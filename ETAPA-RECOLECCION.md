@@ -78,7 +78,7 @@ El prompt (**v2, 2026-08-01**) produce, por cada video, un `.txt` de **8 bloques
 > y sus 8 señales son las que calculan la densidad. Si se tocan, hay que tocar `ETAPA-0.md`
 > en el mismo cambio. Los bloques 5 y 7 nacieron de lo que aporta la skill `/watch`
 > (pacing editorial y hook microscope) y alimentan a `etapa-4`, no a `etapa-0`.
-> Versión anterior en `_ARCHIVO/backups_agentes/Prompt-Gemini_BACKUP_2026-08-01_pre-v2.txt`.
+> Versión anterior: en el historial de git (`git log -- Ads/Prompt-Gemini.txt`).
 
 ---
 
