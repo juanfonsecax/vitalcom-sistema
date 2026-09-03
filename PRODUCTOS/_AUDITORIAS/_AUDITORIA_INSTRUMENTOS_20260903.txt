@@ -1,0 +1,274 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DE INSTRUMENTOS EXTERNOS · 2026-09-03 · 3 commits (85887a9 → 3afe698)
+═══════════════════════════════════════════════════════════════════════════
+
+Pregunta que se contestó: cinco repos de GitHub que circulan como herramientas
+para optimizar sistemas de agentes — ¿sirven para auditar y mejorar ESTE sistema?
+No para generar campañas: para analizar cómo el sistema está construido.
+
+Se evaluaron como INSTRUMENTO DE UNA PASADA, no como dependencia instalada. Un
+plugin que corre una vez y se desinstala no paga arranque en frío; solo paga el
+rato que corre. Ese marco es el que hace viable probar cosas que como residentes
+serían malas.
+
+Todo lo experimental corrió en un worktree de git aislado (rama
+`auditoria-instrumentos`). El repo vivo no se tocó hasta que hubo un hallazgo
+verificado.
+
+
+───────────────────────────────────────────────────────────────────────────
+1. VEREDICTO POR REPOSITORIO
+───────────────────────────────────────────────────────────────────────────
+
+  obra/superpowers ................ NO   metodología de dev (TDD, worktrees,
+                                         code review). VITALCOM no produce
+                                         código: produce campañas. Su
+                                         "verification-before-completion" es una
+                                         skill que pide verificar; acá eso ya es
+                                         un exit code (verificar_producto.py).
+                                         Riesgo real: instala hooks SessionStart
+                                         encima de los 3 propios.
+
+  affaan-m/ECC .................... NO   68 agentes + 284 skills. El sistema
+                                         acaba de pasar de 17 etapas a 16 y de
+                                         16.120 tok de arranque a 5.540. Cada
+                                         skill instalada suma su descripción a
+                                         ese arranque y compite por triggerear.
+                                         Su única idea buena — "sesiones
+                                         resumidas en instintos" — ya existe acá
+                                         mejor implementada: _APRENDIZAJES.csv.
+
+  JuliusBrussee/caveman ........... NO   compresor de tokens con proxy local.
+                                         Reescribe contenido en tránsito
+                                         ("colapsa arrays repetitivos"). Sobre
+                                         22 CSV donde un dato tiene un dueño,
+                                         eso es un proceso que puede alterar una
+                                         fila y NO avisar: sale un CPA plausible.
+                                         Mismo modo de fallo que llevó a revertir
+                                         los modelos baratos. Su skill de
+                                         concisión además degrada el entregable,
+                                         que es prosa. Se roba su MÉTODO de
+                                         benchmark, no su software.
+
+  Graphify-Labs/graphify .......... NO   PROBADO Y MEDIDO. Ver §2.
+
+  mattpocock/skills ............... NO   PROBADO Y MEDIDO. Ver §3.
+
+  Instalados de los cinco: cero. Ideas robadas: dos, ambas ya implementadas.
+
+
+───────────────────────────────────────────────────────────────────────────
+2. GRAPHIFY — probado, medido, descartado
+───────────────────────────────────────────────────────────────────────────
+
+Se instaló graphifyy 0.9.53 y se corrió `graphify update` (ruta determinista,
+sin LLM) sobre el worktree. 11,5 s, 1.478 nodos, 1.473 aristas, 144 comunidades.
+
+Lo que construyó NO es un grafo de dependencias:
+
+    contains (encabezado→subencabezado, MISMO archivo) .. 1.289   87,5 %
+    calls (dentro del mismo .py) ......................     138    9,4 %
+    rationale_for .....................................      41    2,8 %
+    ARISTAS QUE CRUZAN DE UN ARCHIVO A OTRO ...........       3    0,2 %
+
+Tres. Sobre 147 archivos fuente. Es una tabla de contenidos, no un mapa de
+quién lee qué.
+
+Y de esas 3, una es FALSA. Su única "Surprising Connection" era
+gen_pl.py::main() --calls--> clasificar_conceptos.py::clasificar(), marcada
+INFERRED. Verificado contra el código: gen_pl.py DEFINE su propia clasificar()
+en L264 y la llama en L283. No importa clasificar_conceptos.py en ningún lado.
+Match por nombre de función entre archivos.
+
+No conoce las zonas del repositorio. 388 nodos (26,3 %) salen de _ARCHIVO/,
+_ROADMAP/, _OPERADOR/, _CONOCIMIENTO/ y _SKILLS_FUENTE/, que CLAUDE.md declara
+referencia humana. Peor: contamina el ranking. En su lista de nodos dios,
+_ARCHIVO/refactor_20260731_2330/COPYWRITING_ADS.md aparece con grado 14, el
+MISMO que el COPYWRITING_ADS.md vivo. Una herramienta que dice que un archivo
+jubilado es tan central como el que corre no es neutral: es engañosa.
+
+Para cruzar archivos en documentos necesita la ruta con LLM (GEMINI_API_KEY):
+costo por corrida y no determinismo, para INFERIR lo que un grep obtiene exacto,
+porque este repo declara sus referencias con el nombre de archivo literal.
+
+Corrección de la evaluación previa: se había predicho que tree-sitter no
+parsearía la doctrina en Markdown. Falso — el 82 % del grafo (1.204 nodos) sale
+de .md, sin LLM. Lo que no hace es leer las REFERENCIAS entre documentos, solo
+la estructura interna de cada uno. La conclusión se sostuvo por otra razón.
+
+Desinstalado: graphifyy + 28 dependencias (tree-sitter de 26 lenguajes,
+networkx, rapidfuzz). Verificado con `import networkx` → ModuleNotFoundError.
+
+
+───────────────────────────────────────────────────────────────────────────
+3. MATTPOCOCK — 2 de 3 no aplican; la que sirve no estaba en la lista
+───────────────────────────────────────────────────────────────────────────
+
+Se descargaron y leyeron las tres SKILL.md como DATO (no se instaló nada).
+
+  improve-codebase-architecture ... NO. Construida sobre módulos profundos vs
+      superficiales, interfaces, seams, adapters, superficie de test, CONTEXT.md
+      y ADRs en docs/adr/. Nada de eso existe acá. Su entregable es un reporte
+      HTML sobre los ~20 scripts de Python: la parte menos interesante del repo.
+      Se roba una idea: el TEST DE BORRADO — "¿borrar esto concentraría la
+      complejidad, o solo la movería?". Buen lente para los documentos.
+
+  wayfinder ....................... NO. Se había predicho que mapeaba cómo se
+      navega un repo. FALSO: es planificación de proyectos grandes como tickets
+      de decisión sobre un issue tracker, con mapa, bloqueos y niebla de guerra.
+      Requiere un issue tracker, que este repo no tiene, y el trabajo de VITALCOM
+      es operativo diario, no planificación de proyecto.
+
+  writing-for-agents .............. LA QUE SIRVE, y no estaba en la lista de
+      candidatos. No se instala: se usa como RÚBRICA. Nombra con precisión lo que
+      la auditoría del 2026-09-02 hizo por intuición:
+
+        · CONTEXT POINTER — una referencia que nombra material fuera de contexto
+          y codifica la condición para alcanzarlo. "El WORDING del puntero, no su
+          destino, decide cuándo el agente llega al material." Eso es exactamente
+          la tabla de dueños de CLAUDE.md.
+        · LAS DOS CARGAS — carga de contexto (siempre cargado) vs carga cognitiva
+          (sobre el humano). Da nombre a la decisión de la Ola 2.
+        · DIVULGACIÓN PROGRESIVA — "la ramificación es el test más limpio:
+          inlinear lo que TODA rama necesita, y empujar detrás de un puntero lo
+          que solo ALGUNAS alcanzan."  ← es el criterio exacto con el que se
+          partió PLANTILLAS_INFOGRAFIAS.md hoy, derivado por separado.
+          Confirmación independiente.
+        · PALABRAS GUÍA — conceptos comprimidos que el modelo ya trae. El sistema
+          ya lo hace bien: "ángulo", "concepto", "gate", "nodo dios", "polizón".
+        · CACHÉ vs ENTORNO — un documento que repite lo que el entorno ya dice es
+          una caché que se vuelve rancia.
+        · NEGACIÓN — "guiar por prohibición arrastra la conducta prohibida al
+          contexto y la hace MÁS disponible. Enunciar el positivo."
+
+  MEDIDO en la superficie del sistema: 215 imperativos negativos (16 en
+  CLAUDE.md, 199 en los 16 agentes). PERO al clasificarlos, la mayoría están
+  APAREADOS — enuncian el positivo y el negativo juntos, que es justo lo que la
+  skill recomienda ("El ganador se declara por VENTA... nunca por conversación").
+  La regla se cumple sin haberla nombrado. Prohibiciones DESNUDAS reales en
+  CLAUDE.md: dos, ambas menores.
+
+  Conclusión honesta: la rúbrica encontró que el sistema ya está bien escrito en
+  este eje. El hallazgo es que NO hay hallazgo grande — y eso vale medirlo, no
+  inventarle trabajo.
+
+
+───────────────────────────────────────────────────────────────────────────
+4. LO QUE SE CONSTRUYÓ EN VEZ DE INSTALAR
+───────────────────────────────────────────────────────────────────────────
+
+Ads/_TOOLS/gen_grafo.py — el gate de reconciliación, pero del SISTEMA.
+  verificar_producto.py comprueba que un PRODUCTO sea coherente; nada comprobaba
+  que lo fuera el sistema, y el sistema ya falló tres veces por una copia que
+  nadie sabía que existía. Mide costo en tokens, nodos dios por costo heredado,
+  huérfanos, RUTAS MUERTAS y model:inherit. `--comparar` guarda y contrasta la
+  línea base: medir antes y después, hecho comando. `--estricto` devuelve 1.
+
+  Sabe qué zonas del repo están jubiladas. Eso es exactamente lo que Graphify no
+  puede hacer, y la razón por la que 180 líneas propias ganan a 29 paquetes.
+
+  Contra la vara fijada antes de probar — "si Graphify devuelve lo mismo que el
+  casero, no vale instalarlo":
+
+                                    Graphify      gen_grafo.py
+      aristas agente → documento           1              40+
+      documentos huérfanos            no busca            2 reales
+      CSV sin consumidor              no mira             1
+      nodo dios                    grado pelado    tokens heredados
+      falsos positivos                1 de 3              0
+      conoce las zonas del repo          no               sí
+
+
+───────────────────────────────────────────────────────────────────────────
+5. CAMBIOS APLICADOS AL SISTEMA (3 commits)
+───────────────────────────────────────────────────────────────────────────
+
+85887a9  Sacar las dos skills polizonas de .agents/
+  .agents/ es infraestructura del tooling de skills externas y skills-lock.json
+  declara UNA: find-skills (vercel-labs/skills). Arrastraba desde b7aeb9e dos
+  skills DEL SISTEMA que nadie declaró: buscar-producto (copia idéntica) y
+  generar-conceptos (DIVERGIDA — apuntaba a AGENTS.md y a `.Codex/agents/`, un
+  directorio que la Ola 1 retiró a _ARCHIVO/).
+  Misma clase de bug que la auditoría del 02-09 fue a matar en .codex/agents/,
+  sobreviviendo en el directorio de al lado. Claude Code no lee .agents/: no
+  costaba tokens, costaba algo peor — quien editara ahí no cambiaba nada.
+  README.md decía "copia de find-skills", cierto para 1 de 3 archivos. Ahora
+  declara LA REGLA en vez del contenido, para que el próximo polizón se detecte
+  sin auditoría.
+  Arranque en frío: 6.064 → 6.064. Sin cambio. Es la PRUEBA de que era peso
+  muerto y no consumo.
+
+4838e83  gen_grafo.py al repo (ver §4). +52 tok de arranque en frío por la fila
+  en la tabla de determinismo de CLAUDE.md, declarados.
+
+3afe698  Partir PLANTILLAS_INFOGRAFIAS.md
+  Era el ítem más caro del sistema: 25.578 tok × 3 agentes = 76.734 heredados,
+  el número uno de la lista de nodos dios. Y de sus 3 lectores, DOS no necesitan
+  una sola plantilla: etapa-5 solo quería la REGLA MAESTRA DE COLOR y saber que
+  IMAGEN 3 lleva el sello de garantía; etapa-guardar-producto solo la nombra para
+  decir que al copiar se omitan las citas de mentor. Pagaban 25.578 tokens por
+  dos reglas.
+  Mismo criterio que la Ola 2 aplicó a CLAUDE.md: MOTOR + ENRUTADOR, y la
+  doctrina se carga cuando aplica.
+
+      PLANTILLAS_INFOGRAFIAS.md ..............  7.010 tok   motor + enrutador
+      PLANTILLAS_INFOGRAFIAS_FLUJO.md ........ 13.011 tok   IMAGEN 1/2/3
+      PLANTILLAS_INFOGRAFIAS_OPCIONALES.md ...  5.906 tok   IMAGEN 4/5/6
+
+  CONSERVACIÓN VERIFICADA: 998 líneas = 208 + 553 + 237, hash SHA-256 del cuerpo
+  idéntico antes y después. Las 6 secciones IMAGEN están, 3 y 3. Ni una línea de
+  plantilla reescrita.
+
+
+───────────────────────────────────────────────────────────────────────────
+6. RESULTADO MEDIDO
+───────────────────────────────────────────────────────────────────────────
+
+  Métrica de gen_grafo.py (TECHO: cuenta como cargado todo .md mencionado).
+  No comparable con la métrica del 2026-09-02; solo consigo misma.
+
+                                  INICIO       CIERRE
+    Arranque en frío .......       6.064        6.167     +103  (declarado)
+    FASE 1 .................     325.624      290.594   -35.030
+    FASE 2 .................     389.181      354.592   -34.589
+    FASE 3 .................     244.247      227.134   -17.113
+
+  Ahorro REAL por FASE 1, camino por defecto: -42.693 tok
+    etapa-4 -5.557 · etapa-5 -18.568 · etapa-guardar-producto -18.568
+
+  El techo reporta MENOS que el ahorro real: no ve que etapa-4 ya no abre
+  OPCIONALES salvo que se lo pidan. Por eso ciclo-diario marca +1.562 sin haber
+  empeorado — invoca etapa-4 y hereda ese conteo. Límite de la métrica, no del
+  sistema. Anotado acá para que nadie lo lea como regresión dentro de tres meses.
+
+  Verificación al cierre: gate 4/4 exit 0 (TINNIDROP, NUSAVA, CLEARSTEM,
+  VARICOSE) · dashboard exit 0 · 16/16 agentes con model:inherit · sin rutas
+  muertas nuevas.
+
+  Línea base versionada en PRODUCTOS/_AUDITORIAS/_LINEA_BASE_SISTEMA.json.
+  Se reproduce con:  python Ads/_TOOLS/gen_grafo.py --comparar
+
+
+───────────────────────────────────────────────────────────────────────────
+7. LO QUE QUEDA ABIERTO
+───────────────────────────────────────────────────────────────────────────
+
+  Tres hallazgos de gen_grafo.py, ninguno tocado — el script mide, no arregla:
+
+    · PLANTILLAS_VIDEO_IA.md (2.412 tok) — solo lo nombran README.md y _ROADMAP/,
+      ambos referencia humana. Huérfano de ejecución. Aplicarle el TEST DE
+      BORRADO antes de decidir.
+    · _MAPEO_CREATIVOS.csv — ningún agente, skill, documento ni script lo
+      consume. Solo aparece en .hook_csv_mtimes.json, contabilidad del hook.
+      El sistema lo mantiene y nadie lo lee.
+    · ETAPA-RECOLECCION.md apunta a `Ads/COPYS_COMPETENCIA.txt`, que NO EXISTE.
+      Misma clase que `.Codex/agents/`, encontrada automáticamente esta vez.
+
+  Y lo que la auditoría del 2026-09-02 dejó abierto SIGUE abierto, a propósito:
+  la próxima FASE 1 real es la primera que corre con el sistema recortado de
+  punta a punta. Ahora además con las infografías partidas. No se movió
+  PLANTILLAS_ADS.md (51.792 tok heredados, el nuevo nodo dios más caro) porque
+  no está aprobado y porque conviene que corra una FASE 1 antes de mover otra
+  pieza.
+
+═══════════════════════════════════════════════════════════════════════════
