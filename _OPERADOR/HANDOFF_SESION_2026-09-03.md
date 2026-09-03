@@ -79,7 +79,7 @@ TINNIDROP  3.002 msgs · 262 ventas · 8,73 % · CPA $6,48
    ACCESIBILIDAD_MEDICO   406 msgs ·  47 v · 11,58 % · $4,21   ← el GANADOR declarado
    ME_DIJERON_NO_CURA     195 msgs ·  22 v · 11,28 % · $6,38
 CLEARSTEM  1.106 msgs · 124 ventas · 11,21 %
-   ANTI_FALSIFICACION     188 msgs ·  34 v · 18,09 % · $5,98   ← EL TECHO YA SE ALCANZÓ
+   ANTI_FALSIFICACION     188 msgs ·  34 v · 18,09 % · $5,98   ← ver corrección abajo
 NUSAVA       893 msgs ·  62 ventas · 6,94 %
 VARICOSE     391 msgs ·  13 ventas · 3,32 %  (producto muerto, ver §4)
 ```
@@ -88,8 +88,15 @@ VARICOSE     391 msgs ·  13 ventas · 3,32 %  (producto muerto, ver §4)
 1. El ganador declarado (`ACCESIBILIDAD_MEDICO`) recibe el 13 % del tráfico; el peor cierre recibe
    3,5× más presupuesto. Si se confirma, no es problema de texto del bot: es **asignación de
    presupuesto que no siguió al ganador que el propio sistema declaró.**
-2. `CLEARSTEM/ANTI_FALSIFICACION` cierra 18,09 %. **El 15-20 % es alcanzable con esta
-   infraestructura de bot.** El 8,73 % no es un techo estructural.
+2. ⚠️ **CORREGIDO POR `etapa-11` (2026-09-03).** Se afirmó que el 18,09 % de
+   `CLEARSTEM/ANTI_FALSIFICACION` probaba que "el 15-20 % es alcanzable con esta infraestructura de
+   bot". **Es falso.** `_EVENTOS.csv` línea 15 registra `2026-07-10 · CLEARSTEM · CAMBIO_BOT · "Bot
+   NUEVO del relanzamiento — VARIABLE DE CONFUSIÓN sin aislar"`, más un `CAMBIO_CREATIVO` el mismo
+   día. CLEARSTEM corre **otro bot**, estrenado. La lectura correcta: *hay un bot y un ángulo que
+   llegan a 18 % y nadie sabe cuál de los dos lo produjo.* Es argumento a favor del A/B, no prueba.
+3. ⚠️ **El cierre de TINNIDROP es 8,29 %, no 8,73 %.** Las 13 filas `SIN_ATRIBUCION` tienen
+   **0 mensajes y 1 venta cada una**: entran al numerador sin denominador. El JOIN cierra al 100 %
+   de los mensajes y 95 % de las ventas.
 
 ---
 
@@ -115,10 +122,42 @@ agregar máquina al sistema debe justificarse contra este número.**
 Orden acordado con el operador. **Decidió: arreglar el cierre primero, dejar los 4 productos
 parados.**
 
-- **#1 · Arreglar el cierre — EN CURSO.** Se lanzó `etapa-11` sobre TINNIDROP con el ángulo ganador
-  `ACCESIBILIDAD_MEDICO`, ventana 2026-07-01→09-01, **sin export de chats** (diagnóstico de
-  LOCALIZACIÓN, no de causa). ⚠️ **Si esta sesión se cerró antes de que terminara, hay que
-  relanzarlo.**
+- **#1 · Arreglar el cierre — `etapa-11` COMPLETADA.** Informe:
+  `PRODUCTOS/_AUDITORIAS/_FLUJO_TINNIDROP_20260903.txt` (653 líneas). **Leerlo antes de tocar nada
+  del bot.** Su conclusión da vuelta la hipótesis de partida:
+
+  > **TINNIDROP no tiene un problema de flujo demostrado: tiene un problema demostrado de A QUIÉN
+  > le compra los mensajes.**
+
+  · 🔴 **EL HALLAZGO.** `PERDIDA_AUDITIVA` corre en dos bandas de edad contra un avatar 45-60:
+    **45-60 → 7,48 %** (69/923) · **25+ (GTR0) → 3,06 %** (16/523). Fisher **p=0,00044**. Mismo
+    ángulo, mismo creativo, mismo bot, mismo número, misma cuenta. **Un texto de flujo idéntico no
+    puede cerrar 7,48 % y 3,06 % a la vez** → es cuasi-experimento: para esa celda descarta el
+    flujo como causa. En GTR7 a 45-60 el mismo ángulo cierra 9,13 %, sano.
+  · 🔴 **ESA CELDA SIGUE PRENDIDA** al 01-sep: Q2.051 gastados a **CPA Q128 contra break-even
+    Q71,56**, once días después de que `APR-060` registrara "25+ cierra 4× peor". En los últimos
+    7 días es **el 49 % del tráfico del producto**. Es plata saliendo ahora.
+  · **Reparto de presupuesto (16 días):** `PERDIDA_AUDITIVA` **62,6 % del gasto** cerrando 5,93 %
+    a CPA Q71 = *exactamente* el break-even (margen cero) · `ACCESIBILIDAD_MEDICO` **9,2 %**
+    cerrando 14,29 % a CPA Q30. Reasignar es de `etapa-8`, no de `etapa-11`.
+  · **No hay cinco flujos que arreglar, hay uno.** Excluyendo `PERDIDA_AUDITIVA`: χ²=0,932, df=3,
+    **p=0,818** — los otros cuatro son homogéneos a 10,54 %. El ganador declarado lo es por VENTA
+    y por CPA, **no por superioridad de cierre demostrada** (empata con ME_DIJERON_NO_CURA).
+  · **Desajustes ad↔bot citables** para el brazo A: C1 (el bot abre con "en un momento una asesora
+    se pondrá en contacto" — saludo neutro que anuncia espera), C2 (INT 2 habla de mecanismo, el ad
+    ganador habla de plata y médicos), C3 (el ad dice "+10.200", el bot "+12.000"), C5, C6.
+    C4 (entrega) está congruente: no se toca.
+  · **El A/B es viable sólo en TINNIDROP** (72,4 msj/día; n=358/brazo). Pero el brazo B a
+    7,0 msj/día tardaría 51 días: **reasignar presupuesto no es sólo la palanca más rentable, es la
+    precondición para que el test exista.**
+
+  🔴 **GATE DURO ANTES DE QUE `etapa-5` ESCRIBA:** `1_HACER_MANUAL.txt` **no es el flujo actual**.
+  Dice textual *"NO se rehace el bot. Se CONSERVA el bot que el operador ya tiene cargado"* y que
+  el flujo de abajo queda como REFERENCIA/RESPALDO. **Todo el PASO 3 del informe es PROVISIONAL
+  hasta que el operador exporte el flujo real de LucidBot.**
+
+  `etapa-11` **no anexó filas a `_EVENTOS.csv`** — la regla 10 dice loguear *el día que se aplica*.
+  Quedan listas en la sección 7 del informe con `[FECHA_APLICACION]`.
 - **#2 · Los 12 creativos — CERRADO.** No era una fábrica detenida: los 8 de TINNIDROP **existían
   en disco desde el 26-jul** y estaban mal etiquetados. Corregidos a `GENERADO` + evento
   `CORRECCION_ESTADO`. Los 4 de CLEARSTEM sí faltan producir. **El cuello era PUBLICAR.**
@@ -156,7 +195,11 @@ parados.**
    01-09. En contraentrega **la entrega es el dinero**: falta el export de Dropi.
 
 ### Pregunta abierta que quedó sin responder
-6. **¿Con qué cadencia debe entregar cada fuente de data?** El operador venía pasando Meta,
+6. 🔴 **EXPORT SEMANAL DE CONVERSACIONES DE LUCIDBOT.** `etapa-11` lo declara *"el input más barato
+   y de mayor retorno pendiente en todo el sistema"*. Sin chats se puede decir DÓNDE se pierde la
+   venta pero nunca POR QUÉ, y las FAQ nuevas quedan **entregadas vacías a propósito** (proponerlas
+   por intuición sería el "cambio sin evidencia" que el brief no admite).
+7. **¿Con qué cadencia debe entregar cada fuente de data?** El operador venía pasando Meta,
    LucidSales, Dropi y tarjetas; las tarjetas y (cree que) Dropi eran mensuales. Hay que definir la
    cadencia **por fuente**, basada en para qué se usa cada una y en el ciclo de maduración de la COD
    (~10 días). **Esta era la siguiente pregunta cuando se cortó la sesión.**
