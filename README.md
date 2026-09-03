@@ -71,7 +71,7 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 
 **FASE 1 — Pre-testeo:** `etapa-producto` → `etapa-0` → **[PASO 1.5 lavado de videos]** → `etapa-1` → `etapa-1b` → (`etapa-2` ∥ `etapa-fanpage`) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
-**FASE 2 — Post-testeo / Escalado:** `etapa-3a` → `etapa-3b` → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
+**FASE 2 — Post-testeo / Escalado:** `etapa-3` → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
 **Ciclo de optimización (diario):** `etapa-7` (lee métricas) → `etapa-8` (PLAN DE ESCALADO) → `etapa-10` (por qué ganó lo que ganó → brief) → `etapa-9` (produce ≥6 creativos) → anexar al CSV → **regenerar el dashboard** (último paso siempre).
 

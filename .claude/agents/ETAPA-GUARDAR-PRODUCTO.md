@@ -127,7 +127,7 @@ ANGULO_GANADOR: [vacío hasta que el operador lo confirme con métricas]
 
 ━━━ PRÓXIMA SESIÓN ━━━
 - Optimización (ETAPA-7): leer este REGISTRO + datos de Meta, comparar CPA real vs objetivo/break even, indicar qué escalar y qué apagar.
-- FASE 2: si hay ángulo ganador confirmado + métricas → ir directo a ETAPA-3A.
+- FASE 2: si hay ángulo ganador confirmado + métricas → ir directo a ETAPA-3.
 - Nuevo testeo del mismo producto: saltar ETAPA-1 y ETAPA-1B (ya están), ir a ETAPA-0 con nuevos videos.
 - El detalle copiable (copies, prompts, bot) está en 1_HACER_MANUAL.txt.
 ```
@@ -184,7 +184,7 @@ Vocabularios controlados (no inventar valores nuevos sin anotarlo):
 - `formato`: VIDEO · IMAGEN
 - `tipo_hook`: MIEDO · EMOCIONAL · TESTIMONIO · EDUCACIONAL · MECANISMO · OFERTA · PRUEBA_SOCIAL · ANTI_FALSIFICACION
 - `nivel_conciencia`: 1 · 2 · 3 (admite 3a/3b/1-2 como en ETAPA-2). Vacío si no se declaró — **no inventarlo**.
-- `rol_embudo`: TOFU · MOFU · BOFU — `rol_embudo_origen` = **DECLARADO** (lo dijo ETAPA-3B/ETAPA-4) o **DERIVADO_NC** (se dedujo del nivel de conciencia con la regla de abajo).
+- `rol_embudo`: TOFU · MOFU · BOFU — `rol_embudo_origen` = **DECLARADO** (lo dijo ETAPA-3/ETAPA-4) o **DERIVADO_NC** (se dedujo del nivel de conciencia con la regla de abajo).
 - `lleva_precio`: SI · NO → refleja lo **EJECUTADO** en Meta, no lo planificado. Si difieren, se anota la discrepancia en `notas`.
 - `origen_angulo`: TRANSCRIPCION (ETAPA-0) · VOZ_REAL (ETAPA-1B) · PROBLEMA_OCULTO · GANADOR_PRIOR · MICROANGULO_3B
 - `estado`: ACTIVO · PODADO · PAUSADO · NUNCA_ENTREGO
@@ -195,7 +195,7 @@ Regla de derivación NC → rol de embudo (doctrina del sistema: el rol se mapea
 
 **Cuándo se escribe:**
 - **FASE 1**, al cerrar: una fila por cada uno de los 6 conjuntos (`verificado_en_csv=NO` hasta que gasten).
-- **FASE 2**, al cerrar: una fila por microángulo, con `rol_embudo` DECLARADO por ETAPA-3B.
+- **FASE 2**, al cerrar: una fila por microángulo, con `rol_embudo` DECLARADO por ETAPA-3.
 - **Al leer data** (ETAPA-7): si aparece un `conjunto_meta` que no está acá, se **anexa la fila** y se marca `verificado_en_csv=SI`. Nunca se descarta una fila de datos por falta de dimensión.
 - Un rerun **actualiza** las filas del producto; no duplica. Llave única = (`producto_key`, `conjunto_meta`).
 
@@ -281,5 +281,5 @@ Después de escribir los archivos y confirmar el gate, el orquestador NO se qued
 2. Leer el análisis + el REGISTRO DE CONJUNTOS.
 3. Tres caminos:
    - **Optimización (ETAPA-7):** traer datos de Meta (o leerlos por MCP), unir por NOMBRE_CONJUNTO, comparar CPA real vs objetivo/break even y % de conversación, e indicar qué escalar y qué apagar.
-   - **FASE 2:** ángulo ganador confirmado + métricas → ETAPA-3A.
+   - **FASE 2:** ángulo ganador confirmado + métricas → ETAPA-3.
    - **Nuevo testeo:** saltar ETAPA-1/1B → ETAPA-0 con nuevos videos.

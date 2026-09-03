@@ -70,7 +70,7 @@ Preguntaste si dolor, deseo, avatar, punto B están en el sistema *"porque si no
 | Deseos / Punto B | `etapa-2` → "Punto A → Punto B" en la ficha de ángulo | parcial |
 | Nivel de conciencia | `etapa-2` 6º eje (Niveles 1, 2, 3a, 3b) | `nivel_conciencia` |
 | Emoción dominante | `etapa-2` → **vocabulario cerrado** de 7 valores | `emocion_dominante` |
-| Objeciones | `etapa-3a` → 10+ sub-dolores, mín. 3 `[EXTERNO]` | — |
+| Objeciones | `etapa-3` → 10+ sub-dolores, mín. 3 `[EXTERNO]` | — |
 
 Esto es un sistema de investigación de avatar **muy por encima del promedio**. No hay nada roto ahí.
 

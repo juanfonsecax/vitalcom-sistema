@@ -17,7 +17,7 @@ tools: Read, Write, Glob, Grep, Bash, Task
 **1-1-7** a **$15-18/día**. Después, expansión horizontal (Post ID, multicuenta, multi-fanpage) y
 `1-7-7` si el inventario de creativos lo sostiene.
 
-**Secuencia:** `etapa-3` (banco de copy, si no corrió) → `etapa-6` (FASE 3) →
+**Secuencia:** `etapa-3` (banco de copy) → `etapa-6` (FASE 3) →
 `etapa-guardar-producto` → ciclo `etapa-7` / `etapa-8` / `etapa-10`
 
 ---
@@ -34,7 +34,7 @@ Si falta cualquiera → detener. **Un ganador de 1 de 2 es ruido.**
 
 ## PASO 0 — Banco de copy para la expansión horizontal
 
-Si `etapa-3a` / `etapa-3b` no corrieron todavía, corren acá: su output —los 8-12 microángulos del
+Si `etapa-3` no corrió todavía, corre acá: su output —los 8-12 microángulos del
 ángulo ganador— es el banco de copy que alimenta la expansión horizontal de esta fase. Ese es su
 único consumidor real.
 

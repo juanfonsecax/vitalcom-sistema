@@ -23,7 +23,7 @@
 1. **Optimizar el flujo hacia el/los ángulo(s) ganador(es)** (Clase 22): el bot deja de ser paraguas y se apunta al ángulo que Meta marcó con más clics. El **bot paraguas es herramienta de TESTEO (FASE 1), no de escalado** — a escala, un bot que no es congruente con el anuncio genera **efecto rebote** ("si el flujo dice algo distinto a lo pauteado, el cliente se sale", Clase 22).
 2. **El ganador se riega HORIZONTAL, no se multiplica en campañas nuevas hacia un bot compartido:** la **campaña ganadora** (con su ángulo) se replica en **multicuenta (4→9), multifanpage y Post ID**. Ese es el vehículo del volumen.
 3. **Cada ángulo ganador tiene su propio recorrido de FASE 2** (bot dedicado + microángulos + banco de creativos), **escalonado**, no todos de golpe:
-   - **Ganador #1 (mejor CPA semanal):** arranca FASE 2 ya (ETAPA-3A→3B→4→5). Bot dedicado de un solo ángulo = máxima congruencia (Clase 22).
+   - **Ganador #1 (mejor CPA semanal):** arranca FASE 2 ya (ETAPA-3→4→5). Bot dedicado de un solo ángulo = máxima congruencia (Clase 22).
    - **Ganador #2 y #3:** entran como **FASE 2 propias escalonadas cada ~3 días**, cada uno con su bot dedicado. No se fusionan en un paraguas a escala.
    - Motivo: Joaquín optimiza el flujo hacia **EL** ángulo, no hacia tres a la vez. La congruencia es la que sostiene la conversión al meter plata.
 
@@ -257,7 +257,7 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 
 ### 🟨 VENTANA 3 — DÍA 4 (GATE #2: VALIDACIÓN HORIZONTAL) · *validar sin subir presupuesto*
 > **Calendario calibrado a Guatemala (entrega COD ~3 días, GINTACOM/FORZA — no los 4-7 de Colombia).** Ya hay un CPA formándose y las primeras entregas empiezan a confirmar. Se valida que el ganador **aguanta** en varias cuentas/fanpages antes de meterle gasolina. En mercados con entrega más lenta esta ventana corre a días 4-6.
-- **Arranca FASE 2 del sistema sobre el ganador #1** (ETAPA-3A → 3B → 4 → 5): microángulos + **bot dedicado de un solo ángulo** + banco de creativos anti-fatiga (TOFU/MOFU/BOFU). Si hay ganador #2/#3 → sus FASE 2 se **escalonan cada ~3 días** (§1).
+- **Arranca FASE 2 del sistema sobre el ganador #1** (ETAPA-3 → 4 → 5): microángulos + **bot dedicado de un solo ángulo** + banco de creativos anti-fatiga (TOFU/MOFU/BOFU). Si hay ganador #2/#3 → sus FASE 2 se **escalonan cada ~3 días** (§1).
 - **VALIDAR el ganador en DISTINTAS fanpages/cuentas** (Joaquín): replicar la campaña ganadora en las 4 cuentas/fanpages. **⚠️ En esta fase NO se sube presupuesto** — se valida que funcione a largo plazo (regla explícita Joaquín, Clase 15 Q&A). El +20% es solo para lo ya validado.
 - **"Cuando vende en las 4 → SÚPER WINNER"** → habilita el escalado fuerte de la Ventana 4.
 - **Empezar el banco de creativos del ganador** (Camilo: la variable #1): mandar a hacer **10-40 creativos** del mismo ángulo, conceptos/formatos distintos, entendiendo POR QUÉ ganó (Clase 20: "se copia el por qué vendió, no el creativo"). Brief lo arma ETAPA-8, lo ejecuta ETAPA-4.

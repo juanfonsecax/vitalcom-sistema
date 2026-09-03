@@ -12,7 +12,7 @@ Actúa en dos modos:
 - **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `PLANTILLAS_INFOGRAFIAS.md`, con IMAGEN 4 anti-imitación opcional).
 
 > **DOS SISTEMAS DE CREATIVO — no confundir:** (a) **AD DE TESTEO** = el anuncio (video o imagen Prompt Maestro) que va EN LA CAMPAÑA de Meta y detiene el scroll. (b) **INFOGRAFÍAS DEL BOT** = las imágenes informativas DENTRO del flujo de WhatsApp (después del clic). Aplicar siempre las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) del sistema a ambos.
-- **FASE 2 (Conceptos):** Produce **el copy ÚNICO** de la fase — texto, título y descripción — más sus 3 variaciones de respaldo, en formato testimonio de primera persona, construido sobre el ángulo ganador y alimentado por los microángulos de `etapa-3b`.
+- **FASE 2 (Conceptos):** Produce **el copy ÚNICO** de la fase — texto, título y descripción — más sus 3 variaciones de respaldo, en formato testimonio de primera persona, construido sobre el ángulo ganador y alimentado por los microángulos de `etapa-3`.
 
 > 🔴 **Cambio del 02-sep-2026 (arquitectura de 3 fases).** Antes esta etapa producía **6 copies
 > distintos**, uno por microángulo, y cada uno iba a un conjunto. Eso movía **dos variables a la
@@ -45,7 +45,7 @@ Actúa en dos modos:
 ### FASE 2
 ```xml
 <input_fase2>
-  <output_etapa_3b>[microángulos completos: dolores específicos, objeciones, frases de apertura]</output_etapa_3b>
+  <output_etapa_3>[microángulos completos: dolores específicos, objeciones, frases de apertura]</output_etapa_3>
   <producto>[nombre del producto]</producto>
   <precio_p1u>[P1u de ETAPA-1 — Q]</precio_p1u>
   <angulo_ganador>[nombre y promesa del ángulo ganador]</angulo_ganador>
@@ -154,7 +154,7 @@ Si el operador no entregó alguna variable del grupo `Operador` (estadísticas c
 > Usar el **Prompt Maestro de `PLANTILLAS_ADS.md`** (15 estilos + reglas de compliance Andrómeda) como base de cada concepto. Este es el BANCO de imágenes para el escalado horizontal multicuenta de FASE 2.
 
 Andrómeda penaliza la fatiga: cada concepto distinto = una segmentación distinta. Además de los videos del ángulo ganador y de las infografías, generar conceptos de IMAGEN variados que alimentan el escalado horizontal multicuenta (ETAPA-6 Fase 2). **PRIMER EJE — FORMATO** (mínimo un concepto por cada uno):
-- **TESTIMONIO:** reseña/captura con antes→después (usar MOMENTOS DE TRANSFORMACIÓN de ETAPA-3A).
+- **TESTIMONIO:** reseña/captura con antes→después (usar MOMENTOS DE TRANSFORMACIÓN de ETAPA-3).
 - **PROBLEMA-SOLUCIÓN:** punto de dolor del microángulo → producto como puente.
 - **COMPARACIÓN:** vs. lo que el avatar ya probó o vs. competencia, con 3-4 ventajas verificables.
 

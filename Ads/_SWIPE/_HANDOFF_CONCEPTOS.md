@@ -106,7 +106,7 @@ los creativos del test
 3. **El brazo A (collage de síntomas) hay que limpiarlo:** el original dice *"elimina hongos"* y lleva sello **REGISTRO-FDA US**. Ambos violan el compliance. Si se testea sucio, el resultado no dice nada del concepto.
 
 ### Decisiones pendientes del operador
-4. **¿FASE 2 pasa de 6 microángulos a 6 conceptos?** Recomendado: sí. Implica tocar `ETAPA-3B` y `ETAPA-6` FASE 2. **Es lo que convierte el test T01 en parte del flujo normal en vez de un experimento aparte.**
+4. **¿FASE 2 pasa de 6 microángulos a 6 conceptos?** Recomendado: sí. Implica tocar `ETAPA-3` y `ETAPA-6` FASE 2. **Es lo que convierte el test T01 en parte del flujo normal en vez de un experimento aparte.**
 5. **Tensión de FORMATO:** el swipe da **1:1 en 64 %** de los ganadores contra 17 % de 4:5, y el sistema manda *"4:5 único"*. Es el único choque con margen amplio. Pide un test, no un cambio a ciegas.
 6. Nota en `_METODO.md`: "posición" es ranking relativo, no impresiones absolutas.
 
@@ -165,5 +165,5 @@ Según lo que toque:
 
 - **Producir los creativos de T01** → *"Armá la plantilla madre del brazo B (C2 ligera) para TINNIDROP con el PROMPT DE CONTROL de `PLANTILLAS_ADS.md`, y decime cómo verifico la huella antes de subir."*
 - **Lanzar el test** → *"Ya creé la campaña. Estos son los nombres de los conjuntos: [...]. Llenalos en `_TESTEOS.csv` y regenerá la página."*
-- **Cerrar el pendiente 4** → *"Pasemos FASE 2 de 6 microángulos a 6 conceptos. Tocá `ETAPA-3B` y `ETAPA-6`."*
+- **Cerrar el pendiente 4** → *"Pasemos FASE 2 de 6 microángulos a 6 conceptos. Tocá `ETAPA-3` y `ETAPA-6`."*
 - **Re-análisis del swipe (~1-sep)** → *"Corré el re-barrido de `_HANDOFF.md` y calculá supervivencia por `concepto_key`. Interesa sobre todo si C8_PROGRESION sobrevive."*

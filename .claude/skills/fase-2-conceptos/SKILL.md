@@ -1,6 +1,6 @@
 ---
 name: fase-2-conceptos
-description: FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, mapear el ángulo, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando el operador responde "2" a la pregunta inicial, o dice "ya sé qué ángulo vende", "testear conceptos", "qué creativo lo vende más barato" o "tengo el ángulo ganador".
+description: FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando el operador responde "2" a la pregunta inicial, o dice "ya sé qué ángulo vende", "testear conceptos", "qué creativo lo vende más barato" o "tengo el ángulo ganador".
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -21,7 +21,7 @@ sumando sus 2 apariciones** (~4.1 días a 1× BE), nunca por conjunto. Aritméti
 Catálogo de los 8 conceptos y su evidencia: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`. Se registra en
 `concepto_key` de `_DIM_CONJUNTOS.csv` (vocabulario en `DATA_PLAYBOOK.md` §1).
 
-**Secuencia:** `etapa-11` → `etapa-3a` → `etapa-3b` → `etapa-9` (10 conceptos) →
+**Secuencia:** `etapa-11` → `etapa-9` (10 conceptos) →
 (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
 ---
@@ -62,29 +62,18 @@ de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID)
 > `ESCALADO_PLAYBOOK.md` §3 y va **antes de gastar más**. El cierre del portafolio está en 8.6 %
 > contra el 15-20 % de los mentores; a mensajes y gasto idénticos, el 15 % son **+324 ventas y CPA
 > de Q51.5 a Q29.6**. Ninguna palanca de estructura se acerca. Su brief entra a `etapa-5` en el
-> PASO 4, que redacta **los dos flujos** del A/B.
+> PASO 2, que redacta **los dos flujos** del A/B.
 
 ---
 
-## PASO 1 — `etapa-3a` (mapeador del ángulo ganador)
-
-Inputs: ficha completa del ángulo ganador + output completo de `etapa-2`.
-Output: mapa en 4 secciones (10+ sub-dolores, objeciones con mín. 3 marcadas [EXTERNO] y validación
-web, recorrido del avatar, formatos). Solo investiga.
-
----
-
-## PASO 2 — `etapa-3b` (constructor de microángulos)
-
-Inputs: output completo de `etapa-3a` + ángulo ganador.
-Output: 8-12 microángulos (dolor, objeción asignada, formato, frase de apertura).
-
-> ⚠️ **Los microángulos YA NO arman conjuntos.** Son (a) el banco de copy de la FASE 3 y (b) materia
-> prima de los briefs de concepto. En FASE 2 el copy es **uno solo y fijo** para los 10 anuncios.
+> ⚠️ **`etapa-3` NO corre en esta fase.** Los microángulos que produce ya no arman conjuntos: son el
+> banco de copy de la FASE 3. Corrían acá por herencia del diseño anterior al 2026-09-02, gastando
+> dos invocaciones en el camino crítico para alimentar algo que esta fase no consume. En FASE 2 el
+> copy es **uno solo y fijo** para los 10 anuncios — es la constante de control.
 
 ---
 
-## PASO 3 — `etapa-9` (fábrica de conceptos)
+## PASO 1 — `etapa-9` (fábrica de conceptos)
 
 Inputs: ángulo ganador, imagen del producto, data del producto, `_APRENDIZAJES.csv` de creativos.
 Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.csv` con
@@ -92,12 +81,12 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
 
 ---
 
-## PASO 4 — `etapa-4` ∥ `etapa-5` (PARALELO)
+## PASO 2 — `etapa-4` ∥ `etapa-5` (PARALELO)
 
-- **`etapa-4` (FASE 2)** — Inputs: ángulo ganador, microángulos de `etapa-3b`, producto, P1u,
+- **`etapa-4` (FASE 2)** — Inputs: ángulo ganador con su ficha de `etapa-2`, producto, P1u,
   `<pagina_asignada>`. Output: **el copy único** de la fase (texto/título/descripción) + sus 3
   variaciones de respaldo. **No** 6 copies distintos: el copy es constante de control.
-- **`etapa-5` (FASE 2)** — Inputs: ángulo ganador (con nivel de conciencia), microángulos, producto,
+- **`etapa-5` (FASE 2)** — Inputs: ángulo ganador (con nivel de conciencia), producto,
   P1u/P2u/P3u, `<costo_envio_cliente>` = Q0, `<pagina_asignada>` y **el brief de `etapa-11`**. País
   Guatemala, transportadoras GINTACOM/FORZA. Output: **los DOS flujos del A/B** — brazo A = el
   paraguas vigente con los cambios del brief aplicados; brazo B = flujo LucidBot de un solo ángulo
@@ -109,7 +98,7 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
 
 ---
 
-## PASO 5 — `etapa-6` (FASE 2 — planificador de conceptos)
+## PASO 3 — `etapa-6` (FASE 2 — planificador de conceptos)
 
 Inputs: ángulo ganador, copy único de `etapa-4`, los 10 conceptos de `etapa-9`, cuenta principal +
 cuenta réplica, `avatar_edad`, output de `etapa-1`.
@@ -124,7 +113,7 @@ mismos 10 en OTRA cuenta), $6/conjunto = **$24/día**, 4 AM día siguiente.
 
 ---
 
-## PASO 6 — `etapa-guardar-producto`
+## PASO 4 — `etapa-guardar-producto`
 
 Correr también al final de FASE 2 para actualizar con el ángulo ganador y los resultados.
 

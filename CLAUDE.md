@@ -33,8 +33,8 @@ Cada etapa es un **subagente real**, definido en `.claude/agents/ETAPA-*.md` con
 - Las etapas marcadas "∥ PARALELO" se lanzan en un solo turno. Esperar AMBOS outputs antes de la
   etapa que las consume.
 
-**Las 17 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` ·
-`etapa-fanpage` · `etapa-3a` · `etapa-3b` · `etapa-4` · `etapa-5` · `etapa-6` ·
+**Las 16 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` ·
+`etapa-fanpage` · `etapa-3` · `etapa-4` · `etapa-5` · `etapa-6` ·
 `etapa-guardar-producto` · `etapa-7` · `etapa-8` · `etapa-9` · `etapa-10` · `etapa-11`
 
 ---

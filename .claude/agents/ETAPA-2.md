@@ -256,5 +256,5 @@ P2u irresistible: Q[precio] con envío gratis
 
 ## Conexión
 - **FASE 1:** Output completo → ORCHESTRATOR → ETAPA-4, ETAPA-5 y ETAPA-6-FASE1 (las 6 fichas de ángulo). Corre en paralelo con ETAPA-FANPAGE.
-- **FASE 2:** Output completo → ORCHESTRATOR → ETAPA-3A (como `output_etapa_2`), cuando el operador confirma el ángulo ganador.
-Este output permanece disponible como referencia para ETAPA-3A/3B, ETAPA-4 y ETAPA-5.
+- **FASE 2:** Output completo → ORCHESTRATOR → ETAPA-3 (como `output_etapa_2`), cuando el operador confirma el ángulo ganador.
+Este output permanece disponible como referencia para ETAPA-3, ETAPA-4 y ETAPA-5.

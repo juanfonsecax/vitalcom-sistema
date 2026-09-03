@@ -229,7 +229,7 @@ Aplicarlos como restricciones sobre la lectura y **citar el `id`** cuando uno ca
 - Recorrer `PRODUCTOS/_PORTAFOLIO.txt` y auditar **cada producto en ESTADO=VIVO**, uno por uno — no solo el último.
 - Escribir resultados en el bloque RESULTADOS_TESTEO de `2_DATA_PRODUCTO.txt` (y `3_CAMPAÑA_META.txt` si existe).
 - El informe alimenta a **ETAPA-8**, que decide las palancas de escalado.
-- Al confirmar ganador con ventana COMPLETA: "El ángulo ganador es [nombre]" → ORCHESTRATOR inicia FASE 2 — **ETAPA-11 primero**, después TESTEO DE CONCEPTOS (ETAPA-3A → ETAPA-3B → ETAPA-9).
+- Al confirmar ganador con ventana COMPLETA: "El ángulo ganador es [nombre]" → ORCHESTRATOR inicia FASE 2 — **ETAPA-11 primero**, después TESTEO DE CONCEPTOS (ETAPA-3 → ETAPA-9).
 - 🔴 **ETAPA-11 corre ANTES que 3A.** Optimizar el flujo es la palanca #1 (`ESCALADO_PLAYBOOK.md` §3) y va antes de gastar más: el cierre del portafolio va en 8.6 % contra el 15-20 % de los mentores. Al entregar el ganador, **pedir también el export de chats de LucidBot** de la ventana de testeo — es el input que le permite a ETAPA-11 decir POR QUÉ se pierde la venta y no solo DÓNDE.
 - **Precondición que hay que decir al entregar el ganador:** la FASE 2 necesita **10 conceptos publicables** y una **segunda cuenta** para la campaña de réplica. Si no existen, el ganador queda confirmado pero la fase no arranca — se corre `etapa-9` primero.
 - **Y una advertencia de lectura que aplica desde el 02-sep:** en las campañas `1-1-N` de FASE 2, un anuncio con gasto acumulado < 30 % de su reparto prorrateado es **`SIN_ENTREGA`**, no perdedor. No incluirlo en el ranking ni recomendarlo para apagar.

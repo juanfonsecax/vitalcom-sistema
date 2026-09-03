@@ -151,7 +151,7 @@ PRODUCTO: [nombre]
 BUYER TYPE: [EMOCIONAL / TÉCNICO]
 TIPO DE FLUJO BOT: [NARRATIVO / TÉCNICO]
 DOLOR ATACADO: "[dolor central en primera persona del avatar]"
-BARRERA PRINCIPAL A RESOLVER: "[OBJ-01 de ETAPA-3A]"
+BARRERA PRINCIPAL A RESOLVER: "[OBJ-01 de ETAPA-3]"
 PRIMERA FRASE DEL BOT: "[dolor del ángulo en voseo — eso tiene solución]"
 PROMESA CENTRAL: [de X → a Y en Z tiempo]
 VELOCIDAD: [Semana X en Y | Mes X en Z]

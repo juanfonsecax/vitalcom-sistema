@@ -23,10 +23,10 @@ variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cu
 §1.7.1 y el choque C-09 de `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 
 > ⚠️ **Qué pasó con los MICROÁNGULOS.** Hasta el 02-sep, "FASE 2" nombraba una campaña de 6
-> microángulos del ganador (`etapa-3a` → `etapa-3b`). Eso **movía dos variables a la vez**
+> microángulos del ganador (`etapa-3`). Eso **movía dos variables a la vez**
 > (microángulo + ejecución visual) y nada era atribuible. En la arquitectura de 3 fases los
 > microángulos **no arman conjuntos**: son el banco de copy y de briefs que alimenta (a) el copy
-> de las campañas de FASE 3 y (b) la siguiente tanda de conceptos. `etapa-3a`/`etapa-3b` siguen
+> de las campañas de FASE 3 y (b) la siguiente tanda de conceptos. `etapa-3`/`etapa-3` siguen
 > corriendo con el mismo output; cambia quién lo consume.
 
 El operador solo necesita leer el output de este agente y replicarlo en Meta Ads.
@@ -193,7 +193,7 @@ Las réplicas de un mismo ángulo son **idénticas por diseño** (mismo creativo
   <post_id>[si existe · ver la advertencia sobre OUTCOME_SALES en ESCALADO_PLAYBOOK §3.5]</post_id>
   <output_etapa_5>[flujo LucidBot del ángulo — para confirmar coherencia]</output_etapa_5>
   <output_etapa_1>[CPA objetivo, CPA break even, precios P1u/P2u/P3u]</output_etapa_1>
-  <microangulos>[de etapa-3b — banco de copy para la expansión horizontal, NO para armar conjuntos]</microangulos>
+  <microangulos>[de etapa-3 — banco de copy para la expansión horizontal, NO para armar conjuntos]</microangulos>
 </input_fase3>
 ```
 

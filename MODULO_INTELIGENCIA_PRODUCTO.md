@@ -195,4 +195,4 @@ Un solo creativo no cierra la venta. El público está a distinta temperatura; e
 
 ---
 
-*Fuente: doctrina de investigación del SISTEMA VITALCOM (ETAPA-1B voz del cliente · ETAPA-2 avatar/ángulos · ETAPA-3A mapa del ganador · ETAPA-3B microángulos · ETAPA-4 embudo TOFU/MOFU/BOFU), destilada de las clases de los mentores (Joaquín/Andrómeda, Clase 12/19/20/22) y hecha agnóstica al canal para replicarse en TikTok o web.*
+*Fuente: doctrina de investigación del SISTEMA VITALCOM (ETAPA-1B voz del cliente · ETAPA-2 avatar/ángulos · ETAPA-3 mapa del ganador · ETAPA-3 microángulos · ETAPA-4 embudo TOFU/MOFU/BOFU), destilada de las clases de los mentores (Joaquín/Andrómeda, Clase 12/19/20/22) y hecha agnóstica al canal para replicarse en TikTok o web.*

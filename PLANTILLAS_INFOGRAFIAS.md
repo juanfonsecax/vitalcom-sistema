@@ -91,12 +91,12 @@ Solo reemplazar los valores entre `[ ]` con los datos del producto actual.
 | [COLOR_ETIQUETA_FRASCO_DOCTORA] | Imagen del producto (color de la etiqueta) |
 | [COLOR_FONDO_OSCURO] | COLOR_OSCURO del producto si mantiene legibilidad de texto blanco; de lo contrario #0a1628. Se usa en fondos de ZONA 1 y ZONA 2 de IMAGEN 2 y en el degradado izquierdo de IMAGEN 3. |
 | [COLOR_ACENTO_PRODUCTO] | COLOR_PRIMARIO del producto. Acento estructural y visual dominante de las 4 piezas: IMAGEN 2 (separadores, bordes ZONA 2, bullets de ingredientes, flechas de modo de uso), IMAGEN 3 (separador de headline, zoom de confianza, separador FAQ, borde de certificaciones **y los 3 números estadísticos grandes**), IMAGEN 4 (triángulos, bandas, checkmarks). Reemplaza al antiguo #caec55 fijo. Ver REGLA MAESTRA DE COLOR. |
-| [FAQ_1_PREGUNTA] | ETAPA-3A Fase 2 / ETAPA-2 Fase 1 (objeción principal) |
-| [FAQ_1_RESPUESTA] | ETAPA-3A Fase 2 / ETAPA-2 Fase 1 |
+| [FAQ_1_PREGUNTA] | ETAPA-3 Fase 2 / ETAPA-2 Fase 1 (objeción principal) |
+| [FAQ_1_RESPUESTA] | ETAPA-3 Fase 2 / ETAPA-2 Fase 1 |
 | [FAQ_1_ICONO_3D] | Derivado de la pregunta (ej: "Batería verde 3D cargándose") |
-| [FAQ_2_RESPUESTA] | ETAPA-3A Fase 2 / ETAPA-2 Fase 1 |
-| [FAQ_3_PREGUNTA] | ETAPA-3A Fase 2 / ETAPA-2 Fase 1 |
-| [FAQ_3_RESPUESTA] | ETAPA-3A Fase 2 / ETAPA-2 Fase 1 |
+| [FAQ_2_RESPUESTA] | ETAPA-3 Fase 2 / ETAPA-2 Fase 1 |
+| [FAQ_3_PREGUNTA] | ETAPA-3 Fase 2 / ETAPA-2 Fase 1 |
+| [FAQ_3_RESPUESTA] | ETAPA-3 Fase 2 / ETAPA-2 Fase 1 |
 | [FAQ_3_ICONO_3D] | Derivado de la pregunta |
 | [ATRIBUTO_REAL_1] … [ATRIBUTO_REAL_7] | Sistema — generado con base en ETAPA-1B (ingredientes verificados, certificaciones, sellado, dosificación, respaldo de marca, autenticidad, garantía de envío). 7 ítems. |
 | [DEFECTO_FALSO_1] … [DEFECTO_FALSO_4] | Sistema — generado con base en ETAPA-1B (problemas típicos de imitaciones en la categoría del producto: ingredientes diluidos o adulterados, sin control de calidad, sin garantía, riesgo para la salud). 4 ítems. |

@@ -255,7 +255,7 @@ CPA real semanal (LucidSales, del _FACT_VENTAS.csv) · integridad de ventana: X/
 
 ## 8. MÉTRICAS DE EVALUACIÓN DE TESTEO (umbrales canónicos — fuente única)
 
-> Movidas desde `CLAUDE.md` el 31-jul-2026. **Este archivo es el dueño**: `etapa-6`, `etapa-7` y `etapa-8` leen los umbrales de acá, no los duplican. Sirven para diagnosticar por qué un ángulo gana o falla; el orquestador las interpreta antes de activar `etapa-3a`. El operador entrega los datos de los 6 conjuntos en estos términos.
+> Movidas desde `CLAUDE.md` el 31-jul-2026. **Este archivo es el dueño**: `etapa-6`, `etapa-7` y `etapa-8` leen los umbrales de acá, no los duplican. Sirven para diagnosticar por qué un ángulo gana o falla; el orquestador las interpreta antes de activar `etapa-3`. El operador entrega los datos de los 6 conjuntos en estos términos.
 
 **Métrica 1 — % Conversación por Clic en Enlace** *(la más importante)* — `Conversaciones ÷ Clics × 100`
 - < 35% → problema en el flujo del bot o incoherencia anuncio-bot (revisar `etapa-5`)
