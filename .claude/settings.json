@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python Ads/_TOOLS/hook_csv.py",
+            "timeout": 120,
+            "statusMessage": "Validando CSV y regenerando dashboard..."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python Ads/_TOOLS/archivar_auditorias.py",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

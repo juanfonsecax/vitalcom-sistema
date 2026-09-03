@@ -1,7 +1,7 @@
 ---
 name: etapa-guardar-producto
 description: Guarda el producto en disco al final de cada fase. Crea UNA carpeta por producto en PRODUCTOS/[NOMBRE]/ con archivos por rol — 1_HACER_MANUAL.txt (todo lo que el operador ejecuta a mano), 2_DATA_PRODUCTO.txt (memoria del producto para análisis/optimización) y 3_CAMPAÑA_META.txt (IDs reales de Meta, solo si hubo MCP). Obligatorio antes de entregar el paquete final. Pasa un gate de reconciliación antes de cerrar.
-tools: Read, Write
+tools: Read, Write, Bash
 model: sonnet
 ---
 
@@ -226,7 +226,29 @@ Además de los umbrales (`cpa_be_q`, `cpa_base_q`, tasa, cuenta, page_id), relle
 ## GATE DE RECONCILIACIÓN (obligatorio antes de cerrar)
 > El producto NO está "completo" hasta pasar este gate. Garantiza que el sistema entregue **siempre lo mismo**, sin que un rerun deje datos que se contradicen entre archivos.
 
-Verificar que estos 6 valores son **idénticos** donde aparezcan (encabezado de los 3 archivos + cuerpo) y coinciden con los INPUTS CONGELADOS del orquestador:
+### PASO 1 — Correr el verificador (obligatorio, no negociable)
+
+```bash
+python Ads/_TOOLS/verificar_producto.py [PRODUCTO_KEY]
+```
+
+**Exit 0 = pasa. Exit 1 = NO cerrar.** Si sale 1, corregir cada discrepancia que reporte y volver
+a correrlo hasta que salga 0. Nunca declarar el producto completo "asumiendo" que reconcilia: eso
+es exactamente lo que este gate existe para impedir.
+
+El script compara el encabezado de `1_`/`2_`/`3_` entre sí y contra `_DIM_PRODUCTOS.csv`, y verifica
+que el producto tenga fila en `_PORTAFOLIO.txt`. Las líneas `[!]` son avisos (un `page_id PENDIENTE`
+no bloquea el guardado, pero sí impide pautar); las `[x]` son discrepancias y bloquean.
+
+> Estado al 2026-09-02: 7 de 8 productos pasan. NUSAVA falla porque su `3_CAMPAÑA_META.txt` quedó
+> en `v2 / 2026-06-22` con el `campaign_id` viejo mientras `1_` y `2_` están en `v4`, y porque los
+> tres encabezados dicen `COSTO Q70` contra el `costo_q=55` que `_DIM_PRODUCTOS.csv` corrigió el
+> 31-jul. Es el tipo de deriva silenciosa que a ojo no se veía.
+
+### PASO 2 — Lo que el script todavía no cubre
+
+Verificar a mano que estos valores son **idénticos** donde aparezcan (cuerpo de los archivos, no
+solo el encabezado) y coinciden con los INPUTS CONGELADOS del orquestador:
 
 | # | Valor | Debe coincidir en |
 |---|---|---|
