@@ -61,7 +61,7 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 | `_SKILLS_FUENTE/` | Fuente y paquetes de las 3 skills propias (3qs, analizador-creativos, monitor-pixel). Para instalar/editar, no para el flujo. | ❌ |
 | `INFPRODUCTOS/` | Activos del infoproducto "Defienda su Salud EPS" (PDFs, plantillas). **Negocio aparte**, fuera del pipeline de dropshipping. | ❌ |
 | `_ARCHIVO/` | Todo lo retirado: `Bases/` (fuentes crudas de clases) · `CONTEXTOS_VIEJOS/` · `DATA_MIGRADA/` · `roadmap_cumplido/` · `handoffs_ejecutados/` · `backups_data/` · pruebas. | 🔎 Forense |
-| `.agents/` · `skills-lock.json` | Infraestructura de tooling de skills (copia de `.claude/skills/find-skills`). **No es del sistema — no tocar.** | ❌ |
+| `.agents/` · `skills-lock.json` | Infraestructura de tooling de skills EXTERNAS. Solo puede contener lo declarado en `skills-lock.json` (hoy: `find-skills`, de vercel-labs/skills). **Ninguna skill del sistema vive acá** — las del sistema viven en `.claude/skills/`. Si aparece otra, es un polizón: borrarla. | ❌ |
 
 ---
 
