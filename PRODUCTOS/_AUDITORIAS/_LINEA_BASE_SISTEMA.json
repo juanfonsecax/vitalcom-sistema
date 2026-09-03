@@ -1,0 +1,97 @@
+{
+  "arranque_frio": 6064,
+  "claude_md": 3584,
+  "fases": {
+    "fase-1-angulos": 325624,
+    "fase-2-conceptos": 389181,
+    "fase-3-escalado": 244247,
+    "ciclo-diario": 227485
+  },
+  "nodos_dios": [
+    [
+      "PLANTILLAS_INFOGRAFIAS.md",
+      3,
+      25578,
+      76734
+    ],
+    [
+      "PLANTILLAS_ADS.md",
+      6,
+      8603,
+      51618
+    ],
+    [
+      "ESCALADO_PLAYBOOK.md",
+      5,
+      8919,
+      44595
+    ],
+    [
+      "CLAUDE.md",
+      8,
+      3584,
+      28672
+    ],
+    [
+      "_CATALOGO_CONCEPTOS.md",
+      3,
+      8476,
+      25428
+    ],
+    [
+      "CALENDARIO_ESCALADO.md",
+      3,
+      7997,
+      23991
+    ],
+    [
+      "DATA_PLAYBOOK.md",
+      1,
+      10684,
+      10684
+    ],
+    [
+      "MCP_PLAYBOOK.md",
+      2,
+      3784,
+      7568
+    ],
+    [
+      "COPYWRITING_ADS.md",
+      2,
+      3688,
+      7376
+    ],
+    [
+      "PLANTILLAS_DEFAULTS_OPERADOR.md",
+      3,
+      1526,
+      4578
+    ],
+    [
+      "LAVADO.md",
+      1,
+      1153,
+      1153
+    ]
+  ],
+  "huerfanos_md": [
+    "PLANTILLAS_VIDEO_IA.md"
+  ],
+  "huerfanos_csv": [
+    "_MAPEO_CREATIVOS.csv"
+  ],
+  "rutas_muertas": [
+    [
+      "./ETAPA-RECOLECCION.md",
+      "Ads/COPYS_COMPETENCIA.txt"
+    ]
+  ],
+  "sin_inherit": [],
+  "inventario": {
+    "agentes": 16,
+    "skills": 7,
+    "docs_raiz": 17,
+    "csv": 22
+  }
+}

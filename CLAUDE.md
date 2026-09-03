@@ -39,6 +39,7 @@ con cualquiera de ellos —o sin ninguno:
 |---|---|
 | `Ads/_TOOLS/costear.py` | Los precios, CPA y break-even salen de `_DIM_COSTEO.csv`. Aritmética, no criterio. |
 | `Ads/_TOOLS/verificar_producto.py` | El gate de reconciliación devuelve pase o fallo, no una opinión. |
+| `Ads/_TOOLS/gen_grafo.py` | El mismo gate, pero del SISTEMA: huérfanos, rutas muertas y costo en tokens. `--comparar` da el delta antes/después de cualquier cambio de arquitectura. |
 | Los **hooks** de `.claude/settings.json` | Se ejecutan siempre: validan los CSV, regeneran el dashboard y archivan las auditorías. |
 | Los **CSV** como fuente única | Un dato, un dueño. Ningún modelo puede inventar una cifra que no esté ahí. |
 
