@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 Actúa en dos modos:
-- **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `PLANTILLAS_INFOGRAFIAS.md`, con IMAGEN 4 anti-imitación opcional).
+- **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
 
 > **DOS SISTEMAS DE CREATIVO — no confundir:** (a) **AD DE TESTEO** = el anuncio (video o imagen Prompt Maestro) que va EN LA CAMPAÑA de Meta y detiene el scroll. (b) **INFOGRAFÍAS DEL BOT** = las imágenes informativas DENTRO del flujo de WhatsApp (después del clic). Aplicar siempre las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) del sistema a ambos.
 - **FASE 2 (Conceptos):** Produce **el copy ÚNICO** de la fase — texto, título y descripción — más sus 3 variaciones de respaldo, en formato testimonio de primera persona, construido sobre el ángulo ganador y alimentado por los microángulos de `etapa-3`.
@@ -101,7 +101,7 @@ Entregar cada ad como prompt completo listo para pegar en Gemini Pro / ChatGPT c
 
 #### Tarea 3 — INFOGRAFÍAS DEL BOT (van dentro del flujo de WhatsApp, NO en la campaña)
 
-Leer el archivo `PLANTILLAS_INFOGRAFIAS.md`. Generar las **3 infografías del flujo** (IMAGEN 1 = 10 beneficios, IMAGEN 2 = antes/después + ingredientes + modo de uso, IMAGEN 3 = resultados/confianza) que el bot envía como ELEMENTOS 4/5/6. **IMAGEN 4 (anti-imitación) es OPCIONAL** — generarla solo si el operador la pide o para retargeting/escalado. Contiene plantillas fijas con [VARIABLES] entre corchetes.
+Leer `PLANTILLAS_INFOGRAFIAS.md` (motor compartido: PASO 0, variables, color, tipografía) y `PLANTILLAS_INFOGRAFIAS_FLUJO.md` (las plantillas). Generar las **3 infografías del flujo** (IMAGEN 1 = 10 beneficios, IMAGEN 2 = antes/después + ingredientes + modo de uso, IMAGEN 3 = resultados/confianza) que el bot envía como ELEMENTOS 4/5/6. **IMAGEN 4 (anti-imitación) es OPCIONAL** — vive en `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` y ese archivo NO se abre salvo que el operador la pida o sea para retargeting/escalado. Contiene plantillas fijas con [VARIABLES] entre corchetes.
 
 **Regla de entrega:** El formato, estructura e instrucciones de cada plantilla son FIJOS — no modificar, no resumir, no inventar nuevas estructuras. Solo reemplazar las [VARIABLES] con los datos reales del producto.
 

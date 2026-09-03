@@ -358,4 +358,4 @@ Clase 4: "imágenes de testimonios + producto en la misma imagen dan muy buenos 
 
 **Dos sistemas de creativo distintos (no confundir):**
 - **(a) ADS DE TESTEO** = video lavado o imagen Prompt Maestro (este archivo) que van en la campaña de Meta.
-- **(b) INFOGRAFÍAS DEL BOT** = 3 imágenes informativas dentro del flujo de WhatsApp (Info 1 beneficios, Info 2 modo de uso/ingredientes, Info 3 confianza) + IMAGEN 4 anti-imitación opcional, todas de `PLANTILLAS_INFOGRAFIAS.md`.
+- **(b) INFOGRAFÍAS DEL BOT** = 3 imágenes informativas dentro del flujo de WhatsApp (Info 1 beneficios, Info 2 modo de uso/ingredientes, Info 3 confianza) + IMAGEN 4 anti-imitación opcional, todas de `PLANTILLAS_INFOGRAFIAS_FLUJO.md` y `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md`, sobre el motor compartido de `PLANTILLAS_INFOGRAFIAS.md`.

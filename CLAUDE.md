@@ -74,7 +74,8 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | Copy de anuncios (hooks, compliance de copy, precio, HPPPC) | `COPYWRITING_ADS.md` |
 | Creativo visual: Prompt Maestro, 15 estilos, compliance Andrómeda, DOCTRINA DE CREATIVOS | `PLANTILLAS_ADS.md` |
 | Catálogo de los 8 `concepto_key` y su evidencia | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
-| Infografías del bot (Info 1/2/3 + IMAGEN 4) | `PLANTILLAS_INFOGRAFIAS.md` |
+| Infografías del bot: motor compartido (PASO 0, variables, color, tipografía) | `PLANTILLAS_INFOGRAFIAS.md` — enruta a las plantillas |
+| Plantillas Info 1/2/3 · IMAGEN 4/5/6 | `PLANTILLAS_INFOGRAFIAS_FLUJO.md` · `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` |
 | Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo (§8) | `ESCALADO_PLAYBOOK.md` |
 | Cadencia día a día, gates, regla multi-ganador, aritmética de las 3 fases (§1.5, §1.7) | `CALENDARIO_ESCALADO.md` |
 | CAPA DE DATA: los CSV, cómo leerlos, ganancia, break-even, dashboard | `DATA_PLAYBOOK.md` |
