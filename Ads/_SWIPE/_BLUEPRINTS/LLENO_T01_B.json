@@ -1,0 +1,119 @@
+{
+  "id": "B_editorial_limpio",
+  "version": "1.0",
+  "concepto_key": "C2_BENEFICIOS",
+  "variante": "ligera",
+  "referencia_visual": "C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg",
+  "formato": "4:5 (1080x1350)",
+  "densidad": "baja",
+  "espacio_libre_objetivo": "50%",
+  "fondo": {
+    "tipo": "color_plano",
+    "color": "crema/hueso claro derivado de #EAF0FA",
+    "degradado": "ninguno",
+    "textura": "ninguna"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro",
+    "color_texto_secundario": "gris medio"
+  },
+  "zonas": {
+    "eyebrow_pill": {
+      "posicion": "superior_centro",
+      "contenedor": "pildora con borde fino #1B4FA8, fondo transparente",
+      "texto": "BIENESTAR AUDITIVO - SPRAY ÓTICO NATURAL",
+      "estilo": "Bold uppercase, tamano chico, con icono del ingrediente estrella a cada lado",
+      "funcion": "categorizar y filtrar audiencia antes de la lectura"
+    },
+    "badge_garantia": {
+      "posicion": "superior_derecha",
+      "forma": "circular #1B4FA8 solido con estrellas arriba",
+      "linea_1": "90",
+      "linea_2": "DIAS DE GARANTIA",
+      "escala": "14% del ancho",
+      "funcion": "eliminar riesgo ANTES de mostrar el precio",
+      "color": "DORADO #D4A017 solido con estrellas arriba"
+    },
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "linea_1": "¿VIVIR CON EL ZUMBIDO?",
+      "linea_2": "ESO TE DIJERON.",
+      "estilo": "Black/900 uppercase, negro, 2 lineas",
+      "formato_obligatorio": "pregunta con urgencia temporal o consecuencia futura",
+      "restriccion_palabras_total": "7-9 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda, ocupa 45% del alto",
+      "cantidad_items": 5,
+      "formato_item": "icono line-art #1B4FA8 2px en contenedor cuadrado redondeado con borde fino + TITULO BOLD UPPERCASE + subtitulo Regular gris",
+      "items": "[{'titulo':'CIRCULACIÓN AL OÍDO','sub':'con Ginkgo Biloba'},{'titulo':'BAJA LA TENSIÓN','sub':'con Ginseng, lo que lo agrava'},{'titulo':'ALIVIA LA IRRITACIÓN','sub':'del canal auditivo'},{'titulo':'FRESCOR INMEDIATO','sub':'se siente al aplicar'},{'titulo':'REGISTRO MSPAS','sub':'producto seguro y confiable'}]",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla_item_5": "el ultimo item SIEMPRE es el sello regulatorio presentado como beneficio. En Guatemala: MSPAS.",
+      "funcion": "el par titulo/subtitulo sirve al lector que escanea y al que profundiza"
+    },
+    "producto_hero": {
+      "posicion": "derecha_centro",
+      "escala": "40% del frame",
+      "presentacion": "ESCENA CONTEXTUAL, no producto flotando",
+      "composicion": "caja + unidad de producto sobre superficie natural, rodeado de elementos del ingrediente estrella",
+      "elementos_escena": "['hojas de ginkgo biloba', 'raíz de ginseng cortada', 'ramitas de menta']",
+      "fuente": "IMAGEN_2",
+      "iluminacion": "natural, calida, lateral suave"
+    },
+    "claim_lateral": {
+      "posicion": "inferior_derecha, sobre la barra de garantias",
+      "texto": "PARA EL ZUMBIDO, EL PITIDO Y LA PRESIÓN EN EL OÍDO",
+      "estilo": "Bold uppercase, tamano chico, con icono a la izquierda",
+      "restriccion_palabras": "6-9 palabras"
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card NEGRA, esquinas ligeramente redondeadas",
+      "banda_superior": "OFERTA POR TIEMPO LIMITADO en #1B4FA8",
+      "zona_izquierda": "Q178.00",
+      "estilo_precio": "Black/900 en #1B4FA8, decimales al 55% del tamano de los enteros",
+      "zona_derecha": "card blanca con '1' + 'TRATAMIENTO' + pildora '60 ML'",
+      "linea_inferior": "PRECIO NORMAL: Q298 con tachado",
+      "regla": "es el unico bloque negro de la pieza"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono + TITULO BOLD + subtitulo regular debajo",
+      "items": "['ENVÍO GRATIS a toda Guatemala', 'PAGO CONTRA ENTREGA · pagás cuando lo recibís', 'PRODUCTO DISPONIBLE en Guatemala']",
+      "regla_item_3": "el tercero lleva bandera de GUATEMALA: es DISPONIBILIDAD LOCAL, no origen del producto"
+    }
+  },
+  "reglas_duras": [
+    "NO agregar figura humana",
+    "NO llenar el espacio en blanco: el aire ES el concepto",
+    "El producto va en escena, nunca recortado sobre fondo plano",
+    "Maximo 4 colores en toda la pieza",
+    "Todos los iconos: mismo grosor, mismo tamano, mismo contenedor",
+    "El titular va alineado a la izquierda, nunca centrado",
+    "Si el contenido no cabe respetando el aire, se recorta el contenido, no el aire",
+    "Sello regulatorio: MSPAS (Guatemala). El unico sello regulatorio es REGISTRO MSPAS, con bandera de Guatemala."
+  ],
+  "_producto": "Tinnidrop 60 ml - South Moon",
+  "_test": "T01 brazo B - angulo ME_DIJERON_NO_CURA (FIJO)",
+  "_override_T01": {
+    "formato": "4:5 en vez del 1:1 nativo",
+    "fondo": "El 'crema/hueso' nativo se resuelve como AZUL HIELO #EAF0FA: el producto es azul fuerte y un crema calido se le pelea."
+  },
+  "_reglas_globales": {
+    "unidad": "La unidad del producto se llama TRATAMIENTO. Aparece unicamente donde el layout nombra una unidad; donde el layout no la nombra, va solo el numero.",
+    "garantia": "Donde aparezca la garantia va en DORADO #D4A017, resaltada.",
+    "precio": "Arquitectura de precio segun la referencia de este brazo.",
+    "banderas": "La unica bandera de la pieza es la de GUATEMALA, en el tercer item de la barra inferior, acompanando la disponibilidad local."
+  },
+  "_nota_lectura_test": "El bloque de precio sigue la arquitectura NATIVA de cada referencia (decision del operador 19-ago). Cada brazo mezcla dispositivo visual + arquitectura de oferta, asi que el ganador no es atribuible al dispositivo puro. Registrarlo al leer T01."
+}

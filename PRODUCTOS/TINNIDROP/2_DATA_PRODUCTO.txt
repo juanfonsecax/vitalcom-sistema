@@ -1,0 +1,605 @@
+═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id PENDIENTE (Sanarte) · campaign_id nuevo (re-testeo) / histórico 120251463036910595 (GTR 0) ═══
+PRODUCTO: Tinnidrop — spray natural para el alivio del tinnitus (zumbido/acúfeno). Producto importado, marca de empaque "South Meon". Se vende como "original".
+FECHA_PROCESADO: 2026-07-10
+VERSION: v1 (producto YA LANZADO antes de entrar al sistema — este archivo formaliza su ingreso + audita el testeo GTR0 que ya corrió)
+COSTO_PROVEEDOR_Q: Q41 por unidad
+DOSIS / PRESENTACIÓN: spray 60ml (2 fl oz) · 1 aplicación por uso, directo al canal auditivo sin inserción profunda · mañana y noche (2 veces/día), uso continuo
+PROVEEDORES_DROPY: no provisto
+ANUNCIANTES_AD_LIBRARY: no provisto (nicho tinnitus tiende a MEDIO — varios anunciantes de spray de oído en la región)
+VALIDACION_PRODUCTO: 🟢 APTO — producto ya validado por VENTA REAL (vendía bien antes de entrar al sistema; testeo GTR0 dio 17 ventas confirmadas con CPA global bajo el break even). Categoría con dolor crónico intenso, avatar amplio (adultos 45+), COD, ticket sano.
+
+PRECIOS DESPLEGADOS (coinciden con fila Q40 de la tabla ETAPA-1):
+  1️⃣ 1 Tratamiento → Q178-179 + envío gratis
+  2️⃣ 2 Tratamientos → Q239 + envío gratis
+  3️⃣ 3 Tratamientos → Q299 + envío gratis + 🎁 (LA MÁS ELEGIDA ⭐, pagás al recibir)
+
+FANPAGE: Sanarte Guatemala (la de las infografías/muro de comentarios). Tono salud-natural, cálido, "apoya/ayuda". Confirmar page_id real conectado al WhatsApp del anuncio antes de relanzar por MCP.
+  Edad de segmentación recomendada: amplio 18-65+ Advantage+ OFF; la data del testeo apunta a piso 40-45+ (avatar mayor: "tengo 58 años", "llevo 2 años con el zumbido").
+
+MCP_ACCOUNT_ID: act_1665221077707961 (GTR 0) · MCP_PAGE_ID: 498977893288095 (Sanarte — CONFIRMADO vía MCP 20-jul, sale como prefijo de todos los Post IDs vivos) · MCP_PIXEL_ID: PENDIENTE (dataset del WABA) · TASA_USD_GTQ: 7.62
+
+━━━ POST IDs VIVOS (GTR0, campaña 120256219801430595) — para replicar con "usar publicación existente" (20-jul) ━━━
+Página Sanarte = 498977893288095. Todos son publicaciones de la página → reutilizables en GTR7/3/1 si comparten la página en el mismo Business Manager.
+| Conjunto / ángulo            | Ad vivo (mejor)        | Formato | Ventas | Post ID (effective_object_story_id) |
+|------------------------------|------------------------|---------|--------|-------------------------------------|
+| 🥇 Pérdida auditiva (tinnidrop6) | tinnidrop 6 - Copia | VIDEO   | 5      | 498977893288095_122222002100566196  |
+|    Pérdida auditiva (2º ad)  | tinnidrop 6            | VIDEO   | 3      | 498977893288095_122222002094566196  |
+| 🥈 ME DIJERON no tiene cura  | CONJUNTO 5 - Copia     | IMAGEN  | 6      | 498977893288095_122222001908566196  |
+|    Accesibilidad (tinnidrop4)| tinnidrop 4 - Copia    | VIDEO   | 3      | 498977893288095_122222002070566196  |
+|    Deterioro cognitivo       | tinnidrop 3            | VIDEO   | 3      | 498977893288095_122222001974566196  |
+PRIMARIOS a regar = Pérdida auditiva (Post 122222002100566196) + ME DIJERON (Post 122222001908566196).
+⚠ Los 3 videos (tinnidrop 6/4/3) son importados → chequear audio (claims médicos) ANTES de blastear. ME DIJERON es imagen propia = limpia.
+CLAVE_CAMPAÑA (buscar por nombre): TINNIDROP / GTR0
+WhatsApp del anuncio: PENDIENTE registrar.
+
+━━━ COSTEO (ETAPA-1 · fila Q40 · valores exactos — coinciden con los precios ya desplegados) ━━━
+Costo Q41 → cae entre fila Q40 y Q45. Los precios reales desplegados (179/239/299) son los de la fila Q40, así que el costeo operativo es fila Q40:
+  P1u: Q179 · P2u: Q239 · P3u: Q299
+  CPA_OBJETIVO (Base): Q30.8
+  CPA_BREAK_EVEN: Q60.5   ← techo de CPA real sobre la venta mínima de 1u
+(La regla conservadora "usar fila superior" daría fila Q45 → P1u Q189 y BE Q64.5. Como el producto YA vende rentable a Q179, se mantiene la fila Q40 que refleja la realidad. Si algún día sube el costo o el precio, releer ETAPA-1.)
+Margen bruto por pedido: 1u Q179−41 = Q138 · 2u Q239−82 = Q157 · 3u Q299−123 = Q176 (menos envío/RTO COD). Con CPA objetivo Q30.8 el neto por pedido es holgado.
+
+━━━ COMPONENTES (fórmula desplegada en GT — 4 activos de las infografías/copies) ━━━
+GINKGO BILOBA — mejora la circulación cerebral y auditiva (flujo sanguíneo al oído).
+GINSENG — reduce el cortisol y la tensión nerviosa que desencadena/agrava el tinnitus.
+REGALIZ — alivia la inflamación del canal auditivo.
+MENTA — alivio sensorial inmediato + sensación de frescor (gancho que se siente al aplicar).
+(Nota: los VIDEOS originales importados citan otros activos — gymnema, capsicum, cetonas de frambuesa, "17 extractos", "ácido cerebral japonés". Eso es marketing del origen. La fórmula/comunicación GT usa los 4 de arriba. No mezclar en copy.)
+COMPLIANCE de fórmula: hablar del PROBLEMA (zumbido, mala circulación, estrés, inflamación) está permitido; "apoya/ayuda a reducir". NUNCA "cura/elimina/repara el tinnitus".
+
+════════════════════════════════════════════════════════════════
+LOS 6 ÁNGULOS TESTEADOS (FASE 1 — bot paraguas, campaña GTR0)
+════════════════════════════════════════════════════════════════
+Cada conjunto = 1 video importado (lavado) + copy propio. Mapeo video↔conjunto↔copy:
+
+#1 INGREDIENTES NATURALES / ALIVIO INMEDIATO  (video tinnidrop1 · copy "tinidrop 1")
+   Avatar: buscó suplementos/tés naturales sin éxito o con efectos raros. Nivel conciencia 3.
+   Dolor: quiere algo 100% natural que de verdad funcione, sin químicos.
+   Formato: educacional/natural. Creativo = VIDEO.
+
+#2 MECANISMO CEREBRAL SECRETO  (video tinnidrop2 · copy "tinidrop 2")
+   Avatar: probó de todo, el médico "no encontró nada". Curioso del "porqué".
+   Dolor: no entiende por qué tiene tinnitus sin infección. Gancho "no empieza en el oído, empieza en el cerebro".
+   Formato: educacional (científico japonés / cortocircuito cerebral). Creativo = VIDEO.
+
+#3 DETERIORO COGNITIVO / CEREBRO EN COLAPSO  (video tinnidrop3 · copy "tinidrop 3")
+   Avatar: el zumbido le está quitando memoria, concentración y sueño. Miedo a "volverse loco".
+   Dolor: niebla mental, olvidos, agotamiento — el tinnitus amenaza su claridad mental.
+   Formato: educacional-miedo. Creativo = VIDEO.
+
+#4 ACCESIBILIDAD ECONÓMICA vs. MÉDICO  (video tinnidrop4 · copy "tinidrop 4")  ⭐ GANADOR
+   Avatar: años pagando consultas/pastillas sin resultado; harto del sistema médico.
+   Dolor: gastó plata y tiempo en médicos y el pitido sigue igual. "Menos que una consulta".
+   Formato: TESTIMONIO personal ("me costó menos que una ida al médico y me devolvió la tranquilidad"). Creativo = VIDEO.
+
+#5 SEÑAL DE CONDICIÓN MÉDICA SUBYACENTE  (video tinnidrop5 · copy "tinidrop 5")
+   Avatar: asustado de que el zumbido sea señal de algo grave (presión, ATM, neurológico).
+   Dolor: "¿y si no es solo un zumbido?" — 5 causas posibles.
+   Formato: educacional/listículo médico. Creativo = VIDEO.
+
+#6 PÉRDIDA AUDITIVA IRREVERSIBLE  (video tinnidrop6 · copy "tinidrop 6")
+   Avatar: lleva semanas ignorando el pitido; miedo a que sea tarde.
+   Dolor: "antes de que sea tarde / irreversible". Urgencia/miedo.
+   Formato: educacional/advertencia alarmista (variante agresiva). Creativo = VIDEO.
+
+════════════════════════════════════════════════════════════════
+REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (ETAPA-7)
+════════════════════════════════════════════════════════════════
+Cuenta act_1665221077707961 (GTR 0) · campaign_id 120251463036910595 · ABO $1.59/día por conjunto · 2 anuncios/conjunto (creativo duplicado, sufijo "- Copia") · CONVERSATIONS/WHATSAPP.
+| # | Conjunto (nombre en Meta)            | Video    | Copy       | Anuncios (2) |
+|---|--------------------------------------|----------|-----------|--------------|
+| 1 | Ingredientes naturales/alivio inmed  | tinnidrop1 | tinidrop 1 | tinnidrop 1 · tinnidrop 1 - Copia |
+| 2 | Mecanismo cerebral secreto           | tinnidrop2 | tinidrop 2 | tinnidrop 2 · tinnidrop 2 - Copia |
+| 3 | Deterioro cognitivo/cerebro colapso  | tinnidrop3 | tinidrop 3 | tinnidrop 3 · tinnidrop 3 - Copia |
+| 4 | Accesibilidad económica vs. médico   | tinnidrop4 | tinidrop 4 | tinnidrop 4 · tinnidrop 4 - Copia |
+| 5 | Señal de condición médica subyacente | tinnidrop5 | tinidrop 5 | tinnidrop 5 · tinnidrop 5 - Copia |
+| 6 | Pérdida auditiva irreversible        | tinnidrop6 | tinidrop 6 | tinnidrop 6 · tinnidrop 6 - Copia |
+
+════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-10 (ETAPA-7, sobre data GTR0 histórica)
+════════════════════════════════════════════════════════════════
+Ventana: campaña "en curso" desde 5-may-2026. Gasto total $120.38 (≈Q917). 17 VENTAS confirmadas (columna Compras / LucidSales). CPA real global $7.08 = Q54.0 → BAJO el break even Q60.5 ✅ (rentable a nivel campaña completa, pero mezclando ganadores y perdedores).
+
+RANKING POR VENTAS + CPA REAL (Compras por conjunto = suma de sus 2 anuncios):
+| Rank | Conjunto                              | Ventas | Spend  | CPA real | Veredicto |
+|------|---------------------------------------|--------|--------|----------|-----------|
+| 🏆 1 | #4 Accesibilidad económica vs. médico | 6      | $20.03 | Q25.4    | GANADOR — bajo CPA Base Q30.8. Escalar. |
+| 2    | #3 Deterioro cognitivo/cerebro        | 4      | $20.06 | Q38.2    | Fuerte. Mantener/escalar. |
+| 3    | #6 Pérdida auditiva irreversible      | 3      | $20.03 | Q50.9    | Rentable (bajo BE Q60.5). Mantener, vigilar. |
+| 4    | #2 Mecanismo cerebral secreto         | 2      | $20.10 | Q76.6    | Sobre BE. Marginal → podar o renovar. |
+| 5    | #5 Señal condición médica subyacente  | 1      | $20.17 | Q153.7   | PÉRDIDA. Podar. |
+| 6    | #1 Ingredientes naturales/alivio inm  | 1      | $19.99 | Q152.3   | PÉRDIDA. Podar. |
+
+MÉTRICA 1 (% conversación por clic-enlace = tasa conv WhatsApp) por anuncio:
+  Excelentes (≥50%): tinnidrop 1 (78.1% pero 0 ventas), 3-Copia (61.0%), 6 (57.0%), 1-Copia (56.1%), 4 (56.0%), 3 (51.6%).
+  Buenos (35-49%): 5-Copia (46.7%), 2 (45.0%), 4-Copia (43.1%), 6-Copia (41.5%), 5 (37.5%), 2-Copia (36.4%).
+  → Ningún anuncio por debajo del piso 35% → el BOT paraguas cierra bien; el problema de los perdedores NO es el bot, es el ÁNGULO (atrae chats que no compran).
+
+ATENCIÓN (mercado): CPM $1.32–$2.29 (avg ~$1.83) = MUY barato → ángulos no saturados y creativos limpios (lavado + compliance funcionando, sin baneo silencioso). Frecuencia por conjunto 1.34–1.77 (sana); frecuencia global 2.47 (empieza fatiga acumulada en los creativos viejos).
+
+LECTURA CRÍTICA (patrón):
+  · Los 2 mejores = TESTIMONIO/emoción de dolor específico (#4 anti-médico/plata) + MIEDO cognitivo (#3). Los que EDUCAN el mecanismo (#2, #5) y el genérico "natural" (#1) generan chats pero NO cierran.
+  · Caso de estudio tinnidrop 1: 78% conversación a WhatsApp (la más alta) y 0 ventas → % de chat ALTO ≠ ventas. Atrae curiosos/precio-sensibles que no compran. No confundir "buen hook de chat" con "buen ángulo de venta".
+  · El núcleo emocional que SÍ vende (evidenciado por las VENTAS, no por testimonios): FRUSTRACIÓN CON EL SISTEMA MÉDICO + ESCEPTICISMO SUPERADO + alivio de un dolor que le robaba el sueño/la concentración.
+  · ACLARACIÓN (operador, 10-jul): los testimonios de WhatsApp, el audio y el flujo del bot que se aportaron NO fueron chats entrantes de clientes — fueron ASSETS que el operador creó para el bot paraguas de este testeo. NO usarlos como "voz real del cliente". La única evidencia dura de este testeo son las VENTAS por conjunto (arriba). La voz real del cliente se minará fresca en el re-testeo (ETAPA-1B web / Reddit / foros).
+  · NATURALEZA DEL TESTEO PREVIO: fue un bot PARAGUAS con 6 videos importados + copies, corrido "a mano" antes de que el sistema estuviera robusto. Sirve como PRIOR (ya sabemos qué ángulo vende), no como FASE 2 cerrada. El operador quiere RE-TESTEAR de forma óptima con el sistema actual.
+
+ANGULO_GANADOR (FASE 1, confirmado): #4 ACCESIBILIDAD ECONÓMICA vs. MÉDICO (video testimonio tinnidrop4). Co-fuerte: #3 Deterioro cognitivo. → base de la FASE 2.
+
+════════════════════════════════════════════════════════════════
+DECISIÓN DE RELANZAMIENTO (ETAPA-8) — 2026-07-10
+════════════════════════════════════════════════════════════════
+VEREDICTO: SÍ relanzar — pero NO "prender la misma campaña igual". Ya hay ganador claro → pasar a FASE 2 (escalado del ángulo #4), no repetir el testeo de 6 con 3 perdedores quemando presupuesto.
+
+ACCIONES ORDENADAS:
+  1. PODAR: apagar #1 y #5 (CPA Q150+, 1 venta c/u) y #2 (Q76, sobre BE). Liberan ~$5/día que rendían mal.
+  2. ESCALAR el GANADOR #4 (Accesibilidad económica):
+     · Duplicar el anuncio ganador; +20% presupuesto diario (surfing, no saltos).
+     · POST ID / publicar en la página: el video #4 ya tiene interacción real → reusar el mismo post conserva prueba social (comentarios/reacciones) y baja CPA.
+     · Multicuenta MISMA página cuando el CPA real semanal confirme (no por un día).
+  3. MANTENER #3 y #6 como ángulos secundarios rentables (bajo BE) mientras la FASE 2 de #4 madura. #6 es la variante de MIEDO — sirve como segundo caballo.
+  4. FASE 2 dedicada de #4: bot de UN SOLO ÁNGULO (congruencia Clase 22), mensaje inicial = dolor del anti-médico/plata; 6 microángulos del avatar "ya gasté en médicos/pastillas y sigo igual" + "escéptico que al fin encontró el original". Renovar creativo del ganador entendiendo POR QUÉ ganó (testimonio confesional, barato vs consulta, sin receta).
+  5. Escalonar #3 como FASE 2 hermana 2-3 días después (regla multi-ganador del CALENDARIO).
+
+⚠️ RIESGO DE COMPLIANCE (lo más importante antes de subir presupuesto — evita restricción de cuenta al escalar):
+  · INFOGRAFÍA 1: "reduce el zumbido desde el primer día", "Alivio desde la semana 1 / primeros 7 días", "Alivia el acúfeno" = TIMELINE IMPOSIBLE + verbo médico. Cambiar a "desde la semana 2" y "apoya/ayuda a reducir".
+  · INFOGRAFÍA 3: "RESULTADOS CLÍNICOS EN 14 DÍAS", "87%", "93%", sellos "Ministerio de Salud / Registro Sanitario / FDA" = estadísticas clínicas no sustentadas + insignias regulatorias → EL MAYOR riesgo de strike de política de salud. Quitar los sellos regulatorios y suavizar/eliminar los % clínicos inventados antes de escalar.
+  · INFOGRAFÍA 2: cara día1(triste)/día14(feliz) = antes/después bilateral de persona (Andrómeda lo desaconseja). Reemplazar por "Semana 1 / Semana 4" sin comparación facial directa.
+  · VIDEOS importados originales traen claims médicos duros en el audio ("puede curar el tinnitus", "repara células dañadas", "desaparezcan"). Al relanzar, el lavado debe recortar/silenciar esos claims o suben CPM/riesgo de baneo.
+  Que hoy funcionen (CPM barato) NO significa que aguanten más gasto/visibilidad — a escala es cuando Meta castiga estos claims. Corregir ANTES de escalar.
+
+PRÓXIMO PASO SUGERIDO: correr FASE 2 del ángulo #4 (micro-ángulos 3A/3B + 6 copies testimonio + bot de un solo ángulo + campaña de escalado). Avisar para construirla.
+
+════════════════════════════════════════════════════════════════
+RE-TESTEO v2 — DECISIÓN DEL OPERADOR (10-jul): FASE 1 ÓPTIMA HÍBRIDA
+════════════════════════════════════════════════════════════════
+El operador NO va a FASE 2 aún: quiere RE-TESTEAR el producto de forma óptima con el sistema ya robusto,
+aprovechando el prior de ventas. Estrategia elegida = HÍBRIDO INFORMADO:
+  · MANTENER los 3 ángulos que vendieron (#4 anti-médico, #3 cognitivo, #6 miedo-irreversible) → creativo = VIDEO existente (re-lavado).
+  · REEMPLAZAR los 3 perdedores (#1 naturales, #2 mecanismo, #5 señal médica) por 3 ÁNGULOS NUEVOS descubiertos con voz real (creativo = IMAGEN Prompt Maestro, salvo que el operador consiga video).
+
+──────────────────────────────────────────────────────
+BANCO DE DOLOR / DESEO REAL (ETAPA-1B — voz del cliente, web 10-jul)
+Fuentes con señal: TodOido (testimonio), Burbuja.info (foro), GAES/Viviendo el sonido (foro), desansiedad.com, drmiguelmayo, tallerhumano.
+[VOZ-REAL] "cuando el sueño se trunca una y otra vez, cada noche, durante más de dos años, y sabes que esta noche que viene tampoco dormirás, tu fuerza se va debilitando" — emoción: agotamiento/desesperanza — noches sin dormir.
+[VOZ-REAL] "cuando estoy nervioso, el pitido se vuelve más fuerte" — emoción: pérdida de control — tensión/estrés dispara el zumbido.
+[VOZ-REAL/HECHO] "no existe tratamiento curativo para el acúfeno; hay que aprender a vivir con él" — lo que le dicen los médicos → resignación.
+[VOZ-REAL] peregrinaje constante "acudiendo a médicos, especialistas, clínicas y foros buscando una solución" sin respuesta — frustración con el sistema médico (respalda #4).
+[DESEO-REAL] "solo quiero volver a una noche de silencio / dormir de corrido" — anhelo central.
+Ciclo vicioso documentado: zumbido → insomnio → estrés/ansiedad → percepción más fuerte del zumbido → más insomnio (aislamiento social, ansiedad, depresión).
+PROBLEMA OCULTO (Clase 12): tensión cervical/mandíbula (bruxismo, ATM) + cortisol por estrés alimentan el tinnitus — la mayoría de la publicidad culpa "circulación/oído"; casi nadie nombra el eje estrés-tensión. El GINSENG del producto (baja cortisol/tensión nerviosa) respalda este ángulo directamente.
+
+──────────────────────────────────────────────────────
+MATRIZ FINAL DE 6 ÁNGULOS PARA EL RE-TESTEO
+| # | Ángulo | Origen | Creativo | Nivel conciencia | Carga |
+|---|--------|--------|----------|------------------|-------|
+| 1 | ANTI-MÉDICO / PLATA ("menos que una consulta, sin receta") | GANADOR #4 (prior de ventas) | VIDEO tinnidrop4 | 3 | EMOCIONAL |
+| 2 | DETERIORO COGNITIVO (memoria/concentración/niebla mental) | GANADOR #3 (prior) | VIDEO tinnidrop3 | 2 | EMOCIONAL/MIEDO |
+| 3 | MIEDO IRREVERSIBLE (actúa antes de que sea tarde) | GANADOR #6 (prior) — variante AGRESIVA | VIDEO tinnidrop6 | 2 | MIEDO |
+| 4 | NOCHES SIN DORMIR (el silencio de la noche es peor; insomnio crónico) | NUEVO — voz real | IMAGEN | 2 | EMOCIONAL |
+| 5 | "ME DIJERON QUE NO TIENE CURA" (resignación → esperanza) | NUEVO — voz real | IMAGEN | 3 | EMOCIONAL |
+| 6 | TENSIÓN/ESTRÉS — LA CAUSA OCULTA (cuello/mandíbula/cortisol; Ginseng) | NUEVO — problema oculto Clase 12 | IMAGEN | 1-2 | OCULTO/FUNCIONAL |
+
+Notas de diseño del re-testeo:
+  · Los 3 nuevos NO duplican a los ganadores: #4 es dinero/anti-médico; #5 es resignación/esperanza (te dijeron que no hay cura); son emociones distintas.
+  · #6 (tensión oculta) es el diferenciador de mercado — nadie lo comunica y el Ginseng lo respalda. Alta probabilidad de CPM barato.
+  · #4 anti-médico repite como #1 por ser el ganador probado — su copy/video ganador se puede CONSERVAR (refrescar por fatiga), no reinventar.
+  · Lean: 1 creativo por conjunto, 2 anuncios por conjunto (duplicado), $1.59/conjunto, 4 AM. Bot PARAGUAS de los 6 ángulos (ETAPA-5).
+PENDIENTE para construir el paquete (congelar inputs): confirmar FANPAGE + page_id + WhatsApp; confirmar oferta (mantener 1/2/3 = 179/239/299 vs pasar a 2x1 por costo bajo); ¿los 3 nuevos van con IMAGEN o el operador consigue videos?
+
+── RESULTADOS_TESTEO 2026-07-15 (auditoría diaria, PROVISIONAL — sin Lucid, hoy miércoles) ──
+Base Q30.8 · BE Q60.5 · PD $7.94. Campaña "🟩 TINIDROP GTR0 - 1.59 - TEST" ($46.2, día4). SANO.
+PÉRDIDA AUDITIVA 59%conv 5omni CPA~Q12★★ (cpm $0.99); DETERIORO COGNITIVO 60%conv 3omni Q19★ + MEJOR retención vídeo
+  (p75 481/p100 267 · thruplay 20%) = creativo molde; ME DIJERON(nuevo) 3omni Q21★.
+NOCHES marginal(≈BE); ACCESIBILIDAD 64%conv pero 0 venta semana (histórico #4, vigilar jueves); TENSIÓN=podar.
+ACCIÓN: podar TENSIÓN; F2 = Pérdida auditiva + Deterioro cognitivo; brief creativo replicando "Deterioro cognitivo".
+⚠️ corregir sellos FDA/%clínicos/antes-después antes de escalar.
+
+═══ RESULTADOS_TESTEO · AUDITORÍA 2026-07-17 (auto, lado-ads + omni_purchase Meta aprox) ═══
+Campaña VIVA nueva = "🟩 TINIDROP GTR0 - 1.59 - TEST" (120256219801430595, día 6 · BE Q60.5 · PD $7.94). omni aprox Meta; cruzar Lucid.
+Este test estrena ÁNGULOS NUEVOS (distintos al histórico #4 Accesibilidad). Ranking por CPA aprox:
+ 🟢🟢 Pérdida auditiva irreversible: 54.5%conv/clic · $0.18/conv · 7 compras · CPA$1.52=Q11.6 · freq 1.25 · CTR 4.67% — el mejor.
+ 🟢 ME DIJERON QUE NO TIENE CURA: 6 compras · CPA$1.83=Q13.9 · freq 1.78 (vigilar fatiga) · anti-médico, coherente con ganador histórico #4.
+ 🟢 Deterioro cognitivo: 3 compras · Q27.1 · CTR 5.79% (mejor hook).
+ Accesibilidad vs médico: 3 compras · Q27.9 · 65%conv/clic.
+ NOCHES SIN DORMIR: 2 compras · Q41.1 (<BE).
+ 🔴 TENSIÓN/ESTRÉS: 22%conv/clic, 0 compras, $6.21 (<PD aún) → débil, candidato a podar si no arranca.
+last_3d: Pérdida auditiva y Deterioro sostienen (freq ~1.1, CPM <$1.3), sin fatiga. TODAS <BE Q60.5 → TINNIDROP SANO.
+Compliance pendiente antes de escalar: sellos FDA/%clínicos infografías, timelines, antes/después facial (ver notas 14-jul).
+
+═══ RESULTADOS_TESTEO · AUDITORÍA 2026-07-20 (CSV Meta 11-19 jul, ventana completa) + DECISIÓN FASE 3 ═══
+CSV GTR0 "TINIDROP GTR0 - 1.59 - TEST": $76.42 gastados, 22 compras Meta, CPA global Q26.5 (<BE Q60.5). SANO.
+Ranking final del re-testeo (Meta / cruzado con Lucid):
+ 🥇 Pérdida auditiva irreversible (VIDEO tinnidrop6): 8 compras · CPA Q13.5 · 58%conv/clic · freq 1.29 — GANADOR PRIMARIO.
+ 🥈 ME DIJERON no tiene cura (IMAGEN, nuevo): 6 compras · CPA Q17.6 · CTR 1.63% (el más alto) · freq 1.86 (renovar) — PRIMARIO.
+    → clic muy intencionado: %conv/clic bajo (23%) pero compra. El chat no es el problema.
+ Deterioro cognitivo (VIDEO tinnidrop3): 3 compras · Q35.6 — SECUNDARIO rentable.
+ Accesibilidad vs médico (VIDEO tinnidrop4): 3 compras · Q35.8 — SECUNDARIO (ya NO es el ganador nº1 del histórico).
+ Noches sin dormir (IMAGEN): 2 compras · Q53.4 (<BE, al filo) — vigilar.
+ Tensión/estrés (IMAGEN): 0 compras · APAGADO por el operador (pagó el detención). Correcto.
+
+LECTURA CRÍTICA 20-jul:
+ · El FORMATO no decide, el ÁNGULO decide: ME DIJERON (IMAGEN) es #2 y vence a 2 videos. Regar imágenes con Post ID igual que videos.
+ · El ganador se corrió del histórico #4 Accesibilidad → hoy Pérdida auditiva (miedo irreversible) + ME DIJERON (anti-médico/resignación→esperanza). Misma vena emocional que el prior.
+ · n pequeño por conjunto (2-8 ventas) pero + prior histórico (17 ventas) + tendencia sin fatiga = base sólida para escalar.
+
+DECISIÓN FASE 3 (operador 20-jul): ESCALAR FUERTE por ANCHO (horizontal + surfing), NO vertical.
+ · Despliegue = Post ID madre → replicar a GTR0/7/3/1 (misma página Sanarte) + surfing +20%/día en los que venden.
+ · Bot = regar el paraguas YA; bots dedicados de un solo ángulo (Pérdida auditiva, ME DIJERON) en 2-3 días.
+ · CANDADO DURO antes de subir plata: corregir compliance del ADS (videos con claims médicos en audio/pantalla; sellos FDA/Min.Salud, %87/93, timelines "primer día/14 días" en infografías post-clic son secundarios pero limpiar los del propio ADS es obligatorio). A escala es cuando Meta castiga.
+ · Anti-fatiga prioritario: ME DIJERON freq 1.86 → video/imagen fresca del mismo ángulo pronto.
+ · Plan de ejecución completo en 3_PLAN_ESCALADO.txt.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-21 (LucidSales 14→21 jul, FUSIONADO)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid. BE Q60.5 · Base Q30.8.
+TINNIDROP TOTAL: 26 ventas · CPA Q23.4 · ROAS 8.9 · 🥇 el más sano del portafolio.
+ · ME DIJERON QUE NO TIENE CURA .... 9v · CPA Q10.2 ★ TOP (25% conv, pero VENDE)
+ · Pérdida auditiva irreversible ... 7v · CPA Q18.9 · 7/7 ENTREGADO ★ el mejor entregado
+ · Accesibilidad vs médico ......... 4v · CPA Q29.7
+ · NOCHES SIN DORMIR ............... 3v · CPA Q30.9
+ · DETERIORO (leg 4WINNERS multic.). 2v · CPA Q17.3  ← horizontal ya vendiendo
+ · Deterioro cognitivo (GTR0 main).. 1v · CPA Q94.8 (>BE) débil esta semana pese a 61% conv
+ · TENSIÓN/ESTRÉS .................. 0v (sub-PD $1.27)
+ACCIÓN: ESCALAR ME DIJERON + Pérdida auditiva por Post ID a las 4 cuentas. Reactivar pata GTR3 (no está viva). ⚠️ compliance antes de regar más: quitar sellos FDA/%clínicos, timelines "primer día".
+
+════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-31 (LucidSales BASE 25→30 jul, 6 días, ventana COMPLETA)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid · BE v2 = Q71.56 · CPA Base = Q30.80
+TINNIDROP 6d: 46 ventas · pauta Q2,689 · CPA Q58.5 · ganancia +Q604 🟡 rentable
+Acumulado 17-30 jul: 71 ventas · Q3,664 · CPA Q51.6 · +Q1,417
+
+RANKING POR ÁNGULO (agregado por angulo_key — nunca por conjunto):
+ · ACCESIBILIDAD_MEDICO (VIDEO) .. 8v · Q195  · CPA Q24.4 🟢 MEJOR · solo 7% de la pauta
+ · DETERIORO_COGNITIVO (IMAGEN) .. 3v · Q97   · CPA Q32.3 🟢
+ · PERDIDA_AUDITIVA (VIDEO) ...... 9v · Q432  · CPA Q48.0 🟢
+ · NOCHES_SIN_DORMIR (IMAGEN) .... 1v · Q59   · CPA Q59.0 🟡 82% PD, sub-testeado
+ · ME_DIJERON_NO_CURA (IMAGEN) ... 7v · Q467  · CPA Q66.7 🟡 al filo del BE
+ · DETERIORO_COGNITIVO (VIDEO) .. 16v · Q1158 · CPA Q72.4 🔴 sobre BE
+ · ACCESIBILIDAD_MEDICO (IMAGEN) . 1v · Q91   · CPA Q91.0 🔴
+ · PERDIDA_AUDITIVA (IMAGEN) ..... 1v · Q190  · CPA Q190  🔴
+
+🔥 SATURACIÓN POR CUENTA — DETERIORO_COGNITIVO (mismo video, mismo Post ID):
+   GTR0 Q32.3 🟢 · GTR1 Q38.3 🟢 · CP1 Q66.0 🟡 · GTR7 **Q124.5** 🔴 SATURADA
+   GTR7 absorbió Q747 (28% de toda la pauta del producto) para 6 ventas. Es lo que
+   subió el CPA del producto de Q46.6 a Q51.6 y hundió el 30-jul a −Q117 de portafolio.
+   El activo NO está gastado: rinde 3× mejor en GTR1. El problema es la CUENTA.
+
+RENOVACIÓN 25-jul (5 hooks nuevos, 6 días): 2 de 5 prendieron.
+   🟢 "YA NO ME ACUERDO" (Familia B) Q32 · "EL OTORRINO ME DIO 3 MINUTOS" Q48
+   🔴 "CADA MES OIGO UN POCO MENOS" Q92 · "GASTÉ MÁS DE Q2,000" Q91 · "MI ESPOSA" 0v/137% PD
+
+ACCIÓN: (1) apagar MI ESPOSA (PD cumplido, 0 ventas) + los 2 hooks a Q91-92.
+(2) bajar a piso GTR7·DETERIORO-Copia (Q681 gastados a Q114/venta) y mover ese
+presupuesto a GTR1·DETERIORO video (CPA Q13, asfixiado con Q66 en 6 días).
+(3) ESCALAR ACCESIBILIDAD_MEDICO con surfing +20%/día en GTR7/CP1/GTR0 — es el
+mejor ángulo del producto y está infra-financiado (Q195 de Q2,689).
+(4) Brief ETAPA-4: 3 conceptos nuevos de ACCESIBILIDAD (ángulo de PÉRDIDA, no de
+mecanismo — confirma el aprendizaje de que lo educacional no vende en tinnitus).
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-14 (ventana 11→13 ago, 3d agregados)
+═══════════════════════════════════════════════════════════════════════════
+20 ventas · pauta Q865 · ingreso Q4,300 · CPA Q43.3 · BE Q94.60 · 🟢 GANANCIA Q+1,041
+Serie completa 17-jul→13-ago: 153 ventas · Q6,145 · CPA Q40.2 · Q+8,329
+→ 64% de toda la ganancia del portafolio. Mejoró de CPA Q51.6 (julio) a Q40.2.
+
+POR ÁNGULO (11-13 ago):
+  ME_DIJERON_NO_CURA    Q102 ·  4v · Q25  ✅
+  ACCESIBILIDAD_MEDICO  Q113 ·  4v · Q28  ✅
+  DETERIORO_COGNITIVO   Q346 · 10v · Q35  ✅ ← el de más volumen, aguanta más
+  NOCHES_SIN_DORMIR     Q 25 ·  0v ·  —     (sub-testeado, no juzgar)
+  PERDIDA_AUDITIVA      Q280 ·  2v · Q140 🔴 ← 48% SOBRE su break-even
+
+🔴 PERDIDA_AUDITIVA — el lastre. En julio era el ganador primario (CPA Q13.5);
+   hoy gasta Q280 para 2 ventas. Es el caso literal de APR-007: ángulo con buen
+   historial que deja de vender = FATIGA DE CREATIVO, no ángulo muerto.
+   Agravante: corre DUPLICADO (el conjunto viejo + GTR0/GTR7_TINNIDROP_
+   PERDIDA-AUDITIVA_R1..R4 de la migración) → parte del CPA alto es que se está
+   comprando a sí mismo en la subasta.
+   → NO apagar el ángulo. (1) resolver la duplicación, (2) brief de renovación
+     creativa a etapa-4 sobre el mismo territorio emocional.
+
+⚠️ MIGRACIÓN 12-ago: TINNIDROP ahora corre en 3 campañas nuevas
+   (GTR0_/GTR1_/GTR7_TINNIDROP_ESCALA_20260812) EN PARALELO con las viejas
+   (2🟦/3🟦/4🟦 TINIDROP + TINNIDROP_RENOVACION). Viejas Q1,258/29v/CPA Q43 ·
+   nuevas Q532/9v/CPA Q59 (en aprendizaje desde el 12). Decidir el 16-17 ago.
+⚠️ Entrega 94.3% en agosto (n=53) — el 2º mejor del portafolio.
+
+━━━ RESULTADOS_TESTEO — AUDITORÍA 2026-08-15 ━━━
+VENTANA: BASE 01→13 ago (PARCIAL: faltan 14 y 15-ago de LucidSales).
+RANKING POR ÁNGULO (agregado por angulo_key · break-even Q86.7):
+  ACCESIBILIDAD_MEDICO  11 ventas · Q211 · CPA Q19.2  ⭐ el más barato
+  ME_DIJERON_NO_CURA     5 ventas · Q129 · CPA Q25.8  ⭐
+  DETERIORO_COGNITIVO   28 ventas · Q856 · CPA Q30.6  🏆 motor del producto
+  PERDIDA_AUDITIVA       7 ventas · Q482 · CPA Q68.9  ⚠️ 3.6× más caro
+  NOCHES_SIN_DORMIR      0 ventas · Q25 → bajo Presupuesto de Decisión, sin veredicto.
+SATURACIÓN POR CUENTA: DETERIORO_COGNITIVO GTR1 Q30.9 (22v) · CP1 Q32.0 · GTR7 Q45.0
+  (n=2, no llega al umbral de 2× para declarar saturación). ACCESIBILIDAD_MEDICO
+  rinde igual en GTR7 (Q16.0) y CP1 (Q15.8) → ángulo que VIAJA, apto para multicuenta.
+LADO-ADS 14-ago: PERDIDA_AUDITIVA 40.7% conv/clic-enlace · Q4.00/msj (lidera en
+  conversación y pierde en venta — regla 2 del sistema).
+🔴 GTR0 EN ESTADO UNSETTLED: 3 campañas ACTIVE, 18 conjuntos, $0.00 gastado el 14-ago.
+  Sus métricas por ventana no son fiables (today > last_7d ⇒ devuelve acumulado).
+  TINNIDROP corre sobre 2 cuentas en vez de 3 hasta liquidar el saldo.
+ACCIÓN: +20% a ACCESIBILIDAD_MEDICO · reactivar ME_DIJERON_NO_CURA en GTR7/GTR1 ·
+  bajar PERDIDA_AUDITIVA a la mitad (NO apagar: 7 ventas reales, sigue bajo BE) ·
+  destrabar la facturación de GTR0.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-16 (lado-ads MCP, día cerrado 15-ago)
+═══════════════════════════════════════════════════════════════════════════
+⚠️ PROVISIONAL — sin LucidSales del 14 ni del 15. Es ranking por CONVERSACIÓN.
+   Sirve para cortar, nunca para coronar (regla 2 / APR-002).
+
+PAUTA DEL 15-AGO: Q352.66 (GTR7 Q286.55 · GTR1 Q112.85 · GTR0 Q0.00)
+73 conversaciones · Q4.83 por conversación · sin fatiga (frec. máx 1.06)
+
+RANKING POR ÁNGULO (agregado por angulo_key, nunca por conjunto):
+  PERDIDA_AUDITIVA      Q161.70 · 37 msj · 37.0% conv/clic-enlace · Q4.37/conv
+  DETERIORO_COGNITIVO   Q135.10 · 31 msj · 39.7% · Q4.36/conv
+  ACCESIBILIDAD_MEDICO  Q 55.85 ·  5 msj · 18.5% · Q11.17/conv
+  ME_DIJERON_NO_CURA    Q  0.00 ·  0 msj · sin conjunto vivo 🔴
+
+MEJOR CONJUNTO: GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1 — 13 conversaciones,
+56.5% conv/clic-enlace, CPconv $0.32.
+
+CAMBIO ESTRUCTURAL (registrado en _EVENTOS.csv):
+  El 16-ago quedaron PAUSED las campañas viejas duplicadas
+  `4🟦 TINIDROP GTR0 - 1.59 - 4 WINERS` (GTR7) y `3🟦 TINIDROP GTR0` (GTR1).
+  Sobreviven GTR7_TINNIDROP_ESCALA_20260812 y GTR1_TINNIDROP_ESCALA_20260812.
+  ✅ Se cierra el doble financiamiento de APR-023 — la estructura nueva ya
+     supera a la vieja en conversación en los 3 ángulos comparables.
+  🔴 PERO el gasto vivo del producto cae de Q352/día a ~Q189/día (solo las
+     nuevas). Ver APR-039: hay que re-dotar a las sobrevivientes.
+
+🔴 GTR0 UNSETTLED — 2º DÍA. is_queryable=false, $0.00 el 15-ago, campañas
+   figurando ACTIVE. TINNIDROP corre con 2 de sus 3 cuentas. Todo CPA sobre
+   GTR0 es inválido hasta liquidar el saldo (APR-037).
+
+⚠️ ANOMALÍA: `Accesibilidad económica vs. médico - Copia 2` gastó $2.83 con
+   13 clics-enlace y CERO conversaciones. Patrón de conjunto ciego
+   (APR-033/035) o destino roto — NO evidencia contra el ángulo: su hermano
+   nuevo hizo 35.7% el mismo día. Si se relanza el ángulo, hacerlo desde el
+   conjunto NUEVO.
+
+📊 EL REPARTO SIGUE AL REVÉS DEL CPA — 3er día (APR-038):
+   ACCESIBILIDAD_MEDICO CPA real Q19.2 → 16% de la pauta
+   ME_DIJERON_NO_CURA   CPA real Q25.8 → 0%
+   DETERIORO_COGNITIVO  CPA real Q30.6 → 38%
+   PERDIDA_AUDITIVA     CPA real Q68.9 → 46%
+   ACCIONES: (1) reactivar ME_DIJERON_NO_CURA con un R[N] en la campaña
+   nueva; (2) surfing +20% con más peso en ACCESIBILIDAD_MEDICO que en
+   PERDIDA_AUDITIVA; (3) PERDIDA_AUDITIVA = renovar creativo, no apagar
+   (trae 41.3% de conversación y vendía a Q13.5 en julio → fatiga, APR-007).
+
+Informe completo: PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_20260816.txt
+
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-17 (ventana 14→16 ago, 3d, SIN MADURAR)
+═══════════════════════════════════════════════════════════════════════════
+Q1,474 pauta · 22 ventas · CPA Q67.0 · BE Q93.41 · ganancia Q+589.
+Sigue siendo el motor del portafolio, pero el CPA subió de Q43.3 (11-13) a Q67.0.
+
+POR ÁNGULO (ventana 14-16):
+  PERDIDA_AUDITIVA      Q638 · 11v · CPA Q58.0   ← el que más vendió del portafolio
+  DETERIORO_COGNITIVO   Q416 ·  7v · CPA Q59.5
+  ACCESIBILIDAD_MEDICO  Q211 ·  3v · CPA Q70.4
+  ME_DIJERON_NO_CURA    Q158 ·  1v · CPA Q158.2
+  NOCHES_SIN_DORMIR     Q 50 ·  0v
+
+SERIE 17-jul→16-ago: DETERIORO_COGNITIVO 69v Q46.1 · PERDIDA_AUDITIVA 38v Q55.9 ·
+ACCESIBILIDAD_MEDICO 31v Q32.9 · ME_DIJERON_NO_CURA 21v Q51.0 · NOCHES_SIN_DORMIR 3v Q74.0.
+TODOS bajo break-even. Ningún ángulo para matar.
+
+🔴 CAUSA DEL DETERIORO = LA CUENTA GTR0, NO EL ÁNGULO.
+   Mismo ángulo PERDIDA_AUDITIVA, misma ventana, mismo creativo:
+     GTR7  Q392 · 10v · CPA Q39.2
+     GTR0  Q246 ·  1v · CPA Q246.4   ← 6.3× peor
+   GTR0 completo: Q490 para 2 ventas, Q-302 de ganancia. Venía en Q32-Q68 todo
+   julio; se rompió la misma semana que quedó UNSETTLED con 10 rechazos de cobro
+   y US$176 en retención (APR-037/049). Ver APR-058.
+
+ACCIÓN: GTR0 a presupuesto piso HOY y arreglar el pago (tope de tarjetas de AMG2
+a US$300, quitar MC-8931, revisar MC-4308) antes de re-dotarla. NO pausar el
+ángulo — PERDIDA_AUDITIVA está sano en GTR7. +20% a GTR7_TINNIDROP_PERDIDA-
+AUDITIVA_R2 (CPA Q28.7) y a GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1 (CPA Q29.1).
+
+⚠️ Ventana sin madurar (COD ~3 días, el 16 cerró hoy): 22 ventas es PISO y
+   CPA Q67.0 es TECHO. No matar nada por estos números (regla 5).
+
+───────────────────────────────────────────────────────────────────────────
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-18
+───────────────────────────────────────────────────────────────────────────
+INTEGRIDAD: PARCIAL — falta el export de ventas del 2026-08-17. Última BASE = 14→16 ago.
+Los números de ventas son los mismos de anoche; lo NUEVO es el lado-ads del 16 y 17-ago.
+
+P&L ventana 11-16 ago: 42 ventas · ingreso Q8,898 · pauta Q2,339 · CPA Q55.7 · GANANCIA Q+1,824.
+Break-even derivado (1er escalón, TE 90.4%): Q86.2.
+
+RANKING POR ÁNGULO (agregado por angulo_key, desglosado por cuenta — regla 4):
+  DETERIORO_COGNITIVO   17v · Q762 · CPA Q44.8 · Q+892   GTR1 12v/Q585/+554 · GTR0 2v · CP1 2v · GTR7 1v
+  PERDIDA_AUDITIVA      13v · Q918 · CPA Q70.6 · Q+396   GTR7 12v/Q539/**+674** · GTR0 1v/Q379/**−278**
+  ACCESIBILIDAD_MEDICO   7v · Q324 · CPA Q46.4 · Q+354   GTR7 4v · CP1 2v · GTR0 1v
+  ME_DIJERON_NO_CURA     5v · Q260 · CPA Q51.9 · Q+256   GTR0 3v · CP1 2v
+  NOCHES_SIN_DORMIR      0v · Q75  · —        · Q−75     GTR0
+
+🟢 GTR0 RECUPERADA — CORRECCIÓN A APR-058. La cuenta volvió a ser legible por MCP
+(ACTIVE + queryable) y el 17-ago gastó $24.55 con costo por conversación $0.42–$0.77,
+el rango sano de GTR7. Serie diaria: 12-ago $12.67 · 13 $44.15 · **14 $0.00** · 15 $30.62
+· **16 $0.21** · 17 $24.55. GTR0 no rinde mal de forma continua: se APAGA días enteros por
+el método de pago y vuelve. El CPA Q244.8 de la ventana 14-16 era gasto de los días que sí
+entregó dividido entre ventas de una ventana en la que estuvo apagada 2 de 3 días.
+La causa de APR-058 (es la CUENTA, no el ángulo) se confirma; la descripción "rota" se
+corrige a INTERMITENTE. PERDIDA_AUDITIVA en GTR7 paga Q44.9/venta — el ángulo está sano.
+
+LADO-ADS 17-ago (conversación · sirve para CORTAR, nunca para CORONAR):
+  GTR7: ACCESIBILIDAD-MEDICO_R1 $0.37/msj 48% · PERDIDA-AUDITIVA_R1 $0.40 40% · R2 $0.41 39% · R3 $0.40 35%
+  GTR0: PERDIDA-AUDITIVA_R4 $0.42 45% · R1 $0.46 50% · R2 $0.76 21% · R3 $0.77 32% · NOCHES-SIN-DORMIR_R1 $1.70 7%
+  GTR1: DETERIORO-COGNITIVO_R3 $0.30 54% · R4 $0.47 50% · R5 $0.55 40% · R2 $0.70 43% · R1 $1.07 40%
+  Sin fatiga: frecuencia máxima 1.26 (umbral 1.9).
+
+ACCIONES RECOMENDADAS (las ejecuta el operador):
+  1. **+20% a los 5 conjuntos de GTR1_TINNIDROP_DETERIORO-COGNITIVO** ($1.69 → $2.03).
+     CPA Q44.8 contra BE Q86.2 y es el ángulo peor financiado del portafolio. GTR1 está
+     fresca para este ángulo (12 de sus 17 ventas). Son ~Q13/día — cabe bajo el techo de
+     Q597/día (APR-057). No acumular con otras subidas el mismo día.
+  2. **Apagar GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1 +25AÑOS.** Q101 gastados, 0 ventas,
+     PD (1×BE = Q86) cumplido, 7% conv/clic el 17-ago. Verificado que NO es conjunto ciego
+     (regla 9): tiene gasto y mensajes atribuidos en LucidSales. Su $3.49/día se reasigna a
+     PERDIDA-AUDITIVA_R4 SOLO cuando GTR0 lleve 2-3 días seguidos entregando.
+  3. **NO escalar GTR0.** Entrega recuperada ≠ venta confirmada (regla 6). Antes: tope de
+     las tarjetas de AMG 2 a US$300, quitar MC-8931, revisar MC-4308 (61% de falla).
+  4. Sigue vigente la regla 7: los educacionales/mecanismo están descartados. Venden los
+     ángulos de PÉRDIDA. Los 5 ángulos vivos hoy son todos de pérdida — correcto.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-21 (ventana 17→20 ago, 4 días diarios)
+═══════════════════════════════════════════════════════════════════════════
+Q1,273 de pauta · 25 ventas · CPA Q50.9 (era Q55.7) · Break-Even Q94.6
+Serie completa 17-jul→20-ago: 200 ventas · CPA Q44.5 · ganancia Q+10,029
+(64% de toda la ganancia del portafolio)
+
+POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q):
+  ACCESIBILIDAD_MEDICO    117    6   Q19.4   Q+462   ⬆⬆ el mejor del portafolio
+  PERDIDA_AUDITIVA        810   12   Q67.5   Q+345
+  NOCHES_SIN_DORMIR       117    3   Q38.9   Q+157   ⬆ (venía en 0 ventas)
+  DETERIORO_COGNITIVO     229    4   Q57.3   Q+146   ⬇ (era Q44.8)
+  ME_DIJERON_NO_CURA        0    0     —     Q0      🔴 APAGADO (era Q51.9)
+
+MEJORES CONJUNTOS:
+  GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1   Q117 →  6v  CPA Q19.4
+  GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3       Q110 →  6v  CPA Q18.3
+  GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1       Q116 →  3v  CPA Q38.5
+
+🔴 T01 NO ARRANCÓ. El test figura CONFIRMADO en `_TESTEOS.csv` con
+   `fecha_inicio=2026-08-20` y no existe en la data: ningún brazo aparece como
+   conjunto y ME_DIJERON_NO_CURA gastó Q0.00 los cuatro días. Ese ángulo venía
+   vendiendo a CPA Q51.9 (BE Q94.6, Q43 de colchón por venta) y pasó de Q260 a
+   cero. Se apagó un ángulo rentable Y no se lanzó su reemplazo.
+   → o se lanza T01 con el brazo A limpiado de compliance, o se cambia la fecha
+     y se reactiva ME_DIJERON_NO_CURA.
+
+⚠️ ACCESIBILIDAD_MEDICO está ASFIXIADO: el mejor CPA del producto y solo el 13%
+   de la pauta. Es la acción de mayor impacto del dashboard (Q2,363/sem).
+⚠️ PERDIDA_AUDITIVA se lleva Q810 de Q1,273 (64% de la pauta) para pagar Q67.5.
+   Sigue siendo el ángulo mejor financiado y no el mejor rendidor.
+🔴 GTR0: Q590 de pauta → 4 ventas → Q−230. Cierre msj→venta 2.6% contra 13.9%
+   de GTR7, con el MISMO costo por mensaje. A piso; presupuesto a GTR7.
+⚠️ Ventana NO madurada (19 y 20 frescos): ventas = piso, CPA = techo.
+
+── ANEXO 2026-08-21 · VERIFICACIÓN CONTRA ADS MANAGER (17-20 ago) ──────────
+🔴🔴 EL 46% DE LA PAUTA DE TINNIDROP LE HABLA A QUIEN NO COMPRA.
+   banda 25+    → Q590 · 150 msj ·  4 ventas · cierre  2.7% · CPA Q147.5
+   banda 45-60  → Q683 · 162 msj · 21 ventas · cierre 13.0% · CPA Q 32.5
+   Mismo producto, mismos ángulos, mismos creativos. 4.5× de diferencia.
+
+   EXPERIMENTO NATURAL (PERDIDA_AUDITIVA, mismo ángulo y creativo):
+     GTR0 @ 25+    Q474 · 126 msj ·  1 venta  · 0.8%  · CPA Q473.6
+     GTR7 @ 45-60  Q337 ·  90 msj · 11 ventas · 12.2% · CPA Q 30.6
+   No es ruido: al cierre del 13%, esas 150 conversaciones debían dar ~19
+   ventas y dieron 4 (≈4 sigma).
+
+   → El tinnitus y la pérdida auditiva son problemas de 45-60+. La banda ancha
+     no deja que Andrómeda encuentre al comprador: lo inunda de conversaciones
+     baratas de gente joven que pregunta y no compra.
+   → ACCIÓN: pasar los conjuntos «+25AÑOS» a 45-60. Es el movimiento de mayor
+     impacto del producto (Q1,188/sem).
+   ⚠️ VERIFICAR primero en Ads Manager que la edad configurada coincide con el
+     sufijo del nombre (el `avatar_edad` se derivó del nombre en la migración
+     del 12-ago, no de leer la config).
+
+🔧 CORRECCIÓN — GTR0 NO ES «UNA CUENTA ROTA».
+   Su CPM (1.61) es 16% mayor que el de GTR7 (1.39), su frecuencia es la MÁS
+   BAJA del portafolio (1.19) y sus tasas de conversación son normales
+   (32-43%). Compra bien; le habla a quien no compra. El 100% de sus conjuntos
+   está en 25+. → NO bajarla a piso: eso apagaría un ángulo sano. Cambiarle la
+   banda de edad. (Revisa APR-058)
+
+🔴 SEIS CONJUNTOS EN EL PRESUPUESTO DEPRECADO $1.59.
+   Las 6 réplicas de GTR1_TINNIDROP_DETERIORO-COGNITIVO corren a $1.52-1.61/día
+   contra el escalón sano de ~$4/día. R1 tiene CPA Q29.1 y está financiado a la
+   mitad que conjuntos que pierden plata. Subirlos.
+
+✅ SIN FATIGA: frecuencia máxima 1.74 (umbral 1.9).
+✅ Migración limpia: todos los conjuntos con gasto en las campañas nuevas.
+
+───────────────────────────────────────────────────────────────────────────
+🔓 BANCO CONGELADO — 8 CREATIVOS QUE NUNCA SE MIDIERON (alta 2026-08-21)
+───────────────────────────────────────────────────────────────────────────
+QUÉ SON: la RENOVACIÓN CREATIVA completa de TINNIDROP. Se lanzaron el 27-jul
+en GTR0 (tanda de 15 segundos, 00:11:08-00:11:23) y salieron 100% CIEGOS: el
+destino de WhatsApp no llevaba el identificador que LucidBot usa para atribuir.
+Se apagaron el 15-ago con 0 ventas registradas.
+
+⚠️ ESE CERO ES UN ARTEFACTO, NO UN VEREDICTO (APR-034). Si hubieran vendido,
+LucidSales tampoco lo habría registrado. Gastaron Q31 cada uno = 33% del
+Presupuesto de Decisión (Q93), o sea por rendimiento NO se habrían apagado.
+Sus 46 conversaciones salieron a ~Q5.4 c/u — precio normal, ninguna señal de
+que los hooks sean malos.
+
+LOS OCHO HOOKS, PENDIENTES DE RE-TESTEAR CON EL LINK CORREGIDO:
+   1. EL VOLUMEN DE LA TELE
+   2. MENOS QUE LA CONSULTA
+   3. RESEÑA 5 ESTRELLAS
+   4. EMPEZÓ CON UN ZUMBIDO
+   5. LA HIJA QUE LO COMPRÓ
+   6. APRENDÉ A VIVIR CON ESO
+   7. TRES ESPECIALISTAS (CERO RESPUESTAS)
+   8. NO SE QUEDA QUIETO
+
+CÓMO RELANZARLOS (no repetir el error):
+   · NO crear los conjuntos de cero. DUPLICAR uno que hoy trackea de
+     GTR7_TINNIDROP_ESCALA_20260812 y cambiarle SOLO el creativo → el destino
+     bueno se hereda (MCP_PLAYBOOK §7).
+   · Banda de edad 45-60, NO 25+ (APR-060 — es el error que se llevó puesto
+     el resto del producto).
+   · Presupuesto ~$4/día, no $1.59 (APR-062).
+   · CONTROL D+1 OBLIGATORIO al día siguiente: Meta vs LucidSales conjunto por
+     conjunto. Si Lucid marca 0 mensajes y Meta marca >0 → tanda ciega otra
+     vez, cortar ese mismo día (MCP_PLAYBOOK §7.5).
+
+POR QUÉ VALE LA PENA: la fatiga de creativo es la variable #1 del escalado y
+este es un banco de 8 hooks ya producidos, con costo hundido, listos para
+cargar. Renovar creativo es más barato que descubrir un ángulo nuevo.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-26 (ventana 21→25 ago, 5 días diarios · backfill)
+═══════════════════════════════════════════════════════════════════════════
+Hueco de 5 días (21-25 ago) cerrado hoy con exports diarios de LucidSales +
+Ads Manager. Q1,697 de pauta · 25 ventas · CPA Q67.9 (peor que el Q50.9 del
+tramo 17-20) · Break-Even Q94.41.
+Serie completa 17-jul→25-ago: 225 ventas · CPA Q47.1 · ganancia Q+10,652
+(58% de toda la ganancia del portafolio).
+
+POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q, tramo 21-25):
+  PERDIDA_AUDITIVA        1053   15   Q70.2   Q+361
+  DETERIORO_COGNITIVO      336    4   Q84.1   Q+24    🔴 ver alerta GTR1 abajo
+  ACCESIBILIDAD_MEDICO     156    3   Q51.9   Q+103   sigue infra-financiado
+  NOCHES_SIN_DORMIR        152    3   Q50.8   Q+135
+  ME_DIJERON_NO_CURA         0    0     —     Q0      🔴 SIGUE APAGADO, 6º día
+
+🔴 T01 SIGUE SIN ARRANCAR — 6 DÍAS. Ninguno de los 4 brazos aparece como
+   conjunto en los 10 días verificados (17-20 y 21-25 ago). ME_DIJERON_NO_CURA
+   sigue en Q0. Impacto acumulado según el dashboard: Q807/sem en juego.
+   Decisión pendiente del operador: lanzar T01 (brazo A limpiado de
+   compliance) o cambiar la fecha en `_TESTEOS.csv` y reactivar el ángulo.
+
+🔴 SATURACIÓN GTR0 vs GTR7 — SIN RESOLVER. El mismo ángulo (PERDIDA_AUDITIVA)
+   paga Q156.0 en GTR0 y Q47.6 en GTR7 (CPA corregido por cobertura de
+   tracking: GTR0 ve 54% de su gasto, GTR7 el 95%). GTR0 se llevó Q2,023 para
+   24 ventas en la serie completa. Sigue siendo la acción #2 del dashboard
+   (Q880/sem) — bajar GTR0 a piso y mover el presupuesto a GTR7.
+
+🆕 ALERTA NUEVA — GTR1 SANGRANDO EN SU VENTANA RECIENTE. DETERIORO_COGNITIVO
+   en GTR1 gastó Q212 para 1 venta (CPA Q211.5 contra BE Q94.4) en los días
+   más recientes del tramo. Sobre la serie completa el ángulo da Q48.7 y
+   parece sano — lo que se rompió es la ventana reciente en ESTA cuenta, no
+   el ángulo entero. Antes de culpar al creativo: revisar método de pago /
+   rechazos de cobro en GTR1 (APR-049). No se manda apagar el ángulo
+   completo, solo se marca para revisar la cuenta.
+
+⚠️ 24 y 25-ago aún no maduran del todo (COD ~3 días): sus cifras son un piso.
+   21-23-ago ya son definitivos.

@@ -1,0 +1,146 @@
+{
+  "canonico_id": "CN07_DOLOR_A_PLENO",
+  "schema_version": "canonico-1.0",
+  "nombre": "Foto de dolor a pleno",
+  "dispositivo_canonico": "LA FOTOGRAFIA DEL SINTOMA OCUPA MEDIA PIEZA O MAS, a sangre, del tamano de una persona. No hay lista ni argumento: hay un rostro o un cuerpo en el gesto exacto del dolor — la mano en el oido, la pierna que arde, la cara de la noche sin dormir. El texto es una sola frase que nombra ese momento.",
+  "cuando_elegirlo": "TOFU puro, para detener el scroll con reconocimiento emocional. Necesita un sintoma con GESTO fotografiable; si el problema no tiene una postura reconocible, no hay foto que tomar.",
+  "ejes_de_variacion": [
+    "encuadre: mitad de la pieza (F012-13) o sangrado completo (F005)",
+    "el hook puede apuntar al SINTOMA o saltar a la CAUSA (F013)",
+    "el producto puede estar ya PUESTO sobre el avatar en la misma toma (F049)",
+    "puede fotografiar la emocion en el momento exacto con el objeto que la produce (F055)"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F005",
+  "score_referencia": 130,
+  "perfil": {
+    "concepto_key": {
+      "C3_SINTOMA": 4,
+      "C2_BENEFICIOS": 1
+    },
+    "rol_embudo": {
+      "TOFU": 4,
+      "MOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 5
+    },
+    "formato": {
+      "1:1": 4,
+      "4:5": 1
+    },
+    "densidad": {
+      "media": 5
+    },
+    "nivel_conciencia_rango": [
+      2,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "FOTO_DEL_GESTO",
+    "GESTO_DESCRITO",
+    "TITULAR",
+    "ENCUADRE",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "COLOR_ACENTO",
+      "GARANTIA_ENVIO",
+      "GARANTIA_PAGO",
+      "MONEDA"
+    ],
+    "recurrentes": [
+      "COLOR_ALERTA",
+      "OFERTA_LABEL",
+      "PRECIO",
+      "PROMESA_L1"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "La foto de dolor sangra por el borde del frame y va sin rostro identificable",
+    "La zona afectada va encendida en rojo, y el rojo no se usa en ningun otro lugar",
+    "La punta activa del producto apunta hacia la zona de dolor",
+    "El titular en primera linea tiene una o dos palabras: si necesita mas, va a la segunda linea",
+    "El precio va sobre la foto de dolor, en el mismo golpe de vista que el sintoma",
+    "Un solo bloque negro: la franja de confianza del pie"
+  ],
+  "cuando_usar": [
+    "dolor localizado y fotografiable (espalda, cuello, rodilla, pies)",
+    "DISPOSITIVOS y aparatos, no solo suplementos",
+    "publico 40+ que ya probo analgesicos y busca algo sin medicamento",
+    "cuando la promesa es alivio rapido y no resultado progresivo",
+    "sintoma VISIBLE en la piel o la postura (varices, manchas, hinchazon, acne)",
+    "cuando existe foto de una persona real del avatar exacto",
+    "publico de nivel 2 que reconoce el sintoma pero no la solucion",
+    "cuando el argumento es 'te pasa esto' y no 'asi funciona'"
+  ],
+  "cuando_no_usar": [
+    "productos preventivos o de bienestar general: no hay dolor que encender",
+    "cuando no hay material fotografico de la zona afectada",
+    "categorias esteticas o de belleza",
+    "sintomas invisibles: sin foto el layout se queda sin su mitad derecha",
+    "cuando solo hay fotos de banco genericas: el avatar falso rompe la identificacion",
+    "productos preventivos"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F005",
+      "score": 130,
+      "anunciante": "Dra.Dra. Sofa Alejandra Mo",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA FOTO DE DOLOR A SANGRE, DEL TAMANO DE UNA PERSONA"
+    },
+    {
+      "ficha_id": "F012",
+      "score": 107,
+      "anunciante": "Dr. Felipe Flores",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA MITAD DERECHA ENTERA ES LA FOTO DEL SINTOMA"
+    },
+    {
+      "ficha_id": "F013",
+      "score": 107,
+      "anunciante": "Dr. Felipe Flores",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MISMO LAYOUT DE MITAD-FOTO QUE F012, PERO CON EL AVATAR LOCALIZADO Y EL HOOK EN LA CAUSA, NO EN EL SINTOMA"
+    },
+    {
+      "ficha_id": "F049",
+      "score": 52,
+      "anunciante": "FrezNova",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "4:5",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL AVATAR CON EL SINTOMA Y EL PRODUCTO PUESTO AL MISMO TIEMPO"
+    },
+    {
+      "ficha_id": "F055",
+      "score": 49,
+      "anunciante": "Rincon de las Ventas Onlin",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA FOTO DE LA EMOCION EN EL MOMENTO EXACTO, CON EL OBJETO QUE LA PRODUCE EN LA MANO"
+    }
+  ]
+}

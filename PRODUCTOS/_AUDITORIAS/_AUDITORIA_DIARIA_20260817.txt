@@ -1,0 +1,200 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — 2026-08-17 (20:00) · SISTEMA VITALCOM GUATEMALA
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 3 de 3 días con data en la última BASE (14→16 ago) ·
+huecos: NINGUNO en ventas · el 16-ago entró dentro de un agregado de 3 días
+exportado ANTES del cierre del día → esa fecha es un PISO, no un cierre.
+
+LADO-ADS POR MCP: **NO CORRIÓ**. El conector de Meta Ads no está expuesto en
+esta sesión (ninguna herramienta ads_* disponible). No se escribió nada en
+`_FACT_ENTREGA.csv`; su último día cargado sigue siendo el 15-ago. Nada de lo
+que sigue depende del MCP: todo sale de LucidSales, que es la fuente de verdad
+de ventas. Reintentar mañana (GTR0 y GTR13 siguen pendientes de reintento).
+
+───────────────────────────────────────────────────────────────────────────
+1 · ETAPA-7 — QUÉ PASÓ (ventana 14→16 ago vs 11→13 ago)
+───────────────────────────────────────────────────────────────────────────
+
+  VENTANA 11→13-ago (3d)  ·  Q597/día · 12.7 v/día · CPA Q47.1 · ganancia Q+652/día
+     TINNIDROP  Q   865 pauta · 20v · CPA    Q43.3 (BE Q93) · ganancia Q +1041
+     CLEARSTEM  Q   529 pauta · 15v · CPA    Q35.3 (BE Q106) · ganancia Q +1015
+     NUSAVA     Q   220 pauta ·  3v · CPA    Q73.2 (BE Q93) · ganancia Q   +77
+     VARICOSE   Q   176 pauta ·  0v · CPA       -- (BE Q90) · ganancia Q  -176
+
+  VENTANA 14→16-ago (3d)  ·  Q974/día · 13.0 v/día · CPA Q75.0 · ganancia Q+317/día
+     TINNIDROP  Q  1474 pauta · 22v · CPA    Q67.0 (BE Q93) · ganancia Q  +589
+     CLEARSTEM  Q   925 pauta · 11v · CPA    Q84.1 (BE Q106) · ganancia Q  +232
+     NUSAVA     Q   524 pauta ·  6v · CPA    Q87.4 (BE Q93) · ganancia Q  +129
+     VARICOSE   Q     0 pauta ·  0v · CPA       -- (BE Q90) · ganancia Q    +0
+
+  ‼️ LO ÚNICO QUE IMPORTA HOY — SE ROMPIÓ EL TECHO DE GASTO, Y EN CONTRA:
+
+       11-13 ago   Q597/día · CPA Q47.1 · 12.7 v/día → Q+652/día
+       14-16 ago   Q974/día · CPA Q75.0 · 13.0 v/día → Q+317/día
+
+     Se gastó 63% MÁS (Q378/día extra) y se compraron 0.3 ventas más por día.
+     La ganancia diaria se partió al medio. Esto NO es "el mercado se puso
+     caro": es haber pasado el techo demostrado del portafolio (Q597/día,
+     APR-022) sin que ningún ángulo nuevo lo sostenga.
+
+     ⚠️ MADURACIÓN: la ventana 14-16 no está madurada (COD ~3 días, el 16 cerró
+     hoy). Sus 39 ventas son un PISO y el CPA Q75 un TECHO. Pero la comparación
+     INTERNA de la misma ventana (cuenta contra cuenta, ángulo contra ángulo)
+     sí es válida: todas las filas están igual de inmaduras.
+
+  🔴🔴 DÓNDE SE FUE LA PLATA — GTR0, Y NO ES EL ÁNGULO:
+
+     ventana 14-16 ago, por cuenta:
+       GTR7   Q  1092 pauta · 18v · CPA    Q60.7 → ganancia Q  +686
+       GTR1   Q   318 pauta ·  6v · CPA    Q53.0 → ganancia Q  +245
+       GTR13  Q   925 pauta · 11v · CPA    Q84.1 → ganancia Q  +232
+       CP1    Q    98 pauta ·  2v · CPA    Q49.1 → ganancia Q   +89
+       GTR0   Q   490 pauta ·  2v · CPA   Q244.8 → ganancia Q  -302
+
+     GTR0 es la única cuenta en rojo y se llevó Q490 (17% de la pauta) para
+     2 ventas. Su serie propia lo dice todo:
+
+       2026-07-17→2026-07-24  Q  404 · 12v ·  177 msj · CPA Q33.6
+       2026-07-25→2026-07-25  Q  194 ·  3v ·   41 msj · CPA Q64.5
+       2026-07-26→2026-07-26  Q  203 ·  3v ·   38 msj · CPA Q67.7
+       2026-07-27→2026-07-27  Q  171 ·  4v ·   35 msj · CPA Q42.7
+       2026-07-28→2026-07-28  Q  172 ·  2v ·   25 msj · CPA Q85.9
+       2026-07-29→2026-07-29  Q  184 ·  4v ·   40 msj · CPA Q46.0
+       2026-07-30→2026-07-30  Q  205 ·  3v ·   37 msj · CPA Q68.4
+       2026-07-31→2026-08-02  Q  161 ·  5v ·   32 msj · CPA Q32.2
+       2026-08-11→2026-08-13  Q  284 ·  5v ·   63 msj · CPA Q56.7
+       2026-08-14→2026-08-16  Q  490 ·  2v ·   68 msj · CPA Q244.8
+
+     Venía en Q32-Q68 todo julio. Se rompió esta semana, de golpe.
+
+  🔬 PRUEBA DE QUE ES LA CUENTA Y NO EL CREATIVO — mismo ángulo, misma ventana,
+     mismos días, mismo bot:
+
+       TINNIDROP · ACCESIBILIDAD_MEDICO
+           GTR7   Q  135 ·  2v ·   19 msj · CPA Q67.6
+           GTR0   Q   44 ·  1v ·    2 msj · CPA Q44.1
+           CP1    Q   32 ·  0v ·    4 msj · CPA --
+       TINNIDROP · DETERIORO_COGNITIVO
+           GTR1   Q  318 ·  6v ·   65 msj · CPA Q53.0
+           CP1    Q   31 ·  1v ·    8 msj · CPA Q31.3
+           GTR7   Q   41 ·  0v ·    7 msj · CPA --
+           GTR0   Q   26 ·  0v ·    1 msj · CPA --
+       TINNIDROP · ME_DIJERON_NO_CURA
+           CP1    Q   35 ·  1v ·    6 msj · CPA Q34.8
+           GTR0   Q  123 ·  0v ·   14 msj · CPA --
+       TINNIDROP · PERDIDA_AUDITIVA
+           GTR7   Q  392 · 10v ·  105 msj · CPA Q39.2
+           GTR0   Q  246 ·  1v ·   44 msj · CPA Q246.4
+
+     PERDIDA_AUDITIVA: Q39.2 en GTR7 contra Q246.4 en GTR0. **6.3× peor** con
+     el mismo ángulo y el mismo creativo. Regla 4 (saturación por cuenta) en su
+     forma más pura — salvo que acá la causa más probable no es saturación de
+     audiencia sino ENTREGA ROTA POR PAGO: GTR0 arrastra 10 rechazos de cobro,
+     US$176 en retención y quedó UNSETTLED desde el 15-ago (APR-037/049). Una
+     cuenta a la que Meta le corta la entrega cada vez que rebota un cargo
+     reinicia aprendizaje sin parar y paga lo que sea por cada conversión.
+
+  ✅ CORRECCIÓN A LA AUDITORÍA DE ANOCHE (APR-039) — LA ACCIÓN #1 ERA AL REVÉS.
+     Anoche leí "el portafolio cayó a Q273/día, 46% del techo → surfing +20%".
+     Era una lectura PARCIAL: el MCP solo ve GTR7+GTR1 (GTR0 devuelve $0 por
+     estar UNSETTLED, GTR13 y CP1 no tienen MCP) ≈ 48% del gasto real. Con
+     LucidSales completo, esos días corrieron Q974/día — 63% POR ENCIMA del
+     techo, no por debajo. Subir +20% en bloque habría sido escalar hacia el
+     deterioro. Queda como regla: **el volumen del portafolio NUNCA se juzga
+     desde el MCP** (ver APR-059).
+
+  ✅ CORRECCIÓN A APR-038 — ERA UN PROBLEMA DE CUENTA, NO DE ÁNGULO.
+     Tres noches seguidas reporté que PERDIDA_AUDITIVA se llevaba la mayor
+     parte de la pauta de TINNIDROP siendo el peor CPA. Con la ventana cerrada
+     PERDIDA_AUDITIVA hizo 11 ventas a Q58.0 — el ángulo que más vendió del
+     portafolio — y en GTR7 paga Q39.2. El "peor CPA" era el promedio de mezclar
+     GTR7 (sano) con GTR0 (roto). Promediar cuentas escondió la señal.
+
+───────────────────────────────────────────────────────────────────────────
+2 · ETAPA-7 — RANKING POR ÁNGULO (regla 1: se agrega por angulo_key)
+───────────────────────────────────────────────────────────────────────────
+
+  SERIE COMPLETA 17-jul → 16-ago:
+
+    PRODUCTO   ÁNGULO                         PAUTA  VTAS       CPA      vs BE
+    TINNIDROP  DETERIORO_COGNITIVO         Q  3180   69v     Q46.1        +47
+    NUSAVA     ARDOR                       Q  2389   41v     Q58.3        +34
+    TINNIDROP  PERDIDA_AUDITIVA            Q  2125   38v     Q55.9        +37
+    TINNIDROP  ACCESIBILIDAD_MEDICO        Q  1021   31v     Q32.9        +60
+    CLEARSTEM  RESISTENCIA_INSULINA_SOP    Q  1091   25v     Q43.7        +62
+    TINNIDROP  ME_DIJERON_NO_CURA          Q  1070   21v     Q51.0        +42
+    CLEARSTEM  MEDICOS_FALLARON            Q  1065   20v     Q53.3        +53
+    CLEARSTEM  ANTI_FALSIFICACION          Q  1099   15v     Q73.3        +33
+    VARICOSE   VERGUENZA_PIERNAS           Q   621   10v     Q62.1        +28
+    TINNIDROP  NOCHES_SIN_DORMIR           Q   222    3v     Q74.0        +19
+    CLEARSTEM  TESTIMONIO_RADICAL          Q   282    2v    Q141.1        -35
+    CLEARSTEM  EJE_INTESTINO_PIEL          Q    38    2v     Q18.9        +87
+    VARICOSE   MIEDO_CIRUGIA               Q   113    1v    Q112.5        -23
+    VARICOSE   MANCHAS_OSCURAS             Q   133    1v    Q132.7        -43
+    VARICOSE   CALAMBRES_NOCTURNOS         Q    95    1v     Q94.9         -5
+    CLEARSTEM  DOLOR_EMOCIONAL_MASCULINO   Q    77    0v        --         --
+
+    Todos los ángulos con ventas están BAJO su break-even. No hay ni un ángulo
+    para matar por ventas hoy. El problema de esta semana no es de ángulos.
+
+───────────────────────────────────────────────────────────────────────────
+3 · ETAPA-8 — PLAN DE ESCALADO (qué hacer, en orden)
+───────────────────────────────────────────────────────────────────────────
+
+  El motor del dashboard emite estas acciones. Están ORDENADAS y son
+  COMPLEMENTARIAS, no contradictorias: se recorta donde sangra y se reinvierte
+  una parte en lo que ya prueba que rinde. Neto: el gasto/día BAJA.
+
+  #1 — FRENAR EL PORTAFOLIO A LA BANDA QUE RINDE.  [impacto ≈ Q1,007/sem]
+       Volver a la banda Q550-650/día. NO subir presupuesto en bloque.
+       El gate es el CPA (<~Q50), no el monto: la ventana 11-13 lo demostró.
+
+  #2 — GTR0 A PISO, HOY.  [impacto ≈ Q345/sem entre las dos reglas]
+       Bajar a presupuesto piso los 7-8 conjuntos de GTR0 (campaña
+       `GTR0_TINNIDROP_ESCALA_20260812` + lo que quede vivo de
+       `TINNIDROP_RENOVACION_20260725` y `🟩 TINIDROP GTR0 - 1.59 - TEST`).
+       NO pausar el ángulo: PERDIDA_AUDITIVA está sanísimo en GTR7.
+       ANTES de reactivar GTR0, arreglar el pago — es la causa raíz probable:
+         · subir el tope de las tarjetas de AMG2 a US$300 (APR-050: Meta cobra
+           por umbral acumulado, no por gasto diario; el tope de US$50 rebota
+           cargos por diseño y el pico de demanda de AMG2 fue US$169.64/día).
+         · quitar MC-8931 (muerta) y revisar MC-4308 (61% de falla, APR-049).
+         · confirmar que el saldo UNSETTLED quedó liquidado (al 16-ago: $0.73).
+
+  #3 — REINVERTIR SOLO EN LOS TRES QUE YA PROBARON.  [impacto ≈ Q546/sem]
+       +20% conjunto por conjunto, uno por día, no los tres de golpe:
+         · GTR7 · GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2 — CPA Q28.7 vs BE Q94.5
+         · GTR7 · GTR7_NUSAVA_ARDOR_R4 +25 — CPA Q24.4 vs BE Q100.2
+         · GTR1 · GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1 — CPA Q29.1 vs BE Q94.5
+
+  #4 — CLEARSTEM: MIRARLO, NO TOCARLO TODAVÍA.
+       Pasó de CPA Q35.3 (11-13) a Q84.1 (14-16) con casi el doble de pauta.
+       Sigue bajo BE Q105.89 y es la cuenta SIN MCP: su data llega solo por
+       LucidSales y la ventana no maduró. ANTI_FALSIFICACION hizo 0 ventas con
+       Q306 — es el candidato #1 a renovar creativo si mañana repite (el ángulo
+       lleva 15 ventas en la serie: comunica, el creativo se gastó).
+
+  #5 — VARICOSE: sigue correctamente en CERO.
+       0 pauta, 0 ventas, 4 mensajes residuales. No reactivar hasta que ads y
+       bot muestren la crema AZUL (causa raíz confirmada 14-ago).
+
+  LO QUE **NO** HAY QUE HACER HOY:
+    · No matar ningún ángulo. Todos los que venden están bajo break-even.
+    · No matar ningún conjunto por su cero individual (regla 1 / APR-055).
+    · No leer el CPA Q75 como veredicto: la ventana no maduró (regla 5).
+
+───────────────────────────────────────────────────────────────────────────
+4 · DATA QUE FALTA
+───────────────────────────────────────────────────────────────────────────
+
+  · Export de LucidSales del **2026-08-16** como CONTROL (re-export del día ya
+    cerrado): el 16 entró dentro de un agregado exportado antes de cerrar.
+  · Desde hoy 17-ago hay **UN SOLO BOT** (APR-043) → un solo export por día.
+    Mañana: export de UN SOLO DÍA, 2026-08-17.
+  · Lado-ads: el MCP de Meta no estaba disponible esta sesión. Reintentar.
+
+═══════════════════════════════════════════════════════════════════════════
+Dashboard regenerado: PRODUCTOS/_DASHBOARD.html
+Reglas nuevas en el motor: J) cuenta que sangra · K) techo de gasto pasado.
+═══════════════════════════════════════════════════════════════════════════

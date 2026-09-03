@@ -1,0 +1,235 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — miércoles 2026-08-26, 8 PM
+SISTEMA VITALCOM · ETAPA-7 (monitor) + ETAPA-8 (escalado)
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 2 de 7 días con data · huecos: 2026-08-21,
+2026-08-22, 2026-08-23, 2026-08-24, 2026-08-25.
+
+Última BASE cargada = 2026-08-20 (46 filas). Sexta noche seguida sin
+ingesta. 0 filas nuevas a `_FACT_VENTAS.csv` · 0 a `_FACT_ENTREGA.csv`.
+`_GANANCIAS.txt` y los `2_DATA_PRODUCTO.txt` NO se tocaron — mismo criterio
+que el 20-25 ago: sin día nuevo no se escribe fila.
+
+⚠️ REGLA DURA APLICADA: con huecos NO se presenta CPA semanal como completo,
+NO se declara ganador oficial y NO se manda matar por ventas. Nada se mandó
+apagar por estos cinco días. Data faltante ≠ cero ventas.
+
+
+───────────────────────────────────────────────────────────────────────────
+1. QUÉ CAMBIÓ HOY RESPECTO DE AYER
+───────────────────────────────────────────────────────────────────────────
+
+El hueco pasó de 4 a 5 días. La frontera de maduración (~3 días COD) sigue
+avanzando dentro del hueco, no en su borde:
+
+  · 21, 22 y 23-ago → YA MADURARON (≥3 días). Sus exports son DEFINITIVOS.
+  · 24 y 25-ago → siguen AMBIGUOS. LucidSales todavía los va a reajustar
+    retroactivamente unos días más.
+
+Se sostiene la misma consecuencia práctica: los días más viejos del hueco
+son los que más rinden por pegarlos primero, porque ya no se van a mover.
+
+Tamaño de la apuesta a ciegas: ~Q2,367 de pauta que pasó sin medirse
+(Q473/día del último ritmo conocido, tramo 17-20 ago × 5 días). Ayer eran
+~Q1,893. Crece Q473/día, ritmo constante desde que se abrió el hueco.
+
+MCP de Meta Ads: 9ª noche caída. Se verificó de nuevo hoy con una búsqueda
+de herramientas — cero `ads_*` disponibles en la sesión. Sigue sin ser una
+cuenta con `is_queryable=false`: es el conector completo, ausente. PASO 4
+no corrió, otra vez.
+
+PASO 4B (conciliación de facturación): sin novedad, sigue cayendo en el
+mismo hueco. El domingo 23-ago no corrió y el próximo (30-ago) tampoco va a
+tener contra qué verificar la ecuación de arrastre (APR-041) si el hueco no
+se cierra antes.
+
+
+───────────────────────────────────────────────────────────────────────────
+2. VERIFICACIÓN DEL FIX DE AYER — APR-068 EN PRODUCCIÓN
+───────────────────────────────────────────────────────────────────────────
+
+Ayer se corrigió `gen_dashboard.py` para que el gate de ceguera de data
+saliera en una banda de prioridad 0, fuera del ranking por impacto — porque
+el día anterior había caído al 2º puesto por pura coincidencia aritmética.
+
+Hoy, con el hueco más grande de toda la serie (5d / Q2,367) y con una
+acción de TINNIDROP en Q2,363 (prácticamente empatada en magnitud), el gate
+se mantuvo en el puesto 1. La corrección no solo se ve razonable en teoría:
+sostuvo el resultado correcto en el peor caso de prueba disponible hasta
+ahora (las dos cifras casi iguales, el escenario que la haría fallar si
+solo fuera un ajuste cosmético). Se considera verificada, no solo aplicada.
+
+
+───────────────────────────────────────────────────────────────────────────
+3. EL PEDIDO SIGUE SIN RESPUESTA — SEXTA NOCHE
+───────────────────────────────────────────────────────────────────────────
+
+Mismo pedido, mismo canal, sexta noche seguida (21 a 25-ago) sin recibirlo.
+Las dos hipótesis de ayer siguen abiertas y solo el operador puede
+descartarlas:
+
+  (a) El pedido llega pero a una hora en que no está frente a LucidSales
+      → mover el horario de la tarea, o pasar a un backfill semanal.
+  (b) Hay fricción en el export mismo (login, permisos, la cuenta B que se
+      apagó el 17-ago) → el pedido diario nunca lo va a resolver.
+
+No se cambia el flujo por cuenta propia. Se deja registrado porque el
+sistema sigue apoyado en un supuesto —que alguien pega un export a diario—
+que lleva 6 días sin cumplirse. Mientras eso no se resuelva, cada noche que
+pasa el dashboard describe el 20-ago con más precisión y el presente con
+menos.
+
+
+───────────────────────────────────────────────────────────────────────────
+4. ESTADO DEL PORTAFOLIO (sobre data del 2026-08-20 — CONGELADA)
+───────────────────────────────────────────────────────────────────────────
+
+Sin cambios de fondo respecto del 24/25-ago: es la misma foto del 20-ago,
+ahora con cinco días sin medir encima en vez de cuatro.
+
+TINNIDROP (VIVO · multicuenta GTR0/GTR1/GTR3/GTR7/GTR13/CP1)
+  · ACCESIBILIDAD-MÉDICO sigue infra-financiado: mejor CPA del producto
+    (Q30.7) llevándose solo 13% de la pauta → Q2,363/sem en juego, la
+    acción de mayor magnitud del portafolio (después del gate).
+  · Saturación por cuenta confirmada y sin resolver: el mismo ángulo paga
+    Q164.8 en GTR0 vs Q43.3 en GTR7 (CPA corregido por cobertura de
+    tracking) → Q732/sem si se rebalancea.
+  · Bandas de edad 25+ siguen cerrando muy por debajo de 45-60 (3.6% vs
+    15.1%, 4/110 vs 14/93) → Q1,188/sem en la banda que no compra.
+  · Ninguna de estas tres acciones se ejecuta a ciegas todavía: la
+    dirección es sólida (se repite en 4 cuentas), pero su magnitud exacta
+    sale de la ventana ambigua. Se ejecutan después del backfill.
+
+CLEARSTEM (VIVO · GTR 13 · sin MCP)
+  · Banda 25+ sigue en 0.0% de cierre (0/39) vs 25-35 en 12.1% (4/33) →
+    Q488/sem en la banda muerta.
+  · MEDICOS_FALLARON sigue INDECIDIBLE (APR-067). No se toca.
+  · Es el producto más ciego de los tres: no tiene lado-ads (MCP off desde
+    antes) que compense el hueco de LucidSales.
+
+CP1 (cuenta, TINNIDROP)
+  · Sigue en cero gasto tras venir dando 6 ventas a CPA Q33.1. Se mantiene
+    como REVISAR, no REACTIVAR — no se atribuye la caída por descarte
+    (APR-030). Q395/sem en juego si se confirma que fue un cobro caído.
+
+Test T01: sigue CONFIRMADO en `_DIM_TESTS` sin gasto en ningún brazo.
+Q618/sem de la lista está atado a esto — o se lanza o se le cambia la
+fecha; mientras tanto ensucia el registro.
+
+NusavaB12 · VARICOSE · resto: sin cambios respecto del 25-ago. VARICOSE
+sigue PAUSADO. Los LISTO (D3+K2, Repelente, Serum, Óvulos) siguen
+bloqueados por page_id/WhatsApp y no se auditan.
+
+
+───────────────────────────────────────────────────────────────────────────
+5. LO QUE HAY QUE PEDIR
+───────────────────────────────────────────────────────────────────────────
+
+1. Export de LucidSales de UN SOLO DÍA para 2026-08-21, 22, 23, 24 y 25 —
+   CINCO exports, uno por día, nunca agregados. Prioridad: 21, 22 y 23
+   primero (ya maduraron, son definitivos); 24 y 25 después.
+
+2. Reconectar el conector de Meta Ads en Cowork (9ª noche caída).
+
+3. Atrasados de domingo, arrastrados dos ciclos:
+   · Extracto de Facturación de Meta por cuenta (las 6).
+   · Export de Ads Manager nivel conjunto de GTR13 y CP1, con desglose por
+     Día (las dos cuentas sin MCP).
+   · Export de 7 días → `rol_ventana=CONTROL`.
+
+4. Mensual, pendiente: export de ÓRDENES de Dropi (xlsx) + extracto
+   bancario.
+
+5. Responder la pregunta del punto 3: ¿el pedido diario no llega, o el
+   export tiene una fricción técnica? Es la única forma de saber qué
+   arreglar.
+
+
+───────────────────────────────────────────────────────────────────────────
+6. ESCRITURAS DE ESTA CORRIDA
+───────────────────────────────────────────────────────────────────────────
+  ✅ `_BITACORA_DATA.txt` — fila del 26-ago.
+  ✅ `_AUDITORIAS/_AUDITORIA_DIARIA_20260826.txt` — este archivo.
+  ✅ `_DASHBOARD.html` — regenerado AL FINAL. 0 filas sin dimensión.
+  ⬜ `gen_dashboard.py` — sin cambios (el fix de ayer se verificó, no
+     necesitó ajuste).
+  ⬜ `_APRENDIZAJES.csv` — sin fila nueva (nada estructuralmente distinto de
+     lo ya capturado en APR-066/067/068; hoy es continuación, no hallazgo).
+  ⬜ `_FACT_VENTAS.csv` / `_FACT_ENTREGA.csv` — sin filas nuevas (sin data).
+  ⬜ `_GANANCIAS.txt` / `2_DATA_PRODUCTO.txt` — intactos a propósito.
+
+
+───────────────────────────────────────────────────────────────────────────
+ADENDA — INGESTA INTRADÍA (mismo 26-ago, después del pedido de las 8 PM)
+───────────────────────────────────────────────────────────────────────────
+
+El operador entregó los 5 exports pedidos EN EL MISMO TURNO: 5 archivos
+LucidSales (report-2026-08-21 a 25, uno por día) + 5 archivos de Ads
+Manager (Informe-sin-título-ago-21 a 25, nivel conjunto, GTR0/GTR1/GTR7/
+GTR13). El hueco de 5 días quedó CERRADO.
+
+QUÉ SE CARGÓ
+  · 223 filas nuevas a `_FACT_VENTAS.csv` (rol_ventana=BASE, fuente
+    LucidSales) — 53 ventas atribuidas directamente a un adId.
+  · 2 filas más a `_FACT_VENTAS.csv` como `SIN_ATRIBUCION` (ventas orgánicas
+    de CLEARSTEM que el export no liga a ningún anuncio: 23-ago 3x Q389.01,
+    25-ago 1x Q198.00 — mismo patrón que las 14 filas previas de APR-035).
+  · 115 filas a `_FACT_ENTREGA.csv`, fuente `AdsManager-export-1d`: mensajes
+    se derivaron de `Clics en el enlace × TASA DE CONVERSION A WHATSAPP`
+    (columna nativa del export, verificado que reproduce un entero exacto
+    en las 115 filas). Total: 601 mensajes — CRUZA EXACTO con la suma
+    independiente de mensajes en los 5 exports de LucidSales (601). Buena
+    señal de consistencia entre las dos fuentes.
+  · Las 23 conjuntos de Ads Manager y los conjuntos de LucidSales unieron
+    100% contra `_DIM_CONJUNTOS.csv` — 0 altas nuevas necesarias.
+
+VERIFICACIÓN DEL RECONECTAR-MCP
+El operador indicó que el conector de Meta Ads ya está conectado. Se
+volvió a buscar herramientas `ads_*` en esta sesión y siguen sin aparecer
+— mismo resultado que las 9 noches anteriores. Puede ser que el conector
+esté activo a nivel de cuenta de Cowork pero no se esté heredando en este
+hilo/tarea programada (haría falta una sesión nueva para confirmarlo). En
+la práctica no bloqueó nada: el export manual de Ads Manager que trajo el
+operador cumplió la misma función que hubiera cumplido el MCP (mensajes,
+clicks, impresiones, gasto por conjunto, con resolución diaria).
+
+RECÁLCULO DEL P&L
+  Ganancia 17-jul→25-ago: Q15,604 → **Q18,343** (389 ventas, +55 vs. antes).
+  Tramo 21-25 ago solo: Q2,740 de ganancia · Q2,737 de pauta (Q548/día) ·
+  CPA Q49.8 · ROAS 4.5x — dentro de la banda sana ya identificada (gate en
+  CPA <~Q50-55, no en el monto).
+  Mejor día suelto de toda la serie: **25-ago, +Q1,092** (superó el récord
+  anterior del 26-jul, +Q520).
+
+VEREDICTOS QUE SE DESTRABARON
+  ✅ CLEARSTEM/MEDICOS_FALLARON — llevaba desde el 21-ago INDECIDIBLE por el
+     hueco cruzando la maduración COD. Con data fresca volvió a vender (5
+     ventas tramo, CPA Q53.9). Confirma APR-063: la causa es la banda de
+     edad 25+ (cierre 9.1% vs 29.7% en 25-35), no fatiga ni ángulo muerto.
+     NO se mató el ángulo — hubiera sido un error.
+
+LO QUE SIGUE ABIERTO (sin cambios de fondo, solo confirmado con data nueva)
+  🔴 T01 — 6º día consecutivo en Q0, ningún brazo arrancó.
+  🔴 GTR0 vs GTR7 — saturación del mismo ángulo (Q156 vs Q48 de CPA) sigue
+     sin resolverse, acción #2 del dashboard (Q880/sem).
+  🆕 GTR1 — ventana reciente sangrando (Q212 para 1 venta, CPA Q211.5).
+     Sobre la serie completa el ángulo está sano; revisar método de pago
+     antes de tocar el creativo (APR-049).
+  🆕 VARICOSE — `_DIM_PRODUCTOS.csv` lo marca VIVO, `_PORTAFOLIO.txt` lo
+     tiene como PAUSADO desde el cambio de envase. Ninguna de las dos
+     ventanas cargadas hoy (17-20 ni 21-25 ago) muestra gasto. Pendiente de
+     que el operador confirme cuál etiqueta manda.
+  ⚪ CP1 — quinto tramo consecutivo en cero gasto. Sigue sin confirmarse si
+     fue apagada a propósito.
+
+ESCRITURAS DE ESTA ADENDA
+  ✅ `_FACT_VENTAS.csv` +225 filas · `_FACT_ENTREGA.csv` +115 filas.
+  ✅ `_EVENTOS.csv` +5 filas (data recibida, veredicto CLEARSTEM resuelto,
+     T01, GTR1, VARICOSE).
+  ✅ `_GANANCIAS.txt` — reescrito con la ventana 17-jul→25-ago.
+  ✅ `TINNIDROP/2_DATA_PRODUCTO.txt`, `CLEARSTEM/2_DATA_PRODUCTO.txt`,
+     `NusavaB12/2_DATA_PRODUCTO.txt` — bloque RESULTADOS_TESTEO 26-ago.
+  ✅ `_BITACORA_DATA.txt` — fila de cierre del hueco.
+  ✅ `_DASHBOARD.html` — regenerado tras cada carga. 0 filas sin dimensión.
+═══════════════════════════════════════════════════════════════════════════

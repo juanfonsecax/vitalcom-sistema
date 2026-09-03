@@ -1,0 +1,149 @@
+================================================================
+CONTEXTO DE PRODUCTO — NAD+ MEN'S COMPLEX SELERB
+Generado: 04 de mayo 2026 | FASE 1 completada
+================================================================
+
+================================================================
+ETAPA-0 — PRE-CLASIFICADOR DE CREATIVOS
+================================================================
+| # | Archivo     | Ángulo del Producto                                                      | Formato Creativo                             | Señales (1-10) | Seleccionado |
+|---|-------------|---------------------------------------------------------------------------|----------------------------------------------|----------------|--------------|
+| 1 | SELERB103   | Disfunción eréctil por próstata inflamada + arterias bloqueadas           | Educacional animado villanos/superhéroes      | 9              | ✓            |
+| 2 | selerb158   | Fatiga crónica masculina + pérdida de energía y vitalidad diaria          | Prueba social / testimonio suegra-yerno       | 8              | ✓            |
+| 3 | selerb170   | Próstata agrandada + levantadas nocturnas + estadística médica             | Educacional con gráfico testosterona/edad     | 8              | ✓            |
+| 4 | selerb178   | Deterioro eréctil por déficit de NO + depósitos calcificados (NAD+ mec.)  | Educacional animado molecular                 | 8              | ✓            |
+| 5 | slerb149    | Múltiples síntomas masculinos: tamaño, resistencia, goteo, cansancio      | Educacional tipo lista diagnóstica            | 8              | ✓            |
+| 6 | selerb182   | Déficit nutricional masculino silencioso que causa fallas múltiples        | Educacional diagnóstico nutriente→solución    | 7              | ✓            |
+
+NOTA: SELERB103 y selerb178 originalmente promocionan la marca "Boostiva".
+Los ángulos y mecanismos son válidos para NAD+ Selerb — adaptar nombre en copy.
+
+================================================================
+ETAPA-1 — COSTEO OFICIAL
+================================================================
+Producto: NAD+ Men's Complex Selerb (60 Veggie Capsules · 1,000 mg/servicio)
+Costo proveedor: Q55 → usa fila Q60 (conservador)
+
+P1u: Q199  |  P2u: Q299  |  P3u: Q399  |  CPA Base: Q30.8  |  CPA Break Even: Q60.5
+
+================================================================
+ETAPA-1B — COMPONENTES
+================================================================
+INGREDIENTES CONFIRMADOS (etiqueta):
+● NAD+ liposomal         → energía celular y reparación de ADN
+● Resveratrol            → activa sirtuinas de longevidad; antioxidante
+● CoQ10                  → producción de ATP mitocondrial; salud cardiovascular
+● L-Arginina             → precursor de óxido nítrico → vasodilatación → función eréctil
+● L-Citrulina            → convierte a L-Arginina en riñones; más biodisponible
+● Maca (raíz)            → adaptógeno; libido, fertilidad, vigor, resistencia
+● Cúrcuma                → curcumina antiinflamatoria; próstata y articulaciones
+● Saw Palmetto           → inhibe 5-alfa-reductasa; reduce próstata; mejora flujo urinario
+
+INGREDIENTES ADICIONALES (mencionados en transcripciones):
+● Ashwagandha, Ortiga, Beta-sitosterol, Zinc, Licopeno
+
+CLAIMS VERIFICADOS:
+✔ Cellular Energy → NAD+, CoQ10
+✔ Nitric Oxide Booster → L-Arginina, L-Citrulina
+✔ Prostate Health → Saw Palmetto, Cúrcuma, Licopeno
+
+ÁNGULOS DESCUBIERTOS (sin video asignado — requieren creativo nuevo):
+→ Anti-envejecimiento / longevidad celular (NAD+, Resveratrol, CoQ10)
+→ Estrés crónico / cortisol (Ashwagandha, Maca)
+→ Fertilidad masculina (Maca, Zinc)
+→ Claridad mental / biohacking (NAD+, CoQ10)
+
+================================================================
+ETAPA-FANPAGE
+================================================================
+PÁGINA ASIGNADA: 8 🔥 Virilidad Masculina
+Identidad activa: Dr. Diego Abarca — rendimiento masculino
+Tono: Clínico, educativo primero. Nunca sonar a vendedor.
+Mecanismo antes que promesa. Autoridad médica obligatoria.
+Productos del mismo nicho: Nitric Oxide, Beetroot
+
+================================================================
+ETAPA-2 — 6 FICHAS DE ÁNGULO
+================================================================
+
+ÁNGULO 1 — Disfunción eréctil por obstrucción vascular y próstata inflamada
+Video: SELERB103
+Avatar: Hombre 45-60 años, casado, levanta en la noche al baño, evita intimidad por vergüenza.
+Dolor: Próstata agrandada + depósitos calcificados bloquean flujo sanguíneo.
+Deseo: Responder cuando él quiere, sin fármacos ni receta.
+Promesa: Saw Palmetto reduce próstata, L-Arginina abre vasos, NAD+ destruye depósitos.
+Saturación: Alta
+
+ÁNGULO 2 — Fatiga crónica masculina
+Video: selerb158
+Avatar: Hombre 50-65 años, familia nota que "ya no es el mismo". Sin energía.
+Dolor: Colapso en producción de energía celular por declive de NAD+ desde los 40.
+Deseo: Despertar con energía real sin depender de café ni estimulantes.
+Promesa: NAD+ liposomal + CoQ10 recargan mitocondrias sin estimulantes ni rebotes.
+Saturación: Media
+
+ÁNGULO 3 — Próstata agrandada y noches interrumpidas
+Video: selerb170
+Avatar: Hombre 40-65 años, 2-4 levantadas/noche, chorro débil, teme al urólogo.
+Dolor: Próstata agrandada interrumpe sueño silenciosamente durante años.
+Deseo: Dormir de corrido y que el sistema urinario funcione como antes de los 40.
+Promesa: Saw Palmetto + Cúrcuma + Licopeno reducen inflamación prostática progresivamente.
+Saturación: Media
+
+ÁNGULO 4 — Múltiples síntomas del "hombre viejo" antes de tiempo
+Video: slerb149
+Avatar: Hombre 30-50 años con síntomas simultáneos: erección menos firme, termina antes,
+       goteo urinario, cansancio de tarde.
+Dolor: Déficit combinado que ningún suplemento aislado puede resolver.
+Deseo: Cuerpo como a los 25: firme, aguante en intimidad, energía sostenida.
+Promesa: 7+ ingredientes en 1 cápsula atacan circulación, próstata y energía.
+Saturación: Media-Alta
+
+ÁNGULO 5 — Déficit nutricional masculino silencioso
+Video: selerb182
+Avatar: Hombre 35-55 años, consciente de su salud, probó suplementos individuales sin éxito.
+Dolor: +50% hombres tiene deficiencias nutricionales silenciosas sin diagnóstico.
+Deseo: Solución completa, eficiente, que reemplace la "ensalada de suplementos".
+Promesa: 7 ingredientes críticos en 1,000 mg diarios con sinergia verificada.
+Saturación: Baja
+
+ÁNGULO 6 — Declive de NAD+ celular: el mecanismo real del envejecimiento masculino
+Video: selerb178
+Avatar: Hombre 40-60 años, orientado a datos, biohacking, no se identifica con ads de ED.
+Dolor: NAD+ cae 50% por década desde los 30 — energía, circulación y función sexual.
+Deseo: Retrasar envejecimiento funcional con ciencia real.
+Promesa: NAD+ liposomal + Resveratrol + CoQ10 restauran energía celular desde la raíz.
+Saturación: Baja
+
+================================================================
+ETAPA-4 — PRECIOS Y COPY (resumen para FASE 2)
+================================================================
+Regla 3/3 aplicada:
+CON PRECIO Q199: Ángulos 2, 4, 6
+SIN PRECIO: Ángulos 1, 3, 5
+
+Colores del producto:
+COLOR_PRIMARIO / COLOR_ACENTO: #1565C0 (azul Selerb)
+COLOR_FONDO_OSCURO: #0d2141 (azul marino profundo)
+
+================================================================
+ETAPA-6 — CAMPAÑA DE TESTEO
+================================================================
+Nombre: [TESTEO] NAD+ MEN'S COMPLEX SELERB 05-05-2026
+Objetivo: Mensajes (WhatsApp)
+FanPage: 8 🔥 Virilidad Masculina — Dr. Diego Abarca
+Lanzamiento: 05/05/2026 04:00 AM
+Presupuesto: Q54 por conjunto | Q324 total
+
+C1 | SELERB103  | Ángulo 1 | Sin precio | "Flujo restaurado natural"
+C2 | selerb158  | Ángulo 2 | Q199       | "Energía celular real"
+C3 | selerb170  | Ángulo 3 | Sin precio | "Dormí sin interrupciones"
+C4 | slerb149   | Ángulo 4 | Q199       | "7 ingredientes, 1 cápsula"
+C5 | selerb182  | Ángulo 5 | Sin precio | "Una cápsula, todo cubierto"
+C6 | selerb178  | Ángulo 6 | Q199       | "Recargá tu NAD+ celular"
+
+================================================================
+PARA FASE 2 — recordar cargar este archivo al iniciar sesión
+Permite saltar ETAPA-0, ETAPA-1, ETAPA-1B y ETAPA-2 directamente.
+Solicitar al operador: ángulo ganador + métricas del testeo (CTR, CPA, mensajes, conversiones)
+================================================================

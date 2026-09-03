@@ -1,0 +1,202 @@
+{
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "schema_version": "canonico-1.0",
+  "nombre": "Multiplicador de cantidad",
+  "dispositivo_canonico": "UN NUMERAL DE CANTIDAD DOMINA LA PIEZA. El digito (2X1, 3X2, el numero de unidades) se lee ANTES que el producto y antes que el titular: ocupa un cuarto del alto, va dentro de un escudo, cartucho, llama o card de oro, y el resto de la pieza se ordena alrededor. El argumento no es el beneficio: es cuanto te llevas.",
+  "cuando_elegirlo": "Publico que ya conoce el producto o la categoria (NC3+), BOFU y retargeting. Exige una oferta de volumen real: sin 2x1 ni pack, el numeral no tiene que decir.",
+  "ejes_de_variacion": [
+    "contenedor del numeral: escudo, cartucho ovalado, llama, card dorada, banda",
+    "que acompana: dos retratos del avatar (F044), tres tubos en abanico (F065)",
+    "la variante 'segunda unidad a precio reducido' en banda de ancho completo",
+    "si lleva bloques de cierre apilados (garantia + envio + CTA) o solo el numeral"
+  ],
+  "n_miembros": 8,
+  "ficha_referencia": "F001",
+  "score_referencia": 418,
+  "perfil": {
+    "concepto_key": {
+      "C1_OFERTA": 4,
+      "C3_SINTOMA": 2,
+      "C7_DESEO": 1,
+      "C2_BENEFICIOS": 1
+    },
+    "rol_embudo": {
+      "BOFU": 4,
+      "MOFU": 4
+    },
+    "estetica": {
+      "cartel_publicitario": 8
+    },
+    "formato": {
+      "1:1": 4,
+      "4:5": 2,
+      "3:4": 1,
+      "2:3": 1
+    },
+    "densidad": {
+      "alta": 3,
+      "media": 2,
+      "baja": 2,
+      "muy_alta": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "MULTIPLICADOR",
+    "CONTENEDOR_MULTIPLICADOR",
+    "TITULAR",
+    "PRECIO_OFERTA",
+    "MONEDA",
+    "GARANTIAS",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "CTA",
+      "MONEDA",
+      "PRECIO"
+    ],
+    "recurrentes": [
+      "ATRIBUTOS[4]",
+      "BENEFICIOS[3]",
+      "BENEFICIOS[4]",
+      "CANT",
+      "CANTIDAD",
+      "CLAIM_VELOCIDAD",
+      "COLOR_ACENTO",
+      "ETIQUETA_FORMULA",
+      "FORMULA_ADIOS",
+      "FRECUENCIA",
+      "GARANTIAS[2]",
+      "GARANTIAS[3]",
+      "GARANTIA_ENVIO",
+      "INGREDIENTE_ESTRELLA",
+      "LOGO_TIENDA",
+      "MOMENTO_ACENTO",
+      "MULTIPLICADOR",
+      "OFERTA_LABEL",
+      "PAIS",
+      "PROMESA_L1",
+      "SELLO_SOCIAL",
+      "SINTOMA_ACENTO"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El numeral es el elemento mas grande de la pieza: mas grande que el precio y que el producto",
+    "La cantidad de unidades fotografiadas coincide con el numeral",
+    "El precio unitario derivado va debajo del precio total, dentro del mismo contenedor",
+    "Un solo bloque negro en toda la pieza: la franja de garantias",
+    "Los iconos son line-art de grosor uniforme y de un solo color",
+    "Maximo 3 pesos tipograficos"
+  ],
+  "cuando_usar": [
+    "oferta de multiunidad (2x, 3x) donde el ahorro por unidad es el argumento",
+    "publico que ya conoce el producto o la categoria (nivel de conciencia 4-5)",
+    "retargeting y BOFU: el creativo que cierra, no el que educa",
+    "empaque con color fuerte que aguante ser fotografiado en multiples",
+    "producto PREVENTIVO sin sintoma visible (omega, vitaminas, minerales)",
+    "ingrediente que la persona ya busca por nombre",
+    "oferta de pack multiple donde el multiplicador es el argumento",
+    "cuando existe una cifra de prevalencia real para abrir"
+  ],
+  "cuando_no_usar": [
+    "producto nuevo o desconocido: sin conciencia previa el numeral no significa nada",
+    "cuando solo se vende 1 unidad",
+    "TOFU o publico frio que todavia no reconoce el problema",
+    "dolor agudo o sintoma que se puede mostrar: se desperdicia el gancho",
+    "producto de marca desconocida sin ingrediente reconocible",
+    "cuando solo se vende 1 unidad: el cartucho pierde sentido"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F001",
+      "score": 418,
+      "anunciante": "Camila Recomienda",
+      "concepto_key": "C1_OFERTA",
+      "formato": "3:4",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL NUMERAL DE CANTIDAD GIGANTE"
+    },
+    {
+      "ficha_id": "F010",
+      "score": 113,
+      "anunciante": "Guate compra",
+      "concepto_key": "C1_OFERTA",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MULTIPLICADOR DE OFERTA EN CARTUCHO OVALADO"
+    },
+    {
+      "ficha_id": "F033",
+      "score": 57,
+      "anunciante": "VitalBio",
+      "concepto_key": "C1_OFERTA",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ESCUDO DE OFERTA CON EL NUMERAL DE CANTIDAD ADENTRO"
+    },
+    {
+      "ficha_id": "F044",
+      "score": 52,
+      "anunciante": "Ovejitas Lab",
+      "concepto_key": "C1_OFERTA",
+      "formato": "2:3",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MULTIPLICADOR 2X1 GIGANTE ENTRE DOS RETRATOS DEL MISMO HOMBRE"
+    },
+    {
+      "ficha_id": "F057",
+      "score": 46,
+      "anunciante": "Dr. Felipe Flores",
+      "concepto_key": "C7_DESEO",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MULTIPLICADOR EN LLAMA SOBRE LA FOTO DEL AVATAR, CON LOS TRES BLOQUES DE CIERRE APILADOS EN COLUMNA"
+    },
+    {
+      "ficha_id": "F065",
+      "score": 38,
+      "anunciante": "Andromeda Market",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LOS TRES TUBOS EN ABANICO CON EL MULTIPLICADOR EN CARD DE ORO"
+    },
+    {
+      "ficha_id": "F066",
+      "score": 38,
+      "anunciante": "Andromeda Market",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA MISMA PIEZA DE F065 CON LA CANTIDAD Y LA ZONA CAMBIADAS"
+    },
+    {
+      "ficha_id": "F075",
+      "score": 33,
+      "anunciante": "Doa Oferta",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA OFERTA DE LA SEGUNDA UNIDAD A PRECIO REDUCIDO, EN BANDA DE ANCHO COMPLETO"
+    }
+  ]
+}

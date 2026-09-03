@@ -1,0 +1,201 @@
+{
+  "ficha_id": "F077",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/El_Punto_GT/01_1556666105781627.jpg",
+    "anunciante": "El Punto GT",
+    "ad_archive_id": "1556666105781627",
+    "dias_activo": 8,
+    "replicas": 1,
+    "score": 33,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL BADGE DE FORMULA MULTIPLE CON LA CIFRA GIGANTE Y LOS TIPOS ENUMERADOS. Un bloque en la esquina superior derecha declara cuantas cosas hace la formula — 5 EN 1 — con el numeral al mayor tamano, y debajo enumera los tipos incluidos en numeracion romana. La columna de cuatro beneficios que sigue es la explicacion de ese numero.",
+  "lectura_estrategica": "Vende AMPLITUD: no un beneficio profundo sino varios a la vez, que es como se compra en categorias de suplemento generalista. La cifra del badge es el gancho y la columna de cuatro beneficios es su desglose, uno por sistema del cuerpo, de modo que el numero prometido y los items listados cuadran. El avatar aparece sonriendo con el shaker en la mano y sin mirar a camara, y la nota manuscrita en el margen izquierdo — belleza que se siente, fuerza que se nota — cierra en identidad. La fila de atributos del pie es toda de exclusiones dieteticas.",
+  "fondo": {
+    "tipo": "escena_luminosa_desenfocada_con_velos",
+    "base": "interior claro muy desenfocado con velos de color",
+    "elemento_inferior": "polvo del producto servido sobre la superficie, al pie del envase",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} vino o magenta (titular de acento, badge, cards, iconos) mas blanco (fondo y cards) mas {{PALETA_OSCURA}} (texto) mas los tonos del polvo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "la cursiva se usa en la palabra secundaria del titular y en la nota del margen",
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_producto": {
+      "posicion": "superior, ancho parcial centrado",
+      "lineas": 3,
+      "linea_1": "{{PREFIJO}}",
+      "linea_2": "{{ACTIVO_PRINCIPAL}}",
+      "linea_3": "{{DESCRIPTOR_CURSIVA}}",
+      "estilo_l1": "Bold uppercase {{PALETA_OSCURA}} con tracking amplio",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}, elemento tipografico mas grande",
+      "estilo_l3": "cursiva decorativa en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3 palabras",
+      "regla": "el nombre del activo en el mayor tamano y el descriptor en cursiva: registro de belleza, no de farmacia"
+    },
+    "badge_formula_multiple": {
+      "posicion": "superior_derecha",
+      "contenedor": "card blanca redondeada con borde {{PALETA_ACENTO}}",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{CIFRA}} EN {{BASE}}",
+      "linea_3": "{{TIPOS_ENUMERADOS}}",
+      "linea_4": "{{ALCANCE}}",
+      "estilo_l2": "Black/900 en {{PALETA_ACENTO}} con el numeral al mayor tamano",
+      "estilo_l3": "Regular chico, tipos en numeracion romana",
+      "restriccion_l4": "4-5 palabras",
+      "regla_critica": "la cifra del badge es el gancho y la columna de beneficios es su desglose: el numero prometido y los items listados tienen que cuadrar"
+    },
+    "bajada_soporte": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_AMPLITUD}}",
+      "estilo": "Regular {{PALETA_OSCURA}} con la cifra y las ultimas palabras en Bold {{PALETA_ACENTO}}",
+      "restriccion_palabras": "7-9 palabras"
+    },
+    "avatar_con_producto": {
+      "posicion": "izquierda, ocupa el alto central",
+      "contenido": "{{FOTO_AVATAR_CON_PREPARACION}}",
+      "escala": "35% del frame",
+      "tratamiento": "persona del avatar sonriendo con el vaso mezclador o la preparacion en la mano, mirando hacia el producto y no a camara",
+      "regla": "muestra el producto YA PREPARADO, no el envase: en polvos la duda es como queda"
+    },
+    "nota_manuscrita": {
+      "posicion": "izquierda_media, sobre la foto",
+      "texto": "{{NOTA_IDENTIDAD}}",
+      "estilo": "cursiva decorativa {{PALETA_OSCURA}} de 2-3 lineas con un corazon al final",
+      "restriccion_palabras": "6-8 palabras",
+      "formato_obligatorio": "dos sustantivos en paralelo: X que se siente, Y que se nota"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo con borde mas TITULO Bold uppercase mas subtitulo Regular de 2-3 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "6-10 palabras",
+      "regla": "un item por SISTEMA del cuerpo: es el desglose de la cifra del badge"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "bolsa o envase de pie de frente con el polvo servido al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_ACENTO}} solida con esquina recortada",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 blanco"
+    },
+    "fila_exclusiones": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art en circulo con borde mas texto Regular muy chico de 2 lineas",
+      "items": "{{EXCLUSIONES[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "las exclusiones dieteticas van juntas y separadas de los beneficios"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[3]}} mas {{APTITUD}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_item_4": "el ultimo declara aptitud para un regimen alimentario especifico"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_producto",
+    "badge_formula_multiple",
+    "producto_hero",
+    "bajada_soporte",
+    "columna_beneficios",
+    "card_precio",
+    "avatar_con_producto",
+    "nota_manuscrita",
+    "fila_exclusiones",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "La cifra del badge y la cantidad de beneficios listados tienen que cuadrar",
+    "Un beneficio por sistema del cuerpo",
+    "El avatar muestra el producto ya preparado, no el envase",
+    "La persona mira el producto, no a camara",
+    "La nota manuscrita cierra en identidad, con dos sustantivos en paralelo",
+    "Las exclusiones dieteticas van juntas y separadas de los beneficios",
+    "La cursiva se usa solo en el descriptor y en la nota"
+  ],
+  "variables_requeridas": [
+    "PREFIJO",
+    "ACTIVO_PRINCIPAL",
+    "DESCRIPTOR_CURSIVA",
+    "ETIQUETA_FORMULA",
+    "CIFRA",
+    "BASE",
+    "TIPOS_ENUMERADOS",
+    "ALCANCE",
+    "PROMESA_AMPLITUD",
+    "FOTO_AVATAR_CON_PREPARACION",
+    "NOTA_IDENTIDAD",
+    "BENEFICIOS[4]",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "MONEDA",
+    "EXCLUSIONES[3]",
+    "GARANTIAS[3]",
+    "APTITUD"
+  ],
+  "cuando_usar": [
+    "suplementos generalistas que cubren varios sistemas a la vez",
+    "cuando la formula tiene una cifra distintiva que se puede enumerar",
+    "productos en polvo donde conviene mostrar la preparacion",
+    "publico femenino de belleza y bienestar"
+  ],
+  "cuando_no_usar": [
+    "productos de un solo beneficio profundo",
+    "cuando la cifra del badge no se puede desglosar en items",
+    "categorias de dolor agudo"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge FORMULA 5 EN 1 · TIPOS I, II, III, V Y X · PARA TODO TU CUERPO.",
+    "Bajada SOPORTE 5 EN 1 PARA TU BELLEZA Y BIENESTAR INTEGRAL.",
+    "Beneficios: PIEL, CABELLO Y UNAS (mas elasticidad, firmeza y brillo natural), ARTICULACIONES Y HUESOS (apoya el cartilago, tendones y ligamentos. Mas flexibilidad y movilidad), BIENESTAR INTESTINAL (favorece la salud digestiva y el equilibrio intestinal), RECUPERACION MUSCULAR (apoya la estructura muscular y tu rendimiento).",
+    "Exclusiones: SIN GLUTEN, SIN LACTEOS, SIN AZUCARES ANADIDOS.",
+    "Card PRECIO ESPECIAL Q199.",
+    "Barra: ENVIO GRATIS A TODO EL PAIS, PAGO CONTRA ENTREGA (PAGAS AL RECIBIR), COMPRA SEGURA Y GARANTIZADA, APTO PARA KETO Y PALEO.",
+    "Nota manuscrita BELLEZA QUE SE SIENTE, FUERZA QUE SE NOTA.",
+    "Claims impresos en el empaque: type I, II, III, V, X, unflavored, with biotin, vitamin C, hyaluronic acid, GMO free, grass fed, pasture raised, 2 lb (907 g) Dietary Supplement."
+  ],
+  "canonico_id": "CN15_INGREDIENTES_ACTIVO",
+  "blueprint_equivalente": null
+}

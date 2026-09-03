@@ -1,0 +1,204 @@
+{
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "schema_version": "canonico-1.0",
+  "nombre": "Avatar del deseo con el producto",
+  "dispositivo_canonico": "EL CUERPO O LA VIDA QUE SE QUIERE, FOTOGRAFIADO COMPLETO, y el producto sostenido dentro de esa escena. No muestra el problema en ningun lado: muestra el estado de llegada. El aparato comercial (oferta, sellos, precio) se apila en el flanco opuesto o baja a una banda, sin invadir la figura.",
+  "cuando_elegirlo": "Categorias donde el motor es aspiracional y no clinico — figura, piel, energia, vitalidad. Si el avatar de la foto no se parece a la compradora guatemalteca, la pieza expulsa en vez de atraer.",
+  "ejes_de_variacion": [
+    "encuadre: de espaldas, de frente, silueta en contraluz, en su actividad",
+    "el eje 1:1 -> 4:5 mueve la oferta de card lateral a banda central bajo el titular",
+    "fenotipo de la modelo (F094 vs F095) e intensidad del verbo, moldea vs realza (F105 vs F106)",
+    "puede llevar o retirar el panel de prueba sin cambiar la plantilla"
+  ],
+  "n_miembros": 7,
+  "ficha_referencia": "F016",
+  "score_referencia": 107,
+  "perfil": {
+    "concepto_key": {
+      "C7_DESEO": 7
+    },
+    "rol_embudo": {
+      "MOFU": 7
+    },
+    "estetica": {
+      "cartel_publicitario": 7
+    },
+    "formato": {
+      "1:1": 5,
+      "4:5": 2
+    },
+    "densidad": {
+      "alta": 4,
+      "muy_alta": 2,
+      "media": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "FOTO_AVATAR",
+    "AVATAR_DESCRIPCION",
+    "ENCUADRE",
+    "TITULAR_DESEO",
+    "BENEFICIOS",
+    "PRECIO_OFERTA",
+    "MONEDA",
+    "POSICION_APARATO_COMERCIAL",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "BENEFICIOS[3]",
+      "CALIFICATIVO",
+      "CONDICION_PAGO",
+      "CTA",
+      "ETIQUETA_SOCIAL",
+      "FRASE_MANUSCRITA",
+      "METODO",
+      "N_CLIENTES",
+      "PAIS",
+      "SUSTANTIVO_CLIENTES"
+    ],
+    "recurrentes": [
+      "BENEFICIOS[4]",
+      "CANT_1",
+      "CANT_2",
+      "CANT_3",
+      "CONFIANZA[4]",
+      "DESEO_L1_ACENTO",
+      "DESEO_L1_RESTO",
+      "DESEO_L2",
+      "ENVIO",
+      "GARANTIAS[2]",
+      "IMAGEN_1",
+      "MODELO",
+      "MONEDA",
+      "OBJECION_1",
+      "OBJECION_2",
+      "OBJETO_DEL_DESEO",
+      "OFERTA_LABEL",
+      "OFERTA_MECANICA",
+      "PLAZO_ENTREGA",
+      "PRECIO_1",
+      "PRECIO_2",
+      "PRECIO_3",
+      "PRODUCTO",
+      "PROMESA_TRIPLE",
+      "SELLOS[4]",
+      "VERBO_APOYO",
+      "ZONA_1",
+      "ZONA_2",
+      "ZONA_3"
+    ]
+  },
+  "reglas_duras_compartidas": [
+    "Las dos variantes se lanzan al mismo tiempo y con el mismo presupuesto"
+  ],
+  "reglas_duras_referencia": [
+    "El filtro de audiencia va antes que el nombre del producto",
+    "La persona mira el producto, no a camara",
+    "El avatar es el cuerpo y la vida que el comprador quiere, no el que tiene",
+    "El producto aparece dos veces: en la mano y de pie al centro",
+    "Los diferenciadores son de composicion (que lleva, que no lleva), no de resultado",
+    "La pieza cierra en identidad, no en precio",
+    "Sin foto de sintoma ni de dolor: este layout no los admite"
+  ],
+  "cuando_usar": [
+    "categoria que la persona ya conoce y busca por nombre (nivel 4)",
+    "producto ligado a una actividad o identidad (entrenar, correr, maternidad, trabajo fisico)",
+    "cuando el diferenciador es la formulacion para un segmento (for women, sin azucar, vegano)",
+    "cuando existe foto de una persona real del avatar deseado usando el producto",
+    "beneficio invisible que solo se puede mostrar como postura (energia, animo, enfoque, libido)",
+    "ingrediente con origen geografico reconocible y exotico",
+    "publico masculino o mixto 30-55",
+    "cuando el ingrediente crudo es visualmente distintivo"
+  ],
+  "cuando_no_usar": [
+    "publico frio que no conoce la categoria: el titular con el nombre del producto no le dice nada",
+    "problemas de salud con dolor: la aspiracion no compite con el alivio",
+    "cuando no hay avatar fotografiable haciendo la actividad",
+    "sintoma visible: se desperdicia la evidencia que si se puede mostrar",
+    "ingrediente sin origen que contar",
+    "cuando no hay foto de paisaje ni silueta disponible"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F016",
+      "score": 107,
+      "anunciante": "Aranza Glow",
+      "concepto_key": "C7_DESEO",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL AVATAR DESEADO SOSTENIENDO EL PRODUCTO, EN SU ACTIVIDAD"
+    },
+    {
+      "ficha_id": "F020",
+      "score": 90,
+      "anunciante": "Aranza Glow",
+      "concepto_key": "C7_DESEO",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA SILUETA EN CONTRALUZ CON LOS BRAZOS ABIERTOS, A CONTRAPUNTO DEL PRODUCTO"
+    },
+    {
+      "ficha_id": "F034",
+      "score": 57,
+      "anunciante": "Aurora GT",
+      "concepto_key": "C7_DESEO",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL CUERPO DESEADO DE ESPALDAS, CON EL PRODUCTO SOSTENIDO A LA ALTURA DEL HOMBRO"
+    },
+    {
+      "ficha_id": "F094",
+      "score": 32,
+      "anunciante": "Aurora GT",
+      "concepto_key": "C7_DESEO",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL CUERPO DEL DESEO OCUPA LA MITAD IZQUIERDA Y TODO EL APARATO COMERCIAL SE APILA EN LA DERECHA"
+    },
+    {
+      "ficha_id": "F095",
+      "score": 32,
+      "anunciante": "Aurora GT",
+      "concepto_key": "C7_DESEO",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA MISMA PLANTILLA CON OTRO FENOTIPO Y SIN EL PANEL DE PRUEBA"
+    },
+    {
+      "ficha_id": "F105",
+      "score": 29,
+      "anunciante": "Aurora GT",
+      "concepto_key": "C7_DESEO",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA OFERTA SUBE A BANDA CENTRAL, JUSTO DEBAJO DEL TITULAR"
+    },
+    {
+      "ficha_id": "F106",
+      "score": 29,
+      "anunciante": "Aurora GT",
+      "concepto_key": "C7_DESEO",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA MISMA PLANTILLA VERTICAL CON EL COLOR MOVIDO DE MITAD Y EL VERBO SUAVIZADO"
+    }
+  ]
+}

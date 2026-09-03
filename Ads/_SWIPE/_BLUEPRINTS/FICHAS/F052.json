@@ -1,0 +1,211 @@
+{
+  "ficha_id": "F052",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Ovejitas_Lab/02_27775034692150842.jpg",
+    "anunciante": "Ovejitas Lab",
+    "ad_archive_id": "27775034692150842",
+    "dias_activo": 27,
+    "replicas": 1,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "14%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL MISMO TITULAR DE NEGACION QUE F051, PERO CON LAS DOS COLUMNAS DE ESTADO A LADO Y LADO DEL PRODUCTO Y EL 2X1 AL CENTRO. Los estados de antes van en rojo a la izquierda y los de despues en blanco a la derecha, cada uno con su lista de items, y el multiplicador se planta en el eje central entre las dos columnas.",
+  "lectura_estrategica": "Version de cierre del mismo mensaje: donde F051 respira y argumenta, F052 comprime y vende. El titular emocional se conserva intacto pero pierde el tamano relativo, porque el protagonista pasa a ser el 2X1. La estructura de dos columnas espejadas alrededor del producto hace que la comparacion se lea de un vistazo, y el bloque derecho de cuatro checks en card cierra las objeciones de uso (para todo tipo de cabello, uso diario) que en la version clara no aparecian. Mismo avatar, mismos sellos, distinta funcion en el embudo.",
+  "fondo": {
+    "tipo": "degradado_saturado_con_rayos",
+    "base": "{{COLOR_ALERTA}} rojo profundo a negro con rayos de luz irradiando desde el centro",
+    "textura": "ninguna",
+    "funcion": "el rojo saturado convierte una pieza de argumento en una pieza de urgencia sin cambiar el mensaje"
+  },
+  "paleta": {
+    "derivacion": "del color de urgencia, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "{{COLOR_ALERTA}} rojo (fondo y columna ANTES) mas blanco (titular, columna DESPUES, cards) mas negro (bloque de la marca) mas el ambar del envase"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_negacion": {
+      "posicion": "superior_centro",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{NEGACION_L1}}",
+      "linea_2": "{{NEGACION_L2}}",
+      "estilo": "Black/900 uppercase blanco, terminado en punto",
+      "restriccion_palabras_total": "4-5 palabras"
+    },
+    "bajada_emocional": {
+      "posicion": "bajo el titular",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "texto": "{{CONSECUENCIA_EMOCIONAL}}",
+      "estilo": "Bold uppercase blanco con 2-3 palabras en {{PALETA_ACENTO}}, al 40% del titular",
+      "restriccion_palabras": "7-9 palabras"
+    },
+    "retrato_antes": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{FOTO_PERSONA_ANTES}}",
+      "escala": "16% del frame",
+      "tratamiento": "el avatar con gesto de preocupacion, mano en la zona"
+    },
+    "retrato_despues": {
+      "posicion": "superior_derecha",
+      "contenido": "{{FOTO_PERSONA_DESPUES}}",
+      "escala": "16% del frame",
+      "tratamiento": "el MISMO avatar sonriendo, mirando a camara"
+    },
+    "sello_promo": {
+      "posicion": "centro_superior, entre los dos retratos",
+      "contenedor": "sello en forma de estrella o explosion blanca con borde",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "linea_2": "{{MULTIPLICADOR}}",
+      "linea_3": "{{URGENCIA}}",
+      "estilo_l2": "Black/900 {{COLOR_ALERTA}}, elemento mas grande de la pieza",
+      "escala": "26% del ancho",
+      "regla": "el multiplicador se planta en el eje central: es lo que separa las dos columnas de estado"
+    },
+    "columna_antes": {
+      "posicion": "izquierda_media",
+      "header": "ANTES:",
+      "estilo_header": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "resumen": "{{ESTADOS_ANTES_RESUMEN}}",
+      "estilo_resumen": "Bold uppercase blanco de 2 lineas",
+      "restriccion_resumen": "3-5 palabras",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde mas TITULO Bold uppercase en {{PALETA_ACENTO}} mas subtitulo Regular blanco",
+      "items": "{{PROBLEMAS[3]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras"
+    },
+    "columna_despues": {
+      "posicion": "derecha_media",
+      "header": "DESPUES:",
+      "estilo_header": "Black/900 uppercase blanco",
+      "resumen": "{{ESTADOS_DESPUES_RESUMEN}}",
+      "estilo_resumen": "Bold uppercase blanco de 2 lineas",
+      "restriccion_resumen": "3-5 palabras",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde mas TITULO Bold uppercase blanco mas subtitulo Regular",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla": "espejo exacto de la columna izquierda: mismo numero de items y misma estructura"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "32% del frame",
+      "composicion": "envase de pie de frente, entre las dos columnas",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto ocupa el eje entre los dos estados"
+    },
+    "card_checks": {
+      "posicion": "derecha_baja",
+      "contenedor": "card {{COLOR_ALERTA}} mas oscura con borde fino",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas mas check blanco en circulo a la derecha",
+      "items": "{{OBJECIONES_RESUELTAS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "cierra objeciones de USO (para que tipo, con que frecuencia, que sensacion), no de resultado"
+    },
+    "bloque_marca": {
+      "posicion": "izquierda_baja",
+      "logo": "{{LOGO_MARCA}}",
+      "tagline": "{{TAGLINE_IDENTIDAD}}",
+      "cierre": "{{LLAMADO_HABITO}}",
+      "estilo_cierre": "Bold uppercase blanco con la segunda linea en {{PALETA_ACENTO}}"
+    },
+    "barra_sellos": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores",
+      "formato_item": "icono line-art mas texto Regular muy chico de 2 lineas",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_negacion",
+    "sello_promo",
+    "retrato_antes",
+    "retrato_despues",
+    "columna_antes",
+    "columna_despues",
+    "producto_hero",
+    "card_checks",
+    "bloque_marca",
+    "barra_sellos"
+  ],
+  "reglas_duras": [
+    "El multiplicador se planta en el eje central y es el elemento mas grande",
+    "Las dos columnas son espejo: mismo numero de items y misma estructura",
+    "La columna ANTES lleva sus titulos en el color de alerta y la DESPUES en blanco",
+    "El producto ocupa el eje entre los dos estados",
+    "La card de checks cierra objeciones de uso, no de resultado",
+    "El titular emocional se conserva pero cede el tamano al multiplicador"
+  ],
+  "variables_requeridas": [
+    "NEGACION_L1",
+    "NEGACION_L2",
+    "CONSECUENCIA_EMOCIONAL",
+    "FOTO_PERSONA_ANTES",
+    "FOTO_PERSONA_DESPUES",
+    "OFERTA_LABEL",
+    "MULTIPLICADOR",
+    "URGENCIA",
+    "ESTADOS_ANTES_RESUMEN",
+    "ESTADOS_DESPUES_RESUMEN",
+    "PROBLEMAS[3]",
+    "BENEFICIOS[3]",
+    "OBJECIONES_RESUELTAS[4]",
+    "LOGO_MARCA",
+    "TAGLINE_IDENTIDAD",
+    "LLAMADO_HABITO",
+    "SELLOS[4]",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "cierre de un mensaje que ya corrio en version clara y argumentativa",
+    "cuando la oferta de multiplicador tiene que ser el protagonista",
+    "BOFU y retargeting sobre publico que ya vio la version calmada",
+    "cuando hay que meter estados, beneficios y objeciones de uso en la misma pieza"
+  ],
+  "cuando_no_usar": [
+    "publico frio: la saturacion sin contexto previo no argumenta",
+    "cuando no hay una version clara del mismo mensaje corriendo antes",
+    "marcas que cuidan un registro sobrio"
+  ],
+  "sellos_y_claims_observados": [
+    "Barra de sellos: INGREDIENTES NATURALES, SIN PARABENOS NI SULFATOS, DERMATOLOGICAMENTE PROBADO, CALIDAD PREMIUM PARA HOMBRES.",
+    "Sello SUPER PROMO 2X1 con APROVECHA AHORA.",
+    "Resumenes de columna: INSEGURIDAD, CAIDA, MENOS FUERZA contra CONFIANZA, FUERZA Y RESULTADOS VISIBLES.",
+    "Problemas: CAIDA (cabello debil desde la raiz), EXCESO DE GRASA (limpieza profunda y equilibrio), FALTA DE VOLUMEN (cabello mas denso y con cuerpo).",
+    "Beneficios: FORTALECE Y NUTRE LA RAIZ, LIMPIEZA PROFUNDA Y EQUILIBRIO DEL CUERO CABELLUDO, CABELLO MAS FUERTE (mas denso, con volumen y vida).",
+    "Card de checks: FORMULA CON INGREDIENTES NATURALES, PARA TODO TIPO DE CABELLO, USO DIARIO, SENSACION DE FRESCURA Y LIMPIEZA.",
+    "Tagline PORQUE CUIDARTE TAMBIEN ES COSA DE HOMBRES y cierre EMPIEZA POR TU RUTINA DIARIA."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

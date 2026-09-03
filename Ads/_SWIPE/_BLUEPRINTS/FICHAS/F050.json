@@ -1,0 +1,185 @@
+{
+  "ficha_id": "F050",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/FrezNova/07_1975331536548881.jpg",
+    "anunciante": "FrezNova",
+    "ad_archive_id": "1975331536548881",
+    "dias_activo": 27,
+    "replicas": 1,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES DONDE EL LADO DESPUES ES EL PRODUCTO PUESTO. La mitad izquierda muestra la pierna descubierta con las varices y un halo rojo de molestia; la derecha, la misma pierna con la media puesta y las espirales ascendentes del mecanismo. No compara dos momentos en el tiempo: compara CON y SIN el producto encima, que es una comparacion que se puede hacer en el mismo minuto.",
+  "lectura_estrategica": "El antes/despues mas honesto que permite un producto vestible: no promete que la pierna cambie, muestra como se ve y se siente con la prenda puesta. Por eso funciona sin plazo ni evidencia longitudinal. Cada lado lleva su propia columna de tres items — a la izquierda los estados negativos con icono gris, a la derecha los beneficios con icono de color — de modo que la comparacion se lee dos veces, en la foto y en las listas. La flecha circular en la costura declara la direccion, y el pie repite la categoria y ofrece las variantes.",
+  "fondo": {
+    "tipo": "partido_por_la_mitad",
+    "mitad_izquierda": "fondo gris frio o desaturado",
+    "mitad_derecha": "fondo claro y calido",
+    "regla": "la temperatura del fondo cambia entre los dos lados: es lo que hace que el cambio se lea antes que las listas"
+  },
+  "paleta": {
+    "derivacion": "del empaque o de la prenda",
+    "cantidad_colores": 5,
+    "estructura": "{{PALETA_ACENTO}} rosa (labels, espirales, iconos del lado derecho) mas gris (iconos del lado izquierdo) mas azul marino (titular y banda del pie) mas rojo del halo de molestia mas blanco"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "azul marino"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{VERBO_TRANSFORMACION}}",
+      "linea_2": "{{ZONA_OBJETIVO_ACENTO}}",
+      "estilo_l1": "Black/900 azul marino",
+      "estilo_l2": "Black/900 en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3 palabras",
+      "regla_acento": "el color cae sobre la zona del cuerpo"
+    },
+    "banda_inmediatez": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda azul marino solida",
+      "texto": "{{PROMESA_INMEDIATEZ}}",
+      "estilo": "Regular blanco",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "la promesa es de sensacion desde el primer uso, no de cambio en la zona"
+    },
+    "lado_antes": {
+      "posicion": "mitad izquierda",
+      "contenido": "{{FOTO_ZONA_SIN_PRODUCTO}}",
+      "escala": "40% del frame",
+      "label": "ANTES",
+      "formato_label": "pildora blanca con borde, en el borde superior",
+      "tratamiento": "la zona descubierta, con el signo visible y un halo rojo difuso sobre el punto de molestia",
+      "encabezado": "{{ESTADO_SIN}} en Bold sobre la foto",
+      "restriccion_encabezado": "3-5 palabras"
+    },
+    "lado_despues": {
+      "posicion": "mitad derecha",
+      "contenido": "{{FOTO_ZONA_CON_PRODUCTO}}",
+      "escala": "40% del frame",
+      "label": "DESPUES",
+      "formato_label": "pildora {{PALETA_ACENTO}} solida, en el borde superior",
+      "tratamiento": "la MISMA zona con el producto puesto, con espirales ascendentes translucidas del mecanismo",
+      "encabezado": "{{ESTADO_CON}} en Bold sobre la foto",
+      "restriccion_encabezado": "4-6 palabras",
+      "regla_critica": "el lado DESPUES es el producto PUESTO, no la zona curada: compara con y sin, no dos momentos en el tiempo"
+    },
+    "flecha_costura": {
+      "posicion": "centro, en la union de las dos mitades",
+      "forma": "flecha dentro de circulo blanco con sombra",
+      "funcion": "declara la direccion de lectura y marca la costura"
+    },
+    "columna_estados": {
+      "posicion": "izquierda_baja, bajo el lado ANTES",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art GRIS en circulo con borde gris mas texto Regular de 2 lineas",
+      "items": "{{ESTADOS_SIN[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_color": "los iconos de este lado van en gris, sin color de marca"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_baja, bajo el lado DESPUES",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo con borde de color mas texto Regular de 2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_color": "los iconos de este lado van en el color de marca: el contraste con la columna gris repite la comparacion en las listas"
+    },
+    "banda_categoria": {
+      "posicion": "inferior_izquierda",
+      "linea_1": "{{CATEGORIA_L1}}",
+      "linea_2": "{{CATEGORIA_L2_ACENTO}}",
+      "estilo_l1": "Black/900 blanco",
+      "estilo_l2": "Black/900 en {{PALETA_ACENTO}}",
+      "cta": "{{CTA}} con logo circular verde de WhatsApp debajo",
+      "restriccion_cta": "4-5 palabras"
+    },
+    "selector_variantes": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card blanca redondeada",
+      "header": "{{HEADER_VARIANTES}}",
+      "cantidad_items": 2,
+      "orientacion": "fila de circulos de color",
+      "items": "{{VARIANTES[2]}}"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "lado_antes",
+    "lado_despues",
+    "flecha_costura",
+    "banda_inmediatez",
+    "columna_estados",
+    "columna_beneficios",
+    "banda_categoria",
+    "selector_variantes"
+  ],
+  "reglas_duras": [
+    "El lado DESPUES es el producto puesto, no la zona curada",
+    "La temperatura del fondo cambia entre las dos mitades",
+    "Los iconos del lado SIN van en gris y los del lado CON en el color de marca",
+    "Cada lado lleva su propia columna: la comparacion se lee dos veces, en la foto y en las listas",
+    "La flecha circular marca la costura entre las dos mitades",
+    "La promesa es de sensacion desde el primer uso, no de cambio en la zona"
+  ],
+  "variables_requeridas": [
+    "VERBO_TRANSFORMACION",
+    "ZONA_OBJETIVO_ACENTO",
+    "PROMESA_INMEDIATEZ",
+    "FOTO_ZONA_SIN_PRODUCTO",
+    "FOTO_ZONA_CON_PRODUCTO",
+    "ESTADO_SIN",
+    "ESTADO_CON",
+    "ESTADOS_SIN[3]",
+    "BENEFICIOS[4]",
+    "CATEGORIA_L1",
+    "CATEGORIA_L2_ACENTO",
+    "CTA",
+    "HEADER_VARIANTES",
+    "VARIANTES[2]"
+  ],
+  "cuando_usar": [
+    "productos VESTIBLES donde el efecto se ve con la prenda puesta",
+    "cuando no hay material longitudinal de antes y despues pero si del producto en uso",
+    "cuando la zona tiene un signo visible que la prenda cubre o mejora a la vista",
+    "cuando el producto viene en variantes"
+  ],
+  "cuando_no_usar": [
+    "productos que se ingieren",
+    "cuando la prenda no produce ningun cambio visible al ponerse",
+    "publico frio que no reconoce el signo"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular TRANSFORMA TUS PIERNAS con banda SIENTE EL ALIVIO DESDE EL PRIMER USO.",
+    "Encabezados de lado: PIERNAS CANSADAS E HINCHADAS contra PIERNAS LIGERAS, DESCANSADAS Y ACTIVAS.",
+    "Columna del lado SIN: PESADEZ Y CANSANCIO, HINCHAZON Y MOLESTIAS, VARICES Y MALA CIRCULACION.",
+    "Columna del lado CON: MEJORA LA CIRCULACION, REDUCE LA HINCHAZON, ALIVIA MOLESTIAS POR VARICES, COMODAS LIGERAS Y TRANSPIRABLES.",
+    "Banda de categoria MEDIAS DE COMPRESION PANTORRILLERAS con CTA PIDE LAS TUYAS POR WHATSAPP.",
+    "Selector 2 COLORES DISPONIBLES."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

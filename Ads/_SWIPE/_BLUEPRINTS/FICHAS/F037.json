@@ -1,0 +1,219 @@
+{
+  "ficha_id": "F037",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Bella_Glow_GT/01_926138603848023.jpg",
+    "anunciante": "Bella Glow GT",
+    "ad_archive_id": "926138603848023",
+    "dias_activo": 28,
+    "replicas": 1,
+    "score": 53,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL COMPARADOR DE DOS OPCIONES AL PIE, CON EL PRODUCTO FOTOGRAFIADO EN CADA UNA. No es una escalera de precios en texto: son dos cards, una con un envase y otra con dos, cada una con su precio y su cantidad de comprimidos. La decision se toma mirando cuanto producto hay en cada foto, no leyendo cuanto cuesta.",
+  "lectura_estrategica": "Vende continuidad a un publico mayor que ya sabe que va a necesitar el producto por mucho tiempo. El titular es de vida (moverse hoy, disfrutar siempre) y no de dolor, y la pareja corriendo al aire libre proyecta el despues sin mostrar el antes. El bloque de TRIPLE ACCION en badge circular resume la formula en tres palabras, y la columna de tres beneficios pone el INGREDIENTE debajo de cada uno: en publico 40+ la composicion es lo que convence. El comparador visual del pie es la palanca de ticket.",
+  "fondo": {
+    "tipo": "foto_exterior_luminosa_desenfocada_arriba_y_plano_abajo",
+    "base_superior": "escena de exterior con la pareja en actividad, desenfocada",
+    "base_inferior": "color plano claro derivado de {{PALETA_CLARO}} para el bloque de oferta",
+    "regla": "la pieza se parte en dos zonas: relato arriba, transaccion abajo"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} dorado o ambar (badges, titulos de beneficio, banda de ahorro) mas azul (subtitulos y iconos) mas blanco (fondo de cards) mas los verdes del exterior"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_derecha",
+      "alineacion": "derecha",
+      "lineas": 2,
+      "linea_1": "{{ACCION_HOY}}",
+      "linea_2": "{{CONSECUENCIA_SIEMPRE}}",
+      "estilo": "Black/900 uppercase negro",
+      "restriccion_palabras_total": "4 palabras",
+      "formato_obligatorio": "dos verbos en contraste temporal: hoy contra siempre",
+      "regla": "titular de VIDA, no de dolor: nombra lo que se conserva, no lo que duele"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_TRIPLE}}",
+      "estilo": "Regular negro de 3 lineas",
+      "restriccion_palabras": "14-18 palabras",
+      "regla": "tres verbos de accion encadenados (apoya, protege, mantiene), uno por sistema"
+    },
+    "avatar_en_actividad": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{FOTO_PAREJA_EN_ACTIVIDAD}}",
+      "escala": "28% del frame",
+      "tratamiento": "pareja del rango de edad objetivo caminando o corriendo al aire libre, sonriendo, en ropa deportiva comun",
+      "regla": "proyecta el DESPUES sin mostrar el antes: no hay foto de dolor en esta pieza"
+    },
+    "badge_accion": {
+      "posicion": "derecha_media",
+      "contenedor": "circulo con borde {{PALETA_ACENTO}} punteado",
+      "linea_1": "{{CLAIM_MULTIPLE}}",
+      "linea_2": "{{SISTEMAS}}",
+      "estilo_l1": "Black/900 uppercase negro",
+      "estilo_l2": "Bold muy chico",
+      "restriccion_l1": "2 palabras",
+      "restriccion_l2": "3 sistemas separados por punto",
+      "funcion": "resume la formula en dos palabras y nombra los tres sistemas que ataca"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "DOS envases identicos de frente sobre superficie de madera, con comprimidos sueltos al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas VERBO en Black/900 {{PALETA_ACENTO}} mas complemento en Bold negro mas INGREDIENTE en Regular chico debajo",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_verbo": "1 palabra",
+      "restriccion_complemento": "2-3 palabras",
+      "restriccion_ingrediente": "4-7 palabras",
+      "regla_critica": "cada beneficio lleva DEBAJO el ingrediente que lo produce: en publico 40+ la composicion es lo que convence, no la promesa"
+    },
+    "fila_sellos": {
+      "posicion": "centro_inferior",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores",
+      "formato_item": "icono line-art mas texto Bold uppercase muy chico de 2 lineas",
+      "items": "{{SELLOS[3]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "badge_edad": {
+      "posicion": "derecha, junto a la fila de sellos",
+      "contenedor": "pildora o bloque con la cifra grande",
+      "linea_1": "{{EDAD_OBJETIVO}}+",
+      "linea_2": "{{FRASE_SEGMENTO}}",
+      "estilo_l1": "Black/900 {{PALETA_ACENTO}}",
+      "estilo_l2": "Regular muy chico de 2 lineas",
+      "restriccion_l2": "8-12 palabras",
+      "funcion": "declara la edad objetivo en numero: filtra y a la vez valida al que si tiene esa edad"
+    },
+    "comparador_opciones": {
+      "posicion": "inferior, ancho completo",
+      "header": "{{HEADER_OPCIONES}}",
+      "estilo_header": "Black/900 uppercase negro",
+      "cantidad_opciones": 2,
+      "orientacion": "dos cards lado a lado",
+      "formato_opcion": "FOTO del producto en la cantidad correspondiente, cantidad en Bold arriba, precio Black/900 grande, y la cantidad total de unidades del contenido en Regular debajo",
+      "opcion_1": {
+        "foto": "un envase",
+        "cantidad": "{{CANT_1}}",
+        "precio": "{{MONEDA}}{{PRECIO_1}}",
+        "contenido": "{{CONTENIDO_1}}"
+      },
+      "opcion_2": {
+        "foto": "dos envases",
+        "cantidad": "{{CANT_2}}",
+        "precio": "{{MONEDA}}{{PRECIO_2}}",
+        "contenido": "{{CONTENIDO_2}}",
+        "etiqueta": "{{OFERTA_LABEL}}",
+        "banda_ahorro": "{{AHORRO_LABEL}} en pildora {{COLOR_ALERTA}} en la esquina"
+      },
+      "regla_critica": "cada opcion lleva la FOTO del producto en su cantidad: la decision se toma mirando cuanto producto hay, no leyendo cuanto cuesta",
+      "regla_contenido": "declarar la cantidad total de unidades del contenido (comprimidos, capsulas) hace visible la duracion del tratamiento"
+    },
+    "barra_cierre": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda clara",
+      "cantidad_items": 3,
+      "formato_item": "icono mas texto Bold uppercase muy chico",
+      "items": "{{GARANTIAS[3]}}",
+      "cierre_derecho": "{{CIERRE_EMOCIONAL}} en Bold uppercase",
+      "restriccion_cierre": "5-7 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "avatar_en_actividad",
+    "producto_hero",
+    "subtitular",
+    "columna_beneficios",
+    "comparador_opciones",
+    "badge_accion",
+    "badge_edad",
+    "barra_cierre"
+  ],
+  "reglas_duras": [
+    "El titular contrasta hoy contra siempre, con dos verbos",
+    "No hay foto de dolor: solo se proyecta el despues",
+    "Cada beneficio lleva debajo el ingrediente que lo produce",
+    "Cada opcion de compra lleva la foto del producto en su cantidad",
+    "Se declara la cantidad total de unidades del contenido, para que se vea la duracion del tratamiento",
+    "La pieza se parte en dos zonas: relato arriba, transaccion abajo",
+    "La edad objetivo va declarada en numero"
+  ],
+  "variables_requeridas": [
+    "ACCION_HOY",
+    "CONSECUENCIA_SIEMPRE",
+    "PROMESA_TRIPLE",
+    "FOTO_PAREJA_EN_ACTIVIDAD",
+    "CLAIM_MULTIPLE",
+    "SISTEMAS",
+    "BENEFICIOS[3]",
+    "SELLOS[3]",
+    "EDAD_OBJETIVO",
+    "FRASE_SEGMENTO",
+    "HEADER_OPCIONES",
+    "CANT_1",
+    "CANT_2",
+    "PRECIO_1",
+    "PRECIO_2",
+    "CONTENIDO_1",
+    "CONTENIDO_2",
+    "MONEDA",
+    "OFERTA_LABEL",
+    "AHORRO_LABEL",
+    "GARANTIAS[3]",
+    "CIERRE_EMOCIONAL",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "producto de uso continuo donde la duracion del tratamiento es el argumento",
+    "publico 40+ que decide por composicion y no por promesa",
+    "cuando hay solo dos opciones de compra y conviene compararlas visualmente",
+    "categorias de mantenimiento (huesos, articulaciones, vista, memoria)"
+  ],
+  "cuando_no_usar": [
+    "compra de impulso de una sola vez",
+    "cuando hay tres o mas tiers: el comparador de dos se satura",
+    "publico joven, donde la composicion no pesa"
+  ],
+  "sellos_y_claims_observados": [
+    "Fila de sellos: FORMULA COMPLETA, INGREDIENTES DE CALIDAD, BIENESTAR OSEO Y ARTICULAR.",
+    "Badge circular TRIPLE ACCION · HUESOS + CARTILAGO + MOVILIDAD.",
+    "Badge 40+ IDEAL PARA ADULTOS ACTIVOS Y PERSONAS MAYORES DE 40 ANOS.",
+    "Cada beneficio nombra su ingrediente: FORTALECE TUS HUESOS (con calcio, magnesio y vitamina D), PROTEGE TU CARTILAGO (con glucosamina y condroitina), APOYA TU MOVILIDAD (con vitamina C y nutrientes esenciales).",
+    "Banda de ahorro AHORRA Q30 en la opcion de dos unidades.",
+    "Cierre CUIDA TU CUERPO, VIVE SIN LIMITES."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

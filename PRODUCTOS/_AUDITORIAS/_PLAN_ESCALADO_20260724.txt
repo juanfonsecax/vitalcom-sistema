@@ -1,0 +1,591 @@
+════════════════════════════════════════════════════════════════════════════
+PLAN DE ESCALADO EJECUTABLE · 2026-07-24 · VENTANA 17-24 JUL (LucidSales)
+Portafolio: TINNIDROP · CLEARSTEM · NUSAVA B12 · VARICOSE
+════════════════════════════════════════════════════════════════════════════
+NORMALIZACIÓN DE DATA: la cuenta act_1346892… (campaña 2🟦) reporta en COP.
+Tasa derivada comparando con campañas hermanas idénticas (3🟦/4🟦/5🟦 = $18.4-19.3):
+76,325 COP ÷ 4,050 = $18.85 USD. Todo lo de abajo ya está normalizado a USD y a Q (7.62).
+
+RESULTADO 7 DÍAS: $296.48 USD (Q2,259) → 53 ventas → Q12,489 facturado. CPA global Q42.6.
+SANGRADO DETECTADO: $78.46 (26% del gasto) en conjuntos con CERO ventas.
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 0 — EL HALLAZGO QUE CAMBIA EL PLAN
+════════════════════════════════════════════════════════════════════════════
+Ya habías ejecutado el PASO 6 del plan del 20-jul (regar horizontal a 4 cuentas).
+La data de esas 4 réplicas dice algo que NO se sabía antes:
+
+  NO TODOS LOS ÁNGULOS VIAJAN IGUAL ENTRE CUENTAS.
+
+| Ángulo                    | 🟩 GTR0 | 2🟦 | 3🟦 | 4🟦 | 5🟦 | ¿Viaja? |
+|---------------------------|---------|-----|-----|-----|-----|---------|
+| DETERIORO COGNITIVO-video |    —    |  1  |  3  |  2  |  1  | ✅ SÍ — vende en las 4 |
+| ME DIJERON NO TIENE CURA  |    3    |  3  |  0  |  0  |  0  | ⚠️ solo 2 cuentas |
+| Pérdida auditiva irrevers.|    4    |  0  |  0  |  2  |  0  | ⚠️ solo 2 cuentas |
+| Accesibilidad vs médico   |    2    |  1  |  0  |  0  |  0  | ❌ se está muriendo |
+
+→ EL VERDADERO GANADOR HORIZONTAL ES **DETERIORO COGNITIVO (video tinnidrop 3)**:
+  7 ventas · $18.97 · CPA Q20.7 · cierre 15.2% · vendió en LAS 4 cuentas réplica.
+  "Cuando vende en las 4 cuentas = súper winner" (Clase 15, Joaquín). Este es EL activo.
+
+→ PARADOJA IMPORTANTE: ese MISMO creativo, en la cuenta madre GTR0, está en el adset
+  "Deterioro cognitivo / cerebro en colapso" con 1 venta a Q82. Mismo video, mismo ángulo:
+  Q82 en la madre vs Q20.7 en las réplicas. GTR0 se está SATURANDO en ese ángulo
+  (frecuencia acumulada). Las cuentas frescas lo convierten 4× mejor.
+  ACCIÓN: el volumen de este ángulo se mete en 2🟦/3🟦/4🟦, NO en GTR0.
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 1 — POR QUÉ FUNCIONA LO QUE FUNCIONA (leer antes de crear creativos)
+════════════════════════════════════════════════════════════════════════════
+Cruzando los 3 testeos de Tinnidrop (mayo, 11-19 jul, 17-24 jul), el patrón es estable:
+
+VENDEN (CPA Q19-40):
+  · ME DIJERON QUE NO TIENE CURA ....... Q19.0 · cierre 16.7%
+  · DETERIORO COGNITIVO ................ Q20.7 · cierre 15.2%
+  · Accesibilidad económica vs médico .. Q25.4 (histórico)
+  · Pérdida auditiva irreversible ...... Q13.5 (prior) / Q38.3 (hoy)
+  · NOCHES SIN DORMIR .................. Q40.1 · cierre 15.4%
+
+NO VENDEN (CPA Q72-153 o cero):
+  · Ingredientes naturales / alivio inmediato
+  · Mecanismo cerebral secreto
+  · Señal de condición médica subyacente
+  · Tensión / estrés: la causa oculta
+
+EL DENOMINADOR COMÚN — dos familias, ambas de PÉRDIDA:
+
+  ▸ FAMILIA A — ANTI-MÉDICO / RESIGNACIÓN
+    "Fui, pagué, me dijeron que aprenda a vivir con esto." El dolor NO es el zumbido:
+    es haber sido descartado por el sistema. La compra es un acto de esperanza contra
+    una sentencia. Emoción: resignación → esperanza. (ME DIJERON, Accesibilidad)
+
+  ▸ FAMILIA B — MIEDO A UNA PÉRDIDA IRREVERSIBLE
+    No teme el ruido: teme perder algo (la memoria, la audición, el sueño, la cabeza).
+    La compra es un seguro contra una pérdida que ya empezó. Emoción: miedo con urgencia.
+    (DETERIORO COGNITIVO, Pérdida auditiva, NOCHES SIN DORMIR)
+
+LOS QUE FALLAN TIENEN TODOS EL MISMO DEFECTO: EXPLICAN en vez de AMENAZAR O RESCATAR.
+"Mecanismo cerebral", "señal de condición", "ingredientes naturales", "tensión" son
+ángulos EDUCACIONALES. Enseñan algo interesante → generan curiosidad → generan chat →
+NO generan compra. Prueba dura: tinnidrop 1 tuvo 78% de conversación a WhatsApp (la más
+alta de todo el histórico) y CERO ventas.
+
+  ⚠️ REGLA QUE SALE DE ACÁ: en Tinnidrop, %conversación alto NO predice venta.
+     El único predictor es que el ángulo toque PÉRDIDA (familia A o B).
+     Nunca volver a lanzar un ángulo educacional/mecanismo en este producto.
+
+QUÉ COPIAR AL CREAR CREATIVOS NUEVOS (el "por qué ganó", Clase 20):
+  1. Hook en PRIMERA PERSONA o en boca del médico ("me dijeron que…", "ya no me acuerdo…").
+  2. Nombrar la PÉRDIDA concreta, no el síntoma ("no me acuerdo de las cosas" > "tinnitus").
+  3. Sin explicación de mecanismo en el hook. El mecanismo va abajo, chiquito, como prueba.
+  4. Testimonio con nombre y edad como prueba social (funcionó en ME DIJERON).
+  5. Tono clínico-cálido, esperanzador. NO alarmista de choque (este nicho no lo premia).
+  6. Sin precio en el creativo (los 3 ganadores no lo llevan).
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 2 — ✂️ APAGAR HOY (checklist exacto · libera $11.20/día de sangrado)
+════════════════════════════════════════════════════════════════════════════
+Marcá cada uno al apagarlo.
+
+▸ CAMPAÑA COMPLETA
+[ ] 5🟦 TINIDROP GTR0 - 1.59 - 4 WINERS  (cuenta act_916746…)
+    $18.41 · 46 msg · 1 venta · CPA Q140.3 · 3× sobre break-even. Apagar entera.
+
+▸ TINNIDROP — conjuntos con CERO ventas dentro de campañas que siguen vivas
+[ ] 2🟦 → "Pérdida auditiva irreversible"              $4.83 · 33 msg · 0 ventas
+[ ] 3🟦 → "Pérdida auditiva irreversible"              $4.92 · 21 msg · 0 ventas
+[ ] 3🟦 → "ME DIJERON QUE NO TIENE CURA - Copia"       $4.94 ·  4 msg · 0 ventas
+[ ] 3🟦 → "Accesibilidad económica vs. médico - Copia 2" $4.59 · 13 msg · 0 ventas
+[ ] 4🟦 → "ME DIJERON QUE NO TIENE CURA - Copia"       $4.50 ·  5 msg · 0 ventas
+[ ] 4🟦 → "Accesibilidad económica vs. médico - Copia 2" $4.58 ·  5 msg · 0 ventas
+[ ] 🟩 GTR0 → "Deterioro cognitivo / cerebro en colapso" $10.79 · 48 msg · 1 venta · Q82.2
+    (mismo creativo que el ganador horizontal, pero quemado en la cuenta madre)
+
+▸ CLEARSTEM (cuenta act_916746…)
+[ ] "Dolor Emocional Masculino"   $10.13 · 30 msg · 0 ventas  ← el mayor sangrado suelto
+[ ] "Eje Intestino-Piel"          $4.95 ·  8 msg · 0 ventas
+
+▸ NUSAVA B12 (BE Q68.3 · cuenta act_598687…)
+[ ] "MA1-COMPLEJOB"    $5.81 ·  4 msg · 0 ventas
+[ ] "MA3-HORMIGUEO"    $5.41 · 15 msg · 0 ventas
+[ ] "MA2-ARDORNOCHE"   $11.30 · 1 venta · CPA Q86.1 → sobre break-even
+[ ] "MA5-AZUCAR"       $10.87 · 1 venta · CPA Q82.8 → sobre break-even
+
+▸ VARICOSE
+[ ] "VERGUENZA_MA4_MANCHAS"        $5.47 · 4 msg · 0 ventas
+[ ] "MANCHAS-OSCURAS_VARICOSE_TEST" $4.70 · 17 msg · 0 ventas
+
+⚠️ NO APAGAR (aunque tengan CPA alto — están bajo su break-even):
+   · NUSAVA MA7-ARDORVIDEO (Q44.1) y MA4-DEPIE (Q39.9) → BE es Q68.3, siguen rentables.
+   · Tinnidrop "Pérdida auditiva" en 🟩 GTR0 (4 ventas) y en 4🟦 (2 ventas) → ahí SÍ vende.
+   · Tinnidrop "Accesibilidad" en 🟩 GTR0 (2 ventas, Q39.4) → bajo BE Q60.5.
+
+⚠️ REVISAR ANTES DE SEGUIR: VARICOSE "VERGUENZA_MA6_OFERTA2X1" está en CPA Q17.2 con
+   25% de cierre y su break-even es Q159. Es el mejor CPA del portafolio con el margen
+   más grande. Si lo pausaste por stock, ok. Si fue por lectura de métricas, reactivalo.
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 3 — 📈 DUPLICAR HOY (el motor de las ventas de mañana)
+════════════════════════════════════════════════════════════════════════════
+DOCTRINA APLICADA: Camilo (Clase 11) duplica el CONJUNTO ganador hasta 8-10 veces dentro
+de la misma campaña. Mercy (SKOOL 6.2) duplica los conjuntos ganadores ×3-10 a las 9-10 AM.
+Esto NO es subir presupuesto — es "cada anuncio es un vendedor". El CPA se mantiene.
+
+CÓMO SE DUPLICA (idéntico en todos los casos):
+  Seleccionar conjunto → Duplicar → indicar nº de copias → "Duplicar la configuración
+  original" (NUNCA una recomendación de Meta) → marcar "Mostrar reacciones, comentarios
+  y contenido compartido en anuncios nuevos" (hereda la prueba social) → Publicar.
+  Presupuesto de cada copia: $1.59 (el mismo, NO subirlo).
+  Verificar en cada copia: objetivo sigue en "maximizar conversaciones" (Meta lo revierte
+  solo a "clics en el enlace"), destino WhatsApp, 2 anuncios adentro.
+
+──────────────── 3.1 · EL SÚPER GANADOR — riego máximo ────────────────
+DETERIORO COGNITIVO - video (ads: "tinnidrop 3" + "tinnidrop 3 - Copia") · CPA Q20.7
+Vende en las 4 cuentas réplica. Es el que aguanta volumen.
+
+[ ] En 2🟦 → duplicar "DETERIORO COGNITIVO - video" ×4
+[ ] En 3🟦 → duplicar "DETERIORO COGNITIVO - video" ×4
+[ ] En 4🟦 → duplicar "DETERIORO COGNITIVO - video" ×4
+    (12 conjuntos nuevos · $19.08/día · a CPA Q20.7 ≈ 7 ventas/día extra)
+    NO duplicarlo en 🟩 GTR0 — ahí está quemado (Q82).
+
+──────────────── 3.2 · GANADORES DE CUENTA — riego donde sí venden ────────────────
+[ ] En 🟩 GTR0 → duplicar "ME DIJERON QUE NO TIENE CURA" ×4      (CPA Q26.2 en esa cuenta)
+[ ] En 2🟦    → duplicar "ME DIJERON... - Copia 2" ×3            (CPA Q13.3 ← el mejor)
+[ ] En 🟩 GTR0 → duplicar "Pérdida auditiva irreversible" ×3     (4 ventas ahí)
+[ ] En 4🟦    → duplicar "Pérdida auditiva irreversible" ×2      (2 ventas ahí)
+    (12 conjuntos nuevos · $19.08/día)
+
+──────────────── 3.3 · OTROS PRODUCTOS ────────────────
+[ ] CLEARSTEM → duplicar ×3 cada uno: "Anti-Falsificación" (Q25.9), "Resistencia a la
+    Insulina / SOP" (Q26.2), "Médicos Fallaron" (Q26.8). Los tres parejos y sanos.
+    (9 conjuntos · $14.31/día)
+[ ] NUSAVA B12 → duplicar "MA6-OFERTA" ×3 (Q28.2, el único claramente bajo Base).
+    (3 conjuntos · $4.77/día)
+[ ] VARICOSE (si reactivás) → duplicar "VERGUENZA_MA6_OFERTA2X1" ×4 (Q17.2, cierre 25%).
+    (4 conjuntos · $6.36/día)
+
+──────────────── 3.4 · SURFING +20% (solo mañana temprano) ────────────────
+[ ] Mañana entre 9:00 y 10:00 AM, a TODO conjunto que haya vendido: $1.59 → $1.91.
+    Nunca más de +20%. Nunca después de las 10 AM (desoptimiza la campaña).
+
+──────────────── 3.5 · DUPLICAR LA CAMPAÑA MADRE ────────────────
+[ ] Duplicar la campaña 2🟦 (la de mejor CPA: Q28.7) ×2 dentro de su misma cuenta,
+    en estado borrador, "duplicar configuración original" + "mostrar reacciones".
+    Dato de Mercy: su campaña original trajo 25 conversaciones a 636 y la copia idéntica
+    44 a 376. La copia frecuentemente rinde mejor que el original.
+
+RESUMEN DE INVERSIÓN NUEVA: 40 conjuntos nuevos ≈ $63.60/día extra.
+Proyección a CPA mezclado Q25: ≈ 19 ventas/día adicionales.
+Menos el sangrado apagado (−$11.20/día), el incremento neto es ≈ $52/día.
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 4 — 🎨 5 CREATIVOS NUEVOS (variaciones de las familias ganadoras)
+════════════════════════════════════════════════════════════════════════════
+Los 5 salen de las familias A y B. Ninguno explica mecanismo. Formato 4:5 (1080×1350),
+sin precio, sin sello de oferta. Marca visible = Sanarte. Tono clínico-cálido.
+Generar en Gemini/ChatGPT con la FOTO DEL PRODUCTO adjunta.
+
+⚠️ COMPLIANCE OBLIGATORIO EN LOS 5: nunca "cura / trata / elimina / sana". Usar
+"apoya / ayuda a / contribuye". Sin plazos imposibles (nada de "en 7 días" ni "desde el
+primer día" — usar "desde la segunda semana"). Sin sellos FDA/Ministerio de Salud. Sin
+porcentajes clínicos inventados. Sin antes/después bilateral de persona. Texto < 20% del área.
+
+────────────────────────────────────────────────────────────────────────────
+NUEVO #1 — "YA NO ME ACUERDO DE LAS COSAS"  (Familia B · variación del súper ganador)
+Por qué: es el ángulo que vende en las 4 cuentas, pero hoy corre con un video importado.
+Esta versión lo lleva a primera persona y a la pérdida concreta (la memoria), que es lo
+que realmente engancha. Es el creativo más importante de los 5.
+────────────────────────────────────────────────────────────────────────────
+PROMPT:
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta
+conversión. Genera un creativo VERTICAL 1080x1350 px (4:5), fotorrealista, profesional, listo
+para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO
+parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con
+onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: apoya la circulación del oído y el descanso, para recuperar claridad mental
+- PROBLEMA QUE RESUELVE: el zumbido constante le está robando la memoria y la concentración
+- PÚBLICO OBJETIVO: adultos 45-65 en Guatemala que olvidan cosas y no logran concentrarse
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, comprensivo, esperanzador (página Sanarte)
+- OFERTA: este ad NO lleva precio ni sello de oferta
+
+ESTILO VISUAL: Editorial de marca / clínico-cálido. Fondo claro de hogar real, luz natural
+suave de ventana. Hombre latino de unos 55 años sentado a la mesa de la cocina, mirando un
+papel en la mano con expresión de esfuerzo por recordar (ceño leve, mano en la sien), NO
+dramático ni desesperado. Una sola escena, sin comparación antes/después. Frasco Tinnidrop
+grande y nítido en primer plano sobre la mesa.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior izquierda, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, "YA NO ME ACUERDO" en azul): "El zumbido no me deja
+   pensar — YA NO ME ACUERDO de las cosas"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante en el tercio central.
+4. BENEFICIO (texto mediano): "Fórmula natural que apoya la circulación del oído y tu descanso"
+5. CONFIANZA (1 badge chico): "SIN RECETA · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Preguntanos cómo te ayudamos 👉"
+7. PRUEBA SOCIAL (burbuja de chat de WhatsApp pequeña abajo, 5 estrellas doradas): "Vivía
+   distraído y olvidando todo por el pitido. Ahora duermo y me siento más despejado. — Mario, 57"
+
+PALETA: azul del producto + blancos cálidos + verde Sanarte. Tipografía sans-serif limpia y
+redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO usar "cura/trata/elimina/sana". Sin antes/después corporal bilateral. Sin
+plazos imposibles. Enmarcar como apoyo, nunca como cura garantizada. Usar "apoya / ayuda a".
+
+RESULTADO: un anuncio que detiene el scroll de alguien que siente que está perdiendo la
+cabeza por el zumbido, comunica claridad mental y descanso en 3 segundos, y motiva a escribir
+por WhatsApp. Entregá la versión 4:5 lista para pautar.
+
+COPIES (3 variaciones, sin precio):
+TEXTO 1:
+¿El zumbido en el oído te tiene distraído y olvidando cosas? 😔 No es la edad — el ruido
+constante desgasta tu concentración y tu descanso, y al final se te olvida hasta lo que
+acabás de leer. Tinnidrop se aplica directo en el canal auditivo con Ginkgo Biloba y Ginseng
+para apoyar la circulación del oído y calmar la tensión que alimenta ese ruido. Muchos notan
+la diferencia desde la segunda semana. Sin receta, pagás al recibir. Escribinos hoy.
+TEXTO 2:
+Llevás meses con un pitido que no se apaga y ya te cuesta concentrarte. 🧠 Perdés el hilo de
+las conversaciones, releés lo mismo tres veces, olvidás para qué entraste al cuarto. No es
+normal acostumbrarse. Tinnidrop trabaja desde la raíz —circulación, tensión nerviosa e
+inflamación— con extractos naturales directo en el oído. +10,200 personas ya recuperaron su
+descanso. Sin receta, pago contra entrega. Mandanos un mensaje hoy.
+TEXTO 3 (testimonio):
+"Vivía distraído y olvidando todo por el pitido. Ahora duermo bien y me siento mucho más
+despejado." 🙏 Cuando el zumbido no para, tu cabeza nunca descansa — y ahí empiezan los
+olvidos. Tinnidrop apoya la circulación del oído con Ginkgo, Ginseng, Regaliz y Menta.
+Envío gratis, pagás cuando te llega. Preguntanos cómo te ayudamos.
+TÍTULOS: "Recuperá tu concentración" · "El pitido te desconcentra" · "Volvé a pensar claro"
+DESCRIPCIÓN: Sin receta · Pagás al recibir
+
+────────────────────────────────────────────────────────────────────────────
+NUEVO #2 — "EL OTORRINO ME DIO 3 MINUTOS"  (Familia A · anti-médico específico)
+Por qué: refresca ME DIJERON (freq 1.86, ya fatigando) manteniendo el núcleo que gana
+—ser descartado por el sistema— pero con una escena concreta y nueva.
+────────────────────────────────────────────────────────────────────────────
+PROMPT:
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta
+conversión. Genera un creativo VERTICAL 1080x1350 px (4:5), fotorrealista, profesional, listo
+para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO
+parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con
+onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: una opción natural para quien salió del consultorio sin solución
+- PROBLEMA QUE RESUELVE: la consulta fue rápida, cara y no le resolvió nada
+- PÚBLICO OBJETIVO: adultos 45+ en Guatemala que ya fueron al otorrino y salieron igual
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, empático, esperanzador (página Sanarte)
+- OFERTA: este ad NO lleva precio ni sello de oferta
+
+ESTILO VISUAL: Editorial de marca / clínico-cálido. Mujer latina de unos 52 años saliendo de
+un edificio de consultorios a la luz del día, con una hoja de receta en la mano y expresión
+de resignación tranquila (no llanto, no drama). Fondo desenfocado y luminoso. Una sola escena,
+sin comparación antes/después. Frasco Tinnidrop grande y nítido en primer plano.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior izquierda, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, "3 MINUTOS" en azul): "El otorrino me dio 3 MINUTOS y
+   me mandó a vivir con el zumbido"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante.
+4. BENEFICIO (texto mediano): "Hay una opción natural que actúa donde está el problema"
+5. CONFIANZA (1 badge chico): "SIN RECETA · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Preguntanos cómo te ayudamos 👉"
+7. PRUEBA SOCIAL (burbuja de chat de WhatsApp pequeña abajo, 5 estrellas doradas): "Salí del
+   consultorio igual que entré. Con esto por fin siento alivio. — Rosa, 54"
+
+PALETA: azul del producto + blancos cálidos + verde Sanarte. Tipografía sans-serif limpia y
+redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO usar "cura/trata/elimina/sana". No desacreditar a la profesión médica de forma
+agresiva (empatía, no ataque). Sin plazos imposibles. Usar "apoya / ayuda a".
+
+RESULTADO: un anuncio que le habla a quien salió del consultorio sin respuesta, le devuelve
+la esperanza en 3 segundos y lo motiva a escribir por WhatsApp. Entregá la versión 4:5.
+
+COPIES (3 variaciones, sin precio):
+TEXTO 1:
+Pagaste la consulta, esperaste semanas… y salís con un "aprendé a vivir con eso". 😔 Si el
+zumbido sigue igual después de todo eso, no te resignes todavía. El tinnitus tiene causas que
+sí se pueden apoyar: circulación, inflamación y tensión nerviosa. Tinnidrop actúa sobre ellas
+con Ginkgo Biloba, Ginseng, Regaliz y Menta, directo en tu oído. Sin receta, pagás al recibir.
+Escribinos hoy.
+TEXTO 2:
+Tres minutos de consulta y una receta que no sirvió. 🌱 Así salen miles de personas con
+zumbido en el oído cada mes. Lo que casi nadie les dice es que hay algo natural que trabaja
+sobre las causas más comunes, aplicado directo en el canal auditivo. +10,200 personas ya lo
+usan en Guatemala. Sin receta, sin efectos raros, pago contra entrega. Mandanos un mensaje.
+TEXTO 3 (testimonio):
+"Salí del consultorio igual que entré. Con esto por fin siento alivio, no lo podía creer." 🙌
+Si ya fuiste al médico y seguís con el pitido, todavía hay algo natural que podés probar sin
+riesgo. Tinnidrop apoya tu oído desde la raíz. Envío gratis, pagás cuando te llega.
+Preguntanos cómo te ayudamos hoy.
+TÍTULOS: "No te resignes al zumbido" · "Salí igual del médico" · "Todavía hay una opción"
+DESCRIPCIÓN: Sin receta · Pagás al recibir
+
+────────────────────────────────────────────────────────────────────────────
+NUEVO #3 — "CADA MES OIGO UN POCO MENOS"  (Familia B · pérdida progresiva)
+Por qué: refresca Pérdida auditiva irreversible cambiando el miedo de golpe ("va a ser
+tarde") por miedo de goteo ("se va yendo"), que es más creíble y menos alarmista.
+────────────────────────────────────────────────────────────────────────────
+PROMPT:
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta
+conversión. Genera un creativo VERTICAL 1080x1350 px (4:5), fotorrealista, profesional, listo
+para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO
+parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con
+onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: apoyar la salud del oído ahora, mientras se puede
+- PROBLEMA QUE RESUELVE: lleva meses ignorando el zumbido y siente que oye menos que antes
+- PÚBLICO OBJETIVO: adultos 45-65 en Guatemala que suben el volumen y piden que les repitan
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, urgente pero sereno (página Sanarte)
+- OFERTA: este ad NO lleva precio ni sello de oferta
+
+ESTILO VISUAL: Editorial de marca / clínico-cálido. Hombre latino de unos 58 años inclinando
+la cabeza hacia un interlocutor fuera de cuadro, con la mano cerca de la oreja, gesto natural
+de "no te escuché bien". Sala de estar real, luz natural cálida. Una sola escena, sin
+comparación antes/después. Frasco Tinnidrop grande y nítido en primer plano.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior izquierda, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, "UN POCO MENOS" en azul): "Cada mes que pasa con el
+   zumbido, oigo UN POCO MENOS"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante.
+4. BENEFICIO (texto mediano): "Apoyá la circulación de tu oído mientras estás a tiempo"
+5. CONFIANZA (1 badge chico): "SIN RECETA · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Preguntanos cómo te ayudamos 👉"
+7. PRUEBA SOCIAL (burbuja de chat de WhatsApp pequeña abajo, 5 estrellas doradas): "Ya le
+   subía a todo y pedía que me repitieran. Desde que lo uso me siento mucho mejor. — Julio, 61"
+
+PALETA: azul del producto + blancos cálidos + verde Sanarte. Tipografía sans-serif limpia y
+redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO usar "cura/trata/elimina/sana". NO afirmar que previene o revierte sordera.
+Sin plazos imposibles. Enmarcar como apoyo. Usar "apoya / ayuda a".
+
+RESULTADO: un anuncio que activa la urgencia de quien siente que su audición se le va de a
+poco, sin sonar alarmista, y lo motiva a escribir por WhatsApp. Entregá la versión 4:5.
+
+COPIES (3 variaciones, sin precio):
+TEXTO 1:
+¿Le subís cada vez más al volumen y pedís que te repitan las cosas? 👂 El zumbido constante
+no viene solo: suele acompañar una circulación deficiente en el oído, y mientras más tiempo
+pasa, más cuesta. Tinnidrop se aplica directo en el canal auditivo con Ginkgo Biloba y Ginseng
+para apoyar esa circulación. Muchos notan la diferencia desde la segunda semana. Sin receta,
+pagás al recibir. Escribinos hoy.
+TEXTO 2:
+Llevás meses diciendo "ya se me va a quitar" — y cada mes oís un poco menos. ⏳ El pitido no
+se va solo. Tinnidrop trabaja donde está el problema: circulación, tensión nerviosa e
+inflamación del oído, con extractos naturales aplicados directo. +10,200 personas en Guatemala
+ya lo usan. Sin receta, sin efectos raros, pago contra entrega. Mandanos un mensaje hoy.
+TEXTO 3 (testimonio):
+"Ya le subía a todo y pedía que me repitieran las cosas. Desde que lo uso me siento mucho
+mejor." 🙏 No esperés a acostumbrarte a oír menos. Tinnidrop apoya la circulación de tu oído
+con Ginkgo, Ginseng, Regaliz y Menta, directo donde se necesita. Envío gratis, pagás cuando
+te llega. Preguntanos cómo te ayudamos.
+TÍTULOS: "No esperés a oír menos" · "Cada mes oís menos" · "Cuidá tu oído hoy"
+DESCRIPCIÓN: Envío gratis · Pagás al recibir
+
+────────────────────────────────────────────────────────────────────────────
+NUEVO #4 — "MI ESPOSA YA SE CANSÓ DE REPETIRME"  (Familia A+B · costo social)
+Por qué: ángulo NUEVO no testeado, pero construido sobre las mismas dos familias — la
+pérdida ya no es física sino relacional. Voz real de foros: el aislamiento. Es la apuesta
+de exploración de este lote.
+────────────────────────────────────────────────────────────────────────────
+PROMPT:
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta
+conversión. Genera un creativo VERTICAL 1080x1350 px (4:5), fotorrealista, profesional, listo
+para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO
+parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con
+onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: volver a las conversaciones y a la mesa familiar sin esfuerzo
+- PROBLEMA QUE RESUELVE: el zumbido lo está aislando de su propia familia
+- PÚBLICO OBJETIVO: adultos 50+ en Guatemala, casados/con familia, que se sienten un estorbo
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, emocional, cercano (página Sanarte)
+- OFERTA: este ad NO lleva precio ni sello de oferta
+
+ESTILO VISUAL: Editorial de marca / clínico-cálido. Pareja latina de unos 55-60 años en la
+mesa del comedor; ella le habla y él la mira con gesto de concentración y algo de disculpa.
+Ambiente hogareño guatemalteco real, luz natural cálida de tarde. Escena única, sin
+comparación antes/después. Frasco Tinnidrop grande y nítido en primer plano sobre la mesa.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior izquierda, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, "SE CANSÓ DE REPETIRME" en azul): "Mi esposa ya SE
+   CANSÓ DE REPETIRME todo"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante.
+4. BENEFICIO (texto mediano): "Apoyá tu oído y volvé a las conversaciones de siempre"
+5. CONFIANZA (1 badge chico): "SIN RECETA · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Preguntanos cómo te ayudamos 👉"
+7. PRUEBA SOCIAL (burbuja de chat de WhatsApp pequeña abajo, 5 estrellas doradas): "Me había
+   alejado hasta de las pláticas en la mesa. Ahora vuelvo a estar en todo. — Óscar, 59"
+
+PALETA: azul del producto + blancos cálidos + verde Sanarte. Tipografía sans-serif limpia y
+redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO usar "cura/trata/elimina/sana". Sin antes/después bilateral. Sin plazos
+imposibles. Sin culpabilizar al avatar. Usar "apoya / ayuda a".
+
+RESULTADO: un anuncio que toca el costo emocional del zumbido —quedarse afuera de su propia
+familia— y motiva a escribir por WhatsApp. Entregá la versión 4:5.
+
+COPIES (3 variaciones, sin precio):
+TEXTO 1:
+"¿Qué dijiste?" 😔 Cuando el zumbido no para, uno se va saliendo de las conversaciones sin
+darse cuenta: en la mesa, en las reuniones, con los nietos. Y al final preferís quedarte
+callado. Tinnidrop se aplica directo en el canal auditivo con Ginkgo Biloba y Ginseng para
+apoyar la circulación del oído y calmar la tensión. Sin receta, pagás al recibir. Escribinos
+hoy y volvé a la plática.
+TEXTO 2:
+No es que no te importe lo que dicen — es que el pitido tapa todo. 🏠 El tinnitus aísla más
+de lo que la gente cree: dejás de opinar, te alejás de la mesa, decís que estás cansado.
+Tinnidrop trabaja sobre las causas más comunes del zumbido con extractos naturales, directo
+en el oído. +10,200 personas en Guatemala ya lo usan. Pago contra entrega. Mandanos un mensaje.
+TEXTO 3 (testimonio):
+"Me había alejado hasta de las pláticas en la mesa. Ahora vuelvo a estar en todo." 🙏 El
+zumbido no solo suena: te va sacando de tu propia casa. Tinnidrop apoya tu oído desde la raíz
+con Ginkgo, Ginseng, Regaliz y Menta. Envío gratis, pagás cuando te llega. Preguntanos cómo
+te ayudamos.
+TÍTULOS: "Volvé a la conversación" · "Ya no oís en la mesa" · "No te quedés afuera"
+DESCRIPCIÓN: Sin receta · Pagás al recibir
+
+────────────────────────────────────────────────────────────────────────────
+NUEVO #5 — "GASTÉ MÁS DE Q2,000 Y SIGO IGUAL"  (Familia A · el dinero)
+Por qué: revive el ganador histórico #4 (Accesibilidad, Q25.4) que hoy se apagó a Q72.
+El ángulo no está muerto — el creativo sí. Este lo reconstruye con cifra concreta.
+────────────────────────────────────────────────────────────────────────────
+PROMPT:
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta
+conversión. Genera un creativo VERTICAL 1080x1350 px (4:5), fotorrealista, profesional, listo
+para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO
+parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con
+onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: una opción accesible después de haber gastado en consultas sin resultado
+- PROBLEMA QUE RESUELVE: gastó mucho dinero en médicos y pastillas y el zumbido sigue igual
+- PÚBLICO OBJETIVO: adultos 45+ en Guatemala, sensibles al gasto, cansados de pagar sin solución
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, honesto, sin humillar (página Sanarte)
+- OFERTA: este ad NO lleva precio ni sello de oferta
+
+ESTILO VISUAL: Editorial de marca / clínico-cálido. Mujer latina de unos 56 años sentada en
+su sala con varias cajas de medicamento y facturas sobre la mesa, mirándolas con cansancio
+sereno. Luz natural suave. Escena única, sin comparación antes/después. Frasco Tinnidrop
+grande, nítido y dominante en primer plano, claramente separado de las cajas viejas.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior izquierda, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, "Y SIGO IGUAL" en azul): "Gasté más de Q2,000 en
+   consultas Y SIGO IGUAL"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante.
+4. BENEFICIO (texto mediano): "Una opción natural que actúa directo en el oído, sin receta"
+5. CONFIANZA (1 badge chico): "SIN RECETA · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Preguntanos cómo te ayudamos 👉"
+7. PRUEBA SOCIAL (burbuja de chat de WhatsApp pequeña abajo, 5 estrellas doradas): "Gasté un
+   montón en consultas y pastillas. Esto me costó mucho menos y sí lo siento. — Elena, 56"
+
+PALETA: azul del producto + blancos cálidos + verde Sanarte. Tipografía sans-serif limpia y
+redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO usar "cura/trata/elimina/sana". No prometer ahorro garantizado ni desacreditar
+tratamientos médicos. Sin plazos imposibles. Usar "apoya / ayuda a".
+
+RESULTADO: un anuncio que conecta con el hartazgo de haber gastado sin resultado y presenta
+una alternativa accesible, motivando a escribir por WhatsApp. Entregá la versión 4:5.
+
+COPIES (3 variaciones, sin precio):
+TEXTO 1:
+Consultas, exámenes, pastillas… y el zumbido sigue exactamente igual. 😔 Después de gastar
+tanto, cuesta creer que algo funcione. Tinnidrop no es otra pastilla: se aplica directo en el
+canal auditivo con Ginkgo Biloba, Ginseng, Regaliz y Menta, para apoyar la circulación del
+oído y calmar la tensión que alimenta el ruido. Sin receta, pagás al recibir. Escribinos hoy.
+TEXTO 2:
+¿Cuánto llevás gastado en el zumbido y seguís igual? 💸 Lo que casi nadie prueba es algo que
+actúe donde de verdad está el problema, aplicado directo en el oído. Tinnidrop trabaja sobre
+circulación, tensión nerviosa e inflamación con extractos naturales. +10,200 personas en
+Guatemala ya lo usan. Sin receta, sin efectos raros, pago contra entrega. Mandanos un mensaje.
+TEXTO 3 (testimonio):
+"Gasté un montón en consultas y pastillas. Esto me costó mucho menos y sí lo siento." 🙌 Si
+ya invertiste sin resultado, todavía hay algo natural que podés probar sin riesgo — pagás
+solo cuando te llega. Tinnidrop apoya tu oído desde la raíz. Envío gratis. Preguntanos cómo
+te ayudamos hoy.
+TÍTULOS: "Gastaste y seguís igual" · "Sin gastar en consultas" · "Probá sin riesgo"
+DESCRIPCIÓN: Envío gratis · Pagás al recibir
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 5 — DÓNDE LANZAR LOS 5 NUEVOS (mañana, no hoy)
+════════════════════════════════════════════════════════════════════════════
+Los 5 creativos nuevos NO van hoy — hoy se duplica lo probado (eso da las ventas de mañana).
+Los nuevos entran en una campaña de testeo aparte, programada 4 AM, para no ensuciar la
+lectura de los ganadores.
+
+[ ] Campaña NUEVA en GTR0: "TINNIDROP_RENOVACION_20260725"
+    · Objetivo Tráfico · rendimiento CONVERSACIONES · destino WhatsApp manual
+    · ABO · 5 conjuntos (1 por creativo nuevo) · 2 anuncios idénticos por conjunto
+    · Presupuesto $2.50/conjunto (NO $1.59 — ver nota abajo) = $12.50/día
+    · Segmentación amplia Guatemala, Advantage+ OFF · programada 4:00 AM del 25-jul
+    · Página: Sanarte
+
+NOTA SOBRE EL PRESUPUESTO DE TESTEO: a $1.59 (Q12.1/día) un conjunto tarda 5 días en gastar
+su Presupuesto de Decisión (1× break-even = Q60.5), pero el GATE de decisión cae al día 3 →
+estás decidiendo antes de tener data válida. A $2.50 (Q19.05/día) llega a su PD en 3.2 días
+y el gate del día 3 pasa a ser matemáticamente honesto. Además te alinea con el 9,900 COP
+del currículo oficial de Mercy. Para TESTEOS nuevos: $2.50. Para GANADORES: $1.59 + surfing.
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 6 — ORDEN DE EJECUCIÓN DE HOY
+════════════════════════════════════════════════════════════════════════════
+1. [ ] APAGAR todo lo de la PARTE 2 (15 min) — empezar por acá, libera presupuesto.
+2. [ ] DUPLICAR 3.1 (súper ganador, 12 conjuntos) — es lo que más ventas trae mañana.
+3. [ ] DUPLICAR 3.2 (ganadores de cuenta, 12 conjuntos).
+4. [ ] DUPLICAR 3.3 (Clearstem 9 + Nusava 3 + Varicose 4 si reactivás).
+5. [ ] DUPLICAR 3.5 (campaña 2🟦 ×2 en borrador).
+6. [ ] Mandar a generar los 5 creativos de la PARTE 4 (Gemini/ChatGPT) — llegan para mañana.
+7. [ ] Verificar en TODAS las copias: "maximizar conversaciones" + destino WhatsApp + 2 ads.
+8. [ ] Mañana 9-10 AM: surfing +20% en todo lo que vendió ($1.59 → $1.91).
+9. [ ] Mañana: montar la campaña de renovación (PARTE 5) programada 4 AM del 26.
+
+⚠️ NO HACER HOY:
+  · No subir presupuesto de golpe en ningún conjunto (solo el +20% de mañana temprano).
+  · No tocar el bot de Tinnidrop — cierra bien (ningún ángulo bajo el piso de 35%).
+  · No apagar "Pérdida auditiva" donde SÍ vende (🟩 GTR0 y 4🟦).
+  · No lanzar los creativos nuevos hoy mezclados con los ganadores.
+
+════════════════════════════════════════════════════════════════════════════
+PARTE 7 — QUÉ APRENDIMOS (para el sistema, no para hoy)
+════════════════════════════════════════════════════════════════════════════
+1. Un ángulo ganador NO viaja igual a todas las cuentas. Hay que medir por cuenta antes de
+   regar volumen. "DETERIORO COGNITIVO" vendió en las 4; "Pérdida auditiva" solo en 2.
+2. La cuenta madre se satura primero. Mismo creativo: Q82 en GTR0 vs Q20.7 en réplicas.
+   El volumen del ángulo va a las cuentas frescas, no a la madre.
+3. En Tinnidrop, %conversación NO predice venta. Solo predice venta que el ángulo toque
+   PÉRDIDA (anti-médico/resignación o miedo a perder algo irreversible).
+4. Los ángulos educacionales/mecanismo están descartados definitivamente en este producto:
+   3 testeos, 3 fracasos (Ingredientes naturales, Mecanismo cerebral, Señal médica, Tensión).
+5. El sistema está bien armado para TESTEAR y flojo para ESCALAR: no tiene etapa que decida
+   duplicaciones por cuenta, ni detecte saturación de cuenta madre, ni gestione el ciclo de
+   renovación anti-fatiga con briefs automáticos. Pendiente: construir esa etapa.
+════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,120 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA DE ESCALADO — SISTEMA VITALCOM · 2026-07-18 (sáb, ~7 PM COL)
+ETAPA-7 (lectura métricas) + ETAPA-8 (plan de escalado) · SOLO LECTURA
+═══════════════════════════════════════════════════════════════════════════
+Acceso MCP reverificado: GTR7 ON ✅ · GTR0 ON ✅ · GTR13 OFF ❌ (rollout, sigue sin habilitar → CLEARSTEM solo-Lucid).
+⚠️ SIN LucidSales pegada en este run (automático nocturno; el operador la pega LUN y JUE — próxima LUN 20-jul).
+    → Todo ranking por VENTA es PROVISIONAL. omni_purchase de Meta usado solo como APROXIMACIÓN marcada donde existe (VARICOSE/TINNIDROP); en NUSAVA sale "Not available" → provisional por conversación.
+TASA usada = 7.62.  Fórmulas: %conv/clic-enlace = results ÷ link_click ×100 · $/conv = spend ÷ results · CPA(aprox)=spend÷omni ×7.62.
+
+───────────────────────────────────────────────────────────────────────────
+1) NUSAVAB12 (GTR7) — VENTANA: ESCALADO (día 4 del escalado ARDOR) · omni_purchase ROTO (Not available) → provisional por conversación, cruzar con Lucid
+───────────────────────────────────────────────────────────────────────────
+Campañas VIVAS (2):
+  · NUSAVAB12_TEST_20260622 - Copia (120246893776440784) — $126.17 acum (testeo viejo, sigue corriendo)
+  · NUSAVAB12_ESCALA_ARDOR_20260715 (120247507971430784) — $39.54 acum (escalado nuevo, 4 días)
+  · MEMORIA_ESCALA (120247342961210784) = PAUSED (correcto: MEMORIA no rendía; ARDOR es el caballo).
+PD por conjunto = 1×BE Q68.3 = $8.96.
+
+INFORME ETAPA-7 — TESTEO (Copia), ranking por conversación (acum):
+  # | conjunto     | gasto$ | %conv/clic | $/conv | CTR  | CPM  | freq | %PD  | estado
+  1 | ANIMO        | 12.62 | 68.0% ✅   | 0.19  | 7.59%| 1.71 | 1.30 | 141% | ⚠️ conv alta pero LUCID=0 ventas (histórico) → NO fiar
+  2 | ARDOR        | 33.19 | 54.5% ✅   | 0.23  | 5.04%| 1.69 | 1.54 |>100% | 🟢 caballo confirmado (Lucid sano Q33.7)
+  3 | CIATICA      | 13.05 | 50.9% ✅   | 0.48  | 4.24%| 2.60 | 1.25 | 146% | 🔴 conv ok pero 0 ventas Lucid histórico
+  4 | MEMORIA      | 26.92 | 50.4% ✅   | 0.42  | 5.95%| 2.41 | 1.40 |>100% | 🟡 escalado propio no rindió
+  5 | AZUCAR       | 12.55 | 33.8% 🔴   | 0.55  | 2.96%| 1.67 | 1.39 | 140% | 🔴 MATAR-CONV + 0 ventas
+  6 | ABSORCION    | 27.84 | 31.9% 🔴   | 0.41  | 5.27%| 1.73 | 1.44 |>100% | 🔴 conv floja
+
+ESCALA_ARDOR (microángulos, 4 días, ~$5.6 c/u, %PD≈63%):
+  MA7-ARDORVIDEO 61% ✅ ($0.24) VIDEO — ÚNICO que convierte fuerte
+  MA1..MA6 (imágenes): 15–31% 🔴 conv floja (COMPLEJOB 30.8, DEPIE 29.7, HORMIGUEO 27.5, AZUCAR 28.1, ARDORNOCHE 23.1, OFERTA 15.2)
+  → señal: en el ángulo ARDOR el VIDEO gana; las imágenes de microángulo no enganchan.
+
+PLAN ETAPA-8 (NUSAVA):
+  1. PAUSAR ya por conversación en el testeo Copia: AZUCAR + ABSORCION (<35%, 0 ventas). ANIMO/CIATICA: conv alta pero Lucid=0 histórico → pausar por VENTAS (ya pasaron PD).
+  2. En ESCALA_ARDOR: dejar correr hasta PD ($8.96 ≈ 2 días más) pero el patrón dice concentrar en MA7-ARDORVIDEO. Preparar 2-3 microángulos NUEVOS en formato VIDEO (replicar el que gana), no más imágenes de microángulo.
+  3. NUSAVA global sigue EN ROJO por Lucid (Q91.9/venta > BE Q68.3). NO escalar fuerte. Consolidar en ARDOR (video) y matar el resto.
+  4. CREATIVOS brief p/ETAPA-4: 3 conceptos VIDEO sobre ARDOR/hormigueo en pies (avatar +50 diabético/prediabético), rol MOFU, hook "el ardor en los pies de noche no es normal…", compliance Andrómeda (texto <20%, sin "cura", sin antes/después bilateral).
+  QUÉ HACER: pausar AZUCAR+ABSORCION+ANIMO+CIATICA (Copia); esperar Lucid del lunes antes de tocar el escalado ARDOR.
+
+───────────────────────────────────────────────────────────────────────────
+2) VARICOSE (GTR7) — VENTANA: ESCALADO (día 8 del escalado VERGÜENZA) · omni_purchase DISPONIBLE (aprox) — SANO
+───────────────────────────────────────────────────────────────────────────
+Campañas VIVAS (2):
+  · VARICOSE_TRAFICO_20260704 (120247186770470784) — $80.24 (testeo, día 14)
+  · 🟦 VARICOSE_ESCALA_VERGUENZA_20260710 (120247375697420784) — $69.63 (escalado, día 8; el master ...332930784 sigue PAUSED, correcto)
+PD testeo = 1×BE v1 Q64.5 = $8.46 · PD escalado(2x1) = 1×BE Q159 ≈ $20.9.
+
+INFORME ETAPA-7 — TESTEO (acum, omni aprox):
+  conjunto            | gasto$ | %conv/clic | omni | CPA(aprox Q) | freq | estado
+  MIEDO-CIRUGIA       | 22.27 | 55.2% ✅   | 8   | Q21.2 ✅✅   | 1.49 | 🟢 GANADOR (co-ganador confirmado)
+  VERGUENZA-PIERNAS   | 22.13 | 52.1% ✅   | 3   | Q56.2 ✅     | 1.32 | 🟢 ganador (ya escalando aparte)
+  MANCHAS-OSCURAS     | 22.28 | 40.3% ✅   | 2   | Q84.9 ⚠️    | 1.39 | 🟡 sobre BE v1, vigilar
+  ARAÑITAS-VENOSAS    |  6.71 | 64.4%      | 0   | —            | 1.15 | 🔴 DESCARTADO (0 ventas histórico)
+  PIERNAS-CANSADAS    |  6.86 | 74.0%      | 0   | —            | 1.12 | 🔴 podar (0 ventas)
+  CALAMBRES-NOCTURNOS |  0.00 | —          | —   | —            | —    | nunca entregó
+
+INFORME ETAPA-7 — ESCALA_VERGUENZA (acum, omni aprox):
+  conjunto           | gasto$ | %conv/clic | omni | CPA(aprox Q) | freq  | estado
+  MA2_VESTIDO        | 13.43 | 47.4% ✅   | 5   | Q20.5 ✅✅   | 1.30  | 🟢 GANADOR (Lucid Q11.6)
+  MA6_OFERTA2X1      | 13.57 | 18.6% 🔴   | 5   | Q20.7 ✅✅   | 1.92⚠️| 🟢 VENDE pese a conv baja; FATIGA (freq≥1.9)→renovar creativo
+  MA5_RESIGNACION    | 13.58 | 19.4% 🔴   | 2   | Q51.7 ✅     | 1.67  | 🟡 rentable en 2x1, conv floja
+  MA4_MANCHAS        | 13.44 | 23.7% 🔴   | 1   | Q102.4      | 1.55  | 🟡 marginal
+  MA3_VERANO         |  7.90 | 14.5% 🔴   | 0   | —            | 1.46  | 🔴 last_3d=$0 (Meta ya lo apagó)
+  MA1_COMPARACION    |  7.71 | 10.0% 🔴   | 0   | —            | 1.53  | 🔴 last_3d=$0 (Meta ya lo apagó)
+  (Meta consolidó gasto de últimos 3d en MA5/MA4/MA2/MA6 → está podando solo.)
+
+PLAN ETAPA-8 (VARICOSE):
+  1. PAUSAR: testeo ARAÑITAS + PIERNAS-CANSADAS + CALAMBRES (0 ventas). Escalado MA3 + MA1 (ya en $0, formalizar pausa).
+  2. FATIGA: MA6_OFERTA2X1 freq 1.92 → renovar el creativo del MISMO microángulo (oferta 2x1) YA.
+  3. GANADORES claros: MA2_VESTIDO + MA6_2X1 (CPA ~Q20 en 2x1) y testeo MIEDO-CIRUGIA (Q21). Con CPA real de Lucid del lunes → surfing +20%/día en estos 3 + Post ID (prueba social) + validar horizontal en 2ª cuenta MISMA página.
+  4. MIEDO-CIRUGÍA merece su FASE 2 hermana (bot de 1 ángulo) — escalonar 2-3 días tras VERGÜENZA.
+  5. CREATIVOS brief: 3 conceptos frescos p/MA6 (oferta 2x1) anti-fatiga + 2 p/MIEDO-CIRUGÍA (rol BOFU oferta / MOFU miedo), compliance Andrómeda.
+  QUÉ HACER: renovar creativo MA6_2X1 (fatiga) y pausar los 5 conjuntos en 0 ventas; escalar +20% solo tras confirmar CPA con Lucid del lunes.
+
+───────────────────────────────────────────────────────────────────────────
+3) TINNIDROP (GTR0) — VENTANA: ESCALADO/DEFINICIÓN (día 7) · omni_purchase DISPONIBLE (aprox) — SANO
+───────────────────────────────────────────────────────────────────────────
+Campaña VIVA: 🟩 TINIDROP GTR0 - 1.59 - TEST (120256219801430595) — $65.75 acum (la Copia 2 ...910595 ya está PAUSED, correcto).
+PD por conjunto = 1×BE Q60.5 = $7.94. Todos ya pasaron PD (~$12 c/u).
+
+INFORME ETAPA-7 (acum, omni aprox):
+  conjunto                        | gasto$ | %conv/clic | omni | CPA(aprox Q) | freq | estado
+  Pérdida auditiva irreversible   | 11.86 | 56.1% ✅   | 8   | Q11.3 ✅✅✅ | 1.28 | 🟢 GANADOR TOP
+  ME DIJERON QUE NO TIENE CURA    | 12.06 | 23.8% 🔴   | 6   | Q15.3 ✅✅   | 1.81 | 🟢 VENDE (conv baja, freq alta→vigilar fatiga)
+  Deterioro cognitivo/cerebro     | 11.76 | 57.8% ✅   | 3   | Q29.9 ✅     | 1.35 | 🟢 sano
+  Accesibilidad económica vs méd. | 11.82 | 64.6% ✅   | 3   | Q30.0 ✅     | 1.32 | 🟢 sano
+  NOCHES SIN DORMIR               | 12.04 | 24.6% 🔴   | 2   | Q45.9 ✅     | 1.47 | 🟡 rentable, conv floja
+  TENSIÓN / ESTRÉS                |  6.21 | 22.2% 🔴   | 0   | —            | 1.30 | 🔴 MATAR (0 ventas, conv floja)
+
+PLAN ETAPA-8 (TINNIDROP):
+  1. PAUSAR: TENSIÓN/ESTRÉS (0 ventas, %conv/clic 22%). last_3d ya en $0 → formalizar.
+  2. GANADOR TOP = Pérdida auditiva irreversible (Q11.3, 8 ventas aprox, freq sana 1.28). Es el nuevo caballo — supera al histórico #4 Accesibilidad.
+  3. Vigilar "ME DIJERON NO TIENE CURA" freq 1.81 (cerca de fatiga) — tiene compliance "no tiene cura" en nombre, ok en bot pero revisar el AD.
+  4. Con Lucid del lunes → surfing +20% en Pérdida auditiva + Deterioro + Accesibilidad; Post ID del video ganador; escalar horizontal.
+  5. ⚠️ COMPLIANCE pendiente antes de escalar fuerte (del ingreso 10-jul): quitar sellos FDA/Min.Salud + %clínicos inventados (infografía 3), corregir timelines "primer día/semana 1" (infografía 1), reemplazar antes/después facial (infografía 2). Esto es en ADS → sube CPM si no se corrige.
+  QUÉ HACER: pausar TENSIÓN; preparar Post ID de "Pérdida auditiva"; corregir compliance de infografías/ads antes del surfing.
+
+───────────────────────────────────────────────────────────────────────────
+4) CLEARSTEM (GTR13) — VENTANA: TESTEO · GTR13 MCP OFF → SIN lado-ads en vivo
+───────────────────────────────────────────────────────────────────────────
+Reintento de acceso MCP a GTR13: sigue is_ads_mcp_enabled=false ("rollout gradual"). No puedo leer métricas en vivo.
+Campaña viva conocida: 🟩 CLEARSTEM - WP - NEW TEST (no legible por MCP).
+Último dato (Lucid 14-jul, 7d): 6 ventas, CPA Q36.2/venta · Q54.3/entregado. Mejor = Anti-Falsificación Q18.5 (2 ventas).
+SIN Lucid nueva en este run → nada que actualizar. PENDIENTE: cruzar con LucidSales del LUN 20-jul (única ventana de CLEARSTEM).
+
+═══════════════════════════════════════════════════════════════════════════
+RESUMEN DEL PORTAFOLIO (próximo paso por producto)
+═══════════════════════════════════════════════════════════════════════════
+VIVOS:
+  · NUSAVAB12  → EN ROJO. Pausar 4 conjuntos flojos del testeo Copia; concentrar en ARDOR-VIDEO. Esperar Lucid lun.
+  · VARICOSE   → SANO. Renovar creativo MA6_2X1 (fatiga 1.92); pausar 5 conjuntos 0-ventas; surfing tras Lucid lun.
+  · TINNIDROP  → SANO. Nuevo top = Pérdida auditiva (Q11.3). Pausar TENSIÓN; corregir compliance; Post ID tras Lucid lun.
+  · CLEARSTEM  → sin lectura (GTR13 MCP OFF). Solo-Lucid; próximo dato lun 20-jul.
+PENDIENTES (no auditados, no VIVO): VITAMINA D3+K2 (LISTO, falta página+WhatsApp), Repelente_Ultrasonico (LISTO, falta FanPage Hogar), SERUM_COLAGENO_BOTOX (LISTO, falta page_id Belleza). OVULOS_PURITY existe carpeta pero NO está en _PORTAFOLIO → agregar fila si va a trackearse.
+
+⚠️ RECORDATORIO AL OPERADOR — pegar LucidSales (LUN 20-jul, export 7d de TODAS las campañas):
+   Formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus
+   (o: PRODUCTO | conjunto/anuncio | ventas Lucid | despachadas | entregadas/pagadas)
+   Sin Lucid no se declara ganador oficial ni se escala fuerte — CPA se decide SEMANAL por entregado.
+═══════════════════════════════════════════════════════════════════════════

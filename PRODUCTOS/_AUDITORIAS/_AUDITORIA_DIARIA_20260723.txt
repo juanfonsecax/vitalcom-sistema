@@ -1,0 +1,124 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — SISTEMA VITALCOM · 2026-07-23 (jueves, ~7 PM)
+ETAPA-7 (lado-ads) + ETAPA-8 (plan de escalado) · SOLO LECTURA
+═══════════════════════════════════════════════════════════════════════════
+⚠️ EN ESTE RUN EL OPERADOR AÚN NO PEGÓ LAS VENTAS DE LUCIDSALES → todo ranking
+es PROVISIONAL (lado-ads: conversación/clic + omni_purchase como aproximación
+donde Meta lo entrega). NO se declara ganador oficial ni escalado fuerte sin Lucid.
+Hoy es JUEVES = día de Lucid (cadencia Lun/Jue): pegar el export 7d esta noche.
+
+ACCESO MCP (reverificado hoy): GTR7 ✅ · GTR0 ✅ · GTR3 ✅ · GTR1 ✅ · GTR13 ❌ (sigue OFF).
+omni_purchase HOY: llega en TINNIDROP-GTR0 y VARICOSE(histórico); NULL en NUSAVA.
+
+PENDIENTES (no VIVO, no auditados): VITAMINA D3+K2, Repelente_Ultrasonico,
+SERUM_COLAGENO_BOTOX, OVULOS_PURITY = LISTO/sin lanzar. Myo retirado.
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║ 1) TINNIDROP — GTR0 madre + GTR7/GTR1 satélites (FASE 3 multicuenta)        ║
+║    Ventana: ESCALADO horizontal. Madre madura; satélites día ~2-3.          ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+BE Q60.5 · Base Q30.8 · PD = 1×BE = Q60.5 = $7.94/conjunto · TASA 7.62
+
+── INFORME ETAPA-7 · GTR0 MADRE "🟩 TINIDROP GTR0-1.59-TEST" (acumulado, ~$101) ──
+Conv = gasto ÷ costo/result · CPA aprox = gasto ÷ omni_purchase × 7.62 (marcado)
+Rank | Conjunto             | Conv | link | %conv/clic | CTR  | CPM   | Freq | omni | CPA≈Q  | Estado
+ 🥇  | Pérdida auditiva     | 112  | 191  | 58.6%      | 4.43%| $0.90 | 1.32 |  8   | Q19.1 | 🟢 GANADOR (PD cumplido)
+ 🥈  | Deterioro cognitivo  | 100  | 165  | 60.6%      | 5.59%| $1.12 | 1.37 |  3   | Q50.9 | 🟢 fuerte conv, mantener
+ 🥉  | Accesibilidad econ.  |  67  | 100  | 67.0%      | 3.51%| $1.26 | 1.37 |  3   | Q50.8 | 🟢 mantener
+  4  | ME DIJERON no cura   |  50  | 197  | 25.4%      | 4.33%| $1.56 | 1.87 |  6   | Q25.6 | 🟡 vende bien pero FREQ 1.87→renovar creativo
+  5  | NOCHES SIN DORMIR    |  40  | 194  | 20.5%      | 3.50%| $1.23 | 1.55 |  2   | Q77.4 | 🔴 MATAR (%conv<35 + CPA>BE, PD cumplido)
+  -  | TENSIÓN/ESTRÉS       |  12  |  —   |  —         | 3.83%| $1.42 | 1.30 | null | —     | ya PAUSADO
+GLOBAL madre: ~22 ventas (omni) / ~$101 → CPA≈Q34.9 < BE ✅ (sano).
+
+── SATÉLITES (validación horizontal, día ~2-3) ──
+GTR7 "4🟦…4 WINERS" (~$18): Pérdida auditiva lidera (%conv/clic 50%, CPM $0.99).
+GTR1 "3🟦…4 WINERS" (~$19): Pérdida auditiva 21 conv $0.23 (%conv/clic 51%) · Accesibilidad 56.5% · Deterioro 42.9% · ME DIJERON 12.9% (flojo en satélite).
+→ Los satélites CONFIRMAN el orden de la madre: Pérdida auditiva #1 en las 3 cuentas.
+
+── PLAN ETAPA-8 ──
+1. PAUSAR: NOCHES SIN DORMIR (madre) — %conv 20.5% + CPA Q77>BE, PD cumplido.
+2. HÉROE horizontal = "Pérdida auditiva irreversible" → mantener/replicar por Post ID
+   en GTR7/GTR1 (ya está) y evaluar GTR3 cuando se reactive; es el creativo a regar.
+3. FATIGA: ME DIJERON freq 1.87 (umbral 1.9) → briefear 1 variante nueva del MISMO
+   ángulo (mismo hook "me dijeron que no tiene cura", nuevo testimonio/plano).
+4. Surfing +20%/día SOLO sobre lo que Lucid confirme rentable (probable Pérdida auditiva).
+   No subir presupuesto hoy sin Lucid.
+QUÉ HACER HOY: pausar NOCHES SIN DORMIR; dejar correr satélites 1-2 días más;
+pegar Lucid 7d para fijar CPA real y decidir surfing.
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║ 2) VARICOSE — GTR7 · ⚠️⚠️ ALERTA: CAMPAÑAS ACTIVE PERO SIN CONJUNTOS VIVOS  ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+BE Q64.5 (v1) / ≈Q159 sobre 2x1 (v2) · Base Q30.8 · TASA 7.62
+Las DOS campañas figuran ACTIVE a nivel campaña pero TODOS sus conjuntos están
+PAUSED → VARICOSE NO ESTÁ ENTREGANDO NI GASTANDO AHORA (producto "dark").
+  · "🟦 VARICOSE_ESCALA_VERGUENZA_20260710" (FASE2) → 6 conjuntos PAUSED.
+  · "🟩 VARICOSE_TRAFICO_20260704" (FASE1) → 6 conjuntos PAUSED.
+Esto es crítico: VARICOSE era el 🥈 del portafolio y estaba a un paso de escalar
+horizontal (Post ID → GTR0/3/1). Hoy está apagado.
+
+── INFORME ETAPA-7 (histórico, por qué ganaron) ──
+FASE2 VERGÜENZA:  MA2_VESTIDO 5v CPA≈Q24.3 ★ · MA6_OFERTA2X1 5v Q24.2 ★ (freq 1.965=fatiga) · MA5_RESIGNACION 2v · MA4_MANCHAS 1v · MA1/MA3 0v.
+FASE1 TESTEO:     MIEDO-CIRUGIA 8v Q23.6 ★ (CPM $1.13) · VERGÜENZA-PIERNAS 3v Q63 (ganador declarado por Lucid) · MANCHAS-OSCURAS 2v · ARAÑITAS/PIERNAS-CANSADAS 0v (descartados).
+Los CPA (omni) confirman que VERGÜENZA + MIEDO-CIRUGÍA son los caballos.
+
+── PLAN ETAPA-8 ──
+1. RESOLVER EL APAGADO: confirmar con el operador si pausó a propósito (reestructura)
+   o si quedó dark por error. Si es sin querer → reactivar YA los 2 mejores conjuntos
+   (MA2_VESTIDO + MA6_OFERTA2X1) para no perder el aprendizaje/pixel.
+2. FATIGA MA6_OFERTA2X1 freq 1.965 → renovar creativo del 2x1 antes de reactivarlo.
+3. ESCALADO HORIZONTAL (lo que tocaba): llevar VERGÜENZA por Post ID a GTR0/GTR3/GTR1,
+   misma página Claudia Vásquez, mismo playbook que TINNIDROP — PERO solo con CPA real
+   de Lucid confirmado (semanal). Escalonar MIEDO-CIRUGÍA como FASE 2 hermana 2-3 días después.
+QUÉ HACER HOY: aclarar por qué VARICOSE está dark y reactivar los 2 ganadores;
+pegar Lucid 7d para autorizar el salto horizontal.
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║ 3) NUSAVA B12 — GTR7 (ESCALADO ARDOR) · el más débil del portafolio          ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+BE Q68.3 · Base Q32.3 · TASA 7.62 · omni_purchase = NULL en toda la cuenta Nusava
+→ CPA SOLO por LucidSales (no pegado hoy). Ranking provisional por conversación.
+
+── INFORME ETAPA-7 (acumulado) ──
+Campaña "NUSAVAB12_ESCALA_ARDOR_20260715" (~$87):
+ 🥇 MA7-ARDORVIDEO  conv≈59  %conv/clic 65.6%  CTR 4.58% CPM $1.41  → el motor
+    MA5-AZUCAR      conv≈33  %conv/clic 29%
+    MA4-DEPIE       conv≈30  %conv/clic 32%
+    MA2-ARDORNOCHE  conv≈25  %conv/clic 23%
+ 🔴 MA6-OFERTA      conv≈14  %conv/clic 17.7% costo/conv $1.02 → PODAR (más caro, flojo)
+    MA3/MA1 ya PAUSED.
+Campaña "NUSAVAB12_TEST…-Copia" (~$134): solo ARDOR activo (conv≈172, %conv/clic 51%,
+CTR 5.08%, freq 1.61) — el resto (ABSORCION/MEMORIA/AZUCAR/ANIMO/CIATICA) PAUSED. Bien.
+
+── PLAN ETAPA-8 ──
+1. PAUSAR MA6-OFERTA (costo/conv $1.02, %conv 17.7%).
+2. Concentrar en ARDOR / MA7-ARDORVIDEO (el caballo real; MEMORIA escala no rindió, ya off).
+3. NO escalar Nusava hasta que Lucid confirme CPA < BE — venía en rojo (Q45.5-91.9/venta).
+   Si Lucid sigue rojo esta semana → limpiar a 2-3 conjuntos ARDOR y sostener, no invertir más.
+QUÉ HACER HOY: pausar MA6-OFERTA; esperar Lucid para decidir si Nusava sostiene o se poda.
+
+╔═══════════════════════════════════════════════════════════════════════════╗
+║ 4) CLEARSTEM — GTR13 (MCP OFF) · solo LucidSales                             ║
+╚═══════════════════════════════════════════════════════════════════════════╝
+GTR13 sigue sin Ads MCP → no hay lado-ads en vivo. Campaña viva 14-jul
+"🟩 CLEARSTEM - WP - NEW TEST". SIN el export de Lucid de hoy no hay lectura nueva.
+Último dato (Lucid 13→20 jul): 13 ventas · CPA Q31 · ROAS 7.3 — sano, aún en TESTEO.
+ACCIÓN: pegar el export de Lucid de CLEARSTEM (única ventana). Recordar aislar la
+variable "música Meta en ads-imagen" al leer.
+
+═══════════════════════════════════════════════════════════════════════════
+RESUMEN DEL PORTAFOLIO (próximo paso por producto)
+═══════════════════════════════════════════════════════════════════════════
+• TINNIDROP 🟢 sano, escalando horizontal. Pausar NOCHES SIN DORMIR; héroe = Pérdida
+  auditiva en las 3 cuentas; renovar creativo ME DIJERON (fatiga). Surfing tras Lucid.
+• VARICOSE ⚠️ DARK (todos los conjuntos PAUSED en ambas campañas). Aclarar/reactivar
+  MA2_VESTIDO + MA6_OFERTA2X1; luego horizontal Post ID con CPA real.
+• NUSAVA 🟡 débil. Pausar MA6-OFERTA; sostener ARDOR/MA7; decidir sostener vs podar con Lucid.
+• CLEARSTEM ⏳ sin MCP → depende 100% del export Lucid; venía sano (Q31).
+• LISTO sin lanzar: VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX, OVULOS_PURITY.
+
+RECORDATORIO AL OPERADOR — pegá el export de LucidSales (7 días, todas las campañas),
+formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus.
+Sin eso, todo lo de arriba es provisional por conversación; matar-por-ventas y escalado
+fuerte quedan en espera del CPA real por entregado.
+═══════════════════════════════════════════════════════════════════════════

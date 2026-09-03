@@ -1,0 +1,122 @@
+{
+  "slug": "tinnidrop-gt",
+  "producto": "Tinnidrop - spray natural para el oido",
+  "marca": "South Moon",
+  "concepto_asignado": "TEST_T01 — los 4 blueprints sobre el mismo angulo",
+  "test_id": "T01",
+  "mercado": {
+    "pais": "Guatemala",
+    "gentilicio": "guatemalteco",
+    "moneda": "Q",
+    "canal_cierre": "contraentrega"
+  },
+  "producto_data": {
+    "categoria": "Suplemento de bienestar auditivo",
+    "subcategoria": "Spray otico natural",
+    "ingrediente_estrella": "Ginkgo Biloba",
+    "dosis": "60 ml",
+    "presentacion": "frasco spray 60 ml, 2 aplicaciones por dia",
+    "empaque_color_dominante": "azul (royal/medio, aprox #1B4FA8)",
+    "empaque_color_secundario": "blanco + gris plata (lateral de caja) + verde hoja (logo South Moon)",
+    "empaque_es_neutro": false,
+    "texto_en_empaque": [
+      "TINNIDROP",
+      "TINNITUS RELIEF SPRAY",
+      "South Moon",
+      "NET WT 2FL.OZ (60ML)"
+    ],
+    "claims_en_empaque": [
+      "HEARING PROTECTION",
+      "HEALTHIER EARS",
+      "ACTIVE INGREDIENT",
+      "EVERYDAY FORMULA",
+      "IMPROVE COGNITIVE FUNCTION",
+      "ANTI-RINGING AND BUZZING"
+    ],
+    "icono_empaque": "oreja de linea blanca con onda sonora, sobre halo azul radial"
+  },
+  "audiencia": {
+    "edad": "45-65",
+    "genero": "mixto",
+    "nivel_consciencia": 3,
+    "dolor_principal": "zumbido constante en el oido que nadie le supo resolver"
+  },
+  "contenido": {
+    "problemas": [
+      "zumbido que no para",
+      "no seguir conversaciones",
+      "noches sin dormir",
+      "cansancio constante"
+    ],
+    "beneficios": [
+      "Apoya la circulacion hacia el oido",
+      "Ayuda a bajar la tension que lo agrava",
+      "Alivia la irritacion del canal auditivo",
+      "Sensacion de frescor desde la aplicacion"
+    ],
+    "mecanismos": [
+      "Ginkgo Biloba - circulacion hacia el oido",
+      "Ginseng - baja la tension nerviosa",
+      "Regaliz - alivia la irritacion del canal"
+    ],
+    "sellos": [
+      "Registro MSPAS",
+      "Formula natural",
+      "Producto importado"
+    ],
+    "botanicos": [
+      "ginkgo",
+      "ginseng",
+      "menta"
+    ],
+    "elementos_escena": [
+      "hojas de ginkgo",
+      "raiz de ginseng",
+      "hojas de menta"
+    ]
+  },
+  "oferta": {
+    "dias_garantia": 90,
+    "tiers": [
+      {
+        "cantidad": 1,
+        "unidad": "FRASCO",
+        "precio": "178.00"
+      },
+      {
+        "cantidad": 2,
+        "unidad": "FRASCOS",
+        "precio": "239.00"
+      },
+      {
+        "cantidad": 3,
+        "unidad": "FRASCOS",
+        "precio": "299.00"
+      }
+    ],
+    "precio_tachado": null
+  },
+  "assets": {
+    "producto_png": "foto real del frasco + caja Tinnidrop South Moon (entregada por el operador 2026-08-19)",
+    "figura_autoridad": "PENDIENTE — solo para blueprint A",
+    "fotos_problema": "PENDIENTE — escenas del avatar, NO lesiones"
+  },
+  "_OVERRIDES_TEST_T01": {
+    "por_que": "T01 mide el DISPOSITIVO VISUAL con todo lo demas fijo. Cada blueprint trae su propia arquitectura de precio y su propio formato; si se dejan nativos, los 4 brazos difieren en mas de una variable y el resultado no es atribuible al concepto.",
+    "formato": "4:5 (1080x1350) en los 4 brazos — NO el 1:1 nativo de los blueprints. El formato es un test aparte (pendiente #5 del handoff).",
+    "bloque_precio": "IDENTICO en los 4: Q178 - 1 FRASCO - ENVIO GRATIS - PAGAS AL RECIBIR. Anula 'tiers: 2' de C y 'tiers: 3' de D, y el precio_tachado de B.",
+    "hook": "IDENTICO en los 4: TE DIJERON QUE TENES QUE VIVIR CON EL ZUMBIDO?",
+    "beneficios": "los mismos 4, en el mismo orden, en los 4 brazos",
+    "garantia": "sello de 90 dias en los 4",
+    "pagina": "Sanarte Guatemala (498977893288095)",
+    "brazo_D": "MODO DEGRADADO. Timeline por momento de uso (PRIMERA SEMANA / USO CONTINUO / DIA A DIA), paneles con la escena del avatar. Registrar como degradado: una derrota de D NO significa que C8_PROGRESION no funcione."
+  },
+  "_nota_marca": "El empaque dice SOUTH MOON. 2_DATA_PRODUCTO.txt lo tiene mal escrito como 'South Meon' — corregir alli.",
+  "costo_proveedor_q": 41,
+  "_NOTAS_DE_MARCA": {
+    "sellos": "Todos los productos del operador cuentan con registro MSPAS. El sello va en las zonas que lo piden.",
+    "verbos": "Sin restriccion de verbos por decision del operador (19-ago): los creativos con 'cura/elimina/repara/trata' ya estan validados y corriendo. La disciplina de verbos SIGUE escrita en CLAUDE.md, COPYWRITING_ADS.md y ETAPA-4 — si no se actualizan alli, esos agentes la van a volver a imponer.",
+    "reguladores_de_otro_pais": "No usar FDA ni INVIMA: son de EEUU y Colombia. En Guatemala es MSPAS.",
+    "paleta": "El empaque es azul fuerte, no neutro -> la paleta deriva del EMPAQUE, no del ingrediente. Ojo con el blueprint B, cuyo fondo crema debe resolverse como azul hielo muy claro para no pelearse con el producto."
+  }
+}

@@ -1,0 +1,1172 @@
+============================================================
+KIT DIGITAL PANINI MUNDIAL 2026 — CONTEXTO COMPLETO
+Creado: 11 mayo 2026 | Mercado: Colombia
+Última actualización: Ronda 5 — A28–A35 + Investigación de mercado profunda + 6 ads nuevos con prompts extensos
+============================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. FICHA DEL PRODUCTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Nombre: Kit Digital Panini Mundial 2026
+Precio testeo inicial: $13.000 COP
+Precio en infografías: $19.990 COP
+⚠️ PENDIENTE: Confirmar precio definitivo antes de siguiente ronda
+Canal de venta: WhatsApp → LucidBot
+Mercado principal: Colombia
+Expansión potencial: Ecuador, Argentina
+Entrega: Descarga inmediata vía link al chat de WhatsApp
+Personaje del bot: Laura (asesora digital, tono coloquial colombiano)
+
+CONTENIDO DEL KIT:
+- 980+ láminas en alta resolución (300 DPI)
+- 48 equipos clasificados FIFA World Cup 2026
+- Fichas doradas (special gold) — 1 en 1.900 sobres oficiales
+- Fichas holográficas y plateadas
+- Fichas especiales Coca-Cola (edición completa)
+- Guía de impresión paso a paso (tinta y láser)
+- Tracker / control de figuras (para tachar las pegadas)
+- Plantillas de sobres para imprimir
+- Álbum en PDF (para quien no tiene álbum físico)
+Formato entrega: ZIP con PDFs en alta resolución
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. DATOS DE MERCADO (COLOMBIA 2026)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- 1 sobre en kiosco: ~$3.000 COP (5 láminas)
+- Sobres necesarios para completar sin repetidas: ~1.000
+- Costo mínimo completando con sobres: $1.000.000 COP
+- Costo real con repetidas: $1.500.000 COP o más
+- Fichas doradas en reventa: $25.000–$30.000 COP por unidad
+- Kioscos con desabastecimiento desde abril 2026
+- Ahorro estimado usando el kit: 98% vs comprar sobres
+- Impresión en papelería (álbum completo): $15.000–$25.000 COP adicionales
+- Costo total real para el comprador: $28.000–$45.000 COP (kit + impresión)
+- Fichas doradas: estadísticamente 1 en 1.900 sobres (dato Panini oficial)
+- 48 fichas doradas en reventa = $1.200.000–$1.440.000 COP solo en doradas
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. MÉTRICAS DEL TESTEO — RONDA 1 (11 mayo 2026)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Período: 1 día | Presupuesto por conjunto: ~$1.59 diario
+
+Conjunto                              | Result | CTR   | CPM   | Tasa WP | Alcance | Gasto
+--------------------------------------|--------|-------|-------|---------|---------|-------
+El ahorro total vs. comprar sobres    | 19     | 4.19% | $1.44 | 90.48%  | 483     | $0.72
+Montá tu negocio de cromos            | 19     | 6.07% | $1.71 | 61.29%  | 516     | $0.90
+El regalito que hace quedar bien      | 16     | 3.01% | $1.58 | 76.19%  | 636     | $1.10
+Todos los jugadores de Colombia       | 10     | 2.81% | $1.37 | 62.50%  | 580     | $0.83
+Completalo este fin de semana         | 10     | 2.85% | $0.88 | 35.71%  | 923     | $0.89
+Las fichas especiales                 | 8      | 1.96% | $1.20 | 61.54%  | 656     | $0.86
+
+INTERPRETACIÓN POR MÉTRICA (sistema):
+- Tasa WP <35%  → mismatch anuncio-bot (revisar primer mensaje del bot)
+- Tasa WP 48-50% → aceptable
+- Tasa WP 60-70% → excelente
+- Tasa WP 70%+  → extraordinario → escalar
+
+WINNERS CONFIRMADOS RONDA 1:
+🥇 Ahorro total: Tasa WP 90.48% — coherencia anuncio-bot extraordinaria → ESCALAR
+🥈 Negocio cromos: CTR 6.07% — mejor click-through → ESCALAR
+🥉 Regalito: Tasa WP 76.19% — familia/regalo muy receptivo → ESCALAR
+
+PROBLEMA DETECTADO RONDA 1:
+❌ "Completalo este fin de semana": Tasa WP 35.71% (bajo umbral crítico)
+   → Urgencia temporal no activa el chat
+   → Acción: revisar primer mensaje del bot para ese ángulo específico
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. TESTIMONIOS REALES RECIBIDOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+T1 (objeción calidad derribada):
+"Hola gracias, lo acabo de imprimir super facil con la guia que me pasaste
+que calidad tan brutal, todavia no me creo la calidad de ese documento
+mira ni se nota, que chimba" [adjuntó video de láminas impresas]
+→ Insight: La objeción "las impresas se notan" cae al ver el resultado
+
+T2 (ahorro cuantificado por el propio cliente + viralidad):
+"Buenas! solo para avisarles, el viernes compré el kit y este domingo ya
+tengo el álbum completo jaja yo calculé que me hubiera gastado como
+$900.000 comprando sobres hasta las doradas quedaron perfectas, mi primo
+tambien se lo pase, me salio todo en unos 16k lo que me hubieran salido
+3 sobres jaja" [adjuntó foto de James Rodríguez y Quintero impresos]
+→ Insight: El cliente calculó su propio ahorro ($900k), compartió con primo
+→ Insight: Las doradas son el elemento más valorado
+→ Insight: Costo real al cliente = $16k (kit + impresión) = dato de venta
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. TODOS LOS ÁNGULOS CREADOS (27 ángulos totales)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+RONDA 1 — Testeados (métricas arriba)
+A1  | El ahorro total vs. comprar sobres        | RACIONAL        | 90.48% WP ← GANADOR
+A2  | Montá tu negocio de cromos                | OPORTUNIDAD     | 6.07% CTR ← GANADOR
+A3  | El regalito que hace quedar bien           | EMOCIONAL FAM   | 76.19% WP ← SÓLIDO
+A4  | Todos los jugadores de Colombia            | PATRIÓTICO      | 62.50% WP — regular
+A5  | Completalo este fin de semana              | URGENCIA        | 35.71% WP ← PROBLEMA
+A6  | Las fichas especiales (kioscos)            | EXCLUSIVIDAD    | 61.54% WP — nicho
+
+RONDA 2 — Por lanzar
+A7  | Calculé el costo. Me asusté.              | RACIONAL 2.0    | Pendiente
+A8  | De niño nunca lo terminé. Ahora sí.       | NOSTALGIA       | Pendiente
+A9  | Las doradas en el grupo de WA             | SOCIAL CURRENCY | Pendiente
+A10 | Vendí 3 el mismo día que compré el mío    | NEGOCIO PROOF   | Pendiente
+A11 | Kioscos sin stock. Faltan semanas.         | FOMO REAL       | Pendiente
+A12 | Su primer Mundial que va a recordar        | PAPÁ EMOCIONAL  | Pendiente
+
+RONDA 3 — Por lanzar
+A13 | "Las impresas se notan" (era escéptica)   | CREENCIA FALSA  | Pendiente
+A14 | No tenía para los sobres. Nadie lo supo.  | MIEDO OCULTO    | Pendiente
+A15 | A los 50 le compré el álbum a mi nieto    | IDENTIDAD 50+   | Pendiente
+A16 | Mi hijo de 15 ya casi no habla. El álbum. | CONEXIÓN FAM    | Pendiente
+A17 | 30 días. 20% del álbum. No dan las matas. | URGENCIA FECHA  | Pendiente
+A18 | No soy el que gasta $1M. Compro intelig.  | ASPIRACIÓN      | Pendiente
+A19 | Mi hijo dijo que era imposible. Lo hice.  | SORPRESA MAT.   | Pendiente
+
+RONDA 4 — Conceptos creativos nuevos C1–C8
+A20 | Álbum completo en 5 días (C1-centrado)    | AHORRO VISUAL   | Pendiente
+A21 | Las doradas — todas incluidas (C2-asim.)  | EXCLUSIVIDAD    | Pendiente
+A22 | Era escéptico de la calidad (C3-UGC)      | CREENCIA FALSA  | Pendiente
+A23 | Kioscos sin stock → aquí tenemos (C4-P→S) | FOMO REAL       | Pendiente
+A24 | Qué incluye exactamente (C5-escalonada)   | INFORMATIVO     | Pendiente
+A25 | Fichas especiales protagonistas (C6-comp) | EXCLUSIVIDAD    | Pendiente
+A26 | Lo que dicen los que compraron (C7-test.) | PRUEBA SOCIAL   | Pendiente
+A27 | Así funciona el kit paso a paso (C8-din.) | PROCESO         | Pendiente
+
+RONDA 5 — Investigación de mercado + ángulos emocionales profundos
+A28 | Tenés $400k en sobres. Álbum al 60%.       | SUNK COST       | Pendiente
+A29 | En el 2002 tampoco lo terminé (último Pan.) | NOSTALGIA HIST  | Pendiente
+A30 | Mi cuñado ya lo terminó. Él lleva el álbum  | COMPETENCIA SOC | Pendiente
+A31 | 14 láminas que Panini NO vende en sobres    | TRAMPA PANINI   | Pendiente
+A32 | Mundial en junio + último álbum de historia | URGENCIA DOBLE  | Pendiente
+A33 | Hice los cálculos. Me faltan $1.300.000.    | MATEMÁTICA BRUL | Pendiente
+A34 | Grupos intercambio, Facebook, kioscos: nada | AGOTAMIENTO     | Pendiente
+A35 | Mi hijo preguntó si Colombia estaba. No.    | CULPA PARENTAL  | Pendiente
+
+RONDA 6 — Videos TikTok editados (Batch 1: V1–V11) — nuevos ángulos de video
+A36 | Wolf of Wall Street / negocio humor viral   | HUMOR VIRAL     | Pendiente
+A37 | Pedidos manifestados / humor religioso       | NEGOCIO PRUEBA  | Pendiente
+A38 | SIUUU apertura sobre → comparación vs kit   | COMPARACIÓN VIS | Pendiente
+
+RONDA 7 — Videos TikTok Batch 2 (V12–V23)
+A39 | "Lo llené. Terminé. Qué bendición." (V21)  | COMPLETACIÓN    | Pendiente ← PRIORIDAD
+A40 | Cartel de los Sapos + negocio colombiano    | HUMOR CULTURAL  | Pendiente
+A41 | Alien voice / envío interespacial (V18)     | HUMOR VIRAL 2   | Pendiente
+
+RONDA 8 — Videos TikTok Batch 3 (V24–V33)
+A42 | POV: Encontraste el PDF (V26)              | DESCUBRIMIENTO  | Pendiente ← PRIORIDAD
+A43 | Medir impresa = original — tamaño (V33)    | PRUEBA TAMAÑO   | Pendiente
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. MARCO PSICOLÓGICO POR ÁNGULO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DESEOS activados: álbum completo, ahorro, ser buen papá/mamá, estatus social
+DOLORES activados: sobres caros, repetidas, álbum vacío, kioscos sin stock
+EMOCIONES activadas: nostalgia, orgullo, frustración, emoción del Mundial
+CREENCIAS bloqueadoras: "las impresas se notan", "es muy complicado imprimir"
+ASPIRACIONES: comprador inteligente, buen padre, coleccionista completo
+MIEDOS: Mundial sin álbum, gastar $1M sin terminar, comprar algo de mala calidad
+NECESIDADES OCULTAS: conexión familiar, validación como padre/madre, revivir infancia
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. FLUJO DEL BOT (RESUMEN)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+APERTURA AUTOMÁTICA (trigger primer mensaje):
+→ Pausa 5 seg (simula persona real)
+→ Texto: "Un segundo que te comparto todo 😊"
+→ Video 1: Recorrido del Drive (contenido del kit)
+→ Video 2: Calidad de impresión (láminas sobre la mesa)
+→ Imagen 1: Infografía "Todo lo que incluye el kit"
+→ Imagen 2: Infografía "¿Cuánto te va a costar?" (antes/después)
+→ Testimonio 1: "que calidad tan brutal, ni se nota" + video
+→ Testimonio 2: "me hubiera gastado $900k comprando sobres" + foto
+→ Audio de Laura (30-45 seg, guión ETAPA-5)
+→ Texto Laura (CIERRE ASUNTIVO):
+   "Ya casi tenés el álbum completo 🏆
+    [si no tenés álbum físico, también incluye álbum PDF]
+    Precio de hoy: $[PRECIO] COP
+    📱 Nequi: [número] | 🏦 Bancolombia: [número]
+    Hacé el pago y enviame el pantallazo — lo tenés en minutos ⚡"
+
+INTERACCIÓN 1 (cliente paga):
+→ "✅ Pago recibido"
+→ "Procesando tu acceso... ⚡" (pausa 1.5s)
+→ Link de descarga + instrucciones
+→ Bono (si aplica)
+
+REGLAS: sin preguntas de ciudad/dirección, cierre asuntivo siempre,
+máximo 2 métodos de pago (Nequi + Bancolombia)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. MATERIALES CREADOS (checklist)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ 27 copies completos (Rondas 1–4) con títulos y CTAs
+✅ 27 prompts de imagen Midjourney (uno por ángulo)
+✅ Bot paraguas LucidBot (ETAPA-5 completa)
+✅ Flujo definitivo LucidBot (4 interacciones + 8 reglas)
+✅ 4 prompts de infografías (Imágenes 1–4 para generador IA)
+✅ 2 prompts creativos iniciales (Ángulos 5 y 6, tarjetas doradas + split screen)
+✅ 12 prompts de imagen para ads Ronda 2 y 3
+✅ 8 prompts de imagen para ads Ronda 4 (C1–C8)
+✅ Secuencia de apertura bot (orden exacto de todos los elementos)
+✅ Análisis de métricas Ronda 1 con diagnóstico
+✅ Framework de conceptos creativos visuales C1–C8
+✅ Investigación de mercado profunda (Ronda 5) — 8 problemas ocultos, consecuencias emocionales, deseos
+✅ 8 nuevos ángulos con fichas completas (A28–A35) — sunk cost, nostalgia histórica, ego social, trampa Panini, urgencia doble, matemática brutal, agotamiento, culpa parental
+✅ 6 ads completos Ronda 5 (A28, A29, A30, A31, A32, A35) — 3 V por ad + prompts extensos con paleta FIFA 2026
+✅ Análisis Batch 1 videos TikTok (V1–V11) — clasificación, prioridad, textos overlay y copies Meta completos
+✅ 3 nuevos ángulos Batch 1 (A36 Wolf of Wall Street · A37 pedidos religiosos · A38 SIUUU comparación)
+✅ Análisis Batch 2 videos TikTok (V12–V23) — clasificación, prioridad, textos overlay y copies Meta completos
+✅ 3 nuevos ángulos Batch 2 (A39 completación/bendición · A40 Cartel Sapos · A41 alien/humor viral)
+✅ Análisis Batch 3 videos TikTok (V24–V33) — clasificación, prioridad, textos overlay y copies Meta completos
+✅ 2 nuevos ángulos Batch 3 (A42 descubrimiento/revelación POV · A43 prueba de tamaño/medición)
+✅ TOTAL ÁNGULOS: 43 (A1–A43) | TOTAL VIDEOS ANALIZADOS: 33 (V1–V33)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. FRAMEWORK DE CONCEPTOS CREATIVOS (C1–C8)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+C1 | Producto centrado + beneficios íconos a los lados (simétrico)
+   → Usar: cuando el producto tiene muchos beneficios que listar claramente
+   → Ideal para: ahorro total, qué incluye, comparativa de valor
+
+C2 | Layout asimétrico — producto izquierda, lista derecha
+   → Usar: cuando hay un elemento hero que necesita protagonismo visual
+   → Ideal para: fichas doradas, elementos exclusivos, coleccionismo
+
+C3 | UGC — foto estilo usuario real (celular, mano, luz natural)
+   → Usar: para derribar objeciones de calidad, generar confianza
+   → Ideal para: calidad de impresión, álbum ya completo, resultado real
+
+C4 | Problema → Solución en una imagen (sin etiqueta antes/después)
+   → Usar: cuando el pain point es visual y concreto (kiosk vacío vs álbum lleno)
+   → Ideal para: desabastecimiento, frustración acumulada, FOMO real
+
+C5 | Oferta escalonada (básico / familiar / coleccionista)
+   → Usar: para mostrar opciones y todo lo que incluye el kit
+   → Ideal para: cierre de indecisos, pregunta "¿qué incluye exactamente?"
+
+C6 | Componentes como protagonistas (fichas especiales, doradas)
+   → Usar: para coleccionistas que valoran los items específicos
+   → Ideal para: doradas, holográficas, Coca-Cola especiales
+
+C7 | Testimonio visual (captura WhatsApp o Facebook real)
+   → Usar: para prueba social directa — el cliente habla, nosotros callamos
+   → Ideal para: escépticos, objeción calidad, necesitan ver evidencia
+
+C8 | Creativo Dinámico de Meta (4–5 imágenes en un solo anuncio)
+   → Usar: para mostrar procesos, pasos, o múltiples beneficios en secuencia
+   → Ideal para: cómo funciona, paso a paso, journey completo del cliente
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10A. RONDAS 1–3 — COPIES COMPLETOS (A1–A19)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+────────────────────────────────────────────
+A1 | El ahorro total vs. comprar sobres | RACIONAL | 90.48% WP ← GANADOR
+Ángulo: El cálculo que asusta
+Avatar: Adulto 28–45 años que hizo los números y se paralizó
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Calculé. Me asusté." / "Ahorro del 98% comprobado" / "El álbum sin el millón"
+DESCRIPCIÓN: "Descarga inmediata · Sin sobres"
+
+V1: Calculé cuánto me costaría completar el álbum comprando sobres. Me arrepentí de haber calculado 😬 Sin repetidas: $1.000.000 COP mínimo. Con repetidas — que siempre pasan — $1.500.000 o más. Y eso si encontrás stock, porque desde abril los kioscos están vacíos. Un amigo me pasó el Kit Digital Panini. 980+ láminas en un ZIP. Lo descargué, lo mandé a imprimir en la papelería con papel fotográfico. Gasté $16.000 en total. El álbum lo terminé ese fin de semana. El cálculo que me asustó se convirtió en el mejor negocio del año. Si también hiciste ese cálculo y te asustaste, escribinos.
+
+V2: $1.000.000 COP. Eso cuesta completar el álbum comprando sobres. Sin repetidas, con suerte 💸 Con repetidas — inevitables — fácilmente $1.500.000 o más. Y eso si encontrás los sobres, porque desde abril el desabastecimiento es real. El Kit Digital Panini te da las 980+ láminas completas. Descarga inmediata. Las imprimís en papelería por $15.000–$25.000 más. Un cliente nos escribió: 'me hubiera gastado $900.000 comprando sobres. Me salió todo en unos $16.000'. Costo total: menos de $45.000. Ahorro: 98%. Si querés el mismo resultado, escribinos.
+
+V3: La diferencia entre el álbum que querés y el que podés pagar comprando sobres es de $1.000.000 COP. El Kit Digital Panini cierra esa brecha. 980+ láminas en alta resolución. Los 48 equipos clasificados. Fichas doradas, holográficas, especiales Coca-Cola. Una descarga. Un pago. Lo imprimís en cualquier papelería. El kit incluye la guía exacta de qué papel pedir. Nadie nota la diferencia. El Mundial arranca pronto. El álbum vacío, no. Escribinos y te explicamos cómo funciona.
+
+PROMPT MIDJOURNEY A1: Bold price comparison infographic for Panini World Cup 2026 Colombia, split design showing shocking financial contrast, left side: massive red price tag "$1.000.000 COP" with cascading stack of Panini sticker packets, red orange tones, thick red X crossing it out, right side: bright green checkmark beside completed Panini album glowing with satisfaction, savings badge "Ahorra 98%" in gold circle at top center, Colombian family silhouette celebrating in background, center dividing arrow pointing right toward smart choice, bold clean sans-serif typography, Colombian football green and gold accents, professional marketing infographic, high contrast, 8k, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A2 | Montá tu negocio de cromos | OPORTUNIDAD | 6.07% CTR ← GANADOR
+Ángulo: El Mundial como oportunidad de negocio
+Avatar: Persona 20–35 años con mentalidad emprendedora
+Precio: V1 y V2 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Montá tu negocio ya" / "Kit + venta = ingreso" / "Negocio del Mundial 2026"
+DESCRIPCIÓN: "$19.990 · Margen desde día 1"
+
+V1: Hay un negocio que nadie está viendo en el desabastecimiento de sobres Panini 💰 Los kioscos sin stock. Los padres buscando láminas en grupos de WhatsApp. Las doradas en reventa a $25.000–$30.000 la unidad. El Kit Digital Panini te da las 980+ láminas por $19.990. Las imprimís en papelería — costo por hoja de 9 láminas: menos de $1.500. Lo que vendés en el colegio o el barrio: lo que el mercado aguante. Hay gente que ya está haciendo esto. Nosotros les damos el kit. Ellos ponen el ingenio. Si te interesa entender cómo funciona, escribinos.
+
+V2: El kit que compré por $19.990 ya me generó $90.000 el primer día 📈 El viernes compré el Kit Digital Panini. El sábado en el colegio de mis sobrinos me preguntaron de dónde había sacado las láminas. El domingo ya tenía 3 pedidos de papás. El modelo es simple: comprás el kit, imprimís en papelería, vendés. El margen existe. El mercado existe. El tiempo es limitado porque el Mundial termina. Mientras los kioscos sin stock, vos tenés el inventario que buscan. Si querés entender el modelo completo, escribinos.
+
+V3: Durante el Mundial, hay un negocio que se abre y dura exactamente mientras dure la fiebre del álbum 🚀 El desabastecimiento de sobres Panini es real desde abril. Los padres quieren láminas. Los niños quieren completar el álbum. Los kioscos no tienen. Ese vacío es una oportunidad. El Kit Digital Panini te da todo el inventario: 980+ láminas, jugadores de Colombia, fichas doradas, holográficas. Lo imprimís y distribuís. Sin local, sin inventario físico, sin mucho capital. Si querés saber cómo funciona el modelo, escribinos.
+
+PROMPT MIDJOURNEY A2: Entrepreneurship opportunity visual for Panini World Cup 2026 sticker kit Colombia, dynamic split scene, left panel: frustrated line of Colombian parents outside empty "SIN STOCK" kiosk stall, grey muted tones, right panel: young Colombian entrepreneur at home desk with printed Panini sticker sheets stacked neatly, phone open to WhatsApp showing multiple order messages and Nequi payment confirmations, upward profit arrow graphic in green and gold, "pedidos: 12 hoy" message visible on phone, motivational entrepreneurial energy, Colombian home office setting, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A3 | El regalito que hace quedar bien | EMOCIONAL FAMILIA | 76.19% WP ← SÓLIDO
+Ángulo: El regalo del Mundial para niños
+Avatar: Tío/tía, padrino/madrina, abuelo/abuela 35–60 años
+Precio: V1 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "El regalo del Mundial" / "Regalá el álbum completo" / "El tío que más quieren"
+DESCRIPCIÓN: "$19.990 · El regalazo del año"
+
+V1: Encontré el regalo perfecto para mi sobrino del Mundial y me costó $19.990 🎁 Llevaba semanas buscando. Los sobres sin stock en kioscos. Las láminas en reventa carísimas. El Kit Digital Panini: 980+ láminas, los 48 equipos, fichas doradas, holográficas, la colección Coca-Cola completa. $19.990. Descarga inmediata. Lo imprimí en la papelería ($18.000 más), lo puse en sobre bonito. Mi sobrino de 9 años no podía creer que tenía las doradas. $37.000 total. El mejor regalo del año. Escribinos si querés hacer lo mismo.
+
+V2: El regalo que ningún adulto sabe dar en época del Mundial es el que más piden los niños 🏆 No queremos dar plata. No queremos dar "algo aburrido". El Kit Digital Panini tiene todo lo que un niño quiere: los jugadores de Colombia, las fichas doradas, las holográficas, los 48 equipos completos. Lo imprimís antes de entregarlo o se lo mandás digital. El niño tiene el álbum completo. Vos quedás como el mejor tío, el mejor padrino, la mejor abuela. Para el regalo que realmente sorprende, escribinos.
+
+V3: Mi cuñada lleva 3 semanas buscando láminas de Panini para el álbum de su hijo. No encuentra. Yo le resolví el problema en 15 minutos 🤝 Compré el Kit Digital Panini por WhatsApp. Me llegó el link al instante. Se lo reenvié. Ella imprimió lo que quiso ese mismo día: los jugadores de Colombia primero, las doradas, el resto. El niño tenía el álbum 80% lleno para el fin de semana. Un kit. Dos familias felices. Ningún kiosco involucrado. Si querés resolver el mismo problema para alguien que conocés, escribinos.
+
+PROMPT MIDJOURNEY A3: Warm family gift moment advertising visual for Panini World Cup 2026, Colombian adult (35-40 years) presenting completed Panini sticker album with festive ribbon to excited 8-10 year old child, child's face expressing pure joy and disbelief, warm Colombian living room, afternoon golden sunlight, golden stickers on open album pages catching the light, Colombia player stickers prominently visible, small Colombia flag decoration nearby, incredibly heartfelt emotional moment, lifestyle photography natural colors, soft bokeh background, authentic Colombian family representation, high resolution, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A4 | Todos los jugadores de Colombia | PATRIÓTICO | 62.50% WP — regular
+Ángulo: La selección completa en el álbum
+Avatar: Colombiano apasionado por la selección 18–50 años
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Colombia completa ya" / "La selección, toda aquí" / "James, Falcao, todos"
+DESCRIPCIÓN: "Todos los jugadores · Descarga ya"
+
+V1: Los jugadores de Colombia en el álbum. Todos. Sin buscar en kioscos sin stock 🇨🇴 James Rodríguez. Los del Mundial 2026. En el Kit Digital Panini están todos en alta resolución, listos para imprimir. No es fácil encontrarlos en sobre. Los kioscos sin stock desde abril. Las repetidas te dan cualquier jugador menos el que buscás. El kit tiene las fichas de Colombia completas. En papel fotográfico quedan igual a las originales. Ni la persona más obsesiva del grupo nota la diferencia. Colombia en el álbum. Para siempre. Escribinos.
+
+V2: El álbum del Mundial sin los jugadores de Colombia no vale nada. Y conseguirlos en sobre es casi imposible 🇨🇴 Los kioscos sin stock. Las repetidas te dan todo menos a Colombia. Los grupos de Facebook piden $5.000–$8.000 por las láminas de la selección. El Kit Digital Panini incluye TODOS los jugadores de Colombia en el Mundial 2026. En alta resolución 300 DPI. Imprimís en papelería y quedan perfectas. La selección completa. En tu álbum. Sin depender del azar. Escribinos y te contamos cómo funciona.
+
+V3: Colombia va al Mundial 2026. Ese álbum tiene que estar completo 🏆 Pero los kioscos sin stock, los sobres a $5.000, las repetidas interminables — completar la selección colombiana está siendo casi imposible. El Kit Digital Panini tiene todos los jugadores de Colombia incluidos. Los impresos quedan exactamente igual a los originales. La guía de impresión dice qué papel pedir para que el acabado sea perfecto. Colombia completa en el álbum. Para que quede para la historia. Si querés esto, escribinos.
+
+PROMPT MIDJOURNEY A4: Patriotic Colombian football advertising visual for Panini World Cup 2026, Colombian football fan (late 20s, yellow Colombia jersey number 10) holding up completed Panini album open to Colombia national team page, face full of pride and emotion, small Colombia flag waving in one hand, vivid Colombia flag colors yellow blue red abstract wash background, Panini sticker cards of Colombian players floating dynamically around, one prominent golden James Rodriguez sticker card center-frame, stadium crowd atmosphere in blurred background, warm golden sunset light, high energy patriotic mood, professional advertising photography, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A5 | Completalo este fin de semana | URGENCIA TEMPORAL | 35.71% WP ← PROBLEMA
+Ángulo: Urgencia de tiempo + solución inmediata
+Avatar: Procrastinador 25–45 años con el álbum a medias
+⚠️ MISMATCH BOT — Revisar primer mensaje para reflejar urgencia temporal
+Precio: V1 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Álbum listo este finde" / "El Mundial llega pronto" / "Completalo antes del pitazo"
+DESCRIPCIÓN: "$19.990 · Hoy descargás"
+
+V1: El Mundial arranca pronto. Calculé que si empiezo HOY puedo tener el álbum completo este fin de semana 📅 No comprando sobres — el desabastecimiento desde abril hace imposible conseguirlos. El costo sería $1.000.000 o más. El Kit Digital Panini: 980+ láminas descargadas hoy. Las mandás a imprimir mañana. El sábado pegás. El domingo el álbum está completo. $19.990 por el kit. $15.000–$25.000 en papelería. Menos de $45.000 en total. El fin de semana que querés tener el álbum listo es este. Escribinos hoy.
+
+V2: Hay algo que se acaba antes del Mundial: el tiempo para completar el álbum 🗓️ Si empezás mañana a buscar sobres — no hay. Si pedís en grupos de WhatsApp — te cobran el doble. Si esperás — llegás al Mundial con el álbum a medias. El Kit Digital Panini te da las 980+ láminas hoy. Las imprimís este fin de semana. El álbum queda completo antes de que empiece el torneo. No es para el próximo fin de semana. Es para este. Escribinos ahora.
+
+V3: El Mundial empieza pronto. El álbum tiene que estar completo antes ⚡ Comprar sobres no es opción: sin stock, sin tiempo, sin plata suficiente. El Kit Digital Panini funciona así: hoy comprás, hoy descargás, mañana imprimís, este fin de semana pegás. Álbum completo antes del pitazo inicial. 980+ láminas. Los 48 equipos. Las fichas doradas. Todo en una descarga. El que tiene el álbum completo cuando empieza el Mundial es el que actuó ahora. Escribinos.
+
+PROMPT MIDJOURNEY A5: Urgency countdown advertising visual for Panini World Cup 2026 sticker kit Colombia, top half: FIFA World Cup 2026 trophy glowing in golden stadium light, crowd celebration fireworks, "¡El Mundial Llega!" calendar icon with urgent red circle, bottom half: close-up of hands rapidly placing final sticker into nearly-complete Panini album, Colombian player card being pressed into place with fingertips, warm residential lighting, kinetic energy and motion blur suggesting speed, red and green urgency color contrast, "Este fin de semana" badge in bold red pill shape, dynamic composition, 8k, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A6 | Las fichas especiales (kioscos) | EXCLUSIVIDAD | 61.54% WP — nicho
+Ángulo: Las fichas imposibles de conseguir, ahora disponibles
+Avatar: Coleccionista adulto 20–40 años que conoce el valor de las especiales
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Las doradas, acá están" / "1 en 1.900 — sin buscar" / "Especiales, todas aquí"
+DESCRIPCIÓN: "48 doradas · Holográficas · Coca-Cola"
+
+V1: Las fichas doradas del álbum Panini: 1 en 1.900 sobres. ¿Cuánto llevarías gastado para tenerlas todas? 🥇 Son 48 doradas — una por equipo. Para tenerlas comprando sobres, estadísticamente necesitarías más de 90.000 sobres. Imposible. En reventa: $25.000–$30.000 por unidad. Las 48: hasta $1.440.000 solo en doradas. El Kit Digital Panini las incluye todas. Las holográficas también. Las plateadas. Las especiales Coca-Cola completas. Todo en un ZIP de descarga inmediata. Para el coleccionista que entiende lo que está leyendo — escribinos.
+
+V2: Hay láminas en el álbum Panini 2026 que no son para cualquiera. Acá están todas ✨ Las doradas: 1 en 1.900 sobres (dato oficial Panini). Las holográficas: igual de raras con efecto prisma. Las plateadas: tercer nivel de rareza. Las Coca-Cola especiales: edición de colaboración, no están en todos los países. Estas son las fichas que hacen que el álbum sea un álbum. Sin ellas, es solo un cuaderno con fotos. El Kit Digital las tiene todas en 300 DPI. El álbum real, con las especiales. Escribinos.
+
+V3: Los kioscos no tienen las doradas porque Panini diseñó el sistema para que no existan 🎴 1 en 1.900 sobres. Es matemáticamente imposible completarlas comprando sobres de forma accesible. Esa es la intención del modelo de negocio. El Kit Digital tiene todas: 48 fichas doradas, holográficas con efecto prisma, plateadas con acabado metálico, edición especial Coca-Cola completa. La guía de impresión te indica qué papel pedir para cada tipo de ficha. Para el coleccionista que quiere el álbum completo de verdad — escribinos.
+
+PROMPT MIDJOURNEY A6: Collector luxury advertising visual for rare Panini FIFA World Cup 2026 special sticker cards, extreme macro photography of golden shimmering Panini cards arranged elegantly on dark velvet, center: large golden card with holographic foil catching studio light in rainbow prismatic pattern, "1 en 1.900 sobres" statistic elegantly typeset in white, surrounding cards showing silver metallic finish, red Coca-Cola edition card, second holographic card, dramatic directional studio lighting with specular highlights on foil surfaces, particle light bokeh in deep background, exclusive luxury collector aesthetic, Colombian gold and emerald accents, 8k macro photography, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A7 | Calculé el costo. Me asusté. | RACIONAL 2.0
+Ángulo: El cálculo detallado con números exactos
+Avatar: Persona analítica 25–45 años que hizo los números en detalle
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "El cálculo que nadie hace" / "Los números del álbum" / "Calculé. Encontré salida."
+DESCRIPCIÓN: "Hay una salida. Escribinos."
+
+V1: Hice el cálculo completo del álbum Panini. Me tomó 10 minutos. Me duró el susto 3 días 😬 Sobres para completar sin repetidas: ~1.000. A $3.000 cada uno: $3.000.000. Las repetidas hacen eso imposible — con suerte real: $1.000.000–$1.500.000. Las fichas doradas por separado en reventa: $25.000 × 48 equipos = $1.200.000 solo en doradas. El Kit Digital Panini: 980+ láminas. Una descarga. Un pago. El cálculo que te asusta tiene una salida. Solo hay que saber dónde buscarla. Escribinos.
+
+V2: Nota en el cuaderno de mi hijo (9 años): "Para completar el álbum necesito que papá gaste $1.000.000" 😅 No tenía idea de dónde sacó ese número. Era exactamente el correcto. 1 sobre = $3.000 = 5 láminas. Para completar sin repetidas: ~1.000 sobres = $3.000.000. Con repetidas razonables: más de $1.000.000. Le expliqué que había una forma mejor. El Kit Digital Panini: 980+ láminas, descarga inmediata, impresión en papelería por $15.000–$25.000 más. Mi hijo ya tiene el álbum completo. Papá no gastó el millón. Escribinos si también querés resolver esto.
+
+V3: Me puse a hacer el cálculo en serio. Hoja, lapicero, calculadora. Resultado: imposible de pagar 📊 1 sobre = $3.000 = 5 láminas = necesito ~1.000 sobres sin repetidas. Con repetidas reales: más de $1.000.000. Sin contar las doradas (1 en 1.900 sobres) que en reventa están a $25.000–$30.000 cada una. Sin contar el desabastecimiento desde abril. El Kit Digital Panini existe precisamente para ese momento en que hacés el cálculo y no encontrás salida convencional. Hay una salida. Escribinos.
+
+PROMPT MIDJOURNEY A7: Dramatic financial revelation advertising visual for Panini World Cup 2026 Colombia, Colombian adult at kitchen table at night illuminated by phone screen light, face showing shock and disbelief, phone calculator visible showing "$1.000.000" crossed out in red, handwritten notes on paper with math showing sticker costs multiplied out, half-empty Panini sticker album open on table nearby, second phone notification showing Kit Digital Panini solution glowing green in corner, cinematic chiaroscuro lighting, contrast between red problem and green solution, authentic Colombian home atmosphere, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A8 | De niño nunca lo terminé. Ahora sí. | NOSTALGIA
+Ángulo: La segunda oportunidad que la infancia no tuvo
+Avatar: Adulto 30–50 años que de niño nunca pudo terminar el álbum
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "De niño nunca lo terminé" / "El álbum que quedó a medias" / "Segunda oportunidad"
+DESCRIPCIÓN: "Para el adulto que lo mereció"
+
+V1: De niño coleccionaba álbumes Panini. Nunca pude terminar ninguno. Siempre me faltaba plata 😔 Me acuerdo perfectamente: raspaba las monedas, compraba los sobres que podía, miraba los huecos que no podía llenar. El álbum quedaba siempre a medias. 2026. El kit digital existe. 980+ láminas en una descarga. Todos los equipos, las fichas doradas que nunca pude conseguir. Lo imprimí. Lo pegué. Terminé el álbum. Por primera vez en mi vida, un álbum Panini completo. Si también tenés esa deuda pendiente con el niño que fuiste, escribinos.
+
+V2: El álbum de Italia '90 quedó a medias. El de Francia '98, igual. El de Corea-Japón '02, también 🎴 No era falta de ganas. Era falta de plata. Un sobre era lujo que no siempre había. 2026. El kit digital existe. 980+ láminas en alta resolución, todos los equipos, las fichas doradas que de niño solo veíamos en las vitrinas. Lo imprimí, lo pegué. Terminé el álbum. El niño que nunca pudo terminar el suyo finalmente lo hizo. Si esa historia también es tuya, escribinos.
+
+V3: Hay una memoria de infancia que muchos colombianos compartimos: el álbum Panini a medias guardado en algún cajón 📦 Los cromos que sí conseguimos, los huecos que nunca pudimos llenar, el último sobre antes de que se acabara la plata. El Kit Digital Panini es la segunda oportunidad que esa historia no tuvo. 980+ láminas, los 48 equipos, las fichas especiales que de niños solo mirábamos. Esta vez el álbum se termina. Para el adulto que le debe esa satisfacción al niño que fue — escribinos.
+
+PROMPT MIDJOURNEY A8: Nostalgic split-timeline advertising visual for Panini World Cup 2026, emotional composition in two halves, LEFT: vintage 1990s aesthetic with warm sepia film grain, young Colombian child (8-10 years) on tiled floor holding half-empty Panini album with visible blank spaces, sad but hopeful expression, simple clothing suggesting modest means, RIGHT: same person as adult Colombian (38-45 years) completing the same style Panini album now full of stickers, warm satisfied smile, modern apartment setting, center between both halves: glowing golden time-bridge effect, emotional weight of time and fulfillment, cinematic emotional advertising photography, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A9 | Las doradas en el grupo de WA | SOCIAL CURRENCY
+Ángulo: Las fichas doradas como moneda de estatus social
+Avatar: Adulto 20–40 años activo en grupos WhatsApp del álbum
+Precio: V1 y V2 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Las doradas del grupo" / "Sé el del grupo con todo" / "Doradas: el nuevo estatus"
+DESCRIPCIÓN: "$19.990 · Las 48 doradas incluidas"
+
+V1: En el grupo de WhatsApp del álbum, las doradas son el equivalente al Rolex 🥇 El que las tiene marca el territorio. El que las pide desesperado — todos se aprovechan. El que las ofrece para intercambio — pone las reglas. Las fichas doradas Panini: 1 en 1.900 sobres. En reventa: $25.000–$30.000 por unidad. El Kit Digital Panini las tiene todas incluidas. $19.990. Las imprimís en 300 DPI — indistinguibles del original. El lunes llegás al grupo con las doradas. Sin haber gastado $1.200.000 en reventas. Si querés ese momento, escribinos.
+
+V2: Todo grupo de WhatsApp del álbum Panini tiene una jerarquía no escrita. Las doradas la definen 📱 El que las tiene para intercambio manda. El que las busca desesperado — los demás lo aprovechan. $25.000–$30.000 por unidad en reventa. Son 48 equipos. El Kit Digital Panini tiene las 48 doradas incluidas por $19.990 total. No $25.000 por una. Todas. Las imprimís. Llegás al grupo el lunes. El grupo no sabe cómo. Escribinos.
+
+V3: El intercambio que más poder da en el grupo de WhatsApp del álbum: una ficha dorada 💬 Todos la quieren. Nadie las tiene. Los kioscos sin stock. En reventa a precios imposibles. El Kit Digital Panini resuelve eso. Las 48 fichas doradas incluidas. Las holográficas también. Las plateadas. Las especiales Coca-Cola que nadie tiene. Imprimís, tenés, intercambiás, ponés las reglas. El estatus en el grupo lo da el que tiene las fichas que los demás no pueden conseguir. Escribinos.
+
+PROMPT MIDJOURNEY A9: Social currency WhatsApp group advertising visual for Panini World Cup 2026, close-up of smartphone screen showing WhatsApp group chat "Álbum Panini 2026 🔥", multiple messages: "alguien tiene doradas?? 🙏", "pago lo que sea por James dorado", then confident sent message in blue: "Tengo todas 😏" with golden sticker photo attachment, notification showing 47 reply reactions, above the phone: actual golden Panini sticker cards catching warm light, behind: blurred group of friends reacting with surprise, gold and emerald Colombian colors, authentic digital lifestyle social dynamics, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A10 | Vendí 3 el mismo día que compré el mío | NEGOCIO PROOF
+Ángulo: Prueba real del modelo de negocio funcionando
+Avatar: Emprendedor 20–35 años — el modelo ya está validado
+Precio: V1 y V2 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Vendí 3 el día que compré" / "El negocio del Mundial" / "Tu barrio te está esperando"
+DESCRIPCIÓN: "Modelo real · Márgenes reales"
+
+V1: Compré el Kit Digital Panini el viernes. El sábado ya había vendido 3 kits 💰 No planeaba hacer negocio. Solo lo compré para mi hijo. Pero cuando vi el contenido, pensé: "esto lo necesita todo el mundo en el colegio". Hice un estado de WhatsApp. Un mensaje en el grupo de papás. Tres personas me escribieron ese mismo día. $19.990 el kit. Lo vendí a $35.000 para cubrir impresión y ganar algo. Los tres compraron. Yo ya había pagado el mío. Si comprás con la intención de vender — la oportunidad es real. Escribinos.
+
+V2: El negocio del Mundial que nadie está vendiendo en tu barrio: el Kit Digital Panini 📲 El modelo: comprás el kit por $19.990, hacés el estado de WhatsApp, esperás. En un barrio colombiano durante el Mundial, la demanda es real. El desabastecimiento desde abril hace que los padres estén buscando láminas en cualquier lado. Vos podés ser ese lado. Un comprador nuestro vendió 3 el mismo día. Otro tiene 15 pedidos activos del colegio de sus hijos. No es multinivel. Es vender algo que el mercado está buscando. Escribinos.
+
+V3: Primera semana: 3 personas en mi barrio. Segunda semana: 8. Tercera: referidos 🚀 No hice publicidad. No tengo local. No tengo ningún negocio formal. Tengo un kit digital, la papelería del barrio, y el grupo de WhatsApp de los papás del colegio. Los kioscos sin stock. Los padres con el álbum de sus hijos a medias. Yo con la solución que nadie más tiene en el barrio. El modelo es simple. Los márgenes son reales. El tiempo es limitado. Escribinos para entender cómo empezar.
+
+PROMPT MIDJOURNEY A10: Small business success proof visual for Panini World Cup 2026 kit resale, young Colombian entrepreneur (mid-20s, casual clothing) at kitchen table with organized setup: printed Panini sticker sheets in neat stacks, phone screen showing multiple WhatsApp orders and Nequi payment confirmations, handwritten notepad showing "pedidos" tally 3, 8, 15 with upward arrow, Colombian banknotes beside phone as real proof of earnings, entrepreneurial energy without luxury aesthetics, authentic Colombian home setting, warm practical lighting, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A11 | Kioscos sin stock. Faltan semanas. | FOMO REAL
+Ángulo: El desabastecimiento es permanente hasta el Mundial
+Avatar: Persona que dejó el álbum para después y no encuentra sobres
+Precio: V1 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Los sobres no van a llegar" / "Sin stock. Hay solución." / "Kioscos vacíos. Acá no."
+DESCRIPCIÓN: "$19.990 · Disponible ahora mismo"
+
+V1: Fui a 7 kioscos esta semana buscando sobres de Panini. Los últimos 2 ni abrían 😤 El desabastecimiento en Colombia es real desde abril. No es que "se acabaron" — es que Panini no va a reabastecer antes del Mundial. El Kit Digital Panini: 980+ láminas en un ZIP. Sin kiosco, sin fila, sin "venga mañana a ver si llegan". $19.990. Pago por Nequi o Bancolombia. El link te llega al WhatsApp en minutos. El que espera a que lleguen los sobres va a llegar al Mundial con el álbum vacío. Escribinos ahora.
+
+V2: Hay algo que no te están diciendo en los kioscos cuando te dicen "ya llegan" 📦 No van a llegar. El desabastecimiento de sobres Panini en Colombia arrancó en abril 2026 y no tiene solución antes del Mundial. Los que saben esto ya buscaron alternativas. El Kit Digital Panini tiene las 980+ láminas disponibles hoy. Sin cadena de suministro, sin lista de espera, sin promesas. Descarga inmediata. WhatsApp. Minutos. El que no actúa ahora llega al Mundial con el álbum a medias. Escribinos.
+
+V3: El momento exacto en que te das cuenta de que los sobres no van a llegar es el momento de escribirnos 📵 No es pesimismo. Es información: desabastecimiento confirmado desde abril 2026 · sin reposición antes del torneo · reventa a $5.000–$6.000 por sobre. La alternativa: 980+ láminas en descarga inmediata. Los 48 equipos. Las fichas especiales. Todo incluido. No el próximo fin de semana. Hoy. Escribinos y en minutos tenés el link.
+
+PROMPT MIDJOURNEY A11: FOMO urgency advertising visual for Panini World Cup 2026, top portion: Colombian adult standing outside closed kiosk stall, handwritten "SIN STOCK" sign taped to glass, bare empty sticker rack visible inside, frustration in body language, cold grey overcast Colombian street, muted desaturated tones, bottom portion: same person at home, phone screen glowing green with WhatsApp showing successful download link, Panini album being filled with stickers, warm golden home lighting, relief visible in body language, sharp emotional contrast between grey street and golden home, "Disponible ahora" badge in urgent red, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A12 | Su primer Mundial que va a recordar | PAPÁ EMOCIONAL
+Ángulo: El recuerdo del álbum que el hijo se lleva de por vida
+Avatar: Papá/mamá 28–45 años con hijo entre 6–12 años, primer Mundial consciente
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "El primer Mundial de su vida" / "El recuerdo del álbum" / "Papá que completa el álbum"
+DESCRIPCIÓN: "El recuerdo que construís hoy"
+
+V1: Mi hijo tiene 7 años. Este es su primer Mundial que realmente va a recordar 🏆 No quiero que lo recuerde como el año en que el álbum quedó a medias porque no encontrábamos sobres. El Kit Digital Panini nos dio las 980+ láminas. Lo imprimimos juntos un sábado. Él fue pegando cada ficha, yo le contaba quién era cada jugador. Colombia completa. Las doradas. El álbum terminado. El recuerdo construido. Cuando sea grande va a decir que vivió el Mundial 2026 — con el álbum completo como prueba. Escribinos si también querés ese recuerdo para tu hijo.
+
+V2: Hay una cosa que los hijos recuerdan del Mundial para siempre: si completaron el álbum o no 📘 No recuerdan los goles. No recuerdan los horarios. Sí recuerdan si el álbum tenía huecos o estaba lleno. El Kit Digital Panini: 980+ láminas, los 48 equipos, los jugadores de Colombia, las fichas doradas. Una tarde de sábado pegando juntos. Ese recuerdo no tiene precio. El kit sí tiene precio — y es mucho menor al millón que igual no alcanzarías a conseguir. Para el papá o mamá que quiere construir ese recuerdo — escribinos.
+
+V3: Mi hija de 8 años me preguntó por qué el álbum estaba a medias si el Mundial era "el evento más importante del año" 😅 No tenía buena respuesta. El Kit Digital Panini. Descarga inmediata. Lo imprimimos ese fin de semana. Ella pegó cada ficha. Buscamos a Colombia juntos. El lunes llevó el álbum completo al colegio. Nadie más lo tenía. Para resolver esto antes de que sea tarde — escribinos.
+
+PROMPT MIDJOURNEY A12: Heartwarming father-child bonding advertising visual for Panini World Cup 2026, Colombian father (early 30s) and young child (7-8 years) sitting close together on couch leaning over nearly-complete Panini sticker album on coffee table, child carefully pressing golden sticker onto final empty space, father watching with pure love and pride, warm afternoon golden hour light through living room window, completed pages showing Colombian players, empty sticker packets strewn nearby, both in casual home clothes, genuine authentic emotional moment, lifestyle photography, warm amber tones, soft bokeh home background, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A13 | "Las impresas se notan" (era escéptica) | CREENCIA FALSA
+Ángulo: La objeción de calidad derribada con evidencia
+Avatar: Persona 25–40 años que tenía la creencia de que se notan
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Las impresas no se notan" / "300 DPI: igual al orig." / "La duda que para a todos"
+DESCRIPCIÓN: "Te mostramos resultados antes"
+
+V1: Era escéptica total. "Las impresas siempre se notan. Esto no va a funcionar." Me equivoqué 😅 Tardé 3 semanas en comprar el kit por esa razón. Lo compré. Lo imprimí con papel fotográfico brillante en la papelería del barrio, como decía la guía. Puse una lámina impresa al lado de una original. Las comparé durante 5 minutos buscando diferencias. No encontré ninguna. La objeción que me tuvo 3 semanas sin comprar era falsa. Ese tiempo lo pude haber tenido el álbum completo. Si también tenés esa duda, escribinos.
+
+V2: Hay una creencia que le cuesta el álbum completo a mucha gente: "las impresas se notan" 🖨️ No se notan. Esa es la respuesta directa. La razón técnica: el kit viene en 300 DPI — resolución de impresión profesional, la misma que usa Panini. Con papel fotográfico brillante en cualquier papelería, el resultado es indistinguible. Un cliente nos mandó un video: "que calidad tan brutal, todavía no me creo, mira ni se nota, qué chimba". La creencia era falsa. El álbum completo era posible desde el principio. Escribinos si querés verlo antes de decidir.
+
+V3: Le pregunté a mi esposo si notaba algo raro en las láminas que acababa de pegar. Las miró, las comparó con las de sobre. Dijo que no 🤔 Eran impresas. Yo sabía que eran impresas. Él no podía saberlo con solo verlas. 300 DPI, papel fotográfico brillante, la guía de impresión que dice exactamente qué pedir. Las doradas quedan doradas. Las holográficas quedan holográficas. Los colores exactos. La creencia de que se notan es la razón por la que mucha gente no completa el álbum cuando podría. Si tenés esa duda, escribinos — te mostramos resultados antes de que decidas.
+
+PROMPT MIDJOURNEY A13: Myth-busting quality comparison advertising visual for Panini World Cup 2026 sticker printing, two identical-looking Panini sticker cards placed side by side on clean white surface, one subtly labeled "original" and one "impresa 300 DPI", magnifying glass hovering over both showing zero visible difference even under magnification, skeptical Colombian woman's face in background transforming from doubt to amazement, high-key studio lighting revealing every color detail clearly, "300 DPI" technical badge in professional design corner, clean minimal composition, truth and verification visual language, consumer trust aesthetic, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A14 | No tenía para los sobres. Nadie lo supo. | MIEDO OCULTO
+Ángulo: El álbum completo cuando el presupuesto no alcanzaba
+Avatar: Papá/mamá 25–45 años clase media-baja, vergüenza silenciosa de no poder
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "El álbum cuando no hay $1M" / "Papá que siempre resuelve" / "Sin el millón, con el álbum"
+DESCRIPCIÓN: "Acá no juzgamos. Resolvemos."
+
+V1: No tenía plata para los sobres. Durante meses le prometí a mi hijo que "ya íbamos a comprar más" 😶 No era mentira. Era esperanza de que apareciera el dinero. $1.000.000 para completar el álbum no aparecía. El álbum seguía a medias. Mi hijo seguía preguntando. Encontré el Kit Digital Panini. No gasté el millón. Gasté menos de $40.000 en total — kit más impresión. El álbum quedó completo. Mi hijo nunca supo que hubo un momento en que yo no podía. Solo vio que papá resolvió. Para el papá o mamá que necesitaba esta opción — escribinos.
+
+V2: El álbum Panini tiene un problema que nadie habla en voz alta: completarlo cuesta más de lo que la mayoría puede pagar 💬 $1.000.000 mínimo comprando sobres. Para muchas familias colombianas, eso no existe. Pero el hijo sí pide. El álbum sí está vacío. La presión sí está. El Kit Digital Panini existe para ese espacio. 980+ láminas, todos los equipos, las fichas doradas. Una descarga. Menos de $40.000 en total. El álbum completo sin que nadie sepa el cómo ni el cuánto. Escribinos. Acá no juzgamos — resolvemos.
+
+V3: Hay un orgullo silencioso en completar el álbum cuando no tenías cómo comprarlo con sobres ✊ No todos tenemos $1.000.000 para sobres de Panini. Eso es un hecho que nadie dice en voz alta en el grupo del colegio. El Kit Digital Panini es la forma en que muchas familias que no podían — pudieron. 980+ láminas. Descarga inmediata. Impresión en papelería. Álbum completo. El hijo que lleva el álbum lleno al colegio sin saber que papá o mamá encontró una forma inteligente de lograrlo. Eso vale más que el millón que no había. Escribinos.
+
+PROMPT MIDJOURNEY A14: Emotionally dignified advertising visual for Panini World Cup 2026, Colombian parent (early 30s, working-class warm face) sitting at modest kitchen table late at night, single lamp light, phone calculator showing large number crossed out and small number circled in relief, completed Panini sticker album nearby with all pages full, child asleep visible through doorway in background, parent's expression: relief and quiet pride — not sadness, modest but clean Colombian home, no luxury signals, authentic dignity and protective parental love as dominant emotion, intimate cinematic portrait lighting, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A15 | A los 50 le compré el álbum a mi nieto | IDENTIDAD 50+
+Ángulo: El abuelo/tío mayor que conecta con el nieto a través del álbum
+Avatar: Adulto mayor 50+ años que quiere dar un regalo significativo
+Precio: V1 y V3 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "El regalo del abuelo" / "A los 50, abuelo de oro" / "El nieto y el álbum"
+DESCRIPCIÓN: "$19.990 · El regalo que recuerdan"
+
+V1: Tengo 54 años y acabo de descubrir que puedo darle a mi nieto el álbum Panini completo por menos de $40.000 🏆 No entiendo mucho de lo digital. Pero vi la emoción de mi nieto, y decidí que ese álbum iba a estar completo. Mi hija me ayudó con el Kit Digital Panini. $19.990. Descarga en el celular. Lo llevamos a imprimir a la papelería. Mi nieto de 8 años tiene el álbum completo. Las fichas doradas incluidas. La cara que puso cuando vio las doradas no tiene precio. El kit sí: $19.990 COP. Si también querés darle ese momento a tu nieto, escribinos.
+
+V2: De joven coleccionaba álbumes Panini. Ahora tengo la oportunidad de darle ese mismo placer a mi nieto 🎴 Los tiempos cambiaron. Ya no hay que buscar sobres en kioscos. Hay un kit digital con las 980+ láminas, descarga en el celular, guía para imprimirlas en la papelería del barrio. No es complicado. Mi hija me ayudó con la descarga. Fuimos juntos a imprimir. Mi nieto las pegó. Tres generaciones. Un álbum. Una tarde de sábado. Eso es lo que el Kit Digital Panini nos dio. Escribinos si querés hacer lo mismo.
+
+V3: A los 52 años, darle a mi nieto el álbum Panini completo fue de las mejores cosas que he hecho 💛 Pensé que completarlo costaba más de $500.000 en sobres. Mi hija me mostró el Kit Digital. $19.990. Lo descargamos juntos. Lo imprimimos. Mi nieto tuvo el álbum completo ese fin de semana. Las doradas incluidas. Los jugadores de Colombia. Mi nieto de 9 años todavía me muestra el álbum cuando me visita. Si también querés ese momento, escribinos.
+
+PROMPT MIDJOURNEY A15: Intergenerational joy advertising visual for Panini World Cup 2026, Colombian grandparent (55-60 years old, warm weathered face, reading glasses, casual comfortable clothing) and grandchild (8-9 years old) sitting together at dining table, grandparent helping child carefully place stickers into nearly-complete Panini album, both leaning in with concentration and delight, completed pages showing Colombia stickers and golden cards, afternoon family visit warm atmosphere, family photos on wall in background, generational hand contrast tender and warm, authentic Colombian home details, pure love and connection between generations, lifestyle photography, golden afternoon light, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A16 | Mi hijo de 15 ya casi no habla. El álbum. | CONEXIÓN FAMILIAR
+Ángulo: El álbum como puente generacional inesperado con el adolescente
+Avatar: Papá/mamá con adolescente 12–17 años que siente la distancia
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "El álbum que lo conectó" / "Mi hijo habló ese finde" / "El puente generacional"
+DESCRIPCIÓN: "Una tarde que sí cambia algo"
+
+V1: Mi hijo de 15 años ya casi no habla conmigo. El álbum Panini cambió eso inesperadamente 🙏 No estaba buscando un punto de conexión. Estaba buscando sobres de Panini. Le mostré el Kit Digital — las 980+ láminas, los jugadores que él conocía, las doradas. Me pidió ayuda para imprimirlas. Pasamos un sábado entero pegando fichas, hablando de jugadores, discutiendo sobre Colombia. Habló más ese sábado que en los últimos 3 meses. El álbum sigue ahí. Las conversaciones también empezaron a quedarse. Si también buscás ese puente con tu adolescente, escribinos.
+
+V2: La adolescencia se roba a los hijos durante años. Un álbum de Panini me devolvió el mío por un fin de semana 💬 Mi hijo de 16, que pasa el día en el cuarto con el celular, salió cuando lo llamé a ver el Kit Digital. Me preguntó si estaban los jugadores de Colombia. Me preguntó por las doradas. Me preguntó si podíamos imprimirlas ese día. Imprimimos, pegamos, hablamos. Ese fin de semana fue diferente. El álbum quedó completo. El adolescente que se había ido apareció por unas horas. Escribinos si querés intentarlo.
+
+V3: No fue el kit lo que me sorprendió. Fue lo que pasó después de comprarlo 📘 Mi hija de 14 años se interesó desde que mencioné las fichas doradas. Me ayudó a descargar el ZIP. Me enseñó a enviar el archivo a la papelería. Yo le expliqué de los equipos, ella me enseñó de tecnología. Fuimos juntos a imprimir. Pegamos viendo el partido del día. No busqué reconectar. Pasó solo. El kit fue la excusa. La tarde juntos fue el regalo. Si también querés esa tarde, escribinos.
+
+PROMPT MIDJOURNEY A16: Unexpected family reconnection advertising visual for Panini World Cup 2026, Colombian teenager (15-16 years old, earbuds around neck, casual streetwear) and parent (40s) both genuinely engaged over Panini sticker album spread on living room floor, teen pointing excitedly at a golden Colombian player sticker, parent looking at teen with quiet joy and relief, teen's phone face-down momentarily forgotten beside them, completed album pages surrounding them, late afternoon light through window, cozy Colombian living room, authentic body language of genuine spontaneous connection, emotional advertising photography, warm tones, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A17 | 30 días. 20% del álbum. No dan las matas. | URGENCIA FECHA
+Ángulo: Los números de tiempo no cuadran — el kit es la única salida
+Avatar: Persona que lleva meses comprando sobres pero los números no dan
+Precio: V1 y V2 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "30 días. El álbum no da." / "Los números no cuadran" / "Solución antes del pitazo"
+DESCRIPCIÓN: "$19.990 · Álbum listo este finde"
+
+V1: Llevo 2 meses comprando sobres. Tengo el 20% del álbum. Quedan semanas para el Mundial 📅 Hice el cálculo: si sigo al ritmo actual, el día del pitazo inaugural voy a tener el 25% del álbum. No da. El Kit Digital Panini: 980+ láminas en una descarga. $19.990. Lo imprimís en papelería. El álbum completo este fin de semana. El tiempo que gasté en sobres no se recupera. El álbum incompleto sí se puede resolver. Escribinos ahora.
+
+V2: Hay un momento en que los números del álbum Panini no cuadran y lo sabés ⏰ Lleváis meses comprando. Tenés el 30% del álbum. Quedan semanas para el torneo. El ritmo no alcanza. Los sobres ya no hay. El costo de lo que falta es imposible. El Kit Digital Panini existe para ese momento: 980+ láminas completas, $19.990, descarga hoy, álbum listo este fin de semana. Las semanas que perdiste esperando no vuelven. Las que quedan, sí se pueden aprovechar. Escribinos.
+
+V3: El Mundial se acerca. El álbum a medias. Los kioscos vacíos. El tiempo se acabó de forma silenciosa 🗓️ Si ahora mismo mirarás el álbum y contarás los huecos versus el tiempo que queda, los números no cuadran comprando sobres. Eso no tiene solución convencional. La solución: el Kit Digital Panini. 980+ láminas en una descarga. Álbum completo este fin de semana. El Mundial con el álbum lleno es una decisión que se toma ahora. Escribinos.
+
+PROMPT MIDJOURNEY A17: Countdown urgency advertising visual for Panini World Cup 2026, Colombian adult at table with half-empty Panini album open, visible empty sticker slots numerous and prominent, calendar on wall with Mundial start date circled in red, calculator showing number gap between current progress and completion, frustrated contemplative expression, red urgency color dominating the frame, split to the right showing phone in hand with digital kit solution found, mood shifting to relief green, Colombia football green and red contrast colors, dynamic editorial advertising composition, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A18 | No soy el que gasta $1M. Compro inteligente. | ASPIRACIÓN
+Ángulo: La identidad del comprador inteligente vs. el impulsivo
+Avatar: Adulto 25–45 años con mentalidad de comprador racional, quiere validar su decisión
+Precio: V1 y V2 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Compro inteligente" / "El 98% de ahorro, real" / "No el millón. El kit."
+DESCRIPCIÓN: "Comprador inteligente · Álbum completo"
+
+V1: Hay dos tipos de persona en el grupo del álbum: el que gasta $1.000.000 en sobres y el que compra inteligente 💡 Yo soy el segundo. No es que no quiera completar el álbum — quiero. Es que el millón de pesos en sobres es mal negocio cuando existe una alternativa. El Kit Digital Panini: 980+ láminas por $19.990. Las imprimís en papelería. Total real: menos de $45.000. Ahorro: 98%. El que gastó el millón me va a preguntar cómo tengo el álbum completo. Escribinos si también querés ser el que compró inteligente.
+
+V2: No soy de los que gastan $1.000.000 en sobres para completar un álbum. Tampoco me quedé sin álbum 💰 La lógica era simple: hay un kit digital con las 980+ láminas por $19.990. Hay kioscos vendiendo sobres a $3.000 la unidad con 5 láminas aleatorias. Uno de esos dos tiene sentido. El otro es marketing. Lo compré el viernes. Lo imprimí el sábado. El álbum quedó completo. El que gastó el millón todavía no termina. Yo terminé con $45.000 en total. Para el que compra con la cabeza, no con el hype — escribinos.
+
+V3: La gente que gasta $500.000 en sobres y no termina el álbum no es porque le sobre plata. Es porque no sabe que hay una forma mejor 📊 El Kit Digital Panini: 980+ láminas, los 48 equipos, fichas doradas, holográficas. Un pago. Una impresión en papelería. Costo total real: menos de lo que muchos gastan en 2 semanas de sobres. No es trampa. No es ilegal. Es comprar con información. El comprador inteligente termina el álbum. El impulsivo sigue esperando las doradas. Escribinos.
+
+PROMPT MIDJOURNEY A18: Smart consumer vs impulsive buyer contrast for Panini World Cup 2026, left side: person drowning in massive pile of unopened sticker packets, calculator showing "$1.000.000" on screen, overwhelmed expression, excessive clutter and waste in grey muted tones, right side: confident satisfied Colombian adult holding up completed Panini album with minimal effort, single neat stack of printed pages beside them, phone showing "$19.990 pagado" confirmation, clever relaxed expression, clean organized minimal desk, bright confident greens and gold, center comparison badge "o esto — o esto" with bold arrow pointing right, professional lifestyle advertising aesthetic, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A19 | Mi hijo dijo que era imposible. Lo hice. | SORPRESA MATERNA/PATERNA
+Ángulo: El padre/madre que resuelve lo que se veía imposible
+Avatar: Papá/mamá 30–45 años que logró lo que nadie creía posible
+Precio: Sin precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Imposible. Lo hice igual." / "Mamá siempre encuentra cómo" / "La sorpresa que construí"
+DESCRIPCIÓN: "El álbum que 'no se podía'"
+
+V1: Mi hijo dijo que era imposible tener todas las láminas del álbum antes del Mundial. Le demostré que no 💪 No porque tengamos $1.000.000. Porque encontré el Kit Digital Panini. 980+ láminas en una descarga. Los 48 equipos. Las fichas doradas que él decía que "nadie puede conseguir". Todo. Lo imprimimos juntos. El álbum quedó completo ese fin de semana. Mi hijo no podía creerlo. Yo tampoco del todo. Hay algo muy satisfactorio en resolver algo que tu hijo creyó imposible. Si también querés ese momento, escribinos.
+
+V2: "Mamá, es que las doradas son imposibles de conseguir. Hay que tener suerte." — mi hijo de 10 años, resignado 😤 No acepté eso como respuesta. Busqué. Encontré el Kit Digital Panini. Las 980+ láminas, incluyendo TODAS las fichas doradas. Alta resolución. Guía de impresión. Lo descargué sola. Fui a la papelería sola. Lo imprimí. Cuando llegué a casa y saqué las doradas, mi hijo no podía creerlo. Me preguntó tres veces de dónde las había sacado. La respuesta fue que su mamá siempre encuentra la manera. Escribinos si querés ese momento.
+
+V3: Mi hija de 12 años me dijo que el álbum completo "era para los ricos" porque los sobres cuestan un millón 🏆 No le di la razón. El Kit Digital Panini tiene las 980+ láminas por una fracción de eso. Descarga inmediata. Álbum completo en un fin de semana. Se lo demostré con el álbum completo en la mano. "Mamá, ¿cómo lo conseguiste?" No le expliqué el kit. Solo le dije que los padres siempre encuentran la forma. Para el papá o mamá que quiere ese momento — escribinos.
+
+PROMPT MIDJOURNEY A19: Triumphant parental achievement advertising visual for Panini World Cup 2026, Colombian mother (early 40s) standing in doorway holding fully-completed Panini World Cup album up with both hands like a trophy, wide genuine smile of pride and achievement, child (10-12 years old) in background with expression of complete disbelief pointing at golden sticker cards visible on open pages, warm Colombian home setting, late afternoon light, sense of "I did it" energy without arrogance, pure family triumph moment, completed album clearly showing Colombia players and golden stickers, cinematic portrait composition, natural warm colors, --ar 4:5 --style raw --v 6
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. RONDA 4 — COPIES COMPLETOS (A20–A27)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+────────────────────────────────────────────
+A20 | C1 — ÁLBUM COMPLETO EN 5 DÍAS
+Ángulo: Ahorro total demostrado visualmente
+Avatar: Papá/mamá 30–45 años, álbum físico comprado, semanas sin sobres
+Precio: Sin precio en copy | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Álbum completo en 5 días" / "Sin sobres, sin kioscos" / "980 láminas, una descarga"
+DESCRIPCIÓN: "Descarga inmediata · Desde $16k total"
+
+V1: Llevaba 3 meses con el álbum a medias y ya me había resignado 😤 Fui a 6 kioscos diferentes. Unos sin stock, otros con sobres a $4.000 que ya no bajan. Calculé que necesitaba casi $900.000 para llenarlo comprando sobres — y eso sin contar las repetidas. Un amigo me pasó el Kit Digital Panini. En 5 días tenía el álbum completo. Las 980 láminas, los jugadores de Colombia, las fichas doradas — todo. Lo imprimí en la papelería del barrio por $18.000. Nadie supo que eran impresas. Si también tenés el álbum a medias y no querés gastar un millón en sobres, escribinos.
+
+V2: Mi hijo me preguntó todos los días si ya había llegado Colombia 🏆 El álbum llevaba 2 meses en el clóset porque no encontraba sobres y los que había estaban carísimos. Calculé el costo: $1.200.000 para llenarlo. Imposible. Me enteré del Kit Digital Panini por WhatsApp. Descarga inmediata: 980+ láminas en alta resolución, los 48 equipos, las fichas doradas que en kioscos ya no existen. Lo imprimimos juntos ese mismo fin de semana. Mi hijo todavía habla de eso. Si querés llenarlo antes del Mundial sin gastar una fortuna, escribinos.
+
+V3: Nadie me dijo que completar el álbum iba a ser tan imposible. Empecé en enero con ganas. En marzo ya llevaba $180.000 en sobres y 30% del álbum. Hice las cuentas: más de $1.000.000 para terminarlo. Con suerte. El Kit Digital cambió todo: 980 láminas en una descarga. Las doradas, las holográficas, los jugadores de Colombia. Lo imprimí en papelería y quedó exactamente igual al original. Álbum completo. Papá feliz. Todo por menos de lo que gasté en los 3 primeros meses de sobres. Escribinos y te explicamos cómo funciona.
+
+PROMPT MIDJOURNEY C1: Clean advertising infographic for Panini FIFA World Cup 2026 Colombia, symmetrical product-centered layout, official Panini World Cup 2026 sticker album book perfectly centered in the middle third, large and prominent, surrounded by floating benefit cards on both left and right sides, left side shows three benefit cards with icons: football icon "980+ Láminas", star icon "Fichas Doradas", download arrow icon "Descarga Inmediata", right side shows three benefit cards: Colombia flag icon "48 Equipos", printer icon "Guía de Impresión", checkmark icon "Álbum Completo", background gradient from deep forest green to vibrant emerald, Colombian yellow red blue accent colors, gold shimmer effect behind the album, clean sans-serif typography in white and gold, comparison savings badge at bottom: "Ahorra 98% vs sobres", modern flat design with subtle depth shadows, professional marketing visual, 8k resolution, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A21 | C2 — LAS DORADAS — TODAS INCLUIDAS
+Ángulo: Exclusividad / fichas imposibles de conseguir
+Avatar: Coleccionista 20–35 años obsesionado con las doradas
+Precio: Con precio $19.990 COP | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Las doradas, todas aquí" / "1 en 1.900 — ya no más" / "Fichas doradas completas"
+DESCRIPCIÓN: "$19.990 COP · Descarga inmediata"
+
+V1: 1 ficha dorada en 1.900 sobres. Eso dice Panini. Llevaba 4 meses comprando y tengo 2 🥇 DOS doradas. En reventa te piden $25.000–$30.000 por unidad. Son 48 fichas doradas en el álbum. Hacé la cuenta: comprarlas en reventa cuesta más que el álbum entero. El Kit Digital Panini tiene TODAS las fichas doradas incluidas. Las 48 de equipo, las especiales Coca-Cola, las holográficas, las plateadas. 980+ láminas en alta resolución. $19.990 COP. Descarga inmediata. Imprimís en cualquier papelería. Si querés las doradas sin depender de la suerte ni pagar reventas, escribinos.
+
+V2: Las fichas doradas en reventa están a $25.000 cada una. Son 48 equipos 🤯 $25.000 × 48 = $1.200.000 solo en doradas. Sin contar el resto del álbum. El kit tiene TODAS incluidas: las doradas de cada equipo clasificado, las especiales Coca-Cola, las holográficas, las plateadas. 980+ láminas en un ZIP. $19.990 COP. Todo en una descarga. Para el coleccionista que sabe lo que valen esas fichas — escribinos ahora.
+
+V3: Las fichas doradas de Panini son 1 en 1.900 sobres. No es casualidad que no las tengás. Es el modelo de negocio: hacer que las fichas más buscadas sean imposibles de conseguir para que sigas comprando sobres indefinidamente. El Kit Digital tiene todas. Las especiales, las holográficas, las doradas de equipo, las Coca-Cola. Alta resolución 300 DPI. Un coleccionista nos escribió: 'las doradas quedaron perfectas, mi primo también se lo pasé, me salió todo en unos 16k lo que me hubieran salido 3 sobres'. Si querés el álbum completo sin depender del azar, escribinos.
+
+PROMPT MIDJOURNEY C2: Asymmetric advertising layout for Panini World Cup 2026 sticker collection, left third: official Panini World Cup 2026 sticker album standing upright with golden shimmering light emanating from it, dramatic product photography style, right two-thirds: clean dark navy background with a structured list of golden special sticker cards fanned out, showing holographic effect stickers, golden shimmer cards with "ORO", "HOLOGRÁFICA", "COCA-COLA ESPECIAL" labels in elegant serif font, price badge "$19.990 COP" in gold on dark pill shape, countdown urgency element "Mundial 2026 · Descarga inmediata", strong diagonal dividing line between left album image and right content list, gold foil texture accents, professional luxury sports marketing aesthetic, Colombian football colors, high contrast, ultra sharp, 8k, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A22 | C3 — ERA ESCÉPTICO DE LA CALIDAD
+Ángulo: Creencia bloqueadora — las impresas se notan
+Avatar: Persona 25–40 años que dudaba de la calidad antes de comprar
+Precio: V3 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "¿Se nota que es impresa?" / "300 DPI — igual al orig." / "La duda que para a todos"
+DESCRIPCIÓN: "Fotos de resultados reales disponibles"
+
+V1: Yo también pensé 'las impresas se van a notar a leguas' 😅 Llevaba semanas mirando el kit pero no lo compraba porque estaba seguro de que iba a quedar feo. Las descargué, las imprimí en la papelería con papel fotográfico. Las puse al lado de unas originales. No se nota la diferencia. La resolución es 300 DPI — la misma que usa Panini en sus impresiones comerciales. La guía de impresión te dice exactamente qué papel pedir. Si también tenés esa duda, escribinos y te explicamos antes de que decidas.
+
+V2: Mi primer pensamiento fue: 'esto va a quedar horrible' 🖨️ Compré el kit con dudas. La guía decía papel fotográfico brillante 300 DPI. Fui a la papelería, pedí exactamente eso. Cuando las saqué y las comparé con las originales... ni yo encontré diferencia. Ni mi hijo. Ni mi cuñado que es obsesivo con el álbum. Un cliente nos mandó un video: 'que calidad tan brutal, todavía no me creo, mira ni se nota, qué chimba'. Si tenés esa misma duda, escribinos — te explicamos todo antes de decidir.
+
+V3: La razón por la que no había comprado antes: pensaba que iba a quedar como fotocopia 📄 Me equivoqué completamente. Las láminas están en 300 DPI — resolución de impresión profesional. No es una fotocopia. Con papel fotográfico brillante en cualquier papelería queda exactamente igual al original. Las doradas tienen el acabado dorado. Las holográficas tienen el efecto holográfico. $19.990 COP por las 980+ láminas. Descarga inmediata. Si querés verlo antes de decidir, escribinos — te mostramos fotos de resultados reales.
+
+PROMPT MIDJOURNEY C3: Authentic UGC-style mobile phone photograph, natural handheld aesthetic with slight motion blur, Colombian hands holding open a Panini FIFA World Cup 2026 sticker album, album open to a page showing neatly placed stickers including a golden shimmering James Rodriguez card prominent in center, stickers placed on table in background, warm indoor kitchen or living room lighting, natural daylight from window, slightly imperfect framing as if shot by real person, grain and texture consistent with phone camera, wooden table surface partially visible, coffee mug blurred in background corner, authentic Colombian home setting, no professional studio lighting, candid real-life feel, portrait crop, authentic social proof visual, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A23 | C4 — KIOSCOS SIN STOCK → AQUÍ TENEMOS TODO
+Ángulo: FOMO real / desabastecimiento documentado
+Avatar: Persona frustrada que fue a varios kioscos sin encontrar sobres
+Precio: V1 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Sin kioscos, sin fila" / "Agotado afuera, acá sí" / "Los sobres ya no hay"
+DESCRIPCIÓN: "$19.990 COP · Descarga inmediata hoy"
+
+V1: Fui a 5 kioscos distintos esta semana. En todos me dijeron lo mismo: "No hay sobres" 😤 Algunos tienen lista de espera. Otros venden packs de 10 mínimo a $5.000 el sobre. Panini tiene desabastecimiento desde abril. El Mundial arranca en junio. El tiempo se acaba. El Kit Digital Panini tiene las 980+ láminas en un ZIP. Sin kiosco, sin fila, sin stock. Descarga en minutos. $19.990 COP. Pago por Nequi o Bancolombia. Lo tenés en tu celular hoy. Si ya te cansaste de buscar sobres, escribinos ahora.
+
+V2: La realidad de los kioscos de Panini en Colombia en 2026 🛒 Semana 1: "se agotaron pero mañana llegan". Semana 2: "esta semana con seguridad". Semana 3: "no sabemos cuándo". Semana 4: sobres a $5.000 si encontrás. Panini no va a reabastecer antes del Mundial. El desabastecimiento ya está documentado desde abril. El Kit Digital no depende de kioscos. Es una descarga: 980+ láminas en alta resolución, entrega inmediata al WhatsApp. Si ya perdiste demasiado tiempo esperando, escribinos.
+
+V3: Busqué sobres en 7 kioscos y en ninguno había. El álbum lleva meses a medias. Lo peor no es el tiempo perdido. Es calcular cuánto necesitaría si aparecieran: $1.000.000 para completarlo sin repetidas. Con repetidas, $1.500.000. El Kit Digital resuelve los dos problemas: el del stock y el del presupuesto. 980+ láminas en un ZIP. Los 48 equipos, las fichas especiales, las doradas. Sin depender de si el kiosco recibió o no. El Mundial empieza pronto. Escribinos antes de que se pase la fiebre.
+
+PROMPT MIDJOURNEY C4: Split visual problem-solution advertisement for World Cup 2026 sticker kit Colombia, no text labels, visual storytelling only, left half: empty kiosk display rack with bare sticker slots, "SIN STOCK" paper sign handwritten and taped, frustrated Colombian adult standing in front with arms crossed, muted desaturated color palette, dusty yellow-grey tones, closed kiosk shutters partially visible, right half: vibrant celebration scene, same person now at home at a kitchen table, full completed Panini World Cup 2026 album open showing every page filled with stickers, golden and holographic stickers gleaming, phone screen showing WhatsApp download confirmation, bright warm saturated colors green gold red, joyful facial expression, Colombian home decor visible, sharp diagonal split between the two halves, no "antes después" or "before after" text anywhere, pure visual contrast tells the story, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A24 | C5 — QUÉ INCLUYE EXACTAMENTE (escalonada)
+Ángulo: Informativo / accesibilidad / oferta completa
+Avatar: Familia o persona indecisa que quiere saber el contenido antes de comprar
+Precio: V1 y V2 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "$19.990 — todo incluido" / "Kit completo por $19k" / "Básico, familia o todo"
+DESCRIPCIÓN: "Descarga inmediata · Nequi o Bancolombia"
+
+V1: Todo lo que incluye el Kit Digital Panini Mundial 2026 — sin letra chica 📦 980+ láminas en alta resolución (300 DPI). Los 48 equipos clasificados. Las fichas doradas. Las holográficas y plateadas. Las especiales Coca-Cola edición completa. Guía de impresión paso a paso. ¿No tenés álbum físico? También viene el álbum en PDF. ¿Sos coleccionista? Viene tracker de figuras y plantillas de sobres para imprimir tus propios packs. Todo esto: $19.990 COP. Una sola descarga. Escribinos y te lo explicamos con calma.
+
+V2: La pregunta no es si el kit vale la pena. Es cuánto estás gastando sin él 💸 Costo real de completar con sobres: $1.000.000–$1.500.000 COP. Costo del Kit Digital: $19.990 COP. Incluye: 980+ láminas · 48 equipos · fichas doradas · holográficas · plateadas · Coca-Cola · guía impresión · álbum PDF · tracker · plantillas de sobres. Ahorro estimado: 98%. 'Me hubiera gastado $900k comprando sobres, me salió todo en $16k' — cliente real, domingo pasado. Escribinos — el kit llega a tu WhatsApp en minutos.
+
+V3: Todo el mundo pregunta lo mismo: ¿qué viene incluido exactamente? 🧩 Acá va la respuesta: Las 980+ láminas en alta resolución. Los 48 equipos del Mundial. Las fichas doradas. Las holográficas y plateadas. Las especiales Coca-Cola. PLUS: álbum en PDF para quien no tiene físico. PLUS: tracker de figuras para saber cuáles ya pegaste. PLUS: plantillas de sobres para armar los tuyos. Todo en un ZIP. Una sola descarga. Una sola transferencia. Escribinos y te decimos exactamente cómo funciona para tu caso.
+
+PROMPT MIDJOURNEY C5: Clean e-commerce style tiered offer graphic for Panini World Cup 2026 digital sticker kit, three-tier package display arranged vertically from top to bottom, each tier is a distinct card with rounded corners and drop shadow, TOP TIER "Básico": white card with Panini album illustration and list of 4 main features in small text, CENTER TIER "Familiar" (highlighted as popular with bright green border and "MÁS POPULAR" badge): includes album illustration plus additional icons for PDF album and family extras, BOTTOM TIER "Coleccionista" (gold premium feel): dark navy card with gold accents showing tracker and special sticker icons, pricing "$19.990 COP" in bold on center tier with green background pill badge, Colombian green and gold color scheme throughout, FIFA World Cup 2026 trophy icon as header element, clean modern sans-serif typography, white background for overall graphic, e-commerce product card aesthetic, ultra sharp, professional, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A25 | C6 — FICHAS ESPECIALES PROTAGONISTAS
+Ángulo: Exclusividad / componentes de alto valor
+Avatar: Coleccionista que conoce el valor exacto de las fichas especiales
+Precio: V3 con precio | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Fichas doradas, todas" / "Holográficas incluidas" / "Las especiales, acá sí"
+DESCRIPCIÓN: "48 doradas · Holográficas · Coca-Cola"
+
+V1: Las fichas que nadie tiene en su álbum — todas aquí ✨ Panini diseñó el Mundial 2026 con fichas especiales que hacen imposible completar el álbum de forma convencional: 🥇 DORADAS — 1 en 1.900 sobres. Una por equipo, 48 en total. ✨ HOLOGRÁFICAS — efecto prisma, las más vistosas del álbum. ⚪ PLATEADAS — acabado metálico, casi tan raras como las doradas. 🥤 COCA-COLA ESPECIALES — edición completa de la colaboración oficial. En el Kit Digital: todas en 300 DPI. En papelería quedan con el acabado exacto. Si querés el álbum que nadie más tiene completo, escribinos.
+
+V2: Panini sabe exactamente lo que está haciendo con las fichas especiales 🧩 Las doradas: estadísticamente 1 en 1.900 sobres. Necesitarías comprar más de 9.000 sobres para tener las 48 de equipos. Solo en doradas. Las holográficas: igual de escasas, diferente acabado. Las plateadas: tercer nivel de rareza. Las Coca-Cola: edición especial de colaboración, distribución limitada. Panini las hace escasas para que sigas comprando indefinidamente. Ese es el modelo de negocio. El Kit Digital incluye TODAS en alta resolución. Sin depender de la probabilidad. Escribinos si querés el álbum real, no el álbum del azar.
+
+V3: Gente pagando $25.000–$30.000 por UNA ficha dorada en reventa 🤑 Son 48 fichas doradas en el álbum. En reventa: $1.200.000–$1.440.000 solo en doradas. Sin contar el resto. El Kit Digital: $19.990 COP por las 980+ láminas, incluyendo TODAS las especiales: → 48 doradas completas → Holográficas y plateadas → Edición especial Coca-Cola completa → Todos los jugadores de Colombia. Descarga inmediata. Para el coleccionista que entiende el valor — escribinos.
+
+PROMPT MIDJOURNEY C6: Luxury macro photography advertisement of Panini FIFA World Cup 2026 special edition sticker cards as heroes, five special stickers arranged in elegant fan spread on rich dark velvet surface, center card: large golden shimmering "ORO" sticker with football player silhouette and gold foil effect, extreme close-up showing texture and gold reflection, left cards: holographic prismatic sticker card catching rainbow light, silver metallic "PLATA" edition card, right cards: Coca-Cola edition special card in red and white, second holographic card with different color shift, dramatic directional studio lighting creating specular highlights on gold surfaces, black marble surface reflection below cards, each card perfectly sharp with bokeh behind, premium luxury jewelry advertisement aesthetic, Colombian yellow accent light, particle light flares floating above cards, text space at top and bottom thirds, 8k studio photography, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A26 | C7 — PRUEBA SOCIAL (captura WhatsApp real)
+Ángulo: Testimonios / evidencia directa de clientes reales
+Avatar: Escéptico 25–45 años que necesita ver evidencia antes de comprar
+Precio: Sin precio en copy | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "Álbum completo en 2 días" / "$900k ahorrados: real" / "Ya lo tienen, ¿y vos?"
+DESCRIPCIÓN: "Fotos y capturas reales disponibles"
+
+V1: Esta conversación de WhatsApp llegó el domingo pasado 📱 [captura de pantalla] "Buenas! solo para avisarles, el viernes compré el kit y este domingo ya tengo el álbum completo jaja. Yo calculé que me hubiera gastado como $900.000 comprando sobres. Hasta las doradas quedaron perfectas. Mi primo también se lo pasé. Me salió todo en unos 16k lo que me hubieran salido 3 sobres jaja" Viernes: compró el kit. Domingo: álbum completo. $900.000 ahorrados. Si también querés esto, escribinos.
+
+V2: El primer mensaje después de cada venta siempre dice lo mismo 💬 "No me creo la calidad" / "Mis hijos están emocionados" / "Le pasé el link a mi primo" / "No sé por qué esperé tanto". El más reciente: "Hola gracias, lo acabo de imprimir super fácil con la guía que me pasaste. Qué calidad tan brutal, todavía no me creo, mira ni se nota, qué chimba" — y adjuntó un video con las láminas sobre la mesa. La objeción más común es 'las impresas se van a notar'. Ese video es la respuesta. Si querés verlo antes de decidir, escribinos.
+
+V3: Guardamos todas las conversaciones porque son la mejor publicidad 📸 Esta llegó el lunes: "Yo dudé mucho antes de comprarlo. Pensé que era de esos productos que suenan bien pero no funcionan. Ya tengo el álbum completo y las doradas impresas quedan perfectas. Mi sobrino de 8 años no paró de hablar del álbum en todo el fin de semana." Eso pasa dos días después de comprar el kit. Escribinos y te mandamos fotos de resultados reales antes de que decidas.
+
+PROMPT MIDJOURNEY C7: Realistic WhatsApp conversation screenshot mockup on modern Android phone, phone held in hand at slight angle, WhatsApp interface shown clearly with green header and chat bubbles, conversation shows: received message bubble in white "Buenas! solo para avisarles, el viernes compré el kit y este domingo ya tengo el álbum completo 😄" followed by second bubble "me hubiera gastado como $900.000 comprando sobres, hasta las doradas quedaron perfectas 🥇", then a photo attachment thumbnail showing completed Panini sticker album opened to Colombia page with golden sticker visible, read receipts (double blue checkmarks) visible, Colombian phone wallpaper partially visible behind WhatsApp, authentic notification bar at top, battery indicator visible, soft natural indoor lighting on the hand, background is neutral out-of-focus home setting, genuine social proof screenshot aesthetic, ultra-realistic phone mockup, --ar 4:5 --style raw --v 6
+
+────────────────────────────────────────────
+A27 | C8 — ASÍ FUNCIONA EL KIT (dinámico, 5 pasos)
+Ángulo: Proceso / cómo funciona / eliminar fricción de compra
+Avatar: Persona que quiere comprar pero no entiende cómo funciona una descarga digital
+Precio: V1 con precio $19.990 | CTA: Enviar mensaje
+────────────────────────────────────────────
+TÍTULOS: "5 pasos, álbum completo" / "Así funciona el kit" / "En minutos lo tenés"
+DESCRIPCIÓN: "Proceso claro · Sin complicaciones"
+
+V1: Así de fácil es completar el álbum del Mundial 2026 🏆 → Paso 1: Comprás el kit ($19.990 por Nequi o Bancolombia) → Paso 2: Te llega el link al WhatsApp en minutos → Paso 3: Descargás el ZIP con 980+ láminas → Paso 4: Imprimís en papelería (la guía dice exactamente qué pedir) → Paso 5: Pegás en el álbum. Costo total real: $19.990 (kit) + $15.000–$25.000 (papelería) = menos de $45.000. Comparado con: $1.000.000–$1.500.000 comprando sobres, sin garantía de tenerlas todas. Escribinos hoy.
+
+V2: La gente me pregunta cómo funciona el kit. Acá va la respuesta completa 📲 1️⃣ Lo comprás por WhatsApp — Nequi o Bancolombia. 2️⃣ En minutos te llega el link de descarga. 3️⃣ Descargás un ZIP con 980+ láminas en PDF. 4️⃣ Vas a la papelería, pedís papel fotográfico, imprimís. 5️⃣ Cortás, pegás, listo. El ZIP incluye: 48 equipos, fichas doradas, holográficas, plateadas, especiales Coca-Cola, guía de impresión, tracker de figuras y plantillas de sobres. Sin kioscos, sin filas, sin stock agotado, sin $1.000.000 en sobres. Escribinos y te explicamos todo.
+
+V3: ¿Nunca imprimiste láminas en casa? Yo tampoco. Fue más fácil de lo que pensé 🖨️ El kit viene con una guía de impresión paso a paso. No necesitás saber nada de diseño ni de impresión. La guía dice: qué papel pedir, a qué calidad imprimir, cómo cortar para que queden exactas, cómo pegarlas para que no se levanten. Una mamá nos escribió: 'lo acabo de imprimir super fácil con la guía, qué calidad tan brutal'. Un papá: 'tengo el álbum completo en 2 días, me hubiera gastado $900.000 en sobres'. Si querés intentarlo, escribinos — te explicamos todo antes de comprar.
+
+PROMPT MIDJOURNEY C8: Meta dynamic creative multi-image advertisement for Panini World Cup 2026 digital sticker kit, five separate square image panels arranged in a 2x2 grid plus one wide banner panel below, each panel shows one step of the process: PANEL 1 (top left): Colombian smartphone screen showing WhatsApp payment confirmation in Nequi app green interface; PANEL 2 (top right): phone screen displaying ZIP download with progress bar and "980+ Láminas" file visible; PANEL 3 (middle left): hands at a papelería store printer tray, sheets of Panini stickers coming out of printer in high quality color; PANEL 4 (middle right): hands carefully cutting printed sticker sheet with scissors on wooden table; BOTTOM BANNER: fully completed Panini FIFA World Cup 2026 sticker album open, every page filled with stickers, golden Colombian stickers prominently visible, joyful atmosphere, warm home lighting, step numbers 1-2-3-4 overlaid in white circles on each panel, bottom banner no number, vibrant green and gold color theme throughout, sequential narrative layout, ultra realistic photography style, --ar 4:5 --style raw --v 6
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. PRÓXIMOS PASOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+□ URGENTE: Confirmar precio definitivo ($13.000 vs $19.990) y unificar en todo el material
+□ Lanzar Ronda 2 (A7–A12) a 4 AM — 6 nuevos conjuntos
+□ Lanzar Ronda 3 (A13–A19) a 4 AM — 7 nuevos conjuntos
+□ Lanzar Ronda 4 (A20–A27) a 4 AM — 8 nuevos conjuntos con conceptos C1–C8
+□ Lanzar Ronda 5 (A28–A35) a 4 AM — 8 nuevos conjuntos · generar los 6 prompts Midjourney primero
+□ Escalar A1 (Ahorro) y A2 (Negocio) — aumentar presupuesto gradualmente
+□ Corregir mismatch A5 (Completalo este finde): primer mensaje bot debe reflejar urgencia temporal
+□ ACTIVAR ÁNGULO URGENCIA HISTÓRICA (A29/A32) INMEDIATO — el dato "último Panini-FIFA" es evergreen pero tiene ventana emocional antes del inicio del Mundial (junio 2026)
+□ Verificar tracking de ventas activo antes de próxima ronda
+□ Generar imágenes Midjourney con los 6 prompts extensos de Ronda 5 antes de lanzar
+□ Recolectar testimonios nuevos — especialmente del ritual padre/hijo (alimentar A35)
+□ Activar FASE 2 cuando haya datos de 3–5 días: ángulo ganador + métricas completas
+□ Ronda 6 potencial: A33 (matemática brutal) y A34 (agotamiento del proceso) — pendiente de métricas Ronda 5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+12. INVESTIGACIÓN DE MERCADO — RONDA 5 (11 mayo 2026)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FUENTES: LaFM.com.co · ElTiempo.com · Infobae Colombia · Bloomberg Línea · DigitalTrends ES
+         ElColombiano · LetraLibres · ElDiario24 (fin licencia Panini-FIFA)
+
+──────────────────────────────────────────────
+PROBLEMAS OCULTOS CONFIRMADOS
+──────────────────────────────────────────────
+
+1. EL TECHO DE CRISTAL DEL 60-70%
+El álbum avanza fácil en los primeros meses. Después del 60-70%, la probabilidad
+de sacar láminas nuevas por sobre cae dramáticamente (matemática estadística confirmada
+por cálculos de matemáticos publicados en Infobae). El coleccionista que llega al 70%
+ya gastó suficiente para que "parar" se sienta peor que seguir — Panini explota
+activamente el sesgo del costo hundido.
+
+2. SUNK COST TRAP ACTIVO
+Quien gastó $300k-$500k en sobres tiene MENOR probabilidad de detenerse. El progreso
+visible ("ya casi termino") refuerza el compromiso aunque el retorno marginal sea mínimo.
+Estadísticamente, el tramo final del álbum requiere comprar sobres en proporción
+exponencial al avance: terminar el último 10% puede costar más que el primer 60%.
+
+3. LÁMINAS DE DISTRIBUCIÓN RESTRINGIDA (las "14 que no se venden en sobres")
+Hay estampas del álbum 2026 que Panini distribuye exclusivamente en paquetes especiales,
+cajas premium o colaboraciones con retailers específicos (p.ej. Coca-Cola, tiendas
+especializadas). El coleccionista de kiosco no puede obtenerlas por ese canal sin importar
+cuántos sobres compre. Panini confirma la colaboración oficial Coca-Cola con distribución
+de canal diferente al kiosco regular.
+
+4. EL ÚLTIMO ÁLBUM PANINI-FIFA DE LA HISTORIA
+FIFA eligió una empresa estadounidense para el Mundial 2030. Panini pierde la licencia
+histórica que sostuvo ininterrumpidamente desde México 1970 — 56 años. El 2026 es el
+ÚLTIMO álbum Panini-FIFA que existirá. Después del 26 de junio de 2026, no habrá otra
+oportunidad. Fuente: ElDiario24 / MejorInformado (10 mayo 2026).
+
+5. GRUPOS DE INTERCAMBIO: TRAMPA DE TIEMPO
+Las láminas que le faltan al coleccionista al final (el 30-40%) son exactamente las que
+nadie tiene de sobra. Los grupos de intercambio en Facebook y WhatsApp funcionan bien
+para el primer tramo pero se vuelven inútiles en el tramo final — y consumen horas de
+búsqueda sin resultado. El tiempo invertido es un costo oculto que se suma al económico.
+
+6. DEUDA EMOCIONAL GENERACIONAL (6 mundiales sin terminar)
+Adultos de 35-55 años que coleccionaron álbumes en 2002, 2006, 2010, 2014, 2018 y 2022
+sin terminar ninguno. Seis mundiales con la misma promesa rota. El 2026 es la última
+oportunidad con Panini — y con la irreversibilidad histórica encima.
+Fuente: LetraLibres.com — "El álbum Panini fue infancia, ansiedad y memoria."
+
+7. ESTATUS SOCIAL DEL ÁLBUM EN COLOMBIA 2026
+En Colombia, el álbum Panini es conversación de trabajo, familia, WhatsApp y asados.
+Tener el álbum completo es un marcador de estatus informal. El cuñado/vecino/compañero
+que lo terminó primero no necesita decir nada — el grupo lo sabe. Fuente: ElColombiano —
+reporta filas enormes en supermercados y jornadas de intercambio en Bogotá, Medellín y Bq.
+
+8. CULPA PARENTAL DE PROMESA ROTA
+El padre/madre que no puede completar el álbum con su hijo no solo siente frustración
+económica — siente que falló en el ritual generacional más grande del fútbol. El álbum
+Panini es el puente emocional entre padres e hijos en el Mundial. No completarlo es
+no haber estado presente en ese ritual.
+
+──────────────────────────────────────────────
+CONSECUENCIAS EMOCIONALES (mapa completo)
+──────────────────────────────────────────────
+→ Vergüenza del álbum a medias (en familia, trabajo, grupos de WhatsApp)
+→ Culpa por dinero quemado sin resultado tangible (las repetidas = símbolo físico del fracaso)
+→ Rabia dirigida a Panini ("el sistema está amañado desde el principio")
+→ FOMO de fecha límite real (Mundial empieza junio 2026)
+→ FOMO histórico permanente (último álbum Panini-FIFA para siempre, desde México 1970)
+→ Melancolía generacional (décadas de álbumes incompletos — 2002, 2006, 2010, 2014, 2018, 2022)
+→ Orgullo herido (el cuñado/vecino/compañero ganó sin decir nada)
+→ Culpa parental específica (la mirada del hijo cuando le decís que no hay Colombia en el álbum)
+
+──────────────────────────────────────────────
+DESEOS CONFIRMADOS
+──────────────────────────────────────────────
+→ Terminar el álbum antes del Mundial sin gastar una fortuna
+→ Sentir "esta vez sí lo logré" después de décadas de álbumes incompletos
+→ Ganar en el grupo familiar/social — tener el álbum que otros no lograron
+→ Ser el padre/madre que completó el ritual del Mundial con su hijo
+→ No ser víctima del sistema Panini — elegir la alternativa inteligente
+→ Cerrar el ciclo Panini para siempre con el último álbum de la historia
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+13. RONDA 5 — 8 NUEVOS ÁNGULOS CON FICHAS COMPLETAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+────────────────────────────────────────────
+ÁNGULO 28 — "Tenés $400.000 en sobres. El álbum sigue al 60%."
+Concepto: C4 (Problema → Solución visual)
+Avatar: Coleccionista 25-45 años, meses comprando sobres, álbum estancado entre 50-70%,
+        cajón lleno de repetidas que nadie quiere
+Dolor central: El dinero ya gastado no produce resultado visible. Las repetidas son el
+               símbolo físico del fracaso del sistema Panini.
+Deseo: Terminar el álbum sin caer más en la trampa. Ser quien tomó la decisión inteligente.
+Consecuencia emocional: Culpa, rabia hacia Panini, necesidad de reivindicarse.
+Saturación estimada: Baja | Precio en copy: No
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 29 — "En el 2002 tampoco lo terminé. Este es el último álbum Panini de la historia."
+Concepto: C3 (UGC nostálgico — álbum viejo al lado del nuevo)
+Avatar: Adulto 35-55 años que coleccionó álbumes en 2002, 2006 y nunca terminó ninguno
+Dolor central: Décadas de álbumes incompletos + irreversibilidad histórica: si no se termina
+               este año, nunca más hay un Panini-FIFA.
+Deseo: Terminar el álbum una vez en la vida. Cerrar el ciclo generacional.
+Consecuencia emocional: Melancolía activada, urgencia existencial, oportunidad irrepetible.
+Saturación estimada: Baja (ángulo inédito) | Precio en copy: No
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 30 — "Mi cuñado ya lo terminó. Él sí lleva el álbum al asado."
+Concepto: C7 (Testimonio visual WhatsApp — grupo familiar)
+Avatar: Colombiano 30-45 años, dinámica familiar típica donde el álbum se muestra en reuniones
+Dolor central: La posición social en el grupo. No es el álbum — es quién ganó esta ronda.
+Deseo: Tener el álbum completo antes de la próxima reunión. Recuperar el estatus.
+Consecuencia emocional: Orgullo herido, envidia sana, urgencia de recuperar posición.
+Saturación estimada: Baja | Precio en copy: Sí ($19.990)
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 31 — "Panini tiene 14 láminas que no se venden en sobres normales. Las tenemos todas."
+Concepto: C2 (Layout asimétrico / información privilegiada / exposé)
+Avatar: Coleccionista metódico 25-45 años que investigó y descubrió que el sistema está amañado
+Dolor central: Hay láminas que nunca van a aparecer en un sobre de kiosco — el juego estaba
+               perdido desde el principio, sin que el coleccionista lo supiera.
+Deseo: Información honesta sobre el sistema. Una alternativa que no dependa de las reglas de Panini.
+Consecuencia emocional: Rabia dirigida (válida), validación de sospechas, alivio al encontrar la salida.
+Saturación estimada: Baja (ángulo inédito) | Precio en copy: No
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 32 — "El Mundial llega en junio. Este es el último álbum Panini de la historia."
+Concepto: C1 (Centrado — doble urgencia: fecha + historia)
+Avatar: Procrastinador 28-50 años que "ya va a completarlo" pero el tiempo y la historia se acaban
+Dolor central: La convergencia de dos urgencias simultáneas e irreversibles: el tiempo (junio 2026)
+               y la historia (último Panini-FIFA para siempre).
+Deseo: Completarlo antes de que sea doblemente imposible — en el tiempo y en la historia.
+Consecuencia emocional: Ansiedad existencial, FOMO absoluto y permanente, urgencia real hoy.
+Saturación estimada: Baja | Precio en copy: Sí ($19.990)
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 33 — "Hice los cálculos. Me faltan $1.300.000 para terminar el álbum con sobres."
+Concepto: C4 (Revelación matemática — calculadora vs ticket del kit)
+Avatar: Persona analítica 25-45 años que hizo sus propios cálculos del costo restante y se asustó
+Dolor central: Ver el número real en la calculadora. No es abstracto — es $1.3M para algo que
+               es entretenimiento. Con ese dinero se compran cosas infinitamente más importantes.
+Deseo: Una solución que haga ese número completamente irrelevante.
+Consecuencia emocional: Shock, indignación, urgencia de alternativa racional inmediata.
+Saturación estimada: Baja | Precio en copy: No
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 34 — "Grupos de intercambio, Facebook, kioscos. Nada funcionó."
+Concepto: C4 (Múltiples intentos fallidos → descarga directa)
+Avatar: Coleccionista 25-45 años que intentó TODAS las alternativas convencionales y fracasó en todas
+Dolor central: El cansancio acumulado de buscar en todos los canales sin resultado. El sistema
+               completo está diseñado para que el coleccionista nunca termine por su cuenta.
+Deseo: Una solución definitiva que no dependa de factores externos, personas ni disponibilidad.
+Consecuencia emocional: Agotamiento profundo, rendición, alivio genuino al encontrar algo real.
+Saturación estimada: Baja | Precio en copy: No
+────────────────────────────────────────────
+
+────────────────────────────────────────────
+ÁNGULO 35 — "Mi hijo me preguntó si Colombia ya estaba en el álbum. Tuve que decirle que no."
+Concepto: C3 (UGC emocional — manos de hijo y padre pegando Colombia juntos)
+Avatar: Papá/mamá 30-45 años, hijo entre 6-12 años, el álbum es la promesa emocional del Mundial
+Dolor central: La mirada del hijo cuando le decís que no. No es el álbum — es sentir que fallaste
+               en el ritual generacional más grande del fútbol colombiano.
+Deseo: Ser el héroe de tu hijo este Mundial. Darle el álbum completo con Colombia adentro.
+Consecuencia emocional: Culpa parental profunda, amor activado, urgencia de reparar antes de junio.
+Saturación estimada: Baja | Precio en copy: Sí ($19.990)
+────────────────────────────────────────────
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+14. RONDA 5 — 6 ADS COMPLETOS CON PROMPTS EXTENSOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REGLA PRECIO RONDA 5 (3/3):
+SIN PRECIO → A28, A29, A31  |  CON PRECIO → A30, A32, A35
+Regla solidaria: los 3 con precio llevan $19.990 en copy Y en creativo visual.
+
+═══════════════════════════════════════════════
+AD 1 — A28 | C4 | SUNK COST / TRAMPA DEL PROGRESO (SIN PRECIO)
+═══════════════════════════════════════════════
+TÍTULOS (max 27 chars):
+→ "Panini diseñó esto así"   (22) ✓
+→ "El 60% que no avanza"     (21) ✓
+→ "Tus repetidas lo dicen"   (22) ✓
+DESCRIPCIÓN: "980 láminas · Sin repetidas" (28) ✓
+
+V1 — PAS (sin precio):
+Tenés $400k en sobres. Álbum al 60%. No es mala suerte. 📦
+
+El álbum Panini avanza fácil al inicio. Después del 60–70% para. Cada sobre nuevo trae más repetidas y menos láminas nuevas — es estadística pura que Panini conoce de memoria. Cuanto más cerca estás de terminar, más sobres necesitás para avanzar un solo casillero. Así fue diseñado.
+
+El Kit Digital Panini sale de esa trampa: 980+ láminas completas, sin sobres, sin repetidas, sin kioscos. Descarga inmediata al WhatsApp. Escribinos y te explicamos cómo funciona antes de que comprés un sobre más.
+
+V2 — BAB (sin precio):
+Antes: $300k en sobres, álbum al 55%, cajón de repetidas. 😤
+Después: álbum completo en 5 días, $35k total (kit + papelería), sin depender de ningún kiosco.
+Lo que cambió: un solo kit digital.
+
+El modelo Panini está diseñado para que el progreso se frene cuando ya invertiste demasiado para parar. No es percepción — es matemática publicada. El Kit Digital tiene las 980+ láminas: 48 equipos, fichas doradas, holográficas, Coca-Cola especiales. Sin sobre, sin repetida.
+
+Escribinos antes de comprar un sobre más.
+
+V3 — Prueba social (sin precio):
+"Me hubiera gastado $900k en sobres" — cliente real. Él compró el kit. 📱
+
+Compró el viernes. El domingo tenía el álbum completo. Las doradas incluidas. Las holográficas incluidas. Las 980+ láminas en una sola descarga.
+
+La trampa de los sobres: cuanto más avanzás, menos rentable es cada sobre comprado. El Kit Digital cuesta lo mismo si llevás el álbum al 30% o al 80%: siempre $35k total (kit + papelería), siempre el álbum completo. Escribinos y te contamos cómo funciona.
+
+────────────────────────────────────────────
+PROMPT MIDJOURNEY A28 — Extenso, Mundial 2026:
+────────────────────────────────────────────
+Ultra-dramatic split-frame advertising visual for Panini FIFA World Cup 2026 digital sticker kit Colombia campaign, powerful diagonal composition from top-left to bottom-right dividing two emotional worlds with a sharp contrasting edge, LEFT HALF — PROBLEM: fully desaturated amber-grey cinematic color grading, overhead aerial flat-lay shot of a weathered wooden Colombian kitchen table covered in crumpled and scattered duplicate Panini World Cup 2026 sticker sheets, at least 200 visible duplicate stickers piled and overlapping, physical Panini 2026 album open in center showing approximately 60 percent complete with clearly visible empty white squares on multiple pages, a real calculator display prominently showing "$400.000" in red LCD digits placed on the table next to the album, torn sticker wrappers scattered around, kiosk receipt visible with "AGOTADO" stamp, moody flat diffused grey light from above, heavy emotional weight in the composition, LEFT CORNER TEXT OVERLAY in bold white Noto Sans: "❌ $400.000 en sobres · Álbum al 60%", RIGHT HALF — SOLUTION: explosive vibrant saturation using FIFA World Cup 2026 official color palette, electric cobalt blue (#003F9E) to deep emerald green (#006847) diagonal gradient referencing USA and Mexico host nation colors, the same Panini 2026 album now impossibly complete — every single page filled with crisp vibrant stickers, a golden holographic James Rodriguez sticker gleaming center-page catching a dramatic directional spot light with gold lens flare and particle shimmer, Colombian flag tricolor (yellow #FCD116, blue #003087, red #CE1126) woven as accent ribbons in the corners, phone screen showing WhatsApp download confirmation visible at edge, RIGHT CORNER TEXT OVERLAY in bold FIFA FWC26 geometric font white: "✓ $35k total · Álbum 100%", FULL WIDTH BOTTOM BANNER: deep navy (#050B1F) ribbon with FIFA World Cup 2026 trophy silhouette icon in gold centered, clean white Noto Sans text: "Kit Digital · 980+ Láminas · Descarga Inmediata", gold and cobalt particle light flares floating throughout right half, photorealistic split advertisement poster, 8K ultra-sharp commercial direction, --ar 4:5 --style raw --v 6
+
+═══════════════════════════════════════════════
+AD 2 — A29 | C3 | NOSTALGIA + ÚLTIMO PANINI HISTORIA (SIN PRECIO)
+═══════════════════════════════════════════════
+TÍTULOS:
+→ "El último álbum Panini"   (22) ✓
+→ "Desde 1970, termina aquí" (24) ✓
+→ "2002 no. 2026 sí."        (18) ✓
+DESCRIPCIÓN: "Último Panini FIFA · Descarga" (28) ✓
+
+V1 — PAS nostálgico (sin precio):
+En el 2002 tampoco lo terminé. En el 2006 tampoco. En el 2022 tampoco. ⚽
+
+Seis mundiales. Seis álbumes incompletos. Y este va a ser diferente — porque es el último. FIFA eligió otra empresa para el 2030. Panini pierde la licencia histórica que tuvo desde México 1970. Cincuenta y seis años. No hay próxima vez.
+
+El Kit Digital Panini tiene las 980+ láminas completas. Una descarga. Sin sobre, sin kiosco, sin probabilidad. El álbum que nunca terminaste de niño — este año sí se puede. Escribinos.
+
+V2 — BAB histórico (sin precio):
+Lo que nunca hice en el 2002, el 2006, el 2010, el 2014, el 2018 ni el 2022 🏆
+
+Terminar el álbum Panini.
+
+Este año se puede. Y tiene que ser este año — porque Panini pierde la licencia FIFA para el 2030. Este es el último álbum Panini de la historia del Mundial. Después de junio, ya no hay "otro Mundial para intentarlo". La tradición que empezó en el 70 termina en el 26.
+
+El Kit Digital: 980+ láminas, 48 equipos, fichas doradas. Descarga inmediata. El álbum que nunca pudo ser — esta vez sí. Escribinos.
+
+V3 — Emocional directo (sin precio):
+Panini pierde la licencia FIFA en 2030. Este es su último álbum Mundial. 😶
+
+Desde México 1970. Cincuenta y seis años acompañando cada Copa del Mundo. El álbum del 94 que no pudiste terminar. El del 2002 que se quedó a medias. El del 2022 que tampoco. Y ahora el último.
+
+Si hay un año para terminar el álbum Panini, es este. El Kit Digital tiene las 980+ láminas completas. En una descarga. Sin sobre, sin kiosco. El cierre que nunca llegó — llegó. Escribinos.
+
+────────────────────────────────────────────
+PROMPT MIDJOURNEY A29 — Extenso, Mundial 2026:
+────────────────────────────────────────────
+Deeply emotional authentic UGC-style documentary photography for Panini FIFA World Cup 2026 digital sticker kit nostalgia campaign Colombia, two Panini sticker albums held side by side in the same pair of adult male hands, hands clearly belonging to a 40-50 year old Colombian man with slightly weathered skin texture, simple gold wedding band on ring finger, slightly trembling with weight of memory, LEFT ALBUM: genuinely aged and worn vintage Panini FIFA World Cup album from circa 2002 Korea-Japan era, cover faded and slightly yellowed at edges, spine bent from 20 years of storage, opened to a double page spread showing unmistakably INCOMPLETE collection — at least 15 empty white squares visible in sequence, small handwritten childhood notes in pencil visible in margins "me falta esta", pages wavy and soft from humidity and time, melancholy desaturated warm sepia-amber color treatment, RIGHT ALBUM: brand new pristine Panini FIFA World Cup 2026 album, vibrant official artwork cover with FIFA 2026 trophy and "26" logo clearly visible, opened to a completely filled Colombia national team page with every slot occupied, center slot featuring a gleaming golden holographic James Rodriguez sticker with FIFA 2026 gold foil effect catching directional warm light, specular golden reflection on the holographic surface, warm late-afternoon golden hour Colombian sunlight streaming from an off-frame window creating a halo of hope on the right album, bokeh background showing a lived-in Colombian home bookshelf with framed family photos barely readable, ELEGANT TEXT OVERLAYS: bottom left corner in thin white italic "2002 — incompleto" and bottom right corner "2026 — por fin." in matching italic, very top of frame in delicate thin white serif: "El último álbum Panini de la historia" with a subtle FIFA World Cup 2026 trophy tiny icon, OVERALL COLOR GRADING: the two albums exist in a color transition — left album in desaturated warm sepia (#8B7355 tones), right album in vibrant golden FIFA World Cup palette (gold #FFD700, green #006847, cobalt #003F9E), authentic documentary Fujifilm Pro 400H color science, Leica 50mm f/2 lens perspective, slight natural film grain texture, cinematic 1.33x anamorphic lens flare on right side golden light, 8K resolution, --ar 4:5 --style raw --v 6
+
+═══════════════════════════════════════════════
+AD 3 — A30 | C7 | CUÑADO / COMPETENCIA SOCIAL (CON PRECIO $19.990)
+═══════════════════════════════════════════════
+TÍTULOS:
+→ "Él ya lo tiene. Vos no."  (24) ✓
+→ "$19.990 y ganás esta."    (23) ✓
+→ "El álbum del asado."      (21) ✓
+DESCRIPCIÓN: "$19.990 · Descarga hoy mismo" (30) ✓
+
+V1 — Apertura social (con precio):
+Mi cuñado ya tiene el álbum completo. Él sí lo lleva a la reunión familiar. 😬
+
+En Colombia el álbum Panini no es solo un álbum — es el tema de WhatsApp, del asado, del trabajo. El cuñado que lo terminó no dice nada. No necesita. El grupo lo sabe y él lo sabe.
+
+$19.990 COP — Kit Digital Panini. 980+ láminas en una descarga. Descarga inmediata al WhatsApp. Dos días después: álbum completo con las fichas doradas que en kioscos ya no aparecen. Para la próxima reunión — llegás con el álbum que él no tiene completo todavía. Escribinos hoy.
+
+V2 — FOMO social (con precio):
+En el grupo de WhatsApp ya van 3 que mostraron el álbum completo. 🏆
+
+El álbum Panini 2026 se convirtió en el marcador informal de quién ganó el Mundial en la familia. El compañero de trabajo lo tiene. El cuñado lo tiene. El vecino de arriba también.
+
+$19.990 COP — Kit Digital Panini. 980+ láminas, fichas doradas incluidas, descarga inmediata. Dos días y tenés el álbum completo con Colombia adentro. Para el próximo asado — llegás con el álbum que nadie más tiene completo todavía. Escribinos.
+
+V3 — Prueba social (con precio):
+"Yo también lo llené" — lo que querés poder decir en el grupo. $19.990 COP. 📱
+
+Un comprador nos escribió el lunes pasado: "Buenas, el viernes compré el kit y este domingo ya tengo el álbum completo. Hasta las doradas quedaron perfectas. Mi primo también se lo pasé." Viernes: compró el kit. Domingo: álbum completo. $900.000 ahorrados según sus propios cálculos.
+
+Kit Digital Panini: 980+ láminas, fichas doradas, holográficas, Coca-Cola especiales. $19.990 COP. Escribinos hoy.
+
+────────────────────────────────────────────
+PROMPT MIDJOURNEY A30 — Extenso, Mundial 2026:
+────────────────────────────────────────────
+Hyperrealistic WhatsApp conversation screenshot advertisement for Panini FIFA World Cup 2026 Colombia digital sticker kit social dynamics campaign, ultra-detailed Samsung Galaxy S25 Android smartphone held naturally in a Colombian man's hand at slight downward reading angle, hand showing a 35-40 year old man, casual weekend attire suggesting family gathering context, WhatsApp interface rendered with forensic accuracy including correct green (#128C7E) header bar gradient, status bar with Colombian time 3:47 PM, battery at 68 percent, signal bars visible, GROUP CHAT named "Familia Ramírez 🏡" with member count 9, CONVERSATION THREAD from top to bottom: FIRST BUBBLE (received, white): cuñado "Carlos R." sends an image attachment — thumbnail clearly shows a completed open Panini World Cup 2026 album with every sticker slot filled, golden James Rodriguez sticker gleaming top-center of the photo, white bubble with attachment corner fold visible, timestamp 2:15 PM, SECOND BUBBLE (received): "Ya llené el álbum compadre 🏆🏆 hasta las doradas quedé" with three fire emojis 🔥, reaction emoji counter showing 6 hearts from group members below bubble, THIRD BUBBLE (sent, green bubble): protagonist's response "😬😬" — just two awkward emojis, double grey checkmarks, TIME SEPARATOR styled exactly as WhatsApp: thin grey line with "2 días después" text centered, FOURTH BUBBLE (sent, green): "😎 Yo también lo llené" with WhatsApp photo attachment showing protagonist's completed album, blue double checkmarks indicating read, FIFTH BUBBLE (received): Carlos R. "🔥🔥🔥 capo!!! ese kit funciona bien", SIX MORE received bubbles showing various family members reacting with 🏆❤️🎉 emojis, PRICE BADGE: small rounded pill badge in Colombian gold (#FCD116) with dark navy text "$19.990 COP · Kit Digital" overlaid at bottom-right corner of phone screen over the home screen wallpaper area, phone WALLPAPER partially visible: small Colombian football jersey yellow with dark trim, BACKGROUND: pleasantly blurred warm Colombian living room, wood furniture, TV showing football match out of focus, comfortable family home atmosphere, authentic social proof mobile advertisement, Meta Ads 4:5 format, 8K ultra-realistic, --ar 4:5 --style raw --v 6
+
+═══════════════════════════════════════════════
+AD 4 — A31 | C2 | TRAMPA PANINI / 14 LÁMINAS OCULTAS (SIN PRECIO)
+═══════════════════════════════════════════════
+TÍTULOS:
+→ "Panini no te lo dijo"     (22) ✓
+→ "14 que el kiosco no da"   (23) ✓
+→ "El sistema estaba roto"   (22) ✓
+DESCRIPCIÓN: "Las tenemos todas incluidas" (28) ✓
+
+V1 — Revelación directa (sin precio):
+Hay 14 láminas del álbum 2026 que Panini no vende en sobres normales. 🔍
+
+Son estampas de distribución restringida — disponibles solo en paquetes especiales, cajas premium o colaboraciones exclusivas con retailers específicos. Si comprás sobres de kiosco, esas 14 nunca van a aparecer. Sin importar cuántos sobres comprés. Esto no es teoría: Panini confirma la distribución diferencial de las ediciones Coca-Cola y especiales.
+
+El Kit Digital Panini tiene TODAS incluidas: las 14 de distribución especial, las 48 doradas, las holográficas, las plateadas, las Coca-Cola. Las 980+ láminas. Escribinos y te mandamos la lista completa.
+
+V2 — Rabia validada (sin precio):
+La razón por la que el álbum nunca se termina comprando solo sobres. 🧩
+
+No es solo que sean 980 láminas. Es que Panini tiene un grupo de estampas que únicamente se consiguen fuera del canal de kioscos — paquetes especiales, cajas premium, colaboraciones de tienda exclusiva. El coleccionista de kiosco no puede acceder a ellas por definición. Podés comprar 10.000 sobres y esas 14 nunca van a aparecer.
+
+El Kit Digital Panini tiene todas. Sin restricciones de canal, sin caja premium, sin suerte. Una descarga. Escribinos y te contamos qué incluye exactamente.
+
+V3 — Sospechas confirmadas (sin precio):
+Si sentiste que el álbum estaba amañado — tenías razón. 🚨
+
+Panini distribuye un grupo de láminas exclusivamente fuera del canal de kioscos. Stickers de edición especial que son estadísticamente imposibles de sacar en un sobre regular. El coleccionista promedio no sabe esto hasta que ya invirtió mucho dinero en sobres que nunca las van a traer.
+
+El Kit Digital Panini tiene las 980+ láminas completas — incluyendo las de distribución especial, las Coca-Cola, las doradas. Sin trampa, sin canal exclusivo, sin probabilidad. Una descarga. Escribinos.
+
+────────────────────────────────────────────
+PROMPT MIDJOURNEY A31 — Extenso, Mundial 2026:
+────────────────────────────────────────────
+Bold asymmetric investigative exposé advertising infographic for Panini FIFA World Cup 2026 Colombia digital sticker kit, layout divided into left one-third and right two-thirds by a dramatic vertical gradient dividing line, LEFT ONE-THIRD: muted desaturated background in cold grey-blue (#C5CBD3), centered: large official-looking Panini FIFA World Cup 2026 sticker packet (sobre) rendered in accurate Panini packaging colors red-white-black with official FIFA logo visible, overlaid on the packet: a circular government-warning-style badge in FIFA crimson red (#C41E3A) with white bold text "NO DISPONIBLES EN SOBRES" in urgent block caps, three crumpled empty sticker wrappers scattered below the packet suggesting futile repeated purchases, subtle yellow caution stripe pattern at the very bottom left corner suggesting construction zone warning, RIGHT TWO-THIRDS: deep investigation-board dark navy background (#0A0E2A) with subtle paper texture suggesting a detective's evidence board, TOP: explosive headline in FIFA FWC26 custom geometric white bold typography taking up 22 percent of height — "14 LÁMINAS QUE PANINI NO VENDE EN SOBRES" with a large ⚠️ warning triangle icon in FIFA crimson red (#C41E3A) to the left of the text, BELOW HEADLINE: a neat 2-column grid of 14 small preview card thumbnails (7 per column) each approximately 60x80px showing different special edition sticker types — holographic prismatic cards, golden foil team cards, Coca-Cola collaboration edition cards, trophy ceremony special stickers, official mascot cards, each thumbnail has a bright crimson red X mark overlaid and a tiny white label in Noto Sans 8pt naming the category (HOLOGRÁFICA · COCA-COLA ESPECIAL · DORADA EQUIPO · COPA ESPECIAL · etc.), BOTTOM RIGHT QUADRANT: bright emerald green (#00A651) rounded pill badge spanning full width of right column: "KIT DIGITAL · TODAS INCLUIDAS ✓" in bold white Noto Sans 16pt, small subtext below badge: "980+ láminas · Descarga inmediata" in #B8FFD4, DIVIDING LINE: dramatic vertical gradient stripe 8px wide from FIFA crimson red at top to FIFA cobalt blue (#003F9E) at bottom, overall aesthetic: investigative journalism meets premium advertising design, stark high-contrast visual impact, 8K ultra-sharp, --ar 4:5 --style raw --v 6
+
+═══════════════════════════════════════════════
+AD 5 — A32 | C1 | URGENCIA DOBLE — FECHA + ÚLTIMO DE LA HISTORIA (CON PRECIO $19.990)
+═══════════════════════════════════════════════
+TÍTULOS:
+→ "Junio llega. Es el último" (25) ✓
+→ "$19.990 · El final Panini" (26) ✓
+→ "Último álbum. Primera vez" (26) ✓
+DESCRIPCIÓN: "$19.990 · Descarga inmediata" (28) ✓
+
+V1 — Urgencia doble (con precio):
+El Mundial empieza en junio. Y este es el último álbum Panini de la historia. ⏳
+
+Dos urgencias al mismo tiempo: el tiempo y la historia. FIFA eligió otra empresa para el 2030. Panini pierde la licencia que tuvo desde México 1970 — cincuenta y seis años. Este álbum no se repite ni en el 2030 ni nunca más.
+
+Kit Digital Panini: 980+ láminas completas. $19.990 COP. Descarga inmediata al WhatsApp. Álbum completo antes del arranque del Mundial. El cierre que Panini nunca va a poder darte de nuevo. Escribinos hoy.
+
+V2 — PAS histórico (con precio):
+Después del 2030, no hay álbum Panini del Mundial. Eso es para siempre. ⚽
+
+FIFA eligió otra empresa para el próximo ciclo. Panini, que tuvo la licencia desde México 1970, la pierde. El álbum del 2026 es el último. No hay próxima vez para terminar el álbum Panini.
+
+Y el Mundial arranca en junio. $19.990 COP — Kit Digital Panini: 980+ láminas, fichas doradas, holográficas, Coca-Cola especiales. Descarga inmediata. Si hay dos razones para hacerlo este año, acá están las dos. Escribinos.
+
+V3 — Prueba social + historia (con precio):
+"No sabía que era el último álbum Panini. Lo compré al tiro." — cliente, ayer. 🏆
+
+Panini pierde la licencia FIFA después del 2026. Este es el último álbum Panini-FIFA de la historia. El que vas a recordar cuando ya no haya otro.
+
+El Kit Digital: 980+ láminas, 48 equipos, fichas doradas. $19.990 COP. Descarga inmediata. La tradición que empezó en el 70 termina en el 26 — vos podés tener el álbum completo del último Mundial Panini. Escribinos.
+
+────────────────────────────────────────────
+PROMPT MIDJOURNEY A32 — Extenso, Mundial 2026:
+────────────────────────────────────────────
+Epic cinematic premium advertising poster for the final ever Panini FIFA World Cup 2026 digital sticker kit, monumental scale with profound historical weight, BACKGROUND: deep interstellar dark navy blue-black (#050B1F) full bleed with extremely subtle star field texture suggesting permanence and cosmic scale, barely perceptible vignette of deep space, UPPER CENTER — HERO ELEMENT: photorealistic ultra-detailed 3D FIFA World Cup trophy rendered with god-tier quality, warm golden-white key light from directly above creating dramatic specular highlights along every curved surface, caustic light rays emanating from the trophy base in four directions, golden particle embers rising from trophy like living sparks, trophy scale taking up approximately 35 percent of image height, trophy perfectly centered horizontally, BELOW TROPHY CENTER: official Panini FIFA World Cup 2026 sticker album standing upright at slight 3-degree angle, premium edition with embossed cover visible, soft golden ambient glow halo connecting album to trophy above as if passing a torch, album dimensions are approximately 25 percent of image height, MAIN TEXT BLOCK below album in FIFA FWC26 custom geometric bold all-caps white typography, large scale taking up 20 percent of image: "EL ÚLTIMO ÁLBUM PANINI DE LA HISTORIA" — this is the dominant text element, letter-spacing slightly expanded, BELOW MAIN TEXT: medium-scale text in FIFA crimson red (#C41E3A) bold geometric: "MUNDIAL · JUNIO 2026", DECORATIVE ELEMENTS: very thin Colombian flag tricolor horizontal stripe (yellow #FCD116 / blue #003087 / red #CE1126) at left and right edges as accent lines, LEFT SIDE: soft red gradient light wash from FIFA crimson representing urgency and passion, RIGHT SIDE: soft cobalt blue gradient wash (#003F9E) from FIFA US host color representing destiny, BOTTOM SECTION: clean horizontal separator line in FIFA electric cobalt blue (#003F9E) 2px weight, below separator: three benefit columns in clean white Noto Sans 14pt with gold separator dots between them: "980+ LÁMINAS" · "$19.990 COP" · "DESCARGA INMEDIATA", small official FIFA World Cup 2026 trophy-26 logo watermark at very bottom center in 15 percent opacity white, LIGHTING ATMOSPHERE: dramatic cinematic rim lighting on trophy from all sides, depth of field creating sharp trophy and soft album edges, anamorphic lens flares in gold on trophy crown, 8K ultra-sharp commercial retouching quality, --ar 4:5 --style raw --v 6
+
+═══════════════════════════════════════════════
+AD 6 — A35 | C3 | CULPA PARENTAL / HIJO Y COLOMBIA (CON PRECIO $19.990)
+═══════════════════════════════════════════════
+TÍTULOS:
+→ "Colombia en el álbum hoy"  (24) ✓
+→ "El momento con tu hijo"    (23) ✓
+→ "$19.990 · Él lo recuerda"  (25) ✓
+DESCRIPCIÓN: "$19.990 · Colombia incluida" (28) ✓
+
+V1 — Culpa y redención (con precio):
+Mi hijo preguntó si Colombia estaba en el álbum. Tuve que decirle que no. 😔
+
+No porque no quisiera. Porque los kioscos no tenían. Porque los sobres cada vez más caros. Porque el álbum llevaba meses parado.
+
+Ese fin de semana compré el Kit Digital Panini. $19.990 COP. Descarga inmediata. Lo imprimimos juntos el sábado. El domingo, Colombia ya estaba en el álbum. Él pegó la de James Rodríguez. Yo lo miré y no dije nada.
+
+Ese momento no te lo da ningún kiosco. Escribinos.
+
+V2 — BAB parental (con precio):
+El álbum a medias. Kioscos sin stock. Mi hijo esperando. $19.990 lo cambió. 🏆
+
+Kit Digital Panini: 980+ láminas en una descarga. Los 48 equipos, los jugadores de Colombia, las fichas doradas que en kioscos no aparecen. Guía de impresión paso a paso.
+
+Un comprador: "El viernes compré el kit y este domingo ya tengo el álbum completo. Hasta las doradas quedaron perfectas." Ese es el mismo fin de semana que podés tener con tu hijo. $19.990 COP. Escribinos hoy.
+
+V3 — Emocional ritualístico (con precio):
+El álbum del Mundial no es un álbum. Es el ritual que hacés con tu hijo. 💛
+
+El primer mundial que él va a recordar. Las páginas que van llenando juntos. La lámina de Colombia que él pega con su mano. Si Colombia ganó o no — eso ya no importa tanto como que estaban juntos mirando.
+
+Kit Digital Panini: 980+ láminas, $19.990 COP, descarga inmediata. Lo imprimís en papelería y el sábado lo armás con él. Las doradas, los jugadores de Colombia, las especiales. Por menos de lo que cuesta un sobre en reventa. Escribinos.
+
+────────────────────────────────────────────
+PROMPT MIDJOURNEY A35 — Extenso, Mundial 2026:
+────────────────────────────────────────────
+Ultra-emotional authentic UGC documentary photography for Panini FIFA World Cup 2026 Colombia digital sticker kit family campaign, extreme overhead close-up flat-lay shot looking straight down at an open Panini FIFA World Cup 2026 sticker album lying on a warm wooden Colombian family dining table with visible wood grain texture, album opened precisely to the Colombia national team double page spread, CENTER OF COMPOSITION AND EMOTIONAL CORE: two pairs of hands working together on the album — LEFT: an adult parent's hand (30-40 years old, strong, slightly calloused from daily life, wearing a simple thin metal bracelet, warm olive Colombian skin tone) — RIGHT: a child's small delicate hand (approximately 8-10 years old, tiny fingers, no jewelry, same warm Colombian skin tone) — both hands converging toward the exact same empty slot on the Colombia page center where a gleaming sticker is in the process of being placed, child's index finger pointing precisely where it goes, the sticker itself partially visible between the two hands showing the beginning of a golden holographic James Rodriguez card catching warm afternoon light with specular gold shimmer, REST OF COLOMBIA PAGE: every other sticker slot already perfectly occupied with crisp printed Colombia national team stickers, Falcao, Cuadrado, Borja, all Colombia players visible in their correct grid positions, OTHER PAGES: surrounding pages of other Latin American national teams visible at the album's edges, partially filled pages suggesting the natural chaos of an album in progress, ADDITIONAL PROPS ON TABLE: several sheets of printed Panini sticker sheets nearby with Colombia section visible, small scissors with rounded tips (child-safe), a thin brush and glue stick, half-empty glass of orange juice at far edge suggesting mid-afternoon snack time, LIGHTING: warm golden late-afternoon 4 PM sunlight streaming from off-frame left window creating long soft shadows across the table surface and highlighting the gold shimmer on the sticker being placed, the light creates a natural golden halo effect around the point where the hands meet, BACKGROUND: pleasantly blurred Colombian home — wooden chairs, small Colombian flag magnet on a fridge barely visible in deep bokeh, PRICE BADGE: tastefully small rounded pill shape in Colombian yellow (#FCD116) with deep navy (#003087) text "$19.990 COP" placed at bottom-right corner of frame without interrupting the emotional core, SUBTLE TEXT OVERLAY: at very top of frame in extremely thin white italic sans-serif barely legible: "El momento que no querés perderte" 15 percent opacity, TECHNICAL: natural iPhone 15 Pro portrait mode color science, Kodak Portra 400 film color grading with warm shadows and rich golden midtones, authentic slight lens vignette, micro-grain consistent with 35mm photography, shallow depth of field with both sets of hands perfectly sharp and table surface gently falling to bokeh, 8K emotional documentary photography, --ar 4:5 --style raw --v 6
+
+============================================================
+FIN DEL DOCUMENTO — Kit Panini Mundial 2026
+Próxima actualización: cuando haya métricas de Rondas 2, 3, 4 y 5
+ÁNGULOS TOTALES: 43 (A1–A43) | ADS COMPLETOS: 33 copies + prompts | VIDEOS ANALIZADOS: 33 (V1–V33)
+DATO CRÍTICO RONDA 5: Este es el ÚLTIMO álbum Panini-FIFA de la historia.
+   Licencia perdida para 2030. Usar en A29 y A32 como urgencia irreversible.
+   Ventana emocional activa hasta inicio del Mundial — junio 2026.
+
+BATCH 1 VIDEOS (V1–V11) — GUÍA DE LANZAMIENTO:
+   BATCH 1 — PRIORIDAD: V7 → V3 → V11 → V1 → V9 → V5
+   BATCH 1 — RETARGETING: V2, V4, V6, V8, V10
+   ⚠️ V1: cubrir texto "imprenta Lima" con overlay colombiano ($18k papelería barrio)
+   ⚠️ V5: monitorear comentarios — preparar respuesta "el kit es completamente legal"
+   ⚠️ V3: audio en portugués — silenciar o dejar (el video funciona solo visual)
+
+   BATCH 2 — PRIORIDAD: V21 → V19 → V18 → V17 → V13 → V16
+   BATCH 2 — RETARGETING: V12, V14, V15, V20, V22, V23
+   ⚠️ V14: cubrir "Somos Recentia" + referencias Ecuador con overlay del kit
+   ⚠️ V15: cubrir "Somos Recentia" + "Ambato" + "gratis" con overlay del kit
+   ⚠️ V12 y V23 casi idénticos — usar copies distintos (V12→negocio / V23→ahorro)
+   ★ V21 "Lo llené, qué bendición" — ángulo A39 — VIDEO MÁS FUERTE DE LOS 23
+
+   BATCH 3 — PRIORIDAD: V26 → V33 → V24 → V31 → V30 → V25
+   BATCH 3 — RETARGETING: V27, V28, V32
+   BATCH 3 — NO USAR SIN EDICIÓN AGRESIVA: V29 (duplicado exacto V15), V32 (marca ajena)
+   ⚠️ V28/V29: duplicados de V14/V15 — misma marca Ecuador, mismo guion
+   ⚠️ V30: variante de V13 — usar el que tenga mejor imagen, no lanzar ambos juntos
+   ⚠️ V26: silenciar Pump Up The Jam (copyright Meta) y reemplazar con música libre
+   ⚠️ V32: cubrir "Fabian Estrech" completo + referencias a "gratis" — baja prioridad
+============================================================

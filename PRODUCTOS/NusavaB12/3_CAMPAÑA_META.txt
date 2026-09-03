@@ -1,0 +1,76 @@
+═══ NUSAVA B12 · VERSION v2 · 2026-06-22 · COSTO Q70 · DOSIS B12 5000 mcg / 1.5 ml sublingual · page_id 1218486924672725 · campaign_id 120246451636510784 ═══
+MAPA DE CAMPAÑA — NUSAVA B12 | FASE 1 (Testeo de ángulos)
+Estado: CAMPAÑA COMPLETA (campaña + 6 conjuntos + 12 anuncios) · TODO PAUSED · creado por MCP
+
+Cuenta de anuncios : GTR 7 · act 598687956219141 · moneda USD
+Negocio            : AMG 5 · 1207290087231971
+FanPage            : Dr. Ricardo Estrada — Salud Nerviosa & Neuropatía · page_id 1218486924672725
+WhatsApp           : +502 5283 2734 (wa.me/50252832734)
+Campaña            : NUSAVAB12_TEST_20260622 · campaign_id 120246451636510784
+Objetivo           : Tráfico (OUTCOME_TRAFFIC) → CONVERSATIONS → WHATSAPP
+Presupuesto        : ABO · $1.59/conjunto (159¢ USD) · 6 conjuntos
+Segmentación       : Guatemala · amplio 18-65+ · Advantage+ OFF · narrow por edad con ETAPA-7
+Programación       : 4 AM 2026-06-22 (-06:00) · 2 anuncios por conjunto
+Umbrales (ETAPA-1) : CPA Base Q32.3 ($4.24) · CPA Break Even Q68.3 ($8.96) [costo Q70]
+Precios            : P1u Q219 · P2u Q339 · P3u Q449 (Q219 visible solo en MEMORIA y CIATICA)
+
+⚠️ Nota: una primera campaña (campaign_id 120246448788380784) fue ELIMINADA. Esta (120246451636510784) es la reconstruida y completa. Ignorar/borrar la vieja.
+
+🔴 CAMPAÑA VIVA ≠ ESQUELETO MCP (corregido 2026-07-03):
+   El esqueleto MCP `NUSAVAB12_TEST_20260622` (120246451636510784) quedó con TODOS los anuncios PAUSED → $0 gasto, 0 impresiones. NUNCA entregó.
+   La que SÍ corre y genera las conversaciones es un DUPLICADO MANUAL:
+   → CAMPAÑA VIVA: "NUSAVAB12_TEST_20260622 - Copia" · campaign_id **120246893776440784** · ACTIVE · lanzada 27-jun.
+   ETAPA-7 (manual y programada) debe leer ESTA. Regla robusta: no fijar el id a ciegas — listar campañas de la cuenta y tomar la ACTIVE cuyo nombre contenga "NUSAVAB12" (el operador pausa/renombra/duplica).
+   ad_set_id de la campaña viva (llave por ángulo): ABSORCION 120246893776600784 · ARDOR 120246893776560784 · AZUCAR 120246893776580784 · MEMORIA 120246893776590784 · ANIMO 120246893776570784 · CIATICA 120246893776540784.
+   Acción sugerida: pausar/limpiar el esqueleto vacío para no confundir lecturas.
+
+───────────────────────────────────────────────────────────────────
+REGISTRO DE CONJUNTOS + ANUNCIOS — llave de unión con Meta (ETAPA-7)
+───────────────────────────────────────────────────────────────────
+
+1) ABSORCION_NUSAVAB12_TEST · ad_set_id 120246451637560784 · IMAGEN · sin precio
+   creative_id 1554800492951443 (NUSAVAB12_1_ABSORCION.jpg)
+   Anuncios: ABSORCION_A 120246451642820784 · ABSORCION_B 120246451656220784
+
+2) ARDOR_NUSAVAB12_TEST · ad_set_id 120246451638100784 · VIDEO (NUSAVAB12_2_ARDOR.mp4, vid 1218184677006877) · sin precio
+   Anuncios: ARDOR_A 120246451647960784 · ARDOR_B 120246451660790784
+
+3) AZUCAR_NUSAVAB12_TEST · ad_set_id 120246451638550784 · IMAGEN · sin precio
+   creative_id 1683559292927300 (NUSAVAB12_3_AZUCAR.jpg)
+   Anuncios: AZUCAR_A 120246451657570784 · AZUCAR_B 120246451659280784
+
+4) MEMORIA_NUSAVAB12_TEST · ad_set_id 120246451638870784 · VIDEO (NUSAVAB12_4_MEMORIA.mp4, vid 937624479288957) · PRECIO Q219
+   Anuncios: MEMORIA_A 120246451661880784 · MEMORIA_B 120246451663010784
+
+5) ANIMO_NUSAVAB12_TEST · ad_set_id 120246451639210784 · VIDEO (NUSAVAB12_5_ANIMO.mp4, vid 26420456800961022) · sin precio
+   Anuncios: ANIMO_A 120246451664580784 · ANIMO_B 120246451665560784
+
+6) CIATICA_NUSAVAB12_TEST · ad_set_id 120246451639610784 · VIDEO (NUSAVAB12_6_CIATICA.mp4, vid 2169101477220582) · PRECIO Q219
+   Anuncios: CIATICA_A 120246451667700784 · CIATICA_B 120246451668070784
+
+───────────────────────────────────────────────────────────────────
+CTA de todos: WHATSAPP_MESSAGE → enruta al WhatsApp de la página (502 5283 2734).
+Lectura ETAPA-7: CPA real = (amount_spent ÷ actions:omni_purchase) × 7.62, vs Base Q32.3 / BE Q68.3.
+
+PENDIENTE OPERADOR:
+□ Revisar los 12 anuncios en Business Manager (preview, copy, precio Q219 en MEMORIA/CIATICA).
+□ Regenerar imagen ABSORCION con badge "5000 mcg" (la versión subida dice "10,000 mcg" — incorrecto).
+□ Activar la campaña a las 4 AM del 22-jun (manual o ads_activate_entity). NADA se activa solo.
+□ Tracking de ventas: YA enlazado vía GUAVA → WABA → Meta (omni_purchase). ETAPA-7 lee CPA real automático. Solo validar 1 vez en la 1ª corrida que las Compras caen en actions:omni_purchase. (Pegar el dataset_id como MCP_PIXEL_ID es opcional — solo para la skill monitor-pixel.)
+
+RESULTADOS_TESTEO (lectura MCP 2026-07-03 · campaña VIVA 120246893776440784 · ventana 27-jun→03-jul ≈6 días):
+  ⚠️ SIN VENTAS: omni_purchase = "Not available" en toda la campaña → el tracking de Compras estaba roto (no atribuía qué publicación generó la venta). El operador lo arregló el 03-jul; desde la próxima corrida el CPA real debe poblarse. Ranking de abajo = PROVISIONAL por eficiencia de conversación, NO por CPA. No declarar ganador oficial hasta tener CPA (regla ETAPA-7).
+  Global: gasto $46.85 · impr 25,117 · clics 1,312 · alcance 15,151 · frec 1.66 · CPM $1.87 · CPC $0.04 · CTR 5.22% · 149 conversaciones · $0.31/conv.
+
+  | Conjunto (ángulo) | conv | $/conv | clics-enlace | %conv/clic-enlace | CTR | CPM | CPC | frec | zona |
+  |---|---|---|---|---|---|---|---|---|---|
+  | ANIMO     | 52 | $0.15 | 67 | 77.6% | 7.54% | $1.68 | $0.02 | 1.20 | 🟢 |
+  | ARDOR     | 35 | $0.23 | 61 | 57.4% | 5.41% | $1.89 | $0.03 | 1.16 | 🟢 |
+  | ABSORCION | 28 | $0.29 | 74 | 37.8% | 5.46% | $1.51 | $0.03 | 1.19 | 🟡 |
+  | AZUCAR    | 16 | $0.48 | 45 | 35.6% | 3.18% | $1.74 | $0.05 | 1.31 | 🟡 |
+  | MEMORIA(Q219) | 11 | $0.73 | 28 | 39.3% | 5.52% | $2.35 | $0.04 | 1.16 | 🟡 |
+  | CIATICA(Q219) | 7 | $1.06 | 21 | 33.3% | 3.73% | $2.38 | $0.06 | 1.18 | 🔴 |
+
+  Lectura mentores: CPM/CPC baratísimos (mercado GT nuevo, sin saturación) · frecuencia 1.16-1.31 = cero fatiga, mucha pista · %conv/clic-enlace bien medido: ANIMO y ARDOR súper escalables.
+  Confound de precio: los 2 conjuntos con Q219 en el ad (MEMORIA, CIATICA) son los de menor volumen — consistente con la doctrina V5 (el precio filtra). Sin CPA no se sabe si esas pocas conversaciones cierran mejor; el CPA lo dirá.
+ANGULO_GANADOR: PROVISIONAL = ANIMO (valida la nota de ETAPA-2 v3: estaba #5 pero marcado "el que más conversión podría dar"). Confirmar con CPA real tras 2-3 días con tracking ya arreglado.

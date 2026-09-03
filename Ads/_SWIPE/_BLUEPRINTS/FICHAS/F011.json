@@ -1,0 +1,153 @@
+{
+  "ficha_id": "F011",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/01_1764549424739113.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1764549424739113",
+    "dias_activo": 8,
+    "replicas": 4,
+    "score": 108,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "9:16",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "40%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LOS CALLOUTS FLOTANTES CON LINEA PUNTEADA AL PRODUCTO. Cuatro pildoras blancas con icono cuelgan alrededor del envase y cada una apunta al producto con una linea punteada curva. No hay columna ni fila: los beneficios ORBITAN el producto. Es el unico layout del banco donde el beneficio esta espacialmente ligado a la pieza que lo cumple.",
+  "lectura_estrategica": "Formato de historia vertical, donde no hay ancho para columnas laterales: el producto ocupa el centro y los beneficios se acomodan en el aire que queda. El titular ocupa el quinto superior entero con una pregunta en segunda persona femenina, y el bloque de precio se ancla al pie con anclaje tachado. Vende rutina y ligereza, no cura: los cuatro callouts son de FACILIDAD DE USO (gotero, liquida, botanica), no de resultado, lo que baja el riesgo de claim y sube la sensacion de habito sostenible.",
+  "fondo": {
+    "tipo": "foto_naturaleza_desenfocada",
+    "base": "follaje verde claro fuera de foco",
+    "elemento_inferior": "superficie de piedra o roca donde apoya el producto",
+    "textura": "ninguna",
+    "funcion": "el follaje sostiene la promesa botanica sin necesidad de decirla"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (titular de acento, callouts, card de precio) mas blanco (pildoras y texto) mas negro (titular) mas el verde del fondo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2}}",
+      "linea_3": "{{HOOK_L3_ACENTO}}",
+      "estilo": "Black/900 uppercase negro con la ULTIMA linea en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3-5 palabras",
+      "formato_obligatorio": "pregunta en segunda persona dirigida al avatar por genero",
+      "escala": "ocupa el quinto superior del frame",
+      "regla_acento": "el color cae sobre la SENSACION (pesada, cansada), que es la palabra con la que la persona se nombra a si misma"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{SUBHOOK}}",
+      "estilo": "Bold negro chico",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "enuncia una RUTINA, no un resultado: apoya, acompana, sostiene"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "envase de pie sobre superficie natural, centrado y vertical",
+      "fuente": "IMAGEN_2",
+      "regla": "en formato vertical el producto va al centro exacto: es el eje del que cuelgan los callouts"
+    },
+    "callouts_orbitales": {
+      "posicion": "alrededor del producto, dos a la izquierda y dos a la derecha",
+      "cantidad_items": 4,
+      "formato_item": "pildora blanca redondeada con icono line-art {{PALETA_ACENTO}} arriba y label Bold de 1-2 lineas, unida al producto por una LINEA PUNTEADA curva",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras_label": "2-3 palabras",
+      "regla": "los cuatro se distribuyen en las cuatro diagonales, nunca alineados entre si",
+      "regla_contenido": "son atributos de FACILIDAD DE USO (formato, via, frecuencia), no promesas de resultado",
+      "funcion": "ligan espacialmente cada beneficio a la parte del producto que lo cumple"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_OSCURA}} solida con esquinas redondeadas",
+      "banda_superior": "{{OFERTA_LABEL}} en Bold uppercase blanco",
+      "linea_1": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 blanco, segundo elemento mas grande de la pieza",
+      "linea_2": "ANTES {{MONEDA}}{{PRECIO_TACHADO}}",
+      "estilo_l2": "Bold con linea de tachado, al 30% de L1"
+    },
+    "card_entrega": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card blanca con borde {{PALETA_ACENTO}} e icono de camion arriba",
+      "linea_1": "{{PLAZO_ENTREGA}}",
+      "linea_2": "{{GARANTIA_PAGO}}",
+      "estilo_l2": "Bold uppercase blanco sobre banda {{PALETA_OSCURA}}",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "funcion": "en vertical no cabe barra de garantias: se comprimen en una card gemela a la de precio"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "subtitular",
+    "producto_hero",
+    "callouts_orbitales",
+    "card_precio",
+    "card_entrega"
+  ],
+  "reglas_duras": [
+    "El producto va al centro exacto del frame y ningun callout lo tapa",
+    "Cada callout se une al producto con una linea punteada curva",
+    "Los cuatro callouts se distribuyen en las cuatro diagonales, nunca alineados entre si",
+    "Los callouts hablan de como se usa, no de que cura",
+    "El acento de color del titular cae sobre la sensacion, no sobre el organo",
+    "Las dos cards del pie son del mismo alto: precio a la izquierda, entrega a la derecha"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2",
+    "HOOK_L3_ACENTO",
+    "SUBHOOK",
+    "ATRIBUTOS[4]",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "PRECIO_TACHADO",
+    "MONEDA",
+    "PLAZO_ENTREGA",
+    "GARANTIA_PAGO"
+  ],
+  "cuando_usar": [
+    "ubicaciones verticales: stories, reels, feed 9:16",
+    "producto de formato distintivo (gotero, spray, roll-on) donde el COMO se usa es argumento",
+    "promesa de rutina o habito, no de cura",
+    "cuando hay 4 atributos de uso y ninguna evidencia visual del problema"
+  ],
+  "cuando_no_usar": [
+    "feed cuadrado: el layout orbital desperdicia el ancho",
+    "cuando hay mas de 4 beneficios imprescindibles: los callouts se amontonan y pierden las lineas",
+    "cuando el argumento es el resultado y no el uso"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio.",
+    "Card de entrega ENTREGA 2 A 4 DIAS HABILES con icono de camion, y banda PAGA AL RECIBIR.",
+    "Precio con anclaje: PRECIO ESPECIAL Q190 · ANTES Q380 tachado.",
+    "Callouts de uso: APOYO BOTANICO, GOTERO SENCILLO, RUTINA LIQUIDA."
+  ],
+  "canonico_id": "CN18_CALLOUTS_PRODUCTO",
+  "blueprint_equivalente": null
+}

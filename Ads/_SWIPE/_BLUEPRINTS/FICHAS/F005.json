@@ -1,0 +1,175 @@
+{
+  "ficha_id": "F005",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Dra_Dra__Sofa_Alejandra_Mo/02_1446615720714296.jpg",
+    "anunciante": "Dra.Dra. Sofa Alejandra Mo",
+    "ad_archive_id": "1446615720714296",
+    "dias_activo": 5,
+    "replicas": 5,
+    "score": 130,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "problema-grande"
+  },
+  "dispositivo_dominante": "LA FOTO DE DOLOR A SANGRE, DEL TAMANO DE UNA PERSONA. Un cuerpo real de espaldas con la zona afectada encendida en rojo ocupa el cuarto inferior izquierdo y sangra por el borde. El titular es una PREGUNTA DE UNA PALABRA sobre franja de color, y el producto cruza el frame en diagonal con arco electrico.",
+  "lectura_estrategica": "Vende alivio inmediato de un dolor localizado. La foto del dolor es lo que detiene el scroll; el titular solo lo nombra. Es un DISPOSITIVO y no un suplemento, asi que la columna derecha no vende ingredientes sino atributos de aparato (recargable, portatil) y el badge tecnico reemplaza al sello regulatorio. El precio va en card SOBRE la foto de dolor: sintoma y solucion economica en el mismo golpe de vista.",
+  "fondo": {
+    "tipo": "foto_ambiente_oscurecida_con_glow",
+    "base": "escena real desenfocada y oscurecida",
+    "glow": "{{COLOR_MECANISMO}} irradiando desde detras del producto en diagonal",
+    "funcion": "el ambiente real hace creible el uso domestico; el glow separa el producto del fondo"
+  },
+  "paleta": {
+    "derivacion": "del producto y del mecanismo, no del empaque",
+    "cantidad_colores": 5,
+    "regla": "cada color tiene UNA funcion: rojo es dolor y zona afectada, {{COLOR_MECANISMO}} es la accion del aparato, amarillo es titular y precio, blanco es texto, negro es la franja del pie"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "lineas": 2,
+      "linea_1": "{{HOOK_PREGUNTA}}",
+      "linea_2": "{{HOOK_PROMESA}}",
+      "estilo_l1": "Black/900 uppercase en {{COLOR_ACENTO}} con signos de pregunta de apertura y cierre",
+      "estilo_l2": "Black/900 uppercase blanco sobre franja oscura",
+      "restriccion_palabras_l1": "1-2 palabras",
+      "restriccion_palabras_l2": "3-5 palabras",
+      "regla": "la pregunta nombra el sintoma en el minimo de palabras posible; la promesa va en la segunda linea, sobre franja"
+    },
+    "banda_velocidad": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{COLOR_ALERTA}}",
+      "linea_1": "{{CLAIM_INTENSIDAD}}",
+      "linea_2": "{{CLAIM_VELOCIDAD}}",
+      "estilo": "Black/900 uppercase",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "funcion": "responde CUANDO funciona, que es la segunda objecion del dolor agudo"
+    },
+    "foto_dolor": {
+      "posicion": "inferior_izquierda, sangrando por el borde",
+      "contenido": "{{FOTO_PERSONA_EN_DOLOR}}",
+      "escala": "30% del frame",
+      "tratamiento": "persona real de espaldas o de perfil, zona afectada encendida con overlay rojo y lineas de irradiacion",
+      "regla": "sin rostro identificable: el lector debe poder ponerse en ese cuerpo",
+      "funcion": "ESTE es el elemento que detiene el scroll, no el titular"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha, en diagonal",
+      "escala": "45% del frame",
+      "angulo": "diagonal ascendente hacia la esquina superior derecha",
+      "efecto": "arco electrico o glow {{COLOR_MECANISMO}} en la punta activa",
+      "fuente": "IMAGEN_2",
+      "regla": "la punta activa del dispositivo apunta hacia la zona de dolor"
+    },
+    "columna_atributos": {
+      "posicion": "derecha_media",
+      "cantidad_items": 4,
+      "formato_item": "icono blanco en circulo {{COLOR_MECANISMO}} mas TITULO Bold uppercase blanco mas subtitulo en {{COLOR_ACENTO}}",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "2-3 palabras",
+      "regla": "en un dispositivo los atributos son de aparato (autonomia, portabilidad), no de formula"
+    },
+    "badge_tecnologia": {
+      "posicion": "derecha_baja",
+      "contenedor": "card oscura con borde fino y escudo con check",
+      "linea_1": "{{TECNOLOGIA}}",
+      "linea_2": "{{SUBCLAIM_SEGURIDAD}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "estilo_l2": "Regular chico",
+      "funcion": "sustituye al sello regulatorio cuando el producto es un dispositivo"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda, sobre la foto de dolor",
+      "contenedor": "card oscura con borde {{COLOR_ACENTO}}",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "linea_2": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l2": "Black/900 en {{COLOR_ACENTO}}, segundo elemento mas grande de la pieza",
+      "banda_inferior": "{{GARANTIA_ENVIO}} sobre franja {{COLOR_ALERTA}} con icono de camion"
+    },
+    "franja_confianza": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "franja NEGRA solida",
+      "cantidad_items": 3,
+      "formato_item": "icono en circulo de color mas TITULO Bold uppercase mas subtitulo regular",
+      "items": "{{CONFIANZA[3]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "foto_dolor",
+    "producto_hero",
+    "banda_velocidad",
+    "columna_atributos",
+    "card_precio",
+    "badge_tecnologia",
+    "franja_confianza"
+  ],
+  "reglas_duras": [
+    "La foto de dolor sangra por el borde del frame y va sin rostro identificable",
+    "La zona afectada va encendida en rojo, y el rojo no se usa en ningun otro lugar",
+    "La punta activa del producto apunta hacia la zona de dolor",
+    "El titular en primera linea tiene una o dos palabras: si necesita mas, va a la segunda linea",
+    "El precio va sobre la foto de dolor, en el mismo golpe de vista que el sintoma",
+    "Un solo bloque negro: la franja de confianza del pie"
+  ],
+  "variables_requeridas": [
+    "HOOK_PREGUNTA",
+    "HOOK_PROMESA",
+    "CLAIM_INTENSIDAD",
+    "CLAIM_VELOCIDAD",
+    "FOTO_PERSONA_EN_DOLOR",
+    "ATRIBUTOS[4]",
+    "TECNOLOGIA",
+    "SUBCLAIM_SEGURIDAD",
+    "OFERTA_LABEL",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "CONFIANZA[3]",
+    "COLOR_MECANISMO",
+    "COLOR_ALERTA",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "dolor localizado y fotografiable (espalda, cuello, rodilla, pies)",
+    "DISPOSITIVOS y aparatos, no solo suplementos",
+    "publico 40+ que ya probo analgesicos y busca algo sin medicamento",
+    "cuando la promesa es alivio rapido y no resultado progresivo"
+  ],
+  "cuando_no_usar": [
+    "productos preventivos o de bienestar general: no hay dolor que encender",
+    "cuando no hay material fotografico de la zona afectada",
+    "categorias esteticas o de belleza"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge TECNOLOGIA ELECTRO ACUPUNTURA CORPORAL con subclaim SIN MEDICAMENTOS · SIN EFECTOS SECUNDARIOS.",
+    "Claim de velocidad ALIVIO PROFUNDO DESDE LA PRIMERA APLICACION en banda roja.",
+    "Franja de confianza: PUNTOS DE ACUPUNTURA PRECISOS, SEGURO Y EFECTIVO, BIENESTAR Y ENERGIA.",
+    "Atributos de aparato: 100% RECARGABLE, PORTATIL Y PRACTICA."
+  ],
+  "canonico_id": "CN07_DOLOR_A_PLENO",
+  "blueprint_equivalente": null
+}

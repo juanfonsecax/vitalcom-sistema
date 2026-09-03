@@ -1,0 +1,278 @@
+MEJORAS FUTURAS — SISTEMA VITALCOM GUATEMALA
+============================================================
+Este archivo NO es parte del sistema activo. No se carga automaticamente en ningun sesion.
+Usarlo como bitacora personal de ideas, variaciones y experimentos pendientes.
+============================================================
+
+
+[IDEA-001] ESTRATEGIA DE PRECIO VISIBLE EN ADS (estilo Colombia)
+Fecha de registro: 2026-04-26
+Estado: PENDIENTE — no implementada, evaluar antes de aplicar en Guatemala
+
+Descripcion:
+En lugar de lanzar sin precio en los ads (sistema actual), mostrar un precio BASE bajo en la imagen/copy del anuncio — sin envio incluido. Ej: "Q149" en la imagen del ad.
+
+Flujo completo de la estrategia:
+- Ad muestra precio 1u SIN envio (ej: Q149)
+- Cliente llega a WhatsApp esperando ese precio
+- El bot revela que el envio cuesta X quetzales adicionales (ej: Q25)
+- Pero ofrece que con 2 unidades el envio es GRATIS (ej: Q249 con envio incluido)
+- Y con 3 unidades tambien envio gratis y precio aun mejor (ej: Q329)
+- Psicologia: el cliente ya "llego hasta aca" y hace el calculo mental -> compra 2u
+
+Por que funciona en Colombia:
+- Crea un "precio ancla" bajo que genera el clic
+- El upsell en el flujo se siente como un beneficio (envio gratis), no como un engano
+- Aumenta el ticket promedio natural hacia 2u
+
+Riesgo en Guatemala:
+- Mercado menos acostumbrado a este modelo puede percibir "trampa" si el precio real es mayor
+- Posible aumento de churn en el flujo antes de completar la conversion
+
+En que fase testear:
+- NO en FASE 1: en FASE 1 se lanzan 6 angulos distintos simultaneamente, lo que
+  contamina la variable. No se podria saber si el resultado se debe al angulo o al precio.
+- SI en FASE 2: cuando ya hay un angulo ganador validado, los 6 conjuntos atacan el
+  mismo angulo con microangulos distintos. Ahi se puede meter 1 conjunto con precio
+  visible y comparar directamente contra los otros 5 sin precio — misma audiencia,
+  mismo angulo, unica variable = presencia del precio en el ad.
+
+Como implementarlo en el sistema cuando se decida:
+- En ETAPA-4 Fase 2: agregar 1 conjunto "variante precio ancla" entre los 6 microangulos
+- Crear campo adicional en ETAPA-1: precio ancla (1u sin envio) + precio con envio
+- Agregar logica al bot de ETAPA-5 para manejar la objecion "pero en el ad decia X"
+- Medir separadamente: CTR del conjunto con precio vs. sin precio + conversion en flujo
+
+
+============================================================
+[IDEA-002] ESTRATEGIA MULTI-CUENTA (escalado masivo)
+Fuente: Joaquin (1, 8, 22 abril) + Mercy (27 abril)
+Estado: PENDIENTE — implementar despues de validar angulos ganadores consistentes
+
+Descripcion:
+Nunca depender de una sola cuenta publicitaria para escalar. Cuando una cuenta se pausa o es penalizada, las ventas se detienen completamente. La estrategia ensenada es operar en 3 a 5 cuentas publicitarias simultaneas (BMs diferentes), replicando el conjunto ganador en cada una.
+
+Logica del escalado multi-cuenta:
+- FASE 1 y FASE 2 actuales → 1 cuenta, validacion del angulo
+- Una vez el angulo gana con CPA bajo: replicar la estructura en 3 a 5 cuentas adicionales
+- Cada cuenta tiene su propio conjunto con el mismo creativo ganador
+- Si una cuenta falla, las otras siguen vendiendo (no hay paro total)
+- Mercy (27 abril): "Las cuentas publicitarias son para escalar. De las cinco, por lo menos en una me tiene que dar buen resultado."
+- Analogia de Joaquin: es como tener 30 vendedores en Bogota — no dependes de uno solo
+
+Flujo recomendado para implementar en ETAPA posterior a ETAPA-6:
+1. Resultado de ETAPA-6 FASE 2: conjunto ganador identificado con CPA bajo sostenido
+2. ETAPA-MULTICUENTA (nueva): replicar el conjunto ganador en 3 a 5 BMs
+   → mismo Post ID para preservar prueba social acumulada
+   → mismo presupuesto inicial Q54 por conjunto en cada nueva cuenta
+   → medir CPA por cuenta separadamente
+3. Escalar la cuenta con mejor CPA primero, luego las demas
+
+Conexion con multi-fanpage (ver IDEA-003):
+Cada cuenta puede tener su propia fanpage. Con 3 fanpages son 750 anuncios posibles por dia.
+
+============================================================
+[IDEA-003] MULTI-FANPAGE Y SALUD DE PAGINA
+Fuente: Mercy (15 abril) + Joaquin (1 abril)
+Estado: PENDIENTE — implementar en paralelo con multi-cuenta
+
+Descripcion:
+La fanpage es una variable de rendimiento, no solo un perfil. Una fanpage penalizada sube los CPMs y reduce la entrega aunque el creativo sea bueno.
+
+Reglas especificas de las clases:
+- Crear minimo 1 a 2 fanpages nuevas por semana (Mercy: "minimo 1, ideal 2 o 3 por semana")
+- Cada producto puede tener su fanpage propia
+- Limite fisico: 250 anuncios por fanpage por dia → con 3 fanpages = 750 anuncios posibles
+- Recovery de fanpage penalizada: lanzar campana de interaccion (reacciones/comentarios)
+  con presupuesto equivalente a Q37 por dia (≈5,000 COP) durante exactamente 4 dias
+  → normaliza la salud de la pagina sin necesidad de crear una nueva
+
+Que agregar al sistema cuando se implemente:
+- Campo en ETAPA-6: "Fanpage asignada a este conjunto" (nombre + ID)
+- Regla de rotacion: si CPMs suben mas de 40% en una fanpage sin cambio de creativo → revisar salud
+- ETAPA-FANPAGE (nueva): monitoreo semanal de salud + protocolo de recovery
+
+============================================================
+[IDEA-004] CBO PARA ESCALADO (despues de validar con ABO)
+Fuente: Joaquin (1, 8, 22 abril) + Calet (23 abril)
+Estado: PENDIENTE — implementar en ETAPA-6 FASE 2 cuando haya ganador sostenido
+
+Descripcion:
+El sistema actual usa ABO en ambas fases (FASE 1 y FASE 2). Esto es correcto para testeo.
+Para escalar, la metodologia ensenada es transicionar a CBO (presupuesto por campana, no por conjunto).
+
+Flujo correcto ABO → CBO:
+1. ABO testeo (FASE 1 actual): valida angulos, Q54 por conjunto
+2. ABO escalado inicial (FASE 2 actual): valida microangulos, mismo Q54
+3. CBO escalado (nueva etapa): una vez hay microangulo ganador con CPA bajo sostenido
+   → Crear nueva campana CBO con presupuesto mayor
+   → Usar el Post ID del anuncio ganador (preserva toda la prueba social acumulada)
+   → Presupuesto sugerido equivalente a Q450 a Q585 por dia (≈60,000 a 80,000 COP Colombia)
+   → 1 campana → 1 conjunto → 1 anuncio (el ganador) + su duplicado interno
+   → Meta optimiza automaticamente donde entregar dentro del conjunto
+
+Dato clave de Calet (23 abril):
+"ABO para testear angulos. Una vez hay ganador, ese conjunto se lleva a CBO nueva con Post ID."
+El Post ID es critico: preserva los miles de comentarios y reacciones acumuladas en el anuncio ganador.
+Sin Post ID, el nuevo anuncio empieza desde cero en prueba social.
+
+Que agregar al sistema:
+- En ETAPA-6 FASE 2: campo "Post ID del anuncio a duplicar en CBO"
+- Nueva instruccion para el operador: copiar el Post ID antes de crear la nueva campana CBO
+- ETAPA-CBO (nueva): instrucciones para crear la campana CBO con el Post ID correcto
+
+============================================================
+[IDEA-005] ALGORITMO ANDROMEDA — REGLAS DE CREATIVE COMPLIANCE
+Fuente: Joaquin (22 abril) — clase casi completamente dedicada a Andromeda
+Estado: PENDIENTE — implementar en ETAPA-4 cuando se sistematice la creacion de creativos visuales
+
+Descripcion:
+Andromeda es el algoritmo actual de Meta para evaluar y penalizar creativos. El sistema actual
+no tiene ninguna regla sobre esto. Las penalizaciones son silenciosas (sin notificacion → los CPMs suben).
+
+Reglas especificas ensenadas en clase:
+1. DENSIDAD DE TEXTO EN IMAGEN: si el texto supera el 20% del area de la imagen → penalizacion
+   → Resultado: hasta 50% menos entrega en ese creativo
+   → Regla practica: texto en imagen solo para titulos cortos o numeros (prueba social). Nunca parrafos.
+
+2. COPIES REPETIDOS: Andromeda detecta copies identicos propios y de competidores
+   → Si detecta que el copy ya esta en uso (por ti o por otro anunciante) → baja entrega
+   → Regla practica: cada copy debe ser unico. No reusar el mismo copy en dos cuentas o dos campanas.
+
+3. BANO SILENCIOSO: cuando Andromeda penaliza, no hay notificacion
+   → Senales de que ocurrio: CPMs suben 30 a 50% sin cambio de audiencia ni creativo
+   → Accion: pausar el anuncio, crear copia con texto levemente diferente, relanzar
+
+4. ANTES/DESPUES PROHIBIDO: Meta penaliza imagenes con layout "lado izquierdo vs lado derecho"
+   → No usar las palabras "antes" y "despues" juntas en el mismo creativo
+   → Alternativa valida: "semana 1" y "semana 20" (mismo concepto, no penalizado)
+
+5. TES PROHIBIDO: herramienta de Meta que el algoritmo detecta y penaliza
+   → Nunca usar TES para crear o editar anuncios
+
+6. LAYOUTS BILATERALES: composiciones con dos mitades simetricas son senalas de "antes/despues"
+   → Andromeda los detecta y reduce entrega aunque no haya texto explicito
+
+Donde implementar en el sistema:
+- En ETAPA-4 FASE 1 (seccion Director de Arte): agregar checklist de compliance Andromeda
+  para los 2 prompts de imagen
+- En ETAPA-6: agregar verificacion antes de lanzar (texto en imagen < 20% area, no TES)
+- Nueva regla en REGLAS META ADS BASE de CLAUDE.md cuando se active
+
+============================================================
+[IDEA-007] CANAL B — LANDING PAGE (modo paraguas y escalado)
+Fecha de registro: 2026-05-03
+Estado: PENDIENTE — removido de CLAUDE.md para simplificar el sistema activo. Implementar cuando se decida escalar con landing pages.
+
+Descripcion:
+Canal B generaba una serie de prompts de imagen para construir una landing page completa
+usando Layer / Midjourney / DALL-E. Tenia dos subetapas secuenciales:
+
+- ETAPA-LP-TIPO: clasificaba la tipologia de landing (evidencia clinica, transformacion
+  antes/despues, prueba social masiva) y definia la paleta de colores y tipografias
+  segun los colores del empaque del producto.
+
+- ETAPA-LP-PROMPTS: generaba un prompt de imagen por modulo de la landing (hero,
+  ingredientes, beneficios, testimonios, garantia, CTA) con variables rellenas del
+  producto — listos para pegar en el generador de imagen.
+
+Canal C (Ambos) = Canal A (WhatsApp) + Canal B (Landing) corriendo en paralelo.
+
+Para restaurar en el sistema:
+1. Crear .claude/agents/ETAPA-LP-TIPO.md con logica de clasificacion y paleta de colores
+2. Crear .claude/agents/ETAPA-LP-PROMPTS.md con generacion de prompts por modulo
+3. En CLAUDE.md: restaurar opciones B y C en pregunta inicial, tablas de secuencia,
+   PASO 4 (bifurcacion), PASO 4B (ETAPA-LP-TIPO → ETAPA-LP-PROMPTS), FIN FASE 1,
+   PASO 3 FASE 2 (bifurcacion), PASO 3B (ETAPA-LP-PROMPTS-FASE2), FIN FASE 2,
+   y reglas 8 y 12 del orquestador.
+
+============================================================
+[IDEA-006] DIAS BUENOS Y DIAS MALOS — CRITERIO DE DECISION EXACTO
+Fuente: Calet (23 abril) — criterio sistematizado con datos especificos
+Estado: PENDIENTE — implementar en ETAPA-7 cuando se active
+
+Descripcion:
+Una campana que ayer vendio 10 veces y hoy no vende NO esta muerta. Esta en un "dia malo."
+El error mas comun es apagar campanas en dias malos y perder creativos ganadores.
+
+Criterios exactos de las clases:
+- El CPA de una misma campana puede variar de 800 a 3,000 pesos (Colombia) entre dias
+  → Equivalente Guatemala: el CPA puede triplicarse de un dia a otro sin que el creativo sea el problema
+- Una campana SIN ventas durante UN dia: NO apagar. Observar.
+- Una campana SIN ventas durante DOS dias consecutivos: evaluar. Revisar CPMs y entrega.
+- Una campana SIN ventas durante TRES dias consecutivos: apagar ese conjunto o creativo.
+- La tendencia de 7 dias es el indicador correcto, no el dia a dia.
+
+Dias buenos (lunes a miercoles generalmente mejor en Guatemala):
+- Si vende bien → escalar segun Regla Kaleth (+20% en 3 ventanas)
+- Si vende muy bien → no tocar nada. Dejar correr.
+
+Dias malos (generalmente jueves a domingo pueden bajar):
+- Si no vende un dia → no tocar nada. Esperar.
+- Si no vende dos dias → revisar si subieron CPMs (senal de Andromeda) o si es el dia de la semana
+- Si no vende tres dias → apagar y analizar que cambio
+
+Dato clave de Calet:
+"No le tengas miedo a los dias malos. El problema es cuando la gente apaga todo en un dia malo
+y luego no sabe cual creativo era el bueno."
+
+Donde implementar:
+- ETAPA-7 (cuando se active): incorporar estos criterios como logica de decision
+  → campo: "dias consecutivos sin venta" como variable de decision, no el CPA del dia
+  → regla: nunca apagar hasta 3 dias consecutivos sin venta con presupuesto activo
+
+============================================================
+[IDEA-008] LIQUIDACION / REMATE AGRESIVO COMO ANGULO BOFU (condicional)
+Fuente: mentor externo "Juli" (moda/IA) — ver _ROADMAP/ANALISIS_MENTOR_JULI_vs_SISTEMA_2026-07-03.md
+Fecha de registro: 2026-07-03
+Estado: PARQUEADO — NO usar en los productos de salud actuales. Reevaluar solo para otros tipos de producto.
+
+Descripcion:
+El mentor valida rapido con un angulo de "liquidacion al cuello" (remate: "ultimas unidades",
+"todo al 70%", urgencia/escasez extrema). Atrae al publico ya caliente listo para pagar -> ROAS alto,
+valida rapido. En su modelo (moda, tarjeta/Shopify, sin compliance) funciona.
+
+Por que NO se metio como default en el sistema actual (salud/COD/Guatemala):
+- Compliance Andromeda: el tono de remate agresivo en salud parece spam de baja confianza -> sube CPMs
+  por baneo silencioso.
+- Modelo COD/WhatsApp: la venta se construye con confianza (garantia + tratamiento + pago al recibir),
+  no con escasez fabricada. Por eso el BOFU del nuevo eje TOFU/MOFU/BOFU cierra con garantia/tratamiento/
+  contraentrega, NUNCA con "liquidacion al cuello".
+- No escala vertical: el mentor mismo dice que ese angulo agota el publico caliente y no se puede escalar.
+
+Cuando reevaluarlo:
+- Solo si el sistema se expande a productos NO medicos de impulso (moda, gadgets, hogar) donde el remate
+  no choca con compliance de salud. Ahi podria ser un rol BOFU adicional en FASE 2.
+- Aun asi, testear como 1 conjunto contra los otros en FASE 2 (misma audiencia, unica variable = el remate),
+  nunca en FASE 1 (contamina la lectura por angulo).
+
+============================================================
+
+
+[IDEA-009] PREGUNTA FILTRO DE DOLOR EN EL BOT (segmentar por dolor dentro del chat)
+Fecha de registro: 2026-07-04
+Estado: PARQUEADA — se removio del sistema activo por no tener respaldo de clase. Probar DESPUES de validar el flujo base como lo dicen los mentores.
+
+Descripcion:
+El sistema (ETAPA-5 FASE 1) tenia en el ELEMENTO 13, en vez del saludo + pregunta de ciudad de Mercy, una pregunta de opciones para detectar por cual dolor llego el cliente:
+  "Para darte la info mas util, contame: cual de estas situaciones se parece mas a la tuya?
+   A) manchas/varices/aranitas   B) piernas hinchadas y pesadas (de pie)   C) calambres de noche / no descanso   D) otro"
+La respuesta se usaria para personalizar el parrafo de refuerzo (Interaccion 2) segun el dolor elegido.
+
+Por que lo hacia el sistema (intencion de diseno):
+En FASE 1 se testean 6 angulos con UN solo bot paraguas. La pregunta buscaba que, aunque el bot sea uno, cada cliente reciba un refuerzo alineado a SU dolor exacto — reducir el "efecto rebote" anuncio->bot sin tener que construir 6 bots separados. Idea razonable de ingenieria, pero NO validada por los mentores.
+
+Por que se removio (verificado en _CONOCIMIENTO, 2026-07-04):
+- SKOOL consolidado (oficial): "LA PRIMERA PREGUNTA (primer si): desde que ciudad nos escribis?" — la primera pregunta es la ciudad.
+- Clase 22 (mas reciente sobre flujo) — umbral cognitivo: no meter carga antes de dar valor; una idea por mensaje. Y cubrir varios dolores con 6-8 PROPUESTAS DE VALOR, no interrogando.
+- Clase 1 (Mercy): contenido -> saludo + ciudad (2o si). Sin filtro de opciones.
+- Clase 10: el filtrado del avatar ya ocurre en el ANUNCIO ("angulo bien definido = filtro automatico"). Preguntar el dolor otra vez en el chat es redundante.
+- Clase 2: "un solo angulo, no multiangulo".
+Ninguna clase respalda la pregunta filtro; la 22 y el consolidado la contradicen.
+
+Como/ cuando testearla si se decide (bien hecho, sin contaminar variables):
+- NO en FASE 1 base: mientras se valida el sistema como lo dicen los mentores, dejar el flujo canonico (ciudad).
+- Probar como VARIACION A/B controlada una vez el flujo base tenga metrica estable: mismo producto/angulo ganador, un bot con pregunta filtro vs un bot sin ella, y comparar % conversacion por clic-enlace y CPA. Unica variable = la pregunta.
+- Cuidar que la pregunta no rompa el umbral cognitivo (Clase 22): si se prueba, hacerla UNA sola, corta, y despues del valor, no antes.
+
+Donde estaba implementado (por si se retoma): .claude/agents/ETAPA-5.md (ELEMENTO 13 + seccion MODO FASE 1) y el bloque en PRODUCTOS/VARICOSE/1_HACER_MANUAL.txt. Backup del ETAPA-5 pre-cambio: /tmp/ETAPA-5.pre-filtro.bak (temporal de la sesion).

@@ -1,0 +1,174 @@
+{
+  "ficha_id": "F041",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/25_1049875981073548.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1049875981073548",
+    "dias_activo": 3,
+    "replicas": 2,
+    "score": 53,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": "progresion"
+  },
+  "dispositivo_dominante": "EL TIMELINE DE EVIDENCIA SOBRE FONDO CLARO, CON DOS COLUMNAS DE BENEFICIO FLANQUEANDO EL PRODUCTO. Misma progresion de tres fotos que F039 y F040, pero en clave clara y con el trabajo repartido en dos columnas simetricas: la izquierda dice que hace el producto y la derecha que NO lleva. El producto queda en el centro exacto entre las dos.",
+  "lectura_estrategica": "Tercera variante del mismo timeline del mismo anunciante, y la que resuelve el problema de legibilidad: sobre crema, las tres fotos de la senal se leen mucho mas limpias que sobre granate. Los labels usan una escala mixta — ANTES, 1 DIA, CON USO DIARIO — que combina lo verificable inmediato con el habito, sin comprometerse a semanas. Las dos columnas simetricas dividen la argumentacion en dos preguntas que el comprador se hace por separado: que me da y que me evita.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_vineta",
+    "color": "crema o beige derivado de {{PALETA_CLARO}}",
+    "elemento": "vineta calida en las esquinas superiores y banda {{PALETA_OSCURA}} al pie",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} granate (titular, banda del pie, sellos) mas crema (fondo) mas {{COLOR_ACENTO}} dorado (sello de potencia y promocion) mas blanco (marcos y cards)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_centro",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "12% del ancho"
+    },
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "estructura_l1": "{{MENOS_PROBLEMA}}, {{MAS_ESTADO_ACENTO}}",
+      "linea_2": "{{SUBPROMESA}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}} con la segunda mitad en {{COLOR_ACENTO}} o en un tono mas saturado",
+      "estilo_l2": "Black/900 uppercase al 70% de L1",
+      "restriccion_palabras_l1": "4-5 palabras",
+      "restriccion_palabras_l2": "4-5 palabras",
+      "formato_obligatorio": "MENOS del problema, MAS del estado, y debajo la promesa de apoyo"
+    },
+    "timeline_evidencia": {
+      "posicion": "superior_media, ancho completo",
+      "cantidad_estados": 3,
+      "orientacion": "tres fotos en fila con marco blanco y esquinas redondeadas",
+      "formato_estado": "foto real de la senal con LABEL en pildora {{PALETA_OSCURA}} sobre el borde superior",
+      "estados": "{{TIMELINE_EVIDENCIA[3]}}",
+      "estructura_estado": {
+        "foto": "{{FOTO_SENAL}}",
+        "label": "{{LABEL_MOMENTO}}"
+      },
+      "restriccion_label": "1-3 palabras",
+      "separador": "flecha circular {{PALETA_OSCURA}} entre estados",
+      "regla_labels": "escala MIXTA: el primero es el estado inicial, el segundo un plazo corto verificable y el tercero un habito (con uso diario)",
+      "regla_fondo": "sobre fondo claro las fotos de la senal se leen mas limpias que sobre fondo oscuro"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "38% del frame",
+      "composicion": "bolsa o envase de pie de frente, con las perlas sueltas al pie",
+      "fuente": "IMAGEN_2",
+      "regla": "queda en el centro exacto, entre las dos columnas simetricas"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde {{PALETA_OSCURA}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "responde QUE ME DA: organo y funcion"
+    },
+    "columna_pureza": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical, simetrica a la izquierda",
+      "formato_item": "icono line-art en circulo con borde {{PALETA_OSCURA}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{ATRIBUTOS_PUREZA[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "responde QUE ME EVITA: lo que el producto no lleva"
+    },
+    "sello_potencia": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "banda vertical {{PALETA_OSCURA}} con la cifra grande",
+      "linea_1": "{{ETIQUETA_POTENCIA}}",
+      "linea_2": "{{DOSIS}}",
+      "linea_3": "{{UNIDAD_DOSIS}}",
+      "estilo_l2": "Black/900 en {{COLOR_ACENTO}}"
+    },
+    "badge_promocion": {
+      "posicion": "inferior_derecha",
+      "contenedor": "cinta o banderola {{PALETA_OSCURA}} con icono de reloj",
+      "texto": "{{PROMOCION_LABEL}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "timeline_evidencia",
+    "producto_hero",
+    "columna_beneficios",
+    "columna_pureza",
+    "sello_potencia",
+    "badge_promocion"
+  ],
+  "reglas_duras": [
+    "Las dos columnas son simetricas: izquierda que me da, derecha que me evita",
+    "El producto queda en el centro exacto entre ambas",
+    "Los labels del timeline usan escala mixta: estado inicial, plazo corto, habito",
+    "El fondo va claro para que las fotos de la senal se lean limpias",
+    "El titular usa la formula MENOS del problema, MAS del estado",
+    "Una sola banda oscura al pie"
+  ],
+  "variables_requeridas": [
+    "LOGO_MARCA",
+    "MENOS_PROBLEMA",
+    "MAS_ESTADO_ACENTO",
+    "SUBPROMESA",
+    "TIMELINE_EVIDENCIA[3]",
+    "BENEFICIOS[3]",
+    "ATRIBUTOS_PUREZA[3]",
+    "ETIQUETA_POTENCIA",
+    "DOSIS",
+    "UNIDAD_DOSIS",
+    "PROMOCION_LABEL",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "cuando existe una senal corporal cotidiana fotografiable",
+    "cuando las fotos de evidencia necesitan maxima legibilidad",
+    "cuando el argumento se divide en lo que da y lo que evita",
+    "productos con atributos de pureza que valen tanto como los beneficios"
+  ],
+  "cuando_no_usar": [
+    "cuando solo hay tres beneficios y ningun atributo de pureza: la simetria queda coja",
+    "cuando no hay senal externa observable",
+    "cuando se necesita el registro dramatico del fondo oscuro"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello vertical ALTA POTENCIA 12 MG POR CAPSULA.",
+    "Atributos de pureza: LIBRE DE GLUTEN, LAB TESTED, NON-GMO.",
+    "Claims impresos en el empaque: NON GMO, GLUTEN FREE, LAB TESTED, IMPORTED USA.",
+    "Labels del timeline: ANTES / 1 DIA / CON USO DIARIO.",
+    "Banderola PROMOCION DE HOY con icono de reloj.",
+    "Beneficios: APOYA TUS FILTROS RENALES, APOYA EL MANEJO DE LIQUIDOS, BIENESTAR URINARIO DIARIO.",
+    "Logo de marca arriba y centrado."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

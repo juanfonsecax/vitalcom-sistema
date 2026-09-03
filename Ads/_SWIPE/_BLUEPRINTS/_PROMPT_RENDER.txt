@@ -1,0 +1,61 @@
+═══════════════════════════════════════════════════════════════════════════
+PROMPT DE RENDER — CAPA 3
+Esto es lo UNICO que se le pega al generador de imagenes.
+Plantilla fija: no se toca. Lo unico que cambia es el JSON del final.
+═══════════════════════════════════════════════════════════════════════════
+
+IMAGENES QUE SE SUBEN CON ESTE PROMPT
+  IMAGEN_1  la referencia del concepto (de _BANCO_CREATIVOS/)   SIEMPRE
+  IMAGEN_2  la foto real del producto                            SIEMPRE
+  IMAGEN_3  la figura de autoridad / persona                     solo blueprints A y C
+  IMAGEN_4  referencia de paleta                                 opcional
+
+La ficha del producto NO se sube. Su contenido ya viaja adentro del JSON.
+
+
+──────────────── COPIAR DESDE ACA ────────────────
+
+ROLES DE LAS IMÁGENES DE REFERENCIA
+
+IMAGEN 1 = referencia de LAYOUT ÚNICAMENTE.
+Replicá su composición, jerarquía visual, proporciones relativas, posiciones
+de cada bloque, pesos tipográficos, radios de esquina y espaciado.
+NO copies su producto. NO copies su texto. NO copies su paleta. NO copies sus
+fotos. NO copies sus sellos.
+
+IMAGEN 2 = PRODUCTO EXACTO.
+Preservá forma, proporciones, etiqueta, tipografía del empaque y colores con
+fidelidad total. NO inventes texto sobre el empaque. NO modifiques el diseño
+de la etiqueta. NO cambies el color del envase.
+
+IMAGEN 3 = IDENTIDAD (si se provee).
+Preservá el rostro sin modificar. NO alteres rasgos, edad ni tono de piel.
+
+TAREA
+
+Generá un creativo publicitario que siga EXACTAMENTE la especificación JSON de
+abajo, usando la estructura de IMAGEN 1. La especificación es la fuente de
+verdad. Donde la especificación y tu criterio estético entren en conflicto,
+gana la especificación.
+
+REQUISITOS TÉCNICOS
+
+- Todo el texto debe ser legible al 100% de zoom, con tildes y signos de
+  apertura correctos, como diseñado en software profesional de layout.
+- Los textos van EXACTOS como están en la especificación. No los reescribas,
+  no los acortes, no los traduzcas.
+- No agregues ningún elemento que no esté en la especificación.
+- No agregues sellos, certificaciones, logos ni marcas de agua que no estén
+  en la especificación.
+- Ningún bloque de texto se superpone con otro.
+- Respetá el campo "espacio_libre_objetivo": si dice 50%, la mitad del frame
+  respira.
+- Respetá el campo "maximo_pesos_en_pieza".
+- Respetá el campo "formato": es la relación de aspecto de la pieza.
+- Cumplí todas las entradas del array "reglas_duras".
+
+ESPECIFICACIÓN
+
+{ACÁ VA EL JSON LLENO, PEGADO LITERAL, SIN MODIFICAR}
+
+──────────────── HASTA ACÁ ────────────────

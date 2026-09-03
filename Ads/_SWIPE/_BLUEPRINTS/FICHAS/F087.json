@@ -1,0 +1,195 @@
+{
+  "ficha_id": "F087",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/12_1488888463263472.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1488888463263472",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "24%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA ILUSTRACION ANATOMICA ENCENDIDA A UN LADO Y EL AVATAR AL OTRO, CON EL PRODUCTO ENTRE LOS DOS. La izquierda es el organo objetivo dibujado y luminoso sobre fondo oscuro; la derecha es una persona real del rango de edad sonriendo con los brazos cruzados. El producto se planta en el eje entre el interior del cuerpo y la persona que lo habita.",
+  "lectura_estrategica": "Resuelve la tension entre mostrar el mecanismo y mostrar al avatar sin que ninguno gane: los pone uno a cada lado y deja el producto en el medio. El titular nombra DOS AREAS a la vez y la bajada las cuantifica en una frase de estructura numerica — dos areas clave, un apoyo antioxidante — que convierte una lista en una formula. Los tres beneficios van en fila al pie, en cards con icono anatomico, y la oferta se resuelve en un solo tier con etiqueta de mejor oferta, sin escalera: la pieza no quiere que se delibere, quiere que se elija lo que ya viene elegido.",
+  "fondo": {
+    "tipo": "partido_por_temperatura",
+    "mitad_izquierda": "oscuro con la ilustracion anatomica luminosa",
+    "mitad_derecha": "{{PALETA_CLARO}} crema con el avatar",
+    "corte": "difuso, sin linea visible",
+    "regla": "izquierda el interior del cuerpo, derecha la persona que lo habita"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (titular, cards, banda) mas crema (fondo derecho) mas rojo y naranja de la ilustracion anatomica mas {{COLOR_ACENTO}} dorado del boton"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_dos_areas": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{AREA_1}}",
+      "linea_2": "Y {{AREA_2}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "regla": "nombra dos areas del cuerpo unidas por Y, sin verbo ni promesa"
+    },
+    "bajada_formula": {
+      "posicion": "bajo el titular",
+      "texto": "{{CANTIDAD_AREAS}} {{CALIFICATIVO_AREAS}}. {{CANTIDAD_APOYO}} {{TIPO_APOYO}}.",
+      "estilo": "Regular {{PALETA_OSCURA}}",
+      "restriccion_palabras": "6-8 palabras",
+      "formato_obligatorio": "dos frases numericas separadas por punto: N areas clave. Un apoyo X.",
+      "regla_critica": "la estructura numerica convierte una lista en una FORMULA: dos areas, un apoyo"
+    },
+    "pildora_activo": {
+      "posicion": "bajo la bajada",
+      "contenedor": "pildora con borde fino",
+      "texto": "{{ACTIVO}} {{DOSIS}}",
+      "estilo": "Bold {{PALETA_OSCURA}}",
+      "restriccion_palabras": "3 palabras"
+    },
+    "ilustracion_anatomica": {
+      "posicion": "izquierda_media",
+      "contenido": "{{ILUSTRACION_ORGANO_LUMINOSA}}",
+      "escala": "30% del frame",
+      "tratamiento": "el organo objetivo dibujado con sus vasos, iluminado en rojo y naranja sobre el fondo oscuro, con halo",
+      "regla": "es el interior del cuerpo: va del lado oscuro"
+    },
+    "avatar": {
+      "posicion": "derecha, ocupa el alto superior",
+      "contenido": "{{FOTO_AVATAR}}",
+      "escala": "35% del frame",
+      "tratamiento": "persona real del rango de edad objetivo, sonriendo, con los brazos cruzados, mirando a camara",
+      "regla": "es la persona que habita ese cuerpo: va del lado claro. Brazos cruzados y sonrisa, sin gesto de dolor"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "envase de pie de frente sobre mesa, con las perlas sueltas al pie",
+      "fuente": "IMAGEN_2",
+      "regla": "se planta en el eje entre la ilustracion y el avatar"
+    },
+    "fila_beneficios": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal de cards claras redondeadas",
+      "formato_item": "icono anatomico line-art en circulo mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "card_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_OSCURA}} solida",
+      "linea_1": "{{CANTIDAD}} {{UNIDAD_PLURAL}}",
+      "estilo_l1": "Bold uppercase blanco chico",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 blanco",
+      "linea_3": "{{ETIQUETA_SOCIAL}}",
+      "estilo_l3": "Bold uppercase en {{COLOR_ACENTO}}",
+      "regla_critica": "un solo tier con etiqueta de mejor oferta, sin escalera: la pieza no quiere que se delibere, quiere que se elija lo que ya viene elegido"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_centro",
+      "cantidad_items": 2,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_cierre": {
+      "posicion": "inferior_derecha",
+      "contenedor": "boton {{COLOR_ACENTO}} dorado redondeado",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "estilo": "Black/900 uppercase oscuro",
+      "restriccion_palabras": "1-2 palabras por linea",
+      "formato_obligatorio": "verbo de eleccion mas verbo de cuidado (elige cuidarte hoy)"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_dos_areas",
+    "ilustracion_anatomica",
+    "avatar",
+    "producto_hero",
+    "bajada_formula",
+    "fila_beneficios",
+    "card_oferta",
+    "boton_cierre",
+    "fila_garantias"
+  ],
+  "reglas_duras": [
+    "La ilustracion anatomica va del lado oscuro y el avatar del lado claro",
+    "El producto se planta en el eje entre los dos",
+    "El avatar va con brazos cruzados y sonrisa, sin gesto de dolor",
+    "La bajada usa estructura numerica: N areas clave, un apoyo X",
+    "Un solo tier de precio, sin escalera",
+    "El CTA encadena un verbo de eleccion y uno de cuidado"
+  ],
+  "variables_requeridas": [
+    "AREA_1",
+    "AREA_2",
+    "CANTIDAD_AREAS",
+    "CALIFICATIVO_AREAS",
+    "CANTIDAD_APOYO",
+    "TIPO_APOYO",
+    "ACTIVO",
+    "DOSIS",
+    "ILUSTRACION_ORGANO_LUMINOSA",
+    "FOTO_AVATAR",
+    "BENEFICIOS[3]",
+    "CANTIDAD",
+    "UNIDAD_PLURAL",
+    "PRECIO",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "GARANTIAS[2]",
+    "CTA_L1",
+    "CTA_L2",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "cuando el producto actua sobre dos areas del cuerpo relacionadas",
+    "cuando conviene mostrar el mecanismo y el avatar sin que ninguno gane",
+    "publico 50+ donde la ilustracion anatomica no incomoda",
+    "cuando la oferta ya esta decidida y no se quiere deliberacion"
+  ],
+  "cuando_no_usar": [
+    "cuando el producto actua sobre una sola area: el titular pierde su estructura",
+    "cuando hay que ofrecer escalera de tres tiers",
+    "publico joven donde la ilustracion clinica no conecta"
+  ],
+  "sellos_y_claims_observados": [
+    "Bajada DOS AREAS CLAVE. UN APOYO ANTIOXIDANTE.",
+    "Pildora ASTAXANTINA 12 MG.",
+    "Beneficios: CIRCULACION SALUDABLE, BIENESTAR VASCULAR, APOYO A FILTROS RENALES.",
+    "Card 2 UNIDADES Q325 MEJOR OFERTA.",
+    "Garantias ENVIO GRATIS y PAGO CONTRA ENTREGA.",
+    "Boton ELIGE CUIDARTE HOY.",
+    "Claims impresos en el empaque: from microalgae, triple strength, 12 mg, GMO free, gluten free, lab tested, 60 Softgels Dietary Supplement."
+  ],
+  "canonico_id": "CN13_ANATOMIA_MECANISMO",
+  "blueprint_equivalente": null
+}

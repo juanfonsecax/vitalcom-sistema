@@ -1,0 +1,27 @@
+============================================================
+Análisis del Video N: 11. Varicose.mp4
+
+CLASIFICACIÓN RÃPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "Antes de operarte de várices debes saber esto. Por eso hoy quiero recomendarte esta crema" | qué se ve: Una doctora con uniforme e identificador hablando a cámara frente a un diagrama de una vena, seguida por el frasco de la crema. | overlay en pantalla: "Antes", "de operarte", "de varices", "tienes", "que saber esto", "Por eso", "hoy quiero", "recomendarte"
+- ÃNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Evitar la operación de várices mejorando la circulación, reduciendo la hinchazón y el dolor desde casa sin cirugía.
+- FORMATO CREATIVO (elegí UNO): educacional
+- AVATAR (quién aparece): Doctora al inicio (uniforme quirúrgico/bata blanca) y piernas de pacientes tratándose.
+- TONO: clínico / educacional + tuteo + habla una voz en off (doctora al inicio).
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    Â· Prueba social (nº de clientes, "miles de personas"...): No aplica
+    Â· Cifras/resultados con tiempo ("en 30 días"...): No aplica
+    Â· Urgencia/escasez ("oferta por tiempo limitado"...): "por tiempo limitado"
+    Â· Garantía / envío gratis / pago contra entrega: "envío gratis"
+    Â· Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"Antes de operarte de várices debes saber esto. Por eso hoy quiero recomendarte esta crema de origen natural, diseñada para mejorar la circulación, disminuir la hinchazón y aliviar el dolor en piernas cansadas. Actúa directamente sobre la zona afectada, ayudando a reducir progresivamente la apariencia de las várices y mejorando el aspecto de la piel. Puedes usarla desde casa, sin cirugías ni procedimientos invasivos. Si ya intentaste otras opciones sin resultados, esta es la solución para ti. Aprovecha el dos por uno, con envío gratis por tiempo limitado."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Se inicia con una médica advirtiendo sobre las cirugías. Luego se presenta el producto "South Moon Varicose Veins Ointment". Un dedo toma la crema y la esparce sobre una pierna con várices. A continuación, transiciones de pantalla dividida mostrando cómo desaparecen las venas, seguidas de diversas tomas de "Antes" y "Después". También incluye el gráfico de la inyección tachada, indicando que es "sin cirugías".
+Textos en pantalla citados literal: "Antes", "de operarte", "de varices", "tienes", "que saber esto", "Por eso", "hoy quiero", "recomendarte", "esta crema de", "origen natural,", "diseñada para", "mejorar", "Antes", "la circulación,", "disminuir la", "hinchazón", "y aliviar el dolor", "Después", "en piernas", "cansadas,", "actúa", "directamente", "sobre la zona", "afectada", "Reduce las", "varices", "ayudando a", "reducir", "la apariencia", "de las varices", "y mejorando el", "aspecto de la", "piel,", "Después", "USO", "DESDE CASA", "sin cirugías ni", "procedimientos", "invasivos", "si ya intentaste", "otras", "opciones sin", "resultados", "esta es la", "solución", "para ti.", "Después", "2x1", "Antes", "Envío gratis", "Después".
+* Qué transmite: Autoridad médica ("Dra.") para advertir y dar una segunda opinión natural antes de someterse a una operación quirúrgica, ofreciendo una alternativa cómoda ("desde casa") y menos drástica con resultados visibles.
+* Llamado a la acción (CTA): "Aprovecha el dos por uno, con envío gratis por tiempo limitado."
+============================================================
+

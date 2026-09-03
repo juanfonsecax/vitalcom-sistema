@@ -1,0 +1,76 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HUB DE CREATIVOS</title><style>
+:root{--bg:#0b0d10;--pan:#12161c;--bd:#232a33;--tx:#e6edf3;--mut:#8b949e;--ac:#4f8cff}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--tx);
+     font:14px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+     display:flex;flex-direction:column}
+header{border-bottom:1px solid var(--bd);background:var(--pan);flex:0 0 auto}
+.top{display:flex;align-items:baseline;gap:12px;padding:10px 18px 0}
+.top h1{margin:0;font-size:15px;letter-spacing:.4px}
+.top .sub{color:var(--mut);font-size:12px}
+nav{display:flex;gap:4px;padding:8px 18px 0}
+button.tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--mut);
+     font:inherit;font-size:13px;padding:8px 14px 9px;cursor:pointer;display:flex;
+     flex-direction:column;gap:2px;align-items:flex-start;border-radius:6px 6px 0 0}
+button.tab:hover{color:var(--tx);background:#0b0d10}
+button.tab.on{color:var(--tx);border-bottom-color:var(--ac);background:#0b0d10}
+button.tab b{font-size:13px;letter-spacing:.5px}
+button.tab span{font-size:10.5px;color:var(--mut);font-weight:400}
+.edad{font-size:10px;padding:1px 6px;border-radius:99px;margin-left:6px;vertical-align:1px}
+.edad.ok{background:#0f2e1a;color:#3fb950}
+.edad.tibia{background:#3d2a10;color:#e3b341}
+.edad.mala{background:#3a1418;color:#f85149}
+main{position:relative;flex:1 1 auto;min-height:0}
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:var(--bg);display:none}
+iframe.on{display:block}
+.fb{position:absolute;inset:0;display:none;align-items:center;justify-content:center;padding:40px}
+.fb.on{display:flex}
+.fb div{max-width:520px;text-align:center;color:var(--mut);font-size:13px}
+.fb b{display:block;color:var(--tx);font-size:15px;margin-bottom:10px}
+.fb a{display:inline-block;margin-top:14px;background:var(--ac);color:#0b0d10;font-weight:600;
+      padding:9px 18px;border-radius:7px;text-decoration:none}
+.hint{padding:6px 18px;font-size:11px;color:var(--mut);border-top:1px solid var(--bd);
+      background:var(--pan);flex:0 0 auto}
+.hint code{background:#0b0d10;padding:1px 5px;border-radius:3px;color:#c9d1d9}
+.hint a{color:var(--ac);text-decoration:none}
+</style></head><body><header><div class="top"><h1>HUB DE CREATIVOS</h1><div class="sub">testeos, favoritos y swipe completo en una sola pagina</div></div><nav><button class="tab" data-v="sistema"><b>SISTEMA<span class="edad ok">recien generada</span></b><span>los 4 conceptos y como se producen</span></button><button class="tab" data-v="testeos"><b>TESTEOS<span class="edad ok">recien generada</span></b><span>que se esta midiendo ahora</span></button><button class="tab" data-v="winners"><b>WINNERS<span class="edad ok">recien generada</span></b><span>los 111 favoritos, por concepto</span></button><button class="tab" data-v="catalogo"><b>CATALOGO<span class="edad ok">recien generada</span></b><span>los 597 del swipe completo</span></button></nav></header><main><iframe data-v="sistema" data-src="_SISTEMA.html" title="SISTEMA"></iframe><div class="fb"><div><b>Tu navegador no monto la vista SISTEMA aca dentro</b>Algunos navegadores bloquean iframes de archivos locales. La pagina existe y esta al dia — se abre igual por separado.<a href="_SISTEMA.html" target="_blank">abrir SISTEMA en otra pestana</a></div></div><iframe data-v="testeos" data-src="../../PRODUCTOS/_TESTEOS.html" title="TESTEOS"></iframe><div class="fb"><div><b>Tu navegador no monto la vista TESTEOS aca dentro</b>Algunos navegadores bloquean iframes de archivos locales. La pagina existe y esta al dia — se abre igual por separado.<a href="../../PRODUCTOS/_TESTEOS.html" target="_blank">abrir TESTEOS en otra pestana</a></div></div><iframe data-v="winners" data-src="_WINNERS.html" title="WINNERS"></iframe><div class="fb"><div><b>Tu navegador no monto la vista WINNERS aca dentro</b>Algunos navegadores bloquean iframes de archivos locales. La pagina existe y esta al dia — se abre igual por separado.<a href="_WINNERS.html" target="_blank">abrir WINNERS en otra pestana</a></div></div><iframe data-v="catalogo" data-src="_GALERIA.html" title="CATALOGO"></iframe><div class="fb"><div><b>Tu navegador no monto la vista CATALOGO aca dentro</b>Algunos navegadores bloquean iframes de archivos locales. La pagina existe y esta al dia — se abre igual por separado.<a href="_GALERIA.html" target="_blank">abrir CATALOGO en otra pestana</a></div></div></main><div class="hint">teclas <code>1</code> <code>2</code> <code>3</code> <code>4</code> para cambiar de vista &nbsp;·&nbsp; el hub debe vivir en <code>Ads/_SWIPE/</code> junto a <code>_IMG/</code> &nbsp;·&nbsp; regenerar todo: <code>python Ads/_TOOLS/gen_hub.py --todo</code></div><script>
+var tabs = document.querySelectorAll('button.tab');
+var vistas = document.querySelectorAll('iframe');
+var fbs = document.querySelectorAll('.fb');
+
+// Red de seguridad: si el navegador no deja montar un iframe local (Firefox lo bloquea
+// en algunas configuraciones; Chrome no), el iframe queda en blanco para siempre y la
+// pagina pareceria rota. A los 2.5 s sin haber disparado load, mostramos el enlace directo.
+function vigilar(i){
+  var vista = vistas[i];
+  var listo = false;
+  vista.addEventListener('load', function(){ listo = true; fbs[i].classList.remove('on'); });
+  setTimeout(function(){ if (!listo) fbs[i].classList.add('on'); }, 2500);
+}
+
+function ir(id){
+  for (var i=0;i<tabs.length;i++){
+    var on = tabs[i].dataset.v === id;
+    tabs[i].classList.toggle('on', on);
+    vistas[i].classList.toggle('on', on);
+    if (!on) fbs[i].classList.remove('on');
+    // carga diferida: la galeria de 597 solo se monta cuando se la pide
+    if (on && !vistas[i].src){ vigilar(i); vistas[i].src = vistas[i].dataset.src; }
+  }
+  try { localStorage.setItem('hub_tab', id); } catch(e){}
+}
+for (var i=0;i<tabs.length;i++){
+  tabs[i].addEventListener('click', function(){ ir(this.dataset.v); });
+}
+document.addEventListener('keydown', function(e){
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  var n = parseInt(e.key, 10);
+  if (n >= 1 && n <= tabs.length) ir(tabs[n-1].dataset.v);
+});
+var guardada = null;
+try { guardada = localStorage.getItem('hub_tab'); } catch(e){}
+var valida = false;
+for (var i=0;i<tabs.length;i++) if (tabs[i].dataset.v === guardada) valida = true;
+ir(valida ? guardada : tabs[0].dataset.v);
+</script></body></html>

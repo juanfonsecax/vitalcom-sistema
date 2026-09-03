@@ -1,0 +1,168 @@
+{
+  "ficha_id": "F055",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Rincon_de_las_Ventas_Onlin/08_1366332328765678.jpg",
+    "anunciante": "Rincon de las Ventas Onlin",
+    "ad_archive_id": "1366332328765678",
+    "dias_activo": 24,
+    "replicas": 1,
+    "score": 49,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "24%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA FOTO DE LA EMOCION EN EL MOMENTO EXACTO, CON EL OBJETO QUE LA PRODUCE EN LA MANO. Una mujer llorando de emocion sostiene la prueba de embarazo y la mira; la habitacion del fondo tiene una cuna. No hay sintoma, no hay antes/despues y no hay mecanismo: hay una escena de vida en el segundo en que el deseo se cumple.",
+  "lectura_estrategica": "Vende un DESEO con nombre propio, no un beneficio. El titular lo nombra en imperativo y con signos de exclamacion (cumple tu sueno de ser mama), y todo lo demas de la pieza esta subordinado a esa escena: tres checks minimos, sin subtitulos, y una banda de precios en una sola linea. El detalle que sostiene la promesa es la palabra TRATAMIENTO COMPLETO entre parentesis bajo los precios, que reencuadra el gasto como un proceso con final y no como una compra recurrente. La cuna del fondo hace el trabajo del despues sin mostrar un bebe.",
+  "fondo": {
+    "tipo": "escena_domestica_significativa",
+    "base": "habitacion clara en luz natural, desenfocada, con un objeto que anticipa el resultado deseado (cuna, ropa de bebe, foto)",
+    "regla": "el objeto del fondo hace el trabajo del despues sin mostrarlo explicitamente"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rosa o magenta (segunda linea del titular, banda de precios, banda del pie) mas negro (titular) mas blanco (texto sobre las bandas) mas los calidos de la escena"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular_deseo": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{IMPERATIVO_L1}}",
+      "linea_2": "{{DESEO_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase negro con signo de exclamacion de apertura",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}} con signo de exclamacion de cierre",
+      "restriccion_palabras_total": "5-7 palabras",
+      "formato_obligatorio": "imperativo de CUMPLIMIENTO mas el deseo nombrado como identidad (ser mama, volver a caminar, dormir de nuevo)",
+      "regla": "el deseo se nombra como identidad y no como resultado clinico: no dice mejora tu fertilidad, dice cumple tu sueno de ser mama"
+    },
+    "subtitular_mecanismo": {
+      "posicion": "bajo el titular",
+      "texto": "{{MECANISMO_SUAVE}}",
+      "estilo": "Regular negro",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "una sola linea con el como, en registro suave: es lo unico tecnico de la pieza"
+    },
+    "checks_beneficio": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "check en circulo con borde fino mas texto Bold negro de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "sin subtitulos y sin iconos ilustrados: la pieza no quiere competirle atencion a la foto"
+    },
+    "avatar_en_la_escena": {
+      "posicion": "derecha, ocupa el alto central",
+      "contenido": "{{FOTO_EMOCION}}",
+      "escala": "45% del frame",
+      "tratamiento": "persona del avatar en el momento emocional exacto, sosteniendo y MIRANDO el objeto que produce la emocion, con lagrimas o gesto de alegria contenida",
+      "regla_mirada": "mira el objeto, no a camara: el lector observa la escena en vez de ser interpelado",
+      "funcion": "es la pieza entera: todo lo demas esta subordinado"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_baja",
+      "escala": "22% del frame",
+      "composicion": "envase de pie de frente con badge de contenido en pildora sobre la esquina",
+      "badge": "{{CONTENIDO_NETO}}",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto va chico y a un costado: en esta pieza no es el protagonista"
+    },
+    "banda_precios": {
+      "posicion": "inferior_centro",
+      "contenedor": "banda {{PALETA_ACENTO}} solida",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "linea_2": "{{CANT_1}} {{MONEDA}}{{PRECIO_1}} | {{CANT_2}} {{MONEDA}}{{PRECIO_2}} | {{CANT_3}} {{MONEDA}}{{PRECIO_3}}",
+      "linea_3": "({{ETIQUETA_TRATAMIENTO}})",
+      "estilo_l2": "Black/900 blanco, los tres tiers en UNA SOLA LINEA separados por barra vertical",
+      "estilo_l3": "Bold blanco entre parentesis",
+      "regla_critica": "la etiqueta de TRATAMIENTO COMPLETO bajo los precios reencuadra el gasto como un proceso con final, no como una compra recurrente",
+      "regla_formato": "los tres tiers en una linea y no en cards: la pieza no quiere que el precio compita con la escena"
+    },
+    "banda_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_ACENTO}} mas oscura",
+      "texto": "{{GARANTIA_ENVIO}} + {{GARANTIA_PAGO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "5-7 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_deseo",
+    "avatar_en_la_escena",
+    "subtitular_mecanismo",
+    "checks_beneficio",
+    "banda_precios",
+    "producto_hero",
+    "banda_garantias"
+  ],
+  "reglas_duras": [
+    "El deseo se nombra como identidad, no como resultado clinico",
+    "La persona mira el objeto que produce la emocion, no a camara",
+    "El objeto del fondo anticipa el resultado sin mostrarlo explicitamente",
+    "Los checks van sin subtitulos ni iconos ilustrados",
+    "El producto va chico y a un costado",
+    "Los tres tiers van en una sola linea, sin cards",
+    "La etiqueta de tratamiento completo va bajo los precios, entre parentesis"
+  ],
+  "variables_requeridas": [
+    "IMPERATIVO_L1",
+    "DESEO_L2_ACENTO",
+    "MECANISMO_SUAVE",
+    "BENEFICIOS[3]",
+    "FOTO_EMOCION",
+    "CONTENIDO_NETO",
+    "OFERTA_LABEL",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_TRATAMIENTO",
+    "GARANTIA_ENVIO",
+    "GARANTIA_PAGO"
+  ],
+  "cuando_usar": [
+    "cuando el producto sirve a un deseo con nombre propio y carga identitaria",
+    "categorias de fertilidad, movilidad recuperada, sueno, autonomia",
+    "cuando existe una escena fotografiable del momento en que el deseo se cumple",
+    "cuando el producto se vende como tratamiento con duracion definida"
+  ],
+  "cuando_no_usar": [
+    "productos de bienestar general sin un deseo nombrable",
+    "cuando no hay foto de la emocion: una foto de catalogo mata la pieza",
+    "publico de nivel 4 que compara especificaciones"
+  ],
+  "sellos_y_claims_observados": [
+    "Beneficios: AYUDA A REGULAR CICLOS, MEJORA CALIDAD DE OVULOS, COMBATE EL SOP.",
+    "Subtitulo REGULA TUS CICLOS Y TU OVULACION NATURALMENTE.",
+    "Badge de contenido 243.1 G NETO en pildora sobre el envase.",
+    "Banda PROMO FLASH: 1x Q200 | 2x Q270 | 3x Q350 (TRATAMIENTO COMPLETO).",
+    "Banda final ENVIO GRATIS GUATEMALA + PAGO AL RECIBIR.",
+    "Claims impresos en el empaque: INOSITOL MULTIVITAMIN, NON GMO/TESTED, MULTIVITAMIN."
+  ],
+  "canonico_id": "CN07_DOLOR_A_PLENO",
+  "blueprint_equivalente": null
+}

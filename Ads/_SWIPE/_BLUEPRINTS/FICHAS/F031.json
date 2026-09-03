@@ -1,0 +1,137 @@
+{
+  "ficha_id": "F031",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/08_1246537431875248.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "1246537431875248",
+    "dias_activo": 10,
+    "replicas": 2,
+    "score": 60,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES CASERO CON GLOBOS DE TEXTO Y FLECHAS DIBUJADAS. Dos fotos de las mismas piernas en el mismo sofa, partidas por una linea blanca fina, con globos de texto de color claro arriba y flechas verdes curvas dibujadas encima. Nada esta alineado ni maquetado: parece hecho en la app del telefono, y ese es el punto.",
+  "lectura_estrategica": "Antes/despues que renuncia a la produccion para ganar veracidad. Los globos no dicen una promesa, describen el estado con la palabra que la persona usa (retencion de liquidos) y la version negada de la misma frase — CON retencion y SIN retencion — lo que hace la comparacion sin verbo ni marca. La flecha inferior baja del cambio hacia la mano con el producto: conecta la transformacion con el frasco sin necesidad de escribir por que. Sin precio, sin logo, sin garantias.",
+  "fondo": {
+    "tipo": "la_foto_misma",
+    "base": "las dos tomas del mismo lugar domestico (sofa, cama, silla), partidas por linea blanca fina",
+    "regla": "es el MISMO mueble, el mismo angulo y la misma hora del dia en las dos tomas"
+  },
+  "paleta": {
+    "derivacion": "de las fotos mismas",
+    "cantidad_colores": 3,
+    "estructura": "los colores propios de la escena mas un claro pastel para los globos mas un verde para las flechas. No se agrega ninguno mas"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif comun de sistema, NO condensada",
+    "pesos_permitidos": [
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "oscuro sobre globo claro",
+    "regla": "tipografia de editor de telefono: una condensada de diseno delata el anuncio"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "la misma zona del cuerpo, en el mismo lugar de la casa, sin rostro",
+    "angulo": "el de quien se fotografia a si mismo mirandose las piernas o los pies",
+    "luz": "la de la casa, sin correccion, la misma en las dos tomas",
+    "que_se_conserva": "el mueble de fondo, el desorden, el desencuadre leve, la sombra real",
+    "que_NO_se_hace": "estudio, recorte, fondo plano, alineacion perfecta de los globos, logo, precio",
+    "regla": "el mueble identico en las dos tomas es la prueba de que es la misma persona el mismo dia: es lo que no se puede falsificar a ojo"
+  },
+  "zonas": {
+    "globo_antes": {
+      "posicion": "superior_izquierda, sobre la foto ANTES",
+      "contenedor": "globo o card de esquinas redondeadas en color pastel claro",
+      "texto": "{{ESTADO_ANTES}}",
+      "estilo": "Bold oscuro de 2 lineas",
+      "restriccion_palabras": "4-6 palabras",
+      "formato_obligatorio": "la zona del cuerpo + CON + el nombre coloquial del problema"
+    },
+    "globo_despues": {
+      "posicion": "superior_derecha, sobre la foto DESPUES",
+      "contenedor": "el mismo globo, mismo color y mismo tamano",
+      "texto": "{{ESTADO_DESPUES}}",
+      "estilo": "Bold oscuro con la negacion SUBRAYADA",
+      "restriccion_palabras": "4-6 palabras",
+      "formato_obligatorio": "la MISMA frase del globo izquierdo con SIN en vez de CON, y el SIN subrayado",
+      "regla": "la comparacion se hace con la misma frase negada: no hace falta verbo ni promesa"
+    },
+    "foto_partida": {
+      "posicion": "frame completo",
+      "escala": "100% del frame",
+      "contenido_izquierda": "{{FOTO_ZONA_ANTES}}",
+      "contenido_derecha": "{{FOTO_ZONA_DESPUES}}",
+      "corte": "linea blanca fina vertical al centro",
+      "regla": "mismo mueble, mismo angulo, misma luz en las dos tomas"
+    },
+    "flecha_superior": {
+      "posicion": "entre los dos globos",
+      "forma": "flecha curva verde fina, dibujada, de izquierda a derecha",
+      "funcion": "declara la direccion de lectura entre los dos estados"
+    },
+    "flecha_inferior": {
+      "posicion": "del centro de la foto hacia la mano con el producto",
+      "forma": "flecha curva verde fina, dibujada, apuntando hacia abajo",
+      "funcion": "conecta la transformacion con el producto sin escribir por que"
+    },
+    "mano_con_producto": {
+      "posicion": "inferior_centro, sobre la foto",
+      "contenido": "{{FOTO_MANO_CON_PRODUCTO}}",
+      "escala": "25% del frame",
+      "tratamiento": "una mano sosteniendo el envase, recortada e insertada sobre la foto",
+      "regla": "el producto entra como intruso sobre la escena, no integrado: refuerza la sensacion de collage casero"
+    }
+  },
+  "secuencia_lectura": [
+    "globo_antes",
+    "globo_despues",
+    "foto_partida",
+    "flecha_inferior",
+    "mano_con_producto"
+  ],
+  "reglas_duras": [
+    "Es el mismo mueble, el mismo angulo y la misma luz en las dos tomas",
+    "Los dos globos llevan la misma frase, una con CON y otra con SIN, y el SIN va subrayado",
+    "Las flechas van dibujadas a mano alzada, curvas y finas",
+    "Tipografia de sistema, nunca condensada de diseno",
+    "Sin precio, sin logo, sin garantias, sin CTA",
+    "El desorden y el desencuadre de la escena se conservan"
+  ],
+  "variables_requeridas": [
+    "ESTADO_ANTES",
+    "ESTADO_DESPUES",
+    "FOTO_ZONA_ANTES",
+    "FOTO_ZONA_DESPUES",
+    "FOTO_MANO_CON_PRODUCTO"
+  ],
+  "cuando_usar": [
+    "cambio visible en una zona del cuerpo fotografiable en casa",
+    "publico saturado de antes/despues producidos, que ya desconfia del formato pulido",
+    "TOFU frio donde el objetivo es que alguien se reconozca",
+    "cuando se puede producir material propio real"
+  ],
+  "cuando_no_usar": [
+    "BOFU: sin precio ni CTA no cierra",
+    "cuando el cambio no es visible en foto casera",
+    "marcas que necesitan verse premium"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos, precio, garantias ni CTA.",
+    "Globos de estado: PIERNAS CON RETENCION DE LIQUIDOS y PIERNAS SIN RETENCION DE LIQUIDOS, con el SIN subrayado."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

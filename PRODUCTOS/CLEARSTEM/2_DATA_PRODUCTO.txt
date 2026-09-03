@@ -1,0 +1,443 @@
+CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id "🟩 CLEARSTEM - WP - NEW TEST" (GTR13)
+(v1 = 2026-07-10 relanzamiento · v2 = 2026-07-25 se completa 1_HACER_MANUAL.txt + copies + prompts + flujo)
+════════════════════════════════════════════════════════════════════════
+
+DATA DEL PRODUCTO — memoria para análisis y optimización
+════════════════════════════════════════════════════════════════════════
+
+1) VALIDACIÓN / CONTEXTO
+- Producto ya vendido antes; se relanza. Acné hormonal, hombres y mujeres.
+- Trabaja desde adentro (hormonas, intestino, hígado, estrés). 6 ingredientes:
+  DIM, Vitamina A biodisponible, B5, Cúrcuma, Raíz de Diente de León, 5-HTP, Glutatión.
+
+2) COSTEO (tabla ETAPA-1, Q57 → fila Q60, conservador)
+- P1u Q199 + envío gratis
+- P2u Q299 + envío gratis (OFERTA IRRESISTIBLE)
+- P3u Q399 + envío gratis + regalo (LA MÁS ELEGIDA ⭐)
+- CPA Objetivo Q30.8 · CPA Break Even (1u) Q60.5 (≈ $7.86 a tasa ~7.7)
+- Arquitectura: 1/2/3 unidades (suplemento de recompra, ticket medio despeja el piso).
+
+3) RENDIMIENTO HISTÓRICO POR VIDEO (cuentas GTR-0 + GTR-13; 49 compras, $441 gasto, $9.01/compra global)
+  VIDEO  ÁNGULO                     GASTO   CONV  COMPRAS  $/CONV  $/COMPRA
+  V13    Dolor Emocional MASCULINO  $32.91   64     7      $0.51   $4.70  ← MEJOR eficiencia (casi sin presupuesto)
+  V3     Anti-Falsificación         $36.41   33     6      $1.10   $6.07
+  V10    Testimonio Radical        $113.83  104    16      $1.09   $7.11  ← MEJOR volumen de ventas
+  V2     Médicos Fallaron          $109.01  185    11      $0.59   $9.91  ← chats baratos, cierra mal
+  V15    Dolor Emoc/Inseguridad     $57.19   64     5      $0.89   $11.44
+  V14    Médicos Fallaron (var)     $39.94   27     3      $1.48   $13.31
+  V18    Prueba Social/Doctora      $30.92   35     1      $0.88   $30.92  ← MATAR
+- Lección: el ángulo que trae conversaciones más baratas (V2) NO es el que más vende. Chat barato ≠ venta.
+- Mapeo ángulo→video confirmado por export de estructura de Meta (campaña GTR1):
+  Testimonio Radical=V10 · Médicos Fallaron=V2 · Dolor Emocional=V15 · Prueba Social/Autoridad=V18.
+
+4) DECISIÓN DE RELANZAMIENTO
+- Enfoque: re-testeo híbrido FASE 1 con BOT NUEVO (el viejo desperdiciaba mejoras de cierre).
+- 4 ganadores probados vía POST ID (mantiene prueba social, no re-lavar) + 2 ángulos frescos en IMAGEN.
+- Escalar V13 (nunca recibió presupuesto). Matar V18.
+- Tras 3-5 días de reconfirmación → FASE 2 hard-scale del que confirme (surfing 20%, Post ID, multicuenta).
+
+5) LOS 6 CONJUNTOS (ángulo · avatar · creativo · nivel conciencia)
+  1. Dolor Emocional Masculino · hombre 20-35, acné mandíbula, evita contacto visual · VIDEO Clearstem13 · N2
+  2. Testimonio Radical · mujer 30-40, años de lucha, antibióticos fallaron · VIDEO Clearstem10 · N3
+  3. Anti-Falsificación · conoce el producto viral, teme falso · VIDEO Clearstem3 · N3
+  4. Médicos Fallaron · fue a dermatólogo/ginecólogo/endocrino sin solución · VIDEO Clearstem2 · N2
+  5. Resistencia a la Insulina / SOP (FRESCO) · mujer 25-35, SOP, dejó anticonceptivos · IMAGEN · N1
+  6. Eje Intestino-Piel (FRESCO) · adulto acné + digestión/hinchazón · IMAGEN · N1
+- Ángulos frescos validados con voz del cliente (SOP causa hasta 13% del acné adulto femenino; eje intestino-piel).
+
+6) FANPAGE ASIGNADA
+- Página 4 ✨ Belleza & Piel — Astrid García. Reuso (único producto que ha corrido esa página).
+- La página no segmenta género (el creativo lo hace) → V13 masculino corre igual.
+- Tono para acné: confesional + educativo (no aspiracional puro).
+
+7) CONFIG MCP
+- MCP_ACCOUNT_ID: act_916746367261028 (GTR 13) — ⚠️ Ads MCP OFF (rollout gradual). Solo LucidSales.
+- MCP_PAGE_ID (Astrid García): **823825257480758** ← verificado 25-jul contra Meta
+  (ads_get_user_pages: aparece como "Astrid García" con permiso CREATE_ADS).
+  ⚠️ DISCREPANCIA A RESOLVER: el operador entregó el link
+  facebook.com/profile.php?id=**61581366406442**, que NO aparece en la lista de páginas
+  con permiso para pautar. Son DOS entidades distintas:
+    · 823825257480758 → la que Meta reconoce y con la que SE PUEDE pautar hoy.
+    · 61581366406442  → formato de perfil/página nueva; sin permiso de ads asociado.
+  Si la página que el operador quiere usar es la segunda, hay que asignarla al Business
+  y a la cuenta GTR 13 y conectarle el WhatsApp ANTES de pautar; si no, el ad no puede
+  entregar al bot. Mientras no se resuelva, el page_id operativo es 823825257480758.
+- MCP_PIXEL_ID: [PENDIENTE]
+- TASA_USD_GTQ: 7.62 (misma que el resto del portafolio; el 7.7 anterior era un default sin confirmar)
+
+  Otras páginas del Business (referencia, verificadas 25-jul): Dr Diego Abarca 457409967454598 ·
+  Dra Claudia Vasquez 498977893288095 · Valeria Ramírez 726855933855139 · Hernatura 733299323197322 ·
+  Primal Tienda 1038400919355152 · Génesis Morales 1115546361637525 ·
+  Dr. Ricardo Estrada (Salud Nerviosa & Neuropatía) 1218486924672725.
+
+8) REGISTRO DE CONJUNTOS (llave ETAPA-7 — completar al crear campaña)
+  Conjunto | Ángulo | Creativo | adset_id | precio en copy
+  1 | Dolor Emoc Masculino | Clearstem13 (PostID) | — | no
+  2 | Testimonio Radical | Clearstem10 (PostID) | — | Q199
+  3 | Anti-Falsificación | Clearstem3 (PostID) | — | Q199
+  4 | Médicos Fallaron | Clearstem2 (PostID) | — | no
+  5 | Resistencia Insulina/SOP | IMAGEN nueva | — | no
+  6 | Eje Intestino-Piel | IMAGEN nueva | — | no
+
+9) NOTA DE ANÁLISIS FUTURO
+- El operador activó la MÚSICA AUTOMÁTICA de Meta en los ads de IMAGEN (prueba). Aislar esa variable
+  al analizar; comparar imagen-con-música vs video sin atribuir mal el resultado.
+
+── RESULTADOS_TESTEO 2026-07-15 (auditoría diaria) ──
+GTR13 MCP OFF (reintentado hoy, sigue OFF) → sin lectura lado-ads. Sin datos nuevos.
+Último Lucid firme (7d 07→14): SANO Q36.2/v · Q54.3/ent; mejor Anti-Falsificación Q18.5(2v).
+Depende del export LucidSales del jueves. Aislar variable "música Meta en ads-imagen".
+
+═══ RESULTADOS_TESTEO · AUDITORÍA 2026-07-17 (auto) ═══
+GTR 13 (916746367261028) sigue con Ads MCP OFF (is_ads_mcp_enabled=false, "rollout gradual"). NO se pudo leer lado-ads en vivo.
+CLEARSTEM se audita SOLO por LucidSales que pega el operador → PENDIENTE en este run.
+Última lectura conocida (Lucid 7d al 14-jul): 6 ventas · CPA Q36.2/venta · Q54.3/entregado · mejor = Anti-Falsificación Q18.5 (2v).
+Recordar aislar variable "música automática Meta" activada en los ads-imagen. Reintentar MCP GTR13 en el próximo run.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-21 (LucidSales 14→21 jul — única fuente, GTR13 MCP OFF)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid.
+CLEARSTEM TOTAL: 13 ventas · CPA Q40.2 · ROAS 5.6 · sano, sigue en TESTEO.
+ · Médicos Fallaron ........... 4v · CPA Q22.7 ★ nuevo líder
+ · Testimonio Radical ......... 3v · CPA Q30.0 · 3/3 ENTREGADO
+ · Anti-Falsificación ......... 3v · CPA Q30.1 · 3/3 ENTREGADO
+ · Resistencia Insulina/SOP ... 2v · CPA Q45.0
+ · Dolor Emocional Masculino .. 1v · CPA Q89.6 (>BE; era ganador antes, débil este ciclo)
+ · Eje Intestino-Piel ......... 0v · $9.51
+NOTA: música Meta activa en ads-imagen (variable a aislar). Sin MCP → no multicuenta aún.
+ACCIÓN: dejar correr; podar Eje Intestino-Piel. Vigilar Dolor Masculino (fue ganador histórico).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — VENTANA 17→24 JUL (_HISTORICO.csv, LucidSales)
+CLEARSTEM: 10 ventas · pauta Q429 · ingreso Q2,162 · CPA Q42.9 vs BE Q60.5 → 🟡 RENTABLE (+Q176)
+ · Eje Intestino-Piel ......... 0v · Q38 gastados · conversación 11% (<<35%) → APAGAR
+ · Dolor Emocional Masculino .. 0v · Q77 gastados · 128% de su PD
+   ⚠️ NO APAGAR — RENOVAR CREATIVO. Es el ángulo MÁS EFICIENTE del historial del producto
+   ($4.70/compra, 7 compras con solo $32.91 — el mejor de los 7 videos testeados). Un ángulo
+   con ese historial que deja de vender = FATIGA DE CREATIVO, no ángulo muerto (Clase 4:
+   "el ÁNGULO sirve, el CREATIVO se gastó"). Coincide con la acción ya escrita el 21-jul
+   ("vigilar Dolor Masculino, fue ganador histórico"). Dos variables de confusión sin aislar:
+   bot nuevo del relanzamiento + música automática de Meta en ads-imagen.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+MATERIAL DISPONIBLE (inventario 2026-07-25)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+VIDEOS + TRANSCRIPCIONES: 20 y 20 (Clearstem1-20) en Ads/1.1 Videos/CLEARSTEM/ y
+  Ads/1.2 Transcripcion videos/CLEARSTEM/. NO hay carpeta Ads/MEDIA_CLEARSTEM/ (no se
+  lavaron: los 4 ganadores corren por Post ID de publicaciones ya existentes, no requieren lavado).
+
+VIDEOS ANALIZADOS NUEVOS (25-jul) — candidatos a creativo de renovación:
+ · Clearstem18 — EDUCACIONAL, avatar DOCTORA con bata. Ángulo: acné de mandíbula + piel grasa
+   por hígado/digestión/hormonas, tratado desde adentro. Prueba social fuerte: "4.4 estrellas,
+   casi 3,000 reseñas", "más de 54,000 unidades vendidas". Urgencia: "22% de descuento".
+   Hook 0-5s: "Sigues despertando con esos brotes dolorosos en la mandíbula…"
+   → ENCAJA con el ángulo #4 Médicos Fallaron (líder actual, CPA Q22.7) y aporta AUTORIDAD.
+ · Clearstem19 — ANTI-FALSIFICACIÓN, avatar cliente joven en casa. "esto es falso, falso,
+   falsísimo", "Gold Star Seller", "tienda oficial", "asegúrate de estar usando el original".
+   Maneja la objeción de PRECIO de frente: "yo sé que no es el más económico, pero si ya
+   intentaste todo, cremas, jabones, y al contrario te ponen peor…"
+   → ENCAJA con el ángulo #3 Anti-Falsificación (3v, CPA Q30.1) = creativo de reemplazo directo.
+
+TESTIMONIOS REALES DE WHATSAPP (2, entregados por el operador 25-jul) — prueba social de oro
+para copies e Info 3. Son conversaciones reales de clientas guatemaltecas:
+ · +502 5974 0833 — "hace 3 semanas me llegaron los 3 cabal jaja, yo dudé si pedir 1 o los 3
+   pero qué bueno que pedí los 3". "ya voy en la semana 3 y carita ya se ve diferente… hasta
+   mi hermana me dijo que le guarde uno porque como que es de familia".
+   → VALIDA: (a) el timeline real de resultado = SEMANA 3, (b) el P3u (3 unidades) como la
+     elección correcta — sirve textual para empujar la oferta de 3, (c) el componente familiar/
+     hereditario del acné = ángulo virgen no testeado ("como que es de familia").
+ · +502 8955 6589 — "tenía dudas pero me di cuenta que es el original y necesito otro porque
+   he visto resultados" → VALIDA el ángulo #3 Anti-Falsificación Y demuestra RECOMPRA.
+ (Voseo real de la clienta: "cabal", "carita". Usar ese lenguaje en copies — es [VOZ-REAL].)
+
+INFOGRAFÍAS DEL BOT: 2 confirmadas.
+ · Info 1 — "ADIÓS ACNÉ HORMONAL / HOLA PIEL SIN BROTES" + 4 beneficios (reduce acné,
+   regula grasa, disminuye manchas, equilibra hormonas). Sellos: Fórmula Americana, #1 Amazon,
+   Viral en TikTok, Best Seller, Dermatologically Tested, FDA-APPROVED.
+ · Info 2 — "TRANSFORMACIÓN 50 días" con progresión Día 1 / Día 25 / Día 50 + 4 bloques
+   (equilibrio hormonal, estado de ánimo/5-HTP, limpia y renueva, desintoxica hígado/intestino).
+ · Info 3 (confianza) — NO CONFIRMADA, pendiente de verificar con el operador.
+ ⚠️ REVISAR EL SELLO "FDA-APPROVED": la FDA no aprueba suplementos dietéticos (solo medicamentos),
+   así que es factualmente falso. Doctrina del sistema: el compliance NO aplica post-clic (Meta no
+   lee el bot) → dentro del bot es decisión del operador. PERO si esta imagen se usa como AD,
+   ahí sí sube CPM / puede rechazar el anuncio. Además ya existe la orden equivalente para
+   TINNIDROP en _PORTAFOLIO.txt ("quitar sellos FDA/Min.Salud + %clínicos inventados").
+   DEFINIR: ¿estas 2 imágenes son SOLO del bot, o también se pautan como ads?
+
+FLUJO LUCIDBOT ACTUAL (parcial, entregado por el operador 25-jul):
+ 1) Bienvenida: "¡Hola! 👋 Bienvenido a Sanarte, estamos encantados de tenerte por acá.
+    En un momento una asesora se pondrá en contacto con vos. ✨"
+ 2) AUDIO (guion textual): "Hola, claro que sí, te cuento. CLEARSTEM es un suplemento para el
+    acné hormonal, ese que sale en la barbilla o la mandíbula y no se va con cremas. Trabaja
+    desde adentro: tiene DIM que regula tus hormonas, que es la raíz del problema, más cúrcuma
+    y glutatión para desinflamar, y 5-HTP para controlar el estrés que dispara los brotes. Todo
+    natural, sin gluten y vegano. Empezás a notar cambios entre la semana 2 y 3, y miles de
+    personas ya tienen resultados reales. Es la mejor decisión que podés tomar por tu piel."
+ 3) Presentación + ciudad: "Hola, soy Laura, estaré atendiéndote el día de hoy 😊 Cuéntame,
+    ¿desde qué ciudad nos escribís?"
+ → FALTA documentar: elementos 4-13, INTERACCIONES 1/2 (validación + refuerzo/oferta), FAQ del
+   producto y reglas condicionales. Las INTERACCIONES 3/4/5 son las FIJAS universales (el
+   operador ya las tiene cargadas, no se reescriben).
+
+✅ DISCREPANCIA DE FANPAGE — RESUELTA POR EL OPERADOR (25-jul)
+   FANPAGE VIGENTE Y ÚNICA: **#4 ✨ Belleza & Piel — Astrid García** (confirmado por el operador).
+   Sobre el "Bienvenido a Sanarte" del bot: NO es necesariamente un error. La especificación de
+   ETAPA-5 (ELEMENTO 1) dice textual que `[NOMBRE_TIENDA]` = "nombre de la TIENDA (ej. Sanarte),
+   no la fanpage ni la asesora". O sea SANARTE puede ser la marca-tienda paraguas y BELLEZA & PIEL
+   la fanpage de pauta — conviven sin conflicto y así está especificado el sistema.
+   → DECISIÓN DEL OPERADOR (no bloquea): dejar "Sanarte" si es su tienda paraguas, o cambiarlo a
+     "Belleza & Piel" si quiere coherencia 1:1 entre el nombre del ad y el del bot. Lo único que
+     importa es que el cliente no sienta que llegó a otra marca: si el ad va firmado "Belleza &
+     Piel · Astrid García" y el bot saluda "Sanarte" sin ningún puente, eso sí puede costar
+     conversación (incoherencia anuncio-bot, causa #1 de %conv bajo). Puente sugerido en el saludo
+     si se deja Sanarte: "Bienvenida a Sanarte, la tienda de Belleza & Piel ✨".
+   Tono calibrado para todos los copies y el flujo: belleza/piel, confesional + educativo
+   (no aspiracional puro), voseo guatemalteco.
+
+✅ USO DE LAS INFOGRAFÍAS — DEFINIDO POR EL OPERADOR (25-jul)
+   Las 2 imágenes (Info 1 sellos + Info 2 transformación 50 días) se usan **SOLO DENTRO DEL BOT**,
+   nunca como creativo de anuncio. Meta no lee post-clic → NO afectan CPM, entrega ni riesgo de
+   cuenta. Se mantienen como están, sin suavizar (doctrina: dentro del bot la prioridad es
+   CONVERSIÓN). El sello FDA y el antes/después facial NO son problema en este uso.
+   ⚠️ Si alguna vez se pautan como ad, hay que rehacerlas: ahí sí disparan CPM alto.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-31 (LucidSales BASE 25→30 jul · GTR13 sigue MCP OFF)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid · BE v2 = Q69.56 · CPA Base = Q30.80
+CLEARSTEM 6d: 10 ventas · pauta Q828 · CPA Q82.8 · −Q132 (la ventana corta está en rojo)
+Acumulado 17-30 jul: 20 ventas · Q1,257 · CPA Q62.8 · **+Q134** ✅ SE RECUPERÓ
+   (venía de −Q65 al 28-jul; vendió los 3 días seguidos: 29→4v, 30→3v, 31 parcial→3v)
+
+RANKING POR ÁNGULO (6 días):
+ · ANTI_FALSIFICACION (VIDEO) ....... 5v · Q261 · CPA Q52.2 · 375% PD · conv 10.3% 🟢
+ · RESISTENCIA_INSULINA_SOP (IMAGEN)  3v · Q252 · CPA Q84.0 · 362% PD · conv 14.6% 🟡
+ · MEDICOS_FALLARON (VIDEO) ......... 2v · Q248 · CPA Q124  · 357% PD · conv 10.4% 🔴
+ · TESTIMONIO_RADICAL (VIDEO) ....... 0v · Q67  · —         ·  96% PD · conv 5.2%  🔴
+
+⚠️ CONFUSORES VIVOS sin aislar (desde 10-jul, ver _EVENTOS.csv): bot NUEVO + música
+   automática de Meta en los ads-imagen. No atribuir estos resultados al ángulo.
+   GTR13 sin Ads MCP → sin lado-ads; LucidSales es la única ventana.
+
+ACCIÓN: (1) APAGAR TESTIMONIO_RADICAL — conv/clic 5.2% (<<35%) con 0 ventas y PD casi
+cumplido → matar-por-conversación. (2) MEDICOS_FALLARON: NO apagar, RENOVAR CREATIVO —
+conv/clic sano 10.4% y ya vendió 2 veces: el ángulo comunica, el creativo se gastó
+(doctrina Clase 4). (3) OBSERVAR RESISTENCIA_INSULINA_SOP: su variante sin "- Copia"
+dio Q62 con 18.6% de conversación (la más alta) y el 31 parcial suma 2 ventas más →
+candidato a ganador si sostiene 2 días. (4) NO escalar horizontal: producto en TESTEO,
+sin MCP y con 2 confusores activos.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-14 (ventana 11→13 ago, 3d agregados)
+═══════════════════════════════════════════════════════════════════════════
+15 ventas · pauta Q529 · ingreso Q3,343 · CPA Q35.3 · BE Q103.18 · 🟢 GANANCIA Q+1,015
+Serie completa 17-jul→13-ago: 53 ventas · Q2,728 · CPA Q51.5 · Q+2,740
+→ El producto que MÁS mejoró. Casi empata a TINNIDROP en ganancia con 60% menos pauta.
+
+POR ÁNGULO (11-13 ago):
+  RESISTENCIA_INSULINA_SOP  Q168 · 7v · Q24 ✅ ← EL MEJOR ÁNGULO DEL PORTAFOLIO
+  TESTIMONIO_RADICAL        Q 29 · 1v · Q29 ✅ (n=1, ruido)
+  MEDICOS_FALLARON          Q158 · 3v · Q53 ✅
+  ANTI_FALSIFICACION        Q174 · 3v · Q58 ✅
+  EJE_INTESTINO_PIEL        Q  0 · 1v ·  —   (venta sin pauta atribuida)
+
+✅ RESISTENCIA_INSULINA_SOP se consolida: ya venía siendo el caballo desde el
+   29-jul y ahora entrega 7 ventas a Q24, muy por debajo del BE Q103.18.
+   → Es el destino natural del volumen extra del portafolio.
+✅ Entrega 100% en agosto (16 de 16 resueltas) — el mejor del portafolio.
+⚠️ GTR13 sigue SIN Ads MCP → este producto se monitorea SOLO por LucidSales.
+⚠️ Los 2 confusores de APR-012 (bot nuevo + música automática de Meta en los
+   ads-imagen) siguen SIN AISLAR desde el 10-jul. La revisión vence el 25-ago.
+⚠️ MIGRACIÓN 12-ago: corre GTR13_CLEARSTEM_ESCALA_20260812 (Q119/3v/Q40) en
+   paralelo con 🟩 CLEARSTEM - WP - NEW TEST (Q410/12v/Q34).
+
+━━━ RESULTADOS_TESTEO — AUDITORÍA 2026-08-15 ━━━
+VENTANA: BASE 01→13 ago (PARCIAL: faltan 14 y 15-ago de LucidSales).
+⚠️ GTR13 tiene Ads MCP OFF → no hay lectura en vivo. Todo lo de abajo sale de
+   LucidSales; sin export diario este producto queda ciego.
+RANKING POR ÁNGULO (break-even Q89.3):
+  RESISTENCIA_INSULINA_SOP  11 ventas · Q314 · CPA Q28.5  ⭐ mejor CPA del PORTAFOLIO
+  MEDICOS_FALLARON           7 ventas · Q302 · CPA Q43.1
+  ANTI_FALSIFICACION         6 ventas · Q312 · CPA Q52.0
+  EJE_INTESTINO_PIEL         2 ventas · Q0 (Post ID heredado, sin pauta propia)
+  TESTIMONIO_RADICAL         1 venta  · Q69  · CPA Q69.0
+Los 5 ángulos están bajo break-even. Entrega 100% en el lote de agosto (n=16).
+INFRA-FINANCIADO: todo CLEARSTEM gastó Q997 en 13 días teniendo el mejor CPA del
+  portafolio (Q60.8 de colchón por venta en INSULINA_SOP).
+ACCIÓN: surfing +20% diario en RESISTENCIA_INSULINA_SOP y MEDICOS_FALLARON.
+  Variable de confusión activa: música automática de Meta en los ads de imagen.
+
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-17 (ventana 14→16 ago, 3d, SIN MADURAR)
+═══════════════════════════════════════════════════════════════════════════
+Q925 pauta · 11 ventas · CPA Q84.1 · BE Q105.89 · ganancia Q+232.
+Se deterioró fuerte: venía de CPA Q35.3 con Q529 (11-13). Casi el doble de pauta
+para 4 ventas menos. Sigue bajo break-even — rentable, pero de largo el que más
+empeoró del portafolio en la ventana.
+
+POR ÁNGULO (ventana 14-16):
+  MEDICOS_FALLARON          Q290 · 7v · CPA Q41.4   ← el único sano
+  RESISTENCIA_INSULINA_SOP  Q297 · 4v · CPA Q74.3   (venía de Q24.0)
+  ANTI_FALSIFICACION        Q306 · 0v · --          ← candidato a renovar creativo
+  TESTIMONIO_RADICAL        Q 32 · 0v · --
+
+SERIE 17-jul→16-ago: RESISTENCIA_INSULINA_SOP 25v Q43.7 · MEDICOS_FALLARON 20v
+Q53.3 · ANTI_FALSIFICACION 15v Q73.3 · TESTIMONIO_RADICAL 2v Q141.1 ·
+EJE_INTESTINO_PIEL 2v Q18.9. Todos bajo BE Q105.89.
+
+⚠️ GTR13 NO TIENE MCP: no hay lado-ads, no hay conversación ni frecuencia. Toda
+   la lectura sale de LucidSales y la ventana no maduró. NO tocar todavía.
+
+ACCIÓN: observar 24h más. Si ANTI_FALSIFICACION repite 0 ventas con pauta
+material, es RENOVAR CREATIVO, no apagar el ángulo (lleva 15 ventas en la serie:
+el ángulo comunica, el creativo se gastó). Vigilar también que la subida de
+pauta de RESISTENCIA_INSULINA_SOP no sea el mismo error de escalar sobre el techo.
+
+───────────────────────────────────────────────────────────────────────────
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-18
+───────────────────────────────────────────────────────────────────────────
+INTEGRIDAD: PARCIAL — falta el export de ventas del 2026-08-17. Última BASE = 14→16 ago.
+⚠️ SIN LADO-ADS: GTR13 (916746367261028) sigue con **MCP OFF** (rollout gradual de Meta).
+Reintentado hoy, sigue fuera. Este producto se audita SOLO con LucidSales — no hay
+conversación, CPM, frecuencia ni retención. Todo lo de abajo sale de ventas.
+
+P&L ventana 11-16 ago: 26 ventas · ingreso Q5,885 · pauta Q1,454 · CPA Q55.9 · GANANCIA Q+1,366.
+Break-even derivado (1er escalón, TE 95.8% — la mejor entrega del portafolio): Q94.9.
+CLEARSTEM es el 2º producto del portafolio por ganancia y el 1º por tasa de entrega.
+
+RANKING POR ÁNGULO (todo en GTR13):
+  RESISTENCIA_INSULINA_SOP  11v · Q465 · CPA Q42.3 · Q+759   ✅ el mejor
+  MEDICOS_FALLARON          10v · Q448 · CPA Q44.8 · Q+673   ✅ sano
+  EJE_INTESTINO_PIEL         1v · Q0   · —         · Q+95    (venta sin pauta atribuida)
+  TESTIMONIO_RADICAL         1v · Q62  · CPA Q61.6 · Q+33    bajo PD, observar
+  ANTI_FALSIFICACION         3v · Q479 · CPA Q159.8 · Q−195  ⚠️ ver abajo
+
+⚠️ ANTI_FALSIFICACION — OBSERVAR, **NO MATAR TODAVÍA** (corrección dentro de esta misma
+auditoría). La primera lectura de esta noche fue "apagarlo ya: CPA Q159.8 contra un
+break-even de Q94.9". Es una lectura MAL HECHA y se retracta:
+  · Q159.8 sale de los últimos 6 días (11-16 ago), que es justo el tramo MENOS maduro.
+    La venta COD tarda ~3 días y LucidSales reajusta retroactivo ⇒ en ese tramo las
+    ventas son un PISO y el CPA es un TECHO (regla 5: nunca matar por el CPA de un día).
+  · Sobre la ventana ponderada del motor (03-16 ago) el mismo ángulo da **Q102.9 con
+    6 ventas** — prácticamente en break-even, no sangrando.
+  · Sobre la serie completa (17-jul→16-ago) da CPA Q73 contra BE Q106: rentable.
+  Es el mismo error de forma que ya revocó APR-038 y APR-058: sacar veredicto de una
+  ventana chica y sin madurar. Tres noches seguidas el sistema se equivocó así.
+
+  QUÉ SÍ HACER: **no meterle más presupuesto y volverlo a leer con el export del 17 y 18.**
+  Si con la ventana madura sigue arriba de Q95, ahí sí se apaga y su pauta va a
+  RESISTENCIA_INSULINA_SOP (Q42.3) y MEDICOS_FALLARON (Q44.8), 3.6× más baratos por venta.
+  Es el candidato #1 a apagar del portafolio, pero todavía no tiene veredicto.
+
+🔧 REGLA NUEVA EN EL MOTOR DEL DASHBOARD (regla L). Este caso destapó un hueco real:
+el motor SOLO sabe matar en CERO (las reglas A y B exigen 0 ventas). Un ángulo que SÍ
+vende pero a 1.7× su break-even no lo agarraba ninguna regla — y es peor que un cero,
+porque el cero se detecta rápido mientras que éste sigue comprando ventas caras en
+silencio. Además `_angulo_sano()` mide sobre TODA la serie, así que un ángulo rentable
+un mes queda blindado por su propio pasado aunque se rompa esta semana.
+Regla L = la versión por ÁNGULO de la regla J (que hace lo mismo por cuenta): agrega por
+`angulo_key` (nunca por conjunto), exige gasto ≥1 break-even, pérdida real en quetzales
+y CPA ≥1.25× break-even sobre la ventana ponderada del motor.
+✅ Verificado en el HTML: con la data de hoy **NO dispara para ANTI_FALSIFICACION**, que
+es el resultado correcto — leído sobre la ventana madura el ángulo está en break-even.
+La regla queda armada para el día en que el sangrado sea sostenido y no un artefacto de
+maduración.
+
+CONTEXTO: los dos ángulos ganadores son los del relanzamiento híbrido (insulina/SOP y
+médicos que fallaron) — la hipótesis del re-testeo se sostiene con 21 de las 26 ventas.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-21 (ventana 17→20 ago, 4 días diarios)
+═══════════════════════════════════════════════════════════════════════════
+Q531 de pauta · 5 ventas · CPA Q106.2 (era Q55.9) · Break-Even Q103.3
+Serie completa 17-jul→20-ago: 69 ventas · CPA Q60.6 · ganancia Q+2,944
+Toda la cuenta GTR13 · ganancia de la ventana Q−28 (en el filo)
+
+POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q):
+  RESISTENCIA_INSULINA_SOP   210   3   Q70.1   Q+74   ⬇ (era Q42.3)
+  ANTI_FALSIFICACION         122   2   Q61.0   Q+96   ⬆⬆ (era Q159.8)
+  MEDICOS_FALLARON           199   0     —     Q−199  🔴 (era Q44.8, 10 ventas)
+
+🟢 ANTI_FALSIFICACION SE SALVÓ. Cinco noches seguidas figuró como candidato #1
+   a apagar con CPA Q159.8, y cinco noches quedó congelado sin veredicto porque
+   era lectura de 6 días sin madurar. Con la ventana nueva da Q61.0 — Q42 de
+   colchón por venta. Matarlo habría sido un error caro. Es la prueba de la
+   regla: ninguna acción de MATAR se funda en <10 días ni en data sin 3 días de
+   maduración.
+
+⚠️ MEDICOS_FALLARON — CANDIDATO A APAGAR, SIN VEREDICTO AÚN.
+   Q199 · 42 mensajes · CERO ventas en 4 días = 1.9× su break-even → cruza el
+   Presupuesto de Decisión. PERO vendió 10 veces a Q44.8 la semana previa, y el
+   19-20 no maduraron; restringido a días maduros (17-18) da Q108 ≈ 1.05× BE,
+   justo en el umbral. Su hermano RESISTENCIA_INSULINA_SOP cerró 3 ventas sobre
+   54 mensajes los mismos días en la misma cuenta.
+   → Hipótesis principal: FATIGA DE CREATIVO, no ángulo muerto. La acción
+     correcta sería renovar el creativo del mismo ángulo, no matar.
+   → VEREDICTO PROGRAMADO 23-ago con el 19 y 20 madurados. Presupuesto
+     CONGELADO mientras tanto: no subirlo, no bajarlo.
+   ⚠️ No se puede confirmar la fatiga sin lectura de frecuencia — el MCP lleva
+     4 días caído.
+
+⚠️ Diversidad conceptual: GTR13_CLEARSTEM_ESCALA_20260812 corre con 3 conceptos
+   distintos. Andrómeda premia 8-12; faltan 5.
+⚠️ Ventana NO madurada (19 y 20 frescos): ventas = piso, CPA = techo.
+
+── ANEXO 2026-08-21 · VERIFICACIÓN CONTRA ADS MANAGER (17-20 ago) ──────────
+🔴🔴 LA BANDA 25+ DE CLEARSTEM NO VENDIÓ NADA — Y NO ES EL ÁNGULO.
+   banda 25+    → Q301 · 63 msj · **0 ventas** · cierre  0.0%
+   banda 25-35  → Q230 · 39 msj ·   5 ventas   · cierre 12.8% · CPA Q46.1
+
+   CONTROL DENTRO DE LA MISMA CUENTA — mismo producto, MISMO ángulo:
+     RESISTENCIA_INSULINA_SOP @ 25-35 → Q108 · 21 msj · 3 ventas · 14.3%
+     RESISTENCIA_INSULINA_SOP @ 25+   → Q102 · 33 msj · 0 ventas ·  0.0%
+   La banda ancha generó MÁS conversación y NINGUNA venta. Al cierre del 13%,
+   esas 63 conversaciones debían dar ~8 ventas y dieron 0 (p≈0.0003).
+
+🔧 CORRECCIÓN IMPORTANTE — MEDICOS_FALLARON NO ES FATIGA DE CREATIVO.
+   Ayer diagnostiqué su cero de ventas (Q199, 42 msj) como fatiga. El export lo
+   desmiente: **frecuencia 1.19-1.21**, de las más bajas del portafolio (umbral
+   1.9), y tasa de conversación a WhatsApp **45.2% y 47.5% — la MÁS ALTA de
+   CLEARSTEM**. Audiencia fresca, mejor conversación del producto, cero ventas.
+   La causa es que sus DOS réplicas están en 25+.
+   → NO matar el ángulo. Cambiarle la banda a 25-35 y volver a medir. Matarlo
+     ahora sería matar un ángulo por un error de segmentación.
+   → LECCIÓN DE MÉTODO: diagnostiqué fatiga sin tener la frecuencia a la vista
+     porque el MCP llevaba 4 días caído. Una hipótesis de fatiga sin lectura de
+     frecuencia es una conjetura, no un diagnóstico. (APR-063)
+
+✅ Y ahora se sabe por qué ANTI_FALSIFICACION se salvó de Q159.8 a Q61.0: está
+   en **25-35**, la única réplica de CLEARSTEM bien segmentada. No fue suerte.
+
+🔴 RENOMBRAR: `GTR13_CLEARSTEM_MEDICOS-FALLARON_R1 + 25AÑOS - Copia` → `R3`.
+   Es el único «- Copia» que quedó vivo en todo el portafolio (regla 23).
+
+⚠️ GTR13 tiene el peor CPM del sistema: 2.25 contra 1.39 de GTR7 (62% más caro).
+✅ SIN FATIGA: ningún conjunto sobre 1.7 de frecuencia.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-26 (ventana 21→25 ago, 5 días diarios · backfill)
+═══════════════════════════════════════════════════════════════════════════
+Hueco de 5 días (21-25 ago) cerrado hoy con exports diarios de LucidSales +
+Ads Manager. Q656 de pauta · 23 ventas atribuidas + 2 ventas orgánicas sin
+adId (23-ago 3x Q389.01, 25-ago 1x Q198.00) · CPA Q28.5, el MEJOR del
+portafolio en este tramo · Break-Even Q103.93.
+Serie completa 17-jul→25-ago: 94 ventas · CPA Q51.5 · ganancia Q+4,930.
+
+POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q, tramo 21-25):
+  MEDICOS_FALLARON          269    5   Q53.9   Q+233   ✅ VOLVIÓ A VENDER
+  RESISTENCIA_INSULINA_SOP  256   11   Q23.3   Q+964   ⭐ el mejor del producto
+  ANTI_FALSIFICACION        130    7   Q18.6   Q+534   ⭐ sigue en 25-35
+  (2 ventas orgánicas CLEARSTEM sin adId, +Q254, no atribuibles a ángulo)
+
+✅ VEREDICTO MEDICOS_FALLARON RESUELTO — ERA LA BANDA DE EDAD, NO EL ÁNGULO.
+   Llevaba desde el 21-ago marcado INDECIDIBLE (hueco de data cruzando el
+   ciclo de maduración COD). Con el hueco cerrado: el ángulo VOLVIÓ A VENDER
+   (5 ventas, CPA Q53.9) en cuanto se leyó data fresca — confirma la
+   corrección del 21-ago (APR-063): no era fatiga de creativo, es que sus
+   réplicas 25+ cierran 9.1% (5/55 msj) contra 29.7% (11/37) de la banda
+   25-35, mismo costo por mensaje. Acción pendiente: mover las réplicas 25+
+   a 25-35 (Q1,174/sem en juego, la acción #1 del dashboard para este
+   producto). NO se mató el ángulo — la pausa hubiera sido un error.
+
+⚠️ 24 y 25-ago aún no maduran del todo (COD ~3 días): sus cifras son un piso.
+   21-23-ago ya son definitivos.

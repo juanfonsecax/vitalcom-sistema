@@ -1,0 +1,140 @@
+{
+  "ficha_id": "F073",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/13_920632301090908.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "920632301090908",
+    "dias_activo": 9,
+    "replicas": 1,
+    "score": 34,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "32%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C9_COMPARACION",
+    "variante_operador": "yo-sin-yo-con"
+  },
+  "dispositivo_dominante": "LA TABLA PROBLEMAS CONTRA SOLUCION, CON ILUSTRACIONES PLANAS DEL LADO IZQUIERDO Y LA FOTO DEL PRODUCTO DEL DERECHO. Dos columnas de fondo distinto encabezadas por una sola palabra cada una. La izquierda lista tres problemas, cada uno con una ilustracion plana de personaje; la derecha no lista nada: solo tiene el producto en mano ocupando la columna entera.",
+  "lectura_estrategica": "La asimetria ES el argumento. Tres problemas contra una sola cosa: el desbalance visual dice que se necesita un solo producto para resolverlos todos, sin escribirlo. Las ilustraciones planas de personaje (no fotos, no line-art) le dan registro de infografia de red social y permiten mostrar sintomas que serian desagradables fotografiados. Los tres problemas estan elegidos para no solaparse — uno fisico visible, uno de energia y uno hormonal — de modo que cubren tres avatares distintos en la misma pieza. La calificacion al pie es lo unico comercial.",
+  "fondo": {
+    "tipo": "partido_por_la_mitad",
+    "mitad_izquierda": "blanco o gris muy claro",
+    "mitad_derecha": "{{PALETA_MEDIO}} verde o color de marca en tono apagado",
+    "corte": "vertical al centro exacto, sin borde",
+    "regla": "el cambio de fondo separa los dos mundos sin necesidad de marco ni linea"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 3,
+    "estructura": "{{PALETA_OSCURA}} verde (headers y texto) mas {{PALETA_MEDIO}} (fondo derecho) mas blanco (fondo izquierdo), con los colores propios de las ilustraciones"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de texto, NO condensada",
+    "pesos_permitidos": [
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "{{PALETA_OSCURA}}",
+    "regla": "tipografia de lectura en caja baja: la pieza se lee como una infografia, no como un cartel"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "ilustraciones planas de personaje o de zona, del tipo de las infografias de redes sociales",
+    "estilo": "vectorial plano con relleno de color, sin degradados ni sombras realistas",
+    "personajes": "figuras genericas sin rasgos particulares, en gesto de la molestia que ilustran",
+    "que_se_conserva": "el mismo estilo, la misma paleta y la misma escala en las tres ilustraciones",
+    "que_NO_se_hace": "fotografia real, line-art fino, iconos vectoriales de sistema, mezcla de estilos entre items",
+    "regla": "las ilustraciones planas permiten mostrar sintomas que serian desagradables fotografiados, y dan el registro de infografia que la pieza necesita"
+  },
+  "zonas": {
+    "header_problemas": {
+      "posicion": "superior_izquierda",
+      "texto": "{{PALABRA_PROBLEMA}}",
+      "estilo": "Bold {{PALETA_OSCURA}} en caja baja, tamano grande",
+      "restriccion_palabras": "1 palabra",
+      "default": "Problemas"
+    },
+    "header_solucion": {
+      "posicion": "superior_derecha",
+      "texto": "{{PALABRA_SOLUCION}}",
+      "estilo": "Bold {{PALETA_OSCURA}} en caja baja, mismo tamano que el header izquierdo",
+      "restriccion_palabras": "1 palabra",
+      "default": "Solucion",
+      "regla": "una sola palabra por columna y del mismo tamano: el contraste lo hace el contenido, no la tipografia"
+    },
+    "columna_problemas": {
+      "posicion": "izquierda, ocupa el alto central",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical con mucho aire entre filas",
+      "formato_item": "texto Bold de 2 lineas a la izquierda mas ILUSTRACION PLANA de personaje a la derecha",
+      "items": "{{PROBLEMAS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_critica": "los tres problemas NO se solapan: uno fisico visible, uno de energia y uno sistemico. Asi cubren tres avatares distintos en la misma pieza"
+    },
+    "columna_solucion": {
+      "posicion": "derecha, ocupa el alto central",
+      "contenido": "{{FOTO_MANO_CON_PRODUCTO}}",
+      "escala": "45% del frame",
+      "tratamiento": "una mano sosteniendo el envase, ocupando la columna entera, sin lista ni texto",
+      "regla_critica": "la columna derecha NO lista nada: la asimetria de tres contra uno dice que se necesita un solo producto para resolverlos todos, sin escribirlo"
+    },
+    "barra_calificacion": {
+      "posicion": "inferior_derecha, al pie de la columna de solucion",
+      "estrellas": 5,
+      "texto": "{{CALIFICACION}} (+{{NUMERO_RESENAS}} resenas)",
+      "estilo": "Bold {{PALETA_OSCURA}} chico con estrellas doradas",
+      "regla": "es lo unico comercial de la pieza y va del lado de la solucion"
+    }
+  },
+  "secuencia_lectura": [
+    "header_problemas",
+    "header_solucion",
+    "columna_problemas",
+    "columna_solucion",
+    "barra_calificacion"
+  ],
+  "reglas_duras": [
+    "Una sola palabra por header y del mismo tamano",
+    "Tres problemas a la izquierda contra una sola cosa a la derecha: la asimetria es el argumento",
+    "La columna de solucion no lista nada",
+    "Los tres problemas no se solapan entre si",
+    "Las ilustraciones son planas de personaje, todas del mismo estilo y escala",
+    "Sin precio, sin garantias, sin CTA",
+    "El cambio de fondo separa las columnas sin marco ni linea"
+  ],
+  "variables_requeridas": [
+    "PALABRA_PROBLEMA",
+    "PALABRA_SOLUCION",
+    "PROBLEMAS[3]",
+    "FOTO_MANO_CON_PRODUCTO",
+    "CALIFICACION",
+    "NUMERO_RESENAS"
+  ],
+  "cuando_usar": [
+    "cuando el producto resuelve varios problemas que parecen inconexos",
+    "cuando los sintomas serian desagradables fotografiados",
+    "TOFU frio donde el objetivo es que la pieza se lea como informacion",
+    "publico que no relaciona sus sintomas entre si"
+  ],
+  "cuando_no_usar": [
+    "productos de un solo beneficio: la asimetria pierde sentido",
+    "BOFU: sin precio ni CTA no cierra",
+    "cuando no se puede sostener el mismo estilo de ilustracion en los tres items"
+  ],
+  "sellos_y_claims_observados": [
+    "Headers PROBLEMAS y SOLUCION.",
+    "Problemas listados: HINCHAZON EN CARA, ABDOMEN Y PIERNAS; CANSANCIO CONSTANTE; HORMONAS DESEQUILIBRADAS.",
+    "Barra de calificacion de cinco estrellas: 4.6/5 (+5500 resenas).",
+    "Claims impresos en el empaque: SOPORTE LINFATICO TRADICIONAL, EXTRACTOS HERBALES LIQUIDOS, Suplemento Alimenticio, 2 FL OZ (59 ML).",
+    "La pieza no declara precio, sellos regulatorios ni garantias."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

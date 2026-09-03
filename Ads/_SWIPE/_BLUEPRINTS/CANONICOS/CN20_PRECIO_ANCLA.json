@@ -1,0 +1,109 @@
+{
+  "canonico_id": "CN20_PRECIO_ANCLA",
+  "schema_version": "canonico-1.0",
+  "nombre": "Precio unico con ancla",
+  "dispositivo_canonico": "UN SOLO PRECIO, PRESENTADO CONTRA SU ANCLA. El bloque va en card de ancho completo o en tres partes (precio tachado, precio actual, ahorro) bajo una columna corta de atributos. No hay escalera ni eleccion: hay una cifra y su referencia.",
+  "cuando_elegirlo": "La oferta tiene UNA sola presentacion, o se quiere empujar una sola unidad sin abrir la decision. Hermano de CN04_ESCALERA_PRECIOS: si hay 3 tiers reales, ese canonico rinde mas.",
+  "ejes_de_variacion": [
+    "bloque de tres partes (tachado / actual / ahorro) o card simple con ancla",
+    "cuantos atributos lo preceden: 3 es el maximo antes de tapar el precio",
+    "el ancla puede ser precio anterior, precio de farmacia o precio por unidad"
+  ],
+  "n_miembros": 2,
+  "ficha_referencia": "F018",
+  "score_referencia": 106,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 2
+    },
+    "rol_embudo": {
+      "MOFU": 1,
+      "BOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 2
+    },
+    "formato": {
+      "1:1": 2
+    },
+    "densidad": {
+      "baja": 1,
+      "alta": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "PRECIO_ANCLA",
+    "PRECIO_ACTUAL",
+    "AHORRO",
+    "MONEDA",
+    "ATRIBUTOS",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "MONEDA",
+      "PRECIO_TACHADO",
+      "PREFIJO_PRECIO"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "La mitad izquierda es una escalera de cuatro pisos y cada piso es mas chico que el anterior, salvo el precio",
+    "La pregunta del titular es por la sensacion, conjugada al genero del avatar",
+    "El subtitulo enuncia una rutina que acompana, nunca un resultado",
+    "Los atributos son de uso, no de resultado",
+    "El precio vuelve al tamano del titular",
+    "Una sola banda al pie con las garantias logisticas"
+  ],
+  "cuando_usar": [
+    "feed cuadrado, cuando el mismo producto ya corre en vertical con F011",
+    "promesa de rutina o habito sin evidencia visual del problema",
+    "cuando el precio con anclaje es el argumento y hay pocos beneficios que contar",
+    "producto de formato distintivo (gotero, spray) en categoria natural",
+    "cierre sobre publico que ya vio la pieza de ingredientes del mismo producto",
+    "cuando el pack tiene un ahorro en dinero que vale la pena declarar",
+    "suplementos donde el total de capsulas es el comparador de valor",
+    "BOFU"
+  ],
+  "cuando_no_usar": [
+    "cuando hay 5 o mas beneficios imprescindibles: la columna corta no los sostiene",
+    "dolor agudo",
+    "cuando no hay precio de anclaje real",
+    "publico frio",
+    "cuando no hay precio de referencia real que tachar",
+    "productos de una sola unidad"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F018",
+      "score": 106,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL PRECIO CON ANCLAJE EN CARD DE ANCHO COMPLETO, BAJO UNA COLUMNA CORTA DE 3 ATRIBUTOS"
+    },
+    {
+      "ficha_id": "F081",
+      "score": 32,
+      "anunciante": "Natura Shoppy Guatemala",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL BLOQUE DE PRECIO DE TRES PARTES"
+    }
+  ]
+}

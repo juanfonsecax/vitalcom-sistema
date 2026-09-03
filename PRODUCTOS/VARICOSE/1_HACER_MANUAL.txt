@@ -1,0 +1,395 @@
+═══ VARICOSE VEINS (South Moon) · VERSION v2 · 2026-07-09 · COSTO Q45/u (Q90 el par) · DOSIS 20g c/frasco · ungüento tópico · page_id 498977893288095 (Dra. Claudia Vásquez) · campaign_id 120247374332930784 (FASE 2 ESCALA VERGÜENZA, PAUSED) ═══
+HACER MANUAL — VARICOSE VEINS | FASE 2 (escalado ángulo ganador VERGÜENZA) | 2026-07-09
+FanPage de pauta: #5 Dra. Claudia Vásquez (page_id 498977893288095)   ·   Edad de segmentación: 18-65+ (amplio, la data sube el piso)
+PRECIO (2 variantes únicas): 2 frascos (2x1) = Q249 · 4 frascos = Q389 · envío gratis · pagás al recibir
+
+──────────────────────────────────────────────────────────────
+A. CHECKLIST RÁPIDO
+──────────────────────────────────────────────────────────────
+[ ] Generar las 5 imágenes de conceptos (prompts en sección C) — MA1, MA3, MA4, MA5, MA6
+[ ] MA2 usa el VIDEO ganador (VARICOSE_2_VERGUENZA-PIERNAS) vía Post ID — no se genera imagen
+[ ] Subir la media a la biblioteca de GTR 7
+[ ] Configurar el flujo del bot de VERGÜENZA en LucidBot (sección E, campo por campo) — reemplaza el bot paraguas para este WhatsApp
+[ ] Crear los 6 conjuntos + 12 anuncios en la campaña 120247374332930784 (ver 3_CAMPAÑA_META) o duplicar la estructura de FASE 1
+[ ] Duplicar la campaña → destino WhatsApp + número 502 5283 2734 + optimización Conversaciones
+[ ] Precio Q249/Q389 SOLO en los conjuntos 1 y 6 (copy + creativo). Los otros 4 sin precio.
+[ ] Programar/activar a las 4 AM del 2026-07-10 (nunca el mismo día)
+
+──────────────────────────────────────────────────────────────
+B. CREATIVOS POR CONJUNTO
+──────────────────────────────────────────────────────────────
+| # | Conjunto | Microángulo | Formato | Archivo / Prompt | Precio en ad |
+|---|---|---|---|---|---|
+| 1 | VERGUENZA_MA1_COMPARACION | La crema que SÍ (vs cremas del super) | IMAGEN | Prompt C-MA1 | SÍ Q249 |
+| 2 | VERGUENZA_MA2_VESTIDO | El vestido que dejaste de ponerte | VIDEO | VARICOSE_2_VERGUENZA-PIERNAS.mp4 (Post ID) | NO |
+| 3 | VERGUENZA_MA3_VERANO | Verano sin taparte | IMAGEN | Prompt C-MA3 | NO |
+| 4 | VERGUENZA_MA4_MANCHAS | Manchas del tobillo | IMAGEN | Prompt C-MA4 | NO |
+| 5 | VERGUENZA_MA5_RESIGNACION | Ya me había resignado (testimonio) | IMAGEN | Prompt C-MA5 | NO |
+| 6 | VERGUENZA_MA6_OFERTA2X1 | Para tus 2 piernas · 2x1 | IMAGEN | Prompt C-MA6 | SÍ Q249/Q389 |
+Cada conjunto lleva 2 anuncios (mismo creativo duplicado A/B).
+
+──────────────────────────────────────────────────────────────
+C. PROMPTS DE IMAGEN (pegar en Gemini Pro / ChatGPT con la foto del producto)
+──────────────────────────────────────────────────────────────
+Base para los 5: producto = frasco gotero ámbar South Moon, etiqueta roja/borgoña "Varicose Veins Ointment", 20g. Marca visible arriba = "Dra. Claudia Vásquez". Color de acento = rojo/borgoña. Texto total < 20% del área. Fotorrealista, NO parecer IA, se vende en <3 seg. Entregar 1:1 (1080x1080) + describir 4:5 y 9:16. Compliance: "apoya la circulación / reduce la apariencia de várices y arañitas", NUNCA "cura/elimina". Sin antes/después corporal bilateral.
+
+── C-MA1 — LA CREMA QUE SÍ (MOFU · comparación · LLEVA PRECIO Q249) ──
+Estilo anti-fatiga: dividido problema/beneficio (no corporal).
+Composición: lado izquierdo apagado/gris con un montón de cremas/geles genéricos de farmacia tachados; lado derecho luminoso con el frasco South Moon grande y nítido.
+Marca arriba: "Dra. Claudia Vásquez".
+HOOK grande (máx 2 líneas, palabra clave en rojo): "Probaste cremas y NADA… por esto".
+Beneficio medio: "Las comunes solo refrescan. Esta lleva castaño de indias y rusco que trabajan la vena por dentro."
+Badges: "CASTAÑO DE INDIAS + RUSCO", "ALIVIO INMEDIATO (MENTOL)", "PAGÁS AL RECIBIR".
+SELLO STARBURST esquina superior (rojo con borde amarillo, moderado, <20% texto): "MEGA OFERTA / SOLO HOY".
+Franja inferior CTA rojo: "Escribinos hoy 👉" + "2x1 Q249 · envío gratis".
+
+── C-MA3 — VERANO SIN TAPARTE (TOFU · deseo/estacional · sin precio) ──
+Estilo: lifestyle con persona real / fondo tropical.
+Escena: mujer guatemalteca 40-50 sonriente en falda/short a la orilla de una piscina, piernas relajadas y frescas (sin mostrar comparación de várices). Frasco South Moon en primer plano sobre una toalla.
+Marca arriba: "Dra. Claudia Vásquez".
+HOOK: "Llegá al calor con OTRAS piernas".
+Beneficio: "Menos pesadez e hinchazón para volver a usar lo que te gusta."
+Badges: "APOYA LA CIRCULACIÓN", "ALIVIO DESDE EL DÍA 1", "ENVÍO GRATIS".
+CTA: "Preguntanos cómo 👉". Sin precio, sin sello.
+
+── C-MA4 — LAS MANCHAS DEL TOBILLO (MOFU · educativo · sin precio) ──
+Estilo: dermocosmético elegante / clínico.
+Escena: primer plano de tobillo/pantorrilla de mujer con manchas ocre leves (real, NO comparación bilateral), luz clara; frasco South Moon a la par grande.
+Marca arriba: "Dra. Claudia Vásquez".
+HOOK: "Esas manchas oscuras NO son suciedad".
+Beneficio: "Son de las várices. El castaño de indias apoya la circulación y la piel se ve más pareja."
+Badges: "CASTAÑO DE INDIAS + RUSCO", "USO TÓPICO", "PAGÁS AL RECIBIR".
+CTA: "Escribinos 👉". Sin precio, sin sello.
+
+── C-MA5 — YA ME HABÍA RESIGNADO (TOFU/MOFU · testimonio · sin precio) ──
+Estilo: testimonio (reseña + producto en la misma imagen).
+Escena: mujer guatemalteca 45-55 real, cálida, en su casa, sosteniendo el frasco; a un lado una tarjeta de reseña 5 estrellas.
+Texto reseña (dentro de la tarjeta, corto): "Ya había probado de todo… esto es lo único que de verdad me movió la aguja." — con nombre GT tipo "Carmen R."
+Marca arriba: "Dra. Claudia Vásquez".
+HOOK: "Casi tiro la toalla con mis piernas".
+Badges: "+ personas ya lo usan", "ALIVIO REAL", "ENVÍO GRATIS".
+CTA: "Contanos tu caso 👉". Sin precio, sin sello.
+
+── C-MA6 — PARA TUS DOS PIERNAS · 2X1 (BOFU · oferta · LLEVA PRECIO Q249/Q389) ──
+Estilo: enfoque en oferta / e-commerce viral.
+Composición: DOS frascos South Moon grandes con moño/regalo; a un lado, opción de 4 frascos.
+Marca arriba: "Dra. Claudia Vásquez".
+HOOK: "Tratá tus DOS piernas completas".
+Bloque de oferta grande: "2 frascos (2x1) → Q249" y debajo "4 frascos (tratamiento completo) → Q389 🎁 LA MÁS ELEGIDA".
+Badges: "ENVÍO GRATIS", "PAGÁS AL RECIBIR", "GARANTÍA DE SATISFACCIÓN".
+SELLO STARBURST esquina superior (rojo/amarillo, moderado): "SOLO HOY / 2X1".
+CTA franja inferior: "Pedí el tuyo hoy 👉".
+
+──────────────────────────────────────────────────────────────
+D. COPIES POR CONJUNTO (pegar en Meta — texto principal + títulos + descripción)
+──────────────────────────────────────────────────────────────
+
+═══ COPY 1 — MA1 "LA CREMA QUE SÍ" · LLEVA PRECIO Q249 ═══
+TEXTO PRINCIPAL:
+Probé como 4 cremas para las várices y ninguna me hizo nada 😮‍💨
+
+Frías al momento y ya, al rato igual.
+Una amiga me explicó por qué: la mayoría solo refresca.
+No llevan castaño de indias ni rusco, que son los que de verdad trabajan la vena por dentro.
+
+Esta sí los trae. Me la pongo mañana y noche con masajito de abajo hacia arriba.
+A las 3 semanas las tengo menos hinchadas y las arañitas menos marcadas.
+Volví a ponerme falda sin pensarlo tanto 🙌
+
+Las 2 me salieron en Q249 con envío gratis, y pagás cuando te llega.
+TÍTULOS: "La que sí funciona" / "No es como las del super" / "Por dentro, no solo frío"
+DESCRIPCIÓN: "Pagás al recibir · envío gratis"
+Lleva precio: SÍ (Q249)
+
+═══ COPY 2 — MA2 "EL VESTIDO QUE DEJASTE" · VIDEO ═══
+TEXTO PRINCIPAL:
+Hace como 2 años que no me ponía un vestido por mis piernas 😔
+
+Andaba en pantalón aunque me estuviera muriendo de calor.
+Me daba pena que me vieran las várices y las arañitas.
+
+Empecé a usar este ungüento en las mañanas y en las noches, con masaje de abajo hacia arriba.
+No es magia, pero de a poco las fui viendo más desinflamadas y las venitas menos marcadas.
+
+Lo que más me gustó es cómo me siento.
+El mes pasado fui a una fiesta de vestido y no me tapé ❤️
+TÍTULOS: "Volví a usar vestido" / "Sin taparme las piernas" / "Otra vez yo"
+DESCRIPCIÓN: "Envío gratis · pagás en casa"
+Lleva precio: NO
+
+═══ COPY 3 — MA3 "VERANO SIN TAPARTE" ═══
+TEXTO PRINCIPAL:
+Se viene el calor y ya andaba viendo cómo tapar las piernas otra vez ☀️
+
+Cada verano lo mismo: todas en short y yo con pantalón.
+Las várices y las arañitas me daban una pena tremenda.
+
+Este año empecé antes con el ungüento, mañana y noche con masajito de abajo hacia arriba.
+El mentol alivia la pesadez al toque y el castaño de indias va trabajando la vena por dentro.
+
+Llevo unas semanas y las siento más ligeras, menos hinchadas al final del día.
+Por primera vez en años me metí a la piscina sin pareo 🏖️
+TÍTULOS: "A tiempo para el calor" / "Piernas de short" / "Sin pareo"
+DESCRIPCIÓN: "Envío gratis a toda GT"
+Lleva precio: NO
+
+═══ COPY 4 — MA4 "LAS MANCHAS DEL TOBILLO" ═══
+TEXTO PRINCIPAL:
+Esas manchas oscuras arriba del tobillo no son suciedad 👀
+
+Yo pensaba que eran de tanto sol o de no lavarme bien.
+Resulta que son de las várices: la sangre que se estanca va manchando la piel.
+Por eso no se me quitaban con cremas normales.
+
+Empecé con este ungüento de castaño de indias y rusco, mañana y noche.
+Apoya la circulación desde adentro y de a poco la piel se va viendo más pareja.
+
+Llevo un mes y las manchas están más claritas y las piernas menos pesadas.
+Ojalá lo hubiera sabido antes.
+TÍTULOS: "No es suciedad" / "Manchas del tobillo" / "Piel más pareja"
+DESCRIPCIÓN: "Pagás al recibir"
+Lleva precio: NO
+
+═══ COPY 5 — MA5 "YA ME HABÍA RESIGNADO" ═══
+TEXTO PRINCIPAL:
+Ya me había resignado a mis piernas… en serio 🙃
+
+Probé geles, remedios caseros, vinagre, de todo. Nada.
+Pensé que así me iba a quedar para siempre.
+
+Una compañera del trabajo me pasó el dato de este ungüento y por no dejar lo probé.
+Mañana y noche, con masaje de abajo hacia arriba.
+
+No esperaba nada y a las semanas las noté menos hinchadas y las arañitas más disimuladas.
+No es magia, pero es lo único que de verdad me movió la aguja.
+Me alegra no haberme quedado con los brazos cruzados.
+TÍTULOS: "Casi tiro la toalla" / "Lo único que sirvió" / "No me resigné"
+DESCRIPCIÓN: "+ personas ya lo usan"
+Lleva precio: NO
+
+═══ COPY 6 — MA6 "PARA TUS DOS PIERNAS · 2X1" · LLEVA PRECIO Q249/Q389 ═══
+TEXTO PRINCIPAL:
+Si de verdad querés ver cambios, el secreto es constancia y tratar las dos piernas 🛵
+
+Por eso la mayoría se lleva el combo:
+✅ 2 frascos (2x1) → Q249 con envío gratis
+✅ 4 frascos (tratamiento completo, la más pedida) → Q389 con envío gratis 🎁
+
+Te alcanza para el masaje mañana y noche por varias semanas, que es cuando de verdad se nota.
+Y lo mejor: pagás hasta que lo tenés en tus manos, en toda Guatemala.
+
+Escribinos y te decimos cómo pedirlo hoy 👇
+TÍTULOS: "2 frascos Q249" / "Para tus 2 piernas" / "Pagás al recibir"
+DESCRIPCIÓN: "Envío gratis · pagás en casa"
+Lleva precio: SÍ (Q249 el 2x1 / Q389 los 4)
+
+RESUMEN COPIES: con precio 2 de 6 (COPY 1 y COPY 6) ✓ (ideal Guatemala).
+
+──────────────────────────────────────────────────────────────
+E. FLUJO LUCIDBOT — ÁNGULO VERGÜENZA (copiar campo por campo)
+──────────────────────────────────────────────────────────────
+Este flujo REEMPLAZA al bot paraguas para el WhatsApp de esta campaña. Un solo ángulo: VERGÜENZA de mostrar las piernas. Voseo guatemalteco. Precio 2 variantes (2x1 Q249 / 4x Q389). Asesora: Laura López. Tienda: Sanarte.
+
+BLOQUE J — DATOS DEL PRODUCTO (catálogo LucidBot)
+PRODUCTO: Ungüento para várices South Moon
+ÁNGULO: Vergüenza de mostrar las piernas (várices/arañitas)
+BUYER TYPE: EMOCIONAL · TIPO DE FLUJO: NARRATIVO
+DOLOR ATACADO: "me da pena que me vean las piernas, ya no me pongo falda"
+BARRERA PRINCIPAL: "las cremas para várices no sirven, ya probé y nada" (OBJ-01)
+PROMESA CENTRAL: de esconder las piernas → volver a mostrarlas con confianza (apoyando la circulación, reduciendo la apariencia de várices y arañitas)
+VELOCIDAD: alivio de pesadez desde los primeros días · apariencia semanas 2-4
+
+DESCRIPCIÓN (catálogo):
+¿Dejaste de ponerte falda o vestido por las várices y las arañitas? No sos la única, y no tenés que taparte para siempre. Este ungüento de castaño de indias, rusco y mentol apoya la circulación de tus piernas: el mentol alivia la pesadez desde el primer uso y, con constancia mañana y noche, vas notando las piernas más desinflamadas y las venitas menos marcadas. Sin cirugía, desde tu casa, y pagás hasta que lo tenés en tus manos.
+
+MODO DE USO:
+Aplicá una capa fina mañana y noche sobre la zona, con masaje suave de abajo hacia arriba (del tobillo hacia el muslo). Fácil, en 1 minuto, sin manchar la ropa.
+
+CARACTERÍSTICAS TÉCNICAS:
+- Vuelve a mostrar tus piernas: reduce la apariencia de várices y arañitas apoyando la circulación
+- Alivia la pesadez e hinchazón al final del día
+- Castaño de indias (aescina): tonifica la pared de la vena y ayuda a desinflamar
+- Rusco: venotónico, apoya el retorno de la circulación
+- Mentol: alivio refrescante inmediato al aplicar
+- Uso tópico, sin cirugía, apto para uso diario en casa
+
+CONTENIDO DEL PAQUETE:
+Tratamiento para tus dos piernas. El combo de 4 frascos es el tratamiento completo (rinde varias semanas de masaje mañana y noche).
+
+──────────────────────────────────────────
+MENSAJE INICIAL (orden obligatorio · temporizador 2-3 seg entre mensajes)
+──────────────────────────────────────────
+ELEMENTO 1 — TEXTO (saludo FIJO, sin nombre de asesora, sin dolor):
+Hola! 👋 Bienvenida/o a Sanarte, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨
+
+ELEMENTO 2 — VIDEO 1 (autoridad): "11. Varicose.mp4" (doctora + diagrama de la vena, "antes de operarte de várices debes saber esto") — resuelve OBJ-01 (que sí funciona, mecanismo, evita cirugía).
+ELEMENTO 3 — VIDEO 2 (UGC): "7. Varicose.mp4" (testimonio personal, mujer hablando a cámara mostrando las piernas, tono confesional) — resuelve OBJ-02/08. Reserva FASE 2. Contenido de terceros: ok para el bot; lavar si se usa como anuncio.
+ELEMENTO 4 — IMAGEN INFO 1 (beneficios del ángulo):
+Título impactante (NO "beneficios", NO nombre del producto): "VOLVÉ A MOSTRAR TUS PIERNAS SIN PENA"
+Kicker: "FÓRMULA AVANZADA"
+8-10 bullets (lenguaje del avatar): reduce la apariencia de várices y arañitas · piernas menos hinchadas al final del día · alivio refrescante inmediato · piel más pareja (menos manchas) · apoya la circulación desde adentro · volvé a usar falda/short · fácil de aplicar en 1 min · sin cirugía, desde casa · castaño de indias + rusco + mentol · pagás al recibir.
+Acento de color: rojo/borgoña. Pie: "Tus piernas no tienen por qué esconderse."
+ELEMENTO 5 — IMAGEN INFO 2 (modo de uso / ingredientes):
+Antes/ahora (no bilateral): "Semana 1: menos pesadez · Semana 4: venitas menos marcadas".
+Modo de uso: mañana y noche, masaje de abajo hacia arriba.
+Ingredientes: Castaño de indias (desinflama/tonifica la vena) · Rusco (venotónico) · Mentol (alivio inmediato).
+Badge: "SIN CIRUGÍA · USO TÓPICO · 100% DESDE CASA".
+ELEMENTO 6 — IMAGEN INFO 3 (confianza / contraentrega):
+PAGÁS AL RECIBIR (prominente) · Sello GARANTÍA de satisfacción · envío a toda Guatemala por GINTACOM y FORZA, 2-5 días · 3 mini testimonios de recepción.
+ELEMENTO 7 — TEXTO (transición): A continuación te muestro lo que dicen quienes ya lo tienen en casa 👇
+
+ELEMENTO 8 — TESTIMONIO 1 (recepción / resuelve estafa):
+GLOBO (texto listo): "buenas, ya me llego el producto, vino bien selladito y con su cajita. la verdad tenia miedo q fuera estafa pq una ya ni sabe, pero todo bien, pague hasta q lo tuve en la mano"
+IMAGEN: foto del frasco recibido en mano/mesa en un hogar guatemalteco (real, o generar con IA — es producto, no persona).
+
+ELEMENTO 9 — TESTIMONIO 2 (resultado + cantidad · TEXTO→IMAGEN→TEXTO):
+TEXTO 1: "antes andaba siempre en pantalon por las varices y las arañitas, me daba pena. llevo como 3 semanas poniendomelo mañana y noche y las siento menos hinchadas, ya me anime a usar falda"
+IMAGEN: escena real de piernas descansadas / mujer con falda saliendo (buscar en internet, NUNCA IA de personas).
+TEXTO 2: "pedi 2 frascos pq queria tratar bien las dos piernas, me salio mejor y con envio gratis"
+
+ELEMENTO 10 — TESTIMONIO 3 (comunidad + autoridad):
+Comentarios de Facebook encadenados (nombres GT, ortografía imperfecta, 0-1 emoji):
+- "Marta Xocop: a mi me lo recomendo la doctora para las arañitas y si las veo mas disimuladas"
+- "Rosa Ical: yo lo uso en la noche con masajito, las piernas ya no me pesan tanto al llegar del trabajo"
+- "Ana L.: sirve para las manchas del tobillo? — Sí Ana, apoya la circulacion y la piel se ve mas pareja 🙂"
+
+ELEMENTO 11 — AUDIO (45-55 seg, voz femenina GT, SIN precio, SIN contraentrega, 2ª persona):
+"Hola! Claro que sí, te cuento. Sé lo que se siente dejar de ponerte una falda o un vestido por las várices y las arañitas, andar tapándote aunque haga calor. Este ungüento te va a ayudar a VOS con eso, de forma natural y desde tu casa. Lleva castaño de indias y rusco, que trabajan la vena por dentro apoyando la circulación, y mentol que te alivia la pesadez apenas te lo ponés. Con el masajito mañana y noche vas a ir notando las piernas más descansadas, menos hinchadas, y las venitas menos marcaditas. Imaginate volver a usar lo que te gusta sin pensar en taparte — esa tranquilidad es lo mejor. Es la mejor decisión para vos y para tu confianza. Lo bueno es que es súper fácil, tópico, sin cirugía."
+
+ELEMENTO 12 — CIERRE → PREGUNTA DE CIUDAD (sí #2):
+Hola, soy Laura López, te atiendo hoy 😊 ¿Desde qué municipio y departamento nos escribís?
+
+──────────────────────────────────────────
+INTERACCIONES DEL BOT
+──────────────────────────────────────────
+INTERACCIÓN 0 — CIUDAD (explícita): ¿Desde qué municipio y departamento nos escribís? 😊
+
+INTERACCIÓN 1 — COBERTURA + VALIDACIÓN:
+¡Qué bien, desde {CIUDAD}! 😊
+Me alegra que estés dando el paso de *cuidar tus piernas* — es una gran decisión por vos.
+Confirmo que tenemos cobertura ahí, con envíos a toda Guatemala y *pago contraentrega*. Las entregas tardan de 2 a 5 días hábiles. 🚚
+¿Deseás conocer nuestros precios?
+
+INTERACCIÓN 2 — PRECIOS (párrafo de refuerzo corto + oferta):
+¡Claro! 😊
+Ya sabés que las várices y las arañitas *no se quitan con las cremas de siempre* — esas solo refrescan un rato.
+Y lo que más pesa no es la venita: es *la pena de tener que taparte las piernas.*
+Este ungüento actúa *desde la raíz* con castaño de indias y rusco. Por eso *muchas clientas* ya lo usan y volvieron a mostrar sus piernas.
+
+OFERTAS HASTA AGOTAR
+
+2️⃣ 2 frascos (2x1) → Q249 + 🛻 ENVÍO TOTALMENTE GRATIS
+   OFERTA IRRESISTIBLE 🥰👇
+
+4️⃣ 4 frascos (tratamiento completo, para tus dos piernas) → Q389 + 🎁 ENVÍO TOTALMENTE GRATIS
+   LA MÁS ELEGIDA ⭐ — y lo mejor, pagás al recibir 😊
+
+¿Me confirmás tu Departamento y Municipio? 😊
+
+INTERACCIÓN 3 — PEDIDO DE DATOS (reversión de riesgo):
+¡Perfecto! Tranqui, no arriesgás nada: pagás solo cuando tengas el producto en tus manos. 🙌
+
+Antes de continuar asegurate de permanecer en casa los próximos 5 días, o que algún familiar reciba el producto en la dirección que indicarás.
+En caso de no ser así, podés pedir que tu envío se haga a la agencia principal de GINTACOM o FORZA de tu municipio.
+
+Indicame en UN SOLO MENSAJE y en este orden:
+1. Nombre
+2. Apellido
+3. Teléfono de LLAMADAS
+4. Departamento
+5. Municipio
+6. Dirección exacta (o escribí OFICINA si reclamás en agencia)
+7. Barrio
+8. ¿Cuál opción preferís? (2 frascos Q249 / 4 frascos Q389)
+
+INTERACCIÓN 4 — CONFIRMACIÓN:
+¡Todo confirmado!
+Resumen:
+- Nombre: {NOMBRE} {APELLIDO}
+- Teléfono: {TEL}
+- Departamento: {DEPTO} · Municipio: {MUNICIPIO}
+- Dirección: {DIR} · Barrio: {BARRIO}
+- Producto: Ungüento para várices — {OPCIÓN}
+- Total a pagar: Q{TOTAL} al recibir
+¿Confirmás que los datos están correctos?
+
+INTERACCIÓN 5 — CIERRE:
+¡Listo, {NOMBRE}! Tu pedido fue tomado exitosamente.
+Tu ungüento está en camino. La entrega tarda de 2 a 5 días hábiles en {MUNICIPIO}.
+Recordá: solo pagás cuando lo tenés en tus manos. Cualquier duda, acá estoy. ¡Cuidá esas piernas! 💜
+
+──────────────────────────────────────────
+MENSAJES DE INACTIVIDAD (máx 2)
+──────────────────────────────────────────
+MSJ 1 (4-6 h): Fijate que te quedé debiendo la info completa. ¿Pudiste ver el audio y los videos que te mandé?
+MSJ 2 (8-12 h, 7am-9pm): Última vez que te escribo para no molestarte. Si querés retomar, acá estamos. Si ya no querés mensajes, respondé STOP.
+
+──────────────────────────────────────────
+FAQ_VENTA (10)
+──────────────────────────────────────────
+P1: ¿De verdad funciona o es como las otras cremas? R: Muchas clientas probaron cremas comunes que solo refrescan. Esta lleva castaño de indias y rusco, que apoyan la circulación de la vena por dentro; con constancia mañana y noche van notando las piernas menos hinchadas y las venitas menos marcadas.
+P2: ¿Sirve para las arañitas y las manchas o solo para várices grandes? R: Sí, ayuda con arañitas, várices y con las manchas oscuras del tobillo, apoyando la circulación y dejando la piel más pareja.
+P3: ¿En cuánto tiempo se ve? R: La pesadez alivia desde los primeros usos por el mentol; la apariencia se va notando entre la semana 2 y 4 de uso constante.
+P4: ¿Me va a irritar la piel? R: Es de uso tópico y suave; se aplica en capa fina con masaje. Si tenés piel muy sensible, probá primero en una zona pequeña.
+P5: ¿Cómo se usa? R: Mañana y noche, una capa fina con masaje de abajo hacia arriba, del tobillo al muslo.
+P6: ¿Tengo que operarme igual? R: Es una opción tópica desde casa para apoyar la circulación y la apariencia; no reemplaza al médico, pero muchas clientas lo prefieren antes de pensar en procedimientos.
+P7: ¿Es seguro pagar? R: Pagás contraentrega, solo cuando el producto está en tus manos.
+P8: ¿Hacen envíos a todo el país? R: Sí, a toda Guatemala por GINTACOM y FORZA, 2 a 5 días hábiles.
+P9: ¿Por qué llevar 2 o 4 frascos? R: Para tratar bien las dos piernas y darle constancia, que es cuando de verdad se nota. El de 4 es el tratamiento completo y sale más conveniente.
+P10: ¿Hasta cuándo está la promoción? R: Tenemos ese precio hasta agotar existencias.
+
+──────────────────────────────────────────
+FAQ_POSTVENTA (5)
+──────────────────────────────────────────
+P1: ¿Cómo sé cuándo llega? R: Te avisamos y la transportadora te contacta; entrega 2-5 días hábiles.
+P2: ¿Puedo pagar con tarjeta al recibir? R: Se paga en efectivo contraentrega; consultá con el repartidor si acepta otra forma.
+P3: ¿Cada cuánto lo aplico? R: Mañana y noche, todos los días, para mejores resultados.
+P4: ¿Puedo usarlo si estoy embarazada? R: Consultá con tu médico antes de usarlo en el embarazo o lactancia.
+P5: Si no estoy en casa, ¿qué hago? R: Podés recibirlo en la agencia de GINTACOM o FORZA de tu municipio; escribí OFICINA al dar la dirección.
+
+──────────────────────────────────────────
+MAPEO DE BARRERAS (lite)
+──────────────────────────────────────────
+Video 1 (autoridad) resuelve: OBJ-01 (que sí funciona / mecanismo) ← objeción CRÍTICA ✓
+Video 2 (UGC) resuelve: OBJ-02 / OBJ-08
+Imagen 1 resuelve: OBJ-02 (idoneidad: arañitas/manchas)
+Imagen 2 resuelve: OBJ-04 (tiempo) / OBJ-03 (seguridad)
+Imagen 3 resuelve: OBJ-05 (logística/estafa)
+Audio: refuerza OBJ-01
+Verificación: ¿Video 1 ataca la objeción CRÍTICA (OBJ-01)? SÍ ✓
+
+──────────────────────────────────────────
+REGLAS DEL BOT (copiar en "Reglas" de LucidBot)
+──────────────────────────────────────────
+[IMPORTANTE: Si el cliente envía parte de sus datos, dale tiempo para los faltantes. No seas insistente.]
+[IMPORTANTE: Si el cliente reclama en agencia/oficina, ese dato reemplaza la dirección. No preguntar casa ni barrio.]
+[IMPORTANTE: Si ya envió sus datos, no preguntar de nuevo cuál opción desea ni si están bien: hacé el cierre resumiendo producto y precio.]
+[IMPORTANTE: Si escribió una palabra mal, corregila sin hacer notar el error.]
+[IMPORTANTE: Si pregunta "¿hasta cuándo la promoción?": "Tenemos ese precio hasta agotar existencias."]
+[IMPORTANTE: Una vez cerrada la venta, solo respondé dudas. No seguir vendiendo.]
+[IMPORTANTE: NUNCA insistir en la misma pregunta más de 2 veces; en el 2do intento cambiá el enfoque al beneficio.]
+[IMPORTANTE: Si pide descuento por 1 solo frasco: no vendemos por unidad. "La oferta arranca en el 2x1 (2 frascos) a Q249 con envío gratis, que te sale mucho más conveniente y tratás las dos piernas."]
+[IMPORTANTE: Si pide varios combos: ofrecé el de 4 frascos Q389 como el más completo.]
+[IMPORTANTE: Si dice que pide después: "¡Súper, no hay problema! Acá estamos cuando querás."]
+[IMPORTANTE: Si pregunta por tienda física: "Trabajamos solo por envíos a casi toda Guatemala por GINTACOM y FORZA."]
+[IMPORTANTE: Si manda GIFs/stickers/imágenes, respondé amable sin describir el contenido.]
+[IMPORTANTE: Si pide audios: "En este momento no puedo enviarte audios, el micrófono está fallando."]
+[IMPORTANTE: NUNCA usar "cura", "elimina" ni "descuento". "Garantía" solo como garantía de SATISFACCIÓN.]
+[IMPORTANTE: TODO en voseo guatemalteco: "vos", "tenés", "llevás", "pagás", "escribinos", "ahorita".]
+[IMPORTANTE: El audio NUNCA menciona precio.]
+[IMPORTANTE: Confirmar "municipio y departamento", no "ciudad".]
+[IMPORTANTE: Si elige 2 frascos, invitá amablemente al de 4 (tratamiento completo, ambas piernas) por el mayor ahorro.]
+[IMPORTANTE (compliance producto): responder las FAQ en lenguaje de apoyo (apoya/ayuda a la circulación), nunca "cura/elimina las várices".]
+[IMPORTANTE (embarazo/lactancia): recomendar consultar al médico antes de usar.]
+
+──────────────────────────────────────────────────────────────
+F. CHECKLIST ANTES DE LANZAR (4 AM del 2026-07-10)
+──────────────────────────────────────────────────────────────
+[ ] El flujo LucidBot activo en el WhatsApp es el de VERGÜENZA (no el paraguas)
+[ ] Los 6 conjuntos tienen copy distinto (COPY 1-6), 2 anuncios c/u (creativo duplicado)
+[ ] Precio Q249/Q389 solo en conjuntos 1 y 6 (copy Y creativo). Los otros 4 sin precio.
+[ ] MA2 usa el video ganador VARICOSE_2 (idealmente Post ID para heredar prueba social)
+[ ] Campaña destino WhatsApp + número 502 5283 2734 + optimización Conversaciones
+[ ] Presupuesto $1.59/conjunto igual en los 6 · segmentación GT 18-65+ Advantage+ OFF
+[ ] Programada 4 AM del día siguiente (NUNCA el mismo día)
+[ ] Al día siguiente: leer CPA real (LucidSales + omni_purchase), +20% matutino a lo que venda

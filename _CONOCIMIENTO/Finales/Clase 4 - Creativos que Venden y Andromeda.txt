@@ -1,0 +1,345 @@
+============================================================
+CLASE 4 — CREATIVOS QUE VENDEN: ANDRÓMEDA, ÁNGULOS Y CONCEPTOS VISUALES
+Instructor: Joaquín (Joaquito)
+============================================================
+
+---
+
+## 🎯 IDEA CENTRAL DE LA CLASE
+
+Esta clase profundiza en cómo crear creativos (imágenes y videos publicitarios) que realmente vendan bajo el nuevo sistema algorítmico de Meta llamado ANDRÓMEDA. Joaquín explica qué penaliza Meta, qué premia, cómo funcionan los juicios algorítmicos, la diferencia entre ángulos generalizados vs directos, cómo segmentar a través de la creatividad visual (ya no por intereses), cómo usar IA (Gemini, Claude) para crear creativos, y la estructura exacta de campañas (1 campaña → 6 conjuntos → 1 anuncio diferente por conjunto). La lección central: "El mejor targeting es una creatividad que hace que la audiencia correcta se detenga, se identifique y actúe. Todo lo demás es automatizable."
+
+---
+
+## 📚 RESUMEN COMPLETO (Sección por Sección)
+
+### BLOQUE 1: Juicios Algorítmicos de Meta y Penalizaciones bajo Andrómeda
+
+Joaquín presenta un documento técnico sobre cómo funciona Andrómeda (el framework/algoritmo actual de Meta) y explica detalladamente qué penaliza y qué premia:
+
+**QUÉ PENALIZA META (No te banea, pero te sube CPMs silenciosamente):**
+
+1. **Texto excesivo en imagen** — Imágenes con más del 20% del área cubierta por texto activan penalizaciones de alcance. Meta reduce la entrega hasta un 50%.
+
+2. **Antes y después** — Las comparaciones de resultados físicos de salud están explícitamente prohibidas. Andrómeda detecta layouts bilaterales y los clasifica como antes/después automáticamente.
+   - **LO QUE SÍ FUNCIONA:** En vez de "antes y después", usar "Día 1 vs Día 20" o "Semana 1 vs Semana 4". No se afirma nada, no se compara directamente.
+
+3. **Imágenes engañosas** — Mockups irreales, cheques de dinero falsos, capturas manipuladas de ganancias o transformaciones físicas exageradas.
+
+4. **Señales de baja calidad visual** — Imágenes pixeladas, stock mal recortado, tipografías genéricas o diseños que imitan interfaces de sistemas operativos.
+
+5. **Creativos repetidos / copiados** — Tomar un anuncio de la competencia sin quitar metadatos. Meta detecta que es el mismo archivo y penaliza con CPM alto.
+
+6. **Copies repetidos** — Copiar el copy de otro anunciante. Meta lo identifica y penaliza.
+
+7. **Creativos sin ángulos definidos** — Ángulos generalizados que no atacan un dolor específico. Entra mucha gente curiosa que no compra (conversión del 4% vs 20-25% con ángulos directos).
+
+8. **Copies sin estructura / sin microángulos** — Copies planos sin microángulos que den beneficios específicos.
+
+9. **Cambios frecuentes de copy en ads activos** — Editar el copy de un anuncio en entrega desoptimiza la campaña.
+
+10. **Promesas vacías** — "Elimina la grasa en 7 días", "Cura el terigión". Meta lo penaliza.
+
+11. **Palabras prohibidas** — "Elimina", "cura", "trata" en relación con salud. Comunicar de forma indirecta.
+
+**CONCEPTO DE "BANEO SILENCIOSO":**
+No te quitan la posibilidad de pautar, pero te suben los CPMs masivamente. Es la razón por la que un mismo creativo funciona en una cuenta publicitaria y en otra no. Viene de malas prácticas acumuladas en esa cuenta.
+
+### BLOQUE 2: Lo que Meta Premia y Optimización Acelerada
+
+**QUÉ PREMIA META:**
+
+1. **Retención e interacción real** — Creativos que generan me gusta, comentarios, compartidos. Meta los identifica como "creativos ganadores" y les da más alcance.
+
+2. **Tiempo de visualización** — Especialmente en videos. Un buen hook que mantenga la atención.
+
+3. **Diversificación de formato** — Hacer el mismo creativo en diferentes formatos: 1:1 (feed Facebook), 4:5, 9:16 (reels/historias). Meta premia a quienes se toman el trabajo de adaptar formatos.
+
+4. **Imágenes limpias y claras** — Menos texto, más fotografía de calidad, mensaje directo.
+
+5. **Coherencia entre imagen y copy** — No se puede poner una imagen de un problema y un copy de otro tema. Debe haber congruencia total.
+
+6. **Prueba social visual** — Imágenes de testimonios + producto en la misma imagen. Está dando muy buenos resultados.
+
+7. **Rostros mirando el producto** — Escenas de uso real. El cerebro procesa el estado emocional de otros antes que el producto.
+
+8. **Creativo dinámico** — Proveer múltiples variaciones de imágenes dentro de un mismo ad para que Meta testee combinaciones. "Se lo recomiendo absolutamente a todos."
+
+**DATO CLAVE:** "Meta no optimiza todos los ads por igual. Existen estructuras creativas que permiten al algoritmo aprender más rápido, asignar más presupuesto y alcanzar la fase de optimización de valor en menos tiempo."
+
+### BLOQUE 3: Ángulos Generalizados vs Ángulos Directos
+
+Joaquín muestra ejemplos reales de la Biblioteca de Anuncios para explicar la diferencia:
+
+**ÁNGULO GENERALIZADO (NO recomendado):**
+- Ejemplo 1: Magnesio 12-en-1 Complex — "Energía, sueño, músculo, mente" → Demasiado vago, no ataca un dolor específico
+- Ejemplo 2: "Mejora el dolor muscular y articular" → No hay punto de dolor definido
+- Resultado: Mucha gente curiosa, baja conversión, CPA alto
+
+**ÁNGULO DIRECTO (RECOMENDADO):**
+- Ejemplo 1: "CIÁTICA" — Una persona que sufre de ciática lee esa palabra y se detiene inmediatamente
+- Ejemplo 2: "No más dolores" + Artritis, artrosis, fibromialgia, lumbalgia, ciática → Ángulo de curiosidad + dolor directo
+- Ejemplo 3: "¿Tienes cataratas, glaucoma o terigión? Restaura tu visión" → Identifica directamente al avatar
+- Resultado: CTR alto, conversiones con bajo CPA
+
+### BLOQUE 4: La Pirámide de Prioridades para Crear un Anuncio
+
+Joaquín presenta su pirámide de 3 niveles (de abajo hacia arriba):
+
+1. **Base = AUDIENCIA** (lo más importante) — ¿A quién voy a atacar? Identificar el avatar
+2. **Medio = ÁNGULO** — ¿Qué dolor/deseo/miedo/frustración voy a atacar?
+3. **Arriba = ANUNCIO** — La ejecución visual (concepto + copy)
+
+"Yo primero identifico mi audiencia, luego meto el ángulo y de último dejo el anuncio."
+
+### BLOQUE 5: Identificación del Avatar para Creativos
+
+Para crear buenos creativos, hay que mapear completamente al avatar:
+
+- **Dolores:** "No logro resultados", problemas físicos, frustraciones con productos anteriores
+- **Deseos:** "Quiero llegar a 55 kg", verse mejor, sentirse mejor, resolver un problema
+- **Miedos:** Perder dinero, que no funcione, efectos secundarios, estafa
+- **Frustraciones:** "Nada me funciona", "He comprado miles de productos"
+
+"Cuando yo tengo identificado todo esto, gana quien mejor comunique el producto."
+
+### BLOQUE 6: Segmentación a Través del Creativo
+
+**CONCEPTO REVOLUCIONARIO:** Ya no se segmenta por intereses en Meta. La segmentación se hace A TRAVÉS del creativo.
+
+Ejemplos de segmentación visual:
+- Imagen con padre cargando hijo + "Ciática" → Segmenta a: padres + mayores de 40 + problemas de ciática
+- Imagen con persona usando lentes + "¿Tienes glaucoma?" → Segmenta a: personas con problemas visuales + 45-60 años + usuarios de lentes
+- Imagen con artritis/artrosis → Segmenta a: adultos mayores + dolores articulares
+
+"Cada vez que ustedes vayan a hacer un creativo, imagínense que están segmentando."
+
+### BLOQUE 7: Creación de Creativos con IA
+
+Joaquín hace un ejercicio en vivo usando Gemini para crear creativos:
+
+**Proceso:**
+1. Buscar concepto en la Biblioteca de Anuncios de Meta (mercado de EE.UU.)
+2. Tomar una plantilla/concepto que funcione bien
+3. En Gemini (modo Pro, no Fast): subir la plantilla + imagen del producto
+4. Pedir: "Reemplaza el producto de la imagen 1 con el producto de la imagen 2, busca información del producto"
+5. Si Gemini no da exactamente lo deseado → ir a Canva y corregir rápidamente
+
+**Tips de IA:**
+- Gemini en modo Fast no funciona bien para esto, usar modo Pro
+- Cuentas nuevas de Gemini tienen menos contexto
+- Dar toda la información del producto a la IA para mejores resultados
+- Pedir beneficios, precio y "paga al recibir" directamente
+
+**Herramienta futura de LucidBot:** Se está desarrollando una herramienta que automatizará TODO este proceso: investigación de mercado, identificación de dolores/deseos/miedos, creación de imágenes y flujos de venta. Sale en aproximadamente un mes.
+
+### BLOQUE 8: Estructura de Campañas para Testeo
+
+**Estructura exacta:**
+- 1 campaña
+- 6 conjuntos de anuncios
+- Cada conjunto: 1 anuncio con ángulo y concepto DIFERENTE
+- Dentro de cada conjunto: duplicar el anuncio (2 creativos iguales por conjunto)
+- Presupuesto: $7,000 COP por conjunto ($42,000-$48,000 total por campaña)
+- Lanzar la MISMA campaña en 2-3 cuentas publicitarias diferentes
+
+**¿Por qué 3 cuentas?** Porque una cuenta puede no funcionar ese día. Al tener 3, tienes 18 anuncios recogiendo data simultáneamente.
+
+**Escalado (después de identificar ganadores):**
+- Identificar los 2 ángulos/conceptos ganadores
+- Crear 50+ creativos nuevos con esos ángulos y conceptos ganadores
+- Lanzar 5 campañas × 6 conjuntos = 30 creativos en un día
+- Usar hasta 9 cuentas publicitarias
+- Subir 20% de presupuesto al conjunto que venda (así sea 1 venta)
+
+### BLOQUE 9: Formatos de Creativos
+
+- **1:1 (1080×1080)** — Feed de Facebook. El formato más usado.
+- **9:16 (1080×1920)** — Reels e historias de Instagram/Facebook, TikTok.
+- **4:5** — Formato intermedio, también funciona bien en feed.
+
+Meta premia cuando se adaptan los creativos a diferentes formatos. En los ajustes de campaña, se puede optimizar específicamente para Reels/historias con formato 9:16.
+
+### BLOQUE 10: Niveles de Conciencia del Avatar (Avanzado)
+
+Joaquín menciona brevemente los niveles de conciencia:
+- **Nivel 1:** La persona no sabe que tiene un problema (ej: le duele desde la espalda hasta el pie, pero no sabe que es ciática)
+- **Nivel 2:** Sabe que tiene un problema pero no la solución
+- **Nivel 3:** Sabe el problema y la solución pero no el producto
+- **Nivel 4:** Conoce el producto
+
+Cada nivel se ataca con creativos COMPLETAMENTE diferentes. Esto será parte de la herramienta futura de LucidBot.
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **"El mejor targeting es una creatividad que hace que la audiencia correcta se detenga, se identifique y actúe"** — Regla de oro de Andrómeda. La creatividad ES el targeting ahora.
+
+2. **Baneo silencioso** — Meta no te banea, pero te sube CPMs por malas prácticas acumuladas. Es la razón #1 de CPMs altos inexplicables.
+
+3. **"Ahora debemos pasar más tiempo haciendo creativos que viendo cuántas ventas llevo"** — La mentalidad ha cambiado. El creativo es la variable más importante.
+
+4. **Ángulo directo = conversiones altas** — "Ciática" vs "Mejora dolores musculares". La diferencia entre 4% y 25% de conversión.
+
+5. **Segmentación por creatividad** — Ya no segmentar por intereses. El creativo le dice a Meta a quién buscar.
+
+6. **Nunca dejar morir una campaña** — "Yo desde el primer día estoy creando creativos del concepto y ángulo ganador."
+
+7. **Un ángulo + un concepto por conjunto de anuncios** — No repetir ángulos ni conceptos dentro de la misma campaña de testeo.
+
+8. **Claude para copies, Gemini para imágenes** — Joaquín usa Claude para redacción y Gemini para generación visual.
+
+9. **Los productos saturados son MEJORES** — "A nosotros nos gustan los productos saturados porque ya hay mercado." La diferenciación está en el ángulo.
+
+10. **Frecuencia de 1.9+ = fatiga creativa** — Hora de renovar creativos cuando la frecuencia sube de 1.9.
+
+---
+
+## 🛠️ TRUCOS, TIPS Y RECOMENDACIONES
+
+1. **Quitar metadatos con Adsurus** — Si tomas un video o imagen de otro anunciante, quitar metadatos para evitar penalización. También funciona: pasar por WhatsApp o editar en Canva.
+
+2. **Crear un banco de conceptos** — Carpeta en computador: "Concepto Winner" (los que funcionan) y "Conceptos No Funcionaron". Tener 50+ plantillas de alta calidad.
+
+3. **Lanzar campañas a las 4 AM** — Joaquín lanza TODAS sus campañas para las 4 de la mañana. No lanzar al mediodía.
+
+4. **No duplicar para el mismo día** — Si duplicas un conjunto para escalar, programarlo para el día siguiente a las 4 AM. En WhatsApp, Meta gasta el presupuesto muy rápido si duplicas en el mismo día.
+
+5. **Subir 20% al conjunto que vende** — "Así sea una sola venta en la mañana, ahí mismo le subo el 20%."
+
+6. **Usar Claude para encontrar ángulos de productos desconocidos** — Darle los componentes/ingredientes a Claude y preguntar "¿Para qué sirve cada componente?" para descubrir ángulos.
+
+7. **Usar "Día 1 / Semana 4" en vez de "Antes / Después"** — Andrómeda detecta automáticamente layouts de antes/después y penaliza.
+
+8. **Para productos emocionales (joyería, regalos)** — Usar ángulo emocional: regalos, fechas especiales, mascotas, amor. No hay dolor físico pero sí emocional.
+
+9. **Objetivo de campaña:** WhatsApp → Interacción y Tráfico. Landing → Ventas (optimizar a compras).
+
+10. **Crear mínimo 3 variaciones de formato** — 1:1, 4:5, 9:16 del mismo creativo. Meta premia la diversificación de formato.
+
+11. **No editar ads activos** — Nunca cambiar copy o imagen de un anuncio en entrega. Duplicar y crear nuevo.
+
+12. **Lanzar en 3 cuentas publicitarias diferentes** — La misma campaña en 3 cuentas para testeo. Joaquín tiene 9 cuentas activas.
+
+---
+
+## 📋 PROCESOS Y PASOS
+
+### PROCESO 1: Cómo Crear un Creativo Ganador (paso a paso)
+
+**Paso 1:** Identificar el avatar — Edad, dolores, deseos, miedos, frustraciones
+**Paso 2:** Mapear dolores → ¿Qué problema resuelve mi producto?
+**Paso 3:** Mapear deseos → ¿Cómo quiere verse/sentirse el avatar?
+**Paso 4:** Mapear miedos → ¿Qué teme el avatar? (perder dinero, que no funcione)
+**Paso 5:** Mapear frustraciones → ¿Qué ha intentado sin éxito?
+**Paso 6:** Elegir el ángulo DIRECTO (no generalizado) — Un dolor específico
+**Paso 7:** Buscar conceptos en Biblioteca de Anuncios (mercado EE.UU.)
+**Paso 8:** Adaptar el concepto a tu producto con IA (Gemini) o Canva
+**Paso 9:** Asegurar coherencia entre imagen y copy
+**Paso 10:** Crear en múltiples formatos (1:1, 4:5, 9:16)
+**Paso 11:** Incluir: precio + "paga al recibir" + hook directo + máximo 2 beneficios
+
+### PROCESO 2: Estructura de Campaña de Testeo
+
+**Paso 1:** Crear 1 campaña con objetivo Interacción o Tráfico (WhatsApp)
+**Paso 2:** Crear 6 conjuntos de anuncios
+**Paso 3:** En cada conjunto: 1 anuncio con ángulo y concepto DIFERENTE
+**Paso 4:** Duplicar el anuncio dentro de cada conjunto (quedan 2 iguales)
+**Paso 5:** Presupuesto: $7,000 por conjunto
+**Paso 6:** Programar para las 4 AM del día siguiente
+**Paso 7:** Lanzar la misma campaña en 2-3 cuentas publicitarias diferentes
+**Paso 8:** Dejar rodar 1-2 días completos sin tocar
+**Paso 9:** Analizar métricas: clics en enlace, CTR, CPM, conversiones
+**Paso 10:** Identificar los 2 ángulos/conceptos ganadores
+
+### PROCESO 3: Escalado de Creativo Ganador
+
+**Paso 1:** Mantener la campaña original rodando (la que ya funciona)
+**Paso 2:** Crear 50+ creativos nuevos con el ángulo y concepto ganador
+**Paso 3:** Crear nuevas campañas (no editar las existentes)
+**Paso 4:** 5 campañas × 6 conjuntos = 30 creativos nuevos
+**Paso 5:** Distribuir en múltiples cuentas publicitarias (hasta 9)
+**Paso 6:** Subir 20% de presupuesto a conjuntos que venden
+**Paso 7:** No dejar morir la campaña, renovar creativos constantemente
+**Paso 8:** Cuando frecuencia > 1.9, renovar el creativo
+
+---
+
+## ❓ PREGUNTAS Y RESPUESTAS
+
+**Pregunta:** ¿Cuántos creativos recomiendas para un producto y cada cuánto renovarlos?
+**Respuesta:** Meta te va diciendo. Cuando un creativo deja de vender, necesita renovación. "Yo nunca dejo morir una campaña. Desde el primer día estoy mandando a crear creativos del concepto y ángulo ganador."
+
+**Pregunta:** ¿Se puede usar una imagen con persona que tenga acné levemente visible?
+**Respuesta:** Sí se puede. Lo importante es no poner afirmaciones fuertes como "elimina" ni exagerar el punto de dolor visualmente.
+
+**Pregunta:** ¿Cuántos ángulos por conjunto de anuncios?
+**Respuesta:** Uno. Un ángulo, un concepto por conjunto. No repetir en la misma campaña.
+
+**Pregunta:** ¿Qué presupuesto para testeo por WhatsApp?
+**Respuesta:** $7,000 por conjunto × 6 conjuntos = $42,000-$48,000 por campaña. Lanzar en 2-3 cuentas diferentes.
+
+**Pregunta:** ¿Para landing se usa el mismo objetivo que WhatsApp?
+**Respuesta:** No. WhatsApp = Interacción/Tráfico. Landing = Ventas (optimizar a compras). En landing, $12,000 por conjunto.
+
+**Pregunta:** ¿Cómo vender productos de joyería o ropa que no tienen "dolor"?
+**Respuesta:** Usar ángulo EMOCIONAL: regalos, fechas especiales, amor. Ejemplo: esferas de luces de Saturno vendidas como "el planeta del amor" para el día del amor y la amistad.
+
+**Pregunta:** ¿Cómo vender un producto nuevo que nadie conoce?
+**Respuesta:** Dar los componentes/ingredientes a Claude y preguntar para qué sirve cada uno. Buscar el ángulo menos saturado. "Quítate la limitante de no vender productos saturados. A nosotros nos gustan porque ya hay mercado."
+
+**Pregunta:** ¿Las duplicaciones se hacen antes o después del mediodía?
+**Respuesta:** Nunca duplicar para el mismo día. Siempre programar para el día siguiente a las 4 AM.
+
+---
+
+## ⚠️ ERRORES COMUNES Y ADVERTENCIAS
+
+1. **Copiar creativos sin quitar metadatos** — Meta detecta que es el mismo archivo y penaliza con CPM alto.
+
+2. **Usar ángulos generalizados** — "Energía, sueño, músculo, mente" no ataca a nadie específico. Conversión del 4%.
+
+3. **Texto excesivo en imagen** — Más del 20% de texto = penalización de hasta 50% de alcance.
+
+4. **Usar "antes y después"** — Andrómeda lo detecta automáticamente. Usar "Día 1 / Semana 4".
+
+5. **Editar ads activos** — Cambiar copy en un anuncio en entrega desoptimiza la campaña.
+
+6. **Lanzar una sola campaña en una sola cuenta** — Si esa cuenta no funciona, perdiste todo. Mínimo 3 cuentas.
+
+7. **No renovar creativos** — Frecuencia > 1.9 = fatiga. El creativo necesita renovación constante.
+
+8. **Buscar ventas el primer día** — "Yo no busco vender en la primera campaña, busco datos."
+
+9. **Repetir ángulos y conceptos en la misma campaña** — Cada conjunto debe tener ángulo y concepto diferente.
+
+10. **No tener banco de conceptos** — Sin biblioteca de conceptos, no hay material para escalar.
+
+---
+
+## 🔗 RECURSOS, HERRAMIENTAS Y REFERENCIAS
+
+- **Andrómeda** — Framework/algoritmo actual de Meta que prioriza creatividad visual y diversificación
+- **Biblioteca de Anuncios de Meta** — Para buscar conceptos de marcas grandes (especialmente mercado EE.UU.)
+- **Gemini (modo Pro)** — Para generar creativos con IA basados en plantillas
+- **Canva Pro** — Para editar y corregir creativos rápidamente
+- **Claude (Anthropic)** — Para redacción de copies y descubrimiento de ángulos
+- **Adsurus** — Herramienta para quitar metadatos de imágenes/videos
+- **Adobe Express** — Alternativa a Canva (más costosa)
+- **LucidBot (herramienta futura)** — Creación automática de creativos, investigación de mercado e imágenes con IA
+- **Documento de Andrómeda compartido por Joaquín** — Dejado en la clase del School
+
+---
+
+## 📌 CONCLUSIONES Y CIERRE
+
+La Clase 4 establece que bajo Andrómeda, la CREATIVIDAD VISUAL es la única variable que los anunciantes pueden controlar. Todo lo demás (targeting, presupuesto, optimización) se automatiza. Los pilares son:
+
+1. **Creativos con ángulos directos** — Atacar un dolor específico, no generalizar
+2. **Diversificación de conceptos** — Múltiples formas de presentar el producto, no solo cambiar colores
+3. **Segmentación por creatividad** — El creativo le dice a Meta a quién buscar
+4. **Renovación constante** — Nunca dejar morir un creativo, tener banco de 50+ plantillas
+5. **Testeo en múltiples cuentas** — Mínimo 3 cuentas publicitarias para validar
+
+Joaquín cierra con su filosofía: "Ahora debemos pasar más tiempo haciendo creativos que viendo cuántas ventas llevo." La próxima clase cubrirá escalado progresivo y escalado de creativos.

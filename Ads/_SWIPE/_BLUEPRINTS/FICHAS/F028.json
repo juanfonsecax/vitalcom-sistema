@@ -1,0 +1,199 @@
+{
+  "ficha_id": "F028",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Ixchel_Store_GT/04_1558694018956341.jpg",
+    "anunciante": "Ixchel Store GT",
+    "ad_archive_id": "1558694018956341",
+    "dias_activo": 43,
+    "replicas": 1,
+    "score": 68,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA AVATAR SOSTENIENDO EL PRODUCTO A LA ALTURA DEL PECHO, CON LA CARD DE BENEFICIOS FLOTANDO A SU DERECHA. La persona ocupa la mitad derecha, sostiene el envase con las dos manos y lo presenta hacia camara; a su lado, una card blanca con cuatro beneficios en iconos morados. El producto queda en el centro geometrico exacto por estar en sus manos, sin necesidad de una zona propia.",
+  "lectura_estrategica": "Vende identidad y resultado estetico a la vez. El titular escalona tres sustantivos (firmeza, energia, confianza) que van de lo fisico a lo emocional, y el nombre del producto va inmediatamente debajo en pildora: promesa primero, marca despues. La resena con estrellas al pie es minima pero suficiente, y el 2x1 en banda roja diagonal es el unico elemento agresivo. Notable: incluye al pie el descargo de que los resultados varian, que es raro en el banco y baja el riesgo de la pieza entera.",
+  "fondo": {
+    "tipo": "degradado_suave_de_paleta",
+    "centro": "{{PALETA_CLARO}}",
+    "borde": "{{PALETA_MEDIO}}",
+    "elemento": "ondas o velos de luz muy suaves detras de la persona",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} violeta o morado (titular de acento, iconos, pildoras) mas {{COLOR_ALERTA}} rojo (banda de oferta) mas blanco (cards) mas lila muy claro (fondo)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{BENEFICIO_1}},",
+      "linea_2": "{{BENEFICIO_2}} Y",
+      "linea_3": "{{BENEFICIO_3}}",
+      "estilo": "Black/900 uppercase con {{BENEFICIO_1}} y {{BENEFICIO_2}} en {{PALETA_ACENTO}} y el resto en oscuro",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "tres sustantivos en escalada de lo fisico a lo emocional, unidos por coma y conjuncion",
+      "regla": "el tercero es siempre emocional: es el que cierra"
+    },
+    "pildora_producto": {
+      "posicion": "bajo el titular",
+      "contenedor": "pildora {{PALETA_ACENTO}} solida",
+      "texto": "{{PRODUCTO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "regla": "la promesa va primero y la marca despues: al reves no engancha en nivel 3"
+    },
+    "bajada": {
+      "posicion": "bajo la pildora",
+      "texto": "{{TAGLINE}}",
+      "estilo": "Bold uppercase {{PALETA_ACENTO}} chico entre lineas horizontales finas",
+      "restriccion_palabras": "3 palabras"
+    },
+    "avatar_con_producto": {
+      "posicion": "derecha, ocupa el alto central",
+      "contenido": "{{FOTO_AVATAR_PRESENTANDO}}",
+      "escala": "45% del frame",
+      "tratamiento": "persona real del avatar, sonriendo a camara, sosteniendo el envase con las dos manos a la altura del pecho y presentandolo hacia adelante",
+      "regla": "el producto en sus manos queda en el centro geometrico del frame: no necesita zona propia",
+      "regla_mirada": "mira a CAMARA, no al producto: es una recomendacion, no una contemplacion"
+    },
+    "card_beneficios": {
+      "posicion": "derecha_superior, junto a la cabeza del avatar",
+      "contenedor": "card blanca redondeada con header",
+      "header": "{{HEADER_BENEFICIOS}}",
+      "estilo_header": "Bold uppercase {{PALETA_ACENTO}}",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en cuadrado redondeado {{PALETA_ACENTO}} mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_item_4": "el ultimo repite el tercer sustantivo del titular: cierra el circulo"
+    },
+    "fila_specs": {
+      "posicion": "centro_derecha, bajo la card",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal de pildoras circulares o redondeadas",
+      "formato_item": "cifra o simbolo Black/900 mas etiqueta Regular muy chica",
+      "items": "{{SPECS[3]}}",
+      "restriccion_palabras": "1-3 palabras",
+      "regla": "datos duros de formato (miligramos, capsulas, tipo de formula), no beneficios"
+    },
+    "card_resena": {
+      "posicion": "derecha_baja",
+      "contenedor": "card blanca redondeada",
+      "estrellas": 5,
+      "cita": "{{CITA_RESENA}}",
+      "estilo_cita": "Regular oscuro en cursiva",
+      "restriccion_cita": "16-22 palabras",
+      "firma": "{{NOMBRE_RESENA}}",
+      "sello": "{{SELLO_VERIFICACION}} con check",
+      "regla": "una sola resena: la pieza ya tiene al avatar como prueba visual"
+    },
+    "banda_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "banda {{COLOR_ALERTA}} solida con esquinas cortadas en diagonal",
+      "texto": "{{OFERTA_LABEL}} {{MULTIPLICADOR}}",
+      "estilo": "Black/900 uppercase blanco con el multiplicador en {{COLOR_ACENTO}} amarillo",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "unico elemento agresivo de la pieza"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "cantidad_items": 2,
+      "formato_item": "icono blanco mas texto Bold uppercase",
+      "items": "{{GARANTIAS[2]}}"
+    },
+    "descargo": {
+      "posicion": "inferior extremo, ancho completo",
+      "texto": "{{DESCARGO}}",
+      "estilo": "Regular gris muy chico, centrado",
+      "restriccion_palabras": "6-9 palabras",
+      "default": "Los resultados pueden variar segun cada persona",
+      "funcion": "baja el riesgo de la pieza entera y es raro en el banco: se replica siempre"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "avatar_con_producto",
+    "pildora_producto",
+    "card_beneficios",
+    "banda_oferta",
+    "fila_specs",
+    "card_resena",
+    "barra_garantias",
+    "descargo"
+  ],
+  "reglas_duras": [
+    "El avatar sostiene el producto con las dos manos a la altura del pecho y mira a camara",
+    "El producto en sus manos queda en el centro geometrico del frame",
+    "El titular son tres sustantivos en escalada, y el tercero es emocional",
+    "La promesa va antes que el nombre del producto",
+    "Las specs son datos duros de formato, no beneficios",
+    "Una sola resena",
+    "El descargo de variabilidad de resultados va siempre al pie"
+  ],
+  "variables_requeridas": [
+    "BENEFICIO_1",
+    "BENEFICIO_2",
+    "BENEFICIO_3",
+    "PRODUCTO",
+    "TAGLINE",
+    "FOTO_AVATAR_PRESENTANDO",
+    "HEADER_BENEFICIOS",
+    "BENEFICIOS[4]",
+    "SPECS[3]",
+    "CITA_RESENA",
+    "NOMBRE_RESENA",
+    "SELLO_VERIFICACION",
+    "OFERTA_LABEL",
+    "MULTIPLICADOR",
+    "GARANTIAS[2]",
+    "DESCARGO",
+    "COLOR_ALERTA",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "producto estetico o de bienestar con promesa mixta fisica y emocional",
+    "cuando existe foto de una persona del avatar presentando el producto",
+    "publico femenino 30-50",
+    "oferta de multiplicador simple (2x1) que no necesita escalera"
+  ],
+  "cuando_no_usar": [
+    "dolor agudo: la pieza es demasiado luminosa y calmada",
+    "cuando no hay avatar fotografiable",
+    "cuando la oferta necesita tres tiers: la banda diagonal solo sostiene un multiplicador"
+  ],
+  "sellos_y_claims_observados": [
+    "Specs en pildoras: CON CoQ10, 60 CAPSULAS, FORMULA ANTIOXIDANTE.",
+    "Resena de cinco estrellas firmada con nombre y sello COMPRA VERIFICADA.",
+    "Banda diagonal SOLO HOY OFERTA 2X1.",
+    "Barra de garantias ENVIO GRATIS y PAGA AL RECIBIR.",
+    "Descargo al pie: LOS RESULTADOS PUEDEN VARIAR SEGUN CADA PERSONA. Es la unica pieza del banco que lo declara.",
+    "Beneficios: PIEL MAS FIRME Y TONIFICADA, APOYO CONTRA LA FLACIDEZ, FIRMEZA EN ZONAS CLAVE, MAS ENERGIA Y CONFIANZA."
+  ],
+  "canonico_id": "CN21_AVATAR_CARD_BENEFICIOS",
+  "blueprint_equivalente": null
+}

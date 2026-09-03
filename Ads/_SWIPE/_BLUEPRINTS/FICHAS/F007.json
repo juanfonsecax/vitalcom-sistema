@@ -1,0 +1,173 @@
+{
+  "ficha_id": "F007",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Camila_Recomienda/25_1019494497528403.jpg",
+    "anunciante": "Camila Recomienda",
+    "ad_archive_id": "1019494497528403",
+    "dias_activo": 18,
+    "replicas": 4,
+    "score": 118,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "42%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "ligera"
+  },
+  "dispositivo_dominante": "LA FILA DE 3 BENEFICIOS EN HORIZONTAL, BAJO EL TITULAR. Misma familia editorial que F002, pero la columna de 5 se acuesta en fila de 3 y libera todo el flanco izquierdo para que el PRECIO CON ANCLAJE TACHADO ocupe el centro-izquierda a tamano de titular. Es la variante donde el precio, y no el beneficio, es el segundo golpe de vista.",
+  "lectura_estrategica": "Misma estetica premium que F002 pero apuntada a un sintoma NOMBRADO (nivel 2, no 3): el titular pregunta por una condicion especifica en vez de por el cuidado general. Al bajar el nivel de conciencia, el creativo compensa subiendo el precio en la jerarquia: la persona que todavia no sabe que existe la solucion necesita ver que es accesible antes de leer los cinco por que. El anclaje tachado hace ese trabajo.",
+  "fondo": {
+    "tipo": "color_plano",
+    "color": "crema/hueso claro derivado de {{PALETA}}",
+    "degradado": "ninguno",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "crema (fondo) mas {{PALETA_ACENTO}} (precio, iconos, pildora) mas negro (titular) mas gris medio (subtitulos y tachado)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro",
+    "color_texto_secundario": "gris medio"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2}}",
+      "linea_3": "{{HOOK_L3}}",
+      "estilo": "Black/900 uppercase negro con la PRIMERA linea en {{PALETA_ACENTO}}",
+      "formato_obligatorio": "pregunta que nombra el sintoma especifico",
+      "restriccion_palabras_total": "7-9 palabras",
+      "regla_acento": "el color cae sobre el nombre del sintoma, que es lo que hace que la persona se reconozca"
+    },
+    "badge_garantia": {
+      "posicion": "superior_derecha",
+      "forma": "circular {{PALETA_ACENTO}} solido con estrellas arriba",
+      "linea_1": "{{DIAS_GARANTIA}}",
+      "linea_2": "DIAS DE GARANTIA",
+      "escala": "15% del ancho"
+    },
+    "fila_beneficios": {
+      "posicion": "izquierda_media, bajo el titular",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal, sin contenedor ni separador",
+      "formato_item": "icono line-art 2px arriba mas TITULO Bold uppercase de 2 lineas mas subtitulo Regular gris de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla": "cada icono en distinto color dentro de la paleta: es el unico lugar donde el color varia por item"
+    },
+    "bloque_precio": {
+      "posicion": "centro_izquierda",
+      "contenedor": "ninguno, sobre el fondo limpio",
+      "linea_1": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l1": "Black/900 en {{PALETA_ACENTO}}, decimales al 55% del entero, al tamano del titular",
+      "linea_2": "{{MONEDA}}{{PRECIO_TACHADO}}",
+      "estilo_l2": "Regular gris con linea de tachado, al 35% de L1",
+      "regla": "sin card ni fondo: el precio flota sobre el crema. Es lo que lo hace verse premium y no de descuento"
+    },
+    "pildora_oferta": {
+      "posicion": "bajo el bloque de precio",
+      "contenedor": "pildora con borde fino {{PALETA_ACENTO}} e icono de etiqueta",
+      "texto": "{{OFERTA_LABEL}}",
+      "restriccion_palabras": "2 palabras"
+    },
+    "producto_hero": {
+      "posicion": "derecha_centro",
+      "escala": "38% del frame",
+      "presentacion": "ESCENA CONTEXTUAL sobre superficie natural",
+      "composicion": "caja de pie mas unidad del producto, rodeado de {{ELEMENTOS_INGREDIENTE}}",
+      "iluminacion": "natural calida, lateral suave",
+      "fuente": "IMAGEN_2"
+    },
+    "fila_atributos": {
+      "posicion": "inferior_media, ancho completo",
+      "cantidad_items": 4,
+      "formato_item": "icono line-art en contenedor circular mas TITULO Bold uppercase de 2 lineas mas subtitulo Regular gris",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla_item_2": "el segundo es el sello regulatorio ({{SELLO_REGULATORIO}}) presentado como atributo"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda de color muy claro, no negra",
+      "cantidad_items": 3,
+      "formato_item": "icono mas TITULO Bold mas subtitulo regular",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye bandera de {{PAIS}}"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "bloque_precio",
+    "fila_beneficios",
+    "producto_hero",
+    "badge_garantia",
+    "fila_atributos",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El precio va sin card, flotando sobre el fondo: el contenedor lo abarataria",
+    "El precio de anclaje va tachado, en gris, justo debajo y al 35% del tamano",
+    "El acento de color del titular cae sobre el nombre del sintoma",
+    "Sin figura humana",
+    "El producto va en escena sobre superficie, nunca recortado",
+    "Ninguna banda negra: en esta variante el pie es claro"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2",
+    "HOOK_L3",
+    "BENEFICIOS[3]",
+    "ATRIBUTOS[4]",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "PRECIO_TACHADO",
+    "MONEDA",
+    "OFERTA_LABEL",
+    "DIAS_GARANTIA",
+    "GARANTIAS[3]",
+    "ELEMENTOS_INGREDIENTE",
+    "SELLO_REGULATORIO",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "sintoma nombrable y especifico dentro de una categoria premium",
+    "cuando el precio es competitivo y conviene mostrarlo temprano",
+    "producto con ingrediente estrella fotogenico",
+    "publico que rechaza el look agresivo pero necesita ver el precio antes de escribir"
+  ],
+  "cuando_no_usar": [
+    "cuando el precio es alto y conviene ganarse el valor antes de mostrarlo: usar F002",
+    "cuando hay mas de 3 beneficios que son imprescindibles",
+    "dolor agudo: la estetica calmada lo contradice"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello REGISTRO INVIMA como segundo item de la fila de atributos, con subtitulo PRODUCTO SEGURO Y CONFIABLE.",
+    "Badge circular 30 DIAS DE GARANTIA con estrellas.",
+    "Pildora OFERTA LIMITADA bajo el precio, con precio de anclaje tachado.",
+    "Atributos: FORMULA CON MIEL PURA, ALIVIA LA IRRITACION, SIN COLORANTES NI CONSERVANTES.",
+    "El titular nombra la condicion ocular (carnosidad)."
+  ],
+  "canonico_id": "CN05_LISTA_BENEFICIOS",
+  "blueprint_equivalente": "B_editorial_limpio"
+}

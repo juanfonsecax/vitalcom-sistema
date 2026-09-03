@@ -1,0 +1,140 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA TOTAL DE RENTABILIDAD — ¿ESTAMOS GANANDO DINERO?
+Ventana 01 → 15 agosto 2026 · generada 15-ago-2026
+Cruza CUATRO fuentes por primera vez sobre la MISMA ventana:
+  (1) facturación de Meta + extractos de las 2 tarjetas
+  (2) Meta MCP / Ads Manager — gasto entregado por cuenta y conjunto
+  (3) los DOS LucidSales (cuenta A + cuenta B, 0 adId en común)
+  (4) Dropi — entregas, devoluciones y tránsito
+═══════════════════════════════════════════════════════════════════════════
+
+▓▓ RESPUESTA CORTA ▓▓
+SÍ, la operación gana dinero — pero MENOS de lo que el dashboard venía
+diciendo, y los CPA que estabas mirando estaban subestimados.
+
+   Ganancia 01-15 ago con la pauta REAL ....... Q4,909  (Q327/día)
+   Ganancia que mostraba el método anterior ... Q6,808  (Q454/día)
+   SOBRESTIMACIÓN ............................. Q1,899  (39% de más)
+
+───────────────────────────────────────────────────────────────────────────
+§1 — LA CAUSA: EL SISTEMA CONTABA EL 75% DE LA PAUTA
+───────────────────────────────────────────────────────────────────────────
+`spend_usd` de _FACT_VENTAS es lo que LucidSales ATRIBUYE a un anuncio, no
+lo que Meta cobra. Un conjunto sin tracking gasta igual y no aparece.
+
+ CUENTA   PAUTA QUE VE   PAUTA REAL   COBERTURA   SIN CONTAR
+ ─────────────────────────────────────────────────────────────
+ GTR 7      $316.68        $333.16        95%       Q  126  ✅
+ GTR 1      $125.08        $136.37        92%       Q   86  ✅
+ GTR 13     $213.01        $264.39        81%       Q  392  ⚠️
+ GTR 0       $38.23         $70.75        54%       Q  248  🔴
+ CP 1        $51.70        $189.27        27%       Q1,048  🔴
+ GTR 2/3      $0.00          $0.00         —          —     ✅
+ ─────────────────────────────────────────────────────────────
+ TOTAL      $744.70        $993.94        75%       Q1,899
+
+ Validación: $993.94 contra la facturación de Meta del período
+ (pagado $942.47 + saldo sin facturar $56.24 − arrastre de julio ~$24
+ = $974.71) → desvío +2.0%. CUADRA.
+
+───────────────────────────────────────────────────────────────────────────
+§2 — LOS CPA ESTABAN MAL. ESTA ES LA TABLA BUENA
+───────────────────────────────────────────────────────────────────────────
+ PRODUCTO     CPA QUE VEÍAS   CPA REAL   ERROR   BREAK-EVEN   COLCHÓN
+ ──────────────────────────────────────────────────────────────────────
+ TINNIDROP        Q35.3        Q55.9     +58%      Q93.4      +Q37.5  ✅
+ CLEARSTEM        Q43.9        Q54.5     +24%     Q105.9      +Q51.4  ✅
+ NUSAVA           Q57.2        Q60.2      +5%      Q92.6      +Q32.5  ✅
+ VARICOSE        Q116.5       Q122.5      +5%      Q89.9      −Q32.6  🔴
+ ──────────────────────────────────────────────────────────────────────
+ GLOBAL           Q44.3        Q59.2     +34%
+
+ → Todos estaban subestimados entre 5% y 58%. TINNIDROP era el peor: creías
+   Q35 y pagabas Q56.
+ → AUN ASÍ, 3 de 4 productos siguen SANOS con el CPA real. El colchón contra
+   break-even es amplio (Q32-51). No hay que frenar nada.
+ → VARICOSE es el único que pierde plata, y ya está pausado desde el 14-ago
+   por el cambio de producto físico del proveedor.
+
+───────────────────────────────────────────────────────────────────────────
+§3 — P&L REAL POR PRODUCTO · 01-15 AGO
+───────────────────────────────────────────────────────────────────────────
+ PRODUCTO    VENTAS  INGRESO  CONTRIB  PAUTA REAL  GANANCIA REAL
+ ────────────────────────────────────────────────────────────────
+ TINNIDROP      69   Q14,565   Q6,510    Q3,860       Q+2,650
+ CLEARSTEM      37    Q8,163   Q3,781    Q2,015       Q+1,766
+ NUSAVA         16    Q4,433   Q1,632      Q963       Q+  669
+ VARICOSE        6    Q1,774     Q559      Q735       Q−  176
+ ────────────────────────────────────────────────────────────────
+ TOTAL         128   Q28,935  Q12,483    Q7,574       Q+4,909
+
+ Margen bruto por venta (antes de devoluciones): Q114
+ ROAS sobre pauta real: 3.8× · CPA global real: Q59.2
+
+───────────────────────────────────────────────────────────────────────────
+§4 — DÓNDE ESTÁ LA PLATA HOY (Dropi, lotes 01-13 ago · 137 órdenes)
+───────────────────────────────────────────────────────────────────────────
+ PRODUCTO    ENTREGADO  DEVUELTO  EN TRÁNSITO  TOTAL  % ENTREGA
+ ─────────────────────────────────────────────────────────────
+ TINNIDROP       50         3          33        86     94.3%
+ CLEARSTEM       16         0          13        29    100.0%
+ NUSAVA           9         3           5        17     75.0%  🔴
+ VARICOSE         4         0           1         5    100.0%
+ ─────────────────────────────────────────────────────────────
+ TOTAL           79         6          52       137     92.9%
+
+ Reparto del ingreso de Q28,935:
+   ya cobrado (entregado) ....... Q16,685  (58%)
+   por cobrar (en tránsito) ..... Q10,983  (38%)  ← todavía no es tu plata
+   perdido (devuelto) ...........  Q1,267   (4%)
+
+ ⚠️ El 38% en tránsito significa que la ganancia de Q4,909 es una PROYECCIÓN.
+
+───────────────────────────────────────────────────────────────────────────
+§5 — ¿Y SI LA ENTREGA SALE MAL? ESCENARIOS
+───────────────────────────────────────────────────────────────────────────
+ ESCENARIO                                        TE     GANANCIA   /DÍA
+ ──────────────────────────────────────────────────────────────────────
+ OPTIMISTA · el tránsito entrega al 100%        95.6%    Q+6,278    +419
+ ESPERADO  · entrega a la tasa histórica        90.5%    Q+5,354    +357
+ REALISTA MALO · tránsito 20 pts peor           70.5%    Q+1,729    +115
+ PESIMISTA · el tránsito se devuelve TODO       57.7%      Q−592     −39
+
+ ‼️ PUNTO DE QUIEBRE: la operación empata a una tasa de entrega del 61.0%.
+    El histórico real es 86.2% (289 órdenes resueltas) y agosto va en 92.9%.
+    → Hay 25 PUNTOS DE COLCHÓN. Solo un colapso total de la entrega
+      (todo el tránsito devuelto) pondría el período en rojo, y eso nunca
+      pasó en la serie.
+
+───────────────────────────────────────────────────────────────────────────
+§6 — LO QUE SÍ HAY QUE ARREGLAR, POR PLATA
+───────────────────────────────────────────────────────────────────────────
+ 1. Q1,048/15d — CP 1 al 27% de cobertura. 7 conjuntos "- Copia" ciegos.
+    YA APAGADOS el 15-ago. Al relanzar, duplicar un conjunto que sí trackea.
+ 2. Q392/15d — GTR 13 al 81%. Sin MCP no se ve por conjunto.
+    → PEDIR export de Ads Manager nivel conjunto (igual al de CP1).
+ 3. Q248/15d — GTR 0 al 54%. Toda la tanda del 27-jul 00:11. YA APAGADA.
+ 4. NUSAVA entrega 75% (25% de devolución) — la fuga más cara del portafolio
+    en producto, no en pauta. Sin atacar desde julio (APR-015).
+ 5. La tasa COP del sistema (4,050) está 28% mal; la real es ~3,150.
+    Ya corregida en _FACT_PAUTA_REAL; falta corregirla en el pipeline de
+    carga de CP1 a _FACT_VENTAS y en DATA_PLAYBOOK.
+
+───────────────────────────────────────────────────────────────────────────
+§7 — QUÉ CAMBIÓ EN EL DASHBOARD
+───────────────────────────────────────────────────────────────────────────
+ · Nueva sección «¿Estamos contando toda la pauta?» — cuenta por cuenta,
+   pauta trackeada vs pauta real, cobertura y ganancia ajustada. Se alimenta
+   de `_FACT_PAUTA_REAL.csv` (archivo nuevo). Ningún número a mano.
+ · Nueva sección «Dónde está la plata hoy» — entregado / devuelto / en
+   tránsito por producto desde `_TASA_ENTREGA.csv`, con el punto de quiebre
+   de la tasa de entrega calculado.
+ · El bloque de ganancia ajustada muestra los dos números lado a lado para
+   que no se pierda de vista la diferencia mientras la cobertura no sea 100%.
+
+ ⚠️ La ganancia grande de arriba del dashboard sigue calculada sobre la
+   ventana histórica (17-jul → 13-ago) con la pauta trackeada. La sección
+   nueva le aplica el factor de cobertura y muestra el ajuste. Cuando el
+   tracking se arregle y la cobertura llegue a ~100%, los dos números
+   convergen solos.
+═══════════════════════════════════════════════════════════════════════════

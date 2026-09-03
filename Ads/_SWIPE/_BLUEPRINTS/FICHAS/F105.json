@@ -1,0 +1,195 @@
+{
+  "ficha_id": "F105",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aurora_GT/09_1066273702541087.jpg",
+    "anunciante": "Aurora GT",
+    "ad_archive_id": "1066273702541087",
+    "dias_activo": 4,
+    "replicas": 1,
+    "score": 29,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": "deseo"
+  },
+  "dispositivo_dominante": "LA OFERTA SUBE A BANDA CENTRAL, JUSTO DEBAJO DEL TITULAR. Es la variante vertical de la familia: la mecanica, el pais y la condicion de pago viajan juntos en una banda de color solida pegada al titular, y con eso desaparecen la card de oferta lateral y el pack shot. Los sellos de confianza bajan de columna a una fila de cuatro circulos sobre el CTA.",
+  "lectura_estrategica": "Al pasar de cuadrado a vertical se pierde ancho, y la pieza resuelve la perdida promoviendo la oferta al eje: quien lee el titular ya leyo el 2X1 y el pago contra entrega en el mismo movimiento del ojo, sin tener que buscar en una esquina. El titular tambien cambia de naturaleza - abre con un verbo en imperativo en vez de nombrar el deseo como sustantivo - lo que convierte la promesa en instruccion. Y el tercer beneficio se corre de energia a confianza, con lo que la ultima linea de la columna deja de ser fisica y pasa a ser de identidad.",
+  "fondo": {
+    "tipo": "escena_interior_clara_desenfocada",
+    "base": "interior luminoso con espejo y planta, muy desenfocado",
+    "capa": "blanco roto plano hacia la derecha para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta (brochazo, banda de oferta, iconos, CTA) mas {{PALETA_OSCURA}} negro (titular) mas blanco (fondo) mas los tonos de piel de la modelo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una manuscrita de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Manuscrita"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "firma_manuscrita": {
+      "posicion": "superior_izquierda, SOBRE la foto de la modelo",
+      "texto": "{{FRASE_MANUSCRITA}}",
+      "estilo": "manuscrita {{PALETA_OSCURA}} con corazon {{PALETA_ACENTO}}",
+      "lineas": 3,
+      "restriccion_palabras": "4-6 palabras",
+      "formato_obligatorio": "verbo en imperativo mas el objeto del deseo mas un adverbio de constancia"
+    },
+    "titular_imperativo": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{VERBO_IMPERATIVO}} TUS",
+      "linea_2": "{{OBJETO_DEL_DESEO}}",
+      "estilo_l1": "Bold uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase {{PALETA_OSCURA}} al doble de altura",
+      "restriccion_palabras_total": "3 palabras",
+      "regla_critica": "abre con VERBO en imperativo y no con el deseo en sustantivo: la promesa se lee como instruccion"
+    },
+    "brochazo_metodo": {
+      "posicion": "bajo el titular",
+      "contenedor": "brochazo irregular {{PALETA_ACENTO}} pintado a mano",
+      "texto": "{{METODO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "banda_oferta": {
+      "posicion": "bajo el brochazo, ancho de la columna",
+      "contenedor": "banda {{PALETA_ACENTO}} solida",
+      "texto": "{{OFERTA_MECANICA}} {{PAIS}} · {{CONDICION_PAGO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "5-6 palabras",
+      "regla_critica": "mecanica, pais y condicion de pago van juntos y pegados al titular: se leen en el mismo movimiento del ojo"
+    },
+    "bajada_alcance": {
+      "posicion": "bajo la banda",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "texto": "{{VERBO_APOYO}} {{ZONA_1}}, {{ZONA_2}} y {{ZONA_3}} con constancia",
+      "estilo": "Regular {{PALETA_OSCURA}} chico",
+      "restriccion_palabras": "7-9 palabras",
+      "regla": "enumera las tres zonas del cuerpo y cierra con la palabra constancia"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo de borde fino mas texto de 2 lineas con la PALABRA CLAVE en {{PALETA_ACENTO}}",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_item_3": "el ultimo es de IDENTIDAD y no de energia: cierra la columna en confianza"
+    },
+    "modelo_deseo": {
+      "posicion": "izquierda, sangrada de arriba abajo",
+      "escala": "45% del ancho",
+      "composicion": "{{MODELO}} de espaldas tres cuartos con la zona objetivo hacia camara, sosteniendo el envase a la altura de la cintura y mirando a camara",
+      "vestuario": "prenda de tono neutro pegada al cuerpo"
+    },
+    "fila_sellos": {
+      "posicion": "centro_bajo, ancho de la columna",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal de circulos con borde {{PALETA_ACENTO}}",
+      "formato_item": "icono line-art en circulo mas label Bold uppercase de 2 lineas muy chico",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "en la version vertical los sellos pasan de columna a fila para liberar alto"
+    },
+    "barra_social": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "pildora blanca precedida por tres avatares circulares superpuestos",
+      "texto": "+{{N_CLIENTES}} {{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}} EN {{PAIS}}",
+      "estilo": "Bold uppercase con el numero en {{PALETA_ACENTO}}, muy chico, con corazon"
+    },
+    "cta_boton": {
+      "posicion": "inferior_derecha, ancho de la columna",
+      "contenedor": "boton redondeado {{PALETA_ACENTO}} solido con flecha a la derecha",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "modelo_deseo",
+    "titular_imperativo",
+    "brochazo_metodo",
+    "banda_oferta",
+    "columna_beneficios",
+    "cta_boton",
+    "fila_sellos",
+    "barra_social",
+    "bajada_alcance",
+    "firma_manuscrita"
+  ],
+  "reglas_duras": [
+    "La oferta viaja en banda de color solida pegada al titular",
+    "Mecanica, pais y condicion de pago van en la misma banda",
+    "El titular abre con un verbo en imperativo",
+    "El tercer beneficio es de identidad y no de energia",
+    "Los sellos van en fila horizontal de cuatro circulos",
+    "La modelo sostiene el envase en la misma foto en que muestra el resultado",
+    "El numero de prueba social se mantiene igual en todas las variantes de la familia"
+  ],
+  "variables_requeridas": [
+    "FRASE_MANUSCRITA",
+    "VERBO_IMPERATIVO",
+    "OBJETO_DEL_DESEO",
+    "METODO",
+    "OFERTA_MECANICA",
+    "PAIS",
+    "CONDICION_PAGO",
+    "VERBO_APOYO",
+    "ZONA_1",
+    "ZONA_2",
+    "ZONA_3",
+    "BENEFICIOS[3]",
+    "MODELO",
+    "SELLOS[4]",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "CTA"
+  ],
+  "cuando_usar": [
+    "formato vertical, donde no hay ancho para una card de oferta lateral",
+    "cuando la mecanica de oferta es corta y merece leerse junto al titular",
+    "productos de deseo con tres zonas del cuerpo nombrables",
+    "MOFU y BOFU sobre publico que ya conoce la categoria"
+  ],
+  "cuando_no_usar": [
+    "cuando la oferta es compleja y no cabe en una banda de una linea",
+    "cuando hace falta mostrar el pack: en esta variante el pack shot desaparece",
+    "publico frio de nivel 1"
+  ],
+  "sellos_y_claims_observados": [
+    "Manuscrita Potencia tu figura con constancia.",
+    "Titular MOLDEA TUS CURVAS sobre brochazo DE FORMA NATURAL.",
+    "Banda 2X1 GUATEMALA · PAGA AL RECIBIR.",
+    "Bajada Apoya gluteos, caderas y cintura con constancia.",
+    "Beneficios: Apoya gluteos y caderas / Ayuda a definir tu cintura / Mas confianza y bienestar.",
+    "Sellos 100% NATURAL / A BASE DE PLANTAS / GARANTIA DE CALIDAD / PAGO CONTRA ENTREGA.",
+    "Marca SUPPLEMENT FACTORY - WOMAN CURVES(R).",
+    "Prueba social +4,253 CLIENTAS SATISFECHAS EN GUATEMALA con tres avatares.",
+    "CTA PIDELO HOY con flecha."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

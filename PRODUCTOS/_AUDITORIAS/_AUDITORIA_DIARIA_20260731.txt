@@ -1,0 +1,188 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA · 2026-07-31 · ETAPA-7 (informe) + ETAPA-8 (plan de escalado)
+Disparada por entrega del operador: 3 exports LucidSales (29, 30 y 31-jul)
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 7 de 7 días con data (24→30 jul) · huecos: ninguno
+  · 29-jul → BASE  · 104 filas · 11 ventas · $81.54 · Q2,353
+  · 30-jul → BASE  ·  97 filas ·  8 ventas · $89.64 · Q1,788
+  · 31-jul → CONTROL PARCIAL · 101 filas · export cortado 19:45, día NO cerrado.
+             NO suma al P&L. Se cierra mañana con el re-export completo.
+  · JOIN con _DIM_CONJUNTOS: 100% (0 filas sin dimensión)
+  · CP1 (1346891653335162) normalizada COP÷4050 los 3 días.
+  · Ventas del 29-30 aún NO maduraron (COD ~3 días) → el −Q117 del 30 es PISO.
+
+───────────────────────────────────────────────────────────────────────────
+P&L DEL PORTAFOLIO — 17 al 30 jul (14 días, BASE)
+───────────────────────────────────────────────────────────────────────────
+GANANCIA NETA Q2,302 · 117 ventas · pauta Q6,211 · ingreso Q26,550 · ROAS 4.27
+CPA global Q53.1  ·  promedio Q164/día
+
+⚠️ TENDENCIA A LA BAJA: Q188/día (al 28-jul) → Q164/día (al 30-jul).
+   No es volumen (8.2 → 8.4 ventas/día). Es PRECIO: el CPA subió Q50.1 → Q53.1.
+   Se está pagando más caro por la misma venta. Toda la degradación cabe en
+   un solo conjunto (ver TINNIDROP abajo).
+
+| Producto  | Ventas | Pauta Q | CPA Q | BE Q | Estado      | Ganancia Q |
+|-----------|--------|---------|-------|------|-------------|------------|
+| TINNIDROP |     71 |    3664 |  51.6 | 71.6 | 🟡 rentable |      +1417 |
+| NUSAVA    |     19 |    1021 |  53.7 | 76.9 | 🟡 rentable |       +439 |
+| VARICOSE  |      7 |     269 |  38.4 | 83.0 | 🔴 APAGADO  |       +312 |
+| CLEARSTEM |     20 |    1257 |  62.8 | 69.6 | 🟡 justo    |       +134 |
+
+═══════════════════════════════════════════════════════════════════════════
+1) TINNIDROP · GTR0 madre + GTR1/GTR7/CP1 réplicas · FASE 3 multicuenta
+═══════════════════════════════════════════════════════════════════════════
+
+RANKING POR ÁNGULO (agregado por angulo_key, 6 días 25-30 jul · BE Q71.56)
+
+| angulo_key           | Fmt    | V  | Pauta Q | CPA Q | %PD   | conv/clic | Estado |
+|----------------------|--------|----|---------|-------|-------|-----------|--------|
+| ACCESIBILIDAD_MEDICO | VIDEO  |  8 |     195 |  24.4 |  272% |     11.7% | 🟢 GANADOR |
+| DETERIORO_COGNITIVO  | IMAGEN |  3 |      97 |  32.3 |  136% |      2.1% | 🟢 |
+| PERDIDA_AUDITIVA     | VIDEO  |  9 |     432 |  48.0 |  604% |      6.5% | 🟢 |
+| NOCHES_SIN_DORMIR    | IMAGEN |  1 |      59 |  59.0 |   82% |      4.8% | 🟡 sub-testeado |
+| ME_DIJERON_NO_CURA   | IMAGEN |  7 |     467 |  66.7 |  653% |      7.3% | 🟡 al filo |
+| DETERIORO_COGNITIVO  | VIDEO  | 16 |    1158 |  72.4 | 1618% |      5.0% | 🔴 sobre BE |
+| ACCESIBILIDAD_MEDICO | IMAGEN |  1 |      91 |  91.0 |  127% |      4.1% | 🔴 |
+| PERDIDA_AUDITIVA     | IMAGEN |  1 |     190 | 190.0 |  266% |      6.4% | 🔴 |
+| TOTAL                |        | 46 |    2689 |  58.5 |       |           | +Q604 |
+
+🔥 HALLAZGO PRINCIPAL — SATURACIÓN POR CUENTA (PASO 4C)
+DETERIORO_COGNITIVO es el mismo video, el mismo Post ID, en 4 cuentas.
+El resultado NO es el mismo:
+
+| Cuenta | V | Pauta Q | CPA Q  | vs BE  | Lectura              |
+|--------|---|---------|--------|--------|----------------------|
+| GTR0   | 3 |      97 |   32.3 | −55%   | fresca               |
+| GTR1   | 9 |     345 |   38.3 | −46%   | la mejor por volumen |
+| CP1    | 1 |      66 |   66.0 | justo  | vigilar              |
+| GTR7   | 6 |     747 |  124.5 | +74% 🔴 | **SATURADA**         |
+
+GTR7 absorbió Q747 — más que las otras tres juntas — para traer 6 ventas.
+Es el 28% de toda la pauta de TINNIDROP y es lo que empujó el CPA del producto
+de Q46.6 a Q51.6 y hundió el 30-jul a −Q117.
+⚠️ NO es un problema de ángulo ni de creativo: el mismo activo rinde 3× mejor
+   en GTR1. Es la cuenta. Doctrina: el volumen va a las frescas, no a la madre.
+
+CONJUNTO A CONJUNTO (los que mueven la aguja, 25-30 jul)
+🟢 ESCALAR   GTR1 · DETERIORO COGNITIVO - video ......... 5v · Q66  · CPA Q13 ⭐⭐
+🟢 ESCALAR   GTR0 · Pérdida auditiva irreversible ....... 3v · Q57  · CPA Q19 ⭐
+🟢 ESCALAR   GTR7 · Accesibilidad económica - Copia 2 ... 3v · Q66  · CPA Q22 ⭐
+🟢 ESCALAR   CP1  · Accesibilidad económica - Copia 2 ... 3v · Q71  · CPA Q24 ⭐
+🟢 MANTENER  GTR0 · "YA NO ME ACUERDO" (Familia B) ...... 3v · Q97  · CPA Q32
+🟢 MANTENER  GTR0 · Accesibilidad económica - Copia 2 ... 2v · Q59  · CPA Q30
+🟡 VIGILAR   GTR1 · DETERIORO COGNITIVO - video - Copia . 4v · Q279 · CPA Q70
+🔴 BAJAR     GTR7 · DETERIORO COGNITIVO - video - Copia . 6v · Q681 · CPA Q114 · 952% PD
+🔴 BAJAR     GTR0 · ME DIJERON QUE NO TIENE CURA - Copia  2v · Q241 · CPA Q120 · 337% PD
+🔴 APAGAR    GTR0 · MI ESPOSA YA SE CANSÓ DE REPETIRME .. 0v · Q98  · 137% PD cumplido
+
+Nota de renovación: los 5 hooks nuevos de TINNIDROP_RENOVACION (lanzados 25-jul)
+llevan 6 días. Balance: "YA NO ME ACUERDO" Q32 🟢 · "EL OTORRINO" Q48 🟢 ·
+"CADA MES" Q92 🔴 · "GASTÉ MÁS DE Q2,000" Q91 🔴 · "MI ESPOSA" 0 ventas 🔴.
+2 de 5 funcionan. Es una tasa normal de renovación — se quedan los 2, se cortan los 3.
+
+───────────────────── PLAN ETAPA-8 · TINNIDROP ─────────────────────
+1. APAGAR: GTR0 · "MI ESPOSA YA SE CANSÓ DE REPETIRME" (137% PD, 0 ventas → matar-por-ventas).
+2. BAJAR A PISO ($1.59) el conjunto GTR7 · DETERIORO COGNITIVO - video - Copia.
+   No apagarlo: vendió 6 veces, pero a Q114. Sacarle el presupuesto de escala.
+3. MOVER ese presupuesto a GTR1 · DETERIORO COGNITIVO - video (CPA Q13, corriendo
+   con solo Q66 en 6 días = está ASFIXIADO). Surfing +20%/día sobre este.
+4. ESCALAR ACCESIBILIDAD_MEDICO — es el mejor ángulo del producto (Q24.4) y solo
+   se llevó Q195 de Q2,689 (7% de la pauta). Subir +20%/día en GTR7, CP1 y GTR0.
+   Está infra-financiado: es plata sobre la mesa, no un ángulo por descubrir.
+5. CORTAR los 3 hooks de renovación que no prendieron (CADA MES · GASTÉ Q2,000 ·
+   MI ESPOSA) y dejar corriendo YA NO ME ACUERDO + EL OTORRINO.
+6. CREATIVOS — por qué gana ACCESIBILIDAD_MEDICO: es un ángulo de PÉRDIDA
+   (el médico te cobró y no te resolvió) con prueba de precio, no de mecanismo.
+   Confirma el aprendizaje vigente: en TINNIDROP venden resignación/pérdida, no
+   educación. Brief para ETAPA-4 — 3 conceptos nuevos del MISMO ángulo:
+     · "LO QUE ME COBRÓ EL ESPECIALISTA vs LO QUE ME COSTÓ ESTO" (BOFU · comparación
+       de precio en texto, sin cifras clínicas · imagen · avatar 55+ con audífono descartado)
+     · "3 CONSULTAS Y NADIE ME DIJO ESTO" (MOFU · testimonio a cámara 20s · video)
+     · "NO NECESITÁS OTRA CITA" (TOFU · hook de alivio, no de miedo · imagen)
+   Compliance Andrómeda: texto <20% del área, sin "cura/elimina", sin antes/después
+   bilateral, sin % clínicos, sin sellos FDA.
+
+═══════════════════════════════════════════════════════════════════════════
+2) CLEARSTEM · GTR13 (MCP OFF — solo LucidSales) · TESTEO
+═══════════════════════════════════════════════════════════════════════════
+✅ SE RECUPERÓ: de −Q65 acumulado (28-jul) a +Q134. Vendió los 3 días seguidos
+   (29: 4 ventas · 30: 3 · 31 parcial: 3). Ya no es el lastre del portafolio.
+
+| angulo_key               | Fmt    | V | Pauta Q | CPA Q | %PD  | conv/clic |
+|--------------------------|--------|---|---------|-------|------|-----------|
+| ANTI_FALSIFICACION       | VIDEO  | 5 |     261 |  52.2 | 375% |     10.3% | 🟢
+| RESISTENCIA_INSULINA_SOP | IMAGEN | 3 |     252 |  84.0 | 362% |     14.6% | 🟡
+| MEDICOS_FALLARON         | VIDEO  | 2 |     248 | 124.0 | 357% |     10.4% | 🔴
+| TESTIMONIO_RADICAL       | VIDEO  | 0 |      67 |   inf |  96% |      5.2% | 🔴
+
+⚠️ CONFUSORES AÚN SIN AISLAR (declarados en _EVENTOS.csv, 10-jul): bot nuevo +
+   música automática de Meta en los ads-imagen. No atribuir resultados al ángulo
+   sin aislarlos. GTR13 sigue sin MCP → no hay lado-ads, solo LucidSales.
+
+───────────────────── PLAN ETAPA-8 · CLEARSTEM ─────────────────────
+1. APAGAR: TESTIMONIO_RADICAL (conv/clic 5.2% << 35%, 0 ventas, PD casi cumplido
+   → matar-por-conversación, el criterio que sí corta rápido).
+2. RENOVAR CREATIVO, no apagar: MEDICOS_FALLARON (Q124/venta). Ya vendió 2 veces
+   y tiene conv/clic sano (10.4%) → el ángulo comunica, el creativo se gastó.
+3. MANTENER y observar RESISTENCIA_INSULINA_SOP: el conjunto sin "- Copia" dio
+   CPA Q62 con 18.6% de conversación (la más alta del producto) y el 31 parcial
+   ya trae 2 ventas más. Es el candidato a ganador si sostiene 2 días.
+4. NO escalar todavía: producto en TESTEO, sin MCP y con 2 confusores vivos.
+   Escalado horizontal solo cuando haya CPA semanal limpio.
+
+═══════════════════════════════════════════════════════════════════════════
+3) NUSAVA B12 · GTR7 · ESCALADO ARDOR
+═══════════════════════════════════════════════════════════════════════════
+| Conjunto             | V | Pauta Q | CPA Q | %PD  | conv/clic |
+|----------------------|---|---------|-------|------|-----------|
+| MA6-OFERTA - Copia   | 7 |     194 |  28.0 | 252% |     11.4% | 🟢 GANADOR
+| MA7-ARDORVIDEO       | 1 |      60 |  60.0 |  78% |     15.5% | 🟡
+| ARDOR_NUSAVAB12_TEST | 0 |      60 |   inf |  78% |     17.3% | 🟡 sub-testeado
+| MA6-OFERTA           | 0 |      61 |   inf |  79% |      6.4% | 🔴
+| MA4-DEPIE            | 0 |      60 |   inf |  78% |      6.8% | 🔴
+
+📌 CONFIRMA EL APRENDIZAJE VIGENTE: la conversación no corona. ARDOR_NUSAVAB12_TEST
+   tiene la conversación MÁS ALTA del producto (17.3%) y CERO ventas; MA6-OFERTA-Copia
+   tiene 11.4% y se lleva las 7 ventas. Igual que ANIMO en su día (68% conv, 0 ventas).
+
+───────────────────── PLAN ETAPA-8 · NUSAVA ─────────────────────
+1. APAGAR: MA4-DEPIE y MA6-OFERTA (el sin "- Copia") — conv/clic 6-7% y 0 ventas
+   con ~79% del PD → matar-por-conversación.
+2. SURFING +20%/día sobre MA6-OFERTA - Copia (Q28 vs BE Q76.9 = 64% de colchón).
+   Es el único conjunto sano del producto y solo consumió Q194 en 6 días.
+3. DEJAR CORRER hasta su PD: MA7-ARDORVIDEO y ARDOR_NUSAVAB12_TEST (78% PD).
+   Llegan al PD en ~2 días → ahí se decide con ventana completa. No matar hoy.
+
+═══════════════════════════════════════════════════════════════════════════
+4) VARICOSE · GTR7 — 🔴 SIGUE APAGADO (3ª auditoría consecutiva pidiéndolo)
+═══════════════════════════════════════════════════════════════════════════
+CERO filas en LucidSales el 29, 30 y 31-jul. Cero gasto. Lleva ~13 días parado.
+Tiene el MEJOR CPA del portafolio: Q38.4 contra un Break-Even de Q83 — vende a
+menos de la mitad de lo que puede pagar. GANADOR CONFIRMADO = VERGÜENZA-PIERNAS.
+La campaña FASE 2 (VARICOSE_ESCALA_VERGUENZA, 120247374332930784) está creada
+y PAUSED desde el 10-jul.
+
+→ Esto no es un problema de rendimiento ni de análisis. Es ejecución pendiente.
+   Es la palanca de crecimiento #1 del portafolio y no cuesta trabajo creativo:
+   ya está todo construido (bot de VERGÜENZA, 6 copies, 12 anuncios, imágenes).
+
+═══════════════════════════════════════════════════════════════════════════
+QUÉ HACER MAÑANA (01-ago) — en orden de impacto
+═══════════════════════════════════════════════════════════════════════════
+1. REACTIVAR VARICOSE (campaña ESCALA VERGÜENZA). Mejor CPA del portafolio,
+   apagado 13 días, todo el paquete listo. Es la única acción que AGREGA ventas.
+2. BAJAR a piso GTR7 · DETERIORO COGNITIVO - video - Copia y mover ese presupuesto
+   a GTR1 · DETERIORO COGNITIVO - video (Q13/venta) y a ACCESIBILIDAD_MEDICO.
+   Solo esto vale ≈Q86/día de ahorro sin perder una sola venta.
+3. Apagar los 4 conjuntos muertos: TINNIDROP MI ESPOSA · CLEARSTEM TESTIMONIO
+   RADICAL · NUSAVA MA4-DEPIE y MA6-OFERTA (sin Copia). ≈Q285 de sangrado.
+4. Re-exportar el 31-jul COMPLETO esta noche para cerrar el día (hoy entró parcial).
+
+ARCHIVOS ACTUALIZADOS EN ESTE RUN:
+  ✅ _FACT_VENTAS.csv  (+302 filas: 104 BASE 29 · 97 BASE 30 · 101 CONTROL 31)
+  ✅ _BITACORA_DATA.txt (filas 29, 30 y 31-parcial)
+  ✅ _GANANCIAS.txt (P&L, historial diario, bloque de saturación por cuenta)
+  ✅ _DASHBOARD.html (regenerado: 117 ventas · Q2,302 · 0 filas sin dimensión)
+═══════════════════════════════════════════════════════════════════════════

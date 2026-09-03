@@ -1,0 +1,8 @@
+ventana_ini,ventana_fin,dias,cuenta_id,cuenta_alias,spend_trackeado_usd,spend_real_usd,fuente,moneda_origen,notas
+2026-08-01,2026-08-15,15,598687956219141,GTR7,316.68,333.16,MCP,USD,amount_spent nivel cuenta
+2026-08-01,2026-08-15,15,1665221077707961,GTR0,38.23,70.75,MCP,USD,hueco concentrado en TINNIDROP_RENOVACION (tanda 27-jul sin tracking)
+2026-08-01,2026-08-15,15,824783947334627,GTR1,125.08,136.37,MCP,USD,amount_spent nivel cuenta
+2026-08-01,2026-08-15,15,581490137794343,GTR3,0.0,0.0,MCP,USD,sin gasto
+2026-08-01,2026-08-15,15,1680252426660775,GTR2,0.0,0.0,FACTURACION,USD,"extracto de facturacion vacio, saldo 0.00 - verificado 15-ago"
+2026-08-01,2026-08-15,15,916746367261028,GTR13,213.01,264.39,FACTURACION,USD,"sin MCP: cobrado 238.41 + saldo 25.98, margen +-10 por arrastre de julio. Pedir export Ads Manager nivel conjunto."
+2026-08-01,2026-08-15,15,1346891653335162,CP1,51.7,189.27,ADS_MANAGER,COP,"COP 162,993 trackeado vs COP 596,678 real, ambos /3152.5 (tasa REAL del banco, APR-028, NO el 4050 viejo). 7 conjuntos - Copia ciegos."

@@ -1,0 +1,149 @@
+{
+  "id": "D_transformacion_temporal",
+  "version": "1.0",
+  "concepto_key": "C8_PROGRESION",
+  "variante": "progresion",
+  "referencia_visual": "C8_PROGRESION/progresion__Tiendas-KetsalStore__29_1304415972751500.jpg",
+  "formato": "1:1",
+  "densidad": "alta",
+  "espacio_libre_objetivo": "25%",
+  "aplicabilidad": {
+    "requiere": "problema visualizable anatomicamente en estados progresivos",
+    "no_usar_si": "el problema no se puede ilustrar (zumbido, insomnio, animo, memoria, concentracion)",
+    "modo_degradado": "Si se corre igual sobre un problema invisible, el timeline se rotula por MOMENTO DE USO (PRIMERA SEMANA / USO CONTINUO / DIA A DIA) y los paneles muestran la ESCENA del avatar, no el organo. Esto debilita el concepto: registrar el brazo como DEGRADADO para que una derrota no se lea como 'D no funciona'."
+  },
+  "fondo": {
+    "tipo": "degradado_oscuro",
+    "base": "{{PALETA_OSCURA}} profundo a casi negro",
+    "textura": "particulas/bokeh muy sutil",
+    "regla_paleta": "cuando el empaque es blanco o neutro, la paleta se deriva del INGREDIENTE ACTIVO o del ORGANO objetivo, no del empaque"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "color_texto_principal": "blanco",
+    "color_acento": "dorado"
+  },
+  "zonas": {
+    "timeline_transformacion": {
+      "posicion": "superior, ancho completo",
+      "cantidad_estados": 3,
+      "formato_estado": "circulo numerado + imagen del organo/zona en ese estado + label temporal sobre pildora + descripcion corta debajo",
+      "estados": "{{TIMELINE[3]}}",
+      "estructura_estado": {
+        "numero": "1 | 2 | 3",
+        "imagen": "{{IMAGEN_ESTADO}}",
+        "label": "{{LABEL_TEMPORAL}}",
+        "descripcion": "{{DESC_ESTADO}}"
+      },
+      "restriccion_label": "1-2 palabras (INICIO / SEMANA 4 / SEMANA 8)",
+      "restriccion_descripcion": "4-7 palabras",
+      "separador": "flecha o transicion entre estados",
+      "funcion": "ES EL ELEMENTO DIFERENCIADOR DEL CONCEPTO. Promete cronograma, no solo resultado.",
+      "regla_progresion": "el estado 1 muestra el problema, el 3 muestra el resultado, el 2 muestra progreso intermedio creible",
+      "regla_compliance": "En MODO DEGRADADO la regla_progresion NO aplica: ningun panel muestra 'el problema' ni 'el resultado'. Los tres son momentos de uso. Un antes/despues corporal viola compliance."
+    },
+    "titular": {
+      "posicion": "centro_superior",
+      "contenedor": "banda de brochazo irregular {{PALETA_MEDIA}}",
+      "linea_1": "{{TITULAR}}",
+      "linea_2": "{{SUBTITULAR}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold dorado, 45% del tamano de L1",
+      "restriccion_l1": "4-5 palabras",
+      "restriccion_l2": "5-7 palabras",
+      "funcion_brochazo": "unica textura organica de la pieza, rompe la rigidez del layout"
+    },
+    "badge_garantia": {
+      "posicion": "izquierda_media",
+      "forma": "circular con borde dorado doble",
+      "linea_1": "GARANTIA",
+      "linea_2": "{{DIAS_GARANTIA}}",
+      "linea_3": "DIAS"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "35% del frame",
+      "fuente": "IMAGEN_2",
+      "iluminacion": "frontal suave con reflejo lateral"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "derecha_superior, al lado del producto",
+      "texto": "{{PARRAFO}}",
+      "estilo": "Regular blanco, 2-3 lineas, con 1-2 terminos clave en Bold",
+      "restriccion_palabras": "20-28 palabras",
+      "funcion": "unico bloque de prosa del sistema. Sirve para colar claims que no caben en bullets."
+    },
+    "pildora_dosis": {
+      "posicion": "derecha, sobre la lista de beneficios",
+      "contenedor": "pildora dorada solida",
+      "texto": "{{INGREDIENTE}} {{DOSIS}} - {{BENEFICIO_RESUMEN}}",
+      "estilo": "Bold, texto oscuro sobre dorado",
+      "funcion": "header de la lista de beneficios"
+    },
+    "lista_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 5,
+      "formato_item": "foto CIRCULAR real (organo, celula, vaso) + TITULO BOLD + subtitulo regular, todo dentro de contenedor con borde fino redondeado",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_subtitulo": "5-8 palabras",
+      "regla_icono": "fotos reales circulares, NUNCA line-art. Esto le da el tono cientifico.",
+      "regla_item_5": "el ultimo suele ser el mecanismo tecnico (antioxidante, absorcion, etc.)"
+    },
+    "bloque_escasez": {
+      "posicion": "inferior_izquierda",
+      "icono": "reloj",
+      "linea_1": "{{ESCASEZ_L1}}",
+      "linea_2": "{{ESCASEZ_L2}}",
+      "estilo": "Bold uppercase blanco sobre fondo oscuro",
+      "default_l1": "QUEDAN POCAS UNIDADES",
+      "default_l2": "Alta demanda esta semana"
+    },
+    "bloque_precios": {
+      "posicion": "inferior_centro",
+      "tiers": 3,
+      "formato_tier": "card con borde dorado + cantidad arriba + precio Black gigante + etiqueta de valor debajo",
+      "tier_1": "{{CANT_1}} - {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} - {{MONEDA}}{{PRECIO_2}} - MEJOR OFERTA",
+      "tier_3": "{{CANT_3}} - {{MONEDA}}{{PRECIO_3}} - MAYOR AHORRO",
+      "funcion": "anclaje de 3 puntos, empuja al tier medio-alto",
+      "regla": "el tier 2 lleva la etiqueta mas atractiva, no el 3"
+    },
+    "cta_emocional": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card dorada solida",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_URGENCIA}}",
+      "estilo_l2": "Black/900, texto oscuro sobre dorado",
+      "funcion": "segundo cierre de la pieza (el primero es la escasez)"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono + texto bold uppercase",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye bandera de {{PAIS}}"
+    },
+    "props_botanicos": {
+      "posicion": "borde inferior_izquierdo",
+      "contenido": "{{BOTANICOS[]}}",
+      "tratamiento": "coral/rosa translucido, parcialmente fuera de foco"
+    }
+  },
+  "reglas_duras": [
+    "El timeline NO es opcional: sin timeline no es este concepto",
+    "Los 3 estados deben ser visualmente distinguibles entre si",
+    "El estado 2 debe ser creible: progreso parcial, no resultado total",
+    "Los iconos de beneficio son fotos circulares reales, nunca line-art",
+    "El brochazo es la unica textura organica: no agregar mas",
+    "Siempre 3 tiers de precio, nunca 1 ni 2 — EXCEPTO en test de concepto, donde el bloque de precio se fija igual en todos los brazos",
+    "La pieza tiene DOS cierres: escasez + CTA emocional",
+    "Si el empaque es blanco/neutro, la paleta viene del ingrediente activo o el organo objetivo",
+    "En MODO DEGRADADO: ningun panel del timeline muestra el problema ni el resultado corporal"
+  ]
+}

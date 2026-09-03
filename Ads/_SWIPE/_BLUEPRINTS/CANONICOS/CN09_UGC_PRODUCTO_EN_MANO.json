@@ -1,0 +1,126 @@
+{
+  "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+  "schema_version": "canonico-1.0",
+  "nombre": "UGC con el producto en la mano",
+  "dispositivo_canonico": "LA MANO REAL SOSTIENE EL PRODUCTO — la caja recien abierta con el pack adentro, el frasco a la altura del pecho en un selfie. Prueba dos cosas de una: que el producto EXISTE y que YA LLEGO. El texto entra como caja de subtitulo de video o nota manuscrita, nunca como titular de cartel.",
+  "cuando_elegirlo": "MOFU: la objecion viva es 'esto no llega' o 'no es real'. El unboxing responde la logistica sin nombrarla.",
+  "ejes_de_variacion": [
+    "una mano / dos manos / selfie con rostro",
+    "estado: caja cerrada, caja abierta con el pack visible, frasco suelto",
+    "marcador de autenticidad: brochazo, nota manuscrita, caja de subtitulo"
+  ],
+  "n_miembros": 3,
+  "ficha_referencia": "F014",
+  "score_referencia": 107,
+  "perfil": {
+    "concepto_key": {
+      "C5_PRUEBA": 3
+    },
+    "rol_embudo": {
+      "MOFU": 3
+    },
+    "estetica": {
+      "organico_ugc": 3
+    },
+    "formato": {
+      "3:4": 2,
+      "1:1": 1
+    },
+    "densidad": {
+      "media": 2,
+      "baja": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "SUJETO",
+    "ESTADO_DEL_PAQUETE",
+    "ANGULO",
+    "LUZ",
+    "TEXTO_SOBREIMPRESO",
+    "MARCADOR_AUTENTICIDAD"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "BENEFICIOS[4]",
+      "CANT",
+      "ESCASEZ_L1",
+      "ESCASEZ_L2",
+      "HOOK_L1",
+      "MONEDA",
+      "OFERTA_LABEL",
+      "PRECIO"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [
+    "La cantidad de unidades visibles coincide con la del pack ofertado"
+  ],
+  "reglas_duras_referencia": [
+    "La mano es real, sin rostro, y entra por el borde del frame",
+    "La luz es natural de ventana: la sombra suave es lo que hace creible la escena",
+    "El relleno de papel, los pliegues del carton y la sombra real se conservan",
+    "La cantidad de unidades visibles coincide con la del pack ofertado",
+    "Un solo callout sobre la foto",
+    "El producto nunca se recorta ni se hace flotar: eso lo devuelve a cartel"
+  ],
+  "cuando_usar": [
+    "cierre por contraentrega, donde la objecion es si el pedido llega",
+    "packs de 2 o 3 unidades: la caja abierta muestra el volumen real",
+    "cuando se tiene o se puede tomar una foto real del pedido",
+    "publico que ya vio el producto en otro creativo y duda de que sea real",
+    "cuando se quiere subir percepcion de marca sin subir el precio",
+    "packs de regalo o de temporada",
+    "publico femenino que valora el detalle del empaque",
+    "cuando ya se probo el producto en otro creativo y toca elevar el tono"
+  ],
+  "cuando_no_usar": [
+    "publico frio de nivel 1 o 2: la caja no significa nada si no sabe que problema resuelve",
+    "cuando solo hay renders del producto: un unboxing renderizado se nota y destruye la unica ventaja del formato",
+    "venta de una sola unidad, donde la caja se ve vacia",
+    "ofertas agresivas de precio: el tono calido contradice la urgencia",
+    "dolor agudo",
+    "cuando no se puede producir la tarjeta ni el empaque cuidado: prometerlo y no cumplirlo genera devoluciones"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F014",
+      "score": 107,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "3:4",
+      "rol_embudo": "MOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA MANO SOSTENIENDO LA CAJA ABIERTA CON EL PACK ADENTRO"
+    },
+    {
+      "ficha_id": "F015",
+      "score": 107,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "3:4",
+      "rol_embudo": "MOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LAS DOS MANOS SOSTENIENDO LA CAJA, CON BROCHAZO EN EL TITULAR Y NOTA MANUSCRITA"
+    },
+    {
+      "ficha_id": "F078",
+      "score": 33,
+      "anunciante": "Vida Natural",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "EL SELFIE CON EL PRODUCTO EN LA MANO Y DOS CAJAS DE SUBTITULO, UNA ARRIBA Y OTRA ABAJO"
+    }
+  ]
+}

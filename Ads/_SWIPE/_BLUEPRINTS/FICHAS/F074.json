@@ -1,0 +1,194 @@
+{
+  "ficha_id": "F074",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/DF_SHOP_GT/01_1608793880756154.jpg",
+    "anunciante": "DF SHOP GT",
+    "ad_archive_id": "1608793880756154",
+    "dias_activo": 8,
+    "replicas": 1,
+    "score": 33,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "24%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL NUMERO DE TELEFONO EN LA BARRA DEL PIE, AL MISMO PESO QUE LAS GARANTIAS. La pieza cierra con una fila donde el telefono de contacto ocupa el primer lugar, con icono de mensajeria, seguido de las condiciones de pago y de envio. No hay boton ni CTA verbal: el numero ES el llamado a la accion.",
+  "lectura_estrategica": "Layout de revendedor. El producto es de una marca que otros tambien venden, asi que la pieza no compite por el producto sino por el contacto: de ahi el telefono escrito completo al pie y el precio con la presentacion pegada al lado. El titular pone la palabra generica del formato antes del nombre — gotas mas la marca — porque el comprador busca por formato y no por marca, y la bajada usa la formula de alivio natural PARA la zona, que fija el organo objetivo sin nombrar una condicion. Los tres beneficios llevan par titulo/subtitulo y los tres sellos del pie son de seguridad de uso.",
+  "fondo": {
+    "tipo": "foto_de_ingrediente_desenfocada",
+    "base": "macrofotografia del ingrediente estrella (panal, grano, hoja) desenfocada y aclarada",
+    "elemento_inferior": "superficie de piedra o madera donde apoya el producto, con el ingrediente en bruto al pie",
+    "regla": "el ingrediente ocupa el fondo entero: la pieza no necesita explicar de que esta hecha"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} amarillo o color del empaque (banda del titular, precio, iconos) mas negro (titular, cards y barra del pie) mas blanco (texto) mas los tonos calidos del fondo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada con textura de desgaste en el titular",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular_formato": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{FORMATO_GENERICO}}",
+      "linea_2": "{{MARCA}}",
+      "estilo_l1": "Black/900 uppercase negro con textura de desgaste",
+      "estilo_l2": "Black/900 uppercase blanco con contorno negro",
+      "restriccion_palabras_total": "2 palabras",
+      "regla_critica": "la palabra generica del FORMATO va antes que la marca: el comprador de esta categoria busca por formato, no por nombre"
+    },
+    "bajada_zona": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda negra solida",
+      "texto": "{{TIPO_ALIVIO}} PARA {{ZONA_OBJETIVO_ACENTO}}",
+      "estilo": "Bold uppercase blanco con la zona en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-5 palabras",
+      "regla": "fija el organo objetivo sin nombrar una condicion"
+    },
+    "badge_formula": {
+      "posicion": "superior_derecha",
+      "contenedor": "banderola o cinta con el icono del ingrediente arriba",
+      "texto": "{{ETIQUETA_FORMULA}}",
+      "estilo": "Bold uppercase",
+      "restriccion_palabras": "2 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde mas TITULO Bold uppercase mas subtitulo Regular de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "6-9 palabras"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "caja de pie mas envase delante sobre superficie natural, con el ingrediente en bruto al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "sello_ingredientes": {
+      "posicion": "centro, junto al producto",
+      "forma": "circular con borde punteado y hoja",
+      "texto": "{{CLAIM_ORIGEN_INGREDIENTES}}",
+      "escala": "16% del ancho"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card negra solida",
+      "banda_superior": "{{PREFIJO_PRECIO}}",
+      "estilo_banda": "Bold uppercase blanco chico",
+      "linea_1": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l1": "Black/900 en {{PALETA_ACENTO}}",
+      "linea_2": "{{PRESENTACION}}",
+      "estilo_l2": "Bold blanco al 25% de L1, pegado al precio",
+      "regla": "la presentacion va pegada al precio y no en otra zona: precio y contenido se leen como un solo dato"
+    },
+    "badge_envio": {
+      "posicion": "inferior_centro",
+      "contenedor": "sin card, sobre el fondo, con icono de camion",
+      "linea_1": "{{GARANTIA_ENVIO}}",
+      "linea_2": "{{ALCANCE_ENVIO}}",
+      "estilo_l1": "Black/900 uppercase negro"
+    },
+    "fila_sellos": {
+      "posicion": "inferior_media, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{SELLOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "los tres son de SEGURIDAD DE USO (formula segura, uso diario, apto para el caso sensible)"
+    },
+    "barra_contacto": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda negra solida",
+      "cantidad_items": 3,
+      "item_1": "{{TELEFONO}} con logo circular de la aplicacion de mensajeria",
+      "item_2": "{{GARANTIA_PAGO}}",
+      "item_3": "{{ALCANCE_ENVIO}} con bandera de {{PAIS}}",
+      "estilo": "Black/900 uppercase blanco",
+      "regla_critica": "el numero de telefono va PRIMERO y al mismo peso que las garantias: no hay boton ni CTA verbal, el numero ES el llamado a la accion"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_formato",
+    "bajada_zona",
+    "producto_hero",
+    "card_precio",
+    "columna_beneficios",
+    "badge_envio",
+    "barra_contacto",
+    "sello_ingredientes",
+    "fila_sellos"
+  ],
+  "reglas_duras": [
+    "La palabra generica del formato va antes que la marca",
+    "La presentacion va pegada al precio, en el mismo contenedor",
+    "El numero de telefono va primero en la barra del pie y al mismo peso que las garantias",
+    "Sin boton ni CTA verbal",
+    "Los tres sellos del pie son de seguridad de uso",
+    "El ingrediente estrella ocupa el fondo entero"
+  ],
+  "variables_requeridas": [
+    "FORMATO_GENERICO",
+    "MARCA",
+    "TIPO_ALIVIO",
+    "ZONA_OBJETIVO_ACENTO",
+    "ETIQUETA_FORMULA",
+    "BENEFICIOS[3]",
+    "CLAIM_ORIGEN_INGREDIENTES",
+    "PREFIJO_PRECIO",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "MONEDA",
+    "PRESENTACION",
+    "GARANTIA_ENVIO",
+    "ALCANCE_ENVIO",
+    "SELLOS[3]",
+    "TELEFONO",
+    "GARANTIA_PAGO",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "revendedores de una marca que otros tambien venden",
+    "cuando el cierre es por telefono o mensajeria directa y no por boton",
+    "categorias donde el comprador busca por formato (gotas, spray, crema) antes que por marca",
+    "productos con un ingrediente estrella fotografiable"
+  ],
+  "cuando_no_usar": [
+    "marcas propias con identidad fuerte: el titular deberia ser la marca",
+    "cuando no se puede atender el telefono publicado",
+    "publico frio"
+  ],
+  "sellos_y_claims_observados": [
+    "Banderola FORMULA APICOLA con icono de abeja.",
+    "Sello circular INGREDIENTES DE ORIGEN NATURAL.",
+    "Beneficios: LUBRICA Y ALIVIA (reduce la resequedad, irritacion y sensacion de ardor), FORMULA APICOLA (con miel y extractos naturales que cuidan tus ojos), VISION MAS CLARA (ayuda a mantener tus ojos limpios y comodos cada dia).",
+    "Card POR SOLO Q150.00 con la presentacion 20ML pegada al precio.",
+    "Badge ENVIO GRATIS A TODA GUATEMALA.",
+    "Fila de sellos: FORMULA SEGURA Y DE CALIDAD, USO DIARIO Y CONFIABLE, PARA OJOS SENSIBLES.",
+    "Barra de contacto con el numero 5267-4934, PAGO CONTRA ENTREGA (COMPRA CON CONFIANZA) y ENVIOS A TODA GUATEMALA con bandera."
+  ],
+  "canonico_id": "CN16_EMISOR_COMERCIAL",
+  "blueprint_equivalente": null
+}

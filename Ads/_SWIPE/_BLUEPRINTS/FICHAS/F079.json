@@ -1,0 +1,163 @@
+{
+  "ficha_id": "F079",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Natura_Shoppy_Guatemala/01_2628459784224039.jpg",
+    "anunciante": "Natura Shoppy Guatemala",
+    "ad_archive_id": "2628459784224039",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL DESPIECE DE INGREDIENTES: SEIS FOTOS REALES ORBITANDO EL ENVASE, UNIDAS POR LINEAS PUNTEADAS. Tres a cada lado, cada una con la foto del ingrediente en circulo, su nombre, su dosis cuando la tiene, y una explicacion de dos lineas de que aporta. La formula se abre y se muestra pieza por pieza.",
+  "lectura_estrategica": "Vende la FORMULA, no el resultado: el titular no promete nada, califica los ingredientes. Sirve en nivel 4, donde el comprador ya decidio la categoria y compara composiciones entre marcas, y responde la pregunta que ese comprador se hace de verdad — que trae adentro y para que sirve cada cosa. La estructura orbital con lineas punteadas hace que cada ingrediente quede fisicamente ligado al envase, y el orden importa: el activo principal va primero y arriba a la izquierda, con su dosis, y los coadyuvantes despues. La fila del pie son atributos de pureza, no beneficios.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_props",
+    "color": "blanco o gris muy claro",
+    "elementos": "hojas y frutos del ingrediente principal desenfocados en los bordes superiores",
+    "textura": "ninguna",
+    "regla": "el fondo claro deja que las seis fotos de ingrediente se lean sin competencia"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rojo o color del empaque (titular de acento, bordes de card, nombres de ingrediente) mas blanco (fondo y cards) mas {{PALETA_OSCURA}} (texto) mas los colores propios de los ingredientes"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_centro",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "12% del ancho"
+    },
+    "titular_calidad": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{SUSTANTIVO_COMPOSICION}}",
+      "linea_2": "{{CALIFICATIVO_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "INGREDIENTES mas un calificativo de calidad",
+      "regla_critica": "el titular no promete resultado: califica la COMPOSICION. Responde la pregunta del comprador de nivel 4, que es que trae adentro"
+    },
+    "bajada_formula": {
+      "posicion": "bajo el titular",
+      "texto": "{{FRASE_FORMULA}}",
+      "estilo": "Regular {{PALETA_OSCURA}} uppercase chico",
+      "restriccion_palabras": "6-8 palabras"
+    },
+    "badge_formula": {
+      "posicion": "superior_derecha",
+      "contenedor": "card {{PALETA_ACENTO}} con esquina recortada y hoja",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{SUBCLAIM_CALIDAD}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras por linea"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "envase de pie de frente con sello de garantia sobre la tapa y capsulas sueltas al pie",
+      "fuente": "IMAGEN_2",
+      "regla": "va al centro exacto: es el eje del que cuelgan los seis ingredientes"
+    },
+    "despiece_ingredientes": {
+      "posicion": "tres a la izquierda y tres a la derecha del producto",
+      "cantidad_items": 6,
+      "formato_item": "FOTO REAL del ingrediente en circulo con borde mas NOMBRE en Black/900 mas DOSIS o tipo de extracto en {{PALETA_ACENTO}} mas explicacion Regular de 2-3 lineas, unido al envase por una LINEA PUNTEADA",
+      "items": "{{INGREDIENTES[6]}}",
+      "estructura_item": {
+        "foto": "{{FOTO_INGREDIENTE}}",
+        "nombre": "{{NOMBRE}}",
+        "dosis_o_tipo": "{{DOSIS_O_EXTRACTO}}",
+        "explicacion": "{{QUE_APORTA}}"
+      },
+      "restriccion_nombre": "2-3 palabras",
+      "restriccion_explicacion": "10-16 palabras",
+      "regla_orden": "el ACTIVO PRINCIPAL va primero y arriba a la izquierda, con su dosis en miligramos; los coadyuvantes despues",
+      "regla_verbos": "cada explicacion usa verbos de apoyo (puede apoyar, contribuye, ayuda a) y nombra el sistema al que sirve",
+      "regla_linea": "cada ingrediente se une al envase con una linea punteada: queda fisicamente ligado a la formula"
+    },
+    "fila_pureza": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda clara con borde fino",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{ATRIBUTOS_PUREZA[4]}}",
+      "restriccion_titulo": "1-2 palabras",
+      "restriccion_subtitulo": "4-7 palabras",
+      "regla": "son atributos de PUREZA y de fabricacion, no beneficios: cierran la pieza en el mismo eje que la abrio"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_calidad",
+    "producto_hero",
+    "despiece_ingredientes",
+    "badge_formula",
+    "bajada_formula",
+    "fila_pureza"
+  ],
+  "reglas_duras": [
+    "El titular califica la composicion, no promete resultado",
+    "Cada ingrediente lleva su foto REAL en circulo, nunca un icono",
+    "Cada ingrediente se une al envase con una linea punteada",
+    "El activo principal va primero y arriba a la izquierda, con su dosis",
+    "Cada explicacion usa verbos de apoyo y nombra el sistema al que sirve",
+    "La fila del pie son atributos de pureza, no beneficios",
+    "El producto va al centro exacto"
+  ],
+  "variables_requeridas": [
+    "LOGO_MARCA",
+    "SUSTANTIVO_COMPOSICION",
+    "CALIFICATIVO_ACENTO",
+    "FRASE_FORMULA",
+    "ETIQUETA_FORMULA",
+    "SUBCLAIM_CALIDAD",
+    "INGREDIENTES[6]",
+    "ATRIBUTOS_PUREZA[4]"
+  ],
+  "cuando_usar": [
+    "publico de nivel 4 que compara composiciones entre marcas",
+    "formulas con varios activos reconocibles y fotografiables",
+    "cuando el activo principal tiene una dosis superior a la de la competencia",
+    "categorias donde el comprador lee etiquetas"
+  ],
+  "cuando_no_usar": [
+    "publico frio: sin problema ni promesa no engancha",
+    "formulas de un solo activo: el despiece queda vacio",
+    "cuando los ingredientes no son fotografiables o no se reconocen"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge FORMULA AVANZADA · INGREDIENTES DE CALIDAD.",
+    "Ingredientes con foto, dosis y explicacion: BERBERINA HCL 1000MG (compuesto natural que puede apoyar el metabolismo de glucosa y lipidos), ALCACHOFA EXTRACTO (apoya la funcion digestiva y contribuye al bienestar intestinal), HOJA DE OLIVO EXTRACTO (fuente de antioxidantes que pueden apoyar las defensas naturales), CANELA DE CEYLAN EXTRACTO (tradicionalmente usada para apoyar el metabolismo y la sensibilidad a la insulina), CURCUMA EXTRACTO (con propiedades antioxidantes que pueden apoyar la salud general y la inflamacion), PIMIENTA NEGRA EXTRACTO (mejora la absorcion de nutrientes y potencia la efectividad de la formula).",
+    "Fila de pureza: NATURAL (ingredientes de origen natural), SIN ADITIVOS (sin colorantes ni conservantes), MAXIMA PUREZA (ingredientes seleccionados de la mas alta calidad), FORMULA SINERGICA (ingredientes que trabajan juntos por tu bienestar).",
+    "Sello de garantia sobre la tapa del envase.",
+    "Claims impresos en el empaque: 1000MG POR PORCION, METABOLISMO DE GLUCOSA Y LIPIDOS, APOYA LA SALUD DIGESTIVA, FUNCION CARDIOVASCULAR, SISTEMA INMUNOLOGICO, 60 CAPSULAS SUPLEMENTO DIETARIO."
+  ],
+  "canonico_id": "CN15_INGREDIENTES_ACTIVO",
+  "blueprint_equivalente": null
+}

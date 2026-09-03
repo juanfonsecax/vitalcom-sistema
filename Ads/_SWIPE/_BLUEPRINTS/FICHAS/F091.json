@@ -1,0 +1,84 @@
+{
+  "ficha_id": "F091",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Megacomprasgt/05_1030875646366807.jpg",
+    "anunciante": "Megacomprasgt",
+    "ad_archive_id": "1030875646366807",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "nula",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 1,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "LA SELFIE DE LA ABUELA EN SU PROPIO PASILLO, SIN PRODUCTO Y SIN UNA SOLA PALABRA. Una mujer mayor sostiene el telefono a la altura de la cara y sonrie apenas, en el corredor de su casa: mosaico de cemento, pared verde, la luz de la ventana al fondo. No hay titular, ni producto, ni logo. El telefono queda visible en el borde del frame.",
+  "lectura_estrategica": "Es la CARA del testimonio antes de que se lea el testimonio. En el feed no compite como anuncio sino como foto de alguien: la mujer, el pasillo y el mosaico son de aca, y el que scrollea reconoce la casa de su mama antes de darse cuenta de que le venden algo. Toda la carga verbal vive en el copy, asi la imagen tiene un solo trabajo: frenar el pulgar y prestar un rostro creible. El telefono visible en el borde es lo que la separa de una foto de banco.",
+  "fondo": {
+    "tipo": "interior_domestico_real_en_profundidad",
+    "base": "pasillo de casa con piso de mosaico de cemento y paredes de color, con una puerta iluminada al fondo",
+    "regla": "el fondo se ve en perspectiva y desenfocado por la lente del telefono, no recortado ni reemplazado",
+    "textura": "la del mosaico, la pintura y la madera reales"
+  },
+  "paleta": {
+    "derivacion": "de la escena real, no del producto",
+    "cantidad_colores": 4,
+    "estructura": "verdes de la pared mas cafes de la madera mas el gris del mosaico mas los tonos de piel; sin color de marca"
+  },
+  "sistema_tipografico": {
+    "familia": "no aplica - la pieza no lleva texto",
+    "pesos_permitidos": [],
+    "maximo_pesos_en_pieza": 0,
+    "color_texto_principal": "no aplica"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una persona sola del rango de edad del avatar, rostro completo, sin maquillaje ni peinado de produccion",
+    "angulo": "selfie a la altura de los ojos o apenas por debajo, con el brazo extendido",
+    "luz": "la natural del lugar, entrando por una ventana al fondo o de costado, sin flash ni rebote",
+    "encuadre": "vertical o cuadrado con el pasillo o el cuarto abierto detras, para que se lea la casa",
+    "que_se_conserva": "las arrugas, las manchas de la piel, el pelo suelto, la ropa de estar en casa, el telefono visible en el borde del frame",
+    "que_NO_se_hace": "texto sobreimpreso, logo, marco, filtro de belleza, fondo desenfocado artificial, producto en la mano",
+    "regla": "el producto NO aparece: en cuanto entra al frame la pieza deja de ser la foto de alguien y vuelve a ser un anuncio"
+  },
+  "zonas": {},
+  "secuencia_lectura": [
+    "foto_completa"
+  ],
+  "reglas_duras": [
+    "La pieza va sin texto, sin logo y sin producto: toda la carga verbal vive en el copy del anuncio",
+    "El rostro es de la edad exacta del avatar y se ve completo",
+    "El entorno es una casa guatemalteca reconocible: mosaico, pintura de color, madera",
+    "El telefono queda visible en el borde del frame",
+    "La luz es la del lugar"
+  ],
+  "variables_requeridas": [
+    "FOTO_SELFIE_AVATAR",
+    "EDAD_AVATAR",
+    "ENTORNO_DOMESTICO"
+  ],
+  "cuando_usar": [
+    "apertura de embudo frio donde el copy carga todo el mensaje",
+    "avatar mayor de 50 anos, donde el rostro real es la mayor senal de pertenencia",
+    "cuando se quiere probar el COPY con la imagen como constante",
+    "cuando ya hay una foto real de una clienta y no hace falta producir nada"
+  ],
+  "cuando_no_usar": [
+    "cuando el copy es corto y la imagen tiene que explicar el producto",
+    "cierre por precio u oferta: la pieza no tiene donde poner el numero",
+    "cuando no hay una foto real y habria que generar el rostro con estetica de estudio"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no lleva texto: no declara sellos, precio, marca ni claims. Toda la carga verbal vive en el copy del anuncio."
+  ],
+  "canonico_id": "CN08_UGC_CRUDO",
+  "blueprint_equivalente": null
+}

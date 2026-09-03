@@ -1,0 +1,165 @@
+{
+  "ficha_id": "F070",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Isla_Everyday_Wellness/03_2965661897100438.jpg",
+    "anunciante": "Isla Everyday Wellness",
+    "ad_archive_id": "2965661897100438",
+    "dias_activo": 9,
+    "replicas": 1,
+    "score": 34,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "40%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA SILUETA ANATOMICA DIGITAL EN MOVIMIENTO, CON LOS PUNTOS DE ACCION ENCENDIDOS. Una figura humana de aspecto de radiografia o escaner corre en el centro del frame, con las articulaciones objetivo iluminadas en naranja. No es una foto ni una ilustracion medica plana: es una representacion tecnologica del cuerpo en accion, con el problema senalado por luz.",
+  "lectura_estrategica": "Resuelve como mostrar un problema que esta adentro del cuerpo y en movimiento. La silueta digital permite tres cosas a la vez: senalar todas las zonas afectadas de una sola vez, mostrar el cuerpo EN ACTIVIDAD (que es donde el problema aparece) y evitar el avatar, con lo cual la pieza no queda atada a una edad ni a un genero. El titular es de RITMO PROPIO y no de curacion — muevete a tu ritmo — lo que la vuelve valida tanto para quien corre como para quien camina. Cierra con un boton de conocer el producto, no de comprarlo.",
+  "fondo": {
+    "tipo": "color_plano_blanco_con_estela",
+    "color": "blanco",
+    "elemento": "estela de particulas o lineas de energia en {{PALETA_ACENTO}} saliendo de la figura hacia atras",
+    "textura": "ninguna",
+    "regla": "el blanco y el aire son lo que dan el registro clinico-tecnologico"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} azul (silueta, titular de acento, boton) mas naranja (puntos de accion encendidos) mas blanco (fondo) mas gris (subtitulos)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}} azul"
+  },
+  "zonas": {
+    "titular_ritmo": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{VERBO_MOVIMIENTO}}",
+      "linea_2": "{{POSESIVO_RITMO_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4 palabras",
+      "formato_obligatorio": "verbo de movimiento mas A TU + el posesivo del ritmo propio",
+      "regla_critica": "el ritmo PROPIO vuelve la pieza valida tanto para quien corre como para quien camina: no promete curacion, promete autonomia"
+    },
+    "subtitular_rutina": {
+      "posicion": "bajo el titular",
+      "lineas": 2,
+      "linea_1": "{{VERBO_ACOMPANAR}}",
+      "linea_2": "{{OBJETO_RUTINA_ACENTO}}",
+      "estilo_l1": "Bold {{PALETA_OSCURA}}",
+      "estilo_l2": "Bold en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-5 palabras",
+      "regla": "el verbo ACOMPANA posiciona el producto junto a la rutina y no como su causa"
+    },
+    "silueta_digital": {
+      "posicion": "centro, ocupa el alto central",
+      "contenido": "{{SILUETA_ANATOMICA_EN_ACCION}}",
+      "escala": "50% del frame",
+      "tratamiento": "figura humana de aspecto de escaner o radiografia, en {{PALETA_ACENTO}} translucido, EN MOVIMIENTO (corriendo, caminando, levantando), con los puntos objetivo encendidos en naranja",
+      "regla_puntos": "todas las zonas afectadas se encienden a la vez: la silueta senala el alcance completo del producto en una sola imagen",
+      "regla_avatar": "sin rostro, sin edad y sin genero: la pieza no queda atada a un avatar",
+      "funcion": "muestra un problema que esta adentro del cuerpo y en movimiento, que es donde aparece"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical con mucho aire entre filas",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas TITULO Bold uppercase mas subtitulo Regular gris en caja baja",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_titulo": "1-2 palabras",
+      "restriccion_subtitulo": "2-4 palabras",
+      "regla": "titulos de una o dos palabras: en este layout el aire vale mas que la exhaustividad"
+    },
+    "producto_hero": {
+      "posicion": "derecha_media",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente con la etiqueta legible",
+      "fuente": "IMAGEN_2",
+      "regla": "sin podio, sin halo y sin props: el registro clinico no los admite"
+    },
+    "barra_sellos": {
+      "posicion": "inferior_izquierda",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{SELLOS[3]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_conocer": {
+      "posicion": "inferior_derecha",
+      "contenedor": "boton {{PALETA_ACENTO}} redondeado con flecha a la derecha",
+      "texto": "{{CTA_CONOCER}} {{PRODUCTO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3 palabras",
+      "regla": "el CTA invita a CONOCER el producto, no a comprarlo: coherente con el registro clinico de la pieza"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_ritmo",
+    "silueta_digital",
+    "subtitular_rutina",
+    "columna_beneficios",
+    "producto_hero",
+    "boton_conocer",
+    "barra_sellos"
+  ],
+  "reglas_duras": [
+    "La silueta va en movimiento, no de pie",
+    "Todas las zonas afectadas se encienden a la vez",
+    "La silueta va sin rostro, sin edad y sin genero",
+    "El titular promete ritmo propio, no curacion",
+    "El verbo ACOMPANA posiciona el producto junto a la rutina",
+    "Los titulos de beneficio son de una o dos palabras",
+    "El producto va sin podio, sin halo y sin props",
+    "El CTA invita a conocer, no a comprar"
+  ],
+  "variables_requeridas": [
+    "VERBO_MOVIMIENTO",
+    "POSESIVO_RITMO_ACENTO",
+    "VERBO_ACOMPANAR",
+    "OBJETO_RUTINA_ACENTO",
+    "SILUETA_ANATOMICA_EN_ACCION",
+    "BENEFICIOS[3]",
+    "SELLOS[3]",
+    "CTA_CONOCER",
+    "PRODUCTO"
+  ],
+  "cuando_usar": [
+    "problemas internos que aparecen en movimiento (articulaciones, circulacion, musculos)",
+    "cuando el producto actua sobre varias zonas y conviene senalarlas todas juntas",
+    "cuando no se quiere atar la pieza a una edad o un genero",
+    "campanas de trafico con registro clinico y sobrio"
+  ],
+  "cuando_no_usar": [
+    "problemas visibles en la piel: la foto real convence mas que la silueta",
+    "cuando la pieza necesita identificacion con un avatar concreto",
+    "BOFU: la pieza no lleva precio ni oferta"
+  ],
+  "sellos_y_claims_observados": [
+    "Barra de sellos: INGREDIENTES NATURALES, CALIDAD GARANTIZADA, FORMULA AVANZADA.",
+    "Beneficios: FORMULA DE ORIGEN NATURAL, MOVIMIENTO CADA DIA, BIENESTAR ARTICULAR.",
+    "Subtitulo ACOMPANA TU RUTINA DIARIA.",
+    "Boton CONOCE EL PRODUCTO con flecha.",
+    "Claims impresos en el empaque: 100% organic, estabiliza el fondo vitaminico del cuerpo y mejora el funcionamiento del organismo, 16 g, 20 pieces.",
+    "La pieza no declara precio ni garantias de envio."
+  ],
+  "canonico_id": "CN13_ANATOMIA_MECANISMO",
+  "blueprint_equivalente": null
+}

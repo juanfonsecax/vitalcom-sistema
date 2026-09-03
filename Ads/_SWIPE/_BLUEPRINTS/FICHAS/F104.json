@@ -1,0 +1,150 @@
+{
+  "ficha_id": "F104",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/15_819182151216035.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "819182151216035",
+    "dias_activo": 4,
+    "replicas": 1,
+    "score": 29,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA PREGUNTA CONTRA EL PROPIO PASADO Y LA BANDA QUE CAMBIA DE CATEGORIA EL PROBLEMA. El titular pregunta si hay mas sintoma que el mes pasado - compara a la persona con ella misma, no con un ideal - y justo debajo una banda blanca reencuadra: no es solo estetica, es tu sistema. El antes-despues va APILADO EN VERTICAL a la derecha y sin etiquetas de plazo.",
+  "lectura_estrategica": "La pregunta segmenta por TENDENCIA y no por estado: no busca a quien tiene el problema sino a quien lo ve empeorar, que es quien esta dispuesto a actuar hoy. La banda de reencuadre es la pieza que justifica el producto - mientras el problema sea estetico compite con la dieta y el gimnasio, en cuanto pasa a ser un sistema del cuerpo compite con nada. Las dos fotos apiladas se leen de arriba hacia abajo como paso del tiempo y al no llevar etiqueta no comprometen ningun plazo. Y el CTA repite el mecanismo en imperativo.",
+  "fondo": {
+    "tipo": "color_plano_crema_con_degradado",
+    "base": "crema calido con degradado suave hacia los bordes",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del empaque",
+    "cantidad_colores": 4,
+    "estructura": "crema (fondo) mas azul marino (titular) mas {{PALETA_OSCURA}} verde (banda de CTA, marcos, iconos) mas los tonos de piel de las fotos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif humanista",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "azul marino oscuro"
+  },
+  "zonas": {
+    "titular_pregunta_tendencia": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "texto": "?Mas {{SINTOMA}} que {{REFERENCIA_TEMPORAL}}?",
+      "estilo": "Bold en caja baja azul marino, con signos de interrogacion",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "mas mas el sintoma mas que mas un periodo pasado del propio avatar",
+      "regla_critica": "compara a la persona con ella misma y segmenta por TENDENCIA: busca a quien lo ve empeorar, no a quien lo tiene"
+    },
+    "banda_reencuadre": {
+      "posicion": "bajo el titular, ancho parcial centrado",
+      "contenedor": "card blanca de borde fino",
+      "texto": "No es solo {{CATEGORIA_APARENTE}}, es {{CATEGORIA_REAL}}.",
+      "estilo": "Regular azul marino de tamano medio",
+      "restriccion_palabras": "7-9 palabras",
+      "regla_critica": "mueve el problema de una categoria donde compite con la dieta y el gimnasio a otra donde no compite con nada"
+    },
+    "callouts_en_arco": {
+      "posicion": "izquierda, rodeando el producto",
+      "cantidad_items": 3,
+      "orientacion": "tres callouts dispuestos en arco, unidos por una linea fina continua que rodea el envase",
+      "formato_item": "icono line-art en circulo de borde fino mas texto Regular de 2 lineas",
+      "item_1": "{{MECANISMO_PRINCIPAL}}",
+      "item_2": "{{BENEFICIO_SINTOMA}}",
+      "item_3": "{{CLAIM_COMPOSICION}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "el arco es una linea continua y no punteada: envuelve el envase en vez de cablearlo"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_media, dentro del arco",
+      "escala": "34% del alto",
+      "composicion": "frasco gotero de pie con salpicadura de agua detras y el ingrediente crudo al pie",
+      "fuente": "IMAGEN_1"
+    },
+    "panel_apilado": {
+      "posicion": "derecha, dos fotos una sobre otra",
+      "contenedor": "marco {{PALETA_OSCURA}} fino que encierra las dos",
+      "foto_superior": "{{FOTO_ESTADO_INICIAL}}",
+      "foto_inferior": "{{FOTO_ESTADO_FINAL}}",
+      "escala": "40% del ancho",
+      "regla_critica": "van APILADAS y SIN etiqueta: se leen de arriba hacia abajo como paso del tiempo y no comprometen ningun plazo",
+      "regla_encuadre": "las dos fotos usan el mismo encuadre, la misma prenda y la misma pose"
+    },
+    "banda_cta": {
+      "posicion": "bajo el panel apilado, ancho del panel",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "texto": "{{CTA_MECANISMO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "3-4 palabras",
+      "formato_obligatorio": "verbo en imperativo mas el mecanismo nombrado en el arco",
+      "regla": "el CTA repite el mecanismo en vez de decir compra: cierra el circulo que abrio la banda de reencuadre"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_pregunta_tendencia",
+    "banda_reencuadre",
+    "panel_apilado",
+    "producto_hero",
+    "callouts_en_arco",
+    "banda_cta"
+  ],
+  "reglas_duras": [
+    "El titular compara a la persona con su propio pasado",
+    "La banda de reencuadre mueve el problema de categoria aparente a categoria real",
+    "El antes-despues va apilado en vertical y sin etiquetas de plazo",
+    "Las dos fotos comparten encuadre, prenda y pose",
+    "Los tres callouts se disponen en arco unidos por una linea continua alrededor del envase",
+    "El CTA es un imperativo que repite el mecanismo"
+  ],
+  "variables_requeridas": [
+    "SINTOMA",
+    "REFERENCIA_TEMPORAL",
+    "CATEGORIA_APARENTE",
+    "CATEGORIA_REAL",
+    "MECANISMO_PRINCIPAL",
+    "BENEFICIO_SINTOMA",
+    "CLAIM_COMPOSICION",
+    "FOTO_ESTADO_INICIAL",
+    "FOTO_ESTADO_FINAL",
+    "CTA_MECANISMO",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "problemas progresivos que el avatar percibe empeorando mes a mes",
+    "cuando conviene sacar el problema de la categoria estetica para justificar un suplemento",
+    "cuando hay fotos reales pero no se quiere comprometer un plazo",
+    "MOFU sobre publico que ya intento resolverlo por la via estetica"
+  ],
+  "cuando_no_usar": [
+    "problemas estables que no empeoran: la pregunta de tendencia no engancha",
+    "cuando el producto ES estetico y el reencuadre sonaria forzado",
+    "cierre por precio: la pieza no tiene zona de numero"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular ?Mas hinchazon que el mes pasado?",
+    "Banda de reencuadre No es solo estetica, es tu sistema linfatico.",
+    "Callouts en arco: Activa el sistema linfatico / Reduce la retencion de liquidos / Formula 100% vegetal.",
+    "Marca VITA LABS Drenaje Linfatico - APOYO LINFATICO TRADICIONAL, EXTRACTOS DE HIERBAS, HERBAL EXPERTS, 1.7 FL OZ (50 ML), badge NEW ORIGINALS.",
+    "Banda de cierre ACTIVA TU DRENAJE LINFATICO."
+  ],
+  "canonico_id": "CN17_TITULAR_DOMINANTE",
+  "blueprint_equivalente": null
+}

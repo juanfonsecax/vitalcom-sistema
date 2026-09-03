@@ -1,0 +1,102 @@
+CONTEXTO DE PRODUCTO — MYO Y D-CHIRO INOSITOL
+Sesión: FASE 1 / Canal A / 2026-05-02
+═══════════════════════════════════════════════════════════
+
+ETAPA-1 — COSTEO
+─────────────────
+Producto: Myo y D-Chiro Inositol (Intimate Rose)
+Costo proveedor: Q54
+P1u: Q199 | P2u: Q279 | P3u: Q369 | CPA Base: Q30.8 | CPA Break Even: Q65.3
+
+ETAPA-1B — COMPONENTES
+───────────────────────
+Ingredientes activos (4):
+- Myo-Inositol (principal, 40:1 ratio)
+- D-Chiro Inositol (complementario, 40:1 ratio)
+- Ashwagandha (extracto de raíz) — adaptógeno, regula cortisol
+- Vitamina D3 — regula hormonas e inmunidad
+
+Specs: 120 cápsulas vegetarianas · 1000 mg · 4 cápsulas/día (2+2 con comidas)
+Certificaciones: libre de gluten, soja, lácteos · Clean Label Project · Hecho en USA
+
+Ángulos Descubiertos (sin video — requieren creativo nuevo):
+- Estrés crónico como detonador hormonal (Ashwagandha) — Saturación Baja
+- Deficiencia de Vitamina D como causa silenciosa del SOP — Saturación Baja
+- Fatiga y falta de energía ligada al SOP — Saturación Baja
+
+ETAPA-0 — VIDEOS SELECCIONADOS
+────────────────────────────────
+1. inositol5.mp4 — Transformación SOP → equilibrio (Testimonial) — Señales: 9
+2. inositol6.mp4 — Acné hormonal por SOP (Testimonial educacional) — Señales: 8
+3. inositol3.mp4 — Fertilidad + anovulación (Autoridad médica) — Señales: 8
+4. inositol1.mp4 — SOP + resistencia a insulina (Educacional PainPoints) — Señales: 7
+5. inositol2.mp4 — SOP recién diagnosticada (Autoridad médica) — Señales: 7
+6. inositol4.mp4 — Síntomas físicos visibles (Comercial showcase) — Señales: 6
+
+ETAPA-2 — 6 FICHAS DE ÁNGULO
+──────────────────────────────
+ÁNGULO 1 — SOP con resistencia a la insulina (causa metabólica)
+Video: inositol1.mp4
+Avatar: Mujer 22-38 años, SOP diagnosticado, glucosa/insulina alterada, sube de peso fácil
+Dolor: Cuerpo no procesa bien la glucosa → desbalance hormonal en ciclo, peso y ánimo
+Deseo: Regular metabolismo y hormonas naturalmente, sin metformina
+Promesa: Proporción 40:1 mejora sensibilidad a insulina, regula hormonas desde raíz
+Saturación: Media
+
+ÁNGULO 2 — SOP recién diagnosticada (¿qué inositol tomo?)
+Video: inositol2.mp4
+Avatar: Mujer 18-32 años, recién diagnosticada, confundida entre Myo y D-Chiro
+Dolor: No sabe cómo tratar SOP naturalmente; médicos solo ofrecen pastillas
+Deseo: Encontrar suplemento correcto específicamente formulado para SOP
+Promesa: Combinación Myo + D-Chiro 40:1 replica equilibrio ideal para el SOP
+Saturación: Alta
+
+ÁNGULO 3 — Fertilidad + anovulación
+Video: inositol3.mp4
+Avatar: Mujer 26-40 años, SOP, intenta quedar embarazada, ciclos irregulares
+Dolor: SOP impide ovular regularmente → dificultad para concebir
+Deseo: Restaurar ovulación natural sin procedimientos invasivos
+Promesa: Myo-Inositol mejora función ovárica y restaura ovulación regular
+Saturación: Media
+
+ÁNGULO 4 — Síntomas físicos visibles (ciclo + manchas + vello)
+Video: inositol4.mp4
+Avatar: Mujer 20-35 años, SOP, manchas oscuras, exceso de vello, ciclo caótico
+Dolor: Síntomas físicos visibles que afectan autoestima; tratamientos tópicos no funcionan
+Deseo: Eliminar síntomas físicos del SOP, recuperar ciclo normal y confianza
+Promesa: Actúa sobre insulina y andrógenos → reduce manchas, vello y regula ciclo
+Saturación: Media
+
+ÁNGULO 5 — Transformación personal SOP → equilibrio
+Video: inositol5.mp4
+Avatar: Mujer 25-38 años, SOP desde hace años, probó todo sin resultado, escéptica
+Dolor: Años con cólicos severos, ciclos ausentes, sin solución sostenida
+Deseo: Algo que realmente funcione y devuelva el control de su cuerpo
+Promesa: Devuelve equilibrio hormonal completo — ovarios limpios, ciclo regular
+Saturación: Media
+
+ÁNGULO 6 — Acné hormonal por SOP
+Video: inositol6.mp4
+Avatar: Mujer 18-30 años, SOP, acné hormonal en mentón/mandíbula, gastó en cremas
+Dolor: Acné viene de hormonas (no de la piel) → ningún producto tópico lo elimina
+Deseo: Limpiar piel definitivamente atacando causa hormonal desde adentro
+Promesa: Regula insulina y andrógenos → elimina acné hormonal de forma progresiva
+Saturación: Baja
+
+VARIABLES INFOGRAFÍAS
+──────────────────────
+DIAS_RESULTADO: 21
+PORCENTAJE_1: 87% — mejora en regularidad ciclo menstrual
+PORCENTAJE_2: 79% — reducción visible acné hormonal y síntomas androgénicos
+NUMERO_CLIENTES: +4,852 mujeres con SOP
+CAPSULAS_CANTIDAD: 120
+MILIGRAMOS: 1000
+CAPSULAS_DOSIS: 4 CÁPSULAS
+MOMENTO_USO_TITULO: CON LAS COMIDAS
+MOMENTO_USO_SUBTEXTO: 2 al desayuno · 2 al almuerzo
+
+CAMPAÑA FASE 1 — TESTEO
+────────────────────────
+6 conjuntos · Q54 c/u · Q324 total · Lanzamiento 4 AM día siguiente
+Conjuntos con precio Q199: inositol2 (SOP diagnóstico), inositol3 (Fertilidad), inositol5 (Transformación)
+Conjuntos sin precio: inositol1 (SOP metabólico), inositol4 (Síntomas físicos), inositol6 (Acné hormonal)

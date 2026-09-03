@@ -1,0 +1,186 @@
+{
+  "ficha_id": "F069",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/El_Ofertn_Guatemala/03_1053167130430747.jpg",
+    "anunciante": "El Ofertn Guatemala",
+    "ad_archive_id": "1053167130430747",
+    "dias_activo": 9,
+    "replicas": 1,
+    "score": 34,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA ESCENA NOCTURNA CON EL PRODUCTO ILUMINADO SOBRE LA MESA DE NOCHE. El fondo es una habitacion a oscuras con una persona durmiendo, y el envase se apoya en la mesa de noche bajo la luz de una lampara. La pieza no muestra el problema ni el mecanismo: muestra el MOMENTO Y EL LUGAR donde el producto se usa, y ese contexto declara para que sirve.",
+  "lectura_estrategica": "El contexto reemplaza al argumento. Un fondo nocturno con alguien durmiendo dice descanso, calma y noche sin escribir ninguna de las tres palabras, y por eso la columna de beneficios puede ser corta y directa. El titular usa la formula de despedida sobre DOS problemas encadenados (estres y ansiedad, dile adios) y pone el nombre del producto en el mismo bloque, con el activo principal impreso en grande sobre el envase. Los tres iconos de la derecha son estados nocturnos, no funciones, y el boton dice MAS INFORMACION en vez de comprar: la pieza busca clic, no cierre.",
+  "fondo": {
+    "tipo": "escena_nocturna_real",
+    "base": "habitacion a oscuras con una persona durmiendo en la cama, desenfocada",
+    "elemento": "lampara encendida en la mesa de noche que ilumina el producto",
+    "regla": "el contexto declara para que sirve el producto sin escribir una palabra: la noche, la cama y la lampara son el argumento"
+  },
+  "paleta": {
+    "derivacion": "del empaque y del momento de uso",
+    "cantidad_colores": 4,
+    "estructura": "azul noche y violeta (fondo) mas {{PALETA_ACENTO}} lila o cian (titular de acento e iconos) mas blanco (texto) mas {{COLOR_ACENTO}} amarillo del boton"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_despedida": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 4,
+      "linea_1": "{{PREAMBULO}}",
+      "linea_2": "{{PROBLEMA_1}}",
+      "linea_3": "{{PROBLEMA_2_Y_DESPEDIDA_ACENTO}}",
+      "linea_4": "CON {{PRODUCTO}}",
+      "estilo_l1": "Bold uppercase blanco chico con signo de interrogacion de apertura",
+      "estilo_l2": "Black/900 uppercase blanco",
+      "estilo_l3": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "estilo_l4": "Black/900 uppercase blanco con el nombre del producto en el mayor tamano",
+      "restriccion_palabras_total": "8-11 palabras",
+      "formato_obligatorio": "crisis de X y Y, dile adios, con NOMBRE DEL PRODUCTO",
+      "regla": "encadena DOS problemas en el mismo titular y cierra con el nombre del producto en el mismo bloque"
+    },
+    "bajada_inmediatez": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_TOMAS}}",
+      "estilo": "Regular blanco con las ultimas palabras en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "la inmediatez se mide en TOMAS y no en dias: desde las primeras tomas"
+    },
+    "columna_estados": {
+      "posicion": "derecha_superior",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde mas texto Bold uppercase de 2 lineas",
+      "items": "{{ESTADOS_NOCTURNOS[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "son ESTADOS del momento de uso (duerme tranquilo, menos ansiedad, mas bienestar), no funciones del producto"
+    },
+    "avatar_durmiendo": {
+      "posicion": "centro_superior, al fondo",
+      "contenido": "{{FOTO_PERSONA_EN_EL_MOMENTO}}",
+      "escala": "30% del frame",
+      "tratamiento": "persona durmiendo o en reposo, de perfil, desenfocada y en penumbra",
+      "regla": "sin rostro nitido y sin mirar a camara: es una escena observada, no un testimonio"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo con borde mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "2-4 palabras",
+      "regla_item_4": "el ultimo es de formato y no de efecto (cantidad de capsulas, apto vegano)"
+    },
+    "producto_hero": {
+      "posicion": "centro, sobre la mesa de noche",
+      "escala": "45% del frame",
+      "composicion": "envase de pie apoyado en la mesa de noche, iluminado por la lampara, con capsulas sueltas al pie",
+      "etiqueta_lateral": "{{CLAIM_LATERAL}} impreso verticalmente en el costado del envase",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto se apoya EN la escena y recibe su luz: no flota ni lleva glow propio"
+    },
+    "boton_informacion": {
+      "posicion": "centro_inferior",
+      "contenedor": "boton {{COLOR_ACENTO}} amarillo redondeado con icono de cursor",
+      "texto": "{{CTA_INFORMACION}}",
+      "estilo": "Black/900 uppercase oscuro",
+      "restriccion_palabras": "2 palabras",
+      "regla": "el CTA busca CLIC y no cierre: pide informacion, no compra"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_izquierda",
+      "cantidad_items": 2,
+      "orientacion": "columna corta",
+      "formato_item": "icono line-art mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "3-5 palabras"
+    },
+    "barra_sellos": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores",
+      "formato_item": "icono line-art mas texto Bold uppercase muy chico de 2 lineas",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_despedida",
+    "producto_hero",
+    "bajada_inmediatez",
+    "columna_estados",
+    "columna_beneficios",
+    "boton_informacion",
+    "avatar_durmiendo",
+    "fila_garantias",
+    "barra_sellos"
+  ],
+  "reglas_duras": [
+    "El contexto declara para que sirve el producto: la escena es el argumento",
+    "El producto se apoya en la escena y recibe su luz, sin glow propio",
+    "La persona del fondo va desenfocada, de perfil y sin mirar a camara",
+    "Los tres items de la derecha son estados del momento de uso, no funciones",
+    "La inmediatez se mide en tomas, no en dias",
+    "El CTA pide informacion, no compra"
+  ],
+  "variables_requeridas": [
+    "PREAMBULO",
+    "PROBLEMA_1",
+    "PROBLEMA_2_Y_DESPEDIDA_ACENTO",
+    "PRODUCTO",
+    "PROMESA_TOMAS",
+    "ESTADOS_NOCTURNOS[3]",
+    "FOTO_PERSONA_EN_EL_MOMENTO",
+    "BENEFICIOS[4]",
+    "CLAIM_LATERAL",
+    "CTA_INFORMACION",
+    "GARANTIAS[2]",
+    "SELLOS[4]",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "productos con un momento de uso claro (noche, manana, post-comida, pre-entreno)",
+    "cuando el contexto puede reemplazar la explicacion del mecanismo",
+    "categorias de calma, sueno y animo",
+    "campanas de trafico donde el objetivo es el clic y no la conversacion"
+  ],
+  "cuando_no_usar": [
+    "productos sin momento de uso asociado",
+    "cuando el argumento es el precio",
+    "cuando el cierre debe ser por chat: el boton de informacion apunta a otro lado"
+  ],
+  "sellos_y_claims_observados": [
+    "Barra de sellos: 100% NATURAL, ALTA POTENCIA, EQUILIBRA TU CUERPO, BIENESTAR INTEGRAL.",
+    "Estados nocturnos: DUERME TRANQUILO, MENOS ANSIEDAD, MAS BIENESTAR.",
+    "Beneficios: RECUPERA LA CALMA RAPIDO, DUERME TRANQUILO Y PLENO, ELIMINA ANSIEDAD, 60 CAPSULAS VEGANAS.",
+    "Bajada RECUPERA LA CALMA DESDE LAS PRIMERAS TOMAS.",
+    "Garantias ENVIO GRATIS A TODO GUATEMALA y PAGAS AL RECIBIR TU PRODUCTO.",
+    "Boton MAS INFORMACION con icono de cursor.",
+    "Claims impresos en el empaque: RHODIOLA ROSEA, ASHWAGANDHA, L-THEANINE, MAGNESIUM, all in one supplement, CORTISOL HEALTH & BALANCE, 9450 MG, LIPOSOMAL, ORIGINAL USA, ALL IN ONE."
+  ],
+  "canonico_id": "CN22_ESCENA_DE_USO",
+  "blueprint_equivalente": null
+}

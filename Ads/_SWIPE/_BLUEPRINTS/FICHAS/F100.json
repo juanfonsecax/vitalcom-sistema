@@ -1,0 +1,172 @@
+{
+  "ficha_id": "F100",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/05_1962943997688690.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1962943997688690",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "TRES ESTADOS DEL MISMO ORGANO CON ETIQUETA DE SEMANA, Y UNA BANDA ROJA QUE TRADUCE EL DIBUJO A SENSACION. La mitad superior es una tira de tres ilustraciones del mismo organo que va perdiendo la mancha oscura, cada una con su card de SEMANA N debajo. Entre esa tira y el resto corre una banda roja de ancho completo que dice lo que la persona va a SENTIR.",
+  "lectura_estrategica": "La progresion anatomica sola es informacion de biologia, no de compra: la banda roja es lo que la convierte en oferta. Y el corte horizontal en dos mitades - arriba la evidencia sobre fondo oscuro, abajo la conversacion sobre blanco - hace que se lea como dos anuncios pegados, donde el de abajo cobra lo que el de arriba probo. El titular de abajo abre con un SALUDO al estado deseado, en caja baja, con lo que suena a lo que la persona se va a decir a si misma. El pie ordena la prueba en tres capas distintas.",
+  "fondo": {
+    "tipo": "dos_mitades_de_fondo_opuesto",
+    "base_superior": "{{PALETA_OSCURA}} verde profundo plano, para la tira de progresion",
+    "base_inferior": "blanco plano, para el bloque de conversacion",
+    "separador": "banda roja de ancho completo",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 5,
+    "estructura": "{{PALETA_OSCURA}} verde (mitad superior) mas blanco (mitad inferior y cards) mas rojo (banda de sensacion) mas azul marino (titular inferior) mas los rosados y negros de las ilustraciones"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif humanista",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "azul marino oscuro"
+  },
+  "zonas": {
+    "tira_progresion": {
+      "posicion": "superior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres ilustraciones en fila, del mismo tamano y el mismo encuadre",
+      "contenido": "{{ORGANO}} ilustrado en tres estados: {{ESTADO_0}}, {{ESTADO_MEDIO}}, {{ESTADO_FINAL}}",
+      "escala": "40% del alto",
+      "regla_critica": "las tres ilustraciones comparten estilo, tamano y angulo: lo unico que cambia es la cantidad de mancha oscura",
+      "fuente": "IMAGEN_1"
+    },
+    "labels_semana": {
+      "posicion": "bajo cada ilustracion",
+      "cantidad_items": 3,
+      "contenedor": "card blanca redondeada",
+      "items": "{{HITO_0}}, {{HITO_MEDIO}}, {{HITO_FINAL}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras": "2 palabras",
+      "formato_obligatorio": "sustantivo de tiempo mas numero, arrancando en cero",
+      "regla_critica": "el primer hito es CERO y no UNO: declara que el punto de partida es hoy y no despues de la primera semana"
+    },
+    "banda_sensacion": {
+      "posicion": "franja media, ancho completo, separando las dos mitades",
+      "contenedor": "banda roja solida",
+      "texto": "{{MENOS_SINTOMA}}, {{MAS_CAPACIDAD}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "5-6 palabras",
+      "formato_obligatorio": "MENOS mas el sintoma, coma, MAS mas la capacidad recuperada",
+      "regla_critica": "traduce el dibujo anatomico a vida diaria: sin esta banda la tira de arriba es informacion de biologia y no una oferta"
+    },
+    "producto_hero": {
+      "posicion": "inferior_izquierda",
+      "escala": "26% del alto",
+      "composicion": "frasco gotero de pie, frontal, recortado sobre el blanco",
+      "fuente": "IMAGEN_2"
+    },
+    "titular_saludo": {
+      "posicion": "inferior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "texto": "Hola {{ESTADO_DESEADO_1}} y {{ESTADO_DESEADO_2}}",
+      "estilo": "Bold en caja baja azul marino, tamano medio",
+      "restriccion_palabras": "9-12 palabras",
+      "formato_obligatorio": "saludo mas dos estados deseados encadenados con y",
+      "regla_critica": "va en CAJA BAJA y saluda al resultado, no al lector: suena a lo que la persona se va a decir a si misma y no a una promesa del anunciante"
+    },
+    "triada_prueba": {
+      "posicion": "inferior_derecha, bajo el titular",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono circular de color pleno mas una linea en Regular azul marino",
+      "item_1": "{{PRUEBA_MECANISMO}}",
+      "item_2": "{{PRUEBA_MULTITUD}}",
+      "item_3": "{{PRUEBA_GARANTIA}}",
+      "restriccion_palabras": "5-7 palabras",
+      "regla_critica": "las tres pruebas son de TIPO distinto - como funciona, cuanta gente lo usa y que pasa si no funciona - y van en ese orden",
+      "regla_item_3": "la garantia se enuncia en dias y con la palabra satisfaccion"
+    },
+    "descargo": {
+      "posicion": "inferior extremo, alineado con la triada",
+      "texto": "{{DESCARGO}}",
+      "estilo": "Regular gris claro muy chico",
+      "restriccion_palabras": "4-5 palabras",
+      "funcion": "cierra la pieza al pie, en el tamano mas chico del cartel"
+    }
+  },
+  "secuencia_lectura": [
+    "tira_progresion",
+    "labels_semana",
+    "banda_sensacion",
+    "titular_saludo",
+    "producto_hero",
+    "triada_prueba",
+    "descargo"
+  ],
+  "reglas_duras": [
+    "Las tres ilustraciones son del mismo organo, con el mismo estilo, tamano y angulo",
+    "Lo unico que cambia entre ellas es la cantidad de mancha oscura",
+    "El primer hito arranca en cero",
+    "La banda roja de ancho completo separa las dos mitades y traduce el dibujo a sensacion",
+    "El cartel se parte en dos mitades de fondo opuesto: oscuro para la evidencia, blanco para la conversacion",
+    "El titular de abajo va en caja baja y saluda al estado deseado",
+    "Las tres pruebas son de tipo distinto y van en orden mecanismo, multitud, garantia",
+    "El descargo cierra al pie en el tamano mas chico de la pieza"
+  ],
+  "variables_requeridas": [
+    "ORGANO",
+    "ESTADO_0",
+    "ESTADO_MEDIO",
+    "ESTADO_FINAL",
+    "HITO_0",
+    "HITO_MEDIO",
+    "HITO_FINAL",
+    "MENOS_SINTOMA",
+    "MAS_CAPACIDAD",
+    "ESTADO_DESEADO_1",
+    "ESTADO_DESEADO_2",
+    "PRUEBA_MECANISMO",
+    "PRUEBA_MULTITUD",
+    "PRUEBA_GARANTIA",
+    "DESCARGO",
+    "IMAGEN_1",
+    "IMAGEN_2"
+  ],
+  "cuando_usar": [
+    "productos con un organo objetivo cuya mejora se puede dibujar en tres pasos",
+    "cuando existe garantia de satisfaccion en dias para cerrar la triada de prueba",
+    "MOFU sobre publico que ya reconoce el sintoma y quiere saber en cuanto tiempo",
+    "cuando conviene un registro conversacional en vez de uno de oferta"
+  ],
+  "cuando_no_usar": [
+    "problemas sin organo ilustrable o sin mejora visible por etapas",
+    "cierre por precio: la pieza no tiene zona de numero ni CTA",
+    "cuando no hay garantia real que declarar en la tercera prueba"
+  ],
+  "sellos_y_claims_observados": [
+    "Tira de progresion con labels SEMANA 0 / SEMANA 2 / SEMANA 3.",
+    "Banda roja MENOS TOS, MAS RESPIRACION LIBRE.",
+    "Titular Hola vias respiratorias mas despejadas y respiracion mas comoda.",
+    "Triada de prueba: Apoyo botanico para tu rutina respiratoria / Miles de personas lo han incorporado a su rutina / 90 dias de garantia de satisfaccion.",
+    "Marca BETTERBRAND - DIETARY SUPPLEMENT - BETTER LUNGS(R) MULLEIN + CHLOROPHYLL, Alcohol Free, 1 MONTH SUPPLY, Lung Cleanse and Support.",
+    "Descargo Los resultados pueden variar."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": null
+}

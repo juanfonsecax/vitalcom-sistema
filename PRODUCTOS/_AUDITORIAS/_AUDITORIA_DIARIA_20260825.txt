@@ -1,0 +1,212 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — martes 2026-08-25, 8 PM
+SISTEMA VITALCOM · ETAPA-7 (monitor) + ETAPA-8 (escalado)
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 3 de 7 días con data · huecos: 2026-08-21,
+2026-08-22, 2026-08-23, 2026-08-24.
+
+Última BASE cargada = 2026-08-20 (46 filas). Quinta noche seguida sin
+ingesta. 0 filas nuevas a `_FACT_VENTAS.csv` · 0 a `_FACT_ENTREGA.csv`.
+`_GANANCIAS.txt` y los `2_DATA_PRODUCTO.txt` NO se tocaron — mismo criterio
+que el 20/21/22/23/24: sin día nuevo no se escribe fila. Repetir una fila
+sin día nuevo es inventar movimiento en la serie.
+
+⚠️ REGLA DURA APLICADA: con huecos NO se presenta CPA semanal como completo,
+NO se declara ganador oficial y NO se manda matar por ventas. Nada se mandó
+apagar por estos cuatro días. Data faltante ≠ cero ventas.
+
+
+───────────────────────────────────────────────────────────────────────────
+1. QUÉ CAMBIÓ HOY RESPECTO DE AYER
+───────────────────────────────────────────────────────────────────────────
+
+El hueco pasó de 3 a 4 días y CRUZÓ el ciclo de maduración de la COD, no
+solo lo igualó. Eso estratifica el hueco en dos zonas que ya no se tratan
+igual:
+
+  · 21-ago y 22-ago → YA MADURARON (≥3 días). Sus exports son DEFINITIVOS:
+    lo que digan hoy es lo que van a decir siempre. Backfillearlos cierra
+    esos días de forma permanente.
+  · 23-ago y 24-ago → todavía dentro de la ventana de maduración. Siguen
+    siendo AMBIGUOS aunque entre el export: LucidSales los reajusta
+    retroactivo.
+
+Consecuencia práctica para el pedido: los dos días más viejos son los que
+más rinden por pegarlos, exactamente al revés de la intuición de "primero
+lo más reciente". Cada día que pasa, un día más del hueco termina de
+madurar — el hueco no solo crece, se vuelve más recuperable y más caro
+al mismo tiempo.
+
+Tamaño de la apuesta a ciegas: ~Q1,893 de pauta que pasó sin medirse
+(Q473/día del último ritmo conocido, tramo 17-20 ago × 4 días). Ayer eran
+~Q1,420. Crece a Q473/día.
+
+MCP de Meta Ads: 8ª noche caída. No hay herramientas `ads_*` disponibles en
+la sesión — no es una cuenta con `is_queryable=false`, es el conector
+entero ausente. PASO 4 no corrió. Sigue siendo la primera vez que las DOS
+fuentes están oscuras sobre los mismos días cerrados: cuando el MCP fallaba,
+el backfill de LucidSales rescataba el tramo; hoy no hay de dónde.
+
+PASO 4B (conciliación de facturación): el domingo 23-ago tampoco corrió —
+sin extractos. `_FACT_SALDOS.csv` lleva dos semanas sin fila OBSERVADA, así
+que la conciliación del próximo domingo (30-ago) tampoco va a poder
+verificar nada contra la anterior (APR-041). El agujero ya se propagó dos
+ciclos.
+
+
+───────────────────────────────────────────────────────────────────────────
+2. CORRECCIÓN AL MOTOR — APR-068
+───────────────────────────────────────────────────────────────────────────
+
+HALLAZGO: la regla P) que se agregó ayer para subir la alerta de ceguera a
+prioridad 1 NO resolvió el problema que decía resolver. Ayer salió primera y
+se dio por bueno. Hoy, con el hueco MÁS GRANDE (4d vs 3d, Q1,893 vs
+Q1,420), CAYÓ al segundo puesto — porque una acción de TINNIDROP subió a
+Q2,363 y la lista ordena por (prioridad, -impacto).
+
+O sea: la posición de la alerta de ceguera se movía por razones que no
+tienen nada que ver con qué tan ciego está el sistema. Ayer fue primera por
+casualidad aritmética, no por diseño.
+
+CAUSA RAÍZ: se estaban comparando dos magnitudes que no viven en el mismo
+eje.
+  · El impacto de las demás reglas = dinero RECUPERABLE por semana si el
+    operador actúa sobre ese renglón.
+  · El impacto de esta regla = dinero YA GASTADO sin medirse. No se
+    recupera tocándola. Es el tamaño de la incertidumbre, no un retorno.
+
+Ordenarlas en la misma columna deja que una suma de peras con manzanas
+decida qué se lee primero.
+
+Y hay un problema de orden lógico encima del aritmético: todas las filas de
+abajo se calculan SOBRE la ventana que esta regla declara ambigua. Leer
+"meterle Q2,363 a TINNIDROP" antes de leer "la ventana con la que calculé
+eso no distingue maduración de caída" es actuar sobre un número cuya
+confiabilidad todavía no se evaluó.
+
+CORRECCIÓN APLICADA en `gen_dashboard.py`:
+  · Nueva banda de prioridad 0 = "primero", por ENCIMA de "hoy".
+  · La regla P) emite en prioridad 0 cuando el hueco ≥ ciclo de maduración.
+  · `n_urgentes` ahora cuenta `pri <= 1` (si no, el contador de la cabecera
+    se comía la fila del gate).
+  · CSS `.prio--0` en rojo sólido invertido, distinto de "hoy".
+  · Verificado: el gate sale en el puesto 1 y ya no puede ser desplazado por
+    ninguna cifra.
+
+PRINCIPIO GENERAL (extensión de APR-066): si una acción CONDICIONA la
+confiabilidad de las filas de abajo en vez de COMPETIR con ellas por el
+mismo presupuesto, no pertenece al mismo ranking. Un número solo puede
+ordenar contra otro número que mida lo mismo. Aplica a futuras reglas de
+gate — no solo a ésta.
+
+
+───────────────────────────────────────────────────────────────────────────
+3. PATRÓN QUE YA NO ES CASUALIDAD — EL PEDIDO NO ESTÁ FUNCIONANDO
+───────────────────────────────────────────────────────────────────────────
+
+Cinco noches seguidas (21, 22, 23, 24, 25-ago) pidiendo lo mismo, con la
+misma redacción, y cinco noches sin recibirlo. Eso ya no es "el operador
+estuvo ocupado": es evidencia de que el canal del pedido no está
+funcionando, y repetirlo una sexta vez idéntico no tiene por qué dar un
+resultado distinto.
+
+NO se cambia el flujo por cuenta propia — eso lo decide el operador. Pero
+se deja registrado, porque el sistema está diseñado alrededor de un supuesto
+que lleva cinco días sin cumplirse: que alguien pega un export a diario.
+Mientras ese supuesto falle, el dashboard es un documento histórico, no un
+tablero de decisión.
+
+Dos hipótesis que el operador puede descartar en un minuto y que cambian
+qué habría que arreglar:
+  (a) El pedido llega pero a una hora en que no está frente a LucidSales
+      → mover el horario de la tarea, o pedir un backfill semanal en vez
+      de diario.
+  (b) Hay una fricción en el export mismo (login, permisos, la cuenta B
+      que se apagó el 17-ago) → entonces el problema es técnico y no de
+      agenda, y el pedido diario nunca lo va a resolver.
+
+Ninguna de las dos se puede distinguir desde acá. Es la única pregunta de
+esta auditoría que necesita respuesta humana.
+
+
+───────────────────────────────────────────────────────────────────────────
+4. ESTADO DEL PORTAFOLIO (sobre data del 2026-08-20 — CONGELADA)
+───────────────────────────────────────────────────────────────────────────
+
+Todo lo de abajo se lee con la advertencia del punto 1: es la foto del
+20-ago, con cuatro días sin medir encima.
+
+TINNIDROP (VIVO · multicuenta GTR0/GTR1/GTR3/GTR7/GTR13/CP1)
+  · ACCESIBILIDAD-MÉDICO sigue siendo el mejor CPA del producto (Q30.7) y
+    se lleva solo el 13% de la pauta → infra-financiado, Q2,363/sem en
+    juego. Es la acción #1 de dinero del dashboard.
+  · Saturación por cuenta confirmada: el MISMO ángulo paga Q164.8 en GTR0 y
+    Q43.3 en GTR7 (CPA corregido por cobertura de tracking — GTR0 ve el 54%
+    de su gasto, GTR7 el 95%). GTR0 se llevó Q1,425 para 16 ventas.
+  · Banda de edad: 25+ cierra 3.6% (4/110) y 45-60 cierra 15.1% (14/93).
+    Q403 de pauta en la banda que no compra.
+  · Próximo paso: NO escalar a ciegas. La acción de infra-financiado es
+    sólida en dirección (el ángulo gana en 4 cuentas), pero su MAGNITUD sale
+    de la ventana ambigua. Se ejecuta después del backfill.
+
+CLEARSTEM (VIVO · GTR 13 · sin MCP)
+  · Banda 25+ cierra 0.0% (0/39) vs 25-35 que cierra 12.1% (4/33). Q204 de
+    pauta en la banda muerta, Q488/sem.
+  · MEDICOS_FALLARON sigue INDECIDIBLE (APR-067). No se toca.
+  · Monitoreo 100% dependiente de LucidSales — es el producto que más sufre
+    el hueco, porque no tiene lado-ads que lo respalde.
+
+CP1 (cuenta, TINNIDROP)
+  · Gasto en cero en los últimos puntos de data tras venir dando 6 ventas a
+    CPA Q33.1 (Q198 de pauta, Q395 netos). Sigue como REVISAR, no como
+    REACTIVAR: la caída a cero puede ser deliberada o un cobro rechazado, y
+    no se atribuye por descarte (APR-030).
+
+NusavaB12 · VARICOSE · resto: sin cambios respecto del 24-ago. VARICOSE
+sigue PAUSADO. Los LISTO (D3+K2, Repelente, Serum, Óvulos) siguen
+bloqueados por page_id/WhatsApp y no se auditan.
+
+Test T01: figura CONFIRMADO en `_DIM_TESTS` pero no registra gasto en
+ningún brazo. O se lanza o se marca como no arrancado — mientras esté así
+ensucia el registro de tests.
+
+
+───────────────────────────────────────────────────────────────────────────
+5. LO QUE HAY QUE PEDIR
+───────────────────────────────────────────────────────────────────────────
+
+1. Export de LucidSales de UN SOLO DÍA para 2026-08-21, 2026-08-22,
+   2026-08-23 y 2026-08-24 — CUATRO exports, uno por día, NUNCA agregados.
+   El agregado no se descompone y mata la resolución diaria.
+   Prioridad dentro del pedido: 21 y 22 primero (ya maduraron, son
+   definitivos).
+   Un solo bot desde el 17-ago (APR-043) → un solo export por día.
+
+2. Reconectar el conector de Meta Ads en Cowork (8ª noche caída).
+
+3. Atrasados de domingo, ya arrastrados dos ciclos:
+   · Extracto de Facturación de Meta por cuenta (las 6).
+   · Export de Ads Manager nivel conjunto de GTR13 y CP1, CON DESGLOSE POR
+     DÍA (las dos cuentas sin MCP).
+   · Export de 7 días → `rol_ventana=CONTROL`.
+
+4. Mensual, pendiente: export de ÓRDENES de Dropi (xlsx) + extracto
+   bancario.
+
+5. Responder la pregunta del punto 3: ¿el pedido diario no llega, o el
+   export tiene una fricción técnica?
+
+
+───────────────────────────────────────────────────────────────────────────
+6. ESCRITURAS DE ESTA CORRIDA
+───────────────────────────────────────────────────────────────────────────
+  ✅ `Ads/_TOOLS/gen_dashboard.py` — banda de prioridad 0 + regla P) a pri 0
+     + `n_urgentes` a `pri<=1` + CSS `.prio--0`.
+  ✅ `_APRENDIZAJES.csv` — APR-068 (escrito con csv.writer, 15/15 campos).
+  ✅ `_BITACORA_DATA.txt` — fila del 25-ago.
+  ✅ `_AUDITORIAS/_AUDITORIA_DIARIA_20260825.txt` — este archivo.
+  ✅ `_DASHBOARD.html` — regenerado AL FINAL. 0 filas sin dimensión.
+  ⬜ `_FACT_VENTAS.csv` / `_FACT_ENTREGA.csv` — sin filas nuevas (sin data).
+  ⬜ `_GANANCIAS.txt` / `2_DATA_PRODUCTO.txt` — intactos a propósito.
+═══════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,160 @@
+{
+  "canonico_id": "CN04_ESCALERA_PRECIOS",
+  "schema_version": "canonico-1.0",
+  "nombre": "Escalera de tiers",
+  "dispositivo_canonico": "TRES NIVELES DE COMPRA EN CARDS PARALELAS, cada uno con su cantidad y su precio, ordenados para que la aritmetica hable sola: el salto del tier 1 al 2 cuesta menos que una unidad suelta. El tier heroe se marca con medalla, borde o subtitulo de intencion. No se argumenta cual conviene — se deja ver.",
+  "cuando_elegirlo": "Hay 3 tiers reales con precio unitario decreciente y el publico ya decidio comprar (BOFU/NC4). Con 1 o 2 tiers la escalera se ve incompleta y pierde todo su mecanismo.",
+  "ejes_de_variacion": [
+    "orientacion: columna al flanco (F019) o tabla horizontal (F038)",
+    "marcador del heroe: medalla, numeracion, subtitulo de intencion",
+    "si muestra % de descuento, precio unitario, o el AHORRO calculado aparte (F108)",
+    "la garantia puede entrar como CUARTA columna de la escalera (F086)"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F019",
+  "score_referencia": 92,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 4,
+      "C1_OFERTA": 1
+    },
+    "rol_embudo": {
+      "BOFU": 5
+    },
+    "estetica": {
+      "cartel_publicitario": 5
+    },
+    "formato": {
+      "1:1": 2,
+      "4:5": 1,
+      "19:20": 1,
+      "2:3": 1
+    },
+    "densidad": {
+      "media": 2,
+      "muy_alta": 2,
+      "alta": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "UNIDAD",
+    "TIER_HEROE",
+    "MARCADOR_HEROE",
+    "GARANTIAS",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "CANT_1",
+      "CANT_2",
+      "CANT_3",
+      "MONEDA",
+      "PRECIO_1",
+      "PRECIO_2",
+      "PRECIO_3"
+    ],
+    "recurrentes": [
+      "CLAIM_NATURAL",
+      "DOSIS",
+      "GARANTIAS[2]"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "La escalera va en columna y ocupa el flanco izquierdo entero",
+    "El titular enuncia los activos sin verbo ni promesa",
+    "El salto de precio del tier 1 al 2 es menor que el precio de una unidad",
+    "Sin etiquetas de valor en los tiers: la aritmetica habla sola",
+    "La cantidad de envases fotografiados coincide con el tier mas alto",
+    "El microcopy final nombra el gesto esperado: escribir, no comprar"
+  ],
+  "cuando_usar": [
+    "ingrediente que la persona ya busca por nombre (colageno, magnesio, omega)",
+    "cuando el argumento es precio y volumen, no beneficio",
+    "retargeting y BOFU",
+    "cuando hay 3 tiers con una aritmetica que se explica sola",
+    "categoria que la persona ya busca por nombre y compara entre marcas",
+    "cuando el producto tiene una cifra distintiva de formula",
+    "BOFU y retargeting",
+    "cuando hay tres tiers y el precio unitario mejora de verdad al subir"
+  ],
+  "cuando_no_usar": [
+    "publico frio: sin promesa ni problema, el titular no engancha a nadie que no busque el activo",
+    "cuando solo hay 1 o 2 tiers: la escalera en columna se ve incompleta",
+    "productos sin ingrediente reconocible por nombre",
+    "publico frio: sin problema ni promesa no engancha",
+    "cuando el descuento por volumen es marginal: el unitario no justificaria el salto",
+    "cuando no hay resenas reales que citar"
+  ],
+  "blueprint_equivalente": [
+    "D_transformacion_temporal"
+  ],
+  "miembros": [
+    {
+      "ficha_id": "F019",
+      "score": 92,
+      "anunciante": "Valle Lo Vende",
+      "concepto_key": "C1_OFERTA",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA ESCALERA DE 3 PRECIOS EN COLUMNA, CADA UNO EN SU PROPIA CARD CON LLAMA"
+    },
+    {
+      "ficha_id": "F038",
+      "score": 53,
+      "anunciante": "Mundohome",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "4:5",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA TABLA DE TRES TIERS CON PORCENTAJE DE DESCUENTO Y PRECIO UNITARIO EN CADA UNO"
+    },
+    {
+      "ficha_id": "F083",
+      "score": 32,
+      "anunciante": "Tienda de Don Gato",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "19:20",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA ESCALERA DE TRES PRECIOS EN CARDS NUMERADAS, CON MEDALLA EN EL TIER 1"
+    },
+    {
+      "ficha_id": "F086",
+      "score": 32,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA ESCALERA DE TRES TIERS CON UN SUBTITULO DE INTENCION EN CADA UNO, Y LA GARANTIA COMO CUARTA COLUMNA"
+    },
+    {
+      "ficha_id": "F108",
+      "score": 27,
+      "anunciante": "Zentri Shop",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL AHORRO CALCULADO EN CARD APARTE, AL PIE DE LA ESCALERA"
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "ficha_id": "F095",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aurora_GT/18_1638169037638906.jpg",
+    "anunciante": "Aurora GT",
+    "ad_archive_id": "1638169037638906",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": "deseo"
+  },
+  "dispositivo_dominante": "LA MISMA PLANTILLA CON OTRO FENOTIPO Y SIN EL PANEL DE PRUEBA. Es la variante de F094: identico titular, identicos beneficios, identicas cards y CTA, pero la modelo cambia de fenotipo y de vestuario, y el espacio que ocupaba el antes-despues se libera para que el cuerpo llegue al pie del frame. Lo que se testea es a QUIEN se parece la modelo.",
+  "lectura_estrategica": "Es una replica de identificacion, no una iteracion creativa. Con el resto del cartel congelado, la unica variable es el cuerpo que aparece, de modo que la diferencia de resultado se atribuye limpio al avatar. La segunda decision es que el vestuario adopta el color de la marca: la modelo deja de ser una mujer con un producto y pasa a ser la imagen del producto, lo que sube el reconocimiento a costa de algo de veracidad. Y al sacar el panel de prueba, apuesta a que aca el cuerpo mismo es la prueba.",
+  "fondo": {
+    "tipo": "escena_interior_clara_desenfocada",
+    "base": "interior luminoso con planta y ventana, muy desenfocado",
+    "capa": "blanco roto plano hacia la derecha para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta (titular de acento, brochazo, iconos, CTA, VESTUARIO DE LA MODELO) mas {{PALETA_OSCURA}} negro (titular, cards) mas blanco (fondo) mas los tonos de piel"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una manuscrita de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Manuscrita"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "firma_manuscrita": {
+      "posicion": "superior_izquierda, SOBRE la foto de la modelo",
+      "texto": "{{FRASE_MANUSCRITA}}",
+      "estilo": "manuscrita {{PALETA_OSCURA}} con corazon {{PALETA_ACENTO}} al final",
+      "lineas": 3,
+      "restriccion_palabras": "5-7 palabras"
+    },
+    "titular_deseo": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{DESEO_L1_ACENTO}} {{DESEO_L1_RESTO}}",
+      "linea_2": "{{DESEO_L2}}",
+      "estilo": "Black/900 uppercase, primera palabra en {{PALETA_ACENTO}} y el resto en {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "3-4 palabras"
+    },
+    "brochazo_metodo": {
+      "posicion": "bajo el titular",
+      "contenedor": "brochazo irregular {{PALETA_ACENTO}} pintado a mano",
+      "texto": "{{METODO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "linea_objeciones": {
+      "posicion": "bajo el brochazo",
+      "alineacion": "izquierda",
+      "texto": "Sin {{OBJECION_1}} · Sin {{OBJECION_2}} · {{CONDICION_PAGO}}",
+      "estilo": "Regular {{PALETA_OSCURA}} chico con separadores de punto medio",
+      "restriccion_palabras": "6-8 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo de borde fino mas texto de 2 lineas con la PALABRA CLAVE en {{PALETA_ACENTO}}",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "modelo_deseo": {
+      "posicion": "izquierda, sangrada de arriba abajo",
+      "escala": "50% del ancho",
+      "composicion": "{{MODELO}} de espaldas tres cuartos con la zona objetivo hacia camara, sosteniendo el envase a la altura del hombro",
+      "vestuario": "conjunto deportivo en {{PALETA_ACENTO}}",
+      "regla_critica": "el cuerpo llega hasta el pie del frame porque no hay panel de prueba que lo interrumpa: en esta variante el cuerpo ES la prueba"
+    },
+    "pildoras_confianza": {
+      "posicion": "centro_bajo, en columna",
+      "cantidad_items": 4,
+      "orientacion": "columna de pildoras blancas de borde fino",
+      "formato_item": "icono en circulo mas texto Bold uppercase muy chico",
+      "items": "{{CONFIANZA[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "pack_producto": {
+      "posicion": "centro_bajo, a la derecha de las pildoras",
+      "composicion": "envase grande de frente con un segundo envase mas chico delante, ambos con cinta {{PALETA_ACENTO}} de claim cruzada",
+      "escala": "22% del ancho",
+      "fuente": "IMAGEN_1",
+      "regla": "gana el espacio que en la variante con prueba ocupa el panel de antes-despues"
+    },
+    "card_oferta": {
+      "posicion": "derecha_baja",
+      "contenedor": "card blanca de borde fino con banda {{PALETA_OSCURA}} arriba",
+      "banda": "{{ETIQUETA_SOCIAL}}",
+      "cuerpo": "{{OFERTA_LABEL}}",
+      "estilo_cuerpo": "Black/900 uppercase {{PALETA_ACENTO}}",
+      "fila_1": "{{ENVIO}}",
+      "fila_2": "{{PLAZO_ENTREGA}}",
+      "estilo_filas": "Bold uppercase {{PALETA_OSCURA}} muy chico con icono de camion y de reloj"
+    },
+    "cta_boton": {
+      "posicion": "inferior_derecha, ancho de la columna",
+      "contenedor": "boton redondeado {{PALETA_ACENTO}} solido con flecha a la derecha",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "barra_social": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "pildora {{PALETA_OSCURA}} solida precedida por tres avatares circulares superpuestos",
+      "texto": "+{{N_CLIENTES}} {{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}} EN {{PAIS}}",
+      "estilo": "Bold uppercase blanco muy chico con corazon {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla_critica": "el numero es IDENTICO al de la variante gemela: si cambia, deja de ser una prueba de avatar y pasa a ser otra pieza"
+    }
+  },
+  "secuencia_lectura": [
+    "modelo_deseo",
+    "titular_deseo",
+    "brochazo_metodo",
+    "columna_beneficios",
+    "cta_boton",
+    "card_oferta",
+    "pack_producto",
+    "pildoras_confianza",
+    "barra_social",
+    "linea_objeciones",
+    "firma_manuscrita"
+  ],
+  "reglas_duras": [
+    "Titular, brochazo, beneficios, pildoras, card de oferta, CTA y prueba social se mantienen IDENTICOS a la variante gemela",
+    "La unica variable declarada es el fenotipo y el vestuario de la modelo",
+    "El vestuario de la modelo adopta el color de acento de la marca",
+    "El cuerpo llega hasta el pie del frame, sin panel de prueba que lo interrumpa",
+    "El numero de prueba social es el mismo de la variante gemela",
+    "Las dos variantes se lanzan al mismo tiempo y con el mismo presupuesto"
+  ],
+  "variables_requeridas": [
+    "FRASE_MANUSCRITA",
+    "DESEO_L1_ACENTO",
+    "DESEO_L1_RESTO",
+    "DESEO_L2",
+    "METODO",
+    "OBJECION_1",
+    "OBJECION_2",
+    "CONDICION_PAGO",
+    "BENEFICIOS[3]",
+    "MODELO",
+    "CONFIANZA[4]",
+    "ETIQUETA_SOCIAL",
+    "OFERTA_LABEL",
+    "ENVIO",
+    "PLAZO_ENTREGA",
+    "CTA",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "PAIS",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "como segunda entrada del mismo angulo cuando se quiere medir a QUE fenotipo responde el publico",
+    "cuando el producto ya tiene una plantilla ganadora y solo falta variar el avatar",
+    "cuando no hay foto de antes-despues y el cuerpo tiene que sostener solo la promesa",
+    "para llenar el segundo anuncio del conjunto sin duplicar el creativo"
+  ],
+  "cuando_no_usar": [
+    "cuando se cambia mas de una variable a la vez: deja de ser atribuible",
+    "cuando la prueba visual es indispensable para la categoria",
+    "publico frio de nivel 1"
+  ],
+  "sellos_y_claims_observados": [
+    "Manuscrita Realza tu figura, potencia tus curvas.",
+    "Titular CURVAS MAS FEMENINAS sobre brochazo DE FORMA NATURAL.",
+    "Linea de servicio Sin cirugia · Sin hormonas · Paga al recibir.",
+    "Beneficios: Apoya gluteos y caderas / Ayuda a definir tu cintura / Mas energia y bienestar.",
+    "Pildoras: SIN HORMONAS (tachado), 100% ORIGINAL, PAGO AL RECIBIR, GUATEMALA con bandera.",
+    "Envase con cinta SIN HORMONAS. Marca SUPPLEMENT FACTORY - WOMAN CURVES(R), 60 capsules dietary supplement.",
+    "Card PACK MAS VENDIDO con estrella / OFERTA DISPONIBLE / ENVIO GRATIS / ENTREGA DE 2 A 5 DIAS.",
+    "CTA PIDELO HOY con flecha.",
+    "Prueba social +4,253 CLIENTAS SATISFECHAS EN GUATEMALA con tres avatares - identica a la variante gemela."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

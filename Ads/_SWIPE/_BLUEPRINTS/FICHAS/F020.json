@@ -1,0 +1,207 @@
+{
+  "ficha_id": "F020",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aranza_Glow/02_1629936214758342.jpg",
+    "anunciante": "Aranza Glow",
+    "ad_archive_id": "1629936214758342",
+    "dias_activo": 65,
+    "replicas": 1,
+    "score": 90,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA SILUETA EN CONTRALUZ CON LOS BRAZOS ABIERTOS, A CONTRAPUNTO DEL PRODUCTO. Una persona de espaldas o de perfil, en un paisaje amplio al amanecer, con los brazos abiertos, ocupa el cuarto superior izquierdo. No hay rostro reconocible ni sintoma: hay una POSTURA que es el resultado. El titular escalonado la traduce a palabras y el sello de origen geografico ancla el ingrediente en un lugar del mundo.",
+  "lectura_estrategica": "Vende energia y vitalidad, que no se pueden fotografiar, entonces el creativo fotografia su POSTURA. La cadena de persuasion es: postura deseada, nombre del ingrediente, origen exotico del ingrediente, cuatro beneficios, escalera de precios, WhatsApp. El origen (del Himalaya) hace el trabajo que en otros layouts hace el sello regulatorio: da autoridad sin institucion. Es el layout para productos donde el beneficio es un estado interno.",
+  "fondo": {
+    "tipo": "foto_paisaje_amplio_al_amanecer",
+    "base": "montana, cielo o horizonte en contraluz calido, con la luz saliendo detras de la figura",
+    "capa": "degradado oscuro desde el borde derecho e inferior para sostener el texto",
+    "funcion": "el paisaje amplio ES la promesa: apertura, aire, capacidad"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente y del paisaje, no del empaque",
+    "cantidad_colores": 5,
+    "estructura": "negro y marron oscuro (fondo) mas {{COLOR_ACENTO}} dorado o ambar (titular de acento, precios, sello de origen) mas blanco (titular principal) mas naranja del amanecer mas verde exclusivo del CTA de WhatsApp"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "10% del ancho"
+    },
+    "titular": {
+      "posicion": "superior_derecha",
+      "alineacion": "derecha",
+      "lineas": 2,
+      "linea_1": "{{PROMESA_L1}}",
+      "linea_2": "{{PROMESA_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}",
+      "restriccion_palabras_total": "3-4 palabras",
+      "formato_obligatorio": "verbo de recuperacion mas el estado interno deseado",
+      "regla_acento": "el color cae sobre el ESTADO (energia, vitalidad, enfoque), no sobre el verbo"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_TRIPLE}}",
+      "estilo": "Bold blanco chico",
+      "restriccion_palabras": "7-9 palabras",
+      "regla": "tres estados en una linea, en escalada"
+    },
+    "nombre_producto": {
+      "posicion": "derecha, bajo el subtitular",
+      "lineas": 2,
+      "linea_1": "{{PRODUCTO}}",
+      "linea_2": "{{ORIGEN_GEOGRAFICO}}",
+      "estilo_l1": "Black/900 uppercase blanco con contorno o sombra",
+      "estilo_l2": "Bold en cursiva {{COLOR_ACENTO}}, al 40% de L1",
+      "restriccion_palabras_l2": "3-4 palabras",
+      "regla": "el origen geografico va pegado al nombre: es parte de la identidad del producto, no un dato suelto"
+    },
+    "silueta_aspiracional": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{FOTO_SILUETA_EN_POSTURA}}",
+      "escala": "25% del frame",
+      "tratamiento": "persona en contraluz, de espaldas o de perfil, brazos abiertos o postura de apertura, en paisaje amplio",
+      "regla": "sin rostro reconocible: el lector se pone en esa silueta",
+      "funcion": "fotografia la POSTURA del beneficio, porque el beneficio en si es invisible"
+    },
+    "sello_origen": {
+      "posicion": "centro_izquierda",
+      "forma": "circular con borde {{COLOR_ACENTO}} doble y silueta del accidente geografico",
+      "linea_1": "{{CLAIM_PUREZA}}",
+      "linea_2": "{{ORIGEN_GEOGRAFICO}}",
+      "escala": "16% del ancho",
+      "funcion": "hace el trabajo del sello regulatorio: da autoridad por procedencia, sin institucion"
+    },
+    "columna_beneficios": {
+      "posicion": "centro_derecha, junto al producto",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono en circulo {{COLOR_ACENTO}} mas TITULO Bold blanco mas subtitulo Regular en {{COLOR_ACENTO}}",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "2-3 palabras",
+      "regla": "beneficios de ESTADO INTERNO (energia, enfoque, vitalidad), no de organo"
+    },
+    "producto_hero": {
+      "posicion": "derecha_baja",
+      "escala": "35% del frame",
+      "composicion": "envase de pie con los ingredientes crudos en bruto al pie (resina, raiz, fruto) y capsulas sueltas",
+      "regla": "el ingrediente crudo visible es lo que sostiene el claim de origen",
+      "fuente": "IMAGEN_2"
+    },
+    "escalera_precios": {
+      "posicion": "inferior_izquierda",
+      "tiers": 3,
+      "orientacion": "fila horizontal de tres cards",
+      "formato_tier": "card oscura con borde {{COLOR_ACENTO}}, cantidad en Regular arriba y precio en Black {{COLOR_ACENTO}} debajo",
+      "tier_1": "{{CANT_1}} POR {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} POR {{MONEDA}}{{PRECIO_2}}",
+      "tier_3": "{{CANT_3}} POR {{MONEDA}}{{PRECIO_3}}",
+      "etiquetas": "el tier 2 lleva {{ETIQUETA_SOCIAL}} y el tier 3 {{ETIQUETA_AHORRO}}, en pildora sobre el borde superior",
+      "regla": "el tier 2 lleva la etiqueta mas atractiva, no el 3"
+    },
+    "cta_whatsapp": {
+      "posicion": "inferior_izquierda, bajo la escalera",
+      "contenedor": "boton verde WhatsApp redondeado con logo circular blanco",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "estilo_l2": "Black/900 uppercase blanco",
+      "regla": "el verde aparece solo aca"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_derecha",
+      "cantidad_items": 2,
+      "formato_item": "icono {{COLOR_ACENTO}} mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "3-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "silueta_aspiracional",
+    "nombre_producto",
+    "subtitular",
+    "columna_beneficios",
+    "producto_hero",
+    "sello_origen",
+    "escalera_precios",
+    "cta_whatsapp",
+    "fila_garantias"
+  ],
+  "reglas_duras": [
+    "La silueta va sin rostro reconocible y en postura de apertura",
+    "El paisaje es amplio y en contraluz: es la promesa, no un decorado",
+    "El origen geografico va pegado al nombre del producto",
+    "Los beneficios son de estado interno, no de organo",
+    "El ingrediente crudo aparece al pie del envase",
+    "El verde se usa solo en el boton de WhatsApp",
+    "El tier 2 lleva la etiqueta mas atractiva"
+  ],
+  "variables_requeridas": [
+    "LOGO_MARCA",
+    "PROMESA_L1",
+    "PROMESA_L2_ACENTO",
+    "PROMESA_TRIPLE",
+    "PRODUCTO",
+    "ORIGEN_GEOGRAFICO",
+    "FOTO_SILUETA_EN_POSTURA",
+    "CLAIM_PUREZA",
+    "BENEFICIOS[4]",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "CTA_L1",
+    "CTA_L2",
+    "GARANTIAS[2]",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "beneficio invisible que solo se puede mostrar como postura (energia, animo, enfoque, libido)",
+    "ingrediente con origen geografico reconocible y exotico",
+    "publico masculino o mixto 30-55",
+    "cuando el ingrediente crudo es visualmente distintivo"
+  ],
+  "cuando_no_usar": [
+    "sintoma visible: se desperdicia la evidencia que si se puede mostrar",
+    "ingrediente sin origen que contar",
+    "cuando no hay foto de paisaje ni silueta disponible"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular 100% NATURAL DEL HIMALAYA con silueta de montana.",
+    "Etiquetas de valor: MAS VENDIDO en el tier 2 y MEJOR OFERTA en el tier 3.",
+    "Garantias ENVIO GRATIS A TODA GUATEMALA y PAGAS AL RECIBIR.",
+    "Claims impresos en el empaque: ENHANCED IMMUNE DEFENSE, SUSTAINED ENERGY & VITALITY, ADRENAL & MOOD SUPPORT.",
+    "Beneficios de estado: MAS ENERGIA TODO EL DIA, MAYOR ENFOQUE Y RENDIMIENTO, VITALIDAD Y FUERZA, NATURAL Y POTENTE."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

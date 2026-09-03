@@ -1,0 +1,146 @@
+================================================================================
+CONTEXTO DE PRODUCTO — SISTEMA VITALCOM
+Generado: 2026-06-13
+================================================================================
+
+PRODUCTO: Kit "Defienda su Salud ante la EPS"
+TIPO: Infoproducto digital (PDF + DOCX)
+MERCADO: Colombia
+IDIOMA COPY: Español colombiano (ustedeo suave)
+FANPAGE: "Tus Derechos en Salud — Colombia" (CREAR ANTES DE LANZAR — Formato B)
+IDENTIDAD ACTIVA: Ana Gómez — colombiana 40-45 años que aprendió a exigir sus derechos
+
+================================================================================
+ETAPA-1 — COSTEO
+================================================================================
+P1u: $12.900 COP (Kit completo — 8 documentos)
+P2u: $19.900 COP (Kit completo + acompañamiento WhatsApp 48h)
+P3u: N/A
+CPA Base: $2.000 COP
+CPA Break Even: $8.000 COP
+Presupuesto por conjunto: $28.000 COP (~$7 USD equivalente a Q54)
+Lanzamiento: 4 AM hora Colombia
+
+================================================================================
+ETAPA-1B — COMPONENTES DEL KIT
+================================================================================
+8 documentos:
+1. Guia-Completa-Defienda-su-Salud.pdf (~25 páginas)
+2. Bonus-PQRD-Supersalud.pdf
+3. Plantilla-1-Medicamentos.docx
+4. Plantilla-2-Cita-Especialista.docx
+5. Plantilla-3-No-Entrega-Medicamentos.docx
+6. Plantilla-4-Historia-Clinica.docx
+7. Plantilla-5-Mala-Atencion.docx
+8. Plantilla-6-Procedimiento-Cirugia.docx
+
+Archivos en: INFPRODUCTOS/SALUD EPS/ y INFPRODUCTOS/SALUD EPS/Plantillas/
+
+================================================================================
+ETAPA-2 — 6 ÁNGULOS DE TESTEO (FASE 1)
+================================================================================
+
+ÁNGULO 1 — Medicamento crónico negado o demorado
+Avatar: Mujer 42-52 años, condición crónica, EPS contributivo. Medicamento autorizado pero
+no entregado. No sabe que puede exigir formalmente.
+Dolor: EPS no entrega medicamento ya autorizado.
+Promesa: Plantilla obliga a EPS a responder y entregar en plazo legal.
+Saturación: Baja
+
+ÁNGULO 2 — Cirugía o procedimiento negado
+Avatar: Persona 45-60 años. Cirugía ordenada por médico. EPS dice "en revisión" o niega.
+Dolor: Cirugía ordenada que la EPS no autoriza ni programa.
+Promesa: Derecho de petición obliga a EPS a dar respuesta escrita o abrir escalamiento.
+Saturación: Baja
+
+ÁNGULO 3 — Cita con especialista que tarda meses
+Avatar: Mujer 35-50 años. Remisión a especialista. Sin cita disponible por meses.
+Dolor: Meses sin poder ver al especialista ya ordenado.
+Promesa: Plantilla de cita prioritaria obliga a EPS a responder con opciones concretas.
+Saturación: Baja
+
+ÁNGULO 4 — Impotencia general con la EPS
+Avatar: Colombiano/a 40-60 años. Cualquier problema. Se resigna. No conoce sus derechos.
+Dolor: Impotencia — no sabe cómo pelear formalmente con la EPS.
+Promesa: Kit da herramienta concreta: guía + 6 plantillas. Sin abogado.
+Saturación: Baja (mayor alcance de audiencia)
+
+ÁNGULO 5 — Urgencias negadas / mala atención
+Avatar: Mujer 35-50 años. Fue a urgencias y la negaron o trataron mal.
+Dolor: Mala atención sin saber a quién reclamar formalmente.
+Promesa: Plantilla de queja formal deja constancia legal y puede escalar a Supersalud.
+Saturación: Media
+
+ÁNGULO 6 — Historia clínica no entregada
+Avatar: Mujer 38-55 años. Necesita historia clínica. EPS da largas sin fecha.
+Dolor: No le entregan documento que legalmente le pertenece.
+Promesa: Derecho de petición obliga a entregar en plazo legal.
+Saturación: Alta
+
+================================================================================
+ETAPA-FANPAGE — FORMATO B
+================================================================================
+⚠️ PRODUCTO SIN PÁGINA IDEAL en las 8 páginas actuales del sistema.
+
+Página nueva sugerida: "Tus Derechos en Salud — Colombia"
+Identidad: Ana Gómez — colombiana 40-45 años, clase media, historia personal con EPS.
+Tono: Confesional-empático. Historia personal antes del producto. Ustedeo suave colombiano.
+Edad segmentación: 35+
+ACCIÓN REQUERIDA: Crear esta FanPage antes de lanzar la campaña.
+
+================================================================================
+ETAPA-4 — RESUMEN DE COPIES (ver conversación para copies completos)
+================================================================================
+
+Ángulos SIN precio (1, 3, 5): copy enfocado en dolor y herramienta
+Ángulos CON precio $12.900 COP (2, 4, 6): copy con precio P1u en texto y creativo
+
+Títulos recomendados por ángulo:
+1. "Sin abogado, sin esperas" / "La EPS tiene que responder" / "Exija su medicamento hoy"
+2. "Su cirugía no puede esperar" / "Obligue a la EPS hoy" / "Plantilla lista: $12.900"
+3. "Meses sin cita: cambie eso" / "La EPS le debe fecha" / "Cita prioritaria en papel"
+4. "La EPS no siempre gana" / "Exíjale a su EPS hoy" / "Derechos en salud: $12.900"
+5. "La EPS tiene que responderle" / "Su queja tiene peso legal" / "No se quede callado/a"
+6. "Su historia clínica: exíjala" / "Son suyos esos documentos" / "Pídala hoy: $12.900 COP"
+
+================================================================================
+ETAPA-5 — BOT PARAGUAS LUCIDBOT
+================================================================================
+Mensaje inicial: dolor general EPS (cualquier problema)
+Audio: guión validado con [Nombre producto / promesa / mecanismo / objeción / futuro]
+Precios: P1 = $12.900 / P2 = $19.900 (kit + acompañamiento 48h — "el más elegido")
+Entrega: archivos por WhatsApp inmediatamente tras confirmación de pago
+Pago: Nequi / Daviplata (ver configuración del número en LucidBot)
+Testimonios: 3 formatos (chat WhatsApp x2, hilo comentarios)
+FAQs: 7 preguntas cubriendo los 6 ángulos
+
+VERIFICACIÓN DE COHERENCIA COPY ↔ BOT:
+✓ Beneficio principal del copy = mismo en mensaje inicial del bot
+✓ Precio P1u $12.900 coincide en copies con precio y en bot
+✓ No hay menciones de envío físico ni GINTACOM/FORZA
+✓ Entrega digital inmediata mencionada en copies y en bot
+
+================================================================================
+ETAPA-6 — ESTRUCTURA DE CAMPAÑA TESTEO
+================================================================================
+1 campaña | 6 conjuntos | 1 anuncio por conjunto
+$28.000 COP/conjunto | Lanzar 4 AM hora Colombia
+
+Conjunto 1: Ángulo medicamento — sin precio — imagen 2 (antes/después)
+Conjunto 2: Ángulo cirugía — CON precio — imagen 2
+Conjunto 3: Ángulo especialista — sin precio — imagen 2
+Conjunto 4: Ángulo impotencia — CON precio — imagen 2
+Conjunto 5: Ángulo urgencias — sin precio — imagen 2
+Conjunto 6: Ángulo historia clínica — CON precio — imagen 2
+
+Objetivo: Mensajes WhatsApp | Edad: 35-65 | País: Colombia | Idioma: Español
+
+================================================================================
+NOTAS PARA FASE 2
+================================================================================
+- Identificar ángulo ganador al día siguiente con métricas: % conversación/clic,
+  % conversación/impresión, CPA real vs. CPA Break Even ($8.000 COP)
+- Para FASE 2 confirmar: ángulo ganador + métricas de los 6 conjuntos
+- Pendiente crear FanPage "Tus Derechos en Salud — Colombia" antes del lanzamiento
+- Pendiente producir videos de creativos (no existían al momento de FASE 1)
+================================================================================

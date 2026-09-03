@@ -1,0 +1,73 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA — 2026-07-27 (~9 PM) · SOLO LADO-ADS (MCP) · PROVISIONAL
+═══════════════════════════════════════════════════════════════════════════
+INTEGRIDAD DE VENTANA (ventas): 6 de 7 días con data · hueco: 27-jul (hoy).
+  · Jul 21-22 recuperados como CONTROL · 23-26 ✅ · 27 pendiente del operador.
+  · ⚠️ SIN LucidSales esta noche → NO hay CPA real, NO se declara ganador ni se
+    mata por venta. Todo ranking de abajo es PROVISIONAL por CONVERSACIÓN.
+  · Recordatorio doctrina TINNIDROP: %conversación NO predice venta → esto es
+    un chequeo de SALUD (fatiga/CPM/CTR/entrega), no un veredicto de escalado.
+LADO-ADS: leído por MCP en GTR0 / GTR7 / GTR1 → 24 filas a _FACT_ENTREGA
+          (rol MCP-ladoads-3d, ventana 24-26 jul). CLEARSTEM (GTR13 MCP OFF)
+          sin lectura. VARICOSE prácticamente apagado.
+
+───────────────────────────────────────────────────────────────────────────
+TINNIDROP — VIVO · ESCALADO multicuenta (GTR0 madre + GTR7 + GTR1)
+───────────────────────────────────────────────────────────────────────────
+Salud general: EXCELENTE. CPM baratísimo ($0.7–2.5), CTR 2.4–5%, frecuencia
+1.0–1.13 en todas las cuentas → audiencias frescas, CERO fatiga. No hay nada
+que renovar por desgaste hoy.
+
+Conversación (provisional · no matar por esto):
+· GTR0 "TEST": Accesibilidad económica 50% conv/clic ($0.39/conv) y Pérdida
+  auditiva ($0.29–0.37/conv) los más eficientes. ME DIJERON 26% conv/clic —
+  NO tocar: es de los que MÁS vende (la conversación baja engaña). NOCHES SIN
+  DORMIR flojo (12% conv/clic, $1.06/conv) — vigilar, no matar sin ventas.
+· GTR7 "4 WINERS": DETERIORO COGNITIVO (video) = motor de volumen (64 conv/3d);
+  Pérdida auditiva 39% conv/clic ($0.46–0.63). Accesibilidad flojo acá ($1.30).
+· GTR1 "4 WINERS": DETERIORO COGNITIVO el más eficiente de la cuenta (un
+  conjunto 17 conv a $0.29, 34% conv/clic). Réplica sana.
+· RENOVACION +25 años (GTR0, lanzada 25-jul → hoy DÍA 3, CAMBIO_CREATIVO =
+  variable de confusión): mejores hooks por conversación "CADA MES OIGO MENOS"
+  ($0.56) y "EL OTORRINO 3 MIN" ($0.55). Peores "GASTÉ MÁS DE Q2000" ($2.42,
+  freq ya 1.55) y "YA NO ME ACUERDO / Familia B" ($2.34). Aún es pronto —
+  mañana es su gate de conversación (día 3). Sin ventas no se poda.
+
+───────────────────────────────────────────────────────────────────────────
+NUSAVA B12 — VIVO · ESCALADO (GTR7)
+───────────────────────────────────────────────────────────────────────────
+El motor es ARDOR, confirmado también por lado-ads:
+· ARDOR escala (NUSAVAB12_ESCALA_ARDOR): MA7-ARDORVIDEO extraordinario
+  (66% conv/clic, $0.19/conv), MA6-OFERTA sólido ($0.35–0.40 en las copias),
+  MA4-DEPIE ok ($0.62, freq 1.2). MA5-AZUCAR/MA2-ARDORNOCHE marginales.
+  MA1-COMPLEJOB y MA3-HORMIGUEO en $0 (no entregan) → efectivamente muertos.
+· TEST copia (NUSAVAB12_TEST - Copia): SOLO corre ARDOR_NUSAVAB12_TEST
+  ($0.40, 48% conv/clic). MEMORIA / ABSORCION / ANIMO / AZUCAR / CIATICA en $0.
+  → Coincide con la memoria: ARDOR es el caballo, el escalado MEMORIA no rinde.
+Frecuencia sana (1.04–1.2), CPM $1.5–2.4. Sin fatiga.
+
+───────────────────────────────────────────────────────────────────────────
+VARICOSE — VIVO en portafolio pero PRÁCTICAMENTE APAGADO
+───────────────────────────────────────────────────────────────────────────
+ESCALA VERGÜENZA ≈$2.24 y FASE1 tráfico ≈$1.54 en 7d → gasto casi nulo, ACTIVE
+pero sin entrega real. Nada de lado-ads que leer. Es el MEJOR CPA del portafolio
+(Q38 vs BE Q79) y está ocioso = plata sobre la mesa. Decisión del operador:
+reactivar VERGÜENZA (ganador confirmado) si hay caja, o dejar apagado a propósito.
+
+───────────────────────────────────────────────────────────────────────────
+CLEARSTEM — VIVO · GTR13 MCP OFF
+───────────────────────────────────────────────────────────────────────────
+Sin lectura en vivo (Meta no habilitó MCP). Depende 100% de LucidSales, que no
+llegó esta noche. Pendiente hasta el próximo export.
+
+───────────────────────────────────────────────────────────────────────────
+QUÉ HACER MAÑANA (prioridad)
+───────────────────────────────────────────────────────────────────────────
+1. PEGAR LucidSales SOLO-AYER (27-jul). Sin ventas no hay CPA real → no se
+   declara ganador ni se mata nada. Es el paso que desbloquea todo lo demás.
+2. TINNIDROP: sano en 3 cuentas, sin fatiga → no tocar. Mañana leer el gate de
+   conversación día-3 de la RENOVACION +25 años.
+3. NUSAVA: concentrar en ARDOR (MA7-video + MA6-oferta). Confirmar apagados los
+   conjuntos en $0 (MA1/MA3 y todo el TEST menos ARDOR).
+4. VARICOSE: reactivar VERGÜENZA si hay caja — ganador Q38 ocioso.
+═══════════════════════════════════════════════════════════════════════════

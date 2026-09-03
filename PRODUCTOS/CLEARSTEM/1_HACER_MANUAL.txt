@@ -1,0 +1,768 @@
+CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id "🟩 CLEARSTEM - WP - NEW TEST" (GTR13)
+════════════════════════════════════════════════════════════════════════
+1_HACER_MANUAL — TODO LO QUE EJECUTÁS A MANO, EN ORDEN
+════════════════════════════════════════════════════════════════════════
+FanPage de pauta: #4 ✨ Belleza & Piel — Astrid García
+Tono: confesional + educativo (no aspiracional puro) · voseo guatemalteco
+Cuenta: GTR 13 (916746367261028) — ⚠️ MCP OFF, se monitorea solo por LucidSales
+Precios: 1u Q199 · 2u Q299 (OFERTA IRRESISTIBLE) · 3u Q399 (LA MÁS ELEGIDA ⭐)
+CPA Objetivo Q30.8 · CPA Break-Even Q60.5 · Presupuesto $1.59/conjunto
+
+────────────────────────────────────────────────────────────────────────
+PARTE 0 — QUÉ CAMBIA EN ESTE CICLO (leer antes de tocar nada)
+────────────────────────────────────────────────────────────────────────
+Estado ventana 17-24 jul: 10 ventas · CPA Q42.9 vs BE Q60.5 → RENTABLE (+Q176).
+
+□ APAGAR — Conjunto 6 "Eje Intestino-Piel": 0 ventas, Q38 gastados, conversación
+  11% (umbral 35%). Ángulo fresco sin historial que no arrancó. Apagar, no eliminar.
+
+□ RENOVAR CREATIVO (NO apagar) — Conjunto 1 "Dolor Emocional Masculino":
+  0 ventas esta ventana y ya pasó su presupuesto de decisión (Q77 = 128%).
+  PERO es el ángulo MÁS EFICIENTE del historial del producto: $4.70 por compra,
+  7 compras con solo $32.91. Un ángulo con ese historial que deja de vender es
+  FATIGA DE CREATIVO, no ángulo muerto. Se cambia el creativo, NO el ángulo.
+  → Creativo nuevo sugerido: Clearstem18 (doctora, autoridad) o un ad-imagen
+    con el testimonio masculino. Prompt listo en la PARTE 3.
+
+□ DEJAR CORRER — Conjuntos 2, 3, 4 y 5 (todos con ventas).
+  Líder actual: #4 Médicos Fallaron (4 ventas, CPA Q22.7).
+
+⚠️ TRES VARIABLES DE CONFUSIÓN sin aislar en esta lectura: (1) bot nuevo del
+   relanzamiento, (2) música automática de Meta activada en los ads-imagen,
+   (3) nombre de tienda del bot vs. nombre de la fanpage. No atribuir el
+   resultado a los ángulos hasta aislarlas.
+
+────────────────────────────────────────────────────────────────────────
+PARTE 1 — REVISIÓN DEL SALUDO DEL BOT (2 minutos, hacelo primero)
+────────────────────────────────────────────────────────────────────────
+El bot saluda "Bienvenido a Sanarte" y los ads van firmados "Belleza & Piel".
+NO es necesariamente un error: el sistema permite que Sanarte sea tu tienda
+paraguas y Belleza & Piel la fanpage de pauta. Elegí UNA:
+
+  OPCIÓN A — mantener Sanarte como tienda, con puente explícito:
+  ¡Hola! 👋 Bienvenida a *Sanarte*, la tienda de Belleza & Piel. Estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨
+
+  OPCIÓN B — coherencia 1:1 con el ad:
+  ¡Hola! 👋 Bienvenida a *Belleza & Piel*, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨
+
+Lo que NO puede quedar es el saludo actual sin puente: el cliente llega desde un
+anuncio de una marca y lo recibe otra. Eso es incoherencia anuncio-bot, la causa
+#1 documentada de conversación baja.
+
+────────────────────────────────────────────────────────────────────────
+PARTE 2 — LOS 6 COPIES (pegar en cada conjunto de Meta)
+────────────────────────────────────────────────────────────────────────
+Regla de precio aplicada: solo los conjuntos 2 y 3 llevan precio (2 de 6, el ideal).
+Si el conjunto lleva precio en el copy, también va en el creativo. Si no, en ninguno.
+Meta admite hasta 5 opciones de texto: pegá las 3 variaciones en "Agregar opción de texto".
+
+════════ CONJUNTO 1 — DOLOR EMOCIONAL MASCULINO ════════
+Avatar: hombre 20-35, acné en mandíbula y espalda, evita el contacto visual, no habla del tema.
+Nivel de conciencia 2 · Creativo: RENOVAR (ver Parte 3) · SIN precio
+
+── TEXTO PRINCIPAL · variación 1 (problema-solución) ──
+Nadie habla del acné en hombres. 😔
+
+Pero ahí estás vos, evitando las fotos.
+Bajando la mirada cuando alguien te habla de cerca.
+Dejándote la barba a ver si tapa algo.
+
+No es falta de higiene.
+No es "ya se te va a quitar con la edad".
+El acné de la mandíbula es hormonal — sale desde adentro.
+
+🧬 CLEARSTEM trabaja donde empieza el problema:
+DIM para apoyar el equilibrio hormonal, cúrcuma y glutatión para desinflamar.
+
+✅ 2 cápsulas al día, nada de cremas
+✅ Vegano, sin gluten
+✅ Pagás cuando lo tenés en la mano
+
+Muchos empiezan a notar cambios entre la semana 2 y 3.
+Escribinos hoy y te explicamos cómo funciona 👉
+
+── TEXTO PRINCIPAL · variación 2 (emocional / identidad) ──
+Te acostumbraste a que te digan "es normal a tu edad". 🙄
+
+Y ya no decís nada.
+Pero cada vez que te ves en el espejo del carro, ahí está.
+La mandíbula. El cuello. La espalda.
+
+No sos vos. Puede ser tu química.
+El acné hormonal masculino no se arregla lavándose más la cara.
+
+CLEARSTEM apoya el equilibrio hormonal desde adentro con DIM,
+y ayuda a desinflamar con cúrcuma y glutatión.
+
+✅ Sin cremas, sin rutinas de 6 pasos
+✅ Una toma al día con el desayuno
+✅ Pagás al recibir
+
+Mandanos un mensaje y te contamos si es para vos 👉
+
+── TEXTO PRINCIPAL · variación 3 (prueba social) ──
+"Tenía dudas pero me di cuenta que es el original y necesito otro porque he visto resultados."
+
+Así nos escribió un cliente esta semana. 💬
+
+Si tenés acné en la mandíbula o la espalda y ya probaste
+jabones, cremas y hasta antibióticos sin que nada aguante —
+el problema no está en la piel. Está adentro.
+
+🧬 CLEARSTEM: DIM para apoyar tus hormonas,
+cúrcuma y glutatión para desinflamar, 5-HTP para el estrés
+que dispara los brotes.
+
+✅ Fórmula americana, 90 cápsulas
+✅ Vegano y sin gluten
+✅ Pagás al recibir, envío gratis
+
+Preguntanos cómo te podemos ayudar 👉
+
+── TÍTULOS (3) ──
+1. No es tu higiene
+2. Acné de mandíbula
+3. Desde adentro
+
+── DESCRIPCIÓN ──
+Envío gratis · Pagá al recibir
+
+════════ CONJUNTO 2 — TESTIMONIO RADICAL ════════
+Avatar: mujer 30-40, años de lucha con acné hormonal, antibióticos y anticonceptivos fallaron.
+Nivel de conciencia 3 · Creativo: VIDEO Clearstem10 (Post ID) · CON precio Q199
+
+── TEXTO PRINCIPAL · variación 1 (testimonio) ──
+"Ya voy en la semana 3 y mi carita ya se ve diferente." 💬
+
+Es de una clienta de esta semana.
+Había dudado si pedir uno o los tres. Pidió los tres.
+
+Si llevás años con el acné hormonal —
+el de la barbilla y la mandíbula, el que vuelve siempre
+antes de la regla — ya sabés que las cremas no lo tocan.
+
+🧬 CLEARSTEM trabaja desde adentro:
+DIM para apoyar el equilibrio hormonal (la raíz),
+cúrcuma y glutatión para desinflamar,
+5-HTP para el estrés que dispara los brotes.
+
+✅ Q199 con envío gratis
+✅ Vegano, sin gluten, fórmula americana
+✅ Pagás al recibir
+
+Escribinos hoy y te orientamos 👉
+
+── TEXTO PRINCIPAL · variación 2 (problema-solución) ──
+¿Otra vez el mismo grano en el mismo lugar de la barbilla? 😮‍💨
+
+Ese que aparece siempre antes de la regla.
+El que duele por debajo antes de salir.
+El que deja mancha meses después.
+
+No es suciedad. Es hormonal.
+Y por eso ninguna crema lo detiene: actúan por fuera,
+el problema está por dentro.
+
+CLEARSTEM apoya el equilibrio hormonal con DIM,
+desinflama con cúrcuma y glutatión, y calma
+con 5-HTP el estrés que dispara los brotes.
+
+✅ Q199 + envío gratis
+✅ 2 cápsulas al día con el desayuno
+✅ Muchas notan cambios entre la semana 2 y 3
+
+Mandanos un mensaje 👉
+
+── TEXTO PRINCIPAL · variación 3 (comparación) ──
+Cremas. Jabones. Antibióticos. Anticonceptivos. 🌀
+
+Los probaste todos.
+Algunos funcionaron un mes y después volvió peor.
+
+La diferencia de CLEARSTEM es que no actúa en la piel:
+apoya lo que está causando el brote.
+
+🧬 DIM → equilibrio hormonal
+🧬 Cúrcuma + glutatión → desinflamación
+🧬 5-HTP → el estrés que dispara los brotes
+🧬 Diente de león → apoya el hígado
+
+✅ Q199 con envío gratis
+✅ 90 cápsulas, vegano y sin gluten
+✅ Pagás al recibir
+
+Preguntanos si es para tu tipo de acné 👉
+
+── TÍTULOS (3) ──
+1. Semana 3, otra piel
+2. No era la crema
+3. Acné hormonal
+
+── DESCRIPCIÓN ──
++3,000 reseñas · Pagá en casa
+
+════════ CONJUNTO 3 — ANTI-FALSIFICACIÓN ════════
+Avatar: ya conoce el producto por TikTok, teme comprar una copia falsa.
+Nivel de conciencia 3 · Creativo: VIDEO Clearstem3 (Post ID) · CON precio Q199
+(Alternativa de renovación cuando fatigue: Clearstem19, mismo ángulo, más fuerte en objeción de precio.)
+
+── TEXTO PRINCIPAL · variación 1 (alerta) ──
+Si lo viste en TikTok y lo encontraste a mitad de precio… cuidado. ⚠️
+
+Cuando un producto se vuelve viral, salen las copias.
+Y con un suplemento que te vas a tomar, eso no es un detalle.
+
+CLEARSTEM Mindbodyskin original:
+fórmula americana, 90 cápsulas, sello íntegro.
+
+🧬 DIM para apoyar el equilibrio hormonal
+🧬 Cúrcuma y glutatión para desinflamar
+🧬 5-HTP para el estrés que dispara los brotes
+
+✅ Q199 con envío gratis
+✅ Producto original, sellado
+✅ Lo revisás y pagás hasta tenerlo en la mano
+
+Escribinos y te confirmamos que estás llevando el original 👉
+
+── TEXTO PRINCIPAL · variación 2 (confesional) ──
+"Tenía dudas, pero me di cuenta que es el original." 💬
+
+Nos lo escribió una clienta que ya va por el segundo frasco.
+
+Y la entendemos: con el acné hormonal ya te sentís
+estafada por suficientes productos.
+Si encima el suplemento es falso, es plata y tiempo perdido.
+
+CLEARSTEM original trabaja desde adentro —
+DIM, cúrcuma, glutatión y 5-HTP —
+no desde la superficie como las cremas.
+
+✅ Q199 + envío gratis
+✅ Sellado, con su empaque original
+✅ Pagás al recibir, lo revisás primero
+
+Mandanos un mensaje y te orientamos 👉
+
+── TEXTO PRINCIPAL · variación 3 (comparación) ──
+No es el suplemento más barato del mercado. Y hay una razón. 🧬
+
+Las copias que ves a Q80 no traen la fórmula completa.
+Y en un suplemento hormonal, la dosis es todo.
+
+CLEARSTEM Mindbodyskin original:
+DIM + Vitamina A biodisponible + B5 + cúrcuma +
+diente de león + 5-HTP + glutatión. 90 cápsulas.
+
+Si ya gastaste en cremas, jabones y tratamientos
+que te dejaron la piel peor — entendés por qué
+vale la pena llevar el original.
+
+✅ Q199 con envío gratis
+✅ Vegano y sin gluten
+✅ Pagás al recibir
+
+Preguntanos cómo identificar el original 👉
+
+── TÍTULOS (3) ──
+1. Cuidado con las copias
+2. Llevá el original
+3. ¿Es el verdadero?
+
+── DESCRIPCIÓN ──
+Original sellado · Pagá al recibir
+
+════════ CONJUNTO 4 — MÉDICOS FALLARON ════════  ★ LÍDER ACTUAL (CPA Q22.7)
+Avatar: fue a dermatólogo, ginecólogo y endocrino sin solución definitiva.
+Nivel de conciencia 2 · Creativo: VIDEO Clearstem2 (Post ID) · SIN precio
+(Refuerzo de autoridad disponible: Clearstem18, doctora con bata — usarlo como 2º creativo.)
+
+── TEXTO PRINCIPAL · variación 1 (problema-solución) ──
+Dermatólogo. Ginecólogo. Endocrino. 🩺
+
+Y seguís con el mismo acné en la mandíbula.
+
+Cada uno te dio algo distinto.
+Antibióticos que funcionaron mientras los tomabas.
+Anticonceptivos que te lo controlaron y al dejarlos volvió peor.
+Cremas que te resecaron la cara sin quitar nada.
+
+El acné hormonal no se resuelve solo por fuera:
+está conectado con tus hormonas, tu hígado y tu digestión.
+
+🧬 CLEARSTEM apoya esas tres cosas desde adentro:
+DIM, diente de león, cúrcuma, glutatión y 5-HTP.
+
+✅ 2 cápsulas al día, nada de rutinas
+✅ Vegano, sin gluten, fórmula americana
+✅ Pagás al recibir
+
+Escribinos hoy y te explicamos cómo funciona 👉
+
+── TEXTO PRINCIPAL · variación 2 (reencuadre) ──
+No es que tu piel esté mal. Es que nadie miró más adentro. 💡
+
+Te trataron el grano.
+Nadie te habló del hígado, del intestino ni del cortisol.
+
+Y ahí es donde empieza el acné hormonal:
+hormonas desbalanceadas, inflamación, estrés.
+
+CLEARSTEM apoya el equilibrio hormonal con DIM,
+la desinflamación con cúrcuma y glutatión,
+el hígado con diente de león
+y el estrés con 5-HTP.
+
+✅ Una toma al día con la primera comida
+✅ 90 cápsulas, vegano y sin gluten
+✅ Muchas notan cambios entre la semana 2 y 3
+
+Mandanos un mensaje y te orientamos 👉
+
+── TEXTO PRINCIPAL · variación 3 (autoridad) ──
+El acné de la mandíbula que no se va con cremas tiene explicación. 🔬
+
+Sale desde adentro: hormonas, hígado y digestión.
+Por eso los tratamientos que actúan solo en la superficie
+lo controlan un rato y después vuelve.
+
+🧬 CLEARSTEM Mindbodyskin:
+DIM → apoya el equilibrio hormonal
+Cúrcuma + glutatión → apoyan la desinflamación
+Diente de león → apoya la función del hígado
+5-HTP → ayuda con el estrés que dispara los brotes
+
+✅ Fórmula americana, 90 cápsulas
+✅ Vegano y sin gluten
+✅ Envío gratis, pagás al recibir
+
+Preguntanos cómo te podemos ayudar 👉
+
+── TÍTULOS (3) ──
+1. Nadie miró adentro
+2. Ya fuiste al doctor
+3. La raíz del brote
+
+── DESCRIPCIÓN ──
+Envío gratis · Pagá al recibir
+
+════════ CONJUNTO 5 — RESISTENCIA A LA INSULINA / SOP ════════
+Avatar: mujer 25-35 con SOP, dejó anticonceptivos, acné + periodos irregulares + vello facial.
+Nivel de conciencia 1 · Creativo: IMAGEN (prompt en Parte 3) · SIN precio
+
+── TEXTO PRINCIPAL · variación 1 (revelación) ──
+¿Acné en la mandíbula + periodos irregulares + vello donde no debería? 🔍
+
+No son tres problemas distintos.
+Puede ser uno solo: desbalance hormonal.
+
+El SOP y la resistencia a la insulina están detrás
+de buena parte del acné adulto femenino —
+y por eso ninguna crema lo toca.
+
+🧬 CLEARSTEM apoya el equilibrio hormonal desde adentro
+con DIM, y acompaña con cúrcuma, glutatión y 5-HTP.
+
+✅ 2 cápsulas al día con el desayuno
+✅ Vegano, sin gluten, sin hormonas añadidas
+✅ Pagás al recibir
+
+Escribinos y te orientamos si es tu caso 👉
+
+── TEXTO PRINCIPAL · variación 2 (identidad) ──
+Dejaste los anticonceptivos y se te vino el mundo encima. 😮‍💨
+
+El acné volvió con todo.
+La regla se desordenó.
+Y te dijeron que "es normal, tu cuerpo se está regulando".
+
+Llevás año y medio esperando esa regulación.
+
+CLEARSTEM apoya el equilibrio hormonal con DIM —
+no aporta hormonas, apoya las tuyas —
+más cúrcuma y glutatión para desinflamar.
+
+✅ Sin hormonas añadidas
+✅ 90 cápsulas, una toma al día
+✅ Envío gratis, pagás al recibir
+
+Mandanos un mensaje 👉
+
+── TEXTO PRINCIPAL · variación 3 (prueba social) ──
+"Yo dudé si pedir 1 o los 3, pero qué bueno que pedí los 3." 💬
+
+Nos escribió en la semana 3, ya viendo cambios.
+
+Si tenés SOP o resistencia a la insulina,
+sabés que el acné no viene solo:
+viene con la regla desordenada y el ánimo por el suelo.
+
+🧬 CLEARSTEM apoya el equilibrio hormonal (DIM),
+la desinflamación (cúrcuma, glutatión)
+y el estrés que empeora todo (5-HTP).
+
+✅ Vegano y sin gluten
+✅ Sin hormonas añadidas
+✅ Pagás al recibir
+
+Preguntanos cómo te podemos ayudar 👉
+
+── TÍTULOS (3) ──
+1. No son 3 problemas
+2. SOP y tu piel
+3. Sin hormonas
+
+── DESCRIPCIÓN ──
+Sin hormonas · Pagá al recibir
+
+════════ CONJUNTO 6 — EJE INTESTINO-PIEL ════════  ⏸️ APAGAR ESTE CICLO
+Avatar: adulto con acné + hinchazón/digestión pesada.
+Nivel de conciencia 1 · Creativo: IMAGEN · SIN precio
+0 ventas, Q38 gastados, conversación 11%. Se apaga.
+El copy queda documentado abajo por si se retoma con otro hook más adelante.
+
+── TEXTO PRINCIPAL (guardado) ──
+¿Acné y además te sentís hinchada todo el día? 🌀
+
+No es coincidencia.
+La piel refleja lo que pasa en tu digestión y tu hígado.
+
+Cuando el intestino está inflamado y el hígado cargado,
+la piel es la que paga la cuenta.
+
+🧬 CLEARSTEM apoya ese eje desde adentro:
+diente de león para la función del hígado,
+cúrcuma y glutatión para desinflamar,
+DIM para el equilibrio hormonal.
+
+✅ Una toma al día con la primera comida
+✅ Vegano y sin gluten
+✅ Pagás al recibir
+
+Escribinos y te explicamos 👉
+
+── TÍTULOS ──
+1. Tu piel refleja
+2. Hinchazón y acné
+3. Empieza adentro
+
+── DESCRIPCIÓN ──
+Envío gratis · Pagá al recibir
+
+────────────────────────────────────────────────────────────────────────
+PARTE 3 — PROMPTS DE IMAGEN (pegar en Gemini Pro / ChatGPT con la foto del frasco)
+────────────────────────────────────────────────────────────────────────
+Los tres prompts ya están rellenados. Copiá el bloque completo, adjuntá la foto
+del frasco de CLEARSTEM y pedí el render.
+
+════ PROMPT A — AD RENOVADO CONJUNTO 1 (Dolor Emocional Masculino) ════
+Este es el creativo de renovación del ángulo más eficiente del producto. NO lleva precio.
+
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta conversión.
+Genera un creativo VERTICAL 4:5 (1080x1350 px), fotorrealista, profesional, listo para pautar en Facebook e
+Instagram (feed). Debe venderse visualmente en menos de 3 segundos y NO parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco blanco cilíndrico, etiqueta blanca con texto azul marino "CLEARSTEM
+MINDBODYSKIN", 90 cápsulas, suplemento en cápsula]
+
+DATOS DEL PRODUCTO
+- NOMBRE: CLEARSTEM Mindbodyskin
+- BENEFICIO PRINCIPAL: apoya el equilibrio hormonal desde adentro para reducir los brotes de la mandíbula
+- PROBLEMA QUE RESUELVE: acné hormonal en mandíbula, cuello y espalda en hombres jóvenes, que no cede con
+  jabones ni cremas y que nadie toma en serio
+- PÚBLICO OBJETIVO: hombre guatemalteco 20-35 años, acné inflamado en mandíbula, evita fotos y contacto visual
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: confesional y educativo, cercano, nada aspiracional ni de revista
+- OFERTA: sin precio en este ad
+
+ESTILO VISUAL: lifestyle con persona real (estilo 9), luz natural de ventana, ambiente de casa real
+
+JERARQUÍA VISUAL (de arriba hacia abajo):
+1. MARCA VISIBLE en la esquina superior, discreta pero legible: "Belleza & Piel"
+2. HOOK (texto grande, máx 2 líneas, la palabra clave en azul marino): "NADIE HABLA DEL ACNÉ EN HOMBRES"
+3. PRODUCTO PROTAGONISTA Y GRANDE: el frasco de CLEARSTEM nítido, bien iluminado, dominante en la composición,
+   sostenido por un hombre joven latino de 25-30 años con acné leve visible en la mandíbula, mirando el producto
+   (no a la cámara), expresión de alivio y calma, no de sufrimiento
+4. BENEFICIO PRINCIPAL (texto mediano): "No es tu higiene. Es hormonal — y se trabaja desde adentro."
+5. ELEMENTOS DE CONFIANZA (badges pequeños): "90 CÁPSULAS" · "VEGANO · SIN GLUTEN" · "PAGÁS AL RECIBIR"
+6. CTA (botón azul marino redondeado): "Escribinos hoy 👉"
+7. SELLO: sello de PRUEBA SOCIAL pequeño en esquina superior, "+3,000 RESEÑAS", NO sello de urgencia
+   (el ángulo es emocional y sensible; la urgencia lo abarata)
+
+PALETA: azul marino profundo y blanco (colores de la etiqueta), con lavanda muy suave de fondo. Tipografía
+sans-serif limpia y moderna, bold en el hook. Texto mínimo legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE (obligatorio): NO usar "cura", "trata" ni "elimina". NO antes/después corporal bilateral. NO promesas
+de tiempo imposibles. Hablar del problema del avatar está permitido; afirmar que cura el diagnóstico NO.
+
+RESULTADO: un anuncio que detiene el scroll de un hombre joven con acné hormonal, comunica el beneficio en 3
+segundos y motiva a escribir por WhatsApp. Entregar SOLO en 4:5 (1080x1350).
+
+════ PROMPT B — AD CONJUNTO 5 (Resistencia a la Insulina / SOP) ════
+Sin precio.
+
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta conversión.
+Genera un creativo VERTICAL 4:5 (1080x1350 px), fotorrealista, profesional, listo para pautar en Facebook e
+Instagram (feed). Debe venderse visualmente en menos de 3 segundos y NO parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco blanco cilíndrico, etiqueta blanca con texto azul marino "CLEARSTEM
+MINDBODYSKIN", 90 cápsulas, suplemento en cápsula]
+
+DATOS DEL PRODUCTO
+- NOMBRE: CLEARSTEM Mindbodyskin
+- BENEFICIO PRINCIPAL: apoya el equilibrio hormonal en mujeres con SOP o resistencia a la insulina, sin aportar
+  hormonas externas
+- PROBLEMA QUE RESUELVE: acné en mandíbula que viene junto con periodos irregulares y vello facial — la mujer
+  no sabe que son el mismo problema hormonal
+- PÚBLICO OBJETIVO: mujer guatemalteca 25-35 años con SOP, dejó los anticonceptivos y el acné volvió peor
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: confesional y educativo, empático, de amiga que sabe del tema
+- OFERTA: sin precio en este ad
+
+ESTILO VISUAL: dermocosmético elegante (estilo 3), fondo limpio con degradado suave lavanda-blanco
+
+JERARQUÍA VISUAL (de arriba hacia abajo):
+1. MARCA VISIBLE en la esquina superior, discreta pero legible: "Belleza & Piel"
+2. HOOK (texto grande, máx 2 líneas, "UN SOLO PROBLEMA" en azul marino):
+   "¿ACNÉ, REGLA IRREGULAR Y VELLO FACIAL? NO SON 3 PROBLEMAS. ES UN SOLO PROBLEMA."
+3. PRODUCTO PROTAGONISTA Y GRANDE: el frasco de CLEARSTEM nítido y dominante, en primer plano, con una mujer
+   latina de 28-32 años detrás en plano suave y desenfocado, piel real con textura, mirando el frasco con
+   expectativa tranquila
+4. BENEFICIO PRINCIPAL (texto mediano): "Apoya tu equilibrio hormonal desde adentro"
+5. ELEMENTOS DE CONFIANZA (badges pequeños): "SIN HORMONAS AÑADIDAS" · "VEGANO · SIN GLUTEN" · "PAGÁS AL RECIBIR"
+6. CTA (botón azul marino redondeado): "Preguntanos si es tu caso 👉"
+7. SELLO DE OFERTA starburst pequeño en esquina superior: "SÚPER OFERTA" + "SOLO HOY", moderado, que no tape
+   el producto, tono de oferta atractiva y nunca de pánico
+
+PALETA: azul marino y blanco de la etiqueta, con lavanda y rosa muy pálido de acento. Tipografía sans-serif
+limpia, bold en el hook. Texto mínimo legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE (obligatorio): NO usar "cura", "trata" ni "elimina". NO antes/después corporal bilateral. NO promesas
+de tiempo imposibles. Al ser un ángulo hormonal sensible, usar siempre "apoya / ayuda a la función".
+NO afirmar que trata el SOP.
+
+RESULTADO: un anuncio que detiene el scroll de una mujer con SOP, le revela que sus tres síntomas son uno solo,
+y la motiva a escribir por WhatsApp. Entregar SOLO en 4:5 (1080x1350).
+
+════ PROMPT C — INFOGRAFÍA INFO 3 DEL BOT (CONFIANZA) — la que falta ════
+Ya tenés Info 1 (beneficios) e Info 2 (transformación 50 días). Falta esta.
+Va DENTRO del bot, no es un anuncio: Meta no la lee.
+
+Actúa como un diseñador gráfico experto en infografías de venta para WhatsApp.
+Genera una imagen VERTICAL 4:5 (1080x1350 px), limpia, legible en celular, que elimine el miedo a comprar online.
+NO es un anuncio: es una imagen informativa que se manda dentro de la conversación.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco CLEARSTEM MINDBODYSKIN, 90 cápsulas]
+
+ESTRUCTURA (de arriba hacia abajo):
+1. BLOQUE PRINCIPAL Y MÁS GRANDE — "PAGÁS AL RECIBIR" en tipografía grande, con ícono de mano recibiendo un
+   paquete. Es lo primero que el ojo debe encontrar.
+2. SELLO DE GARANTÍA al lado, tipo escudo o medalla: "Garantía de satisfacción · Acompañamiento del equipo"
+3. BLOQUE DE AUTENTICIDAD: el frasco de CLEARSTEM con su sello íntegro visible y la leyenda
+   "PRODUCTO ORIGINAL SELLADO · Fórmula americana · 90 cápsulas"
+4. BLOQUE DE ENVÍO: mapa simplificado de Guatemala con la leyenda "COBERTURA EN TODA GUATEMALA · GINTACOM y
+   FORZA · Entrega en 2 a 5 días hábiles", con íconos de camión
+5. TRES MINI TESTIMONIOS en formato de burbuja de chat, solo texto, sin fotos de personas:
+   · "me llego bien selladito y con su sello original, pague hasta q lo tuve en la mano"
+   · "tenia dudas pero me di cuenta q es el original, ya voy por el segundo"
+   · "pedi los 3 y que bueno q los pedi, ya voy en la semana 3"
+6. BADGE DIFERENCIADOR al pie: "SIN HORMONAS AÑADIDAS · VEGANO · SIN GLUTEN"
+
+PALETA: azul marino y blanco de la etiqueta del producto, con lavanda suave de fondo. Tipografía sans-serif
+limpia y grande. Todo debe leerse en la pantalla de un celular sin hacer zoom.
+SIN PRECIO en la imagen.
+
+RESULTADO: una imagen que responde "¿me va a llegar? ¿es original? ¿y si no me funciona?" antes de que el
+cliente lo pregunte.
+
+────────────────────────────────────────────────────────────────────────
+PARTE 4 — FLUJO LUCIDBOT (campo por campo)
+────────────────────────────────────────────────────────────────────────
+Temporizador entre mensajes: 2-3 segundos SIEMPRE. Nunca 15.
+Asesora: Laura (ya está en tu flujo, se mantiene).
+
+⚠️ LO QUE NO SE TOCA: las INTERACCIONES 3 (pedido de datos), 4 (confirmación) y 5
+(cierre), los mensajes de inactividad y las reglas base son las FIJAS de siempre —
+iguales para todo producto, ya las tenés cargadas. No se reescriben.
+Abajo va SOLO lo que cambia para CLEARSTEM.
+
+═══ MENSAJE INICIAL (elementos 1 a 10) ═══
+
+ELEMENTO 1 — TEXTO (saludo, ver PARTE 1 para elegir A o B):
+¡Hola! 👋 Bienvenida a *Sanarte*, la tienda de Belleza & Piel. Estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨
+
+ELEMENTO 2 — VIDEO VIRAL 1 (Autoridad): Clearstem18.mp4
+   (la doctora con bata: "Sigues despertando con esos brotes dolorosos en la mandíbula…")
+
+ELEMENTO 3 — VIDEO VIRAL 2 (UGC): Clearstem19.mp4
+   (la clienta anti-falsificación: "esto es falso, falso, falsísimo")
+
+ELEMENTO 4 — IMAGEN INFO 1: la que ya tenés ("ADIÓS ACNÉ HORMONAL / HOLA PIEL SIN BROTES")
+
+ELEMENTO 5 — IMAGEN INFO 2: la que ya tenés ("TRANSFORMACIÓN · 50 días tomando Clearstem")
+
+   (NO hay Info 3 y NO se genera — confirmado por el operador 25-jul. El flujo va con 2 infos.
+    El PROMPT C de la Parte 3 queda archivado por si más adelante se quiere sumar.)
+
+ELEMENTO 6 — TEXTO (transición a testimonios):
+A continuación te muestro lo que dicen quienes ya lo tienen en casa 👇
+
+ELEMENTO 7 — TESTIMONIO 1 · RECEPCIÓN + ORIGINAL
+   → LA CAPTURA REAL que ya tenés: cliente +502 8955 6589
+   ("tenía dudas pero me di cuenta que es el original y necesito otro porque he visto
+    resultados" + el video/foto de los dos frascos + la llamada).
+   Resuelve el miedo a la estafa Y demuestra recompra. No se toca.
+
+ELEMENTO 8 — TESTIMONIO 2 · RESULTADO + CANTIDAD
+   → LA CAPTURA REAL que ya tenés: clienta +502 5974 0833
+   ("hace 3 semanas me llegaron los 3 cabal jaja, yo dudé si pedir 1 o los 3 pero qué bueno
+    que pedí los 3" + la foto de su piel + "ya voy en la semana 3 y carita ya se ve diferente…
+    hasta mi hermana me dijo que le guarde uno porque como que es de familia").
+   Resuelve "¿funciona?" Y "¿por qué llevar más de 1?" en una sola captura. No se toca.
+
+⚠️ DECISIÓN DEL OPERADOR (25-jul): el flujo se queda con estos 2 testimonios REALES porque
+   YA CONVIERTE (CPA Q42.9 vs BE Q60.5, rentable). No se agregan testimonios redactados ni
+   capturas de comentarios armadas. Material real > material fabricado.
+   La estructura canónica de ETAPA-5 pide 3 testimonios (recepción · resultado · comunidad);
+   acá se corren 2 porque cubren las mismas objeciones y son auténticos.
+   → SI alguna vez baja la conversación, el tercero (comentarios de Facebook, prueba social
+     de comunidad) es la primera pieza a sumar — está de reserva en la PARTE 6.
+
+ELEMENTO 9 — AUDIO (el que ya tenés, se mantiene tal cual):
+Hola, claro que sí, te cuento. CLEARSTEM es un suplemento para el acné hormonal, ese que sale en la barbilla o la mandíbula y no se va con cremas. Trabaja desde adentro: tiene DIM que regula tus hormonas, que es la raíz del problema, más cúrcuma y glutatión para desinflamar, y 5-HTP para controlar el estrés que dispara los brotes. Todo natural, sin gluten y vegano. Empezás a notar cambios entre la semana 2 y 3, y miles de personas ya tienen resultados reales. Es la mejor decisión que podés tomar por tu piel.
+
+ELEMENTO 10 — CIERRE + PREGUNTA DE CIUDAD:
+Hola, soy Laura, estaré atendiéndote el día de hoy 😊 Cuéntame, ¿desde qué municipio y departamento nos escribís?
+
+═══ INTERACCIONES ═══
+
+INTERACCIÓN 1 — AL RECIBIR LA CIUDAD:
+¡Qué bien, desde {CIUDAD}! 😊
+
+Me alegra que estés dando el paso de cuidar tu piel desde adentro — es una gran decisión, y de las pocas que de verdad se sostienen en el tiempo.
+
+Confirmo que tenemos cobertura completa ahí, con envíos a toda Guatemala y pago contraentrega. Las entregas tardan de 2 a 5 días hábiles. 🚚
+
+¿Deseás conocer nuestros precios?
+
+INTERACCIÓN 2 — PRESENTACIÓN DE PRECIOS:
+¡Claro! 😊
+
+Ya sabés que el acné hormonal *no se quita con cremas* ni con jabones — vuelve siempre al mismo lugar.
+
+Y lo que más pesa no son los granos: es *evitar las fotos, la pena de que te vean de cerca, tener que planear el maquillaje todos los días.*
+
+CLEARSTEM actúa *desde la raíz* con DIM para tus hormonas y cúrcuma con glutatión para desinflamar. Por eso tiene *más de 3,000 reseñas* de gente con resultados reales.
+
+Cuando trabajás *desde la raíz, el cambio sí se mantiene.* ✨
+
+OFERTAS HASTA AGOTAR
+
+1️⃣ Tratamiento 1 mes (1 frasco) → Q199 + 🛻 ENVÍO TOTALMENTE GRATIS
+
+2️⃣ Tratamiento 2 meses (2 frascos) → Q299 + 🎁 ENVÍO TOTALMENTE GRATIS
+   OFERTA IRRESISTIBLE 🥰👇
+
+3️⃣ Tratamiento 3 meses (3 frascos) → Q399 + 🎁🎁 ENVÍO TOTALMENTE GRATIS
+   LA MÁS ELEGIDA ⭐ (tratamiento completo) — y lo mejor, pagás al recibir 😊
+
+El acné hormonal necesita constancia: la mayoría empieza a ver cambios entre la semana 2 y 3, y el resultado se asienta con los meses. Por eso el de 3 es el que más piden.
+
+¿Confirmame tu Departamento y Municipio? 😊
+
+INTERACCIONES 3, 4 y 5 → las de siempre, sin cambios.
+
+═══ FAQ DEL PRODUCTO (cargar en el bot) ═══
+
+P: ¿Sirve para hombres?
+R: Sí. El acné hormonal de la mandíbula y la espalda funciona igual en hombres, y CLEARSTEM apoya el equilibrio hormonal en ambos casos. Muchos de nuestros clientes son hombres. 😊
+
+P: ¿Tiene hormonas?
+R: No. No aporta hormonas: apoya el equilibrio de las tuyas con DIM, que es un compuesto que viene de vegetales crucíferos como el brócoli.
+
+P: ¿En cuánto tiempo veo resultados?
+R: La mayoría empieza a notar cambios entre la semana 2 y la 3. El resultado se va asentando con los meses de uso constante, por eso recomendamos el tratamiento de 2 o 3 frascos.
+
+P: ¿Cómo se toma?
+R: 2 a 3 cápsulas al día con la primera comida. Nada más, no necesitás cremas ni rutinas.
+
+P: ¿Puedo tomarlo si estoy con anticonceptivos?
+R: Es un suplemento natural, pero si estás con tratamiento médico lo mejor es que se lo consultés a tu doctora. CLEARSTEM acompaña, no reemplaza tu tratamiento.
+
+P: ¿Sirve si tengo SOP?
+R: Muchas clientas con SOP lo usan porque apoya el equilibrio hormonal, que es lo que está detrás del acné, la regla irregular y el vello facial. No trata el SOP, pero apoya lo que lo desbalancea.
+
+P: ¿Es el original?
+R: Sí, es CLEARSTEM Mindbodyskin original, fórmula americana de 90 cápsulas, sellado. Lo revisás cuando te llega y pagás hasta tenerlo en la mano. 🙌
+
+P: ¿Me va a resecar la piel?
+R: No. A diferencia de los tratamientos tópicos, CLEARSTEM trabaja desde adentro — no reseca ni irrita la piel.
+
+═══ REGLAS CONDICIONALES DE ESTE PRODUCTO ═══
+· Si el cliente es HOMBRE → nunca decir "tu carita"; usar "tu piel", "la mandíbula", "la espalda".
+· Si menciona ANTICONCEPTIVOS o tratamiento médico → siempre "acompaña, no reemplaza"; sugerir consultar.
+· Si menciona EMBARAZO o LACTANCIA → no vender; recomendar consultar con su médico primero.
+· Si pregunta por resultados en menos de 2 semanas → ser honesta: "entre la semana 2 y 3". Nunca prometer antes.
+· Si dice que ya probó CLEARSTEM antes y no le funcionó → preguntar cuánto tiempo lo tomó. La causa más común
+  es haberlo dejado antes de la semana 3.
+· NUNCA usar "cura", "elimina el acné" ni "trata el SOP". Siempre "apoya", "ayuda a", "acompaña".
+
+────────────────────────────────────────────────────────────────────────
+PARTE 5 — CHECKLIST DE EJECUCIÓN
+────────────────────────────────────────────────────────────────────────
+□ 1. RESOLVER LA PÁGINA (bloqueante — hacelo primero, ver abajo)
+□ 2. Revisar el saludo del bot (Parte 1) — elegir opción A o B
+□ 3. Apagar el conjunto 6 "Eje Intestino-Piel" (apagar, NO eliminar)
+□ 4. Generar el ad renovado del conjunto 1 con el PROMPT A → subirlo y reemplazar el creativo
+      (el conjunto NO se apaga: solo cambia el creativo)
+□ 5. Actualizar los copies de los conjuntos 1 a 5 con los textos de la Parte 2
+      (pegar las 3 variaciones en "Agregar opción de texto")
+□ 6. Verificar que solo los conjuntos 2 y 3 llevan precio, en copy Y creativo
+□ 7. Cargar el FAQ y las reglas condicionales en el bot
+□ 8. Reintentar el MCP de GTR 13 (sigue OFF; mientras tanto, todo se mide por LucidSales)
+
+  El bot NO se toca fuera del saludo: las 2 infografías y los 2 testimonios reales
+  se quedan como están porque ya convierten.
+
+⚠️ PASO 1 EN DETALLE — DOS "ASTRID GARCÍA" DISTINTAS (verificado contra Meta el 25-jul)
+   El link que entregaste (facebook.com/profile.php?id=61581366406442) NO aparece entre las
+   páginas con permiso para pautar. La que Meta sí reconoce se llama igual pero tiene otro ID:
+
+       Astrid García → page_id 823825257480758   ✅ publicable hoy
+       id=61581366406442                          ❌ sin permiso de ads asociado
+
+   Antes de tocar la campaña, entrá a Meta y confirmá cuál es la que está corriendo CLEARSTEM
+   hoy (Configuración del conjunto → Página de Facebook). Dos escenarios:
+   · Si la campaña usa 823825257480758 → todo bien, no hacés nada, el archivo ya la tiene.
+   · Si la que querés usar es la 61581366406442 → hay que asignarla al Business, darle acceso
+     a la cuenta GTR 13 y conectarle el WhatsApp ANTES de pautar. Sin eso el anuncio no puede
+     entregar al bot y perdés el gasto.
+
+────────────────────────────────────────────────────────────────────────
+PARTE 6 — RESERVA (no usar ahora, solo si baja la conversación)
+────────────────────────────────────────────────────────────────────────
+El flujo corre hoy con 2 infografías y 2 testimonios reales, y convierte. Si en algún
+momento la conversación cae, esta es la primera pieza a sumar — un tercer testimonio de
+COMUNIDAD (captura de comentarios de Facebook), que es la objeción que hoy no está cubierta
+("¿a otros de verdad les sirvió?"). Textos listos para el layout:
+
+Comentario 1 — María José Xoyón:
+a mi me lo recomendo mi dermatologa cuando le dije q ya no queria mas antibioticos. voy en el mes y medio y la diferencia se nota
+
+Comentario 2 — Andrea Súchite:
+yo tenia acne desde los 19 y ya tengo 31. probe de todo. esto es lo unico q me ha aguantado sin q vuelva peor al dejarlo
+
+Comentario 3 — Kevin Morales:
+sirve para hombres? tengo en la mandibula y la espalda
+   ↳ Respuesta de Diana Ruiz: si va, mi hermano lo esta tomando. es hormonal igual
+
+También queda de reserva el PROMPT C (Info 3 de confianza) en la Parte 3.
+
+VERIFICACIÓN DE COHERENCIA COPY ↔ BOT (antes de activar):
+□ El beneficio "trabaja desde adentro / hormonal" aparece en los copies Y en el audio del bot ✓
+□ "Envío gratis" y "pagás al recibir" coinciden entre copy y bot ✓
+□ El Q199 de los copies 2 y 3 coincide con el P1u del bot ✓
+□ El bot usa "tratamiento de X meses" y "LA MÁS ELEGIDA ⭐" en el P3u ✓
+□ El timeline "semana 2 a 3" es el mismo en copies, audio, FAQ y testimonios ✓
+□ Cada conjunto tiene 2 anuncios (creativo duplicado)
+════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,225 @@
+{
+  "ficha_id": "F042",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/29_1304415972751500.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1304415972751500",
+    "dias_activo": 3,
+    "replicas": 2,
+    "score": 53,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": "progresion"
+  },
+  "dispositivo_dominante": "EL TIMELINE ANATOMICO ARRIBA CON EL TITULAR SOBRE BROCHAZO INMEDIATAMENTE DEBAJO. Tres ilustraciones del organo con circulo numerado, flecha y label temporal, y bajo ellas una banda de brochazo irregular que sostiene el titular. El brochazo es lo que separa la zona de promesa de la zona de argumento, y es la unica textura organica de la pieza.",
+  "lectura_estrategica": "Version cuadrada del concepto de transformacion temporal. La diferencia con el 5:6 es que al perder alto, la lista de beneficios se comprime a cinco filas de una linea y el parrafo descriptivo pasa a compartir renglon con la pildora de dosis. Lo que se conserva intacto es la secuencia: cronograma, promesa, mecanismo, precio, cierre. El bloque de escasez y los tres tiers comparten fila al pie, y el CTA emocional escrito en cursiva cierra en el mismo renglon que los precios.",
+  "fondo": {
+    "tipo": "degradado_oscuro",
+    "base": "{{PALETA_OSCURA}} profundo a casi negro",
+    "textura": "particulas o bokeh muy sutil",
+    "regla_paleta": "cuando el empaque es blanco o neutro, la paleta se deriva del INGREDIENTE ACTIVO o del ORGANO objetivo"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 5,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (fondo) mas dorado (garantia, etiquetas de tier, bordes) mas blanco (texto) mas rojo o coral (organo y props) mas verde exclusivo de los checks"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco",
+    "color_acento": "dorado"
+  },
+  "zonas": {
+    "timeline_transformacion": {
+      "posicion": "superior, ancho completo",
+      "cantidad_estados": 3,
+      "formato_estado": "circulo numerado sobre la ilustracion anatomica del organo, mas label temporal sobre pildora {{PALETA_OSCURA}} mas descripcion corta de 2 lineas debajo",
+      "estados": "{{TIMELINE[3]}}",
+      "estructura_estado": {
+        "numero": "1 | 2 | 3",
+        "imagen": "{{IMAGEN_ESTADO}}",
+        "label": "{{LABEL_TEMPORAL}}",
+        "descripcion": "{{DESC_ESTADO}}"
+      },
+      "separador": "flecha {{PALETA_ACENTO}} entre estados",
+      "restriccion_label": "1-2 palabras",
+      "restriccion_descripcion": "5-8 palabras",
+      "regla_progresion": "el estado 1 muestra el organo afectado, el 3 el apoyado y el 2 un intermedio gradual",
+      "funcion": "ES EL ELEMENTO DIFERENCIADOR: promete cronograma, no solo resultado"
+    },
+    "titular": {
+      "posicion": "bajo el timeline, ancho completo",
+      "alineacion": "centrado",
+      "contenedor": "banda de BROCHAZO irregular {{PALETA_OSCURA}} mas oscura que el fondo",
+      "linea_1": "{{TITULAR}}",
+      "linea_2": "{{SUBTITULAR}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold uppercase al 45% de L1, sobre banda de acento",
+      "restriccion_l1": "3-5 palabras",
+      "restriccion_l2": "5-7 palabras",
+      "funcion_brochazo": "unica textura organica de la pieza: separa la zona de cronograma de la zona de argumento"
+    },
+    "badge_garantia": {
+      "posicion": "izquierda_media",
+      "forma": "circular con borde dorado doble y laurel",
+      "linea_1": "GARANTIA",
+      "linea_2": "{{DIAS_GARANTIA}}",
+      "linea_3": "DIAS",
+      "escala": "15% del ancho",
+      "regla": "siempre en dorado, nunca en el color de la paleta"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "34% del frame",
+      "composicion": "envase de pie sobre superficie de madera con las perlas sueltas al pie y props del ingrediente al borde",
+      "fuente": "IMAGEN_2"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "derecha_superior",
+      "texto": "{{PARRAFO}}",
+      "estilo": "Regular blanco de 3 lineas con el ingrediente y la dosis en Bold",
+      "restriccion_palabras": "16-22 palabras",
+      "funcion": "unico bloque de prosa del layout"
+    },
+    "pildora_dosis": {
+      "posicion": "bajo el parrafo, sobre la lista",
+      "contenedor": "pildora {{PALETA_MEDIO}} solida con borde fino",
+      "texto": "{{INGREDIENTE}} {{DOSIS}} · {{BENEFICIO_RESUMEN}}",
+      "estilo": "Bold blanco",
+      "funcion": "header de la lista de beneficios"
+    },
+    "lista_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical compacta",
+      "formato_item": "FOTO CIRCULAR REAL (organo, vaso sanguineo, celula, gota) mas TITULO Bold blanco mas subtitulo Regular gris de 1-2 lineas, dentro de contenedor con borde fino redondeado",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_subtitulo": "5-9 palabras",
+      "regla_icono": "fotos circulares reales, nunca line-art",
+      "regla_item_4": "uno de los items descarta explicitamente una objecion de categoria (no es un diuretico agresivo)"
+    },
+    "bloque_escasez": {
+      "posicion": "inferior_izquierda",
+      "icono": "reloj",
+      "linea_1": "{{ESCASEZ_L1}}",
+      "linea_2": "{{ESCASEZ_L2}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "restriccion_palabras": "3-5 palabras por linea"
+    },
+    "bloque_precios": {
+      "posicion": "inferior_centro",
+      "tiers": 3,
+      "orientacion": "fila horizontal de tres columnas separadas por lineas finas",
+      "formato_tier": "cantidad en Regular arriba, precio Black/900 blanco debajo, etiqueta de valor en pildora dorada al pie",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} — {{ETIQUETA_SOCIAL}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}} — {{ETIQUETA_AHORRO}}"
+    },
+    "cta_emocional": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card con borde dorado",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_URGENCIA}}",
+      "estilo_l1": "Regular blanco de 2 lineas",
+      "estilo_l2": "Black/900 en cursiva {{PALETA_ACENTO}} con signos de exclamacion",
+      "restriccion_palabras": "4-8 palabras por linea",
+      "regla": "el CTA nombra los sistemas del titular antes de la urgencia"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye bandera de {{PAIS}}"
+    }
+  },
+  "secuencia_lectura": [
+    "timeline_transformacion",
+    "titular",
+    "producto_hero",
+    "parrafo_descriptivo",
+    "pildora_dosis",
+    "lista_beneficios",
+    "bloque_precios",
+    "bloque_escasez",
+    "badge_garantia",
+    "cta_emocional",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El timeline NO es opcional: sin timeline no es este concepto",
+    "Los 3 estados del organo son visualmente distinguibles",
+    "El estado 2 muestra progreso parcial, no resultado total",
+    "El brochazo va inmediatamente bajo el timeline y es la unica textura organica",
+    "Los iconos de beneficio son fotos circulares reales",
+    "Siempre 3 tiers de precio",
+    "La garantia va en dorado",
+    "Uno de los beneficios descarta una objecion de categoria"
+  ],
+  "variables_requeridas": [
+    "TIMELINE[3]",
+    "TITULAR",
+    "SUBTITULAR",
+    "PARRAFO",
+    "INGREDIENTE",
+    "DOSIS",
+    "BENEFICIO_RESUMEN",
+    "BENEFICIOS[5]",
+    "DIAS_GARANTIA",
+    "ESCASEZ_L1",
+    "ESCASEZ_L2",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "CTA_L1",
+    "CTA_URGENCIA",
+    "GARANTIAS[3]",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "producto con resultado progresivo ilustrable en el organo objetivo",
+    "feed cuadrado, cuando el mismo producto ya corre en vertical",
+    "cuando hay margen para 3 tiers y garantia de devolucion",
+    "publico que compara y necesita proyeccion"
+  ],
+  "cuando_no_usar": [
+    "resultado inmediato",
+    "organos no ilustrables en estados",
+    "cuando no hay parrafo tecnico que contar: la zona de prosa queda vacia"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular GARANTIA 90 DIAS en dorado con laurel.",
+    "Claims impresos en el empaque: GMO free, gluten free, lab tested.",
+    "Timeline con labels INICIO / SEMANA 4 / SEMANA 8 y descripciones RINONES SOBRECARGADOS Y ESTRES OXIDATIVO, MAS ALIVIO MEJOR EQUILIBRIO Y APOYO RENAL, FILTROS RENALES APOYADOS Y MAYOR BIENESTAR.",
+    "Pildora de dosis ASTAXANTHIN 12 MG · APOYO ANTIOXIDANTE DIARIO.",
+    "Beneficios: APOYA TUS FILTROS RENALES, PROMUEVE UNA CIRCULACION SALUDABLE, BIENESTAR VASCULAR, MANEJO SALUDABLE DE LIQUIDOS (NO ES UN DIURETICO AGRESIVO), DEFENSA ANTIOXIDANTE.",
+    "Etiquetas MEJOR OFERTA en el tier 2 y MAYOR AHORRO en el tier 3.",
+    "Bloque QUEDAN POCAS UNIDADES · ALTA DEMANDA ESTA SEMANA.",
+    "Barra final: ENVIOS A TODA GUATEMALA, PAGO CONTRA ENTREGA, COMPRA SEGURA Y GARANTIZADA con bandera."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

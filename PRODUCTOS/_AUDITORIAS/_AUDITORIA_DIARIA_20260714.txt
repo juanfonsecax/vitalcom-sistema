@@ -1,0 +1,64 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA DE ESCALADO — 2026-07-14 (martes, ~7 PM) · SOLO LECTURA
+Lado-ads leído EN VIVO por MCP (GTR7 NUSAVA+VARICOSE, GTR0 TINNIDROP).
+CLEARSTEM (GTR13) MCP OFF → solo LucidSales (sin dato nuevo hoy).
+VENTAS REALES = LucidSales. Última ventana pegada = 07→14 jul (lunes).
+Hoy es martes → NO hay Lucid nuevo. omni_purchase de Meta = aproximación
+parcial (COD sub-reporta). Todo CPA de hoy es PROVISIONAL hasta el próximo
+Lucid (jueves 17-jul). Frecuencias 1.1–1.7 → sin fatiga en ningún conjunto.
+═══════════════════════════════════════════════════════════════════════════
+
+── VARICOSE (GTR7) ─────────────────────────────────────────────────────────
+2 campañas vivas. BE v1 Q64.5 (PD $8.46) · BE v2 2x1 ≈Q159 (PD $20.87).
+
+ESCALADO VERGUENZA (120247375697420784) · $45.81 · día 4-5
+  conjunto            gasto  linkclk conv  %conv/clic  omni*  estado
+  MA2_VESTIDO         $7.77   46      23    50.0%       4      🟢 GANADOR (Lucid Q11.6/4v)
+  MA6_OFERTA2X1       $8.16   65      8     12.3%       3      🟢 vende (Lucid Q16.7/3v)
+  MA4_MANCHAS         $7.02   47      13    27.7%       —      🟡 sub-testeado (37%PD)
+  MA3_VERANO          $7.73   58      9     15.5%       —      🟡 sub-testeado
+  MA5_RESIGNACION     $7.55   82      11    13.4%       1      🟡 conv floja, 1 venta
+  MA1_COMPARACION     $7.58   60      6     10.0%       —      🔴 matar-conv (10%, 0v)
+
+TESTEO TRAFICO (120247186770470784) · $63.20 · día 10-11 (MADURO)
+  MIEDO-CIRUGIA       $16.49  161     97    60.2%       5      🟢 co-ganador (Lucid Q25.1/4v)
+  VERGUENZA-PIERNAS   $16.74  145     77    53.1%       3      🟢 ganador (ya escalado)
+  MANCHAS-OSCURAS     $16.42  141     60    42.6%       2      🟡 vende poco
+  ARANITAS-VENOSAS    $6.71   59      38    64.4%       0      🔴 matar-ventas (buena conv, 0v, PD cumplido)
+  PIERNAS-CANSADAS    $6.86   31      23    74.2%       0      🔴 matar-ventas (0v)
+  CALAMBRES-NOCTURNOS $0.00   —       0     —           —      🔴 muerto (Meta nunca entregó)
+
+── NUSAVA B12 (GTR7) — EN ROJO ─────────────────────────────────────────────
+CPA global Q91.9/venta > BE Q68.3. BE Q68.3 (PD $8.96).
+
+ESCALADO MEMORIA (120247342961210784) · $54.25 · día 5-6 — NO RINDE
+  C-3 cuidadora       $9.34   68      24    35.3%       —      🟡 (Lucid Q58.6/2v)
+  C-4 niebla mental   $8.92   72      23    31.9%       —      🟡 sub-testeado
+  C-2 olvido cuarto   $9.15   62      19    30.6%       —      🟡 sub-testeado
+  C-5 Dr autoridad    $9.19   73      22    30.1%       —      🟡 (Lucid Q60.2/2v)
+  C-1 pastilla PRECIO $8.79   41      5     12.2%       —      🔴 matar-conv (precio tanquea)
+  C-6 oferta2X1 PRECIO$8.88   33      3     9.1%        —      🔴 matar-conv (precio tanquea)
+
+TESTEO PARAGUAS (120246893776440784) · $120.15 · día 17 (MUY MADURO)
+  ARDOR               $27.36  227     126   55.5%       —      🟢 EL CABALLO REAL (Lucid Q33.7/3v, sano)
+  MEMORIA             $26.88  127     64    50.4%       —      🟡 buena conv, escalado no cierra
+  AZUCAR              $12.55  68      23    33.8%       —      ⚪ capado
+  ABSORCION           $27.69  211     67    31.8%       —      🟡
+  ANIMO               $12.62  100     68    68.0%       0      🔴 68% conv pero 0 ventas de 35 msj (bot/avatar)
+  CIATICA             $13.05  53      27    50.9%       0      🔴 0 ventas
+
+── TINNIDROP (GTR0) — SANO ─────────────────────────────────────────────────
+TEST relanzado (120256219801430595) · $35.91 · día 3-4. BE Q60.5 (PD $7.94).
+  Pérdida auditiva    $5.87   59      39    66.1%       3      🟢 GANADOR (Lucid Q17.3/2v)
+  Deterioro cognitivo $5.66   58      35    60.3%       2      🟢 co-ganador (Lucid Q16.5/2v)
+  Accesibilidad Copia2$6.28   30      20    66.7%       —      🟡 buena conv
+  NOCHES SIN DORMIR   $5.87   55      17    30.9%       1      🟡
+  TENSIÓN/ESTRÉS      $6.07   53      12    22.6%       —      🔴 conv floja (día 3, cerca PD)
+  ME DIJERON NO CURA  $6.16   60      11    18.3%       1      🔴 conv floja
+
+── CLEARSTEM (GTR13) — sin lectura hoy (MCP OFF) ───────────────────────────
+Último Lucid 7d (07-14): 6 ventas · Q36.2/venta · Q54.3/entregado · SANO.
+Mejor = Anti-Falsificación Q18.5 (2v). Reintentar MCP cada run.
+
+* omni = omni_purchase de Meta (parcial, sub-reporta COD). Ventas reales = Lucid.
+═══════════════════════════════════════════════════════════════════════════

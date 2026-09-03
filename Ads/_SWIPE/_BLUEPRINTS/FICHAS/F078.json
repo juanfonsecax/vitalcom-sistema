@@ -1,0 +1,122 @@
+{
+  "ficha_id": "F078",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Vida_Natural/01_1019740840890431.jpg",
+    "anunciante": "Vida Natural",
+    "ad_archive_id": "1019740840890431",
+    "dias_activo": 8,
+    "replicas": 1,
+    "score": 33,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "EL SELFIE CON EL PRODUCTO EN LA MANO Y DOS CAJAS DE SUBTITULO, UNA ARRIBA Y OTRA ABAJO. Una persona real se fotografia en su cocina sosteniendo el envase junto a la cara, y el relato se parte en dos cajas de texto opuestas: la de arriba dice cuanto tiempo duro el problema, la de abajo dice que se acabo. El desayuno servido en la mesa fija la escena.",
+  "lectura_estrategica": "Variante masculina y de rostro visible del testimonio en chat. Donde la version con globos observa a alguien, esta version le habla a la camara: la persona sostiene el producto a la altura de la cara y mira de frente, lo que convierte la pieza en una recomendacion directa. El relato usa una estructura de DURACION mas RUPTURA — seis meses sin poder desayunar tranquilo... hasta esto — donde la cifra de meses es lo que da veracidad, y el remate de abajo personifica el problema (me dejo en paz) en vez de describir una mejora clinica.",
+  "fondo": {
+    "tipo": "escena_domestica_real",
+    "base": "cocina real con la comida servida en la mesa y los objetos cotidianos a la vista",
+    "regla": "el plato servido fija el momento y la comida del pais: es lo que hace local la pieza sin decirlo"
+  },
+  "paleta": {
+    "derivacion": "de la escena real",
+    "cantidad_colores": 2,
+    "estructura": "los colores propios de la cocina mas gris muy claro para las cajas de subtitulo. No se agrega ninguno"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de sistema, la de los subtitulos automaticos",
+    "pesos_permitidos": [
+      "Regular/400",
+      "Medium/500"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "gris muy oscuro sobre caja clara",
+    "regla": "caja baja, sin punto final y sin uppercase"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una persona del avatar en su cocina, sosteniendo el envase a la altura de la cara con la etiqueta hacia camara",
+    "encuadre": "selfie de brazo extendido, medio cuerpo, con la mesa servida visible",
+    "mirada": "a camara, con media sonrisa contenida",
+    "luz": "la de la ventana de la cocina, sin correccion",
+    "escena": "el desayuno o la comida servida, los utensilios usados, la cortina, los objetos del lugar",
+    "que_se_conserva": "el grano, el desencuadre leve, el desorden de la mesa, la ropa de casa",
+    "que_NO_se_hace": "estudio, mesa montada de produccion, recorte del producto, filtro, logo",
+    "regla": "el plato servido con la comida tipica del pais es lo que hace local la pieza sin escribirlo"
+  },
+  "zonas": {
+    "caja_duracion": {
+      "posicion": "superior, ancho parcial centrado",
+      "contenedor": "caja gris muy clara rectangular con esquinas apenas redondeadas",
+      "texto": "{{DURACION_DEL_PROBLEMA}}",
+      "estilo": "Regular gris oscuro en caja baja, terminado en puntos suspensivos mas HASTA ESTO",
+      "restriccion_palabras": "7-9 palabras",
+      "formato_obligatorio": "CIFRA DE TIEMPO mas el problema en gerundio negado mas hasta esto",
+      "regla_critica": "la cifra de meses o anos es lo que da veracidad: un problema fechado se lee vivido y no inventado",
+      "regla_deixis": "termina en ESTO, sin nombrar el producto: el envase en la mano lo nombra"
+    },
+    "caja_ruptura": {
+      "posicion": "inferior, ancho parcial centrado",
+      "contenedor": "la misma caja, mismo color y mismo estilo",
+      "texto": "{{RUPTURA_DEL_PROBLEMA}}",
+      "estilo": "Regular gris oscuro en caja baja, sin punto final",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "el problema PERSONIFICADO haciendo algo (me dejo en paz, se olvido de mi, ya no me visita)",
+      "regla_critica": "personifica el problema en vez de describir una mejora clinica: es lo que mantiene el registro de persona y no de marca"
+    },
+    "selfie_con_producto": {
+      "posicion": "frame completo",
+      "escala": "100% del frame",
+      "contenido": "{{FOTO_SELFIE_CON_PRODUCTO}}",
+      "tratamiento": "persona del avatar en su cocina, sosteniendo el envase a la altura de la cara con la etiqueta hacia camara, mirando de frente",
+      "regla": "el producto se sostiene en la mano y no se recorta ni se agranda: la etiqueta tiene que leerse pero dentro de la escena"
+    }
+  },
+  "secuencia_lectura": [
+    "caja_duracion",
+    "selfie_con_producto",
+    "caja_ruptura"
+  ],
+  "reglas_duras": [
+    "Las dos cajas de subtitulo son identicas en color, forma y tipografia",
+    "La caja de arriba lleva una cifra de tiempo",
+    "La caja de arriba termina en ESTO, sin nombrar el producto",
+    "La caja de abajo personifica el problema en vez de describir una mejora",
+    "La persona mira a camara y sostiene el producto a la altura de la cara",
+    "El plato servido con comida del pais queda visible",
+    "Sin logo, sin precio, sin sellos, sin CTA"
+  ],
+  "variables_requeridas": [
+    "DURACION_DEL_PROBLEMA",
+    "RUPTURA_DEL_PROBLEMA",
+    "FOTO_SELFIE_CON_PRODUCTO"
+  ],
+  "cuando_usar": [
+    "cuando el problema tiene una duracion que se puede fechar en meses o anos",
+    "cuando el problema aparece asociado a una comida o a un momento del dia",
+    "publico saturado de anuncios producidos",
+    "cuando existe una persona real dispuesta a mostrar la cara"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay persona real disponible: un modelo de banco rompe el formato",
+    "BOFU: sin precio ni CTA no cierra",
+    "problemas sin duracion identificable"
+  ],
+  "sellos_y_claims_observados": [
+    "Caja superior: 6 meses sin poder desayunar tranquilo... hasta esto.",
+    "Caja inferior: la gastritis por fin me dejo en paz.",
+    "Claims impresos en el empaque: TRATA ACIDEZ, ELIMINA H PYLORI, FALTA DE APETITO, DOLORES ESTOMACALES, Supplement Dietary, 60 CAPS.",
+    "La pieza no declara precio, sellos, garantias ni CTA."
+  ],
+  "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+  "blueprint_equivalente": null
+}

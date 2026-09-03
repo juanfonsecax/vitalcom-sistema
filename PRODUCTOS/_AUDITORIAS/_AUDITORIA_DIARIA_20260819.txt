@@ -1,0 +1,191 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — 2026-08-19 · 8 PM
+SISTEMA VITALCOM GUATEMALA · ETAPA-7 (monitor) + ETAPA-8 (escalado)
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 5 de 7 días con data · huecos: 2026-08-17, 2026-08-18.
+
+Última BASE cargada: 2026-08-14 → 2026-08-16 (cargada el 16-ago).
+No entró export de LucidSales en esta corrida → `_FACT_VENTAS.csv` NO se tocó
+(0 filas nuevas). El P&L y el ranking de esta noche se leen sobre la ventana
+2026-08-11 → 2026-08-16 y son LOS MISMOS NÚMEROS de anoche: no hay día nuevo
+que reportar. ⚠️ Marcado PARCIAL — regla dura: sin los días 17 y 18 no se
+presenta CPA semanal como completo, no se declara ganador oficial y no se
+manda matar por ventas.
+
+───────────────────────────────────────────────────────────────────────────
+🔴 LADO-ADS NO CORRIÓ — 2º DÍA CONSECUTIVO
+───────────────────────────────────────────────────────────────────────────
+El conector de Meta Ads NO está expuesto en esta sesión: cero herramientas
+`ads_*` disponibles (verificado por búsqueda de herramientas; lo único que
+aparece es un conector de Google Drive). Igual que el 17-ago.
+
+CONSECUENCIA: `_FACT_ENTREGA.csv` sigue con **2026-08-17 como último día**.
+Sin lado-ads esta noche NO hay:
+  · lectura de frecuencia / detección de fatiga,
+  · verificación del estado de GTR0 (¿siguió en línea tras el 17-ago?),
+  · conteo de conceptos por campaña,
+  · confirmación de qué campañas están vivas y gastando.
+
+Registrado en `_EVENTOS.csv` como `ANOMALIA_MCP_AUSENTE`. Reintentar mañana.
+Si falla un 3er día seguido, revisar la configuración del conector en Cowork
+— no es un problema de la cuenta de Meta, es de la sesión.
+
+⚠️ RECORDAR APR-059: el volumen del portafolio NUNCA se juzga desde el MCP
+(solo ve ~48% del gasto real). Pero su ausencia sí ciega la lectura de fatiga
+y de estado de cuenta, que no tienen otra fuente.
+
+───────────────────────────────────────────────────────────────────────────
+ETAPA-7 · RANKING POR ÁNGULO — ventana 2026-08-11 → 2026-08-16 (6 días)
+───────────────────────────────────────────────────────────────────────────
+Agregado por `angulo_key` (regla 1: nunca por conjunto; las réplicas R[N] se
+suman, no se comparan). JOIN con `_DIM_CONJUNTOS` cierra 100% — 0 de 233
+filas sin dimensión.
+
+  PRODUCTO   ÁNGULO                      VENTAS   PAUTA Q   CPA Q   vs BE
+  ───────────────────────────────────────────────────────────────────────
+  TINNIDROP  DETERIORO_COGNITIVO            17       762     44.8   ✅ 2.1× colchón
+  TINNIDROP  ACCESIBILIDAD_MEDICO            7       324     46.3   ✅
+  TINNIDROP  ME_DIJERON_NO_CURA              5       260     52.0   ✅
+  TINNIDROP  PERDIDA_AUDITIVA               13       918     70.6   ⚠️ el más financiado
+  TINNIDROP  NOCHES_SIN_DORMIR               0        75      —     bajo PD, sin veredicto
+  CLEARSTEM  RESISTENCIA_INSULINA_SOP       11       465     42.3   ✅ mejor del producto
+  CLEARSTEM  MEDICOS_FALLARON               10       448     44.8   ✅
+  CLEARSTEM  TESTIMONIO_RADICAL              1        62     62.0   n=1, ruido
+  CLEARSTEM  ANTI_FALSIFICACION              3       479    159.7   🔴 candidato a apagar
+  CLEARSTEM  EJE_INTESTINO_PIEL              1         0      —     sin pauta atribuida
+  NUSAVA     ARDOR                           9       744     82.7   ⚠️ cerca de su BE (Q98.8)
+  VARICOSE   (3 ángulos)                     0       177      —     producto apagado, correcto
+
+  Break-even vigente: TINNIDROP Q94.5 · CLEARSTEM Q106 · NUSAVA Q100.2
+
+POR CUENTA (regla 4 — saturación se compara cuenta por cuenta, nunca agregado):
+  CP1    6v · Q198   · CPA Q33.0  ✅ la más eficiente
+  GTR1  12v · Q585   · CPA Q48.8  ✅
+  GTR13 26v · Q1,454 · CPA Q55.9  ✅ (CLEARSTEM entero)
+  GTR7  26v · Q1,703 · CPA Q65.5  ✅
+  GTR0   7v · Q773   · CPA Q110.4 🔴 la única en rojo — 2.3× el portafolio
+
+  GTR0 sigue siendo el sumidero de la ventana. Recordar la corrección del
+  18-ago: no está "rota", está INTERMITENTE — se apagaba días enteros por el
+  método de pago (AMG2 con sus 3 tarjetas fallando, APR-049) y volvía. El
+  CPA de Q110 es gasto de pocos días repartido sobre ventas de seis. NO
+  escalar GTR0 hasta ver 2-3 días seguidos con gasto Y ventas. Antes de tocar
+  creativo o presupuesto ahí: arreglar el pago (quitar MC-8931, revisar
+  MC-4308 que falla 61%).
+
+SIN VEREDICTO ESTA NOCHE:
+  · ANTI_FALSIFICACION (CLEARSTEM, Q159.7) sigue siendo el candidato #1 a
+    apagar, y sigue SIN veredicto por 3ª noche: es la lectura de 6 días sin
+    madurar (ventas = piso, CPA = techo, regla 5); sobre la ventana ponderada
+    del motor da ≈Q103 ≈ break-even y sobre la serie completa Q73 contra BE
+    Q106. Presupuesto congelado, se relee con los exports del 17 y 18.
+  · Es el 4º caso seguido de un veredicto que se habría equivocado si se
+    saca de una ventana chica y sin madurar (APR-038 revocado, APR-058
+    corregido, APR-039 revocado). La propuesta abierta desde anoche sigue en
+    pie: ninguna acción de MATAR se funda en <10 días ni en data sin 3 días
+    de maduración.
+
+───────────────────────────────────────────────────────────────────────────
+⭐ NOVEDAD DE HOY — TEST T01 CONFIRMADO, ARRANCA MAÑANA 20-AGO
+───────────────────────────────────────────────────────────────────────────
+`_TESTEOS.csv` se editó hoy 14:45: el test **T01 "Densidad del creativo de
+control"** pasó a estado CONFIRMADO con sus 4 brazos y fecha de inicio
+2026-08-20.
+
+  Producto: TINNIDROP · Ángulo FIJO: ME_DIJERON_NO_CURA · Formato: IMAGEN 4:5
+  A — Colage de síntomas   (C2_BENEFICIOS / colage-sintomas)
+  B — Ligera               (C2_BENEFICIOS / ligera) ← control vigente de FASE 1
+  C — Densa                (C2_BENEFICIOS / densa)
+  D — Progresión           (C8_PROGRESION / progresion) ← único concepto distinto
+
+TRES COSAS QUE HAY QUE DECIR ANTES DE QUE ARRANQUE:
+
+1. 🔴 COMPLIANCE — EL BRAZO A NO SE PUEDE PRODUCIR TAL CUAL. La propia ficha
+   lo anota: el creativo de referencia dice "elimina hongos" y lleva sello
+   REGISTRO-FDA US. Ambos violan el compliance de ADS (verbo de cura + sello
+   inventado). Se limpia AL PRODUCIR, no después: un ad con eso puesto sube
+   el CPM de Andrómeda y arriesga la cuenta, y encima contamina el test
+   (estarías midiendo densidad contra un ad penalizado). Recordar que el
+   compliance aplica SOLO a los ADS — dentro del bot no se suaviza nada.
+
+2. ⚠️ EL TEST ES DE VARIANTE, NO DE CONCEPTO — y la ficha ya lo advierte.
+   A/B/C comparten `concepto_key=C2_BENEFICIOS`: miden densidad visual dentro
+   del mismo concepto. Solo D cambia de concepto (C8_PROGRESION) y es el
+   único brazo SIN validar (5 anunciantes con réplicas, cero con 21+ días).
+   Al leer el resultado: A vs B vs C responde "¿cuánta densidad?"; D contra
+   los otros tres mezcla dos variables y no es comparable de forma limpia.
+
+3. 📏 TAMAÑO DE MUESTRA — ojo con el presupuesto que exige. Presupuesto de
+   Decisión = 1 × break-even por brazo = 4 × Q94.5 ≈ **Q378 mínimo** solo
+   para tener derecho a un veredicto, y aun así con 1-3 ventas por brazo el
+   intervalo es ±113-196% (Poisson casi puro, regla 1). Con ME_DIJERON_NO_CURA
+   corriendo a Q52 de CPA, eso son ~7 ventas repartidas en 4 brazos. Si el
+   resultado sale apretado, NO es un empate: es que faltó muestra.
+   Recomendación: dejarlo correr hasta que cada brazo cruce su PD, sin podar
+   por conversación antes del día 3.
+
+4. 🚩 VARIABLE DE CONFUSIÓN desde el 20-ago (regla 8). Ya quedó registrada en
+   `_EVENTOS.csv`: cualquier movimiento del CPA de TINNIDROP en
+   ME_DIJERON_NO_CURA a partir de mañana NO se atribuye al ángulo.
+   Nota de diseño: el test fija el ángulo en ME_DIJERON_NO_CURA (CPA Q52, 5
+   ventas en la ventana) y no en DETERIORO_COGNITIVO (Q44.8, 17 ventas).
+   Elegir un ángulo estable para aislar el creativo es correcto en principio,
+   pero ME_DIJERON_NO_CURA tiene 3.4× menos historia de ventas → va a tardar
+   más en separar los brazos. Si el objetivo es velocidad de veredicto,
+   DETERIORO_COGNITIVO daría señal antes.
+
+───────────────────────────────────────────────────────────────────────────
+ETAPA-8 · PLAN DE ACCIÓN (sale del motor del dashboard, no de opinión)
+───────────────────────────────────────────────────────────────────────────
+El motor calcula Q345/semana en juego sobre 3 acciones de hoy. En orden:
+
+HOY
+  1. ▼ BAJAR el gasto a la banda que sí rendía, no subirlo. 11-13 ago corrió
+     Q597/día y dejó Q652/día; 14-16 corrió Q974/día (+63%) y dejó Q317/día.
+     Q378/día más de pauta compró 0.3 ventas más por día. Impacto Q1,007/sem.
+  2. ⇄ TINNIDROP · GTR0 → a piso, mover presupuesto a GTR7. El MISMO ángulo
+     paga Q117.4 en GTR0 y Q48.7 en GTR7 (corregido por cobertura de
+     tracking). Impacto Q221/sem.
+  3. ⇄ GTR0 toda la cuenta → a piso. Q773 para 7 ventas, perdió Q124.
+     Revisar el método de pago ANTES de culpar al creativo (APR-049).
+
+ESTA SEMANA
+  4. ▲ +20% a GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2 — CPA Q28.7 vs BE Q94.5
+     (Q65.8 limpios por venta). Impacto Q263/sem.
+  5. ▲ +20% a GTR7_NUSAVA_ARDOR_R4 — CPA Q24.4 vs BE Q100.2. Q152/sem.
+  6. ▲ +20% a GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1 — CPA Q29.1. Q131/sem.
+     (Uno por día, no los tres de golpe.)
+  7. ◧ PEGAR EL EXPORT DE LUCIDSALES — 2 días sin cargar.
+
+CUANDO PUEDAS
+  8. ✦ CLEARSTEM/GTR13: sumar 5 conceptos distintos (corre con 3; Andrómeda
+     premia 8-12 y un duplicado no cuenta).
+  9. ✦ TINNIDROP/GTR7: sumar 6 conceptos distintos (corre con 2).
+     ⚠️ El test T01 empieza a llenar precisamente este hueco en TINNIDROP —
+     pero solo suma 1 concepto nuevo real (C8_PROGRESION); A/B/C son
+     variantes del mismo. Para llegar a 8 hacen falta conceptos, no variantes.
+
+───────────────────────────────────────────────────────────────────────────
+ARCHIVOS TOCADOS
+───────────────────────────────────────────────────────────────────────────
+  · `_EVENTOS.csv`         → +2 filas (LANZAMIENTO_TEST T01 · ANOMALIA_MCP_AUSENTE)
+  · `_BITACORA_DATA.txt`   → fila del 19-ago
+  · `_DASHBOARD.html`      → regenerado (0 filas sin dimensión ✅)
+  · `_FACT_VENTAS.csv`     → NO tocado (sin export)
+  · `_FACT_ENTREGA.csv`    → NO tocado (sin MCP)
+  · `_GANANCIAS.txt`       → NO tocado (sin día nuevo; escribir una fila
+                              repetida sería inventar movimiento)
+  · `2_DATA_PRODUCTO.txt`  → NO tocado por producto: el bloque
+                              RESULTADOS_TESTEO sería idéntico al de anoche.
+
+PEDIR AL OPERADOR:
+  · Export de LucidSales de UN SOLO DÍA para **2026-08-17**.
+  · Export de LucidSales de UN SOLO DÍA para **2026-08-18**.
+  · (Pendiente de anteanoche) re-export del **2026-08-16** como CONTROL.
+  Desde el 17-ago hay UN SOLO BOT (APR-043) → un solo export por día, ya no
+  dos fuentes.
+
+Serie vigente 17-jul → 16-ago: 294 ventas · Q66,886 ingreso · ganancia
+Q13,971 · sangrado Q210.
+═══════════════════════════════════════════════════════════════════════════

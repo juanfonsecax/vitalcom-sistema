@@ -1,0 +1,351 @@
+═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id PENDIENTE (Sanarte) · campaign_id nuevo (re-testeo) ═══
+GUÍA DE EJECUCIÓN MANUAL — RE-TESTEO FASE 1 (bot paraguas de 6 ángulos)
+Orden de ejecución: (1) prompts de imagen → (2) flujo LucidBot → (3) subir media → (4) conjuntos+copies+precio → (5) duplicar→WhatsApp + activar 4 AM.
+
+INPUTS CONGELADOS
+  PRODUCTO: Tinnidrop (spray tinnitus 60ml, South Meon importado)
+  COSTO_PROVEEDOR_Q: Q41/u
+  OFERTA: 1/2/3 → 1u Q178 (gancho) · 2u Q239 (HÉROE — "la oferta increíble") · 3u Q299 (la más elegida ⭐ + regalo, pagás al recibir). Envío gratis en las 3.
+  GARANTÍA (real, la da el operador — palanca de landing portada al bot): 1u y 2u = 90 días de garantía de satisfacción · 3u = 180 días de garantía + regalo. Baseline 90 días va en INFO 3 (imagen). La escalera 90/180 va SOLO en el mensaje de oferta del bot (Parte 4), NO en la imagen (no se ponen precios/cantidades en la imagen). Wording "garantía de satisfacción", nunca "devolución de dinero" (COD).
+  CREATIVOS: 3 VIDEO (ganadores re-lavados: anti-médico, cognitivo, miedo) + 3 IMAGEN (ángulos nuevos).
+  CAMPAÑA: 6 conjuntos · 2 anuncios/conjunto (duplicado) · $1.59/día c/u · CONVERSATIONS/WHATSAPP · 4 AM.
+  FANPAGE / page_id / WhatsApp: PENDIENTE confirmar (Sanarte).
+
+════════════════════════════════════════════════════════════════
+PARTE 1 — PROMPTS DE IMAGEN (pegar en Gemini Pro / ChatGPT junto con la FOTO del frasco Tinnidrop)
+════════════════════════════════════════════════════════════════
+Los 3 ads-imagen son de los ángulos NUEVOS. Sin precio ni sello de oferta (el precio va solo en 2 de los copies de video). Marca visible = Sanarte. Producto = frasco spray blanco con etiqueta azul, ícono de oreja con onda de sonido, "TINNIDROP", 60ml. Tono clínico-cálido. Color de acento azul del producto + verde Sanarte de confianza. Compliance: "apoya/ayuda a", NUNCA "cura/elimina"; sin plazos imposibles; sin antes/después de cara.
+
+────────────────────────────────────────
+AD-IMAGEN #4 — ÁNGULO "NOCHES SIN DORMIR"
+────────────────────────────────────────
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta conversión. Genera un creativo CUADRADO 1080x1080 px (y luego adaptaciones 4:5 y 9:16), fotorrealista, profesional, listo para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: volver a dormir de corrido, noches en silencio y descanso real
+- PROBLEMA QUE RESUELVE: en el silencio de la noche el zumbido se vuelve insoportable y no lo deja dormir
+- PÚBLICO OBJETIVO: adultos 45+ (hombres y mujeres) que llevan meses o años sin dormir bien por el tinnitus, Guatemala
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, salud natural (página Sanarte)
+- OFERTA: (este ad NO lleva precio ni sello de oferta)
+
+ESTILO VISUAL: Oscuro de lujo / escena nocturna — dormitorio en penumbra, luz cálida tenue de una lámpara, ambiente de "3 de la mañana". Persona adulta sentada en el borde de la cama de espaldas o de perfil, con gesto de cansancio llevándose la mano cerca del oído (NO comparación antes/después, una sola escena). El frasco Tinnidrop iluminado en primer plano sobre la mesa de noche, protagonista y grande.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, palabra clave "NO TE DEJA DORMIR" en azul brillante): "En el silencio de la noche, el zumbido NO TE DEJA DORMIR"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido, bien iluminado, dominante sobre la mesa de noche.
+4. BENEFICIO (texto mediano): "Apoya el descanso para que vuelvas a dormir de corrido"
+5. CONFIANZA (1 badge chico, para no recargar): "100% NATURAL · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Escribinos hoy 👉"
+7. SELLO DE OFERTA (estrella/starburst PEQUEÑO, esquina superior derecha, que NO tape el producto, texto total < 20%): "OFERTA ESPECIAL" arriba en chico + "SOLO HOY" grande, rojo #C81E2D con borde amarillo. Tono de oferta atractiva, NO de pánico.
+8. TESTIMONIO (banner tipo burbuja de chat de WhatsApp PEQUEÑA en la parte inferior, con 5 estrellas doradas, letra legible, ocupa poco): "Llevaba más de un año sin dormir de corrido por el pitido. Hoy por fin duermo la noche entera 🙏 — María, 52". Experiencia subjetiva, SIN claim de cura. Mantené el texto TOTAL de la imagen < 20% (si se recarga, achicá el beneficio, no el testimonio).
+
+PALETA: azul del producto + acentos cálidos de la lámpara + verde suave Sanarte para confianza. Tipografía sans-serif limpia y redondeada (kit del branding Tinnidrop/Sanarte), bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO "cura/trata/elimina". Sin antes/después corporal bilateral. Sin promesas de tiempo imposibles. Hablar del dolor del avatar está permitido; NO afirmar que cura el tinnitus. Usar "apoya / ayuda a".
+
+RESULTADO: un anuncio que detiene el scroll de alguien que no duerme por el zumbido, comunica el descanso en 3 segundos y motiva a escribir por WhatsApp. Entregá la versión 1:1 y describí las adaptaciones 4:5 y 9:16.
+
+────────────────────────────────────────
+AD-IMAGEN #5 — ÁNGULO "ME DIJERON QUE NO TIENE CURA" (resignación → esperanza)
+────────────────────────────────────────
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta conversión. Genera un creativo CUADRADO 1080x1080 px (y luego adaptaciones 4:5 y 9:16), fotorrealista, profesional, listo para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: hay algo natural que sí apoya cuando te dijeron que "no hay nada que hacer"
+- PROBLEMA QUE RESUELVE: el médico le dijo que aprenda a vivir con el zumbido; se resignó
+- PÚBLICO OBJETIVO: adultos 45+ que ya fueron al médico/otorrino y salieron sin solución, Guatemala
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, esperanzador (página Sanarte)
+- OFERTA: (este ad NO lleva precio ni sello de oferta)
+
+ESTILO VISUAL: Editorial de marca / clínico-cálido — fondo claro y limpio, luz natural suave. Persona adulta con expresión de alivio y esperanza tranquila (media sonrisa serena mirando por la ventana), una sola escena, sin comparación antes/después. Frasco Tinnidrop grande y nítido en primer plano.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, palabra clave "NO HAY NADA QUE HACER" en azul): "¿Te dijeron que con el zumbido NO HAY NADA QUE HACER?"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante.
+4. BENEFICIO (texto mediano): "Fórmula natural que apoya tu oído desde la raíz — sin receta"
+5. CONFIANZA (1 badge chico): "SIN RECETA · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Preguntanos cómo te ayudamos 👉"
+7. TESTIMONIO como prueba social (banner tipo burbuja de chat de WhatsApp PEQUEÑA en la parte inferior, con 5 estrellas doradas): "El doctor me dijo que aprendiera a vivir con el zumbido. Con esto por fin siento alivio, no lo podía creer. — Carlos, 58". Experiencia subjetiva, SIN claim de cura. En este ángulo de esperanza el testimonio ES la prueba social (reemplaza cualquier sello de urgencia — encaja mejor con el tono y no lo cheapea). Texto total de la imagen < 20%.
+
+PALETA: azul del producto + blancos cálidos + verde Sanarte. Tipografía sans-serif limpia y redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO "cura/trata/elimina". Sin antes/después corporal bilateral. Sin plazos imposibles. Enmarcar como apoyo/esperanza, nunca como cura garantizada. "apoya / ayuda a".
+
+RESULTADO: un anuncio que le devuelve la esperanza a quien se resignó, comunica "sí hay una opción natural" en 3 segundos y motiva a escribir por WhatsApp. Entregá la versión 1:1 y describí las adaptaciones 4:5 y 9:16.
+
+────────────────────────────────────────
+AD-IMAGEN #6 — ÁNGULO "TENSIÓN/ESTRÉS: LA CAUSA OCULTA"
+────────────────────────────────────────
+Actúa como un diseñador experto en e-commerce, publicidad para Meta Ads y creativos de alta conversión. Genera un creativo CUADRADO 1080x1080 px (y luego adaptaciones 4:5 y 9:16), fotorrealista, profesional, listo para pautar en Facebook e Instagram. Debe venderse visualmente en menos de 3 segundos y NO parecer generado por IA.
+
+[ADJUNTO: FOTO DEL PRODUCTO — frasco spray blanco con etiqueta azul, ícono de una oreja con onda de sonido, texto "TINNIDROP", aplicador de spray largo, 60 ml]
+
+DATOS DEL PRODUCTO
+- NOMBRE: Tinnidrop
+- BENEFICIO PRINCIPAL: calma la tensión nerviosa que dispara el zumbido (Ginseng) + circulación (Ginkgo)
+- PROBLEMA QUE RESUELVE: cuando el avatar se estresa o tensa el cuello/mandíbula, el pitido se vuelve más fuerte
+- PÚBLICO OBJETIVO: adultos 40+ estresados, con tensión de cuello/mandíbula, que notan que el zumbido sube con los nervios, Guatemala
+- PAÍS/MERCADO: Guatemala
+- TONO DE MARCA: clínico-cálido, educativo (página Sanarte)
+- OFERTA: (este ad NO lleva precio ni sello de oferta)
+
+ESTILO VISUAL: Composición diagonal dinámica / clínico-educativo — fondo claro con un diagrama sutil y elegante que conecta cuello → mandíbula → oído con líneas de luz suaves (insinuar el eje tensión-oído, sin verse a "infografía médica" recargada). Persona adulta llevándose la mano al cuello/nuca con leve gesto de tensión. Frasco Tinnidrop grande y nítido resolviendo la escena.
+
+JERARQUÍA VISUAL (arriba → abajo):
+1. MARCA: "Sanarte" en la esquina superior, discreta y legible.
+2. HOOK (texto grande, máx 2 líneas, palabra clave "LA TENSIÓN" en azul): "¿El zumbido empeora cuando estás tenso? LA TENSIÓN puede ser la causa"
+3. PRODUCTO PROTAGONISTA: frasco Tinnidrop nítido y dominante.
+4. BENEFICIO (texto mediano): "Ginseng que ayuda a calmar la tensión nerviosa que alimenta el zumbido"
+5. CONFIANZA (1 badge chico): "GINSENG + GINKGO · PAGÁS AL RECIBIR"
+6. CTA (botón azul redondeado): "Escribinos hoy 👉"
+7. SELLO DE OFERTA (estrella/starburst PEQUEÑO, esquina superior IZQUIERDA para variar respecto a los otros ads, que NO tape el producto, texto total < 20%): "PROMO" arriba en chico + "SOLO HOY" grande, rojo #C81E2D con borde amarillo. Tono de oferta, NO de pánico.
+8. TESTIMONIO (banner tipo burbuja de chat de WhatsApp PEQUEÑA en la parte inferior, con 5 estrellas doradas): "Cuando me estresaba el pitido se ponía horrible. Desde que lo uso lo siento mucho más calmado. — Andrea, 47". Experiencia subjetiva, SIN claim de cura. Texto total de la imagen < 20% (si se recarga, achicá el beneficio, no el testimonio).
+
+PALETA: azul del producto + líneas de luz turquesa/verde tenue del diagrama + verde Sanarte. Tipografía sans-serif limpia y redondeada, bold en el hook. Texto legible a 24pt en celular. Texto total < 20% del área.
+
+COMPLIANCE: NO "cura/trata/elimina". Sin antes/después corporal bilateral. Sin plazos imposibles. Presentar la tensión como POSIBLE causa ("puede ser"), no diagnóstico. "apoya / ayuda a".
+
+RESULTADO: un anuncio que revela una causa que casi nadie nombra, hace clic en quien nota que su zumbido sube con el estrés, y motiva a escribir por WhatsApp. Entregá la versión 1:1 y describí las adaptaciones 4:5 y 9:16.
+
+════════════════════════════════════════════════════════════════
+PARTE 2 — INFOGRAFÍAS DEL BOT (3 imágenes dentro del flujo de WhatsApp) — pegar en Gemini/ChatGPT con la foto del frasco
+════════════════════════════════════════════════════════════════
+ADN VISUAL (PASO 0, fijo para las 3): color acento = AZUL del frasco Tinnidrop; fondo azul marino→azul eléctrico; tipografía sans-serif geométrica limpia (Poppins/Montserrat), bold en títulos; frasco spray blanco con etiqueta azul, ícono de oreja con onda de sonido, aplicador largo, 60ml. Textura de nicho = red neuronal punteada al 3%. Ingredientes: Ginkgo Biloba, Ginseng, Regaliz, Menta.
+COMPLIANCE aplicada: sin "cura/elimina"; sin plazos imposibles (usar "desde la semana 2"); stats de comportamiento, NO % clínicos inventados; sellos institucionales permitidos con "Estándares FDA" (nunca "Aprobado FDA").
+
+────────────────────────────────────────
+INFO 1 — BENEFICIOS (título = deseo, no "beneficios")
+────────────────────────────────────────
+Un póster de infografía de producto vertical 4:5 (1080x1350), alta resolución, estética premium de bienestar (NO clínica-plana). FONDO: degradado azul marino a azul eléctrico (color del frasco Tinnidrop), con micro-textura de red neuronal punteada al 3% encima. Todo el texto en español. Tipografía sans-serif geométrica limpia (Poppins/Montserrat), bold en títulos.
+
+ENCABEZADO: TÍTULO PRINCIPAL grande en bold blanco: "RECUPERÁ EL SILENCIO Y VOLVÉ A DORMIR". Kicker pequeño al lado: "10 BENEFICIOS". Botón azul con texto blanco: "TINNIDROP". NUNCA poner "BENEFICIOS" como título principal.
+
+CENTRO — PRODUCTO HÉROE: frasco spray blanco Tinnidrop ultra-realista, etiqueta azul con ícono de oreja y onda de sonido, aplicador largo, grande y protagonista, iluminación dramática con glow azul, reflejo sutil. Base rodeada de hojas de ginkgo, raíz de ginseng y hojas de menta.
+
+10 BENEFICIOS en dos columnas que flanquean el frasco. Cada uno = número en círculo azul + ILUSTRACIÓN 3D DIE-CUT a color (tamaño moderado) + TÍTULO en mayúsculas (domina) + descripción corta 1 línea:
+1. Ilustración 3D die-cut de una oreja con onda azul — "ALIVIA EL ZUMBIDO" — apoya la reducción del acúfeno.
+2. Ilustración 3D die-cut de un corazón/vaso rojo — "MEJORA LA CIRCULACIÓN AUDITIVA" — el Ginkgo Biloba optimiza el flujo al oído.
+3. Ilustración 3D die-cut de un cerebro rosado — "CALMA LA TENSIÓN NERVIOSA" — el Ginseng reduce el cortisol que dispara el zumbido.
+4. Ilustración 3D die-cut de una hoja verde — "DESINFLAMA EL CANAL" — el Regaliz alivia la irritación del conducto auditivo.
+5. Ilustración 3D die-cut de una hoja de menta — "FRESCOR Y ALIVIO INMEDIATO" — la Menta da sensación de frescor al aplicar.
+6. Ilustración 3D die-cut de una luna morada — "MEJORA EL SUEÑO" — descanso reparador sin el pitido.
+7. Ilustración 3D die-cut de un foco/rayo — "MÁS CLARIDAD MENTAL" — menos niebla mental, mejor concentración.
+8. Ilustración 3D die-cut de una gota azul — "APLICACIÓN DIRECTA" — spray al canal auditivo, sin inserción profunda.
+9. Ilustración 3D die-cut de un escudo verde — "100% NATURAL" — sin químicos ni aditivos artificiales.
+10. Ilustración 3D die-cut de un reloj — "ALIVIO PROGRESIVO" — resultados que vas notando desde la semana 2.
+
+PIE: logo "sanarte®". Barra azul oscuro. Izquierda: escudo "BIENESTAR AUDITIVO, CADA DÍA." Derecha: hoja verde "FÓRMULA SEGURA Y DE ALTA CALIDAD". Texto total legible en celular (≥24pt). Sin sellos oficiales en esta pieza.
+
+────────────────────────────────────────
+INFO 2 — TRANSFORMACIÓN + INGREDIENTES + MODO DE USO
+────────────────────────────────────────
+Un póster de infografía vertical 1080x1350, alta resolución, estilo médico-wellness premium. Fondo base blanco roto teñido 5% hacia azul. Tipografía sans-serif geométrica limpia. Todo en español.
+
+ZONA 1 — MOMENTO (mitad superior, fondo degradado azul marino a negro). Formato "momento situacional" (NO dos fotos de la misma cara). Headline bold uppercase blanco centrado con línea azul debajo: "DEL RUIDO CONSTANTE AL SILENCIO".
+Dos escenas lado a lado separadas por línea vertical 1px con logo sanarte® pequeño:
+IZQUIERDA — habitación oscura de noche, reloj de mesa marcando 2:47 AM, persona acostada despierta de espaldas con gesto de tensión llevándose la mano al oído, luz azulada fría, auténtico y doméstico. Etiqueta: "NOCHE 1 · EL PITIDO NO ME DEJA DORMIR".
+DERECHA — mismo cuarto con luz natural de día entrando por la ventana, la cama ordenada y vacía, ambiente de calma y silencio, frasco Tinnidrop en la mesa de noche. Etiqueta: "SEMANA 3 · SILENCIO Y DESCANSO". Grano natural de cámara de teléfono, sin filtros, sin actuación exagerada.
+
+ZONA 2 — INGREDIENTES (fondo azul marino oscuro, borde 1px azul). Título bold uppercase blanco: "LO QUE HAY DENTRO IMPORTA". Subtítulo azul claro: "4 ingredientes con función específica". Grilla de 2 columnas, 4 celdas con aire:
+● GINKGO BILOBA → mejora la circulación cerebral y auditiva
+● GINSENG → reduce el cortisol y la tensión nerviosa que desencadena el tinnitus
+● REGALIZ → alivia la inflamación del canal auditivo
+● MENTA → alivio sensorial inmediato y sensación de frescor en el oído
+Nota italic gris de cierre: "Fórmula sinérgica — cada ingrediente potencia al otro."
+
+ZONA 3 — MODO DE USO (25% inferior, fondo blanco roto teñido azul). Título centrado bold uppercase azul oscuro: "CÓMO USARLO". Tres íconos en fila con flecha azul entre ellos:
+Ícono 1 — spray 3D blanco realista. Texto: "1 APLICACIÓN". Subtexto: "por uso".
+Ícono 2 — oreja 3D. Texto: "DIRECTO AL OÍDO". Subtexto: "sin inserción profunda".
+Ícono 3 — sol y luna 3D. Texto: "MAÑANA Y NOCHE". Subtexto: "2 veces al día, uso continuo".
+Barra inferior: "SIN EFECTOS SECUNDARIOS · 100% NATURAL · ABSORCIÓN DIRECTA EN EL CANAL AUDITIVO". Logo sanarte® centrado pequeño. Sin emojis.
+
+────────────────────────────────────────
+INFO 3 — CONFIANZA / CONTRAENTREGA
+────────────────────────────────────────
+PASO 1 — FOTO BASE (generar primero): Foto candid estilo iPhone UGC, altamente realista. Una doctora latina real de unos 35 años, bata blanca profesional limpia, en una clínica moderna luminosa con luz natural suave desde la izquierda. La doctora está en el lado DERECHO del frame (del centro al borde derecho); el lado IZQUIERDO es espacio negativo limpio, fondo de clínica desenfocado, para superponer texto. Sostiene con ambas manos a la altura del pecho el frasco spray blanco Tinnidrop con etiqueta azul y sello termoencogible transparente brillante alrededor de la tapa (claramente visible). Mira a la cámara con sonrisa genuina y confiable. Poros naturales, leve grano iPhone, luz suave, sin filtros. Aspecto 100% auténtico. Aspecto 4:5. --style raw
+
+PASO 2 — DISEÑO (superponer sobre la foto, 1080x1350):
+HEADLINE superior bold uppercase blanco, alineado izquierda, máx 2 líneas: "RECUPERÁ TU SILENCIO CON RESPALDO". Línea separadora 2px azul debajo.
+BLOQUE CONTRAENTREGA (lo más prominente, primer elemento): pastilla grande fondo azul, ícono billete+casa, texto bold uppercase "PAGÁS AL RECIBIR". Subtexto blanco: "Envío GRATIS a toda Guatemala · GINTACOM y FORZA · No pagás nada por adelantado". Debajo, sello de garantía PROMINENTE (escudo/medalla con check azul): "90 DÍAS DE GARANTÍA DE SATISFACCIÓN" en bold + subtexto "Acompañamiento del equipo".
+ZOOM DE CONFIANZA: círculo tipo lupa conectado con línea al frasco de la doctora; dentro, macro del sello termoencogible con reflejo; debajo texto azul italic: "Sellado por sanarte®".
+TRES BLOQUES ESTADÍSTICOS (números grandes en azul). Esta imagen es IN-BOT (post-clic) → el operador elige la versión que más convierta; ninguna afecta el CPM de Meta:
+  OPCIÓN A (comportamiento): "4.9/5" valoración de clientes · "9 de cada 10" repiten · "+12,000" personas eligieron Tinnidrop.
+  OPCIÓN B (la fuerte del operador, in-bot, válida): "87%" reportaron reducción del zumbido en 2 semanas · "93%" mejor sueño y claridad desde la 1ª semana · "+10,200" recuperaron el silencio.
+  → Usar la que el operador prefiera (por defecto la B, que es la que ya venía usando).
+BLOQUE FAQ inferior (fondo blanco roto teñido azul), título centrado "RESOLVAMOS TUS DUDAS", separador azul, 3 columnas:
+COL 1 — ícono 3D oreja con onda. "¿FUNCIONA PARA TODOS LOS TIPOS DE ZUMBIDO?" — "Apoya las causas más comunes: mala circulación, inflamación y tensión nerviosa en las vías auditivas."
+COL 2 — reloj análogo 3D. "¿EN CUÁNTO TIEMPO FUNCIONA?" — "La mayoría nota mejoras entre la semana 2 y la 4 de uso continuo."
+COL 3 — hoja/escudo 3D verde. "¿TIENE EFECTOS SECUNDARIOS?" — "Fórmula 100% natural a base de plantas, suave para el uso diario en el canal auditivo."
+BARRA DE CERTIFICACIONES final (3 sellos institucionales, texto azul oscuro muy pequeño):
+IZQUIERDO — escudo verde/blanco Ministerio de Salud Pública y Asistencia Social de Guatemala. "Ministerio de Salud Pública y Asistencia Social" / "REGISTRO SANITARIO GUATEMALA".
+CENTRAL — logo Registro Mercantil de Guatemala. "Registro Mercantil" / "EMPRESA LEGALMENTE REGISTRADA".
+DERECHO — escudo rojo/blanco/azul EE.UU. "HECHO EN USA" / "FABRICADO BAJO ESTÁNDARES FDA". (NUNCA "Aprobado FDA" ni "Certificado FDA".)
+Todo el texto en español. Tipografía sans-serif geométrica limpia.
+
+════════════════════════════════════════════════════════════════
+PARTE 3 — FLUJO LUCIDBOT (BOT PARAGUAS DE LOS 6 ÁNGULOS)
+════════════════════════════════════════════════════════════════
+⚠️ DECISIÓN (operador, 10-jul): EL BOT ACTUAL YA FUNCIONA (conversación a WhatsApp 36-78%, ninguno bajo el piso 35% → el bot no fue el problema; el problema fue de ÁNGULO). NO se rehace el bot. Se CONSERVA el bot que el operador ya tiene cargado.
+  PRINCIPIO CLAVE (operador, 10-jul): el compliance/CPM de Andrómeda aplica SOLO a los ADS (lo que Meta lee para segmentar y cobrar). El BOT, el AUDIO, las INFOGRAFÍAS y los TESTIMONIOS son POST-CLIC (dentro de WhatsApp) → Meta NO los lee → NO afectan CPM ni entrega. Dentro del bot el objetivo es CONVERSIÓN. NO suavizar verbos ni claims post-clic por "compliance".
+  · AUDIO: se conserva TAL CUAL (incluye "eliminar el zumbido"). No se cambia.
+  · INFOGRAFÍAS (in-bot): el operador puede usar sus números fuertes (87%, 93%, "resultados clínicos", sellos) — no cuesta nada en Meta. Los prompts de la PARTE 2 pueden llevar esos números si el operador los prefiere (ver nota en INFO 3).
+  ÚNICO CAMBIO AL BOT (lo pidió el operador): agregar la GARANTÍA a la oferta → 1u/2u = 90 días de garantía · 3u = 180 días. Nada más.
+  DONDE SÍ SE MANTIENE LA DISCIPLINA = LOS ADS (creativos + copy que Meta lee): ahí "cura/elimina", % clínicos y "FDA aprobado" sí pueden subir CPM o hacer rechazar el ad. Solo ahí.
+El flujo completo de abajo queda como REFERENCIA/RESPALDO del estándar del sistema, pero el operador NO tiene que re-pegarlo: su bot actual + la garantía es suficiente.
+── FLUJO DE REFERENCIA (el operador conserva el suyo; esto es el estándar del sistema) ──
+Tienda: Sanarte · Asesora: Laura López (nombre se revela en el audio/cierre, no antes) · Voseo GT · GINTACOM/FORZA · pago contraentrega.
+PROMESA INTEGRADORA (denominador común de los 6 ángulos): "Tinnidrop te ayuda a calmar el zumbido DESDE LA RAÍZ —circulación, tensión nerviosa e inflamación— para recuperar el silencio, el descanso y la claridad, de forma natural y sin receta."
+6-8 PROPUESTAS DE VALOR (problema→solución→resultado, alimentan bullets/audio/FAQ):
+  1. ¿El pitido no te deja dormir? → Ginkgo mejora la circulación y Ginseng calma la tensión → volvés a dormir de corrido.
+  2. ¿El zumbido te quita memoria y concentración? → apoya la claridad mental → volvés a pensar claro.
+  3. ¿Fuiste al médico y seguís igual? → actúa directo en el canal auditivo, sin receta → alivio sin gastar en consultas.
+  4. ¿El pitido empeora cuando estás estresado? → Ginseng baja el cortisol/tensión → lo sentís más calmado.
+  5. ¿Te dijeron que no tiene cura? → fórmula natural que apoya desde la raíz → esperanza real.
+  6. ¿Miedo a que empeore? → actuás a tiempo sobre la raíz → protegés tu oído y tu descanso.
+
+BLOQUE J — CATÁLOGO (4 campos, pegar tal cual en la ficha de producto de LucidBot)
+DESCRIPCIÓN:
+¿Vivís con ese zumbido en los oídos que no se apaga? Ese pitido *no se quita solo* ni con pastillas — y lo que más pesa no es el ruido, es *no poder dormir, concentrarte ni estar en paz*. Tinnidrop actúa *directo en tu canal auditivo* con Ginkgo Biloba, Ginseng, Regaliz y Menta: mejora la circulación, calma la tensión nerviosa y desinflama *desde la raíz*. Vas recuperando el silencio, el descanso y la claridad. Sin receta, pagás al recibir.
+
+MODO DE USO:
+Súper fácil: 1 aplicación directa en el oído, sin inserción profunda. Mañana y noche, uso continuo. En segundos y sin complicaciones.
+
+CARACTERÍSTICAS TÉCNICAS:
+- Apoya el alivio del zumbido desde la raíz (circulación + tensión nerviosa + inflamación)
+- Ginkgo Biloba: mejora la circulación cerebral y auditiva
+- Ginseng: reduce el cortisol y la tensión nerviosa que dispara el tinnitus
+- Regaliz: alivia la inflamación del canal auditivo
+- Menta: alivio sensorial inmediato y sensación de frescor
+- 100% natural · sin receta · aplicación directa al oído
+
+CONTENIDO DEL PAQUETE:
+Cada frasco es un tratamiento en spray de 60ml para uso continuo. Elegís tratamiento de 1, 2 o 3 frascos según la opción.
+
+PRECIO BASE: Q178 (1u) · Q239 (2u) · Q299 (3u) — envío gratis en todas. Garantía: 90 días (1u/2u) · 180 días (3u).
+
+──────────────── MENSAJE INICIAL (elementos 1-12) ────────────────
+ELEMENTO 1 — TEXTO (saludo FIJO, sin cambios): "¡Hola! 👋 Bienvenida/o a Sanarte, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨"
+ELEMENTO 2 — VIDEO 1 (autoridad): usar el video del ángulo #4 anti-médico lavado (TINNIDROP_1_ANTIMEDICO.mp4) — es testimonio con doctora, da autoridad y resuelve la objeción crítica "¿funciona de verdad si el médico no me resolvió?".
+ELEMENTO 3 — VIDEO 2 (UGC): usar el video del ángulo #3 cognitivo o #6 (UGC más crudo).
+ELEMENTO 4 — IMAGEN INFO 1 (beneficios) — la de la PARTE 2.
+ELEMENTO 5 — IMAGEN INFO 2 (transformación/ingredientes/uso) — la de la PARTE 2.
+ELEMENTO 6 — IMAGEN INFO 3 (confianza/contraentrega + 90 días garantía) — la de la PARTE 2.
+ELEMENTO 7 — TEXTO (transición, sin cambios): "A continuación te muestro lo que dicen quienes ya lo tienen en casa 👇"
+ELEMENTO 8 — TESTIMONIO 1 (recepción — resuelve estafa):
+  GLOBO: "buenas, me llego el producto, vino bien selladito con su caja original. la verdad tenia miedo q fuera estafa pq uno ya ni sabe, pero todo bien, pague hasta q lo tuve en la mano, gracias"
+  IMAGEN: foto real del frasco/caja Tinnidrop recibido en mano/mesa, luz de casa (o generar con IA — prompt en PROMPTS_IMAGENES).
+ELEMENTO 9 — TESTIMONIO 2 (resultado + cantidad — TEXTO→IMAGEN→TEXTO):
+  GLOBO 1: "antes el pitido no me dejaba dormir, me la pasaba despierto en las noches horrible. llevo como 3 semanas usandolo y ya casi no lo escucho, duermo mucho mejor"
+  IMAGEN (real, buscar en internet): persona adulta durmiendo/descansando tranquila en la cama, mañana, luz natural.
+  GLOBO 2: "pedi 2 frascos pq mi esposo tambn lo usa para lo mismo, mejor asegurar el tratamiento completo"
+ELEMENTO 10 — TESTIMONIO 3 (comunidad + autoridad — captura de comentarios FB):
+  · "Juan Cifuentes — yo llevaba 2 años con ese zumbido horrible, fui con 2 otorrinos y no me dieron solucion. con esto en unas semanas ya bajo bastante, enserio no lo creia"
+  · "Karla Gudiel — x2 yo igual, al principio dude pero si funciona"
+  · "Fernando Perez — tengo 58 años y el zumbido en las noches era insoportable. lo uso ace un mes y ya duermo bien"
+  · mini hilo → "Sandra Lopez — sirve? " / "Valeria Morales — a mi si me ayudo cabal"
+ELEMENTO 11 — AUDIO (guión 45-55s, voz femenina GT, 2ª persona, SIN precio):
+  "¡Hola! Claro que sí, te cuento 😊. Sé lo agotador que es vivir con ese zumbido que no se apaga — que no te deja dormir, ni concentrarte, ni estar tranquilo. Tinnidrop está hecho para ayudarte a calmar ese pitido desde la raíz, de forma natural. Gracias al Ginkgo Biloba que mejora la circulación en tu oído, al Ginseng que baja la tensión nerviosa que lo dispara, y al Regaliz y la Menta que desinflaman y te dan alivio al instante. Lo vas a aplicar directo en tu oído, en segundos, y con el uso vas a ir notando cómo el zumbido baja, dormís mejor y tu mente se aclara. Y olvidate de recetas o complicaciones: es natural y suave para el uso diario. Imaginate volver a una noche en silencio, descansar de verdad y recuperar tu paz. Sinceramente, es la mejor decisión para tu bienestar y tu tranquilidad."
+ELEMENTO 12 — CIERRE → CIUDAD (sí #2): "Hola, soy Laura López, te atiendo hoy 😊 ¿Desde qué municipio y departamento nos escribís?"
+
+──────────────── INTERACCIONES ────────────────
+INTERACCIÓN 0 — CIUDAD (explícita): "¿Desde qué municipio y departamento nos escribís? 😊"
+INTERACCIÓN 1 — COBERTURA + VALIDACIÓN (al recibir ciudad):
+  "¡Qué bien, desde {CIUDAD}! 😊 Me alegra que estés *dando el paso de cuidar tu descanso y tu salud auditiva* — es una gran decisión.
+  Confirmo que tenemos cobertura completa ahí, con envíos a toda Guatemala y *pago contraentrega*. Las entregas tardan de 2 a 5 días hábiles. 🚚
+  ¿Deseás conocer nuestros precios?"
+INTERACCIÓN 2 — REFUERZO + PRECIOS (paraguas):
+  "¡Claro! 😊
+  Ya sabés que ese zumbido *no se quita con gotas comunes* ni con lo de siempre. Y lo que más pesa no es el sonido — es *no poder dormir, concentrarte ni estar en paz.*
+  Tinnidrop actúa *directo en tu canal auditivo* con Ginkgo Biloba y Ginseng, mejorando la circulación y la tensión que causan ese pitido. Por eso *+12,000 personas* ya lo usan y dejaron reseñas reales. Cuando lo tratás *desde la raíz, el alivio sí se siente.*
+
+  OFERTAS HASTA AGOTAR
+  1️⃣ Tratamiento (1 frasco) → Q178 🛻 ENVÍO GRATIS · 🛡️ 90 días de garantía
+  2️⃣ Tratamiento (2 frascos) → Q239 🎁 ENVÍO GRATIS · 🛡️ 90 días de garantía
+     OFERTA IRRESISTIBLE 🥰👇
+  3️⃣ Tratamiento (3 frascos) → Q299 🎁🎁 ENVÍO GRATIS + regalo · 🛡️ 180 días de garantía
+     LA MÁS ELEGIDA ⭐ (tratamiento completo) — y lo mejor, pagás al recibir 😊
+
+  ¿Confirmame tu Departamento y Municipio? 😊"
+INTERACCIÓN 3 — PEDIDO DE DATOS: (FIJA universal, sin cambios — la que ya tenés cargada)
+INTERACCIÓN 4 — CONFIRMACIÓN DEL PEDIDO: (FIJA universal, sin cambios)
+INTERACCIÓN 5 — CIERRE FINAL: (FIJA universal, sin cambios)
+MENSAJES DE INACTIVIDAD (1 y 2): (FIJOS universales, sin cambios)
+
+──────────────── FAQ_VENTA (producto) ────────────────
+P1 ¿Sirve para cualquier tipo de zumbido? → Apoya las causas más comunes del tinnitus: mala circulación, inflamación y tensión nerviosa en las vías auditivas.
+P2 ¿En cuánto tiempo se nota? → La mayoría nota mejoras entre la semana 2 y la 4 de uso continuo.
+P3 ¿Tiene efectos secundarios? → Es 100% natural a base de plantas, suave para el uso diario en el canal auditivo.
+P4 ¿Cómo se usa? → 1 aplicación directa en el oído, mañana y noche. Sin inserción profunda.
+P5 ¿Necesito receta? → No, no necesitás receta.
+P6 ¿Me lo tengo que meter muy adentro? → No, la aplicación es superficial en el canal auditivo, sin inserción profunda.
+P7 ¿Es original? → Sí, es el producto original y sellado. Además pagás al recibir, así comprás con confianza.
+P8 ¿Cuánto cuesta? → 1 frasco Q178, 2 frascos Q239, 3 frascos Q299, todos con envío gratis y pago contraentrega.
+P9 ¿Hacen envíos a todo el país? → Sí, a toda Guatemala por GINTACOM y FORZA, 2 a 5 días hábiles, pagás al recibir.
+P10 ¿Y si no me funciona? → Tenés 90 días de garantía de satisfacción y acompañamiento del equipo (180 días con el tratamiento de 3).
+
+FAQ_POSTVENTA: entrega/tracking, cómo mantener el uso continuo, cuándo repetir, soporte del equipo, qué hacer si tarda. (usar los de siempre + los P de arriba)
+
+──────────────── REGLAS CONDICIONALES DEL PRODUCTO ────────────────
+[IMPORTANTE: Responder las FAQ en lenguaje de APOYO ("apoya/ayuda a"), NUNCA "cura/elimina/trata el tinnitus".]
+[IMPORTANTE: No apto durante embarazo/lactancia. Si el cliente toma anticoagulantes o tiene una condición, sugerirle consultar a su médico (el Ginkgo puede interactuar con anticoagulantes).]
+[IMPORTANTE: No usar si hay perforación de tímpano o infección activa del oído; la aplicación es superficial, sin introducir el aplicador a fondo.]
+[IMPORTANTE: Garantía = de SATISFACCIÓN (90 días / 180 con el de 3), nunca "devolución del 100% del dinero".]
+(Las demás reglas base del bot = las de siempre, sin cambios.)
+
+════════════════════════════════════════════════════════════════
+PARTE 4 — MEDIA + COPIES DE LOS 6 CONJUNTOS
+════════════════════════════════════════════════════════════════
+MEDIA POR CONJUNTO (2 anuncios c/u = creativo duplicado):
+  Conj 1 #4 ANTI-MÉDICO → VIDEO tinnidrop4 (lavado). Creativo ganador, lleva sello de oferta en el lavado.
+  Conj 2 #3 COGNITIVO → VIDEO tinnidrop3 (lavado).
+  Conj 3 #6 MIEDO-IRREVERSIBLE → VIDEO tinnidrop6 (lavado, variante agresiva).
+  Conj 4 #NUEVO NOCHES SIN DORMIR → IMAGEN (Parte 1).
+  Conj 5 #NUEVO NO TIENE CURA → IMAGEN (Parte 1).
+  Conj 6 #NUEVO TENSIÓN OCULTA → IMAGEN (Parte 1).
+REGLA DE PRECIO (máx 2-3/6): el número Q178 va SOLO en los copies de 2 conjuntos = #4 y #3 (los ganadores, que ya lo llevan). Los otros 4 no llevan número de precio en el copy.
+
+COPIES GANADORES (#3, #4, #6): REUSAR los que ya vendieron (los del testeo previo), opcionalmente refrescados una variación para anti-fatiga. NO se reinventan.
+
+──────────── COPIES NUEVOS (3 ángulos nuevos) ────────────
+
+★ CONJUNTO 4 — NOCHES SIN DORMIR (sin precio)
+TEXTO 1:
+¿Ese pitido en el oído se vuelve insoportable apenas apagás la luz? 😔 En el silencio de la noche el zumbido se hace más fuerte y no te deja dormir — y al otro día andás agotado, sin ánimo ni concentración. Tinnidrop actúa directo en tu canal auditivo con Ginkgo Biloba y Ginseng: mejora la circulación y calma la tensión que alimenta ese ruido. Muchos empiezan a dormir mejor desde la segunda semana. Sin receta, pagás al recibir. Escribinos hoy y recuperá tus noches.
+TEXTO 2:
+Llevás noches sin dormir por ese zumbido que nunca se apaga. 🌙 No es normal acostumbrarse a vivir cansado. Tinnidrop trabaja desde la raíz del tinnitus —circulación, tensión nerviosa e inflamación— con extractos naturales que se aplican directo en el oído. +10,200 personas ya recuperaron el silencio y el descanso. Sin efectos raros, sin receta, pagás cuando te llega. Mandanos un mensaje hoy.
+TEXTO 3 (testimonio):
+"Llevaba más de un año durmiendo mal por el pitido en los oídos. Empecé con Tinnidrop y en unas semanas volví a dormir de corrido" 🙏 El tinnitus se hace más fuerte de noche, cuando todo está en silencio. Por eso actuamos donde está el problema: en tu canal auditivo, con Ginkgo, Ginseng, Regaliz y Menta. Envío gratis, pago contra entrega. Preguntanos cómo te ayudamos.
+TÍTULOS: "Volvé a dormir en silencio" · "El pitido no te deja dormir" · "Recuperá tus noches"
+DESCRIPCIÓN: Envío gratis · Pagás al recibir
+
+★ CONJUNTO 5 — "ME DIJERON QUE NO TIENE CURA" (sin precio)
+TEXTO 1:
+¿Fuiste al médico por el zumbido y te dijeron que "aprendas a vivir con él"? 😔 No te resignes todavía. El tinnitus tiene causas que sí se pueden apoyar: mala circulación, inflamación y tensión nerviosa. Tinnidrop actúa sobre ellas con Ginkgo Biloba, Ginseng, Regaliz y Menta, directo en tu oído. Muchos que ya lo habían intentado todo notaron alivio desde la segunda semana. Sin receta, pagás al recibir. Escribinos hoy.
+TEXTO 2:
+Te dijeron que no hay nada que hacer con el zumbido — y te resignaste. 🌱 Pero miles de personas que pensaban igual encontraron alivio con algo natural que actúa desde la raíz. Tinnidrop se aplica directo en el canal auditivo y trabaja sobre las causas más comunes del tinnitus. +10,200 personas ya recuperaron el silencio. Sin receta, sin efectos raros, pago contra entrega. Mandanos un mensaje hoy.
+TEXTO 3 (testimonio):
+"El doctor me dijo que aprendiera a vivir con el zumbido. Con esto por fin siento alivio, no lo podía creer." 🙌 Si ya agotaste las opciones y seguís igual, todavía hay algo natural que podés probar sin riesgo. Tinnidrop apoya tu oído desde la raíz. Envío gratis, pagás cuando te llega a la puerta. Preguntanos cómo te ayudamos hoy.
+TÍTULOS: "No te resignes al zumbido" · "Todavía hay una opción" · "¿Te dijeron que no hay cura?"
+DESCRIPCIÓN: Sin receta · Pagás al recibir
+
+★ CONJUNTO 6 — TENSIÓN / ESTRÉS: LA CAUSA OCULTA (sin precio)
+TEXTO 1:
+¿Notaste que el zumbido se pone más fuerte cuando estás estresado o tenso? 😮‍💨 No es tu imaginación: la tensión del cuello, la mandíbula y el cortisol alto alimentan el tinnitus — y casi nadie te lo explica. Tinnidrop lleva Ginseng, que ayuda a calmar esa tensión nerviosa, más Ginkgo para la circulación del oído. Se aplica directo, sin receta. Muchos lo notan más calmado desde la segunda semana. Escribinos hoy.
+TEXTO 2:
+La causa de tu zumbido que casi nadie menciona: la tensión. 🔍 Cuando el estrés y la tensión del cuello/mandíbula suben, el pitido se dispara. Tinnidrop trabaja justo ahí — el Ginseng baja la tensión nerviosa y el cortisol que lo detonan, el Ginkgo mejora la circulación auditiva. Fórmula natural, directo al oído, sin receta ni efectos raros. Pago contra entrega. Mandanos un mensaje hoy.
+TEXTO 3 (testimonio):
+"Cuando me estresaba el pitido se ponía horrible. Desde que lo uso lo siento mucho más calmado." 😌 Si tu zumbido empeora con los nervios, la tensión puede ser la causa. Tinnidrop apoya con Ginseng y Ginkgo para calmar y mejorar la circulación del oído. +10,200 personas ya lo usan. Envío gratis, pagás al recibir. Preguntanos cómo te ayudamos.
+TÍTULOS: "Tensión y zumbido" · "La causa que nadie te dice" · "Calmá la tensión del oído"
+DESCRIPCIÓN: 100% natural · Pagás al recibir
+
+[PENDIENTE — PARTE 5 crear campaña (6 conjuntos, 2 anuncios c/u, $1.59, 4 AM) + duplicar→WhatsApp + activar. Falta: page_id + WhatsApp de Sanarte (+ MCP_PIXEL_ID).]

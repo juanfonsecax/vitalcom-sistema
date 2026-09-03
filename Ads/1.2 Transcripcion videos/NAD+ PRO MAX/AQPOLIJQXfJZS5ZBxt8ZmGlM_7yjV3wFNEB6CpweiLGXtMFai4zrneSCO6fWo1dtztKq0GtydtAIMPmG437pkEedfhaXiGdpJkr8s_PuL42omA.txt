@@ -1,0 +1,25 @@
+============================================================
+Análisis del Video N: AQPOLIJQXfJZS5ZBxt8ZmGlM_7yjV3wFNEB6CpweiLGXtMFai4zrneSCO6fWo1dtztKq0GtydtAIMPmG437pkEedfhaXiGdpJkr8s_PuL42omA.mp4
+
+CLASIFICACIÓN RÁPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "Esto agranda el busto, ensancha las caderas y te quita años de encima" | qué se ve: Una mujer joven vestida de doctora (bata blanca y estetoscopio) hablando a la cámara y sosteniendo el frasco del producto. A la izquierda, un gráfico estático promocional. | overlay en pantalla: "NAD PRO MAX Hileathy", "3x1", "LEVANTA PECHOS Y GLÚTEOS"
+- ÁNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Recuperación de volumen corporal (aumento de busto y caderas) y rejuvenecimiento de la piel al compensar la pérdida de NAD después de los 30 años.
+- FORMATO CREATIVO (elegí UNO): educacional
+- AVATAR (quién aparece): Mujeres mayores de 30 años que experimentan flacidez, pérdida de volumen en caderas/busto y envejecimiento de la piel, y buscan una solución con respaldo aparentemente médico.
+- TONO: clínico / informativo + tuteo + habla una falsa doctora/médico.
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    · Prueba social (nº de clientes, "miles de personas"...): "y lo están recetando médicos"
+    · Cifras/resultados con tiempo ("en 30 días"...): "desde la primera semana"
+    · Urgencia/escasez ("oferta por tiempo limitado"...): No aplica
+    · Garantía / envío gratis / pago contra entrega: "envío gratis", y en pantalla dice: "ENVIO GRATIS", "PAGA AL RECIBIR"
+    · Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No (solo menciona "50% de descuento" y en pantalla "3x1")
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"Esto agranda el busto, ensancha las caderas y te quita años de encima, y lo están recetando médicos. Lo que nadie te explica es que después de los 30 tu cuerpo deja de producir NAD y por eso el busto cae, las caderas se pierden y la piel envejece más rápido de lo que debería. Cuando restauras el NAD con este suplemento, el cuerpo vuelve a regenerarse. El busto recupera volumen, las caderas se definen y la piel empieza a verse como años atrás desde la primera semana. Encuéntralo con 50% de descuento y envío gratis."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Pantalla dividida. En la mitad izquierda se mantiene un banner gráfico del producto con los beneficios y logos. En la mitad derecha, la mujer con bata blanca y estetoscopio gesticula, sostiene el frasco y luego saca un blíster de cápsulas para mostrarlo de cerca a la cámara. Textos literales en pantalla: "NAD PRO MAX Hileathy", "3x1", "LEVANTA PECHOS Y GLÚTEOS", "REJUVENECE LA PIEL Y BORRA ARRUGAS", "FORTALECE UÑAS Y CABELLO", "CERTIFICADO INVIMA REGISTRO SANITARIO NO. NS02024-C01234", "ENVIO GRATIS", "PAGA AL RECIBIR".
+* Qué transmite: Transmite autoridad médica para validar claims estéticos muy fuertes (agrandar busto y caderas). Apunta directamente a la inseguridad por el envejecimiento biológico natural a partir de los 30 años y ofrece una supuesta "cura" para revertirlo.
+* Llamado a la acción (CTA): "Encuéntralo con 50% de descuento y envío gratis."
+============================================================

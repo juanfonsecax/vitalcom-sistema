@@ -1,0 +1,123 @@
+{
+  "canonico_id": "CN11_PANTALLA_SIMULADA",
+  "schema_version": "canonico-1.0",
+  "nombre": "Captura de pantalla simulada",
+  "dispositivo_canonico": "LA PIEZA IMITA UNA INTERFAZ QUE EL LECTOR YA USA: el resultado de un buscador con el producto insertado, el marco del telefono con barra de estado completa, dos globos de chat sobre una escena real. Toma prestada la credibilidad del medio, no la de la marca.",
+  "cuando_elegirlo": "Publico NC1-NC2 que todavia no busca el producto: la captura le muestra la busqueda que 'deberia' haber hecho. Tambien para llevar la conversacion a WhatsApp mostrando el chat como CTA.",
+  "ejes_de_variacion": [
+    "interfaz imitada: buscador, chat, ficha de producto",
+    "con marco de telefono completo o solo el recorte de la captura",
+    "la palabra clave puede funcionar como CTA literal (F067)"
+  ],
+  "n_miembros": 3,
+  "ficha_referencia": "F027",
+  "score_referencia": 70,
+  "perfil": {
+    "concepto_key": {
+      "C5_PRUEBA": 3
+    },
+    "rol_embudo": {
+      "TOFU": 2,
+      "MOFU": 1
+    },
+    "estetica": {
+      "organico_ugc": 3
+    },
+    "formato": {
+      "4:5": 2,
+      "1:1": 1
+    },
+    "densidad": {
+      "media": 2,
+      "baja": 1
+    },
+    "nivel_conciencia_rango": [
+      1,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "INTERFAZ_IMITADA",
+    "CONSULTA_O_MENSAJE",
+    "RESPUESTA",
+    "PALABRA_CLAVE_CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "DESCRIPCION_SEGUNDO",
+      "FUENTE_CITADA",
+      "PREGUNTA_DEL_AVATAR",
+      "PRODUCTO_RECORTADO",
+      "TEXTO_INFORMATIVO",
+      "TITULO_RESULTADO",
+      "TITULO_SEGUNDO_RESULTADO",
+      "URL_APARENTE"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "Tipografia de interfaz, nunca condensada ni en peso Black",
+    "Sin precio, sin boton de compra, sin logo de tienda, sin signos de exclamacion",
+    "El texto del bloque va en tono neutro de enciclopedia, sin segunda persona",
+    "Los elementos de interfaz se replican completos, incluidos los que no aportan informacion",
+    "El segundo resultado va cortado por el borde inferior",
+    "El producto entra como ilustracion del resultado, no como oferta"
+  ],
+  "cuando_usar": [
+    "nivel de conciencia 1: la persona no sabe que el producto existe",
+    "producto que resuelve una necesidad que la gente si busca en internet",
+    "publico saturado de anuncios donde el formato publicitario ya no detiene",
+    "cuando el objetivo es informar y calificar, no cerrar",
+    "cuando el problema aparece en un momento cotidiano identificable",
+    "cuando se prefiere calificar por conversacion antes que mostrar precio",
+    "categorias digestivas, de sueno o de animo donde el cambio es de sensacion",
+    "cuando el bot o el equipo puede responder a una palabra clave"
+  ],
+  "cuando_no_usar": [
+    "BOFU o retargeting: no hay oferta ni precio, no cierra nada",
+    "cuando la pregunta del avatar no es algo que alguien buscaria realmente",
+    "cuando el producto no resuelve algo que la gente busque escrito: sin pregunta creible, la barra de busqueda no engancha",
+    "cuando no hay quien responda los mensajes: el CTA queda muerto",
+    "BOFU donde el precio ya es el argumento",
+    "cuando no se tiene foto real de una escena domestica"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F027",
+      "score": 70,
+      "anunciante": "Megacomprasgt",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "4:5",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA CAPTURA DE PANTALLA DE UN BUSCADOR, CON EL PRODUCTO INSERTADO EN EL RESULTADO"
+    },
+    {
+      "ficha_id": "F067",
+      "score": 38,
+      "anunciante": "Vida Natural",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LOS DOS GLOBOS DE CHAT SOBRE LA ESCENA REAL, Y LA PALABRA CLAVE COMO CTA"
+    },
+    {
+      "ficha_id": "F090",
+      "score": 32,
+      "anunciante": "Megacomprasgt",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "4:5",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA CAPTURA DEL BUSCADOR DENTRO DEL MARCO DEL TELEFONO, CON LA BARRA DE ESTADO COMPLETA"
+    }
+  ]
+}

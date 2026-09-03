@@ -1,0 +1,200 @@
+═══ OVULOS PURITY (Hernatura) · VERSION v1 · 2026-07-18 · COSTO $7.000 COP/paquete · DOSIS 3 perlas/paquete (48-72h c/u) · fanpage HERNATURA CO YA EXISTE (page_id pendiente de registrar) · campaign_id SIN MCP ═══
+
+PRODUCTO: Óvulos Purity — perlas herbales detox de limpieza íntima femenina (marca Hernatura)
+FECHA_PROCESADO: 2026-07-18
+VERSION: v1
+MERCADO: COLOMBIA (excepción al sistema Guatemala — moneda COP, español neutro Bogotá, NO voseo)
+COSTO_PROVEEDOR: $7.000 COP por paquete (3 perlas)
+ENVÍO (lo paga el vendedor en pedidos con envío gratis): ~$20.000 COP
+CPA estimado por el operador: $20.000 – $30.000 COP por venta confirmada
+DOSIS / PRESENTACIÓN: 1 paquete = 3 perlas, cada perla en su propia bolsita (higiene). Uso: activar la perla en agua tibia 1 min → insertar como tampón → dejar actuar 48-72 h → retirar → 24 h de descanso entre cada perla.
+PROVEEDORES_DROPY: no provisto
+ANUNCIANTES_AD_LIBRARY: no provisto (competencia principal identificada: ICOLITE fem — marca establecida, landing + video ads activos)
+LANZAMIENTO: MANUAL, sin MCP
+TASA_USD_COP referencia: ~4.000 (solo referencia)
+
+════════════════════════════════════════════════════════════════
+VALIDACIÓN DE PRODUCTO (ETAPA-PRODUCTO)
+════════════════════════════════════════════════════════════════
+FILTRO DE DESCARTE: PASA (no de temporada · no se consigue igual en farmacia · categoría de impulso con efecto WOW).
+D1 Resuelve problema específico: SÍ — olor íntimo / flujo / picazón / incomodidad: dolor muy sentido y con vergüenza asociada.
+OBLIGATORIOS: O1 Stock SÍ · O2 Ligero/no frágil SÍ (sachets) · O3 Proveedor SÍ (del operador) · O4 No de temporada SÍ.
+RECOMENDADOS (≈12/12): micronicho ✓ · innovador/poco común ✓ · percepción de valor ✓ · público masivo ✓ (mujeres) · fuera del mercado tradicional ✓ · ticket bajo ✓ (~USD 25) · potencial viral ✓ (tema tabú + shock visual) · tamaño chico ✓ · sin variaciones ✓ · vendible en combos ✓ · efecto WOW ✓✓ (perla usada = residuos) · margen ≥3 USD ✓✓ (costo ~USD 1,75 vende ~USD 25).
+SCORE DE APTITUD: ≈0.95 → 🟢 ÓPTIMO. VEREDICTO: APTO — continuar.
+
+⚠️ RIESGO REGULATORIO / DE COMPLIANCE (Colombia) — decisivo para los ADS, no elimina la aptitud comercial:
+- INVIMA emitió ALERTA SANITARIA No. 170-2024 (junio 2024) sobre venta ilegal de óvulos vaginales / perlas "detox". Ginecólogos advierten que estos productos carecen de evidencia y pueden alterar la flora / causar infecciones.
+- Implicación operativa (NO se debate el negocio; se blinda la cuenta): en los ADS que Meta LEE está PROHIBIDO afirmar "cura/elimina candidiasis", "saca quistes", "desinflama útero/ovarios", "aprobado FDA", timelines imposibles. Eso sube CPM (baneo silencioso Andrómeda) Y agrega riesgo regulatorio real. En ADS: lenguaje de apoyo ("ayuda a", "sensación de frescura/limpieza", "equilibrio"), problema del avatar sí (olor, flujo), diagnóstico/cura NO.
+- POST-CLIC (bot/audio/infografías/testimonios): Meta no lo lee → conversión-first; se permiten verbos persuasivos, sin mentir de forma flagrante sobre curar una enfermedad grave nombrada.
+
+════════════════════════════════════════════════════════════════
+COSTEO — COLOMBIA / COP (ETAPA-1 adaptada, tabla Q no aplica)
+════════════════════════════════════════════════════════════════
+ARQUITECTURA DE OFERTA (elegida): ESCALERA 1/2/3 con 2u HÉROE. Producto de recompra/salud, ticket medio, P1u despeja el piso con margen → 1/2/3 con 3u = "la más completa ⭐ + regalo". Ancla con ENVÍO GRATIS + REGALO, no con 1u inflada.
+
+PRECIOS DE VENTA (confirmados por operador):
+- P1u — 1 paquete:  $69.900  (+ ENVÍO lo paga el cliente)   ← entrada / prueba 1 ciclo
+- P2u — 2 paquetes: $99.900  + ENVÍO GRATIS   ⭐ EL MÁS ELEGIDO (héroe)
+- P3u — 3 paquetes: $129.900 + ENVÍO GRATIS + REGALO   ← tratamiento completo
+
+UNIT ECONOMICS (por pedido ENTREGADO, antes de pauta):
+- P1u: $69.900 − prod $7.000 − pasarela ~3% $2.100 (envío lo cubre el cliente) = contribución ≈ $60.800
+- P2u: $99.900 − prod $14.000 − envío $20.000 − pasarela ~$3.000 = contribución ≈ $62.900
+- P3u: $129.900 − prod $21.000 − envío $20.000 − regalo ~$7.000 − pasarela ~$3.900 = contribución ≈ $78.000
+
+CPA_OBJETIVO (meta sana): $25.000 COP por venta confirmada.
+CPA_BREAK_EVEN (2u, ajustado por RTO ~25% + pasarela): ≈ $40.000 COP por venta confirmada.
+  · Break-even bruto sin RTO (2u) ≈ $62.900. La variable #1 a medir es el RTO (rechazo contraentrega); decidir por CPA SEMANAL, no por un día.
+MARGEN al CPA objetivo $25.000 (antes de RTO): P1u ≈ $35.800 · P2u ≈ $37.900 · P3u ≈ $53.000 por pedido.
+> Producto muy rentable por el costo bajísimo ($7.000). El riesgo económico real no es el margen sino el RTO y el CPA — vigilar ambos.
+
+════════════════════════════════════════════════════════════════
+COMPONENTES (ETAPA-1B)
+════════════════════════════════════════════════════════════════
+INGREDIENTES exactos (entregados por el operador — 8 raíces/hierbas, medicina natural ayurveda):
+1. OSTHOL — mejora la circulación y promueve limpieza interna → apoya una flora vaginal saludable.
+2. STEMONA SESSILIFOLIA — propiedades calmantes; ayuda a reducir la irritación y a mantener el equilibrio natural de la zona íntima.
+3. KOCHIA SCOPARIA — desintoxicante/purificador; ayuda a "arrastrar" toxinas y revitalizar.
+4. MOTHERWORT (agripalma) — ayuda a regular el ciclo menstrual y a aliviar molestias; entorno equilibrado.
+5. RHIZOMA SMILACIS GLABRAE — antibacteriano y antifúngico; protege y equilibra la flora.
+6. ANGELICA — mejora la circulación y apoya la salud del sistema reproductivo femenino; pH balance.
+7. RHIZOMA CHUANXIONG — alivia congestión y mejora el flujo sanguíneo; bienestar íntimo.
+8. BORNEOL — antiinflamatorio y desintoxicante; ayuda a mantener un entorno limpio (efecto antibacterial junto con Probióticos/Osthol).
+   (Variantes de empaque también citan: Probióticos, Seaberry Extract [pH balance], Green Tea Extract [mejora flujo sanguíneo].)
+Diferenciador para copy/infografía 2: "8 raíces de la medicina natural" + mecanismo antibacteriano/antifúngico natural + pH/flora. Mecanismo comunicable en ADS sin claim médico: limpieza profunda, arrastre de residuos, sensación de frescura y equilibrio (NO "elimina infecciones" en el ad).
+
+════════════════════════════════════════════════════════════════
+BRANDING HERNATURA — ESTILO "LACTOMEDI" (referencia del operador, 18-jul)
+════════════════════════════════════════════════════════════════
+Referente: LACTOMEDI (marca coreana de cuidado íntimo, lactomedi.com — LACTO-BVTC patentado, lactobacilos + 6 naturales; posicionamiento "the scientific touch to your feminine care"; azul médico, minimal, board de OB/GYN, Dermatest/EWG). El operador quiere ESE look (azul clínico, NO rosado; el azul vende y da seriedad médica).
+DIRECCIÓN DE MARCA HERNATURA:
+- PALETA: fondo blanco → celeste muy claro (#FFFFFF / #F0F7FC / #E3F1FB); AZUL ACENTO médico/royal #2A6FE0 (subtítulos, labels, íconos, números, pills "Ayuda a"); celeste producto #7FC3E8 (gradientes de fondo); NAVY titulares #0B1E33; VERDE #2E7D32 solo en panel de plantas; gris texto #5B6B7A. Monocromo azul+blanco, mucho espacio en blanco.
+- TIPOGRAFÍA (cambia el kit anterior): TITULARES = SERIF elegante bold alto contraste (aprox. Playfair Display / Lora / Noto Serif). CUERPO/subtítulos = SANS humanista (Inter / Open Sans). ACENTOS en italic serif ("en 2 semanas", "Ayuda a", "Paso 01"). Misma familia en las 3 infografías + ads + bot.
+- LAYOUT: minimal, UNA idea por panel, split (texto izq / macro producto der), pills redondeadas para labels, separadores finos, filas de beneficio (ícono en cuadro redondeado + título azul bold + 1 línea), footnote de respaldo.
+- IMAGERY: macro de la PERLA y el EMPAQUE sobre gradiente celeste; gel/burbujas; plantas sumergidas en agua mostrando las hierbas COMPLETAS; modelos reales diversas sonriendo sosteniendo el sachet; íconos de mano en círculos para modo de uso.
+- SELLOS DE CONFIANZA (honestos para CO): "Recomendado por profesionales" (solo si real) · "Apto para piel sensible" · "100% ingredientes naturales" · "Hecho en Colombia" · "Garantía de satisfacción". NO copiar "OBGYN Approved/Dermatest/EWG/FDA/INVIMA" si no se tienen.
+⚠️ COMPLIANCE vs LACTOMEDI: Lactomedi puede decir "clinically proven, remove 99% Gardnerella/Candida, tested WHO method" porque tiene fórmula patentada + estudios + board médico + disclaimer legal ("not evaluated by FDA, not intended to treat/cure"). Hernatura NO debe fabricar un estudio clínico que no tiene. Adoptar el LOOK y la ESTRUCTURA (azul médico, sellos, "Ayuda a", reviews reales), pero mantener claims en satisfacción real ("9 de cada 10 notan más frescura") o lenguaje de apoyo. En ADS de Meta, aún más estricto.
+VOZ REAL LACTOMEDI (reviews, sirve de banco): "I've tried everything and this is by far the best thing I've used! Instant relief!" · "gives you your confidence back" · "no sweaty smells no odor at all" · "if I don't use it 4-5 days the odor comes back" (recompra) · 4.7/5 de 1621 reseñas.
+
+BANCO DE DOLOR Y DESEO REAL (VOZ DEL CLIENTE)
+Fuentes con señal: 9 transcripciones de ads del competidor ICOLITE (habla colombiana real) + reseñas de la landing del competidor (clientas con ciudad) + prensa/salud (Univisión, Cleveland Clinic, INVIMA). Foros/Reddit quedaron mayormente tras login (no se inventó voz).
+[VOZ-REAL] "me pica, me arde, o sea… no sé qué hacer" — emoción: desesperación/hartazgo.
+[VOZ-REAL] "tengo mal olor, picazón, requesón" — emoción: asco de sí misma.
+[VOZ-REAL] "me compré un jabón de esos íntimos y eso me tiene con más resequedad todavía" — ya probó y falló.
+[VOZ-REAL] "les huele como a pescado / a bacalao" — emoción: vergüenza extrema (que otros lo noten).
+[VOZ-REAL] "antes tenía hasta pena de salir a cualquier lado por ese olor" — emoción: aislamiento/vergüenza.
+[VOZ-REAL] "llevaba años con la candidiasis que iba y volvía, esto fue lo único que de verdad me ayudó" — esperanza frustrada.
+[VOZ-REAL] "usas esto (protector) todos los días porque tu ropa interior se ve así" — dolor específico, flujo constante.
+[VOZ-REAL] "protectores, cremas y óvulos… todos van para la basura" — frustración con la farmacia.
+[DESEO-REAL] "gracias a este producto mejoró mi relación con mi esposo, ya no vivo con esa inseguridad de antes" — deseo de confianza íntima / pareja.
+[DESEO-REAL] "quedé súper fresca y limpia" — deseo de frescura que dura.
+[DESEO-REAL] "todo súper discreto, nadie se dio cuenta" — deseo de discreción en la compra/entrega.
+[VOZ-REAL] "entre más cosas usan, peor les huele" — creencia/insight: el exceso de higiene empeora.
+
+PROBLEMAS OCULTOS (la mina de oro):
+- El exceso de higiene (jabones íntimos, perfumes, duchas) DESEQUILIBRA el pH y empeora el olor → consecuencia emocional: "hago todo bien y aun así huelo mal, algo está mal conmigo".
+- El olor no es "falta de baño" sino residuos/flujo acumulado que el agua no arrastra → reencuadre que quita culpa ("no es tu culpa, es limpieza profunda").
+- La vergüenza del olor daña la vida sexual y la autoestima, no solo la higiene → el verdadero producto es "volver a sentirme segura y deseable".
+
+ÁNGULOS DESCUBIERTOS (no cubiertos por los 6 videos — reserva para copy/bot y FASE 2):
+- CONFIANZA ÍNTIMA / PAREJA (emocional-identidad): "volver a estar con mi pareja sin pensar en el olor". Respaldo [DESEO-REAL] esposo/inseguridad. Carga EMOCIONAL alta. (Creativo si se usa: IMAGEN)
+- DISCRECIÓN ("nadie se entera, llega discreto, pagas al recibir") — objeción/deseo. Va en bot y copy.
+- FRESCURA QUE DURA TODO EL DÍA (deseo funcional-aspiracional).
+
+════════════════════════════════════════════════════════════════
+ÁNGULOS FASE 1 — 6 RANKEADOS (ETAPA-2) · todos con VIDEO del competidor (lavado)
+════════════════════════════════════════════════════════════════
+Nota de asignación: los 6 ángulos están cubiertos por video (competidor) → FASE 1 lean, 1 creativo VIDEO por conjunto. Conjunto 5 = variación AGRESIVA/IMPACTO (shock detox). Ningún ángulo virgen → ETAPA-4 no genera ad-imagen de testeo, solo las 3 infografías del bot.
+
+ÁNGULO 1 — "OLOR ÍNTIMO QUE OTROS NOTAN" (miedo social / vergüenza)  ·  Ranking #1
+Creativo: VIDEO 2 (sketch gimnasio "tres series de 12") — OVULOS_PURITY_1.mp4
+Avatar: mujer colombiana 25-40, activa/social, teme que su pareja o amigas noten el olor "a pescado". Nivel de conciencia 2 (sabe que le pasa, no sabe la solución real).
+Dolor: "me da pánico que alguien sienta mi olor". Deseo: sentirme segura y fresca cerca de la gente. Miedo: que su pareja lo note. Frustración: perfumes/jabones no lo tapan.
+Tipo: miedo/emocional. Saturación: DESCONOCIDA. Promesa A→B: "olor que te delata" → "frescura que ya no tenés que esconder".
+Hook: "¿Te ha pasado que te da pena por el olor?"
+
+ÁNGULO 2 — "LO PROBÉ TODO Y NADA ME FUNCIONA" (frustración / farmacia)  ·  Ranking #2
+Creativo: VIDEO 9 ("protectores, cremas y óvulos a la basura") — OVULOS_PURITY_2.mp4
+Avatar: mujer 25-45 que gastó en óvulos de farmacia, cremas, jabones y protectores sin resolver. Nivel 3a (conoce productos, desconfía de que algo sirva).
+Dolor: "ya gasté en de todo y sigo igual". Deseo: por fin una solución que sí funcione. Frustración: la farmacia no le resolvió.
+Tipo: problema-solución / error común. Promesa: "cansada de gastar sin resultado" → "el detox que sí se siente".
+Hook: "Protectores, cremas y óvulos… a la basura."
+
+ÁNGULO 3 — "PICAZÓN, ARDOR Y FLUJO (requesón)" + jabones que resecan  ·  Ranking #3
+Creativo: VIDEO 4 ("¿usted se está oliendo la cucaracha?" / requesón) — OVULOS_PURITY_3.mp4
+Avatar: mujer 25-40 con picazón/ardor frecuente y flujo espeso; usó jabón íntimo y quedó más reseca. Nivel 2.
+Dolor: "vivo con picazón y ardor, no es normal". Deseo: dejar de rascarme y sentirme normal. Frustración: el jabón íntimo la resecó más.
+Tipo: problema-dolor. Promesa: "picazón/ardor/flujo de todos los días" → "equilibrio y comodidad".
+Hook: "No es normal vivir con picazón y ardor."
+
+ÁNGULO 4 — "EL ERROR QUE EMPEORA TODO" (educativo autoridad / remedios caseros)  ·  Ranking #4
+Creativo: VIDEO 5 (doctora "¿cándida o vaginosis?", vinagre/aceite de coco NO) — OVULOS_PURITY_4.mp4
+Avatar: mujer 25-45 que prueba remedios caseros (vinagre, aceite de coco, duchas) y empeora. Nivel 1-2 (no conoce la causa real: pH/flora).
+Dolor: "hago remedios caseros y sigo igual o peor". Deseo: entender qué me pasa y hacerlo bien. Frustración: internet la confundió.
+Tipo: educativo / mecanismo único. Promesa: "los remedios caseros que te empeoran" → "cuidar tu pH y tu flora de verdad".
+Hook: "Si te lavas con vinagre, para ya."
+
+ÁNGULO 5 — "MIRÁ LO QUE TU CUERPO GUARDA" (DETOX / SHOCK — variación AGRESIVA)  ·  Ranking #5
+Creativo: VIDEO 7 (perla usada/oscura = residuos) — OVULOS_PURITY_5.mp4  ← ENFOQUE DE IMPACTO
+Avatar: mujer curiosa/impactable 25-45 que siente humedad/olor y no sabe que "acumula". Nivel 1 (no sabe la causa).
+Dolor: "siento que por dentro no estoy limpia del todo". Deseo: sacar lo acumulado, sentirme limpia de verdad.
+Tipo: curiosidad/reencuadre + efecto WOW. Promesa: "años acumulando residuos que el agua no saca" → "limpieza profunda que se ve".
+Hook: "Esto es lo que tu cuerpo estaba guardando."
+⚠ Compliance: mostrar residuos/"lo que arrastra" SÍ; NO afirmar "saca quistes / desinflama ovarios". Sticker de oferta discreto, sin pánico médico.
+
+ÁNGULO 6 — "USÁS PROTECTOR TODOS LOS DÍAS" (flujo constante)  ·  Ranking #6
+Creativo: VIDEO 6 (protector diario / flujo) — OVULOS_PURITY_6.mp4
+Avatar: mujer 25-45 que depende del protector diario por flujo constante. Nivel 2-3a.
+Dolor: "no puedo salir sin protector, siempre estoy húmeda". Deseo: dejar de depender del protector. Frustración: cambiar de jabón/marca no cambió nada.
+Tipo: problema-dolor / facilidad. Promesa: "protector todos los días" → "sequedad y frescura sin depender de nada".
+Hook: "¿Usás protector todos los días?"
+
+TABLA RESUMEN
+| # | Ángulo | Tipo | Creativo (video lavado) | Nivel | Hook |
+|---|--------|------|--------------------------|-------|------|
+| 1 | Olor que otros notan | miedo/emocional | OVULOS_PURITY_1.mp4 | 2 | "¿Te da pena por el olor?" |
+| 2 | Lo probé todo y nada | frustración/solución | OVULOS_PURITY_2.mp4 | 3a | "Protectores, cremas y óvulos… a la basura" |
+| 3 | Picazón, ardor y flujo | problema-dolor | OVULOS_PURITY_3.mp4 | 2 | "No es normal vivir con picazón" |
+| 4 | El error que empeora todo | educativo/mecanismo | OVULOS_PURITY_4.mp4 | 1-2 | "Si te lavas con vinagre, para ya" |
+| 5 | Mirá lo que tu cuerpo guarda | shock/detox (AGRESIVO) | OVULOS_PURITY_5.mp4 | 1 | "Esto es lo que tu cuerpo guardaba" |
+| 6 | Usás protector todos los días | facilidad/dolor | OVULOS_PURITY_6.mp4 | 2-3a | "¿Usás protector todos los días?" |
+
+════════════════════════════════════════════════════════════════
+FANPAGE (ETAPA-FANPAGE) — FORMATO B
+════════════════════════════════════════════════════════════════
+FANPAGE: HERNATURA (Colombia) — YA EXISTE (el operador la tiene hace tiempo). No hay que crearla.
+Marca propia; no aplica ninguna de las 10 páginas de Guatemala (por eso "Formato B" en el sistema, pero la página real ya está).
+Identidad/tono: marca de bienestar íntimo femenino, cercana, mujer a mujer, sin tabú, sin sonar a clínica; el olor/flujo se nombra con naturalidad y sin culpa. Empatía > autoridad médica. Español neutro Colombia (tú, NO vos).
+Edad de segmentación: comprador principal mujeres 25-45. Default de lanzamiento amplio 18-65 (la data decide el piso).
+PENDIENTE OPERADOR: registrar el page_id de Hernatura CO aquí y verificar WhatsApp conectado a la página antes de pautar.
+
+════════════════════════════════════════════════════════════════
+REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (insumo ETAPA-7)
+════════════════════════════════════════════════════════════════
+CAMPAÑA: OVULOS PURITY - TESTEO - [fecha] (nombre a fijar al crear en Meta) · FASE: 1 testeo · LANZAMIENTO: 4 AM día siguiente
+CPA_OBJETIVO: $25.000 COP · CPA_BREAK_EVEN: ~$40.000 COP · PRESUPUESTO/CONJUNTO: definir (modo manual; equivalente low-budget o el que use el operador en CO)
+
+>>> CREATIVOS = 6 VIDEOS PROPIOS del operador (marca Óvulos Purity/Hernatura), YA VALIDADOS. LAVADOS (anti-huella, ya se habían reusado antes) → carpeta Ads/MEDIA_OVULOS_PURITY_PROPIOS/ con nombres OVULOSPURITY_PROPIO_[N]_[ANGULO].mp4 (5 en uso + ANIMADO reserva). Subir SIEMPRE los lavados. Los 9 videos del competidor (ICOLITE) quedan SOLO como DATA de minado de ángulos — nunca como anuncio (muestran la marca del competidor). Imágenes = refuerzo anti-fatiga FASE 2.
+
+| NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo (video propio) | Precio en ad | Hook | Estado |
+|---|---|---|---|---|---|---|---|
+| 1_OLOR_PAREJA | Olor en la intimidad/pareja | miedo/emocional | VIDEO propio | 5 NUEVO 30fps 1080p Optical flow.mp4 | sí | "Mi novio me dijo que huelo mal" | por lanzar |
+| 2_PROBE_TODO | Frustración / miedo a otra receta | frustración | VIDEO propio | 2X1 HER5.mp4 | sí (2x1) | "Cuando no entiendes por qué pica, duele y huele" | por lanzar |
+| 3_PICAZON_FLUJO | Flujo/olor a pescado/ardor | dolor | VIDEO propio | 10 HN (1).mp4 | no | "Tienes mucho flujo y huele a pescado" | por lanzar |
+| 4_ANTIMEDICO | Lo que los médicos no te cuentan | educativo/anti-médico | VIDEO propio | 9 HN.mp4 | no | "Los ginecólogos te recetan lo que destruye tu flora" | por lanzar |
+| 5_AUTORIDAD_PODCAST | Autoridad / 8 raíces (podcast doctor) | autoridad/educativo | VIDEO propio | PODCAST MUJER HOMBRE ENTREVISTA-1.mp4 | no | "¿Cuál es la solución al mal olor vaginal?" | por lanzar |
+| 6_ANIMADO_RAIZ | Desde la raíz (animado/mecanismo) | educativo/mecanismo | VIDEO propio | ANIMADO-1.mp4 | sí | "Si tu zona íntima no se siente fresca…" | por lanzar |
+> Regla de precio (Colombia, ideal 2/6): precio solo en conjuntos 1 (olor) y 2 (2x1). Ajustable.
+> ⚠️ COMPLIANCE: los 6 videos propios llevan claims fuertes que Meta LEE (transcripciones marcadas [CLAIM MÉDICO]: "eliminan candidiasis", "comprobados clínicamente contra la vaginosis", "eliminan olores en 72 h", "equilibrio hormonal"). Riesgo CPM (Andrómeda) + INVIMA. Más riesgosos: 9 HN y PODCAST. Lanzar y vigilar CPM por conjunto; para escalar, versión con audio/texto suavizado.
+> Copies ETAPA-4: Copy1→video 5NUEVO · Copy2→2X1 HER5 · Copy3→10 HN · Copy4→9 HN · conjuntos 5 (podcast) y 6 (animado) requieren 2 copies nuevos (autoridad + mecanismo) — pendiente.
+
+RESULTADOS_TESTEO: [vacío en FASE 1]
+ANGULO_GANADOR: [pendiente — confirmar con métricas del día: CTR / CPA real / mensajes / conversiones por conjunto]
+
+━━━ DATOS DE SATURACIÓN ━━━
+Módulo B (APIFY) no corrido. Competencia directa observada: ICOLITE fem (marca establecida, landing madura + banco de video ads). Recomendado: contar anunciantes de "perlas/óvulos detox íntimo" en Biblioteca de Anuncios (regla del 10%) antes de escalar.
+
+━━━ PRÓXIMA SESIÓN ━━━
+- Optimización (ETAPA-7): traer métricas de los 6 conjuntos, unir por NOMBRE_CONJUNTO, comparar CPA real vs $25.000/$40.000 y % conversación/clic, decidir escalar/apagar.
+- FASE 2: con ángulo ganador confirmado → ETAPA-3A.
+- El detalle copiable (copies, prompts de infografía, flujo LucidBot) está en 1_HACER_MANUAL.txt.

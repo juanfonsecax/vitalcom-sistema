@@ -1,0 +1,161 @@
+{
+  "ficha_id": "F018",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/06_2253912738784954.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "2253912738784954",
+    "dias_activo": 6,
+    "replicas": 4,
+    "score": 106,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "40%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL PRECIO CON ANCLAJE EN CARD DE ANCHO COMPLETO, BAJO UNA COLUMNA CORTA DE 3 ATRIBUTOS. La mitad izquierda es una escalera de lectura de cuatro pisos: pregunta, promesa, tres atributos, precio. Cada piso es mas chico que el anterior salvo el precio, que vuelve a crecer. Es el mismo esqueleto vertical de F011 acostado a formato cuadrado.",
+  "lectura_estrategica": "Version 1:1 del mismo producto y anunciante que F011, y la comparacion entre las dos es util: al ganar ancho, los callouts orbitales desaparecen y se convierten en columna, y el precio se agranda hasta el tamano del titular. Lo que se conserva intacto es la doctrina del mensaje: pregunta por la SENSACION (hinchada, pesada), promesa de RUTINA y no de cura, atributos de USO y no de resultado. Eso es lo replicable; el arreglo espacial cambia con el formato.",
+  "fondo": {
+    "tipo": "foto_naturaleza_desenfocada",
+    "base": "follaje verde y agua en movimiento, fuera de foco, del lado del producto",
+    "lado_texto": "crema o blanco roto plano para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde (titular y card de precio) mas crema (fondo del lado del texto) mas blanco mas el verde del follaje"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2}}",
+      "linea_3": "{{HOOK_L3}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}, con signos de interrogacion de apertura y cierre",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "pregunta por la SENSACION en segunda persona, conjugada al genero del avatar"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "lineas": 2,
+      "texto": "{{SUBHOOK}}",
+      "estilo": "Regular oscuro, al 35% del titular",
+      "restriccion_palabras": "6-9 palabras",
+      "regla": "enuncia una RUTINA que acompana, nunca un resultado que promete"
+    },
+    "columna_atributos": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en contenedor circular con borde fino mas texto Bold de 1 linea",
+      "items": "{{ATRIBUTOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "atributos de USO (via, formato, frecuencia), no de resultado"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "envase de pie sobre superficie de piedra, con hojas grandes detras y agua o luz en movimiento al fondo",
+      "fuente": "IMAGEN_2"
+    },
+    "card_precio": {
+      "posicion": "izquierda_baja",
+      "contenedor": "card {{PALETA_OSCURA}} solida de ancho parcial",
+      "prefijo": "{{PREFIJO_PRECIO}}",
+      "estilo_prefijo": "Bold uppercase blanco",
+      "linea_1": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 blanco, al tamano del titular",
+      "linea_2": "ANTES {{MONEDA}}{{PRECIO_TACHADO}}",
+      "estilo_l2": "Bold con linea de tachado sobre fondo claro, al 30% de L1",
+      "regla": "el precio vuelve al tamano del titular: es el unico piso de la escalera que crece"
+    },
+    "card_pago": {
+      "posicion": "bajo la card de precio",
+      "contenedor": "card clara con borde {{PALETA_OSCURA}} e icono de paquete",
+      "texto": "{{GARANTIA_PAGO}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras": "3 palabras"
+    },
+    "barra_envio": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida con icono de camion",
+      "texto": "{{GARANTIA_ENVIO}} · {{PLAZO_ENTREGA}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "6-8 palabras",
+      "regla": "una sola banda al pie con las dos garantias logisticas juntas"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "subtitular",
+    "producto_hero",
+    "columna_atributos",
+    "card_precio",
+    "card_pago",
+    "barra_envio"
+  ],
+  "reglas_duras": [
+    "La mitad izquierda es una escalera de cuatro pisos y cada piso es mas chico que el anterior, salvo el precio",
+    "La pregunta del titular es por la sensacion, conjugada al genero del avatar",
+    "El subtitulo enuncia una rutina que acompana, nunca un resultado",
+    "Los atributos son de uso, no de resultado",
+    "El precio vuelve al tamano del titular",
+    "Una sola banda al pie con las garantias logisticas"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2",
+    "HOOK_L3",
+    "SUBHOOK",
+    "ATRIBUTOS[3]",
+    "PREFIJO_PRECIO",
+    "PRECIO",
+    "PRECIO_TACHADO",
+    "MONEDA",
+    "GARANTIA_PAGO",
+    "GARANTIA_ENVIO",
+    "PLAZO_ENTREGA"
+  ],
+  "cuando_usar": [
+    "feed cuadrado, cuando el mismo producto ya corre en vertical con F011",
+    "promesa de rutina o habito sin evidencia visual del problema",
+    "cuando el precio con anclaje es el argumento y hay pocos beneficios que contar",
+    "producto de formato distintivo (gotero, spray) en categoria natural"
+  ],
+  "cuando_no_usar": [
+    "cuando hay 5 o mas beneficios imprescindibles: la columna corta no los sostiene",
+    "dolor agudo",
+    "cuando no hay precio de anclaje real"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio.",
+    "Precio con anclaje: AHORA Q190 · ANTES Q380 tachado.",
+    "Card PAGA AL RECIBIR con icono de paquete.",
+    "Barra inferior ENVIO GRATIS · ENTREGA 2 A 4 DIAS HABILES.",
+    "Atributos de uso: APOYO BOTANICO DIARIO, RUTINA LIQUIDA SENCILLA, GOTERO FACIL DE USAR.",
+    "Claims impresos en el empaque: SIN AZUCAR, SIN ALCOHOL, SIN GLUTEN, SIN COLORANTES, SIN SABORIZANTES."
+  ],
+  "canonico_id": "CN20_PRECIO_ANCLA",
+  "blueprint_equivalente": null
+}

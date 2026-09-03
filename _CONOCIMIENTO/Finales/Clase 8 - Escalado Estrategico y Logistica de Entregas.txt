@@ -1,0 +1,303 @@
+============================================================
+CLASE 8 — ESCALADO ESTRATÉGICO: CPA REAL, MÁRGENES Y LOGÍSTICA DE ENTREGAS
+Instructor: Camilo (con cierre de las compañeras del equipo)
+============================================================
+
+---
+
+## 🎯 IDEA CENTRAL DE LA CLASE
+
+Camilo enseña que escalar NO es solo vender más ni gastar más en publicidad, sino **generar más RENTABILIDAD** dominando dos pilares: la ADQUISICIÓN de ventas (Meta Ads) y la RETENCIÓN de entregas (logística). La gran tesis: "Cualquiera puede aprender a pautar y conseguir pedidos; escalar a las grandes ligas es para los que dominan la logística y las entregas." La clase resuelve la duda más frecuente sobre escalado (cómo mantener CPAs estables) mediante el concepto del CPA SEMANAL/PONDERADO, presenta múltiples técnicas de escalado (duplicación, multicuenta, fanpages, renovación de creativos, surfing 20%, subir el precio), y dedica la segunda mitad al CPA REAL (despachados y entregados, no solo vendidos), la efectividad logística y el manejo de pedidos falsos. El mensaje recurrente: "No me interesa vender 200 o 500 pedidos y no ser rentable; me interesa GANAR más."
+
+---
+
+## 📚 RESUMEN COMPLETO (Sección por Sección)
+
+### BLOQUE 1: CPAs estables = pensar en CPA semanal/ponderado, no diario
+
+El error #1: apagar una campaña porque "hoy no me vendió" o porque el CPA de un día subió. Las ventas NO son iguales todos los días, y eso es normal. La solución es calcular un **CPA general/ponderado, principalmente SEMANAL**: si en la semana hiciste 100 ventas gastando 1 millón, tu CPA es 10,000 — así sabes si eres rentable EN EL TIEMPO. Ejemplo: lunes 10 ventas, martes 15, miércoles 20, jueves 5, viernes 10 → se complementan y dan un equilibrio. Camilo tenía campañas tan estables que solo entraba a Meta a "ver el estado de salud del número", porque sabía que la semana le daría ~700 pedidos. Si un anuncio te vende bien, DÉJALO PRENDIDO aunque un día específico el CPA suba (vender hoy a 5,000, mañana a 3,000, pasado a 10,000, luego a 8,000 → el ponderado es lo que importa).
+
+### BLOQUE 2: Detectar competencia cuando bajan las ventas
+
+Si las ventas bajan de repente, ir a la **Biblioteca de Anuncios** y buscar el producto (a veces aparece solo en tu inicio cuando lo mencionas/buscas en el celular). Si hay un competidor nuevo, la respuesta es: **renovar anuncios, mejores ofertas, nuevos ángulos, nuevos creativos** para sacarlo del mercado. OJO con Meta vs TikTok: TikTok permite meterle muchísimo presupuesto y vender todo de golpe; Meta es más ESTABLE — si apagas una campaña, la competencia sigue activa y te quita clientes potenciales, y además apagar puede DESOPTIMIZAR.
+
+### BLOQUE 3: El flujo de caja como límite del escalado
+
+Antes de escalar agresivo hay que ser consciente del PRESUPUESTO y sobre todo del FLUJO DE CAJA. La logística (GINTACOM/FORZA/etc.) entrega en 4-5 hasta 7 días hábiles, así que el retorno tarda. Puedes escalar a 1-2 millones hoy, pero ¿lo SOSTIENES en el tiempo? Si no, no escales tan agresivo. "Que no arriesgue un huevo, no hace una gallina", pero el ideal es ser RENTABLE Y ESTABLE (dos cosas raras de ver juntas).
+
+### BLOQUE 4: Las técnicas de escalado (de 0 a 9 dígitos)
+
+Camilo presentó una diapositiva "de cero a nueve dígitos" sobre escalado publicitario y logístico. Técnicas:
+
+1. **Duplicación de campaña/conjunto (escalado AGRESIVO):** si un conjunto/campaña funciona, duplícalo. Duplicar todo el conjunto es muy agresivo (una campaña de 200,000 duplicada = 400,000, un 100% de golpe). El CPA sube un poco pero vendes más. Camilo lo hacía con conjuntos: de 16,000 → 32,000 → 64,000 duplicando.
+2. **Escalado HORIZONTAL (réplicas):** "no toques lo que da resultados; crea réplicas para encontrar nuevos bolsillos". Probar nuevas estructuras constantemente.
+3. **Estructura MULTICUENTA:** pautar desde otras cuentas publicitarias y usar otras fanpages para evitar bloqueos y escalar agresivo. Camilo tiene 6-7 cuentas publicitarias y crea muchas fanpages (si una fanpage eleva costos o no deja escalar, escalar en otra fanpage nueva da buenos costos — ya está comprobado).
+4. **Renovación de creativos (la variable #1 del éxito):** la fatiga del anuncio es real. Para mantener costos bajos al escalar hay que testear NUEVOS creativos (videos, imágenes, carruseles, testimonios, mitad video/mitad imagen) constantemente. Con un hook/ángulo ganador se hace diversidad de creativos.
+5. **Surfing del 20%:** subir el presupuesto total de la campaña un 20% (de 100,000 a 120,000; de 1 millón a 1.2 millones). No más, porque desoptimiza.
+6. **Subir el precio del producto gradualmente:** de 1,000 en 1,000 cada día; cada incremento va directo al margen neto sin dañar la conversión.
+
+### BLOQUE 5: La diversificación de creativos = más audiencias (analogía de la pancarta)
+
+Asesores de Meta le dijeron a Camilo: antes pautaban con UN solo anuncio metiéndole 500,000-600,000 y vendía bien, pero para MÁS ventas, estabilidad y NUEVOS clientes hay que DIVERSIFICAR el contenido. La analogía: vas por la calle y ves una pancarta "compra esta crema para las várices" → te interesa. Más adelante ves la MISMA pancarta → ya no te llama. Pero si ves otra persona con un cartel y un ángulo DIFERENTE ("si compras esto te quita las várices de X manera") → te convence. Además, cada persona consume distinto: a unos les gustan imágenes, a otros videos. Diversificar (imágenes, videos, carruseles, distintos ángulos, testimonios) agrupa MÁS audiencia. Meta incluso recomienda manejar formatos 9:16 y 1:1 — eso "no es de gratis", trae conversiones. Estructura jerárquica: la CAMPAÑA es el dueño de la empresa, el CONJUNTO es el jefe directo, los ANUNCIOS son los trabajadores (cada uno vende a un público).
+
+### BLOQUE 6: Manejo de winners y ángulos quemados (la historia del chilají)
+
+Cuando se identifica un creativo ganador: iterarlo con VARIACIONES (no mínimas) manteniendo lo que lo hace ganador (el ÁNGULO). Analizar QUÉ le llamó la atención a la persona y conservar eso; cambiar diseño, fondo, textos, modelo (blanca→morena, mujer→hombre), pero mismo ángulo ganador. Si montas lo MISMO, encareces el creativo.
+
+**Historia clave (chilají):** El chilají estaba "quemadísimo", todos lo vendían, pero Camilo no lo sabía. Grabó un video de 30 segundos con su papá, se hizo viral en TikTok, lo pasó a Meta y vendió "a la lata". **Lección: muchas veces el PRODUCTO no se quema — lo que se quema es el ÁNGULO de venta.** La necesidad sigue en las personas. Si un ángulo ya no funciona, cambia de ángulo. Camilo vende productos "requemados" más caros que la competencia y le va muy bien.
+
+### BLOQUE 7: Publicar en la fanpage para conservar la prueba social (vs Post ID)
+
+Problema planteado por un alumno: al duplicar campañas/conjuntos en el administrador, Meta está quitando los likes/reacciones (de un mes para acá). Solución de Camilo: en vez de duplicar con Post ID, **publicar el creativo DIRECTAMENTE en la fanpage** (como subir una foto normal). Luego, al crear el anuncio en Meta, usar "crear anuncio con publicación existente" → el anuncio ya trae todos los likes, comentarios y compartidos. Así, al llevarlo a otra cuenta publicitaria NO hace falta Post ID: con que reconozca la página, hereda todas las reacciones. Beneficio extra: una fanpage con publicaciones llenas de likes/comentarios genera confianza, ventas ORGÁNICAS y pagos sin recaudo. Camilo tiene una página que genera 12-14 ventas diarias en orgánico.
+
+### BLOQUE 8: El CPA REAL — despachados y entregados (el corazón de la clase)
+
+Aquí está el verdadero secreto. La gente calcula mal: "vendí 100 pedidos, gasté 1 millón, CPA 10,000". FALSO. Hay que recalcular en capas:
+- **CPA sobre despachados:** de 100 pedidos solo despachaste 70 (30 cancelados/falsos) → el millón se reparte entre 70, no 100. Esos 30 CPAs perdidos (300,000) se suman a la campaña.
+- **CPA sobre entregados:** de esos 70, 10 fueron a devolución → solo 60 paquetes efectivos. Cada NO entregado además te cobra un FLETE (~20,000) perdido.
+
+Ejemplo de Camilo: vende un producto que con flete le cuesta 30,000, lo vende a 70,000 = "supuestos" 40,000 de ganancia, pero con CPA real + devoluciones, la ganancia real es ~15,000. "Sí sirve, pero CALCÚLALO BIEN." Mucha gente quiebra al escalar porque se enamora del "cachín cachín" de los pedidos sin mirar el CPA real, las devoluciones, los pedidos falsos y los cancelados.
+
+### BLOQUE 9: La efectividad logística como multiplicador de ganancia
+
+La métrica clave es la EFECTIVIDAD REAL de entregas (% de pedidos entregados). Camilo está en 85%. Subir la efectividad solo 2 puntos (75→77%) se refleja en 2-3 millones en operaciones pequeñas, y 5-10 millones en grandes. Pasar de 75% a 80% = 10-20 millones mensuales. **"Vender lo mismo e ingresar más":** si mantienes las ventas pero la transportadora entrega más paquetes, ganas más sin gastar más en Meta. Por eso vale la pena PAGARLE a alguien que gestione novedades, llame a clientes, notifique recogidas: si recupera 10 pedidos = 100,000 de ganancia + 200,000 de fletes no perdidos = 300,000 que dejas de perder.
+
+### BLOQUE 10: Pedidos falsos y llamada de verificación
+
+Están haciendo MUCHOS pedidos falsos (presuntamente organizaciones que quieren sacar gente del mercado colombiano). Caso real de Camilo: 117 pedidos, **46 cancelados** por falsos (llamaban y caía a buzón). Cada pedido falso despachado = ~20,000 de flete perdido. Proceso de verificación:
+- **Regla obligatoria:** NUNCA despachar contraentrega sin contactar al cliente para verificar la dirección real.
+- A clientes SIN antecedente: llamarlos (en cualquier momento, no avisado). Pedir confirmación de: apellido, departamento, ciudad, último número de la dirección, barrio, punto de referencia. Si lo que dice coincide con el chat → verídico. Si no sabe el apellido, la ciudad o el último número → pedido FALSO.
+- Truco del apellido: "ella me pidió que hiciera el pedido" → "¿cuál es el apellido de ella?" → si responde otro apellido, es falso.
+- Si cae a buzón o tiene MAL antecedente: enviar plantilla pidiendo anticipado (10,000-20,000) que cubra el flete. Si no paga, no se despacha. El anticipado compromete al cliente real y filtra los falsos.
+- Si mandas mensaje de despacho y no contesta: no despachar ("si no me contesta a mí, mucho menos a la transportadora").
+
+### BLOQUE 11: El costo real de una operación
+
+- **Publicidad perdida:** el CPA que pagaste se va a la basura si el cliente no recibe. CPA de 5,000 que no se despacha → ya es 6,000-7,000; cancelado → 8,000; falso → 10,000. Bola de nieve.
+- Sumar siempre: flete, flujo de caja, devoluciones, cancelados, falsos.
+- "A mí no me hace nada vender 200 o 500 pedidos y no ser rentable. Me interesa GANAR más. Si con 100 pedidos gano más, me voy por 100."
+
+### BLOQUE 12: Diferencias WhatsApp vs Landing, Black/Blap y Pixel
+
+- **WhatsApp vs Landing:** son herramientas distintas. WhatsApp atiende a gente mayor, desconfiada de páginas web, que busca atención personalizada y leer lo que dicen otros. Landing atrae a gente más joven que verifica y compra, pero con CPA más elevado para generar una venta. Camilo solo vende por WhatsApp actualmente.
+- **Black/Blap:** NO es solo lo sexual (potenciadores, retardantes). Es todo lo que toca la piel, promesas de valor fuerte, productos de salud/belleza, ingeribles, cualquier cosa que "cure" o intervenga la salud. Con Black se llega a 100+ pedidos diarios. Un producto white (ej. cocina) puede volverse blap según cómo lo presentes. Meta NO permite vender medicamentos — ser cuidadoso con las políticas.
+- **Pixel:** ideal UNO por NICHO (no por producto). Recoge datos de clientes para traer clientes más aptos. Una cuenta publicitaria no recibe datos (es solo donde publicas); el Pixel sí. Se crea fácil con landing.
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **"Escalar no es gastar más para vender más; es generar más RENTABILIDAD dominando adquisición de ventas y retención de entregas."** — Definición central de la clase.
+
+2. **CPA SEMANAL/PONDERADO, no diario.** — La estabilidad se mide en la semana; un día malo es normal. Apagar por un día malo es el peor error.
+
+3. **"Cualquiera puede pautar y conseguir pedidos; escalar a las grandes ligas es para los que dominan la logística y las entregas."** — La logística es el verdadero diferenciador.
+
+4. **El CPA REAL se calcula sobre DESPACHADOS y ENTREGADOS, no sobre vendidos.** — De 100 vendidos a 70 despachados a 60 entregados, el CPA real es muy distinto al aparente.
+
+5. **"Lo que se quema es el ÁNGULO de venta, no el producto."** — La necesidad sigue en las personas; cambiar de ángulo revive un producto "quemado" (caso chilají).
+
+6. **Diversificar creativos = llegar a más audiencias.** — Cada concepto/formato segmenta a un público diferente; la variable #1 del éxito al escalar.
+
+7. **Subir la efectividad logística 2 puntos vale millones.** — De 75% a 77% = 2-3 millones; a 80% = 10-20 millones mensuales en operaciones grandes.
+
+8. **Subir el precio de 1,000 en 1,000 va directo al margen neto.** — Vendes lo mismo, gastas lo mismo en Meta, ganas más; y puede sacar competencia del mercado.
+
+9. **"No me interesa vender más, me interesa GANAR más."** — Vender 200 pedidos sin rentabilidad no es negocio.
+
+10. **Pedidos falsos: 46 de 117 en un caso real.** — La verificación telefónica y el anticipado son defensa obligatoria contra fletes perdidos.
+
+11. **Publicar en la fanpage conserva la prueba social sin Post ID.** — Y genera ventas orgánicas + confianza + pagos sin recaudo.
+
+12. **"Nosotros no testeamos, vendemos."** — Si otra persona ya está vendiendo el producto, ¿qué te impide vender a ti? Se sale a vender desde el día 1.
+
+13. **Cada cuenta publicitaria se comporta diferente.** — ABO o CBO, estructura de Mercy o estructura propia: hay que probar qué funciona en cada cuenta.
+
+14. **El flujo de caja es el límite real del escalado.** — Meta es estable pero el retorno tarda 4-7 días; sin flujo de caja no se sostiene un escalado agresivo.
+
+---
+
+## 🛠️ TRUCOS, TIPS Y RECOMENDACIONES
+
+1. **Calcular el CPA ponderado semanal** dividiendo gasto total entre ventas totales de la semana, para no entrar en pánico diario.
+
+2. **Vigilar la Biblioteca de Anuncios** cuando bajen las ventas, para detectar competidores nuevos y responder con creativos/ofertas/ángulos.
+
+3. **Sacar el anuncio ganador a un conjunto/campaña aparte** con presupuesto propio (20,000-50,000) y hacerle seguimiento constante.
+
+4. **Meter el anuncio ganador en una campaña Advantage (Vantage)** con 30,000-60,000: Meta, con confianza, te trae "personas ganadoras" y mejora el CPA.
+
+5. **Publicar el creativo directamente en la fanpage** y usar "crear anuncio con publicación existente" para conservar likes/comentarios al duplicar o pasar a otra cuenta (evita el problema del Post ID).
+
+6. **Subir el precio gradualmente (1,000/día)** mientras siga vendiendo, para escalar el MARGEN sin tocar la pauta. Camilo subió 15,000 a un producto y sacó dos competidores.
+
+7. **Iterar el ganador con variaciones NO mínimas**, conservando el ángulo que enganchó (cambiar diseño, modelo, textos/beneficios, no solo el color de fondo).
+
+8. **Surfing del 20%:** si una campaña/anuncio trae buenas ventas en la mañana, subir 20%; si sigue trayendo, otro 20%. Nunca más del 20% (desoptimiza).
+
+9. **Calentar números/cuentas nuevas** empezando suave (20,000), subiendo a 25,000 cuando ya haya ventas tempranas.
+
+10. **Llamada de verificación a clientes sin antecedente:** pedir apellido, ciudad, último número, barrio y referencia, comparando con el chat. Llamar sin avisar.
+
+11. **Cobrar anticipado (10,000-20,000)** a clientes con mal antecedente o que caen a buzón; compromete al real y filtra al falso.
+
+12. **Apagar (NO eliminar) anuncios** que superan tu CPA objetivo: pueden cerrar ventas rezagadas y se reactivan.
+
+13. **Pagar a alguien para gestionar novedades/llamadas** — se paga solo recuperando pedidos y evitando fletes perdidos.
+
+14. **Un Pixel por NICHO** (no por producto) para traer clientes más aptos.
+
+15. **Diversificar formatos (9:16, 1:1, video, imagen, carrusel, testimonio)** porque cada formato segmenta a un público distinto.
+
+16. **Más presupuesto = data más rápida:** 10 anuncios con 40,000 (4,000 c/u) traen información para decidir más rápido que 6,000 que tardan 2 días en sumar 12,000.
+
+---
+
+## 📋 PROCESOS Y PASOS
+
+### PROCESO 1: Calcular el CPA real (en capas)
+**Paso 1:** CPA aparente = Importe gastado ÷ pedidos vendidos.
+**Paso 2:** CPA sobre despachados = Importe ÷ pedidos realmente despachados (restar cancelados/falsos).
+**Paso 3:** CPA sobre entregados = Importe ÷ paquetes entregados (restar devoluciones).
+**Paso 4:** Sumar fletes perdidos de no entregados y falsos.
+**Paso 5:** Comparar la ganancia real resultante con la "supuesta" para saber si eres rentable.
+
+### PROCESO 2: Llamada de verificación de pedido (anti-falsos)
+**Paso 1:** Identificar si el cliente tiene antecedente. Si NO, llamar (sin avisar previamente).
+**Paso 2:** Saludar e identificar la tienda y el producto solicitado.
+**Paso 3:** Pedir confirmación de: apellido, departamento, ciudad, último número de la dirección, barrio, punto de referencia cercano.
+**Paso 4:** Comparar las respuestas con los datos del chat. Si coinciden → verídico, despachar. Si no sabe apellido/ciudad/último número → falso.
+**Paso 5:** Si cae a buzón o tiene mal antecedente → enviar plantilla pidiendo anticipado (10,000-20,000). Si paga, despachar; si no, cancelar.
+
+### PROCESO 3: Conservar prueba social al escalar
+**Paso 1:** Publicar el creativo directamente en la fanpage (como una foto normal).
+**Paso 2:** Al crear el anuncio en Meta → "crear anuncio con publicación existente" → seleccionar esa publicación (ya con likes/comentarios).
+**Paso 3:** Para otra cuenta publicitaria, repetir con la misma página: hereda automáticamente todas las reacciones (sin Post ID).
+
+### PROCESO 4: Escalado agresivo por duplicación de conjunto
+**Paso 1:** Tener un conjunto rentable (ej. 16,000 con varios anuncios, CPA ~3,000).
+**Paso 2:** Duplicar el conjunto completo (16,000 → 32,000). Verificar que siga vendiendo.
+**Paso 3:** Duplicar de nuevo (32,000 → 64,000). El CPA sube un poco; compensar con creativos nuevos para que no se eleve tanto.
+
+---
+
+## ❓ PREGUNTAS Y RESPUESTAS
+
+**Pregunta:** ¿Qué dejar prendido si el creativo lleva constancia pero un día no vende? / ¿Qué haces si un día vende mucho y otro no? (Esteban)
+**Respuesta:** Calcular el CPA general/semanal; es normal que no venda igual todos los días, se complementan. No estresarse ni apagar por un día.
+
+**Pregunta:** ¿Cuánto esperar para decidir escalar? (John Alejandro)
+**Respuesta:** Depende del presupuesto y del flujo de caja. Solo escalar agresivo lo que puedas SOSTENER en el tiempo; si no, hacerlo poco a poco.
+
+**Pregunta:** Tengo buenas métricas pero no vende, con el embudo de Mercy al pie de la letra. (Leonardo)
+**Respuesta:** Probablemente la OFERTA, o la estructura de venta, o falta de coherencia anuncio-flujo (vender "manzanas" y que el flujo hable de "peras").
+
+**Pregunta:** ¿Escalado vertical, horizontal o sin Post ID? (Harrison)
+**Respuesta:** Todas. Campaña + conjunto con 6-10 anuncios y presupuesto (40-60K), apagar por costos; o duplicar el conjunto completo; o publicar en la página (sin Post ID) y llevar a otra cuenta heredando likes.
+
+**Pregunta:** ¿Cómo no se cae una campaña: renovar con nuevos ABO duplicados o variaciones? (Misael)
+**Respuesta:** Primero estabilidad (CPA semanal); para escalar, lo más recomendable hoy son NUEVOS anuncios (mejores costos por resultado y CPA bajo). Inyectar más presupuesto al mismo anuncio sube el CPA.
+
+**Pregunta:** ¿Cuando duplico se borra la prueba social aunque no cambie nada?
+**Respuesta:** Suele pasar al duplicar con Post ID; Meta lo está quitando últimamente. Mejor publicar en la fanpage y usar "publicación existente".
+
+**Pregunta:** ¿Cómo escalas un creativo ganador con variaciones mínimas?
+**Respuesta:** No variaciones mínimas. Identificar qué hace ganador al creativo (el ángulo) y conservarlo; cambiar diseño, modelo, textos. Lo mismo encarece el creativo.
+
+**Pregunta:** ¿Un winner lo lanzas en audiencias diferentes/similares/intereses? (Harrison)
+**Respuesta:** Se lanza de una (abierto). Muchas veces uno HACE que el producto sea winner con el ángulo; lo que se quema es el ángulo, no el producto (caso chilají).
+
+**Pregunta:** Tengo CPM 27K, gasté 45K y solo 3 ventas. (Bolívar)
+**Respuesta:** Lo que interesa es el CPA. Hay anuncios con costo por mensaje alto (2,500) que con 2 mensajes venden (CPA 5,000) y se dejan; no apagar lo rentable.
+
+**Pregunta:** ¿El costo por mensaje va en el creativo o en la configuración?
+**Respuesta:** En el CREATIVO. Hay anuncios con costo por mensaje de 50-100 pesos que traen miles de mensajes pero NO venden (morbo, preguntas) → apagar. Mejor costo por mensaje alto que VENDE.
+
+**Pregunta:** ¿Cómo se monta una campaña Advantage?
+**Respuesta:** En crear → tráfico (u objetivo) → aparece "crear contenido Advantage" arriba (o manual abajo). Creas campaña, conjunto, colocas el anuncio y se va solo. Dejar el copy activo (Meta optimiza).
+
+**Pregunta:** ¿Mezclas imágenes y videos en un mismo anuncio o separados? (Felipe)
+**Respuesta:** Mejor diversificar (imágenes, videos) en la campaña. Meta vende por conjunto y por los anuncios del conjunto; distintos formatos = distintos públicos.
+
+**Pregunta:** ¿La primera campaña de un producto nuevo en CBO o ABO? (Jeffrey)
+**Respuesta:** Camilo hace campaña + un conjunto + varios anuncios (5-10) con ~40,000. Depende de la cuenta: a unas les funciona ABO, a otras CBO. Probar.
+
+**Pregunta:** ¿Cómo detectar pedidos falsos si el cliente da datos correctos? (Ángela)
+**Respuesta:** Llamar al cliente sin antecedente y verificar apellido, ciudad, último número, barrio, referencia contra el chat. Si no sabe el apellido propio o el de quien "pidió por él", es falso.
+
+**Pregunta:** ¿Cuándo decides escalar? (Jimmy)
+**Respuesta:** Cuando hay buenas ventas, buen flujo de caja y buena logística. Subir de a poco (de 10 a 15 pedidos = +50%); no saltar de 100 a 150 sin equipo logístico.
+
+**Pregunta:** ¿Has vendido productos de ticket alto (+140,000)?
+**Respuesta:** No, manejan ticket medio-bajo (proveedor ~10,000, venta 65-70,000).
+
+**Pregunta:** ¿6,000 por anuncio alcanzan para decidir, o mejor 40,000 en CBO con 10 anuncios?
+**Respuesta:** Más presupuesto = data más rápida para decidir. 40,000 en un conjunto permite tomar decisión al mediodía; con 6,000 hay que esperar a que sumen. Si ningún anuncio del conjunto vendió a mediodía y ya gastó la mitad, se apaga (no se va a optimizar). "Tus productos tienen que venderte el primer día."
+
+**Pregunta:** ¿Un Pixel por nicho o por producto?
+**Respuesta:** Por NICHO. El Pixel recoge datos; ideal uno por nicho para clientes más aptos.
+
+**Pregunta:** ¿Qué es Blap/Black?
+**Respuesta (con Felipe):** No solo lo sexual. Todo lo que toca la piel, promesas de valor fuerte, salud, belleza, ingeribles, "cura". Meta no permite medicamentos.
+
+**Pregunta:** ¿Cuál fue el error que más dinero te hizo perder? (Matías)
+**Respuesta:** La LOGÍSTICA, sin duda. No resolver novedades, no notificar al cliente, no llamar para verificar y los pedidos falsos.
+
+---
+
+## ⚠️ ERRORES COMUNES Y ADVERTENCIAS
+
+1. **Apagar una campaña por un solo día malo.** — El peor error; usar CPA semanal.
+
+2. **Escalar de 30 a 50 pedidos y QUEBRAR.** — Por no calcular CPA real, devoluciones, fletes y falsos.
+
+3. **Calcular el CPA solo sobre pedidos vendidos.** — Hay que calcularlo sobre despachados y entregados.
+
+4. **Descuidar la logística al escalar.** — Es lo que más dinero hace perder; subir efectividad vale millones.
+
+5. **Despachar contraentrega sin verificar al cliente.** — Pedidos falsos = fletes de 20,000 perdidos (46 de 117 en un caso).
+
+6. **Competir solo por precio (vender más barato).** — La pregunta real es: ¿soy rentable en el tiempo? Mejor agregar valor y subir precio.
+
+7. **Escalar agresivo sin flujo de caja.** — Meta tarda 4-7 días en retornar; te quedas sin presupuesto.
+
+8. **Subir más del 20% de presupuesto de golpe.** — Desoptimiza la campaña.
+
+9. **Iterar el ganador con variaciones mínimas o copias idénticas.** — Encarece el creativo; hay que variar de verdad manteniendo el ángulo.
+
+10. **Apagar (eliminar) anuncios con costo por mensaje alto que venden.** — Lo que importa es el CPA, no el costo por mensaje.
+
+11. **Dejar anuncios con costo por mensaje de 50-100 que traen morbo y no venden.** — Gastan presupuesto sin convertir; apagar.
+
+12. **Creer que un producto "quemado" no sirve.** — Lo quemado es el ángulo; cambiarlo revive el producto.
+
+13. **Confiar en duplicar con Post ID esperando conservar reacciones.** — Meta las está quitando; publicar en la página es más seguro.
+
+---
+
+## 🔗 RECURSOS, HERRAMIENTAS Y REFERENCIAS
+
+- **Biblioteca de Anuncios de Meta** — Detectar competencia y ángulos en circulación.
+- **LucidBot / Lucy Sales** — "Lo mejor que nos pudo pasar": dice exactamente qué anuncio/número vende y manda data a Meta, evitando escalar a ciegas.
+- **Advantage (Vantage) / ABO / CBO** — Tipos de campaña; CBO o ABO según la cuenta.
+- **Post ID vs publicación existente** — Para conservar prueba social al escalar (mejor publicar en la fanpage).
+- **Pixel** — Uno por nicho; recoge datos para clientes más aptos.
+- **OROFI** — Plataforma centralizada mencionada para acceder a proveedores directos y costos fijos controlados.
+- **Transportadoras (GINTACOM/FORZA, MasterChef/EOPI mencionadas)** — Logística contraentrega, 4-7 días hábiles.
+- **TikTok** — Comparado con Meta: más volátil/agresivo; fuente de videos virales (caso chilají).
+- **Estrategia de Mercy** — Referenciada como base (5 conjuntos × 6,000, imagen duplicada); Camilo la combina con su escalado propio.
+- **Personas:** Camilo (instructor; novia hace creativos, papá en el video del chilají), Mercy ("la jefa"), Juan/Juan Silva (landing), y participantes: Esteban, John Alejandro, Leonardo, Harrison, Misael, Bolívar, Felipe, Ángela, Jeffrey, Jimmy, Matías, Luisa, Sebastián Carvajal, María Fernanda, Julián.
+
+---
+
+## 📌 CONCLUSIONES Y CIERRE
+
+**Pilares de la clase:**
+
+1. **Escalar = rentabilidad, no volumen** — dominar adquisición (Meta) + retención (logística).
+2. **CPA semanal/ponderado** — la estabilidad se mide en el tiempo, no en un día.
+3. **CPA REAL y efectividad logística** — calcular sobre despachados y entregados; subir la efectividad es el multiplicador de ganancia más rentable.
+4. **Técnicas de escalado** — duplicación, multicuenta/fanpages, renovación de creativos (la #1), surfing 20%, subir precio gradual.
+5. **Defensa anti-falsos** — verificación telefónica y anticipado; los pedidos falsos quiebran operaciones.
+
+**Mensaje final de Camilo:** "A mí no me interesa que me digan 'vendí 200 pedidos', me interesa que me digan 'apliqué tus consejos, mi logística subió a 85%, genero los mismos pedidos pero gano 200,000 más', o 'pasé de 30 a 80 pedidos'. Quiero que todos crezcan. Vendemos, no testeamos: si otro vende, tú también puedes." Las compañeras cierran invitando a configurar las campañas el domingo para "empezar a vender en forma".

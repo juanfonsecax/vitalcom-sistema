@@ -1,0 +1,227 @@
+{
+  "ficha_id": "F083",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tienda_de_Don_Gato/01_1823612068617773.jpg",
+    "anunciante": "Tienda de Don Gato",
+    "ad_archive_id": "1823612068617773",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "19:20",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "densa"
+  },
+  "dispositivo_dominante": "LA ESCALERA DE TRES PRECIOS EN CARDS NUMERADAS, CON MEDALLA EN EL TIER 1. Los tres tiers van al pie en cards negras de igual tamano, cada una con un circulo numerado en la esquina superior izquierda — 1, 2, 3 — y la del primero lleva una medalla dorada. Cada card repite ENVIO GRATIS, de modo que el beneficio no depende de subir de tier.",
+  "lectura_estrategica": "Vende un producto de marca internacional conocida, asi que el titular es el NOMBRE en tipografia enorme y la persuasion se juega en la aritmetica y en la disponibilidad. La numeracion de los tiers convierte la escalera en una lista ordenada — se lee como opciones de un menu y no como una comparacion de precios — y la medalla en el primero hace algo poco habitual: destaca el tier de ENTRADA, lo que baja la barrera del primer pedido en vez de empujar al mas caro. Repetir el envio gratis en las tres cards elimina la sospecha de que el beneficio esta condicionado.",
+  "fondo": {
+    "tipo": "escena_natural_oscurecida_con_salpicadura",
+    "base": "paisaje verde o vegetacion desenfocada y oscurecida",
+    "elemento": "salpicadura o chorro del producto preparado detras del envase, con frutas y hojas suspendidas",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "verde (fondo, titular de acento, cards de sello) mas negro (cards de precio) mas blanco (titular) mas {{COLOR_ALERTA}} rojo de las etiquetas de ahorro"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "banda_promocion": {
+      "posicion": "superior_izquierda",
+      "contenedor": "banda {{COLOR_ALERTA}} con icono de llama a cada lado",
+      "texto": "{{ETIQUETA_PROMOCION}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2 palabras"
+    },
+    "titular_marca": {
+      "posicion": "superior_izquierda, bajo la banda",
+      "lineas": 2,
+      "linea_1": "{{MARCA}}",
+      "linea_2": "{{CATEGORIA_PRODUCTO}}",
+      "estilo_l1": "Black/900 uppercase blanco, elemento tipografico mas grande",
+      "estilo_l2": "Bold uppercase blanco al 30% de L1",
+      "restriccion_palabras_total": "3-4 palabras",
+      "regla": "el titular es el NOMBRE: la marca internacional ya es la unidad de busqueda"
+    },
+    "bajada_promesa": {
+      "posicion": "bajo el titular",
+      "lineas": 2,
+      "linea_1": "{{IMPERATIVO_L1}}",
+      "linea_2": "{{IMPERATIVO_L2_CURSIVA}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 en cursiva {{PALETA_ACENTO}}",
+      "restriccion_palabras": "2-3 palabras por linea",
+      "formato_obligatorio": "dos imperativos cortos encadenados (nutre tu cuerpo, vive mejor)"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "bajo la bajada",
+      "texto": "{{PARRAFO}}",
+      "estilo": "Regular blanco de 3-4 lineas",
+      "restriccion_palabras": "18-24 palabras",
+      "regla": "define la CATEGORIA del producto para quien no la conoce: un superalimento diario con..."
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "check o icono line-art verde mas texto Bold de 1 linea con asterisco",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "una linea por item y con asterisco: registro de etiqueta de suplemento importado"
+    },
+    "badge_natural": {
+      "posicion": "superior_derecha",
+      "forma": "circular con borde dorado y hoja",
+      "texto": "{{CLAIM_NATURAL}}",
+      "escala": "14% del ancho"
+    },
+    "badge_contenido": {
+      "posicion": "superior_derecha extrema",
+      "contenedor": "card negra con borde",
+      "linea_1": "{{ETIQUETA_CONTENIDO}}",
+      "linea_2": "{{CONTENIDO}}",
+      "estilo_l2": "Black/900 blanco"
+    },
+    "badge_porciones": {
+      "posicion": "centro_derecha",
+      "forma": "circular blanco con borde",
+      "texto": "{{PORCIONES}}",
+      "estilo": "Black/900 oscuro",
+      "escala": "12% del ancho",
+      "regla": "la cantidad de porciones va en su propio circulo: en polvos es el dato de duracion"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "45% del frame",
+      "composicion": "envase de pie de frente con sello de seguridad sobre la tapa, rodeado de las frutas del sabor y salpicadura del preparado",
+      "fuente": "IMAGEN_2"
+    },
+    "vaso_preparado": {
+      "posicion": "inferior_izquierda",
+      "escala": "16% del frame",
+      "contenido": "{{FOTO_PREPARACION}}",
+      "regla": "el producto ya preparado en un vaso, al pie: en polvos la duda es como queda"
+    },
+    "logo_tienda": {
+      "posicion": "derecha_media",
+      "contenido": "{{LOGO_TIENDA}}",
+      "escala": "16% del ancho"
+    },
+    "escalera_precios": {
+      "posicion": "inferior, ancho completo",
+      "tiers": 3,
+      "orientacion": "tres cards negras de igual tamano",
+      "formato_tier": "circulo numerado en la esquina superior izquierda, cantidad en Bold arriba, precio Black/900 grande, etiqueta de ahorro en pildora {{COLOR_ALERTA}} y ENVIO GRATIS con icono al pie",
+      "tier_1": {
+        "numero": 1,
+        "cantidad": "{{CANT_1}}",
+        "precio": "{{MONEDA}}{{PRECIO_1}}",
+        "medalla": "{{MEDALLA}} dorada sobre el numero"
+      },
+      "tier_2": {
+        "numero": 2,
+        "cantidad": "{{CANT_2}}",
+        "precio": "{{MONEDA}}{{PRECIO_2}}",
+        "ahorro": "AHORRAS {{MONEDA}}{{AHORRO_2}}"
+      },
+      "tier_3": {
+        "numero": 3,
+        "cantidad": "{{CANT_3}}",
+        "precio": "{{MONEDA}}{{PRECIO_3}}",
+        "ahorro": "AHORRAS {{MONEDA}}{{AHORRO_3}}"
+      },
+      "regla_numeracion": "los tiers van NUMERADOS: la escalera se lee como opciones de un menu y no como comparacion de precios",
+      "regla_medalla": "la medalla va en el tier de ENTRADA y no en el mas caro: baja la barrera del primer pedido",
+      "regla_envio": "las TRES cards repiten ENVIO GRATIS: elimina la sospecha de que el beneficio esta condicionado a subir de tier"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_marca",
+    "producto_hero",
+    "escalera_precios",
+    "bajada_promesa",
+    "parrafo_descriptivo",
+    "columna_beneficios",
+    "badge_natural",
+    "badge_porciones",
+    "vaso_preparado",
+    "logo_tienda"
+  ],
+  "reglas_duras": [
+    "El titular es el nombre de la marca, en el mayor tamano tipografico",
+    "Los tres tiers van numerados con un circulo en la esquina",
+    "La medalla va en el tier de entrada, no en el mas caro",
+    "Las tres cards repiten envio gratis",
+    "La cantidad de porciones va en su propio circulo",
+    "El producto ya preparado aparece en un vaso al pie",
+    "Cada beneficio va en una linea y con asterisco"
+  ],
+  "variables_requeridas": [
+    "ETIQUETA_PROMOCION",
+    "MARCA",
+    "CATEGORIA_PRODUCTO",
+    "IMPERATIVO_L1",
+    "IMPERATIVO_L2_CURSIVA",
+    "PARRAFO",
+    "BENEFICIOS[4]",
+    "CLAIM_NATURAL",
+    "ETIQUETA_CONTENIDO",
+    "CONTENIDO",
+    "PORCIONES",
+    "FOTO_PREPARACION",
+    "LOGO_TIENDA",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "AHORRO_2",
+    "AHORRO_3",
+    "MONEDA",
+    "MEDALLA",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "marcas internacionales conocidas donde el nombre es la unidad de busqueda",
+    "cuando conviene bajar la barrera del primer pedido en vez de empujar al pack grande",
+    "productos en polvo donde hay que mostrar la preparacion",
+    "revendedores con logo propio que acompana sin competir"
+  ],
+  "cuando_no_usar": [
+    "marcas desconocidas: el titular con el nombre no engancha",
+    "cuando la estrategia es empujar al tier mas alto",
+    "publico frio"
+  ],
+  "sellos_y_claims_observados": [
+    "Banda PROMOCION ACTIVA con iconos de llama.",
+    "Badge circular 100% NATURAL y card CONTENIDO 303 G.",
+    "Badge 60 SERVINGS en circulo.",
+    "Bajada NUTRE TU CUERPO, VIVE MEJOR.",
+    "Parrafo UN SUPERALIMENTO DIARIO CON INGREDIENTES VERDES, FRUTAS Y NUTRIENTES ESENCIALES PARA APOYAR TU SALUD Y ENERGIA.",
+    "Beneficios: APOYA LA DIGESTION*, MAS ENERGIA NATURAL*, FORTALECE TU SISTEMA INMUNE*, INGREDIENTES VERDES Y SUPERALIMENTOS.",
+    "Escalera: 1 UNIDAD Q190 con medalla, 2 UNIDADES Q250 (AHORRAS Q90), 3 UNIDADES Q330 (AHORRAS Q150), las tres con ENVIO GRATIS.",
+    "Claims impresos en el empaque: greens & superfoods, DIGESTION* BLOATING* ENERGY*, STRAWBERRY KIWI FLAVORED, 60 servings, GLUTEN FREE, SEALED FOR YOUR PROTECTION, Net Wt. 10.7 oz (303 g)."
+  ],
+  "canonico_id": "CN04_ESCALERA_PRECIOS",
+  "blueprint_equivalente": null
+}

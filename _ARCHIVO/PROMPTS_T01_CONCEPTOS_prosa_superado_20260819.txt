@@ -1,0 +1,175 @@
+═══════════════════════════════════════════════════════════════════════════
+TINNIDROP · TEST T01 — CONCEPTO DE CONTROL · 4 ADS-IMAGEN 4:5 (1080×1350)
+Generado 2026-08-19 · método en Ads/_SWIPE/_SISTEMA_CREATIVOS_TESTEO.md
+Página: Sanarte Guatemala (498977893288095) · Cuenta GTR0 (act_1665221077707961)
+═══════════════════════════════════════════════════════════════════════════
+
+QUÉ MIDE ESTE TEST
+───────────────────────────────────────────────────────────────────────────
+El ángulo está FIJO (ME DIJERON QUE NO TIENE CURA, ya probado por venta real).
+Lo único que varía entre los 4 es el DISPOSITIVO VISUAL. El ganador pasa a ser
+el concepto de control con el que se testean los ángulos de TODO producto.
+
+OJO: los brazos A, B y C son la misma concepto_key (C2_BENEFICIOS). Este test
+corona la mejor VARIANTE del control, no el mejor concepto. Sirve para elegir
+con qué se testea; NO valida el catálogo.
+
+CÓMO SE USA CADA PROMPT
+───────────────────────────────────────────────────────────────────────────
+A la IA de imagen se le pasan TRES cosas por brazo:
+  1. la imagen de referencia del brazo (ruta indicada en cada prompt)
+  2. la foto real del frasco Tinnidrop 60 ml
+  3. el texto del prompt (BLOQUE FIJO + DISPOSITIVO)
+
+Instrucción: "Leé esta referencia y creá desde cero una imagen con este mismo
+formato y estructura para este producto." No copiar el texto de la referencia.
+
+
+███ BLOQUE FIJO — VA IDÉNTICO EN LOS 4 PROMPTS ███████████████████████████
+
+PRODUCTO:  Tinnidrop — spray natural para el oído, frasco 60 ml, marca South
+           Meon. Usar la foto real adjunta, no inventar el envase.
+
+ÁNGULO:    ME DIJERON QUE NO TIENE CURA (resignación → esperanza)
+
+HOOK (texto exacto, idéntico en las 4):
+           "¿TE DIJERON QUE TENÉS QUE VIVIR CON EL ZUMBIDO?"
+
+LOS 4 BENEFICIOS (mismo texto, mismo orden, en las 4):
+   1. Apoya la circulación hacia el oído
+   2. Ayuda a bajar la tensión que lo agrava
+   3. Alivia la irritación del canal auditivo
+   4. Sensación de frescor desde la aplicación
+
+BLOQUE DE PRECIO (idéntico en las 4, no se omite en ninguna):
+           Q178 · 1 FRASCO
+           ENVÍO GRATIS  ·  PAGÁS AL RECIBIR
+
+SELLO DE GARANTÍA (idéntico en las 4):
+           90 DÍAS DE GARANTÍA DE SATISFACCIÓN
+
+CONTEXTO:  Guatemala · formato 4:5 (1080×1350) · avatar 45-65 años ·
+           español neutro de Guatemala · texto legible en móvil
+
+COMPLIANCE (duro — si aparece, la imagen se rebota):
+   ✗ "cura" · "elimina" · "repara" · "trata"
+   ✗ sellos FDA / REGISTRO-FDA US / cualquier sello regulatorio
+   ✗ porcentajes clínicos · "desde el primer día" · plazos de resultado
+   ✗ antes/después corporal
+   ✓ "apoya" · "ayuda a reducir" · "alivia"
+
+███████████████████████████████████████████████████████████████████████████
+
+
+─── BRAZO A · C2_BENEFICIOS variante colage-sintomas ──────────────────────
+Referencia: Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/
+            colage-sintomas__Camila-Recomienda__12_3103763283146693.jpg
+Archivo:    TINNIDROP_T01_A_COLLAGE.png
+
+[pegar BLOQUE FIJO] + :
+
+Estructura: fondo cálido plano de un solo tono. El hook ocupa el tercio
+superior en tipografía bold muy grande. A la derecha del centro, un rostro de
+profesional de salud con bata blanca, sonriente, de medio cuerpo, mirando a
+cámara. A la izquierda, columna vertical de 3 sellos de confianza con ícono +
+etiqueta corta (fórmula natural / apoya tu bienestar / origen importado).
+Alrededor del rostro, 3 recuadros circulares recortados mostrando la situación
+del avatar — persona mayor tocándose el oído, persona con gesto de esfuerzo al
+escuchar, persona despierta de noche — cada uno con una etiqueta corta y un
+check verde. El frasco Tinnidrop grande al centro-izquierda, en primer plano.
+Banda inferior con el bloque de precio a la izquierda y los íconos de envío
+gratis / pagás al recibir a la derecha. El sello de 90 días bien visible.
+
+⚠️ La referencia trae el claim "elimina hongos" y un sello REGISTRO-FDA US.
+   Los DOS se eliminan. El espacio del sello FDA lo ocupa el de 90 días.
+   Los recuadros muestran la SITUACIÓN de la persona, nunca lesión ni antes/después.
+
+
+─── BRAZO B · C2_BENEFICIOS variante ligera ───────────────────────────────
+Referencia: Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/
+            ligera__Camila-Recomienda__15_1364693855873597.jpg
+Archivo:    TINNIDROP_T01_B_LIGERA.png
+
+[pegar BLOQUE FIJO] + :
+
+Estructura: fondo claro, limpio, de un solo tono cálido. El hook domina el
+tercio superior en bold muy grande, sin ningún elemento que le compita — es lo
+primero y más grande de la composición. Debajo, a la izquierda, columna de 4
+filas: ícono vectorial circular de línea + el beneficio en bold + una línea de
+apoyo en gris. A la derecha, el frasco Tinnidrop grande, fotografía limpia con
+sombra suave, apoyado sobre una superficie neutra con un elemento botánico
+discreto. Esquina superior derecha: sello circular de 90 días de garantía.
+Banda inferior delgada con el bloque de precio y los íconos de envío gratis /
+pagás al recibir. Máximo aire entre elementos. Nada más que esto.
+
+⚠️ Este es el brazo de la contención: la tentación es agregarle cosas. No.
+   Y no se le quita el precio aunque "se vea más limpio" sin él.
+
+
+─── BRAZO C · C2_BENEFICIOS variante densa ────────────────────────────────
+Referencia: Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/
+            densa__Aranza-Glow__13_2474355926408939.jpg
+Archivo:    TINNIDROP_T01_C_DENSA.png
+
+[pegar BLOQUE FIJO] + :
+
+Estructura: fondo oscuro con acentos dorados y de color cálido. Arriba a la
+izquierda, una etiqueta pequeña de tensión ("NO ES NORMAL"). Debajo, el hook
+en bold grande a varias líneas, con una palabra resaltada en color. Debajo del
+hook, un subhook de una línea. Fila horizontal de 5 pictogramas de línea con
+etiqueta corta debajo, representando lo que vive el avatar: zumbido constante,
+dificultad para seguir conversaciones, noches sin dormir, cansancio,
+dificultad para concentrarse. Debajo, un bloque enmarcado rotulado "ACTÚA
+DESDE LA RAÍZ" con 3 casillas conectadas por signos +, una por mecanismo
+(circulación / tensión / irritación). El frasco Tinnidrop grande a la derecha,
+en primer plano, iluminado. Columna derecha de badges verticales (fórmula
+natural, origen importado, uso diario, apto adultos). Banda inferior con el
+bloque de precio destacado y los íconos de envío gratis / pagás al recibir.
+Sello de 90 días. Densidad alta a propósito: más de 15 elementos.
+
+⚠️ La referencia trae "REGISTRADO EN FDA" en su columna de badges. Se elimina.
+   Los pictogramas son de SÍNTOMA, no de resultado, y no llevan check.
+
+
+─── BRAZO D · C8_PROGRESION ───────────────────────────────────────────────
+Referencia: Ads/_SWIPE/_BANCO_CREATIVOS/C8_PROGRESION/
+            progresion__Tiendas-KetsalStore__29_1304415972751500.jpg
+Archivo:    TINNIDROP_T01_D_PROGRESION.png
+
+[pegar BLOQUE FIJO] + :
+
+Estructura: fondo oscuro con acentos cálidos. El hook arriba en bold grande,
+con un subhook de una línea. Al centro, tres paneles horizontales del mismo
+tamaño, separados y rotulados arriba de cada uno:
+
+        PRIMERA SEMANA   |   USO CONTINUO   |   DÍA A DÍA
+
+Cada panel es una ilustración de ESTADO DE USO, no de resultado corporal:
+  · PRIMERA SEMANA — la persona aplicando el spray, gesto de rutina de noche
+  · USO CONTINUO  — la persona en su rutina diaria, el frasco en la mesa
+  · DÍA A DÍA     — la persona conversando tranquila con alguien más
+
+El frasco Tinnidrop centrado encima de los tres paneles, en primer plano,
+solapándolos ligeramente. A los lados, dos columnas de 3 badges de línea con
+los beneficios. Banda inferior con el bloque de precio y los íconos de envío
+gratis / pagás al recibir. Sello de 90 días.
+
+⚠️ EL MÁS DELICADO. La referencia es literalmente un antes/después de un
+   resultado corporal. Acá NO: en tinnitus no hay nada que fotografiar y un
+   antes/después viola compliance. Los paneles se rotulan por MOMENTO DE USO,
+   nunca por resultado. Ningún panel muestra "el problema".
+
+
+─── DESPUÉS DE GENERAR ────────────────────────────────────────────────────
+1. Checklist de compliance de _SISTEMA_CREATIVOS_TESTEO.md §7 sobre las 4.
+2. Guardar en Ads/MEDIA_TINNIDROP/ con los nombres de archivo de arriba.
+3. Crear 4 conjuntos × 2 anuncios (mismo creativo duplicado), presupuesto
+   idéntico en los 4. Nombres:
+       GTR0_TINNIDROP_MEDIJERON-C2COLLAGE_R1
+       GTR0_TINNIDROP_MEDIJERON-C2LIGERA_R1
+       GTR0_TINNIDROP_MEDIJERON-C2DENSA_R1
+       GTR0_TINNIDROP_MEDIJERON-C8PROG_R1
+   (el concepto VA en el nombre — si los 4 se llaman igual con R1..R4, la
+    regla 23 los suma como réplicas y el test queda ilegible)
+4. Pegar esos 4 nombres en conjuntos_meta de PRODUCTOS/_TESTEOS.csv.
+5. python Ads/_TOOLS/gen_hub.py --todo

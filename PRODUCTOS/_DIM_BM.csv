@@ -1,0 +1,7 @@
+bm_id,bm_nombre,cuentas_ids,cuentas_alias,moneda,mcp,estado,notas
+1207290087231971,AMG 5,598687956219141,GTR7,USD,ON,ACTIVO,1 sola cuenta -> la conciliacion de BM y de cuenta coinciden.
+523977064022240,AMG 2,1665221077707961|824783947334627|1680252426660775,GTR0|GTR1|GTR2,USD,ON|ON|OFF,ACTIVO,TRES cuentas bajo un BM: un cargo de su tarjeta puede corresponder a cualquiera de las 3. Conciliar a nivel BM y repartir por gasto devengado. Confirmado: MC-8931 pagaba GTR1 y GTR0. GTR0 en UNSETTLED desde 15-ago.
+1632082414095745,AMG 3,581490137794343,GTR3,USD,ON,ACTIVO,Sin gasto desde julio.
+941347687954885,AMG 9,916746367261028,GTR13,USD,OFF,ACTIVO,CLEARSTEM. 2o mayor gasto del portafolio y sin MCP -> depende 100% del extracto de Facturacion.
+515747137534744,AMG 8,1346891653335162,CP1,COP,OFF,ACTIVO,"Factura en COP. Tasa REAL medida en banco = 3152.5 COP/USD (APR-028), NO 4050."
+,SIN_BM,332010724162945,(sin alias),COP,ON,SIN_USO,Cuenta sin BM propietario y sin metodo de pago. No gasta.

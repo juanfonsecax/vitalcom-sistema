@@ -1,0 +1,83 @@
+{
+  "ficha_id": "F022",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Doctora_Patricia_Morales/07_1033317359293146.jpg",
+    "anunciante": "Doctora Patricia Morales",
+    "ad_archive_id": "1033317359293146",
+    "dias_activo": 6,
+    "replicas": 3,
+    "score": 81,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "nula",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "LA MISMA FOTO CRUDA QUE F021 PERO EN ENTORNO DE TRABAJO, NO CLINICO. Los mismos dos pies, uno sano y uno inflamado, pero de pie sobre un piso de cemento manchado, con una bota de trabajo gastada a un costado. Cambia el lugar y con eso cambia el avatar entero: donde F021 dice paciente, F022 dice trabajador.",
+  "lectura_estrategica": "Par exacto de F021, y la comparacion entre las dos es la leccion: la misma foto del mismo sintoma segmenta audiencias distintas segun DONDE se toma. La camilla apela a quien ya fue al medico; el piso de taller y la bota apelan a quien aguanta y sigue trabajando. La segunda no solo identifica el sintoma, identifica la vida que lo produce y a quien no puede parar. Sin una palabra.",
+  "fondo": {
+    "tipo": "escena_de_trabajo_real",
+    "base": "piso de cemento o tierra del lugar de trabajo, con manchas y desgaste reales",
+    "elemento": "una bota o herramienta de trabajo gastada entrando por el borde del frame",
+    "regla": "el objeto de trabajo es el que nombra al avatar: se conserva sucio y usado"
+  },
+  "paleta": {
+    "derivacion": "de la escena real, no del empaque",
+    "cantidad_colores": 3,
+    "estructura": "los grises del piso, el cuero de la bota y los tonos de piel. No se agrega ninguno"
+  },
+  "sistema_tipografico": {
+    "familia": "ninguna",
+    "pesos_permitidos": [],
+    "maximo_pesos_en_pieza": 0,
+    "nota": "la pieza no lleva texto: toda la carga verbal vive en el copy del anuncio"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "la zona afectada y su contraparte sana en el mismo encuadre, sin rostro",
+    "angulo": "cenital, desde el punto de vista de quien se mira los pies estando de pie",
+    "luz": "la del lugar, escasa y dura, sin correccion",
+    "encuadre": "cerrado sobre la zona, con el piso y el objeto de trabajo visibles",
+    "que_se_conserva": "la suciedad del piso, el desgaste de la bota, la textura real de la piel",
+    "que_NO_se_hace": "texto, logo, filtro, limpieza del entorno, retoque de piel",
+    "regla": "el entorno sucio no es un defecto de la foto: es el argumento. Limpiarlo la vuelve generica"
+  },
+  "zonas": {},
+  "secuencia_lectura": [
+    "foto_completa"
+  ],
+  "reglas_duras": [
+    "Cero texto sobreimpreso",
+    "La comparacion va dentro de la foto, en el mismo encuadre",
+    "El objeto de trabajo gastado queda visible: es lo que nombra al avatar",
+    "El entorno se conserva sucio y usado",
+    "Sin rostro, sin logo, sin filtro",
+    "Toda la carga verbal se traslada al copy del anuncio y al bot"
+  ],
+  "variables_requeridas": [
+    "FOTO_ZONA_AFECTADA_EN_ENTORNO_DE_TRABAJO"
+  ],
+  "cuando_usar": [
+    "cuando el avatar se define por su oficio y no por su diagnostico",
+    "sintoma visualmente inequivoco en publico que trabaja de pie o con esfuerzo fisico",
+    "cuando se quiere el mismo sintoma de F021 pero para una audiencia que no va al medico",
+    "TOFU frio"
+  ],
+  "cuando_no_usar": [
+    "publico de oficina o urbano donde el entorno de taller no identifica a nadie",
+    "cuando solo hay foto clinica: usar F021, que aprovecha esa autoridad",
+    "cuando el creativo tiene que cerrar solo"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no lleva texto: no declara sellos, precio, marca ni claims. Toda la carga verbal vive en el copy del anuncio."
+  ],
+  "canonico_id": "CN08_UGC_CRUDO",
+  "blueprint_equivalente": null
+}

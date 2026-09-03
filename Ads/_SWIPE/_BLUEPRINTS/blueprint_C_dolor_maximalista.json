@@ -1,0 +1,156 @@
+{
+  "id": "C_dolor_maximalista",
+  "version": "1.0",
+  "concepto_key": "C2_BENEFICIOS",
+  "variante": "densa",
+  "referencia_visual": "C2_BENEFICIOS/densa__Aranza-Glow__13_2474355926408939.jpg",
+  "formato": "1:1",
+  "densidad": "muy_alta",
+  "espacio_libre_objetivo": "15%",
+  "fondo": {
+    "tipo": "degradado_oscuro_con_glow",
+    "base": "navy muy oscuro a negro",
+    "glow": "{{COLOR_MECANISMO}} irradiando desde detras del producto",
+    "funcion": "comunicar ciencia/tecnologia"
+  },
+  "sistema_color": {
+    "regla": "cada color tiene UNA funcion asignada, nunca se mezclan",
+    "rojo": "dolor, sintoma, problema",
+    "color_mecanismo": "mecanismo, accion del producto — valor en {{COLOR_MECANISMO}}",
+    "dorado_amarillo": "valor, oferta, premium, headers de seccion",
+    "verde": "exclusivamente el CTA de WhatsApp",
+    "blanco": "texto principal"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "micro_pregunta": {
+      "posicion": "superior_izquierda",
+      "texto": "{{GANCHO_SCROLL}}",
+      "estilo": "Bold uppercase, tamano chico, color de alerta",
+      "restriccion_palabras": "7-9 palabras",
+      "formato_obligatorio": "pregunta"
+    },
+    "foto_dolor": {
+      "posicion": "superior_derecha",
+      "contenido": "{{FOTO_PERSONA_EN_DOLOR}}",
+      "tratamiento": "persona real, gesto de dolor visible, zona afectada con overlay rojo/glow",
+      "escala": "22% del frame",
+      "funcion": "ESTE es el elemento que detiene el scroll, no el titular",
+      "regla_problema_invisible": "Si el problema no tiene zona fotografiable, se muestra el GESTO del avatar (tocarse el oido, apretarse la sien) con el glow sobre la zona. Nunca lesion ni antes/despues."
+    },
+    "badge_premium": {
+      "posicion": "superior_derecha_extrema",
+      "contenedor": "card con borde dorado y estrellas",
+      "linea_1": "{{BADGE_L1}}",
+      "linea_2": "{{BADGE_L2}}"
+    },
+    "titular": {
+      "posicion": "superior_izquierda, bajo la micro-pregunta",
+      "lineas": 3,
+      "linea_1": "{{TITULAR_L1}}",
+      "linea_2": "{{TITULAR_L2_ACENTO}}",
+      "linea_3": "{{TITULAR_L3}}",
+      "estilo": "Black/900 uppercase, blanco, con la LINEA 2 en amarillo",
+      "regla_acento": "el color cae en la promesa emocional, nunca en el organo o el sintoma",
+      "escala": "la linea mas larga ocupa 55% del ancho del frame"
+    },
+    "sub_banda": {
+      "posicion": "debajo del titular",
+      "contenedor": "banda oscura",
+      "texto": "{{CATEGORIZACION_TECNICA}}",
+      "estilo": "Bold uppercase, tamano medio"
+    },
+    "columna_sellos": {
+      "posicion": "derecha superior, columna estrecha vertical",
+      "cantidad_items": "5-6",
+      "formato_item": "check dorado en circulo + texto bold uppercase chico",
+      "items": "{{SELLOS_CONFIANZA[]}}",
+      "funcion": "NO se leen individualmente, se leen como masa de credibilidad",
+      "restriccion_palabras": "3-4 palabras por item",
+      "regla_dura": "Sellos de la ficha. En Guatemala MSPAS. No usar FDA ni INVIMA (reguladores de otros paises)."
+    },
+    "header_identificacion": {
+      "posicion": "izquierda_media",
+      "texto": "{{HEADER_SINTOMAS}}",
+      "estilo": "Bold uppercase amarillo, tamano medio",
+      "default": "TE IDENTIFICAS?"
+    },
+    "columna_sintomas": {
+      "posicion": "izquierda_media, bajo el header",
+      "cantidad_items": 5,
+      "formato_item": "mini-foto cuadrada del sintoma + card oscura con borde rojo con TITULO BOLD UPPERCASE + subtitulo regular",
+      "items": "{{SINTOMAS[5]}}",
+      "restriccion_titulo": "3-4 palabras",
+      "restriccion_subtitulo": "2-4 palabras",
+      "funcion": "la persona debe reconocerse en al menos 3 de los 5",
+      "regla": "sintomas ESPECIFICOS y sensoriales, nunca genericos"
+    },
+    "header_mecanismo": {
+      "posicion": "centro_medio",
+      "texto": "{{HEADER_MECANISMO}}",
+      "estilo": "Bold uppercase amarillo",
+      "default": "ACTUA DESDE LA RAIZ"
+    },
+    "columna_mecanismo": {
+      "posicion": "centro_medio, bajo el header",
+      "cantidad_items": 3,
+      "formato_item": "icono circular relleno con glow {{COLOR_MECANISMO}} + TITULO BOLD + explicacion regular 2 lineas",
+      "items": "{{MECANISMOS[3]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_explicacion": "6-9 palabras",
+      "funcion": "responde el 'por que funcionaria?' que aparece tras la identificacion"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "35% del frame",
+      "efecto": "glow {{COLOR_MECANISMO}} detras",
+      "fuente": "IMAGEN_2",
+      "elementos_flanqueantes": {
+        "derecha_superior": "{{CLAIM_DOSIS}}",
+        "derecha_inferior": "{{CLAIM_SECUNDARIO}}"
+      }
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "label": "{{OFERTA_LABEL}}",
+      "tiers": 2,
+      "tier_1": "{{CANT_1}} - {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} - {{MONEDA}}{{PRECIO_2}} + AHORRAS {{MONEDA}}{{AHORRO}}",
+      "badge_central": "ENVIO GRATIS con icono de camion",
+      "estilo_precio": "Black/900, gigante, en card de color",
+      "funcion": "el tier 2 debe verse como la decision obvia"
+    },
+    "cta_whatsapp": {
+      "posicion": "inferior, ancho parcial izquierdo",
+      "contenedor": "barra verde WhatsApp",
+      "icono": "logo WhatsApp circular blanco",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "regla": "verde exclusivo de esta zona, no aparece en ningun otro lado"
+    },
+    "micro_garantias": {
+      "posicion": "inferior_derecha",
+      "cantidad_items": 3,
+      "formato_item": "icono + texto bold muy chico",
+      "items": "{{GARANTIAS[3]}}"
+    }
+  },
+  "reglas_duras": [
+    "La densidad alta viene de bloques COMPACTOS bien separados, nunca de texto amontonado",
+    "Ningun bloque de texto se superpone con otro",
+    "El rojo se usa SOLO para dolor/sintoma",
+    "El verde se usa SOLO para el CTA de WhatsApp",
+    "Los sintomas deben ser sensoriales y especificos (ardor, hormigueo, punzadas), nunca genericos (malestar, incomodidad)",
+    "La foto de dolor va arriba: es el gancho de scroll",
+    "El acento de color del titular cae en la promesa, no en el organo",
+    "Sello regulatorio: MSPAS (Guatemala). No usar FDA ni INVIMA: son reguladores de otros paises."
+  ]
+}

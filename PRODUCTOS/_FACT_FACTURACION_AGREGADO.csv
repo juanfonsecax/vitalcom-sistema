@@ -1,0 +1,12 @@
+ventana_ini,ventana_fin,cuenta_id,cuenta_alias,bm_nombre,cobros_usd,rechazos_n,creditos_usd,moneda_origen,fuente,notas
+2026-08-01,2026-08-15,598687956219141,GTR7,AMG 5,331.77,0,0.0,USD,FACTURACION,Unica cuenta con CERO rechazos en 15 dias.
+2026-08-01,2026-08-15,824783947334627,GTR1,AMG 2,150.32,5,0.0,USD,FACTURACION,
+2026-08-01,2026-08-15,1665221077707961,GTR0,AMG 2,64.39,3,0.0,USD,FACTURACION,"Ademas US$65.00 en retencion al 13-ago, no contado como cobro."
+2026-08-01,2026-08-15,916746367261028,GTR13,AMG 9,238.41,7,0.0,USD,FACTURACION,6 dias reintentando contra 2 tarjetas muertas antes de que Visa 4167 lo salvara.
+2026-08-01,2026-08-15,1346891653335162,CP1,AMG 8,202.44,10,0.0,COP,FACTURACION,"COP 638,196 / 3152.5 (tasa REAL del banco APR-028). El informe del 15-ago uso /4050 y dio 157.58: SUBESTIMABA 28.5%."
+2026-08-01,2026-08-15,581490137794343,GTR3,AMG 3,0.0,0,0.0,USD,MCP,"Sin gasto, confirmado por MCP."
+2026-08-01,2026-08-16,1665221077707961,GTR0,AMG 2,139.88,10,0.27,USD,FACTURACION,Extracto oficial. Solo PAGADO+CREDITO. GTR2 y GTR3 sin gasto (confirmado por el operador).
+2026-08-01,2026-08-16,824783947334627,GTR1,AMG 2,150.32,5,0.0,USD,FACTURACION,Extracto oficial. Solo PAGADO+CREDITO. GTR2 y GTR3 sin gasto (confirmado por el operador).
+2026-08-01,2026-08-16,598687956219141,GTR7,AMG 5,417.45,0,0.74,USD,FACTURACION,Extracto oficial. Solo PAGADO+CREDITO. GTR2 y GTR3 sin gasto (confirmado por el operador).
+2026-08-01,2026-08-16,916746367261028,GTR13,AMG 9,317.41,7,0.06,USD,FACTURACION,Extracto oficial. Solo PAGADO+CREDITO. GTR2 y GTR3 sin gasto (confirmado por el operador).
+2026-08-01,2026-08-16,1346891653335162,CP1,AMG 8,202.46,10,0.0,COP,FACTURACION,Extracto oficial. Solo PAGADO+CREDITO. GTR2 y GTR3 sin gasto (confirmado por el operador).

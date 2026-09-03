@@ -1,0 +1,79 @@
+===========================================================================
+CONCILIACION DE FACTURACION — ventana 2026-08-01 -> 2026-08-16
+generada 2026-08-16 · fuente de cobros: detalle
+===========================================================================
+
+ECUACION:  cobros - saldo_inicial + saldo_final = gasto devengado
+Meta cobra por UMBRAL acumulado, no por rango de fechas. Un descuadre entre
+'lo gastado' y 'lo cobrado' en las mismas fechas NO es sobrecobro (APR-025).
+
+---------------------------------------------------------------------------
+(A) ¿ME COBRAN DE MAS? — ecuacion de arrastre por cuenta
+---------------------------------------------------------------------------
+CUENTA     COBRADO  SALDO_INI  SALDO_FIN      GASTO  DESCUADRE  VEREDICTO
+GTR7        416.71       3.99       7.37     333.16      86.93  NO VERIFICA (saldo ini estimado)
+GTR13       317.35          —       6.77     264.39          —  NO VERIFICABLE (falta saldo inicial)
+CP1         202.46          —      20.48     189.27          —  NO VERIFICABLE (falta saldo inicial)
+GTR1        150.32      14.66      18.04     136.37      17.33  NO VERIFICA (saldo ini estimado)
+GTR0        139.61       5.62       0.73      70.75      63.97  NO VERIFICA (saldo ini estimado)
+
+TOTAL     1,226.45
+
+!! NINGUNA CUENTA ES VERIFICABLE TODAVIA.
+   Los saldos iniciales son ESTIMADOS (despejados de la propia ecuacion),
+   asi que la ecuacion cierra por construccion y no prueba nada.
+   A partir del SEGUNDO corte semanal con saldo OBSERVADO, esto ya verifica.
+
+---------------------------------------------------------------------------
+(B) ¿TODO LO QUE ME COBRAN ESTA EN MI P&L? — cobertura
+---------------------------------------------------------------------------
+CUENTA     TRACKEADO         REAL    COBERT.  VEREDICTO
+GTR7        316.68     333.16        95%  OK
+GTR13       213.01     264.39        81%  REVISAR
+CP1          51.70     189.27        27%  FUGA GRANDE
+GTR1        125.08     136.37        92%  OK
+GTR0         38.23      70.75        54%  FUGA GRANDE
+GTR3          0.00       0.00          —  sin gasto
+GTR2          0.00       0.00          —  sin gasto
+
+TOTAL       744.70     993.94        75%
+Gasto NO contabilizado en el P&L: $249.24 USD = Q1,899
+-> Mientras la cobertura no sea ~100%, la ganancia del dashboard esta INFLADA
+   en aproximadamente ese monto. No es que Meta cobre de mas: es gasto real
+   que el P&L no descuenta.
+
+---------------------------------------------------------------------------
+(C) SALUD DE TARJETAS — un rechazo no es plata perdida, pero frena entrega
+---------------------------------------------------------------------------
+ULT.4   MARCA BM           OK  RECH  %FALLA  VEREDICTO
+2190    MC    AMG 8         0     7    100%  MUERTA
+8069    MC    AMG 9         0     5    100%  MUERTA
+8931    MC    AMG 2         0     3    100%  MUERTA
+1193    MC    AMG 9         0     2    100%  MUERTA
+4308    MC    AMG 2         7    11     61%  INTERMITENTE
+2388    MC    AMG 8         2     2     50%  INTERMITENTE
+0786    Visa  AMG 2         8     4     33%  INTERMITENTE
+0925    Visa  AMG 8         3     1     25%  INTERMITENTE
+9941    Visa  AMG 5        10     1      9%  INTERMITENTE
+4167    Visa  AMG 9         4     0      0%  SANA
+3494    MC    AMG 5         4     0      0%  SANA
+
+ACCION: quitar como metodo de pago las tarjetas MUERTAS (0 cobros exitosos):
+        ···2190 · ···8069 · ···8931 · ···1193
+Meta las intenta PRIMERO, falla, y recien despues cae a la buena. Cada
+reintento fallido acerca la cuenta a restriccion. Quitarlas es gratis.
+
+---------------------------------------------------------------------------
+(D) QUE HACER
+---------------------------------------------------------------------------
+1. 4 tarjetas MUERTAS siguen configuradas como metodo de pago: ···2190, ···8069, ···8931, ···1193.
+2. CP1: el P&L solo ve el 27% de su gasto ($137.57 sin contabilizar).
+3. CP1: no se puede conciliar, falta saldo inicial.
+4. GTR0: el P&L solo ve el 54% de su gasto ($32.52 sin contabilizar).
+5. GTR13: el P&L solo ve el 81% de su gasto ($51.38 sin contabilizar).
+6. GTR13: no se puede conciliar, falta saldo inicial.
+
+RECORDATORIO DE CIERRE: guardar el saldo sin facturar de CADA cuenta en
+_FACT_SALDOS.csv con estado=OBSERVADO. Es lo unico que convierte esta
+conciliacion en una verificacion real la semana que viene.
+===========================================================================

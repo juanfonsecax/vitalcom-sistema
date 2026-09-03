@@ -1,0 +1,90 @@
+{
+  "ficha_id": "F092",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Megacomprasgt/06_1032838982690077.jpg",
+    "anunciante": "Megacomprasgt",
+    "ad_archive_id": "1032838982690077",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "nula",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "EL BODEGON DE LO QUE YA NO FUNCIONO, CENITAL Y SIN UNA PALABRA. Sobre la mesa de noche, al lado de la cama deshecha, estan juntos todos los intentos anteriores: la rodillera gastada, dos pomadas, un blister empezado y la receta de farmacia arrugada. No hay titular, ni producto de la marca, ni logo. El diagnostico esta en el INVENTARIO de objetos, no en un texto.",
+  "lectura_estrategica": "Vende por reconocimiento, no por argumento. Quien tiene ese problema tiene esa mesa de noche, y ver la propia mesa fotografiada produce una identificacion que ningun titular consigue: la pieza no dice te duele, muestra las pruebas de que te duele. El detalle que hace el trabajo es el papel ARRUGADO - no es que la persona no haya hecho nada, es que ya hizo todo y nada le sirvio, que es el estado mental que compra la alternativa. Y al no incluir el producto, deja la mesa limpia para lo que todavia no esta ahi.",
+  "fondo": {
+    "tipo": "escena_real_de_dormitorio",
+    "base": "mesa de noche de madera junto a una cama con sabanas blancas revueltas, vista desde arriba",
+    "regla": "la cama entra por el borde del frame: es lo que fecha la escena de noche y de dolor",
+    "textura": "la veta de la madera, los pliegues de la tela y el papel arrugado reales"
+  },
+  "paleta": {
+    "derivacion": "de la escena real, no del producto",
+    "cantidad_colores": 4,
+    "estructura": "cafes de la madera mas blancos de la sabana y el papel mas los beige del soporte ortopedico mas un unico acento saturado del objeto deportivo"
+  },
+  "sistema_tipografico": {
+    "familia": "no aplica - la pieza no lleva texto",
+    "pesos_permitidos": [],
+    "maximo_pesos_en_pieza": 0,
+    "color_texto_principal": "no aplica"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "los objetos del intento fallido agrupados sobre una superficie domestica, sin manos y sin rostro",
+    "inventario": "un soporte ortopedico o accesorio de la zona afectada, dos topicos, un blister de pastillas empezado, un papel de farmacia arrugado y un objeto de la vida que el dolor interrumpio",
+    "angulo": "cenital, desde el punto de vista de quien esta sentado en la cama mirando su propia mesa",
+    "luz": "la del cuarto, lateral y baja, con sombras largas y sin flash",
+    "encuadre": "la mesa ocupa el frame y la cama entra por un borde",
+    "que_se_conserva": "el papel arrugado, el blister empezado con los huecos, el desgaste del soporte, las sabanas revueltas, el polvo de la madera",
+    "que_NO_se_hace": "texto sobreimpreso, logo, flecha, circulo de senalamiento, el producto de la marca en la escena, objetos alineados en grilla, fondo plano",
+    "regla": "los objetos se acomodan como quedaron, no como se veria bien: la simetria delata la produccion y borra el reconocimiento"
+  },
+  "zonas": {},
+  "secuencia_lectura": [
+    "foto_completa"
+  ],
+  "reglas_duras": [
+    "La pieza va sin texto, sin logo y sin el producto de la marca",
+    "El inventario incluye al menos un topico, un blister empezado y un papel de farmacia arrugado",
+    "El papel se fotografia arrugado: es lo que declara que ya se intento todo",
+    "Los objetos quedan desordenados, con la disposicion en que se dejaron",
+    "La cama o el entorno domestico entra por un borde del frame",
+    "La luz es la del cuarto, con sombra larga"
+  ],
+  "variables_requeridas": [
+    "FOTO_BODEGON_INTENTOS_FALLIDOS",
+    "OBJETO_ORTOPEDICO_DE_LA_ZONA",
+    "TOPICOS[2]",
+    "BLISTER",
+    "PAPEL_FARMACIA",
+    "OBJETO_DE_LA_VIDA_INTERRUMPIDA"
+  ],
+  "cuando_usar": [
+    "problemas cronicos donde el avatar ya probo pomadas, pastillas y soportes",
+    "apertura de embudo frio con copy largo de identificacion",
+    "cuando el diferencial de la oferta es ser la alternativa a lo que ya fallo",
+    "cuando conviene medir el copy con la imagen como constante"
+  ],
+  "cuando_no_usar": [
+    "problemas nuevos o de primera vez, donde no hay historial de intentos",
+    "cierre por oferta: la pieza no tiene donde poner precio ni CTA",
+    "categorias esteticas o de deseo, donde el bodegon del fracaso no existe"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no lleva texto: no declara sellos, precio, marca ni claims. Toda la carga verbal vive en el copy del anuncio.",
+    "Los empaques de los topicos y el blister son de farmacia generica y quedan ilegibles a escala de feed: el inventario se lee por silueta, no por marca."
+  ],
+  "canonico_id": "CN08_UGC_CRUDO",
+  "blueprint_equivalente": null
+}

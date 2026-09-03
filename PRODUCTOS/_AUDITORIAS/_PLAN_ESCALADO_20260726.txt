@@ -1,0 +1,155 @@
+═══════════════════════════════════════════════════════════════════════════
+PLAN DE ESCALADO · 2026-07-26 · ETAPA-8 (multi-producto)
+Base: ventana BASE 17-26 jul · aplica ESCALADO_PLAYBOOK §3/§4/§5/§6
+═══════════════════════════════════════════════════════════════════════════
+
+⚠️ CORRECCIÓN A LA AUDITORÍA DE ANOCHE
+   Ayer recomendé APAGAR el ángulo CLEARSTEM DOLOR_EMOCIONAL_MASCULINO por
+   sangrado (Q77, 111% del PD, 0 ventas). El aprendizaje APR-007 —escrito el
+   25-jul sobre este caso exacto— dice lo contrario: fue el ángulo MÁS eficiente
+   del historial del producto (7 compras con $32.91 = $4.70/compra). Un ángulo
+   con ese historial que cae a cero es FATIGA DE CREATIVO, no ángulo muerto.
+   → Se pausa el CREATIVO, se CONSERVA el ángulo y se renueva. No se mata.
+
+───────────────────────────────────────────────────────────────────────────
+1. APAGAR HOY — LISTA EXACTA  (corregida 26-jul tras desglose por cuenta)
+───────────────────────────────────────────────────────────────────────────
+⚠️ CORRECCIÓN de la primera versión de este plan. Tenía dos errores:
+   (a) "ME DIJERON QUE NO TIENE CURA - Copia" existe en CUATRO cuentas con el
+       MISMO nombre. El Q190 que reporté era la suma de las 4, no un conjunto.
+       Solo UNA pasó su PD.
+   (b) 3 de los 5 que listé YA no gastan desde el 24-jul → mandarlos a apagar
+       era trabajo inútil.
+   Verificado contra el gasto diario del 25 y 26 de julio.
+
+SOLO 2 CONJUNTOS SIGUEN GASTANDO Y DEBEN APAGARSE. Libera $7.65/día (Q58/día):
+
+┌─ 1 ────────────────────────────────────────────────────────────────────────
+│ CUENTA:    GTR0 · act_1665221077707961
+│ CAMPAÑA:   🟩 TINIDROP GTR0 - 1.59 - TEST
+│ CONJUNTO:  ME DIJERON QUE NO TIENE CURA - Copia      ← el que TERMINA en "- Copia"
+│ Gasto acumulado Q83.5 · 0 ventas · 117% del PD · corriendo a $6.14/día
+│ POR QUÉ: pasó su Presupuesto de Decisión sin vender, y GTR0 está saturada
+│          para este ángulo (CP1 lo corre a Q19.9; GTR0 a Q72.4 = 3.6× peor).
+│ ⚠️ EN ESA MISMA CAMPAÑA hay otro llamado "ME DIJERON QUE NO TIENE CURA"
+│    (SIN "- Copia"): ese vendió 3 con CPA Q33 → NO TOCAR.
+└────────────────────────────────────────────────────────────────────────────
+
+┌─ 2 ────────────────────────────────────────────────────────────────────────
+│ CUENTA:    GTR13 · act_916746367261028
+│ CAMPAÑA:   🟩 CLEARSTEM - WP - NEW TEST
+│ CONJUNTO:  Testimonio Radical                        ← sin sufijo
+│ Gasto acumulado Q101.7 · 1 venta · CPA Q101.7 vs BE Q69.6 · $1.51/día
+│ POR QUÉ: no es que no venda — vende PERDIENDO plata. 146% del PD.
+└────────────────────────────────────────────────────────────────────────────
+
+NO APAGAR — se llaman parecido pero NO son estos:
+  · GTR1  "ME DIJERON QUE NO TIENE CURA - Copia"  → Q37.6 · 53% del PD · aún no decide
+  · GTR13 "ME DIJERON QUE NO TIENE CURA - Copia"  → Q34.8 · 49% del PD · aún no decide
+  · GTR7  "ME DIJERON QUE NO TIENE CURA - Copia"  → Q34.3 · 48% del PD · aún no decide
+  · GTR0  "ME DIJERON QUE NO TIENE CURA" (sin sufijo) → 3 ventas · CPA Q33 · RENTABLE
+  · CP1   "ME DIJERON QUE NO TIENE CURA" (sin sufijo) → 3 ventas · CPA Q19.9 · el MEJOR del portafolio
+
+YA ESTÁN APAGADOS (sin gasto el 25 ni el 26 — no hay nada que hacer):
+  · CLEARSTEM "Dolor Emocional Masculino" (GTR13) → coincide con la renovación §4
+  · CLEARSTEM "Eje Intestino-Piel" (GTR13)
+  · NUSAVA "MA1-COMPLEJOB" (GTR7)
+  · VARICOSE "MANCHAS-OSCURAS_VARICOSE_TEST" → pausado desde el 21-jul
+
+  ⚠️ Confirmá en Meta que estos 4 figuran PAUSADOS y no simplemente "sin
+     entrega". Si están activos pero Meta no les está dando salida, es otro
+     problema (presupuesto o competencia interna entre conjuntos), no una pausa.
+
+───────────────────────────────────────────────────────────────────────────
+2. DEJAR CORRER SIN TOCAR
+───────────────────────────────────────────────────────────────────────────
+· RENOVACIÓN TINNIDROP (5 conjuntos, Q165, 0 ventas) — van al 43-48% de su
+  Presupuesto de Decisión. Por debajo del PD, "0 ventas" no significa nada.
+  Su conversación (5.2%) está en línea con el resto del producto (6.4%): está
+  JOVEN, no rota. Además APR-009: en TINNIDROP el %conversación no predice
+  venta ni para cortar. → Revisar en 2-3 días, cuando cada conjunto toque el 100%.
+· CLEARSTEM "Médicos Fallaron - Copia" y "Resistencia a la Insulina/SOP - Copia"
+  — al 95% del PD con 0 ventas. Les falta un día. Decidir mañana, no hoy.
+· NUSAVA ARDOR (CPA Q45.5) — rentable contra BE Q76.9 pero por encima del CPA
+  Base Q31.3 → NO califica para duplicar. Dejar + surfing +20%.
+· CLEARSTEM ANTI_FALSIFICACION (Q33.5) — el único sano del producto, pero
+  apenas sobre el Base Q30.8. Surfing +20%, sin duplicar todavía.
+
+───────────────────────────────────────────────────────────────────────────
+3. ESCALAR — TABLA DE DUPLICACIÓN (§6)
+───────────────────────────────────────────────────────────────────────────
+Regla aplicada: solo se duplica lo que tiene CPA real ≤ CPA Base Y n≥6 ventas.
+Con 1-3 ventas el IC95 es ±113-196% (APR-004): duplicar ahí es escalar ruido.
+
+| Ángulo                    | Cuenta | n | CPA hoy | %Base | ×N | $/día c/u | $/día add |
+|---------------------------|--------|---|---------|-------|----|-----------|-----------|
+| DETERIORO_COGNITIVO       | GTR1   | 8 |  Q21.3  |  69%  | ×4 |   6.64    |   26.56   |
+| PERDIDA_AUDITIVA          | GTR0   | 8 |  Q29.3  |  95%  | ×3 |   3.79    |   11.37   |
+| ME_DIJERON + ACCESIBILIDAD| CP1    | 6 |  Q20.2  |  66%  | ×2 |   3.81    |    7.62   |
+| VERGUENZA_PIERNAS         | GTR7   | 6 |  Q32.5  |  88%  | ×2 |   2.99    |    5.98   |
+|                           |        |   |         |       |    | TOTAL     |   51.53   |
+
+  Gasto incremental: $51.5/día (Q393) = +55% sobre los $93.6/día actuales.
+  PROYECCIÓN (CPA degradado +30%, que es lo que avisa el playbook al duplicar):
+     +12.9 ventas/día · ganancia +Q541/día.
+  Peor caso (CPA +60%): +10.5 ventas/día · +Q366/día → sigue rentable. GATE PASA.
+
+  ⚠️ La fórmula del playbook es LINEAL y sobreestima: asume que la demanda
+     escala sin techo. Hoy el portafolio entero hace 17 ventas/día; proyectar
+     +12.9 es agresivo. Tratar como cota superior y verificar en 48h.
+
+  Al duplicar (obligatorio): "duplicar la configuración original" (nunca una
+  recomendación de Meta) · marcar "mostrar reacciones, comentarios y contenido
+  compartido" · verificar objetivo en "maximizar conversaciones" (Meta lo
+  revierte solo a "clics en el enlace") · destino WhatsApp · 2 anuncios adentro.
+  MISMO presupuesto del original — duplicar no es subir presupuesto.
+
+  NO duplicar en GTR0 los ángulos DETERIORO y ME_DIJERON: cuenta saturada (§5).
+
+───────────────────────────────────────────────────────────────────────────
+4. CREATIVOS A CREAR (§4 — "se copia el POR QUÉ vendió, no el creativo")
+───────────────────────────────────────────────────────────────────────────
+[A] TINNIDROP — 8 imágenes nuevas del CLUSTER GANADOR.  ← prioridad 1
+    APR-010: DETERIORO + PERDIDA_AUDITIVA + ACCESIBILIDAD + ME_DIJERON NO son
+    4 ganadores que se destronan, son UN territorio: frustración médica + miedo
+    a que sea irreversible. Ese es el "por qué vendió".
+    Destino: GTR0 (saturada por frecuencia — necesita cara nueva, no más plata)
+    y alimentar las copias de la tabla §3.
+    · 3 de FRUSTRACIÓN MÉDICA (el otorrino que no resolvió, el gasto sin
+      resultado, "me dijeron que no tiene cura")
+    · 3 de MIEDO A LO IRREVERSIBLE (cada mes oigo menos, la progresión)
+    · 2 de TESTIMONIO A→B (reseña 4-5 estrellas, punto A → punto B)
+    Formato IMAGEN 4:5 (§4.5: las imágenes escalan igual o mejor y se producen
+    en masa). Variar CONCEPTO, no detalles: fondo, modelo, oferta, CTA.
+    Compliance pendiente del portafolio: quitar sellos FDA/Min.Salud y los %
+    clínicos inventados; nada de "cura/elimina"; timelines creíbles.
+
+[B] CLEARSTEM DOLOR_EMOCIONAL_MASCULINO — 4 creativos nuevos. ← renovación APR-007
+    Pausar el creativo actual (fatigado) y relanzar el ÁNGULO con cara nueva.
+    Ojo APR-012: CLEARSTEM arrastra 2 variables de confusión sin aislar desde el
+    10-jul (bot nuevo + música automática de Meta). Al relanzar, aislar una.
+
+[C] VARICOSE VERGUENZA_PIERNAS — 3 creativos nuevos al reactivar.
+    El creativo lleva días parado y ya tenía millaje; no reactivar con el mismo.
+
+───────────────────────────────────────────────────────────────────────────
+5. ANTES DE TODO LO ANTERIOR — DOS COSAS QUE VALEN MÁS
+───────────────────────────────────────────────────────────────────────────
+[1] REACTIVAR VARICOSE. CPA Q38.4 contra BE Q83.0 — el margen por venta más
+    ancho del portafolio, y lleva 2 días en Q0. La palanca 1 del playbook es
+    "optimizar el flujo", pero acá ni siquiera está corriendo. Confirmá si la
+    pausa fue deliberada.
+
+[2] REGISTRAR CP1 (1346891653335162) EN _PORTAFOLIO.txt. Es la cuenta MÁS
+    EFICIENTE del portafolio: 8 ventas con Q181 = CPA Q22.6, mejor que GTR0,
+    GTR1, GTR7 y GTR13. Sigue figurando como "COP-NO-REGISTRADA" desde el
+    24-jul. Una cuenta que rinde así y el sistema no la conoce es riesgo puro:
+    no tiene alias, no se sabe si tiene MCP, ni por qué factura en COP.
+
+───────────────────────────────────────────────────────────────────────────
+ORDEN DE EJECUCIÓN
+───────────────────────────────────────────────────────────────────────────
+  HOY:     §1 apagar (4) → §5[1] reactivar VARICOSE → §5[2] registrar CP1
+  MAÑANA:  surfing +20% a lo que vendió → §3 duplicar → brief creativos §4[A]
+  +2 días: revisar RENOVACIÓN al 100% de PD · decidir las 2 copias de CLEARSTEM
+═══════════════════════════════════════════════════════════════════════════

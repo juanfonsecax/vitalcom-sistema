@@ -1,0 +1,181 @@
+{
+  "ficha_id": "F066",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Andromeda_Market/02_2157137728232677.jpg",
+    "anunciante": "Andromeda Market",
+    "ad_archive_id": "2157137728232677",
+    "dias_activo": 13,
+    "replicas": 1,
+    "score": 38,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA MISMA PIEZA DE F065 CON LA CANTIDAD Y LA ZONA CAMBIADAS. Dos envases en vez de tres, un precio menor, y el avatar mostrando la afeccion en otra parte del cuerpo. Todo lo demas — titular, banda, sello, columna, atributos — es identico.",
+  "lectura_estrategica": "Par de F065 y demuestra que en este layout la CANTIDAD es una variable de la plantilla y no un rediseno: la foto del producto, el multiplicador de la card y el precio cambian juntos, y nada mas se toca. Correr las dos versiones en paralelo permite medir la elasticidad del ticket sobre el mismo mensaje, con el creativo controlado. Ademas cambia la zona del cuerpo del avatar, lo que abre un segundo frente de identificacion sin escribir una palabra distinta.",
+  "fondo": {
+    "tipo": "foto_naturaleza_oscurecida",
+    "base": "follaje verde profundo desenfocado con luz filtrada",
+    "elemento_derecho": "la foto del avatar mostrando OTRA zona afectada, integrada al fondo",
+    "elementos_inferiores": "raices, rodajas del ingrediente y crema en cuenco, al pie de los envases"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "verde oscuro (fondo y envases) mas dorado (bordes, sellos, precio) mas blanco (titular) mas negro (card de precio y boton)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "logo_tienda": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_TIENDA}}",
+      "escala": "16% del ancho"
+    },
+    "titular_despedida": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{FORMULA_ADIOS}}",
+      "linea_2": "{{SINTOMA_ACENTO}}",
+      "estilo": "Black/900 uppercase blanco con contorno o sombra",
+      "restriccion_palabras_total": "2 palabras",
+      "regla": "identico al de la pieza hermana: lo que varia es la cantidad y la zona"
+    },
+    "banda_inmediatez": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda verde oscuro con borde",
+      "linea_1": "{{PROMESA_L1}}",
+      "linea_2": "{{MOMENTO_ACENTO}}",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "3-5 palabras por linea"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_media",
+      "escala": "42% del frame",
+      "composicion": "{{CANT}} envases escalonados en abanico diagonal, con los ingredientes en bruto al pie",
+      "fuente": "IMAGEN_2",
+      "regla_critica": "la cantidad de envases fotografiados coincide con el multiplicador de esta version: la foto, la card y el precio cambian JUNTOS y nada mas se toca"
+    },
+    "sello_formula": {
+      "posicion": "sobre los envases, centro",
+      "forma": "circular con borde dorado doble y hoja",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{CLAIM_VELOCIDAD}}",
+      "escala": "22% del ancho"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo verde con borde mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "card_precio": {
+      "posicion": "derecha_baja",
+      "contenedor": "card negra con borde dorado doble",
+      "banda_superior": "{{OFERTA_LABEL}}",
+      "linea_1": "{{CANT}}x {{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 en {{COLOR_ACENTO}} dorado, multiplicador y precio al mismo tamano"
+    },
+    "fila_garantias": {
+      "posicion": "bajo la card de precio",
+      "cantidad_items": 2,
+      "formato_item": "icono line-art mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_cta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "boton negro con borde dorado y icono de carrito",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco con signos de exclamacion",
+      "restriccion_palabras": "2 palabras"
+    },
+    "fila_atributos": {
+      "posicion": "inferior, ancho parcial derecho",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art verde mas texto Regular muy chico de 2 lineas",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_despedida",
+    "banda_inmediatez",
+    "producto_hero",
+    "card_precio",
+    "sello_formula",
+    "columna_beneficios",
+    "boton_cta",
+    "fila_garantias",
+    "fila_atributos"
+  ],
+  "reglas_duras": [
+    "La cantidad de envases fotografiados coincide con el multiplicador de esta version",
+    "La foto, el multiplicador de la card y el precio cambian juntos; el resto de la pieza no se toca",
+    "El titular no cambia entre versiones",
+    "El sello de formula va plantado sobre los envases",
+    "El avatar muestra una zona distinta a la de la pieza hermana"
+  ],
+  "variables_requeridas": [
+    "LOGO_TIENDA",
+    "FORMULA_ADIOS",
+    "SINTOMA_ACENTO",
+    "PROMESA_L1",
+    "MOMENTO_ACENTO",
+    "CANT",
+    "ETIQUETA_FORMULA",
+    "CLAIM_VELOCIDAD",
+    "BENEFICIOS[3]",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "CTA",
+    "ATRIBUTOS[4]",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "cuando se quiere medir elasticidad de ticket sobre el mismo mensaje con creativo controlado",
+    "cuando el producto afecta varias zonas y conviene abrir un segundo frente de identificacion",
+    "para correr en paralelo con la version de mayor cantidad",
+    "oferta de entrada mas barata sobre publico que no compro el pack grande"
+  ],
+  "cuando_no_usar": [
+    "cuando no existe la version hermana con otra cantidad: la comparacion pierde sentido",
+    "cuando la zona alternativa no es fotografiable",
+    "publico de nivel 4"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular FORMULA 100% NATURAL con ALIVIO RAPIDO, plantado sobre los envases.",
+    "Beneficios: ALIVIA LA PICAZON Y LA IRRITACION, HIDRATA Y CALMA TU PIEL, FORMULA SEGURA PARA PIELES SENSIBLES.",
+    "Banda SIENTE EL ALIVIO DESDE LA PRIMERA APLICACION.",
+    "Card PRECIO ESPECIAL 2x Q199.",
+    "Garantias ENVIO GRATIS y PAGA AL RECIBIR EN CASA.",
+    "Fila de atributos: FORMULA NATURAL, APTO PARA PIELES DELICADAS, HIDRATA Y CALMA, SIN QUIMICOS AGRESIVOS.",
+    "Boton COMPRA AHORA con icono de carrito."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

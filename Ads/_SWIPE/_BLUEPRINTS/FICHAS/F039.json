@@ -1,0 +1,173 @@
+{
+  "ficha_id": "F039",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/13_1788681988936855.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1788681988936855",
+    "dias_activo": 3,
+    "replicas": 2,
+    "score": 53,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "14%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": "progresion"
+  },
+  "dispositivo_dominante": "EL TIMELINE DE TRES FOTOS DE UNA EVIDENCIA COTIDIANA Y VERIFICABLE. Tres fotos reales de la misma senal corporal — no del organo ilustrado, sino de algo que la persona VE todos los dias — en tres momentos: antes, poco despues y con uso continuo. Es la progresion hecha con una prueba que el cliente puede comprobar en su propia casa mananas despues.",
+  "lectura_estrategica": "Variante fotografica del concepto de progresion, y estrategicamente superior a la ilustracion anatomica en un punto: la evidencia es verificable por el propio cliente. Nadie puede mirarse el rinon, pero todos pueden mirar la senal. El titular pregunta por esa senal en terminos que nadie usa en voz alta, lo que garantiza que quien la tiene se detenga. Las dos columnas laterales reparten el trabajo: la izquierda son beneficios de organo, la derecha son atributos de pureza. Y el rojo del fondo esta tomado del color del ingrediente activo, no del empaque.",
+  "fondo": {
+    "tipo": "degradado_oscuro",
+    "base": "{{PALETA_OSCURA}} profundo a casi negro",
+    "elemento": "resplandor calido detras del producto",
+    "regla_paleta": "cuando el empaque es blanco o neutro, la paleta se deriva del INGREDIENTE ACTIVO"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} granate o vinotinto (fondo) mas {{COLOR_ACENTO}} dorado (badges, marcos, sello de dosis) mas blanco (texto) mas {{COLOR_ALERTA}} rojo (labels y alertas)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_senal": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{PREGUNTA_SENAL}}",
+      "estilo": "Black/900 uppercase blanco con signos de interrogacion de apertura y cierre",
+      "restriccion_palabras": "3-5 palabras",
+      "formato_obligatorio": "pregunta por una senal corporal COTIDIANA y observable, en terminos llanos",
+      "regla": "la senal debe ser algo que la persona ve todos los dias y no comenta con nadie: eso garantiza que quien la tiene se detenga"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_APOYO}}",
+      "estilo": "Bold uppercase en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "promesa de APOYO desde adentro, nunca de eliminacion de la senal"
+    },
+    "timeline_evidencia": {
+      "posicion": "superior_media, ancho completo",
+      "cantidad_estados": 3,
+      "orientacion": "tres fotos en fila con marco {{COLOR_ALERTA}} fino",
+      "formato_estado": "foto real de la senal en ese momento, con LABEL en pildora sobre el borde superior del marco",
+      "estados": "{{TIMELINE_EVIDENCIA[3]}}",
+      "estructura_estado": {
+        "foto": "{{FOTO_SENAL}}",
+        "label": "{{LABEL_MOMENTO}}"
+      },
+      "restriccion_label": "2-3 palabras",
+      "regla_labels": "los labels son de MOMENTO DE USO (antes, poco despues, uso continuo), no de semanas: evita la promesa de plazo",
+      "regla_critica": "es una evidencia que el cliente puede VERIFICAR en su propia casa: esa es la ventaja sobre la ilustracion anatomica",
+      "nota_alerta": "{{NOTA_ALERTA}} en card con signo de admiracion bajo la primera foto, explicando que significa la senal"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "38% del frame",
+      "composicion": "envase o bolsa de pie de frente, con las capsulas o perlas sueltas al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde {{COLOR_ALERTA}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "beneficios de ORGANO y funcion"
+    },
+    "columna_pureza": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo con borde {{COLOR_ALERTA}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{ATRIBUTOS_PUREZA[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "atributos de lo que NO lleva (sin transgenicos, sin gluten, sin aditivos): la columna derecha responde la objecion de que es otro suplemento mas"
+    },
+    "bloque_escasez": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "banda {{COLOR_ALERTA}} inclinada con icono de campana",
+      "texto": "{{ESCASEZ}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "sello_dosis": {
+      "posicion": "inferior_derecha",
+      "forma": "circular con borde {{COLOR_ACENTO}} doble",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{DOSIS}}",
+      "linea_3": "{{CLAIM_POTENCIA}}",
+      "escala": "16% del ancho"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_senal",
+    "timeline_evidencia",
+    "producto_hero",
+    "subtitular",
+    "columna_beneficios",
+    "columna_pureza",
+    "bloque_escasez",
+    "sello_dosis"
+  ],
+  "reglas_duras": [
+    "La evidencia del timeline es una senal cotidiana que el cliente puede verificar en su casa",
+    "Los labels son de momento de uso, nunca de semanas",
+    "La columna izquierda es de organo y la derecha de lo que el producto NO lleva",
+    "La promesa es de apoyo desde adentro, nunca de eliminacion de la senal",
+    "La paleta se deriva del ingrediente activo cuando el empaque es neutro",
+    "Una nota bajo la primera foto explica que significa la senal"
+  ],
+  "variables_requeridas": [
+    "PREGUNTA_SENAL",
+    "PROMESA_APOYO",
+    "TIMELINE_EVIDENCIA[3]",
+    "NOTA_ALERTA",
+    "BENEFICIOS[3]",
+    "ATRIBUTOS_PUREZA[3]",
+    "ESCASEZ",
+    "ETIQUETA_FORMULA",
+    "DOSIS",
+    "CLAIM_POTENCIA",
+    "COLOR_ACENTO",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "cuando existe una senal corporal cotidiana, observable y fotografiable",
+    "organos internos que no se pueden mostrar pero cuya funcion deja evidencia visible",
+    "publico de nivel 2 que nota la senal pero no sabe que significa",
+    "cuando se quiere progresion sin prometer plazos"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay ninguna senal externa observable: usar la ilustracion anatomica de F029",
+    "senales cuya fotografia resulte desagradable en el feed",
+    "publico de nivel 4 que ya busca el ingrediente por nombre"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular FORMULA 12 MG ALTA POTENCIA en dorado.",
+    "Atributos de pureza: NO TRANSGENICO, LIBRE DE GLUTEN, SIN ADITIVOS ARTIFICIALES.",
+    "Claims impresos en el empaque: NON GMO, GLUTEN FREE, LAB TESTED, IMPORTED USA.",
+    "Nota bajo la primera foto: EXCESO DE ESPUMA · SENAL DE ESTRES RENAL.",
+    "Labels del timeline por momento de uso: ANTES / POCO DESPUES / USO CONTINUO.",
+    "Bloque QUEDAN POCAS UNIDADES con icono de campana.",
+    "Beneficios: APOYO A TUS FILTROS RENALES, BIENESTAR URINARIO DIARIO, DEFENSA ANTIOXIDANTE."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

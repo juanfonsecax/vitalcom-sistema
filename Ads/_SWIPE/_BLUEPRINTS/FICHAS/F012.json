@@ -1,0 +1,162 @@
+{
+  "ficha_id": "F012",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Dr__Felipe_Flores/02_766770793098394.jpg",
+    "anunciante": "Dr. Felipe Flores",
+    "ad_archive_id": "766770793098394",
+    "dias_activo": 82,
+    "replicas": 1,
+    "score": 107,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA MITAD DERECHA ENTERA ES LA FOTO DEL SINTOMA. Una persona real, en su casa, tocandose la zona afectada, ocupa el 50% del frame de arriba abajo. No es una foto de apoyo: es la mitad de la pieza. El titular de dos palabras a la izquierda solo pone en palabras lo que la foto ya mostro.",
+  "lectura_estrategica": "El sintoma es visible en la piel, entonces el creativo no explica nada: lo muestra a tamano real y pregunta si te pasa. Nivel 2 puro. El resto de la pieza es minimo — producto, prueba social numerica, precio de pack y WhatsApp — porque la persona que se reconocio en la foto ya no necesita argumentos, necesita saber que existe y cuanto cuesta. La prueba social en numero de CLIENTAS (no de clientes) confirma el genero del avatar sin decirlo.",
+  "fondo": {
+    "tipo": "degradado_diagonal_partido",
+    "mitad_izquierda": "degradado {{PALETA_MEDIO}} a {{PALETA_OSCURA}}",
+    "mitad_derecha": "la foto del sintoma, a sangre",
+    "corte": "diagonal suave o recto vertical",
+    "funcion": "el color solido de la izquierda hace legible el texto sobre una foto que no se puede controlar"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (fondo izquierdo) mas {{COLOR_ACENTO}} amarillo (segunda linea del titular y cards de dato) mas blanco (texto y cards) mas verde exclusivo del boton de WhatsApp"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "lineas": 2,
+      "linea_1": "{{SINTOMA_L1}}",
+      "linea_2": "{{SINTOMA_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}, con signo de interrogacion de cierre",
+      "restriccion_palabras_total": "2-3 palabras",
+      "formato_obligatorio": "el sintoma nombrado en crudo, como pregunta",
+      "regla": "dos palabras, no mas: la foto ya hizo el trabajo de identificacion"
+    },
+    "foto_sintoma": {
+      "posicion": "mitad derecha del frame, a sangre",
+      "contenido": "{{FOTO_PERSONA_CON_SINTOMA}}",
+      "escala": "50% del frame, de arriba abajo",
+      "tratamiento": "persona real del avatar exacto, en su casa, tocandose o mirandose la zona afectada, gesto de molestia contenida",
+      "regla_avatar": "la persona debe ser del pais, la edad y el nivel socioeconomico del comprador, no una modelo de banco de imagenes",
+      "regla_zona": "la zona afectada queda visible y sin retocar: es la prueba",
+      "funcion": "es la mitad de la pieza y el motivo por el que se detiene el scroll"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_media",
+      "escala": "38% del frame",
+      "composicion": "caja de pie mas envase delante, ambos de frente y de tamano similar",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto se apoya sobre el fondo de color, nunca invade la foto"
+    },
+    "card_prueba_social": {
+      "posicion": "derecha_media, sobre la foto",
+      "contenedor": "card {{PALETA_OSCURA}} translucida o solida",
+      "linea_1": "+{{NUMERO_CLIENTES}}",
+      "linea_2": "{{ETIQUETA_CLIENTES}}",
+      "estilo_l1": "Black/900 blanco",
+      "estilo_l2": "Bold uppercase",
+      "regla": "la etiqueta va en el genero del avatar (CLIENTAS o CLIENTES): confirma para quien es sin decirlo",
+      "funcion": "unica prueba de la pieza: sustituye a la columna de sellos"
+    },
+    "card_oferta": {
+      "posicion": "derecha_media, bajo la prueba social",
+      "contenedor": "card blanca con esquinas redondeadas",
+      "linea_1": "x{{CANT}} {{MONEDA}}{{PRECIO}}",
+      "linea_2": "{{GARANTIA_ENVIO}}",
+      "estilo_l1": "Black/900 negro",
+      "estilo_l2": "Regular en cursiva, al 40% de L1",
+      "regla": "cantidad y precio en la misma linea y al mismo tamano"
+    },
+    "linea_pago": {
+      "posicion": "derecha_baja",
+      "icono": "mano recibiendo paquete",
+      "texto": "{{GARANTIA_PAGO}}",
+      "estilo": "Bold blanco de 2 lineas",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "boton_whatsapp": {
+      "posicion": "inferior_derecha",
+      "contenedor": "boton verde WhatsApp redondeado con logo circular blanco",
+      "texto": "WhatsApp",
+      "estilo": "Bold blanco",
+      "regla": "el verde aparece solo aca"
+    }
+  },
+  "secuencia_lectura": [
+    "foto_sintoma",
+    "titular",
+    "producto_hero",
+    "card_prueba_social",
+    "card_oferta",
+    "linea_pago",
+    "boton_whatsapp"
+  ],
+  "reglas_duras": [
+    "La foto del sintoma ocupa la mitad del frame de arriba abajo, a sangre",
+    "El titular tiene dos o tres palabras: la foto ya identifico",
+    "La persona de la foto es del pais, la edad y el nivel del comprador",
+    "La zona afectada queda visible y sin retocar",
+    "El producto se apoya en el fondo de color y nunca invade la foto",
+    "El verde se usa solo en el boton de WhatsApp",
+    "La etiqueta de prueba social va en el genero del avatar"
+  ],
+  "variables_requeridas": [
+    "SINTOMA_L1",
+    "SINTOMA_L2_ACENTO",
+    "FOTO_PERSONA_CON_SINTOMA",
+    "NUMERO_CLIENTES",
+    "ETIQUETA_CLIENTES",
+    "CANT",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "GARANTIA_PAGO",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "sintoma VISIBLE en la piel o la postura (varices, manchas, hinchazon, acne)",
+    "cuando existe foto de una persona real del avatar exacto",
+    "publico de nivel 2 que reconoce el sintoma pero no la solucion",
+    "cuando el argumento es 'te pasa esto' y no 'asi funciona'"
+  ],
+  "cuando_no_usar": [
+    "sintomas invisibles: sin foto el layout se queda sin su mitad derecha",
+    "cuando solo hay fotos de banco genericas: el avatar falso rompe la identificacion",
+    "productos preventivos"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio.",
+    "Prueba social +10,000 CLIENTAS en card sobre la foto.",
+    "Oferta de pack x3 Q249 con ENVIO GRATUITO en cursiva.",
+    "PAGO CONTRA ENTREGA con icono de mano recibiendo paquete.",
+    "Boton verde de WhatsApp abajo a la derecha.",
+    "Claims impresos en el empaque: EASY TO USE, 100% NATURAL INGREDIENTS."
+  ],
+  "canonico_id": "CN07_DOLOR_A_PLENO",
+  "blueprint_equivalente": null
+}

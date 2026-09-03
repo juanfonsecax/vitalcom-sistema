@@ -1,0 +1,174 @@
+{
+  "ficha_id": "F019",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Valle_Lo_Vende/07_1476571934274805.jpg",
+    "anunciante": "Valle Lo Vende",
+    "ad_archive_id": "1476571934274805",
+    "dias_activo": 17,
+    "replicas": 3,
+    "score": 92,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C1_OFERTA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA ESCALERA DE 3 PRECIOS EN COLUMNA, CADA UNO EN SU PROPIA CARD CON LLAMA. Los tres tiers se apilan verticalmente ocupando el flanco izquierdo entero, cada uno en card con borde de color e icono de llama. No es un bloque de precio dentro de un anuncio: la escalera ES el anuncio, y el resto (titular, producto, CTA) la rodea.",
+  "lectura_estrategica": "Vende el ingrediente por su nombre a alguien que ya lo busca. El titular no promete nada: enuncia los dos activos y los une con un ampersand, como una ficha de catalogo. Nivel 4 puro. Toda la persuasion esta en la aritmetica de la escalera, donde el salto del tier 1 al 2 (Q95 a Q165) es menos que el precio de una unidad, lo que hace visible el ahorro sin necesidad de escribir la palabra. El CTA en boton con carrito y el escribe ahora al pie cierran el circuito.",
+  "fondo": {
+    "tipo": "degradado_radial_claro",
+    "centro": "{{PALETA_CLARO}}",
+    "borde": "{{PALETA_MEDIO}}",
+    "elemento": "ondas o velos de luz suaves en el tercio inferior",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta o fucsia (cards de precio, CTA, badge) mas {{PALETA_OSCURA}} violeta (titular y pildoras) mas blanco (fondo de cards) mas naranja del envase"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{ACTIVO_1}} &",
+      "linea_2": "{{ACTIVO_2}}",
+      "estilo_l1": "Black/900 {{PALETA_OSCURA}} en caja baja",
+      "estilo_l2": "Black/900 en {{PALETA_ACENTO}} en caja baja",
+      "restriccion_palabras_total": "3-4 palabras",
+      "formato_obligatorio": "los dos activos unidos por ampersand, sin promesa ni verbo",
+      "regla": "en nivel 4 el titular es una ficha de catalogo: la persona ya sabe para que sirve"
+    },
+    "pildora_formula": {
+      "posicion": "bajo el titular",
+      "contenedor": "pildora {{PALETA_OSCURA}} solida",
+      "texto": "{{DESCRIPTOR_FORMULA}}",
+      "estilo": "Bold blanco",
+      "restriccion_palabras": "3 palabras"
+    },
+    "badge_oferta": {
+      "posicion": "superior_derecha",
+      "contenedor": "cinta o banderola {{PALETA_ACENTO}} con estrella",
+      "linea_1": "{{OFERTA_LABEL_L1}}",
+      "linea_2": "{{OFERTA_LABEL_L2}}",
+      "estilo": "Black/900 uppercase blanco"
+    },
+    "escalera_precios": {
+      "posicion": "izquierda, ocupa el alto central",
+      "tiers": 3,
+      "orientacion": "COLUMNA vertical, una card por tier",
+      "formato_tier": "card blanca con borde {{PALETA_ACENTO}} redondeado, icono de llama a la izquierda, cantidad en Regular arriba y precio en Black {{PALETA_ACENTO}} debajo",
+      "tier_1": "{{CANT_1}} {{UNIDAD}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} {{UNIDAD_PLURAL}} — {{MONEDA}}{{PRECIO_2}}",
+      "tier_3": "{{CANT_3}} {{UNIDAD_PLURAL}} — {{MONEDA}}{{PRECIO_3}}",
+      "escala": "el conjunto ocupa 45% del alto del frame",
+      "regla_aritmetica": "el salto de precio entre el tier 1 y el 2 debe ser MENOR que el precio de una unidad: asi el ahorro se ve sin escribir la palabra ahorro",
+      "regla": "sin etiquetas de valor: en esta variante la aritmetica habla sola"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "45% del frame",
+      "composicion": "{{CANT_3}} envases agrupados, uno al frente y los otros detras en abanico, con capsulas o perlas sueltas al pie",
+      "regla": "la cantidad de envases fotografiados coincide con el tier mas alto",
+      "fuente": "IMAGEN_2"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_derecha",
+      "cantidad_items": 2,
+      "orientacion": "columna corta",
+      "formato_item": "check en circulo {{PALETA_OSCURA}} mas texto Bold",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-4 palabras"
+    },
+    "cta_boton": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "boton {{PALETA_ACENTO}} redondeado de ancho parcial con icono de carrito",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "microcopy_cierre": {
+      "posicion": "bajo el boton",
+      "texto": "{{MICROCOPY}}",
+      "estilo": "Regular {{PALETA_OSCURA}} chico con icono de globo de chat",
+      "restriccion_palabras": "2 palabras",
+      "default": "Escribe ahora",
+      "funcion": "dice el gesto exacto que se espera: no comprar, escribir"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "escalera_precios",
+    "producto_hero",
+    "badge_oferta",
+    "cta_boton",
+    "fila_garantias",
+    "microcopy_cierre"
+  ],
+  "reglas_duras": [
+    "La escalera va en columna y ocupa el flanco izquierdo entero",
+    "El titular enuncia los activos sin verbo ni promesa",
+    "El salto de precio del tier 1 al 2 es menor que el precio de una unidad",
+    "Sin etiquetas de valor en los tiers: la aritmetica habla sola",
+    "La cantidad de envases fotografiados coincide con el tier mas alto",
+    "El microcopy final nombra el gesto esperado: escribir, no comprar"
+  ],
+  "variables_requeridas": [
+    "ACTIVO_1",
+    "ACTIVO_2",
+    "DESCRIPTOR_FORMULA",
+    "OFERTA_LABEL_L1",
+    "OFERTA_LABEL_L2",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "UNIDAD",
+    "UNIDAD_PLURAL",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "CTA",
+    "MICROCOPY"
+  ],
+  "cuando_usar": [
+    "ingrediente que la persona ya busca por nombre (colageno, magnesio, omega)",
+    "cuando el argumento es precio y volumen, no beneficio",
+    "retargeting y BOFU",
+    "cuando hay 3 tiers con una aritmetica que se explica sola"
+  ],
+  "cuando_no_usar": [
+    "publico frio: sin promesa ni problema, el titular no engancha a nadie que no busque el activo",
+    "cuando solo hay 1 o 2 tiers: la escalera en columna se ve incompleta",
+    "productos sin ingrediente reconocible por nombre"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio y sin claims de salud: la pieza enuncia activos, precios y garantias.",
+    "Pildora FORMULA DOBLE ACCION bajo el titular.",
+    "Banderola OFERTA ESPECIAL con estrella, arriba a la derecha.",
+    "Garantias ENVIO GRATIS y PAGO CONTRA ENTREGA en checks.",
+    "Microcopy de cierre ESCRIBE AHORA con globo de chat."
+  ],
+  "canonico_id": "CN04_ESCALERA_PRECIOS",
+  "blueprint_equivalente": null
+}

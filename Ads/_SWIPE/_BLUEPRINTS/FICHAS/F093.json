@@ -1,0 +1,201 @@
+{
+  "ficha_id": "F093",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aurora_GT/04_3288954141307567.jpg",
+    "anunciante": "Aurora GT",
+    "ad_archive_id": "3288954141307567",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "5:6",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": "deseo"
+  },
+  "dispositivo_dominante": "LOS TRES CALLOUTS CABLEADOS AL FRASCO CON LINEA PUNTEADA, DOS DE ELLOS TACHADOS. A la izquierda cuelgan tres pildoras unidas al envase por lineas de puntos: la primera declara el deseo, y las otras dos son los DOS QUIRURGICOS - hormonas y bisturi - con su icono TACHADO. El producto queda conectado a lo que promete y a lo que evita.",
+  "lectura_estrategica": "Vende deseo estetico convirtiendo las dos objeciones de la categoria en atributos visuales del frasco. El cuerpo de la modelo ya declaro el resultado - se ve antes que el titular - y el titular no habla de cuerpo sino de como se va a SENTIR ella, que es lo que hace comprable un producto de figura sin sonar a quirofano. Las lineas punteadas hacen el trabajo fino: sin ellas los callouts serian una lista mas, con ellas son propiedades del envase. La fila de ingredientes con foto real devuelve la promesa al terreno natural.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_destellos",
+    "base": "blanco o crema muy claro, plano",
+    "capa": "destellos de cuatro puntas en {{PALETA_ACENTO}} dispersos en las esquinas",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta (titular de acento, callouts, CTA) mas {{PALETA_OSCURA}} berenjena (eyebrow, banda de pie, texto) mas blanco (fondo) mas los tonos de piel y ropa de la modelo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif geometrica de caja alta",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "eyebrow_formula": {
+      "posicion": "superior, centrado",
+      "contenedor": "pildora {{PALETA_OSCURA}} solida con icono de hoja a la izquierda",
+      "texto": "{{CLAIM_FORMULA}}",
+      "estilo": "Bold uppercase blanco chico",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "declara la naturaleza de la formula antes del deseo: es el permiso para pedir lo que pide el titular"
+    },
+    "titular_sensacion": {
+      "posicion": "superior_izquierda, ancho parcial",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{VERBO_SENSACION}}",
+      "linea_2": "{{ADJETIVO_1}}, {{ADJETIVO_2}}",
+      "linea_3": "Y {{ADJETIVO_3}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase {{PALETA_ACENTO}}",
+      "estilo_l3": "Black/900 uppercase {{PALETA_ACENTO}} con la conjuncion en {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "verbo de sensacion en imperativo mas TRES adjetivos de identidad",
+      "regla_critica": "el titular nombra como se va a SENTIR, no como se va a ver: el cuerpo de la foto ya dijo como se va a ver"
+    },
+    "bajada_sin_quirurgico": {
+      "posicion": "bajo el titular",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "texto": "{{BENEFICIO_FISICO}} y {{BENEFICIO_IDENTIDAD}} sin {{OBJECION_1}} y sin {{OBJECION_2}}",
+      "estilo": "Regular {{PALETA_OSCURA}} con las dos objeciones en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "12-16 palabras",
+      "regla": "las dos objeciones van resaltadas en color dentro de la frase, no en un bloque aparte"
+    },
+    "callouts_cableados": {
+      "posicion": "izquierda_media, en columna vertical",
+      "cantidad_items": 3,
+      "contenedor": "pildora de borde fino {{PALETA_ACENTO}} con icono line-art a la izquierda",
+      "conexion": "linea de puntos {{PALETA_ACENTO}} desde cada pildora hasta el cuerpo del envase",
+      "item_1": "{{DESEO_PRINCIPAL}}",
+      "item_2": "SIN {{OBJECION_1}}",
+      "item_3": "SIN {{OBJECION_2}}",
+      "estilo_icono_2_y_3": "el icono de la objecion va TACHADO con una diagonal",
+      "restriccion_palabras": "2-3 palabras",
+      "regla_critica": "la linea punteada convierte cada callout en propiedad del envase: sin el cable son una lista mas"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda, ocupa el alto medio",
+      "escala": "30% del frame",
+      "composicion": "envase de pie, frontal, sin sombra dura",
+      "fuente": "IMAGEN_1",
+      "funcion": "es el punto de convergencia de las tres lineas punteadas"
+    },
+    "modelo_deseo": {
+      "posicion": "derecha, sangrada al borde",
+      "escala": "45% del ancho",
+      "composicion": "{{MODELO}} de espaldas tres cuartos con la zona objetivo hacia camara, sosteniendo el envase a la altura del hombro y mirando a camara",
+      "regla": "la modelo sostiene el producto: lo que se ve como resultado y lo que se compra estan en el mismo gesto"
+    },
+    "cta_boton": {
+      "posicion": "inferior_centro, sobre la fila de ingredientes",
+      "contenedor": "boton redondeado {{PALETA_ACENTO}} solido de ancho medio",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras",
+      "formato_obligatorio": "verbo de pedido mas adverbio de hoy"
+    },
+    "subcta_canal": {
+      "posicion": "bajo el boton, centrado",
+      "texto": "{{SUBCTA_CANAL}}",
+      "estilo": "Regular {{PALETA_OSCURA}} chico con icono de chat",
+      "restriccion_palabras": "2-3 palabras",
+      "funcion": "declara el canal de la conversacion debajo del boton"
+    },
+    "fila_ingredientes": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal de circulos con foto real recortada",
+      "formato_item": "circulo con foto del ingrediente crudo mas nombre en Regular {{PALETA_OSCURA}} debajo",
+      "items": "{{INGREDIENTES[4]}}",
+      "restriccion_palabras": "1-2 palabras",
+      "regla": "foto real del ingrediente, no icono: es lo que devuelve la promesa estetica al terreno natural"
+    },
+    "banda_pie": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "parte_1": "{{PROMESA_CORTA}}",
+      "estilo_p1": "Bold blanco",
+      "parte_2": "{{PLAZO}}",
+      "estilo_p2": "cursiva decorativa {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "6-8 palabras",
+      "regla": "la promesa va en recto y el plazo en cursiva: el plazo se lee como susurro y no como garantia"
+    }
+  },
+  "secuencia_lectura": [
+    "modelo_deseo",
+    "titular_sensacion",
+    "bajada_sin_quirurgico",
+    "producto_hero",
+    "callouts_cableados",
+    "cta_boton",
+    "fila_ingredientes",
+    "eyebrow_formula",
+    "banda_pie"
+  ],
+  "reglas_duras": [
+    "Los tres callouts se conectan al envase con linea de puntos",
+    "Los iconos de las dos objeciones van tachados con una diagonal",
+    "El titular nombra una sensacion y tres adjetivos de identidad",
+    "Las dos objeciones aparecen resaltadas en color dentro de la bajada",
+    "La modelo sostiene el envase en la misma foto en que muestra el resultado",
+    "Los ingredientes se muestran con foto real, no con icono",
+    "El plazo del pie va en cursiva y la promesa en recto"
+  ],
+  "variables_requeridas": [
+    "CLAIM_FORMULA",
+    "VERBO_SENSACION",
+    "ADJETIVO_1",
+    "ADJETIVO_2",
+    "ADJETIVO_3",
+    "BENEFICIO_FISICO",
+    "BENEFICIO_IDENTIDAD",
+    "OBJECION_1",
+    "OBJECION_2",
+    "DESEO_PRINCIPAL",
+    "MODELO",
+    "CTA",
+    "SUBCTA_CANAL",
+    "INGREDIENTES[4]",
+    "PROMESA_CORTA",
+    "PLAZO",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "productos de deseo estetico con dos objeciones de categoria claras y nombrables",
+    "cuando existe una modelo que puede mostrar el resultado y sostener el envase",
+    "cuando la formula tiene ingredientes reconocibles y fotografiables",
+    "MOFU sobre publico que ya sabe lo que quiere y duda del metodo"
+  ],
+  "cuando_no_usar": [
+    "productos donde el resultado no se puede fotografiar en un cuerpo",
+    "cuando no hay dos objeciones de categoria: los callouts tachados se quedan sin trabajo",
+    "cierre por precio: la pieza no tiene zona de numero"
+  ],
+  "sellos_y_claims_observados": [
+    "Eyebrow FORMULA NATURAL con icono de hoja.",
+    "Titular SIENTETE SEGURA, FEMENINA Y ATRACTIVA.",
+    "Bajada Curvas mas marcadas y silueta mas 'de mujer' sin quirofano y sin hormonas.",
+    "Callouts cableados al frasco: Curvas mas marcadas / Sin hormonas (icono tachado) / Sin quirofano (icono de bisturi tachado).",
+    "Marca SUPPLEMENT FACTORY - WOMAN CURVES(R), suplemento alimenticio, 60 capsulas de 500 mg.",
+    "CTA PIDELO HOY sobre boton magenta, con Escribenos ahora debajo.",
+    "Ingredientes con foto real: Aguaje, Fenogreco, Maca, Hinojo.",
+    "Banda de pie Silueta mas femenina desde los primeros dias."
+  ],
+  "canonico_id": "CN18_CALLOUTS_PRODUCTO",
+  "blueprint_equivalente": null
+}

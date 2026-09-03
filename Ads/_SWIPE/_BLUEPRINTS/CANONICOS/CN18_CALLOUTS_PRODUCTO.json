@@ -1,0 +1,104 @@
+{
+  "canonico_id": "CN18_CALLOUTS_PRODUCTO",
+  "schema_version": "canonico-1.0",
+  "nombre": "Callouts cableados al producto",
+  "dispositivo_canonico": "EL PRODUCTO AL CENTRO Y LAS ETIQUETAS FLOTANDO ALREDEDOR, cada una unida al frasco por una linea punteada. Convierte al envase en un diagrama tecnico. Algunos callouts pueden ir TACHADOS: lo que el producto NO tiene se vuelve argumento igual que lo que tiene.",
+  "cuando_elegirlo": "El diferencial esta en atributos del producto mismo (sin azucar, sin gluten, absorcion sublingual, dosis) y no en un resultado. Requiere una foto del envase limpia y con espacio a los lados.",
+  "ejes_de_variacion": [
+    "cantidad de callouts: 3 (respira) o mas (se lee como ficha tecnica)",
+    "callouts en positivo, o tachados para marcar lo que se evita (F093)",
+    "formato vertical 9:16 da mas aire a las lineas punteadas (F011)"
+  ],
+  "n_miembros": 2,
+  "ficha_referencia": "F011",
+  "score_referencia": 108,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 1,
+      "C7_DESEO": 1
+    },
+    "rol_embudo": {
+      "MOFU": 2
+    },
+    "estetica": {
+      "cartel_publicitario": 2
+    },
+    "formato": {
+      "9:16": 1,
+      "5:6": 1
+    },
+    "densidad": {
+      "baja": 1,
+      "alta": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "CALLOUTS",
+    "CALLOUTS_TACHADOS",
+    "TITULAR",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El producto va al centro exacto del frame y ningun callout lo tapa",
+    "Cada callout se une al producto con una linea punteada curva",
+    "Los cuatro callouts se distribuyen en las cuatro diagonales, nunca alineados entre si",
+    "Los callouts hablan de como se usa, no de que cura",
+    "El acento de color del titular cae sobre la sensacion, no sobre el organo",
+    "Las dos cards del pie son del mismo alto: precio a la izquierda, entrega a la derecha"
+  ],
+  "cuando_usar": [
+    "ubicaciones verticales: stories, reels, feed 9:16",
+    "producto de formato distintivo (gotero, spray, roll-on) donde el COMO se usa es argumento",
+    "promesa de rutina o habito, no de cura",
+    "cuando hay 4 atributos de uso y ninguna evidencia visual del problema",
+    "productos de deseo estetico con dos objeciones de categoria claras y nombrables",
+    "cuando existe una modelo que puede mostrar el resultado y sostener el envase",
+    "cuando la formula tiene ingredientes reconocibles y fotografiables",
+    "MOFU sobre publico que ya sabe lo que quiere y duda del metodo"
+  ],
+  "cuando_no_usar": [
+    "feed cuadrado: el layout orbital desperdicia el ancho",
+    "cuando hay mas de 4 beneficios imprescindibles: los callouts se amontonan y pierden las lineas",
+    "cuando el argumento es el resultado y no el uso",
+    "productos donde el resultado no se puede fotografiar en un cuerpo",
+    "cuando no hay dos objeciones de categoria: los callouts tachados se quedan sin trabajo",
+    "cierre por precio: la pieza no tiene zona de numero"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F011",
+      "score": 108,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "9:16",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LOS CALLOUTS FLOTANTES CON LINEA PUNTEADA AL PRODUCTO"
+    },
+    {
+      "ficha_id": "F093",
+      "score": 32,
+      "anunciante": "Aurora GT",
+      "concepto_key": "C7_DESEO",
+      "formato": "5:6",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LOS TRES CALLOUTS CABLEADOS AL FRASCO CON LINEA PUNTEADA, DOS DE ELLOS TACHADOS"
+    }
+  ]
+}

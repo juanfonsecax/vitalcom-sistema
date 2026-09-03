@@ -1,0 +1,168 @@
+{
+  "ficha_id": "F067",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Vida_Natural/04_2142616439934924.jpg",
+    "anunciante": "Vida Natural",
+    "ad_archive_id": "2142616439934924",
+    "dias_activo": 13,
+    "replicas": 1,
+    "score": 38,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "30%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LOS DOS GLOBOS DE CHAT SOBRE LA ESCENA REAL, Y LA PALABRA CLAVE COMO CTA. Sobre una foto domestica sin producir — una mujer terminando de comer en su cocina — flotan dos burbujas de mensajeria: la primera gris con el antes, la segunda de color con el ahora. El cierre no pide comprar: pide ESCRIBIR UNA PALABRA.",
+  "lectura_estrategica": "Convierte el testimonio en conversacion. Los dos globos imitan el formato de un chat, con la burbuja recibida en gris y la enviada en color, de modo que el lector no lee un claim sino un intercambio. El contenido esta construido como par temporal (antes... / ahora...) y el segundo termina en corazon, lo que fija el registro personal. Pero el hallazgo comercial es el cierre: en vez de un boton de compra, pide escribir una PALABRA CLAVE, que baja la friccion a un solo toque, califica al que responde y deja el precio fuera del creativo.",
+  "fondo": {
+    "tipo": "escena_domestica_real",
+    "base": "cocina o comedor real en luz de dia, con los objetos de la vida cotidiana visibles (plato usado, vaso, taza, calendario)",
+    "regla": "el plato ya vacio y los objetos usados son el argumento: fijan el MOMENTO en que el problema aparece"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 3,
+    "estructura": "gris claro (burbuja del antes) mas {{PALETA_ACENTO}} rojo o color de marca (burbuja del ahora y logo) mas blanco (banda superior y card del CTA), sobre los tonos reales de la escena"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de sistema, la de una aplicacion de mensajeria",
+    "pesos_permitidos": [
+      "Regular/400",
+      "Medium/500"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "gris oscuro en la burbuja del antes, {{PALETA_ACENTO}} en la del ahora",
+    "regla": "tipografia de interfaz de chat, en caja baja: cualquier condensada de cartel rompe la ilusion de conversacion"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una persona del avatar en su casa, en el momento cotidiano donde el problema aparece",
+    "gesto": "natural y a media accion (levantando un vaso, terminando de comer, estirandose), nunca posando",
+    "mirada": "fuera de camara",
+    "luz": "la del lugar, de dia, sin correccion",
+    "escena": "los objetos de la vida cotidiana quedan a la vista, incluido el desorden",
+    "que_se_conserva": "el plato usado, las migas, la ropa de casa, el fondo real de la cocina",
+    "que_NO_se_hace": "estudio, mesa montada, ropa de produccion, sonrisa a camara, recorte del producto",
+    "regla": "el producto se apoya en la mesa dentro de la escena, no se inserta recortado encima"
+  },
+  "zonas": {
+    "banda_categoria": {
+      "posicion": "superior_izquierda",
+      "contenedor": "pildora blanca o clara",
+      "texto": "{{MARCA}} · {{CATEGORIA}}",
+      "estilo": "Medium uppercase chico",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "la unica marca visible en toda la pieza, y va chica"
+    },
+    "globo_antes": {
+      "posicion": "superior_derecha, sobre la escena",
+      "contenedor": "burbuja de chat GRIS CLARO con esquinas redondeadas y cola",
+      "texto": "{{FRASE_ANTES}}",
+      "estilo": "Regular gris oscuro en caja baja, terminado en puntos suspensivos",
+      "restriccion_palabras": "8-11 palabras",
+      "formato_obligatorio": "antes + el momento cotidiano + el problema, en primera persona y pasado",
+      "regla": "la burbuja gris imita el mensaje recibido: es el estado anterior"
+    },
+    "globo_ahora": {
+      "posicion": "bajo el globo del antes",
+      "contenedor": "burbuja de chat en {{PALETA_ACENTO}} claro con esquinas redondeadas y cola",
+      "texto": "{{FRASE_AHORA}}",
+      "estilo": "Regular en {{PALETA_ACENTO}} en caja baja, terminado en corazon",
+      "restriccion_palabras": "10-14 palabras",
+      "formato_obligatorio": "ahora + lo que puede hacer sin pensar en el problema, en primera persona y presente",
+      "regla_critica": "el segundo globo no describe un resultado clinico sino la DESAPARICION DE LA ANTICIPACION: ya no piensa en lo que viene despues",
+      "regla_corazon": "el emoji de corazon al final fija el registro personal"
+    },
+    "avatar_en_la_escena": {
+      "posicion": "izquierda, ocupa el alto central",
+      "contenido": "{{FOTO_AVATAR_EN_MOMENTO}}",
+      "escala": "45% del frame",
+      "tratamiento": "persona del avatar a media accion en el momento cotidiano, sin posar y sin mirar a camara"
+    },
+    "producto_en_mesa": {
+      "posicion": "centro_inferior",
+      "escala": "18% del frame",
+      "contenido": "{{PRODUCTO}}",
+      "tratamiento": "el envase apoyado sobre la mesa DENTRO de la escena, con la misma luz y la misma sombra que el resto",
+      "fuente": "IMAGEN_2",
+      "regla": "va chico y dentro de la escena: si se recorta y se agranda, la pieza vuelve a ser un cartel"
+    },
+    "cta_palabra_clave": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card blanca redondeada con logo circular de la aplicacion de mensajeria a la derecha",
+      "texto": "{{VERBO_ESCRIBIR}} \"{{PALABRA_CLAVE}}\"",
+      "estilo": "Black/900 con la palabra clave ENTRE COMILLAS y en uppercase",
+      "restriccion_palabra_clave": "1 palabra",
+      "linea_2": "{{PROMESA_RESPUESTA}}",
+      "estilo_l2": "Regular gris chico",
+      "restriccion_l2": "6-9 palabras",
+      "regla_critica": "el CTA no pide comprar: pide escribir UNA palabra. Baja la friccion a un solo toque, califica al que responde y deja el precio fuera del creativo",
+      "regla_promesa": "la segunda linea promete INFORMACION, no venta: te damos la informacion por mensaje"
+    },
+    "nota_legal": {
+      "posicion": "inferior extremo",
+      "texto": "{{CATEGORIA_LEGAL}}",
+      "estilo": "Regular gris muy chico",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "globo_antes",
+    "globo_ahora",
+    "avatar_en_la_escena",
+    "producto_en_mesa",
+    "cta_palabra_clave",
+    "banda_categoria",
+    "nota_legal"
+  ],
+  "reglas_duras": [
+    "Los dos globos imitan un chat: el del antes en gris y el del ahora en color",
+    "El texto va en caja baja, con tipografia de interfaz de mensajeria",
+    "El globo del ahora describe la desaparicion de la anticipacion, no un resultado clinico",
+    "El producto se apoya dentro de la escena, con la misma luz y sombra",
+    "El CTA pide escribir una palabra clave entre comillas, no comprar",
+    "La segunda linea del CTA promete informacion, no venta",
+    "Sin precio en toda la pieza"
+  ],
+  "variables_requeridas": [
+    "MARCA",
+    "CATEGORIA",
+    "FRASE_ANTES",
+    "FRASE_AHORA",
+    "FOTO_AVATAR_EN_MOMENTO",
+    "PRODUCTO",
+    "VERBO_ESCRIBIR",
+    "PALABRA_CLAVE",
+    "PROMESA_RESPUESTA",
+    "CATEGORIA_LEGAL"
+  ],
+  "cuando_usar": [
+    "cuando el problema aparece en un momento cotidiano identificable",
+    "cuando se prefiere calificar por conversacion antes que mostrar precio",
+    "categorias digestivas, de sueno o de animo donde el cambio es de sensacion",
+    "cuando el bot o el equipo puede responder a una palabra clave"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay quien responda los mensajes: el CTA queda muerto",
+    "BOFU donde el precio ya es el argumento",
+    "cuando no se tiene foto real de una escena domestica"
+  ],
+  "sellos_y_claims_observados": [
+    "Banda superior con la marca y la categoria: SALUD DIGESTIVA.",
+    "Globo del antes: antes terminaba de comer y empezaba el malestar...",
+    "Globo del ahora: ahora disfruto la comida sin estar pensando en lo que viene despues, con corazon.",
+    "CTA ESCRIBENOS \"GASTRO\" con logo de WhatsApp y promesa TE DAMOS LA INFORMACION POR MENSAJE.",
+    "Nota al pie: SUPLEMENTO ALIMENTICIO.",
+    "La pieza no declara precio, sellos regulatorios ni garantias."
+  ],
+  "canonico_id": "CN11_PANTALLA_SIMULADA",
+  "blueprint_equivalente": null
+}

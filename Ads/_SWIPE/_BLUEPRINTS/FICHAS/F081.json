@@ -1,0 +1,186 @@
+{
+  "ficha_id": "F081",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Natura_Shoppy_Guatemala/05_1355967309474975.jpg",
+    "anunciante": "Natura Shoppy Guatemala",
+    "ad_archive_id": "1355967309474975",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL BLOQUE DE PRECIO DE TRES PARTES: CANTIDAD, PRECIO NORMAL TACHADO Y AHORRO EN CARD APARTE. La oferta no se resuelve en un solo numero sino en tres piezas alineadas — a la izquierda cuantas unidades y cuantas capsulas en total, al centro el precio normal tachado sobre el precio de hoy, y a la derecha el ahorro en su propia card con icono de alcancia. El descuento se muestra tres veces con tres formatos distintos.",
+  "lectura_estrategica": "Version de cierre del despiece de ingredientes del mismo anunciante: donde aquella pieza argumentaba la formula, esta argumenta la aritmetica. El titular son tres sustantivos en escalada y la bajada nombra el activo con la marca, de modo que quien ya vio el despiece reconoce el producto de inmediato. Los cinco beneficios llevan la palabra clave resaltada en color dentro de cada linea, lo que permite escanear la columna leyendo solo lo rojo. Y el bloque de precio declara el TOTAL DE CAPSULAS del pack, que es como se compara valor real en suplementos.",
+  "fondo": {
+    "tipo": "escena_exterior_luminosa_desenfocada",
+    "base": "exterior claro muy desenfocado",
+    "capa": "blanco plano sobre la mitad izquierda para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rojo (titular de acento, palabras clave, cards de precio) mas blanco (fondo y cards) mas {{PALETA_OSCURA}} (texto) mas los tonos de la escena"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "12% del ancho"
+    },
+    "titular_triple": {
+      "posicion": "superior_izquierda, bajo el logo",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{SUSTANTIVO_1}}, {{SUSTANTIVO_2}},",
+      "linea_2": "Y {{SUSTANTIVO_3_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase con el ultimo sustantivo en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4 palabras",
+      "formato_obligatorio": "tres sustantivos en escalada unidos por coma y conjuncion",
+      "regla": "el tercero es el mas general y el que lleva el color: cierra la escalada"
+    },
+    "bajada_activo": {
+      "posicion": "bajo el titular",
+      "texto": "{{ACTIVO}} {{MARCA}} {{PROMESA}}",
+      "estilo": "Regular {{PALETA_OSCURA}} de 3 lineas con los sistemas objetivo en Bold {{PALETA_ACENTO}}",
+      "restriccion_palabras": "14-18 palabras",
+      "regla": "nombra el activo CON la marca: quien ya vio la pieza de ingredientes reconoce el producto de inmediato"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical de cards claras redondeadas",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo con borde mas texto Bold uppercase de 2 lineas con la PALABRA CLAVE en {{PALETA_ACENTO}}",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_critica": "cada linea lleva su palabra clave resaltada en color: permite escanear la columna leyendo solo lo resaltado"
+    },
+    "avatar_con_producto": {
+      "posicion": "derecha_superior",
+      "contenido": "{{FOTO_AVATAR_CON_PRODUCTO}}",
+      "escala": "32% del frame",
+      "tratamiento": "persona del avatar al aire libre, sosteniendo el envase, con los ojos cerrados y gesto de bienestar",
+      "regla": "el avatar sostiene una unidad chica del producto y el envase grande va delante: uno da contexto, el otro da etiqueta"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "envase de pie de frente con sello de garantia sobre la tapa y capsulas sueltas al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "bloque_precio": {
+      "posicion": "inferior, ancho completo",
+      "partes": 3,
+      "parte_izquierda": {
+        "label": "{{OFERTA_LABEL}}",
+        "cantidad": "{{CANTIDAD}} {{UNIDAD_PLURAL}}",
+        "total": "{{TOTAL_CONTENIDO}} EN TOTAL",
+        "estilo": "Black/900 blanco sobre card {{PALETA_ACENTO}}",
+        "regla": "declara el TOTAL DE UNIDADES DE CONTENIDO del pack: es como se compara valor real en suplementos"
+      },
+      "parte_centro": {
+        "precio_normal": "PRECIO NORMAL: {{MONEDA}}{{PRECIO_TACHADO}} con tachado",
+        "label": "{{PREFIJO_PRECIO}}",
+        "precio": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+        "estilo_precio": "Black/900 en {{PALETA_ACENTO}}, elemento mas grande del bloque"
+      },
+      "parte_derecha": {
+        "contenedor": "card {{PALETA_ACENTO}} con icono de alcancia",
+        "texto": "AHORRA {{MONEDA}}{{AHORRO}}",
+        "estilo": "Black/900 blanco"
+      },
+      "regla_critica": "el descuento se muestra TRES VECES y en tres formatos distintos: cuantas unidades, precio antes contra ahora, y cuanto se ahorra en dinero"
+    },
+    "barra_garantias": {
+      "posicion": "inferior extremo, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[4]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_triple",
+    "producto_hero",
+    "bloque_precio",
+    "bajada_activo",
+    "columna_beneficios",
+    "avatar_con_producto",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El bloque de precio tiene tres partes: cantidad, precio antes contra ahora, y ahorro en card aparte",
+    "La parte izquierda declara el total de unidades de contenido del pack",
+    "Cada beneficio lleva su palabra clave resaltada en color",
+    "El titular son tres sustantivos en escalada y el tercero lleva el color",
+    "La bajada nombra el activo con la marca",
+    "El producto aparece dos veces: chico en la mano del avatar y grande delante"
+  ],
+  "variables_requeridas": [
+    "LOGO_MARCA",
+    "SUSTANTIVO_1",
+    "SUSTANTIVO_2",
+    "SUSTANTIVO_3_ACENTO",
+    "ACTIVO",
+    "MARCA",
+    "PROMESA",
+    "BENEFICIOS[5]",
+    "FOTO_AVATAR_CON_PRODUCTO",
+    "OFERTA_LABEL",
+    "CANTIDAD",
+    "UNIDAD_PLURAL",
+    "TOTAL_CONTENIDO",
+    "PRECIO_TACHADO",
+    "PREFIJO_PRECIO",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "AHORRO",
+    "MONEDA",
+    "GARANTIAS[4]"
+  ],
+  "cuando_usar": [
+    "cierre sobre publico que ya vio la pieza de ingredientes del mismo producto",
+    "cuando el pack tiene un ahorro en dinero que vale la pena declarar",
+    "suplementos donde el total de capsulas es el comparador de valor",
+    "BOFU"
+  ],
+  "cuando_no_usar": [
+    "publico frio",
+    "cuando no hay precio de referencia real que tachar",
+    "productos de una sola unidad"
+  ],
+  "sellos_y_claims_observados": [
+    "Beneficios: AYUDA AL METABOLISMO DE GLUCOSA Y LIPIDOS, PROMUEVE EL BIENESTAR DIGESTIVO, FAVORECE LA FUNCION CARDIOVASCULAR, APOYA TUS DEFENSAS, BIENESTAR GENERAL.",
+    "Bajada BERBERINE DE LA MARCA PUEDE APOYAR TU METABOLISMO, DIGESTION Y DEFENSAS DE FORMA NATURAL.",
+    "Bloque de precio: OFERTA ESPECIAL 2 FRASCOS (120 CAPSULAS EN TOTAL), PRECIO NORMAL Q338.00 tachado, AHORA SOLO Q249.00, AHORRA Q89.00 con icono de alcancia.",
+    "Barra de garantias: ENVIO GRATIS A TODO EL PAIS, PAGO CONTRA ENTREGA, COMPRA 100% SEGURA, INGREDIENTES DE CALIDAD.",
+    "Sello de garantia sobre la tapa del envase.",
+    "Claims impresos en el empaque: 1000MG POR PORCION, METABOLISMO DE GLUCOSA Y LIPIDOS, APOYA LA SALUD DIGESTIVA, FUNCION CARDIOVASCULAR, SISTEMA INMUNOLOGICO, 60 CAPSULAS SUPLEMENTO DIETARIO."
+  ],
+  "canonico_id": "CN20_PRECIO_ANCLA",
+  "blueprint_equivalente": null
+}

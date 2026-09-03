@@ -1,0 +1,163 @@
+{
+  "ficha_id": "F057",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Dr__Felipe_Flores/27_1340602134905998.jpg",
+    "anunciante": "Dr. Felipe Flores",
+    "ad_archive_id": "1340602134905998",
+    "dias_activo": 21,
+    "replicas": 1,
+    "score": 46,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "30%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL MULTIPLICADOR EN LLAMA SOBRE LA FOTO DEL AVATAR, CON LOS TRES BLOQUES DE CIERRE APILADOS EN COLUMNA. La mitad derecha es el avatar tocandose la zona objetivo y la izquierda una columna de cuatro bloques que descienden en tamano: sello de mas vendido, multiplicador con precio, garantia de pago y boton de WhatsApp. Cada bloque cierra una objecion distinta y ninguno argumenta el producto.",
+  "lectura_estrategica": "Pieza de cierre pura: cuatro palabras de titular, cero beneficios listados y todo el espacio dedicado a que la compra sea facil. La secuencia de la columna izquierda es una escalera de objeciones — otros ya lo compraron, cuesta esto y el envio es gratis, pagas al recibir, escribime — y termina en el gesto exacto. El titular esta redactado en clave de APARIENCIA y no de condicion (luce una piel con apariencia mas uniforme), lo que le permite vender un resultado estetico sin nombrar ninguna afeccion.",
+  "fondo": {
+    "tipo": "escena_de_interior_clara",
+    "base": "sala o habitacion clara con una planta, desenfocada",
+    "textura": "ninguna",
+    "regla": "interior domestico luminoso: el producto se usa en casa"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} naranja o ambar (titular de acento, card de precio, llama) mas negro (titular y cards) mas blanco (fondo de cards) mas verde exclusivo del boton de WhatsApp"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{VERBO_APARIENCIA}}",
+      "linea_2": "{{COMPLEMENTO_ACENTO}}",
+      "linea_3": "{{CUALIDAD}}",
+      "estilo_l1_l3": "Black/900 uppercase negro con contorno blanco",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}} con contorno blanco",
+      "restriccion_palabras_total": "5-6 palabras",
+      "formato_obligatorio": "verbo de APARIENCIA (luce, muestra, se ve) mas la cualidad deseada",
+      "regla_critica": "redactado en clave de apariencia y no de condicion: permite vender un resultado estetico sin nombrar ninguna afeccion",
+      "regla_contorno": "el contorno blanco permite que el titular se lea sobre la foto sin necesidad de banda"
+    },
+    "badge_ranking": {
+      "posicion": "izquierda_superior",
+      "contenedor": "card oscura con bandera de {{PAIS}} a la izquierda y estrellas debajo",
+      "texto": "{{ETIQUETA_RANKING}}",
+      "estilo": "Bold blanco",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "el ranking va localizado al pais: mas vendido EN Guatemala pesa mas que mas vendido a secas"
+    },
+    "card_multiplicador": {
+      "posicion": "izquierda_media",
+      "contenedor": "card {{PALETA_ACENTO}} solida con esquinas redondeadas e icono de llama a la izquierda",
+      "linea_1": "{{MULTIPLICADOR}} {{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 blanco, multiplicador y precio en la MISMA linea y al mismo tamano",
+      "linea_2": "{{GARANTIA_ENVIO}}",
+      "estilo_l2": "Black/900 uppercase blanco sobre banda mas oscura",
+      "regla": "multiplicador y precio en una sola expresion, con el envio pegado debajo: las tres variables de la decision economica en un bloque"
+    },
+    "card_pago": {
+      "posicion": "izquierda_baja",
+      "contenedor": "card blanca con icono de camion",
+      "texto": "{{GARANTIA_PAGO}}",
+      "estilo": "Black/900 uppercase negro de 2 lineas",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_whatsapp": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "boton verde WhatsApp redondeado con logo circular blanco",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco de 2 lineas",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "el verde aparece solo aca"
+    },
+    "avatar_zona_objetivo": {
+      "posicion": "derecha, ocupa el alto completo",
+      "contenido": "{{FOTO_AVATAR_ZONA}}",
+      "escala": "50% del frame",
+      "tratamiento": "persona del avatar sentada o de pie en interior domestico, TOCANDOSE la zona objetivo con la mano, sonriendo y mirando hacia abajo",
+      "regla_gesto": "el gesto de tocarse la zona senala donde actua el producto sin necesidad de flecha ni etiqueta"
+    },
+    "producto_hero": {
+      "posicion": "derecha_superior",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente, sobresaliendo por el borde superior del frame",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto va grande y arriba, con la etiqueta legible: en cierre la marca tiene que reconocerse"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "producto_hero",
+    "card_multiplicador",
+    "avatar_zona_objetivo",
+    "badge_ranking",
+    "card_pago",
+    "boton_whatsapp"
+  ],
+  "reglas_duras": [
+    "El titular usa verbo de apariencia, no de condicion",
+    "El titular lleva contorno blanco para leerse sobre la foto sin banda",
+    "El avatar se toca la zona objetivo: el gesto senala donde actua el producto",
+    "La columna izquierda es una escalera de objeciones que desciende en tamano",
+    "Multiplicador y precio van en la misma linea y al mismo tamano",
+    "El ranking va localizado al pais",
+    "El verde se usa solo en el boton de WhatsApp",
+    "Sin lista de beneficios: es una pieza de cierre"
+  ],
+  "variables_requeridas": [
+    "VERBO_APARIENCIA",
+    "COMPLEMENTO_ACENTO",
+    "CUALIDAD",
+    "ETIQUETA_RANKING",
+    "MULTIPLICADOR",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "GARANTIA_PAGO",
+    "CTA",
+    "FOTO_AVATAR_ZONA",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "cierre sobre publico que ya conoce el producto",
+    "resultados esteticos donde conviene hablar de apariencia y no de condicion",
+    "cuando existe foto del avatar tocandose la zona objetivo",
+    "cuando la oferta es un multiplicador simple con envio incluido"
+  ],
+  "cuando_no_usar": [
+    "publico frio: la pieza no argumenta nada",
+    "cuando hay que explicar el mecanismo",
+    "cuando la oferta necesita escalera de tres tiers"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge MAS VENDIDO EN GUATEMALA con bandera y cinco estrellas.",
+    "Card x2 Q239 con ENVIO GRATIS.",
+    "Card PAGO CONTRAENTREGA con icono de camion.",
+    "Boton PIDELO POR WHATSAPP.",
+    "Titular LUCE UNA PIEL CON APARIENCIA MAS UNIFORME.",
+    "Claims impresos en el empaque: EXFOLIATING KOJIC ACID TURMERIC SPRAY, Kojic Acid | Turmeric | Niacinamide, BODY AND FOOT EXFOLIATOR, Key ingredient KOJIC ACID, 99+."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,126 @@
+{
+  "ficha_id": "F063",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Dona_Oferta/03_1027488603536936.jpg",
+    "anunciante": "Dona Oferta",
+    "ad_archive_id": "1027488603536936",
+    "dias_activo": 16,
+    "replicas": 1,
+    "score": 41,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "38%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": "progresion"
+  },
+  "dispositivo_dominante": "LA MISMA LAMINA Y EL MISMO TITULAR DE F062, CON LA ZONA OBJETIVO CAMBIADA. Identica estructura — confesion de adicion, tres ilustraciones por mes, tres frascos alineados — pero las ilustraciones son de otra parte del cuerpo. El titular no cambia una palabra.",
+  "lectura_estrategica": "Demuestra que en esta lamina el titular y la zona son variables INDEPENDIENTES: el mismo mensaje se puede correr sobre cuantas zonas del cuerpo afecte el producto, generando una serie entera de creativos unicos sin reescribir nada. Es la forma mas barata de producir volumen creativo del banco: una plantilla, un titular, N zonas. Y como cada zona apela a un avatar distinto que se mira una parte distinta de si mismo, la serie no canibaliza: segmenta.",
+  "fondo": {
+    "tipo": "color_plano_blanco",
+    "color": "blanco puro",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "libre, con un color de estado",
+    "cantidad_colores": 3,
+    "estructura": "negro (titular y trazo) mas un ROSA o color de afeccion para la zona marcada mas los tonos del envase"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de texto, NO condensada",
+    "pesos_permitidos": [
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "negro puro"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "ilustracion vectorial de linea de OTRA zona del cuerpo afectada por el mismo producto",
+    "trazo": "linea negra fina de grosor uniforme, identico al de las otras piezas de la serie",
+    "relleno": "ninguno, salvo la mancha de color en la zona afectada",
+    "progresion": "estado 1 con la mancha extendida, estado 2 con la mancha reducida, estado 3 sin mancha",
+    "que_se_conserva": "el mismo trazo, la misma paleta y el mismo encuadre que el resto de la serie",
+    "que_NO_se_hace": "cambiar el estilo de ilustracion entre piezas de la misma serie",
+    "regla": "la serie se reconoce como una sola campana porque el trazo y la paleta no varian: solo cambia la zona"
+  },
+  "zonas": {
+    "titular_adicion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{RENUNCIA_NEGADA}}...",
+      "linea_2": "{{ADICION}}.",
+      "estilo_l1": "Bold negro en caja baja, terminado en puntos suspensivos",
+      "estilo_l2": "Regular negro, terminado en punto",
+      "restriccion_palabras_total": "7-9 palabras",
+      "regla": "el titular NO cambia entre piezas de la serie: lo que varia es la zona ilustrada"
+    },
+    "progresion_ilustrada": {
+      "posicion": "centro, ancho completo",
+      "cantidad_estados": 3,
+      "orientacion": "tres ilustraciones en fila, mismo tamano y misma altura",
+      "formato_estado": "ilustracion de linea de la zona con la mancha de color, y el NOMBRE DEL MES debajo",
+      "estados": "{{PROGRESION[3]}}",
+      "estructura_estado": {
+        "ilustracion": "{{DIBUJO_ESTADO}}",
+        "label": "{{MES}}"
+      },
+      "restriccion_label": "1 palabra",
+      "regla_serie": "cada pieza de la serie ilustra una ZONA distinta del cuerpo afectada por el mismo producto"
+    },
+    "fila_producto": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres envases IDENTICOS alineados, uno bajo cada ilustracion",
+      "contenido": "{{PRODUCTO}}",
+      "escala": "cada envase al 26% del alto del frame",
+      "fuente": "IMAGEN_2"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_adicion",
+    "progresion_ilustrada",
+    "fila_producto"
+  ],
+  "reglas_duras": [
+    "El titular no cambia entre piezas de la serie",
+    "Cada pieza ilustra una zona distinta del cuerpo",
+    "El trazo, la paleta y el encuadre son identicos en toda la serie",
+    "Los labels son meses reales del calendario",
+    "Un envase por mes",
+    "Fondo blanco total, sin precio ni CTA"
+  ],
+  "variables_requeridas": [
+    "RENUNCIA_NEGADA",
+    "ADICION",
+    "PROGRESION[3]",
+    "PRODUCTO"
+  ],
+  "cuando_usar": [
+    "cuando el producto afecta varias zonas del cuerpo y se quiere una serie",
+    "cuando hace falta volumen creativo con poco presupuesto de produccion",
+    "cuando cada zona apela a un avatar distinto: la serie segmenta en vez de canibalizar",
+    "TOFU frio con varios conjuntos corriendo en paralelo"
+  ],
+  "cuando_no_usar": [
+    "productos que afectan una sola zona: no hay serie que armar",
+    "cuando el estilo de ilustracion no se puede sostener igual en todas las piezas",
+    "BOFU"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos, precio, garantias ni CTA.",
+    "Titular NO HE ELIMINADO EL AZUCAR... SOLO HE ANADIDO ESTO, identico al de la pieza hermana.",
+    "Labels de la progresion: ENERO / FEBRERO / MARZO.",
+    "Claims impresos en el empaque: TRADITIONAL LYMPHATIC SUPPORT, LIQUID HERBAL EXTRACTS, Dietary Supplement, HERBAL EXPERTS since 1972."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": null
+}

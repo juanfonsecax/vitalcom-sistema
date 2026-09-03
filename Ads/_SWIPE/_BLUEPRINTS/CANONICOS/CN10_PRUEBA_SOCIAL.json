@@ -1,0 +1,158 @@
+{
+  "canonico_id": "CN10_PRUEBA_SOCIAL",
+  "schema_version": "canonico-1.0",
+  "nombre": "Prueba social en tarjetas y rating",
+  "dispositivo_canonico": "EL TESTIMONIO DE OTROS SE VUELVE OBJETO GRAFICO: tarjetas de resena con foto de perfil, nombre, ciudad y estrellas; una fila de comentarios de red social; o un rating decimal del tamano de un titular. La cifra no acompana — es la pieza.",
+  "cuando_elegirlo": "MOFU/BOFU donde la objecion es '¿a quien mas le funciono?'. Necesita volumen real o al menos un numero de clientes defendible; con 3 resenas inventadas la pieza se lee falsa.",
+  "ejes_de_variacion": [
+    "formato de la prueba: cards de resena, comentarios de red, rating decimal",
+    "posicion del rating: barra propia o apilado bajo el rostro, que hace que la nota se lea como la de ELLA (F111)",
+    "densidad de la vitrina: 8 cards con subtitulo o 4 sin (F107 vs F109)"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F025",
+  "score_referencia": 79,
+  "perfil": {
+    "concepto_key": {
+      "C5_PRUEBA": 4,
+      "C2_BENEFICIOS": 1
+    },
+    "rol_embudo": {
+      "MOFU": 4,
+      "BOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 5
+    },
+    "formato": {
+      "2:3": 4,
+      "1:1": 1
+    },
+    "densidad": {
+      "alta": 4,
+      "muy_alta": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "TITULAR",
+    "TESTIMONIOS",
+    "NOMBRES",
+    "CIUDADES",
+    "CALIFICACION",
+    "CANTIDAD_CLIENTES",
+    "FORMATO_PRUEBA",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "ATRIBUTO_1",
+      "ATRIBUTO_2",
+      "ATRIBUTO_3",
+      "CALIFICATIVO",
+      "DESCARGO",
+      "IMAGEN_1",
+      "LOGISTICA[3]",
+      "MODELO",
+      "N_CLIENTES",
+      "RATING_DECIMAL",
+      "SUSTANTIVO_CLIENTES"
+    ],
+    "recurrentes": [
+      "BENEFICIOS[4]",
+      "CLAIM_APOYO",
+      "FRECUENCIA",
+      "LOGO_MARCA"
+    ]
+  },
+  "reglas_duras_compartidas": [
+    "La calificacion va con decimales y el numero de clientes con separador de millar"
+  ],
+  "reglas_duras_referencia": [
+    "Cada resena lleva nombre, ciudad, cinco estrellas y avatar circular",
+    "Las tres ciudades son distintas y del mismo pais",
+    "Las palabras resaltadas de las tres citas dicen el mismo beneficio con otras palabras",
+    "La segunda resena arranca reconociendo que ya probo otras cosas sin resultado",
+    "La persona del fondo mira a camara",
+    "Las tres metricas del pie son numericas o verificables"
+  ],
+  "cuando_usar": [
+    "retargeting y BOFU, cuando la duda que queda es si a otros les sirvio",
+    "cuando existen resenas reales de clientes con permiso de uso",
+    "productos con recompra o con historial de ventas en el pais",
+    "cuando se quiere probar cobertura geografica ademas de satisfaccion",
+    "cuando hay comentarios reales de clientes en las publicaciones de la pagina",
+    "productos con varios ingredientes reconocibles que se pueden fotografiar",
+    "cuando la funcion recuperada tiene un gesto corporal claro (respirar, estirarse, dormir)",
+    "publico que confia mas en la gente que en la marca"
+  ],
+  "cuando_no_usar": [
+    "producto recien lanzado sin clientes reales",
+    "publico frio de nivel 1 o 2: el testimonio no significa nada si no sabe que problema resuelve",
+    "cuando no se tiene permiso de las personas citadas",
+    "cuando no hay comentarios que reproducir",
+    "formulas de un solo activo: la columna de ingredientes queda coja",
+    "cuando el beneficio no tiene un gesto asociado"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F025",
+      "score": 79,
+      "anunciante": "Teyra",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LAS TRES TARJETAS DE RESENA CON FOTO DE PERFIL, NOMBRE, CIUDAD Y ESTRELLAS"
+    },
+    {
+      "ficha_id": "F059",
+      "score": 42,
+      "anunciante": "El Ofertn Guatemala",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA FILA DE COMENTARIOS DE RED SOCIAL SIMULADOS AL PIE"
+    },
+    {
+      "ficha_id": "F107",
+      "score": 28,
+      "anunciante": "Topishop",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL RATING DECIMAL CON ESTRELLAS, DEL TAMANO DE UN TITULAR"
+    },
+    {
+      "ficha_id": "F109",
+      "score": 26,
+      "anunciante": "Topishop",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA MISMA VITRINA DORADA, ESPEJADA Y ALIGERADA"
+    },
+    {
+      "ficha_id": "F111",
+      "score": 25,
+      "anunciante": "Topishop",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TITULAR POSESIVO Y EL RATING APILADO BAJO LA MODELO"
+    }
+  ]
+}

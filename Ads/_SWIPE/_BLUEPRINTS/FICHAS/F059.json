@@ -1,0 +1,221 @@
+{
+  "ficha_id": "F059",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/El_Ofertn_Guatemala/05_2634495017065590.jpg",
+    "anunciante": "El Ofertn Guatemala",
+    "ad_archive_id": "2634495017065590",
+    "dias_activo": 17,
+    "replicas": 1,
+    "score": 42,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA FILA DE COMENTARIOS DE RED SOCIAL SIMULADOS AL PIE. Cuatro tarjetas horizontales, cada una con foto de perfil circular, nombre completo, antiguedad del comentario, el texto en dos o tres lineas, y debajo el contador de reacciones con sus iconos y el numero de respuestas. Reproduce la caja de comentarios completa, incluidos los elementos que no aportan informacion.",
+  "lectura_estrategica": "Traslada la prueba social del formato testimonio al formato COMENTARIO, y la diferencia importa: un testimonio lo escribe la marca, un comentario lo escribe la gente. Los detalles que lo sostienen son los que parecen irrelevantes — la antiguedad en dias, el contador de reacciones con numeros disparejos, la cantidad de respuestas — porque son los que una marca no se molestaria en inventar. Ademas cada comentario ocupa un angulo distinto (funciono rapido, era esceptico, me sirvio para otra cosa), de modo que la fila cubre tres objeciones sin que ninguna se enuncie.",
+  "fondo": {
+    "tipo": "foto_naturaleza_luminosa_desenfocada",
+    "base": "exterior verde muy desenfocado y luminoso",
+    "capa": "blanco translucido en el tercio inferior para sostener los comentarios",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} violeta o color de marca (titular de acento, iconos, pildoras) mas verde (checks y sello natural) mas blanco (cards de comentario) mas {{COLOR_ACENTO}} amarillo del boton de cierre"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada para el cartel mas sans de sistema para los comentarios",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro",
+    "regla": "los comentarios usan la tipografia de interfaz, no la del cartel: es parte de la verosimilitud"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{ACCION_L1}}",
+      "linea_2": "{{TEMPORALIDAD_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase negro",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3 palabras",
+      "formato_obligatorio": "verbo de recuperacion mas un adverbio de vuelta al estado normal (nuevamente, otra vez, de nuevo)",
+      "regla": "el adverbio implica que la persona ya estuvo bien antes: promete volver, no cambiar"
+    },
+    "logo_marca": {
+      "posicion": "superior_derecha",
+      "contenido": "{{LOGO_MARCA}}",
+      "bajada": "{{TAGLINE}}",
+      "estilo_bajada": "Regular chico"
+    },
+    "banda_producto": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda con borde inferior de color",
+      "texto": "CON {{PRODUCTO}} {{DESCRIPTOR}}",
+      "estilo": "Bold uppercase con el producto en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "pildora_formula": {
+      "posicion": "bajo la banda",
+      "contenedor": "pildora con borde verde y hoja",
+      "texto": "{{CLAIM_FORMULA}}",
+      "estilo": "Bold verde",
+      "restriccion_palabras": "3 palabras"
+    },
+    "avatar_alivio": {
+      "posicion": "izquierda_media",
+      "contenido": "{{FOTO_AVATAR_RESPIRANDO}}",
+      "escala": "30% del frame",
+      "tratamiento": "una o dos personas del avatar con los ojos cerrados y el gesto de alivio de la funcion recuperada (respirar hondo, estirarse, dormir)",
+      "regla": "el gesto ES el beneficio: no hace falta flecha ni etiqueta que lo senale"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente con hojas del ingrediente detras",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_ingredientes": {
+      "posicion": "derecha_media",
+      "header": "{{CANTIDAD_INGREDIENTES}} {{ETIQUETA_INGREDIENTES}}",
+      "estilo_header": "Black/900 en {{PALETA_ACENTO}} con la cifra grande",
+      "cantidad_items": 6,
+      "orientacion": "columna vertical",
+      "formato_item": "foto circular real del ingrediente mas nombre en Regular",
+      "items": "{{INGREDIENTES[6]}}",
+      "restriccion_palabras": "1-2 palabras",
+      "regla": "cada ingrediente lleva su FOTO real, no un icono: la lista es el argumento de que la formula es natural"
+    },
+    "banda_alivio": {
+      "posicion": "izquierda_baja",
+      "contenedor": "banda {{PALETA_ACENTO}} solida con extremos irregulares",
+      "linea_1": "{{ALIVIO_L1}}",
+      "linea_2": "{{CONDICIONES_L2}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold uppercase en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "regla": "la segunda linea enumera las condiciones que cubre: amplia la audiencia sin cambiar el titular"
+    },
+    "fila_mecanismos": {
+      "posicion": "centro_bajo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores",
+      "formato_item": "icono line-art en circulo mas texto Bold uppercase muy chico de 2 lineas",
+      "items": "{{MECANISMOS[3]}}",
+      "restriccion_palabras": "3-5 palabras"
+    },
+    "fila_garantias": {
+      "posicion": "bajo los mecanismos",
+      "cantidad_items": 2,
+      "formato_item": "icono mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}"
+    },
+    "hilo_comentarios": {
+      "posicion": "inferior, ancho completo",
+      "header": "{{HEADER_COMENTARIOS}}",
+      "estilo_header": "Black/900 uppercase negro",
+      "cantidad_items": 4,
+      "orientacion": "fila de cuatro tarjetas horizontales",
+      "formato_item": "foto de perfil circular mas NOMBRE COMPLETO en Bold mas antiguedad en gris mas el texto del comentario en Regular de 2-3 lineas, y debajo el contador de reacciones con sus iconos y el numero de respuestas",
+      "items": "{{COMENTARIOS[4]}}",
+      "estructura_item": {
+        "nombre": "{{NOMBRE}}",
+        "antiguedad": "{{DIAS}}",
+        "texto": "{{TEXTO_COMENTARIO}}",
+        "reacciones": "{{NUMERO_REACCIONES}}",
+        "respuestas": "{{NUMERO_RESPUESTAS}}"
+      },
+      "restriccion_texto": "14-22 palabras",
+      "regla_critica": "reproduce la caja de comentarios COMPLETA, incluidos los elementos que no aportan informacion: la antiguedad en dias, el contador de reacciones con numeros disparejos y la cantidad de respuestas son los que una marca no se molestaria en inventar",
+      "regla_angulos": "cada comentario ocupa un angulo distinto — funciono rapido, era esceptico, me sirvio para otra cosa — de modo que la fila cubre tres objeciones sin que ninguna se enuncie",
+      "regla_tipografia": "los comentarios usan la tipografia de interfaz, no la del cartel"
+    },
+    "boton_cierre": {
+      "posicion": "inferior extremo, ancho parcial centrado",
+      "contenedor": "boton {{COLOR_ACENTO}} amarillo redondeado con icono de cursor",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase negro",
+      "restriccion_palabras": "2 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "avatar_alivio",
+    "producto_hero",
+    "banda_alivio",
+    "columna_ingredientes",
+    "fila_mecanismos",
+    "hilo_comentarios",
+    "boton_cierre",
+    "fila_garantias"
+  ],
+  "reglas_duras": [
+    "El hilo reproduce la caja de comentarios completa, con antiguedad, reacciones y respuestas",
+    "Los numeros de reacciones son disparejos entre comentarios",
+    "Cada comentario ocupa un angulo distinto y cubre una objecion sin enunciarla",
+    "Los comentarios usan tipografia de interfaz, no la del cartel",
+    "Cada ingrediente de la columna lleva su foto real, no un icono",
+    "El gesto del avatar es el beneficio: sin flecha ni etiqueta",
+    "El adverbio del titular implica volver al estado normal, no cambiar"
+  ],
+  "variables_requeridas": [
+    "ACCION_L1",
+    "TEMPORALIDAD_ACENTO",
+    "LOGO_MARCA",
+    "TAGLINE",
+    "PRODUCTO",
+    "DESCRIPTOR",
+    "CLAIM_FORMULA",
+    "FOTO_AVATAR_RESPIRANDO",
+    "CANTIDAD_INGREDIENTES",
+    "ETIQUETA_INGREDIENTES",
+    "INGREDIENTES[6]",
+    "ALIVIO_L1",
+    "CONDICIONES_L2",
+    "MECANISMOS[3]",
+    "GARANTIAS[2]",
+    "HEADER_COMENTARIOS",
+    "COMENTARIOS[4]",
+    "CTA",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "cuando hay comentarios reales de clientes en las publicaciones de la pagina",
+    "productos con varios ingredientes reconocibles que se pueden fotografiar",
+    "cuando la funcion recuperada tiene un gesto corporal claro (respirar, estirarse, dormir)",
+    "publico que confia mas en la gente que en la marca"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay comentarios que reproducir",
+    "formulas de un solo activo: la columna de ingredientes queda coja",
+    "cuando el beneficio no tiene un gesto asociado"
+  ],
+  "sellos_y_claims_observados": [
+    "Pildora FORMULA 100% NATURAL con hoja.",
+    "Columna 6 INGREDIENTES 100% NATURALES con foto de cada uno: XILITOL, EUCALIPTO, PAU D'ARCO, ARBOL DEL TE, ACEITE DE OREGANO, MENTA.",
+    "Banda ALIVIA SINUSITIS, RINITIS Y ALERGIAS NASALES.",
+    "Mecanismos: DESINFLAMA CORNETES Y SENOS PARANASALES, ELIMINA MUCOSIDAD Y ALIVIA LA PRESION, RESPIRACION LIBRE Y ALIVIO DURADERO.",
+    "Garantias ENVIO GRATIS A TODO GUATEMALA y PAGAS AL RECIBIRLO SIN PAGOS ANTICIPADOS.",
+    "Hilo LO QUE DICEN NUESTROS CLIENTES con cuatro comentarios firmados, cada uno con antiguedad en dias, contador de reacciones y numero de respuestas.",
+    "Claim impreso en el empaque: CLINICAMENTE PROBADO, UNA NARIZ LIBRE UNA NARIZ SANA, SPRAY NASAL 1 FL OZ (30 ml).",
+    "Boton MAS INFORMACION."
+  ],
+  "canonico_id": "CN10_PRUEBA_SOCIAL",
+  "blueprint_equivalente": null
+}

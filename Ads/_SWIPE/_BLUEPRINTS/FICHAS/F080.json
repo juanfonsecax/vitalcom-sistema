@@ -1,0 +1,171 @@
+{
+  "ficha_id": "F080",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Natura_Shoppy_Guatemala/02_28294575000175112.jpg",
+    "anunciante": "Natura Shoppy Guatemala",
+    "ad_archive_id": "28294575000175112",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "26%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL ACTIVO PRINCIPAL SOLO, EN UN CIRCULO GRANDE A LA IZQUIERDA, CON SU DOSIS Y SU EXPLICACION. Misma cabecera que el despiece de seis, pero en vez de abrir la formula entera aisla UN ingrediente y le da un circulo del tamano de un cuarto del frame. La derecha se libera para cuatro atributos de calidad.",
+  "lectura_estrategica": "Par del despiece completo y sirve para el mismo comprador en otro momento: cuando la marca ya no necesita listar todo sino instalar UN nombre. Al aislar el activo con su dosis por porcion y una explicacion de origen, la pieza convierte el ingrediente en el argumento y deja los otros cinco fuera. La columna derecha, liberada del despiece, pasa a ser de garantias de calidad — natural, sin colorantes, calidad en cada capsula — que es lo que queda por responder cuando el activo ya convencio.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_props",
+    "color": "blanco o gris muy claro",
+    "elementos": "hojas y frutos del ingrediente principal desenfocados en los bordes",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rojo o color del empaque (titular de acento, borde del circulo, cards) mas blanco (fondo) mas {{PALETA_OSCURA}} (texto) mas los colores del ingrediente"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "12% del ancho"
+    },
+    "titular_calidad": {
+      "posicion": "superior_izquierda, bajo el logo",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{SUSTANTIVO_COMPOSICION}}",
+      "linea_2": "{{CALIFICATIVO_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "regla": "identico al de la pieza hermana: lo que cambia es si se abre la formula o se aisla el activo"
+    },
+    "bajada_formula": {
+      "posicion": "bajo el titular",
+      "lineas": 2,
+      "texto": "{{FRASE_BIENESTAR}}",
+      "estilo": "Regular {{PALETA_OSCURA}} con las ultimas palabras en Bold {{PALETA_ACENTO}}",
+      "restriccion_palabras": "8-10 palabras"
+    },
+    "badge_formula": {
+      "posicion": "superior_derecha",
+      "contenedor": "card {{PALETA_ACENTO}} con esquina recortada y check",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{SUBCLAIM_CALIDAD}}",
+      "estilo_l1": "Black/900 uppercase blanco"
+    },
+    "activo_aislado": {
+      "posicion": "izquierda_media",
+      "contenedor": "circulo grande con borde {{PALETA_ACENTO}} grueso",
+      "foto": "{{FOTO_INGREDIENTE_PRINCIPAL}}",
+      "escala": "25% del frame",
+      "nombre": "{{NOMBRE_ACTIVO}}",
+      "estilo_nombre": "Black/900 {{PALETA_OSCURA}}",
+      "dosis": "{{DOSIS}} POR PORCION",
+      "estilo_dosis": "Bold en {{PALETA_ACENTO}}",
+      "explicacion": "{{ORIGEN_Y_ALCANCE}}",
+      "estilo_explicacion": "Regular de 3 lineas",
+      "restriccion_explicacion": "14-20 palabras",
+      "regla_critica": "aisla UN ingrediente y le da un circulo del tamano de un cuarto del frame: convierte el activo en el argumento y deja los demas fuera",
+      "regla_explicacion": "la explicacion declara el ORIGEN (extraido de plantas) y el ALCANCE (multiples beneficios para el organismo), no un beneficio puntual"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "42% del frame",
+      "composicion": "envase de pie de frente con sello de garantia sobre la tapa, capsulas y frutos del ingrediente al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_calidad": {
+      "posicion": "derecha_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical de cards claras redondeadas",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en cuadrado redondeado mas TITULO Bold mas subtitulo Regular de 2 lineas",
+      "items": "{{ATRIBUTOS_CALIDAD[4]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "4-7 palabras",
+      "regla_critica": "liberada del despiece, la columna pasa a ser de GARANTIAS DE CALIDAD: es lo que queda por responder cuando el activo ya convencio"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda clara con borde fino",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[4]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_calidad",
+    "activo_aislado",
+    "producto_hero",
+    "bajada_formula",
+    "columna_calidad",
+    "badge_formula",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "Un solo ingrediente aislado, en circulo grande con borde de color",
+    "El circulo lleva nombre, dosis por porcion y explicacion de origen y alcance",
+    "La explicacion declara origen y alcance, no un beneficio puntual",
+    "La columna derecha es de garantias de calidad, no de beneficios",
+    "El titular es identico al de la pieza hermana con el despiece completo",
+    "El producto lleva el sello de garantia sobre la tapa"
+  ],
+  "variables_requeridas": [
+    "LOGO_MARCA",
+    "SUSTANTIVO_COMPOSICION",
+    "CALIFICATIVO_ACENTO",
+    "FRASE_BIENESTAR",
+    "ETIQUETA_FORMULA",
+    "SUBCLAIM_CALIDAD",
+    "FOTO_INGREDIENTE_PRINCIPAL",
+    "NOMBRE_ACTIVO",
+    "DOSIS",
+    "ORIGEN_Y_ALCANCE",
+    "ATRIBUTOS_CALIDAD[4]",
+    "GARANTIAS[4]"
+  ],
+  "cuando_usar": [
+    "cuando la marca ya no necesita listar todo sino instalar UN nombre de activo",
+    "cuando el activo principal es el diferenciador y tiene dosis superior",
+    "publico de nivel 4 que ya conoce la categoria",
+    "para correr en paralelo con la version de despiece completo"
+  ],
+  "cuando_no_usar": [
+    "cuando el valor esta en la combinacion y no en un activo: usar el despiece de seis",
+    "publico frio",
+    "cuando el activo no es reconocible por nombre"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge FORMULA AVANZADA · INGREDIENTES DE CALIDAD.",
+    "Activo aislado BERBERINA 1000MG POR PORCION: compuesto natural extraido de plantas, conocido por sus multiples beneficios para el organismo.",
+    "Columna de calidad: FORMULA NATURAL (con ingredientes de alta calidad), SIN COLORANTES (ni conservantes artificiales), CALIDAD (en cada capsula), APTO PARA TU BIENESTAR DIARIO.",
+    "Barra de garantias: ENVIO GRATIS A TODO EL PAIS, PAGO CONTRA ENTREGA, COMPRA 100% SEGURA, INGREDIENTES DE CALIDAD.",
+    "Sello de garantia sobre la tapa del envase.",
+    "Claims impresos en el empaque: 1000MG POR PORCION, METABOLISMO DE GLUCOSA Y LIPIDOS, APOYA LA SALUD DIGESTIVA, FUNCION CARDIOVASCULAR, SISTEMA INMUNOLOGICO, 60 CAPSULAS SUPLEMENTO DIETARIO."
+  ],
+  "canonico_id": "CN15_INGREDIENTES_ACTIVO",
+  "blueprint_equivalente": null
+}

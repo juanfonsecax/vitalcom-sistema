@@ -1,0 +1,105 @@
+{
+  "canonico_id": "CN22_ESCENA_DE_USO",
+  "schema_version": "canonico-1.0",
+  "nombre": "Escena del momento de uso",
+  "dispositivo_canonico": "UNA FOTOGRAFIA DEL MOMENTO EN QUE EL PRODUCTO ENTRA EN LA VIDA: el frasco iluminado sobre la mesa de noche en escena nocturna, la cinta metrica como eje vertical del frame y el gesto de auto-medirse. No es el problema ni el resultado — es el ritual. Instala CUANDO se usa sin escribirlo.",
+  "cuando_elegirlo": "El momento de uso es parte del beneficio (antes de dormir, en ayunas, despues del bano) o el gesto de medicion es en si el disparador emocional. Necesita una escena reconocible del hogar guatemalteco.",
+  "ejes_de_variacion": [
+    "momento retratado: nocturno, matinal, de control/medicion",
+    "el objeto del ritual puede volverse el eje grafico del frame (F096)",
+    "iluminacion: calida y baja (noche) o neutra de dia"
+  ],
+  "n_miembros": 2,
+  "ficha_referencia": "F069",
+  "score_referencia": 34,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 2
+    },
+    "rol_embudo": {
+      "MOFU": 1,
+      "BOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 2
+    },
+    "formato": {
+      "2:3": 1,
+      "1:1": 1
+    },
+    "densidad": {
+      "alta": 2
+    },
+    "nivel_conciencia_rango": [
+      3,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "MOMENTO",
+    "ESCENA",
+    "OBJETO_DEL_RITUAL",
+    "ILUMINACION",
+    "TITULAR",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El contexto declara para que sirve el producto: la escena es el argumento",
+    "El producto se apoya en la escena y recibe su luz, sin glow propio",
+    "La persona del fondo va desenfocada, de perfil y sin mirar a camara",
+    "Los tres items de la derecha son estados del momento de uso, no funciones",
+    "La inmediatez se mide en tomas, no en dias",
+    "El CTA pide informacion, no compra"
+  ],
+  "cuando_usar": [
+    "productos con un momento de uso claro (noche, manana, post-comida, pre-entreno)",
+    "cuando el contexto puede reemplazar la explicacion del mecanismo",
+    "categorias de calma, sueno y animo",
+    "campanas de trafico donde el objetivo es el clic y no la conversacion",
+    "beneficios que se expresan en una MAGNITUD medible con escala propia",
+    "cuando el publico se puede segmentar solo con una pregunta en vez de nombrar la edad",
+    "cierre por precio con envio y contraentrega",
+    "categorias donde el gesto del resultado es reconocible y se puede fotografiar"
+  ],
+  "cuando_no_usar": [
+    "productos sin momento de uso asociado",
+    "cuando el argumento es el precio",
+    "cuando el cierre debe ser por chat: el boton de informacion apunta a otro lado",
+    "beneficios que no tienen escala numerica ni instrumento de medida",
+    "publico frio de nivel 1 o 2",
+    "cuando no hay precio que poner: la card de color pleno se queda sin contenido"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F069",
+      "score": 34,
+      "anunciante": "El Ofertn Guatemala",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA ESCENA NOCTURNA CON EL PRODUCTO ILUMINADO SOBRE LA MESA DE NOCHE"
+    },
+    {
+      "ficha_id": "F096",
+      "score": 30,
+      "anunciante": "El Punto GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA CINTA METRICA COMO EJE VERTICAL DEL FRAME Y EL GESTO DE AUTO-MEDIRSE"
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "ficha_id": "F075",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Doa_Oferta/08_1975614833064130.jpg",
+    "anunciante": "Doa Oferta",
+    "ad_archive_id": "1975614833064130",
+    "dias_activo": 8,
+    "replicas": 1,
+    "score": 33,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA OFERTA DE LA SEGUNDA UNIDAD A PRECIO REDUCIDO, EN BANDA DE ANCHO COMPLETO. En vez de un 2x1 o de una escalera, la pieza vende UNA unidad y ofrece la segunda por un precio bajo declarado en la banda mas grande del frame. El envase aparece dos veces en la foto, uno delante y otro detras, para que la oferta se vea antes de leerse.",
+  "lectura_estrategica": "Arquitectura de precio distinta a todo el resto del banco: no descuenta el pack, descuenta LA SEGUNDA. Eso conserva el precio de referencia de la unidad — que sigue siendo el ancla — y convierte el ticket alto en una decision de anadir, no de gastar el doble. La pieza divide el frame en dos mitades tematicas: la izquierda es el problema, con la pregunta y la foto de la mujer agotada; la derecha es la solucion, con su propio titular verde. El badge lateral de dosificacion responde el cuanto, que en formato gotero es la primera duda practica.",
+  "fondo": {
+    "tipo": "escena_de_interior_calida",
+    "base": "sala de estar en luz de tarde con plantas, desenfocada",
+    "elemento_derecho": "hojas y flores del ingrediente entrando por el borde, y superficie de piedra bajo los envases",
+    "regla": "la mitad izquierda del fondo sostiene a la persona y la derecha al producto"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde (bandas, titular de la solucion, card de oferta) mas crema (fondo de cards) mas negro (titular del problema) mas {{COLOR_ACENTO}} dorado del boton"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular_problema": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{PREGUNTA_L1}}",
+      "linea_2": "{{GERUNDIO_L2}}",
+      "linea_3": "{{SENSACION_L3_ACENTO}}",
+      "estilo_l1": "Bold negro con signo de interrogacion de apertura",
+      "estilo_l2": "Black/900 uppercase negro",
+      "estilo_l3": "Black/900 uppercase en gris o tono apagado, con signo de interrogacion de cierre",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "pregunta por el FINAL DEL DIA mas la sensacion, conjugada al genero del avatar",
+      "regla": "el momento del dia acota cuando ocurre el problema y hace que quien lo vive se reconozca"
+    },
+    "titular_solucion": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{PREAMBULO_SOLUCION}}",
+      "linea_2": "{{TIPO_SOLUCION_ACENTO}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "restriccion_palabras_total": "4-5 palabras",
+      "regla_critica": "la pieza se parte en dos mitades tematicas: izquierda el problema, derecha la solucion, cada una con su propio titular"
+    },
+    "bajada_solucion": {
+      "posicion": "bajo el titular de la solucion",
+      "texto": "{{PROMESA_APOYO}}",
+      "estilo": "Regular oscuro con las ultimas palabras en {{PALETA_OSCURA}}",
+      "restriccion_palabras": "5-7 palabras"
+    },
+    "avatar_agotado": {
+      "posicion": "izquierda_media",
+      "contenido": "{{FOTO_AVATAR_AGOTADO}}",
+      "escala": "30% del frame",
+      "tratamiento": "persona del avatar sentada en su sala con los ojos cerrados y la cabeza apoyada, en el gesto del final de la jornada",
+      "regla": "ojos cerrados y sin mirar a camara: es una escena observada"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical de cards claras",
+      "formato_item": "icono line-art {{PALETA_OSCURA}} en circulo mas texto Regular de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla_item_2": "uno de los tres es de FACILIDAD DE INCORPORACION a la rutina, no de efecto"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "45% del frame",
+      "composicion": "DOS envases identicos, uno delante y otro detras y desplazado",
+      "fuente": "IMAGEN_2",
+      "regla_critica": "el envase aparece dos veces para que la oferta de la segunda unidad se VEA antes de leerse"
+    },
+    "sello_natural": {
+      "posicion": "derecha_media, sobre el producto",
+      "forma": "circular o de burbuja con hoja",
+      "texto": "{{CLAIM_NATURAL}}",
+      "escala": "14% del ancho"
+    },
+    "badge_dosificacion": {
+      "posicion": "derecha_baja",
+      "contenedor": "card clara con icono de gotero",
+      "texto": "{{DOSIS}}, {{FRECUENCIA}}",
+      "estilo": "Regular oscuro de 2 lineas",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "responde el CUANTO, que en formato gotero es la primera duda practica"
+    },
+    "banda_segunda_unidad": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida, el bloque mas grande del frame",
+      "zona_izquierda": "{{OFERTA_SEGUNDA_L1}} {{OFERTA_SEGUNDA_L2}}",
+      "estilo_izquierda": "Black/900 uppercase blanco",
+      "zona_centro": "{{PREFIJO_PRECIO}} {{MONEDA}}{{PRECIO_SEGUNDA}}",
+      "estilo_centro": "Black/900 en card clara, precio al mayor tamano",
+      "zona_derecha": "{{CTA}} en boton {{COLOR_ACENTO}} con flecha",
+      "regla_critica": "no descuenta el pack, descuenta LA SEGUNDA: conserva el precio de referencia de la unidad como ancla y convierte el ticket alto en una decision de anadir, no de gastar el doble"
+    },
+    "barra_garantias": {
+      "posicion": "inferior extremo, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono line-art mas texto Regular",
+      "items": "{{GARANTIAS[3]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_problema",
+    "titular_solucion",
+    "producto_hero",
+    "banda_segunda_unidad",
+    "avatar_agotado",
+    "columna_beneficios",
+    "badge_dosificacion",
+    "sello_natural",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "La oferta descuenta la SEGUNDA unidad, no el pack",
+    "El envase aparece dos veces en la foto",
+    "La pieza se parte en dos mitades tematicas, cada una con su propio titular",
+    "La pregunta del problema acota el momento del dia",
+    "Uno de los beneficios es de facilidad de incorporacion a la rutina",
+    "El badge de dosificacion responde el cuanto",
+    "La banda de la segunda unidad es el bloque mas grande del frame"
+  ],
+  "variables_requeridas": [
+    "PREGUNTA_L1",
+    "GERUNDIO_L2",
+    "SENSACION_L3_ACENTO",
+    "PREAMBULO_SOLUCION",
+    "TIPO_SOLUCION_ACENTO",
+    "PROMESA_APOYO",
+    "FOTO_AVATAR_AGOTADO",
+    "BENEFICIOS[3]",
+    "CLAIM_NATURAL",
+    "DOSIS",
+    "FRECUENCIA",
+    "OFERTA_SEGUNDA_L1",
+    "OFERTA_SEGUNDA_L2",
+    "PREFIJO_PRECIO",
+    "PRECIO_SEGUNDA",
+    "MONEDA",
+    "CTA",
+    "GARANTIAS[3]",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "cuando conviene conservar el precio de referencia de la unidad como ancla",
+    "productos de consumo continuo donde la segunda unidad extiende el tratamiento",
+    "cuando el problema tiene un momento del dia identificable",
+    "formatos con dosificacion que hay que explicar"
+  ],
+  "cuando_no_usar": [
+    "cuando la oferta es de escalera de tres tiers",
+    "cuando no hay precio de unidad establecido: sin ancla la oferta de la segunda no significa nada",
+    "publico de nivel 4 que compara precio por unidad"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello 100% NATURAL con hoja.",
+    "Beneficios: PROMUEVE LIGEREZA Y EQUILIBRIO, FACIL DE INCORPORAR A TU RUTINA, CON EXTRACTOS HERBALES.",
+    "Badge de dosificacion 15 A 20 GOTAS, MANANA Y TARDE.",
+    "Banda LLEVA EL 2DO GOTERO POR SOLO Q80 con boton PIDELO HOY.",
+    "Barra de garantias: ENVIO GRATIS, PAGA AL RECIBIR, COMPRA SEGURA.",
+    "Claims impresos en el empaque: FORMULA NATURAL, EXTRACTOS HERBALES, Suplemento Dietario, EXPERTOS EN HIERBAS desde 1972, CALIDAD GARANTIZADA, 2 FL OZ (59 ML)."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

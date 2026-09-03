@@ -1,0 +1,142 @@
+{
+  "ficha_id": "F076",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Dona_Oferta/02_891334886992620.jpg",
+    "anunciante": "Dona Oferta",
+    "ad_archive_id": "891334886992620",
+    "dias_activo": 8,
+    "replicas": 1,
+    "score": 33,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "40%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LOS DOS BOTONES APILADOS AL PIE, DEL MISMO TAMANO: UNO PIDE COMPRAR Y EL OTRO DECLARA LA FORMA DE PAGO. No hay card de precio ni oferta. La pieza termina en dos rectangulos identicos, uno sobre otro, y el segundo no es un boton sino una GARANTIA disfrazada de boton, para que se lea con el mismo peso que la accion.",
+  "lectura_estrategica": "Vertical minimo: pregunta, promesa, tres checks y dos botones. Todo lo que sobra se saco. El hallazgo esta al pie: al darle a la forma de pago la misma forma y el mismo tamano que al boton de compra, la objecion queda respondida en el mismo golpe de vista que la accion, sin necesidad de una barra de garantias. El titular pregunta por la SENSACION con el nombre coloquial que la persona usa, y la bajada promete equilibrio diario en vez de resolucion, lo que sostiene la promesa sin plazo.",
+  "fondo": {
+    "tipo": "foto_naturaleza_desenfocada",
+    "base": "follaje verde con gotas de agua, muy desenfocado y aclarado hacia arriba",
+    "elemento_inferior": "superficie humeda o piedra bajo el producto",
+    "textura": "ninguna",
+    "regla": "el fondo se aclara hacia arriba para que el titular se lea sin banda"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 3,
+    "estructura": "{{PALETA_OSCURA}} verde (titular, iconos, botones) mas blanco (fondo de botones y texto) mas los verdes del follaje"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_sensacion": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{PREGUNTA_L1}}",
+      "linea_2": "{{SENSACION_L2}}",
+      "estilo": "Black/900 {{PALETA_OSCURA}} en caja baja, con signos de interrogacion de apertura y cierre",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "sientes + el nombre COLOQUIAL de la sensacion",
+      "regla": "en caja baja y no uppercase: la pregunta se lee como dicha, no como gritada"
+    },
+    "bajada_equilibrio": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_DIARIA}}",
+      "estilo": "Regular {{PALETA_OSCURA}}, al 45% del titular",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "promete EQUILIBRIO DIARIO en vez de resolucion: sostiene la promesa sin comprometer un plazo"
+    },
+    "columna_checks": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_OSCURA}} en circulo con borde fino mas texto Regular de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "4-7 palabras",
+      "regla_item_3": "el ultimo es de practicidad y va en dos palabras (natural y practico)"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "45% del frame",
+      "composicion": "envase de pie de frente sobre superficie humeda, con hojas grandes detras",
+      "fuente": "IMAGEN_2"
+    },
+    "boton_compra": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "boton blanco con borde {{PALETA_OSCURA}} redondeado e icono de carrito",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras": "2 palabras"
+    },
+    "boton_pago": {
+      "posicion": "bajo el boton de compra",
+      "contenedor": "boton blanco con borde {{PALETA_OSCURA}} redondeado, del MISMO tamano que el de compra, con icono de billete y escudo",
+      "texto": "{{GARANTIA_PAGO}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras": "3 palabras",
+      "regla_critica": "no es un boton: es una GARANTIA con forma de boton. Al darle el mismo tamano que a la accion, la objecion queda respondida en el mismo golpe de vista, sin necesidad de barra de garantias"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_sensacion",
+    "bajada_equilibrio",
+    "producto_hero",
+    "columna_checks",
+    "boton_compra",
+    "boton_pago"
+  ],
+  "reglas_duras": [
+    "Los dos botones del pie son del mismo tamano y la misma forma",
+    "El segundo no es un boton sino la forma de pago con forma de boton",
+    "El titular va en caja baja, no uppercase",
+    "La bajada promete equilibrio diario, no resolucion",
+    "Sin card de precio y sin oferta",
+    "El fondo se aclara hacia arriba para que el titular se lea sin banda"
+  ],
+  "variables_requeridas": [
+    "PREGUNTA_L1",
+    "SENSACION_L2",
+    "PROMESA_DIARIA",
+    "BENEFICIOS[3]",
+    "CTA",
+    "GARANTIA_PAGO"
+  ],
+  "cuando_usar": [
+    "ubicaciones verticales con espacio limitado",
+    "cuando la objecion principal es pagar por adelantado",
+    "cuando conviene no mostrar precio en el creativo",
+    "productos de rutina diaria sin promesa de plazo"
+  ],
+  "cuando_no_usar": [
+    "BOFU donde el precio es el argumento",
+    "cuando hay mas de tres beneficios imprescindibles",
+    "publico de nivel 4 que compara especificaciones"
+  ],
+  "sellos_y_claims_observados": [
+    "Beneficios: FAVORECE LA ELIMINACION NATURAL DE LIQUIDOS RETENIDOS, APOYA EL BIENESTAR LINFATICO, NATURAL Y PRACTICO.",
+    "Bajada APOYA TU EQUILIBRIO NATURAL CADA DIA.",
+    "Botones COMPRA AHORA y PAGO CONTRA ENTREGA, del mismo tamano.",
+    "Claims impresos en el empaque: TRADITIONAL LYMPHATIC SUPPORT, LIQUID HERBAL EXTRACTS, Dietary Supplement, NEW LOOK SAME GREAT PRODUCT, HERBAL EXPERTS since 1972, 2 FL OZ (59 ML).",
+    "La pieza no declara precio ni sellos regulatorios."
+  ],
+  "canonico_id": "CN16_EMISOR_COMERCIAL",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,198 @@
+{
+  "ficha_id": "F097",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/04_1316717740287683.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1316717740287683",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "antes-despues"
+  },
+  "dispositivo_dominante": "EL ORGANO PARTIDO EN DOS MITADES CON EL FRASCO COMO BISAGRA. No hay dos paneles: hay UN organo abierto por la mitad - el lobulo enfermo negro a la izquierda, el sano rosado a la derecha - y el envase parado en el eje, con una flecha verde que entra al lado sano por detras del frasco. El producto ocupa el punto exacto donde el organo cambia de color.",
+  "lectura_estrategica": "Es un antes-despues sin marcos, y ahi esta toda la diferencia: al no estar enmarcados, los dos estados se leen como un solo cuerpo y no como dos fotos comparadas, lo que elimina la sospecha de que sean dos imagenes distintas. La barra roja y la flecha verde traen el codigo de semaforo, que se entiende sin leer. El titular no habla del organo sino de la MULTITUD, de modo que la prueba visual va por la imagen y la social por el texto, sin repetirse. La oferta entra por una esquina sin robarle el centro.",
+  "fondo": {
+    "tipo": "color_plano_blanco",
+    "base": "blanco puro, plano",
+    "regla": "sin degradado ni textura: el fondo blanco es lo que permite que el organo negro se lea a escala de feed",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 5,
+    "estructura": "blanco (fondo) mas negro (titular y organo enfermo) mas {{PALETA_ACENTO}} verde (badge, flecha, CTA) mas rosado del organo sano mas rojo de la barra de estado enfermo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro"
+  },
+  "zonas": {
+    "titular_multitud": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{CANTIDAD_GENTE}} YA {{VERBO_LOGRO}}",
+      "linea_2": "{{OBJETO_DEL_LOGRO}}",
+      "estilo": "Black/900 uppercase negro",
+      "restriccion_palabras_total": "4-6 palabras",
+      "formato_obligatorio": "cuantificador de multitud mas YA mas verbo en pasado",
+      "regla_critica": "el titular declara la MULTITUD, no el mecanismo: la imagen ya se encarga del mecanismo"
+    },
+    "subtitular_turno": {
+      "posicion": "bajo el titular",
+      "alineacion": "centrado",
+      "texto": "{{FRASE_TURNO}}",
+      "estilo": "Bold uppercase negro chico",
+      "restriccion_palabras": "4-5 palabras",
+      "formato_obligatorio": "ahora te toca a vos",
+      "regla": "convierte la prueba social en invitacion personal en una sola linea"
+    },
+    "badge_oferta": {
+      "posicion": "superior_izquierda, sobre el organo enfermo",
+      "contenedor": "badge de borde rasgado {{PALETA_ACENTO}} solido, inclinado",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "linea_2": "{{OFERTA_MECANICA}}",
+      "estilo_l2": "Black/900 blanco muy grande",
+      "linea_3": "{{URGENCIA}}",
+      "estilo_l3": "Bold uppercase {{PALETA_ACENTO_2}} amarillo muy chico",
+      "restriccion_palabras": "1-3 palabras por linea",
+      "regla": "entra por una esquina y encima del organo enfermo: la oferta no le quita el centro a la transformacion"
+    },
+    "organo_bisagra": {
+      "posicion": "centro, ocupa la mitad del alto",
+      "escala": "55% del frame",
+      "mitad_izquierda": "{{ORGANO_ENFERMO}} renderizado en negro cargado, con textura",
+      "mitad_derecha": "{{ORGANO_SANO}} renderizado en rosado limpio",
+      "eje": "el envase de pie en el punto exacto donde el organo cambia de color",
+      "conector_izquierdo": "barra roja horizontal que sale del lado enfermo",
+      "conector_derecho": "flecha verde gruesa que entra al lado sano, pasando POR DETRAS del frasco",
+      "regla_critica": "sin marcos y sin separacion: los dos estados son UN organo abierto, no dos fotos comparadas",
+      "fuente": "IMAGEN_1"
+    },
+    "labels_estado": {
+      "posicion": "bajo cada mitad del organo",
+      "cantidad_items": 2,
+      "alineacion": "centrado bajo su mitad",
+      "item_1": "{{LABEL_ENFERMO}}",
+      "item_2": "{{LABEL_SANO}}",
+      "estilo": "Bold uppercase negro chico, 2 lineas",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "el label del estado enfermo nombra la SUSTANCIA que lo ensucia, no el sintoma"
+    },
+    "linea_posologia": {
+      "posicion": "bajo los labels, centrado",
+      "texto": "{{DOSIS}} {{VIA}}. {{FRECUENCIA}}.",
+      "estilo": "Regular negro",
+      "restriccion_palabras": "8-10 palabras",
+      "funcion": "declara lo facil que es usarlo justo antes del cierre, que es la ultima objecion viva"
+    },
+    "barra_cierre": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres modulos: pildora chica, boton central grande, pildora chica",
+      "modulo_1": {
+        "contenedor": "pildora {{PALETA_OSCURA}} de borde redondeado con icono de reloj",
+        "linea_1": "{{ESCASEZ_L1}}",
+        "linea_2": "{{ESCASEZ_L2}}",
+        "estilo_l2": "Bold uppercase {{PALETA_ACENTO_2}} amarillo"
+      },
+      "modulo_2": {
+        "contenedor": "boton {{PALETA_OSCURA}} solido grande con icono de carrito",
+        "linea_1": "{{CTA}}",
+        "estilo_l1": "Black/900 uppercase blanco",
+        "linea_2": "{{ENVIO}}",
+        "estilo_l2": "Bold uppercase {{PALETA_ACENTO_2}} amarillo chico"
+      },
+      "modulo_3": {
+        "contenedor": "pildora {{PALETA_OSCURA}} de borde redondeado con icono de camion",
+        "linea_1": "{{CONDICION_PAGO}}",
+        "estilo_l1": "Bold uppercase {{PALETA_ACENTO_2}} amarillo",
+        "linea_2": "{{COBERTURA}}",
+        "estilo_l2": "Bold uppercase blanco"
+      },
+      "regla": "el boton del centro es el doble de ancho que las pildoras: escasez y logistica lo flanquean sin competirle"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_multitud",
+    "organo_bisagra",
+    "badge_oferta",
+    "subtitular_turno",
+    "labels_estado",
+    "barra_cierre",
+    "linea_posologia"
+  ],
+  "reglas_duras": [
+    "Los dos estados son un mismo organo abierto por la mitad, sin marcos ni separacion",
+    "El envase se para en el eje exacto donde el organo cambia de color",
+    "La flecha verde entra al lado sano pasando por detras del frasco",
+    "El fondo es blanco plano para que el estado enfermo se lea a escala de feed",
+    "El titular declara la multitud y el subtitular convierte esa multitud en turno personal",
+    "El label del estado enfermo nombra la sustancia que lo ensucia",
+    "La oferta entra por una esquina en badge rasgado, sobre el lado enfermo",
+    "El boton central duplica el ancho de las pildoras que lo flanquean"
+  ],
+  "variables_requeridas": [
+    "CANTIDAD_GENTE",
+    "VERBO_LOGRO",
+    "OBJETO_DEL_LOGRO",
+    "FRASE_TURNO",
+    "OFERTA_LABEL",
+    "OFERTA_MECANICA",
+    "URGENCIA",
+    "ORGANO_ENFERMO",
+    "ORGANO_SANO",
+    "LABEL_ENFERMO",
+    "LABEL_SANO",
+    "DOSIS",
+    "VIA",
+    "FRECUENCIA",
+    "ESCASEZ_L1",
+    "ESCASEZ_L2",
+    "CTA",
+    "ENVIO",
+    "CONDICION_PAGO",
+    "COBERTURA",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "productos con un organo objetivo que se puede renderizar en dos estados de color",
+    "cuando hay volumen de clientes que permite abrir con multitud en vez de con mecanismo",
+    "cierre con oferta de mecanica simple que cabe en dos caracteres",
+    "BOFU sobre publico que ya entiende el problema"
+  ],
+  "cuando_no_usar": [
+    "problemas sin organo visible o sin contraste cromatico entre estados",
+    "cuando no hay volumen de clientes: el titular de multitud se queda sin respaldo",
+    "publico frio de nivel 1"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular MILES YA LIMPIARON SUS PULMONES / AHORA TE TOCA A TI.",
+    "Badge OFERTA 2X1 - POR TIEMPO LIMITADO.",
+    "Labels PULMONES CARGADOS DE ALQUITRAN / PULMONES LIMPIOS Y LIBRES.",
+    "Posologia 2 gotas bajo la lengua. Dos veces al dia.",
+    "Marca BETTERBRAND - DIETARY SUPPLEMENT - BETTER LUNGS(R) MULLEIN + CHLOROPHYLL, Alcohol Free, 1 MONTH SUPPLY, Lung Cleanse and Support.",
+    "Barra !QUEDAN POCAS UNIDADES! / COMPRA AHORA - ENVIO GRATIS HOY / PAGO CONTRA ENTREGA EN TODA GUATEMALA."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

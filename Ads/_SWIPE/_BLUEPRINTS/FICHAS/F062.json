@@ -1,0 +1,131 @@
+{
+  "ficha_id": "F062",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Doa_Oferta/06_2304922313581923.jpg",
+    "anunciante": "Doa Oferta",
+    "ad_archive_id": "2304922313581923",
+    "dias_activo": 16,
+    "replicas": 1,
+    "score": 41,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "35%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": "progresion"
+  },
+  "dispositivo_dominante": "LA MISMA LAMINA DE F061, PERO CON EL TITULAR DE ADICION EN VEZ DE REVELACION. Cambia una sola cosa y cambia el argumento entero: en vez de confesar un error de diagnostico, la frase declara lo que la persona NO tuvo que dejar de hacer — no he eliminado el azucar... solo he anadido esto. La progresion ilustrada y la fila de frascos son identicas.",
+  "lectura_estrategica": "Par exacto de F061 y la comparacion entre las dos es la leccion: la misma lamina sirve para dos objeciones distintas segun que diga el titular. F061 ataca el ERROR DE DIAGNOSTICO (creias que era otra cosa); F062 ataca el COSTO DE ENTRADA (creias que ibas a tener que renunciar a algo). La segunda es la que desactiva la resistencia mas cara en categorias de habito, porque la mayoria no compra por no querer cambiar su vida. La palabra ANADIDO es el nucleo: posiciona el producto como suma, nunca como sacrificio.",
+  "fondo": {
+    "tipo": "color_plano_blanco",
+    "color": "blanco puro",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "libre, con un color de estado",
+    "cantidad_colores": 3,
+    "estructura": "negro (titular y trazo) mas un ROSA o color de afeccion para las zonas marcadas mas los tonos del envase"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de texto, NO condensada",
+    "pesos_permitidos": [
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "negro puro"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "ilustracion vectorial de linea de la zona objetivo, sin rostro y sin rasgos particulares",
+    "trazo": "linea negra fina de grosor uniforme",
+    "relleno": "ninguno, salvo las manchas de color en la zona afectada",
+    "progresion": "estado 1 con la mancha extendida, estado 2 con la mancha reducida, estado 3 sin mancha",
+    "que_se_conserva": "el mismo encuadre, escala y angulo en las tres ilustraciones",
+    "que_NO_se_hace": "fotografia real, sombreado, degradado, marco, fondo de color",
+    "regla": "el dibujo permite mostrar el estado afectado sin depender de material fotografico"
+  },
+  "zonas": {
+    "titular_adicion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{RENUNCIA_NEGADA}}...",
+      "linea_2": "{{ADICION}}.",
+      "estilo_l1": "Bold negro en caja baja, terminado en puntos suspensivos",
+      "estilo_l2": "Regular negro, terminado en punto",
+      "restriccion_palabras_total": "7-9 palabras",
+      "formato_obligatorio": "NO he dejado / eliminado / renunciado a X... SOLO he anadido esto",
+      "regla_critica": "la palabra ANADIDO es el nucleo: posiciona el producto como suma y nunca como sacrificio",
+      "regla_objecion": "ataca el COSTO DE ENTRADA, que es la resistencia mas cara en categorias de habito: la mayoria no compra por no querer cambiar su vida",
+      "regla_deixis": "termina en ESTO, sin nombrar el producto: obliga a mirar la fila de abajo"
+    },
+    "progresion_ilustrada": {
+      "posicion": "centro, ancho completo",
+      "cantidad_estados": 3,
+      "orientacion": "tres ilustraciones en fila, mismo tamano y misma altura",
+      "formato_estado": "ilustracion de linea de la zona con la mancha de color, y el NOMBRE DEL MES en Bold uppercase debajo",
+      "estados": "{{PROGRESION[3]}}",
+      "estructura_estado": {
+        "ilustracion": "{{DIBUJO_ESTADO}}",
+        "label": "{{MES}}"
+      },
+      "restriccion_label": "1 palabra: el nombre del mes",
+      "sin_separador": "sin flechas entre estados"
+    },
+    "fila_producto": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres envases IDENTICOS alineados, uno bajo cada ilustracion",
+      "contenido": "{{PRODUCTO}}",
+      "escala": "cada envase al 24% del alto del frame",
+      "fuente": "IMAGEN_2",
+      "regla": "un envase por mes: declara la duracion del tratamiento sin escribir un numero"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_adicion",
+    "progresion_ilustrada",
+    "fila_producto"
+  ],
+  "reglas_duras": [
+    "El titular niega una renuncia y afirma una adicion",
+    "Termina en ESTO, sin nombrar el producto",
+    "Las tres ilustraciones van en dibujo de linea, mismo encuadre y misma escala",
+    "Los labels son meses reales del calendario",
+    "Un envase por mes, alineado bajo su ilustracion",
+    "Fondo blanco total",
+    "Sin precio, sin sellos, sin CTA"
+  ],
+  "variables_requeridas": [
+    "RENUNCIA_NEGADA",
+    "ADICION",
+    "PROGRESION[3]",
+    "PRODUCTO"
+  ],
+  "cuando_usar": [
+    "categorias donde la objecion es tener que renunciar a algo (dieta, habitos, rutina)",
+    "cuando no hay material fotografico de la progresion",
+    "cuando el producto se suma a la vida en vez de reemplazar algo",
+    "TOFU frio"
+  ],
+  "cuando_no_usar": [
+    "cuando el producto SI exige un cambio de habito: la promesa seria falsa",
+    "BOFU",
+    "cuando el argumento es el error de diagnostico: usar F061"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos, precio, garantias ni CTA.",
+    "Titular NO HE ELIMINADO EL AZUCAR... SOLO HE ANADIDO ESTO.",
+    "Labels de la progresion: ENERO / FEBRERO / MARZO.",
+    "Claims impresos en el empaque: TRADITIONAL LYMPHATIC SUPPORT, LIQUID HERBAL EXTRACTS, Dietary Supplement, HERBAL EXPERTS since 1972."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": null
+}

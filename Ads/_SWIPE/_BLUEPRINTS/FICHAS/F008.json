@@ -1,0 +1,238 @@
+{
+  "ficha_id": "F008",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aranza_Glow/12_1664152224892342.jpg",
+    "anunciante": "Aranza Glow",
+    "ad_archive_id": "1664152224892342",
+    "dias_activo": 89,
+    "replicas": 1,
+    "score": 114,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "densa"
+  },
+  "dispositivo_dominante": "LA FILA HORIZONTAL DE 5 SINTOMAS EN ICONO, BAJO EL TITULAR. Cinco iconos line-art de la zona afectada, en linea, cada uno con label de 2 lineas. Es el mismo motor de identificacion que F009 pero ACOSTADO: no roba alto, y por eso el titular puede ocupar el tercio superior entero. La negacion de normalidad abre la pieza (no es normal sentir X): reencuadra un sintoma que la persona ya habia aceptado como parte de envejecer.",
+  "lectura_estrategica": "Vende alivio de un dolor cronico que la persona dejo de consultar. Nivel 2 con una vuelta de tuerca: no solo desconoce la solucion, ademas normalizo el sintoma. Por eso el primer trabajo del creativo no es prometer, es DESNORMALIZAR. La foto de la pareja mayor con el pie encendido da el avatar y el contexto (compania, casa) en un solo golpe, y la columna derecha de sellos actua como masa de credibilidad para sostener una promesa neurologica.",
+  "fondo": {
+    "tipo": "degradado_oscuro_con_glow",
+    "base": "navy muy oscuro a negro",
+    "glow": "{{COLOR_MECANISMO}} irradiando desde detras del producto",
+    "props": "hojas verdes translucidas en el borde derecho, cortadas por el marco",
+    "funcion": "el oscuro comunica ciencia; las hojas evitan que se lea farmaceutico"
+  },
+  "paleta": {
+    "derivacion": "del mecanismo y del organo objetivo, no del empaque",
+    "cantidad_colores": 5,
+    "regla": "cada color tiene UNA funcion: rojo/naranja es dolor y zona encendida, {{COLOR_MECANISMO}} es la accion del producto, amarillo es titular de acento y precio, verde es exclusivo del CTA de WhatsApp, blanco es texto"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "banda_desnormalizacion": {
+      "posicion": "superior_izquierda",
+      "contenedor": "banda {{COLOR_ALERTA}} solida, angosta",
+      "texto": "{{GANCHO_DESNORMALIZACION}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-4 palabras",
+      "default": "NO ES NORMAL",
+      "funcion": "reencuadra un sintoma que la persona ya habia aceptado como inevitable"
+    },
+    "titular": {
+      "posicion": "superior_izquierda, bajo la banda",
+      "lineas": 3,
+      "linea_1": "{{TITULAR_L1}}",
+      "linea_2": "{{TITULAR_L2_ACENTO}}",
+      "linea_3": "{{TITULAR_L3}}",
+      "estilo": "Black/900 uppercase blanco con la LINEA 2 en {{COLOR_ACENTO}}",
+      "restriccion_palabras_total": "7-10 palabras",
+      "regla_acento": "el color cae sobre la enumeracion de sintomas, que es donde la persona se reconoce",
+      "escala": "la linea mas larga ocupa 50% del ancho del frame"
+    },
+    "sub_promesa": {
+      "posicion": "bajo el titular",
+      "lineas": 2,
+      "linea_1": "{{SUBHOOK_L1}}",
+      "linea_2": "{{SUBHOOK_L2_ACENTO}}",
+      "estilo": "Bold uppercase blanco con la linea 2 en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "funcion": "convierte el sintoma en senal de un mecanismo, no en fatalidad"
+    },
+    "foto_avatar": {
+      "posicion": "superior_derecha",
+      "contenido": "{{FOTO_AVATAR_CON_DOLOR}}",
+      "escala": "28% del frame",
+      "tratamiento": "pareja o persona del rango de edad objetivo, en casa, con la zona afectada encendida en rojo y lineas de irradiacion",
+      "regla": "el avatar se muestra ACOMPANADO y en su ambiente: da edad, contexto y aspiracion en un golpe",
+      "funcion": "detiene el scroll y declara para quien es la pieza"
+    },
+    "badge_premium": {
+      "posicion": "superior_derecha extrema",
+      "contenedor": "card con borde {{COLOR_ACENTO}} y estrellas",
+      "linea_1": "{{BADGE_L1}}",
+      "linea_2": "{{BADGE_L2}}",
+      "restriccion_palabras": "2-3 por linea"
+    },
+    "columna_sellos": {
+      "posicion": "derecha superior, columna estrecha vertical",
+      "cantidad_items": "5-6",
+      "formato_item": "check {{COLOR_ACENTO}} en circulo mas texto Bold uppercase chico",
+      "items": "{{SELLOS_CONFIANZA[]}}",
+      "restriccion_palabras": "3-4 palabras por item",
+      "funcion": "NO se leen individualmente: se leen como masa de credibilidad"
+    },
+    "fila_sintomas": {
+      "posicion": "izquierda_media, bajo la sub-promesa",
+      "cantidad_items": 5,
+      "orientacion": "FILA horizontal, sin contenedor",
+      "formato_item": "icono line-art {{COLOR_ACENTO}} de la zona afectada mas label Bold uppercase de 2 lineas debajo",
+      "items": "{{SINTOMAS[5]}}",
+      "restriccion_palabras_label": "2-4 palabras",
+      "regla": "sintomas sensoriales y especificos (ardor, hormigueo, punzadas), nunca genericos",
+      "funcion": "la persona debe reconocerse en al menos 3 de los 5",
+      "diferencia_con_columna": "acostado no roba alto: elige esta variante cuando el titular necesita el tercio superior entero"
+    },
+    "bloque_mecanismo": {
+      "posicion": "izquierda_baja",
+      "contenedor": "card oscura con borde fino",
+      "header": "{{HEADER_MECANISMO}}",
+      "estilo_header": "Bold uppercase {{COLOR_ACENTO}}",
+      "default_header": "ACTUA DESDE LA RAIZ",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal separada por signos de suma",
+      "formato_item": "icono circular relleno con glow {{COLOR_MECANISMO}} mas TITULO Bold de 2-3 lineas",
+      "items": "{{MECANISMOS[3]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "funcion": "responde el por que funcionaria, que aparece justo despues de la identificacion"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "38% del frame",
+      "efecto": "glow {{COLOR_MECANISMO}} detras",
+      "fuente": "IMAGEN_2",
+      "elementos_flanqueantes": {
+        "derecha_superior": "{{CLAIM_DOSIS}}",
+        "derecha_inferior": "{{CLAIM_SECUNDARIO}}"
+      },
+      "estilo_flanqueantes": "Bold uppercase blanco con el ingrediente en {{COLOR_ACENTO}}"
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "label": "{{OFERTA_LABEL}}",
+      "estilo_label": "Bold uppercase {{COLOR_ACENTO}}",
+      "tiers": 2,
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} con {{AHORRO_LABEL}}",
+      "badge_central": "{{GARANTIA_ENVIO}} en pildora {{COLOR_ALERTA}} con icono de camion, ENTRE los dos tiers",
+      "estilo_precio": "Black/900 gigante blanco sobre card oscura",
+      "funcion": "el badge de envio entre los dos tiers empuja la mirada del tier 1 al tier 2"
+    },
+    "cta_whatsapp": {
+      "posicion": "inferior, ancho parcial izquierdo",
+      "contenedor": "barra verde WhatsApp con logo circular blanco",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "restriccion_palabras_l1": "3-5 palabras",
+      "regla": "el verde aparece solo aca"
+    },
+    "micro_garantias": {
+      "posicion": "inferior_derecha",
+      "cantidad_items": 3,
+      "formato_item": "icono mas texto Bold muy chico",
+      "items": "{{GARANTIAS[3]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "banda_desnormalizacion",
+    "titular",
+    "foto_avatar",
+    "sub_promesa",
+    "fila_sintomas",
+    "bloque_mecanismo",
+    "producto_hero",
+    "bloque_oferta",
+    "cta_whatsapp",
+    "columna_sellos",
+    "micro_garantias"
+  ],
+  "reglas_duras": [
+    "La densidad alta viene de bloques COMPACTOS bien separados, nunca de texto amontonado",
+    "Ningun bloque de texto se superpone con otro",
+    "El rojo se usa solo para dolor y zona encendida",
+    "El verde se usa solo para el CTA de WhatsApp",
+    "Los sintomas son sensoriales y especificos, nunca genericos como malestar o incomodidad",
+    "El avatar aparece en su ambiente y del rango de edad objetivo",
+    "El badge de envio va ENTRE los dos tiers de precio, no debajo"
+  ],
+  "variables_requeridas": [
+    "GANCHO_DESNORMALIZACION",
+    "TITULAR_L1",
+    "TITULAR_L2_ACENTO",
+    "TITULAR_L3",
+    "SUBHOOK_L1",
+    "SUBHOOK_L2_ACENTO",
+    "FOTO_AVATAR_CON_DOLOR",
+    "SINTOMAS[5]",
+    "MECANISMOS[3]",
+    "HEADER_MECANISMO",
+    "SELLOS_CONFIANZA[]",
+    "BADGE_L1",
+    "BADGE_L2",
+    "CLAIM_DOSIS",
+    "CLAIM_SECUNDARIO",
+    "OFERTA_LABEL",
+    "CANT_1",
+    "CANT_2",
+    "PRECIO_1",
+    "PRECIO_2",
+    "AHORRO_LABEL",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "CTA_L1",
+    "CTA_L2",
+    "GARANTIAS[3]",
+    "COLOR_MECANISMO",
+    "COLOR_ALERTA",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "sintoma cronico que el publico normalizo como parte de envejecer",
+    "dolor con multiples manifestaciones sensoriales que se pueden enumerar",
+    "publico 45+ que ya probo otras cosas",
+    "producto con historia tecnica que contar (dosis, activo, mecanismo)",
+    "cuando el titular necesita el tercio superior entero: la fila de sintomas no roba alto"
+  ],
+  "cuando_no_usar": [
+    "bienestar general o preventivo: no hay sintoma que desnormalizar",
+    "cuando hay material fotografico de cada sintoma: usar F009, que los muestra",
+    "publico joven o estetico"
+  ],
+  "sellos_y_claims_observados": [
+    "Columna de sellos: INGREDIENTES DE ALTA ABSORCION, CERTIFICADO cGMP, REGISTRADO EN FDA, LIBRE DE GMO, LIBRE DE GLUTEN.",
+    "Badge FORMULA PREMIUM · CALIDAD GARANTIZADA con estrellas.",
+    "Claims de dosis flanqueando el producto: CON ACIDO ALFA LIPOICO 1200 mg y + VITAMINAS B1 B6 B12.",
+    "Mecanismos: REPARA Y PROTEGE TUS NERVIOS, MEJORA LA CIRCULACION Y OXIGENACION, FAVORECE LA REGENERACION NERVIOSA.",
+    "Micro-garantias: COMPRA 100% SEGURA, PAGO CONTRA ENTREGA, DEVOLUCION GARANTIZADA."
+  ],
+  "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+  "blueprint_equivalente": "C_dolor_maximalista"
+}

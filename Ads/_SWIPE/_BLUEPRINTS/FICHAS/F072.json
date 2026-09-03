@@ -1,0 +1,165 @@
+{
+  "ficha_id": "F072",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Ixchel_Store_GT/05_2213531639436800.jpg",
+    "anunciante": "Ixchel Store GT",
+    "ad_archive_id": "2213531639436800",
+    "dias_activo": 9,
+    "replicas": 1,
+    "score": 34,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "24%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES EN MINIATURA CON FLECHA, DENTRO DE UNA PIEZA DORADA DE REGISTRO PREMIUM. Las dos fotos de la zona ocupan apenas un octavo del frame, arriba a la izquierda, unidas por una flecha dorada. Todo lo demas — negro, dorado, laurel, tipografia con serifa de lujo — construye un registro de producto caro alrededor de una evidencia deliberadamente chica.",
+  "lectura_estrategica": "Invierte la jerarquia habitual del antes/despues: en vez de agrandar la prueba, la achica y deja que el registro visual haga el trabajo de credibilidad. Funciona en categorias donde el comprador desconfia del formato pulido de la promesa capilar, y por eso la pieza no promete recuperar sino DETENER — no dejes que avance. La bajada declara el genero objetivo en la segunda linea, el badge de laurel aporta ranking, y los tres beneficios estan redactados todos con verbos de apoyo, sin una sola afirmacion de resultado.",
+  "fondo": {
+    "tipo": "degradado_oscuro_con_textura",
+    "base": "negro a gris muy oscuro con textura de lineas diagonales o fibra",
+    "elemento": "podio circular negro con reflejo bajo el producto",
+    "regla": "negro y dorado: el registro visual es lo que aporta la credibilidad que la evidencia chica no da"
+  },
+  "paleta": {
+    "derivacion": "del posicionamiento premium, no del empaque",
+    "cantidad_colores": 3,
+    "estructura": "dorado (titular de acento, bandas, badge, borde de la oferta) mas negro (fondo) mas blanco (texto)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada con detalles de serifa en el titular",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_detencion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{IMPERATIVO_DETENCION}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "4 palabras",
+      "formato_obligatorio": "NO DEJES QUE + verbo de progresion del problema",
+      "regla_critica": "no promete recuperar, promete DETENER: es lo que hace creible la pieza en una categoria donde el comprador desconfia de la promesa de recuperacion"
+    },
+    "bajada_segmento": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda con bordes dorados finos arriba y abajo",
+      "texto": "{{CATEGORIA_FORMULA}} PARA {{GENERO_OBJETIVO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "4-5 palabras",
+      "regla": "declara el genero objetivo en la bajada, no en el titular"
+    },
+    "badge_ranking": {
+      "posicion": "superior_derecha",
+      "forma": "circular con laurel dorado y estrella",
+      "texto": "{{ETIQUETA_RANKING}}",
+      "estilo": "Black/900 uppercase blanco",
+      "escala": "16% del ancho"
+    },
+    "mini_comparativo": {
+      "posicion": "izquierda_superior",
+      "cantidad_estados": 2,
+      "orientacion": "dos fotos chicas lado a lado con marco fino",
+      "estado_1": "{{FOTO_ZONA_ANTES}}",
+      "estado_2": "{{FOTO_ZONA_DESPUES}}",
+      "separador": "flecha dorada curva entre las dos",
+      "escala": "12% del frame",
+      "regla_critica": "la evidencia va DELIBERADAMENTE CHICA: el registro visual de la pieza aporta la credibilidad, no el tamano de la prueba",
+      "regla": "mismo encuadre y misma luz en las dos tomas"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art dorado en circulo con borde mas texto Regular blanco de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "5-8 palabras",
+      "regla_verbos": "los tres se redactan con verbos de APOYO (apoya, contribuye, favorece), sin una sola afirmacion de resultado",
+      "regla_item_3": "el ultimo es de formato y frecuencia (suplemento diario, cantidad de capsulas)"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "envase de pie sobre podio circular negro con reflejo",
+      "fuente": "IMAGEN_2"
+    },
+    "card_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card negra con borde dorado grueso",
+      "linea_1": "{{OFERTA_LABEL}} {{MULTIPLICADOR}}",
+      "estilo_l1": "Black/900 uppercase blanco con el multiplicador en el mayor tamano"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda negra con separador dorado al centro",
+      "cantidad_items": 2,
+      "formato_item": "icono line-art dorado mas texto Bold uppercase blanco",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_detencion",
+    "bajada_segmento",
+    "mini_comparativo",
+    "producto_hero",
+    "columna_beneficios",
+    "card_oferta",
+    "badge_ranking",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El titular promete detener, no recuperar",
+    "La evidencia del antes/despues va chica: el registro visual aporta la credibilidad",
+    "Las dos fotos comparten encuadre y luz",
+    "Los tres beneficios usan verbos de apoyo, sin afirmacion de resultado",
+    "El genero objetivo se declara en la bajada, no en el titular",
+    "Solo dorado, negro y blanco en toda la pieza"
+  ],
+  "variables_requeridas": [
+    "IMPERATIVO_DETENCION",
+    "CATEGORIA_FORMULA",
+    "GENERO_OBJETIVO",
+    "ETIQUETA_RANKING",
+    "FOTO_ZONA_ANTES",
+    "FOTO_ZONA_DESPUES",
+    "BENEFICIOS[3]",
+    "OFERTA_LABEL",
+    "MULTIPLICADOR",
+    "GARANTIAS[2]"
+  ],
+  "cuando_usar": [
+    "categorias donde el comprador desconfia de la promesa de recuperacion",
+    "cuando la evidencia disponible es debil y conviene no agrandarla",
+    "productos de posicionamiento premium",
+    "cuando el argumento es frenar la progresion y no revertirla"
+  ],
+  "cuando_no_usar": [
+    "cuando hay evidencia fuerte disponible: agrandarla convierte mas",
+    "publico frio",
+    "categorias de precio bajo: el registro dorado contradice la oferta"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge circular TOP VENTAS con laurel dorado y estrella.",
+    "Bajada FORMULA CAPILAR PARA HOMBRES.",
+    "Beneficios: APOYA EL FORTALECIMIENTO DEL CABELLO, INGREDIENTES QUE APOYAN LA SALUD CAPILAR, SUPLEMENTO DIARIO 60 CAPSULAS.",
+    "Card OFERTA 2X1.",
+    "Barra ENVIO GRATIS y PAGA AL RECIBIR.",
+    "Claims impresos en el empaque: DHT BLOCKER, Hair & Skin Formula*, Herbal Ingredients*, Supports blocking DHT*, Dietary Supplement, 30 Day Supply, 500mg Plus Per Serving, 60 CAPSULES."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

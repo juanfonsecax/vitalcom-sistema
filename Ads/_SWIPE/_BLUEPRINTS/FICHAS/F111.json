@@ -1,0 +1,193 @@
+{
+  "ficha_id": "F111",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Topishop/11_912841071345736.jpg",
+    "anunciante": "Topishop",
+    "ad_archive_id": "912841071345736",
+    "dias_activo": 0,
+    "replicas": 1,
+    "score": 25,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "14%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL TITULAR POSESIVO Y EL RATING APILADO BAJO LA MODELO. El titular no pide ni argumenta: reparte posesion - tu bienestar, tu ligereza, todos los dias - en tres lineas que alternan cursiva blanca y versal dorada. Y a diferencia de sus gemelas, el bloque de calificacion no se enfrenta a la modelo sino que se apila debajo de ella, en la misma columna.",
+  "lectura_estrategica": "El posesivo es la forma mas barata de prometer: al decir tu ligereza da por hecho que la ligereza ya es de la persona y que solo falta sostenerla, sin verbo que se pueda discutir. El cambio de lugar del rating es la otra decision: apilado bajo el rostro, la calificacion deja de leerse como la nota del producto y pasa a leerse como la de ella, que es prueba social y testimonio en un solo bloque. El borde dorado que rodea la pieza entera termina de cerrar la vitrina.",
+  "fondo": {
+    "tipo": "follaje_verde_denso_con_luz_calida",
+    "base": "vegetacion muy desenfocada con luz entrando de costado",
+    "capa": "vineta negra en los bordes y filete {{PALETA_ACENTO}} fino que enmarca la pieza entera",
+    "textura": "el follaje desenfocado"
+  },
+  "paleta": {
+    "derivacion": "de la categoria premium, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "verde profundo (fondo) mas {{PALETA_ACENTO}} dorado (titular, filete, bordes, estrellas) mas negro (cards) mas blanco (texto de apoyo)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Cursiva"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_posesivo": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "linea_1": "Tu {{BENEFICIO_AMPLIO}},",
+      "linea_2": "TU {{BENEFICIO_SENSORIAL}}",
+      "linea_3": "{{FRECUENCIA}}",
+      "estilo_l1": "cursiva blanca",
+      "estilo_l2": "Black/900 uppercase con relleno degradado {{PALETA_ACENTO}} y borde oscuro, al triple de altura",
+      "estilo_l3": "cursiva blanca",
+      "restriccion_palabras_total": "6-8 palabras",
+      "formato_obligatorio": "TU mas sustantivo, TU mas sustantivo, mas la frecuencia",
+      "regla_critica": "reparte posesion en vez de prometer: al decir TU ligereza da por hecho que ya es de la persona y no queda verbo que se pueda discutir"
+    },
+    "banda_apoyo": {
+      "posicion": "bajo el titular, ancho parcial centrado",
+      "contenedor": "banda {{PALETA_OSCURA}} de borde {{PALETA_ACENTO}}",
+      "texto": "{{CLAIM_APOYO}} {{SISTEMA_OBJETIVO}}",
+      "estilo": "Bold uppercase blanco con el sistema objetivo en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras"
+    },
+    "cards_beneficio": {
+      "posicion": "izquierda_media, en columna",
+      "cantidad_items": 4,
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}",
+      "formato_item": "icono {{PALETA_ACENTO}} mas texto Bold uppercase de 2 lineas con la palabra clave en {{PALETA_ACENTO}}, SIN subtitulo",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_item_1": "el primero lleva asterisco y se ancla en el descargo del pie",
+      "regla_item_4": "el ultimo es de rutina diaria, no de efecto"
+    },
+    "modelo_consumo": {
+      "posicion": "derecha_alta, sangrada al borde",
+      "escala": "40% del ancho",
+      "composicion": "{{MODELO}} con la cabeza inclinada hacia atras y los ojos cerrados, aplicandose el gotero en la boca, iluminada en calido",
+      "regla": "el gesto es el de TOMAR el producto y la expresion es de disfrute, no de demostracion"
+    },
+    "bloque_rating": {
+      "posicion": "derecha_media, APILADO DEBAJO de la modelo, misma columna",
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}",
+      "estrellas": "cinco estrellas {{PALETA_ACENTO}} en fila",
+      "linea_1": "{{RATING_DECIMAL}}/5",
+      "estilo_l1": "Black/900 {{PALETA_ACENTO}} al tamano de un titular",
+      "linea_2": "{{N_CLIENTES}} {{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}}",
+      "estilo_l2": "Bold blanco chico, 2 lineas",
+      "remate": "corazon line-art {{PALETA_ACENTO}} debajo de la card",
+      "regla_critica": "va DEBAJO del rostro y no enfrentado a el: asi la calificacion se lee como la de ella y no como la del producto",
+      "regla_numero": "la calificacion lleva decimales y el numero de clientes, separador de millar"
+    },
+    "producto_hero": {
+      "posicion": "centro, ocupa el alto medio-bajo",
+      "escala": "40% del ancho",
+      "composicion": "frasco gotero de pie sobre un disco de madera circular, con flores blancas, lavanda y hierbas alrededor",
+      "fuente": "IMAGEN_1",
+      "regla": "el disco de madera funciona como pedestal: eleva el envase por encima del follaje"
+    },
+    "fila_logistica": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres cards de borde {{PALETA_ACENTO}}",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas con la palabra clave en {{PALETA_ACENTO}}",
+      "items": "{{LOGISTICA[3]}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla_item_3": "el tercero es de seguridad de la compra, no de entrega"
+    },
+    "banda_sintesis": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "texto": "{{ATRIBUTO_1}} · {{ATRIBUTO_2}} · {{ATRIBUTO_3}}",
+      "estilo": "Bold uppercase {{PALETA_ACENTO}}",
+      "restriccion_palabras": "6-8 palabras"
+    },
+    "descargo": {
+      "posicion": "inferior extremo, bajo la banda",
+      "lineas": 2,
+      "texto": "{{DESCARGO}}",
+      "estilo": "Regular gris muy chico",
+      "restriccion_palabras": "18-24 palabras",
+      "funcion": "cierra la pieza en el cuerpo mas chico y recoge el asterisco del primer beneficio"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_posesivo",
+    "modelo_consumo",
+    "bloque_rating",
+    "producto_hero",
+    "cards_beneficio",
+    "banda_apoyo",
+    "fila_logistica",
+    "banda_sintesis",
+    "descargo"
+  ],
+  "reglas_duras": [
+    "El titular reparte posesion con TU y no promete con un verbo",
+    "El bloque de calificacion se apila debajo del rostro, en la misma columna",
+    "La calificacion va con decimales y el numero de clientes con separador de millar",
+    "Las cards de beneficio van sin subtitulo",
+    "El primer beneficio lleva asterisco recogido en el descargo del pie",
+    "Un filete dorado enmarca la pieza entera",
+    "El envase se eleva sobre un disco de madera por encima del follaje",
+    "La modelo esta tomando el producto, con expresion de disfrute"
+  ],
+  "variables_requeridas": [
+    "BENEFICIO_AMPLIO",
+    "BENEFICIO_SENSORIAL",
+    "FRECUENCIA",
+    "CLAIM_APOYO",
+    "SISTEMA_OBJETIVO",
+    "BENEFICIOS[4]",
+    "MODELO",
+    "RATING_DECIMAL",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "LOGISTICA[3]",
+    "ATRIBUTO_1",
+    "ATRIBUTO_2",
+    "ATRIBUTO_3",
+    "DESCARGO",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "cuando existe calificacion real con decimales y se quiere que se lea como testimonio",
+    "productos de bienestar donde el beneficio se nombra como estado y no como cambio",
+    "cuando conviene prometer sin verbo, en categorias donde el verbo se discute",
+    "MOFU sobre publico que compara marcas"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay calificacion real: el bloque apilado pierde su funcion",
+    "cuando el beneficio necesita un verbo para entenderse",
+    "cierre por precio: la pieza no lleva numero ni escalera"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular Tu bienestar, TU LIGEREZA todos los dias.",
+    "Banda APOYO HERBAL PARA TU SISTEMA LINFATICO.",
+    "Beneficios: APOYA TU SISTEMA LINFATICO* / FORMULA HERBAL DE CALIDAD / FACIL DE TOMAR EN GOTAS / IDEAL PARA TU RUTINA DIARIA.",
+    "Rating cinco estrellas 4.95/5 - 1.455 CLIENTES SATISFECHOS, con corazon debajo.",
+    "Logistica ENVIO GRATIS / PAGO CONTRA ENTREGA / COMPRA 100% SEGURA.",
+    "Banda FORMULA HERBAL · CALIDAD PREMIUM · CONFIANZA QUE RESPALDA.",
+    "Marca NATURES SUNSHINE Lymphatic Drainage - TRADITIONAL LYMPHATIC SUPPORT, LIQUID HERBS + EXTRACTS, Dietary Supplement, 2 oz (60 ml), badge NEW LOOK! SAME GREAT PRODUCT y sello circular de planta certificada.",
+    "Descargo Este producto es un suplemento dietario. No es un medicamento y no pretende diagnosticar, tratar, curar o prevenir ninguna enfermedad."
+  ],
+  "canonico_id": "CN10_PRUEBA_SOCIAL",
+  "blueprint_equivalente": null
+}

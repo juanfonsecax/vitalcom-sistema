@@ -1,0 +1,107 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA DE ESCALADO — SISTEMA VITALCOM · 2026-07-16 (jueves, ~7 PM COL)
+ETAPA-7 (lado-ads en vivo) + ETAPA-8 (plan de escalado) · SOLO LECTURA
+═══════════════════════════════════════════════════════════════════════════
+Acceso MCP hoy: GTR7 ON · GTR0 ON · GTR13 OFF (sigue rollout -> CLEARSTEM solo-Lucid).
+VIVOS auditados: NusavaB12, VARICOSE, TINNIDROP (lado-ads) + CLEARSTEM (solo-Lucid).
+HOY ES JUEVES -> el operador debe pegar el export de LucidSales 7d (ventana Jue).
+  Sin el, TODO CPA de abajo es aproximacion por omni_purchase de Meta (subcuenta COD)
+  o provisional por conversacion. NINGUN ganador oficial nuevo ni escalado fuerte sin Lucid.
+Tasa Q/USD = 7.62.
+
+---------------------------------------------------------------------------
+1) NUSAVA B12 (GTR7) - 2 campanas vivas
+---------------------------------------------------------------------------
+A. TESTEO "NUSAVAB12_TEST_20260622 - Copia" (120246893776440784) $123.48 desde 27-jun (~19d, maduro)
+   omni = Not available en los 6 -> CPA solo por LucidSales. Ranking por CONVERSACION (provisional).
+   PD = BE Q68.3 = $8.96/conjunto.
+   Conjunto     Gasto$  Conv  LinkClk  %conv/clic  $/conv  CTR    Freq   %PD    Estado
+   ARDOR        30.50   138   245      56.3%       0.22   5.04%  1.53   340%   GANADOR (caballo real, Lucid sano)
+   MEMORIA      26.92    64   127      50.4%       0.42   5.95%  1.40   300%   conv OK, escalado no rindio
+   ANIMO        12.62    68   100      68.0%       0.19   7.59%  1.30   141%   MATAR: lidera conv pero 0 ventas
+   CIATICA      13.05    27    53      50.9%       0.48   4.24%  1.25   146%   MATAR: 0 ventas
+   ABSORCION    27.84    68   213      31.9%       0.41   5.27%  1.44   311%   conv <35% (bot/coherencia)
+   AZUCAR       12.55    23    68      33.8%       0.55   2.96%  1.39   140%   MATAR: 0 ventas
+   Ult 3d: solo ARDOR/ABSORCION/MEMORIA gastan; ANIMO/AZUCAR/CIATICA en $0 (ya podados). OK.
+   Coincide snapshot 14-jul: Nusava GLOBAL en rojo (CPA Q91.9/v > BE Q68.3); ARDOR unico sano.
+
+B. ESCALA "NUSAVAB12_ESCALA_ARDOR_20260715" (120247507971430784) $17.74 desde 14-15 jul (DIA 1-2)
+   Ventana OBSERVAR - no pausar. 7 conjuntos microangulos ARDOR ~$2-3 c/u. omni N/A.
+   Mejores conv/clic: MA7-ARDORVIDEO 46% / MA4-DEPIE 37.5% / MA1-COMPLEJOB 33%.
+   Flojos: MA6-OFERTA 4.2% / MA2-ARDORNOCHE 14.3%. Todos SUB-TESTEADO (nadie llego al PD). 2 dias, sin veredicto.
+   PLAN: (1) NO tocar ESCALA_ARDOR - dia 1-2, dejar a PD. (2) Testeo: mantener solo ARDOR (ya es FASE 2).
+   (3) Con Lucid jueves si ARDOR sostiene CPA <= BE -> surfing +20%. (4) MEMORIA escalado no rinde, no reinvertir.
+   HOY: pegar Lucid 7d; si ARDOR-escala trae ventas, unico candidato a subir presupuesto.
+
+---------------------------------------------------------------------------
+2) VARICOSE (GTR7) - 2 campanas vivas - omni SI disponible (parcial)
+---------------------------------------------------------------------------
+A. TESTEO "VARICOSE_TRAFICO_20260704" (120247186770470784) $70.59 desde 4-jul (12d)
+   PD v1 = BE Q64.5 = $8.46. CPA(Q) = omni_cpa$ x 7.62 (Meta aprox - cruzar Lucid).
+   Conjunto            Gasto$ Conv LinkClk %conv/clic omni CPA(Q)  CTR   Freq  Estado
+   MIEDO-CIRUGIA       19.36  112  201    55.7%       7   Q21.1    3.43  1.42  GANADOR (CPA<Base) *
+   VERGUENZA-PIERNAS   18.10   83  156    53.2%       3   Q46.0    3.40  1.32  ganador confirmado
+   MANCHAS-OSCURAS     19.56   68  161    42.2%       2   Q74.5    3.33  1.36  marginal (>BE, 2v)
+   ARANITAS-VENOSAS     6.71   38   59    64.4%       0   -        4.31  1.15  DESCARTADO (0v, $0 3d)
+   PIERNAS-CANSADAS     6.86   23   31    74.0%       0   -        2.65  1.12  podar (0v, $0 3d)
+   CALAMBRES-NOCTURNOS  0.00    0    0    -           0   -        -     -     nunca gasto
+   Ult 3d: MIEDO 3v / MANCHAS 1v / VERGUENZA 1v -> sigue vendiendo sano.
+
+B. ESCALA "VARICOSE_ESCALA_VERGUENZA_20260710" (120247375697420784) $58.22 desde 10-jul (6d)
+   Precio v2 2x1 -> BE ~Q159 -> PD $20.87/conjunto (nadie lo alcanzo, ~$10 c/u = ~50% PD).
+   Conjunto              Gasto$ Conv LinkClk %conv/clic omni CPA(Q)  Freq  Estado
+   MA2_VESTIDO           10.88   31   64    48.4%       4   Q20.7    1.25  ESTRELLA * (Lucid 7d Q11.6)
+   MA6_OFERTA2X1         10.95   12   82    14.6%       3   Q27.8    1.85  vende (freq 1.85 -> fatiga cerca)
+   MA5_RESIGNACION       10.67   19  111    17.1%       1   Q81.3    1.62  <BE 2x1, conv/clic baja
+   MA4_MANCHAS           10.11   15   69    21.7%       1   Q77.0    1.45  marginal
+   MA3_VERANO             7.90    9   62    14.5%       0   -        1.46  sub-testeado, hook flojo
+   MA1_COMPARACION        7.71    6   60    10.0%       0   -        1.53  conv/clic 10% -> matar
+   Nota: conv/clic baja (10-21%) pese a ventas -> posible incoherencia ad-bot. MA2/MA6 son los caballos.
+   PLAN: (1) Vela MA6 freq 1.85 -> si cruza 1.9 o CTR cae, renovar creativo mismo angulo.
+   (2) Podar ARANITAS + PIERNAS-CANSADAS. (3) MIEDO-CIRUGIA = FASE 2 hermana pendiente (escalonar 2-3d).
+   (4) Surfing +20% SOLO sobre MA2_VESTIDO tras confirmar Lucid (ya Q11.6, mas rentable del portafolio).
+   (5) MA1_COMPARACION conv/clic 10% -> matar por conversacion.
+   HOY: subir +20% a MA2_VESTIDO si Lucid confirma; arrancar FASE 2 de MIEDO-CIRUGIA.
+
+---------------------------------------------------------------------------
+3) TINNIDROP (GTR0) - 1 campana viva - omni SI disponible
+---------------------------------------------------------------------------
+TESTEO "TINIDROP GTR0 - 1.59 - TEST" (120256219801430595) $52.35 desde 11-jul (DIA 5, DEFINICION)
+   PD = BE Q60.5 = $7.94. CPA(Q) = omni x 7.62 (Meta aprox - cruzar Lucid).
+   Conjunto                       Gasto$ Conv LinkClk %conv/clic omni CPA(Q)  CTR   Freq  Estado
+   Perdida auditiva irreversible  9.07   53   94     56.4%       6   Q11.5    4.77  1.23  MEJOR *
+   Deterioro cognitivo/colapso    8.87   49   85     57.6%       3   Q22.6    6.31  1.27  hook top CTR 6.31
+   ME DIJERON QUE NO TIENE CURA   9.51   22  105     21.0%       4   Q18.1    4.80  1.72  vende (conv/clic baja)
+   NOCHES SIN DORMIR              9.33   26  102     25.5%       2   Q35.6    3.77  1.35  <BE
+   Accesibilidad economica vs med 9.36   31   48     64.6%       1   Q71.3    4.02  1.28  historico #4, hoy 1v (>BE)
+   TENSION/ESTRES causa oculta    6.21   12   54     22.2%       0   -        3.83  1.30  sub-testeado (78% PD)
+   Ult 3d: Perdida auditiva 4v / ME DIJERON 3v / Deterioro 2v / NOCHES 1v -> fuerte y fresco.
+   El testeo NUEVO reordena el ranking historico: Perdida auditiva + Deterioro lideran, NO el #4 Accesibilidad.
+   PLAN: (1) Dia 5 = declarar ganador con Lucid. Candidatos: Perdida auditiva (Q11.5) y Deterioro (Q22.6).
+   (2) Antes de escalar EJECUTAR compliance pendiente: quitar sellos FDA/Min.Salud + %clinicos (infog 3),
+   corregir "primer dia/semana 1" (infog 1), reemplazar antes/despues facial (infog 2).
+   (3) TENSION bajo PD -> dejar correr. (4) Accesibilidad no repitio -> no priorizar.
+   HOY: pegar Lucid; si confirma, montar FASE 2 de Perdida auditiva (+ Deterioro hermana).
+
+---------------------------------------------------------------------------
+4) CLEARSTEM (GTR13) - SOLO-LUCID (MCP OFF)
+---------------------------------------------------------------------------
+GTR13 sin Ads MCP (rollout). Sin lectura lado-ads. Sin Lucid nuevo este run.
+Ultima data 14-jul (Lucid 7d): 6 ventas, CPA Q36.2/v - Q54.3/entregado (sano < BE). Mejor Anti-Falsificacion Q18.5 (2v).
+Recordatorio: aislar variable "musica Meta en ads-imagen".
+   PLAN: sin accion hasta que el operador pegue Lucid del jueves. Reintentar MCP cada run.
+   HOY: pedir export LucidSales 7d de CLEARSTEM (unica ventana de este producto).
+
+---------------------------------------------------------------------------
+RESUMEN DEL PORTAFOLIO - proximo paso por producto
+---------------------------------------------------------------------------
+- NUSAVA B12   -> ARDOR es el caballo; ESCALA_ARDOR dia 1-2 (observar). Global en rojo. Cruzar Lucid.
+- VARICOSE     -> sano. +20% MA2_VESTIDO (Q11.6); podar ARANITAS/PIERNAS/MA1; watch fatiga MA6 (1.85).
+- TINNIDROP    -> dia 5, ganadores Perdida auditiva + Deterioro; compliance ANTES de escalar.
+- CLEARSTEM    -> solo-Lucid; esperar export jueves. MCP GTR13 aun off.
+- PENDIENTES (sin lanzar): VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX (LISTO). Myo retirado.
+
+ACCION OPERADOR (JUEVES): pegar export LucidSales 7d de TODAS las campanas.
+   Formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus.
+   Sin el, todo CPA aqui es aproximacion por omni de Meta (COD) - no declarar ganador oficial ni subir presupuesto.
+===========================================================================

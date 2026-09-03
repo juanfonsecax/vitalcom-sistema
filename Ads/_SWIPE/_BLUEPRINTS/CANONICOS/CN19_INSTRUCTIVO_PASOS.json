@@ -1,0 +1,106 @@
+{
+  "canonico_id": "CN19_INSTRUCTIVO_PASOS",
+  "schema_version": "canonico-1.0",
+  "nombre": "Instructivo de pasos numerados",
+  "dispositivo_canonico": "COMO SE USA, EN PASOS NUMERADOS CON SU FOTO DE LA ACCION. Responde la pregunta que frena la compra en productos de aplicacion no obvia: '¿y esto como se hace?'. La seccion de modo de preparacion puede intercalarse entre los beneficios y el precio, con su propio header en pregunta.",
+  "cuando_elegirlo": "El producto tiene un modo de uso que no se adivina (ovulo, gotero sublingual, parche, polvo que se prepara). Si se toma como cualquier capsula, el instructivo gasta espacio en algo que nadie pregunta.",
+  "ejes_de_variacion": [
+    "3-4 pasos con foto real de la accion, o solo iconos",
+    "pieza entera (F045) o seccion embebida en un cartel de beneficios (F084)",
+    "header en pregunta ('¿Como se prepara?') que le da funcion de FAQ"
+  ],
+  "n_miembros": 2,
+  "ficha_referencia": "F045",
+  "score_referencia": 52,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 2
+    },
+    "rol_embudo": {
+      "MOFU": 2
+    },
+    "estetica": {
+      "cartel_publicitario": 2
+    },
+    "formato": {
+      "17:18": 1,
+      "2:3": 1
+    },
+    "densidad": {
+      "alta": 1,
+      "muy_alta": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "HEADER_PREGUNTA",
+    "PASOS",
+    "FOTO_POR_PASO",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "MARCA"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "Cuatro pasos numerados, cada uno con foto de manos ejecutando la accion, sin rostro",
+    "El verbo de cada paso va en imperativo y en una sola palabra",
+    "El cuarto paso es de frecuencia, no de accion",
+    "El tercer adjetivo de la banda responde la objecion propia de la categoria",
+    "El bloque de razones recupera lo que el instructivo no cubre",
+    "La cursiva se usa solo en la nota superior derecha",
+    "El fondo negro deja que las fotos de piel se lean sin competencia"
+  ],
+  "cuando_usar": [
+    "cuando la objecion real es COMO se usa y no si funciona",
+    "categorias intimas o de higiene donde la discrecion es argumento",
+    "productos de aplicacion topica con varios pasos",
+    "publico de nivel 4 que ya decidio comprar la categoria y duda del uso",
+    "productos en polvo o de preparacion donde la objecion es el habito diario",
+    "cuando conviene una pieza larga tipo pagina de producto",
+    "cuando el mismo argumento se puede decir en clave funcional y sensorial",
+    "ubicaciones verticales con mucho alto disponible"
+  ],
+  "cuando_no_usar": [
+    "productos de un solo paso: el instructivo queda vacio",
+    "publico frio que todavia no reconoce el problema",
+    "cuando no hay fotos de manos ejecutando cada paso",
+    "feed cuadrado: la pieza no cabe",
+    "productos sin preparacion: la card queda vacia",
+    "cuando el argumento es solo el precio"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F045",
+      "score": 52,
+      "anunciante": "Flor Expres GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "17:18",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL INSTRUCTIVO DE 4 PASOS NUMERADOS, CADA UNO CON SU FOTO DE LA ACCION"
+    },
+    {
+      "ficha_id": "F084",
+      "score": 32,
+      "anunciante": "Tienda de Don Gato",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA SECCION DE MODO DE PREPARACION INTERCALADA ENTRE LOS BENEFICIOS Y EL PRECIO, CON SU PROPIO HEADER EN PREGUNTA"
+    }
+  ]
+}

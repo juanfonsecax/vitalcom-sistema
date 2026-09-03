@@ -1,0 +1,27 @@
+============================================================
+Análisis del Video N: 13. Varicose.mp4
+
+CLASIFICACIÓN RÃPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "Esas manchas oscuras en las piernas no son estéticas. Pasé de esto a esto con esta crema de origen natural." | qué se ve: Una pierna con vendajes y manchas oscuras graves; un hombre con bata hablando frente a la cámara, seguido de la aplicación de la crema. | overlay en pantalla: "Esas manchas", "en las piernas", "no son estéticas", "ANTES", "DESPUES"
+- ÃNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Eliminar manchas oscuras antiestéticas en las piernas, mejorando la circulación y aliviando síntomas asociados.
+- FORMATO CREATIVO (elegí UNO): educacional
+- AVATAR (quién aparece): Hombre con bata (estilo médico) y piernas de pacientes con manchas oscuras.
+- TONO: educacional / clínico + tuteo + habla una voz en off.
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    Â· Prueba social (nº de clientes, "miles de personas"...): No aplica
+    Â· Cifras/resultados con tiempo ("en 30 días"...): No aplica
+    Â· Urgencia/escasez ("oferta por tiempo limitado"...): No aplica
+    Â· Garantía / envío gratis / pago contra entrega: "envío gratis"
+    Â· Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"Esas manchas oscuras en las piernas no son estéticas. Pasé de esto a esto con esta crema de origen natural. Cuando se trata de manchas, la constancia es clave. Esta crema natural ayuda a mejorar la circulación, aliviar el dolor y reducir la hinchazón con el uso diario. Actúa directamente sobre la zona afectada, contribuyendo a una mejora visible en la piel con el tiempo. No requiere cirugías ni tratamientos costosos. Si buscas una opción práctica y no invasiva, esta puede ser la indicada. Obtén hoy el 2x1 con envío gratis."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Se inicia mostrando una pierna muy afectada por manchas oscuras al lado de otra vendada. Aparece un hombre en bata blanca (simulando un médico) introduciendo el tema. Luego, se muestra la transición "Antes" y "Después", seguida del frasco de la crema y un dedo tomándola para aplicarla. Se incluye una animación del flujo de glóbulos rojos por una vena y un gráfico de láser tachado y marcado con advertencia para reforzar "No requiere cirugías". Hay numerosas comparaciones visuales de "Antes" y "Ahora" del estado de la piel de las piernas.
+Textos en pantalla citados literal: "Esas manchas", "en las piernas", "no son estéticas", "ANTES", "DESPUES", "Reduce las", "manchas", "Cuando se trata de", "manchas", "la constancia es", "clave,", "esta crema", "natural", "ayuda a mejorar", "la circulación,", "aliviar el dolor", "Elimina las manchas de tus piernas", "y reducir la", "hinchazón", "con el uso diario.", "Antes", "Actúa", "directamente", "sobre la zona", "afectada", "contribuyendo", "Ahora", "a una mejora", "visible", "en la piel", "con el tiempo.", "Cierre de oferta", "Láser para manchas", "No requiere", "cirugías", "ni tratamientos", "costosos", "USO", "DESDE CASA", "si buscas una", "opción", "práctica y no", "invasiva", "Devuelve el color natural a tus piernas", "esta puede ser la", "indicada.", "2x1", "Envío gratis".
+* Qué transmite: Autoridad e impacto inicial debido a la severidad de las manchas mostradas, presentando luego la solución (crema) como una alternativa natural, estética y no invasiva en comparación con tratamientos con láser o cirugía.
+* Llamado a la acción (CTA): "Obtén hoy el 2x1 con envío gratis."
+============================================================
+

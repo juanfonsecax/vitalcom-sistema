@@ -1,0 +1,356 @@
+============================================================
+CLASE 6 — META ADS PRO: ESTRUCTURA DE CAMPAÑAS Y LANZAMIENTO ("CADA ANUNCIO ES UN VENDEDOR")
+Instructora: Mercy Pardo (con apoyo de Angi / Angicita)
+============================================================
+
+---
+
+## 🎯 IDEA CENTRAL DE LA CLASE
+
+Esta es la masterclass de Meta Ads donde Mercy revela su estrategia COMPLETA de campañas publicitarias: la estructura exacta con la que sale al mercado y consigue costos por conversación tan bajos (200–500 pesos colombianos por mensaje) y un alto volumen de ventas. La clase es eminentemente práctica: Mercy comparte pantalla y monta una campaña paso a paso, en vivo, dentro del Administrador de Anuncios de Meta. El concepto rector de toda la clase es una sola frase que repite obsesivamente: **"Cada anuncio es un vendedor."** De ahí se desprende toda su filosofía: salir al mercado con MUCHOS anuncios (vendedores) a presupuesto bajo, darle SIEMPRE opciones a Meta, escalar por volumen de anuncios (no subiendo presupuesto), y confiar en que el embudo de ventas de WhatsApp cierra la venta. La clase cierra con un bloque emotivo de mentalidad ganadora (la historia de Julián).
+
+El objetivo es que cualquier persona, incluso desde cero, pueda montar su primera campaña de testeo/venta replicando la estructura "1 campaña × 3 conjuntos × 2 anuncios duplicados" con presupuesto de 6,000 COP por conjunto, lanzando para las 4 AM del día siguiente.
+
+---
+
+## 📚 RESUMEN COMPLETO (Sección por Sección)
+
+### BLOQUE 1: Por qué Mercy pauta con el objetivo de TRÁFICO (su favorito)
+
+Mercy aclara que existen muchas maneras y objetivos de hacer campañas, y que cada instructor tiene la suya: Joaquito usa tráfico/interacción, Pipe tiene otra, ella tiene la suya. Ninguna es "la única" — se han ido mezclando y mejorando entre sí. Lo que ella trae es la estrategia INICIAL, la que ella desarrolló desde cero, y aclara que "la estrategia de Mercy" no es solo el embudo de WhatsApp, sino también la parte de campañas publicitarias y escalado.
+
+**Su objetivo favorito es TRÁFICO.** Le insistieron que "para vender el tráfico no servía" (que solo servía para dar a conocer la página o llevar tráfico a una web), pero como ella es terca quiso probarlo y hacerlo funcionar. Fue de las primeras personas en usar tráfico y en vender masivamente por WhatsApp.
+
+La lógica de por qué tráfico funciona para ella: cuando pautas por VENTAS, le dices a Meta "tráeme personas que de verdad me compren", y Meta filtra mucho el público. Pero como Mercy confía PLENAMENTE en su embudo y en su estrategia de cierre, ella le dice a Meta lo contrario: **"Tráeme TODO el tráfico posible, que yo me encargo en el chat."** En el chat es donde ocurre la magia, donde la gente compra sin que le vendan, solo mostrándole el producto con la estrategia ya conocida del embudo.
+
+- **Interacción:** A Mercy NUNCA le ha funcionado en ninguna de sus cuentas publicitarias (no sabe por qué). No la recomienda personalmente, aunque reconoce que a mucha gente sí le va bien con interacción.
+- **Ventas:** Al comienzo no le funcionaba; ahora sí le funciona bien. Confirma que SÍ se puede vender a WhatsApp con el objetivo de ventas.
+- La mayoría de la comunidad hace tráfico porque es lo que mejor convierte para esta estrategia.
+
+### BLOQUE 2: La prueba — la campaña del 22 de abril (resultados reales)
+
+Mercy muestra una captura (no comparte pantalla del BM por seguridad de su identificador) de una campaña de prueba con un solo producto, lanzada el 22 de abril. Hizo **6 campañas: 3 de tráfico y 3 de ventas.** Las organizó por "costo por conversación". Datos concretos que mostró:
+
+- La **campaña original de tráfico** (la 4ta señalada) trajo **25 conversaciones a 636 pesos** en promedio — fue la que tuvo el costo MÁS ALTO de las de tráfico.
+- Cuando publica la campaña, la **duplica por 2** (copias idénticas). Una de esas copias trajo **44 mensajes a 376 pesos** — el MEJOR resultado de todas.
+- La otra copia de tráfico trajo **34 mensajes a 476 pesos**.
+- La **campaña de ventas:** la original fue la de mejor rendimiento con **36 conversaciones a 474 pesos**. Sus copias rindieron peor (al revés que en tráfico).
+
+**El insight clave de los resultados:** la campaña ORIGINAL no siempre es la mejor; muchas veces las COPIAS idénticas rinden mejor. Por eso siempre duplica. Si ese día hubiera salido solo con la campaña original de tráfico (25 conversaciones), habría tenido apenas ~2 ventas. Pero como salió con toda la estructura, terminó el día con ~20 ventas. Gasto total: entre 108,000 y 120,000 pesos (a veces un poco más, a veces menos). Importante: estos creativos eran NUEVOS (videos virales de TikTok de un producto viral), y era un producto de prueba que ni siquiera despacharon.
+
+### BLOQUE 3: "Cada anuncio es un vendedor" — el concepto rector
+
+Mercy hace que TODOS escriban en el chat la frase **"Cada anuncio es un vendedor"** y que la anoten en su agenda. Es el concepto central de la clase. La lógica:
+
+- Cada anuncio = un vendedor en el mercado. ¿Cuántos vendedores quieres tener? Si cada vendedor te trae por lo menos una venta, querrás tener MUCHOS vendedores.
+- Analogía: si mandas UNA persona a vender a la calle con 20 productos y vuelve con todos sin vender, perdiste. Pero si mandas DOS personas, o una con dos productos distintos ("no me gusta el maní, pero le tengo habas"), vendes más. Más opciones = más ventas.
+- Por eso ella, con un producto ya validado, ángulo identificado y creativos que sabe que venden, se atreve a salir el primer día con **250 anuncios**, lo que le garantiza por lo menos **125 ventas**.
+
+El "secreto" de cómo garantizar que cada vendedor traiga una venta: confiar en la estrategia completa del embudo de ventas, y pautar con **presupuesto MUY BAJO** por conjunto, salir con muchos anuncios.
+
+### BLOQUE 4: La estructura de campaña "1 × 3 × 2"
+
+La estructura base de Mercy: **1 campaña → 3 conjuntos de anuncios → 2 anuncios idénticos por conjunto.** Lo nombra como "1*3*2" para tener siempre clara la estructura. Cada conjunto sale con 6,000 pesos. El presupuesto va a nivel CONJUNTO de anuncios, no a nivel campaña.
+
+Con 3 creativos diferentes → 18 anuncios por campaña duplicada × 2 objetivos (tráfico+ventas) → da las cifras que mencionó (alrededor de 36 anuncios cuando combina ambos objetivos y las copias). Lo importante: el presupuesto NO se multiplica por anuncio, se reparte por conjunto. Los 6,000 de un conjunto se distribuyen entre los 2 anuncios idénticos.
+
+### BLOQUE 5: Montaje paso a paso de la campaña (en vivo)
+
+Mercy monta la campaña en el Administrador de Anuncios. Ver sección PROCESOS para el detalle completo. Puntos enfatizados durante el montaje:
+
+- **No acepta NUNCA las recomendaciones de Meta.** Ha tenido campañas apagadas a las que Meta le dice "aumenta presupuesto, tiene buen rendimiento" cuando están apagadas. Desactiva conjuntos buenos por hacerle caso. Por eso siempre lo hace todo manual.
+- **Objetivo de rendimiento:** SIEMPRE "maximizar el número de conversaciones". Meta constantemente lo revierte a "maximizar número de clics en el enlace" cada vez que haces un cambio — hay que revisarlo SIEMPRE antes de publicar.
+- **Destino manual + WhatsApp** (nunca Messenger automático, porque Messenger no está entrenado para vender como WhatsApp).
+- **Presupuesto bajo a propósito:** le dice a Meta "no tengo más, trabaja con lo que hay, tengo 6,000". No usa escalado vertical (subir presupuesto) porque cuando subes presupuesto "Meta empieza a gastar como loco". Desde el inicio le pone poco para forzar CPAs bajos.
+- **Edad:** Meta no la deja bajar de 25. Ella usó por mucho tiempo 38+ (por poder adquisitivo), ahora usa 30+. Sus productos suelen ir a público mayor por poder adquisitivo.
+- **No segmenta por intereses NUNCA.** Su segmentación la hace desde las PALABRAS del creativo y del copy. Cada palabra que pones (arrugas, manchas, el dolor del cliente) segmenta el público. Meta ya sabe a quién mostrarle el anuncio.
+
+### BLOQUE 6: Por qué duplicar el anuncio dentro del conjunto
+
+Esta es la parte más sutil de la estrategia. Mercy pone DOS anuncios IDÉNTICOS dentro de cada conjunto. ¿Por qué? Para darle opciones a Meta CON LA INTENCIÓN DE QUE EL CREATIVO FUNCIONE.
+
+- Si sale con UN solo creativo en un conjunto, es muy probable que Meta diga "no se vendió" y no haya resultados.
+- Al poner el creativo duplicado, le dice a Meta: "si este creativo no me vende, que me venda este (el idéntico)". Meta entiende: "no te puedo llegar al final del día sin resultados".
+- Lo que pasa en la práctica: uno de los dos anuncios idénticos se lleva la MAYOR parte del presupuesto y el otro una parte pequeña. Meta razona: "este no vendió, le traje un mensaje a 1000 pesos; pero a este otro le traje 8 mensajes a 300 pesos".
+- **Regla importante:** aunque uno de los dos consuma casi todo el presupuesto, NUNCA apagar el otro. Si apagas uno, "se daña la lógica" de la estrategia. El propósito de poner dos iguales es mantener los costos bajos; si apagas uno, pierdes esa función.
+
+Adicionalmente, cada CONJUNTO puede llevar un ángulo de venta diferente (con su propio copy), para darle también opciones a Meta a nivel de ángulo: "si este ángulo no vende, que venda este o este". En la campaña que mostró usó el MISMO copy en todas porque el producto tenía un ángulo muy amplio — "a veces no me complico tanto".
+
+### BLOQUE 7: Duplicar la campaña completa (mini-escalado inicial)
+
+Tras dejar lista y publicada la campaña original, Mercy espera ~5 minutos a que quede en revisión/procesamiento/borrador y entonces **duplica la campaña completa × 2**. Esto es porque (como demostró) a veces la copia rinde mejor que la original. Reglas:
+
+- Solo se duplica la campaña cuando está en BORRADOR, PROCESAMIENTO o REVISIÓN. **NUNCA duplicar una campaña que ya arrancó y tiene resultados** (eso ella lo hizo mucho tiempo, ya no lo hace; "ya no la abro").
+- Al duplicar: usar SIEMPRE "duplicar la configuración original", nunca una recomendación. Marcar "mostrar reacciones, comentarios y contenido compartido en anuncios nuevos" para que las copias hereden los likes/comentarios de la original.
+- Después repite TODO idéntico para el objetivo de VENTAS (y si a alguien le funciona, interacción).
+
+### BLOQUE 8: Cuándo y cómo apagar conjuntos (optimización básica)
+
+- Deja correr los conjuntos nuevos el **primer y segundo día** (a veces tercero). Al tercer día empieza a tomar decisiones.
+- Pone **alarmas en el celular cada 2 horas desde el mediodía** (12, 2, 4, 6, 8 PM) para revisar y apagar.
+- **NO apagar antes del mediodía** porque Meta a veces no actualiza a tiempo.
+- Razón de apagar a mediodía: si un conjunto de 6,000 ya gastó 3,000 a mediodía sin traer ni un mensaje desde las 4 AM, ¿para qué dejar que gaste los otros 3,000? Si tienes 100 conjuntos así, apagarlos a tiempo te ahorra 300,000 pesos. Cuando escalas agresivo son MUCHOS los conjuntos a apagar.
+- Hoy con Lucid no se mide solo por mensajes sino por VENTAS: el conjunto que te vende es el que escalas. Antes se escalaba a ciegas (los que traían más mensajes); hoy se escala los que realmente VENDEN.
+
+### BLOQUE 9: Cómo escalar (volumen, no presupuesto)
+
+- **La filosofía de escalado de Mercy: escalar en VOLUMEN de anuncios, no subiendo presupuesto.** Tiene muchísimos anuncios en circulación a presupuesto bajo.
+- Para tener 40 ventas mañana en vez de 20: deja quieto lo que funciona y replica lo MISMO en OTRA cuenta publicitaria. Mismos o diferentes creativos, otra fanpage.
+- **Cada fanpage permite solo 250 anuncios en circulación.** Por eso recomienda tener muchas fanpages. (Compartió un enlace para ver el límite de anuncios por fanpage y los restantes — recomienda guardarlo en favoritos y medirlo siempre.)
+- Multiplicación: 3 creativos en una cuenta = 36 anuncios; replicado con otros 3 creativos en la misma cuenta = 72; llevado a otra cuenta = 144; en 5 cuentas = mucho más. Cada cuenta gasta ~120,000.
+- **Por qué escalar en cuentas publicitarias DIFERENTES (no en la misma):** (1) subir presupuesto en la misma campaña/escalado vertical tiende a subir los costos; (2) cada cuenta publicitaria se comporta TOTALMENTE diferente, y en cada una puedes tener varias fanpages, ampliando la posibilidad de llegar a público diferente. (Esto lo complementó Angi.)
+- Si una de las 3 campañas sale ganadora a los 2-3 días, hay 2 caminos que se hacen AL MISMO TIEMPO (no uno solo, para no quedarse sin ventas): (a) escalarla con **Post ID** en una campaña nueva en otra cuenta, conservando likes/comentarios/data; (b) crear una campaña nueva desde cero. No todas las cuentas dejan escalar igual, hay que identificar cómo deja escalar cada cuenta.
+- Si escala con un anuncio ganador a campaña nueva: 1 conjunto, 1 creativo, presupuesto mayor, sin cambiar NADA del copy. Y si sube presupuesto, de a poquito: **20% cada vez**.
+
+### BLOQUE 10: El plan financiero para presupuesto bajo (400,000 / bola de nieve)
+
+Para quien tiene poco presupuesto (ella empezó con 500,000):
+
+- Divide 400,000 en ~6 días = ~66,000 diarios. Hace solo la MITAD de la estructura completa (o solo tráfico, o solo ventas, mejor ambos). Por ejemplo, tráfico "a la fija" en 3 cuentas publicitarias.
+- A partir del 3er día empiezas a recibir retorno (Dropy te paga pedidos entregados). Reinviertes TODO lo que Dropy te paga.
+- Al 6º día ya gastaste los 400,000 pero ya recaudaste ~120,000+ del retorno → el 7º día pautas con esos 120,000 (escalando, no quedándote en 66,000). Optimizas el CPA (de 10,000 baja a 6,000-7,000) → más del doble de ventas.
+- Se vuelve una "bola de nieve": de 66,000 diarios pasas a 500,000 e incluso millones diarios, todo del propio retorno. Sacas para ti lo MÍNIMO al inicio ("que fulanito espere"), reinviertes el resto. En ~20 días a 1 mes llegas a sacar 500 para ti y 500 para invertir.
+
+### BLOQUE 11: Integración con Lucid Sales (medir métricas)
+
+Para no escalar a ciegas hay que integrar los identificadores de anuncios (AD IDs) en Lucid Sales:
+- En Lucid Sales → producto → "editar producto" → seleccionar el administrador de anuncios → escribir el nombre/fecha de la campaña → "actualizar" → aparecen los identificadores de anuncios ("ese chorrero de IDs") → guardar.
+- Luego en **Métricas → métricas de Facebook Ads**, filtras por producto / campaña / conjunto de anuncios y ves: mensajes, costo por mensaje, cantidad de ventas, total de ventas, inversión, porcentaje de cierre. Así identificas exactamente QUÉ conjunto te vende y es el que escalas. "No vas a escalar a ciegas... vas a ahorrar un montón de plata."
+
+### BLOQUE 12: Mentalidad ganadora (cierre — la historia de Julián)
+
+La clase cierra con varios alumnos contando su experiencia. El momento central es Julián Torres: tras un accidente de tránsito (trabajaba en plataformas/moto), pasó 3 meses en cama mirando el techo, se sintió "insuficiente" frente a primos profesionales. Empezó el dropshipping desde el celular (un Xiaomi 10S), respondiendo mensajes en los semáforos de la moto mientras pagaba publicidad de 70,000. Junto a su pareja Yuri (que comían salchipapas un sábado), construyó hasta tener un capital de ~22 millones para testear. Mercy y Angi refuerzan: la MENTALIDAD es lo primero ("detrás de vender hay mentalidad; ganar es bueno, pero si no tienes mentalidad preparada para ganar, no vas a escalar"), "romper cadenas que no nos corresponden", pensar en grande (la meta no es 50, son 100, 500, 1000 ventas diarias), y usar SIEMPRE la calculadora para motivarse viendo las cifras de ganancia.
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **"Cada anuncio es un vendedor."** — El concepto rector de toda la estrategia. Más anuncios = más vendedores en la calle = más ventas. Justifica salir con muchísimos anuncios a presupuesto bajo.
+
+2. **"Nosotros no testeamos, sino que vendemos y hacemos que funcione todo de maravilla desde el comienzo."** — Mercy no sale a "probar"; sale a vender con producto y ángulo ya validados, escalando agresivamente desde el día 1.
+
+3. **"Siempre le damos opciones a Meta."** — La filosofía detrás de la estructura 1×3×2 y de pautar en múltiples cuentas. "Si no funciona este, me tiene que funcionar este. De cinco me tiene que funcionar uno."
+
+4. **El tráfico SÍ vende.** — Contra la creencia generalizada de que el tráfico solo "da a conocer", Mercy demuestra que con un embudo fuerte de WhatsApp el tráfico es el objetivo más rentable: le dice a Meta "tráeme todo el tráfico, yo cierro en el chat".
+
+5. **La copia idéntica suele rendir MEJOR que la original.** — Dato real: la original trajo 25 conversaciones a 636 pesos; una copia idéntica trajo 44 a 376 pesos. Por eso siempre duplica campañas en estado de borrador/revisión.
+
+6. **"En el chat es donde ocurre realmente la magia. En el chat la gente compra sin que nosotros estemos vendiendo."** — La pauta solo lleva tráfico; la venta la cierra el embudo automatizado.
+
+7. **No seguir NUNCA las recomendaciones de Meta.** — Meta sugiere apagar buenos conjuntos, subir presupuesto en campañas apagadas, compartir presupuesto entre conjuntos. Todo eso daña los resultados.
+
+8. **Escalar por VOLUMEN de anuncios, no por presupuesto.** — "Mi manera de escalar es escalar en volumen de anuncios, no escalar en presupuesto." Subir presupuesto hace que Meta "gaste como loco" y sube los CPAs.
+
+9. **El presupuesto NO tiene relación con el ticket del producto.** — Aunque vendas un producto de 190,000, el conjunto sale igual a 6,000. El presupuesto bajo es para forzar CPAs bajos, no se ajusta al precio del producto.
+
+10. **La segmentación se hace desde las PALABRAS del creativo y del copy, no por intereses.** — Cada palabra (arrugas, manchas, el dolor) le dice a Meta a quién mostrar el anuncio. Mercy NUNCA segmenta por intereses.
+
+11. **Cada fanpage = máximo 250 anuncios en circulación.** — Límite duro que obliga a tener muchas fanpages para poder escalar en volumen.
+
+12. **A mayor porcentaje de conversión, menor CPA.** — No hay regla fija de "108,000 = 20 ventas". Si conviertes al 30% tendrás CPAs mucho más bajos y más ventas que quien convierte al 10%. El embudo es la palanca del CPA.
+
+13. **"Si tienen algo y les funciona, no lo toquen, no lo cambien. Eso es prohibido."** — No experimentar con lo que ya rinde; experimentar solo con presupuesto/cuentas adicionales.
+
+14. **"Detrás de vender hay mentalidad. Ganar es bueno, pero si no tienes una mentalidad preparada para ganar, no vas a escalar."** — La mentalidad ganadora es tratada como pilar, no como adorno.
+
+---
+
+## 🛠️ TRUCOS, TIPS Y RECOMENDACIONES
+
+1. **Presupuesto a nivel CONJUNTO de anuncios, no a nivel campaña.** — Y desmarcar la casilla de "compartir parte del presupuesto con otros conjuntos": si la dejas marcada, un conjunto malo puede robarse presupuesto de otros y terminar gastando 20,000 en vez de 6,000 sin rendir.
+
+2. **Revisar SIEMPRE el objetivo de rendimiento antes de publicar.** — Meta revierte constantemente "maximizar conversaciones" a "maximizar clics en el enlace" cada vez que haces un cambio. Que NUNCA se vaya una campaña con "maximizar clics".
+
+3. **Desmarcar WhatsApp en las TRES ubicaciones donde aparece.** — Mercy quita "incluir personas de WhatsApp cuya edad se desconoce" (porque WhatsApp no conoce la edad y tu anuncio puede caerle a un menor, perdiendo la impresión) y desmarca WhatsApp en ubicaciones manuales (la función está en beta y los "estados" generan dudas). Anuncios solo en Facebook e Instagram.
+
+4. **Destino MANUAL, solo WhatsApp (no Messenger).** — Messenger no está entrenado para vender como WhatsApp. Verificar que el número aparezca conectado tanto en la fanpage (información de contacto) como en Lucid.
+
+5. **Conectar el número de WhatsApp desde el CELULAR si el computador no deja.** — Llega un código a Lucid; si conectas el mismo número a 5 fanpages, usas el mismo código para todas (uno por uno).
+
+6. **Usar SIEMPRE una palabra clave en el anuncio (mensaje predefinido).** — Ej: "Hola, deseo más información sobre [producto]". Sirve para que Lucid identifique el producto aunque falle Grok u OpenAI, y para reanudar conversaciones masivas. Además, si NO pones nada, el cliente llega al chat, ve el saludo, le da pereza escribir y se va (por eso "100 mensajes en Meta" pueden ser solo "70 en Lucid"). La palabra clave reduce esa fuga.
+
+7. **Desmarcar "anuncios multianunciantes".** — Si lo dejas, tu anuncio puede salir junto a competidores en el mismo bloque; si quedas en la 7ª-10ª posición no te ven, o tu producto a 99,900 sale al lado de uno a 89,900 y le dan clic al más barato.
+
+8. **Poner el PRECIO en el creativo (video o descripción).** — Es lo primero que hace que un creativo llame la atención y filtra al cliente: si ya vio el precio, llega al chat más decidido. Si no recibes mensajes, suele ser por el creativo o por un producto que nadie conoce.
+
+9. **Vender productos que el público YA conoce.** — Mercy nunca inserta productos nuevos al mercado (no lo recomienda): un producto que nadie conoce no recibe mensajes. Usa productos virales y conocidos.
+
+10. **Alarmas cada 2 horas desde el mediodía para apagar.** — 12, 2, 4, 6, 8 PM. Apagar a tiempo los conjuntos sin resultados ahorra cientos de miles de pesos cuando escalas agresivo.
+
+11. **Antes de decidir qué apagar/escalar, verificar que los pedidos en error/incompletos hayan entrado al informe.** — Mantener actualizada la columna del CRM "pedidos en WhatsApp" para que el conteo de ventas sea real.
+
+12. **Para CTA del botón usar "Enviar mensaje a WhatsApp".** — Así el cliente sabe que va a chatear con alguien por WhatsApp, no que lo mandan a una web.
+
+13. **Excluir regiones de envío costoso/lejano.** — En Colombia: San Andrés y Providencia, Amazonas, Guainía, Vaupés, Vichada. Crear una lista de "ubicaciones guardadas" para reutilizarla.
+
+14. **Hacer DOS campañas para comparar: una solo con imágenes y otra solo con videos.** — Ambos formatos venden (tiene una tienda con 110 ventas casi toda con imagen, y la del ejemplo fue todo video). Probar cuál rinde mejor por producto.
+
+15. **Si tienes poco presupuesto, ve "a la fija con tráfico" en 3 cuentas publicitarias.** — En vez de la estructura completa de 36 anuncios, haz la mitad (~66,000/día), repartiendo en varias cuentas para multiplicar la posibilidad de que al menos una te dé buen resultado.
+
+16. **Usar la calculadora SIEMPRE.** — Mercy "parece loca con la calculadora": calcula proyecciones de ganancia para motivarse. La calculadora de costeo muestra la ganancia estimada en rojo y grande a propósito, como combustible de mentalidad.
+
+---
+
+## 📋 PROCESOS Y PASOS
+
+### PROCESO 1: Montar la campaña paso a paso (Administrador de Anuncios)
+
+**Paso 1 — Portafolio/BM:** Entrar al portafolio comercial (BM / Business Manager). Pautar desde la cuenta publicitaria deseada. Se pueden crear tantas cuentas como Meta permita (a Joaquito le habilitaron ~2,500).
+
+**Paso 2 — Crear campaña:** Botón verde "Crear" → seleccionar objetivo **Tráfico** (su favorito) → elegir "**campaña de tráfico manual**" (NO la configuración recomendada).
+
+**Paso 3 — Nivel campaña (solo 3 cosas):**
+- Nombrar la campaña (ej: "28 de abril – tráfico – producto 1 – 6K").
+- Seleccionar que el presupuesto vaya a nivel CONJUNTO de anuncios.
+- DESMARCAR la casilla de compartir presupuesto con otros conjuntos.
+- Siguiente.
+
+**Paso 4 — Nivel conjunto de anuncios:**
+- Nombrar el conjunto.
+- Seleccionar **destino: mensajes**.
+- Objetivo de rendimiento: **maximizar el número de conversaciones** (verificar que no se haya cambiado a "clics en el enlace").
+- Seleccionar la **fanpage** desde la que se muestra el anuncio.
+- **Destino manual → WhatsApp** (desmarcar Messenger). Verificar el número conectado.
+- Presupuesto: **6,000** (mínimo permitido ~3,630, según el dólar; recomienda 6,000-9,900 para campañas serias, dejando 1 sola de prueba a presupuesto mínimo).
+- Programación: arranque **4:00 AM del día siguiente**. Sin fecha de finalización.
+- Lugares: el país (Colombia) con la lista de **exclusiones** (regiones costosas). Opcionalmente solo las 47 ciudades principales.
+- Edad: 25 mínimo (Meta no deja menos); ella usa 30+ o 38+. Todos los géneros (no segmentar por género; productos "de mujer" como antiarrugas también los compran hombres ~65/35).
+- DESMARCAR "incluir personas de WhatsApp cuya edad se desconoce".
+- Ubicaciones MANUALES → desmarcar WhatsApp (aparece marcado en 3 lugares).
+- Siguiente.
+
+**Paso 5 — Nivel anuncio (creativo 1):**
+- Nombrarlo "creativo 1".
+- Configurar la palabra clave / mensaje predefinido ("Hola, deseo más información sobre [producto]") y guardar la plantilla.
+- DESMARCAR "anuncios multianunciantes".
+- Configurar contenido: imagen o video. Cargar el creativo. Copy con el ángulo de venta.
+- Vista previa para verificar.
+
+**Paso 6 — Verificación completa antes de duplicar:** Devolverse a revisar TODO: presupuesto a nivel conjunto desmarcado, destino de mensajes, objetivo "conversaciones" intacto, fanpage y número correctos, 6,000 sin alterar, arranque a las 4 AM del día siguiente, exclusiones, edad, ubicaciones manuales sin WhatsApp, creativo correcto.
+
+**Paso 7 — Crear los 3 conjuntos:** Duplicar el conjunto (botón "duplicar" indicando el número de veces: si hay 3 creativos → 3 conjuntos). En cada copia, ir a configuración de contenido y REEMPLAZAR por el creativo 2 y el creativo 3 (cambiar también el copy si cada conjunto lleva un ángulo distinto).
+
+**Paso 8 — Duplicar el anuncio dentro de cada conjunto:** "Duplicar rápido" el creativo para tener 2 anuncios IDÉNTICOS por conjunto (darle opciones a Meta y mantener costos bajos).
+
+**Paso 9 — Publicar y duplicar la campaña completa:** Publicar. Esperar ~5 min a que quede en revisión/procesamiento. Seleccionar la campaña → "Duplicar" × 2 → "duplicar la configuración original" + marcar "mostrar reacciones, comentarios y contenido compartido en anuncios nuevos" → verificar presupuesto/objetivo/número → Publicar. Nombrar "copia 1" y "copia 2".
+
+**Paso 10 — Repetir para VENTAS:** Hacer exactamente lo mismo con el objetivo de Ventas (también "destino mensajes" + "maximizar conversaciones"). Opcionalmente interacción para quien le funcione.
+
+### PROCESO 2: Integrar AD IDs y leer métricas en Lucid Sales
+
+**Paso 1:** En Lucid Sales → ir al producto → "Editar producto".
+**Paso 2:** Seleccionar el administrador de anuncios conectado.
+**Paso 3:** Escribir el nombre/fecha de la campaña; aparecen las campañas activas. Dar "Actualizar".
+**Paso 4:** En "identificadores de anuncios" aparece la lista completa de AD IDs; seleccionarlos/guardar.
+**Paso 5:** Ir a Métricas → "Métricas de Facebook Ads". Filtrar por producto, campaña o conjunto.
+**Paso 6:** Leer: mensajes, costo por mensaje, cantidad de ventas, total de ventas, inversión, porcentaje de cierre. Identificar el conjunto que VENDE y escalar ese (descargable como reporte).
+
+### PROCESO 3: Plan financiero de arranque con bajo presupuesto
+
+**Paso 1:** Dividir el capital (ej. 400,000) en ~6 días = ~66,000/día.
+**Paso 2:** Hacer la mitad de la estructura, idealmente tráfico "a la fija" en 3 cuentas publicitarias.
+**Paso 3:** Desde el día 3 empiezas a recibir retorno de pedidos entregados (Dropy paga).
+**Paso 4:** Reinvertir TODO el retorno; recargar Dropy (vía Tropical) — el dinero queda disponible para pautar al día siguiente.
+**Paso 5:** Al día 7 pautar con el retorno acumulado (~120,000), escalando, y optimizar el CPA.
+**Paso 6:** Repetir; el capital se vuelve "bola de nieve". Sacar para ti lo mínimo al inicio, reinvertir el resto.
+
+---
+
+## ❓ PREGUNTAS Y RESPUESTAS
+
+**Pregunta:** ¿Se pueden testear los dos (o tres) objetivos a la vez?
+**Respuesta:** Sí, se pueden hacer campañas con ventas, interacción y tráfico simultáneamente.
+
+**Pregunta:** ¿A qué tiempo se apagan los conjuntos que no funcionaron?
+**Respuesta:** Se dejan correr el 1er y 2º día (a veces el 3º). Si no traen resultados, se apagan y se escala lo que sí funciona. Con alarmas cada 2 horas desde mediodía; nunca antes de mediodía (Meta no actualiza a tiempo).
+
+**Pregunta:** ¿Si duplico los creativos, Meta me cobra 6,000 por cada creativo?
+**Respuesta:** No. Cobra 6,000 por CONJUNTO. Al duplicar el anuncio dentro del conjunto, los 6,000 se reparten entre el anuncio y su copia.
+
+**Pregunta:** Al duplicar el anuncio, uno consume casi todo el presupuesto y el otro casi nada. ¿Apago el que no gasta?
+**Respuesta:** No. Siempre se dejan correr ambos. Si apagas uno se daña la lógica de la estrategia (poner dos iguales sirve para mantener los costos bajos).
+
+**Pregunta:** ¿La campaña de ventas lleva otros creativos?
+**Respuesta:** En el ejemplo fueron los mismos. Si tienes más de 3 creativos, haces otra campaña con otros 3 diferentes (pasarías de 36 a 72 conjuntos, y a 144 si lo llevas a otra cuenta).
+
+**Pregunta:** Si me funcionó una campaña ganadora, ¿la duplico?
+**Respuesta:** No todas las cuentas dejan escalar igual. Puedes duplicarla, sacar el Post ID en una campaña nueva, o crear campaña nueva desde cero. Hazlo de varias formas a la vez para no quedarte sin ventas.
+
+**Pregunta:** ¿Cuántas variaciones de copy usas por creativo?
+**Respuesta:** Un copy por conjunto si cada conjunto tiene un ángulo diferente. Pero la campaña del ejemplo salió con el MISMO copy en todos.
+
+**Pregunta:** Mi producto es de 190,000 y vende a 15,000-25,000 de CPA. ¿Cambio el presupuesto del conjunto?
+**Respuesta:** No, sale igual a 6,000. El presupuesto no se relaciona con el ticket sino con el CPA (presupuesto bajo = CPA bajo). Con CPA alto necesitarás más conjuntos: por cada ~3 vendedores, 1 venta. Mejor optimizar el embudo para convertir más y bajar el CPA.
+
+**Pregunta:** Tengo un anuncio ganador que pauto hace 2 meses y en 5 días no vendió; el CPA subió de 7,000 a 9,000. ¿Lo apago?
+**Respuesta:** Primero identifica la causa: revisa en Meta si hay competidores nuevos con mejor precio, si alguien robó tus creativos o si un competidor con 200 anuncios te sacó del mercado (Meta prioriza a quien invierte más en circulación y a ti te muestra solo lo que queda, llegándote clientes no calificados/con devoluciones). Si mantienes el costo por conversación pero no vendes, puede ser el flujo o un competidor más barato. Solución: renovar creativos (un creativo nuevo, concepto diferente, mismo ángulo y mismo copy), lanzar muchos.
+
+**Pregunta:** ¿La estrategia funciona para Ecuador / Landing?
+**Respuesta:** Sí, funciona igual en Ecuador (Joaquito vende mucho ahí) y también en Landing (con campaña de ventas). Puedes vender un producto por Landing y a la vez por WhatsApp para duplicar resultados.
+
+**Pregunta:** ¿Cómo veo si me está llegando tráfico a WhatsApp y por cuál creativo? (David)
+**Respuesta:** Integrando los AD IDs en Lucid Sales y mirando "Métricas de Facebook Ads" filtrando por producto/campaña/conjunto. Sin integrar, tendrías que ir chat por chat ("ver anuncio... de dónde proviene"). Configúralo para no escalar a ciegas.
+
+**Pregunta:** ¿Por qué se recomienda escalar en cuentas publicitarias diferentes y no en la misma?
+**Respuesta (Angi):** Porque amplía la posibilidad de llegar a público diferente; cada cuenta se comporta totalmente distinto y en cada una puedes tener varias fanpages. Subir presupuesto en la misma (escalado vertical) tiende a subir los costos.
+
+---
+
+## ⚠️ ERRORES COMUNES Y ADVERTENCIAS
+
+1. **Dejar el objetivo en "maximizar clics en el enlace".** — Meta lo revierte solo; siempre debe ser "maximizar número de conversaciones". Revisar antes de publicar.
+
+2. **Hacer caso a las recomendaciones de Meta.** — Apaga buenos conjuntos, sugiere subir presupuesto en campañas apagadas. No acatarlas nunca.
+
+3. **Salir con un solo anuncio o un solo conjunto.** — Meta dirá "no se vendió" y te quedas sin resultados. Hay que darle opciones (estructura 1×3×2).
+
+4. **Apagar el anuncio duplicado que "no gasta".** — Daña la lógica de costos de la estrategia. Dejar correr ambos.
+
+5. **Subir presupuesto bruscamente (escalado vertical).** — Meta "gasta como loco" y suben los CPAs. Escalar en volumen y, si subes, solo 20%.
+
+6. **Lanzar UNA sola campaña a presupuesto mínimo y, si no arranca, quedarse sin ventas.** — Las pruebas al límite (3,630) a veces no arrancan. Que la de prueba no sea la única.
+
+7. **Tirar 120,000 a un solo anuncio.** — "Me tiré 120,000 y no vendí" pasa por no repartir en muchos anuncios a bajo presupuesto. Poco presupuesto por conjunto y escalar.
+
+8. **Lanzar la campaña a las 11 PM del mismo día.** — Se gasta todo el presupuesto en una hora, recibes una avalancha de mensajes y no puedes medir el rendimiento. Programar para las 4 AM del día siguiente.
+
+9. **Insertar al mercado un producto que nadie conoce.** — No recibe mensajes. Vender productos ya conocidos/virales con precio visible.
+
+10. **No estar atento durante la clase / no apuntar.** — Mercy reitera que muchos se "varan" después por estar distraídos (viendo novela, respondiendo mensajes) y perderse detalles clave que repitió varias veces.
+
+11. **No apagar a tiempo los conjuntos sin resultados.** — Llegas al final del día con CPA de 9,000-11,000 por conjuntos que gastaron sin traer mensajes. Apagar desde mediodía ahorra mucho.
+
+12. **Diagnosticar mal una campaña que falló.** — "La cagué con interacción, ahora la hago con tráfico" puede no ser la causa real (puede ser el creativo, el producto, o que Meta pide diversificación). Probar mismo creativo y creativo nuevo en los 3 objetivos en varias cuentas para identificar la causa real.
+
+13. **Soltar lo que funciona para probar algo nuevo.** — Prohibido tocar lo que ya rinde. Probar solo con presupuesto/cuentas adicionales, sin abandonar lo que vende.
+
+---
+
+## 🔗 RECURSOS, HERRAMIENTAS Y REFERENCIAS
+
+- **Administrador de Anuncios de Meta (Meta Ads Manager)** — Donde se montan campañas, conjuntos y anuncios.
+- **Business Manager / BM (Portafolio Comercial)** — Contenedor de cuentas publicitarias y fanpages. Se pueden tener varios; cada cuenta se comporta distinto.
+- **Lucid Sales / LucidBot** — Plataforma de automatización de WhatsApp y de MÉTRICAS: integra AD IDs y muestra ventas, costo por mensaje, % de cierre por producto/campaña/conjunto.
+- **Dropy** — Proveedor/logística; paga los pedidos entregados (retorno que se reinvierte). Recarga vía "Tropical".
+- **TikTok** — Fuente de videos virales que Mercy descarga y usa como creativos.
+- **Post ID** — Identificador de publicación para escalar un anuncio ganador conservando likes/comentarios/data.
+- **Skool (School)** — Plataforma con las clases grabadas (incluyendo la clase de Meta Ads y el video de cómo integrar Facebook Ads con Lucid Sales).
+- **Enlace de límite de anuncios por fanpage** — Para ver cuántos anuncios tienes en circulación y cuántos restan por cada fanpage (máx. 250). Recomienda guardarlo en favoritos.
+- **Calculadora de costeo/rentabilidad** — Para proyectar ganancias (cifra en rojo grande como motivación).
+- **Personas mencionadas:** Mercy Pardo (instructora), Angi/Angicita (apoyo y respuestas), Joaquito/Juaco (otra estrategia, tráfico/interacción, ~2,500 cuentas habilitadas), Pipe (Pipe Crack, clase de mentalidad citada por Julián), Julián Torres (alumno, historia de mentalidad), David de Bolivia (preguntas de métricas).
+
+---
+
+## 📌 CONCLUSIONES Y CIERRE
+
+**Pilares de la clase:**
+
+1. **"Cada anuncio es un vendedor"** — salir al mercado con muchos anuncios a presupuesto bajo, dándole siempre opciones a Meta.
+2. **Estructura 1×3×2** — 1 campaña, 3 conjuntos (un creativo c/u), 2 anuncios idénticos por conjunto, 6,000 por conjunto, objetivo tráfico (y ventas), destino mensajes/maximizar conversaciones, lanzamiento 4 AM día siguiente; luego duplicar la campaña completa ×2 en estado de borrador.
+3. **Escalar por volumen, no por presupuesto** — replicar en múltiples cuentas publicitarias y fanpages (máx. 250 anuncios/fanpage), nunca subir presupuesto de golpe.
+4. **Medir para no escalar a ciegas** — integrar AD IDs en Lucid Sales y escalar solo lo que VENDE; apagar lo que no rinde con alarmas desde mediodía.
+5. **Mentalidad ganadora** — pensar en grande (de 50 a 100 a 1000 ventas), reinvertir el retorno como bola de nieve, romper cadenas mentales y usar la calculadora como motivación.
+
+**Tareas pendientes / próximas clases:** La siguiente clase (miércoles) es de OPTIMIZACIÓN de campañas, con Joaquito, donde se compartirán las métricas que Mercy usa en su administrador de anuncios. Más adelante habrá otra clase de Meta Ads con Joaquín y Angi, y una clase específica de ESCALADO. Las clases rotan de instructor (lunes Mercy, miércoles otro, viernes invitado especial).
+
+**Mensaje final de Mercy:** "Vayan y apliquen todo lo que aprendieron hoy. Es sencillo, una campaña se monta en 5 minutos. Pongan su musiquita, pongan todo en manos de Dios, oren cuando lancen la campaña. Trabajen mucho — es la manera en que se logran los sueños. La próxima vez ustedes serán los que cuenten su historia." Cierre con énfasis en mentalidad y abundancia.

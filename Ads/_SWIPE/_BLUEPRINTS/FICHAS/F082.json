@@ -1,0 +1,252 @@
+{
+  "ficha_id": "F082",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/TE_VENDO_Express_GT/01_1731623901418443.jpg",
+    "anunciante": "TE VENDO Express GT",
+    "ad_archive_id": "1731623901418443",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "3:4",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL LOGO DE LA TIENDA REPETIDO ARRIBA Y ABAJO, CON EL TELEFONO EN EL MAYOR TAMANO DE LA PIEZA. La identidad del revendedor abre y cierra el frame: arriba a la izquierda con su lema, abajo otra vez junto a un numero de telefono escrito en digitos gigantes, mas grandes que el precio. La pieza vende el CANAL antes que el producto.",
+  "lectura_estrategica": "Layout de revendedor multiproducto, donde la marca del producto es prestada y lo unico propio es la tienda. Por eso el logo se repite dos veces y el telefono compite en tamano con el precio: lo que se esta construyendo es el contacto recurrente, no la venta de este articulo. El titular es de ALIVIO Y CONFORT — dos sustantivos blandos — porque la categoria no permite prometer mas, y el badge lateral responde por adelantado la objecion propia del producto (formula suave, sin sensacion de ardor). El precio se declara DE LANZAMIENTO, que justifica el numero sin necesidad de un tachado.",
+  "fondo": {
+    "tipo": "escena_de_uso_desenfocada",
+    "base": "foto de la zona objetivo siendo tocada o cuidada, muy desenfocada, con vegetacion",
+    "capa": "blanco y azul degradado sobre la mitad izquierda para sostener el texto",
+    "regla": "el fondo muestra la zona objetivo sin mostrar el sintoma"
+  },
+  "paleta": {
+    "derivacion": "de la identidad de la tienda, no del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} azul (titular, cards, banda del pie) mas verde (banda de precio y checks) mas blanco (fondo) mas naranja del logo de la tienda"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "logo_tienda_superior": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_TIENDA}}",
+      "lema": "{{LEMA_TIENDA}}",
+      "estilo_lema": "Bold uppercase muy chico de 2 lineas",
+      "escala": "20% del ancho",
+      "restriccion_lema": "5-7 palabras",
+      "regla": "el logo abre el frame: en revendedor multiproducto lo unico propio es la tienda"
+    },
+    "eyebrow": {
+      "posicion": "superior_centro",
+      "contenedor": "pildora con borde fino y hoja",
+      "texto": "{{ENCUADRE_BIENESTAR}}",
+      "estilo": "Bold uppercase chico de 2 lineas",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "titular_blando": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{SUSTANTIVO_BLANDO_1}} Y",
+      "linea_2": "{{SUSTANTIVO_BLANDO_2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3 palabras",
+      "formato_obligatorio": "dos sustantivos blandos unidos por Y",
+      "regla": "sustantivos blandos (alivio, confort, bienestar) cuando la categoria no permite prometer mas"
+    },
+    "bajada_frecuencia": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "texto": "{{FRASE_FRECUENCIA}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "4-5 palabras"
+    },
+    "banda_producto": {
+      "posicion": "izquierda_superior",
+      "contenedor": "banda {{PALETA_OSCURA}} con esquina recortada",
+      "linea_1": "{{PRODUCTO}}",
+      "linea_2": "{{VARIANTE}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold en cursiva {{PALETA_ACENTO}}"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "bajo la banda de producto",
+      "texto": "{{PARRAFO}}",
+      "estilo": "Regular {{PALETA_OSCURA}} de 3 lineas con los verbos en Bold",
+      "restriccion_palabras": "16-22 palabras"
+    },
+    "header_beneficios": {
+      "posicion": "izquierda_media",
+      "contenedor": "pildora {{PALETA_OSCURA}} con estrella",
+      "texto": "{{HEADER}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "1 palabra"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media, bajo el header",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art verde en circulo con borde mas texto Regular de 1-2 lineas",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_palabras": "4-7 palabras",
+      "regla_item_5": "el ultimo es de frecuencia de uso (ideal para uso diario)"
+    },
+    "badge_objecion": {
+      "posicion": "derecha_media",
+      "contenedor": "card con borde e icono",
+      "linea_1": "{{ETIQUETA_OBJECION}}",
+      "linea_2": "{{RESPUESTA_OBJECION}}",
+      "estilo_l1": "Black/900 uppercase",
+      "estilo_l2": "Bold chico",
+      "restriccion_palabras": "2-4 palabras por linea",
+      "regla_critica": "responde por adelantado la objecion PROPIA de la categoria (sin ardor, sin olor, no mancha), en su propio badge"
+    },
+    "badge_envio": {
+      "posicion": "superior_derecha extrema",
+      "contenedor": "card con icono de camion",
+      "linea_1": "{{GARANTIA_ENVIO}}",
+      "linea_2": "{{ALCANCE_ENVIO}}",
+      "estilo_l1": "Black/900 uppercase"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "envase de pie sobre base de madera circular, con hojas detras",
+      "fuente": "IMAGEN_2"
+    },
+    "fila_confianza": {
+      "posicion": "bajo el producto",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal de cards claras",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{CONFIANZA[3]}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card verde solida con esquina recortada",
+      "linea_1": "{{TIPO_PRECIO}}",
+      "estilo_l1": "Bold uppercase blanco de 2 lineas",
+      "linea_2": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l2": "Black/900 blanco",
+      "regla": "el precio se declara DE LANZAMIENTO: justifica el numero sin necesidad de un tachado"
+    },
+    "nota_manuscrita": {
+      "posicion": "inferior_derecha",
+      "texto": "{{NOTA_CIERRE}}",
+      "estilo": "cursiva decorativa {{PALETA_OSCURA}} de 2 lineas con corazon",
+      "restriccion_palabras": "6-8 palabras"
+    },
+    "barra_telefono": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda blanca con logo circular verde de mensajeria a la izquierda",
+      "linea_1": "{{CTA_ORDENA}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_ACENTO}} con signos de exclamacion",
+      "linea_2": "{{TELEFONO}}",
+      "estilo_l2": "Black/900 {{PALETA_OSCURA}}, EL MAYOR TAMANO DE LA PIEZA",
+      "logo_derecha": "{{LOGO_TIENDA}} repetido",
+      "regla_critica": "el telefono va mas grande que el precio: lo que se construye es el contacto recurrente, no la venta de este articulo"
+    },
+    "barra_atributos": {
+      "posicion": "inferior extremo, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art mas texto Bold uppercase muy chico de 2 lineas",
+      "items": "{{ATRIBUTOS_TIENDA[4]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "son atributos de la TIENDA (atencion personalizada, envios a todo el pais), no del producto"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_blando",
+    "producto_hero",
+    "card_precio",
+    "barra_telefono",
+    "banda_producto",
+    "columna_beneficios",
+    "badge_objecion",
+    "logo_tienda_superior",
+    "fila_confianza",
+    "nota_manuscrita",
+    "barra_atributos"
+  ],
+  "reglas_duras": [
+    "El logo de la tienda aparece dos veces: abre y cierra el frame",
+    "El telefono va en el mayor tamano de la pieza, mas grande que el precio",
+    "El titular son dos sustantivos blandos unidos por Y",
+    "El badge lateral responde la objecion propia de la categoria",
+    "El precio se declara de lanzamiento, sin tachado",
+    "La barra del pie lleva atributos de la tienda, no del producto"
+  ],
+  "variables_requeridas": [
+    "LOGO_TIENDA",
+    "LEMA_TIENDA",
+    "ENCUADRE_BIENESTAR",
+    "SUSTANTIVO_BLANDO_1",
+    "SUSTANTIVO_BLANDO_2_ACENTO",
+    "FRASE_FRECUENCIA",
+    "PRODUCTO",
+    "VARIANTE",
+    "PARRAFO",
+    "HEADER",
+    "BENEFICIOS[5]",
+    "ETIQUETA_OBJECION",
+    "RESPUESTA_OBJECION",
+    "GARANTIA_ENVIO",
+    "ALCANCE_ENVIO",
+    "CONFIANZA[3]",
+    "TIPO_PRECIO",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "MONEDA",
+    "NOTA_CIERRE",
+    "CTA_ORDENA",
+    "TELEFONO",
+    "ATRIBUTOS_TIENDA[4]"
+  ],
+  "cuando_usar": [
+    "revendedores multiproducto que construyen contacto recurrente",
+    "cuando el cierre es por telefono directo",
+    "categorias donde solo se puede prometer alivio y confort",
+    "lanzamiento de un producto nuevo en el catalogo de la tienda"
+  ],
+  "cuando_no_usar": [
+    "marcas propias: el logo de tienda repetido resta espacio al producto",
+    "cuando no se puede atender el telefono publicado",
+    "publico frio"
+  ],
+  "sellos_y_claims_observados": [
+    "Logo de la tienda con lema LO QUE QUIERES, RAPIDO Y FACIL, repetido arriba y abajo.",
+    "Eyebrow BIENESTAR PARA TU DIA A DIA.",
+    "Badge FORMULA SUAVE SIN SENSACION DE ARDOR.",
+    "Badge ENVIO GRATIS A TODO GUATEMALA.",
+    "Beneficios: ALIVIO CALMANTE PARA PIERNAS, PIES Y MANOS; FORMULA SUAVE, NO IRRITANTE; SENSACION REFRESCANTE Y RECONFORTANTE; FACIL APLICACION Y RAPIDA ABSORCION; IDEAL PARA USO DIARIO.",
+    "Fila de confianza: FORMULA SEGURA Y CONFIABLE, PAGO CONTRA ENTREGA, TU SATISFACCION ES NUESTRA PRIORIDAD.",
+    "Card PRECIO ESPECIAL DE LANZAMIENTO Q150.00.",
+    "Barra de telefono ORDENA AHORA POR WHATSAPP 30862500.",
+    "Barra de atributos de tienda: PRODUCTOS DE CALIDAD, ATENCION PERSONALIZADA, ENVIOS A TODO EL PAIS, COMPRA SEGURA.",
+    "Nota CUIDA TU BIENESTAR, MEJORA TU CALIDAD DE VIDA.",
+    "Claims impresos en el empaque: Extra Strength, Gentle Non-Burning Relief, MADE IN USA, NET WT 6 oz (118 g)."
+  ],
+  "canonico_id": "CN16_EMISOR_COMERCIAL",
+  "blueprint_equivalente": null
+}

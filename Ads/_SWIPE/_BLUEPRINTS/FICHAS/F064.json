@@ -1,0 +1,184 @@
+{
+  "ficha_id": "F064",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/05_1762477188271110.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1762477188271110",
+    "dias_activo": 13,
+    "replicas": 1,
+    "score": 38,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "densa"
+  },
+  "dispositivo_dominante": "LA COLUMNA DE 5 BENEFICIOS CON FOTO CIRCULAR REAL, SOBRE FONDO DE TEXTURA BIOLOGICA. Cinco filas apiladas en el flanco izquierdo, cada una con una foto circular del organo o del tejido y un par titulo/subtitulo, mientras el fondo superior muestra una macrofotografia del sistema objetivo (vasos, celulas, fibras) desenfocada. La biologia esta en el fondo y en los iconos, no en un diagrama.",
+  "lectura_estrategica": "Version vertical y sin timeline del concepto de progresion: al quitar el cronograma, la carga argumental se traslada a la columna de beneficios, que crece a cinco items con foto real. El titular habla de PROTEGER lo que ya funciona en vez de reparar lo que fallo, lo que cambia el avatar — de quien tiene un problema a quien quiere no tenerlo. La banda del pie cierra con una frase de inversion (cuidar hoy es invertir en tu bienestar de manana) que reencuadra el gasto como prevencion, y el badge de garantia comparte fila con los tres tiers en vez de flotar aparte.",
+  "fondo": {
+    "tipo": "macrofotografia_biologica_desenfocada",
+    "base_superior": "textura del sistema objetivo (vasos sanguineos, celulas, fibras) en rojo o en el color del organo, muy desenfocada",
+    "base_inferior": "{{PALETA_CLARO}} crema plano",
+    "regla": "la biologia va en el fondo y en los iconos, nunca como diagrama explicativo"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (bandas, titular, pie) mas crema (fondo inferior) mas dorado (garantia y etiquetas de tier) mas rojo de la textura biologica"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco sobre la banda, {{PALETA_OSCURA}} sobre el crema"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{VERBO_PROTECCION}}",
+      "linea_2": "{{OBJETO_ACENTO}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "estilo_l2": "Black/900 uppercase blanco, al 180% de L1",
+      "restriccion_palabras_total": "5-7 palabras",
+      "formato_obligatorio": "verbo de PROTECCION (protege, cuida, conserva) sobre lo que ya funciona",
+      "regla_critica": "protege lo que funciona en vez de reparar lo que fallo: cambia el avatar de quien tiene un problema a quien quiere no tenerlo"
+    },
+    "banda_necesidad": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_OSCURA}} translucida",
+      "texto": "{{FRASE_NECESIDAD}}",
+      "estilo": "Regular blanco",
+      "restriccion_palabras": "9-12 palabras",
+      "regla": "nombra los dos sistemas objetivo y declara que necesitan apoyo TODOS LOS DIAS: instala la frecuencia"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda, ocupa 50% del alto",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "FOTO CIRCULAR REAL del organo o tejido con borde fino mas TITULO Bold uppercase en {{PALETA_OSCURA}} mas subtitulo Regular de 2-3 lineas",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "7-12 palabras",
+      "regla_icono": "fotos circulares reales, nunca line-art",
+      "regla_item_4": "uno de los items descarta explicitamente una objecion de categoria",
+      "regla_item_5": "el ultimo repite la dosis del activo dentro del subtitulo"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "envase o bolsa de pie de frente con las perlas sueltas al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "bloque_precios": {
+      "posicion": "inferior, ancho parcial izquierdo",
+      "tiers": 3,
+      "orientacion": "fila horizontal de tres columnas separadas por lineas finas",
+      "formato_tier": "cantidad en Regular arriba, precio Black/900 debajo, etiqueta de valor en pildora {{PALETA_OSCURA}} al pie",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} — {{ETIQUETA_SOCIAL}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}} — {{ETIQUETA_AHORRO}}"
+    },
+    "badge_garantia": {
+      "posicion": "inferior_derecha, en la MISMA fila que los precios",
+      "forma": "circular con borde dorado doble",
+      "linea_1": "{{DIAS_GARANTIA}}",
+      "linea_2": "DIAS",
+      "linea_3": "{{CLAIM_DEVOLUCION}}",
+      "escala": "14% del ancho",
+      "regla": "comparte fila con los tiers en vez de flotar aparte: la garantia se lee como parte del precio"
+    },
+    "barra_garantias": {
+      "posicion": "bajo los precios, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[4]}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla_item_4": "el ultimo declara apoyo a lo local con bandera de {{PAIS}}"
+    },
+    "banda_inversion": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida con icono a la izquierda",
+      "linea_1": "{{INVERSION_L1}}",
+      "linea_2": "{{INVERSION_L2_ACENTO}}",
+      "estilo_l2": "Black/900 uppercase blanco",
+      "restriccion_palabras": "5-8 palabras por linea",
+      "regla_critica": "reencuadra el gasto como PREVENCION: cuidar hoy es invertir en el bienestar de manana"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "banda_necesidad",
+    "producto_hero",
+    "columna_beneficios",
+    "bloque_precios",
+    "badge_garantia",
+    "barra_garantias",
+    "banda_inversion"
+  ],
+  "reglas_duras": [
+    "El titular protege lo que funciona en vez de reparar lo que fallo",
+    "La banda de necesidad instala la frecuencia: todos los dias",
+    "Los iconos de beneficio son fotos circulares reales, nunca line-art",
+    "La textura biologica va en el fondo, nunca como diagrama explicativo",
+    "La garantia comparte fila con los tiers",
+    "La banda del pie reencuadra el gasto como prevencion",
+    "Siempre 3 tiers de precio"
+  ],
+  "variables_requeridas": [
+    "VERBO_PROTECCION",
+    "OBJETO_ACENTO",
+    "FRASE_NECESIDAD",
+    "BENEFICIOS[5]",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "DIAS_GARANTIA",
+    "CLAIM_DEVOLUCION",
+    "GARANTIAS[4]",
+    "INVERSION_L1",
+    "INVERSION_L2_ACENTO",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "publico preventivo que todavia no tiene el problema declarado",
+    "cuando el sistema objetivo tiene textura biologica fotografiable",
+    "cuando se quiere la carga argumental del timeline sin usar cronograma",
+    "ubicaciones verticales"
+  ],
+  "cuando_no_usar": [
+    "publico con sintoma agudo: el registro preventivo no compite con el alivio",
+    "cuando no hay cinco beneficios con foto real disponible",
+    "cuando el producto promete resultado y no mantenimiento"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular GARANTIA DE DEVOLUCION DE 90 DIAS en dorado.",
+    "Beneficios: CIRCULACION SALUDABLE (apoya el flujo sanguineo para que tu cuerpo reciba lo que necesita), BIENESTAR VASCULAR (contribuye a la salud de los vasos sanguineos y al bienestar general), APOYA TUS FILTROS RENALES (favorece el funcionamiento normal de los filtros renales), MANEJO SALUDABLE DE LIQUIDOS (ayuda a mantener el equilibrio natural de liquidos. No es un diuretico agresivo), ANTIOXIDANTE DE ALTA POTENCIA (12 mg de astaxantina para ayudar a proteger tus celulas del estres oxidativo).",
+    "Etiquetas MEJOR OFERTA en el tier 2 y MAYOR AHORRO en el tier 3.",
+    "Barra de garantias: ENVIOS A TODA GUATEMALA, PAGO CONTRA ENTREGA, COMPRA SEGURA Y GARANTIZADA, APOYAMOS LO HECHO EN GUATEMALA con bandera.",
+    "Banda de cierre CUIDAR TU CIRCULACION Y TUS FILTROS RENALES HOY, ES INVERTIR EN TU BIENESTAR DE MANANA.",
+    "Claims impresos en el empaque: GMO free, gluten free, lab tested, from microalgae, triple strength."
+  ],
+  "canonico_id": "CN05_LISTA_BENEFICIOS",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

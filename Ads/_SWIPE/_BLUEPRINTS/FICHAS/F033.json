@@ -1,0 +1,171 @@
+{
+  "ficha_id": "F033",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/VitalBio/01_932960223166291.jpg",
+    "anunciante": "VitalBio",
+    "ad_archive_id": "932960223166291",
+    "dias_activo": 32,
+    "replicas": 1,
+    "score": 57,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "28%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C1_OFERTA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL ESCUDO DE OFERTA CON EL NUMERAL DE CANTIDAD ADENTRO. Un escudo o blason vertical con borde dorado contiene, apilados, la etiqueta EL MAS ELEGIDO, el numeral de cantidad gigante y el precio. La forma de escudo hace que la oferta se lea como una distincion, no como un descuento: es la misma informacion de F001 pero vestida de premio.",
+  "lectura_estrategica": "Vende autoridad de producto premium a un problema cotidiano. El titular usa una estructura de tres pisos con concesion incorporada — el sintoma, la frecuencia, y el aunque duermas bien — que anticipa y desarma la explicacion facil que la persona ya se dio. El subtitulo convierte la carencia en una cifra memorizable (los 12 magnesios que le faltan), que es lo que la persona va a repetir. El fondo azul con halos dorados y el podio elevan un suplemento comun a categoria de producto importado.",
+  "fondo": {
+    "tipo": "degradado_radial_oscuro_con_halos",
+    "centro": "{{PALETA_MEDIO}} azul",
+    "borde": "{{PALETA_OSCURA}}",
+    "elemento": "anillos o halos dorados concentricos detras del producto, y un podio o pedestal bajo el",
+    "textura": "ninguna",
+    "funcion": "el podio y los halos elevan un producto comun a categoria de importado premium"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "azul en tres tonos (fondo) mas dorado (bordes, escudo, halos, banda de CTA) mas blanco (titular) mas el granate del envase"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada con una serif o script de apoyo en el titular",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "icono_superior": {
+      "posicion": "superior_centro",
+      "contenido": "{{ICONO_SIMBOLICO}}",
+      "escala": "8% del ancho",
+      "regla": "un solo icono dorado que simbolice el sistema afectado, sobre el titular"
+    },
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "linea_1": "{{SINTOMA_1}} y {{SINTOMA_2}}",
+      "linea_2": "{{FRECUENCIA}}",
+      "linea_3": "{{CONCESION}}",
+      "estilo_l1": "Black/900 blanco con signo de interrogacion de apertura",
+      "estilo_l2": "Black/900 en {{COLOR_ACENTO}} dorado",
+      "estilo_l3": "Bold blanco al 60% de L1, con signo de interrogacion de cierre",
+      "restriccion_palabras_total": "7-9 palabras",
+      "formato_obligatorio": "dos sintomas + la frecuencia + una CONCESION que desarma la explicacion facil (aunque duermas bien, aunque comas sano)",
+      "regla_critica": "la concesion es lo que hace el trabajo: anticipa la razon que la persona ya se dio a si misma y la descarta"
+    },
+    "subtitular_carencia": {
+      "posicion": "bajo el titular",
+      "lineas": 2,
+      "linea_1": "{{FRASE_CARENCIA}}",
+      "linea_2": "{{CIFRA_MEMORIZABLE}}",
+      "estilo_l1": "Bold blanco",
+      "estilo_l2": "Black/900 en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "4-7 palabras por linea",
+      "regla": "convierte la carencia en una CIFRA memorizable: es lo que la persona va a repetir y a buscar"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "42% del frame",
+      "composicion": "DOS envases identicos de frente sobre un podio o pedestal, con halo dorado detras",
+      "regla": "la cantidad de envases coincide con el numeral del escudo",
+      "fuente": "IMAGEN_2"
+    },
+    "escudo_oferta": {
+      "posicion": "centro_derecha",
+      "contenedor": "escudo o blason vertical con borde dorado doble y banda superior",
+      "banda_superior": "{{ETIQUETA_SOCIAL}}",
+      "estilo_banda": "Bold uppercase blanco sobre dorado",
+      "linea_1": "{{CANTIDAD}}",
+      "estilo_l1": "Black/900 blanco, elemento mas grande del bloque",
+      "linea_2": "SOLO",
+      "linea_3": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l3": "Black/900 blanco",
+      "escala": "28% del alto del frame",
+      "regla": "la forma de escudo hace que la oferta se lea como distincion y no como descuento"
+    },
+    "fila_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores dorados",
+      "formato_item": "icono en circulo dorado mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[3]}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla_item_3": "el tercero es el sello de origen con bandera de {{PAIS_ORIGEN}}"
+    },
+    "cta_boton": {
+      "posicion": "inferior extremo, ancho parcial centrado",
+      "contenedor": "boton oscuro con borde dorado e icono de carrito",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco con la ultima palabra en dorado",
+      "restriccion_palabras": "3 palabras",
+      "formato_obligatorio": "primera persona del deseo (los quiero, lo quiero), no imperativo"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "escudo_oferta",
+    "producto_hero",
+    "subtitular_carencia",
+    "fila_garantias",
+    "cta_boton"
+  ],
+  "reglas_duras": [
+    "El titular incluye una concesion que desarma la explicacion facil que la persona ya se dio",
+    "El subtitulo convierte la carencia en una cifra memorizable",
+    "La oferta va dentro de un escudo con borde dorado, no en una card rectangular",
+    "La cantidad de envases fotografiados coincide con el numeral del escudo",
+    "El producto va sobre podio con halo dorado detras",
+    "El CTA va en primera persona del deseo, no en imperativo"
+  ],
+  "variables_requeridas": [
+    "ICONO_SIMBOLICO",
+    "SINTOMA_1",
+    "SINTOMA_2",
+    "FRECUENCIA",
+    "CONCESION",
+    "FRASE_CARENCIA",
+    "CIFRA_MEMORIZABLE",
+    "ETIQUETA_SOCIAL",
+    "CANTIDAD",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[3]",
+    "CTA",
+    "PAIS_ORIGEN",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "sintoma cotidiano con una explicacion facil que conviene descartar (cansancio, estres, mal humor)",
+    "producto con una cifra distintiva en la formula (12 tipos, 8 formas, 1000 mg)",
+    "cuando el argumento es que el producto es superior, no que es barato",
+    "producto importado donde el origen es parte del valor"
+  ],
+  "cuando_no_usar": [
+    "dolor agudo: el registro solemne no acompana la urgencia",
+    "cuando no hay una cifra distintiva que dar",
+    "ofertas de liquidacion: el escudo dorado contradice el mensaje de precio bajo"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello MADE IN USA 100% ORIGINAL con bandera de EEUU en la fila de garantias, y MADE IN USA impreso en el empaque.",
+    "Etiqueta EL MAS ELEGIDO en la banda superior del escudo de oferta.",
+    "Garantias ENVIO GRATIS y PAGO AL RECIBIR.",
+    "Subtitulo de carencia: TU CUERPO PIDE LOS 12 MAGNESIOS QUE LE FALTAN.",
+    "CTA en primera persona: LOS QUIERO HOY."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

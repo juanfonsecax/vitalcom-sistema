@@ -1,0 +1,171 @@
+{
+  "ficha_id": "F088",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/14_1779511049710752.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1779511049710752",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "26%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "ligera"
+  },
+  "dispositivo_dominante": "EL SISTEMA INTERNO SUPERPUESTO SOBRE EL TORSO DEL AVATAR. La ilustracion del corazon y los vasos se dibuja ENCIMA de la ropa de la persona, en el lugar anatomico exacto, como si se le viera por dentro. No es un diagrama al costado: es una radiografia sobre alguien concreto.",
+  "lectura_estrategica": "El recurso mas eficiente del banco para explicar un mecanismo interno sin perder al avatar: al superponer el sistema sobre el cuerpo real, la persona y el organo son la misma cosa, y el lector no tiene que hacer la traduccion. La pregunta del titular usa el verbo NECESITA APOYO en vez de nombrar una falla, lo que permite interpelar a alguien que no se siente enfermo. Los tres items de la columna van sin subtitulos y con icono anatomico, y la oferta es de una sola unidad con el precio de entrada: la pieza es de captacion, no de ticket.",
+  "fondo": {
+    "tipo": "macrofotografia_biologica_desenfocada",
+    "base": "textura de globulos rojos o del tejido objetivo en rojo, muy desenfocada",
+    "capa": "blanco plano sobre la mitad izquierda para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del organo objetivo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (titular, banda, card de precio, boton) mas blanco (fondo izquierdo) mas rojo de la ilustracion y del fondo mas crema"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_pregunta": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{POSESIVO_SISTEMA}}",
+      "linea_2": "{{VERBO_NECESIDAD_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}} con signo de interrogacion de apertura",
+      "estilo_l2": "Black/900 uppercase, con signo de interrogacion de cierre",
+      "restriccion_palabras_total": "4 palabras",
+      "formato_obligatorio": "tu SISTEMA necesita apoyo",
+      "regla_critica": "el verbo NECESITA APOYO no nombra una falla: permite interpelar a alguien que no se siente enfermo"
+    },
+    "banda_imperativo": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_OSCURA}} solida con extremos irregulares",
+      "texto": "{{IMPERATIVO_CUIDADO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "avatar_con_sistema": {
+      "posicion": "derecha, ocupa el alto central",
+      "contenido": "{{FOTO_AVATAR}}",
+      "escala": "45% del frame",
+      "superposicion": "{{ILUSTRACION_SISTEMA_INTERNO}}",
+      "tratamiento": "persona real del rango de edad, de pie y sonriendo, con la ilustracion del organo y sus vasos dibujada ENCIMA de la ropa, en el lugar anatomico exacto",
+      "regla_critica": "el sistema se superpone al cuerpo real: la persona y el organo son la misma cosa, y el lector no tiene que hacer la traduccion",
+      "regla_mirada": "mira hacia arriba o al costado, no a camara: la atencion queda en el sistema dibujado"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_media",
+      "escala": "40% del frame",
+      "composicion": "envase de pie de frente con las perlas sueltas al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_beneficios": {
+      "posicion": "centro_derecha",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono anatomico line-art en circulo con borde mas texto Regular de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "sin subtitulos: en una pieza de captacion la lista no debe competir con la imagen",
+      "regla_item_1": "el primero es el activo con su dosis, no un beneficio"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_OSCURA}} solida",
+      "linea_1": "{{CANTIDAD}} {{UNIDAD}}",
+      "estilo_l1": "Bold uppercase blanco chico",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 blanco",
+      "regla": "una sola unidad al precio de entrada: la pieza es de captacion, no de ticket"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_centro",
+      "cantidad_items": 2,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_cierre": {
+      "posicion": "inferior_derecha",
+      "contenedor": "boton {{PALETA_OSCURA}} solido",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2 palabras",
+      "formato_obligatorio": "imperativo de inicio (empieza hoy)"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_pregunta",
+    "avatar_con_sistema",
+    "banda_imperativo",
+    "producto_hero",
+    "columna_beneficios",
+    "card_precio",
+    "boton_cierre",
+    "fila_garantias"
+  ],
+  "reglas_duras": [
+    "El sistema interno se dibuja encima de la ropa del avatar, en el lugar anatomico exacto",
+    "El avatar mira hacia arriba o al costado, no a camara",
+    "El titular pregunta si el sistema necesita apoyo, sin nombrar una falla",
+    "La columna va sin subtitulos",
+    "El primer item de la columna es el activo con su dosis",
+    "Un solo tier al precio de entrada"
+  ],
+  "variables_requeridas": [
+    "POSESIVO_SISTEMA",
+    "VERBO_NECESIDAD_ACENTO",
+    "IMPERATIVO_CUIDADO",
+    "FOTO_AVATAR",
+    "ILUSTRACION_SISTEMA_INTERNO",
+    "BENEFICIOS[3]",
+    "CANTIDAD",
+    "UNIDAD",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "CTA"
+  ],
+  "cuando_usar": [
+    "cuando hay que explicar un mecanismo interno sin perder al avatar",
+    "publico que no se siente enfermo y no responderia a un titular de sintoma",
+    "captacion con precio de entrada",
+    "sistemas del cuerpo que se pueden ilustrar sobre el torso"
+  ],
+  "cuando_no_usar": [
+    "zonas del cuerpo que no caen sobre el torso",
+    "cuando el objetivo es ticket alto: la pieza ofrece una sola unidad",
+    "publico de nivel 4 que compara composiciones"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular ¿TU CIRCULACION NECESITA APOYO? con banda CUIDA TUS VASOS SANGUINEOS.",
+    "Beneficios: ASTAXANTINA 12 MG, APOYA LA CIRCULACION SALUDABLE, CONTRIBUYE AL BIENESTAR VASCULAR.",
+    "Card 1 UNIDAD Q220.",
+    "Garantias ENVIO GRATIS y PAGO CONTRA ENTREGA.",
+    "Boton EMPIEZA HOY.",
+    "Claims impresos en el empaque: from microalgae, triple strength, 12 mg, GMO free, gluten free, lab tested, 60 Softgels Dietary Supplement."
+  ],
+  "canonico_id": "CN13_ANATOMIA_MECANISMO",
+  "blueprint_equivalente": null
+}

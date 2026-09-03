@@ -1,0 +1,177 @@
+{
+  "ficha_id": "F010",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Guate_compra/02_4497636627224156.jpg",
+    "anunciante": "Guate compra",
+    "ad_archive_id": "4497636627224156",
+    "dias_activo": 63,
+    "replicas": 2,
+    "score": 113,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "38%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C1_OFERTA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL MULTIPLICADOR DE OFERTA EN CARTUCHO OVALADO. La formula CANTIDAD por PRECIO (3x1 Q330) va dentro de un ovalo de borde dorado sobre banda de cinta, apilada en dos lineas, y es lo unico grande del cuarto izquierdo. Donde F001 usa un numeral solo, aca el numeral y el precio se funden en UNA expresion aritmetica: no son dos datos, es una ecuacion.",
+  "lectura_estrategica": "Vende cantidad a una audiencia que ya acepto la categoria. Abre con un dato estadistico en tipo chica (8 de cada 10 adultos no consumen suficiente X): valida la necesidad sin dramatizarla, apto para un producto preventivo donde no hay dolor que mostrar. El pack de 3 unidades fotografiado replica visualmente el multiplicador. Cierra con localizacion explicita (precio especial para el pais), que en mercados chicos funciona como senal de que el anuncio no es un catalogo extranjero.",
+  "fondo": {
+    "tipo": "foto_ambiente_natural_desenfocada",
+    "base": "escena luminosa con vegetacion desenfocada, superficie de madera al frente",
+    "textura": "ninguna",
+    "funcion": "el ambiente natural compensa la falta de props: el producto no queda flotando"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} saturado (cartucho de oferta y banda) mas dorado (bordes y cintas) mas negro (titular) mas blanco (fondo de cards y franja del pie)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "dato_apertura": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{DATO_ESTADISTICO}}",
+      "estilo": "Regular negro chico, formato de pregunta",
+      "restriccion_palabras": "9-13 palabras",
+      "formato_obligatorio": "pregunta con cifra de prevalencia",
+      "funcion": "valida la necesidad sin dramatizarla: es la apertura para productos preventivos, donde no hay sintoma que mostrar"
+    },
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{TITULAR_L1}}",
+      "linea_2": "{{TITULAR_L2}}",
+      "linea_3": "{{INGREDIENTE_ESTRELLA}}",
+      "estilo_l1_l2": "Black/900 uppercase negro",
+      "estilo_l3": "Bold en caja baja, al 70% de L1",
+      "restriccion_palabras": "4-6 palabras en total",
+      "regla": "la ultima linea nombra el INGREDIENTE, no el producto: en un preventivo la persona busca el nutriente"
+    },
+    "bajada_marca": {
+      "posicion": "bajo el titular",
+      "texto": "{{MARCA}} {{PROMESA_DIARIA}}",
+      "estilo": "Bold negro de 2 lineas",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "cartucho_oferta": {
+      "posicion": "centro_izquierda",
+      "contenedor": "ovalo blanco con borde dorado doble, sobre banda de cinta {{PALETA_ACENTO}} con extremos plegados",
+      "banda_superior": "{{OFERTA_LABEL}} en Black uppercase blanco sobre la cinta",
+      "linea_1": "{{CANT}}x{{UNIDADES_POR_PACK}}",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo": "Black/900 en {{PALETA_ACENTO}}, las dos lineas al mismo tamano, apiladas y centradas",
+      "escala": "el conjunto ocupa 25% del alto del frame",
+      "regla": "cantidad y precio van en el MISMO contenedor y al mismo tamano: se leen como una sola expresion, no como dos datos"
+    },
+    "banda_descriptor": {
+      "posicion": "bajo el cartucho",
+      "contenedor": "banda de cinta {{PALETA_ACENTO}} con extremos plegados",
+      "linea_1": "{{DESCRIPTOR_L1}}",
+      "linea_2": "{{DESCRIPTOR_L2}}",
+      "estilo_l1": "Bold uppercase chico",
+      "estilo_l2": "Black/900 uppercase grande",
+      "restriccion_palabras": "2-3 palabras por linea",
+      "funcion": "nombra el formato o la textura del producto, que es el diferenciador cuando el ingrediente es commodity"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "45% del frame",
+      "composicion": "{{CANT}} unidades del producto agrupadas, una adelante y las otras detras en abanico, sobre superficie de madera con capsulas sueltas al pie",
+      "regla": "la cantidad de unidades fotografiadas COINCIDE con el multiplicador del cartucho",
+      "fuente": "IMAGEN_2"
+    },
+    "fila_beneficios": {
+      "posicion": "inferior_media, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "beneficios de sistema u organo (corazon, cerebro, articulaciones), que es como se vende un preventivo"
+    },
+    "franja_localizacion": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "franja {{PALETA_OSCURA}} solida con bandera de {{PAIS}} a la izquierda",
+      "texto": "{{CLAIM_LOCALIZACION}}",
+      "estilo": "Black/900 uppercase blanco con el pais en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-5 palabras",
+      "default": "PRECIO ESPECIAL PARA {{PAIS}}",
+      "funcion": "en mercados chicos senala que el anuncio no es un catalogo extranjero"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "cartucho_oferta",
+    "producto_hero",
+    "dato_apertura",
+    "banda_descriptor",
+    "fila_beneficios",
+    "franja_localizacion"
+  ],
+  "reglas_duras": [
+    "Cantidad y precio van dentro del mismo contenedor y al mismo tamano: son una expresion, no dos datos",
+    "La cantidad de unidades fotografiadas coincide con el multiplicador",
+    "La tercera linea del titular nombra el ingrediente, no el producto",
+    "Sin figura humana y sin foto de sintoma: es un preventivo",
+    "Una sola franja oscura en toda la pieza: la de localizacion, al pie",
+    "El fondo es ambiente natural desenfocado, nunca color plano"
+  ],
+  "variables_requeridas": [
+    "DATO_ESTADISTICO",
+    "TITULAR_L1",
+    "TITULAR_L2",
+    "INGREDIENTE_ESTRELLA",
+    "MARCA",
+    "PROMESA_DIARIA",
+    "OFERTA_LABEL",
+    "CANT",
+    "UNIDADES_POR_PACK",
+    "PRECIO",
+    "MONEDA",
+    "DESCRIPTOR_L1",
+    "DESCRIPTOR_L2",
+    "BENEFICIOS[3]",
+    "CLAIM_LOCALIZACION",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "producto PREVENTIVO sin sintoma visible (omega, vitaminas, minerales)",
+    "ingrediente que la persona ya busca por nombre",
+    "oferta de pack multiple donde el multiplicador es el argumento",
+    "cuando existe una cifra de prevalencia real para abrir",
+    "publico que ya acepto la categoria y compara precio"
+  ],
+  "cuando_no_usar": [
+    "dolor agudo o sintoma que se puede mostrar: se desperdicia el gancho",
+    "producto de marca desconocida sin ingrediente reconocible",
+    "cuando solo se vende 1 unidad: el cartucho pierde sentido"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio.",
+    "Abre con dato de prevalencia: 8 de cada 10 adultos no consumen suficiente del nutriente.",
+    "Banda de descriptor GEL SUAVE MEGA ROJO bajo el cartucho de oferta.",
+    "Beneficios por sistema: SALUD CARDIOVASCULAR, FUNCION CEREBRAL, ARTICULACIONES.",
+    "Franja de cierre PRECIO ESPECIAL PARA GUATEMALA con bandera."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

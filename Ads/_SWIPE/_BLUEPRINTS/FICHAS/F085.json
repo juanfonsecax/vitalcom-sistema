@@ -1,0 +1,202 @@
+{
+  "ficha_id": "F085",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tienda_de_Don_Gato/08_1717366556294976.jpg",
+    "anunciante": "Tienda de Don Gato",
+    "ad_archive_id": "1717366556294976",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "9:10",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA LISTA DE CATEGORIAS DE INGREDIENTE, NO DE INGREDIENTES SUELTOS. En vez de nombrar cada componente, la columna izquierda lista FAMILIAS — verdes, frutas, antioxidantes, probioticos, vitaminas — cada una con su calificativo en una segunda linea. La formula se resume en cinco grupos en lugar de en veinte nombres.",
+  "lectura_estrategica": "Solucion para formulas con demasiados ingredientes como para listarlos: agruparlos en familias conserva la sensacion de abundancia sin volver ilegible la pieza. El titular declara la categoria entera del producto — superalimentos que nutren tu cuerpo — y el conector CON UNA MEZCLA PODEROSA DE presenta la lista como el desglose de esa mezcla. La columna derecha, en cambio, si es de beneficios, de modo que izquierda dice QUE TRAE y derecha dice QUE HACE. El badge de resultados que sientes cierra en clave sensorial.",
+  "fondo": {
+    "tipo": "escena_natural_oscura_con_explosion_de_ingredientes",
+    "base": "verde oscuro casi negro con luz radial detras del envase",
+    "elemento": "frutas, hojas y verduras suspendidas alrededor del producto, como en explosion",
+    "textura": "ninguna",
+    "regla": "el fondo oscuro con los ingredientes suspendidos hace visible la abundancia que la lista resume"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "verde oscuro (fondo) mas verde brillante (titular de acento, checks) mas blanco (titular y cards) mas {{COLOR_ALERTA}} rojo de las etiquetas de ahorro"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "la cursiva se usa en la segunda linea del titular",
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_categoria": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{CATEGORIA_PLURAL}}",
+      "linea_2": "{{VERBO_CURSIVA_ACENTO}}",
+      "linea_3": "{{OBJETO}}",
+      "estilo_l1_l3": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 en cursiva verde brillante",
+      "restriccion_palabras_total": "5 palabras",
+      "regla": "declara la CATEGORIA entera del producto, no la marca ni un beneficio"
+    },
+    "conector_mezcla": {
+      "posicion": "bajo el titular",
+      "contenedor": "pildora con borde verde y hoja",
+      "texto": "{{CONECTOR}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "5-6 palabras",
+      "default": "CON UNA MEZCLA PODEROSA DE:",
+      "regla": "presenta la lista de abajo como el desglose de una mezcla, no como un inventario"
+    },
+    "columna_familias": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "check verde en circulo mas NOMBRE DE FAMILIA en Black/900 uppercase mas calificativo en Regular en la segunda linea",
+      "items": "{{FAMILIAS_INGREDIENTE[5]}}",
+      "restriccion_nombre": "1-2 palabras",
+      "restriccion_calificativo": "2-4 palabras",
+      "regla_critica": "lista FAMILIAS de ingrediente y no ingredientes sueltos: conserva la sensacion de abundancia sin volver ilegible la pieza",
+      "regla": "izquierda dice QUE TRAE"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "42% del frame",
+      "composicion": "envase de pie de frente con sello de seguridad, rodeado de frutas y hojas suspendidas, con el vaso servido a la derecha",
+      "fuente": "IMAGEN_2"
+    },
+    "badge_natural": {
+      "posicion": "superior_derecha",
+      "forma": "circular con borde dorado y hoja",
+      "texto": "{{CLAIM_NATURAL}}",
+      "escala": "13% del ancho"
+    },
+    "logo_tienda": {
+      "posicion": "superior_derecha extrema",
+      "contenido": "{{LOGO_TIENDA}}",
+      "escala": "16% del ancho"
+    },
+    "badge_contenido": {
+      "posicion": "derecha_superior",
+      "contenedor": "card oscura con borde",
+      "linea_1": "{{ETIQUETA_CONTENIDO}}",
+      "linea_2": "{{CONTENIDO}}",
+      "estilo_l2": "Black/900 blanco"
+    },
+    "badge_resultados": {
+      "posicion": "derecha_media",
+      "forma": "circular con borde",
+      "linea_1": "{{CLAIM_RESULTADOS}}",
+      "linea_2": "{{MATIZ_SENSORIAL}}",
+      "estilo_l1": "Black/900 blanco",
+      "escala": "15% del ancho",
+      "regla": "cierra en clave sensorial: resultados que SIENTES"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "check verde mas texto Regular de 1-2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "derecha dice QUE HACE"
+    },
+    "escalera_precios": {
+      "posicion": "inferior_izquierda",
+      "tiers": 3,
+      "orientacion": "tres cards oscuras numeradas de igual tamano",
+      "formato_tier": "circulo numerado con medalla en el primero, cantidad en Bold, precio Black/900, etiqueta de ahorro en pildora {{COLOR_ALERTA}} y ENVIO GRATIS al pie",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} — AHORRAS {{MONEDA}}{{AHORRO_2}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}} — AHORRAS {{MONEDA}}{{AHORRO_3}}"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_categoria",
+    "producto_hero",
+    "conector_mezcla",
+    "columna_familias",
+    "columna_beneficios",
+    "escalera_precios",
+    "badge_resultados",
+    "badge_natural",
+    "badge_contenido",
+    "logo_tienda"
+  ],
+  "reglas_duras": [
+    "La columna izquierda lista familias de ingrediente, no ingredientes sueltos",
+    "Cada familia lleva su calificativo en una segunda linea",
+    "Izquierda dice que trae y derecha dice que hace",
+    "El conector presenta la lista como el desglose de una mezcla",
+    "El fondo oscuro con los ingredientes suspendidos hace visible la abundancia",
+    "La medalla va en el tier de entrada",
+    "Las tres cards repiten envio gratis"
+  ],
+  "variables_requeridas": [
+    "CATEGORIA_PLURAL",
+    "VERBO_CURSIVA_ACENTO",
+    "OBJETO",
+    "CONECTOR",
+    "FAMILIAS_INGREDIENTE[5]",
+    "CLAIM_NATURAL",
+    "LOGO_TIENDA",
+    "ETIQUETA_CONTENIDO",
+    "CONTENIDO",
+    "CLAIM_RESULTADOS",
+    "MATIZ_SENSORIAL",
+    "BENEFICIOS[4]",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "AHORRO_2",
+    "AHORRO_3",
+    "MONEDA",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "formulas con demasiados ingredientes como para listarlos uno por uno",
+    "cuando la abundancia de la formula es el argumento",
+    "productos multiingrediente en polvo o mezcla",
+    "cuando conviene separar que trae de que hace en dos columnas"
+  ],
+  "cuando_no_usar": [
+    "formulas de uno o dos activos: usar el despiece de ingredientes",
+    "cuando el argumento es la dosis de un activo especifico",
+    "publico frio"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge circular 100% NATURAL y card CONTENIDO 303 G.",
+    "Badge circular 100% RESULTADOS QUE SIENTES.",
+    "Conector CON UNA MEZCLA PODEROSA DE.",
+    "Familias listadas: VERDES Y SUPERALIMENTOS, FRUTAS NATURALES, ANTIOXIDANTES QUE PROTEGEN, PROBIOTICOS Y ENZIMAS, VITAMINAS Y MINERALES ESENCIALES.",
+    "Beneficios: MAS ENERGIA NATURAL, MEJOR DIGESTION, INGREDIENTES VERDES Y SUPERALIMENTOS, FORTALECE TU SISTEMA INMUNE.",
+    "Escalera: 1 UNIDAD Q190 con medalla, 2 UNIDADES Q250 (AHORRAS Q60), 3 UNIDADES Q330 (AHORRAS Q140), las tres con ENVIO GRATIS.",
+    "Claims impresos en el empaque: greens & superfoods, DIGESTION* BLOATING* ENERGY*, STRAWBERRY KIWI FLAVORED, 60 servings, GLUTEN FREE, Net Wt. 10.7 oz (303 g)."
+  ],
+  "canonico_id": "CN15_INGREDIENTES_ACTIVO",
+  "blueprint_equivalente": null
+}

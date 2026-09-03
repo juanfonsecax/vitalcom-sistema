@@ -1,0 +1,181 @@
+{
+  "ficha_id": "F096",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/El_Punto_GT/02_1553800686196723.jpg",
+    "anunciante": "El Punto GT",
+    "ad_archive_id": "1553800686196723",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA CINTA METRICA COMO EJE VERTICAL DEL FRAME Y EL GESTO DE AUTO-MEDIRSE. El borde derecho es una regla graduada con numeros reales de estatura, y una flecha luminosa sube a lo largo de ella. Contra esa regla, el modelo se pone la mano plana sobre la cabeza y mira hacia arriba: el resultado deseado no es una sensacion, es un NUMERO en una escala dibujada en la pieza.",
+  "lectura_estrategica": "Convierte un beneficio abstracto en una magnitud medible, que es lo que hace comprable esta categoria: nadie discute si crecio o no, se mide. La flecha ascendente le da direccion al frame - el cartel se lee de abajo hacia arriba, igual que el gesto del modelo - y el titular en PREGUNTA hace la segmentacion: quien todavia quiere crecer se identifica solo, sin que la pieza nombre una edad. La nota al pie cierra el circulo declarando a quien esta orientado, y con eso responde la pregunta del titular.",
+  "fondo": {
+    "tipo": "escena_nocturna_azul_con_grafico_superpuesto",
+    "base": "azul marino profundo con degradado y destellos de luz",
+    "capa": "regla graduada vertical en el borde derecho, con marcas y numeros de la magnitud objetivo, mas una flecha ascendente luminosa",
+    "textura": "vineta oscura en las esquinas"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 3,
+    "estructura": "{{PALETA_OSCURA}} azul marino (fondo) mas {{PALETA_ACENTO}} amarillo (palabra clave, iconos, flecha, card de precio) mas blanco (texto)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada de caja alta",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_pregunta": {
+      "posicion": "superior_izquierda, ancho parcial",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{PREGUNTA_L1}}",
+      "linea_2": "{{VERBO_DESEO}}",
+      "linea_3": "{{PREGUNTA_L3}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "estilo_l2": "Black/900 uppercase {{PALETA_ACENTO}} al doble de altura",
+      "estilo_l3": "Bold uppercase blanco",
+      "restriccion_palabras_total": "5-6 palabras",
+      "formato_obligatorio": "pregunta cerrada que abre con TODAVIA y se responde con si o no",
+      "regla_critica": "el verbo del deseo se aisla en su propia linea y en color: es la unica palabra que se lee a escala de feed",
+      "funcion": "la pregunta segmenta sola - quien todavia lo quiere se identifica sin que la pieza nombre una edad"
+    },
+    "banda_etapa": {
+      "posicion": "bajo el titular, ancho parcial",
+      "contenedor": "banda de borde fino translucida",
+      "texto": "{{FRASE_ETAPA}}",
+      "estilo": "Bold uppercase blanco con las dos palabras clave en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "6-8 palabras",
+      "formato_obligatorio": "apoya tu etapa de mas los dos sustantivos del proceso"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas texto Bold uppercase blanco de 2 lineas con la palabra clave en {{PALETA_ACENTO}} y ASTERISCO al final",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_critica": "los tres beneficios cierran con asterisco y remiten a la nota al pie",
+      "regla_item_2": "el segundo es de apetito o de habito diario, no del resultado: sostiene la verosimilitud del primero"
+    },
+    "producto_hero": {
+      "posicion": "centro_bajo, entre la columna y el modelo",
+      "escala": "32% del alto",
+      "composicion": "envase de pie, frontal, con el nombre del activo y la cantidad legibles en el frente",
+      "fuente": "IMAGEN_1",
+      "regla": "el frente del envase declara los dos activos y el contenido neto: en esta categoria la etiqueta es parte del argumento"
+    },
+    "modelo_midiendose": {
+      "posicion": "derecha, sangrado al borde",
+      "escala": "38% del ancho",
+      "composicion": "{{MODELO}} de perfil tres cuartos contra una pared o columna, con la mano plana sobre la cabeza y la mirada hacia arriba",
+      "regla_critica": "el gesto es el de medirse a si mismo y la mano queda a la altura de una marca de la regla"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_ACENTO}} solida con esquinas recortadas",
+      "banda_superior": "{{PRECIO_LABEL}}",
+      "estilo_banda": "Bold uppercase {{PALETA_OSCURA}}",
+      "linea_1": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 {{PALETA_OSCURA}} muy grande",
+      "regla": "es la unica zona con fondo de color pleno: el precio se lee como el punto mas brillante del cartel"
+    },
+    "barra_logistica": {
+      "posicion": "inferior, ancho completo, bajo la card",
+      "cantidad_items": 2,
+      "orientacion": "dos modulos separados por una linea vertical fina",
+      "formato_item": "icono line-art blanco mas texto de 2 lineas con la palabra clave en {{PALETA_ACENTO}}",
+      "item_1": "{{ENVIO}} {{COBERTURA}}",
+      "item_2": "{{CONDICION_PAGO}} {{REFUERZO_PAGO}}",
+      "restriccion_palabras": "4-6 palabras por modulo"
+    },
+    "nota_al_pie": {
+      "posicion": "inferior extremo, centrado",
+      "texto": "*{{NOTA_ORIENTACION}}",
+      "estilo": "Regular blanco muy chico",
+      "restriccion_palabras": "10-14 palabras",
+      "formato_obligatorio": "asterisco mas especialmente orientado a mas la definicion del publico",
+      "regla_critica": "la nota define A QUIEN esta orientado el producto y con eso responde la pregunta del titular"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_pregunta",
+    "modelo_midiendose",
+    "producto_hero",
+    "columna_beneficios",
+    "card_precio",
+    "banda_etapa",
+    "barra_logistica",
+    "nota_al_pie"
+  ],
+  "reglas_duras": [
+    "La regla graduada con numeros reales ocupa el borde vertical del frame",
+    "Una flecha luminosa sube a lo largo de la regla y da direccion al cartel",
+    "El modelo se mide a si mismo con la mano plana sobre la cabeza",
+    "El titular es una pregunta cerrada y el verbo del deseo se aisla en color al doble de altura",
+    "Los tres beneficios cierran con asterisco",
+    "La nota al pie declara a quien esta orientado el producto",
+    "La card de precio es la unica zona de color pleno del cartel"
+  ],
+  "variables_requeridas": [
+    "PREGUNTA_L1",
+    "VERBO_DESEO",
+    "PREGUNTA_L3",
+    "FRASE_ETAPA",
+    "BENEFICIOS[3]",
+    "MODELO",
+    "PRECIO_LABEL",
+    "MONEDA",
+    "PRECIO",
+    "ENVIO",
+    "COBERTURA",
+    "CONDICION_PAGO",
+    "REFUERZO_PAGO",
+    "NOTA_ORIENTACION",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "beneficios que se expresan en una MAGNITUD medible con escala propia",
+    "cuando el publico se puede segmentar solo con una pregunta en vez de nombrar la edad",
+    "cierre por precio con envio y contraentrega",
+    "categorias donde el gesto del resultado es reconocible y se puede fotografiar"
+  ],
+  "cuando_no_usar": [
+    "beneficios que no tienen escala numerica ni instrumento de medida",
+    "publico frio de nivel 1 o 2",
+    "cuando no hay precio que poner: la card de color pleno se queda sin contenido"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular ?TODAVIA QUIERES CRECER UN POCO MAS?",
+    "Banda APOYA TU ETAPA DE CRECIMIENTO Y DESARROLLO.",
+    "Beneficios con asterisco: APOYA EL CRECIMIENTO Y DESARROLLO* / FAVORECE EL APETITO* / APOYA ENERGIA Y RENDIMIENTO*.",
+    "Marca AMERICAN NATURAL - Krec'UP, suplemento alimenticio en capsulas con L-arginina y Zinc.",
+    "Etiqueta del envase: L-ARGININE Y ZINC, Perfect For Children And Adults, Natural Bone support, 36 g cont. net., 60 capsulas de 600 mg.",
+    "Card PRECIO ESPECIAL Q285.",
+    "Barra ENVIO GRATIS A TODO EL PAIS / PAGO CONTRA ENTREGA - !PAGAS AL RECIBIR!.",
+    "Nota al pie *Especialmente orientado a personas que aun se encuentran en etapa de crecimiento.",
+    "Regla graduada de fondo con las marcas 130 a 170."
+  ],
+  "canonico_id": "CN22_ESCENA_DE_USO",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,195 @@
+{
+  "ficha_id": "F107",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Topishop/04_1609259837535109.jpg",
+    "anunciante": "Topishop",
+    "ad_archive_id": "1609259837535109",
+    "dias_activo": 3,
+    "replicas": 1,
+    "score": 28,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "10%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL RATING DECIMAL CON ESTRELLAS, DEL TAMANO DE UN TITULAR. Una card negra de borde dorado sostiene cinco estrellas, la calificacion en decimales - no un cinco redondo - y debajo el numero de clientes con separador de millar. Es la ficha de producto de un e-commerce trasplantada al creativo, y ocupa el mismo peso visual que el titular.",
+  "lectura_estrategica": "El decimal es todo el dispositivo: un cinco perfecto se lee como inventado y un 4.95 se lee como promedio de gente real. La segunda decision es el sistema de contenedores - todo vive en cards de borde dorado sobre fondo oscuro con bokeh - y eso es lo que comunica precio alto antes de que se lea una sola palabra: el envase no cambia, cambia la vitrina. La pieza no lleva precio ni escalera; toda su energia esta puesta en que el producto parezca caro y bien calificado, y deja el numero para la conversacion.",
+  "fondo": {
+    "tipo": "follaje_oscuro_con_bokeh_dorado",
+    "base": "vegetacion verde profunda muy desenfocada con puntos de luz calida",
+    "capa": "vineta negra fuerte en los cuatro bordes",
+    "textura": "el bokeh del follaje"
+  },
+  "paleta": {
+    "derivacion": "de la categoria premium, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "negro (fondo y cards) mas {{PALETA_ACENTO}} dorado (titular, bordes, estrellas, iconos) mas {{PALETA_OSCURA}} verde bosque (bandas) mas blanco (texto de apoyo)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Cursiva"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_contraste": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 4,
+      "linea_1": "{{COSA_PEQUENA}},",
+      "linea_2": "{{COSA_GRANDE}}",
+      "linea_3": "PARA TU {{AMBITO}}",
+      "linea_4": "{{FRECUENCIA}}",
+      "estilo_l1": "cursiva blanca",
+      "estilo_l2": "Black/900 uppercase con relleno degradado {{PALETA_ACENTO}} y borde oscuro",
+      "estilo_l3": "Bold uppercase blanco sobre banda {{PALETA_OSCURA}}",
+      "estilo_l4": "cursiva {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "8-10 palabras",
+      "formato_obligatorio": "algo pequeno en cursiva, coma, algo grande en versal dorada",
+      "regla_critica": "el titular es una figura de contraste de tamano: la unidad minima de dosis contra la magnitud del beneficio"
+    },
+    "bloque_rating": {
+      "posicion": "superior_derecha, junto al titular",
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}",
+      "estrellas": "cinco estrellas {{PALETA_ACENTO}} en fila",
+      "linea_1": "{{RATING_DECIMAL}}/5",
+      "estilo_l1": "Black/900 {{PALETA_ACENTO}} al tamano de un titular",
+      "linea_2": "{{N_CLIENTES}}",
+      "linea_3": "{{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}}",
+      "estilo_l2": "Black/900 {{PALETA_ACENTO}} grande",
+      "regla_critica": "la calificacion lleva DECIMALES y no es un cinco redondo: el decimal es lo que la hace leer como promedio de gente real",
+      "regla_numero": "el numero de clientes lleva separador de millar"
+    },
+    "modelo_consumo": {
+      "posicion": "izquierda, sangrada al borde",
+      "escala": "38% del ancho",
+      "composicion": "{{MODELO}} sonriendo con la cabeza inclinada hacia atras, aplicandose el gotero en la boca, iluminada en calido",
+      "regla": "el gesto es el de TOMAR el producto, no el de sostenerlo"
+    },
+    "producto_hero": {
+      "posicion": "centro, ocupa el alto medio",
+      "escala": "34% del ancho",
+      "composicion": "frasco gotero de pie sobre madera con flores y hierbas al pie",
+      "fuente": "IMAGEN_1"
+    },
+    "cards_beneficio_mayor": {
+      "posicion": "izquierda_media, en columna",
+      "cantidad_items": 4,
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}",
+      "formato_item": "icono {{PALETA_ACENTO}} mas TITULO Bold uppercase mas subtitulo Regular de 2 lineas",
+      "items": "{{BENEFICIOS_MAYORES[4]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_subtitulo": "6-9 palabras",
+      "regla_item_1": "el primero lleva asterisco y se ancla en el descargo del pie"
+    },
+    "cards_beneficio_menor": {
+      "posicion": "derecha_media, en columna",
+      "cantidad_items": 4,
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}, mas chica",
+      "formato_item": "icono {{PALETA_ACENTO}} mas texto Bold uppercase de 2 o 3 lineas, sin subtitulo",
+      "items": "{{BENEFICIOS_MENORES[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "la columna menor repite el argumento en version corta: llena la vitrina sin agregar informacion nueva"
+    },
+    "fila_logistica": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres cards de borde {{PALETA_ACENTO}}",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas con la palabra clave en {{PALETA_ACENTO}}",
+      "items": "{{LOGISTICA[3]}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla_item_3": "el tercero es de seguridad de la compra, no de entrega"
+    },
+    "banda_sintesis": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "texto": "{{ATRIBUTO_1}} · {{ATRIBUTO_2}} · {{ATRIBUTO_3}}",
+      "estilo": "Bold uppercase {{PALETA_ACENTO}}",
+      "restriccion_palabras": "6-8 palabras"
+    },
+    "descargo": {
+      "posicion": "inferior extremo, bajo la banda",
+      "lineas": 2,
+      "texto": "*{{DESCARGO}}",
+      "estilo": "Regular gris muy chico",
+      "restriccion_palabras": "18-24 palabras",
+      "funcion": "cierra la pieza en el tamano mas chico y recoge el asterisco del primer beneficio"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_contraste",
+    "bloque_rating",
+    "producto_hero",
+    "modelo_consumo",
+    "cards_beneficio_mayor",
+    "cards_beneficio_menor",
+    "fila_logistica",
+    "banda_sintesis",
+    "descargo"
+  ],
+  "reglas_duras": [
+    "La calificacion va con decimales y con cinco estrellas, al tamano de un titular",
+    "El numero de clientes lleva separador de millar",
+    "Todo el contenido vive en cards de borde dorado sobre fondo oscuro",
+    "El titular contrasta una cosa pequena en cursiva con una grande en versal dorada",
+    "La modelo esta TOMANDO el producto, no sosteniendolo",
+    "El primer beneficio lleva asterisco y se recoge en el descargo del pie",
+    "El descargo de dos lineas cierra la pieza en el cuerpo mas chico"
+  ],
+  "variables_requeridas": [
+    "COSA_PEQUENA",
+    "COSA_GRANDE",
+    "AMBITO",
+    "FRECUENCIA",
+    "RATING_DECIMAL",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "MODELO",
+    "BENEFICIOS_MAYORES[4]",
+    "BENEFICIOS_MENORES[4]",
+    "LOGISTICA[3]",
+    "ATRIBUTO_1",
+    "ATRIBUTO_2",
+    "ATRIBUTO_3",
+    "DESCARGO",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "cuando existe una calificacion real con decimales y volumen de resenas",
+    "productos que se quieren posicionar como premium sin declarar precio en el creativo",
+    "categorias de bienestar donde conviene llevar el descargo dentro de la pieza",
+    "MOFU sobre publico que compara marcas"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay calificacion real: el bloque de rating es el dispositivo entero",
+    "cierre por precio u oferta agresiva: el registro premium se contradice con la escalera",
+    "publico frio de nivel 1 o 2"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular Pequenas gotas, GRANDES BENEFICIOS PARA TU BIENESTAR todos los dias.",
+    "Rating cinco estrellas 4.95/5 - 1.455 CLIENTES SATISFECHOS.",
+    "Beneficios mayores: APOYO HERBAL PARA TU SISTEMA LINFATICO* (Favorece el flujo linfatico y el bienestar general) / FORMULA HERBAL PREMIUM (Extractos herbales de alta calidad) / FACIL DE TOMAR EN GOTAS (Practico, delicioso y facil de incorporar a tu rutina) / IDEAL PARA TU RUTINA DIARIA (Bienestar que se adapta a tu estilo de vida).",
+    "Beneficios menores: FORMULA HERBAL DE CALIDAD / BIENESTAR Y LIGEREZA ACTIVA / CONFIANZA QUE RESPALDA TU ELECCION.",
+    "Logistica ENVIO GRATIS / PAGO CONTRA ENTREGA / COMPRA 100% SEGURA.",
+    "Banda FORMULA HERBAL · CALIDAD PREMIUM · CONFIANZA QUE RESPALDA.",
+    "Marca NATURES SUNSHINE Lymphatic Drainage - TRADITIONAL LYMPHATIC SUPPORT, LIQUID HERBS + EXTRACTS, Dietary Supplement, 2 oz (60 ml), badge NEW LOOK! SAME GREAT PRODUCT.",
+    "Descargo *Este producto es un suplemento dietario. No es un medicamento y no pretende diagnosticar, tratar, curar o prevenir ninguna enfermedad."
+  ],
+  "canonico_id": "CN10_PRUEBA_SOCIAL",
+  "blueprint_equivalente": null
+}

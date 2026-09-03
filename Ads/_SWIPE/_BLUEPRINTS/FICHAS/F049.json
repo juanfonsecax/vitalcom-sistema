@@ -1,0 +1,154 @@
+{
+  "ficha_id": "F049",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/FrezNova/05_1293270589550515.jpg",
+    "anunciante": "FrezNova",
+    "ad_archive_id": "1293270589550515",
+    "dias_activo": 27,
+    "replicas": 1,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "30%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL AVATAR CON EL SINTOMA Y EL PRODUCTO PUESTO AL MISMO TIEMPO. Una mujer sentada en su sala, con gesto de agotamiento y la mano en la sien, lleva las medias puestas y los zapatos de tacon tirados en el piso a su lado. La pieza muestra el problema, la vida que lo causa y la solucion en una sola foto, sin partirla en antes y despues.",
+  "lectura_estrategica": "Resuelve en una toma lo que otros layouts necesitan dos fotos para decir. El gesto de cansancio da el sintoma, los tacones en el piso dan la causa y el horario (fin de la jornada), y la prenda puesta da la solucion — todo simultaneo, sin comparacion ni promesa de cambio. El titular anade la palabra que cierra el argumento (desde el primer uso), que es la unica promesa de la pieza y es de INMEDIATEZ, no de resultado. La columna de cuatro beneficios va en tipo chica y sin subtitulos, porque el peso esta en la foto.",
+  "fondo": {
+    "tipo": "escena_de_interior_domestica",
+    "base": "sala de estar en luz calida de lampara, con sofa y alfombra",
+    "elemento": "los zapatos de trabajo tirados en el piso, junto a un bolso",
+    "textura": "ninguna",
+    "regla": "los objetos del piso son el argumento: nombran la jornada que produjo el sintoma"
+  },
+  "paleta": {
+    "derivacion": "del empaque o de la prenda",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rosa (segunda linea del titular, iconos, pildoras) mas azul marino (titular) mas blanco (cards) mas los calidos de la escena"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "azul marino"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{PROMESA_L1}}",
+      "linea_2": "{{PROMESA_L2_ACENTO}}",
+      "linea_3": "{{INMEDIATEZ}}",
+      "estilo_l1": "Black/900 azul marino",
+      "estilo_l2": "Black/900 en {{PALETA_ACENTO}}",
+      "estilo_l3": "Regular azul al 45% de L1",
+      "restriccion_palabras_total": "6-8 palabras",
+      "regla": "la tercera linea es la unica promesa de la pieza y es de INMEDIATEZ (desde el primer uso), no de resultado"
+    },
+    "pildora_categoria": {
+      "posicion": "bajo el titular",
+      "contenedor": "pildora {{PALETA_ACENTO}} solida con icono de corazon",
+      "texto": "{{CATEGORIA_PRODUCTO}}",
+      "estilo": "Bold blanco de 2 lineas",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "avatar_con_sintoma_y_producto": {
+      "posicion": "derecha, ocupa el alto completo",
+      "contenido": "{{FOTO_AVATAR_CON_PRODUCTO_PUESTO}}",
+      "escala": "50% del frame",
+      "tratamiento": "persona del avatar sentada en su casa al final del dia, con GESTO DE AGOTAMIENTO (mano en la sien o en la pierna) y el producto YA PUESTO",
+      "elementos_de_escena": "{{OBJETOS_DE_JORNADA}} tirados en el piso a su lado",
+      "regla_critica": "el sintoma, la causa y la solucion aparecen simultaneos en una sola toma, sin partirla en antes y despues",
+      "regla_objetos": "los objetos del piso nombran la jornada y el horario: son el argumento, no decorado"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo con borde mas texto Regular de 2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "tipo chica y SIN subtitulos: el peso de la pieza esta en la foto, no en la lista"
+    },
+    "pildora_rutina": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "pildora con borde {{PALETA_ACENTO}} y icono de corazon",
+      "linea_1": "{{FRASE_RUTINA_L1}}",
+      "linea_2": "{{FRASE_RUTINA_L2_ACENTO}}",
+      "estilo_l2": "Bold en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "convierte el uso puntual en habito: para tu rutina diaria, para tu bienestar siempre"
+    },
+    "selector_variantes": {
+      "posicion": "inferior_derecha",
+      "header": "{{HEADER_VARIANTES}}",
+      "estilo_header": "Regular uppercase muy chico",
+      "cantidad_items": 2,
+      "orientacion": "fila de circulos de color",
+      "items": "{{VARIANTES[2]}}"
+    }
+  },
+  "secuencia_lectura": [
+    "avatar_con_sintoma_y_producto",
+    "titular",
+    "pildora_categoria",
+    "columna_beneficios",
+    "pildora_rutina",
+    "selector_variantes"
+  ],
+  "reglas_duras": [
+    "El sintoma, la causa y la solucion aparecen simultaneos en una sola foto",
+    "El avatar lleva el producto YA puesto mientras muestra el gesto de cansancio",
+    "Los objetos de la jornada van tirados en el piso: nombran la causa y el horario",
+    "La unica promesa es de inmediatez, nunca de resultado",
+    "La columna de beneficios va en tipo chica y sin subtitulos",
+    "La pildora del pie convierte el uso puntual en habito"
+  ],
+  "variables_requeridas": [
+    "PROMESA_L1",
+    "PROMESA_L2_ACENTO",
+    "INMEDIATEZ",
+    "CATEGORIA_PRODUCTO",
+    "FOTO_AVATAR_CON_PRODUCTO_PUESTO",
+    "OBJETOS_DE_JORNADA",
+    "BENEFICIOS[4]",
+    "FRASE_RUTINA_L1",
+    "FRASE_RUTINA_L2_ACENTO",
+    "HEADER_VARIANTES",
+    "VARIANTES[2]"
+  ],
+  "cuando_usar": [
+    "cuando el sintoma aparece al final de una jornada identificable",
+    "productos vestibles o de uso prolongado",
+    "cuando existe foto del avatar usando el producto en su contexto real",
+    "TOFU donde interesa que la persona reconozca su rutina antes que su diagnostico"
+  ],
+  "cuando_no_usar": [
+    "cuando el sintoma no tiene un momento del dia asociado",
+    "cuando no hay foto del avatar con el producto puesto",
+    "BOFU: la pieza no lleva precio ni oferta"
+  ],
+  "sellos_y_claims_observados": [
+    "Pildora de categoria MEDIAS DE COMPRESION PANTORRILLERAS con icono de corazon.",
+    "Titular ALIVIO QUE SE SIENTE DESDE EL PRIMER USO.",
+    "Beneficios: MEJORA LA CIRCULACION, REDUCE LA HINCHAZON Y PIERNAS CANSADAS, ALIVIA MOLESTIAS POR VARICES, COMODAS LIGERAS Y TRANSPIRABLES.",
+    "Pildora de rutina PARA TU RUTINA DIARIA, PARA TU BIENESTAR SIEMPRE.",
+    "Selector 2 COLORES."
+  ],
+  "canonico_id": "CN07_DOLOR_A_PLENO",
+  "blueprint_equivalente": null
+}

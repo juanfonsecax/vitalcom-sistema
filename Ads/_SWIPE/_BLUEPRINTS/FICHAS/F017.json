@@ -1,0 +1,217 @@
+{
+  "ficha_id": "F017",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Leyna_Dolch_Filandro/01_28872761882326053.jpg",
+    "anunciante": "Leyna Dolch Filandro",
+    "ad_archive_id": "28872761882326053",
+    "dias_activo": 6,
+    "replicas": 4,
+    "score": 106,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "15%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA PAREJA MAYOR FELIZ AL FONDO, CON EL ORGANO ILUMINADO SOBRE EL PRODUCTO. No se muestra el dolor: se muestra la vida SIN el dolor. La unica referencia al problema es un grafico anatomico de la articulacion encendida, del tamano de un puno, flotando junto al envase. Es el layout del ALIVIO YA CONSEGUIDO.",
+  "lectura_estrategica": "Invierte el orden habitual del dolor cronico: en vez de identificar el sintoma y prometer alivio, muestra el alivio y deja que el lector deduzca el sintoma. Funciona en nivel 3, donde la persona ya conoce su condicion y esta cansada de que se la recuerden. La columna de 5 checks es puramente funcional (alivia, mejora, natural, rapida, apta) y el bloque derecho de 3 sellos verticales carga la credibilidad. El descuento circular arriba a la derecha es el unico elemento agresivo, y por eso destaca sin que la pieza se vea barata.",
+  "fondo": {
+    "tipo": "foto_exterior_luminosa_desenfocada",
+    "base": "escena de exterior en luz calida (parque, jardin, campo), muy desenfocada",
+    "capa": "blanco translucido sobre los bordes izquierdo e inferior para sostener el texto",
+    "funcion": "la luz exterior comunica movilidad recuperada sin decirlo"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 5,
+    "estructura": "{{PALETA_ACENTO}} verde (checks, titular de acento, sellos) mas azul oscuro (titular principal) mas blanco (fondo de cards) mas {{COLOR_ALERTA}} rojo (badge de descuento y CTA) mas amarillo (banda de urgencia)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "azul oscuro"
+  },
+  "zonas": {
+    "eyebrow": {
+      "posicion": "superior_izquierda",
+      "texto": "{{EYEBROW}}",
+      "estilo": "Bold uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "califica la solucion (alivio natural para) antes de nombrar el problema"
+    },
+    "titular": {
+      "posicion": "superior_izquierda, bajo el eyebrow",
+      "lineas": 2,
+      "linea_1": "{{PROBLEMA_L1}}",
+      "linea_2": "{{PROBLEMA_L2}}",
+      "estilo": "Black/900 uppercase azul oscuro",
+      "restriccion_palabras_total": "2-4 palabras",
+      "regla": "nombra la condicion en seco, sin dramatizarla: el drama lo desactiva la foto feliz"
+    },
+    "banda_beneficio": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_ACENTO}} solida con esquina recortada",
+      "linea_1": "{{PROMESA_L1}}",
+      "linea_2": "{{PROMESA_L2}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "regla": "la promesa es de VIDA (movilidad, calidad de vida), no de sintoma"
+    },
+    "badge_descuento": {
+      "posicion": "superior_derecha",
+      "forma": "circular {{COLOR_ALERTA}} solido con borde de puntos",
+      "linea_1": "{{DESCUENTO_LABEL}}",
+      "linea_2": "{{PORCENTAJE}}%",
+      "linea_3": "OFF",
+      "estilo_l2": "Black/900 blanco",
+      "escala": "20% del ancho",
+      "regla": "unico elemento agresivo de la pieza: por eso destaca sin abaratarla"
+    },
+    "foto_avatar_feliz": {
+      "posicion": "centro_derecha, al fondo",
+      "contenido": "{{FOTO_AVATAR_SIN_DOLOR}}",
+      "escala": "35% del frame",
+      "tratamiento": "pareja o persona del rango de edad objetivo, abrazados o en movimiento, sonriendo, en exterior",
+      "regla": "NO se muestra el dolor: se muestra la vida sin el",
+      "funcion": "desactiva el drama y proyecta el despues"
+    },
+    "grafico_organo": {
+      "posicion": "centro, sobre el producto",
+      "contenido": "{{GRAFICO_ZONA_AFECTADA}}",
+      "escala": "12% del frame",
+      "tratamiento": "ilustracion anatomica de la zona con halo rojo o naranja de inflamacion",
+      "regla": "es la UNICA referencia al problema en toda la pieza, y va del tamano de un puno",
+      "funcion": "ancla clinica: dice donde actua sin necesidad de mostrar a nadie sufriendo"
+    },
+    "columna_checks": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "check en circulo {{PALETA_ACENTO}} mas texto Bold de 1-2 lineas",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_item_5": "el ultimo declara la amplitud de uso (apto para hombres y mujeres), que amplia la audiencia"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "35% del frame",
+      "composicion": "caja de pie de frente, con props del ingrediente estrella al pie",
+      "sello_sobre_producto": "sello circular tipo timbre con {{SELLO_APROBACION}}, rotado, sobre la esquina superior de la caja",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_sellos": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "escudo o medalla en {{PALETA_ACENTO}} mas texto Bold uppercase de 2-3 lineas",
+      "items": "{{SELLOS_CONFIANZA[3]}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "fila_iconos": {
+      "posicion": "inferior_izquierda",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art en circulo mas texto Regular muy chico de 2 lineas",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "repite en icono lo que la columna de checks dijo en texto: refuerzo, no informacion nueva"
+    },
+    "cta_boton": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "boton {{COLOR_ALERTA}} redondeado con icono de carrito",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco con signos de exclamacion",
+      "restriccion_palabras": "2 palabras"
+    },
+    "banda_urgencia": {
+      "posicion": "inferior_centro",
+      "contenedor": "banda amarilla con icono de advertencia",
+      "linea_1": "{{URGENCIA_L1}}",
+      "linea_2": "{{URGENCIA_L2}}",
+      "estilo_l2": "Bold en {{COLOR_ALERTA}}",
+      "restriccion_palabras": "3-4 palabras por linea"
+    },
+    "prueba_social": {
+      "posicion": "inferior_derecha",
+      "formato": "escudo con check mas texto Bold de 2 lineas",
+      "texto": "{{PRUEBA_SOCIAL}}",
+      "restriccion_palabras": "4-5 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "foto_avatar_feliz",
+    "banda_beneficio",
+    "badge_descuento",
+    "columna_checks",
+    "producto_hero",
+    "grafico_organo",
+    "columna_sellos",
+    "cta_boton",
+    "banda_urgencia",
+    "fila_iconos",
+    "prueba_social"
+  ],
+  "reglas_duras": [
+    "No se muestra el dolor: se muestra la vida sin el",
+    "La unica referencia al problema es el grafico anatomico, del tamano de un puno",
+    "El badge de descuento es el unico elemento agresivo de la pieza",
+    "La promesa habla de vida y movilidad, no de sintoma",
+    "El sello sobre el producto va rotado, como un timbre",
+    "La fila de iconos repite lo que dijo la columna de checks: es refuerzo, no informacion nueva"
+  ],
+  "variables_requeridas": [
+    "EYEBROW",
+    "PROBLEMA_L1",
+    "PROBLEMA_L2",
+    "PROMESA_L1",
+    "PROMESA_L2",
+    "DESCUENTO_LABEL",
+    "PORCENTAJE",
+    "FOTO_AVATAR_SIN_DOLOR",
+    "GRAFICO_ZONA_AFECTADA",
+    "BENEFICIOS[5]",
+    "ATRIBUTOS[4]",
+    "SELLOS_CONFIANZA[3]",
+    "SELLO_APROBACION",
+    "CTA",
+    "URGENCIA_L1",
+    "URGENCIA_L2",
+    "PRUEBA_SOCIAL",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "condicion cronica que el publico ya conoce y esta cansado de que le recuerden",
+    "publico 55+ donde la aspiracion es seguir activo, no dejar de doler",
+    "cuando existe grafico anatomico de la zona",
+    "cuando hay un descuento porcentual real que anunciar"
+  ],
+  "cuando_no_usar": [
+    "publico de nivel 2 que todavia no nombro su condicion: necesita el sintoma explicito",
+    "cuando no hay foto de avatar en actividad positiva",
+    "productos esteticos"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello APPROVED tipo timbre rotado sobre la caja del producto.",
+    "Columna de sellos: PROBADO CALIDAD, PRODUCTO CERTIFICADO, INGREDIENTES DE ORIGEN NATURAL.",
+    "Badge circular DESCUENTO 50% OFF arriba a la derecha.",
+    "Prueba social COMPROBADO POR MILES DE PERSONAS con escudo y check.",
+    "Banda de urgencia NO TE PIERDAS ESTA OFERTA UNICA con icono de advertencia.",
+    "Checks de beneficio: ALIVIA EL DOLOR E INFLAMACION, MEJORA LA MOVILIDAD, FORMULA NATURAL CON EXTRACTOS DE HIERBAS, RAPIDA ABSORCION, APTO PARA HOMBRES Y MUJERES."
+  ],
+  "canonico_id": "CN13_ANATOMIA_MECANISMO",
+  "blueprint_equivalente": null
+}

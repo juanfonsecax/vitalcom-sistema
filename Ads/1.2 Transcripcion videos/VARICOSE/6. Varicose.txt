@@ -1,0 +1,27 @@
+============================================================
+Análisis del Video N: 6. Varicose.mp4
+
+CLASIFICACIÓN RÃPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "Muchos pacientes acuden a nosotros por manchas negras en las piernas. Pasé de esto a esto, con esta crema" | qué se ve: Un médico examinando piernas con manchas muy oscuras por estasis venosa, luego tomas de piernas con várices y el frasco de crema. | overlay en pantalla: "Piernas Negras", "Por Várices", "Muchos pacientes", "acuden a nosotros por", "manchas negras", "en las piernas.", "Antes", "pasé de esto a esto", "Después"
+- ÃNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Reducción de manchas negras en las piernas por várices, mejora de la circulación, alivio de dolor e hinchazón.
+- FORMATO CREATIVO (elegí UNO): educacional
+- AVATAR (quién aparece): Doctor al inicio y pacientes con piernas manchadas por várices.
+- TONO: clínico / educacional + tuteo + habla un doctor/voz en off.
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    Â· Prueba social (nº de clientes, "miles de personas"...): No aplica
+    Â· Cifras/resultados con tiempo ("en 30 días"...): "4 semanas de uso" (en pantalla)
+    Â· Urgencia/escasez ("oferta por tiempo limitado"...): No aplica
+    Â· Garantía / envío gratis / pago contra entrega: "envío gratis"
+    Â· Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"Muchos pacientes acuden a nosotros por manchas negras en las piernas. Pasé de esto a esto, con esta crema de origen natural. Cuando se trata de várices, la constancia es clave. Esta crema natural ayuda a mejorar la circulación, aliviar el dolor y reducir la hinchazón con el uso diario. Actúa directamente sobre la zona afectada, contribuyendo a una mejora visible en la piel con el tiempo. No requiere cirugías ni tratamientos costosos. Si buscas una opción práctica y no invasiva, esta puede ser la indicada. Obtén hoy el 2x1 con envío gratis."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Comienza con un profesional de la salud con guantes examinando una pierna con manchas negras severas. Muestra una transición "Antes" y "Después", luego el producto "South Moon Varicose Veins Ointment" y cómo se aplica la crema en las várices. Aparece una animación del interior de una vena mostrando el flujo sanguíneo, seguido por múltiples comparaciones de "Antes" y "Después", incluyendo la comparación "4 semanas de uso" contra "Sin aplicar".
+Textos en pantalla citados literal: "Piernas Negras", "Por Várices", "Muchos pacientes", "acuden a nosotros por", "manchas negras", "en las piernas.", "Antes", "pasé de esto a esto", "Después", "con esta crema", "de origen natural.", "Reduce las manchas", "Cuando se trata de", "várices,", "la constancia es", "clave,", "esta crema natural", "ayuda a mejorar", "la circulación,", "aliviar el dolor", "Elimina las manchas de tus piernas", "y reducir la", "hinchazón", "con el uso diario.", "Actúa", "directamente", "sobre la zona", "afectada", "contribuyendo", "ANTES", "a una mejora visible", "en la piel", "con el tiempo.", "DESPUÉS", "ANTES", "No requiere", "cirugías", "DESPUÉS", "USO DESDE CASA", "4 semanas de uso", "Sin aplicar", "ANTES Y DESPUÉS", "si buscas una", "opción", "práctica y no", "invasiva", "esta puede ser la", "indicada.", "2x1", "Devuelve el color natural a tus piernas", "Envío gratis".
+* Qué transmite: Autoridad y confianza al iniciar con un entorno médico, para luego empoderar al paciente con una solución natural y efectiva que puede usar desde su casa para tratar un problema grave (manchas por estasis venosa).
+* Llamado a la acción (CTA): "Obtén hoy el 2x1 con envío gratis."
+============================================================
+

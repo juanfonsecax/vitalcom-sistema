@@ -1,0 +1,135 @@
+{
+  "canonico_id": "CN15_INGREDIENTES_ACTIVO",
+  "schema_version": "canonico-1.0",
+  "nombre": "Despiece de ingredientes",
+  "dispositivo_canonico": "LA FORMULA SE ABRE Y SE MUESTRA POR PARTES: el activo principal solo en un circulo grande con su dosis y su explicacion, el despiece de los componentes alrededor del frasco, la lista de CATEGORIAS de ingrediente (no de ingredientes sueltos), o el badge con la cifra gigante de cuantos tipos lleva.",
+  "cuando_elegirlo": "Publico NC4 que compara formulas y lee etiquetas, o cuando el diferencial real del producto es la dosis. Requiere una formula que aguante el escrutinio: si el activo esta subdosificado, esta familia expone el problema en vez de venderlo.",
+  "ejes_de_variacion": [
+    "granularidad: un solo activo protagonista o el despiece completo",
+    "agrupar por CATEGORIA de ingrediente comprime una lista larga (F085)",
+    "la cifra de cantidad de activos puede volverse el badge dominante (F077)",
+    "la dosis en miligramos entra como pildora junto al circulo del activo"
+  ],
+  "n_miembros": 4,
+  "ficha_referencia": "F077",
+  "score_referencia": 33,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 4
+    },
+    "rol_embudo": {
+      "MOFU": 4
+    },
+    "estetica": {
+      "cartel_publicitario": 4
+    },
+    "formato": {
+      "1:1": 3,
+      "9:10": 1
+    },
+    "densidad": {
+      "alta": 3,
+      "media": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "ACTIVO_PRINCIPAL",
+    "DOSIS",
+    "EXPLICACION_ACTIVO",
+    "ACTIVOS_SECUNDARIOS",
+    "GRANULARIDAD",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "BENEFICIOS[4]",
+      "CALIFICATIVO_ACENTO",
+      "ETIQUETA_FORMULA",
+      "LOGO_MARCA",
+      "MONEDA",
+      "SUBCLAIM_CALIDAD",
+      "SUSTANTIVO_COMPOSICION"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "La cifra del badge y la cantidad de beneficios listados tienen que cuadrar",
+    "Un beneficio por sistema del cuerpo",
+    "El avatar muestra el producto ya preparado, no el envase",
+    "La persona mira el producto, no a camara",
+    "La nota manuscrita cierra en identidad, con dos sustantivos en paralelo",
+    "Las exclusiones dieteticas van juntas y separadas de los beneficios",
+    "La cursiva se usa solo en el descriptor y en la nota"
+  ],
+  "cuando_usar": [
+    "suplementos generalistas que cubren varios sistemas a la vez",
+    "cuando la formula tiene una cifra distintiva que se puede enumerar",
+    "productos en polvo donde conviene mostrar la preparacion",
+    "publico femenino de belleza y bienestar",
+    "publico de nivel 4 que compara composiciones entre marcas",
+    "formulas con varios activos reconocibles y fotografiables",
+    "cuando el activo principal tiene una dosis superior a la de la competencia",
+    "categorias donde el comprador lee etiquetas"
+  ],
+  "cuando_no_usar": [
+    "productos de un solo beneficio profundo",
+    "cuando la cifra del badge no se puede desglosar en items",
+    "categorias de dolor agudo",
+    "publico frio: sin problema ni promesa no engancha",
+    "formulas de un solo activo: el despiece queda vacio",
+    "cuando los ingredientes no son fotografiables o no se reconocen"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F077",
+      "score": 33,
+      "anunciante": "El Punto GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL BADGE DE FORMULA MULTIPLE CON LA CIFRA GIGANTE Y LOS TIPOS ENUMERADOS"
+    },
+    {
+      "ficha_id": "F079",
+      "score": 32,
+      "anunciante": "Natura Shoppy Guatemala",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL DESPIECE DE INGREDIENTES"
+    },
+    {
+      "ficha_id": "F080",
+      "score": 32,
+      "anunciante": "Natura Shoppy Guatemala",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ACTIVO PRINCIPAL SOLO, EN UN CIRCULO GRANDE A LA IZQUIERDA, CON SU DOSIS Y SU EXPLICACION"
+    },
+    {
+      "ficha_id": "F085",
+      "score": 32,
+      "anunciante": "Tienda de Don Gato",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "9:10",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA LISTA DE CATEGORIAS DE INGREDIENTE, NO DE INGREDIENTES SUELTOS"
+    }
+  ]
+}

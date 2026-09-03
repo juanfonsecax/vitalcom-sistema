@@ -1,0 +1,190 @@
+{
+  "ficha_id": "F003",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Camila_Recomienda/12_3103763283146693.jpg",
+    "anunciante": "Camila Recomienda",
+    "ad_archive_id": "3103763283146693",
+    "dias_activo": 24,
+    "replicas": 9,
+    "score": 249,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "35%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "colage-sintomas"
+  },
+  "dispositivo_dominante": "LA COLUMNA DE PROBLEMAS CON EVIDENCIA FOTOGRAFICA MAS CHECK. No dice que elimina hongos: MUESTRA la foto del hongo y la tacha con un check. La prueba es visual, no verbal. La figura de autoridad va DETRAS del producto: respalda, no compite.",
+  "lectura_estrategica": "Vende credibilidad institucional. La compra se justifica porque un medico la respalda. El titular es una AFIRMACION somatica, no una pregunta: crea una necesidad que la persona no habia reconocido. Nivel 2: sabe que tiene sintomas pero no sabe que existe esta solucion, por eso el titular nombra el sintoma y no el producto.",
+  "fondo": {
+    "tipo": "degradado_radial",
+    "centro": "{{PALETA_CLARO}} casi blanco",
+    "borde": "{{PALETA_MEDIO}}",
+    "vineta": "suave",
+    "textura": "ninguna",
+    "funcion": "el degradado radial hace que el producto brille sin glow artificial"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "3 tonos del color base (claro en el centro, medio en el borde, saturado en las pildoras) mas blanco, negro y el verde de los props botanicos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_centro",
+      "alineacion": "centrado",
+      "linea_1": "{{HOOK}}",
+      "linea_2": "{{SUBHOOK}}",
+      "estilo_l1": "Black/900 negro, tracking apretado",
+      "estilo_l2": "Regular/400 al 55% de L1",
+      "restriccion_palabras_l1": "3-4 palabras",
+      "restriccion_palabras_l2": "5-7 palabras",
+      "formato_obligatorio": "AFIRMACION somatica, no pregunta"
+    },
+    "sello_autoridad": {
+      "posicion": "superior_izquierda",
+      "forma": "circular con borde doble",
+      "contenido": "{{SELLO_REGULATORIO}}",
+      "escala": "10% del ancho",
+      "funcion": "primer ancla de confianza donde arranca la lectura occidental"
+    },
+    "columna_atributos": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "apilado vertical",
+      "formato_item": "icono line-art 2px en contenedor circular con borde mas label Bold uppercase debajo",
+      "items": "{{ATRIBUTOS[3]}}",
+      "restriccion_palabras_label": "2-3 palabras",
+      "funcion": "que ES el producto"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "45% del frame",
+      "angulo": "3/4 frontal con inclinacion leve",
+      "sombra": "suave y difusa debajo",
+      "fuente": "IMAGEN_2",
+      "regla": "ningun elemento lo tapa"
+    },
+    "figura_autoridad": {
+      "posicion": "superior_derecha, DETRAS del producto",
+      "sujeto": "{{FIGURA}}",
+      "encuadre": "medio cuerpo, sonriendo, mirando a camara",
+      "fuente": "IMAGEN_3",
+      "regla": "el producto siempre queda delante"
+    },
+    "claim_central": {
+      "posicion": "derecha del producto",
+      "texto": "{{CLAIM_CENTRAL}}",
+      "estilo": "Regular con 1-2 palabras en Bold y color de acento",
+      "restriccion_palabras": "10-14 palabras"
+    },
+    "columna_problemas": {
+      "posicion": "derecha_media",
+      "cantidad_items": "3-4",
+      "formato_item": "foto cuadrada con esquinas radio 20% mas check blanco en circulo {{PALETA_ACENTO}} en la esquina superior derecha sobresaliendo 30% mas label uppercase Bold sobre pildora {{PALETA_ACENTO}} debajo",
+      "items": "{{PROBLEMAS[]}}",
+      "restriccion_palabras_label": "2-3 palabras",
+      "regla_foto": "la foto debe MOSTRAR el problema, no ilustrarlo"
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card blanca con esquinas redondeadas y sombra suave",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "linea_2": "{{CANTIDAD}} x {{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900, segundo elemento mas grande de la pieza",
+      "regla": "maximo contraste contra el fondo"
+    },
+    "garantias": {
+      "posicion": "inferior_centro",
+      "cantidad_items": 3,
+      "orientacion": "columna",
+      "formato_item": "icono en contenedor redondeado mas texto Bold",
+      "items": "{{GARANTIAS[3]}}",
+      "restriccion_palabras": "2-3 palabras por item"
+    },
+    "sello_origen": {
+      "posicion": "inferior_derecha",
+      "forma": "circular oscuro con estrellas y borde",
+      "contenido": "{{SELLO_ORIGEN}}",
+      "escala": "16% del ancho"
+    },
+    "props_botanicos": {
+      "posicion": "bordes inferior_izquierda e inferior_derecha",
+      "contenido": "{{BOTANICOS[]}}",
+      "tratamiento": "reales, parcialmente fuera de foco, cortados por el borde"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "sello_autoridad",
+    "producto_hero",
+    "figura_autoridad",
+    "columna_problemas",
+    "claim_central",
+    "columna_atributos",
+    "bloque_oferta",
+    "garantias",
+    "sello_origen"
+  ],
+  "reglas_duras": [
+    "Ningun elemento tapa el producto hero",
+    "La figura de autoridad va siempre detras del producto",
+    "Los checks son blancos sobre circulo de color y sobresalen del borde de la foto",
+    "Cada problema lleva foto real que lo muestra, no un icono que lo ilustra",
+    "Maximo 3 pesos tipograficos",
+    "Fondo liso con degradado radial, sin textura ni patron"
+  ],
+  "variables_requeridas": [
+    "HOOK",
+    "SUBHOOK",
+    "ATRIBUTOS[3]",
+    "PROBLEMAS[]",
+    "CLAIM_CENTRAL",
+    "FIGURA",
+    "SELLO_REGULATORIO",
+    "SELLO_ORIGEN",
+    "BOTANICOS[]",
+    "OFERTA_LABEL",
+    "CANTIDAD",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[3]"
+  ],
+  "cuando_usar": [
+    "problemas fotografiables (piel, hongos, hinchazon, inflamacion)",
+    "producto con respaldo regulatorio real que se puede mostrar",
+    "publico 35+ que responde a autoridad medica",
+    "empaque atractivo con color fuerte"
+  ],
+  "cuando_no_usar": [
+    "problemas invisibles (energia, animo, sueno): no hay foto que mostrar",
+    "empaque feo o generico",
+    "publico joven o esceptico de la institucionalidad"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular REGISTRO-FDA-US arriba a la izquierda, con figura institucional estadounidense.",
+    "Sello circular ORIGINAL AMERICANO con bandera de EEUU y estrellas, abajo a la derecha.",
+    "Labels de problema con verbos de eliminacion: ELIMINA HONGOS, ELIMINA TOXINAS, REDUCE LA HINCHAZON, COMBATE LA FATIGA.",
+    "Atributos: FORMULA NATURAL, APOYA TU BIENESTAR, EQUILIBRA TU FLORA INTESTINAL.",
+    "Garantias: ENVIO GRATIS, PAGA AL RECIBIR, COMPRA SEGURA."
+  ],
+  "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+  "blueprint_equivalente": "A_autoridad_medica"
+}

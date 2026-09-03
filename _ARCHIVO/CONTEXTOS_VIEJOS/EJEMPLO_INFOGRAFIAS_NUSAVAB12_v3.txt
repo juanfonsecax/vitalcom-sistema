@@ -1,0 +1,165 @@
+═══ EJEMPLO INFOGRAFÍAS NUSAVA B12 · v3 (reglas mentores aplicadas) · 2026-06-26 ═══
+Basado en _CONOCIMIENTO (Clase 1 Mercy · Clase 22 y 10 Joaquín · Clase 14/PDF Prompt Maestro) y PLANTILLAS_INFOGRAFIAS.md actualizado.
+Producto: NUSAVA B12 — complejo B líquido sublingual, frasco gotero ámbar, etiqueta ROJA frambuesa #c81e2d, 5000 mcg B12.
+Fanpage: Dr. Ricardo Estrada (clínico-cálido). Pegar cada prompt en Gemini Pro / ChatGPT adjuntando la foto del frasco.
+
+───────────────────────────────────────────────────────────────────
+QUÉ CAMBIÓ vs la versión anterior (las 3 correcciones de los mentores)
+───────────────────────────────────────────────────────────────────
+1. TÍTULO IMAGEN 1: antes "10 BENEFICIOS" (genérico). Ahora título de dolor/deseo "DESPERTÁ TUS NERVIOS Y TU ENERGÍA"; "10 BENEFICIOS" baja a kicker pequeño. (Clase 22 Joaquín)
+2. COLOR: antes las 3 estadísticas y acentos iban en verde lima #caec55 SIENDO EL PRODUCTO ROJO. Ahora TODO el acento = ROJO #c81e2d (estadísticas, triángulos, bandas). El lima desaparece. (Clase 14: paleta coherente)
+3. INFO 3 lidera con "PAGÁS AL RECIBIR" como bloque prominente (antes empezaba con estadísticas). (Clase 10/22 Joaquín: reductor de fricción #1)
++ INFO 2 des-saturada (umbral cognitivo): 5 ingredientes máx, texto legible ~24pt. (Clase 22)
+Logo: como el producto es rojo, NO usar el lima #caec55. Recomendado: identidad "Dr. Ricardo Estrada" o logo en blanco/dorado. Si se mantiene sanarte®, sin contorno lima.
+
+KIT TIPOGRÁFICO DE CAMPAÑA: una sola fuente en las 4 infografías + los ads de Meta + el bot (Clase 22 Joaquín: marca = secuencia). Para Nusava B12 (fanpage clínica Dr. Estrada): sans-serif limpia tipo Inter/Poppins, bold en titulares. Usar la MISMA en todo; si los ads de referencia usan otra categoría, igualarla.
+
+PALETA FIJA DE ESTE PRODUCTO:
+- [COLOR_ACENTO_PRODUCTO] = ROJO #c81e2d (acento dominante de las 4 piezas)
+- [COLOR_FONDO_OSCURO] = #2b0a0c (rojo muy oscuro, legible con texto blanco)
+- Apoyo: dorado tenue (de la etiqueta), #0a1628, #FFFFFF, #6b7280
+- ⚠️ Producto LÍQUIDO SUBLINGUAL (gotero) — nunca "cápsula" ni "vaso de agua": usar GOTERO / DEBAJO DE LA LENGUA.
+- ⚠️ Validar prueba social (+8,400 / 9 de cada 10 son claim a confirmar con dato real).
+
+
+═══════════════════════════════════════════════
+INFO 1 — BENEFICIOS CON TÍTULO IMPACTANTE (formato 4:5, 1080×1350)
+═══════════════════════════════════════════════
+Un póster de infografía de producto vertical, alta resolución, calidad profesional, estética médica/de bienestar. Layout en columna central con el frasco protagonista y 10 beneficios numerados alrededor, priorizando el espacio de los textos. Fondo blanco cálido con micro-textura de energía/vitalidad (líneas diagonales finísimas como rayos de luz desde la esquina superior derecha, opacidad 2-5% máx — si se ve a primera vista, está demasiado intensa). Todo el texto en español.
+
+ENCABEZADO (compacto pero el TÍTULO domina — jerarquía Clase 22):
+- KICKER pequeño arriba, en pastilla roja #c81e2d con texto blanco: "10 BENEFICIOS"
+- TÍTULO PRINCIPAL grande y en bold, color rojo #c81e2d (o degradado rojo→dorado), 2 líneas máx: "DESPERTÁ TUS NERVIOS Y TU ENERGÍA" — es lo más grande y lo primero que se lee, congruente con la apertura del anuncio/bot. (PROHIBIDO usar "BENEFICIOS" como título principal.)
+- Botón delgado rojo #c81e2d con texto blanco: "NUSAVA B12"
+- Pequeñas gotas de líquido rojo frambuesa decoran sin saturar.
+
+ELEMENTO CENTRAL (frasco): frasco de vidrio ámbar con gotero ultra-realista de "NUSAVA B12" (líquido sublingual, NO botella de cápsulas), etiqueta roja #c81e2d con texto blanco y detalles dorados, banda inferior "NUSAVA B12 · COMPLEJO B LÍQUIDO SUBLINGUAL | 60 ml". Sello dorado "5000 MCG" en la etiqueta. Etiqueta colgante negra con texto dorado "5000 MCG B12" cuelga del gotero a la izquierda. Frasco ligeramente reducido para ceder espacio a los laterales.
+
+BASE DEL FRASCO: frambuesas frescas, gotas de líquido rojo y cristales dorados (complejo de vitaminas B), disposición compacta.
+
+LOS 10 BENEFICIOS (puntos numerados circulares rojos #c81e2d con números blancos, dos columnas; TÍTULO en mayúsculas destacado, descripción en letra más pequeña pero LEGIBLE):
+Columna izquierda (1-5):
+1. [Icono: rayo] MÁS ENERGÍA. "Combate el cansancio del día a día."
+2. [Icono: pie con ondas] ADIÓS AL HORMIGUEO. "Apoya los nervios de pies y manos."
+3. [Icono: cabeza con destello] MENTE MÁS CLARA. "Favorece la memoria y la concentración."
+4. [Icono: carita serena] MEJOR ÁNIMO. "B6 y B12 apoyan el sistema nervioso."
+5. [Icono: llama tachada] CALMA EL ARDOR. "Nutre las fibras nerviosas que arden de noche."
+Columna derecha (6-10):
+6. [Icono: gotero con gota] ABSORCIÓN DIRECTA. "Sublingual: entra directo a la sangre."
+7. [Icono: escudo sobre nervio] PROTEGE TUS NERVIOS. "B1 y B12 cuidan la vaina de mielina."
+8. [Icono: gota de sangre] SANGRE SANA. "Apoya la formación de glóbulos rojos."
+9. [Icono: pierna/columna] APOYA EL CIÁTICO. "Cuida el nervio y la movilidad."
+10. [Icono: hoja vegana] 100% VEGANO. "Sin azúcar, sabor frambuesa, hecho en USA."
+
+Debajo del producto: logotipo de marca pequeño (Dr. Ricardo Estrada o sanarte® SIN contorno lima — el producto es rojo).
+PIE DE PÁGINA: barra estrecha rojo oscuro #7a1119. Izq: escudo con check + "SALUD NERVIOSA, TODOS LOS DÍAS." Der: icono gota + "FÓRMULA SEGURA Y DE ALTA CALIDAD". (SIN SELLOS OFICIALES).
+Tipografía sans-serif (Inter/Poppins). TODO EN ESPAÑOL.
+
+
+═══════════════════════════════════════════════
+INFO 2 — ANTES/DESPUÉS + INGREDIENTES + MODO DE USO (1080×1350) — ARQUETIPO 4
+═══════════════════════════════════════════════
+Póster vertical, alta resolución, estilo médico-wellness premium. Fondo base blanco #FFFFFF. Español. Sin emojis. Sans-serif (Inter/Poppins).
+REGLA UMBRAL COGNITIVO: cada zona respira, texto legible ~24pt en celular (público 45-65 años), nada de letra microscópica.
+
+── ZONA 1 — ANTES/DESPUÉS (50% superior) ──
+Fondo: degradado suave de #2b0a0c a negro puro.
+HEADLINE bold uppercase blanco grande, centrado, línea de 2px ROJO #c81e2d debajo: "RESULTADOS REALES EN 21 DÍAS"
+Dos fotos rectangulares lado a lado, misma mujer, grano natural de cámara frontal, sin filtros, auténtico:
+ANTES: mujer latina real 40s-50s, sentada al borde de la cama, encorvada, mano en la pierna/pie, expresión de molestia y cansancio (hormigueo/ardor). Habitación doméstica, luz de mañana. Sin posado.
+DESPUÉS: la misma mujer caminando en un parque, postura erguida, paso firme, ropa casual similar, sonrisa natural. Selfie de brazo extendido — nada producido.
+ETIQUETA ANTES: "DÍA 1 · HORMIGUEO Y CANSANCIO"   ·   ETIQUETA DESPUÉS: "DÍA 21 · CON ENERGÍA Y SIN MOLESTIAS"
+Entre las fotos: línea vertical blanca 1px con logo de marca pequeño centrado (sin contorno lima).
+
+── ZONA 2 — INGREDIENTES PRINCIPALES (5 protagonistas, NO toda la fórmula) ──
+Fondo: #2b0a0c, borde superior e inferior 1px ROJO #c81e2d.
+TÍTULO centrado bold uppercase blanco mediano: "LO QUE HAY DENTRO IMPORTA"
+Subtítulo regular pequeño ROJO #c81e2d: "Ingredientes clave con función específica"
+Grilla 2 columnas, celdas compactas CON AIRE (fondo 15% más oscuro, border-radius suave, separación 12px). Cada celda: [punto circular ROJO #c81e2d] NOMBRE bold blanco uppercase → función regular legible #e5e7eb, 1 línea:
+● B12 METILCOBALAMINA 5000 MCG → nervios, energía y memoria
+● B6 (PIRIDOXINA) 3400 MCG → ánimo y sistema nervioso
+● B1 (TIAMINA) 2400 MCG → nervios de pies y manos
+● NIACINA (B3) → energía y circulación
+● FOLATO (B9) → función nerviosa y sangre sana
+Nota de cierre centrada italic pequeña #6b7280: "Fórmula sinérgica — cada vitamina potencia a la otra."
+
+── ZONA 3 — MODO DE USO + CIERRE (25% inferior) ──
+Fondo blanco #FFFFFF. Línea separadora 1px ROJO #c81e2d ancho completo.
+TÍTULO centrado bold uppercase #0a1628 mediano: "MODO DE USO"
+TRES ÍCONOS en una fila, flecha delgada ROJA #c81e2d entre ellos:
+Ícono 1 — Gotero 3D realista con gota roja. Texto: "1.5 ML (UN GOTERO)". Subtexto: "dosis diaria"
+Ícono 2 — Lengua con gota debajo (sublingual). Texto: "DEBAJO DE LA LENGUA". Subtexto: "sostené 30 seg"
+Ícono 3 — Sol cálido 3D radiante. Texto: "EN LA MAÑANA". Subtexto: "sabor frambuesa"
+BARRA INFERIOR: "SIN AZÚCAR · 100% VEGANO · ABSORCIÓN SUBLINGUAL DIRECTA"
+Logo de marca centrado debajo, pequeño.
+Paleta estricta: ROJO #c81e2d (acento dominante), #0a1628, #FFFFFF, #6b7280, dorado tenue. Resolución mínima 1080×1350px.
+
+
+═══════════════════════════════════════════════
+INFO 3 — CONFIANZA / CONTRAENTREGA + RESULTADOS (1080×1350) — 2 PASOS
+═══════════════════════════════════════════════
+PASO 1 — FOTO BASE (generar primero):
+Candid iPhone photo, highly realistic UGC style. A real Latino male doctor in his late 40s (Dr. Ricardo Estrada style), clean white lab coat, bright modern clinic, soft natural daylight from the left.
+COMPOSICIÓN CRÍTICA: el doctor en el lado DERECHO del frame (centro a borde derecho). Lado IZQUIERDO = espacio negativo limpio (fondo de clínica desenfocado) para superponer texto sin taparlo.
+Sostiene con ambas manos, a la altura del pecho, el frasco gotero de NUSAVA B12 con etiqueta roja #c81e2d y detalles dorados; sello termoencogible transparente y brillante en la tapa, claramente visible.
+Mira a la cámara, sonrisa genuina y confiable. Poros naturales, leve grano de iPhone, luz natural. Sin filtros. 100% auténtico. Aspect ratio 4:5. --style raw
+
+PASO 2 — DISEÑO (superponer, 1080×1350):
+CAPA 1 — la foto ocupa todo el lienzo. Degradado oscuro SOLO en el lado izquierdo: de #2b0a0c (opacidad 65%) en el borde a transparente hacia el centro. El lado derecho (el doctor) sin degradado.
+CAPA 2 — contenido izquierdo (orden de arriba a abajo):
+HEADLINE bold uppercase blanco grande, alineado izquierda, máx 2 líneas: "TUS NERVIOS BIEN CUIDADOS, SIN RIESGO". Debajo: línea 2px ROJO #c81e2d, ancho 60%.
+
+▶ BLOQUE CONTRAENTREGA + GARANTÍA (PROMINENTE — lo primero/más visible, reductores de fricción #1 y #2):
+Pastilla grande con fondo ROJO #c81e2d (texto blanco), ícono de billete + mano/casa. Texto bold uppercase: "PAGÁS AL RECIBIR".
+Subtexto blanco pequeño debajo: "Envío GRATIS a toda Guatemala · GINTACOM y FORZA · No pagás nada por adelantado."
+Debajo, sello de garantía (escudo/medalla con check, ROJO #c81e2d) con texto bold pequeño: "GARANTÍA DE SATISFACCIÓN · Acompañamiento del equipo del Dr. Estrada".
+(NO prometer reembolso 100% salvo política real confirmada por el operador.)
+Estos dos bloques se ven ANTES que las estadísticas.
+
+ZOOM DE CONFIANZA: círculo tipo lupa (borde blanco 2px, interior negro semitransparente) conectado con línea blanca al frasco; dentro, macro del sello termoencogible con reflejo de luz. Debajo, texto pequeño ROJO #c81e2d italic: "Sello de seguridad original".
+
+BLOQUE ESTADÍSTICO 1: número "9 de cada 10" bold display muy grande, color ROJO #c81e2d. Debajo blanco pequeño: "notan más energía y menos hormigueo con uso constante."
+BLOQUE ESTADÍSTICO 2: "Semana 2-3" mismo estilo ROJO #c81e2d. Debajo: "el tiempo en que la mayoría empieza a sentir la diferencia."
+BLOQUE ESTADÍSTICO 3: "+8,400" mismo estilo ROJO #c81e2d. Debajo: "personas ya cuidan sus nervios con NUSAVA B12."
+(Los 3 números, en ROJO del producto, son lo dominante del bloque inferior izquierdo. Espaciado generoso. NUNCA en verde lima.)
+
+TRANSICIÓN: degradado vertical de transparente a blanco #FFFFFF, 50px, encima del bloque blanco inferior.
+CAPA 3 — FAQ inferior (fondo blanco #FFFFFF, lean):
+TÍTULO centrado bold uppercase #0a1628 mediano: "RESOLVAMOS TUS DUDAS". Línea 1px ROJO #c81e2d ancho completo debajo.
+TRES COLUMNAS (íconos 3D limpios, sombra suave, sin emoji):
+Col 1 — [Gotero 3D]. "¿SIRVE SI YA PROBÉ PASTILLAS?" / "Sí. Es líquida sublingual: se absorbe directo, sin perderse en el estómago."
+Col 2 — [Reloj 3D]. "¿EN CUÁNTO TIEMPO FUNCIONA?" / "Muchos notan cambios desde la semana 2-3 de uso constante."
+Col 3 — [Lengua con gota 3D]. "¿CÓMO SE TOMA?" / "Un gotero (1.5 ml) debajo de la lengua cada mañana, sostené 30 seg."
+BARRA DE CERTIFICACIONES (fondo blanco, borde superior 1px ROJO #c81e2d, parte más baja): tres sellos en fila —
+IZQ: escudo Ministerio de Salud Pública y Asistencia Social de Guatemala (verde/blanco) + "Ministerio de Salud Pública y Asistencia Social" / "REGISTRO SANITARIO GUATEMALA".
+CENTRO: logo Registro Mercantil de Guatemala ("RM" + "Registro MERCANTIL") + "Registro Mercantil" / "EMPRESA LEGALMENTE REGISTRADA".
+DER: escudo con colores de bandera de EE.UU. + "HECHO EN USA" / "FABRICADO BAJO ESTÁNDARES FDA". (NUNCA "Aprobado/Certificado FDA" — solo "Estándares FDA".)
+Reglas: español, sans-serif (Inter/Poppins), sin emojis. Paleta: ROJO #c81e2d (acento dominante: headline, contraentrega, 3 números, separadores), #0a1628, #FFFFFF, #6b7280, dorado tenue. Resolución mínima 1080×1350px.
+
+
+═══════════════════════════════════════════════
+INFO 4 — ANTI-IMITACIÓN / PRODUCTO ORIGINAL (OPCIONAL, formato 2:3) — solo retargeting/escalado
+═══════════════════════════════════════════════
+Póster de advertencia/comparación vertical, sans-serif bold (Poppins), sin emojis, español.
+BLOQUE 1 (alerta): fondo ROJO #c81e2d ancho completo. Esquina sup-izq: triángulo de advertencia 3D AMARILLO clásico #FFC107 (NO lima) con exclamación negra. Texto centrado blanco bold uppercase muy grande: "¡NO TE DEJES / ESTAFAR!". Sub-barra más oscura: "Cuidado con las imitaciones de NUSAVA B12."
+BLOQUE 2 (encabezados): fondo #2b0a0c, dos mitades. Izq: "¡PRODUCTO REAL!" ("REAL" en blanco o dorado). Der: "¡FALSO IMITACIÓN!". Separador vertical blanco 1px.
+BLOQUE 3 (subtítulos): Izq: "Nuestro auténtico:" + "Calidad Garantizada" (ROJO #c81e2d bold). Der: "Cuidado: Producto" + "falsificado y de baja calidad" (rojo #cc0000 bold).
+BLOQUE 4 (cuerpo comparativo, fondo blanco): dividido por un rayo dentado blanco 3px con glow ROJO #c81e2d.
+  IZQUIERDA (auténtico): frasco gotero real de NUSAVA B12, etiqueta roja con dorado; sello circular verde con check "REAL/REAL". Lista con checkmarks ROJO #c81e2d:
+   ✔ B12 metilcobalamina real 5000 mcg
+   ✔ Fórmula líquida sublingual auténtica
+   ✔ Sello de seguridad original
+   ✔ Vegano, sin azúcar, hecho en USA (GMP)
+   ✔ Pago contraentrega garantizado
+   ✔ Asesoría del equipo del Dr. Estrada
+   ✔ Tienda autorizada
+  DERECHA (falso): frasco genérico sin marca, etiqueta mal impresa ("poor printing"). Sobre él, calavera 3D verde tóxico #39ff14, prominente. Lista con X roja #cc0000:
+   ✘ B12 de baja o nula concentración
+   ✘ Mezcla diluida sin control de calidad
+   ✘ Sin sello de seguridad
+   ✘ Sin garantía ni pago contraentrega
+BLOQUE 5 (precios): fondo #2b0a0c, cinta de precaución ROJO/negro en bordes. Triángulo AMARILLO #FFC107. Texto blanco bold uppercase: "DESCONFIÁ DE PRECIOS DEMASIADO BAJOS / PUEDEN SER IMITACIONES PELIGROSAS".
+BLOQUE 6 (protege): fondo ROJO #c81e2d ancho completo, texto blanco bold uppercase grande: "¡PROTEGÉ TU SALUD Y TU DINERO!"
+BLOQUE 7 (CTA, fondo blanco): "COMPRÁ SOLO EL AUTÉNTICO" + "NUSAVA B12" en ROJO #c81e2d. Línea 2: "¡NO ARRIESGUES CON COPIAS BARATAS Y PELIGROSAS!"
+BLOQUE 8 (pie, fondo blanco): logo de marca centrado (sin lima) + "TIENDA AUTORIZADA".
+Paleta: ROJO #c81e2d (acento dominante), #FFC107 (triángulos), #cc0000 (X/falso), #39ff14 (calavera), #0a1628, #FFFFFF, #6b7280. Resolución mínima 1080×1350px.

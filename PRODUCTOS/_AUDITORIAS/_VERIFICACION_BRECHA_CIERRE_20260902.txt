@@ -1,0 +1,131 @@
+═══════════════════════════════════════════════════════════════════════════
+VERIFICACIÓN §2.3 DEL HANDOFF ETAPA-11 — ¿EL BOT PARAGUAS EXPLICA LA BRECHA DE CIERRE?
+Fecha: 2026-09-02 · Fuente: PRODUCTOS/_FACT_VENTAS.csv (BASE) + _DIM_CONJUNTOS.csv + _FACT_ENTREGA.csv
+Serie: 17-jul → 01-sep-2026 · 1,822 filas BASE · JOIN conjunto→angulo_key cerró al 100%
+Exclusión aplicada: VARICOSE ≥ 01-ago (el proveedor cambió el producto físico; esa data mide
+el desajuste ad↔destino, no el flujo — _PORTAFOLIO.txt 14-ago). 34 filas / 302 msj / 6 ventas.
+═══════════════════════════════════════════════════════════════════════════
+
+VEREDICTO: **LA HIPÓTESIS DEL PARAGUAS NO SE SOSTIENE.**
+El paraguas no explica la brecha de cierre — ni una parte grande ni pequeña.
+Va en la dirección CONTRARIA y no sobrevive al control de producto.
+
+───────────────────────────────────────────────────────────────────────────
+1 · EL CONTRASTE PARAGUAS vs DEDICADO
+───────────────────────────────────────────────────────────────────────────
+Definición operativa usada: PARAGUAS = campaña cuyo tráfico viene de ≥2 angulo_key
+distintos hacia el mismo flujo. DEDICADO = un solo angulo_key.
+(La clasificación por NOMBRE de campaña —TEST vs ESCALA— es engañosa: la migración
+del 12-ago renombró a "…_ESCALA_…" campañas que siguen corriendo 2-3 ángulos.)
+
+  DEDICADO (1 ángulo)     1,151 msj ·  83 ventas ·  7.21 %
+  PARAGUAS  (≥2 ángulos)  3,939 msj · 356 ventas ·  9.04 %
+
+DENTRO DE CADA PRODUCTO (control de Simpson) — el único con ambos regímenes y n usable:
+  TINNIDROP  dedicado  226 msj ·  18 v ·  7.96 %
+             paraguas 2,776 msj · 231 v ·  8.32 %      Fisher p = 1.000 · OR 0.95
+  VARICOSE   dedicado   32 msj ·   4 v · 12.50 %       n irrelevante (Poisson puro)
+             paraguas   57 msj ·   3 v ·  5.26 %       Fisher p = 0.246
+  CLEARSTEM  solo corrió paraguas  → 11.03 %
+  NUSAVA     solo corrió dedicado  →  6.83 %   ← el ÚNICO flujo 100 % dedicado del
+                                                 portafolio es el PEOR cerrador
+
+→ No hay efecto. El producto con el bot dedicado más puro (NUSAVA/ARDOR, 893 msj)
+  cierra 6.8 %; el que nunca dejó de ser paraguas (CLEARSTEM, 6 ángulos a un flujo)
+  cierra 11.0 %. Dedicar el flujo, tal como se hizo, no movió el cierre.
+
+───────────────────────────────────────────────────────────────────────────
+2 · DÓNDE SÍ ESTÁ LA VARIANZA
+───────────────────────────────────────────────────────────────────────────
+Cierre del portafolio limpio: 8.62 % (439 ventas / 5,090 msj)
+
+  spread por régimen del bot  :  7.2 % → 9.0 %    rango  1.8 pp  (y con signo invertido)
+  spread por producto         :  6.8 % → 11.0 %   rango  4.2 pp
+  spread por ÁNGULO           :  5.9 % → 18.1 %   rango 12.2 pp   ← 7× el del régimen
+
+HETEROGENEIDAD ENTRE ÁNGULOS QUE COMPARTEN EL MISMO FLUJO (χ² de homogeneidad):
+  TINNIDROP  χ²=22.6  df=4  p=0.0002   ← no es ruido de Poisson
+    ACCESIBILIDAD_MEDICO   406 msj ·  47 v · 11.6 %  IC95 ±3.3pp
+    ME_DIJERON_NO_CURA     195 msj ·  22 v · 11.3 %  IC95 ±4.7pp
+    NOCHES_SIN_DORMIR      120 msj ·  12 v · 10.0 %  IC95 ±5.7pp
+    DETERIORO_COGNITIVO    835 msj ·  83 v ·  9.9 %  IC95 ±2.1pp
+    PERDIDA_AUDITIVA     1,446 msj ·  85 v ·  5.9 %  IC95 ±1.2pp  ← 2× peor, con el n más grande
+  CLEARSTEM  χ²=16.5  df=3  p=0.0009
+    ANTI_FALSIFICACION     188 msj ·  34 v · 18.1 %  IC95 ±6.1pp  ← el mejor del portafolio
+    RESISTENCIA_INSULINA   465 msj ·  52 v · 11.2 %  IC95 ±3.0pp
+    MEDICOS_FALLARON       391 msj ·  32 v ·  8.2 %  IC95 ±2.8pp
+    DOLOR_EMOCIONAL_MASC.   30 msj ·   0 v ·  0.0 %  n insuficiente
+
+→ Un MISMO flujo cierra 18.1 % con un ángulo y 5.9 % con otro. Eso es señal real,
+  no azar. La congruencia SÍ importa — pero no se arregla dedicando el bot después:
+  se arregla haciendo que el flujo responda al ángulo que trajo la conversación.
+
+⚠️ LÍMITE HONESTO DE ESTA LECTURA: con la data disponible NO se puede separar
+  "el flujo cierra mal ese ángulo" de "ese ángulo trae tráfico que no compra".
+  Ambas hipótesis predicen exactamente estos números. Separarlas exige transcripciones
+  de chat (ver decisión D2 del handoff). Sin chats, etapa-11 puede señalar DÓNDE se
+  pierde, nunca POR QUÉ.
+
+───────────────────────────────────────────────────────────────────────────
+3 · CONVERSACIÓN NO PREDICE CIERRE (confirma APR-002)
+───────────────────────────────────────────────────────────────────────────
+Correlación entre %conv/clic-enlace y cierre, a nivel ángulo (n=9):
+  Pearson r = −0.23 (p=0.543) · Spearman ρ = −0.37 (p=0.332)
+→ Nula/negativa. La conversación sigue sirviendo para CORTAR, nunca para CORONAR.
+
+Hallazgo lateral: el %conv/clic del portafolio (ratio de sumas, no promedio de ratios)
+va en ~24 %, POR DEBAJO de la banda 35-70 % de ESCALADO_PLAYBOOK §8.
+Cobertura de _FACT_ENTREGA: TINNIDROP 75 % · NUSAVA 90 % · CLEARSTEM 17 % (GTR13 sin
+MCP hasta el 17-ago) → el número de CLEARSTEM no es utilizable.
+
+───────────────────────────────────────────────────────────────────────────
+4 · LO QUE VALE LA PALANCA (serie limpia, mismo gasto, mismos mensajes)
+───────────────────────────────────────────────────────────────────────────
+  hoy    5,090 msj × 8.62 % =   439 ventas → CPA Q51.5
+  a 12 % 5,090 msj × 12 %   =   611 ventas → CPA Q37.0   (+172 v · −28 % CPA)
+  a 15 % 5,090 msj × 15 %   =   764 ventas → CPA Q29.6   (+324 v · −43 % CPA)
+  a 20 % 5,090 msj × 20 %   = 1,018 ventas → CPA Q22.2   (+579 v · −57 % CPA)
+
+  Techo conservador y ya demostrado internamente — llevar CADA ángulo al cierre del
+  mejor ángulo de SU PROPIO producto: 598 vs 428 ventas = **+40 % sin gastar un quetzal más.**
+  No requiere superar a nadie: requiere que PERDIDA_AUDITIVA cierre como ACCESIBILIDAD_MEDICO.
+
+───────────────────────────────────────────────────────────────────────────
+5 · CONSECUENCIAS PARA EL DISEÑO DE etapa-11
+───────────────────────────────────────────────────────────────────────────
+a) El disparador NO puede ser "cuando hay ángulo ganador" (eso es la palanca que se
+   midió y no rinde). Debe ser el CIERRE bajo umbral, corra la fase que corra.
+b) La unidad de análisis es ÁNGULO × FLUJO, no producto ni conjunto.
+c) `_EVENTOS.csv` tiene **1 solo CAMBIO_BOT en toda la serie** (CLEARSTEM 10-jul, previo
+   a la data). No existe ni un antes/después de flujo medible en el histórico → hoy es
+   IMPOSIBLE evaluar si un cambio de bot sirvió. Loguear CAMBIO_BOT es precondición,
+   no un extra.
+d) ✅ RESUELTO EL MISMO DÍA — 103 de 406 filas de `_FACT_ENTREGA.csv` no cruzaban con
+   `_DIM_CONJUNTOS.csv`. No eran 64 casos sueltos sino CUATRO PATRONES:
+     1. `_FACT_ENTREGA` trae el conjunto SIN el prefijo `[CUENTA]_[PRODUCTO]_` que sí
+        lleva el nombre real en Meta y en DIM (cuenta y producto van en sus columnas).
+     2. Llega sin tildes ni eñes: "Perdida" vs "Pérdida", "RESENA" vs "RESEÑA".
+     3. Los sufijos de réplica "- Copia (R1)/(2)/(a)" nunca se dieron de alta.
+     4. Los 8 conjuntos de la renovación creativa del 27-jul no estaban registrados.
+   SOLUCIÓN: 63 filas nuevas en `_DIM_CONJUNTOS.csv` (94 → 157) con el MISMO `angulo_key`
+   de su grafía hermana — la llave sigue siendo el nombre EXACTO de Meta, y dos grafías
+   del mismo ángulo son dos filas, como manda la regla de esa tabla.
+   RECUPERADO: **Q2,622 de pauta, 513 mensajes y 2,043 clics de enlace** (19 % del gasto
+   de entrega) que estaban fuera de todo análisis por ángulo. JOIN 75 % → **100 %**.
+   ⚠️ NINGUNA CONCLUSIÓN DE ESTE INFORME CAMBIA con la data recuperada: el %conv/clic del
+   portafolio sigue en 24.1 % y la correlación conversación↔cierre sigue nula (r=−0.26,
+   p=0.50). Lo que cambió es que ahora se miden sobre 35 % más de data de entrega.
+   · La fila `"(campaña completa)"` NO se dio de alta: es un agregado de campaña legítimo
+     ($4.86, NUSAVA), la contraparte de las filas sintéticas de cuadre de `_FACT_VENTAS`.
+     Nunca se le inventa un `angulo_key`.
+   · PENDIENTE DE CONFIRMAR: el ángulo de "EMPEZÓ CON UN ZUMBIDO" — hook compuesto
+     ("Dormís mal / Se te olvidan las cosas / y todo empezó con un zumbido") que toca
+     PERDIDA_AUDITIVA, NOCHES_SIN_DORMIR y DETERIORO_COGNITIVO. Se asignó PERDIDA_AUDITIVA
+     por su bloque temático (BLOQUE 2 · miedo a lo irreversible).
+   · Los 8 de la renovación quedan `estado=PAUSADO` con la marca de TANDA CIEGA (APR-034):
+     su 0 ventas es artefacto de la ceguera de atribución, NO un veredicto de rendimiento.
+   Registrado en `_EVENTOS.csv` (CORRECCION_TRACKING) · backup en
+   `_ARCHIVO/_DIM_CONJUNTOS_pre_join_2026-09-02.csv.bak`.
+
+Reproducible con: scratchpad/cierre.py · cierre2.py · cierre3.py (sesión 02-sep)
+═══════════════════════════════════════════════════════════════════════════

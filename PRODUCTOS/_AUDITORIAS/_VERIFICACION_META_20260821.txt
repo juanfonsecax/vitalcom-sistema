@@ -1,0 +1,211 @@
+═══════════════════════════════════════════════════════════════════════════
+VERIFICACIÓN CONTRA META ADS MANAGER — 17→20 AGO · 2026-08-21
+Fuente: `Informe-sin-título-ago-17-2026-al-ago-20-2026.xlsx` (23 conjuntos, 4 cuentas)
+═══════════════════════════════════════════════════════════════════════════
+
+Las tres preguntas del operador, respondidas primero. Después, lo que el
+export destapó y que nadie estaba buscando.
+
+───────────────────────────────────────────────────────────────────────────
+PREGUNTA 1 — ¿META COBRÓ DE MÁS?  →  NO.
+───────────────────────────────────────────────────────────────────────────
+  Meta cobró .............. USD 288.69  = Q 2,200
+  LucidSales atribuyó ..... USD 275.57  = Q 2,100
+  Diferencia .............. USD  13.12  = Q   100   → COBERTURA 95.5%
+
+  POR CUENTA:  GTR0 95.6% · GTR1 95.7% · GTR13 95.1% · GTR7 95.5%
+
+**Lo importante no es el 95.5%, es que sea UNIFORME.** Una fuga se concentra
+en una cuenta — así se veía en la ventana 01-15 ago, donde la cobertura global
+era 75% pero GTR0 estaba en 54% y CP1 en 27%. Cuatro cuentas independientes
+cayendo todas en la banda 95.1-95.7% no es plata perdida: es desfase de
+atribución (LucidSales atribuye al momento del mensaje, Meta cobra al momento
+de la entrega).
+
+**Subiste 20 puntos de cobertura en dos semanas.** Lo que lo arregló: el bot
+único desde el 17-ago (APR-043) y la convención de nombres del 12-ago.
+Consecuencia práctica: la ganancia del dashboard ya casi no está inflada — el
+ajuste pasó de −25% a −4.5%. (APR-061)
+
+⚠️ LIMITACIÓN: el export vino **AGREGADO 17-20, no por día**. Puedo verificar
+el total y el reparto por conjunto, pero NO si cada día individual gastó lo
+que debía. Para eso, en Ads Manager agregá el desglose por **«Día»** antes de
+exportar. Es el mismo informe con una casilla más.
+
+───────────────────────────────────────────────────────────────────────────
+PREGUNTA 2 — ¿LA MIGRACIÓN QUEDÓ?  →  SÍ, LIMPIA.
+───────────────────────────────────────────────────────────────────────────
+Los 23 conjuntos con gasto viven en las 6 campañas nuevas
+(`[CUENTA]_[PRODUCTO]_[FASE]_[YYYYMMDD]`) con sus conjuntos en
+`[CUENTA]_[PRODUCTO]_[ANGULO]_R[N]`. **Cero campañas viejas con gasto** — el
+doble financiamiento que arrastrabas desde el 12-ago está cerrado.
+
+Queda **un solo rastro legacy**:
+  `GTR13_CLEARSTEM_MEDICOS-FALLARON_R1 + 25AÑOS - Copia`
+Renombralo a `R3` antes de que ensucie el CSV. Regla 23 de CLAUDE.md: prohibido
+publicar un «- Copia» — cuatro conjuntos con el mismo nombre son cuatro filas
+anónimas cuando toque agregarlas.
+
+───────────────────────────────────────────────────────────────────────────
+PREGUNTA 3 — ¿SE GASTÓ LO QUE SE DEBÍA?  →  NO EN SIETE CONJUNTOS.
+───────────────────────────────────────────────────────────────────────────
+Del export salen DOS escalones de presupuesto:
+
+  · 16 conjuntos a **$3.4 – $4.2 / día** ← el escalón sano
+  · **7 conjuntos a $1.52 – $1.63 / día** ← el $1.59 DEPRECADO
+
+Los siete: las **6 réplicas de `GTR1_TINNIDROP_DETERIORO-COGNITIVO`** (R1-R5)
+y **`GTR7_NUSAVA_ARDOR_R3` y `R4`**.
+
+CLAUDE.md marca $1.59 como DEPRECADO desde el recalibrado del 25-jul: al día 3
+solo cubría 46-60% del Presupuesto de Decisión y Meta no salía de aprendizaje.
+
+Y es caro justo donde más duele:
+
+  `GTR7_NUSAVA_ARDOR_R4`  → $1.57/día · **CPA Q15.2 · cierre 37.5%**
+                             = el mejor conjunto de todo el portafolio
+  `GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1` → $1.56/día · CPA Q29.1
+
+**Tus dos ganadores más baratos están financiados a la mitad que los conjuntos
+que pierden plata.** Subirlos al escalón de ~$4/día va antes que cualquier otro
+surfing. (APR-062)
+
+───────────────────────────────────────────────────────────────────────────
+BONUS — CP1 RESUELTO: NO DEJÓ DE REPORTAR, DEJÓ DE GASTAR
+───────────────────────────────────────────────────────────────────────────
+Anoche quedó abierto si CP1 había dejado de gastar o de reportar. El export lo
+cierra: la fila total del informe suma **181,787 impresiones y 1,456
+clics-enlace**, y la suma de los 23 conjuntos USD da **exactamente lo mismo**
+(diferencia cero). Como la fila total figura con divisa «Multiple», el alcance
+del reporte SÍ incluye la cuenta en COP — y su aporte es cero.
+
+→ CP1 no gastó nada del 17 al 20. Confirmá si la apagaste a propósito: en la
+  ventana 11-16 era tu cuenta más barata (CPA Q33.1).
+
+───────────────────────────────────────────────────────────────────────────
+🔴🔴 LO QUE EL EXPORT DESTAPÓ — LA BANDA DE EDAD ES LA VARIABLE MÁS CARA
+───────────────────────────────────────────────────────────────────────────
+Nunca se había medido. El motor cortaba por ángulo, cuenta, conjunto y
+concepto — nunca por edad de segmentación. Resulta ser lo que explica casi
+todo lo que veníamos diagnosticando mal.
+
+**EL PORTAFOLIO COMPLETO, 17-20 AGO:**
+
+  BANDA     PAUTA Q   MENSAJES   VENTAS   CIERRE    CPA
+  25+         983       228         7      3.1%    Q140.5
+  25-35       230        39         5     12.8%    Q 46.1
+  45-60       886       220        28     12.7%    Q 31.7
+
+**EXPERIMENTO NATURAL** — mismo ángulo, mismo producto, mismo creativo, misma
+ventana. Lo único que cambia es la banda:
+
+  PERDIDA_AUDITIVA @ GTR0, **25+**   → Q474 · 126 msj · **1 venta** · 0.8% · CPA Q473.6
+  PERDIDA_AUDITIVA @ GTR7, **45-60** → Q337 ·  90 msj · **11 ventas** · 12.2% · CPA Q30.6
+
+**CONTROL DENTRO DE LA MISMA CUENTA** (GTR13, mismo producto, mismo ángulo —
+esto elimina la cuenta como explicación):
+
+  RESISTENCIA_INSULINA_SOP @ **25-35** → Q108 · 21 msj · **3 ventas** · 14.3%
+  RESISTENCIA_INSULINA_SOP @ **25+**   → Q102 · 33 msj · **0 ventas** ·  0.0%
+
+La banda ancha generó **más** conversaciones y **ninguna** venta.
+
+**NO ES RUIDO.** Al cierre del 13%, las 150 conversaciones de TINNIDROP en 25+
+deberían haber dado ~19 ventas; dieron 4 (≈4 sigma). Las 63 de CLEARSTEM
+deberían haber dado ~8; dieron 0 (p≈0.0003).
+
+**POR PRODUCTO:**
+  TINNIDROP  25+ → CPA Q147.5   ‖ resto → Q32.5   → **4.5× peor**
+  CLEARSTEM  25+ → **0 ventas en Q301** ‖ resto → Q46.1
+  NUSAVA     25+ → Q30.8        ‖ resto → Q29.1   → **sin diferencia**
+
+Que NUSAVA no sufra es lo que le da sentido al hallazgo: el tinnitus y la
+pérdida auditiva son problemas de 45-60+; el ardor/B12 tiene comprador
+transversal. La banda ancha no le «deja encontrar» el comprador a Andrómeda —
+lo inunda de conversaciones baratas de gente joven que pregunta y no compra.
+
+**Q891 de Q2,100 (42% de toda tu pauta) está en la banda que no compra.**
+
+⚠️ ESTO CONTRADICE UNA DOCTRINA VIGENTE. CLAUDE.md manda segmentación «amplia
+18-65+ con Advantage+ OFF». Para productos con avatar de edad marcada, la data
+propia dice lo contrario. No lo cambio unilateralmente — lo dejo registrado
+como APR-060 con confianza ALTA y revisión el 28-ago.
+
+⚠️ VERIFICAR EN ADS MANAGER: el `avatar_edad=25+` se derivó del sufijo
+«+25AÑOS» del nombre del conjunto en la migración del 12-ago, no de leer la
+configuración real. Antes de mover nada, confirmá que la edad configurada
+coincide con el nombre.
+
+───────────────────────────────────────────────────────────────────────────
+🔧 TRES DIAGNÓSTICOS MÍOS QUE ESTE EXPORT CORRIGE
+───────────────────────────────────────────────────────────────────────────
+1. **«MEDICOS_FALLARON es fatiga de creativo» — ERA FALSO.**
+   Su frecuencia es **1.19-1.21**, de las más bajas del portafolio (umbral de
+   fatiga 1.9), y su tasa de conversación a WhatsApp es **45.2% y 47.5%**, la
+   más alta de CLEARSTEM. Audiencia fresca, mejor conversación del producto,
+   cero ventas. La causa es que sus dos réplicas están en 25+.
+   LECCIÓN DE MÉTODO: diagnostiqué fatiga sin tener la frecuencia a la vista,
+   porque el MCP llevaba 4 días caído. **Una hipótesis de fatiga sin lectura de
+   frecuencia es una conjetura, no un diagnóstico.** (APR-063)
+
+2. **«GTR0 es un problema de calidad de audiencia» — correcto en dirección,
+   incompleto en causa.** No es la cuenta: es que GTR0 tiene el 100% de sus
+   conjuntos en 25+. Su CPM (1.61) es apenas 16% mayor que el de GTR7 (1.39),
+   su frecuencia es la más baja del portafolio (1.19) y sus tasas de
+   conversación son normales (32-43%). Compra bien y le habla a quien no compra.
+   → La acción correcta NO es «GTR0 a piso». Es **cambiarle la banda de edad**.
+   Bajarla a piso apaga un ángulo sano; cambiar la edad lo arregla.
+
+3. **«ANTI_FALSIFICACION se salvó»** — sí, y ahora se sabe por qué: está en
+   25-35, no en 25+. No fue suerte ni maduración: fue la única de CLEARSTEM
+   bien segmentada.
+
+Es la **tercera corrección seguida sobre el mismo conjunto de síntomas**
+(APR-058 «cuenta rota» → «intermitente» → banda de edad). El patrón común: dar
+un veredicto de causa sin tener a la vista la dimensión que lo explicaba.
+
+───────────────────────────────────────────────────────────────────────────
+🔧 REGLA NUEVA EN EL MOTOR — N) BANDA DE EDAD QUE NO CIERRA
+───────────────────────────────────────────────────────────────────────────
+Compara el cierre mensaje→venta entre bandas **dentro del mismo producto** y
+dispara cuando la peor cierra ≤ la mitad que la mejor.
+
+Por qué compara CIERRE y no CPA: **la banda mala no se delata por precio.**
+Compra conversaciones igual de baratas (Q3.91 el mensaje contra Q3.86 de la
+banda buena). Se delata en el paso conversación→venta. Es la regla 2 del
+sistema hecha rutina — la conversación sirve para CORTAR, nunca para CORONAR.
+
+GUARDARRAÍLES: (1) compara dentro del mismo producto — entre productos no es
+comparable, y NUSAVA lo demuestra; (2) exige ≥1 break-even de gasto y ≥25
+mensajes en cada banda, para no reaccionar a ruido de Poisson; (3) la acción es
+**REBALANCEAR, nunca APAGAR**: el ángulo puede estar sano y estarle hablando a
+quien no compra.
+
+✅ Verificada: dispara para TINNIDROP (Q1,188/sem) y CLEARSTEM (Q488/sem).
+   No dispara para NUSAVA — resultado correcto.
+
+También quedó cargado el export a `_FACT_ENTREGA.csv` (23 filas, fuente
+`AdsManager-export-4d`) — primera lectura de lado-ads desde el 17-ago.
+⚠️ Es un AGREGADO de 4 días: sirve para nivel y comparación, no para tendencia
+diaria ni para detectar cuándo empezó algo.
+
+───────────────────────────────────────────────────────────────────────────
+QUÉ HACER, EN ORDEN
+───────────────────────────────────────────────────────────────────────────
+1. **Cambiar la banda de edad** de los conjuntos 25+ de TINNIDROP (→45-60) y
+   CLEARSTEM (→25-35). Verificá primero la config real en Ads Manager.
+   Q891 de pauta está ahí. NO tocar los de NUSAVA.
+2. **Subir los 7 conjuntos de $1.59 al escalón de ~$4/día** — empezando por
+   `GTR7_NUSAVA_ARDOR_R4` (CPA Q15.2).
+3. **Resolver T01**: lanzarlo con el brazo A limpio, o cambiarle la fecha y
+   reactivar ME_DIJERON_NO_CURA (vendía a Q51.9 y está en Q0).
+4. Renombrar el `- Copia` de GTR13 a `R3`.
+5. Confirmar si CP1 se apagó a propósito.
+6. Reconectar Meta Ads en Cowork (5º día sin MCP) y, para el próximo export,
+   agregar el desglose por «Día».
+
+**NO tocar todavía:** CLEARSTEM/MEDICOS_FALLARON sigue congelado. Ya no por la
+hipótesis de fatiga —descartada— sino porque su problema es la banda de edad:
+cambiala primero y volvé a medir. Matarlo ahora sería matar un ángulo por un
+error de segmentación.
+═══════════════════════════════════════════════════════════════════════════

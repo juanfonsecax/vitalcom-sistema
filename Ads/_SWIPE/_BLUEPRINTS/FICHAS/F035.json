@@ -1,0 +1,192 @@
+{
+  "ficha_id": "F035",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Topishop/01_1581763106816398.jpg",
+    "anunciante": "Topishop",
+    "ad_archive_id": "1581763106816398",
+    "dias_activo": 4,
+    "replicas": 2,
+    "score": 54,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES INVERTIDO: EL DESPUES ES PEOR. Dos fotos rotuladas ANTES y DESPUES, pero la de la derecha muestra el problema MAS AVANZADO, no resuelto. No proyecta la mejora que da el producto: proyecta el deterioro que da NO comprarlo. El titular lo declara sin rodeos y los pies de foto explican la progresion.",
+  "lectura_estrategica": "Inversion completa del motor de transformacion, y probablemente el dispositivo mas transferible de esta tanda. Sirve donde no hay material de mejora disponible — condiciones que tardan meses en mejorar pero semanas en empeorar — y funciona sin prometer nada, porque las dos fotos son del problema. La banda central convierte el miedo en instruccion (cuanto antes empieces, mejor) y el badge circular lateral repite el mensaje en clave de cuidado, no de amenaza.",
+  "fondo": {
+    "tipo": "degradado_oscuro_azul",
+    "base": "azul navy profundo a casi negro",
+    "elemento": "lineas de circuito o textura tecnologica muy sutil",
+    "textura": "ninguna marcada"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 5,
+    "estructura": "azul navy (fondo) mas {{COLOR_ACENTO}} amarillo (segunda linea del titular y acentos) mas verde (label ANTES y checks) mas {{COLOR_ALERTA}} rojo (label DESPUES) mas blanco (texto)",
+    "regla_labels": "el label ANTES va en VERDE y el DESPUES en ROJO: el color invierte la expectativa antes de que se lean las fotos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{ADVERTENCIA_L1}}",
+      "linea_2": "{{ADVERTENCIA_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}",
+      "restriccion_palabras_total": "4-6 palabras",
+      "formato_obligatorio": "imperativo negativo de espera (no esperes a que...) mas la consecuencia de esperar",
+      "regla": "no promete mejora: advierte del deterioro"
+    },
+    "par_comparativo": {
+      "posicion": "superior_media, ancho completo",
+      "cantidad_estados": 2,
+      "orientacion": "dos fotos lado a lado, marco fino",
+      "estado_1": {
+        "foto": "{{FOTO_ESTADO_LEVE}}",
+        "label": "ANTES",
+        "color_label": "verde",
+        "pie": "{{PIE_LEVE}}"
+      },
+      "estado_2": {
+        "foto": "{{FOTO_ESTADO_AVANZADO}}",
+        "label": "DESPUES",
+        "color_label": "{{COLOR_ALERTA}}",
+        "pie": "{{PIE_AVANZADO}}"
+      },
+      "separador": "doble flecha en el centro, entre las dos fotos",
+      "restriccion_pie": "5-8 palabras",
+      "regla_critica": "el estado DESPUES muestra el problema MAS AVANZADO, no resuelto: la pieza proyecta el deterioro de no actuar, no la mejora de comprar",
+      "regla_pies": "el pie del leve dice que todavia se puede atender; el del avanzado, que ya es mas dificil",
+      "funcion": "esquiva el compliance del antes/despues clasico porque no promete ningun resultado"
+    },
+    "banda_instruccion": {
+      "posicion": "centro, ancho completo",
+      "contenedor": "banda azul mas clara con icono de calendario a la izquierda",
+      "linea_1": "{{INSTRUCCION_L1}}",
+      "linea_2": "{{INSTRUCCION_L2_ACENTO}}",
+      "estilo": "Black/900 uppercase blanco con la ultima parte en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "cuanto antes empieces, mejor",
+      "funcion": "convierte el miedo en instruccion: le da a la persona algo que hacer con lo que acaba de sentir"
+    },
+    "columna_atributos": {
+      "posicion": "izquierda_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art verde mas TITULO Bold uppercase con la segunda linea en {{COLOR_ACENTO}} mas subtitulo Regular",
+      "items": "{{ATRIBUTOS[3]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "4-6 palabras",
+      "regla": "atributos de USO y de composicion, nunca de resultado: la pieza ya decidio no prometer"
+    },
+    "producto_hero": {
+      "posicion": "centro_inferior",
+      "escala": "30% del frame",
+      "composicion": "envase de pie de frente",
+      "fuente": "IMAGEN_2"
+    },
+    "bloque_categoria": {
+      "posicion": "derecha del producto",
+      "lineas": 2,
+      "linea_1": "{{CATEGORIA_L1}}",
+      "linea_2": "{{CATEGORIA_L2}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold en {{COLOR_ACENTO}}",
+      "extra": "tira de 3 mini-fotos del problema en distintos grados, bajo el bloque",
+      "regla_extra": "las mini-fotos repiten la gradualidad del par comparativo en pequeno"
+    },
+    "badge_cuidado": {
+      "posicion": "derecha_baja",
+      "forma": "circular con borde {{COLOR_ACENTO}} y check",
+      "texto": "{{MENSAJE_CUIDADO}}",
+      "escala": "18% del ancho",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "cuida + la zona + hoy, manana y siempre",
+      "funcion": "repite el mensaje en clave de cuidado y no de amenaza: baja el tono justo antes del cierre"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono mas TITULO Bold uppercase mas subtitulo en {{COLOR_ACENTO}}",
+      "items": "{{GARANTIAS[3]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "par_comparativo",
+    "banda_instruccion",
+    "producto_hero",
+    "bloque_categoria",
+    "columna_atributos",
+    "badge_cuidado",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El estado DESPUES muestra el problema mas avanzado, nunca resuelto",
+    "El label ANTES va en verde y el DESPUES en rojo",
+    "El pie del estado leve dice que todavia se puede atender; el del avanzado, que ya es mas dificil",
+    "La banda central convierte el miedo en instruccion",
+    "Los atributos son de uso y composicion, nunca de resultado",
+    "El badge de cuidado baja el tono justo antes del cierre",
+    "La pieza no promete ninguna mejora en ninguna zona"
+  ],
+  "variables_requeridas": [
+    "ADVERTENCIA_L1",
+    "ADVERTENCIA_L2_ACENTO",
+    "FOTO_ESTADO_LEVE",
+    "FOTO_ESTADO_AVANZADO",
+    "PIE_LEVE",
+    "PIE_AVANZADO",
+    "INSTRUCCION_L1",
+    "INSTRUCCION_L2_ACENTO",
+    "ATRIBUTOS[3]",
+    "CATEGORIA_L1",
+    "CATEGORIA_L2",
+    "MENSAJE_CUIDADO",
+    "GARANTIAS[3]",
+    "COLOR_ACENTO",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "condiciones que empeoran con el tiempo y son visibles (hongos, varices, caries, caida de cabello, manchas)",
+    "cuando el antes/despues honesto es imposible porque la mejora tarda meses",
+    "cuando se quiere evitar el compliance del antes/despues clasico",
+    "publico que ya tiene el problema en grado leve y lo esta postergando"
+  ],
+  "cuando_no_usar": [
+    "problemas que no progresan visiblemente",
+    "publico que ya tiene el problema avanzado: la pieza le dice que llego tarde",
+    "categorias aspiracionales o de bienestar general"
+  ],
+  "sellos_y_claims_observados": [
+    "Atributos: FORMULA A BASE DE PLANTAS (CUIDADO DIARIO CON INGREDIENTES SELECCIONADOS), FACIL DE APLICAR (APLICACION RAPIDA Y PRACTICA), USO DIARIO (IDEAL PARA INCLUIR EN TU RUTINA DE CUIDADO).",
+    "Badge circular CUIDA TUS UNAS HOY, MANANA Y SIEMPRE.",
+    "Barra de garantias: ENVIO GRATIS, PAGO CONTRA ENTREGA, GARANTIA DE CALIDAD.",
+    "Pies de foto del par comparativo: PEQUENOS CAMBIOS QUE AUN PUEDES ATENDER y PROBLEMAS MAS AVANZADOS SON MAS DIFICILES DE ATENDER.",
+    "Banda de instruccion: CUANTO ANTES EMPIECES A CUIDARLAS, MEJOR."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,212 @@
+{
+  "ficha_id": "F046",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Flor_Expres_GT/03_1601930471944205.jpg",
+    "anunciante": "Flor Expres GT",
+    "ad_archive_id": "1601930471944205",
+    "dias_activo": 2,
+    "replicas": 2,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA COLUMNA DE 6 BENEFICIOS CON ICONO EN CUADRADO REDONDEADO, SOBRE EL PRODUCTO EN PODIO. Seis filas apiladas en el flanco izquierdo, cada una con icono line-art en contenedor cuadrado y un par titulo/subtitulo, mientras el producto se eleva sobre un podio de piedra con anillo de neon detras. Los seis items van de lo hormonal a lo practico, y el ultimo es de facilidad de uso.",
+  "lectura_estrategica": "Formato vertical de ficha completa: promesa, seis razones, precio escalonado y contacto directo, todo en una pantalla de telefono. El titular es de EMPODERAMIENTO y no de sintoma (tu bienestar es tu poder), lo que permite hablarle a una condicion con carga emocional sin nombrarla en la primera linea; la condicion aparece recien en el quinto beneficio, ya envuelta en las otras cinco. La frase en cursiva antes de la escalera de precios (senti la diferencia desde los primeros dias) hace de bisagra entre el argumento y la transaccion.",
+  "fondo": {
+    "tipo": "degradado_oscuro_con_neon",
+    "base": "{{PALETA_OSCURA}} violeta profundo a negro",
+    "elemento": "anillo o arco de neon {{PALETA_ACENTO}} detras del producto, hojas y flores translucidas en los bordes, patron hexagonal muy tenue",
+    "textura": "ninguna marcada"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta o fucsia (titular de acento, neon, cards de precio) mas {{PALETA_OSCURA}} violeta (fondo) mas blanco (texto) mas verde de los props botanicos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "la cursiva se usa solo en la frase bisagra y en el cierre del pie",
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{POSESION_L1}}",
+      "linea_2": "{{AFIRMACION_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}} con destello",
+      "restriccion_palabras_total": "5-6 palabras",
+      "formato_obligatorio": "afirmacion de EMPODERAMIENTO en segunda persona posesiva (tu X es tu Y)",
+      "regla": "permite hablarle a una condicion con carga emocional sin nombrarla en la primera linea"
+    },
+    "badge_formula": {
+      "posicion": "superior_derecha",
+      "contenedor": "card con borde {{PALETA_ACENTO}} redondeado",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{RESPALDO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Regular chico",
+      "restriccion_palabras": "2-4 palabras por linea"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA}}",
+      "estilo": "Regular blanco de 2 lineas con las ultimas palabras en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "9-12 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda, ocupa 45% del alto",
+      "cantidad_items": 6,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art blanco en contenedor cuadrado redondeado con borde {{PALETA_ACENTO}} mas TITULO Bold uppercase blanco mas subtitulo Regular de 2 lineas",
+      "items": "{{BENEFICIOS[6]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "6-10 palabras",
+      "regla_orden": "van de lo sistemico a lo practico: los primeros son de mecanismo interno y el ultimo es de FACILIDAD DE USO",
+      "regla_condicion": "cuando la categoria tiene una condicion con nombre, aparece recien en el quinto item, ya envuelta en las otras cinco"
+    },
+    "producto_hero": {
+      "posicion": "derecha_centro",
+      "escala": "42% del frame",
+      "composicion": "envase de pie sobre podio de piedra, con las capsulas sueltas al pie y el anillo de neon detras",
+      "fuente": "IMAGEN_2"
+    },
+    "frase_bisagra": {
+      "posicion": "bajo el producto, centrada",
+      "linea_1": "{{BISAGRA_L1_CURSIVA}}",
+      "linea_2": "{{BISAGRA_L2}}",
+      "estilo_l1": "cursiva decorativa {{PALETA_ACENTO}}",
+      "estilo_l2": "Bold blanco",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "funcion": "bisagra entre el argumento y la transaccion: promete inmediatez justo antes del precio"
+    },
+    "escalera_precios": {
+      "posicion": "inferior, ancho completo",
+      "header": "{{HEADER_PACKS}}",
+      "estilo_header": "Bold uppercase blanco",
+      "tiers": 3,
+      "orientacion": "tres cards lado a lado",
+      "formato_tier": "cantidad en Bold arriba, precio Black/900 blanco grande, y etiqueta de valor en pildora {{PALETA_ACENTO}} debajo",
+      "tier_1": {
+        "cantidad": "{{CANT_1}}",
+        "precio": "{{MONEDA}}{{PRECIO_1}}",
+        "etiqueta": "{{ETIQUETA_1}}"
+      },
+      "tier_2": {
+        "cantidad": "{{CANT_2}}",
+        "precio": "{{MONEDA}}{{PRECIO_2}}",
+        "etiqueta": "{{AHORRO_2}}",
+        "badge": "{{ETIQUETA_SOCIAL}} sobre el borde superior"
+      },
+      "tier_3": {
+        "cantidad": "{{CANT_3}}",
+        "precio": "{{MONEDA}}{{PRECIO_3}}",
+        "etiqueta": "{{AHORRO_3}}",
+        "badge": "{{ETIQUETA_MEJOR}} sobre el borde superior"
+      },
+      "regla_etiquetas": "el tier 1 lleva una etiqueta de ENTRADA (ideal para empezar) en vez de un ahorro: baja la barrera del primer pedido"
+    },
+    "barra_contacto": {
+      "posicion": "inferior extremo, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[2]}} mas {{CONTACTO}}",
+      "regla_contacto": "el tercer item es el NUMERO de telefono o WhatsApp escrito completo, con icono",
+      "restriccion_palabras": "2-4 palabras"
+    },
+    "pie_cierre": {
+      "posicion": "inferior extremo, centrado",
+      "texto": "{{CIERRE_CURSIVA}}",
+      "estilo": "cursiva decorativa blanca con corazon al final",
+      "restriccion_palabras": "4-6 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "subtitular",
+    "producto_hero",
+    "columna_beneficios",
+    "frase_bisagra",
+    "escalera_precios",
+    "badge_formula",
+    "barra_contacto",
+    "pie_cierre"
+  ],
+  "reglas_duras": [
+    "El titular es una afirmacion de empoderamiento en segunda persona posesiva",
+    "Los seis beneficios van de lo sistemico a lo practico y el ultimo es de facilidad de uso",
+    "La condicion con nombre aparece recien en el quinto item",
+    "La frase bisagra en cursiva va entre el producto y la escalera de precios",
+    "El tier 1 lleva etiqueta de entrada, no de ahorro",
+    "El numero de contacto va escrito completo en la barra del pie",
+    "La cursiva se usa solo en la bisagra y en el cierre"
+  ],
+  "variables_requeridas": [
+    "POSESION_L1",
+    "AFIRMACION_L2_ACENTO",
+    "PROMESA",
+    "ETIQUETA_FORMULA",
+    "RESPALDO",
+    "BENEFICIOS[6]",
+    "BISAGRA_L1_CURSIVA",
+    "BISAGRA_L2",
+    "HEADER_PACKS",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_1",
+    "AHORRO_2",
+    "AHORRO_3",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_MEJOR",
+    "GARANTIAS[2]",
+    "CONTACTO",
+    "CIERRE_CURSIVA"
+  ],
+  "cuando_usar": [
+    "condicion con carga emocional que conviene no nombrar en la primera linea",
+    "ubicaciones verticales donde cabe la ficha completa",
+    "cuando hay seis beneficios que sostener y tres tiers que ofrecer",
+    "publico femenino que decide por mecanismo y no por precio"
+  ],
+  "cuando_no_usar": [
+    "cuando hay menos de cinco beneficios: la columna queda corta y el layout se desbalancea",
+    "feed cuadrado: la columna de seis no cabe",
+    "cuando el argumento principal es el precio"
+  ],
+  "sellos_y_claims_observados": [
+    "Badge FORMULA NATURAL RESPALDADA POR LA CIENCIA.",
+    "Beneficios: APOYA EL EQUILIBRIO HORMONAL (regula tus ciclos y mejora tu bienestar general), COMBATE EL ACNE HORMONAL (ayuda a mejorar la salud de tu piel desde la raiz), REDUCE LA INFLAMACION (disminuye molestias, hinchazon y malestares hormonales), FORTALECE TU SISTEMA INMUNE (gracias a la vitamina D y sus ingredientes naturales), SOLUCION NATURAL SOP (apoya tu bienestar de forma segura y efectiva), FACIL DE USAR (solo 2 capsulas al dia para resultados visibles).",
+    "Frase bisagra SENTI LA DIFERENCIA DESDE LOS PRIMEROS DIAS.",
+    "Etiquetas de tier: IDEAL PARA EMPEZAR, MAS VENDIDO con AHORRA Q70, MEJOR PRECIO con AHORRA Q165.",
+    "Barra de contacto: ENVIOS GRATIS A TODO EL PAIS, PAGAS AL RECIBIR, PEDIDOS AL 3610 0632 con icono de WhatsApp.",
+    "Claims impresos en el empaque: WOMEN'S HEALTH SUPPORT, DAILY WELLNESS SUPPORT, 40:1 RATIO OF MYO & D-CHIRO INOSITOL, WITH ASHWAGANDHA AND VITAMIN D.",
+    "Cierre TU BIENESTAR, TU MEJOR INVERSION."
+  ],
+  "canonico_id": "CN05_LISTA_BENEFICIOS",
+  "blueprint_equivalente": null
+}

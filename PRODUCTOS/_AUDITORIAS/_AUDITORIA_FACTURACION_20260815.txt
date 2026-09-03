@@ -1,0 +1,622 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DE FACTURACIÓN — ¿LO QUE ME COBRAN = LO QUE GASTO?
+Ventana: 01 → 15 agosto 2026 · generada 15-ago-2026
+Fuentes: (1) extracto de Facturación de Meta por cuenta (pegado por el operador)
+         (2) amount_spent por MCP (GTR7/GTR0/GTR1/GTR3)
+         (3) _FACT_VENTAS.csv rol=BASE (lo que ve LucidSales)
+═══════════════════════════════════════════════════════════════════════════
+
+VEREDICTO PRINCIPAL: ✅ NO HAY SOBRECOBRO.
+Meta cobra por UMBRAL acumulado, no por rango de fechas — por eso los montos
+son irregulares ($17, $46, $86...) y no calzan día a día. Pero la ecuación
+contable cierra en las 3 cuentas legibles por MCP:
+
+    COBRADO − ARRASTRE_JULIO + SALDO_SIN_FACTURAR = GASTO REPORTADO
+
+  GTR7   cobrado $331.77 · gasto Meta $333.16 · saldo $5.38  → arrastre jul $3.99 ✅
+  GTR1   cobrado $150.32 · gasto Meta $136.37 · saldo $0.71  → arrastre jul $14.66 ✅
+  GTR0   cobrado  $64.39 · gasto Meta  $70.75 · saldo $11.98 → arrastre jul $5.62 ✅
+
+Los tres arrastres son montos plausibles y coinciden con el patrón de cobro
+de fin de julio. Ninguna cuenta muestra cargos sin respaldo de gasto.
+
+───────────────────────────────────────────────────────────────────────────
+§1 — TOTALES DEL PERÍODO
+───────────────────────────────────────────────────────────────────────────
+  TOTAL COBRADO Y PAGADO 01-15 ago .... $942.47 USD = Q7,182
+      (incluye $1.07 de créditos publicitarios — no salió de tarjeta)
+      Cash real de tarjetas ............ $941.40 USD = Q7,173
+  EN RETENCIÓN / PENDIENTE ............ $65.00 USD (GTR0, 13-ago) — puede caer aún
+  SALDO GASTADO SIN FACTURAR .......... $56.24 USD — se cobra en los próximos días
+  ─────────────────────────────────────────────────────────────────
+  COMPROMISO REAL DEL PERÍODO ......... $1,063.71 USD = Q8,105
+
+  Desglose de lo pagado por cuenta:
+    GTR7   $331.77   (35%)
+    GTR13  $238.41   (25%)  ← 2º mayor gasto del portafolio
+    CP1    $157.58   (17%)  (COP 638,196 ÷ 4050)
+    GTR1   $150.32   (16%)
+    GTR0    $64.39    (7%)
+    GTR3     $0.00    (0%)  — sin gasto, confirmado por MCP
+
+───────────────────────────────────────────────────────────────────────────
+§2 🔴 HALLAZGO CRÍTICO — 24 INTENTOS DE COBRO RECHAZADOS EN 15 DÍAS
+───────────────────────────────────────────────────────────────────────────
+No es dinero perdido (son REINTENTOS del mismo cargo que después entra por
+otra tarjeta — no sumar como gasto). Pero cada rechazo puede frenar la entrega
+de anuncios, y acumulados llevan a restricción de la cuenta publicitaria.
+
+  Rechazos por cuenta:  CP1 10 · GTR13 7 · GTR1 5 · GTR0 3 · GTR7 0 ✅
+
+  SALUD POR TARJETA:
+  ┌──────────────┬───────────┬──────────┬──────────────────────────────┐
+  │ TARJETA      │ COBROS OK │ RECHAZOS │ VEREDICTO                    │
+  ├──────────────┼───────────┼──────────┼──────────────────────────────┤
+  │ MC ···2190   │     0     │    7     │ 🔴 MUERTA — quitar de CP1     │
+  │ MC ···8069   │     0     │    5     │ 🔴 MUERTA — quitar de GTR13   │
+  │ MC ···1193   │     0     │    2     │ 🔴 MUERTA — quitar de GTR13   │
+  │ MC ···8931   │     0     │    2     │ 🔴 MUERTA — quitar GTR1/GTR0  │
+  │ MC ···4308   │     7     │    6     │ ⚠️ INTERMITENTE — 46% falla   │
+  │ MC ···2388   │     2     │    2     │ ⚠️ INTERMITENTE               │
+  │ Visa ···0925 │     3     │    1     │ ⚠️ leve                       │
+  │ Visa ···0786 │     7     │    0     │ ✅ SANA                       │
+  │ Visa ···9941 │     6     │    0     │ ✅ SANA                       │
+  │ MC ···3494   │     4     │    0     │ ✅ SANA                       │
+  │ Visa ···4167 │     3     │    0     │ ✅ SANA                       │
+  └──────────────┴───────────┴──────────┴──────────────────────────────┘
+
+  LECTURA: hay 4 tarjetas con CERO cobros exitosos que siguen configuradas
+  como método de pago. Meta las intenta primero, falla, y recién después cae
+  a la buena. GTR13 estuvo 6 días (03→09 ago) reintentando $79-80 contra dos
+  tarjetas muertas antes de que Visa ···4167 lo salvara.
+
+  ACCIÓN: quitar ···2190, ···8069, ···1193, ···8931 como método de pago y
+  dejar como primaria la Visa sana de cada cuenta. Es gratis y elimina el
+  riesgo de corte de entrega.
+
+───────────────────────────────────────────────────────────────────────────
+§3 🔴 HALLAZGO 2 — EL SISTEMA SOLO VE EL 79% DEL GASTO REAL
+───────────────────────────────────────────────────────────────────────────
+Cruce de tasa diaria: lo que carga LucidSales a _FACT_VENTAS vs lo que Meta
+efectivamente cobra.
+
+  CUENTA   Lucid $/día   Meta $/día   COBERTURA   VEREDICTO
+  GTR7        22.32        22.21        101%      ✅ OK
+  GTR1         8.27         9.09         91%      ✅ OK
+  GTR0         4.17         4.72         88%      ✅ OK (huecos conocidos)
+  GTR13       13.79        17.63         78%      ⚠️ REVISAR
+  CP1          2.89        11.32         26%      🔴 FUGA GRANDE
+  ─────────────────────────────────────────────────────────────
+  TOTAL       51.44        64.96         79%
+
+  Gasto REAL ....................... Q495/día
+  Gasto que el sistema contabiliza .. Q392/día
+  NO CONTABILIZADO .................. Q103/día ≈ Q3,091/mes
+
+  🔴 CP1 es la fuga principal: el sistema ve $2.89/día y Meta cobra $11.32/día.
+     Falta el 74%. Hipótesis a verificar con el operador:
+       (a) CP1 corre campañas que NO están conectadas al bot de LucidSales
+           (por eso no aparecen en el export), o
+       (b) la tasa COP÷4050 quedó desactualizada.
+     Si es (a), esas campañas gastan ~$8.4/día = Q64/día sin que el P&L las
+     descuente → la ganancia real del portafolio está SOBREESTIMADA en ~Q1,900/mes.
+     ⚠️ VERIFICAR ANTES DE TOCAR EL P&L. No corregir a mano.
+
+  ⚠️ GTR13 (CLEARSTEM) es el 2º mayor gasto ($238 en 15 días) y es
+     precisamente la cuenta SIN MCP → el sistema está ciego en su segundo
+     mayor gasto. Su cobertura de 78% es sospechosa pero puede explicarse
+     en parte por los 2 días faltantes (14-15 ago).
+
+───────────────────────────────────────────────────────────────────────────
+§4 — COMPLETITUD: ¿ESTÁN TODAS LAS CUENTAS?
+───────────────────────────────────────────────────────────────────────────
+Inventario verificado contra ads_get_ad_accounts (8 cuentas con acceso):
+
+  ✅ GTR 7  598687956219141   extracto recibido · MCP ON  · $331.77
+  ✅ GTR 0  1665221077707961  extracto recibido · MCP ON  · $64.39
+  ✅ GTR 1  824783947334627   extracto recibido · MCP ON  · $150.32
+  ✅ GTR 13 916746367261028   extracto recibido · MCP OFF · $238.41
+  ✅ CP1    1346891653335162  extracto recibido · MCP OFF · COP 638,196
+  ✅ GTR 3  581490137794343   sin extracto — MCP confirma $0.00 gasto, OK
+  ❌ GTR 2  1680252426660775  SIN EXTRACTO · MCP OFF · tiene método de pago
+                              → PUNTO CIEGO REAL, hay que pedirlo
+  ➖ 332010724162945 "Margarita Perez Carrero" — sin método de pago, sin
+     gasto, moneda COP. Ignorar (no opera).
+
+  🔴 FALTA: el extracto de Facturación de GTR 2. Es la única cuenta con
+     método de pago activo, sin MCP y sin extracto → podría estar gastando
+     sin que nadie lo vea. Pedirlo.
+
+───────────────────────────────────────────────────────────────────────────
+§5 — POR QUÉ NUNCA VA A CALZAR DÍA A DÍA (para no volver a auditar esto)
+───────────────────────────────────────────────────────────────────────────
+Meta cobra cuando se cruza un UMBRAL de gasto acumulado (o en la fecha fija
+mensual, lo que llegue primero). El umbral sube con cada cobro exitoso:
+$25 → $50 → $100 → $250... Por eso:
+  · Un cargo puede incluir gasto de días fuera del rango que estás mirando.
+  · El gasto de los últimos días del corte todavía NO está facturado
+    (eso es el "Saldo actual" de cada cuenta).
+  · Comparar "gasto del 1 al 15" contra "cargos del 1 al 15" SIEMPRE va a
+    dar diferencia. La comparación válida es la ecuación del veredicto:
+        COBRADO − ARRASTRE + SALDO = GASTO
+  · Los "Error" NO son gasto: son reintentos del mismo cargo. Sumarlos
+    infla el total (en GTR13 los inflaría $418 de $238 reales).
+
+───────────────────────────────────────────────────────────────────────────
+§6 — QUÉ HACER (en orden de impacto)
+───────────────────────────────────────────────────────────────────────────
+1. 🔴 Quitar las 4 tarjetas muertas (···2190, ···8069, ···1193, ···8931) y
+   dejar la Visa sana como primaria en cada cuenta. Elimina el riesgo de
+   corte de entrega. Gratis, 10 minutos.
+2. 🔴 Averiguar qué corre CP1 que LucidSales no ve (74% del gasto invisible).
+   Abrir Ads Manager de CP1 → listar campañas con gasto en agosto → comparar
+   contra las que aparecen en el export.
+3. 🟡 Pasar el extracto de Facturación de GTR 2 (punto ciego, tiene tarjeta).
+4. 🟡 Revisar la retención de $65.00 de GTR0 del 13-ago: si no se convirtió
+   en cargo pagado, va a reintentar.
+5. ⚪ Este cruce NO necesita ser mensual. Con las tarjetas sanas y CP1
+   resuelto, basta revisarlo cuando aparezcan rechazos.
+
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+ANEXO v2 — CRUCE CONTRA LOS EXTRACTOS BANCARIOS REALES  (15-ago, 2ª pasada)
+El operador entregó los extractos de DOS tarjetas: una en COP (app blanca,
+cargos "Facebk *código") y una en USD (app verde, "Facebook VISA").
+Se excluyeron OpenAI, Anthropic, Inversiones Gumohi, Minimed, Namecheap,
+DFF Ventures y los pagos de tarjeta.
+═══════════════════════════════════════════════════════════════════════════
+
+§7 ✅ CONFIRMACIÓN DEFINITIVA — META NO SOBRECOBRA
+───────────────────────────────────────────────────────────────────────────
+Los códigos del extracto de Meta ("Identificador de factura de IVA") aparecen
+LITERALMENTE en el banco como "Facebk *código". Emparejé 9 cargos uno a uno:
+
+   CÓDIGO        BANCO COP        META USD     TASA IMPLÍCITA
+   T2unf22je4    $ 96,952.81      $31.00       3,127.5
+   Dc3h53jhe4    $ 53,095.76      $17.00       3,123.3
+   W5pk63whe4    $203,013.20      $65.00       3,123.3
+   24k63zvhe2    $ 53,251.14      $17.00       3,132.4
+   Rcqqsyhhe2    $ 53,251.14      $17.00       3,132.4
+   2qhxyyhhe2    $ 54,917.48      $17.00       3,230.4
+   Bmrxdy5he2    $ 11,859.16      $ 3.73       3,179.4
+   7z7ffz5je2    $  6,772.12      $ 2.13       3,179.4
+   8svlt2n3n4    $     94.32      $ 0.03       3,144.0
+
+Cada cargo del banco tiene su factura en Meta y viceversa. CERO cargos
+inventados. La pregunta original queda cerrada. ✅
+
+TOTAL QUE SALIÓ DE LAS TARJETAS 01-15 ago:
+   Tarjeta USD (liquidado, punto verde) ........ $  605.93
+   Tarjeta COP (cargos Facebk) ................. COP 1,420,559.70
+   Tarjeta COP (comisión cambio de moneda) ..... COP     5,172.46
+   ───────────────────────────────────────────────────────────
+   TOTAL ....................................... $1,058.19 = Q8,063
+   Meta dice haber cobrado ..................... $  942.47
+   DIFERENCIA .................................. $  115.72  ← ver §9
+
+CORRECCIÓN a §1: la "retención temporal" de $65.00 de GTR0 (13-ago,
+W5PK63WHE4) SÍ se convirtió en cargo real — está en el banco COP por
+$203,013.20. Ya no es un pendiente que "puede caer".
+
+REPARTO DE TARJETAS (confirmado por emparejamiento):
+   → Tarjeta COP: MC ···4308 (GTR1), MC ···3494 (GTR7), MC ···2388 /
+     ···2190 / Visa ···0925 (CP1)
+   → Tarjeta USD: Visa ···0786 (GTR1+GTR0), Visa ···9941 (GTR7),
+     Visa ···4167 (GTR13)
+   No hay solape: ningún cargo de Meta aparece en ambas. Sin doble conteo.
+
+───────────────────────────────────────────────────────────────────────────
+§8 🔴🔴 HALLAZGO MAYOR — LA TASA COP DEL SISTEMA ESTÁ 28.5% MAL
+───────────────────────────────────────────────────────────────────────────
+   TASA REAL medida en el banco ...... 3,152 COP/USD (promedio de 9 pares)
+   TASA QUE USA EL SISTEMA ........... 4,050 COP/USD
+   ERROR ............................. +28.5%
+
+El 4,050 se derivó el 24-jul de forma INDIRECTA (comparando la campaña
+"2🟦 TINIDROP" contra sus hermanas 3🟦/4🟦/5🟦). El extracto bancario es
+evidencia DIRECTA y manda. La estimación indirecta estaba mal.
+
+CONSECUENCIA: todo el gasto de CP1 cargado a `_FACT_VENTAS.csv` con ÷4050
+está SUBESTIMADO un 28.5%. El P&L muestra a CP1 más barato de lo que es.
+   CP1 facturado 1-15 ago:  $202.44 real  (el sistema diría $157.58)
+   Impacto directo de la tasa: ~Q188/mes  (chico por sí solo)
+
+⚠️ NO corregir el CSV a mano. La corrección correcta es:
+   (a) cambiar la constante de normalización de CP1 a ~3,150 en el pipeline
+       de carga y en `DATA_PLAYBOOK.md`,
+   (b) re-normalizar las filas históricas de CP1 (`moneda_origen`), y
+   (c) volver a derivar la tasa del banco cada mes — el COP se mueve.
+
+───────────────────────────────────────────────────────────────────────────
+§9 🔴🔴 HALLAZGO MAYOR — HAY UNA CUENTA GASTANDO QUE NADIE ESTÁ MIRANDO
+───────────────────────────────────────────────────────────────────────────
+Tres cargos LIQUIDADOS (punto verde = plata que ya salió) en la tarjeta USD
+no tienen NINGÚN respaldo en los 5 extractos de Meta entregados:
+
+   09-ago  US$ 37.46
+   10-ago  US$ 35.27
+   12-ago  US$ 45.15
+   ─────────────────
+   TOTAL   US$117.88
+
+Y la diferencia global del cruce fue $115.72. Coinciden dentro del margen
+de comisión FX (~1%). Es decir: TODO lo demás cuadra, y este bloque es la
+única plata sin explicar. Es evidencia sólida, no ruido.
+
+Además, en punto NARANJA (autorizaciones no liquidadas) aparecen montos
+repetidos que tampoco están en ningún extracto de Meta:
+   US$71.00 ×6 (13 y 14-ago) = $426.00
+   US$50.30 ×2 = $100.60 · US$66.91 ×2 = $133.82 · US$47.57 · US$51.43
+
+SOSPECHOSO #1: **GTR 2 (1680252426660775)** — es la única cuenta con método
+de pago activo, sin MCP y sin extracto entregado. Encaja perfecto.
+Si está corriendo a ~$40/día, son ~Q9,000/mes fuera del sistema.
+
+→ ACCIÓN INMEDIATA: abrir Ads Manager de GTR 2 y sacar su Facturación
+  01-15 ago. Si no es GTR 2, hay una 9ª cuenta que no aparece en
+  `ads_get_ad_accounts` (cuenta a la que el token no tiene acceso).
+
+───────────────────────────────────────────────────────────────────────────
+§10 — RECÁLCULO DEL HUECO DEL P&L (reemplaza §3)
+───────────────────────────────────────────────────────────────────────────
+   Salió de tarjetas (real) ............ Q538/día
+   El sistema contabiliza .............. Q392/día
+   FUERA DEL P&L ....................... Q146/día ≈ Q4,368/mes
+
+   Descomposición del hueco:
+     · GTR 2 / cuenta desconocida (§9) ....... ~Q60/día   ← el más grande
+     · CP1 sin cobertura de LucidSales ....... ~Q83/día   (cobertura 26%)
+     · Tasa COP mal calibrada (§8) ........... ~Q6/día
+     · GTR13 cobertura 78% ................... resto
+
+   ⚠️ Esto NO significa que el negocio pierda plata: significa que la
+   GANANCIA REPORTADA está inflada porque falta descontar ese gasto.
+   Con Q+652/día de ganancia reportada en el último tramo, un hueco de
+   Q146/día se come el 22%. La ganancia real sería ~Q506/día.
+   ⚠️ CIFRA PROVISIONAL hasta identificar la cuenta de §9.
+
+───────────────────────────────────────────────────────────────────────────
+§11 — HUECOS DE LOS PROPIOS EXTRACTOS (para cerrar bien la próxima)
+───────────────────────────────────────────────────────────────────────────
+   · Tarjeta COP: faltan los días 05, 08, 09, 10, 11 y 12 de agosto.
+   · Tarjeta USD: faltan 01→08 de agosto (el más antiguo visible es 09-ago).
+   · Falta el extracto de Facturación de Meta de GTR 2.
+   Con esos tres el cruce cierra al 100%. Aun así, la conclusión de §7
+   (no hay sobrecobro) ya es sólida: se sostiene en 9 emparejamientos exactos.
+
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+§12 — TABLA FINAL CUENTA POR CUENTA (las 7)  ·  respuesta corta
+═══════════════════════════════════════════════════════════════════════════
+
+ CUENTA   META COBRÓ   TARJETA     DIF      VEREDICTO
+ ───────────────────────────────────────────────────────────────────────
+ GTR 0     $ 129.12    $ 129.76   +$0.64   ✅ CUADRA (dif = comisión FX 1%)
+ GTR 1     $ 150.32    $ 150.77   +$0.45   ✅ CUADRA
+ GTR 3     $   0.00    $   0.00    $0.00   ✅ sin gasto, nada que cuadrar
+ GTR 7     $ 331.00    $ 332.38   +$1.38   ✅ CUADRA
+ GTR 13    $ 238.35    $ 240.73   +$2.38   ✅ CUADRA
+ CP 1      $ 202.44    $  86.00      —     ⚠️ PARCIAL: faltan pantallazos
+                                             de los días 09, 10 y 12-ago
+                                             (3 cargos por COP 367,074)
+ GTR 2     $   0.00    $ 117.88  +$117.88  🔴 NO CUADRA — plata sin factura
+ ───────────────────────────────────────────────────────────────────────
+ TOTAL     $1,051.23   $1,057.52   +$6.29
+
+CORRECCIÓN A §9: los 3 cargos grandes de la tarjeta COP que había marcado
+como "sin respaldo" (Grdauyd4n2 $196,402.73 · Byn7yzv3n2 $270,396.04 ·
+Aqf222j3n4 $149,431.80) SÍ tienen factura: son los 3 cargos de GTR 7 a la
+MC ···3494 ($62.70 + $86.00 + $47.00 = $195.70).
+   Prueba: 616,230.57 COP ÷ 195.70 USD = 3,148.9 COP/USD — la misma tasa
+   que los otros 9 emparejamientos. No es coincidencia.
+El único hueco real es el de GTR 2.
+
+RESPUESTA EN UNA LÍNEA:
+   Todo cuadra al centavo en 5 de las 7 cuentas. La única plata que salió
+   de la tarjeta y NO tiene factura de Meta son $117.88 de una cuenta sin
+   identificar — casi con certeza GTR 2. CP 1 no se pudo cerrar porque
+   faltan 3 días de pantallazos, no porque haya diferencia.
+
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+§13 — 🔴 RETRACTACIÓN: NO EXISTE CUENTA FANTASMA. TODO CUADRA.
+El operador entregó el extracto de GTR 2: saldo $0.00, CERO transacciones.
+La hipótesis de §9 queda REFUTADA. Corrijo abajo.
+═══════════════════════════════════════════════════════════════════════════
+
+QUÉ HICE MAL: el extracto bancario dice solo "Facebook" — nunca dice qué
+cuenta publicitaria es. Asigné los $117.88 a GTR 2 POR DESCARTE ("es la
+única que queda"), no porque lo hubiera visto escrito. Eso no es evidencia.
+
+A QUÉ CORRESPONDEN DE VERDAD — son de CP 1, tarjeta Visa ···0925:
+
+   FECHA     META CP1 (COP)   TARJETA (USD)    TASA IMPLÍCITA
+   09-ago         117,104         $37.46          3,126.1
+   10-ago         110,266         $35.27          3,126.3
+   12-ago         139,704         $45.15          3,094.2
+   ─────────────────────────────────────────────────────────
+   TOTAL          367,074        $117.88          3,114.0
+
+Las tasas caen en el mismo rango (3,094-3,132) que los otros 9
+emparejamientos ya validados. No es coincidencia: son esos cargos.
+
+POR QUÉ SE ESCAPARON: CP 1 factura en COP, pero su Visa ···0925 vive en la
+tarjeta USD → el banco los convirtió a dólares. Por eso no aparecían en el
+extracto en pesos. Y eran justo los días 09, 10 y 12 que yo había dado por
+"faltantes en los pantallazos". Los dos huecos que reporté (§9 dinero sin
+factura · §12 días faltantes de CP1) eran EL MISMO hueco visto desde los
+dos lados — se cancelan entre sí.
+
+───────────────────────────────────────────────────────────────────────────
+TABLA FINAL DEFINITIVA — LAS 7 CUENTAS · 01-15 AGO
+───────────────────────────────────────────────────────────────────────────
+ CUENTA   META COBRÓ   TARJETA     DIF       VEREDICTO
+ ─────────────────────────────────────────────────────────────────
+ GTR 0     $  129.12   $  129.76   +$0.64    ✅ CUADRA
+ GTR 1     $  150.32   $  150.77   +$0.45    ✅ CUADRA
+ GTR 2     $    0.00   $    0.00    $0.00    ✅ sin gasto (extracto vacío)
+ GTR 3     $    0.00   $    0.00    $0.00    ✅ sin gasto (MCP confirma)
+ GTR 7     $  331.00   $  332.35   +$1.35    ✅ CUADRA
+ GTR 13    $  238.35   $  240.73   +$2.38    ✅ CUADRA
+ CP 1      $  204.16   $  204.61   +$0.45    ✅ CUADRA
+ ─────────────────────────────────────────────────────────────────
+ TOTAL     $1,052.95   $1,058.22   +$5.27    (+0.50% = comisión FX)
+
+>> CERO plata sin explicar. Las 7 cuentas cierran. Meta no cobra de más y
+   no hay ninguna cuenta gastando a escondidas.
+
+───────────────────────────────────────────────────────────────────────────
+QUÉ SIGUE EN PIE Y QUÉ SE CAE (estado de los hallazgos de esta auditoría)
+───────────────────────────────────────────────────────────────────────────
+ ✅ EN PIE — §2 · 24 cobros rechazados / 4 tarjetas con cero éxitos
+    (···2190, ···8069, ···1193, ···8931). Sigue siendo la acción #1.
+ ✅ EN PIE — §8 · la tasa COP del sistema (4,050) está ~28% mal; la real
+    es ~3,130. Esta auditoría la reconfirmó con 12 emparejamientos.
+    CP1 sigue subestimado en el P&L.
+ ⚠️ REDUCIDO — §3/§10 · el hueco de cobertura del P&L. Al desaparecer la
+    "cuenta fantasma" (~Q60/día), el hueco baja de ~Q146/día a ~Q86/día,
+    y casi todo es CP1 (LucidSales ve ~26% de su gasto) + GTR13 (78%).
+    Sigue siendo un problema real, pero la mitad de lo que dije.
+ ❌ SE CAE — §9 · "hay una cuenta gastando que nadie mira". FALSO.
+    APR-029 marcado RETRACTADO. Reemplazado por APR-030 (regla de método).
+
+LECCIÓN DE MÉTODO (APR-030): un cargo solo se atribuye a una cuenta si
+(a) el código del extracto de Meta aparece literal en el banco, o (b) el
+monto convertido da una tasa consistente con los emparejamientos ya
+validados. Si no cumple ninguna → se marca NO IDENTIFICADO y se pide el
+dato. No se nombra un culpable por eliminación.
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+§14 — CRUCE FINAL DE 3 CAPAS: LUCIDSALES vs META vs TARJETA
+Insumo nuevo: `report-2026-08-01-2026-08-15.xlsx` (cuenta B) +
+`...(1).xlsx` (cuenta A). 0 adId en común → universos disjuntos, ambos suman.
+Ventana idéntica a la de facturación → por fin es comparación limpia.
+═══════════════════════════════════════════════════════════════════════════
+
+ CUENTA   LUCID $    META $   FUENTE META    COBERTURA   NO CONTABILIZADO
+ ────────────────────────────────────────────────────────────────────────
+ GTR 7     316.68    333.16   MCP                 95%    Q  126   ✅
+ GTR 1     125.08    136.37   MCP                 92%    Q   86   ✅
+ GTR 13    213.01    264.39   facturación         81%    Q  392   ⚠️
+ GTR 0      38.23     70.75   MCP                 54%    Q  248   🔴
+ CP 1       52.14    219.95   facturación         24%    Q1,279   🔴🔴
+ GTR 2       0.00      0.00   extracto vacío       —       —      ✅
+ GTR 3       0.00      0.00   MCP                  —       —      ✅
+ ────────────────────────────────────────────────────────────────────────
+ TOTAL     745.14   1,024.62                      73%    Q2,130
+
+   Gasto REAL ........... Q7,808 en 15 días = Q521/día
+   Sistema contabiliza .. Q5,678 en 15 días = Q379/día
+   FUERA DEL P&L ........ Q2,130 = Q142/día ≈ Q4,259/mes
+
+⚠️ La ganancia reportada está inflada en ~Q142/día. Sobre los Q+652/día del
+   último tramo, la ganancia real sería ~Q510/día (−22%).
+
+───────────────────────────────────────────────────────────────────────────
+§15 — DÓNDE EXACTAMENTE SE PIERDE EL TRACKING (campaña por campaña)
+───────────────────────────────────────────────────────────────────────────
+ CAMPAÑA                                      META    LUCID   COBERT
+ ──────────────────────────────────────────────────────────────────
+ TINNIDROP_RENOVACION_20260725 +25 años      $44.89  $12.37     28% 🔴
+ GTR7_NUSAVA_ESCALA-ARDOR_20260812           $23.37  $19.09     82% ⚠️
+ GTR7_TINNIDROP_ESCALA_20260812              $27.61  $24.16     88% ⚠️
+ NUSAVAB12_ESCALA_ARDOR_20260715             $91.28  $86.44     95% ✅
+ 4🟦 TINIDROP GTR0 - 1.59 - 4 WINERS          $83.65  $80.61     96% ✅
+ NUSAVAB12_TEST_20260622 - Copia             $15.55  $14.64     94% ✅
+ 🟩GTR7 VARICOSE_TRAFICO_20260801             $48.02  $48.02    100% ✅
+ 🟩 GTR7 - VARICOSE_ESCALA_VERGUENZA_20260801 $38.63  $38.63    100% ✅
+ GTR7_VARICOSE_ESCALA-VERGUENZA_20260812      $5.09   $5.09    100% ✅
+ GTR0_TINNIDROP_ESCALA_20260812              $13.93  $13.93    100% ✅
+ 🟩 TINIDROP GTR0 - 1.59 - TEST               $11.93  $11.93    100% ✅
+
+HALLAZGO PRECISO — el hueco de GTR 0 es UNA SOLA CAMPAÑA:
+   `TINNIDROP_RENOVACION_20260725 +25 años` gastó $44.89 y LucidSales solo
+   atribuye $12.37 → el 72% de su gasto NO tiene tracking (Q248 en 15 días).
+   Las otras dos campañas de GTR 0 calzan AL CENTAVO ($13.93 y $11.93).
+   → No es un problema de cuenta ni de export: son ANUNCIOS concretos dentro
+     de esa campaña sin el link del bot bien parametrizado (o creados
+     después de conectar el bot). Es reparable ad por ad.
+   → Es la campaña de RENOVACIÓN CREATIVA. Si sus ads no trackean, todas las
+     conclusiones sobre si la renovación funcionó están construidas sobre
+     el 28% de su gasto. **No juzgar la renovación con esta data.**
+
+CP 1 — el agujero más grande del portafolio:
+   LucidSales trae UNA sola campaña (`2🟦 TINIDROP`, COP 162,993).
+   Meta cobró COP 638,196 → faltan ~COP 475,000 (~Q1,150) en campañas que
+   el export ni siquiera lista. CP 1 no tiene MCP → hay que abrir su Ads
+   Manager y listar a mano las campañas con gasto en agosto.
+
+───────────────────────────────────────────────────────────────────────────
+§16 — QUÉ HACER, EN ORDEN
+───────────────────────────────────────────────────────────────────────────
+1. 🔴 CP 1: abrir Ads Manager → campañas con gasto 01-15 ago. Identificar
+   qué corre además de `2🟦 TINIDROP`. Es Q1,279 en 15 días sin descontar.
+2. 🔴 `TINNIDROP_RENOVACION_20260725`: revisar ad por ad el link del bot.
+   72% de esa campaña gasta a ciegas.
+3. 🔴 Quitar las 4 tarjetas muertas (§2). Sigue pendiente, sigue gratis.
+4. 🟡 Corregir la tasa COP de 4,050 → ~3,130 en el pipeline (§8).
+5. 🟡 GTR 13 al 81%: sin MCP no se puede ver por campaña. Pedir su export
+   de Ads Manager por campaña para ubicar el faltante.
+6. ⚪ Repetir este cruce de 3 capas 1 vez al mes. Es el único control que
+   detecta gasto sin tracking — ningún chequeo interno del CSV lo ve.
+
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+§17 — CP 1 RESUELTO: LA CAUSA SON LOS CONJUNTOS "- Copia"
+Insumo: `CP1-Conjuntos-de-anuncios-1-ago-2026---15-ago-2026.csv` (Ads Manager)
+═══════════════════════════════════════════════════════════════════════════
+
+CP 1 corre 11 conjuntos (todos TINNIDROP). LucidSales solo ve 3.
+Los 8 invisibles son TODOS duplicados llamados "- Copia" con el nombre
+EXACTAMENTE IGUAL a un conjunto trackeado.
+
+ CONJUNTO (Ads Manager)                  COP AM  CONV  COP LUCID  ESTADO
+ ─────────────────────────────────────────────────────────────────────────
+ ME DIJERON QUE NO TIENE CURA - Copia    61,350    24         0   🔴 CIEGO
+ ME DIJERON QUE NO TIENE CURA            60,391    16    54,675   ✅
+ ME DIJERON QUE NO TIENE CURA - Copia    60,309    20         0   🔴 CIEGO
+ DETERIORO COGNITIVO - video             60,073    48    55,237   ✅
+ ME DIJERON QUE NO TIENE CURA - Copia    59,595    16         0   🔴 CIEGO
+ DETERIORO COGNITIVO - video - Copia     59,414    37         0   🔴 CIEGO
+ DETERIORO COGNITIVO - video - Copia     59,095    38         0   🔴 CIEGO
+ DETERIORO COGNITIVO - video - Copia     59,018    50         0   🔴 CIEGO
+ DETERIORO COGNITIVO - video - Copia     58,784    53         0   🔴 CIEGO
+ Accesibilidad económica vs. médico -Co  58,649    58    53,081   ✅
+ Pérdida auditiva irreversible                0     0         0   (inactive)
+ ─────────────────────────────────────────────────────────────────────────
+ TOTAL                                  596,678   360   162,993
+
+   TRACKEADO ... COP 179,113 (Q437) · 122 conversaciones · Q3.58 c/conv
+   CIEGO ....... COP 417,565 (Q1,018) · 238 conversaciones · Q4.28 c/conv
+   → 70% del gasto y 66% de las conversaciones de CP1 están fuera del sistema.
+
+✅ CP1 CUADRA CON LA FACTURACIÓN: Ads Manager COP 596,678 vs
+   (facturado 638,196 − arrastre julio 110,266 + saldo 49,373) = 577,303.
+   Diferencia +3.4%. El dinero está bien cobrado; el problema es de TRACKING.
+
+───────────────────────────────────────────────────────────────────────────
+LA PREGUNTA QUE DECIDE TODO: ¿ALGUIEN ATIENDE ESAS 238 CONVERSACIONES?
+───────────────────────────────────────────────────────────────────────────
+ A) SI se atienden y venden al mismo ritmo (10.9% de cierre):
+      ~26 ventas ocultas · ~Q5,614 de ingreso oculto · Q1,018 de gasto
+      → CP1 estaría GANANDO ~Q4,596 que el P&L no registra. BUENA noticia:
+        el portafolio rinde MÁS de lo reportado, no menos.
+
+ B) SI nadie las atiende (van a un número/bot sin operar):
+      Q1,018 perdidos en 15 días = Q68/día = ~Q2,036/mes tirados.
+
+   No se puede decidir desde la data: hay que ABRIR el WhatsApp/bot al que
+   apuntan esos 8 conjuntos y ver si entran mensajes. Es una revisión de
+   5 minutos, no un análisis.
+
+   ⚠️ Dato a favor de (A): el export de LucidSales del 11-ago ya reveló una
+   SEGUNDA cuenta de LucidSales (APR-021). Podría existir una tercera donde
+   sí viven estas conversaciones. Antes de concluir pérdida, preguntarlo.
+
+───────────────────────────────────────────────────────────────────────────
+CAUSA RAÍZ — ES EXACTAMENTE LO QUE ADVIERTE CLAUDE.md REGLA 23
+───────────────────────────────────────────────────────────────────────────
+"Prohibido publicar un `- Copia`: se renombra a R[N] antes de publicar.
+ Cuatro conjuntos llamados `DETERIORO COGNITIVO - video - Copia` en la misma
+ campaña son cuatro filas anónimas en el CSV."
+Acá son CINCO de DETERIORO COGNITIVO y CUATRO de ME DIJERON. La regla ya
+estaba escrita; CP1 nunca se migró a la convención de nombres del 12-ago
+(esa migración cubrió GTR0/GTR1/GTR7/GTR13, no CP1).
+
+ACCIÓN: incluir CP1 en la migración de nombres pendiente. Sin eso, el 70%
+de su gasto seguirá siendo invisible aunque se arregle el tracking.
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+§18 — AUDITORÍA DE TRACKING COMPLETA: TODOS LOS CONJUNTOS vs LOS 2 LUCIDSALES
+Ventana 01-15 ago. Fuente Meta: MCP nivel adset (GTR7/GTR0/GTR1) + export
+Ads Manager (CP1). Fuente bot: los DOS exports de LucidSales (A y B, 0 adId
+en común). Se compara GASTO y CONVERSACIONES conjunto por conjunto.
+═══════════════════════════════════════════════════════════════════════════
+
+ CUENTA    $META   CONV META   $LUCID   MSJ LUCID   %GASTO  %CONV   $CIEGO
+ ──────────────────────────────────────────────────────────────────────────
+ GTR 7    323.47        717    306.93        688      95%    96%     0.00 ✅
+ GTR 1    137.26        224    125.08        207      91%    92%     0.00 ✅
+ GTR 13   264.39          ?    213.01        281      81%      ?        ? ⚠️
+ GTR 0     70.75        111     38.23         67      54%    60%    32.52 🔴
+ CP 1     190.88        360     52.14        119      27%    33%   133.58 🔴🔴
+ ──────────────────────────────────────────────────────────────────────────
+ SUBTOTAL 722.36      1,412    522.38      1,081      72%    77%   166.10
+
+ >> 331 CONVERSACIONES DE 1,412 (23%) LAS COBRA META Y NO LLEGAN A NINGÚN
+    LUCIDSALES. Gasto en conjuntos 100% ciegos: $166.10 = Q1,266 en 15 días
+    = Q84/día.
+
+ ✅ GTR 7 y GTR 1 están SANOS (95% y 91%). Su 5-9% faltante es desfase de
+    atribución normal, no un hueco. NO tocar nada ahí.
+
+───────────────────────────────────────────────────────────────────────────
+LOS 15 CONJUNTOS CIEGOS — LISTA EXACTA
+───────────────────────────────────────────────────────────────────────────
+
+🔴 GTR 0 · campaña `TINNIDROP_RENOVACION_20260725 +25 años` — 8 conjuntos
+   ($32.52 · 46 conversaciones perdidas):
+     EL VOLUMEN DE LA TELE .................. $4.72 ·  8 conv
+     MENOS QUE LA CONSULTA .................. $4.44 ·  9 conv
+     RESEÑA 5 ESTRELLAS (hombre 58) ......... $4.43 ·  8 conv
+     EMPEZÓ CON UN ZUMBIDO .................. $4.22 ·  1 conv
+     LA HIJA QUE LO COMPRÓ .................. $3.93 ·  6 conv
+     "APRENDÉ A VIVIR CON ESO" · SIN precio . $3.76 ·  5 conv
+     TRES ESPECIALISTAS, CERO RESPUESTAS .... $3.56 ·  5 conv
+     NO SE QUEDA QUIETO ..................... $3.46 ·  2 conv
+
+   ‼️ EL DIAGNÓSTICO ESTÁ ACÁ: en la MISMA campaña, 4 conjuntos SÍ trackean
+      al 100% — "YA NO ME ACUERDO DE LAS COSAS" ($3.13), "CADA MES OIGO UN
+      POCO MENOS" ($3.11), "EL OTORRINO ME DIO 3 MINUTOS" ($3.09) y "GASTÉ
+      MÁS DE Q2,000 Y SIGO IGUAL" ($3.04).
+      → NO es la cuenta, NO es el número de WhatsApp de la campaña, NO es
+        la fanpage. Es el LINK DEL ANUNCIO en esos 8 conjuntos concretos.
+      → Pista adicional: los 4 que trackean gastan $3.04-3.13 y los 8 ciegos
+        gastan $3.46-4.72 → se crearon en TANDAS DISTINTAS. Los ciegos son
+        de la tanda posterior, hecha sin copiar el link bueno.
+      → SE ARREGLA COMPARANDO EL LINK de un anuncio bueno contra uno ciego.
+
+🔴 CP 1 · 7 conjuntos "- Copia" (COP 417,565 = $133.58 · 238 conv perdidas):
+     DETERIORO COGNITIVO - video - Copia  ×4 . COP 236,311 · 178 conv
+     ME DIJERON QUE NO TIENE CURA - Copia ×3 . COP 181,254 ·  60 conv
+   Mismo patrón: los 3 conjuntos con nombre ORIGINAL trackean bien
+   (COP 179,113 / 122 conv) y los duplicados "- Copia" no trackean ninguno.
+
+⚠️ GTR 13 — sin MCP no puedo ver sus conjuntos. Cobertura de gasto 81%
+   (213.01 de 264.39). Falta su export de Adsemanager nivel conjunto,
+   igual al que se pasó de CP1, para ubicar cuáles son.
+
+───────────────────────────────────────────────────────────────────────────
+CONCLUSIÓN DE CAUSA
+───────────────────────────────────────────────────────────────────────────
+El patrón se repite idéntico en GTR 0 y CP 1: **dentro de la misma campaña,
+los conjuntos ORIGINALES trackean y los DUPLICADOS/nuevos no.** Eso descarta
+que el problema sea la cuenta, la fanpage o el número de WhatsApp — si fuera
+eso, la campaña entera estaría ciega, no la mitad.
+
+La causa está a nivel ANUNCIO: el link/destino de WhatsApp de los conjuntos
+ciegos no lleva el parámetro que LucidSales usa para atribuir. Se rompe al
+duplicar o al crear una tanda nueva sin copiar el anuncio bueno.
+
+VERIFICACIÓN (5 min, decide todo): abrir un anuncio de `EL VOLUMEN DE LA
+TELE` (GTR0) y uno de `CADA MES OIGO UN POCO MENOS` (GTR0, mismo campaña,
+sí trackea) y comparar el destino de WhatsApp campo por campo. La diferencia
+que aparezca es la causa, y aplica igual a los 15 conjuntos.
+
+⚠️ NO APAGAR ESOS 15 CONJUNTOS. Rinden igual o mejor que los trackeados
+   (CP1 ciego Q4.28/conv vs Q3.58 trackeado). Están trayendo 331
+   conversaciones reales. Apagarlos es cortar tráfico bueno; lo que falta
+   es la atribución, no el resultado.
+═══════════════════════════════════════════════════════════════════════════

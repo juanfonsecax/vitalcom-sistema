@@ -1,0 +1,164 @@
+{
+  "ficha_id": "F090",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Megacomprasgt/03_886288984223653.jpg",
+    "anunciante": "Megacomprasgt",
+    "ad_archive_id": "886288984223653",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 1,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA CAPTURA DEL BUSCADOR DENTRO DEL MARCO DEL TELEFONO, CON LA BARRA DE ESTADO COMPLETA. Sobre la version de pantalla suelta, esta suma el chasis del dispositivo: bordes redondeados, camara frontal, y arriba la hora, la senal, el wifi y el porcentaje de bateria. Lo que se ve ya no es una pagina: es el telefono de alguien.",
+  "lectura_estrategica": "El marco cambia el sujeto de la pieza. Sin chasis, el lector ve una pagina de resultados; con chasis, ve la pantalla de OTRA PERSONA — alguien que busco esto y encontro esto. Los detalles de la barra de estado son lo que sostiene la ilusion, y por eso van completos hasta el porcentaje de bateria en un numero no redondo. La pregunta de la barra de busqueda es larga y encadena tres sintomas de una misma etapa de la vida, que es como busca alguien que no sabe que su problema tiene nombre: nivel 1 puro.",
+  "fondo": {
+    "tipo": "chasis_de_dispositivo",
+    "base": "marco de telefono con bordes redondeados sobre fondo neutro",
+    "elemento": "camara frontal centrada en el borde superior",
+    "regla": "el chasis convierte la pagina en la pantalla de alguien: ese es el dispositivo entero"
+  },
+  "paleta": {
+    "derivacion": "de la interfaz imitada, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "blanco (fondo de interfaz) mas gris (texto secundario, iconos de estado) mas azul de enlace (titulos de resultado) mas celeste muy claro del bloque destacado"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de interfaz, NO condensada",
+    "pesos_permitidos": [
+      "Medium/500",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "gris muy oscuro",
+    "regla": "tipografia de sistema operativo: cualquier condensada de cartel delata la pieza"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una pantalla de resultados de busqueda dentro del chasis de un telefono",
+    "chasis": "bordes redondeados, camara frontal centrada, proporciones de un telefono actual",
+    "barra_de_estado": "hora, senal, wifi y porcentaje de bateria, completos y legibles",
+    "que_se_conserva": "los iconos de la barra de estado, el contador de notificaciones, el avatar de cuenta, las pestanas, los tres puntos, el favicon y la URL de cada resultado",
+    "que_NO_se_hace": "tipografia publicitaria, precio, boton de compra, logo de tienda, color de marca, signos de exclamacion, barra de estado incompleta",
+    "detalle_bateria": "el porcentaje va en un numero NO redondo: un 100% se lee montado",
+    "regla": "sin chasis el lector ve una pagina; con chasis ve la pantalla de otra persona"
+  },
+  "zonas": {
+    "barra_estado": {
+      "posicion": "borde superior del chasis",
+      "contenido": "{{HORA}} · senal · wifi · {{BATERIA}}%",
+      "estilo": "Medium gris oscuro muy chico",
+      "regla": "va completa: es lo que sostiene la ilusion del dispositivo"
+    },
+    "cabecera_app": {
+      "posicion": "bajo la barra de estado",
+      "contenido": "menu de tres lineas a la izquierda, logotipo al centro, campana con contador de notificaciones y avatar de cuenta a la derecha",
+      "regla": "elementos de verosimilitud: se replican completos aunque no aporten informacion"
+    },
+    "barra_busqueda": {
+      "posicion": "bajo la cabecera",
+      "contenedor": "campo redondeado con borde fino, lupa a la izquierda, microfono y camara a la derecha",
+      "texto": "{{PREGUNTA_DEL_AVATAR}}",
+      "estilo": "Regular gris oscuro, en dos lineas si hace falta",
+      "restriccion_palabras": "12-18 palabras",
+      "formato_obligatorio": "pregunta larga que ENCADENA VARIOS SINTOMAS de una misma etapa o situacion de la vida",
+      "regla_critica": "asi busca alguien que no sabe que su problema tiene nombre: enumera lo que le pasa, no lo que tiene. Es nivel 1 puro"
+    },
+    "barra_pestanas": {
+      "posicion": "bajo la barra de busqueda",
+      "contenido": "fila de pestanas de categoria con la primera subrayada",
+      "regla": "se replica completa"
+    },
+    "bloque_destacado": {
+      "posicion": "centro, ocupa 40% del alto",
+      "contenedor": "card de fondo celeste muy claro con borde fino",
+      "titulo": "{{TITULO_RESULTADO}}",
+      "estilo_titulo": "Medium azul de enlace, subrayado, seguido del texto en negro",
+      "cuerpo": "{{TEXTO_INFORMATIVO}}",
+      "estilo_cuerpo": "Regular gris oscuro",
+      "restriccion_cuerpo": "45-65 palabras",
+      "regla_tono": "tono de enciclopedia: describe que es el producto y que puede apoyar, sin adjetivos de venta ni segunda persona",
+      "regla_cierre": "cierra mencionando que ALGUNAS PERSONAS lo incorporan y notan mejoras en pocas semanas: prueba social en tercera persona y sin cifra",
+      "fuente_atribucion": "{{FUENTE_CITADA}} con favicon y URL completa al pie del bloque"
+    },
+    "producto_insertado": {
+      "posicion": "derecha del bloque destacado",
+      "escala": "20% del frame",
+      "contenido": "{{PRODUCTO_RECORTADO}}",
+      "tratamiento": "recorte limpio del envase sobre el fondo del bloque, como imagen de resultado",
+      "regla": "sin precio, sin badge y sin marca destacada: entra como ilustracion del resultado"
+    },
+    "segundo_resultado": {
+      "posicion": "inferior",
+      "favicon": "circulo generico",
+      "url": "{{URL_APARENTE}}",
+      "titulo": "{{TITULO_SEGUNDO_RESULTADO}}",
+      "estilo_titulo": "Medium azul de enlace",
+      "descripcion": "{{DESCRIPCION_SEGUNDO}}",
+      "restriccion_descripcion": "16-24 palabras",
+      "regla": "cortado por el borde inferior: sugiere que hay mas",
+      "regla_contenido": "el segundo resultado nombra la CONDICION con su nombre, aunque la busqueda no lo hiciera: es donde el lector aprende como se llama lo que tiene"
+    }
+  },
+  "secuencia_lectura": [
+    "barra_busqueda",
+    "bloque_destacado",
+    "producto_insertado",
+    "segundo_resultado",
+    "barra_estado"
+  ],
+  "reglas_duras": [
+    "El chasis del telefono va completo, con camara frontal y barra de estado",
+    "El porcentaje de bateria va en un numero no redondo",
+    "La pregunta encadena varios sintomas de una misma etapa de la vida",
+    "El texto del bloque va en tono de enciclopedia, sin segunda persona",
+    "El bloque cierra con prueba social en tercera persona y sin cifra",
+    "El segundo resultado nombra la condicion con su nombre",
+    "Sin precio, sin boton de compra, sin logo de tienda"
+  ],
+  "variables_requeridas": [
+    "HORA",
+    "BATERIA",
+    "PREGUNTA_DEL_AVATAR",
+    "TITULO_RESULTADO",
+    "TEXTO_INFORMATIVO",
+    "FUENTE_CITADA",
+    "PRODUCTO_RECORTADO",
+    "URL_APARENTE",
+    "TITULO_SEGUNDO_RESULTADO",
+    "DESCRIPCION_SEGUNDO"
+  ],
+  "cuando_usar": [
+    "nivel de conciencia 1: la persona no sabe que su problema tiene nombre",
+    "etapas de la vida con varios sintomas simultaneos (menopausia, embarazo, envejecimiento)",
+    "publico saturado de anuncios donde el formato publicitario ya no detiene",
+    "cuando el objetivo es informar y calificar"
+  ],
+  "cuando_no_usar": [
+    "BOFU o retargeting: no hay oferta ni precio",
+    "cuando la pregunta no es algo que alguien buscaria escrito",
+    "cuando no se puede replicar la interfaz con fidelidad: a medias se nota"
+  ],
+  "sellos_y_claims_observados": [
+    "Barra de estado con hora 9:42, senal, wifi y bateria 87%.",
+    "Cabecera con menu, logotipo, campana con contador de 3 notificaciones y avatar de cuenta.",
+    "Pregunta de busqueda: ¿QUE AYUDA CON LA CAIDA DEL CABELLO, EL INSOMNIO Y LOS CAMBIOS REPENTINOS EN LA MENOPAUSIA?",
+    "Bloque destacado: EL ACEITE DE SEMILLA DE CALABAZA ES UN SUPLEMENTO NATURAL que contiene fitoesteroles, acidos grasos esenciales, vitaminas y minerales que pueden apoyar el equilibrio hormonal, la calidad del sueno y el bienestar emocional durante la menopausia. Algunas personas lo incorporan a su rutina diaria y notan mejoras en pocas semanas.",
+    "Fuente citada: Bienestar Femenino Natural, con URL completa.",
+    "Segundo resultado: Salud y Equilibrio — MENOPAUSIA: SOLUCIONES NATURALES PARA CADA SINTOMA.",
+    "Claims impresos en el empaque: PUMPKIN SEED OIL, Cold Pressed · Natural, 1,000 mg per serving, 2-in-1 formula, 200 Softgels Dietary Supplement.",
+    "La pieza no declara precio, sellos regulatorios, garantias ni CTA."
+  ],
+  "canonico_id": "CN11_PANTALLA_SIMULADA",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,152 @@
+{
+  "ficha_id": "F054",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Doctora_Patricia_Morales/17_1621429326017571.jpg",
+    "anunciante": "Doctora Patricia Morales",
+    "ad_archive_id": "1621429326017571",
+    "dias_activo": 1,
+    "replicas": 2,
+    "score": 51,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "25%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C9_COMPARACION",
+    "variante_operador": "falsa-vs-real"
+  },
+  "dispositivo_dominante": "LA COMPARACION FALSA CONTRA REAL, CON EL PRODUCTO SOSTENIDO EN MANO A CADA LADO. Dos mitades de fondo distinto, cada una con una mano sosteniendo un ejemplar del producto — el de imitacion a la izquierda con sello IMITACION, el legitimo a la derecha con la marca visible — y bajo cada uno una lista de cuatro items con equis rojas de un lado y checks verdes del otro.",
+  "lectura_estrategica": "No compite contra el problema: compite contra las copias. Sirve cuando el producto ya se replico en el mercado y la persona esta a punto de comprar una version barata. La lista izquierda no ataca al competidor generico sino a defectos VERIFICABLES de la copia (el velcro se rompe en una semana, se coloca en la posicion incorrecta), y la derecha responde uno por uno con especificaciones y respaldo. El cuarto item de cada lado es de POSVENTA — sin reembolso ni soporte contra garantia de devolucion — que es la objecion que decide cuando los dos productos se ven parecidos.",
+  "fondo": {
+    "tipo": "partido_por_la_mitad",
+    "mitad_izquierda": "{{COLOR_ALERTA}} naranja o rojo saturado",
+    "mitad_derecha": "crema o beige claro",
+    "corte": "vertical al centro exacto",
+    "regla": "la temperatura del fondo hace la mitad del trabajo: el lado de la copia es agresivo y el del original es sereno"
+  },
+  "paleta": {
+    "derivacion": "de la oposicion, no del empaque",
+    "cantidad_colores": 5,
+    "estructura": "{{COLOR_ALERTA}} (fondo izquierdo y label FALSA) mas verde (label REAL y checks) mas rojo (equis) mas blanco (cards de item) mas crema (fondo derecho)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "label_falsa": {
+      "posicion": "superior_izquierda",
+      "contenedor": "card {{COLOR_ALERTA}} solida con esquinas redondeadas",
+      "texto": "{{LABEL_NEGATIVO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "1 palabra",
+      "default": "FALSA"
+    },
+    "label_real": {
+      "posicion": "superior_derecha",
+      "contenedor": "card blanca con borde verde grueso",
+      "texto": "{{LABEL_POSITIVO}}",
+      "estilo": "Black/900 uppercase verde",
+      "restriccion_palabras": "1 palabra",
+      "default": "REAL",
+      "regla": "una sola palabra por lado: el contraste tipografico y de color hace el resto"
+    },
+    "producto_falso": {
+      "posicion": "izquierda_media",
+      "contenido": "{{FOTO_PRODUCTO_IMITACION}}",
+      "escala": "28% del frame",
+      "tratamiento": "una mano sosteniendo el ejemplar de imitacion, con el defecto visible si es posible",
+      "sello": "{{SELLO_IMITACION}} en etiqueta rotada sobre el producto",
+      "regla": "la mano da escala y hace que el producto se lea como un objeto real que alguien te podria vender"
+    },
+    "producto_real": {
+      "posicion": "derecha_media",
+      "contenido": "{{FOTO_PRODUCTO_ORIGINAL}}",
+      "escala": "28% del frame",
+      "tratamiento": "una mano sosteniendo el ejemplar legitimo, con la MARCA visible y legible",
+      "fuente": "IMAGEN_2",
+      "regla": "misma pose, mismo encuadre y misma escala que el falso: la unica diferencia visible debe ser el producto"
+    },
+    "lista_defectos": {
+      "posicion": "izquierda_baja",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical de cards blancas redondeadas",
+      "formato_item": "EQUIS blanca en circulo rojo a la izquierda mas TITULO Bold negro mas subtitulo Regular gris",
+      "items": "{{DEFECTOS[4]}}",
+      "restriccion_titulo": "3-6 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla_critica": "los defectos son VERIFICABLES y concretos (el velcro se rompe en una semana, se coloca en posicion incorrecta), nunca descalificaciones genericas",
+      "regla_item_4": "el ultimo es de POSVENTA: sin reembolso ni soporte"
+    },
+    "lista_ventajas": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical de cards blancas redondeadas",
+      "formato_item": "CHECK blanco en circulo verde a la izquierda mas TITULO Bold negro mas subtitulo Regular gris",
+      "items": "{{VENTAJAS[4]}}",
+      "restriccion_titulo": "3-6 palabras",
+      "restriccion_subtitulo": "2-4 palabras",
+      "regla": "responde uno por uno a los defectos de la izquierda, en el mismo orden",
+      "regla_especificacion": "al menos un item lleva una MEDIDA o una CIFRA con su fuente",
+      "regla_item_4": "el ultimo es de POSVENTA: garantia de devolucion. Es la objecion que decide cuando los dos productos se ven parecidos"
+    }
+  },
+  "secuencia_lectura": [
+    "label_falsa",
+    "label_real",
+    "producto_falso",
+    "producto_real",
+    "lista_defectos",
+    "lista_ventajas"
+  ],
+  "reglas_duras": [
+    "Los dos productos van en la misma pose, mismo encuadre y misma escala",
+    "Los dos van sostenidos en mano, para que se lean como objetos reales",
+    "Una sola palabra en cada label",
+    "Los defectos son verificables y concretos, nunca descalificaciones genericas",
+    "Las ventajas responden a los defectos uno por uno y en el mismo orden",
+    "Al menos una ventaja lleva una medida o cifra con su fuente",
+    "El cuarto item de cada lado es de posventa"
+  ],
+  "variables_requeridas": [
+    "LABEL_NEGATIVO",
+    "LABEL_POSITIVO",
+    "FOTO_PRODUCTO_IMITACION",
+    "FOTO_PRODUCTO_ORIGINAL",
+    "SELLO_IMITACION",
+    "DEFECTOS[4]",
+    "VENTAJAS[4]",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "cuando el producto ya se replico en el mercado y hay copias circulando",
+    "publico de nivel 4 que esta comparando precios entre versiones",
+    "productos con una especificacion tecnica que la copia no cumple",
+    "cuando existe politica de garantia y soporte que la copia no ofrece"
+  ],
+  "cuando_no_usar": [
+    "producto nuevo sin copias en el mercado: la comparacion no tiene contra que",
+    "publico frio que todavia no conoce la categoria",
+    "cuando no hay diferencias verificables entre el original y la copia"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello IMITACION en etiqueta rotada sobre el producto del lado izquierdo.",
+    "Defectos listados: IMITACION DE AMAZON, EL VELCRO SE ROMPE EN UNA SEMANA, SE COLOCA SOBRE LA ROTULA (posicion incorrecta), SIN REEMBOLSO NI SOPORTE.",
+    "Ventajas listadas: LA CORREA DE PRECISION ORIGINAL DE LA MARCA, 2 CM DEBAJO DE LA ROTULA (en el punto exacto de presion), 34% MENOS TENSION (Sports Health 2011), GARANTIA DE DEVOLUCION DE 60 DIAS.",
+    "La ventaja de la cifra cita su fuente y ano de publicacion."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

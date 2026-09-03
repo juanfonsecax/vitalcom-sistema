@@ -1,0 +1,205 @@
+{
+  "ficha_id": "F006",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aranza_Glow/03_1028456859550381.jpg",
+    "anunciante": "Aranza Glow",
+    "ad_archive_id": "1028456859550381",
+    "dias_activo": 102,
+    "replicas": 1,
+    "score": 127,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "antes-despues"
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES EN COLUMNA VERTICAL, APILADO A LA IZQUIERDA. Las dos fotos van una sobre otra en la columna izquierda con label sobre pildora y pie de foto descriptivo, dejando las otras dos terceras partes del frame libres para titular, checks y escalera de precios. A diferencia del antes/despues horizontal, aca la transformacion NO es el frame entero: es una columna de evidencia que respalda una promesa escrita.",
+  "lectura_estrategica": "Vende ligereza y bienestar diario, no cura. El titular es una promesa sensorial en primera persona (sentirse mas ligera cada dia), no un sintoma clinico: por eso el pie de foto del ANTES nombra la sensacion (pesadez) y no una patologia. El badge OFERTA HOY arriba a la derecha mete urgencia sin tocar el precio, y la escalera de 3 precios en tipo compacta cierra sin robarle protagonismo a la transformacion.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_props_botanicos",
+    "color": "blanco o crema derivado de {{PALETA_CLARO}}",
+    "elementos": "ramas y hojas de {{INGREDIENTE_ESTRELLA}} en las esquinas superiores, cortadas por el borde",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (labels, checks, badge) mas blanco (fondo y cards) mas negro (titular y precios) mas el neutro de las fotos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_centro",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "12% del ancho",
+      "funcion": "en este layout la marca va arriba y al centro, no sobre el producto"
+    },
+    "badge_urgencia": {
+      "posicion": "superior_derecha",
+      "contenedor": "pildora {{PALETA_ACENTO}} solida con icono de llama",
+      "texto": "{{BADGE_URGENCIA}}",
+      "restriccion_palabras": "2 palabras",
+      "default": "OFERTA HOY",
+      "funcion": "urgencia sin tocar el precio"
+    },
+    "columna_transformacion": {
+      "posicion": "izquierda, ocupa 55% del alto",
+      "cantidad_estados": 2,
+      "orientacion": "apilado vertical, ANTES arriba y DESPUES abajo",
+      "formato_estado": "foto de la zona con marco redondeado mas label sobre pildora {{PALETA_ACENTO}} en el borde superior mas pie de foto Regular debajo",
+      "estado_1": {
+        "foto": "{{FOTO_ZONA_ANTES}}",
+        "label": "ANTES",
+        "pie": "{{PIE_ANTES}}"
+      },
+      "estado_2": {
+        "foto": "{{FOTO_ZONA_DESPUES}}",
+        "label": "DESPUES",
+        "pie": "{{PIE_DESPUES}}"
+      },
+      "restriccion_pie": "3-5 palabras",
+      "regla_pie": "el pie del ANTES nombra la SENSACION, no una patologia"
+    },
+    "titular": {
+      "posicion": "superior_derecha",
+      "alineacion": "derecha",
+      "lineas": 3,
+      "texto": "{{HOOK}}",
+      "estilo": "Black/900 uppercase negro con la ultima linea en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-6 palabras",
+      "formato_obligatorio": "promesa sensorial en primera persona, no sintoma clinico"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{SUBHOOK}}",
+      "estilo": "Regular con las ultimas 2 palabras en Bold {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-8 palabras"
+    },
+    "lista_checks": {
+      "posicion": "derecha_media",
+      "cantidad_items": 4,
+      "formato_item": "check en circulo {{PALETA_ACENTO}} mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "sin subtitulo: en este layout la columna de fotos ya carga la explicacion"
+    },
+    "producto_hero": {
+      "posicion": "centro_inferior",
+      "escala": "35% del frame",
+      "composicion": "caja de pie mas envase delante sobre superficie de piedra o madera, con props del ingrediente al pie",
+      "badge_sobre_producto": "pildora {{PALETA_ACENTO}} con {{SELLO_SOCIAL}} en la esquina superior de la caja",
+      "fuente": "IMAGEN_2"
+    },
+    "escalera_precios": {
+      "posicion": "derecha_baja",
+      "tiers": 3,
+      "contenedor": "card blanca con borde fino, tres filas apiladas",
+      "formato_tier": "cantidad en Regular a la izquierda, precio en Black {{PALETA_ACENTO}} a la derecha",
+      "tier_1": "{{CANT_1}} {{UNIDAD}}: {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} {{UNIDAD_PLURAL}}: {{MONEDA}}{{PRECIO_2}}",
+      "tier_3": "{{CANT_3}} {{UNIDAD_PLURAL}}: {{MONEDA}}{{PRECIO_3}}",
+      "regla": "tipo compacta y alineada a la derecha: el precio cierra pero no compite con la transformacion"
+    },
+    "badge_envio": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card {{PALETA_OSCURA}} con icono de camion",
+      "linea_1": "{{GARANTIA_ENVIO}}",
+      "linea_2": "{{GARANTIA_PAGO}}",
+      "estilo_l1": "Black/900 uppercase blanco"
+    },
+    "sello_calidad": {
+      "posicion": "izquierda_baja",
+      "forma": "circular con borde doble y laurel",
+      "contenido": "{{SELLO_CALIDAD}}",
+      "escala": "13% del ancho"
+    },
+    "barra_atributos": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 4,
+      "formato_item": "icono line-art mas texto Regular chico",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "columna_transformacion",
+    "subtitular",
+    "lista_checks",
+    "producto_hero",
+    "escalera_precios",
+    "badge_envio",
+    "barra_atributos"
+  ],
+  "reglas_duras": [
+    "Las dos fotos van apiladas en columna, ANTES arriba y DESPUES abajo, nunca lado a lado",
+    "Cada foto lleva label sobre pildora en el borde superior y pie descriptivo debajo",
+    "El pie del ANTES nombra una sensacion, no una patologia",
+    "La columna de transformacion ocupa un tercio del ancho: el resto del frame respira",
+    "La escalera de precios va en tipo compacta alineada a la derecha",
+    "Los props botanicos van cortados por el borde, nunca centrados"
+  ],
+  "variables_requeridas": [
+    "HOOK",
+    "SUBHOOK",
+    "FOTO_ZONA_ANTES",
+    "FOTO_ZONA_DESPUES",
+    "PIE_ANTES",
+    "PIE_DESPUES",
+    "BENEFICIOS[4]",
+    "ATRIBUTOS[4]",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "UNIDAD",
+    "UNIDAD_PLURAL",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "GARANTIA_PAGO",
+    "SELLO_CALIDAD",
+    "SELLO_SOCIAL",
+    "BADGE_URGENCIA",
+    "LOGO_MARCA",
+    "INGREDIENTE_ESTRELLA"
+  ],
+  "cuando_usar": [
+    "promesa sensorial (ligereza, comodidad, descanso) con evidencia visual disponible",
+    "cuando hay material de antes/despues pero NO se quiere que domine el frame",
+    "producto con marca propia que aguanta llevar logo arriba",
+    "cuando hay que meter beneficios, precios y transformacion en la misma pieza"
+  ],
+  "cuando_no_usar": [
+    "cuando la transformacion es el unico argumento: usar el antes/despues horizontal (F004), que la agranda",
+    "problemas sin zona corporal visible",
+    "empaque generico sin identidad de marca"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular CALIDAD PREMIUM GMP CERTIFICADO CONFIANZA TOTAL, abajo a la izquierda.",
+    "Badge OFERTA HOY con icono de llama, arriba a la derecha.",
+    "Pildora MUY PEDIDO sobre la caja del producto.",
+    "Barra de atributos: INGREDIENTES NATURALES, SIN OGM, FACIL DE TOMAR, CALIDAD EN LA QUE PUEDES CONFIAR.",
+    "Card ENVIO GRATIS + PAGO CONTRA ENTREGA."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

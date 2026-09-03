@@ -1,0 +1,150 @@
+{
+  "ficha_id": "F036",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/12_1626538309130941.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "1626538309130941",
+    "dias_activo": 4,
+    "replicas": 2,
+    "score": 54,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "24%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA CRONOLOGIA DE SENSACIONES EN ESCALA DESIGUAL: 15 MINUTOS, 2 HORAS, 14 DIAS. Tres hitos temporales apilados en columna, cada uno con la sensacion que ocurre en ese momento. La escala es deliberadamente desigual — minutos, horas, dias — y eso es lo que la hace funcionar: el primer hito es tan cercano que se puede verificar el mismo dia.",
+  "lectura_estrategica": "Resuelve el problema central de los productos de resultado lento: nadie compra algo cuyo efecto tarda dos semanas. La solucion no es mentir sobre el plazo, es encontrar QUE se siente a los 15 minutos y ponerlo primero. La escala desigual construye una escalera de verificacion — el cliente comprueba el hito 1 el mismo dia, y eso le compra al producto las dos semanas que necesita. Notar que los dos primeros hitos son SENSACIONES (calor, ligereza) y solo el tercero es resultado: las sensaciones no se pueden desmentir.",
+  "fondo": {
+    "tipo": "color_plano_calido_con_patron_sutil",
+    "color": "crema o beige derivado de {{PALETA_CLARO}}",
+    "textura": "patron geometrico muy tenue (panal, ondas) en el mismo tono",
+    "regla": "claro y calido: la pieza habla de sensaciones corporales agradables"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 3,
+    "estructura": "{{PALETA_OSCURA}} verde (titular de acento y labels) mas negro (texto) mas crema (fondo), con los tonos de piel de la silueta"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de texto, NO condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro",
+    "regla": "tipografia de lectura y no de cartel: la pieza se lee como un relato de experiencia"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "linea_1": "{{PLAZO}} de {{PRODUCTO}}",
+      "linea_2": "{{PREPOSICION_PERSONAL}}",
+      "linea_3": "{{PROBLEMA_ACENTO}}",
+      "estilo_l1_l2": "Bold negro",
+      "estilo_l3": "Black/900 uppercase en {{PALETA_OSCURA}}, al 160% de L1",
+      "restriccion_palabras_total": "7-9 palabras",
+      "formato_obligatorio": "PLAZO de PRODUCTO para MI problema: en primera persona posesiva",
+      "regla_critica": "el para mi convierte la pieza en relato de experiencia y no en promesa de marca: es lo que permite hablar de plazos sin prometerlos"
+    },
+    "producto_hero": {
+      "posicion": "izquierda, ocupa el alto central",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente, sin props",
+      "fuente": "IMAGEN_2"
+    },
+    "cronologia": {
+      "posicion": "centro y derecha, columna vertical",
+      "cantidad_hitos": 3,
+      "formato_hito": "LABEL TEMPORAL en Bold uppercase seguido de dos puntos y guion, y debajo dos lineas de Regular: la sensacion y el efecto, separadas por un signo de suma",
+      "hitos": "{{CRONOLOGIA[3]}}",
+      "estructura_hito": {
+        "label": "{{LABEL_TEMPORAL}}",
+        "sensacion": "{{SENSACION}}",
+        "efecto": "{{EFECTO}}"
+      },
+      "restriccion_label": "2-4 palabras",
+      "restriccion_sensacion": "4-7 palabras",
+      "restriccion_efecto": "3-6 palabras",
+      "regla_escala": "la escala es DESIGUAL a proposito: minutos, horas, dias. El primer hito debe ser tan cercano que se pueda verificar el mismo dia",
+      "regla_contenido": "los dos primeros hitos son SENSACIONES (calor, ligereza, alivio) y solo el tercero es resultado: las sensaciones no se pueden desmentir",
+      "funcion": "escalera de verificacion: el cliente comprueba el hito 1 el mismo dia y eso le compra al producto el plazo que necesita"
+    },
+    "silueta_anatomica": {
+      "posicion": "derecha, al fondo",
+      "contenido": "{{SILUETA_CON_SISTEMA_ILUMINADO}}",
+      "escala": "35% del frame",
+      "tratamiento": "silueta corporal en tono piel, sin rostro y sin rasgos, con el sistema o la zona objetivo dibujada en lineas luminosas",
+      "regla": "sin rostro ni rasgos: es un cuerpo generico donde el lector se pone",
+      "funcion": "ancla anatomica que sostiene el relato de sensaciones"
+    },
+    "mini_comparativo": {
+      "posicion": "centro_inferior, incrustado",
+      "cantidad_estados": 2,
+      "formato": "dos fotos chicas lado a lado con label ANTES y DESPUES {{PLAZO_FINAL}} sobre pildora",
+      "estado_1": "{{FOTO_ZONA_ANTES}}",
+      "estado_2": "{{FOTO_ZONA_DESPUES}}",
+      "escala": "18% del frame",
+      "regla": "va CHICO y al final: es respaldo del tercer hito, no el argumento de la pieza",
+      "funcion": "da evidencia visual al unico hito que es resultado, sin que la pieza se vuelva un antes/despues"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "cronologia",
+    "producto_hero",
+    "silueta_anatomica",
+    "mini_comparativo"
+  ],
+  "reglas_duras": [
+    "La escala temporal es desigual: minutos, horas, dias",
+    "El primer hito es verificable el mismo dia",
+    "Los dos primeros hitos son sensaciones y solo el tercero es resultado",
+    "El titular va en primera persona posesiva: para MI problema",
+    "La silueta va sin rostro ni rasgos",
+    "El mini comparativo va chico y al final: es respaldo, no argumento",
+    "Tipografia de lectura, no de cartel"
+  ],
+  "variables_requeridas": [
+    "PLAZO",
+    "PRODUCTO",
+    "PREPOSICION_PERSONAL",
+    "PROBLEMA_ACENTO",
+    "CRONOLOGIA[3]",
+    "SILUETA_CON_SISTEMA_ILUMINADO",
+    "FOTO_ZONA_ANTES",
+    "FOTO_ZONA_DESPUES",
+    "PLAZO_FINAL"
+  ],
+  "cuando_usar": [
+    "producto de resultado LENTO donde el plazo es la objecion principal",
+    "cuando existe algun efecto sensorial inmediato que se pueda verificar el mismo dia",
+    "categorias digestivas, de sueno, de energia o de alivio donde se siente antes de que se vea",
+    "publico que ya compro otras cosas que no le hicieron nada"
+  ],
+  "cuando_no_usar": [
+    "producto sin ningun efecto perceptible a corto plazo: la escalera se cae en el primer escalon",
+    "resultado inmediato: no hay cronologia que contar",
+    "publico frio que todavia no nombro el problema"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos ni garantias.",
+    "Hitos de la cronologia: DESPUES DE 15 MINUTOS (sensacion de calor en el vientre + digestion que se reactiva), DESPUES DE 2 HORAS (los gases empiezan a reducirse + sensacion de ligereza inmediata), DESPUES DE 14 DIAS (vientre plano recuperado + cintura abdominal aligerada).",
+    "Claims impresos en el empaque: FAVORECE INMUNIDAD, GARLICA CARDIAGA, MADURA LA FRUTA, REDUCE HINCHAZON, EXTRACTOS DE PLANTAS LIQUIDAS.",
+    "Mini comparativo con labels ANTES y DESPUES 14 DIAS."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": null
+}

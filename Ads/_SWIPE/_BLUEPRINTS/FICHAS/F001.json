@@ -1,0 +1,183 @@
+{
+  "ficha_id": "F001",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Camila_Recomienda/01_1561152092075074.jpg",
+    "anunciante": "Camila Recomienda",
+    "ad_archive_id": "1561152092075074",
+    "dias_activo": 18,
+    "replicas": 16,
+    "score": 418,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "3:4",
+    "densidad": "media",
+    "espacio_libre_objetivo": "30%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C1_OFERTA",
+    "variante_operador": "oferta"
+  },
+  "dispositivo_dominante": "EL NUMERAL DE CANTIDAD GIGANTE. Un digito negro ocupa ~28% del alto del frame y se lee antes que el producto, el precio o el titular. No dice 'oferta': dice CUANTO te llevas. El precio unitario derivado hace la division por el lector.",
+  "lectura_estrategica": "Vende VOLUMEN, no beneficio. La persona ya conoce el producto (nivel 4) y la unica pregunta viva es cuanto cuesta y cuanto recibe. Por eso no hay hook de dolor ni columna de sintomas: el frame entero es aritmetica de valor. El badge de mas vendido cierra por prueba social sin cifras, y la franja negra de garantias absorbe la ultima friccion (envio, pago, origen).",
+  "fondo": {
+    "tipo": "color_plano_claro_con_foto_de_ingrediente",
+    "color": "blanco roto derivado de {{PALETA_CLARO}}",
+    "elemento_superior_derecho": "foto de {{INGREDIENTE_ESTRELLA}} en chorro o textura, sangrando por el borde",
+    "elemento_medio_derecho": "textura del ingrediente (panal, grano, hoja) detras del producto, fuera de foco"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "base": "{{PALETA_ACENTO}}",
+    "estructura": "negro puro (numeral y franja) + {{PALETA_ACENTO}} (precio, pildoras, bordes) + blanco (fondo) + un neutro calido"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "badge_origen": {
+      "posicion": "superior_izquierda",
+      "contenedor": "pildora con borde {{PALETA_ACENTO}} y icono de check",
+      "texto": "{{BADGE_ORIGEN}}",
+      "estilo": "Bold uppercase chico",
+      "restriccion_palabras": "2-3 palabras",
+      "funcion": "primer ancla de confianza en el punto donde arranca la lectura"
+    },
+    "numeral_cantidad": {
+      "posicion": "superior_izquierda, bajo el badge",
+      "contenido": "{{CANTIDAD}}",
+      "estilo": "Black/900 negro puro, un solo digito",
+      "escala": "28% del alto del frame",
+      "regla": "es el elemento mas grande de la pieza, por encima del precio y del producto"
+    },
+    "bajada_cantidad": {
+      "posicion": "debajo del numeral",
+      "linea_1": "{{UNIDAD_PLURAL}}",
+      "linea_2": "DE {{PRODUCTO}}",
+      "estilo_l1": "Black/900 al 25% del tamano del numeral",
+      "estilo_l2": "Bold al 55% de L1",
+      "restriccion_palabras": "1 palabra mas el nombre del producto"
+    },
+    "badge_formula": {
+      "posicion": "superior_derecha",
+      "forma": "circular con borde fino {{PALETA_ACENTO}} e icono del ingrediente arriba",
+      "texto": "{{CLAIM_FORMULA}}",
+      "escala": "18% del ancho",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "40% del frame",
+      "composicion": "caja de pie mas {{CANTIDAD}} unidades del producto delante, alineadas",
+      "regla": "la cantidad de unidades mostradas COINCIDE con el numeral: es la prueba visual de la oferta",
+      "fuente": "IMAGEN_2"
+    },
+    "card_precio": {
+      "posicion": "centro_izquierda",
+      "contenedor": "card blanca con borde {{PALETA_ACENTO}} de 3px, esquinas redondeadas",
+      "linea_1": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l1": "Black/900 en {{PALETA_ACENTO}}, decimales al 55% del entero, segundo elemento mas grande de la pieza",
+      "linea_2": "{{MONEDA}}{{PRECIO_UNITARIO}} CADA UNO",
+      "estilo_l2": "Bold negro al 22% de L1",
+      "funcion": "el precio unitario hace la division por el lector: convierte un ticket alto en una compra barata"
+    },
+    "sello_mas_vendido": {
+      "posicion": "bajo la card de precio",
+      "contenedor": "pildora con borde {{PALETA_ACENTO}} y estrella",
+      "texto": "{{SELLO_SOCIAL}}",
+      "restriccion_palabras": "2 palabras",
+      "default": "MAS VENDIDO"
+    },
+    "fila_beneficios": {
+      "posicion": "inferior_media, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} 2px mas label Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras_label": "2-3 palabras",
+      "regla_item_4": "el ultimo es el sello regulatorio ({{SELLO_REGULATORIO}})"
+    },
+    "franja_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "franja NEGRA solida",
+      "cantidad_items": 3,
+      "formato_item": "icono blanco mas TITULO Bold uppercase mas subtitulo regular",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye bandera de {{PAIS}}",
+      "funcion": "unico bloque negro: cierra la pieza y separa la oferta del pie"
+    },
+    "pie_categoria": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_ACENTO}}",
+      "texto": "{{CATEGORIA}} · {{SUBCATEGORIA}} · {{USO}}",
+      "estilo": "Bold uppercase muy chico"
+    }
+  },
+  "secuencia_lectura": [
+    "numeral_cantidad",
+    "bajada_cantidad",
+    "card_precio",
+    "producto_hero",
+    "sello_mas_vendido",
+    "fila_beneficios",
+    "franja_garantias"
+  ],
+  "reglas_duras": [
+    "El numeral es el elemento mas grande de la pieza: mas grande que el precio y que el producto",
+    "La cantidad de unidades fotografiadas coincide con el numeral",
+    "El precio unitario derivado va debajo del precio total, dentro del mismo contenedor",
+    "Un solo bloque negro en toda la pieza: la franja de garantias",
+    "Los iconos son line-art de grosor uniforme y de un solo color",
+    "Maximo 3 pesos tipograficos"
+  ],
+  "variables_requeridas": [
+    "CANTIDAD",
+    "UNIDAD_PLURAL",
+    "PRODUCTO",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "PRECIO_UNITARIO",
+    "MONEDA",
+    "BENEFICIOS[4]",
+    "GARANTIAS[3]",
+    "BADGE_ORIGEN",
+    "CLAIM_FORMULA",
+    "INGREDIENTE_ESTRELLA",
+    "SELLO_REGULATORIO",
+    "SELLO_SOCIAL",
+    "PAIS",
+    "CATEGORIA",
+    "SUBCATEGORIA",
+    "USO"
+  ],
+  "cuando_usar": [
+    "oferta de multiunidad (2x, 3x) donde el ahorro por unidad es el argumento",
+    "publico que ya conoce el producto o la categoria (nivel de conciencia 4-5)",
+    "retargeting y BOFU: el creativo que cierra, no el que educa",
+    "empaque con color fuerte que aguante ser fotografiado en multiples"
+  ],
+  "cuando_no_usar": [
+    "producto nuevo o desconocido: sin conciencia previa el numeral no significa nada",
+    "cuando solo se vende 1 unidad",
+    "TOFU o publico frio que todavia no reconoce el problema"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello REGISTRO INVIMA como cuarto item de la fila de beneficios.",
+    "Badge IMPORTADO · ORIGINAL en pildora superior izquierda.",
+    "Sello MAS VENDIDO en pildora bajo la card de precio.",
+    "Franja de garantias: ENVIO GRATIS A GUATEMALA, PAGO CONTRA ENTREGA, GUATEMALA PAIS DE ORIGEN con bandera."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

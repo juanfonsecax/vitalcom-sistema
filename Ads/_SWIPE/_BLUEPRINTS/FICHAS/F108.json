@@ -1,0 +1,219 @@
+{
+  "ficha_id": "F108",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Zentri_Shop/01_2276333469852233.jpg",
+    "anunciante": "Zentri Shop",
+    "ad_archive_id": "2276333469852233",
+    "dias_activo": 2,
+    "replicas": 1,
+    "score": 27,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL AHORRO CALCULADO EN CARD APARTE, AL PIE DE LA ESCALERA. Los tres tiers dan el precio de cada cantidad, y en la esquina inferior el precio normal aparece TACHADO junto a una card roja que declara cuanto se ahorra. La resta ya viene hecha. Y el pictograma del problema no vive en el cartel: vive impreso en el tubo.",
+  "lectura_estrategica": "Resuelve como anunciar una categoria de pudor. El titular habla en abstracto - la solucion que si funciona - y quien nombra la situacion concreta es la ETIQUETA del envase, con su pictograma; asi el cartel puede gritar sin que la persona sienta que la senalan en el feed. El bloque de precio trabaja en dos tiempos: la escalera muestra que conviene llevar mas, y el par de tachado y ahorro le pone un numero al beneficio de haberlo hecho. El registro neon sobre morado oscuro le presta a una crema barata el aire de farmacia avanzada.",
+  "fondo": {
+    "tipo": "color_oscuro_con_humo_y_vineta",
+    "base": "morado profundo con nebulosa de humo",
+    "capa": "vineta oscura en los bordes y halos de luz detras del producto",
+    "textura": "el humo"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} morado (fondo y cards) mas {{PALETA_ACENTO}} amarillo (banda del titular, subtitulos, precios) mas blanco (titular y texto) mas rojo del bloque de ahorro"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada de caja alta",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_abstracto": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{SUSTANTIVO_SOLUCION}}",
+      "linea_2": "{{VALIDACION}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase {{PALETA_OSCURA}} sobre banda {{PALETA_ACENTO}} solida",
+      "restriccion_palabras_total": "4-5 palabras",
+      "regla_critica": "el titular nombra la SOLUCION en abstracto y nunca la situacion: quien la nombra es la etiqueta del envase"
+    },
+    "subtitular_velocidad": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_OSCURA}} de borde fino",
+      "texto": "{{ATRIBUTO_VELOCIDAD}} Y {{ATRIBUTO_EFICACIA}}",
+      "estilo": "Bold uppercase blanco con la segunda palabra en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "badge_formula": {
+      "posicion": "superior_derecha",
+      "contenedor": "card {{PALETA_OSCURA}} de borde luminoso con icono de hoja",
+      "texto": "{{CLAIM_FORMULA}}",
+      "estilo": "Bold uppercase {{PALETA_ACENTO}}, 2 lineas",
+      "restriccion_palabras": "2 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo mas TITULO Bold uppercase blanco mas subtitulo Regular {{PALETA_ACENTO}} de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "4-7 palabras",
+      "regla_item_1": "el primero declara desde cuando se siente el efecto",
+      "regla_item_3": "el ultimo es de volver a la rutina, que es lo que la persona quiere de verdad"
+    },
+    "producto_hero": {
+      "posicion": "centro, ocupa el alto completo",
+      "escala": "34% del ancho",
+      "composicion": "envase de pie sobre superficie de marmol con una hoja detras y halo de luz",
+      "fuente": "IMAGEN_1",
+      "regla_critica": "el frente del envase lleva el pictograma de la situacion y los checks de indicacion: es la unica zona de la pieza que nombra el problema en concreto"
+    },
+    "cards_logistica": {
+      "posicion": "derecha_media, en columna",
+      "cantidad_items": 2,
+      "contenedor": "card {{PALETA_OSCURA}} de borde luminoso",
+      "formato_item": "icono line-art mas texto de 2 o 3 lineas con la palabra clave en {{PALETA_ACENTO}}",
+      "items": "{{LOGISTICA[2]}}",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "card_prueba_social": {
+      "posicion": "derecha_baja",
+      "contenedor": "card {{PALETA_OSCURA}} de borde luminoso con escudo y cinco estrellas",
+      "texto": "{{CANTIDAD_GENTE}} {{VERBO_LOGRO}} {{OBJETO_DEL_LOGRO}}",
+      "estilo": "Bold uppercase blanco muy chico, 3 lineas",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "la prueba social se enuncia en pasado y sin cifra exacta"
+    },
+    "escalera_precios": {
+      "posicion": "inferior_izquierda",
+      "tiers": 3,
+      "header": "{{HEADER_OFERTA}}",
+      "estilo_header": "Bold uppercase {{PALETA_ACENTO}}",
+      "orientacion": "tres cards claras en fila",
+      "formato_tier": "banda {{PALETA_OSCURA}} arriba con la cantidad en Bold blanco, y el precio en Black/900 {{PALETA_OSCURA}} muy grande debajo",
+      "tier_1": {
+        "cantidad": "{{CANT_1}}",
+        "precio": "{{MONEDA}}{{PRECIO_1}}"
+      },
+      "tier_2": {
+        "cantidad": "{{CANT_2}}",
+        "precio": "{{MONEDA}}{{PRECIO_2}}"
+      },
+      "tier_3": {
+        "cantidad": "{{CANT_3}}",
+        "precio": "{{MONEDA}}{{PRECIO_3}}"
+      },
+      "regla": "las cantidades se enuncian como N POR precio, sin nombrar el producto"
+    },
+    "bloque_ahorro": {
+      "posicion": "inferior_derecha, al pie de la escalera",
+      "parte_1": "{{MONEDA}}{{PRECIO_NORMAL}} {{LABEL_NORMAL}}",
+      "estilo_p1": "Black/900 blanco TACHADO con una diagonal, con el label debajo en muy chico",
+      "parte_2": "{{LABEL_AHORRO}} {{MONEDA}}{{MONTO_AHORRO}}",
+      "contenedor_p2": "card roja solida redondeada",
+      "estilo_p2": "Black/900 blanco",
+      "regla_critica": "el tachado y el monto ahorrado van juntos y aparte de la escalera: la resta ya viene hecha para el lector"
+    },
+    "cierre_emocional": {
+      "posicion": "inferior, bajo la escalera",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "texto": "{{FRASE_MERECIMIENTO}}, {{FRASE_ACCESIBILIDAD}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "7-9 palabras",
+      "formato_obligatorio": "el alivio que mereces, por fin a tu alcance"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_abstracto",
+    "producto_hero",
+    "escalera_precios",
+    "bloque_ahorro",
+    "columna_beneficios",
+    "cards_logistica",
+    "subtitular_velocidad",
+    "badge_formula",
+    "card_prueba_social",
+    "cierre_emocional"
+  ],
+  "reglas_duras": [
+    "El titular nombra la solucion en abstracto y la etiqueta del envase nombra la situacion",
+    "El pictograma del problema vive impreso en el frente del envase",
+    "La escalera enuncia las cantidades como N POR precio",
+    "El precio normal va tachado y el monto ahorrado va en card roja aparte",
+    "El primer beneficio declara desde cuando se siente el efecto",
+    "El ultimo beneficio es volver a la rutina",
+    "El cierre emocional combina merecimiento y accesibilidad en dos lineas"
+  ],
+  "variables_requeridas": [
+    "SUSTANTIVO_SOLUCION",
+    "VALIDACION",
+    "ATRIBUTO_VELOCIDAD",
+    "ATRIBUTO_EFICACIA",
+    "CLAIM_FORMULA",
+    "BENEFICIOS[3]",
+    "LOGISTICA[2]",
+    "CANTIDAD_GENTE",
+    "VERBO_LOGRO",
+    "OBJETO_DEL_LOGRO",
+    "HEADER_OFERTA",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "PRECIO_NORMAL",
+    "LABEL_NORMAL",
+    "LABEL_AHORRO",
+    "MONTO_AHORRO",
+    "MONEDA",
+    "FRASE_MERECIMIENTO",
+    "FRASE_ACCESIBILIDAD",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "categorias de pudor, donde conviene que el envase nombre lo que el cartel calla",
+    "cuando hay precio normal y precio de oferta y la resta vale la pena mostrarla",
+    "productos de aplicacion topica con efecto desde el primer uso",
+    "BOFU con escalera de cantidad"
+  ],
+  "cuando_no_usar": [
+    "cuando no existe un precio normal contra el cual calcular el ahorro",
+    "cuando el envase no lleva pictograma ni indicacion legible",
+    "publico frio: la pieza arranca directo en oferta"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular LA SOLUCION QUE SI FUNCIONA / ALIVIO RAPIDO Y EFECTIVO.",
+    "Badge FORMULA AVANZADA con hoja.",
+    "Beneficios: ALIVIO RAPIDO (Desde la primera aplicacion) / PROTEGE Y REPARA (Reduce la inflamacion y favorece la recuperacion) / RECUPERA TU CONFORT (Vuelve a tu rutina sin molestias).",
+    "Etiqueta del envase HEMORRHOID CREAM con pictograma de la situacion y checks Bactericidal & Antibacterial, Reduce Swelling & Pain, External & Internal Hemorrhoids, 20 g.",
+    "Logistica ENVIO GRATIS A TODO EL PAIS / PAGO AL RECIBIR - COMPRA SEGURA.",
+    "Prueba social cinco estrellas MILES DE PERSONAS YA RECUPERARON SU BIENESTAR.",
+    "Escalera ELIGE TU OFERTA: 1 POR Q162 / 2 POR Q210 / 3 POR Q250.",
+    "Bloque de ahorro Q225 PRECIO NORMAL tachado y AHORRA Q63 en card roja.",
+    "Cierre EL ALIVIO QUE MERECES, POR FIN A TU ALCANCE."
+  ],
+  "canonico_id": "CN04_ESCALERA_PRECIOS",
+  "blueprint_equivalente": null
+}

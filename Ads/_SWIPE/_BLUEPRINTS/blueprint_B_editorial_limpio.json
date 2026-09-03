@@ -1,0 +1,105 @@
+{
+  "id": "B_editorial_limpio",
+  "version": "1.0",
+  "concepto_key": "C2_BENEFICIOS",
+  "variante": "ligera",
+  "referencia_visual": "C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg",
+  "formato": "1:1",
+  "densidad": "baja",
+  "espacio_libre_objetivo": "50%",
+  "fondo": {
+    "tipo": "color_plano",
+    "color": "crema/hueso claro derivado de {{PALETA}}",
+    "degradado": "ninguno",
+    "textura": "ninguna"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro",
+    "color_texto_secundario": "gris medio"
+  },
+  "zonas": {
+    "eyebrow_pill": {
+      "posicion": "superior_centro",
+      "contenedor": "pildora con borde fino {{PALETA_ACENTO}}, fondo transparente",
+      "texto": "{{CATEGORIA}} - {{SUBCATEGORIA}}",
+      "estilo": "Bold uppercase, tamano chico, con icono del ingrediente estrella a cada lado",
+      "funcion": "categorizar y filtrar audiencia antes de la lectura"
+    },
+    "badge_garantia": {
+      "posicion": "superior_derecha",
+      "forma": "circular {{PALETA_ACENTO}} solido con estrellas arriba",
+      "linea_1": "{{DIAS_GARANTIA}}",
+      "linea_2": "DIAS DE GARANTIA",
+      "escala": "14% del ancho",
+      "funcion": "eliminar riesgo ANTES de mostrar el precio"
+    },
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2}}",
+      "estilo": "Black/900 uppercase, negro, 2 lineas",
+      "formato_obligatorio": "pregunta con urgencia temporal o consecuencia futura",
+      "restriccion_palabras_total": "7-9 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda, ocupa 45% del alto",
+      "cantidad_items": 5,
+      "formato_item": "icono line-art {{PALETA_ACENTO}} 2px en contenedor cuadrado redondeado con borde fino + TITULO BOLD UPPERCASE + subtitulo Regular gris",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla_item_5": "el ultimo item SIEMPRE es el sello regulatorio presentado como beneficio. En Guatemala: MSPAS.",
+      "funcion": "el par titulo/subtitulo sirve al lector que escanea y al que profundiza"
+    },
+    "producto_hero": {
+      "posicion": "derecha_centro",
+      "escala": "40% del frame",
+      "presentacion": "ESCENA CONTEXTUAL, no producto flotando",
+      "composicion": "caja + unidad de producto sobre superficie natural, rodeado de elementos del ingrediente estrella",
+      "elementos_escena": "{{ELEMENTOS_INGREDIENTE[]}}",
+      "fuente": "IMAGEN_2",
+      "iluminacion": "natural, calida, lateral suave"
+    },
+    "claim_lateral": {
+      "posicion": "inferior_derecha, sobre la barra de garantias",
+      "texto": "{{CLAIM_SINTOMAS}}",
+      "estilo": "Bold uppercase, tamano chico, con icono a la izquierda",
+      "restriccion_palabras": "6-9 palabras"
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card NEGRA, esquinas ligeramente redondeadas",
+      "banda_superior": "{{OFERTA_LABEL}} en {{PALETA_ACENTO}}",
+      "zona_izquierda": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_precio": "Black/900 en {{PALETA_ACENTO}}, decimales al 55% del tamano de los enteros",
+      "zona_derecha": "card blanca con {{CANTIDAD}} + {{UNIDAD}} + pildora {{UNIDADES}}",
+      "linea_inferior": "PRECIO NORMAL: {{MONEDA}}{{PRECIO_TACHADO}} con tachado",
+      "regla": "es el unico bloque negro de la pieza"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono + TITULO BOLD + subtitulo regular debajo",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "el tercero incluye bandera de {{PAIS}}"
+    }
+  },
+  "reglas_duras": [
+    "NO agregar figura humana",
+    "NO llenar el espacio en blanco: el aire ES el concepto",
+    "El producto va en escena, nunca recortado sobre fondo plano",
+    "Maximo 4 colores en toda la pieza",
+    "Todos los iconos: mismo grosor, mismo tamano, mismo contenedor",
+    "El titular va alineado a la izquierda, nunca centrado",
+    "Si el contenido no cabe respetando el aire, se recorta el contenido, no el aire",
+    "Sello regulatorio: MSPAS (Guatemala). No usar FDA ni INVIMA: son reguladores de otros paises."
+  ]
+}

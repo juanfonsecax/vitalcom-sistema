@@ -1,0 +1,25 @@
+============================================================
+Análisis del Video N: tinnidrop1.mp4
+
+CLASIFICACIÓN RÁPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "Este spray natural para los oídos puede hacer que el tinnitus y otros problemas auditivos desaparezcan." | qué se ve: Una mujer joven aplicándose el spray en el oído con un envase blanco, seguido de una animación 3D de la oreja expulsando el spray. | overlay en pantalla: "TINNIDROP", "TINNITUS RELIEF SPRAY"
+- ÁNGULO DEL PRODUCTO: Alivio del tinnitus (zumbido en los oídos) y reparación celular en el oído interno.
+- FORMATO CREATIVO: educacional
+- AVATAR (quién aparece): mujeres y hombres adultos, en situaciones cotidianas, experimentando alivio tras aplicar el producto.
+- TONO: clínico / voz en off neutra
+- SEÑALES DE COMPRA:
+    · Prueba social: No aplica
+    · Cifras/resultados con tiempo: "instantáneamente" ("reducen instantáneamente las molestias")
+    · Urgencia/escasez: No aplica
+    · Garantía / envío gratis / pago contra entrega: No aplica
+    · Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"Este spray natural para los oídos puede hacer que el tinnitus y otros problemas auditivos desaparezcan [CLAIM MÉDICO]. Los ingredientes naturales penetran a través del canal auditivo que va hasta el oído interno y reducen instantáneamente las molestias causadas por este zumbido. Capaz de reparar y reemplazar las células dañadas [CLAIM MÉDICO], proporciona un alivio duradero a los problemas comunes del oído. Pruébalo."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Varias personas (mujeres y hombres) aplicándose el spray, animaciones médicas 3D del interior del canal auditivo, el oído interno, el cerebro y ondas sonoras representativas del zumbido, animaciones de cómo el líquido actúa internamente, expresiones de alivio y una mujer escuchando música al final. El empaque "TINNIDROP" con su envase está presente todo el tiempo en la esquina inferior izquierda. Textos en pantalla: "TINNIDROP", "TINNITUS RELIEF SPRAY".
+* Qué transmite: Autoridad médica y alivio rápido. Busca generar esperanza y confianza mostrando un proceso "científico" de sanación interna (con animaciones 3D) para conectar con quienes sufren zumbidos.
+* Llamado a la acción (CTA): "Pruébalo."
+============================================================

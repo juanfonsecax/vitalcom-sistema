@@ -1,0 +1,224 @@
+{
+  "ficha_id": "F094",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aurora_GT/16_1676706823435900.jpg",
+    "anunciante": "Aurora GT",
+    "ad_archive_id": "1676706823435900",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": "deseo"
+  },
+  "dispositivo_dominante": "EL CUERPO DEL DESEO OCUPA LA MITAD IZQUIERDA Y TODO EL APARATO COMERCIAL SE APILA EN LA DERECHA. La modelo va sangrada de arriba abajo en la mitad izquierda, y la mitad derecha se organiza en cuatro estratos que bajan de la promesa a la logistica: titular, beneficios con icono, cards de oferta y entrega, y boton. Deseo y comercio se reparten el frame por mitades.",
+  "lectura_estrategica": "Resuelve el problema tipico del creativo de deseo: el cuerpo se come la atencion y no queda donde argumentar. Al partir el frame, la modelo puede ser tan grande como haga falta para frenar el scroll y la columna derecha conserva su jerarquia completa. La firma manuscrita sobre la foto es la pieza mas fina - dice el beneficio en primera persona y hace hablar a la mitad izquierda sin convertirla en cartel. Y el mini panel antes-despues al pie sostiene la promesa con dos fotos de la misma prenda, la prueba mas barata y creible de la categoria.",
+  "fondo": {
+    "tipo": "escena_interior_clara_desenfocada",
+    "base": "interior luminoso con planta y ventana, muy desenfocado",
+    "capa": "blanco roto plano hacia la derecha para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta (titular de acento, brochazo, iconos, CTA) mas {{PALETA_OSCURA}} negro (titular, cards, pildoras) mas blanco (fondo y cards) mas los tonos de piel y ropa de la modelo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una manuscrita de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Manuscrita"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "firma_manuscrita": {
+      "posicion": "superior_izquierda, SOBRE la foto de la modelo",
+      "texto": "{{FRASE_MANUSCRITA}}",
+      "estilo": "manuscrita {{PALETA_OSCURA}} con corazon {{PALETA_ACENTO}} al final",
+      "lineas": 3,
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "dos verbos en imperativo dirigidos al cuerpo de quien mira",
+      "regla_critica": "va sobre la foto y en manuscrita: hace hablar a la mitad izquierda sin convertirla en cartel"
+    },
+    "titular_deseo": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{DESEO_L1_ACENTO}} {{DESEO_L1_RESTO}}",
+      "linea_2": "{{DESEO_L2}}",
+      "estilo": "Black/900 uppercase, primera palabra en {{PALETA_ACENTO}} y el resto en {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "3-4 palabras",
+      "regla": "solo la PRIMERA palabra va en color: es la que nombra el deseo"
+    },
+    "brochazo_metodo": {
+      "posicion": "bajo el titular",
+      "contenedor": "brochazo irregular {{PALETA_ACENTO}} pintado a mano",
+      "texto": "{{METODO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras",
+      "formato_obligatorio": "de forma mas adjetivo de metodo",
+      "regla": "el contenedor es un brochazo y no un rectangulo: rompe la rigidez de la columna"
+    },
+    "linea_objeciones": {
+      "posicion": "bajo el brochazo",
+      "alineacion": "izquierda",
+      "texto": "Sin {{OBJECION_1}} · Sin {{OBJECION_2}} · {{CONDICION_PAGO}}",
+      "estilo": "Regular {{PALETA_OSCURA}} chico con separadores de punto medio",
+      "restriccion_palabras": "6-8 palabras",
+      "regla": "las dos objeciones y la condicion de pago viajan en UNA sola linea de servicio"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo de borde fino mas texto de 2 lineas con la PALABRA CLAVE en {{PALETA_ACENTO}}",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "la palabra clave de cada beneficio va en color para que la columna se escanee leyendo solo lo magenta",
+      "regla_item_3": "el tercero es de energia o bienestar general, para que la promesa no sea solo estetica"
+    },
+    "panel_antes_despues": {
+      "posicion": "inferior_izquierda, al pie de la modelo",
+      "contenedor": "dos fotos chicas lado a lado en marco fino con flecha {{PALETA_ACENTO}} entre ellas",
+      "contenido": "{{FOTO_ANTES}} y {{FOTO_DESPUES}} de la misma zona con la misma prenda",
+      "escala": "18% del ancho",
+      "pie": "{{LABEL_PRUEBA}}",
+      "estilo_pie": "manuscrita {{PALETA_OSCURA}} con corazon",
+      "regla_critica": "la misma prenda en las dos fotos: es lo que hace que la comparacion se lea sola"
+    },
+    "pildoras_confianza": {
+      "posicion": "centro_bajo, en columna",
+      "cantidad_items": 4,
+      "orientacion": "columna de pildoras blancas de borde fino",
+      "formato_item": "icono en circulo mas texto Bold uppercase muy chico",
+      "items": "{{CONFIANZA[4]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla_item_1": "el primero repite la objecion principal tachada",
+      "regla_item_4": "el ultimo declara el pais con su bandera"
+    },
+    "pack_producto": {
+      "posicion": "centro_bajo, a la derecha de las pildoras",
+      "composicion": "envase grande de frente con un segundo envase mas chico delante, ambos con cinta {{PALETA_ACENTO}} de claim cruzada",
+      "escala": "20% del ancho",
+      "fuente": "IMAGEN_1",
+      "regla": "dos envases de distinto tamano: declara que hay presentacion y que hay pack"
+    },
+    "card_oferta": {
+      "posicion": "derecha_baja",
+      "contenedor": "card blanca de borde fino con banda {{PALETA_OSCURA}} arriba",
+      "banda": "{{ETIQUETA_SOCIAL}}",
+      "estilo_banda": "Bold uppercase blanco con estrella",
+      "cuerpo": "{{OFERTA_LABEL}}",
+      "estilo_cuerpo": "Black/900 uppercase {{PALETA_ACENTO}}",
+      "fila_1": "{{ENVIO}}",
+      "fila_2": "{{PLAZO_ENTREGA}}",
+      "estilo_filas": "Bold uppercase {{PALETA_OSCURA}} muy chico con icono de camion y de reloj",
+      "restriccion_palabras": "2-4 palabras por fila",
+      "regla": "oferta y logistica viven en la MISMA card: el que decide comprar resuelve las dos preguntas de un vistazo"
+    },
+    "cta_boton": {
+      "posicion": "inferior_derecha, ancho de la columna",
+      "contenedor": "boton redondeado {{PALETA_ACENTO}} solido con flecha a la derecha",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "barra_social": {
+      "posicion": "inferior_izquierda, bajo el panel de prueba",
+      "contenedor": "pildora {{PALETA_OSCURA}} solida precedida por tres avatares circulares superpuestos",
+      "texto": "+{{N_CLIENTES}} {{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}} EN {{PAIS}}",
+      "estilo": "Bold uppercase blanco muy chico con corazon {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "el numero lleva coma de millar y los avatares son rostros del mismo genero que el avatar"
+    }
+  },
+  "secuencia_lectura": [
+    "modelo",
+    "titular_deseo",
+    "brochazo_metodo",
+    "columna_beneficios",
+    "panel_antes_despues",
+    "cta_boton",
+    "card_oferta",
+    "pack_producto",
+    "pildoras_confianza",
+    "barra_social",
+    "linea_objeciones",
+    "firma_manuscrita"
+  ],
+  "reglas_duras": [
+    "La modelo va sangrada de arriba abajo en la mitad izquierda del frame",
+    "Todo el aparato comercial se apila en la mitad derecha",
+    "La frase manuscrita va sobre la foto, en cursiva, con dos verbos en imperativo",
+    "Solo la primera palabra del titular va en color de acento",
+    "El metodo va dentro de un brochazo pintado, no de un rectangulo",
+    "Las dos fotos del antes-despues usan la misma prenda",
+    "Oferta y logistica comparten una sola card",
+    "El numero de clientes lleva coma de millar y va acompanado de tres avatares"
+  ],
+  "variables_requeridas": [
+    "FRASE_MANUSCRITA",
+    "DESEO_L1_ACENTO",
+    "DESEO_L1_RESTO",
+    "DESEO_L2",
+    "METODO",
+    "OBJECION_1",
+    "OBJECION_2",
+    "CONDICION_PAGO",
+    "BENEFICIOS[3]",
+    "FOTO_ANTES",
+    "FOTO_DESPUES",
+    "LABEL_PRUEBA",
+    "CONFIANZA[4]",
+    "ETIQUETA_SOCIAL",
+    "OFERTA_LABEL",
+    "ENVIO",
+    "PLAZO_ENTREGA",
+    "CTA",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "PAIS",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "productos de deseo estetico con modelo disponible y antes-despues real",
+    "cuando hace falta que el cuerpo frene el scroll SIN perder la columna de argumento",
+    "cuando hay volumen de clientes para declarar prueba social numerica",
+    "MOFU y BOFU sobre publico que ya conoce la categoria"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay foto de antes-despues real: el panel se vuelve decorativo",
+    "publico frio de nivel 1, que no sabe que el problema tiene solucion",
+    "productos sin resultado visible en un cuerpo"
+  ],
+  "sellos_y_claims_observados": [
+    "Manuscrita Realza tu figura, potencia tus curvas.",
+    "Titular CURVAS MAS FEMENINAS sobre brochazo DE FORMA NATURAL.",
+    "Linea de servicio Sin cirugia · Sin hormonas · Paga al recibir.",
+    "Beneficios: Apoya gluteos y caderas / Ayuda a definir tu cintura / Mas energia y bienestar.",
+    "Panel antes-despues con la misma prenda, pie manuscrito Resultados reales.",
+    "Pildoras: SIN HORMONAS (tachado), 100% ORIGINAL, PAGO AL RECIBIR, GUATEMALA con bandera.",
+    "Envase con cinta SIN HORMONAS. Marca SUPPLEMENT FACTORY - WOMAN CURVES(R), 60 capsules dietary supplement.",
+    "Card PACK MAS VENDIDO con estrella / OFERTA DISPONIBLE / ENVIO GRATIS / ENTREGA DE 2 A 5 DIAS.",
+    "CTA PIDELO HOY con flecha.",
+    "Prueba social +4,253 CLIENTAS SATISFECHAS EN GUATEMALA con tres avatares."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

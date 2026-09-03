@@ -1,0 +1,180 @@
+{
+  "ficha_id": "F023",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/01_1000423539275941.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1000423539275941",
+    "dias_activo": 54,
+    "replicas": 1,
+    "score": 79,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "15%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "antes-despues"
+  },
+  "dispositivo_dominante": "EL ROSTRO PARTIDO AL MEDIO: LA MISMA CARA, ANTES A LA IZQUIERDA Y DESPUES A LA DERECHA, CON EL PRODUCTO EN LA COSTURA. No son dos fotos distintas puestas lado a lado: es UN rostro cortado por el eje vertical del frame, misma pose, misma luz, mismo encuadre. La continuidad de la cara a traves del corte es lo que hace imposible leerlo como dos personas.",
+  "lectura_estrategica": "El antes/despues mas fuerte que existe, porque elimina la objecion de que sean dos modelos distintos. La columna izquierda de tres sintomas con icono acompana el lado ANTES y no el DESPUES: cada problema esta fisicamente del lado donde se ve. El badge circular del lado derecho hace lo inverso. Es decir, el layout no solo muestra la transformacion, la ARGUMENTA espacialmente. El pie con dos botones de WhatsApp (uno de pedido y otro de atencion) baja la friccion de escribir.",
+  "fondo": {
+    "tipo": "la_foto_misma",
+    "base": "el rostro ocupa el frame completo de borde a borde",
+    "capa": "degradado oscuro en el borde superior e inferior para sostener titular y pie",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (segunda linea del titular, checks, botones) mas blanco (texto y cards) mas negro (bandas y fondo del pie) mas los tonos de piel de la foto"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "promesa en potencial (puede verse, puede sentirse), nunca en afirmativo",
+      "regla": "el potencial es lo que permite mostrar un antes/despues sin prometer resultado garantizado"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda blanca o clara",
+      "texto": "{{TRIPLE_BENEFICIO}}",
+      "estilo": "Bold oscuro",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "tres frases cortas separadas por punto, en escalada de lo fisico a lo emocional"
+    },
+    "foto_partida": {
+      "posicion": "frame completo",
+      "escala": "100% del frame",
+      "contenido_izquierda": "{{FOTO_ROSTRO_ANTES}}",
+      "contenido_derecha": "{{FOTO_ROSTRO_DESPUES}}",
+      "corte": "vertical al centro exacto, sin marco ni separador visible",
+      "labels": "ANTES en pildora gris a la izquierda, DESPUES en pildora gris a la derecha, ambos a la misma altura",
+      "regla_critica": "es UN mismo rostro, misma pose, misma luz, mismo encuadre: la continuidad a traves del corte es lo que impide leerlo como dos personas",
+      "funcion": "elimina la objecion de que sean dos modelos distintos"
+    },
+    "columna_problemas": {
+      "posicion": "izquierda, sobre el lado ANTES",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono en circulo blanco mas label Bold uppercase de 2 lineas",
+      "items": "{{PROBLEMAS[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla_espacial": "van del lado ANTES, no repartidos: cada problema esta fisicamente donde se ve"
+    },
+    "badge_resultado": {
+      "posicion": "derecha, sobre el lado DESPUES",
+      "forma": "circular blanco con check {{PALETA_ACENTO}} arriba",
+      "texto": "{{RESULTADO}}",
+      "escala": "18% del ancho",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_espacial": "va del lado DESPUES: es el espejo de la columna de problemas"
+    },
+    "producto_hero": {
+      "posicion": "centro, sobre la costura",
+      "escala": "30% del frame",
+      "efecto": "halo o burbujas translucidas detras del envase",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto se planta EN el corte: es lo que separa los dos estados"
+    },
+    "logo_marca": {
+      "posicion": "inferior_derecha",
+      "contenido": "{{LOGO_MARCA}}",
+      "bajada": "{{TAGLINE}}",
+      "estilo_bajada": "Bold uppercase chico sobre banda oscura",
+      "restriccion_palabras_bajada": "3 palabras"
+    },
+    "fila_mecanismos": {
+      "posicion": "inferior_izquierda",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores verticales",
+      "formato_item": "icono line-art mas texto Regular muy chico de 3 lineas",
+      "items": "{{MECANISMOS[3]}}",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "barra_whatsapp": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda oscura con DOS botones verdes de WhatsApp",
+      "boton_1": "{{CTA_PEDIDO}}",
+      "boton_2": "{{CTA_ATENCION}}",
+      "estilo": "Bold uppercase blanco con la ultima palabra en verde",
+      "regla": "dos botones, uno de pedido y otro de atencion: bajan la friccion de escribir al dar dos motivos distintos para hacerlo"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "foto_partida",
+    "subtitular",
+    "columna_problemas",
+    "badge_resultado",
+    "producto_hero",
+    "fila_mecanismos",
+    "barra_whatsapp"
+  ],
+  "reglas_duras": [
+    "Es un mismo rostro partido al medio: misma pose, misma luz, mismo encuadre",
+    "El corte es vertical al centro exacto, sin marco ni separador visible",
+    "Los problemas van del lado ANTES y el resultado del lado DESPUES",
+    "El producto se planta sobre la costura",
+    "El titular promete en potencial, nunca en afirmativo",
+    "Los labels ANTES y DESPUES van a la misma altura"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2_ACENTO",
+    "TRIPLE_BENEFICIO",
+    "FOTO_ROSTRO_ANTES",
+    "FOTO_ROSTRO_DESPUES",
+    "PROBLEMAS[3]",
+    "RESULTADO",
+    "MECANISMOS[3]",
+    "LOGO_MARCA",
+    "TAGLINE",
+    "CTA_PEDIDO",
+    "CTA_ATENCION"
+  ],
+  "cuando_usar": [
+    "problema visible en el rostro (acne, manchas, arrugas, ojeras)",
+    "cuando se tiene la MISMA persona fotografiada en dos momentos con la misma pose y luz",
+    "producto con marca reconocible que aguanta llevar logo",
+    "cierre por WhatsApp"
+  ],
+  "cuando_no_usar": [
+    "cuando las dos fotos son de personas distintas: se nota y destruye la credibilidad",
+    "problemas no faciales: el corte vertical pierde sentido",
+    "cuando no se puede controlar la pose y la luz de las dos tomas"
+  ],
+  "sellos_y_claims_observados": [
+    "Bajada de marca: CIENCIA. RESULTADOS. CONFIANZA.",
+    "Titular en potencial: TU PIEL PUEDE VERSE DIFERENTE.",
+    "Subtitulo de triple beneficio: MENOS GRANOS. MENOS MARCAS. MAS CONFIANZA.",
+    "Labels de problema sobre el lado ANTES: GRANOS ACTIVOS, MARCAS DE ACNE, EXCESO DE GRASA.",
+    "Badge de resultado sobre el lado DESPUES: PIEL MAS LIMPIA Y UNIFORME.",
+    "Mecanismos: MEJORA LA APARIENCIA DE LA PIEL, CONTROLA LA GRASA Y LOS GRANOS, DISMINUYE MARCAS DE ACNE.",
+    "Dos botones de WhatsApp: PIDE EL TUYO POR WHATSAPP y ESCRIBENOS AHORA · ATENCION RAPIDA Y SEGURA."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,183 @@
+{
+  "ficha_id": "F014",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/15_2070590410487975.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "2070590410487975",
+    "dias_activo": 7,
+    "replicas": 4,
+    "score": 107,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "3:4",
+    "densidad": "media",
+    "espacio_libre_objetivo": "25%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": "unboxing"
+  },
+  "dispositivo_dominante": "LA MANO SOSTENIENDO LA CAJA ABIERTA CON EL PACK ADENTRO. Una mano real entra por el borde inferior sosteniendo la caja de envio abierta, con las unidades acomodadas sobre el relleno. Es la foto de la ENTREGA, no del producto: muestra lo que va a llegar a la puerta, en la mano de alguien, ya desempacado.",
+  "lectura_estrategica": "Prueba de existencia. En contraentrega la objecion mas cara no es el precio sino si esto llega de verdad y si es lo que dice la foto. El unboxing la responde antes de que se formule: hay una caja, hay una mano, hay tres frascos reales. La estetica es semi-organica (foto casera con texto sobreimpreso limpio) y esa mezcla es intencional: la mano da veracidad y el texto da confianza comercial. El stock limitado al pie es la unica presion, y funciona porque la pieza ya probo que el producto existe.",
+  "fondo": {
+    "tipo": "escena_real_de_interior",
+    "base": "superficie de cama, mesa o sofa en luz natural, ligeramente desenfocada",
+    "regla": "luz de ventana, no de estudio: la sombra suave es lo que la hace creible",
+    "textura": "la de la tela o la madera reales, no agregada"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (titular de acento, cards y checks) mas blanco (fondo de cards) mas negro (titular) mas los cafes del carton de la caja"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una sola mano, sin rostro, entrando por el borde inferior o lateral del frame",
+    "manicura": "natural, sin unas de produccion",
+    "angulo": "cenital o levemente inclinado, como quien mira lo que acaba de abrir",
+    "luz": "natural de ventana, lateral, sin flash ni rebote",
+    "que_se_conserva": "el relleno de papel arrugado, los pliegues del carton, la sombra real de la caja",
+    "que_NO_se_hace": "sombra artificial, fondo recortado, producto flotando, reflejo de estudio",
+    "regla": "si la foto se ve producida, deja de probar que el pedido llega y vuelve a ser un cartel"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2_ACENTO}}",
+      "estilo_l1": "Bold uppercase negro",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3-5 palabras",
+      "formato_obligatorio": "verbo de accion mas el problema o el sistema objetivo"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{SUBHOOK}}",
+      "estilo": "Bold uppercase {{PALETA_ACENTO}} chico",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "fila_confianza": {
+      "posicion": "bajo el subtitular, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal de pildoras blancas",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas texto Bold uppercase de 2 lineas",
+      "items": "{{CONFIANZA[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla_item_3": "el tercero declara el pais de disponibilidad"
+    },
+    "foto_unboxing": {
+      "posicion": "centro, ocupa la mitad del alto",
+      "contenido": "{{FOTO_MANO_CON_CAJA_ABIERTA}}",
+      "escala": "50% del frame",
+      "composicion": "caja de envio abierta sostenida por una mano, con {{CANT}} unidades acomodadas sobre el relleno de papel",
+      "regla": "la cantidad de unidades visibles COINCIDE con la del pack ofertado",
+      "funcion": "prueba de existencia y de entrega, que es la objecion cara del contraentrega"
+    },
+    "callout_beneficio": {
+      "posicion": "derecha_media, sobre la foto",
+      "contenedor": "burbuja o pildora {{PALETA_ACENTO}} irregular",
+      "linea_1": "{{CLAIM_L1}}",
+      "linea_2": "{{CLAIM_L2}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "un solo callout: mas de uno convierte la foto en cartel y pierde la veracidad"
+    },
+    "card_precio": {
+      "posicion": "derecha_baja",
+      "contenedor": "card {{PALETA_OSCURA}} solida",
+      "banda_superior": "{{OFERTA_LABEL}} en Bold uppercase blanco",
+      "linea_1": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 blanco"
+    },
+    "bloque_escasez": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card {{PALETA_ACENTO}} solida",
+      "linea_1": "{{ESCASEZ_L1}}",
+      "linea_2": "{{ESCASEZ_L2}}",
+      "estilo_l1": "Black/900 uppercase blanco con signos de exclamacion",
+      "default_l1": "STOCK LIMITADO",
+      "default_l2": "Ultimas unidades disponibles",
+      "funcion": "unica presion de la pieza: solo funciona despues de haber probado que el producto existe"
+    },
+    "fila_beneficios": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card blanca redondeada",
+      "header": "{{HEADER_BENEFICIOS}}",
+      "estilo_header": "Bold uppercase {{PALETA_ACENTO}}",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art en circulo {{PALETA_ACENTO}} mas label de 2 lineas muy chico",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "foto_unboxing",
+    "callout_beneficio",
+    "card_precio",
+    "fila_confianza",
+    "bloque_escasez",
+    "fila_beneficios"
+  ],
+  "reglas_duras": [
+    "La mano es real, sin rostro, y entra por el borde del frame",
+    "La luz es natural de ventana: la sombra suave es lo que hace creible la escena",
+    "El relleno de papel, los pliegues del carton y la sombra real se conservan",
+    "La cantidad de unidades visibles coincide con la del pack ofertado",
+    "Un solo callout sobre la foto",
+    "El producto nunca se recorta ni se hace flotar: eso lo devuelve a cartel"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2_ACENTO",
+    "SUBHOOK",
+    "CONFIANZA[3]",
+    "FOTO_MANO_CON_CAJA_ABIERTA",
+    "CANT",
+    "CLAIM_L1",
+    "CLAIM_L2",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "MONEDA",
+    "ESCASEZ_L1",
+    "ESCASEZ_L2",
+    "HEADER_BENEFICIOS",
+    "BENEFICIOS[4]"
+  ],
+  "cuando_usar": [
+    "cierre por contraentrega, donde la objecion es si el pedido llega",
+    "packs de 2 o 3 unidades: la caja abierta muestra el volumen real",
+    "cuando se tiene o se puede tomar una foto real del pedido",
+    "publico que ya vio el producto en otro creativo y duda de que sea real"
+  ],
+  "cuando_no_usar": [
+    "publico frio de nivel 1 o 2: la caja no significa nada si no sabe que problema resuelve",
+    "cuando solo hay renders del producto: un unboxing renderizado se nota y destruye la unica ventaja del formato",
+    "venta de una sola unidad, donde la caja se ve vacia"
+  ],
+  "sellos_y_claims_observados": [
+    "Fila de confianza: FORMULA 100% HERBAL, 100% ORIGINAL GARANTIZADO, PRODUCTO ORIGINAL GUATEMALA.",
+    "Callout ELIMINA TOXINAS Y DESECHOS NATURALES en burbuja verde sobre la foto.",
+    "Bloque STOCK LIMITADO · ULTIMAS UNIDADES DISPONIBLES.",
+    "Beneficios: RETENCION DE LIQUIDOS, HINCHAZON Y PESADEZ, FATIGA Y BAJA ENERGIA, SISTEMA INMUNOLOGICO.",
+    "Precio PRECIO ESPECIAL Q320."
+  ],
+  "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+  "blueprint_equivalente": null
+}

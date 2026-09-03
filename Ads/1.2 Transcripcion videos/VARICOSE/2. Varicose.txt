@@ -1,0 +1,27 @@
+============================================================
+Análisis del Video N: 2. Varicose.mp4
+
+CLASIFICACIÓN RÃPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "Si tienes esto, corre a tratarlo. Las arañitas venosas como estas" | qué se ve: Un doctor en un consultorio, luego una imagen de primer plano de arañitas venosas en una pierna señalada por el doctor. | overlay en pantalla: "SI TIENES", "ESTO", "VENOSAS"
+- ÃNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Prevención de enfermedad venosa crónica a partir de arañitas venosas. Mejora de circulación, disminución de hinchazón y alivio de dolor.
+- FORMATO CREATIVO (elegí UNO): educacional
+- AVATAR (quién aparece): Doctor en consultorio, luego piernas de pacientes.
+- TONO: clínico / educacional + tuteo + habla un doctor/voz en off.
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    Â· Prueba social (nº de clientes, "miles de personas"...): No aplica
+    Â· Cifras/resultados con tiempo ("en 30 días"...): "TESTIMONIO 8 SEMANAS" (en pantalla)
+    Â· Urgencia/escasez ("oferta por tiempo limitado"...): "por tiempo limitado"
+    Â· Garantía / envío gratis / pago contra entrega: "envío gratis"
+    Â· Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"Si tienes esto, corre a tratarlo. Las arañitas venosas como estas son el primer signo de enfermedad venosa crónica. Con esto, se pueden prevenir grados más avanzados de enfermedad. Te presento esta crema de origen natural, diseñada para mejorar la circulación, disminuir la hinchazón y aliviar el dolor en piernas cansadas. Actúa directamente sobre la zona afectada, ayudando a reducir progresivamente la apariencia de las várices y mejorando el aspecto de la piel. Puedes usarla desde casa, sin cirugías ni procedimientos invasivos. Si ya intentaste otras opciones sin resultados, esta es la solución para ti. Aprovecha el dos por uno, con envío gratis por tiempo limitado."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Aparece un doctor explicando el problema, con tomas intercaladas de arañitas venosas en piernas. Se muestra el frasco de la crema "South Moon Varicose Veins Ointment", y a alguien aplicando la crema en las piernas. Hay tomas de "Antes" y "Después", incluyendo una pantalla dividida con "TESTIMONIO 8 SEMANAS". Al final, el doctor recomienda el producto con la placa de oferta.
+Textos en pantalla citados literal: "SI TIENES", "ESTO", "VENOSAS", "PRIMER", "ENFERMEDAD", "CRÓNICA", "CON", "PREVENIR", "MÃS", "CREMA NATURAL", "MEJORA TU CIRCULACIÓN ELIMINA TUS ARAÑITAS", "ANTES", "DESPUÉS", "TESTIMONIO 8 SEMANAS", "USO DESDE CASA", "DESPUES DEL TRATAMIENTO", "¡PIDE TU TRATAMIENTO AHORA!", "OFERTA 2X1".
+* Qué transmite: Transmite urgencia por tratar las arañitas venosas como una señal de advertencia, brindando una solución accesible y natural que promete resultados visibles (mostrados en testimonios). Busca generar confianza con la figura del médico.
+* Llamado a la acción (CTA): "Aprovecha el dos por uno, con envío gratis por tiempo limitado."
+============================================================
+

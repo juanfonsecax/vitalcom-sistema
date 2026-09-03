@@ -1,0 +1,180 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA DEL PORTAFOLIO — 2026-07-28 (~21:10)  ·  ETAPA-7 + ETAPA-8
+Run AUTOMÁTICO (operador ausente) · SOLO LECTURA + RECOMENDACIÓN
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 6 de 7 días con data de ventas (22-28 jul) · hueco: 28-jul
+(auditoría automática, el operador no pegó LucidSales) → PARCIAL.
+⚠️ REGLA DURA APLICADA: no se declara ganador nuevo ni se manda matar por ventas
+usando la ventana con el 28 abierto. Data faltante ≠ cero ventas. El P&L cierra
+en el 27-jul (última data real). Lado-ads del 27-28 SÍ se leyó por MCP (entrega).
+
+QUÉ SE HIZO ESTA NOCHE (autónomo):
+  1. Se cerró el P&L del 27-jul que quedó PENDIENTE anoche (la LucidSales del 27
+     entró 22:31, después del run automático). 8 ventas, todas TINNIDROP,
+     ganancia −Q58 (CLEARSTEM/NUSAVA gastaron sin vender → rezago COD probable).
+  2. Se leyó lado-ads por MCP (GTR0 + GTR7), ventana 27-28 → 23 filas a
+     _FACT_ENTREGA (contigua, no solapa con 24-26). ⚠️ el campo results/
+     conversaciones del MCP vino VACÍO este window → filas SIN `mensajes`; el
+     %conv/clic no se pudo recalcular en vivo. Se conservan entrega/CTR/CPM/freq.
+  3. Se actualizaron _GANANCIAS.txt (P&L 17-27), _BITACORA_DATA.txt (28 = 🔴
+     ventas / ✅ lado-ads) y se regenera el dashboard como último paso.
+
+───────────────────────────────────────────────────────────────────────────
+P&L DEL PORTAFOLIO — acumulado 17-27 jul (11 días, BASE no solapadas)
+───────────────────────────────────────────────────────────────────────────
+GANANCIA NETA Q1987 · Ingreso Q19835 · Pauta Q4310 · 86 ventas · ROAS 4.60 · CPA Q50.1
+Fórmula: ganancia = (ventas × Break-Even) − pauta Q. (BE ya descuenta producto+envío+RTO.)
+
+| Producto  | Ventas | Pauta Q | CPA real | Break-Even | Estado      | Ganancia Q |
+|-----------|--------|---------|----------|------------|-------------|------------|
+| TINNIDROP |    51  |   2368  | Q46.4    | Q71.6      | 🟡 rentable | +1283      |
+| NUSAVA    |    16  |    804  | Q50.3    | Q76.9      | 🟡 rentable | +426       |
+| VARICOSE  |     7  |    269  | Q38.4    | Q83.0      | 🔴 APAGADO  | +312       |
+| CLEARSTEM |    12  |    869  | Q72.4    | Q69.6      | 🔴 bajo BE  | -34        |
+
+═══════════════════════════════════════════════════════════════════════════
+1) TINNIDROP — VIVO · ESCALADO (multicuenta GTR0 madre + GTR7/GTR1/GTR3)
+═══════════════════════════════════════════════════════════════════════════
+ETAPA-7 (ranking acumulado por conjunto, CPA real por venta LucidSales):
+  ⭐ DETERIORO COGNITIVO - video ...... 12 v · CPA Q20.4  (GTR0)  el motor
+  ⭐ ME DIJERON QUE NO TIENE CURA ......  8 v · CPA Q22.4  anti-médico/resignación
+     Pérdida auditiva irreversible .....  9 v · CPA Q32.0  ganador de pérdida
+     Accesibilidad económica vs médico .  8 v · CPA Q40.4
+     NOCHES SIN DORMIR .................  3 v · CPA Q36.6
+  ⚠️ DETERIORO COGNITIVO - video - Copia  5 v · CPA Q102.4 (réplica GTR7 4WINERS)
+
+SATURACIÓN POR CUENTA (PASO 4C): el MISMO ángulo DETERIORO rinde Q20.4 en la
+madre GTR0 y Q102.4 en la réplica GTR7 (4WINERS) — 5× más caro. GTR7 está
+SATURADA para DETERIORO. El volumen de DETERIORO va a GTR0, NO a la réplica.
+
+Lado-ads 27-28 (MCP, entrega): TODO SANO. La campaña de renovación GTR0
+"TINNIDROP_RENOVACION +25 años" ($64/2d, 12 ángulos nuevos) entrega fuerte:
+CTR 3-5.7%, CPM $1.1-3.9, frecuencia 1.0-1.4 (sin fatiga). Los ángulos con más
+tracción de clic-enlace son de PÉRDIDA/resignación, coherente con la doctrina del
+producto: "APRENDÉ A VIVIR CON ESO" (74 lc), "EL VOLUMEN DE LA TELE" (52 lc, CTR
+4.67%), "RESEÑA 5 ESTRELLAS hombre 58" (CTR 4.28%). Los educacionales/mecanismo
+siguen descartados (3 testeos, 3 fracasos) — la renovación bien hizo en NO incluirlos.
+
+ETAPA-8 (plan):
+  · MANTENER DETERIORO + ME DIJERON + Pérdida auditiva en GTR0 (ganadores <BE).
+  · NO subir volumen de DETERIORO en GTR7 (saturada: Q102 vs Q20 en GTR0).
+  · La renovación +25años es el refresh de creativo del ángulo ganador (correcto:
+    "el ángulo sirve, el creativo se gastó"). Dejarla correr hasta su PD (~2-3 días)
+    y rankear por venta LucidSales, no por conversación (en TINNIDROP la
+    conversación NO predice venta — tinnidrop-1 tuvo 78% conv y 0 ventas).
+  · Escalado horizontal del ganador YA validado (Post ID a GTR0/3/1 misma página
+    Sanarte) sigue en pie — solo a las cuentas donde el ángulo ya vendió.
+QUÉ HACER MAÑANA: nada que apagar; es el caballo del portafolio. Confirmar con la
+próxima LucidSales qué ángulos de la renovación +25años venden (no solo convierten).
+
+═══════════════════════════════════════════════════════════════════════════
+2) NUSAVA B12 — VIVO · ESCALADO (GTR7)
+═══════════════════════════════════════════════════════════════════════════
+ETAPA-7 (ranking acumulado por conjunto):
+  ⭐ MA6-OFERTA (ARDOR) ......... 5 v Q19.9 (copia) · 3 v Q37.7 (base) = 8 v  el caballo
+     MA4-DEPIE .................. 2 v · CPA Q54.4
+     MA7-ARDORVIDEO ............ 2 v · CPA Q59.5
+     ARDOR_NUSAVAB12_TEST ...... 2 v · CPA Q54.6
+     MA5-AZUCAR / MA2-ARDORNOCHE  1 v c/u · CPA Q80+   (débiles)
+     MA1-COMPLEJOB ............. 0 v   (muerto)
+Acumulado 16 v · CPA Q50.3 < BE Q76.9 · rentable (+Q426). Confirma la memoria del
+sistema: ARDOR es el ángulo real, MEMORIA-escalado no rinde.
+
+27-jul: 0 ventas con Q77 de gasto → probable rezago COD (madura ~3 días), no
+señal de muerte del ángulo. Lado-ads 27-28: MA6-OFERTA entrega bien (94 lc, CTR
+4.2-4.9%, freq 1.15-1.18), MA7-ARDORVIDEO CTR 5.70% (el más alto). MA4-DEPIE
+flojo (CTR 3.18%). MA5/MA3/MA2/MA1 en $0 (sin entrega).
+
+ETAPA-8 (plan):
+  · CONCENTRAR en MA6-OFERTA + MA7-ARDORVIDEO (los dos que entregan y venden).
+  · MA1-COMPLEJOB (0 v) y MA5/MA2 (1 v, Q80+) ya están apagados de facto → dejarlos.
+  · NO escalar fuerte hasta que la próxima LucidSales confirme si el 0 del 27 fue
+    rezago o caída real. Con CPA Q50 < BE Q77 hay margen para renovar creativo de
+    MA6/ARDOR antes que apagar.
+QUÉ HACER MAÑANA: mantener MA6-OFERTA + MA7-ARDORVIDEO; verificar el 0 del 27 con
+el próximo export (esperado rezago COD).
+
+═══════════════════════════════════════════════════════════════════════════
+3) CLEARSTEM — VIVO · TESTEO (GTR13, MCP OFF → solo LucidSales)
+═══════════════════════════════════════════════════════════════════════════
+ETAPA-7 (ranking acumulado, sin lado-ads MCP — GTR13 no habilitado):
+  ⭐ Anti-Falsificación ......... 4 v · CPA Q28.4   el mejor
+     Médicos Fallaron .......... 3 v · CPA Q38.3
+     Resistencia Insulina/SOP .. 3 v · CPA Q37.2
+     Testimonio Radical ........ 1 v · CPA Q112.3   (lastre)
+     Eje Intestino-Piel / Dolor Emocional Masc. .. 0 v
+Acumulado 12 v · CPA Q72.4 > BE Q69.6 → cruzó por DEBAJO del break-even (−Q34).
+
+⚠️ DOS CONFUSORES ACTIVOS (declarados): bot NUEVO en el relanzamiento + música de
+Meta activada en ads-imagen. NO se puede culpar al ángulo por la semana floja.
+27-jul: 0 ventas con Q151 → arrastra el CPA. Probable rezago COD + confusores.
+
+ETAPA-8 (plan):
+  · NO MATAR POR ÁNGULO. Los ganadores por conjunto (Anti-Falsificación Q28.4,
+    Insulina/SOP Q37.2) están sanos; el arrastre son Testimonio Radical (Q112) y
+    los 0-venta. El problema es de creativo/implementación, no de ángulo.
+  · Renovar creativo del ganador Anti-Falsificación (brief a ETAPA-4) y AISLAR la
+    variable de música de Meta (correr una versión sin música).
+  · Sigue en TESTEO → darle su PD antes de cualquier corte por venta.
+QUÉ HACER MAÑANA: pedir LucidSales de CLEARSTEM (única fuente, sin MCP). Si el 0
+persiste 2 días más → creativo nuevo de Anti-Falsificación, no apagar el ángulo.
+
+═══════════════════════════════════════════════════════════════════════════
+4) VARICOSE — VIVO en nombre, APAGADO en entrega (GTR7)
+═══════════════════════════════════════════════════════════════════════════
+Verificado por MCP 28-jul: las campañas "VARICOSE_ESCALA_VERGUENZA" y
+"VARICOSE_TRAFICO" figuran ACTIVE pero con $0 de gasto en los últimos 3 días → NO
+están entregando. Sigue apagado desde el 25-jul.
+Histórico: mejor CPA del portafolio (Q38.4), ganador VERGÜENZA confirmado, +Q312.
+
+ETAPA-8 (plan): esto es SANGRADO DE OPORTUNIDAD — el mejor CPA del portafolio
+está parado. La palanca #1 de VARICOSE es REACTIVAR VERGÜENZA (verificar
+presupuesto/entrega de la ESCALA 120247375697420784) y, cuando corra estable,
+regarlo HORIZONTAL (Post ID → GTR0/3/1), mismo playbook que TINNIDROP.
+QUÉ HACER MAÑANA (acción del operador): reactivar/verificar entrega de
+VARICOSE_ESCALA_VERGUENZA. Es plata sobre la mesa.
+
+───────────────────────────────────────────────────────────────────────────
+PRODUCTOS NO VIVOS (no auditados, siguen pendientes):
+  · VITAMINA D3+K2 — LISTO, falta página #9 + WhatsApp y lanzar por MCP.
+  · Repelente Ultrasónico — LISTO, falta FanPage "Hogar Protegido GT" + WhatsApp.
+  · SERUM Colágeno Botox — LISTO, falta page_id de Belleza & Piel + WhatsApp.
+  · OVULOS Purity — LISTO, opera en COP (Colombia), falta normalización + lanzar.
+
+───────────────────────────────────────────────────────────────────────────
+RESUMEN 1 LÍNEA POR PRODUCTO (próximo paso):
+  · TINNIDROP  🟢 el motor (+Q1283). Dejar correr la renovación +25años; ojo GTR7 saturada para DETERIORO.
+  · NUSAVA     🟢 rentable (+Q426). Concentrar en MA6-OFERTA/MA7; verificar el 0 del 27 (rezago).
+  · CLEARSTEM  🔴 cruzó bajo BE. NO matar (bot+música confunden); renovar creativo Anti-Falsificación.
+  · VARICOSE   🔴 apagado con el mejor CPA (Q38.4). Reactivar VERGÜENZA = palanca #1.
+═══════════════════════════════════════════════════════════════════════════
+
+───────────────────────────────────────────────────────────────────────────
+ADDENDUM 22:59 — LLEGÓ LA LUCIDSALES DEL 28-JUL (operador la pegó tras el run)
+───────────────────────────────────────────────────────────────────────────
+Se ingirieron 106 filas BASE dias=1 (ventana 28-28, sin solape). CP1 (COP)
+normalizada ÷4050. JOIN con _DIM_CONJUNTOS cierra 100% (0 sin dimensión).
+INTEGRIDAD DE VENTANA 22-28 jul: AHORA COMPLETA (7 de 7 días).
+
+P&L 28-jul: 12 ventas · pauta Q596 · ingreso Q2574 · GANANCIA +Q272 · ROAS 4.32.
+  · TINNIDROP  9 v · CPA Q47.5 · +Q217 (DETERIORO video 4v Q40.7, Pérdida auditiva 3v).
+  · NUSAVA     2 v · CPA Q33.9 · +Q86  → MA6-OFERTA (ARDOR) vendió a Q15.4 ⭐.
+  · CLEARSTEM  1 v · CPA Q100.6 · −Q31 → sigue siendo el lastre.
+
+CONFIRMACIONES que cambian las lecturas de arriba:
+  1. El 0 del 27-jul en NUSAVA era REZAGO COD, NO muerte del ángulo: el 28 MA6-OFERTA
+     volvió a ser el mejor CPA del portafolio (Q15.4). ARDOR sigue siendo el caballo.
+  2. TINNIDROP: la saturación día-a-día es RUIDO. Hoy por cuenta: GTR0 Q85.9,
+     GTR7 Q44, GTR1 Q26.9, CP1 Q25.7 — hoy las réplicas rinden MEJOR que la madre,
+     al revés que el acumulado. Confirma la regla: decidir por ÁNGULO acumulado,
+     nunca por cuenta-día. La bandera de "GTR7 saturada para DETERIORO" se mantiene
+     a nivel ACUMULADO (Q102 histórico), pero no se actúa sobre un día suelto.
+  3. CLEARSTEM: 3er día flojo seguido (Q100.6 hoy). Acumulado ya en −Q65 bajo BE.
+     Con GTR13 sin MCP + bot nuevo + música Meta, el diagnóstico sigue siendo
+     FATIGA DE CREATIVO, no ángulo. Prioridad sube: brief a ETAPA-4 para renovar
+     Anti-Falsificación e Insulina/SOP (los 2 ganadores) + versión SIN música Meta.
+
+ACUMULADO 17-28 jul actualizado: 98 ventas · +Q2260 · ROAS 4.57 · CPA Q50.1.
+Archivos actualizados: _FACT_VENTAS (+106), _GANANCIAS, _BITACORA, dashboard regenerado.
+═══════════════════════════════════════════════════════════════════════════

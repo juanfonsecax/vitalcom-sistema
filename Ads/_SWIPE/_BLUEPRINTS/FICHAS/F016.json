@@ -1,0 +1,196 @@
+{
+  "ficha_id": "F016",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aranza_Glow/06_984361930991326.jpg",
+    "anunciante": "Aranza Glow",
+    "ad_archive_id": "984361930991326",
+    "dias_activo": 82,
+    "replicas": 1,
+    "score": 107,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "18%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL AVATAR DESEADO SOSTENIENDO EL PRODUCTO, EN SU ACTIVIDAD. Una mujer atletica real, en el gimnasio, mira el envase que tiene en la mano. No hay problema ni sintoma: se muestra el CUERPO Y LA VIDA que el producto acompana. El titular declara para quien es en la primera linea (para mujeres que entrenan) antes de nombrar el producto.",
+  "lectura_estrategica": "Vende pertenencia a una identidad, no solucion a un dolor. Nivel 4: la persona ya conoce la categoria (creatina) y lo que decide la compra es si esto es PARA ELLA — de ahi que el filtro de audiencia sea la primera linea y que el producto diga for Women en el empaque. La escalera de 3 precios con MAS VENDIDO en el tier 2 y la columna izquierda de diferenciadores (con colageno, sin azucar) cierran las objeciones especificas de ese avatar, que no son de eficacia sino de composicion.",
+  "fondo": {
+    "tipo": "foto_de_actividad_desenfocada",
+    "base": "escena del entorno donde se usa el producto (gimnasio, cocina, cancha), desenfocada y desaturada",
+    "capa": "degradado del color de paleta sobre el tercio derecho para sostener el texto",
+    "funcion": "el entorno declara la actividad y por lo tanto el avatar"
+  },
+  "paleta": {
+    "derivacion": "del empaque y del genero del avatar",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (bandas, cards de precio, iconos) mas blanco (texto y fondo de cards) mas negro (titular) mas los grises del entorno"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada con textura de desgaste en el titular",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "eyebrow_filtro": {
+      "posicion": "superior_derecha",
+      "contenedor": "banda de brochazo {{PALETA_ACENTO}} irregular",
+      "texto": "{{FILTRO_AUDIENCIA}}",
+      "estilo": "cursiva o Bold blanco sobre el brochazo",
+      "restriccion_palabras": "3-5 palabras",
+      "formato_obligatorio": "para + el grupo al que se le habla",
+      "funcion": "declara el avatar ANTES del producto: quien no se reconoce, sigue de largo, y eso es deseable"
+    },
+    "titular": {
+      "posicion": "superior_derecha, bajo el eyebrow",
+      "lineas": 2,
+      "linea_1": "{{PRODUCTO}}",
+      "linea_2": "{{SEGMENTO_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase negro con textura de desgaste",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "3-4 palabras",
+      "regla": "el titular NOMBRA el producto: en nivel 4 la persona ya lo busca por nombre"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{PROMESA_TRIPLE}}",
+      "estilo": "Bold negro con una palabra en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "tres beneficios en una linea, separados por comas, en escalada"
+    },
+    "avatar_con_producto": {
+      "posicion": "izquierda, ocupa el alto completo",
+      "contenido": "{{FOTO_AVATAR_CON_PRODUCTO}}",
+      "escala": "35% del frame",
+      "tratamiento": "persona real del avatar deseado, en su actividad, SOSTENIENDO Y MIRANDO el envase",
+      "regla_mirada": "la persona mira el producto, no a camara: dirige la atencion del lector hacia el envase",
+      "regla_avatar": "es el cuerpo y la vida que el comprador quiere, no el que tiene",
+      "funcion": "sustituye a la foto de sintoma: aca el gancho es la aspiracion"
+    },
+    "fila_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas label Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "columna_diferenciadores": {
+      "posicion": "izquierda_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono molecular o de simbolo en {{PALETA_ACENTO}} mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{DIFERENCIADORES[3]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla": "en nivel 4 las objeciones no son de eficacia sino de COMPOSICION: que lleva, que no lleva"
+    },
+    "producto_hero": {
+      "posicion": "centro_inferior",
+      "escala": "32% del frame",
+      "composicion": "envase de pie mas accesorio de la actividad (shaker, toalla, pesa) y una porcion del producto servida al pie",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto aparece dos veces: en la mano del avatar y de pie al centro. Es deliberado: uno da contexto, el otro da detalle de etiqueta"
+    },
+    "escalera_precios": {
+      "posicion": "derecha_baja",
+      "contenedor": "card blanca con header en banda {{PALETA_ACENTO}}",
+      "header": "{{OFERTA_LABEL}}",
+      "tiers": 3,
+      "formato_tier": "numeral de cantidad en card {{PALETA_ACENTO}} a la izquierda, POR SOLO en Regular, precio en Black a la derecha",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}}",
+      "etiqueta": "el tier 2 lleva {{ETIQUETA_SOCIAL}} en pildora saliente a la derecha",
+      "funcion": "anclaje de 3 puntos con la etiqueta en el medio"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_derecha",
+      "cantidad_items": 2,
+      "formato_item": "icono mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[2]}}"
+    },
+    "pie_promesa": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_ACENTO}} solida",
+      "texto": "{{CIERRE_EMOCIONAL}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "6-8 palabras",
+      "regla": "cierra en la identidad, no en el precio: es lo ultimo que se lee"
+    }
+  },
+  "secuencia_lectura": [
+    "eyebrow_filtro",
+    "titular",
+    "avatar_con_producto",
+    "subtitular",
+    "fila_beneficios",
+    "producto_hero",
+    "escalera_precios",
+    "columna_diferenciadores",
+    "fila_garantias",
+    "pie_promesa"
+  ],
+  "reglas_duras": [
+    "El filtro de audiencia va antes que el nombre del producto",
+    "La persona mira el producto, no a camara",
+    "El avatar es el cuerpo y la vida que el comprador quiere, no el que tiene",
+    "El producto aparece dos veces: en la mano y de pie al centro",
+    "Los diferenciadores son de composicion (que lleva, que no lleva), no de resultado",
+    "La pieza cierra en identidad, no en precio",
+    "Sin foto de sintoma ni de dolor: este layout no los admite"
+  ],
+  "variables_requeridas": [
+    "FILTRO_AUDIENCIA",
+    "PRODUCTO",
+    "SEGMENTO_ACENTO",
+    "PROMESA_TRIPLE",
+    "FOTO_AVATAR_CON_PRODUCTO",
+    "BENEFICIOS[4]",
+    "DIFERENCIADORES[3]",
+    "OFERTA_LABEL",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "GARANTIAS[2]",
+    "CIERRE_EMOCIONAL"
+  ],
+  "cuando_usar": [
+    "categoria que la persona ya conoce y busca por nombre (nivel 4)",
+    "producto ligado a una actividad o identidad (entrenar, correr, maternidad, trabajo fisico)",
+    "cuando el diferenciador es la formulacion para un segmento (for women, sin azucar, vegano)",
+    "cuando existe foto de una persona real del avatar deseado usando el producto"
+  ],
+  "cuando_no_usar": [
+    "publico frio que no conoce la categoria: el titular con el nombre del producto no le dice nada",
+    "problemas de salud con dolor: la aspiracion no compite con el alivio",
+    "cuando no hay avatar fotografiable haciendo la actividad"
+  ],
+  "sellos_y_claims_observados": [
+    "Diferenciadores de composicion: CON COLAGENO (PIEL, CABELLO Y UNAS), BCAA (MUSCULOS FUERTES Y RECUPERADOS), SIN AZUCAR (SIN GRASAS, SIN LACTOSA).",
+    "Sellos impresos en el empaque: NO SUGAR ADDED, CALIFORNIA.",
+    "Etiqueta MAS VENDIDO en el tier 2 de la escalera.",
+    "Garantias ENVIO GRATIS y PAGO CONTRA ENTREGA.",
+    "Filtro de audiencia PARA MUJERES QUE ENTRENAN sobre brochazo."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

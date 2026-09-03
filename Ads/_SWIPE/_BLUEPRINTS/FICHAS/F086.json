@@ -1,0 +1,251 @@
+{
+  "ficha_id": "F086",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/09_1053624560407481.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1053624560407481",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "densa"
+  },
+  "dispositivo_dominante": "LA ESCALERA DE TRES TIERS CON UN SUBTITULO DE INTENCION EN CADA UNO, Y LA GARANTIA COMO CUARTA COLUMNA. Los tres precios no llevan solo etiqueta de ahorro sino una frase que declara PARA QUE es cada tier — tu inicio para sentirte mejor, mas ahorro mejores resultados, cuidado completo beneficios duraderos — y a su derecha, del mismo alto, una card de garantia que funciona como cuarta opcion.",
+  "lectura_estrategica": "Convierte la escalera de precios en una escalera de COMPROMISO. Cada tier describe un tipo de comprador y no un descuento, de modo que elegir deja de ser una cuestion de cuanto gastar y pasa a ser de que tan en serio va la persona. La card de garantia alineada como cuarta columna es la otra decision fuerte: en vez de flotar en una esquina, ocupa el mismo lugar visual que los precios, lo que la hace parte de la deliberacion economica. Arriba, el titular enumera tres sistemas en una sola linea y la banda declara que todo eso cabe en una sola capsula.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_macrofotografia",
+    "base_superior": "macrofotografia de globulos rojos o del tejido objetivo, desenfocada",
+    "base_central": "crema o blanco roto plano",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (titular, bandas, cards) mas crema (fondo) mas rojo de la macrofotografia mas blanco"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "eyebrow_reciprocidad": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{FRASE_RECIPROCIDAD}}",
+      "estilo": "Regular {{PALETA_OSCURA}} chico con corazon al final",
+      "restriccion_palabras": "8-10 palabras",
+      "formato_obligatorio": "tu cuerpo trabaja por ti, ayudalo a funcionar mejor",
+      "regla": "abre con reciprocidad y no con problema: no le dice a la persona que algo esta mal"
+    },
+    "titular_sistemas": {
+      "posicion": "superior, bajo el eyebrow",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{SISTEMA_1}}, {{CALIFICATIVO}},",
+      "linea_2": "{{SISTEMA_2}} Y {{SISTEMA_3}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "6-7 palabras",
+      "regla": "enumera tres sistemas en una sola frase, sin verbo"
+    },
+    "banda_sintesis": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "texto": "{{FRASE_SINTESIS}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "4-6 palabras",
+      "regla_critica": "declara que todo lo anterior cabe en UNA SOLA unidad de toma: es lo que hace manejable una lista de tres sistemas"
+    },
+    "pildora_activo": {
+      "posicion": "bajo la banda",
+      "texto": "{{ACTIVO}} {{DOSIS}} · {{CLAIM_POTENCIA}}",
+      "estilo": "Regular {{PALETA_OSCURA}} con hoja a la izquierda",
+      "restriccion_palabras": "8-10 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art del organo en circulo con borde mas TITULO Bold uppercase en {{PALETA_OSCURA}} mas subtitulo Regular de 2 lineas",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "8-12 palabras",
+      "regla_item_4": "uno de los items descarta explicitamente una objecion de categoria"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "40% del frame",
+      "composicion": "envase de pie sobre base de madera con las perlas sueltas al pie y hojas detras",
+      "fuente": "IMAGEN_2"
+    },
+    "badge_seguridad": {
+      "posicion": "derecha_media",
+      "forma": "circular con borde",
+      "linea_1": "{{CLAIM_NATURAL}}",
+      "linea_2": "{{CLAIM_SEGURIDAD}}",
+      "escala": "13% del ancho"
+    },
+    "header_eleccion": {
+      "posicion": "centro_bajo",
+      "alineacion": "centrado",
+      "texto": "{{HEADER_ELECCION}}",
+      "estilo": "Bold {{PALETA_OSCURA}}",
+      "restriccion_palabras": "7-9 palabras",
+      "formato_obligatorio": "elige tu opcion y empieza hoy a + verbo de cuidado",
+      "regla": "encabeza la escalera con un imperativo de eleccion, no de compra"
+    },
+    "escalera_compromiso": {
+      "posicion": "inferior, ancho parcial izquierdo",
+      "tiers": 3,
+      "orientacion": "tres columnas separadas por lineas verticales finas",
+      "formato_tier": "cantidad en Bold arriba, precio Black/900 grande, etiqueta de valor en pildora, y SUBTITULO DE INTENCION en Regular debajo",
+      "tier_1": {
+        "cantidad": "{{CANT_1}}",
+        "precio": "{{MONEDA}}{{PRECIO_1}}",
+        "intencion": "{{INTENCION_1}}"
+      },
+      "tier_2": {
+        "cantidad": "{{CANT_2}}",
+        "precio": "{{MONEDA}}{{PRECIO_2}}",
+        "etiqueta": "{{ETIQUETA_SOCIAL}}",
+        "intencion": "{{INTENCION_2}}"
+      },
+      "tier_3": {
+        "cantidad": "{{CANT_3}}",
+        "precio": "{{MONEDA}}{{PRECIO_3}}",
+        "etiqueta": "{{ETIQUETA_AHORRO}}",
+        "intencion": "{{INTENCION_3}}"
+      },
+      "restriccion_intencion": "4-6 palabras",
+      "regla_critica": "cada tier describe un TIPO DE COMPRADOR y no un descuento: elegir deja de ser cuanto gastar y pasa a ser que tan en serio va la persona"
+    },
+    "card_garantia": {
+      "posicion": "inferior_derecha, alineada como CUARTA COLUMNA de la escalera",
+      "contenedor": "card {{PALETA_OSCURA}} solida del mismo alto que los tiers",
+      "linea_1": "{{CLAIM_DEVOLUCION}}",
+      "linea_2": "{{DIAS_GARANTIA}}",
+      "linea_3": "{{FRASE_SATISFACCION}}",
+      "estilo_l2": "Black/900 blanco",
+      "regla_critica": "ocupa el mismo lugar visual que los precios en vez de flotar en una esquina: la hace parte de la deliberacion economica"
+    },
+    "fila_atributos": {
+      "posicion": "bajo la escalera, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_item_4": "el ultimo es de facilidad de uso (facil de tomar, una capsula al dia)"
+    },
+    "barra_garantias": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "cantidad_items": 4,
+      "formato_item": "icono line-art blanco mas texto Bold uppercase",
+      "items": "{{GARANTIAS[4]}}",
+      "restriccion_palabras": "2-4 palabras"
+    },
+    "pie_cierre": {
+      "posicion": "inferior extremo, centrado",
+      "texto": "{{CIERRE_CURSIVA}}",
+      "estilo": "cursiva decorativa blanca con corazon",
+      "restriccion_palabras": "8-10 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_sistemas",
+    "banda_sintesis",
+    "producto_hero",
+    "columna_beneficios",
+    "header_eleccion",
+    "escalera_compromiso",
+    "card_garantia",
+    "eyebrow_reciprocidad",
+    "fila_atributos",
+    "barra_garantias",
+    "pie_cierre"
+  ],
+  "reglas_duras": [
+    "Cada tier lleva un subtitulo que declara para que tipo de comprador es",
+    "La card de garantia se alinea como cuarta columna de la escalera",
+    "El eyebrow abre con reciprocidad, no con problema",
+    "La banda declara que todo cabe en una sola unidad de toma",
+    "El header de la escalera es un imperativo de eleccion, no de compra",
+    "Uno de los beneficios descarta una objecion de categoria"
+  ],
+  "variables_requeridas": [
+    "FRASE_RECIPROCIDAD",
+    "SISTEMA_1",
+    "CALIFICATIVO",
+    "SISTEMA_2",
+    "SISTEMA_3",
+    "FRASE_SINTESIS",
+    "ACTIVO",
+    "DOSIS",
+    "CLAIM_POTENCIA",
+    "BENEFICIOS[5]",
+    "CLAIM_NATURAL",
+    "CLAIM_SEGURIDAD",
+    "HEADER_ELECCION",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "INTENCION_1",
+    "INTENCION_2",
+    "INTENCION_3",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "MONEDA",
+    "CLAIM_DEVOLUCION",
+    "DIAS_GARANTIA",
+    "FRASE_SATISFACCION",
+    "ATRIBUTOS[4]",
+    "GARANTIAS[4]",
+    "CIERRE_CURSIVA"
+  ],
+  "cuando_usar": [
+    "cuando los tiers pueden describir tipos de comprador y no solo cantidades",
+    "productos de uso continuo donde el compromiso crece con el pack",
+    "cuando hay garantia de devolucion real que conviene poner al nivel del precio",
+    "BOFU sobre publico que ya conoce el producto"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay diferencia real de intencion entre los tiers",
+    "publico frio",
+    "cuando no existe garantia de devolucion"
+  ],
+  "sellos_y_claims_observados": [
+    "Eyebrow TU CUERPO TRABAJA POR TI, AYUDALO A FUNCIONAR MEJOR.",
+    "Banda EN UNA SOLA CAPSULA NATURAL.",
+    "Pildora ASTAXANTHIN 12 MG · ANTIOXIDANTE DE ALTA POTENCIA DE ORIGEN NATURAL.",
+    "Beneficios: MEJORA TU CIRCULACION, BIENESTAR VASCULAR, APOYA TUS FILTROS RENALES, MANEJO SALUDABLE DE LIQUIDOS (no es un diuretico agresivo), ANTIOXIDANTE DE ALTA POTENCIA.",
+    "Badge 100% NATURAL Y SEGURO.",
+    "Header ELIGE TU OPCION Y EMPIEZA HOY A CUIDAR TU SALUD.",
+    "Escalera con subtitulos de intencion: 1 UNIDAD Q220 (tu inicio para sentirte mejor), 2 UNIDADES Q325 MEJOR OFERTA (mas ahorro, mejores resultados), 3 UNIDADES Q450 MAYOR AHORRO (cuidado completo, beneficios duraderos).",
+    "Card GARANTIA DE DEVOLUCION DE 90 DIAS · TU SATISFACCION ESTA ASEGURADA, como cuarta columna.",
+    "Fila de atributos: DE ORIGEN NATURAL, PROBADO EN LABORATORIO, LIBRE DE GMO Y GLUTEN, FACIL DE TOMAR 1 CAPSULA AL DIA.",
+    "Barra: ENVIOS A TODA GUATEMALA, PAGO CONTRA ENTREGA, EMPAQUE SEGURO Y DISCRETO, COBERTURA NACIONAL.",
+    "Cierre CUIDAR TU SALUD HOY ES LA MEJOR DECISION PARA TU MANANA."
+  ],
+  "canonico_id": "CN04_ESCALERA_PRECIOS",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

@@ -1,0 +1,57 @@
+═══════════════════════════════════════════════════════════════════════════
+VERIFICACIÓN DE CAJA — ¿el dinero que dice el sistema es el que entra?
+Ventana: 2026-08-01 → 2026-08-31 · generado 2026-09-02
+═══════════════════════════════════════════════════════════════════════════
+
+CAPA 1 — LucidSales (lo que los ADS atribuyen)
+  302 ventas · facturado Q68,916 · pauta trackeada Q15,074
+  contribución estimada Q28,478 → ganancia del sistema Q13,404
+
+CAPA 2 — Dropi (el dinero que REALMENTE se cobró)
+  349 órdenes: 284 entregadas · 40 devueltas · 22 en tránsito
+  recaudado Q64,686 · contribución bruta Q34,546
+  − devoluciones (40 × Q27.16) Q1,086 · − admin/otros (284 × Q6.08) Q1,727
+  = CONTRIBUCIÓN NETA REAL Q31,733
+  ⏳ sin resolver: 22 órdenes por Q5,254
+
+  Por producto (solo entregadas):
+    CLEARSTEM     85 órdenes · recaudo    Q20,160 · contribución    Q10,113 · ticket Q237
+    NUSAVA        37 órdenes · recaudo     Q9,804 · contribución     Q5,707 · ticket Q265
+    TINNIDROP    156 órdenes · recaudo    Q32,948 · contribución    Q17,608 · ticket Q211
+    VARICOSE       6 órdenes · recaudo     Q1,774 · contribución     Q1,118 · ticket Q296
+
+CAPA 3 — Banco (lo que Meta REALMENTE cobró)
+  75 cargos de Facebook en la ventana · $1871.89 = Q14,264
+  pauta trackeada por LucidSales en la ventana: Q15,074
+
+  ── CORTE ALINEADO 2026-08-09 → 2026-09-01 (el único tramo con las dos fuentes) ──
+  Banco cobró $1894.91 · LucidSales atribuye $1732.43 (sin CP1, que factura en COP)
+  COBERTURA: 91.4% — Q1,238 de gasto real NO aparece en el P&L
+  (por eso el mes calendario engaña: los cargos de los primeros días del mes
+   suelen caer en el extracto anterior. Para cerrar esto hace falta el extracto previo.)
+
+  Otros cargos en la misma cuenta — NO son pauta y NO están en el P&L.
+  Confirmar cuáles son del negocio (no se atribuyen por descarte, APR-030):
+    MINIMED GEDIATRIA            $  901.59 = Q6,870
+    Proxy-Cheap                  $   26.29 = Q200
+    ANTHROPIC* CLAUDE SUB        $   21.53 = Q164
+
+───────────────────────────────────────────────────────────────────────────
+VEREDICTO
+───────────────────────────────────────────────────────────────────────────
+  GANANCIA REAL DE CAJA = contribución neta de Dropi − pauta real
+    con pauta COBRADA en el mes      Q31,733 − Q14,264 = Q17,469
+    con pauta DEVENGADA (corregida)  Q31,733 − Q16,488 = Q15,245
+    → BANDA HONESTA: entre Q15,245 y Q17,469
+
+  Ganancia que reporta el sistema (capa 1): Q13,404
+  El sistema SUBESTIMA frente a la caja: Q1,841 a Q4,065
+
+  POR QUÉ la caja da más que el sistema: Dropi cobró 349 órdenes y los ads solo
+  atribuyen 302 ventas. Esas 47 órdenes de diferencia SÍ entraron, pero ningún
+  anuncio se lleva el crédito (orgánico, recompra o tracking roto).
+
+  ⚠ El costo de devolución (Q27.16) es un PARÁMETRO, no sale de la orden:
+    para medirlo de verdad hace falta el ESTADO DE CUENTA de Dropi.
+  ⚠ Las órdenes en tránsito todavía pueden caer a devolución: la contribución
+    neta de la capa 2 es un TECHO hasta que el cohorte madure.

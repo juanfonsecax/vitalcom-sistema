@@ -1,0 +1,174 @@
+{
+  "ficha_id": "F026",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Camila_Recomienda/10_1055655254086110.jpg",
+    "anunciante": "Camila Recomienda",
+    "ad_archive_id": "1055655254086110",
+    "dias_activo": 24,
+    "replicas": 2,
+    "score": 74,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "28%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL DIAGNOSTICO EN CADENA: TITULAR QUE NOMBRA LA CONDICION Y COLUMNA DE SINTOMAS TODOS EN FORMA DE PREGUNTA. El titular pregunta por la condicion clinica y los tres items de la derecha preguntan por sus sintomas, uno por uno, cada uno con signo de interrogacion. La pieza entera es un cuestionario de autodiagnostico: quien contesta que si a dos, ya se diagnostico solo.",
+  "lectura_estrategica": "Version 4:5 y sin doctor del mismo producto de F003. Al perder al medico, la autoridad se traslada al sello circular de origen y al par de envases, y la persuasion se concentra en el autodiagnostico. Es mas eficiente para nivel 2 que la version con figura: no le dice a la persona que tiene, le pregunta, y la respuesta se la da ella. La condicion se nombra en el titular con su termino clinico, lo que filtra fuerte y trae trafico muy calificado a costa de alcance.",
+  "fondo": {
+    "tipo": "degradado_radial",
+    "centro": "blanco",
+    "borde": "{{PALETA_CLARO}}",
+    "vineta": "muy suave",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (fondo de borde y detalles) mas {{COLOR_ALERTA}} rojo (card de precio) mas azul oscuro (banda de atributos e iconos) mas blanco"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular_condicion": {
+      "posicion": "superior_izquierda",
+      "texto": "{{CONDICION}}",
+      "estilo": "Black/900 uppercase negro con signos de interrogacion de apertura y cierre",
+      "restriccion_palabras": "1-2 palabras",
+      "formato_obligatorio": "el termino con el que la persona buscaria en Google, como pregunta",
+      "regla": "nombrar la condicion filtra fuerte: menos alcance, trafico mucho mas calificado"
+    },
+    "subtitular_sintoma": {
+      "posicion": "bajo el titular",
+      "texto": "{{SINTOMA_PRINCIPAL}}",
+      "estilo": "Regular negro, al 40% del titular, con signos de interrogacion",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "el sintoma mas reconocible y menos declarado en voz alta: es el que engancha al que no se atreve a buscarlo"
+    },
+    "sello_origen": {
+      "posicion": "superior_derecha",
+      "forma": "circular con borde doble y bandera",
+      "contenido": "{{SELLO_ORIGEN}}",
+      "escala": "20% del ancho",
+      "funcion": "al no haber figura de autoridad, el sello circular carga toda la credibilidad institucional"
+    },
+    "producto_hero": {
+      "posicion": "izquierda, ocupa el alto central",
+      "escala": "45% del frame",
+      "composicion": "DOS envases identicos de frente, ligeramente superpuestos",
+      "regla": "el par de envases sugiere la oferta de dos sin necesidad de un numeral",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_sintomas": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo azul oscuro mas label Black/900 uppercase de 2 lineas TERMINADO EN SIGNO DE INTERROGACION",
+      "items": "{{SINTOMAS[3]}}",
+      "restriccion_palabras_label": "3-4 palabras",
+      "regla_critica": "TODOS los items van en forma de pregunta: la pieza es un cuestionario de autodiagnostico",
+      "funcion": "quien contesta que si a dos de tres, ya se diagnostico solo"
+    },
+    "pildora_origen": {
+      "posicion": "izquierda_baja",
+      "contenedor": "pildora oscura solida",
+      "texto": "{{CLAIM_ORIGEN}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "pildora_pago": {
+      "posicion": "bajo la pildora de origen",
+      "contenedor": "pildora clara con borde",
+      "texto": "{{GARANTIA_PAGO}}",
+      "estilo": "Black/900 uppercase oscuro",
+      "restriccion_palabras": "2 palabras"
+    },
+    "card_precio": {
+      "posicion": "derecha_baja",
+      "contenedor": "card {{COLOR_ALERTA}} con esquinas redondeadas",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "linea_2": "{{CANTIDAD}} x {{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 blanco, segundo elemento mas grande de la pieza",
+      "sub_items": "{{GARANTIA_ENVIO}} y {{GARANTIA_PAGO}} en dos lineas con icono, bajo el precio"
+    },
+    "banda_atributos": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda azul oscuro solida",
+      "cantidad_items": 4,
+      "formato_item": "icono line-art blanco mas texto Bold uppercase de 2 lineas",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla_item_4": "el ultimo incluye la bandera de origen"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_condicion",
+    "subtitular_sintoma",
+    "producto_hero",
+    "columna_sintomas",
+    "card_precio",
+    "sello_origen",
+    "banda_atributos"
+  ],
+  "reglas_duras": [
+    "Todos los items de la columna van en forma de pregunta, con signo de interrogacion",
+    "El titular nombra la condicion con el termino que la persona buscaria",
+    "Dos envases identicos y superpuestos: sugieren el pack sin numeral",
+    "Sin figura humana: el sello circular carga la credibilidad",
+    "Una sola banda oscura al pie",
+    "La card de precio es el unico bloque de color de alerta"
+  ],
+  "variables_requeridas": [
+    "CONDICION",
+    "SINTOMA_PRINCIPAL",
+    "SINTOMAS[3]",
+    "ATRIBUTOS[4]",
+    "SELLO_ORIGEN",
+    "CLAIM_ORIGEN",
+    "OFERTA_LABEL",
+    "CANTIDAD",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "GARANTIA_PAGO",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "condicion con nombre clinico que la gente busca en Google",
+    "sintomas que se reconocen pero no se declaran en voz alta",
+    "cuando se prefiere trafico calificado sobre alcance",
+    "productos sin figura de autoridad disponible"
+  ],
+  "cuando_no_usar": [
+    "condiciones sin nombre reconocible: la pregunta no engancha",
+    "cuando se necesita alcance amplio: nombrar la condicion recorta la audiencia",
+    "temas donde nombrar la condicion en la imagen expone al usuario frente a quien mire su pantalla"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular REGISTRO-FDA-US arriba a la derecha, con figura institucional estadounidense.",
+    "Pildora ORIGINAL - AMERICANO sobre el producto y CALIDAD AMERICANA con bandera de EEUU en la banda inferior.",
+    "Pildora PAGO CONTRAENTREGA.",
+    "Sintomas en forma de pregunta: FLUJO ESPESO Y ABUNDANTE, ARDOR AL ORINAR, PICAZON VAGINAL.",
+    "Atributos: FORMULA NATURAL, APOYA TU BIENESTAR, EQUILIBRA TU FLORA INTESTINAL.",
+    "Card de precio OFERTA 1 · 1 x Q145.78 con ENVIO GRATIS y PAGA AL RECIBIR."
+  ],
+  "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+  "blueprint_equivalente": null
+}

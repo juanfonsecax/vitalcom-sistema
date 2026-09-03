@@ -1,0 +1,209 @@
+{
+  "ficha_id": "F038",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mundohome/01_1080700541287501.jpg",
+    "anunciante": "Mundohome",
+    "ad_archive_id": "1080700541287501",
+    "dias_activo": 28,
+    "replicas": 1,
+    "score": 53,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "26%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA TABLA DE TRES TIERS CON PORCENTAJE DE DESCUENTO Y PRECIO UNITARIO EN CADA UNO. Tres cards al pie, cada una con la cantidad, el porcentaje de descuento, el precio total y — lo decisivo — el PRECIO POR UNIDAD calculado. La comparacion deja de ser entre totales y pasa a ser entre unitarios, donde el tier 3 siempre gana.",
+  "lectura_estrategica": "Ficha de producto convertida en anuncio. Titular con el nombre del producto en dos lineas, la cifra distintiva de la formula debajo, y una columna de seis beneficios en checks: todo lo que alguien de nivel 4 necesita para comparar contra otra marca. El precio grande en verde va en el centro con OFERTA POR HOY, y la tabla de abajo hace la aritmetica. Al mostrar el unitario, el salto del tier 1 al 3 se lee como un 25% de ahorro y no como gastar el doble.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_ondas",
+    "color": "blanco o gris muy claro",
+    "elemento": "ondas o velos azules muy suaves en los bordes",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "azul marino (titular y badges) mas verde (precio principal y checks) mas {{COLOR_ACENTO}} amarillo (etiqueta del mejor tier) mas blanco"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "azul marino"
+  },
+  "zonas": {
+    "titular_producto": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{PRODUCTO_L1}}",
+      "linea_2": "{{PRODUCTO_L2}}",
+      "estilo": "Black/900 uppercase azul marino",
+      "restriccion_palabras_total": "2-3 palabras",
+      "regla": "en nivel 4 el titular es el NOMBRE: la persona ya busca la categoria por su nombre"
+    },
+    "banda_cifra": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda azul marino solida",
+      "texto": "{{CIFRA_DISTINTIVA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "la cifra que diferencia esta formula de las otras de la misma categoria"
+    },
+    "subtitular": {
+      "posicion": "bajo la banda",
+      "texto": "{{CLAIM_DOBLE}}",
+      "estilo": "Bold uppercase azul chico, dos frases separadas por punto medio",
+      "restriccion_palabras": "4-6 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda, ocupa 45% del alto",
+      "cantidad_items": 6,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en cuadrado redondeado azul mas check verde mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[6]}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "seis items: es el maximo que sostiene una columna sin volverse muro. En nivel 4 la exhaustividad es el argumento"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "40% del frame",
+      "composicion": "un envase de frente, centrado",
+      "badge_dosis": "{{DOSIS}} en badge oscuro rotado sobre la esquina superior izquierda del envase",
+      "fuente": "IMAGEN_2"
+    },
+    "badges_garantia": {
+      "posicion": "derecha_media",
+      "cantidad_items": 2,
+      "orientacion": "columna vertical de dos circulos",
+      "formato_item": "circulo azul con icono blanco arriba mas TITULO Black/900 mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras"
+    },
+    "precio_principal": {
+      "posicion": "centro_inferior",
+      "contenedor": "ninguno, sobre el fondo",
+      "linea_1": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l1": "Black/900 verde, elemento mas grande de la pieza, decimales al 45% del entero",
+      "linea_2": "{{OFERTA_LABEL}}",
+      "estilo_l2": "Bold uppercase azul al 20% de L1"
+    },
+    "tabla_tiers": {
+      "posicion": "inferior, ancho completo",
+      "tiers": 3,
+      "orientacion": "tres cards lado a lado",
+      "formato_tier": "cantidad en Bold arriba, ETIQUETA de descuento en Regular chico, precio total en Black/900, y PRECIO POR UNIDAD en Regular chico debajo",
+      "tier_1": {
+        "cantidad": "{{CANT_1}}",
+        "etiqueta": "{{ETIQUETA_1}}",
+        "precio": "{{MONEDA}}{{PRECIO_1}}",
+        "unitario": "{{MONEDA}}{{UNITARIO_1}} C/U"
+      },
+      "tier_2": {
+        "cantidad": "{{CANT_2}}",
+        "etiqueta": "{{DESCUENTO_2}}% DSCTO.",
+        "precio": "{{MONEDA}}{{PRECIO_2}}",
+        "unitario": "{{MONEDA}}{{UNITARIO_2}} C/U"
+      },
+      "tier_3": {
+        "cantidad": "{{CANT_3}}",
+        "etiqueta": "{{DESCUENTO_3}}% DSCTO.",
+        "precio": "{{MONEDA}}{{PRECIO_3}}",
+        "unitario": "{{MONEDA}}{{UNITARIO_3}} C/U",
+        "badge": "{{ETIQUETA_MEJOR}} en pildora {{COLOR_ACENTO}} sobre el borde superior"
+      },
+      "regla_critica": "cada tier declara el PRECIO POR UNIDAD: la comparacion deja de ser entre totales y pasa a ser entre unitarios, donde el tier mayor siempre gana",
+      "regla_etiqueta": "en esta variante la etiqueta destacada va en el tier 3, no en el 2, porque el unitario ya justifica el salto"
+    },
+    "barra_calificacion": {
+      "posicion": "inferior extremo",
+      "estrellas": 5,
+      "texto": "{{CALIFICACION}} ({{NUMERO_RESENAS}} resenas)",
+      "estilo": "Bold azul chico con estrellas doradas",
+      "regla": "la calificacion no es redonda"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_producto",
+    "producto_hero",
+    "precio_principal",
+    "columna_beneficios",
+    "tabla_tiers",
+    "banda_cifra",
+    "badges_garantia",
+    "barra_calificacion"
+  ],
+  "reglas_duras": [
+    "El titular es el nombre del producto, sin promesa",
+    "Cada tier declara su precio por unidad",
+    "La etiqueta destacada va en el tier 3, porque el unitario ya justifica el salto",
+    "Seis beneficios como maximo en la columna",
+    "El precio principal es el elemento mas grande de la pieza",
+    "La calificacion no es redonda",
+    "Sin figura humana: es una ficha de producto"
+  ],
+  "variables_requeridas": [
+    "PRODUCTO_L1",
+    "PRODUCTO_L2",
+    "CIFRA_DISTINTIVA",
+    "CLAIM_DOBLE",
+    "BENEFICIOS[6]",
+    "DOSIS",
+    "GARANTIAS[2]",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "OFERTA_LABEL",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "UNITARIO_1",
+    "UNITARIO_2",
+    "UNITARIO_3",
+    "DESCUENTO_2",
+    "DESCUENTO_3",
+    "ETIQUETA_1",
+    "ETIQUETA_MEJOR",
+    "MONEDA",
+    "CALIFICACION",
+    "NUMERO_RESENAS",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "categoria que la persona ya busca por nombre y compara entre marcas",
+    "cuando el producto tiene una cifra distintiva de formula",
+    "BOFU y retargeting",
+    "cuando hay tres tiers y el precio unitario mejora de verdad al subir"
+  ],
+  "cuando_no_usar": [
+    "publico frio: sin problema ni promesa no engancha",
+    "cuando el descuento por volumen es marginal: el unitario no justificaria el salto",
+    "cuando no hay resenas reales que citar"
+  ],
+  "sellos_y_claims_observados": [
+    "Badges circulares ENVIO GRATIS A TODA GUATEMALA y PAGA AL RECIBIR (COMODO, SEGURO Y CONFIABLE).",
+    "Calificacion de cinco estrellas: 4.7 (52 resenas).",
+    "Descuentos declarados por tier: LLEVA 2 con 20% DSCTO y LLEVA 3 con 25% DSCTO, con precio por unidad en cada uno.",
+    "Etiqueta MEJOR OFERTA en el tier 3.",
+    "Badge de dosis 1000 MG POR PORCION rotado sobre el envase.",
+    "Beneficios: APOYA MUSCULOS Y HUESOS, MEJORA TU SUENO Y RELAJACION, FORTALECE TU SISTEMA INMUNE, REDUCE EL ESTRES Y LA FATIGA, APOYA EL ENFOQUE Y LA CONCENTRACION."
+  ],
+  "canonico_id": "CN04_ESCALERA_PRECIOS",
+  "blueprint_equivalente": null
+}

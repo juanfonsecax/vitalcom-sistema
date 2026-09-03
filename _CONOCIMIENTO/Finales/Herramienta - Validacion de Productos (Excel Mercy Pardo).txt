@@ -1,0 +1,130 @@
+============================================================
+HERRAMIENTA — EJERCICIO DE VALIDACIÓN DE PRODUCTOS (EXCEL, COMUNIDAD MERCY PARDO)
+============================================================
+
+> NOTA: Este archivo documenta la HERRAMIENTA en Excel "VALIDACIÓN DE PRODUCTOS - COMUNIDAD DE MERCY PARDO". Es una hoja de cálculo con un sistema de puntuación automático (checklist) que evalúa qué tan apto es un producto para venderse por e-commerce de impulso. Se reproduce su estructura, criterios y la fórmula exacta para poder replicarla.
+
+---
+
+## 🎯 OBJETIVO DE LA HERRAMIENTA
+
+**"Este ejercicio tiene el objetivo de ENTRENAR TU OJO para detectar los productos más aptos para venderse por e-commerce."** Es un ejercicio de validación: el usuario marca casillas (Sí/No) para cada criterio y la hoja calcula automáticamente una PROBABILIDAD de aptitud (de 0 a 1) con un código de color (rojo → blanco → verde).
+
+**IMPORTANTE (aclaración de la hoja):** "Esta probabilidad te dice qué tan APTO es el producto para venta online POR IMPULSO, NO si tendrás éxito con él o no." Es decir, mide la aptitud del producto para el modelo, no garantiza ventas.
+
+---
+
+## 📋 ESTRUCTURA Y CRITERIOS
+
+Los criterios se agrupan en 3 categorías según su peso. Cada producto se evalúa marcando TRUE/FALSE en cada criterio.
+
+### 🔴 CRITERIO DECISIVO (1) — sin él, el producto NO es apto (score = 0)
+1. **Resuelve un problema en específico.**
+
+### 🟠 CRITERIOS OBLIGATORIOS (4) — TODOS deben cumplirse o el score es 0
+2. **Stock ilimitado.**
+3. **Ligero y no frágil.**
+4. **Proveedor verificado o de buena calificación.**
+5. **No es de temporada.**
+
+### 🟢 CRITERIOS RECOMENDADOS (12) — suman puntaje (entre más, mejor)
+6. **Micronicho.**
+7. **Es innovador o poco común.**
+8. **Percepción de valor.**
+9. **Público masivo.**
+10. **No se encuentra en el mercado tradicional.**
+11. **Ticket bajo (menos de 30 USD / unidades).**
+12. **Potencial viral.**
+13. **No tiene un tamaño muy grande.**
+14. **No tiene variaciones complejas** (tallas/colores/modelos).
+15. **Puede venderse en combos de cantidades.**
+16. **Efecto WOW (genera curiosidad o sorpresa).**
+17. **Margen mínimo de ganancia después de TODOS mis gastos (3 USD).**
+
+### Columna de resultado: "APTO PARA VENDERSE" (0 a 1, con escala de color)
+
+---
+
+## 🧮 LA FÓRMULA EXACTA (cómo puntúa)
+
+La celda de resultado usa esta lógica (Excel):
+```
+=IF( AND(DECISIVO=TRUE, OBLIGATORIO_1=TRUE, OBLIGATORIO_2=TRUE, OBLIGATORIO_3=TRUE, OBLIGATORIO_4=TRUE),
+      IF( CONTAR.RECOMENDADAS_MARCADAS > 0,
+          CONTAR.RECOMENDADAS_MARCADAS * (0.5 / 12) + 0.5,
+          0.5 ),
+      0 )
+```
+Traducción de la regla:
+- **Si el criterio DECISIVO y los 4 OBLIGATORIOS están TODOS en TRUE:** la base es **0.5**, y cada criterio RECOMENDADO marcado suma **0.5 ÷ 12 ≈ 0.0417**. Así, con los 12 recomendados marcados el score llega a **1.0** (100%).
+- **Si falla el DECISIVO o cualquiera de los 4 OBLIGATORIOS:** el score es **0** (NO apto), sin importar cuántos recomendados tenga.
+- **Escala de color:** 0 = ROJO, 0.5 = BLANCO, 1.0 = VERDE.
+
+**Interpretación:** un producto solo "pasa" si cumple lo decisivo + los 4 obligatorios (eso ya da 0.5 = 50%); de ahí hacia arriba, cada recomendado sube la nota hacia el verde.
+
+---
+
+## 📊 EJEMPLOS YA EVALUADOS EN LA HOJA (casos de muestra)
+
+| # | Producto | Resultado | Por qué |
+|---|----------|-----------|---------|
+| 1 | Colágeno | 0.958 (verde) | Cumple decisivo + 4 obligatorios + 11 de 12 recomendados (falla "combos de cantidades") |
+| 2 | Borrador | 0.792 | Cumple obligatorios; le faltan varios recomendados |
+| 3 | Corrector de postura | 0.833 | Cumple obligatorios + buena parte de recomendados |
+| 4 | San Vale Mammoth (ID 2009535) | 0 (rojo) | FALLA un obligatorio ("No es de temporada") → no apto |
+| 5 | Perfume Esotérico Suerte Rápida Buda (ID 1985661) | 0 (rojo) | FALLA obligatorios (stock / proveedor verificado) → no apto |
+| 6 | X1 Odorless Aged Garlic Extract Doypack (ID 2131351) | 0.917 | Cumple obligatorios + 10 de 12 recomendados |
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **El criterio DECISIVO + los 4 OBLIGATORIOS son eliminatorios.** — Si uno falla, el producto NO es apto (score 0), por buenos que sean los recomendados.
+
+2. **"Resuelve un problema específico" es lo no negociable.** — El producto debe atacar un dolor concreto.
+
+3. **Los 4 obligatorios son operativos/logísticos:** stock ilimitado, ligero/no frágil, proveedor confiable, no estacional.
+
+4. **Los 12 recomendados suben la nota hacia el verde.** — Micronicho, innovador, percepción de valor, público masivo, fuera del mercado tradicional, ticket bajo, viral, tamaño no grande, sin variaciones complejas, combos, efecto WOW, margen ≥3 USD.
+
+5. **Margen mínimo de 3 USD DESPUÉS de TODOS los gastos.** — El criterio de rentabilidad real.
+
+6. **La herramienta mide APTITUD, no éxito garantizado.** — Entrena el ojo para elegir productos de impulso.
+
+7. **0.5 (50%) es el umbral de "pasa".** — Cumplir lo decisivo + obligatorios; de ahí, cada recomendado acerca al 100%.
+
+---
+
+## 🛠️ CÓMO USAR / REPLICAR LA HERRAMIENTA
+
+1. Listar los productos candidatos (nombre, ID de Dropy).
+2. Para cada producto, marcar TRUE/FALSE en los 17 criterios (1 decisivo + 4 obligatorios + 12 recomendados).
+3. La fórmula calcula automáticamente el score (0 a 1) y lo colorea (rojo→blanco→verde).
+4. Descartar de inmediato cualquier producto en ROJO (falló decisivo u obligatorio).
+5. Priorizar los más cercanos al VERDE (más recomendados cumplidos).
+
+---
+
+## ⚠️ ERRORES Y ADVERTENCIAS
+
+1. **Validar un producto que falla un obligatorio.** — Aunque tenga efecto WOW y sea viral, si es de temporada o frágil o sin stock, el score es 0.
+
+2. **Confundir aptitud con éxito.** — La hoja lo aclara: mide qué tan apto es para venta por impulso, no si venderás.
+
+3. **Ignorar el margen real (3 USD post-gastos).** — Un producto sin margen tras todos los costos no es rentable.
+
+4. **No verificar el proveedor.** — Proveedor no confiable = obligatorio fallido = no apto.
+
+---
+
+## 🔗 RECURSOS Y REFERENCIAS
+
+- **Excel "VALIDACIÓN DE PRODUCTOS - COMUNIDAD DE MERCY PARDO"** — La herramienta original (checklist con fórmula y escala de color).
+- **Dropy** — Fuente de productos e IDs (los ejemplos usan IDs de Dropy).
+- **Relación con las clases:** Clase 5 (Productos Ganadores y Sistema de Validación), Clase 16 (Drop Killer — búsqueda de productos), Clase 17 (margen/costeo). La herramienta operacionaliza los criterios de selección de producto.
+
+---
+
+## 📌 CONCLUSIÓN
+
+Es un sistema de puntuación de productos para e-commerce de impulso con 17 criterios en 3 niveles: 1 DECISIVO ("resuelve un problema específico") + 4 OBLIGATORIOS (stock ilimitado, ligero/no frágil, proveedor confiable, no estacional) que son eliminatorios, y 12 RECOMENDADOS que elevan la nota. La regla: si falla lo decisivo o cualquier obligatorio → 0 (rojo, no apto); si los cumple → 0.5 base + ~0.0417 por cada recomendado, hasta 1.0 (verde). Sirve para entrenar el ojo y filtrar rápidamente productos aptos, recordando que mide APTITUD, no éxito garantizado.

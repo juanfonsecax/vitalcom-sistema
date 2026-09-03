@@ -1,0 +1,110 @@
+TINNIDROP · PLAN DE ESCALADO (FASE 3 — escalar el ganador) · 2026-07-20
+Cuenta madre: GTR0 (act_1665221077707961, MCP ON) · Página: Sanarte · Tasa 7.62
+Break-Even Q60.5 · CPA Base Q30.8 · Precios 179/239/299 (fila Q40)
+CPA real 7d (LucidSales): Q16.5/venta · ROAS real sano · producto YA validado por ventas.
+════════════════════════════════════════════════════════════════════════════
+REGLA DE ORO: se escala lo que YA vende. NO se rehace el bot (cierra bien).
+Decidir por CPA SEMANAL, nunca por un día. Surfing máx +20%/día.
+════════════════════════════════════════════════════════════════════════════
+
+━━━ DECISIONES DEL OPERADOR (2026-07-20) — LOCK DE FASE 3 ━━━
+  · DESPLIEGUE = HORIZONTAL + SURFING. El presupuesto fuerte se mete a lo ANCHO
+    (mismo Post ID en GTR0/7/3/1) + surfing +20%/día en los que venden. NO crank
+    vertical de un solo adset (resetea aprendizaje, dispara CPA).
+  · BOT = se REGA el paraguas YA (ningún ángulo bajo el piso 35% histórico → cierra
+    bien). Bots dedicados de un solo ángulo (Pérdida auditiva, ME DIJERON) en 2-3 días.
+  · CANDADO: NO subir presupuesto ni regar a otras cuentas hasta corregir el compliance
+    del ADS (PASO 1). A escala es cuando Meta castiga. Es lo primero, sin excepción.
+  · Contexto: 800 unidades en stock + caja disponible → sí escalar fuerte, pero por ancho.
+
+━━━ VERIFICACIÓN CON CSV META (GTR0 · 11-19 jul · $76.42 · 22 compras Meta) ━━━
+| Conjunto                    | Formato | Compras | CPA real (Meta) | %conv/clic | Freq |
+|-----------------------------|---------|---------|-----------------|-----------|------|
+| Pérdida auditiva irrevers.  | VIDEO   | 8       | Q13.5           | 58%       | 1.29 |
+| ME DIJERON no tiene cura    | IMAGEN  | 6       | Q17.6           | 23%       | 1.86 |
+| Deterioro cognitivo         | VIDEO   | 3       | Q35.6           | 58%       | 1.37 |
+| Accesibilidad vs médico     | VIDEO   | 3       | Q35.8           | 64%       | 1.35 |
+| Noches sin dormir           | IMAGEN  | 2       | Q53.4 (<BE)     | 25%       | 1.51 |
+| Tensión/estrés              | IMAGEN  | 0       | — (apagado)     | 22%       | 1.30 |
+CPA global Q26.5/venta vs BE Q60.5 → SANO. Coincide con Lucid (top2 Q9-Q17).
+LECTURA CLAVE: el FORMATO no decide — el ÁNGULO decide. ME DIJERON (IMAGEN) es #2 y
+vence a 2 videos. Las imágenes se riegan con Post ID igual que los videos.
+ME DIJERON: CTR más alto (1.63%) pero %conv/clic bajo (23%) y aun así 6 ventas → clic
+muy intencionado que compra. No "arreglar" el chat; ya convierte. Freq 1.86 → renovar ya.
+
+CONJUNTOS GANADORES (los que se escalan — por venta real Lucid + Meta):
+  1) Pérdida auditiva irreversible ...... 8 ventas · Q9-13  🥇 (video "tinnidrop 6")  PRIMARIO
+  2) ME DIJERON QUE NO TIENE CURA ........ 6-7 ventas · Q10-18 🥈 (IMAGEN · ⚠ freq 1.86 renovar) PRIMARIO
+  3) Accesibilidad económica vs médico .. 3 ventas · Q22-36 (video "tinnidrop 4")  SECUNDARIO
+  4) Deterioro cognitivo / cerebro ...... 2-3 ventas · Q34-36 (video "tinnidrop 3") SECUNDARIO
+  APAGAR: TENSIÓN/ESTRÉS (0 ventas). VIGILAR: NOCHES SIN DORMIR (Q53, al filo del BE).
+  ⚠ El ganador YA NO es Accesibilidad (#4 histórico) — hoy son Pérdida auditiva + ME DIJERON.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 1 — CHEQUEO DE COMPLIANCE (solo el ADS, 5 min)
+────────────────────────────────────────────────────────────────────────────
+· Mirá SOLO el VIDEO del anuncio (lo que Meta lee). Que NO tenga en pantalla:
+  "cura/elimina", sello FDA/Min.Salud, % clínicos inventados.
+· Las INFOGRAFÍAS del bot son post-clic → Meta NO las lee → NO frenan el escalado.
+· Si el video está limpio → verde. Si tiene un claim médico en pantalla → recortarlo antes.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 2 — POST IDs YA EXTRAÍDOS (20-jul, no hace falta crear ad madre)
+────────────────────────────────────────────────────────────────────────────
+Los ganadores YA están vivos en GTR0 con su publicación de página. Página Sanarte = 498977893288095.
+Se reusan directo con "usar publicación existente" (no recrear, así hereda likes/comentarios):
+  🥇 PÉRDIDA AUDITIVA (video, 5 ventas) → Post ID  498977893288095_122222002100566196
+  🥈 ME DIJERON (imagen, 6 ventas)      → Post ID  498977893288095_122222001908566196
+  (secundarios: Accesibilidad 498977893288095_122222002070566196 · Deterioro 498977893288095_122222001974566196)
+· ⚠ NO editar la publicación después: si cambiás algo → post nuevo, ID nuevo, prueba social a 0.
+· Requisito para reusar entre cuentas: GTR7/3/1 deben tener la página Sanarte (498977893288095)
+  compartida en el MISMO Business Manager + WhatsApp conectado. Verificar en pre-flight.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 3 — OPTIMIZAR EL FLUJO PRIMERO (convertir más sin gastar más, Clase 22)
+────────────────────────────────────────────────────────────────────────────
+· Apuntar el bot al ángulo Pérdida auditiva; apagar lo que no vende (TENSIÓN ya).
+· Cada punto de cierre que subís multiplica ventas sin subir presupuesto. Esto va ANTES de gastar más.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 4 — SURFING +20%/DÍA en GTR0 (la cuenta madre)
+────────────────────────────────────────────────────────────────────────────
+· Cada mañana, a los conjuntos que VENDIERON, subir +20% del presupuesto. Nunca más de 20%.
+· Solo a lo que vende (Pérdida auditiva, ME DIJERON, Accesibilidad, Deterioro).
+· Yo leo GTR0 en vivo cada noche → decidimos el +20% con la data del día.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 5 — VESTIR EL PERFIL IG (confianza, en paralelo)
+────────────────────────────────────────────────────────────────────────────
+· Foto de perfil + bio clara + 6-9 posts orgánicos (producto, 2-3 testimonios, modo de uso,
+  lifestyle/modelo) + historias destacadas. Liviano, es sello de confianza, no canal de crecimiento.
+· Estos orgánicos NO son el anuncio (el ad corre con el Post ID del Paso 2).
+
+────────────────────────────────────────────────────────────────────────────
+PASO 6 — REGAR HORIZONTAL (multicuenta, MISMA página, con el mismo Post ID)
+────────────────────────────────────────────────────────────────────────────
+· Replicar la campaña ganadora 1 VEZ en cada cuenta: GTR7, GTR3, GTR1 (todas MCP ON).
+· MISMA página Sanarte en todas · creativo = "usar publicación existente" con EL MISMO Post ID
+  (hereda likes/comentarios) · presupuesto base $1.59, SIN subir (esto es validar, no escalar).
+· "Cuando vende en las 4 cuentas = súper winner" → ahí sí se riega hasta 9 cuentas.
+· NUNCA repetir la campaña 2 veces en la misma cuenta (se pelea la subasta, sube el CPM).
+
+────────────────────────────────────────────────────────────────────────────
+PASO 7 — MÁS VOLUMEN Y MARGEN (solo con CPA real sostenido)
+────────────────────────────────────────────────────────────────────────────
+· Duplicar el CONJUNTO ganador con caja nueva, escalonado (duplicar → madurar → duplicar).
+· Post ID / publicación en página para seguir acumulando prueba social.
+· Subir precio gradual (última palanca): con CPA Q9-16 vs BE Q60 hay colchón enorme; cada
+  subida va directo al margen y saca competencia.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 8 — ANTI-FATIGA PERMANENTE
+────────────────────────────────────────────────────────────────────────────
+· Renovar creativo del MISMO ángulo cuando frecuencia ≥1.9 o CTR/hook cae >20% en 48h.
+· PRIORIDAD: ME DIJERON ya va en freq 1.89 → hacerle un video fresco pronto (mismo ángulo).
+· "Se queman los ángulos, no los productos": nunca abandonar Tinnidrop; refrescar el creativo.
+
+════════════════════════════════════════════════════════════════════════════
+ORDEN DE EJECUCIÓN: 1 compliance → 2 ad madre + Post ID → 3 optimizar flujo →
+4 surfing +20% en GTR0 → 5 perfil IG → 6 regar a GTR7/3/1 → 7 volumen/precio → 8 anti-fatiga.
+════════════════════════════════════════════════════════════════════════════

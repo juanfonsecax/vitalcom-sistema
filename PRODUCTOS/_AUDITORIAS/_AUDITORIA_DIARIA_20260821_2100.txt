@@ -1,0 +1,147 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA — 2026-08-21 · 8 PM · SISTEMA VITALCOM
+CORRIDA DE DELTA — sin data nueva, sin MCP · reparación del bug `ad_id`
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 7 de 7 días con data · SIN HUECOS.
+Última BASE: 2026-08-20. Serie continua desde 2026-07-17.
+
+⚠️ ESTE ARCHIVO NO REEMPLAZA A `_AUDITORIA_DIARIA_20260821.txt` (corrida de la
+mañana, que cerró el hueco 17→20 y contiene el análisis completo: ranking por
+ángulo, por cuenta y por producto, el plan de ETAPA-8 y las 3 correcciones de
+diagnóstico). Esta corrida es el DELTA de la noche. Lo que cambió desde la
+mañana es una sola cosa, y es de integridad de data, no de rendimiento.
+
+───────────────────────────────────────────────────────────────────────────
+0) POR QUÉ NO SE PIDIÓ DATA
+───────────────────────────────────────────────────────────────────────────
+El único día no cargado es HOY, 21-ago, y todavía no cerró. Pedirlo esta noche
+lo metería como CONTROL (verifica, no suma) y obligaría a re-pedirlo mañana
+como BASE — dos exports para un día. Se pide mañana, una sola vez.
+
+No hay hueco. `_FACT_VENTAS.csv` sin filas nuevas esta noche es el estado
+CORRECTO, no una falla del pipeline. Es la primera noche en cinco que se puede
+decir eso.
+
+───────────────────────────────────────────────────────────────────────────
+1) 🔴 LADO-ADS — 4º DÍA SIN CONECTOR (PASO 4 NO PUDO CORRER)
+───────────────────────────────────────────────────────────────────────────
+Cero herramientas `ads_*` expuestas en la sesión de la tarea programada. Lo
+único montado: Google Drive, Chrome, computer-use. No se pudo:
+
+  · listar campañas ACTIVE con gasto > 0 en ninguna de las 6 cuentas;
+  · reintentar GTR0 (`is_queryable=false` desde el 15-ago) ni GTR13 / CP1;
+  · leer frecuencia diaria → sin lectura de fatiga (la de la mañana es del
+    export de Ads Manager, agregado de 4 días: sirve para nivel, no para
+    tendencia);
+  · **verificar si T01 arrancó** — que es la pregunta abierta #1 del sistema;
+  · confirmar si se ejecutaron las 3 acciones «hoy» del dashboard.
+
+`_FACT_ENTREGA.csv` sigue congelado en el agregado `AdsManager-export-4d`
+(17→20) que el operador subió a mano.
+
+DIAGNÓSTICO SIN CAMBIOS respecto del 20-ago, y hoy con una prueba más fuerte:
+el export oficial de Ads Manager entró sin problema el mismo día. Las cuentas
+de Meta responden. **Lo que no funciona es la config del conector en Cowork.**
+→ ACCIÓN: Cowork → Conectores → reconectar Meta Ads, y verificar que la tarea
+  de las 8 PM lo herede. No basta con que ande en un chat manual.
+
+───────────────────────────────────────────────────────────────────────────
+2) 🔧 BUG `ad_id` — REPARADO LO REPARABLE, DOCUMENTADO LO QUE NO
+───────────────────────────────────────────────────────────────────────────
+La auditoría de la mañana encontró el bug y lo dejó pendiente a propósito, para
+no mezclar una migración de esquema con una carga de data. Esta noche NO hubo
+carga de data — es la ventana limpia. Se ejecutó.
+
+LO QUE SE HIZO (medido, no estimado):
+  · 74 filas recuperadas con el adId EXACTO verificado. Método: match por
+    `repr(float(id))` contra los 48 ids bien formados de la serie 17→20.
+    Cero colisiones entre los ids buenos → cada match es unívoco.
+  · 1,649 filas quedan en notación científica. NO son recuperables.
+  · 32 filas tienen `ad_id` vacío (sin cambio).
+  · Verificación de escritura: 1,939 filas antes y después · 74 cambios, TODOS
+    en la columna `ad_id` · 0 cambios en cualquier otra columna.
+  · Backup: `_ARCHIVO/backups_csv/_FACT_VENTAS_20260821_pre-adid.csv.bak`.
+
+⚠️ EL DAÑO ES PEOR DE LO QUE DECÍA EL DIAGNÓSTICO DE LA MAÑANA.
+No se pierde «el último dígito». A la magnitud 1.2e17 el espaciado
+representable de un float64 es **16**, así que lo guardado es el múltiplo de 16
+más cercano: el id verdadero está en una ventana de ±8, no a un dígito de
+distancia. Y la pérdida ya ocurrió **en el xlsx de LucidSales** — Excel guarda
+la celda adId como número, no como texto. Re-leer el archivo de origen no la
+revierte.
+
+🔴 DECISIÓN DELIBERADA — NO SE CONVIRTIERON LAS 1,649 A ENTERO PLANO.
+Escribir `120247375927400780` haría que un valor aproximado se vea exacto, y un
+dato equivocado que parece correcto es peor que uno visiblemente roto. Dejarlas
+en notación científica las mantiene marcadas como no confiables a simple vista.
+Se repara solo lo verificable. La columna queda mixta y eso es intencional:
+cada fila arreglada es demostrablemente correcta.
+
+🔧 ARREGLADO EL ORIGEN, NO SOLO EL SÍNTOMA:
+`Ads/_TOOLS/enriquecer_adid.py` ahora formatea el adId con una función nueva
+`s_id()` en vez de `s()`. Lee primero como texto/entero y solo cae a formato
+numérico si openpyxl devolvió un float, dejando ese caso documentado como
+aproximado en el docstring. Cierra la mitad (a) del bug — el falso negativo del
+anti-duplicado por adId. La mitad (b), la precisión, es irreversible por diseño
+de Excel y así queda escrito en el código, no en la memoria de nadie.
+
+✅ LA INGESTA HISTÓRICA NO ESTÁ COMPROMETIDA. La llave de carga siempre fue la
+tupla (ventana_ini, producto_key, conjunto, anuncio, fuente, rol_ventana), que
+nunca dependió del adId. Y `gen_dashboard.py` no lee la columna: se verificó.
+Ningún número del P&L, del ranking ni del dashboard se movió por esto.
+
+Es el mismo tipo de bug que la regla 22 de CLAUDE.md (CSV escrito sin escritor
+real), ahora en la dirección contraria: **CSV leído sin lector tipado.**
+
+───────────────────────────────────────────────────────────────────────────
+3) DECISIONES — NINGUNA NUEVA, Y ES A PROPÓSITO
+───────────────────────────────────────────────────────────────────────────
+Sin día nuevo y sin MCP, cualquier veredicto de rendimiento sería el de la
+mañana repetido con otra fecha encima. Eso no es análisis, es ruido con
+timestamp. Siguen abiertos, con la misma fecha de vencimiento:
+
+  1. **T01** — resolver: lanzarlo con los 4 brazos limpios (el brazo A se
+     limpia al producir: «elimina hongos» + sello REGISTRO-FDA violan
+     compliance de ADS) **o** cambiarle la fecha en `_TESTEOS.csv` y reactivar
+     ME_DIJERON_NO_CURA, que a CPA Q51.9 contra BE Q94.6 no tenía por qué
+     estar apagado. Una de las dos, no ambas.
+  2. **CLEARSTEM / MEDICOS_FALLARON** — CONGELADO. Releer el **23-ago** con el
+     19 y el 20 ya madurados. Si sigue en cero: renovar creativo (regla F),
+     no matar el ángulo. No subirle ni bajarle presupuesto mientras tanto.
+  3. **Banda de edad 25+ de TINNIDROP** — REBALANCEAR, nunca apagar. Cierra
+     3.6% contra 15.1% de la banda 45-60, al mismo costo por mensaje.
+     Q1,188/sem en juego. ⚠️ Verificar en Ads Manager que la config real sea
+     25+ antes de mover: se derivó del sufijo del NOMBRE en la migración del
+     12-ago, no de leer la segmentación.
+  4. **VARICOSE** — VIVO en `_PORTAFOLIO.txt` y sin gastar hace 8 días. O se
+     reactiva (CPA histórico Q73.9 vs BE Q93.9) o se marca APAGADO para que
+     deje de contaminar la lista de productos vivos.
+
+`_GANANCIAS.txt` y los `2_DATA_PRODUCTO.txt` NO se tocaron. Sin día nuevo,
+agregar una fila al historial es inventar movimiento — misma disciplina que la
+noche del 20-ago.
+
+───────────────────────────────────────────────────────────────────────────
+4) DASHBOARD — REGENERADO (último paso, siempre)
+───────────────────────────────────────────────────────────────────────────
+  `python Ads/_TOOLS/gen_dashboard.py` ✅
+  ventana 2026-07-17 → 2026-08-20 · 334 ventas · ganancia Q15,604 ·
+  sangrado Q826 · 4 productos · 16 ángulos · 60 aprendizajes ·
+  **0 filas sin dimensión** ✅
+  ⚠️ 14 filas SIN ATRIBUCIÓN (14 ventas) — es tracking, no dimensión (APR-035).
+  **7 acciones para hoy · Q2,711/sem en juego** — idénticas a las de la mañana:
+  no entró data que las pudiera mover.
+
+───────────────────────────────────────────────────────────────────────────
+5) LO QUE HAY QUE MANDAR
+───────────────────────────────────────────────────────────────────────────
+  · **Mañana: el export de LucidSales de UN SOLO DÍA para 2026-08-21.**
+    LucidSales → Métricas de Facebook Ads → rango SOLO 21-ago → exportar.
+    Un archivo por día: el agregado no se descompone y mata la resolución
+    diaria, que es justo lo que destrabó el análisis de esta semana.
+  · **Reconectar Meta Ads en Cowork** (4º día caído).
+  · Domingo 23-ago: además el export de 7 días como CONTROL, el extracto de
+    Facturación de Meta por cuenta (las 6) y el export de Ads Manager nivel
+    conjunto de GTR13 y CP1 (las dos sin MCP) → conciliación del PASO 4B.
+═══════════════════════════════════════════════════════════════════════════

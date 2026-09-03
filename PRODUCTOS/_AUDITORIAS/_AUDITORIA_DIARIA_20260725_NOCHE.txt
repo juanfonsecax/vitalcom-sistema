@@ -1,0 +1,117 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA — 2026-07-25 (~21:00)  ·  ETAPA-7 + ETAPA-8  ·  SOLO LECTURA
+═══════════════════════════════════════════════════════════════════════════
+INTEGRIDAD DE VENTANA: 3 de 7 días con data de ventas · huecos: 19, 21, 22, 25-jul.
+  → VENTANA PARCIAL. NO se declara ganador oficial ni se mata por ventas.
+  → CORRIÓ SOLA (tarea programada, operador ausente): NO entró LucidSales de hoy.
+    Lo de abajo es 100% LADO-ADS (MCP, GTR7/GTR0/GTR1, ventana last_3d 22-24 jul).
+    Ranking = PROVISIONAL por CONVERSACIÓN. Las VENTAS reales viven en LucidSales
+    (omni_purchase de Meta = "Not available" en COD) y no se pegaron esta noche.
+
+  ⚠️ TINNIDROP: recordar que %conversación NO predice venta (tinnidrop-1 tuvo 78%
+     conv y 0 ventas). No matar ningún ángulo de TINNIDROP por conversación floja.
+
+CUENTAS LEÍDAS: GTR7 ✅ · GTR0 ✅ · GTR1 ✅ · GTR3 (solo campañas pausadas, TINNIDROP OFF)
+              · CP1 (COP) MCP OFF ❌ no leída · GTR13 MCP OFF ❌ (CLEARSTEM solo Lucid).
+SALUD GLOBAL: frecuencia 1.0–1.27 en TODO el portafolio → sin fatiga creativa.
+              CTR 2.9–9% sano · CPM $0.4–2.7 baratísimo · ningún ángulo saturado por CPM.
+
+───────────────────────────────────────────────────────────────────────────
+1) TINNIDROP — ESCALADO multicuenta (GTR0 madre + GTR1 + GTR7 réplicas)  [last_3d]
+───────────────────────────────────────────────────────────────────────────
+conv = gasto ÷ costo-por-conversación (Meta) · %conv/clic = conv ÷ clics-ENLACE
+
+GTR0 (madre · campaña "🟩 TINIDROP GTR0 - 1.59 - TEST" 120256219801430595, fresca):
+  Pérdida auditiva ......... $4.35 · 18 conv · lc42 · 43% · CTR 3.97% · CPM $0.77 · 🟢
+  Deterioro/cerebro colapso  $3.70 · 13 conv · lc24 · 54% · CTR 5.05% · CPM $0.96 · 🟢
+  Accesibilidad vs médico .. $4.33 · 12 conv · lc16 · 75% · CTR 3.25% · 🟢 (base lc chica)
+  ME DIJERON no tiene cura .. $4.54 ·  9 conv · lc38 · 24% · CTR 4.23% · 🟡
+  NOCHES SIN DORMIR (nuevo)   $4.37 ·  5 conv · lc35 · 14% · CTR 3.42% · 🟡 conv floja*
+  TENSIÓN/ESTRÉS (nuevo) .... $0 sin entrega — ⚠️ ángulo MECANISMO = DESCARTADO por
+     doctrina TINNIDROP (educacional/mecanismo: 3 testeos, 3 fracasos). No invertir.
+  * NOCHES SIN DORMIR es ángulo de PÉRDIDA (miedo a perder el sueño) → según doctrina
+    SÍ puede vender aunque la conversación sea floja. VIGILAR con ventas, no matar.
+
+GTR1 (réplica · "3🟦 TINIDROP GTR0 - 1.59 - 4 WINERS" 120250923862620706):
+  Deterioro/cerebro ........ $4.69 · 13 conv · lc30 · 43% · 🟢
+  Pérdida auditiva ......... $4.20 · 13 conv · lc28 · 46% · 🟢
+  Accesibilidad vs médico .. $4.52 · 10 conv · lc22 · 45% · 🟢
+  ME DIJERON no tiene cura .. $4.84 ·  3 conv · lc25 · 12% · 🔴 conv muy floja
+
+GTR7 (réplica · "4🟦 TINIDROP GTR0 - 1.59 - 4 WINERS" 120247634423980784):
+  Pérdida auditiva ......... $4.53 · 15 conv · lc29 · 52% · 🟢
+  Deterioro/cerebro ........ $4.59 ·  6 conv · lc26 · 23% · 🟡
+  Accesibilidad vs médico .. $4.90 ·  4 conv · lc15 · 27% · 🟡
+  ME DIJERON no tiene cura .. $4.72 ·  6 conv · lc30 · 20% · 🟡
+
+  NUEVO 25-jul: campaña "TINNIDROP_RENOVACION_20260725 +25 años" (GTR0, 120256605036370595)
+  ACTIVE, $0 aún → renovación de creativo recién lanzada (probable 4 AM). Buena señal
+  (doctrina: renovar creativo del MISMO ángulo, no apagar). Vigilar arranque mañana.
+
+  ►► SATURACIÓN POR CUENTA (PASO 4C · costo-por-conversación del MISMO ángulo):
+     Pérdida auditiva : GTR0 $0.24 · GTR1 $0.32 · GTR7 $0.30 → PAREJO, sano en las 3.
+     Deterioro       : GTR0 $0.28 · GTR1 $0.36 · GTR7 $0.77 → GTR7 ~2.5× peor → GTR7 SATURADO.
+     Accesibilidad   : GTR0 $0.36 · GTR1 $0.45 · GTR7 $1.23 → GTR7 ~3× peor → GTR7 SATURADO.
+     ME DIJERON      : GTR0 $0.50 · GTR1 $1.61 · GTR7 $0.79 → GTR1 el peor de este ángulo.
+     LECTURA: la cuenta MADRE GTR0 (con campaña TEST fresca) volvió a ser la más eficiente;
+     GTR7 es la réplica más débil (2 de 4 ángulos saturados). El volumen de Deterioro y
+     Accesibilidad va a GTR0/GTR1, NO a GTR7. Pérdida auditiva sí aguanta las 3 cuentas.
+
+───────────────────────────────────────────────────────────────────────────
+2) NUSAVA B12 — FASE 2 ESCALADO ARDOR (GTR7, "NUSAVAB12_ESCALA_ARDOR_20260715")  [last_3d]
+───────────────────────────────────────────────────────────────────────────
+  MA7-ARDORVIDEO ........... $4.46 · 23 conv · lc34 · 68% · CTR 4.43% · CPM $1.42 · 🟢 mejor
+  MA4-DEPIE ................ $5.31 · 13 conv · lc33 · 39% · CTR 5.19% · 🟡
+  MA5-AZUCAR ............... $4.03 ·  8 conv · lc29 · 28% · CTR 3.54% · 🔴 conv floja
+  MA2-ARDORNOCHE ........... $4.03 ·  7 conv · lc38 · 18% · CTR 3.51% · 🔴 conv floja
+  MA6-OFERTA ............... $4.57 ·  3 conv · lc31 · 10% · CTR 3.19% · 🔴 conv muy floja
+  MA1-COMPLEJOB / MA3-HORMIGUEO / MA6-copias → $0 sin entrega.
+  Además corre "NUSAVAB12_TEST_20260622 - Copia" (120246893776440784) con $4.50/3d.
+  LECTURA: MA7-ARDORVIDEO es el caballo por conversación (68%). MA6/MA2/MA5 flojos.
+  NUSAVA es el producto más débil del portafolio (CPA 7d Q53.3, cerca del BE Q68.3).
+  Sin ventas de hoy NO se mata nada; MA6-OFERTA (10%) queda MARCADO para podar si el
+  Presupuesto de Decisión se cumple sin ventas (Lucid manda).
+
+───────────────────────────────────────────────────────────────────────────
+3) VARICOSE — ESCALADO VERGÜENZA + FASE 1 (GTR7)  [last_7d + last_3d]
+───────────────────────────────────────────────────────────────────────────
+  ⚠️ ALERTA DE ENTREGA: ambas campañas figuran ACTIVE pero gastaron $0 en los últimos
+     3 días. En last_7d sí gastaron (data de la primera mitad de la semana). VARICOSE
+     DEJÓ DE ENTREGAR hace ~3 días → revisar si se agotó presupuesto/programación o si
+     el operador pausó los anuncios por dentro. Producto rentable, NO conviene apagado.
+
+  Conversación (last_7d, sana en los ganadores confirmados):
+  FASE 1 test:  MIEDO-CIRUGIA $0.27/conv (lc24, ~55%) 🟢 · VERGUENZA-PIERNAS $0.28 (lc35, ~43%) 🟢
+                MANCHAS-OSCURAS $0.25 (lc27, ~52%) 🟢
+  ESCALA VERG:  MA2_VESTIDO $0.50 (47%) 🟢 · MA5_RESIGNACION $0.44 (35%) 🟡 · MA6_OFERTA2X1 $0.65 (25%) 🟡
+                MA4_MANCHAS $3.83/conv (5%) 🔴 pésimo → PODAR.
+  Ángulos en $0 (ya apagados): ARAÑITAS, PIERNAS-CANSADAS, CALAMBRES, MA1, MA3.
+
+───────────────────────────────────────────────────────────────────────────
+4) CLEARSTEM (GTR13, MCP OFF) — no auditable en vivo. Solo LucidSales (última 14-jul:
+   6 ventas, mejor Anti-Falsificación Q18.5). Sigue en TESTEO. Pedir Lucid para avanzar.
+   Repelente / Serum / VitaminaD3K2 / VITAMINA: LISTO/INCOMPLETO, no VIVO, no se auditan.
+
+═══════════════════════════════════════════════════════════════════════════
+PLAN ETAPA-8 — ACCIONES (el operador ejecuta a mano; esto es recomendación)
+═══════════════════════════════════════════════════════════════════════════
+PRIORIDAD 1 — PEGAR LUCIDSALES. La ventana va PARCIAL (4 huecos en 7 días). Sin ventas
+  reales no se declara ganador ni se escala fuerte. LucidSales → Métricas de Facebook
+  Ads → rango SOLO AYER (24-jul) → exportar → pegar en el chat.
+
+PRIORIDAD 2 — VARICOSE dejó de entregar: revisar presupuesto/estado de anuncios HOY.
+  Es rentable (CPA Q38 vs BE Q79); tenerlo apagado es dejar plata en la mesa.
+
+PRIORIDAD 3 — TINNIDROP volumen a las cuentas frescas: Deterioro y Accesibilidad rinden
+  ~2.5–3× mejor en GTR0/GTR1 que en GTR7. Mover volumen de esos 2 ángulos a GTR0/GTR1;
+  en GTR7 dejar solo Pérdida auditiva (aguanta). NO subir presupuesto sin CPA real.
+
+PRIORIDAD 4 — TINNIDROP TENSIÓN/ESTRÉS (ángulo mecanismo): NO reactivar. Doctrina: los
+  educacionales/mecanismo llevan 3 fracasos. Los que venden son de PÉRDIDA (anti-médico,
+  miedo a perder memoria/audición/sueño). NOCHES SIN DORMIR sí es de pérdida → dejar correr.
+
+PRIORIDAD 5 — NUSAVA: MA7-ARDORVIDEO es el caballo (68% conv). Si Lucid confirma que
+  MA6/MA2/MA5 siguen 0 ventas tras el Presupuesto de Decisión, podarlos y concentrar en MA7.
+
+QUÉ HACER MAÑANA: (1) pegar LucidSales de ayer · (2) reactivar/entregar VARICOSE.
+═══════════════════════════════════════════════════════════════════════════

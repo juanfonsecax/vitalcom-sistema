@@ -1,0 +1,135 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA DE ESCALADO — SISTEMA VITALCOM — 2026-07-15 (miércoles, ~7 PM)
+Motor ETAPA-7 (lectura) + ETAPA-8 (plan). SOLO LECTURA + RECOMENDACIÓN.
+═══════════════════════════════════════════════════════════════════════════
+LADO-ADS leído EN VIVO por MCP: GTR7 (NUSAVA, VARICOSE) + GTR0 (TINNIDROP). ✅
+GTR13 (CLEARSTEM) MCP OFF ❌ → solo LucidSales del operador.
+⚠️ HOY ES MIÉRCOLES → el operador NO pegó LucidSales (cadencia = LUN y JUE).
+   Todo CPA de hoy es PROVISIONAL: omni_purchase de Meta (marcado aprox.) + ranking
+   por conversación. NINGÚN ganador NUEVO oficial ni escalado fuerte hoy sin Lucid.
+   El último Lucid firme es el snapshot 07→14 jul del portafolio.
+───────────────────────────────────────────────────────────────────────────
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 1) NUSAVA B12 (GTR7) — 3 campañas ACTIVE a la vez                        │
+└─────────────────────────────────────────────────────────────────────────┘
+Base Q32.3 · Break-Even Q68.3 → PD = $8.96/conjunto · tasa 7.62.
+Lucid firme (7d): CPA GLOBAL EN ROJO Q91.9/venta > BE. Único sano = ARDOR Q33.7.
+Escalado MEMORIA no rinde (2v). → El caballo real es ARDOR, no MEMORIA.
+
+A) TESTEO paraguas "NUSAVAB12_TEST_20260622 - Copia" ($122.23, ~18 días — MADURO)
+ Conjunto      | gasto  | %conv/clic-enlace | $/conv | CTR  | freq | %PD  | estado
+ ANIMO         | $12.62 | 68/100 = 68%  ★  | $0.19 | 7.59%| 1.30 | 141% | 🔴 trampa (68% conv, 0 ventas Lucid histórico)
+ ARDOR         | $29.25 | 131/234 = 56% ★  | $0.22 | 5.06%| 1.51 | 326% | 🟢 GANADOR real (Lucid Q33.7)
+ CIATICA       | $13.05 | 27/53 = 51%      | $0.48 | 4.24%| 1.25 | 146% | 🔴 0 ventas (snapshot)
+ MEMORIA       | $26.92 | 64/127 = 50%     | $0.42 | 5.95%| 1.40 | 300% | 🟡 conv ok, ventas flojas
+ AZUCAR        | $12.55 | 23/68 = 34%      | $0.55 | 2.96%| 1.39 | 140% | 🔴 MATAR-CONV (<35%)
+ ABSORCION     | $27.84 | 68/213 = 32%     | $0.41 | 5.27%| 1.44 | 311% | 🔴 conv floja + 0 ventas
+ → El paraguas de testeo YA cumplió su función. ARDOR salió ganador y hoy arrancó su
+   FASE 2 dedicada. Recomendación: PAUSAR el paraguas de testeo (deja de duplicar gasto
+   con la campaña ARDOR FASE 2). ANIMO es la trampa clásica: máxima conversación, cero venta.
+
+B) ESCALADO "NUSAVAB12_ESCALA_MEMORIA_20260708" ($59.61, día 7)
+ Conjunto              | gasto  | %conv/clic | $/conv | freq | estado
+ C-5 Dr. autoridad     | $10.79 | 26/86=30%  | $0.42 | 1.36 | 🟡 conv floja
+ C-4 niebla mental     | $10.48 | 25/80=31%  | $0.42 | 1.40 | 🟡 conv floja
+ C-3 cuidadora         | $11.32 | 25/82=31%  | $0.45 | 1.31 | 🟡 conv floja
+ C-2 olvido cuarto     | $ 9.22 | 19/62=31%  | $0.49 | 1.26 | 🟡 conv floja
+ C-6 oferta2X1 (precio)| $ 8.95 | 3/33=9%    | $2.98 | 1.14 | 🔴 MATAR-CONV YA
+ C-1 pastilla (precio) | $ 8.85 | 5/43=12%   | $1.77 | 1.34 | 🔴 MATAR-CONV YA
+ → MEMORIA escalado NO rinde: conversación toda en ~30% (bajo) + Lucid confirma solo 2v/semana.
+   Los 2 conjuntos "LLEVA PRECIO" (C-1, C-6) mueren ya por conversación (<12%).
+   VEREDICTO: pausar la campaña ESCALA_MEMORIA completa y volcar ese presupuesto a ARDOR.
+
+C) ESCALADO "NUSAVAB12_ESCALA_ARDOR_20260715" ($10.20, DÍA 1 — arrancó hoy)
+ 7 conjuntos MA1–MA7, $1.0–1.7 c/u. VENTANA 0-1 = OBSERVAR, no juzgar (nadie llegó al PD $8.96).
+ Señales tempranas: MA5-AZUCAR 6 conv/18lc (33%), MA7-ARDORVIDEO 3/6, MA3-HORMIGUEO cpm barato $1.10.
+ → Dejar correr sin tocar hasta que cada conjunto gaste su PD. Es la apuesta correcta (ARDOR = ganador real).
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 2) VARICOSE (GTR7) — el más SANO del portafolio                          │
+└─────────────────────────────────────────────────────────────────────────┘
+Base Q30.8 · BE v1 Q64.5 (PD $8.46) · BE v2 2x1 ≈Q159 (PD $20.87) · tasa 7.62.
+Lucid firme (7d) SANO: MA2_VESTIDO Q11.6 (4v)★ · MA6_2X1 Q16.7 (3v)★ · testeo MIEDO-CIRUGIA Q25.1 (4v)★.
+
+A) TESTEO "VARICOSE_TRAFICO_20260704" ($67.08, día 11 — MADURO)
+ Conjunto            | gasto  | %conv/clic | omni | CPA aprox | estado
+ MIEDO-CIRUGIA       | $18.31 | 109/189=58%| 6    | Q23.3 ★  | 🟢 CO-GANADOR (FASE 2 hermana pendiente)
+ VERGUENZA-PIERNAS   | $16.83 | 78/146=53% | 3    | Q42.7    | 🟢 GANADOR (ya en escalado)
+ MANCHAS-OSCURAS     | $18.37 | 63/151=42% | 2    | Q70.0    | 🟡 marginal (>BE, testeo maduro)
+ ARANITAS-VENOSAS    | $ 6.71 | 38/59=64%  | –    | s/venta  | 🔴 DESCARTADO (0 ventas histórico)
+ PIERNAS-CANSADAS    | $ 6.86 | 23/31=74%  | –    | s/venta  | 🔴 podar (0 ventas)
+ CALAMBRES-NOCTURNOS | $ 0.00 | sin entrega| –    | –        | ⚪ nunca entregó — revisar/eliminar
+ → Testeo maduro y resuelto. Ganador VERGÜENZA ya escalando; MIEDO-CIRUGÍA (Q23) debe arrancar
+   su FASE 2 hermana escalonada. Podar ARAÑITAS + PIERNAS-CANSADAS + CALAMBRES. Wind-down del testeo.
+
+B) ESCALADO "VARICOSE_ESCALA_VERGUENZA_20260710" ($53.37, día 5) — 2x1 Q249 / 4x Q389
+ Conjunto              | gasto | %conv/clic | omni | CPA aprox | freq | estado
+ VERGUENZA_MA2_VESTIDO | $9.61 | 28/56=50%  | 4    | Q18.3 ★  | 1.23 | 🟢 GANADOR (Lucid Q11.6)
+ MA6_OFERTA2X1         | $9.92 | 12/76=16%  | 3    | Q25.2 ★  | 1.82 | 🟢 vende (⚠️ freq 1.82 = fatiga cerca)
+ MA4_MANCHAS          | $8.77 | 14/61=23%  | 1    | Q66.8    | 1.42 | 🟡 marginal (bien sobre 2x1)
+ MA5_RESIGNACION      | $9.46 | 17/96=18%  | 1    | Q72.0    | 1.59 | 🟡 marginal
+ MA3_VERANO           | $7.90 | 9/62=15%   | –    | s/venta  | 1.46 | 🔴 conv floja, s/venta
+ MA1_COMPARACION      | $7.71 | 6/60=10%   | –    | s/venta  | 1.53 | 🔴 MATAR-CONV (<12%)
+ → VERGÜENZA escalado FUNCIONA: VESTIDO + 2X1 venden con CPA muy bajo (Lucid confirmó). Es el
+   producto más escalable. MA1 muere por conversación; MA3 candidato. Vigilar fatiga MA6 (freq 1.82).
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 3) TINNIDROP (GTR0) — testeo sano, día 4                                 │
+└─────────────────────────────────────────────────────────────────────────┘
+Base Q30.8 · BE Q60.5 → PD $7.94 · tasa 7.62. Campaña "🟩 TINIDROP GTR0 - 1.59 - TEST" ($46.20).
+Lucid firme (7d) SANO: Deterioro cognitivo Q16.5 (2v) + Pérdida auditiva Q17.3 (2v).
+ Conjunto                     | gasto | %conv/clic | omni | CPA aprox | thruplay/imp | estado
+ PÉRDIDA AUDITIVA IRREVERS.   | $7.86 | 47/80=59%★ | 5    | Q12.0 ★★ | 1221/7961=15%| 🟢 MEJOR (conv+venta+cpm $0.99)
+ DETERIORO COGNITIVO          | $7.63 | 44/74=60%★ | 3    | Q19.4 ★  | 1175/5842=20%| 🟢 GANADOR (mejor retención vídeo)
+ ME DIJERON QUE NO TIENE CURA | $8.23 | 20/90=22%  | 3    | Q20.9 ★  | n/d          | 🟢 vende (ángulo nuevo, buen CPA)
+ NOCHES SIN DORMIR            | $8.04 | 23/88=26%  | 1    | Q61.3    | n/d          | 🟡 marginal (≈BE)
+ ACCESIBILIDAD vs MÉDICO      | $8.23 | 27/42=64%★ | –    | s/venta  | 566/5400=10%| 🟡 conv alta, 0 ventas semana (histórico #4 ganador — vigilar)
+ TENSIÓN / ESTRÉS             | $6.21 | 12/54=22%  | –    | s/venta  | n/d          | 🔴 conv floja (PD no cumplido aún)
+ → TINNIDROP sano: 3 ganadores claros (Pérdida auditiva, Deterioro cognitivo, ME DIJERON) con
+   conv+venta. Deterioro cognitivo = mejor retención de vídeo (p75 481, p100 267 sobre 5.8k imp) →
+   el creativo más fuerte para replicar. Accesibilidad (histórico ganador) trae mucha conversación
+   pero 0 ventas esta semana: no matar (podría ser maduración COD), vigilar en el Lucid del jueves.
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 4) CLEARSTEM (GTR13, MCP OFF) — solo LucidSales                          │
+└─────────────────────────────────────────────────────────────────────────┘
+No hay lectura lado-ads en vivo (Meta no habilitó MCP en GTR13; reintentado hoy, sigue OFF).
+Último Lucid firme (7d 07→14): SANO Q36.2/venta · Q54.3/entregado. Mejor = Anti-Falsificación Q18.5 (2v).
+ → Sin datos nuevos hoy. Depende 100% del export LucidSales del jueves. Recordar aislar la variable
+   "música Meta en ads-imagen" que activó el operador solo en CLEARSTEM.
+
+───────────────────────────────────────────────────────────────────────────
+PLAN DE ESCALADO (ETAPA-8) — acciones ordenadas (el operador ejecuta a mano)
+───────────────────────────────────────────────────────────────────────────
+NUSAVA:
+ 1. PAUSAR "ESCALA_MEMORIA" completa (7 días, conv ~30%, Lucid 2v → no rinde).
+ 2. PAUSAR el paraguas "TEST - Copia" (ya dio ganador; duplica gasto con ARDOR FASE 2).
+ 3. DEJAR correr "ESCALA_ARDOR" (día 1) intacta hasta que cada MA gaste su PD ($8.96).
+ 4. Mientras tanto, matar ya por conversación C-1 y C-6 de MEMORIA si se prefiere no pausar toda la campaña.
+VARICOSE (lo más escalable — pero escalado FUERTE solo con Lucid del jueves):
+ 1. En ESCALA_VERGUENZA: matar MA1_COMPARACION (10% conv) y MA3_VERANO (15%, 0 venta).
+ 2. Preparar surfing +20% sobre MA2_VESTIDO y MA6_2X1 (confirmar con Lucid jueves antes de subir).
+ 3. Vigilar fatiga MA6_2X1 (freq 1.82) → tener creativo de relevo del MISMO ángulo listo.
+ 4. Arrancar FASE 2 hermana de MIEDO-CIRUGÍA (Q23-25 confirmado) escalonada 2-3 días.
+ 5. Podar el testeo (ARAÑITAS/PIERNAS-CANSADAS/CALAMBRES) y cerrarlo.
+TINNIDROP:
+ 1. Poda testeo: TENSIÓN/ESTRÉS (conv floja). NOCHES marginal → dejar hasta PD.
+ 2. Ganadores para FASE 2: Pérdida auditiva + Deterioro cognitivo (+ ME DIJERON como 3º).
+ 3. BRIEF CREATIVO ETAPA-4: replicar el concepto de "Deterioro cognitivo" (mejor retención de vídeo
+    y CTR 6.47%): hook de miedo cognitivo + testimonio + cierre accesibilidad; formato vídeo UGC;
+    rol MOFU; avatar 45-65 con zumbido + olvidos; compliance Andrómeda (texto <20%, sin "cura",
+    sin FDA — recordar que TINNIDROP arrastra sellos FDA/%clínicos a corregir antes de escalar).
+CLEARSTEM: esperar Lucid jueves. Sin acción MCP posible.
+
+───────────────────────────────────────────────────────────────────────────
+QUÉ HACER HOY/MAÑANA (prioridad)
+───────────────────────────────────────────────────────────────────────────
+1. NUSAVA: pausá ESCALA_MEMORIA y el paraguas de testeo; que ARDOR FASE 2 corra sola. Es donde está el dinero.
+2. VARICOSE: matá MA1/MA3 de VERGÜENZA; dejá listo el surfing +20% de VESTIDO+2X1 para confirmarlo el jueves.
+3. TINNIDROP: podá TENSIÓN; el creativo "Deterioro cognitivo" es el molde a replicar.
+
+RECORDATORIO AL OPERADOR: hoy es miércoles, falta el LucidSales. El JUEVES pegá el export de los
+ÚLTIMOS 7 DÍAS de TODAS las campañas (xlsx: adId, spend, sells, total, fulfillmentStatus) para
+cerrar CPA real por venta y por ENTREGADO y habilitar el escalado fuerte (surfing/Post ID/multicuenta).
+═══════════════════════════════════════════════════════════════════════════

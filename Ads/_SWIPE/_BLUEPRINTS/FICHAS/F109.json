@@ -1,0 +1,190 @@
+{
+  "ficha_id": "F109",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Topishop/05_1016585764533577.jpg",
+    "anunciante": "Topishop",
+    "ad_archive_id": "1016585764533577",
+    "dias_activo": 1,
+    "replicas": 1,
+    "score": 26,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "14%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA MISMA VITRINA DORADA, ESPEJADA Y ALIGERADA. Es la gemela de F107: mismo rating decimal, mismas cards de borde dorado, misma fila de logistica y mismo descargo, pero la modelo y el bloque de rating cambian de lado y las ocho cards de beneficio se reducen a cuatro, sin subtitulo. El titular pasa de contraste de tamano a invitacion a incorporar el producto a la rutina.",
+  "lectura_estrategica": "Prueba cuanta argumentacion aguanta el formato antes de estorbar. Con la mitad de las cards, el frasco y el rating respiran, y la pieza deja de parecer una pagina de producto para parecer un anuncio; lo que se pierde son las cuatro lineas de subtitulo que explicaban cada beneficio. El titular tambien cambia de trabajo: en vez de argumentar que algo chico rinde mucho, invita a sumar el producto a lo que la persona ya hace, que es una peticion mas barata. El bloque de rating se mantiene intacto porque es lo unico que no se esta probando.",
+  "fondo": {
+    "tipo": "bosque_verde_con_luz_dorada",
+    "base": "bosque abierto desenfocado con luz calida entrando entre los arboles",
+    "capa": "vineta oscura en los bordes",
+    "textura": "el follaje desenfocado"
+  },
+  "paleta": {
+    "derivacion": "de la categoria premium, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "verde profundo (fondo) mas {{PALETA_ACENTO}} dorado (titular, bordes, estrellas) mas negro (cards) mas blanco (texto de apoyo)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Cursiva"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_incorporacion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 4,
+      "linea_1": "{{INVITACION}}",
+      "linea_2": "{{SUSTANTIVO_BENEFICIO}}",
+      "linea_3": "{{CALIFICACION_SENSORIAL}}",
+      "linea_4": "{{CLAIM_APOYO}}",
+      "estilo_l1": "cursiva blanca",
+      "estilo_l2": "Black/900 uppercase con relleno degradado {{PALETA_ACENTO}}",
+      "estilo_l3": "Black/900 uppercase blanco sobre banda {{PALETA_OSCURA}}",
+      "estilo_l4": "Bold uppercase blanco con el sistema objetivo en {{PALETA_ACENTO}} y asterisco",
+      "restriccion_palabras_total": "9-12 palabras",
+      "formato_obligatorio": "invitacion a incorporar a la rutina mas el beneficio calificado por como se percibe",
+      "regla": "pide sumar el producto a lo que la persona ya hace, que es una peticion mas barata que cambiar algo"
+    },
+    "bloque_rating": {
+      "posicion": "izquierda_media",
+      "contenedor": "card negra de borde {{PALETA_ACENTO}} flanqueada por laureles",
+      "estrellas": "cinco estrellas {{PALETA_ACENTO}} en fila",
+      "linea_1": "{{RATING_DECIMAL}}/5",
+      "estilo_l1": "Black/900 {{PALETA_ACENTO}} muy grande",
+      "linea_2": "{{N_CLIENTES}} {{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}}",
+      "regla_critica": "identico al de la variante gemela: es la constante contra la que se mide todo lo demas"
+    },
+    "badge_premium": {
+      "posicion": "derecha_media",
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}",
+      "texto": "{{CLAIM_PREMIUM}}",
+      "estilo": "Bold uppercase blanco, 3 lineas",
+      "restriccion_palabras": "3 palabras"
+    },
+    "modelo_consumo": {
+      "posicion": "derecha, sangrada al borde",
+      "escala": "38% del ancho",
+      "composicion": "{{MODELO}} sonriendo con la cabeza inclinada hacia atras, aplicandose el gotero en la boca",
+      "regla": "cambia de lado respecto de la variante gemela: la pieza es su espejo horizontal"
+    },
+    "cards_beneficio": {
+      "posicion": "izquierda_media, en columna",
+      "cantidad_items": 4,
+      "contenedor": "card negra de borde {{PALETA_ACENTO}}",
+      "formato_item": "icono {{PALETA_ACENTO}} mas texto Bold uppercase de 2 lineas, SIN subtitulo",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_critica": "sin subtitulo: es la version aligerada de la gemela, que lleva el doble de cards y explicacion en cada una",
+      "regla_item_1": "el primero lleva asterisco y se ancla en el descargo del pie"
+    },
+    "producto_hero": {
+      "posicion": "centro, ocupa el alto medio-bajo",
+      "escala": "36% del ancho",
+      "composicion": "frasco gotero de pie sobre musgo con flores, hierbas y frutos rojos al pie",
+      "fuente": "IMAGEN_1"
+    },
+    "fila_logistica": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres cards de borde {{PALETA_ACENTO}}",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas con la palabra clave en {{PALETA_ACENTO}}",
+      "items": "{{LOGISTICA[3]}}",
+      "restriccion_palabras": "2-4 palabras"
+    },
+    "banda_sintesis": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida de borde {{PALETA_ACENTO}}",
+      "texto": "{{ATRIBUTO_1}}, {{ATRIBUTO_2}} Y {{ATRIBUTO_3}} EN {{UNIDAD_DE_DOSIS}}",
+      "estilo": "Bold uppercase {{PALETA_ACENTO}}",
+      "restriccion_palabras": "6-8 palabras",
+      "regla": "cierra enumerando tres atributos y aterrizandolos en la unidad minima de toma"
+    },
+    "descargo": {
+      "posicion": "inferior extremo, bajo la banda",
+      "lineas": 2,
+      "texto": "*{{DESCARGO}}",
+      "estilo": "Regular gris muy chico",
+      "restriccion_palabras": "18-24 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_incorporacion",
+    "bloque_rating",
+    "producto_hero",
+    "modelo_consumo",
+    "cards_beneficio",
+    "badge_premium",
+    "fila_logistica",
+    "banda_sintesis",
+    "descargo"
+  ],
+  "reglas_duras": [
+    "El bloque de rating, la fila de logistica y el descargo se mantienen identicos a la variante gemela",
+    "La variable declarada es la densidad de argumento y el lado de la modelo",
+    "Las cards de beneficio van sin subtitulo y se reducen a la mitad",
+    "El titular invita a incorporar el producto a la rutina",
+    "La calificacion va con decimales y el numero de clientes con separador de millar",
+    "El primer beneficio lleva asterisco recogido en el descargo",
+    "La banda de cierre aterriza los atributos en la unidad minima de toma"
+  ],
+  "variables_requeridas": [
+    "INVITACION",
+    "SUSTANTIVO_BENEFICIO",
+    "CALIFICACION_SENSORIAL",
+    "CLAIM_APOYO",
+    "RATING_DECIMAL",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "CLAIM_PREMIUM",
+    "MODELO",
+    "BENEFICIOS[4]",
+    "LOGISTICA[3]",
+    "ATRIBUTO_1",
+    "ATRIBUTO_2",
+    "ATRIBUTO_3",
+    "UNIDAD_DE_DOSIS",
+    "DESCARGO",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "como pareja aligerada de una vitrina cargada, para medir cuanta argumentacion aguanta el formato",
+    "cuando el producto ya tiene calificacion real y el resto es relleno",
+    "publico que ya vio la version cargada y no compro",
+    "MOFU sobre publico que compara marcas"
+  ],
+  "cuando_no_usar": [
+    "cuando cada beneficio necesita explicacion y no se puede quitar el subtitulo",
+    "cuando no hay calificacion real que sostenga el bloque constante",
+    "cierre por precio: la pieza no lleva numero"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular Incorpora a tu rutina BIENESTAR QUE SE SIENTE / APOYO HERBAL PARA TU SISTEMA LINFATICO*.",
+    "Rating cinco estrellas 4.95/5 - 1.455 CLIENTES SATISFECHOS, con laureles.",
+    "Badge FORMULA HERBAL PREMIUM.",
+    "Beneficios: APOYA TU SISTEMA LINFATICO* / FORMULA HERBAL DE CALIDAD / FACIL DE TOMAR EN GOTAS / IDEAL PARA TU RUTINA DIARIA.",
+    "Logistica ENVIO GRATIS / PAGO CONTRA ENTREGA / COMPRA 100% SEGURA.",
+    "Banda CONFIANZA, CALIDAD Y BIENESTAR EN CADA GOTA.",
+    "Marca NATURES SUNSHINE Lymphatic Drainage - TRADITIONAL LYMPHATIC SUPPORT, LIQUID HERBS + EXTRACTS, Dietary Supplement, 2 oz (60 ml), badge NEW LOOK! SAME GREAT PRODUCT y sello CERTIFIED PLANT.",
+    "Descargo *Este producto es un suplemento dietario. No es un medicamento y no pretende diagnosticar, tratar, curar o prevenir ninguna enfermedad."
+  ],
+  "canonico_id": "CN10_PRUEBA_SOCIAL",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,171 @@
+{
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "schema_version": "canonico-1.0",
+  "nombre": "Comparacion en dos columnas",
+  "dispositivo_canonico": "LA PIEZA SE PARTE EN DOS COLUMNAS ENFRENTADAS y cada una lista un estado: yo sin / yo con, problema / solucion, falso / real, el remedio de la cocina / el producto. El rival casi nunca es una marca competidora — es la persona contra si misma o contra lo que ya hace gratis.",
+  "cuando_elegirlo": "Hay una alternativa concreta que el publico YA esta usando (remedio casero, generico, falsificacion) y el argumento es la friccion de esa alternativa, no su ineficacia. Discutir si el remedio sirve pierde; cobrarle el olor, la preparacion y el tiempo gana.",
+  "ejes_de_variacion": [
+    "rival elegido: yo mismo, remedio casero, producto falso, no hacer nada",
+    "material: tabla dibujada a mano, ilustraciones planas, dos fotos del producto",
+    "posicion: pieza entera o comparador reducido al pie (F037)",
+    "puede combinarse con el multiplicador al centro del eje (F052)"
+  ],
+  "n_miembros": 7,
+  "ficha_referencia": "F037",
+  "score_referencia": 53,
+  "perfil": {
+    "concepto_key": {
+      "C9_COMPARACION": 5,
+      "C2_BENEFICIOS": 1,
+      "C4_TRANSFORMACION": 1
+    },
+    "rol_embudo": {
+      "MOFU": 3,
+      "TOFU": 2,
+      "BOFU": 2
+    },
+    "estetica": {
+      "cartel_publicitario": 5,
+      "organico_ugc": 2
+    },
+    "formato": {
+      "1:1": 5,
+      "2:3": 2
+    },
+    "densidad": {
+      "alta": 3,
+      "media": 3,
+      "baja": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "RIVAL",
+    "HEADER_COLUMNA_A",
+    "HEADER_COLUMNA_B",
+    "ITEMS_COLUMNA_A",
+    "ITEMS_COLUMNA_B",
+    "MATERIAL_TABLA",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": [
+      "BENEFICIOS[3]",
+      "COLOR_ALERTA",
+      "IMAGEN_1",
+      "MARCA",
+      "OFERTA_LABEL",
+      "PROBLEMAS[3]"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El titular contrasta hoy contra siempre, con dos verbos",
+    "No hay foto de dolor: solo se proyecta el despues",
+    "Cada beneficio lleva debajo el ingrediente que lo produce",
+    "Cada opcion de compra lleva la foto del producto en su cantidad",
+    "Se declara la cantidad total de unidades del contenido, para que se vea la duracion del tratamiento",
+    "La pieza se parte en dos zonas: relato arriba, transaccion abajo",
+    "La edad objetivo va declarada en numero"
+  ],
+  "cuando_usar": [
+    "producto de uso continuo donde la duracion del tratamiento es el argumento",
+    "publico 40+ que decide por composicion y no por promesa",
+    "cuando hay solo dos opciones de compra y conviene compararlas visualmente",
+    "categorias de mantenimiento (huesos, articulaciones, vista, memoria)",
+    "cuando el problema tiene consecuencias cotidianas facilmente dibujables",
+    "publico saturado de anuncios pulidos",
+    "TOFU frio donde el objetivo es identificacion, no cierre",
+    "cuando se quiere contrastar dos estados sin fotos de antes y despues"
+  ],
+  "cuando_no_usar": [
+    "compra de impulso de una sola vez",
+    "cuando hay tres o mas tiers: el comparador de dos se satura",
+    "publico joven, donde la composicion no pesa",
+    "BOFU: el pie de oferta deliberadamente apagado no cierra",
+    "cuando el problema no tiene escenas cotidianas asociadas",
+    "marcas que necesitan verse premium"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F037",
+      "score": 53,
+      "anunciante": "Bella Glow GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL COMPARADOR DE DOS OPCIONES AL PIE, CON EL PRODUCTO FOTOGRAFIADO EN CADA UNA"
+    },
+    {
+      "ficha_id": "F043",
+      "score": 53,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C9_COMPARACION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA TABLA YO SIN / YO CON, DIBUJADA A MANO EN DOS COLUMNAS"
+    },
+    {
+      "ficha_id": "F052",
+      "score": 52,
+      "anunciante": "Ovejitas Lab",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "2:3",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MISMO TITULAR DE NEGACION QUE F051, PERO CON LAS DOS COLUMNAS DE ESTADO A LADO Y LADO DEL PRODUCTO Y EL 2X1 AL CENTRO"
+    },
+    {
+      "ficha_id": "F054",
+      "score": 51,
+      "anunciante": "Doctora Patricia Morales",
+      "concepto_key": "C9_COMPARACION",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA COMPARACION FALSA CONTRA REAL, CON EL PRODUCTO SOSTENIDO EN MANO A CADA LADO"
+    },
+    {
+      "ficha_id": "F073",
+      "score": 34,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C9_COMPARACION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA TABLA PROBLEMAS CONTRA SOLUCION, CON ILUSTRACIONES PLANAS DEL LADO IZQUIERDO Y LA FOTO DEL PRODUCTO DEL DERECHO"
+    },
+    {
+      "ficha_id": "F102",
+      "score": 30,
+      "anunciante": "Teyra",
+      "concepto_key": "C9_COMPARACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LAS DOS COLUMNAS DE YO, DIBUJADAS A MANO, CON EL PRODUCTO COMO UNICA FOTO EN EL EJE"
+    },
+    {
+      "ficha_id": "F110",
+      "score": 26,
+      "anunciante": "Topishop",
+      "concepto_key": "C9_COMPARACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL VS CONTRA EL REMEDIO CASERO, NO CONTRA UNA MARCA"
+    }
+  ]
+}

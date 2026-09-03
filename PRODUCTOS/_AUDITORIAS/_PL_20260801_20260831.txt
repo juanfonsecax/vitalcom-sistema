@@ -1,0 +1,137 @@
+════════════════════════════════════════════════════════════════════
+ESTADO DE RESULTADOS — 2026-08-01 → 2026-08-31
+VISTA A · COHORTE (por fecha de ORDEN) — «¿rindió la pauta de esta ventana?»
+Generado 2026-09-02 · norma: CONTABILIDAD.md · parámetros: _PARAMETROS_FINANZAS.csv
+════════════════════════════════════════════════════════════════════
+
+🟡 COHORTE PRELIMINAR — el último día tiene 2 días de edad y la norma pide 10.
+   Las devoluciones tardan ~8 días en confirmarse, así que este resultado
+   está SOBRESTIMADO. No declarar ganador ni mandar apagar con esto.
+
+   349 órdenes · 284 entregadas · 41 devueltas · 21 sin resolver (94.0% resuelto)
+
+────────────────────────────────────────────────────────────────────
+  (+) VENTA BRUTA ENTREGADA               Q   64,686.25
+  (−) Costo de producto                   Q  -19,905.00
+  (−) Flete de entrega                    Q  -10,235.61
+      ························································
+  (=) MARGEN LOGÍSTICO                    Q   34,545.64
+      ↑ esto es lo que muestra el panel de Dropi. NO es tu ganancia.
+
+  (−) Costo de devoluciones ( 41 devol.)  Q   -1,148.17
+      REAL: 40 cobros del historial de cartera + 1 aún sin cobrar al promedio Q28.02
+  (−) Costo de personal     (284 × Q4.00)  Q   -1,136.00
+  (−) Otros gastos operativos(284 × Q2.08)  Q     -590.72
+      ························································
+  (=) MARGEN DE CONTRIBUCIÓN              Q   31,670.75
+
+  (−) Publicidad Meta ($1978.22 × 7.62)    Q  -15,074.05
+      ························································
+  (=) MARGEN OPERATIVO                    Q   16,596.70
+
+  (−) Gastos fijos del negocio            Q     -364.39
+        Proxy-Cheap              $   26.29  infraestructura
+        ANTHROPIC* CLAUDE SUB    $   21.53  software
+      ════════════════════════════════════════════════════════
+  (=) RESULTADO NETO DEL NEGOCIO          Q   16,232.31
+────────────────────────────────────────────────────────────────────
+
+RETIROS PERSONALES — salieron de la cuenta pero NO son del negocio.
+No reducen la ganancia (no es plata que el negocio gastó en operar);
+sí reducen la CAJA disponible. Contablemente es un retiro de socio.
+     MINIMED GEDIATRIA          $  901.59 = Q    6,870.12
+     ····················································
+     Total retirado                       Q    6,870.12
+
+     El negocio ganó Q   16,232.31 y vos sacaste Q    6,870.12 → quedaron Q    9,362.19
+
+════════════════════════════════════════════════════════════════════
+ECONOMÍA UNITARIA — cuánto deja CADA VENTA, por producto
+════════════════════════════════════════════════════════════════════
+
+  TINNIDROP   (entrega 86.2% · 156 entregadas / 25 devueltas)
+     Precio de venta (ticket promedio)      Q      211.21
+     − Costo del producto                   Q      -63.08
+     − Flete                                Q      -35.26
+     − Devolución amortizada                Q       -4.49
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      102.30  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -50.77
+       ······················································
+     = GANANCIA POR VENTA                   Q       51.53  ✅
+
+  CLEARSTEM   (entrega 91.4% · 85 entregadas / 8 devueltas)
+     Precio de venta (ticket promedio)      Q      237.18
+     − Costo del producto                   Q      -81.81
+     − Flete                                Q      -36.39
+     − Devolución amortizada                Q       -2.64
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      110.26  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -40.91
+       ······················································
+     = GANANCIA POR VENTA                   Q       69.35  ✅
+
+  NUSAVA   (entrega 82.2% · 37 entregadas / 8 devueltas)
+     Precio de venta (ticket promedio)      Q      264.97
+     − Costo del producto                   Q      -72.84
+     − Flete                                Q      -37.89
+     − Devolución amortizada                Q       -6.06
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      142.11  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -58.28
+       ······················································
+     = GANANCIA POR VENTA                   Q       83.83  ✅
+
+  VARICOSE   (entrega 100.0% · 6 entregadas / 0 devueltas)
+     Precio de venta (ticket promedio)      Q      295.67
+     − Costo del producto                   Q      -69.33
+     − Flete                                Q      -40.07
+     − Devolución amortizada                Q       -0.00
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      180.18  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q     -115.35
+       ······················································
+     = GANANCIA POR VENTA                   Q       64.83  ✅
+
+════════════════════════════════════════════════════════════════════
+VISTA B — CAJA (¿cuánto dinero entró de verdad en la ventana?)
+════════════════════════════════════════════════════════════════════
+  Fuente: historial de cartera de Dropi — movimientos REALES de dinero,
+  fechados por cuándo ocurrieron (no por cuándo se tomó la orden).
+
+  (+) Entradas por ganancia de órdenes (290)  Q   34,919.71
+  (−) Cobros de devolución ( 54)              Q   -1,512.89
+  (−) Otras salidas (2)                       Q     -234.02
+      ························································
+  (=) NETO ACREDITADO EN LA CARTERA           Q   33,172.80
+  (−) Personal y otros (290 × Q6.08)          Q   -1,763.20
+  (−) Publicidad cobrada por el banco         Q  -14,263.80
+  (−) Gastos fijos del negocio                Q     -364.39
+      ════════════════════════════════════════════════════════
+  (=) CAJA QUE GENERÓ EL NEGOCIO              Q   16,781.41
+  (−) Retiros personales (no son del negocio) Q   -6,870.12
+      ════════════════════════════════════════════════════════
+  (=) CAJA QUE QUEDÓ EN LA CUENTA             Q    9,911.29
+
+  ARRASTRE: 31 de las 290 acreditaciones (Q    3,650.07) vienen de órdenes tomadas ANTES
+  del 2026-08-01. Eso es exactamente lo que la vista de COHORTE no ve: se vendió un
+  mes y se cobró al siguiente.
+
+  COHORTE vs CAJA en esta ventana: Q   31,670.75 vs Q   31,409.60
+  No tienen por qué coincidir y ninguna está mal: miden cosas distintas.
+
+────────────────────────────────────────────────────────────────────
+NOTAS
+  ⚠ Cobertura de pauta en el tramo ALINEADO 2026-08-09→2026-09-01 (el único comparable, APR-070): el banco cobró $1894.91 y LucidSales atribuye $1732.43 = 91.4%. Faltan Q    1,238.10 de gasto real en el P&L.
+
+────────────────────────────────────────────────────────────────────
+VERIFICACIÓN DE INTEGRIDAD
+  ✅ Cuadre de Dropi (venta−producto−flete = GANANCIA)
+  ✅ Cuadre del extracto (movimientos = total del resumen)
+  🟡 Maduración del cohorte (≥ 10 días)
+  ✅ Cruce cartera↔órdenes (297 movimientos, 0 descuadres, 0 sin orden)
+────────────────────────────────────────────────────────────────────

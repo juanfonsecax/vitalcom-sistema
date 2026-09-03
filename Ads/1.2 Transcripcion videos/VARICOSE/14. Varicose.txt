@@ -1,0 +1,27 @@
+============================================================
+Análisis del Video N: 14. Varicose.mp4
+
+CLASIFICACIÓN RÃPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "¿Quieres saber cómo mi paciente pasó de esto a esto en solamente un mes? Por eso hoy quiero recomendarte" | qué se ve: Un doctor hablando en un consultorio moderno, mostrando un recuadro de un paciente con várices ("Antes") y luego curado ("Después"). | overlay en pantalla: "¿QUIERES SABER CÓMO MI", "PACIENTE", "PASÓ", "DE ESTO", "A ESTO EN", "SOLAMENTE UN MES."
+- ÃNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Reducir la apariencia de várices severas en solo un mes, mejorando la circulación, hinchazón y el dolor.
+- FORMATO CREATIVO (elegí UNO): educacional
+- AVATAR (quién aparece): Un doctor en su consultorio (inicio) y piernas de pacientes mostrando resultados rápidos.
+- TONO: clínico / aspiracional + tuteo + habla un doctor/voz en off.
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    Â· Prueba social (nº de clientes, "miles de personas"...): No aplica
+    Â· Cifras/resultados con tiempo ("en 30 días"...): "SOLAMENTE UN MES." (en pantalla)
+    Â· Urgencia/escasez ("oferta por tiempo limitado"...): "por tiempo limitado"
+    Â· Garantía / envío gratis / pago contra entrega: "envío gratis"
+    Â· Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"¿Quieres saber cómo mi paciente pasó de esto a esto en solamente un mes? Por eso hoy quiero recomendarte esta crema de origen natural, diseñada para mejorar la circulación, disminuir la hinchazón y aliviar el dolor en piernas cansadas. Actúa directamente sobre la zona afectada, ayudando a reducir progresivamente la apariencia de las várices y mejorando el aspecto de la piel. Puedes usarla desde casa, sin cirugías ni procedimientos invasivos. Si ya intentaste otras opciones sin resultados, esta es la solución para ti. Aprovecha el dos por uno, con envío gratis por tiempo limitado."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Un profesional de la salud en una oficina moderna capta la atención mostrando el caso de éxito de un paciente ("en solamente un mes"). Luego presenta el frasco de la crema "South Moon Varicose Veins Ointment". Un dedo toma y esparce la crema sobre la pierna afectada. Se muestran transiciones de "Antes" a "Después" de venas que se desvanecen. Se incluye la cruz roja sobre una inyección como símbolo de "sin cirugías". 
+Textos en pantalla citados literal: "¿QUIERES SABER CÓMO MI", "PACIENTE", "PASÓ", "DE ESTO", "A ESTO EN", "SOLAMENTE UN MES.", "Por eso", "hoy quiero", "recomendarte", "esta crema de", "origen natural,", "diseñada para", "mejorar", "Antes", "la circulación,", "disminuir la", "hinchazón", "y aliviar el dolor", "Después", "en piernas", "cansadas,", "actúa", "directamente", "sobre la zona", "afectada", "Reduce las", "varices", "ayudando a", "reducir", "progresivamente", "la apariencia", "de las varices", "y mejorando el", "aspecto de la", "piel,", "Después", "USO", "DESDE CASA", "sin cirugías ni", "procedimientos", "invasivos", "si ya intentaste", "otras", "opciones sin", "resultados", "esta es la", "solución", "para ti.", "Después", "2x1", "Antes", "Envío gratis", "Después".
+* Qué transmite: El formato de "estudio de caso" de un mes da esperanza y promueve urgencia/expectativa de un resultado rápido y comprobado por un doctor, posicionando al producto como el secreto detrás de esa mejora asombrosa.
+* Llamado a la acción (CTA): "Aprovecha el dos por uno, con envío gratis por tiempo limitado."
+============================================================
+

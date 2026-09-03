@@ -1,0 +1,127 @@
+PROMPT DE TRANSCRIPCIÓN Y ANÁLISIS DE CREATIVOS — v2 (2026-08-01)
+Fuente única. Se copia tal cual y se pega en Gemini junto con los videos.
+Consumido por: ETAPA-0 (clasificación) · ETAPA-2 (ángulos) · ETAPA-4 (banco de hooks)
+
+============================================================
+
+Vas a transcribir y analizar videos publicitarios. Hacé esto:
+
+1. Entrá a la carpeta "Ads/1.1 Videos/[PRODUCTO]/". Ahí están todos los videos.
+2. Procesá CADA video, en orden numérico.
+3. Por cada video, generá un archivo .txt en "Ads/1.2 Transcripcion videos/[PRODUCTO]/"
+   con el MISMO nombre del video (ej: "5. Te Chino.mp4" → "5. Te Chino.txt").
+
+Para cada video, el .txt debe tener esta estructura EXACTA, en este orden, sin omitir
+ningún campo (si uno no aplica, escribí "No aplica"). NO resumas: transcribí todo literal.
+
+============================================================
+Análisis del Video N: [nombre exacto del archivo]
+
+--- BLOQUE 1 · HOOK MICROSCOPE (0-10 seg) ---
+El hook es el 80% del resultado. Desglosalo por bloques de 2 segundos.
+Por cada bloque escribí las tres capas por separado — no las mezcles:
+
+  0-2s   | VOZ: "..." | IMAGEN: ... | OVERLAY: "..."
+  2-4s   | VOZ: "..." | IMAGEN: ... | OVERLAY: "..."
+  4-6s   | VOZ: "..." | IMAGEN: ... | OVERLAY: "..."
+  6-8s   | VOZ: "..." | IMAGEN: ... | OVERLAY: "..."
+  8-10s  | VOZ: "..." | IMAGEN: ... | OVERLAY: "..."
+
+- PRIMER FOTOGRAMA (lo que se ve en el segundo 0, antes de que hable nadie): ...
+- TIPO DE HOOK (elegí UNO): dolor · pregunta que saca el SÍ ("¿cansada de…?") ·
+  curiosidad/reencuadre · número/estadística · historia · prueba social · resultado extremo
+- FUERZA DEL HOOK: FUERTE (ataca dolor o deseo concreto, corto, escaneable) /
+  DÉBIL (genérico o descriptivo). Justificá en una línea.
+- ¿EL HOOK SE ENTIENDE SIN AUDIO? Sí / No — la mayoría lo ve en mudo.
+
+--- BLOQUE 2 · CLASIFICACIÓN ---
+- DOLOR ESPECÍFICO DEL AVATAR — escrito en PRIMERA PERSONA, como lo diría él o ella:
+  ❌ MAL (genérico): "problemas digestivos", "falta de energía"
+  ✅ BIEN (específico): "me levanto hinchada aunque no haya cenado", "llevo 3 meses
+     sin ir al baño normal y ya probé de todo"
+  Si en los primeros 5 segundos no hay un dolor claro → escribí "DOLOR NO DEFINIDO".
+- ÁNGULO DEL PRODUCTO (la causa específica que resuelve, no el beneficio genérico): ...
+- FORMATO CREATIVO (elegí UNO): TESTIMONIO (persona real cuenta su experiencia) /
+  AUTORIDAD (médico o experto recomienda) / UGC (usuario mostrando el producto) /
+  EDUCATIVO (explica cómo funciona) / OFERTA (enfocado en precio o urgencia)
+- SUB-ETIQUETA (opcional, si aplica): anti-falsificación / comparativa con competencia /
+  respuesta a comentario / antes-después puro
+- AVATAR (quién aparece): edad aprox, género, situación y contexto concretos.
+- AVATAR_GENERO (elegí UNO, vocabulario cerrado): MUJER / HOMBRE / MIXTO
+- AVATAR_EDAD (elegí UNO, el bucket DOMINANTE — no el rango completo):
+  25-35 / 35-45 / 45-60 / 60+
+- EMOCION_DOMINANTE (elegí UNA, vocabulario cerrado):
+  MIEDO_FUTURO (teme que empeore o sea irreversible) / VERGUENZA (lo esconde de los demás) /
+  RESIGNACION (ya se rindió) / FRUSTRACION_MEDICA (pagó especialistas y sigue igual) /
+  DESCONFIANZA (teme que sea falso o no funcione) / AGOTAMIENTO (cansado, sin energía) /
+  CURIOSIDAD (no sabía que su problema tenía esa causa)
+- TONO: [coloquial / clínico / motivacional / confesional / aspiracional] + ¿voseo o tuteo? +
+  ¿habla un cliente, doctor, coach o voz en off?
+
+--- BLOQUE 3 · SEÑALES DE COMPRA (las 8) ---
+Marcá SÍ/NO en cada una y citá la frase exacta cuando sea SÍ.
+Estas 8 son las que cuenta ETAPA-0 para calcular densidad — no cambies ni agregues.
+
+  1. Resultado en tiempo específico ("en 30 días", "desde la segunda semana"): ...
+  2. Ingrediente o mecanismo específico nombrado ("18 hierbas", "cardo mariano"): ...
+  3. Prueba social (persona real, número concreto de clientes): ...
+  4. Urgencia o escasez ("últimas cajas", "solo hoy"): ...
+  5. Garantía / envío gratis / pago contra entrega: ...
+  6. Antes y después explícito o implícito: ...
+  7. Pregunta directa al avatar ("¿te pasa esto?"): ...
+  8. CTA explícito o implícito: ...
+
+- MENCIÓN DE PRECIO: [Sí — cuál / No]
+- PALABRAS QUE BANEAN presentes (citá cuáles): "cura", "elimina", "garantizado",
+  "aprobado por la FDA", nombres de enfermedades, porcentajes clínicos, "transforma en X días".
+  Si no hay, escribí "ninguna".
+
+--- BLOQUE 4 · TRANSCRIPCIÓN LITERAL ---
+Todo lo hablado, palabra por palabra, sin resumir ni parafrasear.
+Respetá modismos, voseo y errores. Marcá los claims médicos con [CLAIM MÉDICO].
+"..."
+
+--- BLOQUE 5 · PERFIL EDITORIAL (cómo está armado) ---
+- DURACIÓN TOTAL: [MM:SS]
+- NÚMERO DE CORTES (cambios de plano en todo el video): [N]
+- RITMO: [cortes por minuto ≈ N] → clasificá: LENTO (<10) / MEDIO (10-25) / RÁPIDO (>25)
+- ESTRUCTURA (arco del video, con marcas de tiempo aproximadas):
+  ej. "0-3s hook dolor → 3-12s problema agravado → 12-25s producto y mecanismo →
+       25-40s prueba social → 40-50s oferta y CTA"
+- SUBTÍTULOS QUEMADOS: Sí / No — ¿de qué estilo (color, tamaño, posición)?
+- MÚSICA: Sí / No — qué tipo y si sube o baja en algún punto.
+- CALIDAD DE PRODUCCIÓN: casera-celular / semipro / estudio.
+- ¿SE REPITE EL PRODUCTO EN PANTALLA? cuántas veces y en qué segundos.
+
+--- BLOQUE 6 · ANÁLISIS VISUAL Y DE CONTENIDO ---
+* Qué se ve en el video: quién aparece, escenario, demostración de uso, empaque,
+  antes/después, diagramas, comentarios respondidos, y TODOS los textos en pantalla
+  citados literal con su marca de tiempo.
+* Qué transmite: qué emoción busca generar y por qué conecta con ese avatar.
+* Llamado a la acción (CTA): "..." (literal, con el segundo en que aparece)
+
+--- BLOQUE 7 · MOMENTOS CITABLES ---
+Las 3 a 5 frases más punzantes del video, que funcionen SOLAS fuera de contexto.
+Son materia prima directa para el banco de hooks de los copies.
+  1. "..."  (seg XX)
+  2. "..."  (seg XX)
+  3. "..."  (seg XX)
+
+--- BLOQUE 8 · TRACCIÓN (lo llena el OPERADOR, no Gemini) ---
+Dejá estos campos escritos y vacíos. Los completa el operador después.
+Un video con tracción real rankea por encima de uno solo denso en señales.
+- FUENTE: [TikTok / Meta Ads Library]
+- DÍAS ACTIVO EN ADS LIBRARY: [N o "no aplica"]
+- ANUNCIANTE: [nombre de la página]
+- ENGAGEMENT (likes / comentarios / vistas): [...]
+- ¿HAY VARIACIONES DEL MISMO ANUNCIANTE CON ESTE CREATIVO? [Sí — cuántas / No]
+============================================================
+
+Reglas:
+- Transcribí todo lo hablado respetando modismos, voseo y errores. No parafrasees.
+- Citá literal todos los textos en pantalla y overlays, con marca de tiempo.
+- No inventes: si un dato no está en el video, escribí "No aplica". Nunca deduzcas
+  una cifra, un precio ni una marca que no se vea o se escuche.
+- Los campos de vocabulario CERRADO (TIPO DE HOOK, FORMATO CREATIVO, AVATAR_GENERO,
+  AVATAR_EDAD, EMOCION_DOMINANTE) solo admiten los valores listados. Nada de valores nuevos.
+- Un .txt por video, con el mismo nombre y número del archivo de video.

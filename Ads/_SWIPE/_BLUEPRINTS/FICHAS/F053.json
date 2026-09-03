@@ -1,0 +1,223 @@
+{
+  "ficha_id": "F053",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/26_1064560426121134.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1064560426121134",
+    "dias_activo": 1,
+    "replicas": 2,
+    "score": 51,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL TIMELINE ANATOMICO ARRIBA CON EL BLOQUE DE URGENCIA VERTICAL A LA DERECHA. Misma progresion de tres estados del organo que las otras variantes, pero el flanco derecho lo ocupa un bloque vertical de precio especial y stock limitado, con reloj, que corre de arriba abajo junto a la lista de beneficios. El cronograma promete tiempo y el bloque lateral lo quita.",
+  "lectura_estrategica": "Variante de cierre del concepto de transformacion temporal. La tension que la hace funcionar es deliberada: el timeline dice que el resultado toma ocho semanas y el bloque lateral dice que el precio dura hoy. Uno da paciencia sobre el producto y el otro urgencia sobre la compra, y no se contradicen porque hablan de cosas distintas. Los cinco beneficios usan icono circular con foto real y titulo en cursiva, un registro mas suave que el resto de la pieza, y el titular en dos bandas apiladas separa el organo de la consecuencia sistemica.",
+  "fondo": {
+    "tipo": "degradado_claro_a_oscuro",
+    "base": "crema en la zona del timeline y {{PALETA_OSCURA}} vinotinto en la banda del titular y el pie",
+    "elemento": "coral o props del ingrediente en el borde inferior izquierdo",
+    "regla": "la pieza se parte en dos temperaturas: claro arriba para las ilustraciones, oscuro abajo para el argumento"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 5,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (bandas y fondo inferior) mas crema (zona del timeline) mas dorado (garantia y etiquetas de tier) mas blanco (texto) mas rojo del organo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "la cursiva se usa en los titulos de beneficio y en el cierre emocional",
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "timeline_transformacion": {
+      "posicion": "superior, ancho completo",
+      "cantidad_estados": 3,
+      "formato_estado": "ilustracion anatomica del organo con marco redondeado, mas label temporal sobre banda {{PALETA_OSCURA}} mas descripcion de 2 lineas debajo",
+      "estados": "{{TIMELINE[3]}}",
+      "estructura_estado": {
+        "imagen": "{{IMAGEN_ESTADO}}",
+        "label": "{{LABEL_TEMPORAL}}",
+        "descripcion": "{{DESC_ESTADO}}"
+      },
+      "separador": "flecha entre estados",
+      "restriccion_label": "1-2 palabras",
+      "restriccion_descripcion": "5-8 palabras",
+      "regla_progresion": "estado 1 el organo afectado, estado 3 el apoyado, estado 2 intermedio gradual"
+    },
+    "titular": {
+      "posicion": "bajo el timeline, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "contenedor": "dos bandas {{PALETA_OSCURA}} apiladas con extremos irregulares",
+      "linea_1": "{{ORGANO_OBJETIVO}}",
+      "linea_2": "{{CONSECUENCIA_SISTEMICA}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold uppercase al 55% de L1, sobre banda mas angosta",
+      "restriccion_l1": "2-3 palabras",
+      "restriccion_l2": "4-6 palabras",
+      "regla": "la primera banda nombra el organo y la segunda la consecuencia sistemica: separa lo local de lo general"
+    },
+    "badge_garantia": {
+      "posicion": "izquierda_media",
+      "forma": "circular con borde dorado doble y laurel",
+      "linea_1": "GARANTIA",
+      "linea_2": "{{DIAS_GARANTIA}}",
+      "linea_3": "DIAS",
+      "escala": "15% del ancho"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "34% del frame",
+      "composicion": "envase de pie con las perlas sueltas al pie y props del ingrediente al borde",
+      "fuente": "IMAGEN_2"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "centro_superior, junto al producto",
+      "texto": "{{PARRAFO}}",
+      "estilo": "Regular blanco de 3 lineas con el ingrediente y la dosis en Bold",
+      "restriccion_palabras": "16-22 palabras"
+    },
+    "pildora_dosis": {
+      "posicion": "bajo el parrafo",
+      "texto": "{{CLAIM_POTENCIA}}",
+      "estilo": "Bold blanco entre lineas horizontales finas",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "lista_beneficios": {
+      "posicion": "centro_medio",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical compacta",
+      "formato_item": "FOTO CIRCULAR REAL con borde mas TITULO en cursiva blanca mas subtitulo Regular de 1 linea",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "5-8 palabras",
+      "regla_icono": "fotos circulares reales, nunca line-art",
+      "regla_registro": "los titulos van en cursiva: un registro mas suave que el resto de la pieza"
+    },
+    "bloque_urgencia": {
+      "posicion": "derecha, columna vertical de arriba abajo",
+      "contenedor": "card {{PALETA_OSCURA}} con borde dorado, alta y angosta",
+      "icono": "reloj o cronometro dorado arriba",
+      "linea_1": "{{PRECIO_LABEL_L1}}",
+      "linea_2": "{{PRECIO_LABEL_L2}}",
+      "linea_3": "{{URGENCIA_TEMPORAL}}",
+      "linea_4": "{{ESCASEZ}}",
+      "estilo_l3": "Black/900 dorado",
+      "estilo_l4": "Bold blanco en card interna",
+      "restriccion_palabras": "1-3 palabras por linea",
+      "regla_critica": "el timeline promete OCHO SEMANAS y este bloque dice SOLO POR HOY: uno da paciencia sobre el producto y el otro urgencia sobre la compra, y no se contradicen porque hablan de cosas distintas"
+    },
+    "bloque_precios": {
+      "posicion": "inferior_izquierda",
+      "tiers": 3,
+      "orientacion": "fila horizontal de tres columnas",
+      "formato_tier": "cantidad en Regular arriba, precio Black/900 blanco debajo, etiqueta de valor en pildora dorada al pie",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} — {{ETIQUETA_SOCIAL}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}} — {{ETIQUETA_AHORRO}}"
+    },
+    "cta_emocional": {
+      "posicion": "inferior_derecha",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_URGENCIA}}",
+      "estilo_l1": "Regular blanco de 2 lineas",
+      "estilo_l2": "Black/900 en cursiva con signos de exclamacion",
+      "restriccion_palabras": "4-8 palabras por linea"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye bandera de {{PAIS}}"
+    }
+  },
+  "secuencia_lectura": [
+    "timeline_transformacion",
+    "titular",
+    "bloque_urgencia",
+    "producto_hero",
+    "parrafo_descriptivo",
+    "lista_beneficios",
+    "bloque_precios",
+    "badge_garantia",
+    "cta_emocional",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El timeline NO es opcional",
+    "El bloque de urgencia va vertical en el flanco derecho, de arriba abajo",
+    "El timeline habla del producto y el bloque de urgencia habla del precio: nunca se mezclan",
+    "El titular va en dos bandas apiladas: organo arriba, consecuencia sistemica abajo",
+    "Los iconos de beneficio son fotos circulares reales con titulo en cursiva",
+    "La pieza se parte en dos temperaturas: claro arriba, oscuro abajo",
+    "Siempre 3 tiers de precio"
+  ],
+  "variables_requeridas": [
+    "TIMELINE[3]",
+    "ORGANO_OBJETIVO",
+    "CONSECUENCIA_SISTEMICA",
+    "PARRAFO",
+    "CLAIM_POTENCIA",
+    "BENEFICIOS[5]",
+    "DIAS_GARANTIA",
+    "PRECIO_LABEL_L1",
+    "PRECIO_LABEL_L2",
+    "URGENCIA_TEMPORAL",
+    "ESCASEZ",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "CTA_L1",
+    "CTA_URGENCIA",
+    "GARANTIAS[3]",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "cierre de una campana de transformacion temporal que ya corrio sin urgencia",
+    "cuando hay una promocion con fecha real que anunciar",
+    "publico que ya vio el timeline y no compro",
+    "cuando el resultado toma semanas pero la oferta dura horas"
+  ],
+  "cuando_no_usar": [
+    "publico frio: la urgencia sin argumento previo no convierte",
+    "cuando no hay una promocion real con vencimiento",
+    "organos no ilustrables en estados"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular GARANTIA 90 DIAS en dorado con laurel.",
+    "Timeline con labels SEMANA 0 / SEMANA 4 / SEMANA 8 y descripciones FILTROS RENALES CANSADOS Y ESTRES OXIDATIVO, MENOR CARGA Y MEJOR APOYO CIRCULATORIO, MAS BIENESTAR RENAL Y MEJOR EQUILIBRIO.",
+    "Pildora ANTIOXIDANTE DE ALTA POTENCIA.",
+    "Beneficios: APOYO RENAL DIARIO (acompana el bienestar de tus filtros renales), CIRCULACION SALUDABLE (favorece un buen flujo sanguineo), BIENESTAR VASCULAR (apoya tus vasos sanguineos cada dia), EQUILIBRIO DE LIQUIDOS (contribuye al manejo natural de liquidos retenidos), PROTECCION ANTIOXIDANTE (ayuda a cuidar tus celulas del estres oxidativo).",
+    "Bloque lateral PRECIO ESPECIAL SOLO POR HOY con STOCK LIMITADO y reloj.",
+    "Etiquetas MAS VENDIDO en el tier 2 y MAS AHORRO en el tier 3.",
+    "Barra final: ENVIOS A TODA GUATEMALA, PAGO CONTRA ENTREGA, COMPRA 100% SEGURA con bandera.",
+    "Claims impresos en el empaque: GMO free, gluten free, lab tested."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

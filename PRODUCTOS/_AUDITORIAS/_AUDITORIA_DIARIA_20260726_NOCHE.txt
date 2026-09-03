@@ -1,0 +1,101 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA — 2026-07-26 (domingo, ~21:10) · CORRIÓ SOLA (operador ausente)
+═══════════════════════════════════════════════════════════════════════════
+INTEGRIDAD DE VENTANA: 3 de 7 días con VENTAS (LucidSales) · huecos: 21, 22, 25, 26 jul → PARCIAL.
+⚠️ Domingo = tocaba el export CONTROL 7d de LucidSales y NO entró. P&L congelado en el
+   baseline 17-24 jul (Q1,163). Este informe es SOLO lado-ads (MCP): rankea por CONVERSACIÓN,
+   NO corona ganador por venta ni ordena escalado fuerte. La conversación CORTA, no CORONA.
+
+FUENTE: MCP en vivo GTR7(598687956219141) / GTR0(1665221077707961) / GTR1(824783947334627),
+ventana 23-25 jul (dias=3). GTR3: sin campañas TINNIDROP activas. GTR13(CLEARSTEM) MCP OFF.
+Salud general lado-ads: frecuencias 1.0-1.4 (SIN fatiga), CTR 3-5% sano, CPM $0.7-2.5 (barato,
+no saturado). El cuello NO es la entrega — es que faltan las ventas de LucidSales para decidir.
+
+───────────────────────────────────────────────────────────────────────────
+NOVEDAD DE LA NOCHE — TINNIDROP_RENOVACION (+25 años), GTR0, lanzada 25-jul
+───────────────────────────────────────────────────────────────────────────
+Campaña nueva 120256605036370595, 5 hooks RENOVADOS sobre los ángulos ganadores
+(no ángulos nuevos — renovación creativa, doctrina "el ángulo sirve, el creativo se gastó"):
+ · "GASTÉ MÁS DE Q2,000 Y SIGO IGUAL"     → ACCESIBILIDAD_MEDICO · $2.02 · 1 conv · 6%conv/clic
+ · "MI ESPOSA YA SE CANSÓ DE REPETIRME"   → PERDIDA_AUDITIVA     · $2.02 · 2 conv · 22%
+ · "CADA MES OIGO UN POCO MENOS"          → PERDIDA_AUDITIVA     · $1.99 · 1 conv · 5%
+ · "EL OTORRINO ME DIO 3 MINUTOS"         → ME_DIJERON_NO_CURA   · $2.01 · 3 conv · 18%
+ · "YA NO ME ACUERDO DE LAS COSAS (Fam B)"→ DETERIORO_COGNITIVO  · $0.02 · 0 conv · (casi sin gasto)
+Registrada en _EVENTOS.csv (LANZAMIENTO + CAMBIO_CREATIVO 25-jul) y en _DIM_CONJUNTOS.csv (5 filas).
+Solo ~1 día de vida en la ventana → OBSERVAR, no juzgar. Es variable de confusión si se lee
+junto al test viejo. El hook anti-médico "EL OTORRINO" es el más prometedor (18% con 1 día).
+
+═══════════════════════════════════════════════════════════════════════════
+INFORME ETAPA-7 — RANKING LADO-ADS (provisional, por %conv/clic-enlace y $/conv)
+═══════════════════════════════════════════════════════════════════════════
+
+TINNIDROP — 4 campañas vivas (test GTR0 + renovación GTR0 + réplicas GTR7/GTR1). Gasto ventana ≈ $102.
+Ranking por ángulo (agregado multicuenta, conversación-eficiencia):
+| Ángulo                     | conv | link-clk | %conv/clic | $/conv aprox | Lectura                         |
+|----------------------------|------|----------|------------|--------------|----------------------------------|
+| DETERIORO COGNITIVO        |  91  |   301    |   30%      |  ~$0.62      | volumen alto, mejor retención video; el "molde" |
+| Pérdida auditiva irrev.    |  56  |   168    |   33%      |  ~$0.40      | eficiente y barato; GANADOR_PRIOR por venta      |
+| Accesibilidad vs. médico   |  20  |    45    |   44%      |  ~$0.60      | mejor %conv, poco volumen                        |
+| ME DIJERON NO TIENE CURA   |  25  |   116    |   22%      |  ~$0.60      | %conv BAJO pero HISTÓRICAMENTE VENDE (no se juzga por conversación) |
+| NOCHES SIN DORMIR          |   5  |    33    |   15%      |  ~$0.84      | marginal, al filo                                |
+⚠️ Recordatorio de aprendizaje TINNIDROP: el %conversación NO predice la venta
+(tinnidrop-1 tuvo 78% conv → 0 ventas). Los que VENDEN son ángulos de PÉRDIDA
+(anti-médico/resignación + miedo a perder memoria/audición/sueño). NO coronar por este cuadro.
+
+NUSAVA — 2 campañas vivas (ESCALA_ARDOR + TEST-Copia). Gasto ventana ≈ $25.
+| Conjunto        | conv | link-clk | %conv/clic | $/conv | Lectura                                   |
+|-----------------|------|----------|------------|--------|-------------------------------------------|
+| MA7-ARDORVIDEO  |  22  |   33     |   67%      | $0.18  | súper eficiente en conversación (el caballo)|
+| ARDOR (test)    |  13  |   26     |   50%      | $0.32  | consistente                                |
+| MA4-DEPIE       |  12  |   31     |   39%      | $0.41  | bien                                       |
+| MA6-OFERTA      |   9  |   61     |   15%      | ~$0.84 | %conv bajo (llegan al chat pero no escriben)|
+| MA5-AZUCAR      |   3  |   19     |   16%      | $0.82  | flojo                                      |
+| MA2-ARDORNOCHE  |   4  |   22     |   18%      | $0.59  | flojo                                      |
+MA1-COMPLEJOB y MA3-HORMIGUEO: $0 (ya apagados / sin entrega). ARDOR sigue siendo el caballo
+del producto (coincide con el snapshot 20-jul: MEMORIA no escala, ARDOR sí).
+
+VARICOSE — 🔴 STALL / DARK. Ambas campañas ACTIVE pero CERO entrega en 23-25 jul.
+En 7d combinadas apenas $14.76 (ESCALA $8.60 · TRÁFICO $6.16), todo gastado ~19-22 jul.
+El producto #2 del portafolio, marcado "próximo a escalar horizontal", está DETENIDO.
+Causa probable: presupuesto agotado / caja sin reponer, o el operador la dejó sin activar tras
+duplicar→WhatsApp. NO es problema de ángulo (VERGÜENZA ya está confirmado por venta).
+
+CLEARSTEM — no auditado por MCP (GTR13 OFF). Se monitorea solo por LucidSales. Sin export → sin lectura.
+
+═══════════════════════════════════════════════════════════════════════════
+PLAN DE ESCALADO ETAPA-8
+═══════════════════════════════════════════════════════════════════════════
+1) PAUSAR: nada por conversación esta noche. Todo lo flojo (NUSAVA MA5/MA2/MA6) está al filo pero
+   sin ventas confirmadas no se mata (regla: la conversación corta solo con PD cumplido + 0 ventas,
+   y hoy la ventana de venta es PARCIAL). MA1/MA3 ya en $0.
+2) OPTIMIZAR FLUJO: NUSAVA MA6-OFERTA tiene 61 clics-enlace y solo 15% conv → llegan al chat y no
+   escriben. Si se confirma con ventas floja, revisar plantilla de inicio del bot (ETAPA-5), no el ad.
+3) SURFING +20%: NO. Requiere CPA real semanal por entregado; hoy no hay ventas. No tocar presupuestos.
+4) ESCALAR HORIZONTAL: en pausa hasta tener ventas. TINNIDROP ya está en 3 cuentas (GTR0/GTR7/GTR1).
+5) DUPLICAR CONJUNTO GANADOR: no, sin CPA real.
+6) CREATIVOS: la RENOVACIÓN TINNIDROP ya ejecutó lo correcto (renovar creativo del ángulo ganador).
+   POR QUÉ ganan los ángulos TINNIDROP = son de PÉRDIDA/resignación (anti-médico, miedo a perder
+   memoria/audición). El hook "EL OTORRINO ME DIO 3 MINUTOS" (anti-médico) es el mejor candidato de la
+   renovación — vigilarlo. NO proponer educacionales/mecanismo (3 testeos, 3 fracasos).
+7) PRECIO: sin cambios.
+
+⚠️ RECORDATORIO DE LÍMITE: sin LucidSales, todo esto es lado-ads. Ningún "matar" ni "escalar fuerte"
+   se ejecuta con esta ventana. El operador decide con la data de venta.
+
+═══════════════════════════════════════════════════════════════════════════
+QUÉ HACER MAÑANA (prioridad)
+═══════════════════════════════════════════════════════════════════════════
+1) 🔴 REACTIVAR VARICOSE: está dark 3-4 días. Reponer caja/activar la campaña de escalado VERGÜENZA
+   (GTR7) — es plata sobre la mesa, el ángulo ya vende. Verificar por qué dejó de entregar.
+2) 📊 PEGAR LUCIDSALES: falta el CONTROL 7d del domingo + los diarios de 25 y 26. Sin eso el P&L
+   lleva 2 noches congelado y no se puede coronar/escalar nada.
+3) 👀 OBSERVAR RENOVACIÓN TINNIDROP (+25 años): 1 día de vida, vigilar "EL OTORRINO" (anti-médico).
+
+ARCHIVOS ESCRITOS ESTA NOCHE:
+ · _FACT_ENTREGA.csv  → +24 filas (ventana 23-25 jul, MCP-ladoads-3d)
+ · _DIM_CONJUNTOS.csv → +5 filas (hooks renovación TINNIDROP, JOIN cerrado)
+ · _EVENTOS.csv       → +2 filas (LANZAMIENTO + CAMBIO_CREATIVO renovación 25-jul)
+ · _BITACORA_DATA.txt → fila 26-jul (🔴 sin LucidSales) + balance actualizado
+ · _GANANCIAS.txt     → fila historial 26-jul (s/d)
+ · _DASHBOARD.html    → regenerado (P&L sin cambio; refleja baseline 17-24 jul)
+═══════════════════════════════════════════════════════════════════════════

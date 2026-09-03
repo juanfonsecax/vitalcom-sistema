@@ -1,0 +1,181 @@
+═══════════════════════════════════════════════════════════════════════════
+_GANANCIAS.txt — CÓMO ME FUE   ·   actualizado 2026-09-02
+═══════════════════════════════════════════════════════════════════════════
+VENTANA: 17-jul → 01-sep (47 días) · canal WhatsApp · todas las cuentas y
+campañas sumadas. Hueco de 6 días (26-ago → 31-ago) CERRADO HOY con 7
+exports de LucidSales (uno por día). Serie SIN HUECOS.
+
+   ┌──────────────────────────────────────────────────────┐
+   │  GANANCIA NETA ....................  Q19,846         │
+   │  Ingreso facturado ................  Q105,032        │
+   │  Invertido en pauta ...............  Q23,308         │
+   │  Ventas ...........................  461             │
+   │  ROAS .............................  4.5 x           │
+   │  CPA global .......................  Q50.6           │
+   └──────────────────────────────────────────────────────┘
+
+   Promedio: Q422 de ganancia/día · 9.8 ventas/día · Q496/día de pauta
+
+⭐⭐ CORRECCIÓN MAYOR 02-sep — LA GANANCIA NO ESTABA INFLADA: ESTABA
+   SUBESTIMADA (APR-069). Primera medición contra las DOS fuentes de CAJA
+   (órdenes de Dropi + extracto bancario). Para AGOSTO:
+
+     lo que reporta el sistema (LucidSales) ......  Q13,404
+     ganancia REAL de caja .......................  Q15,245 a Q17,469
+     el sistema se queda corto por ...............  Q1,841 a Q4,065
+
+   Por qué: Dropi COBRÓ 349 órdenes en agosto y los ads solo atribuyen 302
+   ventas. Esas 47 órdenes (15.6%) entraron de verdad, pero ningún anuncio
+   se lleva el crédito — orgánico, recompra o tracking roto. Ese efecto a
+   favor es MAYOR que el del gasto no trackeado (8.6% en contra).
+   → Durante semanas este archivo advirtió «la ganancia está inflada»
+     mirando UNA SOLA punta de la ecuación (el gasto). APR-036 queda
+     CORREGIDO. Auditar las dos puntas antes de declarar el signo del error.
+
+   COBERTURA DE PAUTA: 91.4% en el tramo alineado 09-ago→01-sep (venía de
+   75%). Q1,238 de gasto real todavía no aparece en el P&L.
+   ⚠️ NO conciliar por mes calendario (APR-070): el extracto de agosto no
+   tiene ningún cargo del 01 al 08 — Meta cobra por umbral y con retraso, y
+   esos cargos cayeron en el extracto de julio. Por mes, el banco parece
+   cobrar Q810 MENOS de lo trackeado, que es una lectura falsa.
+
+🔴 GASTOS DEL NEGOCIO QUE NO ESTÁN EN ESTE P&L (agosto, misma cuenta):
+     MINIMED GEDIATRIA .......  $901.59 = Q6,870   ← 2º gasto del mes
+     Suscripciones Lucid .....  $114.00 = Q869/mes (visto el 01-sep)
+     Proxy-Cheap .............  $ 26.29 = Q200
+     Anthropic Claude ........  $ 21.53 = Q164
+   No se atribuyen por descarte (APR-030): el operador debe confirmar
+   cuáles son del negocio. Si MINIMED lo es, se lleva ~45% de la ganancia.
+
+📅 EL DETALLE SEMANA POR SEMANA está en `_REPORTE_SEMANAL.txt`, en
+   `_FACT_SEMANAL.csv` y en la sección «Semana por semana» del dashboard.
+
+⭐⭐ BAJAR EL GASTO FUNCIONÓ — EL GATE ES EL CPA, NO EL MONTO (APR-057 ✅)
+   | Tramo          | días | Pauta/día | CPA   | v/día | Ganancia/día |
+   |----------------|------|-----------|-------|-------|--------------|
+   | 17-30 jul      |  13  |   Q478    | Q53.1 |  9.0  |   Q+386      |
+   | 31jul-02ago    |   3  |   Q478    | Q42.2 | 11.3  |   Q+664 ⭐   |
+   | 03-10 ago      |   8  |   Q218    | Q28.6 |  7.6  |   Q+512      |
+   | 11-13 ago      |   3  |   Q597    | Q47.1 | 12.7  |   Q+652      |
+   | 14-16 ago      |   3  | **Q974**  | Q75.0 | 13.0  |   Q+317 🔴   |
+   | 17-20 ago      |   4  |   Q525    | Q52.5 | 10.0  |   Q+408      |
+   | 21-25 ago      |   5  |   Q547    | Q49.8 | 11.0  |   Q+548      |
+   El tramo 21-25 (con los 2 orgánicos sin atribución sumados) confirma la
+   banda sana: Q547/día a CPA Q49.8, dentro del rango que ya venía
+   sosteniendo ganancia desde el 17-ago. Techo demostrado sigue en
+   Q597/día; el gate sigue siendo el CPA (<~Q50-55), no el monto.
+   ⚠️ 24 y 25-ago AÚN NO MADURAN del todo (COD ~3 días) — sus cifras son un
+     PISO, no un techo. 21-23-ago ya son definitivos.
+
+───────────────────────────────────────────────────────────────────────────
+POR PRODUCTO — serie completa 17-jul → 25-ago
+───────────────────────────────────────────────────────────────────────────
+| Producto · canal        | Ventas | Pauta Q | Ingreso Q | CPA real | Break-Even | Estado      | GANANCIA Q |
+|-------------------------|--------|---------|-----------|----------|------------|-------------|------------|
+| TINNIDROP · WhatsApp    |    225 |   10589 |     47613 | Q47.1    | Q94.41     | 🟢 sano      |     +10652 |
+| CLEARSTEM · WhatsApp    |     94 |    4840 |     21287 | Q51.5    | Q103.93    | 🟢 sano      |      +4930 |
+| NUSAVA · WhatsApp       |     57 |    3068 |     15212 | Q53.8    | Q97.70     | 🟢 sano      |      +2501 |
+| VARICOSE · WhatsApp     |     13 |     961 |      3887 | Q73.9    | Q93.95     | ⚠️ ver nota  |       +260 |
+|-------------------------|--------|---------|-----------|----------|------------|-------------|------------|
+| TOTAL                   |    389 |   19458 |     88000 | Q50.0    | —          |             |     +18343 |
+
+   🟢 TINNIDROP: sigue el 58% de la ganancia total. En el tramo 21-25
+      vendió 25 (CPA Q67.9, algo caro) — arrastrado por la saturación de
+      GTR0 (CPA Q156.0 en GTR0 vs Q47.6 en GTR7, MISMO ángulo) y por GTR1
+      que sangró Q212 para 1 venta en su ventana reciente (ver nota de
+      cuenta). 🔴 T01 sigue SIN ARRANCAR: 6 días de Q0 en
+      ME_DIJERON_NO_CURA, el test iba a reemplazarlo y no corrió. Impacto
+      acumulado ~Q807/sem.
+   🟢 CLEARSTEM: el misterio de MEDICOS_FALLARON se RESOLVIÓ con esta
+      ventana. No era fatiga de creativo (APR-063 ya lo había descartado:
+      frecuencia 1.19-1.21) — es la BANDA DE EDAD. Sus réplicas 25+ cierran
+      9.1% (5/55) contra 29.7% (11/37) de la banda 25-35. Con el tramo
+      21-25 CLEARSTEM fue el MEJOR CPA del portafolio (Q28.5 en GTR13, 23
+      ventas atribuidas + 2 ventas orgánicas sin atribuir) — el producto se
+      recuperó apenas se leyó data fresca.
+   🟢 NUSAVA: estable, CPA Q76.6 en el tramo (por encima del BE Q97.7 así
+      que sigue sano) pero el más débil de los tres vivos. ARDOR/GTR7 sigue
+      siendo el único ángulo con margen para +20% (Q335/sem en juego).
+   ⚠️ VARICOSE: `_DIM_PRODUCTOS.csv` lo marca VIVO pero no registra gasto
+      en ninguno de los 10 días de esta actualización (ni en el tramo
+      21-25 ni en el 17-20 previo) — 12 días sin gasto según el dashboard.
+      Esto CONTRADICE la nota de `_PORTAFOLIO.txt` que lo tiene como
+      PAUSADO desde el cambio de envase del proveedor. Ninguna fuente
+      nueva lo confirma reactivado. NO se toca el estado por cuenta propia
+      — falta que el operador confirme cuál de las dos etiquetas manda.
+
+───────────────────────────────────────────────────────────────────────────
+POR CUENTA — tramo 21-25 ago (5 días, un export por día)
+───────────────────────────────────────────────────────────────────────────
+| Cuenta         | Pauta Q | Ventas | CPA    | Cierre msj→venta | GANANCIA Q |
+|----------------|---------|--------|--------|-------------------|------------|
+| GTR13          |     656 |     23 | Q28.5  | 17.3% (133 msj)   |     +1732  |
+| GTR7           |     994 |     15 | Q66.3  |  6.9% (216 msj)   |      +411  |
+| GTR0           |     751 |     11 | Q68.2  |  5.9% (185 msj)   |      +318  |
+| GTR1           |     336 |      4 | Q84.1  |  6.0% ( 67 msj)   |       +24  |
+| SIN_ATRIBUCION |       0 |      2 |   —    |  — (organic)      |      +254  |
+
+   🟢 GTR13 fue la cuenta más sana del tramo — coincide con la resolución
+      de CLEARSTEM/MEDICOS_FALLARON (banda de edad, no ángulo muerto).
+   🔴 GTR0 sigue cerrando peor que GTR7 al mismo costo por mensaje — la
+      saturación por cuenta NO se resolvió con data nueva; sigue siendo la
+      acción #2 del dashboard (Q880/sem).
+   🔴 GTR1 tuvo una ventana reciente mala dentro del tramo: el dashboard
+      la marca sangrando (Q212 gastados por 1 venta, CPA muy por encima
+      del portafolio) — antes de culpar al creativo, revisar método de
+      pago / rechazos de cobro (APR-049).
+   ⚪ CP1 sigue AUSENTE de los exports — quinto tramo consecutivo en cero.
+      Cada vez más probable que esté apagada a propósito y no que sea una
+      fuga de reporteo (APR-030: no se atribuye por descarte, falta
+      confirmación del operador).
+   ⚪ SIN_ATRIBUCION: 2 ventas orgánicas de CLEARSTEM (23-ago Q389.01 = 3x,
+      25-ago Q198.00 = 1x) que el export no liga a ningún adId — mismo
+      patrón que las 14 filas previas (APR-035). Sin spend asociado en
+      LucidSales; no significa spend cero real, significa spend no
+      atribuible a este pedido puntual.
+
+───────────────────────────────────────────────────────────────────────────
+HISTORIAL — una línea por día (la auditoría de 9 PM agrega la fila cada noche)
+───────────────────────────────────────────────────────────────────────────
+| FECHA      | Ventas | Pauta Q | Ingreso Q | GANANCIA Q | ROAS  | Nota                        |
+|------------|--------|---------|-----------|------------|-------|-----------------------------|
+| 17-24 jul  |     53 |    2259 |     12489 |      +1163 | 5.53x | baseline agregado de 7 días (BE v1) |
+| 25-jul     |      8 |     708 |      1982 |       -130 | 2.80x | 🔴 DÍA EN PÉRDIDA. CLEARSTEM 0 ventas con Q134. Arranca RENOVACIÓN TINNIDROP (Q83, 0 ventas). Recuperado 26-jul. |
+| 26-jul     |     17 |     713 |      3692 |       +520 | 5.18x | ✅ MEJOR DÍA registrado (hasta el 25-ago). NUSAVA/ARDOR CPA Q19.3. TINNIDROP 11 ventas CPA Q43.7. |
+| 27-jul     |      8 |     630 |      1672 |        -58 | 2.65x | 🔴 leve pérdida. Solo TINNIDROP vendió (8, CPA Q50.3). CLEARSTEM (Q151) y NUSAVA (Q77) 0 ventas → probable rezago COD, sube retroactivo. Cerrado 28-jul con la data que ya estaba en _FACT_VENTAS. |
+| 28-jul     |     12 |     596 |      2574 |       +272 | 4.32x | ✅ recuperó. TINNIDROP 9 (Q47.5), NUSAVA 2 MA6-OFERTA (Q15.4 ⭐), CLEARSTEM 1 (Q100.6 lastre). Confirma que el 0 del 27 en NUSAVA fue rezago COD. CP1 (COP) normalizada ÷4050. 106 filas BASE. |
+| 29-jul     |     11 |     621 |      2353 |       +163 | 3.79x | ✅ CLEARSTEM 4 ⭐ (Q38.4, su mejor día), TINNIDROP 6 (Q65.9 caro), NUSAVA 1 (Q72.2, al filo del BE). Recuperado el 31-jul. 104 filas BASE. |
+| 30-jul     |      8 |     683 |      1788 |       -117 | 2.62x | 🔴 DÍA EN PÉRDIDA. TINNIDROP CPA Q94.6 (>BE Q71.6) → −Q115; NUSAVA 0 ventas con Q77 → −Q77. Solo CLEARSTEM salvó (3 ventas Q44.5, +Q75). Culpable: DETERIORO_COGNITIVO GTR7 gastó Q124 para 1 venta. Recuperado el 31-jul. 97 filas BASE. |
+| 31-jul ⚠️  |    (11)|   (534) |    (2566) |     (+247) | 4.81x | ⚠️ PARCIAL rol=CONTROL, NO suma. Cerrado después dentro del agregado 31jul-02ago. |
+| 31jul-02ago|     34 |    1434 |      7916 |      +1993 | 5.52x | agregado 3d. Cierra el hueco. Q478/día a CPA Q42.2 → Q+664/día, el mejor ritmo de la serie. |
+| 03-10 ago  |     61 |    1748 |     13541 |      +4096 | 7.75x | agregado 8d. Q218/día a CPA Q28.6 (el mejor CPA) pero solo Q+512/día: gastó poco. |
+| 11-13 ago  |     38 |    1790 |      8450 |      +1957 | 4.72x | ⭐ agregado 3d. **Q597/día = récord de gasto** a CPA Q47.1 → Q+652/día. TINNIDROP +1041, CLEARSTEM +1015, NUSAVA +77, VARICOSE −176. 119 filas BASE de las DOS cuentas de LucidSales. Tramo NO madurado → piso. |
+| 14-16 ago  |     39 |    2923 |      8904 |       +950 | 3.05x | 🔴 agregado 3d. Se pasó el techo: **Q974/día (+63%)** y la ganancia cayó a Q+317/día. Q378/día extra compraron 0.3 ventas más. Confirmado con la ventana siguiente. Último export con DOS bots (APR-043). |
+| 17-ago     |      9 |     680 |      1910 |        +34 | 2.81x | ✅ 1 día. CPA Q75.5, el peor de los cuatro. GTR0 gastó Q188 y vendió 0. Reanuda la resolución diaria tras 3 días de hueco. 47 filas BASE. |
+| 18-ago     |     12 |     497 |      2638 |       +618 | 5.31x | ✅ 1 día. CPA Q41.4 con Q497 de pauta. 45 filas BASE. |
+| 19-ago     |     10 |     562 |      2338 |       +425 | 4.16x | ✅ 1 día. CPA Q56.2. CLEARSTEM/RESISTENCIA_INSULINA 2 ventas. 46 filas BASE. Maduró el 24-ago. |
+| 20-ago     |      9 |     361 |      1910 |       +556 | 5.29x | ✅ 1 día. CPA Q40.1 con la pauta más baja del tramo (Q361, bajo la banda). 46 filas BASE. T01 debía arrancar hoy y no arrancó; ME_DIJERON_NO_CURA en Q0. Maduró el 25-ago. |
+| 21-ago     |     11 |     528 |      2275 |       +521 | 4.31x | ✅ 1 día, backfill 26-ago (hueco de 5 días cerrado). CPA Q48.0. 44 filas BASE + 23 filas AdsManager-1d. MADURO — definitivo. |
+| 22-ago     |      5 |     468 |      1374 |       +113 | 2.94x | ✅ 1 día, backfill. CPA Q93.6, el más caro del tramo. 45 filas BASE. MADURO — definitivo. |
+| 23-ago     |      9 |     624 |      2158 |       +303 | 3.46x | ✅ 1 día, backfill. CPA Q69.3. 45 filas BASE + 1 venta orgánica CLEARSTEM 3x (Q389.01) sin adId. MADURO — definitivo. |
+| 24-ago     |     13 |     561 |      2855 |       +711 | 5.09x | ✅ 1 día, backfill. CPA Q43.2. 45 filas BASE. Piso — aún no madura del todo. |
+| 25-ago     |     17 |     556 |      3655 |      +1092 | 6.57x | ✅ 1 día, backfill. **Mejor día de la serie (supera al 26-jul)**. CPA Q32.7. 44 filas BASE + 1 venta orgánica CLEARSTEM 1x (Q198.00) sin adId. Piso — recién cerrado, ni empezó a madurar. |
+
+   ✅ HUECO DE 5 DÍAS (21-25 ago) CERRADO el 26-ago con 5 exports de
+   LucidSales (uno por día) + 5 exports de Ads Manager (uno por día, GTR0/
+   GTR1/GTR7/GTR13) que el operador entregó juntos. El lado-ads (mensajes/
+   clicks/impresiones/gasto) también quedó cargado en `_FACT_ENTREGA.csv`
+   con fuente `AdsManager-export-1d` — sin conector MCP en la sesión
+   (verificado de nuevo hoy, sigue ausente), pero con la misma resolución
+   diaria que hubiera dado el MCP. Los totales de LucidSales (spend/sells/
+   total) y los del export de Ads Manager (spend/link clicks/mensajes vía
+   tasa de conversión a WhatsApp) cruzan casi exacto entre sí (601
+   mensajes en ambas fuentes) — buena señal de consistencia.
+
+RÉCORD DE GANANCIA/DÍA (día suelto): Q+1,092 (25-ago) ⭐ NUEVO RÉCORD
+RÉCORD DE GANANCIA/DÍA (tramo sostenido): Q+664 (31jul-02ago) · escolta Q+652 (11-13 ago)
+RÉCORD DE GASTO/DÍA SOSTENIDO CON GANANCIA: Q597/día (11-13 ago)
+TECHO CONFIRMADO: arriba de Q600/día el CPA se rompe (14-16 ago, Q974 → Q75.0)
+MEJOR DÍA SUELTO: 25-ago — 17 ventas · +Q1,092 · ROAS 6.57x
+PEOR DÍA SUELTO: 30-jul — 8 ventas · −Q117 · ROAS 2.62x
+═══════════════════════════════════════════════════════════════════════════

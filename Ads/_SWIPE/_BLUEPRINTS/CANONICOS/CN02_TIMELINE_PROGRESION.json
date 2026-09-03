@@ -1,0 +1,266 @@
+{
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "schema_version": "canonico-1.0",
+  "nombre": "Timeline de progresion",
+  "dispositivo_canonico": "TRES O MAS ESTADOS EN FILA, CADA UNO CON SU ETIQUETA DE PLAZO. A diferencia del antes/despues, aca el eje del tiempo esta DIBUJADO: dia 1, semana 2, mes 3. La pieza no promete un salto, promete un recorrido — y al hacerlo instala la idea de que el producto se toma durante un periodo, no una vez.",
+  "cuando_elegirlo": "El producto es un TRATAMIENTO con curva de resultado y el argumento de venta es la duracion (por eso empuja el pack de 3). Tambien cuando el resultado es invisible: el timeline lo puede narrar en ilustracion o render sin necesitar una foto real.",
+  "ejes_de_variacion": [
+    "material del estado: render de organo, ilustracion de linea, foto cotidiana",
+    "que dice la etiqueta: plazo real (semana 1) o momento de uso (al despertar)",
+    "escala del eje: pareja o desigual/logaritmica, que comprime el final",
+    "posicion: banda superior sobre el titular, o cuerpo central de la pieza",
+    "un frasco por periodo debajo = el pack se justifica solo (F061-63)"
+  ],
+  "n_miembros": 12,
+  "ficha_referencia": "F029",
+  "score_referencia": 63,
+  "perfil": {
+    "concepto_key": {
+      "C8_PROGRESION": 12
+    },
+    "rol_embudo": {
+      "MOFU": 7,
+      "TOFU": 4,
+      "BOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 9,
+      "organico_ugc": 3
+    },
+    "formato": {
+      "1:1": 11,
+      "5:6": 1
+    },
+    "densidad": {
+      "media": 5,
+      "muy_alta": 3,
+      "baja": 3,
+      "alta": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "TITULAR",
+    "ESTADO_1",
+    "ESTADO_2",
+    "ESTADO_3",
+    "LABEL_PLAZO_1",
+    "LABEL_PLAZO_2",
+    "LABEL_PLAZO_3",
+    "MATERIAL_DEL_ESTADO",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": [
+      "ADICION",
+      "ATRIBUTOS_PUREZA[3]",
+      "BENEFICIOS[3]",
+      "BENEFICIOS[5]",
+      "BENEFICIO_RESUMEN",
+      "CANT_1",
+      "CANT_2",
+      "CANT_3",
+      "CLAIM_POTENCIA",
+      "COLOR_ACENTO",
+      "COLOR_ALERTA",
+      "CTA_L1",
+      "CTA_URGENCIA",
+      "DIAS_GARANTIA",
+      "DOSIS",
+      "ESCASEZ",
+      "ETIQUETA_AHORRO",
+      "ETIQUETA_SOCIAL",
+      "GARANTIAS[3]",
+      "IMAGEN_1",
+      "IMAGEN_2",
+      "INGREDIENTE",
+      "LOGO_MARCA",
+      "MAS_ESTADO_ACENTO",
+      "MENOS_PROBLEMA",
+      "MONEDA",
+      "PAIS",
+      "PARRAFO",
+      "PRECIO_1",
+      "PRECIO_2",
+      "PRECIO_3",
+      "PRODUCTO",
+      "PROGRESION[3]",
+      "RENUNCIA_NEGADA",
+      "SUBTITULAR",
+      "TIMELINE[3]",
+      "TIMELINE_EVIDENCIA[3]",
+      "TITULAR"
+    ]
+  },
+  "reglas_duras_compartidas": [
+    "Siempre 3 tiers de precio",
+    "El timeline NO es opcional: sin timeline no es este concepto",
+    "La garantia va en dorado, nunca en el color de la paleta",
+    "La paleta se deriva del ingrediente activo cuando el empaque es neutro",
+    "Las tres ilustraciones van en dibujo de linea, mismo encuadre y misma escala",
+    "Un envase por mes, alineado bajo su ilustracion",
+    "Sin precio, sin sellos, sin CTA",
+    "Los labels son meses reales del calendario"
+  ],
+  "reglas_duras_referencia": [
+    "El timeline NO es opcional: sin timeline no es este concepto",
+    "Los 3 estados del organo son visualmente distinguibles entre si",
+    "El estado 2 muestra progreso parcial creible, nunca resultado total",
+    "Los iconos de beneficio son fotos circulares reales, nunca line-art",
+    "Siempre 3 tiers de precio",
+    "La garantia va en dorado, nunca en el color de la paleta",
+    "Si el empaque es blanco o neutro, la paleta viene del ingrediente activo o del organo objetivo"
+  ],
+  "cuando_usar": [
+    "producto con resultado progresivo y medible en semanas",
+    "organo o zona que se puede ilustrar anatomicamente en estados (rinon, higado, articulacion, piel, cabello)",
+    "cuando hay margen para 3 tiers de precio",
+    "publico que compara y necesita proyeccion de resultado",
+    "producto de resultado LENTO donde el plazo es la objecion principal",
+    "cuando existe algun efecto sensorial inmediato que se pueda verificar el mismo dia",
+    "categorias digestivas, de sueno, de energia o de alivio donde se siente antes de que se vea",
+    "publico que ya compro otras cosas que no le hicieron nada"
+  ],
+  "cuando_no_usar": [
+    "resultado inmediato: el timeline no aplica",
+    "problemas no visualizables anatomicamente (tinnitus, animo, insomnio)",
+    "cuando solo se vende 1 unidad",
+    "producto sin ningun efecto perceptible a corto plazo: la escalera se cae en el primer escalon",
+    "resultado inmediato: no hay cronologia que contar",
+    "publico frio que todavia no nombro el problema"
+  ],
+  "blueprint_equivalente": [
+    "D_transformacion_temporal"
+  ],
+  "miembros": [
+    {
+      "ficha_id": "F029",
+      "score": 63,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "5:6",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TIMELINE DE 3 ESTADOS DEL ORGANO EN EL TOPE"
+    },
+    {
+      "ficha_id": "F036",
+      "score": 54,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA CRONOLOGIA DE SENSACIONES EN ESCALA DESIGUAL"
+    },
+    {
+      "ficha_id": "F039",
+      "score": 53,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TIMELINE DE TRES FOTOS DE UNA EVIDENCIA COTIDIANA Y VERIFICABLE"
+    },
+    {
+      "ficha_id": "F040",
+      "score": 53,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MISMO TIMELINE DE EVIDENCIA QUE F039, PERO CON HOOK DE PROMESA Y LABELS DE PLAZO REAL"
+    },
+    {
+      "ficha_id": "F041",
+      "score": 53,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TIMELINE DE EVIDENCIA SOBRE FONDO CLARO, CON DOS COLUMNAS DE BENEFICIO FLANQUEANDO EL PRODUCTO"
+    },
+    {
+      "ficha_id": "F042",
+      "score": 53,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TIMELINE ANATOMICO ARRIBA CON EL TITULAR SOBRE BROCHAZO INMEDIATAMENTE DEBAJO"
+    },
+    {
+      "ficha_id": "F053",
+      "score": 51,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TIMELINE ANATOMICO ARRIBA CON EL BLOQUE DE URGENCIA VERTICAL A LA DERECHA"
+    },
+    {
+      "ficha_id": "F061",
+      "score": 41,
+      "anunciante": "Doa Oferta",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA PROGRESION EN DIBUJO DE LINEA CON MESES DEL CALENDARIO, Y UN FRASCO POR MES DEBAJO"
+    },
+    {
+      "ficha_id": "F062",
+      "score": 41,
+      "anunciante": "Doa Oferta",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA MISMA LAMINA DE F061, PERO CON EL TITULAR DE ADICION EN VEZ DE REVELACION"
+    },
+    {
+      "ficha_id": "F063",
+      "score": 41,
+      "anunciante": "Dona Oferta",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA MISMA LAMINA Y EL MISMO TITULAR DE F062, CON LA ZONA OBJETIVO CAMBIADA"
+    },
+    {
+      "ficha_id": "F100",
+      "score": 30,
+      "anunciante": "Teyra",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "TRES ESTADOS DEL MISMO ORGANO CON ETIQUETA DE SEMANA, Y UNA BANDA ROJA QUE TRADUCE EL DIBUJO A SENSACION"
+    },
+    {
+      "ficha_id": "F101",
+      "score": 30,
+      "anunciante": "Teyra",
+      "concepto_key": "C8_PROGRESION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA CRONOLOGIA EN ESCALA LOGARITMICA"
+    }
+  ]
+}

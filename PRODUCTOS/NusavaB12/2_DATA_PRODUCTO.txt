@@ -1,0 +1,664 @@
+═══ NUSAVA B12 · VERSION v4 · 2026-07-14 · COSTO Q70 · DOSIS B12 5000 mcg / 1.5 ml sublingual · page_id 1218486924672725 · campaign_id 120246893776440784 (viva "…- Copia") · +FASE 2 ARDOR hermana ═══
+[v3 = FASE 2 iniciada 2026-07-07 con ángulo ganador MEMORIA confirmado por CPA real (LucidSales). ETAPA-3A→3B→4→5→6 abajo, bloque "FASE 2 — ESCALADO MEMORIA".]
+[v4 = FASE 2 hermana de ARDOR iniciada 2026-07-14 (co-ganador Lucid, CPA histórico Q19.1 / 7d Q33.7). Bot dedicado de UN solo ángulo (ardor/hormigueo pies-manos), campaña hermana escalonada — NO se mezcla con MEMORIA (otro problema, coherencia Clase 2/22). Bloque "FASE 2 — ESCALADO ARDOR" al final. MIEDO-CIRUGÍA (Varicose) se corre aparte, escalonado 2-3 días.]
+
+PRODUCTO: NUSAVA B12 — complejo de vitaminas B líquido sublingual (Extra Strength), frasco 60 ml / 2 fl oz, sabor frambuesa, ~40 dosis.
+FECHA_PROCESADO: 2026-06-22
+VERSION: v2 (consolida y reconcilia las corridas previas v1; sobrescribe los TXT planos viejos)
+COSTO_PROVEEDOR_Q: Q70
+DOSIS / PRESENTACIÓN: 1.5 ml (un gotero) debajo de la lengua, 1 vez/día en la mañana, sostener 30 seg. Sin agua.
+PROVEEDORES_DROPY: 5 (un registro previo decía 3 — confirmar con el operador; no afecta la campaña)   ·   ANUNCIANTES_AD_LIBRARY: no provisto
+VALIDACION_PRODUCTO: APTO. Dolor múltiple y fuerte, mecanismo único (sublingual) demostrable, oferta de proveedores baja-media. Nota R5: "la B12 se consigue en farmacia" → mitigado con ángulos de causa específica (absorción, nervio diabético, ciática, ánimo). El producto se lanzó, queda APTO en la práctica.
+FANPAGE: Formato A (ya creada y asignada a GTR 7). 🧬 Dr. Ricardo Estrada — Salud Nerviosa & Neuropatía · page_id 1218486924672725 · WhatsApp +502 5283 2734. Tono clínico-cálido, autoridad médica, compliance estricto. Edad de segmentación: amplio 18-65+ (la data decide el piso de edad vía ETAPA-7).
+MCP_ACCOUNT_ID: act_598687956219141 (GTR 7, USD) · MCP_PAGE_ID: 1218486924672725 · MCP_PIXEL_ID: [pegar dataset_id de Events Manager — solo para la skill monitor-pixel; NO bloquea ETAPA-7] · TASA_USD_GTQ: 7.62
+TRACKING DE VENTAS: enlazado vía GUAVA → WABA → Meta. El bot dispara WhatsApp conversions y cada venta cae en actions:omni_purchase (Compras). ETAPA-7 lee el CPA real desde ahí por campaign_id, automático — sin necesidad del pixel_id ni de input manual. Validar 1 vez en la 1ª corrida que las Compras caen en omni_purchase y no en otra acción (offline_conversion.purchase / custom).
+
+━━━ COSTEO (ETAPA-1, fila Q70) ━━━
+⚠️ CORRECCIÓN DE OFERTA (2026-07-07 — confirmado por operador): NUSAVA B12 SE VENDE SIEMPRE EN COMBO (2x1 o 4x2), NUNCA unidad suelta. Clasificación correcta = BAJO TICKET → 2x1/4x2 (ETAPA-1 regla 1: costo por unidad ~Q35 < Q50 → liderar con 2x1/4x2 sin 1u de entrada). La corrida v2 lo puso en 1/2/3 por el default "salud→tratamiento"; se corrige a combos.
+   · 2X1 (oferta base, mínima): 2 frascos por Q219 · costo proveedor Q70 (los 2) · ganancia bruta Q149 (~68%) · − CPA Base Q32.3 = Q116.7
+   · 4X2 (upsell): 4 frascos por Q369 · costo proveedor Q140 (las 4) · ganancia bruta Q229 · − CPA Base Q32.3 = Q196.7
+   · CPA Objetivo Q32.3 y Break Even Q68.3 SIGUEN VÁLIDOS (se derivan del 2x1 base; precio Q219 y costo Q70 no cambian).
+   · HECHO (2026-07-07, edición quirúrgica): bot (1_HACER_MANUAL) corregido a 2X1 Q219 / 4X2 Q369 (bloque PRECIOS, FAQ P10, interacción de precios, regla de upsell, testimonio de cantidad). Copies (ETAPA-4) NO se tocaron: dicen solo "Q219 con envío gratis" y Q219 no cambia (ahora = 2x1). Presentación del 4X2 = "la más elegida ⭐ tratamiento completo + regalo, la 2ª mitad casi regalada" (Clase 17 + ETAPA-5).
+OFERTA REAL (reemplaza la escalera legacy 1/2/3):
+2X1 (2 frascos): Q219 + envío gratis · costo Q70 los 2
+4X2 (4 frascos): Q369 · costo Q140 las 4
+CPA_OBJETIVO (Base, ~15% ganancia): Q32.3 ($4.24)
+CPA_BREAK_EVEN (límite, no perder): Q68.3 ($8.96)
+Márgenes por pedido (precio − costo − CPA Base): 2X1 Q116.7 · 4X2 Q196.7   [legacy 1/2/3: P1u Q116.7 · P2u Q166.7 · P3u Q206.7 — reemplazado por combos]
+
+━━━ COMPONENTES (ETAPA-1B) ━━━
+- B12 metilcobalamina 5000 mcg — forma activa, vaina de mielina, nervios, glóbulos rojos, energía, memoria/función mental
+- B6 (piridoxina) 3400 mcg — sistema nervioso, ánimo (serotonina/GABA), SPM
+- B1 (tiamina) 2400 mcg — nervios periféricos, energía, "antiestrés", nervio diabético
+- Niacina (B3) — energía, circulación, piel
+- Folato (B9) — homocisteína/circulación, función nerviosa
+DIFERENCIADOR CLAVE: absorción sublingual — entra directo a la sangre, sin pasar por el estómago (vs pastilla).
+
+━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) ━━━
+[Re-revisión ETAPA-2 v3 · 2026-06-27] Criterios de ranking actualizados: (1) voz real/problema oculto, (2) carga emocional/identidad, (3) saturación baja, (4) señales de compra, (5) ángulo directo. Bajo estos criterios: ABSORCION sigue #1 (problema oculto = mala absorción de la pastilla, dolor de voz real "boto el pisto", saturación baja). ANIMO (emocional, único de identidad pura) sube por el criterio 2: quedó #5 por nivel de conciencia bajo y saturación media, pero hay que vigilarlo de cerca en el testeo. Los 6 conjuntos lanzados NO cambian (campaña ya viva). Niveles de conciencia ahora notados con sub-estado 3a/3b cuando aplica.
+
+ÁNGULO 1 — ABSORCION "El que SÍ se absorbe" (mecanismo único)
+  Creativo: IMAGEN (NUSAVAB12_1_ABSORCION.jpg) · Precio en ad: no
+  Dolor: "Ya probé pastillas de B12 y nunca sentí nada — siento que boto el pisto"
+  Avatar: 40-58, escéptico, gastritis/digestión lenta · Nivel de conciencia 3a (conoce la B12 pero teme "botar el pisto" otra vez → reducir fricción: mecanismo único + prueba) · Saturación BAJA
+  Emoción/necesidad oculta: cansado de gastar en algo que no siente; quiere por fin SENTIR que algo le funciona (problema oculto = mala absorción de la pastilla, no la B12 en sí).
+  Promesa: B12 líquida sublingual se absorbe sin depender del estómago.
+
+ÁNGULO 2 — ARDOR "Apaga el ardor de pies y manos" (problema-dolor)
+  Creativo: VIDEO (NUSAVAB12_2_ARDOR.mp4) · Precio en ad: no
+  Dolor: "En la noche me arden los pies como brasas y se me duermen las manos"
+  Avatar: 45-62, ardor/hormigueo nocturno, posible glucosa alta · Nivel 2 · Saturación MEDIA
+  Promesa: B12 + B1 apoyan los nervios de pies y manos.
+
+ÁNGULO 3 — AZUCAR "Protegé tus nervios del azúcar" (miedo) — COMPLIANCE CRÍTICO
+  Creativo: IMAGEN (NUSAVAB12_3_AZUCAR.jpg) · Precio en ad: no
+  Dolor: "Tengo el azúcar alta y ya siento hormigueo en los pies — me da miedo perder sensibilidad"
+  Avatar: 48-65, diabético/prediabético · Nivel 2 · Saturación BAJA
+  Promesa: B1 + B12 apoyan los nervios que el azúcar debilita. NUNCA "trata/cura la diabetes" ni "baja el azúcar".
+
+ÁNGULO 4 — MEMORIA "Vitamina del nervio y la memoria" (educativo) · LLEVA PRECIO Q219
+  Creativo: VIDEO (NUSAVAB12_4_MEMORIA.mp4) · Precio en ad: Q219
+  Dolor: "Mi mamá tiene los nervios dañados y pierde memoria, y yo ando sin energía cuidándola"
+  Avatar: mujer 38-55 cuidadora / adulto 55+ con olvidos · Nivel 1 (educar) · Saturación MEDIA-ALTA
+  Promesa: B12 metilcobalamina apoya la vaina de mielina (nervios y memoria).
+
+ÁNGULO 5 — ANIMO "B12 para el ánimo y la ansiedad" (emocional)
+  Creativo: VIDEO (NUSAVAB12_5_ANIMO.mp4) · Precio en ad: no
+  Dolor: "Ando ansioso, irritable y sin foco — como apagado por dentro"
+  Avatar: 30-48, agotamiento emocional · Nivel 1-2 · Saturación MEDIA
+  Emoción/necesidad oculta: quiere volver a SENTIRSE él mismo, con energía y presente para su familia (identidad, no solo síntoma) — único ángulo de carga emocional pura del set; bajo criterios v3 es el que más conversión podría dar.
+  Promesa: B12 + B6 apoyan el sistema nervioso y la serotonina.
+
+ÁNGULO 6 — CIATICA "Calmá el nervio ciático" (problema-dolor) · LLEVA PRECIO Q219
+  Creativo: VIDEO (NUSAVAB12_6_CIATICA.mp4) · Precio en ad: Q219
+  Dolor: "Tengo ciática, ese dolor que me baja de la cintura por la pierna"
+  Avatar: 40-58 (Don Carlos, 55, trabajó de pie) · Nivel 2 · Saturación MEDIA
+  Promesa: B12 + B1 apoyan el nervio ciático.
+
+━━━ ÁNGULOS DESCUBIERTOS DESDE COMPONENTES (ETAPA-1B) ━━━
+[Re-modelado ETAPA-1B v3 · 2026-06-27] Ahora cada descubierto lleva: deseo/anhelo + problema oculto + transformación A→B + carga. Banco = DOLOR y DESEO (antes solo dolor). Chequeo de competencia: automático por WebSearch (Paso 2B). Los conjuntos vivos NO cambian.
+D1. Absorción sublingual vs pastillas (EL MÁS FUERTE — usado como ángulo #1)
+    Problema OCULTO: la pastilla de B12 casi no se absorbe en el estómago → la gente "toma" B12 pero sigue sin sentir nada (la competencia no lo nombra).
+    Deseo real: "solo quiero por fin SENTIR que algo me funciona y no botar el pisto".
+    Transformación A→B: de gastar en pastillas sin efecto → a sentir energía/mejoría real porque por fin se absorbe. Carga: OCULTO+EMOCIONAL.
+D2. SPM / ciclo menstrual (B6) — apunta a página hormonal femenina (audiencia distinta, no usado)
+D3. Nervios del diabético (B1+B12) — usado como ángulo #3
+    Deseo real: "quiero dejar de sentir el ardor/hormigueo y dormir tranquilo". Transformación A→B: de noches con ardor de pies → a descanso sin molestia. Carga: EMOCIONAL (miedo). COMPLIANCE: "apoya/acompaña", nunca "cura el azúcar".
+D4. Corazón/circulación/homocisteína (B6+B9+B12) — no usado
+D5. Digestión / panza hinchada / lengua ardida — no usado
+D6. Colesterol/piel (niacina) — el más débil, no usado
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (insumo de ETAPA-7 / optimización)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPAÑA: NUSAVAB12_TEST_20260622   ·   FASE: 1 testeo   ·   LANZAMIENTO: 4 AM 2026-06-22
+CPA_OBJETIVO: Q32.3   ·   CPA_BREAK_EVEN: Q68.3   ·   PRESUPUESTO/CONJUNTO: $1.59 (159¢ USD)   ·   EDAD: amplio 18-65+
+
+| NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo | Precio ad | Avatar | Hook |
+|---|---|---|---|---|---|---|---|
+| ABSORCION_NUSAVAB12_TEST | El que SÍ se absorbe | mecanismo único | IMAGEN | NUSAVAB12_1_ABSORCION.jpg | no | 40-58 escéptico, ya probó pastillas | "¿Probaste pastillas de B12 y no sentiste nada?" |
+| ARDOR_NUSAVAB12_TEST | Apaga el ardor pies/manos | problema-dolor | VIDEO | NUSAVAB12_2_ARDOR.mp4 | no | 45-62 ardor nocturno | "¿Te arden o queman los pies en la noche?" |
+| AZUCAR_NUSAVAB12_TEST | Protegé tus nervios del azúcar | miedo | IMAGEN | NUSAVAB12_3_AZUCAR.jpg | no | 48-65 glucosa alta + hormigueo | "¿Azúcar alta y ya sentís hormigueo en los pies?" |
+| MEMORIA_NUSAVAB12_TEST | Vitamina del nervio y la memoria | educativo | VIDEO | NUSAVAB12_4_MEMORIA.mp4 | Q219 | mujer 38-55 cuidadora / 55+ | "Tus nervios y tu memoria piden esta vitamina" |
+| ANIMO_NUSAVAB12_TEST | B12 para el ánimo y la ansiedad | emocional | VIDEO | NUSAVAB12_5_ANIMO.mp4 | no | 30-48 agotamiento emocional | "¿Andás ansioso, irritable y sin foco?" |
+| CIATICA_NUSAVAB12_TEST | Calmá el nervio ciático | problema-dolor | VIDEO | NUSAVAB12_6_CIATICA.mp4 | Q219 | 40-58 ciática | "¿La ciática no te deja ni sentarte?" |
+
+CAMPAÑA VIVA (corregido 2026-07-03): la que corre es el DUPLICADO MANUAL "NUSAVAB12_TEST_20260622 - Copia" · campaign_id 120246893776440784 · ACTIVE. El esqueleto MCP 120246451636510784 quedó PAUSED/$0 (nunca entregó). ETAPA-7 lee la Copia (o la campaña ACTIVE cuyo nombre contenga "NUSAVAB12").
+
+RESULTADOS_TESTEO (auditoría 2026-07-09 · 🟢🟢 ESCALADO MEMORIA YA LANZADO + test FASE-1 podado según plan):
+  ✅ CAMBIO CLAVE vs ayer: el operador EJECUTÓ el plan. (1) La FASE 2 "🟦 NUSAVAB12_ESCALA_MEMORIA_20260708" (120247342961210784) YA EXISTE y está ACTIVE (lanzó hoy 09-jul, gasto $2.50). (2) En el test "…- Copia" (120246893776440784, $85.32 acum) ANIMO/AZUCAR/CIATICA quedaron PAUSED ✓ y siguen vivos solo ARDOR/ABSORCION/MEMORIA. Nada pendiente de podar.
+  🔴 Tracking Meta sigue roto (omni_purchase="Not available" en ambas campañas) → VENTAS = LucidSales (fuente de verdad). Ranking Meta por conversación es PROVISIONAL/engañoso (ANIMO lideraba conversación y vendió 0).
+
+  A) TEST "…- Copia" (acumulado 27-jun→09-jul · ranking por conversación, no venta):
+  | conjunto  | estado  | conv | clic-enl | %conv/clic | $/conv | CTR | CPM | frec | venta (LucidSales) |
+  | ARDOR     | ACTIVE  | 73 | 121 | 60.3% | $0.22 | 5.30% | $1.81 | 1.33 | 🟢 GANADOR (Q19.1 sem) |
+  | ANIMO     | PAUSED  | 68 | 100 | 68.0% | $0.19 | 7.59% | $1.71 | 1.30 | 🔴 0 ventas (apagado ✓) |
+  | ABSORCION | ACTIVE  | 46 | 137 | 33.6% | $0.34 | 5.61% | $1.55 | 1.35 | 🟢 rentable (Q27.8) |
+  | MEMORIA   | ACTIVE  | 33 |  75 | 44.0% | $0.47 | 5.82% | $2.31 | 1.29 | 🟢🟢 GANADOR (Q18.7 sem) |
+  | CIATICA   | PAUSED  | 27 |  53 | 50.9% | $0.48 | 4.24% | $2.60 | 1.25 | 🔴 0 ventas (apagado ✓) |
+  | AZUCAR    | PAUSED  | 23 |  68 | 33.8% | $0.55 | 2.96% | $1.67 | 1.39 | 🔴 0 ventas (apagado ✓) |
+  last_3d (solo activos): ARDOR 10 conv/$0.23 · ABSORCION 6/$0.40 · MEMORIA 3/$0.72. Frec 1.04-1.06, CPM $1.7-2.0 → SIN fatiga, sin saturación. (MEMORIA hace menos conversación pero convierte a venta = congruente con LucidSales.)
+
+  B) ESCALADO "🟦 NUSAVAB12_ESCALA_MEMORIA_20260708" (DÍA 0 · $2.50 · 6 microángulos C-1..C-6):
+  C-5 Dr. autoridad 2 conv/$0.17 · C-3 cuidadora 1 conv/CTR 9.33% (mejor hook) · C-2 olvido-cuarto 1 conv · C-1/C-4/C-6 0 conv (C-1 y C-6 = "LLEVA PRECIO", el precio filtra, esperado). Total 4 conv. DÍA 1 = solo DATA, NO decidir nada todavía.
+
+  DECISIÓN HOY: (1) Escalado en Ventana-0 → observar, dejar correr, revisar mañana con día 1-2 completo. (2) Optimizar el flujo del bot hacia el dolor de MEMORIA (memoria/concentración). (3) Mandar 10-40 creativos nuevos del ángulo MEMORIA a ETAPA-4 (brief abajo). (4) ARDOR sigue siendo FASE 2 hermana PENDIENTE — armar su campaña dedicada escalonada (Clase 22 congruencia). (5) Con CPA real MEMORIA Q18.7 sem confirmado → habilitado Post ID de MEMORIA_A/ARDOR_B para prueba social + multicuenta MISMA página.
+  BRIEF CREATIVOS MEMORIA (ETAPA-4, por qué gana: es el ángulo que MÁS vende pese a conversación más cara — el avatar "se me olvidan las cosas / niebla mental 45-60" tiene intención de compra real): 3-5 conceptos nuevos, hook problema+curiosidad ("¿Entrás a un cuarto y ya no sabés a qué?"), cuerpo B12 nervio+memoria, oferta 2x1 Q219, formatos 1:1/4:5/9:16, avatar cuidadora 45-60. Compliance Andrómeda: texto <20%, "apoya/ayuda" (no cura), sin antes/después bilateral, render propio único.
+ANGULO_GANADOR: MEMORIA (Q18.7 sem / Q31.6 30d, LucidSales) — sin cambios; hoy el escalado YA está en marcha, foco = alimentar creativos + arrancar ARDOR hermana.
+
+RESULTADOS_TESTEO (auditoría 2026-07-08 · 🟢 CAMPAÑA FASE-1 REACTIVADA · ganador ya CONFIRMADO por LucidSales):
+  🟢 "NUSAVAB12_TEST_20260622 - Copia" (120246893776440784) volvió a ACTIVE. Gasto acumulado $76.41. En los últimos 3 días apenas gastó ~$3.74 (recién reactivada) → lectura = ACUMULADO 27-jun→08-jul, no del día.
+  🔴 TRACKING SIGUE ROTO en la "Copia": omni_purchase="Not available" en los 6 conjuntos. La verdad de ventas es LucidSales (bloque 07-jul): GANADORES = MEMORIA Q18.7 + ARDOR Q19.1; ABSORCION rentable Q27.8; ANIMO/AZUCAR/CIATICA 0 ventas.
+  ⚠️ La campaña ACTIVA sigue siendo el TEST de FASE 1 (6 conjuntos originales) — NO el escalado. Reactivarla vuelve a quemar presupuesto en ANIMO/AZUCAR/CIATICA (0 ventas). El esqueleto de escalado NUSAVAB12_ESCALA_MEMORIA_20260708 aún NO existe (solo hay un TEST_20260706 en PAUSED).
+  Ranking por conversación (acumulado, engañoso — NO refleja ventas): ANIMO 68 conv/$0.19/68% · ARDOR 57/$0.22/59% · ABSORCION 39/$0.33/35% · MEMORIA 28/$0.46/49% · CIATICA 27/$0.48/51% · AZUCAR 23/$0.55/34%. Frec 1.20-1.39 sin fatiga; CPM $1.5-2.6 sin saturación.
+  DECISIÓN: (1) dentro del test reactivado, APAGAR ANIMO/AZUCAR/CIATICA (0 ventas, gasto ~BE). (2) LANZAR la FASE 2 MEMORIA ya construida (crear NUSAVAB12_ESCALA_MEMORIA_20260708, 4 AM) en vez de seguir el test viejo. (3) +20% a MEMORIA/ARDOR/ABSORCION. (4) Post ID de MEMORIA_A/ARDOR_B para prueba social → multicuenta. ARDOR = FASE 2 hermana pendiente.
+ANGULO_GANADOR: MEMORIA (CPA real sem Q18.7) confirmado por LucidSales — sin cambios; hoy es problema de EJECUTAR el escalado, no de decidir.
+
+RESULTADOS_TESTEO (2026-07-07 · ✅ VENTAS REALES desde LucidSales · ventana 30-jun→07-jul · FUENTE DE VERDAD, reemplaza el ranking por conversación):
+  🔑 LucidSales (CRM del bot) SÍ tiene las ventas atribuidas por anuncio — el omni_purchase de Meta estaba roto pero las ventas existen. LucidSales = fuente de verdad de VENTAS; Meta solo sirve para mensajes/clics/CPM. Cruzar SIEMPRE con LucidSales.
+  ⚠️ EL RANKING SE INVIERTE: ANIMO (era "ganador provisional" por conversación) VENDIÓ 0 de 35 mensajes. Los ángulos que venden son MEMORIA, ARDOR y ABSORCION. Lección confirmada del sistema: conversación barata ≠ venta; el ángulo emocional ("ánimo/ansiedad") trae curiosos que no compran.
+  Global Nusava: 8 ventas · inversión ~$45.29 · Q vendido ~$2,352.
+  | conjunto  | mensajes | ventas | inversión | CPA real (Q, tasa 7.62) | vs Base Q32.3 / BE Q68.3 | decisión |
+  | MEMORIA   | 17 | 3 | $7.34 | Q18.7 | 🟢🟢 << Base | GANADOR — escalar |
+  | ARDOR     | 32 | 3 | $7.52 | Q19.1 | 🟢🟢 << Base | GANADOR — escalar |
+  | ABSORCION | 19 | 2 | $7.29 | Q27.8 | 🟢 < Base | rentable — mantener +20% |
+  | ANIMO     | 35 | 0 | $7.39 | — (0 ventas) | 🔴 ~BE sin vender | PAUSAR |
+  | AZUCAR    | 15 | 0 | $7.58 | — (0 ventas) | 🔴 ~BE sin vender | PAUSAR |
+  | CIATICA   | 24 | 0 | $8.17 | — (0 ventas) | 🔴 > BE sin vender | PAUSAR |
+  Anuncio-nivel: MEMORIA_A (3 ventas, 20% cierre, CPA Q13.4) es el mejor anuncio individual; ARDOR_B (2 ventas) y ARDOR_A (1) también cierran. ANIMO_A trajo 33 mensajes y 0 ventas (0% cierre) → el ad atrae, el ángulo no compra.
+  DECISIÓN: apagar ANIMO/AZUCAR/CIATICA (0 ventas, gasto ~BE, ~10 días de data). Escalar MEMORIA + ARDOR (CPA real rentable sostenido). Ir a FASE 2 con ángulo ganador = MEMORIA (y ARDOR de segundo). Surfing +20% a los 3 que venden. Post ID de MEMORIA_A/ARDOR_B para prueba social → multicuenta.
+  RECONCILIACIÓN VENTANA 30 DÍAS (LucidSales 01-jun→07-jul, 11 ventas Nusava): MEMORIA 3 (CPA Q31.6), ARDOR 3 (Q31.9), ABSORCION 2 (Q47.4), ANIMO 2 (Q47.3), AZUCAR 1 (Q94.3), CIATICA 0. Sobre 30d los CPA suben (más honestos) pero MEMORIA/ARDOR siguen ≤ Base y su TENDENCIA baja a Q18-19 la última semana (mejorando al madurar). ANIMO/AZUCAR vendieron al INICIO y se enfriaron (0 en la última semana; ANIMO peor cierre 2.9% con 68 msj = chat barato que no compra). Regla: decidir por CPA SEMANAL → gana la lectura de últimos 7-8d. Decisión SIN CAMBIOS: escalar MEMORIA+ARDOR, mantener ABSORCION vigilada, apagar ANIMO/AZUCAR/CIATICA.
+ANGULO_GANADOR: MEMORIA (B12 memoria/concentración) — CPA semanal Q18.7 (30d Q31.6), mejor cierre. ARDOR (B12 ardor/neuropatía pies-manos) co-ganador Q19.1 (30d Q31.9). ← CPA REAL confirmado, habilita FASE 2 y escalado.
+
+RESULTADOS_TESTEO (auditoría 2026-07-07 · 🟡 CAMPAÑA PAUSADA — cuenta ya desbloqueada, lectura ACUMULADA):
+  🟢 GTR 7 (act_598687956219141) volvió a estar QUERYABLE — el UNSETTLED del 06-jul se resolvió.
+  🟡 PERO la campaña viva "NUSAVAB12_TEST_20260622 - Copia" (120246893776440784) está PAUSED. No gastó nada nuevo → lectura = ACUMULADO 27-jun→07-jul (~$76.41), no del día.
+  🔴 TRACKING SIGUE ROTO: omni_purchase = "Not available" en los 6 conjuntos, 4 días después del arreglo del 03-jul. 242 conversaciones acumuladas y CERO ventas atribuidas por MCP. El arreglo NO está poblando la campaña "Copia". ACCIÓN OPERADOR #1: verificar en Ads Manager que el evento de compra esté atribuido a ESTA campaña; sin CPA real NO se declara ganador oficial ni se escala fuerte.
+  Global acumulado: gasto $76.41 · ~40,707 impr · ~2,129 clics · CPM ~$1.9 · 242 conversaciones a ~$0.32.
+  | conjunto  | conv | $/conv | clics-enlace | %conv/clic-enlace | CTR | CPM | frec | estado | ventas |
+  | ANIMO     | 68 | $0.19 | 100 | 68.0% | 7.59% | $1.71 | 1.30 | 🟢 | n/d |
+  | ARDOR     | 57 | $0.22 | 96  | 59.4% | 5.13% | $1.83 | 1.24 | 🟢 | n/d |
+  | ABSORCION | 39 | $0.33 | 112 | 34.8% | 5.46% | $1.51 | 1.29 | 🟡 (bot: muchos clics/pocos chats) | n/d |
+  | MEMORIA   | 28 | $0.46 | 57  | 49.1% | 5.88% | $2.35 | 1.20 | 🟡 | n/d |
+  | CIATICA   | 27 | $0.48 | 53  | 50.9% | 4.24% | $2.60 | 1.25 | 🟡 | n/d |
+  | AZUCAR    | 23 | $0.55 | 68  | 33.8% | 2.96% | $1.67 | 1.39 | 🔴 (CTR flojo + bot) | n/d |
+  Frecuencias 1.20-1.39 → SIN fatiga (todas <1.9). CPMs $1.5-2.6 → ángulos no saturados.
+  Ganador PROVISIONAL (por conversación, sin CPA): ANIMO — mayor volumen (68 conv) + 68% conv/clic-enlace + CTR 7.59%. ARDOR sólido #2. AZUCAR el más débil (candidato a pausar si se reactiva).
+ANGULO_GANADOR: PROVISIONAL = ANIMO (confirmar con CPA real una vez el tracking pueble ventas; sin eso no pasa a FASE 2 de escalado fuerte).
+
+RESULTADOS_TESTEO (auditoría 2026-07-06 · 🔴 SIN LECTURA — CUENTA BLOQUEADA):
+  🔴 GTR 7 (act_598687956219141) devolvió account_status=UNSETTLED, is_queryable=false, not_queryable_reason="Unknown error". No se pudieron leer campañas ni conjuntos hoy — ni NusavaB12 ni VARICOSE (ambos viven en esta cuenta).
+  UNSETTLED = saldo pendiente / método de pago con problema. Meta suele detener la entrega cuando la cuenta está sin liquidar → la campaña puede estar SIN gastar hoy. ACCIÓN OPERADOR (prioridad #1): entrar a Facturación de GTR 7, saldar el balance pendiente y regularizar el método de pago. Sin esto no hay data ni entrega para ningún producto de esta cuenta.
+  No se declara ganador ni se toma decisión de escalado hoy. Última lectura válida = 05-jul (abajo): ANIMO ganador PROVISIONAL por conversación (68 conv, $0.18, 68.7% conv/clic-enlace); ventas aún sin poblar. Sigue vigente hasta poder releer.
+
+RESULTADOS_TESTEO (lectura MCP 2026-07-05 · campaña VIVA 120246893776440784 "…- Copia" · ventana maximum 27-jun→05-jul ≈8 días):
+  ⚠️ VENTAS AÚN NO POBLADAS (omni_purchase = "Not available" en los 6 conjuntos, 2 días después del arreglo del 03-jul). Ranking = PROVISIONAL por conversación, NO por CPA. NO iniciar FASE 2 ni escalar fuerte hasta CPA real.
+  Global: gasto $74.97 · 40,074 impr · 2,089 clics · CPM ~$1.87 · CPC ~$0.036 · CTR ~5.2% · 237 conversaciones a ~$0.32.
+  | conjunto  | conv | $/conv | clics-enlace | %conv/clic-enlace | %conv/impr | CTR | CPM | CPC | frec | estado | ventas |
+  | ANIMO     | 68 | $0.18 | 99 | 68.7% | 0.94% | 7.60% | $1.71 | $0.02 | 1.30 | 🟢 | n/d |
+  | ARDOR     | 56 | $0.22 | 95 | 58.9% | 0.82% | 5.14% | $1.83 | $0.04 | 1.24 | 🟢 | n/d |
+  | ABSORCION | 37 | $0.34 | 105 | 35.2% | 0.45% | 5.34% | $1.50 | $0.03 | 1.27 | 🟡 | n/d |
+  | CIATICA   | 27 | $0.47 | 52 | 51.9% | 0.55% | 4.22% | $2.57 | $0.06 | 1.25 | 🟡 | n/d |
+  | MEMORIA   | 26 | $0.48 | 55 | 47.3% | 0.49% | 5.95% | $2.35 | $0.04 | 1.20 | 🟡 | n/d |
+  | AZUCAR    | 23 | $0.54 | 67 | 34.3% | 0.31% | 2.93% | $1.67 | $0.06 | 1.39 | 🔴 | n/d |
+  Tendencia last_3d (02→04-jul): ANIMO sigue #1 (CTR 7.95%, $0.27/conv), ARDOR #2 ($0.23), CIATICA repunta ($0.26). AZUCAR último ($0.80/conv, CTR cae a 2.56%). Frecuencias 1.04-1.10 → SIN fatiga (todas <1.9). CPMs $1.0-2.8 → ángulos NO saturados.
+  Lectura: ANIMO se confirma ganador PROVISIONAL sobre 8 días (mayor volumen 68 conv + 68.7% conv/clic-enlace). ARDOR sólido #2. Débiles sostenidos: AZUCAR 🔴 (hook flojo CTR 2.93%, %conv/clic 34.3% <35%, frec 1.39 la más alta) y ABSORCION 🟡 (clics baratos pero %conv/clic 35.2% al límite). BLOQUEANTE: tracking de ventas sigue sin poblar 2 días tras el arreglo → sin CPA real no se valida ni se escala fuerte. Acción #1 = revisar la config del evento de compra (pixel/dataset) con el operador.
+
+RESULTADOS_TESTEO (lectura MCP 2026-07-04 · campaña VIVA 120246893776440784 "…- Copia" · ventana maximum 27-jun→04-jul ≈7 días):
+  ⚠️ VENTAS AÚN NO POBLADAS (omni_purchase = "Not available" en los 6 conjuntos). Tracking arreglado 03-jul pero todavía no atribuye ventas. Ranking = PROVISIONAL por conversación, NO por CPA. NO iniciar FASE 2 hasta CPA real.
+  Global: gasto $62.28 · 33,531 impr · 1,758 clics · CPM ~$1.86 · CPC ~$0.035 · CTR ~5.2% · 204 conversaciones a ~$0.31.
+  | conjunto  | conv | $/conv | clics-enlace | %conv/clic-enlace | %conv/impr | CTR | CPM | CPC | frec | estado | ventas |
+  | ANIMO     | 63 | $0.17 | 86 | 73.3% | 1.02% | 7.59% | $1.70 | $0.02 | 1.25 | 🟢 | n/d |
+  | ARDOR     | 48 | $0.22 | 81 | 59.3% | 0.85% | 5.30% | $1.86 | $0.04 | 1.20 | 🟢 | n/d |
+  | ABSORCION | 35 | $0.29 | 94 | 37.2% | 0.51% | 5.44% | $1.49 | $0.03 | 1.25 | 🟡 | n/d |
+  | MEMORIA   | 21 | $0.50 | 49 | 42.9% | 0.47% | 5.98% | $2.39 | $0.04 | 1.16 | 🟡 | n/d |
+  | AZUCAR    | 19 | $0.54 | 52 | 36.5% | 0.31% | 2.95% | $1.67 | $0.06 | 1.34 | 🔴 | n/d |
+  | CIATICA   | 18 | $0.57 | 38 | 47.4% | 0.42% | 4.00% | $2.39 | $0.06 | 1.23 | 🔴 | n/d |
+  Tendencia last_3d (01→03-jul): ARDOR $0.24/conv y ANIMO $0.25/conv empatan a la cabeza (13 conv c/u); AZUCAR último ($0.58). Frecuencias 1.0-1.08 → SIN fatiga en ningún conjunto (todas frec <1.9, CTR estable).
+  Lectura: ANIMO se consolida como ganador PROVISIONAL (mayor volumen 63 conv + 73% conv/clic-enlace excelente). ARDOR fuerte #2. Los 6 conjuntos superan 35% conv/clic-enlace → el BOT convierte bien, no hay problema de flujo. AZUCAR (CTR 2.95%, hook flojo) y CIATICA (mayor $/conv) son los débiles.
+
+RESULTADOS_TESTEO (lectura MCP 2026-07-03 · campaña VIVA 120246893776440784 · ventana 27-jun→03-jul ≈6 días):
+  ⚠️ VENTAS NO TRAQUEADAS en esta ventana (omni_purchase = "Not available"): el tracking no atribuía qué publicación generó cada venta. Arreglado por el operador el 03-jul. Ranking = PROVISIONAL por conversación, NO por CPA. No iniciar FASE 2 hasta confirmar el ganador por CPA real.
+  Global: gasto $46.85 · 25,117 impr · 1,312 clics · frec 1.66 · CPM $1.87 · CPC $0.04 · CTR 5.22% · 149 conversaciones a $0.31.
+  | conjunto | conv | $/conv | clics-enlace | %conv/clic-enlace | CTR | CPM | CPC | frec | ventas |
+  | ANIMO     | 52 | $0.15 | 67 | 77.6% | 7.54% | $1.68 | $0.02 | 1.20 | n/d |
+  | ARDOR     | 35 | $0.23 | 61 | 57.4% | 5.41% | $1.89 | $0.03 | 1.16 | n/d |
+  | ABSORCION | 28 | $0.29 | 74 | 37.8% | 5.46% | $1.51 | $0.03 | 1.19 | n/d |
+  | AZUCAR    | 16 | $0.48 | 45 | 35.6% | 3.18% | $1.74 | $0.05 | 1.31 | n/d |
+  | MEMORIA   | 11 | $0.73 | 28 | 39.3% | 5.52% | $2.35 | $0.04 | 1.16 | n/d |
+  | CIATICA   |  7 | $1.06 | 21 | 33.3% | 3.73% | $2.38 | $0.06 | 1.18 | n/d |
+ANGULO_GANADOR: PROVISIONAL = ANIMO ("B12 para el ánimo y la ansiedad", avatar 30-48 agotamiento emocional). Lidera en volumen (52 conv) y eficiencia ($0.15, 77.6% conv/clic-enlace). Valida la nota de ETAPA-2 v3 (estaba #5 pero marcado "el que más conversión podría dar" por carga emocional/identidad).
+  → CONFIRMAR con CPA real tras 2-3 días con tracking arreglado, y recién ahí escalar en FASE 2.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FASE 2 — ESCALADO MEMORIA (iniciada 2026-07-07)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÁNGULO GANADOR: MEMORIA — "Vitamina del nervio y la memoria" · CPA real semanal Q18.7 (30d Q31.6), mejor cierre (LucidSales). Habilitó FASE 2.
+NOTA CO-GANADOR ARDOR: ARDOR (ardor/neuropatía pies-manos, CPA Q19.1) es co-ganador PERO es OTRO problema (territorio distinto). Por regla de coherencia de ángulo (Clase 2) NO se mezcla en los microángulos de MEMORIA. ARDOR merece su propia FASE 2 idéntica (correr después). Los "creativos memoria/ardor" que pidió el operador = 2 FASES 2 separadas, no una mezclada.
+
+── ETAPA-3A · MAPA DEL ÁNGULO MEMORIA ──
+DOLOR CENTRAL: "Se me olvidan las cosas y ando en neblina" (avatar propio) / "Mi mamá pierde memoria y yo agotada cuidándola" (avatar cuidadora).
+Emoción dominante: miedo (¿será algo peor?) + frustración + resignación ("es la edad"). Nivel de conciencia 1 (no sabe que la causa puede ser B12 baja mal absorbida → EDUCAR primero).
+Validación web (WebSearch): déficit B12 → deterioro cognitivo REVERSIBLE en adultos mayores; síntomas = olvidos, lentitud mental, falta de concentración, irritabilidad/apatía, hormigueo manos/pies; sublingual absorbe mejor (ideal en mayores con mala absorción); beneficios "en pocas semanas" (atención, memoria reciente, ánimo). Efectos 2ndarios leves (alergia leve/GI/irritación boca).
+SUB-DOLORES: SD-01 "entro al cuarto y olvido a qué venía" · SD-02 "se me va la palabra a mitad de frase" · SD-03 "mi mamá repite la misma pregunta 3 veces" · SD-04 "ando en neblina, no me concentro" · SD-05 "olvido citas, llaves, lo que me acaban de decir" · SD-06 "cuido a mi mamá y termino sin energía" · SD-07 "miedo de que sea el principio de algo peor" · SD-08 "ya tomé B12 en pastilla y no sentí que me despejara" · SD-09 "tengo la B12 baja pero la pastilla me cae mal" · SD-10 "olvidos + hormigueo en manos y pies" · SD-11 "más lento mentalmente que hace 2 años" · SD-12 "quiero estar lúcida y presente para mi familia".
+OBJECIONES: OBJ-01 credibilidad "¿una vitamina de verdad mejora la memoria?" · OBJ-02 idoneidad "¿sirve para olvidos de la edad o solo si tengo enfermedad?" · OBJ-03 seguridad[EXTERNO] "¿efectos/me cae mal?" · OBJ-04 tiempo "¿en cuánto se nota?" · OBJ-05 logística[EXTERNO] "¿y si pago y no llega/no trae lo que dice?" · OBJ-06 precio[EXTERNO] "¿por qué pagar si la B12 está en la farmacia?" · OBJ-08 experiencia[EXTERNO] "ya probé pastillas y no sentí nada" · OBJ-09 diferenciación "¿qué tiene que no tenga la de farmacia?".
+OBJ CRÍTICA (Video 1 / MA-01): OBJ-08+OBJ-06+OBJ-09 = "ya tomé B12 y sigo olvidadizo / está en farmacia" → se derriba con el MECANISMO SUBLINGUAL (la pastilla casi no se absorbe). Es la barrera nº1 histórica del producto (nota R5).
+TRANSFORMACIÓN: antes "neblina, olvidos, cansancio, miedo" → después "mente despejada, recuerdo mejor, más energía". Tiempo creíble: primeros cambios semana 2, consolidado 30-60 días de uso constante. NUNCA "en 7 días" ni "cura/previene demencia/alzheimer".
+
+── ETAPA-3B · 6 MICROÁNGULOS (1 por conjunto) + 2 de banco ──
+MA-01 LA PASTILLA QUE NO SENTISTE (mecanismo único/diferenciación) · SD-08/09 · OBJ CRÍTICA · Rol MOFU · Formato IMAGEN comparación · LLEVA PRECIO · Apertura "Tomaste B12 y seguís igual de olvidadizo. No es que no sirva: en pastilla casi no se absorbe."
+MA-02 ENTRO AL CUARTO Y NO SÉ A QUÉ (olvidos cotidianos/identificación) · SD-01/02/05 · OBJ-01 · Rol TOFU frío · Formato VIDEO/IMAGEN escena · sin precio · Apertura "¿Entrás a un cuarto y se te olvida a qué ibas? No es solo la edad."
+MA-03 CUIDO A MI MAMÁ Y ESTOY AGOTADA (cuidadora/emocional) · SD-03/06 · OBJ-02 · Rol TOFU/MOFU · Formato VIDEO testimonio · sin precio · Apertura "Cuidar a mi mamá con la memoria fallando me tenía agotada… a las dos nos faltaba lo mismo."
+MA-04 NIEBLA MENTAL (concentración/foco, avatar 38-50) · SD-04/11 · OBJ-04 · Rol TOFU/MOFU · Formato IMAGEN problema-solución · sin precio · Apertura "No es pereza ni estrés. Esa niebla que no te deja concentrarte puede ser B12 baja."
+MA-05 OLVIDOS + HORMIGUEO = TUS NERVIOS (miedo/autoridad Dr. Ricardo) · SD-07/10/12 · OBJ-01/03 · Rol MOFU · Formato VIDEO autoridad · sin precio · Apertura "Si a los olvidos se les suma hormigueo en manos y pies, tus nervios te están pidiendo algo." (COMPLIANCE: apoya nervios/memoria, NUNCA cura/previene demencia)
+MA-06 TRATAMIENTO COMPLETO, LA MÁS ELEGIDA (oferta/cierre) · barrera compra · OBJ-06/07 · Rol BOFU · Formato IMAGEN oferta · LLEVA PRECIO Q219 · Apertura "Un tratamiento para tu memoria y tus nervios, con la segunda mitad casi de regalo."
+BANCO (anti-fatiga, no van en los 6 conjuntos iniciales): MA-07 "la B12 de la farmacia vs esta" (comparación directa, refuerza MA-01) · MA-08 "mi abuelo volvió a acordarse de mis hijos" (testimonio emocional fuerte, voz del nieto).
+Cobertura embudo: TOFU MA-02/03/04 · MOFU MA-01/05 · BOFU MA-06. Objeción crítica en MA-01 = primer creativo. Precio en 2/6 (MA-01, MA-06) — regla máx 3, ideal 2.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGISTRO DE CONJUNTOS — FASE 2 ESCALADO MEMORIA (llave de unión con Meta)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPAÑA: NUSAVAB12_ESCALA_MEMORIA_20260708 · FASE: 2 escalado · LANZAMIENTO: 4 AM 2026-07-08
+CPA_OBJETIVO: Q32.3 · CPA_BREAK_EVEN: Q68.3 · PRESUPUESTO/CONJUNTO: $1.59 (159¢ USD) · EDAD: amplio 18-65+ (candidato piso 35+ tras leer breakdown — avatar 38-55/55+)
+OBJETIVO: Tráfico → CONVERSATIONS → WHATSAPP · ABO · Advantage+ OFF · flujo bot = MEMORIA (un solo ángulo)
+| NOMBRE_CONJUNTO (llave Meta) | Microángulo | Rol embudo | Formato | Precio ad | Copy |
+| MA1-PASTILLA_NUSAVAB12_ESCALA   | La pastilla que no sentiste | MOFU | IMAGEN comparación | Q219 | Copy 1 |
+| MA2-OLVIDOCUARTO_NUSAVAB12_ESCALA | Entro al cuarto y no sé a qué | TOFU | VIDEO/IMAGEN | no | Copy 2 |
+| MA3-CUIDADORA_NUSAVAB12_ESCALA  | Cuido a mi mamá y estoy agotada | TOFU/MOFU | VIDEO testimonio | no | Copy 3 |
+| MA4-NIEBLA_NUSAVAB12_ESCALA     | Niebla mental | TOFU/MOFU | IMAGEN prob-sol | no | Copy 4 |
+| MA5-HORMIGUEO_NUSAVAB12_ESCALA  | Olvidos + hormigueo = nervios | MOFU | VIDEO autoridad | no | Copy 5 |
+| MA6-OFERTA_NUSAVAB12_ESCALA     | Tratamiento completo, la más elegida | BOFU | IMAGEN oferta | Q219 | Copy 6 |
+Creativo base a replicar por Post ID: MEMORIA_A (mejor anuncio FASE 1 — 3 ventas, cierre 20%, CPA Q13.4). Video NUSAVAB12_4_MEMORIA.mp4 disponible en Ads/MEDIA_NusavaB12/.
+RESULTADOS_ESCALADO: [vacío — lo llena ETAPA-7 tras lanzar]
+ANGULO_GANADOR_FASE2: MEMORIA (confirmado). Próximo hito: correr FASE 2 de ARDOR como campaña hermana.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FASE 2 — ESCALADO ARDOR (iniciada 2026-07-14 · campaña hermana de MEMORIA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ÁNGULO GANADOR: ARDOR — "Apaga el ardor de pies y manos" · co-ganador por VENTAS (LucidSales) CPA real histórico Q19.1 (7d Q33.7), sostenido bajo Base Q32.3. Territorio DISTINTO a MEMORIA → bot dedicado propio (Clase 2/22 coherencia). Se corre ESCALONADO tras MEMORIA. MIEDO-CIRUGÍA (Varicose) sigue en su propia FASE 2, aparte.
+NOTA DE FORMATO: ARDOR ganó con VIDEO (NUSAVAB12_2_ARDOR.mp4, thruplay 2600 en el testeo) → se replica por Post ID en el conjunto TOFU de ardor nocturno; el resto de conjuntos = IMAGEN Prompt Maestro (banco anti-fatiga).
+
+── ETAPA-3A · MAPA DEL ÁNGULO ARDOR ──
+DOLOR CENTRAL: "En la noche me arden los pies como brasas y se me duermen las manos". Síntoma: ardor/quemazón en las plantas (peor al acostarse) + hormigueo/adormecimiento en manos y pies.
+Duración: meses a años, empeora con la edad. Momento de mayor intensidad: en la cama al acostarse, al quitarse los zapatos, madrugada, tras estar mucho de pie.
+Emoción dominante: frustración + preocupación/miedo (¿será diabetes/algo peor?) + resignación ("es la edad/circulación") + desvelo/irritabilidad por no dormir.
+Nivel de conciencia 2: sabe el problema (ardor/hormigueo) pero no la causa/solución (lo achaca a circulación o edad). EDUCAR que la raíz puede ser B12/B1 baja mal absorbida.
+Validación web (WebSearch, 14-jul): B12 baja → ardor, hormigueo, adormecimiento, PEOR de noche (Mayo Clinic, Podoactiva); neuropatía periférica; causas frecuentes = diabetes/prediabetes, déficit de B12, mala circulación (Eureka, TuaSaude); B12 sublingual absorbe mejor en gente con mala absorción. Efectos 2ndarios leves. COMPLIANCE: apoya los nervios, NUNCA "cura/baja el azúcar/trata la diabetes/la neuropatía".
+SUB-DOLORES: SD-01 "en la noche me arden los pies como brasas y no puedo dormir" · SD-02 "se me duermen las manos, se me caen las cosas" · SD-03 "siento hormigueo y como agujas en los pies" · SD-04 "ando descalzo en el piso frío para calmar el ardor" · SD-05 "ya casi no siento bien las plantas de los pies (adormecidas)" · SD-06 "me despierto en la madrugada por el ardor/quemazón" · SD-07 "trabajé años de pie y ahora los nervios me pasan factura" · SD-08 "tengo el azúcar alta y ya siento el hormigueo — me da miedo" · SD-09 "ya probé complejo B/B12 en pastilla y no sentí nada" · SD-10 "me dijeron que es la edad/circulación y me resigné" · SD-11 "las cremas y remedios caseros solo calman un rato" · SD-12 "el ardor no me deja dormir y ando irritable y cansado de día".
+OBJECIONES: OBJ-01 credibilidad "¿una vitamina de verdad me quita el ardor?" · OBJ-02 idoneidad "¿sirve si es por azúcar/diabetes o solo si me falta B12?" · OBJ-03 seguridad[EXTERNO] "¿efectos? ¿puedo siendo diabético/tomando medicina?" · OBJ-04 tiempo "¿en cuánto se nota?" · OBJ-05 logística[EXTERNO] "¿y si pago y no llega?" · OBJ-06 precio[EXTERNO] "¿por qué pagar si la B12 está en la farmacia?" · OBJ-08 experiencia[EXTERNO] "ya tomé complejo B en pastilla y no sentí nada" · OBJ-09 diferenciación "¿qué tiene que no tenga la de farmacia?".
+OBJ CRÍTICA (Video 1 / MA-01): OBJ-08+OBJ-06+OBJ-09 = "ya tomé complejo B/B12 y sigo con el ardor / está en la farmacia" → se derriba con el MECANISMO SUBLINGUAL (la pastilla casi no se absorbe). Barrera nº1 histórica del producto (nota R5), igual que en MEMORIA.
+TRANSFORMACIÓN: antes "noches con los pies ardiendo, sin dormir, manos dormidas, irritable" → después "pies más tranquilos, duermo de corrido, el hormigueo va cediendo, más energía". Tiempo creíble: alivio va cediendo desde semana 2, consolidado 30-60 días. NUNCA "en 7 días" ni "cura la neuropatía/diabetes".
+
+── ETAPA-3B · 6 MICROÁNGULOS (1 por conjunto) + 2 de banco ──
+MA-01 EL COMPLEJO B QUE NO SENTISTE (mecanismo único/diferenciación) · SD-09 · OBJ CRÍTICA (08/06/09) · Rol MOFU · Formato IMAGEN comparación · LLEVA PRECIO Q219 · Apertura "Tomaste complejo B en pastilla y seguís con el ardor en los pies. No es que no sirva: en pastilla casi no se absorbe."
+MA-02 LOS PIES QUE ARDEN DE NOCHE (dolor nocturno/identificación) · SD-01/06 · OBJ-01/04 · Rol TOFU · Formato VIDEO (ARDOR ganador vía Post ID) · sin precio · Apertura "¿Llegás a la cama y se te empiezan a arder los pies como brasas? No es normal de la edad."
+MA-03 SE ME DUERMEN LAS MANOS (hormigueo/adormecimiento) · SD-02/03/05 · OBJ-01 · Rol TOFU · Formato IMAGEN problema-solución · sin precio · Apertura "Se te duermen las manos, se te caen las cosas, sentís agujas en los pies… tus nervios te piden algo."
+MA-04 TRABAJASTE AÑOS DE PIE (avatar/testimonio) · SD-07 · OBJ-02 · Rol TOFU/MOFU · Formato VIDEO testimonio (o UGC/Post ID) · sin precio · Apertura "Trabajaste años parado, cargando… y ahora los nervios de tus pies te pasan la factura."
+MA-05 AZÚCAR ALTA Y HORMIGUEO (miedo/autoridad Dr. Ricardo) · SD-08 · OBJ-02/03 · Rol MOFU · Formato IMAGEN autoridad · sin precio · COMPLIANCE CRÍTICO · Apertura "Si tenés el azúcar alta y ya sentís hormigueo en los pies, es una señal temprana que no conviene ignorar." (apoya nervios, NUNCA baja el azúcar/cura la diabetes)
+MA-06 TRATAMIENTO PARA TUS NERVIOS · 2X1 (oferta/cierre) · barrera compra · OBJ-06/07 · Rol BOFU · Formato IMAGEN oferta · LLEVA PRECIO Q219 · Apertura "Un tratamiento para calmar el ardor y el hormigueo de tus pies y manos, con la segunda mitad casi de regalo."
+BANCO (anti-fatiga, no van en los 6 conjuntos iniciales): MA-07 "la B12 de la farmacia vs esta líquida sublingual" (comparación directa, refuerza MA-01) · MA-08 "volví a dormir de corrido, los pies tranquilos" (testimonio emocional fuerte).
+Cobertura embudo: TOFU MA-02/03/04 · MOFU MA-01/05 · BOFU MA-06. Objeción crítica en MA-01 = primer creativo. Precio en 2/6 (MA-01, MA-06) — regla máx 3, ideal 2.
+COBERTURA OBJECIONES: OBJ-01→MA-02/03 · OBJ-02→MA-04/05 · OBJ-03→MA-05(+FAQ bot) · OBJ-04→MA-02 · OBJ-05→MA-06(COD) · OBJ-06→MA-01/06 · OBJ-07→MA-06 · OBJ-08 CRÍTICA→MA-01 · OBJ-09→MA-01/MA-07(banco).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGISTRO DE CONJUNTOS — FASE 2 ESCALADO ARDOR (llave de unión con Meta)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPAÑA: NUSAVAB12_ESCALA_ARDOR_20260715 · FASE: 2 escalado · LANZAMIENTO: 4 AM 2026-07-15
+campaign_id: PENDIENTE (paquete-only, sin MCP — el operador crea la campaña en Meta; luego pegar el id acá)
+CPA_OBJETIVO: Q32.3 · CPA_BREAK_EVEN: Q68.3 · PRESUPUESTO/CONJUNTO: $1.59 (159¢ USD) · EDAD: amplio 18-65+ (candidato piso 45+ — avatar 45-62)
+OBJETIVO: Tráfico → CONVERSATIONS → WHATSAPP · ABO · Advantage+ OFF · flujo bot = ARDOR (un solo ángulo)
+7 CONJUNTOS (6 imágenes generadas 14-jul + el video ganador ARDOR como 7º). PRESUPUESTO TOTAL: $1.59 × 7 = $11.13/día.
+| NOMBRE_CONJUNTO (llave Meta) | Microángulo | Rol embudo | Formato | Archivo (Ads/MEDIA_GTR7_NUSAVAB12/) | Precio ad | Copy |
+| MA1-COMPLEJOB_NUSAVAB12_ESCALA   | El complejo B que no sentiste | MOFU | IMAGEN comparación | NUSAVAB12_ARDOR_MA1_COMPLEJOB.jpg | Q219 | Copy 1 |
+| MA2-ARDORNOCHE_NUSAVAB12_ESCALA  | Los pies que arden de noche | TOFU | IMAGEN | NUSAVAB12_ARDOR_MA2_ARDORNOCHE.jpg | no | Copy 2 |
+| MA3-HORMIGUEO_NUSAVAB12_ESCALA   | Se me duermen las manos | TOFU | IMAGEN prob-sol | NUSAVAB12_ARDOR_MA3_HORMIGUEO.jpg | no | Copy 3 |
+| MA4-DEPIE_NUSAVAB12_ESCALA       | Trabajaste años de pie | TOFU/MOFU | IMAGEN testimonio | NUSAVAB12_ARDOR_MA4_DEPIE.jpg | no | Copy 4 |
+| MA5-AZUCAR_NUSAVAB12_ESCALA      | Azúcar alta y hormigueo | MOFU | IMAGEN autoridad | NUSAVAB12_ARDOR_MA5_AZUCAR.jpg | no | Copy 5 |
+| MA6-OFERTA_NUSAVAB12_ESCALA      | Tratamiento para tus nervios 2X1 | BOFU | IMAGEN oferta | NUSAVAB12_ARDOR_MA6_OFERTA.jpg | Q219 | Copy 6 |
+| MA7-ARDORVIDEO_NUSAVAB12_ESCALA  | Los pies que arden de noche (video) | TOFU | VIDEO Post ID | NUSAVAB12_2_ARDOR.mp4 (Post ID) | no | Copy 7 (solo si sube nuevo) |
+Creativo base a replicar por Post ID: video NUSAVAB12_2_ARDOR.mp4 (mejor video del ángulo en FASE 1, thruplay 2600). MA2 (imagen) y MA7 (video) = mismo sub-ángulo ardor nocturno, formatos distintos → test imagen vs video. Con Post ID, MA7 hereda el copy original de la publicación + su prueba social (no se le pega COPY 7).
+⚠️ DOSIS FRASCO: MA1 muestra 5000 mcg (correcto); MA2-MA6 muestran 10000 mcg en la etiqueta → inconsistente, unificar antes de lanzar.
+RESULTADOS_ESCALADO: [vacío — lo llena ETAPA-7 tras lanzar]
+ANGULO_GANADOR_FASE2: ARDOR (co-ganador confirmado por LucidSales). Correr escalonado tras MEMORIA; escalado fuerte solo con CPA real semanal por LucidSales (omni_purchase de Meta roto en esta cuenta COD).
+
+━━━ DATOS DE SATURACIÓN ━━━
+ETAPA-RESEARCH Módulo B: no corrido. Saturación por ángulo = inferencia de ETAPA-2.
+5 proveedores en Dropy (baja-media). Recomendado: contar anunciantes activos en Biblioteca de Anuncios por ángulo (sobre todo ABSORCION y AZUCAR) antes de fijar presupuesto.
+
+━━━ PRÓXIMA SESIÓN ━━━
+- Optimización (ETAPA-7): leer este REGISTRO + datos de Meta, comparar CPA real vs Q32.3 / Q68.3 y % de conversación, indicar qué escalar y qué apagar.
+- FASE 2: ángulo ganador confirmado + métricas → ETAPA-3A.
+- Nuevo testeo del mismo producto: saltar ETAPA-1 y ETAPA-1B (ya están), ir a ETAPA-0 con nuevos videos.
+- El detalle copiable (copies, prompts, flujo del bot) está en 1_HACER_MANUAL.txt. Los IDs de Meta en 3_CAMPAÑA_META.txt.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — LECTURA AUDITORÍA 2026-07-10 (ETAPA-7, MCP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ omni_purchase de Meta = "Not available" en todos los conjuntos → CPA real NO calculable por MCP. Ranking PROVISIONAL por conversación; ventas = LucidSales (fuente de verdad).
+
+[A] CAMPAÑA VIVA FASE 2 — NUSAVAB12_ESCALA_MEMORIA_20260708 (id 120247342961210784) · ACTIVE · gasto acum $11.55 · DÍA 1 (observar, no pausar)
+Conjuntos (acum, %conv/clic-enlace = results ÷ link_click):
+  C-4 niebla mental    9 conv · 24 lc · 37.5% · $0.23/conv · CTR 5.38% · freq 1.15 · 🟢
+  C-2 olvido cuarto    8 conv · 20 lc · 40.0% · $0.26/conv · CTR 5.13% · freq 1.15 · 🟢
+  C-5 Dr. autoridad    7 conv · 17 lc · 41.2% · $0.25/conv · CTR 3.93% · freq 1.14 · 🟢
+  C-3 cuidadora        5 conv · 13 lc · 38.5% · $0.37/conv · CTR 6.70% · freq 1.09 · 🟡
+  C-1 pastilla LLEVA PRECIO   0 conv · 6 lc · $1.61 gastado · 🔴 (día 1)
+  C-6 oferta 2X1 LLEVA PRECIO 0 conv · 7 lc · $2.21 gastado · 🔴 (día 1)
+  → PATRÓN A VIGILAR: los 2 únicos conjuntos con precio (C-1, C-6) = 0 conversaciones; los 4 sin precio 5-9 c/u. Consistente con la regla de precio como filtro. Reevaluar en día 3; si siguen en 0, pausar esos 2 y redistribuir a los sin-precio.
+
+[B] CAMPAÑA TEST VIVA — NUSAVAB12_TEST_20260622 - Copia (id 120246893776440784) · gasto acum $92.83
+Ranking por conversación (acum): ARDOR 83 (56.8%) · ANIMO 68 (68%) · ABSORCION 50 (33.3%) · MEMORIA 39 (45.3%) · CIATICA 27 (50.9%) · AZUCAR 23 (33.8%)
+Últimos 3d: SOLO entregan ABSORCION/MEMORIA/ARDOR; ANIMO/AZUCAR/CIATICA = $0 (ya apagados por el operador ✓, según plan). Frecuencias 1.1-1.4 → sin fatiga.
+RECORDATORIO: ganador por VENTAS (LucidSales) = MEMORIA (Q18.7 sem) + ARDOR (Q19.1). ANIMO lidera conversación pero vendió 0/35 → la conversación NO es venta acá.
+
+ESTADO: MEMORIA ya en escalado (FASE 2 viva, día 1). ARDOR = FASE 2 hermana PENDIENTE.
+
+═══════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA AUTOMÁTICA 2026-07-10 (~7PM COL) · LADO-ADS · PROVISIONAL
+(operador NO pegó ventas LucidSales este run → ranking por CONVERSACIÓN, NO oficial)
+═══════════════════════════════════════════════════════════════════
+2 campañas VIVAS del producto:
+  A) TESTEO viva: "NUSAVAB12_TEST_20260622 - Copia" (120246893776440784) · gasto acum $95.72 · freq 2.06 (FATIGA acum) · 299 conv
+  B) ESCALADO: "🟦 NUSAVAB12_ESCALA_MEMORIA_20260708" (120247342961210784) · gasto $15.34 · día ~2-3 · 34 conv
+
+RANKING TESTEO (acumulado, %conv/clic-enlace = results ÷ link_click):
+  ARDOR    56.2% · $0.223/conv · CTR 5.25% · freq1.37 · 🟢 (co-ganador REAL x LucidSales Q19.1)
+  ANIMO    68.0% · $0.186/conv · CTR 7.59% · 🟡 FALSO POSITIVO conocido (0 ventas/35 msj x Lucid) — NO escalar por conversación
+  CIATICA  50.9% · $0.483/conv · 🔴 podar (0 ventas)
+  MEMORIA  47.2% · $0.451/conv · CTR 5.93% · 🟢 GANADOR REAL x Lucid (CPA Q18.7 sem)
+  AZUCAR   33.8% · $0.546/conv · 🔴 podar
+  ABSORCION 33.3% · $0.366/conv · 🟡 (<35% clic→chat = revisar coherencia bot)
+  Tendencia 3d: solo ABSORCION/MEMORIA/ARDOR siguen entregando; AZUCAR/ANIMO/CIATICA en $0 (ya frenados). ARDOR 3d 53.7% conv/clic sigue fuerte.
+
+RANKING ESCALADO MEMORIA (día ~2, microángulos C-1..C-6):
+  C-2 olvido    39.1% · C-5 Dr autoridad 37.5% · C-4 niebla 35.7% · C-3 cuidadora 35.3% (cpm alto $3.25)
+  C-1 pastilla LLEVA PRECIO 0% · C-6 oferta2X1 LLEVA PRECIO 0% → los 2 con precio = 0 conversaciones (patrón precio-filtro extremo)
+
+PLAN ETAPA-8:
+  1) PODAR ya la TESTEO viva: apagar AZUCAR/CIATICA/ANIMO (ANIMO = 0 ventas confirmado). El testeo sigue quemando en losers mientras ya corre el escalado.
+  2) Escalado MEMORIA está en día 2-3 → OBSERVAR, no subir presupuesto aún. Vigilar C-1/C-6 (precio): si siguen 0 conv a día 3, pausarlos y dejar solo micro sin precio.
+  3) CPA real y escalado fuerte: BLOQUEADO hasta que el operador pegue ventas LucidSales (Meta omni_purchase roto en COD).
+QUÉ HACER MAÑANA: pegar ventas Lucid por conjunto (testeo + escalado) para CPA real; apagar los 3 losers de la testeo.
+
+═══════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-14 (auto, ETAPA-7/8) · SIN Lucid pegado → PROVISIONAL por conversación
+Cuenta act_598687956219141 (GTR 7). omni_purchase de Meta = Not available (tracking roto) → CPA real solo por LucidSales.
+Dos campañas VIVAS: TESTEO paraguas 120246893776440784 ("…- Copia", $117.37 acum, 17 días) + ESCALADO MEMORIA 120247342961210784 ($48.85, día 5).
+
+TESTEO PARAGUAS (acum) — ranking por %conv/clic-enlace:
+  ARDOR      $26.59 · 122 conv · 217 lc · 56.2% · $0.22/conv · CTR 5.16% · freq1.47 · VIDEO(thruplay 2600)  → GANADOR Lucid histórico Q19.1
+  MEMORIA    $25.83 ·  62 conv · 122 lc · 50.8% · $0.42/conv · CTR 5.97% · freq1.39 · VIDEO(p25 26.8% mejor hook) → GANADOR Lucid Q18.7
+  CIATICA    $13.05 ·  27 conv ·  53 lc · 50.9% · $0.48/conv · CTR 4.24% · VIDEO → 0 ventas Lucid → PODAR
+  ABSORCION  $26.73 ·  67 conv · 207 lc · 32.4% · $0.40/conv · CTR 5.28% · IMAGEN
+  AZUCAR     $12.55 ·  23 conv ·  68 lc · 33.8% · $0.55/conv · CTR 2.96% · IMAGEN → PODAR
+  ANIMO      $12.62 ·  68 conv · 100 lc · 68.0% · $0.19/conv · CTR 7.59% · VIDEO → 0 ventas Lucid histórico (alta conversación, no vende) → PODAR
+  Sin fatiga (freq 1.3-1.5). El paraguas lleva 17 días sin podar: sigue gastando en ANIMO/AZUCAR/CIATICA (0 ventas).
+
+ESCALADO MEMORIA (día 5) — %conv/clic 29-33% (POR DEBAJO del testeo MEMORIA 50.8% → revisar bot 1-ángulo/coherencia):
+  C-4 niebla mental   $8.19 · 22 · 67 lc · 32.8% · $0.37 · IMAGEN  (mejor no-precio)
+  C-5 Dr autoridad    $8.43 · 21 · 66 lc · 31.8% · $0.40 · IMAGEN
+  C-3 cuidadora       $8.29 · 17 · 56 lc · 30.4% · $0.49 · IMAGEN
+  C-2 olvido cuarto   $8.28 · 16 · 55 lc · 29.1% · $0.52 · IMAGEN
+  C-6 2X1 LLEVA PRECIO $7.97 ·  3 · 30 lc · 10.0% · $2.66 · IMAGEN  (precio = filtro; muy pocas chats)
+  C-1 pastilla PRECIO $7.69 ·  4 · 38 lc · 10.5% · $1.92 · IMAGEN
+  Sin fatiga. Sin CPA real → NO declarar ganador de escalado; falta cruzar con LucidSales.
+
+ACCIONES: (1) PODAR en testeo: ANIMO, AZUCAR, CIATICA (0 ventas). Mantener ARDOR (arrancar su FASE 2 hermana) + MEMORIA + ABSORCION.
+(2) Escalado MEMORIA: conv/clic <35% → señal de bot, no creativo; revisar coherencia ad↔bot 1-ángulo. Pedir Lucid para CPA de los 6 conjuntos antes de +20%.
+(3) Creativo a replicar: video MEMORIA (hook p25 26.8%, el más alto) — entender POR QUÉ y regenerar variaciones anti-fatiga.
+═══════════════════════════════════════════════════════════════════
+
+── RESULTADOS_TESTEO 2026-07-15 (auditoría diaria, PROVISIONAL — sin Lucid, hoy miércoles) ──
+3 campañas ACTIVE. Base Q32.3 · BE Q68.3 · PD $8.96.
+TESTEO paraguas ($122, 18d): ARDOR 56%conv/venta=GANADOR real (Lucid Q33.7); ANIMO 68%conv pero 0 venta=trampa;
+  ABSORCION 32%/AZUCAR 34%=matar-conv. → paraguas cumplió, RECOMENDADO PAUSAR (duplica gasto con ARDOR F2).
+ESCALA_MEMORIA (día7, $59.6): conv toda ~30% + Lucid 2v → NO RINDE, RECOMENDADO PAUSAR. C-1(12%)/C-6(9%)=matar ya.
+ESCALA_ARDOR (día1, $10.2): OBSERVAR, no tocar hasta PD. Es el caballo real.
+ACCIÓN: volcar presupuesto a ARDOR F2; apagar MEMORIA y paraguas.
+
+═══ RESULTADOS_TESTEO · AUDITORÍA 2026-07-17 (auto, lado-ads) ═══
+omni_purchase de Meta = "Not available" en TODA la campaña Nusava → ranking PROVISIONAL por conversación; CPA real PENDIENTE LucidSales.
+CAMPAÑA TEST-Copia (120246893776440784, día ~20, $124.87 acum · PD $8.96/conj ya SUPERADO por todos):
+ %conv/clic-enlace: ANIMO 68% ($0.19) · ARDOR 55.3% ($0.23) · CIATICA 50.9% ($0.48) · MEMORIA 50.4% ($0.42) · AZUCAR 33.8% ($0.55) · ABSORCION 31.9% ($0.41).
+ OJO: ANIMO lidera conversación pero histórico 0 ventas Lucid (clásico chat-sin-compra). ARDOR = caballo real (fuerte en conv + Lucid Q33.7).
+CAMPAÑA ESCALA_ARDOR (120247507971430784, día 3, ~$4/conj <PD → SUB-TESTEADO): MA7-ARDORVIDEO 58.6% ($0.24)🟢 · MA1-COMPLEJOB 40% · MA4-DEPIE 35.7% · MA5-AZUCAR 25.6% · MA3-HORMIGUEO 25.5% · MA2-ARDORNOCHE 23.1% · MA6-OFERTA 7.4% ($1.99)🔴MATAR-CONV.
+ MEMORIA escala PAUSADA por operador (no rindió, snapshot 14-jul solo 2v). Veredicto: ARDOR es el escalado correcto; MEMORIA como testeo.
+PENDIENTE: cruzar con LucidSales (única fuente de venta). Nusava global venía EN ROJO (CPA Q91.9 > BE Q68.3) salvo ARDOR.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-21 (LucidSales 14→21 jul, FUSIONADO)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid. BE Q68.3 · Base Q32.3.
+NUSAVA TOTAL: 13 ventas · CPA global Q58.2 · ROAS 4.2 · ⚠️ el más débil (bajo BE pero sobre Base).
+ · MA6-OFERTA ...... 3v · CPA Q28.8 (0 entregados aún — COD madurando)
+ · MA4-DEPIE ....... 2v · CPA Q38.4
+ · MA5-AZUCAR ...... 2v · CPA Q41.2
+ · MA2-ARDORNOCHE .. 2v · CPA Q42.2
+ · ARDOR (test) .... 2v · CPA Q46.6 (166 conv → solo 2 ventas: conversación NO = venta)
+ · C-4 niebla (MEMORIA-escala, PAUSED) 1v Q20.8 · MA7-ARDORVIDEO 1v Q86 (>BE)
+ · MA1-COMPLEJOB / MA3-HORMIGUEO ... 0v pese a ~$8.7 (~1×PD) → 🔴 matar-ventas
+⚠️ Fulfillment pobre: muchos INCIDENCIA EN RUTA / RECOLECTADO / DEVOLUCION → 0 entregados en casi todo.
+ACCIÓN: NO escalar. Podar MA1-COMPLEJOB + MA3-HORMIGUEO. Limpiar entrega/bot antes de invertir más. ARDOR chatea pero no vende — revisar coherencia ad→bot.
+
+════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-31 (LucidSales BASE 25→30 jul)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid · BE v2 = **Q76.85** · CPA Base = Q31.31
+NUSAVA 6d: 8 ventas · pauta Q435 · CPA Q54.4 · +Q180 🟡 rentable
+Acumulado 17-30 jul: 19 ventas · Q1,021 · CPA Q53.7 · +Q439
+
+RANKING POR CONJUNTO (campaña NUSAVAB12_ESCALA_ARDOR, GTR7):
+ · MA6-OFERTA - Copia .... 7v · Q194 · CPA Q28.0 · 252% PD · conv 11.4% 🟢 GANADOR
+ · MA7-ARDORVIDEO ........ 1v · Q60  · CPA Q60.0 ·  78% PD · conv 15.5% 🟡 sub-PD
+ · ARDOR_NUSAVAB12_TEST .. 0v · Q60  · —         ·  78% PD · conv 17.3% 🟡 sub-PD
+ · MA6-OFERTA (sin Copia)  0v · Q61  · —         ·  79% PD · conv  6.4% 🔴
+ · MA4-DEPIE ............. 0v · Q60  · —         ·  78% PD · conv  6.8% 🔴
+
+📌 REFUERZA EL APRENDIZAJE VIGENTE "la conversación no corona": ARDOR_NUSAVAB12_TEST
+   tiene la conversación MÁS ALTA del producto (17.3%) y CERO ventas; MA6-OFERTA-Copia
+   con 11.4% se lleva las 7. Mismo patrón que ANIMO (68% conv, 0 ventas) en su día.
+   La conversación sirve para CORTAR, nunca para CORONAR.
+
+ACCIÓN: (1) APAGAR MA4-DEPIE y MA6-OFERTA (sin Copia) — conv/clic 6-7% con 0 ventas
+a ~79% del PD → matar-por-conversación. (2) SURFING +20%/día sobre MA6-OFERTA - Copia:
+Q28 contra BE Q76.9 = 64% de colchón, y solo consumió Q194 en 6 días. (3) DEJAR CORRER
+hasta el PD (≈2 días más) MA7-ARDORVIDEO y ARDOR_NUSAVAB12_TEST — no matar hoy, están
+sub-testeados. (4) El 30-jul NUSAVA hizo 0 ventas con Q77 de pauta: vigilar si el 31
+completo lo corrige por maduración COD (patrón ya visto el 27→28).
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-14 (ventana 11→13 ago, 3d agregados)
+═══════════════════════════════════════════════════════════════════════════
+3 ventas · pauta Q220 · ingreso Q807 · CPA Q73.2 · BE Q98.76 · 🟡 GANANCIA Q+77
+Serie completa 17-jul→13-ago: 36 ventas · Q1,865 · CPA Q51.8 · Q+1,691
+
+POR ÁNGULO (11-13 ago): ARDOR Q220 · 3v · Q73 🟡 (único ángulo con gasto)
+   Se cayó respecto a la ventana 03-10 ago (11 ventas, CPA Q40.2). Con n=3 en
+   3 días es ruido de Poisson (APR-004): no declarar deterioro todavía.
+
+🔴 EL PROBLEMA DE NUSAVA NO ES EL CPA, ES LA ENTREGA:
+   agosto 75.0% (9 ent / 3 dev, n=12) · serie completa 71.7% (38/53) ·
+   28.3% de devolución = el PEOR del portafolio por 19 puntos.
+   Esto ya movió su break-even de Q120.40 a Q92.64 (APR-015) e invirtió el
+   ranking de productos. **Escalarlo sin arreglar la entrega es multiplicar
+   el problema** — y sigue sin atacarse desde que se detectó el 11-ago.
+   → Investigar las 3 causas candidatas: promesa del bot vs. lo que llega ·
+     ticket alto en la puerta · demora de despacho.
+
+⚠️ MIGRACIÓN 12-ago: GTR7_NUSAVA_ESCALA-ARDOR_20260812 (Q80/2v/Q40) corre en
+   paralelo con NUSAVAB12_ESCALA_ARDOR_20260715 (Q117/1v/Q117).
+
+━━━ RESULTADOS_TESTEO — AUDITORÍA 2026-08-15 ━━━
+VENTANA: BASE 01→13 ago (PARCIAL: faltan 14 y 15-ago de LucidSales).
+ÁNGULO ARDOR: 14 ventas · Q662 pauta · CPA Q47.3 · ticket Q273 · break-even Q120.4.
+  ✅ RENTABLE con Q73 de colchón por venta. El ángulo NO se toca.
+LADO-ADS 14-ago: Q212 gastados · 36 mensajes · 21.2% conv/clic-enlace · Q5.89 por
+  mensaje. Es el % de conversación más bajo del portafolio (umbral de corte: 35%).
+CONJUNTOS QUE SANGRAN (candidatos a apagar — son réplicas, apagarlas no mata el ángulo):
+  MA6-OFERTA - Copia (R2)   8.3% conv/clic · Q17.53 por mensaje
+  MA6-OFERTA - Copia (R3)   9.1% · Q17.37
+  ARDOR_R4 +EDAD MIN +25   11.1% · Q12.95
+NO MATAR TODAVÍA (0 ventas pero bajo Presupuesto de Decisión Q120.4):
+  ARDOR_NUSAVAB12_TEST Q87 · MA4-DEPIE Q82. Su cero aún no es veredicto.
+RECORDATORIO VIGENTE: NUSAVA sigue siendo el peor entregador del portafolio
+  (75.0% en el lote de agosto, n=12) — su 28% de devolución sigue sin atacarse.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-16 (lado-ads MCP, día cerrado 15-ago)
+═══════════════════════════════════════════════════════════════════════════
+⚠️ PROVISIONAL — sin LucidSales del 14 ni del 15. Ranking por CONVERSACIÓN.
+
+PAUTA DEL 15-AGO: Q165.89 (todo en GTR7) · 38 conversaciones · Q4.37/conv
+Sin fatiga (frecuencia máx 1.30).
+
+RANKING POR ÁNGULO:
+  ARDOR       Q108.05 · 31 msj · 37.3% conv/clic-enlace · Q3.49/conv ⭐
+  MA6_OFERTA  Q 57.84 ·  7 msj · 14.9% · Q8.26/conv 🔴
+
+⭐ MEJOR CONJUNTO DE TODO EL PORTAFOLIO HOY: `GTR7-MA7-ARDORVIDEO` —
+   Q32.46, 15 conversaciones, 57.7% conv/clic-enlace, CTR 4.89% (el único
+   del portafolio sobre 4%), CPconv $0.28. Es el caballo del producto.
+
+  Detalle de los conjuntos ARDOR nuevos:
+    GTR7-MA7-ARDORVIDEO          Q32.5 · 15 msj · 57.7%  ⭐
+    GTR7_NUSAVA_ARDOR_R2         Q17.1 ·  6 msj · 35.3%
+    GTR7_NUSAVA_ARDOR_R1         Q21.0 ·  3 msj · 18.8%
+    GTR7_NUSAVA_ARDOR_R3 (+25)   Q 8.7 ·  1 msj · 14.3%
+    GTR7_NUSAVA_ARDOR_R4 (+25)   Q 8.7 ·  1 msj · 20.0%
+  · Las réplicas se SUMAN, no se comparan (regla 23 / Poisson).
+  · Los dos conjuntos con EDAD MIN +25 rindieron por debajo del resto en
+    conversación. n muy chico (1 msj cada uno) → observar, no concluir.
+
+CAMBIO ESTRUCTURAL (registrado en _EVENTOS.csv):
+  El 16-ago quedó PAUSED `NUSAVAB12_ESCALA_ARDOR_20260715`. Sobrevive
+  GTR7_NUSAVA_ESCALA-ARDOR_20260812. ✅ Cierra el doble financiamiento.
+  Con eso MA6_OFERTA queda sin conjuntos vivos — y bien: hacía 14.9% de
+  conversación a Q8.26 cada una, el peor ratio del portafolio el 15-ago.
+  🔴 El gasto vivo del producto cae de Q165.89/día a ~Q84/día. Ver APR-039.
+
+RECORDATORIO QUE NO CAMBIA: el problema estructural de NUSAVA sigue siendo la
+ENTREGA, no el ángulo — 71.7% en la serie completa (289 resueltos) y 75.0%
+en agosto, el peor entregador del portafolio, con 28.3% de devolución.
+Escalar ARDOR sin atacar la entrega multiplica el problema.
+
+Informe completo: PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_20260816.txt
+
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-17 (ventana 14→16 ago, 3d, SIN MADURAR)
+═══════════════════════════════════════════════════════════════════════════
+Q524 pauta · 6 ventas · CPA Q87.4 · BE Q92.64 · ganancia Q+129.
+Apenas bajo break-even — el margen más fino del portafolio. Venía de Q73.2 con 3
+ventas (11-13); n bajo en ambas ventanas, todavía es ruido de Poisson.
+
+POR ÁNGULO: ARDOR Q524 · 6v · CPA Q87.4 (único ángulo con pauta).
+SERIE 17-jul→16-ago: ARDOR 41v · CPA Q58.3 · Q2,389 de pauta. Sano contra BE Q92.64.
+
+✅ Un conjunto de ARDOR con 0 ventas NO se mata: el ángulo completo lleva 41
+   ventas bajo break-even (regla 1 / APR-055).
+
+ACCIÓN: +20% a GTR7_NUSAVA_ARDOR_R4 +25 (CPA Q24.4 vs BE Q100.2), uno solo, no
+en bloque. NADA MÁS. El problema real de NUSAVA sigue siendo la ENTREGA: 75.0%
+en agosto, 28% de devolución, el peor entregador del portafolio (APR-015) y sin
+atacar desde hace semanas. Cada punto de entrega vale más que cualquier palanca
+de pauta en este producto.
+
+───────────────────────────────────────────────────────────────────────────
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-18
+───────────────────────────────────────────────────────────────────────────
+INTEGRIDAD: PARCIAL — falta el export de ventas del 2026-08-17. Última BASE = 14→16 ago.
+
+P&L ventana 11-16 ago: 9 ventas · ingreso Q2,571 · pauta Q744 · CPA Q82.6 · GANANCIA Q+206.
+Break-even derivado (1er escalón 2X1, TE 71.7%): **Q78.6**.
+
+⚠️ NUSAVA ESTÁ AL FILO — ES EL ÚNICO PRODUCTO DEL PORTAFOLIO SIN MARGEN DE ERROR.
+CPA Q82.6 contra BE Q78.6: el CPA está POR ENCIMA del break-even del primer escalón.
+Queda en positivo (+Q206) únicamente porque el ticket medio sube al 4X2 (Q286 promedio
+contra Q219 del 2X1). El margen no lo está dando el ángulo, lo está dando el upsell.
+Y su tasa de entrega es la peor del portafolio: **71.7%** contra 90.4% de TINNIDROP y
+95.8% de CLEARSTEM — 28 puntos de devolución que se comen la contribución.
+
+ÁNGULO ÚNICO VIVO: ARDOR (GTR7_NUSAVA_ESCALA-ARDOR_20260812), 9v · Q744 · CPA Q82.6.
+
+LADO-ADS 17-ago (conversación · sirve para CORTAR, nunca para CORONAR):
+  GTR7-MA7-ARDORVIDEO                   $4.23  19 msj  $0.22/msj  66% conv/clic  freq 1.07
+  GTR7_NUSAVA_ARDOR_R3 + EDAD MIN +25   $2.15   3 msj  $0.72      25%            freq 1.09
+  GTR7_NUSAVA_ARDOR_R2                  $4.54   2 msj  $2.27      11%            freq 1.22
+  GTR7_NUSAVA_ARDOR_R4 + EDAD MIN +25   $2.01   1 msj  $2.01       9%            freq 1.05
+  Sin fatiga (máx 1.26). Dispersión enorme entre el VIDEO y las réplicas de imagen:
+  ARDORVIDEO consigue 10× más conversaciones por dólar que R2/R4 el mismo día.
+  ⚠️ NO coronar por esto (regla 2) — pero sí es señal de que el creativo VIDEO carga el
+  ángulo entero. Un solo día no basta: releer con 3 días de LucidSales antes de decidir.
+  ⚠️ Las réplicas R[N] se SUMAN, nunca se comparan entre sí (regla 1): la diferencia entre
+  R2 y R4 es ruido de Poisson, no un veredicto de creativo.
+
+ACCIÓN RECOMENDADA: **NO TOCAR — ni escalar ni matar.**
+  · Escalarlo lo pone en rojo: ya está sobre el BE del primer escalón y el portafolio
+    demostró (APR-057) que arriba de ~Q600/día el CPA se dispara.
+  · Matarlo tira el pedido con más margen unitario del portafolio (Q218 en el 4X2).
+  · Se deja correr y se relee cuando entren 3 días limpios de LucidSales.
+  · Si en esos 3 días el CPA no baja de Q78.6, la palanca a probar NO es presupuesto sino
+    la tasa de entrega (71.7%): cada punto de devolución recuperado vale más que cualquier
+    ajuste de puja en este producto.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-21 (ventana 17→20 ago, 4 días diarios)
+═══════════════════════════════════════════════════════════════════════════
+Q296 de pauta · 10 ventas · CPA Q29.6 (era Q82.6) · Break-Even Q97.2
+Serie completa 17-jul→20-ago: 52 ventas · CPA Q51.6 · ganancia Q+2,370
+
+⭐ EL PRODUCTO QUE MÁS MEJORÓ DEL PORTAFOLIO. ARDOR pasó de CPA Q82.6 a Q29.6 y
+   dejó Q+551 en cuatro días con solo Q296 de pauta — la mejor relación
+   ganancia/pauta de la ventana (1.86× lo invertido).
+
+POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q):
+  ARDOR                      296   10   Q29.6   Q+551
+
+MEJORES CONJUNTOS:
+  GTR7_NUSAVA_ARDOR_R2                  Q103 →  5v  CPA Q20.6
+  GTR7_NUSAVA_ARDOR_R4 + EDAD MIN +25   Q46  →  3v  CPA Q15.2  ⭐ el más barato
+  GTR7-MA7-ARDORVIDEO                   Q100 →  2v  CPA Q50.2
+
+→ ESCALAR: R2 y R4 son las dos acciones de surfing +20% de mayor impacto del
+  dashboard después de ACCESIBILIDAD_MEDICO (Q475/sem y Q392/sem).
+
+🔴 PERO ANTES: NUSAVA SIGUE SIENDO EL PEOR ENTREGADOR DEL PORTAFOLIO.
+   75.0% de entrega en agosto (n=12) contra 92.9% global · 28% de devolución.
+   APR-015 sigue SIN ATACARSE desde hace semanas. Escalar un producto que
+   devuelve 1 de cada 4 órdenes multiplica el problema: cada venta extra trae
+   Q27.16 de costo de devolución esperado en el 25% de los casos.
+   → La decisión honesta no es "no escalar", es escalar Y arreglar la entrega
+     en paralelo. Si solo se hace lo primero, el CPA Q29.6 no se traduce en
+     la ganancia que sugiere.
+
+⚠️ Diversidad conceptual: GTR7_NUSAVA_ESCALA-ARDOR_20260812 corre con 2
+   conceptos distintos (4 anuncios, el resto duplicados). Andrómeda premia 8-12.
+⚠️ Ventana NO madurada (19 y 20 frescos): ventas = piso, CPA = techo.
+
+── ANEXO 2026-08-21 · VERIFICACIÓN CONTRA ADS MANAGER (17-20 ago) ──────────
+✅ NUSAVA ES EL ÚNICO PRODUCTO AL QUE LA BANDA DE EDAD NO LE AFECTA.
+   banda 25+   → Q92  · 15 msj · 3 ventas · cierre 20.0% · CPA Q30.8
+   banda 45-60 → Q204 · 58 msj · 7 ventas · cierre 12.1% · CPA Q29.1
+   Sin diferencia (el 25+ hasta rinde algo mejor). Tiene sentido: el ardor/B12
+   tiene comprador transversal, a diferencia del tinnitus (45-60+).
+   → **NO tocar la segmentación de NUSAVA.** El cambio de banda que aplica a
+     TINNIDROP y CLEARSTEM no aplica acá — y ese contraste es justamente lo que
+     valida el hallazgo (APR-060).
+
+🔴🔴 PERO SUS DOS MEJORES CONJUNTOS ESTÁN FINANCIADOS A LA MITAD.
+   GTR7_NUSAVA_ARDOR_R4 + EDAD MIN +25 → **$1.57/día** · CPA Q15.2 · cierre 37.5%
+   GTR7_NUSAVA_ARDOR_R3 + EDAD MIN +25 → **$1.63/día**
+   contra el escalón sano de ~$4/día en que corre el resto del portafolio.
+   $1.59 está DEPRECADO desde el recalibrado del 25-jul (al día 3 solo cubría
+   46-60% del Presupuesto de Decisión y Meta no salía de aprendizaje).
+   **R4 es el mejor conjunto de TODO el portafolio y recibe menos plata que los
+   conjuntos que pierden dinero.** Subirlo al escalón de ~$4/día es la acción #1
+   del producto. (APR-062)
+
+⚠️ RECORDATORIO QUE SIGUE ABIERTO: NUSAVA es el peor entregador (75% en agosto,
+   28% de devolución, APR-015 sin atacar). Escalar R4 sin arreglar la entrega
+   convierte parte de esa ganancia en costo de devolución.
+
+✅ SIN FATIGA: ARDOR_R2 frecuencia 1.46, MA7-ARDORVIDEO 1.25.
+⚠️ GTR7-MA7-ARDORVIDEO: 46.0% de conversación a WhatsApp (la más alta de NUSAVA)
+   y solo 2 ventas a CPA Q50.2, contra ARDOR_R2 con 16.5% de conversación y 5
+   ventas a Q20.6. Otra vez la regla 2: la conversación corta, no corona.
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-26 (ventana 21→25 ago, 5 días diarios · backfill)
+═══════════════════════════════════════════════════════════════════════════
+Hueco de 5 días (21-25 ago) cerrado hoy con exports diarios de LucidSales +
+Ads Manager. Q383 de pauta · 5 ventas · CPA Q76.6 (por encima del ritmo
+habitual, pero todavía sano contra Break-Even Q97.70).
+Serie completa 17-jul→25-ago: 57 ventas · CPA Q53.8 · ganancia Q+2,501 — el
+más débil de los tres productos vivos, pero sigue rentable.
+
+POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q, tramo 21-25):
+  ARDOR                     383    5   Q76.6   Q+131   único ángulo con gasto
+
+⚠️ SIGUE SIN RESOLVERSE: R4 y R3 de ARDOR (los mejores conjuntos del
+   producto, CPA histórico Q15-20) siguen infra-financiados frente al resto
+   del portafolio — acción #10 del dashboard, Q335/sem en juego con +20% de
+   presupuesto.
+⚠️ NUSAVA sigue siendo el peor entregador del portafolio (75% en agosto,
+   28% de devolución, APR-015 sin atacar) — sin novedad en esta ventana.
+⚠️ 24 y 25-ago aún no maduran del todo (COD ~3 días): sus cifras son un piso.
+   21-23-ago ya son definitivos.

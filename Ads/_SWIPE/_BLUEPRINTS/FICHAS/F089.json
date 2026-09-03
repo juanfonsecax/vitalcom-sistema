@@ -1,0 +1,152 @@
+{
+  "ficha_id": "F089",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/17_1333513915431618.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1333513915431618",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "34%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA MISMA OFERTA Y LOS MISMOS TRES BENEFICIOS QUE LA PIEZA CON AVATAR, PERO SIN NADIE. Se quita la persona, se quita la superposicion anatomica y en su lugar queda la macrofotografia del vaso sanguineo ocupando la mitad derecha. El titular cambia de pregunta a imperativo y la pieza baja de densidad media a baja.",
+  "lectura_estrategica": "Es la version sin avatar de la misma campana, y sirve para dos cosas: correr en audiencias donde la foto de persona no ayuda, y aislar en un test si lo que mueve la metrica es el avatar o la oferta. Al eliminar a la persona, el titular tiene que hacer todo el trabajo de interpelacion y por eso pasa de preguntar a ordenar — empieza hoy a cuidar tu circulacion — con el organo objetivo destacado en su propia banda. Los tres beneficios se conservan identicos y en el mismo orden, con el activo primero.",
+  "fondo": {
+    "tipo": "macrofotografia_biologica",
+    "base": "vaso sanguineo o tejido objetivo en macro, con luz interna, ocupando la mitad derecha",
+    "base_izquierda": "crema o blanco roto plano",
+    "textura": "ninguna",
+    "regla": "la macrofotografia reemplaza al avatar: el sujeto de la pieza pasa a ser el organo"
+  },
+  "paleta": {
+    "derivacion": "del organo objetivo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} vinotinto (titular, banda, cards) mas crema (fondo izquierdo) mas rojo de la macrofotografia mas blanco"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_imperativo": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{IMPERATIVO_TEMPORAL}}",
+      "linea_2": "{{CONECTOR}}",
+      "linea_3": "{{ORGANO_OBJETIVO}}",
+      "estilo_l1_l2": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l3": "Black/900 uppercase blanco sobre banda {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "5-6 palabras",
+      "formato_obligatorio": "empieza hoy a cuidar tu ORGANO",
+      "regla_critica": "sin avatar, el titular hace todo el trabajo de interpelacion: pasa de preguntar a ordenar, y el organo objetivo va destacado en su propia banda"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono anatomico line-art en circulo con borde mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla": "identicos y en el mismo orden que la version con avatar, con el activo primero"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "42% del frame",
+      "composicion": "envase de pie sobre base circular de piedra clara, con las perlas sueltas al pie",
+      "fuente": "IMAGEN_2",
+      "regla": "sobre podio: sin avatar que le de escala, el producto necesita una base que lo asiente"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_OSCURA}} solida",
+      "linea_1": "{{CANTIDAD}} {{UNIDAD}}",
+      "estilo_l1": "Bold uppercase blanco chico",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 blanco"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_centro",
+      "cantidad_items": 2,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_cierre": {
+      "posicion": "inferior_derecha",
+      "contenedor": "boton {{PALETA_OSCURA}} solido",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2 palabras",
+      "formato_obligatorio": "imperativo de pedido (pidela hoy)"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_imperativo",
+    "producto_hero",
+    "columna_beneficios",
+    "card_precio",
+    "boton_cierre",
+    "fila_garantias"
+  ],
+  "reglas_duras": [
+    "Sin avatar: la macrofotografia del organo lo reemplaza",
+    "El titular pasa de pregunta a imperativo",
+    "El organo objetivo va destacado en su propia banda dentro del titular",
+    "Los tres beneficios son identicos y en el mismo orden que la version con avatar",
+    "El producto va sobre podio: sin avatar necesita una base que le de escala",
+    "Un solo tier de precio"
+  ],
+  "variables_requeridas": [
+    "IMPERATIVO_TEMPORAL",
+    "CONECTOR",
+    "ORGANO_OBJETIVO",
+    "BENEFICIOS[3]",
+    "CANTIDAD",
+    "UNIDAD",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "CTA"
+  ],
+  "cuando_usar": [
+    "audiencias donde la foto de persona no ayuda",
+    "para aislar en un test si lo que mueve la metrica es el avatar o la oferta",
+    "cuando no hay foto de avatar disponible del rango de edad correcto",
+    "correr en paralelo con la version con avatar"
+  ],
+  "cuando_no_usar": [
+    "cuando la identificacion con una persona es el motor de la campana",
+    "publico frio que necesita reconocerse en alguien",
+    "cuando no hay macrofotografia del organo disponible"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular EMPIEZA HOY A CUIDAR TU CIRCULACION.",
+    "Beneficios: ASTAXANTINA 12 MG, APOYO ANTIOXIDANTE, BIENESTAR VASCULAR.",
+    "Card 1 UNIDAD Q220.",
+    "Garantias ENVIO GRATIS y PAGO CONTRA ENTREGA.",
+    "Boton PIDELA HOY.",
+    "Claims impresos en el empaque: from microalgae, triple strength, 12 mg, GMO free, gluten free, lab tested, 60 Softgels Dietary Supplement."
+  ],
+  "canonico_id": "CN21_AVATAR_CARD_BENEFICIOS",
+  "blueprint_equivalente": null
+}

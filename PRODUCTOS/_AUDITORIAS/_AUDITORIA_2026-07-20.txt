@@ -1,0 +1,120 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA DE ESCALADO — 2026-07-20 (lun, ~7 PM COL) · run automático
+Motor: ETAPA-7 (lectura) + ETAPA-8 (plan). SOLO LECTURA + RECOMENDACIÓN.
+Tasa USD→GTQ = 7.62. Lado-ads leído EN VIVO por MCP (GTR7, GTR0).
+⚠️ El operador NO pegó LucidSales en este run → CPA por VENTA es PROVISIONAL.
+   omni_purchase de Meta se usa como APROXIMACIÓN marcada (COD subcuenta/tarde).
+   Ranking oficial y escalado fuerte quedan pendientes de cruzar con LucidSales.
+Acceso: GTR7 ON ✅ · GTR0 ON ✅ · GTR13 OFF ❌ (rollout Meta) → CLEARSTEM solo-Lucid.
+═══════════════════════════════════════════════════════════════════════════
+
+PD (Presupuesto de Decisión = 1×Break-Even, en $):
+  NusavaB12 BE Q68.3 → PD $8.96 · VARICOSE testeo BE Q64.5 → PD $8.46 ·
+  VARICOSE escala 2x1 BE ~Q159 → PD $20.9 · TINNIDROP BE Q60.5 → PD $7.94.
+
+───────────────────────────────────────────────────────────────────────────
+NUSAVAB12 (GTR7) — 2 campañas ACTIVE
+───────────────────────────────────────────────────────────────────────────
+A) TESTEO paraguas "NUSAVAB12_TEST_20260622 - Copia" (120246893776440784) · $128.97 · desde 27-jun (23d)
+   omni_purchase = Not available en TODOS → conversación provisional.
+   Conjunto      | gasto  | conv | LC  | %conv/LC | $/conv | CTR   | freq | CPM  | Decisión
+   ANIMO         | $12.62 |  68  | 100 | 68.0%    | $0.19  | 7.59% | 1.30 | 1.71 | 🟡 conv top / 0 ventas Lucid histórico (vanidad)
+   ARDOR         | $35.99 | 152  | 285 | 53.3%    | $0.24  | 4.97% | 1.57 | 1.66 | 🟢 caballo real (Lucid 7d Q33.7)
+   CIATICA       | $13.05 |  27  |  53 | 50.9%    | $0.48  | 4.24% | 1.25 | 2.60 | 🔴 0 ventas → podar
+   MEMORIA       | $26.92 |  64  | 127 | 50.4%    | $0.42  | 5.95% | 1.40 | 2.41 | 🟡 escala no rindió (Lucid)
+   AZUCAR        | $12.55 |  23  |  68 | 33.8%    | $0.55  | 2.96% | 1.39 | 1.67 | 🔴 conv floja + 0 ventas → podar
+   ABSORCION     | $27.84 |  68  | 213 | 31.9%    | $0.41  | 5.27% | 1.44 | 1.73 | 🔴 conv <35% → podar
+
+B) ESCALA "NUSAVAB12_ESCALA_ARDOR_20260715" (120247507971430784) · $58.04 · desde 14-jul (6d) — GATE día 6
+   omni = Not available → provisional. PD $8.96/conjunto.
+   Conjunto        | gasto | conv | LC  | %conv/LC | $/conv | CTR   | %PD  | Decisión
+   MA7-ARDORVIDEO  | $8.51 |  35  | 54  | 64.8%    | $0.24  | 4.37% | 95%  | 🟢 estrella (video validado)
+   MA5-AZUCAR      | $8.37 |  23  | 81  | 28.4%    | $0.36  | 4.57% | 93%  | 🟡 sub-testeado
+   MA4-DEPIE       | $7.78 |  16  | 57  | 28.1%    | $0.49  | 4.57% | 87%  | 🟡 sub-testeado
+   MA3-HORMIGUEO   | $8.37 |  26  | 105 | 24.8%    | $0.32  | 4.07% | 93%  | 🟡 conv floja
+   MA2-ARDORNOCHE  | $8.44 |  13  | 58  | 22.4%    | $0.65  | 3.46% | 94%  | 🔴 conv floja + $/conv caro
+   MA1-COMPLEJOB   | $8.25 |  13  | 50  | 26.0%    | $0.63  | 4.02% | 92%  | 🔴 conv floja + $/conv caro
+   MA6-OFERTA      | $8.34 |   7  | 47  | 14.9%    | $1.19  | 2.74% | 93%  | 🔴 peor de todos
+   Lectura: solo MA7 (video ARDOR) pasa el 35%. El resto quedó 22-28% → los micro-hooks
+   traen clic de baja intención frente al video. Sin Lucid no se declara. Nusava sigue EN ROJO (snap 7d).
+
+───────────────────────────────────────────────────────────────────────────
+VARICOSE (GTR7) — 2 campañas ACTIVE
+───────────────────────────────────────────────────────────────────────────
+A) TESTEO "🟩 VARICOSE_TRAFICO_20260704" (120247186770470784) · $88.03 · desde 4-jul (16d)
+   omni de Meta APROX (marcado). Hook rate = 3s÷impr.
+   Conjunto            | gasto  | conv | LC  | %conv/LC | $/conv | omni | CPA≈Q(Meta) | hook | Decisión
+   MIEDO-CIRUGIA       | $24.80 | 134  | 246 | 54.5%    | $0.19  |  8   | Q23.6       | 32.9%| 🟢 co-ganador
+   VERGUENZA-PIERNAS   | $24.85 | 107  | 210 | 51.0%    | $0.23  |  3   | Q63.1       | 32.8%| 🟢 GANADOR confirmado
+   MANCHAS-OSCURAS     | $24.81 |  86  | 201 | 42.8%    | $0.29  |  2   | Q94.6       | 32.3%| 🟡 CPA>BE en Meta
+   ARANITAS-VENOSAS    | $6.71  |  38  | 59  | 64.4%    | $0.18  |  0   | s/venta     | —    | 🔴 DESCARTADO (0v)
+   PIERNAS-CANSADAS    | $6.86  |  23  | 31  | 74.2%    | $0.30  |  0   | s/venta     | —    | 🔴 0 ventas → podar
+   CALAMBRES-NOCTURNOS | $0.00  |   0  |  0  | —        | —      |  0   | nunca entregó| —   | 🔴 revisar/apagar
+   Nota: este testeo ya cumplió su rol. Mantener MIEDO-CIRUGIA + VERGUENZA como fuente de Post ID;
+   podar el resto. VERGÜENZA ya escala en campaña aparte.
+
+B) ESCALA "🟦 VARICOSE_ESCALA_VERGUENZA_20260710" (120247375697420784) · $79.40 · desde 10-jul (10d) — día 10, VENTANA ESCALAR
+   Oferta 2x1 (Q249) / 4x (Q389). PD $20.9. omni Meta APROX.
+   Conjunto           | gasto  | conv | LC  | %conv/LC | $/conv | omni | CPA≈Q(Meta) | freq | Decisión
+   MA2_VESTIDO        | $15.84 |  40  | 86  | 46.5%    | $0.40  |  5   | Q24.2       | 1.34 | 🟢 top (Lucid 7d Q11.6)
+   MA6_OFERTA2X1      | $15.83 |  20  | 110 | 18.2%    | $0.79  |  5   | Q24.2       | 1.96 | 🟢 vende pese a conv baja (precio=filtro; Lucid Q16.7)
+   MA5_RESIGNACION    | $16.19 |  31  | 150 | 20.7%    | $0.52  |  2   | Q61.7       | 1.70 | 🟡 caro, vigilar
+   MA4_MANCHAS        | $15.94 |  22  | 104 | 21.2%    | $0.72  |  1   | Q121.5      | 1.60 | 🔴 caro → candidato a podar
+   MA3_VERANO         | $7.90  |   9  | 62  | 14.5%    | $0.88  |  0   | s/venta     | —    | 🔴 ya en $0 last3d (apagado)
+   MA1_COMPARACION    | $7.71  |   6  | 60  | 10.0%    | $1.29  |  0   | s/venta     | —    | 🔴 ya en $0 last3d (apagado)
+   Retención video MA2_VESTIDO: thruplay 865 · p100 516 (buena). Fatiga: freq last3d todas <1.5, sin fatiga aguda.
+
+───────────────────────────────────────────────────────────────────────────
+TINNIDROP (GTR0) — "🟩 TINIDROP GTR0 - 1.59 - TEST" (120256219801430595) · $78.93 · desde 11-jul (9d) — día 9, GATE definir ganador
+───────────────────────────────────────────────────────────────────────────
+   omni Meta APROX. PD $7.94.
+   Conjunto                 | gasto  | conv | LC  | %conv/LC | $/conv | omni | CPA≈Q(Meta) | CTR   | Decisión
+   Pérdida auditiva irrev.  | $14.50 |  89  | 150 | 59.3%    | $0.16  |  8   | Q13.8       | 4.52% | 🟢🟢 mejor
+   Deterioro cognitivo      | $14.71 |  74  | 127 | 58.3%    | $0.20  |  3   | Q37.3       | 5.71% | 🟢 fuerte
+   Accesibilidad econ vs méd| $14.63 |  51  | 79  | 64.6%    | $0.29  |  3   | Q37.2       | 3.84% | 🟢 sano
+   ME DIJERON QUE NO TIENE  | $14.45 |  35  | 149 | 23.5%    | $0.41  |  6   | Q18.4       | 4.45% | 🟢 vende pese a conv baja (freq1.89)
+   NOCHES SIN DORMIR        | $14.44 |  34  | 142 | 23.9%    | $0.42  |  2   | Q55.0       | 3.54% | 🟡 al borde de BE
+   TENSIÓN/ESTRÉS           | $6.21  |  12  | 54  | 22.2%    | $0.52  |  0   | s/venta     | 3.83% | 🔴 ya en $0 last3d (apagado)
+   Lectura: re-testeo de 6 ángulos. Los ganadores se MOVIERON del histórico #4 Accesibilidad a
+   PÉRDIDA AUDITIVA + DETERIORO COGNITIVO (coincide con snap Lucid 7d). CPM barato $0.95-1.60, no saturado.
+   ⚠️ Compliance pendiente antes de escalar: quitar sellos FDA/Min.Salud + %clínicos + antes/después facial.
+
+───────────────────────────────────────────────────────────────────────────
+CLEARSTEM (GTR13) — MCP OFF ❌ → sin lado-ads en vivo
+───────────────────────────────────────────────────────────────────────────
+   Reverificado hoy: GTR13 sigue "rollout gradual", is_ads_mcp_enabled=false. No se leen métricas.
+   Monitoreo SOLO por LucidSales (pendiente que el operador pegue). Último snap 7d: 6 ventas,
+   Q36.2/venta · Q54.3/entregado; mejor Anti-Falsificación Q18.5. Sin datos nuevos este run.
+
+───────────────────────────────────────────────────────────────────────────
+PENDIENTES (no VIVO, no auditados): VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX = LISTO sin lanzar.
+═══════════════════════════════════════════════════════════════════════════
+RECORDATORIO AL OPERADOR — pegá LucidSales (últimos 7 días, todas las campañas) para cerrar
+CPA real por venta y por entregado. Formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus.
+Sin eso, todo lo de arriba es provisional por conversación y NO habilita escalado fuerte.
+═══════════════════════════════════════════════════════════════════════════
+
+
+═══════════════════════════════════════════════════════════════════════════
+CIERRE CON LUCIDSALES (recibido 20-jul) — CPA REAL POR VENTA (fuente de verdad)
+Ventana Lucid 13→20 jul (8d, incluye hoy) · Meta CSV 13→19 jul (7d) → 1 día de desfase.
+TOTAL PORTAFOLIO: 63 ventas · gasto $244.66 · CPA real Q29.6/venta · ROAS real 7.85x. RENTABLE.
+(El ROAS "59.6" mezcla ingreso en Q con gasto en USD; el real = ÷7.62.)
+
+CPA real por producto (Q/venta):
+  TINNIDROP  22v Q16.5 (BE 60.5) VERDE-VERDE · VARICOSE testeo 10v Q19.6 (BE 64.5) VERDE
+  CLEARSTEM  12v Q33.7 VERDE · VARICOSE escala 2x1 9v Q34.3 (BE ~159) VERDE · NUSAVA 10v Q59.1 (BE 68.3) AMARILLO
+
+Ganadores reales (escalar): Perdida auditiva Q8.7(8v) · ME DIJERON Q9.8(7v) · MIEDO-CIRUGIA Q13.3(5v)
+  · Anti-Falsificacion Q13.3(5v) · VERGUENZA-PIERNAS Q15.8(4v) · MA2_VESTIDO Q16.4(4v) · MA6_2X1 Q22.3(3v)
+MATAR ya (0 ventas tras PD): campana NUSAVAB12_ESCALA_MEMORIA completa (C-1..C-6) · MA3-HORMIGUEO
+  · MA1-COMPLEJOB · ABSORCION · TENSION(Tinni) · Eje Intestino-Piel(Clear) · VERGUENZA_MA1 · VERGUENZA_MA3
+
+CORRECCION vs lectura provisional por conversacion: MA7-ARDORVIDEO (Nusava) lideraba por
+  %conv/clic (65%) pero por VENTA cierra Q46/venta, 4% cierre, 1 venta -> "trae charla, no cierra".
+  Confirma: LucidSales manda sobre la conversacion. Nusava sin caballo claro por venta (borderline).
+
+MEJORA DE MEDICION PENDIENTE: agregar a GTR7 y GTR0 las columnas de retencion de video
+  (Reproducciones 3s + ThruPlays + %25/50/75/100) que ya existen en GTR13, para diagnosticar
+  hook vs cuerpo en videos ganadores. "Compras" de Meta seguira subcontando (COD) -> Lucid = verdad.
+═══════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,214 @@
+{
+  "ficha_id": "F024",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/03_3358506677671426.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "3358506677671426",
+    "dias_activo": 54,
+    "replicas": 1,
+    "score": 79,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "antes-despues"
+  },
+  "dispositivo_dominante": "DOS RETRATOS SEPARADOS, UNIDOS POR UNA FLECHA CURVA, CON TESTIMONIO EN PRIMERA PERSONA BAJO CADA UNO. Donde F023 parte una cara, F024 usa dos fotos distintas de la misma persona en momentos y lugares distintos, y las une con una flecha. Debajo de cada retrato hay tres frases cortas EN PRIMERA PERSONA: bajo el ANTES lo que evitaba, bajo el DESPUES lo que recupero.",
+  "lectura_estrategica": "Mismo producto y anunciante que F023, misma transformacion, pero el eje se corre del sintoma a la CONSECUENCIA SOCIAL. El titular no habla de piel: habla de volver a salir en las fotos. Los textos en primera persona bajo cada retrato (me escondia / mas seguridad) convierten el antes/despues en un mini testimonio, y el cambio de fondo entre las dos fotos (interior apagado a exterior soleado) refuerza el arco sin decir nada. Es la version emocional del mismo motor.",
+  "fondo": {
+    "tipo": "las_dos_fotos",
+    "base": "los dos retratos ocupan la banda central del frame",
+    "regla_fondo_interno": "el ANTES en interior apagado y el DESPUES en exterior luminoso: el cambio de ambiente refuerza el arco sin texto",
+    "capa": "claro plano en el tercio superior e inferior para sostener titular y pie"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (segunda linea del titular, checks, botones) mas blanco (fondo y cards) mas negro (titular) mas los tonos de las fotos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase negro",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4-6 palabras",
+      "formato_obligatorio": "la CONSECUENCIA SOCIAL recuperada, no el sintoma resuelto",
+      "regla": "volver a + una accion social concreta (salir en las fotos, ir a la playa, dar la mano)"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda clara",
+      "texto": "{{PROMESA_EMOCIONAL}}",
+      "estilo": "Bold oscuro con una palabra en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras"
+    },
+    "logo_marca": {
+      "posicion": "superior_derecha",
+      "contenido": "{{LOGO_MARCA}}",
+      "bajada": "{{CLAIM_MARCA}}",
+      "estilo_bajada": "Bold uppercase con una parte en {{PALETA_ACENTO}}"
+    },
+    "retrato_antes": {
+      "posicion": "izquierda_media",
+      "contenido": "{{FOTO_PERSONA_ANTES}}",
+      "escala": "28% del frame",
+      "label": "ANTES",
+      "formato_label": "texto Bold uppercase oscuro, sin pildora, bajo la foto",
+      "tratamiento": "interior apagado, expresion cerrada, mirada baja o de lado"
+    },
+    "retrato_despues": {
+      "posicion": "derecha_media",
+      "contenido": "{{FOTO_PERSONA_DESPUES}}",
+      "escala": "28% del frame",
+      "label": "DESPUES",
+      "formato_label": "texto Bold uppercase oscuro, sin pildora, bajo la foto",
+      "tratamiento": "exterior luminoso, sonriendo, sosteniendo el objeto de la consecuencia social (telefono, camara)",
+      "regla": "es la MISMA persona: mismo corte de pelo, mismos rasgos, ropa distinta"
+    },
+    "flecha_transicion": {
+      "posicion": "entre los dos retratos, arco superior",
+      "forma": "flecha curva fina, oscura, de izquierda a derecha",
+      "funcion": "declara la direccion de lectura y convierte dos fotos sueltas en una secuencia"
+    },
+    "testimonio_antes": {
+      "posicion": "bajo el retrato ANTES",
+      "cantidad_lineas": 3,
+      "texto": "{{FRASES_ANTES[3]}}",
+      "estilo": "Regular oscuro chico",
+      "restriccion_palabras": "2-4 palabras por linea",
+      "formato_obligatorio": "PRIMERA PERSONA en pasado, lo que evitaba o perdia"
+    },
+    "testimonio_despues": {
+      "posicion": "bajo el retrato DESPUES",
+      "cantidad_lineas": 3,
+      "texto": "{{FRASES_DESPUES[3]}}",
+      "estilo": "Regular oscuro chico",
+      "restriccion_palabras": "2-4 palabras por linea",
+      "formato_obligatorio": "PRIMERA PERSONA en presente, lo que recupero. La ultima frase es de identidad, no de sintoma"
+    },
+    "producto_hero": {
+      "posicion": "centro, entre los dos retratos",
+      "escala": "26% del frame",
+      "efecto": "burbujas o halo translucido detras",
+      "fuente": "IMAGEN_2"
+    },
+    "badge_central": {
+      "posicion": "bajo el producto",
+      "contenedor": "card blanca redondeada",
+      "texto": "{{RESULTADO}}",
+      "estilo": "Bold uppercase con las palabras clave en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-5 palabras"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono en circulo claro mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_item_3": "el ultimo es emocional, no fisico"
+    },
+    "barra_whatsapp": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "banda con logo circular verde de WhatsApp",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "estilo": "Bold uppercase oscuro con una palabra en verde"
+    },
+    "badge_envio": {
+      "posicion": "inferior_derecha",
+      "contenedor": "pildora {{PALETA_ACENTO}} con icono de camion",
+      "texto": "{{GARANTIA_ENVIO}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "fila_confianza": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono line-art mas texto Bold uppercase de 2 lineas",
+      "items": "{{CONFIANZA[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_item_3": "el tercero es prueba social numerica"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "retrato_antes",
+    "flecha_transicion",
+    "retrato_despues",
+    "testimonio_antes",
+    "testimonio_despues",
+    "producto_hero",
+    "badge_central",
+    "columna_beneficios",
+    "barra_whatsapp",
+    "fila_confianza"
+  ],
+  "reglas_duras": [
+    "Es la misma persona en las dos fotos: mismo corte de pelo y mismos rasgos, ropa distinta",
+    "El ANTES va en interior apagado y el DESPUES en exterior luminoso",
+    "La flecha curva une los dos retratos y declara la direccion de lectura",
+    "Los textos bajo cada retrato van en primera persona: pasado bajo el ANTES, presente bajo el DESPUES",
+    "La ultima frase del DESPUES es de identidad, no de sintoma",
+    "El titular nombra la consecuencia social recuperada, no el sintoma resuelto"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2_ACENTO",
+    "PROMESA_EMOCIONAL",
+    "LOGO_MARCA",
+    "CLAIM_MARCA",
+    "FOTO_PERSONA_ANTES",
+    "FOTO_PERSONA_DESPUES",
+    "FRASES_ANTES[3]",
+    "FRASES_DESPUES[3]",
+    "RESULTADO",
+    "BENEFICIOS[3]",
+    "CTA_L1",
+    "CTA_L2",
+    "GARANTIA_ENVIO",
+    "CONFIANZA[3]"
+  ],
+  "cuando_usar": [
+    "cuando el problema tiene una consecuencia social clara (esconderse, no salir, evitar fotos)",
+    "publico joven donde la identidad pesa mas que el sintoma",
+    "cuando hay dos fotos de la misma persona pero no se puede controlar pose ni luz: usar esta en vez de F023",
+    "cuando se quiere sumar testimonio sin sumar una zona de testimonio"
+  ],
+  "cuando_no_usar": [
+    "problemas sin consecuencia social visible",
+    "cuando las fotos son de personas distintas",
+    "publico que responde a evidencia clinica y no a relato"
+  ],
+  "sellos_y_claims_observados": [
+    "Bajada de marca: QUITA ACNE Y MARCAS DE ACNE.",
+    "Testimonios en primera persona bajo cada retrato: SIN CONFIANZA / EVITABA LAS FOTOS / ME ESCONDIA contra MAS SEGURIDAD / MAS SONRISA / MAS TU.",
+    "Badge central PIEL MAS LIMPIA Y CON CONFIANZA.",
+    "Beneficios: MENOS GRANOS Y MENOS MARCAS, PIEL MAS UNIFORME Y SALUDABLE, RECUPERA TU CONFIANZA.",
+    "Fila de confianza: FORMULA EFECTIVA Y SEGURA, CIENCIA REAL RESULTADOS REALES, MILES DE PERSONAS YA CONFIAN EN LA MARCA.",
+    "Badge ENVIO A TODO GUATEMALA."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

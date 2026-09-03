@@ -1,0 +1,201 @@
+{
+  "ficha_id": "F051",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Ovejitas_Lab/01_4443764439233898.jpg",
+    "anunciante": "Ovejitas Lab",
+    "ad_archive_id": "4443764439233898",
+    "dias_activo": 27,
+    "replicas": 1,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "8:11",
+    "densidad": "media",
+    "espacio_libre_objetivo": "26%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL TITULAR QUE NIEGA QUE EL PROBLEMA SEA EL PROBLEMA. Dos lineas que descartan la lectura obvia (no era solo el cabello) y una bajada de tres lineas que nombra lo que si era: como te sentias cuando te mirabas al espejo. Arriba, dos retratos del mismo hombre con sus pies de foto en tipo chica, uno frente al espejo y otro ya seguro.",
+  "lectura_estrategica": "Mueve el eje del sintoma fisico a la CONSECUENCIA EMOCIONAL, y lo hace con una estructura de negacion que obliga a seguir leyendo: si no era el cabello, entonces que era. Los dos retratos van arriba y en tamano chico, con el pie de foto sobre cada uno en vez de labels ANTES y DESPUES — la comparacion se lee sin rotularse. La columna de seis beneficios va en dos columnas de tres para no robar alto, y el 2x1 en sello de estrella es lo unico saturado de una pieza que por lo demas es clara y limpia.",
+  "fondo": {
+    "tipo": "color_plano_muy_claro",
+    "color": "blanco o gris muy claro",
+    "textura": "ninguna",
+    "regla": "el fondo claro deja que los dos unicos bloques de color (el sello de promo y la marca) se lleven la atencion"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} naranja o color del empaque (segunda linea del titular, sello de promo, iconos) mas negro (titular y texto) mas blanco (fondo) mas los tonos de los retratos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "retrato_antes": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{FOTO_PERSONA_ANTES}}",
+      "escala": "22% del frame",
+      "tratamiento": "el avatar frente al espejo o tocandose la zona, expresion de preocupacion",
+      "pie_de_foto": "{{PIE_ANTES}}",
+      "estilo_pie": "Regular negro chico, sobre la foto, sin pildora ni label",
+      "restriccion_pie": "5-8 palabras",
+      "regla": "el pie de foto reemplaza al label ANTES: la comparacion se lee sin rotularse"
+    },
+    "retrato_despues": {
+      "posicion": "superior_derecha",
+      "contenido": "{{FOTO_PERSONA_DESPUES}}",
+      "escala": "22% del frame",
+      "tratamiento": "el MISMO avatar, postura erguida, expresion segura, sobre fondo oscuro",
+      "pie_de_foto": "{{PIE_DESPUES}}",
+      "estilo_pie": "Regular negro chico, alineado a la derecha",
+      "restriccion_pie": "4-6 palabras"
+    },
+    "titular_negacion": {
+      "posicion": "centro_superior",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{NEGACION_L1}}",
+      "linea_2": "{{NEGACION_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase negro",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}, terminado en punto",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "NO ERA SOLO + el sintoma fisico obvio",
+      "regla_critica": "la negacion obliga a seguir leyendo: si no era eso, entonces que era. El punto final refuerza la afirmacion"
+    },
+    "bajada_emocional": {
+      "posicion": "bajo el titular",
+      "alineacion": "derecha",
+      "lineas": 3,
+      "texto": "{{CONSECUENCIA_EMOCIONAL}}",
+      "estilo": "Bold uppercase negro con 2-3 palabras en {{PALETA_ACENTO}}, al 45% del titular",
+      "restriccion_palabras": "7-9 palabras",
+      "formato_obligatorio": "ERA COMO + te sentias + en la situacion concreta donde el sintoma dolia",
+      "regla": "nombra la ESCENA, no el sentimiento abstracto: cuando te mirabas al espejo"
+    },
+    "header_mecanismo": {
+      "posicion": "izquierda_media",
+      "lineas": 2,
+      "linea_1": "{{HEADER_L1}}",
+      "linea_2": "{{HEADER_L2_ACENTO}}",
+      "estilo": "Bold uppercase negro con la segunda linea en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "3-5 palabras"
+    },
+    "grilla_beneficios": {
+      "posicion": "izquierda_media, bajo el header",
+      "cantidad_items": 6,
+      "orientacion": "GRILLA de 2 columnas por 3 filas",
+      "formato_item": "icono line-art fino en cuadrado redondeado con borde mas TITULO Bold uppercase mas subtitulo Regular de 2 lineas",
+      "items": "{{BENEFICIOS[6]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_subtitulo": "3-5 palabras",
+      "regla": "en grilla y no en columna: seis items apilados robarian el alto que necesitan los retratos"
+    },
+    "producto_hero": {
+      "posicion": "centro_inferior",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente, sin props",
+      "fuente": "IMAGEN_2"
+    },
+    "sello_promo": {
+      "posicion": "derecha_media",
+      "contenedor": "sello en forma de estrella o explosion {{COLOR_ALERTA}} con borde blanco",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "linea_2": "{{MULTIPLICADOR}}",
+      "estilo_l2": "Black/900 blanco",
+      "escala": "22% del ancho",
+      "regla": "unico bloque saturado de la pieza: por eso destaca sobre el fondo claro"
+    },
+    "bloque_marca": {
+      "posicion": "derecha_baja",
+      "logo": "{{LOGO_MARCA}}",
+      "tagline": "{{TAGLINE_IDENTIDAD}}",
+      "estilo_tagline": "Regular negro con la ultima palabra en {{PALETA_ACENTO}}",
+      "restriccion_tagline": "6-8 palabras",
+      "cierre": "{{LLAMADO_HABITO}}",
+      "estilo_cierre": "Bold uppercase con la segunda linea en {{PALETA_ACENTO}}",
+      "restriccion_cierre": "4-5 palabras",
+      "regla_tagline": "el tagline habla de la IDENTIDAD del comprador, no del producto"
+    },
+    "barra_sellos": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} mas texto Regular muy chico de 2 lineas",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_negacion",
+    "retrato_antes",
+    "retrato_despues",
+    "bajada_emocional",
+    "producto_hero",
+    "sello_promo",
+    "grilla_beneficios",
+    "bloque_marca",
+    "barra_sellos"
+  ],
+  "reglas_duras": [
+    "El titular niega que el sintoma fisico sea el problema real",
+    "La bajada nombra la ESCENA donde el sintoma dolia, no el sentimiento abstracto",
+    "Los retratos llevan pie de foto en tipo chica en vez de labels ANTES y DESPUES",
+    "Los seis beneficios van en grilla de 2x3, no en columna",
+    "El sello de promocion es el unico bloque saturado de la pieza",
+    "El tagline habla de la identidad del comprador, no del producto"
+  ],
+  "variables_requeridas": [
+    "FOTO_PERSONA_ANTES",
+    "FOTO_PERSONA_DESPUES",
+    "PIE_ANTES",
+    "PIE_DESPUES",
+    "NEGACION_L1",
+    "NEGACION_L2_ACENTO",
+    "CONSECUENCIA_EMOCIONAL",
+    "HEADER_L1",
+    "HEADER_L2_ACENTO",
+    "BENEFICIOS[6]",
+    "OFERTA_LABEL",
+    "MULTIPLICADOR",
+    "LOGO_MARCA",
+    "TAGLINE_IDENTIDAD",
+    "LLAMADO_HABITO",
+    "SELLOS[4]",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "cuando el sintoma fisico tiene una consecuencia emocional mas fuerte que el sintoma mismo",
+    "categorias de autoimagen (cabello, piel, peso, dientes)",
+    "publico masculino donde el argumento emocional necesita entrar por la negacion",
+    "cuando existen dos retratos de la misma persona con distinto gesto"
+  ],
+  "cuando_no_usar": [
+    "cuando el problema es puramente funcional y no toca la autoimagen",
+    "cuando no hay una lectura obvia que negar",
+    "publico de nivel 4 que ya busca el producto por nombre"
+  ],
+  "sellos_y_claims_observados": [
+    "Barra de sellos: INGREDIENTES NATURALES, SIN PARABENOS NI SULFATOS, DERMATOLOGICAMENTE PROBADO, CALIDAD PREMIUM PARA HOMBRES.",
+    "Sello SUPER PROMO 2X1 en forma de estrella.",
+    "Pies de foto: CABELLO DEBIL, SIN VIDA Y SIN CONFIANZA contra MAS FUERTE, MAS DENSO, MAS SEGURO.",
+    "Header NUTRICION DESDE LA RAIZ, RESULTADOS VISIBLES.",
+    "Beneficios: FORTALECE Y NUTRE LA RAIZ, LIMPIEZA PROFUNDA Y EQUILIBRIO, MAS VOLUMEN (cabello mas denso y con cuerpo), MENOS CAIDA (cabello mas fuerte y resistente), CONTROL GRASA (cabello fresco y saludable), CASPA (control efectivo y duradero).",
+    "Tagline PORQUE CUIDARTE TAMBIEN ES COSA DE HOMBRES y cierre EMPIEZA POR TU RUTINA DIARIA."
+  ],
+  "canonico_id": "CN17_TITULAR_DOMINANTE",
+  "blueprint_equivalente": null
+}

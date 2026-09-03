@@ -1,0 +1,280 @@
+============================================================
+CLASE 20 — DOMINAR LOS ÁNGULOS DE VENTA: BANCO DE ÁNGULOS, FÓRMULA HPPPC Y OPTIMIZACIÓN
+Instructor: Líder de la comunidad (clase metódica sobre ángulos)
+============================================================
+
+---
+
+## 🎯 IDEA CENTRAL DE LA CLASE
+
+Clase sistemática para DOMINAR los ángulos de venta con un MÉTODO (no ideas sueltas). El objetivo: salir con una estructura para detectar el dolor, elegir un ángulo, convertirlo en anuncio y optimizarlo con datos — mínimo 3-4 ángulos para testear. La tesis: **"No vendes el producto en bruto, vendes la razón más convincente para elegirlo."** Un ángulo está compuesto por el AVATAR + su DOLOR/DESEO + una PROMESA + una PRUEBA, y el motor es llevar al cliente del PUNTO A (su problema) al PUNTO B (la solución), siendo el producto el PUENTE. La clase entrega un BANCO de ángulos, profundiza en los 5 principales (problema-solución, comparación, autoridad, emocional, oferta-escasez), enseña la fórmula HPPPC (Hook-Problema-Promesa-Prueba-CTA) para pasar de ángulo a anuncio, y un sistema de optimización por métricas (CTR, cierre, CPA, ROAS) más cómo investigar y replicar creativos ganadores con ética.
+
+---
+
+## 📚 RESUMEN COMPLETO (Sección por Sección)
+
+### BLOQUE 1: Qué es un ángulo (la anatomía)
+
+Un ángulo se compone de:
+- **Cliente/Avatar:** quién es, qué le duele, qué le frustra, qué quiere lograr.
+- **Dolor/Deseo:** la tensión que mueve la compra (problema, miedo, aspiración, urgencia).
+- **Promesa:** el resultado percibido que se ofrece (más energía, confianza, comodidad, ahorro).
+- **Prueba:** la razón para creer (autoridad, comparación, testimonio, garantía, mecanismo).
+
+**El motor (Punto A → Punto B):** el cliente está en el punto A (dolor, frustración, duda, miedo); el producto es el VEHÍCULO/PUENTE que lo lleva al punto B (resultado aspiracional, facilidad, control, confianza). Pregunta clave: "¿Qué le duele hoy al cliente y qué quiere recibir mañana?"
+
+### BLOQUE 2: El banco de ángulos (menú creativo)
+
+No usarlos todos, pero conocerlos para hacer variaciones: problema-solución, resultados/transformación, miedo (evitar el riesgo), ahorro (dinero/tiempo/rapidez), educativo, mecanismo/diferenciador, autoridad, prueba social, error común, comparación, emocional (uno de los mejores), facilidad, garantía, oferta/urgencia.
+**Regla: un creativo = UN ángulo dominante.** No mezclar ángulos ni generalizar (el cliente se pierde); resaltar el principal.
+
+### BLOQUE 3: Los 5 ángulos principales (en profundidad)
+
+**1. PROBLEMA-SOLUCIÓN:**
+- Nombrar el problema y hacerlo ESPECÍFICO ("¿Te sientes pesado después de comer y no sabes qué cambiar?").
+- Amplificar la consecuencia (qué pierde si sigue igual).
+- Conectar con un hábito/mecanismo simple y una PROMESA RESPONSABLE.
+- **Lenguaje de apoyo, no absoluto:** "contribuye, acompaña, puede mejorar" — NUNCA "cura" ni plazos imposibles ("en 2 días curado"), por las políticas de Meta. Bonus: el lenguaje de apoyo favorece la RECOMPRA (no es solución definitiva, acompaña la mejora).
+- Presentar el producto como puente creíble y cerrar con una acción clara.
+
+**2. COMPARACIÓN (uno de los que más funcionan):**
+- Aumenta el valor percibido mostrando por qué tu producto es más conveniente que la competencia.
+- Comparar CRITERIOS, no personas: 3-4 ventajas verificables (ingredientes, proceso, garantía, facilidad, precio por uso, uso diario).
+- Que la decisión por tu producto sea OBVIA.
+
+**3. AUTORIDAD (principal, para todos los productos, sobre todo salud/suplementos):**
+- Fuentes: expertos (doctores, químicos, nutricionistas), laboratorio/formulación/trazabilidad, registros (INVIMA en Colombia), figuras públicas conocidas, testimonios, estudios, garantías.
+- Plantilla: "Este producto fue formulado con [ingrediente] para ayudarte con [problema], usándolo 3 veces por semana, y cuenta con registro INVIMA."
+- **La autoridad debe ser VERIFICABLE. NO inventar expertos, credenciales ni registros falsos** (problemas legales).
+
+**4. EMOCIONAL (uno de los mejores; el cliente reacciona mejor):**
+- Conecta con el deseo más profundo: identidad, seguridad, autoestima, pertenencia.
+- Ejemplo: "Volver a sentirte bien contigo." Da control, hace sentir identificado, ofrece tranquilidad (comprar sin miedo a equivocarse).
+
+**5. OFERTA-ESCASEZ (no crea valor, ACELERA la decisión):**
+- Usar cuando el cliente ya conoce el producto/resultado.
+- Ofertas irresistibles (paquetes, bonus, envío, descuentos, garantías).
+- Escasez REAL (fecha límite, stock, lotes, contadores en landing — todo verificable).
+- CTA directo: "compra ahora", "reserva hoy", "reclama el bonus".
+
+### BLOQUE 4: Otros ángulos para variar
+
+Antes/después (transformación por semanas), educativo (enseñar la causa/error que el cliente no veía), mecanismo único (por qué tu producto funciona distinto), prueba social (reseñas, testimonios, uso real), facilidad (menos pasos/fricción), garantía (reduce el riesgo percibido).
+
+### BLOQUE 5: Cómo ELEGIR el ángulo (no adivinar)
+
+Hacer estudio/análisis de mercado y responder:
+- **¿El problema es urgente?** → problema-solución o miedo.
+- **¿La competencia es fuerte?** → comparación, mecanismo, oferta/escasez.
+- **¿Hay poca confianza?** (muchos proveedores, calidad variable) → autoridad, garantía, prueba social.
+- **¿El cliente compra por aspiración?** → emocional, resultados.
+- **El mejor ángulo es el que hace MÁS EVIDENTE la compra para ese cliente específico.**
+
+### BLOQUE 6: De ángulo a anuncio — la fórmula HPPPC
+
+**HPPPC = Hook + Problema + Promesa + Prueba + CTA (llamado a la acción).**
+- **Hook:** captar la atención, romper el scroll (en landing ~3 segundos; en imágenes, títulos/ganchos + imagen representativa del ángulo).
+- **Problema:** nombrar el dolor una vez captada la atención.
+- **Promesa:** el resultado deseado.
+- **Prueba:** la razón para creer (autoridad, testimonio, mecanismo, comparación).
+- **CTA:** qué debe hacer la persona para obtener el resultado.
+- Ejemplo: "¿Te cuesta mantener tu rutina? Prueba una fórmula diaria fácil, creada con [autoridad], con garantía de [X] días. Compra hoy y recibe."
+
+### BLOQUE 7: Optimización por métricas
+
+La creatividad se valida "en la calle" (campañas) por clics, conversiones y costo. Setup de prueba: mismo producto, misma oferta, 3-4 ÁNGULOS diferentes a la vez; duplicar lo ganador y hacer variaciones.
+- **CTR / clics:** retención del hook (si el CTR < 1.5 → el hook falla, corregirlo).
+- **CR / cierre:** la oferta/flujo/landing/WhatsApp; si no convierte, ahí está el filtro.
+- **CPA:** cuánto costó vender (mejorar los clics suele bajar el CPA).
+- **ROAS:** el retorno que justifica escalar.
+- **Ganador = mayor conversión RENTABLE, no likes.**
+
+**Interpretación (dónde está el filtro):**
+- **CTR alto + CPA económico:** ganador → escalar con control, crear variaciones del mismo ángulo.
+- **CTR/retención baja + cierre alto:** la oferta vende pero el creativo no detiene el scroll → mejorar el CREATIVO.
+- **CTR muy alto + CPA alto:** el hook está bien, pero la oferta/mensaje inicial/cierre fallan → mejorar el CIERRE.
+- **CTR muy bajo + caro:** no hay interés → pausar, replantear el dolor/prueba o probar otro ángulo.
+- **Optimizar = separar el problema:** ¿falló la atención, la confianza o la oferta/cierre?
+
+### BLOQUE 8: Investigar y replicar con ética
+
+- "No copiar, pero no reinventar la rueda." Estudiar lo que YA funciona y adaptarlo (otro producto, otro mercado).
+- **Herramientas:** Calodata, Biblioteca de Anuncios, Calbu (con generador de voz para crear creativos propios tomando referencias ganadoras).
+- Buscar creativos activos con mucho tiempo rodando y buenos likes.
+- **Desarmar la estructura** del creativo ganador: hook, ángulo, prueba, oferta, CTA.
+- **Adaptar con ética** (cambiar texto, promesa, prueba, voz; no copiar literal).
+- **Lo que SÍ se copia: el POR QUÉ vendió y qué se hizo para lograrlo.**
+- Preguntas de análisis: ¿Qué hace el hook que rompe el scroll (frase, gesto, visual, problema)? ¿Qué tipo de ángulo es? ¿Qué prueba usa? ¿Qué tipo de oferta? ¿Qué CTA pide (comprar, escribir, reservar, reclamar, probar)? Aplica igual a videos e imágenes.
+
+### BLOQUE 9: Errores comunes que dañan el ángulo
+
+- **Saturar:** la claridad vende más que la saturación; ser concreto y puntual (la gente no lee párrafos).
+- **Usar todos los ángulos a la vez:** el cliente se confunde y no sabes cuál funcionó.
+- **Prometer de más:** sube clics/ventas y baja el CPA al inicio, pero daña la confianza, encarece y genera devoluciones.
+- **Copiar la competencia:** pierdes el diferenciador y la originalidad de la marca.
+- **Optimizar por likes:** creativos que "entretienen" bajan el CPM pero encarecen clics y CPA (no venden).
+
+### BLOQUE 10: El plan de 7 días (adaptable)
+
+- **Día 1:** definir el cliente, el punto A y el punto B (estudio de mercado).
+- **Día 2:** crear el banco/biblioteca de hooks.
+- **Día 3:** seleccionar los mejores ángulos.
+- **Día 4:** producir/grabar los creativos.
+- **Día 5:** testear.
+- **Día 6:** leer las métricas.
+- **Día 7:** escalar.
+(Se puede comprimir; cuanto más se aplica, más rápido y más experiencia.) "Repetir: investigar, crear, probar, analizar, mejorar — todo a conciencia, con plan, no volumen sin estrategia."
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **"No vendes el producto en bruto, vendes la razón más convincente para elegirlo."** — La esencia del ángulo.
+
+2. **El producto es el PUENTE del punto A al punto B.** — A = dolor; B = resultado; el producto conecta.
+
+3. **Un creativo = UN ángulo dominante.** — Mezclar ángulos pierde al cliente.
+
+4. **Lenguaje de apoyo, no absoluto.** — "Contribuye/acompaña/puede mejorar"; nunca "cura" ni plazos imposibles (políticas Meta + favorece la recompra).
+
+5. **El mejor ángulo es el que hace MÁS EVIDENTE la compra para ese cliente.** — Se elige por el contexto (urgencia, competencia, confianza, aspiración).
+
+6. **Fórmula HPPPC.** — Hook, Problema, Promesa, Prueba, CTA: la receta para pasar de ángulo a anuncio.
+
+7. **Ganador = conversión RENTABLE, no likes.** — Optimizar por likes engaña (creativos que entretienen no venden).
+
+8. **Cada métrica señala un filtro distinto del embudo.** — CTR=hook, cierre=oferta/flujo, CPA=costo, ROAS=escalar.
+
+9. **"Copia el POR QUÉ vendió, no el creativo."** — Desarmar la estructura y adaptar con ética.
+
+10. **La autoridad debe ser VERIFICABLE.** — No inventar expertos ni registros falsos.
+
+11. **La comparación es de los que más funcionan.** — 3-4 ventajas verificables hacen obvia la decisión.
+
+12. **El ángulo emocional conecta más fuerte.** — Identidad, seguridad, autoestima, pertenencia.
+
+13. **La claridad vende más que la saturación.** — Concreto y puntual; la gente no lee párrafos.
+
+14. **"Se queman los ángulos."** — El producto es el mismo; la razón para comprar es lo que diferencia.
+
+---
+
+## 🛠️ TRUCOS, TIPS Y RECOMENDACIONES
+
+1. **Tener mínimo 3-4 ángulos para testear** por producto.
+
+2. **Definir el punto A y el punto B** del cliente con estudio de mercado antes de crear.
+
+3. **Un ángulo dominante por creativo** (resaltar el principal).
+
+4. **Usar el banco de ángulos** para hacer variaciones a conciencia.
+
+5. **Lenguaje de apoyo** en salud (contribuye/acompaña), no "cura" ni plazos.
+
+6. **Comparar criterios verificables** (ingredientes, proceso, garantía, precio por uso).
+
+7. **Autoridad verificable** (registro INVIMA, especialistas reales).
+
+8. **Aplicar la fórmula HPPPC** en cada creativo.
+
+9. **Setup de prueba: mismo producto/oferta, 3-4 ángulos a la vez.**
+
+10. **Interpretar las métricas para hallar el filtro** (CTR, cierre, CPA, ROAS).
+
+11. **Investigar con Calodata, Biblioteca de Anuncios, Calbu** y desarmar la estructura ganadora.
+
+12. **Copiar el "por qué vendió", adaptando texto/promesa/prueba/voz.**
+
+13. **Ser concreto y puntual** (sin párrafos largos).
+
+14. **Seguir el plan de 7 días** (o comprimirlo) para tomar acción rápida.
+
+---
+
+## 📋 PROCESOS Y PASOS
+
+### PROCESO 1: Construir un ángulo
+**Paso 1:** Definir el avatar (quién, qué le duele, qué quiere).
+**Paso 2:** Identificar el dolor/deseo (punto A).
+**Paso 3:** Formular la promesa (punto B).
+**Paso 4:** Elegir la prueba (autoridad/comparación/testimonio/garantía).
+
+### PROCESO 2: Elegir el ángulo según el contexto
+- Problema urgente → problema-solución / miedo.
+- Competencia fuerte → comparación / mecanismo / oferta.
+- Poca confianza → autoridad / garantía / prueba social.
+- Compra aspiracional → emocional / resultados.
+
+### PROCESO 3: De ángulo a anuncio (HPPPC)
+Hook (romper scroll) → Problema → Promesa (resultado) → Prueba (razón para creer) → CTA (acción).
+
+### PROCESO 4: Optimizar (separar el problema)
+**Paso 1:** Setup: mismo producto/oferta, 3-4 ángulos.
+**Paso 2:** Leer CTR/clics (hook), cierre (oferta/flujo), CPA, ROAS.
+**Paso 3:** Diagnosticar el filtro: CTR alto+CPA bajo (escalar), CTR bajo+cierre alto (mejorar creativo), CTR alto+CPA alto (mejorar cierre), CTR bajo+caro (descartar/replantear).
+**Paso 4:** Duplicar lo ganador con variaciones.
+
+### PROCESO 5: Investigar y replicar con ética
+**Paso 1:** Buscar creativos ganadores (Calodata, Ad Library, Calbu).
+**Paso 2:** Desarmar la estructura (hook, ángulo, prueba, oferta, CTA).
+**Paso 3:** Identificar el POR QUÉ vendió.
+**Paso 4:** Adaptar con ética (cambiar texto, promesa, prueba, voz).
+
+### PROCESO 6: Plan de 7 días
+Día 1 cliente A→B; Día 2 banco de hooks; Día 3 ángulos; Día 4 producir creativos; Día 5 testear; Día 6 leer métricas; Día 7 escalar.
+
+---
+
+## ❓ PREGUNTAS Y RESPUESTAS
+
+*(Clase principalmente expositiva, sin sección formal de Q&A. Las "preguntas" son las guía para elegir ángulo y diagnosticar métricas, ya detalladas en los bloques 5 y 7.)*
+
+---
+
+## ⚠️ ERRORES COMUNES Y ADVERTENCIAS
+
+1. **Saturar el creativo.** — La claridad vende más; ser concreto.
+
+2. **Usar todos los ángulos a la vez.** — El cliente se confunde y no sabes cuál funcionó.
+
+3. **Prometer de más.** — Daña la confianza, encarece y genera devoluciones.
+
+4. **Copiar la competencia.** — Pierdes el diferenciador y la originalidad.
+
+5. **Optimizar por likes.** — Creativos que entretienen bajan el CPM pero encarecen clics y CPA.
+
+6. **Usar lenguaje absoluto ("cura", plazos imposibles).** — Viola las políticas de Meta.
+
+7. **Inventar autoridad/registros falsos.** — Problemas legales.
+
+8. **Adivinar el ángulo sin estudio de mercado.** — Crear sin estructura.
+
+9. **Mezclar varios ángulos en un solo creativo.** — Un ángulo dominante por creativo.
+
+10. **Hacer volumen sin plan ni estrategia.** — Todo a conciencia.
+
+---
+
+## 🔗 RECURSOS, HERRAMIENTAS Y REFERENCIAS
+
+- **Calodata** — Herramienta para investigar/validar el mercado y creativos.
+- **Biblioteca de Anuncios (Ad Library)** — Ver creativos ganadores y su estructura.
+- **Calbu** — Investigación + generador de voz para crear creativos propios desde referencias.
+- **Registro INVIMA** — Fuente de autoridad verificable en Colombia.
+- **Fórmula HPPPC** — Hook + Problema + Promesa + Prueba + CTA.
+- **Banco de ángulos** — Problema-solución, comparación, autoridad, emocional, oferta-escasez, antes/después, educativo, mecanismo único, prueba social, facilidad, garantía, miedo, ahorro, error común.
+- **Métricas:** CTR/clics, CR/cierre, CPA, ROAS, CPM.
+
+---
+
+## 📌 CONCLUSIONES Y CIERRE
+
+**Pilares de la clase:**
+
+1. **El ángulo es la razón para elegir el producto** — avatar + dolor/deseo + promesa + prueba; punto A → punto B.
+2. **Banco de ángulos y un ángulo dominante por creativo** — los 5 principales: problema-solución, comparación, autoridad, emocional, oferta-escasez.
+3. **Elegir el ángulo según el contexto** — urgencia, competencia, confianza, aspiración.
+4. **Fórmula HPPPC para pasar de ángulo a anuncio** y optimizar por métricas (no por likes).
+5. **Investigar y replicar con ética** — copiar el "por qué vendió", adaptar con originalidad.
+
+**Mensaje final:** "Dominar ángulos es dominar perspectivas y enfoques: el producto es el mismo, pero la razón para que los clientes compren es la que nos diferencia y la que hace que venda. Prepara el ojo y la mente, toma acción rápido, aplica el método muchas veces y se te dará fácil identificar ángulos y creativos ganadores."

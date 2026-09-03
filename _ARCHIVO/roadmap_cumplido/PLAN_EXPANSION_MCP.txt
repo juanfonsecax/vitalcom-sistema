@@ -1,0 +1,895 @@
+═══════════════════════════════════════════════════════════════════════════════════
+PLAN DE EXPANSIÓN — SISTEMA VITALCOM GUATEMALA
+INTEGRACIÓN META ADS MCP + BIBLIOTECA DE CREATIVOS + DECISIONES BASADAS EN DATA
+Versión 1.0 | Mayo 2026
+Investigación: Meta Ads MCP oficial (lanzado 29 abril 2026), benchmarks de la industria,
+mejores prácticas de escalado con Andromeda, análisis completo del sistema actual.
+═══════════════════════════════════════════════════════════════════════════════════
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 1 — DIAGNÓSTICO DEL SISTEMA ACTUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1 LO QUE EL SISTEMA HACE BIEN HOY
+────────────────────────────────────
+- Clasificación de ángulos por video (ETAPA-0): excelente — usa primeros 5 segundos
+  como clasificador, densidad de señales de compra como ranker.
+- Análisis de costeo (ETAPA-1): tabla embebida precisa, sin inventar cifras.
+- Investigación de ángulos (ETAPA-2): avatar de 4 ejes, saturación estimada.
+- Asignación de FanPage (ETAPA-FANPAGE): 8 identidades con tono calibrado.
+- Generación de copies (ETAPA-4): regla Kaleth, regla 3/3 de precios, formato PAS/BAB.
+- Bot LucidBot (ETAPA-5): flujo completo calibrado por ángulo e identidad de página.
+- Estructura de campaña (ETAPA-6): ABO, presupuesto fijo Q54, regla 4 AM, duplicado interno.
+- Guardado de contexto (ETAPA-GUARDAR-PRODUCTO): archivo TXT por producto.
+
+1.2 LOS 5 CUELLOS DE BOTELLA ACTUALES
+───────────────────────────────────────
+CUELLO 1 — Input manual de métricas:
+  El operador lee métricas en Meta Ads y las transcribe a mano para iniciar FASE 2.
+  Riesgo: error humano, demora, pérdida de datos crudos valiosos.
+  → SOLUCIÓN: ETAPA-7 lee métricas directamente via MCP.
+
+CUELLO 2 — Creación manual de campaña:
+  El operador replica la estructura de ETAPA-6 manualmente en Meta Ads.
+  Tarda 20-40 minutos por producto, es propenso a errores de nombre/configuración.
+  → SOLUCIÓN: ETAPA-6 expandida usa MCP para crear la estructura en modo PAUSED.
+
+CUELLO 3 — Sin trazabilidad entre conjunto y ángulo:
+  Una vez creada la campaña, no hay un archivo que diga "Conjunto 3 = Ángulo hormonal =
+  Video B = Copy variación 2". Si el operador lo pierde, se pierde el contexto.
+  → SOLUCIÓN: ETAPA-MAPA-CAMPAÑA genera y guarda ese archivo automáticamente.
+
+CUELLO 4 — Sin monitoreo sistemático:
+  No hay informe diario. El operador decide "a ojo" cuándo pausar, escalar o reemplazar.
+  El promedio de la industria muestra que los creativos alcanzan pico a las 72 horas y
+  luego declinan 15-25% por semana — los equipos manuales lo detectan 7-14 días tarde.
+  → SOLUCIÓN: ETAPA-7 genera informe diario automático con señales de fatiga.
+
+CUELLO 5 — Sin sistema de biblioteca de creativos:
+  Los videos se usan una vez y se pierden. No hay un banco clasificado por ángulo y
+  rendimiento. Cuando el ángulo ganador está identificado, el operador no sabe qué otros
+  videos de la biblioteca son similares al que ganó.
+  → SOLUCIÓN: ETAPA-8 gestiona la biblioteca y hace matching por ángulo + performance.
+
+1.3 ETAPAS RESERVADAS QUE SE ACTIVAN EN ESTE PLAN
+───────────────────────────────────────────────────
+Según CLAUDE.md, las siguientes etapas ya están reservadas pero no implementadas:
+  - ETAPA-7: Lector de métricas → se implementa como Monitor Diario con MCP
+  - ETAPA-8: Banco de creativos → se implementa como Biblioteca de 100+ videos
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 2 — QUÉ ES EL MCP OFICIAL DE META ADS Y QUÉ PUEDE HACER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 RESUMEN TÉCNICO
+────────────────────
+Meta lanzó su MCP oficial en open beta el 29 de abril de 2026.
+Endpoint: mcp.facebook.com/ads
+Autenticación: Business Suite (la misma cuenta que ya usás en Meta Ads).
+Costo: gratuito en open beta.
+Compatible con: Claude (Desktop + Code), ChatGPT.
+
+El MCP incluye 29 herramientas agrupadas en 4 familias:
+  A) REPORTING: métricas de campaña, conjunto, anuncio. CTR, CPA, frecuencia, impresiones,
+     mensajes iniciados, conversiones. Por día, rango de fechas, comparativo de períodos.
+  B) GESTIÓN DE CAMPAÑA: crear campaña, crear conjunto, crear anuncio, activar/pausar
+     entidades, modificar presupuestos, duplicar conjuntos.
+  C) GESTIÓN DE CATÁLOGO: productos, precios, disponibilidad.
+  D) DIAGNÓSTICO DE SEÑALES: estado del Pixel, eventos CAPI, cobertura de conversiones.
+
+2.2 LO QUE SÍ HACE (confirmado para el sistema Vitalcom)
+──────────────────────────────────────────────────────────
+  ✓ Crear campaña en status PAUSED — por defecto, nunca gasta hasta que el operador la activa.
+  ✓ Crear conjuntos de anuncios (ad sets) en status PAUSED con nombre, presupuesto, objetivo.
+  ✓ Crear anuncios con texto/copy en status PAUSED (sin video — ver limitación abajo).
+  ✓ Leer métricas de cualquier conjunto o anuncio: CTR, CPA, mensajes, conversiones.
+  ✓ Detectar frecuencia acumulada por creativo (señal de fatiga).
+  ✓ Comparar rendimiento entre conjuntos del mismo período.
+  ✓ Activar o pausar entidades existentes (ads_activate_entity).
+  ✓ Pull de datos de múltiples cuentas si el Business Suite tiene acceso a ellas.
+
+2.3 LO QUE NO HACE (limitaciones reales — importantes para el sistema)
+───────────────────────────────────────────────────────────────────────
+  ✗ Subir archivos de video directamente (los videos se suben via Business Manager manual).
+  ✗ Activar la campaña automáticamente a las 4 AM — sigue siendo acción del operador.
+  ✗ Modificar presupuestos de forma automatizada sin confirmación — riesgo de resetear
+    la fase de aprendizaje de Andromeda. El sistema NO debe hacer esto automáticamente.
+  ✗ Acceder a Audience Network reservation buys, branded content tools, lift studies.
+  ✗ Programar tareas de forma nativa — necesita Claude Code hooks o cron externo.
+
+2.4 REGLA CRÍTICA — ANDROMEDA Y EL MCP
+────────────────────────────────────────
+El algoritmo Andromeda de Meta (activo desde 2026) maneja la micro-optimización
+de forma autónoma. Cada vez que una herramienta externa toca un presupuesto activo,
+bidding o status de un conjunto en aprendizaje, SE RESETEA LA FASE DE APRENDIZAJE.
+
+REGLA FIJA DEL SISTEMA: El MCP solo hace cambios durante la PREPARACIÓN (modo PAUSED)
+y durante la LECTURA (reporting). NUNCA modifica presupuestos de campañas activas
+de forma automática. Los ajustes de presupuesto los decide el operador manualmente
+siguiendo las recomendaciones de ETAPA-7.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 3 — SETUP DEL MCP EN CLAUDE (PASO A PASO)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PASO 1 — Conectar el MCP oficial de Meta a Claude Desktop
+──────────────────────────────────────────────────────────
+  1. Abrir Claude Desktop → Configuración → MCP Servers
+  2. Agregar nuevo servidor MCP:
+       Nombre:    Meta Ads
+       Endpoint:  https://mcp.facebook.com/ads
+       Auth:      OAuth (te pedirá login con tu cuenta de Business Suite)
+  3. Autenticar con la cuenta que tiene acceso al Business Manager de Vitalcom.
+  4. Verificar que aparezca "Connected" en el panel.
+
+PASO 2 — Verificar permisos del Business Manager
+──────────────────────────────────────────────────
+  La cuenta conectada debe tener:
+  - Rol de anunciante (mínimo) en las cuentas de anuncios de Vitalcom.
+  - Acceso a la Fan Page correspondiente al producto.
+  - Pixel activo vinculado a la cuenta de anuncios.
+
+PASO 3 — Primer test (leer sin escribir)
+─────────────────────────────────────────
+  Antes de habilitar escritura, pasar 2-3 días solo leyendo métricas.
+  En Claude, enviar: "Usando el MCP de Meta Ads, mostrame las métricas de los últimos
+  3 días de la cuenta [nombre de cuenta]."
+  Si devuelve datos correctos → el MCP está configurado bien.
+
+PASO 4 — Habilitar escritura (modo PAUSED obligatorio)
+───────────────────────────────────────────────────────
+  Confirmar que cualquier creación via MCP usa status="PAUSED" en todos los niveles.
+  Nunca usar status="ACTIVE" en la creación automática.
+  El operador activa manualmente y solo cuando está todo listo.
+
+PASO 5 — Guardar la configuración de cuenta
+─────────────────────────────────────────────
+  En el archivo PRODUCTOS/[NOMBRE]_CONTEXTO.txt, agregar al final:
+    MCP_ACCOUNT_ID: [ID de la cuenta de anuncios de Meta]
+    MCP_PAGE_ID: [ID de la FanPage asignada]
+    MCP_PIXEL_ID: [ID del Pixel activo]
+  Estos 3 datos son necesarios para que ETAPA-6, ETAPA-7 y ETAPA-8 funcionen.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 4 — ETAPA-6 EXPANDIDA: CREACIÓN DE CAMPAÑA VIA MCP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 CAMBIO RESPECTO A LA ETAPA-6 ACTUAL
+─────────────────────────────────────────
+ANTES: ETAPA-6 genera una estructura de texto que el operador replica manualmente en Meta Ads.
+DESPUÉS: ETAPA-6 genera la estructura Y la crea via MCP (en PAUSED). El operador solo
+         sube los videos y activa a las 4 AM.
+
+4.2 LO QUE EL MCP CREA AUTOMÁTICAMENTE (todo en PAUSED)
+──────────────────────────────────────────────────────────
+  ✓ La campaña con el nombre correcto ([PRODUCTO]_TEST_[YYYYMMDD] o _ESCALA_[ANGULO])
+  ✓ Los 6 conjuntos con nombres exactos de ángulo/microángulo
+  ✓ Presupuesto Q54 diario por conjunto
+  ✓ Objetivo: Mensajes a WhatsApp
+  ✓ Programación de horario: 4 AM del día siguiente
+  ✓ El copy (texto principal, título, descripción) de cada anuncio, en PAUSED
+  ✓ El anuncio duplicado dentro de cada conjunto (Regla Joaquín — duplicado interno)
+  ✓ Estructura ABO (presupuesto por conjunto, no por campaña)
+
+4.3 LO QUE EL OPERADOR HACE DESPUÉS (manual, en Business Manager)
+────────────────────────────────────────────────────────────────────
+  1. Abrir Business Manager → encontrar la campaña PAUSED recién creada.
+  2. Leer el archivo MAPA_CAMPAÑA_[PRODUCTO]_[FECHA].txt (ver Sección 5).
+     Ese archivo dice: "Conjunto 1 = Ángulo X = Video [nombre_exacto.mp4]"
+  3. Ir a cada conjunto y subir el video correspondiente al anuncio.
+  4. Revisar que el copy esté correcto en cada anuncio.
+  5. No activar aún — dejar todo en PAUSED.
+  6. A las 4 AM del día siguiente, activar la campaña completa.
+
+4.4 INSTRUCCIÓN OPERATIVA PARA EL OPERADOR (se incluye en el output de ETAPA-6)
+──────────────────────────────────────────────────────────────────────────────────
+  "CAMPAÑA CREADA EN META ADS — EN PAUSED.
+  Para lanzar:
+  □ Abrir Business Manager → Campaña: [nombre exacto de la campaña]
+  □ Para cada conjunto, subir el video indicado en MAPA_CAMPAÑA_[FECHA].txt:
+      Conjunto 1: [nombre_video_1.mp4]
+      Conjunto 2: [nombre_video_2.mp4]
+      [...]
+  □ Verificar copies en cada anuncio (ya están cargados)
+  □ NO activar todavía
+  □ A las 4 AM mañana: activar la campaña completa
+  □ A las 8 AM mañana: confirmar en el chat que está activa para iniciar monitoreo"
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 5 — ETAPA-MAPA-CAMPAÑA: EL ARCHIVO DE TRAZABILIDAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+5.1 QUÉ ES
+───────────
+Es un archivo TXT que el sistema genera automáticamente después de ETAPA-6.
+Se guarda en: PRODUCTOS/[NOMBRE]_MAPA_CAMPAÑA_[FECHA].txt
+Es el archivo que usa ETAPA-7 para interpretar las métricas de cada conjunto.
+Sin este archivo, los números de Meta Ads no tienen contexto.
+
+5.2 FORMATO EXACTO DEL ARCHIVO
+────────────────────────────────
+Ejemplo para FASE 1 (Testeo):
+
+  ═══════════════════════════════════════════════════════
+  MAPA DE CAMPAÑA — [NOMBRE PRODUCTO]
+  Fase: FASE 1 (Testeo de ángulos)
+  Fecha lanzamiento: [FECHA] 4 AM
+  Campaña en Meta: [NOMBRE_CAMPAÑA_EXACTO]
+  Campaign ID: [ID del MCP]
+  AdAccount ID: [ID]
+  FanPage: [Número] [Nombre]
+  ═══════════════════════════════════════════════════════
+
+  CONJUNTO 1
+  Nombre en Meta: [ÁNGULO1]_[PRODUCTO]_TEST
+  AdSet ID: [ID del MCP]
+  Ángulo: [Nombre del ángulo]
+  Video asignado: [nombre_exacto.mp4]
+  Hook del video (primeros 5 seg): "[texto exacto]"
+  Avatar objetivo: [descripción]
+  Dolor central: "[frase]"
+  Copy: Variación [N] de ETAPA-4
+  Lleva precio P1u: SÍ/NO
+  CPA objetivo: Q[valor]
+  CPA break even: Q[valor]
+
+  CONJUNTO 2
+  [misma estructura]
+
+  [repetir para los 6 conjuntos]
+
+  ═══════════════════════════════════════════════════════
+  SEÑALES DE GANADOR A OBSERVAR
+  Tasa de conversión a WhatsApp objetivo: ≥30%
+  Tasa ideal: ≥40%
+  CPA objetivo: Q[valor de ETAPA-1]
+  Criterio de ganador: mejor conversión a WhatsApp + CPA más cercano o por debajo del objetivo
+  ═══════════════════════════════════════════════════════
+
+Para FASE 2 (Escalado), el archivo agrega:
+  - Microángulo de cada conjunto (con ID de MA-[N])
+  - Objeción que elimina
+  - Si es un ángulo nuevo o continuación del ganador de FASE 1
+
+5.3 POR QUÉ ES CRÍTICO PARA ETAPA-7
+─────────────────────────────────────
+Cuando ETAPA-7 consulta el MCP y obtiene que "el Conjunto 3 tiene CPA Q28 y 18 mensajes",
+el sistema necesita saber que ese Conjunto 3 corresponde al ángulo hormonal, con el
+video B.mp4, y que el hook es "Para mujeres con ciclo irregular". Sin ese contexto, el
+número Q28 no sirve para tomar decisiones.
+
+El MAPA_CAMPAÑA.txt es el puente entre los datos de Meta y la inteligencia del sistema.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 6 — ETAPA-7: MONITOR DIARIO (LA NUEVA ETAPA RESERVADA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+6.1 CUÁNDO SE ACTIVA
+─────────────────────
+ETAPA-7 se activa manualmente cada mañana, una vez que la campaña lleva al menos
+24 horas activa. El operador escribe: "Analizame el rendimiento de hoy."
+El sistema carga el MAPA_CAMPAÑA.txt del producto activo y consulta el MCP.
+
+6.2 DATOS QUE LEE DEL MCP
+───────────────────────────
+Para cada uno de los 6 conjuntos activos, ETAPA-7 solicita al MCP:
+  - Impresiones
+  - Clics (en enlace a WhatsApp)
+  - CTR (click-through rate)
+  - Mensajes iniciados en WhatsApp
+  - Tasa de conversión a mensaje (mensajes / clics)
+  - CPA real (costo por mensaje iniciado)
+  - Frecuencia acumulada del creativo
+  - Gasto total del conjunto
+  - Comparativo respecto al día anterior (si hay más de 1 día de datos)
+
+6.3 EL INFORME DIARIO — FORMATO FIJO
+──────────────────────────────────────
+  ═══════════════════════════════════════════════════════
+  INFORME DIARIO — [PRODUCTO] | Día [N] de testeo
+  Fecha: [FECHA] | Período: últimas 24h
+  ═══════════════════════════════════════════════════════
+
+  RANKING DE CONJUNTOS (de mejor a peor CPA real)
+
+  #1 — Conjunto [N] | ÁNGULO: [nombre] | Video: [nombre]
+  CTR: [%] | Conv. a WA: [%] | CPA real: Q[valor] | Mensajes: [N]
+  vs. CPA objetivo Q[valor]: [X% por debajo / encima]
+  Frecuencia: [N] (señal de fatiga: [SÍ/NO])
+  Estado: [GANADOR POTENCIAL / OBSERVAR / PAUSAR]
+  Acción recomendada: [descripción de 1 línea]
+
+  [repetir para los 6 conjuntos en orden]
+
+  ═══════════════════════════════════════════════════════
+  ANÁLISIS DE SITUACIÓN
+
+  ÁNGULO(S) GANADOR(ES) POTENCIAL(ES):
+  → [nombre ángulo]: CPA Q[X], conversión [%], [N] mensajes. Por debajo del CPA objetivo.
+    Características del video ganador: [hook, formato, duración estimada del engagement]
+    ¿Buscar más videos similares? [SÍ/NO + criterios de similitud]
+
+  ÁNGULOS A PAUSAR (si aplica — solo después de día 3):
+  → [nombre ángulo]: CPA Q[X] (supera break even Q[Y]). Sin mensajes suficientes.
+    Acción: Pausar este conjunto. NO reasignar presupuesto automáticamente.
+
+  SEÑALES DE FATIGA DETECTADAS:
+  → [nombre creativo]: Frecuencia [N] (umbral: 4.0). CTR bajando [X]% vs ayer.
+    Acción: Buscar video nuevo del mismo ángulo en biblioteca.
+
+  ═══════════════════════════════════════════════════════
+  DECISIÓN RECOMENDADA (el operador decide)
+
+  Si es Día 1-2:     No pausar nada. Meta aún está en aprendizaje.
+                     Solo observar qué conjuntos tienen conversión > 0.
+
+  Si es Día 3-5:     [Conjunto X] es el ganador potencial con [métricas].
+                     Opciones:
+                     A) Confirmar ganador e iniciar FASE 2 con este ángulo.
+                     B) Esperar un día más si los datos son borderline.
+                     C) Pausar los conjuntos con CPA > Q[break even].
+
+  Si hay 2 ganadores: [Ángulo A] y [Ángulo B] ambos por debajo del CPA objetivo.
+                      → Ver Sección 9 (Escalado Multi-Ángulo).
+
+  ═══════════════════════════════════════════════════════
+  PARA INICIAR FASE 2: responder "El ángulo ganador es [nombre]"
+  ═══════════════════════════════════════════════════════
+
+6.4 SEÑALES DE FATIGA CREATIVA (benchmark de la industria 2026)
+────────────────────────────────────────────────────────────────
+La investigación confirma: el creativo promedio alcanza pico de rendimiento a las
+72 horas y luego declina 15-25% por semana. Los equipos manuales lo detectan
+7-14 días tarde (ya gastaron en eso).
+
+Señales que ETAPA-7 detecta automáticamente:
+  - Frecuencia > 4.0: la misma persona vio el anuncio 4+ veces → agotamiento.
+  - CTR cayendo > 20% en 48h respecto al CTR del día 1-2.
+  - Costo por mensaje subiendo > 25% sin cambios en presupuesto.
+  - Impresiones bajando sin cambios en presupuesto (Meta dejó de distribuirlo).
+
+Cuando se detecta fatiga en un conjunto que era ganador:
+  → No pausar el ángulo — el ÁNGULO sigue funcionando, el CREATIVO se agotó.
+  → Acción: buscar en la biblioteca (ETAPA-8) otro video del mismo ángulo.
+  → Reemplazar el creativo, mantener el ángulo, no tocar el presupuesto.
+
+6.5 REGLA DE CUÁNDO NO PAUSAR NADA
+────────────────────────────────────
+CRÍTICO: Meta Andromeda necesita al menos 50 eventos de optimización (mensajes)
+por conjunto de anuncios para salir de la fase de aprendizaje.
+Con Q54 diario en Guatemala, esto tarda típicamente 3-7 días.
+
+REGLA: No pausar ningún conjunto antes del Día 3, salvo que el gasto ya superó
+el break even Q[valor] sin un solo mensaje. En ese caso, pausar ese conjunto
+específico. Nunca pausar más de 2 conjuntos simultáneamente — el sistema necesita
+seguir aprendiendo con los 4 restantes.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 7 — ETAPA-8: BIBLIOTECA DE 100+ CREATIVOS VALIDADOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+7.1 EL CAMBIO DE PARADIGMA
+────────────────────────────
+El sistema actual asume 6-10 videos disponibles. La visión expandida es operar con
+100+ videos por producto, clasificados, etiquetados y rankeados por rendimiento histórico.
+
+Con 100 videos disponibles, el proceso ya no es "¿cuál de los 6 videos testeo?" sino
+"del banco de 100 videos, ¿cuál es el top 6 para el siguiente batch?"
+
+La investigación confirma que en 2026, con Andromeda, el creativo es responsable del
+56% de los resultados de la campaña. Más que targeting, presupuesto, horario y
+placement combinados. Esto justifica invertir en construir y gestionar bien la biblioteca.
+
+7.2 ESTRUCTURA DE LA BIBLIOTECA
+─────────────────────────────────
+Carpeta física: TRANSCRIPCIONES/BIBLIOTECA/[NOMBRE_PRODUCTO]/
+
+Subcarpetas:
+  TRANSCRIPCIONES/BIBLIOTECA/[PRODUCTO]/TIER_1_GANADORES/     → Top 20% performers
+  TRANSCRIPCIONES/BIBLIOTECA/[PRODUCTO]/TIER_2_TESTERS/       → Middle 60%
+  TRANSCRIPCIONES/BIBLIOTECA/[PRODUCTO]/TIER_3_ARCHIVO/       → Bottom 20% (no relanzar)
+  TRANSCRIPCIONES/BIBLIOTECA/[PRODUCTO]/SIN_TESTEAR/          → Pendientes de primer testeo
+
+Cada video en la biblioteca tiene una ficha TXT acompañante llamada:
+  [nombre_video]_DATOS.txt
+
+Formato de la ficha:
+  ────────────────────────────────────
+  VIDEO: [nombre_archivo.mp4]
+  PRODUCTO: [nombre]
+  ÁNGULO: [nombre del ángulo — de ETAPA-0]
+  FORMATO: [UGC / Autoridad / Testimonial / Educativo / Oferta]
+  HOOK (primeros 5 seg): "[texto exacto]"
+  AVATAR: [descripción]
+  DOLOR CENTRAL: "[frase en primera persona]"
+  DENSIDAD DE SEÑALES: [%]
+  ────────────────────────────────────
+  HISTORIAL DE TESTEOS:
+  [FECHA] | Conjunto [N] | Campaña [nombre]
+    CTR: [%] | Conv. WA: [%] | CPA: Q[valor] | Mensajes: [N] | Días activo: [N]
+    Resultado: GANADOR / TESTER / PERDEDOR
+    Ángulo en ese testeo: [nombre]
+    Observaciones: [fatiga en día X, mejor horario, etc.]
+  ────────────────────────────────────
+  TIER ACTUAL: [1 / 2 / 3 / SIN TESTEAR]
+  ÚLTIMA ACTUALIZACIÓN: [FECHA]
+
+7.3 CÓMO ETAPA-0 PROCESA LA BIBLIOTECA COMPLETA
+─────────────────────────────────────────────────
+Cuando la biblioteca tiene 100 videos, el operador no pasa los 100 TXT al chat.
+El proceso es diferente:
+
+  MODO BIBLIOTECA (activar cuando hay >20 videos disponibles):
+  El operador indica el ángulo objetivo o el producto.
+  ETAPA-0 recibe los TXT de la carpeta SIN_TESTEAR más las fichas _DATOS.txt de TIER_1 y TIER_2.
+
+  ETAPA-0 hace dos cosas en simultáneo:
+    1. Clasifica los SIN_TESTEAR por ángulo y densidad de señales (proceso normal).
+    2. Verifica si hay videos de TIER_1 con el mismo ángulo del ganador actual.
+       Si los hay → priorizarlos para el siguiente batch (no testear desde cero).
+
+  Selección del batch de 6 para FASE 1:
+    - Prioridad 1: Videos TIER_1 de ángulos con historial de CPA < objetivo.
+    - Prioridad 2: Videos SIN_TESTEAR con densidad de señales > 70%.
+    - Prioridad 3: Videos TIER_2 con ángulos de baja saturación.
+    - Excluir: Videos TIER_3 (archivados por mal rendimiento).
+
+7.4 MATCHING: ENCONTRAR VIDEOS SIMILARES AL GANADOR
+──────────────────────────────────────────────────────
+Este es el caso de uso que describió el operador: "buscar más videos como los que ganaron."
+
+Cuando ETAPA-7 identifica un ganador, genera automáticamente un PERFIL DEL GANADOR:
+
+  PERFIL DEL CREATIVO GANADOR — [nombre video]
+  Ángulo: [nombre]
+  Formato: [UGC / Autoridad / etc.]
+  Hook tipo: [Negativa/Tensión / Pregunta directa / Afirmación sorprendente / Número/Stat]
+  Avatar específico: [descripción]
+  Dolor principal: "[frase]"
+  Duración de engagement: [señal de que la gente vio bastante del video]
+  CTR: [%] | Conv. WA: [%] | CPA: Q[valor]
+
+  CRITERIOS DE MATCHING para ETAPA-8:
+  → Buscar en biblioteca videos con: mismo ángulo + mismo tipo de hook + mismo formato.
+  → Si no hay suficientes: mismo ángulo + densidad de señales > [% del ganador].
+  → Output: lista de top 5-10 videos más similares de la biblioteca, ordenados por
+    densidad de señales + historial de testeos (si tienen).
+
+7.5 CUÁNDO AGREGAR VIDEOS A LA BIBLIOTECA
+───────────────────────────────────────────
+Cada video que pasa por ETAPA-0 (seleccionado o no) debe quedar en la biblioteca.
+Los NO seleccionados van a SIN_TESTEAR (pueden ser útiles más adelante).
+Los seleccionados y testeados van a TIER_1, 2 o 3 según rendimiento.
+
+Frecuencia de agregar nuevos videos: mínimo 4-8 videos por semana por producto activo.
+(Benchmark de la industria: ese ritmo de adición sostiene el escalado sin fatiga.)
+La biblioteca de 100 videos no es el destino final — es el mínimo operativo para un
+producto que se está escalando en FASE 2 sostenida.
+
+7.6 ROTACIÓN DE CREATIVOS (REGLA ANTI-FATIGA)
+───────────────────────────────────────────────
+La investigación muestra que el creativo promedio necesita rotación cuando:
+  - Frecuencia supera 4.0 (el mismo usuario vio el anuncio 4+ veces)
+  - CTR cae más del 20% en 48h
+
+Con una biblioteca de 100+ videos, la rotación es fluida:
+  1. ETAPA-7 detecta fatiga en un conjunto.
+  2. El operador consulta a ETAPA-8: "necesito reemplazo para el ángulo X."
+  3. ETAPA-8 selecciona el mejor video disponible de ese ángulo.
+  4. El operador sube el nuevo video al conjunto en Business Manager (mismo conjunto,
+     nuevo creativo dentro).
+  5. No tocar presupuesto, no resetear el conjunto — solo cambiar el video.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 8 — SISTEMA DE DECISIÓN BASADO EN DATA: UMBRALES Y REGLAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+8.1 ÁRBOL DE DECISIONES DIARIO (ETAPA-7 lo aplica)
+────────────────────────────────────────────────────
+
+DESPUÉS DEL DÍA 1:
+  → Observar. No tomar ninguna acción. Solo verificar que los conjuntos están activos
+    y gastando. Si algún conjunto no gastó nada en 24h → problema técnico, revisar.
+
+DESPUÉS DEL DÍA 2:
+  → Identificar si hay algún conjunto con 0 mensajes y gasto > Q80 (> 1.5 días de budget).
+    Si sí → candidato a pausar en Día 3 si no mejora.
+  → Notar tendencias iniciales pero no confirmar ganador todavía.
+
+DESPUÉS DEL DÍA 3 (primer corte real):
+  → CASO A: Un conjunto tiene CPA < CPA objetivo + conversión > 30%.
+    Acción: Designarlo ganador potencial. Continuar 1-2 días más para confirmar.
+  → CASO B: Todos los conjuntos tienen CPA > break even sin mensajes.
+    Acción: El ángulo general del producto no está funcionando. Ver Subsección 8.3.
+  → CASO C: Algunos conjuntos funcionan, otros no.
+    Acción: Pausar los que superaron break even. Dejar correr los demás 2 días más.
+
+DESPUÉS DEL DÍA 5 (segunda lectura):
+  → Confirmar ganador con CPA consistentemente bajo el objetivo.
+  → Iniciar FASE 2 con ese ángulo.
+  → Pausar todos los demás conjuntos.
+
+8.2 UMBRALES DE DECISIÓN (VARIABLES POR PRODUCTO — de ETAPA-1)
+────────────────────────────────────────────────────────────────
+  CPA objetivo (de tabla): Q[valor exacto de ETAPA-1]
+  CPA break even (de tabla): Q[valor exacto de ETAPA-1]
+
+  Zona verde (ESCALAR): CPA real < CPA objetivo
+  Zona amarilla (MANTENER): CPA objetivo < CPA real < CPA break even
+  Zona roja (PAUSAR): CPA real > CPA break even
+
+  Conversión a WhatsApp:
+    ≥ 40%: excelente → conjunto ganador fuerte
+    30-40%: bueno → conjunto competitivo
+    < 30%: observar → puede mejorar con el tiempo de aprendizaje
+
+8.3 QUÉ HACER SI NINGÚN ÁNGULO GANA EN FASE 1
+────────────────────────────────────────────────
+Si después de 5 días todos los conjuntos tienen CPA > break even:
+
+  PASO 1 — Verificar el funnel completo:
+    ¿El bot de LucidBot está configurado correctamente para este ángulo?
+    ¿El video tiene audio? ¿El video se reproduce en Facebook/Instagram?
+    ¿La FanPage asignada (ETAPA-FANPAGE) está activa y publicando?
+
+  PASO 2 — Verificar la coherencia ángulo-bot:
+    ¿El primer mensaje del bot menciona el dolor específico del ángulo?
+    Si el anuncio habla de ciclo irregular y el bot responde sobre "bienestar general" → incoherencia.
+
+  PASO 3 — Si el funnel está bien, el problema es el ángulo o el creativo:
+    Pausar todos los conjuntos.
+    Consultar ETAPA-8: ¿hay videos de TIER_1 de este producto con ángulos distintos?
+    Si sí → relanzar con esos videos (nuevo batch).
+    Si no → el producto puede necesitar más videos o un ángulo diferente.
+
+  PASO 4 — Documentar el resultado:
+    Actualizar todas las fichas _DATOS.txt de los videos usados con resultado PERDEDOR.
+    Actualizar los TIER a TIER_3 (archivados).
+
+8.4 REGLAS DE ESCALADO DE PRESUPUESTO (FASE 2 Y EN ADELANTE)
+──────────────────────────────────────────────────────────────
+La investigación confirma la Regla del 20%: nunca aumentar presupuesto más del 20%
+cada 3-4 días. Hacerlo más rápido resetea la fase de aprendizaje de Andromeda.
+
+REGLA DE ESCALADO DEL SISTEMA (integrada con Regla Kaleth existente):
+  Ventana 1 (mañana temprano): si el conjunto vendió 2+ desde la madrugada → +20%
+  Ventana 2 (3 horas después): si sigue bien → otro +20%
+  Ventana 3 (3 PM): si sigue bien → otro +20%
+  Máximo 3 ajustes por día. Nunca duplicar el presupuesto en un solo movimiento.
+
+REGLA DE CONSOLIDACIÓN (nueva — basada en investigación):
+  Si un conjunto de Q54 lleva 5 días con CPA < objetivo, considerar pasar a CBO
+  (Campaign Budget Optimization) con todos los conjuntos ganadores en una sola campaña.
+  CBO: el algoritmo decide cómo distribuir el presupuesto entre conjuntos.
+  CUÁNDO usarlo: solo cuando hay 3+ conjuntos ganadores simultáneamente.
+  CUÁNDO NO usarlo: durante FASE 1 (testeo) — siempre ABO en testeo.
+
+  Un insight importante de la industria 2026: una campaña a Q540/día supera en
+  rendimiento a 6 campañas a Q90/día. La consolidación de presupuesto es clave cuando
+  ya se tienen ganadores confirmados.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 9 — ESCALADO MULTI-ÁNGULO: CUANDO HAY 2 GANADORES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+9.1 CUÁNDO SE ACTIVA
+─────────────────────
+Después de 5 días de FASE 1, si 2 ángulos distintos tienen:
+  - CPA real < CPA objetivo, Y
+  - Conversión a WhatsApp > 30%, Y
+  - Mínimo 5 mensajes cada uno
+
+No es suficiente que uno sea ligeramente mejor — ambos deben estar genuinamente
+en zona verde. Si uno está en zona amarilla y el otro en verde → usar solo el verde.
+
+9.2 POR QUÉ NO MEZCLARLOS EN UNA SOLA CAMPAÑA
+──────────────────────────────────────────────────
+Andromeda usa las señales del creativo para encontrar al avatar correcto.
+Si el Ángulo A habla a mujeres con acné hormonal y el Ángulo B habla a mujeres
+con acné por estrés, Meta los dirige a personas DISTINTAS.
+
+Mezclar los dos ángulos en la misma campaña FASE 2 genera competencia interna:
+Meta no sabe a cuál avatar optimizar. El resultado es que ninguno llega a la persona
+más probable de comprar — diluye el efecto.
+
+REGLA: Un ángulo = una campaña de escalado. Siempre.
+
+9.3 LA ESTRUCTURA DE DOS FLUJOS INDEPENDIENTES
+────────────────────────────────────────────────
+  CAMPAÑA A — [PRODUCTO]_ESCALA_[ÁNGULO_A]_[FECHA]
+    6 conjuntos de microángulos del Ángulo A
+    Flujo LucidBot: el específico del Ángulo A
+    Presupuesto inicial: Q54 × 6 = Q324
+    FanPage: [la misma asignada por ETAPA-FANPAGE]
+
+  CAMPAÑA B — [PRODUCTO]_ESCALA_[ÁNGULO_B]_[FECHA]
+    6 conjuntos de microángulos del Ángulo B
+    Flujo LucidBot: el específico del Ángulo B (nuevo flujo de ETAPA-5)
+    Presupuesto inicial: Q54 × 6 = Q324
+    FanPage: [puede ser la misma o una diferente según el avatar]
+
+Las dos campañas corren simultáneamente e independientemente.
+ETAPA-7 monitorea ambas por separado en el informe diario.
+Después de 5-7 días, si una campaña supera a la otra sistemáticamente:
+  → Escalar la ganadora más agresivamente.
+  → Mantener la otra en presupuesto base mientras siga rentable.
+  → No pausar la perdedora si sigue en zona verde — sigue generando ventas.
+
+9.4 CUÁNDO HACER FASE 2 DE ÁNGULO B
+─────────────────────────────────────
+Para que el Ángulo B tenga su propia FASE 2 (con microángulos), necesita:
+  - Su propia ETAPA-3A (mapa del Ángulo B)
+  - Su propia ETAPA-3B (microángulos del Ángulo B)
+  - Su propia ETAPA-4 (copies del Ángulo B)
+  - Su propio flujo ETAPA-5 (bot específico del Ángulo B)
+
+Esto se activa igual que FASE 2 normal, pero con el Ángulo B como ganador.
+El orquestador puede correr dos FASE 2 en paralelo para los dos ángulos.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 10 — EL CICLO COMPLETO EXPANDIDO (FLUJO NUEVO SISTEMA)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CICLO DE VIDA COMPLETO DE UN PRODUCTO CON EL SISTEMA EXPANDIDO:
+
+────────────────────────────────────────────────────────────────────────────────
+FASE 0 — SETUP INICIAL (una sola vez por producto)
+────────────────────────────────────────────────────────────────────────────────
+  1. Operador agrega los videos TXT a TRANSCRIPCIONES/BIBLIOTECA/[PRODUCTO]/SIN_TESTEAR/
+  2. Se configura el MCP con los IDs de cuenta del producto (ver Sección 3).
+  3. Se corren ETAPA-0 → ETAPA-1 → ETAPA-1B para análisis base del producto.
+
+────────────────────────────────────────────────────────────────────────────────
+FASE 1 — PRE-TESTEO (sin cambios conceptuales, con MCP nuevo)
+────────────────────────────────────────────────────────────────────────────────
+  ETAPA-0:  Clasifica los TXT de SIN_TESTEAR. Selecciona top 6 por densidad + diversidad.
+  ETAPA-1:  Costeo del producto.
+  ETAPA-1B: Análisis de ingredientes. Identifica ángulos ocultos desde componentes.
+  ETAPA-2 ∥ ETAPA-FANPAGE: En paralelo.
+  ETAPA-4 ∥ ETAPA-5: En paralelo. Copies + bot.
+  ETAPA-6 EXPANDIDA:
+    → Produce estructura (como antes)
+    → USA MCP para crear campaña en Meta Ads en PAUSED (nuevo)
+    → Genera MAPA_CAMPAÑA_[PRODUCTO]_[FECHA].txt (nuevo)
+  ETAPA-GUARDAR-PRODUCTO: Actualiza contexto del producto.
+
+  Operador:
+    → Sube videos a los conjuntos en Business Manager
+    → Revisa copies
+    → Activa la campaña a las 4 AM
+
+────────────────────────────────────────────────────────────────────────────────
+FASE 1B — MONITOREO DIARIO (nuevo — durante los días de testeo)
+────────────────────────────────────────────────────────────────────────────────
+  ETAPA-7 (cada día hábil, por 5 días):
+    → Lee MAPA_CAMPAÑA_[PRODUCTO]_[FECHA].txt
+    → Consulta MCP por métricas de las últimas 24h
+    → Genera informe diario con ranking, señales de fatiga, recomendaciones
+    → Operador decide en base al informe (nunca el sistema solo)
+
+  Si hay fatiga detectada:
+    → ETAPA-8 sugiere reemplazo de video desde biblioteca
+    → Operador sube el nuevo video al conjunto correspondiente
+
+────────────────────────────────────────────────────────────────────────────────
+FASE 2 — POST-TESTEO (un ángulo ganador)
+────────────────────────────────────────────────────────────────────────────────
+  ETAPA-3A: Mapa exhaustivo del ángulo ganador (sub-dolores, objeciones, recorrido).
+  ETAPA-3B: Microángulos (8-12 variaciones del ganador).
+  ETAPA-4 ∥ ETAPA-5: En paralelo. Copies testimonio + bot específico del ganador.
+  ETAPA-6 EXPANDIDA:
+    → Crea campaña de escalado en PAUSED via MCP
+    → Genera MAPA_CAMPAÑA_[PRODUCTO]_ESCALA_[FECHA].txt
+
+  Operador:
+    → Sube videos/creativos de los microángulos
+    → Activa a las 4 AM
+
+────────────────────────────────────────────────────────────────────────────────
+FASE 2B — MONITOREO DE ESCALADO (nuevo — continuo)
+────────────────────────────────────────────────────────────────────────────────
+  ETAPA-7 continúa diariamente:
+    → Contrasta métricas de escalado con MAPA de FASE 2
+    → Detecta qué microángulo tiene mejor CPA
+    → Detecta fatiga por microángulo
+    → Recomienda: cuáles microángulos escalar más, cuáles reemplazar
+
+  Si hay 2 microángulos ganando muy bien:
+    → Considerar nuevos conjuntos solo con esos microángulos (mini-campaña de microángulo)
+
+  Si el ángulo principal satura (frecuencia general alta):
+    → Volver a ETAPA-8 para buscar nuevos videos del mismo ángulo
+    → Volver a ETAPA-3B para generar nuevos microángulos desde la misma base
+
+────────────────────────────────────────────────────────────────────────────────
+FASE 3 — ESCALADO MULTI-ÁNGULO (cuando hay 2+ ganadores)
+────────────────────────────────────────────────────────────────────────────────
+  → 2 FASE 2 paralelas, una por cada ángulo ganador
+  → 2 flujos LucidBot simultáneos
+  → ETAPA-7 monitorea ambas campañas y genera informe comparativo
+  → Decisión de presupuesto entre ángulos: basada en data de ETAPA-7
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 11 — POLÍTICA DE CUMPLIMIENTO PARA SUPLEMENTOS EN META ADS 2026
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+La investigación detectó una alerta importante:
+Meta endureció significativamente las políticas de publicidad de suplementos en 2025-2026.
+Esto afecta directamente al sistema Vitalcom.
+
+REGLAS QUE EL SISTEMA DEBE RESPETAR EN COPIES E INFOGRAFÍAS:
+  ✗ NUNCA: "cura", "trata", "elimina [enfermedad]", "aprobado FDA", "garantizamos"
+  ✓ SÍ: "apoya", "ayuda a", "contribuye a", "estándares FDA", "fórmula segura"
+  ✗ NUNCA: claims de tratamiento de enfermedades (ej: "trata el síndrome de ovario poliquístico")
+  ✓ SÍ: "apoya el equilibrio hormonal", "ayuda a regular el ciclo"
+
+El sistema ya tiene protección parcial en ETAPA-4 (palabras prohibidas: "garantizamos",
+"cura", "elimina"). Esta lista debe expandirse para incluir cualquier claim que suene
+a tratamiento médico de enfermedad.
+
+ETAPA-4 debe agregar a sus reglas:
+  → Nunca prometer curar una enfermedad diagnosticada.
+  → Las afirmaciones de beneficio deben ser sobre "bienestar" o "apoyo", no sobre "tratamiento".
+  → La IMAGEN 3 ya tiene el disclaimer correcto: "Estándares FDA" (nunca "Aprobado FDA").
+  → Si el copy menciona una condición médica (PCOS, diabetes, hipertensión), reformular
+    hacia el síntoma que el avatar experimenta, no hacia el diagnóstico clínico.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 12 — ROADMAP DE IMPLEMENTACIÓN (EN ORDEN DE PRIORIDAD)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRIORIDAD 1 — Setup del MCP (hacer primero, habilita todo lo demás)
+────────────────────────────────────────────────────────────────────
+  □ Conectar mcp.facebook.com/ads a Claude Desktop (ver Sección 3).
+  □ Autenticar con Business Suite de Vitalcom.
+  □ Pasar 2-3 días solo leyendo métricas para verificar que funciona.
+  □ Agregar MCP_ACCOUNT_ID, MCP_PAGE_ID y MCP_PIXEL_ID al CONTEXTO.txt de cada producto.
+  Tiempo estimado: 1-2 horas de setup + 2-3 días de verificación.
+
+PRIORIDAD 2 — ETAPA-MAPA-CAMPAÑA (cero riesgo, máximo valor inmediato)
+────────────────────────────────────────────────────────────────────────
+  □ Crear el formato de MAPA_CAMPAÑA.txt (Sección 5).
+  □ Modificar ETAPA-6 para que genere este archivo automáticamente al final de su output.
+  □ Modificar ETAPA-GUARDAR-PRODUCTO para que también guarde el MAPA_CAMPAÑA en PRODUCTOS/.
+  Este cambio no requiere MCP — se puede implementar ahora mismo con el sistema actual.
+  Tiempo estimado: 1 sesión de trabajo.
+
+PRIORIDAD 3 — ETAPA-7 básica (lectura de métricas via MCP)
+────────────────────────────────────────────────────────────
+  □ Crear el archivo .claude/agents/ETAPA-7.md con el formato de informe diario (Sección 6).
+  □ El agente lee el MAPA_CAMPAÑA.txt del producto activo.
+  □ El agente consulta el MCP por métricas de las últimas 24h.
+  □ Genera el informe estructurado.
+  □ El operador toma la decisión basada en el informe.
+  Tiempo estimado: 1-2 sesiones de trabajo.
+
+PRIORIDAD 4 — ETAPA-8 básica (biblioteca de creativos)
+────────────────────────────────────────────────────────
+  □ Crear la estructura de carpetas TRANSCRIPCIONES/BIBLIOTECA/[PRODUCTO]/.
+  □ Crear el formato de ficha _DATOS.txt para cada video.
+  □ Crear el archivo .claude/agents/ETAPA-8.md con la lógica de matching.
+  □ Migrar los videos ya testeados a la biblioteca con sus fichas.
+  Tiempo estimado: 2-3 sesiones de trabajo (la mayor parte es organizar los videos existentes).
+
+PRIORIDAD 5 — ETAPA-6 con creación via MCP
+─────────────────────────────────────────────
+  □ Actualizar .claude/agents/ETAPA-6.md para incluir la llamada al MCP.
+  □ El MCP crea la campaña y los 6 conjuntos en PAUSED.
+  □ El output de ETAPA-6 ahora incluye los IDs generados por Meta (para que ETAPA-7 pueda leer).
+  □ Verificar con un producto real que la campaña creada tiene la configuración correcta.
+  Tiempo estimado: 1 sesión + verificación real.
+
+PRIORIDAD 6 — Escalado Multi-Ángulo (ETAPA-9 / lógica de dos flujos)
+─────────────────────────────────────────────────────────────────────
+  □ Actualizar el ORCHESTRATOR (CLAUDE.md) para manejar el caso de 2 ángulos ganadores.
+  □ Crear lógica en ETAPA-7 para identificar cuando hay 2 ganadores simultáneos.
+  □ Definir el flujo de activación de 2 FASE 2 paralelas.
+  Este es el paso más complejo — implementar después de tener Prioridades 1-5 funcionando.
+  Tiempo estimado: 2-3 sesiones de trabajo.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 13 — RESUMEN DE CAMBIOS AL SISTEMA ACTUAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ARCHIVOS NUEVOS A CREAR:
+  □ .claude/agents/ETAPA-7.md — Monitor diario con MCP
+  □ .claude/agents/ETAPA-8.md — Biblioteca de creativos
+  □ TRANSCRIPCIONES/BIBLIOTECA/ — Carpeta de biblioteca con subcarpetas por producto
+  □ PRODUCTOS/[NOMBRE]_MAPA_CAMPAÑA_[FECHA].txt — Generado automáticamente por ETAPA-6
+
+ARCHIVOS EXISTENTES A MODIFICAR:
+  □ .claude/agents/ETAPA-6.md — Agregar creación via MCP + generación de MAPA_CAMPAÑA
+  □ .claude/agents/ETAPA-GUARDAR-PRODUCTO.md — Incluir MAPA_CAMPAÑA en el guardado
+  □ .claude/agents/ETAPA-4.md — Expandir palabras prohibidas (política suplementos Meta 2026)
+  □ CLAUDE.md (Orchestrator) — Agregar:
+      * Flujo de ETAPA-7 (monitoreo diario)
+      * Flujo de ETAPA-8 (biblioteca)
+      * Caso de 2 ángulos ganadores → escalado multi-ángulo
+      * Setup MCP como prerequisito del sistema
+      * FASE 0 (setup inicial de biblioteca y MCP)
+
+CONSTANTES DEL SISTEMA A AGREGAR (en CLAUDE.md):
+  □ MCP_ENDPOINT: mcp.facebook.com/ads
+  □ REGLA ANDROMEDA: el MCP no modifica presupuestos de campañas activas.
+  □ REGLA ANTI-FATIGA: frecuencia > 4.0 → reemplazar creativo, no el ángulo.
+  □ REGLA 20%: aumentar presupuesto máximo 20% cada 3-4 días.
+  □ REGLA DE CONSOLIDACIÓN: una campaña grande supera a muchas pequeñas.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 14 — LO QUE NO CAMBIA (para mantener lo que funciona)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Estas reglas se mantienen intactas porque están respaldadas por resultados reales
+y por la lógica del sistema Andromeda:
+
+  ✓ Presupuesto fijo Q54 por conjunto — no cambia. (Regla Joaquín/Angi)
+  ✓ Lanzamiento 4 AM del día siguiente — el operador sigue activando manualmente.
+  ✓ Duplicado interno de anuncios — sigue siendo obligatorio.
+  ✓ ABO en testeo (FASE 1) — siempre ABO. CBO solo en escalado con 3+ ganadores.
+  ✓ Regla 3/3 de precios — exactamente 3 de 6 copies con precio.
+  ✓ Un ángulo por conjunto en FASE 1.
+  ✓ Coherencia ángulo-flujo LucidBot (Regla Mercy/Joaquín).
+  ✓ Tabla de costeo embebida en ETAPA-1 — nunca calcular cifras propias.
+  ✓ Tonalidad voseo guatemalteco — no cambia.
+  ✓ 8 FanPages con identidades fijas — no cambia.
+  ✓ No inventar outputs entre etapas — el orquestador pasa datos completos.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FUENTES DE INVESTIGACIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Meta Ads AI Connectors — Página oficial:
+  https://www.facebook.com/business/news/meta-ads-ai-connectors
+
+  Meta Ads MCP: Right for Reporting, Wrong for Launching Ads:
+  https://adsuploader.com/blog/meta-ads-mcp
+
+  Official Meta Ads MCP for Claude — 29 Tools (April 2026):
+  https://pasqualepillitteri.it/en/news/1707/official-meta-ads-mcp-claude-29-tools-2026
+
+  Common Thread Co. — Meta AI MCP & CLI: Skip the Developer App:
+  https://commonthreadco.com/blogs/coachs-corner/meta-ai-mcp-cli-ads-connectors-ecommerce
+
+  Creative Scaling: The Ultimate Guide for Meta Ads 2026:
+  https://www.admetrics.io/en/post/creative-scaling-the-ultimate-guide
+
+  Meta Andromeda 2026: Complete Guide for Ecommerce:
+  https://skaleit.agency/blog/meta-andromeda-complete-guide-ecommerce/
+
+  Creative Testing Framework for Meta Ads 2026:
+  https://adrow.ai/en/blog/creative-testing-framework-meta-ads/
+
+  Claude AI Meta Ads Daily Reporting Automation Guide 2026:
+  https://www.get-ryze.ai/blog/claude-meta-ads-daily-reporting-auto
+
+  Meta Creative Fatigue: Spot & Fix It Fast 2026:
+  https://www.adstellar.ai/blog/meta-ads-creative-fatigue
+
+  Meta Ads Scaling Strategy 2026 — Budget, Creative & Audiences:
+  https://www.causalfunnel.com/blog/how-to-scale-facebook-ads-effective-meta-ads-scaling-strategy-for-2026/
+
+  Pipeboard Meta Ads MCP Server (GitHub):
+  https://github.com/pipeboard-co/meta-ads-mcp
+
+  Best MCP for Meta Ads in 2026 — 7 Servers Compared:
+  https://www.get-ryze.ai/blog/best-mcp-for-meta-ads
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FIN DEL PLAN — SISTEMA VITALCOM GUATEMALA
+Versión 1.0 | Mayo 2026
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

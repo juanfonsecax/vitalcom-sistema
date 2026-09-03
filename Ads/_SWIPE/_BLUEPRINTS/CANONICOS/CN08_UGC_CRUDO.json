@@ -1,0 +1,125 @@
+{
+  "canonico_id": "CN08_UGC_CRUDO",
+  "schema_version": "canonico-1.0",
+  "nombre": "UGC crudo sin una palabra",
+  "dispositivo_canonico": "UNA SOLA FOTOGRAFIA QUE NO PARECE UN ANUNCIO, sin texto sobreimpreso, sin logo y a veces sin producto. Presta un rostro real en su propia casa, una foto clinica sin retoque o el bodegon cenital de todo lo que la persona ya probo y le fallo. Lo que se replica no es un layout: son las condiciones de captura.",
+  "cuando_elegirlo": "El publico esta quemado de carteles y la categoria huele a estafa. Compra atencion por parecer contenido, no publicidad. El copy tiene que cargar TODO el argumento — si el texto del anuncio es debil, esta familia no vende.",
+  "ejes_de_variacion": [
+    "sujeto: rostro del avatar, zona del sintoma, o el bodegon de lo que fallo",
+    "entorno: clinico, laboral, domestico — cambia a quien le habla",
+    "conservar la imperfeccion (pliegue, sombra dura, fondo desordenado) es la regla"
+  ],
+  "n_miembros": 4,
+  "ficha_referencia": "F021",
+  "score_referencia": 81,
+  "perfil": {
+    "concepto_key": {
+      "C5_PRUEBA": 4
+    },
+    "rol_embudo": {
+      "TOFU": 4
+    },
+    "estetica": {
+      "organico_ugc": 4
+    },
+    "formato": {
+      "1:1": 4
+    },
+    "densidad": {
+      "nula": 4
+    },
+    "nivel_conciencia_rango": [
+      1,
+      2
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "SUJETO",
+    "ENTORNO",
+    "ANGULO",
+    "LUZ",
+    "IMPERFECCION_QUE_SE_CONSERVA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [
+    "Cero texto sobreimpreso",
+    "Toda la carga verbal se traslada al copy del anuncio y al bot"
+  ],
+  "reglas_duras_referencia": [
+    "Cero texto sobreimpreso",
+    "La comparacion va dentro de la foto: la zona sana junto a la afectada, en el mismo encuadre",
+    "El entorno del lugar se conserva entero, porque es lo que da autoridad",
+    "Sin logo, sin marco, sin filtro, sin flecha, sin circulo",
+    "Sin rostro",
+    "Toda la carga verbal se traslada al copy del anuncio y al bot"
+  ],
+  "cuando_usar": [
+    "sintoma visualmente inequivoco y localizado (inflamacion, hongo, deformidad, erupcion)",
+    "cuando se tiene acceso a foto real, idealmente en entorno clinico",
+    "TOFU frio, donde el objetivo es detener y calificar, no convencer",
+    "cuando el copy del anuncio y el bot pueden cargar toda la venta",
+    "cuando el avatar se define por su oficio y no por su diagnostico",
+    "sintoma visualmente inequivoco en publico que trabaja de pie o con esfuerzo fisico",
+    "cuando se quiere el mismo sintoma de F021 pero para una audiencia que no va al medico",
+    "TOFU frio"
+  ],
+  "cuando_no_usar": [
+    "sintomas invisibles o difusos",
+    "cuando solo hay fotos de banco: se nota y pierde la unica ventaja del formato",
+    "campanas donde el creativo tiene que cerrar solo, sin copy fuerte detras",
+    "publico de oficina o urbano donde el entorno de taller no identifica a nadie",
+    "cuando solo hay foto clinica: usar F021, que aprovecha esa autoridad",
+    "cuando el creativo tiene que cerrar solo"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F021",
+      "score": 81,
+      "anunciante": "Doctora Patricia Morales",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA FOTO CLINICA CRUDA, SIN UNA SOLA PALABRA"
+    },
+    {
+      "ficha_id": "F022",
+      "score": 81,
+      "anunciante": "Doctora Patricia Morales",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA MISMA FOTO CRUDA QUE F021 PERO EN ENTORNO DE TRABAJO, NO CLINICO"
+    },
+    {
+      "ficha_id": "F091",
+      "score": 32,
+      "anunciante": "Megacomprasgt",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LA SELFIE DE LA ABUELA EN SU PROPIO PASILLO, SIN PRODUCTO Y SIN UNA SOLA PALABRA"
+    },
+    {
+      "ficha_id": "F092",
+      "score": 32,
+      "anunciante": "Megacomprasgt",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "EL BODEGON DE LO QUE YA NO FUNCIONO, CENITAL Y SIN UNA PALABRA"
+    }
+  ]
+}

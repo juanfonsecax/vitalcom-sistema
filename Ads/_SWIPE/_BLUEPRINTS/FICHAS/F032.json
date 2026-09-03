@@ -1,0 +1,154 @@
+{
+  "ficha_id": "F032",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/01_1565610685214789.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "1565610685214789",
+    "dias_activo": 10,
+    "replicas": 2,
+    "score": 60,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "35%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL REENCUADRE DEL PROBLEMA EN EL TITULAR: NIEGA UNA CREENCIA Y LA REEMPLAZA POR OTRA. Dos oraciones cortas separadas por coma — la primera niega lo que la persona cree de si misma, la segunda ofrece una explicacion distinta, con la palabra clave subrayada. No promete nada todavia: le cambia el diagnostico.",
+  "lectura_estrategica": "El hook mas potente de todo el banco hasta ahora, porque no ataca un sintoma sino una IDENTIDAD dolorosa. Quien se cree gorda carga culpa; decirle que en realidad esta hinchada le quita la culpa y le da una causa externa y resoluble. Eso compra atencion y gratitud a la vez. Debajo, el testimonio entrecomillado con cifra concreta y la contra-objecion incorporada (sin ir al gimnasio) hace de prueba, con una foto de perfil diminuta y la flecha apuntando al producto. Cierra con estrellas y numero de resenas.",
+  "fondo": {
+    "tipo": "foto_naturaleza_desenfocada_muy_clara",
+    "base": "campo de flores o follaje claro, muy fuera de foco, casi lavado",
+    "regla": "el fondo debe estar tan desenfocado que no compita: aca el protagonista es el texto"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 3,
+    "estructura": "negro (titular) mas {{PALETA_OSCURA}} verde (palabra subrayada y sello) mas dorado exclusivo de las estrellas, sobre el claro del fondo"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif comun, NO condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una mano sosteniendo el envase, entrando por el borde derecho, sin rostro",
+    "angulo": "frontal, a la altura del pecho, como quien muestra algo a la camara del telefono",
+    "luz": "natural de exterior, difusa",
+    "que_se_conserva": "la piel real de la mano, la sombra natural, el fondo del lugar",
+    "que_NO_se_hace": "recorte del producto, fondo plano, brillo de estudio, manicura de produccion",
+    "regla": "la mano real es lo que separa esta pieza de un cartel: si el producto flota, el testimonio deja de leerse como de alguien"
+  },
+  "zonas": {
+    "titular_reencuadre": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{NEGACION}},",
+      "linea_2": "{{REENCUADRE_SUBRAYADO}}",
+      "estilo": "Black/900 uppercase negro con la ultima palabra SUBRAYADA en {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "5-6 palabras",
+      "formato_obligatorio": "NO sos [la creencia con culpa], sos [la causa externa resoluble]",
+      "regla_critica": "la primera oracion niega una IDENTIDAD dolorosa que la persona ya se adjudica, no un sintoma. La segunda le da una causa externa que si se puede resolver",
+      "funcion": "le quita la culpa y le da una salida: eso compra atencion y gratitud a la vez"
+    },
+    "testimonio": {
+      "posicion": "izquierda_media",
+      "texto": "{{CITA_TESTIMONIO}}",
+      "estilo": "Bold negro entre comillas, 3-4 lineas, alineado a la izquierda",
+      "restriccion_palabras": "14-20 palabras",
+      "formato_obligatorio": "primera persona con CIFRA concreta y PLAZO, mas la contra-objecion incorporada (sin hacer X)",
+      "regla": "la contra-objecion dentro de la cita es lo que la hace creible: responde el pero antes de que aparezca"
+    },
+    "avatar_testimonio": {
+      "posicion": "bajo la cita, a la izquierda",
+      "forma": "foto de perfil circular muy chica",
+      "contenido": "{{FOTO_PERFIL}}",
+      "escala": "6% del ancho",
+      "regla": "diminuta a proposito: sugiere que viene de un perfil real y no de una campana"
+    },
+    "flecha": {
+      "posicion": "de la cita hacia el producto",
+      "forma": "flecha recta fina y oscura, dibujada",
+      "funcion": "atribuye el resultado del testimonio al producto sin escribirlo"
+    },
+    "mano_con_producto": {
+      "posicion": "derecha, ocupa el alto central",
+      "contenido": "{{FOTO_MANO_CON_PRODUCTO}}",
+      "escala": "40% del frame"
+    },
+    "sello_natural": {
+      "posicion": "inferior_izquierda",
+      "forma": "circular con borde {{PALETA_OSCURA}} y hoja",
+      "texto": "{{CLAIM_NATURAL}}",
+      "escala": "12% del ancho"
+    },
+    "barra_calificacion": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "estrellas": 5,
+      "texto": "{{CALIFICACION}} ({{NUMERO_RESENAS}} RESENAS)",
+      "estilo": "Black/900 blanco con las estrellas en dorado",
+      "regla": "la calificacion no es redonda (4.7, no 5.0): un 5.0 perfecto se lee falso"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_reencuadre",
+    "testimonio",
+    "mano_con_producto",
+    "flecha",
+    "avatar_testimonio",
+    "barra_calificacion",
+    "sello_natural"
+  ],
+  "reglas_duras": [
+    "El titular niega una identidad con culpa y la reemplaza por una causa externa resoluble",
+    "La palabra del reencuadre va subrayada",
+    "La cita lleva cifra concreta, plazo y la contra-objecion incorporada",
+    "La foto de perfil del testimonio va diminuta",
+    "La calificacion no es redonda: un 5.0 perfecto se lee falso",
+    "El fondo va muy desenfocado para que el texto sea el protagonista",
+    "La mano real sostiene el producto: si flota, el testimonio deja de leerse como de alguien"
+  ],
+  "variables_requeridas": [
+    "NEGACION",
+    "REENCUADRE_SUBRAYADO",
+    "CITA_TESTIMONIO",
+    "FOTO_PERFIL",
+    "FOTO_MANO_CON_PRODUCTO",
+    "CLAIM_NATURAL",
+    "CALIFICACION",
+    "NUMERO_RESENAS"
+  ],
+  "cuando_usar": [
+    "cuando el publico se adjudica una identidad dolorosa que en realidad es un sintoma resoluble",
+    "categorias con carga de culpa (peso, piel, energia, orden, disciplina)",
+    "TOFU frio: el reencuadre funciona sin que la persona conozca el producto",
+    "cuando existe un testimonio real con cifra"
+  ],
+  "cuando_no_usar": [
+    "problemas sin componente de culpa o autoimagen",
+    "cuando no hay una creencia extendida que negar",
+    "cuando no hay una cita con cifra: el testimonio es el nucleo de la pieza"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular 100% NATURAL con hoja.",
+    "Barra de calificacion de cinco estrellas: 4.7/5 (+5500 RESENAS).",
+    "Testimonio con cifra y plazo: BAJE 5 KILOS EN 1 MES SIN IR AL GIMNASIO, SOLO LIMPIANDO MI ORGANISMO, con foto de perfil.",
+    "Titular de reencuadre: NO ESTAS GORDA, ESTAS HINCHADA con la ultima palabra subrayada."
+  ],
+  "canonico_id": "CN17_TITULAR_DOMINANTE",
+  "blueprint_equivalente": null
+}

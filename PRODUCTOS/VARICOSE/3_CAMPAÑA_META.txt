@@ -1,0 +1,48 @@
+═══ VARICOSE VEINS (South Moon) · VERSION v2 · 2026-07-09 · COSTO Q45/u (Q90 el par) · DOSIS 20g c/frasco · ungüento tópico · page_id 498977893288095 (Dra. Claudia Vásquez) · campaign_id 120247374332930784 (FASE 2 ESCALA VERGÜENZA, PAUSED) ═══
+MAPA DE CAMPAÑA — VARICOSE VEINS | FASE 2 (escalado ángulo ganador VERGÜENZA)
+Cuenta: GTR 7 · act_598687956219141 · USD   ·   Negocio AMG 5 (1207290087231971) · pautada vía contenedor Sanarte
+FanPage: Dra. Claudia Vásquez · page_id 498977893288095 (compartida a GTR 7)
+WhatsApp del anuncio: 502 5283 2734 (wa.me/50252832734)
+
+━━━ CAMPAÑA FASE 2 (creada por MCP, PAUSED) ━━━
+Nombre: VARICOSE_ESCALA_VERGUENZA_20260710 · campaign_id 120247374332930784
+Objetivo: Tráfico (OUTCOME_TRAFFIC) · buying_type AUCTION · valid_optimization_goals incluye CONVERSATIONS
+Presupuesto: ABO $1.59/conjunto (159¢ USD) · Segmentación: GT amplio 18-65+, Advantage+ OFF · 4 AM 2026-07-10 · PAUSED
+Estructura objetivo: 6 conjuntos (1 microángulo del ángulo VERGÜENZA c/u) × 2 anuncios (creativo duplicado A/B) = 12 anuncios.
+
+⚠️ ESTADO MCP: solo la CAMPAÑA (shell) quedó creada por MCP en esta sesión. El conector de esta sesión NO expone la herramienta de crear conjuntos vacíos (ads_create_ad_set), y los anuncios necesitan media que aún no existe (las 5 imágenes de conceptos + el video ganador). Por eso los 6 conjuntos + 12 anuncios se crean en el 2º paso (tras subir media), igual que en FASE 1.
+
+━━━ CONJUNTOS A CREAR (llaves para ETAPA-7) ━━━
+| # | CONJUNTO (llave) | Microángulo | Rol | Formato | Copy | Precio | ad_set_id |
+|---|---|---|---|---|---|---|---|
+| 1 | VERGUENZA_MA1_COMPARACION_VARICOSE_ESCALA | La crema que SÍ     | MOFU | IMAGEN (C-MA1) | COPY 1 | SÍ Q249 | PENDIENTE |
+| 2 | VERGUENZA_MA2_VESTIDO_VARICOSE_ESCALA     | El vestido          | TOFU | VIDEO VARICOSE_2 (Post ID, video_id 2033565670880962) | COPY 2 | NO | PENDIENTE |
+| 3 | VERGUENZA_MA3_VERANO_VARICOSE_ESCALA      | Verano sin taparte  | TOFU | IMAGEN (C-MA3) | COPY 3 | NO | PENDIENTE |
+| 4 | VERGUENZA_MA4_MANCHAS_VARICOSE_ESCALA     | Manchas del tobillo | MOFU | IMAGEN (C-MA4) | COPY 4 | NO | PENDIENTE |
+| 5 | VERGUENZA_MA5_RESIGNACION_VARICOSE_ESCALA | Ya me había resignado| TOFU/MOFU | IMAGEN (C-MA5) | COPY 5 | NO | PENDIENTE |
+| 6 | VERGUENZA_MA6_OFERTA2X1_VARICOSE_ESCALA   | Para tus 2 piernas 2x1| BOFU | IMAGEN (C-MA6) | COPY 6 | SÍ Q249/Q389 | PENDIENTE |
+
+Parámetros de cada conjunto (al crearlos): optimization_goal CONVERSATIONS · destination_type WHATSAPP · promoted_object {"page_id":"498977893288095"} · billing_event IMPRESSIONS · daily_budget 159 · targeting {"geo_locations":{"countries":["GT"]},"age_min":18,"age_max":65,"targeting_automation":{"advantage_audience":0}} · start_time 2026-07-10T04:00:00-06:00 · PAUSED.
+
+Asset conocido: VIDEO ganador VARICOSE_2_VERGUENZA-PIERNAS → video_id 2033565670880962 (biblioteca GTR 7). Las 5 imágenes (C-MA1/3/4/5/6) las genera el operador y sube a la biblioteca; luego se obtiene su image_hash.
+
+━━━ PASOS DEL OPERADOR (Ads Manager) ━━━
+1. Generar las 5 imágenes de conceptos (prompts en 1_HACER_MANUAL sec. C) y subirlas a la biblioteca de GTR 7.
+2. En la campaña 120247374332930784 crear los 6 conjuntos con los nombres/llaves de arriba (o duplicar la estructura de la campaña de FASE 1 y renombrar). Cada conjunto: WhatsApp, Conversaciones, $1.59, GT 18-65+, 4 AM.
+3. En cada conjunto crear 2 anuncios (A/B, mismo creativo) con el copy de su COPY 1-6. Precio en creativo solo conjuntos 1 y 6.
+4. MA2 = video ganador vía "publicación existente" (Post ID) para heredar likes/comentarios.
+5. Como la página Claudia no tiene WhatsApp nativo para video: si un conjunto de video no acepta destino WhatsApp por API, duplicar la campaña en Ads Manager y en la copia cambiar destino a WhatsApp + número 502 5283 2734 (mismo truco que FASE 1). Las imágenes sí aceptan wa.me directo.
+6. Confirmar bot de VERGÜENZA activo en el WhatsApp antes de activar.
+7. Activar a las 4 AM 2026-07-10.
+
+━━━ LECTURA ETAPA-7 ━━━
+Buscar la campaña ACTIVE cuyo nombre contenga VARICOSE + ESCALA con gasto > 0.
+CPA real (Q) = (amount_spent ÷ actions:omni_purchase) × 7.62, vs CPA Objetivo Q30.8 / break-even ≈Q159 (sobre el 2x1). Cruzar con LucidSales.
+%conv/clic-enlace = conversaciones ÷ actions:link_click. Nunca ROAS.
+
+RESULTADOS_TESTEO: (vacío — lo llena ETAPA-7)
+ANGULO_GANADOR (FASE 1): VERGÜENZA-PIERNAS confirmado (2 ventas, CPV $1.85). Co-ganador MIEDO-CIRUGÍA (FASE 2 escalonada pendiente).
+
+━━━ CAMPAÑA FASE 1 (referencia — sigue viva) ━━━
+VARICOSE_TRAFICO_20260704 · campaign_id 120247186689120784 (master) → la viva es su duplicada→WhatsApp.
+Al arrancar el escalado de VERGÜENZA, se puede podar en la de FASE 1: pausar ARAÑITAS-VENOSAS (35 msj, 0 ventas) y PIERNAS-CANSADAS (0 ventas).

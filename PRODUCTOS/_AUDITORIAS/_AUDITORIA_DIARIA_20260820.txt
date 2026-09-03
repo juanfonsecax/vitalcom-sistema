@@ -1,0 +1,194 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — 2026-08-20 (20:00) · SISTEMA VITALCOM
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 3 de 7 días con data · huecos: 2026-08-17, 2026-08-18,
+2026-08-19 (el 2026-08-20 está en curso, no cuenta como hueco).
+
+Última BASE cargada: 2026-08-14 → 2026-08-16. Sin cambios desde el 17-ago.
+`_FACT_VENTAS.csv` NO se tocó en esta corrida (0 filas nuevas).
+⚠️ PARCIAL: no se presenta CPA semanal como completo, no se declara ganador
+oficial y no se manda matar nada por ventas. Data faltante ≠ cero ventas.
+
+───────────────────────────────────────────────────────────────────────────
+1) 🔴🔴 EL HALLAZGO DE HOY NO ES UNA MÉTRICA — ES QUE EL SISTEMA ESTÁ CIEGO
+───────────────────────────────────────────────────────────────────────────
+Van 3 noches seguidas sin conector de Meta Ads y 3 días seguidos sin export
+de LucidSales. Las DOS fuentes del sistema están caídas al mismo tiempo.
+
+  · LADO-VENTAS (LucidSales): último día cerrado 2026-08-16. 3 días sin cargar.
+  · LADO-ADS (MCP Meta): `_FACT_ENTREGA.csv` congelado en 2026-08-17.
+    Cero herramientas `ads_*` expuestas en la sesión — 17, 18 y 19-ago igual.
+    Lo único conectado sigue siendo Google Drive.
+
+UMBRAL CRUZADO (marcado desde el 18-ago): al 3er día el problema deja de ser
+"la cuenta de Meta" y pasa a ser LA CONFIG DEL CONECTOR EN COWORK. GTR0 volvió
+ACTIVE + `is_queryable=true` el 17-ago y ese día leyó bien; lo que falló
+después no es la cuenta, es que la sesión de la tarea programada no está
+heredando el conector.
+→ ACCIÓN DEL OPERADOR: reconectar Meta Ads en Cowork → Conectores, y verificar
+  que la tarea programada de las 8 PM lo tenga expuesto (no basta con que
+  funcione en un chat manual).
+
+QUÉ SE PIERDE MIENTRAS TANTO (ninguna tiene fuente alternativa):
+  a) frecuencia / detección de fatiga — 3 días sin lectura;
+  b) verificación de si GTR0 SOSTUVO el gasto tras volver en línea el 17-ago
+     ($24.55 ese día, costo/conv $0.42-0.77, el rango sano) o si volvió a
+     apagarse — que es exactamente la pregunta abierta de APR-037/058;
+  c) conteo de conceptos distintos por campaña (las 3 acciones "sumar
+     conceptos" del dashboard se calculan con data del 17-ago).
+
+Registrado en `_EVENTOS.csv` como `ANOMALIA_MCP_AUSENTE` (3er día).
+
+───────────────────────────────────────────────────────────────────────────
+2) ⭐ RIESGO CONCRETO: T01 ARRANCA HOY Y ARRANCA A CIEGAS
+───────────────────────────────────────────────────────────────────────────
+El test T01 ("Densidad del creativo de control", TINNIDROP, ángulo fijo
+ME_DIJERON_NO_CURA, 4 brazos A/B/C/D) tenía fecha de inicio HOY 2026-08-20 y
+está CONFIRMADO en `_TESTEOS.csv`.
+
+El problema no es el diseño del test — es que empieza a gastar el mismo día en
+que las dos fuentes que lo miden están caídas:
+  · el brazo por brazo se lee del lado-ads (MCP) → caído hace 3 días;
+  · las ventas por brazo se leen de LucidSales → sin cargar hace 3 días.
+
+Su Presupuesto de Decisión es Q378 (4 brazos × BE Q94.5). A la banda de gasto
+actual eso se consume en pocos días. Si el pipeline no se restablece, T01 va a
+haber gastado su PD completo sin que exista la serie diaria para separar los
+brazos — y con 1-3 ventas por brazo el IC ya es ±113-196% (regla 1) aun con
+data perfecta. Gastar el PD sin medir no produce un empate: produce un test
+quemado que hay que volver a correr.
+
+→ RECOMENDACIÓN: o se restablece el conector ANTES de que T01 acumule gasto,
+  o se retrasa el arranque de T01 hasta tener la lectura diaria. No dejarlo
+  corriendo a ciegas.
+
+Recordatorios de producción vigentes del 19-ago (sin cambios):
+  🔴 el brazo A se limpia al producir — "elimina hongos" + sello REGISTRO-FDA
+     violan compliance de ADS; si no, se mide densidad contra un ad ya
+     penalizado por Andrómeda.
+  ⚠️ A/B/C comparten `C2_BENEFICIOS` → mide VARIANTE, no concepto. Solo D
+     cambia (`C8_PROGRESION`) y es el único brazo sin validar: D contra los
+     otros tres mezcla dos variables.
+  📏 Variable de confusión activa desde HOY (regla 8): ningún movimiento de CPA
+     de TINNIDROP en ME_DIJERON_NO_CURA se atribuye al ángulo a partir de hoy.
+
+───────────────────────────────────────────────────────────────────────────
+3) ETAPA-7 — RANKING (ventana 2026-08-11 → 2026-08-16, SIN CAMBIOS)
+───────────────────────────────────────────────────────────────────────────
+Es la MISMA ventana de las últimas 4 noches. No hay día nuevo: los números de
+abajo son idénticos a los del 19-ago y se repiten solo como referencia.
+
+POR ÁNGULO (pauta Q · ingreso Q · ventas · CPA Q · mensajes):
+
+  TINNIDROP  PERDIDA_AUDITIVA            918   2627   13    70.6   230
+  TINNIDROP  DETERIORO_COGNITIVO         762   3643   17    44.8   157   ← mejor por volumen
+  NUSAVA     ARDOR                       744   2571    9    82.6   160
+  CLEARSTEM  ANTI_FALSIFICACION          479    594    3   159.8    38   ← candidato a apagar
+  CLEARSTEM  RESISTENCIA_INSULINA_SOP    465   2551   11    42.3    93   ← mejor CPA
+  CLEARSTEM  MEDICOS_FALLARON            448   2344   10    44.8    99
+  TINNIDROP  ACCESIBILIDAD_MEDICO        324   1553    7    46.4    53
+  TINNIDROP  ME_DIJERON_NO_CURA          260   1075    5    51.9    39   ← ángulo de T01
+  VARICOSE   VERGUENZA_PIERNAS           133      0    0      —      54   (producto apagado, ok)
+  TINNIDROP  NOCHES_SIN_DORMIR            75      0    0      —      16
+  CLEARSTEM  TESTIMONIO_RADICAL           62    198    1    61.6     3
+  VARICOSE   MANCHAS_OSCURAS              23      0    0      —      10
+  VARICOSE   CALAMBRES_NOCTURNOS          21      0    0      —       5
+  CLEARSTEM  EJE_INTESTINO_PIEL            0    198    1      —       0
+
+POR CUENTA (pauta Q · ingreso Q · ventas · CPA Q):
+  GTR7    1703   6094   26    65.5
+  GTR13   1454   5885   26    55.9
+  GTR0     773   1433    7   110.5   ← única en rojo
+  GTR1     585   2568   12    48.7
+  CP1      198   1374    6    33.1
+
+POR PRODUCTO:
+  TINNIDROP  2339   8898   42   55.7
+  CLEARSTEM  1454   5885   26   55.9
+  NUSAVA      744   2571    9   82.6
+  VARICOSE    176      0    0    —
+
+JOIN con `_DIM_CONJUNTOS.csv`: cierra 100%, 0 conjuntos sin dimensión.
+
+CLEARSTEM / ANTI_FALSIFICACION — **5ª noche SIN VEREDICTO, sigue congelado.**
+Q159.8 es la lectura de 6 días sin madurar (ventas = piso, CPA = techo,
+regla 5); sobre la ventana ponderada del motor da ≈Q103 ≈ break-even y sobre
+la serie completa Q73 contra BE Q106. Es el 5º caso seguido en que una ventana
+chica y sin madurar habría producido una decisión equivocada (APR-038 revocado ·
+APR-058 corregido · APR-039 revocado). La propuesta de aprendizaje sigue
+abierta y ya no es una hipótesis: **ninguna acción de MATAR se funda en <10
+días de ventana ni en data sin 3 días de maduración.**
+
+⚠️ GTR0 (Q110.5): INTERMITENTE por método de pago, no rota. La serie diaria
+mostraba apagones día por medio (14-ago $0.00 · 16-ago $0.21). No escalar
+hasta ver 2-3 días seguidos con gasto Y ventas — y hoy, sin MCP, no se puede
+verificar si eso pasó. Antes de tocar creativo o presupuesto: tope de tarjetas
+de AMG2, quitar MC-8931, revisar MC-4308 (61% de falla) — APR-049.
+
+───────────────────────────────────────────────────────────────────────────
+4) ETAPA-8 — PLAN (3 acciones del motor · Q345/semana en juego)
+───────────────────────────────────────────────────────────────────────────
+Derivadas por `gen_dashboard.py` de los CSV, no escritas a mano:
+
+  HOY
+  1. Bajar el gasto a la banda que sí rendía, NO subirlo — portafolio entero.
+     11-13 ago: Q597/día → Q652/día de ganancia. 14-16 ago: Q974/día (+63%)
+     → Q317/día. Q378 más de pauta compraron 0.3 ventas más por día.
+     Impacto Q1,007/sem.
+  2. GTR0 a piso, presupuesto a GTR7 (TINNIDROP). El MISMO ángulo paga Q117.4
+     en GTR0 y Q48.7 en GTR7 (CPA corregido por cobertura de tracking: GTR0 ve
+     el 54% de su gasto, GTR7 el 95%). Impacto Q221/sem.
+  3. GTR0 toda la cuenta a piso: Q773 para 7 ventas, −Q124. Revisar primero el
+     método de pago, no el creativo.
+
+  ESTA SEMANA (surfing +20%, uno por día, solo conjuntos probados)
+  · GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2 — CPA Q28.7 vs BE Q94.5 → Q263/sem
+  · GTR7_NUSAVA_ARDOR_R4 +25 — CPA Q24.4 vs BE Q100.2 → Q152/sem
+  · GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1 — CPA Q29.1 vs BE Q94.5 → Q131/sem
+  ⚠️ Estas tres son de la ventana congelada. Con 3 días sin data, subir +20%
+     es escalar sobre una foto de hace 4 días. Preferible cargar los exports
+     primero; si el operador escala igual, que sea UNO SOLO y el más barato.
+
+  CUANDO PUEDAS (banco anti-fatiga, Andrómeda premia 8-12 conceptos)
+  · CLEARSTEM / GTR13_CLEARSTEM_ESCALA_20260812 — 3 conceptos, faltan 5
+  · TINNIDROP / GTR7_TINNIDROP_ESCALA_20260812 — 2 conceptos, faltan 6
+  · NUSAVA / GTR7_NUSAVA_ESCALA-ARDOR_20260812 — 2 conceptos, faltan 6
+  (calculado con data del 17-ago; sin MCP no se pudo refrescar)
+
+───────────────────────────────────────────────────────────────────────────
+5) DATA QUE FALTA — PEDIR
+───────────────────────────────────────────────────────────────────────────
+Desde el 17-ago hay UN SOLO BOT (APR-043) → un solo export por día, no dos.
+Pedir UNO POR DÍA (un agregado no se descompone y mata la resolución diaria):
+
+  □ LucidSales → Métricas de Facebook Ads → rango SOLO 2026-08-17 → exportar
+  □ LucidSales → Métricas de Facebook Ads → rango SOLO 2026-08-18 → exportar
+  □ LucidSales → Métricas de Facebook Ads → rango SOLO 2026-08-19 → exportar
+  □ re-export de 2026-08-16 como CONTROL (pendiente desde el 17-ago: entró
+    dentro de un agregado exportado antes de cerrar el día)
+  □ reconectar Meta Ads en Cowork → Conectores (bloquea el lado-ads)
+
+Recordatorio de cadencia: el domingo 2026-08-23 toca además el export de
+7 días como CONTROL, el extracto de Facturación de Meta de las 6 cuentas y el
+export de Ads Manager nivel conjunto de GTR13 y CP1 (PASO 4B).
+
+───────────────────────────────────────────────────────────────────────────
+6) ESCRITURAS DE ESTA CORRIDA
+───────────────────────────────────────────────────────────────────────────
+  ✅ `_EVENTOS.csv` — +1 fila `ANOMALIA_MCP_AUSENTE` (3er día, umbral cruzado)
+  ✅ `_BITACORA_DATA.txt` — fila del 2026-08-20
+  ✅ `_AUDITORIAS/_AUDITORIA_DIARIA_20260820.txt` — este archivo
+  ✅ `_DASHBOARD.html` regenerado — 0 filas sin dimensión ·
+     ventana 17-jul→16-ago · 294 ventas · ganancia Q13,971 · sangrado Q210 ·
+     ⚠️ 14 filas SIN ATRIBUCIÓN (14 ventas) — tracking, no dimensión (APR-035)
+  ⛔ `_FACT_VENTAS.csv` — NO tocado (sin export)
+  ⛔ `_FACT_ENTREGA.csv` — NO tocado (sin MCP)
+  ⛔ `_GANANCIAS.txt` y los `2_DATA_PRODUCTO.txt` — NO tocados A PROPÓSITO:
+     sin día nuevo, escribir una fila repetida es inventar movimiento.
+
+⚠️ RECORDATORIO PERMANENTE (APR-036): la ganancia del dashboard usa
+`spend_usd` de LucidSales = lo que LucidSales ATRIBUYE, no lo que Meta cobra.
+Cobertura medida 75% → la ganancia mostrada está INFLADA hasta que el PASO 4B
+la cierre.
+═══════════════════════════════════════════════════════════════════════════

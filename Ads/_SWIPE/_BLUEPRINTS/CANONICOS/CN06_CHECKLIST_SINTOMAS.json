@@ -1,0 +1,178 @@
+{
+  "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+  "schema_version": "canonico-1.0",
+  "nombre": "Checklist de sintomas / diagnostico",
+  "dispositivo_canonico": "UNA LISTA DE PROBLEMAS, NO DE BENEFICIOS. Cada item es un sintoma que la persona reconoce en si misma, con su mini-foto o icono de evidencia y su check. La pieza funciona como test de auto-diagnostico: el lector se cuenta a si mismo cuantos tiene. El producto aparece recien despues de la lista, como la salida.",
+  "cuando_elegirlo": "Publico FRIO (TOFU/NC2) que tiene el problema pero no lo nombra todavia. Es la unica familia que engancha a alguien que no esta buscando nada: le pone nombre a lo que siente.",
+  "ejes_de_variacion": [
+    "orientacion: columna vertical, fila horizontal o collage de cuadrantes (F030)",
+    "evidencia del item: fotografia real del sintoma o icono ilustrado",
+    "header: pregunta de identificacion ('¿Te pasa esto?') o diagnostico en cadena (F026)",
+    "el cierre puede ser check verde por item o un solo check global"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F003",
+  "score_referencia": 249,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 4,
+      "C3_SINTOMA": 1
+    },
+    "rol_embudo": {
+      "TOFU": 5
+    },
+    "estetica": {
+      "cartel_publicitario": 4,
+      "organico_ugc": 1
+    },
+    "formato": {
+      "1:1": 4,
+      "4:5": 1
+    },
+    "densidad": {
+      "media": 2,
+      "muy_alta": 2,
+      "baja": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      2
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "HEADER_IDENTIFICACION",
+    "SINTOMAS",
+    "EVIDENCIA_ITEM",
+    "ORIENTACION_LISTA",
+    "FRASE_SALIDA",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "COLOR_ALERTA",
+      "GARANTIAS[3]",
+      "GARANTIA_ENVIO",
+      "MONEDA",
+      "OFERTA_LABEL"
+    ],
+    "recurrentes": [
+      "AHORRO_LABEL",
+      "BADGE_L1",
+      "BADGE_L2",
+      "CANTIDAD",
+      "CANT_1",
+      "CANT_2",
+      "CLAIM_DOSIS",
+      "CLAIM_SECUNDARIO",
+      "COLOR_ACENTO",
+      "COLOR_MECANISMO",
+      "CTA_L1",
+      "CTA_L2",
+      "FOTO_AVATAR_CON_DOLOR",
+      "HEADER_MECANISMO",
+      "MECANISMOS[3]",
+      "PRECIO",
+      "PRECIO_1",
+      "PRECIO_2",
+      "SELLOS_CONFIANZA[]",
+      "SELLO_ORIGEN",
+      "SINTOMAS[3]",
+      "SINTOMAS[5]",
+      "TITULAR_L1",
+      "TITULAR_L2_ACENTO",
+      "TITULAR_L3"
+    ]
+  },
+  "reglas_duras_compartidas": [
+    "La densidad alta viene de bloques COMPACTOS bien separados, nunca de texto amontonado",
+    "Ningun bloque de texto se superpone con otro",
+    "El verde se usa solo para el CTA de WhatsApp"
+  ],
+  "reglas_duras_referencia": [
+    "Ningun elemento tapa el producto hero",
+    "La figura de autoridad va siempre detras del producto",
+    "Los checks son blancos sobre circulo de color y sobresalen del borde de la foto",
+    "Cada problema lleva foto real que lo muestra, no un icono que lo ilustra",
+    "Maximo 3 pesos tipograficos",
+    "Fondo liso con degradado radial, sin textura ni patron"
+  ],
+  "cuando_usar": [
+    "problemas fotografiables (piel, hongos, hinchazon, inflamacion)",
+    "producto con respaldo regulatorio real que se puede mostrar",
+    "publico 35+ que responde a autoridad medica",
+    "empaque atractivo con color fuerte",
+    "sintoma cronico que el publico normalizo como parte de envejecer",
+    "dolor con multiples manifestaciones sensoriales que se pueden enumerar",
+    "publico 45+ que ya probo otras cosas",
+    "producto con historia tecnica que contar (dosis, activo, mecanismo)"
+  ],
+  "cuando_no_usar": [
+    "problemas invisibles (energia, animo, sueno): no hay foto que mostrar",
+    "empaque feo o generico",
+    "publico joven o esceptico de la institucionalidad",
+    "bienestar general o preventivo: no hay sintoma que desnormalizar",
+    "cuando hay material fotografico de cada sintoma: usar F009, que los muestra",
+    "publico joven o estetico"
+  ],
+  "blueprint_equivalente": [
+    "A_autoridad_medica",
+    "C_dolor_maximalista"
+  ],
+  "miembros": [
+    {
+      "ficha_id": "F003",
+      "score": 249,
+      "anunciante": "Camila Recomienda",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA COLUMNA DE PROBLEMAS CON EVIDENCIA FOTOGRAFICA MAS CHECK"
+    },
+    {
+      "ficha_id": "F008",
+      "score": 114,
+      "anunciante": "Aranza Glow",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA FILA HORIZONTAL DE 5 SINTOMAS EN ICONO, BAJO EL TITULAR"
+    },
+    {
+      "ficha_id": "F009",
+      "score": 114,
+      "anunciante": "Aranza Glow",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA COLUMNA VERTICAL DE 5 SINTOMAS CON MINI-FOTO, BAJO EL HEADER DE IDENTIFICACION"
+    },
+    {
+      "ficha_id": "F026",
+      "score": 74,
+      "anunciante": "Camila Recomienda",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "4:5",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL DIAGNOSTICO EN CADENA"
+    },
+    {
+      "ficha_id": "F030",
+      "score": 60,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C3_SINTOMA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "EL COLLAGE DE CUATRO CUADRANTES"
+    }
+  ]
+}

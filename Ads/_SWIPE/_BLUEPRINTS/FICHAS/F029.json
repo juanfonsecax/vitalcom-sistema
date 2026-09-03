@@ -1,0 +1,211 @@
+{
+  "ficha_id": "F029",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/05_1411590777481139.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1411590777481139",
+    "dias_activo": 13,
+    "replicas": 2,
+    "score": 63,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "5:6",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL TIMELINE DE 3 ESTADOS DEL ORGANO EN EL TOPE. Tres ilustraciones anatomicas del mismo organo, separadas por flechas, con label temporal debajo (SEMANA 0 / 4 / 8) y una linea de descripcion en cada una. Es lo primero que se ve y es lo que diferencia este concepto de todos los demas: no promete resultado, promete CRONOGRAMA.",
+  "lectura_estrategica": "La referencia guatemalteca del concepto de transformacion temporal, y una de las cuatro estructuras que el operador ya habia bajado a blueprint. El estado 1 muestra el organo danado, el 3 el sano y el 2 un intermedio creible — esa gradualidad es lo que lo hace pasar como plausible en vez de milagroso. Debajo, la lista de 5 beneficios usa FOTOS CIRCULARES REALES (organo, vaso sanguineo, celula) en vez de iconos de linea, y eso le da el tono cientifico que el timeline necesita para sostenerse. Tres tiers de precio y garantia de 90 dias cierran.",
+  "fondo": {
+    "tipo": "degradado_oscuro",
+    "base": "{{PALETA_OSCURA}} profundo a casi negro",
+    "textura": "particulas o bokeh muy sutil",
+    "regla_paleta": "cuando el empaque es blanco o neutro, la paleta se deriva del INGREDIENTE ACTIVO o del ORGANO objetivo, no del empaque"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo y del organo objetivo",
+    "cantidad_colores": 5,
+    "estructura": "{{PALETA_OSCURA}} vinotinto o burdeos (fondo) mas dorado (garantia, etiquetas de tier, acentos) mas blanco (texto) mas rojo o coral (organo y props) mas verde exclusivo de los checks de seguridad"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco",
+    "color_acento": "dorado"
+  },
+  "zonas": {
+    "timeline_transformacion": {
+      "posicion": "superior, ancho completo",
+      "cantidad_estados": 3,
+      "formato_estado": "ilustracion anatomica del organo en ese estado mas label temporal sobre pildora oscura mas descripcion corta debajo",
+      "estados": "{{TIMELINE[3]}}",
+      "estructura_estado": {
+        "imagen": "{{IMAGEN_ESTADO}}",
+        "label": "{{LABEL_TEMPORAL}}",
+        "descripcion": "{{DESC_ESTADO}}"
+      },
+      "separador": "flecha curva {{PALETA_ACENTO}} entre estados",
+      "restriccion_label": "1-2 palabras",
+      "restriccion_descripcion": "5-8 palabras",
+      "regla_progresion": "el estado 1 muestra el organo afectado, el 3 el sano y el 2 un intermedio CREIBLE: la gradualidad es lo que lo hace plausible en vez de milagroso",
+      "funcion": "ES EL ELEMENTO DIFERENCIADOR: promete cronograma, no solo resultado"
+    },
+    "titular": {
+      "posicion": "bajo el timeline, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{TITULAR}}",
+      "linea_2": "{{SUBTITULAR}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold uppercase, al 45% de L1",
+      "restriccion_l1": "3-5 palabras",
+      "restriccion_l2": "5-7 palabras",
+      "regla": "el titular nombra el ORGANO sano y la bajada la CONSECUENCIA de vida"
+    },
+    "badge_garantia": {
+      "posicion": "izquierda_media",
+      "forma": "circular con borde dorado doble",
+      "linea_1": "GARANTIA",
+      "linea_2": "{{DIAS_GARANTIA}}",
+      "linea_3": "DIAS",
+      "escala": "16% del ancho",
+      "regla": "siempre en dorado, nunca en el color de la paleta (convencion del operador)"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "35% del frame",
+      "composicion": "envase de pie sobre superficie de madera, con las capsulas o perlas sueltas al pie y props del ingrediente al borde",
+      "iluminacion": "frontal suave con reflejo lateral",
+      "fuente": "IMAGEN_2"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "derecha_superior, junto al producto",
+      "texto": "{{PARRAFO}}",
+      "estilo": "Regular blanco de 2-3 lineas con 1-2 terminos en Bold",
+      "restriccion_palabras": "12-18 palabras",
+      "funcion": "unico bloque de prosa del layout: cuela claims que no caben en bullets"
+    },
+    "pildora_dosis": {
+      "posicion": "derecha, sobre la lista de beneficios",
+      "contenedor": "pildora dorada solida o linea con separador",
+      "texto": "{{INGREDIENTE}} {{DOSIS}} · {{BENEFICIO_RESUMEN}}",
+      "estilo": "Bold, texto oscuro sobre dorado",
+      "funcion": "header de la lista de beneficios"
+    },
+    "lista_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "FOTO CIRCULAR REAL (organo, vaso sanguineo, celula, gota) mas TITULO Bold blanco mas subtitulo Regular gris, todo dentro de contenedor con borde fino redondeado",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_subtitulo": "6-10 palabras",
+      "regla_icono": "fotos circulares reales, NUNCA line-art: es lo que le da el tono cientifico que el timeline necesita para sostenerse",
+      "regla_item_5": "el ultimo es el mecanismo tecnico (antioxidante, absorcion, biodisponibilidad)"
+    },
+    "bloque_precios": {
+      "posicion": "inferior_izquierda",
+      "tiers": 3,
+      "orientacion": "fila horizontal de tres cards",
+      "formato_tier": "cantidad en Regular arriba, precio Black/900 blanco debajo, etiqueta de valor en pildora dorada al pie",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} — {{ETIQUETA_SOCIAL}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}} — {{ETIQUETA_AHORRO}}",
+      "funcion": "anclaje de 3 puntos que empuja al tier medio-alto"
+    },
+    "cta_emocional": {
+      "posicion": "inferior_derecha",
+      "contenedor": "bloque sobre el fondo, sin card",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_URGENCIA}}",
+      "estilo_l2": "Black/900 en cursiva {{PALETA_ACENTO}} con signos de exclamacion",
+      "restriccion_palabras": "4-6 palabras por linea",
+      "funcion": "cierre emocional que nombra los tres sistemas del titular"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono mas texto Bold uppercase de 2 lineas",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye bandera de {{PAIS}}"
+    }
+  },
+  "secuencia_lectura": [
+    "timeline_transformacion",
+    "titular",
+    "producto_hero",
+    "parrafo_descriptivo",
+    "pildora_dosis",
+    "lista_beneficios",
+    "bloque_precios",
+    "badge_garantia",
+    "cta_emocional",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "El timeline NO es opcional: sin timeline no es este concepto",
+    "Los 3 estados del organo son visualmente distinguibles entre si",
+    "El estado 2 muestra progreso parcial creible, nunca resultado total",
+    "Los iconos de beneficio son fotos circulares reales, nunca line-art",
+    "Siempre 3 tiers de precio",
+    "La garantia va en dorado, nunca en el color de la paleta",
+    "Si el empaque es blanco o neutro, la paleta viene del ingrediente activo o del organo objetivo"
+  ],
+  "variables_requeridas": [
+    "TIMELINE[3]",
+    "TITULAR",
+    "SUBTITULAR",
+    "PARRAFO",
+    "INGREDIENTE",
+    "DOSIS",
+    "BENEFICIO_RESUMEN",
+    "BENEFICIOS[5]",
+    "DIAS_GARANTIA",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "CTA_L1",
+    "CTA_URGENCIA",
+    "GARANTIAS[3]",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "producto con resultado progresivo y medible en semanas",
+    "organo o zona que se puede ilustrar anatomicamente en estados (rinon, higado, articulacion, piel, cabello)",
+    "cuando hay margen para 3 tiers de precio",
+    "publico que compara y necesita proyeccion de resultado"
+  ],
+  "cuando_no_usar": [
+    "resultado inmediato: el timeline no aplica",
+    "problemas no visualizables anatomicamente (tinnitus, animo, insomnio)",
+    "cuando solo se vende 1 unidad"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular GARANTIA 90 DIAS DE DEVOLUCION en dorado.",
+    "Claims impresos en el empaque: GMO FREE, GLUTEN FREE, LAB TESTED.",
+    "Timeline con labels por semana: SEMANA 0 / SEMANA 4 / SEMANA 8.",
+    "Etiquetas de valor: MEJOR OFERTA en el tier 2 y MAYOR AHORRO en el tier 3.",
+    "Beneficios: APOYA TUS FILTROS RENALES, PROMUEVE UNA CIRCULACION SALUDABLE, CONTRIBUYE AL BIENESTAR VASCULAR, MANEJO SALUDABLE DE LIQUIDOS, ANTIOXIDANTE DE ALTA POTENCIA.",
+    "Barra final: ENVIOS A TODA GUATEMALA, PAGO CONTRA ENTREGA, COMPRA SEGURA Y GARANTIZADA con bandera."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

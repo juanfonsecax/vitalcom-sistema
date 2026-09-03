@@ -1,0 +1,142 @@
+{
+  "ficha_id": "F058",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/SupleNat/01_1009614115306946.jpg",
+    "anunciante": "SupleNat",
+    "ad_archive_id": "1009614115306946",
+    "dias_activo": 18,
+    "replicas": 1,
+    "score": 43,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "9:16",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "LOS DOS SELFIES DE ESPEJO DEL MISMO BANO, CON SUBTITULO DE VIDEO SOBRE LA COSTURA. Dos fotos verticales de la misma persona en el mismo espejo, misma pose y misma ropa, rotuladas DIA 1 y DIA 45 en cajas blancas, con el producto en la mano en las dos. Sobre la union va un subtitulo de fondo translucido con una frase en minusculas, del tipo que genera automaticamente un editor de video.",
+  "lectura_estrategica": "Es un frame de video convertido en imagen, y todo en el esta diseNado para no parecer publicidad: el bano real con los frascos de champu al fondo, la ropa identica en las dos tomas, la caja de subtitulo con tipografia de sistema y la frase en minusculas sin punto final. El texto no promete: reporta lo que otros le dijeron a ella (no me creian que era natural), que es una prueba social invertida — en vez de citar a clientes satisfechos, cita el ESCEPTICISMO ajeno como evidencia de que el cambio se noto. El segundo renglon, mas chico, es lo unico que pide algo.",
+  "fondo": {
+    "tipo": "las_dos_fotos",
+    "base": "las dos tomas ocupan el frame completo, partidas al medio",
+    "regla": "el mismo bano, el mismo espejo, la misma hora y la misma ropa en las dos tomas"
+  },
+  "paleta": {
+    "derivacion": "de las fotos mismas",
+    "cantidad_colores": 2,
+    "estructura": "los colores propios de la escena mas blanco para las cajas de label y subtitulo. No se agrega ninguno"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de sistema, la de los subtitulos automaticos",
+    "pesos_permitidos": [
+      "Regular/400",
+      "Medium/500"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "negro sobre caja blanca translucida",
+    "regla": "minusculas, sin punto final y sin uppercase: cualquier tipografia de diseno delata el anuncio"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "la persona completa de perfil frente al espejo, sosteniendo el telefono, con el producto en la otra mano",
+    "lugar": "un bano o habitacion real, con los objetos cotidianos visibles (toallas, frascos, cortina)",
+    "pose": "identica en las dos tomas: mismo perfil, mismo pie adelantado, misma altura del telefono",
+    "ropa": "la MISMA prenda en las dos tomas",
+    "luz": "la del lugar, sin correccion",
+    "que_se_conserva": "el reflejo del telefono, el desorden del bano, el grano, la sombra real",
+    "que_NO_se_hace": "estudio, recorte, filtro de belleza, cambio de ropa, cambio de encuadre, logo, precio",
+    "regla": "la ropa identica y el mismo bano son la prueba de que es la misma persona: es lo que no se puede falsificar a ojo"
+  },
+  "zonas": {
+    "label_dia_1": {
+      "posicion": "superior_izquierda, sobre la primera foto",
+      "contenedor": "caja blanca rectangular simple, sin borde",
+      "texto": "{{LABEL_INICIO}}",
+      "estilo": "Medium negro",
+      "restriccion_palabras": "2 palabras",
+      "default": "DIA 1"
+    },
+    "label_dia_n": {
+      "posicion": "superior_derecha, sobre la segunda foto",
+      "contenedor": "la misma caja, mismo tamano y misma altura",
+      "texto": "{{LABEL_FINAL}}",
+      "estilo": "Medium negro",
+      "restriccion_palabras": "2 palabras",
+      "regla": "los dos labels van a la misma altura exacta: es lo que hace que se lean como una secuencia y no como dos fotos"
+    },
+    "foto_partida": {
+      "posicion": "frame completo",
+      "escala": "100% del frame",
+      "contenido_izquierda": "{{FOTO_ESPEJO_INICIO}}",
+      "contenido_derecha": "{{FOTO_ESPEJO_FINAL}}",
+      "corte": "linea blanca fina vertical al centro",
+      "regla": "el producto aparece en la mano en las DOS tomas: sugiere continuidad de uso sin escribirla"
+    },
+    "subtitulo_principal": {
+      "posicion": "centro, sobre la costura",
+      "contenedor": "caja blanca translucida de ancho ajustado al texto",
+      "texto": "{{FRASE_TESTIMONIO}}",
+      "estilo": "Regular negro en MINUSCULAS, sin punto final",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "reporta lo que OTROS le dijeron, no lo que ella afirma",
+      "regla_critica": "prueba social invertida: en vez de citar clientes satisfechos, cita el ESCEPTICISMO ajeno como evidencia de que el cambio se noto"
+    },
+    "subtitulo_cta": {
+      "posicion": "bajo el subtitulo principal",
+      "contenedor": "la misma caja, mas angosta",
+      "texto": "{{CTA_MINUSCULAS}}",
+      "estilo": "Regular negro en minusculas, al 70% del principal",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "es lo unico que pide algo, y va en el mismo registro de subtitulo para no romper el formato"
+    }
+  },
+  "secuencia_lectura": [
+    "foto_partida",
+    "label_dia_1",
+    "label_dia_n",
+    "subtitulo_principal",
+    "subtitulo_cta"
+  ],
+  "reglas_duras": [
+    "El mismo bano, el mismo espejo, la misma pose y la MISMA ropa en las dos tomas",
+    "El producto aparece en la mano en las dos tomas",
+    "Los dos labels van a la misma altura exacta",
+    "El texto va en minusculas, sin punto final, en caja de subtitulo translucida",
+    "La frase reporta lo que otros dijeron, no lo que la persona afirma",
+    "Sin logo, sin precio, sin sellos, sin tipografia de diseno",
+    "Los objetos cotidianos del lugar se conservan"
+  ],
+  "variables_requeridas": [
+    "LABEL_INICIO",
+    "LABEL_FINAL",
+    "FOTO_ESPEJO_INICIO",
+    "FOTO_ESPEJO_FINAL",
+    "FRASE_TESTIMONIO",
+    "CTA_MINUSCULAS"
+  ],
+  "cuando_usar": [
+    "ubicaciones verticales: stories, reels, feed 9:16",
+    "cuando existe material real de la misma persona en dos momentos",
+    "publico joven saturado de anuncios producidos",
+    "TOFU frio donde el objetivo es que la pieza no se lea como pauta"
+  ],
+  "cuando_no_usar": [
+    "feed cuadrado",
+    "cuando solo hay fotos de banco o de dos personas distintas",
+    "BOFU: sin precio ni oferta no cierra"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos, precio, marca ni garantias.",
+    "Labels DIA 1 y DIA 45.",
+    "Subtitulo principal: no me creian que era natural.",
+    "Subtitulo de cierre: escribenos y empieza tu cambio."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,184 @@
+{
+  "ficha_id": "F045",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Flor_Expres_GT/01_1092376730025332.jpg",
+    "anunciante": "Flor Expres GT",
+    "ad_archive_id": "1092376730025332",
+    "dias_activo": 2,
+    "replicas": 2,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "17:18",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL INSTRUCTIVO DE 4 PASOS NUMERADOS, CADA UNO CON SU FOTO DE LA ACCION. Cuatro filas apiladas en la columna izquierda: foto cuadrada de la mano ejecutando el paso, numeral grande, titulo del verbo en dos colores y una explicacion de dos lineas. La pieza no vende el producto, ENSENA A USARLO — y al hacerlo demuestra que es facil.",
+  "lectura_estrategica": "Layout de manual, no de oferta. Sirve donde la objecion real no es el precio ni la eficacia sino la incomodidad o la duda de como se usa: al mostrar los cuatro pasos con fotos de manos, elimina la friccion antes de que se formule. El subtitulo lo declara sin rodeos — FACIL · RAPIDO · DISCRETO — y esa tercera palabra es la que importa en categorias intimas. El bloque POR QUE ELEGIR del pie recupera los beneficios que el instructivo no cubre, y la nota manuscrita superior derecha le baja el tono clinico.",
+  "fondo": {
+    "tipo": "color_plano_oscuro",
+    "color": "negro o {{PALETA_OSCURA}} muy profundo",
+    "elemento": "anillo o halo {{PALETA_ACENTO}} detras del producto, y podio reflectante bajo el",
+    "textura": "ninguna",
+    "funcion": "el negro hace que las fotos de piel de los pasos se lean sin competencia"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rojo o color del empaque (numerales, segunda linea de cada verbo, halos) mas negro (fondo) mas blanco (texto y cards) mas los tonos de piel de las fotos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "la cursiva se usa solo en la nota superior derecha",
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "estructura": "{{TITULAR_L1}} {{TITULAR_L2_ACENTO}}",
+      "estilo": "Black/900 uppercase blanco con la segunda mitad en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "3 palabras",
+      "formato_obligatorio": "declara que la pieza es un instructivo (modo de uso, como se aplica, paso a paso)"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{SUBHOOK}}",
+      "estilo": "Bold uppercase blanco con la segunda mitad en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "6-8 palabras"
+    },
+    "banda_atributos": {
+      "posicion": "bajo el subtitular",
+      "texto": "{{ATRIBUTO_1}} · {{ATRIBUTO_2}} · {{ATRIBUTO_3}}",
+      "estilo": "Bold uppercase blanco, separados por punto medio",
+      "restriccion_palabras": "3 palabras",
+      "regla": "tres adjetivos de USO, y el tercero responde la objecion propia de la categoria (discreto, silencioso, sin olor)"
+    },
+    "nota_manuscrita": {
+      "posicion": "superior_derecha",
+      "estructura": "{{NOTA_L1}} {{NOTA_L2_CURSIVA}}",
+      "estilo": "Regular blanco con la segunda mitad en cursiva {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "mas que X, es Y: eleva la categoria del producto",
+      "regla": "va sin contenedor, como escrita a mano sobre el fondo"
+    },
+    "instructivo": {
+      "posicion": "izquierda, ocupa 60% del alto",
+      "cantidad_pasos": 4,
+      "orientacion": "cuatro filas apiladas",
+      "formato_paso": "FOTO cuadrada de la mano ejecutando la accion a la izquierda, NUMERAL grande en {{PALETA_ACENTO}} al centro, VERBO en Black uppercase blanco con la segunda linea en {{PALETA_ACENTO}}, y explicacion Regular de 2-3 lineas debajo",
+      "pasos": "{{PASOS[4]}}",
+      "estructura_paso": {
+        "numero": "1 | 2 | 3 | 4",
+        "foto": "{{FOTO_ACCION}}",
+        "verbo": "{{VERBO}}",
+        "complemento": "{{COMPLEMENTO}}",
+        "explicacion": "{{EXPLICACION}}"
+      },
+      "restriccion_verbo": "1 palabra en imperativo",
+      "restriccion_complemento": "2-3 palabras",
+      "restriccion_explicacion": "10-16 palabras",
+      "regla_fotos": "cada foto muestra MANOS ejecutando el paso sobre el cuerpo o el producto, sin rostro",
+      "regla_paso_4": "el ultimo paso es de FRECUENCIA (usalo a diario) y no de accion: convierte la compra en habito",
+      "funcion": "no vende el producto, ENSENA a usarlo, y al hacerlo demuestra que es facil"
+    },
+    "producto_hero": {
+      "posicion": "derecha_centro",
+      "escala": "40% del frame",
+      "composicion": "envase de pie sobre podio reflectante, con anillo o halo {{PALETA_ACENTO}} detras",
+      "fuente": "IMAGEN_2"
+    },
+    "bloque_razones": {
+      "posicion": "inferior, ancho completo",
+      "header": "{{HEADER_RAZONES}} {{MARCA}}:",
+      "estilo_header": "Bold uppercase blanco con la marca en {{PALETA_ACENTO}}",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} arriba mas TITULO Bold uppercase de 2 lineas mas explicacion Regular de 2-3 lineas",
+      "items": "{{RAZONES[4]}}",
+      "restriccion_titulo": "2 palabras",
+      "restriccion_explicacion": "8-12 palabras",
+      "regla": "recupera los beneficios que el instructivo no cubre",
+      "regla_item_4": "el ultimo es emocional (confianza, seguridad), no funcional"
+    },
+    "pie_cierre": {
+      "posicion": "inferior extremo, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{CIERRE_SENSORIAL}}",
+      "estilo": "Black/900 uppercase blanco con la ultima parte en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "5-7 palabras",
+      "regla": "cierra en como se va a SENTIR y con que frecuencia"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "subtitular",
+    "instructivo",
+    "producto_hero",
+    "nota_manuscrita",
+    "banda_atributos",
+    "bloque_razones",
+    "pie_cierre"
+  ],
+  "reglas_duras": [
+    "Cuatro pasos numerados, cada uno con foto de manos ejecutando la accion, sin rostro",
+    "El verbo de cada paso va en imperativo y en una sola palabra",
+    "El cuarto paso es de frecuencia, no de accion",
+    "El tercer adjetivo de la banda responde la objecion propia de la categoria",
+    "El bloque de razones recupera lo que el instructivo no cubre",
+    "La cursiva se usa solo en la nota superior derecha",
+    "El fondo negro deja que las fotos de piel se lean sin competencia"
+  ],
+  "variables_requeridas": [
+    "TITULAR_L1",
+    "TITULAR_L2_ACENTO",
+    "SUBHOOK",
+    "ATRIBUTO_1",
+    "ATRIBUTO_2",
+    "ATRIBUTO_3",
+    "NOTA_L1",
+    "NOTA_L2_CURSIVA",
+    "PASOS[4]",
+    "HEADER_RAZONES",
+    "MARCA",
+    "RAZONES[4]",
+    "CIERRE_SENSORIAL"
+  ],
+  "cuando_usar": [
+    "cuando la objecion real es COMO se usa y no si funciona",
+    "categorias intimas o de higiene donde la discrecion es argumento",
+    "productos de aplicacion topica con varios pasos",
+    "publico de nivel 4 que ya decidio comprar la categoria y duda del uso"
+  ],
+  "cuando_no_usar": [
+    "productos de un solo paso: el instructivo queda vacio",
+    "publico frio que todavia no reconoce el problema",
+    "cuando no hay fotos de manos ejecutando cada paso"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos regulatorios ni precio.",
+    "Banda de atributos FACIL · RAPIDO · DISCRETO.",
+    "Nota manuscrita MAS QUE LIMPIEZA, ES BIENESTAR.",
+    "Pasos: LIMPIA LA ZONA INTIMA, APLICA EL PRODUCTO, DISTRIBUYE SUAVEMENTE, USALO A DIARIO.",
+    "Razones: LIMPIEZA PROFUNDA (elimina impurezas, sudor y exceso de grasa), FRESCURA DURADERA (sensacion de limpieza y frescura durante todo el dia), EQUILIBRIO NATURAL (mantiene el pH natural y protege tu zona intima de agresiones externas), CONFIANZA DIARIA (te hace sentir seguro, comodo y listo para cualquier momento).",
+    "Activos declarados en el empaque: ACIDO SALICILICO, ARGININA.",
+    "Cierre SIENTETE LIMPIO, FRESCO Y SEGURO... TODOS LOS DIAS."
+  ],
+  "canonico_id": "CN19_INSTRUCTIVO_PASOS",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,103 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — 2026-08-29 (8 PM) — SISTEMA VITALCOM GUATEMALA
+═══════════════════════════════════════════════════════════════════════════
+
+PASO 1-2 — INTEGRIDAD DE VENTANA
+─────────────────────────────────
+INTEGRIDAD DE VENTANA: 4 de 7 días con data · huecos: 2026-08-26, 2026-08-27, 2026-08-28.
+Última fila rol_ventana=BASE en _FACT_VENTAS.csv = 2026-08-25 (44 filas, cargadas el 26-ago
+junto con el backfill de 5 días). No entró ningún export nuevo en este ciclo (tarea programada,
+sin operador presente). _FACT_VENTAS.csv y _FACT_ENTREGA.csv: 0 filas nuevas hoy.
+_GANANCIAS.txt y los 2_DATA_PRODUCTO.txt de cada producto NO se tocaron — mismo criterio que
+todas las noches sin día nuevo: escribir una fila repetida sería inventar movimiento en la serie.
+
+⭐ EL HUECO IGUALÓ EL CICLO DE MADURACIÓN COD (~3 días) — APR-067/068 vuelven a aplicar.
+Con 26, 27 y 28-ago sin export, el sistema ya no puede distinguir "venta que no maduró" de
+"venta que dejó de entrar" para ninguno de esos tres días — ambas hipótesis producen la misma
+tabla. Apuesta a ciegas sobre esos 3 días: ~Q1,741 de pauta sin medirse (Q580/día del último
+ritmo confirmado × 3d, cifra que trae el propio motor del dashboard).
+Consecuencia de método: ningún veredicto de matar/escalar que dependa de 26-28 ago es
+defendible hoy. Los pendientes de abajo se leen sobre la serie hasta el 25-ago, que sigue
+siendo sólida.
+
+PASO 3 — INGESTA
+─────────────────
+Sin data nueva que ingestar. No se tocó _FACT_VENTAS.csv, _FACT_ENTREGA.csv, _DIM_CONJUNTOS.csv
+ni _EVENTOS.csv más allá del registro de esta corrida.
+
+PASO 4 — LADO-ADS POR MCP
+───────────────────────────
+Verificado de nuevo con ToolSearch ("ads", "ads_get_ad_accounts ads_get_ad_entities"): CERO
+herramientas ads_* disponibles en esta sesión programada. Mismo patrón que las últimas ~12
+noches — no es una cuenta puntual con is_queryable=false, es el conector Meta Ads entero no
+heredado por la tarea programada. _FACT_ENTREGA.csv sigue sin fuente MCP; el último dato de
+lado-ads en disco sigue siendo el export manual de Ads Manager del 26-ago
+(fuente AdsManager-export-1d). No se pudo leer frecuencia/fatiga en vivo, estado ACTIVE/gasto
+por cuenta, ni verificar ejecución de las acciones del dashboard de anoche.
+
+🔴 SEGUNDA VEZ QUE LA CADENA DE 8 PM NO DEJA RASTRO PARA UN DÍA: el 27-ago no tiene entrada ni
+en _BITACORA_DATA.txt ni en _AUDITORIAS/ (detectado ya el 28-ago). Sigue sin poder confirmarse
+desde acá si la tarea no corrió, corrió y falló antes de escribir, o corrió sin conectores.
+Si vuelve a pasar una tercera vez, el problema deja de ser "reconectar el MCP" y pasa a ser la
+configuración de la tarea programada en Cowork — vale la pena que el operador la revise
+directamente en Cowork → Tareas programadas.
+
+PASO 4B — CONCILIACIÓN DE FACTURACIÓN
+────────────────────────────────────────
+No aplica hoy (sábado). Última fila OBSERVADO en _FACT_SALDOS.csv = 2026-08-16. El domingo
+23-ago no corrió (confirmado en _BITACORA_DATA.txt). Mañana 2026-08-30 es domingo — pedir
+extracto de Facturación de Meta de las 6 cuentas + export de Ads Manager nivel conjunto de
+GTR13 y CP1 (desglose por día) + control de 7 días.
+
+PASO 5 — ECONOMÍA UNITARIA
+─────────────────────────────
+Sin cambios: P&L sigue en la ventana 2026-07-17 → 2026-08-25 (389 ventas, Q18,343 ganancia,
+Q106 de sangrado neto por producto rojo, según el dashboard regenerado hoy). Ningún número
+se recalculó a mano — sale de gen_dashboard.py sobre los CSV existentes.
+
+PASO 6 — PENDIENTES VIGENTES (sin cambios de veredicto, a propósito)
+────────────────────────────────────────────────────────────────────
+1. T01 (TINNIDROP, ángulo ME_DIJERON_NO_CURA, 4 brazos) — 9º día en Q0 desde su fecha de
+   arranque confirmada (2026-08-20). Decisión pendiente del operador: lanzarlo limpio de
+   compliance o reprogramar fecha_inicio en _TESTEOS.csv.
+2. CLEARSTEM banda de edad — réplicas 25+ cierran 9.1% de las conversaciones vs 29.7% en
+   25-35 (mismo costo por mensaje). Acción: mover las réplicas 25+ a 25-35, NO apagar el
+   ángulo (RESISTENCIA_INSULINA_SOP ya confirmado ganador, APR-063 descartó fatiga).
+   Impacto Q1,180/sem.
+3. TINNIDROP GTR0 vs GTR7 — saturación por cuenta confirmada: el mismo ángulo
+   (PERDIDA-AUDITIVA / DETERIORO-COGNITIVO) paga CPA Q156.0 en GTR0 vs Q47.6 en GTR7 (ajustado
+   por cobertura de tracking). Acción: bajar GTR0 a piso, mover presupuesto a GTR7.
+   Impacto Q880/sem.
+4. VARICOSE — estado inconsistente: _DIM_PRODUCTOS.csv lo marca VIVO/ESCALADO,
+   _PORTAFOLIO.txt lo tiene PAUSADO desde el cambio de envase del proveedor. Sin gasto
+   verificado en los últimos 12+ días de data. No se corrige por cuenta propia — requiere que
+   el operador confirme cuál etiqueta manda. Impacto Q260/sem mientras quede en limbo.
+5. GTR1 — ventana reciente sangrando: Q212 de pauta para 1 venta, CPA Q211.5 vs Q44.6 del
+   portafolio en la misma ventana. Antes de culpar al creativo, revisar método de pago /
+   rechazos de cobro en la cuenta (APR-049). Sobre la serie completa el ángulo
+   DETERIORO-COGNITIVO da Q48.7 y parece sano — lo roto es la cuenta, no el ángulo.
+   Impacto Q125/sem.
+6. PASO 4B — 1 domingo sin correr (23-ago) desde la última fila OBSERVADO (16-ago). Mañana
+   30-ago es la próxima oportunidad.
+
+Nada se mandó matar por los huecos de 26-28 ago: data faltante ≠ cero ventas.
+
+PASO 7 — ESCRITURA
+─────────────────────
+- _FACT_VENTAS.csv / _FACT_ENTREGA.csv: sin cambios (no entró data).
+- _BITACORA_DATA.txt: nueva fila añadida para 2026-08-29.
+- _GANANCIAS.txt / 2_DATA_PRODUCTO.txt: sin cambios (mismo criterio de días anteriores).
+- Este archivo.
+- Dashboard regenerado: python Ads/_TOOLS/gen_dashboard.py → 0 filas sin dimensión ·
+  ventana 2026-07-17→2026-08-25 · 389 ventas · ganancia Q18,343 · sangrado Q106 ·
+  4 productos · 16 ángulos · 7 acciones · Q2,571/sem en juego. Gate #1 (banda de prioridad 0,
+  hueco de data) = Q1,741/sem, se sostiene en el puesto 1 sin que ninguna acción de mayor
+  monto lo desplace (verificación en vivo de APR-068).
+
+PEDIDO PARA EL OPERADOR
+──────────────────────────
+3 exports de LucidSales, UNO POR DÍA, para 2026-08-26, 2026-08-27 y 2026-08-28 (nunca
+agregados) + reconectar Meta Ads en Cowork → Conectores y confirmar que la tarea programada
+lo herede + confirmar por qué el 27-ago no dejó registro de auditoría.
+Mañana domingo 30-ago, pedir además: extracto de Facturación de Meta (6 cuentas) + export de
+Ads Manager nivel conjunto de GTR13 y CP1 con desglose por día + control de 7 días.

@@ -1,0 +1,82 @@
+════════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA — LADO-ADS EN VIVO · 2026-07-24 ~7PM · SOLO LECTURA
+Complementa (no reemplaza) _PLAN_ESCALADO_20260724.txt (ese trae el cruce LucidSales 17-24 jul).
+Esta corrida = lectura fresca de conversación/CPM/CTR/FRECUENCIA por MCP + flags de FATIGA de HOY.
+Cuentas MCP ON leídas: GTR7, GTR0, GTR1. GTR13 (CLEARSTEM) MCP OFF → solo Lucid.
+════════════════════════════════════════════════════════════════════════════
+
+★ 2 FLAGS NUEVOS DE HOY (no estaban en el plan de la mañana):
+  1. VARICOSE "VERGUENZA_MA6_OFERTA2X1" → frecuencia 1.97 = FATIGA. Y es el MEJOR margen del
+     portafolio (Lucid CPA Q17.2 / cierre 25% / BE Q159). Renovar su creativo YA — mismo ángulo,
+     mismo microángulo, nuevo render — antes de que el CPA suba. No apagarlo: refrescarlo.
+  2. TINNIDROP "ME DIJERON QUE NO TIENE CURA" (🟩 GTR0) → frecuencia 1.89, acercándose a 1.9.
+     Vigilar 48h; ya tiene copia de renovación lista (campaña RENOVACION_20260725 en GTR0, en $0).
+
+────────────────────────────────────────────────────────────────────────────
+NUSAVA B12 (GTR7) — campaña viva testeo "NUSAVAB12_TEST…- Copia" 120246893776440784 · $135.88
++ escala ARDOR viva 120247507971430784 (~$134 en adsets). omni_purchase NULL (tracking roto → Lucid manda).
+Ranking lado-ads (conv = gasto ÷ costo/conv):
+| Conjunto     | Gasto | conv | %conv/link | CTR   | CPM   | Freq | Estado (lado-ads) |
+| ARDOR        |$42.90 | ~179 | 52%        | 5.04% | $1.62 | 1.63 | 🟢 caballo (Lucid confirma) |
+| MEMORIA      |$26.92 | ~64  | 50%        | 5.95% | $2.41 | 1.40 | 🟡 escala no rinde (Lucid) |
+| ABSORCION    |$27.84 | ~68  | 32%        | 5.27% | $1.73 | 1.44 | ⚠️ %conv<35 = bot/flujo |
+| ANIMO        |$12.62 | ~66  | 66%        | 7.59% | $1.71 | 1.30 | 🔴 mejor hook, vende 0 (histórico) |
+| CIATICA      |$13.05 | ~27  | 51%        | 4.24% | $2.60 | 1.25 | 🔴 0 ventas |
+| AZUCAR       |$12.55 | ~23  | 34%        | 2.96% | $1.67 | 1.39 | 🔴 hook débil + 0 ventas |
+PD (BE Q68.3 = $8.96): TODOS cumplieron PD. → apagar ANIMO/AZUCAR/CIATICA (0 ventas, PD cumplido).
+Escala ARDOR: MA7-ARDORVIDEO mejor ($0.23/conv, CTR 4.51%) — es el activo a duplicar.
+NUSAVA sigue el más débil del portafolio (Lucid: sano solo ARDOR/MA7 y MA6-OFERTA Q28.2).
+
+────────────────────────────────────────────────────────────────────────────
+VARICOSE (GTR7) — 2 campañas vivas. omni_purchase presente (Meta, aprox — Lucid es verdad).
+ESCALA VERGÜENZA 120247375697420784 · $79.73 (precio 2x1, BE≈Q159 → PD $20.9):
+| MA2_VESTIDO      |$15.93| omni5 | CPA Q24.3 | freq1.35 | 🟢 GANADOR |
+| MA6_OFERTA2X1    |$15.85| omni5 | CPA Q24.2 | freq1.97 | 🟢 GANADOR ⚠️FATIGA→renovar (Lucid Q17.2) |
+| MA5_RESIGNACION  |$16.26| omni2 | CPA Q62   | freq1.70 | 🟡 flojo |
+| MA4_MANCHAS      |$16.08| omni1 | CPA Q123  |          | 🔴 apagar (Lucid 0v) |
+| MA3_VERANO       |$7.90 | omni0 | <PD       |          | 🟡 sub-testeado |
+| MA1_COMPARACION  |$7.71 | omni0 | $1.29/conv|          | 🔴 caro |
+TESTEO TRÁFICO 120247186770470784 · $88.15 (redundante con la escala):
+| MIEDO-CIRUGIA    |$24.83| omni8 | CPA Q23.7 | freq1.55 | 🟢🟢 merece FASE 2 propia (pendiente) |
+| VERGUENZA-PIERNAS|$24.92| omni3 | CPA Q63   | freq1.37 | ganador original |
+| MANCHAS-OSCURAS  |$24.83| omni2 | CPA Q95   |          | 🔴 podar |
+| ARANITAS / PIERNAS-CANSADAS | 0 ventas | 🔴 podar (ya marcado) |
+| CALAMBRES        |$0    | nunca entregó |
+VARICOSE es el 2º más sano. VERGÜENZA corre solo en GTR7 → LISTO para regar HORIZONTAL (Post ID → GTR0/1/3), mismo playbook que Tinnidrop.
+
+────────────────────────────────────────────────────────────────────────────
+TINNIDROP — escalado multicuenta. GTR0 madre + GTR7 + GTR1 (GTR3 sin Tinnidrop activo hoy).
+GTR0 "🟩 …TEST" 120256219801430595 · $113.88 · omni presente:
+| Pérdida auditiva |$21.55| omni8 | CPA Q20.5 | CPM$0.89 | CTR4.39% | freq1.31 | 🟢🟢 mejor |
+| ME DIJERON       |$21.70| omni6 | CPA Q27.6 | CPM$1.56 | freq1.89 | 🟢 ⚠️fatiga acercándose |
+| Deterioro cognit.|$21.29| omni3 | CPA Q54   | CTR5.56% | freq1.36 | 🟡 (Lucid: GANADOR real Q20.7 en réplicas, se satura en GTR0) |
+| Accesibilidad    |$21.66| omni3 | CPA Q55   | 67%conv  | | 🟡 |
+| NOCHES SIN DORMIR|$21.48| omni2 | CPA Q82   | 21%conv  | | ⚠️ bot flojo |
+| TENSIÓN/ESTRÉS   |$6.21 | omni0 | <PD       | | 🟡 sub-testeado (educacional→matar según plan) |
+Multicuenta FRESCA (freq 1.0-1.2, CPMs $0.9-2.1 baratísimos, sin saturación):
+  · GTR7 "4🟦" $24.69 — Pérdida auditiva mejor ($0.30/conv, CPM$0.98)
+  · GTR1 "3🟦" $25.10 — Pérdida auditiva mejor ($0.25/conv, CPM$0.97)
+RENOVACION_20260725 +25años (GTR0, $0) → montada y esperando arranque (renovar creativo/edad).
+TINNIDROP = el más sano del portafolio. Escalado horizontal funcionando; CPMs sin saturar.
+
+────────────────────────────────────────────────────────────────────────────
+CLEARSTEM (GTR13) — MCP OFF, sin lado-ads en vivo. Última Lucid (plan hoy): sano, TESTEO.
+Sangrado a apagar (plan): "Dolor Emocional Masculino" $10.13/0v · "Eje Intestino-Piel" $4.95/0v.
+Mejores: Anti-Falsificación Q25.9. Duplicar los ganadores ×3.
+
+────────────────────────────────────────────────────────────────────────────
+⚠️ OVULOS_PURITY: existe carpeta PRODUCTOS/OVULOS_PURITY/ (v1 18-jul, Hernatura CO) pero NO está
+en _PORTAFOLIO.txt y no se auditó. Si ya está VIVO en Meta, decime "agregá OVULOS al tracking".
+PENDIENTES sin lanzar (no se auditan): VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX.
+
+════════════════════════════════════════════════════════════════════════════
+QUÉ HACER MAÑANA (delta sobre el plan de hoy):
+1. VARICOSE MA6_OFERTA2X1 → renovar creativo (freq 1.97, es el mejor margen). Brief a ETAPA-4.
+2. TINNIDROP → arrancar RENOVACION +25años; empujar volumen de Pérdida auditiva/ME DIJERON a
+   GTR7/GTR1 (frescas), NO más a GTR0 (Deterioro se satura ahí).
+3. NUSAVA → apagar ANIMO/AZUCAR/CIATICA (PD cumplido, 0 ventas); consolidar en ARDOR.
+4. El resto de duplicaciones/podas → ejecutar _PLAN_ESCALADO_20260724.txt (ya detallado).
+
+RECORDATORIO LUCID: próxima ventana de pega = LUNES 27-jul (export 7d: adId, spend, sells, total,
+fulfillmentStatus). Sin esa pega no hay CPA real nuevo; el escalado fuerte se decide con Lucid semanal.
+════════════════════════════════════════════════════════════════════════════

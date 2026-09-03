@@ -1,0 +1,124 @@
+================================================================
+CONTEXTO GUARDADO — CREMA TIGRE SANARTE
+Fecha de sesión: 2026-05-03
+Fase completada: FASE 1 — PRE-TESTEO
+================================================================
+
+DATOS BASE DEL PRODUCTO
+------------------------
+Nombre: Tiger Chinese Red Ointment / Crema Tigre Sanarte
+Costo proveedor: Q55
+Fila tabla usada: Q60 (conservador, Q55 cae entre Q54 y Q60)
+P1u: Q199 | P2u: Q299 | P3u: Q399 | CPA Base: Q30.8 | CPA Break Even: Q60.5
+
+INGREDIENTES ACTIVOS (Módulo A)
+---------------------------------
+- Alcanfor (Camphor) ~11-16% — contrairritante, flujo sanguíneo local
+- Mentol (Menthol) ~10-16% — efecto frío-calor, analgésico
+- Aceite de Cajeput ~7-10% — penetración profunda, antiinflamatorio
+- Aceite de Menta ~6-10% — refrescante, analgésico suave
+- Aceite de Clavo ~1.2-5% — antiinflamatorio, analgésico
+- Aceite de Cassia (Canela China) ~5% — calor terapéutico, circulación
+- Capsaicina (mencionada en video 4) — reduce sustancia P, acción térmica
+Fórmula: 100% natural, sin parabenos, sin ingredientes sintéticos agresivos.
+NO apto: heridas abiertas, alérgicos a componentes, menores 12 años, embarazadas.
+
+ETAPA-FANPAGE RESULTADO
+--------------------------
+⚠️ PRODUCTO SIN PÁGINA IDEAL — Aplica Regla F3
+Página nueva sugerida: 🦴 Movilidad & Articulaciones
+Identidad recomendada: Dr. Roberto Solano — traumatólogo y especialista en medicina del dolor
+Tono: Educativo-clínico accesible. Mecanismo antes que solución. Nunca sonar a vendedor.
+Opción provisional: FanPage 5 🌿 Detox & Hígado (Dra. Claudia Vásquez — médica integrativa)
+ACCIÓN PENDIENTE: Crear la página antes de lanzar.
+
+ETAPA-0 — VIDEOS SELECCIONADOS (6)
+-------------------------------------
+1. crematigre2 — Ángulo: Rodilla al colapso / evitar cirugía — Señales: 9/10
+2. crematigre4 — Ángulo: Validación médica especialista — Señales: 9/10
+3. crematigre3 — Ángulo: Alivio inmediato 20 minutos — Señales: 8/10
+4. crematigre6 — Ángulo: Múltiples articulaciones / vida diaria — Señales: 7/10
+5. crematigre5 — Ángulo: Penetración profunda cartílago — Señales: 6/10
+6. crematigre1 — Ángulo: Urgencia extrema / deterioro activo — Señales: 6/10
+
+ETAPA-2 — 6 FICHAS DE ÁNGULO
+--------------------------------
+ÁNGULO 1 — Rodilla al colapso: la cirugía ya era la única opción
+Video: crematigre2
+Avatar: Hombre o mujer 50-65 años, diagnóstico rodilla destruida, miedo a cirugía por costo o recuperación
+Dolor: Sentencia médica de cirugía irreversible que le aterra
+Deseo: Algo natural que evite la operación y devuelva movilidad
+Promesa: Penetra hasta tejido articular y revierte deterioro sin bisturí
+Saturación: Baja
+
+ÁNGULO 2 — La doctora que lo recomienda: credibilidad sin debate
+Video: crematigre4
+Avatar: 35-60 años, escéptico de remedios caseros, solo confía en respaldo médico
+Dolor: No puede confiar sin validación científica de especialista
+Deseo: Solución que un médico real respalde abiertamente
+Promesa: Dra. especialista ortopédica recomienda con ingredientes naturales certificados
+Saturación: Media
+
+ÁNGULO 3 — 20 minutos y el dolor se fue
+Video: crematigre3
+Avatar: Mujer 30-55 años, probó cremas sin resultado inmediato, quiere alivio rápido sin pastillas
+Dolor: Cremas anteriores tardaron días o no funcionaron; el dolor paraliza a cualquier hora
+Deseo: Alivio real y rápido, sin esperar semanas
+Promesa: En menos de 20 minutos el dolor desaparece completamente
+Saturación: Baja
+
+ÁNGULO 4 — El cuerpo entero duele: rodillas, hombros, escaleras
+Video: crematigre6
+Avatar: Adulto 45-65 años con dolor articular generalizado, limitado en actividades simples
+Dolor: Múltiples articulaciones afectadas limitan actividades cotidianas
+Deseo: Movimiento fluido en todo el cuerpo sin efectos secundarios
+Promesa: Alivia rodillas, hombros y codos con ingredientes naturales; diferencia desde día 3
+Saturación: Media
+
+ÁNGULO 5 — La crema que llega donde las otras no pueden
+Video: crematigre5
+Avatar: 40-60 años, probó múltiples cremas sin resultado, sabe que el daño está "adentro"
+Dolor: Cremas comunes solo cubren superficie; daño real en cartílagos y meniscos
+Deseo: Fórmula que llegue al tejido afectado, no solo alivio superficial
+Promesa: Penetra hasta tejidos musculares, articulaciones, cartílagos y terminaciones nerviosas
+Saturación: Baja
+
+ÁNGULO 6 — Tu rodilla pide ayuda a gritos: actuá antes de que sea tarde
+Video: crematigre1
+Avatar: 45-70 años con dolor crónico de rodilla que cruje, ignoró señal por meses, teme daño permanente
+Dolor: Deterioro interno severo y cada día sin actuar empeora más
+Deseo: Actuar a tiempo para evitar daño irreversible
+Promesa: Actúa ahora antes que sea demasiado tarde — garantía de devolución
+Saturación: Baja
+
+ÁNGULOS DESCUBIERTOS (sin video — para futuros creativos)
+-----------------------------------------------------------
+1. Dolor nocturno / rigidez matutina — alcanfor + mentol activan circulación durante el sueño
+2. Deportistas / recuperación post-ejercicio — cajeput + menta para músculo inflamado
+3. Dolor crónico por postura / trabajo sedentario — cassia para cervical y lumbar
+4. Adultos mayores +60 / independencia de movimiento — natural sin efectos gastrointestinales
+5. Personas que fallaron con pastillas/inyecciones — acción directa vs. medicamento sistémico
+
+ETAPA-6 — ESTRUCTURA CAMPAÑA TESTEO
+--------------------------------------
+Campaña: 1
+Conjuntos: 6
+Presupuesto por conjunto: Q54
+Presupuesto total: Q324
+Lanzamiento: 4:00 AM día siguiente
+
+Conjunto 1 — crematigre2 — Rodilla al colapso / evitar cirugía
+Conjunto 2 — crematigre4 — Validación médica especialista
+Conjunto 3 — crematigre3 — Alivio 20 minutos
+Conjunto 4 — crematigre6 — Múltiples articulaciones
+Conjunto 5 — crematigre5 — Penetración profunda
+Conjunto 6 — crematigre1 — Urgencia extrema / deterioro
+
+Regla 3/3: CON precio (Q199): Conjuntos 1, 3, 6 | SIN precio: Conjuntos 2, 4, 5
+
+NOTAS PARA FASE 2
+------------------
+- Esperar 24 horas de testeo antes de iniciar Fase 2
+- Identificar ángulo ganador por: CTR más alto + CPA más bajo + mayor volumen de mensajes
+- Entregar: nombre del ángulo ganador + métricas de los 6 conjuntos (CTR/CPA/mensajes/conversiones)
+================================================================

@@ -1,0 +1,176 @@
+{
+  "ficha_id": "F025",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/08_1536827234832370.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1536827234832370",
+    "dias_activo": 54,
+    "replicas": 1,
+    "score": 79,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "14%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LAS TRES TARJETAS DE RESENA CON FOTO DE PERFIL, NOMBRE, CIUDAD Y ESTRELLAS. Cada testimonio va en card blanca con el avatar circular a la izquierda, el nombre y la CIUDAD debajo, cinco estrellas doradas a la derecha y la cita entre comillas con las palabras clave resaltadas en color. El icono de WhatsApp sobre cada avatar sugiere que la resena llego por chat.",
+  "lectura_estrategica": "Pieza de cierre: no explica el producto, acredita que otros ya lo compraron. La CIUDAD es el detalle que hace el trabajo — Guatemala, Quetzaltenango, Antigua — porque convierte un testimonio generico en gente del mismo pais y de departamentos distintos, o sea que ya llega a todos lados. Las palabras resaltadas dentro de cada cita repiten el beneficio principal tres veces sin que se lea repetitivo. La fila de metricas al pie (clientes, calificacion promedio, garantia) cierra con numeros.",
+  "fondo": {
+    "tipo": "foto_de_persona_con_producto_desenfocada",
+    "base": "una persona real sosteniendo el producto, del lado derecho, con el entorno desenfocado",
+    "capa": "claro plano sobre la mitad izquierda para sostener las tarjetas",
+    "regla": "la persona del fondo mira a camara y sonrie: es el testimonio que no lleva tarjeta"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (palabras resaltadas, badges, botones) mas blanco (tarjetas) mas negro (titular y bandas) mas dorado exclusivo de las estrellas"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase negro",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "lo que dicen + los clientes: la voz cedida a terceros"
+    },
+    "banda_prueba": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda negra solida",
+      "linea_1": "{{PRUEBA_L1}}",
+      "linea_2": "{{PRUEBA_L2_ACENTO}}",
+      "estilo_l2": "Bold uppercase en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "afirma masa (miles ya...) sin dar cifra: la cifra exacta va al pie"
+    },
+    "logo_marca": {
+      "posicion": "superior_derecha",
+      "contenido": "{{LOGO_MARCA}}",
+      "bajada": "{{CLAIM_MARCA}}"
+    },
+    "tarjetas_resena": {
+      "posicion": "izquierda, ocupa 55% del alto",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "card blanca redondeada con avatar circular a la izquierda, icono de WhatsApp sobre el avatar, NOMBRE Bold y CIUDAD Regular debajo, cinco estrellas doradas a la derecha, y la cita entre comillas en Regular con 3-5 palabras resaltadas en Bold {{PALETA_ACENTO}}",
+      "items": "{{RESENAS[3]}}",
+      "estructura_item": {
+        "nombre": "{{NOMBRE}}",
+        "ciudad": "{{CIUDAD}}",
+        "estrellas": 5,
+        "cita": "{{CITA}}",
+        "resaltado": "{{PALABRAS_CLAVE}}"
+      },
+      "restriccion_cita": "18-26 palabras",
+      "regla_ciudad": "las tres ciudades son DISTINTAS y del mismo pais: prueba cobertura ademas de satisfaccion",
+      "regla_resaltado": "las palabras resaltadas de las tres citas dicen el mismo beneficio con otras palabras: lo repite tres veces sin sonar repetitivo",
+      "regla_cita_2": "la segunda resena arranca reconociendo que ya probo otras cosas que no funcionaron: es la que convierte al esceptico"
+    },
+    "persona_con_producto": {
+      "posicion": "derecha, ocupa el alto completo",
+      "contenido": "{{FOTO_PERSONA_CON_PRODUCTO}}",
+      "escala": "40% del frame",
+      "tratamiento": "persona real del avatar, sonriendo a camara, sosteniendo el envase a la altura del pecho",
+      "regla": "mira a CAMARA, a diferencia de los layouts de deseo donde mira el producto"
+    },
+    "badge_confianza": {
+      "posicion": "centro_derecha, sobre la foto",
+      "forma": "circular blanco con borde",
+      "texto": "{{BADGE_MASA}}",
+      "restriccion_palabras": "5-6 palabras",
+      "escala": "16% del ancho"
+    },
+    "fila_metricas": {
+      "posicion": "inferior, sobre la barra de cierre",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores",
+      "formato_item": "icono line-art mas CIFRA Bold mas etiqueta Regular de 2 lineas",
+      "items": "{{METRICAS[3]}}",
+      "regla": "las tres son numericas o verificables: cantidad de clientes, calificacion promedio, garantia",
+      "restriccion_palabras": "2-3 palabras por etiqueta"
+    },
+    "barra_whatsapp": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda oscura con logo circular verde de WhatsApp a la izquierda",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "estilo": "Bold uppercase blanco",
+      "zona_derecha": "{{GARANTIA_ENVIO}} y {{GARANTIA_PAGO}} con icono de camion"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "banda_prueba",
+    "tarjetas_resena",
+    "persona_con_producto",
+    "badge_confianza",
+    "fila_metricas",
+    "barra_whatsapp"
+  ],
+  "reglas_duras": [
+    "Cada resena lleva nombre, ciudad, cinco estrellas y avatar circular",
+    "Las tres ciudades son distintas y del mismo pais",
+    "Las palabras resaltadas de las tres citas dicen el mismo beneficio con otras palabras",
+    "La segunda resena arranca reconociendo que ya probo otras cosas sin resultado",
+    "La persona del fondo mira a camara",
+    "Las tres metricas del pie son numericas o verificables"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2_ACENTO",
+    "PRUEBA_L1",
+    "PRUEBA_L2_ACENTO",
+    "LOGO_MARCA",
+    "CLAIM_MARCA",
+    "RESENAS[3]",
+    "FOTO_PERSONA_CON_PRODUCTO",
+    "BADGE_MASA",
+    "METRICAS[3]",
+    "CTA_L1",
+    "CTA_L2",
+    "GARANTIA_ENVIO",
+    "GARANTIA_PAGO"
+  ],
+  "cuando_usar": [
+    "retargeting y BOFU, cuando la duda que queda es si a otros les sirvio",
+    "cuando existen resenas reales de clientes con permiso de uso",
+    "productos con recompra o con historial de ventas en el pais",
+    "cuando se quiere probar cobertura geografica ademas de satisfaccion"
+  ],
+  "cuando_no_usar": [
+    "producto recien lanzado sin clientes reales",
+    "publico frio de nivel 1 o 2: el testimonio no significa nada si no sabe que problema resuelve",
+    "cuando no se tiene permiso de las personas citadas"
+  ],
+  "sellos_y_claims_observados": [
+    "Tres resenas con nombre, ciudad del pais y cinco estrellas, con icono de WhatsApp sobre cada avatar.",
+    "Banda de prueba MILES YA CUIDAN SU PIEL CON LA MARCA.",
+    "Badge circular MILES DE PERSONAS YA CONFIAN EN EL.",
+    "Metricas de cierre: +10,000 CLIENTES SATISFECHOS, 4.8/5 CALIFICACION PROMEDIO, 100% ORIGINAL Y GARANTIZADO.",
+    "Barra final: ESCRIBENOS POR WHATSAPP Y PIDE EL TUYO HOY MISMO, ENVIO GRATIS PAGO CONTRA ENTREGA A TODO GUATEMALA."
+  ],
+  "canonico_id": "CN10_PRUEBA_SOCIAL",
+  "blueprint_equivalente": null
+}

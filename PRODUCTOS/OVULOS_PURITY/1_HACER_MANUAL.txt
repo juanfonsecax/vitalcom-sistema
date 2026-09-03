@@ -1,0 +1,393 @@
+═══ OVULOS PURITY (Hernatura) · VERSION v1 · 2026-07-18 · COSTO $7.000 COP · DOSIS 3 perlas/paquete (48-72h c/u) · fanpage HERNATURA CO (registrar page_id) · campaign_id SIN MCP ═══
+HACER MANUAL — ÓVULOS PURITY | FASE 1 | 2026-07-18
+Mercado: COLOMBIA · Español neutro (tú, sin voseo) · FanPage: HERNATURA (Colombia) · Lanzamiento MANUAL (sin MCP)
+
+── A. CHECKLIST RÁPIDO ──
+[ ] Generar el ad-imagen del ángulo 6 (cólicos/ciclo) — prompt en sección C
+[ ] (Ya generadas) 3 infografías del bot — prompts de respaldo en sección C
+[ ] Configurar el flujo en LucidBot (sección E, campo por campo)
+[ ] Subir a Meta los 5 videos + la imagen del ángulo 6 y crear la campaña (sección F)
+[ ] Programar/activar la campaña a las 4 AM del día siguiente
+
+── B. CREATIVOS POR CONJUNTO ──
+Los videos son PROPIOS (marca Óvulos Purity), ya validados. LAVADOS (limpieza anti-huella, ya se reusaron antes) en: Ads/MEDIA_OVULOS_PURITY_PROPIOS/ — usar SIEMPRE los lavados para subir a Meta.
+| Conjunto | Ángulo | Formato | Archivo LAVADO a subir | Precio en ad |
+|---|---|---|---|---|
+| 1_PAREJA | Rechazo de la pareja (olor en la intimidad) | VIDEO | OVULOSPURITY_PROPIO_1_PAREJA.mp4 | no |
+| 2_FLUJO | Flujo abundante + olor a pescado | VIDEO | OVULOSPURITY_PROPIO_2_FLUJO.mp4 | no |
+| 3_PICAZON | Picazón/ardor + shock detox | VIDEO | OVULOSPURITY_PROPIO_3_PICAZON.mp4 | SÍ (2x1) |
+| 4_RECURRENTE | Infección recurrente / anti-médico | VIDEO | OVULOSPURITY_PROPIO_4_RECURRENTE.mp4 | no |
+| 5_INTEGRAL | Solución integral / autoridad (8 raíces) | VIDEO | OVULOSPURITY_PROPIO_5_INTEGRAL.mp4 | no |
+| 6_CICLO | Cólicos y ciclo / equilibrio hormonal | IMAGEN | ad-imagen (sección C) | SÍ |
+Reserva (FASE 2): OVULOSPURITY_PROPIO_6_ANIMADO.mp4. Data (no anuncio): 9 transcripciones ICOLITE.
+⚠️ Los videos llevan claims fuertes que Meta lee ("clínicamente comprobado", "eliminan candidiasis", "72 horas"). Vigilar CPM por conjunto; los más expuestos: 9 HN y PODCAST. Para escalar, versión con audio/texto suavizado.
+
+── C. PROMPTS DE IMAGEN ──
+
+## AD-IMAGEN — CONJUNTO 6 (cólicos/ciclo) — estilo AD que convierte (Prompt Maestro, NO editorial)
+Actúa como diseñador experto en Meta Ads de alta conversión. Crea un anuncio VERTICAL 4:5 (1080x1350 px), fotorrealista, que NO parezca hecho por IA y se venda en 3 segundos. Estilo: LIFESTYLE CON PERSONA REAL (nativo, tipo UGC). Texto total < 20% del área. Todo en ESPAÑOL.
+[ADJUNTAR foto real del empaque celeste ÓVULOS PURITY]
+ESCENA: mujer latina real de 28-38 años, ropa de casa, sentada en su cama/sofá con una mano en el bajo vientre (cólico) y gesto de alivio-esperanza, MIRANDO el empaque de Óvulos Purity que sostiene en la otra mano. Luz natural de hogar, auténtica, no de revista.
+JERARQUÍA:
+1. MARCA arriba, discreta: "HERNATURA".
+2. HOOK grande, 2 líneas, con "cada mes" en azul: "¿TU CICLO ES UNA TORMENTA CADA MES?"
+3. PRODUCTO grande y nítido en la mano.
+4. BENEFICIO: "Cólicos, cambios de humor y desequilibrio — apoya tu equilibrio de forma natural."
+5. Badge pequeño: "100% NATURAL · PAGAS AL RECIBIR".
+6. TESTIMONIO en burbuja de chat pequeña (5 estrellas): "llevaba años con cólicos horribles, con esto por fin paso mi periodo tranquila".
+7. SELLO STARBURST moderado esquina superior: "SÚPER OFERTA · 2 PAQUETES $99.900 · SOLO HOY".
+8. CTA botón azul: "Escríbenos hoy 👉".
+PALETA azul médico #2A6FE0 + celeste. Tipografía bold legible ≥24pt. COMPLIANCE: nada de "cura/elimina/regula hormonas/72 horas"; usar "apoya/ayuda a/calma las molestias". Sin antes/después corporal. Que se vea real.
+
+## INFOGRAFÍAS DEL BOT (respaldo — ya generadas)
+INFO 1 (hero + 6 beneficios), INFO 2 (antes/después perla + 8 plantas + modo de uso), INFO 3 (doctora + pagas al recibir + resultados + FAQ + sellos). Estilo Lactomedi premium (azul médico, serif). [Prompts completos en el historial del chat; las imágenes ya están creadas.] Recordatorio compliance INFO 3: suavizar "-99%/-96%" a "9 de cada 10 notan más frescura / 92% la recompraría" y quitar el sello FDA.
+
+── D. COPIES POR CONJUNTO (pegar en Meta) ──
+
+### CONJUNTO 1 · PAREJA (video 5 NUEVO) · SIN precio
+TEXTO 1:
+¿Te ha pasado que evitas la intimidad por miedo a ese olor? 🙈
+
+No es falta de aseo. Por dentro se acumulan flujo y residuos que el agua no alcanza a sacar, y eso genera el olor y la incomodidad.
+
+Óvulos Purity son perlas detox de 8 raíces naturales que limpian en profundidad y te devuelven la frescura y la seguridad.
+
+✅ Frescura que dura
+✅ 100% natural, te la pones en casa
+✅ Pagas al recibir
+
+Vuelve a estar cerca sin pensar en el olor.
+Escríbenos hoy 👉
+
+TEXTO 2:
+Que tu pareja note el olor es de las cosas que más inseguridad dan. 😔
+
+Y lo peor es que ya probaste jabones, cremas y nada.
+
+No es tu culpa: el problema es por dentro. Óvulos Purity limpia en profundidad con 8 hierbas naturales y te devuelve la confianza en la intimidad.
+
+✅ Sensación de limpieza real
+✅ Discreto y fácil
+✅ Pagas cuando lo recibes
+
+Mándanos un mensaje 👉
+
+TEXTO 3:
+"Ya no vivo con esa inseguridad de antes, hasta mi relación con mi pareja mejoró." 💗
+Así nos escriben.
+
+Si evitas la intimidad por el olor o el flujo, no estás sola.
+
+Óvulos Purity, perlas detox naturales, ayudan a limpiar a fondo y a devolverte la frescura.
+
+✅ +40.000 mujeres ya lo probaron
+✅ 100% natural
+✅ Envío · pagas al recibir
+
+Escríbenos y recupera tu seguridad 👉
+
+TÍTULOS: Sin miedo al olor · No es tu culpa · Frescura natural
+DESCRIPCIÓN: 100% natural · Pagas en casa
+
+### CONJUNTO 2 · FLUJO (video 10 HN) · SIN precio
+TEXTO 1:
+¿Mucho flujo y ese olor a pescado que no se te quita? 🐟
+
+Te bañas, cambias de jabón, y vuelve. No es aseo: por dentro se acumula flujo viejo que el agua no saca.
+
+Óvulos Purity, perlas detox de 8 raíces, limpian en profundidad y equilibran tu flujo desde adentro.
+
+✅ Menos flujo, más frescura
+✅ 100% natural
+✅ Pagas al recibir
+
+Escríbenos hoy 👉
+
+TEXTO 2:
+Vivir pendiente del flujo y del olor cansa. 😮‍💨
+
+Cambiar de jabón o usar más protectores solo lo tapa, no lo soluciona.
+
+Óvulos Purity ayuda a limpiar lo acumulado y a devolverte la sensación de sequedad y frescura, con hierbas naturales.
+
+✅ Frescura que dura
+✅ Fácil y discreto
+✅ Pagas cuando lo recibes
+
+Mándanos un mensaje 👉
+
+TEXTO 3:
+"Antes tenía mucho flujo y ese olor me daba pena… esto fue lo único que me funcionó." 🙌
+
+Si te pasa, tiene solución natural.
+
+Óvulos Purity limpia a fondo y equilibra tu flora con 8 raíces naturales.
+
+✅ +40.000 mujeres felices
+✅ 100% natural
+✅ Envío · pagas al recibir
+
+Escríbenos y te contamos 👉
+
+TÍTULOS: Adiós al flujo · No huele más · Frescura real
+DESCRIPCIÓN: Envío · Pagas en casa
+
+### CONJUNTO 3 · PICAZÓN + SHOCK (video 2X1 HER5) · CON PRECIO (2x1)
+TEXTO 1:
+¿Picazón, ardor y esa sensación de que algo no está bien ahí abajo? 🔥
+
+Casi siempre es flujo y residuos acumulados que el agua no saca — y por eso vuelve.
+
+Óvulos Purity, perlas detox de 8 raíces, limpian en profundidad y calman la irritación desde adentro.
+
+✅ Menos picazón y ardor
+✅ 2 paquetes por $99.900 con envío GRATIS
+✅ Pagas al recibir
+
+Escríbenos hoy 👉
+
+TEXTO 2:
+No vas a creer lo que tu cuerpo estaba guardando. 😮
+
+Si vives con picazón y ardor, casi siempre es por residuos acumulados que ni sabías que tenías.
+
+Óvulos Purity ayuda a arrastrarlos y a devolverte la comodidad y la frescura, con 8 hierbas naturales.
+
+✅ Limpieza que se siente
+✅ 2 paquetes $99.900, envío gratis
+✅ Pagas cuando lo recibes
+
+Mándanos un mensaje 👉
+
+TEXTO 3:
+"Quedé impresionada con lo que salió… pero después quedé súper fresca y sin la picazón." 😳
+Así nos escriben.
+
+Óvulos Purity, perlas detox naturales, limpian a fondo y calman la irritación.
+
+✅ +40.000 mujeres ya lo vieron
+✅ 2 paquetes $99.900 con envío gratis
+✅ Pagas en casa
+
+Escríbenos y compruébalo 👉
+
+TÍTULOS: Adiós picazón · Míralo tú misma · Limpieza profunda
+DESCRIPCIÓN: 2x $99.900 · Envío gratis
+
+### CONJUNTO 4 · INFECCIÓN RECURRENTE / ANTI-MÉDICO (video 9 HN) · SIN precio
+TEXTO 1:
+¿Infecciones que van y vuelven por más tratamientos que hagas? 😮‍💨
+
+Muchos jabones, óvulos de farmacia y cremas terminan alterando tu flora — por eso el problema regresa.
+
+Óvulos Purity, perlas detox de 8 raíces, ayudan a limpiar y a equilibrar tu flora de forma natural.
+
+✅ Apoyo antibacteriano natural
+✅ 100% hierbas naturales
+✅ Pagas al recibir
+
+Escríbenos hoy 👉
+
+TEXTO 2:
+No es tu culpa que nada te funcione. 💧
+
+Muchas soluciones "de siempre" desequilibran tu flora y por eso las infecciones vuelven.
+
+Lo que tu zona íntima necesita es equilibrio, no más químicos. Óvulos Purity lo apoya con 8 hierbas naturales.
+
+✅ Equilibra tu pH y tu flora
+✅ Natural y fácil
+✅ Pagas cuando lo recibes
+
+Mándanos un mensaje 👉
+
+TEXTO 3:
+"Llevaba años con eso que iba y volvía… esto fue lo único que de verdad me ayudó." 🙏
+
+Si las infecciones te vuelven una y otra vez, hay una alternativa natural.
+
+Óvulos Purity apoya el equilibrio de tu flora con 8 raíces naturales.
+
+✅ +40.000 mujeres felices
+✅ 100% natural
+✅ Envío · pagas al recibir
+
+Escríbenos y te contamos 👉
+
+TÍTULOS: Que no vuelva · No es tu culpa · Equilibrio natural
+DESCRIPCIÓN: 100% natural · Pagas en casa
+
+### CONJUNTO 5 · SOLUCIÓN INTEGRAL / AUTORIDAD (video PODCAST) · SIN precio
+TEXTO 1:
+Cada molestia íntima tiene una causa distinta — y una raíz natural que la apoya. 🌿
+
+Olor, picazón, flujo, cólicos, sequedad… casi siempre nacen del mismo desequilibrio de tu flora y tu pH.
+
+Óvulos Purity reúne 8 raíces de la medicina natural en una sola perla que limpia a fondo y reequilibra tu zona íntima.
+
+✅ 8 hierbas en 1 solo óvulo
+✅ Fácil, natural, en casa
+✅ Pagas al recibir
+
+Escríbenos hoy 👉
+
+TEXTO 2:
+¿Para qué usar jabón, cremas, pastillas y óvulos por separado? 🤔
+
+Es caro, engorroso y no ataca la raíz.
+
+Óvulos Purity combina 8 raíces naturales en una sola perla que limpia en profundidad y reequilibra tu flora y tu pH.
+
+✅ Todo en uno, natural
+✅ Sin químicos agresivos
+✅ Pagas cuando lo recibes
+
+Mándanos un mensaje 👉
+
+TEXTO 3:
+8 raíces de la medicina natural, en un solo óvulo. 🌿
+
+Osthol, Angélica, Motherwort, Borneol y más — trabajando juntas para limpiar a fondo y devolverte el equilibrio.
+
+Por eso +40.000 mujeres ya cambiaron los tratamientos de siempre por Óvulos Purity.
+
+✅ 100% natural
+✅ Envío · pagas al recibir
+
+Escríbenos y te explicamos 👉
+
+TÍTULOS: 8 raíces en 1 · Todo en uno · Solución natural
+DESCRIPCIÓN: 100% natural · Pagas en casa
+
+### CONJUNTO 6 · CÓLICOS / CICLO (imagen ángulo 6) · CON PRECIO
+TEXTO 1:
+¿Tu ciclo es una tormenta cada mes? 🌧️
+
+Cólicos fuertes, cambios de humor y esa sensación de desequilibrio no son "normales" — tu cuerpo te pide equilibrio.
+
+Óvulos Purity, con Motherwort y Angélica, apoya tu equilibrio natural y calma las molestias del ciclo.
+
+✅ Calma los cólicos
+✅ 2 paquetes por $99.900 con envío GRATIS
+✅ Pagas al recibir
+
+Escríbenos hoy 👉
+
+TEXTO 2:
+Pasar cada mes con cólicos que te tumban no debería ser tu normalidad. 😔
+
+Óvulos Purity reúne 8 raíces naturales —entre ellas Motherwort y Angélica— que apoyan tu equilibrio y calman las molestias del ciclo.
+
+✅ Menos molestias, más equilibrio
+✅ 2 paquetes $99.900, envío gratis
+✅ Pagas cuando lo recibes
+
+Mándanos un mensaje 👉
+
+TEXTO 3:
+"Llevaba años con cólicos horribles, con esto por fin paso mi periodo tranquila." 💗
+Así nos escriben.
+
+Óvulos Purity, con Motherwort y Angélica, apoya tu equilibrio natural mes a mes.
+
+✅ +40.000 mujeres felices
+✅ 2 paquetes $99.900 con envío gratis
+✅ Pagas en casa
+
+Escríbenos y te contamos 👉
+
+TÍTULOS: Adiós cólicos · Ciclo en paz · Equilibrio natural
+DESCRIPCIÓN: 2x $99.900 · Envío gratis
+
+── D2. DESCRIPCIÓN ORGÁNICA (1 sola por conjunto — para publicar el video como POST y luego pautarlo con Post ID) ──
+Uso: al publicar el video orgánico (IG/FB) va UNA sola descripción (sin título/descripción aparte). Al pautar ESE mismo post (Post ID), esta descripción = el texto del anuncio (no se puede cambiar). Las 3 variaciones + títulos de la sección D solo aplican si se crea un anuncio NUEVO en Ads Manager. Buenas prácticas: hook en la 1ª línea, CTA con palabra clave (más interacción que "link en bio"), 3-5 hashtags de nicho ROTADOS por post (no repetir el mismo set = shadowban), evitar #vaginal/#candidiasis (restringidos). Compliance suave (apoya/ayuda), porque al pautar Meta lo lee.
+
+CONJUNTO 1 · PAREJA:
+Evitaba la intimidad por miedo a ese olor… hasta que entendí que no era falta de aseo. 🙈
+
+El olor y la incomodidad casi siempre vienen de flujo y residuos que se acumulan por dentro, donde el agua no llega. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar en profundidad y a devolverte la frescura y la seguridad para volver a estar cerca sin pensarlo.
+
+¿Te pasa? Escríbenos la palabra FRESCA por mensaje directo y te contamos cómo 💬
+
+#saludfemenina #bienestaríntimo #autocuidado #frescura #mujeres
+
+CONJUNTO 2 · FLUJO:
+¿Mucho flujo y ese olor que vuelve por más que te bañes? No eres solo tú. 🐟
+
+No es aseo: por dentro se acumula flujo viejo que el agua no saca. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar a fondo y a equilibrar tu flujo desde adentro, para sentirte fresca y seca todo el día.
+
+Escríbenos la palabra INFO por mensaje directo y te explicamos 💬
+
+#saludíntima #bienestarfemenino #cuidadopersonal #frescuranatural #mujer
+
+CONJUNTO 3 · PICAZÓN (oferta):
+Vivía con picazón y ardor y pensaba que era "normal". No lo es. 🔥
+
+Casi siempre es por residuos acumulados que ni sabías que tenías. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar en profundidad y a calmar la irritación desde adentro. Hoy: 2 paquetes con envío gratis y pagas al recibir.
+
+Escríbenos la palabra QUIERO por mensaje directo 💬
+
+#saludfemenina #autocuidado #bienestaríntimo #detoxnatural #mujeres
+
+CONJUNTO 4 · RECURRENTE:
+¿Las infecciones te vuelven una y otra vez por más que hagas de todo? No es tu culpa. 💧
+
+Muchos jabones y productos "de siempre" terminan desequilibrando tu flora, y por eso el problema regresa. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar y a devolver el equilibrio de forma natural.
+
+Escríbenos la palabra EQUILIBRIO por mensaje directo y te contamos 💬
+
+#saludíntima #cuidadoíntimo #saludnatural #bienestarfemenino #mujer
+
+CONJUNTO 5 · INTEGRAL (podcast):
+Olor, flujo, picazón, cólicos… casi todo nace del mismo desequilibrio. 🌿
+
+Por eso no necesitas 5 productos distintos. Los Óvulos Purity reúnen 8 raíces de la medicina natural en una sola perla que limpia a fondo y ayuda a reequilibrar tu zona íntima. Simple, natural y en casa.
+
+Escríbenos la palabra PURITY por mensaje directo y te explicamos 💬
+
+#bienestaríntimo #medicinanatural #saludfemenina #autocuidado #mujeres
+
+CONJUNTO 6 · CÓLICOS/CICLO (oferta):
+¿Tu ciclo es una tormenta cada mes? Cólicos, cambios de humor, desequilibrio… 🌧️
+
+No tiene que ser tu normalidad. Los Óvulos Purity, con Motherwort y Angélica entre sus 8 raíces, apoyan tu equilibrio natural y ayudan a calmar las molestias del ciclo. Hoy: 2 paquetes con envío gratis, pagas al recibir.
+
+Escríbenos la palabra CICLO por mensaje directo 💬
+
+#saludfemenina #ciclomenstrual #bienestarfemenino #autocuidado #mujeres
+
+── REMARKETING / INACTIVIDAD (máx 2, entre 7am-9pm) — el VIDEO de mecanismo va acá, NO en el ad ni dentro de los 2 videos del bot ──
+MENSAJE 1 (30-60 min sin respuesta — lleva el VIDEO de mecanismo anatómico ~20s):
+¿Te quedó alguna duda? 😊 Muchas quieren ver esto antes de decidir: mira cómo actúa la perla por dentro y todo lo que ayuda a arrastrar 👇
+[VIDEO mecanismo ~20s]
+Cuéntame y te ayudo a dejar tu pedido — recuerda que solo pagas cuando lo recibes en tus manos. 🌿
+
+MENSAJE 2 (8-12 h — última, empujón de oferta + salida):
+Última vez que te escribo para no molestarte 🌿 Si quieres recuperar tu frescura, todavía tienes la oferta de 2 paquetes con envío gratis y pago contra entrega. Escríbeme y te lo dejo listo. Si ya no quieres más mensajes, responde STOP.
+> El video de mecanismo (modelo anatómico "cómo entra el óvulo y arrastra residuos") es POST-CLIC: va solo en el bot/remarketing, nunca en el creativo del anuncio (Meta lo lee = CPM alto + riesgo INVIMA).
+
+── E. FLUJO LUCIDBOT (ver detalle completo en el chat / Parte 3) ──
+Asesora: Valentina · Tienda: Hernatura · País: Colombia (tú, sin voseo) · Transportadoras: Interrapidísimo / Servientrega (ajustar a la tuya).
+Catálogo (4 campos), Mensaje inicial (Elementos 1-12: saludo fijo → VIDEO 1 autoridad = PODCAST (OVULOSPURITY_PROPIO_5_INTEGRAL; alt. corto 9 HN=4_RECURRENTE) / VIDEO 2 UGC persona real = 2X1 HER5 (OVULOSPURITY_PROPIO_3_PICAZON) → INFO 1/2/3 → transición → testimonios 1/2/3 → audio → cierre con ciudad), Interacciones 0-5, Inactividad (2), FAQ venta (10), FAQ postventa (5), Reglas.
+Oferta escalera: 1 paq $69.900 (+envío) · 2 paq $99.900 envío gratis ⭐ · 3 paq $129.900 envío gratis + regalo.
+[El flujo completo verbatim está entregado en el chat, Parte 3 — copiar de ahí campo por campo.]
+
+── MENSAJE PRE-LLENADO (lo que la persona ENVÍA al tocar el anuncio — se configura en el destino WhatsApp del ad) ──
+FASE 1 = UNO SOLO para los 6 anuncios (máx 80 caracteres). Refuerzo estilo Joaquín, SIN "INVIMA" (alerta sanitaria en Colombia = riesgo). El refuerzo lo da "100% naturales".
+MENSAJE ÚNICO (67 car.):
+Quiero recuperar mi frescura con los Óvulos Purity 100% naturales 🌿
+(Variantes por ángulo: recién en escalado/FASE 2, no ahora. No confundir con el Elemento 1 del bot, que es la RESPUESTA del bot.)
+
+── F. CAMPAÑA META (ETAPA-6) + CHECKLIST ANTES DE LANZAR ──
+1 campaña · Objetivo TRÁFICO · Optimizar CONVERSACIONES · Destino WHATSAPP.
+6 conjuntos (ABO), mismo presupuesto en todos (recomendado ~$30.000 COP/conjunto/día; ajustable). 2 anuncios por conjunto (mismo creativo duplicado).
+Segmentación amplia 18-65, Advantage+ OFF. Programar 4 AM del día siguiente (nunca el mismo día).
+[ ] Objetivo = Tráfico (no Interacción) · "Maximizar conversaciones" verificado antes de publicar
+[ ] Desmarcar "compartir presupuesto entre conjuntos"
+[ ] Destino manual → WhatsApp (número conectado a la fanpage Hernatura)
+[ ] Desmarcar "anuncios multianunciante" y "edad desconocida"
+[ ] 6 conjuntos, 2 anuncios c/u (12 anuncios); precio solo en conjuntos 3 y 6
+[ ] Subidos los 5 videos + imagen ángulo 6; infografías cargadas en el bot
+[ ] Bot LucidBot configurado y probado; Video 1 del bot = PODCAST (autoridad), Video 2 = 2X1 HER5 / 3_PICAZON (UGC persona real)
+[ ] Programada 4 AM mañana
+AL DÍA SIGUIENTE: traer métricas por conjunto (CTR, mensajes, conversiones, CPA real) → identificar ángulo ganador → FASE 2. CPA objetivo $25.000 · break even ~$40.000. Decidir por CPA semanal, no de un día.

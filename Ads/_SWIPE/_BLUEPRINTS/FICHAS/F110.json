@@ -1,0 +1,177 @@
+{
+  "ficha_id": "F110",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Topishop/08_28219289081058505.jpg",
+    "anunciante": "Topishop",
+    "ad_archive_id": "28219289081058505",
+    "dias_activo": 1,
+    "replicas": 1,
+    "score": 26,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C9_COMPARACION",
+    "variante_operador": "vs-alternativa"
+  },
+  "dispositivo_dominante": "EL VS CONTRA EL REMEDIO CASERO, NO CONTRA UNA MARCA. El rival de la comparacion es lo que la persona ya hace gratis en su cocina - el vinagre, el ajo, el limon, fotografiados en penumbra - y del otro lado del rayo de luz esta el producto sobre un pedestal. Los tres contras no discuten si el remedio sirve: le cobran la FRICCION de prepararlo, olerlo y cargarlo.",
+  "lectura_estrategica": "Atacar la eficacia del remedio casero desmiente una creencia heredada y activa defensa; atacar su friccion no desmiente nada y deja a la persona eligiendo comodidad, que es una decision sin costo de identidad. Los tres pros son el espejo exacto de los tres contras y en el mismo orden, asi la comparacion se resuelve linea por linea sin que haya que recordar nada. La iluminacion hace la mitad del argumento: penumbra y humo de un lado, halo verde y pedestal del otro. Y el cierre no dice compra, dice elegi.",
+  "fondo": {
+    "tipo": "frame_partido_por_un_rayo_de_luz",
+    "base_izquierda": "penumbra calida con humo sobre madera oscura",
+    "base_derecha": "{{PALETA_OSCURA}} verde profundo con halo luminoso",
+    "separador": "rayo de luz vertical {{PALETA_ACENTO}} con destello",
+    "textura": "humo del lado del rival, particulas de luz del lado del producto"
+  },
+  "paleta": {
+    "derivacion": "semaforo de decision mas el empaque",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} verde (columna del producto, checks, banda de cierre) mas rojo (encabezado y equis de la columna rival) mas negro y cafes (penumbra) mas blanco (titulos)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada de caja alta",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_binario": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "?{{ALTERNATIVA_RIVAL}}",
+      "linea_2": "O {{ALTERNATIVA_PROPIA}}?",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "O en Bold blanco chico sobre banda oscura, y la alternativa propia en Black/900 uppercase {{PALETA_ACENTO}}",
+      "restriccion_palabras_total": "4-6 palabras",
+      "regla_critica": "es una pregunta binaria y la opcion que se vende va en color: la respuesta esta dada por la tipografia antes de leerse"
+    },
+    "header_rival": {
+      "posicion": "superior_izquierda, sobre la columna rival",
+      "contenedor": "banda oscura de borde rojo",
+      "texto": "{{ALTERNATIVA_RIVAL}}",
+      "estilo": "Bold uppercase rojo",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "header_propio": {
+      "posicion": "superior_derecha, sobre la columna propia",
+      "contenedor": "banda {{PALETA_ACENTO}} solida",
+      "texto": "{{ALTERNATIVA_PROPIA}}",
+      "estilo": "Bold uppercase oscuro",
+      "restriccion_palabras": "1-2 palabras"
+    },
+    "bodegon_rival": {
+      "posicion": "izquierda_media",
+      "escala": "40% del ancho",
+      "composicion": "los ingredientes del remedio casero agrupados sobre madera en penumbra, con humo",
+      "contenido": "{{INGREDIENTES_CASEROS}}",
+      "regla_critica": "se fotografian con dignidad pero en penumbra: la pieza no los ridiculiza, los deja en la sombra"
+    },
+    "producto_pedestal": {
+      "posicion": "derecha_media",
+      "escala": "34% del ancho",
+      "composicion": "envase de pie sobre un pedestal de piedra con halo luminoso detras",
+      "fuente": "IMAGEN_1",
+      "regla": "el pedestal y el halo hacen el argumento de estatus sin una palabra"
+    },
+    "vs_central": {
+      "posicion": "centro exacto, sobre el rayo de luz",
+      "texto": "VS",
+      "estilo": "Black/900 blanco con sombra dura, muy grande",
+      "funcion": "marca el eje y obliga a leer la pieza como una eleccion y no como una lista"
+    },
+    "contras_rival": {
+      "posicion": "inferior_izquierda",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "equis roja en circulo mas TITULO Bold uppercase blanco mas explicacion Regular de 2 lineas",
+      "items": "{{FRICCIONES[3]}}",
+      "restriccion_titulo": "1-2 palabras",
+      "restriccion_explicacion": "5-8 palabras",
+      "regla_critica": "los tres contras cobran FRICCION - preparacion, olor, practicidad - y nunca discuten si el remedio funciona"
+    },
+    "pros_propios": {
+      "posicion": "derecha, en columna",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "check {{PALETA_ACENTO}} en circulo mas TITULO Bold uppercase blanco mas explicacion Regular de 2 lineas",
+      "items": "{{COMODIDADES[3]}}",
+      "restriccion_titulo": "1-2 palabras",
+      "restriccion_explicacion": "5-8 palabras",
+      "regla_critica": "cada pro es el espejo exacto del contra que le toca, en el mismo orden: la comparacion se resuelve linea por linea"
+    },
+    "banda_cierre": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} de borde fino con icono de hoja",
+      "linea_1": "{{IMPERATIVO_ELECCION}}",
+      "estilo_l1": "Bold uppercase blanco con la palabra clave en {{PALETA_ACENTO}}",
+      "linea_2": "{{IMPERATIVO_ARRANQUE}}",
+      "estilo_l2": "Bold uppercase blanco chico con la palabra clave en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "6-9 palabras por linea",
+      "regla_critica": "cierra con ELEGI y no con compra: mantiene el marco de decision que abrio el titular"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_binario",
+    "vs_central",
+    "bodegon_rival",
+    "producto_pedestal",
+    "header_rival",
+    "header_propio",
+    "contras_rival",
+    "pros_propios",
+    "banda_cierre"
+  ],
+  "reglas_duras": [
+    "El rival de la comparacion es lo que la persona ya hace gratis, no otra marca",
+    "Los tres contras cobran friccion y nunca discuten la eficacia del rival",
+    "Cada pro es el espejo exacto de su contra, en el mismo orden",
+    "El lado rival va en penumbra con humo y el lado propio con halo y pedestal",
+    "El VS se para en el eje, sobre el rayo de luz",
+    "La opcion que se vende va en color dentro del titular binario",
+    "El cierre es un imperativo de eleccion, no de compra"
+  ],
+  "variables_requeridas": [
+    "ALTERNATIVA_RIVAL",
+    "ALTERNATIVA_PROPIA",
+    "INGREDIENTES_CASEROS",
+    "FRICCIONES[3]",
+    "COMODIDADES[3]",
+    "IMPERATIVO_ELECCION",
+    "IMPERATIVO_ARRANQUE",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "categorias donde existe un remedio casero popular y arraigado",
+    "cuando el diferencial real del producto es la comodidad y no la potencia",
+    "publico que ya intento resolverlo por su cuenta y sigue con el problema",
+    "MOFU sobre publico de nivel 3 que esta comparando caminos"
+  ],
+  "cuando_no_usar": [
+    "cuando no existe una alternativa casera reconocible",
+    "cuando el diferencial es la potencia: la pieza no argumenta eficacia",
+    "cierre por precio: no lleva numero ni escalera"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular ?REMEDIOS CASEROS O TRATAMIENTO ESPECIFICO?",
+    "Headers de columna REMEDIOS CASEROS (rojo) y TRATAMIENTO (verde).",
+    "Bodegon rival: vinagre etiquetado, ajos, limones, bicarbonato y aceite sobre madera en penumbra.",
+    "Contras: PREPARACION (Requieren tiempo e ingredientes) / OLORES FUERTES (Aromas intensos y desagradables) / POCO PRACTICOS (Recetas caseras que no siempre son faciles).",
+    "Pros: APLICACION SENCILLA (Facil de usar, sin complicaciones) / RUTINA DIARIA (Se adapta a tu dia a dia) / PRACTICO (Llevalo contigo y usalo donde quieras).",
+    "Marca 7DAYS NAIL FUNGUS TREATMENT - FORMULA AVANZADA PARA EL CUIDADO DE TUS UNAS.",
+    "Cierre ELIGE LO QUE REALMENTE FUNCIONA PARA TI. / EMPIEZA HOY UNA RUTINA EFECTIVA PARA EL CUIDADO DE TUS UNAS."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

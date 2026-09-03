@@ -1,0 +1,185 @@
+{
+  "ficha_id": "F098",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/07_1363397375988432.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1363397375988432",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "14%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL EJE DEL ANTES-DESPUES NO ES UN PLAZO, ES UNA SOLA TOMA. El panel de comparacion lleva ANTES en la izquierda y, donde normalmente iria una fecha o una cantidad de dias, lleva la unidad de dosis: UNA TOMA. El titular lo repite en manuscrita roja, de modo que el compromiso que se le pide al comprador no es de semanas sino del primer trago.",
+  "lectura_estrategica": "Baja el costo psicologico de probar al minimo posible. Todo antes-despues pide fe en un plazo; este pide fe en un solo acto, que es lo unico que la persona controla hoy. El titular esta construido como un tramo - de un estado a otro - con el estado bueno en banda invertida, asi el ojo ve el salto antes de leer las palabras. El badge multiplicador cuantifica la promesa con un asterisco. Y los cuatro beneficios usan formato de dos tiempos - MECANISMO en versal y explicacion en redonda - que deja escanear solo los titulos.",
+  "fondo": {
+    "tipo": "color_plano_crema_con_superficie_de_madera",
+    "base": "crema o beige claro plano en las tres cuartas partes superiores",
+    "base_inferior": "tablon de madera clara donde apoya el producto",
+    "textura": "ninguna sobre el crema; la veta real en la madera"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde bosque (titular, bandas, cards, iconos) mas crema (fondo) mas {{PALETA_ACENTO}} amarillo (badge, flores, banda de pie) mas rojo oscuro de la manuscrita"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una manuscrita de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Manuscrita"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_tramo": {
+      "posicion": "superior_izquierda, ancho parcial",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "DE {{ESTADO_MALO}}",
+      "linea_2": "A {{ESTADO_BUENO}}",
+      "estilo_l1": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase blanco sobre banda {{PALETA_OSCURA}} solida",
+      "restriccion_palabras_total": "6-8 palabras",
+      "formato_obligatorio": "DE mas estado malo, A mas estado bueno",
+      "regla_critica": "el estado bueno va en banda invertida: el ojo ve el salto de color antes de leer las palabras"
+    },
+    "manuscrita_plazo": {
+      "posicion": "bajo el titular, alineada a la izquierda",
+      "texto": "!En solo {{UNIDAD_DE_DOSIS}}!",
+      "estilo": "manuscrita rojo oscuro grande, con signos de exclamacion",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_critica": "declara el compromiso en unidades de DOSIS y no de tiempo: es lo mas barato que se le puede pedir a alguien"
+    },
+    "linea_marca_extracto": {
+      "posicion": "bajo la manuscrita",
+      "texto": "{{MARCA}} {{DESCRIPTOR_EXTRACTO}}",
+      "estilo": "Regular uppercase {{PALETA_OSCURA}} muy chico con tracking abierto",
+      "restriccion_palabras": "5-7 palabras",
+      "funcion": "firma de laboratorio en letra chica: da procedencia sin robar jerarquia"
+    },
+    "badge_multiplicador": {
+      "posicion": "superior_derecha",
+      "contenedor": "card {{PALETA_OSCURA}} de borde {{PALETA_ACENTO}} con dos bandas apiladas debajo",
+      "linea_1": "{{MULTIPLICADOR}}X",
+      "estilo_l1": "Black/900 {{PALETA_ACENTO}} muy grande",
+      "linea_2": "{{PROMESA_CUANTIFICADA}}*",
+      "estilo_l2": "Bold uppercase blanco",
+      "banda_1": "{{PALABRA_BIENESTAR}}",
+      "estilo_banda_1": "Black/900 uppercase {{PALETA_OSCURA}} sobre {{PALETA_ACENTO}}",
+      "banda_2": "{{FRASE_CONTEXTO}}",
+      "estilo_banda_2": "Bold uppercase blanco sobre {{PALETA_OSCURA}}",
+      "restriccion_palabras": "2-4 palabras por linea",
+      "regla": "el multiplicador lleva asterisco y la promesa se enuncia en una sola palabra de bienestar"
+    },
+    "panel_antes_toma": {
+      "posicion": "izquierda_media",
+      "contenedor": "dos marcos blancos redondeados lado a lado con flecha circular {{PALETA_ACENTO_VERDE}} entre ellos",
+      "label_izquierdo": "{{LABEL_ANTES}}",
+      "label_derecho": "{{UNIDAD_DE_DOSIS}}",
+      "estilo_labels": "pildora {{PALETA_OSCURA}} con Bold uppercase blanco",
+      "contenido_izquierdo": "{{ORGANO_ENFERMO}} renderizado oscuro",
+      "contenido_derecho": "{{ORGANO_SANO}} renderizado rosado",
+      "escala": "35% del ancho",
+      "regla_critica": "el label derecho es la unidad de DOSIS, no un plazo: ahi vive todo el dispositivo"
+    },
+    "columna_mecanismos": {
+      "posicion": "inferior_izquierda",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_OSCURA}} en circulo mas TITULO Bold uppercase con dos puntos, mas explicacion Regular en la linea de abajo",
+      "items": "{{MECANISMOS[4]}}",
+      "restriccion_titulo": "2-3 palabras",
+      "restriccion_explicacion": "5-7 palabras",
+      "regla": "el titulo nombra la FUNCION y la explicacion la desarrolla: se puede escanear leyendo solo los titulos",
+      "regla_item_4": "el ultimo es de origen o pureza de la formula, no de efecto"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto medio-bajo",
+      "escala": "34% del ancho",
+      "composicion": "frasco gotero de pie junto a su caja, ambos sobre madera, con las flores del ingrediente y hojas al pie y gotas de aceite",
+      "fuente": "IMAGEN_1",
+      "regla": "el envase aparece CON su caja: en formulas liquidas la caja es lo que da estatus de producto formal"
+    },
+    "banda_pie": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "texto": "{{CIERRE_HABITO}}",
+      "estilo": "Black/900 uppercase {{PALETA_ACENTO}} flanqueado por dos corazones",
+      "restriccion_palabras": "4-6 palabras",
+      "formato_obligatorio": "verbo de cuidado mas la zona mas todos los dias"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_tramo",
+    "manuscrita_plazo",
+    "badge_multiplicador",
+    "panel_antes_toma",
+    "producto_hero",
+    "columna_mecanismos",
+    "linea_marca_extracto",
+    "banda_pie"
+  ],
+  "reglas_duras": [
+    "El label del despues es una unidad de dosis, no un plazo",
+    "La manuscrita repite ese compromiso en rojo y con exclamaciones",
+    "El estado bueno del titular va en banda invertida",
+    "El multiplicador lleva asterisco",
+    "Cada mecanismo se escribe como TITULO en versal, dos puntos, y explicacion en redonda",
+    "El envase aparece junto a su caja, sobre madera y con el ingrediente botanico al pie",
+    "El cierre del pie es un habito diario, no una compra"
+  ],
+  "variables_requeridas": [
+    "ESTADO_MALO",
+    "ESTADO_BUENO",
+    "UNIDAD_DE_DOSIS",
+    "MARCA",
+    "DESCRIPTOR_EXTRACTO",
+    "MULTIPLICADOR",
+    "PROMESA_CUANTIFICADA",
+    "PALABRA_BIENESTAR",
+    "FRASE_CONTEXTO",
+    "LABEL_ANTES",
+    "ORGANO_ENFERMO",
+    "ORGANO_SANO",
+    "MECANISMOS[4]",
+    "CIERRE_HABITO",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "productos de efecto percibible desde la primera toma",
+    "formulas liquidas o de accion rapida, donde el plazo largo debilita en vez de fortalecer",
+    "cuando existe un multiplicador o una cifra de alivio que se pueda declarar",
+    "MOFU sobre publico que reconoce el sintoma y no quiere comprometerse a semanas"
+  ],
+  "cuando_no_usar": [
+    "productos de resultado acumulativo, donde prometer una sola toma contradice el uso",
+    "cuando no hay contraste visual entre los dos estados del organo",
+    "cierre por precio: la pieza no tiene zona de numero"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular DE UN PECHO CARGADO / A UN RESPIRO LIBRE / !En solo 1 Toma!.",
+    "Firma ACENTIA LABS EXTRACTO PURO DE GORDOLOBO.",
+    "Badge 10X MAS ALIVIO PULMONAR* / BIENESTAR / NATURAL DESDE CASA.",
+    "Panel con labels ANTES y 1 TOMA.",
+    "Mecanismos: DESPEJE NATURAL: Ayuda a limpiar las vias respiratorias / ALIVIO DE GARGANTA: Contribuye a suavizar frente a la tos / EFECTO EXPULSOR: Promueve la eliminacion de la flema / ORIGEN BOTANICO: Extracto liquido puro sin quimicos.",
+    "Marca acentialabs - MULLEIN LEAF EXTRACT, For Stronger Lunge, Lung Aid and Purifier, 1 MONTH SUPPLY, 60 ml / 2.0 fl.oz.",
+    "Banda de pie CUIDA TU RESPIRACION, TODOS LOS DIAS entre corazones."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

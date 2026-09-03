@@ -1,0 +1,162 @@
+{
+  "ficha_id": "F040",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/17_1043923548227651.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1043923548227651",
+    "dias_activo": 3,
+    "replicas": 2,
+    "score": 53,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": "progresion"
+  },
+  "dispositivo_dominante": "EL MISMO TIMELINE DE EVIDENCIA QUE F039, PERO CON HOOK DE PROMESA Y LABELS DE PLAZO REAL. Cambian dos cosas y cambia la pieza entera: el titular deja de preguntar por la senal y pasa a prometer el estado (MENOS espuma, MAS tranquilidad), y los labels del timeline dejan de ser momentos de uso para volverse plazos concretos (24 horas, 3 semanas).",
+  "lectura_estrategica": "El par de F039 y la comparacion entre las dos es la leccion mas util de la tanda. F039 es TOFU: pregunta, alerta, y no promete nada. F040 es MOFU: ya asume que la persona conoce la senal y le vende el estado del otro lado, con plazos que le dan expectativa concreta. Sube la conversion y sube el riesgo, en la misma proporcion. El titular construye la promesa con una formula de dos mitades — MENOS del problema, MAS del estado — donde la segunda mitad es emocional y no fisica. Ademas suma logo de marca y garantia de devolucion, que F039 no tiene.",
+  "fondo": {
+    "tipo": "degradado_oscuro",
+    "base": "{{PALETA_OSCURA}} profundo a casi negro",
+    "elemento": "resplandor calido detras del producto",
+    "regla_paleta": "cuando el empaque es blanco o neutro, la paleta se deriva del INGREDIENTE ACTIVO"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} granate (fondo) mas {{COLOR_ACENTO}} dorado (sello de garantia) mas blanco (titular) mas {{COLOR_ALERTA}} rojo (segunda mitad del titular, marcos y labels)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "logo_marca": {
+      "posicion": "superior_centro",
+      "contenido": "{{LOGO_MARCA}}",
+      "escala": "12% del ancho",
+      "regla": "el logo arriba y centrado le da a la pieza registro de marca, que F039 no tiene"
+    },
+    "titular_promesa": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "estructura": "{{MENOS_PROBLEMA}}, {{MAS_ESTADO_ACENTO}}",
+      "estilo": "Black/900 uppercase blanco con la segunda mitad en {{COLOR_ALERTA}}",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "MENOS del problema fisico, MAS del estado emocional",
+      "regla_critica": "la segunda mitad es EMOCIONAL y no fisica: tranquilidad, no funcion renal. Es lo que hace que la promesa sea deseable sin ser un claim medico"
+    },
+    "timeline_evidencia": {
+      "posicion": "superior_media, ancho completo",
+      "cantidad_estados": 3,
+      "orientacion": "tres fotos en fila con marco {{COLOR_ALERTA}} fino",
+      "formato_estado": "foto real de la senal en ese momento, con LABEL en pildora sobre el borde superior",
+      "estados": "{{TIMELINE_EVIDENCIA[3]}}",
+      "estructura_estado": {
+        "foto": "{{FOTO_SENAL}}",
+        "label": "{{LABEL_PLAZO}}"
+      },
+      "restriccion_label": "2-3 palabras",
+      "regla_labels": "en esta variante los labels son PLAZOS CONCRETOS (24 horas, 3 semanas): dan expectativa clara y suben la conversion, a costa de convertirse en promesa de plazo",
+      "diferencia_con_F039": "F039 usa momentos de uso y no promete; F040 usa plazos y si promete. Se elige segun cuanto respalde el producto"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "38% del frame",
+      "composicion": "envase o bolsa de pie de frente, con las perlas sueltas al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-6 palabras",
+      "regla": "beneficios de organo y funcion"
+    },
+    "columna_pureza": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo mas texto Bold uppercase de 2 lineas",
+      "items": "{{ATRIBUTOS_PUREZA[3]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "atributos de lo que el producto NO lleva"
+    },
+    "sello_garantia": {
+      "posicion": "inferior_derecha",
+      "forma": "circular con borde {{COLOR_ACENTO}} doble",
+      "linea_1": "{{CLAIM_DEVOLUCION}}",
+      "linea_2": "{{DIAS_GARANTIA}}",
+      "linea_3": "DIAS",
+      "escala": "16% del ancho",
+      "regla": "siempre en dorado, nunca en el color de la paleta (convencion del operador)",
+      "funcion": "compensa el riesgo de la promesa de plazo: si prometes un plazo, das garantia"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_promesa",
+    "timeline_evidencia",
+    "producto_hero",
+    "logo_marca",
+    "columna_beneficios",
+    "columna_pureza",
+    "sello_garantia"
+  ],
+  "reglas_duras": [
+    "El titular usa la formula MENOS del problema, MAS del estado, y la segunda mitad es emocional",
+    "Los labels del timeline son plazos concretos",
+    "Si la pieza promete un plazo, lleva sello de garantia de devolucion",
+    "La garantia va en dorado, nunca en el color de la paleta",
+    "La columna izquierda es de organo y la derecha de lo que el producto no lleva",
+    "La paleta se deriva del ingrediente activo cuando el empaque es neutro"
+  ],
+  "variables_requeridas": [
+    "LOGO_MARCA",
+    "MENOS_PROBLEMA",
+    "MAS_ESTADO_ACENTO",
+    "TIMELINE_EVIDENCIA[3]",
+    "BENEFICIOS[3]",
+    "ATRIBUTOS_PUREZA[3]",
+    "CLAIM_DEVOLUCION",
+    "DIAS_GARANTIA",
+    "COLOR_ACENTO",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "cuando el producto respalda plazos concretos y hay politica de devolucion real",
+    "MOFU: publico que ya conoce la senal y busca la solucion",
+    "cuando F039 ya corrio como TOFU y toca la pieza de conversion",
+    "marcas con identidad propia que aguantan llevar logo"
+  ],
+  "cuando_no_usar": [
+    "cuando el producto no puede sostener el plazo prometido: usar F039",
+    "cuando no hay garantia de devolucion que respalde la promesa",
+    "publico frio que todavia no noto la senal"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular 100% DEVOLUCION GARANTIZADA 60 DIAS en dorado.",
+    "Atributos de pureza: NO TRANSGENICO (NON-GMO), LIBRE DE GLUTEN, SIN ADITIVOS ARTIFICIALES.",
+    "Labels del timeline por plazo: ANTES / 24 HORAS DESPUES / 3 SEMANAS.",
+    "Beneficios: APOYO A TUS FILTROS RENALES, BIENESTAR URINARIO DIARIO, DEFENSA ANTIOXIDANTE DE ALTA POTENCIA.",
+    "Titular MENOS ESPUMA, MAS TRANQUILIDAD con la segunda mitad en color de alerta.",
+    "Logo de marca arriba y centrado."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": "D_transformacion_temporal"
+}

@@ -1,0 +1,161 @@
+{
+  "ficha_id": "F102",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/09_1025480160114953.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1025480160114953",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C9_COMPARACION",
+    "variante_operador": "yo-sin-yo-con"
+  },
+  "dispositivo_dominante": "LAS DOS COLUMNAS DE YO, DIBUJADAS A MANO, CON EL PRODUCTO COMO UNICA FOTO EN EL EJE. Izquierda YO SIN con carita triste roja, derecha YO CON con carita feliz verde, y entre las dos el envase recortado - lo unico fotografico de la pieza. Las tres filas van en doodle de cuaderno y cada una suma un callout manuscrito con linea que apunta al dibujo.",
+  "lectura_estrategica": "No compara el producto contra un competidor: compara a la persona contra si misma, que es la unica comparacion que no despierta defensa. Cada fila trabaja en dos niveles - el titulo dice el hecho fisico y el callout manuscrito dice la CONSECUENCIA SOCIAL, que es donde de verdad duele y donde de verdad se vende. Y la estetica de cuaderno hace que se lea como algo que la persona anoto y no como un cartel; al ser el envase la unica foto, queda como lo unico real en medio de un dibujo.",
+  "fondo": {
+    "tipo": "color_plano_blanco",
+    "base": "blanco puro, plano",
+    "regla": "sin marcos, sin sombras y sin separador: las dos columnas se distinguen solo por el color de su encabezado",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "semaforo de estado, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "blanco (fondo) mas negro (dibujos y titulos) mas rojo (columna SIN y su carita) mas {{PALETA_ACENTO}} verde azulado (columna CON, check y destellos)"
+  },
+  "sistema_tipografico": {
+    "familia": "manuscrita redondeada de trazo grueso",
+    "pesos_permitidos": [
+      "Bold manuscrito",
+      "Regular manuscrito"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "negro"
+  },
+  "zonas": {
+    "encabezado_sin": {
+      "posicion": "superior_izquierda",
+      "alineacion": "izquierda",
+      "texto": "Yo {{NEGACION}} :(",
+      "estilo": "manuscrita grande, YO en negro y la negacion en rojo, con carita triste roja",
+      "restriccion_palabras": "2 palabras",
+      "regla": "arranca con YO: la comparacion es contra uno mismo y no contra una marca"
+    },
+    "encabezado_con": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "texto": "Yo {{AFIRMACION}} :)",
+      "estilo": "manuscrita grande, YO en negro y la afirmacion en {{PALETA_ACENTO}}, con carita feliz",
+      "restriccion_palabras": "2 palabras"
+    },
+    "filas_comparadas": {
+      "posicion": "centro, dos columnas de tres filas",
+      "cantidad_items": 3,
+      "orientacion": "tres filas espejadas, cada lado con titulo, dibujo y callout",
+      "formato_lado": "titulo manuscrito de 2 lineas arriba, dibujo line-art debajo, y callout manuscrito chico unido al dibujo por una linea corta",
+      "fila_1": {
+        "sin": "{{PROBLEMA_1}}",
+        "callout_sin": "{{VERGUENZA_1}}",
+        "con": "{{LOGRO_1}}",
+        "callout_con": "{{LIBERTAD_1}}"
+      },
+      "fila_2": {
+        "sin": "{{PROBLEMA_2}}",
+        "callout_sin": "{{VERGUENZA_2}}",
+        "con": "{{LOGRO_2}}",
+        "callout_con": "{{LIBERTAD_2}}"
+      },
+      "fila_3": {
+        "sin": "{{PROBLEMA_3}}",
+        "callout_sin": "{{VERGUENZA_3}}",
+        "con": "{{LOGRO_3}}",
+        "callout_con": "{{LIBERTAD_3}}"
+      },
+      "restriccion_titulo": "3-6 palabras",
+      "restriccion_callout": "3-4 palabras",
+      "regla_critica": "el titulo dice el hecho fisico y el callout dice la consecuencia SOCIAL: no salgo por esto, vuelvo a salir",
+      "regla_dibujos": "el dibujo de cada lado muestra el MISMO objeto en los dos estados - el mismo muslo, el mismo pie, el mismo pantalon",
+      "regla_plazo": "el unico plazo de la pieza va metido en el titulo de un solo logro, no en un bloque aparte"
+    },
+    "producto_eje": {
+      "posicion": "centro exacto, sobre la fila del medio",
+      "escala": "22% del ancho",
+      "composicion": "envase recortado, de pie, frontal",
+      "fuente": "IMAGEN_1",
+      "regla_critica": "es la UNICA foto de la pieza: rodeado de dibujo, se lee como lo unico real"
+    },
+    "pie_marca": {
+      "posicion": "inferior, centrado",
+      "texto": "{{MARCA}} - {{DESCRIPTOR}}",
+      "estilo": "manuscrita Bold negro chico",
+      "restriccion_palabras": "3-5 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "encabezado_sin",
+    "encabezado_con",
+    "filas_comparadas",
+    "producto_eje",
+    "pie_marca"
+  ],
+  "reglas_duras": [
+    "Los dos encabezados arrancan con YO: la comparacion es contra uno mismo",
+    "Cada fila muestra el mismo objeto dibujado en sus dos estados",
+    "El titulo dice el hecho fisico y el callout manuscrito dice la consecuencia social",
+    "Los callouts se unen al dibujo con una linea corta",
+    "El envase es la unica foto de la pieza y se para en el eje",
+    "Todo el resto va en dibujo de cuaderno, negro sobre blanco",
+    "El unico plazo viaja dentro del titulo de un logro"
+  ],
+  "variables_requeridas": [
+    "NEGACION",
+    "AFIRMACION",
+    "PROBLEMA_1",
+    "PROBLEMA_2",
+    "PROBLEMA_3",
+    "VERGUENZA_1",
+    "VERGUENZA_2",
+    "VERGUENZA_3",
+    "LOGRO_1",
+    "LOGRO_2",
+    "LOGRO_3",
+    "LIBERTAD_1",
+    "LIBERTAD_2",
+    "LIBERTAD_3",
+    "MARCA",
+    "DESCRIPTOR",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "problemas con consecuencia social clara: ropa, playa, salir, mostrarse",
+    "cuando el avatar puede nombrar tres situaciones concretas que evita",
+    "para bajar el registro de anuncio a apunte personal",
+    "MOFU sobre publico que reconoce el problema y todavia no lo nombra en voz alta"
+  ],
+  "cuando_no_usar": [
+    "problemas sin consecuencia social, donde el callout se queda vacio",
+    "cierre por precio u oferta: la pieza no tiene donde poner el numero",
+    "cuando el producto necesita mostrarse en detalle: aca vive chico y en el eje"
+  ],
+  "sellos_y_claims_observados": [
+    "Encabezados Yo SIN :( y Yo CON :).",
+    "Fila 1 Celulitis en los muslos / Me da verguenza el bikini - Piel lisa en 21 dias / Me siento libre.",
+    "Fila 2 Tobillos hinchados al final del dia / Dolor constante - Tobillos definidos / Sin dolor.",
+    "Fila 3 Pantalones que no cierran / No salgo por esto - Ropa que vuelve a quedar bien / Vuelvo a salir.",
+    "Marca LINFOVIT(R) Drenaje Linfatico - APOYO LINFATICO TRADICIONAL, 60 capsulas vegetales.",
+    "Pie LINFOVIT - Drenaje en capsulas."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

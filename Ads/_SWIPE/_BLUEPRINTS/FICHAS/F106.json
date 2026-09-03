@@ -1,0 +1,194 @@
+{
+  "ficha_id": "F106",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aurora_GT/13_1612842337033892.jpg",
+    "anunciante": "Aurora GT",
+    "ad_archive_id": "1612842337033892",
+    "dias_activo": 4,
+    "replicas": 1,
+    "score": 29,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA MISMA PLANTILLA VERTICAL CON EL COLOR MOVIDO DE MITAD Y EL VERBO SUAVIZADO. Es la gemela de F105: en aquella el titular va entero en oscuro y abre con MOLDEA; aca la primera mitad se pinta en el color de acento y el verbo pasa a REALZA, mas hedged. La bajada tambien se ablanda - de apoya a ideal para apoyar - y el vestuario vuelve al deportivo.",
+  "lectura_estrategica": "Es una prueba de INTENSIDAD DE PROMESA con el layout congelado. Las dos variantes dicen lo mismo, pero una manda y la otra sugiere: moldear afirma que el producto hace algo sobre el cuerpo, realzar afirma que acompana algo que ya esta. El cambio de color de mitad del titular es lo que traduce eso a lo visual - en la gemela la palabra grande carga el peso, aca lo carga el verbo, y el ojo se detiene en un lugar distinto. Correr las dos permite saber si este publico responde al mandato o a la sugerencia.",
+  "fondo": {
+    "tipo": "escena_interior_clara_desenfocada",
+    "base": "interior luminoso con planta y pared clara, muy desenfocado",
+    "capa": "blanco roto plano hacia la derecha para sostener el texto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} magenta (primera mitad del titular, brochazo, banda de oferta, iconos, CTA) mas {{PALETA_OSCURA}} negro (palabra grande del titular) mas blanco (fondo) mas los tonos de piel y ropa"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una manuscrita de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "Manuscrita"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "firma_manuscrita": {
+      "posicion": "superior_izquierda, SOBRE la foto de la modelo",
+      "texto": "{{FRASE_MANUSCRITA}}",
+      "estilo": "manuscrita {{PALETA_OSCURA}} con corazon {{PALETA_ACENTO}}",
+      "lineas": 3,
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "verbo de complemento mas la rutina mas el objeto del deseo",
+      "regla": "en esta variante la manuscrita habla de COMPLEMENTAR una rutina, no de potenciar sin mas"
+    },
+    "titular_sugerencia": {
+      "posicion": "superior_derecha",
+      "alineacion": "izquierda",
+      "lineas": 2,
+      "linea_1": "{{VERBO_SUAVE}} TUS",
+      "linea_2": "{{OBJETO_DEL_DESEO}}",
+      "estilo_l1": "Bold uppercase {{PALETA_ACENTO}}",
+      "estilo_l2": "Black/900 uppercase {{PALETA_OSCURA}} al doble de altura",
+      "restriccion_palabras_total": "3 palabras",
+      "regla_critica": "el color se corre a la PRIMERA mitad: el ojo se detiene en el verbo y no en el sustantivo, que es lo que baja la intensidad de la promesa"
+    },
+    "brochazo_metodo": {
+      "posicion": "bajo el titular",
+      "contenedor": "brochazo irregular {{PALETA_ACENTO}} pintado a mano",
+      "texto": "{{METODO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "banda_oferta": {
+      "posicion": "bajo el brochazo, ancho de la columna",
+      "contenedor": "banda {{PALETA_ACENTO}} solida",
+      "texto": "{{OFERTA_MECANICA}} {{PAIS}} · {{CONDICION_PAGO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "5-6 palabras",
+      "regla_critica": "identica a la de la variante gemela: la oferta no es la variable que se esta probando"
+    },
+    "bajada_hedged": {
+      "posicion": "bajo la banda",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "texto": "Ideal para {{VERBO_APOYO}} {{ZONA_1}}, {{ZONA_2}} y {{ZONA_3}} con constancia",
+      "estilo": "Regular {{PALETA_OSCURA}} chico",
+      "restriccion_palabras": "9-11 palabras",
+      "regla": "abre con ideal para en vez del verbo directo: es la misma frase de la gemela, un grado mas suave"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo de borde grueso mas texto de 2 lineas con la PALABRA CLAVE en {{PALETA_ACENTO}}",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_critica": "identicos a los de la variante gemela, palabra por palabra"
+    },
+    "modelo_deseo": {
+      "posicion": "izquierda, sangrada de arriba abajo",
+      "escala": "45% del ancho",
+      "composicion": "{{MODELO}} de espaldas tres cuartos con la zona objetivo hacia camara, sosteniendo el envase a la altura del pecho y mirando a camara",
+      "vestuario": "conjunto deportivo de dos piezas en tonos neutros"
+    },
+    "fila_sellos": {
+      "posicion": "centro_bajo, ancho de la columna",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal de circulos con borde {{PALETA_ACENTO}}",
+      "formato_item": "icono line-art en circulo mas label Bold uppercase de 2 lineas muy chico",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "barra_social": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "pildora blanca precedida por tres avatares circulares superpuestos",
+      "texto": "+{{N_CLIENTES}} {{SUSTANTIVO_CLIENTES}} {{CALIFICATIVO}} EN {{PAIS}}",
+      "estilo": "Bold uppercase con el numero en {{PALETA_ACENTO}}, muy chico, con corazon"
+    },
+    "cta_boton": {
+      "posicion": "inferior_derecha, ancho de la columna",
+      "contenedor": "boton redondeado {{PALETA_ACENTO}} solido con flecha a la derecha",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "modelo_deseo",
+    "titular_sugerencia",
+    "brochazo_metodo",
+    "banda_oferta",
+    "columna_beneficios",
+    "cta_boton",
+    "fila_sellos",
+    "barra_social",
+    "bajada_hedged",
+    "firma_manuscrita"
+  ],
+  "reglas_duras": [
+    "Layout, banda de oferta, beneficios, sellos, prueba social y CTA se mantienen identicos a la variante gemela",
+    "La variable declarada es la intensidad del verbo y en que mitad del titular vive el color",
+    "El color de acento se corre a la primera mitad del titular",
+    "La bajada abre con ideal para, un grado mas suave que la gemela",
+    "El numero de prueba social es el mismo en toda la familia",
+    "Las dos variantes se lanzan al mismo tiempo y con el mismo presupuesto"
+  ],
+  "variables_requeridas": [
+    "FRASE_MANUSCRITA",
+    "VERBO_SUAVE",
+    "OBJETO_DEL_DESEO",
+    "METODO",
+    "OFERTA_MECANICA",
+    "PAIS",
+    "CONDICION_PAGO",
+    "VERBO_APOYO",
+    "ZONA_1",
+    "ZONA_2",
+    "ZONA_3",
+    "BENEFICIOS[3]",
+    "MODELO",
+    "SELLOS[4]",
+    "N_CLIENTES",
+    "SUSTANTIVO_CLIENTES",
+    "CALIFICATIVO",
+    "CTA"
+  ],
+  "cuando_usar": [
+    "como pareja de una variante de promesa fuerte, para medir mandato contra sugerencia",
+    "paginas o cuentas donde conviene el registro mas suave de la familia",
+    "cuando el layout ya esta validado y solo falta calibrar la intensidad del verbo",
+    "para llenar el segundo anuncio del conjunto sin duplicar el creativo"
+  ],
+  "cuando_no_usar": [
+    "cuando se cambia mas de una variable a la vez",
+    "publico frio de nivel 1",
+    "cuando se lanza sola: su valor esta en correr contra la variante de promesa fuerte"
+  ],
+  "sellos_y_claims_observados": [
+    "Manuscrita Complementa tu rutina y potencia tu figura.",
+    "Titular REALZA TUS CURVAS sobre brochazo DE FORMA NATURAL.",
+    "Banda 2X1 GUATEMALA · PAGA AL RECIBIR.",
+    "Bajada Ideal para apoyar gluteos, caderas y cintura con constancia.",
+    "Beneficios: Apoya gluteos y caderas / Ayuda a definir cintura / Mas confianza y bienestar.",
+    "Sellos 100% NATURAL / A BASE DE PLANTAS / GARANTIA DE CALIDAD / PAGO CONTRA ENTREGA.",
+    "Marca SUPPLEMENT FACTORY - WOMAN CURVES(R).",
+    "Prueba social +4,253 CLIENTAS SATISFECHAS EN GUATEMALA con tres avatares.",
+    "CTA PIDELO HOY con flecha."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,168 @@
+{
+  "id": "C_dolor_maximalista",
+  "version": "1.0",
+  "concepto_key": "C2_BENEFICIOS",
+  "variante": "densa",
+  "referencia_visual": "C2_BENEFICIOS/densa__Aranza-Glow__13_2474355926408939.jpg",
+  "formato": "4:5 (1080x1350)",
+  "densidad": "muy_alta",
+  "espacio_libre_objetivo": "15%",
+  "fondo": {
+    "tipo": "degradado_oscuro_con_glow",
+    "base": "navy muy oscuro a negro",
+    "glow": "#1B4FA8 irradiando desde detras del producto",
+    "funcion": "comunicar ciencia/tecnologia"
+  },
+  "sistema_color": {
+    "regla": "cada color tiene UNA funcion asignada, nunca se mezclan",
+    "rojo": "dolor, sintoma, problema",
+    "color_mecanismo": "mecanismo, accion del producto — valor en #1B4FA8",
+    "dorado_amarillo": "valor, oferta, premium, headers de seccion",
+    "verde": "exclusivamente el CTA de WhatsApp",
+    "blanco": "texto principal"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "micro_pregunta": {
+      "posicion": "superior_izquierda",
+      "texto": "¿EL ZUMBIDO NO TE DEJA DORMIR NI PENSAR?",
+      "estilo": "Bold uppercase, tamano chico, color de alerta",
+      "restriccion_palabras": "7-9 palabras",
+      "formato_obligatorio": "pregunta"
+    },
+    "foto_dolor": {
+      "posicion": "superior_derecha",
+      "contenido": "hombre latino de 55-60 años apretándose el oído derecho con los ojos cerrados, gesto de fastidio, halo rojo sobre la zona del oído",
+      "tratamiento": "persona real, gesto de dolor visible, zona afectada con overlay rojo/glow",
+      "escala": "22% del frame",
+      "funcion": "ESTE es el elemento que detiene el scroll, no el titular",
+      "regla_problema_invisible": "Si el problema no tiene zona fotografiable, se muestra el GESTO del avatar (tocarse el oido, apretarse la sien) con el glow sobre la zona. Nunca lesion ni antes/despues."
+    },
+    "badge_premium": {
+      "posicion": "superior_derecha_extrema",
+      "contenedor": "card con borde dorado y estrellas",
+      "linea_1": "FÓRMULA PREMIUM",
+      "linea_2": "MÁXIMA ABSORCIÓN"
+    },
+    "titular": {
+      "posicion": "superior_izquierda, bajo la micro-pregunta",
+      "lineas": 3,
+      "linea_1": "¿VIVIR CON EL ZUMBIDO?",
+      "linea_2": "ESO TE DIJERON",
+      "linea_3": "NO ES CIERTO",
+      "estilo": "Black/900 uppercase, blanco, con la LINEA 2 en amarillo",
+      "regla_acento": "el color cae en la promesa emocional, nunca en el organo o el sintoma",
+      "escala": "la linea mas larga ocupa 55% del ancho del frame"
+    },
+    "sub_banda": {
+      "posicion": "debajo del titular",
+      "contenedor": "banda oscura",
+      "texto": "SPRAY ÓTICO NATURAL PARA EL ZUMBIDO Y EL PITIDO",
+      "estilo": "Bold uppercase, tamano medio"
+    },
+    "columna_sellos": {
+      "posicion": "derecha superior, columna estrecha vertical",
+      "cantidad_items": "5-6",
+      "formato_item": "check dorado en circulo + texto bold uppercase chico",
+      "items": "['REGISTRO MSPAS', 'FÓRMULA NATURAL', 'ORIGEN AMERICANO', 'USO DIARIO SEGURO', 'APTO ADULTOS 18+', 'GARANTÍA 90 DÍAS']",
+      "funcion": "NO se leen individualmente, se leen como masa de credibilidad",
+      "restriccion_palabras": "3-4 palabras por item",
+      "regla_dura": "Sellos de la ficha. El regulatorio es REGISTRO MSPAS, con bandera de Guatemala."
+    },
+    "header_identificacion": {
+      "posicion": "izquierda_media",
+      "texto": "¿TE IDENTIFICÁS?",
+      "estilo": "Bold uppercase amarillo, tamano medio",
+      "default": "TE IDENTIFICAS?"
+    },
+    "columna_sintomas": {
+      "posicion": "izquierda_media, bajo el header",
+      "cantidad_items": 5,
+      "formato_item": "mini-foto cuadrada del sintoma + card oscura con borde rojo con TITULO BOLD UPPERCASE + subtitulo regular",
+      "items": "[{'titulo':'PITIDO QUE NO PARA','sub':'de día y de noche'},{'titulo':'ZUMBIDO EN EL SILENCIO','sub':'peor al acostarte'},{'titulo':'PERDÉS LA CONVERSACIÓN','sub':'pedís que repitan'},{'titulo':'PRESIÓN EN EL OÍDO','sub':'como tapado'},{'titulo':'NO TE CONCENTRÁS','sub':'cansancio constante'}]",
+      "restriccion_titulo": "3-4 palabras",
+      "restriccion_subtitulo": "2-4 palabras",
+      "funcion": "la persona debe reconocerse en al menos 3 de los 5",
+      "regla": "sintomas ESPECIFICOS y sensoriales, nunca genericos"
+    },
+    "header_mecanismo": {
+      "posicion": "centro_medio",
+      "texto": "ACTÚA DESDE LA RAÍZ",
+      "estilo": "Bold uppercase amarillo",
+      "default": "ACTUA DESDE LA RAIZ"
+    },
+    "columna_mecanismo": {
+      "posicion": "centro_medio, bajo el header",
+      "cantidad_items": 3,
+      "formato_item": "icono circular relleno con glow #1B4FA8 + TITULO BOLD + explicacion regular 2 lineas",
+      "items": "[{'titulo':'ABRE LA CIRCULACIÓN','exp':'Ginkgo Biloba lleva sangre al oído interno'},{'titulo':'BAJA LA TENSIÓN NERVIOSA','exp':'Ginseng reduce el cortisol que lo dispara'},{'titulo':'DESINFLAMA EL CANAL','exp':'Regaliz alivia la irritación del conducto'}]",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_explicacion": "6-9 palabras",
+      "funcion": "responde el 'por que funcionaria?' que aparece tras la identificacion"
+    },
+    "producto_hero": {
+      "posicion": "centro_derecha",
+      "escala": "35% del frame",
+      "efecto": "glow #1B4FA8 detras",
+      "fuente": "IMAGEN_2",
+      "elementos_flanqueantes": {
+        "derecha_superior": "Con GINKGO BILOBA + GINSENG",
+        "derecha_inferior": "+ Regaliz y Menta · 60 ml"
+      }
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "label": "OFERTA ESPECIAL",
+      "tiers": 2,
+      "tier_1": "1 TRATAMIENTO - Q178",
+      "badge_central": "ENVÍO GRATIS con icono de camion, entre los dos niveles",
+      "estilo_precio": "Black/900, gigante, en card de color",
+      "funcion": "el tier 2 debe verse como la decision obvia, igual que en la referencia",
+      "tier_2": "2 TRATAMIENTOS - Q239 + AHORRÁS Q117"
+    },
+    "cta_whatsapp": {
+      "posicion": "inferior, ancho parcial izquierdo",
+      "contenedor": "barra verde WhatsApp",
+      "icono": "logo WhatsApp circular blanco",
+      "linea_1": "ESCRIBINOS POR WHATSAPP",
+      "linea_2": "Y LO RECIBÍS EN TU CASA",
+      "regla": "verde exclusivo de esta zona, no aparece en ningun otro lado"
+    },
+    "micro_garantias": {
+      "posicion": "inferior_derecha",
+      "cantidad_items": 3,
+      "formato_item": "icono + texto bold muy chico",
+      "items": "['COMPRA 100% SEGURA', 'PAGO CONTRA ENTREGA', 'DEVOLUCIÓN GARANTIZADA']"
+    }
+  },
+  "reglas_duras": [
+    "La densidad alta viene de bloques COMPACTOS bien separados, nunca de texto amontonado",
+    "Ningun bloque de texto se superpone con otro",
+    "El rojo se usa SOLO para dolor/sintoma",
+    "El verde se usa SOLO para el CTA de WhatsApp",
+    "Los sintomas deben ser sensoriales y especificos (ardor, hormigueo, punzadas), nunca genericos (malestar, incomodidad)",
+    "La foto de dolor va arriba: es el gancho de scroll",
+    "El acento de color del titular cae en la promesa, no en el organo",
+    "Sello regulatorio: MSPAS (Guatemala). El unico sello regulatorio es REGISTRO MSPAS, con bandera de Guatemala."
+  ],
+  "_producto": "Tinnidrop 60 ml - South Moon",
+  "_test": "T01 brazo C - angulo ME_DIJERON_NO_CURA (FIJO)",
+  "_override_T01": {
+    "formato": "4:5 en vez del 1:1 nativo"
+  },
+  "_reglas_globales": {
+    "unidad": "La unidad del producto se llama TRATAMIENTO. Aparece unicamente donde el layout nombra una unidad; donde el layout no la nombra, va solo el numero.",
+    "garantia": "Donde aparezca la garantia va en DORADO #D4A017, resaltada.",
+    "precio": "Arquitectura de precio segun la referencia de este brazo.",
+    "banderas": "La pieza no lleva banderas."
+  },
+  "_nota_lectura_test": "El bloque de precio sigue la arquitectura NATIVA de cada referencia (decision del operador 19-ago). Cada brazo mezcla dispositivo visual + arquitectura de oferta, asi que el ganador no es atribuible al dispositivo puro. Registrarlo al leer T01."
+}

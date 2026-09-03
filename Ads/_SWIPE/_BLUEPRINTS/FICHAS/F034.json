@@ -1,0 +1,180 @@
+{
+  "ficha_id": "F034",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aurora_GT/01_1496472259170835.jpg",
+    "anunciante": "Aurora GT",
+    "ad_archive_id": "1496472259170835",
+    "dias_activo": 7,
+    "replicas": 2,
+    "score": 57,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C7_DESEO",
+    "variante_operador": "deseo"
+  },
+  "dispositivo_dominante": "EL CUERPO DESEADO DE ESPALDAS, CON EL PRODUCTO SOSTENIDO A LA ALTURA DEL HOMBRO. La persona esta de espaldas o de tres cuartos mostrando la zona objetivo, gira la cabeza hacia camara y sostiene el envase junto al rostro. La zona objetivo y el producto quedan en el mismo eje visual, y la nota manuscrita del margen habla en imperativo carinoso.",
+  "lectura_estrategica": "Vende resultado estetico corporal. La pose resuelve un problema de composicion: hay que mostrar la zona objetivo sin que la pieza se lea como contenido sexual, y la solucion es la mirada a camara — al girar la cabeza, la persona deja de ser un cuerpo y pasa a ser alguien que te habla. La promesa de plazo (desde la primera semana) va en banda de color separada del titular, que es la parte mas riesgosa de la pieza. El pie con tres rostros de clientas y una cifra localizada cierra con prueba social de pais.",
+  "fondo": {
+    "tipo": "interior_domestico_claro_desenfocado",
+    "base": "sala o habitacion clara con una planta, muy desenfocada",
+    "regla": "interior domestico y no gimnasio: sugiere que el resultado se consigue en casa"
+  },
+  "paleta": {
+    "derivacion": "del empaque y del genero del avatar",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rosa o fucsia (titular de acento, banda, iconos, CTA) mas blanco (texto y cards) mas negro (titular) mas los neutros del interior"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "la cursiva se usa solo en la nota del margen, como escritura a mano",
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "nota_manuscrita": {
+      "posicion": "superior_izquierda",
+      "texto": "{{NOTA_IMPERATIVA}}",
+      "estilo": "cursiva decorativa oscura, 3 lineas, con un corazon al final",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "imperativo carinoso en segunda persona (entrena, potencia, cuida)",
+      "regla": "va sin contenedor, como escrita sobre la imagen"
+    },
+    "titular": {
+      "posicion": "superior_derecha",
+      "alineacion": "derecha",
+      "lineas": 3,
+      "linea_1": "{{VERBO}}",
+      "linea_2": "{{ZONA_OBJETIVO_ACENTO}}",
+      "linea_3": "{{MODO}}",
+      "estilo_l1_l3": "Black/900 uppercase negro",
+      "estilo_l2": "Black/900 uppercase en {{PALETA_ACENTO}}, al 130% de L1",
+      "restriccion_palabras_total": "3 palabras",
+      "regla_acento": "el color y el tamano caen sobre la ZONA OBJETIVO: es la palabra que la persona busca"
+    },
+    "banda_plazo": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{PALETA_ACENTO}} solida con extremos irregulares",
+      "texto": "{{PROMESA_PLAZO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "el plazo va SEPARADO del titular, en su propia banda: asi se puede cambiar el plazo o el color de la banda sin rehacer el titular"
+    },
+    "subtitular_identidad": {
+      "posicion": "bajo la banda",
+      "texto": "{{FRASE_IDENTIDAD}}",
+      "estilo": "Bold uppercase oscuro chico entre corazones o guiones",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "cierra en como se va a SENTIR, no en como se va a ver"
+    },
+    "avatar_con_producto": {
+      "posicion": "izquierda, ocupa el alto completo",
+      "contenido": "{{FOTO_AVATAR_ZONA_OBJETIVO}}",
+      "escala": "45% del frame",
+      "tratamiento": "persona de espaldas o de tres cuartos mostrando la zona objetivo, GIRANDO LA CABEZA hacia camara y sosteniendo el envase a la altura del hombro",
+      "regla_critica": "la mirada a camara es lo que evita que la pieza se lea como contenido sexual: al girar la cabeza, deja de ser un cuerpo y pasa a ser alguien que te habla",
+      "regla_eje": "la zona objetivo y el producto quedan en el mismo eje visual"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en cuadrado redondeado mas texto Bold de 2 lineas con las palabras clave en {{PALETA_ACENTO}}",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_item_3": "el ultimo es emocional (confianza, bienestar), no fisico"
+    },
+    "fila_sellos": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art en circulo con borde mas texto Regular muy chico de 2 lineas",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "prueba_social": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card oscura translucida con tres fotos de perfil circulares superpuestas a la izquierda",
+      "linea_1": "+{{NUMERO_CLIENTES}} {{ETIQUETA_CLIENTES}}",
+      "linea_2": "{{CLAIM_LOCALIZACION}}",
+      "estilo_l1": "Bold blanco",
+      "regla": "la cifra NO es redonda y va acompanada del pais: la localizacion es lo que la vuelve creible"
+    },
+    "cta_boton": {
+      "posicion": "inferior_derecha",
+      "contenedor": "boton {{PALETA_ACENTO}} redondeado con flecha",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "avatar_con_producto",
+    "banda_plazo",
+    "columna_beneficios",
+    "nota_manuscrita",
+    "cta_boton",
+    "prueba_social",
+    "fila_sellos"
+  ],
+  "reglas_duras": [
+    "La persona gira la cabeza hacia camara: la mirada es lo que evita la lectura sexual",
+    "La zona objetivo y el producto quedan en el mismo eje visual",
+    "El plazo va en su propia banda, separable del titular",
+    "El acento de color y el tamano caen sobre la zona objetivo",
+    "El interior es domestico, no gimnasio",
+    "La cifra de prueba social no es redonda y va acompanada del pais",
+    "La cursiva se usa solo en la nota del margen"
+  ],
+  "variables_requeridas": [
+    "NOTA_IMPERATIVA",
+    "VERBO",
+    "ZONA_OBJETIVO_ACENTO",
+    "MODO",
+    "PROMESA_PLAZO",
+    "FRASE_IDENTIDAD",
+    "FOTO_AVATAR_ZONA_OBJETIVO",
+    "BENEFICIOS[3]",
+    "SELLOS[4]",
+    "NUMERO_CLIENTES",
+    "ETIQUETA_CLIENTES",
+    "CLAIM_LOCALIZACION",
+    "CTA"
+  ],
+  "cuando_usar": [
+    "resultado estetico corporal en una zona concreta",
+    "publico femenino 20-40 orientado a imagen",
+    "cuando existe foto de una persona real que acepta mostrar la zona objetivo",
+    "cuando hay cifra real de clientas del pais"
+  ],
+  "cuando_no_usar": [
+    "publico de salud o dolor: el registro estetico no aplica",
+    "cuando el producto no tiene una zona objetivo concreta que nombrar",
+    "cuando la unica foto disponible no permite la mirada a camara: sin ella la pieza se cae"
+  ],
+  "sellos_y_claims_observados": [
+    "Fila de sellos: SELLO DE SEGURIDAD, GARANTIA DE CALIDAD, 100% NATURAL, A BASE DE PLANTAS.",
+    "Prueba social +4,253 CLIENTAS SATISFECHAS EN GUATEMALA con tres fotos de perfil.",
+    "Banda de plazo DESDE LA PRIMERA SEMANA.",
+    "Beneficios: APOYA GLUTEOS Y CADERAS, AYUDA A DEFINIR TU CINTURA, MAS CONFIANZA Y BIENESTAR.",
+    "Nota manuscrita ENTRENA TU FUERZA, POTENCIA TUS CURVAS y subtitulo SIENTETE FEMENINA Y SEGURA.",
+    "CTA PIDELO HOY con flecha."
+  ],
+  "canonico_id": "CN12_AVATAR_DESEO",
+  "blueprint_equivalente": null
+}

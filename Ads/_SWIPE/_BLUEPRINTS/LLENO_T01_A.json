@@ -1,0 +1,137 @@
+{
+  "id": "A_autoridad_medica",
+  "version": "1.0",
+  "concepto_key": "C2_BENEFICIOS",
+  "variante": "colage-sintomas",
+  "referencia_visual": "C2_BENEFICIOS/colage-sintomas__Camila-Recomienda__12_3103763283146693.jpg",
+  "formato": "4:5 (1080x1350)",
+  "densidad": "media",
+  "espacio_libre_objetivo": "40%",
+  "fondo": {
+    "tipo": "degradado_radial",
+    "centro": "#EAF0FA",
+    "borde": "#7FA3D8",
+    "vineta": "suave",
+    "textura": "ninguna"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior_centro",
+      "alineacion": "centrado",
+      "linea_1": "¿VIVIR CON EL ZUMBIDO?",
+      "linea_2": "ESO TE DIJERON. NO ES CIERTO.",
+      "estilo_l1": "Black/900, negro, tracking apretado",
+      "estilo_l2": "Regular/400, 55% del tamano de L1",
+      "restriccion_palabras_l1": "3-4 palabras",
+      "restriccion_palabras_l2": "5-7 palabras"
+    },
+    "sello_autoridad": {
+      "posicion": "superior_izquierda",
+      "forma": "circular con borde doble",
+      "contenido": "REGISTRO MSPAS",
+      "escala": "8% del ancho del frame",
+      "regla_pais": "Guatemala = REGISTRO MSPAS (Ministerio de Salud Publica y Asistencia Social), con bandera de Guatemala.",
+      "bandera": "bandera de GUATEMALA dentro del sello",
+      "estilo": "sello circular con borde doble DORADO #D4A017, se tiene que leer como certificacion oficial"
+    },
+    "columna_atributos": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "formato_item": "icono line-art 2px en contenedor circular con borde + label bold uppercase debajo",
+      "items": "['FÓRMULA NATURAL', 'USO DIARIO', 'ORIGEN AMERICANO']",
+      "restriccion_palabras_label": "2-3 palabras",
+      "orientacion": "apilado vertical"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "45% del frame",
+      "angulo": "3/4 frontal, inclinacion 5 grados a la derecha",
+      "sombra": "suave, difusa, debajo",
+      "fuente": "IMAGEN_2",
+      "regla": "ningun elemento lo tapa"
+    },
+    "figura_autoridad": {
+      "posicion": "superior_derecha, DETRAS del producto",
+      "sujeto": "médico de bata blanca con estetoscopio, latino, 50-55 años, canas, sonriendo, mirando a cámara",
+      "encuadre": "medio cuerpo, sonriendo, mirando a camara",
+      "fuente": "IMAGEN_3",
+      "regla": "el producto siempre queda delante"
+    },
+    "claim_central": {
+      "posicion": "derecha_del_producto",
+      "texto": "Una fórmula NATURAL que actúa donde nace el zumbido, no donde se escucha.",
+      "estilo": "Regular con 1-2 palabras en Bold y color de acento",
+      "restriccion_palabras": "10-14 palabras"
+    },
+    "columna_problemas": {
+      "posicion": "derecha_media",
+      "cantidad_items": "3-4",
+      "formato_item": "foto cuadrada con esquinas radio 20% + check blanco en circulo #1B4FA8 en esquina superior derecha sobresaliendo 30% + label uppercase bold sobre pildora #1B4FA8 debajo",
+      "items": "[{'label':'ZUMBIDO CONSTANTE','foto':'primer plano de hombre mayor apretándose el oído con gesto de fastidio'},{'label':'NOCHES SIN DORMIR','foto':'persona mayor sentada en la cama de noche, luz de lámpara, con la mano en la sien'},{'label':'CONVERSACIONES PERDIDAS','foto':'mujer mayor inclinando la cabeza hacia quien le habla, gesto de esfuerzo'},{'label':'CANSANCIO TODO EL DÍA','foto':'hombre mayor frotándose los ojos frente a la mesa del desayuno'}]",
+      "restriccion_palabras_label": "2-3 palabras",
+      "regla_foto": "la foto debe MOSTRAR el problema, no ilustrarlo",
+      "regla_problema_invisible": "Si el problema NO es fotografiable (zumbido, insomnio, animo, memoria), la foto muestra la SITUACION del avatar (persona tocandose el oido, persona despierta de noche), nunca una lesion ni un antes/despues."
+    },
+    "bloque_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card blanca, esquinas redondeadas, sombra suave",
+      "linea_1": "OFERTA 1",
+      "linea_2": "1 x Q178",
+      "estilo_l2": "Black/900, segundo elemento mas grande de la pieza",
+      "regla": "maximo contraste contra el fondo",
+      "nota_unidad": "Este layout no nombra la unidad: va solo el numero, como en la referencia."
+    },
+    "garantias": {
+      "posicion": "inferior_centro",
+      "cantidad_items": 3,
+      "formato_item": "icono + texto bold, en fila",
+      "items": "['ENVÍO GRATIS', 'PAGÁS AL RECIBIR', 'COMPRA SEGURA']",
+      "restriccion_palabras": "2-3 palabras por item"
+    },
+    "sello_origen": {
+      "posicion": "inferior_derecha",
+      "forma": "circular oscuro con estrellas y borde",
+      "contenido": "ORIGEN AMERICANO",
+      "escala": "10% del ancho",
+      "bandera": "bandera de ESTADOS UNIDOS dentro del sello, como en la referencia"
+    },
+    "props_botanicos": {
+      "posicion": "bordes inferior_izquierda e inferior_derecha",
+      "contenido": "['hojas de ginkgo biloba', 'raíz de ginseng', 'hojas de menta fresca']",
+      "tratamiento": "reales, parcialmente fuera de foco, cortados por el borde"
+    }
+  },
+  "reglas_duras": [
+    "Ningun elemento tapa el producto hero",
+    "Los checks son siempre blancos sobre circulo de color",
+    "Maximo 3 pesos tipograficos en toda la pieza",
+    "El doctor va SIEMPRE detras del producto",
+    "Los iconos son line-art de grosor uniforme, nunca rellenos",
+    "El fondo nunca lleva textura ni patron",
+    "Sello regulatorio: MSPAS (Guatemala). El unico sello regulatorio es REGISTRO MSPAS, con bandera de Guatemala."
+  ],
+  "_producto": "Tinnidrop 60 ml - South Moon",
+  "_test": "T01 brazo A - angulo ME_DIJERON_NO_CURA (FIJO)",
+  "_override_T01": {
+    "formato": "4:5 en vez del 1:1 nativo",
+    "titular": "El conteo nativo era L1 3-4 / L2 5-7 palabras. El hook es identico en los 4 brazos por diseno del test: manda el hook."
+  },
+  "_reglas_globales": {
+    "unidad": "La unidad del producto se llama TRATAMIENTO. Aparece unicamente donde el layout nombra una unidad; donde el layout no la nombra, va solo el numero.",
+    "garantia": "Donde aparezca la garantia va en DORADO #D4A017, resaltada.",
+    "regulatorio": "REGISTRO MSPAS con bandera de Guatemala.",
+    "precio": "Arquitectura de precio segun la referencia de este brazo.",
+    "banderas": "El sello inferior derecho es de ORIGEN: dice ORIGEN AMERICANO y lleva bandera de ESTADOS UNIDOS. El sello superior izquierdo es REGULATORIO: dice REGISTRO MSPAS y lleva bandera de GUATEMALA. Son dos sellos distintos con dos banderas distintas."
+  },
+  "_nota_lectura_test": "El bloque de precio sigue la arquitectura NATIVA de cada referencia (decision del operador 19-ago). Cada brazo mezcla dispositivo visual + arquitectura de oferta, asi que el ganador no es atribuible al dispositivo puro. Registrarlo al leer T01."
+}

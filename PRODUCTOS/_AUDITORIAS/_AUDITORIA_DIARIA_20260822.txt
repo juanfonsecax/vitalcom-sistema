@@ -1,0 +1,124 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — 2026-08-22 (sábado, 8 PM)
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 6 de 7 días con data · hueco: 2026-08-21
+Última BASE cargada: 2026-08-20 (46 filas, fuente LucidSales).
+Estado: ⚠️ PARCIAL — no se declara ganador oficial ni se mata por ventas.
+
+───────────────────────────────────────────────────────────────────────────
+1. LO QUE FALTA
+───────────────────────────────────────────────────────────────────────────
+· Export de LucidSales de **2026-08-21** (un solo día, ya cerrado). Sin él la
+  serie diaria se corta en el 20 y no hay tendencia de 5 días.
+· MAÑANA 23-ago es DOMINGO → además del diario del 22 corresponde pedir:
+    (a) export de 7 días → rol_ventana=CONTROL (verifica maduración COD, no suma)
+    (b) extracto de Facturación de Meta por cuenta (las 6)
+    (c) export de Ads Manager nivel conjunto de GTR13 y CP1 (las dos sin MCP)
+  → alimentan la conciliación del PASO 4B (sobrecobro / cobertura / tarjetas).
+
+───────────────────────────────────────────────────────────────────────────
+2. LADO-ADS (PASO 4) — NO SE PUDO CORRER
+───────────────────────────────────────────────────────────────────────────
+🔴 5º DÍA CONSECUTIVO SIN CONECTOR DE META ADS.
+Herramientas expuestas en esta sesión programada: Google Drive, Chrome,
+computer-use, workspace/bash. Cero herramientas `ads_*`.
+
+Diagnóstico (sin cambios desde el 20-ago, y ya confirmado dos veces):
+NO es la cuenta de Meta — el export oficial de Ads Manager entró sin problema
+el 21-ago. Es la **configuración del conector en Cowork**: la tarea de las 8 PM
+no lo está heredando.
+
+Lo que se pierde acumulado en 5 días:
+· Frecuencia diaria por conjunto → no hay detección de fatiga de creativo.
+· Estado ACTIVE / gasto por cuenta → no se verifica si algo se apagó solo
+  (precedente APR-037: cuenta con todo en ACTIVE gastando $0).
+· %conv/clic-enlace en vivo → la regla de cortar por conversación queda ciega.
+· Saturación por cuenta → no se puede comparar un mismo ángulo cuenta a cuenta.
+· Verificación de ejecución → no se confirma si las acciones del dashboard se
+  hicieron ni si T01 arrancó.
+
+`_FACT_ENTREGA.csv` sigue congelado en el agregado `AdsManager-export-4d`
+(17→20 ago) que subió el operador a mano. Ese agregado sirve para NIVEL y
+comparación entre conjuntos, NO para tendencia diaria.
+
+ACCIÓN: reconectar Meta Ads en Cowork → Conectores, y verificar explícitamente
+que la tarea programada de las 8 PM lo herede (no alcanza con que funcione en
+una sesión de chat manual).
+
+───────────────────────────────────────────────────────────────────────────
+3. P&L — SIN MOVIMIENTO (ventana 17→20 ago, la misma del 21)
+───────────────────────────────────────────────────────────────────────────
+No entró data nueva → no se recalcula. Se repite para referencia:
+
+| día    | ventas | pauta Q | ingreso Q | ganancia Q | ROAS |
+|--------|--------|---------|-----------|------------|------|
+| 17-ago |    9   |   680   |   1910    |    +34     | 2.81 |
+| 18-ago |   12   |   497   |   2638    |   +618     | 5.31 |
+| 19-ago |   10   |   562   |   2338    |   +425     | 4.16 |
+| 20-ago |    9   |   361   |   1910    |   +556     | 5.29 |
+| 4 días |   40   |  2100   |   8796    |  +1633     | 4.19 |
+         → Q525/día de pauta · CPA Q52.5 · Q+408/día
+
+⚠️ Los días 19 y 20 NO están madurados (COD madura ~3 días y LucidSales
+reajusta retroactivo) → su ganancia es un PISO, no un cierre.
+⚠️ Recordatorio APR-036: el P&L usa `spend_usd` de LucidSales = lo que
+LucidSales ATRIBUYE, no lo que Meta cobra. Mientras la cobertura del PASO 4B
+no sea ~100%, la ganancia está INFLADA. La conciliación de mañana (domingo)
+es la que corrige esto.
+
+───────────────────────────────────────────────────────────────────────────
+4. PENDIENTES ABIERTOS — NINGUNO SE PUDO MOVER SIN MCP
+───────────────────────────────────────────────────────────────────────────
+Los cuatro vienen del 20-ago sin cambio. Se listan con su antigüedad porque
+un pendiente que no envejece en el informe no se cierra nunca.
+
+🔴 T01 (3 días abierto) — no se confirma si arrancó (el 20-ago no arrancó).
+   Decisión pendiente: lanzarlo limpio, o reactivar ME_DIJERON_NO_CURA.
+   Nota: ME_DIJERON_NO_CURA está a CPA Q51.9 contra BE Q94.60 — es decir,
+   rentable con margen. No había causa de rendimiento para apagarlo.
+
+🔴 VARICOSE (9 días abierto) — figura ESTADO=VIVO en `_PORTAFOLIO.txt` y no
+   gasta desde el 13-ago. Cada noche dispara la regla «producto VIVO sin
+   gastar» del motor del dashboard y ocupa un lugar en la lista de acciones
+   sin que haya nada que hacer con él. Hay que resolverlo en una de dos:
+     (a) REACTIVAR con la config de JULIO y tratarlo como testeo nuevo
+         — el producto físico ya se corrigió; VERGUENZA_PIERNAS nunca se
+         midió limpio (su CPA Q106 y su PD 474% son artefactos del desajuste
+         ad↔destino, no evidencia de que el ángulo esté quemado); o
+     (b) marcar PAUSADO en `_PORTAFOLIO.txt` y sacarlo de la auditoría diaria.
+   Cualquiera de las dos es mejor que un décimo día en limbo.
+
+🟡 CLEARSTEM / MEDICOS_FALLARON (congelado) — releer **mañana 23-ago**, que es
+   cuando el 19 y el 20 quedan madurados. No decidir antes.
+
+🟡 TINNIDROP banda de edad 25+ — REBALANCEAR, nunca APAGAR. El ángulo puede
+   estar sano y estarle hablando a quien no compra; apagarlo destruye el
+   ángulo para arreglar la segmentación. Requiere MCP para ejecutarse.
+
+───────────────────────────────────────────────────────────────────────────
+5. ESCRITURAS DE ESTA CORRIDA
+───────────────────────────────────────────────────────────────────────────
+✅ `_BITACORA_DATA.txt` — fila del 22-ago.
+✅ `PRODUCTOS/_DASHBOARD.html` — regenerado (último paso, como siempre).
+     0 filas sin dimensión · ventana 2026-07-17→2026-08-20 · 334 ventas ·
+     ganancia Q15,604 · sangrado Q826 · 4 productos · 16 ángulos.
+     Cifras idénticas a las del 21-ago: correcto, no entró data.
+     ⚠️ 14 filas SIN ATRIBUCIÓN (14 ventas) — es tracking, no dimensión (APR-035).
+     Recordatorio de la regla 9: un conjunto sin tracking siempre marca 0
+     ventas, y ese cero es artefacto de la ceguera — no sirve para matar.
+❌ `_FACT_VENTAS.csv` — NO se tocó (no entró data). Correcto.
+❌ `_FACT_ENTREGA.csv` — NO se tocó (sin MCP). Correcto.
+❌ `_GANANCIAS.txt` — NO se tocó. Sin día nuevo, una fila más sería movimiento
+     inventado. Mismo criterio que el 20 y el 21-ago.
+❌ `2_DATA_PRODUCTO.txt` de cada producto — NO se tocaron, misma razón.
+
+───────────────────────────────────────────────────────────────────────────
+6. QUÉ PEDIR ESTA NOCHE
+───────────────────────────────────────────────────────────────────────────
+1. Export de LucidSales, rango SOLO **2026-08-21** → pegarlo en el chat.
+2. Reconectar **Meta Ads** en Cowork → Conectores (5º día caído).
+3. Decidir VARICOSE: reactivar o marcar PAUSADO.
+4. Preparar para mañana (domingo): export 7d + extracto de Facturación de las
+   6 cuentas + export Ads Manager nivel conjunto de GTR13 y CP1.
+═══════════════════════════════════════════════════════════════════════════

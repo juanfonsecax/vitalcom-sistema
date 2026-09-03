@@ -1,0 +1,257 @@
+═══════════════════════════════════════════════════════════════════════════
+_PORTAFOLIO.txt — REGISTRO MAESTRO MULTI-PRODUCTO (insumo de la auditoría diaria)
+═══════════════════════════════════════════════════════════════════════════
+Este archivo lista TODOS los productos que el sistema trackea. La tarea programada
+diaria (ETAPA-7 + ETAPA-8) RECORRE este registro y audita cada producto en ESTADO=VIVO.
+No se enfoca en un solo producto: procesa el portafolio completo, uno por uno.
+
+CÓMO AGREGAR UN PRODUCTO: el operador dice "agregá [PRODUCTO] al tracking" (o corre FASE 1).
+Se añade una fila acá con su cuenta, clave de búsqueda de campaña, tasa y umbrales, y se
+pone ESTADO=VIVO cuando la campaña ya corre en Meta. Los umbrales y la config salen de
+PRODUCTOS/[PRODUCTO]/2_DATA_PRODUCTO.txt y 3_CAMPAÑA_META.txt (fuente de verdad por producto).
+
+CONVENCIÓN DE ESTADO:
+  VIVO         → campaña ACTIVE gastando en Meta → se audita a diario.
+  LISTO        → paquete completo, aún sin lanzar → no se audita hasta lanzar.
+  INCOMPLETO   → falta terminar FASE 1 → no se audita.
+  PAUSADO      → lanzado y luego apagado por el operador → no se audita (o audita histórico si se pide).
+
+CONVENCIÓN DE FASE (ver ESCALADO_PLAYBOOK.md):
+  TESTEO       → día 1-2, buscando data (clics-enlace por ángulo). Observar, no pausar.
+  DEFINICION   → día 3-5, declarando ángulo ganador por CPA real / conversación.
+  ESCALADO     → ganador validado, aplicando palancas (surfing 20%, Post ID, multicuenta, creativos).
+
+REGLA DE BÚSQUEDA DE CAMPAÑA (robusta): NUNCA fijar campaign_id a ciegas. Listar campañas
+de la cuenta y tomar la ACTIVE cuyo nombre contenga CLAVE_CAMPAÑA con gasto > 0
+(el operador pausa/renombra/duplica; caso Nusava: la viva es "…- Copia").
+
+───────────────────────────────────────────────────────────────────────────
+| PRODUCTO | ESTADO | FASE | MCP_ACCOUNT_ID | CLAVE_CAMPAÑA (buscar por nombre) | campaign_id conocido | TASA | CPA_Base Q | CPA_BE Q | NOTAS |
+|---|---|---|---|---|---|---|---|---|---|
+| NusavaB12 | VIVO | ESCALADO | act_598687956219141 (GTR 7) | NUSAVAB12 | 120246893776440784 ("…- Copia"; el esqueleto 120246451636510784 está en $0) | 7.62 | 32.3 | 68.3 | GANADOR = MEMORIA (CPA real Q18.7 sem / Q31.6 30d por LucidSales; co-ganador ARDOR Q19.1). omni_purchase de Meta roto → VENTAS por LucidSales (fuente de verdad). FASE 2 MEMORIA construida 07-jul (microángulos+copies+brief+bot+campaña en 1_HACER_MANUAL/2_DATA). Campaña actual PAUSADA por el operador (error de número, no rendimiento) → reactivar y APAGAR ANIMO/AZUCAR/CIATICA (0 ventas), +20% a MEMORIA/ARDOR/ABSORCION. Crear NUSAVAB12_ESCALA_MEMORIA_20260708. ARDOR = FASE 2 hermana pendiente. |
+| VITAMINA D3+K2 | LISTO | — | PENDIENTE (elegir GTR 7/3/0/1) | VITAMINAD3K2 / D3K2 | PENDIENTE | 7.62 | (ver 2_DATA) | (ver 2_DATA) | Falta asignar página #9 + WhatsApp y lanzar por MCP. No auditar hasta VIVO. |
+| VARICOSE | PAUSADO | ESCALADO | act_598687956219141 (GTR 7) | VARICOSE | FASE1 viva: 120247186770470784 ("🟩 VARICOSE_TRAFICO_20260704"). FASE2 ESCALA: 120247374332930784 ("VARICOSE_ESCALA_VERGUENZA_20260710", PAUSED) | 7.62 | 30.8 | **79** (v2 · corregido 25-jul; antes decía ≈159 = margen bruto sin envío/RTO. v1 era 64.5) | GANADOR CONFIRMADO = VERGÜENZA-PIERNAS (09-jul: 2 ventas, CPV $1.85, 14.29% cierre; co-ganador MIEDO-CIRUGÍA 2 ventas). ARAÑITAS DESCARTADO (35 msj, 0 ventas). FASE 2 de VERGÜENZA construida 09-jul (v2): microángulos+6 copies+bot 1-ángulo+banco creativos+campaña ESCALA creada PAUSED. ⚠️ PRECIO v2 = SOLO 2 variantes: 2x1 Q249 / 4x Q389 (ya no hay 1u/3u). FASE 2 PUBLICADA 09-jul, programada 4 AM 10-jul (imágenes generadas, bot de VERGÜENZA cargado, 6 conjuntos+12 anuncios, duplicada→WhatsApp). La campaña VIVA de escalado será la duplicada→WhatsApp (nuevo campaign_id, buscar por nombre "VARICOSE"+"ESCALA"/"VERGUENZA" ACTIVE con gasto>0; el master 120247374332930784 queda PAUSED). Pendiente en FASE 1: podar ARAÑITAS + PIERNAS-CANSADAS (0 ventas). MIEDO-CIRUGÍA = FASE 2 hermana pendiente (escalonar 2-3 días). Página Claudia Vásquez (498977893288095). |
+| TINNIDROP | VIVO | ESCALADO (FASE 3 · multicuenta 20-jul: GTR0 madre + GTR1 824783947334627 + GTR7 598687956219141 + GTR3 581490137794343, misma página Sanarte, mismos Post IDs) | act_1665221077707961 (GTR 0) + GTR1/GTR7/GTR3 | TINNIDROP | campaña VIVA 14-jul = "🟩 TINIDROP GTR0 - 1.59 - TEST" (buscar por nombre ACTIVE; el 120251463036910595 fue una de las que prendía/apagaba) | 7.62 | 30.8 | 60.5 | Producto IMPORTADO que YA vendía bien antes de entrar al sistema. Ingresado + auditado 10-jul sobre data histórica GTR0: $120.38 gasto, 17 ventas (LucidSales), CPA global Q54 < BE Q60.5 ✅. GANADOR CLARO = #4 ACCESIBILIDAD ECONÓMICA vs. MÉDICO (video testimonio tinnidrop4, 6 ventas, CPA Q25.4). Co-fuerte #3 Deterioro cognitivo (4 ventas Q38) y #6 Pérdida auditiva (3 ventas Q51). PODAR #1 Ingredientes naturales + #5 Señal médica (1 venta Q150 c/u) + #2 Mecanismo cerebral (Q76). CPM barato $1.83 (no saturado). ⚠️ COMPLIANCE antes de escalar: quitar sellos FDA/Min.Salud + %clínicos inventados (infografía 3), corregir timelines "primer día/semana 1" (infografía 1), reemplazar antes/después facial (infografía 2). Precios 179/239/299 (fila Q40). VEREDICTO: relanzar como FASE 2 de #4 (no repetir testeo de 6). Página Sanarte (page_id PENDIENTE confirmar). Poner VIVO al reactivar. |
+| Repelente_Ultrasonico | LISTO | — | PENDIENTE | REPELENTE | sin MCP | (op.) | 30.8 | 60.5 | FASE 1 completa 04-jul. NICHO HOGAR (no salud) → requiere FanPage NUEVA "Hogar Protegido GT" + WhatsApp (Formato B, no encaja en las 10 páginas). Bloqueado hasta crear página + page_id. 6 ángulos: 5 IMAGEN (ruido nocturno, sin veneno, asco, cables/incendio, sin trampas) + 1 VIDEO genérico. Oferta 1/2/3 con 2u héroe (Q179/239/299). ⚠️ Categoría saturada + eficacia ultrasónica controvertida → vigilar RTO/entrega, no solo CPA. No auditar hasta VIVO. |
+| CLEARSTEM | VIVO | TESTEO | act_916746367261028 (GTR 13) · page_id **823825257480758** (Astrid García, verificado 25-jul) | CLEARSTEM | campaña VIVA 14-jul = "🟩 CLEARSTEM - WP - NEW TEST" | 7.62 | 30.8 | 60.5 | ⚠️ GTR 13 NO tiene Ads MCP habilitado aún (rollout gradual) → NO puedo leer métricas EN VIVO; se monitorea SOLO por LucidSales que pega el operador. Re-testeo híbrido acné hormonal (bot nuevo 4 videos PostID + 2 imágenes). Operador activó música Meta en ads-imagen → aislar esa variable. AUDIT 14-jul (Lucid 7d): 6 ventas, CPA Q36.2/venta · Q54.3/entregado. Mejor = Anti-Falsificación Q18.5 (2 ventas). |
+| SERUM_COLAGENO_BOTOX | LISTO | — | PENDIENTE | SERUM / COLAGENO | sin MCP | 7.7 (confirmar) | 30.8 | 60.5 | Registrado 25-jul (tenía paquete FASE 1 completo desde 04-jul pero NO estaba en este archivo → invisible para la auditoría). Validación 0.96 🟢 ÓPTIMO. Costo Q33 (usa fila Q40, conservador). Oferta 2x1/4x2. FanPage #4 ✨ Belleza & Piel — Astrid García, **page_id SIN ASIGNAR** (falta ID + WhatsApp) → bloqueado hasta tener página. No auditar hasta VIVO. |
+| OVULOS_PURITY | LISTO | — | PENDIENTE | OVULOS / PURITY | sin MCP | ⚠️ COP ~4,000 | $25.000 COP | (ver 2_DATA) | Registrado 25-jul (mismo caso: paquete del 18-jul fuera del registro). ⚠️ **ÚNICO PRODUCTO QUE OPERA EN COLOMBIA/COP**, no en Guatemala/Q — costo $7.000 COP/paquete, CPA objetivo $25.000 COP. Los umbrales en Q del resto del portafolio NO aplican acá. FanPage HERNATURA CO ya existe. Al cargarlo a `_FACT_VENTAS.csv` hay que definir su normalización de moneda ANTES (igual que se hizo con CP1) o contamina el CPA global. No auditar hasta VIVO. |
+───────────────────────────────────────────────────────────────────────────
+✅ RESUELTO 2026-08-14 (auditoría MCP 8PM) — la alerta de abajo (12-ago) era
+   un lag de reporte de MCP, NO una migración. GTR0 hoy muestra $70.55 de
+   gasto en 7d repartido en sus 3 campañas (26 conjuntos activos, incl. la
+   nueva GTR0_TINNIDROP_ESCALA_20260812 que no se había logueado en
+   _EVENTOS.csv). TINNIDROP corre SIMULTÁNEO en GTR0+GTR7+GTR1 desde el
+   12-ago — multicuenta real, ninguna cuenta se apagó. MCP_ACCOUNT_ID de la
+   fila TINNIDROP no cambia. Detalle: _AUDITORIAS/_AUDITORIA_DIARIA_20260814.txt.
+   ⚠️ Aún faltan los exports de LucidSales del 11, 12 y 13-ago (3 huecos
+   seguidos) — sin ellos no hay CPA real ni veredicto de ventas.
+
+───────────────────────────────────────────────────────────────────────────
+⭐ SNAPSHOT 2026-08-14 — VENTANA 11→13 AGO (3d) · ver _AUDITORIAS/_AUDITORIA_DIARIA_20260814.txt
+   ✅ SERIE COMPLETA 17-jul → 13-ago: **27 días SIN HUECOS** · 255 ventas ·
+      Q11,698 pauta · Q57,982 ingreso · CPA Q45.9 · ROAS 4.96 · **Q+13,021**.
+   Tramo 11-13: Q1,790 pauta · 38 ventas · CPA Q47.1 · **Q+1,957 = Q+652/día**.
+   · TINNIDROP 🥇 20v · CPA Q43.3 (BE Q94.60) · Q+1,041 — 64% de la ganancia total.
+   · CLEARSTEM 🥈 15v · CPA Q35.3 (BE Q103.18) · Q+1,015 — el que más mejoró,
+     casi empata a TINNIDROP con 60% menos pauta. RESISTENCIA_INSULINA_SOP Q24.
+   · NUSAVA    🥉  3v · CPA Q73.2 (BE Q98.76) · Q+77 — n=3 en 3d es ruido; el
+     problema real sigue siendo la ENTREGA (75% agosto, 28% devolución).
+   · VARICOSE  🔴  0v · Q176 de pauta · **Q−176** — el único que sangra.
+
+   ‼️ SE ROMPIÓ EL TECHO DE GASTO, Y A FAVOR (APR-022):
+        17-30 jul   (13d) Q478/día · CPA Q53.1 ·  9.0 v/día → Q+386/día
+        31jul-02ago  (3d) Q478/día · CPA Q42.2 · 11.3 v/día → Q+664/día ⭐
+        03-10 ago    (8d) Q218/día · CPA Q28.6 ·  7.6 v/día → Q+512/día
+        11-13 ago    (3d) **Q597/día** · CPA Q47.1 · 12.7 v/día → **Q+652/día**
+      Se gastó 25% más que cualquier tramo previo y quedó a 4 quetzales del
+      récord de ganancia diaria. La ventana 03-10 tenía el MEJOR CPA de la
+      serie y ganó MENOS por día, porque gastaba menos de la mitad.
+      → El gate es el CPA (<~Q50), no el monto. Techo demostrado: Q597/día.
+      ⚠️ Es un PISO: tramo no madurado (52 de 137 órdenes Dropi en tránsito).
+
+   ‼️ RESUELTO — LA ALERTA DEL 12-AGO ERA UNA MIGRACIÓN, NO UN APAGADO.
+      TINNIDROP no se movió de GTR0: el operador **duplicó toda la estructura
+      del portafolio a la convención de nombres** (CLAUDE.md regla 23). El
+      12-ago nacen 6 campañas `[CUENTA]_[PRODUCTO]_[FASE]_[YYYYMMDD]` y 29
+      conjuntos `[CUENTA]_[PRODUCTO]_[ANGULO]_R[N]`. Se acabaron los "- Copia"
+      anónimos. Los 29 conjuntos ya están dados de alta en _DIM_CONJUNTOS.csv
+      con `origen_angulo=HEREDADO_MIGRACION` (angulo_key derivado del nombre,
+      resto de atributos heredados) → **confirmar si formato/creativo/edad
+      cambiaron de verdad en la migración**.
+      🔴 PENDIENTE: las campañas VIEJAS siguen vivas → cada ángulo se financia
+      DOS veces y compite consigo mismo (viejas Q1,258/29v/CPA Q43 · nuevas
+      Q532/9v/CPA Q59, éstas en aprendizaje desde el 12). NO apagar hoy;
+      el 16-17 ago apagar lo viejo ÁNGULO POR ÁNGULO. Mientras conviven, el
+      CPA por ángulo está inflado y no sirve para coronar ni matar (APR-023).
+
+   🔴🔴 VARICOSE — CAUSA RAÍZ CONFIRMADA POR EL OPERADOR (14-ago):
+      **EL PROVEEDOR CAMBIÓ EL PRODUCTO FÍSICO.** Ahora es una CREMA AZUL. Los
+      ADS muestran el envase VIEJO y el bot/página muestra el NUEVO → el cliente
+      llega, ve otro producto y se cae. ESTADO → **PAUSADO** (relanza el 15-ago).
+      Curva del daño (el tráfico nunca falló, el cierre se desplomó):
+        17-24 jul   89 msj ·  7v · **7.9%** de cierre · CPA Q38 🟢 ← único dato limpio
+        01-10 ago  233 msj ·  5v ·   2.1% · CPA Q103 🔴
+        11-13 ago   65 msj ·  0v ·   0.0% 🔴
+      → TODA la data de VARICOSE desde ~01-ago mide el DESAJUSTE, no el ángulo.
+        **VERGUENZA_PIERNAS NO está quemado** — nunca se midió limpio; su CPA
+        Q106 y su PD de 474% son artefactos. NO aplicar matar-por-ventas a
+        ninguno de los 4 ángulos. Al relanzar, volver a la config de JULIO y
+        tratarlo como testeo nuevo.
+      ⚠️ Mi diagnóstico previo (precio/escalera sin escalón de entrada) ERA
+        EQUIVOCADO. La regla general de APR-024 se sostiene y se refuerza
+        (conversación alta + cierre bajo = problema post-clic), pero la causa
+        era física. Lección de método incorporada: ante un cierre desplomado,
+        verificar PRIMERO la consistencia física ad↔destino.
+      ⚠️ RIESGO DE DEVOLUCIÓN: los que sí compraron desde el cambio pidieron una
+        cosa y reciben otra. VARICOSE ya va 74.2% de entrega / 22.6% devolución.
+      ⚠️ MCP 14-ago: las campañas del 01 y del 12-ago ya no figuran ACTIVE, pero
+        quedaron DOS viejas en ACTIVE con $0 — `🟩 VARICOSE_TRAFICO_20260704`
+        (120247186770470784) y `🟦 VARICOSE_ESCALA_VERGUENZA_20260710`
+        (120247375697420784). Muestran el producto viejo igual: pausarlas.
+
+   🔴 TINNIDROP/PERDIDA_AUDITIVA — Q280 para 2 ventas (CPA Q140, 48% sobre BE)
+      cuando en julio daba Q13.5. Es FATIGA DE CREATIVO (APR-007), no ángulo
+      muerto, y encima corre duplicado. Renovar creativo, no apagar.
+
+   ✅ ENTREGA (Dropi 01→13 ago, 137 órdenes): CLEARSTEM 100% (n=16) ·
+      TINNIDROP 94.3% (n=53) · NUSAVA **75.0%** (n=12) · VARICOSE 100% (n=4) ·
+      GLOBAL 92.9%. El costeo NO cambia (manda la serie completa con 289
+      resueltos). NUSAVA sigue siendo el peor entregador — sin atacar.
+   ✅ CADENCIA DE CARGA A DROPI ARREGLADA: lotes el 11, 12 y 13, tres días
+      seguidos. El hueco de 3-4 días marcado el 11-ago se corrigió.
+
+───────────────────────────────────────────────────────────────────────────
+⚠️ ALERTA 2026-08-12 (auditoría MCP 8PM) — TINNIDROP GTR0 EN $0.00 DE GASTO [RESUELTA 14-ago, ver arriba]
+   `last_7d` y `last_3d` de las 2 campañas ACTIVE de GTR0 (motor del portafolio,
+   Q2,370 ganancia 8d) devuelven $0 gasto por MCP. El mismo día aparecieron 2
+   campañas nuevas sin registrar: GTR7_TINNIDROP_ESCALA_20260812 (0 adsets con
+   spend) y GTR1_TINNIDROP_ESCALA_20260812. Lectura más probable: migración/
+   expansión en curso, no confirmada. CONFIRMAR CON EL OPERADOR antes de la
+   próxima auditoría — si migró, actualizar MCP_ACCOUNT_ID de esta fila.
+   Detalle: _AUDITORIAS/_AUDITORIA_DIARIA_20260812.txt. Sin export de
+   LucidSales del 11-ago (pendiente pedir).
+
+⭐ SNAPSHOT 2026-08-11 — VENTANA 03→10 AGO (8d) · ver _AUDITORIAS/_AUDITORIA_2026-08-11.txt
+   Portafolio: Q1,748 pauta · 61 ventas · CPA Q28.6 · Q13,541 ingreso · GANANCIA Q+3,972.
+   · TINNIDROP 🥇 37v · CPA Q22.6 (BE Q86.7) · Q+2,370 · ROAS 9.3 — motor del portafolio.
+   · NUSAVA    🥈 11v · CPA Q40.2 (BE Q120.4) · Q+966 — ⚠️ YA NO es el más débil:
+     MA6-OFERTA (ARDOR) hace 10v a CPA Q25 con solo Q250. Es el mejor ROI unitario.
+   · CLEARSTEM 🥉 12v · CPA Q39.0 (BE Q89.3) · Q+541 — sano, sigue sin MCP.
+   · VARICOSE  ⚫ GASTO CERO en 8 días. Figura VIVO pero NO corre. CPA histórico Q33
+     contra BE Q111 → es la mayor pérdida silenciosa (~Q600/sem). REACTIVAR.
+   ‼️ HALLAZGO [CORREGIDO 11-ago al cerrar el hueco de 3 días] — NO ES EL GASTO, ES EL CPA:
+        JULIO      17-30 jul (13d): Q478/día · CPA Q53.1 ·  9.0 v/día → Q+372/día
+        TRANSICIÓN 31jul-02ago (3d): Q478/día · CPA Q42.2 · 11.3 v/día → Q+606/día ← TOPE
+        AGOSTO     03-10 ago  (8d): Q218/día · CPA Q28.6 ·  7.6 v/día → Q+499/día
+      El tramo de transición gastó IGUAL que julio y es el más rentable de la serie.
+      La primera lectura ("gastar menos gana más") era un artefacto del hueco de data.
+      → SÍ ESCALAR. Techo demostrado = Q478/día con CPA ~Q42 → Q+606/día. Agosto opera
+        a menos de la mitad de ese gasto y resigna volumen (7.6 v/día vs 11.3).
+      → EL CPA ES EL GATE, NO EL MONTO: subir gasto sin vigilar CPA reproduce julio.
+        Objetivo: Q478/día sosteniendo CPA <Q45.
+      ⚠️ Agosto está SUBESTIMADO (días 08-10 sin madurar) → su Q+499/día es un piso.
+   ✅ SERIE COMPLETA 17-jul → 10-ago: 24 días sin huecos · 212 ventas · Q+10,650.
+   ✅ Los 17 pedidos "Sin Envío/PENDIENTE" NO eran fuga: es carga en LOTE a Dropi
+      (§9). Riesgo real = demora de despacho de hasta 4 días, no pérdida.
+   ✅ TASA DE ENTREGA validada: el lote del 01-ago cerró 100% resuelto en 84.6%,
+      contra el 85.1% costeado. El supuesto del sistema es correcto.
+   ‼️ [11-ago · serie completa Dropi, 304 órdenes] LA ENTREGA NO ES IGUAL ENTRE
+      PRODUCTOS — 24 puntos de spread, y se costeaba todo con una sola tasa:
+        CLEARSTEM 95.8% · TINNIDROP 90.4% · VARICOSE 74.2% · NUSAVA 71.7% 🔴
+      BREAK-EVEN REAL (recalculado con tasa propia · v4):
+        CLEARSTEM Q105.89 · TINNIDROP Q93.41 · NUSAVA Q92.64 · VARICOSE Q89.88
+      → EL RANKING SE INVIERTE: antes NUSAVA encabezaba, ahora va 3º.
+      → CORRECCIÓN: NUSAVA MA6-OFERTA NO es "el mejor ROI del portafolio" (usé
+        BE Q120.40; el real es Q92.64). Sigue rentable a CPA Q25 y se escala
+        igual, pero con 28.3% de devolución: escalarlo sin arreglar la entrega
+        es multiplicar el problema.
+   🔴 FUGA MÁS CARA: 23 de las 40 devoluciones son de NUSAVA (15) y VARICOSE (8).
+      Investigar: promesa del bot · ticket alto en la puerta · demora de despacho.
+   ✅ ENTREGA MEJORANDO: sem29 73.4% → sem30 85.5% → sem31 92.9% → sem32 95.7%.
+   ✅ Flete validado por escalón (desvío +0.3% a +4.2%) · comisión 0% · el upsell
+      NO aumenta devolución (3u entrega 94.7%) → seguir empujando combos.
+   ⚠️ La carga a Dropi pasó de DIARIA en julio a huecos de 3-4 días en agosto.
+      Volver a diaria: es gratis y ataca la fuga de devoluciones.
+
+   ‼️‼️ [11-ago · CORRECCIÓN MAYOR] **EXISTE UNA SEGUNDA CUENTA DE LUCIDSALES.**
+      VARICOSE NUNCA estuvo apagado. Desde el **01-ago** corre en GTR7 con dos
+      campañas nuevas — `🟩GTR7 VARICOSE_TRAFICO_20260801` y
+      `🟩 GTR7 - VARICOSE_ESCALA_VERGUENZA_20260801` — cuya data vive en OTRA
+      cuenta de LucidSales que no estaba en el sistema.
+      → Se cargó con `fuente=LucidSales_CuentaB` (0 adId en común con la cuenta A,
+        universos disjuntos → ambas suman). 14 filas · Q516 pauta · 5 ventas ·
+        Q1,525 · 233 mensajes · CPA Q103.2 · costo por conversación Q2.2.
+      → QUEDA SIN EFECTO la acción "reactivar VARICOSE": ya estaba activo.
+      → QUEDA SIN EFECTO la hipótesis de "VARICOSE vende orgánico": había pauta,
+        yo no la veía. (APR-017 degradado a MEDIA · nuevo APR-021.)
+      LECTURA DEL RELANZAMIENTO (10 días, n=5 → señal débil, NO decidir todavía):
+        · VERGUENZA-PIERNAS  Q73 · 2v · CPA **Q36** · 39 msj  ← el ganador
+          histórico vuelve a destacar. Es el único bajo el BE (Q89.88).
+        · VERGUENZA_MA5_RESIGNACION / CALAMBRES-NOCTURNOS / MANCHAS-OSCURAS:
+          Q74 · 1v c/u · CPA Q74 — bajo BE pero n=1, es ruido.
+        · MIEDO-CIRUGIA (49 msj) y VERGUENZA_MA2_VESTIDO (49 msj): 0 ventas con
+          la conversación MÁS ALTA → el caso de manual de APR-002: la
+          conversación sirve para cortar, nunca para coronar.
+        · Conjunto global en Q−51 de ganancia: está en TESTEO con presupuesto
+          parejo (~Q74/conjunto), no es "está perdiendo plata".
+      🆕 ÁNGULO NUEVO no registrado: **CALAMBRES-NOCTURNOS**. Lo creó el operador
+        directo en Meta, no salió de ningún `2_DATA`. Dado de alta en
+        `_DIM_CONJUNTOS.csv` con atributos DERIVADOS (no declarados) → confirmar
+        avatar/dolor/nivel de conciencia con el operador antes de decidir sobre él.
+
+───────────────────────────────────────────────────────────────────────────
+ACTUALIZACIÓN 2026-07-14 — ACCESO A CUENTAS + CADENCIA DE DATA
+Acceso Meta MCP verificado (ads_get_ad_accounts):
+  · GTR 7  (598687956219141) → MCP ON  ✅ leo métricas en vivo (VARICOSE, NUSAVA)
+  · GTR 0  (1665221077707961) → MCP ON  ✅ leo métricas en vivo (TINNIDROP)
+  · GTR 13 (916746367261028) → MCP OFF ❌ "rollout gradual, check back later" → CLEARSTEM se monitorea SOLO por LucidSales hasta que Meta habilite MCP.
+  · Bonus con MCP ON: GTR 3 (581490137794343), GTR 1 (824783947334627). Sin MCP: GTR 2, CP1, act_332010724162945.
+  · ⚠️ CP1 = **1346891653335162** (identificada 24-jul por el operador). MCP OFF ❌ → solo LucidSales.
+    ‼️ ES LA ÚNICA CUENTA QUE FACTURA EN **COP (pesos colombianos)**, no en dólares. Su `spend` y
+    `costPerMessage`/`costPerSale` vienen en COP; el `total` (venta) sigue en QUETZALES como todas.
+    NORMALIZACIÓN OBLIGATORIA AL CARGAR DATA: spend_COP ÷ **3,152.5** = spend_USD.
+    ⚠️ CORREGIDO 15-ago (APR-028): antes decía 4,050 y subestimaba el gasto de CP1 un 28.5%.
+    La 4,050 era DERIVADA (comparando "2🟦 TINIDROP" contra sus hermanas 3🟦/4🟦/5🟦); la 3,152.5
+    está MEDIDA sobre 9 cargos emparejados uno a uno entre el extracto de Meta y el del banco.
+    Si no se normaliza, contamina TODO el CPA del portafolio (aparece como si hubiera gastado
+    76,325 en vez de $18.85). Corre TINNIDROP réplica "2🟦" — la mejor de las 4 (CPA Q28.7).
+CADENCIA (criterizada 14-jul — HÍBRIDA, no MCP-diario-solo porque Meta no trae ventas reales):
+  · LADO-ADS (conversación/CPM/CTR/frecuencia/retención) GTR7+GTR0 → lo leo YO solo, automático, cada noche 7 PM (tarea programada). El operador no pega nada acá. Alimenta matar-por-conversación, fatiga, surfing.
+  · ⚠️ CADENCIA ACTUALIZADA 24-jul — SUPERSEDE lo de abajo: LucidSales se pega **TODAS LAS NOCHES**
+    con export de **1 SOLO DÍA (ayer)**, no 7 días agregados. Recordatorio 8 PM · auditoría 9 PM.
+    Razón: el export de 7 días viene AGREGADO y no se puede descomponer → sin granularidad diaria no
+    hay tendencia ni detección de fatiga. Con 1 día se acumula en `_FACT_VENTAS.csv` y el sistema calcula
+    cualquier ventana solo. Los LUNES se pide TAMBIÉN el export de 7 días como control cruzado
+    (la venta COD madura ~3 días y LucidSales reajusta retroactivamente) — se carga con dias=7 y NO
+    se suma con las diarias (sería doble conteo), solo se usa para verificar.
+    ARCHIVOS NUEVOS: `_HISTORICO.csv` (data cruda normalizada, capa máquina) · `_BITACORA_DATA.txt`
+    (qué días entraron y qué días faltan) · `_GANANCIAS.txt` (P&L legible, capa humana).
+    ⚠️ ACTUALIZACIÓN 25-jul: `_HISTORICO.csv` YA NO EXISTE — se partió en `_FACT_VENTAS.csv` (ventas,
+    la única que suma al P&L) + `_FACT_ENTREGA.csv` (señales de Meta, nunca se suman al gasto).
+    El original quedó en `_ARCHIVO/DATA_MIGRADA/`. Roles y reglas de lectura en `DATA_PLAYBOOK.md`.
+  · [HISTÓRICO, ya no vigente] LUCIDSALES → el operador la pega 2x/semana: LUNES y JUEVES, export de los ÚLTIMOS 7 DÍAS de TODAS las campañas (ventana móvil), en la noche. Porqué: decisiones de CPA son SEMANALES (Clase 11) + COD ~3 días → Lun→Jue=3d / Jue→Lun=4d calza con la maduración. Alimenta CPA semanal, declarar ganador, matar-por-ventas (PD §1.5), FASE 2, escalar.
+  · EXCEPCIÓN: en campaña NUEVA, pasar Lucid también en su Día 3 (poda) y Día 5-6 (escalado) aunque no sea Lun/Jue. GTR13/Clearstem (sin MCP) entra en el mismo Lun/Jue — su Lucid es la única ventana.
+  · Formato ideal = export xlsx (adId, spend, sells, total, fulfillmentStatus — el del 14-jul es perfecto).
+
+SNAPSHOT CPA REAL 7d (LucidSales 13→20 jul) — ranking del portafolio por CPA/ROAS:
+  · TINNIDROP (GTR0) 🥇: 24 ventas · CPA Q15.1 · ROAS 13.2 · el más sano. En escalado horizontal (4 cuentas 20-jul). Ganadores: Pérdida auditiva Q13.5 + ME DIJERON Q17.6.
+  · VARICOSE (GTR7) 🥈: 19 ventas (FASE1 testeo Q19.6/ROAS 13.9 + FASE2 VERGÜENZA 2x1 Q35/ROAS 7.7). GANADOR VERGÜENZA confirmado, corre SOLO en GTR7 → PRÓXIMO A ESCALAR HORIZONTAL (Post ID → GTR0/3/1), mismo playbook que Tinnidrop.
+  · CLEARSTEM (GTR13, MCP OFF): 13 ventas · CPA Q31 · ROAS 7.3. Sano pero aún en TESTEO y sin MCP → no multicuenta todavía.
+  · NUSAVA B12 (GTR7): 13 ventas · CPA Q45.5 · ROAS 5.3 · el más débil del portafolio. ARDOR es el caballo; MEMORIA escala no rinde. Limpiar antes de pensar en escalar.
+
+SNAPSHOT CPA REAL 7d (LucidSales 07→14 jul), por venta / por entregado:
+  · VARICOSE (GTR7) SANO: escalado MA2_VESTIDO Q11.6 (4v)★ · MA6_2X1 Q16.7 (3v)★ · testeo MIEDO-CIRUGIA Q25.1 (4v)★. Todos < Base Q30.8. Podar MA1/MA3/MA4/ARAÑITAS/PIERNAS-CANSADAS (0v).
+  · NUSAVA B12 (GTR7) EN ROJO: CPA global Q91.9/venta > BE Q68.3. Único sano = ARDOR Q33.7 (3v, está en TESTEO). Escalado MEMORIA solo 2v (C-5 Q60.2, C-3 Q58.6), 4 conjuntos 0v → el escalado MEMORIA no rinde; ARDOR es el caballo real.
+  · CLEARSTEM (GTR13) SANO: Q36.2/v · Q54.3/ent. Mejor Anti-Falsificación Q18.5 (2v).
+  · TINNIDROP (GTR0) SANO: Q42/v · Q52.4/ent < BE Q60.5. Mejores = Deterioro cognitivo Q16.5 (2v) + Pérdida auditiva Q17.3 (2v) — NO el #4 Accesibilidad (0v esta semana).
+───────────────────────────────────────────────────────────────────────────
+RETIRADOS (fuera del sistema activo, archivados en _ARCHIVO/PRODUCTOS_RETIRADOS/ el 2026-07-03):
+  · MyoDChiroInositol — estaba incompleto (solo PROMPTS_INFOGRAFIAS). Para retomarlo: completar FASE 1 y volver a agregar la fila acá.
+  · (VARICOSE VEINS ya NO está retirado — FASE 1 procesada el 2026-07-03; ver la fila VARICOSE arriba, estado LISTO.)
+
+SALIDA DIARIA ESPERADA (por cada producto VIVO): un bloque con
+  (1) INFORME ETAPA-7 (ranking de conjuntos por CPA real o conversación, %conv/clic-enlace, fatiga),
+  (2) PLAN DE ESCALADO ETAPA-8 (qué pausar, qué escalar y CÓMO según ESCALADO_PLAYBOOK, qué creativos crear y por qué),
+  (3) 1-2 líneas de "qué hacer HOY".
+Los resultados se escriben en PRODUCTOS/[PRODUCTO]/2_DATA_PRODUCTO.txt y 3_CAMPAÑA_META.txt (bloque RESULTADOS_TESTEO).

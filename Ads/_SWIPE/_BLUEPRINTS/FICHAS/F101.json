@@ -1,0 +1,168 @@
+{
+  "ficha_id": "F101",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/10_1550701966528230.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1550701966528230",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "24%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C8_PROGRESION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA CRONOLOGIA EN ESCALA LOGARITMICA: 30 MINUTOS, 6 HORAS, 3 DIAS, 10 DIAS. Los cuatro hitos no son intervalos iguales - arrancan en minutos y terminan en dias - y cada uno lleva DOS lineas: una fisiologica de lo que pasa adentro y otra, precedida por un mas, con la senal que la persona puede notar sin instrumento.",
+  "lectura_estrategica": "El primer hito esta tan cerca que se verifica el mismo dia, y esa verificacion es la que hace creibles los tres siguientes: la pieza no pide fe, pide que la persona vaya al bano. El desdoblamiento en dos lineas separa el mecanismo interno de la senal domestica, y las senales elegidas son de ROPA - anillos, calcetines, silueta - porque son las unicas que se comprueban sin balanza ni laboratorio. El titular es el nombre del problema, sin verbo ni promesa.",
+  "fondo": {
+    "tipo": "color_plano_crema_con_patron_sutil",
+    "base": "crema calido plano",
+    "capa": "trama de hexagonos apenas visible en una esquina superior",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde bosque (titular, hitos) mas crema (fondo) mas dorado del sistema anatomico mas azul de las gotas y flechas"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif humanista",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "eyebrow_plazo_formato": {
+      "posicion": "superior, centrado",
+      "texto": "{{PLAZO_TOTAL}} de {{MECANISMO}} en {{FORMA_FARMACEUTICA}}",
+      "estilo": "Bold {{PALETA_OSCURA}} de tamano medio",
+      "restriccion_palabras": "6-8 palabras",
+      "regla": "el plazo total y la forma de toma van juntos arriba, antes del problema"
+    },
+    "titular_problema": {
+      "posicion": "superior, bajo el eyebrow",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "texto": "{{NOMBRE_DEL_PROBLEMA}}",
+      "estilo": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla_critica": "es el NOMBRE del problema, sin verbo y sin promesa: quien lo tiene se reconoce y quien no, pasa de largo"
+    },
+    "cronologia": {
+      "posicion": "centro, columna central",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical de hitos",
+      "formato_item": "DESPUES DE [tiempo del hito]: en Bold {{PALETA_OSCURA}} cerrado con raya, mas linea de mecanismo en Regular, mas linea de senal precedida por un signo mas",
+      "hito_1": {
+        "tiempo": "{{T1_MINUTOS}}",
+        "mecanismo": "{{MECANISMO_1}}",
+        "senal": "{{SENAL_1}}"
+      },
+      "hito_2": {
+        "tiempo": "{{T2_HORAS}}",
+        "mecanismo": "{{MECANISMO_2}}",
+        "senal": "{{SENAL_2}}"
+      },
+      "hito_3": {
+        "tiempo": "{{T3_DIAS}}",
+        "mecanismo": "{{MECANISMO_3}}",
+        "senal": "{{SENAL_3}}"
+      },
+      "hito_4": {
+        "tiempo": "{{T4_PLAZO_TOTAL}}",
+        "mecanismo": "{{MECANISMO_4}}",
+        "senal": "{{SENAL_4}}"
+      },
+      "restriccion_mecanismo": "4-6 palabras",
+      "restriccion_senal": "3-5 palabras",
+      "regla_critica": "la escala es logaritmica: minutos, horas, dias, plazo total. El primer hito se verifica el mismo dia y por eso sostiene a los otros tres",
+      "regla_senales": "las senales son domesticas y comprobables sin instrumento: la ropa, los anillos, las marcas de la media"
+    },
+    "lamina_anatomica": {
+      "posicion": "derecha, ocupa el alto completo",
+      "escala": "28% del ancho",
+      "contenido": "{{CUERPO}} de frente con {{SISTEMA_OBJETIVO}} dibujado en dorado, gotas en la zona alta y flechas descendentes hacia los pies",
+      "regla": "las flechas van en el sentido del mecanismo - de arriba hacia abajo - y acumulan en la zona donde el avatar siente el sintoma",
+      "fuente": "IMAGEN_2"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_media",
+      "escala": "26% del ancho",
+      "composicion": "envase de pie, frontal, con los sellos de garantia legibles en el hombro de la etiqueta",
+      "fuente": "IMAGEN_1"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_problema",
+    "cronologia",
+    "lamina_anatomica",
+    "producto_hero",
+    "eyebrow_plazo_formato"
+  ],
+  "reglas_duras": [
+    "Los cuatro hitos van en escala logaritmica y arrancan en minutos",
+    "Cada hito lleva una linea de mecanismo y una linea de senal precedida por un signo mas",
+    "Las senales son domesticas y verificables sin instrumento",
+    "El titular es el nombre del problema, sin verbo",
+    "Las flechas de la lamina anatomica van en el sentido del mecanismo",
+    "El eyebrow declara el plazo total y la forma de toma"
+  ],
+  "variables_requeridas": [
+    "PLAZO_TOTAL",
+    "MECANISMO",
+    "FORMA_FARMACEUTICA",
+    "NOMBRE_DEL_PROBLEMA",
+    "T1_MINUTOS",
+    "T2_HORAS",
+    "T3_DIAS",
+    "T4_PLAZO_TOTAL",
+    "MECANISMO_1",
+    "MECANISMO_2",
+    "MECANISMO_3",
+    "MECANISMO_4",
+    "SENAL_1",
+    "SENAL_2",
+    "SENAL_3",
+    "SENAL_4",
+    "CUERPO",
+    "SISTEMA_OBJETIVO",
+    "IMAGEN_1",
+    "IMAGEN_2"
+  ],
+  "cuando_usar": [
+    "productos con efecto medible desde las primeras horas",
+    "cuando el problema tiene senales domesticas que la persona ya usa para medirse",
+    "categorias donde el plazo largo genera desconfianza y conviene anclar en lo inmediato",
+    "MOFU sobre publico que reconoce el sintoma y quiere saber cuando lo va a notar"
+  ],
+  "cuando_no_usar": [
+    "productos de efecto acumulativo sin senal temprana",
+    "cuando no se puede nombrar que pasa en la primera hora",
+    "cierre por precio: la pieza no tiene zona de numero ni CTA"
+  ],
+  "sellos_y_claims_observados": [
+    "Eyebrow 10 dias de drenaje interno en capsulas.",
+    "Titular RETENCION DE LIQUIDOS.",
+    "Hito 30 minutos: Primera eliminacion renal activa + Miccion mas frecuente.",
+    "Hito 6 horas: Agua atrapada empieza a liberarse + Sensacion menos hinchada.",
+    "Hito 3 dias: Anillos y ropa mas sueltos + Menos marcas de calcetines.",
+    "Hito 10 dias: Equilibrio hidrico restaurado + Silueta afinada.",
+    "Marca LINFOVIT(R) Drenaje Linfatico - APOYO LINFATICO TRADICIONAL, extractos de plantas liquidos, complemento alimenticio, 60 capsulas vegetales.",
+    "Sellos en la etiqueta: Sello de Garantia · Quality USA, e iconos de Diuretico, Hepatico, Mejoria, Inmunidad."
+  ],
+  "canonico_id": "CN02_TIMELINE_PROGRESION",
+  "blueprint_equivalente": null
+}

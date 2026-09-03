@@ -1,0 +1,151 @@
+{
+  "ficha_id": "F071",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Verdigris_sv/02_2093000304939311.jpg",
+    "anunciante": "Verdigris.sv",
+    "ad_archive_id": "2093000304939311",
+    "dias_activo": 9,
+    "replicas": 1,
+    "score": 34,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "26%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL NOMBRE DEL PRODUCTO COMO TITULAR, FLANQUEADO POR EL SIMBOLO DE LA MARCA. El envase no lleva promesa arriba: lleva su propio nombre en tipografia enorme con un rayo a cada lado, repitiendo el simbolo impreso en la etiqueta. Debajo, cinco beneficios en columna y una oferta de CUATRO unidades por un precio unico.",
+  "lectura_estrategica": "Ficha de producto de cierre para una categoria donde el comprador ya sabe que necesita. El titular es el nombre porque en nivel 3-4 la marca ya es la unidad de busqueda, y los simbolos laterales replican el grafismo del envase para que la pieza y el producto se lean como una sola cosa. Los cinco beneficios cubren dos generos en la misma lista — uno de ellos nombra explicitamente la version femenina del problema — lo que amplia la audiencia sin dividir el creativo. Y la oferta de cuatro unidades por un precio cerrado convierte la compra en abastecimiento.",
+  "fondo": {
+    "tipo": "degradado_oscuro_partido",
+    "base_izquierda": "negro o gris muy oscuro plano",
+    "base_derecha": "{{PALETA_OSCURA}} azul con textura de patron geometrico tenue",
+    "elemento": "podio o base circular oscura bajo el producto",
+    "regla": "el fondo se parte en dos temperaturas: texto sobre negro, producto sobre color"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} naranja (titular, iconos, bordes de card, precio) mas negro (fondo y cards) mas blanco (texto) mas azul oscuro del degradado"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_marca": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "contenido": "{{SIMBOLO}} {{PRODUCTO}} {{SIMBOLO}}",
+      "estilo": "Black/900 uppercase blanco, con el simbolo de la marca en {{PALETA_ACENTO}} a cada lado",
+      "restriccion_palabras": "1 palabra",
+      "regla_critica": "el titular es el NOMBRE, sin promesa: en nivel 3-4 la marca ya es la unidad de busqueda",
+      "regla_simbolo": "los simbolos laterales replican el grafismo impreso en la etiqueta para que pieza y producto se lean como una sola cosa"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda, ocupa 45% del alto",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} en circulo con borde mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_genero": "uno de los items nombra explicitamente la version del problema del OTRO genero: amplia la audiencia sin dividir el creativo",
+      "regla_item_5": "el ultimo es de mecanismo general (antioxidante, purificador) y cierra la lista"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "45% del frame",
+      "composicion": "envase de pie sobre podio circular oscuro, ligeramente en contrapicado",
+      "fuente": "IMAGEN_2"
+    },
+    "badge_envio": {
+      "posicion": "izquierda_baja",
+      "contenedor": "card negra con borde {{PALETA_ACENTO}} redondeado e icono de camion",
+      "texto": "{{GARANTIA_ENVIO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "2 palabras"
+    },
+    "card_oferta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card negra con borde {{PALETA_ACENTO}} grueso",
+      "banda_superior": "{{OFERTA_LABEL}}",
+      "estilo_banda": "Black/900 uppercase blanco sobre banda {{PALETA_ACENTO}}",
+      "linea_1": "{{CANTIDAD}} {{UNIDAD_PLURAL}} POR",
+      "linea_2": "{{MONEDA}}{{PRECIO_ENTERO}}.{{PRECIO_DECIMAL}}",
+      "estilo_l1": "Bold uppercase blanco",
+      "estilo_l2": "Black/900 blanco, decimales al 45% del entero",
+      "regla_critica": "la oferta es de CUATRO unidades por un precio cerrado: convierte la compra en abastecimiento y no en prueba"
+    },
+    "badge_contenido": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card negra con borde {{PALETA_ACENTO}} redondeado e icono de capsula",
+      "texto": "{{CONTENIDO}}",
+      "estilo": "Bold uppercase blanco",
+      "restriccion_palabras": "2 palabras",
+      "regla": "la cantidad de unidades por envase va en su propia card, al mismo peso que el envio"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_marca",
+    "producto_hero",
+    "card_oferta",
+    "columna_beneficios",
+    "badge_envio",
+    "badge_contenido"
+  ],
+  "reglas_duras": [
+    "El titular es el nombre del producto, sin promesa",
+    "Los simbolos laterales replican el grafismo de la etiqueta",
+    "Uno de los cinco beneficios nombra la version del problema del otro genero",
+    "La oferta es de varias unidades por un precio cerrado",
+    "El fondo se parte en dos temperaturas: texto sobre negro, producto sobre color",
+    "El contenido por envase va en su propia card"
+  ],
+  "variables_requeridas": [
+    "SIMBOLO",
+    "PRODUCTO",
+    "BENEFICIOS[5]",
+    "GARANTIA_ENVIO",
+    "OFERTA_LABEL",
+    "CANTIDAD",
+    "UNIDAD_PLURAL",
+    "PRECIO_ENTERO",
+    "PRECIO_DECIMAL",
+    "MONEDA",
+    "CONTENIDO"
+  ],
+  "cuando_usar": [
+    "categorias donde el comprador ya sabe que necesita el producto",
+    "cuando el problema tiene version masculina y femenina y conviene cubrir ambas",
+    "ofertas de abastecimiento (3, 4 o mas unidades por precio cerrado)",
+    "envases con grafismo fuerte que se puede replicar en el titular"
+  ],
+  "cuando_no_usar": [
+    "publico frio: el titular con el nombre no dice nada",
+    "cuando el producto es de una sola unidad",
+    "marcas sin identidad grafica reconocible"
+  ],
+  "sellos_y_claims_observados": [
+    "Beneficios: REDUCE LA INFLAMACION Y EL DOLOR, MEJORA LA FUNCION DE LA PROSTATA, REDUCE PROBLEMAS DE MICCION NOCTURNA, REDUCE PROBLEMAS DE SISTITIS FEMENINA, ANTIOXIDANTE PURIFICADOR.",
+    "Card ENVIO GRATIS con icono de camion.",
+    "Card OFERTA 4 FRASCOS POR $30.00.",
+    "Badge 50 CAPSULAS.",
+    "Claims impresos en el empaque: SUPLEMENTO ALIMENTICIO, REFUERZO NATURAL, ORTIGA SAW PALMETTO ARBROJO, 50 caps.",
+    "El precio va en dolares: la pieza corre en un mercado distinto al guatemalteco."
+  ],
+  "canonico_id": "CN16_EMISOR_COMERCIAL",
+  "blueprint_equivalente": null
+}

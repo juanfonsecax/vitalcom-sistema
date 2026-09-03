@@ -1,0 +1,143 @@
+{
+  "canonico_id": "CN17_TITULAR_DOMINANTE",
+  "schema_version": "canonico-1.0",
+  "nombre": "Titular tipografico dominante",
+  "dispositivo_canonico": "EL TEXTO ES LA IMAGEN. Tres lineas apiladas con una sola palabra en color sobre un fondo casi vacio, un titular que NIEGA que el problema sea el problema, una pregunta contra el propio pasado, un hook de retargeting explicito. El producto aparece pequeno o al pie: lo que detiene el scroll es la frase.",
+  "cuando_elegirlo": "Hay UNA frase con giro real — reencuadre, negacion, pregunta incomoda. Sin ese giro queda un cartel vacio. Es tambien la unica familia con una pieza de NC5 (retargeting explicito, F056).",
+  "ejes_de_variacion": [
+    "mecanismo del giro: negacion, reencuadre, pregunta al propio pasado, retargeting",
+    "una sola palabra en color de acento marca el pivote de la frase",
+    "puede llevar una banda que RE-CATEGORIZA el problema bajo el titular (F104)",
+    "espacio libre alto: el vacio es parte del dispositivo"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F032",
+  "score_referencia": 60,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 2,
+      "C4_TRANSFORMACION": 2,
+      "C5_PRUEBA": 1
+    },
+    "rol_embudo": {
+      "BOFU": 2,
+      "MOFU": 2,
+      "TOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 4,
+      "organico_ugc": 1
+    },
+    "formato": {
+      "1:1": 3,
+      "4:5": 1,
+      "8:11": 1
+    },
+    "densidad": {
+      "media": 3,
+      "baja": 2
+    },
+    "nivel_conciencia_rango": [
+      2,
+      5
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "TITULAR",
+    "PALABRA_PIVOTE",
+    "MECANISMO_DEL_GIRO",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": [
+      "OFERTA_LABEL"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El titular niega una identidad con culpa y la reemplaza por una causa externa resoluble",
+    "La palabra del reencuadre va subrayada",
+    "La cita lleva cifra concreta, plazo y la contra-objecion incorporada",
+    "La foto de perfil del testimonio va diminuta",
+    "La calificacion no es redonda: un 5.0 perfecto se lee falso",
+    "El fondo va muy desenfocado para que el texto sea el protagonista",
+    "La mano real sostiene el producto: si flota, el testimonio deja de leerse como de alguien"
+  ],
+  "cuando_usar": [
+    "cuando el publico se adjudica una identidad dolorosa que en realidad es un sintoma resoluble",
+    "categorias con carga de culpa (peso, piel, energia, orden, disciplina)",
+    "TOFU frio: el reencuadre funciona sin que la persona conozca el producto",
+    "cuando existe un testimonio real con cifra",
+    "publico de nivel 4 que compara marcas del mismo activo",
+    "cuando el producto tiene una dosis o especificacion superior que se puede poner al pie",
+    "cuando la categoria arrastra una objecion que un beneficio negativo desactiva",
+    "marcas que quieren distanciarse del registro de dropshipping"
+  ],
+  "cuando_no_usar": [
+    "problemas sin componente de culpa o autoimagen",
+    "cuando no hay una creencia extendida que negar",
+    "cuando no hay una cita con cifra: el testimonio es el nucleo de la pieza",
+    "publico frio: no hay problema, ni promesa, ni prueba social",
+    "cuando hay muchos beneficios que contar: el layout no los sostiene",
+    "cuando el precio bajo es el argumento principal"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F032",
+      "score": 60,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C5_PRUEBA",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "EL REENCUADRE DEL PROBLEMA EN EL TITULAR"
+    },
+    {
+      "ficha_id": "F048",
+      "score": 52,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "4:5",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TITULAR EN TRES LINEAS APILADAS CON UNA SOLA PALABRA EN COLOR, SOBRE FONDO CASI VACIO"
+    },
+    {
+      "ficha_id": "F051",
+      "score": 52,
+      "anunciante": "Ovejitas Lab",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "8:11",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL TITULAR QUE NIEGA QUE EL PROBLEMA SEA EL PROBLEMA"
+    },
+    {
+      "ficha_id": "F056",
+      "score": 48,
+      "anunciante": "GoMarket",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL HOOK DE RETARGETING EXPLICITO"
+    },
+    {
+      "ficha_id": "F104",
+      "score": 29,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA PREGUNTA CONTRA EL PROPIO PASADO Y LA BANDA QUE CAMBIA DE CATEGORIA EL PROBLEMA"
+    }
+  ]
+}

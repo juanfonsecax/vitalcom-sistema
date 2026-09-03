@@ -1,0 +1,155 @@
+{
+  "canonico_id": "CN16_EMISOR_COMERCIAL",
+  "schema_version": "canonico-1.0",
+  "nombre": "Cartel de tienda / emisor comercial",
+  "dispositivo_canonico": "QUIEN VENDE PESA MAS QUE QUE SE VENDE. El logo de la farmacia o la tienda funciona como emisor, se repite arriba y abajo, y el TELEFONO puede ser el elemento mas grande de la pieza. Las garantias, los botones de contacto y el nombre del producto como titular completan un cartel de comercio, no de marca.",
+  "cuando_elegirlo": "La pagina ya tiene reconocimiento local y la venta se cierra por mensaje. Convierte al que ya conoce el negocio. Con una fanpage nueva y sin prueba social, esta familia no tiene de donde sacar autoridad.",
+  "ejes_de_variacion": [
+    "peso del telefono: barra de pie discreta o el mayor tamano de la pieza (F082)",
+    "el titular puede ser el NOMBRE del producto flanqueado por el simbolo de marca (F071)",
+    "badge de duracion del tratamiento como sello de seriedad (F060)",
+    "dos botones apilados del mismo tamano al pie, sin jerarquia entre ellos (F076)"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F060",
+  "score_referencia": 41,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 5
+    },
+    "rol_embudo": {
+      "BOFU": 3,
+      "MOFU": 2
+    },
+    "estetica": {
+      "cartel_publicitario": 5
+    },
+    "formato": {
+      "1:1": 3,
+      "2:3": 1,
+      "3:4": 1
+    },
+    "densidad": {
+      "baja": 2,
+      "media": 2,
+      "alta": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      4
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "LOGO_TIENDA",
+    "NOMBRE_TIENDA",
+    "TELEFONO",
+    "TITULAR",
+    "GARANTIAS",
+    "PESO_DEL_TELEFONO",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "BENEFICIOS[3]",
+      "GARANTIA_ENVIO",
+      "MONEDA",
+      "PRECIO_DECIMAL",
+      "PRECIO_ENTERO"
+    ],
+    "recurrentes": [
+      "ALCANCE_ENVIO",
+      "BENEFICIOS[5]",
+      "CTA",
+      "GARANTIA_PAGO",
+      "OFERTA_LABEL",
+      "PRODUCTO",
+      "TELEFONO"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El anuncio lo firma el punto de venta, no la marca del producto",
+    "El badge declara los dias de suministro Y su equivalencia en meses",
+    "El titular usa verbo de apoyo en la primera linea y nombra el problema en la ultima, al mayor tamano",
+    "Los tres beneficios usan verbos de apoyo",
+    "El producto va sin podio, sin halo y sin badge encima",
+    "Un solo bloque negro: la card de precio",
+    "El CTA va en la barra del pie, al mismo peso que las garantias"
+  ],
+  "cuando_usar": [
+    "cuando el vendedor es un punto de venta fisico con nombre y sucursal",
+    "productos de presentacion larga donde la duracion del tratamiento es argumento",
+    "publico de nivel 4 que ya conoce el activo y compara donde comprarlo",
+    "cuando se quiere un registro sobrio, sin urgencia ni prueba social",
+    "categorias donde el comprador ya sabe que necesita el producto",
+    "cuando el problema tiene version masculina y femenina y conviene cubrir ambas",
+    "ofertas de abastecimiento (3, 4 o mas unidades por precio cerrado)",
+    "envases con grafismo fuerte que se puede replicar en el titular"
+  ],
+  "cuando_no_usar": [
+    "tiendas online sin direccion fisica: el emisor no acredita nada",
+    "publico frio que necesita que le expliquen el problema",
+    "cuando la oferta necesita urgencia o escalera de precios",
+    "publico frio: el titular con el nombre no dice nada",
+    "cuando el producto es de una sola unidad",
+    "marcas sin identidad grafica reconocible"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F060",
+      "score": 41,
+      "anunciante": "Farmacia De Mi Tierra Boca del Monte",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL LOGO DE LA FARMACIA COMO EMISOR, CON EL BADGE DE DURACION DEL TRATAMIENTO ARRIBA A LA DERECHA"
+    },
+    {
+      "ficha_id": "F071",
+      "score": 34,
+      "anunciante": "Verdigris.sv",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL NOMBRE DEL PRODUCTO COMO TITULAR, FLANQUEADO POR EL SIMBOLO DE LA MARCA"
+    },
+    {
+      "ficha_id": "F074",
+      "score": 33,
+      "anunciante": "DF SHOP GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL NUMERO DE TELEFONO EN LA BARRA DEL PIE, AL MISMO PESO QUE LAS GARANTIAS"
+    },
+    {
+      "ficha_id": "F076",
+      "score": 33,
+      "anunciante": "Dona Oferta",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LOS DOS BOTONES APILADOS AL PIE, DEL MISMO TAMANO"
+    },
+    {
+      "ficha_id": "F082",
+      "score": 32,
+      "anunciante": "TE VENDO Express GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "3:4",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL LOGO DE LA TIENDA REPETIDO ARRIBA Y ABAJO, CON EL TELEFONO EN EL MAYOR TAMANO DE LA PIEZA"
+    }
+  ]
+}

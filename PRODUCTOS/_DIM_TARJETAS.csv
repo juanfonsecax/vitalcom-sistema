@@ -1,0 +1,12 @@
+ultimos4,marca,bm_nombre,cuentas_vistas,rol,cobros_ok,rechazos,pct_falla,veredicto,visto_desde,visto_hasta,estado,notas
+8931,MC,AMG 2,GTR0|GTR1,QUITAR,0,3,100.0,MUERTA,2026-08-01,2026-08-16,QUITAR,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+8069,MC,AMG 9,GTR13,QUITAR,0,5,100.0,MUERTA,2026-08-01,2026-08-16,QUITAR,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+1193,MC,AMG 9,GTR13,QUITAR,0,2,100.0,MUERTA,2026-08-01,2026-08-16,QUITAR,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+2190,MC,AMG 8,CP1,QUITAR,0,7,100.0,MUERTA,2026-08-01,2026-08-16,QUITAR,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+4308,MC,AMG 2,GTR0|GTR1,RESPALDO,7,11,61.1,INTERMITENTE,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+2388,MC,AMG 8,CP1,RESPALDO,2,2,50.0,INTERMITENTE,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+0786,Visa,AMG 2,GTR0|GTR1,RESPALDO,8,4,33.3,INTERMITENTE,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+0925,Visa,AMG 8,CP1,RESPALDO,3,1,25.0,INTERMITENTE,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+9941,Visa,AMG 5,GTR7,PRIMARIA,10,1,9.1,INTERMITENTE,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+4167,Visa,AMG 9,GTR13,PRIMARIA,4,0,0.0,SANA,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.
+3494,MC,AMG 5,GTR7,PRIMARIA,4,0,0.0,SANA,2026-08-01,2026-08-16,ACTIVO,DERIVADO del extracto de Facturacion 01-16 ago. Cada tarjeta pertenece a UN solo BM: confirma APR-040 con 11 de 11.

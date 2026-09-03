@@ -1,0 +1,179 @@
+{
+  "ficha_id": "F004",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Aranza_Glow/08_964174726362714.jpg",
+    "anunciante": "Aranza Glow",
+    "ad_archive_id": "964174726362714",
+    "dias_activo": 113,
+    "replicas": 1,
+    "score": 138,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "25%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": "antes-despues"
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES HORIZONTAL PARTIDO POR EL PRODUCTO. Dos fotos de la MISMA zona del cuerpo, izquierda y derecha, rotuladas ANTES y DESPUES, con el producto plantado en el centro tapando la costura. El producto es literalmente lo que separa los dos estados: la causalidad se lee sin texto.",
+  "lectura_estrategica": "Vende resultado visible en una zona que la persona ya se mira al espejo. Nivel 3: sabe que tiene el problema y compara soluciones, entonces el creativo salta la educacion y va directo a la prueba. La escalera de 3 precios con etiquetas de valor empuja al ticket medio-alto, y el CTA verde de WhatsApp cierra sin pedir clic a landing.",
+  "fondo": {
+    "tipo": "degradado_radial_saturado",
+    "centro": "{{PALETA_MEDIO}}",
+    "borde": "{{PALETA_OSCURA}}",
+    "elemento": "halo o rayos de luz irradiando desde detras del producto, en {{PALETA_CLARO}}",
+    "funcion": "el halo separa las dos fotos y jerarquiza el producto sobre ellas"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "monocromatica saturada ({{PALETA_ACENTO}} en 3 tonos) mas blanco en cards y texto mas verde exclusivo del CTA de WhatsApp"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{HOOK}}",
+      "estilo": "Black/900 uppercase blanco con signos de exclamacion de apertura y cierre",
+      "restriccion_palabras": "3-5 palabras",
+      "formato_obligatorio": "despedida del problema: formula de adios al sintoma"
+    },
+    "banda_producto": {
+      "posicion": "bajo el titular, ancho completo",
+      "contenedor": "banda oscura translucida",
+      "texto": "{{PRODUCTO}} {{DESCRIPTOR}} {{PRESENTACION}}",
+      "estilo": "Regular con la presentacion en Bold",
+      "restriccion_palabras": "5-8 palabras"
+    },
+    "foto_antes": {
+      "posicion": "izquierda_media",
+      "escala": "22% del frame",
+      "contenido": "{{FOTO_ZONA_ANTES}}",
+      "label": "ANTES",
+      "formato_label": "pildora {{PALETA_ACENTO}} con texto Bold uppercase, en la esquina superior de la foto",
+      "regla": "misma zona del cuerpo, mismo encuadre y misma iluminacion que la foto DESPUES"
+    },
+    "foto_despues": {
+      "posicion": "derecha_media",
+      "escala": "22% del frame",
+      "contenido": "{{FOTO_ZONA_DESPUES}}",
+      "label": "DESPUES",
+      "formato_label": "pildora {{PALETA_ACENTO}} con texto Bold uppercase, en la esquina superior de la foto",
+      "regla": "el cambio debe ser visible entrecerrando los ojos, sin leer los labels"
+    },
+    "producto_hero": {
+      "posicion": "centro, sobre la costura entre las dos fotos",
+      "escala": "35% del frame",
+      "composicion": "caja de pie mas envase abierto o de perfil delante",
+      "fuente": "IMAGEN_2",
+      "regla": "el producto se planta EN el medio y tapa la union de las dos fotos"
+    },
+    "fila_beneficios": {
+      "posicion": "media_baja, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal de cards blancas redondeadas",
+      "formato_item": "icono circular {{PALETA_ACENTO}} mas texto Bold de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "escalera_precios": {
+      "posicion": "inferior_media, ancho completo",
+      "tiers": 3,
+      "formato_tier": "card blanca redondeada con la cantidad arriba y el precio Black gigante debajo",
+      "tier_1": "{{CANT_1}} POR {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} POR {{MONEDA}}{{PRECIO_2}}",
+      "tier_3": "{{CANT_3}} POR {{MONEDA}}{{PRECIO_3}}",
+      "etiquetas": "el tier 2 lleva {{ETIQUETA_SOCIAL}} y el tier 3 {{ETIQUETA_AHORRO}}, en pildora sobre el borde superior de la card",
+      "funcion": "anclaje de 3 puntos: el tier 1 existe para que el 2 parezca la decision obvia"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono mas TITULO Bold mas subtitulo regular",
+      "items": "{{GARANTIAS[3]}}",
+      "regla_item_3": "incluye silueta o bandera de {{PAIS}}"
+    },
+    "cta_whatsapp": {
+      "posicion": "inferior extremo, ancho completo",
+      "contenedor": "barra verde WhatsApp con logo circular blanco a la izquierda",
+      "linea_1": "{{CTA_L1}}",
+      "linea_2": "{{CTA_L2}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "restriccion_palabras_l1": "2-4 palabras",
+      "regla": "el verde aparece solo aca"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "foto_antes",
+    "foto_despues",
+    "producto_hero",
+    "fila_beneficios",
+    "escalera_precios",
+    "cta_whatsapp"
+  ],
+  "reglas_duras": [
+    "Las dos fotos son de la misma zona, mismo encuadre y misma iluminacion: si cambia el encuadre, el lector lee dos personas y no una transformacion",
+    "El producto se planta en el centro tapando la union de las dos fotos",
+    "Los labels ANTES y DESPUES van en la esquina superior de su foto",
+    "El verde se usa solo en la barra de WhatsApp",
+    "Siempre 3 tiers de precio, y la etiqueta mas atractiva va en el tier 2",
+    "El cambio entre las dos fotos debe leerse entrecerrando los ojos, sin leer los labels"
+  ],
+  "variables_requeridas": [
+    "HOOK",
+    "PRODUCTO",
+    "DESCRIPTOR",
+    "PRESENTACION",
+    "FOTO_ZONA_ANTES",
+    "FOTO_ZONA_DESPUES",
+    "BENEFICIOS[3]",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "MONEDA",
+    "ETIQUETA_SOCIAL",
+    "ETIQUETA_AHORRO",
+    "GARANTIAS[3]",
+    "CTA_L1",
+    "CTA_L2",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "resultado visible en una zona fotografiable (piel, abdomen, piernas, cabello, unas)",
+    "producto topico o de aplicacion local, donde el antes/despues es honesto",
+    "cuando hay margen para 3 tiers de precio",
+    "cierre por WhatsApp"
+  ],
+  "cuando_no_usar": [
+    "problemas internos o invisibles: no hay zona que fotografiar",
+    "cuando no existe material de antes/despues creible",
+    "publico frio que todavia no nombro el problema"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio.",
+    "Etiquetas de valor en la escalera: MAS VENDIDO en el tier 2 y MEJOR OFERTA en el tier 3.",
+    "Barra de garantias: ENVIO GRATIS A TODO GUATEMALA, PAGO CONTRA ENTREGA, COBERTURA EN GUATEMALA con silueta del pais."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

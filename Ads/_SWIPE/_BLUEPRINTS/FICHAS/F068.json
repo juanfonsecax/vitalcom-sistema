@@ -1,0 +1,186 @@
+{
+  "ficha_id": "F068",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Trendora/11_1794409161883168.jpg",
+    "anunciante": "Trendora",
+    "ad_archive_id": "1794409161883168",
+    "dias_activo": 11,
+    "replicas": 1,
+    "score": 36,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL ANTES/DESPUES EN MACRO CON LAS LISTAS DE EQUIS Y CHECKS BAJO CADA LADO. Dos fotografias en primer plano extremo de la misma zona, partidas por el producto plantado en el centro, y bajo cada una una lista de tres items: equis rojas a la izquierda, checks verdes a la derecha. El encuadre macro hace que el detalle ocupe todo el ancho de su mitad.",
+  "lectura_estrategica": "El antes/despues llevado al maximo detalle: al fotografiar en macro, el cambio no necesita senalarse porque llena la mitad del frame. Las dos listas convierten lo visual en verbal — la izquierda nombra los tres defectos que se ven en la foto, la derecha los tres estados que se ven en la otra — de modo que la comparacion se lee dos veces. El titular no promete resultado sino ACCION INMEDIATA (empieza hoy el cuidado que necesitan), y la linea bajo el producto usa el verbo INCORPORA para posicionarlo como rutina y no como cura.",
+  "fondo": {
+    "tipo": "color_plano_blanco_con_props",
+    "color": "blanco",
+    "elementos": "hojas verdes desenfocadas entrando por las esquinas superiores",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde (titular, banda del label DESPUES, banda del pie) mas {{COLOR_ALERTA}} rojo (banda del label ANTES y equis) mas blanco (fondo) mas los tonos de la zona fotografiada"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_accion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "linea_1": "{{IMPERATIVO_TEMPORAL}}",
+      "linea_2": "{{CONECTOR}}",
+      "linea_3": "{{OBJETO_ACENTO}}",
+      "estilo_l1": "Black/900 {{PALETA_OSCURA}}",
+      "estilo_l2": "Regular oscuro al 55% de L1",
+      "estilo_l3": "Black/900 blanco sobre banda {{PALETA_OSCURA}} redondeada",
+      "restriccion_palabras_total": "6-8 palabras",
+      "formato_obligatorio": "imperativo con HOY mas lo que la zona NECESITA",
+      "regla": "promete ACCION inmediata, no resultado: empieza hoy el cuidado que necesitan"
+    },
+    "label_antes": {
+      "posicion": "izquierda, sobre la primera foto",
+      "contenedor": "banda {{COLOR_ALERTA}} solida de ancho completo de su mitad",
+      "texto": "ANTES",
+      "estilo": "Black/900 uppercase blanco"
+    },
+    "label_despues": {
+      "posicion": "derecha, sobre la segunda foto",
+      "contenedor": "banda {{PALETA_OSCURA}} solida de ancho completo de su mitad",
+      "texto": "DESPUES",
+      "estilo": "Black/900 uppercase blanco",
+      "regla": "los dos labels van en banda de ancho completo y a la misma altura, no en pildora"
+    },
+    "foto_antes": {
+      "posicion": "izquierda_media",
+      "contenido": "{{FOTO_MACRO_ANTES}}",
+      "escala": "24% del frame",
+      "tratamiento": "PRIMER PLANO EXTREMO de la zona afectada, ocupando todo el ancho de su mitad",
+      "regla": "el encuadre macro hace que el cambio no necesite senalarse: llena la mitad del frame"
+    },
+    "foto_despues": {
+      "posicion": "derecha_media",
+      "contenido": "{{FOTO_MACRO_DESPUES}}",
+      "escala": "24% del frame",
+      "tratamiento": "el MISMO encuadre macro de la misma zona en estado sano",
+      "regla": "mismo angulo, misma distancia y misma luz que la foto ANTES"
+    },
+    "producto_hero": {
+      "posicion": "centro, sobre la costura entre las dos fotos",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente, plantado sobre la union",
+      "fuente": "IMAGEN_2"
+    },
+    "lista_defectos": {
+      "posicion": "izquierda_baja, bajo la foto ANTES",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "EQUIS blanca en circulo {{COLOR_ALERTA}} mas texto Regular oscuro",
+      "items": "{{DEFECTOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "nombra los tres defectos que se VEN en la foto de arriba: convierte lo visual en verbal"
+    },
+    "lista_estados": {
+      "posicion": "derecha_baja, bajo la foto DESPUES",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "CHECK blanco en circulo {{PALETA_OSCURA}} mas texto Regular oscuro",
+      "items": "{{ESTADOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla": "espejo exacto de la lista izquierda: mismo numero de items y misma longitud"
+    },
+    "linea_rutina": {
+      "posicion": "bajo las dos listas, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{VERBO_INCORPORAR}} {{PRODUCTO}}",
+      "linea_2": "{{FRECUENCIA}}",
+      "estilo_l1": "Bold oscuro con el producto en Black/900",
+      "estilo_l2": "Regular oscuro",
+      "restriccion_palabras": "4-6 palabras por linea",
+      "regla_critica": "el verbo INCORPORA posiciona el producto como rutina y no como cura"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "cantidad_items": 2,
+      "formato_item": "icono line-art blanco mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_accion",
+    "foto_antes",
+    "foto_despues",
+    "producto_hero",
+    "lista_defectos",
+    "lista_estados",
+    "linea_rutina",
+    "barra_garantias"
+  ],
+  "reglas_duras": [
+    "Las dos fotos van en primer plano extremo, ocupando todo el ancho de su mitad",
+    "Mismo angulo, misma distancia y misma luz en las dos tomas",
+    "Los labels van en banda de ancho completo y a la misma altura, no en pildora",
+    "El producto se planta sobre la costura entre las dos fotos",
+    "Las dos listas son espejo: mismo numero de items y misma longitud",
+    "El titular promete accion inmediata, no resultado",
+    "El verbo INCORPORA posiciona el producto como rutina"
+  ],
+  "variables_requeridas": [
+    "IMPERATIVO_TEMPORAL",
+    "CONECTOR",
+    "OBJETO_ACENTO",
+    "FOTO_MACRO_ANTES",
+    "FOTO_MACRO_DESPUES",
+    "DEFECTOS[3]",
+    "ESTADOS[3]",
+    "VERBO_INCORPORAR",
+    "PRODUCTO",
+    "FRECUENCIA",
+    "GARANTIAS[2]",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "zonas pequenas que se pueden fotografiar en macro (unas, dientes, poros, cuero cabelludo)",
+    "cuando el cambio es de textura o color y necesita detalle para leerse",
+    "cuando existen dos tomas macro con el mismo encuadre",
+    "productos de rutina diaria"
+  ],
+  "cuando_no_usar": [
+    "zonas grandes donde el macro pierde el contexto",
+    "cuando no hay dos tomas con el mismo encuadre",
+    "publico frio que no reconoce el defecto"
+  ],
+  "sellos_y_claims_observados": [
+    "Defectos listados: OPACA Y AMARILLENTA, UNAS DEBILES Y QUEBRADIZAS, ASPECTO DESCUIDADO.",
+    "Estados listados: MAS LIMPIA Y SALUDABLE, UNAS MAS FUERTES, MEJOR APARIENCIA.",
+    "Linea de rutina INCORPORA EL SERUM ANTIHONGOS A TU RUTINA DIARIA.",
+    "Barra de garantias ENVIO GRATIS A TODA GUATEMALA y PAGO CONTRA ENTREGA.",
+    "Claims impresos en el empaque: 7 DAYS NAIL FUNGUS TREATMENT, ALL NATURAL FORMULA, Net 30ml / 1.0 fl.oz."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

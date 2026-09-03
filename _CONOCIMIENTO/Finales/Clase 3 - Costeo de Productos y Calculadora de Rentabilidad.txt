@@ -1,0 +1,320 @@
+============================================================
+CLASE 3 — COSTEO DE PRODUCTOS Y CALCULADORA DE RENTABILIDAD
+Instructora: Mercy Pardo
+============================================================
+
+---
+
+## 🎯 IDEA CENTRAL DE LA CLASE
+
+Esta clase es FUNDAMENTAL para la salud financiera del negocio. Mercy presenta y explica en detalle su calculadora de costeo (tabla de Excel formulada) que permite determinar exactamente cuánto se gana por unidad vendida, considerando TODOS los costos reales: precio del proveedor, envío, CPA, gastos administrativos, descartados y devoluciones. La clase demuestra que incluso con CPAs altos, se puede ser rentable si se vende en volumen, y establece la estrategia de precios de múltiples unidades para maximizar el ticket promedio. El mensaje central: "Costear bien es la diferencia entre ganar dinero y creer que estás ganando dinero."
+
+---
+
+## 📚 RESUMEN COMPLETO (Sección por Sección)
+
+### BLOQUE 1: Estructura de la Calculadora de Costeo
+
+Mercy presenta una calculadora de Excel totalmente formulada donde el usuario SOLO necesita modificar los campos superiores y todo se calcula automáticamente abajo. Los campos que se deben llenar son:
+
+**Datos de entrada (lo único que se modifica):**
+- Precio del producto (costo del proveedor)
+- Costo de envío real (ej: $18,000 COP)
+- CPA estimado (costo por adquisición)
+- Gastos administrativos por pedido
+
+**Ejemplo usado en la clase:**
+- Producto: Cápsulas de vinagre de manzana
+- Costo proveedor: $14,000 COP
+- Costo de envío real: $18,000 COP
+- CPA estimado: $7,000 COP
+- Gastos administrativos: $2,000 COP (incluye IA, nómina, herramientas)
+
+### BLOQUE 2: Estrategia de Precios — Precio Publicación vs Precio Flete
+
+Mercy detalla las tres estrategias de publicación:
+
+**Estrategia 1 (FAVORITA): Precio unitario + envío separado**
+- Publicar a $49,900 + $15,000 de envío = Total $64,900
+- El precio del flete al cliente ($15,000) es MENOR al costo real ($18,000)
+- ¿Por qué $15,000 y no $18,000? Para que el cliente no se asuste
+- INTENCIÓN: Que el cliente diga "mejor compro la segunda unidad en vez de pagar $15,000 de envío"
+- Ventaja: El precio de $49,900 es más atractivo que la competencia que publica a $74,900
+- "Todo tiene una intención. Cada cosa es intencional."
+
+**Estrategia 2: Precio total con envío incluido**
+- Publicar precio total sin desglosar envío
+
+**Estrategia 3: Sin precio en el anuncio**
+- Para ciertos productos o audiencias
+
+**¿Por qué la estrategia 1 es la favorita?** Porque permite:
+1. Atraer público con precio bajo visible ($49,900)
+2. Hacer filtro (quien ve ese precio y hace clic, ya aceptó gastarlo)
+3. La competencia con CPA de $17,000 publicitaria publica a $74,900-$79,900
+4. Impulsar la compra de segunda unidad (el envío "se ahorra")
+
+### BLOQUE 3: Entendiendo Descartados y Devoluciones
+
+**Descartados (cancelaciones antes de enviar):**
+- Porcentaje típico: 13-14%
+- Para entregar 100 pedidos, se necesita VENDER 115
+- 15 se descartan por verificación de huella digital del cliente
+- IMPORTANTE: SIEMPRE verificar la huella digital del cliente antes de enviar
+- Si un cliente tiene 10 pedidos y devolvió 5, NO le envías
+- Dropy ahora facilita la verificación
+
+**Devoluciones (producto enviado pero devuelto):**
+- Porcentaje típico: 20%
+- De 100 enviados, se entregan solo 80
+- Razones: cliente se arrepintió, lo vio más barato, cambió de opinión
+
+**¿Quién paga el CPA de los descartados y las devoluciones?** Los pedidos que SÍ se entregaron (los 80). Este es un concepto CRÍTICO que muchos no entienden.
+
+**Desglose del costo por devolución:**
+- CPA de los 15 descartados ($105,000 a CPA de $7,000)
+- CPA de las 20 devoluciones ($140,000 a CPA de $7,000)
+- Flete de las 20 devoluciones ($18,000 x 20 = $360,000)
+- TOTAL costos absorbidos por los 80 entregados: $605,000
+- Costo por devolución por pedido entregado: $605,000 ÷ 80 = $7,562
+
+### BLOQUE 4: Análisis de Rentabilidad por Opción
+
+**Opción 1 (1 unidad): $49,900 + $15,000 envío = $64,900**
+- Ganancia por unidad entregada: ~$16,300
+- Con 100 entregas: ~$1,630,000
+
+**Opción 2 (2 unidades): $84,900 envío gratis**
+- Ganancia por pedido: ~$21,720
+- Con 100 entregas: ~$2,172,000
+- La segunda unidad sale al cliente en $20,000 (vs $49,900 sola)
+- "La estrategia está dada para que nos compren dos o tres unidades"
+
+**Opción 3 (3 unidades): $104,900 envío gratis**
+- Ganancia por pedido: ~$28,000
+- La tercera unidad sale al cliente aún más económica
+
+**Distribución típica de compras:**
+- De 100 pedidos: ~10 compran 1 unidad, ~80 compran 2 unidades, ~10 compran 3+ unidades
+- Angicita confirma: "De pedidos en productos casi es el doble" → 100 pedidos = ~200 productos despachados
+
+### BLOQUE 5: CPA vs Volumen — No Asustarse por CPAs Altos
+
+Este es uno de los mensajes MÁS IMPORTANTES de la clase.
+
+**Escenario 1: CPA $7,000 con 100 pedidos**
+- Ganancia: $2,172,000 (opción 2)
+- "Buen escenario"
+
+**Escenario 2: CPA $12,000 (alto) con 200 pedidos**
+- Aunque el CPA es "altísimo", la ganancia por volumen sigue siendo rentable
+- Ganancia: ~$2,794,000
+- "Sigo siendo rentable aún así"
+
+**Escenario 3: CPA $7,000 pero solo 30 pedidos (por haber apagado anuncios)**
+- Ganancia: mucho menor
+- "Por querer cuidar un CPA están perdiendo dinero"
+
+**La lección:** "No se asusten si se les suben los costos. Van a terminar con menos ventas por querer cuidar un CPA." Es mejor tener CPA alto con volumen alto que CPA bajo con volumen bajo.
+
+**Ejemplo personal de Mercy:** Un domingo se fue a almorzar con la familia, no optimizó, el CPA se subió pero vendió 200+ pedidos. "Ese almuerzo me puede salir en más de 1 millón" — pero la ganancia del día lo compensó.
+
+### BLOQUE 6: Relación CPA y Porcentaje de Conversión
+
+"Es inversamente proporcional: entre más convierto, menor es mi CPA."
+
+- Si conviertes al 5%: CPA de $15,000-$20,000
+- Si conviertes al 20%+: CPA de $3,000-$7,000
+- Meta de conversión: siempre por encima del 20% en promedio
+- Hay días de 100%, 50%, pero el PROMEDIO debe estar por encima del 20%
+
+**Si estás convirtiendo por debajo del 15%:** "Presten mucha atención a su flujo de ventas." Pequeños detalles en testimonios, audio, video hacen la diferencia.
+
+**Cómo calcular porcentaje de conversión:**
+- Fórmula: (Número de ventas × 100) ÷ Total de mensajes
+- Ejemplo: 85 ventas ÷ 1,587 mensajes × 100 = 5.35%
+
+**Cómo calcular CPA:**
+- Fórmula: Total invertido ÷ Número de ventas
+- Ejemplo: $1,904,400 ÷ 235 ventas = $8,104 CPA
+
+### BLOQUE 7: Sesión de Preguntas Prácticas
+
+Mercy responde múltiples preguntas sobre situaciones reales de los participantes, cubriendo temas de logística, cuentas publicitarias, BMs, números de WhatsApp y más.
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **"La estrategia está dada para que nos compren 2 o 3 unidades"** — Toda la estructura de precios está diseñada para empujar al cliente a la opción 2 o 3. No es coincidencia, es ingeniería de ventas.
+
+2. **Los 80 entregados pagan los costos de los 35 que no se entregaron** — Si no entiendes esto, crees que estás ganando más de lo que realmente ganas.
+
+3. **No apagar anuncios por CPA alto** — "Prefiero llegar al final del día con 200 pedidos y CPA de $12,000 que con 30 pedidos y CPA de $7,000."
+
+4. **$15,000 de flete al cliente vs $18,000 real** — La diferencia de $3,000 se absorbe intencionalmente para que el cliente no se asuste y para incentivar la segunda unidad.
+
+5. **"Lo que no le pague a Meta, descuénteselo al cliente y venda en volumen"** — Si tu CPA es bajo, puedes vender más barato que la competencia y ganar por volumen.
+
+6. **21 cuentas publicitarias** — Mercy tiene 21 cuentas publicitarias y pauta desde 4 simultáneamente. "Tengan muchas, tengan muchas."
+
+7. **El CPA disminuye con mejor porcentaje de conversión** — "Antes de preguntarse cómo bajar el CPA, vayan y revisen el flujo de ventas."
+
+8. **Verificar la huella digital del cliente SIEMPRE** — Nunca enviar sin verificar. Si tiene historial de devoluciones, no enviar.
+
+9. **Contratar ayuda desde los 30 pedidos diarios** — Delegar logística para poder enfocarse en escalar.
+
+10. **Un error de logística puede costar $50,000 por pedido** — CPA + flete de devolución + ganancia perdida. 10 errores al día = $500,000 perdidos.
+
+---
+
+## 🛠️ TRUCOS, TIPS Y RECOMENDACIONES
+
+1. **Usar la calculadora de Excel formulada** — Solo modificar los campos superiores, no tocar las fórmulas de abajo.
+
+2. **Costear siempre con CPA "alto" para sorprenderse** — Mercy costea a $7,000 aunque a veces tiene CPAs de $1,000-$2,000.
+
+3. **La segunda unidad debe ser MUY atractiva en precio** — El salto de $49,900 a $84,900 por dos es clave. La segunda unidad sale en $20,000 vs $49,900 sola.
+
+4. **El tercera unidad debe salir más barata que la segunda** — Descender: primera a $49,900, segunda a $20,000, tercera a $19,000.
+
+5. **Poner precio en el creativo como filtro** — "Si tienes costos por mensaje bajísimos pero nadie compra, el problema es que no filtraste."
+
+6. **Medir CPA por ANUNCIO, no solo por campaña** — Para saber exactamente cuál anuncio escalar.
+
+7. **Si no funciona un creativo, no descartarlo** — Probarlo en otra cuenta publicitaria. "Meta a veces impulsa más un creativo que otro."
+
+8. **Cambiar el número de WhatsApp como ÚLTIMA opción** — Primero probar: otras cuentas publicitarias, otros BMs, otros perfiles. El número es lo último.
+
+9. **Mensajes de inactividad: 1-2 máximo** — Primer recordatorio a las 4-6 horas, segundo a las 8-12 horas. Respetar horarios de descanso (máximo 9 PM, mínimo 7 AM).
+
+10. **Revisar la calificación del número en Meta** — En Portafolio Comercial → Cuentas de WhatsApp → Administrador → Perfil. Si baja a media, reducir mensajes de inactividad.
+
+11. **Para productos que no son de laboratorio (ej: plateras, ropa)** — Crear combos: platero + organizador de zapatos. Misma estrategia de múltiples unidades.
+
+12. **No combinar dos bots (ej: Seller Chat + LucidBot)** — "Por ahorrar allá vas a perder acá." Enfocarse en una sola herramienta.
+
+13. **Piensa en grande desde el principio** — "No piensen que se van a quedar en 30 pedidos." Contratar ayuda asumiendo crecimiento.
+
+---
+
+## 📋 PROCESOS Y PASOS
+
+### PROCESO 1: Cómo Costear un Producto Correctamente
+
+**Paso 1:** Obtener precio del proveedor (costo de 1 unidad)
+**Paso 2:** Determinar costo real de envío (transportadora)
+**Paso 3:** Calcular o estimar CPA basado en historial o promedio
+**Paso 4:** Estimar gastos administrativos por pedido (nómina, herramientas, IA)
+**Paso 5:** Definir precio de publicación (lo que verá el cliente en el anuncio)
+**Paso 6:** Definir precio de flete al cliente (menor al real para no asustar)
+**Paso 7:** Estimar porcentaje de descartados (13-14% típico)
+**Paso 8:** Estimar porcentaje de devoluciones (20% típico)
+**Paso 9:** Calcular costo por devolución que absorben los entregados
+**Paso 10:** Calcular ganancia neta por unidad entregada
+**Paso 11:** Escalar a 100, 200, 300 pedidos para ver rentabilidad real
+**Paso 12:** Definir precios para 2, 3 y 4 unidades (cada unidad adicional más barata)
+
+### PROCESO 2: Cómo Calcular Métricas Diarias
+
+**Paso 1:** Contar total de mensajes recibidos (de Meta/LucidBot)
+**Paso 2:** Contar total de ventas cerradas
+**Paso 3:** Calcular % conversión: (ventas × 100) ÷ mensajes
+**Paso 4:** Obtener gasto publicitario total del día
+**Paso 5:** Calcular CPA: gasto total ÷ número de ventas
+**Paso 6:** Comparar CPA real con CPA estimado de la calculadora
+**Paso 7:** Si CPA real > estimado → revisar flujo de ventas
+**Paso 8:** Si conversión < 15% → revisar embudo urgentemente
+
+### PROCESO 3: Estrategia de Precios para Múltiples Unidades
+
+**Paso 1:** Definir precio unitario (ej: $49,900 + envío)
+**Paso 2:** Definir precio de 2 unidades con envío gratis (ej: $84,900)
+- La segunda unidad debe costar significativamente menos que la primera
+**Paso 3:** Definir precio de 3 unidades con envío gratis (ej: $104,900)
+- La tercera unidad más barata que la segunda
+**Paso 4:** Opcional: precio de 4 unidades (cada vez más barato por unidad)
+**Paso 5:** Verificar rentabilidad en la calculadora con cada escenario
+**Paso 6:** Asegurarse que la opción 2 sea la más "obvia" para el cliente
+
+---
+
+## ❓ PREGUNTAS Y RESPUESTAS
+
+**Pregunta:** ¿La tabla se calcula sobre ventas diarias o mensuales?
+**Respuesta:** Es sobre la operación en general. El porcentaje de devolución se basa en la operación del mes anterior. Mercy la usa con 100 pedidos como ejemplo, pero se puede poner cualquier número.
+
+**Pregunta:** ¿Aplica para productos que no son de laboratorio (multinicho)?
+**Respuesta:** Sí, la misma calculadora aplica. Para productos donde no compren dos iguales (ej: plateras), crear combos: platero + organizador. Aumentar el valor del combo.
+
+**Pregunta:** ¿Cuál es la diferencia entre costo de envío y precio de flete?
+**Respuesta:** Costo de envío = lo que realmente cobra la transportadora ($18,000). Precio de flete = lo que le dices al cliente que cuesta ($15,000). La diferencia es intencional para no asustar al cliente y motivar la compra de la segunda unidad.
+
+**Pregunta:** ¿Qué hacer si tengo costos por mensaje bajísimos pero no convierto?
+**Respuesta:** Pon el precio en el anuncio para filtrar. Si aún así sigues teniendo costos bajos, "estás ante un producto ganadorísimo." El problema está en el embudo de ventas. Revisa la primera clase.
+
+**Pregunta:** ¿Qué hacer si un anuncio tiene CPA bajo pero no convierte y otro tiene CPA alto pero sí convierte?
+**Respuesta:** Escala el que convierte. Para el que no convierte, pruébalo en otra cuenta publicitaria. Meta a veces impulsa más un creativo en una cuenta que en otra.
+
+**Pregunta:** ¿Después de cuántos pedidos contratar a alguien?
+**Respuesta:** Desde 30 pedidos diarios. Pagarle un básico + comisión por pedido. Ejemplo: $1,500,000 básico + $500 por pedido. Eso libera tu mente para enfocarte en escalar.
+
+**Pregunta:** ¿Cada cuánto los mensajes de inactividad?
+**Respuesta:** No dejarlo cada 30 minutos como viene por defecto. Ponerlo entre 4-6 horas el primero y 8-12 horas el segundo. Máximo 2 mensajes. Respetar horarios de descanso. Si la calificación de WhatsApp baja, reducir a 1 mensaje.
+
+**Pregunta:** ¿Cuántas cuentas publicitarias tener?
+**Respuesta:** Mercy tiene 21. Pauta desde 4 simultáneamente. "Tengan muchas." Si un creativo no funciona en una cuenta, probarlo en otra.
+
+---
+
+## ⚠️ ERRORES COMUNES Y ADVERTENCIAS
+
+1. **No costear las devoluciones** — El error más grave. "Si no costea la devolución, se va a llevar sorpresas."
+
+2. **Apagar anuncios por CPA alto** — Se pierden ventas potenciales. Mejor dejar correr y ganar por volumen.
+
+3. **No verificar la huella digital del cliente** — Enviar pedidos sin verificar = devoluciones evitables.
+
+4. **Ganar más en la primera unidad que en la segunda** — Debe ser al revés. La segunda debe ser MUY atractiva.
+
+5. **No medir CPA ni conversión diariamente** — "Todos los días debemos medir."
+
+6. **Tener solo una cuenta publicitaria** — Limita las opciones de testeo y escalado.
+
+7. **No poner precio en el creativo** — Si tienes muchos mensajes baratos pero no conviertes, es porque no filtras.
+
+8. **Combinar dos herramientas de automatización** — "Por ahorrar allá vas a perder acá."
+
+9. **No contratar ayuda cuando ya hay 30+ pedidos** — "Tú solita estás haciendo campañas, subiendo pedidos, haciendo logística. No te da la cabeza."
+
+10. **Errores de logística sin consecuencia** — Un error cuesta $50,000. Capacitar y responsabilizar al equipo logístico.
+
+11. **Muchos mensajes de inactividad** — Bajan la calificación del número en Meta. Máximo 2, espaciados 4-6 horas.
+
+12. **Transportadora Envía cobrando ida y vuelta** — Verificar si la transportadora está cobrando envío + devolución. Informarse antes de costear.
+
+---
+
+## 🔗 RECURSOS, HERRAMIENTAS Y REFERENCIAS
+
+- **Calculadora de Costeo (Excel)** — Tabla formulada compartida por Mercy en el grupo de WhatsApp
+- **LucidBot / Lucid Sales** — Plataforma de automatización con métricas integradas (porcentaje de cierre, CPA)
+- **Dropy** — Plataforma de dropshipping, facilita verificación de huella digital
+- **Meta Ads** — Plataforma publicitaria
+- **Transportadoras mencionadas:** Envía, Rapidísimo, Coordinadora
+- **Portafolio Comercial de Meta** — Para ver calificación del número de WhatsApp
+- **School (Skool)** — Donde están las clases grabadas y los recursos adjuntos
+
+---
+
+## 📌 CONCLUSIONES Y CIERRE
+
+La Clase 3 establece que el COSTEO CORRECTO es la base de un negocio rentable. Los puntos de cierre clave:
+
+1. **Siempre costear incluyendo descartados y devoluciones** — Los 80 pedidos entregados pagan los costos de los 35 que no llegaron
+2. **La estrategia de precios empuja a la compra de 2+ unidades** — De 100 pedidos, ~200 productos se despachan
+3. **Volumen > CPA bajo** — Mejor vender 200 con CPA alto que 30 con CPA bajo
+4. **El porcentaje de conversión determina el CPA** — Mejorar el embudo = bajar CPA automáticamente
+5. **Diversificar infraestructura** — Múltiples cuentas publicitarias, BMs, fanpages, y como último recurso números de WhatsApp
+
+Tarea pendiente: Mercy comparte la calculadora por el grupo de WhatsApp. La clase de logística vendrá próximamente. BMs verificados el 11 de mayo.

@@ -1,0 +1,193 @@
+{
+  "ficha_id": "F065",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Andromeda_Market/01_1085527623827144.jpg",
+    "anunciante": "Andromeda Market",
+    "ad_archive_id": "1085527623827144",
+    "dias_activo": 13,
+    "replicas": 1,
+    "score": 38,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": "problema-grande"
+  },
+  "dispositivo_dominante": "LOS TRES TUBOS EN ABANICO CON EL MULTIPLICADOR EN CARD DE ORO. El producto se fotografia en la cantidad exacta de la oferta — tres tubos escalonados en diagonal — y a su derecha una card negra con borde dorado lleva la expresion 3x seguida del precio, al mismo tamano. La cantidad se cuenta en la foto y se confirma en la card.",
+  "lectura_estrategica": "Cierre de despedida del sintoma: el titular es una formula de adios (adios picazon) que promete la desaparicion sin nombrar la enfermedad, y la banda inmediatamente debajo responde el CUANDO (desde la primera aplicacion), que es la segunda pregunta en cualquier problema de piel. El sello circular de formula natural va plantado sobre los tubos y no en una esquina, de modo que se lee junto con el producto. La fila de cuatro atributos al pie es toda de composicion y seguridad, que es lo que decide en pieles ya irritadas.",
+  "fondo": {
+    "tipo": "foto_naturaleza_oscurecida",
+    "base": "follaje verde profundo desenfocado con luz filtrada",
+    "elemento_derecho": "la foto del avatar mostrando la zona afectada, integrada al fondo",
+    "elementos_inferiores": "raices, rodajas del ingrediente y crema en cuenco, al pie de los tubos",
+    "regla": "el verde oscuro del follaje deja que el dorado y el blanco del texto se lean sin banda de apoyo"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "verde oscuro (fondo y tubos) mas dorado (bordes de card, sellos, precio) mas blanco (titular) mas negro (card de precio y boton)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "logo_tienda": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_TIENDA}}",
+      "escala": "16% del ancho"
+    },
+    "titular_despedida": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{FORMULA_ADIOS}}",
+      "linea_2": "{{SINTOMA_ACENTO}}",
+      "estilo": "Black/900 uppercase blanco con contorno o sombra",
+      "restriccion_palabras_total": "2 palabras",
+      "formato_obligatorio": "ADIOS mas el SINTOMA en una sola palabra",
+      "regla": "nombra el sintoma, no la enfermedad: promete la desaparicion de lo que molesta sin diagnosticar"
+    },
+    "banda_inmediatez": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda verde oscuro con borde",
+      "linea_1": "{{PROMESA_L1}}",
+      "linea_2": "{{MOMENTO_ACENTO}}",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "regla": "responde el CUANDO, que es la segunda pregunta en cualquier problema de piel"
+    },
+    "producto_hero": {
+      "posicion": "izquierda_media",
+      "escala": "40% del frame",
+      "composicion": "{{CANT}} tubos o envases escalonados en abanico diagonal, con los ingredientes en bruto al pie",
+      "fuente": "IMAGEN_2",
+      "regla_critica": "la cantidad de envases fotografiados coincide con el multiplicador de la oferta: la cantidad se cuenta en la foto y se confirma en la card"
+    },
+    "sello_formula": {
+      "posicion": "sobre los envases, centro",
+      "forma": "circular con borde dorado doble y hoja",
+      "linea_1": "{{ETIQUETA_FORMULA}}",
+      "linea_2": "{{CLAIM_VELOCIDAD}}",
+      "estilo_l1": "Black/900 blanco",
+      "escala": "22% del ancho",
+      "regla": "va plantado SOBRE los envases y no en una esquina: se lee junto con el producto"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en circulo verde con borde mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "4-6 palabras",
+      "regla_item_3": "el ultimo declara seguridad para el tipo de piel o de usuario mas delicado"
+    },
+    "card_precio": {
+      "posicion": "derecha_baja",
+      "contenedor": "card negra con borde dorado doble",
+      "banda_superior": "{{OFERTA_LABEL}}",
+      "estilo_banda": "Bold uppercase blanco",
+      "linea_1": "{{CANT}}x {{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 en {{COLOR_ACENTO}} dorado, multiplicador y precio al MISMO tamano",
+      "regla": "multiplicador y precio en una sola expresion"
+    },
+    "fila_garantias": {
+      "posicion": "bajo la card de precio",
+      "cantidad_items": 2,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "2-3 palabras"
+    },
+    "boton_cta": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "boton negro con borde dorado y icono de carrito",
+      "texto": "{{CTA}}",
+      "estilo": "Black/900 uppercase blanco con signos de exclamacion",
+      "restriccion_palabras": "2 palabras"
+    },
+    "fila_atributos": {
+      "posicion": "inferior, ancho parcial derecho",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art verde mas texto Regular muy chico de 2 lineas",
+      "items": "{{ATRIBUTOS[4]}}",
+      "restriccion_palabras": "2-3 palabras",
+      "regla": "los cuatro son de composicion y seguridad: es lo que decide en pieles ya irritadas"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_despedida",
+    "banda_inmediatez",
+    "producto_hero",
+    "card_precio",
+    "sello_formula",
+    "columna_beneficios",
+    "boton_cta",
+    "fila_garantias",
+    "fila_atributos"
+  ],
+  "reglas_duras": [
+    "El titular nombra el sintoma en una palabra, no la enfermedad",
+    "La banda responde el cuando, inmediatamente bajo el titular",
+    "La cantidad de envases fotografiados coincide con el multiplicador",
+    "El sello de formula va plantado sobre los envases, no en una esquina",
+    "Multiplicador y precio van en una sola expresion y al mismo tamano",
+    "Los cuatro atributos del pie son de composicion y seguridad"
+  ],
+  "variables_requeridas": [
+    "LOGO_TIENDA",
+    "FORMULA_ADIOS",
+    "SINTOMA_ACENTO",
+    "PROMESA_L1",
+    "MOMENTO_ACENTO",
+    "CANT",
+    "ETIQUETA_FORMULA",
+    "CLAIM_VELOCIDAD",
+    "BENEFICIOS[3]",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "CTA",
+    "ATRIBUTOS[4]",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "sintoma de piel con nombre coloquial de una palabra (picazon, ardor, resequedad)",
+    "cuando la oferta es un multiplicador y se pueden fotografiar los envases en esa cantidad",
+    "cuando la velocidad de alivio es el argumento",
+    "publico con piel sensible donde la composicion decide"
+  ],
+  "cuando_no_usar": [
+    "sintomas sin nombre coloquial corto",
+    "cuando solo se vende una unidad: el abanico pierde sentido",
+    "publico de nivel 4 que compara activos"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular FORMULA 100% NATURAL con ALIVIO RAPIDO, plantado sobre los envases.",
+    "Beneficios: ALIVIA LA PICAZON Y LA IRRITACION, HIDRATA Y CALMA TU PIEL, FORMULA SEGURA PARA PIELES SENSIBLES.",
+    "Banda SIENTE EL ALIVIO DESDE LA PRIMERA APLICACION.",
+    "Card PRECIO ESPECIAL 3x Q249.",
+    "Garantias ENVIO GRATIS y PAGA AL RECIBIR EN CASA.",
+    "Fila de atributos: FORMULA NATURAL, APTO PARA PIELES DELICADAS, HIDRATA Y CALMA, SIN QUIMICOS AGRESIVOS.",
+    "Boton COMPRA AHORA con icono de carrito.",
+    "Claim impreso en el empaque: alivio natural para la piel, 20g."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

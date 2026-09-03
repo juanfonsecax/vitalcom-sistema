@@ -1,0 +1,110 @@
+PASADA A - orden por IMPRESIONES (alto->bajo), sin filtro de fecha.
+Tomar top 8-10 por pagina. Para la PASADA B: mismo link + boton Filters -> fecha desde hace 30 dias -> top 5.
+Generado 2026-08-17
+
+=== TANDA 01 (paginas 1-10) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1077522192100287
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1209382515586412
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=721926801013966
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1221488334374769
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1055972337589591
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=958299290704066
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=748778281658819
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=278167247359307
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1168269849703094
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=674390939100125
+
+=== TANDA 02 (paginas 11-20) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1103495619519477
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1056447134229300
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=177329772122805
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1164975106688485
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=406139122578256
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=961844860353165
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=525266630674170
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=100551869603924
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=110589728511421
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1148274688362148
+
+=== TANDA 03 (paginas 21-30) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=106065774763367
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=745749971963910
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1040742129118571
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1197314906792391
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=978133542055979
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=102131028871782
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1146883218510111
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=102226758882604
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1125291077325276
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1255092677685055
+
+=== TANDA 04 (paginas 31-40) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1140077359352414
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1271560446041080
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1261130430408943
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1316319781553607
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1397155316805219
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=100112701678768
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=969288332935678
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1731287477143279
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1209571782243281
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=101261796105090
+
+=== TANDA 05 (paginas 41-50) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=852653251270147
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1022177080979189
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=892576310599899
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1940634296169529
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=771453669393112
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1113405448517909
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=100160428451312
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=521935997676836
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=113719793728761
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1191527110700239
+
+=== TANDA 06 (paginas 51-60) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=654561735159222
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=113901625059057
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=230162010180959
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=254536447742514
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1007507119107008
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=731742993365783
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1228354480362295
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1239937042529023
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=104560062498028
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=155765610946903
+
+=== TANDA 07 (paginas 61-70) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=124853415584111
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1060986950422687
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1025703510621791
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1109686158905730
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1148112101729016
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=723628194161605
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=657554547452083
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1039648642574521
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=961874603684655
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1129268866946877
+
+=== TANDA 08 (paginas 71-80) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=101018632846447
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1240399462493735
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1092364770633187
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=314625391734887
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1270670056128370
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1142651442273602
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=112729938080369
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=171052226092465
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=122098465892002517
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=116699737988475
+
+=== TANDA 09 (paginas 81-89) ===
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=727332347138070
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1193333893861728
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1186061177914132
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=1214104918450498
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=666521673221021
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=515383881655629
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=679576038568351
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=979370288595143
+https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=GT&media_type=all&search_type=page&sort_data[mode]=total_impressions&sort_data[direction]=desc&view_all_page_id=662497783616895

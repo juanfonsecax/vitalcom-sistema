@@ -1,0 +1,65 @@
+page_id|nombre|ads_activos|ya_tomados|profundidad_objetivo|nota
+1239937042529023|Trendora|109|16|5|BAZAR-superficie-DONE
+674390939100125|VitalBio|102|17|18|
+1077522192100287|Dr. Felipe Flores|60|20|18|DONE
+1055972337589591|Aranza Glow|58|13|18|
+406139122578256|Tiendas KetsalStore|50|17|18|
+100112701678768|Tu oferta Online|45|16|5|BAZAR-superficie-DONE
+1164975106688485|Camila Recomienda|43|6|18|DONE-agotada(solo 6 grupos activos)
+104560062498028|RyR Importaciones|39|15|5|BAZAR-superficie-DONE
+662497783616895|Rincon de las Ventas Online|33|16|18|DONE
+721926801013966|Guate compra|31|18|18|DONE
+1186061177914132|Doctora Patricia Morales|31|15|18|DONE
+1148274688362148|Flor Expres GT|29|11|14|DONE
+155765610946903|Valle Lo Vende|25|13|14|DONE
+1039648642574521|Clickazogt|21|18|14|DONE
+748778281658819|Mi Camino al Bienestar|20|16|14|DONE
+106065774763367|Topishop|19|14|14|DONE
+654561735159222|Suplementos Naturales Guatemala|17|17|14|DONE
+1007507119107008|FrezNova|17|14|14|DONE
+679576038568351|Loopi Colombia|17|9|14|DONE-agotada
+979370288595143|Megacomprasgt|17|10|5|BAZAR-superficie-DONE
+177329772122805|Leyna Dolch Filandro|16|10|14|DONE-agotada(todo ya visto)
+1271560446041080|CasaClick|15|15|14|DONE
+1228354480362295|Roxana Recomienda|13|13|10|DONE
+102131028871782|Easy Click Store|12|6|10|DONE-agotada
+745749971963910|Aurora GT|10|9|10|DONE
+1125291077325276||10|0|10|SIN_DATOS(pagina no devolvio resultados, revisar page_id)
+852653251270147|Dona Oferta|10|10|10|DONE
+113719793728761|Valestoreteam|10|10|10|DONE
+657554547452083|YoHa|10|7|10|DONE-agotada
+961874603684655|Guatestore|10|13|10|DONE
+1092364770633187|Dra Sofia Alejandra Morales|10|2|10|DONE-agotada(solo 2 ads)
+771453669393112|El Oferton Guatemala|9|9|10|DONE-agotada
+122098465892002517|Ixchel Store GT|9|9|10|DONE-agotada
+727332347138070|Teyra|9|18|10|DONE
+1255092677685055|Tienda de Don Gato|8|8|10|DONE-agotada
+521935997676836|Karen R Quetzaltenango|8|8|10|CONFIRMADO-sin-ganador(8/8 vistos, max3d)
+171052226092465|Salud y Bienestar con Dulet|8|8|10|CONFIRMADO-sin-ganador(8/8 vistos, max5d)
+525266630674170|Natural Vida Sana|7|7|7|CONFIRMADO-sin-ganador(7/7 vistos, max16d)
+1025703510621791|Ovejita Shop|7|7|7|DONE-ganador37d
+1109686158905730|Ovejitas Lab|7|6|7|DONE-ganador27d
+1270670056128370|Nova Market GT|7|2|5|BAZAR-superficie
+1214104918450498|Salud y bienestar Guatemala|7|5|7|CONFIRMADO-sin-ganador(5/5 vistos, max13d)
+110589728511421|Verdevital|6|6|6|CONFIRMADO-sin-ganador(6/6 vistos, max2d)
+1022177080979189|GoMarket|6|4|6|DONE-ganador23d
+892576310599899|Eco Quetzal Shop|6|7|6|CONFIRMADO-sin-ganador(7/7 vistos, max8d — caso auditado, no habia ganador oculto)
+124853415584111|Dapaju|6|6|6|CONFIRMADO-sin-ganador(6/6 vistos, max10d)
+112729938080369|SupleNat|6|6|6|CONFIRMADO-sin-ganador(6/6 vistos, max18d, 5/6 son catalogo dinamico)
+978133542055979|Andromeda Market|5|7|5|CONFIRMADO-sin-ganador(7/7 vistos, max13d)
+1316319781553607|Natura Shoppy Guatemala|5|5|5|CONFIRMADO-sin-ganador(5/5 vistos, max7d)
+1940634296169529|Isla Everyday Wellness|5|5|5|CONFIRMADO-sin-ganador(5/5 vistos, max13d)
+1113405448517909|Que Chilero|5|5|5|CONFIRMADO-sin-ganador(5/5 vistos, max10d)
+1148112101729016|Dra Andrea Sofia Morales|5|2|5|CONFIRMADO-sin-ganador(2/2 vistos, max5d, 100% catalogo)
+723628194161605|NISTY|5|5|5|CONFIRMADO-sin-ganador(5/5 vistos, max3d)
+1129268866946877|Transforma Tu Bienestar|5|5|5|CONFIRMADO-sin-ganador(5/5 vistos, max5d)
+1142651442273602|Bienestar digestivo 360|5|5|5|CONFIRMADO-sin-ganador(5/5 vistos, max5d, 100% catalogo)
+666521673221021|Compra GT|5|4|5|DONE-ganador266d
+1140077359352414|Medicina Alternativa|4|1|4|CONFIRMADO-sin-ganador(1/1 visto, max7d)
+101261796105090|Vida Natural|4|4|4|CONFIRMADO-sin-ganador(4/4 vistos, max13d)
+1191527110700239|Mundohome|4|2|5|BAZAR-superficie
+230162010180959|Natural Pro Guatemala|4|4|4|CONFIRMADO-sin-ganador(4/4 vistos, max3d)
+1040742129118571|Luceselect GT|3|2|5|BAZAR-superficie
+1240399462493735|BC Market GT|3|3|3|CONFIRMADO-sin-ganador(3/3 vistos, max5d)
+515383881655629|Body Care Market|3|3|3|CONFIRMADO-sin-ganador(3/3 vistos, max6d)
+116699737988475|A Domicilio|2|1|2|CONFIRMADO-sin-ganador(1/1 visto, max5d)

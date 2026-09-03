@@ -1,0 +1,198 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA — 2026-08-14 · CIERRE DEL HUECO 11→13 AGO + MIGRACIÓN DE NOMBRES
+═══════════════════════════════════════════════════════════════════════════
+Entradas del operador: 2 exports de LucidSales (cuenta A y cuenta B, 11-13 ago)
++ 1 export de órdenes de Dropi (01→13 ago, 137 órdenes).
+SOLO LECTURA + RECOMENDACIÓN. No se tocó ninguna campaña por MCP.
+
+┌─ 1) INTEGRIDAD DE VENTANA ──────────────────────────────────────────────┐
+│ ✅ VENTANA COMPLETA: 17-jul → 13-ago, 27 días, SIN HUECOS.               │
+│ El 11-ago quedó marcado 🔴 en la bitácora la noche del 12; se cierra hoy │
+│ dentro del agregado 11→13.                                              │
+│ ⚠️ Los 3 días entran AGREGADOS (un solo export de 3 días por cuenta) →   │
+│    no hay resolución diaria en este tramo: no se puede leer tendencia    │
+│    día a día ni detectar fatiga dentro de la ventana. Solo agregados.    │
+│ ⚠️ TRAMO NO MADURADO: el COD tarda ~3 días y 52 de las 137 órdenes de    │
+│    Dropi siguen en tránsito. Las 38 ventas de 11-13 son un PISO —        │
+│    LucidSales reajusta retroactivo hacia arriba. No cerrar juicios.      │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 2) VERIFICACIÓN ANTI-DUPLICADO (APR-020 / APR-021) ────────────────────┐
+│ Los dos exports son de CUENTAS DISTINTAS de LucidSales. Verificado antes │
+│ de cargar, no asumido:                                                   │
+│   · adId cuenta A: 63 · adId cuenta B: 56 · INTERSECCIÓN: **0**          │
+│   · adId ya presentes en _FACT_VENTAS: 0 de 119                          │
+│   · filas previas con ventana_ini=2026-08-11: 0                          │
+│   · contigüidad POR FUENTE: ambas fuentes cerraban el 10-ago → el 11 es  │
+│     el día siguiente, sin solape. Ambas entran BASE y AMBAS SUMAN.       │
+│ Cuál es cuál (se distinguen por las campañas, no por el nombre de        │
+│ archivo — el operador mandó los dos con el mismo nombre):                 │
+│   · `report-2026-08-11-2026-08-13.xlsx`     → **cuenta A** (`LucidSales`)│
+│     campañas VIEJAS: 2🟦/3🟦/4🟦 TINIDROP, 🟩 CLEARSTEM - WP - NEW TEST,  │
+│     NUSAVAB12_ESCALA_ARDOR_20260715, TINNIDROP_RENOVACION_20260725.      │
+│   · `report-2026-08-11-2026-08-13 (1).xlsx` → **cuenta B**               │
+│     (`LucidSales_CuentaB`) campañas NUEVAS `*_20260812` + VARICOSE.      │
+│ CP1 (1346891653335162) aparece SOLO en la cuenta A, 4 filas, spend crudo │
+│ 53,233 COP → normalizado ÷4050 = **$13.14**. Sin normalizar, el CPA del  │
+│ portafolio entero habría salido destrozado.                              │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 3) ⭐ RESPUESTA A LA PREGUNTA ABIERTA DEL 12-AGO ───────────────────────┐
+│ PREGUNTA: "¿TINNIDROP se movió de GTR0 a GTR7/GTR1? GTR0 salía con $0."  │
+│ RESPUESTA (la da la data, no el operador): **NO se movió — se DUPLICÓ    │
+│ la estructura entera del portafolio a la convención de nombres.**        │
+│ El 12-ago aparecen 6 campañas nuevas, TODAS con el patrón               │
+│ [CUENTA]_[PRODUCTO]_[FASE]_[YYYYMMDD] de CLAUDE.md regla 23:            │
+│   GTR0_TINNIDROP_ESCALA_20260812 · GTR1_TINNIDROP_ESCALA_20260812 ·      │
+│   GTR7_TINNIDROP_ESCALA_20260812 · GTR13_CLEARSTEM_ESCALA_20260812 ·     │
+│   GTR7_NUSAVA_ESCALA-ARDOR_20260812 · GTR7_VARICOSE_ESCALA-VERGUENZA_    │
+│   20260812                                                               │
+│ y sus 29 conjuntos ya vienen nombrados                                   │
+│ [CUENTA]_[PRODUCTO]_[ANGULO]_R[N] (ej. GTR0_TINNIDROP_PERDIDA-AUDITIVA_  │
+│ _R3 +25AÑOS). **Se acabaron los "- Copia" anónimos.** Esto es exactamente │
+│ lo que el sistema venía pidiendo desde el 01-ago.                        │
+│                                                                           │
+│ Por qué el MCP mostraba $0 el 12: las campañas nuevas se crearon ESE día  │
+│ y aún no habían gastado al momento de leer; las viejas de GTR0 sí         │
+│ estaban gastando pero el MCP las devolvió sin datos en `last_7d`. Las     │
+│ VIEJAS siguen vivas y gastando — no fue una migración con apagado.        │
+│                                                                           │
+│ 🔴 CONSECUENCIA QUE HAY QUE DECIDIR: hoy CONVIVEN las dos estructuras.    │
+│ En 11-13 ago corrieron EN PARALELO sobre los mismos ángulos:             │
+│     campañas VIEJAS  → Q1,258 · 29 ventas · CPA Q43                      │
+│     campañas NUEVAS  → Q  532 ·  9 ventas · CPA Q59                      │
+│ No es que las nuevas sean peores: arrancaron el 12 y están en aprendizaje │
+│ (Meta reinicia el aprendizaje con cada objeto nuevo). Pero el ángulo se   │
+│ está financiando dos veces desde dos campañas, y eso ENSUCIA la lectura   │
+│ por ángulo y compite consigo mismo en la subasta.                        │
+│ → RECOMENDACIÓN: elegir UNA estructura por ángulo y apagar la otra. Lo    │
+│   sensato es dejar correr las NUEVAS (ya tienen la nomenclatura y por     │
+│   tanto el CSV las lee bien) y apagar las viejas por ángulo, DE A UNA,    │
+│   no todas de golpe — TINNIDROP viejo está a CPA Q43 y es el que paga la  │
+│   luz. NO apagar nada hoy: dejar que las nuevas salgan de aprendizaje     │
+│   (2-3 días) y comparar el 16-17 ago con data madurada.                  │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 4) P&L — VENTANA 11-13 AGO (3 días) ──────────────────────────────────┐
+│ | Producto  | Ventas | Pauta Q | Ingreso Q | CPA    | Break-Even | Ganancia |
+│ |-----------|--------|---------|-----------|--------|------------|----------|
+│ | TINNIDROP |     20 |     865 |      4300 | Q43.3  | Q94.60  🟢 |   +1,041 |
+│ | CLEARSTEM |     15 |     529 |      3343 | Q35.3  | Q103.18 🟢 |   +1,015 |
+│ | NUSAVA    |      3 |     220 |       807 | Q73.2  | Q98.76  🟡 |      +77 |
+│ | VARICOSE  |      0 |     176 |         0 | —      | Q93.95  🔴 |     −176 |
+│ | TOTAL     |     38 |   1,790 |     8,450 | Q47.1  | —          | **+1,957** |
+│ ROAS 4.72 · Q597/día de pauta · 12.7 ventas/día · **Q+652/día**          │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 5) ‼️ HALLAZGO — SE ROMPIÓ EL TECHO DE GASTO, Y A FAVOR ───────────────┐
+│ Serie completa de 27 días, ordenada por gasto/día:                       │
+│   17-30 jul   (13d)  Q478/día · CPA Q53.1 ·  9.0 v/día → Q+386/día       │
+│   31jul-02ago (3d)   Q478/día · CPA Q42.2 · 11.3 v/día → Q+664/día       │
+│   03-10 ago   (8d)   Q218/día · CPA Q28.6 ·  7.6 v/día → Q+512/día       │
+│   11-13 ago   (3d)   **Q597/día** · CPA Q47.1 · **12.7 v/día** → **Q+652/día** │
+│                                                                           │
+│ Lectura: 11-13 ago es el tramo de MAYOR GASTO de toda la serie (+25%      │
+│ sobre el techo anterior de Q478) y sostuvo Q+652/día de ganancia, el      │
+│ segundo mejor registro, a 4 quetzales del récord. Y su CPA (Q47.1) subió  │
+│ respecto a agosto temprano pero se mantuvo MUY por debajo del break-even  │
+│ de todos los productos.                                                   │
+│ → APR-016 se CONFIRMA y se EXTIENDE: el gate es el CPA, no el monto. El   │
+│   techo demostrado sube de Q478/día a **Q597/día**. La ventana 03-10 ago  │
+│   tenía el mejor CPA de la serie (Q28.6) y aun así ganó MENOS por día que │
+│   ésta, porque gastaba menos de la mitad. Optimizar CPA sin subir volumen │
+│   deja plata en la mesa.                                                  │
+│ ⚠️ Y esto es un PISO: el tramo no maduró (52 de 137 órdenes en tránsito). │
+│ ⚠️ CONFUSOR: en este tramo se estrenaron 6 campañas nuevas (§3). Parte    │
+│   del gasto extra es el arranque en aprendizaje de esas campañas, que     │
+│   todavía no rinde. No atribuir todo el mérito al "escalado".            │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 6) ETAPA-7 — RANKING POR ÁNGULO (11-13 ago, unidad de decisión) ──────┐
+│ ✅ JOIN con _DIM_CONJUNTOS cierra 100%: 0 filas sin dimensión de las 119.│
+│                                                                           │
+│  CLEARSTEM RESISTENCIA_INSULINA_SOP  Q168   7v  Q24  ✅ ← el mejor del set│
+│  TINNIDROP ME_DIJERON_NO_CURA        Q102   4v  Q25  ✅                   │
+│  TINNIDROP ACCESIBILIDAD_MEDICO      Q113   4v  Q28  ✅                   │
+│  CLEARSTEM TESTIMONIO_RADICAL        Q 29   1v  Q29  ✅ (n=1, ruido)      │
+│  TINNIDROP DETERIORO_COGNITIVO       Q346  10v  Q35  ✅ ← más volumen     │
+│  CLEARSTEM MEDICOS_FALLARON          Q158   3v  Q53  ✅                   │
+│  CLEARSTEM ANTI_FALSIFICACION        Q174   3v  Q58  ✅                   │
+│  NUSAVA    ARDOR                     Q220   3v  Q73  🟡 al filo           │
+│  TINNIDROP PERDIDA_AUDITIVA          Q280   2v  Q140 🔴 ← ver abajo       │
+│  TINNIDROP NOCHES_SIN_DORMIR         Q 25   0v   —   (sub-testeado)       │
+│  VARICOSE  VERGUENZA_PIERNAS         Q133   0v   —   🔴                   │
+│  VARICOSE  MANCHAS_OSCURAS           Q 23   0v   —   (sub-testeado)       │
+│  VARICOSE  CALAMBRES_NOCTURNOS       Q 21   0v   —   (sub-testeado)       │
+│                                                                           │
+│ 🔴 PERDIDA_AUDITIVA — Q280 para 2 ventas (CPA Q140, 48% sobre su BE).     │
+│    Era el ganador primario del re-testeo de julio (CPA Q13.5). Esto es    │
+│    el caso literal de APR-007: ángulo con buen historial que deja de      │
+│    vender = FATIGA DE CREATIVO, no ángulo muerto. Además está corriendo   │
+│    duplicado (viejo + GTR0/GTR7_..._PERDIDA-AUDITIVA_R1..R4) → parte del  │
+│    CPA alto es que se está comprando a sí mismo. NO apagar el ángulo:     │
+│    renovar creativo y resolver la duplicación de §3 primero.              │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 7) VARICOSE — el único que sangra ────────────────────────────────────┐
+│ 11-13 ago: Q176 de pauta, **0 ventas**, 65 mensajes. −Q176.              │
+│ Acumulado desde el relanzamiento del 01-ago (13 días):                   │
+│   VERGUENZA_PIERNAS   Q426 · 4v · 178 msj · CPA Q106 · PD 474% 🔴        │
+│   MANCHAS_OSCURAS     Q 97 · 1v ·  48 msj · CPA Q97  · PD 108%           │
+│   CALAMBRES_NOCTURNOS Q 95 · 1v ·  23 msj · CPA Q95  · PD 106%           │
+│   MIEDO_CIRUGIA       Q 74 · 0v ·  49 msj · PD 83% (aún sub-testeado)    │
+│   TOTAL Q692 · 6 ventas · CPA Q115 contra BE Q93.95 → **sobre break-even**│
+│ Los 3 primeros ya gastaron su Presupuesto de Decisión y ninguno baja del  │
+│ BE. VERGUENZA_PIERNAS lleva 4.7× su PD.                                  │
+│ ⚠️ PERO: 178 mensajes y 4 ventas en VERGUENZA_PIERNAS = 2.2% de cierre.   │
+│    El problema NO parece ser el ángulo (trae conversación de sobra): es   │
+│    lo que pasa DESPUÉS del clic. Antes de matar el ángulo ganador         │
+│    histórico, revisar el bot: precio (2x1 Q249 / 4x Q389, sin escalón de  │
+│    entrada barato) y qué se le responde a esos 178 que escribieron.       │
+│ → ACCIÓN SUGERIDA: bajar VARICOSE a presupuesto mínimo mientras se        │
+│   revisa el bot, en vez de apagarlo o de seguir pagando Q59/día por 0.    │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 8) DROPI — tasa de entrega refrescada ────────────────────────────────┐
+│ Export `ordenes_productos_20260814_093912.xlsx`, 137 órdenes, 01→13 ago.  │
+│ SUPERSEDE la fila 2026-08 anterior (67 órdenes): es el MISMO cohorte      │
+│ re-medido con más maduración + 3 lotes nuevos, no órdenes adicionales.    │
+│ Se REEMPLAZÓ, no se sumó.                                                │
+│   CLEARSTEM 16 ent /  0 dev / 13 tránsito → 100.0% (n=16, indicativa)     │
+│   TINNIDROP 50 ent /  3 dev / 33 tránsito →  94.3% (n=53, ya utilizable)  │
+│   NUSAVA     9 ent /  3 dev /  5 tránsito →  75.0% (n=12, indicativa)     │
+│   VARICOSE   4 ent /  0 dev /  1 tránsito → 100.0% (n=4, no usar)         │
+│   GLOBAL    79 ent /  6 dev / 52 tránsito →  92.9% (85 resueltos)         │
+│ El costeo NO cambia: `gen_dashboard.py` toma la fila con MÁS resueltos y  │
+│ la serie completa 01-jul/07-ago sigue teniendo 289. Correcto — una        │
+│ ventana chica no debe inflar la ganancia de todo el portafolio.           │
+│ ✅ NUSAVA sigue siendo el peor entregador (75% vs 71.7% de la serie) →    │
+│    confirma APR-015. Su 28% de devolución sigue sin atacarse.             │
+│ ✅ LA CADENCIA DE CARGA SE ARREGLÓ: lotes el 11, 12 y 13 (20/19/31        │
+│    órdenes), tres días seguidos. El hueco de 3-4 días que se marcó el     │
+│    11-ago se corrigió. Esto es gratis y ataca la devolución (APR-018).    │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 9) QUÉ HACER — por prioridad ─────────────────────────────────────────┐
+│ 1. NO apagar nada hoy. Las 6 campañas nuevas llevan 2 días y están en    │
+│    aprendizaje; matarlas ahora es tirar el gasto de arranque.            │
+│ 2. Decidir la convivencia viejo/nuevo (§3): el 16-17 ago, con las nuevas │
+│    fuera de aprendizaje, apagar la estructura vieja ÁNGULO POR ÁNGULO.   │
+│ 3. PERDIDA_AUDITIVA: brief de renovación creativa a etapa-4 (fatiga, no  │
+│    ángulo muerto). Es el que más gasta de TINNIDROP y el que peor rinde. │
+│ 4. VARICOSE a presupuesto mínimo + revisar el bot (2.2% de cierre sobre  │
+│    178 mensajes es un problema de post-clic, no de ángulo).              │
+│ 5. Volumen a donde rinde: RESISTENCIA_INSULINA_SOP (Q24) y               │
+│    DETERIORO_COGNITIVO (Q35, 10 ventas) aguantan más presupuesto.        │
+│ 6. Pedir mañana el export del 14-ago (un solo día) para volver a         │
+│    resolución diaria — el agregado de 3 días ciega la detección de fatiga.│
+└───────────────────────────────────────────────────────────────────────────┘
+
+ARCHIVOS TOCADOS:
+  _FACT_VENTAS.csv     +119 filas BASE (63 cuenta A + 56 cuenta B), ventana 11→13
+  _DIM_CONJUNTOS.csv   +29 conjuntos de la migración, angulo_key DERIVADO del nombre
+  _TASA_ENTREGA.csv    fila 2026-08 reemplazada + 4 filas por producto
+  _EVENTOS.csv         (ya cargado el 12-ago: migración + anomalía de gasto)
+  _BITACORA_DATA.txt   filas 11-13 ago
+  _GANANCIAS.txt       bloque superior + tabla por producto + historial
+  _DASHBOARD.html      regenerado — 255 ventas · Q13,021 · 0 filas sin dimensión nuevas
+═══════════════════════════════════════════════════════════════════════════

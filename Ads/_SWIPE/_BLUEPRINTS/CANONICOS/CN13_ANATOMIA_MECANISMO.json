@@ -1,0 +1,146 @@
+{
+  "canonico_id": "CN13_ANATOMIA_MECANISMO",
+  "schema_version": "canonico-1.0",
+  "nombre": "Anatomia y mecanismo de accion",
+  "dispositivo_canonico": "EL INTERIOR DEL CUERPO SE DIBUJA Y SE ENCIENDE: el organo iluminado, la silueta digital con los puntos de accion prendidos, el sistema interno superpuesto sobre el torso del avatar, las flechas de mecanismo trazadas sobre la zona. Explica POR QUE funciona, no que resultado da.",
+  "cuando_elegirlo": "El publico ya probo cosas que fallaron y la objecion es '¿por que esto si?'. Convierte un producto mas en un mecanismo. Exige un mecanismo real que se pueda localizar en el cuerpo.",
+  "ejes_de_variacion": [
+    "material: render anatomico, ilustracion digital, silueta en movimiento",
+    "el organo puede ir SOLO, sobre el avatar, o junto a la escena de vida (F017)",
+    "flechas de recorrido dibujadas encima del cuerpo real (F047)",
+    "el producto puede ir entre la anatomia y el avatar, como puente (F087)"
+  ],
+  "n_miembros": 5,
+  "ficha_referencia": "F017",
+  "score_referencia": 106,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 5
+    },
+    "rol_embudo": {
+      "MOFU": 4,
+      "TOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 5
+    },
+    "formato": {
+      "1:1": 4,
+      "4:5": 1
+    },
+    "densidad": {
+      "media": 3,
+      "alta": 1,
+      "baja": 1
+    },
+    "nivel_conciencia_rango": [
+      2,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "ORGANO_O_SISTEMA",
+    "MATERIAL_ANATOMICO",
+    "PUNTOS_DE_ACCION",
+    "TITULAR_MECANISMO",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "BENEFICIOS[3]",
+      "CTA"
+    ],
+    "recurrentes": [
+      "CANTIDAD",
+      "FOTO_AVATAR",
+      "GARANTIAS[2]",
+      "MONEDA",
+      "PRECIO"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "No se muestra el dolor: se muestra la vida sin el",
+    "La unica referencia al problema es el grafico anatomico, del tamano de un puno",
+    "El badge de descuento es el unico elemento agresivo de la pieza",
+    "La promesa habla de vida y movilidad, no de sintoma",
+    "El sello sobre el producto va rotado, como un timbre",
+    "La fila de iconos repite lo que dijo la columna de checks: es refuerzo, no informacion nueva"
+  ],
+  "cuando_usar": [
+    "condicion cronica que el publico ya conoce y esta cansado de que le recuerden",
+    "publico 55+ donde la aspiracion es seguir activo, no dejar de doler",
+    "cuando existe grafico anatomico de la zona",
+    "cuando hay un descuento porcentual real que anunciar",
+    "productos VESTIBLES (medias, fajas, plantillas, soportes, mallas)",
+    "cuando el mecanismo es invisible y se puede representar con flechas de direccion",
+    "cuando el producto viene en variantes de color o talla",
+    "categorias donde el confort de uso prolongado es la objecion final"
+  ],
+  "cuando_no_usar": [
+    "publico de nivel 2 que todavia no nombro su condicion: necesita el sintoma explicito",
+    "cuando no hay foto de avatar en actividad positiva",
+    "productos esteticos",
+    "productos que se ingieren: no hay nada que mostrar puesto",
+    "cuando no se tiene foto del producto usado en el cuerpo",
+    "cuando el producto viene en una sola variante: el selector queda vacio"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F017",
+      "score": 106,
+      "anunciante": "Leyna Dolch Filandro",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA PAREJA MAYOR FELIZ AL FONDO, CON EL ORGANO ILUMINADO SOBRE EL PRODUCTO"
+    },
+    {
+      "ficha_id": "F047",
+      "score": 52,
+      "anunciante": "FrezNova",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL PRODUCTO PUESTO EN EL CUERPO, CON LAS FLECHAS DE MECANISMO DIBUJADAS ENCIMA"
+    },
+    {
+      "ficha_id": "F070",
+      "score": 34,
+      "anunciante": "Isla Everyday Wellness",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA SILUETA ANATOMICA DIGITAL EN MOVIMIENTO, CON LOS PUNTOS DE ACCION ENCENDIDOS"
+    },
+    {
+      "ficha_id": "F087",
+      "score": 32,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA ILUSTRACION ANATOMICA ENCENDIDA A UN LADO Y EL AVATAR AL OTRO, CON EL PRODUCTO ENTRE LOS DOS"
+    },
+    {
+      "ficha_id": "F088",
+      "score": 32,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL SISTEMA INTERNO SUPERPUESTO SOBRE EL TORSO DEL AVATAR"
+    }
+  ]
+}

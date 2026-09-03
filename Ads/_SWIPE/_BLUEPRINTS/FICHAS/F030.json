@@ -1,0 +1,112 @@
+{
+  "ficha_id": "F030",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/11_1528566351843225.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "1528566351843225",
+    "dias_activo": 10,
+    "replicas": 2,
+    "score": 60,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "no aplica",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": "ugc"
+  },
+  "dispositivo_dominante": "EL COLLAGE DE CUATRO CUADRANTES: TRES SINTOMAS FOTOGRAFIADOS Y EL PRODUCTO EN EL CUARTO. Cuatro fotos crudas de distinta procedencia, pegadas en rejilla de 2x2 sin marco ni separacion, cada sintoma con una etiqueta negra simple encima. El cuarto cuadrante rompe la serie: en vez de un sintoma, una mano sosteniendo el producto y una frase suelta de transicion.",
+  "lectura_estrategica": "Formato de publicacion casera, no de anuncio: fotos de calidad y encuadre disparejos, etiquetas de caja negra como las de un meme, cero diseno. Esa tosquedad es el mecanismo — pasa por contenido de grupo de Facebook. Los tres sintomas cubren tres zonas del cuerpo distintas para maximizar la probabilidad de que alguien se reconozca en al menos una, y el cuarto cuadrante hace de giro: TENEMOS ALGO QUE TE VA A ENCANTAR entra como recomendacion de conocida, no como oferta. Sin precio, sin garantias, sin logo.",
+  "fondo": {
+    "tipo": "rejilla_de_fotos",
+    "base": "cuatro fotos que ocupan el frame completo en 2x2",
+    "regla": "sin marco, sin margen entre celdas, sin fondo: las fotos se tocan"
+  },
+  "paleta": {
+    "derivacion": "de las fotos mismas",
+    "cantidad_colores": 2,
+    "estructura": "los colores propios de cada foto mas negro puro para las cajas de etiqueta. No se agrega ninguno"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif comun de sistema, NO condensada",
+    "pesos_permitidos": [
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "blanco sobre caja negra",
+    "regla": "tipografia de sistema, del tipo que produce cualquier editor de telefono: una tipografia de diseno delata el anuncio"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "tres zonas del cuerpo DISTINTAS con el mismo signo, mas una mano sosteniendo el producto",
+    "procedencia": "las cuatro fotos son de origen y calidad disparejos, como recopiladas y no producidas",
+    "angulo": "el que tendria alguien fotografiandose a si mismo",
+    "luz": "la de cada lugar, sin unificar entre celdas",
+    "que_se_conserva": "el desencuadre, el grano, las diferencias de color entre celdas, el fondo domestico",
+    "que_NO_se_hace": "unificar el color, agregar marco o margen, poner logo, poner precio, alinear los encuadres",
+    "regla": "la disparidad entre las cuatro fotos es el mecanismo, no un defecto: unificarlas lo devuelve a cartel"
+  },
+  "zonas": {
+    "cuadrantes_sintoma": {
+      "posicion": "tres de las cuatro celdas de la rejilla",
+      "cantidad_items": 3,
+      "formato_item": "foto cruda de la zona afectada con una CAJA NEGRA rectangular encima y el nombre del sintoma en blanco",
+      "items": "{{SINTOMAS[3]}}",
+      "restriccion_palabras_label": "2-3 palabras",
+      "regla_zonas": "las tres son zonas del cuerpo DISTINTAS con el mismo signo: maximiza la probabilidad de que alguien se reconozca en al menos una",
+      "regla_etiqueta": "caja negra rectangular simple, sin redondeo ni borde, colocada sobre la foto sin alinear con nada"
+    },
+    "cuadrante_producto": {
+      "posicion": "la cuarta celda, inferior derecha",
+      "contenido": "{{FOTO_MANO_CON_PRODUCTO}}",
+      "tratamiento": "una mano sosteniendo el envase, foto casera con fondo domestico",
+      "texto_transicion": "{{FRASE_TRANSICION}}",
+      "estilo_texto": "Bold oscuro sobre el fondo claro de la foto, sin caja",
+      "restriccion_palabras": "5-7 palabras",
+      "formato_obligatorio": "recomendacion de conocida en primera persona del plural (tenemos algo que...), nunca oferta",
+      "regla": "rompe la serie deliberadamente: los tres primeros cuadrantes son problema, el cuarto es el giro"
+    }
+  },
+  "secuencia_lectura": [
+    "cuadrantes_sintoma",
+    "cuadrante_producto"
+  ],
+  "reglas_duras": [
+    "Cuatro fotos en rejilla 2x2 que se tocan, sin marco ni margen",
+    "Las etiquetas van en caja negra rectangular simple, sin redondeo ni borde",
+    "Las tres zonas del cuerpo son distintas entre si",
+    "El cuarto cuadrante rompe la serie con el producto y una frase de recomendacion",
+    "Sin precio, sin garantias, sin logo, sin CTA",
+    "Tipografia de sistema, nunca condensada de diseno",
+    "La disparidad de color y encuadre entre celdas se conserva"
+  ],
+  "variables_requeridas": [
+    "SINTOMAS[3]",
+    "FOTO_MANO_CON_PRODUCTO",
+    "FRASE_TRANSICION"
+  ],
+  "cuando_usar": [
+    "sintoma que se manifiesta en varias zonas del cuerpo",
+    "publico saturado de anuncios pulidos, donde el formato publicitario ya no detiene",
+    "TOFU frio: el objetivo es que alguien se reconozca, no cerrar",
+    "cuando hay acceso a fotos crudas de sintomas de distinta procedencia"
+  ],
+  "cuando_no_usar": [
+    "BOFU: sin precio ni CTA no cierra nada",
+    "cuando el sintoma se manifiesta en una sola zona: no hay tres cuadrantes que llenar",
+    "marcas que cuidan su imagen: el formato es deliberadamente tosco"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos, precio, garantias ni CTA: solo etiquetas de sintoma en caja negra y una frase de transicion.",
+    "Etiquetas: HINCHAZON ABDOMINAL, PIES INFLAMADOS, RETENCION DE LIQUIDOS.",
+    "Frase de transicion: TENEMOS ALGO QUE TE VA A ENCANTAR."
+  ],
+  "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+  "blueprint_equivalente": null
+}

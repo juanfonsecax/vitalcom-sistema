@@ -1,0 +1,254 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA · LUNES 2026-08-24 · 8 PM
+═══════════════════════════════════════════════════════════════════════════
+
+INTEGRIDAD DE VENTANA: 4 de 7 días con data · huecos: 2026-08-21, 2026-08-22,
+2026-08-23
+⚠️ VENTANA PARCIAL. No se declara ganador oficial, no se presenta CPA semanal
+   como completo, no se manda matar por ventas. Data faltante ≠ cero ventas.
+
+Último BASE cargado ....... 2026-08-20 (46 filas, fuente LucidSales)
+Días cerrados sin ingesta .. 21-ago (vie), 22-ago (sáb), 23-ago (dom)
+Antigüedad de la decisión .. 4 días · el fin de semana COMPLETO está fuera
+Lado-ads ................... 🔴 SIN MCP · 7º día consecutivo
+Domingo (PASO 4B) .......... 🔴 NO CORRIÓ ayer · se arrastra a hoy y sigue sin
+                             los extractos
+
+───────────────────────────────────────────────────────────────────────────
+1. LO NUEVO DE ESTA NOCHE: EL HUECO DEJÓ DE SER "DATA VIEJA"
+───────────────────────────────────────────────────────────────────────────
+Las tres noches anteriores el diagnóstico fue el mismo y era correcto: el
+dashboard estaba leyendo una ventana vieja. Hoy cambia de categoría, y el
+cambio tiene una fecha exacta.
+
+La venta COD en Guatemala madura ~3 días y LucidSales la reajusta de forma
+retroactiva. Eso significa:
+
+  · hueco de 1-2 días → el último export sigue describiendo algo real. El
+    dashboard es una lectura VIEJA: incompleta, pero interpretable.
+  · hueco de 3 días → el hueco IGUALA al ciclo de maduración. Un ángulo que
+    figura en cero puede ser (a) una venta que todavía no maduró o (b) una
+    venta que dejó de entrar. Las dos hipótesis producen EXACTAMENTE la misma
+    tabla. El dashboard pasa a ser una lectura AMBIGUA.
+
+Hoy el hueco llegó a 3. No es que las decisiones estén desactualizadas: es que
+con la data que hay en disco NINGÚN veredicto de matar o escalar es defendible,
+porque no existe forma de elegir entre las dos hipótesis. Registrado como
+APR-067.
+
+El caso concreto que lo demuestra es CLEARSTEM / MEDICOS_FALLARON. Su veredicto
+estaba fijado para el 23-ago con el 19 y el 20 ya madurados. Ayer se aplazó por
+falta de export. Hoy no está aplazado: está INDECIDIBLE. Su cero de ventas
+(Q199 · 30 mensajes · 17→20 ago) es justamente el patrón que las dos hipótesis
+comparten, y la única explicación benigna que teníamos —fatiga de creativo— ya
+la desmintió APR-063 (frecuencia 1.19-1.21 contra umbral 1.9).
+
+Tamaño de la apuesta a ciegas: al ritmo del último tramo conocido (Q473/día de
+pauta en 17→20 ago) pasaron ~**Q1,420 de pauta sin medirse** en estos 3 días —
+asumiendo que las campañas siguen corriendo, cosa que tampoco se puede
+verificar porque el MCP lleva 7 días caído. Es la primera vez que las DOS
+fuentes están oscuras sobre los mismos días cerrados: hasta ahora, cuando el
+MCP fallaba, el backfill de LucidSales rescataba el tramo.
+
+───────────────────────────────────────────────────────────────────────────
+2. LADO-ADS: 7º DÍA SIN MCP
+───────────────────────────────────────────────────────────────────────────
+Cero herramientas `ads_*` expuestas en la sesión programada. Montados: Google
+Drive, Chrome, computer-use, workspace, visualize.
+
+Sin cambios respecto de ayer en lo que se pierde (frecuencia/fatiga · estado y
+gasto por cuenta · verificación de ejecución · saturación por cuenta). Lo que
+SÍ cambia es que ahora el dashboard lo dice solo, en vez de callárselo: regla
+Q), §4.
+
+ACCIÓN, abierta desde el 18-ago (7 días): reconectar Meta Ads en Cowork →
+Conectores, y verificar que la tarea programada de las 8 PM herede el permiso.
+
+───────────────────────────────────────────────────────────────────────────
+3. LA CONCILIACIÓN DE AYER (DOMINGO) SIGUE SIN CORRER
+───────────────────────────────────────────────────────────────────────────
+No entró ninguno de los tres insumos del PASO 4B. `_FACT_SALDOS.csv` sigue sin
+su fila `estado=OBSERVADO` de esta semana → la conciliación del próximo domingo
+no tendrá saldo de corte contra el cual verificar la ecuación de arrastre
+(APR-041). El agujero ya se propagó una semana hacia adelante.
+
+Última verificación válida (21-ago, export 17-20 ago), sin cambios:
+  · sobrecobro ............ NO · Meta USD 288.69 vs USD 275.57 atribuidos
+  · cobertura ............. 95.5%, uniforme por cuenta
+  · el 4.5% restante ...... desfase horario ~1 h/día (APR-064) · la ganancia
+    del P&L está ~4.6% inflada, no 25%
+
+───────────────────────────────────────────────────────────────────────────
+4. HUECO DEL MOTOR CERRADO HOY — REGLAS P) y Q)
+───────────────────────────────────────────────────────────────────────────
+Detectado al revisar por qué la petición de export llevaba 4 noches sin
+moverse.
+
+El problema: la regla H) trata igual un hueco de 1 día y uno de 4 — prioridad 2,
+impacto Q0. Con impacto Q0 se hunde al fondo de una lista ordenada por dinero,
+justo debajo de las acciones cuya confiabilidad ella misma está degradando. El
+motor tenía una acción que era PRE-REQUISITO de todas las demás y la mostraba
+como la menos importante.
+
+El arreglo:
+  · **P)** escala el hueco a prioridad 1 cuando iguala al ciclo de maduración
+    (≥3 días) y lo cuantifica como la pauta que pasó sin medirse: días × ritmo
+    del último tramo. Hoy Q473/día × 3 = **Q1,420**. La cifra NO es "ventas
+    perdidas" (la plata se gastó y las ventas ocurrieron); es el tamaño de la
+    apuesta que se está corriendo a ciegas, que es la única cifra honesta que
+    justifica subirlo a prioridad 1.
+  · **Q)** declara la ceguera del lado-ads cuando `_FACT_ENTREGA.csv` lleva ≥2
+    días sin actualizarse, nombrando qué reglas (C, I, F) están corriendo sobre
+    data vieja. Impacto Q0 a propósito: no hay plata directa en juego.
+
+Ambas verificadas: disparan con las cifras de arriba. Es la aplicación directa
+del principio de APR-066 — toda regla debería poder contestar "¿qué pasa si su
+fuente deja de actualizarse?", y si la respuesta es "se calla", está mal
+construida. P) y Q) son las que avisan cuando las fuentes se callan.
+
+───────────────────────────────────────────────────────────────────────────
+5. ETAPA-7 — RANKING POR ÁNGULO (ventana 17→20 ago · SIN CAMBIOS)
+───────────────────────────────────────────────────────────────────────────
+Agregado por `angulo_key`, nunca por conjunto (regla 1). Réplicas R[N] sumadas.
+Se reproduce como referencia; ver §1 sobre por qué hoy no sostiene veredictos.
+
+| Producto  | Ángulo                   | Pauta Q | v  | CPA    | Cierre | Cuentas   |
+|-----------|--------------------------|---------|----|--------|--------|-----------|
+| TINNIDROP | PERDIDA_AUDITIVA         |     810 | 12 |  Q67.5 |   5.6% | GTR0,GTR7 |
+| NUSAVA    | ARDOR                    |     296 | 10 |  Q29.6 |  13.7% | GTR7      |
+| TINNIDROP | DETERIORO_COGNITIVO      |     229 |  4 |  Q57.3 |  10.0% | GTR1      |
+| CLEARSTEM | RESISTENCIA_INSULINA_SOP |     210 |  3 |  Q70.1 |   5.6% | GTR13     |
+| CLEARSTEM | MEDICOS_FALLARON         |     199 |  0 |      — |   0.0% | GTR13     |
+| CLEARSTEM | ANTI_FALSIFICACION       |     122 |  2 |  Q61.0 |  11.1% | GTR13     |
+| TINNIDROP | ACCESIBILIDAD_MEDICO     |     117 |  6 |  Q19.4 |  19.4% | GTR7      |
+| TINNIDROP | NOCHES_SIN_DORMIR        |     117 |  3 |  Q38.9 |  12.5% | GTR0      |
+| TINNIDROP | ME_DIJERON_NO_CURA       |       0 |  0 |      — |      — | GTR0      |
+
+0 filas sin dimensión. El JOIN con `_DIM_CONJUNTOS.csv` cierra al 100%.
+
+La distorsión de asignación sigue intacta y sigue siendo la más cara del
+portafolio: ACCESIBILIDAD_MEDICO paga Q19.4 con el 13% de la pauta de
+TINNIDROP; PERDIDA_AUDITIVA paga Q67.5 (3.5×) y se lleva Q810 de Q1,273.
+
+Nota sobre esta tabla y §1: la distorsión de asignación NO es una de las
+decisiones que el hueco vuelve indecidibles. Es una diferencia de 3.5× medida
+sobre 4 días, no un cero ambiguo — ninguna maduración retroactiva convierte
+Q19.4 en Q67.5. Sigue accionable hoy.
+
+───────────────────────────────────────────────────────────────────────────
+6. ETAPA-8 — PLAN DE ACCIÓN
+───────────────────────────────────────────────────────────────────────────
+Derivado del motor, no escrito a mano. La lista pasó de 8 a 10 acciones por las
+reglas P) y Q), y su orden cambió: el pedido de data subió de último a primero.
+
+1. 🔴 Q1,420 — PEGAR LOS EXPORTS (nuevo, prioridad 1 — regla P)
+   3 días cerrados sin cargar. Es pre-requisito de todo lo de abajo: mientras
+   el hueco iguale al ciclo de maduración, cada acción de esta lista se decide
+   sobre una tabla que no distingue "no maduró" de "cayó".
+
+2. ▲ Q2,363/sem — TINNIDROP / ACCESIBILIDAD_MEDICO está asfixiado
+   Mejor CPA del producto (Q30.7 serie · Q19.4 en 17-20) con el 13% de la
+   pauta. Sigue siendo la palanca más grande y lleva 4 días sin moverse.
+   ✅ Ejecutable HOY sin esperar el export: es una diferencia de 3.5× medida,
+      no un cero ambiguo (§5).
+
+3. ⇄ Q1,188/sem — TINNIDROP: banda 25+ → 45-60
+   25+ cierra 3.6% (4/110), 45-60 cierra 15.1% (14/93) al MISMO precio por
+   mensaje. Q403 hablándole a quien no compra.
+   ⚠️ REBALANCEAR, nunca apagar: el ángulo está sano, la banda no.
+
+4. ⇄ Q732/sem — GTR0 a piso, presupuesto a GTR7 (saturación por ángulo)
+   El mismo ángulo paga Q164.8 en GTR0 y Q43.3 en GTR7. GTR0 se llevó Q1,425
+   para 16 ventas.
+
+5. ⇄ Q488/sem — CLEARSTEM: banda 25+ → 25-35
+   25+ cierra 0.0% (0/39), 25-35 cierra 12.1% (4/33). Q204 en la banda muerta.
+
+6. • Q395/sem — CP1: preguntar por qué dejó de gastar (regla O)
+   Era la cuenta más barata (CPA Q33.1). Confirmado que dejó de GASTAR, no de
+   reportar. Sin confirmar si fue decisión del operador.
+
+7. ▶ Q260/sem — VARICOSE lleva 8 días marcado VIVO sin gastar
+   CPA histórico Q73.9 contra break-even Q93.9. Pendiente desde el 20-ago.
+   Cada noche dispara la regla G) y ensucia la lista: reactivar o marcar
+   PAUSADO. Es la acción más barata de cerrar de toda la lista y lleva 4 noches
+   ignorada.
+
+8. ⇄ GTR0 — cuenta en rojo, 2ª ventana consecutiva
+   Q403 para 4 ventas, CPA Q100.7 contra Q45.8 del portafolio. Compra
+   conversaciones al mismo precio que GTR7 (Q3.91 vs Q3.86) y las cierra 5.3×
+   peor con el mismo bot, productos, ángulos y creativos → calidad de
+   audiencia. Antes de reactivar: comparar su segmentación contra GTR7.
+
+9. 📊 Reconectar Meta Ads — lado-ads congelado (nuevo — regla Q)
+
+10. 📊 PASO 4B: los extractos del domingo, ahora atrasados.
+
+───────────────────────────────────────────────────────────────────────────
+7. PENDIENTES ABIERTOS — CON DÍAS DE ANTIGÜEDAD
+───────────────────────────────────────────────────────────────────────────
+| # | Pendiente                             | Abierto desde | Días |
+|---|---------------------------------------|---------------|------|
+| 1 | Reconectar Meta Ads en Cowork         | 18-ago        |  7   |
+| 2 | T01 no arrancó / ME_DIJERON_NO_CURA   | 21-ago        |  4   |
+| 3 | VARICOSE en limbo VIVO/PAUSADO        | 20-ago        |  5   |
+| 4 | CLEARSTEM/MEDICOS_FALLARON            | 21-ago        |  4   |
+| 5 | Banda 25+ de TINNIDROP                | 21-ago        |  4   |
+| 6 | Renombrar el último "- Copia"         | 21-ago        |  4   |
+| 7 | Confirmar si CP1 se apagó a propósito  | 21-ago        |  4   |
+| 8 | Extractos del PASO 4B (domingo 23)    | 23-ago        |  2   |
+
+Sobre #2 — sin cambios y sigue negativo en las dos puntas: se apagó un ángulo
+que vendía (ME_DIJERON_NO_CURA, 5 ventas a CPA Q51.9 contra BE Q94.6, Q43 de
+colchón por venta) Y no arrancó el test que lo iba a reemplazar. T01 figura
+CONFIRMADO con fecha 20-ago y no existe en la data. Decidir: (a) lanzar T01 con
+el brazo A limpiado de compliance — el original dice "elimina hongos" y lleva
+sello REGISTRO-FDA US, ambos violan compliance de ADS — o (b) corregir la fecha
+en `_TESTEOS.csv` y reactivar ME_DIJERON_NO_CURA.
+   Nota: esta decisión NO depende del export. Ninguna de las dos ramas necesita
+   data nueva para elegirse; lleva 4 días bloqueada sin bloqueante real.
+
+Sobre #4 — cambió de estado: ya no está "reprogramado al primer export", está
+INDECIDIBLE con la data en disco (§1). Se mantiene el presupuesto congelado y
+NO se manda apagar. Se desbloquea con el export del 21-23.
+
+───────────────────────────────────────────────────────────────────────────
+8. LO QUE SE ESCRIBIÓ ESTA NOCHE
+───────────────────────────────────────────────────────────────────────────
+✅ `gen_dashboard.py` ..... reglas P) y Q) agregadas y verificadas (disparan)
+✅ `_APRENDIZAJES.csv` .... APR-067 (hueco vs. ciclo de maduración)
+✅ `_EVENTOS.csv` ......... 3 filas (MCP ausente 7º día · data ausente 4ª noche
+                            · mejora del motor)
+✅ `_BITACORA_DATA.txt` ... fila del día
+✅ `_DASHBOARD.html` ...... regenerado · 0 filas sin dimensión
+⛔ `_GANANCIAS.txt` ....... NO tocado — sin día nuevo (criterio 20/21/22/23)
+⛔ `2_DATA_PRODUCTO.txt` .. NO tocados — idem
+⛔ `_FACT_VENTAS.csv` ..... 0 filas nuevas
+⛔ `_FACT_ENTREGA.csv` .... 0 filas nuevas (sin MCP)
+⛔ PASO 4B ................ no corrió, faltan los extractos
+
+Dashboard: ventana 2026-07-17 → 2026-08-20 · 334 ventas · ganancia Q15,604 ·
+sangrado Q826 · 4 productos · 16 ángulos · 10 acciones. Las cifras de P&L son
+idénticas a las de las últimas cuatro noches porque no entró data — es correcto,
+no es un error de generación. Lo que cambió es el ORDEN de la lista: el pedido
+de data subió a prioridad 1 con Q1,420 de impacto.
+⚠️ Persisten 14 filas SIN ATRIBUCIÓN (14 ventas) por tracking, no por dimensión
+   (APR-035); son todas del 31-jul y 03-ago.
+
+───────────────────────────────────────────────────────────────────────────
+9. QUÉ PEDIR
+───────────────────────────────────────────────────────────────────────────
+1. LucidSales, UN export POR DÍA (el agregado no se descompone y mata la
+   resolución diaria). Desde el 17-ago hay UN SOLO bot (APR-043) → un solo
+   export por día:
+      · Métricas de Facebook Ads → rango SOLO 2026-08-21 → exportar
+      · Métricas de Facebook Ads → rango SOLO 2026-08-22 → exportar
+      · Métricas de Facebook Ads → rango SOLO 2026-08-23 → exportar
+2. Reconectar Meta Ads en Cowork → Conectores.
+3. Del domingo, atrasado:
+      · extracto de Facturación de Meta de las 6 cuentas
+      · export de Ads Manager nivel conjunto de GTR13 y CP1, CON desglose por
+        "Día" (el del 21-ago vino agregado 17-20 y no se pudo verificar día a
+        día)
+      · export de 7 días → rol CONTROL
+═══════════════════════════════════════════════════════════════════════════

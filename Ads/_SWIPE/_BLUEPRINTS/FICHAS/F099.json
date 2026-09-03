@@ -1,0 +1,203 @@
+{
+  "ficha_id": "F099",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Teyra/11_1673173930446502.jpg",
+    "anunciante": "Teyra",
+    "ad_archive_id": "1673173930446502",
+    "dias_activo": 5,
+    "replicas": 1,
+    "score": 30,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "11:10",
+    "densidad": "alta",
+    "espacio_libre_objetivo": "16%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C4_TRANSFORMACION",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL MISMO ANTES-DESPUES, PERO ENMARCADO Y CON ETIQUETA NEUTRA. Es la variante de registro suave de la pieza de organo partido: aca los dos estados van en marcos blancos separados sobre fondo verde, los labels dejan de nombrar la suciedad y pasan a describir una condicion, y la oferta baja del badge de esquina a un modulo mas de la barra inferior. El frasco se monta sobre los dos marcos.",
+  "lectura_estrategica": "Es la version que se puede sostener mucho mas tiempo en el feed. Todo lo que en la variante cruda es choque - fondo blanco, organo abierto, alquitran nombrado, oferta gritada en la esquina - aca esta amortiguado: fondo verde vivo, marcos que declaran que son ilustraciones, etiquetas descriptivas y titular de BENEFICIO en vez de multitud. El precio de esa suavidad es que el impacto inicial baja, y la pieza lo compensa cargando el pie con un modulo de oferta y una fila de atributos de formula que la cruda no tiene.",
+  "fondo": {
+    "tipo": "escena_botanica_verde_desenfocada",
+    "base": "verde profundo con hojas y particulas de luz muy desenfocadas",
+    "capa": "vineta mas oscura en las esquinas para levantar los marcos blancos",
+    "textura": "organica, del follaje desenfocado"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde botanico (fondo y cards) mas blanco (titular, marcos, labels) mas {{PALETA_ACENTO}} amarillo (mecanica de oferta, flores, urgencia) mas rosado del organo sano"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_beneficio": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 2,
+      "linea_1": "{{VERBO_APOYO}} TU {{SUSTANTIVO_BIENESTAR}}",
+      "linea_2": "{{SISTEMA_OBJETIVO}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "verbo de apoyo mas tu mas el sistema del cuerpo",
+      "regla_critica": "abre por BENEFICIO y no por multitud ni por dano: es lo que define el registro suave de esta variante"
+    },
+    "subtitular_formula": {
+      "posicion": "bajo el titular, entre dos reglas finas",
+      "alineacion": "centrado",
+      "texto": "{{CLAIM_FORMULA}} {{FRASE_COTIDIANIDAD}}",
+      "estilo": "Bold uppercase blanco chico",
+      "restriccion_palabras": "6-8 palabras",
+      "formato_obligatorio": "formula natural para tu dia a dia"
+    },
+    "panel_izquierdo": {
+      "posicion": "izquierda_media",
+      "contenedor": "marco blanco fino de esquinas redondeadas",
+      "label": "{{LABEL_ESTADO_1}}",
+      "estilo_label": "pildora blanca con Bold uppercase {{PALETA_OSCURA}}",
+      "contenido": "{{ORGANO_ESTADO_1}} renderizado oscuro sobre fondo neutro",
+      "escala": "30% del ancho",
+      "regla": "el label describe una CONDICION y no una sustancia sucia: expuesto en vez de cargado de"
+    },
+    "panel_derecho": {
+      "posicion": "derecha_media",
+      "contenedor": "marco blanco fino de esquinas redondeadas",
+      "label": "{{LABEL_ESTADO_2}}",
+      "estilo_label": "pildora blanca con Bold uppercase {{PALETA_OSCURA}}",
+      "contenido": "{{ORGANO_ESTADO_2}} renderizado rosado sobre fondo claro",
+      "escala": "30% del ancho",
+      "regla": "el label del estado bueno nombra una SENSACION - respiracion mas ligera - y no un adjetivo de limpieza"
+    },
+    "flecha_transicion": {
+      "posicion": "entre los dos paneles, a la altura del centro",
+      "forma": "flecha gruesa {{PALETA_ACENTO_VERDE}} apuntando al panel derecho",
+      "regla": "pasa por detras del frasco, que queda montado sobre los dos marcos"
+    },
+    "producto_hero": {
+      "posicion": "centro, superpuesto a los dos marcos",
+      "escala": "26% del ancho",
+      "composicion": "frasco gotero de pie con las flores del ingrediente y hojas al pie",
+      "fuente": "IMAGEN_1",
+      "regla_critica": "se monta sobre AMBOS marcos: es lo que impide que la pieza se lea como dos imagenes sueltas"
+    },
+    "linea_posologia": {
+      "posicion": "bajo los paneles, centrado",
+      "texto": "{{DOSIS}} {{VIA}}. {{FRECUENCIA}}.",
+      "estilo": "Regular blanco",
+      "restriccion_palabras": "8-10 palabras"
+    },
+    "barra_cierre": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "tres cards: escasez, oferta y CTA",
+      "modulo_1": {
+        "contenedor": "card {{PALETA_OSCURA}} con icono de reloj",
+        "linea_1": "{{ESCASEZ_L1}}",
+        "linea_2": "{{ESCASEZ_L2}}",
+        "estilo_l2": "Bold uppercase {{PALETA_ACENTO}}"
+      },
+      "modulo_2": {
+        "contenedor": "card {{PALETA_OSCURA}} central, la mas ancha",
+        "linea_1": "{{OFERTA_LABEL}} {{OFERTA_MECANICA}}",
+        "estilo_l1": "Black/900 uppercase blanco con la mecanica en {{PALETA_ACENTO}} muy grande",
+        "linea_2": "{{URGENCIA}}",
+        "estilo_l2": "Bold uppercase {{PALETA_ACENTO}} muy chico"
+      },
+      "modulo_3": {
+        "contenedor": "card {{PALETA_OSCURA}} con icono de carrito",
+        "linea_1": "{{CTA}}",
+        "estilo_l1": "Black/900 uppercase blanco",
+        "linea_2": "{{ENVIO}}",
+        "estilo_l2": "Bold uppercase {{PALETA_ACENTO}} chico"
+      },
+      "regla_critica": "la oferta vive aca como un modulo mas de la barra: en la variante cruda vive en un badge de esquina y grita"
+    },
+    "fila_atributos": {
+      "posicion": "inferior extremo, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal sobre el fondo verde",
+      "formato_item": "icono line-art blanco mas texto Bold uppercase de 2 lineas",
+      "items": "{{ATRIBUTOS[3]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_item_1": "los dos primeros son de composicion de la formula y el tercero de logistica",
+      "funcion": "es la fila que la variante cruda no tiene: compensa con argumento lo que esta version no gana por impacto"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_beneficio",
+    "panel_izquierdo",
+    "panel_derecho",
+    "producto_hero",
+    "subtitular_formula",
+    "barra_cierre",
+    "linea_posologia",
+    "fila_atributos"
+  ],
+  "reglas_duras": [
+    "Los dos estados van en marcos blancos separados sobre fondo botanico",
+    "Los labels describen condiciones y sensaciones, no sustancias",
+    "El titular abre por beneficio",
+    "El frasco se monta sobre los dos marcos a la vez",
+    "La oferta vive como un modulo de la barra inferior, no como badge de esquina",
+    "La fila de atributos de formula cierra la pieza al pie",
+    "El fondo verde vivo sostiene los marcos blancos con una vineta en las esquinas"
+  ],
+  "variables_requeridas": [
+    "VERBO_APOYO",
+    "SUSTANTIVO_BIENESTAR",
+    "SISTEMA_OBJETIVO",
+    "CLAIM_FORMULA",
+    "FRASE_COTIDIANIDAD",
+    "LABEL_ESTADO_1",
+    "LABEL_ESTADO_2",
+    "ORGANO_ESTADO_1",
+    "ORGANO_ESTADO_2",
+    "DOSIS",
+    "VIA",
+    "FRECUENCIA",
+    "ESCASEZ_L1",
+    "ESCASEZ_L2",
+    "OFERTA_LABEL",
+    "OFERTA_MECANICA",
+    "URGENCIA",
+    "CTA",
+    "ENVIO",
+    "ATRIBUTOS[3]",
+    "IMAGEN_1"
+  ],
+  "cuando_usar": [
+    "como pareja de registro suave de una pieza cruda del mismo angulo",
+    "cuentas o paginas donde conviene bajar el tono sin perder el antes-despues",
+    "publico que ya vio la version cruda y no compro",
+    "cuando la formula tiene atributos de composicion que valga la pena declarar al pie"
+  ],
+  "cuando_no_usar": [
+    "apertura en frio donde hace falta el maximo impacto visual",
+    "cuando no hay atributos de formula que sostengan el pie",
+    "cuando se lanza sola: su valor esta en correr contra la variante cruda"
+  ],
+  "sellos_y_claims_observados": [
+    "Titular APOYA TU BIENESTAR RESPIRATORIO / FORMULA NATURAL PARA TU DIA A DIA.",
+    "Labels PULMONES EXPUESTOS / RESPIRACION MAS LIGERA.",
+    "Posologia 2 gotas bajo la lengua. Dos veces al dia.",
+    "Marca BETTERBRAND - DIETARY SUPPLEMENT - BETTER LUNGS(R) MULLEIN + CHLOROPHYLL, Alcohol Free, 1 MONTH SUPPLY, Long Cleanse and Support.",
+    "Barra !QUEDAN POCAS UNIDADES! / OFERTA 2X1 - POR TIEMPO LIMITADO / COMPRA AHORA - ENVIO GRATIS HOY.",
+    "Atributos FORMULA NATURAL SIN ALCOHOL / FORMULA SIN OGM / PAGO CONTRA ENTREGA EN TODA GUATEMALA."
+  ],
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "blueprint_equivalente": null
+}

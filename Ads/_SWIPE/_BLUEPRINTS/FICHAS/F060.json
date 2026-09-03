@@ -1,0 +1,180 @@
+{
+  "ficha_id": "F060",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Farmacia_De_Mi_Tierra_Boca_del_Monte/03_1224458526474367.jpg",
+    "anunciante": "Farmacia De Mi Tierra Boca del Monte",
+    "ad_archive_id": "1224458526474367",
+    "dias_activo": 16,
+    "replicas": 1,
+    "score": 41,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "38%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL LOGO DE LA FARMACIA COMO EMISOR, CON EL BADGE DE DURACION DEL TRATAMIENTO ARRIBA A LA DERECHA. El anuncio no lo firma la marca del producto sino el PUNTO DE VENTA, cuyo logotipo ocupa la esquina superior izquierda con su nombre y su sucursal. Enfrente, un badge circular declara para cuantos dias alcanza el frasco y lo traduce a meses.",
+  "lectura_estrategica": "Cambia quien habla, y eso cambia el nivel de confianza de la pieza entera: no es una tienda online vendiendo un suplemento, es una farmacia con direccion fisica. Por eso el layout puede prescindir de sellos de garantia, prueba social y urgencia — el emisor los reemplaza. El badge de duracion hace el trabajo economico: al declarar 50 dias y traducirlo a mes y medio, convierte un precio de tres cifras en un costo diario que el lector calcula solo. Los tres beneficios usan verbos de apoyo y ocupan menos de un tercio de la pieza; el resto es aire y producto.",
+  "fondo": {
+    "tipo": "color_plano_muy_claro",
+    "color": "blanco o crema",
+    "elemento": "hojas verdes desenfocadas entrando por el borde derecho y superficie de madera clara bajo el producto",
+    "textura": "ninguna",
+    "regla": "el vacio y la luz natural son lo que dan el registro de farmacia"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_OSCURA}} verde (titular, iconos, banda del pie) mas blanco (fondo) mas negro (card de precio) mas el ambar del envase"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "logo_emisor": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{LOGO_PUNTO_DE_VENTA}}",
+      "bajada": "{{SUCURSAL}}",
+      "escala": "18% del ancho",
+      "regla_critica": "el anuncio lo firma el PUNTO DE VENTA y no la marca del producto: el emisor reemplaza a los sellos de garantia, la prueba social y la urgencia"
+    },
+    "badge_duracion": {
+      "posicion": "superior_derecha",
+      "contenedor": "sin card, sobre el fondo, con lineas horizontales finas arriba y abajo",
+      "linea_1": "{{ETIQUETA_SUMINISTRO}}",
+      "linea_2": "{{DIAS}} DIAS",
+      "linea_3": "≈ {{EQUIVALENCIA_MESES}}",
+      "estilo_l2": "Black/900 {{PALETA_OSCURA}}",
+      "estilo_l3": "Regular con el simbolo de aproximacion",
+      "restriccion_palabras": "2-4 palabras por linea",
+      "regla_critica": "declarar los dias Y traducirlos a meses convierte un precio de tres cifras en un costo diario que el lector calcula solo"
+    },
+    "titular": {
+      "posicion": "izquierda_media",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{VERBO_APOYO}}",
+      "linea_2": "{{PREPOSICION}}",
+      "linea_3": "{{PROBLEMA_ACENTO}}",
+      "estilo_l1_l2": "Black/900 uppercase {{PALETA_OSCURA}}",
+      "estilo_l3": "Black/900 uppercase, al 140% de L1",
+      "restriccion_palabras_total": "4-5 palabras",
+      "formato_obligatorio": "verbo de APOYO (ayuda a, contribuye a) mas el problema nombrado en la ultima linea y al mayor tamano",
+      "regla": "el verbo de apoyo en la primera linea permite nombrar el problema en grande sin que la pieza afirme resolverlo"
+    },
+    "icono_simbolico": {
+      "posicion": "derecha del titular",
+      "contenido": "{{ICONO_ESTADO}}",
+      "escala": "10% del ancho",
+      "regla": "un solo icono line-art que simbolice el estado deseado, junto al titular"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_baja",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art {{PALETA_OSCURA}} en circulo mas VERBO en Bold uppercase mas complemento en Regular",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_verbo": "1-2 palabras",
+      "restriccion_complemento": "3-4 palabras",
+      "regla": "los tres usan verbos de apoyo (favorece, apoya, ayuda a manejar) y ocupan menos de un tercio de la pieza"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "45% del frame",
+      "composicion": "envase de pie de frente sobre superficie de madera clara, con dos capsulas sueltas al pie",
+      "fuente": "IMAGEN_2",
+      "regla": "sin podio, sin halo y sin badge sobre el envase: la etiqueta se lee tal cual"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card negra solida",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "estilo_l1": "Regular uppercase blanco chico",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 blanco",
+      "regla": "unico bloque negro de la pieza"
+    },
+    "barra_cierre": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "orientacion": "fila horizontal con separadores verticales finos",
+      "formato_item": "icono line-art mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}} mas {{CTA}}",
+      "regla_item_2": "el segundo declara el origen con bandera de {{PAIS_ORIGEN}}",
+      "regla_item_3": "el tercero es el CTA, con icono de carrito, en la misma fila y al mismo peso que las garantias",
+      "restriccion_palabras": "2-4 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "producto_hero",
+    "logo_emisor",
+    "badge_duracion",
+    "columna_beneficios",
+    "card_precio",
+    "barra_cierre"
+  ],
+  "reglas_duras": [
+    "El anuncio lo firma el punto de venta, no la marca del producto",
+    "El badge declara los dias de suministro Y su equivalencia en meses",
+    "El titular usa verbo de apoyo en la primera linea y nombra el problema en la ultima, al mayor tamano",
+    "Los tres beneficios usan verbos de apoyo",
+    "El producto va sin podio, sin halo y sin badge encima",
+    "Un solo bloque negro: la card de precio",
+    "El CTA va en la barra del pie, al mismo peso que las garantias"
+  ],
+  "variables_requeridas": [
+    "LOGO_PUNTO_DE_VENTA",
+    "SUCURSAL",
+    "ETIQUETA_SUMINISTRO",
+    "DIAS",
+    "EQUIVALENCIA_MESES",
+    "VERBO_APOYO",
+    "PREPOSICION",
+    "PROBLEMA_ACENTO",
+    "ICONO_ESTADO",
+    "BENEFICIOS[3]",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "CTA",
+    "PAIS_ORIGEN"
+  ],
+  "cuando_usar": [
+    "cuando el vendedor es un punto de venta fisico con nombre y sucursal",
+    "productos de presentacion larga donde la duracion del tratamiento es argumento",
+    "publico de nivel 4 que ya conoce el activo y compara donde comprarlo",
+    "cuando se quiere un registro sobrio, sin urgencia ni prueba social"
+  ],
+  "cuando_no_usar": [
+    "tiendas online sin direccion fisica: el emisor no acredita nada",
+    "publico frio que necesita que le expliquen el problema",
+    "cuando la oferta necesita urgencia o escalera de precios"
+  ],
+  "sellos_y_claims_observados": [
+    "Logo del punto de venta con su sucursal en la esquina superior izquierda.",
+    "Badge SUMINISTRO PARA 50 DIAS ≈ 1 MES Y MEDIO.",
+    "Beneficios: FAVORECE UN ESTADO DE CALMA, APOYA UN SUENO REPARADOR, AYUDA A MANEJAR EL ESTRES DIARIO.",
+    "Card PRECIO ESPECIAL Q275.",
+    "Barra de cierre: ENVIO GRATIS A TODO GUATEMALA, HECHO EN ESTADOS UNIDOS con bandera de EEUU, ORDENA EL TUYO HOY con icono de carrito.",
+    "Claims impresos en el empaque: EXTRA STRENGTH, 50 SERVINGS, With BioPerine for absorption*, Free of gluten & soy, 100 Vegetarian Capsules."
+  ],
+  "canonico_id": "CN16_EMISOR_COMERCIAL",
+  "blueprint_equivalente": null
+}

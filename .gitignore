@@ -1,0 +1,70 @@
+# ═══════════════════════════════════════════════════════════════
+# .gitignore — SISTEMA VITALCOM
+#
+# REGLA: git versiona lo que sabe versionar — código, doctrina, data
+# tabular y texto. Lo binario (video, imagen) vive en la bóveda local
+# VITALCOM_MEDIA; las rutas dentro de Ads/ son enlaces locales para que
+# el sistema siga funcionando. Lo DERIVADO (HTML de dashboards) no se
+# versiona: se regenera con su script y ensuciaría cada diff.
+# ═══════════════════════════════════════════════════════════════
+
+# ── MEDIA BINARIA ───────────────────────────────────────────────
+# Videos crudos y media lavada por producto.
+Ads/1.1 Videos/
+Ads/MEDIA_*/
+
+# Banco de creativos del swipe: capturas de anuncios del mercado.
+Ads/_SWIPE/_IMG/
+Ads/_SWIPE/_BANCO_CREATIVOS/
+Ads/_SWIPE/_RAW/
+
+# Assets de producto fuera del pipeline de dropshipping.
+Shopify_Productos/
+INFPRODUCTOS/
+
+# Extensiones binarias, en cualquier ubicación.
+*.mp4
+*.mov
+*.jpg
+*.jpeg
+*.png
+*.webp
+
+# ── DERIVADOS (regenerables con su script) ──────────────────────
+# gen_dashboard.py
+PRODUCTOS/_DASHBOARD.html
+# gen_testeos.py
+PRODUCTOS/_TESTEOS.html
+# gen_metaads.py
+PRODUCTOS/_META_ADS.html
+# gen_estructura.py
+PRODUCTOS/_ESTRUCTURA.html
+# gen_panel.py
+VISTAS/PANEL.html
+# gen_sistema.py / gen_banco.py
+Ads/_SWIPE/_SISTEMA.html
+Ads/_SWIPE/_GALERIA.html
+Ads/_SWIPE/_WINNERS.html
+Ads/_SWIPE/_WINNERS_PORTABLE.html
+
+# ── ARTEFACTOS DE PYTHON ────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ── BACKUPS MANUALES ────────────────────────────────────────────
+# Sustituidos por el historial de git. No crear más de estos.
+*.bak
+*.bak-*
+*.bak_*
+_ARCHIVO/backups_csv/
+_ARCHIVO/backups_agentes/
+_ARCHIVO/backups_data/
+_ARCHIVO/pruebas_lavado_20260705/
+
+# ── SISTEMA OPERATIVO ───────────────────────────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store

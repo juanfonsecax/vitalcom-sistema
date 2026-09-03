@@ -1,0 +1,164 @@
+{
+  "id": "D_transformacion_temporal",
+  "version": "1.0",
+  "concepto_key": "C8_PROGRESION",
+  "variante": "progresion",
+  "referencia_visual": "C8_PROGRESION/progresion__Tiendas-KetsalStore__29_1304415972751500.jpg",
+  "formato": "4:5 (1080x1350)",
+  "densidad": "alta",
+  "espacio_libre_objetivo": "25%",
+  "aplicabilidad": {
+    "requiere": "problema visualizable anatomicamente en estados progresivos",
+    "no_usar_si": "el problema no se puede ilustrar (zumbido, insomnio, animo, memoria, concentracion)",
+    "modo_degradado": "Si se corre igual sobre un problema invisible, el timeline se rotula por MOMENTO DE USO (PRIMERA SEMANA / USO CONTINUO / DIA A DIA) y los paneles muestran la ESCENA del avatar, no el organo. Esto debilita el concepto: registrar el brazo como DEGRADADO para que una derrota no se lea como 'D no funciona'."
+  },
+  "fondo": {
+    "tipo": "degradado_oscuro",
+    "base": "#0A1A38 profundo a casi negro",
+    "textura": "particulas/bokeh muy sutil",
+    "regla_paleta": "cuando el empaque es blanco o neutro, la paleta se deriva del INGREDIENTE ACTIVO o del ORGANO objetivo, no del empaque"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "color_texto_principal": "blanco",
+    "color_acento": "dorado"
+  },
+  "zonas": {
+    "timeline_transformacion": {
+      "posicion": "superior, ancho completo",
+      "cantidad_estados": 3,
+      "formato_estado": "circulo numerado + imagen del organo/zona en ese estado + label temporal sobre pildora + descripcion corta debajo",
+      "estados": "[{'n':'1','label':'PRIMERA SEMANA','desc':'Aplicás dos veces al día','img':'hombre mayor aplicándose el spray en el oído frente al espejo del baño, de noche'},{'n':'2','label':'USO CONTINUO','desc':'Ya es parte de tu rutina','img':'el tratamiento de Tinnidrop sobre la mesa de luz junto a un vaso de agua, luz de mañana'},{'n':'3','label':'DÍA A DÍA','desc':'Volvés a tus conversaciones','img':'el mismo hombre conversando tranquilo con su esposa en la mesa, ambos sonriendo'}]",
+      "estructura_estado": {
+        "numero": "1 | 2 | 3",
+        "imagen": "ver el campo img de cada estado en estados",
+        "label": "ver el campo label de cada estado en estados",
+        "descripcion": "ver el campo desc de cada estado en estados"
+      },
+      "restriccion_label": "1-2 palabras (INICIO / SEMANA 4 / SEMANA 8)",
+      "restriccion_descripcion": "4-7 palabras",
+      "separador": "flecha o transicion entre estados",
+      "funcion": "ES EL ELEMENTO DIFERENCIADOR DEL CONCEPTO. Promete cronograma, no solo resultado.",
+      "regla_progresion": "el estado 1 muestra el problema, el 3 muestra el resultado, el 2 muestra progreso intermedio creible",
+      "regla_compliance": "En MODO DEGRADADO la regla_progresion NO aplica: ningun panel muestra 'el problema' ni 'el resultado'. Los tres son momentos de uso. Un antes/despues corporal viola compliance."
+    },
+    "titular": {
+      "posicion": "centro_superior",
+      "contenedor": "banda de brochazo irregular #7FA3D8",
+      "linea_1": "¿VIVIR CON EL ZUMBIDO?",
+      "linea_2": "ESO TE DIJERON. NO ES CIERTO.",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Bold dorado, 45% del tamano de L1",
+      "restriccion_l1": "4-5 palabras",
+      "restriccion_l2": "5-7 palabras",
+      "funcion_brochazo": "unica textura organica de la pieza, rompe la rigidez del layout"
+    },
+    "badge_garantia": {
+      "posicion": "izquierda_media",
+      "forma": "circular con borde dorado doble",
+      "linea_1": "GARANTIA",
+      "linea_2": "90",
+      "linea_3": "DIAS",
+      "color": "DORADO #D4A017, borde doble, como en la referencia"
+    },
+    "producto_hero": {
+      "posicion": "centro_izquierda",
+      "escala": "35% del frame",
+      "fuente": "IMAGEN_2",
+      "iluminacion": "frontal suave con reflejo lateral"
+    },
+    "parrafo_descriptivo": {
+      "posicion": "derecha_superior, al lado del producto",
+      "texto": "Un spray natural que actúa sobre las TRES causas del zumbido: la mala circulación al oído, la tensión nerviosa y la irritación del canal auditivo.",
+      "estilo": "Regular blanco, 2-3 lineas, con 1-2 terminos clave en Bold",
+      "restriccion_palabras": "20-28 palabras",
+      "funcion": "unico bloque de prosa del sistema. Sirve para colar claims que no caben en bullets."
+    },
+    "pildora_dosis": {
+      "posicion": "derecha, sobre la lista de beneficios",
+      "contenedor": "pildora dorada solida",
+      "texto": "GINKGO BILOBA 60 ML - apoyo auditivo diario",
+      "estilo": "Bold, texto oscuro sobre dorado",
+      "funcion": "header de la lista de beneficios"
+    },
+    "lista_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 5,
+      "formato_item": "foto CIRCULAR real (organo, celula, vaso) + TITULO BOLD + subtitulo regular, todo dentro de contenedor con borde fino redondeado",
+      "items": "[{'titulo':'CIRCULACIÓN AL OÍDO','sub':'Ginkgo Biloba lleva sangre al oído interno','img':'foto circular de flujo sanguíneo'},{'titulo':'BAJA LA TENSIÓN','sub':'Ginseng reduce el cortisol que lo agrava','img':'foto circular de terminación nerviosa'},{'titulo':'ALIVIA LA IRRITACIÓN','sub':'Regaliz desinflama el canal auditivo','img':'foto circular de canal auditivo'},{'titulo':'FRESCOR AL APLICAR','sub':'Menta, se siente desde la primera vez','img':'foto circular de hojas de menta'},{'titulo':'ABSORCIÓN DIRECTA','sub':'spray al canal, sin pastillas ni esperas','img':'foto circular del aplicador del spray'}]",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_subtitulo": "5-8 palabras",
+      "regla_icono": "fotos reales circulares, NUNCA line-art. Esto le da el tono cientifico.",
+      "regla_item_5": "el ultimo suele ser el mecanismo tecnico (antioxidante, absorcion, etc.)"
+    },
+    "bloque_escasez": {
+      "posicion": "inferior_izquierda",
+      "icono": "reloj",
+      "linea_1": "QUEDAN POCAS UNIDADES",
+      "linea_2": "Alta demanda esta semana",
+      "estilo": "Bold uppercase blanco sobre fondo oscuro",
+      "default_l1": "QUEDAN POCAS UNIDADES",
+      "default_l2": "Alta demanda esta semana"
+    },
+    "bloque_precios": {
+      "posicion": "inferior_centro",
+      "tiers": 3,
+      "formato_tier": "card con borde dorado: cantidad arriba, precio Black gigante, etiqueta de valor debajo",
+      "tier_1": "1 TRATAMIENTO - Q178",
+      "funcion": "anclaje de 3 puntos, empuja al tier medio-alto",
+      "regla": "el tier 2 lleva la etiqueta mas atractiva, no el 3",
+      "tier_2": "2 TRATAMIENTOS - Q239 - MEJOR OFERTA",
+      "tier_3": "3 TRATAMIENTOS - Q299 - MAYOR AHORRO"
+    },
+    "cta_emocional": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card dorada solida",
+      "linea_1": "PEDILO HOY POR WHATSAPP",
+      "linea_2": "PAGÁS AL RECIBIR",
+      "estilo_l2": "Black/900, texto oscuro sobre dorado",
+      "funcion": "segundo cierre de la pieza (el primero es la escasez)"
+    },
+    "barra_garantias": {
+      "posicion": "inferior, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono + texto bold uppercase",
+      "items": "['ENVÍOS A TODA GUATEMALA', 'PAGO CONTRA ENTREGA', 'COMPRA SEGURA Y GARANTIZADA']",
+      "regla_item_3": "el tercero lleva bandera de GUATEMALA"
+    },
+    "props_botanicos": {
+      "posicion": "borde inferior_izquierdo",
+      "contenido": "['hojas de ginkgo biloba', 'hojas de menta']",
+      "tratamiento": "coral/rosa translucido, parcialmente fuera de foco"
+    },
+    "_prohibido_en_este_brazo": "Sin badge premium en la esquina superior: la referencia no lo tiene y el elemento diferenciador es la TRANSICION de 3 estados."
+  },
+  "reglas_duras": [
+    "El timeline NO es opcional: sin timeline no es este concepto",
+    "Los 3 estados deben ser visualmente distinguibles entre si",
+    "El estado 2 debe ser creible: progreso parcial, no resultado total",
+    "Los iconos de beneficio son fotos circulares reales, nunca line-art",
+    "El brochazo es la unica textura organica: no agregar mas",
+    "Siempre 3 tiers de precio, nunca 1 ni 2 — EXCEPTO en test de concepto, donde el bloque de precio se fija igual en todos los brazos",
+    "La pieza tiene DOS cierres: escasez + CTA emocional",
+    "Si el empaque es blanco/neutro, la paleta viene del ingrediente activo o el organo objetivo",
+    "En MODO DEGRADADO: ningun panel del timeline muestra el problema ni el resultado corporal"
+  ],
+  "_producto": "Tinnidrop 60 ml - South Moon",
+  "_test": "T01 brazo D - angulo ME_DIJERON_NO_CURA (FIJO)",
+  "_override_T01": {
+    "formato": "4:5 en vez del 1:1 nativo",
+    "MODO_DEGRADADO": "El timeline NO muestra el problema ni el resultado corporal: el tinnitus no es visualizable. Los 3 paneles son MOMENTOS DE USO. La regla_progresion nativa NO aplica. Registrar este brazo como DEGRADADO: si pierde, no significa que C8_PROGRESION no funcione."
+  },
+  "_reglas_globales": {
+    "unidad": "La unidad del producto se llama TRATAMIENTO. Aparece unicamente donde el layout nombra una unidad; donde el layout no la nombra, va solo el numero.",
+    "garantia": "Donde aparezca la garantia va en DORADO #D4A017, resaltada.",
+    "precio": "Arquitectura de precio segun la referencia de este brazo.",
+    "banderas": "La unica bandera de la pieza es la de GUATEMALA, en el tercer item de la barra inferior."
+  },
+  "_nota_lectura_test": "El bloque de precio sigue la arquitectura NATIVA de cada referencia (decision del operador 19-ago). Cada brazo mezcla dispositivo visual + arquitectura de oferta, asi que el ganador no es atribuible al dispositivo puro. Registrarlo al leer T01."
+}

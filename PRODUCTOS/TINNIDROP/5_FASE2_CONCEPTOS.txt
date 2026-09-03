@@ -1,0 +1,177 @@
+═══ TINNIDROP · FASE 2 — TESTEO DE CONCEPTOS · v1 · 2026-08-21 · COSTO Q41/u · DOSIS spray 60ml 2 aplic/día · page_id 498977893288095 (Sanarte) · ÁNGULO FIJO: ACCESIBILIDAD_MEDICO ═══
+GUÍA DE EJECUCIÓN MANUAL — lanzamiento 4 AM del 2026-08-22
+Orden: (1) generar 6 imágenes → (2) apagar GTR0 → (3) subir los 10 creativos → (4) crear las 3 campañas → (5) activar 4 AM.
+
+════════════════════════════════════════════════════════════════════════════
+POR QUÉ ESTE ÁNGULO Y NO OTRO (la evidencia, no la corazonada)
+════════════════════════════════════════════════════════════════════════════
+Agregado por `angulo_key`, ventana 25-jul → 20-ago (27 días, fuente LucidSales):
+
+  ACCESIBILIDAD_MEDICO ... Q920 gasto ·  34 ventas · CPA Q27.1 · cierre 14.2%  ⭐
+  DETERIORO_COGNITIVO .... Q3,183     ·  65 ventas · CPA Q49.0 · cierre 10.7%
+  PERDIDA_AUDITIVA ....... Q2,706     ·  44 ventas · CPA Q61.5 · cierre  6.1%
+  ME_DIJERON_NO_CURA ..... Q850       ·  15 ventas · CPA Q56.6 · cierre 10.2%
+  Break-even TINNIDROP ... Q71.56  ·  CPA Base Q30.80  ·  entrega 90.4%
+
+ACCESIBILIDAD gana en las tres dimensiones a la vez: mejor CPA (38% del BE),
+mejor cierre del portafolio completo (14.2% contra 8.2% global) y 34 ventas de
+evidencia — ya no es ruido de Poisson.
+
+A nivel creativo el patrón es todavía más claro:
+  `tinnidrop 4` + copia .. Q762 gasto · 31 ventas · CPA Q24.6  ← el mejor del sistema
+  `tinnidrop 3` + copia .. Q3,026     · 60 ventas · CPA Q50.4
+  `tinnidrop 6` + copia .. Q2,437     · 41 ventas · CPA Q59.4
+
+**El mejor creativo recibió el 9% del presupuesto.** Esta fase corrige eso.
+
+Y APR-010 ya había establecido que ACCESIBILIDAD + DETERIORO + PERDIDA_AUDITIVA
++ ME_DIJERON no son 4 ángulos: son UN territorio (frustración médica + miedo a
+lo irreversible) con 158 ventas acumuladas. El ángulo NO necesita re-testeo.
+Lo que no se sabe es qué CONCEPTO lo comunica mejor. Eso es lo que se mide acá.
+
+════════════════════════════════════════════════════════════════════════════
+LAS 3 CAMPAÑAS
+════════════════════════════════════════════════════════════════════════════
+Estructura de FASE 2 (ver PRODUCTOS/_ESTRUCTURA.html): 1-1-5 + 1-1-5 + 1-2-5.
+Los mismos 10 conceptos corren DOS VECES → un concepto se corona solo si gana
+en sus 2 apariciones. Gana en 1 de 2 = ruido, se repite.
+
+┌────────────────────────────────────────────────────────────────────────┐
+│ CAMPAÑA A · GTR7 · 1-1-5 · $6.00/día                                   │
+│ Nombre:   GTR7_TINNIDROP_CONCEPTOS-ACCESIBILIDAD_20260822              │
+│ Conjunto: GTR7_TINNIDROP_ACCESIBILIDAD_R1        ($6.00/día, ABO)      │
+│ Anuncios: ACCESIBILIDAD_C01_IMG   (TINNIDROP_R1_VIVIRCONESO)   sin precio │
+│           ACCESIBILIDAD_C02_IMG   (TINNIDROP_R2_TRESESPECIALISTAS) CON precio │
+│           ACCESIBILIDAD_C03_IMG   (TINNIDROP_R3_MENOSQUECONSULTA)  CON precio │
+│           ACCESIBILIDAD_C04_IMG   (TINNIDROP_R8_HIJA)              CON precio │
+│           ACCESIBILIDAD_C05_IMG   (TINNIDROP_C05_LACONSULTA)       CON precio │
+└────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│ CAMPAÑA B · GTR7 · 1-1-5 · $6.00/día                                   │
+│ Nombre:   GTR7_TINNIDROP_CONCEPTOS-ACCESIBILIDAD-B_20260822            │
+│ Conjunto: GTR7_TINNIDROP_ACCESIBILIDAD_R2        ($6.00/día, ABO)      │
+│ Anuncios: ACCESIBILIDAD_C06_IMG   (TINNIDROP_C06_CHATCUNADA)   sin precio │
+│           ACCESIBILIDAD_C07_IMG   (TINNIDROP_C07_TRESSEMANAS)  sin precio │
+│           ACCESIBILIDAD_C08_IMG   (TINNIDROP_C08_ELOIDO)       sin precio │
+│           ACCESIBILIDAD_C09_IMG   (TINNIDROP_C09_LASALA)       sin precio │
+│           ACCESIBILIDAD_C10_IMG   (TINNIDROP_C10_DOSFRASCOS)   CON precio │
+└────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│ CAMPAÑA C · GTR1 · 1-2-5 · $12.00/día  ← LA RÉPLICA (otra cuenta)      │
+│ Nombre:   GTR1_TINNIDROP_CONCEPTOS-ACCESIBILIDAD_20260822              │
+│ Conjunto 1: GTR1_TINNIDROP_ACCESIBILIDAD_R1  ($6.00/día) → C01…C05     │
+│ Conjunto 2: GTR1_TINNIDROP_ACCESIBILIDAD_R2  ($6.00/día) → C06…C10     │
+│ Anuncios: los MISMOS 10, mismos nombres, mismo creativo.               │
+└────────────────────────────────────────────────────────────────────────┘
+
+TOTAL: $24.00/día ≈ Q183/día.
+⚠️ Si se apaga GTR0 (abajo), el gasto NETO del portafolio casi no sube: GTR0
+   venía quemando ~Q163/día a CPA Q244.8.
+
+CONFIGURACIÓN IDÉNTICA EN LAS TRES
+  Objetivo:        Tráfico (OUTCOME_TRAFFIC) · Optimización: Maximizar conversaciones
+  Destino:         WhatsApp (número de Sanarte)
+  Presupuesto:     ABO — a nivel de CONJUNTO. DESMARCAR "compartir presupuesto".
+  Página:          Sanarte Guatemala (498977893288095)
+  🔴 EDAD:         **45 – 60**  ← NO 25+. NO 18-65+. Ver abajo.
+  Ubicaciones:     automáticas · Advantage+ audiencia OFF · sin intereses
+  Programación:    4 AM del 2026-08-22 (nunca el mismo día)
+  Desmarcar:       "anuncios multianunciantes" · "incluir personas cuya edad se desconoce"
+
+🔴 LA BANDA DE EDAD ES LA CONDICIÓN QUE MÁS PESA (APR-060)
+   TINNIDROP a banda 25+ pagó Q147.5 por venta. El resto de las bandas, Q32.5.
+   Experimento natural con el MISMO ángulo y el MISMO creativo: PERDIDA_AUDITIVA
+   en GTR0 a 25+ = Q473.6/venta contra GTR7 a 45-60 = Q30.6. Quince veces.
+   Si esta campaña sale con banda ancha, los 10 conceptos compiten dentro de una
+   audiencia que no compra y el test no mide nada. **45-60, sin excepción.**
+
+════════════════════════════════════════════════════════════════════════════
+QUÉ NO SE TOCA EN ESTA CORRIDA (una variable a la vez)
+════════════════════════════════════════════════════════════════════════════
+· EL BOT NO SE CAMBIA. El flujo actual ya cierra al 14.2% en este ángulo — el
+  mejor del portafolio. Cambiar bot y conceptos a la vez haría que ningún
+  resultado sea atribuible. El bot dedicado de ACCESIBILIDAD queda para después
+  de que salga el concepto ganador.
+· EL OBJETIVO SIGUE SIENDO TRÁFICO. El test de OUTCOME_SALES es una prueba
+  aparte: mezclarlo acá rompería la lectura del concepto.
+· LOS PRECIOS NO SE MUEVEN. Q179 / Q239 / Q299.
+· NO SE TOCAN las campañas de DETERIORO ni PERDIDA_AUDITIVA que ya corren.
+
+════════════════════════════════════════════════════════════════════════════
+PASO A PASO
+════════════════════════════════════════════════════════════════════════════
+□ 1. GENERAR LAS 6 IMÁGENES QUE FALTAN
+     Prompts listos en:
+       Ads/MEDIA_TINNIDROP/FASE2_ACCESIBILIDAD/PROMPTS_FASE2_ACCESIBILIDAD.txt
+     Son C05 a C10. Adjuntar SIEMPRE la foto real del frasco.
+     Guardarlas en esa misma carpeta con el nombre exacto de "Archivo destino".
+
+□ 2. REGENERAR LAS 4 VIEJAS EN AZUL  🔴 (cambió respecto del plan original)
+     Los 8 PNG del 26-jul salieron con el frasco VERDE. El producto real es AZUL
+     Y BLANCO (South Moon). La IA repintó el envase porque el prompt lo pedía —
+     el frasco del anuncio no es el que recibe el cliente. El PARCHE DE COLOR
+     (3 líneas por prompt) está al final del archivo de prompts.
+     C01 sigue pautado y vendiendo tal cual; NO se apaga. Se regenera para la tanda.
+     Los originales verdes están en Ads/MEDIA_TINNIDROP/:
+       TINNIDROP_R1_VIVIRCONESO.png      ← esta sí está pautada, es el control
+       TINNIDROP_R2_TRESESPECIALISTAS.png
+       TINNIDROP_R3_MENOSQUECONSULTA.png
+       TINNIDROP_R8_HIJA.png
+     Guardar las versiones AZULES en FASE2_ACCESIBILIDAD/ con el mismo nombre.
+     ⚠️ Quitar también el badge "Reg. Sanitario MSPAS No. NS02025-GT2599" — sigue
+        sin verificarse si ese número es del producto o del proveedor.
+     ⚠️ Son 10 imágenes a generar, no 6. Si no da el tiempo para el 4 AM, lanzá
+        con las que estén listas y sumá el resto al día siguiente: un concepto que
+        entra tarde se lee igual, porque el veredicto es por réplica, no por día.
+
+□ 3. APAGAR GTR0  (independiente de todo lo demás — es plata yéndose hoy)
+     `_ESTADO_META.csv` la marca ON: GTR0_TINNIDROP_ESCALA_20260812.
+     APR-058: gastó Q490 para 2 ventas (CPA Q244.8) mientras el MISMO ángulo con
+     el MISMO creativo pagaba Q39.2 en GTR7 — 6.3×. La causa es el cobro
+     UNSETTLED, no el creativo. No usar esa cuenta hasta resolver el pago.
+
+□ 4. SUBIR LOS 10 CREATIVOS a la biblioteca de GTR7 y de GTR1.
+
+□ 5. CREAR LAS 3 CAMPAÑAS con la configuración de arriba, TODAS EN PAUSED.
+     Nombres exactos según la convención (son la llave de lectura de ETAPA-7).
+
+□ 6. VERIFICAR ANTES DE ACTIVAR
+     □ "Maximizar CONVERSACIONES" sigue marcado (Meta lo revierte solo a "clics")
+     □ Edad 45-60 en los 4 conjuntos
+     □ Presupuesto por conjunto, "compartir presupuesto" DESMARCADO
+     □ Cada anuncio con su nombre `ACCESIBILIDAD_C[NN]_IMG`
+     □ Los 5 anuncios de cada conjunto son creativos DISTINTOS (no duplicados)
+     □ Los ads con precio dicen Q179 en creativo Y en copy; los otros, en ninguno
+     □ Programadas 4 AM del 22-ago, no de hoy
+
+□ 7. ACTIVAR y no tocar nada hasta el día 3.
+
+════════════════════════════════════════════════════════════════════════════
+CÓMO SE LEE EL RESULTADO
+════════════════════════════════════════════════════════════════════════════
+El veredicto es por CONCEPTO, agregando las 2 apariciones de cada uno
+(campaña A o B + su gemelo en la campaña C). Nunca por conjunto suelto.
+
+  gana en 2 de 2  → GANADOR — pasa a FASE 3 (1-1-7, CBO, Post ID)
+  gana en 1 de 2  → RUIDO — no se corona, se vuelve a correr
+  sin entrega     → SIN_ENTREGA — nunca "perdedor"
+
+Métrica de corte: CPA real por LucidSales contra el break-even Q71.56.
+Secundaria: cierre msj→venta (el ángulo viene de 14.2%; un concepto que baje
+de 10% está atrayendo curiosos aunque traiga chats baratos — APR-002).
+
+⚠️ PRESUPUESTO DE DECISIÓN: con 5 anuncios repartiéndose $6/día, cada concepto
+   recibe ~$1.2/día. A ese ritmo, 1× break-even por concepto tarda ~8 días. NO
+   matar conceptos por "0 ventas" antes de ese punto — el corte temprano de los
+   días 3-4 es SOLO por entrega (impresiones y conversación), nunca por ventas.
+
+════════════════════════════════════════════════════════════════════════════
+RIESGOS ABIERTOS AL LANZAR
+════════════════════════════════════════════════════════════════════════════
+1. MCP caído hace 4 días → sin lectura automática de entrega. Mientras siga así,
+   el corte del día 3 depende del export manual de Ads Manager.
+2. Auto-competencia de subasta: A y B (GTR7) comparten audiencia y página con C
+   (GTR1). Se mitiga con la cuenta distinta, no se elimina. Vigilar el CPM.
+3. Los 4 creativos viejos tienen 26 días de antigüedad de diseño; C01 ya corrió y
+   acumula frecuencia. Si su CPM sale muy por encima de los nuevos, es fatiga del
+   creativo, no del concepto — mirarlo antes de descartar C2_BENEFICIOS.

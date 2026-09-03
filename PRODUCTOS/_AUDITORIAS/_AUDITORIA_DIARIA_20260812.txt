@@ -1,0 +1,100 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA DIARIA — 2026-08-12 (8 PM) — tarea programada auditoria-nusavab12-diaria
+═══════════════════════════════════════════════════════════════════════════
+SOLO LECTURA + RECOMENDACIÓN. No se creó, pausó, activó ni cambió presupuesto
+alguno por MCP. Nada de lo escrito acá se ejecutó solo — el operador ejecuta.
+
+┌─ 1) INTEGRIDAD DE VENTANA ──────────────────────────────────────────────┐
+│ Última BASE cerrada en _FACT_VENTAS.csv: 2026-08-10 (ventana 03→10 ago,  │
+│ 8 días, 61 ventas, cargada el 11-ago).                                   │
+│ FALTA: export de LucidSales del 2026-08-11 (un solo día, "ayer"). No     │
+│ llegó ningún archivo nuevo a `uploads/` en esta sesión. No se tocó       │
+│ `_FACT_VENTAS.csv` ni `_GANANCIAS.txt` — cargar sin ese dato sería       │
+│ inventar o, peor, arriesgar doble conteo cuando llegue tarde.            │
+│ → PEDIR AL OPERADOR: "Me falta el export de 2026-08-11. LucidSales →     │
+│   Métricas de Facebook Ads → rango SOLO 2026-08-11 → exportar → pegalo." │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 2) LADO-ADS POR MCP (corrió igual, con o sin LucidSales) ──────────────┐
+│ Cuentas revisadas: GTR7 (598687956219141) y GTR0 (1665221077707961).    │
+│                                                                            │
+│ GTR7 — 8 campañas ACTIVE con gasto histórico > 0:                        │
+│   · 🟩GTR7 VARICOSE_TRAFICO_20260801 ($38.71 lifetime)                   │
+│   · 🟩 GTR7 - VARICOSE_ESCALA_VERGUENZA_20260801 ($28.98 lifetime)       │
+│   · 4🟦 TINIDROP GTR0 - 1.59 - 4 WINERS ($262.68 lifetime) — OJO: vive   │
+│     en GTR7 pese al nombre "GTR0" (mismo patrón ya documentado en        │
+│     CLAUDE.md regla 23 / memoria "arquitectura-paginas-vs-cuentas").     │
+│   · NUSAVAB12_ESCALA_ARDOR_20260715 ($223.05 lifetime)                   │
+│   · NUSAVAB12_TEST_20260622 - Copia ($157.53 lifetime, la "viva")        │
+│   · 🟦 VARICOSE_ESCALA_VERGUENZA_20260710 ($79.73) y 🟩 VARICOSE_TRAFICO_ │
+│     20260704 ($88.15) — versiones más viejas, siguen ACTIVE con gasto    │
+│     acumulado pero sin adsets propios devueltos en esta pasada (revisar  │
+│     si siguen gastando o son remanentes de campañas madre).              │
+│   · GTR7_TINNIDROP_ESCALA_20260812 — NUEVA HOY, 0 adsets con spend.      │
+│                                                                            │
+│ Se leyeron 18 adsets ACTIVE de GTR7 en `last_7d` (ventana aprox. 05→11   │
+│ ago) y se anexaron a `_FACT_ENTREGA.csv` (fuente `MCP-ladoads-7d`):      │
+│   VARICOSE (6 adsets, testeo+escala VERGUENZA en GTR7):                  │
+│     MANCHAS-OSCURAS        $4.71 · 31 link-click · 13 msj (41.9%)        │
+│     VERGUENZA-PIERNAS      $5.45 · 39 link-click · 21 msj (53.8%) ← alto │
+│     CALAMBRES-NOCTURNOS    $4.22 · 25 link-click ·  6 msj (24.0%) ·1 compra│
+│     VERGUENZA_MA5_RESIG.   $4.20 · 44 link-click · 10 msj (22.7%) ·1 compra│
+│     VERGUENZA_MA2_VESTIDO  $4.47 · 37 link-click · 22 msj (59.5%) ← alto │
+│     VERGUENZA_MA6_OFERTA2X1 $4.23 · 29 link-click ·  3 msj (10.3%) ← bajo│
+│   NUSAVA (7 adsets, escala ARDOR + réplica MA6-OFERTA x3 + test ARDOR):  │
+│     MA6-OFERTA (x4 incl. 3 copias) · MA7-ARDORVIDEO · MA4-DEPIE ·        │
+│     ARDOR_NUSAVAB12_TEST — conversación 13.8%-42.4%, sin sorpresas.      │
+│   TINNIDROP (5 adsets, viven en GTR7 bajo la campaña "4🟦 TINIDROP GTR0"):│
+│     Pérdida auditiva irreversible - Copia (x2), Accesibilidad económica  │
+│     vs. médico - Copia 2, DETERIORO COGNITIVO - video, Pérdida auditiva  │
+│     irreversible — conversación 17.4%-70.0%. Sin ventas visibles por MCP │
+│     (omni_purchase no disponible en COD, normal — ver LucidSales).       │
+│                                                                            │
+│ 🔴 GTR0 (la cuenta MADRE histórica de TINNIDROP) — HALLAZGO IMPORTANTE:  │
+│ las 2 campañas activas (`🟩 TINIDROP GTR0 - 1.59 - TEST` y                │
+│ `TINNIDROP_RENOVACION_20260725 +25 años`) devuelven $0.00 USD de gasto   │
+│ en `last_7d` Y en `last_3d`. Sus ~19 adsets salieron con impresiones/    │
+│ gasto NULL (no cero-con-dato: sin actividad en absoluto). Esto es        │
+│ inusual porque TINNIDROP es "el motor del portafolio" (Q2,370 de         │
+│ ganancia en la ventana 03-10 ago, CPA Q22.6). Coincide en fecha con la   │
+│ aparición de 2 campañas NUEVAS hoy mismo: `GTR7_TINNIDROP_ESCALA_20260812`│
+│ y `GTR1_TINNIDROP_ESCALA_20260812` (esta última no se pudo inspeccionar  │
+│ a nivel adset en esta pasada). Además GTR1 ya tenía una réplica corriendo│
+│ con nombre `3🟦 TINIDROP GTR0 - 1.59 - 4 WINERS` ($42.52 lifetime).      │
+│ → Registrado en `_EVENTOS.csv` como ANOMALIA_GASTO_CERO + 2 LANZAMIENTO. │
+│ → NO SE ASUME que TINNIDROP dejó de correr: lo más probable es que el    │
+│   operador está migrando/expandiendo la campaña madre hacia GTR7/GTR1    │
+│   hoy mismo y GTR0 quedó en pausa a mitad de la migración. Pero esto     │
+│   es una LECTURA, no un hecho confirmado por MCP (el `effective_status`  │
+│   de las campañas de GTR0 sigue en ACTIVE, no PAUSED).                   │
+│ → PREGUNTAR AL OPERADOR: "¿TINNIDROP se movió de GTR0 a GTR7/GTR1 hoy?   │
+│   GTR0 no muestra gasto en los últimos 7 días." Si la respuesta es sí,   │
+│   la próxima auditoría debe leer GTR7/GTR1/GTR3 como las cuentas vivas   │
+│   de TINNIDROP, no GTR0.                                                 │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 3) ETAPA-7 / ETAPA-8 — sin CPA real nuevo, no hay veredicto que dar ───┐
+│ Sin export de LucidSales del 11-ago no hay ventas nuevas que rankear ni │
+│ ángulo que coronar (APR-002: la conversación corta, nunca corona). Lo   │
+│ único accionable hoy es de conversación/fatiga, y ninguno de los 18     │
+│ adsets leídos muestra frecuencia alta (todas < 1.5, lejos del umbral de │
+│ fatiga ≥1.9). VERGUENZA_MA6_OFERTA2X1 (10.3% conv) es el más débil de   │
+│ VARICOSE en esta ventana — vigilar, no matar (presupuesto de testeo,    │
+│ n bajo).                                                                  │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ 4) DASHBOARD ───────────────────────────────────────────────────────────┐
+│ `python Ads/_TOOLS/gen_dashboard.py` corrido. Ventana P&L sin cambios    │
+│ (2026-07-17 → 2026-08-10, 217 ventas, ganancia Q11,064) porque no entró  │
+│ ventas nuevas. "14 filas sin dimensión" son PRE-EXISTENTES (ventas sin   │
+│ conjunto atribuido, spend 0 — TINNIDROP 13 + NUSAVA 1) y no las movió    │
+│ esta corrida; no es un bug introducido hoy.                              │
+└───────────────────────────────────────────────────────────────────────────┘
+
+RESUMEN PARA MAÑANA:
+  1. Pedir export LucidSales de 2026-08-11 (un solo día).
+  2. Confirmar con el operador si TINNIDROP migró de GTR0 → GTR7/GTR1 hoy.
+  3. Si migró: actualizar `_PORTAFOLIO.txt` (MCP_ACCOUNT_ID de TINNIDROP) y
+     la clave de búsqueda de campaña para que la auditoría no siga mirando
+     una cuenta que ya no gasta.
+═══════════════════════════════════════════════════════════════════════════

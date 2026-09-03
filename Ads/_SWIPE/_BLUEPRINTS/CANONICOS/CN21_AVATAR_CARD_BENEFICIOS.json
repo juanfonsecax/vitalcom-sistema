@@ -1,0 +1,109 @@
+{
+  "canonico_id": "CN21_AVATAR_CARD_BENEFICIOS",
+  "schema_version": "canonico-1.0",
+  "nombre": "Avatar con card de beneficios flotante",
+  "dispositivo_canonico": "EL AVATAR SOSTIENE EL PRODUCTO A LA ALTURA DEL PECHO y una card semitransparente de beneficios flota a su lado, sin taparlo. La persona da la cara; la card da el argumento. Su pieza hermana retira al avatar y deja la MISMA card y la MISMA oferta — que el rostro sea opcional es el hallazgo de esta familia.",
+  "cuando_elegirlo": "MOFU donde conviene que alguien 'ponga la cara' pero el argumento sigue siendo la lista. Correr la pieza CON y SIN avatar es un test limpio: cambia una sola variable.",
+  "ejes_de_variacion": [
+    "con avatar (F028) o sin nadie, misma card y misma oferta (F089)",
+    "lado de la card respecto del avatar",
+    "opacidad de la card: solida o velo sobre la foto"
+  ],
+  "n_miembros": 2,
+  "ficha_referencia": "F028",
+  "score_referencia": 68,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 2
+    },
+    "rol_embudo": {
+      "MOFU": 2
+    },
+    "estetica": {
+      "cartel_publicitario": 2
+    },
+    "formato": {
+      "4:5": 1,
+      "1:1": 1
+    },
+    "densidad": {
+      "alta": 1,
+      "baja": 1
+    },
+    "nivel_conciencia_rango": [
+      3,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "FOTO_AVATAR",
+    "BENEFICIOS",
+    "LADO_DE_LA_CARD",
+    "PRECIO_OFERTA",
+    "MONEDA",
+    "CON_O_SIN_AVATAR",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "GARANTIAS[2]"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "El avatar sostiene el producto con las dos manos a la altura del pecho y mira a camara",
+    "El producto en sus manos queda en el centro geometrico del frame",
+    "El titular son tres sustantivos en escalada, y el tercero es emocional",
+    "La promesa va antes que el nombre del producto",
+    "Las specs son datos duros de formato, no beneficios",
+    "Una sola resena",
+    "El descargo de variabilidad de resultados va siempre al pie"
+  ],
+  "cuando_usar": [
+    "producto estetico o de bienestar con promesa mixta fisica y emocional",
+    "cuando existe foto de una persona del avatar presentando el producto",
+    "publico femenino 30-50",
+    "oferta de multiplicador simple (2x1) que no necesita escalera",
+    "audiencias donde la foto de persona no ayuda",
+    "para aislar en un test si lo que mueve la metrica es el avatar o la oferta",
+    "cuando no hay foto de avatar disponible del rango de edad correcto",
+    "correr en paralelo con la version con avatar"
+  ],
+  "cuando_no_usar": [
+    "dolor agudo: la pieza es demasiado luminosa y calmada",
+    "cuando no hay avatar fotografiable",
+    "cuando la oferta necesita tres tiers: la banda diagonal solo sostiene un multiplicador",
+    "cuando la identificacion con una persona es el motor de la campana",
+    "publico frio que necesita reconocerse en alguien",
+    "cuando no hay macrofotografia del organo disponible"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F028",
+      "score": 68,
+      "anunciante": "Ixchel Store GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA AVATAR SOSTENIENDO EL PRODUCTO A LA ALTURA DEL PECHO, CON LA CARD DE BENEFICIOS FLOTANDO A SU DERECHA"
+    },
+    {
+      "ficha_id": "F089",
+      "score": 32,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA MISMA OFERTA Y LOS MISMOS TRES BENEFICIOS QUE LA PIEZA CON AVATAR, PERO SIN NADIE"
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "ficha_id": "F056",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/GoMarket/03_1757241608626600.jpg",
+    "anunciante": "GoMarket",
+    "ad_archive_id": "1757241608626600",
+    "dias_activo": 23,
+    "replicas": 1,
+    "score": 48,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "22%",
+    "nivel_conciencia": 5,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL HOOK DE RETARGETING EXPLICITO: LA PIEZA LE HABLA A QUIEN YA LA VIO. El titular es una pregunta que solo tiene sentido para alguien que ya considero la compra (aun estas pensandolo), en tipo chica sobre el nombre de la marca en grande. Es el unico layout del banco que asume contacto previo y lo declara en la primera linea.",
+  "lectura_estrategica": "Nivel 5: la persona conoce el producto, la marca y el precio, y lo unico que falta es que se decida. Por eso el creativo no argumenta el problema — argumenta la POSTERGACION. El nombre de la marca ocupa el lugar del titular porque ya significa algo para quien lo ve, la lateral del empaque declara la duracion del suministro en dias (que convierte el precio en costo por dia), y el pie ofrece ayuda por WhatsApp en vez de repetir la oferta: si la persona no compro despues de verlo varias veces, lo que falta puede ser una duda, no un argumento.",
+  "fondo": {
+    "tipo": "degradado_radial_saturado",
+    "centro": "{{PALETA_MEDIO}}",
+    "borde": "{{PALETA_OSCURA}}",
+    "elemento": "resplandor calido detras del producto",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} rojo o color del empaque (fondo, bandas) mas dorado (bordes de card y sello de marca) mas blanco (texto) mas negro (cards internas)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "hook_postergacion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{PREGUNTA_POSTERGACION}}",
+      "estilo": "Bold uppercase blanco chico, con signos de interrogacion de apertura y cierre",
+      "restriccion_palabras": "3-4 palabras",
+      "formato_obligatorio": "pregunta que solo tiene sentido para quien ya vio el producto antes",
+      "regla_critica": "no argumenta el problema, argumenta la POSTERGACION: es el unico hook del banco que asume contacto previo"
+    },
+    "titular_marca": {
+      "posicion": "superior_centro, bajo el hook",
+      "contenido": "{{MARCA}}",
+      "estilo": "Black/900 blanco, elemento tipografico mas grande de la pieza",
+      "regla": "el nombre de la marca ocupa el lugar del titular porque en nivel 5 ya significa algo para quien lo ve"
+    },
+    "bajada_rutina": {
+      "posicion": "bajo la marca",
+      "texto": "{{POSICIONAMIENTO_RUTINA}}",
+      "estilo": "Bold uppercase en {{COLOR_ACENTO}} dorado, entre lineas horizontales finas",
+      "restriccion_palabras": "4-5 palabras",
+      "regla": "posiciona el producto como HABITO y no como solucion puntual"
+    },
+    "producto_hero": {
+      "posicion": "izquierda, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "caja de pie de perfil mas el envase delante, ambos de frente al lector",
+      "lateral_de_caja": "{{DURACION_SUMINISTRO}} impreso verticalmente en la lateral de la caja",
+      "fuente": "IMAGEN_2",
+      "regla_lateral": "la duracion del suministro en dias convierte el precio en costo por dia sin escribir la division"
+    },
+    "columna_beneficios": {
+      "posicion": "derecha_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art blanco en circulo con borde mas TITULO Bold uppercase blanco mas subtitulo Regular",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_titulo": "3-5 palabras",
+      "restriccion_subtitulo": "4-6 palabras",
+      "regla": "cada titulo lleva asterisco y cada subtitulo nombra el activo o la propiedad que lo produce"
+    },
+    "fila_garantias": {
+      "posicion": "derecha_baja",
+      "cantidad_items": 2,
+      "orientacion": "fila horizontal de dos cards",
+      "formato_item": "icono grande mas TITULO Black/900 mas subtitulo Regular",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_titulo": "2 palabras",
+      "restriccion_subtitulo": "3-5 palabras"
+    },
+    "sello_marca": {
+      "posicion": "inferior_izquierda",
+      "forma": "circular con borde dorado doble",
+      "linea_1": "{{ETIQUETA_RANKING}}",
+      "linea_2": "{{RESPALDO_PROFESIONAL}}",
+      "estilo_l1": "Black/900 blanco",
+      "escala": "16% del ancho",
+      "regla": "el respaldo profesional va en el sello y no en el titular: acredita sin ocupar jerarquia"
+    },
+    "banda_promocion": {
+      "posicion": "inferior_centro",
+      "header": "{{PROMO_HEADER}}",
+      "estilo_header": "Bold uppercase blanco chico",
+      "contenedor": "card con borde blanco redondeado",
+      "texto": "{{PROMO_VIGENCIA}}",
+      "estilo": "Black/900 uppercase blanco",
+      "pie": "{{RECORDATORIO}}",
+      "estilo_pie": "Regular muy chico",
+      "restriccion_pie": "8-10 palabras",
+      "regla": "declara que hay promocion vigente sin decir el precio: en nivel 5 la persona ya lo sabe"
+    },
+    "card_ayuda": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card blanca con logo circular verde de WhatsApp",
+      "linea_1": "{{PREGUNTA_AYUDA}}",
+      "linea_2": "{{CTA_ESCRIBIR}}",
+      "estilo_l1": "Black/900 negro",
+      "estilo_l2": "Bold en {{PALETA_ACENTO}}",
+      "restriccion_palabras": "3-5 palabras por linea",
+      "regla_critica": "ofrece AYUDA en vez de repetir la oferta: si la persona no compro despues de verlo varias veces, lo que falta puede ser una duda y no un argumento"
+    }
+  },
+  "secuencia_lectura": [
+    "hook_postergacion",
+    "titular_marca",
+    "producto_hero",
+    "bajada_rutina",
+    "columna_beneficios",
+    "fila_garantias",
+    "banda_promocion",
+    "card_ayuda",
+    "sello_marca"
+  ],
+  "reglas_duras": [
+    "El hook le habla a quien ya vio el producto antes",
+    "El nombre de la marca ocupa el lugar del titular",
+    "La duracion del suministro va impresa en la lateral de la caja",
+    "El respaldo profesional va en el sello circular, no en el titular",
+    "La promocion se declara vigente sin decir el precio",
+    "El cierre ofrece ayuda por chat en vez de repetir la oferta"
+  ],
+  "variables_requeridas": [
+    "PREGUNTA_POSTERGACION",
+    "MARCA",
+    "POSICIONAMIENTO_RUTINA",
+    "DURACION_SUMINISTRO",
+    "BENEFICIOS[4]",
+    "GARANTIAS[2]",
+    "ETIQUETA_RANKING",
+    "RESPALDO_PROFESIONAL",
+    "PROMO_HEADER",
+    "PROMO_VIGENCIA",
+    "RECORDATORIO",
+    "PREGUNTA_AYUDA",
+    "CTA_ESCRIBIR",
+    "COLOR_ACENTO"
+  ],
+  "cuando_usar": [
+    "retargeting sobre publico que ya vio el producto y no compro",
+    "marcas con nombre reconocible en la categoria",
+    "productos con presentacion de larga duracion (value pack, suministro de meses)",
+    "cuando la barrera restante es una duda y no un argumento"
+  ],
+  "cuando_no_usar": [
+    "publico frio: el hook de postergacion no significa nada para quien nunca vio el producto",
+    "marcas sin reconocimiento: el titular quedaria vacio",
+    "lanzamientos"
+  ],
+  "sellos_y_claims_observados": [
+    "Sello circular MARCA #1 RECOMENDADA POR MEDICOS EN ACEITE DE KRILL.",
+    "Lateral de caja VALUE PACK · 130 DAY SUPPLY.",
+    "Bajada TU RUTINA DIARIA DE BIENESTAR.",
+    "Beneficios con asterisco: APOYA LA SALUD DEL CORAZON* (con Omega-3 y aceite de krill), APOYA LA FUNCION CEREBRAL* (DHA para tu bienestar diario), FACIL DE ABSORBER (alta biodisponibilidad), APOYA LA MOVILIDAD* (ideal para tu rutina diaria).",
+    "Garantias ENVIO GRATIS A TODA GUATEMALA y PAGA AL RECIBIR CON TOTAL CONFIANZA.",
+    "Banda PROMOCION DISPONIBLE POR TIEMPO LIMITADO con recordatorio NO DEJES PASAR ESTA OPORTUNIDAD DE CUIDAR TU BIENESTAR.",
+    "Card de ayuda TE AYUDAMOS CON TU PEDIDO? ESCRIBENOS AHORA con logo de WhatsApp.",
+    "Claims impresos en el empaque: #1 DOCTOR RECOMMENDED KRILL OIL BRAND, HEART HEALTH SUPPORT, easily absorbed, 350 mg per softgel."
+  ],
+  "canonico_id": "CN17_TITULAR_DOMINANTE",
+  "blueprint_equivalente": null
+}

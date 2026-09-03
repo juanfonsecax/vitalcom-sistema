@@ -1,0 +1,239 @@
+{
+  "ficha_id": "F084",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tienda_de_Don_Gato/03_27754777454205963.jpg",
+    "anunciante": "Tienda de Don Gato",
+    "ad_archive_id": "27754777454205963",
+    "dias_activo": 7,
+    "replicas": 1,
+    "score": 32,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "12%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": "densa"
+  },
+  "dispositivo_dominante": "LA SECCION DE MODO DE PREPARACION INTERCALADA ENTRE LOS BENEFICIOS Y EL PRECIO, CON SU PROPIO HEADER EN PREGUNTA. Entre el bloque de PARA QUE SIRVE y la escalera de precios se mete una card con el header COMO TOMARLO, la medida exacta, el volumen de liquido y la frecuencia. La duda practica se responde antes de que aparezca el precio.",
+  "lectura_estrategica": "Version larga y explicativa del mismo producto: aqui la marca ya no es el titular, sino que el titular promete TRANSFORMACION de la nutricion diaria y el nombre pasa a una pildora debajo. La pieza esta organizada como una pagina de producto — para que sirve, como se toma, cuanto cuesta, que vas a sentir — y su decision mas util es intercalar la preparacion entre el argumento y el precio: en polvos la objecion no es si funciona sino si voy a poder tomarlo todos los dias. La columna derecha de BENEFICIOS QUE SENTIRAS repite en clave sensorial lo que la izquierda dijo en clave funcional.",
+  "fondo": {
+    "tipo": "color_plano_claro_con_producto_al_centro",
+    "color": "blanco o crema muy claro",
+    "elemento": "salpicadura del preparado y hojas detras del envase",
+    "textura": "ninguna"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "verde (titular de acento, headers, cards de sello) mas blanco (fondo) mas negro (cards de precio) mas {{COLOR_ALERTA}} rojo de las etiquetas de ahorro y el header de sensaciones"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "{{PALETA_OSCURA}}"
+  },
+  "zonas": {
+    "titular_transformacion": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "linea_1": "{{AMBITO}}",
+      "linea_2": "{{VERBO_ACENTO}}",
+      "linea_3": "{{OBJETO}}",
+      "estilo_l1_l3": "Bold uppercase {{PALETA_OSCURA}}",
+      "estilo_l2": "Black/900 uppercase en verde, al 180% de L1",
+      "restriccion_palabras_total": "5-6 palabras",
+      "regla": "el verbo de transformacion lleva el mayor tamano y el color"
+    },
+    "pildora_producto": {
+      "posicion": "bajo el titular",
+      "contenedor": "pildora verde solida con corazon",
+      "texto": "{{MARCA}} {{CATEGORIA_PRODUCTO}}",
+      "estilo": "Bold uppercase blanco",
+      "regla": "la marca baja del titular a una pildora: aca lo que vende es la promesa, no el nombre"
+    },
+    "bajada_alcance": {
+      "posicion": "bajo la pildora",
+      "lineas": 2,
+      "linea_1": "{{FRASE_ALIADO}}",
+      "linea_2": "{{ALCANCE_CURSIVA}}",
+      "estilo_l2": "cursiva {{PALETA_OSCURA}}",
+      "restriccion_palabras": "5-7 palabras por linea"
+    },
+    "logo_tienda": {
+      "posicion": "superior_derecha",
+      "contenido": "{{LOGO_TIENDA}}",
+      "escala": "18% del ancho"
+    },
+    "columna_sellos": {
+      "posicion": "derecha_superior",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art verde mas texto Bold uppercase muy chico de 2 lineas",
+      "items": "{{SELLOS[3]}}",
+      "restriccion_palabras": "2-4 palabras"
+    },
+    "header_para_que": {
+      "posicion": "izquierda_media",
+      "contenedor": "pildora verde con signos de interrogacion",
+      "texto": "{{HEADER_FUNCION}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "3 palabras",
+      "default": "¿PARA QUE SIRVE?"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media, bajo el header",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art verde en circulo mas TITULO Bold uppercase mas subtitulo Regular de 2 lineas",
+      "items": "{{BENEFICIOS[5]}}",
+      "restriccion_titulo": "2-4 palabras",
+      "restriccion_subtitulo": "8-12 palabras",
+      "regla": "clave FUNCIONAL: que hace el producto en el cuerpo"
+    },
+    "card_preparacion": {
+      "posicion": "izquierda_baja, entre los beneficios y el precio",
+      "contenedor": "card clara con borde punteado e icono de cuchara",
+      "header": "{{HEADER_PREPARACION}}",
+      "estilo_header": "Black/900 uppercase en {{COLOR_ALERTA}} con signos de interrogacion",
+      "linea_1": "{{MEDIDA}} {{EQUIVALENCIA}}",
+      "linea_2": "CON {{VOLUMEN}} DE {{LIQUIDO}} O {{ALTERNATIVA}}",
+      "linea_3": "{{FRECUENCIA}}",
+      "estilo_l3": "Bold en {{COLOR_ALERTA}} con signos de exclamacion",
+      "restriccion_palabras": "6-10 palabras por linea",
+      "regla_critica": "la preparacion se intercala ENTRE el argumento y el precio: en polvos la objecion no es si funciona sino si voy a poder tomarlo todos los dias",
+      "regla_medida": "la medida va con su equivalencia domestica entre parentesis (1 scoop / cucharada)"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "42% del frame",
+      "composicion": "envase de pie de frente con sello de seguridad, salpicadura del preparado detras y el vaso servido al costado",
+      "badge_contenido": "{{CONTENIDO}} en pildora sobre el envase",
+      "fuente": "IMAGEN_2"
+    },
+    "columna_sensaciones": {
+      "posicion": "derecha_baja",
+      "header": "{{HEADER_SENSACIONES}}",
+      "estilo_header": "Black/900 uppercase en {{COLOR_ALERTA}}",
+      "cantidad_items": 5,
+      "orientacion": "columna vertical",
+      "formato_item": "check {{COLOR_ALERTA}} mas texto Regular de 1-2 lineas",
+      "items": "{{SENSACIONES[5]}}",
+      "restriccion_palabras": "3-5 palabras",
+      "regla_critica": "repite en clave SENSORIAL lo que la columna izquierda dijo en clave funcional: el mismo contenido en dos registros para dos tipos de lector"
+    },
+    "escalera_precios": {
+      "posicion": "inferior, ancho completo",
+      "tiers": 3,
+      "orientacion": "tres cards negras numeradas de igual tamano",
+      "formato_tier": "circulo numerado, cantidad en Bold, precio Black/900, etiqueta de ahorro en pildora {{COLOR_ALERTA}} y ENVIO GRATIS al pie",
+      "tier_1": "{{CANT_1}} — {{MONEDA}}{{PRECIO_1}}",
+      "tier_2": "{{CANT_2}} — {{MONEDA}}{{PRECIO_2}} — AHORRAS {{MONEDA}}{{AHORRO_2}}",
+      "tier_3": "{{CANT_3}} — {{MONEDA}}{{PRECIO_3}} — AHORRAS {{MONEDA}}{{AHORRO_3}}"
+    },
+    "barra_garantias": {
+      "posicion": "inferior extremo, ancho completo",
+      "cantidad_items": 3,
+      "formato_item": "icono line-art mas TITULO Bold uppercase mas subtitulo Regular",
+      "items": "{{GARANTIAS[3]}}",
+      "restriccion_palabras": "3-6 palabras"
+    },
+    "pie_cierre": {
+      "posicion": "inferior extremo, centrado",
+      "texto": "{{CIERRE_CURSIVA}}",
+      "estilo": "cursiva decorativa {{PALETA_OSCURA}} con corazon",
+      "restriccion_palabras": "6-8 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_transformacion",
+    "pildora_producto",
+    "producto_hero",
+    "header_para_que",
+    "columna_beneficios",
+    "card_preparacion",
+    "columna_sensaciones",
+    "escalera_precios",
+    "columna_sellos",
+    "barra_garantias",
+    "pie_cierre"
+  ],
+  "reglas_duras": [
+    "La preparacion se intercala entre el argumento y el precio",
+    "La medida va con su equivalencia domestica entre parentesis",
+    "La columna izquierda es funcional y la derecha sensorial: el mismo contenido en dos registros",
+    "La marca baja del titular a una pildora",
+    "Los tiers van numerados y las tres cards repiten envio gratis",
+    "Cada seccion lleva su propio header en forma de pregunta"
+  ],
+  "variables_requeridas": [
+    "AMBITO",
+    "VERBO_ACENTO",
+    "OBJETO",
+    "MARCA",
+    "CATEGORIA_PRODUCTO",
+    "FRASE_ALIADO",
+    "ALCANCE_CURSIVA",
+    "LOGO_TIENDA",
+    "SELLOS[3]",
+    "HEADER_FUNCION",
+    "BENEFICIOS[5]",
+    "HEADER_PREPARACION",
+    "MEDIDA",
+    "EQUIVALENCIA",
+    "VOLUMEN",
+    "LIQUIDO",
+    "ALTERNATIVA",
+    "FRECUENCIA",
+    "CONTENIDO",
+    "HEADER_SENSACIONES",
+    "SENSACIONES[5]",
+    "CANT_1",
+    "CANT_2",
+    "CANT_3",
+    "PRECIO_1",
+    "PRECIO_2",
+    "PRECIO_3",
+    "AHORRO_2",
+    "AHORRO_3",
+    "MONEDA",
+    "GARANTIAS[3]",
+    "CIERRE_CURSIVA",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "productos en polvo o de preparacion donde la objecion es el habito diario",
+    "cuando conviene una pieza larga tipo pagina de producto",
+    "cuando el mismo argumento se puede decir en clave funcional y sensorial",
+    "ubicaciones verticales con mucho alto disponible"
+  ],
+  "cuando_no_usar": [
+    "feed cuadrado: la pieza no cabe",
+    "productos sin preparacion: la card queda vacia",
+    "cuando el argumento es solo el precio"
+  ],
+  "sellos_y_claims_observados": [
+    "Columna de sellos: 100% NATURAL, INGREDIENTES DE ALTA CALIDAD, PRODUCTO ORIGINAL.",
+    "Header ¿PARA QUE SIRVE? con beneficios: NUTRICION COMPLETA (aporta verduras, vitaminas, minerales y antioxidantes esenciales), MEJOR DIGESTION (contiene enzimas, probioticos y fibra que apoyan tu digestion y reducen la hinchazon), MAS ENERGIA Y VITALIDAD (ingredientes naturales que ayudan a mejorar tu energia diaria de forma natural), SISTEMA INMUNE (antioxidantes y nutrientes que apoyan tus defensas), BIENESTAR GENERAL (te ayuda a sentirte ligero, activo y en equilibrio).",
+    "Card ¿COMO TOMARLO? MEZCLA 1 SCOOP (CUCHARADA) CON 250-300 ML DE AGUA O TU BEBIDA FAVORITA. DISFRUTA TODOS LOS DIAS.",
+    "Columna BENEFICIOS QUE SENTIRAS: MAS ENERGIA NATURAL, MEJOR DIGESTION, INGREDIENTES VERDES Y SUPERALIMENTOS, FORTALECE TU SISTEMA INMUNE, APOYO A TU BIENESTAR DIARIO.",
+    "Escalera: 1 UNIDAD Q190, 2 UNIDADES Q250 (AHORRAS Q60), 3 UNIDADES Q330 (AHORRAS Q140), las tres con ENVIO GRATIS.",
+    "Barra: ENVIOS A TODA GUATEMALA Y DEPARTAMENTOS, PAGO CONTRA ENTREGA (PAGAS AL RECIBIR TU PRODUCTO), COMPRA SEGURA (PRODUCTO ORIGINAL Y DE CALIDAD).",
+    "Cierre CUIDA TU CUERPO HOY, VIVE MEJOR SIEMPRE.",
+    "Badge CONTENIDO 303 G."
+  ],
+  "canonico_id": "CN19_INSTRUCTIVO_PASOS",
+  "blueprint_equivalente": null
+}

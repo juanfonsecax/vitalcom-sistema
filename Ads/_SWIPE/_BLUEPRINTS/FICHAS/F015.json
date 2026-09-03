@@ -1,0 +1,188 @@
+{
+  "ficha_id": "F015",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/19_28466089996316019.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "28466089996316019",
+    "dias_activo": 7,
+    "replicas": 4,
+    "score": 107,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "3:4",
+    "densidad": "media",
+    "espacio_libre_objetivo": "28%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "MOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": "unboxing"
+  },
+  "dispositivo_dominante": "LAS DOS MANOS SOSTENIENDO LA CAJA, CON BROCHAZO EN EL TITULAR Y NOTA MANUSCRITA. Variante mas calida del unboxing: en vez de una mano de costado, dos manos sostienen la caja de frente y el texto adopta recursos de escritura a mano (brochazo detras del titular, cursiva en el subtitulo, una tarjeta de carton con mensaje). La pieza imita un regalo, no un envio.",
+  "lectura_estrategica": "Mismo motor de prueba que F014 con un giro de tono: donde F014 prueba que el pedido LLEGA, F015 prueba que llega BIEN CUIDADO. Los recursos manuscritos y la tarjeta de carton son de packaging artesanal, no de dropshipping, y suben la percepcion de marca sin subir el precio. La columna de 4 beneficios va arriba en fila fina para dejar la caja entera visible, y el bloque de precio se comprime al pie: la foto es la que vende.",
+  "fondo": {
+    "tipo": "escena_real_de_interior",
+    "base": "cama o superficie textil clara en luz natural, muy desenfocada",
+    "regla": "tonos claros y calidos: la escena debe leerse acogedora, no comercial"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} (brochazo, iconos, cards) mas blanco (texto sobre el brochazo y fondo de cards) mas el cafe del carton mas el neutro claro de la escena"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada mas una cursiva de apoyo",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400",
+      "cursiva decorativa"
+    ],
+    "maximo_pesos_en_pieza": 4,
+    "excepcion": "es el unico layout del banco que admite un cuarto estilo tipografico, porque la cursiva no compite con la jerarquia: hace de nota manuscrita",
+    "color_texto_principal": "blanco sobre el brochazo, oscuro sobre el fondo claro"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "dos manos sosteniendo la caja abierta de frente, sin rostro",
+    "manicura": "natural",
+    "angulo": "frontal o levemente cenital, a la altura del pecho",
+    "luz": "natural, difusa, tonos calidos",
+    "que_se_conserva": "el relleno de papel, la tarjeta de carton, los pliegues, la sombra real",
+    "que_NO_se_hace": "recorte, fondo plano, brillo de estudio, unidades flotando",
+    "extra": "una tarjeta de carton kraft con mensaje corto dentro de la caja, escrita en tipografia manuscrita"
+  },
+  "zonas": {
+    "titular": {
+      "posicion": "superior, ancho completo",
+      "alineacion": "centrado",
+      "lineas": 3,
+      "contenedor": "banda de BROCHAZO irregular {{PALETA_ACENTO}} detras de las lineas 2 y 3",
+      "linea_1": "{{HOOK_L1}}",
+      "linea_2": "{{HOOK_L2}}",
+      "linea_3": "{{HOOK_L3_CURSIVA}}",
+      "estilo_l1_l2": "Black/900 uppercase, oscuro fuera del brochazo y blanco encima",
+      "estilo_l3": "cursiva decorativa, al 45% de L2",
+      "restriccion_palabras_total": "5-7 palabras",
+      "funcion_brochazo": "unica textura organica del layout: rompe la rigidez y sostiene el tono de regalo"
+    },
+    "nota_lateral": {
+      "posicion": "superior_derecha",
+      "texto": "{{NOTA_MANUSCRITA}}",
+      "estilo": "cursiva decorativa oscura, 2-3 lineas",
+      "restriccion_palabras": "4-6 palabras",
+      "regla": "va sin contenedor, como escrita sobre la imagen"
+    },
+    "fila_beneficios": {
+      "posicion": "bajo el titular, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal fina, sin contenedor",
+      "formato_item": "icono line-art {{PALETA_ACENTO}} arriba mas texto Regular de 2-3 lineas con la ultima palabra en Bold",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "5-8 palabras",
+      "regla": "fila fina y sin card: no debe robarle alto a la foto"
+    },
+    "foto_unboxing": {
+      "posicion": "centro, ocupa la mitad del alto",
+      "contenido": "{{FOTO_DOS_MANOS_CON_CAJA}}",
+      "escala": "50% del frame",
+      "composicion": "caja de envio abierta sostenida por dos manos de frente, con {{CANT}} unidades sobre el relleno y una tarjeta de carton visible",
+      "regla": "la cantidad de unidades visibles coincide con la del pack ofertado"
+    },
+    "tarjeta_carton": {
+      "posicion": "dentro de la caja, borde derecho",
+      "texto": "{{MENSAJE_TARJETA}}",
+      "estilo": "cursiva decorativa sobre carton kraft",
+      "restriccion_palabras": "4-6 palabras",
+      "funcion": "el detalle que convierte un envio en un regalo"
+    },
+    "bloque_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "ninguno, sobre el fondo",
+      "linea_1": "{{OFERTA_LABEL}}",
+      "estilo_l1": "Bold uppercase oscuro chico",
+      "linea_2": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l2": "Black/900 oscuro"
+    },
+    "fila_garantias": {
+      "posicion": "inferior_centro",
+      "cantidad_items": 2,
+      "formato_item": "icono line-art mas texto Bold de 2 lineas",
+      "items": "{{GARANTIAS[2]}}",
+      "restriccion_palabras": "3-4 palabras"
+    },
+    "bloque_escasez": {
+      "posicion": "inferior, ancho parcial izquierdo",
+      "contenedor": "card {{PALETA_ACENTO}} con icono de reloj",
+      "linea_1": "{{ESCASEZ_L1}}",
+      "linea_2": "{{ESCASEZ_L2}}",
+      "estilo_l1": "Black/900 uppercase blanco con signos de exclamacion"
+    },
+    "sello_origen_pais": {
+      "posicion": "inferior_derecha",
+      "contenedor": "card con bandera de {{PAIS}}",
+      "linea_1": "{{CLAIM_LOCALIZACION}}",
+      "linea_2": "{{SUBCLAIM_CONFIANZA}}",
+      "estilo_l1": "Bold uppercase oscuro"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "foto_unboxing",
+    "fila_beneficios",
+    "nota_lateral",
+    "tarjeta_carton",
+    "bloque_precio",
+    "bloque_escasez",
+    "sello_origen_pais"
+  ],
+  "reglas_duras": [
+    "Dos manos sosteniendo la caja de frente, sin rostro",
+    "El brochazo es la unica textura organica: no se agregan mas",
+    "La cursiva se usa solo en la nota y la tarjeta, nunca en titular ni precio",
+    "La fila de beneficios va fina y sin card para no robarle alto a la foto",
+    "El relleno, la tarjeta de carton y la sombra real se conservan",
+    "La cantidad de unidades visibles coincide con la del pack ofertado"
+  ],
+  "variables_requeridas": [
+    "HOOK_L1",
+    "HOOK_L2",
+    "HOOK_L3_CURSIVA",
+    "NOTA_MANUSCRITA",
+    "BENEFICIOS[4]",
+    "FOTO_DOS_MANOS_CON_CAJA",
+    "CANT",
+    "MENSAJE_TARJETA",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIAS[2]",
+    "ESCASEZ_L1",
+    "ESCASEZ_L2",
+    "CLAIM_LOCALIZACION",
+    "SUBCLAIM_CONFIANZA",
+    "PAIS"
+  ],
+  "cuando_usar": [
+    "cuando se quiere subir percepcion de marca sin subir el precio",
+    "packs de regalo o de temporada",
+    "publico femenino que valora el detalle del empaque",
+    "cuando ya se probo el producto en otro creativo y toca elevar el tono"
+  ],
+  "cuando_no_usar": [
+    "ofertas agresivas de precio: el tono calido contradice la urgencia",
+    "dolor agudo",
+    "cuando no se puede producir la tarjeta ni el empaque cuidado: prometerlo y no cumplirlo genera devoluciones"
+  ],
+  "sellos_y_claims_observados": [
+    "Beneficios con verbos de apoyo: PROMUEVE UN FLUJO LINFATICO SALUDABLE, AYUDA A ELIMINAR LIQUIDOS Y REDUCIR LA RETENCION, CONTRIBUYE A MAS LIGEREZA BIENESTAR Y ENERGIA, FAVORECE LA ELIMINACION DE TOXINAS Y DESECHOS CELULARES.",
+    "Sello PRODUCTO ORIGINAL GUATEMALA con bandera y subclaim COMPRA CON CONFIANZA.",
+    "Bloque STOCK LIMITADO · ULTIMAS UNIDADES DISPONIBLES con icono de reloj.",
+    "Garantias ENVIO GRATIS EN GUATEMALA y PAGA CONTRA ENTREGA.",
+    "Nota manuscrita TU CUERPO MAS LIGERO Y EQUILIBRADO y tarjeta de carton UN PASO MAS HACIA TU BIENESTAR."
+  ],
+  "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,99 @@
+═══════════════════════════════════════════════════════════════════════════
+REPORTE SEMANAL — facturación y ganancia por semana y por producto
+Generado: 2026-09-02 · fuente: _FACT_VENTAS.csv (lo que los ads ATRIBUYEN)
+═══════════════════════════════════════════════════════════════════════════
+
+CÓMO LEERLO: «facturado» es lo que se vendió (antes de costos).
+«ganancia» ya descuenta producto, flete, devoluciones, admin y pauta.
+Una semana con menos de 7 días de data está marcada PARCIAL: su total
+es un PISO, no el cierre.
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-07-13 → 2026-07-19  ⚠ PARCIAL (3 de 7 días)  · corte estimado (tramo multi-día prorrateado)
+  Facturado Q5,352 · Pauta Q968 · GANANCIA Q1,203
+  23 ventas · CPA Q43 · ROAS 5.53x · ganancia/día Q401
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        11       Q2,295        Q418         Q542      Q39
+    NUSAVA            5       Q1,225        Q251         Q249      Q53
+    CLEARSTEM         4         Q927        Q184         Q219      Q43
+    VARICOSE          3         Q906        Q115         Q192      Q38
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-07-20 → 2026-07-26  ⚠ PARCIAL (6 de 7 días)  · corte estimado (tramo multi-día prorrateado)
+  Facturado Q12,811 · Pauta Q2,712 · GANANCIA Q2,525
+  55 ventas · CPA Q49 · ROAS 4.72x · ganancia/día Q421
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        32       Q7,002      Q1,548       Q1,364      Q48
+    NUSAVA           11       Q2,879        Q476         Q698      Q42
+    VARICOSE          4       Q1,207        Q154         Q256      Q38
+    CLEARSTEM         8       Q1,722        Q535         Q207      Q69
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-07-27 → 2026-08-02  · corte estimado (tramo multi-día prorrateado)
+  Facturado Q16,608 · Pauta Q4,068 · GANANCIA Q2,902
+  74 ventas · CPA Q55 · ROAS 4.08x · ganancia/día Q415
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        53      Q11,092      Q2,476       Q2,217      Q47
+    CLEARSTEM        14       Q3,418      Q1,012         Q424      Q72
+    NUSAVA            6       Q1,793        Q476         Q253      Q79
+    VARICOSE          1         Q305        Q103           Q7     Q103
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-08-03 → 2026-08-09  · corte estimado (tramo multi-día prorrateado)
+  Facturado Q12,916 · Pauta Q1,890 · GANANCIA Q3,498
+  57 ventas · CPA Q33 · ROAS 6.83x · ganancia/día Q500
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        32       Q6,839        Q732       Q2,146      Q23
+    NUSAVA           10       Q2,633        Q387         Q694      Q40
+    CLEARSTEM        10       Q2,159        Q410         Q545      Q39
+    VARICOSE          4       Q1,285        Q361         Q113      Q83
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-08-10 → 2026-08-16  · corte estimado (tramo multi-día prorrateado)
+  Facturado Q19,199 · Pauta Q4,983 · GANANCIA Q3,119
+  85 ventas · CPA Q59 · ROAS 3.85x · ganancia/día Q446
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        47       Q9,875      Q2,444       Q1,712      Q52
+    CLEARSTEM        27       Q6,193      Q1,513       Q1,152      Q55
+    NUSAVA           10       Q2,947        Q799         Q415      Q77
+    VARICOSE          1         Q184        Q228        Q-160     Q365
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-08-17 → 2026-08-23
+  Facturado Q14,603 · Pauta Q3,720 · GANANCIA Q2,385
+  65 ventas · CPA Q57 · ROAS 3.93x · ganancia/día Q341
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        37       Q7,943      Q2,304       Q1,018      Q62
+    CLEARSTEM        16       Q3,732        Q910         Q685      Q57
+    NUSAVA           12       Q2,928        Q506         Q682      Q42
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-08-24 → 2026-08-30
+  Facturado Q20,482 · Pauta Q3,764 · GANANCIA Q4,820
+  87 ventas · CPA Q43 · ROAS 5.44x · ganancia/día Q689
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    CLEARSTEM        40       Q9,949        Q939       Q3,216      Q23
+    TINNIDROP        39       Q8,181      Q2,286       Q1,171      Q59
+    NUSAVA            8       Q2,352        Q539         Q433      Q67
+
+───────────────────────────────────────────────────────────────────────────
+SEMANA 2026-08-31 → 2026-09-06  ⚠ PARCIAL (2 de 7 días)
+  Facturado Q3,061 · Pauta Q1,202 · GANANCIA Q119
+  15 ventas · CPA Q80 · ROAS 2.55x · ganancia/día Q60
+
+    PRODUCTO     VENTAS    FACTURADO       PAUTA     GANANCIA      CPA
+    TINNIDROP        11       Q2,269        Q722         Q245      Q66
+    CLEARSTEM         4         Q792        Q294          Q61      Q73
+    NUSAVA            0           Q0        Q186        Q-186        —
+
+═══════════════════════════════════════════════════════════════════════════
+ACUMULADO DE LA SERIE: facturado Q105,032 · pauta Q23,308 · GANANCIA Q20,570
+461 ventas · CPA Q51 · ROAS 4.51x
+═══════════════════════════════════════════════════════════════════════════

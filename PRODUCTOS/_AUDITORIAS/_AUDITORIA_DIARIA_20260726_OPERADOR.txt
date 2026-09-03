@@ -1,0 +1,124 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA 2026-07-26 (entrega del operador, 22:14) · ETAPA-7 + ETAPA-8
+Ventana BASE acumulada: 17-jul → 26-jul (10 días)
+═══════════════════════════════════════════════════════════════════════════
+
+QUÉ ENTRÓ
+───────────────────────────────────────────────────────────────────────────
+  · report-2026-07-25-2026-07-25.xlsx → BASE  1d  106 filas
+  · report-2026-07-26-2026-07-26.xlsx → BASE  1d   91 filas
+  · report-2026-07-19-2026-07-26.xlsx → CONTROL 7d 148 filas (verifica, NO suma)
+  Total anexado a _FACT_VENTAS.csv: 345 filas (76 → 421).
+
+  Normalizaciones aplicadas:
+  · Cuenta CP1 (1346891653335162) factura en COP → spend ÷ 4050 a USD.
+    Sin esto el gasto del portafolio se inflaba de $468 a $146,128.
+  · producto → producto_key (4 productos, 0 sin mapear).
+  · 5 cuentas mapeadas a alias (GTR0/GTR1/GTR7/GTR13/CP1), 0 sin registrar.
+
+  Integridad:
+  · Guarda anti-duplicado sobre (ventana, producto_key, conjunto, anuncio,
+    fuente): 0 colisiones. La regla de no-solapamiento se respeta
+    (última BASE cerraba 24-jul → la nueva abre 25-jul).
+  · JOIN con _DIM_CONJUNTOS: CIERRA 100%, tras dos correcciones:
+      – alta de 6 duplicados internos "- Copia" heredando el angulo_key del base;
+      – la llave del conjunto Familia B se corrigió al nombre EXACTO de Meta
+        ('"YA NO ME ACUERDO DE LAS COSAS"  (Familia B · variación del súper
+        ganador)'); estaba escrita en forma aproximada y no cruzaba.
+
+───────────────────────────────────────────────────────────────────────────
+P&L — ventana BASE 17-26 jul
+───────────────────────────────────────────────────────────────────────────
+  Ganancia neta Q2,042 · ingreso Q18,163 · pauta Q3,680 · 78 ventas
+  CPA global Q47.2 · ROAS 4.94x
+  (ganancia = ventas × CPA Break-Even − pauta; BE v2 de _DIM_PRODUCTOS.csv)
+
+| Producto  | Ventas | Pauta Q | CPA Q | BE Q | Ganancia Q | Estado    |
+|-----------|--------|---------|-------|------|------------|-----------|
+| TINNIDROP |     43 |    1966 |  45.7 | 71.6 |      +1111 | rentable  |
+| NUSAVA    |     16 |     727 |  45.5 | 76.9 |       +502 | rentable  |
+| VARICOSE  |      7 |     269 |  38.4 | 83.0 |       +312 | APAGADO   |
+| CLEARSTEM |     12 |     718 |  59.9 | 69.6 |       +116 | al filo   |
+
+  EL FIN DE SEMANA (25+26): Q1,421 de pauta · 25 ventas · ganancia Q+390
+    · sáb 25:  8 ventas · Q708 · ganancia Q-130  ← día en PÉRDIDA
+    · dom 26: 17 ventas · Q713 · ganancia Q+520  ← MEJOR DÍA registrado
+
+  ⚠️ MADURACIÓN: el COD madura ~3 días y LucidSales reajusta hacia atrás. Las
+     ventas del 25-26 pueden CRECER. El CPA del fin de semana es un TECHO
+     (solo puede mejorar); la ganancia, un PISO. El -130 del sábado no es cierre.
+
+───────────────────────────────────────────────────────────────────────────
+RANKING POR ÁNGULO (agregado por angulo_key — la lectura que manda)
+───────────────────────────────────────────────────────────────────────────
+| Producto  | angulo_key               | Ventas | Pauta Q | CPA Q | Ganancia Q |
+|-----------|--------------------------|--------|---------|-------|------------|
+| TINNIDROP | DETERIORO_COGNITIVO      |     17 |     706 |  41.5 |      +510  |
+| NUSAVA    | ARDOR                    |     16 |     727 |  45.5 |      +502  |
+| VARICOSE  | VERGUENZA_PIERNAS        |      6 |     195 |  32.5 |      +303  |
+| TINNIDROP | PERDIDA_AUDITIVA         |     10 |     452 |  45.1 |      +264  |
+| CLEARSTEM | ANTI_FALSIFICACION       |      5 |     168 |  33.5 |      +180  |
+| TINNIDROP | ACCESIBILIDAD_MEDICO     |      7 |     324 |  46.3 |      +177  |
+| TINNIDROP | NOCHES_SIN_DORMIR        |      3 |     101 |  33.5 |      +114  |
+| TINNIDROP | ME_DIJERON_NO_CURA       |      6 |     384 |  64.0 |       +46  |
+| VARICOSE  | MIEDO_CIRUGIA            |      1 |      38 |  38.3 |       +45  |
+| CLEARSTEM | RESISTENCIA_INSULINA_SOP |      3 |     165 |  55.0 |       +44  |
+| CLEARSTEM | MEDICOS_FALLARON         |      3 |     169 |  56.3 |       +40  |
+| CLEARSTEM | TESTIMONIO_RADICAL       |      1 |     102 | 101.7 |       -32  |
+| VARICOSE  | MANCHAS_OSCURAS          |      0 |      36 |   —   |       -36  |
+| CLEARSTEM | EJE_INTESTINO_PIEL       |      0 |      38 |   —   |       -38  |
+| CLEARSTEM | DOLOR_EMOCIONAL_MASCULINO|      0 |      77 |   —   |       -77  |
+
+  Cortes transversales (fin de semana): VIDEO CPA Q48.3 vs IMAGEN Q83.8 ·
+  ads CON precio CPA Q28.1 vs SIN precio Q68.0 · hook OFERTA Q16.4 es el mejor,
+  EMOCIONAL Q374.6 el peor. Los cortes son de 2 días: señal, no veredicto.
+
+───────────────────────────────────────────────────────────────────────────
+HALLAZGOS QUE EXIGEN ACCIÓN
+───────────────────────────────────────────────────────────────────────────
+[1] VARICOSE ESTÁ APAGADO Y ES EL MEJOR CPA DEL PORTAFOLIO.
+    CPA Q38.4 contra un BE de Q83.0 — el margen por venta más ancho que hay.
+    Gasto el 25-jul: Q0. El 26-jul: Q0. Cero filas, no cero ventas.
+    En el CONTROL 19-26 aparece con Q112 repartidos en 7 conjuntos (~$2 c/u en
+    8 días) = ya venía agonizando antes del fin de semana.
+    → ACCIÓN: confirmar si fue pausa deliberada. Si no lo fue, reactivar
+      VERGUENZA_PIERNAS (Q32.5 de CPA, 6 ventas). Es la plata más barata
+      del portafolio y lleva días sin correr.
+
+[2] SANGRADO ESTRICTO (0 ventas habiendo pasado el Presupuesto de Decisión) Q161:
+    · TINNIDROP "ME DIJERON QUE NO TIENE CURA - Copia" → Q190 gastados, 266% del PD,
+      0 ventas.  ⚠️ NO matar el ángulo: ME_DIJERON_NO_CURA como angulo_key SÍ es
+      rentable (6 ventas, CPA Q64 < BE Q71.6). Lo que falla es ese DUPLICADO
+      concreto → renovar su creativo, no apagar el ángulo.
+    · CLEARSTEM "Dolor Emocional Masculino" → Q77, 111% del PD, 0 ventas, 30 msj.
+      Este sí: apagar. Es el único ángulo del portafolio que pasó su PD sin vender
+      y sin un hermano rentable que lo respalde.
+
+[3] LA RENOVACIÓN DE TINNIDROP (lanzada 25-jul) AÚN NO DECIDE — NO TOCARLA.
+    5 conjuntos · Q165 · 0 ventas · 43-48% de su PD. Por debajo del PD no se mata.
+    Su conversión (5.2% msj/clic) está en línea con el resto de TINNIDROP (6.4%),
+    así que no hay señal de que el creativo nuevo esté roto — está joven.
+    → Revisar cuando cada conjunto llegue al 100% de PD (~2-3 días más).
+
+[4] CLEARSTEM ES EL ESLABÓN DÉBIL. CPA acumulado Q59.9 contra BE Q69.6: margen
+    del 14%. En el fin de semana se fue a Q144.8 (2 ventas por Q290). Tres de sus
+    seis ángulos están en cero o en pérdida. Sigue sin MCP (GTR13), así que solo
+    se ve por LucidSales.
+    → Concentrar en ANTI_FALSIFICACION (CPA Q33.5, el único claramente sano) y
+      podar EJE_INTESTINO_PIEL + DOLOR_EMOCIONAL_MASCULINO.
+
+───────────────────────────────────────────────────────────────────────────
+LÍMITES DE ESTA LECTURA (no sobre-interpretar)
+───────────────────────────────────────────────────────────────────────────
+  · 21 y 22 de julio nunca entraron → la ventana no es una semana limpia.
+  · Las ventas del 25-26 no maduraron (ver arriba).
+  · El %conversación se calcula con clics TOTALES (lo que trae LucidSales), no
+    con clics-de-enlace → subestima el porcentaje real. Sirve para comparar
+    conjuntos entre sí, no contra el umbral de 35%.
+  · Recordatorio de doctrina propia: la conversación sirve para CORTAR, nunca
+    para CORONAR. El ganador se declara por CPA agregado por angulo_key.
+
+Archivos actualizados: _FACT_VENTAS.csv (+345) · _DIM_CONJUNTOS.csv (+6, 1 llave
+corregida) · _BITACORA_DATA.txt · _GANANCIAS.txt · _DASHBOARD.html (regenerado).
+Backups: _FACT_VENTAS.csv.bak-20260726 · _DIM_CONJUNTOS.csv.bak-20260726
+═══════════════════════════════════════════════════════════════════════════

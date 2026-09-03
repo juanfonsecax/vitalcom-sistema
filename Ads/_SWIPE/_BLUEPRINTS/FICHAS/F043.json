@@ -1,0 +1,149 @@
+{
+  "ficha_id": "F043",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Mi_Camino_al_Bienestar/17_1773542093885131.jpg",
+    "anunciante": "Mi Camino al Bienestar",
+    "ad_archive_id": "1773542093885131",
+    "dias_activo": 3,
+    "replicas": 2,
+    "score": 53,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "25%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C9_COMPARACION",
+    "variante_operador": "yo-sin-yo-con"
+  },
+  "dispositivo_dominante": "LA TABLA YO SIN / YO CON, DIBUJADA A MANO EN DOS COLUMNAS. Tres pares de situaciones enfrentadas, cada una con un dibujo de linea hecho a mano y una frase corta encima. El titular de cada columna lleva un emoticon tipeado — carita triste a la izquierda, carita feliz a la derecha — y una linea vertical fina separa los dos mundos. El producto va en la costura, al centro.",
+  "lectura_estrategica": "Formato de meme, no de anuncio. Los dibujos a mano y los emoticones de teclado lo hacen leer como una publicacion de alguien y no como una pauta, y eso le compra la atencion. Su fuerza esta en que los tres pares no son sintomas clinicos sino ESCENAS DE VIDA COTIDIANA: los pantalones que no cierran contra la ropa que vuelve a quedar bien. La persona no se identifica con un diagnostico, se identifica con su martes. El descuento va al pie en la misma tipografia dibujada, sin card ni destaque.",
+  "fondo": {
+    "tipo": "color_plano_blanco",
+    "color": "blanco puro o casi",
+    "textura": "ninguna",
+    "regla": "blanco total: es lo que hace que se lea como una hoja y no como un cartel"
+  },
+  "paleta": {
+    "derivacion": "libre, con dos colores de estado",
+    "cantidad_colores": 3,
+    "estructura": "negro (frases y dibujos) mas un color de PROBLEMA para la columna izquierda mas un color de SOLUCION para la derecha. Sin colores de marca",
+    "regla": "los dos colores de estado solo aparecen en las dos palabras del titular (SIN y CON) y en los signos de la columna derecha"
+  },
+  "sistema_tipografico": {
+    "familia": "manuscrita o sans-serif redondeada de aspecto casero",
+    "pesos_permitidos": [
+      "Regular/400",
+      "Bold/700"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "negro",
+    "regla": "tipografia que parezca escrita, nunca condensada de diseno: la pieza depende de no verse producida"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "dibujos de linea a mano alzada de la zona o el objeto de cada escena, sin persona completa y sin rostro",
+    "trazo": "linea negra fina, irregular, con el temblor de la mano visible",
+    "relleno": "ninguno: solo contorno",
+    "signos": "las flechas, los checks y los destellos de la columna derecha van dibujados con el mismo trazo",
+    "que_se_conserva": "la irregularidad del trazo, el desalineamiento entre los pares, el espacio en blanco",
+    "que_NO_se_hace": "iconos vectoriales limpios, relleno de color, sombras, marcos, alineacion perfecta",
+    "regla": "si los dibujos se ven de banco de iconos, la pieza se vuelve un cartel y pierde el efecto de publicacion casera"
+  },
+  "zonas": {
+    "titular_columnas": {
+      "posicion": "superior, ancho completo",
+      "cantidad_items": 2,
+      "orientacion": "dos titulos enfrentados a lado y lado de la linea divisoria",
+      "izquierda": "YO {{PALABRA_SIN}} {{EMOTICON_TRISTE}}",
+      "derecha": "YO {{PALABRA_CON}} {{EMOTICON_FELIZ}}",
+      "estilo": "Regular manuscrita negra con la preposicion en el color de estado de su columna",
+      "restriccion_palabras": "2-3 palabras por columna",
+      "regla_emoticon": "los emoticones van TIPEADOS con caracteres de teclado, no como emoji grafico: es lo que fija el registro de mensaje escrito a mano"
+    },
+    "linea_divisoria": {
+      "posicion": "centro, vertical de arriba abajo",
+      "forma": "linea negra fina y ligeramente irregular",
+      "funcion": "separa los dos mundos sin necesidad de marco ni fondo"
+    },
+    "pares_de_escena": {
+      "posicion": "columnas izquierda y derecha",
+      "cantidad_pares": 3,
+      "orientacion": "tres filas, cada una con su escena a cada lado de la linea",
+      "formato_item": "frase corta arriba mas dibujo de linea a mano debajo",
+      "pares": "{{PARES_ESCENA[3]}}",
+      "estructura_par": {
+        "sin": "{{ESCENA_SIN}}",
+        "con": "{{ESCENA_CON}}",
+        "dibujo_sin": "{{DIBUJO_SIN}}",
+        "dibujo_con": "{{DIBUJO_CON}}"
+      },
+      "restriccion_frase": "3-5 palabras",
+      "regla_critica": "las tres son ESCENAS DE VIDA COTIDIANA, no sintomas clinicos: la persona se identifica con su martes, no con un diagnostico",
+      "regla_par_1": "el primer par nombra la zona del cuerpo y puede llevar un plazo en el lado CON",
+      "regla_par_3": "el ultimo par es de ropa, espejo o vida social: cierra en consecuencia, no en sintoma"
+    },
+    "producto_hero": {
+      "posicion": "centro, sobre la linea divisoria",
+      "escala": "30% del frame",
+      "composicion": "envase de pie recortado, plantado sobre la costura entre las dos columnas",
+      "fuente": "IMAGEN_2",
+      "regla": "es lo unico fotografico de la pieza: el contraste con los dibujos lo destaca sin necesidad de glow ni marco"
+    },
+    "pie_oferta": {
+      "posicion": "inferior, ancho completo",
+      "alineacion": "centrado",
+      "texto": "{{MARCA}} — {{DESCUENTO}}",
+      "estilo": "Regular manuscrita negra, del mismo tamano que las frases",
+      "restriccion_palabras": "3-4 palabras",
+      "regla": "sin card, sin color y sin destaque: si el precio grita, la pieza deja de parecer una publicacion"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_columnas",
+    "pares_de_escena",
+    "producto_hero",
+    "pie_oferta"
+  ],
+  "reglas_duras": [
+    "Los dibujos van a mano alzada, solo contorno, con el temblor del trazo visible",
+    "Los emoticones van tipeados con caracteres de teclado",
+    "Las tres escenas son de vida cotidiana, no sintomas clinicos",
+    "El ultimo par cierra en ropa, espejo o vida social",
+    "El producto es lo unico fotografico y va plantado sobre la linea divisoria",
+    "El pie de oferta va sin card, sin color y del mismo tamano que las frases",
+    "Fondo blanco total"
+  ],
+  "variables_requeridas": [
+    "PALABRA_SIN",
+    "PALABRA_CON",
+    "EMOTICON_TRISTE",
+    "EMOTICON_FELIZ",
+    "PARES_ESCENA[3]",
+    "MARCA",
+    "DESCUENTO"
+  ],
+  "cuando_usar": [
+    "cuando el problema tiene consecuencias cotidianas facilmente dibujables",
+    "publico saturado de anuncios pulidos",
+    "TOFU frio donde el objetivo es identificacion, no cierre",
+    "cuando se quiere contrastar dos estados sin fotos de antes y despues"
+  ],
+  "cuando_no_usar": [
+    "BOFU: el pie de oferta deliberadamente apagado no cierra",
+    "cuando el problema no tiene escenas cotidianas asociadas",
+    "marcas que necesitan verse premium"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos ni garantias.",
+    "Pares de escena: CELULITIS EN LOS MUSLOS contra PIEL LISA EN 21 DIAS, TOBILLOS HINCHADOS AL FINAL DEL DIA contra TOBILLOS DEFINIDOS, PANTALONES QUE NO CIERRAN contra ROPA QUE VUELVE A QUEDAR BIEN.",
+    "Pie de oferta: MARCA — 70% DESCUENTO, en la misma tipografia dibujada.",
+    "Claims impresos en el empaque: APOYO LINFATICO TRADICIONAL, EXTRACTOS DE HIERBAS, HERBAL EXPERTS."
+  ],
+  "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,162 @@
+{
+  "ficha_id": "F048",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Tiendas_KetsalStore/30_1933761527294749.jpg",
+    "anunciante": "Tiendas KetsalStore",
+    "ad_archive_id": "1933761527294749",
+    "dias_activo": 2,
+    "replicas": 2,
+    "score": 52,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "4:5",
+    "densidad": "baja",
+    "espacio_libre_objetivo": "42%",
+    "nivel_conciencia": 4,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C2_BENEFICIOS",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL TITULAR EN TRES LINEAS APILADAS CON UNA SOLA PALABRA EN COLOR, SOBRE FONDO CASI VACIO. Tres palabras, una por linea, en tipografia enorme, con la del medio en el color del ingrediente. Arriba, el nombre del activo en letra chica y espaciada como en una etiqueta de farmacia. Debajo, solo tres beneficios y el precio. Es el layout de menor densidad del banco.",
+  "lectura_estrategica": "Registro de farmacia, no de dropshipping. El eyebrow con el nombre del activo en tracking amplio, la ausencia de badges y el espacio en blanco comunican que el producto no necesita convencer. Los tres beneficios estan elegidos con precision: dos afirmativos y uno NEGATIVO (no es un diuretico agresivo), que es el que desactiva la objecion de categoria — y ponerlo entre los beneficios en vez de en una seccion aparte lo hace pasar como una ventaja mas. La banda de specs al pie cierra con los tres datos que un comprador de nivel 4 compara entre marcas.",
+  "fondo": {
+    "tipo": "color_plano_muy_claro_con_foto_al_borde",
+    "color": "blanco roto o crema",
+    "elemento_superior_derecho": "foto del contexto de uso (vaso, agua, cristaleria) muy desenfocada, sangrando por la esquina",
+    "textura": "ninguna",
+    "regla": "el vacio es el argumento: no llenarlo"
+  },
+  "paleta": {
+    "derivacion": "del ingrediente activo",
+    "cantidad_colores": 3,
+    "estructura": "{{PALETA_OSCURA}} granate (palabra de acento, card de precio, banda de specs) mas negro (titular) mas blanco (fondo)"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "negro puro"
+  },
+  "zonas": {
+    "eyebrow_activo": {
+      "posicion": "superior_izquierda",
+      "texto": "{{NOMBRE_ACTIVO}}",
+      "estilo": "Regular uppercase con TRACKING MUY AMPLIO, chico, seguido de una linea horizontal fina",
+      "restriccion_palabras": "1-2 palabras",
+      "regla": "el tracking amplio y la linea fina son lo que le dan registro de etiqueta de farmacia en vez de anuncio"
+    },
+    "titular": {
+      "posicion": "superior_izquierda, bajo el eyebrow",
+      "alineacion": "izquierda",
+      "lineas": 3,
+      "linea_1": "{{PALABRA_1}}",
+      "linea_2": "{{PALABRA_2_ACENTO}}",
+      "linea_3": "{{PALABRA_3}}",
+      "estilo": "Black/900 uppercase negro con la linea 2 en {{PALETA_OSCURA}}",
+      "restriccion_palabras_total": "3 palabras, una por linea",
+      "escala": "cada linea ocupa el mismo ancho: es lo que produce el bloque compacto",
+      "regla_acento": "el color cae sobre el organo o el sistema objetivo, que es la palabra que el comprador busca"
+    },
+    "subtitular": {
+      "posicion": "bajo el titular",
+      "texto": "{{FUNCION}}",
+      "estilo": "Bold uppercase de 2 lineas, al 28% del titular",
+      "restriccion_palabras": "7-9 palabras",
+      "regla": "declara la funcion en terminos tecnicos, sin adjetivos de venta"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 3,
+      "orientacion": "columna vertical con mucho aire entre filas",
+      "formato_item": "icono line-art fino en circulo con borde mas texto Bold uppercase de 2 lineas",
+      "items": "{{BENEFICIOS[3]}}",
+      "restriccion_palabras": "3-4 palabras",
+      "regla_item_3": "el ultimo es NEGATIVO y desactiva la objecion de categoria (no es un X agresivo). Va entre los beneficios y no aparte: asi pasa como una ventaja mas"
+    },
+    "producto_hero": {
+      "posicion": "derecha, ocupa el alto central",
+      "escala": "45% del frame",
+      "composicion": "envase o bolsa de pie de frente, con las perlas sueltas al pie y salpicadura de agua o cristaleria detras",
+      "fuente": "IMAGEN_2",
+      "regla": "sin podio, sin halo y sin badge sobre el envase"
+    },
+    "card_precio": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "card {{PALETA_OSCURA}} solida",
+      "banda_superior": "{{OFERTA_LABEL}}",
+      "estilo_banda": "Bold uppercase blanco",
+      "linea_1": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 blanco",
+      "linea_2": "ANTES {{MONEDA}}{{PRECIO_TACHADO}}",
+      "estilo_l2": "Regular con linea de tachado, al 25% de L1"
+    },
+    "banda_specs": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_OSCURA}} solida",
+      "cantidad_items": 3,
+      "formato_item": "icono line-art blanco mas CIFRA Bold mas unidad Regular",
+      "items": "{{SPECS[3]}}",
+      "restriccion_palabras": "1-3 palabras",
+      "regla": "los tres datos que un comprador de nivel 4 compara entre marcas: dosis, origen del activo y cantidad de unidades"
+    }
+  },
+  "secuencia_lectura": [
+    "titular",
+    "producto_hero",
+    "eyebrow_activo",
+    "subtitular",
+    "columna_beneficios",
+    "card_precio",
+    "banda_specs"
+  ],
+  "reglas_duras": [
+    "Tres palabras en el titular, una por linea, y todas del mismo ancho",
+    "El eyebrow lleva el nombre del activo con tracking amplio y linea fina",
+    "El tercer beneficio es negativo y desactiva la objecion de categoria",
+    "Sin badges, sin sellos circulares y sin podio bajo el producto",
+    "La banda de specs del pie lleva los tres datos comparables entre marcas",
+    "El vacio es el argumento: no se llena"
+  ],
+  "variables_requeridas": [
+    "NOMBRE_ACTIVO",
+    "PALABRA_1",
+    "PALABRA_2_ACENTO",
+    "PALABRA_3",
+    "FUNCION",
+    "BENEFICIOS[3]",
+    "OFERTA_LABEL",
+    "PRECIO",
+    "PRECIO_TACHADO",
+    "MONEDA",
+    "SPECS[3]"
+  ],
+  "cuando_usar": [
+    "publico de nivel 4 que compara marcas del mismo activo",
+    "cuando el producto tiene una dosis o especificacion superior que se puede poner al pie",
+    "cuando la categoria arrastra una objecion que un beneficio negativo desactiva",
+    "marcas que quieren distanciarse del registro de dropshipping"
+  ],
+  "cuando_no_usar": [
+    "publico frio: no hay problema, ni promesa, ni prueba social",
+    "cuando hay muchos beneficios que contar: el layout no los sostiene",
+    "cuando el precio bajo es el argumento principal"
+  ],
+  "sellos_y_claims_observados": [
+    "Eyebrow ASTAXANTHIN con tracking amplio.",
+    "Subtitulo PROTECCION ANTIOXIDANTE PARA APOYAR TUS FILTROS RENALES.",
+    "Beneficios: APOYA TUS FILTROS RENALES, MANEJO SALUDABLE DE LIQUIDOS, NO ES DIURETICO AGRESIVO.",
+    "Precio OFERTA ESPECIAL Q220 con ANTES Q430 tachado.",
+    "Banda de specs: 12 MG, DE MICROALGAS, 60 CAPSULAS.",
+    "Claims impresos en el empaque: GMO free, gluten free, lab tested, from microalgae, triple strength."
+  ],
+  "canonico_id": "CN17_TITULAR_DOMINANTE",
+  "blueprint_equivalente": null
+}

@@ -1,0 +1,219 @@
+{
+  "ficha_id": "F044",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Ovejitas_Lab/04_1420447306591898.jpg",
+    "anunciante": "Ovejitas Lab",
+    "ad_archive_id": "1420447306591898",
+    "dias_activo": 27,
+    "replicas": 1,
+    "score": 52,
+    "en_banco_creativos": true,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "2:3",
+    "densidad": "muy_alta",
+    "espacio_libre_objetivo": "10%",
+    "nivel_conciencia": 3,
+    "rol_embudo": "BOFU",
+    "concepto_key": "C1_OFERTA",
+    "variante_operador": "oferta"
+  },
+  "dispositivo_dominante": "EL MULTIPLICADOR 2X1 GIGANTE ENTRE DOS RETRATOS DEL MISMO HOMBRE. Los dos rostros van en las esquinas superiores, uno con gesto de preocupacion y otro seguro, y entre ellos el 2X1 ocupa el centro del tercio superior a mayor tamano que cualquier otra cosa. Bajo cada rostro, una columna de tres palabras sueltas: los estados de antes y de despues, sin verbo.",
+  "lectura_estrategica": "Funde el antes/despues con la oferta de volumen en una sola pieza, y resuelve el problema de que ninguno de los dos tenga que ceder espacio: los retratos ocupan las esquinas y la oferta ocupa el centro. Las columnas de tres palabras bajo cada cara (INSEGURIDAD, CAIDA, MENOS FUERZA contra CONFIANZA, FUERZA, RESULTADOS VISIBLES) hacen el trabajo del testimonio sin escribir una frase. El 2X1 aparece DOS veces — arriba como titular y abajo con el precio — y esa repeticion es deliberada: la primera detiene, la segunda cierra.",
+  "fondo": {
+    "tipo": "degradado_oscuro_con_rayos",
+    "base": "negro a {{PALETA_OSCURA}} con rayos de luz {{PALETA_ACENTO}} irradiando desde el centro",
+    "textura": "ninguna",
+    "funcion": "los rayos concentran la mirada en el multiplicador central"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto",
+    "cantidad_colores": 4,
+    "estructura": "{{PALETA_ACENTO}} verde lima o color del empaque (titular, multiplicador, iconos) mas negro (fondo) mas blanco (texto) mas los tonos de piel de los retratos"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_oferta": {
+      "posicion": "superior_centro",
+      "lineas": 2,
+      "linea_1": "{{OFERTA_LABEL}}",
+      "linea_2": "{{MULTIPLICADOR}}",
+      "estilo_l1": "Black/900 uppercase en {{PALETA_ACENTO}} con signos de exclamacion de apertura y cierre",
+      "estilo_l2": "Black/900 blanco, elemento mas grande de la pieza",
+      "restriccion_palabras_l1": "2 palabras",
+      "regla": "el multiplicador es lo mas grande del frame, por encima de los rostros y del producto"
+    },
+    "sub_urgencia": {
+      "posicion": "bajo el multiplicador",
+      "texto": "{{URGENCIA}}",
+      "estilo": "Bold uppercase en {{PALETA_ACENTO}} con signos de exclamacion",
+      "restriccion_palabras": "2 palabras"
+    },
+    "retrato_antes": {
+      "posicion": "superior_izquierda",
+      "contenido": "{{FOTO_PERSONA_ANTES}}",
+      "escala": "18% del frame",
+      "tratamiento": "rostro del avatar con gesto de preocupacion, mano en la zona afectada, mirando abajo o de lado"
+    },
+    "retrato_despues": {
+      "posicion": "superior_derecha",
+      "contenido": "{{FOTO_PERSONA_DESPUES}}",
+      "escala": "18% del frame",
+      "tratamiento": "el MISMO rostro, sonriendo, mirando a camara, postura erguida",
+      "regla": "misma persona, misma iluminacion: lo unico que cambia es el gesto y la zona"
+    },
+    "columna_antes": {
+      "posicion": "izquierda, bajo el retrato",
+      "cantidad_items": 3,
+      "header": "ANTES:",
+      "estilo_header": "Bold uppercase en {{PALETA_ACENTO}}",
+      "formato_item": "una PALABRA o sintagma corto por linea, en Bold uppercase blanco",
+      "items": "{{ESTADOS_ANTES[3]}}",
+      "restriccion_palabras": "1-2 palabras",
+      "regla": "sin verbo y sin frase: son estados, y la ausencia de verbo es lo que los hace leer como una lista mental"
+    },
+    "columna_despues": {
+      "posicion": "derecha, bajo el retrato",
+      "cantidad_items": 3,
+      "header": "DESPUES:",
+      "estilo_header": "Bold uppercase en {{PALETA_ACENTO}}",
+      "formato_item": "una PALABRA o sintagma corto por linea, en Bold uppercase blanco con la ultima en {{PALETA_ACENTO}}",
+      "items": "{{ESTADOS_DESPUES[3]}}",
+      "restriccion_palabras": "1-2 palabras",
+      "regla": "espejo exacto de la columna izquierda: mismo numero de items y misma longitud"
+    },
+    "columna_beneficios": {
+      "posicion": "izquierda_media",
+      "cantidad_items": 4,
+      "orientacion": "columna vertical",
+      "formato_item": "icono line-art en rombo o circulo {{PALETA_ACENTO}} mas VERBO en Bold uppercase blanco mas complemento en Regular",
+      "items": "{{BENEFICIOS[4]}}",
+      "restriccion_palabras": "4-7 palabras"
+    },
+    "producto_hero": {
+      "posicion": "centro",
+      "escala": "35% del frame",
+      "composicion": "envase de pie de frente con el ingrediente estrella en bruto al pie",
+      "fuente": "IMAGEN_2"
+    },
+    "card_precio": {
+      "posicion": "derecha_media",
+      "contenedor": "card {{PALETA_ACENTO}} solida con esquinas redondeadas",
+      "linea_1": "{{OFERTA_LABEL_2}}",
+      "linea_2": "{{MULTIPLICADOR}}",
+      "linea_3": "POR SOLO",
+      "linea_4": "{{MONEDA}}{{PRECIO}}",
+      "linea_5": "{{GARANTIA_ENVIO}}",
+      "estilo_l2": "Black/900 negro",
+      "estilo_l4": "Black/900 negro",
+      "regla": "el multiplicador se REPITE aca: arriba detiene, aca cierra"
+    },
+    "sello_social": {
+      "posicion": "inferior_izquierda",
+      "contenedor": "circulo o pildora {{PALETA_ACENTO}} con estrellas",
+      "texto": "{{SELLO_SOCIAL}}",
+      "restriccion_palabras": "2 palabras"
+    },
+    "fila_sellos": {
+      "posicion": "inferior_media, ancho completo",
+      "cantidad_items": 4,
+      "orientacion": "fila horizontal",
+      "formato_item": "icono line-art en circulo con borde mas texto Bold uppercase muy chico de 2 lineas",
+      "items": "{{SELLOS[4]}}",
+      "restriccion_palabras": "2-4 palabras",
+      "regla_item_4": "el ultimo declara el orgullo o el origen local con bandera"
+    },
+    "banda_resultado": {
+      "posicion": "inferior, ancho completo",
+      "contenedor": "banda {{PALETA_ACENTO}} solida",
+      "linea_1": "{{CLAIM_RESULTADO}}",
+      "linea_2": "{{CONDICION_USO}}",
+      "estilo_l1": "Black/900 uppercase negro",
+      "restriccion_palabras": "2-3 palabras por linea",
+      "regla": "el claim de resultado va condicionado al uso constante, en la misma banda"
+    },
+    "pie_categoria": {
+      "posicion": "inferior extremo, ancho completo",
+      "texto": "{{USO_1}} · {{USO_2}} · {{USO_3}}",
+      "estilo": "Regular uppercase muy chico",
+      "restriccion_palabras": "6-9 palabras"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_oferta",
+    "retrato_antes",
+    "retrato_despues",
+    "columna_antes",
+    "columna_despues",
+    "producto_hero",
+    "card_precio",
+    "columna_beneficios",
+    "banda_resultado",
+    "fila_sellos",
+    "sello_social",
+    "pie_categoria"
+  ],
+  "reglas_duras": [
+    "El multiplicador es el elemento mas grande del frame",
+    "El multiplicador aparece dos veces: arriba en el titular y abajo con el precio",
+    "Los dos retratos son de la misma persona con la misma iluminacion: cambia el gesto",
+    "Las columnas de estado van sin verbo, una palabra o sintagma por linea",
+    "Las dos columnas son espejo: mismo numero de items y misma longitud",
+    "El claim de resultado va condicionado al uso constante en la misma banda"
+  ],
+  "variables_requeridas": [
+    "OFERTA_LABEL",
+    "OFERTA_LABEL_2",
+    "MULTIPLICADOR",
+    "URGENCIA",
+    "FOTO_PERSONA_ANTES",
+    "FOTO_PERSONA_DESPUES",
+    "ESTADOS_ANTES[3]",
+    "ESTADOS_DESPUES[3]",
+    "BENEFICIOS[4]",
+    "PRECIO",
+    "MONEDA",
+    "GARANTIA_ENVIO",
+    "SELLO_SOCIAL",
+    "SELLOS[4]",
+    "CLAIM_RESULTADO",
+    "CONDICION_USO",
+    "USO_1",
+    "USO_2",
+    "USO_3"
+  ],
+  "cuando_usar": [
+    "oferta de multiplicador simple donde el 2x1 es el argumento principal",
+    "problema con consecuencia visible en el rostro o la cabeza",
+    "cuando existen dos fotos de la misma persona con distinto gesto",
+    "publico masculino 30-55"
+  ],
+  "cuando_no_usar": [
+    "cuando la oferta es de escalera de tres tiers: el multiplicador unico pierde sentido",
+    "cuando no hay retratos de la misma persona",
+    "publico que necesita educacion previa: la pieza asume que ya conoce el problema"
+  ],
+  "sellos_y_claims_observados": [
+    "Fila de sellos: FORMULA CON INGREDIENTES NATURALES, SIN PARABENOS NI SULFATOS, DERMATOLOGICAMENTE PROBADO, ORGULLOSOS DE GUATEMALA con bandera.",
+    "Sello circular MAS VENDIDO con estrellas.",
+    "Banda de resultado RESULTADOS VISIBLES CON USO CONSTANTE.",
+    "Beneficios: FORTALECE Y NUTRE DESDE LA RAIZ, REDUCE LA CAIDA Y APOYA EL CRECIMIENTO, LIMPIEZA PROFUNDA Y EQUILIBRIO, MAS FUERTE MAS DENSO CON VOLUMEN Y VIDA.",
+    "Columnas de estado: INSEGURIDAD / CAIDA / MENOS FUERZA contra CONFIANZA / FUERZA / RESULTADOS VISIBLES.",
+    "Oferta 2X1 POR SOLO Q225 con ENVIO GRATIS.",
+    "Pie de categoria: PARA TODO TIPO DE CABELLO · USO DIARIO · SENSACION DE FRESCURA Y LIMPIEZA."
+  ],
+  "canonico_id": "CN03_OFERTA_MULTIPLICADOR",
+  "blueprint_equivalente": null
+}

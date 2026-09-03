@@ -1,0 +1,537 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA 2026-08-11 — REGRESO DEL OPERADOR · VENTANA 03→10 AGO (8d agregada)
+Fuente: report-2026-08-03-2026-08-10.xlsx (LucidSales) · ETAPA-7 + ETAPA-8
+═══════════════════════════════════════════════════════════════════════════
+
+───────────────────────────────────────────────────────────────────────────
+0. INTEGRIDAD DE VENTANA (se verifica ANTES de analizar — regla de ETAPA-7)
+───────────────────────────────────────────────────────────────────────────
+ÚLTIMO DÍA CERRADO ANTES DE ESTA CARGA: 2026-07-30 (BASE).
+CARGADO HOY: 2026-08-03 → 2026-08-10, rol=BASE, dias=8, 72 filas. No solapa.
+JOIN con _DIM_CONJUNTOS: 100% (0 huérfanas · 6 filas sin conjunto = ventas sin
+   atribución de ad, spend 0 → son ventas rezagadas de gasto anterior).
+NORMALIZACIÓN: CP1 (1346891653335162) factura en COP → ÷4,050. Sin normalizar,
+   el export declara $47,511 de gasto; el real es $229.34. (47,294 COP = $11.68.)
+
+🔴 HUECO ABIERTO: 31-jul (solo CONTROL parcial, no suma) · 01-ago · 02-ago.
+   Son 3 días que NO están en el P&L y no se recuperan solos.
+   → ACCIÓN: exportar LucidSales del rango 2026-07-31 → 2026-08-02 y cargarlo
+     BASE dias=3. No solapa con nada.
+
+⚠️ LIMITACIÓN ESTRUCTURAL DE ESTA VENTANA: viene AGREGADA en 8 días. Da UN solo
+   punto de medición. NO se puede leer tendencia día a día, ni fatiga de creativo,
+   ni el efecto de ninguna acción dentro del período. Todo lo que sigue es un
+   promedio de 8 días — sirve para rankear ángulos, no para detectar deterioro.
+
+───────────────────────────────────────────────────────────────────────────
+1. EL HALLAZGO CENTRAL — LA OPERACIÓN GANA MÁS GASTANDO LA MITAD
+───────────────────────────────────────────────────────────────────────────
+                    PAUTA/DÍA   VENTAS/DÍA   CPA    GANANCIA/DÍA
+  JULIO 17-30 (13d)   Q478         9.0       Q53      Q+369
+  AGOSTO 03-10 (8d)   Q218         7.6       Q29      Q+496   ← +34% ganancia
+                      ▼54%         ▼16%      ▼45%     ▲34%
+
+CONTROL DE SESGO (lo primero que hay que descartar): parte de las ventas de
+agosto son REZAGADAS — llegan de gasto viejo y aparecen con spend 0 (6 sin ad
+atribuido + VARICOSE MA4_MANCHAS + CLEARSTEM Eje Intestino = 9 ventas). Si se
+excluyen TODAS las filas sin gasto, agosto queda en 52 ventas · CPA Q34 ·
+ganancia Q+400/día. SIGUE POR ENCIMA de julio (Q+369/día) con 54% menos pauta.
+El hallazgo sobrevive al control. No es un artefacto de atribución.
+
+QUÉ SIGNIFICA: los ~Q260/día extra que se gastaban en julio producían ganancia
+marginal NEGATIVA. El apagón parcial del portafolio durante la ausencia no fue
+un accidente afortunado — eliminó gasto que destruía valor. La operación estaba
+comprando ventas por encima de lo que valían.
+
+⚠️ POR ESO LA CONCLUSIÓN **NO** ES "VOLVÉ AL GASTO DE JULIO". Restaurar Q478/día
+   a lo bruto es reinstalar el tramo que perdía plata. Lo que corresponde es
+   escalado SELECTIVO y medido (§3), no restauración.
+
+───────────────────────────────────────────────────────────────────────────
+2. P&L DE LA VENTANA — POR PRODUCTO
+───────────────────────────────────────────────────────────────────────────
+| PRODUCTO   | PAUTA | VENTAS | CPA   | BE     | INGRESO | GANANCIA | ROAS |
+|------------|-------|--------|-------|--------|---------|----------|------|
+| TINNIDROP  | Q837  |   37   | Q22.6 | Q86.7  | Q7,816  | Q+2,370  | 9.3× |
+| NUSAVA     | Q442  |   11   | Q40.2 | Q120.4 | Q3,009  | Q+966    | 6.8× |
+| CLEARSTEM  | Q468  |   12   | Q39.0 | Q89.3  | Q2,467  | Q+541    | 5.3× |
+| VARICOSE   | Q0    |    1   |   —   | Q111.0 | Q249    | Q+95     |  —   |
+| TOTAL      |Q1,748 |   61   | Q28.6 |        |Q13,541  | Q+3,972  | 7.7× |
+
+LOS CUATRO PRODUCTOS CORREN MUY POR DEBAJO DE SU BREAK-EVEN. Ninguno está en
+riesgo. El problema del portafolio no es rentabilidad — es VOLUMEN.
+
+───────────────────────────────────────────────────────────────────────────
+3. RANKING POR ÁNGULO (unidad de decisión — regla 6, agregado multicuenta)
+───────────────────────────────────────────────────────────────────────────
+| ÁNGULO                            | PAUTA | V  | CPA   | Q/DÍA | LECTURA        |
+|-----------------------------------|-------|----|-------|-------|----------------|
+| TINNIDROP DETERIORO_COGNITIVO     | Q510  | 18 | Q28   | Q64   | 🟢 caballo vol.|
+| NUSAVA ARDOR (MA6-OFERTA)         | Q250  | 10 | Q25   | Q31   | 🟢 mejor ROI   |
+| TINNIDROP ACCESIBILIDAD_MEDICO    | Q98   |  7 | Q14   | Q12   | 🟢 mejor CPA   |
+| TINNIDROP PERDIDA_AUDITIVA        | Q202  |  5 | Q40   | Q25   | 🟢 sano        |
+| CLEARSTEM RESISTENCIA_INSULINA    | Q146  |  4 | Q37   | Q18   | 🟢 sano        |
+| CLEARSTEM MEDICOS_FALLARON        | Q144  |  4 | Q36   | Q18   | 🟢 sano        |
+| CLEARSTEM ANTI_FALSIFICACION      | Q138  |  3 | Q46   | Q17   | 🟡 el más caro |
+| TINNIDROP ME_DIJERON_NO_CURA      | Q28   |  1 | Q28   | Q3    | 🟡 estrangulado|
+| NUSAVA MA7-ARDORVIDEO             | Q64   |  1 | Q64   | Q8    | 🟡 n bajo      |
+| CLEARSTEM TESTIMONIO_RADICAL      | Q40   |  0 |   —   | Q5    | 🔴 apagar      |
+| NUSAVA MA4-DEPIE                  | Q64   |  0 |   —   | Q8    | 🔴 apagar      |
+| NUSAVA ARDOR_NUSAVAB12_TEST       | Q64   |  0 |   —   | Q8    | 🔴 apagar      |
+| VARICOSE VERGUENZA_PIERNAS        | Q0    |  1 |   —   | Q0    | ⚫ APAGADO     |
+
+TODOS los ángulos mejoraron su CPA respecto a julio. Ninguno se deterioró.
+Eso refuerza §1: lo que salió del aire era el tramo caro, no el tramo bueno.
+
+───────────────────────────────────────────────────────────────────────────
+4. DECISIONES — QUÉ APAGAR
+───────────────────────────────────────────────────────────────────────────
+🔴 APAGAR YA (sangrado confirmado en ≥2 ventanas — no es ruido de Poisson):
+
+ 1. CLEARSTEM · TESTIMONIO RADICAL
+    ago: Q40, 0 ventas · jul: Q144, 1 venta a CPA Q144 (BE Q89).
+    Acumulado Q184 → 1 venta. Falló en las DOS ventanas. Ahorro Q35/sem.
+    NOTA: el ángulo puede servir; el creativo está gastado. Si se quiere
+    conservar, es CREATIVO NUEVO del mismo ángulo, no seguir con este.
+
+ 2. NUSAVA · ARDOR_NUSAVAB12_TEST (campaña NUSAVAB12_TEST_20260622 - Copia)
+    Q64, 0 ventas, 21 mensajes. Es el conjunto de TESTEO ORIGINAL que quedó
+    prendido en paralelo a la FASE 2 del mismo ángulo. Ya no tiene función:
+    ARDOR está validado y escalado en MA6-OFERTA. Está canibalizando subasta
+    contra su propia FASE 2. Ahorro Q56/sem.
+
+ 3. NUSAVA · MA4-DEPIE
+    Q64, 0 ventas, 11 mensajes. Microángulo de FASE 2 que no arrancó, mientras
+    MA6-OFERTA hace 10 ventas con Q250. Ahorro Q56/sem.
+
+ 4. CLEARSTEM · DOLOR EMOCIONAL MASCULINO — confirmar que ya está apagado
+    (Q77 y 0 ventas en julio; Q0 en agosto). Si sigue activo, apagar.
+
+    AHORRO TOTAL DE APAGADOS: ≈Q147/semana, sin perder una sola venta.
+
+🟡 NO APAGAR AUNQUE SE VEA FEO (esto es lo que un lector apurado mataría mal):
+
+ · TINNIDROP · DETERIORO COGNITIVO - video, réplica en GTR7: Q67, 0 ventas.
+   Es una RÉPLICA R[N] del ángulo que MÁS gana del portafolio (Q+1,109).
+   Regla 23 del sistema: las réplicas se SUMAN, nunca se comparan entre sí —
+   la diferencia entre réplicas idénticas es ruido de Poisson. Con 9 mensajes
+   el IC es enorme. NO se mata el ángulo por esto.
+   ✅ Lo que SÍ corresponde: su conv/clic es 3% contra 5-10% de sus hermanas.
+      Eso es señal de ENTREGA, no de ángulo → revisar si GTR7 está saturada
+      para ese creativo y, si el dashboard lo confirma, bajar a piso y mover
+      el presupuesto a GTR1 (donde el mismo ángulo paga Q28 en vez de Q94).
+
+ · TINNIDROP ME_DIJERON_NO_CURA y NUSAVA MA7-ARDORVIDEO: 1 venta cada uno.
+   n insuficiente para decidir en cualquier dirección. Ni matar ni escalar:
+   dejarlos correr al presupuesto actual una ventana más.
+
+───────────────────────────────────────────────────────────────────────────
+5. DECISIONES — QUÉ ESCALAR (la plata está acá, no en los apagados)
+───────────────────────────────────────────────────────────────────────────
+La oportunidad es 10× más grande que el ahorro: los tres mejores ángulos del
+portafolio corren con presupuestos de testeo teniendo CPA 3-6× bajo break-even.
+
+ 1. ⚫→🟢 REACTIVAR VARICOSE — LA MAYOR PÉRDIDA SILENCIOSA
+    Cero gasto en 8 días. Figura VIVO en _PORTAFOLIO pero no corre.
+    CPA histórico Q32-33 contra break-even Q111 = el mejor colchón del
+    portafolio. En julio hacía ~6 ventas por Q195 de pauta.
+    Costo de no hacerlo: ≈Q600/semana de ganancia no capturada.
+    → ES LA ACCIÓN #1 DE HOY. No requiere crear nada: la campaña de escalado
+      VERGÜENZA ya está construida y publicada (solo hay que activarla).
+
+ 2. ▲ SURFING +20%/día · NUSAVA MA6-OFERTA (GTR7)
+    CPA Q25 vs BE Q120 → deja ~Q98 limpios por venta. Recibe Q31/día.
+    Es el mejor retorno unitario de todo el portafolio y está estrangulado.
+
+ 3. ▲ SURFING +20%/día · TINNIDROP ACCESIBILIDAD_MEDICO
+    CPA Q14 — el más bajo de la historia del portafolio — con Q12/día.
+    Corre en 2 cuentas. Subir en la que mejor paga (GTR7: Q21) antes que GTR0.
+
+ 4. ▲ SURFING +20%/día · TINNIDROP DETERIORO_COGNITIVO en GTR1
+    18 ventas a CPA Q28. Es el motor de VOLUMEN. Escalar por GTR1/GTR0,
+    NO por GTR7 (ahí el mismo ángulo paga Q94 — ver §4).
+
+ ⚠️ REGLA DE ESCALADO: +20% diario POR CONJUNTO, uno a la vez, y se vuelve a
+    medir. Subir todo de golpe reinstala exactamente el tramo de gasto que en
+    julio dio ganancia marginal negativa (§1). El objetivo NO es volver a
+    Q478/día: es subir mientras el CPA marginal siga bajo el break-even, y
+    parar en cuanto deje de estarlo.
+
+───────────────────────────────────────────────────────────────────────────
+6. RIESGO OPERATIVO DETECTADO — 28% DE LAS VENTAS SIN DESPACHAR
+───────────────────────────────────────────────────────────────────────────
+Fulfillment de las 61 ventas de la ventana:
+    ENTREGADO 32 · Sin Envío 9 · PENDIENTE 8 · GUIA_GENERADA 6
+    DEVOLUCIÓN 4 · INCIDENCIA EN RUTA 2
+
+  · Tasa de entrega sobre RESUELTOS = 32/(32+4) = 89% — MEJOR que el 85.1%
+    con el que está costeado el sistema. La economía unitaria es conservadora.
+  · 🔴 PERO: 17 ventas (28%) están en "Sin Envío" + "PENDIENTE". Son pedidos
+    cobrados/registrados que no salieron a ruta. Con el operador ausente 11
+    días, es el candidato más probable a fuga real de dinero: cada uno que
+    caduque se convierte en devolución (−Q27.16) en vez de contribución (+Q95).
+    → REVISAR EN DROPI HOY, uno por uno. Vale ≈Q1,600 de contribución.
+
+───────────────────────────────────────────────────────────────────────────
+7. CORRECCIONES APLICADAS A LA CAPA DE DATA
+───────────────────────────────────────────────────────────────────────────
+ · _FACT_VENTAS.csv: +72 filas (BASE, 03→10 ago). Total 1,197 filas.
+ · _DIM_CONJUNTOS.csv: NUSAVA MA6-OFERTA y MA6-OFERTA - Copia estaban marcados
+   PODADO y son los que MÁS ganancia dieron en la ventana (+Q1,057). El estado
+   no reflejaba lo ejecutado en Meta → corregidos a ACTIVO, con nota.
+ · _BITACORA_DATA.txt: registrada la ventana y declarado el hueco 31-jul→02-ago.
+ · _DASHBOARD.html: regenerado (último paso del ciclo).
+
+───────────────────────────────────────────────────────────────────────────
+8. QUÉ HACER HOY (en orden)
+───────────────────────────────────────────────────────────────────────────
+ 1. Reactivar VARICOSE (campaña de escalado VERGÜENZA ya publicada).
+ 2. Apagar los 3 conjuntos de §4 (Testimonio Radical · ARDOR_TEST · MA4-DEPIE).
+ 3. Revisar en Dropi las 17 ventas sin despachar (§6).
+ 4. Subir +20% a MA6-OFERTA y a ACCESIBILIDAD_MEDICO (uno por vez).
+ 5. Exportar LucidSales 31-jul→02-ago para cerrar el hueco.
+ 6. Retomar el export DIARIO de 1 día: sin él no hay tendencia ni fatiga (§0).
+
+═══════════════════════════════════════════════════════════════════════════
+ADENDA — 2ª ENTREGA DEL OPERADOR: EXPORT DE DROPI (ordenes_productos_20260811)
+73 órdenes · FECHA 05→11 ago · 100% tienda LUCIDBOT
+═══════════════════════════════════════════════════════════════════════════
+
+───────────────────────────────────────────────────────────────────────────
+9. ⚠️ LA FECHA DE DROPI NO ES LA FECHA DE LA VENTA — ES LA DE CARGA EN LOTE
+───────────────────────────────────────────────────────────────────────────
+El export muestra 33 órdenes el 05, 21 el 07, 19 el 11 y CERO los días 06, 08,
+09 y 10. Eso NO son días sin ventas. Prueba:
+  · Las 33 órdenes del 05 se crearon entre 12:24 y 12:53 (29 minutos).
+  · Las 21 del 07, entre 09:22 y 09:53.
+  · Las 19 del 11, entre 14:10 y 14:12 (¡2 minutos!).
+  · Los IDs vienen en bloques contiguos con huecos de 27,776 y 11,978 entre lotes.
+Son TRES CARGAS MANUALES en lote. La `FECHA` de Dropi = cuándo la asistente
+subió el pedido, no cuándo el cliente compró.
+
+CONSECUENCIAS (importantes, y ninguna es obvia):
+ (a) 🚫 PROHIBIDO cruzar Dropi con LucidSales día contra día. Solo por acumulado.
+     Cualquier "CPA diario" que mezcle ambas fuentes es falso por construcción.
+ (b) El lote del 11-ago cubre ~4 días de ventas acumuladas (08→11). O sea que un
+     pedido puede esperar hasta 4 DÍAS antes de entrar a Dropi y salir a ruta.
+     En contraentrega eso es caro: el cliente se enfría entre que dice "sí" y
+     recibe. Es el sospechoso #1 detrás de las devoluciones y las "novedades".
+     → La cadencia de carga a Dropi debería ser DIARIA, no cada 2-4 días.
+ (c) Esto EXPLICA los 17 pedidos en "Sin Envío"/"PENDIENTE" que §6 marcó como
+     riesgo: no están perdidos, están esperando el lote. El riesgo baja de
+     "fuga de Q1,600" a "demora estructural de despacho". Sigue costando, pero
+     por otra vía. ✅ §6 queda CORREGIDO por esta evidencia.
+
+───────────────────────────────────────────────────────────────────────────
+10. BRECHA DROPI vs LUCIDSALES — HAY VENTAS FUERA DEL P&L
+───────────────────────────────────────────────────────────────────────────
+| PRODUCTO  | DROPI (73 órd) | LUCIDSALES (61 v) | BRECHA        |
+|-----------|----------------|-------------------|---------------|
+| TINNIDROP | 43 · Q9,130    | 37 · Q7,816       | +6 · Q+1,314  |
+| CLEARSTEM | 13 · Q2,856    | 12 · Q2,467       | +1 · Q+389    |
+| NUSAVA    | 12 · Q3,378    | 11 · Q3,009       | +1 · Q+369    |
+| VARICOSE  |  5 · Q1,385    |  1 · Q249         | +4 · Q+1,136  |
+| TOTAL     | 73 · Q16,749   | 61 · Q13,541      |      Q+3,208  |
+
+Parte de la brecha es desfase de ventana (las fuentes no cubren lo mismo). Pero
+VARICOSE es ESTRUCTURAL y no se explica por desfase:
+
+  ‼️ VARICOSE VENDIÓ 5 VECES CON PAUTA CERO.
+     Las 5 órdenes se cargaron el 07-ago; 4 ya están ENTREGADAS (3× Q249 de 2u
+     + 1× Q389 de 4u) y 1 pendiente. LucidSales solo atribuyó 1.
+     LucidSales ve ventas ATRIBUIDAS A UN AD. Lo que entra al bot por orgánico,
+     por recontacto o por remarketing NO aparece → el P&L del sistema SUBESTIMA.
+     → Refuerza la acción #1 (§5): VARICOSE vende SOLO, sin pauta encima.
+       Reactivarlo no es una apuesta, es destrabar algo que ya convierte.
+
+📌 REGLA NUEVA A ADOPTAR: LucidSales = numerador de ATRIBUCIÓN (sirve para
+   rankear ángulos y calcular CPA). Dropi = VENTA REAL Y COBRADA (sirve para el
+   P&L y la tasa de entrega). No son sustitutos y no deben sumarse entre sí.
+
+───────────────────────────────────────────────────────────────────────────
+11. LO QUE DROPI VALIDÓ DEL COSTEO (buenas noticias, con reserva)
+───────────────────────────────────────────────────────────────────────────
+ · FLETE: real Q35.81/orden vs fórmula 31.42+2.70×u = Q35.56 sobre 1.53 u/orden.
+   Desvío +0.7%. LA FÓRMULA AGUANTA — no se toca.
+ · COMISIÓN DE PLATAFORMA = 0 y COSTO DEVOLUCIÓN FLETE = 0 dentro de la orden.
+   Confirmado por 3ª vez (el cobro de devolución sale en el estado de cuenta).
+ · MIX DE UNIDADES: 43 órdenes de 1u · 22 de 2u · 7 de 3u · 1 de 4u.
+   El 41% de los pedidos lleva 2+ unidades → el upsell del bot funciona.
+ · ESCALONES NUEVOS CONFIRMADOS (Dropi manda sobre el precio planificado):
+     CLEARSTEM 3u: figuraba SIN_VENTAS a Q399 → ESTRENA VENTA a Q389.01 → ACTIVO.
+     VARICOSE 2x1 Q249: n_ordenes 0 → 4.   VARICOSE 4x Q389: n_ordenes 0 → 1.
+ · TASA DE ENTREGA (solo lotes 05 y 07, los maduros; el del 11 se excluye porque
+   tiene 0% resuelto e inventaría una tasa falsa):
+     44 entregados · 2 devoluciones · 8 sin resolver de 54 órdenes.
+     TECHO 95.7% (sobre resueltos hoy) · PISO 81.5% (si los 8 cayeran todos).
+   ⚠️ NO SE SUBE LA TASA DEL COSTEO. El 85.1% de julio queda dentro del rango y
+      cerca del piso → sigue siendo el supuesto prudente. Subirla a 95.7% con 46
+      casos inflaría la ganancia de TODO el portafolio con una ventana inmadura.
+   🔧 Por esto se corrigió `gen_dashboard.py`: antes tomaba "la última fila" de
+      `_TASA_ENTREGA.csv` y habría agarrado el 95.7% automáticamente. Ahora toma
+      la fila con MÁS ÓRDENES RESUELTAS (julio: 121 vs agosto: 46). Manda la
+      evidencia, no la fecha. Cuando agosto madure, gana solo.
+
+───────────────────────────────────────────────────────────────────────────
+12. QUÉ DÍAS FALTAN — ESTADO POR FUENTE
+───────────────────────────────────────────────────────────────────────────
+LUCIDSALES (atribución · ranking de ángulos · CPA):
+  ✅ 17→30 jul (BASE)   ✅ 03→10 ago (BASE, agregado 8d)
+  🔴 31-jul (solo CONTROL parcial, no suma) · 01-ago · 02-ago  ← 3 días
+  ⬜ 11-ago (día abierto, cierra esta noche)
+  → PEDIR: export del rango 2026-07-31 → 2026-08-02. No solapa con nada.
+
+DROPI (venta real cobrada · tasa de entrega · economía unitaria):
+  ✅ lotes del 05, 07 y 11 de agosto (73 órdenes) ← cargado hoy
+  🔴 TODO lo anterior al 05-ago. El sistema nunca ingirió Dropi de forma
+     sistemática: `_TASA_ENTREGA.csv` se armó con 145 órdenes de julio y
+     `_DIM_PRECIOS.csv` se calibró con 102 del 25-31 jul, ambos como carga única.
+  🔴 Concretamente falta el lote (o lotes) que cubren el 01→04 de agosto.
+  → PEDIR: export de Dropi del rango 2026-08-01 → 2026-08-04 para cerrar agosto.
+  → IDEAL: export de 2026-07-17 → 2026-08-04 para conciliar toda la ventana viva
+     contra LucidSales y medir la brecha de atribución real (§10) con serie larga.
+
+⚠️ LO QUE NO SE PUEDE RESPONDER CON LO QUE HAY: cuántas ventas hubo cada día.
+   LucidSales vino agregado en 8 días y Dropi viene en lotes de carga. Las dos
+   fuentes perdieron la granularidad diaria por motivos distintos. Sin eso no hay
+   detección de fatiga ni lectura de tendencia — solo ranking acumulado.
+
+═══════════════════════════════════════════════════════════════════════════
+ADENDA 2 — 3ª ENTREGA: LUCIDSALES 31-jul→02-ago + DROPI lote 01-ago
+LA SERIE QUEDÓ COMPLETA · Y EL TRAMO NUEVO CORRIGE LA CONCLUSIÓN DE §1
+═══════════════════════════════════════════════════════════════════════════
+
+───────────────────────────────────────────────────────────────────────────
+13. ‼️ CORRECCIÓN A §1 — NO ERA EL GASTO, ERA EL CPA
+───────────────────────────────────────────────────────────────────────────
+§1 concluyó: "gastando 54% menos se gana 34% más → NO restaurar el presupuesto".
+Esa lectura se hizo con un HUECO de 3 días en el medio. Con el hueco cerrado,
+el tramo que faltaba es justo el que refuta la tesis:
+
+  FASE                      DÍAS  PAUTA/DÍA   CPA     VENTAS/DÍA  GANANCIA/DÍA
+  JULIO pleno  17-30 jul     13d    Q478     Q53.1       9.0        Q+372
+  TRANSICIÓN   31jul-02ago    3d    Q478     Q42.2      11.3        Q+606  ← TOPE
+  AGOSTO bajo  03-10 ago      8d    Q218     Q28.6       7.6        Q+499
+
+EL TRAMO DE TRANSICIÓN GASTÓ EXACTAMENTE LO MISMO QUE JULIO (Q478/día) Y ES EL
+MÁS RENTABLE DE TODA LA SERIE: Q+606/día contra Q+372 de julio y Q+499 de agosto.
+
+→ La ganancia/día NO la determina el nivel de gasto. La determina el CPA.
+  Julio Q53 → Transición Q42 → Agosto Q29: el CPA mejoró de forma sostenida y
+  monótona en los tres tramos, independientemente del presupuesto.
+→ Agosto ganó más que julio no por gastar menos, sino porque para entonces el
+  CPA ya había mejorado. Al recortar el gasto, RESIGNÓ volumen: 7.6 ventas/día
+  contra 11.3 del tramo de transición con el mismo CPA-régimen.
+
+✅ RECOMENDACIÓN CORREGIDA: SÍ ESCALAR. El techo demostrado de la operación es
+   Q478/día de pauta con CPA ~Q42 → Q+606/día. Agosto está operando a menos de
+   la mitad de ese gasto. La instrucción de §5 (surfing +20%) se mantiene, pero
+   deja de tener el freno de "no volver al nivel de julio": el nivel de julio SÍ
+   funciona cuando el CPA acompaña. El objetivo es Q478/día sosteniendo CPA <Q45,
+   no Q218/día.
+   ⚠️ Lo que sigue vigente de §1: subir el gasto SIN vigilar el CPA reproduce
+      julio (Q478/día a CPA Q53 = solo Q+372/día). El CPA es el gate, no el monto.
+
+MATIZ DE HONESTIDAD (no invalida lo anterior, pero acota su fuerza):
+  · El tramo de transición son 3 días agregados (34 ventas). n chico.
+  · MADURACIÓN ASIMÉTRICA: los dos exports se tomaron el 11-ago. El tramo
+    31jul-02ago tuvo 9-11 días para madurar (COD madura ~3 días) = cerrado.
+    El tramo 03-10 tuvo entre 1 y 8 días: los días 08, 09 y 10 NO están maduros.
+    → Agosto está SUBESTIMADO. Su Q+499/día es un PISO que va a subir.
+    → La comparación real entre tramos será limpia recién con el control del
+      próximo domingo.
+
+───────────────────────────────────────────────────────────────────────────
+14. INTEGRIDAD: LA SERIE DE LUCIDSALES QUEDÓ SIN HUECOS
+───────────────────────────────────────────────────────────────────────────
+  ✅ 17→24 jul (7d) · 25 · 26 · 27 · 28 · 29 · 30 (1d c/u)
+  ✅ 31-jul→02-ago (3d)  ← CARGADO HOY, 111 filas, 34 ventas, $188.20
+  ✅ 03→10 ago (8d)
+  = 24 DÍAS CONTINUOS, 17-jul → 10-ago. CERO huecos. 212 ventas · Q+10,650.
+  ⬜ Único día abierto: 11-ago (cierra esta noche).
+
+  SIN DOBLE CONTEO VERIFICADO: el 31-jul ya existía con 101 filas rol=CONTROL
+  (export parcial del propio 31). Las CONTROL no suman al P&L por construcción,
+  así que la nueva BASE 31jul-02ago no lo duplica. Se comprobó antes de anexar.
+  JOIN con _DIM_CONJUNTOS: 0 huérfanas · 8 filas sin conjunto (ventas sin ad).
+
+───────────────────────────────────────────────────────────────────────────
+15. DROPI — RESPUESTA A "¿FALTA INFO DE PRECIOS Y GANANCIAS?"
+───────────────────────────────────────────────────────────────────────────
+NO FALTA NADA. ASÍ SON SIEMPRE LOS REPORTES DE DROPI. Verificado sobre 86
+órdenes de los dos exports:
+
+  · `GANANCIA` SOLO se llena cuando la orden llega a ENTREGADO:
+      export 05/07/11:  43 de 44 ENTREGADOS con ganancia · 0 de los 29 restantes
+                        (PENDIENTE, EN RUTA, PREPARADO, INCIDENCIA, NOVEDAD, DEVOLUCIÓN)
+      export 01-ago:    11 de 11 ENTREGADOS con ganancia
+    Dropi liquida la ganancia al confirmar la entrega. Un pedido en PENDIENTE con
+    ganancia 0 NO es data faltante — es un pedido que todavía no cobró.
+  · `COMISIÓN` = 0 y `COSTO DEVOLUCIÓN FLETE` = 0 en las 86 órdenes. Ya sabido:
+    la comisión de plataforma es 0% y el cobro de devolución sale en el ESTADO DE
+    CUENTA, no en la orden. Confirmado por 4ª vez.
+  · `TOTAL DE LA ORDEN`, `PRECIO FLETE`, `PRECIO PROVEEDOR` y `CANTIDAD` vienen
+    llenos en el 100% de las órdenes, en todos los estados. Con eso alcanza para
+    la economía unitaria: no dependemos de la columna GANANCIA.
+
+⚠️ IMPLICACIÓN: la GANANCIA de Dropi no sirve para el P&L en tiempo real (sólo ve
+   lo ya entregado, o sea que va ~5 días atrasada). El P&L del sistema se calcula
+   con la contribución esperada por escalón × tasa de entrega, que sí incluye lo
+   que está en tránsito. Son dos cosas distintas y la nuestra va adelantada.
+
+───────────────────────────────────────────────────────────────────────────
+16. EL LOTE DEL 01-AGO ES LA MEJOR VALIDACIÓN DEL COSTEO QUE HAY
+───────────────────────────────────────────────────────────────────────────
+13 órdenes cargadas el 01-ago 09:36-09:37 (otro lote de 1 minuto → §9 confirmado).
+Está **100% RESUELTO**: 11 ENTREGADO + 2 DEVOLUCIÓN, nada en tránsito.
+
+  TASA DE ENTREGA = 11/13 = **84.6%**
+  El sistema costea con **85.1%**. Desvío: −0.5 puntos.
+
+Es la primera cohorte cerrada del ciclo y confirma el supuesto casi exactamente.
+Sumada a los lotes 05/07, la fila 2026-08 de `_TASA_ENTREGA.csv` queda en
+55 entregados · 4 devoluciones · 8 sin resolver → techo 93.2% / piso 82.1%.
+El 85.1% de julio (121 resueltos) sigue DENTRO del rango y sigue mandando en el
+costeo por tener más evidencia. NO SE TOCA LA TASA.
+
+───────────────────────────────────────────────────────────────────────────
+17. QUÉ FALTA AHORA (actualizado)
+───────────────────────────────────────────────────────────────────────────
+LUCIDSALES: ✅ NADA. Serie continua 17-jul → 10-ago. Solo queda el 11-ago abierto.
+   → Retomar el export DIARIO de 1 día desde hoy.
+
+DROPI: cubierto por lotes 01, 05, 07 y 11 de agosto (86 órdenes).
+   · Los días 02, 03 y 04 NO faltan: no hubo carga esos días. Esas ventas están
+     DENTRO del lote del 05-ago. Confirmado por el operador y coherente con §9.
+   · 🔴 SIGUE FALTANDO: todo lo anterior al 01-ago (julio). Sin eso no se puede
+     conciliar la brecha de atribución (§10) sobre la ventana viva completa.
+     → PEDIR: export de Dropi 2026-07-17 → 2026-07-31.
+   · El lote del 11-ago (19 órdenes) queda pendiente de madurar: hoy tiene 12
+     PENDIENTE + 7 PREPARADO, 0% resuelto. Re-exportar en ~5 días para cerrarlo.
+
+═══════════════════════════════════════════════════════════════════════════
+ADENDA 3 — SERIE COMPLETA DE DROPI: 304 ÓRDENES, 01-jul → 07-ago
+EL HALLAZGO MÁS IMPORTANTE DE TODA LA AUDITORÍA
+═══════════════════════════════════════════════════════════════════════════
+
+───────────────────────────────────────────────────────────────────────────
+18. ‼️ LA TASA DE ENTREGA NO ES IGUAL ENTRE PRODUCTOS — Y EL SISTEMA
+    COSTEABA TODO CON UNA SOLA
+───────────────────────────────────────────────────────────────────────────
+| PRODUCTO  | ENT | DEV | RESUELTOS | %ENTREGA | %DEVOLUCIÓN |
+|-----------|-----|-----|-----------|----------|-------------|
+| CLEARSTEM |  46 |   2 |    48     |  95.8%   |   4.2%      |
+| TINNIDROP | 142 |  15 |   157     |  90.4%   |   9.6%      |
+| VARICOSE  |  23 |   8 |    31     |  74.2%   |  22.6%      |
+| NUSAVA    |  38 |  15 |    53     |  71.7%   |  28.3%  🔴  |
+| GLOBAL    | 249 |  40 |   289     |  86.2%   |  13.8%      |
+
+24 PUNTOS de diferencia entre el mejor y el peor. El sistema venía costeando
+TODO el portafolio con el 85.1% global. Consecuencia sobre el break-even real
+(= el CPA máximo que cada producto aguanta antes de perder plata):
+
+  PRODUCTO    BE con tasa GLOBAL  →  BE con tasa PROPIA   desvío
+  CLEARSTEM        Q91.03              Q105.89           +16.3%
+  TINNIDROP        Q86.19              Q 93.41            +8.4%
+  NUSAVA          Q115.30              Q 92.64           −19.5%  🔴
+  VARICOSE        Q106.07              Q 89.88           −15.3%  🔴
+
+EL RANKING DE PRODUCTOS SE INVIERTE:
+  antes (tasa global): NUSAVA > VARICOSE > CLEARSTEM > TINNIDROP
+  ahora (tasa propia): CLEARSTEM > TINNIDROP > NUSAVA > VARICOSE
+
+🔧 IMPLEMENTADO: `_TASA_ENTREGA.csv` gana la columna `producto_key` y una fila
+   por producto. `gen_dashboard.py` usa la tasa PROPIA cuando el producto tiene
+   ≥20 resueltos, y cae a la global si no. La ganancia del portafolio pasó de
+   Q10,650 a Q11,104 (+Q454): TINNIDROP, que es el que más vende, entrega mejor
+   que el promedio y estaba subvalorado.
+
+⚠️ CORRECCIÓN A §5.2 — NUSAVA MA6-OFERTA NO ES "EL MEJOR ROI DEL PORTAFOLIO".
+   Lo declaré así con BE Q120.40. Su BE real es Q92.64, un 23% menos, porque
+   NUSAVA devuelve 28.3% de lo que vende. CPA Q25 contra BE Q92.64 SIGUE siendo
+   muy rentable y la orden de escalar SE MANTIENE — pero el colchón es 3.7×, no
+   4.8×, y el producto tiene un problema de entrega que hay que atacar en
+   paralelo. Escalar NUSAVA sin arreglar la devolución es multiplicar el problema.
+
+🔴 ACCIÓN NUEVA — INVESTIGAR LA DEVOLUCIÓN DE NUSAVA Y VARICOSE:
+   15 devoluciones de NUSAVA y 8 de VARICOSE (23 de las 40 del portafolio) son
+   la fuga más cara que tiene la operación. Cada devolución cuesta el flete que
+   igual se pagó + Q27.16 del evento, y no ingresa nada. Hipótesis a descartar,
+   en orden: (a) el bot promete algo que el producto no cumple y el cliente se
+   arrepiente al recibir; (b) el precio del combo asusta en la puerta (NUSAVA
+   vende 2X1 a Q219 y 4X2 a Q369, tickets altos); (c) demora de despacho — con
+   la carga en lote (§9) el pedido llega días después y el cliente ya no lo
+   quiere. La (c) es medible ya: cruzar días-hasta-entrega contra devolución.
+
+───────────────────────────────────────────────────────────────────────────
+19. LA ENTREGA ESTÁ MEJORANDO DE FORMA SOSTENIDA (buena noticia real)
+───────────────────────────────────────────────────────────────────────────
+  sem 27 (jul)  n=  7   66.7%
+  sem 28        n=  9   87.5%
+  sem 29        n= 64   73.4%
+  sem 30        n= 85   85.5%
+  sem 31        n= 72   92.9%
+  sem 32 (ago)  n= 54   95.7%   ← mejor semana registrada
+Tendencia clara al alza en las últimas 3 semanas. Si se sostiene sobre 90%, el
+break-even de todo el portafolio sube y hay más espacio de CPA para escalar.
+⚠️ NO se cambió el supuesto de costeo por esto: la sem32 aún tiene 8 órdenes sin
+   resolver. Se confirma con el próximo export.
+
+───────────────────────────────────────────────────────────────────────────
+20. COSTOS CORREGIDOS — LA TABLA TENÍA CIFRAS QUE DROPI DESMIENTE
+───────────────────────────────────────────────────────────────────────────
+Contra 304 órdenes reales (manda Dropi, siempre):
+  · NUSAVA 2X1: costo proveedor Q55 → **Q57**   (la tabla venía de un supuesto)
+  · NUSAVA 4X2: costo proveedor Q110 → **Q117**
+  · VARICOSE 2X1: costo Q90 → **Q85**  (a favor)
+  · VARICOSE 4x:  costo Q180 → **Q167** (a favor)
+  · CLEARSTEM 1u: precio Q199 → **Q198**
+  · ⭐ ESCALÓN DESCUBIERTO: **VARICOSE 1u a Q199** (3 órdenes, costo Q45).
+    Existía en la operación real y NO estaba en la tabla → sus 3 órdenes se
+    asignaban por interpolación al escalón vecino. Dado de alta.
+
+FLETE — la fórmula del sistema aguanta y ahora está validada por escalón:
+  u=1  n=181  real Q34.22 vs fórmula Q34.12  (+0.3%)
+  u=2  n= 98  real Q37.49 vs fórmula Q36.82  (+1.8%)
+  u=3  n= 19  real Q39.80 vs fórmula Q39.52  (+0.7%)
+  u=4  n=  6  real Q43.98 vs fórmula Q42.22  (+4.2%)
+  Global Q35.81/orden sobre 1.51 u/orden. NO SE TOCA la fórmula 31.42+2.70×u.
+  COMISIÓN DE PLATAFORMA = Q0 y COSTO DEVOLUCIÓN FLETE = Q0 en las 304 órdenes.
+
+TAMAÑO DE PEDIDO vs ENTREGA — no hay penalización por pedido grande:
+  1u 86.0% · 2u 83.9% · 3u 94.7% · 4u 83.3%
+  → El upsell del bot NO aumenta la devolución. Se puede seguir empujando.
+
+───────────────────────────────────────────────────────────────────────────
+21. LA GANANCIA DE DROPI vs LA DEL SISTEMA — NO SON LA MISMA COSA
+───────────────────────────────────────────────────────────────────────────
+Dropi reporta Q30,107 de GANANCIA sobre 249 órdenes entregadas. NO usar ese
+número como P&L:
+  · Es margen BRUTO de lo YA ENTREGADO (total − proveedor − flete).
+  · NO descuenta admin (Q4/pedido), ni el evento de devolución (Q27.16 × 40 =
+    Q1,086), ni el flete de las 40 devoluciones (Q1,427 que se pagaron igual),
+    ni un solo quetzal de PAUTA.
+  · Va ~5 días atrasado: solo ve lo entregado, ignora lo que está en tránsito.
+El P&L del sistema (contribución esperada × tasa de entrega − pauta) es la cifra
+que corresponde mirar: Q+11,104 netos del 17-jul al 10-ago.
+
+───────────────────────────────────────────────────────────────────────────
+22. ⚠️ LA CADENCIA DE CARGA A DROPI SE DEGRADÓ EN AGOSTO
+───────────────────────────────────────────────────────────────────────────
+Julio: carga casi DIARIA (13,14,15,16,17,19,20,21,22,23,24,25,26,27,28,29,30,31).
+Agosto: 01 … 05 … 07 … 11. Huecos de 4 y 3 días.
+Es exactamente el período en que el operador estuvo ausente. Coincide con §9
+(pedidos esperando el lote) y es candidato directo a explicar parte del 28% de
+devoluciones de NUSAVA/VARICOSE si el retraso se concentró en esos productos.
+→ VOLVER A CARGA DIARIA. Es gratis y ataca la fuga más cara de la operación.
+
+───────────────────────────────────────────────────────────────────────────
+23. QUÉ FALTA DESPUÉS DE ESTA CARGA
+───────────────────────────────────────────────────────────────────────────
+LUCIDSALES: ✅ completo 17-jul → 10-ago. Solo el 11-ago abierto.
+DROPI: ✅ completo 01-jul → 07-ago (304 órdenes).
+   🔴 Falta el tramo 08 → 11-ago: el export llega al 07 y el lote del 11 (19
+      órdenes, 0% resuelto) está fuera de esta serie. Re-exportar en ~5 días
+      para (a) cerrar ese lote y (b) confirmar si la entrega sostiene >90%.
+   📌 Con eso, el sistema tendría cohortes cerradas de punta a punta.
+═══════════════════════════════════════════════════════════════════════════

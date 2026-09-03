@@ -1,0 +1,275 @@
+{
+  "canonico_id": "CN01_ANTES_DESPUES",
+  "schema_version": "canonico-1.0",
+  "nombre": "Antes / Despues partido",
+  "dispositivo_canonico": "DOS ESTADOS DEL MISMO SUJETO EN UNA SOLA PIEZA. La imagen se parte en dos mitades — vertical, horizontal o por el eje del producto — y cada mitad muestra el mismo cuerpo, rostro u organo en un estado distinto. El producto vive en la costura: es la bisagra que explica el salto. La prueba no se argumenta, se ve.",
+  "cuando_elegirlo": "El resultado es VISIBLE en el cuerpo (piel, varices, hinchazon, cabello, peso). Si el beneficio es una sensacion interna que no se fotografia — dormir mejor, menos zumbido, mas memoria — esta familia obliga a inventar la imagen y la pieza se cae.",
+  "ejes_de_variacion": [
+    "eje del corte: vertical / horizontal / apilado / rostro partido al medio",
+    "material: fotografia real, macro, render anatomico o selfie casero",
+    "que hace de bisagra: el producto, una flecha, la linea del gotero o nada",
+    "el 'despues' puede ser el producto YA PUESTO en el cuerpo (F050)",
+    "registro: crudo sin marco (F097) o enmarcado con etiqueta neutra (F099)"
+  ],
+  "n_miembros": 14,
+  "ficha_referencia": "F004",
+  "score_referencia": 138,
+  "perfil": {
+    "concepto_key": {
+      "C4_TRANSFORMACION": 14
+    },
+    "rol_embudo": {
+      "MOFU": 8,
+      "TOFU": 4,
+      "BOFU": 2
+    },
+    "estetica": {
+      "cartel_publicitario": 11,
+      "organico_ugc": 3
+    },
+    "formato": {
+      "1:1": 9,
+      "4:5": 2,
+      "2:3": 1,
+      "9:16": 1,
+      "11:10": 1
+    },
+    "densidad": {
+      "alta": 6,
+      "media": 5,
+      "baja": 3
+    },
+    "nivel_conciencia_rango": [
+      2,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "TITULAR",
+    "IMAGEN_ANTES",
+    "IMAGEN_DESPUES",
+    "ETIQUETA_ANTES",
+    "ETIQUETA_DESPUES",
+    "EJE_DEL_CORTE",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [],
+    "recurrentes": [
+      "ATRIBUTOS[3]",
+      "BENEFICIOS[3]",
+      "BENEFICIOS[4]",
+      "CANT_1",
+      "CANT_2",
+      "CANT_3",
+      "CATEGORIA_L1",
+      "COLOR_ALERTA",
+      "CTA",
+      "CTA_L1",
+      "CTA_L2",
+      "DOSIS",
+      "ENVIO",
+      "ESCASEZ_L1",
+      "ESCASEZ_L2",
+      "FOTO_ZONA_ANTES",
+      "FOTO_ZONA_DESPUES",
+      "FRECUENCIA",
+      "GARANTIAS[2]",
+      "GARANTIAS[3]",
+      "GARANTIA_ENVIO",
+      "HOOK",
+      "HOOK_L1",
+      "HOOK_L2_ACENTO",
+      "IMAGEN_1",
+      "LOGO_MARCA",
+      "MONEDA",
+      "MULTIPLICADOR",
+      "OFERTA_LABEL",
+      "OFERTA_MECANICA",
+      "ORGANO_ENFERMO",
+      "ORGANO_SANO",
+      "PRECIO_1",
+      "PRECIO_2",
+      "PRECIO_3",
+      "PRODUCTO",
+      "RESULTADO",
+      "URGENCIA",
+      "VIA"
+    ]
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "Las dos fotos son de la misma zona, mismo encuadre y misma iluminacion: si cambia el encuadre, el lector lee dos personas y no una transformacion",
+    "El producto se planta en el centro tapando la union de las dos fotos",
+    "Los labels ANTES y DESPUES van en la esquina superior de su foto",
+    "El verde se usa solo en la barra de WhatsApp",
+    "Siempre 3 tiers de precio, y la etiqueta mas atractiva va en el tier 2",
+    "El cambio entre las dos fotos debe leerse entrecerrando los ojos, sin leer los labels"
+  ],
+  "cuando_usar": [
+    "resultado visible en una zona fotografiable (piel, abdomen, piernas, cabello, unas)",
+    "producto topico o de aplicacion local, donde el antes/despues es honesto",
+    "cuando hay margen para 3 tiers de precio",
+    "cierre por WhatsApp",
+    "promesa sensorial (ligereza, comodidad, descanso) con evidencia visual disponible",
+    "cuando hay material de antes/despues pero NO se quiere que domine el frame",
+    "producto con marca propia que aguanta llevar logo arriba",
+    "cuando hay que meter beneficios, precios y transformacion en la misma pieza"
+  ],
+  "cuando_no_usar": [
+    "problemas internos o invisibles: no hay zona que fotografiar",
+    "cuando no existe material de antes/despues creible",
+    "publico frio que todavia no nombro el problema",
+    "cuando la transformacion es el unico argumento: usar el antes/despues horizontal (F004), que la agranda",
+    "problemas sin zona corporal visible",
+    "empaque generico sin identidad de marca"
+  ],
+  "blueprint_equivalente": null,
+  "miembros": [
+    {
+      "ficha_id": "F004",
+      "score": 138,
+      "anunciante": "Aranza Glow",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ANTES/DESPUES HORIZONTAL PARTIDO POR EL PRODUCTO"
+    },
+    {
+      "ficha_id": "F006",
+      "score": 127,
+      "anunciante": "Aranza Glow",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ANTES/DESPUES EN COLUMNA VERTICAL, APILADO A LA IZQUIERDA"
+    },
+    {
+      "ficha_id": "F023",
+      "score": 79,
+      "anunciante": "Teyra",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ROSTRO PARTIDO AL MEDIO"
+    },
+    {
+      "ficha_id": "F024",
+      "score": 79,
+      "anunciante": "Teyra",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "DOS RETRATOS SEPARADOS, UNIDOS POR UNA FLECHA CURVA, CON TESTIMONIO EN PRIMERA PERSONA BAJO CADA UNO"
+    },
+    {
+      "ficha_id": "F031",
+      "score": 60,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "EL ANTES/DESPUES CASERO CON GLOBOS DE TEXTO Y FLECHAS DIBUJADAS"
+    },
+    {
+      "ficha_id": "F035",
+      "score": 54,
+      "anunciante": "Topishop",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "2:3",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ANTES/DESPUES INVERTIDO"
+    },
+    {
+      "ficha_id": "F050",
+      "score": 52,
+      "anunciante": "FrezNova",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ANTES/DESPUES DONDE EL LADO DESPUES ES EL PRODUCTO PUESTO"
+    },
+    {
+      "ficha_id": "F058",
+      "score": 43,
+      "anunciante": "SupleNat",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "9:16",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "LOS DOS SELFIES DE ESPEJO DEL MISMO BANO, CON SUBTITULO DE VIDEO SOBRE LA COSTURA"
+    },
+    {
+      "ficha_id": "F068",
+      "score": 36,
+      "anunciante": "Trendora",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "4:5",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ANTES/DESPUES EN MACRO CON LAS LISTAS DE EQUIS Y CHECKS BAJO CADA LADO"
+    },
+    {
+      "ficha_id": "F072",
+      "score": 34,
+      "anunciante": "Ixchel Store GT",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ANTES/DESPUES EN MINIATURA CON FLECHA, DENTRO DE UNA PIEZA DORADA DE REGISTRO PREMIUM"
+    },
+    {
+      "ficha_id": "F097",
+      "score": 30,
+      "anunciante": "Teyra",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL ORGANO PARTIDO EN DOS MITADES CON EL FRASCO COMO BISAGRA"
+    },
+    {
+      "ficha_id": "F098",
+      "score": 30,
+      "anunciante": "Teyra",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL EJE DEL ANTES-DESPUES NO ES UN PLAZO, ES UNA SOLA TOMA"
+    },
+    {
+      "ficha_id": "F099",
+      "score": 30,
+      "anunciante": "Teyra",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "11:10",
+      "rol_embudo": "BOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "EL MISMO ANTES-DESPUES, PERO ENMARCADO Y CON ETIQUETA NEUTRA"
+    },
+    {
+      "ficha_id": "F103",
+      "score": 29,
+      "anunciante": "Mi Camino al Bienestar",
+      "concepto_key": "C4_TRANSFORMACION",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "organico_ugc",
+      "dispositivo": "EL CUERPO PARTIDO POR UNA LINEA QUE NACE DEL GOTERO, EN UNA SOLA FOTO"
+    }
+  ]
+}

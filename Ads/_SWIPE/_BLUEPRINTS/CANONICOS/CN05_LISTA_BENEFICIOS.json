@@ -1,0 +1,151 @@
+{
+  "canonico_id": "CN05_LISTA_BENEFICIOS",
+  "schema_version": "canonico-1.0",
+  "nombre": "Lista de beneficios con icono",
+  "dispositivo_canonico": "N BENEFICIOS ENUMERADOS, cada uno con su icono o foto circular, alineados en columna al flanco o en fila bajo el titular. Es la estructura mas neutra del banco: no dramatiza, ordena. El producto queda en podio o al centro y la lista lo rodea.",
+  "cuando_elegirlo": "El producto tiene 3-6 beneficios distintos y ninguno domina a los otros. Es la estructura de FASE 1 (C2 variante ligera) justamente porque es la mas neutra: mide el ANGULO sin que el creativo se lleve el credito.",
+  "ejes_de_variacion": [
+    "orientacion: columna vertical al flanco o fila horizontal bajo el titular",
+    "cantidad: 3 (fila) / 5-6 (columna) — cambia la densidad, no la estructura",
+    "marcador del item: icono plano, cuadrado redondeado, foto circular real",
+    "fondo: plano de marca o textura biologica (F064)"
+  ],
+  "n_miembros": 4,
+  "ficha_referencia": "F002",
+  "score_referencia": 269,
+  "perfil": {
+    "concepto_key": {
+      "C2_BENEFICIOS": 4
+    },
+    "rol_embudo": {
+      "MOFU": 3,
+      "TOFU": 1
+    },
+    "estetica": {
+      "cartel_publicitario": 4
+    },
+    "formato": {
+      "1:1": 2,
+      "2:3": 2
+    },
+    "densidad": {
+      "baja": 2,
+      "alta": 2
+    },
+    "nivel_conciencia_rango": [
+      2,
+      3
+    ]
+  },
+  "contrato_variables": [
+    "PRODUCTO_NOMBRE",
+    "PRODUCTO_FOTO",
+    "PALETA_ACENTO",
+    "PALETA_OSCURA",
+    "PALETA_CLARO",
+    "TITULAR",
+    "BENEFICIOS",
+    "MARCADOR_ITEM",
+    "ORIENTACION_LISTA",
+    "CTA"
+  ],
+  "variables_observadas": {
+    "nucleo": [
+      "BENEFICIOS[5]",
+      "CANT_1",
+      "CANT_2",
+      "CANT_3",
+      "DIAS_GARANTIA",
+      "ELEMENTOS_INGREDIENTE",
+      "ETIQUETA_SOCIAL",
+      "GARANTIAS[3]",
+      "HOOK_L1",
+      "HOOK_L2",
+      "MONEDA",
+      "OFERTA_LABEL",
+      "PAIS",
+      "PRECIO_1",
+      "PRECIO_2",
+      "PRECIO_3",
+      "PRECIO_DECIMAL",
+      "PRECIO_ENTERO",
+      "PRECIO_TACHADO",
+      "SELLO_REGULATORIO"
+    ],
+    "recurrentes": []
+  },
+  "reglas_duras_compartidas": [],
+  "reglas_duras_referencia": [
+    "Sin figura humana: la autoridad la produce el diseno",
+    "El aire ES el concepto: si el contenido no cabe respetando el espacio libre, se recorta el contenido",
+    "El producto va en escena sobre superficie, nunca recortado sobre fondo plano",
+    "Maximo 4 colores en toda la pieza",
+    "Todos los iconos: mismo grosor, mismo tamano, mismo contenedor",
+    "El titular va alineado a la izquierda",
+    "Un solo bloque negro: la card de oferta"
+  ],
+  "cuando_usar": [
+    "producto con ingrediente estrella visualmente atractivo (miel, aloe, colageno, curcuma)",
+    "categorias donde natural o premium es el diferenciador",
+    "empaque bonito que aguanta ser protagonista",
+    "publico femenino 30+, o publico que rechaza el look dropshipping",
+    "sintoma nombrable y especifico dentro de una categoria premium",
+    "cuando el precio es competitivo y conviene mostrarlo temprano",
+    "producto con ingrediente estrella fotogenico",
+    "publico que rechaza el look agresivo pero necesita ver el precio antes de escribir"
+  ],
+  "cuando_no_usar": [
+    "dolor agudo o urgente: el diseno calmado contradice el mensaje",
+    "productos con muchos claims que meter: no hay espacio y meterlos rompe el concepto",
+    "cuando se necesita densidad informativa",
+    "cuando el precio es alto y conviene ganarse el valor antes de mostrarlo: usar F002",
+    "cuando hay mas de 3 beneficios que son imprescindibles",
+    "dolor agudo: la estetica calmada lo contradice"
+  ],
+  "blueprint_equivalente": [
+    "B_editorial_limpio",
+    "D_transformacion_temporal"
+  ],
+  "miembros": [
+    {
+      "ficha_id": "F002",
+      "score": 269,
+      "anunciante": "Camila Recomienda",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA COLUMNA DE 5 BENEFICIOS CON TITULO MAS SUBTITULO"
+    },
+    {
+      "ficha_id": "F007",
+      "score": 118,
+      "anunciante": "Camila Recomienda",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "1:1",
+      "rol_embudo": "TOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA FILA DE 3 BENEFICIOS EN HORIZONTAL, BAJO EL TITULAR"
+    },
+    {
+      "ficha_id": "F046",
+      "score": 52,
+      "anunciante": "Flor Expres GT",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA COLUMNA DE 6 BENEFICIOS CON ICONO EN CUADRADO REDONDEADO, SOBRE EL PRODUCTO EN PODIO"
+    },
+    {
+      "ficha_id": "F064",
+      "score": 38,
+      "anunciante": "Tiendas KetsalStore",
+      "concepto_key": "C2_BENEFICIOS",
+      "formato": "2:3",
+      "rol_embudo": "MOFU",
+      "estetica": "cartel_publicitario",
+      "dispositivo": "LA COLUMNA DE 5 BENEFICIOS CON FOTO CIRCULAR REAL, SOBRE FONDO DE TEXTURA BIOLOGICA"
+    }
+  ]
+}

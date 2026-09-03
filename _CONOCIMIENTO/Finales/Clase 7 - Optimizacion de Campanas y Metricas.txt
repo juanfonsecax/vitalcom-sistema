@@ -1,0 +1,345 @@
+============================================================
+CLASE 7 — OPTIMIZA TUS CAMPAÑAS: MÉTRICAS, DIAGNÓSTICO Y ESCALADO PROGRESIVO
+Instructor: Joaquín (Joaquito / Juaco) — con apoyo de Pipe y participación de Mercy
+============================================================
+
+---
+
+## 🎯 IDEA CENTRAL DE LA CLASE
+
+Clase 100% práctica de Joaquín sobre OPTIMIZACIÓN de campañas en Meta. El objetivo es transformar anuncios en VENTAS: entender qué dicen realmente las métricas, identificar exactamente dónde se está perdiendo dinero (en el anuncio, en el clic, en la conversación o en el cierre) y corregirlo en tiempo real. Joaquín enseña a leer las métricas de atención (CPM, CTR, CPC), pero sobre todo a crear DOS métricas personalizadas que él considera más importantes que el CTR: el "% conversación por impresión" y el "% conversación por clic en el enlace" (esta última, la métrica REAL del negocio). La tesis de fondo: "Quien mejor comunica el producto gana la subasta de Meta" — la optimización del FLUJO de ventas y la percepción de valor son el verdadero secreto, no la pauta. Cierra con la filosofía de escalado PROGRESIVO (validar antes de escalar agresivo) y el "surfing" del 20%.
+
+---
+
+## 📚 RESUMEN COMPLETO (Sección por Sección)
+
+### BLOQUE 1: Los 3 niveles de la estructura de campaña
+
+Joaquín organiza todo en 3 niveles:
+- **Nivel 1 — Campaña:** Se trabaja con el objetivo "mensajes a WhatsApp". El tipo de compra de tráfico en Meta es a nivel de SUBASTA. Tres tipos de campaña que usan para vender por LucidBot: **tráfico, interacción y ventas**. Aquí hay un cruce con Mercy: a Mercy le funciona mejor TRÁFICO; a Joaquín le funciona mejor INTERACCIÓN (80-90% de sus campañas), aunque también usa tráfico y ventas. Esto depende mucho de cada cuenta publicitaria, que se comportan TODAS diferente. Cada quien debe analizar qué le funciona mejor (ej: "con 7 conjuntos me va mejor tráfico, con 1-1-1 me va mejor ventas").
+- **Nivel 2 — Conjunto de anuncios:** Segmentación SIEMPRE abierta, NUNCA con intereses ("la IA de Meta es mucho más inteligente que nosotros"). Ubicaciones: Joaquín usa AUTOMÁTICAS / Advantage (deja que Meta escoja formato y ubicación). [Nota: aquí difiere de Mercy, que usa ubicaciones manuales.]
+- **Nivel 3 — Anuncios (creativos):** Imágenes y videos. El creativo debe ser comunicativo, con HOOK, COPY, BENEFICIOS y microángulos. Formatos que funcionan: TESTIMONIOS (funcionando "súper bien") y PROBLEMA-SOLUCIÓN. Hay que saber identificar cuándo un anuncio es ganador o malo, y cuándo cambiar un hook que no engancha (no rompe el scroll).
+
+### BLOQUE 2: Las métricas de atención (antes del clic)
+
+- **CPM** = costo por 1000 impresiones. Si está alto → mala segmentación o nicho saturado.
+- **CTR** (click through rate) = importante, pero Joaquín enseñará una métrica personalizada MÁS importante.
+- **CPC** = costo por clic. Fundamental; lo primero que revisa al analizar flujos.
+- **Clic en el enlace** = métrica clave, sobre todo al lanzar producto nuevo (20-30-40 clics en enlace = Meta confirma que el ángulo es ganador, hay un público).
+
+**Diagnóstico rápido por métrica:**
+- CTR bajo → creativo malo (o hook que no engancha).
+- CPM alto → audiencia mala o SATURADA.
+
+**Sobre la saturación:** nichos saturados en Colombia (y casi todos los países): bajar de peso (el más saturado, punto de dolor enorme), sueño/estrés/ansiedad. En un nicho saturado el CPM SIEMPRE estará alto y hay que aguantarlo. Para verificar si estás en mercado saturado: ir a la **Biblioteca de Anuncios** y buscar el nombre del producto o un keyword relacionado. Truco clave: si entras a un nicho saturado, hazlo con un ÁNGULO DIFERENTE al saturado (Joaquín vendió un producto saturado con un ángulo "súper black" diferente: CPA de 3,000 en TikTok y 5,000-7,000 en Meta, mientras otros competían con CPMs altísimos).
+
+### BLOQUE 3: Las DOS métricas personalizadas (el corazón de la clase)
+
+Joaquín no las muestra en pantalla, da las FÓRMULAS para que cada quien las cree en su administrador (botón "+" → crear métrica personalizada):
+
+**MÉTRICA 1 — % Conversación por Impresión:**
+Fórmula: `Conversaciones con mensaje iniciadas ÷ Impresiones` → tipo: PORCENTAJE.
+Significa: por cada impresión (cada vez que alguien ve tu anuncio), ¿cuántos mensajes obtienes?
+- 1.5% → malo
+- 2.5% → bueno
+- 3.5% → excelente
+- 4.5% → extraordinario (con 3.5-4.5 puedes ir a un escalado súper agresivo sin fallar; muy pocas veces se ve)
+
+**MÉTRICA 2 — % Conversación por Clic en el Enlace (LA MÁS IMPORTANTE):**
+Fórmula: `Conversaciones con mensaje iniciadas ÷ Clic en el enlace` → tipo: PORCENTAJE.
+Joaquín la considera MÁS importante que el CTR porque es la métrica REAL: mide cuántas personas que dieron clic LLEGARON realmente a la conversación en WhatsApp (no las que dieron clic y se devolvieron).
+- Menos de 35% / un 5% → estás haciendo mal trabajo (mala comunicación).
+- 35-48% → bueno / bien (dentro del rango, escalable).
+- 50-60-70% → excelente, súper escalable.
+Ejemplo real: 1000 clics y solo 50 conversaciones = 5% = pésimo. Lo bueno es 50-70%.
+
+**MÉTRICA 3 — CPA:**
+Fórmula: `Importe gastado ÷ Compras` → tipo: DIVISA (no porcentaje, no numérico).
+Joaquín la pone en los primeros 3 renglones de su administrador, siempre al lado de "compras". Aclara: él saca el CPA GENERAL, no por una sola campaña (puede tener una campaña a 14,000 y otra a 8,000 y al final del día sigue siendo rentable en el general).
+
+### BLOQUE 4: Diagnóstico "muchos chats, pocas ventas" (problema de cierre/flujo)
+
+La causa MÁS COMÚN al revisar flujos. Hay público (llegan al WhatsApp), pero la comunicación del flujo no convence. Causas posibles:
+- **Mensaje inicial débil:** solo "Hola, quiero más información". Debe ser específico y apalancarse en la confianza, ej: "Hola, quiero más información del [producto] original con registro INVIMA". Si el producto tiene registro INVIMA, aprovecharlo en ese mensaje.
+- **Mala expectativa / incongruencia anuncio-bot:** la persona desconfía o el flujo no coincide con lo que prometió el anuncio. Ejemplo demoledor: poner "envío gratis" en Meta y luego cobrar 14,999-15,000 de envío en el chat → efecto rebote, mata la optimización. La regla: si pones envío gratis en Meta, el bot también lleva envío gratis (y viceversa).
+- **Incongruencia de ángulo:** el anuncio habla del nervio ciático pero el flujo habla de la rodilla → efecto rebote. Debe haber CONGRUENCIA total entre lo pautado en Meta y el flujo.
+- **Ángulo generalizado:** lleva muchísima gente al chat pero pocas conversiones.
+
+**Frase clave repetida:** "Quien mejor entiende a su cliente siempre va a ganar, y quien mejor comunique su producto ganará la subasta." Todo esto se apoya en una buena INVESTIGACIÓN DE MERCADO y conocimiento del avatar.
+
+### BLOQUE 5: Subir la percepción de valor del flujo
+
+El secreto de la conversión está en el FLUJO, no en la pauta ("ya sabemos pautar, lo difícil es comunicar"). Estrategia central: **agregar valor, NO bajar precio.**
+
+- Colocar dentro del flujo **10, 20, 25, 30 beneficios** que transforman el bienestar (cuantos el producto permita).
+- Ejemplo del magnesio: la persona entra por "sueño" (90% lo vende por sueño), pero en el flujo ve también: reduce estrés y ansiedad, disminuye calambres y fatiga muscular, aumenta energía, apoya el sistema nervioso, reduce dolores corporales, mejora digestión, regula presión arterial, fortalece huesos... Aunque entró por un solo ángulo, descubre que el producto sirve para MUCHAS cosas → la percepción de valor se dispara.
+- Analogía del vendedor de TV/carro: el vendedor te monta en los beneficios ("ahí ves el Mundial, en 4K, cantas karaoke") porque la gente compra TRANSFORMACIÓN, no productos.
+- Por eso competidores con productos más caros venden con 20-30 creativos rodando: porque su landing/flujo entrega beneficios, beneficios, transformación.
+- Cuando Joaquín empezó a poner la imagen de beneficios en el flujo, su % de conversión "subió de una". Recomendó ponerla después del PUNTO DE DOLOR, con el producto/beneficios en la parte de abajo.
+
+### BLOQUE 6: La transformación creíble y los componentes
+
+- Para nichos de bajar de peso, cremas, etc.: poner muchos ANTES y DESPUÉS y transformaciones en el flujo.
+- **El tiempo de transformación debe ser CREÍBLE** (Joaquín casi no lo ve cuando revisa flujos). No "día 1 a día 7 bajas 20 kg" (nadie lo cree) ni "día 0 a día 365" (muy lejano). Usar día 21, día 28 — creíble según el producto.
+- Incluir los COMPONENTES del producto (en suplementos): la persona interesada lee qué contiene y eso refuerza ("esto tiene tal cosa, sirve para bajar de peso, es quemador de grasa").
+- Incluir SELLOS de garantía y TIEMPOS de entrega ("tu pedido llega en 1 a 3 días", en grande dentro de una imagen). La gente le compra a un extraño: necesita confiabilidad.
+
+### BLOQUE 7: El audio como enganche
+
+- Joaquín coloca el audio en la parte de ABAJO del flujo, DESPUÉS de los testimonios (en la estrategia de Mercy, tras la sección "ahora te compartiremos los testimonios de nuestros clientes").
+- Deduce que la persona escucha el audio PRIMERO porque un audio genera intriga ("cuando un amigo te manda un audio, quieres escucharlo aunque estés ocupado"). El audio es "innegociable" para él.
+- En el audio: el ángulo de venta (si hay 4 ángulos, mencionar los 4), beneficios masivos, y LIBERAR objeciones ("si sufres de presión arterial, lo puedes tomar; si sufres de diabetes, también"). Dura ~41-50 segundos. Así la persona sabe que habla con un humano, conoce beneficios y queda con objeciones resueltas → muy cerca de comprar.
+- Voces recomendadas: más voces de MUJER que de hombre (mayor conexión), nunca robóticas; Joaquín usa mucho voces "paisa".
+
+### BLOQUE 8: La OFERTA como palanca de cierre
+
+Cuando llega mucho flujo pero la gente "se queda en el precio" → revisar la OFERTA (no solo el precio). La oferta es: "no me compres uno, cómprame 2 o 3" + el valor que se entrega. Framing de suplementos:
+- NO decir "1 frasco $69,900" → decir "tratamiento de 90 cápsulas $69,900".
+- "2 tratamientos / 180 cápsulas $89,900".
+- "La más elegida ⭐: 3 tratamientos / 270 cápsulas $99,900".
+Hablar de CÁPSULAS y TRATAMIENTO sube la percepción de valor ("vienen 270 cápsulas"). Analogía de McDonald's/cine: "agrega un helado por $2,000" — sumar valor a lo que ya compró.
+
+### BLOQUE 9: Lectura de métricas reales (cuentas de Joaquín)
+
+Mostró un screenshot de UNA de sus 12 cuentas publicitarias (Ecuador), pruebas de creativos:
+- Un creativo con 48% de conversión por clic en enlace y 183 ventas → escalable.
+- Demostró que con CTR bajo (0.80-0.90 en imagen/video) también se vende MUCHÍSIMO si el ángulo está bien definido. Tiene costos por conversación altos (1,334 pesos) pero la gente que entra CONVIERTE, porque prefiere un ángulo súper definido aunque cueste más por mensaje. (Ecuador es más caro por ser dolarizado.)
+- **El insight de las IMPRESIONES (tip clave):** si con 335,987 impresiones hizo 183 ventas a 48% de conversión, para llegar a 366 ventas necesita el DOBLE de impresiones. La gente no se fija en las impresiones: si un CTR/CPC es escalable, escalas duplicando impresiones (más anuncios), no subiendo presupuesto.
+- Porcentaje de cierre con Lucid: 20% (vs. landing que es 4-7%, muy difícil). La diferencia es la COMUNICACIÓN.
+
+### BLOQUE 10: Frecuencia
+
+Métrica importante no mencionada al inicio:
+- Frecuencia 1.5-1.8 → el anuncio se está saturando, se le muestra a la misma persona varias veces (por eso la misma persona te escribe 3 veces en Lucid).
+- Frecuencia 2-3: si el anuncio vende, maravilloso; si el CPM/CPC ya está muy caro → APAGAR.
+- Alternativa: duplicar ese anuncio y subirle presupuesto (de 7,000 a 13,900-14,000) para decirle a Meta "muéstralo a personas diferentes".
+
+### BLOQUE 11: Escalado progresivo y "surfing" del 20%
+
+- **El escalado NO es subir presupuesto; es multiplicar lo que el algoritmo ya demostró que vende.** Joaquín escala por ANUNCIOS (volumen), no por presupuesto.
+- **Escalado PROGRESIVO, no agresivo de una.** Lo que funciona hoy se duplica pero NO muchas veces: se VALIDA primero en otras cuentas publicitarias (o iterando el anuncio, mismos ángulos diferentes conceptos). Solo cuando está validado en todas las cuentas, se va al escalado agresivo. (Caso Sandra: subió de CPA 16,000 a 28,000 por escalar muy agresivo y rápido.)
+- **Cada CONCEPTO nuevo = una segmentación diferente** (Meta lo muestra a otro público). Por eso diversificar conceptos amplía el alcance.
+- **"Surfing" del 20%:** subir el presupuesto 20% en la mañana, apuntar la hora y el CPA/ventas, revisar a las 2 horas. Si se incrementó mucho el CPA → quitar ese 20%. Si se sostiene o trae más ventas → subir otro 20%. (Pipe lo hace en la mañana y al mediodía.) Importante: más del 20% DESOPTIMIZA la campaña (a veces hasta el 20% lo hace). [Nota: una asesora de Meta dijo que lo recomendable son 10% — debate abierto.]
+- **Duplicar campañas/anuncios VIEJOS o apagados FUNCIONA.** Joaquín relanza campañas de hace meses (duplicándolas, con sus interacciones y prueba social) y venden. Anuncios ganadores que se apagaron "con pesar" pueden volver a vender otras 2 semanas o 2-3 meses.
+
+### BLOQUE 12: ABO vs CBO y Post ID
+
+- **WhatsApp → ABO** (presupuesto por conjunto de anuncios). Joaquín NO usa Advantage/CBO en WhatsApp hasta tener un anuncio ganador validado, porque Meta le da casi todo el presupuesto a uno o dos anuncios y deja el resto sin gastar.
+- **Landing → CBO** (presupuesto por campaña).
+- **Post ID:** la ÚNICA forma de replicar un anuncio CON sus interacciones (likes/comentarios/prueba social) en otra cuenta/campaña. Requiere permisos de la fanpage y del número en esa cuenta. OJO: Post ID ≠ identificador de anuncio (son cosas distintas). Si al duplicar un anuncio le cambias el hook, se convierte en anuncio NUEVO y pierde la prueba social → mejor lanzar campaña nueva.
+- **Idea de Caleb (probándose):** lanzar anuncios NUEVOS en conjuntos nuevos dentro de la MISMA campaña en ABO (en CBO se desoptimiza, según Pipe). En CBO existe una regla de optimización para forzar a Meta a dar presupuesto a un anuncio nuevo, pero es avanzado y no se ha probado en WhatsApp.
+
+---
+
+## 💎 GEMAS Y PUNTOS CLAVE
+
+1. **"El escalado en Meta no es subir presupuesto, es multiplicar lo que el algoritmo ya demostró que vende."** — Núcleo de la filosofía de escalado: volumen de anuncios, no presupuesto vertical.
+
+2. **"Quien mejor comunica el producto gana la subasta de Meta."** — La pauta no gana; gana la comunicación + investigación de mercado + conocimiento del avatar.
+
+3. **La métrica REAL es "% conversación por clic en el enlace", no el CTR.** — El CTR mide quién se detuvo/dio clic; esta métrica mide quién LLEGÓ realmente al chat. Debe estar en 35-70%.
+
+4. **"Si no entiendes estas métricas, estás adivinando, no optimizando."** — Optimizar exige medir; sin métricas claras se culpa a Meta y se abandona el producto sin análisis.
+
+5. **Se vende con CTR bajo (0.80-0.90) si el ángulo es ganador.** — No tocar lo que vende aunque el CTR sea bajo; replicar ese ángulo en iteraciones y conceptos.
+
+6. **Agregar valor, NO bajar precio.** — 10-30 beneficios en el flujo suben la percepción de valor; "la gente compra transformación".
+
+7. **Congruencia anuncio ↔ flujo es obligatoria.** — Si Meta promete sueño/envío gratis, el flujo debe hablar de sueño/envío gratis. La incongruencia genera efecto rebote.
+
+8. **Cada concepto creativo = una segmentación distinta.** — Diversificar conceptos hace que Meta llegue a públicos diferentes; por eso hay que pasar más tiempo en lo creativo que mirando ventas.
+
+9. **El tiempo de transformación debe ser CREÍBLE.** — Día 21/día 28, no "7 días bajas 20 kg" ni "1 año". La credibilidad vende.
+
+10. **El audio es enganche innegociable.** — Genera intriga, humaniza, entrega beneficios y libera objeciones en 41-50 segundos.
+
+11. **La oferta no es el precio, es el valor.** — Framing "tratamiento de X cápsulas" + "la más elegida" sube la percepción y mueve al cliente del precio a la compra.
+
+12. **El truco de las impresiones para escalar.** — Para duplicar ventas con un CTR/CPC escalable, duplica las IMPRESIONES (más anuncios), no el presupuesto.
+
+13. **Escalar PROGRESIVO: validar antes de agresivo.** — La validación da seguridad; escalar agresivo de una daña el CPA (caso Sandra: 16,000 → 28,000).
+
+14. **"En la repetición está el éxito."** — Ver la clase 4-5 veces, hacer un producto cada día; los mentores te ahorran el camino de los CPMs altos.
+
+15. **Relanzar campañas/anuncios viejos o apagados funciona.** — Anuncios ganadores apagados pueden volver a vender semanas o meses; relanzarlos (con su prueba social) gana tiempo.
+
+---
+
+## 🛠️ TRUCOS, TIPS Y RECOMENDACIONES
+
+1. **Crear las 2 métricas personalizadas SÍ o SÍ.** — % conversación por impresión (÷ impresiones) y % conversación por clic en enlace (÷ clic en enlace), ambas como PORCENTAJE. Más el CPA como DIVISA.
+
+2. **Verificar saturación en la Biblioteca de Anuncios.** — Buscar el producto/keyword; si está saturado, entrar con un ÁNGULO diferente al que todos usan.
+
+3. **Mensaje inicial fuerte y específico.** — "Hola, quiero más información del [producto] original con registro INVIMA" — apalancarse en certificaciones/confianza, no un "Hola" genérico.
+
+4. **Imagen de beneficios después del punto de dolor.** — Mostrar el dolor, luego la imagen con 10-30 beneficios, luego el producto. Sube la conversión "de una".
+
+5. **Antes/después + tiempo creíble en nichos visuales.** — Bajar de peso, cremas: muchas transformaciones con día 21/28.
+
+6. **Incluir componentes, sellos de garantía y tiempos de entrega en el flujo.** — Confiabilidad; "tu pedido llega en 1 a 3 días" en grande.
+
+7. **Audio al final del flujo (tras testimonios), con ángulo + beneficios + objeciones liberadas.** — Voz de mujer, paisa, no robótica.
+
+8. **Framing de oferta por "tratamiento de cápsulas" con "la más elegida".** — 90 / 180 / 270 cápsulas; sube percepción de valor.
+
+9. **Frecuencia 2-3 con CPM/CPC caro → apagar o duplicar con +presupuesto.** — Evita mostrarle a la misma persona repetidamente.
+
+10. **Surfing del 20%: apuntar hora y CPA, revisar a 2 horas, ajustar.** — Más del 20% desoptimiza. Pipe lo hace mañana y mediodía.
+
+11. **WhatsApp en ABO; Landing en CBO.** — No usar Advantage/CBO en WhatsApp hasta tener anuncio ganador validado.
+
+12. **Replicar interacciones solo con Post ID** (con permisos de fanpage y número). Post ID ≠ identificador de anuncio.
+
+13. **Relanzar campañas viejas duplicándolas para el día siguiente, con presupuesto mínimo.** — Conservan prueba social y vuelven a vender.
+
+14. **Revisar métricas en la mañana (lo del día anterior) y en la noche (barrido del día).** — En la mañana subir el 20% a lo que funciona y mandar a hacer creativos.
+
+15. **Conectar el número de WhatsApp a varias fanpages vía Facebook → Configuración → Cuentas vinculadas → WhatsApp** (o desde administrador → tuerca → información del negocio → solicitudes → probar). También desde el celular.
+
+16. **Pasar MÁS tiempo en la parte creativa que mirando ventas.** — La diversificación de creativos es lo que da los resultados; usar Nano Banana, ChatGPT, IA para iterar conceptos.
+
+---
+
+## 📋 PROCESOS Y PASOS
+
+### PROCESO 1: Crear las métricas personalizadas en el Administrador de Meta
+**Paso 1:** Entrar al dashboard de métricas → botón "+" (crear/personalizar columnas).
+**Paso 2 (% conversación por impresión):** Conversaciones con mensaje iniciadas ÷ Impresiones → nombrar "% conversación por impresión" → tipo PORCENTAJE → crear métrica.
+**Paso 3 (% conversación por clic en enlace):** Conversaciones con mensaje iniciadas ÷ Clic en el enlace → nombrar → tipo PORCENTAJE → crear métrica.
+**Paso 4 (CPA):** Importe gastado ÷ Compras → nombrar "CPA" → tipo DIVISA → crear métrica. Ubicarla al lado de "Compras".
+
+### PROCESO 2: Diagnóstico de una campaña que no vende
+**Paso 1:** Revisar clic en el enlace. Si hay 20-40 clics, el ángulo es ganador (hay público).
+**Paso 2:** Verificar CONGRUENCIA entre lo pautado en Meta y el flujo (mismo ángulo, mismo dolor, mismas condiciones de envío/precio).
+**Paso 3:** Si hay muchos chats y pocas ventas → problema de cierre: revisar mensaje inicial, expectativa, oferta.
+**Paso 4:** Revisar la OFERTA (si se quedan en el precio): framing de tratamiento/cápsulas, "la más elegida", valor agregado.
+**Paso 5:** Optimizar el flujo por SECCIONES (no cambiarlo todo): un cambio en el audio, en el tiempo de transformación, agregar un beneficio. Medir el % de conversión antes/después (si sube de 20 a 21%, funcionó).
+
+### PROCESO 3: Escalado progresivo
+**Paso 1:** Identificar anuncios ganadores (vendieron) con buen % de conversión.
+**Paso 2:** Validar: duplicar el ángulo/concepto en otras cuentas publicitarias o iterar el anuncio (mismo ángulo, distintos conceptos). NO escalar agresivo de una.
+**Paso 3:** Aplicar surfing del 20% a lo que funciona; medir a las 2 horas; ajustar.
+**Paso 4:** Cuando está validado en todas las cuentas → escalado agresivo (más creativos, más cuentas, Post ID).
+**Paso 5 (relanzar viejos):** Duplicar la campaña COMPLETA, programarla para el día siguiente con presupuesto mínimo, conservando interacciones.
+
+### PROCESO 4: Conectar el número de WhatsApp a una fanpage
+**Paso 1:** Abrir Facebook, ir a la fanpage (verificar que la URL muestre el nombre de la página).
+**Paso 2:** Menú izquierdo → "Configuraciones" → "Cuentas vinculadas" → WhatsApp → colocar el número.
+**Paso 3:** Si queda "relojito": Administrador de anuncios → tuerca → "Información del negocio" → bajar a "Solicitudes" → aprobar la solicitud de integración → "Probar". Se hace una por una para cada fanpage (10 si hace falta). También se puede desde el celular.
+
+---
+
+## ❓ PREGUNTAS Y RESPUESTAS
+
+**Pregunta:** ¿Cuál es un buen costo por clic?
+**Respuesta:** En Colombia 200-250 pesos. Ecuador es más caro (país dolarizado: 500-600). USA 3,000-4,000. Al entrar a un país nuevo, lanzar campaña de prueba o pedir métricas a alguien que ya venda ahí.
+
+**Pregunta:** ¿Cómo mejorar el CPM?
+**Respuesta:** Buenos creativos (comunicativos, que enganchen, con prueba social) → Meta premia con CPM bajo. Y no entrar a nichos saturados, o entrar con un ángulo diferente.
+
+**Pregunta:** ¿Por qué hay CTR bajo pero el anuncio vende? (Jessica)
+**Respuesta:** Porque el ángulo es ganador. Si vende con CTR bajo, no se toca; se replica ese ángulo en iteraciones y conceptos.
+
+**Pregunta:** ¿Cuánto es un CPM alto / promedio?
+**Respuesta (Joaquín + Pipe):** Alto: 17,000-20,000. Estable: ~10,000. Bueno: 7,000. Depende del TICKET: ticket bajo (<100,000 al cliente) → CPM 8,000-10,000; ticket alto → CPM más alto.
+
+**Pregunta:** Si no tengo ventas, ¿a los cuántos días apago la campaña?
+**Respuesta:** El error más común es apagar muy rápido. Si llega gente al chat, revisa el FLUJO y la congruencia anuncio-flujo antes de apagar. Hay que darle tiempo a Meta para recopilar datos.
+
+**Pregunta:** Dupliqué un anuncio ganador en varios BM y el CPA subió de 16,000 a 28,000. (Sandra)
+**Respuesta:** Escalaste muy agresivo y rápido. El escalado debe ser PROGRESIVO: validar en pocas cuentas, apagar lo que no funciona, duplicar lo que sí. Para subir presupuesto en una campaña estable, duplicar el conjunto y subirlo (de 7,000 a 14,000-19,900), no tocar la original.
+
+**Pregunta:** El cliente dice que nunca hizo el pedido (en novedades). (Miguel)
+**Respuesta:** Probablemente son pedidos falsos (gente sin oficio). Confirmar los pedidos antes de enviarlos.
+
+**Pregunta:** ¿Cuántos anuncios lanzas diario?
+**Respuesta:** Depende; con 4 tiendas, ~6-7-10 por producto. Si consigues 3 anuncios ganadores en un día, lanza mínimo una campaña con esos 3 iterando conceptos (mismo ángulo).
+
+**Pregunta:** Tengo un anuncio con métricas excelentes pero no da compra.
+**Respuesta:** Revisa el flujo y que el ángulo no sea generalizado y tenga congruencia con lo pautado en Meta.
+
+**Pregunta:** Tengo CTR de 5-6 y CPM de 8, llega gente pero dejan el bot en visto sin confirmar. (Llega al precio y se va)
+**Respuesta:** Verifica la OFERTA. Si interactúan y se quedan en el precio, la oferta no es atractiva: framing de tratamiento/cápsulas, "no compres uno, compra 2 o 3", valor agregado.
+
+**Pregunta:** ¿Por qué pones el audio al inicio o al final?
+**Respuesta:** Al final, tras los testimonios. Se deduce que la persona lo escucha PRIMERO porque un audio genera intriga; se usa como enganche con ángulo + beneficios + objeciones liberadas.
+
+**Pregunta:** Presupuesto por campaña deja sin gastar a varios anuncios. ¿Por campaña o por conjunto?
+**Respuesta:** En WhatsApp, ABO (por conjunto). No usar Advantage/CBO hasta tener anuncio ganador validado (en CBO Meta da el presupuesto solo a uno o dos). En Landing sí CBO.
+
+**Pregunta:** ¿Qué voces recomiendas para los audios?
+**Respuesta:** Más voces de mujer (mayor conexión), nunca robóticas, voces "paisa" funcionan muy bien.
+
+**Pregunta:** ¿Cada cuánto revisas métricas?
+**Respuesta:** En la mañana (lo del día anterior, subir 20% y mandar creativos) y en la noche (barrido del día).
+
+**Pregunta:** Al duplicar para escalar, ¿subes el presupuesto a la duplicada o a ambas?
+**Respuesta:** A la DUPLICADA solamente (de 7,000 a 19,900-20,000 para el día siguiente). La original se deja tal cual.
+
+**Pregunta:** Para optimizar un hook, ¿duplico y edito?
+**Respuesta:** Cambiar el hook crea un anuncio NUEVO (pierde prueba social). Mejor lanzar una campaña nueva con el hook nuevo y dejar la original.
+
+**Pregunta:** No puedo crear cuentas publicitarias por el NIT/IVA.
+**Respuesta:** Usar la misma información del portafolio comercial; se puede usar el RUT personal (número de la DIAN), que Meta sí toma.
+
+---
+
+## ⚠️ ERRORES COMUNES Y ADVERTENCIAS
+
+1. **Apagar las campañas muy rápido.** — El error #1. Un día malo no significa que la estrategia/producto no sirva. Darle tiempo a Meta.
+
+2. **No testear creativos / no hacer pruebas de creativo.** — La diversificación de creativos es lo que escala; hay que producir constantemente.
+
+3. **Abandonar el producto sin análisis de métricas.** — Culpar a Meta, irse a TikTok y repetir el mismo error.
+
+4. **No medir bien.** — Sin identificar dentro de las métricas, se adivina, no se optimiza.
+
+5. **Poner "envío gratis" en Meta y cobrar envío en el chat.** — Efecto rebote inmediato que mata el cierre. Congruencia total.
+
+6. **Usar un ángulo generalizado.** — Mucho tráfico al chat pero pocas conversiones.
+
+7. **Escalar agresivo de una.** — Sube el CPA (caso Sandra 16,000→28,000). Validar primero.
+
+8. **Subir más del 20% de presupuesto.** — Desoptimiza la campaña (a veces hasta el 20% lo hace).
+
+9. **Cambiar TODO el flujo de golpe al optimizar.** — Optimizar por secciones, midiendo cada cambio.
+
+10. **Tiempos de transformación increíbles.** — "7 días, 20 kg" mata la credibilidad.
+
+11. **Usar Advantage/CBO en WhatsApp sin anuncio validado.** — Meta concentra el presupuesto en uno o dos anuncios y deja el resto muerto.
+
+12. **Confiar ciegamente en las llamadas de "agentes de Meta".** — A veces ponen personal no calificado; aplicar lo que funciona en la comunidad, no mitos.
+
+13. **Editar un anuncio (cambiar hook) esperando conservar la prueba social.** — Se vuelve anuncio nuevo y la pierde; mejor campaña nueva.
+
+---
+
+## 🔗 RECURSOS, HERRAMIENTAS Y REFERENCIAS
+
+- **Administrador de Anuncios de Meta** — Dashboard de métricas; aquí se crean las columnas/métricas personalizadas.
+- **Biblioteca de Anuncios de Meta** — Para verificar saturación del nicho/ángulo (buscar producto o keyword).
+- **LucidBot / Lucid Sales** — Flujo de WhatsApp; permite saber de qué anuncio sale cada compra y el % de cierre por producto. Próxima actualización con prompt que desglosa avatar, deseos masivos, transformación, imágenes (Joaquín ayudó con el prompt).
+- **Registro INVIMA** — Certificación para apalancar confianza en el mensaje inicial y el flujo.
+- **ABO / CBO** — ABO (presupuesto por conjunto) para WhatsApp; CBO (por campaña) para Landing.
+- **Post ID** — Para replicar anuncios con sus interacciones/prueba social (≠ identificador de anuncio).
+- **Nano Banana, ChatGPT, herramientas de IA** — Para iterar conceptos y crear creativos.
+- **RUT / DIAN** — Para resolver el problema del NIT al crear cuentas publicitarias.
+- **Skool (School)** — Clases grabadas; sección de Mercy con la configuración del bot y la estrategia.
+- **Personas:** Joaquín (instructor, 12 administradores de anuncio, 4 tiendas), Pipe (confirma CPMs y desoptimización), Mercy ("la jefa", clase de flujos/landing pendiente), Caleb (idea de anuncios nuevos en misma campaña), Juan Silva (LucidBot/landing). Casos: Sandra, Miguel, María Fernanda, David, Daniel, Eider, Johan, Rodrigo, Julián.
+
+---
+
+## 📌 CONCLUSIONES Y CIERRE
+
+**Pilares de la clase:**
+
+1. **Medir para optimizar, no adivinar** — crear las métricas personalizadas (% conversación por impresión, % conversación por clic en enlace, CPA) y leerlas junto a CPM/CTR/CPC/frecuencia.
+2. **El % conversación por clic en enlace es la métrica REAL** — debe estar en 35-70%; por debajo de 35% hay un problema de comunicación/flujo.
+3. **Comunicación > pauta** — quien mejor comunica gana la subasta; subir percepción de valor con 10-30 beneficios, transformación creíble, oferta por tratamiento, audio de enganche y congruencia anuncio-flujo.
+4. **Escalar progresivo** — validar antes de agresivo, surfing del 20%, escalar por volumen de anuncios y relanzar campañas viejas.
+5. **Constancia y repetición** — pasar más tiempo en lo creativo, ver las clases varias veces, tomar acción sobre cada detalle.
+
+**Tareas pendientes / próximas clases:** Clase específica de FLUJOS de venta con Mercy; clase de ESCALADO con Mercy; clase de MÉTRICAS más avanzada con un LucidBot de demostración (mostrar producto, pruebas creativas, cómo se escala en vivo); clase de LANDING (Joaquín hablará con Juan Silva).
+
+**Mensaje final de Joaquín:** "Todo lo que les enseñamos aquí es lo que nosotros estamos aplicando ahorita en nuestras tiendas. No hay otra. En la repetición está el éxito. Tomen acción sobre cada detalle: cuando decimos que algo funciona es porque ya hay un caso práctico, ya lo ensayamos. No crean en mitos ni en llamadas de agentes no calificados — apliquen lo que le está funcionando a la comunidad."

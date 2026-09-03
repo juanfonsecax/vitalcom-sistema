@@ -1,0 +1,25 @@
+============================================================
+Análisis del Video N: Clearstem1.mp4
+
+CLASIFICACIÓN RÁPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "El acné hormonal no solo se reduce con cremas y si ya probaste de todo y nada te ha funcionado, te entiendo perfectamente." | qué se ve: Hombre joven en el auto grabando en modo selfie, con camiseta roja. | overlay en pantalla: "TIENES ACN3 HORMONAL?"
+- ÁNGULO DEL PRODUCTO (la causa específica que resuelve, no genérica): Acné hormonal resistente a cremas, causado por descontrol hormonal, mala digestión o estrés.
+- FORMATO CREATIVO (elegí UNO): testimonio personal
+- AVATAR (quién aparece): Hombre joven, aprox 25-30 años, en su auto.
+- TONO: confesional / motivacional, tuteo (con algo de voseo), habla un cliente.
+- SEÑALES DE COMPRA (marcá las presentes y citá la frase exacta):
+    · Prueba social (nº de clientes, "miles de personas"...): "este producto tiene miles de reseñas positivas y tiene muchísimas ventas"
+    · Cifras/resultados con tiempo ("en 30 días"...): No aplica
+    · Urgencia/escasez ("oferta por tiempo limitado"...): "solamente por hoy"
+    · Garantía / envío gratis / pago contra entrega: "tienen envío gratis"
+    · Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: Sí — "está a un 15% de descuento"
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"El acné hormonal no solo se reduce con cremas y si ya probaste de todo y nada te ha funcionado, te entiendo perfectamente. Yo también estaba así, tenía un acné hormonal horrible. A mí me dolía toda esta parte de la cara. Por más de que yo intentaba las cremas, a mí no me funcionaba nada. Hasta que una gringa me recomendó este suplemento, que pueden ayudar para diferentes tipos de acné. Te puede ayudar si tienes las hormonas descontroladas, te puede ayudar con lo de la digestión, con el estrés. Porque el acné, aunque tú no lo creas, también puede ser causado por el estrés. Pero la razón por las cuales yo la compré es porque este producto tiene miles de reseñas positivas y tiene muchísimas ventas. Si a ti también te causa inseguridad tener todos esos granitos en la cara y no sabes qué hacer, tenés que probar estos suplementos de acá. Pero tenés que aprovechar porque solamente por hoy, si ves aquí el enlace del carrito naranja, está a un 15% de descuento y tienen envío gratis. Si te vas a animar a probarlo, compralo y me escribes a ver cómo te va."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Hombre joven en un auto grabando en modo selfie. Muestra una foto de su antes y después (acné en la mejilla). Sostiene y muestra el frasco blanco "CLEARSTEM MINDBODYSKIN". Muestra en pantalla capturas de información de IA que explica el acné hormonal ("Sí, el acné hormonal aparece típicamente antes del periodo menstrual...") y capturas de pantalla de reseñas en la tienda con estrellas doradas. Textos en pantalla: "TIENES ACN3 HORMONAL?".
+* Qué transmite: Empatía al hablar de su propia frustración con el dolor y la ineficacia de las cremas, y confianza a través de su testimonio personal y la prueba social de las miles de ventas.
+* Llamado a la acción (CTA): "Si te vas a animar a probarlo, compralo y me escribes a ver cómo te va."
+============================================================

@@ -1,0 +1,150 @@
+{
+  "ficha_id": "F013",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Dr__Felipe_Flores/03_1713727966738756.jpg",
+    "anunciante": "Dr. Felipe Flores",
+    "ad_archive_id": "1713727966738756",
+    "dias_activo": 82,
+    "replicas": 1,
+    "score": 107,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "cartel_publicitario",
+    "formato": "1:1",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 2,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C3_SINTOMA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "EL MISMO LAYOUT DE MITAD-FOTO QUE F012, PERO CON EL AVATAR LOCALIZADO Y EL HOOK EN LA CAUSA, NO EN EL SINTOMA. La foto es de una mujer con traje tipico guatemalteco en su lugar de trabajo, y el titular pregunta por la CAUSA COTIDIANA (horas de pie) en vez de por el sintoma visible. Es la variante de segmentacion cultural del mismo esqueleto.",
+  "lectura_estrategica": "Misma pieza que F012 con dos cambios que la vuelven otra oferta. Primero, el avatar deja de ser generico y pasa a ser reconociblemente local, en su contexto de trabajo: la identificacion ya no es solo con el sintoma sino con la vida que lo produce. Segundo, el hook se mueve de la consecuencia (venas visibles) a la causa (horas de pie), lo que amplia la audiencia a todas las que estan de pie todo el dia aunque todavia no tengan el sintoma marcado. El precio baja a unidad y se declara el envio aparte: oferta de entrada, no de pack.",
+  "fondo": {
+    "tipo": "foto_ambiente_de_trabajo_a_sangre",
+    "base": "escena real del lugar de trabajo del avatar, calida y desenfocada al fondo",
+    "capa": "degradado oscuro sobre la mitad izquierda para sostener el texto",
+    "funcion": "el ambiente de trabajo ES el argumento: nombra la causa sin escribirla"
+  },
+  "paleta": {
+    "derivacion": "del empaque del producto y del ambiente de la foto",
+    "cantidad_colores": 5,
+    "estructura": "oscuro calido (fondo) mas blanco (titular L1) mas {{COLOR_ACENTO}} amarillo (titular L2 y card de pago) mas {{COLOR_ALERTA}} rojo (banda de promesa) mas {{PALETA_ACENTO}} del empaque"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif condensada",
+    "pesos_permitidos": [
+      "Black/900",
+      "Bold/700",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 3,
+    "color_texto_principal": "blanco"
+  },
+  "zonas": {
+    "titular_causa": {
+      "posicion": "superior_izquierda",
+      "lineas": 2,
+      "linea_1": "{{CAUSA_L1}}",
+      "linea_2": "{{CAUSA_L2_ACENTO}}",
+      "estilo_l1": "Black/900 uppercase blanco",
+      "estilo_l2": "Black/900 uppercase en {{COLOR_ACENTO}}, con signo de interrogacion de cierre",
+      "restriccion_palabras_total": "3-4 palabras",
+      "formato_obligatorio": "pregunta por la CAUSA COTIDIANA, no por el sintoma",
+      "funcion": "amplia la audiencia a quienes tienen la causa aunque todavia no tengan el sintoma marcado"
+    },
+    "banda_promesa": {
+      "posicion": "bajo el titular",
+      "contenedor": "banda {{COLOR_ALERTA}} solida, dos lineas",
+      "linea_1": "{{PROMESA_L1}}",
+      "linea_2": "{{PROMESA_L2}}",
+      "estilo": "Black/900 uppercase blanco",
+      "restriccion_palabras": "2-3 palabras por linea",
+      "regla": "la promesa es SENSORIAL e inmediata (alivio, frescura), no clinica"
+    },
+    "foto_avatar": {
+      "posicion": "mitad derecha del frame, a sangre",
+      "contenido": "{{FOTO_AVATAR_EN_CONTEXTO}}",
+      "escala": "50% del frame",
+      "tratamiento": "persona real del avatar exacto, EN SU LUGAR DE TRABAJO, con vestimenta y entorno reconociblemente locales, tocandose la zona afectada",
+      "regla_avatar": "la vestimenta y el ambiente son parte del argumento: identifican a quien se le habla mejor que cualquier texto",
+      "funcion": "detiene el scroll por reconocimiento cultural, no solo por el sintoma"
+    },
+    "producto_hero": {
+      "posicion": "inferior_izquierda",
+      "escala": "30% del frame",
+      "composicion": "caja de pie mas envase delante",
+      "fuente": "IMAGEN_2",
+      "regla": "mas chico que en F012: aca el protagonismo es del avatar"
+    },
+    "bloque_precio": {
+      "posicion": "centro_inferior",
+      "contenedor": "ninguno, sobre el fondo",
+      "linea_1": "{{MONEDA}}{{PRECIO}}",
+      "estilo_l1": "Black/900 blanco, segundo elemento mas grande de la pieza",
+      "linea_2": "+ {{MONEDA}}{{COSTO_ENVIO}} {{ETIQUETA_ENVIO}}",
+      "estilo_l2": "Bold en {{COLOR_ACENTO}}, al 30% de L1",
+      "regla": "cuando el envio se cobra aparte se declara junto al precio, nunca escondido al pie"
+    },
+    "card_pago": {
+      "posicion": "inferior_centro",
+      "contenedor": "card {{COLOR_ACENTO}} solida con icono de mano recibiendo paquete",
+      "texto": "{{GARANTIA_PAGO}}",
+      "estilo": "Black/900 uppercase oscuro sobre el amarillo",
+      "restriccion_palabras": "3 palabras",
+      "funcion": "unico bloque de garantia de la pieza: absorbe la objecion de pagar por adelantado"
+    }
+  },
+  "secuencia_lectura": [
+    "titular_causa",
+    "foto_avatar",
+    "banda_promesa",
+    "bloque_precio",
+    "producto_hero",
+    "card_pago"
+  ],
+  "reglas_duras": [
+    "El hook pregunta por la causa cotidiana, no por el sintoma visible",
+    "El avatar aparece en su lugar de trabajo, con vestimenta y entorno locales",
+    "La foto ocupa la mitad del frame a sangre",
+    "La promesa de la banda es sensorial e inmediata, nunca clinica",
+    "Si el envio se cobra aparte, se declara junto al precio y no al pie",
+    "El producto va mas chico que el avatar: aca manda la identificacion"
+  ],
+  "variables_requeridas": [
+    "CAUSA_L1",
+    "CAUSA_L2_ACENTO",
+    "PROMESA_L1",
+    "PROMESA_L2",
+    "FOTO_AVATAR_EN_CONTEXTO",
+    "PRECIO",
+    "COSTO_ENVIO",
+    "ETIQUETA_ENVIO",
+    "MONEDA",
+    "GARANTIA_PAGO",
+    "COLOR_ACENTO",
+    "COLOR_ALERTA"
+  ],
+  "cuando_usar": [
+    "cuando la causa del problema es una actividad cotidiana identificable (estar de pie, cargar, manejar, coser)",
+    "cuando se quiere ampliar la audiencia mas alla de quien ya tiene el sintoma marcado",
+    "mercados donde la vestimenta o el oficio identifican un segmento claro",
+    "oferta de entrada por unidad, con envio cobrado aparte"
+  ],
+  "cuando_no_usar": [
+    "cuando no hay una causa cotidiana clara: usar F012, que ataca el sintoma",
+    "cuando no se tiene foto de un avatar local real",
+    "productos sin relacion con una rutina fisica"
+  ],
+  "sellos_y_claims_observados": [
+    "Sin sello regulatorio.",
+    "Banda roja de promesa ALIVIO Y FRESCURA bajo el titular.",
+    "Precio de entrada Q119 con + Q30 ENVIO declarado en la misma zona.",
+    "Card amarilla PAGA AL RECIBIR como unica garantia de la pieza."
+  ],
+  "canonico_id": "CN07_DOLOR_A_PLENO",
+  "blueprint_equivalente": null
+}

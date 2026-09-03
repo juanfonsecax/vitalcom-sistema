@@ -1,0 +1,142 @@
+{
+  "ficha_id": "F027",
+  "schema_version": "1.0",
+  "origen": {
+    "archivo": "_IMG/Megacomprasgt/01_2043907626518677.jpg",
+    "anunciante": "Megacomprasgt",
+    "ad_archive_id": "2043907626518677",
+    "dias_activo": 20,
+    "replicas": 2,
+    "score": 70,
+    "en_banco_creativos": false,
+    "mercado": "Guatemala"
+  },
+  "clasificacion": {
+    "estetica": "organico_ugc",
+    "formato": "4:5",
+    "densidad": "media",
+    "espacio_libre_objetivo": "20%",
+    "nivel_conciencia": 1,
+    "rol_embudo": "TOFU",
+    "concepto_key": "C5_PRUEBA",
+    "variante_operador": null
+  },
+  "dispositivo_dominante": "LA CAPTURA DE PANTALLA DE UN BUSCADOR, CON EL PRODUCTO INSERTADO EN EL RESULTADO. La pieza imita la interfaz de una pagina de resultados de busqueda: barra de busqueda con la pregunta escrita, pestanas, un bloque de respuesta destacado con el producto recortado adentro, y debajo el comienzo de un segundo resultado con su URL. No se ve como anuncio porque imita algo que no lo es.",
+  "lectura_estrategica": "Formato mimetico: gana atencion haciendose pasar por otra cosa. Sirve para nivel 1, donde la persona ni siquiera sabe que el producto existe, porque no vende — INFORMA, y la pregunta de la barra de busqueda es la que el avatar realmente se hace. El producto aparece como respuesta a una consulta, no como oferta, y eso desarma la resistencia al anuncio. El texto del bloque destacado esta escrito en tono neutro de enciclopedia, sin adjetivos de venta, y ahi esta todo el efecto.",
+  "fondo": {
+    "tipo": "interfaz_replicada",
+    "base": "blanco de interfaz limpia",
+    "regla": "la interfaz se replica completa y fiel: barra, pestanas, bloque destacado, resultado con URL, favicon y los colores propios de la plataforma imitada"
+  },
+  "paleta": {
+    "derivacion": "de la interfaz imitada, no del empaque",
+    "cantidad_colores": 4,
+    "estructura": "blanco (fondo) mas gris (texto secundario y bordes) mas azul de enlace (titulos de resultado) mas un celeste muy claro para el bloque destacado"
+  },
+  "sistema_tipografico": {
+    "familia": "sans-serif de interfaz, NO condensada",
+    "pesos_permitidos": [
+      "Medium/500",
+      "Regular/400"
+    ],
+    "maximo_pesos_en_pieza": 2,
+    "color_texto_principal": "gris muy oscuro",
+    "regla": "es el unico layout del banco que NO usa sans condensada ni pesos Black: cualquier tipografia publicitaria delata la imitacion"
+  },
+  "condiciones_de_captura": {
+    "sujeto": "una pantalla de resultados de busqueda con el producto integrado en el bloque destacado",
+    "encuadre": "vertical, como se ve en un telefono, con la barra de busqueda arriba",
+    "que_se_conserva": "los elementos de interfaz completos: barra, iconos, pestanas, tres puntos, URL del segundo resultado, favicon",
+    "que_NO_se_hace": "tipografia publicitaria, precio, boton de compra, logo de tienda, color de marca, signos de exclamacion",
+    "tono_del_texto": "neutro de enciclopedia: describe la categoria del producto sin adjetivos de venta, sin segunda persona y sin llamada a la accion",
+    "regla": "todo el efecto depende de que no se lea como anuncio. Un solo elemento publicitario adentro y el formato se cae entero"
+  },
+  "zonas": {
+    "barra_busqueda": {
+      "posicion": "superior, ancho completo",
+      "contenedor": "campo redondeado con borde fino, icono de lupa a la izquierda y iconos de voz y camara a la derecha",
+      "texto": "{{PREGUNTA_DEL_AVATAR}}",
+      "estilo": "Regular gris oscuro",
+      "restriccion_palabras": "5-8 palabras",
+      "formato_obligatorio": "la pregunta EXACTA que el avatar escribiria, con como o donde al inicio",
+      "funcion": "es el hook de la pieza: si la pregunta no es la que la persona se hace, nada mas funciona"
+    },
+    "barra_pestanas": {
+      "posicion": "bajo la barra de busqueda",
+      "contenido": "fila de pestanas de categoria con la primera subrayada",
+      "regla": "elemento de verosimilitud: se replica completo aunque no aporte informacion"
+    },
+    "bloque_destacado": {
+      "posicion": "centro, ocupa 45% del alto",
+      "contenedor": "card de fondo celeste muy claro con borde fino",
+      "titulo": "{{TITULO_RESULTADO}}",
+      "estilo_titulo": "Medium azul de enlace, subrayado",
+      "cuerpo": "{{TEXTO_INFORMATIVO}}",
+      "estilo_cuerpo": "Regular gris oscuro",
+      "restriccion_cuerpo": "45-60 palabras",
+      "regla_tono": "tono neutro de enciclopedia: describe que hace la categoria de producto y para que sirve, sin adjetivos de venta ni segunda persona",
+      "fuente_atribucion": "{{FUENTE_CITADA}} en gris chico al pie del bloque"
+    },
+    "producto_insertado": {
+      "posicion": "derecha del bloque destacado",
+      "escala": "22% del frame",
+      "contenido": "{{PRODUCTO_RECORTADO}}",
+      "tratamiento": "recorte limpio sobre el fondo del bloque, como una imagen de resultado de busqueda",
+      "extra": "un detalle circular ampliado con flecha, mostrando el producto en uso o su resultado",
+      "regla": "el producto entra como ILUSTRACION del resultado y no como oferta: sin precio ni badge, para que la pantalla se sostenga como pantalla"
+    },
+    "segundo_resultado": {
+      "posicion": "inferior",
+      "favicon": "circulo gris generico",
+      "url": "{{URL_APARENTE}}",
+      "estilo_url": "Regular gris muy chico",
+      "titulo": "{{TITULO_SEGUNDO_RESULTADO}}",
+      "estilo_titulo": "Medium azul de enlace",
+      "descripcion": "{{DESCRIPCION_SEGUNDO}}",
+      "restriccion_descripcion": "12-18 palabras",
+      "funcion": "cortado por el borde inferior del frame: sugiere que hay mas y que esto es una pantalla real"
+    }
+  },
+  "secuencia_lectura": [
+    "barra_busqueda",
+    "bloque_destacado",
+    "producto_insertado",
+    "segundo_resultado"
+  ],
+  "reglas_duras": [
+    "Tipografia de interfaz, nunca condensada ni en peso Black",
+    "Sin precio, sin boton de compra, sin logo de tienda, sin signos de exclamacion",
+    "El texto del bloque va en tono neutro de enciclopedia, sin segunda persona",
+    "Los elementos de interfaz se replican completos, incluidos los que no aportan informacion",
+    "El segundo resultado va cortado por el borde inferior",
+    "El producto entra como ilustracion del resultado, no como oferta"
+  ],
+  "variables_requeridas": [
+    "PREGUNTA_DEL_AVATAR",
+    "TITULO_RESULTADO",
+    "TEXTO_INFORMATIVO",
+    "FUENTE_CITADA",
+    "PRODUCTO_RECORTADO",
+    "URL_APARENTE",
+    "TITULO_SEGUNDO_RESULTADO",
+    "DESCRIPCION_SEGUNDO"
+  ],
+  "cuando_usar": [
+    "nivel de conciencia 1: la persona no sabe que el producto existe",
+    "producto que resuelve una necesidad que la gente si busca en internet",
+    "publico saturado de anuncios donde el formato publicitario ya no detiene",
+    "cuando el objetivo es informar y calificar, no cerrar"
+  ],
+  "cuando_no_usar": [
+    "BOFU o retargeting: no hay oferta ni precio, no cierra nada",
+    "cuando la pregunta del avatar no es algo que alguien buscaria realmente",
+    "cuando el producto no resuelve algo que la gente busque escrito: sin pregunta creible, la barra de busqueda no engancha"
+  ],
+  "sellos_y_claims_observados": [
+    "La pieza no declara sellos, precio, marca ni CTA: replica una pantalla de resultados de busqueda.",
+    "El bloque destacado cita una fuente al pie (Guia de Exploradores) y el segundo resultado muestra una URL de blog con su titulo y descripcion.",
+    "El texto del bloque va en tono informativo, sin adjetivos de venta ni segunda persona."
+  ],
+  "canonico_id": "CN11_PANTALLA_SIMULADA",
+  "blueprint_equivalente": null
+}

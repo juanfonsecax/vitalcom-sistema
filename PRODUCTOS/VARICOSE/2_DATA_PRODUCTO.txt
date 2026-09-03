@@ -1,0 +1,364 @@
+═══ VARICOSE VEINS (South Moon) · VERSION v2 · 2026-07-09 · COSTO Q45/u (Q90 el par) · DOSIS 20g c/frasco · ungüento tópico · page_id 498977893288095 (Dra. Claudia Vásquez) · campaign_id 120247374332930784 (FASE 2 ESCALA VERGÜENZA, PAUSED) ═══
+PRODUCTO: Varicose Veins Ointment — South Moon (crema/ungüento para várices)
+FECHA_PROCESADO: 2026-07-09
+VERSION: v2  (v1 = FASE 1 testeo 03-jul · v2 = FASE 2 escalado del ángulo ganador VERGÜENZA + precio 2 variantes 09-jul)
+COSTO_PROVEEDOR_Q: Q45 por frasco (Q90 el par)
+DOSIS / PRESENTACIÓN: frasco de 20g · ungüento tópico · aplicación 2 veces al día con masaje ascendente (tobillo → muslo)
+PROVEEDORES_DROPY: no provisto
+ANUNCIANTES_AD_LIBRARY: no provisto (nicho várices tiende a MEDIO/ALTO)
+VALIDACION_PRODUCTO: 🟢 0.83 — APTO ÓPTIMO (ver v1; no cambia).
+
+⚠️ CAMBIO DE PRECIO v2 (operador, 09-jul) — SOLO 2 VARIANTES, ya NO hay 1u ni 3u:
+  · 2 frascos (2x1) → Q249 + envío gratis        (oferta de entrada)
+  · 4 frascos       → Q389 + envío gratis + 🎁    ← LA MÁS ELEGIDA ⭐ (tratamiento completo, ambas piernas)
+  Supersede el esquema v1 (Q189/Q249/Q319 en 3 variantes). Este precio manda en copies, bot y creativos.
+  ⚠️ CORRECCIÓN 31-jul (confirmado por el operador): el esquema v1 se decidió el 09-jul pero el Q319
+     SIGUIÓ VIVO EN EL BOT HASTA EL 20-JUL. Por eso LucidSales registra 6 de las 9 ventas del producto
+     a Q319 — no es un error de data, es el precio que efectivamente se cobró en esa ventana.
+     `_DIM_PRECIOS.csv` conserva el escalón como HISTORICO (04-jul → 20-jul): sin él, los tickets de
+     Q319 se interpolarían mal y la ganancia por ticket real saldría equivocada.
+     Regla que deja esto: la fecha de DECISIÓN de un cambio de precio no es la fecha de EJECUCIÓN en
+     el bot. Manda lo que LucidSales registra cobrado.
+
+FANPAGE: #5 🌿 Dra. Claudia Vásquez — médica integrativa (page_id 498977893288095, AMG 1) — HOGAR INTERINO.
+  Tono: clínico-cálido, educar antes de vender, "apoya/ayuda". Color de acento: rojo/borgoña de la marca South Moon.
+  Edad de segmentación: amplio 18-65+ Advantage+ OFF (la data sube el piso; orientación 35+).
+  A FUTURO: crear #6 Dr. Andrés Peña (circulación) como hogar definitivo; migrar el ganador cuando esté tibia.
+
+MCP_ACCOUNT_ID: act_598687956219141 (GTR 7, USD, is_ads_mcp_enabled=true, queryable) · MCP_PAGE_ID: 498977893288095 (Dra. Claudia Vásquez, compartida a GTR 7)
+MCP_PIXEL_ID: PENDIENTE (dataset del WABA) · TASA_USD_GTQ: 7.62
+WhatsApp del anuncio: 502 5283 2734 (wa.me/50252832734)
+
+━━━ COSTEO (ETAPA-1 · fila Q45 · valores exactos) + AJUSTE DE PRECIO v2 ━━━
+CPA_OBJETIVO:   Q30.8   (tabla del sistema — no cambia)
+CPA_BASE / referencia de escalado fuerte: Q30.8
+Con el precio v2 (ticket mínimo Q249 el 2x1), el margen bruto por pedido sube fuerte:
+  · 2 frascos (2x1) Q249 − (45×2=90) = Q159 margen BRUTO  → break-even CPA ≈ **Q79**
+  · 4 frascos       Q389 − (45×4=180) = Q209 margen BRUTO → break-even CPA ≈ **Q129**
+  Margen neto con CPA objetivo Q30.8: 2x1 ≈ Q48 · 4x ≈ Q98 por pedido.
+
+⚠️ CORRECCIÓN 2026-07-25 — EL BREAK-EVEN NO ES EL MARGEN BRUTO.
+Este archivo tenía escrito "break-even ≈ Q159" tomando el margen bruto del 2x1 tal cual,
+SIN descontar envío ni RTO (devoluciones del contraentrega). Los otros tres productos del
+portafolio SÍ lo descuentan — la logística implícita es ~Q78-81 por pedido:
+    TINNIDROP  margen Q138 → BE Q60.5   (logística Q77.5)
+    NUSAVA     margen Q149 → BE Q68.3   (logística Q80.7)
+    CLEARSTEM  margen Q142 → BE Q60.5   (logística Q81.5)
+    VARICOSE   margen Q159 → BE **Q79** (logística Q80) ← corregido
+Usar Q159 como techo de CPA hacía creer que había el doble de colchón del real y podía
+autorizar un escalado que no aguanta. VARICOSE sigue SANO (CPA real Q38.4 vs BE Q79) y
+VERGUENZA_MA6_OFERTA2X1 (CPA Q17.2) sigue siendo excelente — pero el colchón es la mitad.
+BE VIGENTE EN TODO EL SISTEMA: **Q79** (así está en _GANANCIAS.txt, _PORTAFOLIO.txt y CLAUDE.md regla 20).
+
+NOTA: el break-even v1 (Q64.5) era sobre la venta de 1 frasco a Q189, que YA NO EXISTE. La venta mínima ahora es el 2x1 → el techo real sube de Q64.5 a Q79 (no a Q159). Decidir escalado por CPA real SEMANAL, no por un día (Clase 8).
+
+━━━ COMPONENTES (ETAPA-1B — con evidencia web) ━━━
+CASTAÑO DE INDIAS (aescina) — activo estrella. Revisión Cochrane (17 ensayos): reduce volumen de la pierna, dolor, edema, picazón vs placebo. Tonifica la pared venosa, baja la permeabilidad capilar (menos hinchazón/pesadez).
+RUSCO (Ruscus aculeatus) — venotónico; cesión de síntomas de insuficiencia venosa en ~2 semanas; vasoconstrictor venoso/capilar.
+MENTOL — alivio INMEDIATO de pesadez/calor (gancho sensorial, se siente al aplicar).
+DIFERENCIADOR (clave del ángulo ganador): alivio sensorial inmediato (mentol) + acción de fondo semanas 2-4 (castaño + rusco) que las cremas comunes NO tienen. Tópico, sin cirugía, desde casa, pagás al recibir.
+COMPLIANCE: "apoya la circulación / ayuda a desinflamar / reduce la apariencia de várices y arañitas". NUNCA "cura/elimina". Sin antes/después corporal bilateral.
+
+━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) — resumen ━━━
+#1 MANCHAS OSCURAS (VIDEO) · #2 VERGÜENZA-PIERNAS (VIDEO) ← GANADOR · #3 CALAMBRES NOCTURNOS (IMAGEN descubierto, nunca entregó) · #4 MIEDO-CIRUGÍA (VIDEO) ← co-ganador · #5 PIERNAS-CANSADAS (VIDEO) · #6 ARAÑITAS (VIDEO).
+(Detalle completo de avatares/hooks en v1 — no se repite acá.)
+
+━━━ ÁNGULOS DESCUBIERTOS (ETAPA-1B) ━━━
+Calambres nocturnos (#3, quedó pendiente) · "de pie todo el día" (reforzó #5) · alivio inmediato mentol.
+Reserva para nuevos videos: várices severas (V12), testimonio joven (V7), resultado 1 mes (V14).
+
+════════════════════════════════════════════════════════════════
+FASE 2 — ESCALADO DEL ÁNGULO GANADOR (09-jul)
+════════════════════════════════════════════════════════════════
+
+ANGULO_GANADOR CONFIRMADO: #2 VERGÜENZA DE MOSTRAR LAS PIERNAS
+  Base de decisión (auditoría 02→09-jul, LucidSales + omni_purchase):
+  · VERGUENZA-PIERNAS_A → 2 ventas, CPV $1.85 (~Q14), 14.29% cierre → el más fuerte por VENTA.
+  · MIEDO-CIRUGIA → 2 ventas (A + copia), CPV $1.86–4.76 → CO-GANADOR (escalonar su FASE 2 en 2-3 días).
+  · MANCHAS-OSCURAS → 2 ventas, CPV $3.07–3.36 → tercero.
+  · ARAÑITAS-VENOSAS → 35 mensajes, 0 ventas → DESCARTADO (jala conversación barata, no cierra).
+  · PIERNAS-CANSADAS → 0 ventas · CALAMBRES → nunca entregó.
+  Todos con CPV muy por debajo del break-even → producto rentable. Frecuencias 1.0-1.18, sin fatiga, ángulos NO saturados.
+  DECISIÓN: FASE 2 dedicada de VERGÜENZA ahora (bot de un solo ángulo). MIEDO-CIRUGÍA se escalona después. VERGÜENZA se riega horizontal (multicuenta MISMA página / Post ID del video ganador).
+
+Avatar: mujer guatemalteca 35-55 que dejó de usar falda/short/vestido por las várices, arañitas y manchas; se cubre con pantalón aunque haga calor. Emocional / identidad. Nivel de conciencia 2.
+Dolor central: "me da pena que me vean las piernas, ya no me pongo falda".
+Promesa: reducir la apariencia de várices/arañitas apoyando la circulación → volver a mostrar las piernas con confianza.
+Resultado creíble: pesadez alivia desde los primeros días (mentol); apariencia por semanas 2-4 (progresión semanal).
+
+── MAPA DEL ÁNGULO (ETAPA-3A) ──
+Síntoma: "tengo várices/arañitas y me da vergüenza que me las vean". Duración: años. Intensidad: verano/calor, eventos (boda, playa, piscina), al vestirse frente al espejo.
+Emoción dominante: vergüenza + pérdida de autoestima + resignación.
+SUB-DOLORES: SD-01 no uso falda/vestido, ando en pantalón con calor · SD-02 playa/piscina tapada con pareo · SD-03 pena que me vean en la calle/trabajo · SD-04 boda: todas de vestido, yo de pantalón · SD-05 probé cremas del super y nada · SD-06 me cambio de ropa 3 veces por las piernas · SD-07 mi hija me dice "ponete vestido" y invento excusas · SD-08 antes usaba short sin pensar, ahora me acomplejo · SD-09 manchas oscuras del tobillo que no se quitan · SD-10 miedo a que piensen que es falta de higiene · SD-11 escondo/recorto las piernas en las fotos · SD-12 ya me resigné.
+OBJECIONES: OBJ-01 credibilidad [EXTERNO · CRÍTICA] "las cremas para várices no sirven, son superficiales, ya probé" · OBJ-02 idoneidad "¿sirve para arañitas y manchas o solo várices grandes?" · OBJ-03 seguridad "¿me irrita la piel?" · OBJ-04 tiempo "¿en cuánto se ve?" · OBJ-05 logística "¿y si pago y no llega?" · OBJ-06 precio "las del super son más baratas" · OBJ-07 cantidad "¿por qué 2?" · OBJ-08 experiencia previa [EXTERNO] "probé geles/remedios caseros y nada" · OBJ-09 expectativa [EXTERNO] "¿de verdad se ven menos o solo es sensación de frío?".
+  Validación web (Reddit/clínicas/estudios): "ninguna crema elimina las várices, dan frescura temporal, son superficiales; pacientes decepcionados gastaron y no vieron resultados" → OBJ-01/09 (CRÍTICA). "me da pena usar vestido, años escondiéndome, inseguridades y complejos" → confirma el dolor central.
+  OBJ CRÍTICA (va en el Video 1 / conjunto 1): OBJ-01 — derribar el escepticismo de las cremas mostrando el MECANISMO diferenciador (castaño de indias + rusco actúan sobre la vena, no solo frío como las del super).
+MOMENTOS DE TRANSFORMACIÓN: Antes "me tapaba, no me ponía falda, me daba pena" → Después "a las 3-4 semanas más desinflamadas, arañitas menos marcadas, volví al vestido". Timeline: alivio pesadez días 1-3, apariencia semanas 2-4.
+
+── MICROÁNGULOS (ETAPA-3B) — 6 conjuntos + 2 reserva ──
+MA-01 "LA CREMA QUE SÍ" — SD-05 · OBJ-01 (CRÍTICA) · mecanismo/comparación · IMAGEN · rol MOFU · LLEVA PRECIO Q249. Apertura: "Probé como 4 cremas para las várices y ninguna me hizo nada…".
+MA-02 "EL VESTIDO QUE DEJASTE DE PONERTE" — SD-01/04 · OBJ-02 · emocional/identidad · VIDEO (ganador VARICOSE_2 vía Post ID) · rol TOFU · sin precio. Apertura: "¿Hace cuánto no te ponés un vestido sin pensar en tus piernas?".
+MA-03 "VERANO SIN TAPARTE" — SD-02 · OBJ-04 · deseo aspiracional/urgencia estacional · IMAGEN · rol TOFU · sin precio. Apertura: "Se viene el calor y otra vez pensando en cómo tapar las piernas…".
+MA-04 "LAS MANCHAS DEL TOBILLO" — SD-09 · OBJ-02 · educativo/problema-solución · IMAGEN · rol MOFU · sin precio. Apertura: "Esas manchas oscuras arriba del tobillo no son suciedad — son las várices".
+MA-05 "YA ME HABÍA RESIGNADO" — SD-12/05 · OBJ-08 · prueba social/testimonio · IMAGEN testimonio · rol TOFU/MOFU · sin precio. Apertura: "Ya me había resignado a mis piernas… hasta que probé esto".
+MA-06 "PARA TUS DOS PIERNAS · 2X1" — barrera de compra · OBJ-05/07 · oferta/garantía · IMAGEN · rol BOFU · LLEVA PRECIO Q249/Q389. Apertura: "Tratá tus dos piernas y pagás hasta que te llegue".
+RESERVA: MA-07 "la pena frente a tu familia/hija" (SD-07) · MA-08 "autoridad: lo que recomienda la doctora" (OBJ-01, concepto MOFU con Dra. Claudia).
+Cobertura de embudo: TOFU = MA-02, MA-03, MA-05 · MOFU = MA-01, MA-04 · BOFU = MA-06. Precio en 2 de 6 (MA-01, MA-06). CRÍTICA cubierta en MA-01.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (ETAPA-7)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPAÑA FASE 2: VARICOSE_ESCALA_VERGUENZA_20260710 · campaign_id 120247374332930784 (Tráfico, PAUSED — se duplica→WhatsApp) · FASE 2 escalado · LANZAMIENTO 4 AM 2026-07-10
+CPA_OBJETIVO Q30.8 · break-even Q79 (2x1, ya con envío/RTO descontados) · PRESUPUESTO/CONJUNTO $1.59 (159¢ USD)
+Todos los conjuntos = ángulo VERGÜENZA, 1 microángulo distinto c/u, 2 anuncios/conjunto.
+
+| # | NOMBRE_CONJUNTO (llave Meta) | Microángulo | Rol embudo | Formato | Copy | Precio ad | Apertura |
+|---|---|---|---|---|---|---|---|
+| 1 | VERGUENZA_MA1_COMPARACION_VARICOSE_ESCALA | La crema que SÍ | MOFU | IMAGEN | COPY 1 | SÍ Q249 | "Probé 4 cremas y nada…" |
+| 2 | VERGUENZA_MA2_VESTIDO_VARICOSE_ESCALA     | El vestido que dejaste | TOFU | VIDEO (VARICOSE_2, Post ID) | COPY 2 | NO | "¿Hace cuánto no te ponés vestido?" |
+| 3 | VERGUENZA_MA3_VERANO_VARICOSE_ESCALA      | Verano sin taparte | TOFU | IMAGEN | COPY 3 | NO | "Se viene el calor…" |
+| 4 | VERGUENZA_MA4_MANCHAS_VARICOSE_ESCALA     | Manchas del tobillo | MOFU | IMAGEN | COPY 4 | NO | "No es suciedad, son las várices" |
+| 5 | VERGUENZA_MA5_RESIGNACION_VARICOSE_ESCALA | Ya me había resignado | TOFU/MOFU | IMAGEN testim. | COPY 5 | NO | "Ya me había resignado…" |
+| 6 | VERGUENZA_MA6_OFERTA2X1_VARICOSE_ESCALA   | Para tus 2 piernas 2x1 | BOFU | IMAGEN | COPY 6 | SÍ Q249/Q389 | "Tratá tus dos piernas…" |
+
+RESULTADOS_TESTEO (FASE 2): (vacío — lo llena ETAPA-7 tras activar)
+ANGULO_GANADOR (FASE 1, confirmado): VERGÜENZA-PIERNAS (2 ventas, CPV $1.85, 14.29% cierre). Co-ganador MIEDO-CIRUGÍA (pendiente su FASE 2 escalonada).
+
+━━━ ESTADO / PRÓXIMA SESIÓN ━━━
+ESTADO: FASE 2 LISTA (campaña de escalado creada en PAUSED). Falta del operador: generar imágenes de conceptos (prompts en 1_HACER_MANUAL sec. C), subir media a GTR 7, crear los 6 conjuntos + 12 anuncios (ver 3_CAMPAÑA_META §pasos), duplicar→WhatsApp, activar 4 AM. Configurar el bot de VERGÜENZA en LucidBot antes de activar.
+- ETAPA-7: leer la campaña ACTIVE con "VARICOSE"+"ESCALA" y gasto>0; CPA real = (amount_spent ÷ omni_purchase) × 7.62 vs CPA obj/BE; cruzar con LucidSales.
+- MIEDO-CIRUGÍA: cuando VERGÜENZA valide CPA (2-3 días), arrancar su FASE 2 dedicada (ETAPA-3A).
+- El detalle copiable (copies, prompts, flujo bot) está en 1_HACER_MANUAL.txt.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — LECTURA AUDITORÍA 2026-07-10 (ETAPA-7, MCP)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✓ omni_purchase de Meta SÍ funciona en VARICOSE → CPA real calculable. TASA 7.62. CPA_Base Q30.8 · CPA_BE Q64.5(v1).
+
+[A] CAMPAÑA VIVA FASE 1 — VARICOSE_TRAFICO_20260704 (id 120247186770470784) · ACTIVE · gasto acum $35.52 · DÍA 6
+Ranking por CPA real (Q) = (gasto÷omni_purchase)×7.62:
+  MIEDO-CIRUGIA     42 conv · 2 ventas · $7.44 · CPA Q28.3 · %conv/clic 64.6% · CTR 3.19 · freq 1.21 · 🟢 RENTABLE (bajo Base)
+  VERGUENZA-PIERNAS 35 conv · 2 ventas · $7.28 · CPA Q27.7 · %conv/clic 56.5% · CTR 3.51 · freq 1.18 · 🟢 GANADOR CONFIRMADO
+  MANCHAS-OSCURAS   28 conv · 1 venta · $7.28 · CPA Q55.5 · %conv/clic 44.4% · CTR 3.15 · freq 1.17 · 🟡 (bajo BE, sobre Base)
+  ARANITAS-VENOSAS  38 conv · 0 ventas · $6.66 · sin CPA · %conv/clic 64.4% · 🔴 DESCARTADO (mucha charla, 0 venta)
+  PIERNAS-CANSADAS  23 conv · 0 ventas · $6.86 · sin CPA · %conv/clic 74% (31 clics) · 🔴 PODAR (0 venta día 6)
+  CALAMBRES-NOCTURNOS  nunca entregó ($0)
+Últimos 3d: sin fatiga (freq 1.06-1.12, CTR estable). MIEDO-CIRUGIA y VERGUENZA sostienen ventas.
+
+[B] CAMPAÑA VIVA FASE 2 — VARICOSE_ESCALA_VERGUENZA_20260710 (id 120247375697420784) · ACTIVE · gasto $0.77 · DÍA 0 (lanzó 4 AM hoy)
+6 microconjuntos MA1-MA6 activos, 1 conversación total (MA4). DATA insuficiente — solo observar. Volver a leer mañana (día 1).
+NOTA: coexisten el master PAUSED (120247374332930784) y esta duplicada→WhatsApp ACTIVE. La viva para ETAPA-7 = 120247375697420784.
+
+ESTADO: VERGÜENZA validado rentable (Q27.7 < Base Q30.8). MIEDO-CIRUGIA co-ganador rentable (Q28.3) → arrancar su FASE 2 hermana. Podar ARAÑITAS + PIERNAS-CANSADAS en FASE 1.
+
+═══════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA AUTOMÁTICA 2026-07-10 (~7PM COL) · LADO-ADS · PROVISIONAL
+(operador NO pegó ventas LucidSales este run → ranking por CONVERSACIÓN, NO oficial)
+═══════════════════════════════════════════════════════════════════
+2 campañas VIVAS del producto:
+  A) TESTEO (día 6): "🟩 VARICOSE_TRAFICO_20260704" (120247186770470784) · $38.51 · 182 conv · freq 1.72 · cpm $1.42
+  B) ESCALADO (día 0, lanzada HOY): "🟦 VARICOSE_ESCALA_VERGUENZA_20260710" (120247375697420784) · $5.74 · 13 conv
+
+RANKING TESTEO (acumulado, %conv/clic-enlace):
+  ARANITAS-VENOSAS  64.4% · $0.176/conv · 🟡 FALSO POSITIVO conocido (35 msj, 0 ventas x Lucid) — DESCARTADO, NO escalar
+  MIEDO-CIRUGIA     62.5% · $0.187/conv · CTR 3.19% · 🟢 co-ganador REAL (2 ventas 09-jul) → FASE 2 hermana pendiente
+  VERGUENZA-PIERNAS 56.9% · $0.203/conv · CTR 3.61% · 🟢 GANADOR CONFIRMADO (ya en escalado)
+  MANCHAS-OSCURAS   47.3% · $0.234/conv · 🟡
+  PIERNAS-CANSADAS  74.2% pero solo 23 conv · CTR 2.65% (hook débil) · 🔴 podar (0 ventas)
+  CALAMBRES-NOCTURNOS  $0 gasto, nunca entregó (revisar segmentación/estado)
+
+RANKING ESCALADO VERGÜENZA (día 0 — solo observar):
+  MA2 vestido 44.4% · MA4 manchas 20% · MA5 resignación 15% · MA3 verano 28.6%
+  MA6 OFERTA2X1 7% · MA1 comparación 0% → otra vez el micro con precio (MA6) es el más flojo.
+
+PLAN ETAPA-8:
+  1) PODAR en la TESTEO: apagar PIERNAS-CANSADAS + ARAÑITAS (0 ventas x Lucid). Revisar por qué CALAMBRES nunca entregó.
+  2) Escalado VERGÜENZA día 0 → validar horizontal SIN subir presupuesto (CALENDARIO día 4-6). No declarar micro-ganador todavía.
+  3) MIEDO-CIRUGÍA (co-ganador) → montar su FASE 2 hermana, escalonada 2-3 días después de VERGÜENZA.
+  4) Escalado fuerte (surfing 20%/Post ID/multicuenta): BLOQUEADO hasta CPA real por Lucid.
+QUÉ HACER MAÑANA: pegar ventas Lucid; podar PIERNAS-CANSADAS+ARAÑITAS; diagnosticar CALAMBRES $0.
+
+═══════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-14 (auto, ETAPA-7/8) · omni_purchase SÍ disponible (undercuenta COD → confirmar con Lucid)
+Cuenta act_598687956219141 (GTR 7). Dos campañas VIVAS: TESTEO 120247186770470784 ($60.53) + ESCALADO VERGUENZA 120247375697420784 ($39.85, día 4 — la duplicada→WhatsApp; master 120247374332930784 sigue PAUSED).
+
+TESTEO (acum) — por CPA omni (Q = $/omni ×7.62):
+  MIEDO-CIRUGIA   $15.60 · 89 conv · 148 lc · 60.1% · omni 4 → CPA Q29.7 (<Base 30.8 ✅) · CTR 3.24% · VIDEO  → co-ganador, arrancar su FASE 2 hermana
+  VERGUENZA-PIER  $15.87 · 75 conv · 141 lc · 53.2% · omni 2 → CPA Q60.5 (~BE) · VIDEO → GANADOR confirmado (ya en escalado)
+  MANCHAS-OSCURAS $15.49 · 53 conv · 131 lc · 40.5% · omni 2 → CPA Q59.0 · VIDEO(mejor retención p25 20.8%)
+  ARAÑITAS        $6.71 · 38 conv · 59 lc · 64.4% · omni 0 · VIDEO → DESCARTADO (0 ventas) → PODAR
+  PIERNAS-CANSADAS$6.86 · 23 conv · 31 lc · 74.2% · omni 0 · VIDEO → 0 ventas → PODAR
+  CALAMBRES-NOCT  $0.00 · nunca entregó (0 impresiones) → adset muerto, revisar/eliminar
+
+ESCALADO VERGUENZA (día 4) — por CPA omni:
+  MA2_VESTIDO     $6.68 · 20 conv · 40 lc · 50.0% · omni 3 → CPA Q17.0 · CTR 2.88% · VIDEO  ★ GANADOR de escalado
+  MA6_OFERTA2X1   $7.20 ·  8 conv · 58 lc · 13.8% · omni 3 → CPA Q18.3 · freq1.67 · IMAGEN  ★ 2º (vigilar frecuencia)
+  MA5_RESIGNACION $6.40 · 10 conv · 76 lc · 13.2% · omni 1 → CPA Q48.8 · IMAGEN
+  MA4_MANCHAS     $6.25 · 12 conv · 42 lc · 28.6% · omni 0 · IMAGEN
+  MA3_VERANO      $6.63 ·  7 conv · 44 lc · 15.9% · omni 0 · $0.95/conv · IMAGEN → débil
+  MA1_COMPARACION $6.69 ·  5 conv · 52 lc ·  9.6% · omni 0 · $1.34/conv · IMAGEN → más débil → podar candidato
+  Sin fatiga (freq 1.1-1.67; MA6 1.67 a vigilar).
+
+ACCIONES: (1) Escalado VERGUENZA está VENDIENDO bajo Base (MA2 Q17, MA6 Q18 por omni, que undercuenta). Confirmar con Lucid y surfing +20%/día a MA2 y MA6.
+(2) Podar en escalado: MA1_COMPARACION y MA3_VERANO (0 ventas, conv/clic bajísimo). (3) Podar en testeo: ARAÑITAS, PIERNAS-CANSADAS, CALAMBRES(muerto).
+(4) Replicar concepto MA2_VESTIDO (video, CPA Q17) por Post ID + banco anti-fatiga. (5) MIEDO-CIRUGÍA = arrancar FASE 2 hermana escalonada.
+═══════════════════════════════════════════════════════════════════
+
+── RESULTADOS_TESTEO 2026-07-15 (auditoría diaria, PROVISIONAL — sin Lucid, hoy miércoles) ──
+Base Q30.8 · BE v1 Q64.5 / v2 2x1 Q79 (corregido 25-jul). El MÁS SANO del portafolio.
+TESTEO ($67, día11, maduro): MIEDO-CIRUGIA 58%conv 6omni CPA~Q23=CO-GANADOR (F2 hermana pendiente);
+  VERGUENZA 53% 3omni=ganador(ya escala); MANCHAS marginal Q70; ARAÑITAS/PIERNAS-CANSADAS=podar(0v); CALAMBRES sin entrega.
+ESCALA_VERGUENZA (día5, $53.4): MA2_VESTIDO 50%conv 4omni Q18.3★ + MA6_2X1 3omni Q25.2★ = venden (Lucid Q11.6/Q16.7).
+  MA1_COMPARACION 10%=matar; MA3_VERANO 15% 0v=podar. ⚠️ MA6 freq 1.82=fatiga cerca (relevo mismo ángulo).
+ACCIÓN: matar MA1/MA3; preparar surfing +20% VESTIDO+2X1 (confirmar Lucid jueves); arrancar F2 de MIEDO-CIRUGÍA.
+
+═══ RESULTADOS_TESTEO · AUDITORÍA 2026-07-17 (auto, lado-ads + omni_purchase Meta aprox) ═══
+omni_purchase SÍ disponible (aprox Meta; cruzar con LucidSales para CPA oficial).
+FASE1 TESTEO (120247186770470784, día 13 · BE v1 Q64.5 · PD $8.46):
+ 🟢 MIEDO-CIRUGIA 55.3%conv/clic · $0.17/conv · 8 compras · CPA$2.60=Q19.8 ← GANADOR fuerte (FASE2 hermana pendiente).
+ VERGUENZA-PIERNAS 52.9% · 3 compras · CPA Q50.5 (<BE) — ya en FASE2.
+ MANCHAS-OSCURAS 42.9% · 2 compras · CPA Q79.6 (>BE, flojo).
+ ARAÑITAS 64.4% 0v ($6.71<PD) · PIERNAS-CANSADAS 74.2% 0v ($6.86<PD) → PODAR (0 ventas). CALAMBRES $0/sin entrega.
+FASE2 ESCALA_VERGUENZA (120247375697420784, día 7 · 2x1 BE Q79 · PD $10.37 · omni aprox):
+ 🟢 MA2_VESTIDO 48.6% · 5 compras · CPA$2.43=Q18.5 ← estrella, freq 1.27 sano.
+ MA6_2X1 4 compras CPA Q23.7 pero freq 1.90 = FATIGA → RENOVAR creativo mismo ángulo.
+ MA4_MANCHAS 1 compra Q90.8 · MA5_RESIGNACION 2 compras Q47.1 (freq 1.65).
+ 🔴 MA1_COMPARACION 10%conv/clic ($1.29) y MA3_VERANO 14.5% ($0.88), 0 compras → MATAR-CONV (Meta ya los está estrangulando en last_3d: 1-2 conv).
+Todas las CPA del escalado < BE Q79 → VARICOSE SANO y escalable.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RESULTADOS_TESTEO — AUDITORÍA 2026-07-21 (LucidSales 14→21 jul, FUSIONADO)
+CPA real (Q) = spend(USD)×7.62 ÷ ventas Lucid. Testeo v1 BE Q64.5 · Base Q30.8. Escala 2x1 BE Q79.
+VARICOSE TOTAL: 16 ventas (8 testeo + 8 escala 2x1) · 🥈 sano, LISTO PARA HORIZONTAL.
+TESTEO (Varicose Veins Ointment) CPA Q26.8 · ROAS 10.6:
+ · MIEDO-CIRUGIA ....... 4v · CPA Q18.0 ★
+ · VERGUENZA-PIERNAS ... 4v · CPA Q17.4 · 4/4 ENTREGADO ★
+ · MANCHAS-OSCURAS ..... 0v · $9.53 (>PD) → 🔴 MATAR-VENTAS
+ESCALA 2x1 (Varicose 2x1 oferta VER) CPA Q39.2 · ROAS 6.9 (vs BE 2x1 Q79 = rentable):
+ · MA2_VESTIDO ......... 4v · CPA Q17.9 ★
+ · MA6_OFERTA2X1 ....... 2v · CPA Q34.4
+ · MA4_MANCHAS ......... 1v · CPA Q76
+ · MA5_RESIGNACION ..... 1v · CPA Q76.7
+ · MA3_VERANO / MA1_COMPARACION ... 0v (sub-PD, throttled) → podar
+ACCIÓN: podar MANCHAS-OSCURAS + MA3_VERANO + MA1_COMPARACION. ESCALAR VESTIDO+MIEDO-CIRUGIA+VERGUENZA-PIERNAS por Post ID a GTR0/3/1 (misma página Claudia Vásquez).
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-14 (ventana 11→13 ago, 3d agregados)
+═══════════════════════════════════════════════════════════════════════════
+0 ventas · pauta Q176 · ingreso Q0 · 🔴 PÉRDIDA Q−176
+Serie completa 17-jul→13-ago: 13 ventas · Q961 · CPA Q73.9 · Q+260 (🟡 justo)
+→ EL ÚNICO PRODUCTO QUE SANGRA en la ventana.
+
+ACUMULADO DESDE EL RELANZAMIENTO (01→13 ago, 13 días):
+  VERGUENZA_PIERNAS    Q426 · 4v · 178 msj · CPA Q106 · PD **474%** 🔴
+  MANCHAS_OSCURAS      Q 97 · 1v ·  48 msj · CPA Q97  · PD 108%
+  CALAMBRES_NOCTURNOS  Q 95 · 1v ·  23 msj · CPA Q95  · PD 106%
+  MIEDO_CIRUGIA        Q 74 · 0v ·  49 msj · PD 83% (aún sub-testeado)
+  TOTAL Q692 · 6 ventas · CPA Q115 contra BE Q93.95 → SOBRE break-even
+
+‼️ LECTURA CRÍTICA — EL CUELLO ESTÁ DESPUÉS DEL CLIC, NO EN EL ÁNGULO:
+   VERGUENZA_PIERNAS trajo 178 mensajes y cerró 4 = **2.2% de cierre**.
+   Un ángulo que no engancha trae pocos mensajes; éste trae de sobra y no
+   cierra. Eso apunta al BOT o al PRECIO, no al creativo ni al ángulo.
+   Sospecha concreta: la escalera v2 solo tiene 2x1 Q249 y 4x Q389 — se
+   eliminaron los escalones 1u y 3u. No hay entrada barata para el que llega
+   con dolor pero sin Q249 disponibles en la puerta.
+   → NO matar el ganador histórico por CPA. Bajar a presupuesto MÍNIMO,
+     revisar el flujo del bot y considerar reponer un escalón de entrada.
+   → Registrado como APR-024 (confianza BAJA, EN_OBSERVACIÓN).
+
+⚠️ Toda la data de VARICOSE vive en la CUENTA B de LucidSales (APR-021).
+⚠️ MIGRACIÓN 12-ago: GTR7_VARICOSE_ESCALA-VERGUENZA_20260812 (Q37, 0v) corre
+   en paralelo con 🟩GTR7 VARICOSE_TRAFICO_20260801 (Q69, 0v) y
+   🟩 GTR7 - VARICOSE_ESCALA_VERGUENZA_20260801 (Q71, 0v). Tres campañas del
+   mismo producto sin una sola venta en 3 días.
+
+═══════════════════════════════════════════════════════════════════════════
+🔴 CAUSA RAÍZ IDENTIFICADA — 2026-08-14 (reportada por el operador)
+═══════════════════════════════════════════════════════════════════════════
+**EL PROVEEDOR CAMBIÓ EL PRODUCTO FÍSICO.** Ahora es una CREMA AZUL; antes era
+otro envase. Los ADS siguen mostrando el producto VIEJO y el bot/página muestra
+el NUEVO → el cliente hace clic, escribe, ve otro producto y se cae.
+
+ESTO INVALIDA EL DIAGNÓSTICO ANTERIOR de esta misma auditoría (yo había supuesto
+precio/escalera). La regla general era correcta —conversación alta + cierre bajo
+= problema post-clic— pero la causa era física, no comercial.
+
+CURVA DEL DAÑO (el tráfico nunca falló, el cierre se desplomó):
+  | Ventana         | Mensajes | Ventas | Cierre | CPA   |
+  |-----------------|----------|--------|--------|-------|
+  | 17-24 jul       |       89 |      7 | 7.9%   | Q38 🟢 |
+  | 01-10 ago       |      233 |      5 | 2.1%   | Q103 🔴|
+  | 11-13 ago       |       65 |      0 | 0.0%   |  —  🔴 |
+  Con el TRIPLE de mensajes, cero ventas. El quiebre se ubica alrededor del
+  relanzamiento del 01-ago. ⚠️ La fecha EXACTA del cambio no está confirmada.
+
+CONSECUENCIAS PARA LA DATA:
+  · TODA la data de VARICOSE desde ~01-ago mide el DESAJUSTE, no el ángulo ni
+    el creativo. VERGUENZA_PIERNAS **NO está quemado** — nunca se lo midió en
+    condiciones limpias. Su CPA Q106 y su PD de 474% son artefactos.
+  · Lo mismo para MANCHAS_OSCURAS, CALAMBRES_NOCTURNOS y MIEDO_CIRUGIA: sus
+    ceros no son veredicto. NO aplicar matar-por-ventas a ninguno.
+  · El único dato limpio de VARICOSE es el de julio: 7 ventas, CPA Q38, 7.9%
+    de cierre. Ése es el verdadero punto de partida.
+  · ⚠️ RIESGO DE DEVOLUCIÓN: los que SÍ compraron desde el cambio pidieron una
+    cosa y reciben otra. VARICOSE ya tiene 74.2% de entrega / 22.6% de
+    devolución en la serie completa — el 2º peor. Parte de eso puede ser esto.
+    Vigilar las devoluciones de los pedidos de agosto en Dropi.
+
+ESTADO: **PAUSADO** por el operador el 14-ago (las 3 campañas). Relanza el 15.
+
+⚠️ VERIFICADO POR MCP EL 14-AGO: las campañas del 01-ago y del 12-ago ya NO
+   figuran ACTIVE — pero quedaron DOS campañas viejas todavía en ACTIVE con
+   gasto $0: `🟩 VARICOSE_TRAFICO_20260704` (120247186770470784) y
+   `🟦 VARICOSE_ESCALA_VERGUENZA_20260710` (120247375697420784).
+   Muestran el producto viejo igual. Pausarlas también antes de relanzar.
+
+CHECKLIST DE RELANZAMIENTO — todo lo que muestra el producto viejo:
+  □ Ads/MEDIA_VARICOSE/ — los 6 creativos, TODOS con el envase viejo:
+      VARICOSE_1_MANCHAS-OSCURAS.mp4 · VARICOSE_2_VERGUENZA-PIERNAS.mp4
+      VARICOSE_3_CALAMBRES-NOCTURNOS.png · VARICOSE_4_MIEDO-CIRUGIA.mp4
+      VARICOSE_5_PIERNAS-CANSADAS.mp4 · VARICOSE_6_ARANITAS-VENOSASAS.mp4
+    ⚠️ Los .mp4 son video de proveedor: si el video muestra el envase viejo NO
+       se arregla con un sello — hay que conseguir video del nuevo o pasar el
+       ángulo a IMAGEN (Prompt Maestro con la crema azul).
+  □ Infografías del bot (Info 1/2/3 + IMAGEN 4) — llevan foto de producto
+  □ IMAGEN 6 de novedad/reactivación
+  □ Sello/banner 2X1 sobre la imagen del producto
+  □ Foto del producto en Dropi y en la tienda
+  □ Testimonios del bot que muestren el envase viejo
+  □ Verificar que el color de marca siga calzando (era otro color, ahora AZUL)
+
+RECOMENDACIÓN AL RELANZAR: volver a la configuración de JULIO, que es la única
+que se midió limpia (CPA Q38, cierre 7.9%). No arrastrar las conclusiones de
+agosto — están contaminadas. Y tratar el relanzamiento como testeo nuevo:
+VERGUENZA_PIERNAS vuelve a entrar como candidato, no como ángulo quemado.
+
+━━━ RESULTADOS_TESTEO — AUDITORÍA 2026-08-15 ━━━
+ESTADO: PAUSADO COMPLETO. Verificado por MCP el 15-ago — las 5 campañas de VARICOSE
+  en GTR7 están PAUSED, incluidas las 2 de julio que ayer seguían ACTIVE. Gasto hoy $0.
+  Motivo: el proveedor cambió el envase (crema azul); los creativos muestran el viejo.
+RANKING POR ÁNGULO (BASE 01→13 ago · break-even Q111.0):
+  VERGUENZA_PIERNAS    4 ventas · Q426 · CPA Q106.5 · ticket Q319 → gana Q4.5/venta
+  CALAMBRES_NOCTURNOS  1 venta  · Q95  · CPA Q95.0
+  MANCHAS_OSCURAS      1 venta  · Q97  · CPA Q97.0
+  MIEDO_CIRUGIA        0 ventas · Q74  → bajo PD, sin veredicto
+LECTURA: el ganador VERGUENZA_PIERNAS está prácticamente AL FILO del break-even.
+  Q4.5 de margen por venta no aguanta un mal día de entrega. Los 3 conjuntos con 0
+  ventas no llegaron al Presupuesto de Decisión de Q111 → su cero tampoco es veredicto.
+ACCIÓN: relanzar SOLO con las fotos del envase nuevo Y con el precio revisado.
+  Al margen actual, relanzarlo igual es repetir un empate caro.
+
+
+═══════════════════════════════════════════════════════════════════════════
+RESULTADOS_TESTEO — AUDITORÍA 2026-08-17 (ventana 14→16 ago)
+═══════════════════════════════════════════════════════════════════════════
+Q0 pauta · 0 ventas · 4 mensajes residuales. APAGADO, y correctamente.
+Todas las campañas figuran OFF en _ESTADO_META.csv (confirmado por el operador
+el 16-ago). Ya no sangra: la ventana 11-13 perdía Q-176.
+
+NO REACTIVAR hasta que los ads Y el bot muestren la crema AZUL. La causa raíz
+(el proveedor cambió el producto físico) sigue sin resolverse. Al relanzar:
+volver a la config de JULIO y tratarlo como testeo nuevo — toda la data desde
+~01-ago mide el desajuste ad↔destino, no el ángulo. VERGUENZA_PIERNAS NO está
+quemado (10 ventas, CPA Q62.1 en la serie).

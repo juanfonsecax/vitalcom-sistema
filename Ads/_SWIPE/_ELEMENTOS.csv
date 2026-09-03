@@ -1,0 +1,37 @@
+n,anunciante,producto,dias,replicas,formato,apertura,estetica,precio_prominente,precio_tachado,escalera_precios,precio_unitario,combo_cantidad,sello_mas_vendido,badge_sanitario,badge_importado,garantia,stock_urgencia,prueba_social_num,testimonio_texto,testimonio_chat,franja_confianza,iconos_beneficio,ficha_formula,rostro_humano,cuerpo_afectado,antes_despues,collage_sintomas,multiples_unidades,mano_sosteniendo,caja_envio,props_naturales,cta_textual,menciona_problema,producto_visible,regalo_bono,marca_tienda,dispositivo
+1,Camila Recomienda,Oftalmiel,18,16,4:5,NUMERAL_CANTIDAD,ESTUDIO_PULIDO,1,0,0,1,1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,0,0,1,0,0,OFERTA
+2,Compra GT,Beevana,266,2,2:3,PROMESA_BENEFICIO,ESTUDIO_PULIDO,1,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,OFERTA
+3,Camila Recomienda,Oftalmiel,19,10,1:1,PREGUNTA_DOLOR,ESTUDIO_PULIDO,1,1,0,0,0,0,1,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,LISTA_BENEFICIOS
+4,Camila Recomienda,Candida Cleanse,24,9,1:1,AFIRMACION_PROBLEMA,AUTORIDAD_ESTUDIO,1,0,0,0,0,0,1,1,0,0,0,0,0,1,1,0,1,0,0,1,0,0,0,1,0,1,1,0,0,AUTORIDAD_CLINICA
+5,Valle Lo Vende,Ginkgo+Ginseng,197,1,1:1,PREGUNTA_DOLOR,ESTUDIO_PULIDO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,LISTA_BENEFICIOS
+6,GuateShopping,MegaRed,157,1,1:1,PROMESA_BENEFICIO,ESTUDIO_PULIDO,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,LISTA_BENEFICIOS
+7,Dr. Felipe Flores,Zooone,153,1,1:1,NUMERAL_CANTIDAD,ESTUDIO_PULIDO,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,0,OFERTA
+8,Compra GT,Alexa,151,1,1:1,PROMESA_BENEFICIO,ESTUDIO_PULIDO,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,PRODUCTO_HERO
+9,Valle Lo Vende,Glucosamina,124,1,4:5,PROMESA_BENEFICIO,MIXTA_STOCK,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,SINTOMA_VISUAL
+10,Valle Lo Vende,Glucosamina,124,1,4:5,PROMESA_BENEFICIO,MIXTA_STOCK,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,SINTOMA_VISUAL
+11,VitalBio,Creatine,119,1,9:16,PROMESA_BENEFICIO,ESTUDIO_PULIDO,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,0,0,0,0,0,1,0,1,FICHA_FORMULA
+12,VitalBio,Magnesium,118,1,9:16,NUMERAL_CANTIDAD,ESTUDIO_PULIDO,1,0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,1,0,1,OFERTA
+13,Aranza Glow,Candela,113,1,1:1,PROMESA_BENEFICIO,ESTUDIO_PULIDO,1,0,1,0,1,1,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,1,1,1,0,0,TRANSFORMACION
+14,VitalBio,Candida Cleanse,111,1,9:16,NUMERAL_CANTIDAD,ESTUDIO_PULIDO,1,0,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1,0,1,0,1,OFERTA
+15,Dra Sofia A. Morales,Almohada,5,5,1:1,PROMESA_BENEFICIO,LIFESTYLE_REAL,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,PRODUCTO_HERO
+16,Dra Sofia A. Morales,Lapiz acupuntura,5,5,1:1,PREGUNTA_DOLOR,ESTUDIO_PULIDO,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0,0,1,1,0,0,LISTA_BENEFICIOS
+17,Aranza Glow,Liquid Chlorophyll,102,1,1:1,PROMESA_BENEFICIO,ESTUDIO_PULIDO,1,0,1,0,0,0,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,1,0,1,1,0,0,TRANSFORMACION
+18,Aranza Glow,NeuraZenx,89,1,1:1,PROMESA_BENEFICIO,LIFESTYLE_IA,1,0,1,0,0,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,FICHA_FORMULA
+19,Guate compra,MegaRed,63,2,1:1,HOOK_ESTADISTICA,ESTUDIO_PULIDO,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,OFERTA
+20,Dr. Felipe Flores,Stone Dissolver,85,1,1:1,PREGUNTA_DOLOR,LIFESTYLE_IA,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,SINTOMA_VISUAL
+21,Tiendas KetsalStore,Drenaje Linfatico,8,4,9:16,PREGUNTA_DOLOR,ESTUDIO_BOTANICO,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,LISTA_BENEFICIOS
+22,Dr. Felipe Flores,Varicose Cream,82,1,1:1,PREGUNTA_DOLOR,LIFESTYLE_IA,1,0,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,1,0,0,0,0,0,0,1,1,1,0,0,SINTOMA_VISUAL
+23,Tiendas KetsalStore,Lymphatic Drainage,7,4,4:5,PROMESA_BENEFICIO,UGC_UNBOXING,1,0,0,0,0,0,0,1,1,1,0,0,0,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0,0,UNBOXING
+24,Tiendas KetsalStore,Lymphatic Drainage,7,4,4:5,PROMESA_BENEFICIO,UGC_UNBOXING,1,0,0,0,0,0,0,1,0,1,0,0,0,1,1,0,0,0,0,0,1,1,1,0,0,1,1,0,0,UNBOXING
+25,Flor Exprs GT,Private Cream,3,4,2:3,PROMESA_BENEFICIO,ESTUDIO_PULIDO,1,0,1,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,LISTA_BENEFICIOS
+26,Flor Exprs GT,Derman,2,4,4:5,PROMESA_BENEFICIO,ESTUDIO_PULIDO,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,LISTA_BENEFICIOS
+27,Loopi Colombia,NeoCell Collagen,66,1,1:1,NUMERAL_CANTIDAD,ESTUDIO_PULIDO,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,OFERTA
+28,Guate compra,MegaRed,57,1,1:1,HOOK_ESTADISTICA,ESTUDIO_PULIDO,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0,1,1,0,0,OFERTA
+29,Doctora Patricia Morales,(gota/acido urico),6,3,1:1,SIN_TEXTO,FOTO_CLINICA_CRUDA,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,EVIDENCIA_CRUDA
+30,Rincon de las Ventas,Brain+Neuropathy,56,1,1:1,PROMESA_BENEFICIO,ESTUDIO_PULIDO,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,1,1,0,1,OFERTA
+31,Doctora Patricia Morales,(gota/acido urico),6,3,1:1,SIN_TEXTO,FOTO_CLINICA_CRUDA,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,EVIDENCIA_CRUDA
+32,Doctora Patricia Morales,Uric Acid Purge,6,3,2:3,TESTIMONIO_CHAT,CAPTURA_PANTALLA,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,EVIDENCIA_CRUDA
+33,Rincon de las Ventas,Brain+Neuropathy,56,1,1:1,PROMESA_PRECIO,ESTUDIO_PULIDO,1,0,0,0,1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,1,1,1,OFERTA
+34,Rincon de las Ventas,Brain+Neuropathy,56,1,1:1,PROMESA_BENEFICIO,LIFESTYLE_IA,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,1,1,1,ESCENA_VIDA
+35,Rincon de las Ventas,Brain+Neuropathy,56,1,1:1,PROMESA_BENEFICIO,LIFESTYLE_IA,1,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,1,0,1,ESCENA_VIDA
+36,Teyra,The Ordinary,54,1,1:1,PROMESA_BENEFICIO,ESTUDIO_PULIDO,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,1,1,1,1,0,0,0,0,1,1,1,0,1,TRANSFORMACION

@@ -1,0 +1,418 @@
+═══════════════════════════════════════════════════════════════════════════
+PLAN DE RELANZAMIENTO CON NÚMERO NUEVO · 2026-08-11
+Duplicar → renombrar → cambiar número → programar 4 AM del 2026-08-12
+Verificado contra Meta MCP en vivo (GTR7 · GTR0 · GTR1) + _FACT_VENTAS.csv
+═══════════════════════════════════════════════════════════════════════════
+
+RESUMEN:  7 campañas a duplicar · 18 conjuntos a conservar · 30 a dejar afuera
+BASE DE LA DECISIÓN: 217 ventas BASE (17-jul → 10-ago), agregadas POR ÁNGULO
+                     Y POR CUENTA, contra el break-even propio de cada producto.
+
+───────────────────────────────────────────────────────────────────────────
+0. LA ESTRUCTURA FIJA — de acá en adelante, para todo objeto de Meta
+───────────────────────────────────────────────────────────────────────────
+
+  CAMPAÑA:   [CUENTA]_[PRODUCTO]_[FASE]_[YYYYMMDD]
+  CONJUNTO:  [CUENTA]_[PRODUCTO]_[ANGULO]_R[N]
+  ANUNCIO:   — no se nombra. Ver §8.
+  CREATIVO:  [PRODUCTO]_[ANGULO]_[N]_[CONCEPTO]        ← el archivo en disco,
+             vinculado al conjunto por `creativo_id` en _DIM_CONJUNTOS.csv
+
+┌─ LOS DOS NIVELES — la parte que más se confunde ─────────────────────────┐
+│                                                                           │
+│   CONJUNTO  responde:  ¿de qué DOLOR le hablo?      → el ÁNGULO           │
+│   ANUNCIO   responde:  ¿con qué PIEZA se lo digo?   → el CREATIVO         │
+│                                                                           │
+│   R[N] NO SIGNIFICA "ANUNCIO N". Significa RÉPLICA N del conjunto:        │
+│   R1..R4 son cuatro conjuntos GEMELOS — mismo ángulo, mismo creativo,     │
+│   mismo público — que existen solo para meterle más presupuesto al        │
+│   ángulo sin cargárselo todo a un conjunto. Por eso SE SUMAN y NUNCA      │
+│   se comparan entre sí.                                                   │
+│                                                                           │
+│   GTR7_NUSAVA_ARDOR_R1  →  2 anuncios con NUSAVAB12_ARDOR_MA6_OFERTA     │
+│   GTR7_NUSAVA_ARDOR_R2  →  los mismos 2 anuncios (conjunto gemelo)       │
+│                                                                           │
+│ ── CREATIVO NUEVO DEL MISMO ÁNGULO: no es una réplica ──                  │
+│   Es un conjunto NUEVO del mismo ángulo que ESTRENA PIEZA:                │
+│      GTR7_NUSAVA_ARDOR_R1 → creativo MA6_OFERTA      (la que ya vende)   │
+│      GTR7_NUSAVA_ARDOR_R5 → creativo MA8_TESTIMONIO  (la nueva)          │
+│   El conjunto sigue diciendo ARDOR porque EL ÁNGULO NO CAMBIÓ. Lo que    │
+│   cambió es la pieza, y eso se registra en `creativo_id` (§8).            │
+│                                                                           │
+│   Después se preguntan las dos cosas POR SEPARADO:                        │
+│     ¿ARDOR sigue siendo buen ángulo? → sumar R1..R5 → CPA del ángulo      │
+│     ¿la pieza nueva gana? → agrupar los conjuntos por su `creativo_id`    │
+│                            y comparar MA8_TESTIMONIO contra MA6_OFERTA    │
+│                                                                           │
+│ ── POR QUÉ EL CREATIVO **NO** VA EN EL NOMBRE DEL CONJUNTO ──             │
+│   (1) Un conjunto puede llevar DOS creativos distintos (test abierto      │
+│       31-jul). Ahí el nombre del conjunto mentiría.                       │
+│   (2) 🔴 LA GRAVE: si se nombra NUSAVA_ARDOR-MA6_R1 y NUSAVA_ARDOR-MA8_R1,│
+│       el campo 3 deja de ser el ángulo. Para el sistema pasan a ser DOS   │
+│       ÁNGULOS DISTINTOS y el CPA de ARDOR se parte en dos mitades que ya  │
+│       no se pueden sumar. Se pierde justo la medición que más sirve.      │
+│   En el Administrador no hace falta: se expande el conjunto y ahí está    │
+│   el nombre del creativo.                                                 │
+└───────────────────────────────────────────────────────────────────────────┘
+
+┌─ ⚠️ LAS DOS "R" — ambigüedad conocida, resuelta hacia adelante ──────────┐
+│ `_DIM_CREATIVOS.csv` y los 8 PNG de Ads/MEDIA_TINNIDROP/ usan R1..R8 para│
+│ numerar CREATIVOS (TINNIDROP_R1_VIVIRCONESO). La convención usa R[N] para│
+│ numerar RÉPLICAS. Mismo símbolo, dos significados.                       │
+│ DECISIÓN: NO se renombran los archivos (rompe referencias en los TXT y   │
+│   en los prompts). Quedan como LEGACY documentado.                       │
+│ REGLA NUEVA: ningún creativo nuevo usa "R". Usa                          │
+│   [PRODUCTO]_[ANGULO]_[N]_[CONCEPTO]. Así la ambigüedad se extingue sola  │
+│   y R[N] queda queriendo decir UNA sola cosa: réplica.                    │
+└───────────────────────────────────────────────────────────────────────────┘
+
+REGLAS (las 6, no negociables):
+  1. CUENTA = donde el objeto REALMENTE vive (GTR0 · GTR1 · GTR7 · GTR13 · CP1).
+     Nunca la cuenta de origen. Hoy 4 campañas dicen "GTR0" y ninguna está en GTR0.
+  2. ANGULO = el mismo texto en todas las cuentas y todas las réplicas. Es lo que
+     permite sumar un ángulo entre cuentas. Si cambia de nombre, la suma se parte.
+  3. Separador de campos = "_". Dentro de un campo solo guion medio "-".
+     Así el nombre se parte en 4 campos exactos. Un "_" dentro del ángulo rompe todo.
+  4. R[N] SIEMPRE, desde el primero. R1 es el original, R2/R3… las réplicas.
+     Un conjunto sin R no se sabe si es original o copia.
+  5. PROHIBIDO publicar un "- Copia". Se renombra ANTES de darle publicar.
+     Es el único momento en que renombrar sale gratis.
+  6. Sin emojis ni espacios entre campos. Emoji de estado (🟩/🟦) solo al final.
+
+FASE (campo 3 de la campaña): TEST · ESCALA · ESCALA-[ANGULO] cuando la campaña
+  entera corre un solo ángulo.
+
+⚠️ LAS RÉPLICAS SE SUMAN, NO SE COMPARAN. R1 y R3 son el mismo creativo, mismo
+   público, mismo presupuesto. Que una venda más es ruido de Poisson, no señal.
+   Ejemplo real de GTR1: "DETERIORO COGNITIVO - video" hizo CPA Q21 y su "- Copia"
+   Q38 — mismo anuncio. El R[N] sirve para identificar y sumar, nunca para coronar.
+
+───────────────────────────────────────────────────────────────────────────
+1. GTR7 · act_598687956219141 · TINNIDROP
+───────────────────────────────────────────────────────────────────────────
+DUPLICAR:  "4🟦 TINIDROP GTR0 - 1.59 - 4 WINERS"    id 120247634423980784
+           ⚠️ dice GTR0 pero VIVE EN GTR7. Verificado en vivo.
+
+NOMBRE NUEVO DE LA CAMPAÑA:   GTR7_TINNIDROP_ESCALA_20260812
+
+CONSERVAR Y RENOMBRAR:
+| conjunto origen (nombre actual)              | id                 | NOMBRE NUEVO                              |
+|----------------------------------------------|--------------------|-------------------------------------------|
+| Accesibilidad económica vs. médico - Copia 2 | 120247634582750784 | GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1    |
+| Pérdida auditiva irreversible                | 120247634424000784 | GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1        |
+| Pérdida auditiva irreversible - Copia        | 120247728609710784 | GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2        |
+| Pérdida auditiva irreversible - Copia        | 120247728609720784 | GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3        |
+DATA: ACCESIBILIDAD Q20 (10 ventas) — el mejor CPA del portafolio · PERDIDA Q48 (11 ventas)
+
+BORRAR DE LA COPIA:
+  ✗ los 12 "DETERIORO COGNITIVO - video" y sus "- Copia" (10 pausadas)
+    → en GTR7 ese ángulo paga Q79; en GTR1 paga Q32. NO replicarlo acá.
+  ✗ "ME DIJERON QUE NO TIENE CURA - Copia"  → 0 ventas en esta cuenta.
+
+───────────────────────────────────────────────────────────────────────────
+2. GTR7 · act_598687956219141 · NUSAVA B12
+───────────────────────────────────────────────────────────────────────────
+DUPLICAR:  "NUSAVAB12_ESCALA_ARDOR_20260715"        id 120247507971430784
+
+NOMBRE NUEVO DE LA CAMPAÑA:   GTR7_NUSAVA_ESCALA-ARDOR_20260812
+
+CONSERVAR Y RENOMBRAR:
+| conjunto origen        | id                 | NOMBRE NUEVO              |
+|------------------------|--------------------|---------------------------|
+| MA6-OFERTA             | 120247508133980784 | GTR7_NUSAVA_ARDOR_R1      |
+| MA6-OFERTA - Copia     | 120247728670120784 | GTR7_NUSAVA_ARDOR_R2      |
+| MA6-OFERTA - Copia     | 120247728670130784 | GTR7_NUSAVA_ARDOR_R3      |
+| MA6-OFERTA - Copia     | 120247728670150784 | GTR7_NUSAVA_ARDOR_R4      |
+DATA: ARDOR-OFERTA agregado Q29 · 16 ventas · BE Q93
+
+  ⚠️ MA6-OFERTA y MA7-ARDORVIDEO son el MISMO ángulo (ARDOR) con creativo distinto.
+     Por eso los dos van como ARDOR_R[N] y la diferencia queda en el ANUNCIO
+     (ARDOR_IMG_A vs ARDOR_VID_A). El ángulo es el problema; el creativo es el cómo.
+  ⚠️ OPCIONAL: MA7-ARDORVIDEO (120247508124220784) → GTR7_NUSAVA_ARDOR_R5
+     CPA Q60 · bajo el BE pero el más flojo de los que pasan el corte.
+
+BORRAR DE LA COPIA:
+  ✗ MA4-DEPIE (Q115)  ✗ ARDOR_NUSAVAB12_TEST (Q114)   → sobre el break-even
+  ✗ MA1-COMPLEJOB · MA3-HORMIGUEO (0 ventas)
+  ✗ MA2-ARDORNOCHE · MA5-AZUCAR (1 venta c/u = ruido, no dato)
+
+  🔴 ANTES DE SUBIRLE PRESUPUESTO A NUSAVA: entrega 71.7%, la peor del portafolio,
+     15 de las 40 devoluciones. Escalarlo sin arreglar eso multiplica el problema.
+
+───────────────────────────────────────────────────────────────────────────
+3. GTR7 · act_598687956219141 · VARICOSE
+───────────────────────────────────────────────────────────────────────────
+DUPLICAR:  "🟩GTR7 VARICOSE_TRAFICO_20260801"       id 120247920884190784
+
+NOMBRE NUEVO DE LA CAMPAÑA:   GTR7_VARICOSE_ESCALA-VERGUENZA_20260812
+
+CONSERVAR Y RENOMBRAR:
+| conjunto origen                  | id                 | NOMBRE NUEVO                          |
+|----------------------------------|--------------------|---------------------------------------|
+| VERGUENZA-PIERNAS_VARICOSE_TEST  | 120247920884320784 | GTR7_VARICOSE_VERGUENZA-PIERNAS_R1    |
+| (duplicar el R1 una vez)         | —                  | GTR7_VARICOSE_VERGUENZA-PIERNAS_R2    |
+DATA: Q36 · único ángulo de VARICOSE bajo el BE Q90 · 10 ventas en la serie
+
+BORRAR DE LA COPIA:
+  ✗ MIEDO-CIRUGIA (Q113) · MANCHAS-OSCURAS (Q110)  → sobre el break-even
+  ✗ CALAMBRES-NOCTURNOS · MA2_VESTIDO · MA5_RESIGNACION · MA6_OFERTA2X1
+  ‼️ MIEDO-CIRUGIA y MA2_VESTIDO son los de MÁS conversaciones (49 c/u) y CERO
+     ventas. Es el caso de manual: la conversación sirve para cortar, nunca
+     para coronar. No los rescate porque "generan mucha conversación".
+
+  🔴 Entrega VARICOSE 74.2% · 8 devoluciones. Mismo aviso que NUSAVA.
+
+───────────────────────────────────────────────────────────────────────────
+4. GTR0 · act_1665221077707961 · TINNIDROP
+───────────────────────────────────────────────────────────────────────────
+DUPLICAR:  "🟩 TINIDROP GTR0 - 1.59 - TEST"         id 120256219801430595
+
+NOMBRE NUEVO DE LA CAMPAÑA:   GTR0_TINNIDROP_ESCALA_20260812
+
+CONSERVAR Y RENOMBRAR:
+| conjunto origen                       | id                 | NOMBRE NUEVO                            |
+|---------------------------------------|--------------------|-----------------------------------------|
+| Pérdida auditiva irreversible         | 120256219801400595 | GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1      |
+| Pérdida auditiva irreversible - Copia | 120256604866540595 | GTR0_TINNIDROP_PERDIDA-AUDITIVA_R2      |
+| Pérdida auditiva irreversible - Copia | 120256604866590595 | GTR0_TINNIDROP_PERDIDA-AUDITIVA_R3      |
+| Pérdida auditiva irreversible - Copia | 120256604866610595 | GTR0_TINNIDROP_PERDIDA-AUDITIVA_R4      |
+| ME DIJERON QUE NO TIENE CURA          | 120256219848000595 | GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1    |
+DATA: PERDIDA Q21 (7 ventas, el mejor de ese ángulo) · ME-DIJERON Q36 (4 ventas)
+
+OPCIONAL (apuesta, no ganador):
+| NOCHES SIN DORMIR                     | 120256219801470595 | GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1     |
+   CPA Q49 pero con solo 3 ventas. Si lo lleva, sepa que no está probado.
+
+BORRAR DE LA COPIA:
+  ✗ Accesibilidad económica vs. médico - Copia 2 → acá Q42, en GTR7 Q20. Déjelo en GTR7.
+  ✗ Deterioro cognitivo / cerebro en colapso (Q82)
+  ✗ ME DIJERON QUE NO TIENE CURA - Copia ×4 (la copia hizo Q137)
+  ✗ TENSIÓN / ESTRÉS: LA CAUSA OCULTA (sin ventas)
+
+  🔍 En esta cuenta hay una campaña pausada llamada
+     "NUMERO MAL NO PRENDER TINIDROP GTR0 - 1.59".
+     Ya hubo un incidente de número mal configurado. Revisar qué falló esa vez
+     ANTES de repetir el proceso con el número nuevo.
+
+───────────────────────────────────────────────────────────────────────────
+5. GTR1 · act_824783947334627 · TINNIDROP
+───────────────────────────────────────────────────────────────────────────
+⚠️ ACÁ NO HAY QUE DUPLICAR NADA — la campaña YA EXISTE, creada y ACTIVE con $0
+   gastado. Solo hay que RENOMBRAR sus conjuntos, cambiar el número y subir el
+   presupuesto.
+
+CAMPAÑA YA CREADA:  "GTR1_TINNIDROP_ESCALA_20260812"   id 120251429077990706
+   → el nombre ya está correcto. No tocar.
+
+RENOMBRAR SUS 5 CONJUNTOS:
+| conjunto actual                          | id                 | NOMBRE NUEVO                          |
+|------------------------------------------|--------------------|---------------------------------------|
+| 1. DETERIORO COGNITIVO - video - Copia   | 120251429077910706 | GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1 |
+| 2. DETERIORO COGNITIVO - video - Copia   | 120251429077810706 | GTR1_TINNIDROP_DETERIORO-COGNITIVO_R2 |
+| 3. DETERIORO COGNITIVO - video          | 120251429077820706 | GTR1_TINNIDROP_DETERIORO-COGNITIVO_R3 |
+| 4. DETERIORO COGNITIVO - video - Copia   | 120251429077830706 | GTR1_TINNIDROP_DETERIORO-COGNITIVO_R4 |
+| 5. DETERIORO COGNITIVO - video - Copia   | 120251429077960706 | GTR1_TINNIDROP_DETERIORO-COGNITIVO_R5 |
+DATA: DETERIORO_COGNITIVO en GTR1 = Q32 con 31 ventas. Es la mejor cuenta para
+      este ángulo, contra Q79 en GTR7 y Q48 en GTR0.
+
+SI PREFIERE DUPLICAR EN VEZ DE USAR LA YA CREADA:
+DUPLICAR: "3🟦 TINIDROP GTR0 - 1.59 - 4 WINERS"   id 120250923862620706
+  conservar: DETERIORO COGNITIVO - video (120250923933690706) + sus 4 "- Copia"
+             activas (12025101703558/59/62/63 0706)
+  borrar:    Pérdida auditiva · Accesibilidad · ME DIJERON  → 0 ventas los tres acá
+
+───────────────────────────────────────────────────────────────────────────
+6. CP1 · act_1346891653335162 · TINNIDROP   ⚠️ SIN MCP — no verificado en vivo
+───────────────────────────────────────────────────────────────────────────
+DUPLICAR:  "2🟦 TINIDROP GTR0 - 1.59 - 4 WINERS"   (vive en CP1, dice GTR0)
+
+NOMBRE NUEVO DE LA CAMPAÑA:   CP1_TINNIDROP_ESCALA_20260812
+
+CONSERVAR Y RENOMBRAR:
+| conjunto origen                              | NOMBRE NUEVO                           |
+|----------------------------------------------|----------------------------------------|
+| ME DIJERON QUE NO TIENE CURA                 | CP1_TINNIDROP_ME-DIJERON-NO-CURA_R1    |
+| Accesibilidad económica vs. médico - Copia 2 | CP1_TINNIDROP_ACCESIBILIDAD-MEDICO_R1  |
+DATA: ME-DIJERON Q25 (7 ventas) — el mejor de ese ángulo en TODO el portafolio.
+      ACCESIBILIDAD Q22 (8 ventas).
+
+BORRAR: DETERIORO COGNITIVO (Q57) · Pérdida auditiva (0 ventas)
+
+  ⚠️ Esta cuenta factura en COP. Su gasto se divide entre 4,050 al cargar la data.
+  ⚠️ Los IDs hay que tomarlos del Administrador de Anuncios: sin MCP no los leo.
+
+───────────────────────────────────────────────────────────────────────────
+7. GTR13 · act_916746367261028 · CLEARSTEM   ⚠️ SIN MCP — no verificado en vivo
+───────────────────────────────────────────────────────────────────────────
+DUPLICAR:  "🟩 CLEARSTEM - WP - NEW TEST"
+
+NOMBRE NUEVO DE LA CAMPAÑA:   GTR13_CLEARSTEM_ESCALA_20260812
+
+CONSERVAR Y RENOMBRAR:
+| conjunto origen                     | NOMBRE NUEVO                              |
+|-------------------------------------|-------------------------------------------|
+| Resistencia a la Insulina / SOP     | GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R1   |
+| Resistencia a la Insulina/SOP-Copia | GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R2   |
+| Anti-Falsificación                  | GTR13_CLEARSTEM_ANTI-FALSIFICACION_R1     |
+| Anti-Falsificación - Copia          | GTR13_CLEARSTEM_ANTI-FALSIFICACION_R2     |
+| Médicos Fallaron                    | GTR13_CLEARSTEM_MEDICOS-FALLARON_R1       |
+| Médicos Fallaron - Copia            | GTR13_CLEARSTEM_MEDICOS-FALLARON_R2       |
+DATA: RESISTENCIA Q45 (14v) · ANTI-FALSIFICACION Q52 (12v) · MEDICOS Q62 (10v)
+      Todos muy por debajo del BE Q106. Es el producto de MEJOR ENTREGA: 95.8%.
+
+BORRAR DE LA COPIA:
+  ✗ Testimonio Radical → Q221 contra BE Q106. El peor conjunto del portafolio.
+  ✗ Dolor Emocional → 0 ventas.
+
+───────────────────────────────────────────────────────────────────────────
+8. LOS ANUNCIOS — dentro de cada conjunto, 2 anuncios
+───────────────────────────────────────────────────────────────────────────
+🚫 EL OPERADOR **NO** NOMBRA LOS ANUNCIOS. Decisión del 11-ago, y es correcta:
+   la estructura es 1 CONJUNTO = 1 CREATIVO duplicado en 2 anuncios. Siendo 1:1,
+   el nombre del CONJUNTO ya identifica la pieza — nombrar el anuncio sería
+   escribir dos veces el mismo dato. Los anuncios quedan con el nombre que
+   Meta les ponga.
+
+Regla vigente: 2 anuncios por conjunto, nunca 1. Default = DUPLICADO (el mismo
+creativo dos veces). El A/B no es un test: es darle dos entradas a Meta.
+
+┌─ DÓNDE VIVE ENTONCES EL VÍNCULO CONJUNTO → CREATIVO ─────────────────────┐
+│ En la columna `creativo_id` de `PRODUCTOS/_DIM_CONJUNTOS.csv`. Esa columna│
+│ existe exactamente para esto y NO la llena el operador: la escribe el     │
+│ sistema al dar de alta el conjunto. Cero trabajo extra en Meta.           │
+│                                                                           │
+│ MAPEO A REGISTRAR EN EL RELANZAMIENTO:                                    │
+│  GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1      → tinnidrop4                │
+│  GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1..R3      → tinnidrop6                │
+│  GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1..R4      → tinnidrop6                │
+│  GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1..R5   → tinnidrop3                │
+│  GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1        → (confirmar archivo)       │
+│  CP1_TINNIDROP_ME-DIJERON-NO-CURA_R1         → (confirmar archivo)       │
+│  CP1_TINNIDROP_ACCESIBILIDAD-MEDICO_R1       → tinnidrop4                │
+│  GTR7_NUSAVA_ARDOR_R1..R4                    → NUSAVAB12_ARDOR_MA6_OFERTA│
+│  GTR7_NUSAVA_ARDOR_R5 (opcional)             → NUSAVAB12_2_ARDOR.mp4     │
+│  GTR7_VARICOSE_VERGUENZA-PIERNAS_R1..R2      → VARICOSE_2_VERGUENZA-PIERNAS│
+│  GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R1..R2 → Clearstem2 (Post ID)      │
+│  GTR13_CLEARSTEM_ANTI-FALSIFICACION_R1..R2   → Clearstem3 (Post ID)      │
+│  GTR13_CLEARSTEM_MEDICOS-FALLARON_R1..R2     → Clearstem10 (Post ID)     │
+│                                                                           │
+│ ⚠️ EL PUNTO DÉBIL DE ESTE DISEÑO — asumirlo a conciencia:                 │
+│   siendo el CSV el ÚNICO lugar donde vive el vínculo, si una fila queda   │
+│   mal escrita, la trazabilidad de esa pieza se pierde y NO se puede       │
+│   recuperar desde Meta. Ya pasó: hoy hay 15 filas con descripciones en    │
+│   vez de ids — "imagen nueva" ×3 · "renovacion +25" ×4 ·                  │
+│   "imagen Prompt Maestro" ×2 · "ver 2_DATA" ×6. En esos conjuntos ya no   │
+│   se sabe qué creativo corrió.                                            │
+│   → MITIGACIÓN: al dar de alta cada conjunto nuevo, `creativo_id` DEBE    │
+│     ser el nombre del archivo en Ads/MEDIA_[PRODUCTO]/. Nunca una         │
+│     descripción, nunca un puntero a otro documento.                       │
+│   → SI EL DÍA DE MAÑANA un conjunto pasa a llevar DOS creativos distintos │
+│     (el test de "dos conceptos"), este esquema deja de alcanzar y ahí sí  │
+│     habrá que nombrar los anuncios. Mientras sea 1:1, no hace falta.      │
+└───────────────────────────────────────────────────────────────────────────┘
+
+───────────────────────────────────────────────────────────────────────────
+9. PRESUPUESTO — el cambio que más va a mover la aguja
+───────────────────────────────────────────────────────────────────────────
+HOY (leído en vivo de Meta):  TODOS los conjuntos en $1.59 – $1.69 / día
+PISO DEL SISTEMA:             $2.99      TECHO:  $3.95
+EL $1.59 ESTÁ DEPRECADO desde hace semanas: con eso Meta no sale de aprendizaje.
+
+→ AL DUPLICAR, PONER $3.95/día EN TODOS LOS CONJUNTOS.
+  Son ángulos ya validados; no se está descubriendo nada, se está reconstruyendo
+  volumen conocido. La fórmula del sistema (7 × costo por conversación observado)
+  da por encima del techo en TINNIDROP, así que el techo es lo correcto.
+
+→ DESPUÉS: surfing +20% diario MIENTRAS el CPA del portafolio se mantenga < Q45.
+  EL CPA ES EL GATE, NO EL MONTO. Subir gasto sin vigilar CPA reproduce julio
+  (Q478/día a CPA Q53 = solo Q+372/día).
+
+⚠️ ESPERAR QUE EL CPA SUBA UN POCO. Los CPA de este plan se midieron con los
+   conjuntos a $1.59/día. A $3.95 se compra tráfico menos barato: es normal y
+   está presupuestado. El objetivo NO es sostener Q20 — es sostener < Q45.
+
+OBJETIVO DEMOSTRADO: Q478/día de pauta con CPA ~Q42 → Q+606/día de ganancia.
+Agosto operó a Q218/día. Hay el doble de espacio.
+
+───────────────────────────────────────────────────────────────────────────
+10. ORDEN DE EJECUCIÓN — y lo que NO hay que apagar
+───────────────────────────────────────────────────────────────────────────
+‼️ NO APAGUE NADA HASTA QUE EL NÚMERO NUEVO ESTÉ CONFIRMADO VENDIENDO.
+   TINNIDROP deja ~Q296/día. Apagarlo para probar un flujo nuevo cuesta más que
+   dejar los dos corriendo tres días en paralelo. No hay riesgo de ensuciar la
+   data: son adId distintos y la columna ad_id los separa sola.
+
+  DÍA 1 (4 AM del 12-ago) → VARICOSE (§3). Es chico y ya vive en la cuenta nueva.
+                            Sirve de prueba end-to-end de todo el flujo.
+  DÍA 2 → CLEARSTEM (§7) + NUSAVA (§2), si VARICOSE confirmó que el bot recibe.
+  DÍA 3 → TINNIDROP en sus 4 cuentas (§1 · §4 · §5 · §6).
+  DÍA 4-5 → recién ahí apagar lo viejo, producto por producto.
+
+┌─ QUÉ SE DECIDE LA PRIMERA MAÑANA — y qué NO ────────────────────────────┐
+│ ❌ NO se decide rentabilidad con una noche de data. Tres razones duras:  │
+│    · La venta COD MADURA ~3 DÍAS → el número nuevo va a estar            │
+│      subestimado por construcción.                                       │
+│    · Los conjuntos duplicados arrancan el APRENDIZAJE DE CERO. Sus       │
+│      primeras 24h siempre se ven mal.                                    │
+│    · ~Q540 de pauta en un día ÷ CPA Q45 ≈ 12 ventas repartidas en 18     │
+│      conjuntos = menos de 1 por conjunto. Ruido de Poisson puro.         │
+│                                                                          │
+│ ✅ SÍ se decide LA PLOMERÍA, y para eso una noche sobra:                 │
+│    [ ] ¿Los anuncios entregan?      impresiones > 0 en cada conjunto     │
+│    [ ] ¿Llegan conversaciones?      mensajes > 0 al número nuevo         │
+│    [ ] ¿El bot responde bien?       probarlo en persona                  │
+│    [ ] ¿LucidSales las registra?    aparecen en la cuenta nueva          │
+│                                                                          │
+│ 🔑 EL CRITERIO PARA APAGAR EL NÚMERO VIEJO NO ES DE RENDIMIENTO.         │
+│    El viejo se apaga porque TIENE FALLAS, no porque venda menos. Si los  │
+│    4 checks de arriba dan OK, apáguelo con tranquilidad al día siguiente.│
+│    No espere data de CPA para una decisión que no es de CPA.             │
+│    El CPA del relanzamiento se lee a los 3 días, y sirve para otra cosa: │
+│    decidir cuánto escalar.                                               │
+└──────────────────────────────────────────────────────────────────────────┘
+
+CHECKLIST POR PRODUCTO — antes de encender:
+  [ ] Número nuevo conectado a la página
+  [ ] Bot cargado en la cuenta nueva de LucidSales, con catálogo y precios
+  [ ] MENSAJE DE PRUEBA REAL: entra al número nuevo y el bot responde
+  [ ] Los anuncios apuntan al número nuevo
+  [ ] Presupuesto en $3.95 (no quedó en $1.59)
+  [ ] Ningún conjunto quedó con "- Copia" en el nombre
+  [ ] Programado 4 AM del día siguiente — NUNCA el mismo día
+
+───────────────────────────────────────────────────────────────────────────
+11. DESPUÉS DE LANZAR — para que la data no se rompa
+───────────────────────────────────────────────────────────────────────────
+  [ ] Anotar en PRODUCTOS/_EVENTOS.csv una fila LANZAMIENTO por conjunto nuevo,
+      con la FECHA EXACTA del corte. Sin eso no se puede calcular la edad del
+      conjunto ni su % de Presupuesto de Decisión, ni leer el antes/después.
+  [ ] Dar de alta los conjuntos nuevos en PRODUCTOS/_DIM_CONJUNTOS.csv con su
+      angulo_key IDÉNTICO al que ya usan (ACCESIBILIDAD_MEDICO, DETERIORO_COGNITIVO,
+      PERDIDA_AUDITIVA, ME_DIJERON_NO_CURA, ARDOR, VERGUENZA_PIERNAS,
+      RESISTENCIA_INSULINA_SOP, ANTI_FALSIFICACION, MEDICOS_FALLARON).
+      Si el angulo_key cambia, la serie histórica se parte en dos.
+  [ ] Retomar el export DIARIO de LucidSales (1 día, el de ayer). Con ventanas
+      agregadas no hay tendencia ni detección de fatiga.
+  [ ] Los primeros días la data llega partida entre las DOS cuentas de LucidSales.
+      Es esperable y suma bien: los universos de adId son disjuntos (verificado
+      11-ago, 0 adId en común).
+
+═══════════════════════════════════════════════════════════════════════════
+ANEXO — LOS 30 CONJUNTOS QUE NO PASAN EL CORTE, Y POR QUÉ
+═══════════════════════════════════════════════════════════════════════════
+SOBRE EL BREAK-EVEN (pierden plata en cada venta):
+  CLEARSTEM Testimonio Radical Q221 (BE 106) · NUSAVA MA4-DEPIE Q115 ·
+  NUSAVA ARDOR_TEST Q114 · VARICOSE MIEDO-CIRUGIA Q113 · VARICOSE MANCHAS Q110
+CERO VENTAS con presupuesto de decisión cumplido:
+  CLEARSTEM Dolor Emocional · NUSAVA MA1-COMPLEJOB · NUSAVA MA3-HORMIGUEO ·
+  TINNIDROP ME-DIJERON en GTR7/GTR1/GTR13 · TINNIDROP PERDIDA-AUDITIVA en CP1/GTR13/GTR1 ·
+  TINNIDROP ACCESIBILIDAD en GTR13/GTR1 · TINNIDROP TENSION-ESTRES
+n = 1 VENTA (ruido de Poisson, no dato):
+  NUSAVA MA2-ARDORNOCHE · NUSAVA MA5-AZUCAR · VARICOSE CALAMBRES ·
+  VARICOSE MA4_MANCHAS · VARICOSE MA5_RESIGNACION
+EL MISMO ÁNGULO RINDE MEJOR EN OTRA CUENTA (no es que sea malo, es que está mal ubicado):
+  DETERIORO_COGNITIVO en GTR7 Q79 → va a GTR1 (Q32)
+  DETERIORO_COGNITIVO en GTR0 Q48 y CP1 Q57 → va a GTR1
+  ACCESIBILIDAD en GTR0 Q42 → va a GTR7 (Q20) y CP1 (Q22)
+  ME-DIJERON en GTR0 Q59 → va a CP1 (Q25)
+═══════════════════════════════════════════════════════════════════════════

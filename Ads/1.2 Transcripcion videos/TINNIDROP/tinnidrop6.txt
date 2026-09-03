@@ -1,0 +1,25 @@
+============================================================
+Análisis del Video N: tinnidrop6.mp4
+
+CLASIFICACIÓN RÁPIDA:
+- PRIMEROS 5 SEGUNDOS — voz/texto exacto: "¿Escuchas un pitido en tus oídos aunque todo esté en silencio?" | qué se ve: Primer plano de una oreja a la que se le aplican gotas de líquido transparente con un gotero, el líquido burbujea al entrar. | overlay en pantalla: Subtítulos dinámicos ("un pitido", "en tus oídos", "aunque", "todo esté en", "silencio?").
+- ÁNGULO DEL PRODUCTO: Prevenir que el tinnitus escale a problemas graves (pérdida total de audición o pérdida de memoria/olvido irreversible) tratándolo desde la raíz.
+- FORMATO CREATIVO: educacional / advertencia médica
+- AVATAR (quién aparece): Paciente mujer mayor sufriendo, doctora (apariencia IA) con modelo anatómico de oído, mujer joven relajada. Se dirige a personas que llevan semanas escuchando el pitido y lo están ignorando o normalizando.
+- TONO: clínico / alarmista. Tuteo directo ("tus oídos", "contigo", "no lo normalices").
+- SEÑALES DE COMPRA:
+    · Prueba social: No aplica
+    · Cifras/resultados con tiempo: "desde el primer día"
+    · Urgencia/escasez: "Si todavía hay un botón naranja aquí abajo es porque es tu día de suerte", "Actúa porque puede ser demasiado tarde"
+    · Garantía / envío gratis / pago contra entrega: No aplica
+    · Anti-falsificación / "el original": No aplica
+- MENCIÓN DE PRECIO: No
+
+Transcripción del Audio (palabra por palabra, TODO lo hablado, sin resumir):
+"¿Escuchas un pitido en tus oídos aunque todo esté en silencio? Si lo escuchas todos los días, ojo. El tinnitus constante no siempre es algo pequeño. Cuando el oído pierde sensibilidad, el cerebro intenta compensar... y crea un sonido que no existe. Y si lo que escuchas suena como un latido, podría estar relacionado con tu presión arterial. Pero hay otra causa que casi nadie menciona y que muchas personas descubren cuando ya es tarde. Si el zumbido lleva semanas contigo... No lo normalices. Por ello recomiendo Tinidrop. Ayuda a reducir ese molesto zumbido constante, brindándote paz auditiva. Contiene ingredientes naturales que trabajan para su cuidado y la protección. Es un spray que se aplica directamente en el oído. Reduce el pitido, zumbido y las irritaciones desde el primer día. Ayuda a silenciar el zumbido desde la raíz antes de que te lleve a algo mucho peor. Porque si sigues ignorando esto va a llegar el día en que ni el zumbido vas a poder escuchar. Si todavía hay un botón naranja aquí abajo es porque es tu día de suerte. No esperes a que el zumbido se transforme en olvido y el olvido en algo irreversible. Actúa porque puede ser demasiado tarde."
+
+Análisis Visual y de Contenido:
+* Qué se ve en el video: Inicia con la aplicación de gotas en una oreja. Muestra a una mujer de perfil con su cerebro y sistema nervioso resaltados en rojo (simulando dolor), una doctora en bata blanca explicando con un modelo de oreja, animaciones 3D del cuerpo humano azulado y escáneres cerebrales. Luego, el frasco de South Moon Tinnidrop se muestra de forma aspiracional junto a una planta y una mujer relajada al sol. Termina con un montaje de animaciones 3D del oído, el cerebro, la aplicación del spray y ondas de sonido. Subtítulos dinámicos de cada palabra durante todo el video.
+* Qué transmite: Miedo y urgencia ("el zumbido se transforme en olvido", "algo irreversible"). Juega con el temor de perder la audición o la memoria para presionar a la acción inmediata. Tinidrop se posiciona como una intervención médica oportuna para evitar el peor escenario.
+* Llamado a la acción (CTA): "Si todavía hay un botón naranja aquí abajo es porque es tu día de suerte. [...] Actúa porque puede ser demasiado tarde."
+============================================================
