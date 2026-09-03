@@ -1,0 +1,130 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA Y OPTIMIZACIÓN DEL SISTEMA · 2026-09-02 · 9 commits (b7aeb9e → 1cd7c5e)
+═══════════════════════════════════════════════════════════════════════════
+
+Esto NO es una auditoría de producto ni de métricas. Es el registro de por qué el
+sistema cambió de forma el 2026-09-02. Se conserva para que dentro de tres meses
+nadie tenga que adivinar el motivo de una decisión — ni deshacerla sin saberlo.
+
+Contrastado contra la documentación de ingeniería de Anthropic y la doc oficial de
+Claude Code (context engineering, best practices, subagents, building effective
+agents, writing tools for agents).
+
+
+───────────────────────────────────────────────────────────────────────────
+1. EL PROBLEMA QUE SE ENCONTRÓ
+───────────────────────────────────────────────────────────────────────────
+
+El método (ÁNGULOS → CONCEPTOS → ESCALADO) estaba bien. Lo que estaba mal era cómo
+se le entregaba al modelo.
+
+  · CLAUDE.md pesaba 16.120 tokens y CADA subagente lo hereda entero. Una FASE 1
+    invoca 10 subagentes: 161.200 tokens solo de ese archivo. `etapa-1`, que busca
+    una fila en una tabla, recibía las 24 reglas del orquestador y la doctrina de
+    la FASE 3.
+  · AGENTS.md era una copia línea por línea de CLAUDE.md (538 vs 538), y .codex/
+    era una TERCERA copia, ya divergida: 13 de 17 etapas, sin el ciclo de
+    optimización, con ETAPA-6 al 80 % (le faltaban los modos FASE 2 y FASE 3).
+  · El repositorio no tenía UN SOLO COMMIT. La historia se hacía copiando archivos
+    a _ARCHIVO/ con sufijos de fecha.
+  · 24 reglas mecánicas escritas en prosa, 0 hooks. Dos ya habían fallado: 41
+    auditorías sin archivar y ningún garante de regenerar el dashboard.
+
+
+───────────────────────────────────────────────────────────────────────────
+2. QUÉ SE HIZO, Y POR QUÉ NO DESHACERLO A LA LIGERA
+───────────────────────────────────────────────────────────────────────────
+
+CLAUDE.md pasó de enciclopedia a ENRUTADOR (16.120 → 3.580 tokens).
+  La doctrina de cada fase vive ahora en su skill: fase-1-angulos, fase-2-conceptos,
+  fase-3-escalado y ciclo-diario. Solo se cargan cuando aplican.
+  ⚠️ NO volver a meter doctrina de fase en CLAUDE.md: se paga en cada subagente.
+  Verificado al hacerlo: 44 de 44 conceptos operativos del original sobreviven.
+
+Las cifras del costeo salieron del modelo y pasaron a script.
+  `Ads/_TOOLS/costear.py` lee _DIM_COSTEO.csv. Ya no es POSIBLE que el sistema
+  invente una cifra — que es lo que el invariante 2 intentaba con una advertencia.
+  `etapa-1` lo ejecuta y aplica su juicio SOBRE ese output.
+
+El gate de reconciliación dejó de verificarse a ojo.
+  `Ads/_TOOLS/verificar_producto.py` devuelve pase o fallo. Encontró de entrada un
+  fallo real e invisible: NUSAVA tenía su 3_CAMPAÑA_META en v2/junio con el
+  campaign_id viejo, y COSTO Q70 contra el Q55 corregido en _DIM_PRODUCTOS.csv.
+
+Tres reglas de prosa se volvieron hooks (.claude/settings.json).
+  · PostToolUse Write|Edit  → valida el CSV escrito y regenera el dashboard.
+  · PostToolUse Bash        → barrido por mtime; cubre los CSV que escriben los
+                              scripts (ingerir_lucidsales.py incluido).
+  · SessionStart            → retención de _AUDITORIAS a subcarpeta mensual.
+  ⚠️ El hook de CSV BLOQUEA si el archivo queda malformado. Eso es deliberado: es
+  el bug de NUSAVA del 31-jul (20 campos en vez de 17) hecho imposible.
+
+etapa-3a + etapa-3b → etapa-3, y movida de FASE 2 a FASE 3.
+  El <input> de 3b era literalmente el output de 3a y no tenía búsqueda web: era
+  encadenamiento sin decisión en medio. Y sus microángulos no arman nada en FASE 2,
+  que mide el CREATIVO con ángulo y copy FIJOS. Su consumidor real es la expansión
+  horizontal de la FASE 3. FASE 2 quedó en 5 pasos (antes 7).
+
+UNA sola escalera de precios.
+  Había dos: la tabla de ETAPA-1.md y la regla `costo × 1.7` del código.
+  _DIM_PRECIOS.csv desempató con datos de Dropi — TINNIDROP en la fila Q40 vende a
+  179/239/299 con n=102/42/18 órdenes REALES; la regla habría dado 179/249/319.
+  Ganó la tabla. Vive en _DIM_COSTEO.csv (precio_2u, precio_3u, origen_escalera).
+  JERARQUÍA: _DIM_PRECIOS (Dropi, si ya vende) > _DIM_COSTEO (si es nuevo) > prosa.
+  BUG corregido de paso: la fila se elige por la MÁS CERCANA (empate → superior),
+  no siempre la superior. TINNIDROP Q41 → fila Q40, no Q45.
+
+El registro maestro es _DIM_PRODUCTOS.csv.
+  _PORTAFOLIO.txt tenía 8 de sus 10 columnas duplicadas ahí y el 79 % del archivo
+  era narrativa. Se migraron clave_campana, campaign_id y las 8 notas.
+  _PORTAFOLIO.txt quedó como BITÁCORA: se consulta, no se recorre.
+
+El sistema NO depende de un modelo.
+  Las 16 etapas declaran `model: inherit`: corren en el modelo de la sesión. Se
+  probó fijar haiku/sonnet en las mecánicas y se REVIRTIÓ a propósito — ataba el
+  sistema y arriesgaba degradación silenciosa (un modelo menor no falla: entrega
+  algo peor que parece bien). Bajar el modelo es decisión de COSTO, no del método.
+
+
+───────────────────────────────────────────────────────────────────────────
+3. RESULTADO MEDIDO
+───────────────────────────────────────────────────────────────────────────
+
+                                    ANTES        AHORA
+  Arranque en frío .............   18.050        5.540    (−69 %)
+  Instrucciones de una FASE 1 ..  266.740      127.300    (−52 %)
+  Instrucciones de una FASE 2 ..  186.910       67.400    (−64 %)
+  Etapas .......................       17           16
+  Skills de fase ...............        0            4
+  Hooks ........................        0            3
+  Commits en git ...............        0            9
+
+  Verificación al cierre: gate 8/8 · costeo exacto en TINNIDROP, NUSAVA y
+  CLEARSTEM · dashboard exit 0 · barrido de los 22 CSV limpio · 16 agentes con
+  model declarado · retención al día (16 informes archivados, nada borrado).
+
+
+───────────────────────────────────────────────────────────────────────────
+4. LO QUE SE ELIMINÓ (todo recuperable: git revert)
+───────────────────────────────────────────────────────────────────────────
+
+  Sin ninguna referencia en el repo: gen_banco.py, gen_metaads.py, gen_panel.py,
+  PRUEBA_CHATGPT_INEDITO_TINNIDROP/, Shopify_Productos/ (su único consumidor era
+  gen_panel.py), 26 .pyc.
+  Sustituidos por git: _ARCHIVO/backups_csv/ y backups_agentes/.
+  Retirados a _ARCHIVO/: .codex/agents/ (13 .toml divergidos), ETAPA-3A y ETAPA-3B.
+
+  NADA de la historia del negocio se borró. Ventas, eventos, aprendizajes y
+  auditorías fechadas están completos: son el insumo de etapa-10.
+
+
+───────────────────────────────────────────────────────────────────────────
+5. LO ÚNICO QUE QUEDA ABIERTO
+───────────────────────────────────────────────────────────────────────────
+
+  Empírico, no técnico: la próxima FASE 1 real es la primera que corre con el
+  sistema recortado de punta a punta. Verificar que el costeo salga exacto y que
+  las fichas de ángulo mantengan la calidad. Si algo sale raro, comparar contra el
+  2_DATA_PRODUCTO.txt de un producto ya cerrado — ahí está el patrón bueno.
+
+═══════════════════════════════════════════════════════════════════════════
