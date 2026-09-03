@@ -1,60 +1,60 @@
 {
-  "arranque_frio": 6167,
-  "claude_md": 3687,
+  "arranque_frio": 6256,
+  "claude_md": 3774,
   "fases": {
-    "fase-1-angulos": 290878,
-    "fase-2-conceptos": 354876,
-    "fase-3-escalado": 227276,
-    "ciclo-diario": 229189
+    "fase-1-angulos": 292595,
+    "fase-2-conceptos": 356973,
+    "fase-3-escalado": 228679,
+    "ciclo-diario": 230389
   },
   "nodos_dios": [
     [
       "PLANTILLAS_ADS.md",
       6,
-      8632,
-      51792
+      8649,
+      51894
     ],
     [
       "ESCALADO_PLAYBOOK.md",
       5,
-      8919,
-      44595
+      8934,
+      44670
     ],
     [
       "CLAUDE.md",
       8,
-      3687,
-      29496
+      3774,
+      30192
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
       3,
-      8476,
-      25428
+      8483,
+      25449
     ],
     [
       "CALENDARIO_ESCALADO.md",
       3,
-      7997,
-      23991
+      8007,
+      24021
     ],
     [
       "PLANTILLAS_INFOGRAFIAS.md",
       3,
-      7010,
-      21030
+      7017,
+      21051
     ],
     [
       "PLANTILLAS_INFOGRAFIAS_FLUJO.md",
       1,
-      13011,
-      13011
+      13014,
+      13014
     ],
     [
       "DATA_PLAYBOOK.md",
       1,
-      10826,
-      10826
+      10831,
+      10831
     ],
     [
       "MCP_PLAYBOOK.md",
@@ -65,20 +65,20 @@
     [
       "COPYWRITING_ADS.md",
       2,
-      3688,
-      7376
+      3738,
+      7476
     ],
     [
       "PLANTILLAS_INFOGRAFIAS_OPCIONALES.md",
       1,
-      6050,
-      6050
+      6052,
+      6052
     ],
     [
       "PLANTILLAS_DEFAULTS_OPERADOR.md",
       3,
-      1526,
-      4578
+      1549,
+      4647
     ],
     [
       "LAVADO.md",
@@ -92,7 +92,7 @@
   "rutas_muertas": [],
   "insumos_faltantes": [
     [
-      "./ETAPA-RECOLECCION.md",
+      "DOCTRINA/ETAPA-RECOLECCION.md",
       "Ads/COPYS_COMPETENCIA.txt"
     ]
   ],
@@ -100,7 +100,7 @@
   "inventario": {
     "agentes": 16,
     "skills": 7,
-    "docs_raiz": 18,
+    "docs_raiz": 3,
     "csv": 22
   }
 }

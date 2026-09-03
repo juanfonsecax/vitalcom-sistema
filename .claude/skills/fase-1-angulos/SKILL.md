@@ -68,9 +68,9 @@ así: `--- NOMBRE_DEL_VIDEO.txt ---`
 
 > La imagen del producto **siempre** se entrega en el chat (adjunta o link) — requiere análisis
 > visual (`etapa-4` Director de Arte y `etapa-1b`).
-> Detalle de la fase manual de recolección en `ETAPA-RECOLECCION.md`.
+> Detalle de la fase manual de recolección en `DOCTRINA/ETAPA-RECOLECCION.md`.
 
-> **MÓDULOS OPCIONALES DE INVESTIGACIÓN (`ETAPA-RESEARCH.md`):** antes de `etapa-0`, el operador
+> **MÓDULOS OPCIONALES DE INVESTIGACIÓN (`DOCTRINA/ETAPA-RESEARCH.md`):** antes de `etapa-0`, el operador
 > puede pedir Módulo A (investigación web de ingredientes) o Módulo B (scraping Meta Ads Library,
 > requiere APIFY_TOKEN). Si no los menciona, continuar normal (`etapa-1b` ya hace búsqueda web).
 
@@ -161,7 +161,7 @@ Lanzar ambas en el mismo turno, inmediatamente después de `etapa-1b`.
   DE DOLOR REAL**), componentes, y `<datos_saturacion>` (opcional; si no se entrega, marca
   saturación DESCONOCIDA). Output: 6 fichas de ángulo rankeadas — cada una con su **clasificación
   medible** (`avatar_genero`, `avatar_edad`, `emocion_dominante`, vocabulario cerrado de
-  `DATA_PLAYBOOK.md` §1). Los ángulos con respaldo de voz real rankean por encima de los teóricos.
+  `DOCTRINA/DATA_PLAYBOOK.md` §1). Los ángulos con respaldo de voz real rankean por encima de los teóricos.
 - **`etapa-fanpage`** — Inputs: nombre del producto, componentes de `etapa-1b`, ángulos de
   `etapa-0`. Output: `<pagina_asignada>` (Formato A o B).
   - ⚠️ Si entrega **Formato B** (sin página ideal): alertar al operador antes de continuar. No
@@ -186,7 +186,7 @@ Lanzar ambas en el mismo turno. Esperar AMBOS outputs antes de `etapa-6`.
 
 > **DEFAULTS DE OPERADOR:** cuando el operador no entrega días de resultado, dosis, momento de uso,
 > estadísticas, # clientes o FAQs, `etapa-4` y `etapa-5` usan los valores base de
-> `PLANTILLAS_DEFAULTS_OPERADOR.md` en vez de detenerse. El dato real siempre sobreescribe el default.
+> `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` en vez de detenerse. El dato real siempre sobreescribe el default.
 
 ---
 
@@ -199,7 +199,7 @@ Output: 1 campaña, 6 conjuntos, **2 anuncios por conjunto**, 4 AM día siguient
 su formato (VIDEO [archivo] / IMAGEN). **Nunca pausar un conjunto por falta de video.** Incluir al
 pie: "FanPage de pauta: [página asignada]".
 
-> **Si el conector Meta Ads está disponible → MODO MCP (`MCP_PLAYBOOK.md`):** además del texto, el
+> **Si el conector Meta Ads está disponible → MODO MCP (`DOCTRINA/MCP_PLAYBOOK.md`):** además del texto, el
 > orquestador CREA el esqueleto real **en PAUSED** (campaña Tráfico + 6 conjuntos
 > CONVERSATIONS/WHATSAPP, ABO $2.99/conjunto, banda de edad por avatar con Advantage+ OFF, 4 AM).
 > **Pre-flight obligatorio:** cuenta `is_ads_mcp_enabled`+`is_queryable`, fanpage asignada con
@@ -214,7 +214,7 @@ pie: "FanPage de pauta: [página asignada]".
 **TESTEO EN DOS ETAPAS:** ETAPA 1 días 0-3 = 6 conjuntos × **$2.99** (se cortan 2-3 por
 conversación) → ETAPA 2 días 4-8 = 3 sobrevivientes × **$5.98**. Mismo gasto total, veredicto de
 venta ~2× más rápido. Fórmula autoajustable `presupuesto/día = 7 × (costo por conversación
-observado)`, **piso $2.99 · techo $3.95**. Detalle en `CALENDARIO_ESCALADO.md` §1.5.
+observado)`, **piso $2.99 · techo $3.95**. Detalle en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5.
 
 **Anuncios por conjunto:** 2, nunca 1. Qué va en el 2º está **EN PRUEBA desde 31-jul** (DUPLICADO vs
 DOS CONCEPTOS del mismo ángulo). **Default vigente = DUPLICADO.** Diseño del test en

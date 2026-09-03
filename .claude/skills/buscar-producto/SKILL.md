@@ -62,7 +62,7 @@ FLUJO DE DEMANDA
 **Si no se puede responder "por qué AHORA", no hay oportunidad — hay una
 categoría.** Volver a empezar.
 
-> Cruce con `MODULO_INTELIGENCIA_PRODUCTO.md` §1: si ya existe minado de voz del
+> Cruce con `DOCTRINA/MODULO_INTELIGENCIA_PRODUCTO.md` §1: si ya existe minado de voz del
 > cliente para este flujo, leerlo primero y no repetir el trabajo.
 
 ---
@@ -269,4 +269,4 @@ buscar-producto  →  etapa-producto  →  ETAPA-1 (costeo)  →  ETAPA-0
 ```
 
 El ángulo ganador de una RUTA B cerrada se archiva en `_CONOCIMIENTO/` y
-alimenta `MODULO_INTELIGENCIA_PRODUCTO.md` para la siguiente ventana.
+alimenta `DOCTRINA/MODULO_INTELIGENCIA_PRODUCTO.md` para la siguiente ventana.

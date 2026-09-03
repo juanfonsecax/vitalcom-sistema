@@ -8,9 +8,9 @@ operar. Este archivo existe solo porque algunos clientes buscan `AGENTS.md` por 
 | Qué | Dónde |
 |---|---|
 | Orquestador y doctrina | `CLAUDE.md` |
-| Definiciones de las 17 etapas | `.claude/agents/ETAPA-*.md` |
+| Definiciones de las 16 etapas | `.claude/agents/ETAPA-*.md` |
 | Skills invocables | `.claude/skills/` |
-| Documentos dueños de cada tema | ver la tabla «MAPA DE ARCHIVOS» de `CLAUDE.md` |
+| Documentos dueños de cada tema | `DOCTRINA/` — cuál es cuál, en la tabla «MAPA DE ARCHIVOS» de `CLAUDE.md` |
 
 Las etapas se invocan por su `name` (`etapa-0`, `etapa-4`, …), nunca por ruta de archivo.
 

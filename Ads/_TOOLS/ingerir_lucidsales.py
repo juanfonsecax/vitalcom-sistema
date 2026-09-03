@@ -7,7 +7,7 @@ Uso:
     python Ads/_TOOLS/ingerir_lucidsales.py --dir <carpeta>        (toma report-*.xlsx)
     ... [--rol BASE|CONTROL] [--fuente LucidSales|LucidSales_CuentaB] [--dry-run]
 
-Reglas que implementa (DATA_PLAYBOOK.md + runbook de la auditoría):
+Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md + runbook de la auditoría):
   · header en la FILA 4 (header=3); descarta filas de "Resumen" (accountTitle vacío).
   · mapeo adSetTitle->conjunto · adTitle->anuncio · sells->ventas · total->total_q · spend->spend_usd.
   · CP1 (1346891653335162) factura en COP -> spend_COP / 3152.5 = spend_USD (APR-028).

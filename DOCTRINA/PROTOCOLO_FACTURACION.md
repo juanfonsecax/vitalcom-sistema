@@ -1,7 +1,7 @@
 # PROTOCOLO DE FACTURACIÓN — QUÉ PASAR, CUÁNDO Y CÓMO
 
 > Creado 16-ago-2026 a pedido del operador. Responde: *"¿qué exactamente te paso para que esto corra siempre igual?"*
-> Dueño de la doctrina de data: `DATA_PLAYBOOK.md` → "CAPA DE FACTURACIÓN". Este archivo es **solo el checklist de entrega**.
+> Dueño de la doctrina de data: `DOCTRINA/DATA_PLAYBOOK.md` → "CAPA DE FACTURACIÓN". Este archivo es **solo el checklist de entrega**.
 
 ---
 

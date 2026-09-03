@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 Produce la estructura de campaña lista para crear en Meta Ads. Opera en **tres modos**
-(arquitectura de 3 fases, 2026-09-02 — cadencia y aritmética en `CALENDARIO_ESCALADO.md` §1.7):
+(arquitectura de 3 fases, 2026-09-02 — cadencia y aritmética en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7):
 
 | Modo | Qué mide | Estructura | Variable que se mueve | Todo lo demás |
 |---|---|---|---|---|
@@ -19,7 +19,7 @@ Produce la estructura de campaña lista para crear en Meta Ads. Opera en **tres 
 
 **La regla que gobierna las tres:** *presupuesto **protegido** (conjuntos separados) cuando la
 variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cuando se decide por
-**ENTREGA**.* Por eso el 1-1-5 va en conceptos y **nunca** en ángulos — ver `CALENDARIO_ESCALADO.md`
+**ENTREGA**.* Por eso el 1-1-5 va en conceptos y **nunca** en ángulos — ver `DOCTRINA/CALENDARIO_ESCALADO.md`
 §1.7.1 y el choque C-09 de `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 
 > ⚠️ **Qué pasó con los MICROÁNGULOS.** Hasta el 02-sep, "FASE 2" nombraba una campaña de 6
@@ -31,12 +31,12 @@ variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cu
 
 El operador solo necesita leer el output de este agente y replicarlo en Meta Ads.
 
-> **MODO MCP (automatizado) — recomendado.** Cuando el conector Meta Ads está disponible, ETAPA-6 NO se limita a texto: el orquestador crea la estructura **real en Meta, en estado PAUSED**, siguiendo `MCP_PLAYBOOK.md` (raíz del sistema). Resumen:
+> **MODO MCP (automatizado) — recomendado.** Cuando el conector Meta Ads está disponible, ETAPA-6 NO se limita a texto: el orquestador crea la estructura **real en Meta, en estado PAUSED**, siguiendo `DOCTRINA/MCP_PLAYBOOK.md` (raíz del sistema). Resumen:
 > - Campaña **Tráfico** (`OUTCOME_TRAFFIC`) + 6 conjuntos (**CONVERSATIONS / WHATSAPP**, ABO, **$2.99/conjunto = 299¢ USD** (ETAPA 1), **banda de edad derivada del avatar** (ver BANDA DE EDAD abajo) con Advantage+ OFF, programados **4 AM**, todo **PAUSED**). Nombres según la **CONVENCIÓN DE NOMBRES** de abajo (llave de ETAPA-7).
 > - Los **ANUNCIOS** van en un **2º paso** (requieren media: el MCP no la sube). El operador sube los assets a la biblioteca de la cuenta y avisa; entonces se crean **2 anuncios/conjunto** con su copy (regla del duplicado interno). Precio P1u solo en los conjuntos marcados.
 > - La carpeta `Ads/MEDIA_[PRODUCTO]/` con los videos renombrados por conjunto **ya existe desde antes** (la crea el orquestador justo después de ETAPA-0 — ver CLAUDE.md PASO 1.5, independiente del MCP); acá solo se completa con `PROMPTS_IMAGENES_[PRODUCTO].txt` (ETAPA-4) para los ángulos-imagen, y se genera `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` con todos los IDs (campaign_id + 6 ad_set_id).
-> - Pre-flight (cuenta `is_ads_mcp_enabled`+`is_queryable`, fanpage asignada a la cuenta con WhatsApp, IDs en `2_DATA_PRODUCTO.txt`), parámetros exactos, mapeo de campos y gotchas: ver **`MCP_PLAYBOOK.md`**.
-> - El texto-estructura de abajo es el espejo legible del esqueleto y el **fallback** si no hay MCP. Presupuesto canónico = **$2.99/conjunto** (299¢ USD) para la ETAPA 1 del testeo; al día ~3 se cortan 2-3 conjuntos por conversación y los sobrevivientes suben a **$5.98** (ETAPA 2). Fórmula y aritmética en `CALENDARIO_ESCALADO.md` §1.5. El **$1.59** queda deprecado (no sacaba a Meta de aprendizaje). El **Q54** que aparezca abajo es el legacy pre-MCP (≈$7) y solo aplica si se pauta a mano sin MCP.
+> - Pre-flight (cuenta `is_ads_mcp_enabled`+`is_queryable`, fanpage asignada a la cuenta con WhatsApp, IDs en `2_DATA_PRODUCTO.txt`), parámetros exactos, mapeo de campos y gotchas: ver **`DOCTRINA/MCP_PLAYBOOK.md`**.
+> - El texto-estructura de abajo es el espejo legible del esqueleto y el **fallback** si no hay MCP. Presupuesto canónico = **$2.99/conjunto** (299¢ USD) para la ETAPA 1 del testeo; al día ~3 se cortan 2-3 conjuntos por conversación y los sobrevivientes suben a **$5.98** (ETAPA 2). Fórmula y aritmética en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5. El **$1.59** queda deprecado (no sacaba a Meta de aprendizaje). El **Q54** que aparezca abajo es el legacy pre-MCP (≈$7) y solo aplica si se pauta a mano sin MCP.
 
 ---
 
@@ -284,7 +284,7 @@ QUÉ OBSERVAR AL DÍA SIGUIENTE
 ──────────────────────────────────────────────────────
 Para identificar el ángulo ganador, revisar por conjunto:
 
-MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `ESCALADO_PLAYBOOK.md` §8 → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
+MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `DOCTRINA/ESCALADO_PLAYBOOK.md` §8 → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
 1. % Conversación por Clic en enlace = Conversaciones ÷ Clics × 100  (la más importante)
    → <35% problema de flujo/coherencia · 35-49% bueno/escalable · ≥50% (50-70%) excelente y súper escalable
 2. % Conversación por Impresión = Conversaciones ÷ Impresiones × 100
@@ -348,7 +348,7 @@ PRESUPUESTO TOTAL: $6 + $6 + ($6×2) = $24.00/día  ≈ Q183/día
 ⚠️ Cabe UN SOLO producto en FASE 2 a la vez (techo de portafolio Q597/día — APR-057).
 ──────────────────────────────────────────────────────
 
-CÓMO SE LEE (regla de replicación — CALENDARIO_ESCALADO.md §1.7.3):
+CÓMO SE LEE (regla de replicación — DOCTRINA/CALENDARIO_ESCALADO.md §1.7.3):
   arriba en 2 de 2 .... GANADOR   → pasa a FASE 3
   arriba en 1 de 2 .... RUIDO     → no se corona, se repite
   sin entrega ......... SIN_ENTREGA → se relanza en la próxima tanda, NUNCA "perdedor"
@@ -623,7 +623,7 @@ FIN ESTRUCTURA ESCALADO
   > Matiz de objetivo (Clase 15): en el TESTEO el objetivo es Tráfico (Mercy: "Interacción nunca me funcionó"). En el ESCALADO con Post ID, Joaquín en Clase 15 crea la campaña de réplica con objetivo **Interacción**. Este sistema mantiene Tráfico por defecto; usar Interacción para Post ID solo si el operador lo valida.
 - **Regla de límite por fanpage:** Hasta ~250 anuncios activos por fanpage. Pasado ese punto, abrir nueva fanpage del mismo nicho/identidad. El ganador solo se replica en fanpages del mismo nicho. (Clase 15)
 - **Regla de los dos modos de escalado:** El operador elige modo AGRESIVO (Mercy — duplicar y multicuenta rápido) o PROGRESIVO (Joaquín — +20% matutino y duplicar solo tras 2-3 días estables). No mezclar criterios a mitad del escalado. (Clase 8, 11, 15)
-- **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `PLANTILLAS_ADS.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
+- **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `DOCTRINA/PLANTILLAS_ADS.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
   > ⚠️ **NO APLICA A FASE 1.** Los 6 conjuntos con 1 creativo cada uno son el instrumento de MEDICIÓN: si se meten 3 creativos por conjunto se pierde saber qué ángulo ganó. Andromeda premia diversidad, pero el objetivo de FASE 1 es aprender, no entregar barato. Sacrificar la atribución ahí sale más caro que el CPM que se ahorra.
 - **TEST DE DIVERSIDAD CONCEPTUAL (abierto 2026-07-31, leer antes de cerrarlo):** TINNIDROP corre
   4 réplicas equivalentes (2🟦 CP1 · 3🟦 GTR1 · 4🟦 GTR7 · 5🟦) con los mismos ángulos, la misma

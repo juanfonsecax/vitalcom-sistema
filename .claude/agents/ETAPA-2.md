@@ -104,7 +104,7 @@ El ángulo emocional es el de mayor conversión en la mayoría de productos (Cla
 
 **Fórmula del hook (HPPPC — Clase 20):** Hook + Problema + Promesa + Prueba + CTA.
 
-**Palanca de NÚMEROS / estadística (Clase 12 y Clase 2):** "a todos nos gustan los números". Un hook con dato concreto da credibilidad y atrae ("según [fuente], el 45% de las personas con [problema]…", "el 97% que sufre [X] hace esto…"). Considerar que al menos 1 de los 6 ángulos abra con un hook de dato/estadística. Usar cifras reales del operador; si no las entrega, tomarlas de PLANTILLAS_DEFAULTS_OPERADOR.md. Nunca inventar fuentes ni porcentajes — el dato debe ser verificable (Clase 20).
+**Palanca de NÚMEROS / estadística (Clase 12 y Clase 2):** "a todos nos gustan los números". Un hook con dato concreto da credibilidad y atrae ("según [fuente], el 45% de las personas con [problema]…", "el 97% que sufre [X] hace esto…"). Considerar que al menos 1 de los 6 ángulos abra con un hook de dato/estadística. Usar cifras reales del operador; si no las entrega, tomarlas de DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md. Nunca inventar fuentes ni porcentajes — el dato debe ser verificable (Clase 20).
 
 ### Paso 3 — Registrar saturación real y analizar componentes
 
@@ -145,7 +145,7 @@ Para cada ángulo, en orden de mayor a menor potencial:
 ═══════════════════════════════════════════
 ÁNGULO [N] — [NOMBRE DEL ÁNGULO]
 Ranking: #[posición] de 6
-Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (PLANTILLAS_ADS.md) — ángulo virgen sin video]
+Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (DOCTRINA/PLANTILLAS_ADS.md) — ángulo virgen sin video]
 ═══════════════════════════════════════════
 
 AVATAR
@@ -248,9 +248,9 @@ P2u irresistible: Q[precio] con envío gratis
   
   **FASE 1 → concepto FIJO `C2_BENEFICIOS` en los 6 conjuntos, 6 variantes distintas.** FASE 1 mide el ÁNGULO: si el concepto también cambia entre conjuntos, ángulo y ejecución se mueven juntos y el resultado no es atribuible a ninguno de los dos. Con Andrómeda el creativo explica ~56 % del resultado, o sea que la ejecución pesa **más** que el ángulo — moverla es perder el testeo entero. Los 6 creativos comparten layout, paleta y estructura, y se diferencian en hook, beneficios y props: **son 6 conceptos-variante, no 6 iteraciones**, y la diversidad de entrega que premia Andrómeda se mantiene.
   - **FASE 2 → ángulo FIJO (el ganador), 6 CONCEPTOS distintos.** Ahí sí se abre el abanico y se rotan los 15 estilos anti-fatiga.
-  - Prompt de cada fase en `PLANTILLAS_ADS.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2).
-- **Declarar `concepto_key` en cada ficha de ángulo** para que `etapa-guardar-producto` lo escriba en `_DIM_CONJUNTOS.csv`. En FASE 1 es `C2_BENEFICIOS` en las 6 fichas. Vocabulario cerrado en `DATA_PLAYBOOK.md` §1.
-- **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `PLANTILLAS_ADS.md`)
+  - Prompt de cada fase en `DOCTRINA/PLANTILLAS_ADS.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2).
+- **Declarar `concepto_key` en cada ficha de ángulo** para que `etapa-guardar-producto` lo escriba en `_DIM_CONJUNTOS.csv`. En FASE 1 es `C2_BENEFICIOS` en las 6 fichas. Vocabulario cerrado en `DOCTRINA/DATA_PLAYBOOK.md` §1.
+- **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `DOCTRINA/PLANTILLAS_ADS.md`)
 
 ---
 

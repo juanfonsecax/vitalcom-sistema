@@ -133,7 +133,7 @@ todos son combinables como relleno de C1/C2. Se documentan en §5 para no perder
 - **Rol de embudo:** **TOFU**.
 - **Evidencia:** **124 días de mediana — la supervivencia más alta del catálogo.** 4/4 mencionan el problema. Solo 2 anunciantes (Valle Lo Vende, Dr. Felipe Flores) → transversalidad **no confirmada**.
 - **Ejemplos:** #9/#10 Valle Glucosamina (rodilla) · #20 Stone Dissolver (riñones) · #22 Varicose Cream (pierna)
-- ⚠️ Es lo más cerca que el mercado real llega al *"enfoque agresivo"* de `PLANTILLAS_ADS.md`. Nadie usa amenaza cruda: usan la zona señalada.
+- ⚠️ Es lo más cerca que el mercado real llega al *"enfoque agresivo"* de `DOCTRINA/PLANTILLAS_ADS.md`. Nadie usa amenaza cruda: usan la zona señalada.
 
 ### C4 — TRANSFORMACIÓN
 > Antes / después.
@@ -357,7 +357,7 @@ FASE 3 → 1 ángulo + 1 concepto, ambos validados × 7 instancias    ← compra
 > concepto aparece **dos veces** → se corona por **replicación (gana en 2 de 2)**, no por una
 > corrida. Presupuesto $6/conjunto = **$24/día**, y el `%PD` se suma **por concepto entre sus dos
 > apariciones** (~4.1 días a 1× BE; leerlo por conjunto daría 8.3 y mataría conceptos por
-> impaciencia). Todo en `CALENDARIO_ESCALADO.md` §1.7.
+> impaciencia). Todo en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7.
 >
 > **Y los 10 no son 10 `concepto_key` nuevos** — son **10 EJECUCIONES** etiquetadas con los 6
 > conceptos de la rotación (§3 de esta parte). Con 8 valores y 12-24 conjuntos/mes, estrenar
@@ -370,7 +370,7 @@ hook, los 4 beneficios, props y avatar. **No se rota el estilo anti-fatiga** —
 
 - **Por qué:** con Andrómeda el creativo explica ~56 % del resultado, más que el ángulo. Si ángulo y ejecución se mueven juntos, ningún conjunto ganador es atribuible y el testeo se pierde entero.
 - **No es iteración perezosa.** Iteración perezosa = la misma imagen con otro título o color. Seis variantes del mismo concepto, con distinto hook, dolor, props y avatar, son **seis creativos únicos para Meta** — que detecta duplicados por huella de contenido, no por estructura (`Ads/_TOOLS/LAVADO.md`). La diversidad de entrega se mantiene.
-- Regla corregida en `.claude/agents/ETAPA-2.md`; prompts en `PLANTILLAS_ADS.md`.
+- Regla corregida en `.claude/agents/ETAPA-2.md`; prompts en `DOCTRINA/PLANTILLAS_ADS.md`.
 
 ## 2. Qué variante de C2 es el control: la **LIGERA**
 

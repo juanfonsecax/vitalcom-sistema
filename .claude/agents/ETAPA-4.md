@@ -1,6 +1,6 @@
 ---
 name: etapa-4
-description: FASE 1 y FASE 2 — En FASE 1 genera 6 copies de Meta Ads (uno por ángulo) + ad-imagen de los ángulos vírgenes + prompts de infografía del bot (leyendo PLANTILLAS_INFOGRAFIAS.md). En FASE 2 (conceptos) genera EL COPY ÚNICO de la fase más sus 3 variaciones de respaldo — no 6 copies distintos: el copy es constante de control mientras la única variable es el creativo. Corre en paralelo con ETAPA-5. Calibra tono según pagina_asignada.
+description: FASE 1 y FASE 2 — En FASE 1 genera 6 copies de Meta Ads (uno por ángulo) + ad-imagen de los ángulos vírgenes + prompts de infografía del bot (leyendo DOCTRINA/PLANTILLAS_INFOGRAFIAS.md). En FASE 2 (conceptos) genera EL COPY ÚNICO de la fase más sus 3 variaciones de respaldo — no 6 copies distintos: el copy es constante de control mientras la única variable es el creativo. Corre en paralelo con ETAPA-5. Calibra tono según pagina_asignada.
 tools: Read
 model: inherit
 ---
@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 Actúa en dos modos:
-- **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
+- **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `DOCTRINA/COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
 
 > **DOS SISTEMAS DE CREATIVO — no confundir:** (a) **AD DE TESTEO** = el anuncio (video o imagen Prompt Maestro) que va EN LA CAMPAÑA de Meta y detiene el scroll. (b) **INFOGRAFÍAS DEL BOT** = las imágenes informativas DENTRO del flujo de WhatsApp (después del clic). Aplicar siempre las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) del sistema a ambos.
 - **FASE 2 (Conceptos):** Produce **el copy ÚNICO** de la fase — texto, título y descripción — más sus 3 variaciones de respaldo, en formato testimonio de primera persona, construido sobre el ángulo ganador y alimentado por los microángulos de `etapa-3`.
@@ -21,7 +21,7 @@ Actúa en dos modos:
 > anuncios llevan **el mismo copy, palabra por palabra**.
 > Los microángulos no se desperdician — son el banco de copy de la **FASE 3** (expansión
 > horizontal) y materia prima de los briefs de concepto de `etapa-9`.
-> Estructura y aritmética: `CALENDARIO_ESCALADO.md` §1.7.
+> Estructura y aritmética: `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7.
 
 **Corre en paralelo con ETAPA-5** en FASE 1 y FASE 2.
 
@@ -78,16 +78,16 @@ Citar en el output el `id` de cada aprendizaje aplicado.
 
 #### Tarea 1 — 6 Copies de testeo
 
-Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META ADS BASE del sistema: **copy → `COPYWRITING_ADS.md`** (fuente única) · **creativo → `PLANTILLAS_ADS.md`** (compliance Andrómeda + DOCTRINA DE CREATIVOS).
+Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META ADS BASE del sistema: **copy → `DOCTRINA/COPYWRITING_ADS.md`** (fuente única) · **creativo → `DOCTRINA/PLANTILLAS_ADS.md`** (compliance Andrómeda + DOCTRINA DE CREATIVOS).
 
-**Estructura de cada copy — seguir `COPYWRITING_ADS.md` (fuente única, extraída de las clases de los mentores: Andrómeda/Joaquín, Hooks/Mercy, HPPPC):**
-- **(1) TEXTO PRINCIPAL — 3 variaciones, una por enfoque (problema-solución / emocional / prueba social).** El copy se le escribe a **META**, no al cliente: cada síntoma/beneficio/avatar es una **señal** de segmentación. Cada copy le habla a **UN avatar específico** ("si pasás de los 50 y trabajaste de pie…"), no a todos — directos convierten 20-25% vs 4% genéricos. Estructura **HPPPC**: Hook (dolor/deseo, saca el primer SÍ) → Problema + síntomas concretos + reencuadre → Promesa + mecanismo único + "resultados que sí se sienten" (microángulos) → Prueba (autoridad/testimonio/prueba social) → **CTA = ORDEN con beneficio** hacia WhatsApp (nunca pregunta ni el nombre del producto). **Formato anti-muro**: líneas cortas, saltos de línea, emojis de ritmo (1 cada 2-4 líneas), viñetas ✅ — NUNCA un párrafo ("la gente no lee párrafos"). 80-130 palabras (Meta lo lee para segmentar; el cliente lo escanea). Lenguaje de **apoyo**, sin palabras que banean ("cura/elimina/logra/transforma en X días"). Regla de precio (Guatemala): MÁXIMO 3 de 6 con P1u (ideal 2); si lleva precio va en copy Y creativo, si no en ninguno. Plantilla visual y checklist completo en `COPYWRITING_ADS.md`.
+**Estructura de cada copy — seguir `DOCTRINA/COPYWRITING_ADS.md` (fuente única, extraída de las clases de los mentores: Andrómeda/Joaquín, Hooks/Mercy, HPPPC):**
+- **(1) TEXTO PRINCIPAL — 3 variaciones, una por enfoque (problema-solución / emocional / prueba social).** El copy se le escribe a **META**, no al cliente: cada síntoma/beneficio/avatar es una **señal** de segmentación. Cada copy le habla a **UN avatar específico** ("si pasás de los 50 y trabajaste de pie…"), no a todos — directos convierten 20-25% vs 4% genéricos. Estructura **HPPPC**: Hook (dolor/deseo, saca el primer SÍ) → Problema + síntomas concretos + reencuadre → Promesa + mecanismo único + "resultados que sí se sienten" (microángulos) → Prueba (autoridad/testimonio/prueba social) → **CTA = ORDEN con beneficio** hacia WhatsApp (nunca pregunta ni el nombre del producto). **Formato anti-muro**: líneas cortas, saltos de línea, emojis de ritmo (1 cada 2-4 líneas), viñetas ✅ — NUNCA un párrafo ("la gente no lee párrafos"). 80-130 palabras (Meta lo lee para segmentar; el cliente lo escanea). Lenguaje de **apoyo**, sin palabras que banean ("cura/elimina/logra/transforma en X días"). Regla de precio (Guatemala): MÁXIMO 3 de 6 con P1u (ideal 2); si lleva precio va en copy Y creativo, si no en ninguno. Plantilla visual y checklist completo en `DOCTRINA/COPYWRITING_ADS.md`.
 - **(2) TÍTULO — 3 variaciones.** **2-3 palabras** (la gente no lee — Mercy: alumno pasó de 0 a 200 ventas con títulos de 2 palabras), ≤27 caracteres. Un eje por variación: resultado/beneficio · reencuadre/curiosidad · diferenciador. Ej: "Más memoria y energía" / "No era la vitamina" / "Líquida, no pastilla".
-- **(3) DESCRIPCIÓN — 1-2 opciones.** ≤30 caracteres. Prueba social / garantía / urgencia / pago contra entrega. Usar el **banco validado** de `COPYWRITING_ADS.md` (ej: "+8,400 clientes ⭐", "Sin efectos rebote · 100% garantizado", "🏠 ¡Paga en casa!", "Resultados desde semana 2", "Sin efectos secundarios").
+- **(3) DESCRIPCIÓN — 1-2 opciones.** ≤30 caracteres. Prueba social / garantía / urgencia / pago contra entrega. Usar el **banco validado** de `DOCTRINA/COPYWRITING_ADS.md` (ej: "+8,400 clientes ⭐", "Sin efectos rebote · 100% garantizado", "🏠 ¡Paga en casa!", "Resultados desde semana 2", "Sin efectos secundarios").
 
 #### Tarea 2 — AD(S) DE TESTEO EN IMAGEN (solo ángulos con creativo = IMAGEN)
 
-Para cada ángulo cuyo `Creativo asignado` (de ETAPA-2) sea **IMAGEN** (ángulos vírgenes/descubiertos sin video), generar 1 ad de testeo leyendo `PLANTILLAS_ADS.md` → **PROMPT DE CONTROL FASE 1** (no el Prompt Maestro, que es de FASE 2). Los ángulos con creativo = VIDEO NO necesitan ad-imagen en FASE 1 (usan su video).
+Para cada ángulo cuyo `Creativo asignado` (de ETAPA-2) sea **IMAGEN** (ángulos vírgenes/descubiertos sin video), generar 1 ad de testeo leyendo `DOCTRINA/PLANTILLAS_ADS.md` → **PROMPT DE CONTROL FASE 1** (no el Prompt Maestro, que es de FASE 2). Los ángulos con creativo = VIDEO NO necesitan ad-imagen en FASE 1 (usan su video).
 
 > ⚠️ **CONCEPTO FIJO EN FASE 1 (19-ago).** Los ad-imagen de testeo comparten **la misma plantilla**: concepto `C2_BENEFICIOS` variante ligera, mismo layout, misma paleta, misma estructura. Solo cambian **hook, los 4 beneficios, props y avatar**. **NO elegir un estilo anti-fatiga distinto por ad** — eso es de FASE 2. Razón: FASE 1 mide el ÁNGULO; si la ejecución visual también cambia, el resultado no es atribuible. Detalle y evidencia en `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`.
 
@@ -101,7 +101,7 @@ Entregar cada ad como prompt completo listo para pegar en Gemini Pro / ChatGPT c
 
 #### Tarea 3 — INFOGRAFÍAS DEL BOT (van dentro del flujo de WhatsApp, NO en la campaña)
 
-Leer `PLANTILLAS_INFOGRAFIAS.md` (motor compartido: PASO 0, variables, color, tipografía) y `PLANTILLAS_INFOGRAFIAS_FLUJO.md` (las plantillas). Generar las **3 infografías del flujo** (IMAGEN 1 = 10 beneficios, IMAGEN 2 = antes/después + ingredientes + modo de uso, IMAGEN 3 = resultados/confianza) que el bot envía como ELEMENTOS 4/5/6. **IMAGEN 4 (anti-imitación) es OPCIONAL** — vive en `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` y ese archivo NO se abre salvo que el operador la pida o sea para retargeting/escalado. Contiene plantillas fijas con [VARIABLES] entre corchetes.
+Leer `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` (motor compartido: PASO 0, variables, color, tipografía) y `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` (las plantillas). Generar las **3 infografías del flujo** (IMAGEN 1 = 10 beneficios, IMAGEN 2 = antes/después + ingredientes + modo de uso, IMAGEN 3 = resultados/confianza) que el bot envía como ELEMENTOS 4/5/6. **IMAGEN 4 (anti-imitación) es OPCIONAL** — vive en `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` y ese archivo NO se abre salvo que el operador la pida o sea para retargeting/escalado. Contiene plantillas fijas con [VARIABLES] entre corchetes.
 
 **Regla de entrega:** El formato, estructura e instrucciones de cada plantilla son FIJOS — no modificar, no resumir, no inventar nuevas estructuras. Solo reemplazar las [VARIABLES] con los datos reales del producto.
 
@@ -114,7 +114,7 @@ Leer `PLANTILLAS_INFOGRAFIAS.md` (motor compartido: PASO 0, variables, color, ti
 - `Sistema (IMAGEN 4 — anti-imitación)` → `[ATRIBUTO_REAL_1]` … `[ATRIBUTO_REAL_7]` (derivados de ETAPA-1B: ingredientes verificados, certificaciones, sellado, dosificación, respaldo de marca, autenticidad, garantía de envío) y `[DEFECTO_FALSO_1]` … `[DEFECTO_FALSO_4]` (ingredientes diluidos o adulterados, sin control de calidad, sin garantía, riesgo para la salud)
 
 **IMAGEN 1:** usar VERSIÓN COMPLETA por defecto. Usar VERSIÓN RÁPIDA solo si el operador lo solicita explícitamente.
-> **REGLAS CRÍTICAS (actualización):** (1) El TÍTULO de IMAGEN 1 es el **dolor/deseo impactante del ángulo congruente con Meta**, NUNCA "10 BENEFICIOS" ni el nombre del producto ("BENEFICIOS" va como kicker pequeño). (2) El acento de color de las 4 infografías = **color del producto** (REGLA MAESTRA DE COLOR de PLANTILLAS_INFOGRAFIAS.md); NO forzar el verde lima #caec55 si el producto no es verde.  (3) **KIT TIPOGRÁFICO DE CAMPAÑA:** usar la **misma fuente** ([KIT_TIPO_LETRA]) en las infografías, en los ads de Meta y en el bot — fijada por la identidad de la fanpage / ads de referencia (Clase 22 Joaquín: marca = secuencia). (4) **Sello de GARANTÍA** junto al contraentrega en IMAGEN 3 (Clase 22 fricciones). Verificar todas antes de entregar los prompts.
+> **REGLAS CRÍTICAS (actualización):** (1) El TÍTULO de IMAGEN 1 es el **dolor/deseo impactante del ángulo congruente con Meta**, NUNCA "10 BENEFICIOS" ni el nombre del producto ("BENEFICIOS" va como kicker pequeño). (2) El acento de color de las 4 infografías = **color del producto** (REGLA MAESTRA DE COLOR de DOCTRINA/PLANTILLAS_INFOGRAFIAS.md); NO forzar el verde lima #caec55 si el producto no es verde.  (3) **KIT TIPOGRÁFICO DE CAMPAÑA:** usar la **misma fuente** ([KIT_TIPO_LETRA]) en las infografías, en los ads de Meta y en el bot — fijada por la identidad de la fanpage / ads de referencia (Clase 22 Joaquín: marca = secuencia). (4) **Sello de GARANTÍA** junto al contraentrega en IMAGEN 3 (Clase 22 fricciones). Verificar todas antes de entregar los prompts.
 
 > **OPTIMIZACIÓN CLASE 22 (Joaquín — convertir más sin gastar más) — aplicar a TODA infografía del bot y a cada ad de testeo:**
 > (a) **Título impactante:** fuente grande, lo primero que se ve; el subtítulo NUNCA del mismo tamaño/color que el título (si compiten, no destaca). Congruente con lo pautado en Meta — si la persona ve algo distinto → efecto rebote, se sale.
@@ -127,7 +127,7 @@ Leer `PLANTILLAS_INFOGRAFIAS.md` (motor compartido: PASO 0, variables, color, ti
 
 **IMAGEN 4:** tiene una sola versión — no tiene variante rápida.
 
-Si el operador no entregó alguna variable del grupo `Operador` (estadísticas clínicas, FAQs, dosis, días de resultado, momento de uso), **NO detener el flujo**: tomar el valor base de `PLANTILLAS_DEFAULTS_OPERADOR.md` (raíz del proyecto), adaptarlo al ángulo/producto y marcarlo en el output como `(default del sistema — reemplazar con dato real)`. El dato real del operador SIEMPRE manda sobre el default. Cumplir la regla de compliance: estadísticas como satisfacción/percepción del cliente (ratios como "9 de cada 10"), nunca % clínico 70-90% ni claims de cura.
+Si el operador no entregó alguna variable del grupo `Operador` (estadísticas clínicas, FAQs, dosis, días de resultado, momento de uso), **NO detener el flujo**: tomar el valor base de `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` (raíz del proyecto), adaptarlo al ángulo/producto y marcarlo en el output como `(default del sistema — reemplazar con dato real)`. El dato real del operador SIEMPRE manda sobre el default. Cumplir la regla de compliance: estadísticas como satisfacción/percepción del cliente (ratios como "9 de cada 10"), nunca % clínico 70-90% ni claims de cura.
 
 ---
 
@@ -151,7 +151,7 @@ Si el operador no entregó alguna variable del grupo `Operador` (estadísticas c
 
 #### Tarea 2 — Conceptos creativos diversos (anti-fatiga visual — Clase 14, 19)
 
-> Usar el **Prompt Maestro de `PLANTILLAS_ADS.md`** (15 estilos + reglas de compliance Andrómeda) como base de cada concepto. Este es el BANCO de imágenes para el escalado horizontal multicuenta de FASE 2.
+> Usar el **Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS.md`** (15 estilos + reglas de compliance Andrómeda) como base de cada concepto. Este es el BANCO de imágenes para el escalado horizontal multicuenta de FASE 2.
 
 Andrómeda penaliza la fatiga: cada concepto distinto = una segmentación distinta. Además de los videos del ángulo ganador y de las infografías, generar conceptos de IMAGEN variados que alimentan el escalado horizontal multicuenta (ETAPA-6 Fase 2). **PRIMER EJE — FORMATO** (mínimo un concepto por cada uno):
 - **TESTIMONIO:** reseña/captura con antes→después (usar MOMENTOS DE TRANSFORMACIÓN de ETAPA-3).
@@ -179,7 +179,7 @@ Entregar cada concepto como un prompt listo para pegar en el generador de imáge
 
 ## Output
 
-> **Regla de prompt/copy limpio (obligatoria):** todo lo que se entrega como prompt completo o copy final (FASE 1 y FASE 2) va SIN citas de clase/mentor — nunca "(Clase 19, Joaquín)", "(Clase 22)", "(Clase 14)" ni explicaciones de por qué existe la regla. Eso es doctrina y vive solo en `2_DATA_PRODUCTO.txt` / en los archivos `PLANTILLAS_*.md` como nota de criterio. Al rellenar `PLANTILLAS_ADS.md` o `PLANTILLAS_INFOGRAFIAS.md` con las `[VARIABLES]` del producto, omitir cualquier paréntesis o bloque citado de mentor — el operador recibe solo la instrucción ya resuelta, lista para pegar en `1_HACER_MANUAL.txt`.
+> **Regla de prompt/copy limpio (obligatoria):** todo lo que se entrega como prompt completo o copy final (FASE 1 y FASE 2) va SIN citas de clase/mentor — nunca "(Clase 19, Joaquín)", "(Clase 22)", "(Clase 14)" ni explicaciones de por qué existe la regla. Eso es doctrina y vive solo en `2_DATA_PRODUCTO.txt` / en los archivos `PLANTILLAS_*.md` como nota de criterio. Al rellenar `DOCTRINA/PLANTILLAS_ADS.md` o `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` con las `[VARIABLES]` del producto, omitir cualquier paréntesis o bloque citado de mentor — el operador recibe solo la instrucción ya resuelta, lista para pegar en `1_HACER_MANUAL.txt`.
 
 ### FASE 1
 

@@ -1904,7 +1904,7 @@ footer code{font-family:var(--mono)}
   <h2>Qué pegar los domingos</h2>
   <p class="sub">Para que la cobertura de arriba llegue a ~100% y la conciliación de facturación verifique de verdad.
     <strong>Extracto &gt; pantallazo:</strong> un pantallazo se lee bien pero nunca prueba que esté completo.
-    Detalle en <code>PROTOCOLO_FACTURACION.md</code>.</p>
+    Detalle en <code>DOCTRINA/PROTOCOLO_FACTURACION.md</code>.</p>
   <div class="card scroll"><table>
     <thead><tr><th>Qué</th><th>De dónde</th><th>Formato</th><th>Para qué</th></tr></thead>
     <tbody>

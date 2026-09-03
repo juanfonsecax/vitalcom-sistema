@@ -69,7 +69,7 @@ Output: **1-1-7** — una campaña, un conjunto, el creativo validado ×7, **$15
 
 ## PASO 2 — `etapa-guardar-producto`
 
-Escribe `4_PLAN_ESCALADO.txt` en `PRODUCTOS/[NOMBRE]/` (plantilla en `ESCALADO_PLAYBOOK.md` §7). Se
+Escribe `4_PLAN_ESCALADO.txt` en `PRODUCTOS/[NOMBRE]/` (plantilla en `DOCTRINA/ESCALADO_PLAYBOOK.md` §7). Se
 sobrescribe cada ciclo y sube `v[N]`.
 
 ⚠️ El slot `3_` es **solo** para IDs de Meta. Nunca meter ahí el plan de escalado.

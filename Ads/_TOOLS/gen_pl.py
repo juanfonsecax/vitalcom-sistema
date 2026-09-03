@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""gen_pl.py — Estado de resultados del sistema. Implementa CONTABILIDAD.md.
+"""gen_pl.py — Estado de resultados del sistema. Implementa DOCTRINA/CONTABILIDAD.md.
 
   python Ads/_TOOLS/gen_pl.py --dropi <ordenes.xlsx> [--banco <extracto.pdf>]
                               [--desde YYYY-MM-DD] [--hasta YYYY-MM-DD]
@@ -7,7 +7,7 @@
 Determinista por diseño: mismos archivos de entrada -> mismos números de salida.
 Ningún parámetro vive acá dentro: todos salen de `_PARAMETROS_FINANZAS.csv`.
 
-Produce, en este orden fijo (CONTABILIDAD.md §3):
+Produce, en este orden fijo (DOCTRINA/CONTABILIDAD.md §3):
     venta bruta entregada · costo de producto · flete
     = MARGEN LOGÍSTICO   (lo que Dropi llama "Ganancias")
     − devoluciones · personal · otros
@@ -151,7 +151,7 @@ def main():
     dropi = opt("--dropi"); banco = opt("--banco"); cartera = opt("--cartera")
     ini   = opt("--desde", "2026-08-01"); fin = opt("--hasta", "2026-08-31")
     if not dropi:
-        sys.exit("Falta --dropi <ordenes.xlsx>. Es la fuente de la venta real (CONTABILIDAD.md §5).")
+        sys.exit("Falta --dropi <ordenes.xlsx>. Es la fuente de la venta real (DOCTRINA/CONTABILIDAD.md §5).")
 
     import pandas as pd
     df = leer_dropi(dropi)
@@ -186,7 +186,7 @@ def main():
     L += ["═" * W,
           "ESTADO DE RESULTADOS — %s → %s" % (ini, fin),
           "VISTA A · COHORTE (por fecha de ORDEN) — «¿rindió la pauta de esta ventana?»",
-          "Generado %s · norma: CONTABILIDAD.md · parámetros: _PARAMETROS_FINANZAS.csv" % hoy,
+          "Generado %s · norma: DOCTRINA/CONTABILIDAD.md · parámetros: _PARAMETROS_FINANZAS.csv" % hoy,
           "═" * W, ""]
     if not maduro:
         L += ["🟡 COHORTE PRELIMINAR — el último día tiene %d días de edad y la norma pide %d."
@@ -254,7 +254,7 @@ def main():
           "      " + "·" * 56,
           "  (=) MARGEN OPERATIVO                    %s" % q(m_oper)]
 
-    # ── clasificación de cargos del banco (CONTABILIDAD.md §3-ter) ──
+    # ── clasificación de cargos del banco (DOCTRINA/CONTABILIDAD.md §3-ter) ──
     #   NEGOCIO_PAUTA  -> ya contado en la línea de Publicidad, no se resta otra vez
     #   NEGOCIO_FIJO   -> resta del RESULTADO (software, herramientas)
     #   PERSONAL       -> RETIRO DE SOCIO: NO toca el resultado, sí la caja

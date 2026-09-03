@@ -1,6 +1,6 @@
 # SWIPE FILE — MÉTODO DE COSECHA DE CREATIVOS DE COMPETENCIA (GT · bienestar)
 
-> Banco de imágenes ganadoras de competidores en Guatemala. Alimenta `PLANTILLAS_ADS.md`
+> Banco de imágenes ganadoras de competidores en Guatemala. Alimenta `DOCTRINA/PLANTILLAS_ADS.md`
 > vía la skill `analizador-creativos`. NO es fuente de métricas — es referencia creativa.
 
 ## Las dos capas (no confundirlas)
@@ -46,7 +46,7 @@ Mirar `~N results` y la fecha activa más antigua:
 
 Sin cuota por página: que 30 de 89 den cero está bien. Un banco chico de ganadores
 probados vale más que uno grande de indefinidos — creativos sin veredicto contaminan
-`PLANTILLAS_ADS.md` con patrones que fracasaron.
+`DOCTRINA/PLANTILLAS_ADS.md` con patrones que fracasaron.
 
 ## Valor aparte: producto en tendencia
 

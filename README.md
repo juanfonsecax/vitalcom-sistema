@@ -34,9 +34,9 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 | Ruta | Qué es | ¿Lo lee el flujo? |
 |---|---|---|
 | `CLAUDE.md` | **Cerebro / orquestador.** Detecta la fase, invoca los subagentes en orden y transfiere outputs. Se carga cada sesión — por eso se mantiene delgado: coordina, no guarda doctrina de detalle. | ✅ Siempre |
-| `.claude/agents/` | Los **17 subagentes** `ETAPA-*.md` (0, 1, 1B, 2, 3A, 3B, 4, 5, 6, 7, 8, **9** fábrica de conceptos, **10** lector concepto↔métrica, **11** optimizador de flujo, FANPAGE, PRODUCTO, GUARDAR-PRODUCTO). | ✅ Vía Task |
-| `.claude/skills/` | Skills invocables: `buscar-producto` (FASE 0 — encontrar qué vender). | ✅ Al invocar |
-| **Docs de referencia (raíz)** | Los agentes los leen **por nombre** durante el flujo. **No mover de la raíz** (rompería las citas). | ✅ Bajo demanda |
+| `.claude/agents/` | Las **16 etapas** `ETAPA-*.md` (PRODUCTO, 0, 1, 1B, 2, **3** microángulos, 4, 5, 6, 7, 8, **9** fábrica de conceptos, **10** lector concepto↔métrica, **11** optimizador de flujo, FANPAGE, GUARDAR-PRODUCTO). Todas con `model: inherit`. | ✅ Vía Task |
+| `.claude/skills/` | Las **7 skills**: `buscar-producto` (FASE 0) · `fase-1-angulos` · `fase-2-conceptos` · `fase-3-escalado` · `ciclo-diario` (auditoría diaria) · `generar-conceptos` · `find-skills`. **La doctrina de cada fase vive acá, no en `CLAUDE.md`.** | ✅ Al invocar |
+| `DOCTRINA/` | **Los 15 documentos dueños.** Los agentes los leen **por ruta** durante el flujo. Movidos de la raíz el 2026-09-03; si alguno se mueve otra vez, `python Ads/_TOOLS/gen_grafo.py` canta las referencias que quedaron colgando. | ✅ Bajo demanda |
 | ├ `COPYWRITING_ADS.md` | **Dueño único del COPY**: HPPPC, banco de hooks, anti-muro, título/descripción, compliance, precio. La usa ETAPA-4. | ✅ |
 | ├ `PLANTILLAS_ADS.md` | **Dueño único del CREATIVO**: Prompt Maestro, 15 estilos anti-fatiga, compliance Andrómeda y la **DOCTRINA DE CREATIVOS** (video vs imagen). | ✅ |
 | ├ `PLANTILLAS_INFOGRAFIAS.md` | Infografías del bot (Info 1/2/3 + imagen 4). | ✅ |
@@ -50,7 +50,7 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 | ├ `ETAPA-RECOLECCION.md` | Fase manual de recolección de creativos (prompt de Gemini). | ✅ |
 | `Ads/` | **Insumos y media.** `1.1 Videos/` + `1.2 Transcripcion videos/` por producto · `MEDIA_*/` (assets lavados listos para Meta) · `_TOOLS/` (scripts + `LAVADO.md`). | ✅ Por ruta |
 | `PRODUCTOS/[NOMBRE]/` | **Output por producto.** `1_HACER_MANUAL.txt` (lo que ejecutás) + `2_DATA_PRODUCTO.txt` (memoria) + `3_CAMPAÑA_META.txt` (IDs de Meta) + `4_PLAN_ESCALADO.txt` (FASE 3). Nada más. | ✅ Por ruta |
-| `PRODUCTOS/*.csv` | **Capa de data (máquina).** `_FACT_VENTAS` (la única que suma al P&L) · `_FACT_ENTREGA` · `_DIM_*` · `_EVENTOS` · `_APRENDIZAJES`. Roles y reglas en `DATA_PLAYBOOK.md`. | ✅ Diario |
+| `PRODUCTOS/*.csv` | **Capa de data (máquina).** `_FACT_VENTAS` (la única que suma al P&L) · `_FACT_ENTREGA` · `_DIM_*` · `_EVENTOS` · `_APRENDIZAJES`. Roles y reglas en `DOCTRINA/DATA_PLAYBOOK.md`. | ✅ Diario |
 | `PRODUCTOS/_DASHBOARD.html` | **Capa humana.** Lo único que abrís a diario. Se genera con `python Ads/_TOOLS/gen_dashboard.py`. | 👤 Vos |
 | `PRODUCTOS/_PORTAFOLIO.txt` | **Registro maestro multi-producto.** La auditoría diaria lo recorre y audita cada producto VIVO. Acá se "agrega un producto al tracking". | ✅ Diario |
 | `PRODUCTOS/_AUDITORIAS/` | Informes fechados (auditorías nocturnas, planes multi-producto). Registro legible — **las métricas NO se reconstruyen desde acá**, salen del CSV. | 🔎 Consulta |

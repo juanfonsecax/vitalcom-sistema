@@ -2,11 +2,11 @@
 
 > **Qué es esto:** la plantilla para generar los **anuncios de imagen** que van en la campaña de Meta Ads (stop-scroll). Es lo que se TESTEA. Basado en el "Prompt Maestro de Creativos que Venden" (Comunidad Mercy Pardo, Clase 14 + PDF) y las reglas de Andrómeda (Clase 4, 19).
 >
-> **NO confundir con `PLANTILLAS_INFOGRAFIAS.md`:** ese archivo son las 3 imágenes informativas DENTRO del flujo de WhatsApp (Info 1/2/3) + IMAGEN 4 anti-imitación. Este archivo son los ANUNCIOS que detienen el scroll en el feed.
+> **NO confundir con `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`:** ese archivo son las 3 imágenes informativas DENTRO del flujo de WhatsApp (Info 1/2/3) + IMAGEN 4 anti-imitación. Este archivo son los ANUNCIOS que detienen el scroll en el feed.
 >
 > **Cuándo se usa (ETAPA-4):**
 > - **FASE 1:** generar 1 ad-imagen por cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes/descubiertos sin video). Los ángulos con video usan el video, no necesitan ad-imagen en FASE 1.
-> - **FASE 2:** generar el BANCO anti-fatiga (mínimo 1 por microángulo, idealmente muchas variaciones con estilos distintos) para el escalado horizontal. Además del estilo, cada concepto declara su **ROL DE EMBUDO (TOFU/MOFU/BOFU)** según el nivel de conciencia del avatar (ver ETAPA-4 FASE 2 · `ESCALADO_PLAYBOOK.md` §4) — el banco cubre las 3 etapas para alimentar el embudo interno de la CBO.
+> - **FASE 2:** generar el BANCO anti-fatiga (mínimo 1 por microángulo, idealmente muchas variaciones con estilos distintos) para el escalado horizontal. Además del estilo, cada concepto declara su **ROL DE EMBUDO (TOFU/MOFU/BOFU)** según el nivel de conciencia del avatar (ver ETAPA-4 FASE 2 · `DOCTRINA/ESCALADO_PLAYBOOK.md` §4) — el banco cubre las 3 etapas para alimentar el embudo interno de la CBO.
 >
 > **Doctrina vs. prompt final:** las citas de mentor/clase que aparecen en este archivo (ej. "Clase 19, Joaquín") son criterio interno — explican el PORQUÉ de la regla para quien construye o ajusta esta plantilla. Al rellenar el PROMPT MAESTRO con las `[VARIABLES]` del producto para entregarlo en `1_HACER_MANUAL.txt`, esas citas se OMITEN — el operador solo recibe la instrucción ya resuelta, lista para pegar, sin referencias a clases.
 
@@ -260,7 +260,7 @@ JERARQUÍA VISUAL (de arriba hacia abajo) — estructura del ad ganador: marca �
 
 PALETA: [COLOR_ACENTO + colores derivados de la etiqueta del producto]. Tipografía = [KIT_TIPO_LETRA] del
 PRODUCTO — la categoría tipográfica leída de su branding/etiqueta, LA MISMA en este ad, las infografías del bot
-y la landing (ver PASO 0 ANÁLISIS DEL PRODUCTO + KIT TIPOGRÁFICO en PLANTILLAS_INFOGRAFIAS.md; la IA aproxima
+y la landing (ver PASO 0 ANÁLISIS DEL PRODUCTO + KIT TIPOGRÁFICO en DOCTRINA/PLANTILLAS_INFOGRAFIAS.md; la IA aproxima
 por categoría, no clona la fuente), bold en el hook. Texto mínimo legible a 24pt en celular. Texto total < 20% del área.
 
 COMPLIANCE (obligatorio): NO "cura/trata/elimina". NO antes/después corporal bilateral. NO promesas de
@@ -350,7 +350,7 @@ Clase 4: "imágenes de testimonios + producto en la misma imagen dan muy buenos 
 - **NUNCA pausar ni descartar un ángulo por falta de video.** La imagen lo cubre y se lanza igual.
 - FASE 1 = **1 creativo por conjunto** (lean). No generar espejos.
 
-**ESCALADO (FASE 2):** el ángulo ganador se escala con **banco de imágenes anti-fatiga** (50+, los 15 estilos de este archivo) + se **replica el video ganador vía Post ID** (si ganó un video). Acá las imágenes dominan por volumen — no se hacen 50 videos. El banco se organiza además por **ROL DE EMBUDO (TOFU/MOFU/BOFU)** mapeado al nivel de conciencia de `etapa-2`, para alimentar el embudo interno de la CBO (ver `etapa-4` FASE 2 · `ESCALADO_PLAYBOOK.md` §4). **Solo FASE 2** — FASE 1 se mantiene lean.
+**ESCALADO (FASE 2):** el ángulo ganador se escala con **banco de imágenes anti-fatiga** (50+, los 15 estilos de este archivo) + se **replica el video ganador vía Post ID** (si ganó un video). Acá las imágenes dominan por volumen — no se hacen 50 videos. El banco se organiza además por **ROL DE EMBUDO (TOFU/MOFU/BOFU)** mapeado al nivel de conciencia de `etapa-2`, para alimentar el embudo interno de la CBO (ver `etapa-4` FASE 2 · `DOCTRINA/ESCALADO_PLAYBOOK.md` §4). **Solo FASE 2** — FASE 1 se mantiene lean.
 
 **Nota de lectura (confound de formato):** mezclar video e imagen entre conjuntos mete un sesgo leve (un video validado es un creativo más fuerte que una imagen fría). Mitigación: leer FASE 1 a nivel de **ÁNGULO** con las métricas de conversación (robustas al formato); si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato, FASE 2 los controla probando el ganador en un solo formato. No sobre-optimizar esto en FASE 1.
 
@@ -358,4 +358,4 @@ Clase 4: "imágenes de testimonios + producto en la misma imagen dan muy buenos 
 
 **Dos sistemas de creativo distintos (no confundir):**
 - **(a) ADS DE TESTEO** = video lavado o imagen Prompt Maestro (este archivo) que van en la campaña de Meta.
-- **(b) INFOGRAFÍAS DEL BOT** = 3 imágenes informativas dentro del flujo de WhatsApp (Info 1 beneficios, Info 2 modo de uso/ingredientes, Info 3 confianza) + IMAGEN 4 anti-imitación opcional, todas de `PLANTILLAS_INFOGRAFIAS_FLUJO.md` y `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md`, sobre el motor compartido de `PLANTILLAS_INFOGRAFIAS.md`.
+- **(b) INFOGRAFÍAS DEL BOT** = 3 imágenes informativas dentro del flujo de WhatsApp (Info 1 beneficios, Info 2 modo de uso/ingredientes, Info 3 confianza) + IMAGEN 4 anti-imitación opcional, todas de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` y `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md`, sobre el motor compartido de `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`.

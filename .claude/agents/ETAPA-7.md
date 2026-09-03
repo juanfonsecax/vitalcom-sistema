@@ -138,7 +138,7 @@ Es la palanca más rentable del sistema y suele valer más que escalar. Ejemplo 
 ## Umbrales (NUNCA ROAS)
 
 - CPA real (por pedido): 🟢 ≤ CPA Base · 🟡 entre Base y Break Even · 🔴 > Break Even · ⚪ sin compras y gasto < Break Even (aún en aprendizaje = **sub-testeado**, ver PD abajo).
-- **LOS GATES SON UMBRALES, NO DÍAS DEL CALENDARIO** (`CALENDARIO_ESCALADO.md` §1.5/§1.6). Cada conjunto corre su propio reloj desde su `fecha` de LANZAMIENTO en `_EVENTOS.csv`. Calcular y reportar por conjunto:
+- **LOS GATES SON UMBRALES, NO DÍAS DEL CALENDARIO** (`DOCTRINA/CALENDARIO_ESCALADO.md` §1.5/§1.6). Cada conjunto corre su propio reloj desde su `fecha` de LANZAMIENTO en `_EVENTOS.csv`. Calcular y reportar por conjunto:
   · **edad** (días desde su lanzamiento) — no la edad de la campaña;
   · **`%PD` = gasto ÷ (1 × Break Even)** → gate de VENTA. A $2.99/día con 80% de entrega real llega al 100% en **3.3-4.3 días** según producto (a $1.59 tardaba 5.0-6.5);
   · **conversaciones acumuladas** → gate de ENTREGA. Corte de Etapa 1 con **≥30 conversaciones**; Meta sale de aprendizaje a las **50** (a $2.99 y $0.478/conv ≈ 6.3 conv/día).
@@ -148,7 +148,7 @@ Es la palanca más rentable del sistema y suele valer más que escalar. Ejemplo 
 - % conversación por clic-enlace: 🔴 <35% · 🟡 35–49% (bueno/escalable) · 🟢 ≥50% (50–70% súper escalable). (Clase 7 + Clase 15, Joaquín)
 - % conversación por impresión: 🔴 <1.5% · 🟡 1.5–3.49% · 🟢 ≥3.5%.
 - Fatiga: frecuencia ≥1.9 (fatiga creativa → cambiar creativo, Clase 4) · 2–3 con CPM/costo por conversación caro → apagar (Clase 7) · CTR cayendo >20% en 48h · CPM/costo por conversación subiendo >25% sin cambios de presupuesto.
-- **Saturación por cuenta** (`ESCALADO_PLAYBOOK.md §5`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo.
+- **Saturación por cuenta** (`DOCTRINA/ESCALADO_PLAYBOOK.md §5`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo.
 
 ---
 
@@ -197,7 +197,7 @@ DECISIÓN RECOMENDADA (decide el operador): [según día]
 - **Decidir por CPA SEMANAL, nunca por un día** (Clase 8). Un día malo no mata un ángulo; una semana mala sí.
 - **DECLARAR GANADOR SOLO POR `angulo_key` AGREGADO** (todas las cuentas, todas las semanas acumuladas) — nunca por un conjunto en una semana. Medición propia: dispersión de ventas por conjunto = 1.12 (azar de Poisson casi puro), por ángulo = 2.99 (señal real). Con <5 ventas en el ángulo, marcar `[n bajo, IC ±88%+]` y **no coronar**. El ganador de TINNIDROP "se corrió" tres veces por reaccionar a ruido — no volver a hacerlo.
 - **La conversación CORTA, no CORONA.** %conv alto con 0 ventas es un ángulo que atrae curiosos: se apaga, no se escala (tinnidrop-1 78%→0v, ANIMO 68%→0v). %conv bajo con ventas es un clic intencionado: se deja correr (ME DIJERON 23%→top ventas).
-- Pausar — DOS criterios en cascada (`ESCALADO_PLAYBOOK.md §1.5/§6`), máx 2 a la vez, apagar (no eliminar):
+- Pausar — DOS criterios en cascada (`DOCTRINA/ESCALADO_PLAYBOOK.md §1.5/§6`), máx 2 a la vez, apagar (no eliminar):
   · **TEMPRANO — matar-por-CONVERSACIÓN:** clics pero **%conv/clic-enlace <35%** (y/o %conv/impresión <1.5%) y 0 ventas → problema de anuncio/hook; se apaga sin esperar el PD.
   · **TARDÍO — matar-por-VENTAS:** buena conversación pero 0 ventas → se deja correr (sub-testeado) hasta gastar **1×Break Even (su PD)** + ~3 días COD; recién ahí se apaga. **Requiere ventana COMPLETA.**
   · Día 1-2: no pausar por ninguno de los dos.
@@ -230,7 +230,7 @@ Aplicarlos como restricciones sobre la lectura y **citar el `id`** cuando uno ca
 - Escribir resultados en el bloque RESULTADOS_TESTEO de `2_DATA_PRODUCTO.txt` (y `3_CAMPAÑA_META.txt` si existe).
 - El informe alimenta a **ETAPA-8**, que decide las palancas de escalado.
 - Al confirmar ganador con ventana COMPLETA: "El ángulo ganador es [nombre]" → ORCHESTRATOR inicia FASE 2 — **ETAPA-11 primero**, después TESTEO DE CONCEPTOS (ETAPA-3 → ETAPA-9).
-- 🔴 **ETAPA-11 corre ANTES que 3A.** Optimizar el flujo es la palanca #1 (`ESCALADO_PLAYBOOK.md` §3) y va antes de gastar más: el cierre del portafolio va en 8.6 % contra el 15-20 % de los mentores. Al entregar el ganador, **pedir también el export de chats de LucidBot** de la ventana de testeo — es el input que le permite a ETAPA-11 decir POR QUÉ se pierde la venta y no solo DÓNDE.
+- 🔴 **ETAPA-11 corre ANTES que 3A.** Optimizar el flujo es la palanca #1 (`DOCTRINA/ESCALADO_PLAYBOOK.md` §3) y va antes de gastar más: el cierre del portafolio va en 8.6 % contra el 15-20 % de los mentores. Al entregar el ganador, **pedir también el export de chats de LucidBot** de la ventana de testeo — es el input que le permite a ETAPA-11 decir POR QUÉ se pierde la venta y no solo DÓNDE.
 - **Precondición que hay que decir al entregar el ganador:** la FASE 2 necesita **10 conceptos publicables** y una **segunda cuenta** para la campaña de réplica. Si no existen, el ganador queda confirmado pero la fase no arranca — se corre `etapa-9` primero.
 - **Y una advertencia de lectura que aplica desde el 02-sep:** en las campañas `1-1-N` de FASE 2, un anuncio con gasto acumulado < 30 % de su reparto prorrateado es **`SIN_ENTREGA`**, no perdedor. No incluirlo en el ranking ni recomendarlo para apagar.
 - (Opcional) Salud de señales del pixel/dataset: la skill `monitor-pixel`.

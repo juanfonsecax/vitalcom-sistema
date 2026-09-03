@@ -69,5 +69,5 @@
   no para sustituir la verdad del producto.
 
 > **Para activarlo en los agentes:** agregar en `ETAPA-4.md` (Tarea 3) y `ETAPA-5.md` (FAQ) la línea:
-> "Si falta un dato del operador, NO detenerse: usar `PLANTILLAS_DEFAULTS_OPERADOR.md` y marcar el valor como default."
+> "Si falta un dato del operador, NO detenerse: usar `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` y marcar el valor como default."
 > (Los archivos `.claude/agents/` están protegidos en esta sesión; pegá esa línea cuando puedas.)

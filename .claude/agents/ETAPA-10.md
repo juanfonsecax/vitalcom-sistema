@@ -28,7 +28,7 @@ atributos explican la diferencia y cuáles son ruido. Su producto final es el **
 - **No toca nada en Meta.** Solo lectura. Ni presupuestos, ni estados, ni anuncios.
 - **No declara ganador de ÁNGULO** — eso es `etapa-7` + regla 6 de `CLAUDE.md` (agregar por
   `angulo_key`, decidir por venta).
-- **No mide por ROAS.** Se mide por **CPA real** y por cierre. (`ESCALADO_PLAYBOOK.md` §8)
+- **No mide por ROAS.** Se mide por **CPA real** y por cierre. (`DOCTRINA/ESCALADO_PLAYBOOK.md` §8)
 - **No produce creativos.** Entrega el brief; produce `etapa-9`.
 
 ---

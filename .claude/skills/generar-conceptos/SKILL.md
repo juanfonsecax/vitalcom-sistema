@@ -32,7 +32,7 @@ sería atribuible).
 | Los 22 blueprints canónicos (familias estructurales) | `Ads/_SWIPE/_BLUEPRINTS/CANONICOS/CN*.json` |
 | Qué canónico aplica a qué producto (gates) | `Ads/_TOOLS/seleccionar_canonicos.py` |
 | Vocabulario de `concepto_key` y rotación de FASE 2 | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` PARTE III |
-| Prompt Maestro y los 15 estilos anti-fatiga | `PLANTILLAS_ADS.md` |
+| Prompt Maestro y los 15 estilos anti-fatiga | `DOCTRINA/PLANTILLAS_ADS.md` |
 | Precios, CPA objetivo, break even | `PRODUCTOS/[X]/2_DATA_PRODUCTO.txt` |
 | Tono y edad de la página | `.claude/agents/ETAPA-FANPAGE.md` (ya resuelto en `<pagina_asignada>`) |
 
@@ -154,7 +154,7 @@ es suavizar el creativo — es no llenar una zona con un número inventado.
 
 **(a) Los prompts de imagen** → `Ads/MEDIA_[PRODUCTO]/FASE2_[ANGULO]/PROMPTS_FASE2_[ANGULO].txt`
 
-Un bloque por concepto, con el **Prompt Maestro de `PLANTILLAS_ADS.md` YA
+Un bloque por concepto, con el **Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS.md` YA
 RELLENADO** — todas las `[VARIABLES]` resueltas, sin citas de clase y sin
 `[PENDIENTE]`. Cada bloque lleva:
 
@@ -177,7 +177,7 @@ Escribir el CSV **con un escritor CSV real, nunca a mano** — todo campo de tex
 libre con comas va entre comillas dobles (regla 22 del orquestador).
 
 **(c) El plan de campaña** → `PRODUCTOS/[X]/4_PLAN_ESCALADO.txt` (plantilla en
-`ESCALADO_PLAYBOOK.md` §7). Se **sobrescribe** y sube `v[N]`. Prohibido dejar
+`DOCTRINA/ESCALADO_PLAYBOOK.md` §7). Se **sobrescribe** y sube `v[N]`. Prohibido dejar
 archivos sueltos de reruns.
 
 ---

@@ -32,8 +32,8 @@ y se hace responsable de que cada pieza llegue hasta Meta — no hasta el disco 
 |---|---|
 | Elegir qué blueprint aplica y llenarlo con la data del producto | **skill `generar-conceptos`** — es el motor de llenado |
 | Definir la firma de cada concepto y su rol de embudo | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
-| El Prompt Maestro, los 15 estilos y el compliance visual | `PLANTILLAS_ADS.md` |
-| Escribir el copy del anuncio | `etapa-4` · `COPYWRITING_ADS.md` |
+| El Prompt Maestro, los 15 estilos y el compliance visual | `DOCTRINA/PLANTILLAS_ADS.md` |
+| Escribir el copy del anuncio | `etapa-4` · `DOCTRINA/COPYWRITING_ADS.md` |
 | Montar las campañas y nombrar los objetos | `etapa-6` |
 | Decir **por qué** ganó lo que ganó | **`etapa-10`** |
 | Renderizar la imagen | el operador, en su generador |
@@ -124,7 +124,7 @@ Solo aplica cuando **ya hay un VIDEO ganador con ventas confirmadas**. El proces
    · si es nuevo → se marca `angulo_key` nuevo y **se avisa**: un ángulo virgen se testea en
      **FASE 1**, no se mete de contrabando en una tanda de conceptos.
 
-> **Por qué vale la pena.** Ataca directo el *confound de formato* que `PLANTILLAS_ADS.md` ya
+> **Por qué vale la pena.** Ataca directo el *confound de formato* que `DOCTRINA/PLANTILLAS_ADS.md` ya
 > documenta: hoy, cuando un video le gana a una imagen, no se sabe si ganó el ángulo o ganó el
 > formato. Bajar el contenido del video ganador a imagen aísla la variable — y además convierte un
 > activo que ya está pago en 3-4 creativos nuevos.
@@ -136,7 +136,7 @@ aptitud, el contrato de variables y el prompt resuelto. **No reimplementar su pr
 
 **Lo único que esta etapa impone sobre su salida:**
 - El prompt sale **ya rellenado**, sin `[VARIABLES]` sin resolver y sin citas de clase.
-- Compliance de ADS aplicado (`PLANTILLAS_ADS.md`): sin verbos de cura, sin % clínicos inventados,
+- Compliance de ADS aplicado (`DOCTRINA/PLANTILLAS_ADS.md`): sin verbos de cura, sin % clínicos inventados,
   sin sellos regulatorios falsos. *(Recordatorio: el compliance aplica al ADS. El post-clic —bot,
   infografías, audio— no se suaviza.)*
 - Nada inventado: precios, dosis, ingredientes y prueba social salen del `2_DATA_PRODUCTO.txt`.

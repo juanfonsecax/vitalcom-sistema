@@ -79,7 +79,7 @@ los creativos del test
 
 | Archivo | Qué es |
 |---|---|
-| `PLANTILLAS_ADS.md` | **PROMPT DE CONTROL FASE 1** (nivel de acabado, no esqueleto) + PROMPT MAESTRO FASE 2 + tabla de qué prompt va en cada fase |
+| `DOCTRINA/PLANTILLAS_ADS.md` | **PROMPT DE CONTROL FASE 1** (nivel de acabado, no esqueleto) + PROMPT MAESTRO FASE 2 + tabla de qué prompt va en cada fase |
 | `Ads/_TOOLS/check_huella.py` | verifica que un creativo no comparta huella con la competencia. `--calibrar` mide el piso del banco |
 | `Ads/_TOOLS/gen_testeos.py` | genera `PRODUCTOS/_TESTEOS.html` |
 | `PRODUCTOS/_TESTEOS.csv` | definición de los experimentos y sus brazos (se edita a mano) |
@@ -90,10 +90,10 @@ los creativos del test
 ## 3. CAMBIOS YA APLICADOS AL SISTEMA
 
 - `PRODUCTOS/_DIM_CONJUNTOS.csv` → columna **`concepto_key`** (25 cols, 93 filas en `SIN_CLASIFICAR`). Backup en `_ARCHIVO/_DIM_CONJUNTOS_pre_concepto_key_20260818.csv`. Dashboard regenerado, JOIN cierra al 100 %.
-- `DATA_PLAYBOOK.md` §1 → vocabulario cerrado de `concepto_key` + la tensión con la regla 6.
+- `DOCTRINA/DATA_PLAYBOOK.md` §1 → vocabulario cerrado de `concepto_key` + la tensión con la regla 6.
 - `.claude/agents/ETAPA-2.md` → regla de concepto reescrita (distingue iteración perezosa / concepto / variante) + declara `concepto_key`.
 - `.claude/agents/ETAPA-4.md` → usa el PROMPT DE CONTROL en FASE 1, **no** elige estilo anti-fatiga, lo rotula en el output.
-- `PLANTILLAS_ADS.md` → prompt de control nuevo; los 15 estilos marcados **solo FASE 2**.
+- `DOCTRINA/PLANTILLAS_ADS.md` → prompt de control nuevo; los 15 estilos marcados **solo FASE 2**.
 - `CLAUDE.md` → sección ÁNGULO vs CONCEPTO + el catálogo entra al mapa de dueños.
 
 ---
@@ -163,7 +163,7 @@ Copiar y pegar:
 
 Según lo que toque:
 
-- **Producir los creativos de T01** → *"Armá la plantilla madre del brazo B (C2 ligera) para TINNIDROP con el PROMPT DE CONTROL de `PLANTILLAS_ADS.md`, y decime cómo verifico la huella antes de subir."*
+- **Producir los creativos de T01** → *"Armá la plantilla madre del brazo B (C2 ligera) para TINNIDROP con el PROMPT DE CONTROL de `DOCTRINA/PLANTILLAS_ADS.md`, y decime cómo verifico la huella antes de subir."*
 - **Lanzar el test** → *"Ya creé la campaña. Estos son los nombres de los conjuntos: [...]. Llenalos en `_TESTEOS.csv` y regenerá la página."*
 - **Cerrar el pendiente 4** → *"Pasemos FASE 2 de 6 microángulos a 6 conceptos. Tocá `ETAPA-3` y `ETAPA-6`."*
 - **Re-análisis del swipe (~1-sep)** → *"Corré el re-barrido de `_HANDOFF.md` y calculá supervivencia por `concepto_key`. Interesa sobre todo si C8_PROGRESION sobrevive."*

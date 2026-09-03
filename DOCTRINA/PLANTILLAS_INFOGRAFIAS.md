@@ -150,7 +150,7 @@ Paleta por defecto de marca (sanarte® — ver PARAMETRIZACIÓN DE MARCA para ad
 
 > **Por qué (Joaquín, Clase 22):** *"usar la MISMA fuente en los títulos de Meta, el flujo y la landing → se identifica como producto de marca, una secuencia."* La consistencia tipográfica es lo que hace que el cliente sienta que es **una sola marca** de punta a punta. Esto vale tanto o más que el color.
 
-**REGLA DURA:** se fija **UNA familia tipográfica por PRODUCTO** (el "kit") y se usa **idéntica en las 4 infografías, en los ads de Meta (PLANTILLAS_ADS.md) y en cualquier landing de ese producto**. No cambiar de fuente entre piezas del mismo producto. Nunca mezclar más de 2 familias en una pieza; nunca serif en cuerpos pequeños (ilegible).
+**REGLA DURA:** se fija **UNA familia tipográfica por PRODUCTO** (el "kit") y se usa **idéntica en las 4 infografías, en los ads de Meta (DOCTRINA/PLANTILLAS_ADS.md) y en cualquier landing de ese producto**. No cambiar de fuente entre piezas del mismo producto. Nunca mezclar más de 2 familias en una pieza; nunca serif en cuerpos pequeños (ilegible).
 
 **¿Tipografía de quién? → DEL BRANDING DEL PRODUCTO (decisión del operador, 2026-06-29).** Se extrae la **categoría tipográfica de la etiqueta/branding del frasco** y esa se usa en TODAS las piezas de ese producto. Motivo operativo: el operador lanza muchísimos ads/productos y no puede gestionar una tipografía distinta por fanpage — anclar la fuente al producto es más rápido, escalable y mantiene la coherencia de embudo (ad → bot → landing) donde de verdad importa: **dentro de la secuencia de un mismo producto** (principio de Clase 22 — "misma fuente = una sola marca/secuencia"). Se sacrifica a propósito la consistencia entre productos de una misma fanpage; el operador lo aceptó.
 
@@ -215,8 +215,8 @@ Las plantillas viven en dos archivos, para que cada etapa cargue solo lo que va 
 
 | Archivo | Qué lleva | Quién lo necesita |
 |---|---|---|
-| `PLANTILLAS_INFOGRAFIAS_FLUJO.md` | **IMAGEN 1** beneficios · **IMAGEN 2** transformación + ingredientes + modo de uso · **IMAGEN 3** confianza/contraentrega. Son las 3 que el bot envía como ELEMENTOS 4/5/6. | `etapa-4`, siempre |
-| `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` | **IMAGEN 4** anti-imitación · **IMAGEN 5** reservada · **IMAGEN 6** recuperación de novedad. | `etapa-4`, solo si el operador las pide o para retargeting/escalado |
+| `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` | **IMAGEN 1** beneficios · **IMAGEN 2** transformación + ingredientes + modo de uso · **IMAGEN 3** confianza/contraentrega. Son las 3 que el bot envía como ELEMENTOS 4/5/6. | `etapa-4`, siempre |
+| `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` | **IMAGEN 4** anti-imitación · **IMAGEN 5** reservada · **IMAGEN 6** recuperación de novedad. | `etapa-4`, solo si el operador las pide o para retargeting/escalado |
 
 **Dos datos que otras etapas necesitan sin abrir esos archivos:**
 - El acento de color de las cuatro infografías es el **color del producto** (REGLA MAESTRA DE

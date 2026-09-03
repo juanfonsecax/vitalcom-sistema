@@ -30,15 +30,15 @@ nunca toca presupuestos/estados.
   `%conv/clic-enlace = conversaciones ÷ clics-en-enlace` (usar `actions:link_click`, NO `clicks`
   totales).
 
-Detalle en `.claude/agents/ETAPA-7.md`; mapeo de campos en `MCP_PLAYBOOK.md` §6; reglas de data en
-`DATA_PLAYBOOK.md`.
+Detalle en `.claude/agents/ETAPA-7.md`; mapeo de campos en `DOCTRINA/MCP_PLAYBOOK.md` §6; reglas de data en
+`DOCTRINA/DATA_PLAYBOOK.md`.
 
 ---
 
 ## `etapa-8` — Motor de decisión de ESCALADO
 
 Tras `etapa-7`. No es un reporte de "quién gana": es el **plan de acción para vender más** aplicando
-`ESCALADO_PLAYBOOK.md` contra la data real. Ordena las palancas — optimizar flujo hacia el ganador,
+`DOCTRINA/ESCALADO_PLAYBOOK.md` contra la data real. Ordena las palancas — optimizar flujo hacia el ganador,
 **surfing +20% diario**, duplicar conjunto, **Post ID**, **multicuenta**, **multifanpage**, subir
 precio, y —variable #1— **renovar/replicar los creativos del ganador entendiendo POR QUÉ ganó**
 (brief para `etapa-4`).
@@ -85,13 +85,13 @@ skill `fase-2-conceptos`, PASO 0).
 
 ## Los cuatro archivos de apoyo del ciclo
 
-- 📖 **`ESCALADO_PLAYBOOK.md`** — el **QUÉ**: fases y timing, señales, palancas en orden, cómo
+- 📖 **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — el **QUÉ**: fases y timing, señales, palancas en orden, cómo
   replicar el creativo ganador, contingencia, árbol de decisión y los umbrales de métricas (§8).
-- 🗓️ **`CALENDARIO_ESCALADO.md`** — el **CUÁNDO**: ritmo día-a-día con gates (Ventana 0 lanzamiento ·
+- 🗓️ **`DOCTRINA/CALENDARIO_ESCALADO.md`** — el **CUÁNDO**: ritmo día-a-día con gates (Ventana 0 lanzamiento ·
   Días 1-2 DATA no ventas · Día 3 GATE #1 podar · Días 4-6 GATE #2 FASE 2 del ganador · Día 7+
   escalado). Incluye la **REGLA DEL MULTI-GANADOR**: el bot paraguas es de TESTEO; a escala cada
   ángulo ganador corre su **FASE 2 dedicada**.
-- 🧮 **`DATA_PLAYBOOK.md`** — el **CON QUÉ**: los CSV, cómo leerlos sin sacar cifras falsas, fórmula
+- 🧮 **`DOCTRINA/DATA_PLAYBOOK.md`** — el **CON QUÉ**: los CSV, cómo leerlos sin sacar cifras falsas, fórmula
   de ganancia, break-even y el dashboard.
 - 🗂️ **`PRODUCTOS/_DIM_PRODUCTOS.csv`** — registro maestro de TODOS los productos trackeados.
   `_PORTAFOLIO.txt` es su bitácora en prosa: se consulta a mano, no se recorre.

@@ -76,7 +76,7 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 > una sola aparición. Cada concepto corre dos veces (brazo A o B **y** brazo C):
 > `2 de 2 arriba` = GANADOR · `1 de 2` = RUIDO (se repite) · `0 entregas` = `SIN_ENTREGA`.
 > Y el `%PD` se calcula **sumando el gasto de las 2 apariciones** del mismo `concepto_key`+variante,
-> nunca por conjunto. Aritmética completa en `CALENDARIO_ESCALADO.md` §1.7.4.
+> nunca por conjunto. Aritmética completa en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7.4.
 
 > **Diccionario de emociones:** MIEDO_FUTURO = teme que empeore o sea irreversible · VERGUENZA = lo esconde de los demás · RESIGNACION = ya se rindió · FRUSTRACION_MEDICA = pagó especialistas y sigue igual · DESCONFIANZA = teme que sea falso o no funcione · AGOTAMIENTO = cansado, sin energía · CURIOSIDAD = no sabía que su problema tenía esa causa (educacional/mecanismo).
 
@@ -260,7 +260,7 @@ Es el KPI que gobierna `etapa-11`. Cuatro trampas, todas medidas:
   Piso de evidencia de `etapa-11`: ≥60 mensajes y ≥5 ventas por ángulo.
 - **Semanal, nunca diario** — igual que el CPA.
 - **Cierre ≠ venta cobrada.** Una venta COD que se devuelve no es venta: el cierre del bot y la
-  tasa de entrega son cosas distintas y no se mezclan (`_TASA_ENTREGA.csv` · `CONTABILIDAD.md`).
+  tasa de entrega son cosas distintas y no se mezclan (`_TASA_ENTREGA.csv` · `DOCTRINA/CONTABILIDAD.md`).
 
 Referencia vigente (02-sep): portafolio **8.6 %** · mejor ángulo del sistema 18.1 %
 (CLEARSTEM/ANTI_FALSIFICACION) · umbral de los mentores 15-20 % (M-F01).

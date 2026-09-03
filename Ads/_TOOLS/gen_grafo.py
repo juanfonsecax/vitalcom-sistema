@@ -76,9 +76,8 @@ RE_MD = re.compile(r"\b([" + MAY + r"][" + MAY + r"-]{2,}\.md)\b")
 RE_CSV = re.compile(r"\b(_[A-Z_]+\.csv)\b")
 RE_ETAPA = re.compile(r"\b(etapa-[a-z0-9-]+)\b")
 # Rutas citadas entre comillas o backticks: es lo que atrapa a un `.Codex/...`
-RE_RUTA = re.compile(r"[`\"'(]((?:\.[a-zA-Z]+|Ads|PRODUCTOS)/[\w./À-ÿ -]+?"
+RE_RUTA = re.compile(r"[`\"'(]((?:\.[a-zA-Z]+|Ads|PRODUCTOS|DOCTRINA)/[\w./À-ÿ -]+?"
                      r"\.(?:md|py|csv|json|sh|txt))[`\"')]")
-# La linea manda CREAR el archivo o lo marca opcional: es insumo, no ruta rota.
 # La linea manda CREAR el archivo o lo marca opcional: es insumo, no ruta rota.
 # Se compara SIN TILDES (ver sin_tildes): el mismo caracter acentuado llega en
 # dos formas Unicode distintas segun quien escribio el archivo, y una regex con
@@ -130,7 +129,7 @@ def frontmatter(texto):
 def construir():
     """Devuelve el indice de .md y el grafo de agentes y skills con lo que consumen."""
     indice = {}
-    for carpeta in (".", "Ads/_TOOLS", "Ads/_SWIPE", "PRODUCTOS"):
+    for carpeta in (".", "DOCTRINA", "Ads/_TOOLS", "Ads/_SWIPE", "PRODUCTOS"):
         if os.path.isdir(carpeta):
             for f in os.listdir(carpeta):
                 if f.endswith(".md"):

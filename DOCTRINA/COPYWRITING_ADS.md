@@ -2,7 +2,7 @@
 
 > **Qué es esto:** la fuente única de verdad para escribir los **copies de los anuncios** (los 3 campos de Meta: Texto principal, Título, Descripción). Lo lee **ETAPA-4** en ambas fases. Extraído crítica y directamente de las clases de los mentores: **Clase 19 — Andrómeda (Joaquín)**, **Clase 14 — Creativos que Venden/Hooks (Mercy)**, **Clase 20 — HPPPC (ángulos)**, más los ejemplos validados del operador.
 >
-> **No confundir con `PLANTILLAS_ADS.md`** (eso es el diseño visual del creativo-imagen). Este archivo es el TEXTO del anuncio.
+> **No confundir con `DOCTRINA/PLANTILLAS_ADS.md`** (eso es el diseño visual del creativo-imagen). Este archivo es el TEXTO del anuncio.
 
 ---
 
@@ -158,4 +158,4 @@ El copy no se evalúa por gusto sino por datos (Clase 20 y 22). Separar el filtr
 ---
 
 ## FUENTES
-Clase 19 (Andrómeda — Joaquín), Clase 14 (Creativos/Hooks — Mercy), Clase 20 (HPPPC), Clase 4 (Creativos y Andrómeda), + ejemplos validados del operador (banco de descripciones). Coherente con `PLANTILLAS_ADS.md` (visual) y la regla Kaleth de ETAPA-4.
+Clase 19 (Andrómeda — Joaquín), Clase 14 (Creativos/Hooks — Mercy), Clase 20 (HPPPC), Clase 4 (Creativos y Andrómeda), + ejemplos validados del operador (banco de descripciones). Coherente con `DOCTRINA/PLANTILLAS_ADS.md` (visual) y la regla Kaleth de ETAPA-4.

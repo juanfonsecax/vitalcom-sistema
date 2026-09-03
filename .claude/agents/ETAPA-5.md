@@ -211,7 +211,7 @@ Imagen que comunica los beneficios del producto enfocados en el ángulo ganador.
 • TÍTULO IMPACTANTE de dolor/deseo del ángulo, congruente con el anuncio de Meta (NO el nombre del producto, NO la palabra "BENEFICIOS" — es genérico). Ej: "TU APOYO DIARIO PARA UNA VIDA MÁS SALUDABLE". (Clase 22 Joaquín: título impactante, la gente escanea.)
 • Kicker pequeño secundario: "10 BENEFICIOS" o "FÓRMULA AVANZADA" (nunca como título principal)
 • 8-10 bullets de beneficios en lenguaje del avatar — como lo diría él/ella, no técnico (10 = layout validado con el magnesio)
-• Acento de color = color del producto (REGLA MAESTRA DE COLOR de PLANTILLAS_INFOGRAFIAS.md; no forzar verde lima)
+• Acento de color = color del producto (REGLA MAESTRA DE COLOR de DOCTRINA/PLANTILLAS_INFOGRAFIAS.md; no forzar verde lima)
 • Pie de imagen: frase de conexión emocional
 • Formato sugerido: 1080×1350px (4:5) | SIN precio
 
@@ -228,7 +228,7 @@ Imagen que convierte emoción en decisión informada.
 ELEMENTO 6 — IMAGEN INFO 3 — CONFIANZA / CONTRAENTREGA:
 Imagen que elimina el miedo a comprar online.
 • Bloque 1 (prominente): PAGÁS AL RECIBIR — primera cosa que se ve en la imagen
-• Bloque 1.5 (SELLO DE GARANTÍA, junto al contraentrega — reductor de fricción #2, Clase 22): escudo/medalla con [GARANTIA_TEXTO]. Default compliance-safe: "Garantía de satisfacción · Acompañamiento del equipo". Poner "30 días de garantía / devolución" SOLO si el operador confirma esa política (en COD Guatemala el reembolso es delicado). Responde la objeción "¿y si no me funciona?". Coherente con IMAGEN 3 de PLANTILLAS_INFOGRAFIAS.md.
+• Bloque 1.5 (SELLO DE GARANTÍA, junto al contraentrega — reductor de fricción #2, Clase 22): escudo/medalla con [GARANTIA_TEXTO]. Default compliance-safe: "Garantía de satisfacción · Acompañamiento del equipo". Poner "30 días de garantía / devolución" SOLO si el operador confirma esa política (en COD Guatemala el reembolso es delicado). Responde la objeción "¿y si no me funciona?". Coherente con IMAGEN 3 de DOCTRINA/PLANTILLAS_INFOGRAFIAS.md.
 • Bloque 2: autenticidad del producto (holograma, sello, registro sanitario si aplica)
 • Bloque 3: envío seguro — cobertura toda Guatemala, GINTACOM y FORZA, 2-5 días hábiles
 • Mini testimonios (3, solo texto, sin cara): capturas cortas de clientes que recibieron el producto
@@ -392,7 +392,7 @@ Ese es el testimonio de [una de nuestras últimas clientas / uno de nuestros úl
 
 [UNA razón por la que la mayoría se lleva el nivel ALTO de la oferta, anclada en el timeline
  REAL del producto — ej. "la piel empieza a cambiar hasta la semana 3", "el zumbido no se calma
- en una semana". Sale del dato del operador o de PLANTILLAS_DEFAULTS_OPERADOR.md.]
+ en una semana". Sale del dato del operador o de DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md.]
 
 ¿Te aparto el de [X] (Q[P_bajo]) o el de [Y] (Q[P_alto])?
 Botones: [nivel bajo] · [nivel alto]
@@ -590,7 +590,7 @@ REGLAS CONDICIONALES POR PRODUCTO (incluir SOLO las que apliquen al producto —
 - **Regla del nivel de conciencia:** La apertura del flujo se calibra al nivel del avatar (educar / solución directa / reforzar garantías) y debe coincidir con la apertura del anuncio de ETAPA-4. (CLASE 12 y 22)
 - **Regla de propuestas de valor:** Los bullets, el audio y las FAQ se construyen desde propuestas problema+solución+resultado, nunca desde ingredientes sueltos. (Clase 10, 22)
 - **NUNCA activar sin ángulo ganador confirmado.** (Flujo del sistema)
-- **Regla de defaults de operador:** Si faltan FAQs, días de resultado, dosis, momento de uso o estadísticas, generarlos desde `PLANTILLAS_DEFAULTS_OPERADOR.md` (§1 datos, §2 banco de 10 FAQ venta + 5 postventa) adaptado al ángulo/producto, SIN detener el flujo. El dato real del operador manda sobre el default.
+- **Regla de defaults de operador:** Si faltan FAQs, días de resultado, dosis, momento de uso o estadísticas, generarlos desde `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` (§1 datos, §2 banco de 10 FAQ venta + 5 postventa) adaptado al ángulo/producto, SIN detener el flujo. El dato real del operador manda sobre el default.
 
 ---
 

@@ -71,27 +71,29 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 
 | Tema | Dueño único |
 |---|---|
-| Copy de anuncios (hooks, compliance de copy, precio, HPPPC) | `COPYWRITING_ADS.md` |
-| Creativo visual: Prompt Maestro, 15 estilos, compliance Andrómeda, DOCTRINA DE CREATIVOS | `PLANTILLAS_ADS.md` |
+| Copy de anuncios (hooks, compliance de copy, precio, HPPPC) | `DOCTRINA/COPYWRITING_ADS.md` |
+| Creativo visual: Prompt Maestro, 15 estilos, compliance Andrómeda, DOCTRINA DE CREATIVOS | `DOCTRINA/PLANTILLAS_ADS.md` |
 | Catálogo de los 8 `concepto_key` y su evidencia | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
-| Infografías del bot: motor compartido (PASO 0, variables, color, tipografía) | `PLANTILLAS_INFOGRAFIAS.md` — enruta a las plantillas |
-| Plantillas Info 1/2/3 · IMAGEN 4/5/6 | `PLANTILLAS_INFOGRAFIAS_FLUJO.md` · `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` |
-| Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo (§8) | `ESCALADO_PLAYBOOK.md` |
-| Cadencia día a día, gates, regla multi-ganador, aritmética de las 3 fases (§1.5, §1.7) | `CALENDARIO_ESCALADO.md` |
-| CAPA DE DATA: los CSV, cómo leerlos, ganancia, break-even, dashboard | `DATA_PLAYBOOK.md` |
-| CONTABILIDAD: las 3 vistas, estado de resultados, maduración de 10 días | `CONTABILIDAD.md` + `PRODUCTOS/_PARAMETROS_FINANZAS.csv` |
+| Infografías del bot: motor compartido (PASO 0, variables, color, tipografía) | `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` — enruta a las plantillas |
+| Plantillas Info 1/2/3 · IMAGEN 4/5/6 | `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` · `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` |
+| Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo (§8) | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
+| Cadencia día a día, gates, regla multi-ganador, aritmética de las 3 fases (§1.5, §1.7) | `DOCTRINA/CALENDARIO_ESCALADO.md` |
+| CAPA DE DATA: los CSV, cómo leerlos, ganancia, break-even, dashboard | `DOCTRINA/DATA_PLAYBOOK.md` |
+| CONTABILIDAD: las 3 vistas, estado de resultados, maduración de 10 días | `DOCTRINA/CONTABILIDAD.md` + `PRODUCTOS/_PARAMETROS_FINANZAS.csv` |
 | Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
 | Las 10 FanPages y las reglas de asignación F1–F4 | `.claude/agents/ETAPA-FANPAGE.md` |
 | CONVENCIÓN DE NOMBRES y BANDA DE EDAD por avatar | `.claude/agents/ETAPA-6.md` |
-| Creación de campaña por MCP, mapeo de campos | `MCP_PLAYBOOK.md` |
+| Creación de campaña por MCP, mapeo de campos | `DOCTRINA/MCP_PLAYBOOK.md` |
 | Lavado de video (por qué, comando, colores) | `Ads/_TOOLS/LAVADO.md` |
-| Defaults cuando el operador no entrega un dato | `PLANTILLAS_DEFAULTS_OPERADOR.md` |
-| Recolección manual de creativos (prompt Gemini) | `ETAPA-RECOLECCION.md` |
-| Módulos opcionales de research (web / Ads Library) | `ETAPA-RESEARCH.md` |
+| Defaults cuando el operador no entrega un dato | `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` |
+| Recolección manual de creativos (prompt Gemini) | `DOCTRINA/ETAPA-RECOLECCION.md` |
+| Módulos opcionales de research (web / Ads Library) | `DOCTRINA/ETAPA-RESEARCH.md` |
 | **Doctrina de los mentores, su fecha, su ESTADO y los choques entre ellos** | `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` — **consulta humana**, ninguna etapa la lee para ejecutar |
 
-**Zonas del repositorio:** `.claude/` (agentes + skills) · `PRODUCTOS/` (carpeta por producto + capa
-de data + `_AUDITORIAS/`) · `Ads/` (media, `_TOOLS/`, `_SWIPE/`) se **leen**.
+**Zonas del repositorio:** `DOCTRINA/` (los documentos dueños de la tabla de arriba) · `.claude/`
+(agentes + skills) · `PRODUCTOS/` (carpeta por producto + capa de data + `_AUDITORIAS/`) · `Ads/`
+(media, `_TOOLS/`, `_SWIPE/`) se **leen**. `VISTAS/PANEL.html` es el hub que enlaza las vistas
+generadas de `PRODUCTOS/` y `Ads/_SWIPE/`: se abre, no se lee.
 `_CONOCIMIENTO/Finales/` (las clases) · `_OPERADOR/` · `_ROADMAP/` (backlog no implementado) ·
 `_SKILLS_FUENTE/` · `INFPRODUCTOS/` (negocio aparte) · `_ARCHIVO/` (todo lo retirado) son
 **referencia humana** — el sistema no los lee.
@@ -188,7 +190,7 @@ en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 5. **Congelar los inputs antes de arrancar.** Si uno cambia a mitad → rerun completo que
    **sobrescribe** los archivos y sube `VERSION`; nunca un parche parcial.
 6. **Mismo presupuesto en todos los conjuntos dentro de cada etapa**, para no sesgar qué gana por
-   dinero. Las cifras por fase viven en `CALENDARIO_ESCALADO.md` §1.5 y §1.7.
+   dinero. Las cifras por fase viven en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5 y §1.7.
 7. **Lanzamiento siempre a las 4 AM del día siguiente.** Nunca el mismo día.
 8. **Un producto = una carpeta `PRODUCTOS/[NOMBRE]/` con archivos por rol** — `1_HACER_MANUAL.txt`,
    `2_DATA_PRODUCTO.txt`, `3_CAMPAÑA_META.txt` (solo IDs de Meta), `4_PLAN_ESCALADO.txt`. Prohibido
@@ -214,6 +216,6 @@ en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
   `CAMBIO_BOT` en `_EVENTOS.csv` el día que se aplica** — sin ese evento el cambio no se puede
   evaluar. Ante un cierre desplomado, verificar PRIMERO la consistencia física ad ↔ destino antes de
   tocar una línea de texto.
-- **El dinero se mide con `CONTABILIDAD.md`, que manda sobre cualquier otro cálculo.** Este negocio
+- **El dinero se mide con `DOCTRINA/CONTABILIDAD.md`, que manda sobre cualquier otro cálculo.** Este negocio
   es CONTRA ENTREGA: la venta y el cobro no ocurren el mismo día. Cohorte ≠ caja; un cohorte de
   menos de 10 días es PRELIMINAR; el `MARGEN LOGÍSTICO` de Dropi NO es la ganancia.

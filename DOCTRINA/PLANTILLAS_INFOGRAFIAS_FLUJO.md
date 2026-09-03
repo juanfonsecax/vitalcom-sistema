@@ -1,6 +1,6 @@
 # PLANTILLAS INFOGRAFÍAS — LAS 3 DEL FLUJO (IMAGEN 1 · 2 · 3)
 
-> Parte de `PLANTILLAS_INFOGRAFIAS.md`. El **motor compartido** (PASO 0,
+> Parte de `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`. El **motor compartido** (PASO 0,
 > mapa de variables, REGLA MAESTRA DE COLOR, KIT TIPOGRÁFICO, marca) vive allá:
 > leerlo primero. Acá van solo las plantillas.
 

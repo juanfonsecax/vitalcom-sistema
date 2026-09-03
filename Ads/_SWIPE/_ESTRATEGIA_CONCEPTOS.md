@@ -79,7 +79,7 @@ Esto es un sistema de investigación de avatar **muy por encima del promedio**. 
 El sistema **sí sabe** que los conceptos importan. Está escrito en dos lugares:
 
 - `ETAPA-2.md` línea 231: *"un ángulo = un CONCEPTO creativo distinto por conjunto — no la misma imagen con otro título/color/fuente. **Las iteraciones murieron, los conceptos reinan**"* (Clase 2)
-- `ESCALADO_PLAYBOOK.md` §4: *"Conservar el ángulo, variar el CONCEPTO"* · *"Se copia el POR QUÉ vendió, no el creativo"* (Clase 20)
+- `DOCTRINA/ESCALADO_PLAYBOOK.md` §4: *"Conservar el ángulo, variar el CONCEPTO"* · *"Se copia el POR QUÉ vendió, no el creativo"* (Clase 20)
 
 Pero comparemos cómo trata el sistema a cada dimensión:
 
@@ -113,7 +113,7 @@ Esta es la parte importante de la auditoría.
 
 **Tres variables cambian a la vez entre conjuntos.** Cuando el conjunto 3 gana, no hay forma de saber si ganó por el ángulo, por el concepto o porque le tocó video. Es un experimento sin control.
 
-El sistema **ya detectó la mitad de este problema** — `PLANTILLAS_ADS.md` línea 196 habla del *"confound de formato"* y propone mitigarlo. Pero **no vio el confound de concepto, que es más grande**, porque el concepto impacta más que el formato.
+El sistema **ya detectó la mitad de este problema** — `DOCTRINA/PLANTILLAS_ADS.md` línea 196 habla del *"confound de formato"* y propone mitigarlo. Pero **no vio el confound de concepto, que es más grande**, porque el concepto impacta más que el formato.
 
 Y encima esto choca de frente con la regla 6 del orquestador: las ventas por conjunto tienen dispersión de Poisson (1-3 ventas, IC ±113-196%). O sea: **3 variables confundidas medidas sobre ruido puro.** Estructuralmente no se puede aprender nada a nivel conjunto. Por eso la regla 6 obliga a agregar por `angulo_key` — que es la decisión correcta, pero deja el concepto sin medir para siempre.
 
@@ -255,7 +255,7 @@ Los 3 comparten la misma estructura, cambiando solo el relleno:
 **El precio visible aparece en el 100% de los creativos más escalados del banco.** Contrastar con la regla actual del sistema: *"precio máx 3 de 6, ideal 2 de 6"*. El mejor performer del mercado guatemalteco hace lo contrario — precio en todos. No es prueba suficiente para cambiar la regla (1 anunciante), pero **sí es una hipótesis que merece un test explícito**, y hoy el sistema no la tiene en el radar.
 
 ### Hallazgo 4 — el sistema ya apunta al lugar correcto
-Ese esqueleto es casi idéntico a la jerarquía del **PROMPT MAESTRO** (`PLANTILLAS_ADS.md`): marca → hook → producto → beneficio → CTA → prueba social → oferta. **La plantilla del sistema coincide con lo que hace el mejor del mercado.** El problema nunca fue la plantilla: es que no se registra qué versión de ella se usó, así que no se puede aprender cuál gana.
+Ese esqueleto es casi idéntico a la jerarquía del **PROMPT MAESTRO** (`DOCTRINA/PLANTILLAS_ADS.md`): marca → hook → producto → beneficio → CTA → prueba social → oferta. **La plantilla del sistema coincide con lo que hace el mejor del mercado.** El problema nunca fue la plantilla: es que no se registra qué versión de ella se usó, así que no se puede aprender cuál gana.
 
 ## D) Consecuencia para el reparto de trabajo
 Mi pre-clasificación **no te ahorra la pasada visual** — te ahorra el 21% y te deja el catálogo filtrado. Sugerencia de orden, por rentabilidad:
@@ -319,7 +319,7 @@ Cuatro de las cinco **ya existen parcialmente** en el sistema — esto es adapta
 |---|---|---|---|---|
 | P1 | **TARJETA DE OFERTA** | numeral cantidad → producto → precio dual → franja confianza | **BOFU** | parcial (§7 sello starburst) |
 | P2 | **AUTORIDAD CLÍNICA** | figura experta → producto → collage síntomas → credencial | MOFU | parcial (banco de ángulos: autoridad) |
-| P3 | **TESTIMONIO / CHAT** | burbuja WhatsApp → producto → beneficio corto | MOFU | **sí** (`PLANTILLAS_ADS.md` §B) |
+| P3 | **TESTIMONIO / CHAT** | burbuja WhatsApp → producto → beneficio corto | MOFU | **sí** (`DOCTRINA/PLANTILLAS_ADS.md` §B) |
 | P4 | **HOOK DE PROBLEMA** | pregunta de dolor grande → producto → íconos beneficio | **TOFU** | parcial (fórmula de hook) |
 | P5 | **CHOQUE / AMENAZA** | amenaza cruda primer plano → producto resolviendo | TOFU | **sí** (enfoque agresivo) |
 

@@ -16,10 +16,10 @@ tools: Read, Write, Glob, Grep, Bash, Task
 
 Estructura `1-1-5 + 1-1-5 + 1-2-5` a **$6/conjunto = $24/día**. El `%PD` se calcula **por concepto
 sumando sus 2 apariciones** (~4.1 días a 1× BE), nunca por conjunto. Aritmética completa en
-`CALENDARIO_ESCALADO.md` §1.7.
+`DOCTRINA/CALENDARIO_ESCALADO.md` §1.7.
 
 Catálogo de los 8 conceptos y su evidencia: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`. Se registra en
-`concepto_key` de `_DIM_CONJUNTOS.csv` (vocabulario en `DATA_PLAYBOOK.md` §1).
+`concepto_key` de `_DIM_CONJUNTOS.csv` (vocabulario en `DOCTRINA/DATA_PLAYBOOK.md` §1).
 
 **Secuencia:** `etapa-11` → `etapa-9` (10 conceptos) →
 (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
@@ -59,7 +59,7 @@ de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID)
 `_EVENTOS.csv`.
 
 > **Por qué va primero y no después:** optimizar el flujo es la palanca #1 de
-> `ESCALADO_PLAYBOOK.md` §3 y va **antes de gastar más**. El cierre del portafolio está en 8.6 %
+> `DOCTRINA/ESCALADO_PLAYBOOK.md` §3 y va **antes de gastar más**. El cierre del portafolio está en 8.6 %
 > contra el 15-20 % de los mentores; a mensajes y gasto idénticos, el 15 % son **+324 ventas y CPA
 > de Q51.5 a Q29.6**. Ninguna palanca de estructura se acerca. Su brief entra a `etapa-5` en el
 > PASO 2, que redacta **los dos flujos** del A/B.

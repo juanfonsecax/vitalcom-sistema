@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 
-ETAPA-7 dice **QUÉ está pasando** (métricas por conjunto). ETAPA-8 decide **QUÉ HACER para vender más**, aplicando la doctrina de escalado de los mentores contra la data real. No es un reporte de "quién gana": es el **plan de acción diario** que convierte la data en movimientos concretos (pausar, optimizar, escalar, crear creativos). Su norte lo fija **`ESCALADO_PLAYBOOK.md`** — ETAPA-8 no improvisa, ejecuta ese árbol de decisión.
+ETAPA-7 dice **QUÉ está pasando** (métricas por conjunto). ETAPA-8 decide **QUÉ HACER para vender más**, aplicando la doctrina de escalado de los mentores contra la data real. No es un reporte de "quién gana": es el **plan de acción diario** que convierte la data en movimientos concretos (pausar, optimizar, escalar, crear creativos). Su norte lo fija **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — ETAPA-8 no improvisa, ejecuta ese árbol de decisión.
 
 > **Solo lectura + recomendación.** ETAPA-8 NUNCA crea/pausa/edita/sube presupuestos de entidades vivas por MCP (eso resetea a Andrómeda; lo prohíbe el orquestador). Entrega el PLAN; el **operador** ejecuta en Meta y ETAPA-4 genera los creativos.
 
@@ -22,11 +22,11 @@ ETAPA-7 dice **QUÉ está pasando** (métricas por conjunto). ETAPA-8 decide **Q
 ## Inputs
 
 - **Informe de ETAPA-7** del día (por conjunto: CPA real o eficiencia de conversación, %conv/clic-enlace, %conv/impresión, CTR, CPM, CPC, frecuencia, señal de fatiga, estado 🟢🟡🔴).
-- **`ESCALADO_PLAYBOOK.md`** — la doctrina y el árbol de decisión (§6). Fuente única.
+- **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — la doctrina y el árbol de decisión (§6). Fuente única.
 - `PRODUCTOS/[NOMBRE]/2_DATA_PRODUCTO.txt` → los 6 ángulos (avatar, dolor, formato, precio, nivel de conciencia, hook), ángulos descubiertos no usados, página, precios P1u/P2u/P3u.
 - `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` → ad_set_id, ad_id y **creative_id / Post ID** del anuncio ganador (llave del escalado horizontal), campaña VIVA correcta.
-- `PLANTILLAS_ADS.md` (15 estilos Prompt Maestro) y la biblioteca de video `Ads/1.1 Videos/[PRODUCTO]/`.
-- Nº de cuentas/fanpages disponibles (para multicuenta/multifanpage): inventario en `MCP_PLAYBOOK.md` §1.
+- `DOCTRINA/PLANTILLAS_ADS.md` (15 estilos Prompt Maestro) y la biblioteca de video `Ads/1.1 Videos/[PRODUCTO]/`.
+- Nº de cuentas/fanpages disponibles (para multicuenta/multifanpage): inventario en `DOCTRINA/MCP_PLAYBOOK.md` §1.
 
 ## Memoria del sistema — `PRODUCTOS/_APRENDIZAJES.csv`
 
@@ -54,7 +54,7 @@ ETAPA-8 es el principal **escritor** de esta tabla: es quien ve el patrón repet
 - **Ganador validado (ESCALADO):** aplicar palancas.
 
 ### B) Palancas de escalado — en el orden del playbook (no todas de golpe)
-1. **Optimizar el flujo hacia el ganador** (primero, antes de gastar más): apuntar el bot al ángulo ganador (ETAPA-5) y **pausar los conjuntos que no funcionan** — cascada de 2 criterios (`ESCALADO_PLAYBOOK.md §1.5/§6`), máx 2 a la vez: (a) **matar-por-CONVERSACIÓN** ya, antes del break-even, al que tiene %conv/clic-enlace <35% y 0 ventas (anuncio/hook malo); (b) **matar-por-VENTAS** solo al que ya gastó **1×Break Even (su PD)** + ~3 días COD y sigue en 0 (buena conversación, no cierra). Al de buena conversación que aún NO llegó a su PD → dejarlo correr (sub-testeado), no matar.
+1. **Optimizar el flujo hacia el ganador** (primero, antes de gastar más): apuntar el bot al ángulo ganador (ETAPA-5) y **pausar los conjuntos que no funcionan** — cascada de 2 criterios (`DOCTRINA/ESCALADO_PLAYBOOK.md §1.5/§6`), máx 2 a la vez: (a) **matar-por-CONVERSACIÓN** ya, antes del break-even, al que tiene %conv/clic-enlace <35% y 0 ventas (anuncio/hook malo); (b) **matar-por-VENTAS** solo al que ya gastó **1×Break Even (su PD)** + ~3 días COD y sigue en 0 (buena conversación, no cierra). Al de buena conversación que aún NO llegó a su PD → dejarlo correr (sub-testeado), no matar.
 2. **Surfing +20% diario** a TODO conjunto que vendió (nunca más de 20%).
 3. **Renovar/crear creativos del ángulo ganador** (variable #1) — ver sección C.
 4. **Duplicar el conjunto ganador** (agresivo, solo con flujo de caja): 1×→2×→… compensando con creativos nuevos.
@@ -98,7 +98,7 @@ QUÉ HACER HOY (1-2 líneas): [la acción prioritaria].
 
 ## Reglas fijas
 
-- Aplicar **ESCALADO_PLAYBOOK.md** como fuente única; citar la palanca que se usa.
+- Aplicar **DOCTRINA/ESCALADO_PLAYBOOK.md** como fuente única; citar la palanca que se usa.
 - Decidir por **CPA semanal/ponderado**, nunca por un día suelto (Camilo, Clase 8).
 - **Escalado fuerte SOLO con CPA real confirmado.** Sin tracking = ganador provisional, no escalar fuerte.
 - Fatiga ⇒ nuevo creativo del **MISMO** ángulo, sin tocar presupuesto ni ángulo. "Se queman los ángulos, no los productos."
