@@ -1,8 +1,8 @@
 ---
 name: etapa-1
-description: FASE 1 — Costeo. Recibe nombre y costo en Q, consulta la tabla maestra embebida y entrega P1u/P2u/P3u, CPA objetivo y CPA break even EXACTOS. Nunca inventa cifras. Etapa corta y determinista.
+description: FASE 1 — Costeo. Recibe nombre y costo en Q, ejecuta Ads/_TOOLS/costear.py para obtener P1u/P2u/P3u, CPA objetivo y CPA break even EXACTOS desde _DIM_COSTEO.csv, y sobre esas cifras decide la arquitectura de oferta segun tipo de producto y avatar. Las cifras salen del script, nunca de memoria.
 tools: Read, Bash
-model: haiku
+model: inherit
 ---
 
 # ETAPA-1 — ANÁLISIS DE PRODUCTO Y COSTEO
@@ -106,7 +106,7 @@ Parámetros vigentes: tasa de despacho **97%** · devoluciones **17%** · public
 
 > El BE es, por definición, el CPA donde la ganancia queda en CERO (ya consume toda la utilidad esperada). No es un objetivo: es el techo.
 
-**Regla de aproximación:** Si el costo no está en la tabla, usar la fila con el valor más cercano. Si el costo está entre dos valores, usar el superior para ser conservador.
+**Regla de aproximación:** la fila **más cercana** al costo; **en empate, la superior** (conservador). Lo aplica `costear.py`, no se hace a ojo. Casos reales: TINNIDROP Q41 → fila Q40 · NUSAVA Q55 → fila Q54 · CLEARSTEM Q57 → empata entre Q54 y Q60 → fila Q60. **Nunca se interpola.**
 
 **Productos en COMBO (2x1 / 4x2):** el costo que entra a la tabla es el del PEDIDO COMPLETO, no el de la unidad. Ej. VARICOSE vende 2 frascos de Q45 → **producto Q90 → fila Q90** (precio Q249, BE Q83.0), no la fila Q45.
 

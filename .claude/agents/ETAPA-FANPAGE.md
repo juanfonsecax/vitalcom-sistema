@@ -2,7 +2,7 @@
 name: etapa-fanpage
 description: FASE 1 — Asigna el producto a una de las 10 FanPages de pauta (identidad, tono y edad de segmentación) según el COMPRADOR PRINCIPAL. Corre en paralelo con ETAPA-2. Su output (pagina_asignada) es input requerido de ETAPA-4, ETAPA-5 y ETAPA-6.
 tools: Read
-model: haiku
+model: inherit
 ---
 
 # ETAPA-FANPAGE — ASIGNADOR DE FANPAGE

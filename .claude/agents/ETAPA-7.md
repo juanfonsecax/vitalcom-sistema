@@ -2,7 +2,7 @@
 name: etapa-7
 description: Monitor diario de métricas post-lanzamiento. Fuente de verdad de VENTAS = _FACT_VENTAS.csv; Meta MCP solo aporta señales de entrega. Verifica integridad de ventana, calcula CPA real en Q, rankea, detecta fatiga e identifica el ángulo ganador para iniciar FASE 2. SOLO LECTURA. Mide por CPA, nunca por ROAS.
 tools: Read, Glob, Grep
-model: opus
+model: inherit
 ---
 
 # ETAPA-7 — MONITOR DIARIO (LECTOR DE MÉTRICAS)

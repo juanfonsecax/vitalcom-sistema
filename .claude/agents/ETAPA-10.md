@@ -2,7 +2,7 @@
 name: etapa-10
 description: LECTOR CONCEPTO ↔ MÉTRICA — cruza el rendimiento real de cada anuncio contra los atributos del blueprint que lo originó, para responder POR QUÉ ganó lo que ganó. Separa ÁNGULO de CONCEPTO y lee cada rol de embudo con su propia métrica. Solo lectura; entrega ranking y brief de producción para ETAPA-9. Corre tras ETAPA-7. Úsalo cuando el operador dice "por qué funciona ese creativo", "qué concepto gana" o al cerrar una FASE 2.
 tools: Read, Glob, Grep, Bash, Write
-model: opus
+model: inherit
 ---
 
 # ETAPA-10 — LECTOR CONCEPTO ↔ MÉTRICA

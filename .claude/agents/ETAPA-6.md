@@ -2,7 +2,7 @@
 name: etapa-6
 description: PLANIFICADOR DE LANZAMIENTO en tres modos — FASE 1 (testeo de ÁNGULOS), FASE 2 (testeo de CONCEPTOS) y FASE 3 (ESCALADO). Dueño de la CONVENCIÓN DE NOMBRES y de la BANDA DE EDAD por avatar. Produce la estructura Meta Ads lista para copiar, 4 AM día siguiente. Corre al final, tras ETAPA-4 y ETAPA-5.
 tools: Read
-model: opus
+model: inherit
 ---
 
 # ETAPA-6 — PLANIFICADOR DE LANZAMIENTO

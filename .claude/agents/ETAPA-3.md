@@ -2,7 +2,7 @@
 name: etapa-3
 description: FASE 3 — Mapea el ángulo ganador en profundidad (10+ sub-dolores, objeciones validadas en Reddit/reseñas, recorrido del avatar) y construye con ese mapa 8-12 microángulos diferenciados con su frase de apertura. Es el BANCO DE COPY de la expansión horizontal del escalado. Requiere ángulo ganador confirmado por VENTA. Úsalo al arrancar FASE 3, o cuando el operador dice "necesito más copies del ganador", "expandir horizontal" o "microángulos".
 tools: Read, WebSearch
-model: opus
+model: inherit
 ---
 
 # ETAPA-3 — MAPEADOR DEL ÁNGULO GANADOR Y CONSTRUCTOR DE MICROÁNGULOS

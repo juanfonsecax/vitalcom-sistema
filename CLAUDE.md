@@ -26,6 +26,30 @@ Cada etapa es un **subagente real**, definido en `.claude/agents/ETAPA-*.md` con
 `description`, `tools` y `model`. Se invocan con **Task** (`subagent_type` = el `name`, ej.
 `etapa-0`, `etapa-4`) — nunca por ruta de archivo.
 
+### EL SISTEMA NO DEPENDE DE UN MODELO
+
+**Las 16 etapas declaran `model: inherit`**: cada una corre en el mismo modelo que el operador esté
+usando en la sesión. Si trabaja en Opus, todo corre en Opus; si cambia a otro, todo cambia con él.
+**El sistema respeta su elección, nunca la sobrescribe.**
+
+Lo que hace al sistema *sistemático* no es el modelo, son las cuatro cosas que dan el mismo resultado
+con cualquiera de ellos —o sin ninguno:
+
+| Pieza | Por qué no depende del modelo |
+|---|---|
+| `Ads/_TOOLS/costear.py` | Los precios, CPA y break-even salen de `_DIM_COSTEO.csv`. Aritmética, no criterio. |
+| `Ads/_TOOLS/verificar_producto.py` | El gate de reconciliación devuelve pase o fallo, no una opinión. |
+| Los **hooks** de `.claude/settings.json` | Se ejecutan siempre: validan los CSV, regeneran el dashboard y archivan las auditorías. |
+| Los **CSV** como fuente única | Un dato, un dueño. Ningún modelo puede inventar una cifra que no esté ahí. |
+
+Lo que sí varía con el modelo es la **calidad de la escritura y del juicio** —copies, ángulos,
+diagnóstico de flujo—, y eso es inherente a cualquier sistema con IA: un modelo más capaz escribe
+mejor. Pero las estructuras, los números y los gates son idénticos siempre.
+
+> Si algún día se quiere abaratar fijando modelos más baratos en las etapas mecánicas, se hace
+> cambiando `inherit` por `haiku` en `etapa-1` y `etapa-fanpage`. **Es una decisión de costo, no del
+> método**, y se revierte con una línea.
+
 **Reglas de invocación:**
 - Cada subagente recibe SOLO los inputs que necesita (contexto aislado), no el historial de sesión.
 - El detalle de proceso y formato de output de cada etapa vive en su propio archivo. El orquestador

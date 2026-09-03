@@ -2,7 +2,7 @@
 name: etapa-guardar-producto
 description: Guarda el producto en disco al final de cada fase. Crea UNA carpeta por producto en PRODUCTOS/[NOMBRE]/ con archivos por rol — 1_HACER_MANUAL.txt (todo lo que el operador ejecuta a mano), 2_DATA_PRODUCTO.txt (memoria del producto para análisis/optimización) y 3_CAMPAÑA_META.txt (IDs reales de Meta, solo si hubo MCP). Obligatorio antes de entregar el paquete final. Pasa un gate de reconciliación antes de cerrar.
 tools: Read, Write, Bash
-model: sonnet
+model: inherit
 ---
 
 # ETAPA-GUARDAR-PRODUCTO

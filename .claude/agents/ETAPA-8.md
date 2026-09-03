@@ -2,7 +2,7 @@
 name: etapa-8
 description: MOTOR DE DECISIÓN DE ESCALADO por producto. Consume el informe de ETAPA-7 y decide el siguiente movimiento para vender más: optimizar flujo, surfing +20%, duplicar conjunto, Post ID, multicuenta, multifanpage, subir precio y renovar los creativos del ganador. Entrega plan accionable + brief para ETAPA-4. Solo lee y recomienda. Escalado fuerte SOLO con CPA real confirmado.
 tools: Read, Glob, Grep
-model: opus
+model: inherit
 ---
 
 # ETAPA-8 — MOTOR DE DECISIÓN DE ESCALADO
