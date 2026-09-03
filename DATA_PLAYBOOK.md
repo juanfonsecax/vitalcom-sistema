@@ -178,6 +178,26 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 **Reglas:**
 - **Nunca adivinar la carpeta de un producto por su nombre.** Se resuelve leyendo esta tabla. Si un producto no está, se agrega la fila — no se asume.
 - **`producto_key` es la llave y no cambia nunca.** Las carpetas del disco pueden llamarse como sea; lo que las une es esta tabla.
+
+### 1.1b — Y también resuelve la campaña (añadido 2026-09-02)
+
+| Columna | Para qué |
+|---|---|
+| `clave_campana` | El texto a buscar en los nombres de campaña de Meta (`REGLA DE BÚSQUEDA` de abajo) |
+| `campaign_id` | El `campaign_id` conocido, o `PENDIENTE` / `SIN_MCP` |
+
+> **Por qué se movieron acá.** Estas dos columnas eran los **únicos** datos que
+> `_PORTAFOLIO.txt` tenía y este CSV no: de sus 10 columnas, 8 ya estaban acá
+> (estado, fase, cuenta, tasa, CPA base, CPA BE, notas, producto). Era el mismo
+> registro maestro mantenido dos veces, uno en CSV y otro en prosa — y el 79 %
+> de ese archivo no era la tabla sino narrativa acumulada. Ahora la auditoría
+> diaria puede resolver la campaña de un producto sin leer 27 KB de prosa.
+
+> ⚠️ **REGLA DE BÚSQUEDA DE CAMPAÑA (sigue vigente):** nunca fijar el
+> `campaign_id` a ciegas. Listar las campañas de la cuenta y tomar la ACTIVE cuyo
+> nombre contenga `clave_campana` **con gasto > 0** — el operador pausa, renombra
+> y duplica (caso NusavaB12: la campaña viva era un duplicado manual `…- Copia`).
+> El `campaign_id` de esta tabla es una pista, no la verdad.
 - Al **dar de alta un producto**, `etapa-guardar-producto` escribe su fila con las 5 columnas de carpeta ya resueltas.
 - **Las carpetas NO se renombran para "emparejarlas"**: 17 referencias a rutas `MEDIA_*` viven en los `1_HACER_MANUAL.txt`/`2_DATA_PRODUCTO.txt` que el operador usa para ejecutar. Renombrar las rompería a cambio de nada — el alias hace el mismo trabajo sin tocar un byte.
 

@@ -5,6 +5,22 @@ Este archivo lista TODOS los productos que el sistema trackea. La tarea programa
 diaria (ETAPA-7 + ETAPA-8) RECORRE este registro y audita cada producto en ESTADO=VIVO.
 No se enfoca en un solo producto: procesa el portafolio completo, uno por uno.
 
+⚠️ ATENCIÓN — ESTE ARCHIVO YA NO ES EL DUEÑO DE LA TABLA (2026-09-02)
+   El registro maestro estructurado es `_DIM_PRODUCTOS.csv`. De las 10 columnas de
+   la tabla de abajo, 8 ya vivían ahí (producto, estado, fase, cuenta, tasa, CPA
+   base, CPA BE, notas); las 2 que faltaban — CLAVE_CAMPAÑA y campaign_id — se
+   migraron el 2026-09-02 a `clave_campana` y `campaign_id` de ese CSV.
+
+   · Para EJECUTAR (auditoría diaria, resolver una campaña, umbrales) → leer
+     `_DIM_PRODUCTOS.csv`. Es un CSV: no cuesta 27 KB de prosa y no se desincroniza.
+   · Este archivo queda como BITÁCORA legible: el historial de decisiones por
+     producto y los snapshots fechados. Es referencia humana, no fuente de verdad.
+   · Un dato, un dueño: si un valor de la tabla de abajo choca con
+     `_DIM_PRODUCTOS.csv`, manda el CSV. No editar los dos.
+
+   Pendiente de decisión del operador: retirar la tabla de este archivo y dejarlo
+   solo como bitácora, o retirar el archivo entero. Ver la auditoría del 2026-09-02.
+
 CÓMO AGREGAR UN PRODUCTO: el operador dice "agregá [PRODUCTO] al tracking" (o corre FASE 1).
 Se añade una fila acá con su cuenta, clave de búsqueda de campaña, tasa y umbrales, y se
 pone ESTADO=VIVO cuando la campaña ya corre en Meta. Los umbrales y la config salen de
