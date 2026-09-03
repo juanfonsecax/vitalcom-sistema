@@ -2,7 +2,7 @@
 
 > ⚠️ **ESTADO: BORRADOR — NO INTEGRADO AL FLUJO.** Este archivo existe para que Juan lo refine. **Ninguna etapa lo lee todavía.** No está cableado a la DOCTRINA DE CREATIVOS ni a ETAPA-4/ETAPA-6. La integración (que un ángulo pueda salir como VIDEO-IA en vez de imagen) queda para **después**, y va **junto con el P3 (fanpage/personaje-marca honesto)** — si se crea una fanpage con un personaje, ese personaje necesita contenido de video IA, por eso ambos van conectados.
 >
-> Origen: análisis del mentor de moda/IA (`_ROADMAP/ANALISIS_MENTOR_JULI_vs_SISTEMA_2026-07-03.md`, §3.1). Aquí se destila SU pipeline y se le pone encima **el compliance de salud/COD del sistema** (que el mentor, al vender moda, no necesita).
+> Movido de la raíz a `_ROADMAP/` el 2026-09-03: es backlog no implementado y esa es su zona declarada. Origen: análisis del mentor de moda/IA (`_ROADMAP/ANALISIS_MENTOR_JULI_vs_SISTEMA_2026-07-03.md`, §3.1). Aquí se destila SU pipeline y se le pone encima **el compliance de salud/COD del sistema** (que el mentor, al vender moda, no necesita).
 
 ---
 

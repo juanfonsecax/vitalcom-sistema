@@ -1,5 +1,5 @@
 ═══════════════════════════════════════════════════════════════════════════
-AUDITORÍA DE INSTRUMENTOS EXTERNOS · 2026-09-03 · 3 commits (85887a9 → 3afe698)
+AUDITORÍA DE INSTRUMENTOS EXTERNOS · 2026-09-03 · 5 commits (85887a9 → HEAD)
 ═══════════════════════════════════════════════════════════════════════════
 
 Pregunta que se contestó: cinco repos de GitHub que circulan como herramientas
@@ -253,16 +253,46 @@ Ads/_TOOLS/gen_grafo.py — el gate de reconciliación, pero del SISTEMA.
 7. LO QUE QUEDA ABIERTO
 ───────────────────────────────────────────────────────────────────────────
 
-  Tres hallazgos de gen_grafo.py, ninguno tocado — el script mide, no arregla:
+  Los tres hallazgos de gen_grafo.py se atacaron el mismo dia. El resultado no
+  fue el esperado: DOS DE LOS TRES ERAN FALSOS POSITIVOS DEL PROPIO SCRIPT.
 
-    · PLANTILLAS_VIDEO_IA.md (2.412 tok) — solo lo nombran README.md y _ROADMAP/,
-      ambos referencia humana. Huérfano de ejecución. Aplicarle el TEST DE
-      BORRADO antes de decidir.
-    · _MAPEO_CREATIVOS.csv — ningún agente, skill, documento ni script lo
-      consume. Solo aparece en .hook_csv_mtimes.json, contabilidad del hook.
-      El sistema lo mantiene y nadie lo lee.
-    · ETAPA-RECOLECCION.md apunta a `Ads/COPYS_COMPETENCIA.txt`, que NO EXISTE.
-      Misma clase que `.Codex/agents/`, encontrada automáticamente esta vez.
+    · PLANTILLAS_VIDEO_IA.md — NO era rot. Es un BORRADOR deliberado: su propia
+      cabecera dice "NO INTEGRADO AL FLUJO, ninguna etapa lo lee", el README lo
+      documentaba y es el item P1 del _ROADMAP. Estaba bien; estaba mal UBICADO.
+      Movido a _ROADMAP/, que es su zona declarada ("backlog no implementado").
+      Ya no aparece como huerfano porque ya no esta donde no iba.
+
+    · _MAPEO_CREATIVOS.csv — NO era basura. 62 filas de historia real:
+      anuncio x archivo de media x ventas x spend_usd, de la era anterior a
+      _DIM_CREATIVOS.csv (nombres con "- Copia", que el invariante 12 hoy
+      prohibe). Es la unica fuente que ata media concreta a ventas antes de que
+      existiera creativo_id. No se borro: se le DIO DUENO en DATA_PLAYBOOK.md,
+      declarado como HISTORICO CONGELADO.
+
+    · Ads/COPYS_COMPETENCIA.txt — NO era una ruta rota. ETAPA-RECOLECCION.md le
+      PIDE al operador que cree ese archivo, y lo marca "(Opcional)". Que no
+      exista es el estado normal. El defecto era del script, que no distinguia
+      "esto deberia existir" de "pedile esto al operador".
+
+  El arreglo real fue al script, no al repo. gen_grafo.py ahora separa RUTAS
+  MUERTAS (siempre defecto; cuentan para --estricto) de INSUMOS QUE EL OPERADOR
+  AUN NO ENTREGO (estado normal; no cuentan). Se clasifica por la linea que
+  nombra la ruta mas la anterior, porque la prosa se corta y el verbo queda
+  arriba. La comparacion va SIN TILDES: el mismo caracter acentuado llega en dos
+  formas Unicode segun quien escribio el archivo, y una regex con la tilde
+  adentro falla EN SILENCIO contra la otra forma — se perdio media hora en ese
+  bug antes de encontrarlo.
+
+  POR QUE IMPORTA: un gate que reporta como defecto algo que esta bien es un
+  gate que el operador aprende a ignorar. Tres corridas gritando por un archivo
+  opcional y nadie vuelve a leer la salida. Precision antes que cobertura.
+
+  Verificado con prueba negativa: se inyecto a mano una referencia a
+  `.Codex/agents/ETAPA-99.md` y el script la marco RUTA MUERTA con exit 1; al
+  revertirla, exit 0. Sigue atrapando el defecto que lo justifica.
+
+  Estado al cierre del dia: gen_grafo.py --estricto devuelve 0. Cero huerfanos,
+  cero rutas muertas, cero agentes sin model:inherit.
 
   Y lo que la auditoría del 2026-09-02 dejó abierto SIGUE abierto, a propósito:
   la próxima FASE 1 real es la primera que corre con el sistema recortado de

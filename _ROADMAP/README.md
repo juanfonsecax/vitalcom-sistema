@@ -18,7 +18,7 @@ Contraste del sistema contra 3 transcripciones del mentor "Juli" (moda/dropshipp
 Su cabecera lo dice: **"SOLO ANÁLISIS — nada implementado. Decisión de qué se implementa queda para Juan."**
 
 Su propuesta principal (**P1 — pipeline de video UGC con IA**) sigue viva y conectada a dos cosas:
-- `PLANTILLAS_VIDEO_IA.md` (raíz) — marcado **BORRADOR, NO INTEGRADO AL FLUJO**; ninguna etapa lo lee.
+- `PLANTILLAS_VIDEO_IA.md` (acá, movido de la raíz el 2026-09-03) — **BORRADOR, NO INTEGRADO AL FLUJO**; ninguna etapa lo lee. Vive en `_ROADMAP/` porque eso es lo que es: backlog no implementado. En la raíz aparecía como huérfano en cada auditoría.
 - La idea de extender la DOCTRINA DE CREATIVOS: que un ángulo virgen pueda salir como **VIDEO-IA** en vez de caer automático a IMAGEN — lo que atacaría el "confound de formato" documentado en `PLANTILLAS_ADS.md`.
 
 **Para cerrarlo hay que decidir una cosa:** si se hace el piloto (1 producto, el ángulo ganador, medir CPA de video-IA vs imagen). Si sale que sí, se cablea a `PLANTILLAS_ADS.md` + `etapa-4` + `etapa-6` y este archivo se archiva. Si sale que no, se archiva igual.

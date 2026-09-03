@@ -2,10 +2,10 @@
   "arranque_frio": 6167,
   "claude_md": 3687,
   "fases": {
-    "fase-1-angulos": 290594,
-    "fase-2-conceptos": 354592,
-    "fase-3-escalado": 227134,
-    "ciclo-diario": 229047
+    "fase-1-angulos": 290878,
+    "fase-2-conceptos": 354876,
+    "fase-3-escalado": 227276,
+    "ciclo-diario": 229189
   },
   "nodos_dios": [
     [
@@ -53,8 +53,8 @@
     [
       "DATA_PLAYBOOK.md",
       1,
-      10684,
-      10684
+      10826,
+      10826
     ],
     [
       "MCP_PLAYBOOK.md",
@@ -87,13 +87,10 @@
       1153
     ]
   ],
-  "huerfanos_md": [
-    "PLANTILLAS_VIDEO_IA.md"
-  ],
-  "huerfanos_csv": [
-    "_MAPEO_CREATIVOS.csv"
-  ],
-  "rutas_muertas": [
+  "huerfanos_md": [],
+  "huerfanos_csv": [],
+  "rutas_muertas": [],
+  "insumos_faltantes": [
     [
       "./ETAPA-RECOLECCION.md",
       "Ads/COPYS_COMPETENCIA.txt"
@@ -103,7 +100,7 @@
   "inventario": {
     "agentes": 16,
     "skills": 7,
-    "docs_raiz": 19,
+    "docs_raiz": 18,
     "csv": 22
   }
 }

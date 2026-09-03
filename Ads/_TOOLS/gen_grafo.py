@@ -24,7 +24,9 @@ Que mide
   1. COSTO      arranque en frio y techo de instrucciones por fase, en tokens.
   2. DIOS       que documento hereda mas tokens (peso x cantidad de lectores).
   3. HUERFANOS  .md y .csv que el sistema mantiene y nadie consume.
-  4. MUERTAS    referencias a archivos que ya no existen.
+  4. MUERTAS    referencias a archivos que ya no existen. Se separan de los
+                INSUMOS que el documento le pide al operador y que todavia
+                no entrego: eso es estado normal, no defecto.
   5. MODELO     agentes sin `model: inherit`.
 
 Como se usa
@@ -49,6 +51,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -75,6 +78,20 @@ RE_ETAPA = re.compile(r"\b(etapa-[a-z0-9-]+)\b")
 # Rutas citadas entre comillas o backticks: es lo que atrapa a un `.Codex/...`
 RE_RUTA = re.compile(r"[`\"'(]((?:\.[a-zA-Z]+|Ads|PRODUCTOS)/[\w./À-ÿ -]+?"
                      r"\.(?:md|py|csv|json|sh|txt))[`\"')]")
+# La linea manda CREAR el archivo o lo marca opcional: es insumo, no ruta rota.
+# La linea manda CREAR el archivo o lo marca opcional: es insumo, no ruta rota.
+# Se compara SIN TILDES (ver sin_tildes): el mismo caracter acentuado llega en
+# dos formas Unicode distintas segun quien escribio el archivo, y una regex con
+# la tilde adentro falla EN SILENCIO contra la otra forma. Sin tildes no puede.
+RE_INSUMO = re.compile(r"\b(opcional|copiar?|copia|pegar?|pega|guardar?|guarda|"
+                       r"crear|crea|poner?|pone|adjuntar?|adjunta|"
+                       r"entregar?|entrega|aporta|genera)\w*", re.I)
+
+
+def sin_tildes(texto):
+    """Normaliza para comparar: la tilde no debe decidir si un match ocurre."""
+    return "".join(c for c in unicodedata.normalize("NFD", texto)
+                   if not unicodedata.combining(c))
 
 
 def tokens(ruta):
@@ -214,11 +231,30 @@ def analizar():
     csv_disco = sorted(f for f in os.listdir("PRODUCTOS") if f.endswith(".csv"))
     huerfanos_csv = [c for c in csv_disco if c not in nombrados_csv]
 
-    muertas = []
+    # Una ruta que no existe puede ser dos cosas MUY distintas, y confundirlas
+    # arruina el gate: si reporta como defecto algo que esta bien, se ignora.
+    #   · RUTA MUERTA  — el documento apunta a un archivo que deberia estar y no
+    #     esta. Siempre es un defecto (asi murio `.Codex/agents/`).
+    #   · INSUMO       — el documento le PIDE al operador que cree el archivo.
+    #     Que no exista es el estado normal antes de que lo entregue.
+    # Se separan por la linea que los nombra: si manda crear o dice opcional,
+    # es insumo. Heuristica, no verdad: por eso van en listas distintas y solo
+    # las muertas cuentan para --estricto.
+    muertas, insumos = [], []
+    vistas = set()
     for ruta in fuentes:
-        for cand in sorted(set(RE_RUTA.findall(leer(ruta)))):
-            if not os.path.exists(cand):
-                muertas.append([ruta, cand])
+        lineas = leer(ruta).splitlines()
+        for i, linea in enumerate(lineas):
+            for cand in RE_RUTA.findall(linea):
+                if os.path.exists(cand) or (ruta, cand) in vistas:
+                    continue
+                vistas.add((ruta, cand))
+                # La prosa se corta y el verbo suele caer en la linea de
+                # arriba, separado de la ruta. Por eso la ventana incluye la
+                # linea previa. (Es el caso de ETAPA-RECOLECCION.)
+                contexto = (lineas[i - 1] if i else "") + " " + linea
+                destino = insumos if RE_INSUMO.search(sin_tildes(contexto)) else muertas
+                destino.append([ruta, cand])
 
     sin_inherit = sorted(n for n, a in agentes.items() if a["model"] != "inherit")
 
@@ -229,6 +265,7 @@ def analizar():
             "huerfanos_md": huerfanos_md,
             "huerfanos_csv": huerfanos_csv,
             "rutas_muertas": muertas,
+            "insumos_faltantes": insumos,
             "sin_inherit": sin_inherit,
             "inventario": {"agentes": len(agentes), "skills": len(skills),
                            "docs_raiz": len(docs_raiz), "csv": len(csv_disco)}}
@@ -267,6 +304,10 @@ def informe(r, previo=None):
             L.append("      %s  ->  %s  (NO EXISTE)" % (origen, destino))
     else:
         L.append("   rutas muertas ............ ninguna")
+    if r.get("insumos_faltantes"):
+        L.append("   insumos que el operador aun no entrego (normal, no es defecto):")
+        for origen, destino in r["insumos_faltantes"]:
+            L.append("      %s  espera  %s" % (origen, destino))
 
     inv = r["inventario"]
     L += ["", "4. INVENTARIO",
@@ -296,6 +337,7 @@ def main():
                   ensure_ascii=False, indent=2)
         print("linea base guardada en %s" % LINEA_BASE)
 
+    # Los insumos faltantes NO cuentan: no son defectos del sistema.
     hallazgos = (len(r["huerfanos_md"]) + len(r["huerfanos_csv"])
                  + len(r["rutas_muertas"]) + len(r["sin_inherit"]))
     if args.estricto and hallazgos:

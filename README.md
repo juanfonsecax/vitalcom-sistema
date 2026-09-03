@@ -48,7 +48,6 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 | ├ `MODULO_INTELIGENCIA_PRODUCTO.md` | El núcleo de investigación, **agnóstico al canal** (avatar, ángulo, voz del cliente). Exportable a otro canal. Lo usa `buscar-producto`. | ✅ |
 | ├ `ETAPA-RESEARCH.md` | Módulos opcionales de investigación (web / Ad Library). | ✅ |
 | ├ `ETAPA-RECOLECCION.md` | Fase manual de recolección de creativos (prompt de Gemini). | ✅ |
-| └ `PLANTILLAS_VIDEO_IA.md` | ⚠️ **BORRADOR — no integrado.** Ninguna etapa lo lee. Decisión pendiente en `_ROADMAP/`. | ❌ |
 | `Ads/` | **Insumos y media.** `1.1 Videos/` + `1.2 Transcripcion videos/` por producto · `MEDIA_*/` (assets lavados listos para Meta) · `_TOOLS/` (scripts + `LAVADO.md`). | ✅ Por ruta |
 | `PRODUCTOS/[NOMBRE]/` | **Output por producto.** `1_HACER_MANUAL.txt` (lo que ejecutás) + `2_DATA_PRODUCTO.txt` (memoria) + `3_CAMPAÑA_META.txt` (IDs de Meta) + `4_PLAN_ESCALADO.txt` (FASE 3). Nada más. | ✅ Por ruta |
 | `PRODUCTOS/*.csv` | **Capa de data (máquina).** `_FACT_VENTAS` (la única que suma al P&L) · `_FACT_ENTREGA` · `_DIM_*` · `_EVENTOS` · `_APRENDIZAJES`. Roles y reglas en `DATA_PLAYBOOK.md`. | ✅ Diario |

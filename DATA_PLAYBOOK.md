@@ -149,6 +149,11 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 - `_TASA_ENTREGA.csv` — parámetros de logística, mensual.
 - `_DIM_PRODUCTOS.csv` — fallback por producto (BE, CPA Base, tasa) **y el MAPA DE CARPETAS** (ver §1.1).
 - `_DIM_COSTEO.csv` — tabla de costeo original (de `COSTEOS GT PRO.xlsx`), la usa `etapa-1` para costear un producto NUEVO sin ventas ni escalera.
+- `_MAPEO_CREATIVOS.csv` — **HISTÓRICO, congelado. No lo lee ninguna etapa y no se escribe más.**
+  62 filas de la era pre-`_DIM_CREATIVOS`: anuncio × archivo de media × ventas × spend_usd, con los
+  nombres viejos (`- Copia`, que el invariante 12 hoy prohíbe) y `metodo=AUTO`. Se conserva porque es
+  historia real del negocio — la única fuente que ata media concreta a ventas antes de que existiera
+  `creativo_id`. Para lecturas nuevas usar `_DIM_CREATIVOS.csv`; para minar el pasado, esto.
 - `_DIM_CREATIVOS.csv` — **dimensiones de creativo y el ciclo de vida de cada pieza.** Es el CSV
   que cierra el loop de la fábrica (`etapa-9`) con el lector (`etapa-10`).
   · **Ciclo de estado obligatorio:** `PENDIENTE_GENERAR` → `GENERADO` (el archivo existe en
