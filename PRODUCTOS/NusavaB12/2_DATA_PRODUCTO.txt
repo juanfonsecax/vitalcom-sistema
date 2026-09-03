@@ -1,11 +1,14 @@
-═══ NUSAVA B12 · VERSION v4 · 2026-07-14 · COSTO Q70 · DOSIS B12 5000 mcg / 1.5 ml sublingual · page_id 1218486924672725 · campaign_id 120246893776440784 (viva "…- Copia") · +FASE 2 ARDOR hermana ═══
+═══ NUSAVA B12 · VERSION v5 · 2026-09-02 · COSTO Q55 · DOSIS B12 5000 mcg / 1.5 ml sublingual · page_id 1218486924672725 · campaign_id 120246893776440784 (viva "…- Copia") · +FASE 2 ARDOR hermana ═══
+[v5 = 2026-09-02. El proveedor mejoro el precio: COSTO Q70 -> Q55 (confirmado por el operador y por Dropi, n=43 ordenes).
+ Sube VERSION porque cambio un INPUT CONGELADO (invariante 5). Cambian el costo, la fila de costeo (Q70 -> Q54) y el
+ break-even (Q68.3 -> Q92.64). NO cambia el PRECIO: Q219 (2x1) / Q369 (4x2) siguen validados contra Dropi.]
 [v3 = FASE 2 iniciada 2026-07-07 con ángulo ganador MEMORIA confirmado por CPA real (LucidSales). ETAPA-3A→3B→4→5→6 abajo, bloque "FASE 2 — ESCALADO MEMORIA".]
 [v4 = FASE 2 hermana de ARDOR iniciada 2026-07-14 (co-ganador Lucid, CPA histórico Q19.1 / 7d Q33.7). Bot dedicado de UN solo ángulo (ardor/hormigueo pies-manos), campaña hermana escalonada — NO se mezcla con MEMORIA (otro problema, coherencia Clase 2/22). Bloque "FASE 2 — ESCALADO ARDOR" al final. MIEDO-CIRUGÍA (Varicose) se corre aparte, escalonado 2-3 días.]
 
 PRODUCTO: NUSAVA B12 — complejo de vitaminas B líquido sublingual (Extra Strength), frasco 60 ml / 2 fl oz, sabor frambuesa, ~40 dosis.
 FECHA_PROCESADO: 2026-06-22
 VERSION: v2 (consolida y reconcilia las corridas previas v1; sobrescribe los TXT planos viejos)
-COSTO_PROVEEDOR_Q: Q70
+COSTO_PROVEEDOR_Q: Q55   [corregido 2026-09-02: el proveedor mejoro el precio. Antes Q70, que venia del supuesto "2 frascos = Q70"; Dropi confirma Q55 por pedido]
 DOSIS / PRESENTACIÓN: 1.5 ml (un gotero) debajo de la lengua, 1 vez/día en la mañana, sostener 30 seg. Sin agua.
 PROVEEDORES_DROPY: 5 (un registro previo decía 3 — confirmar con el operador; no afecta la campaña)   ·   ANUNCIANTES_AD_LIBRARY: no provisto
 VALIDACION_PRODUCTO: APTO. Dolor múltiple y fuerte, mecanismo único (sublingual) demostrable, oferta de proveedores baja-media. Nota R5: "la B12 se consigue en farmacia" → mitigado con ángulos de causa específica (absorción, nervio diabético, ciática, ánimo). El producto se lanzó, queda APTO en la práctica.
@@ -13,14 +16,14 @@ FANPAGE: Formato A (ya creada y asignada a GTR 7). 🧬 Dr. Ricardo Estrada — 
 MCP_ACCOUNT_ID: act_598687956219141 (GTR 7, USD) · MCP_PAGE_ID: 1218486924672725 · MCP_PIXEL_ID: [pegar dataset_id de Events Manager — solo para la skill monitor-pixel; NO bloquea ETAPA-7] · TASA_USD_GTQ: 7.62
 TRACKING DE VENTAS: enlazado vía GUAVA → WABA → Meta. El bot dispara WhatsApp conversions y cada venta cae en actions:omni_purchase (Compras). ETAPA-7 lee el CPA real desde ahí por campaign_id, automático — sin necesidad del pixel_id ni de input manual. Validar 1 vez en la 1ª corrida que las Compras caen en omni_purchase y no en otra acción (offline_conversion.purchase / custom).
 
-━━━ COSTEO (ETAPA-1, fila Q70) ━━━
+━━━ COSTEO (ETAPA-1, fila Q54 - costo Q55) ━━━
 ⚠️ CORRECCIÓN DE OFERTA (2026-07-07 — confirmado por operador): NUSAVA B12 SE VENDE SIEMPRE EN COMBO (2x1 o 4x2), NUNCA unidad suelta. Clasificación correcta = BAJO TICKET → 2x1/4x2 (ETAPA-1 regla 1: costo por unidad ~Q35 < Q50 → liderar con 2x1/4x2 sin 1u de entrada). La corrida v2 lo puso en 1/2/3 por el default "salud→tratamiento"; se corrige a combos.
-   · 2X1 (oferta base, mínima): 2 frascos por Q219 · costo proveedor Q70 (los 2) · ganancia bruta Q149 (~68%) · − CPA Base Q32.3 = Q116.7
+   · 2X1 (oferta base, mínima): 2 frascos por Q219 · costo proveedor Q55 (los 2) · ganancia bruta Q149 (~68%) · − CPA Base Q32.3 = Q116.7
    · 4X2 (upsell): 4 frascos por Q369 · costo proveedor Q140 (las 4) · ganancia bruta Q229 · − CPA Base Q32.3 = Q196.7
-   · CPA Objetivo Q32.3 y Break Even Q68.3 SIGUEN VÁLIDOS (se derivan del 2x1 base; precio Q219 y costo Q70 no cambian).
+   · CPA Base Q30.80 y Break Even Q92.64 (vigentes 2026-09-02, ver _DIM_PRODUCTOS.csv). El PRECIO Q219 no cambia: esta validado contra Dropi con n=43 ordenes. Lo que cambio es el COSTO (Q70 -> Q55), y con el el break-even, que ahora se DERIVA de _DIM_PRECIOS + _TASA_ENTREGA con la tasa de entrega propia del producto (71.7%), no de la tabla.
    · HECHO (2026-07-07, edición quirúrgica): bot (1_HACER_MANUAL) corregido a 2X1 Q219 / 4X2 Q369 (bloque PRECIOS, FAQ P10, interacción de precios, regla de upsell, testimonio de cantidad). Copies (ETAPA-4) NO se tocaron: dicen solo "Q219 con envío gratis" y Q219 no cambia (ahora = 2x1). Presentación del 4X2 = "la más elegida ⭐ tratamiento completo + regalo, la 2ª mitad casi regalada" (Clase 17 + ETAPA-5).
 OFERTA REAL (reemplaza la escalera legacy 1/2/3):
-2X1 (2 frascos): Q219 + envío gratis · costo Q70 los 2
+2X1 (2 frascos): Q219 + envío gratis · costo Q55 los 2
 4X2 (4 frascos): Q369 · costo Q140 las 4
 CPA_OBJETIVO (Base, ~15% ganancia): Q32.3 ($4.24)
 CPA_BREAK_EVEN (límite, no perder): Q68.3 ($8.96)

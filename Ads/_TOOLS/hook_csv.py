@@ -67,7 +67,58 @@ def validar(ruta):
             "nunca a mano." % (os.path.basename(ruta), n, det))
 
 
+ESTADO = os.path.join(BASE, "PRODUCTOS", ".hook_csv_mtimes.json")
+
+
+def barrido():
+    """Valida los CSV de PRODUCTOS/ que cambiaron desde la ultima pasada.
+
+    Cierra el hueco del modo por-archivo: ese solo ve escrituras hechas con Write
+    o Edit, y varios scripts del sistema escriben CSV por su cuenta —
+    ingerir_lucidsales.py toca _FACT_VENTAS.csv, que es la fuente de verdad de
+    las ventas. Con esto, cualquier comando que deje un CSV malformado se detecta
+    en el mismo turno, venga de donde venga.
+
+    Se compara por mtime para que el caso normal (nada cambio) no cueste nada.
+    """
+    try:
+        previo = json.load(io.open(ESTADO, encoding="utf-8"))
+    except (OSError, ValueError):
+        previo = {}
+
+    actual, malos = {}, []
+    try:
+        nombres = [n for n in os.listdir(PROD) if n.lower().endswith(".csv")]
+    except OSError:
+        return 0
+    for n in nombres:
+        ruta = os.path.join(PROD, n)
+        try:
+            mt = os.path.getmtime(ruta)
+        except OSError:
+            continue
+        actual[n] = mt
+        if previo.get(n) == mt:
+            continue                      # sin cambios desde la ultima pasada
+        err = validar(ruta)
+        if err:
+            malos.append(err)
+
+    try:
+        json.dump(actual, io.open(ESTADO, "w", encoding="utf-8"))
+    except OSError:
+        pass
+
+    if malos:
+        sys.stderr.write("\n\n".join(malos) + "\n")
+        return 2
+    return 0
+
+
 def main():
+    if "--barrido" in sys.argv:
+        return barrido()
+
     try:
         payload = json.load(sys.stdin)
     except (json.JSONDecodeError, ValueError):

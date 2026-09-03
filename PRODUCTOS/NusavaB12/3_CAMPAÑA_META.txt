@@ -1,4 +1,8 @@
-═══ NUSAVA B12 · VERSION v2 · 2026-06-22 · COSTO Q70 · DOSIS B12 5000 mcg / 1.5 ml sublingual · page_id 1218486924672725 · campaign_id 120246451636510784 ═══
+═══ NUSAVA B12 · VERSION v5 · 2026-09-02 · COSTO Q55 · DOSIS B12 5000 mcg / 1.5 ml sublingual · page_id 1218486924672725 · campaign_id 120246893776440784 (viva, "…- Copia") ═══
+[ENCABEZADO SINCRONIZADO 2026-09-02 con 1_ y 2_. El MAPA de abajo describe la campana de FASE 1
+ (campaign_id 120246451636510784, creada 2026-06-22): se conserva como registro historico. La
+ campana VIVA es 120246893776440784. Regla de busqueda: listar las ACTIVE con gasto > 0 que
+ contengan la clave_campana de _DIM_PRODUCTOS.csv — el operador pausa, renombra y duplica.]
 MAPA DE CAMPAÑA — NUSAVA B12 | FASE 1 (Testeo de ángulos)
 Estado: CAMPAÑA COMPLETA (campaña + 6 conjuntos + 12 anuncios) · TODO PAUSED · creado por MCP
 
@@ -11,7 +15,7 @@ Objetivo           : Tráfico (OUTCOME_TRAFFIC) → CONVERSATIONS → WHATSAPP
 Presupuesto        : ABO · $1.59/conjunto (159¢ USD) · 6 conjuntos
 Segmentación       : Guatemala · amplio 18-65+ · Advantage+ OFF · narrow por edad con ETAPA-7
 Programación       : 4 AM 2026-06-22 (-06:00) · 2 anuncios por conjunto
-Umbrales (ETAPA-1) : CPA Base Q32.3 ($4.24) · CPA Break Even Q68.3 ($8.96) [costo Q70]
+Umbrales (ETAPA-1) : CPA Base Q30.80 · CPA Break Even Q92.64 [costo Q55, fila Q54 · vigentes 2026-09-02]
 Precios            : P1u Q219 · P2u Q339 · P3u Q449 (Q219 visible solo en MEMORIA y CIATICA)
 
 ⚠️ Nota: una primera campaña (campaign_id 120246448788380784) fue ELIMINADA. Esta (120246451636510784) es la reconstruida y completa. Ignorar/borrar la vieja.

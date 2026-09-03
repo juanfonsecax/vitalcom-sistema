@@ -68,3 +68,6 @@ _ARCHIVO/pruebas_lavado_20260705/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Estado interno del hook de validacion de CSV (mtimes)
+PRODUCTOS/.hook_csv_mtimes.json

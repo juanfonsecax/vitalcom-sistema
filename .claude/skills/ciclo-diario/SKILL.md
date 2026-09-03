@@ -1,6 +1,6 @@
 ---
 name: ciclo-diario
-description: CICLO DE OPTIMIZACIÓN post-lanzamiento. Recorre PRODUCTOS/_PORTAFOLIO.txt y, por cada producto VIVO, corre el monitor de métricas (etapa-7), el motor de decisión de escalado (etapa-8) y la lectura concepto↔métrica (etapa-10); la fábrica de conceptos (etapa-9) corre en paralelo todos los días. Termina regenerando el dashboard. Úsala en la auditoría programada de cada mañana, o cuando el operador dice "auditoría", "cómo van las campañas", "métricas de hoy", "qué pauso", "qué escalo" o pega un export de LucidSales.
+description: CICLO DE OPTIMIZACIÓN post-lanzamiento. Recorre PRODUCTOS/_DIM_PRODUCTOS.csv y, por cada producto VIVO, corre el monitor de métricas (etapa-7), el motor de decisión de escalado (etapa-8) y la lectura concepto↔métrica (etapa-10); la fábrica de conceptos (etapa-9) corre en paralelo todos los días. Termina regenerando el dashboard. Úsala en la auditoría programada de cada mañana, o cuando el operador dice "auditoría", "cómo van las campañas", "métricas de hoy", "qué pauso", "qué escalo" o pega un export de LucidSales.
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -8,7 +8,11 @@ tools: Read, Write, Glob, Grep, Bash, Task
 
 No va en la secuencia de FASE 1/2/3. Es lo que corre **después de lanzar**, todos los días.
 
-**Recorre `PRODUCTOS/_PORTAFOLIO.txt` y audita CADA producto en ESTADO=VIVO**, no uno solo.
+**Recorre `PRODUCTOS/_DIM_PRODUCTOS.csv` y audita CADA producto en `estado=VIVO`**, no uno solo.
+
+> El registro maestro es ese CSV: trae estado, fase, cuenta, página, tasa, CPA base, break-even,
+> `clave_campana` y `campaign_id` en una fila por producto. `_PORTAFOLIO.txt` quedó como bitácora
+> legible (historial de decisiones y snapshots fechados) — no se lee para ejecutar.
 
 ---
 
@@ -89,19 +93,23 @@ skill `fase-2-conceptos`, PASO 0).
   ángulo ganador corre su **FASE 2 dedicada**.
 - 🧮 **`DATA_PLAYBOOK.md`** — el **CON QUÉ**: los CSV, cómo leerlos sin sacar cifras falsas, fórmula
   de ganancia, break-even y el dashboard.
-- 🗂️ **`PRODUCTOS/_PORTAFOLIO.txt`** — registro maestro de TODOS los productos trackeados.
+- 🗂️ **`PRODUCTOS/_DIM_PRODUCTOS.csv`** — registro maestro de TODOS los productos trackeados.
+  `_PORTAFOLIO.txt` es su bitácora en prosa: se consulta a mano, no se recorre.
 
 ---
 
-## ÚLTIMO PASO, SIEMPRE
+## EL DASHBOARD SE REGENERA SOLO (desde 2026-09-02)
 
-Anexar al CSV → **luego** regenerar el dashboard:
+Ya no hay que acordarse: un hook `PostToolUse` valida todo CSV escrito en `PRODUCTOS/` y regenera el
+dashboard (774 ms). Cubre las escrituras con Write/Edit y, por barrido de `mtime`, también las que
+hace cualquier script — `ingerir_lucidsales.py` incluido.
+
+Si el CSV queda malformado el hook **bloquea** con el detalle del error: no se puede dejar una fila
+corrupta como la de NUSAVA del 31-jul. Para forzarlo a mano:
 
 ```bash
 python Ads/_TOOLS/gen_dashboard.py
 ```
-
-Si el CSV cambió y el dashboard no se regeneró, el operador está leyendo data vieja.
 
 ---
 
@@ -111,5 +119,6 @@ Los informes por producto van a `PRODUCTOS/[NOMBRE]/`. **Todo informe fechado** 
 nocturnas, planes multi-producto) va a **`PRODUCTOS/_AUDITORIAS/`**, nunca suelto en la raíz. Son
 registro histórico legible: **prohibido reconstruir métricas desde ahí** (eso sale del CSV).
 
-**Retención:** se conservan los últimos 30 días sueltos; lo anterior se colapsa a subcarpeta mensual
-(`2026-07/`). Nunca se borran.
+**Retención: automática desde 2026-09-02.** Un hook `SessionStart` corre
+`Ads/_TOOLS/archivar_auditorias.py` y colapsa a subcarpeta mensual (`2026-07/`) todo lo anterior a
+30 días. **Nada se borra**, solo se mueve. Ya no depende de que alguien lo recuerde.

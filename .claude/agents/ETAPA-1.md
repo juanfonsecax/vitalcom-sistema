@@ -44,12 +44,29 @@ Lo que el script **no** decide y sigue siendo trabajo de esta etapa: la **arquit
 (Paso 2) según tipo de producto y nivel de conciencia del avatar, y la lectura de la tabla de abajo
 cuando hace falta explicar de dónde viene un número.
 
-### Paso 1 — La tabla de referencia (para consulta humana)
+### Paso 1 — La tabla de referencia (espejo legible, no fuente)
 
-> ⚠️ Esta tabla es el **espejo legible** de `PRODUCTOS/_DIM_COSTEO.csv`, no la fuente. Si difiere del
-> output de `costear.py`, manda el script. Divergencia conocida al 2026-09-02: la escalera de esta
-> tabla (Q40 → 179/239/299) no coincide con la regla × 1.7 que usa el código vigente
-> (Q40 → 179/249/319/389, la de VARICOSE y CLEARSTEM). **Pendiente de resolver por el operador.**
+> **UNA SOLA ESCALERA (unificado 2026-09-02).** La fuente única es
+> `PRODUCTOS/_DIM_COSTEO.csv`, columnas `precio_establecido`, `precio_2u`, `precio_3u` y
+> `origen_escalera`. La tabla de abajo es su espejo legible: **si difiere del output de
+> `costear.py`, manda el script.**
+>
+> Antes había dos escaleras en circulación: esta tabla y la regla `costo × 1.7` del código.
+> `_DIM_PRECIOS.csv` las desempató con datos de Dropi — TINNIDROP en la fila Q40 vende a
+> **179/239/299 con n=102/42/18 órdenes reales**, que es esta tabla; la regla habría dado
+> 179/249/319. La regla quedó solo para **extrapolar** los costos Q85-Q130 que el operador nunca
+> fijó, y esas filas salen marcadas `EXTRAPOLADO`: hay que confirmarlas antes de publicarlas.
+
+**JERARQUÍA DE PRECIOS — cuál manda cuando dos fuentes discrepan:**
+
+| Prioridad | Fuente | Cuándo aplica |
+|---|---|---|
+| 1 | `PRODUCTOS/_DIM_PRECIOS.csv` | Producto **ya vendiendo**. Es lo que Dropi cobra de verdad. *Manda Dropi* — el archivo del producto decía Q299 para CLEARSTEM 2x y Dropi confirmó Q289. |
+| 2 | `PRODUCTOS/_DIM_COSTEO.csv` vía `costear.py` | Producto **nuevo**, sin ventas todavía. |
+| 3 | La tabla de abajo | Solo lectura humana. Nunca se copia a mano a un archivo de producto. |
+
+**Regla de selección de fila:** la **más cercana** al costo; en empate, la superior. TINNIDROP Q41 →
+fila Q40 · NUSAVA Q55 → fila Q54 · CLEARSTEM Q57 → empata (54 y 60) → fila Q60. Nunca se interpola.
 
 # COSTEO_COMPLETO_VITALCOM — Tabla Maestra (v2 · actualizada 2026-07-25)
 

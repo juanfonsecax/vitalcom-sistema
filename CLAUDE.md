@@ -168,7 +168,8 @@ en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
    `2_DATA_PRODUCTO.txt`, `3_CAMPAÑA_META.txt` (solo IDs de Meta), `4_PLAN_ESCALADO.txt`. Prohibido
    dejar archivos sueltos de reruns. Toda la media va a `Ads/MEDIA_[PRODUCTO]/`; todo informe
    fechado va a `PRODUCTOS/_AUDITORIAS/`. Todo producto con paquete completo lleva su fila en
-   `_PORTAFOLIO.txt`, aunque no esté lanzado — sin fila es invisible para la auditoría.
+   `_DIM_PRODUCTOS.csv`, aunque no esté lanzado — sin fila es invisible para la auditoría.
+   (`_PORTAFOLIO.txt` quedó como bitácora legible; no se recorre para ejecutar.)
 9. **Gate de reconciliación antes de cerrar.** No declarar un producto completo hasta verificar que
    costo, precio, dosis, proveedores, página y `campaign_id` coinciden idénticos entre archivos.
 10. **`producto_key` es la llave del sistema.** Las carpetas del disco se resuelven leyendo

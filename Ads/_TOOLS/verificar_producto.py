@@ -16,8 +16,8 @@ Que compara
 -----------
   1. El encabezado de 1_/2_/3_ entre si (coherencia interna del paquete).
   2. Esos encabezados contra PRODUCTOS/_DIM_PRODUCTOS.csv (la fuente estructurada).
-  3. Que exista fila en PRODUCTOS/_PORTAFOLIO.txt — sin fila, el producto es
-     invisible para la auditoria diaria (invariante 8).
+  3. Que su fila del registro maestro declare estado y fase — sin eso la
+     auditoria diaria no sabe si auditarlo (invariante 8).
 
 La carpeta del producto NUNCA se adivina por el nombre: se resuelve por
 `slug_carpeta` de _DIM_PRODUCTOS.csv (invariante 10).
@@ -219,15 +219,19 @@ def verificar(key, dim):
                         "_DIM_PRODUCTOS.csv (%s)"
                         % (nombre, COMILLA_A, p, COMILLA_B, page_dim))
 
-    # Fila en el portafolio (invariante 8)
-    if os.path.exists(PORTAFOLIO):
-        txt = io.open(PORTAFOLIO, encoding="utf-8", errors="replace").read()
-        disp = (fila.get("nombre_display") or "").strip()
-        if slug not in txt and key not in txt and (not disp or disp not in txt):
-            disc.append("no tiene fila en _PORTAFOLIO.txt, es invisible para la "
-                        "auditoria diaria (invariante 8)")
-    else:
-        avisos.append("_PORTAFOLIO.txt no existe")
+    # Registro maestro (invariante 8). Desde 2026-09-02 la auditoria diaria recorre
+    # _DIM_PRODUCTOS.csv, no _PORTAFOLIO.txt: tener fila aqui ya es condicion de
+    # existir para el sistema, asi que lo que se comprueba es que este completa.
+    estado = (fila.get("estado") or "").strip()
+    if not estado:
+        disc.append("la fila de _DIM_PRODUCTOS.csv no declara 'estado', la auditoria "
+                    "diaria no sabe si auditarlo (invariante 8)")
+    # La fase solo se exige a los VIVOS: un producto LISTO todavia no lanzado no
+    # tiene fase de testeo/definicion/escalado, y exigirsela era un falso positivo.
+    elif estado.upper() == "VIVO" and not (fila.get("fase") or "").strip().strip("-"):
+        disc.append("esta en estado VIVO pero su fila no declara 'fase' "
+                    "(TESTEO / DEFINICION / ESCALADO): la auditoria diaria no sabe "
+                    "que umbrales aplicarle")
 
     return disc, avisos, {"producto_key": key, "carpeta": "PRODUCTOS/" + slug,
                           "archivos": sorted(heads), "encabezados": heads}

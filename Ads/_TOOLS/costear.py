@@ -18,13 +18,15 @@ Fuentes de verdad (este script no inventa ninguna cifra)
   · ETAPA-1.md Paso 2.5 ........... regla de arranque 1u vs 2x1 (tabla de múltiplos)
   · gen_dashboard.py:escalera_sugerida .. regla de la escalera (costo × 1.7)
 
-⚠️ NOTA DE DIVERGENCIA (2026-09-02). La escalera se calcula con la regla × 1.7,
-que es la que usa el código vigente (`gen_dashboard.py`) y la que cita productos
-reales: costo Q60 → 199/299/399 (CLEARSTEM) y costo Q40 → 179/249/319/389
-(VARICOSE). La tabla en prosa de `ETAPA-1.md` da otra escalera para esos mismos
-costos (Q40 → 179/239/299). Las dos no pueden ser ciertas a la vez. Mientras el
-operador no resuelva cuál manda, este script usa la del código y lo declara en su
-salida.
+RESUELTO 2026-09-02 — una sola escalera
+──────────────────────────────────────
+Habia dos escaleras en circulacion: la tabla de ETAPA-1.md y la regla `costo x
+1.7` del codigo. `_DIM_PRECIOS.csv` desempato con datos de Dropi: TINNIDROP en
+la fila Q40 vende a 179/239/299 con n=102/42/18 ordenes reales, que es la tabla,
+no la regla (habria dado 179/249/319). Ahora la escalera vive SOLO en
+`_DIM_COSTEO.csv` (columnas precio_2u, precio_3u, origen_escalera) y la regla
+x1.7 se usa unicamente para extrapolar los costos Q85-Q130 que el operador
+nunca fijo, marcados como EXTRAPOLADO.
 
 Uso
 ───
@@ -62,8 +64,14 @@ CPA_PEOR = 63.0              # mismo default que gen_dashboard.arranque_recomend
 
 
 def cargar_tabla():
-    """Filas de _DIM_COSTEO.csv ordenadas por costo. La fila Q54 del xlsx es el
-    escalón Q55 (mismo criterio que gen_dashboard.py:154)."""
+    """Filas de _DIM_COSTEO.csv ordenadas por costo, con su valor REAL.
+
+    `gen_dashboard.py` lee la fila Q54 como el escalón Q55 para que su grilla
+    quede en múltiplos de 5; eso es cosmético del dashboard y NO debe usarse
+    acá: con Q55 la distancia a un costo de Q57 sale 2 y elige esa fila,
+    mientras que con el valor real Q54 sale 3 y empata con Q60 — que es la fila
+    que el operador usa de verdad para CLEARSTEM.
+    """
     if not os.path.exists(CSV_COSTEO):
         sys.exit(f"ERROR: no existe {CSV_COSTEO}. Sin la tabla no hay costeo.")
     filas = []
@@ -73,34 +81,58 @@ def cargar_tabla():
                 c = float(r["costo_producto"])
             except (KeyError, ValueError):
                 continue
-            filas.append((55.0 if c == 54.0 else c, r))
+            filas.append((c, r))
     if not filas:
         sys.exit(f"ERROR: {CSV_COSTEO} no tiene filas legibles.")
     return sorted(filas, key=lambda x: x[0])
 
 
 def elegir_fila(costo, filas):
-    """Regla de aproximación de ETAPA-1.md: si el costo no está en la tabla, se
-    usa la fila SUPERIOR (conservador). Nunca se interpola."""
+    """La fila MÁS CERCANA; en empate, la superior (conservador).
+
+    ETAPA-1.md dice las dos cosas —"la fila con el valor más cercano" y "si está
+    entre dos valores, usar el superior"— y la práctica real desempata:
+      · TINNIDROP costo Q41 usa fila Q40 (más cercano), no Q45. Sus precios
+        desplegados son 179/239/299, los de la fila Q40, con n=102 órdenes.
+      · NUSAVA costo Q55 usa fila Q54 (más cercano), no Q60.
+      · CLEARSTEM costo Q57 empata entre Q54 y Q60 → Q60, el superior.
+    Nunca se interpola: siempre cae en una fila existente.
+    """
     exactas = [(c, r) for c, r in filas if c == costo]
     if exactas:
         return exactas[0][0], exactas[0][1], "exacta"
-    superiores = [(c, r) for c, r in filas if c > costo]
-    if superiores:
-        return superiores[0][0], superiores[0][1], "superior (conservador)"
-    # Por encima del techo de la tabla: se usa la última y se avisa fuerte.
-    c, r = filas[-1]
-    return c, r, "TECHO DE TABLA EXCEDIDO"
+    if costo > filas[-1][0]:
+        c, r = filas[-1]
+        return c, r, "TECHO DE TABLA EXCEDIDO"
+    # Ordena por distancia; a igual distancia gana el costo mayor (conservador).
+    c, r = min(filas, key=lambda x: (abs(x[0] - costo), -x[0]))
+    crit = "más cercana" + (" (empate → superior)" if any(
+        abs(o - costo) == abs(c - costo) and o != c for o, _ in filas) else "")
+    return c, r, crit
 
 
-def escalera(costo_u, precio_1u, n=4):
-    """Cada unidad extra se cobra a `costo unitario × 1.7`, redondeado a la decena.
-    Regla canónica en gen_dashboard.py:escalera_sugerida."""
-    inc = round(costo_u * 1.7 / 10.0) * 10
-    return [{"unidades": u,
-             "precio": int(precio_1u + (u - 1) * inc),
-             "costo_pedido": round(costo_u * u, 2)}
-            for u in range(1, n + 1)]
+def escalera(costo_u, fila, n=3):
+    """La escalera sale del CSV, no de una fórmula.
+
+    `precio_2u` y `precio_3u` de _DIM_COSTEO.csv son los precios que fijó el
+    operador, y son los que Dropi confirma: TINNIDROP en la fila Q40 vende a
+    179/239/299 con n=102/42/18 órdenes reales. La regla `costo × 1.7` que se
+    usaba antes daba 179/249/319 para esa misma fila — aproximaba la escalera
+    sin reproducirla. Ahora solo se usa para EXTRAPOLAR los costos que el
+    operador nunca fijó (Q85-Q130), y esas filas van marcadas como tales en
+    `origen_escalera`.
+    """
+    p1 = int(float(fila["precio_establecido"]))
+    precios = [p1]
+    for k in ("precio_2u", "precio_3u"):
+        v = fila.get(k)
+        precios.append(int(float(v)) if v not in (None, "") else None)
+    # Escalones por encima del 3u: se extienden con el último salto conocido.
+    if n > 3 and precios[2] and precios[1]:
+        salto = precios[2] - precios[1]
+        precios += [precios[2] + salto * i for i in range(1, n - 2)]
+    return [{"unidades": u, "precio": p, "costo_pedido": round(costo_u * u, 2)}
+            for u, p in enumerate(precios[:n], start=1) if p is not None]
 
 
 def arranque(costo_u):
@@ -138,13 +170,13 @@ def costear(costo, n_unidades=3):
         "utilidad_esperada": g("utilidad_esperada"),
         # La escalera parte de la FILA: su precio base (P1u) también sale de ahí,
         # y mezclar costo real con precio de tabla daría una escalera incoherente.
-        "escalera": escalera(costo_fila, p1u, max(3, n_unidades)),
+        "escalera": escalera(costo_fila, r, max(3, n_unidades)),
         # El arranque se evalúa sobre el costo REAL: el múltiplo es un diagnóstico
         # del producto, no de la grilla. Con costo Q35 el múltiplo es 4.4x — que es
         # el número que cita ETAPA-1.md Paso 2.5 — no el 4.0x de la fila Q40.
         "arranque": arranque(float(costo)),
         "fuente": "PRODUCTOS/_DIM_COSTEO.csv",
-        "regla_escalera": "costo x 1.7 redondeado a la decena (gen_dashboard.py)",
+        "origen_escalera": r.get("origen_escalera", "OPERADOR"),
     }
     if criterio == "TECHO DE TABLA EXCEDIDO":
         out["alerta"] = (f"El costo Q{costo} supera el techo de la tabla (Q{costo_fila:.0f}). "
@@ -164,7 +196,11 @@ def imprimir(d):
     for e in d["escalera"]:
         marca = "  <- OFERTA HÉROE" if e["unidades"] == 2 else ""
         print(f"  {e['unidades']}u ... Q{e['precio']:<6} (costo del pedido Q{e['costo_pedido']:.0f}){marca}")
-    print(f"\n  regla de escalera: {d['regla_escalera']}")
+    if d["origen_escalera"] == "EXTRAPOLADO":
+        print("\n  *** escalera EXTRAPOLADA: el operador nunca fijó precio para este costo.")
+        print("      Confirmar con él antes de publicarla. ***")
+    else:
+        print("\n  escalera fijada por el operador en _DIM_COSTEO.csv, confirmada contra Dropi")
     print("\nUMBRALES DE PAUTA")
     print(f"  CPA objetivo ......... Q{d['cpa_objetivo']:.2f}")
     print(f"  CPA base ............. Q{d['cpa_base']:.2f}")

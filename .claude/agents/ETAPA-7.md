@@ -74,7 +74,7 @@ La regla de ingesta garantiza que las BASE nunca se solapen: `ventana_ini = vent
 
 **(e) Monedas.** `spend_usd` ya viene normalizado a USD (la cuenta **CP1 = 1346891653335162** factura en COP y se divide entre 4,050 al cargar). `total_q` viene en Quetzales.
 
-**(f)** Si una fila trae `cuenta_alias` desconocido → reportarlo como cuenta no registrada en `_PORTAFOLIO.txt`, no ignorarla.
+**(f)** Si una fila trae `cuenta_alias` desconocido → reportarlo como cuenta no registrada en `_DIM_PRODUCTOS.csv`, no ignorarla.
 
 **(g) JOIN OBLIGATORIO con `_DIM_CONJUNTOS.csv` antes de rankear.**
 
@@ -226,7 +226,7 @@ Aplicarlos como restricciones sobre la lectura y **citar el `id`** cuando uno ca
 
 ## Output / conexión
 
-- Recorrer `PRODUCTOS/_PORTAFOLIO.txt` y auditar **cada producto en ESTADO=VIVO**, uno por uno — no solo el último.
+- Recorrer `PRODUCTOS/_DIM_PRODUCTOS.csv` y auditar **cada producto en `estado=VIVO`**, uno por uno — no solo el último. Es el registro maestro: trae estado, fase, cuenta, página, tasa, CPA base, break-even, `clave_campana` y `campaign_id` en una sola fila. `_PORTAFOLIO.txt` es bitácora legible, no fuente.
 - Escribir resultados en el bloque RESULTADOS_TESTEO de `2_DATA_PRODUCTO.txt` (y `3_CAMPAÑA_META.txt` si existe).
 - El informe alimenta a **ETAPA-8**, que decide las palancas de escalado.
 - Al confirmar ganador con ventana COMPLETA: "El ángulo ganador es [nombre]" → ORCHESTRATOR inicia FASE 2 — **ETAPA-11 primero**, después TESTEO DE CONCEPTOS (ETAPA-3 → ETAPA-9).

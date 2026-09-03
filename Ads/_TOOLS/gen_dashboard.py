@@ -149,11 +149,18 @@ for k in precios:
 
 
 _PRECIO_TABLA, _CPA_BASE_TABLA = {}, {}
+_P2U_TABLA, _P3U_TABLA, _ORIGEN_ESC = {}, {}, {}
 for _x in costeo:
     _c = int(f(_x["costo_producto"]))
     _c = 55 if _c == 54 else _c          # la fila Q54 del xlsx = el escalón Q55
     _PRECIO_TABLA[_c] = int(f(_x["precio_establecido"]))
     _CPA_BASE_TABLA[_c] = f(_x["cpa_base"])
+    # Escalera del operador (unificada 2026-09-02). Ver escalera_sugerida.
+    if _x.get("precio_2u"):
+        _P2U_TABLA[_c] = int(f(_x["precio_2u"]))
+    if _x.get("precio_3u"):
+        _P3U_TABLA[_c] = int(f(_x["precio_3u"]))
+    _ORIGEN_ESC[_c] = (_x.get("origen_escalera") or "OPERADOR").strip()
 
 
 def contrib_tier(precio, costo_total, u):
@@ -203,17 +210,27 @@ def arranque_recomendado(costo_u, cpa_peor=63.0):
 def escalera_sugerida(costo_u, precio_1u, n=4):
     """Precios sugeridos para 1..n unidades.
 
-    REGLA: cada unidad extra se cobra a `costo unitario × 1.7`, redondeado a
-    la decena. No es una invención — reproduce las escaleras que el operador
-    ya usa (costo Q60 → 199/299/399 = CLEARSTEM · costo Q40 → 179/249/319/389
-    = VARICOSE). La unidad extra casi no agrega costo logístico (solo Q2.70 de
+    FUENTE: `precio_2u` y `precio_3u` de _DIM_COSTEO.csv — los precios que fijó
+    el operador. La regla `costo × 1.7` quedó como extrapolación para los costos
+    Q85-Q130 que él nunca fijó (marcados `origen_escalera = EXTRAPOLADO`). La unidad extra casi no agrega costo logístico (solo Q2.70 de
     flete: mismo envío, mismo riesgo de devolución, mismo admin), así que es
     el escalón donde vive el margen.
     ⚠️ Es una SUGERENCIA de precio, no una predicción de conversión: subir el
     precio puede bajar la tasa de cierre. Se testea, no se aplica a ciegas.
     """
-    inc = round(costo_u * 1.7 / 10.0) * 10
-    return [(u, precio_1u + (u - 1) * inc, costo_u * u) for u in range(1, n + 1)]
+    # UNIFICADO 2026-09-02: la escalera sale de _DIM_COSTEO.csv, no de la fórmula.
+    # _DIM_PRECIOS.csv desempató con datos de Dropi: TINNIDROP en la fila Q40 vende
+    # a 179/239/299 con n=102/42/18 órdenes reales, que es la tabla del operador.
+    # La fórmula habría dado 179/249/319. Ahora solo extrapola donde no hay dato.
+    p2, p3 = _P2U_TABLA.get(costo_u), _P3U_TABLA.get(costo_u)
+    if p2 and p3:
+        precios = [precio_1u, p2, p3]
+        salto = p3 - p2
+        precios += [p3 + salto * i for i in range(1, max(0, n - 3) + 1)]
+    else:
+        inc = round(costo_u * 1.7 / 10.0) * 10
+        precios = [precio_1u + (u - 1) * inc for u in range(1, n + 1)]
+    return [(u, precios[u - 1], costo_u * u) for u in range(1, min(n, len(precios)) + 1)]
 
 
 def escalon(pk, ticket):

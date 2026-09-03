@@ -11,6 +11,16 @@
             "statusMessage": "Validando CSV y regenerando dashboard..."
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python Ads/_TOOLS/hook_csv.py --barrido",
+            "timeout": 120
+          }
+        ]
       }
     ],
     "SessionStart": [
