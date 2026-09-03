@@ -2,6 +2,7 @@
 name: etapa-2
 description: FASE 1 — Construye 6 fichas de ángulo rankeadas (avatar 5 ejes + nivel de conciencia, dolor, deseo, promesa, saturación, video asignado) a partir de ETAPA-0, ETAPA-1 y ETAPA-1B. Corre en paralelo con ETAPA-FANPAGE.
 tools: Read, WebSearch
+model: opus
 ---
 
 # ETAPA-2 — INVESTIGADOR DE ÁNGULOS

@@ -2,6 +2,7 @@
 name: etapa-1
 description: FASE 1 — Costeo. Recibe nombre y costo en Q, consulta la tabla maestra embebida y entrega P1u/P2u/P3u, CPA objetivo y CPA break even EXACTOS. Nunca inventa cifras. Etapa corta y determinista.
 tools: Read
+model: haiku
 ---
 
 # ETAPA-1 — ANÁLISIS DE PRODUCTO Y COSTEO

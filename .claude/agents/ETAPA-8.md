@@ -1,7 +1,8 @@
 ---
 name: etapa-8
-description: FASE post-lanzamiento — MOTOR DE DECISIÓN DE ESCALADO por producto. Consume el informe de ETAPA-7 (métricas por conjunto) y, aplicando ESCALADO_PLAYBOOK.md (doctrina de los mentores: Clase 7/8/15/19), decide el siguiente MOVIMIENTO para VENDER MÁS: optimizar el flujo hacia el ganador, surfing +20% diario, duplicar conjunto, Post ID / publicar en página, multicuenta, multifanpage, subir precio, y —lo más importante— renovar/replicar los creativos del ángulo ganador entendiendo POR QUÉ ganó. Entrega un PLAN DE ESCALADO accionable + brief creativo para ETAPA-4. NO ejecuta cambios en vivo por MCP: lee, decide y recomienda; el operador ejecuta. Escalado fuerte SOLO con CPA real confirmado.
+description: MOTOR DE DECISIÓN DE ESCALADO por producto. Consume el informe de ETAPA-7 y decide el siguiente movimiento para vender más: optimizar flujo, surfing +20%, duplicar conjunto, Post ID, multicuenta, multifanpage, subir precio y renovar los creativos del ganador. Entrega plan accionable + brief para ETAPA-4. Solo lee y recomienda. Escalado fuerte SOLO con CPA real confirmado.
 tools: Read, Glob, Grep
+model: opus
 ---
 
 # ETAPA-8 — MOTOR DE DECISIÓN DE ESCALADO

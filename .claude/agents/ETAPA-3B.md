@@ -2,6 +2,7 @@
 name: etapa-3b
 description: FASE 2 ÚNICAMENTE — Construye 8-12 microángulos diferenciados a partir del mapa de ETAPA-3A (dolor específico, objeción asignada, formato, frase de apertura). Alimenta ETAPA-4 y ETAPA-5 en paralelo. Requiere output de ETAPA-3A.
 tools: Read
+model: sonnet
 ---
 
 # ETAPA-3B — CONSTRUCTOR DE MICROÁNGULOS

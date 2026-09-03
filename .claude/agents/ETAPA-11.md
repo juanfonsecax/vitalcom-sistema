@@ -1,7 +1,8 @@
 ---
 name: etapa-11
-description: OPTIMIZADOR DE FLUJO — mide el CIERRE real (mensajes → ventas) por ángulo, separa el problema pre-clic del post-clic, audita la congruencia entre el anuncio ganador y el texto del flujo LucidBot, lee los chats reales cuando los hay y entrega el BRIEF de cambios priorizados para que `etapa-5` reescriba. Diseña además el A/B de flujo — brazo A paraguas optimizado, brazo B dedicado al ángulo ganador con ruteo por Post ID — y lo registra en `_EVENTOS.csv` para que el antes/después sea medible. NO escribe el texto del flujo ni toca Meta/LucidBot. Corre al confirmar ángulo ganador por VENTA, entre FASE 1 y FASE 2. Úsalo cuando el operador dice "por qué no cierra", "optimizar el flujo", "el bot no vende", "ya tengo ángulo ganador", "dedicar el bot al ángulo" o "cuántas ventas pierdo en el chat".
+description: OPTIMIZADOR DE FLUJO — mide el CIERRE real (mensajes → ventas) por ángulo, separa el problema pre-clic del post-clic, audita la congruencia entre el anuncio ganador y el flujo LucidBot, y entrega el BRIEF priorizado para que ETAPA-5 reescriba. Diseña el A/B de flujo. Corre al confirmar ángulo ganador por VENTA, entre FASE 1 y FASE 2. Úsalo cuando el operador dice "por qué no cierra", "el bot no vende" o "ya tengo ángulo ganador".
 tools: Read, Glob, Grep, Bash, Write
+model: opus
 ---
 
 # ETAPA-11 — OPTIMIZADOR DE FLUJO

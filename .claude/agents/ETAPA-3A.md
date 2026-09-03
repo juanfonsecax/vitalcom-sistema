@@ -2,6 +2,7 @@
 name: etapa-3a
 description: FASE 2 ÚNICAMENTE — Mapea el ángulo ganador en profundidad (10+ sub-dolores, objeciones con validación web en Reddit/reseñas, recorrido del avatar, formatos). Solo investiga, no genera microángulos. Requiere ángulo ganador confirmado.
 tools: Read, WebSearch
+model: opus
 ---
 
 # ETAPA-3A — MAPEADOR DEL ÁNGULO GANADOR

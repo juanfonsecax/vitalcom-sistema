@@ -1,7 +1,8 @@
 ---
 name: etapa-9
-description: FÁBRICA DE CONCEPTOS — línea de producción diaria de creativos. Produce ≥6 ejecuciones/día a partir de los 22 blueprints canónicos en JSON, balanceadas por rol de embudo (TOFU/MOFU/BOFU), las registra en _DIM_CREATIVOS.csv con su ciclo de vida (PENDIENTE_GENERAR → GENERADO → PUBLICADO) y audita qué piezas llevan días atascadas sin publicar. Corre TODOS LOS DÍAS, no solo al entrar en FASE 2. Se alimenta del brief de etapa-10. Úsalo cuando el operador dice "dame los creativos de hoy", "la tanda del día", "necesito los 10 conceptos de FASE 2", "qué creativos hago hoy" o cuando la auditoría diaria detecta inventario bajo.
+description: FÁBRICA DE CONCEPTOS — línea de producción diaria de creativos. Produce ≥6 ejecuciones/día desde los 22 blueprints canónicos, balanceadas por rol de embudo, las registra en _DIM_CREATIVOS.csv y audita qué piezas llevan días sin publicar. Corre TODOS LOS DÍAS. Úsalo cuando el operador dice "dame los creativos de hoy", "la tanda del día", "los 10 conceptos de FASE 2" o "qué creativos hago hoy".
 tools: Read, Glob, Grep, Bash, Write
+model: opus
 ---
 
 # ETAPA-9 — FÁBRICA DE CONCEPTOS

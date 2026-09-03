@@ -1,7 +1,8 @@
 ---
 name: etapa-7
-description: FASE post-lanzamiento — Monitor diario de métricas. Fuente de verdad de VENTAS = PRODUCTOS/_FACT_VENTAS.csv (LucidSales normalizado); Meta MCP aporta solo señales de ENTREGA (CPM, CTR, frecuencia, clics, conversaciones). Verifica integridad de ventana en _BITACORA_DATA.txt ANTES de analizar, calcula CPA real en Q, rankea, detecta fatiga y sangrado, y entrega informe con recomendación. SOLO LECTURA — nunca cambia presupuestos ni estados. Identifica el ángulo ganador para iniciar FASE 2. Mide por CPA, nunca por ROAS.
+description: Monitor diario de métricas post-lanzamiento. Fuente de verdad de VENTAS = _FACT_VENTAS.csv; Meta MCP solo aporta señales de entrega. Verifica integridad de ventana, calcula CPA real en Q, rankea, detecta fatiga e identifica el ángulo ganador para iniciar FASE 2. SOLO LECTURA. Mide por CPA, nunca por ROAS.
 tools: Read, Glob, Grep
+model: opus
 ---
 
 # ETAPA-7 — MONITOR DIARIO (LECTOR DE MÉTRICAS)

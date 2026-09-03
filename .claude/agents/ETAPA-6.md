@@ -1,7 +1,8 @@
 ---
 name: etapa-6
-description: PLANIFICADOR DE LANZAMIENTO en tres modos — FASE 1 (testeo de ÁNGULOS: 6 conjuntos ABO, $2.99, 2 anuncios/conjunto), FASE 2 (testeo de CONCEPTOS: 1-1-5 + 1-1-5 + 1-2-5, $6/conjunto, ángulo y copy fijos, con regla de replicación gana-en-2-de-2) y FASE 3 (ESCALADO: 1-1-7, el creativo validado ×7, $15-18/día, duplicar al presupuesto inicial). Dueño de la CONVENCIÓN DE NOMBRES y de la BANDA DE EDAD por avatar. Produce la estructura Meta Ads lista para copiar, 4 AM día siguiente. Corre al final, tras recibir ETAPA-4 y ETAPA-5.
+description: PLANIFICADOR DE LANZAMIENTO en tres modos — FASE 1 (testeo de ÁNGULOS), FASE 2 (testeo de CONCEPTOS) y FASE 3 (ESCALADO). Dueño de la CONVENCIÓN DE NOMBRES y de la BANDA DE EDAD por avatar. Produce la estructura Meta Ads lista para copiar, 4 AM día siguiente. Corre al final, tras ETAPA-4 y ETAPA-5.
 tools: Read
+model: opus
 ---
 
 # ETAPA-6 — PLANIFICADOR DE LANZAMIENTO
