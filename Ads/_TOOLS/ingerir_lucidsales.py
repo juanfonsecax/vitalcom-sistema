@@ -16,7 +16,14 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md + runbook de la auditoría):
   · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _ARCHIVO/backups_csv/.
   · ad_id se formatea con s_id() (no notación científica cuando se puede).
 """
-import sys, os, re, csv, shutil, datetime
+import sys, io, os, re, csv, shutil, datetime
+
+# Windows abre la consola en cp1252: un print con un simbolo fuera de ese mapa revienta con
+# UnicodeEncodeError y el script sale con exit 1 AUNQUE el trabajo ya se completo. Es el mismo
+# bug del 18-ago en gen_dashboard.py; aca lo disparaba el check final del JOIN (03-sep).
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
 import pandas as pd
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

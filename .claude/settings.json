@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python Ads/_TOOLS/hook_csv.py",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Ads/_TOOLS/hook_csv.py\"",
             "timeout": 120,
             "statusMessage": "Validando CSV y regenerando dashboard..."
           }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python Ads/_TOOLS/hook_csv.py --barrido",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Ads/_TOOLS/hook_csv.py\" --barrido",
             "timeout": 120
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python Ads/_TOOLS/archivar_auditorias.py",
+            "command": "python \"$CLAUDE_PROJECT_DIR/Ads/_TOOLS/archivar_auditorias.py\"",
             "timeout": 60
           }
         ]
