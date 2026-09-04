@@ -2339,3 +2339,181 @@ print("  {} productos · {} angulos · {} aprendizajes · {} filas sin dimension
 if sin_atrib:
     print("  ⚠ {} filas SIN ATRIBUCION ({} ventas) — tracking, no dimension. Ver APR-035.".format(
         sin_atrib, sin_atrib_ventas))
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# VISTAS/HOY.html — LA VISTA DE UNA PANTALLA
+# ═══════════════════════════════════════════════════════════════════════════
+# Por que existe (03-sep-2026): el dashboard tiene 14 secciones y lo ejecutable
+# ("Que tenes que hacer") queda enterrado entre las tablas de analisis. Esta vista
+# es una PROYECCION de esas mismas acciones -- mismo motor, mismos numeros, un solo
+# dueno del dato -- filtrada a lo que el operador ejecuta HOY. No calcula nada por
+# su cuenta: si un numero no esta en el dashboard, no esta aca.
+
+_HOY_OUT = os.path.join(ROOT, "VISTAS", "HOY.html")
+
+_hoy_acc = [a for a in acciones if a["pri"] <= 1 and a["sev"] != "done"]
+_hoy_sem = [a for a in acciones if a["pri"] == 2 and a["sev"] != "done"]
+
+
+def _ultima(path, campo, filtro=None):
+    """Ultimo valor de una columna, para medir la frescura de cada fuente."""
+    try:
+        rs = list(csv.DictReader(io.open(path, encoding="utf-8")))
+    except (IOError, OSError):
+        return ""
+    vs = [r.get(campo, "") for r in rs if (filtro is None or filtro(r))]
+    return max(vs) if vs else ""
+
+
+_hoy_dt = datetime.date.today()
+
+# fuente, cadencia, ultima fecha cargada, tolerancia en dias, para que sirve
+_fuentes = [
+    ("LucidSales", "diaria",
+     _ultima(os.path.join(P, "_FACT_VENTAS.csv"), "ventana_fin",
+             lambda r: r.get("rol_ventana") == "BASE"),
+     1, "ventas: sin esto no hay CPA ni ganancia"),
+    ("Meta Ads Manager", "diaria",
+     _ultima(os.path.join(P, "_FACT_ENTREGA.csv"), "ventana_fin"),
+     1, "entrega: separa si no entrega el ad o no cierra el bot"),
+    ("Dropi (ordenes + cartera)", "semanal",
+     _ultima(os.path.join(P, "_TASA_ENTREGA.csv"), "mes")[-10:],
+     8, "cuanto de lo vendido se entrego y se cobro"),
+    ("Banco", "mensual",
+     _ultima(os.path.join(P, "_FACT_FACTURACION.csv"), "fecha"),
+     35, "verifica que Meta cobre lo que dice"),
+]
+
+_rows_data = ""
+_faltan = 0
+for _nm, _cad, _ult, _tol, _para in _fuentes:
+    try:
+        _dias = (_hoy_dt - datetime.date.fromisoformat(_ult)).days
+    except ValueError:
+        _dias, _ult = 999, "nunca"
+    _ok = _dias <= _tol
+    if not _ok:
+        _faltan += 1
+    _rows_data += (
+        '<tr><th scope="row">{nm}</th><td class="sub">{cad}</td>'
+        '<td class="num">{ult}</td><td class="num strong {cls}">{d}</td>'
+        '<td class="sub">{para}</td></tr>'.format(
+            cls="pos" if _ok else "neg", nm=esc(_nm), cad=esc(_cad), ult=esc(_ult),
+            d=("al dia" if _ok else "{} dias".format(_dias)), para=esc(_para)))
+
+# la plata de ayer, en cuatro numeros
+_ay = [r for r in ventas if r["rol_ventana"] == "BASE" and r["ventana_fin"] == ult_dia]
+_ay_v = sum(f(r["ventas"]) for r in _ay)
+_ay_g = sum(f(r["spend_usd"]) for r in _ay) * TASA
+_ay_q = sum(f(r["total_q"]) for r in _ay)
+_ay_cpa = (_ay_g / _ay_v) if _ay_v else 0
+_be_medio = (sum(BE_REAL.values()) / len(BE_REAL)) if BE_REAL else 0
+
+
+def _fila_acc(a):
+    # El "donde" del dashboard enumera cada campana y conjunto tocado y puede pasar de 300
+    # caracteres: en una vista que quiere caber en UNA pantalla eso rompe el proposito. Se
+    # recorta y el texto completo queda en el title (y entero en el dashboard).
+    _d = a["donde"]
+    _dcorto = _d if len(_d) <= 118 else _d[:115].rstrip(" ,·«") + "…"
+    return ('<tr><td class="ic">{ic}</td>'
+            '<td><span class="que">{que}</span><span class="sub" title="{dfull}">{donde}</span></td>'
+            '<td class="sub porque">{porque}</td>'
+            '<td class="num strong {icls}">{imp}</td></tr>').format(
+        ic=_TIPO_ICON.get(a["tipo"], "•"), que=esc(a["que"]),
+        donde=esc(_dcorto), dfull=esc(_d),
+        porque=esc(a["porque"]),
+        icls="pos" if a["tipo"] == "ESCALAR" else ("neg" if a["impacto"] else "muted"),
+        imp=(q(a["impacto"]) + "<small>/sem</small>") if a["impacto"] >= 1 else "—")
+
+
+_HOY_TPL = u"""<!doctype html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HOY · VitalCom</title><style>
+:root{--bg:#0d1117;--card:#161b22;--line:#30363d;--tx:#e6edf3;--sub:#8b949e;
+--pos:#3fb950;--neg:#f85149;--acc:#58a6ff}
+@media(prefers-color-scheme:light){:root{--bg:#f6f8fa;--card:#fff;--line:#d8dee4;
+--tx:#1f2328;--sub:#636c76;--pos:#1a7f37;--neg:#cf222e;--acc:#0969da}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);
+font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:22px 16px 60px}
+h1{font-size:23px;margin:0 0 2px;letter-spacing:-.01em}
+h2{font-size:14px;margin:0;letter-spacing:.03em;text-transform:uppercase}
+.sub{color:var(--sub);font-size:12.5px}.num{text-align:right;font-variant-numeric:tabular-nums}
+.strong{font-weight:650}.pos{color:var(--pos)}.neg{color:var(--neg)}.muted{color:var(--sub)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;margin:16px 0;overflow:hidden}
+.card>h2{padding:13px 17px;border-bottom:1px solid var(--line);background:rgba(127,127,127,.05)}
+table{width:100%;border-collapse:collapse}td,th{padding:11px 15px;text-align:left;
+border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td,tbody tr:last-child th{border-bottom:0}
+thead th{font-size:12px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.02em}
+th[scope=row]{font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:11px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:15px 17px}
+.kpi .v{font-size:25px;font-weight:680;letter-spacing:-.02em}
+.kpi .k{color:var(--sub);font-size:12px;margin-top:3px}
+.que{display:block;font-weight:600}.ic{width:34px;font-size:17px;color:var(--acc)}
+.porque{max-width:400px}a{color:var(--acc)}
+.foot{margin-top:26px;font-size:12.5px;color:var(--sub)}
+.empty{padding:20px 17px;color:var(--sub)}
+@media(max-width:720px){.porque,.ic{display:none}.wrap{padding:14px 10px 40px}}
+</style></head><body><div class="wrap">
+
+<h1>Qué hago hoy</h1>
+<p class="sub">Datos al __ULTDIA__ · generado __GEN__ ·
+<a href="../PRODUCTOS/_DASHBOARD.html">dashboard completo →</a></p>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">__AYV__</div><div class="k">ventas de ayer</div></div>
+  <div class="kpi"><div class="v">__AYQ__</div><div class="k">facturado ayer</div></div>
+  <div class="kpi"><div class="v neg">__AYG__</div><div class="k">pauta de ayer</div></div>
+  <div class="kpi"><div class="v __CPACLS__">__AYCPA__</div><div class="k">__CPAK__</div></div>
+</div>
+
+<div class="card"><h2>Ejecutar hoy · __NACC__</h2>
+<table><tbody>__ROWSHOY__</tbody></table></div>
+
+<div class="card"><h2>Esta semana · __NSEM__</h2>
+<table><tbody>__ROWSSEM2__</tbody></table></div>
+
+<div class="card"><h2>Data que falta pasar</h2>
+<table><thead><tr><th>Fuente</th><th>Cadencia</th><th class="num">Último</th>
+<th class="num">Atraso</th><th>Para qué</th></tr></thead>
+<tbody>__ROWSDATA__</tbody></table></div>
+
+<p class="foot">Las acciones salen del mismo motor que el dashboard: son las reglas del playbook
+aplicadas a la data de hoy, no una opinión. La cadencia de cada fuente está en
+<code>_OPERADOR/ENTREGA_DE_DATA.md</code>.</p>
+</div></body></html>"""
+
+_rep_hoy = {
+    "__ULTDIA__": esc(ult_dia),
+    "__GEN__": _hoy_dt.isoformat(),
+    "__AYV__": "{:.0f}".format(_ay_v),
+    "__AYQ__": q(_ay_q),
+    "__AYG__": q(_ay_g),
+    "__AYCPA__": q1(_ay_cpa) if _ay_v else "—",
+    "__CPAK__": ("CPA de ayer · BE medio {}".format(q(_be_medio)) if _be_medio
+                 else "CPA de ayer"),
+    "__CPACLS__": ("pos" if (_ay_v and _be_medio and _ay_cpa <= _be_medio)
+                   else ("neg" if _ay_v else "muted")),
+    "__NACC__": "{} pendiente{}".format(len(_hoy_acc), "" if len(_hoy_acc) == 1 else "s"),
+    "__NSEM__": "{} pendiente{}".format(len(_hoy_sem), "" if len(_hoy_sem) == 1 else "s"),
+    "__ROWSHOY__": "".join(_fila_acc(a) for a in _hoy_acc) or
+                   '<tr><td class="empty" colspan="4">Nada urgente: ningún conjunto pasó su '
+                   'presupuesto de decisión sin vender y no hay ganadores sin presupuesto.</td></tr>',
+    "__ROWSSEM2__": "".join(_fila_acc(a) for a in _hoy_sem) or
+                    '<tr><td class="empty" colspan="4">Nada pendiente para esta semana.</td></tr>',
+    "__ROWSDATA__": _rows_data,
+}
+_doc_hoy = _HOY_TPL
+for _k, _v in _rep_hoy.items():
+    _doc_hoy = _doc_hoy.replace(_k, _v)
+try:
+    os.makedirs(os.path.dirname(_HOY_OUT), exist_ok=True)
+    io.open(_HOY_OUT, "w", encoding="utf-8").write(_doc_hoy)
+    print("HOY.html: {} accion(es) para hoy, {} para la semana, {} fuente(s) atrasada(s)"
+          .format(len(_hoy_acc), len(_hoy_sem), _faltan))
+except (IOError, OSError) as _e:
+    print("HOY.html no se pudo escribir: {}".format(_e))

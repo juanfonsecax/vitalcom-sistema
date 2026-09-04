@@ -39,7 +39,10 @@ PRODUCTOS/_TESTEOS.html
 PRODUCTOS/_META_ADS.html
 # gen_estructura.py
 PRODUCTOS/_ESTRUCTURA.html
-# gen_panel.py
+# gen_dashboard.py (vista de una pantalla)
+VISTAS/HOY.html
+# SIN GENERADOR: gen_panel.py no existe. Se edita a mano y esta ignorado,
+# asi que si se borra NO se puede reconstruir. Pendiente: o se versiona o se genera.
 VISTAS/PANEL.html
 # gen_sistema.py / gen_banco.py
 Ads/_SWIPE/_SISTEMA.html
