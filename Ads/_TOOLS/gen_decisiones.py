@@ -65,11 +65,13 @@ def main():
              ".ft{margin-top:24px;padding:12px;background:#f0efe9;border-radius:6px;font-size:12px;color:#444}"
              "</style>")
     p.append("<h1>Decisiones</h1>")
-    p.append("<div class=sub>ventana FIJA de %d dias &middot; intervalo de credibilidad %.0f%% &middot; "
+    p.append("<div class=sub>evaluacion: ventana FIJA de %d dias &middot; fatiga: ultimos %d dias &middot; "
+             "tolerancia 1x BE: sobre el gasto ACUMULADO &middot; intervalo de credibilidad %.0f%% &middot; "
              "grano: %s &middot; generado %s<br>"
-             "La ventana no se elige al mirar el dato: sale de <code>_PARAMETROS_DECISION.csv</code>."
-             "</div>" % (rep["ventana_dias"], rep["nivel_confianza"] * 100, rep["grano"],
-                         e(rep["generado"])))
+             "Tres relojes distintos, no uno. Ninguno se elige al mirar el dato: salen de "
+             "<code>_PARAMETROS_DECISION.csv</code>."
+             "</div>" % (rep["ventana_dias"], rep.get("ventana_fatiga_dias", 3),
+                         rep["nivel_confianza"] * 100, rep["grano"], e(rep["generado"])))
     ordenes = bloq = 0
     for pr in rep["productos"]:
         if pr.get("estado") == "SIN_BREAK_EVEN":

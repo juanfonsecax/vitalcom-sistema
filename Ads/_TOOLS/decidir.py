@@ -7,8 +7,15 @@ Combina el rigor estadístico de los Intervalos de Credibilidad Bayesiana (IC 95
 con la Gestión de Riesgo Asimétrico (Bankroll, Tolerancia 1x BE y Detector Temprano de Fatiga).
 
 PRINCIPIOS:
-  1. LA VENTANA ES FIJA (_PARAMETROS_DECISION.csv, default 14 días móviles).
-     No se corta después de ver el dato para evitar p-hacking.
+  1. TRES RELOJES DISTINTOS, NUNCA UNO SOLO (_PARAMETROS_DECISION.csv):
+       - ventana_dias (14)              -> sobre cuántos días se calcula CPA e IC.
+       - ventana_fatiga_dias (3)        -> días recientes que se comparan CONTRA esa ventana.
+       - duracion_testeo_fase2_dias (3) -> cuánto rueda la 1-1-5 antes de coronar (Calet 22-ago).
+       - tolerancia_base = acumulado    -> la regla 1x BE se mide sobre el gasto DESDE EL LANZAMIENTO.
+     Los 3 días de Calet son una DURACIÓN DE CAMPAÑA, no una ventana de cálculo: él decide en 3 días
+     porque corre a $15-18 USD/día y esos 3 días le traen 20-30 ventas. A $3-6 USD/día traen 1-3.
+     Lo que Calet fija es VOLUMEN DE EVIDENCIA, no tiempo. La ventana es fija y no se corta después
+     de ver el dato, para evitar p-hacking.
   2. AGREGACIÓN POR ANGULO_KEY (Invariante 1 y 12): Las réplicas R[N] se SUMAN.
   3. CERO PARÁLISIS OPERATIVA:
      Si el intervalo cruza el Break-Even por escasez de muestra o cercanía al BE,
@@ -24,15 +31,15 @@ PRINCIPIOS:
 
 ESTADOS:
   [ESCALAR]         CPA bajo objetivo o bajo BE con respaldo -> Subir +10% a +20%
-  [PAUSAR]          Gasto sin chats, tolerancia de 1x BE agotada o CPA desbordado
-  [RENOVAR]         Ganador histórico con fatiga en los últimos 3 días (Brief Fase 2)
+  [PAUSAR]          Gasto ACUMULADO sin chats, tolerancia acumulada de 1x BE agotada o CPA desbordado
+  [RENOVAR]         Ganador de la ventana con fatiga en los últimos días recientes (Brief Fase 2)
   [SEGUIR_MIDIENDO] Cruza BE en zona de prueba/maduración (Acción: Mantener presupuesto)
 
 USO:
     python Ads/_TOOLS/decidir.py                      # Portafolio completo
     python Ads/_TOOLS/decidir.py CLEARSTEM            # Un solo producto
     python Ads/_TOOLS/decidir.py --grano conjunto     # Desglose por conjunto
-    python Ads/_TOOLS/decidir.py --dias 14            # Ventana personalizada
+    python Ads/_TOOLS/decidir.py --dias 7             # Ventana de evaluacion personalizada
     python Ads/_TOOLS/decidir.py --json               # Salida JSON
 """
 
@@ -70,7 +77,10 @@ TASA_Q_USD_DEFAULT = 7.62
 
 def cargar_parametros():
     p = {
-        "ventana_dias": 3,
+        "ventana_dias": 14,
+        "ventana_fatiga_dias": 3,
+        "duracion_testeo_fase2_dias": 3,
+        "tolerancia_base": "acumulado",
         "maduracion_dias": 10,
         "nivel_confianza": 0.95,
         "alpha_cierre": 0.05,
@@ -179,7 +189,14 @@ def cargar_productos():
     return prods
 
 
-def cargar_datos_duckdb(dias=14, grano="angulo"):
+def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
+    """Carga cada celda con TRES cortes temporales distintos sobre la misma serie.
+
+    - Columnas de VENTANA  (ventas/mensajes/spend_usd): últimos `dias`. Miden CPA e IC.
+    - Columnas de FATIGA   (*_3d): últimos `dias_fatiga`. Se comparan CONTRA la ventana.
+    - Columnas ACUMULADAS  (*_acum): toda la serie. Miden la tolerancia 1x BE, que no se
+      olvida cada ciclo porque la pérdida se acumula.
+    """
     import duckdb
 
     con = duckdb.connect()
@@ -200,6 +217,13 @@ def cargar_datos_duckdb(dias=14, grano="angulo"):
         cte_bandas, join_bandas, col_banda = "", "", "true"
 
     col_agrup = "coalesce(v.angulo_key, v.conjunto)" if grano == "angulo" else "v.conjunto"
+
+    # Los dos cortes se cuentan desde el ULTIMO DIA CON DATA e incluyen ese dia (>=, no >):
+    # con `>` la ventana entregaba dias-1 dias y mentia en el encabezado.
+    dias = max(int(dias), 1)
+    dias_fatiga = max(min(int(dias_fatiga), dias - 1), 1) if dias > 1 else 1
+    win = f"v.fecha >= (select f from ult) - interval {dias - 1} day"
+    fat = f"v.fecha >= (select f from ult) - interval {dias_fatiga - 1} day"
 
     sql = f"""
     with {cte_bandas}
@@ -240,25 +264,28 @@ def cargar_datos_duckdb(dias=14, grano="angulo"):
         left join dim_conj d
           on d.producto_key = v.producto_key and d.conjunto_meta = v.conjunto
         {join_bandas}
-        where v.fecha > (select f from ult) - interval ({dias} - 1) day
     )
     select
         producto_key,
         {col_agrup} as celda,
-        count(distinct conjunto) as conjuntos,
-        sum(ventas) as ventas,
-        sum(mensajes) as mensajes,
-        sum(spend_usd) as spend_usd,
-        sum(case when fecha > (select f from ult) - interval 3 day then ventas else 0 end) as ventas_3d,
-        sum(case when fecha > (select f from ult) - interval 3 day then mensajes else 0 end) as mensajes_3d,
-        sum(case when fecha > (select f from ult) - interval 3 day then spend_usd else 0 end) as spend_3d,
-        min(fecha) as desde,
-        max(fecha) as hasta,
-        bool_and(banda_coincide) as banda_ok,
-        bool_and(en_convencion) as nombres_ok
+        count(distinct case when {win} then v.conjunto end) as conjuntos,
+        sum(case when {win} then ventas     else 0 end) as ventas,
+        sum(case when {win} then mensajes   else 0 end) as mensajes,
+        sum(case when {win} then spend_usd  else 0 end) as spend_usd,
+        sum(case when {fat} then ventas     else 0 end) as ventas_3d,
+        sum(case when {fat} then mensajes   else 0 end) as mensajes_3d,
+        sum(case when {fat} then spend_usd  else 0 end) as spend_3d,
+        sum(ventas)    as ventas_acum,
+        sum(mensajes)  as mensajes_acum,
+        sum(spend_usd) as spend_acum,
+        min(case when {win} then v.fecha end) as desde,
+        max(case when {win} then v.fecha end) as hasta,
+        min(v.fecha) as desde_acum,
+        bool_and(case when {win} then banda_coincide else true end) as banda_ok,
+        bool_and(case when {win} then en_convencion  else true end) as nombres_ok
     from unidos v
     group by 1, 2
-    having sum(spend_usd) > 0
+    having sum(case when {win} then spend_usd else 0 end) > 0
     order by 1, 4 desc
     """
     df = con.execute(sql).fetchdf()
@@ -267,29 +294,53 @@ def cargar_datos_duckdb(dias=14, grano="angulo"):
 
 
 def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
-                  be_q, obj_q, tasa, params):
-    """Evalúa una celda combinando Intervalos de Credibilidad con Reglas Operativas."""
+                  be_q, obj_q, tasa, params,
+                  ventas_acum=None, mensajes_acum=None, spend_acum_usd=None):
+    """Evalúa una celda combinando Intervalos de Credibilidad con Reglas Operativas.
+
+    Las métricas de rendimiento (CPA, IC, escalado) se miden sobre la VENTANA.
+    Las reglas de corte de pérdida (hook muerto, tolerancia 1x BE) se miden sobre el
+    ACUMULADO desde el lanzamiento: la plata quemada no se olvida al pasar la ventana.
+    """
+    if ventas_acum is None:
+        ventas_acum = ventas
+    if mensajes_acum is None:
+        mensajes_acum = mensajes
+    if spend_acum_usd is None:
+        spend_acum_usd = spend_usd
+
     gasto_q = spend_usd * tasa
+    gasto_acum_q = spend_acum_usd * tasa
     gasto_3d_q = spend_3d * tasa
     cpa_real_q = (gasto_q / ventas) if ventas > 0 else None
+    cpa_acum_q = (gasto_acum_q / ventas_acum) if ventas_acum > 0 else None
     cierre_pct = (ventas / mensajes * 100.0) if mensajes > 0 else None
+
+    # Un ángulo con historia de rentabilidad no se APAGA por una mala racha: se le RENUEVA
+    # el concepto. Sin esta guarda, PAUSAR (regla 3) se evalúa antes que FATIGA (regla 4) y
+    # un ganador probado recibe "apagar" en vez de "rotar creativo" — el error del 06-sep-2026.
+    ganador_historico = (ventas_acum >= 5 and cpa_acum_q is not None and cpa_acum_q <= be_q)
 
     # Intervalo de credibilidad Bayesiano
     conf = float(params.get("nivel_confianza", 0.95))
     horizonte = int(params.get("horizonte_ventas", 60))
+    dias_fat = int(params.get("ventana_fatiga_dias", 3))
     bajo_ic, punto_ic, alto_ic = ic_cpa(ventas, spend_usd, conf, tasa)
     ic_res = [bajo_ic, punto_ic, alto_ic]
 
-    # PD = Presupuesto de Decisión (1x Break-Even de tolerancia para testeo)
+    # PD = Presupuesto de Decisión (1x Break-Even de tolerancia para testeo).
+    # Se consume sobre el gasto ACUMULADO: con ventana móvil la regla era inalcanzable
+    # (Q22.80/día x 3 días = Q68.40 nunca llega al BE Q93.41) y no cortaba nunca.
     pd_q = be_q * params.get("factor_tolerancia_pd", 1.0)
-    pct_pd_consumido = (gasto_q / pd_q * 100.0) if pd_q > 0 else 0.0
+    pct_pd_consumido = (gasto_acum_q / pd_q * 100.0) if pd_q > 0 else 0.0
 
-    # 1. REGLA: HOOK MUERTO / ENLACE CAÍDO
-    if spend_usd >= params["umbral_gasto_sin_chat_usd"] and mensajes == 0:
+    # 1. REGLA: HOOK MUERTO / ENLACE CAÍDO (sobre el acumulado: si alguna vez trajo un
+    #    chat, el enlace no está caído — no importa que esta ventana venga en cero)
+    if spend_acum_usd >= params["umbral_gasto_sin_chat_usd"] and mensajes_acum == 0:
         return {
             "estado": "PAUSAR",
             "accion_codigo": "PAUSAR_HOOK_MUERTO",
-            "accion_sugerida": f"APAGAR INMEDIATO: Gastó ${spend_usd:.2f} sin un solo chat. Hook sin atracción o WhatsApp caído.",
+            "accion_sugerida": f"APAGAR INMEDIATO: Gastó ${spend_acum_usd:.2f} acumulados sin un solo chat. Hook sin atracción o WhatsApp caído.",
             "cpa_real_q": None,
             "cierre_pct": 0.0,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -298,12 +349,12 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "nivel_prioridad": 1,
         }
 
-    # 2. REGLA: TOLERANCIA DE DECISIÓN AGOTADA (0 ventas tras 1x BE)
-    if ventas == 0 and gasto_q >= pd_q:
+    # 2. REGLA: TOLERANCIA DE DECISIÓN AGOTADA (0 ventas ACUMULADAS tras 1x BE acumulado)
+    if ventas_acum == 0 and gasto_acum_q >= pd_q:
         return {
             "estado": "PAUSAR",
             "accion_codigo": "PAUSAR_TOLERANCIA_AGOTADA",
-            "accion_sugerida": f"APAGAR: Gastó Q{gasto_q:.1f} (100% de tolerancia BE Q{be_q:.1f}) sin ventas. Cortar pérdida.",
+            "accion_sugerida": f"APAGAR: Gastó Q{gasto_acum_q:.1f} acumulados (100% de tolerancia BE Q{be_q:.1f}) sin una sola venta. Cortar pérdida.",
             "cpa_real_q": None,
             "cierre_pct": 0.0,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -314,7 +365,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
 
     # 3. REGLA: CPA DESBORDADO (Destrucción de margen confirmada)
     umbral_desborde = be_q * params.get("factor_cpa_desbordado", 1.4)
-    if (ventas >= 2 and cpa_real_q and cpa_real_q > umbral_desborde) or (bajo_ic and bajo_ic > be_q):
+    desbordado = (ventas >= 2 and cpa_real_q and cpa_real_q > umbral_desborde) or (bajo_ic and bajo_ic > be_q)
+    if desbordado and not ganador_historico:
         return {
             "estado": "PAUSAR",
             "accion_codigo": "PAUSAR_CPA_DESBORDADO",
@@ -327,14 +379,16 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "nivel_prioridad": 2,
         }
 
-    # 4. REGLA: DETECTOR TEMPRANO DE FATIGA (Últimos 3 días)
-    if ventas >= 5 and gasto_3d_q >= (0.6 * be_q):
+    # 4. REGLA: DETECTOR TEMPRANO DE FATIGA (últimos `ventana_fatiga_dias` CONTRA la ventana).
+    #    Exige que la ventana de fatiga sea un subconjunto propio de la de evaluación: si son
+    #    iguales, la celda se compara consigo misma y RENOVAR no se emite nunca.
+    if (ventas >= 5 or ganador_historico) and gasto_3d_q >= (0.6 * be_q) and spend_3d < spend_usd:
         cpa_3d = (gasto_3d_q / ventas_3d) if ventas_3d > 0 else None
-        if ventas_3d == 0 or (cpa_3d and cpa_3d > 1.3 * be_q):
+        if ventas_3d == 0 or (cpa_3d and cpa_3d > 1.3 * be_q) or desbordado:
             return {
                 "estado": "RENOVAR",
                 "accion_codigo": "FATIGA_CREATIVO",
-                "accion_sugerida": f"RENOVAR CREATIVO (FASE 2): Ganador histórico ({ventas:.0f} vts) pero últimos 3d sangra (Q{gasto_3d_q:.0f} con {ventas_3d:.0f} vts). Mantener ángulo y rotar concepto.",
+                "accion_sugerida": f"RENOVAR CREATIVO (FASE 2): Ángulo probado ({ventas_acum:.0f} vts acumuladas a CPA Q{cpa_acum_q:.1f} bajo BE Q{be_q:.1f}) pero los últimos {dias_fat}d sangran (Q{gasto_3d_q:.0f} con {ventas_3d:.0f} vts). Mantener ángulo y rotar concepto — NO apagar.",
                 "cpa_real_q": round(cpa_real_q, 1) if cpa_real_q else None,
                 "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
                 "pct_pd": round(pct_pd_consumido, 1),
@@ -349,7 +403,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_SURFING",
-            "accion_sugerida": f"ESCALAR (Calet): CPA Q{cpa_real_q:.1f} (Obj Q{obj_q:.1f}). Validado en 3d. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20%.",
+            "accion_sugerida": f"ESCALAR (Calet): CPA Q{cpa_real_q:.1f} (Obj Q{obj_q:.1f}) con {ventas:.0f} ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20%.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -375,11 +429,11 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     # 7. REGLA: TESTEO ACTIVO / SEGUIR MIDIENDO (El IC cruza BE pero está en tolerancia)
     faltan = calcular_ventas_faltantes(ventas, spend_usd, be_q, conf, horizonte, tasa)
     if ventas == 0:
-        disponible_q = pd_q - gasto_q
+        disponible_q = pd_q - gasto_acum_q
         return {
             "estado": "SEGUIR_MIDIENDO",
             "accion_codigo": "TESTEO_EN_TOLERANCIA",
-            "accion_sugerida": f"MANTENER / MEDIR: Gastó Q{gasto_q:.1f} de Q{pd_q:.1f} ({pct_pd_consumido:.0f}% PD). Margen disponible: Q{disponible_q:.1f}.",
+            "accion_sugerida": f"MANTENER / MEDIR: Gastó Q{gasto_acum_q:.1f} acumulados de Q{pd_q:.1f} ({pct_pd_consumido:.0f}% PD). Margen disponible: Q{disponible_q:.1f}.",
             "cpa_real_q": None,
             "cierre_pct": 0.0,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -429,11 +483,17 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
     if dias:
         params["ventana_dias"] = dias
     dias_v = int(params["ventana_dias"])
+    dias_f = int(params.get("ventana_fatiga_dias", 3))
+    if dias_f >= dias_v:
+        # Invariante del detector de fatiga: si la ventana reciente no es un subconjunto
+        # propio de la de evaluación, la celda se compara consigo misma y RENOVAR muere.
+        dias_f = max(dias_v - 1, 1)
+        params["ventana_fatiga_dias"] = dias_f
 
     prods = cargar_productos()
-    df_celdas = cargar_datos_duckdb(dias=dias_v, grano=grano)
+    df_celdas = cargar_datos_duckdb(dias=dias_v, grano=grano, dias_fatiga=dias_f)
 
-    # FRESCURA. La ventana de 14 dias se cuenta desde el ULTIMO DIA CON DATA, no desde hoy.
+    # FRESCURA. La ventana de evaluacion se cuenta desde el ULTIMO DIA CON DATA, no desde hoy.
     # Si la data trae rezago, la orden se calcula sobre un pasado que la fecha "generado" oculta:
     # es el mismo error de ventana que produjo la orden equivocada del 06-sep-2026.
     hoy = datetime.date.today()
@@ -454,9 +514,11 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
         "datos_desde": datos_desde.isoformat() if datos_desde else None,
         "datos_hasta": datos_hasta.isoformat() if datos_hasta else None,
         "rezago_dias": rezago,
-        "motor": "decidir v3 (Síntesis: Intervalos de Credibilidad Bayesiana + Riesgo Asimétrico)",
+        "motor": "decidir v4 (IC Bayesiana + Riesgo Asimétrico + tres relojes separados)",
         "grano": grano,
         "ventana_dias": dias_v,
+        "ventana_fatiga_dias": dias_f,
+        "tolerancia_base": "acumulado",
         "nivel_confianza": float(params.get("nivel_confianza", 0.95)),
         "resumen_acciones": {
             "PAUSAR": 0,
@@ -493,6 +555,9 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
                 obj_q=obj_q,
                 tasa=tasa,
                 params=params,
+                ventas_acum=float(r.ventas_acum),
+                mensajes_acum=float(r.mensajes_acum),
+                spend_acum_usd=float(r.spend_acum),
             )
             eval_res.update({
                 "celda": str(r.celda),
@@ -501,6 +566,8 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
                 "mensajes": float(r.mensajes),
                 "spend_usd": round(float(r.spend_usd), 2),
                 "spend_q": round(float(r.spend_usd) * tasa, 1),
+                "ventas_acum": float(r.ventas_acum),
+                "spend_acum_q": round(float(r.spend_acum) * tasa, 1),
                 "banda_ok": bool(r.banda_ok),
                 "nombres_ok": bool(r.nombres_ok),
             })
@@ -538,7 +605,7 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
 
 def imprimir_consola(res):
     print("=" * 115)
-    print(f" MOTOR DE DECISIÓN UNIFICADO — VITALCOM GUATEMALA (Ventana: {res['ventana_dias']} días | IC 95% | Grano: {res['grano']})")
+    print(f" MOTOR DE DECISIÓN UNIFICADO — VITALCOM GUATEMALA (Evaluación: {res['ventana_dias']}d | Fatiga: {res.get('ventana_fatiga_dias', 3)}d | Tolerancia: acumulada | IC 95% | Grano: {res['grano']})")
     if res.get("datos_hasta"):
         rez = res.get("rezago_dias")
         print(f" Data: {res.get('datos_desde')} → {res['datos_hasta']}  (generado {res['generado']})")
@@ -573,7 +640,7 @@ def main():
     ap = argparse.ArgumentParser(description="Motor de Decisión Unificado (VitalCom)")
     ap.add_argument("producto", nargs="?", help="producto_key opcional")
     ap.add_argument("--grano", choices=["angulo", "conjunto"], default="angulo", help="Agrupación (angulo por defecto)")
-    ap.add_argument("--dias", type=int, default=None, help="Días de ventana móvil")
+    ap.add_argument("--dias", type=int, default=None, help="Días de la ventana de EVALUACION (no cambia la tolerancia acumulada)")
     ap.add_argument("--json", action="store_true", help="Emitir solo JSON por stdout")
     args = ap.parse_args()
 

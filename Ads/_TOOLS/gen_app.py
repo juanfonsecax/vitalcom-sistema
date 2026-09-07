@@ -223,7 +223,8 @@ def leer_decisiones(refrescar=False):
     if not os.path.exists(DECISIONES_JSON):
         return {
             "generado": HOY.isoformat(),
-            "motor": "decidir v3 (Síntesis: Intervalos de Credibilidad Bayesiana + Riesgo Asimétrico)",
+            "motor": "decidir v4 (IC Bayesiana + Riesgo Asimétrico + tres relojes separados)",
+            "ventana_fatiga_dias": 3,
             "grano": "angulo",
             "ventana_dias": 14,
             "resumen_acciones": {},

@@ -26,6 +26,10 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 ```
 
 * **Regla de Recencia:** La clase más reciente deroga a la anterior en cualquier parámetro operativo.
+* **Pero el NIVEL 4 manda sobre la clase.** Un mentor enseña con SU presupuesto y SU volumen. Antes de
+  copiar un número de una clase hay que preguntar de qué es envoltorio: los "3 días" de Calet son el
+  envoltorio de 20-30 ventas, no una constante de tiempo. **Copiar el reloj sin copiar el presupuesto
+  copia la forma y tira la señal.** Si la data propia contradice el número, manda la data propia.
 * **Normalización de Monedas:**
   * `1 USD = 4,050 COP` (tasa de referencia clases Colombia).
   * `1 USD = 7.62 GTQ` (tasa oficial Guatemala del sistema).
@@ -154,7 +158,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `FASE2_ESTRUCTURA` | `1-1-5 ABO` (1 Campaña · 1 Conjunto · 5 Creativos) | Estructura | **Clase 16-ago (Calet)** | CBO en testeo | `.claude/agents/ETAPA-6.md` |
 | `FASE2_TIPO_PRESUPUESTO` | `ABO` (Nivel conjunto, nunca CBO) | Tipo Ppto | **Clase 16-ago (Calet)** | CBO | `.claude/agents/ETAPA-6.md` |
 | `FASE2_PRESUPUESTO_DIA` | `$4.00 a $6.20 USD` (Q30 a Q47 / 16k-25k COP) | USD / día | **Clase 16-ago (Calet)** | $2.99 USD | `Ads/_TOOLS/gen_fase2_lean.py` |
-| `FASE2_DURACION_TESTEO` | **`3 DÍAS`** (Dejar rodar 3 días para optimización) | Días | **Clase 22-ago (Calet)** | 7 a 14 días | `PRODUCTOS/_PARAMETROS_DECISION.csv` |
+| `FASE2_DURACION_TESTEO` | **`3 DÍAS`** (Dejar rodar 3 días para optimización) | Días | **Clase 22-ago (Calet)** | 7 a 14 días | `PRODUCTOS/_PARAMETROS_DECISION.csv` → `duracion_testeo_fase2_dias` |
 | `FASE2_CAMPANAS_PARALELO` | `2 a 3 campañas` (1-1-5 A, 1-1-5 B, 1-2-5 C) | Cantidad | **Clase 16-ago (Calet)** | 1 sola campaña | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | `FASE3_ESTRUCTURA` | `1-1-7 CBO` (1 Campaña · 1 Conjunto · 7 Anuncios) | Estructura | **Clase 22-ago (Calet)** | 1-1-1 o 1-7-7 | `.claude/agents/ETAPA-6.md` |
 | `FASE3_PRESUPUESTO_INICIAL` | `$15.00 a $18.00 USD` (Q115 a Q140 / 60k-72k COP) | USD / día | **Clase 22-ago (Calet)** | $5.98 USD | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
@@ -168,11 +172,13 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
-| `VENTANA_DECISION_OPERATIVA` | **`3 DÍAS`** | Días | **Clase 22-ago (Calet)** | Tiempo que tarda una campaña 1-1-5 en estabilizar costos y revelar ganador. | `PRODUCTOS/_PARAMETROS_DECISION.csv` · `decidir.py` |
+| `VENTANA_EVALUACION_DIAS` | **`14 DÍAS`** | Días | Data propia (NIVEL 4) | Sobre cuántos días se calcula el CPA y el intervalo de credibilidad. **NO es la duración del testeo de Calet.** Calet decide en 3 días porque corre a $15-18 USD/día y esos 3 días le traen 20-30 ventas; a $3-6 USD/día traen 1-3 y el motor queda ciego. Lo que Calet fija es **volumen de evidencia, no tiempo**. Verificado 07-sep-2026: con ventana 3 el motor ordenó apagar un ángulo de 38 ventas rentables. | `PRODUCTOS/_PARAMETROS_DECISION.csv` · `decidir.py` |
+| `DURACION_TESTEO_FASE2_DIAS` | **`3 DÍAS`** | Días | **Clase 22-ago (Calet)** | Cuánto rueda la campaña 1-1-5 antes de coronar el concepto ganador. Literal: *"de esa campaña de 115 la dejo rodando unos tres días"*. Es una **duración de campaña**, no una ventana de cálculo. | `PRODUCTOS/_PARAMETROS_DECISION.csv` · `.claude/agents/ETAPA-6.md` |
+| `TOLERANCIA_BASE` | **`acumulado`** | Modo | Data propia (NIVEL 4) | La regla de pausar por 1× BE se mide sobre el gasto **desde el lanzamiento**, nunca sobre la ventana móvil: la pérdida se acumula. Con ventana móvil de 3 días era inalcanzable (Q22.80/día × 3 = Q68.40 contra BE Q93.41) y no cortaba nunca. | `Ads/_TOOLS/decidir.py` |
 | `HORA_LANZAMIENTO_CAMPANA` | `04:00 AM` (Día siguiente) | Hora local | Clase 6 (Mercy) / Sistema | Permite a Meta distribuir el presupuesto completo de 24 horas. | `CLAUDE.md` Invariante 7 |
 | `LIMITE_HORA_SURFING` | `15:00 (03:00 PM)` | Hora local | **Clase 22-ago (Calet)** | De las 3 PM en adelante baja el rendimiento; no subir presupuesto tarde. | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | `MADURACION_ENTREGA_COD` | `3 a 10 DÍAS` (3d en GT para cobro) | Días | Doctrina Contable / Forza | Negocio contra-entrega: el pedido no es caja hasta ser entregado. | `DOCTRINA/CONTABILIDAD.md` |
-| `DETECTOR_FATIGA_VENTANA` | `3 DÍAS` | Días | **Clase 22-ago (Calet)** | Ventana corta para comparar rendimiento reciente vs histórico. | `Ads/_TOOLS/decidir.py` |
+| `VENTANA_FATIGA_DIAS` | `3 DÍAS` | Días | **Clase 22-ago (Calet)** | Días recientes que se comparan **contra** `VENTANA_EVALUACION_DIAS`. Debe ser **estrictamente menor** que ella: si son iguales, la celda se compara consigo misma y `RENOVAR` no se emite nunca. Eso ocurrió con ventana 3 el 07-sep-2026. | `Ads/_TOOLS/decidir.py` |
 
 ---
 
@@ -180,7 +186,8 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
-| `TOLERANCIA_MAXIMA_TESTEO` | `1.0 × Break-Even (PD)` | Factor BE | Camilo (Clase 8) / Calet | Si un conjunto gasta 1x su BE sin ventas, se corta pérdida. | `Ads/_TOOLS/decidir.py` |
+| `TOLERANCIA_MAXIMA_TESTEO` | `1.0 × Break-Even (PD)` | Factor BE | Camilo (Clase 8) / Calet | Si un conjunto gasta 1× su BE **acumulado** sin ventas, se corta pérdida. Ver `TOLERANCIA_BASE`. | `Ads/_TOOLS/decidir.py` |
+| `GUARDA_GANADOR_HISTORICO` | `≥5 ventas acumuladas y CPA acumulado ≤ BE` | Regla dura | Data propia (NIVEL 4) | Un ángulo con historia de rentabilidad **nunca recibe APAGAR** por una mala racha: cae a `RENOVAR` (rotar concepto). Sin esta guarda, `PAUSAR` se evalúa antes que `FATIGA` y mata ganadores. | `Ads/_TOOLS/decidir.py` · `Ads/_TOOLS/test_decidir.py` |
 | `UMBRAL_HOOK_MUERTO_USD` | `$5.00 USD` | USD | Regla Operativa Sistema | Gastar $5 sin ni 1 mensaje indica hook inútil o enlace roto. | `Ads/_TOOLS/decidir.py` |
 | `UMBRAL_CPA_DESBORDADO` | `1.4 × Break-Even` | Factor BE | Regla Operativa Sistema | CPA 40% sobre BE destruye rentabilidad de forma confirmada. | `Ads/_TOOLS/decidir.py` |
 | `MINIMO_VENTAS_PARA_ESCALAR` | `2 ventas confirmadas` | Ventas | **Clase 22-ago (Calet)** | Nunca escalar con 1 sola venta por azar. | `Ads/_TOOLS/decidir.py` |
