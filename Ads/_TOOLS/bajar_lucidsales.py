@@ -220,7 +220,12 @@ def main():
     os.makedirs(a.salida, exist_ok=True)
     destino = os.path.join(a.salida, f"report-{ini}-{fin}.json")
     if os.path.exists(destino) and not a.forzar:
-        raise SystemExit(f"Ya existe {os.path.basename(destino)} (usa --forzar para reescribir).")
+        # Salida 0 A PROPOSITO: "ese dia ya esta bajado" no es un fallo, es no tener nada
+        # que hacer. Con exit 1 la rutina nocturna lo leeria como error y abortaria la
+        # auditoria entera por una corrida repetida.
+        print(f"Ya existe {os.path.basename(destino)}; no hay nada que bajar "
+              f"(usa --forzar para reescribir).")
+        return
 
     email, pwd = credenciales(a.env)
     token, quien = login(email, pwd)
