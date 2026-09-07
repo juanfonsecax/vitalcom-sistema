@@ -1,11 +1,11 @@
 {
-  "arranque_frio": 7832,
-  "claude_md": 5350,
+  "arranque_frio": 7892,
+  "claude_md": 5410,
   "fases": {
-    "fase-1-angulos": 320317,
-    "fase-2-conceptos": 400428,
-    "fase-3-escalado": 259560,
-    "ciclo-diario": 254002
+    "fase-1-angulos": 321157,
+    "fase-2-conceptos": 401508,
+    "fase-3-escalado": 260340,
+    "ciclo-diario": 254542
   },
   "nodos_dios": [
     [
@@ -23,8 +23,8 @@
     [
       "CLAUDE.md",
       8,
-      5350,
-      42800
+      5410,
+      43280
     ],
     [
       "_CATALOGO_CONCEPTOS.md",

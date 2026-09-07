@@ -100,6 +100,7 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | Recolección manual de creativos (prompt Gemini) | `DOCTRINA/ETAPA-RECOLECCION.md` |
 | Módulos opcionales de research (web / Ads Library) | `DOCTRINA/ETAPA-RESEARCH.md` |
 | **Doctrina de los mentores, su fecha, su ESTADO y los choques entre ellos** | `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` — **consulta humana**, ninguna etapa la lee para ejecutar |
+| **TEXTO MADRE: Diccionario de variables y metodología parametrizada de las clases** | `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` — dueño único de los parámetros enseñados en clases y su protocolo de ingesta |
 
 **Zonas del repositorio:** `DOCTRINA/` (los documentos dueños de la tabla de arriba) · `.claude/`
 (agentes + skills) · `PRODUCTOS/` (carpeta por producto + capa de data + `_AUDITORIAS/`) · `Ads/`
