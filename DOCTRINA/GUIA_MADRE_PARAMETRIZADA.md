@@ -172,7 +172,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
-| `VENTANA_EVALUACION_DIAS` | **`14 DÍAS`** | Días | Data propia (NIVEL 4) | Sobre cuántos días se calcula el CPA y el intervalo de credibilidad. **NO es la duración del testeo de Calet.** Calet decide en 3 días porque corre a $15-18 USD/día y esos 3 días le traen 20-30 ventas; a $3-6 USD/día traen 1-3 y el motor queda ciego. Lo que Calet fija es **volumen de evidencia, no tiempo**. Verificado 07-sep-2026: con ventana 3 el motor ordenó apagar un ángulo de 38 ventas rentables. | `PRODUCTOS/_PARAMETROS_DECISION.csv` · `decidir.py` |
+| `VENTANA_EVALUACION_DIAS` | **`14 DÍAS`** | Días | Data propia (NIVEL 4) | Sobre cuántos días se calcula el CPA y el intervalo de credibilidad. **NO es la duración del testeo de Calet.** Calet decide en 3 días porque corre a $15-18 USD/día y esos 3 días le traen 20-30 ventas; a $3-6 USD/día traen 1-3 y el motor queda ciego. Lo que Calet fija es **volumen de evidencia, no tiempo**. Verificado 07-sep-2026: con ventana 3 el motor ordenó apagar un ángulo de 38 ventas rentables. | `PRODUCTOS/_PARAMETROS_DECISION.csv` · `Ads/_TOOLS/decidir.py` |
 | `DURACION_TESTEO_FASE2_DIAS` | **`3 DÍAS`** | Días | **Clase 22-ago (Calet)** | Cuánto rueda la campaña 1-1-5 antes de coronar el concepto ganador. Literal: *"de esa campaña de 115 la dejo rodando unos tres días"*. Es una **duración de campaña**, no una ventana de cálculo. | `PRODUCTOS/_PARAMETROS_DECISION.csv` · `.claude/agents/ETAPA-6.md` |
 | `TOLERANCIA_BASE` | **`acumulado`** | Modo | Data propia (NIVEL 4) | La regla de pausar por 1× BE se mide sobre el gasto **desde el lanzamiento**, nunca sobre la ventana móvil: la pérdida se acumula. Con ventana móvil de 3 días era inalcanzable (Q22.80/día × 3 = Q68.40 contra BE Q93.41) y no cortaba nunca. | `Ads/_TOOLS/decidir.py` |
 | `HORA_LANZAMIENTO_CAMPANA` | `04:00 AM` (Día siguiente) | Hora local | Clase 6 (Mercy) / Sistema | Permite a Meta distribuir el presupuesto completo de 24 horas. | `CLAUDE.md` Invariante 7 |
@@ -193,6 +193,9 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `MINIMO_VENTAS_PARA_ESCALAR` | `2 ventas confirmadas` | Ventas | **Clase 22-ago (Calet)** | Nunca escalar con 1 sola venta por azar. | `Ads/_TOOLS/decidir.py` |
 | `PORCENTAJE_SURFING_STEP` | `+20%` | Porcentaje | Calet / Joaquín | Máximo incremento para no desoptimizar el aprendizaje. | `Ads/_TOOLS/decidir.py` |
 | `NIVEL_CONFIANZA_ESTADISTICA` | `0.95 (95%)` | Proporción | Teoría Bayesiana (Jeffreys) | Evita apagar ganadores con muestra insuficiente. | `PRODUCTOS/_PARAMETROS_DECISION.csv` |
+| `ALPHA_CIERRE` | `0.05` | p-valor | Fisher exacto | Umbral para declarar que dos ángulos cierran distinto. **El cierre CORTA, nunca corona** (invariante 1): sirve para descartar, jamás para elegir al ganador. | `Ads/_TOOLS/decidir.py` · `PRODUCTOS/_PARAMETROS_DECISION.csv` |
+| `MINIMO_MENSAJES_COMPARAR_CIERRE` | `30 mensajes` | Mensajes | Regla Operativa Sistema | Piso para siquiera comparar dos tasas de cierre. Por debajo, Fisher no distingue nada útil y la comparación es ruido. | `Ads/_TOOLS/decidir.py` · `PRODUCTOS/_PARAMETROS_DECISION.csv` |
+| `HORIZONTE_VENTAS_PROYECCION` | `60 ventas` | Ventas | Regla Operativa Sistema | Tope de la proyección al CPA observado con que se calcula el *"faltan ~N ventas"* que ve el operador en `SEGUIR_MIDIENDO`. Si ni con 60 el intervalo se resuelve, el CPA no va a decidir esa celda y hay que mirar el CIERRE. | `Ads/_TOOLS/decidir.py` · `PRODUCTOS/_PARAMETROS_DECISION.csv` |
 
 ---
 
@@ -200,7 +203,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
-| `CONCEPTOS_POR_ANGULO` | `10 conceptos distintos` | Cantidad | **Clase 16-ago (Calet)** | El ángulo se mantiene fijo; se prueban 10 formas visuales de mostrarlo. | `_CATALOGO_CONCEPTOS.md` |
+| `CONCEPTOS_POR_ANGULO` | `10 conceptos distintos` | Cantidad | **Clase 16-ago (Calet)** | El ángulo se mantiene fijo; se prueban 10 formas visuales de mostrarlo. | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
 | `BLUEPRINTS_CANONICOS` | `22 blueprints validados` | Cantidad | Auditoría Portafolio GT | Plantillas visuales probadas en Guatemala. | `Ads/_SWIPE/_BLUEPRINTS/` |
 | `PRODUCCION_CREATIVA_DIARIA` | `≥ 6 creativos / día` | Piezas | Sistema Fábrica Creativa | Mantener stock fresco para rotar conceptos ante fatiga. | `.claude/agents/ETAPA-9.md` |
 | `REGLA_PRECIO_EN_ANUNCIO` | `SIN PRECIO` (Máx 1 de cada 6) | Regla | **Clase 22-ago (Calet)** | El anuncio vende el dolor y la solución; el precio se da en el bot. | `DOCTRINA/COPYWRITING_ADS.md` |
@@ -215,7 +218,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 |---|---|---|---|---|---|
 | `UMBRAL_CIERRE_MINIMO_BOT` | **`15% a 20%`** | Porcentaje | **Clases 16 y 22-ago (Calet)** | *"Primero el flujo, luego la estructura"*. Bajo 10% no se debe escalar. | `.claude/agents/ETAPA-11.md` |
 | `TIEMPO_RESPUESTA_BOT` | `2 a 3 segundos` | Segundos | Clase 22 (Flujo) | Evitar fuga por espera en WhatsApp. | `.claude/agents/ETAPA-5.md` |
-| `CONGRUENCIA_ANUNCIO_BOT` | `100% obligatoria` | Regla | **Clases 16 y 22-ago (Calet)** | El hook y la promesa del anuncio deben ser la primera línea del bot. | `CLAUDE.md` · `ETAPA-11.md` |
+| `CONGRUENCIA_ANUNCIO_BOT` | `100% obligatoria` | Regla | **Clases 16 y 22-ago (Calet)** | El hook y la promesa del anuncio deben ser la primera línea del bot. | `CLAUDE.md` · `.claude/agents/ETAPA-11.md` |
 | `ESTRUCTURA_BOT_ESCALADO` | `Flujo dedicado al ángulo ganador` | Estructura | Clase 22 / Joaquín | Paraguas para testear (Fase 1); dedicado para escalar (Fase 3). | `.claude/agents/ETAPA-11.md` |
 
 ---
@@ -236,4 +239,23 @@ Cuando asistas a una nueva clase o recibas una transcripción:
    * **Acción A (Diff de Variables):** Muestra una tabla comparando: `Variable` | `Valor Anterior` | `Nuevo Valor en Clase` | `Impacto`.
    * **Acción B (Actualización de Guía Madre):** Actualiza el valor y la fuente en este archivo.
    * **Acción C (Propagación en Código):** Si cambia un presupuesto, tiempo o estructura, actualiza automáticamente `_PARAMETROS_DECISION.csv`, `decidir.py` o las etapas en `.claude/agents/`.
+
+4. **El gate lo comprueba, no la memoria de nadie:**
+
+   ```bash
+   python Ads/_TOOLS/verificar_guia_madre.py --listar
+   ```
+
+   Extrae el valor que **esta guía declara en cada fila** y lo compara contra el valor real
+   que usa su archivo ejecutor. Si no coinciden, falla y dice cuál fila y cuál archivo.
+   También verifica que todo puntero de la columna *Archivo Ejecutor* exista, y avisa si un
+   parámetro nuevo aparece en `_PARAMETROS_DECISION.csv` sin fila acá.
+
+   Corre solo: `.claude/settings.json` lo dispara al escribir este archivo o
+   `_PARAMETROS_DECISION.csv`, y **bloquea la edición** si quedaron diciendo cosas distintas.
+
+   > Sin este gate, esta guía es prosa. El 07-sep-2026 declaraba VENTANA = 3 DÍAS mientras el
+   > docstring de `decidir.py` seguía diciendo 14: tres fuentes, tres respuestas, cero alarmas.
+   > Lo que hace parametrizado a un sistema no es escribir las variables en una tabla —
+   > es que algo falle cuando la tabla y el código dejan de coincidir.
 

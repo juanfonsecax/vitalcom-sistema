@@ -1,11 +1,11 @@
 {
-  "arranque_frio": 8097,
-  "claude_md": 5615,
+  "arranque_frio": 8362,
+  "claude_md": 5880,
   "fases": {
-    "fase-1-angulos": 324027,
-    "fase-2-conceptos": 405198,
-    "fase-3-escalado": 263005,
-    "ciclo-diario": 256387
+    "fase-1-angulos": 327737,
+    "fase-2-conceptos": 409968,
+    "fase-3-escalado": 266450,
+    "ciclo-diario": 258772
   },
   "nodos_dios": [
     [
@@ -17,8 +17,8 @@
     [
       "CLAUDE.md",
       8,
-      5615,
-      44920
+      5880,
+      47040
     ],
     [
       "ESCALADO_PLAYBOOK.md",

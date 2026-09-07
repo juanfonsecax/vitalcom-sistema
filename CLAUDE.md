@@ -40,6 +40,8 @@ con cualquiera de ellos —o sin ninguno:
 | `Ads/_TOOLS/costear.py` | Los precios, CPA y break-even salen de `_DIM_COSTEO.csv`. Aritmética, no criterio. |
 | `Ads/_TOOLS/verificar_producto.py` | El gate de reconciliación devuelve pase o fallo, no una opinión. |
 | `Ads/_TOOLS/gen_grafo.py` | El mismo gate, pero del SISTEMA: huérfanos, rutas muertas y costo en tokens. `--comparar` da el delta antes/después de cualquier cambio de arquitectura. |
+| `Ads/_TOOLS/verificar_guia_madre.py` | El gate del TEXTO MADRE: extrae el valor que la Guía declara en cada fila y lo compara contra el que realmente usa su ejecutor. Sin él la Guía es prosa y se desincroniza en silencio. Corre solo por hook al tocar la Guía o `_PARAMETROS_DECISION.csv`, y bloquea. |
+| `Ads/_TOOLS/test_decidir.py` | Congela las seis reglas del motor de decisión. Un ángulo con historia rentable no puede volver a recibir APAGAR por una mala racha. |
 | Los **hooks** de `.claude/settings.json` | Se ejecutan siempre: validan los CSV, regeneran la app y archivan las auditorías. |
 | `VISTAS/_MANIFIESTO.json` + `Ads/_TOOLS/gen_app.py` | La aplicación está **declarada**, no escrita: qué vistas hay, quién produce cada una y a los cuántos días caduca. Agregar una vista es una fila del manifiesto. La edad que muestra sale del `mtime` del archivo, no del recuerdo de nadie. |
 | Los **CSV** como fuente única | Un dato, un dueño. Ningún modelo puede inventar una cifra que no esté ahí. |
@@ -100,7 +102,7 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | Recolección manual de creativos (prompt Gemini) | `DOCTRINA/ETAPA-RECOLECCION.md` |
 | Módulos opcionales de research (web / Ads Library) | `DOCTRINA/ETAPA-RESEARCH.md` |
 | **Doctrina de los mentores, su fecha, su ESTADO y los choques entre ellos** | `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` — **consulta humana**, ninguna etapa la lee para ejecutar |
-| **TEXTO MADRE: Diccionario de variables y metodología parametrizada de las clases** | `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` — dueño único de los parámetros enseñados en clases y su protocolo de ingesta |
+| **TEXTO MADRE: Diccionario de variables y metodología parametrizada de las clases** | `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` — dueño único de los parámetros enseñados en clases y su protocolo de ingesta. **Lo verifica `Ads/_TOOLS/verificar_guia_madre.py`**, que compara cada valor declarado contra su ejecutor real y bloquea por hook si dejan de coincidir. Al ingerir una clase nueva: se actualiza la variable acá y se propaga al ejecutor; el gate confirma que quedaron iguales. **Un número de una clase es el envoltorio del presupuesto de ese mentor** — antes de copiarlo, preguntar de qué es envoltorio (los "3 días" de Calet son 20-30 ventas, no una constante de tiempo). |
 
 **Zonas del repositorio:** `DOCTRINA/` (los documentos dueños de la tabla de arriba) · `.claude/`
 (agentes + skills) · `PRODUCTOS/` (carpeta por producto + capa de data + `_AUDITORIAS/`) · `Ads/`

@@ -158,6 +158,14 @@ def main():
 
     ruta = ((payload.get("tool_input") or {}).get("file_path") or "").strip()
 
+    # El texto madre y el CSV de decision son dos caras del MISMO dato: si uno se
+    # mueve sin el otro, el sistema queda diciendo una cosa y haciendo otra sin que
+    # nadie se entere. Paso el 07-sep-2026 con la ventana (Guia 3, docstring 14).
+    error = desincronizacion_guia_madre(ruta)
+    if error:
+        sys.stderr.write(error + "\n")
+        return 2                         # bloquea y el mensaje llega a Claude
+
     # Un _PLAN.json nuevo o corregido cambia lo que el Lanzador tiene que dictar.
     # Sin esto, etapa-6 escribe el plan y la consola sigue mostrando el anterior.
     if ruta.lower().endswith("_plan.json"):
@@ -187,6 +195,35 @@ def main():
     # lanzador y reescribe la app unificada, que lleva la data incrustada.
     regenerar(APP, nombre, "lanzador y app")
     return 0
+
+
+GATE_GUIA = os.path.join(BASE, "Ads", "_TOOLS", "verificar_guia_madre.py")
+
+# Tocar cualquiera de estos dos puede desincronizar el texto madre de lo que corre.
+ARCHIVOS_QUE_DISPARAN_GATE = ("_parametros_decision.csv", "guia_madre_parametrizada.md")
+
+
+def desincronizacion_guia_madre(ruta):
+    """Devuelve el mensaje de falla si el texto madre dejo de coincidir con su ejecutor."""
+    if not ruta or not os.path.exists(GATE_GUIA):
+        return None
+    if not ruta.lower().replace("\\", "/").endswith(ARCHIVOS_QUE_DISPARAN_GATE):
+        return None
+    try:
+        r = subprocess.run([sys.executable, GATE_GUIA], cwd=BASE,
+                           capture_output=True, timeout=120)
+    except (subprocess.TimeoutExpired, OSError):
+        return None                      # el gate caido no frena el trabajo
+    if r.returncode == 0:
+        print("hook: %s tocado, texto madre coherente con sus ejecutores."
+              % os.path.basename(ruta))
+        return None
+    salida = (r.stdout or b"").decode("utf-8", "replace")
+    detalle = salida[salida.find(" FALLAS"):].strip() if " FALLAS" in salida else salida.strip()
+    return ("DESINCRONIZACION DEL TEXTO MADRE tras tocar %s.\n"
+            "DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md ya no coincide con lo que corre.\n"
+            "Corregi el valor en la Guia Madre O en su ejecutor, para que digan lo mismo:\n\n%s"
+            % (os.path.basename(ruta), detalle))
 
 
 def regenerar(script, nombre, etiqueta):
