@@ -237,11 +237,15 @@ en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
     `R[N]` se SUMAN, nunca se comparan.
 
 13. **Ninguna orden de pausar o escalar se emite sin pasar por `decidir.py`.** El motor calcula el
-    intervalo de credibilidad del CPA al 95% y gestiona el riesgo asimétrico. Las acciones irreversibles
-    (pausar o escalar fuerte) requieren respaldo estadístico o tolerancia agotada (1x BE sin ventas); si el
-    intervalo cruza el break-even por escasez de muestra, la orden no se bloquea en parálisis sino que ejecuta
-    la acción de menor riesgo (`SEGUIR_MIDIENDO`: mantener presupuesto y maduración), evitando cortar
-    ganadores prematuros por p-hacking. La ventana de análisis es fija y vive en `PRODUCTOS/_PARAMETROS_DECISION.csv`.
+    intervalo de credibilidad del CPA al 95% y gestiona el riesgo asimétrico. **El intervalo manda en las
+    dos direcciones: no se apaga con el IC cruzando el break-even, y tampoco se sube presupuesto.** Mover
+    plata —hacia arriba o hacia abajo— es la acción irreversible; el CPA puntual bajo break-even no alcanza
+    para ordenarla si el techo del intervalo lo cruza. Cuando cruza, la orden no se bloquea en parálisis:
+    emite la de menor riesgo (`SEGUIR_MIDIENDO` = mantener el presupuesto que ya tiene, ni subir ni bajar) y
+    dice cuántas ventas faltan para resolverlo. La ventana es fija y vive en
+    `PRODUCTOS/_PARAMETROS_DECISION.csv`, y se cuenta desde el **último día CON DATA**: si esa data arrastra
+    más de 2 días de rezago, la orden lo declara arriba de todo, en la consola y en la app. Una orden fechada
+    hoy sobre data de hace una semana es el mismo error de ventana del 06-sep-2026, disfrazado de frescura.
 
 ### Dos punteros que valen por una regla
 

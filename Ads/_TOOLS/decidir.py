@@ -59,6 +59,7 @@ DB_PATH = os.path.join(BASE, "warehouse", "vitalcom.duckdb")
 PARAMS_PATH = os.path.join(PROD, "_PARAMETROS_DECISION.csv")
 DIM_PROD_PATH = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
 DIM_CONJ_PATH = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
+DIM_BANDAS_PATH = os.path.join(PROD, "_DIM_BANDAS.csv")
 FACT_VENTAS_PATH = os.path.join(PROD, "_FACT_VENTAS.csv")
 FACT_ENTREGA_PATH = os.path.join(PROD, "_FACT_ENTREGA.csv")
 SALIDA_JSON = os.path.join(PROD, "_DECISIONES.json")
@@ -185,11 +186,24 @@ def cargar_datos_duckdb(dias=14, grano="angulo"):
 
     f_ventas = FACT_VENTAS_PATH.replace("\\", "/")
     f_conj = DIM_CONJ_PATH.replace("\\", "/")
+    f_bandas = DIM_BANDAS_PATH.replace("\\", "/")
+
+    # La banda REAL vive en _DIM_BANDAS.csv (su dueno). Si el archivo no existe todavia
+    # la bandera queda en true, en vez de mentir con un false.
+    if os.path.exists(DIM_BANDAS_PATH):
+        cte_bandas = ("bandas as (select trim(conjunto_meta) as conjunto, "
+                      "upper(trim(coincide)) = 'SI' as coincide "
+                      "from read_csv('%s', header=true, all_varchar=true)),") % f_bandas
+        join_bandas = "left join bandas b on b.conjunto = v.conjunto"
+        col_banda = "coalesce(b.coincide, true)"
+    else:
+        cte_bandas, join_bandas, col_banda = "", "", "true"
 
     col_agrup = "coalesce(v.angulo_key, v.conjunto)" if grano == "angulo" else "v.conjunto"
 
     sql = f"""
-    with ventas_raw as (
+    with {cte_bandas}
+    ventas_raw as (
         select
             try_cast(ventana_fin as date) as fecha,
             trim(producto_key) as producto_key,
@@ -219,10 +233,13 @@ def cargar_datos_duckdb(dias=14, grano="angulo"):
             coalesce(d.angulo_key, v.conjunto) as angulo_key,
             v.ventas,
             v.mensajes,
-            v.spend_usd
+            v.spend_usd,
+            {col_banda} as banda_coincide,
+            (regexp_extract(v.conjunto, '^[A-Z0-9]+_[A-Z0-9]+_([-A-Z0-9]+)_R[0-9]+$', 1) <> '') as en_convencion
         from ventas_raw v
         left join dim_conj d
           on d.producto_key = v.producto_key and d.conjunto_meta = v.conjunto
+        {join_bandas}
         where v.fecha > (select f from ult) - interval ({dias} - 1) day
     )
     select
@@ -237,8 +254,8 @@ def cargar_datos_duckdb(dias=14, grano="angulo"):
         sum(case when fecha > (select f from ult) - interval 3 day then spend_usd else 0 end) as spend_3d,
         min(fecha) as desde,
         max(fecha) as hasta,
-        true as banda_ok,
-        true as nombres_ok
+        bool_and(banda_coincide) as banda_ok,
+        bool_and(en_convencion) as nombres_ok
     from unidos v
     group by 1, 2
     having sum(spend_usd) > 0
@@ -327,7 +344,12 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             }
 
     # 5. REGLA: ESCALAR SURFING (Ganador sólido con CPA <= Objetivo)
-    if ventas >= 2 and cpa_real_q and cpa_real_q <= obj_q:
+    # Subir presupuesto es una accion IRREVERSIBLE en el sentido del principio 4: compromete plata
+    # nueva. Por eso no basta el CPA puntual — el techo del IC tiene que estar bajo el break-even.
+    # Sin esta condicion el IC era decorativo al escalar y solo frenaba al pausar (asimetria que
+    # dejaba subir presupuesto sobre celdas que podian estar sangrando).
+    ic_bajo_be = alto_ic is not None and alto_ic <= be_q
+    if ventas >= 2 and cpa_real_q and cpa_real_q <= obj_q and ic_bajo_be:
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_SURFING",
@@ -341,7 +363,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         }
 
     # 6. REGLA: ESCALA LEVE / MANTENER (Rentable bajo Break-Even)
-    if ventas >= 2 and cpa_real_q and (obj_q < cpa_real_q <= be_q):
+    if ventas >= 2 and cpa_real_q and (obj_q < cpa_real_q <= be_q) and ic_bajo_be:
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_MODERADO",
@@ -386,10 +408,17 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
 
     # Muestra moderada cruzando BE: acción conservadora de bajo riesgo
     txt_f = f" Faltan ~{faltan} ventas al CPA actual para resolver IC." if faltan else " El CPA observado está cerca del BE."
+    rentable_pero_sin_evidencia = cpa_real_q is not None and cpa_real_q <= be_q
+    if rentable_pero_sin_evidencia:
+        txt_accion = (f"MANTENER PRESUPUESTO (no subir): CPA Q{cpa_real_q:.1f} bajo BE Q{be_q:.1f}, "
+                      f"pero el IC [{bajo_ic:.0f}-{alto_ic if alto_ic else 'inf'}] lo cruza.{txt_f}")
+    else:
+        txt_accion = (f"MANTENER PRESUPUESTO: IC [{bajo_ic:.0f} - {alto_ic if alto_ic else 'inf'}] "
+                      f"cruza BE Q{be_q:.1f}.{txt_f}")
     return {
         "estado": "SEGUIR_MIDIENDO",
         "accion_codigo": "MANTENER_Y_MEDIR",
-        "accion_sugerida": f"MANTENER PRESUPUESTO: IC [{bajo_ic:.0f} - {alto_ic if alto_ic else 'inf'}] cruza BE Q{be_q:.1f}.{txt_f}",
+        "accion_sugerida": txt_accion,
         "cpa_real_q": round(cpa_real_q, 1) if cpa_real_q else None,
         "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
         "pct_pd": round(pct_pd_consumido, 1),
@@ -408,8 +437,27 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
     prods = cargar_productos()
     df_celdas = cargar_datos_duckdb(dias=dias_v, grano=grano)
 
+    # FRESCURA. La ventana de 14 dias se cuenta desde el ULTIMO DIA CON DATA, no desde hoy.
+    # Si la data trae rezago, la orden se calcula sobre un pasado que la fecha "generado" oculta:
+    # es el mismo error de ventana que produjo la orden equivocada del 06-sep-2026.
+    hoy = datetime.date.today()
+    datos_hasta = datos_desde = None
+    rezago = None
+    if not df_celdas.empty:
+        try:
+            datos_hasta = max(df_celdas["hasta"])
+            datos_desde = min(df_celdas["desde"])
+            datos_hasta = getattr(datos_hasta, "date", lambda: datos_hasta)()
+            datos_desde = getattr(datos_desde, "date", lambda: datos_desde)()
+            rezago = (hoy - datos_hasta).days
+        except (KeyError, TypeError, ValueError):
+            pass
+
     resultado = {
-        "generado": datetime.date.today().isoformat(),
+        "generado": hoy.isoformat(),
+        "datos_desde": datos_desde.isoformat() if datos_desde else None,
+        "datos_hasta": datos_hasta.isoformat() if datos_hasta else None,
+        "rezago_dias": rezago,
         "motor": "decidir v3 (Síntesis: Intervalos de Credibilidad Bayesiana + Riesgo Asimétrico)",
         "grano": grano,
         "ventana_dias": dias_v,
@@ -495,6 +543,12 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
 def imprimir_consola(res):
     print("=" * 115)
     print(f" MOTOR DE DECISIÓN UNIFICADO — VITALCOM GUATEMALA (Ventana: {res['ventana_dias']} días | IC 95% | Grano: {res['grano']})")
+    if res.get("datos_hasta"):
+        rez = res.get("rezago_dias")
+        print(f" Data: {res.get('datos_desde')} → {res['datos_hasta']}  (generado {res['generado']})")
+        if rez is not None and rez > 2:
+            print(f" ⚠️  LA DATA ARRASTRA {rez} DÍAS DE REZAGO. Estas órdenes NO describen lo que pasó "
+                  f"después del {res['datos_hasta']}: cargá el export antes de ejecutarlas.")
     print(f" Resumen:  🔴 PAUSAR: {res['resumen_acciones'].get('PAUSAR', 0)}  |  "
           f"🔵 RENOVAR (FATIGA): {res['resumen_acciones'].get('RENOVAR', 0)}  |  "
           f"🟢 ESCALAR: {res['resumen_acciones'].get('ESCALAR', 0)}  |  "

@@ -1,5 +1,8 @@
 {
   "generado": "2026-09-07",
+  "datos_desde": "2026-08-20",
+  "datos_hasta": "2026-09-01",
+  "rezago_dias": 6,
   "motor": "decidir v3 (Síntesis: Intervalos de Credibilidad Bayesiana + Riesgo Asimétrico)",
   "grano": "angulo",
   "ventana_dias": 14,
@@ -7,8 +10,8 @@
   "resumen_acciones": {
     "PAUSAR": 0,
     "RENOVAR": 1,
-    "ESCALAR": 7,
-    "SEGUIR_MIDIENDO": 0
+    "ESCALAR": 4,
+    "SEGUIR_MIDIENDO": 3
   },
   "productos": [
     {
@@ -38,8 +41,8 @@
           "mensajes": 173.0,
           "spend_usd": 89.35,
           "spend_q": 680.8,
-          "banda_ok": true,
-          "nombres_ok": true,
+          "banda_ok": false,
+          "nombres_ok": false,
           "cierre_vs_mejor": {
             "p": 0.0107,
             "significativo": true,
@@ -68,8 +71,8 @@
           "mensajes": 114.0,
           "spend_usd": 88.67,
           "spend_q": 675.7,
-          "banda_ok": true,
-          "nombres_ok": true,
+          "banda_ok": false,
+          "nombres_ok": false,
           "cierre_vs_mejor": {
             "p": 0.0027,
             "significativo": true,
@@ -130,8 +133,8 @@
           "mensajes": 201.0,
           "spend_usd": 129.24,
           "spend_q": 984.8,
-          "banda_ok": true,
-          "nombres_ok": true
+          "banda_ok": false,
+          "nombres_ok": false
         }
       ]
     },
@@ -142,59 +145,6 @@
       "cpa_objetivo_q": 30.8,
       "break_even_q": 93.41,
       "celdas": [
-        {
-          "estado": "ESCALAR",
-          "accion_codigo": "ESCALAR_MODERADO",
-          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q69.9 bajo BE Q93.4 (IC [52-97.3]).",
-          "cpa_real_q": 69.9,
-          "cierre_pct": 6.3,
-          "pct_pd": 2845.5,
-          "ic": [
-            51.5,
-            69.9,
-            97.3
-          ],
-          "faltan_ventas": null,
-          "nivel_prioridad": 3,
-          "celda": "PERDIDA_AUDITIVA",
-          "conjuntos": 7,
-          "ventas": 38.0,
-          "mensajes": 607.0,
-          "spend_usd": 348.82,
-          "spend_q": 2658.0,
-          "banda_ok": true,
-          "nombres_ok": true,
-          "cierre_vs_mejor": {
-            "p": 0.0074,
-            "significativo": true,
-            "cierre_a": 6.3,
-            "cierre_b": 14.9,
-            "contra": "ACCESIBILIDAD_MEDICO"
-          }
-        },
-        {
-          "estado": "ESCALAR",
-          "accion_codigo": "ESCALAR_MODERADO",
-          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q83.8 bajo BE Q93.4 (IC [47-163.0]).",
-          "cpa_real_q": 83.8,
-          "cierre_pct": 7.4,
-          "pct_pd": 897.1,
-          "ic": [
-            47.2,
-            83.8,
-            163.0
-          ],
-          "faltan_ventas": null,
-          "nivel_prioridad": 3,
-          "celda": "DETERIORO_COGNITIVO",
-          "conjuntos": 5,
-          "ventas": 10.0,
-          "mensajes": 136.0,
-          "spend_usd": 109.97,
-          "spend_q": 838.0,
-          "banda_ok": true,
-          "nombres_ok": true
-        },
         {
           "estado": "ESCALAR",
           "accion_codigo": "ESCALAR_SURFING",
@@ -219,9 +169,62 @@
           "nombres_ok": true
         },
         {
-          "estado": "ESCALAR",
-          "accion_codigo": "ESCALAR_MODERADO",
-          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q53.2 bajo BE Q93.4 (IC [27-118.9]).",
+          "estado": "SEGUIR_MIDIENDO",
+          "accion_codigo": "MANTENER_Y_MEDIR",
+          "accion_sugerida": "MANTENER PRESUPUESTO (no subir): CPA Q69.9 bajo BE Q93.4, pero el IC [52-97.3] lo cruza. Faltan ~11 ventas al CPA actual para resolver IC.",
+          "cpa_real_q": 69.9,
+          "cierre_pct": 6.3,
+          "pct_pd": 2845.5,
+          "ic": [
+            51.5,
+            69.9,
+            97.3
+          ],
+          "faltan_ventas": 11,
+          "nivel_prioridad": 2,
+          "celda": "PERDIDA_AUDITIVA",
+          "conjuntos": 7,
+          "ventas": 38.0,
+          "mensajes": 607.0,
+          "spend_usd": 348.82,
+          "spend_q": 2658.0,
+          "banda_ok": false,
+          "nombres_ok": false,
+          "cierre_vs_mejor": {
+            "p": 0.0074,
+            "significativo": true,
+            "cierre_a": 6.3,
+            "cierre_b": 14.9,
+            "contra": "ACCESIBILIDAD_MEDICO"
+          }
+        },
+        {
+          "estado": "SEGUIR_MIDIENDO",
+          "accion_codigo": "MANTENER_Y_MEDIR",
+          "accion_sugerida": "MANTENER PRESUPUESTO (no subir): CPA Q83.8 bajo BE Q93.4, pero el IC [47-163.0] lo cruza. El CPA observado está cerca del BE.",
+          "cpa_real_q": 83.8,
+          "cierre_pct": 7.4,
+          "pct_pd": 897.1,
+          "ic": [
+            47.2,
+            83.8,
+            163.0
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 2,
+          "celda": "DETERIORO_COGNITIVO",
+          "conjuntos": 5,
+          "ventas": 10.0,
+          "mensajes": 136.0,
+          "spend_usd": 109.97,
+          "spend_q": 838.0,
+          "banda_ok": false,
+          "nombres_ok": true
+        },
+        {
+          "estado": "SEGUIR_MIDIENDO",
+          "accion_codigo": "MANTENER_Y_MEDIR",
+          "accion_sugerida": "MANTENER PRESUPUESTO (no subir): CPA Q53.2 bajo BE Q93.4, pero el IC [27-118.9] lo cruza. Faltan ~7 ventas al CPA actual para resolver IC.",
           "cpa_real_q": 53.2,
           "cierre_pct": 10.9,
           "pct_pd": 398.5,
@@ -230,16 +233,16 @@
             53.2,
             118.9
           ],
-          "faltan_ventas": null,
-          "nivel_prioridad": 3,
+          "faltan_ventas": 7,
+          "nivel_prioridad": 2,
           "celda": "NOCHES_SIN_DORMIR",
           "conjuntos": 1,
           "ventas": 7.0,
           "mensajes": 64.0,
           "spend_usd": 48.85,
           "spend_q": 372.2,
-          "banda_ok": true,
-          "nombres_ok": true
+          "banda_ok": false,
+          "nombres_ok": false
         }
       ]
     }

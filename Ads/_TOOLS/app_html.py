@@ -760,6 +760,7 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
 
     <!-- MÓDULO 1: DECISIONES & FATIGA -->
     <section id="mod-decisiones" class="module-view active">
+      <div id="aviso-rezago"></div>
       <div class="stats-grid" id="stats-decisiones"></div>
 
       <div class="filter-bar">
@@ -768,7 +769,7 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
         <button class="filter-btn" data-fdec="ESCALAR" onclick="setFiltroDec('ESCALAR', this)">🟢 Escalar</button>
         <button class="filter-btn" data-fdec="PAUSAR" onclick="setFiltroDec('PAUSAR', this)">🔴 Pausar</button>
         <button class="filter-btn" data-fdec="RENOVAR" onclick="setFiltroDec('RENOVAR', this)">🔵 Renovar (Fatiga)</button>
-        <button class="filter-btn" data-fdec="TESTEO ACTIVO" onclick="setFiltroDec('TESTEO ACTIVO', this)">🟡 Testeo Activo</button>
+        <button class="filter-btn" data-fdec="SEGUIR_MIDIENDO" onclick="setFiltroDec('SEGUIR_MIDIENDO', this)">🟡 Seguir midiendo</button>
       </div>
 
       <div id="contenedor-decisiones"></div>
@@ -895,10 +896,28 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
 
     function pintarDecisiones() {{
       const res = D_DECISIONES.resumen_acciones || {{}};
+
+      // La ventana se cuenta desde el ultimo dia CON DATA. Si hay rezago, decirlo arriba de todo:
+      // una orden fechada hoy sobre data de hace dias es el error que produjo la pausa del 06-sep.
+      const rez = D_DECISIONES.rezago_dias;
+      const hasta = D_DECISIONES.datos_hasta || '';
+      const av = document.getElementById('aviso-rezago');
+      if (av) {{
+        if (rez !== null && rez !== undefined && rez > 2) {{
+          av.innerHTML = `<div style="margin:0 0 14px;padding:11px 14px;border-radius:8px;
+            background:var(--crit-bg);color:var(--crit);font-size:13px;font-weight:600;">
+            ⚠️ La data llega hasta ${{hasta}} — ${{rez}} días de rezago.
+            Estas órdenes no describen lo que pasó después de esa fecha: cargá el export antes de ejecutarlas.
+            </div>`;
+        }} else if (hasta) {{
+          av.innerHTML = `<div style="margin:0 0 14px;font-size:12px;color:var(--ink-3);
+            font-family:var(--font-mono);">data hasta ${{hasta}} · al día</div>`;
+        }}
+      }}
       const pEscalar = res['ESCALAR'] || 0;
       const pPausar = res['PAUSAR'] || 0;
       const pRenovar = res['RENOVAR'] || 0;
-      const pTesteo = res['TESTEO ACTIVO'] || 0;
+      const pTesteo = res['SEGUIR_MIDIENDO'] || 0;
 
       // Stats
       document.getElementById('stats-decisiones').innerHTML = `
@@ -923,11 +942,11 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
             <div class="stat-label">Pausar (Tolerancia)</div>
           </div>
         </div>
-        <div class="stat-card" onclick="setFiltroDec('TESTEO ACTIVO')">
+        <div class="stat-card" onclick="setFiltroDec('SEGUIR_MIDIENDO')">
           <div class="stat-icon" style="background:var(--warn-bg);color:var(--warn);">🟡</div>
           <div>
             <div class="stat-val">${{pTesteo}}</div>
-            <div class="stat-label">Testeo Activo</div>
+            <div class="stat-label">Seguir midiendo</div>
           </div>
         </div>
       `;
@@ -956,7 +975,7 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
           if (c.estado === 'ESCALAR') bCls = 'b-escalar';
           else if (c.estado === 'PAUSAR') bCls = 'b-pausar';
           else if (c.estado === 'RENOVAR') bCls = 'b-renovar';
-          else if (c.estado === 'TESTEO ACTIVO') bCls = 'b-testeo';
+          else if (c.estado === 'SEGUIR_MIDIENDO') bCls = 'b-testeo';
 
           const cpaStr = c.cpa_real_q ? 'Q' + c.cpa_real_q.toFixed(1) : '—';
           let cpaColor = 'var(--ink)';

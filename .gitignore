@@ -74,3 +74,10 @@ desktop.ini
 
 # Estado interno del hook de validacion de CSV (mtimes)
 PRODUCTOS/.hook_csv_mtimes.json
+
+# ── WAREHOUSE (dbt + DuckDB): derivados regenerables con `dbt build` ─────────
+# Los modelos .sql y la config SI se versionan; la base, el target compilado y
+# los logs no: se reconstruyen desde los CSV y ensucian cada diff.
+warehouse/vitalcom.duckdb
+warehouse/target/
+warehouse/logs/
