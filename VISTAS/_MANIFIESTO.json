@@ -55,7 +55,7 @@
    "tipo": "nativa",
    "render": "decisiones",
    "fuente": "PRODUCTOS/_DECISIONES.json",
-   "genera": "python Ads/_TOOLS/decidir.py",
+   "genera": "python Ads/_TOOLS/gen_decisiones.py",
    "dueno": "decidir.py · motor unificado",
    "caduca": {
     "ok_dias": 1,

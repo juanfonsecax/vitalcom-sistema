@@ -26,8 +26,9 @@ PRINCIPIOS:
      Las decisiones irreversibles (apagar definitivamente un ángulo o escalar fuerte)
      requieren evidencia rigurosa o transgresión de tolerancia máxima (1x BE sin ventas).
   5. DETECTOR TEMPRANO DE FATIGA:
-     Si un ángulo ganador histórico decae en los últimos 3 días, la acción es RENOVAR
-     el concepto en Fase 2, nunca apagar el ángulo.
+     Si un ángulo con historia rentable decae en los últimos `ventana_fatiga_dias`, la
+     acción es RENOVAR el concepto en Fase 2, NUNCA apagar el ángulo. La guarda
+     `ganador_historico` hace que esta regla gane sobre PAUSAR, que se evalúa antes.
 
 ESTADOS:
   [ESCALAR]         CPA bajo objetivo o bajo BE con respaldo -> Subir +10% a +20%
@@ -70,7 +71,7 @@ DIM_BANDAS_PATH = os.path.join(PROD, "_DIM_BANDAS.csv")
 FACT_VENTAS_PATH = os.path.join(PROD, "_FACT_VENTAS.csv")
 FACT_ENTREGA_PATH = os.path.join(PROD, "_FACT_ENTREGA.csv")
 SALIDA_JSON = os.path.join(PROD, "_DECISIONES.json")
-SALIDA_HTML = os.path.join(BASE, "VISTAS", "DECISIONES.html")
+# No hay SALIDA_HTML: este motor escribe JSON y nada mas. Lo dibuja VISTAS/APP.html.
 
 TASA_Q_USD_DEFAULT = 7.62
 

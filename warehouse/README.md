@@ -20,8 +20,14 @@ Lo que agrega es lo que los CSV solos no pueden dar:
 cd warehouse && DBT_PROFILES_DIR=. python -m dbt.cli.main build
 ```
 
-`gen_decisiones.py` ya lo corre solo antes de cada lectura, y `gen_app.py --todo` corre a
-`gen_decisiones.py`. En la práctica no hace falta invocarlo a mano.
+`gen_decisiones.py` lo corre solo antes de cada lectura, y `VISTAS/_MANIFIESTO.json` declara a
+`gen_decisiones.py` como el generador de la vista `decisiones`, así que `gen_app.py --todo` lo
+invoca en cada reconstrucción. En la práctica no hace falta correrlo a mano.
+
+> Hasta el 07-sep-2026 el manifiesto apuntaba a `decidir.py` pelado y este `dbt build` **no
+> corría nunca** en el ciclo diario: el motor decidía sobre una capa analítica vieja mientras
+> la app mostraba fecha fresca. Si `gen_decisiones.py` deja de ser el generador declarado,
+> vuelve ese hueco.
 
 ## Estructura
 
