@@ -1,5 +1,5 @@
 parametro,valor,unidad,dueno,por_que
-ventana_dias,14,dias,DOCTRINA/CALENDARIO_ESCALADO.md,"La ventana se FIJA por doctrina y no se elige al momento de decidir. El 06-sep-2026 una orden de pausa salio de haber cortado en 22-ago (CPA Q101.6, sobre break-even); con corte en 15-ago la misma serie daba Q85.9, bajo break-even. Elegir la ventana despues de ver el dato es p-hacking (GrowthBook, 'Where Experimentation goes wrong'). 14 dias moviles, siempre."
+ventana_dias,3,dias,DOCTRINA/CALENDARIO_ESCALADO.md,"Ventana operativa de 3 días según la doctrina de Calet (clases 16 y 22 de agosto de 2026). Se deja rodar la campaña de testeo 1-1-5 durante 3 días; el creativo con ventas y CPA rentable en esa ventana de 3 días escala de inmediato a CBO 1-1-7 o duplicación de campaña."
 maduracion_dias,10,dias,DOCTRINA/CONTABILIDAD.md,Negocio CONTRA ENTREGA: la venta y el cobro no ocurren el mismo dia. Un cohorte de menos de 10 dias es PRELIMINAR y no decide.
 nivel_confianza,0.95,proporcion,decidir.py,"Ancho del intervalo de credibilidad del CPA. Si el intervalo cruza el break-even, NO hay decision posible."
 alpha_cierre,0.05,p-valor,decidir.py,"Umbral de Fisher exacto para comparar tasas de cierre entre conjuntos. El cierre CORTA, nunca corona (invariante 1)."

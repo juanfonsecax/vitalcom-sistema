@@ -70,7 +70,7 @@ TASA_Q_USD_DEFAULT = 7.62
 
 def cargar_parametros():
     p = {
-        "ventana_dias": 14,
+        "ventana_dias": 3,
         "maduracion_dias": 10,
         "nivel_confianza": 0.95,
         "alpha_cierre": 0.05,
@@ -344,16 +344,12 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             }
 
     # 5. REGLA: ESCALAR SURFING (Ganador sólido con CPA <= Objetivo)
-    # Subir presupuesto es una accion IRREVERSIBLE en el sentido del principio 4: compromete plata
-    # nueva. Por eso no basta el CPA puntual — el techo del IC tiene que estar bajo el break-even.
-    # Sin esta condicion el IC era decorativo al escalar y solo frenaba al pausar (asimetria que
-    # dejaba subir presupuesto sobre celdas que podian estar sangrando).
     ic_bajo_be = alto_ic is not None and alto_ic <= be_q
     if ventas >= 2 and cpa_real_q and cpa_real_q <= obj_q and ic_bajo_be:
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_SURFING",
-            "accion_sugerida": f"SUBIR PRESUPUESTO +20%: CPA excelente Q{cpa_real_q:.1f} (Obj Q{obj_q:.1f}, IC [{bajo_ic:.0f}-{alto_ic if alto_ic else 'inf'}]). Ganador claro.",
+            "accion_sugerida": f"ESCALAR (Calet): CPA Q{cpa_real_q:.1f} (Obj Q{obj_q:.1f}). Validado en 3d. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20%.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -367,7 +363,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_MODERADO",
-            "accion_sugerida": f"MANTENER / ESCALA LEVE (+10%): CPA rentable Q{cpa_real_q:.1f} bajo BE Q{be_q:.1f} (IC [{bajo_ic:.0f}-{alto_ic if alto_ic else 'inf'}]).",
+            "accion_sugerida": f"MANTENER / ESCALA LEVE: CPA rentable Q{cpa_real_q:.1f} bajo BE Q{be_q:.1f}. Opciones: duplicar o subir +10% a +20% si el CPA se mantiene bajo.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
