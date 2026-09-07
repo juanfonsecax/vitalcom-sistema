@@ -32,7 +32,119 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 ---
 
-## 1. VARIABLES DE ESTRUCTURA Y CAMPAÑAS
+# PARTE I — VARIABLES DE INVESTIGACIÓN PROFUNDA, PSICOGRAFÍA Y ÁNGULOS
+### (LA CAPA HUMANA: A QUIÉN SE LE HABLA, EL PROBLEMA REAL Y LA CONVERSIÓN)
+
+> **PRINCIPIO FUNDAMENTAL:** *"No se quema el producto, se quema el ÁNGULO."* 
+> La gente no compra con la lógica: compra con la emoción (dolor, miedo, anhelo, estatus, identidad) y justifica después con la razón. Si el anuncio demuestra que conocemos el problema de la persona mejor que ella misma, la venta ocurre sola.
+
+---
+
+## 1. VARIABLES DE INVESTIGACIÓN Y MINADO DE VOZ DEL CLIENTE
+
+| Nombre de Variable | Valor / Parámetro Estándar | Unidad / Formato | Fuente Vigente | Justificación y Regla de Calidad | Archivo Ejecutor |
+|---|---|---|---|---|---|
+| `MINADO_VOZ_CLIENTE_MINIMO` | **8 a 12 frases textuales crudas** | Frases | Clase 12 · Módulo Investigación | Mínimo estadístico para extraer patrones de dolor y anhelo sin sesgos de suposición. | `.claude/agents/ETAPA-1B.md` |
+| `ETIQUETA_VOZ_REAL` | `[VOZ-REAL]` (Frase de dolor exacta) | Formato | Doctrina Vitalcom | Copiar tal cual la escribió el usuario (Reddit, foros, reseñas). Prohibido suavizar o parafrasear. | `.claude/agents/ETAPA-1B.md` |
+| `ETIQUETA_DESEO_REAL` | `[DESEO-REAL]` (Frase de anhelo exacta) | Formato | Clases 10 y 20 (Joaquín) | El anhelo aspiracional en primera persona convierte tanto o más que el dolor punzante. | `.claude/agents/ETAPA-1B.md` |
+| `IDENTIFICACION_ELEFANTE` | **1 Problema Oculto + Consecuencia Emocional** | Hallazgo | Clase 12 ("La mina de oro") | La causa raíz que el avatar sufre pero que la competencia ignora. Quien la nombra primero, domina el mercado. | `DOCTRINA/MODULO_INTELIGENCIA_PRODUCTO.md` |
+| `FUENTES_RESEARCH_OBLIGATORIAS` | Reddit, foros de nicho, reseñas 1★ Amazon/Google, blogs | Plataformas | ETAPA-1B / Research | Lugares donde el usuario desahoga su frustración sin filtro comercial ni censura publicitaria. | `.claude/agents/ETAPA-1B.md` |
+| `PROHIBICION_INVENTAR_VOZ` | **Estricta (Cero testimonios sintéticos)** | Regla dura | Doctrina Vitalcom | Si no hay señal externa en foros para un dolor, se marca "sin señal externa". Nunca inventar citas. | `.claude/agents/ETAPA-1B.md` |
+
+---
+
+## 2. VARIABLES DE PSICOGRAFÍA DEL AVATAR (LOS 5 EJES + IDENTIDAD)
+
+| Nombre de Variable | Eje / Componente | Definición Parametrizada | Pregunta Guía Obligatoria | Archivo Ejecutor |
+|---|---|---|---|---|
+| `AVATAR_EJE_1_DOLORES` | **Dolor Activo y Concreto** | Síntoma específico, físico o visible del día a día (no genérico). | *¿Qué molestia exacta o síntoma físico le fastidió hoy al despertar o al trabajar?* | `.claude/agents/ETAPA-2.md` |
+| `AVATAR_EJE_2_DESEOS` | **Deseo Específico Medible** | Cómo quiere verse, sentirse o desenvolverse en su rutina. | *¿Cuál es la imagen mental exacta de su vida si este problema desapareciera mañana?* | `.claude/agents/ETAPA-2.md` |
+| `AVATAR_EJE_3_MIEDOS` | **Miedo a Futuro / Catástrofe** | Qué teme que pase a mediano/largo plazo si no toma acción hoy. | *¿Qué escenario temido le quita el sueño si el problema sigue empeorando?* | `.claude/agents/ETAPA-2.md` |
+| `AVATAR_EJE_4_FRUSTRACIONES` | **Fracasos Previos Acumulados** | Tratamientos, remedios o productos que ya probó y no funcionaron. | *¿En qué botó plata antes y por qué siente que nadie le soluciona el problema?* | `.claude/agents/ETAPA-2.md` |
+| `AVATAR_EJE_5_IDENTIDAD` | **Transformación Emocional Oculta** | La herida de identidad o autoestima (quién quiere SER o cómo se siente juzgado). | *¿Qué vergüenza, culpa o pérdida de valor personal le produce este problema en secreto?* | `.claude/agents/ETAPA-2.md` |
+| `PARAMETRO_ESPECIFICIDAD_AVATAR` | **"Reconocible en la calle"** | Datos demográficos + situación vital + contexto local (Guatemala 35-65+). | Prohibido "personas con insomnio". Sí: "madre de 45 años en Mixco que despierta a las 2 AM con taquicardia". | `.claude/agents/ETAPA-2.md` |
+
+---
+
+## 3. VARIABLES DE NIVELES DE CONCIENCIA (EUGENE SCHWARTZ)
+
+| Nivel de Conciencia | Estado Mental del Avatar | Tipo de Ángulo Dominante | Tipo de Hook Recomendado | Canal de Cierre |
+|---|---|---|---|---|
+| **NIVEL 1 — No sabe que tiene el problema** | Siente el síntoma o molestia pero ignora la causa real y la etiqueta médica. | Educativo / Revelación del problema oculto ("El elefante"). | *"Si te arde el estómago al despertar, el problema no es la acidez..."* | Anuncio largo / Explicación bot |
+| **NIVEL 2 — Conoce el problema, no la solución** | Sabe con certeza qué padece, pero no sabe cómo solucionarlo de raíz. | Problema - Solución / Mecanismo único innovador. | *"Por qué tomar magnesio genérico no calma tus calambres nocturnos..."* | Prueba de mecanismo / LucidBot |
+| **NIVEL 3A — Conoce el producto pero desconfía** | Sabe que este tipo de solución existe, pero desconfía de comprar por internet. | Reducción de fricción: Autoridad, garantía, prueba social, COD. | *"El único tratamiento con registro y pago contra entrega en toda Guatemala."* | Video médico / Testimonios bot |
+| **NIVEL 3B — Conoce el producto y compara** | Conoce marcas similares, está listo para comprar, busca la mejor oferta/pack. | Oferta irresistible, paquetes de tratamiento (2x1, 3x1), escasez. | *"Tratamiento completo de 60 días con 40% de descuento solo por hoy."* | Cierre comercial / Oferta WhatsApp |
+| **NIVEL 4 — Hiper consciente** | Cliente recurrente o lead fidelizado que ya validó la marca. | Reorden / Upsell / Nuevas aplicaciones del producto. | *"Renueva tu tratamiento mensual con entrega prioritaria."* | WhatsApp Remarketing |
+
+---
+
+## 4. VARIABLES DE ARQUITECTURA DEL EMBUDO (TOFU / MOFU / BOFU)
+
+| Etapa del Embudo | Temperatura de Tráfico | Nivel de Conciencia Asociado | Rol del Creativo / Copy | Elementos Indispensables |
+|---|---|---|---|---|
+| **TOFU (Top of Funnel)** | Frío (Prospectos masivos) | Niveles 1 y 2 | **Frenar el scroll y generar identificación inmediata.** Abre mercado. | No nombrar el producto en los primeros 3 segundos. Enfocar 100% en el síntoma o dolor agudo. |
+| **MOFU (Middle of Funnel)** | Tibio (Consideración) | Niveles 2 y 3a | **Demostrar el mecanismo único y derribar la objeción crítica.** | Historia de transformación, autoridad, respaldo clínico, comparación antes/después. |
+| **BOFU (Bottom of Funnel)** | Caliente (Decisión final) | Niveles 3a y 3b | **Cerrar la venta eliminando todo riesgo financiero.** | Tratamiento por semanas (2-4 semanas), garantía total, **pago contra entrega en mano**. |
+| `REGLA_COBERTURA_EMBUDO` | Mínimo 1 concepto de cada nivel activo en escalado | Regla | Asegura que la campaña no sature al público caliente y siga sembrando prospectos fríos. | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
+
+---
+
+## 5. VARIABLES DE ANÁLISIS COMPETITIVO (MATRIZ DOFA / FODA)
+
+| Cuadrante DOFA | Variable Analítica | Enfoque de Investigación | Aplicación en el Mensaje Publicitario |
+|---|---|---|---|
+| **Debilidades (Mercado / Competencia)** | `DOFA_DEBILIDADES_COMPETENCIA` | Qué quejas tienen los clientes de la competencia (pastillas grandes, mal sabor, demoras, sin resultados). | Usar sus defectos como contraste: *"A diferencia de las cápsulas difíciles de tragar..."* |
+| **Oportunidades (Nichos Desatendidos)** | `DOFA_OPORTUNIDADES_ANGULOS` | Qué síntomas secundarios o causas nadie está atacando en Meta Ads Library. | Crear ángulos de baja saturación ("océano azul"): abordar el dolor que otros omiten. |
+| **Fortalezas (Nuestra Oferta)** | `DOFA_FORTALEZAS_PRODUCTO` | Mecanismo único, pureza de ingredientes, rapidez de absorción, soporte post-compra. | El pilar central de la Promesa y Mecanismo en la estructura HPPPC. |
+| **Amenazas (Objeciones del Entorno)** | `DOFA_AMENAZAS_ENTORNO` | Desconfianza de estafas en Guatemala, productos chinos de imitación, miedo a efectos secundarios. | Implementar sellos de garantía, empaque original, soporte WhatsApp humano y pago COD. |
+
+---
+
+## 6. VARIABLES DE DEFINICIÓN, HOOKS (HPPPC) Y RANKING DE ÁNGULOS
+
+| Nombre de Variable | Parámetro / Fórmula | Definición / Requisito | Regla de Oro | Archivo Ejecutor |
+|---|---|---|---|---|
+| `DIFERENCIA_ANGULO_VS_FORMATO` | **Ángulo = Problema; Formato = Contenedor** | El ángulo es la causa del dolor; el formato es video UGC, imagen estática, infografía, etc. | **Nunca testear 2 variables.** FASE 1 mide ángulo; FASE 2 mide formato/concepto. | `CLAUDE.md` |
+| `REGLA_ANGULO_DIRECTO` | **Hiper-segmentado vs Generalizado** | No "mejora tu salud", sí "¿tienes dolor punzante en la rodilla al bajar gradas?". | El copy directo segmenta al algoritmo sin pagar por curiosos que no compran. | `DOCTRINA/COPYWRITING_ADS.md` |
+| `ESTRUCTURA_HOOK_HPPPC` | **Hook → Problema → Promesa → Prueba → CTA** | Estructura obligatoria de los primeros segundos del anuncio o copy. | Hook de 3-5s con tensión, negatividad o sorpresa. Jamás dar la solución en el hook. | `.claude/agents/ETAPA-4.md` |
+| `PALANCA_NUMEROS_ESTADISTICA` | **Datos reales verificables** | Mínimo 1 de cada 6 ángulos abre con estadística o dato porcentual concreto. | Prohibido inventar fuentes. Credibilidad matemática para avatares escépticos. | `.claude/agents/ETAPA-2.md` |
+| `JERARQUIA_RANKING_ANGULOS` | **1. Respaldo Voz-Real / Oculto > 2. Emoción > 3. Baja Saturación > 4. Urgencia > 5. Directo** | Criterio estricto de priorización de ángulos para lanzar primero. | El dolor activo urgente gana sobre el deseo lejano. El ángulo emocional gana sobre el funcional. | `.claude/agents/ETAPA-2.md` |
+
+---
+
+## 7. VARIABLES DE OBJECIONES Y DERRIBO CRÍTICO (OBJECTION KILLING)
+
+| Código | Categoría Universal de Objeción | Frase Típica del Avatar (Voz Mental) | Disolución Obligatoria en Creativo o Bot |
+|---|---|---|---|
+| `OBJ-01` | **Credibilidad** | *"¿Esto de verdad funciona o es otra estafa más de internet?"* | Prueba social en video, registro sanitario, número de clientes satisfechos. |
+| `OBJ-02` | **Idoneidad** | *"¿Esto servirá para mi caso específico o mi edad?"* | Explicación clara del avatar calificado y para quién NO es. |
+| `OBJ-03` | **Seguridad** | *"¿Tiene efectos secundarios? ¿Me va a dañar los riñones o el estómago?"* | Ingredientes 100% naturales, certificaciones, sin contraindicaciones severas. |
+| `OBJ-04` | **Tiempo** | *"¿Cuánto tarda en hacer efecto? No quiero esperar meses."* | Progresión creíble por semanas (alivio en semana 1, consolidación en semana 4). |
+| `OBJ-05` | **Logística / Pago** | *"¿Y si me roban la tarjeta o me cobran y no me mandan nada?"* | **Pago contra entrega (COD): pagas en efectivo en tu puerta al recibir.** |
+| `OBJ-06` | **Precio / Valor** | *"Se me hace muy caro comparado con lo que compro en la farmacia."* | Costo por dosis diaria ($0.50/día) vs costo del problema sin resolver. |
+| `OBJ-07` | **Cantidad** | *"¿Por qué debería pedir 2 o 3 frascos si apenas voy a probarlo?"* | Los ciclos celulares de regeneración toman mínimo 30-60 días continuos. |
+| `OBJ-08` | **Experiencia Previa** | *"Ya probé suplementos parecidos y ninguno me quitó el dolor."* | El mecanismo único: por qué este producto actúa diferente a lo genérico. |
+| `OBJECION_CRITICA_NUMERO_1` | **La barrera dominante identificada en foros** | Marcada con `[EXTERNO]` en investigación profunda. | **Debe derribarse en el Creativo 1 y en el primer bloque de respuesta del bot.** |
+
+---
+
+## 8. VARIABLES DE MICROÁNGULOS Y DIVERSIDAD CREATIVA (FASE 3)
+
+| Nombre de Variable | Valor / Requisito | Unidad | Justificación Técnica | Archivo Ejecutor |
+|---|---|---|---|---|
+| `MICROANGULOS_POR_GANADOR` | **8 a 12 microángulos específicos** | Cantidad | Al escalar, el ángulo ganador no se abandona: se desglosa en sub-dolores ultra específicos. | `.claude/agents/ETAPA-3.md` |
+| `REGLA_CONCEPTO_DISTINTO` | **1 Presentación radicalmente distinta por conjunto** | Regla dura | Un cambio de color, fondo o tipografía es penalizado por Meta por fatiga. Se requiere un concepto visual entero nuevo. | `.claude/agents/ETAPA-3.md` |
+| `TIMELINE_TRANSFORMACION` | **Progresión por semanas (7 a 30 días)** | Días | Prohibido "resultados en 24 horas" (baneo y nula credibilidad) o "en 4 meses" (intimida). | `DOCTRINA/COPYWRITING_ADS.md` |
+
+---
+---
+
+# PARTE II — VARIABLES OPERATIVAS, CAMPAÑAS Y CONTROL FINANCIERO
+### (LA CAPA DE NÚMEROS: ESTRUCTURAS, TIEMPOS, PRESUPUESTOS Y DECISIÓN)
+
+---
+
+## 9. VARIABLES DE ESTRUCTURA Y CAMPAÑAS
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Deroga a | Archivo Ejecutor |
 |---|---|---|---|---|---|
@@ -52,7 +164,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 ---
 
-## 2. VARIABLES DE TIEMPO Y VENTANAS OPERATIVAS
+## 10. VARIABLES DE TIEMPO Y VENTANAS OPERATIVAS
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
@@ -64,7 +176,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 ---
 
-## 3. VARIABLES DE RIESGO Y TOLERANCIA (BANKROLL)
+## 11. VARIABLES DE RIESGO Y TOLERANCIA (BANKROLL)
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
@@ -77,7 +189,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 ---
 
-## 4. VARIABLES DE CREATIVOS Y FABRICACIÓN
+## 12. VARIABLES DE CREATIVOS Y FABRICACIÓN
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
@@ -90,7 +202,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 ---
 
-## 5. VARIABLES DE FLUJO Y CONVERSIÓN (LUCIDBOT)
+## 13. VARIABLES DE FLUJO Y CONVERSIÓN (LUCIDBOT)
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
@@ -100,8 +212,9 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `ESTRUCTURA_BOT_ESCALADO` | `Flujo dedicado al ángulo ganador` | Estructura | Clase 22 / Joaquín | Paraguas para testear (Fase 1); dedicado para escalar (Fase 3). | `.claude/agents/ETAPA-11.md` |
 
 ---
+---
 
-## 6. PROTOCOLO DE INGESTA DE NUEVA CLASE (PASO A PASO)
+# PARTE III — PROTOCOLO DE INGESTA DE NUEVA CLASE (PASO A PASO)
 
 Cuando asistas a una nueva clase o recibas una transcripción:
 
@@ -116,3 +229,4 @@ Cuando asistas a una nueva clase o recibas una transcripción:
    * **Acción A (Diff de Variables):** Muestra una tabla comparando: `Variable` | `Valor Anterior` | `Nuevo Valor en Clase` | `Impacto`.
    * **Acción B (Actualización de Guía Madre):** Actualiza el valor y la fuente en este archivo.
    * **Acción C (Propagación en Código):** Si cambia un presupuesto, tiempo o estructura, actualiza automáticamente `_PARAMETROS_DECISION.csv`, `decidir.py` o las etapas en `.claude/agents/`.
+
