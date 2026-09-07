@@ -3,20 +3,26 @@
 ingerir_lucidsales.py — carga exports diarios de LucidSales a _FACT_VENTAS.csv
 
 Uso:
-    python Ads/_TOOLS/ingerir_lucidsales.py <archivo.xlsx> [<archivo2.xlsx> ...]
-    python Ads/_TOOLS/ingerir_lucidsales.py --dir <carpeta>        (toma report-*.xlsx)
+    python Ads/_TOOLS/ingerir_lucidsales.py <archivo.xlsx|.json> [<archivo2> ...]
+    python Ads/_TOOLS/ingerir_lucidsales.py --dir <carpeta>   (toma report-*.xlsx|.json)
     ... [--rol BASE|CONTROL] [--fuente LucidSales|LucidSales_CuentaB] [--dry-run]
 
+Dos fuentes, misma data: el .xlsx que el operador bajaba a mano del panel, y el .json
+que baja `bajar_lucidsales.py` contra la API (el xlsx era un volcado literal de ese
+mismo JSON hecho por el navegador). El JSON es el camino automatizable.
+
 Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md + runbook de la auditoría):
-  · header en la FILA 4 (header=3); descarta filas de "Resumen" (accountTitle vacío).
+  · header en la FILA 4 (header=3); descarta el bloque "Resumen" (fila sin cuenta NI adId).
+  · CONSERVA las ventas ORGANICAS (adId="organico", sin cuenta): son ventas reales.
   · mapeo adSetTitle->conjunto · adTitle->anuncio · sells->ventas · total->total_q · spend->spend_usd.
   · CP1 (1346891653335162) factura en COP -> spend_COP / 3152.5 = spend_USD (APR-028).
-  · ANTI-DUPLICADO por (ventana_ini, producto_key, conjunto, anuncio, fuente, rol_ventana).
+  · ANTI-DUPLICADO por ad_id Y por nombre (basta que coincida una): el nombre no
+    sobrevive a los renombrados y el ad_id historico quedo en notacion cientifica.
   · La fecha sale del NOMBRE del archivo (report-YYYY-MM-DD-YYYY-MM-DD.xlsx), no del contenido.
   · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _ARCHIVO/backups_csv/.
   · ad_id se formatea con s_id() (no notación científica cuando se puede).
 """
-import sys, io, os, re, csv, shutil, datetime
+import sys, io, os, re, csv, json, shutil, datetime
 
 # Windows abre la consola en cp1252: un print con un simbolo fuera de ese mapa revienta con
 # UnicodeEncodeError y el script sale con exit 1 AUNQUE el trabajo ya se completo. Es el mismo
@@ -25,6 +31,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
 import pandas as pd
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import alias
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -69,6 +78,19 @@ def s_id(v):
     return str(v).strip()
 
 
+def s_txt(v):
+    """Texto limpio: NaN de pandas y None -> "".
+
+    `str(NaN or "")` devuelve "nan" porque NaN es truthy: sin esto, la fila de venta
+    ORGANICA (que no trae adSetTitle ni adTitle) entra al CSV con conjunto="nan" y
+    dispara un falso "conjunto SIN dimension".
+    """
+    if v is None or (isinstance(v, float) and pd.isna(v)):
+        return ""
+    t = str(v).strip()
+    return "" if t.lower() == "nan" else t
+
+
 def s_num(v, default=0):
     if v is None or (isinstance(v, float) and pd.isna(v)):
         return default
@@ -86,20 +108,84 @@ def producto_key(nombre):
     return "SIN_CLASIFICAR"
 
 
-def fecha_de_nombre(path):
-    m = re.search(r"(\d{4}-\d{2}-\d{2})", os.path.basename(path))
-    if not m:
+def ventana_de_nombre(path):
+    """(ini, fin, dias) desde report-<ini>-<fin>.<ext>.
+
+    Antes se leía SOLO la primera fecha y se forzaba dias=1 · ventana_fin=ventana_ini.
+    Con el export diario daba igual, pero el CONTROL SEMANAL de los lunes (7 días, que
+    manda DATA_PLAYBOOK) entraba etiquetado como un día suelto. Ahora la ventana sale
+    entera del nombre; un nombre con una sola fecha sigue siendo 1 día.
+    """
+    fs = re.findall(r"\d{4}-\d{2}-\d{2}", os.path.basename(path))
+    if not fs:
         raise SystemExit(f"No pude leer la fecha del nombre: {path}")
-    return m.group(1)
+    ini, fin = fs[0], (fs[1] if len(fs) > 1 else fs[0])
+    d0, d1 = datetime.date.fromisoformat(ini), datetime.date.fromisoformat(fin)
+    if d1 < d0:
+        raise SystemExit(f"Ventana invertida en el nombre: {path}")
+    return ini, fin, (d1 - d0).days + 1
+
+
+def fecha_de_nombre(path):
+    return ventana_de_nombre(path)[0]
+
+
+def es_detalle(r):
+    """True si la fila es una venta real; False si es del bloque Resumen del export.
+
+    Antes el corte era "accountTitle vacío = Resumen", y eso tiraba a la basura las
+    VENTAS ORGÁNICAS: LucidSales las emite con accountTitle vacío y `adId='organico'`
+    porque no vienen de ninguna cuenta publicitaria. Medido el 01-sep-2026: Q198 de
+    CLEARSTEM (1 de las 9 ventas del día) se perdían en silencio, y el CSV cerraba en
+    Q1,650 contra los Q1,848 del panel. Es la subestimación que DATA_PLAYBOOK ya
+    advertía ("VARICOSE vendió 5 veces con pauta CERO").
+
+    El corte correcto es: tiene cuenta O tiene adId. Las filas del bloque Resumen
+    (totalSales, spend, ctrCount, paidSales…) no tienen ninguno de los dos.
+    """
+    def lleno(k):
+        v = r.get(k)
+        # NaN de pandas es truthy y str(NaN) == "nan": sin este chequeo, las filas del
+        # bloque Resumen del xlsx pasarían el filtro y entrarían como ventas.
+        if v is None or (isinstance(v, float) and pd.isna(v)):
+            return False
+        return bool(str(v).strip()) and str(v).strip().lower() != "nan"
+
+    return lleno("accountTitle") or lleno("adId")
+
+
+def registros_xlsx(path):
+    df = pd.read_excel(path, header=3)
+    return [r for r in df.to_dict("records") if es_detalle(r)]
+
+
+def registros_json(path):
+    """JSON crudo de bajar_lucidsales.py (la MISMA data que el xlsx, sin el rodeo).
+
+    La API entrega 'Producto' y 'Test' capitalizados; el exportador de Excel del panel
+    los minusculiza. Se normalizan acá para que las dos fuentes carguen idéntico.
+    """
+    with open(path, encoding="utf-8") as fh:
+        crudo = json.load(fh)
+    filas = crudo.get("insights", crudo) if isinstance(crudo, dict) else crudo
+    out = []
+    for r in filas:
+        r = dict(r)
+        for cap, low in (("Producto", "producto"), ("Test", "test")):
+            if cap in r and low not in r:
+                r[low] = r.pop(cap)
+        if not es_detalle(r):
+            continue          # equivalente a las filas de Resumen del xlsx
+        out.append(r)
+    return out
 
 
 def leer_export(path, rol, fuente):
-    fecha = fecha_de_nombre(path)
-    df = pd.read_excel(path, header=3)
-    # filas de resumen al final: accountTitle vacío
-    df = df[df["accountTitle"].notna()].copy()
+    fecha, fin_v, dias = ventana_de_nombre(path)
+    registros = (registros_json(path) if path.lower().endswith(".json")
+                 else registros_xlsx(path))
     filas = []
-    for _, r in df.iterrows():
+    for r in registros:
         cuenta_id = s_id(r.get("accountTitle"))
         # accountTitle viene como float grande -> reconstruir el id entero
         if cuenta_id and "." in cuenta_id:
@@ -111,13 +197,13 @@ def leer_export(path, rol, fuente):
             moneda = "COP"
             spend = spend / TASA_COP_USD
         filas.append({
-            "ventana_ini": fecha, "ventana_fin": fecha, "dias": 1, "rol_ventana": rol,
+            "ventana_ini": fecha, "ventana_fin": fin_v, "dias": dias, "rol_ventana": rol,
             "producto_key": producto_key(r.get("producto")),
-            "producto": str(r.get("producto") or "").strip(),
+            "producto": s_txt(r.get("producto")),
             "cuenta_id": cuenta_id, "cuenta_alias": alias,
-            "campana": str(r.get("campaignTitle") or "").strip(),
-            "conjunto": str(r.get("adSetTitle") or "").strip(),
-            "anuncio": str(r.get("adTitle") or "").strip(),
+            "campana": s_txt(r.get("campaignTitle")),
+            "conjunto": s_txt(r.get("adSetTitle")),
+            "anuncio": s_txt(r.get("adTitle")),
             "mensajes": int(s_num(r.get("messages"))),
             "clicks": int(s_num(r.get("clicks"))),
             "impresiones": int(s_num(r.get("impressions"))),
@@ -130,9 +216,48 @@ def leer_export(path, rol, fuente):
     return filas
 
 
-def llave(f):
-    return (f["ventana_ini"], f["producto_key"], f["conjunto"], f["anuncio"],
-            f["fuente"], f["rol_ventana"])
+def llaves(f):
+    """Identidades anti-duplicado de una fila.
+
+    Por `ad_id` cuando lo hay; por nombre siempre.
+
+    POR QUÉ CAMBIÓ (07-sep-2026). La llave era por NOMBRE (conjunto + anuncio), y el
+    nombre no es estable: el 06-sep se renombraron conjuntos Y ANUNCIOS a la convención
+    de ETAPA-6. Al re-bajar el 01-sep, 24 de 46 filas no encontraron su par —el CSV
+    decía "video Clearstem3", el export "ANTI-FALSIFICACION_VID_A ~ …"— y se habrían
+    anexado duplicadas: DOBLE CONTEO DE VENTAS en el P&L, en silencio.
+
+    El `ad_id` SÍ sobrevive al renombre: medido, los 45 del 01-sep en el CSV coinciden
+    con los 45 de la API. `_ALIAS_CONJUNTOS.csv` cubre conjuntos renombrados, pero no
+    existe un alias de ANUNCIOS — y con ad_id no hace falta.
+
+    Beneficio extra: la llave por nombre COLAPSABA filas legítimas distintas, porque
+    "LucidSales emite una fila por adId y un mismo anuncio corre con varios"
+    (DATA_PLAYBOOK). Esas filas se perdían como falsos duplicados.
+
+    Las ventas orgánicas comparten el literal `adId='organico'`, así que esas caen al
+    camino por nombre + producto_key: si dos productos venden orgánico el mismo día,
+    son dos filas distintas y deben seguir siéndolo.
+
+    DOS identidades, no una: la fila es duplicada si coincide por CUALQUIERA. Hace falta
+    porque ninguna sirve sola —
+      · por ad_id: 182 de las 200 filas de julio quedaron con el ad_id en notación
+        científica ("1.202566048665706e+17"), con la precisión ya perdida. Esos no
+        matchean nunca, y re-ingerir un histórico duplicaría todo.
+      · por nombre: no sobrevive a los renombrados del 06-sep.
+    Coincidir por cualquiera de las dos NUNCA duplica; a lo sumo descarta una fila
+    legítima que comparte nombre, que es el comportamiento que el sistema ya tenía.
+    Para un P&L, inflar ventas es peor que perder una fila conocida.
+    """
+    aid = str(f.get("ad_id") or "").strip()
+    sano = aid and aid.lower() != "organico" and "e+" not in aid.lower()
+    ks = []
+    if sano:
+        ks.append(("AD", f["ventana_ini"], f["fuente"], f["rol_ventana"], aid))
+    ks.append(("NOM", f["ventana_ini"], f["producto_key"], alias.canonico(f["conjunto"]),
+               f["anuncio"], f["fuente"], f["rol_ventana"],
+               aid.lower() if aid.lower() == "organico" else ""))
+    return ks
 
 
 def main():
@@ -153,7 +278,7 @@ def main():
             d = args[i]
             archivos += sorted(
                 os.path.join(d, f) for f in os.listdir(d)
-                if f.startswith("report-") and f.endswith(".xlsx")
+                if f.startswith("report-") and f.endswith((".xlsx", ".json"))
                 and not re.search(r"-[0-9a-f]{8}\.xlsx$", f)   # ignora copias con hash
             )
         else:
@@ -167,17 +292,20 @@ def main():
     if os.path.exists(FACT):
         with open(FACT, newline="", encoding="utf-8") as fh:
             existentes = list(csv.DictReader(fh))
-    ya = {llave(f) for f in existentes}
+    ya = set()
+    for f in existentes:
+        ya.update(llaves(f))
 
     nuevas, dup, resumen = [], 0, {}
     for path in archivos:
         filas = leer_export(path, rol, fuente)
         n_ok = 0
         for f in filas:
-            if llave(f) in ya:
+            ks = llaves(f)
+            if any(k in ya for k in ks):
                 dup += 1
                 continue
-            ya.add(llave(f))
+            ya.update(ks)
             nuevas.append(f)
             n_ok += 1
         d = fecha_de_nombre(path)
@@ -189,11 +317,15 @@ def main():
             "mensajes": sum(x["mensajes"] for x in filas),
         }
 
-    # verificación de JOIN contra _DIM_CONJUNTOS
+    # verificación de JOIN contra _DIM_CONJUNTOS, resolviendo RENOMBRADOS.
+    # Sin canonico() en LOS DOS lados, un conjunto renombrado en Meta se reporta como
+    # "sin dimensión" aunque su dimensión exista bajo el nombre viejo: falso positivo
+    # todas las noches, y un aviso que siempre miente entrena a ignorar los avisos.
+    # El mapeo es de alias.py — ningún consumidor escribe el suyo (regla de CLAUDE.md).
     dim = pd.read_csv(DIMC)
-    conocidos = set(dim["conjunto_meta"].astype(str).str.strip())
+    conocidos = {alias.canonico(c) for c in dim["conjunto_meta"].astype(str).str.strip()}
     sin_dim = sorted({f["conjunto"] for f in nuevas
-                      if f["conjunto"] and f["conjunto"] not in conocidos})
+                      if f["conjunto"] and alias.canonico(f["conjunto"]) not in conocidos})
 
     print(f"archivos: {len(archivos)} · filas nuevas: {len(nuevas)} · duplicados omitidos: {dup}")
     for d in sorted(resumen):
@@ -206,6 +338,29 @@ def main():
             print("   -", c)
     else:
         print("\n✅ JOIN con _DIM_CONJUNTOS cierra al 100%")
+
+    # GUARDARRAÍL DE SOLAPE. Cargar un export de RANGO (dias>1) con el mismo rol que los
+    # diarios ya cargados suma la misma venta dos veces: la fila del tramo y la del día.
+    # Por eso el control semanal de los lunes va con --rol CONTROL (DATA_PLAYBOOK).
+    solapes = []
+    for path in archivos:
+        ini, fin, dias = ventana_de_nombre(path)
+        if dias <= 1:
+            continue
+        chocan = {e["ventana_ini"] for e in existentes
+                  if e["rol_ventana"] == rol and e["fuente"] == fuente
+                  and e["dias"] == "1" and ini <= e["ventana_ini"] <= fin}
+        if chocan:
+            solapes.append((os.path.basename(path), dias, len(chocan), min(chocan), max(chocan)))
+    if solapes:
+        print()
+        for nom, dias, n, d0, d1 in solapes:
+            print(f"⛔ {nom} cubre {dias} días y ya hay {n} días sueltos cargados como "
+                  f"rol={rol} en ese rango ({d0}..{d1}).")
+        print("   Cargarlo así SUMA las mismas ventas dos veces. Si es el control "
+              "semanal, va con --rol CONTROL.")
+        if not dry:
+            raise SystemExit("   Abortado para no duplicar. Revisa el rol o el archivo.")
 
     if dry:
         print("\n[dry-run] no se escribió nada")

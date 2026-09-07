@@ -81,3 +81,10 @@ PRODUCTOS/.hook_csv_mtimes.json
 warehouse/vitalcom.duckdb
 warehouse/target/
 warehouse/logs/
+
+# ── SECRETOS ────────────────────────────────────────────────────
+# Las credenciales de LucidSales viven en ~/.config/lucidsales/.env, FUERA del
+# repo. Esto es la red de seguridad por si alguna vez alguien crea un .env aca.
+.env
+*.env
+!*.env.ejemplo
