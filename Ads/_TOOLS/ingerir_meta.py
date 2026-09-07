@@ -25,6 +25,17 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md §1):
   · Llave = nombre del conjunto EXACTO como quedo en Meta, con tildes y sufijos. No normalizar.
   · Escribe con csv writer real (regla 11 de CLAUDE.md). Backup previo en _ARCHIVO/backups_csv/.
   · Reporta el JOIN contra _DIM_CONJUNTOS.csv; un conjunto sin dimension se REPORTA, no se descarta.
+
+NIVEL ANUNCIO (06-sep-2026)
+---------------------------
+Si el export trae "Nombre del anuncio", el archivo se ingiere en DOS niveles de una sola pasada:
+  · _FACT_ENTREGA.csv          nivel conjunto, agregando los anuncios de cada conjunto (contrato intacto).
+  · _FACT_ENTREGA_ANUNCIO.csv  nivel anuncio, con la FIRMA parseada a sus 5 ejes.
+Sin el nivel anuncio la FASE 2 no mide nada: el CONCEPTO vive en el anuncio, y hasta hoy la
+entrega solo llegaba agregada por conjunto (el eje canonico_id estaba ciego en el 89.3% del gasto).
+La firma se lee del nombre — " ~ producto|angulo|concepto.canonico|NC|oferta|destino" — porque el
+ad_id llego corrupto en 2006 de 2475 filas historicas y el JOIN por id es irrecuperable.
+Un anuncio sin firma NO se descarta: entra con los ejes vacios y se cuenta como deuda.
 """
 import sys, io, os, re, csv, glob, shutil, datetime, warnings
 
@@ -37,9 +48,13 @@ warnings.filterwarnings("ignore")
 
 import pandas as pd
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from alias import canonico   # noqa: E402  (un renombrado en Meta no debe partir la serie)
+
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
 FACT = os.path.join(PROD, "_FACT_ENTREGA.csv")
+FACT_AD = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")
 DIMC = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
 BKDIR = os.path.join(BASE, "_ARCHIVO", "backups_csv")
 
@@ -64,6 +79,10 @@ COLS = ["ventana_ini", "ventana_fin", "dias", "producto_key", "cuenta_id", "cuen
         "campana", "conjunto", "mensajes", "clicks_totales", "link_clicks", "impresiones",
         "spend_usd", "pct_conv_clic_enlace", "fuente"]
 
+# El nivel anuncio lleva los mismos hechos mas el nombre y los 5 ejes que viajan en la firma.
+COLS_AD = (COLS[:8] + ["anuncio", "firma", "angulo_key", "concepto_key", "canonico_id",
+                       "nivel_conciencia", "oferta_key", "destino_key"] + COLS[8:])
+
 # nombre de columna -> las variantes que ha usado el exportador
 COLMAP = {
     "campana":     ["Nombre de la campaña"],
@@ -73,10 +92,42 @@ COLMAP = {
     "impresiones": ["Impresiones"],
     "link_clicks": ["Clics en el enlace"],
     "clicks_tot":  ["Clics (todos)"],
+    "anuncio":     ["Nombre del anuncio"],
     "conv_wa":     ["TASA DE CONVERSION A WHATSAPP", "TASA DE CONVERSIÓN A WHATSAPP"],
     "ini":         ["Inicio del informe"],
     "fin":         ["Fin del informe"],
 }
+
+
+EJES = ["angulo_key", "concepto_key", "canonico_id", "nivel_conciencia",
+        "oferta_key", "destino_key"]
+
+
+def parsear_firma(anuncio):
+    """'ANGULO_VID_A ~ PROD|ANG|C3.CN07|NC2|2X1|BOT_V1' -> (firma, {ejes}).
+
+    Sin firma devuelve ejes vacios: el dato entra igual y validar_parametros.py lo
+    cuenta como deuda. Descartarlo perderia el gasto, que es peor que no clasificarlo.
+    """
+    vacio = {e: "" for e in EJES}
+    txt = str(anuncio or "")
+    if " ~ " not in txt:
+        return "", vacio
+    f = txt.split(" ~ ", 1)[1].strip()
+    p = [x.strip() for x in f.split("|")]
+    if len(p) < 6:
+        p += [""] * (6 - len(p))
+    cc = p[2]
+    nc = p[3][2:] if p[3].upper().startswith("NC") else p[3]
+    limpio = lambda v: "" if v in ("?", "") else v
+    return f, {
+        "angulo_key":       limpio(p[1]),
+        "concepto_key":     limpio(cc.split(".")[0]),
+        "canonico_id":      limpio(cc.split(".")[1]) if "." in cc else "",
+        "nivel_conciencia": limpio(nc),
+        "oferta_key":       limpio(p[4]),
+        "destino_key":      limpio(p[5]),
+    }
 
 
 def col(df, key):
@@ -109,6 +160,8 @@ def producto_de(campana, conjunto, dim):
     k = str(conjunto or "").strip()
     if k in dim:
         return dim[k]
+    if canonico(k) in dim:
+        return dim[canonico(k)]
     txt = (str(campana or "") + "_" + str(conjunto or "")).upper()
     for pat, pk in PROD_KEY.items():
         if pat in txt:
@@ -117,16 +170,22 @@ def producto_de(campana, conjunto, dim):
 
 
 def leer_dim():
-    """conjunto_meta -> producto_key, y el set de conjuntos con angulo declarado."""
+    """conjunto_meta -> producto_key, y el set de conjuntos con angulo declarado.
+
+    Cada conjunto se indexa por su nombre tal cual y por su nombre canonico, para que un
+    export posterior a un renombrado siga cruzando contra la misma fila de dimension.
+    """
     dim, con_angulo = {}, set()
     if os.path.exists(DIMC):
         for r in csv.DictReader(open(DIMC, encoding="utf-8")):
             c = (r.get("conjunto_meta") or "").strip()
             if not c:
                 continue
-            dim[c] = r.get("producto_key") or "SIN_CLASIFICAR"
-            if (r.get("angulo_key") or "").strip():
-                con_angulo.add(c)
+            pk = r.get("producto_key") or "SIN_CLASIFICAR"
+            for k in {c, canonico(c)}:
+                dim[k] = pk
+                if (r.get("angulo_key") or "").strip():
+                    con_angulo.add(k)
     return dim, con_angulo
 
 
@@ -141,14 +200,14 @@ def procesar(path, dim):
     df = pd.read_excel(path)
     c_camp = col(df, "campana")
     if c_camp is None:
-        return None, f"sin columna de campana (columnas: {list(df.columns)[:4]}...)"
+        return None, None, f"sin columna de campana (columnas: {list(df.columns)[:4]}...)"
     c_ini, c_fin = col(df, "ini"), col(df, "fin")
     if c_ini is None or c_fin is None:
-        return None, "sin columnas 'Inicio/Fin del informe'"
+        return None, None, "sin columnas 'Inicio/Fin del informe'"
 
     det = df[df[c_camp].notna()].copy()          # descarta la fila de TOTAL DE CUENTA
     if det.empty:
-        return None, "sin filas de detalle"
+        return None, None, "sin filas de detalle"
 
     ini, fin = fecha(df[c_ini].iloc[0]), fecha(df[c_fin].iloc[0])
     dias = (datetime.date.fromisoformat(fin) - datetime.date.fromisoformat(ini)).days + 1
@@ -157,11 +216,13 @@ def procesar(path, dim):
     c_conj, c_div = col(df, "conjunto"), col(df, "divisa")
     c_sp, c_imp = col(df, "spend"), col(df, "impresiones")
     c_lc, c_ct, c_wa = col(df, "link_clicks"), col(df, "clicks_tot"), col(df, "conv_wa")
+    c_ad = col(df, "anuncio")               # presente solo en los exports nivel anuncio
 
-    out = []
+    filas = []
     for _, r in det.iterrows():
         conjunto = str(r[c_conj]).strip() if c_conj and pd.notna(r[c_conj]) else ""
         campana = str(r[c_camp]).strip()
+        anuncio = str(r[c_ad]).strip() if c_ad and pd.notna(r[c_ad]) else ""
         al = alias_de(conjunto, campana)
         sp = num(r[c_sp]) if c_sp else 0.0
         div = str(r[c_div]).strip().upper() if c_div and pd.notna(r[c_div]) else "USD"
@@ -169,20 +230,54 @@ def procesar(path, dim):
             sp = sp / TASA_COP_USD
         lc = int(num(r[c_lc])) if c_lc else 0
         wa = num(r[c_wa]) if c_wa else 0.0
-        out.append({
+        filas.append({
             "ventana_ini": ini, "ventana_fin": fin, "dias": dias,
             "producto_key": producto_de(campana, conjunto, dim),
             "cuenta_id": ALIAS.get(al, ""), "cuenta_alias": al,
-            "campana": campana, "conjunto": conjunto,
-            "mensajes": int(round(wa * lc)),
+            "campana": campana, "conjunto": conjunto, "anuncio": anuncio,
+            "mensajes_raw": wa * lc,
             "clicks_totales": int(num(r[c_ct])) if c_ct else 0,
             "link_clicks": lc,
             "impresiones": int(num(r[c_imp])) if c_imp else 0,
-            "spend_usd": round(sp, 2),
-            "pct_conv_clic_enlace": round(wa * 100, 1),
+            "spend_usd": sp,
             "fuente": fuente,
         })
-    return out, None
+
+    def cerrar(d):
+        """Redondea al final: sumar valores ya redondeados pierde mensajes."""
+        d = dict(d)
+        lc = d["link_clicks"]
+        d["mensajes"] = int(round(d.pop("mensajes_raw")))
+        d["pct_conv_clic_enlace"] = round(d["mensajes"] / lc * 100, 1) if lc else 0.0
+        d["spend_usd"] = round(d["spend_usd"], 2)
+        return d
+
+    # Nivel ANUNCIO: solo si el export lo trae. La firma sale del nombre, no de una tabla.
+    ads = []
+    if c_ad:
+        for d in filas:
+            f, ejes = parsear_firma(d["anuncio"])
+            ads.append({**cerrar(d), "firma": f, **ejes})
+
+    # Nivel CONJUNTO: si el export era nivel anuncio, se agrega; si no, ya viene asi.
+    # El contrato de _FACT_ENTREGA.csv no cambia, venga el export del nivel que venga.
+    if c_ad:
+        agg = {}
+        for d in filas:
+            k = (d["cuenta_alias"], d["campana"], d["conjunto"])
+            a = agg.setdefault(k, {**d, "mensajes_raw": 0.0, "clicks_totales": 0,
+                                    "link_clicks": 0, "impresiones": 0, "spend_usd": 0.0})
+            for c in ("mensajes_raw", "clicks_totales", "link_clicks", "impresiones", "spend_usd"):
+                a[c] += d[c]
+        base = list(agg.values())
+    else:
+        base = filas
+    out = []
+    for d in base:
+        d = cerrar(d)
+        d.pop("anuncio", None)
+        out.append({c: d[c] for c in COLS})
+    return out, ads, None
 
 
 def main():
@@ -206,9 +301,24 @@ def main():
     llaves = {(r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
                r["conjunto"], r["fuente"]) for r in existentes}
 
-    nuevas, dup, errores, sin_dim, sin_cuenta = [], 0, [], set(), set()
+    ads_ex = list(csv.DictReader(open(FACT_AD, encoding="utf-8"))) if os.path.exists(FACT_AD) else []
+    llaves_ad = {(r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
+                  r["conjunto"], r["anuncio"], r["fuente"]) for r in ads_ex}
+
+    nuevas, nuevos_ads, dup, dup_ad = [], [], 0, 0
+    errores, sin_dim, sin_cuenta, sin_firma = [], set(), set(), []
     for f in archivos:
-        filas, err = procesar(f, dim)
+        filas, ads, err = procesar(f, dim)
+        for r in (ads or []):
+            k = (r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
+                 r["conjunto"], r["anuncio"], r["fuente"])
+            if k in llaves_ad:
+                dup_ad += 1
+                continue
+            llaves_ad.add(k)
+            nuevos_ads.append(r)
+            if not r["firma"]:
+                sin_firma.append((r["anuncio"], r["spend_usd"]))
         if err:
             errores.append((os.path.basename(f), err))
             continue
@@ -221,7 +331,7 @@ def main():
                 continue
             llaves.add(k)
             nuevas.append(r)
-            if r["conjunto"] and r["conjunto"] not in con_angulo:
+            if r["conjunto"] and canonico(r["conjunto"]) not in con_angulo:
                 sin_dim.add(r["conjunto"])
             if not r["cuenta_alias"]:
                 sin_cuenta.add(r["campana"])
@@ -231,6 +341,11 @@ def main():
               f"${sum(x['spend_usd'] for x in agg):8.2f}")
 
     print(f"\narchivos: {len(archivos)} · filas nuevas: {len(nuevas)} · duplicados omitidos: {dup}")
+    if nuevos_ads or dup_ad:
+        print(f"nivel ANUNCIO: {len(nuevos_ads)} filas nuevas · {dup_ad} duplicados omitidos")
+    elif archivos and not errores:
+        print("! el export NO trae 'Nombre del anuncio': solo se cargo el nivel conjunto.")
+        print("  Bajalo desglosado por ANUNCIO o el eje CONCEPTO sigue ciego (FASE 2 no mide).")
     for f, e in errores:
         print(f"  ! {f}: {e}")
     if sin_cuenta:
@@ -243,22 +358,41 @@ def main():
     else:
         print("\nJOIN con _DIM_CONJUNTOS cierra al 100%")
 
+    if sin_firma:
+        gasto = sum(g for _, g in sin_firma)
+        print(f"\n! {len(sin_firma)} anuncios SIN FIRMA en el nombre (${gasto:.2f} de gasto sin ejes).")
+        print("  Se cargan igual y cuentan como deuda; el nombre se corrige en Meta, no aca.")
+        for a, g in sorted(sin_firma, key=lambda x: -x[1])[:8]:
+            print(f"    ${g:7.2f}  {a[:66]}")
+
     if dry:
         print("\n[dry-run] no se escribio nada.")
         return 0
-    if not nuevas:
+    if not nuevas and not nuevos_ads:
         print("\nnada que escribir.")
         return 0
 
     os.makedirs(BKDIR, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    shutil.copy2(FACT, os.path.join(BKDIR, f"_FACT_ENTREGA_{stamp}.csv"))
-    with open(FACT, "a", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=COLS)
-        for r in nuevas:
-            w.writerow(r)
-    print(f"\nescritas {len(nuevas)} filas en {os.path.relpath(FACT, BASE)}")
-    print(f"backup: _ARCHIVO/backups_csv/_FACT_ENTREGA_{stamp}.csv")
+    if nuevas:
+        shutil.copy2(FACT, os.path.join(BKDIR, f"_FACT_ENTREGA_{stamp}.csv"))
+        with open(FACT, "a", newline="", encoding="utf-8") as fh:
+            w = csv.DictWriter(fh, fieldnames=COLS)
+            for r in nuevas:
+                w.writerow(r)
+        print(f"\nescritas {len(nuevas)} filas en {os.path.relpath(FACT, BASE)}")
+        print(f"backup: _ARCHIVO/backups_csv/_FACT_ENTREGA_{stamp}.csv")
+    if nuevos_ads:
+        existe = os.path.exists(FACT_AD)
+        if existe:
+            shutil.copy2(FACT_AD, os.path.join(BKDIR, f"_FACT_ENTREGA_ANUNCIO_{stamp}.csv"))
+        with open(FACT_AD, "a" if existe else "w", newline="", encoding="utf-8") as fh:
+            w = csv.DictWriter(fh, fieldnames=COLS_AD)
+            if not existe:
+                w.writeheader()
+            for r in nuevos_ads:
+                w.writerow({c: r.get(c, "") for c in COLS_AD})
+        print(f"escritas {len(nuevos_ads)} filas en {os.path.relpath(FACT_AD, BASE)}")
     return 0
 
 

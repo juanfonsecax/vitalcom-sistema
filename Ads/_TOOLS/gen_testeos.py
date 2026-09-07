@@ -49,8 +49,13 @@ def f(x):
 
 
 def img64(rel):
+    # Un brazo sin creativo_ref no tiene imagen. Sin este corte, el join daba la
+    # carpeta del banco con barra al final, os.path.exists decia True (existe, es
+    # un directorio) y el open explotaba: gen_testeos.py no podia regenerarse.
+    if not rel:
+        return None
     p = os.path.join(BANCO, rel)
-    if not os.path.exists(p):
+    if not os.path.isfile(p):
         return None
     if not PORTABLE:
         return os.path.relpath(p, "PRODUCTOS").replace("\\", "/")

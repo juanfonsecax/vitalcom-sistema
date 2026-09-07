@@ -1,0 +1,262 @@
+{
+  "generado": "2026-09-07",
+  "version": 4,
+  "app": {
+    "titulo": "VitalCom Guatemala",
+    "subtitulo": "sistema de lanzamiento y optimización",
+    "salida": "VISTAS/APP.html",
+    "alias": [
+      "VISTAS/PANEL.html"
+    ],
+    "estado": "VISTAS/_ESTADO.json",
+    "vista_inicial": "decisiones",
+    "datos_productos": "PRODUCTOS/_LANZADOR.json",
+    "datos_decisiones": "PRODUCTOS/_DECISIONES.json",
+    "datos_blueprints": "Ads/_SWIPE/_BLUEPRINTS/CANONICOS"
+  },
+  "vista_inicial": "decisiones",
+  "secciones": [
+    {
+      "id": "decisiones",
+      "titulo": "CONTROL & DECISIONES",
+      "nota": "órdenes diarias de pausar, escalar o renovar por fatiga"
+    },
+    {
+      "id": "lanzar",
+      "titulo": "LANZADOR 1-CLIC",
+      "nota": "un producto por fila; consola de 7 pasos para lanzar"
+    },
+    {
+      "id": "creativos",
+      "titulo": "FÁBRICA CREATIVA",
+      "nota": "los 22 blueprints canónicos validados en Guatemala"
+    },
+    {
+      "id": "sistema",
+      "titulo": "SISTEMA & AUDITORÍA",
+      "nota": "salud del sistema, frescura y automatizaciones"
+    }
+  ],
+  "vistas": [
+    {
+      "id": "decisiones",
+      "seccion": "decisiones",
+      "rotulo": "Decisiones & Fatiga",
+      "sub": "órdenes diarias: pausar, escalar o renovar",
+      "tipo": "nativa",
+      "render": "decisiones",
+      "fuente": "PRODUCTOS/_DECISIONES.json",
+      "genera": "python Ads/_TOOLS/decidir.py",
+      "dueno": "decidir.py · motor unificado",
+      "caduca": {
+        "ok_dias": 1,
+        "tibia_dias": 3
+      },
+      "pesada": false,
+      "src": "../PRODUCTOS/_DECISIONES.json",
+      "estado": {
+        "existe": true,
+        "mtime": "2026-09-07",
+        "edad_dias": 0,
+        "clase": "ok",
+        "etiqueta": "hoy",
+        "chip": "c-good",
+        "detalle": "hoy · escrita 2026-09-07"
+      }
+    },
+    {
+      "id": "portafolio",
+      "seccion": "lanzar",
+      "rotulo": "Portafolio & Lanzador",
+      "sub": "consola de 7 pasos por producto (Fase 1 y 2 Lean)",
+      "tipo": "nativa",
+      "render": "portafolio",
+      "fuente": "PRODUCTOS/_LANZADOR.json",
+      "genera": "python Ads/_TOOLS/gen_lanzador.py",
+      "dueno": "gen_lanzador.py + planes etapa-6",
+      "caduca": {
+        "ok_dias": 1,
+        "tibia_dias": 4
+      },
+      "pesada": false,
+      "src": "../PRODUCTOS/_LANZADOR.json",
+      "estado": {
+        "existe": true,
+        "mtime": "2026-09-07",
+        "edad_dias": 0,
+        "clase": "ok",
+        "etiqueta": "hoy",
+        "chip": "c-good",
+        "detalle": "hoy · escrita 2026-09-07"
+      }
+    },
+    {
+      "id": "blueprints",
+      "seccion": "creativos",
+      "rotulo": "22 Blueprints Canónicos",
+      "sub": "estructuras ganadoras GT (TOFU, MOFU, BOFU)",
+      "tipo": "nativa",
+      "render": "blueprints",
+      "fuente": "Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
+      "genera": "python Ads/_TOOLS/agrupar_canonicos.py",
+      "dueno": "agrupar_canonicos.py · banco canónico GT",
+      "caduca": false,
+      "pesada": false,
+      "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
+      "estado": {
+        "existe": true,
+        "mtime": "2026-09-07",
+        "edad_dias": 0,
+        "clase": "ninguna",
+        "etiqueta": "",
+        "detalle": "no caduca · escrita 2026-09-07",
+        "chip": "c-neutro"
+      }
+    },
+    {
+      "id": "salud",
+      "seccion": "sistema",
+      "rotulo": "Salud del Sistema",
+      "sub": "frescura de datos, archivos y comandos CLI",
+      "tipo": "nativa",
+      "render": "salud",
+      "fuente": null,
+      "genera": "python Ads/_TOOLS/gen_app.py",
+      "dueno": "gen_app.py",
+      "caduca": false,
+      "pesada": false,
+      "src": null,
+      "estado": {
+        "existe": true,
+        "mtime": null,
+        "edad_dias": null,
+        "clase": "ninguna",
+        "etiqueta": "",
+        "detalle": "se calcula al generar la app",
+        "chip": "c-neutro"
+      }
+    }
+  ],
+  "salud": {
+    "al_dia": 2,
+    "envejecidas": 0,
+    "faltantes": 0,
+    "pendientes": [
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "cuenta publicitaria sin asignar",
+        "quien": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias",
+        "bloquea": true
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "page_id de la FanPage sin asignar",
+        "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
+        "bloquea": true
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 1 (CARA_CANSADA_QUITA): sin nivel_conciencia -> la firma sale con ? en NC",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 2 (PIEL_CAMBIO_40): sin nivel_conciencia -> la firma sale con ? en NC",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 3 (LIFTING_SIN_AGUJAS): sin nivel_conciencia -> la firma sale con ? en NC",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 4 (CREMAS_HACEN_NADA): sin avatar_edad -> corre en banda amplia 18-65+",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 4 (CREMAS_HACEN_NADA): sin nivel_conciencia -> la firma sale con ? en NC",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin avatar_edad -> corre en banda amplia 18-65+",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin nivel_conciencia -> la firma sale con ? en NC",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "conjunto 6 (REAFIRMA_OVALO_FACIAL): sin nivel_conciencia -> la firma sale con ? en NC",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "producto: page_id SIN ASIGNAR -> no se puede publicar",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Serum Colageno Botox",
+        "que": "producto: cuenta publicitaria SIN ASIGNAR",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      }
+    ],
+    "sin_plan": [
+      {
+        "producto": "Varicose Veins Ointment",
+        "estado": "PAUSADO",
+        "falta": [
+          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
+        ],
+        "quien": "etapa-6 — es el paso que falta siempre"
+      },
+      {
+        "producto": "Vitamina D3+K2",
+        "estado": "LISTO",
+        "falta": [
+          "sin break-even calculado",
+          "sin page_id de FanPage",
+          "sin cuenta publicitaria asignada",
+          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
+        ],
+        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
+      },
+      {
+        "producto": "Repelente Ultrasonico",
+        "estado": "LISTO",
+        "falta": [
+          "sin break-even calculado",
+          "sin page_id de FanPage",
+          "sin cuenta publicitaria asignada",
+          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
+        ],
+        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
+      },
+      {
+        "producto": "Ovulos Purity Hernatura",
+        "estado": "LISTO",
+        "falta": [
+          "sin break-even calculado",
+          "sin page_id de FanPage",
+          "sin cuenta publicitaria asignada",
+          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
+        ],
+        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
+      }
+    ]
+  }
+}

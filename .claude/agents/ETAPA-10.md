@@ -41,15 +41,21 @@ atributos explican la diferencia y cuáles son ruido. Su producto final es el **
   <producto>[producto_key o TODOS]</producto>
   <metricas_meta>[por ANUNCIO: gasto, impresiones, clics-enlace, conversaciones, frecuencia, CPM, CTR]</metricas_meta>
   <ventas>[PRODUCTOS/_FACT_VENTAS.csv — la fuente de verdad de la venta]</ventas>
-  <dim_creativos>[PRODUCTOS/_DIM_CREATIVOS.csv — atributos + canonico_id + estado]</dim_creativos>
+  <dim_anuncios>[PRODUCTOS/_DIM_ANUNCIOS.csv — LA TABLA DE ESTA ETAPA: un anuncio, una fila, sus 5 ejes]</dim_anuncios>
+  <dim_creativos>[PRODUCTOS/_DIM_CREATIVOS.csv — la pieza producida y su ciclo de vida]</dim_creativos>
   <dim_conjuntos>[PRODUCTOS/_DIM_CONJUNTOS.csv — el ángulo del conjunto]</dim_conjuntos>
+  <vocabulario>[PRODUCTOS/_DIM_VOCABULARIO.csv — qué valores son válidos en cada eje]</vocabulario>
 </input_etapa10>
 ```
 
-**Precondición dura — el JOIN.** El cruce se hace por el **nombre del anuncio** de la CONVENCIÓN DE
-NOMBRES (`ETAPA-6.md`) contra `creativo_id` de `_DIM_CREATIVOS.csv`. Si más del **20 %** del gasto
-de la ventana cae en anuncios que no cruzan, **se detiene y se reporta la brecha de cobertura** en
-vez de analizar: un análisis sobre el 60 % del gasto produce conclusiones que se contradicen sola
+**El modelo de ejes y el protocolo de una-variable-a-la-vez viven en
+`DOCTRINA/PARAMETRIZACION_ADS.md`. Esta etapa NO los repite: los ejecuta.**
+
+**Precondición dura — el GATE, no el JOIN a mano.** El cruce ya no se hace de memoria: lo hace
+`Ads/_TOOLS/sembrar_anuncios.py` por `(producto_key, anuncio_norm)` — nombre normalizado, réplicas
+`- Copia N` colapsadas (invariante 12: las réplicas se suman). Antes de analizar se corre
+**`python Ads/_TOOLS/validar_parametros.py`**; si sale exit 1, o si un eje aparece marcado
+`<-- eje ciego`, **se reporta la deuda de parametrización y se detiene**, en vez de analizar: un análisis sobre el 60 % del gasto produce conclusiones que se contradicen sola
 la semana siguiente (es el error que APR-056 ya documentó con el CPA por cuenta).
 
 ---
@@ -62,8 +68,23 @@ la semana siguiente (es el error que APR-056 ya documentó con el CPA por cuenta
 2. **Excluir los `SIN_ENTREGA`.** Anuncio con gasto acumulado < 30 % de su reparto prorrateado no
    entra al ranking: no perdió, **no se testeó**. Contarlo como perdedor mete sesgo de
    supervivencia en todo el aprendizaje acumulado.
-3. **Reportar la cobertura del JOIN:** `% del gasto de la ventana que cruza con _DIM_CREATIVOS`.
+3. **Correr el gate y reportar la deuda:** `python Ads/_TOOLS/validar_parametros.py`. Un eje con
+   >50 % del gasto sin clasificar es un **eje ciego**: no se opina sobre él, se reporta la deuda.
 4. **Marcar los ángulos vivos** de la ventana. El concepto se lee **dentro** de su ángulo.
+
+### PASO 0.5 — Los cortes los calcula el script, no el modelo
+
+```bash
+python Ads/_TOOLS/atribuir.py --eje angulo_key   --producto [P]
+python Ads/_TOOLS/atribuir.py --eje concepto_key --fijar angulo_key=[GANADOR]
+python Ads/_TOOLS/atribuir.py --matriz angulo_key canonico_id --producto [P]
+```
+
+El script ya aplica los tres frenos y **hay que respetar su veredicto literal**: `NO TESTEADO`
+(gasto < 1× Presupuesto de Decisión) no es un perdedor; `EMPATE ESTADÍSTICO` prohíbe declarar
+ganador; `no se puede separar de X` significa que el testeo estaba confundido y la lectura de ese
+eje **no se reporta**. El trabajo de esta etapa empieza donde termina el script: **interpretar**,
+no recalcular.
 
 ### PASO 1 — Ranking por CONCEPTO, con la regla de replicación
 

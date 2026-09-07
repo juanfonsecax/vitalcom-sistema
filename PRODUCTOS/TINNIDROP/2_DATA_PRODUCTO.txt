@@ -1,4 +1,4 @@
-═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id PENDIENTE (Sanarte) · campaign_id nuevo (re-testeo) / histórico 120251463036910595 (GTR 0) ═══
+═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id nuevo (re-testeo) / histórico 120251463036910595 (GTR 0) ═══
 PRODUCTO: Tinnidrop — spray natural para el alivio del tinnitus (zumbido/acúfeno). Producto importado, marca de empaque "South Meon". Se vende como "original".
 FECHA_PROCESADO: 2026-07-10
 VERSION: v1 (producto YA LANZADO antes de entrar al sistema — este archivo formaliza su ingreso + audita el testeo GTR0 que ya corrió)

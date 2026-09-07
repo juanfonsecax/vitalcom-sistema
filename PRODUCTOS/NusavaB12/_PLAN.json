@@ -1,0 +1,92 @@
+{
+  "schema": "plan/1",
+  "producto_key": "NUSAVA",
+  "fase": 1,
+  "version": "v1",
+  "origen": "Construido desde 2_DATA_PRODUCTO.txt de NusavaB12",
+  "pagina": {
+    "nombre": "GTR7 FanPage",
+    "page_id": "1218486924672725"
+  },
+  "oferta": {
+    "oferta_key": "2X1",
+    "precio_q": 219,
+    "texto": "2 frascos Q219 (oferta 2x1) · 4 frascos Q369 · Envío gratis · Pagás al recibir"
+  },
+  "concepto_control": {
+    "concepto_key": "C2_BENEFICIOS",
+    "variante": "ligera",
+    "canonico_id": "CN05_LISTA_BENEFICIOS"
+  },
+  "conjuntos": [
+    {
+      "n": 1,
+      "angulo_key": "ARDOR",
+      "angulo_titulo": "Ardor y hormigueo en pies y manos (neuropatía)",
+      "avatar_edad": "45-65",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "2",
+      "formato": "VIDEO",
+      "lleva_precio": true,
+      "archivo_creativo": "nusava_ardor.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "¿Sentís quemazón, pinchazos o adormecimiento en la planta de los pies al caminar o acostarte? 🦶🔥\n\nEse ardor suele ser señal de terminaciones nerviosas desgastadas por falta de Vitamina B12 activa.\n\nNusava B12 Líquida Sublingual entra directo al torrente sanguíneo:\n✅ Calma la sensación de fuego y hormigueo en los pies\n✅ Apoya la regeneración de la mielina nerviosa\n✅ Absorción 5 veces más rápida que las pastillas comunes\n\n🔴 SOLO POR HOY 2X1: 2 frascos por Q219 con envío gratis.\nEscribinos por WhatsApp y te lo enviamos a casa 👉"
+        ],
+        "titulos": [
+          "Ardor y dolor en pies",
+          "Alivio para neuropatía",
+          "Promo 2x1 Nusava B12"
+        ],
+        "descripcion": "Pagás en efectivo al recibir en casa 🏠"
+      }
+    },
+    {
+      "n": 2,
+      "angulo_key": "MEMORIA_NIEBLA",
+      "angulo_titulo": "Pérdida de memoria y concentración",
+      "avatar_edad": "45-65",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "2",
+      "formato": "VIDEO",
+      "lleva_precio": false,
+      "archivo_creativo": "nusava_memoria.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "¿Entrás a una habitación y olvidás a qué ibas? ¿Te cuesta encontrar las palabras? 🧠\n\nNo es solo la edad: el cerebro necesita Vitamina B12 para mantener la agilidad mental y los reflejos.\n\nUn gotero sublingual de Nusava B12 al día te ayuda a recuperar la lucidez y el enfoque que necesitás.\n\nConsultanos aquí 👉"
+        ],
+        "titulos": [
+          "Recuperá tu agilidad mental",
+          "Memoria y enfoque",
+          "B12 líquida sublingual"
+        ],
+        "descripcion": "Entrega en 24-48 horas a toda GT"
+      }
+    },
+    {
+      "n": 3,
+      "angulo_key": "FATIGA_CRONICA",
+      "angulo_titulo": "Cansancio extremo y falta de energía",
+      "avatar_edad": "35-55",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "1",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "NUSAVA_3_fatiga.jpg",
+      "prompt_imagen": "Creativo para Meta Ads 1080x1080 px. Persona adulta agotada frente al trabajo o volante. Gotero de Nusava B12 con líquido rojo rubí resplandeciente. Titular: '¿Te levantás cansado aunque duermas 8 horas?'. Banner '2x1 Q219'.",
+      "copy": {
+        "textos": [
+          "Te levantás sin energía, tomás café tras café y a las 2 de la tarde ya no podés con tu cuerpo.\n\nLa B12 es el combustible que tus células necesitan para producir energía real, no estimulantes pasajeros.\n\nSentí la diferencia desde la primera semana con Nusava B12 sublingual.\n\n🔴 Llevate 2 frascos por Q219 hoy mismo 👉"
+        ],
+        "titulos": [
+          "Energía real todo el día",
+          "Basta de fatiga constante",
+          "Oferta 2x1 Nusava B12"
+        ],
+        "descripcion": "Envío gratis y pago contra entrega"
+      }
+    }
+  ]
+}

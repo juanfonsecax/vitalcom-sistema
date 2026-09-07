@@ -118,12 +118,15 @@ ventana, **declaralo** y no atribuyas el resultado al ángulo.
 1. Auditoría en `PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_[YYYYMMDD].txt`.
 2. **Todo cambio que el operador ejecutó hoy va a `_EVENTOS.csv` con la fecha de hoy.** Un cambio
    sin evento es un cambio que después no se puede evaluar. Escribilo con `csv.writer` real.
-3. **ÚLTIMO PASO SIEMPRE** — regenerá el panel:
+3. **ÚLTIMO PASO SIEMPRE** — regenerá la app:
    ```bash
-   python "Ads/_TOOLS/gen_dashboard.py"
+   python "Ads/_TOOLS/gen_app.py" --todo
    ```
-   Emite `PRODUCTOS/_DASHBOARD.html` **y** `VISTAS/HOY.html` (la vista de una pantalla). Si el CSV
-   cambió y no regeneraste, el operador está mirando data vieja.
+   Un solo comando corre los 7 generadores declarados en `VISTAS/_MANIFIESTO.json` (dashboard,
+   `HOY.html`, testeos, estructura, conceptos, winners, catálogo), refresca el portafolio del
+   lanzador y reescribe `VISTAS/APP.html`, que es la única pantalla que el operador abre. Reporta
+   cuál falló, si alguno falla. Si el CSV cambió y no regeneraste, el operador está mirando data
+   vieja — y la app te lo va a decir con una insignia roja en la vista **Salud**.
 
 ---
 
@@ -150,7 +153,7 @@ Reglas del mensaje:
   cero ventas.
 - Nunca declares ganador ni mates un conjunto sobre una ventana incompleta.
 - Si algo contradice lo que el sistema creía, **decilo explícitamente** en vez de suavizarlo.
-- Cerrá con el link: `VISTAS/HOY.html` tiene la lista ejecutable completa.
+- Cerrá con el link: `VISTAS/APP.html` — abre en **Hoy**, con la lista ejecutable completa.
 
 **Solo lectura sobre Meta y LucidBot**: nunca cambies presupuestos ni estados. Recomendás; el
 operador ejecuta.

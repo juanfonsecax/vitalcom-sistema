@@ -1,0 +1,109 @@
+{
+ "_leeme": [
+  "EL SISTEMA FIJO. Este archivo declara la aplicación: qué vistas existen, en qué",
+  "orden se leen, de qué archivo sale cada una y quién la produce. NO contiene un solo",
+  "dato de producto — los productos entran por PRODUCTOS/_DIM_PRODUCTOS.csv y por los",
+  "_PLAN.json, y son la única cosa que varía de un lanzamiento a otro.",
+  "",
+  "Se edita a mano SOLO cuando el sistema cambia (una vista nueva, un generador que se",
+  "renombra). Lo consume Ads/_TOOLS/gen_app.py, que lo valida contra el disco y renderiza",
+  "VISTAS/APP.html. Si una fuente declarada acá no existe, la app lo dice en la vista",
+  "Salud con el nombre de quien la produce — nunca la esconde ni la inventa."
+ ],
+ "version": 4,
+ "app": {
+  "titulo": "VitalCom Guatemala",
+  "subtitulo": "sistema de lanzamiento y optimización",
+  "salida": "VISTAS/APP.html",
+  "alias": [
+   "VISTAS/PANEL.html"
+  ],
+  "estado": "VISTAS/_ESTADO.json",
+  "vista_inicial": "decisiones",
+  "datos_productos": "PRODUCTOS/_LANZADOR.json",
+  "datos_decisiones": "PRODUCTOS/_DECISIONES.json",
+  "datos_blueprints": "Ads/_SWIPE/_BLUEPRINTS/CANONICOS"
+ },
+ "secciones": [
+  {
+   "id": "decisiones",
+   "titulo": "CONTROL & DECISIONES",
+   "nota": "órdenes diarias de pausar, escalar o renovar por fatiga"
+  },
+  {
+   "id": "lanzar",
+   "titulo": "LANZADOR 1-CLIC",
+   "nota": "un producto por fila; consola de 7 pasos para lanzar"
+  },
+  {
+   "id": "creativos",
+   "titulo": "FÁBRICA CREATIVA",
+   "nota": "los 22 blueprints canónicos validados en Guatemala"
+  },
+  {
+   "id": "sistema",
+   "titulo": "SISTEMA & AUDITORÍA",
+   "nota": "salud del sistema, frescura y automatizaciones"
+  }
+ ],
+ "vistas": [
+  {
+   "id": "decisiones",
+   "seccion": "decisiones",
+   "rotulo": "Decisiones & Fatiga",
+   "sub": "órdenes diarias: pausar, escalar o renovar",
+   "tipo": "nativa",
+   "render": "decisiones",
+   "fuente": "PRODUCTOS/_DECISIONES.json",
+   "genera": "python Ads/_TOOLS/decidir.py",
+   "dueno": "decidir.py · motor unificado",
+   "caduca": {
+    "ok_dias": 1,
+    "tibia_dias": 3
+   },
+   "pesada": false
+  },
+  {
+   "id": "portafolio",
+   "seccion": "lanzar",
+   "rotulo": "Portafolio & Lanzador",
+   "sub": "consola de 7 pasos por producto (Fase 1 y 2 Lean)",
+   "tipo": "nativa",
+   "render": "portafolio",
+   "fuente": "PRODUCTOS/_LANZADOR.json",
+   "genera": "python Ads/_TOOLS/gen_lanzador.py",
+   "dueno": "gen_lanzador.py + planes etapa-6",
+   "caduca": {
+    "ok_dias": 1,
+    "tibia_dias": 4
+   },
+   "pesada": false
+  },
+  {
+   "id": "blueprints",
+   "seccion": "creativos",
+   "rotulo": "22 Blueprints Canónicos",
+   "sub": "estructuras ganadoras GT (TOFU, MOFU, BOFU)",
+   "tipo": "nativa",
+   "render": "blueprints",
+   "fuente": "Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
+   "genera": "python Ads/_TOOLS/agrupar_canonicos.py",
+   "dueno": "agrupar_canonicos.py · banco canónico GT",
+   "caduca": false,
+   "pesada": false
+  },
+  {
+   "id": "salud",
+   "seccion": "sistema",
+   "rotulo": "Salud del Sistema",
+   "sub": "frescura de datos, archivos y comandos CLI",
+   "tipo": "nativa",
+   "render": "salud",
+   "fuente": null,
+   "genera": "python Ads/_TOOLS/gen_app.py",
+   "dueno": "gen_app.py",
+   "caduca": false,
+   "pesada": false
+  }
+ ]
+}

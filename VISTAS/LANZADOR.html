@@ -1,0 +1,632 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lanzador · VitalCom</title><style>
+:root{
+  --ground:#F4F6FA; --surface:#FFFFFF; --line:#DDE2EC; --line-soft:#EBEEF5;
+  --ink:#1A2338; --ink-2:#5A657F; --ink-3:#8892A8;
+  --accent:#3B4E8C; --accent-soft:#EDF0F9;
+  --good:#1F7A4D; --good-bg:#E6F2EA;
+  --warn:#8A6100; --warn-bg:#F7EFDC;
+  --crit:#AE3A31; --crit-bg:#F8E8E6;
+  --radius:10px;
+  --serif:ui-serif,Georgia,'Iowan Old Style','Times New Roman',serif;
+  --sans:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:ui-monospace,'SF Mono','Cascadia Code','Roboto Mono',monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0E1220; --surface:#161B2C; --line:#2A3145; --line-soft:#212739;
+    --ink:#DFE4F0; --ink-2:#9BA5BF; --ink-3:#6E7893;
+    --accent:#93A6E0; --accent-soft:#1D2438;
+    --good:#5FBF8A; --good-bg:#152A20;
+    --warn:#D6A63F; --warn-bg:#2B2415;
+    --crit:#E0776C; --crit-bg:#2E1B19;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0E1220; --surface:#161B2C; --line:#2A3145; --line-soft:#212739;
+  --ink:#DFE4F0; --ink-2:#9BA5BF; --ink-3:#6E7893;
+  --accent:#93A6E0; --accent-soft:#1D2438;
+  --good:#5FBF8A; --good-bg:#152A20;
+  --warn:#D6A63F; --warn-bg:#2B2415;
+  --crit:#E0776C; --crit-bg:#2E1B19;
+}
+:root[data-theme="light"]{
+  --ground:#F4F6FA; --surface:#FFFFFF; --line:#DDE2EC; --line-soft:#EBEEF5;
+  --ink:#1A2338; --ink-2:#5A657F; --ink-3:#8892A8;
+  --accent:#3B4E8C; --accent-soft:#EDF0F9;
+  --good:#1F7A4D; --good-bg:#E6F2EA;
+  --warn:#8A6100; --warn-bg:#F7EFDC;
+  --crit:#AE3A31; --crit-bg:#F8E8E6;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);font-size:14.5px;
+  line-height:1.55;-webkit-font-smoothing:antialiased;display:grid;
+  grid-template-columns:250px 1fr;height:100vh;overflow:hidden}
+
+/* ── lateral ───────────────────────────────────────────── */
+aside{background:var(--surface);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;min-height:0;overflow-y:auto}
+.marca{padding:17px 16px 14px;border-bottom:1px solid var(--line-soft)}
+.marca h1{font-family:var(--serif);font-size:18px;margin:0;font-weight:600;letter-spacing:-.015em}
+.marca .sub{color:var(--ink-3);font-size:11.5px;font-family:var(--mono);margin-top:3px}
+.grupo{padding:13px 9px 4px}
+.grupo .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.11em;color:var(--ink-3);
+  padding:0 7px 7px;font-weight:600}
+button.nav{width:100%;text-align:left;background:none;border:0;border-radius:8px;
+  color:var(--ink-2);font:inherit;padding:8px 10px;cursor:pointer;display:block;
+  border-left:2px solid transparent;margin-bottom:1px}
+button.nav:hover{background:var(--accent-soft);color:var(--ink)}
+button.nav.on{background:var(--accent-soft);color:var(--ink);border-left-color:var(--accent)}
+button.nav .rot{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600}
+button.nav .sb{display:block;font-size:11px;color:var(--ink-3);font-weight:400;margin-top:1px}
+.punto{width:7px;height:7px;border-radius:50%;flex:none}
+.p-listo{background:var(--good)}.p-bloq{background:var(--crit)}.p-sin{background:var(--ink-3)}
+.p-vivo{background:var(--accent)}
+
+/* ── principal ─────────────────────────────────────────── */
+main{overflow-y:auto;min-height:0;padding:26px 30px 90px}
+.contenedor{max-width:920px}
+h2.tit{font-family:var(--serif);font-size:25px;margin:0 0 3px;font-weight:600;letter-spacing:-.02em}
+p.baja{color:var(--ink-2);margin:0 0 22px;font-size:13.5px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+  margin:0 0 16px;overflow:hidden}
+.card>header{padding:13px 17px;border-bottom:1px solid var(--line-soft);
+  display:flex;align-items:center;gap:10px}
+.card>header h3{margin:0;font-size:14px;font-weight:650;letter-spacing:.005em}
+.card>header .n{font-family:var(--mono);font-size:11px;color:var(--ink-3);
+  background:var(--accent-soft);border-radius:5px;padding:2px 7px;font-weight:600;flex:none}
+.card .cuerpo{padding:15px 17px}
+.card .cuerpo>*:first-child{margin-top:0}
+.card .cuerpo>*:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{font-size:11px;color:var(--ink-3);font-weight:650;text-transform:uppercase;
+  letter-spacing:.05em;border-bottom:1px solid var(--line)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.clic{cursor:pointer}
+tbody tr.clic:hover{background:var(--accent-soft)}
+.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12.5px}
+
+.mono{font-family:var(--mono);font-size:12.5px}
+.tenue{color:var(--ink-3)}
+.chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:650;
+  padding:2px 7px;border-radius:5px;letter-spacing:.03em;white-space:nowrap}
+.c-good{background:var(--good-bg);color:var(--good)}
+.c-warn{background:var(--warn-bg);color:var(--warn)}
+.c-crit{background:var(--crit-bg);color:var(--crit)}
+.c-neutro{background:var(--accent-soft);color:var(--ink-2)}
+
+/* ── el campo copiable: la pieza central de la app ─────── */
+.campo{display:flex;align-items:stretch;gap:0;border:1px solid var(--line);
+  border-radius:8px;overflow:hidden;margin:7px 0;background:var(--ground)}
+.campo .et{flex:none;width:118px;padding:9px 11px;font-size:11px;font-weight:650;
+  color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;
+  background:var(--surface);border-right:1px solid var(--line);display:flex;align-items:center}
+.campo .val{flex:1;padding:9px 12px;font-family:var(--mono);font-size:12.5px;
+  word-break:break-word;white-space:pre-wrap;display:flex;align-items:center;min-width:0}
+.campo .val.largo{white-space:pre-wrap;font-size:12px;line-height:1.6;max-height:250px;
+  overflow-y:auto;display:block;font-family:var(--sans)}
+.campo button.cp{flex:none;border:0;border-left:1px solid var(--line);background:var(--surface);
+  color:var(--ink-2);font:inherit;font-size:11.5px;font-weight:650;padding:0 14px;cursor:pointer;
+  letter-spacing:.02em}
+.campo button.cp:hover{background:var(--accent-soft);color:var(--accent)}
+.campo button.cp.hecho{background:var(--good-bg);color:var(--good)}
+
+/* ── checklist ─────────────────────────────────────────── */
+ul.chk{list-style:none;margin:0;padding:0}
+ul.chk li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;
+  border-bottom:1px solid var(--line-soft);font-size:13.5px}
+ul.chk li:last-child{border-bottom:0}
+ul.chk input{margin:3px 0 0;flex:none;width:15px;height:15px;accent-color:var(--accent);cursor:pointer}
+ul.chk li.ok label{color:var(--ink-3);text-decoration:line-through}
+ul.chk label{cursor:pointer}
+ul.chk .por{display:block;font-size:12px;color:var(--ink-3);margin-top:1px;text-decoration:none!important}
+
+.aviso{border-left:3px solid var(--warn);background:var(--warn-bg);color:var(--warn);
+  padding:11px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px}
+.aviso.malo{border-color:var(--crit);background:var(--crit-bg);color:var(--crit)}
+.aviso.bien{border-color:var(--good);background:var(--good-bg);color:var(--good)}
+.aviso b{font-weight:700}
+
+.barra{display:flex;gap:3px;margin:0 0 20px}
+.barra span{height:4px;flex:1;background:var(--line);border-radius:2px}
+.barra span.on{background:var(--accent)}
+
+.pasos{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 20px}
+.pasos button{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);
+  font:inherit;font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:20px;cursor:pointer}
+.pasos button:hover{border-color:var(--accent);color:var(--accent)}
+.pasos button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pasos button.done{border-color:var(--good);color:var(--good)}
+.pasos button.done.on{background:var(--good);border-color:var(--good);color:#fff}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:11px;margin:0 0 18px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:13px 15px}
+.kpi .v{font-size:21px;font-weight:680;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.kpi .k{color:var(--ink-3);font-size:11.5px;margin-top:2px;line-height:1.35}
+
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:var(--ground);padding:9px 18px;border-radius:20px;
+  font-size:13px;font-weight:600;opacity:0;transition:.2s;pointer-events:none;z-index:50}
+.toast.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.pie{margin:34px 0 0;padding-top:16px;border-top:1px solid var(--line);
+  font-size:12px;color:var(--ink-3);line-height:1.7}
+.pie code{font-family:var(--mono);font-size:11.5px;background:var(--accent-soft);
+  padding:1px 5px;border-radius:4px}
+a{color:var(--accent)}
+@media(max-width:860px){
+  body{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  aside{max-height:190px}
+  main{padding:18px 14px 70px}
+  .campo{flex-wrap:wrap}.campo .et{width:100%;border-right:0;border-bottom:1px solid var(--line)}
+}
+</style></head><body><aside><div class="marca"><h1>Lanzador</h1><div class="sub">VitalCom · 2026-09-07</div></div><nav id="nav"></nav></aside><main><div id="vista"></div></main><div class="toast" id="toast"></div><script type="application/json" id="datos">{"generado": "2026-09-07", "usd_por_conversacion_portafolio": 0.518, "estructura": {"1": {"nombre": "FASE 1 · ÁNGULOS", "mide": "el ÁNGULO", "forma": "6 conjuntos × 1 ángulo · ABO · concepto FIJO", "notacion": "6 conjuntos · ABO", "presupuesto": "PROTEGIDO", "decide": "VENTA, agregada por angulo_key", "campanas": 1, "por_que": "El ángulo se decide por VENTA, y Meta no ve ventas: ve clics y conversaciones. APR-002 lo midió en data propia — tinnidrop-1 hizo 78 % de conversación y 0 ventas; ANIMO la conversación más alta del portafolio y 0 ventas; ME DIJERON 23 % y es de los que más vende. En un 1-1-5 Meta repartiría por la métrica equivocada y mataría de hambre al ángulo que sí vende. Por eso cada ángulo lleva su propio presupuesto protegido.", "no_es": "El 1-1-5 NO va acá. Va en FASE 2, cuando el ángulo ya está validado."}, "2": {"nombre": "FASE 2 · CONCEPTOS", "mide": "el CREATIVO", "forma": "1-1-5 + 1-1-5 + 1-2-5 · ABO · ángulo FIJO", "notacion": "1-1-5 ×2 + 1-2-5 · ABO", "presupuesto": "LIBRE", "decide": "REPLICACIÓN: gana en 2 de 2", "campanas": 3, "por_que": "Acá el ángulo ya está validado y lo que se busca es qué ejecución visual entrega más barato. Para eso el criterio de Meta (CTR, CPM, conversación) SÍ está alineado con el objetivo, así que se le puede soltar el presupuesto. Es el 1-1-5 de la clase del 16-ago: «agarramos el ángulo y lo hacemos en varios conceptos, lanzamos campañas 115».", "no_es": "Corre en ABO, no en CBO. Calet probó CBO para testear creativos y lo abandonó: «siempre me tomaba un solo anuncio y me quedaba la duda, los cuatro anuncios restantes ¿dónde están?». En CBO Meta corona uno solo; en prueba de creativo pueden salir dos o tres ganadores."}, "3": {"nombre": "FASE 3 · ESCALADO", "mide": "volumen", "forma": "1-1-7 CBO (el ganador ×7)", "notacion": "1-1-7 · CBO", "presupuesto": "LIBRE", "decide": "CPA semanal sobre ENTREGADOS", "campanas": 1, "por_que": "Acá no se mide nada: se compra volumen con lo ya validado. Son 7 veces EL MISMO creativo ganador, no 7 creativos distintos. «115 para validar en ABO y después nos vamos con CBO para escalar» (clase 16-ago).", "no_es": "Con un solo conjunto, el CBO es funcionalmente idéntico al ABO — todo el presupuesto va a ese conjunto igual. El CBO recién significa algo en el 1-7-7."}}, "constantes": {"piso_presupuesto": 2.99, "techo_presupuesto": 3.95, "presupuesto_etapa2": 5.98, "factor_entrega": 0.8, "max_conjuntos_con_precio": 3}, "productos": [{"producto_key": "TINNIDROP", "nombre": "Tinnidrop Importado Original", "estado": "VIVO", "fase_csv": "ESCALADO", "cuenta": "GTR0", "cpa_be_q": 93.41, "historial": {"spend_usd": 3021.4, "ventas": 506, "mensajes": 5782, "cierre_pct": 8.8, "usd_por_conversacion": 0.523, "ultima_ventana": "2026-09-01"}, "cpa_acumulado_q": 45.5, "tiene_plan": true, "carpeta": "PRODUCTOS/TINNIDROP", "plan": {"producto_key": "TINNIDROP", "nombre": "Tinnidrop Importado Original", "estado": "VIVO", "cuenta": "GTR0", "cuenta_ok": true, "pagina": "Sanarte Guatemala", "page_id": "498977893288095", "fase": 1, "fase_nombre": "FASE 1 · ÁNGULOS", "fase_mide": "el ÁNGULO", "fase_forma": "6 conjuntos × 1 ángulo · ABO · concepto FIJO", "fase_notacion": "6 conjuntos · ABO", "fase_presupuesto": "PROTEGIDO", "fase_por_que": "El ángulo se decide por VENTA, y Meta no ve ventas: ve clics y conversaciones. APR-002 lo midió en data propia — tinnidrop-1 hizo 78 % de conversación y 0 ventas; ANIMO la conversación más alta del portafolio y 0 ventas; ME DIJERON 23 % y es de los que más vende. En un 1-1-5 Meta repartiría por la métrica equivocada y mataría de hambre al ángulo que sí vende. Por eso cada ángulo lleva su propio presupuesto protegido.", "fase_no_es": "El 1-1-5 NO va acá. Va en FASE 2, cuando el ángulo ya está validado.", "fase_decide": "VENTA, agregada por angulo_key", "economia": {"costo_q": 41.0, "precio_q": 179.0, "cpa_base_q": 30.8, "cpa_be_q": 93.41, "cpa_be_usd": 12.26, "tasa": 7.62}, "presupuesto": {"por_conjunto_usd": 3.66, "por_que": "7 × $0.523/conv observado", "etapa2_usd": 5.98, "total_dia_usd": 21.96, "dias_a_pd": 4.2}, "historial": {"spend_usd": 3021.4, "ventas": 506, "mensajes": 5782, "cierre_pct": 8.8, "usd_por_conversacion": 0.523, "ultima_ventana": "2026-09-01"}, "oferta": {"oferta_key": "ESCALERA", "precio_q": 179, "texto": "1u Q179 · 2u Q239 · 3u Q299 (la más elegida) · Envío gratis · Pagás al recibir"}, "concepto_control": {"concepto_key": "C2_BENEFICIOS", "variante": "ligera", "canonico_id": "CN05_LISTA_BENEFICIOS"}, "lanzamiento": {"fecha": "2026-09-08", "legible": "08-sep-2026", "hora": "4:00 AM"}, "campanas": [{"rol": "única", "nombre": "GTR0_TINNIDROP_TEST_20260908", "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp", "presupuesto": "ABO — el presupuesto vive en el conjunto"}], "conjuntos": [{"n": 1, "angulo_key": "ACCESIBILIDAD_MEDICO", "angulo_titulo": "Accesibilidad económica vs médico", "nombre": "GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_R1", "presupuesto_usd": 3.66, "presupuesto_centavos": 366, "banda_edad": "45-60", "banda_por_que": "derivada del avatar 45-60", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": true, "archivo_creativo": "tinnidrop_4.mp4", "prompt_imagen": null, "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|BOT_V1", "anuncios": [{"letra": "A", "nombre": "ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|BOT_V1"}, {"letra": "B", "nombre": "ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|BOT_V1"}], "copy": {"textos": ["¿Cansado de gastar en consultas que solo te dicen 'aprendé a vivir con el zumbido'? 😮‍💨\n\nEl zumbido en el oído desgasta, roba el sueño y altera los nervios.\n\nTinnidrop es un spray sublingual con extractos botánicos que apoyan la circulación auditiva y relajan la tensión del nervio.\n\n✅ Fácil aplicación 2 veces al día\n✅ Fórmula natural sin químicos agresivos\n✅ Miles de personas ya descansan en paz\n\nPedí hoy con envío gratis y pagás en efectivo al recibir 👉"], "titulos": ["Alivio para el zumbido", "No gastes de más", "Spray natural para oídos"], "descripcion": "Pagás en efectivo al recibir en casa 🏠"}}, {"n": 2, "angulo_key": "PERDIDA_AUDITIVA", "angulo_titulo": "Pérdida auditiva progresiva", "nombre": "GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1", "presupuesto_usd": 3.66, "presupuesto_centavos": 366, "banda_edad": "45-60", "banda_por_que": "derivada del avatar 45-60", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": false, "archivo_creativo": "tinnidrop_6.mp4", "prompt_imagen": null, "firma": "TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["Ese pitido constante no es solo molestia… es tu oído pidiendo auxilio.\n\nCon el tiempo el zumbido puede afectar la claridad con la que escuchás a tu familia.\n\nProtegé tu audición a tiempo con la fórmula de Tinnidrop:\n✅ Estimula el microflujo del canal auditivo\n✅ Calma el timbre constante\n✅ Apoya tu bienestar día y noche\n\nConsultá con una asesora por WhatsApp 👉"], "titulos": ["Cuidá tu audición", "El pitido tiene alivio", "Fórmula botánica"], "descripcion": "+5,000 clientes satisfechos en GT"}}, {"n": 3, "angulo_key": "NOCHES_SIN_DORMIR", "angulo_titulo": "Noches sin dormir por el pitido", "nombre": "GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1", "presupuesto_usd": 3.66, "presupuesto_centavos": 366, "banda_edad": "45-60", "banda_por_que": "derivada del avatar 45-60", "genero": "MIXTO", "formato": "IMAGEN", "lleva_precio": false, "archivo_creativo": "TINNIDROP_3_noches.jpg", "prompt_imagen": "Diseño publicitario 1080x1080 para Meta Ads, fotorrealista. Escena nocturna en habitación, persona de 50 años despierta en cama mirando el techo con molestia tocándose la oreja. Frasco de spray Tinnidrop en primer plano sobre mesa de noche bien iluminado. Texto claro: '¿El silencio de la noche te hace sonar más el oído?'. Colores azul noche y blanco, badge 'Pagá al recibir'.", "firma": "TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "NOCHES-SIN-DORMIR_IMG_A ~ TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "NOCHES-SIN-DORMIR_IMG_B ~ TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["Cuando todo se apaga en la noche… el pitido se vuelve insoportable. 🌑\n\nNo lográs conciliar el sueño y te levantás agotado al día siguiente.\n\nDos aplicaciones de Tinnidrop antes de acostarte ayudan a relajar la tensión auditiva para que vuelvas a descansar.\n\nEscribinos y conocé la oferta especial de hoy 👉"], "titulos": ["Volvé a dormir en silencio", "Alivio nocturno", "Descanso profundo"], "descripcion": "Envío gratis a toda Guatemala 🇬🇹"}}, {"n": 4, "angulo_key": "DETERIORO_COGNITIVO", "angulo_titulo": "Deterioro cognitivo y niebla mental", "nombre": "GTR0_TINNIDROP_DETERIORO-COGNITIVO_R1", "presupuesto_usd": 3.66, "presupuesto_centavos": 366, "banda_edad": "45-60", "banda_por_que": "derivada del avatar 45-60", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": false, "archivo_creativo": "tinnidrop_3.mp4", "prompt_imagen": null, "firma": "TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["El zumbido constante no te deja concentrarte ni pensar con claridad.\n\nEsa fatiga mental tiene solución apoyando la microcirculación cerebral y auditiva con Ginkgo Biloba y extractos naturales de Tinnidrop.\n\nMás enfoque, menos ruido de fondo.\nEscribinos hoy mismo 👉"], "titulos": ["Despejá tu mente", "Menos zumbido, más calma", "Apoyo auditivo"], "descripcion": "Tratamiento 100% natural"}}, {"n": 5, "angulo_key": "ME_DIJERON_NO_CURA", "angulo_titulo": "Me dijeron que no tiene cura", "nombre": "GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1", "presupuesto_usd": 3.66, "presupuesto_centavos": 366, "banda_edad": "45-60", "banda_por_que": "derivada del avatar 45-60", "genero": "MIXTO", "formato": "IMAGEN", "lleva_precio": true, "archivo_creativo": "TINNIDROP_5_medijeron.jpg", "prompt_imagen": "Creativo publicitario 1080x1080 px para Meta Ads. Frasco de Tinnidrop en primer plano con fondo médico desenfocado. Hook grande: '¿Te dijeron que tenías que acostumbrarte?'. Badge de oferta '2x1 Q239' y 'Envío gratis'. Estilo editorial limpio de salud.", "firma": "TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|BOT_V1", "anuncios": [{"letra": "A", "nombre": "ME-DIJERON-NO-CURA_IMG_A ~ TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|BOT_V1"}, {"letra": "B", "nombre": "ME-DIJERON-NO-CURA_IMG_B ~ TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|BOT_V1"}], "copy": {"textos": ["\"Aprendé a vivir con eso\"… la frase que nadie quiere escuchar. 💔\n\nAunque no haya soluciones mágicas, no tenés que resignarte al sufrimiento diario.\n\nMiles de guatemaltecos han reducido la intensidad del zumbido con Tinnidrop Spray.\n\n🔴 OFERTA LIMITADA: 2 frascos por Q239 con envío incluido.\nMandanos un mensaje y empezá tu tratamiento 👉"], "titulos": ["No te resignes al zumbido", "Alivio real garantizado", "Oferta especial 2x1"], "descripcion": "Pagás en efectivo al recibir"}}, {"n": 6, "angulo_key": "INGREDIENTES_NATURALES", "angulo_titulo": "Alivio natural sin químicos agresivos", "nombre": "GTR0_TINNIDROP_INGREDIENTES-NATURALES_R1", "presupuesto_usd": 3.66, "presupuesto_centavos": 366, "banda_edad": "45-60", "banda_por_que": "derivada del avatar 45-60", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": false, "archivo_creativo": "tinnidrop_1.mp4", "prompt_imagen": null, "firma": "TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "INGREDIENTES-NATURALES_VID_A ~ TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "INGREDIENTES-NATURALES_VID_B ~ TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["Cuidá tu salud sin someter a tu cuerpo a químicos pesados.\n\nTinnidrop combina Ginkgo Biloba, Ginseng y extractos botánicos puros para el confort del canal auditivo.\n\nFácil de aplicar, suave y efectivo.\nPreguntá por nuestras promociones aquí 👉"], "titulos": ["Fórmula botánica pura", "Sin químicos agresivos", "Alivio suave y natural"], "descripcion": "Entrega en 24 a 48 horas"}}], "calendario": [{"orden": 0, "dia": "Día 0", "fecha": "08-sep", "que": "Lanza a las 4 AM", "hace": "nada — no se toca nada más hoy", "manda": null}, {"orden": 1, "dia": "Días 1-2", "fecha": "09-sep → 10-sep", "que": "Meta está en aprendizaje", "hace": "observar clics-enlace y %conv. NO pausar, NO escalar", "manda": "nada — el reloj de ENTREGA es automático"}, {"orden": 3, "dia": "Día 3", "fecha": "11-sep", "que": "GATE 1 · corte por conversación", "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98", "manda": "export de Meta Ads Manager (no hace falta LucidSales)"}, {"orden": 4, "dia": "Día 4", "fecha": "12-sep", "que": "GATE 2 · validación", "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1", "manda": "export de LucidSales de 7 días"}, {"orden": 4.186656483513331, "dia": "Día 4.2", "fecha": "13-sep", "que": "PRESUPUESTO DE DECISIÓN alcanzado", "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición", "manda": "export de LucidSales"}, {"orden": 999, "dia": "Domingo", "fecha": "cada semana", "que": "ingesta principal", "hace": "el sistema decide qué se poda y qué se escala", "manda": "export de LucidSales de 7 días"}], "bloqueantes": [], "faltantes": [], "origen_plan": "Construido desde 2_DATA_PRODUCTO.txt y rendimiento histórico confirmado"}}, {"producto_key": "NUSAVA", "nombre": "NUSAVA B12", "estado": "VIVO", "fase_csv": "ESCALADO", "cuenta": "GTR7", "cpa_be_q": 92.64, "historial": {"spend_usd": 999.51, "ventas": 134, "mensajes": 2126, "cierre_pct": 6.3, "usd_por_conversacion": 0.47, "ultima_ventana": "2026-09-01"}, "cpa_acumulado_q": 56.84, "tiene_plan": true, "carpeta": "PRODUCTOS/NusavaB12", "plan": {"producto_key": "NUSAVA", "nombre": "NUSAVA B12", "estado": "VIVO", "cuenta": "GTR7", "cuenta_ok": true, "pagina": "GTR7 FanPage", "page_id": "1218486924672725", "fase": 1, "fase_nombre": "FASE 1 · ÁNGULOS", "fase_mide": "el ÁNGULO", "fase_forma": "6 conjuntos × 1 ángulo · ABO · concepto FIJO", "fase_notacion": "6 conjuntos · ABO", "fase_presupuesto": "PROTEGIDO", "fase_por_que": "El ángulo se decide por VENTA, y Meta no ve ventas: ve clics y conversaciones. APR-002 lo midió en data propia — tinnidrop-1 hizo 78 % de conversación y 0 ventas; ANIMO la conversación más alta del portafolio y 0 ventas; ME DIJERON 23 % y es de los que más vende. En un 1-1-5 Meta repartiría por la métrica equivocada y mataría de hambre al ángulo que sí vende. Por eso cada ángulo lleva su propio presupuesto protegido.", "fase_no_es": "El 1-1-5 NO va acá. Va en FASE 2, cuando el ángulo ya está validado.", "fase_decide": "VENTA, agregada por angulo_key", "economia": {"costo_q": 55.0, "precio_q": 219.0, "cpa_base_q": 30.8, "cpa_be_q": 92.64, "cpa_be_usd": 12.16, "tasa": 7.62}, "presupuesto": {"por_conjunto_usd": 3.29, "por_que": "7 × $0.470/conv observado", "etapa2_usd": 5.98, "total_dia_usd": 9.87, "dias_a_pd": 4.6}, "historial": {"spend_usd": 999.51, "ventas": 134, "mensajes": 2126, "cierre_pct": 6.3, "usd_por_conversacion": 0.47, "ultima_ventana": "2026-09-01"}, "oferta": {"oferta_key": "2X1", "precio_q": 219, "texto": "2 frascos Q219 (oferta 2x1) · 4 frascos Q369 · Envío gratis · Pagás al recibir"}, "concepto_control": {"concepto_key": "C2_BENEFICIOS", "variante": "ligera", "canonico_id": "CN05_LISTA_BENEFICIOS"}, "lanzamiento": {"fecha": "2026-09-08", "legible": "08-sep-2026", "hora": "4:00 AM"}, "campanas": [{"rol": "única", "nombre": "GTR7_NUSAVAB12_TEST_20260908", "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp", "presupuesto": "ABO — el presupuesto vive en el conjunto"}], "conjuntos": [{"n": 1, "angulo_key": "ARDOR", "angulo_titulo": "Ardor y hormigueo en pies y manos (neuropatía)", "nombre": "GTR7_NUSAVAB12_ARDOR_R1", "presupuesto_usd": 3.29, "presupuesto_centavos": 329, "banda_edad": "45-65", "banda_por_que": "derivada del avatar 45-65", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": true, "archivo_creativo": "nusava_ardor.mp4", "prompt_imagen": null, "firma": "NUSAVA|ARDOR|C2.CN05|NC2|2X1|BOT_V1", "anuncios": [{"letra": "A", "nombre": "ARDOR_VID_A ~ NUSAVA|ARDOR|C2.CN05|NC2|2X1|BOT_V1"}, {"letra": "B", "nombre": "ARDOR_VID_B ~ NUSAVA|ARDOR|C2.CN05|NC2|2X1|BOT_V1"}], "copy": {"textos": ["¿Sentís quemazón, pinchazos o adormecimiento en la planta de los pies al caminar o acostarte? 🦶🔥\n\nEse ardor suele ser señal de terminaciones nerviosas desgastadas por falta de Vitamina B12 activa.\n\nNusava B12 Líquida Sublingual entra directo al torrente sanguíneo:\n✅ Calma la sensación de fuego y hormigueo en los pies\n✅ Apoya la regeneración de la mielina nerviosa\n✅ Absorción 5 veces más rápida que las pastillas comunes\n\n🔴 SOLO POR HOY 2X1: 2 frascos por Q219 con envío gratis.\nEscribinos por WhatsApp y te lo enviamos a casa 👉"], "titulos": ["Ardor y dolor en pies", "Alivio para neuropatía", "Promo 2x1 Nusava B12"], "descripcion": "Pagás en efectivo al recibir en casa 🏠"}}, {"n": 2, "angulo_key": "MEMORIA_NIEBLA", "angulo_titulo": "Pérdida de memoria y concentración", "nombre": "GTR7_NUSAVAB12_MEMORIA-NIEBLA_R1", "presupuesto_usd": 3.29, "presupuesto_centavos": 329, "banda_edad": "45-65", "banda_por_que": "derivada del avatar 45-65", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": false, "archivo_creativo": "nusava_memoria.mp4", "prompt_imagen": null, "firma": "NUSAVA|MEMORIA_NIEBLA|C2.CN05|NC2|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "MEMORIA-NIEBLA_VID_A ~ NUSAVA|MEMORIA_NIEBLA|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "MEMORIA-NIEBLA_VID_B ~ NUSAVA|MEMORIA_NIEBLA|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["¿Entrás a una habitación y olvidás a qué ibas? ¿Te cuesta encontrar las palabras? 🧠\n\nNo es solo la edad: el cerebro necesita Vitamina B12 para mantener la agilidad mental y los reflejos.\n\nUn gotero sublingual de Nusava B12 al día te ayuda a recuperar la lucidez y el enfoque que necesitás.\n\nConsultanos aquí 👉"], "titulos": ["Recuperá tu agilidad mental", "Memoria y enfoque", "B12 líquida sublingual"], "descripcion": "Entrega en 24-48 horas a toda GT"}}, {"n": 3, "angulo_key": "FATIGA_CRONICA", "angulo_titulo": "Cansancio extremo y falta de energía", "nombre": "GTR7_NUSAVAB12_FATIGA-CRONICA_R1", "presupuesto_usd": 3.29, "presupuesto_centavos": 329, "banda_edad": "35-55", "banda_por_que": "derivada del avatar 35-55", "genero": "MIXTO", "formato": "IMAGEN", "lleva_precio": true, "archivo_creativo": "NUSAVA_3_fatiga.jpg", "prompt_imagen": "Creativo para Meta Ads 1080x1080 px. Persona adulta agotada frente al trabajo o volante. Gotero de Nusava B12 con líquido rojo rubí resplandeciente. Titular: '¿Te levantás cansado aunque duermas 8 horas?'. Banner '2x1 Q219'.", "firma": "NUSAVA|FATIGA_CRONICA|C2.CN05|NC1|2X1|BOT_V1", "anuncios": [{"letra": "A", "nombre": "FATIGA-CRONICA_IMG_A ~ NUSAVA|FATIGA_CRONICA|C2.CN05|NC1|2X1|BOT_V1"}, {"letra": "B", "nombre": "FATIGA-CRONICA_IMG_B ~ NUSAVA|FATIGA_CRONICA|C2.CN05|NC1|2X1|BOT_V1"}], "copy": {"textos": ["Te levantás sin energía, tomás café tras café y a las 2 de la tarde ya no podés con tu cuerpo.\n\nLa B12 es el combustible que tus células necesitan para producir energía real, no estimulantes pasajeros.\n\nSentí la diferencia desde la primera semana con Nusava B12 sublingual.\n\n🔴 Llevate 2 frascos por Q219 hoy mismo 👉"], "titulos": ["Energía real todo el día", "Basta de fatiga constante", "Oferta 2x1 Nusava B12"], "descripcion": "Envío gratis y pago contra entrega"}}], "calendario": [{"orden": 0, "dia": "Día 0", "fecha": "08-sep", "que": "Lanza a las 4 AM", "hace": "nada — no se toca nada más hoy", "manda": null}, {"orden": 1, "dia": "Días 1-2", "fecha": "09-sep → 10-sep", "que": "Meta está en aprendizaje", "hace": "observar clics-enlace y %conv. NO pausar, NO escalar", "manda": "nada — el reloj de ENTREGA es automático"}, {"orden": 3, "dia": "Día 3", "fecha": "11-sep", "que": "GATE 1 · corte por conversación", "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98", "manda": "export de Meta Ads Manager (no hace falta LucidSales)"}, {"orden": 4, "dia": "Día 4", "fecha": "12-sep", "que": "GATE 2 · validación", "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1", "manda": "export de LucidSales de 7 días"}, {"orden": 4.619103463130938, "dia": "Día 4.6", "fecha": "13-sep", "que": "PRESUPUESTO DE DECISIÓN alcanzado", "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición", "manda": "export de LucidSales"}, {"orden": 999, "dia": "Domingo", "fecha": "cada semana", "que": "ingesta principal", "hace": "el sistema decide qué se poda y qué se escala", "manda": "export de LucidSales de 7 días"}], "bloqueantes": [], "faltantes": [], "origen_plan": "Construido desde 2_DATA_PRODUCTO.txt de NusavaB12"}}, {"producto_key": "CLEARSTEM", "nombre": "Clearstem Mindbodyskin", "estado": "VIVO", "fase_csv": "DEFINICION", "cuenta": "GTR13", "cpa_be_q": 105.89, "historial": {"spend_usd": 1273.97, "ventas": 197, "mensajes": 1970, "cierre_pct": 10.0, "usd_por_conversacion": 0.647, "ultima_ventana": "2026-09-01"}, "cpa_acumulado_q": 49.28, "tiene_plan": true, "carpeta": "PRODUCTOS/CLEARSTEM", "plan": {"producto_key": "CLEARSTEM", "nombre": "Clearstem Mindbodyskin", "estado": "VIVO", "cuenta": "GTR13", "cuenta_ok": true, "pagina": "Belleza & Piel — Astrid García", "page_id": "823825257480758", "fase": 1, "fase_nombre": "FASE 1 · ÁNGULOS", "fase_mide": "el ÁNGULO", "fase_forma": "6 conjuntos × 1 ángulo · ABO · concepto FIJO", "fase_notacion": "6 conjuntos · ABO", "fase_presupuesto": "PROTEGIDO", "fase_por_que": "El ángulo se decide por VENTA, y Meta no ve ventas: ve clics y conversaciones. APR-002 lo midió en data propia — tinnidrop-1 hizo 78 % de conversación y 0 ventas; ANIMO la conversación más alta del portafolio y 0 ventas; ME DIJERON 23 % y es de los que más vende. En un 1-1-5 Meta repartiría por la métrica equivocada y mataría de hambre al ángulo que sí vende. Por eso cada ángulo lleva su propio presupuesto protegido.", "fase_no_es": "El 1-1-5 NO va acá. Va en FASE 2, cuando el ángulo ya está validado.", "fase_decide": "VENTA, agregada por angulo_key", "economia": {"costo_q": 57.0, "precio_q": 199.0, "cpa_base_q": 30.8, "cpa_be_q": 105.89, "cpa_be_usd": 13.9, "tasa": 7.62}, "presupuesto": {"por_conjunto_usd": 3.95, "por_que": "techo · 7 × $0.647/conv = $4.53, por encima del techo", "etapa2_usd": 5.98, "total_dia_usd": 23.7, "dias_a_pd": 4.4}, "historial": {"spend_usd": 1273.97, "ventas": 197, "mensajes": 1970, "cierre_pct": 10.0, "usd_por_conversacion": 0.647, "ultima_ventana": "2026-09-01"}, "oferta": {"oferta_key": "ESCALERA", "precio_q": 199, "texto": "1u Q199 · 2u Q299 (oferta irresistible) · 3u Q399 · Envío gratis · Pagás al recibir"}, "concepto_control": {"concepto_key": "C2_BENEFICIOS", "variante": "ligera", "canonico_id": "CN05_LISTA_BENEFICIOS"}, "lanzamiento": {"fecha": "2026-09-08", "legible": "08-sep-2026", "hora": "4:00 AM"}, "campanas": [{"rol": "única", "nombre": "GTR13_CLEARSTEM_TEST_20260908", "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp", "presupuesto": "ABO — el presupuesto vive en el conjunto"}], "conjuntos": [{"n": 1, "angulo_key": "RESISTENCIA_INSULINA", "angulo_titulo": "Acné hormonal y resistencia a la insulina (SOP)", "nombre": "GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R1", "presupuesto_usd": 3.95, "presupuesto_centavos": 395, "banda_edad": "25-40", "banda_por_que": "derivada del avatar 25-35", "genero": "MUJER", "formato": "IMAGEN", "lleva_precio": false, "archivo_creativo": "CLEARSTEM_1_hormonal.jpg", "prompt_imagen": "Creativo cuadrado 1080x1080 px para Meta Ads. Mujer latina 28 años mirándose la mandíbula con acné quístico hormonal, luz natural, fondo limpio. Tarro de Clearstem Mindbodyskin en primer plano. Texto: '¿Brotes en la mandíbula que no se van con cremas?'. Badge 'Regula desde adentro'.", "firma": "CLEARSTEM|RESISTENCIA_INSU|C2.CN05|NC1|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "RESISTENCIA-INSULINA_IMG_A ~ CLEARSTEM|RESISTENCIA_INSU|C2.CN05|NC1|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "RESISTENCIA-INSULINA_IMG_B ~ CLEARSTEM|RESISTENCIA_INSU|C2.CN05|NC1|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["¿Brotes inflamados en la mandíbula y cuello que empeoran antes de tu periodo? 😣\n\nEl acné hormonal no es suciedad exterior: es tu cuerpo pidiendo equilibrio interno (SOP, insulina, estrés).\n\nClearstem Mindbodyskin trabaja desde adentro:\n✅ Regula el exceso de sebo hormonal con DIM y Vitamina A\n✅ Desinflama sin dañar tu estómago\n✅ Piel más limpia y uniforme sin efecto rebote\n\nEscribinos y conocé el tratamiento natural 👉"], "titulos": ["Acné hormonal en mandíbula", "Regulá desde adentro", "Sin cremas que resecan"], "descripcion": "Tratamiento #1 para acné adulto"}}, {"n": 2, "angulo_key": "ANTI_FALSIFICACION", "angulo_titulo": "Cuidado con imitaciones baratas", "nombre": "GTR13_CLEARSTEM_ANTI-FALSIFICACION_R1", "presupuesto_usd": 3.95, "presupuesto_centavos": 395, "banda_edad": "25-40", "banda_por_que": "avatar 25-40 usado tal cual (no está en la tabla de derivación)", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": true, "archivo_creativo": "Clearstem3.mp4", "prompt_imagen": null, "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|ESCALERA|BOT_V1", "anuncios": [{"letra": "A", "nombre": "ANTI-FALSIFICACION_VID_A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|ESCALERA|BOT_V1"}, {"letra": "B", "nombre": "ANTI-FALSIFICACION_VID_B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|ESCALERA|BOT_V1"}], "copy": {"textos": ["Cuidado con lo que ponés en tu cuerpo. El Clearstem original viene sellado y con lote garantizado.\n\nNo arriesgues tu piel con productos sin registro.\n\n🔴 HOY: Frasco original con envío gratis y pagás al recibir en tus manos por Q199 (o 2 por Q299).\n\nPedí el tuyo directamente con nuestras asesoras autorizadas 👉"], "titulos": ["Original garantizado", "No compres imitaciones", "Fórmula auténtica"], "descripcion": "Pagás en efectivo al recibir 🏠"}}, {"n": 3, "angulo_key": "MEDICOS_FALLARON", "angulo_titulo": "Cuando las cremas y antibióticos fallaron", "nombre": "GTR13_CLEARSTEM_MEDICOS-FALLARON_R1", "presupuesto_usd": 3.95, "presupuesto_centavos": 395, "banda_edad": "25-40", "banda_por_que": "avatar 25-40 usado tal cual (no está en la tabla de derivación)", "genero": "MIXTO", "formato": "VIDEO", "lleva_precio": false, "archivo_creativo": "Clearstem2.mp4", "prompt_imagen": null, "firma": "CLEARSTEM|MEDICOS_FALLARON|C2.CN05|NC2|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "MEDICOS-FALLARON_VID_A ~ CLEARSTEM|MEDICOS_FALLARON|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "MEDICOS-FALLARON_VID_B ~ CLEARSTEM|MEDICOS_FALLARON|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["Probaste jabones, ácidos, antibióticos y peelings… y a las dos semanas los granos vuelven. 😮‍💨\n\nPorque el acné persistente casi siempre viene del hígado, intestino y hormonas.\n\nClearstem ataca la raíz con antioxidantes y nutrientes específicos que limpian tu organismo desde el interior.\n\nMandanos un mensaje y recuperá la confianza en tu rostro 👉"], "titulos": ["Atacá la raíz del acné", "Basta de efecto rebote", "Resultados desde adentro"], "descripcion": "Envío a toda Guatemala"}}, {"n": 4, "angulo_key": "DOLOR_EMOCIONAL_MASCULINO", "angulo_titulo": "Acné en hombres y mandíbula", "nombre": "GTR13_CLEARSTEM_DOLOR-EMOCIONAL-MASCULINO_R1", "presupuesto_usd": 3.95, "presupuesto_centavos": 395, "banda_edad": "25-40", "banda_por_que": "derivada del avatar 25-35", "genero": "HOMBRE", "formato": "VIDEO", "lleva_precio": false, "archivo_creativo": "Clearstem13.mp4", "prompt_imagen": null, "firma": "CLEARSTEM|DOLOR_EMOCIONAL_|C2.CN05|NC2|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "DOLOR-EMOCIONAL-MASCULINO_VID_A ~ CLEARSTEM|DOLOR_EMOCIONAL_|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "DOLOR-EMOCIONAL-MASCULINO_VID_B ~ CLEARSTEM|DOLOR_EMOCIONAL_|C2.CN05|NC2|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["Tener acné después de los 25 desgasta la seguridad de cualquier hombre.\n\nEvitás fotos, te molesta al afeitarte y las cremas te dejan la cara grasosa.\n\nClearstem se toma en cápsulas y regula la producción de grasa desde el origen. Simple, sin rutinas complicadas de 5 pasos.\n\nConsultanos por WhatsApp de forma privada 👉"], "titulos": ["Acné masculino adulto", "Sin cremas grasosas", "Firmeza y piel limpia"], "descripcion": "Asesoría privada por WhatsApp"}}, {"n": 5, "angulo_key": "TESTIMONIO_RADICAL", "angulo_titulo": "Testimonio radical de transformación", "nombre": "GTR13_CLEARSTEM_TESTIMONIO-RADICAL_R1", "presupuesto_usd": 3.95, "presupuesto_centavos": 395, "banda_edad": "30-40", "banda_por_que": "avatar 30-40 usado tal cual (no está en la tabla de derivación)", "genero": "MUJER", "formato": "VIDEO", "lleva_precio": true, "archivo_creativo": "Clearstem10.mp4", "prompt_imagen": null, "firma": "CLEARSTEM|TESTIMONIO_RADIC|C2.CN05|NC3A|ESCALERA|BOT_V1", "anuncios": [{"letra": "A", "nombre": "TESTIMONIO-RADICAL_VID_A ~ CLEARSTEM|TESTIMONIO_RADIC|C2.CN05|NC3A|ESCALERA|BOT_V1"}, {"letra": "B", "nombre": "TESTIMONIO-RADICAL_VID_B ~ CLEARSTEM|TESTIMONIO_RADIC|C2.CN05|NC3A|ESCALERA|BOT_V1"}], "copy": {"textos": ["\"Pensé que a mis 30 años ya no me iba a quitar el acné nunca… hasta que limpié mi organismo por dentro\". ✨\n\nDescubrí por qué miles de personas ya dejaron de ocultarse tras el maquillaje.\n\nLlevate el tratamiento de 2 meses por solo Q299 con envío gratis.\nEscribinos ahora 👉"], "titulos": ["Testimonio real de cambio", "Piel sana a los 30+", "Promo 2 frascos Q299"], "descripcion": "Garantía de satisfacción"}}, {"n": 6, "angulo_key": "EJE_INTESTINO_PIEL", "angulo_titulo": "El eje intestino-piel", "nombre": "GTR13_CLEARSTEM_EJE-INTESTINO-PIEL_R1", "presupuesto_usd": 3.95, "presupuesto_centavos": 395, "banda_edad": "25-45", "banda_por_que": "derivada del avatar 25-45", "genero": "MIXTO", "formato": "IMAGEN", "lleva_precio": false, "archivo_creativo": "CLEARSTEM_6_intestino.jpg", "prompt_imagen": "Infografía visual 1080x1080 px para Meta Ads. Conexión gráfica limpia entre salud digestiva y piel del rostro. Ilustración médica sutil con el frasco de Clearstem. Titular: 'Si tu digestión está inflamada, tu piel también lo estará'.", "firma": "CLEARSTEM|EJE_INTESTINO_PI|C2.CN05|NC1|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "EJE-INTESTINO-PIEL_IMG_A ~ CLEARSTEM|EJE_INTESTINO_PI|C2.CN05|NC1|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "EJE-INTESTINO-PIEL_IMG_B ~ CLEARSTEM|EJE_INTESTINO_PI|C2.CN05|NC1|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["¿Sabías que la inflamación intestinal se refleja directo en tu piel como acné y enrojecimiento? 🧬\n\nLos ingredientes digestivos y antioxidantes de Clearstem apoyan tu flora y limpian tu piel al mismo tiempo.\n\nPedí información aquí 👉"], "titulos": ["Salud intestinal y piel", "Desinflamá desde adentro", "Piel limpia y sana"], "descripcion": "Envío gratis a todo el país"}}], "calendario": [{"orden": 0, "dia": "Día 0", "fecha": "08-sep", "que": "Lanza a las 4 AM", "hace": "nada — no se toca nada más hoy", "manda": null}, {"orden": 1, "dia": "Días 1-2", "fecha": "09-sep → 10-sep", "que": "Meta está en aprendizaje", "hace": "observar clics-enlace y %conv. NO pausar, NO escalar", "manda": "nada — el reloj de ENTREGA es automático"}, {"orden": 3, "dia": "Día 3", "fecha": "11-sep", "que": "GATE 1 · corte por conversación", "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98", "manda": "export de Meta Ads Manager (no hace falta LucidSales)"}, {"orden": 4, "dia": "Día 4", "fecha": "12-sep", "que": "GATE 2 · validación", "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1", "manda": "export de LucidSales de 7 días"}, {"orden": 4.397571347885312, "dia": "Día 4.4", "fecha": "13-sep", "que": "PRESUPUESTO DE DECISIÓN alcanzado", "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición", "manda": "export de LucidSales"}, {"orden": 999, "dia": "Domingo", "fecha": "cada semana", "que": "ingesta principal", "hace": "el sistema decide qué se poda y qué se escala", "manda": "export de LucidSales de 7 días"}], "bloqueantes": [], "faltantes": [], "origen_plan": "Construido desde 2_DATA_PRODUCTO.txt y 1_HACER_MANUAL.txt de CLEARSTEM"}}, {"producto_key": "VARICOSE", "nombre": "Varicose Veins Ointment", "estado": "PAUSADO", "fase_csv": "ESCALADO", "cuenta": "GTR7", "cpa_be_q": 89.88, "historial": {"spend_usd": 308.77, "ventas": 47, "mensajes": 946, "cierre_pct": 5.0, "usd_por_conversacion": 0.326, "ultima_ventana": "2026-08-16"}, "cpa_acumulado_q": 50.06, "tiene_plan": false, "carpeta": "PRODUCTOS/VARICOSE", "plan": null, "falta_para_plan": [{"que": "sin _PLAN.json (ángulos, prompts y copies estructurados)", "quien": "etapa-6 — es el paso que falta siempre"}]}, {"producto_key": "VITAMINA D3+K2", "nombre": "Vitamina D3+K2", "estado": "LISTO", "fase_csv": null, "cuenta": "PENDIENTE", "cpa_be_q": null, "historial": null, "cpa_acumulado_q": null, "tiene_plan": false, "carpeta": "PRODUCTOS/VITAMINA D3+K2", "plan": null, "falta_para_plan": [{"que": "sin break-even calculado", "quien": "etapa-1 (costear.py)"}, {"que": "sin page_id de FanPage", "quien": "etapa-fanpage"}, {"que": "sin cuenta publicitaria asignada", "quien": "operador"}, {"que": "sin _PLAN.json (ángulos, prompts y copies estructurados)", "quien": "etapa-6 — es el paso que falta siempre"}]}, {"producto_key": "Repelente_Ultrasonico", "nombre": "Repelente Ultrasonico", "estado": "LISTO", "fase_csv": null, "cuenta": "PENDIENTE", "cpa_be_q": null, "historial": null, "cpa_acumulado_q": null, "tiene_plan": false, "carpeta": "PRODUCTOS/Repelente_Ultrasonico", "plan": null, "falta_para_plan": [{"que": "sin break-even calculado", "quien": "etapa-1 (costear.py)"}, {"que": "sin page_id de FanPage", "quien": "etapa-fanpage"}, {"que": "sin cuenta publicitaria asignada", "quien": "operador"}, {"que": "sin _PLAN.json (ángulos, prompts y copies estructurados)", "quien": "etapa-6 — es el paso que falta siempre"}]}, {"producto_key": "SERUM_COLAGENO_BOTOX", "nombre": "Serum Colageno Botox", "estado": "LISTO", "fase_csv": null, "cuenta": "PENDIENTE", "cpa_be_q": 71.56, "historial": null, "cpa_acumulado_q": null, "tiene_plan": true, "carpeta": "PRODUCTOS/SERUM_COLAGENO_BOTOX", "plan": {"producto_key": "SERUM_COLAGENO_BOTOX", "nombre": "Serum Colageno Botox", "estado": "LISTO", "cuenta": "PENDIENTE", "cuenta_ok": false, "pagina": "4 ✨ Belleza & Piel — Astrid García (especialista en belleza natural)", "page_id": null, "fase": 1, "fase_nombre": "FASE 1 · ÁNGULOS", "fase_mide": "el ÁNGULO", "fase_forma": "6 conjuntos × 1 ángulo · ABO · concepto FIJO", "fase_notacion": "6 conjuntos · ABO", "fase_presupuesto": "PROTEGIDO", "fase_por_que": "El ángulo se decide por VENTA, y Meta no ve ventas: ve clics y conversaciones. APR-002 lo midió en data propia — tinnidrop-1 hizo 78 % de conversación y 0 ventas; ANIMO la conversación más alta del portafolio y 0 ventas; ME DIJERON 23 % y es de los que más vende. En un 1-1-5 Meta repartiría por la métrica equivocada y mataría de hambre al ángulo que sí vende. Por eso cada ángulo lleva su propio presupuesto protegido.", "fase_no_es": "El 1-1-5 NO va acá. Va en FASE 2, cuando el ángulo ya está validado.", "fase_decide": "VENTA, agregada por angulo_key", "economia": {"costo_q": 33.0, "precio_q": 179.0, "cpa_base_q": 30.8, "cpa_be_q": 71.56, "cpa_be_usd": 9.39, "tasa": 7.62}, "presupuesto": {"por_conjunto_usd": 3.63, "por_que": "7 × $0.518/conv observado", "etapa2_usd": 5.98, "total_dia_usd": 21.78, "dias_a_pd": 3.2}, "historial": null, "oferta": {"oferta_key": "2X1", "precio_q": 179, "texto": "SOLO HOY 2x1 → 2 frascos Q179 · envío gratis · pagás al recibir"}, "concepto_control": {"concepto_key": "C2_BENEFICIOS", "variante": "ligera", "canonico_id": "CN05_LISTA_BENEFICIOS"}, "lanzamiento": {"fecha": "2026-09-08", "legible": "08-sep-2026", "hora": "4:00 AM"}, "campanas": [{"rol": "única", "nombre": "[CUENTA]_SERUM_TEST_20260908", "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp", "presupuesto": "ABO — el presupuesto vive en el conjunto"}], "conjuntos": [{"n": 1, "angulo_key": "CARA_CANSADA_QUITA", "angulo_titulo": "Cara cansada que no se quita", "nombre": "[CUENTA]_SERUM_CARA-CANSADA-QUITA_R1", "presupuesto_usd": 3.63, "presupuesto_centavos": 363, "banda_edad": "35-50", "banda_por_que": "derivada del avatar 35-45", "genero": "MUJER", "formato": "IMAGEN", "lleva_precio": false, "archivo_creativo": "SERUM_COLAGENO_BOTOX_1_caracansada.jpg", "prompt_imagen": "Actúa como diseñador experto en e-commerce y creativos de alta conversión para Meta Ads. Genera un creativo CUADRADO 1080x1080 px (y adaptaciones 4:5 y 9:16), fotorrealista, profesional, que se venda en menos de 3 segundos y NO parezca generado por IA.\nADJUNTO: foto del producto — frasco/dosificador morado-púrpura con tapa plateada, etiqueta blanca y morada \"BOTOX COLLAGEN\", serum facial 120ml.\n- MARCA (esquina superior, discreta y legible): \"Belleza & Piel\"\n- HOOK grande (máx 2 líneas, palabra clave en morado): \"¿Dormís bien pero seguís viéndote cansada?\"\n- PRODUCTO protagonista y grande: el frasco morado nítido, bien iluminado, dominante, con glow púrpura suave.\n- ESCENA: rostro de mujer latina real 35-45 años, luz natural, piel luminosa y descansada mirando hacia el producto (no comparación bilateral antes/después).\n- BENEFICIO (texto mediano): \"No es el sueño. Es tu piel pidiendo colágeno.\"\n- Badges pequeños: \"COLÁGENO + PÉPTIDOS\", \"PAGÁS AL RECIBIR\", \"+10,000 clientas\"\n- CTA (botón morado redondeado): \"Escribinos hoy 👉\"\nPALETA: morado/púrpura + plateado + blanco cálido, derivados de la etiqueta. Tipografía sans-serif moderna, bold en el hook. Texto total < 20% del área, legible en celular.\nCOMPLIANCE: nada de \"cura/elimina\"; sin antes/después corporal bilateral; sin promesas de tiempo imposibles. Estética aspiracional y estética de belleza (no clínica-plana). Entregar 1:1 y describir adaptaciones 4:5 y 9:16.", "firma": "SERUM_COLA|CARA_CANSADA_QUI|C2.CN05|?|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "CARA-CANSADA-QUITA_IMG_A ~ SERUM_COLA|CARA_CANSADA_QUI|C2.CN05|?|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "CARA-CANSADA-QUITA_IMG_B ~ SERUM_COLA|CARA_CANSADA_QUI|C2.CN05|?|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["¿Dormís tus 8 horas y aun así te ves cansada en el espejo? 😮‍💨\n\nNo siempre es el sueño.\nCon los años tu piel pierde colágeno y agua…\ny ahí llega esa cara apagada que no se va con maquillaje.\n\nEste serum de colágeno con efecto lifting devuelve firmeza y luz:\n✅ Reactiva el colágeno de tu piel\n✅ Hidrata en profundidad, no solo por encima\n✅ Rostro más terso y descansado\n\nMiles de mujeres ya lo notan.\nEscribinos hoy y te contamos cómo empezar 👉", "No sos vos… es tu piel pidiendo colágeno.\n\nTe ves al espejo y ya no reconocés ese brillo de antes.\nLa piel se siente floja, opaca, cansada.\n\nNo es falta de descanso.\nDespués de cierta edad tu piel produce menos colágeno y retiene menos agua.\n\nNuestro serum efecto lifting lo repone donde se perdió:\nfirmeza, hidratación y esa luz que creías perdida.\n\nVolvé a verte como te sentís por dentro.\nMandanos un mensaje y te orientamos 👉", "\"Me veía cansada aunque durmiera bien\" — así empiezan casi todas.\n\nY en 2-3 semanas nos escriben distinto:\npiel más firme, más luminosa, más descansada.\n\nEs el poder del colágeno hidrolizado + péptidos que reactivan tu piel desde adentro.\n\n+10,000 mujeres guatemaltecas ya lo usan.\nPreguntanos cómo te puede ayudar a vos 👉"], "titulos": ["Adiós cara cansada", "No es el sueño", "Colágeno + luz"], "descripcion": "+10,000 clientas felices ⭐"}}, {"n": 2, "angulo_key": "PIEL_CAMBIO_40", "angulo_titulo": "Tu piel cambió a los 40", "nombre": "[CUENTA]_SERUM_PIEL-CAMBIO-40_R1", "presupuesto_usd": 3.63, "presupuesto_centavos": 363, "banda_edad": "45-55", "banda_por_que": "derivada del avatar 45-55", "genero": "MUJER", "formato": "IMAGEN", "lleva_precio": false, "archivo_creativo": "SERUM_COLAGENO_BOTOX_2_piel40.jpg", "prompt_imagen": "Actúa como diseñador experto en creativos de alta conversión para Meta Ads. Genera un creativo 1080x1080 px (y 4:5, 9:16), fotorrealista, premium, que venda en 3 segundos y no parezca IA.\nADJUNTO: frasco serum morado-púrpura con tapa plateada, etiqueta \"BOTOX COLLAGEN\", 120ml.\n- MARCA (arriba, discreta): \"Belleza & Piel\"\n- HOOK grande (palabra clave en morado): \"¿Sentís que tu piel cambió de un año a otro?\"\n- PRODUCTO grande y protagonista, glow púrpura, sobre superficie clara elegante.\n- ESCENA: mujer latina 45-55 años, elegante, piel firme y luminosa, expresión serena y segura, mirando el producto.\n- BENEFICIO: \"Después de los 40 tu piel produce menos colágeno. Reponelo.\"\n- Badges: \"REAFIRMA\", \"HIDRATA\", \"COLÁGENO HIDROLIZADO\"\n- CTA (botón morado): \"Mandanos un mensaje 👉\"\nPALETA morada/plateada elegante, dermocosmético premium. Tipografía sans-serif moderna. Texto < 20%. Sin frases médicas, sin antes/después bilateral, sin timelines imposibles. Entregar 1:1 + describir 4:5 y 9:16.", "firma": "SERUM_COLA|PIEL_CAMBIO_40|C2.CN05|?|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "PIEL-CAMBIO-40_IMG_A ~ SERUM_COLA|PIEL_CAMBIO_40|C2.CN05|?|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "PIEL-CAMBIO-40_IMG_B ~ SERUM_COLA|PIEL_CAMBIO_40|C2.CN05|?|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["¿Sentís que tu piel cambió de un año a otro?\n\nDe repente notás:\nla piel más floja,\nlíneas nuevas,\nun rostro más apagado.\n\nPasando los 40 tu piel produce menos colágeno… y se nota rápido.\n\nEste serum efecto lifting reactiva el colágeno y reafirma tu piel:\n✅ Más firmeza en rostro y cuello\n✅ Líneas más suaves\n✅ Hidratación que dura todo el día\n\nNunca es tarde para recuperar tu piel.\nEscribinos y te contamos cómo 👉", "A los 40 la piel no avisa… un día simplemente cambió.\n\nY no hablamos de arrugas de vieja —\nhablamos de esa firmeza y esa luz que sentís que se te fueron.\n\nEs normal: baja el colágeno, baja la hidratación.\nPero se puede reponer.\n\nNuestro serum con colágeno hidrolizado y péptidos\nle devuelve a tu piel lo que el tiempo le quitó.\n\nVos seguís siendo vos — solo que con tu piel firme otra vez.\nMandanos un mensaje 👉", "\"De un año a otro sentí que mi cara se cayó\" — nos escriben muchísimas mujeres de 40+.\n\nLa buena noticia: la firmeza se recupera.\n\nCon colágeno + péptidos efecto lifting,\nen pocas semanas la piel se ve más tensa y luminosa.\n\nMiles de guatemaltecas mayores de 40 ya lo comprobaron.\nPreguntanos cómo empezar 👉"], "titulos": ["Tu piel a los 40", "Recuperá firmeza", "Nunca es tarde"], "descripcion": "Resultados desde semana 2"}}, {"n": 3, "angulo_key": "LIFTING_SIN_AGUJAS", "angulo_titulo": "Lifting sin agujas ni bótox", "nombre": "[CUENTA]_SERUM_LIFTING-SIN-AGUJAS_R1", "presupuesto_usd": 3.63, "presupuesto_centavos": 363, "banda_edad": "30-45", "banda_por_que": "derivada del avatar 30-45", "genero": "MUJER", "formato": "IMAGEN", "lleva_precio": true, "archivo_creativo": "SERUM_COLAGENO_BOTOX_3_liftingsinagujas.jpg", "prompt_imagen": "Actúa como diseñador experto en creativos premium de alta conversión para Meta Ads. Genera un creativo 1080x1080 px (y 4:5, 9:16), fotorrealista, lujoso, que venda en 3 segundos y no parezca IA.\nADJUNTO: frasco serum morado-púrpura con tapa plateada, etiqueta \"BOTOX COLLAGEN\", 120ml.\n- FONDO: oscuro de lujo (negro cálido a morado profundo), destellos dorados/púrpura sutiles.\n- MARCA (arriba, discreta): \"Belleza & Piel\"\n- HOOK grande (blanco + morado brillante): \"EFECTO LIFTING SIN AGUJAS NI BÓTOX\"\n- PRODUCTO grande, protagonista, iluminación dramática con halo púrpura, reflejo tipo pódium.\n- ESCENA/rostro: mujer latina 30-45, piel tersa y radiante \"efecto glass skin\", segura.\n- BENEFICIO: \"Péptidos que suavizan las líneas + colágeno que reafirma.\"\n- BANNER ROJO (esquina o franja inferior, rojo intenso, texto blanco bold): \"SOLO HOY 2X1\"\n- OFERTA (junto al banner): \"2 frascos Q179 · Envío gratis\"\n- Badge: \"PAGÁS AL RECIBIR\"\n- CTA (botón morado): \"Escribinos ya 👉\"\nPALETA morado/negro/dorado de lujo + banner rojo para la oferta. Tipografía sans-serif moderna bold. Texto < 20%. Sin \"cura/elimina\", sin antes/después bilateral, sin timelines imposibles. Entregar 1:1 + describir 4:5 y 9:16.", "firma": "SERUM_COLA|LIFTING_SIN_AGUJ|C2.CN05|?|2X1|BOT_V1", "anuncios": [{"letra": "A", "nombre": "LIFTING-SIN-AGUJAS_IMG_A ~ SERUM_COLA|LIFTING_SIN_AGUJ|C2.CN05|?|2X1|BOT_V1"}, {"letra": "B", "nombre": "LIFTING-SIN-AGUJAS_IMG_B ~ SERUM_COLA|LIFTING_SIN_AGUJ|C2.CN05|?|2X1|BOT_V1"}], "copy": {"textos": ["Efecto lifting… sin agujas, sin bótox y sin gastar una fortuna. ✨\n\nLos péptidos de este serum relajan la microtensión de tu rostro\ny suavizan las líneas de expresión —\nun efecto parecido al bótox, pero desde tu casa.\n\nAdemás el colágeno reafirma y da luz:\n✅ Piel más tensa\n✅ Líneas más suaves\n✅ Rostro descansado y radiante\n\n🔴 SOLO HOY 2x1: llevás 2 por Q179 con envío gratis.\nEscribinos ya, es por tiempo limitado 👉", "¿Le tenés miedo a las agujas pero querés verte más joven?\n\nNo necesitás pasar por eso.\n\nEste serum con péptidos efecto bótox\nrelaja las líneas de expresión y reafirma tu piel,\naplicándolo vos misma en casa.\n\nSin dolor, sin citas, sin gastar miles.\n\n🔴 SOLO HOY 2x1 — 2 frascos por Q179, envío gratis.\nMandanos un mensaje 👉", "El \"secreto coreano\" para verte más joven sin bótox. ✨\n\nPiel de vidrio: firme, luminosa, sin líneas marcadas.\nEso logran el colágeno + los péptidos de este serum.\n\n+10,000 mujeres ya lo usan en Guatemala.\n\n🔴 SOLO HOY 2x1: 2 por Q179 con envío gratis y pagás al recibir.\nPreguntanos cómo 👉"], "titulos": ["Lifting sin agujas", "Efecto bótox en casa", "2x1 solo hoy"], "descripcion": "🏠 ¡Pagás al recibir!"}}, {"n": 4, "angulo_key": "CREMAS_HACEN_NADA", "angulo_titulo": "Las cremas no me hacen nada", "nombre": "[CUENTA]_SERUM_CREMAS-HACEN-NADA_R1", "presupuesto_usd": 3.63, "presupuesto_centavos": 363, "banda_edad": "18-65+", "banda_por_que": "sin avatar de edad marcada — única excepción de la regla", "genero": "MIXTO", "formato": "IMAGEN", "lleva_precio": true, "archivo_creativo": "SERUM_COLAGENO_BOTOX_4_cremasno.jpg", "prompt_imagen": "Actúa como diseñador experto en creativos de alta conversión para Meta Ads. Genera un creativo 1080x1080 px (y 4:5, 9:16), fotorrealista, moderno, dinámico, que venda en 3 segundos y no parezca IA.\nADJUNTO: frasco serum morado-púrpura con tapa plateada, etiqueta \"BOTOX COLLAGEN\", 120ml.\n- COMPOSICIÓN diagonal dinámica, fondo degradado morado claro a blanco.\n- MARCA (arriba, discreta): \"Belleza & Piel\"\n- HOOK grande (palabra clave en morado): \"¿Probaste mil cremas y nada?\"\n- PRODUCTO grande, protagonista en diagonal, gota de serum brillante visible saliendo del pump.\n- BENEFICIO: \"Esto es un serum, no una crema: penetra y actúa donde se pierde la firmeza.\"\n- Micro-elemento visual: textura de crema espesa que queda \"encima\" vs gota de serum que \"penetra\" (concepto, no antes/después corporal).\n- BANNER ROJO (franja): \"SOLO HOY 2X1\"\n- OFERTA: \"2 frascos Q179 · Envío gratis · Pagás al recibir\"\n- CTA (botón morado): \"Escribinos y te explicamos 👉\"\nPALETA morada + banner rojo. Tipografía sans-serif moderna bold. Texto < 20%. Sin frases médicas, sin antes/después corporal bilateral, sin timelines imposibles. Entregar 1:1 + describir 4:5 y 9:16.", "firma": "SERUM_COLA|CREMAS_HACEN_NAD|C2.CN05|?|2X1|BOT_V1", "anuncios": [{"letra": "A", "nombre": "CREMAS-HACEN-NADA_IMG_A ~ SERUM_COLA|CREMAS_HACEN_NAD|C2.CN05|?|2X1|BOT_V1"}, {"letra": "B", "nombre": "CREMAS-HACEN-NADA_IMG_B ~ SERUM_COLA|CREMAS_HACEN_NAD|C2.CN05|?|2X1|BOT_V1"}], "copy": {"textos": ["¿Probaste mil cremas y tu piel sigue igual?\n\nNo era tu constancia.\nLas cremas se quedan encima de la piel y tardan meses en notarse.\n\nEste es un serum, no una crema:\npenetra en profundidad y actúa donde se pierde la firmeza.\n\n✅ Colágeno hidrolizado que sí absorbe\n✅ Péptidos que suavizan líneas\n✅ Efecto lifting que se siente\n\n🔴 SOLO HOY 2x1: 2 frascos por Q179, envío gratis.\nEscribinos y te explicamos 👉", "Cansada de gastar en cremas que no hacen nada. Te entiendo.\n\nPasa que la mayoría solo hidrata la superficie…\ny el problema está más adentro: colágeno y firmeza perdidos.\n\nEste serum sí llega ahí.\nColágeno de bajo peso molecular + péptidos efecto lifting\nque reafirman y dan luz de verdad.\n\n🔴 SOLO HOY 2x1 — 2 por Q179 con envío gratis.\nMandanos un mensaje 👉", "\"Ya no sabía qué crema comprar\" — hoy nos escribe feliz.\n\nEl cambio fue pasar de crema a serum:\nmás concentrado, penetra más, se nota antes.\n\nFirmeza, líneas más suaves y esa luz que buscaba.\n\n🔴 SOLO HOY 2x1: 2 frascos por Q179, pagás al recibir.\nPreguntanos cómo te puede servir 👉"], "titulos": ["No era la crema", "Serum, no crema", "2x1 solo hoy"], "descripcion": "Envío gratis · Pagás al recibir"}}, {"n": 5, "angulo_key": "LINEAS_EXPRESION_MARCADAS", "angulo_titulo": "Líneas de expresión marcadas", "nombre": "[CUENTA]_SERUM_LINEAS-EXPRESION-MARCADAS_R1", "presupuesto_usd": 3.63, "presupuesto_centavos": 363, "banda_edad": "18-65+", "banda_por_que": "sin avatar de edad marcada — única excepción de la regla", "genero": "MUJER", "formato": "IMAGEN", "lleva_precio": false, "archivo_creativo": "SERUM_COLAGENO_BOTOX_5_lineasexp.jpg", "prompt_imagen": "Actúa como diseñador experto en creativos de alta conversión para Meta Ads. Genera un creativo 1080x1080 px (y 4:5, 9:16), fotorrealista, limpio, científico-elegante, que venda en 3 segundos y no parezca IA.\nADJUNTO: frasco serum morado-púrpura con tapa plateada, etiqueta \"BOTOX COLLAGEN\", 120ml.\n- FONDO: laboratorio de belleza limpio, tonos blancos y morados, elementos de ciencia cosmética suaves (moléculas de colágeno tipo diagrama sutil).\n- MARCA (arriba, discreta): \"Belleza & Piel\"\n- HOOK grande (palabra clave en morado): \"Esas líneas que ya no se van al dejar de gesticular\"\n- PRODUCTO grande y protagonista con halo púrpura.\n- ZONA de rostro: primer plano de frente/entrecejo de mujer con piel tersa (foco en textura de piel lisa, no comparación bilateral).\n- BENEFICIO: \"Péptidos que relajan la microtensión + colágeno que reafirma.\"\n- Badges: \"PÉPTIDOS EFECTO LIFTING\", \"SIN AGUJAS\"\n- CTA (botón morado): \"Preguntanos cómo usarlo 👉\"\nPALETA morada/blanca limpia. Tipografía sans-serif moderna. Texto < 20%. Sin \"cura/trata/elimina\", sin antes/después corporal bilateral, sin timelines imposibles. Entregar 1:1 + describir 4:5 y 9:16.", "firma": "SERUM_COLA|LINEAS_EXPRESION|C2.CN05|?|SIN_PRECIO|BOT_V1", "anuncios": [{"letra": "A", "nombre": "LINEAS-EXPRESION-MARCADAS_IMG_A ~ SERUM_COLA|LINEAS_EXPRESION|C2.CN05|?|SIN_PRECIO|BOT_V1"}, {"letra": "B", "nombre": "LINEAS-EXPRESION-MARCADAS_IMG_B ~ SERUM_COLA|LINEAS_EXPRESION|C2.CN05|?|SIN_PRECIO|BOT_V1"}], "copy": {"textos": ["Esas líneas que ya no se borran aunque dejés de gesticular…\n\nFrente, entrecejo, patas de gallo.\nAl principio aparecían solo al sonreír o fruncir.\nAhora se quedan marcadas.\n\nLos péptidos de este serum relajan esa microtensión del rostro\ny suavizan las líneas de expresión, mientras el colágeno reafirma.\n\n✅ Líneas más suaves\n✅ Piel más tersa\n✅ Efecto lifting progresivo\n\nEscribinos y te contamos cómo usarlo 👉", "No es que estés envejeciendo… son las líneas de expresión marcándose.\n\nY sí, se pueden suavizar sin tocar una aguja.\n\nLos péptidos efecto bótox de este serum\nrelajan la tensión que marca la frente y el entrecejo,\ny el colágeno devuelve firmeza alrededor.\n\nTu gesto natural, tu piel más lisa.\nMandanos un mensaje 👉", "\"Se me marcó el entrecejo y ya no se iba\" — nos pasa a muchas.\n\nCon péptidos efecto lifting + colágeno,\nesas líneas se van suavizando semana a semana.\n\nPiel más tersa, gesto más descansado.\n\nPreguntanos cómo empezar tu rutina 👉"], "titulos": ["Suavizá tus líneas", "Efecto bótox real", "Frente más lisa"], "descripcion": "Sin agujas · desde casa"}}, {"n": 6, "angulo_key": "REAFIRMA_OVALO_FACIAL", "angulo_titulo": "Reafirma el óvalo facial", "nombre": "[CUENTA]_SERUM_REAFIRMA-OVALO-FACIAL_R1", "presupuesto_usd": 3.63, "presupuesto_centavos": 363, "banda_edad": "40-55", "banda_por_que": "derivada del avatar 40-55", "genero": "MUJER", "formato": "IMAGEN", "lleva_precio": true, "archivo_creativo": "SERUM_COLAGENO_BOTOX_6_ovalofirme.jpg", "prompt_imagen": "Actúa como diseñador experto en creativos de alta conversión para Meta Ads. Genera un creativo 1080x1080 px (y 4:5, 9:16), fotorrealista, con enfoque en la oferta, que venda en 3 segundos y no parezca IA.\nADJUNTO: frasco serum morado-púrpura con tapa plateada, etiqueta \"BOTOX COLLAGEN\", 120ml.\n- FONDO: degradado morado premium con luz que resalta el producto y la oferta.\n- MARCA (arriba, discreta): \"Belleza & Piel\"\n- HOOK grande (palabra clave en morado): \"Devolvele firmeza a tu óvalo facial\"\n- PRODUCTO grande, protagonista, con glow púrpura y reflejo.\n- ESCENA/rostro: mujer latina 40-55 con contorno facial definido y firme, mentón y cuello tersos, sonrisa segura (una sola foto, sin comparación bilateral).\n- BENEFICIO: \"Colágeno + péptidos que tensan y redefinen tu contorno.\"\n- BANNER ROJO (franja destacada): \"SOLO HOY 2X1\"\n- OFERTA (grande): \"2 frascos Q179 · Envío gratis · Pagás al recibir\"\n- CTA (botón morado): \"Escribinos hoy 👉\"\nPALETA morada premium + banner rojo. Tipografía sans-serif moderna bold. Texto < 20%. Sin frases médicas, sin antes/después corporal bilateral, sin timelines imposibles. Entregar 1:1 + describir 4:5 y 9:16.", "firma": "SERUM_COLA|REAFIRMA_OVALO_F|C2.CN05|?|2X1|BOT_V1", "anuncios": [{"letra": "A", "nombre": "REAFIRMA-OVALO-FACIAL_IMG_A ~ SERUM_COLA|REAFIRMA_OVALO_F|C2.CN05|?|2X1|BOT_V1"}, {"letra": "B", "nombre": "REAFIRMA-OVALO-FACIAL_IMG_B ~ SERUM_COLA|REAFIRMA_OVALO_F|C2.CN05|?|2X1|BOT_V1"}], "copy": {"textos": ["El óvalo de tu cara se va cayendo… y se nota primero en la papada.\n\n8 de cada 10 mujeres querrían reafirmar su rostro sin cirugía.\nLa causa es la misma: menos colágeno, menos firmeza.\n\nEste serum efecto lifting reafirma el contorno:\n✅ Óvalo facial más definido\n✅ Piel más tensa en cuello y mentón\n✅ Rostro visiblemente más firme\n\n🔴 SOLO HOY 2x1: 2 frascos por Q179 con envío gratis.\nEscribinos hoy 👉", "¿Notás que se te cae el contorno del rostro?\n\nLa papada, el mentón, el cuello…\nes lo primero que delata la pérdida de firmeza.\n\nCon colágeno hidrolizado + péptidos reafirmantes,\neste serum tensa y redefine tu óvalo facial —\nsin cirugía ni tratamientos caros.\n\n🔴 SOLO HOY 2x1 — 2 por Q179, pagás al recibir.\nMandanos un mensaje 👉", "\"Odiaba mi papada en las fotos\" — hoy se toma selfies feliz.\n\nEl colágeno + los péptidos reafirmantes\ndevuelven firmeza al contorno del rostro en pocas semanas.\n\nÓvalo más definido, piel más tensa.\n\n🔴 SOLO HOY 2x1: 2 frascos por Q179 con envío gratis.\nPreguntanos cómo 👉"], "titulos": ["Reafirmá tu óvalo", "Adiós papada", "2x1 solo hoy"], "descripcion": "+10,000 clientas ⭐"}}], "calendario": [{"orden": 0, "dia": "Día 0", "fecha": "08-sep", "que": "Lanza a las 4 AM", "hace": "nada — no se toca nada más hoy", "manda": null}, {"orden": 1, "dia": "Días 1-2", "fecha": "09-sep → 10-sep", "que": "Meta está en aprendizaje", "hace": "observar clics-enlace y %conv. NO pausar, NO escalar", "manda": "nada — el reloj de ENTREGA es automático"}, {"orden": 3, "dia": "Día 3", "fecha": "11-sep", "que": "GATE 1 · corte por conversación", "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98", "manda": "export de Meta Ads Manager (no hace falta LucidSales)"}, {"orden": 3.2338416375638994, "dia": "Día 3.2", "fecha": "12-sep", "que": "PRESUPUESTO DE DECISIÓN alcanzado", "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición", "manda": "export de LucidSales"}, {"orden": 4, "dia": "Día 4", "fecha": "12-sep", "que": "GATE 2 · validación", "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1", "manda": "export de LucidSales de 7 días"}, {"orden": 999, "dia": "Domingo", "fecha": "cada semana", "que": "ingesta principal", "hace": "el sistema decide qué se poda y qué se escala", "manda": "export de LucidSales de 7 días"}], "bloqueantes": [{"que": "cuenta publicitaria sin asignar", "quien": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias"}, {"que": "page_id de la FanPage sin asignar", "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id"}], "faltantes": ["conjunto 1 (CARA_CANSADA_QUITA): sin nivel_conciencia -> la firma sale con ? en NC", "conjunto 2 (PIEL_CAMBIO_40): sin nivel_conciencia -> la firma sale con ? en NC", "conjunto 3 (LIFTING_SIN_AGUJAS): sin nivel_conciencia -> la firma sale con ? en NC", "conjunto 4 (CREMAS_HACEN_NADA): sin avatar_edad -> corre en banda amplia 18-65+", "conjunto 4 (CREMAS_HACEN_NADA): sin nivel_conciencia -> la firma sale con ? en NC", "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin avatar_edad -> corre en banda amplia 18-65+", "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin nivel_conciencia -> la firma sale con ? en NC", "conjunto 6 (REAFIRMA_OVALO_FACIAL): sin nivel_conciencia -> la firma sale con ? en NC", "producto: page_id SIN ASIGNAR -> no se puede publicar", "producto: cuenta publicitaria SIN ASIGNAR"], "origen_plan": "adaptado de PRODUCTOS/SERUM_COLAGENO_BOTOX/1_HACER_MANUAL.txt por gen_plan.py"}}, {"producto_key": "OVULOS_PURITY", "nombre": "Ovulos Purity Hernatura", "estado": "LISTO", "fase_csv": null, "cuenta": "PENDIENTE", "cpa_be_q": null, "historial": null, "cpa_acumulado_q": null, "tiene_plan": false, "carpeta": "PRODUCTOS/OVULOS_PURITY", "plan": null, "falta_para_plan": [{"que": "sin break-even calculado", "quien": "etapa-1 (costear.py)"}, {"que": "sin page_id de FanPage", "quien": "etapa-fanpage"}, {"que": "sin cuenta publicitaria asignada", "quien": "operador"}, {"que": "sin _PLAN.json (ángulos, prompts y copies estructurados)", "quien": "etapa-6 — es el paso que falta siempre"}]}]}</script><script>
+const D = JSON.parse(document.getElementById('datos').textContent);
+const G = {vista:'portafolio', pk:null, paso:0};
+
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const q  = n => (n==null? '—' : n);
+
+/* el tope de la vista: en la app unificada el scroller es #vista, no <main> */
+const scrollArriba = () => {
+  document.querySelectorAll('main,#vista').forEach(el => { el.scrollTop = 0; });
+};
+
+
+/* ── memoria de progreso: sobrevive al refresh ───────────────── */
+const KEY = 'lanzador/v1';
+let mem = {};
+try { mem = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) { mem = {}; }
+const guardar = () => { try { localStorage.setItem(KEY, JSON.stringify(mem)); } catch(e){} };
+const marcado = id => !!mem[id];
+const marcar  = (id, v) => { if(v) mem[id]=1; else delete mem[id]; guardar(); };
+
+/* ── copiar ──────────────────────────────────────────────────── */
+function toast(t){ const el=document.getElementById('toast'); el.textContent=t;
+  el.classList.add('ver'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('ver'),1400); }
+
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-copiar]');
+  if(!b) return;
+  const txt = b.parentElement.querySelector('.val').innerText;
+  navigator.clipboard.writeText(txt).then(()=>{
+    b.classList.add('hecho'); b.textContent='copiado';
+    toast('copiado'); if(b.dataset.id) marcar(b.dataset.id, true);
+    setTimeout(()=>{ b.textContent='copiar'; }, 1600);
+  }).catch(()=>toast('no se pudo copiar'));
+});
+
+document.addEventListener('change', ev => {
+  const c = ev.target.closest('input[type=checkbox][data-id]');
+  if(!c) return;
+  marcar(c.dataset.id, c.checked);
+  c.closest('li').classList.toggle('ok', c.checked);
+  pintarPasos();
+});
+
+/* ── piezas ──────────────────────────────────────────────────── */
+function campo(etiqueta, valor, opts){
+  opts = opts||{};
+  if(valor==null || valor==='') return '';
+  const cls = opts.largo ? 'val largo' : 'val';
+  const id  = opts.id ? ' data-id="'+esc(opts.id)+'"' : '';
+  return '<div class="campo"><div class="et">'+esc(etiqueta)+'</div>'+
+         '<div class="'+cls+'">'+esc(valor)+'</div>'+
+         '<button class="cp" data-copiar'+id+'>copiar</button></div>';
+}
+function chk(id, texto, porque){
+  const on = marcado(id);
+  return '<li class="'+(on?'ok':'')+'"><input type="checkbox" data-id="'+esc(id)+'"'+
+    (on?' checked':'')+'><label>'+texto+
+    (porque? '<span class="por">'+porque+'</span>':'')+'</label></li>';
+}
+function card(titulo, cuerpo, n){
+  return '<section class="card"><header>'+(n?'<span class="n">'+esc(n)+'</span>':'')+
+    '<h3>'+titulo+'</h3></header><div class="cuerpo">'+cuerpo+'</div></section>';
+}
+
+/* ── vista portafolio ────────────────────────────────────────── */
+function vistaPortafolio(){
+  const P = D.productos;
+  const vivos = P.filter(p=>p.estado==='VIVO').length;
+  const listos = P.filter(p=>p.tiene_plan && !p.plan.bloqueantes.length).length;
+  const bloq = P.filter(p=>p.tiene_plan && p.plan.bloqueantes.length).length;
+  const sin = P.filter(p=>!p.tiene_plan).length;
+
+  let h = '<h2 class="tit">Portafolio</h2>'+
+    '<p class="baja">Datos al '+esc(D.generado)+' · el punto de color dice si el producto se puede lanzar hoy</p>'+
+    '<div class="kpis">'+
+      '<div class="kpi"><div class="v">'+vivos+'</div><div class="k">vivos</div></div>'+
+      '<div class="kpi"><div class="v">'+listos+'</div><div class="k">listos para lanzar</div></div>'+
+      '<div class="kpi"><div class="v">'+bloq+'</div><div class="k">con plan pero bloqueados</div></div>'+
+      '<div class="kpi"><div class="v">'+sin+'</div><div class="k">sin plan de lanzamiento</div></div>'+
+    '</div>';
+
+  let filas = '';
+  P.forEach(p => {
+    let est, cls;
+    if(!p.tiene_plan){ est='sin plan'; cls='c-neutro'; }
+    else if(p.plan.bloqueantes.length){ est=p.plan.bloqueantes.length+' bloqueante'+(p.plan.bloqueantes.length>1?'s':''); cls='c-crit'; }
+    else { est='listo'; cls='c-good'; }
+    const cpa = p.cpa_acumulado_q, be = p.cpa_be_q;
+    let cpaCls = '';
+    if(cpa && be) cpaCls = cpa < be ? 'c-good' : 'c-crit';
+    filas += '<tr class="clic" data-ir="'+esc(p.producto_key)+'">'+
+      '<td><b>'+esc(p.nombre)+'</b><br><span class="tenue mono" style="font-size:11.5px">'+
+        esc(p.producto_key)+'</span></td>'+
+      '<td>'+esc(p.estado||'—')+'<br><span class="tenue" style="font-size:12px">'+
+        esc(p.fase_csv||'—')+'</span></td>'+
+      '<td class="num">'+(be? 'Q'+be.toFixed(2):'—')+'</td>'+
+      '<td class="num">'+(cpa? '<span class="chip '+cpaCls+'">Q'+cpa.toFixed(2)+'</span>':'—')+'</td>'+
+      '<td class="num">'+(p.historial? p.historial.ventas:'—')+'</td>'+
+      '<td><span class="chip '+cls+'">'+esc(est)+'</span></td></tr>';
+  });
+  h += card('Estado de lanzamiento por producto',
+    '<table><thead><tr><th>Producto</th><th>Estado</th><th class="num">Break-even</th>'+
+    '<th class="num">CPA acumulado</th><th class="num">Ventas</th><th>Lanzamiento</th></tr></thead>'+
+    '<tbody>'+filas+'</tbody></table>');
+
+  h += '<div class="aviso"><b>Cómo se lee el CPA acumulado.</b> Es todo el histórico de '+
+    '<code>_FACT_VENTAS.csv</code> dividido por sus ventas, no la semana. Verde = por debajo del '+
+    'break-even. La decisión real es semanal y se toma en el dashboard, no acá: esta pantalla es para '+
+    '<b>lanzar</b>, no para optimizar.</div>';
+
+  h += '<div class="pie">Generado por <code>Ads/_TOOLS/gen_lanzador.py</code> · '+
+    'los planes salen de <code>PRODUCTOS/[X]/_PLAN.json</code> · '+
+    'costo por conversación del portafolio: $'+D.usd_por_conversacion_portafolio+
+    ' → presupuesto derivado con la fórmula de CALENDARIO_ESCALADO §1.5</div>';
+  return h;
+}
+
+/* ── vista producto ──────────────────────────────────────────── */
+const PASOS = ['Gate','Creativos','Campaña','Conjuntos','Copies','Publicar','Después'];
+
+function vistaProducto(){
+  const p = D.productos.find(x=>x.producto_key===G.pk);
+  if(!p) return '<p>no encontrado</p>';
+  if(!p.tiene_plan) return sinPlan(p);
+  const L = p.plan;
+
+  let h = '<h2 class="tit">'+esc(p.nombre)+'</h2>'+
+    '<p class="baja">'+esc(L.fase_nombre)+' · mide '+esc(L.fase_mide)+' · <b class="mono">'+
+    esc(L.fase_notacion)+'</b> · '+esc(L.fase_forma)+
+    ' · lanza <b>'+esc(L.lanzamiento.legible)+' a las '+esc(L.lanzamiento.hora)+'</b></p>';
+
+  h += '<div class="pasos">'+PASOS.map((t,i)=>{
+    const done = pasoCompleto(L, i);
+    return '<button data-paso="'+i+'" class="'+(G.paso===i?'on ':'')+(done?'done':'')+'">'+
+      (i+1)+'. '+t+'</button>';
+  }).join('')+'</div>';
+
+  h += [gate, creativos, campana, conjuntos, copies, publicar, despues][G.paso](L, p);
+  return h;
+}
+
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-paso]');
+  if(!b) return;
+  G.paso = +b.dataset.paso; pintar(); scrollArriba();
+});
+
+function idsDelPaso(L, i){
+  const pk = L.producto_key, ids = [];
+  if(i===0) return ['gate/'+pk+'/revisado'];
+  if(i===1) L.conjuntos.forEach(c=>ids.push('prompt/'+pk+'/'+c.n));
+  if(i===2) ids.push.apply(ids, L.campanas.map((c,j)=>'camp/'+pk+'/'+j));
+  if(i===3) L.conjuntos.forEach(c=>ids.push('conj/'+pk+'/'+c.n));
+  if(i===4) L.conjuntos.forEach(c=>ids.push('copy/'+pk+'/'+c.n));
+  if(i===5) ids.push.apply(ids, CHECK_PUBLICAR.map((x,j)=>'pub/'+pk+'/'+j));
+  if(i===6) return [];
+  return ids;
+}
+function pasoCompleto(L, i){
+  const ids = idsDelPaso(L, i);
+  return ids.length>0 && ids.every(marcado);
+}
+function pintarPasos(){
+  const p = D.productos.find(x=>x.producto_key===G.pk);
+  if(!p || !p.tiene_plan) return;
+  document.querySelectorAll('[data-paso]').forEach(b=>{
+    b.classList.toggle('done', pasoCompleto(p.plan, +b.dataset.paso));
+  });
+}
+
+/* PASO 1 · GATE */
+function gate(L, p){
+  let h = '';
+  if(L.bloqueantes.length){
+    h += '<div class="aviso malo"><b>No se puede publicar todavía.</b> '+
+      L.bloqueantes.length+' cosa'+(L.bloqueantes.length>1?'s':'')+' falta'+
+      (L.bloqueantes.length>1?'n':'')+'. El sistema no las inventa — al lado va quién las produce.</div>';
+    h += card('Bloqueantes', '<table><thead><tr><th>Qué falta</th><th>Quién lo produce</th></tr></thead><tbody>'+
+      L.bloqueantes.map(b=>'<tr><td><b>'+esc(b.que)+'</b></td><td class="tenue">'+esc(b.quien)+'</td></tr>').join('')+
+      '</tbody></table>');
+  } else {
+    h += '<div class="aviso bien"><b>Verde.</b> No hay bloqueantes: cuenta, página y break-even están. '+
+      'Podés seguir al paso 2.</div>';
+  }
+
+  const e = L.economia, pr = L.presupuesto;
+  h += '<div class="kpis">'+
+    '<div class="kpi"><div class="v">Q'+q(e.cpa_be_q&&e.cpa_be_q.toFixed(2))+'</div>'+
+      '<div class="k">CPA break-even<br><span class="tenue">arriba de esto se pierde plata</span></div></div>'+
+    '<div class="kpi"><div class="v">Q'+q(e.cpa_base_q&&e.cpa_base_q.toFixed(2))+'</div>'+
+      '<div class="k">CPA objetivo</div></div>'+
+    '<div class="kpi"><div class="v">$'+pr.por_conjunto_usd.toFixed(2)+'</div>'+
+      '<div class="k">por conjunto/día</div></div>'+
+    '<div class="kpi"><div class="v">$'+pr.total_dia_usd.toFixed(2)+'</div>'+
+      '<div class="k">total/día · '+L.conjuntos.length+' conjuntos</div></div>'+
+    '<div class="kpi"><div class="v">'+q(pr.dias_a_pd)+' d</div>'+
+      '<div class="k">hasta el Presupuesto de Decisión</div></div>'+
+    '</div>';
+
+  h += card('De dónde sale el presupuesto',
+    '<p style="margin:0 0 10px">El presupuesto no es un número elegido: sale de la fórmula de '+
+    '<code style="font-family:var(--mono);font-size:12px">CALENDARIO_ESCALADO §1.5</code> — '+
+    '<b>7 × (costo por conversación observado)</b>, con piso $'+D.constantes.piso_presupuesto+
+    ' y techo $'+D.constantes.techo_presupuesto+'. Para este producto: <b>'+esc(pr.por_que)+'</b>.</p>'+
+    '<div class="aviso"><b>Qué significan los '+q(pr.dias_a_pd)+' días.</b> Antes de ese día, '+
+    'un conjunto con <b>0 ventas no perdió</b> — todavía no gastó lo suficiente para que un cero '+
+    'signifique algo. Apagarlo antes es tirar una moneda. Después de ese día, el cero sí es veredicto.</div>');
+
+  h += card('Por qué esta estructura y no otra',
+    '<table style="margin:-6px 0 12px"><thead><tr><th>Fase</th><th>Estructura</th>'+
+    '<th>Presupuesto</th><th>Decide por</th></tr></thead><tbody>'+
+    [1,2,3].map(f=>{
+      const e = D.estructura[f], aca = (f===L.fase);
+      return '<tr'+(aca?' style="background:var(--accent-soft)"':'')+'>'+
+        '<td>'+(aca?'<b>':'')+esc(e.nombre)+(aca?'</b> ←':'')+'</td>'+
+        '<td class="mono">'+esc(e.notacion)+'</td>'+
+        '<td><span class="chip '+(e.presupuesto==='PROTEGIDO'?'c-warn':'c-neutro')+'">'+
+          esc(e.presupuesto)+'</span></td>'+
+        '<td class="tenue">'+esc(e.decide)+'</td></tr>';
+    }).join('')+'</tbody></table>'+
+    '<p style="margin:0 0 10px"><b>La regla que reparte:</b> presupuesto <b>protegido</b> '+
+    '(conjuntos separados) cuando la variable se decide por <b>VENTA</b> · presupuesto '+
+    '<b>libre</b> (1-1-N, Meta reparte) cuando se decide por <b>ENTREGA</b>.</p>'+
+    '<p style="margin:0 0 10px">'+esc(L.fase_por_que)+'</p>'+
+    '<div class="aviso"><b>Lo que esta fase NO es.</b> '+esc(L.fase_no_es)+'</div>');
+
+  if(L.faltantes.length){
+    h += card('Huecos del plan (no bloquean, pero degradan la lectura)',
+      '<ul class="chk">'+L.faltantes.map(f=>'<li><span class="tenue">·</span><label>'+esc(f)+'</label></li>').join('')+'</ul>');
+  }
+  h += card('Confirmar', '<ul class="chk">'+
+    chk('gate/'+L.producto_key+'/revisado', 'Revisé los bloqueantes y el presupuesto derivado',
+        'Marcalo cuando entendiste con qué plata vas a correr y hasta qué día no se decide nada.')+
+    '</ul>');
+  return h;
+}
+
+/* PASO 2 · CREATIVOS */
+function creativos(L){
+  let h = '<div class="aviso"><b>Cómo se hace cada imagen.</b> Copiá el prompt, abrilo en Gemini Pro '+
+    'o ChatGPT, <b>adjuntá la foto del producto</b> y generá. Guardá el archivo con el nombre exacto '+
+    'que dice la ficha, en <code>Ads/MEDIA_'+esc(L.producto_key)+'/</code>. El nombre importa: es la '+
+    'llave con la que después se lee qué creativo vendió.</div>';
+  L.conjuntos.forEach(c=>{
+    let b = campo('archivo', c.archivo_creativo);
+    b += campo('carpeta', 'Ads/MEDIA_'+L.producto_key+'/');
+    if(c.prompt_imagen){
+      b += campo('prompt', c.prompt_imagen, {largo:true, id:'prompt/'+L.producto_key+'/'+c.n});
+    } else {
+      b += '<div class="aviso malo">Sin prompt. Este conjunto corre en '+esc(c.formato)+
+           ' — el archivo tiene que existir ya en la carpeta de media.</div>';
+    }
+    h += card(esc(c.angulo_titulo||c.angulo_key)+
+      (c.lleva_precio? ' <span class="chip c-warn">con precio</span>':' <span class="chip c-neutro">sin precio</span>'),
+      b, 'conjunto '+c.n);
+  });
+  return h;
+}
+
+/* PASO 3 · CAMPAÑA */
+function campana(L){
+  let h = '';
+  if(L.campanas.length>1){
+    h += '<div class="aviso"><b>Son '+L.campanas.length+' campañas, no una.</b> Cada concepto tiene que '+
+      'correr <b>dos veces</b> en estructuras independientes: es lo que hace posible la regla '+
+      '"gana en 2 de 2". Una sola aparición no alcanza para coronar nada.</div>';
+  }
+  L.campanas.forEach((c,i)=>{
+    let b = campo('nombre', c.nombre, {id:'camp/'+L.producto_key+'/'+i});
+    b += campo('objetivo', c.objetivo);
+    b += campo('presupuesto', c.presupuesto);
+    b += campo('programar', L.lanzamiento.legible+' · '+L.lanzamiento.hora);
+    b += '<div class="aviso"><b>Nunca lanzar el mismo día.</b> Siempre programada para las 4 AM del '+
+      'día siguiente. Y verificá <b>"Maximizar conversaciones"</b> justo antes de publicar: Meta lo '+
+      'revierte solo a "maximizar clics en el enlace" con cada cambio que hacés.</div>';
+    h += card('Campaña '+esc(c.rol), b, i+1);
+  });
+  return h;
+}
+
+/* PASO 4 · CONJUNTOS */
+function conjuntos(L){
+  let h = '<div class="aviso"><b>Mismo presupuesto en todos.</b> Si un conjunto corre con más plata, '+
+    'gana por plata y no por ángulo, y el testeo no mide nada. Y <b>Advantage+ Audience OFF</b>: '+
+    'sin eso Meta ignora la banda de edad y vuelve a lo amplio.</div>';
+
+  let t = '<table><thead><tr><th>#</th><th>Ángulo</th><th>Banda</th><th class="num">$/día</th>'+
+    '<th>Precio</th></tr></thead><tbody>';
+  L.conjuntos.forEach(c=>{
+    t += '<tr><td class="num">'+c.n+'</td><td>'+esc(c.angulo_titulo||c.angulo_key)+'</td>'+
+      '<td class="mono">'+esc(c.banda_edad)+'</td>'+
+      '<td class="num">$'+c.presupuesto_usd.toFixed(2)+'</td>'+
+      '<td>'+(c.lleva_precio?'<span class="chip c-warn">sí</span>':'<span class="tenue">no</span>')+'</td></tr>';
+  });
+  t += '</tbody></table>';
+  h += card('Los '+L.conjuntos.length+' conjuntos', t);
+
+  L.conjuntos.forEach(c=>{
+    let b = campo('nombre', c.nombre, {id:'conj/'+L.producto_key+'/'+c.n});
+    b += campo('presupuesto', '$'+c.presupuesto_usd.toFixed(2)+' diario  ('+c.presupuesto_centavos+'¢ USD)');
+    b += campo('edad', c.banda_edad);
+    b += campo('género', c.genero);
+    b += '<p class="tenue" style="font-size:12.5px;margin:4px 0 12px">Banda '+esc(c.banda_por_que)+
+      '. <b>Advantage+ Audience OFF · sin intereses</b> — el creativo segmenta.</p>';
+    b += '<p style="font-size:12.5px;margin:0 0 4px"><b>Los 2 anuncios</b> — el B es copia exacta del A. '+
+      'El duplicado interno baja el CPA; nunca lanzar con uno solo.</p>';
+    c.anuncios.forEach(a=>{ b += campo('anuncio '+a.letra, a.nombre); });
+    h += card(esc(c.angulo_titulo||c.angulo_key), b, 'conjunto '+c.n);
+  });
+
+  h += '<div class="aviso"><b>Qué es lo que va después del <code>~</code>.</b> Es la firma: los 5 ejes '+
+    'del anuncio metidos en su propio nombre. El <code>ad_id</code> de Meta llegó corrupto en 2.006 de '+
+    '2.475 filas del histórico y no se recupera; el <b>nombre</b>, en cambio, viene intacto en cualquier '+
+    'export. Con la firma ahí, saber qué concepto vendió deja de depender de que alguien mantenga una '+
+    'tabla al día. Un <code>?</code> es un eje sin llenar.</div>';
+  return h;
+}
+
+/* PASO 5 · COPIES */
+function copies(L){
+  let h = '<div class="aviso"><b>Dónde va cada cosa.</b> El texto principal va en "Texto principal" '+
+    '(podés pegar las variaciones en <i>Agregar opción de texto</i>), los títulos en "Título" y la '+
+    'descripción en "Descripción". El precio solo va en los conjuntos marcados.</div>';
+  L.conjuntos.forEach(c=>{
+    const cp = c.copy||{};
+    let b = '';
+    (cp.textos||[]).forEach((t,i)=>{
+      b += campo('texto '+(i+1), t, {largo:true, id: i===0? 'copy/'+L.producto_key+'/'+c.n : null});
+    });
+    if(cp.titulos && cp.titulos.length) b += campo('títulos', cp.titulos.join('  /  '));
+    if(cp.descripcion) b += campo('descripción', cp.descripcion);
+    if(!(cp.textos||[]).length) b += '<div class="aviso malo">Sin copy. Lo produce <b>etapa-4</b>.</div>';
+    h += card(esc(c.angulo_titulo||c.angulo_key)+
+      (c.lleva_precio? ' <span class="chip c-warn">lleva precio</span>':''), b, 'conjunto '+c.n);
+  });
+  return h;
+}
+
+/* PASO 6 · PUBLICAR */
+const CHECK_PUBLICAR = [
+  ['Objetivo = <b>Tráfico</b>, no Interacción',
+   'Interacción nunca funcionó. Ventas solo como campaña paralela: trae público más calificado pero CPA más alto.'],
+  ['<b>"Maximizar conversaciones"</b> verificado justo antes de publicar',
+   'Meta lo revierte solo a "maximizar clics en el enlace" con cada cambio que hacés. Es el error más caro y el más fácil de cometer.'],
+  ['Presupuesto a nivel <b>CONJUNTO</b> + desmarcar "compartir presupuesto entre conjuntos"',
+   'Si queda compartido, un conjunto malo le roba presupuesto a los demás y el testeo no mide el ángulo.'],
+  ['Destino <b>manual → WhatsApp</b>, nunca Messenger',
+   'Messenger no está entrenado para vender. El número tiene que estar conectado a la fanpage.'],
+  ['Desmarcar <b>"anuncios multianunciantes"</b>',
+   'Si queda marcado, tu anuncio sale junto a competencia más barata.'],
+  ['Desmarcar <b>"incluir personas de WhatsApp cuya edad se desconoce"</b>',
+   'Cae a menores y se pierde la impresión.'],
+  ['<b>Advantage+ Audience OFF</b> en todos los conjuntos',
+   'Sin eso Meta ignora la banda de edad. APR-060: Q473.6/venta a 25+ contra Q30.6 a 45-60, mismo ángulo y mismo creativo.'],
+  ['Ningún conjunto ni anuncio se llama <b>"- Copia"</b>',
+   'Meta lo agrega al duplicar. Un "- Copia" publicado nace anónimo: no se sabe de qué cuenta, qué ángulo ni qué réplica es.'],
+  ['<b>NO</b> aceptar las recomendaciones de Meta',
+   'Apaga buenos conjuntos y sugiere subir presupuesto en campañas apagadas.'],
+  ['Todo queda <b>programado para las 4 AM</b>, no publicado ya',
+   'Nunca lanzar el mismo día.'],
+];
+function publicar(L){
+  let h = '<div class="aviso"><b>Esta lista es el filtro final.</b> Cada punto es un error que ya '+
+    'costó plata en este negocio. Van todos marcados antes de darle publicar.</div>';
+  h += card('Checklist de publicación', '<ul class="chk">'+
+    CHECK_PUBLICAR.map((c,i)=>chk('pub/'+L.producto_key+'/'+i, c[0], c[1])).join('')+'</ul>');
+  return h;
+}
+
+/* PASO 7 · DESPUÉS */
+function despues(L){
+  let h = '<div class="aviso"><b>Lo que sigue no lo decidís vos, lo decide la data.</b> Este es el '+
+    'calendario con las fechas ya calculadas para este lanzamiento. Lo único que tenés que hacer es '+
+    'traer el export el día que dice.</div>';
+  let t = '<table><thead><tr><th>Cuándo</th><th>Fecha</th><th>Qué pasa</th><th>Qué traés</th></tr></thead><tbody>';
+  L.calendario.forEach(c=>{
+    t += '<tr><td><b>'+esc(c.dia)+'</b></td><td class="mono">'+esc(c.fecha)+'</td>'+
+      '<td>'+esc(c.que)+'<br><span class="tenue" style="font-size:12.5px">'+esc(c.hace)+'</span></td>'+
+      '<td class="tenue">'+esc(c.manda||'—')+'</td></tr>';
+  });
+  t += '</tbody></table>';
+  h += card('Calendario de decisión', t);
+
+  h += card('Cómo se declara el ganador',
+    '<p style="margin:0 0 10px"><b>'+esc(L.fase_decide)+'.</b></p>'+
+    '<div class="aviso"><b>La conversación corta, nunca corona.</b> Evidencia propia: '+
+    '<code>tinnidrop-1</code> hizo 78% de conversación y <b>0 ventas</b>; <code>ANIMO</code> hizo la '+
+    'conversación más alta del portafolio (68%) y <b>0 ventas</b>; <code>ME DIJERON</code> hizo 23-25% '+
+    'y es de los que más vende. Sirve para apagar el día 3, nunca para elegir el ganador.</div>'+
+    '<div class="aviso"><b>Y se agrega por ángulo, no por conjunto.</b> Las ventas por conjunto son '+
+    'ruido de Poisson casi puro (índice de dispersión 1.12): un conjunto con 3 ventas y uno con 1 son '+
+    'estadísticamente indistinguibles. Agregando por <code>angulo_key</code> la dispersión sube a 2.99 '+
+    '— ahí sí hay señal. Por eso el "ganador" de TINNIDROP se corrió tres veces: no cambió el mercado, '+
+    'era varianza de muestreo.</div>');
+  return h;
+}
+
+/* ── producto sin plan ───────────────────────────────────────── */
+function sinPlan(p){
+  let h = '<h2 class="tit">'+esc(p.nombre)+'</h2>'+
+    '<p class="baja">'+esc(p.estado||'')+' · sin plan de lanzamiento</p>';
+  h += '<div class="aviso malo"><b>Este producto no tiene <code>_PLAN.json</code>.</b> Sin él la app no '+
+    'puede armar el lanzamiento: no hay ángulos, ni prompts, ni copies estructurados. El plan no se '+
+    'inventa acá — lo produce la cadena de etapas.</div>';
+  h += card('Qué falta y quién lo produce',
+    '<table><thead><tr><th>Qué falta</th><th>Quién</th></tr></thead><tbody>'+
+    (p.falta_para_plan||[]).map(f=>'<tr><td><b>'+esc(f.que)+'</b></td><td class="tenue">'+esc(f.quien)+'</td></tr>').join('')+
+    '</tbody></table>');
+  if(p.historial){
+    h += card('Lo que sí sabemos de este producto',
+      '<div class="kpis" style="margin:0">'+
+      '<div class="kpi"><div class="v">$'+p.historial.spend_usd.toFixed(0)+'</div><div class="k">gastado</div></div>'+
+      '<div class="kpi"><div class="v">'+p.historial.ventas+'</div><div class="k">ventas</div></div>'+
+      '<div class="kpi"><div class="v">'+(p.cpa_acumulado_q? 'Q'+p.cpa_acumulado_q.toFixed(2):'—')+
+        '</div><div class="k">CPA acumulado</div></div>'+
+      '<div class="kpi"><div class="v">'+(p.historial.cierre_pct!=null? p.historial.cierre_pct+'%':'—')+
+        '</div><div class="k">cierre</div></div>'+
+      '</div>');
+  }
+  h += '<div class="pie">Cuando <code>etapa-6</code> escriba <code>'+esc(p.carpeta)+
+    '/_PLAN.json</code>, corré <code>python Ads/_TOOLS/gen_lanzador.py</code> y este producto aparece '+
+    'acá con su flujo completo.</div>';
+  return h;
+}
+
+/* ── lateral ─────────────────────────────────────────────────── */
+function pintarNav(){
+  let h = '<div class="grupo"><div class="lbl">VISTA</div>'+
+    '<button class="nav'+(G.vista==='portafolio'?' on':'')+'" data-ir="portafolio">'+
+    '<span class="rot">Portafolio</span>'+
+    '<span class="sb">'+D.productos.length+' productos · '+
+      D.productos.filter(p=>p.tiene_plan).length+' con plan</span></button></div>';
+  h += '<div class="grupo"><div class="lbl">LANZAR</div>';
+  D.productos.forEach(p => {
+    let cls='p-sin', sub='sin plan de lanzamiento';
+    if(p.tiene_plan){
+      const b = p.plan.bloqueantes.length;
+      cls = b? 'p-bloq' : 'p-listo';
+      sub = b? (b+' bloqueante'+(b>1?'s':'')) : 'listo para lanzar';
+    } else if(p.estado==='VIVO'){ cls='p-vivo'; sub='vivo · sin plan nuevo'; }
+    h += '<button class="nav'+(G.pk===p.producto_key?' on':'')+'" data-ir="'+esc(p.producto_key)+'">'+
+      '<span class="rot"><span class="punto '+cls+'"></span>'+esc(p.nombre)+'</span>'+
+      '<span class="sb">'+esc(sub)+'</span></button>';
+  });
+  h += '</div>';
+  document.getElementById('nav').innerHTML = h;
+}
+
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-ir]');
+  if(!b) return;
+  const v = b.dataset.ir;
+  if(v==='portafolio'){ G.vista='portafolio'; G.pk=null; }
+  else { G.vista='producto'; G.pk=v; G.paso=0; }
+  pintar(); scrollArriba();
+});
+
+/* ── arranque ────────────────────────────────────────────────── */
+function pintar(){
+  pintarNav();
+  document.getElementById('vista').innerHTML =
+    '<div class="contenedor">'+(G.vista==='portafolio'? vistaPortafolio() : vistaProducto())+'</div>';
+}
+pintar();
+</script></body></html>

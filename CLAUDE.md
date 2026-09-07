@@ -40,8 +40,10 @@ con cualquiera de ellos —o sin ninguno:
 | `Ads/_TOOLS/costear.py` | Los precios, CPA y break-even salen de `_DIM_COSTEO.csv`. Aritmética, no criterio. |
 | `Ads/_TOOLS/verificar_producto.py` | El gate de reconciliación devuelve pase o fallo, no una opinión. |
 | `Ads/_TOOLS/gen_grafo.py` | El mismo gate, pero del SISTEMA: huérfanos, rutas muertas y costo en tokens. `--comparar` da el delta antes/después de cualquier cambio de arquitectura. |
-| Los **hooks** de `.claude/settings.json` | Se ejecutan siempre: validan los CSV, regeneran el dashboard y archivan las auditorías. |
+| Los **hooks** de `.claude/settings.json` | Se ejecutan siempre: validan los CSV, regeneran la app y archivan las auditorías. |
+| `VISTAS/_MANIFIESTO.json` + `Ads/_TOOLS/gen_app.py` | La aplicación está **declarada**, no escrita: qué vistas hay, quién produce cada una y a los cuántos días caduca. Agregar una vista es una fila del manifiesto. La edad que muestra sale del `mtime` del archivo, no del recuerdo de nadie. |
 | Los **CSV** como fuente única | Un dato, un dueño. Ningún modelo puede inventar una cifra que no esté ahí. |
+| `Ads/_TOOLS/gen_lanzador.py` | Nombres, presupuesto, banda de edad, fechas y gates salen de la doctrina y de los CSV. La consola **dicta**, no opina; si un dato falta lo marca como bloqueante con el nombre de quien lo produce. |
 
 Lo que sí varía con el modelo es la **calidad de la escritura y del juicio** —copies, ángulos,
 diagnóstico de flujo—, y eso es inherente a cualquier sistema con IA: un modelo más capaz escribe
@@ -79,11 +81,20 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo (§8) | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
 | Cadencia día a día, gates, regla multi-ganador, aritmética de las 3 fases (§1.5, §1.7) | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | CAPA DE DATA: los CSV, cómo leerlos, ganancia, break-even, dashboard | `DOCTRINA/DATA_PLAYBOOK.md` |
+| **Parametrización de anuncios: los 5 ejes testeables, las covariables, el protocolo de una-variable-a-la-vez** | `DOCTRINA/PARAMETRIZACION_ADS.md` — dueño de `_DIM_ANUNCIOS.csv` y `_DIM_VOCABULARIO.csv` |
+| **La banda de edad REALMENTE configurada en Meta**, conjunto por conjunto, y si coincide con la que manda la doctrina | `PRODUCTOS/_DIM_BANDAS.csv` — la escribe el operador al configurar o cambiar una banda. Antes del 06-sep el único registro era un sufijo en el nombre del conjunto (`+25AÑOS`), que se perdía al renombrar |
+| **El nombre viejo de un conjunto renombrado en Meta** | `PRODUCTOS/_ALIAS_CONJUNTOS.csv` + `Ads/_TOOLS/alias.py`. El JOIN del sistema es por NOMBRE (el `ad_id` llegó corrupto en 2 006 de 2 475 filas y no vuelve), así que un renombrado partiría la serie en dos objetos distintos. Ningún consumidor escribe su propio mapeo |
+| **LA DECISIÓN de pausar o escalar** | `Ads/_TOOLS/decidir.py` + `PRODUCTOS/_PARAMETROS_DECISION.csv`. **Ninguna orden sale de un juicio.** El motor combina intervalos de credibilidad bayesiana (IC 95%) con gestión de riesgo asimétrico y detector temprano de fatiga. Devuelve un ESTADO claro (`ESCALAR` · `PAUSAR` · `RENOVAR` · `SEGUIR_MIDIENDO`). Si el intervalo cruza el break-even, no se paraliza: emite la acción de menor riesgo (mantener presupuesto y seguir midiendo) y calcula las ventas faltantes. El bloqueo por evidencia aplica estrictamente a las acciones irreversibles (pausar o escalar fuerte). La ventana es FIJA (14 días): elegirla después de ver el dato es p-hacking. |
+| **La capa analítica: tests de integridad, linaje y una definición única por métrica** | `warehouse/` (dbt + DuckDB). Lee los CSV, no los escribe. `warehouse/README.md` explica qué agrega y qué no |
+| **La entrega a nivel ANUNCIO, con los 5 ejes ya parseados de la firma** | `PRODUCTOS/_FACT_ENTREGA_ANUNCIO.csv`, lo escribe `Ads/_TOOLS/ingerir_meta.py` desde el export desglosado por anuncio. Sin este nivel la FASE 2 no mide: el CONCEPTO vive en el anuncio |
 | CONTABILIDAD: las 3 vistas, estado de resultados, maduración de 10 días | `DOCTRINA/CONTABILIDAD.md` + `PRODUCTOS/_PARAMETROS_FINANZAS.csv` |
 | Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
 | Las 10 FanPages y las reglas de asignación F1–F4 | `.claude/agents/ETAPA-FANPAGE.md` |
 | CONVENCIÓN DE NOMBRES y BANDA DE EDAD por avatar | `.claude/agents/ETAPA-6.md` |
 | Creación de campaña por MCP, mapeo de campos | `DOCTRINA/MCP_PLAYBOOK.md` |
+| **LA APP: la única pantalla que el operador abre** | `VISTAS/_MANIFIESTO.json` declara las vistas · `Ads/_TOOLS/gen_app.py` las verifica contra el disco y renderiza `VISTAS/APP.html` · `Ads/_TOOLS/app_html.py` la dibuja |
+| **El LANZADOR: el flujo de 7 pasos que el operador ejecuta** | `Ads/_TOOLS/gen_lanzador.py` deriva nombres, plata, bandas y fechas desde los `_PLAN.json`; `Ads/_TOOLS/lanzador_html.py` lo dibuja, y el mismo render alimenta la app y la página suelta |
+| Contrato del plan de lanzamiento (`_PLAN.json`) y su validación | `Ads/_TOOLS/gen_plan.py` — el esquema vive en su docstring; el dueño del contenido es `ETAPA-6.md` |
 | Lavado de video (por qué, comando, colores) | `Ads/_TOOLS/LAVADO.md` |
 | Defaults cuando el operador no entrega un dato | `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` |
 | Recolección manual de creativos (prompt Gemini) | `DOCTRINA/ETAPA-RECOLECCION.md` |
@@ -92,8 +103,11 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 
 **Zonas del repositorio:** `DOCTRINA/` (los documentos dueños de la tabla de arriba) · `.claude/`
 (agentes + skills) · `PRODUCTOS/` (carpeta por producto + capa de data + `_AUDITORIAS/`) · `Ads/`
-(media, `_TOOLS/`, `_SWIPE/`) se **leen**. `VISTAS/PANEL.html` es el hub que enlaza las vistas
-generadas de `PRODUCTOS/` y `Ads/_SWIPE/`: se abre, no se lee.
+(media, `_TOOLS/`, `_SWIPE/`) se **leen**. `VISTAS/` es la capa de vistas: se abre, no se lee.
+**`VISTAS/APP.html` es la aplicación** — una sola pantalla con una sola barra lateral, donde
+conviven el flujo de lanzamiento por producto y todas las vistas generadas de `PRODUCTOS/` y
+`Ads/_SWIPE/`. Es donde vive el operador. Se reconstruye entera con un comando:
+`python Ads/_TOOLS/gen_app.py --todo`. `PANEL.html` quedó como puerta vieja y redirige ahí.
 `_CONOCIMIENTO/Finales/` (las clases) · `_OPERADOR/` · `_ROADMAP/` (backlog no implementado) ·
 `_SKILLS_FUENTE/` · `INFPRODUCTOS/` (negocio aparte) · `_ARCHIVO/` (todo lo retirado) son
 **referencia humana** — el sistema no los lee.
@@ -117,10 +131,24 @@ cada invocación como referencia, sin repetir el bloque.
 ### ÁNGULO vs CONCEPTO — QUÉ SE FIJA EN CADA FASE
 > **ÁNGULO = por qué duele. CONCEPTO = cómo se muestra.**
 > ```
-> FASE 1 → 6 ÁNGULOS distintos × concepto FIJO          ← mide el ÁNGULO
-> FASE 2 → 1 ángulo ganador × 10 CONCEPTOS distintos    ← mide el CONCEPTO
-> FASE 3 → 1 ángulo + 1 concepto validados × 7          ← no mide: compra volumen
+> FASE 1 → 6 ÁNGULOS distintos × concepto FIJO       6 conjuntos · ABO   ← mide el ÁNGULO
+> FASE 2 → 1 ángulo ganador × 10 CONCEPTOS         1-1-5 ×2 + 1-2-5 · ABO ← mide el CONCEPTO
+> FASE 3 → 1 ángulo + 1 concepto validados × 7          1-1-7 · CBO   ← no mide: compra volumen
 > ```
+> **El 1-1-5 va en FASE 2 y corre en ABO. Nunca en FASE 1 y nunca en CBO** — las dos cosas salen
+> de la misma clase (Calet, 16-ago) y ninguna es interpretación nuestra:
+> - *"115 para validar en ABO y después nos vamos con CBO para escalar."*
+> - Probó CBO para testear creativos y lo abandonó: *"siempre me tomaba un solo anuncio y me quedaba
+>   la duda: los cuatro anuncios restantes ¿dónde están?"* → **en CBO, Meta corona uno solo.**
+> - El orden es el mismo de siempre: *"definimos cuál es el ángulo ganador… eso es lo primero"*, y
+>   recién después *"agarramos el ángulo y lo hacemos en varios conceptos: lanzamos campañas 115"*.
+>
+> **Y por qué el ángulo NO se testea en 1-1-5, con data propia:** en un 1-1-N Meta reparte según
+> clics y conversaciones, y APR-002 demuestra que esa señal **no predice la venta**
+> (`tinnidrop-1` 78 % conv → 0 ventas · `ANIMO` la más alta del portafolio → 0 ventas ·
+> `ME DIJERON` 23 % → de los que más vende). Meta coronaría por la métrica equivocada y mataría de
+> hambre al ángulo que sí vende. Regla: **presupuesto protegido (conjuntos separados) cuando la
+> variable se decide por VENTA · presupuesto libre (1-1-N) cuando se decide por ENTREGA.**
 
 ### TONALIDAD BASE
 Voseo guatemalteco ("vos", "te", "tu"). Coloquial, nunca formal ni genérico. Nunca sonar a anuncio
@@ -207,6 +235,13 @@ en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 12. **Todo objeto de Meta se nombra con la CONVENCIÓN DE NOMBRES de `ETAPA-6.md`**, se cree por MCP
     o a mano. Prohibido publicar un `- Copia`: se renombra a `R[N]` antes de publicar. Las réplicas
     `R[N]` se SUMAN, nunca se comparan.
+
+13. **Ninguna orden de pausar o escalar se emite sin pasar por `decidir.py`.** El motor calcula el
+    intervalo de credibilidad del CPA al 95% y gestiona el riesgo asimétrico. Las acciones irreversibles
+    (pausar o escalar fuerte) requieren respaldo estadístico o tolerancia agotada (1x BE sin ventas); si el
+    intervalo cruza el break-even por escasez de muestra, la orden no se bloquea en parálisis sino que ejecuta
+    la acción de menor riesgo (`SEGUIR_MIDIENDO`: mantener presupuesto y maduración), evitando cortar
+    ganadores prematuros por p-hacking. La ventana de análisis es fija y vive en `PRODUCTOS/_PARAMETROS_DECISION.csv`.
 
 ### Dos punteros que valen por una regla
 

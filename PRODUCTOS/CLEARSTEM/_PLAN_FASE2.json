@@ -1,0 +1,73 @@
+{
+  "schema": "fase2_lean/1",
+  "producto_key": "CLEARSTEM",
+  "fase": 2,
+  "angulo_ganador": "RESISTENCIA_INSULINA",
+  "fecha_creacion": "2026-09-06",
+  "fecha_lanzamiento": "2026-09-07 04:00 AM",
+  "cuenta": "GTR13",
+  "page_id": "823825257480758",
+  "campana": {
+    "nombre": "GTR13_CLEARSTEM_F2-CONCEPTOS_RESISTENCIAINSULINA_20260906",
+    "objetivo": "OUTCOME_TRAFFIC (Conversaciones WhatsApp)",
+    "tipo_presupuesto": "ABO (Presupuesto a nivel de conjunto)",
+    "presupuesto_total_dia_usd": 25.0
+  },
+  "conjuntos": [
+    {
+      "posicion": 1,
+      "nombre_conjunto": "GTR13_CLEARSTEM_RESISTENCIA_INSULINA_C1_BENEFICIOS",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C2_BENEFICIOS",
+      "canonico_id": "CN05_LISTA_BENEFICIOS",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "RESISTENCIA_INSULINA_IMG_C1 ~ CLEARSTEM|RESISTENCIA_INSULINA|C2_BENEFICIOS.CN05_LISTA_BENEFICIOS|NC2|OFERTA_3TIERS|BOTv2",
+      "dispositivo_visual": "Lista de 3 beneficios en cards con iconos y frasco hero.",
+      "archivo_creativo": "CLEARSTEM_F2_CN05_RESISTENCIA.png"
+    },
+    {
+      "posicion": 2,
+      "nombre_conjunto": "GTR13_CLEARSTEM_RESISTENCIA_INSULINA_C2_ANTESDESPUES",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C4_TRANSFORMACION",
+      "canonico_id": "CN01_ANTES_DESPUES",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "RESISTENCIA_INSULINA_IMG_C2 ~ CLEARSTEM|RESISTENCIA_INSULINA|C4_TRANSFORMACION.CN01_ANTES_DESPUES|NC3|OFERTA_3TIERS|BOTv2",
+      "dispositivo_visual": "Antes y después partido por el frasco de Clearstem al centro.",
+      "archivo_creativo": "CLEARSTEM_F2_CN01_RESISTENCIA.png"
+    },
+    {
+      "posicion": 3,
+      "nombre_conjunto": "GTR13_CLEARSTEM_RESISTENCIA_INSULINA_C3_TIMELINE",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C8_PROGRESION",
+      "canonico_id": "CN02_TIMELINE_PROGRESION",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "RESISTENCIA_INSULINA_IMG_C3 ~ CLEARSTEM|RESISTENCIA_INSULINA|C8_PROGRESION.CN02_TIMELINE_PROGRESION|NC2|OFERTA_3TIERS|BOTv2",
+      "dispositivo_visual": "Timeline de 3 etapas Semana 1-2, Semana 4, Semana 8 con frasco.",
+      "archivo_creativo": "CLEARSTEM_F2_CN02_RESISTENCIA.png"
+    },
+    {
+      "posicion": 4,
+      "nombre_conjunto": "GTR13_CLEARSTEM_RESISTENCIA_INSULINA_C4_PRUEBASOCIAL",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C5_PRUEBA",
+      "canonico_id": "CN10_PRUEBA_SOCIAL",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "RESISTENCIA_INSULINA_IMG_C4 ~ CLEARSTEM|RESISTENCIA_INSULINA|C5_PRUEBA.CN10_PRUEBA_SOCIAL|NC3|OFERTA_3TIERS|BOTv2",
+      "dispositivo_visual": "Cards flotantes de testimonios con 5 estrellas y frasco hero.",
+      "archivo_creativo": "CLEARSTEM_F2_CN10_RESISTENCIA.png"
+    },
+    {
+      "posicion": 5,
+      "nombre_conjunto": "GTR13_CLEARSTEM_RESISTENCIA_INSULINA_C5_ESCALERA",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C1_OFERTA",
+      "canonico_id": "CN04_ESCALERA_PRECIOS",
+      "rol_embudo": "BOFU",
+      "nombre_anuncio": "RESISTENCIA_INSULINA_IMG_C5 ~ CLEARSTEM|RESISTENCIA_INSULINA|C1_OFERTA.CN04_ESCALERA_PRECIOS|NC3|OFERTA_3TIERS|BOTv2",
+      "dispositivo_visual": "Escalera de 3 tiers de precio en cards con llama y frasco.",
+      "archivo_creativo": "CLEARSTEM_F2_CN04_RESISTENCIA.png"
+    }
+  ]
+}

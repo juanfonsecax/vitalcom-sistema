@@ -1809,7 +1809,7 @@ footer code{font-family:var(--mono)}
   <h1>Portafolio VitalCom</h1>
   <span class="meta">__VENTANA__</span>
   <span class="spacer"></span>
-  <a class="nav" href="../VISTAS/PANEL.html" target="_top">&uarr; Panel del sistema</a>
+  <a class="nav" href="../VISTAS/APP.html" target="_top">&uarr; Panel del sistema</a>
   <span class="meta muted">generado __HOY__</span>
 </header>
 

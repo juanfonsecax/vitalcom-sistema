@@ -1,4 +1,4 @@
-═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id PENDIENTE (Sanarte) · campaign_id nuevo (re-testeo) ═══
+═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id nuevo (re-testeo) ═══
 GUÍA DE EJECUCIÓN MANUAL — RE-TESTEO FASE 1 (bot paraguas de 6 ángulos)
 Orden de ejecución: (1) prompts de imagen → (2) flujo LucidBot → (3) subir media → (4) conjuntos+copies+precio → (5) duplicar→WhatsApp + activar 4 AM.
 

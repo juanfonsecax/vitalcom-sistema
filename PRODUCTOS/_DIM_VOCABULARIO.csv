@@ -1,0 +1,67 @@
+eje,valor,etiqueta,tipo_eje,mapea_a,definicion,dueno_del_vocabulario,estado
+angulo_key,(abierto),se crea por producto,TESTEABLE,,"La causa o sub-problema que el producto resuelve. Territorio del PROBLEMA, no del formato.",.claude/agents/ETAPA-2.md,VIGENTE
+concepto_key,C1_OFERTA,Oferta,TESTEABLE,,El precio o el multiplicador de cantidad ES la pieza.,Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C2_BENEFICIOS,Beneficios,TESTEABLE,,"Lo que el producto hace, enumerado o dibujado.",Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C3_SINTOMA,Sintoma,TESTEABLE,,El dolor o el sintoma ocupa la pieza; no hay promesa aun.,Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C4_TRANSFORMACION,Transformacion,TESTEABLE,,Dos estados del mismo sujeto: antes y despues.,Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C5_PRUEBA,Prueba,TESTEABLE,,"Evidencia de terceros: UGC, testimonio, unboxing, captura. Absorbe C6.",Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C7_DESEO,Deseo,TESTEABLE,,"La vida o el cuerpo que se quiere, no el problema que se tiene.",Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C8_PROGRESION,Progresion,TESTEABLE,,"Tres o mas estados en fila, cada uno con su plazo.",Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C9_COMPARACION,Comparacion,TESTEABLE,,Dos columnas enfrentadas: con y sin.,Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,C6_UNBOXING,Unboxing (RETIRADO),TESTEABLE,C5_PRUEBA,Fusionado en C5_PRUEBA en la v2 del catalogo. No usar en filas nuevas.,Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+concepto_key,SIN_CLASIFICAR,sin clasificar,TESTEABLE,,Valor de siembra. Una fila con gasto y este valor es deuda de parametrizacion.,Ads/_SWIPE/_CATALOGO_CONCEPTOS.md,VIGENTE
+canonico_id,CN01_ANTES_DESPUES,Antes / Despues partido,TESTEABLE,C4_TRANSFORMACION,Estructura visual canonica. Su concepto dominante es C4_TRANSFORMACION.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN02_TIMELINE_PROGRESION,Timeline de progresion,TESTEABLE,C8_PROGRESION,Estructura visual canonica. Su concepto dominante es C8_PROGRESION.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN03_OFERTA_MULTIPLICADOR,Multiplicador de cantidad,TESTEABLE,C1_OFERTA,Estructura visual canonica. Su concepto dominante es C1_OFERTA.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN04_ESCALERA_PRECIOS,Escalera de tiers,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN05_LISTA_BENEFICIOS,Lista de beneficios con icono,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN06_CHECKLIST_SINTOMAS,Checklist de sintomas / diagnostico,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN07_DOLOR_A_PLENO,Foto de dolor a pleno,TESTEABLE,C3_SINTOMA,Estructura visual canonica. Su concepto dominante es C3_SINTOMA.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN08_UGC_CRUDO,UGC crudo sin una palabra,TESTEABLE,C5_PRUEBA,Estructura visual canonica. Su concepto dominante es C5_PRUEBA.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN09_UGC_PRODUCTO_EN_MANO,UGC con el producto en la mano,TESTEABLE,C5_PRUEBA,Estructura visual canonica. Su concepto dominante es C5_PRUEBA.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN10_PRUEBA_SOCIAL,Prueba social en tarjetas y rating,TESTEABLE,C5_PRUEBA,Estructura visual canonica. Su concepto dominante es C5_PRUEBA.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN11_PANTALLA_SIMULADA,Captura de pantalla simulada,TESTEABLE,C5_PRUEBA,Estructura visual canonica. Su concepto dominante es C5_PRUEBA.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN12_AVATAR_DESEO,Avatar del deseo con el producto,TESTEABLE,C7_DESEO,Estructura visual canonica. Su concepto dominante es C7_DESEO.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN13_ANATOMIA_MECANISMO,Anatomia y mecanismo de accion,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN14_COMPARACION_DOS_COLUMNAS,Comparacion en dos columnas,TESTEABLE,C9_COMPARACION,Estructura visual canonica. Su concepto dominante es C9_COMPARACION.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN15_INGREDIENTES_ACTIVO,Despiece de ingredientes,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN16_EMISOR_COMERCIAL,Cartel de tienda / emisor comercial,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN17_TITULAR_DOMINANTE,Titular tipografico dominante,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN18_CALLOUTS_PRODUCTO,Callouts cableados al producto,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN19_INSTRUCTIVO_PASOS,Instructivo de pasos numerados,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN20_PRECIO_ANCLA,Precio unico con ancla,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN21_AVATAR_CARD_BENEFICIOS,Avatar con card de beneficios flotante,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+canonico_id,CN22_ESCENA_DE_USO,Escena del momento de uso,TESTEABLE,C2_BENEFICIOS,Estructura visual canonica. Su concepto dominante es C2_BENEFICIOS.,Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md,VIGENTE
+nivel_conciencia,1,No sabe la causa,TESTEABLE,,Sabe que le pasa algo pero no por que. El ad EDUCA.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,2,"Sabe el problema, no la solucion",TESTEABLE,,Nombra su problema y busca. El ad OFRECE la solucion.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,3A,"Conoce el producto, teme comprar",TESTEABLE,,Duda del vendedor o del envio. El ad REDUCE FRICCION.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,3B,"Conoce el producto, compara ofertas",TESTEABLE,,Compara precio. El ad ANCLA la oferta.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,3a,alias sucio,TESTEABLE,3A,Valor legado a normalizar a 3A.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,3b,alias sucio,TESTEABLE,3B,Valor legado a normalizar a 3B.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,NC2,alias sucio,TESTEABLE,2,Valor legado a normalizar a 2.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,NC1,alias sucio,TESTEABLE,1,Valor legado a normalizar a 1.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,1-2,alias sucio,TESTEABLE,2,Valor legado a normalizar a 2.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,(vacio),alias sucio,TESTEABLE,2,Valor legado a normalizar a 2.,.claude/agents/ETAPA-2.md,VIGENTE
+nivel_conciencia,3,alias sucio AMBIGUO,TESTEABLE,REVISAR,"3 a secas no distingue 3A (teme comprar -> reducir friccion) de 3B (compara -> anclar oferta). Llevan a ads opuestos. Requiere criterio, no reemplazo automatico.",.claude/agents/ETAPA-2.md,VIGENTE
+oferta_key,1U,unidad suelta,TESTEABLE,,Una unidad al precio base.,.claude/agents/ETAPA-1.md,VIGENTE
+oferta_key,2X1,dos por uno,TESTEABLE,,El multiplicador clasico de bajo ticket.,.claude/agents/ETAPA-1.md,VIGENTE
+oferta_key,4X2,cuatro por dos,TESTEABLE,,Escalon de volumen.,.claude/agents/ETAPA-1.md,VIGENTE
+oferta_key,ESCALERA,escalera de 3 tiers,TESTEABLE,,P1u / P2u / P3u en cards paralelas.,.claude/agents/ETAPA-1.md,VIGENTE
+oferta_key,COMBO,combo con otro producto,TESTEABLE,,Bundle cruzado.,.claude/agents/ETAPA-1.md,VIGENTE
+oferta_key,SIN_PRECIO,sin precio en el ad,TESTEABLE,,La oferta no aparece; se revela en el bot.,.claude/agents/ETAPA-1.md,VIGENTE
+destino_key,(abierto),version del flujo LucidBot,TESTEABLE,,Version del flujo a la que apunta el ad. Cambia solo con un CAMBIO_BOT en _EVENTOS.csv.,.claude/agents/ETAPA-11.md,VIGENTE
+formato,VIDEO,video,COVARIABLE,,Se congela dentro de un testeo.,DOCTRINA/PLANTILLAS_ADS.md,VIGENTE
+formato,IMAGEN,imagen estatica,COVARIABLE,,Se congela dentro de un testeo.,DOCTRINA/PLANTILLAS_ADS.md,VIGENTE
+rol_embudo,TOFU,tope de embudo,COVARIABLE,,"Derivado del nivel de conciencia: 1->TOFU, 2->TOFU/MOFU, 3A/3B->BOFU.",DOCTRINA/ESCALADO_PLAYBOOK.md,VIGENTE
+rol_embudo,MOFU,medio,COVARIABLE,,"Derivado del nivel de conciencia: 1->TOFU, 2->TOFU/MOFU, 3A/3B->BOFU.",DOCTRINA/ESCALADO_PLAYBOOK.md,VIGENTE
+rol_embudo,BOFU,fondo,COVARIABLE,,"Derivado del nivel de conciencia: 1->TOFU, 2->TOFU/MOFU, 3A/3B->BOFU.",DOCTRINA/ESCALADO_PLAYBOOK.md,VIGENTE
+tipo_hook,MIEDO,miedo,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,EMOCIONAL,emocional,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,OFERTA,oferta,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,MECANISMO,mecanismo,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,TESTIMONIO,testimonio,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,EDUCACIONAL,educacional,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,ANTI_FALSIFICACION,anti falsificacion,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+tipo_hook,DOLOR,dolor,COVARIABLE,,Como abre el copy. MECANISMO tiene APR-001 en contra como hook de entrada.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+lleva_precio,SI,SI,COVARIABLE,,Si el creativo muestra precio.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE
+lleva_precio,NO,NO,COVARIABLE,,Si el creativo muestra precio.,DOCTRINA/COPYWRITING_ADS.md,VIGENTE

@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: csv
+    description: >
+      Los CSV de PRODUCTOS/ leidos en su sitio. dbt NO los escribe nunca: son propiedad de los
+      agentes y de los scripts de ingesta. Aca solo se leen, se testean y se les da forma.
+    meta:
+      dueno: los agentes de .claude/agents y Ads/_TOOLS
+    tables:
+      - name: entrega_conjunto
+        description: Entrega diaria por conjunto (Ads Manager o MCP). La escribe ingerir_meta.py.
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_FACT_ENTREGA.csv', header=true, all_varchar=true)"
+      - name: entrega_anuncio
+        description: Entrega diaria por anuncio, con los 5 ejes ya parseados de la firma.
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_FACT_ENTREGA_ANUNCIO.csv', header=true, all_varchar=true)"
+      - name: ventas
+        description: Ventas por dia (LucidSales). FUENTE DE VERDAD de la venta; Meta solo aporta entrega.
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_FACT_VENTAS.csv', header=true, all_varchar=true)"
+      - name: productos
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_DIM_PRODUCTOS.csv', header=true, all_varchar=true)"
+      - name: conjuntos
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_DIM_CONJUNTOS.csv', header=true, all_varchar=true)"
+      - name: bandas
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_DIM_BANDAS.csv', header=true, all_varchar=true)"
+      - name: alias
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_ALIAS_CONJUNTOS.csv', header=true, all_varchar=true)"
+      - name: parametros_decision
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_PARAMETROS_DECISION.csv', header=true, all_varchar=true)"

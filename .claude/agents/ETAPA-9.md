@@ -175,6 +175,26 @@ PENDIENTE_GENERAR  ->  GENERADO  ->  PUBLICADO  ->  RETIRADO
 - `PUBLICADO` exige **`ad_id` real**. Es el único estado que cuenta como inventario vivo.
 - **Más de 7 días en `PENDIENTE_GENERAR` o `GENERADO` = alerta**, no una fila silenciosa.
 
+**Al pasar a `PUBLICADO` — el segundo registro, el que la data lee.** `_DIM_CREATIVOS.csv` es la
+memoria de la PIEZA; `PRODUCTOS/_DIM_ANUNCIOS.csv` es la del ANUNCIO pautado, y es contra esa tabla
+que `atribuir.py` corta el resultado. Al publicar se escribe también ahí, con los **5 ejes**
+completos y sus valores tomados de `_DIM_VOCABULARIO.csv`:
+
+| eje | de dónde sale |
+|---|---|
+| `angulo_key` | el conjunto donde se pauta |
+| `concepto_key` + `canonico_id` | el blueprint que se llenó (ya obligatorio arriba) |
+| `nivel_conciencia` | `1` `2` `3A` `3B` — nunca `3` a secas: **3A y 3B piden ads opuestos** |
+| `oferta_key` | qué oferta muestra la pieza (`1U` `2X1` `4X2` `ESCALERA` `COMBO` `SIN_PRECIO`) |
+| `destino_key` | la versión del flujo LucidBot a la que manda |
+
+Después se corre **`python Ads/_TOOLS/validar_parametros.py`**. Si sale exit 1, la tanda no está
+cerrada. El modelo completo está en `DOCTRINA/PARAMETRIZACION_ADS.md`.
+
+> **Producir sin llenar los ejes agranda el gasto, no el aprendizaje.** Hoy el 100 % del gasto
+> histórico ($5 604) está en anuncios con `concepto_key = SIN_CLASIFICAR`: se pagó por 54
+> observaciones y no se puede leer ninguna.
+
 ### PASO 5 — Nombrar
 
 `creativo_id` y nombre de anuncio siguen la **CONVENCIÓN DE NOMBRES** de `ETAPA-6.md`:

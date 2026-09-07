@@ -20,7 +20,7 @@ Contrato
 Lee el JSON de PostToolUse por stdin. Si el archivo tocado es un CSV de
 PRODUCTOS/, cuenta las columnas de cada fila contra el encabezado. Si alguna no
 cuadra, sale con codigo 2 y el mensaje llega a Claude para que lo corrija. Si
-cuadra, regenera el dashboard (774 ms medidos) y sale 0.
+cuadra, regenera el dashboard y la app unificada (VISTAS/APP.html) y sale 0.
 
 PRINCIPIO: un hook que falla nunca debe bloquear el trabajo. Cualquier error
 inesperado del propio hook sale 0 en silencio.
@@ -36,6 +36,11 @@ import sys
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
 DASHBOARD = os.path.join(BASE, "Ads", "_TOOLS", "gen_dashboard.py")
+APP = os.path.join(BASE, "Ads", "_TOOLS", "gen_app.py")
+
+# gen_app.py refresca PRODUCTOS/_LANZADOR.json y reescribe VISTAS/APP.html y
+# VISTAS/LANZADOR.html de una sola pasada, asi que el hook llama a uno solo.
+# Antes llamaba a gen_lanzador.py directo y la app unificada quedaba atras.
 
 # El dashboard solo se regenera si cambio uno de los CSV que lo alimentan.
 # Tocar _DIM_COSTEO.csv no mueve el dashboard de ventas, pero es barato incluirlo.
@@ -43,8 +48,35 @@ PREFIJOS_QUE_ALIMENTAN_DASHBOARD = ("_FACT_", "_DIM_", "_EVENTOS", "_TASA_",
                                     "_PARAMETROS_", "_APRENDIZAJES", "_TESTEOS")
 
 
+def finales_de_linea(ruta):
+    """CRLF y LF sueltos en el mismo archivo -> el CSV deja de ser legible por motores estrictos.
+
+    Python lo tolera, y por eso vivio meses sin que nadie lo viera. DuckDB ni siquiera puede
+    inferir el dialecto y falla el build entero. Aparecio el 06-sep-2026 en _FACT_ENTREGA.csv
+    (405 lineas CRLF + 233 LF), producto de mezclar escrituras con y sin newline="" en open().
+    La convencion de la casa es CRLF, que es lo que emite csv.writer en Windows.
+    """
+    try:
+        b = io.open(ruta, "rb").read()
+    except OSError:
+        return None
+    crlf = b.count(b"\r\n")
+    lf = b.count(b"\n") - crlf
+    if crlf and lf:
+        return ("FINALES DE LINEA MEZCLADOS: %s\n"
+                "%d lineas terminan en CRLF y %d en LF suelto. Un CSV asi lo lee Python pero lo "
+                "rechaza cualquier motor estricto.\n"
+                "Causa: escribir el archivo sin newline=\"\" en open(). Reescribilo con "
+                "csv.DictWriter y newline=\"\" (invariante 11 de CLAUDE.md)."
+                % (os.path.basename(ruta), crlf, lf))
+    return None
+
+
 def validar(ruta):
     """Devuelve None si el CSV esta bien formado, o el mensaje de error."""
+    malos_finales = finales_de_linea(ruta)
+    if malos_finales:
+        return malos_finales
     try:
         with io.open(ruta, encoding="utf-8", errors="replace", newline="") as fh:
             filas = list(csv.reader(fh))
@@ -125,6 +157,13 @@ def main():
         return 0
 
     ruta = ((payload.get("tool_input") or {}).get("file_path") or "").strip()
+
+    # Un _PLAN.json nuevo o corregido cambia lo que el Lanzador tiene que dictar.
+    # Sin esto, etapa-6 escribe el plan y la consola sigue mostrando el anterior.
+    if ruta.lower().endswith("_plan.json"):
+        regenerar(APP, os.path.basename(ruta), "lanzador y app")
+        return 0
+
     if not ruta or not ruta.lower().endswith(".csv"):
         return 0
 
@@ -142,21 +181,29 @@ def main():
     nombre = os.path.basename(ruta_abs)
     if not nombre.startswith(PREFIJOS_QUE_ALIMENTAN_DASHBOARD):
         return 0
-    if not os.path.exists(DASHBOARD):
-        return 0
+    regenerar(DASHBOARD, nombre, "dashboard")
+    # La app deriva presupuesto y break-even de estos mismos CSV: si cambian, la
+    # consola tiene que volver a calcular o dicta plata vieja. gen_app.py corre el
+    # lanzador y reescribe la app unificada, que lleva la data incrustada.
+    regenerar(APP, nombre, "lanzador y app")
+    return 0
+
+
+def regenerar(script, nombre, etiqueta):
+    """Corre un generador. Un render que falla nunca bloquea: el CSV ya quedo bien."""
+    if not os.path.exists(script):
+        return
     try:
-        r = subprocess.run([sys.executable, DASHBOARD], cwd=BASE,
+        r = subprocess.run([sys.executable, script], cwd=BASE,
                            capture_output=True, timeout=120)
         if r.returncode == 0:
-            print("hook: %s validado, dashboard regenerado." % nombre)
+            print("hook: %s validado, %s regenerado." % (nombre, etiqueta))
         else:
-            # No se bloquea: el CSV quedo bien, solo el render fallo.
             cola = (r.stderr or b"").decode("utf-8", "replace").strip().splitlines()
-            print("hook: %s validado, pero gen_dashboard.py fallo (exit %d). %s"
-                  % (nombre, r.returncode, cola[-1] if cola else ""))
+            print("hook: %s validado, pero %s fallo (exit %d). %s"
+                  % (nombre, os.path.basename(script), r.returncode, cola[-1] if cola else ""))
     except (subprocess.TimeoutExpired, OSError) as e:
-        print("hook: %s validado; no se pudo regenerar el dashboard (%s)." % (nombre, e))
-    return 0
+        print("hook: %s validado; no se pudo regenerar el %s (%s)." % (nombre, etiqueta, e))
 
 
 if __name__ == "__main__":

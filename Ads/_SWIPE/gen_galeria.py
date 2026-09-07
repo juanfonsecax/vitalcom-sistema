@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 import csv,io,os,datetime,html,json
+
+# Todas las rutas de este script son relativas a Ads/_SWIPE/. Sin el chdir solo
+# corria si el operador ya estaba parado en esa carpeta, y el pipeline unificado
+# (gen_app.py --todo) lo llama desde la raiz. Su hermano gen_winners.py ya lo hacia.
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 R=list(csv.DictReader(io.open('_ADS.csv',encoding='utf-8')))
 R+=list(csv.DictReader(io.open('_BANCO.csv',encoding='utf-8'))) if os.path.exists('_BANCO.csv') else []
 def f(x,d=0.0):

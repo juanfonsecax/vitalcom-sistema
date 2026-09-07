@@ -1,0 +1,21 @@
+# VITALCOM · capa analitica declarada
+#
+# POR QUE EXISTE (06-sep-2026). Los CSV de PRODUCTOS/ siguen siendo la fuente de verdad y los
+# generadores siguen leyendolos: esto NO los reemplaza, se monta encima. Lo que agrega es lo que
+# los CSV solos no pueden dar — tests de integridad que corren solos, linaje explicito, y una
+# definicion unica de cada metrica que no se puede recalcular distinto en dos lugares.
+name: vitalcom
+version: "1.0.0"
+profile: vitalcom
+model-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+models:
+  vitalcom:
+    staging:
+      # TABLA, no vista. Una vista guardaria el read_csv('../PRODUCTOS/...') con ruta relativa y
+      # solo funcionaria si el consumidor corre desde warehouse/. Materializar deja el warehouse
+      # como un SNAPSHOT consultable desde cualquier lado, que es lo que necesita decidir.py.
+      +materialized: table
+    marts:
+      +materialized: table

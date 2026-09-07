@@ -1,0 +1,73 @@
+{
+  "schema": "fase2_lean/1",
+  "producto_key": "TINNIDROP",
+  "fase": 2,
+  "angulo_ganador": "ACCESIBILIDAD_MEDICO",
+  "fecha_creacion": "2026-09-06",
+  "fecha_lanzamiento": "2026-09-07 04:00 AM",
+  "cuenta": "GTR0",
+  "page_id": "498977893288095",
+  "campana": {
+    "nombre": "GTR0_TINNIDROP_F2-CONCEPTOS_20260906",
+    "objetivo": "OUTCOME_TRAFFIC (Conversaciones WhatsApp)",
+    "tipo_presupuesto": "ABO (Presupuesto a nivel de conjunto)",
+    "presupuesto_total_dia_usd": 25.0
+  },
+  "conjuntos": [
+    {
+      "posicion": 1,
+      "nombre_conjunto": "GTR0_TINNIDROP_ACCESIBILIDAD_MEDICO_C1_TESTIMONIO",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C1_TESTIMONIO_RADICAL",
+      "canonico_id": "CN02_TESTIMONIO_CHAT",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "ACCESIBILIDAD_MEDICO_IMG_C1 ~ TINNIDROP|ACCESIBILIDAD_MEDICO|C1_TESTIMONIO_RADICAL.CN02_TESTIMONIO_CHAT|NC2|2X1|BOTv1",
+      "dispositivo_visual": "Captura de chat de WhatsApp con clienta agradecida y foto del producto real en mano.",
+      "prompt_sugerido": "Creativo 1080x1080 px para Meta Ads, producto TINNIDROP. Ángulo 'ACCESIBILIDAD_MEDICO'. Dispositivo: Captura de chat de WhatsApp con clienta agradecida y foto del producto real en mano. Estructura: Fondo cálido, captura de mensaje legible con hora y fecha, producto en esquina inferior con badge '100% Original'. Look profesional, sin parecer IA, badges de 'Envío Gratis' y 'Pagás al recibir'."
+    },
+    {
+      "posicion": 2,
+      "nombre_conjunto": "GTR0_TINNIDROP_ACCESIBILIDAD_MEDICO_C2_LISTA",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C2_LISTA_BENEFICIOS",
+      "canonico_id": "CN05_LISTA_BENEFICIOS",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "ACCESIBILIDAD_MEDICO_IMG_C2 ~ TINNIDROP|ACCESIBILIDAD_MEDICO|C2_LISTA_BENEFICIOS.CN05_LISTA_BENEFICIOS|NC2|2X1|BOTv1",
+      "dispositivo_visual": "Producto al centro con 3 checks verdes gigantes de beneficios clave directos al dolor.",
+      "prompt_sugerido": "Creativo 1080x1080 px para Meta Ads, producto TINNIDROP. Ángulo 'ACCESIBILIDAD_MEDICO'. Dispositivo: Producto al centro con 3 checks verdes gigantes de beneficios clave directos al dolor. Estructura: Fondo editorial limpio, frasco protagonista con iluminación de estudio, badges 'Envío Gratis' y 'Pagás al recibir'. Look profesional, sin parecer IA, badges de 'Envío Gratis' y 'Pagás al recibir'."
+    },
+    {
+      "posicion": 3,
+      "nombre_conjunto": "GTR0_TINNIDROP_ACCESIBILIDAD_MEDICO_C3_COMPARATIVA",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C3_COMPARATIVA_VS_OTROS",
+      "canonico_id": "CN08_TABLA_COMPARATIVA",
+      "rol_embudo": "MOFU",
+      "nombre_anuncio": "ACCESIBILIDAD_MEDICO_IMG_C3 ~ TINNIDROP|ACCESIBILIDAD_MEDICO|C3_COMPARATIVA_VS_OTROS.CN08_TABLA_COMPARATIVA|NC2|2X1|BOTv1",
+      "dispositivo_visual": "Tabla comparativa dividida en 2: 'Pastillas comunes / Tratamientos caros' (❌) vs 'Este producto' (✅).",
+      "prompt_sugerido": "Creativo 1080x1080 px para Meta Ads, producto TINNIDROP. Ángulo 'ACCESIBILIDAD_MEDICO'. Dispositivo: Tabla comparativa dividida en 2: 'Pastillas comunes / Tratamientos caros' (❌) vs 'Este producto' (✅). Estructura: División visual vertical clara, cruces rojas vs checks verdes, precio accesible destacado al pie. Look profesional, sin parecer IA, badges de 'Envío Gratis' y 'Pagás al recibir'."
+    },
+    {
+      "posicion": 4,
+      "nombre_conjunto": "GTR0_TINNIDROP_ACCESIBILIDAD_MEDICO_C4_OFERTA",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C4_OFERTA_IRRESISTIBLE",
+      "canonico_id": "CN11_BODEGA_OFERTA",
+      "rol_embudo": "BOFU",
+      "nombre_anuncio": "ACCESIBILIDAD_MEDICO_IMG_C4 ~ TINNIDROP|ACCESIBILIDAD_MEDICO|C4_OFERTA_IRRESISTIBLE.CN11_BODEGA_OFERTA|NC2|2X1|BOTv1",
+      "dispositivo_visual": "Foto en bodega o despacho con etiqueta 'SOLO POR HOY 2X1' o 'PAGÁS AL RECIBIR'.",
+      "prompt_sugerido": "Creativo 1080x1080 px para Meta Ads, producto TINNIDROP. Ángulo 'ACCESIBILIDAD_MEDICO'. Dispositivo: Foto en bodega o despacho con etiqueta 'SOLO POR HOY 2X1' o 'PAGÁS AL RECIBIR'. Estructura: Sensación de urgencia y autenticidad física, sticker de oferta contrastante, llamada a pedir antes de que se agote. Look profesional, sin parecer IA, badges de 'Envío Gratis' y 'Pagás al recibir'."
+    },
+    {
+      "posicion": 5,
+      "nombre_conjunto": "GTR0_TINNIDROP_ACCESIBILIDAD_MEDICO_C5_ANTI",
+      "presupuesto_usd": 5.0,
+      "concepto_key": "C5_ANTI_FALSIFICACION",
+      "canonico_id": "CN10_SELLO_SEGURIDAD",
+      "rol_embudo": "BOFU",
+      "nombre_anuncio": "ACCESIBILIDAD_MEDICO_IMG_C5 ~ TINNIDROP|ACCESIBILIDAD_MEDICO|C5_ANTI_FALSIFICACION.CN10_SELLO_SEGURIDAD|NC2|2X1|BOTv1",
+      "dispositivo_visual": "Primer plano del sello de seguridad y código de autenticidad para despejar desconfianza.",
+      "prompt_sugerido": "Creativo 1080x1080 px para Meta Ads, producto TINNIDROP. Ángulo 'ACCESIBILIDAD_MEDICO'. Dispositivo: Primer plano del sello de seguridad y código de autenticidad para despejar desconfianza. Estructura: Estilo de alerta informativa: 'Exigí el producto original sellado', frasco nítido, badge oficial. Look profesional, sin parecer IA, badges de 'Envío Gratis' y 'Pagás al recibir'."
+    }
+  ]
+}

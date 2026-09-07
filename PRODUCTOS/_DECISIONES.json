@@ -1,0 +1,247 @@
+{
+  "generado": "2026-09-07",
+  "motor": "decidir v3 (Síntesis: Intervalos de Credibilidad Bayesiana + Riesgo Asimétrico)",
+  "grano": "angulo",
+  "ventana_dias": 14,
+  "nivel_confianza": 0.95,
+  "resumen_acciones": {
+    "PAUSAR": 0,
+    "RENOVAR": 1,
+    "ESCALAR": 7,
+    "SEGUIR_MIDIENDO": 0
+  },
+  "productos": [
+    {
+      "producto_key": "CLEARSTEM",
+      "nombre": "Clearstem Mindbodyskin",
+      "estado_producto": "VIVO",
+      "cpa_objetivo_q": 30.8,
+      "break_even_q": 105.89,
+      "celdas": [
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_SURFING",
+          "accion_sugerida": "SUBIR PRESUPUESTO +20%: CPA excelente Q28.4 (Obj Q30.8, IC [19-43.2]). Ganador claro.",
+          "cpa_real_q": 28.4,
+          "cierre_pct": 13.9,
+          "pct_pd": 643.0,
+          "ic": [
+            19.4,
+            28.4,
+            43.2
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 4,
+          "celda": "RESISTENCIA_INSULINA_SOP",
+          "conjuntos": 2,
+          "ventas": 24.0,
+          "mensajes": 173.0,
+          "spend_usd": 89.35,
+          "spend_q": 680.8,
+          "banda_ok": true,
+          "nombres_ok": true,
+          "cierre_vs_mejor": {
+            "p": 0.0107,
+            "significativo": true,
+            "cierre_a": 13.9,
+            "cierre_b": 29.5,
+            "contra": "ANTI_FALSIFICACION"
+          }
+        },
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_MODERADO",
+          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q56.3 bajo BE Q105.9 (IC [33-103.0]).",
+          "cpa_real_q": 56.3,
+          "cierre_pct": 10.5,
+          "pct_pd": 638.1,
+          "ic": [
+            33.2,
+            56.3,
+            103.0
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 3,
+          "celda": "MEDICOS_FALLARON",
+          "conjuntos": 2,
+          "ventas": 12.0,
+          "mensajes": 114.0,
+          "spend_usd": 88.67,
+          "spend_q": 675.7,
+          "banda_ok": true,
+          "nombres_ok": true,
+          "cierre_vs_mejor": {
+            "p": 0.0027,
+            "significativo": true,
+            "cierre_a": 10.5,
+            "cierre_b": 29.5,
+            "contra": "ANTI_FALSIFICACION"
+          }
+        },
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_SURFING",
+          "accion_sugerida": "SUBIR PRESUPUESTO +20%: CPA excelente Q19.5 (Obj Q30.8, IC [13-31.7]). Ganador claro.",
+          "cpa_real_q": 19.5,
+          "cierre_pct": 29.5,
+          "pct_pd": 331.3,
+          "ic": [
+            12.6,
+            19.5,
+            31.7
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 4,
+          "celda": "ANTI_FALSIFICACION",
+          "conjuntos": 1,
+          "ventas": 18.0,
+          "mensajes": 61.0,
+          "spend_usd": 46.04,
+          "spend_q": 350.8,
+          "banda_ok": true,
+          "nombres_ok": true
+        }
+      ]
+    },
+    {
+      "producto_key": "NUSAVA",
+      "nombre": "NUSAVA B12",
+      "estado_producto": "VIVO",
+      "cpa_objetivo_q": 30.8,
+      "break_even_q": 92.64,
+      "celdas": [
+        {
+          "estado": "RENOVAR",
+          "accion_codigo": "FATIGA_CREATIVO",
+          "accion_sugerida": "RENOVAR CREATIVO (FASE 2): Ganador histórico (11 vts) pero últimos 3d sangra (Q283 con 2 vts). Mantener ángulo y rotar concepto.",
+          "cpa_real_q": 89.5,
+          "cierre_pct": 5.5,
+          "pct_pd": 1063.0,
+          "ic": [
+            51.7,
+            89.5,
+            168.5
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 3,
+          "celda": "ARDOR",
+          "conjuntos": 5,
+          "ventas": 11.0,
+          "mensajes": 201.0,
+          "spend_usd": 129.24,
+          "spend_q": 984.8,
+          "banda_ok": true,
+          "nombres_ok": true
+        }
+      ]
+    },
+    {
+      "producto_key": "TINNIDROP",
+      "nombre": "Tinnidrop Importado Original",
+      "estado_producto": "VIVO",
+      "cpa_objetivo_q": 30.8,
+      "break_even_q": 93.41,
+      "celdas": [
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_MODERADO",
+          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q69.9 bajo BE Q93.4 (IC [52-97.3]).",
+          "cpa_real_q": 69.9,
+          "cierre_pct": 6.3,
+          "pct_pd": 2845.5,
+          "ic": [
+            51.5,
+            69.9,
+            97.3
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 3,
+          "celda": "PERDIDA_AUDITIVA",
+          "conjuntos": 7,
+          "ventas": 38.0,
+          "mensajes": 607.0,
+          "spend_usd": 348.82,
+          "spend_q": 2658.0,
+          "banda_ok": true,
+          "nombres_ok": true,
+          "cierre_vs_mejor": {
+            "p": 0.0074,
+            "significativo": true,
+            "cierre_a": 6.3,
+            "cierre_b": 14.9,
+            "contra": "ACCESIBILIDAD_MEDICO"
+          }
+        },
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_MODERADO",
+          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q83.8 bajo BE Q93.4 (IC [47-163.0]).",
+          "cpa_real_q": 83.8,
+          "cierre_pct": 7.4,
+          "pct_pd": 897.1,
+          "ic": [
+            47.2,
+            83.8,
+            163.0
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 3,
+          "celda": "DETERIORO_COGNITIVO",
+          "conjuntos": 5,
+          "ventas": 10.0,
+          "mensajes": 136.0,
+          "spend_usd": 109.97,
+          "spend_q": 838.0,
+          "banda_ok": true,
+          "nombres_ok": true
+        },
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_SURFING",
+          "accion_sugerida": "SUBIR PRESUPUESTO +20%: CPA excelente Q29.8 (Obj Q30.8, IC [18-53.1]). Ganador claro.",
+          "cpa_real_q": 29.8,
+          "cierre_pct": 14.9,
+          "pct_pd": 414.5,
+          "ic": [
+            17.9,
+            29.8,
+            53.1
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 4,
+          "celda": "ACCESIBILIDAD_MEDICO",
+          "conjuntos": 1,
+          "ventas": 13.0,
+          "mensajes": 87.0,
+          "spend_usd": 50.81,
+          "spend_q": 387.2,
+          "banda_ok": true,
+          "nombres_ok": true
+        },
+        {
+          "estado": "ESCALAR",
+          "accion_codigo": "ESCALAR_MODERADO",
+          "accion_sugerida": "MANTENER / ESCALA LEVE (+10%): CPA rentable Q53.2 bajo BE Q93.4 (IC [27-118.9]).",
+          "cpa_real_q": 53.2,
+          "cierre_pct": 10.9,
+          "pct_pd": 398.5,
+          "ic": [
+            27.1,
+            53.2,
+            118.9
+          ],
+          "faltan_ventas": null,
+          "nivel_prioridad": 3,
+          "celda": "NOCHES_SIN_DORMIR",
+          "conjuntos": 1,
+          "ventas": 7.0,
+          "mensajes": 64.0,
+          "spend_usd": 48.85,
+          "spend_q": 372.2,
+          "banda_ok": true,
+          "nombres_ok": true
+        }
+      ]
+    }
+  ]
+}

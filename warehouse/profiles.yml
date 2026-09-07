@@ -1,0 +1,7 @@
+vitalcom:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: vitalcom.duckdb
+      threads: 4

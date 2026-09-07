@@ -101,10 +101,54 @@ CONJUNTO:  [CUENTA]_[PRODUCTO]_[ANGULO]_R[N]
            GTR7_VARICOSE_MIEDO-CIRUGIA_R2      ← réplica horizontal del mismo ángulo
            GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1
 
-ANUNCIO:   [ANGULO]_[FORMATO]_[A|B]
-           MIEDO-CIRUGIA_VID_A  ·  MIEDO-CIRUGIA_VID_B
-           PERDIDA-AUDITIVA_IMG_A
+ANUNCIO:   [ANGULO]_[FORMATO]_[A|B] ~ [FIRMA]
+           MIEDO-CIRUGIA_VID_A ~ VARICOSE|MIEDO_CIRUGIA|C5.CN10|NC2|2X1|BOTv1
+           PERDIDA-AUDITIVA_IMG_A ~ TINNIDROP|PERDIDA_AUDITIVA|C3.CN07|NC2|SIN_PRECIO|BOTv1
 ```
+
+### TRES REGLAS QUE SALIERON DE LA LIMPIEZA DEL 06-sep-2026
+
+La auditoría de ese día encontró **0 de 48 anuncios vivos con el nombre correcto** y 10 de 23
+conjuntos con un parámetro de segmentación escrito a mano en el nombre, en cuatro ortografías
+(`+25AÑOS`, `+ 25AÑOS`, `+25años`, `+ EDAD MIN +25`). De ahí:
+
+1. **Ningún parámetro configurable viaja en el nombre.** El nombre lleva IDENTIDAD (cuenta,
+   producto, ángulo, réplica); la banda de edad, el presupuesto y el objetivo son configuración y
+   se registran donde son consultables. La banda va a **`PRODUCTOS/_DIM_BANDAS.csv`**, con la que
+   dice la doctrina al lado y una columna `coincide`. Un sufijo en el nombre no es un registro:
+   desaparece al renombrar y se escribe distinto cada vez.
+
+2. **El número de réplica no se reutiliza nunca.** Si `_R2` se apaga, la próxima réplica de ese
+   ángulo es `_R3`, no un `_R2` nuevo. Dos objetos con el mismo nombre en distinto momento son
+   indistinguibles en cualquier export, y el JOIN del sistema es por nombre.
+
+3. **Se renombra ANTES de publicar, siempre.** Un `- Copia` publicado ya rompió el invariante 12
+   y, si cae en el mismo conjunto que su original, deja dos anuncios con el mismo nombre — que es
+   como quedaron `tinnidrop 6` y `tinnidrop 6 - Copia`. Un renombrado posterior se registra en
+   **`PRODUCTOS/_ALIAS_CONJUNTOS.csv`** para no partir la serie histórica.
+
+> **El export diario se baja desglosado por ANUNCIO, no por conjunto.** `ingerir_meta.py` deriva
+> solo el nivel conjunto agregando los anuncios, así que un único archivo llena los dos niveles.
+> Con el export a nivel conjunto el eje CONCEPTO queda ciego y **la FASE 2 no mide nada**.
+
+### LA FIRMA — los 5 ejes viajan DENTRO del nombre del anuncio
+
+```
+[producto]|[angulo]|[concepto].[canonico]|NC[nivel]|[oferta]|[destino]
+```
+
+**Es obligatoria en todo anuncio nuevo**, después de ` ~ `. La genera y la parsea
+`Ads/_TOOLS/firma.py`; los valores válidos salen de `PRODUCTOS/_DIM_VOCABULARIO.csv`.
+
+> **Por qué en el nombre y no solo en un CSV.** El `ad_id` de Meta llegó corrupto en **2 006 de
+> 2 475 filas** de `_FACT_VENTAS.csv` (float científico: los últimos dígitos se perdieron en el
+> xlsx y no vuelven). El JOIN por id es irrecuperable en el histórico. El **nombre**, en cambio,
+> viene intacto en cualquier export — Ads Manager, LucidSales o MCP. Si la parametrización viaja
+> en el nombre, **el cruce no depende de que nadie mantenga una tabla paralela al día**: se
+> reconstruye solo desde cualquier export, para siempre.
+
+Un `?` en cualquier posición de la firma significa eje sin llenar, y `validar_parametros.py` lo
+cuenta como deuda. El modelo completo vive en `DOCTRINA/PARAMETRIZACION_ADS.md`.
 
 **FASE 2 · CONCEPTOS — el nombre tiene que cargar el `concepto_key`, si no la fase no mide nada:**
 
@@ -196,6 +240,40 @@ Las réplicas de un mismo ángulo son **idénticas por diseño** (mismo creativo
   <microangulos>[de etapa-3 — banco de copy para la expansión horizontal, NO para armar conjuntos]</microangulos>
 </input_fase3>
 ```
+
+---
+
+## OUTPUT OBLIGATORIO — `PRODUCTOS/[X]/_PLAN.json` (nuevo · 2026-09-06)
+
+> **Por qué existe.** El texto-estructura de abajo es legible pero no es ejecutable: cada producto
+> lo escribió distinto y ninguno se puede leer con un programa. Mientras el plan viva solo en prosa,
+> el operador tiene que **interpretar** en vez de **ejecutar**, y esa fricción es la razón real por
+> la que los lanzamientos se atrasan.
+
+Además del texto, ETAPA-6 escribe **`PRODUCTOS/[SLUG]/_PLAN.json`**. Es el contrato que consume
+`VISTAS/LANZADOR.html`, la consola que le dicta al operador paso por paso qué copiar y dónde pegarlo.
+
+**La regla de reparto — el plan lleva SOLO contenido creativo:**
+
+| Va en `_PLAN.json` | Lo DERIVA `gen_lanzador.py`, nunca se escribe a mano |
+|---|---|
+| ángulos, avatar, nivel de conciencia | nombres de campaña / conjunto / anuncio |
+| prompts de imagen, archivo de creativo | la firma de 5 ejes |
+| copies (texto principal, títulos, descripción) | presupuesto por conjunto y total/día |
+| oferta, página, concepto de control | banda de edad, fecha de lanzamiento, días a PD |
+| `_faltantes`: lo que el plan no pudo llenar | los gates y sus fechas |
+
+Si un dato derivable aparece escrito en el JSON, se está duplicando una fuente y el próximo cambio
+de doctrina deja el plan mintiendo. **El esquema completo está en el docstring de
+`Ads/_TOOLS/gen_plan.py`.** Se valida con:
+
+```bash
+python Ads/_TOOLS/gen_plan.py --validar     # vocabulario, ángulos duplicados, regla de precio
+python Ads/_TOOLS/gen_lanzador.py           # regenera la consola
+```
+
+Lo que ETAPA-6 no sepa va en `_faltantes` — **nunca se inventa**. La consola muestra cada hueco con
+el nombre de la etapa que lo produce, que es más útil que un dato falso.
 
 ---
 

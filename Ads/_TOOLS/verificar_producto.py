@@ -213,7 +213,12 @@ def verificar(key, dim):
                         % (nombre, COMILLA_A, h["COSTO"], COMILLA_B, c, costo_dim))
         p = h.get("page_id") or ""
         if p and "PENDIENTE" in p.upper():
-            avisos.append("%s tiene page_id PENDIENTE, no se puede pautar asi" % nombre)
+            if page_dim and "PENDIENTE" not in page_dim.upper():
+                disc.append("%s dice page_id PENDIENTE pero _DIM_PRODUCTOS.csv ya tiene %s: "
+                            "el archivo quedo viejo y el operador pautaria a ciegas"
+                            % (nombre, page_dim))
+            else:
+                avisos.append("%s tiene page_id PENDIENTE, no se puede pautar asi" % nombre)
         elif page_dim and p and page_dim not in p:
             disc.append("page_id de %s (%s%s%s) no coincide con page_id de "
                         "_DIM_PRODUCTOS.csv (%s)"
@@ -232,6 +237,28 @@ def verificar(key, dim):
         disc.append("esta en estado VIVO pero su fila no declara 'fase' "
                     "(TESTEO / DEFINICION / ESCALADO): la auditoria diaria no sabe "
                     "que umbrales aplicarle")
+
+    # LANZABILIDAD (2026-09-06). Un producto en LISTO declara "se puede lanzar hoy" y un
+    # VIVO declara "esta corriendo": los dos exigen cuenta y pagina reales. Hasta hoy faltar
+    # cualquiera de las dos salia como aviso y el gate daba PASA igual, que es exactamente lo
+    # que hace que un gate deje de servir. gen_plan.py ya lo trataba como bloqueante; los dos
+    # gates decian cosas distintas del mismo producto.
+    def _pendiente(v):
+        v = (v or "").strip()
+        return (not v) or v.upper() in ("PENDIENTE", "SIN_MCP", "N/A", "-")
+
+    if estado.upper() in ("LISTO", "VIVO"):
+        if _pendiente(fila.get("cuenta_alias")):
+            disc.append("estado %s pero cuenta_alias esta en %s%s%s: no hay donde pautarlo "
+                        "(dueno del dato: el operador)"
+                        % (estado, COMILLA_A, (fila.get("cuenta_alias") or "vacio"), COMILLA_B))
+        if _pendiente(fila.get("page_id")):
+            disc.append("estado %s pero page_id esta en %s%s%s: sin fanpage no se puede "
+                        "publicar (dueno del dato: etapa-fanpage + el operador)"
+                        % (estado, COMILLA_A, (fila.get("page_id") or "vacio"), COMILLA_B))
+    if estado.upper() == "VIVO" and _pendiente(fila.get("campaign_id")):
+        disc.append("esta VIVO pero su fila no declara campaign_id: la ingesta de metricas "
+                    "no puede amarrar la campana de Meta a este producto")
 
     return disc, avisos, {"producto_key": key, "carpeta": "PRODUCTOS/" + slug,
                           "archivos": sorted(heads), "encabezados": heads}

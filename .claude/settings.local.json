@@ -40,7 +40,8 @@
       "Read(//c/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/**)",
       "Bash(chmod 600 \"/c/Users/juand/.config/watch/.env\")",
       "Bash(awk -F',' 'NR>1{print $1\",\"$2\",\"$4}' \"PRODUCTOS/_FACT_VENTAS.csv\")",
-      "Bash(awk -F',' 'NR>1{print $2}' \"PRODUCTOS/_FACT_VENTAS.csv\")"
+      "Bash(awk -F',' 'NR>1{print $2}' \"PRODUCTOS/_FACT_VENTAS.csv\")",
+      "Bash(python -c ' *)"
     ]
   }
 }

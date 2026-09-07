@@ -1,0 +1,8 @@
+# Capa analitica y motor de decision (06-sep-2026).
+# El resto del sistema corre solo con la libreria estandar + pandas/openpyxl para los xlsx.
+pandas
+openpyxl
+scipy            # intervalos de credibilidad (gamma) y Fisher exacto en decidir.py
+duckdb           # motor del warehouse
+dbt-core
+dbt-duckdb

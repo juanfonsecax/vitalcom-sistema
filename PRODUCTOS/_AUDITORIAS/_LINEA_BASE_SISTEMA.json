@@ -1,11 +1,11 @@
 {
-  "arranque_frio": 6256,
-  "claude_md": 3774,
+  "arranque_frio": 7781,
+  "claude_md": 5299,
   "fases": {
-    "fase-1-angulos": 292595,
-    "fase-2-conceptos": 356973,
-    "fase-3-escalado": 228679,
-    "ciclo-diario": 230389
+    "fase-1-angulos": 319603,
+    "fase-2-conceptos": 399510,
+    "fase-3-escalado": 258897,
+    "ciclo-diario": 253543
   },
   "nodos_dios": [
     [
@@ -23,8 +23,8 @@
     [
       "CLAUDE.md",
       8,
-      3774,
-      30192
+      5299,
+      42392
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -43,6 +43,12 @@
       3,
       7017,
       21051
+    ],
+    [
+      "PARAMETRIZACION_ADS.md",
+      3,
+      4358,
+      13074
     ],
     [
       "PLANTILLAS_INFOGRAFIAS_FLUJO.md",
@@ -101,6 +107,6 @@
     "agentes": 16,
     "skills": 7,
     "docs_raiz": 3,
-    "csv": 22
+    "csv": 29
   }
 }

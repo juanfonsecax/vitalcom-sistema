@@ -1,0 +1,181 @@
+TAREA DEL OPERADOR — 06-sep-2026 · limpieza de nombres + banda de edad
+====================================================================================================
+
+[DEJAR (nombre ya correcto)]  GTR13
+   AHORA:  GTR13_CLEARSTEM_ANTI-FALSIFICACION_R1
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25-35
+      anuncio  video Clearstem3
+          -->  ANTI-FALSIFICACION_VID_A ~ CLEARSTEM|ANTI_FALSIFICACI|C9|NC3A|SIN_PRECIO|BOT_V1
+      anuncio  video Clearstem3 - Copia
+          -->  ANTI-FALSIFICACION_VID_B ~ CLEARSTEM|ANTI_FALSIFICACI|C9|NC3A|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR13
+   AHORA:  GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R1
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25-35
+      anuncio  imagen nueva
+          -->  RESISTENCIA-INSULINA_IMG_A ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1
+      anuncio  imagen nueva - Copia
+          -->  RESISTENCIA-INSULINA_IMG_B ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1
+
+[APAGAR]  GTR13
+   AHORA:  GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R2 +25años
+   banda que tiene hoy: 25+
+
+[APAGAR]  GTR13
+   AHORA:  GTR13_CLEARSTEM_MEDICOS-FALLARON_R1 + 25AÑOS - Copia
+   banda que tiene hoy: 25+
+
+[APAGAR]  GTR13
+   AHORA:  GTR13_CLEARSTEM_MEDICOS-FALLARON_R2 + 25AÑOS
+   banda que tiene hoy: 25+
+
+[APAGAR]  GTR7
+   AHORA:  GTR7-MA7-ARDORVIDEO
+   banda que tiene hoy: 45-60
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_NUSAVA_ARDOR_R2
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  MA6_OFERTA
+          -->  ARDOR_IMG_A ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1
+      anuncio  MA6_OFERTA - Copia
+          -->  ARDOR_IMG_B ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1
+
+[RENOMBRAR]  GTR7
+   AHORA:  GTR7_NUSAVA_ARDOR_R3 + EDAD MIN +25
+   NUEVO:  GTR7_NUSAVA_ARDOR_R3
+   banda que tiene hoy: 25+
+      anuncio  MA6_OFERTA
+          -->  ARDOR_IMG_A ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1
+      anuncio  MA6_OFERTA - Copia
+          -->  ARDOR_IMG_B ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1
+
+[RENOMBRAR]  GTR7
+   AHORA:  GTR7_NUSAVA_ARDOR_R4 + EDAD MIN +25
+   NUEVO:  GTR7_NUSAVA_ARDOR_R4
+   banda que tiene hoy: 25+
+      anuncio  MA6_OFERTA
+          -->  ARDOR_IMG_A ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1
+      anuncio  MA6_OFERTA - Copia
+          -->  ARDOR_IMG_B ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1
+
+[RENOMBRAR]  GTR0
+   AHORA:  GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1 +25AÑOS
+   NUEVO:  GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1
+   banda que tiene hoy: 25+
+      anuncio  CONJUNTO 4 — NOCHES SIN DORMIR
+          -->  NOCHES-SIN-DORMIR_IMG_A ~ TINNIDROP|NOCHES_SIN_DORMI|?|NC2|SIN_PRECIO|BOT_V1
+      anuncio  CONJUNTO 4 — NOCHES SIN DORMIR - Copia
+          -->  NOCHES-SIN-DORMIR_IMG_B ~ TINNIDROP|NOCHES_SIN_DORMI|?|NC2|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR1
+   AHORA:  GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25+
+      anuncio  tinnidrop 3
+          -->  DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 3 - Copia
+          -->  DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR1
+   AHORA:  GTR1_TINNIDROP_DETERIORO-COGNITIVO_R2
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25+
+      anuncio  tinnidrop 3
+          -->  DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 3 - Copia
+          -->  DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR1
+   AHORA:  GTR1_TINNIDROP_DETERIORO-COGNITIVO_R3
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25+
+      anuncio  tinnidrop 3
+          -->  DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 3 - Copia
+          -->  DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR1
+   AHORA:  GTR1_TINNIDROP_DETERIORO-COGNITIVO_R4
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25+
+      anuncio  tinnidrop 3
+          -->  DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 3 - Copia
+          -->  DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR1
+   AHORA:  GTR1_TINNIDROP_DETERIORO-COGNITIVO_R5
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 25+
+      anuncio  tinnidrop 3
+          -->  DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 3 - Copia
+          -->  DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2|NC1|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 6
+          -->  PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 6 - Copia
+          -->  PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 6
+          -->  PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 6 - Copia
+          -->  PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 6
+          -->  PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 6 - Copia
+          -->  PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 4
+          -->  ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 4 - Copia
+          -->  ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R2
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 4
+          -->  ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 4 - Copia
+          -->  ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R3
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 4
+          -->  ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 4 - Copia
+          -->  ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+
+[DEJAR (nombre ya correcto)]  GTR7
+   AHORA:  GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R4
+   NUEVO:  (sin cambio)
+   banda que tiene hoy: 45-60
+      anuncio  tinnidrop 4
+          -->  ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+      anuncio  tinnidrop 4 - Copia
+          -->  ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1
+

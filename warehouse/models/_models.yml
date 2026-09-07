@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: stg_alias
+    description: Mapa nombre_viejo -> nombre_canonico de conjuntos renombrados en Meta.
+    columns:
+      - name: nombre_viejo
+        data_tests: [unique, not_null]
+      - name: nombre_nuevo
+        data_tests: [not_null]
+
+  - name: stg_productos
+    description: Registro maestro. producto_key es la llave del sistema (invariante 10).
+    columns:
+      - name: producto_key
+        data_tests: [unique, not_null]
+      - name: estado
+        data_tests:
+          - accepted_values: {values: ['VIVO','PAUSADO','LISTO','ARCHIVADO']}
+      - name: cpa_be_q
+        description: Break-even. Sin el no hay decision posible sobre ningun producto VIVO.
+        data_tests:
+          - not_null:
+              config:
+                where: "estado = 'VIVO'"
+
+  - name: stg_ventas
+    columns:
+      - name: producto_key
+        data_tests:
+          - not_null
+          - relationships: {to: ref('stg_productos'), field: producto_key}
+      - name: ventas
+        data_tests: [not_null]
+      - name: fecha
+        data_tests: [not_null]
+
+  - name: stg_entrega_conjunto
+    columns:
+      - name: producto_key
+        data_tests: [not_null]
+      - name: spend_usd
+        data_tests: [not_null]
+
+  - name: stg_entrega_anuncio
+    columns:
+      - name: anuncio
+        data_tests: [not_null]
+      - name: spend_usd
+        data_tests: [not_null]
+
+  - name: dim_conjunto
+    description: Un renglon por conjunto real, con el angulo derivado del nombre.
+    data_tests:
+      - dbt_utils_unique_combination:
+          config: {enabled: false}
+    columns:
+      - name: conjunto
+        data_tests: [not_null]
+      - name: banda_coincide
+        description: >
+          FALSE significa que el conjunto corre en una banda distinta a la de su avatar.
+          No es un error de datos: es una alerta de negocio, por eso no falla el build.
+
+  - name: fct_conjunto_dia
+    description: Hecho diario por conjunto. La base de toda decision de pausar/escalar.
+    columns:
+      - name: fecha
+        data_tests: [not_null]
+      - name: ventas
+        data_tests: [not_null]
+      - name: spend_usd
+        data_tests: [not_null]
+
+  - name: fct_anuncio_dia
+    description: Hecho diario por anuncio con los 5 ejes. El grano del CONCEPTO.
+    columns:
+      - name: anuncio
+        data_tests: [not_null]

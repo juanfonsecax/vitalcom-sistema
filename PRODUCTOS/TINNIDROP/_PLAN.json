@@ -1,0 +1,161 @@
+{
+  "schema": "plan/1",
+  "producto_key": "TINNIDROP",
+  "fase": 1,
+  "version": "v1",
+  "origen": "Construido desde 2_DATA_PRODUCTO.txt y rendimiento histórico confirmado",
+  "pagina": {
+    "nombre": "Sanarte Guatemala",
+    "page_id": "498977893288095"
+  },
+  "oferta": {
+    "oferta_key": "ESCALERA",
+    "precio_q": 179,
+    "texto": "1u Q179 · 2u Q239 · 3u Q299 (la más elegida) · Envío gratis · Pagás al recibir"
+  },
+  "concepto_control": {
+    "concepto_key": "C2_BENEFICIOS",
+    "variante": "ligera",
+    "canonico_id": "CN05_LISTA_BENEFICIOS"
+  },
+  "conjuntos": [
+    {
+      "n": 1,
+      "angulo_key": "ACCESIBILIDAD_MEDICO",
+      "angulo_titulo": "Accesibilidad económica vs médico",
+      "avatar_edad": "45-60",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "VIDEO",
+      "lleva_precio": true,
+      "archivo_creativo": "tinnidrop_4.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "¿Cansado de gastar en consultas que solo te dicen 'aprendé a vivir con el zumbido'? 😮‍💨\n\nEl zumbido en el oído desgasta, roba el sueño y altera los nervios.\n\nTinnidrop es un spray sublingual con extractos botánicos que apoyan la circulación auditiva y relajan la tensión del nervio.\n\n✅ Fácil aplicación 2 veces al día\n✅ Fórmula natural sin químicos agresivos\n✅ Miles de personas ya descansan en paz\n\nPedí hoy con envío gratis y pagás en efectivo al recibir 👉"
+        ],
+        "titulos": [
+          "Alivio para el zumbido",
+          "No gastes de más",
+          "Spray natural para oídos"
+        ],
+        "descripcion": "Pagás en efectivo al recibir en casa 🏠"
+      }
+    },
+    {
+      "n": 2,
+      "angulo_key": "PERDIDA_AUDITIVA",
+      "angulo_titulo": "Pérdida auditiva progresiva",
+      "avatar_edad": "45-60",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "2",
+      "formato": "VIDEO",
+      "lleva_precio": false,
+      "archivo_creativo": "tinnidrop_6.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "Ese pitido constante no es solo molestia… es tu oído pidiendo auxilio.\n\nCon el tiempo el zumbido puede afectar la claridad con la que escuchás a tu familia.\n\nProtegé tu audición a tiempo con la fórmula de Tinnidrop:\n✅ Estimula el microflujo del canal auditivo\n✅ Calma el timbre constante\n✅ Apoya tu bienestar día y noche\n\nConsultá con una asesora por WhatsApp 👉"
+        ],
+        "titulos": [
+          "Cuidá tu audición",
+          "El pitido tiene alivio",
+          "Fórmula botánica"
+        ],
+        "descripcion": "+5,000 clientes satisfechos en GT"
+      }
+    },
+    {
+      "n": 3,
+      "angulo_key": "NOCHES_SIN_DORMIR",
+      "angulo_titulo": "Noches sin dormir por el pitido",
+      "avatar_edad": "45-60",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "2",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "TINNIDROP_3_noches.jpg",
+      "prompt_imagen": "Diseño publicitario 1080x1080 para Meta Ads, fotorrealista. Escena nocturna en habitación, persona de 50 años despierta en cama mirando el techo con molestia tocándose la oreja. Frasco de spray Tinnidrop en primer plano sobre mesa de noche bien iluminado. Texto claro: '¿El silencio de la noche te hace sonar más el oído?'. Colores azul noche y blanco, badge 'Pagá al recibir'.",
+      "copy": {
+        "textos": [
+          "Cuando todo se apaga en la noche… el pitido se vuelve insoportable. 🌑\n\nNo lográs conciliar el sueño y te levantás agotado al día siguiente.\n\nDos aplicaciones de Tinnidrop antes de acostarte ayudan a relajar la tensión auditiva para que vuelvas a descansar.\n\nEscribinos y conocé la oferta especial de hoy 👉"
+        ],
+        "titulos": [
+          "Volvé a dormir en silencio",
+          "Alivio nocturno",
+          "Descanso profundo"
+        ],
+        "descripcion": "Envío gratis a toda Guatemala 🇬🇹"
+      }
+    },
+    {
+      "n": 4,
+      "angulo_key": "DETERIORO_COGNITIVO",
+      "angulo_titulo": "Deterioro cognitivo y niebla mental",
+      "avatar_edad": "45-60",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "1",
+      "formato": "VIDEO",
+      "lleva_precio": false,
+      "archivo_creativo": "tinnidrop_3.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "El zumbido constante no te deja concentrarte ni pensar con claridad.\n\nEsa fatiga mental tiene solución apoyando la microcirculación cerebral y auditiva con Ginkgo Biloba y extractos naturales de Tinnidrop.\n\nMás enfoque, menos ruido de fondo.\nEscribinos hoy mismo 👉"
+        ],
+        "titulos": [
+          "Despejá tu mente",
+          "Menos zumbido, más calma",
+          "Apoyo auditivo"
+        ],
+        "descripcion": "Tratamiento 100% natural"
+      }
+    },
+    {
+      "n": 5,
+      "angulo_key": "ME_DIJERON_NO_CURA",
+      "angulo_titulo": "Me dijeron que no tiene cura",
+      "avatar_edad": "45-60",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "TINNIDROP_5_medijeron.jpg",
+      "prompt_imagen": "Creativo publicitario 1080x1080 px para Meta Ads. Frasco de Tinnidrop en primer plano con fondo médico desenfocado. Hook grande: '¿Te dijeron que tenías que acostumbrarte?'. Badge de oferta '2x1 Q239' y 'Envío gratis'. Estilo editorial limpio de salud.",
+      "copy": {
+        "textos": [
+          "\"Aprendé a vivir con eso\"… la frase que nadie quiere escuchar. 💔\n\nAunque no haya soluciones mágicas, no tenés que resignarte al sufrimiento diario.\n\nMiles de guatemaltecos han reducido la intensidad del zumbido con Tinnidrop Spray.\n\n🔴 OFERTA LIMITADA: 2 frascos por Q239 con envío incluido.\nMandanos un mensaje y empezá tu tratamiento 👉"
+        ],
+        "titulos": [
+          "No te resignes al zumbido",
+          "Alivio real garantizado",
+          "Oferta especial 2x1"
+        ],
+        "descripcion": "Pagás en efectivo al recibir"
+      }
+    },
+    {
+      "n": 6,
+      "angulo_key": "INGREDIENTES_NATURALES",
+      "angulo_titulo": "Alivio natural sin químicos agresivos",
+      "avatar_edad": "45-60",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "2",
+      "formato": "VIDEO",
+      "lleva_precio": false,
+      "archivo_creativo": "tinnidrop_1.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "Cuidá tu salud sin someter a tu cuerpo a químicos pesados.\n\nTinnidrop combina Ginkgo Biloba, Ginseng y extractos botánicos puros para el confort del canal auditivo.\n\nFácil de aplicar, suave y efectivo.\nPreguntá por nuestras promociones aquí 👉"
+        ],
+        "titulos": [
+          "Fórmula botánica pura",
+          "Sin químicos agresivos",
+          "Alivio suave y natural"
+        ],
+        "descripcion": "Entrega en 24 a 48 horas"
+      }
+    }
+  ]
+}

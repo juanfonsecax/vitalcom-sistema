@@ -1,0 +1,161 @@
+{
+  "schema": "plan/1",
+  "producto_key": "CLEARSTEM",
+  "fase": 1,
+  "version": "v1",
+  "origen": "Construido desde 2_DATA_PRODUCTO.txt y 1_HACER_MANUAL.txt de CLEARSTEM",
+  "pagina": {
+    "nombre": "Belleza & Piel — Astrid García",
+    "page_id": "823825257480758"
+  },
+  "oferta": {
+    "oferta_key": "ESCALERA",
+    "precio_q": 199,
+    "texto": "1u Q199 · 2u Q299 (oferta irresistible) · 3u Q399 · Envío gratis · Pagás al recibir"
+  },
+  "concepto_control": {
+    "concepto_key": "C2_BENEFICIOS",
+    "variante": "ligera",
+    "canonico_id": "CN05_LISTA_BENEFICIOS"
+  },
+  "conjuntos": [
+    {
+      "n": 1,
+      "angulo_key": "RESISTENCIA_INSULINA",
+      "angulo_titulo": "Acné hormonal y resistencia a la insulina (SOP)",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "1",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "CLEARSTEM_1_hormonal.jpg",
+      "prompt_imagen": "Creativo cuadrado 1080x1080 px para Meta Ads. Mujer latina 28 años mirándose la mandíbula con acné quístico hormonal, luz natural, fondo limpio. Tarro de Clearstem Mindbodyskin en primer plano. Texto: '¿Brotes en la mandíbula que no se van con cremas?'. Badge 'Regula desde adentro'.",
+      "copy": {
+        "textos": [
+          "¿Brotes inflamados en la mandíbula y cuello que empeoran antes de tu periodo? 😣\n\nEl acné hormonal no es suciedad exterior: es tu cuerpo pidiendo equilibrio interno (SOP, insulina, estrés).\n\nClearstem Mindbodyskin trabaja desde adentro:\n✅ Regula el exceso de sebo hormonal con DIM y Vitamina A\n✅ Desinflama sin dañar tu estómago\n✅ Piel más limpia y uniforme sin efecto rebote\n\nEscribinos y conocé el tratamiento natural 👉"
+        ],
+        "titulos": [
+          "Acné hormonal en mandíbula",
+          "Regulá desde adentro",
+          "Sin cremas que resecan"
+        ],
+        "descripcion": "Tratamiento #1 para acné adulto"
+      }
+    },
+    {
+      "n": 2,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Cuidado con imitaciones baratas",
+      "avatar_edad": "25-40",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "VIDEO",
+      "lleva_precio": true,
+      "archivo_creativo": "Clearstem3.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "Cuidado con lo que ponés en tu cuerpo. El Clearstem original viene sellado y con lote garantizado.\n\nNo arriesgues tu piel con productos sin registro.\n\n🔴 HOY: Frasco original con envío gratis y pagás al recibir en tus manos por Q199 (o 2 por Q299).\n\nPedí el tuyo directamente con nuestras asesoras autorizadas 👉"
+        ],
+        "titulos": [
+          "Original garantizado",
+          "No compres imitaciones",
+          "Fórmula auténtica"
+        ],
+        "descripcion": "Pagás en efectivo al recibir 🏠"
+      }
+    },
+    {
+      "n": 3,
+      "angulo_key": "MEDICOS_FALLARON",
+      "angulo_titulo": "Cuando las cremas y antibióticos fallaron",
+      "avatar_edad": "25-40",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "2",
+      "formato": "VIDEO",
+      "lleva_precio": false,
+      "archivo_creativo": "Clearstem2.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "Probaste jabones, ácidos, antibióticos y peelings… y a las dos semanas los granos vuelven. 😮‍💨\n\nPorque el acné persistente casi siempre viene del hígado, intestino y hormonas.\n\nClearstem ataca la raíz con antioxidantes y nutrientes específicos que limpian tu organismo desde el interior.\n\nMandanos un mensaje y recuperá la confianza en tu rostro 👉"
+        ],
+        "titulos": [
+          "Atacá la raíz del acné",
+          "Basta de efecto rebote",
+          "Resultados desde adentro"
+        ],
+        "descripcion": "Envío a toda Guatemala"
+      }
+    },
+    {
+      "n": 4,
+      "angulo_key": "DOLOR_EMOCIONAL_MASCULINO",
+      "angulo_titulo": "Acné en hombres y mandíbula",
+      "avatar_edad": "25-35",
+      "avatar_genero": "HOMBRE",
+      "nivel_conciencia": "2",
+      "formato": "VIDEO",
+      "lleva_precio": false,
+      "archivo_creativo": "Clearstem13.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "Tener acné después de los 25 desgasta la seguridad de cualquier hombre.\n\nEvitás fotos, te molesta al afeitarte y las cremas te dejan la cara grasosa.\n\nClearstem se toma en cápsulas y regula la producción de grasa desde el origen. Simple, sin rutinas complicadas de 5 pasos.\n\nConsultanos por WhatsApp de forma privada 👉"
+        ],
+        "titulos": [
+          "Acné masculino adulto",
+          "Sin cremas grasosas",
+          "Firmeza y piel limpia"
+        ],
+        "descripcion": "Asesoría privada por WhatsApp"
+      }
+    },
+    {
+      "n": 5,
+      "angulo_key": "TESTIMONIO_RADICAL",
+      "angulo_titulo": "Testimonio radical de transformación",
+      "avatar_edad": "30-40",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "3A",
+      "formato": "VIDEO",
+      "lleva_precio": true,
+      "archivo_creativo": "Clearstem10.mp4",
+      "prompt_imagen": null,
+      "copy": {
+        "textos": [
+          "\"Pensé que a mis 30 años ya no me iba a quitar el acné nunca… hasta que limpié mi organismo por dentro\". ✨\n\nDescubrí por qué miles de personas ya dejaron de ocultarse tras el maquillaje.\n\nLlevate el tratamiento de 2 meses por solo Q299 con envío gratis.\nEscribinos ahora 👉"
+        ],
+        "titulos": [
+          "Testimonio real de cambio",
+          "Piel sana a los 30+",
+          "Promo 2 frascos Q299"
+        ],
+        "descripcion": "Garantía de satisfacción"
+      }
+    },
+    {
+      "n": 6,
+      "angulo_key": "EJE_INTESTINO_PIEL",
+      "angulo_titulo": "El eje intestino-piel",
+      "avatar_edad": "25-45",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "1",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "CLEARSTEM_6_intestino.jpg",
+      "prompt_imagen": "Infografía visual 1080x1080 px para Meta Ads. Conexión gráfica limpia entre salud digestiva y piel del rostro. Ilustración médica sutil con el frasco de Clearstem. Titular: 'Si tu digestión está inflamada, tu piel también lo estará'.",
+      "copy": {
+        "textos": [
+          "¿Sabías que la inflamación intestinal se refleja directo en tu piel como acné y enrojecimiento? 🧬\n\nLos ingredientes digestivos y antioxidantes de Clearstem apoyan tu flora y limpian tu piel al mismo tiempo.\n\nPedí información aquí 👉"
+        ],
+        "titulos": [
+          "Salud intestinal y piel",
+          "Desinflamá desde adentro",
+          "Piel limpia y sana"
+        ],
+        "descripcion": "Envío gratis a todo el país"
+      }
+    }
+  ]
+}

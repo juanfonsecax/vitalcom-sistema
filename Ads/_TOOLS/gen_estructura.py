@@ -283,7 +283,7 @@ DOC = """<title>Estructura del sistema &middot; VitalCom</title>
   <h1>Estructura del sistema</h1>
   <span class="meta">arquitectura de 3 fases</span>
   <span class="spacer"></span>
-  <a class="nav" href="../VISTAS/PANEL.html" target="_top">&uarr; Panel del sistema</a>
+  <a class="nav" href="../VISTAS/APP.html" target="_top">&uarr; Panel del sistema</a>
   <span class="meta">rev. %s</span>
 </header>
 
