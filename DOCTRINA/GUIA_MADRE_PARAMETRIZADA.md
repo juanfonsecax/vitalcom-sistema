@@ -227,6 +227,33 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `ESTRUCTURA_BOT_ESCALADO` | `Flujo dedicado al ángulo ganador` | Estructura | Clase 22 / Joaquín | Paraguas para testear (Fase 1); dedicado para escalar (Fase 3). | `.claude/agents/ETAPA-11.md` |
 
 ---
+
+## 14. VARIABLES DE OPTIMIZACIÓN CONTINUA (CICLO DE VIDA DEL ÁNGULO)
+
+> **Qué gobiernan.** `decidir.py` contesta *«¿qué hago hoy con esta celda?»* sobre una ventana
+> móvil. Estas variables contestan la otra mitad: *«¿qué ha sido este ángulo a lo largo de su
+> vida, en qué punto está, y cuánto cuesta equivocarse al moverle la plata?»*. Las ejecuta
+> `Ads/_TOOLS/perfilar_angulos.py`, que **consume** el veredicto del motor y no lo recalcula
+> (invariante 13). Sus valores viven en `PRODUCTOS/_PARAMETROS_OPTIMIZACION.csv`.
+>
+> **La variable que manda sobre todas es `ELASTICIDAD_CPA_SURFING`, y hoy está SIN_MEDIR.**
+> Mientras lo esté, el perfil **rankea y no ordena**: la orden sigue saliendo de `decidir.py`.
+
+| Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
+|---|---|---|---|---|---|
+| `ELASTICIDAD_CPA_SURFING` | **`SIN_MEDIR`** | Factor | Backtest 09-sep-2026 · APR-057 | Cuánto empeora el CPA de una celda al subirle el presupuesto +20 %. **`_EVENTOS.csv` tiene 84 eventos y CERO `CAMBIO_PRESUPUESTO`**, así que nadie lo sabe. El backtest mide que con degradación 0 la política de pérdida esperada gana Q786 en 38 días, con +59 % (lo único medido, APR-057) empata, y con +80 % pierde. Sin este número, cambiar de política es apostar. | `PRODUCTOS/_PARAMETROS_OPTIMIZACION.csv` → `elasticidad_cpa_surfing` · `Ads/_TOOLS/backtest_politica.py` |
+| `UMBRAL_PERDIDA_ESPERADA_DIA` | **`10 QUETZALES/DÍA`** | Quetzales | Regla operativa 09-sep-2026 | Tope de riesgo de un movimiento de presupuesto: `E[(1 − BE·λ/gasto)+] × Δ`. Es lo que reemplaza a la parálisis del IC — con 6 ventas el intervalo cruza el break-even casi siempre, pero la pérdida esperada puede ser Q3/día contra Q40/día de ganancia. Q10 ≈ 10 % del break-even mediano del portafolio. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `PROBABILIDAD_MINIMA_RENTABLE` | **`0.80`** | Proporción | Regla operativa 09-sep-2026 | `P(CPA ≤ BE)` mínima para autorizar subir presupuesto. Deliberadamente más laxa que el 0.975 implícito en el IC 95 % de dos colas: subir 20 % es reversible al día siguiente y su costo está acotado por el umbral de pérdida. Exigirle la evidencia de una decisión irreversible es lo que produce la parálisis. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `PROBABILIDAD_MAXIMA_APAGAR` | **`0.20`** | Proporción | Regla operativa 09-sep-2026 | Espejo del anterior: bajo esta probabilidad de ser rentable, el perfil entra en la cola de apagado. **No emite la orden** — pausar sigue saliendo solo de `decidir.py`. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `DIAS_SIN_GASTO_DORMIDO` | **`3 DÍAS`** | Días | Caso VARICOSE 03-sep-2026 | Un ángulo sin gasto no rinde mal: no está corriendo, y su CPA viejo contamina el promedio. VARICOSE pasó 21 días en estado VIVO proponiendo reactivación todos los días. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `DIAS_SIN_GASTO_APAGADO` | **`14 DÍAS`** | Días | `VENTANA_EVALUACION_DIAS` | Se ata al largo de la ventana de evaluación: pasado ese punto la celda ya no aparece en ninguna ventana del motor, así que sostenerla viva declara un estado que ninguna data respalda. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `PORCENTAJE_EXPLORACION_GASTO` | **`15 %`** | Porcentaje | Aritmética del sistema 09-sep-2026 | Porción del gasto diario del producto reservada a brazos sin historia. A $2.99-6/día por conjunto, menos del 10 % no alcanza para que un brazo nuevo llegue a su presupuesto de decisión (1×BE) en menos de dos semanas; más del 20 % le saca al ganador el volumen que sostiene la caja. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `MINIMO_ANGULOS_VIVOS` | **`2 ÁNGULOS`** | Ángulos | Regla de riesgo de cartera | Perfiles en `ESCALANDO` o `SOSTENIDO` por producto antes de declarar dependencia de un solo público. Con uno solo, su fatiga es la muerte del producto. Dispara generación de variantes **aunque el único ángulo vivo esté rindiendo bien**. | `Ads/_TOOLS/perfilar_angulos.py` |
+| `HORIZONTE_EVALUACION_ORDEN` | **`7 DÍAS`** | Días | Clase 11 (CPA semanal) | Ventana posterior con la que se evalúa si una orden de escalado fue correcta. Cubre el ciclo semanal completo (la doctrina lee CPA semanal, nunca de un día suelto) y cabe dentro de los 10 días de maduración COD. | `Ads/_TOOLS/backtest_politica.py` |
+| `MINIMO_VENTAS_ATRIBUCION` | **`5 VENTAS`** | Ventas | APR-004 · ETAPA-10 | Piso de evidencia por nivel de un eje para leer causalidad. Bajo 5 ventas el intervalo del CPA es de ±113 % a ±196 % y cualquier ranking es ruido de Poisson. **Vivía solo en la prosa de ETAPA-10 y ningún script lo conocía.** | `PRODUCTOS/_PARAMETROS_OPTIMIZACION.csv` → `min_ventas_atribuir` · `.claude/agents/ETAPA-10.md` |
+| `MINIMO_CREATIVOS_ATRIBUCION` | **`2 CREATIVOS`** | Creativos | ETAPA-10 · `atribuir.py` | Mínimo de piezas distintas por nivel para que la lectura sea del EJE y no de una sola pieza. Con un solo creativo, ese CPA describe esa pieza dentro de ese ángulo. | `PRODUCTOS/_PARAMETROS_OPTIMIZACION.csv` → `min_creativos_atribuir` · `.claude/agents/ETAPA-10.md` |
+
+---
 ---
 
 # PARTE III — PROTOCOLO DE INGESTA DE NUEVA CLASE (PASO A PASO)

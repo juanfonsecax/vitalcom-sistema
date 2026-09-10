@@ -1,6 +1,6 @@
 {
   "generado": "2026-09-09",
-  "version": 5,
+  "version": 6,
   "app": {
     "titulo": "VitalCom Guatemala",
     "subtitulo": "sistema de lanzamiento y optimización",
@@ -91,6 +91,32 @@
       }
     },
     {
+      "id": "perfiles",
+      "seccion": "decisiones",
+      "rotulo": "Perfiles de Ángulo",
+      "sub": "ciclo de vida de cada ángulo y riesgo de mover su presupuesto",
+      "tipo": "iframe",
+      "render": null,
+      "fuente": "VISTAS/PERFILES.html",
+      "genera": "python Ads/_TOOLS/perfilar_angulos.py --html",
+      "dueno": "perfilar_angulos.py — PRODUCTOS/_ESTADO_ANGULOS.csv",
+      "caduca": {
+        "ok_dias": 1,
+        "tibia_dias": 3
+      },
+      "pesada": false,
+      "src": "PERFILES.html",
+      "estado": {
+        "existe": true,
+        "mtime": "2026-09-09",
+        "edad_dias": 0,
+        "clase": "ok",
+        "etiqueta": "hoy",
+        "chip": "c-good",
+        "detalle": "hoy · escrita 2026-09-09"
+      }
+    },
+    {
       "id": "portafolio",
       "seccion": "lanzar",
       "rotulo": "Portafolio & Lanzador",
@@ -164,7 +190,7 @@
     }
   ],
   "salud": {
-    "al_dia": 3,
+    "al_dia": 4,
     "envejecidas": 0,
     "faltantes": 0,
     "pendientes": [

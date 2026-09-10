@@ -70,10 +70,59 @@ def celda(rows, prods):
 
 
 def banda(gasto, v):
-    """Banda de CPA por conteo Poisson: mas/menos 1 sigma sobre n ventas. Grosera y honesta."""
+    """Banda de CPA del MISMO posterior que usa el motor de decision (09-sep-2026).
+
+    Antes era mas/menos 1 sigma sobre n ventas, que no es un intervalo de credibilidad:
+    con 2-3 ventas subestima el ancho y con 0 ventas no existe. Ahora sale de
+    decidir.ic_cpa() -> lambda|k ~ Gamma(k+0.5,1), CPA = gasto/lambda, IC al
+    nivel_confianza de _PARAMETROS_DECISION.csv. Dos partes del sistema que comparan
+    CPA tienen que usar el mismo intervalo, o "las bandas no se tocan" significa una
+    cosa en atribuir.py y otra en decidir.py.
+    """
     if not v: return None
-    lo, hi = v + math.sqrt(v), max(v - math.sqrt(v), 0.5)
-    return (gasto / lo, gasto / hi)
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from decidir import ic_cpa, cargar_parametros
+        conf = float(cargar_parametros().get("nivel_confianza", 0.95))
+        lo, _, hi = ic_cpa(v, gasto / 7.62, conf, 7.62)   # ic_cpa toma USD y reconvierte
+        return (lo, hi) if hi else None
+    except Exception:
+        lo, hi = v + math.sqrt(v), max(v - math.sqrt(v), 0.5)
+        return (gasto / lo, gasto / hi)
+
+
+def gate_integridad(A, prods):
+    """La tabla que este script lee, contra la fuente de verdad de la que salio.
+
+    _DIM_ANUNCIOS.csv lo siembra sembrar_anuncios.py recorriendo _FACT_VENTAS.csv SIN
+    filtrar rol_ventana, y DATA_PLAYBOOK.md es explicito: BASE suma, CONTROL solapa a
+    proposito y NUNCA suma (es la prueba anti-doble-conteo de APR-020). Medido el
+    09-sep-2026: 904 ventas contra 506 reales, y el inflado NO es parejo entre productos
+    (NUSAVA +100 %, VARICOSE +145 %, CLEARSTEM +59 %, TINNIDROP +69 %), asi que tampoco se
+    cancela al comparar niveles. Este gate no corrige nada: lo pone a la vista cada vez
+    que alguien lee causalidad sobre esta tabla.
+    """
+    base = collections.defaultdict(float)
+    for r in csv.DictReader(open(P("_FACT_VENTAS.csv"), encoding="utf-8-sig")):
+        if (r.get("rol_ventana") or "").strip() == "BASE" and (r.get("anuncio") or "").strip():
+            base[r["producto_key"]] += num(r.get("ventas"))
+    tabla = collections.defaultdict(float)
+    for r in A:
+        tabla[r["producto_key"]] += num(r.get("ventas"))
+    malos = [(pk, tabla[pk], base.get(pk, 0.0)) for pk in sorted(tabla)
+             if base.get(pk, 0.0) and abs(tabla[pk] - base[pk]) > 0.5]
+    if not malos:
+        return
+    print("!" * 100)
+    print("AVISO DE INTEGRIDAD: _DIM_ANUNCIOS.csv suma ventanas CONTROL, que por doctrina NO suman.")
+    print("%-14s %12s %12s %10s" % ("producto", "en la tabla", "BASE real", "inflado"))
+    for pk, t, b in malos:
+        print("%-14s %12.0f %12.0f %9.0f%%" % (pk, t, b, 100 * (t / b - 1)))
+    print("Arreglo: en sembrar_anuncios.py, saltear la fila cuando rol_ventana != 'BASE',")
+    print("y re-sembrar con --escribir. Hasta entonces, los CPA de abajo describen una mezcla")
+    print("de BASE + CONTROL y su NIVEL no es comparable con el de decidir.py.")
+    print("!" * 100)
+    print()
 
 
 def leer_eje(A, prods, eje, fijar=None, producto=None):
@@ -102,7 +151,7 @@ def leer_eje(A, prods, eje, fijar=None, producto=None):
           % (be_ref, be_ref))
     print("=" * 100)
     print("%-24s %8s %6s %8s %-14s %7s %4s %4s  %s" %
-          ("nivel", "gasto Q", "vtas", "CPA Q", "banda 1s", "cierre", "ads", "ang", "veredicto"))
+          ("nivel", "gasto Q", "vtas", "CPA Q", "IC 95%", "cierre", "ads", "ang", "veredicto"))
     print("-" * 108)
 
     filas = []
@@ -195,6 +244,7 @@ def matriz(A, prods, e1, e2, producto=None):
 
 def main():
     A, prods = cargar()
+    gate_integridad(A, prods)
     if "--matriz" in sys.argv:
         i = sys.argv.index("--matriz")
         matriz(A, prods, sys.argv[i + 1], sys.argv[i + 2], arg("--producto"))
