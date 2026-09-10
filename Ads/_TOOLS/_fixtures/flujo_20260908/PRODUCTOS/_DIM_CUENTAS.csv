@@ -1,0 +1,9 @@
+cuenta_alias,cuenta_id,negocio_id,negocio,moneda,min_daily_budget_cents,mcp_habilitado,consultable,tiene_metodo_pago,sube_media_local,estado_cuenta,verificado_el,fuente,notas
+GTR 7,598687956219141,1207290087231971,AMG 5,USD,100,SI,SI,SI,SI,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,"UNICA cuenta del portafolio donde ads_creative_upload_media con LOCAL_FILE esta habilitado (medido 08-sep con el mismo llamado en 4 cuentas). La variable es la CUENTA, no el destino del anuncio."
+GTR 0,1665221077707961,523977064022240,AMG 2,USD,100,SI,SI,SI,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,Devuelve 'Local file upload is not available for ad account'. La media la sube el operador a mano a la biblioteca.
+GTR 1,824783947334627,523977064022240,AMG 2,USD,100,SI,SI,SI,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,
+GTR 3,581490137794343,1632082414095745,AMG 3,USD,100,SI,SI,SI,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,
+GTR 2,1680252426660775,523977064022240,AMG 2,USD,100,NO,SI,SI,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,"MCP en rollout gradual, no habilitada. Publicar a mano."
+GTR 13,916746367261028,941347687954885,AMG 9,USD,100,NO,SI,SI,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,"MCP en rollout. Aca vive CLEARSTEM: no se puede publicar por MCP en absoluto, ni campana ni conjuntos ni anuncios."
+CP1,1346891653335162,515747137534744,AMG 8,COP,3154,NO,SI,SI,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,"COP: el presupuesto va en la unidad menor de COP, no en centavos de USD. min 3154."
+Margarita Perez Carrero,332010724162945,,,COP,3154,SI,SI,NO,NO,ACTIVE,2026-09-08,ads_get_ad_accounts en vivo,"SIN METODO DE PAGO: aunque el MCP este habilitado, no puede gastar. No usar."

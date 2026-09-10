@@ -1,6 +1,6 @@
 ---
 name: fase-2-conceptos
-description: FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando el operador responde "2" a la pregunta inicial, o dice "ya sé qué ángulo vende", "testear conceptos", "qué creativo lo vende más barato" o "tengo el ángulo ganador".
+description: FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando flujo.py sitúa al producto en un nodo F2.*, o cuando el operador dice "ya sé qué ángulo vende", "testear conceptos", "qué creativo lo vende más barato" o "tengo el ángulo ganador".
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -26,26 +26,14 @@ Catálogo de los 8 conceptos y su evidencia: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`
 
 ---
 
-## Verificación obligatoria antes de iniciar
+## EL FLUJO DICTA (desde el 09-sep-2026)
 
-- [ ] Ángulo ganador confirmado **por VENTA**, agregado por `angulo_key` (nunca por conversación ni
-      por conjunto-semana)
-- [ ] Métricas del testeo: CTR, CPA real, mensajes y conversiones por cada uno de los 6 conjuntos
-- [ ] **10 conceptos listos y publicables** (los produce `etapa-9`). Con menos de 10 no se arranca
-- [ ] Una **segunda cuenta publicitaria** disponible para la campaña C
-- [ ] Ningún otro producto corriendo FASE 2 esa semana (techo Q597/día)
-- [ ] **`etapa-11` corrió** y su brief está aplicado en los dos flujos del A/B (brazo A optimizado +
-      brazo B dedicado), con el **ruteo por Post ID verificado** con una conversación de prueba por brazo
-
-Si falta cualquiera → escribir:
-
-```
-No puedo iniciar FASE 2 sin el ángulo ganador confirmado y las métricas del testeo.
-Por favor comparte:
-1. ¿Cuál ángulo ganó? (angulo_key, confirmado por ventas)
-2. Métricas del testeo por conjunto: CTR / CPA real / mensajes / conversiones
-3. ¿Están los 10 conceptos generados y subidos? (si no → corre `etapa-9` primero)
-```
+`python Ads/_TOOLS/flujo.py [producto_key]` decide si el producto está en FASE 2 (gate de entrada:
+ángulo ganador **por VENTA** agregando por `angulo_key`) y en qué nodo va: `F2.etapa-11` →
+`F2.conceptos` (≥10 `GENERADO`, R3F-13) → `F2.plan` (contrato `plan/1`) → `F2.publicar` (los
+`ad_id` escritos) → `F2.activar`. Lo que cierra cada nodo está en `DOCTRINA/FLUJO.json`; acá no se
+repite ni se reinterpreta. Sigue siendo criterio del operador al planificar: una **segunda cuenta**
+con MCP para la campaña C y **ningún otro producto en FASE 2 esa semana** (techo Q597/día).
 
 ---
 
@@ -129,7 +117,7 @@ FASE 2 COMPLETADA ✓
 □ 10 creativos subidos y numerados IGUAL en A/B y en C
 □ Copy único cargado idéntico en los 10 anuncios
 □ Banda de edad = avatar del ángulo · Advantage+ OFF · idéntica en las 3 campañas
-□ Filas de los 10 conceptos en _DIM_CREATIVOS.csv con estado PUBLICADO
+□ Filas de los 10 conceptos en _DIM_CREATIVOS.csv con ad_id (lo escribe verificar_publicacion.py --escribir)
 
 □ A/B DE FLUJO corriendo: brazo A (paraguas optimizado) ∥ brazo B (dedicado al ganador)
 □ Ruteo por Post ID verificado con una conversación de prueba POR BRAZO

@@ -1,6 +1,6 @@
 {
-  "generado": "2026-09-07",
-  "version": 4,
+  "generado": "2026-09-09",
+  "version": 5,
   "app": {
     "titulo": "VitalCom Guatemala",
     "subtitulo": "sistema de lanzamiento y optimización",
@@ -9,12 +9,12 @@
       "VISTAS/PANEL.html"
     ],
     "estado": "VISTAS/_ESTADO.json",
-    "vista_inicial": "decisiones",
+    "vista_inicial": "flujo",
     "datos_productos": "PRODUCTOS/_LANZADOR.json",
     "datos_decisiones": "PRODUCTOS/_DECISIONES.json",
     "datos_blueprints": "Ads/_SWIPE/_BLUEPRINTS/CANONICOS"
   },
-  "vista_inicial": "decisiones",
+  "vista_inicial": "flujo",
   "secciones": [
     {
       "id": "decisiones",
@@ -39,6 +39,32 @@
   ],
   "vistas": [
     {
+      "id": "flujo",
+      "seccion": "decisiones",
+      "rotulo": "Flujo del Sistema",
+      "sub": "dónde está cada producto, qué lo bloquea y qué sigue",
+      "tipo": "iframe",
+      "render": null,
+      "fuente": "VISTAS/FLUJO.html",
+      "genera": "python Ads/_TOOLS/flujo.py --todo",
+      "dueno": "flujo.py · DOCTRINA/FLUJO.json (el grafo declarado)",
+      "caduca": {
+        "ok_dias": 1,
+        "tibia_dias": 3
+      },
+      "pesada": false,
+      "src": "FLUJO.html",
+      "estado": {
+        "existe": true,
+        "mtime": "2026-09-09",
+        "edad_dias": 0,
+        "clase": "ok",
+        "etiqueta": "hoy",
+        "chip": "c-good",
+        "detalle": "hoy · escrita 2026-09-09"
+      }
+    },
+    {
       "id": "decisiones",
       "seccion": "decisiones",
       "rotulo": "Decisiones & Fatiga",
@@ -56,12 +82,12 @@
       "src": "../PRODUCTOS/_DECISIONES.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-07",
+        "mtime": "2026-09-09",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-07"
+        "detalle": "hoy · escrita 2026-09-09"
       }
     },
     {
@@ -82,12 +108,12 @@
       "src": "../PRODUCTOS/_LANZADOR.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-07",
+        "mtime": "2026-09-09",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-07"
+        "detalle": "hoy · escrita 2026-09-09"
       }
     },
     {
@@ -105,11 +131,11 @@
       "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-07",
+        "mtime": "2026-09-09",
         "edad_dias": 0,
         "clase": "ninguna",
         "etiqueta": "",
-        "detalle": "no caduca · escrita 2026-09-07",
+        "detalle": "no caduca · escrita 2026-09-09",
         "chip": "c-neutro"
       }
     },
@@ -138,7 +164,7 @@
     }
   ],
   "salud": {
-    "al_dia": 2,
+    "al_dia": 3,
     "envejecidas": 0,
     "faltantes": 0,
     "pendientes": [

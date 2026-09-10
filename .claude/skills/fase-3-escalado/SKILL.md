@@ -1,6 +1,6 @@
 ---
 name: fase-3-escalado
-description: FASE 3 — Escalado. Con un concepto ganador en 2 de 2 apariciones y CPA real bajo Break-Even, orquesta la compra de volumen: campaña 1-1-7 con el creativo validado ×7, expansión horizontal por Post ID, multicuenta y multi-fanpage, y el plan escrito en 4_PLAN_ESCALADO.txt. Aplica las cuatro reglas duras del escalado. Úsala cuando el operador responde "3" a la pregunta inicial, o dice "tengo concepto ganador", "quiero volumen", "escalar" o "subir presupuesto".
+description: FASE 3 — Escalado. Con un concepto ganador en 2 de 2 apariciones y CPA real bajo Break-Even, orquesta la compra de volumen: campaña 1-1-7 con el creativo validado ×7, expansión horizontal por Post ID, multicuenta y multi-fanpage, y el plan escrito en 4_PLAN_ESCALADO.txt. Aplica las cuatro reglas duras del escalado. Úsala cuando flujo.py sitúa al producto en un nodo F3.*, o cuando el operador dice "tengo concepto ganador", "quiero volumen", "escalar" o "subir presupuesto".
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -22,13 +22,12 @@ tools: Read, Write, Glob, Grep, Bash, Task
 
 ---
 
-## Verificación obligatoria antes de iniciar
+## EL FLUJO DICTA (desde el 09-sep-2026)
 
-- [ ] **Concepto ganador en 2 de 2** apariciones de la FASE 2 (regla de replicación)
-- [ ] Ángulo ganador con CPA real bajo Break-Even, medido semanal y sobre ENTREGADOS
-- [ ] Flujo de caja que aguante el ciclo COD de 4-7 días al nuevo nivel de gasto
-
-Si falta cualquiera → detener. **Un ganador de 1 de 2 es ruido.**
+`python Ads/_TOOLS/flujo.py [producto_key]` mete al producto en FASE 3 solo por el gate
+`concepto_2de2`: el mismo concepto es el mejor CPA (≥ `min_ventas_escalar` ventas) en **2 de 2**
+campañas de conceptos. Un ganador de 1 de 2 es ruido, y los objetos de escalado que existan sin
+gate se cantan como avisos. Criterio del operador: flujo de caja para el ciclo COD de 4-7 días.
 
 ---
 

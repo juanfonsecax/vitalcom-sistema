@@ -41,7 +41,17 @@
       "Bash(chmod 600 \"/c/Users/juand/.config/watch/.env\")",
       "Bash(awk -F',' 'NR>1{print $1\",\"$2\",\"$4}' \"PRODUCTOS/_FACT_VENTAS.csv\")",
       "Bash(awk -F',' 'NR>1{print $2}' \"PRODUCTOS/_FACT_VENTAS.csv\")",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(python \"Ads/_TOOLS/bajar_lucidsales.py\")",
+      "Bash(iconv -f utf-8 -t utf-8//IGNORE)",
+      "Bash(python3 -c ' *)",
+      "Bash(python \"Ads/_TOOLS/ingerir_lucidsales.py\" --dir \"Ads/_INGESTA/LUCIDSALES\" --dry-run)",
+      "Bash(python \"Ads/_TOOLS/decidir.py\" --help)",
+      "Bash(python \"Ads/_TOOLS/decidir.py\")",
+      "Bash(python \"Ads/_TOOLS/test_decidir.py\")",
+      "Bash(python \"Ads/_TOOLS/ingerir_lucidsales.py\" --dir \"Ads/_INGESTA/LUCIDSALES\")",
+      "Bash(python3)",
+      "Bash(python \"Ads/_TOOLS/gen_dashboard.py\")"
     ]
   }
 }

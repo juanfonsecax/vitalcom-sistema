@@ -31,10 +31,19 @@ PRINCIPIOS:
      `ganador_historico` hace que esta regla gane sobre PAUSAR, que se evalúa antes.
 
 ESTADOS:
-  [ESCALAR]         CPA bajo objetivo o bajo BE con respaldo -> Subir +10% a +20%
-  [PAUSAR]          Gasto ACUMULADO sin chats, tolerancia acumulada de 1x BE agotada o CPA desbordado
+  [ESCALAR]         CPA bajo objetivo o bajo BE con respaldo -> Subir +surfing_pct (una vez, en la mañana)
+  [PAUSAR]          Gasto ACUMULADO sin chats · conversación por clic-enlace floja con 0 ventas ·
+                    tolerancia acumulada de 1x BE agotada (tras la maduración COD) · CPA desbordado
   [RENOVAR]         Ganador de la ventana con fatiga en los últimos días recientes (Brief Fase 2)
-  [SEGUIR_MIDIENDO] Cruza BE en zona de prueba/maduración (Acción: Mantener presupuesto)
+  [SEGUIR_MIDIENDO] Cruza BE en zona de prueba/maduración (Acción: Mantener presupuesto). También
+                    PAUSAR_DIFERIDA: una pausa que excede max_pausas_por_dia y espera a mañana.
+
+REGLAMENTO ÚNICO (09-sep-2026):
+  Hasta esa fecha el 35 % de conversación por clic-enlace, el presupuesto de decisión con sus ~3
+  días COD, el máximo de 2 pausas por día y el +20 % de surfing vivían SOLO en prosa (ETAPA-8.md,
+  ESCALADO_PLAYBOOK.md) y este motor no los conocía: dos reglamentos. Hoy todos son filas de
+  _PARAMETROS_DECISION.csv, este motor los ejecuta y verificar_guia_madre.py los vigila. ETAPA-8
+  consume _DECISIONES.json; no recalcula nada.
 
 USO:
     python Ads/_TOOLS/decidir.py                      # Portafolio completo
@@ -70,6 +79,7 @@ DIM_CONJ_PATH = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
 DIM_BANDAS_PATH = os.path.join(PROD, "_DIM_BANDAS.csv")
 FACT_VENTAS_PATH = os.path.join(PROD, "_FACT_VENTAS.csv")
 FACT_ENTREGA_PATH = os.path.join(PROD, "_FACT_ENTREGA.csv")
+FACT_ENTREGA_ANUNCIO_PATH = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")  # link_clicks: la conversacion por clic-ENLACE vive aca
 SALIDA_JSON = os.path.join(PROD, "_DECISIONES.json")
 # No hay SALIDA_HTML: este motor escribe JSON y nada mas. Lo dibuja VISTAS/APP.html.
 
@@ -92,6 +102,15 @@ def cargar_parametros():
         "umbral_gasto_sin_chat_usd": 5.0,
         "factor_tolerancia_pd": 1.0,
         "factor_cpa_desbordado": 1.4,
+        # reglamento único (09-sep-2026): antes vivían en prosa o como literales
+        "min_ventas_ganador": 5,
+        "min_ventas_escalar": 2,
+        "rezago_max_dias": 2,
+        "umbral_conv_clic_enlace_pct": 35.0,
+        "min_link_clicks_conv": 30,
+        "max_pausas_por_dia": 2,
+        "surfing_pct": 20.0,
+        "dias_min_cod_pausa_ventas": 3,
     }
     if os.path.exists(PARAMS_PATH):
         try:
@@ -162,6 +181,27 @@ def comparar_cierre(a_v, a_m, b_v, b_m, alpha):
         return None
 
 
+def _num_o_none(v):
+    """float o None (NaN de pandas incluido): el motor no inventa un cero donde no hay data."""
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return None
+    return None if f != f else f
+
+
+def _dias_entre(desde, hasta):
+    """Días con data de una celda, ambos extremos incluidos. None si falta alguno."""
+    try:
+        d = getattr(desde, "date", lambda: desde)()
+        h = getattr(hasta, "date", lambda: hasta)()
+        if d is None or h is None or d != d or h != h:
+            return None
+        return (h - d).days + 1
+    except (TypeError, AttributeError):
+        return None
+
+
 def cargar_productos():
     prods = {}
     if not os.path.exists(DIM_PROD_PATH):
@@ -219,6 +259,30 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
 
     col_agrup = "coalesce(v.angulo_key, v.conjunto)" if grano == "angulo" else "v.conjunto"
 
+    # La conversación por clic-ENLACE vive en _FACT_ENTREGA_ANUNCIO.csv (export de Meta por
+    # anuncio). Se agrega por la misma celda; si el archivo no existe, las columnas quedan nulas
+    # y la regla de conversación calla en vez de mentir con los clics totales de LucidSales.
+    f_ent = FACT_ENTREGA_ANUNCIO_PATH.replace("\\", "/")
+    if os.path.exists(FACT_ENTREGA_ANUNCIO_PATH):
+        col_agrup_e = "coalesce(d.angulo_key, e.conjunto)" if grano == "angulo" else "e.conjunto"
+        cte_entrega = f""",
+    entrega_celda as (
+        select e.producto_key, {col_agrup_e} as celda,
+               sum(try_cast(e.link_clicks as double)) as link_clicks_acum,
+               sum(try_cast(e.mensajes as double)) as mensajes_enlace_acum
+        from (select trim(producto_key) as producto_key, trim(conjunto) as conjunto,
+                     link_clicks, mensajes
+              from read_csv('{f_ent}', header=true, all_varchar=true)) e
+        left join dim_conj d on d.producto_key = e.producto_key and d.conjunto_meta = e.conjunto
+        group by 1, 2
+    )"""
+        col_entrega = "e.link_clicks_acum, e.mensajes_enlace_acum"
+        join_entrega = " left join entrega_celda e on e.producto_key = c.producto_key and e.celda = c.celda"
+    else:
+        cte_entrega = ""
+        col_entrega = "null as link_clicks_acum, null as mensajes_enlace_acum"
+        join_entrega = ""
+
     # Los dos cortes se cuentan desde el ULTIMO DIA CON DATA e incluyen ese dia (>=, no >):
     # con `>` la ventana entregaba dias-1 dias y mentia en el encabezado.
     dias = max(int(dias), 1)
@@ -265,7 +329,8 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
         left join dim_conj d
           on d.producto_key = v.producto_key and d.conjunto_meta = v.conjunto
         {join_bandas}
-    )
+    ),
+    celdas as (
     select
         producto_key,
         {col_agrup} as celda,
@@ -282,11 +347,15 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
         min(case when {win} then v.fecha end) as desde,
         max(case when {win} then v.fecha end) as hasta,
         min(v.fecha) as desde_acum,
+        max(v.fecha) as hasta_acum,
         bool_and(case when {win} then banda_coincide else true end) as banda_ok,
         bool_and(case when {win} then en_convencion  else true end) as nombres_ok
     from unidos v
     group by 1, 2
     having sum(case when {win} then spend_usd else 0 end) > 0
+    ){cte_entrega}
+    select c.*, {col_entrega}
+    from celdas c{join_entrega}
     order by 1, 4 desc
     """
     df = con.execute(sql).fetchdf()
@@ -296,12 +365,18 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
 
 def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
                   be_q, obj_q, tasa, params,
-                  ventas_acum=None, mensajes_acum=None, spend_acum_usd=None):
+                  ventas_acum=None, mensajes_acum=None, spend_acum_usd=None,
+                  link_clicks_acum=None, mensajes_enlace_acum=None, dias_activo=None):
     """Evalúa una celda combinando Intervalos de Credibilidad con Reglas Operativas.
 
     Las métricas de rendimiento (CPA, IC, escalado) se miden sobre la VENTANA.
     Las reglas de corte de pérdida (hook muerto, tolerancia 1x BE) se miden sobre el
     ACUMULADO desde el lanzamiento: la plata quemada no se olvida al pasar la ventana.
+
+    link_clicks_acum / mensajes_enlace_acum vienen de _FACT_ENTREGA_ANUNCIO.csv (export de Meta):
+    la conversación por clic-ENLACE. Sin ellos la regla de conversación calla — nunca se usa la
+    columna `clicks` de _FACT_VENTAS.csv, que son clics totales y dan 5-13 % hasta en ganadores.
+    dias_activo = días entre el primer y el último día con data de la celda (maduración COD).
     """
     if ventas_acum is None:
         ventas_acum = ventas
@@ -320,7 +395,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     # Un ángulo con historia de rentabilidad no se APAGA por una mala racha: se le RENUEVA
     # el concepto. Sin esta guarda, PAUSAR (regla 3) se evalúa antes que FATIGA (regla 4) y
     # un ganador probado recibe "apagar" en vez de "rotar creativo" — el error del 06-sep-2026.
-    ganador_historico = (ventas_acum >= 5 and cpa_acum_q is not None and cpa_acum_q <= be_q)
+    min_gan = int(params.get("min_ventas_ganador", 5))
+    ganador_historico = (ventas_acum >= min_gan and cpa_acum_q is not None and cpa_acum_q <= be_q)
 
     # Intervalo de credibilidad Bayesiano
     conf = float(params.get("nivel_confianza", 0.95))
@@ -350,8 +426,34 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "nivel_prioridad": 1,
         }
 
-    # 2. REGLA: TOLERANCIA DE DECISIÓN AGOTADA (0 ventas ACUMULADAS tras 1x BE acumulado)
-    if ventas_acum == 0 and gasto_acum_q >= pd_q:
+    # 1b. REGLA: MATAR POR CONVERSACIÓN (Joaquín, clases 7 y 15 · ESCALADO_PLAYBOOK 1.5).
+    #     Con 0 ventas acumuladas y clics de enlace suficientes, una conversación por clic-enlace
+    #     bajo el umbral es un problema anuncio→bot y se corta SIN esperar el presupuesto de
+    #     decisión. Solo con link_clicks reales (export de Meta); sin ellos, la regla calla.
+    umb_conv = float(params.get("umbral_conv_clic_enlace_pct", 35.0))
+    piso_lc = int(params.get("min_link_clicks_conv", 30))
+    conv_enlace_pct = None
+    if link_clicks_acum and link_clicks_acum > 0:
+        conv_enlace_pct = (mensajes_enlace_acum or 0.0) / link_clicks_acum * 100.0
+    if (ventas_acum == 0 and not ganador_historico and conv_enlace_pct is not None
+            and link_clicks_acum >= piso_lc and conv_enlace_pct < umb_conv):
+        return {
+            "estado": "PAUSAR",
+            "accion_codigo": "PAUSAR_CONVERSACION_FLOJA",
+            "accion_sugerida": f"APAGAR (matar por conversación): {conv_enlace_pct:.0f}% de conversación por clic-enlace ({(mensajes_enlace_acum or 0):.0f} chats / {link_clicks_acum:.0f} clics) bajo el {umb_conv:.0f}% con 0 ventas. Problema anuncio→bot: no esperar el PD.",
+            "cpa_real_q": None,
+            "cierre_pct": 0.0,
+            "pct_pd": round(pct_pd_consumido, 1),
+            "ic": ic_res,
+            "faltan_ventas": None,
+            "nivel_prioridad": 1,
+        }
+
+    # 2. REGLA: TOLERANCIA DE DECISIÓN AGOTADA (0 ventas ACUMULADAS tras 1x BE acumulado
+    #    Y la maduración COD cumplida: el "0 ventas" de un conjunto de 2 días no es veredicto)
+    dias_min_cod = int(params.get("dias_min_cod_pausa_ventas", 3))
+    cod_cumplido = (dias_activo is None) or (dias_activo >= dias_min_cod)
+    if ventas_acum == 0 and gasto_acum_q >= pd_q and cod_cumplido:
         return {
             "estado": "PAUSAR",
             "accion_codigo": "PAUSAR_TOLERANCIA_AGOTADA",
@@ -400,11 +502,13 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
 
     # 5. REGLA: ESCALAR SURFING (Ganador sólido con CPA <= Objetivo)
     ic_bajo_be = alto_ic is not None and alto_ic <= be_q
-    if ventas >= 2 and cpa_real_q and cpa_real_q <= obj_q and ic_bajo_be:
+    min_esc = int(params.get("min_ventas_escalar", 2))
+    surf = float(params.get("surfing_pct", 20.0))
+    if ventas >= min_esc and cpa_real_q and cpa_real_q <= obj_q and ic_bajo_be:
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_SURFING",
-            "accion_sugerida": f"ESCALAR (Calet): CPA Q{cpa_real_q:.1f} (Obj Q{obj_q:.1f}) con {ventas:.0f} ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20%.",
+            "accion_sugerida": f"ESCALAR (Calet): CPA Q{cpa_real_q:.1f} (Obj Q{obj_q:.1f}) con {ventas:.0f} ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +{surf:.0f}% una vez al día.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -414,11 +518,11 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         }
 
     # 6. REGLA: ESCALA LEVE / MANTENER (Rentable bajo Break-Even)
-    if ventas >= 2 and cpa_real_q and (obj_q < cpa_real_q <= be_q) and ic_bajo_be:
+    if ventas >= min_esc and cpa_real_q and (obj_q < cpa_real_q <= be_q) and ic_bajo_be:
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_MODERADO",
-            "accion_sugerida": f"MANTENER / ESCALA LEVE: CPA rentable Q{cpa_real_q:.1f} bajo BE Q{be_q:.1f}. Opciones: duplicar o subir +10% a +20% si el CPA se mantiene bajo.",
+            "accion_sugerida": f"MANTENER / ESCALA LEVE: CPA rentable Q{cpa_real_q:.1f} bajo BE Q{be_q:.1f}. Opciones: duplicar o subir hasta +{surf:.0f}% (una vez, en la mañana) si el CPA se mantiene bajo.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -431,6 +535,18 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     faltan = calcular_ventas_faltantes(ventas, spend_usd, be_q, conf, horizonte, tasa)
     if ventas == 0:
         disponible_q = pd_q - gasto_acum_q
+        if gasto_acum_q >= pd_q and not cod_cumplido:
+            return {
+                "estado": "SEGUIR_MIDIENDO",
+                "accion_codigo": "TESTEO_ESPERA_COD",
+                "accion_sugerida": f"MANTENER (esperar COD): PD agotado ({pct_pd_consumido:.0f}%) pero solo {dias_activo} día(s) con data, menos que los {dias_min_cod} de maduración. Un 0 ventas tan temprano no es veredicto.",
+                "cpa_real_q": None,
+                "cierre_pct": 0.0,
+                "pct_pd": round(pct_pd_consumido, 1),
+                "ic": ic_res,
+                "faltan_ventas": None,
+                "nivel_prioridad": 2,
+            }
         return {
             "estado": "SEGUIR_MIDIENDO",
             "accion_codigo": "TESTEO_EN_TOLERANCIA",
@@ -477,6 +593,23 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         "faltan_ventas": faltan,
         "nivel_prioridad": 2,
     }
+
+
+def aplicar_tope_pausas(celdas, params):
+    """GATE #1 (ESCALADO_PLAYBOOK 1.5): como máximo `max_pausas_por_dia` pausas por producto por
+    corrida, las de mayor gasto primero. Las demás quedan PAUSAR_DIFERIDA (SEGUIR_MIDIENDO con la
+    orden anotada) hasta mañana. Un enlace caído (hook muerto) nunca se difiere: no es una
+    decisión de rendimiento. Devuelve cuántas se difirieron."""
+    tope = int(params.get("max_pausas_por_dia", 2))
+    cand = [c for c in celdas if c.get("estado") == "PAUSAR" and c.get("accion_codigo") != "PAUSAR_HOOK_MUERTO"]
+    cand.sort(key=lambda c: -float(c.get("spend_q") or c.get("spend_usd") or 0.0))
+    for c in cand[tope:]:
+        c["estado"] = "SEGUIR_MIDIENDO"
+        c["accion_codigo"] = "PAUSAR_DIFERIDA"
+        c["accion_sugerida"] = ("DIFERIDA (máx %d pausas/día, Calet: no apagar todo en un día malo): %s"
+                                % (tope, c.get("accion_sugerida", "")))
+        c["nivel_prioridad"] = 2
+    return max(0, len(cand) - tope)
 
 
 def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
@@ -559,6 +692,9 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
                 ventas_acum=float(r.ventas_acum),
                 mensajes_acum=float(r.mensajes_acum),
                 spend_acum_usd=float(r.spend_acum),
+                link_clicks_acum=_num_o_none(r.link_clicks_acum),
+                mensajes_enlace_acum=_num_o_none(r.mensajes_enlace_acum),
+                dias_activo=_dias_entre(r.desde_acum, r.hasta_acum),
             )
             eval_res.update({
                 "celda": str(r.celda),
@@ -573,7 +709,11 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
                 "nombres_ok": bool(r.nombres_ok),
             })
             celdas_eval.append(eval_res)
-            estado_cat = eval_res["estado"]
+
+        # GATE #1: máximo de pausas por producto por corrida (las demás quedan diferidas)
+        aplicar_tope_pausas(celdas_eval, params)
+        for c in celdas_eval:
+            estado_cat = c["estado"]
             resultado["resumen_acciones"][estado_cat] = resultado["resumen_acciones"].get(estado_cat, 0) + 1
 
         # Comparación de cierre (Fisher) si aplica

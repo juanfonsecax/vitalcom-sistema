@@ -1,0 +1,298 @@
+{
+ "_leeme": [
+  "EL FLUJO DECLARADO. Este archivo es el grafo del sistema: fases, nodos, quién ejecuta cada",
+  "nodo y qué GATE lo cierra. Lo recorre Ads/_TOOLS/flujo.py sobre los CSV; no contiene un solo",
+  "dato de producto. Cada gate es un PREDICADO del vocabulario cerrado de flujo.py: si un gate no",
+  "se puede escribir con ese vocabulario, no es un gate sino criterio, y vive en el subagente.",
+  "",
+  "Se edita a mano SOLO cuando el sistema cambia (un paso nuevo, un gate nuevo). Un hook corre",
+  "`flujo.py --validar` al tocarlo y bloquea si un ejecutor o archivo citado no existe.",
+  "",
+  "Convenciones: {pk} producto_key · {slug} carpeta · {cuenta} alias sin espacios (GTR7) ·",
+  "{carpeta_transcripciones} · {carpeta_media} · {page_id} · {hoy}. Los números que tienen dueño",
+  "se citan como @param:clave (_PARAMETROS_DECISION.csv) o @publicacion:clave",
+  "(_PARAMETROS_PUBLICACION.csv), nunca se copian acá.",
+  "",
+  "Un nodo está CUMPLIDO cuando todos sus `produce` pasan. El NODO ACTUAL es el primero que no.",
+  "Sus `requiere` son lo que hace falta para poder ejecutarlo (bloqueantes, con dueño). Los",
+  "`avisos` no bloquean: cantan contradicciones con la doctrina. Para un nodo de operador sin",
+  "`produce`, sus `requiere` son a la vez lo que se le pide y lo que lo da por cumplido."
+ ],
+ "schema": "flujo/1",
+ "version": 1,
+ "fases": [
+  {
+   "id": "F1",
+   "titulo": "FASE 1 · TESTEO DE ÁNGULOS",
+   "mide": "el ÁNGULO — 6 conjuntos · ABO · concepto fijo",
+   "entrada": null,
+   "nodos": [
+    {
+     "id": "F1.congelar_inputs",
+     "titulo": "Congelar los inputs del producto",
+     "ejecutor": {"tipo": "operador"},
+     "como": "Entregar producto, costo Q, dosis, imagen y ≥6 transcripciones TXT en Ads/1.2 Transcripcion videos/{carpeta_transcripciones}/. Se decide UNA vez; si cambia, rerun completo (invariante 5).",
+     "requiere": [
+      {"dato": "fila del producto en _DIM_PRODUCTOS.csv",
+       "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "producto_key", "no_vacio": true},
+       "dueno": "operador · _DIM_PRODUCTOS.csv", "regla": "invariante 8 y 10"},
+      {"dato": "COSTO_PROVEEDOR_Q",
+       "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "costo_q", "num_min": 1},
+       "dueno": "operador · _DIM_PRODUCTOS.csv columna costo_q", "regla": "fase-1 PASO −1"},
+      {"dato": "≥6 transcripciones TXT",
+       "predicado": {"tipo": "glob", "patron": "Ads/1.2 Transcripcion videos/{carpeta_transcripciones}/*.txt", "min": 6},
+       "dueno": "operador · Ads/1.2 Transcripcion videos/", "regla": "fase-1 PRE-VALIDACIÓN: 6 ángulos = 6 transcripciones"},
+      {"dato": "carpeta de media del producto (imagen del frasco)",
+       "predicado": {"tipo": "archivo", "ruta": "Ads/{carpeta_media}"},
+       "dueno": "operador · Ads/MEDIA_[PRODUCTO]/", "regla": "invariante 8"}
+     ]
+    },
+    {
+     "id": "F1.paquete",
+     "titulo": "Construir el paquete de FASE 1 (validar, clasificar, costear, ángulos, copy, bot, plan)",
+     "ejecutor": {"tipo": "skill", "name": "fase-1-angulos"},
+     "secuencia": ["etapa-producto", "etapa-0", "Ads/_TOOLS/lavar_videos.sh", "etapa-1", "etapa-1b", "etapa-2", "etapa-fanpage", "etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
+     "como": "La skill invoca los subagentes en ese orden (etapa-2 ∥ etapa-fanpage, etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
+     "produce": [
+      {"dato": "2_DATA_PRODUCTO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/2_DATA_PRODUCTO.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
+      {"dato": "1_HACER_MANUAL.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/1_HACER_MANUAL.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
+      {"dato": "break-even calculado (cpa_be_q)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cpa_be_q", "num_min": 1}, "dueno": "etapa-1 · Ads/_TOOLS/costear.py", "regla": "invariante 2"},
+      {"dato": "_PLAN.json fase 1 con ≥6 conjuntos (contrato plan/1)",
+       "predicado": {"tipo": "todos", "de": [
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN.json", "campo": "schema", "eq": "plan/1"},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN.json", "campo": "conjuntos", "min_len": 6}]},
+       "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "6 ángulos × concepto fijo"},
+      {"dato": "≥6 conjuntos FASE1 registrados en _DIM_CONJUNTOS.csv",
+       "predicado": {"tipo": "csv", "csv": "_DIM_CONJUNTOS.csv", "where": {"producto_key": "{pk}", "fase": ["FASE1", "TESTEO"]}, "min": 6},
+       "dueno": "etapa-guardar-producto (SALIDA 4)", "regla": "un dato, un dueño"}
+     ]
+    },
+    {
+     "id": "F1.publicar",
+     "titulo": "Publicar la estructura de FASE 1 en Meta (todo nace PAUSED)",
+     "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
+     "como": "Pre-flight contra Meta (snapshot), regenerar el paquete contra ese snapshot, ejecutar las llamadas en orden, cerrar el gate con verificar_publicacion.py --escribir.",
+     "requiere": [
+      {"dato": "cuenta publicitaria asignada", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias", "regla": "invariante 4"},
+      {"dato": "page_id de la FanPage", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "page_id", "no_vacio": true}, "dueno": "etapa-fanpage + operador · _DIM_PRODUCTOS.csv columna page_id", "regla": "invariante 4"},
+      {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
+      {"dato": "gate de reconciliación del producto", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "etapa-guardar-producto · Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
+      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json (publicar-meta paso 1)", "regla": "HANDOFF 08-sep: el CSV no es evidencia del estado de Meta"},
+      {"dato": "paquete de publicación sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "1", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py (deriva y bloquea)", "regla": "_PARAMETROS_PUBLICACION.csv fase 1"}
+     ],
+     "produce": [
+      {"dato": "evidencia de campaña de FASE 1 en Meta",
+       "predicado": {"tipo": "alguno", "de": [
+         {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "campaign_id", "not_in": ["", "PENDIENTE", "SIN_MCP"]},
+         {"tipo": "eventos", "evento": ["LANZAMIENTO", "LANZAMIENTO_TEST"], "min": 1},
+         {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}"}, "sum": "spend_usd", "sum_min": 0.01}]},
+       "dueno": "verificar_publicacion.py --escribir · operador (campaign_id en _DIM_PRODUCTOS.csv)", "regla": "invariante 8: 3_CAMPAÑA_META / campaign_id"}
+     ],
+     "avisos": [
+      {"dato": "campaign_id vacío en _DIM_PRODUCTOS.csv aunque el producto ya gastó (deuda de registro)",
+       "predicado": {"tipo": "todos", "de": [
+         {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "campaign_id", "in": ["", "PENDIENTE"]},
+         {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}"}, "sum": "spend_usd", "sum_min": 0.01}]}}
+     ]
+    },
+    {
+     "id": "F1.activar",
+     "titulo": "Activar a las 4 AM del día siguiente y registrar LANZAMIENTO",
+     "ejecutor": {"tipo": "mcp"},
+     "como": "Activar la campaña (MCP con confirmación, o a mano) y anexar el evento LANZAMIENTO a _EVENTOS.csv con el presupuesto inicial. Control D+1 de tracking (MCP_PLAYBOOK 7.5).",
+     "produce": [
+      {"dato": "LANZAMIENTO registrado o gasto observado",
+       "predicado": {"tipo": "alguno", "de": [
+         {"tipo": "eventos", "evento": ["LANZAMIENTO", "LANZAMIENTO_TEST"], "min": 1},
+         {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}"}, "sum": "spend_usd", "sum_min": 0.01}]},
+       "dueno": "operador · _EVENTOS.csv evento LANZAMIENTO", "regla": "invariante 7: 4 AM del día siguiente"}
+     ]
+    }
+   ],
+   "salida": {"a": "F2", "regla": "invariante 1: el ganador se declara por VENTA agregando por angulo_key; nunca por conversación",
+              "gate": {"tipo": "angulo_ganador", "min_ventas": "@param:min_ventas_ganador"}}
+  },
+  {
+   "id": "F2",
+   "titulo": "FASE 2 · TESTEO DE CONCEPTOS",
+   "mide": "el CONCEPTO — 1-1-5 + 1-1-5 + 1-2-5 · ABO · ángulo y copy fijos",
+   "entrada": {"regla": "invariante 1: no entrar a FASE 2 sin ángulo ganador por VENTA",
+               "gate": {"tipo": "angulo_ganador", "min_ventas": "@param:min_ventas_ganador"}},
+   "nodos": [
+    {
+     "id": "F2.etapa-11",
+     "titulo": "Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)",
+     "ejecutor": {"tipo": "subagente", "name": "etapa-11"},
+     "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+     "produce": [
+      {"dato": "CAMBIO_BOT registrado en _EVENTOS.csv", "predicado": {"tipo": "eventos", "evento": ["CAMBIO_BOT"], "min": 1},
+       "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)", "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"}
+     ]
+    },
+    {
+     "id": "F2.conceptos",
+     "titulo": "Fabricar y renderizar los conceptos del ángulo ganador",
+     "ejecutor": {"tipo": "subagente", "name": "etapa-9"},
+     "secuencia": ["etapa-9", "etapa-render"],
+     "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); etapa-render las produce en ChatGPT web y las deja GENERADO con el gate de calidad corrido.",
+     "produce": [
+      {"dato": "conceptos GENERADOS (10 = A 5 + B 5, de _PARAMETROS_PUBLICACION.csv)",
+       "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "estado": ["GENERADO", "PUBLICADO"]}, "min": "@publicacion:conceptos_fase2"},
+       "dueno": "etapa-9 (filas) + etapa-render (PNG)", "regla": "R3F-13: FASE 2 necesita 10 conceptos publicables o no arranca"}
+     ],
+     "avisos": [
+      {"dato": "conceptos registrados pero sin renderizar (PENDIENTE_GENERAR)",
+       "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "estado": "PENDIENTE_GENERAR"}, "min": 1}}
+     ]
+    },
+    {
+     "id": "F2.plan",
+     "titulo": "Copy único, los dos flujos del A/B y el plan de las 3 campañas",
+     "ejecutor": {"tipo": "subagente", "name": "etapa-6"},
+     "secuencia": ["etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
+     "como": "etapa-4 ∥ etapa-5 (copy único + brazos A/B del bot), luego etapa-6 escribe PRODUCTOS/{slug}/_PLAN_FASE2.json en el contrato plan/1 y etapa-guardar-producto actualiza el paquete.",
+     "produce": [
+      {"dato": "_PLAN_FASE2.json en el contrato plan/1 con los 10 conceptos",
+       "predicado": {"tipo": "todos", "de": [
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "schema", "eq": "plan/1"},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "fase", "eq": 2},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "conjuntos", "min_len": 1}]},
+       "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "gen_plan.py: el único contrato que el Lanzador y gen_publicacion consumen"}
+     ],
+     "avisos": [
+      {"dato": "_PLAN_FASE2.json existe pero NO está en el contrato plan/1 (esquema lean de 5 conjuntos × 1 concepto = forma de FASE 1)",
+       "predicado": {"tipo": "todos", "de": [
+         {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json"},
+         {"tipo": "no", "de": {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "schema", "eq": "plan/1"}}]}}
+     ]
+    },
+    {
+     "id": "F2.publicar",
+     "titulo": "Publicar las campañas de conceptos en Meta (todo nace PAUSED)",
+     "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
+     "como": "Brazos A y B en la cuenta principal, C en OTRA cuenta. Pre-flight contra Meta, paquete contra el snapshot, llamadas en orden, gate que escribe los ad_id.",
+     "requiere": [
+      {"dato": "cuenta publicitaria asignada", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv", "regla": "invariante 4"},
+      {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
+      {"dato": "gate de reconciliación del producto", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
+      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json", "regla": "HANDOFF 08-sep: preguntarle a Meta qué existe antes de crear"},
+      {"dato": "paquete de publicación del brazo A sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "2", "--brazo", "A", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 2"}
+     ],
+     "produce": [
+      {"dato": "ad_id escritos en _DIM_CREATIVOS.csv para los conceptos (gate cerrado)",
+       "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "ad_id": {"no_vacio": true}}, "min": "@publicacion:conceptos_fase2"},
+       "dueno": "Ads/_TOOLS/verificar_publicacion.py --escribir", "regla": "publicar-meta paso 4: el gate escribe los ad_id"}
+     ],
+     "avisos": [
+      {"dato": "Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada",
+       "predicado": {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}", "campana": {"contiene": "CONCEPTOS"}}, "sum": "spend_usd", "sum_min": 0.01}},
+      {"dato": "la estructura publicada NO es la de la doctrina",
+       "predicado": {"tipo": "no", "de": {"tipo": "estructura_publicada", "fase": 2}}},
+      {"dato": "hay conceptos GENERADOS sin ad_id (el CSV dice sin publicar; Meta puede decir otra cosa)",
+       "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "estado": "GENERADO", "ad_id": {"vacio": true}}, "min": 1}}
+     ]
+    },
+    {
+     "id": "F2.activar",
+     "titulo": "Activar las campañas de conceptos a las 4 AM y registrar LANZAMIENTO",
+     "ejecutor": {"tipo": "mcp"},
+     "como": "Activar (MCP con confirmación, o a mano), registrar LANZAMIENTO con campana_clave de conceptos, y el A/B de flujo: CAMBIO_BOT (brazo A) + LANZAMIENTO (brazo B).",
+     "produce": [
+      {"dato": "gasto observado en una campaña de conceptos",
+       "predicado": {"tipo": "alguno", "de": [
+         {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "CONCEPTOS", "min": 1},
+         {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}", "campana": {"contiene": "CONCEPTOS"}}, "sum": "spend_usd", "sum_min": 0.01}]},
+       "dueno": "operador · _EVENTOS.csv", "regla": "invariante 7"}
+     ]
+    }
+   ],
+   "salida": {"a": "F3", "regla": "regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido",
+              "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}}
+  },
+  {
+   "id": "F3",
+   "titulo": "FASE 3 · ESCALADO",
+   "mide": "volumen — 1-1-7 · CBO · nada se mide",
+   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1)",
+               "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}},
+   "nodos": [
+    {
+     "id": "F3.plan",
+     "titulo": "Banco de copy (microángulos) y plan 1-1-7",
+     "ejecutor": {"tipo": "subagente", "name": "etapa-6"},
+     "secuencia": ["etapa-3", "etapa-6", "etapa-guardar-producto"],
+     "como": "etapa-3 produce los 8-12 microángulos (banco de copy de la expansión horizontal); etapa-6 planifica el 1-1-7 con el creativo validado ×7; guardar escribe 4_PLAN_ESCALADO.txt.",
+     "produce": [
+      {"dato": "_PLAN_FASE3.json (contrato plan/1, fase 3)",
+       "predicado": {"tipo": "todos", "de": [
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "schema", "eq": "plan/1"},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "fase", "eq": 3}]},
+       "dueno": "etapa-6", "regla": "gen_plan.py"},
+      {"dato": "4_PLAN_ESCALADO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"}
+     ]
+    },
+    {
+     "id": "F3.publicar",
+     "titulo": "Publicar el 1-1-7 CBO en Meta (PAUSED)",
+     "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
+     "requiere": [
+      {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv", "regla": "MCP_PLAYBOOK"},
+      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión (publicar-meta paso 1)", "regla": "HANDOFF 08-sep"},
+      {"dato": "paquete de publicación de FASE 3 sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "3", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 3"}
+     ],
+     "produce": [
+      {"dato": "LANZAMIENTO de escalado registrado con su presupuesto inicial",
+       "predicado": {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "ESCALA", "min": 1},
+       "dueno": "operador · _EVENTOS.csv (el presupuesto inicial es al que se duplica después)", "regla": "fase-3 regla dura 1"}
+     ]
+    }
+   ],
+   "salida": null
+  }
+ ],
+ "ciclo": [
+  {
+   "id": "ciclo.datos",
+   "titulo": "Recolectar la data del día (LucidSales por API)",
+   "ejecutor": {"tipo": "skill", "name": "recopilar-lucidsales"},
+   "como": "bajar_lucidsales.py + ingerir_lucidsales.py. La ventana se cuenta desde el último día CON DATA; con más de 2 días de rezago ninguna orden vale.",
+   "produce": [
+    {"dato": "ventas del producto con rezago ≤ @param:rezago_max_dias",
+     "predicado": {"tipo": "data_fresca", "csv": "_FACT_VENTAS.csv", "col": "ventana_fin", "where": {"producto_key": "{pk}"}, "max_rezago_dias": "@param:rezago_max_dias"},
+     "dueno": "skill recopilar-lucidsales · Ads/_TOOLS/bajar_lucidsales.py", "regla": "invariante 13: una orden sobre data vieja es el error de ventana del 06-sep"}
+   ]
+  },
+  {
+   "id": "ciclo.motor",
+   "titulo": "Correr el motor de decisión (dbt build + decidir.py)",
+   "ejecutor": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_decisiones.py"]},
+   "como": "Reconstruye el warehouse y escribe PRODUCTOS/_DECISIONES.json. Ninguna orden de pausar o escalar sale de otro lado.",
+   "produce": [
+    {"dato": "_DECISIONES.json generado hoy con rezago ≤ @param:rezago_max_dias",
+     "predicado": {"tipo": "decisiones_json", "generado_hoy": true, "rezago_max_dias": "@param:rezago_max_dias"},
+     "dueno": "Ads/_TOOLS/gen_decisiones.py", "regla": "invariante 13"}
+   ]
+  },
+  {
+   "id": "ciclo.ordenes",
+   "titulo": "Ejecutar las órdenes del motor (con confirmación) y registrarlas",
+   "ejecutor": {"tipo": "mcp"},
+   "como": "Por cada PAUSAR / ESCALAR / RENOVAR: el operador confirma la orden, la sesión la ejecuta por MCP (o el operador a mano), se verifica contra Meta y se anexa el evento del día a _EVENTOS.csv. RENOVAR dispara etapa-10 → etapa-9. Sin órdenes, no hay nada que registrar.",
+   "produce": [
+    {"dato": "sin órdenes pendientes, o al menos un evento de ejecución registrado hoy",
+     "predicado": {"tipo": "alguno", "de": [
+       {"tipo": "decision", "estados": ["PAUSAR", "ESCALAR", "RENOVAR"], "max": 0},
+       {"tipo": "eventos", "evento": ["PAUSA", "ORDEN_PAUSA", "CAMBIO_PRESUPUESTO", "ORDEN_ESCALADO", "ESCALADO", "CAMBIO_CREATIVO", "ORDEN_RENOVACION", "REPLICA_MULTICUENTA", "ORDEN_REVOCADA"], "hoy": true, "min": 1}]},
+     "dueno": "operador + la sesión (MCP con confirmación) · _EVENTOS.csv", "regla": "decisión del 09-sep-2026: dicta y ejecuta con confirmación por orden"}
+   ]
+  }
+ ],
+ "excepciones": [
+  {
+   "nodo": "PAUSADO",
+   "titulo": "Producto PAUSADO por decisión del operador",
+   "si": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "estado", "eq": "PAUSADO"},
+   "mensaje": "Reingreso solo con decisión explícita del operador (cambiar estado en _DIM_PRODUCTOS.csv y registrar el motivo en _EVENTOS.csv). No se audita ni se ordena nada mientras tanto."
+  }
+ ]
+}

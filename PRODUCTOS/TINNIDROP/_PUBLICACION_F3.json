@@ -1,0 +1,109 @@
+{
+  "schema": "publicacion/1",
+  "generado_el": "2026-09-08T23:25:04",
+  "producto_key": "TINNIDROP",
+  "fase": 3,
+  "brazo": "UNICO",
+  "angulo": "",
+  "cuenta_alias": "GTR7",
+  "cuenta_id": "598687956219141",
+  "moneda": "USD",
+  "page_id": "498977893288095",
+  "estructura": "1-1-7",
+  "presupuesto_nivel": "CAMPANA",
+  "daily_budget_usd_por_conjunto": null,
+  "daily_budget_cents": 1500,
+  "banda_edad": {
+    "age_min": 18,
+    "age_max": 65,
+    "origen": "SIN avatar de edad marcada -> amplio 18-65 (unica excepcion de ETAPA-6)"
+  },
+  "advantage_audience": 0,
+  "start_time": "2026-09-09T04:00:00-06:00",
+  "estado_al_crear": "PAUSED",
+  "plan": "PRODUCTOS\\TINNIDROP\\_PLAN.json",
+  "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.7.2 + ESCALADO_PLAYBOOK.md",
+  "preflight": [
+    {
+      "paso": 1,
+      "llamada": "ads_get_ad_accounts",
+      "verificar": "que GTR7 (598687956219141) tenga is_ads_mcp_enabled=true y is_queryable=true"
+    },
+    {
+      "paso": 2,
+      "llamada": "ads_get_ad_entities level=campaign",
+      "verificar": "PREGUNTARLE A META QUE YA EXISTE antes de crear nada. El CSV no es evidencia del estado de Meta: el 08-sep decia 'cero publicados' con $23.46 ya gastados. Guardar la respuesta y volver a correr este generador con --snapshot."
+    },
+    {
+      "paso": 3,
+      "llamada": "ads_get_user_pages",
+      "verificar": "que el page_id 498977893288095 exista, sea visible para el lanzador y tenga WhatsApp conectado en la cuenta GTR7"
+    },
+    {
+      "paso": 4,
+      "llamada": "ads_create_ad_set (el primero)",
+      "verificar": "es el test real de la pagina: si el primer conjunto la acepta, esta bien. ads_get_ad_account_pages puede tardar en listarla (lag de lectura)."
+    }
+  ],
+  "bloqueantes": [
+    {
+      "falta": "el plan no declara angulo_ganador. En FASE 2 y 3 el angulo es FIJO y va en el nombre del CONJUNTO; sin el, la agregacion por angulo_key se parte.",
+      "lo_produce": "etapa-6"
+    },
+    {
+      "falta": "hacen falta 7 piezas para un 1-1-7 y hay 0 con archivo en disco. R3F-13: la FASE 2 necesita sus conceptos publicables o no arranca; no se monta con menos, porque sin el pool completo no hay replicacion 'gana en 2 de 2'.",
+      "lo_produce": "etapa-9 (fabrica de conceptos)"
+    }
+  ],
+  "avisos": [],
+  "llamadas": [
+    {
+      "n": 1,
+      "tool": "ads_create_campaign",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_name": "GTR7_TINNIDROP_ESCALA-_20260909",
+        "objective": "OUTCOME_TRAFFIC",
+        "buying_type": "AUCTION",
+        "special_ad_categories": "[]",
+        "campaign_daily_budget": 1500
+      },
+      "guardar_como": "campaign_id",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "CBO: el presupuesto va aca, y los conjuntos NO llevan daily_budget."
+    },
+    {
+      "n": 2,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR7_TINNIDROP__R1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 18, \"age_max\": 65, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-09-09T04:00:00-06:00"
+      },
+      "guardar_como": "adset_id_1",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    }
+  ],
+  "manifiesto": {
+    "campana": "GTR7_TINNIDROP_ESCALA-_20260909",
+    "conjuntos": [
+      {
+        "nombre": "GTR7_TINNIDROP__R1",
+        "posicion": 1,
+        "daily_budget_usd": null,
+        "anuncios": []
+      }
+    ],
+    "total_conjuntos": 1,
+    "total_anuncios": 0
+  }
+}

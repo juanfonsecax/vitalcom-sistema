@@ -182,10 +182,16 @@ VERIFICADORES = {
     "TOLERANCIA_MAXIMA_TESTEO":    (_param_efectivo("factor_tolerancia_pd"), "num"),
     "UMBRAL_HOOK_MUERTO_USD":      (_param_efectivo("umbral_gasto_sin_chat_usd"), "num"),
     "UMBRAL_CPA_DESBORDADO":       (_param_efectivo("factor_cpa_desbordado"), "num"),
-    "MINIMO_VENTAS_PARA_ESCALAR":  (_literal_fuente(
-        r"ventas >= (\d+) and cpa_real_q and cpa_real_q <= obj_q", "regla 5, ESCALAR_SURFING"), "num"),
-    "GUARDA_GANADOR_HISTORICO":    (_literal_fuente(
-        r"ventas_acum >= (\d+) and cpa_acum_q is not None", "guarda ganador_historico"), "num"),
+    # Desde el 09-sep-2026 estos dos ya no son literales del código: viven en el CSV.
+    "MINIMO_VENTAS_PARA_ESCALAR":  (_csv_num("min_ventas_escalar"), "num"),
+    "GUARDA_GANADOR_HISTORICO":    (_csv_num("min_ventas_ganador"), "num"),
+    # Reglamento único (09-sep-2026): lo que antes vivía solo en prosa
+    "PORCENTAJE_SURFING_STEP":     (_csv_num("surfing_pct"), "num"),
+    "UMBRAL_CONVERSACION_CLIC_ENLACE": (_csv_num("umbral_conv_clic_enlace_pct"), "num"),
+    "MINIMO_LINK_CLICKS_CONVERSACION": (_csv_num("min_link_clicks_conv"), "num"),
+    "MAX_PAUSAS_POR_DIA":          (_csv_num("max_pausas_por_dia"), "num"),
+    "DIAS_MIN_COD_PAUSA_VENTAS":   (_csv_num("dias_min_cod_pausa_ventas"), "num"),
+    "REZAGO_MAXIMO_DATA":          (_csv_num("rezago_max_dias"), "num"),
 }
 
 

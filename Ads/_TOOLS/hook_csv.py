@@ -37,6 +37,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 PROD = os.path.join(BASE, "PRODUCTOS")
 DASHBOARD = os.path.join(BASE, "Ads", "_TOOLS", "gen_dashboard.py")
 APP = os.path.join(BASE, "Ads", "_TOOLS", "gen_app.py")
+FLUJO = os.path.join(BASE, "Ads", "_TOOLS", "flujo.py")
 
 # gen_app.py refresca PRODUCTOS/_LANZADOR.json y reescribe VISTAS/APP.html y
 # VISTAS/LANZADOR.html de una sola pasada, asi que el hook llama a uno solo.
@@ -166,10 +167,18 @@ def main():
         sys.stderr.write(error + "\n")
         return 2                         # bloquea y el mensaje llega a Claude
 
-    # Un _PLAN.json nuevo o corregido cambia lo que el Lanzador tiene que dictar.
-    # Sin esto, etapa-6 escribe el plan y la consola sigue mostrando el anterior.
-    if ruta.lower().endswith("_plan.json"):
+    # El grafo declarado: si se toca, se valida contra el disco y BLOQUEA si un ejecutor o un
+    # archivo citado no existe. Un flujo que apunta a un subagente borrado dicta pasos imposibles.
+    error = flujo_invalido(ruta)
+    if error:
+        sys.stderr.write(error + "\n")
+        return 2
+
+    # Un _PLAN.json nuevo o corregido cambia lo que el Lanzador tiene que dictar y el nodo en que
+    # esta el producto. Sin esto, etapa-6 escribe el plan y la consola sigue mostrando el anterior.
+    if os.path.basename(ruta).lower().startswith("_plan") and ruta.lower().endswith(".json"):
         regenerar(APP, os.path.basename(ruta), "lanzador y app")
+        regenerar(FLUJO, os.path.basename(ruta), "flujo", ["--todo", "--silencioso"])
         return 0
 
     if not ruta or not ruta.lower().endswith(".csv"):
@@ -194,13 +203,17 @@ def main():
     # consola tiene que volver a calcular o dicta plata vieja. gen_app.py corre el
     # lanzador y reescribe la app unificada, que lleva la data incrustada.
     regenerar(APP, nombre, "lanzador y app")
+    # Y el flujo: un CSV que cambia puede mover a un producto de nodo (un ad_id escrito, un
+    # evento LANZAMIENTO, una fila GENERADO). El estado se deriva, nunca se declara.
+    if not nombre.startswith(("_ESTADO_FLUJO", "_FLUJO")):
+        regenerar(FLUJO, nombre, "flujo", ["--todo", "--silencioso"])
     return 0
 
 
 GATE_GUIA = os.path.join(BASE, "Ads", "_TOOLS", "verificar_guia_madre.py")
 
 # Tocar cualquiera de estos dos puede desincronizar el texto madre de lo que corre.
-ARCHIVOS_QUE_DISPARAN_GATE = ("_parametros_decision.csv", "guia_madre_parametrizada.md")
+ARCHIVOS_QUE_DISPARAN_GATE = ("_parametros_decision.csv", "guia_madre_parametrizada.md", "decidir.py")
 
 
 def desincronizacion_guia_madre(ruta):
@@ -226,12 +239,31 @@ def desincronizacion_guia_madre(ruta):
             % (os.path.basename(ruta), detalle))
 
 
-def regenerar(script, nombre, etiqueta):
+def flujo_invalido(ruta):
+    """Devuelve el mensaje de falla si DOCTRINA/FLUJO.json quedo apuntando a algo que no existe."""
+    if not ruta or not os.path.exists(FLUJO):
+        return None
+    if not ruta.lower().replace(chr(92), "/").endswith("doctrina/flujo.json"):
+        return None
+    try:
+        r = subprocess.run([sys.executable, FLUJO, "--validar"], cwd=BASE,
+                           capture_output=True, timeout=120)
+    except (subprocess.TimeoutExpired, OSError):
+        return None
+    if r.returncode == 0:
+        print("hook: FLUJO.json tocado y valido: cada ejecutor y archivo citado existe.")
+        return None
+    salida = (r.stdout or b"").decode("utf-8", "replace").strip()
+    return ("FLUJO DECLARADO INVALIDO tras tocar DOCTRINA/FLUJO.json.\n"
+            "Corregi el nodo o el predicado para que apunte a algo que exista:\n\n%s" % salida)
+
+
+def regenerar(script, nombre, etiqueta, args=None):
     """Corre un generador. Un render que falla nunca bloquea: el CSV ya quedo bien."""
     if not os.path.exists(script):
         return
     try:
-        r = subprocess.run([sys.executable, script], cwd=BASE,
+        r = subprocess.run([sys.executable, script] + list(args or []), cwd=BASE,
                            capture_output=True, timeout=120)
         if r.returncode == 0:
             print("hook: %s validado, %s regenerado." % (nombre, etiqueta))

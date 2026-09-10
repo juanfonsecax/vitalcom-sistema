@@ -2214,7 +2214,7 @@ for _r in load("_PARAMETROS_FINANZAS.csv"):
 import subprocess as _sub
 try:
     _vm = _sub.run([sys.executable, os.path.join(ROOT, "Ads", "_TOOLS", "verificar_monedas.py")],
-                   capture_output=True, text=True, timeout=60)
+                   capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=60)
     _vm_ok = (_vm.returncode == 0)
     _vm_n = _vm.stdout.count("\u2705")
     verifmon = ('<b style="color:var(--good)">\u2705 Las {} verificaciones de moneda pasan</b> '

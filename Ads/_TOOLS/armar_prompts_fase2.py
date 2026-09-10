@@ -15,6 +15,7 @@ QUE HACE:
 import os
 import sys
 import io
+import csv
 import json
 
 try:
@@ -59,15 +60,79 @@ def detectar_angulo_ganador(producto_key):
     return ganador["celda"], ganador
 
 
-def buscar_foto_producto(producto_key):
-    """Busca la foto limpia de producto en Ads/MEDIA_[PK]/."""
-    media_dir = os.path.join(BASE, "Ads", f"MEDIA_{producto_key}")
-    if not os.path.isdir(media_dir):
+def leer_envase(producto_key):
+    """Lee la identidad FISICA declarada del producto desde PRODUCTOS/_DIM_ENVASE.csv.
+
+    POR QUE EXISTE (07-sep-2026): esta funcion antes se llamaba buscar_foto_producto() y
+    devolvia el PRIMER archivo alfabetico de Ads/MEDIA_[PK]/, llamandolo "la foto limpia del
+    producto". En MEDIA_TINNIDROP el primero alfabetico era TINNIDROP_R1_VIVIRCONESO.png, que
+    NO es un packshot: es un ANUNCIO entero con el frasco VERDE y la marca SOUTH MOON. El
+    prompt le ordenaba al modelo copiar "este envase real respetando su forma y etiqueta", asi
+    que las 5 piezas de FASE 2 salieron verdes y de otra marca. El packshot se DECLARA, no se
+    adivina: un dato, un dueno.
+    """
+    ruta = os.path.join(PROD_DIR, "_DIM_ENVASE.csv")
+    if not os.path.isfile(ruta):
         return None
-    for f in sorted(os.listdir(media_dir)):
-        if f.lower().endswith((".png", ".jpg", ".jpeg")) and not f.startswith("."):
-            return os.path.join(media_dir, f)
+    with open(ruta, encoding="utf-8") as f:
+        for fila in csv.DictReader(f):
+            if fila.get("producto_key", "").strip() == producto_key:
+                return fila
     return None
+
+
+def leer_escalera(producto_key):
+    """Arma los tiers con ANTES y AHORA desde PRODUCTOS/_DIM_PRECIOS.csv.
+
+    POR QUE EXISTE (08-sep-2026): los precios estaban hardcodeados por producto dentro de este
+    script, contra la regla 'un dato, un dueno'. Y el precio ANCLA ('antes Q...') no existia en
+    ningun lado del sistema, asi que el modelo lo completaba solo: en TINNIDROP_F2_CN05 escribio
+    'PRECIO NORMAL: Q299.00', que es nuestro precio de TRES frascos presentado como el precio
+    normal de UNO. La oferta se declara, no se improvisa.
+    """
+    ruta = os.path.join(PROD_DIR, "_DIM_PRECIOS.csv")
+    if not os.path.isfile(ruta):
+        return None
+    filas = []
+    with open(ruta, encoding="utf-8") as f:
+        for x in csv.DictReader(f):
+            if x.get("producto_key") == producto_key and x.get("estado") == "ACTIVO":
+                filas.append(x)
+    if not filas:
+        return None
+    filas.sort(key=lambda x: int(x["unidades"]))
+
+    tiers, etiquetas = {}, {1: "", 2: " (OFERTA MÁS ELEGIDA ⭐)", 3: " (Tratamiento Completo)"}
+    for i, x in enumerate(filas[:3], start=1):
+        u = int(x["unidades"])
+        ahora = f"Q{float(x['precio_q']):.0f}"
+        antes = x.get("precio_antes_q", "").strip()
+        txt = f"{u} Frasco{'s' if u > 1 else ''} por {ahora}"
+        if antes:
+            txt += f" (antes Q{float(antes):.0f})"
+        tiers[f"TIER_{i}"] = txt + etiquetas.get(u, "")
+    return tiers or None
+
+
+def buscar_foto_producto(producto_key):
+    """Devuelve la ruta absoluta del packshot DECLARADO. Falla ruidoso si no lo hay."""
+    envase = leer_envase(producto_key)
+    if not envase or not envase.get("packshot", "").strip():
+        raise SystemExit(
+            f"BLOQUEANTE: {producto_key} no tiene packshot declarado en "
+            f"PRODUCTOS/_DIM_ENVASE.csv.\n"
+            f"  Agregale su fila (packshot, color_envase, marca_impresa) antes de generar.\n"
+            f"  No se adivina agarrando un archivo de Ads/MEDIA_{producto_key}/: asi fue como "
+            f"TINNIDROP heredo un frasco verde de otra marca."
+        )
+    ruta = os.path.join(BASE, envase["packshot"].replace("/", os.sep))
+    if not os.path.isfile(ruta):
+        raise SystemExit(
+            f"BLOQUEANTE: {producto_key} declara el packshot '{envase['packshot']}' "
+            f"pero el archivo no existe en el disco.\n"
+            f"  Ponelo ahi o corregi la fila de PRODUCTOS/_DIM_ENVASE.csv."
+        )
+    return ruta
 
 
 def obtener_perfil_producto(producto_key, angulo_ganador):
@@ -129,7 +194,7 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
 
     # 2. Foto del producto
     foto_prod_path = buscar_foto_producto(producto_key)
-    foto_prod_rel = os.path.relpath(foto_prod_path, BASE).replace("\\", "/") if foto_prod_path else "Ads/MEDIA_" + producto_key + "/packshot.png"
+    foto_prod_rel = os.path.relpath(foto_prod_path, BASE).replace("\\", "/")
 
     # 3. Selección de los 5 blueprints canónicos
     perfil = obtener_perfil_producto(producto_key, angulo)
@@ -183,20 +248,20 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
                     "TIER_3": "3 Frascos (Tratamiento Completo) por Q399"
                 },
                 "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Americano",
-                "CTA": "PIDE EL TUYO POR WHATSAPP AQUÍ"
+                "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
             }
         elif producto_key.upper() == "TINNIDROP":
             variables_adaptadas = {
-                "PRODUCTO": "Tinnidrop Spray Sublingual Original (Azul y Blanco)",
+                "PRODUCTO": "Tinnidrop Spray Ótico Original (Azul y Blanco)",
                 "DESCRIPTOR": "Alivio botánico del zumbido y timbre en los oídos",
                 "HOOK_TITULAR": "¿CANSADO DE GASTAR EN CONSULTAS QUE SOLO DICEN 'APRENDÉ A VIVIR CON EL ZUMBIDO'?",
-                "SUB_HOOK": "Menos de lo que cuesta una sola consulta con el especialista. Fórmula botánica sublingual.",
+                "SUB_HOOK": "Menos de lo que cuesta una sola consulta con el especialista. Fórmula botánica de aplicación ótica.",
                 "SINTOMA_ANTES": "Pitido agudo constante, noches en vela, dolor de cabeza y recetas caras que no quitan el ruido",
                 "RESULTADO_DESPUES": "Silencio auditivo, descanso reparador en las noches y tranquilidad sin gastar de más",
                 "ACTIVOS_CLAVE": [
                     "Ginkgo Biloba: Estimula la microcirculación en el canal auditivo",
                     "Extractos Botánicos: Calman la hiperexcitabilidad del nervio",
-                    "Fórmula Sublingual: Absorción rápida directa sin dañar el estómago"
+                    "Aplicación Ótica: Actúa directo en el oído, sin pasar por el estómago"
                 ],
                 "PRECIOS_GT": {
                     "TIER_1": "1 Frasco por Q179",
@@ -212,11 +277,17 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
                 "DESCRIPTOR": "Fórmula avanzada de alivio",
                 "HOOK_TITULAR": f"¡ALIVIO COMPROBADO PARA {angulo.replace('_', ' ')}!",
                 "SUB_HOOK": "Fórmula natural importada con respaldo comprobado.",
-                "ACTIVOS_CLAVE": ["Extractos botánicos certificados", "Absorción sublingual rápida"],
+                "ACTIVOS_CLAVE": ["Extractos botánicos certificados", "Absorción rápida"],
                 "PRECIOS_GT": {"TIER_1": "1 Unidad por Q179", "TIER_2": "2 Unidades por Q239", "TIER_3": "3 Unidades por Q299"},
                 "GARANTIAS": "Pago Contra Entrega · Envío Gratis",
-                "CTA": "PIDE EL TUYO POR WHATSAPP AQUÍ"
+                "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
             }
+
+        # La escalera REAL manda sobre la hardcodeada de arriba: sale de _DIM_PRECIOS.csv
+        # y trae el precio ancla, para que el modelo no invente el "antes".
+        _esc = leer_escalera(producto_key)
+        if _esc:
+            variables_adaptadas["PRECIOS_GT"] = _esc
 
         nombre_archivo = f"{producto_key}_F2_{cid.split('_')[0]}_{angulo[:12]}.png"
 
@@ -233,8 +304,25 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
             f"- Beneficios en viñetas/cards: {', '.join(variables_adaptadas['ACTIVOS_CLAVE'])}\n"
             f"- Escalera de Precios: Tier 1: {variables_adaptadas['PRECIOS_GT']['TIER_1']} | Tier 2: {variables_adaptadas['PRECIOS_GT']['TIER_2']} | Tier 3: {variables_adaptadas['PRECIOS_GT']['TIER_3']}\n"
             f"- Franja inferior: Botón verde WhatsApp con texto: \"{variables_adaptadas['CTA']}\"\n"
-            f"- Garantías en micro-badges: {variables_adaptadas['GARANTIAS']}\n"
-            f"- Formato: 4:5 vertical (1080x1350 px), fotorrealista, iluminación comercial de estudio, colores nítidos, texto 100% legible y sin errores ortográficos."
+            f"- Garantías en micro-badges: {variables_adaptadas['GARANTIAS']} · Garantía de 30 días\n"
+            f"- Registro sanitario (si la IMAGEN 1 muestra un sello regulatorio, va ESTE): "
+            f"MSPAS NS02026-GT3147 · FDA 30045469041. Somos de Guatemala: nunca INVIMA ni "
+            f"ningún otro regulador extranjero.\n"
+            f"- Formato: 4:5 vertical (1080x1350 px), fotorrealista, iluminación comercial de estudio, colores nítidos, texto 100% legible y sin errores ortográficos.\n\n"
+            f"REGLA DE PRECEDENCIA — MANDA LA IMAGEN 1:\n"
+            f"La IMAGEN 1 es un anuncio que YA está validado en este mercado. Su estructura no es "
+            f"una sugerencia: es el concepto que se está replicando. Qué bloques existen, cuántos "
+            f"elementos tiene cada bloque y —sobre todo— qué NO aparece, lo decide la IMAGEN 1.\n"
+            f"- Si algo de la lista de arriba NO está en la IMAGEN 1, OMITILO. Ejemplo: si la "
+            f"IMAGEN 1 muestra un solo precio, va un solo precio, no la escalera de tres.\n"
+            f"- Si la IMAGEN 1 tiene un elemento que la lista de arriba no menciona, REPLICALO "
+            f"igual, PERO con nuestro dato — nunca con el de la IMAGEN 1.\n"
+            f"- Ante cualquier duda entre la lista y la IMAGEN 1, se hace lo que muestra la IMAGEN 1.\n"
+            f"La IMAGEN 1 dicta la FORMA. La lista de arriba dicta QUÉ DICE cada parte.\n"
+            f"NUNCA se copia de la IMAGEN 1 ningún dato que identifique a SU producto: marca, "
+            f"nombre, ingredientes, precios, entidad reguladora, números de registro, nombres o "
+            f"ciudades de los testimonios. Todo eso va con NUESTRO dato, que está en la lista de "
+            f"arriba. El elemento se replica siempre — lo que cambia es el dato que lleva adentro."
         )
 
         item = {

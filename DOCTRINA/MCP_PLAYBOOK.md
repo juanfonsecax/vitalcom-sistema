@@ -1,9 +1,33 @@
 # MCP_PLAYBOOK — Creación de campañas de testeo vía Meta Ads MCP
 
 **Estado:** VERIFICADO en producción (primer caso: NusavaB12 en GTR 7, 2026-06-21).
-**Alcance:** este playbook convierte la salida de ETAPA-6 en una campaña **real creada en Meta, en estado PAUSED**, para cualquier producto. El MCP **solo crea en PAUSED y solo lee**; nunca activa ni toca presupuestos de campañas vivas. **El operador publica/activa manualmente.**
+**Alcance:** este playbook convierte la salida de ETAPA-6 en una campaña **real creada en Meta, en estado PAUSED**, para cualquier producto.
 
-> Regla de oro (Andrómeda): el MCP actúa en dos momentos — PREPARACIÓN (crear en PAUSED) y LECTURA (reporting). Nunca cambia presupuesto/estado de algo activo de forma automática.
+> 🔧 **ESTE DOCUMENTO YA NO SE EJECUTA A MANO (2026-09-08).** Era prosa que un modelo tenía que
+> leer y recordar entera, y eso costó caro: el 06-sep se publicó una campaña, nadie escribió los
+> `ad_id`, y el 08-sep el sistema creía "cero publicados" con **$23.46 ya gastados**.
+> Ahora la ejecución tiene herramientas:
+>
+> | Pieza | Qué hace |
+> |---|---|
+> | `Ads/_TOOLS/gen_publicacion.py` | Deriva la secuencia EXACTA de llamadas MCP desde los CSV y el `_PLAN.json`. **Bloquea con exit 1 si falta un dato**, con el nombre de su dueño. Emite además el **manifiesto** de lo que debe existir en Meta al terminar. |
+> | `Ads/_TOOLS/verificar_publicacion.py` | El gate: compara Meta contra el manifiesto y **escribe los `ad_id` en `_DIM_CREATIVOS.csv`**. Es el paso que nadie hizo el 06-sep. |
+> | `.claude/skills/publicar-meta/SKILL.md` | El procedimiento de 5 pasos que ejecuta las llamadas. |
+> | `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` | Estructura, presupuesto, objetivo y hora **por fase**. Cambiar la doctrina = editar una fila. |
+> | `PRODUCTOS/_DIM_CUENTAS.csv` | El inventario de cuentas, machine-readable. |
+>
+> **Este playbook queda como el POR QUÉ y el catálogo de gotchas.** Los valores que abajo aparecen
+> en prosa son ilustrativos: **manda el CSV**. Si los dos discrepan, el CSV tiene razón y esta
+> prosa está vieja.
+
+**Qué hace y qué no hace el conector:**
+
+- **Todo lo que crea nace PAUSED.** No hay forma de crear en ACTIVE, y ese es el candado nativo del human-in-the-loop.
+- **Sí puede activar.** `ads_activate_entity` existe y funciona (verificado 2026-09-08). Que active el operador es **política de este sistema, no un límite de la herramienta** — hasta hoy este documento decía "nunca activa", y eso escondía una palanca real.
+- **No mueve presupuesto ni estado de algo vivo de forma automática.** Eso sigue en pie, y su dueño es `decidir.py` (invariante 13).
+- **No tiene idempotencia ni memoria entre sesiones.** Publicar dos veces duplica. Lo cubre `gen_publicacion.py --snapshot`.
+
+> Regla de oro (Andrómeda): el MCP actúa en dos momentos — PREPARACIÓN (crear en PAUSED) y LECTURA (reporting).
 
 ---
 
@@ -22,16 +46,60 @@ MCP_PIXEL_ID   : [dataset_id que recibe las Compras offline del WABA — para ET
 TASA_USD_GTQ   : [tasa del día, ej. 7.62]
 ```
 
-### Inventario de cuentas (verificado 2026-06-21) — usar solo las habilitadas y consultables
-| Cuenta | act_id | Negocio | Moneda | MCP |
-|---|---|---|---|---|
-| GTR 7 | 598687956219141 | AMG 5 (1207290087231971) | USD | ✅ enabled |
-| GTR 3 | 581490137794343 | AMG 3 | USD | ✅ enabled |
-| GTR 0 | 1665221077707961 | AMG 2 | USD | ✅ enabled |
-| GTR 1 | 824783947334627 | AMG 2 | USD | ✅ enabled |
-| GTR 2 / 13 / CP1 | — | — | — | ❌ rollout pendiente |
+### Inventario de cuentas — el dueño es `PRODUCTOS/_DIM_CUENTAS.csv`
 
-> Verificar siempre con `ads_get_ad_accounts` que la cuenta tenga `is_ads_mcp_enabled=true` y `is_queryable=true`. `min_daily_budget_cents` de las USD = 100 ($1.00).
+> La tabla de abajo quedó como **espejo legible** de la lectura en vivo del 2026-09-08. El dato que
+> el sistema usa sale del CSV, que `gen_publicacion.py` lee para resolver `cuenta_id`, moneda,
+> mínimo de presupuesto y si la cuenta sube media local. Una tabla en prosa se desincroniza en
+> silencio; un CSV lo cobra un hook.
+
+| Cuenta | act_id | Negocio | Moneda | MCP | **Subir media** |
+|---|---|---|---|---|---|
+| **GTR 7** | 598687956219141 | AMG 5 (1207290087231971) | USD | ✅ | ✅ **la única** |
+| GTR 3 | 581490137794343 | AMG 3 (1632082414095745) | USD | ✅ | ❌ |
+| GTR 0 | 1665221077707961 | AMG 2 (523977064022240) | USD | ✅ | ❌ |
+| GTR 1 | 824783947334627 | AMG 2 | USD | ✅ | ❌ |
+| GTR 13 | 916746367261028 | AMG 9 (941347687954885) | USD | ❌ rollout | — |
+| GTR 2 | 1680252426660775 | AMG 2 | USD | ❌ rollout | — |
+| CP1 | 1346891653335162 | AMG 8 (515747137534744) | COP | ❌ rollout | — |
+| Margarita Perez Carrero | 332010724162945 | (sin negocio) | COP | ✅ | — sin método de pago |
+
+> Verificar siempre con `ads_get_ad_accounts` que la cuenta tenga `is_ads_mcp_enabled=true` y `is_queryable=true`. `min_daily_budget_cents` de las USD = 100 ($1.00); las COP = 3154.
+
+> ⚠️ **CLEARSTEM vive en GTR 13, que NO tiene MCP.** No se puede publicar por MCP en absoluto —
+> ni crear campaña, ni conjuntos, ni anuncios. Todo a mano, o se mueve a una cuenta habilitada.
+
+### 🔴 LA SUBIDA DE MEDIA SOLO FUNCIONA EN GTR 7 (medido 2026-09-08)
+
+`ads_creative_upload_media` con `upload_source=LOCAL_FILE` abre un widget donde el operador elige
+los archivos y devuelve los hashes. **Está habilitado en una sola cuenta del portafolio.** Probado
+el mismo día, con el mismo llamado, sin campaña ni destino de por medio:
+
+```
+GTR 7 (598687956219141)  ->  {"result_kind":"LOCAL_FILE", "ui_enabled":true}   ✅
+GTR 0 (1665221077707961) ->  "Local file upload is not available for ad account…"  ❌
+GTR 1 (824783947334627)  ->  "Local file upload is not available for ad account…"  ❌
+GTR 3 (581490137794343)  ->  "Local file upload is not available for ad account…"  ❌
+```
+
+**La variable es la CUENTA, no el destino del anuncio.** La hipótesis de que fallaba "porque los
+anuncios van a WhatsApp" quedó descartada por este test: la subida es a la biblioteca de la cuenta
+y ocurre **antes** de que exista campaña alguna — no sabe si el ad irá a WhatsApp o a una web.
+
+> **Corolario operativo:** no cambiar el destino a `WEBSITE` para intentar destrabar la subida.
+> Sería inútil (no es la variable) y **rompería el tracking**: LucidBot atribuye por el bloque
+> `referral` del Click-to-WhatsApp (`source_id`, `ctwa_clid`). Un ad a web no genera conversación
+> de WhatsApp y el negocio es COD por WhatsApp — ver el gotcha de APR-035 en §7.
+
+**Las dos vías cuando el producto no corre en GTR 7:**
+1. El operador sube los assets **a mano** a la biblioteca de la cuenta y avisa; el MCP los lee con
+   `ads_get_ad_images` y arma creativos y anuncios normalmente.
+2. Se monta la campaña **en GTR 7**, que además es lo que la FASE 2 ya pide para su campaña C
+   (`CALENDARIO_ESCALADO` §1.7.2: la C va en OTRA cuenta para no competirse en la subasta).
+
+> ⚠️ **Nunca reusar el nombre de archivo al subir una versión corregida.** Meta guarda las dos y
+> quedan indistinguibles por nombre: el 08-sep se publicaron 10 anuncios con la pieza del 06-sep
+> porque el PNG regenerado tenía el mismo nombre que el viejo. Usar sufijo `_V2`, `_V3`.
 
 ---
 
@@ -55,7 +123,7 @@ Si falta cualquiera → detener y pedirlo. No inventar IDs.
 | destination_type | `WHATSAPP` | |
 | promoted_object | `{"page_id": MCP_PAGE_ID}` | |
 | billing_event | `IMPRESSIONS` | |
-| daily_budget | **$1.59 = `159`** centavos USD | modo low-budget actual del operador. Convertir si se cambia: `cents = round(USD*100)`. (Equivale a ~Q12.1; el legacy Q54 era el modo anterior.) |
+| daily_budget | **sale de `_PARAMETROS_PUBLICACION.csv`**, por fase y brazo | F1 $2.99 · F2 $6.00/conjunto · F3 $15.00 CBO. Convertir: `cents = round(USD*100)`, y siempre en la **unidad menor de la moneda de la cuenta** (CP1 factura en COP). ⚠️ **El $1.59 que decía esta fila está DEPRECADO** por `ETAPA-6.md`: no sacaba a Meta de aprendizaje. Eran dos dueños diciendo cosas distintas; ahora el dueño es el CSV. |
 | targeting | `{"geo_locations":{"countries":["GT"]},"age_min":[MIN],"age_max":[MAX],"targeting_automation":{"advantage_audience":0}}` | 🔴 **`age_min`/`age_max` salen del `avatar_edad` del ángulo**, no son 18-65 fijos (corregido 02-sep, APR-060: mismo ángulo y creativo, Q473.6/venta a 25+ contra Q30.6 a 45-60). Tabla de derivación en `ETAPA-6.md` → BANDA DE EDAD. Amplio 18-65 solo si el ángulo no tiene avatar de edad marcada. Advantage+ **siempre** OFF: sin eso Meta ignora la banda. |
 | start_time | `[mañana]T04:00:00-06:00` | 4 AM día siguiente, hora Guatemala (UTC-6) |
 | status | **PAUSED** (default del MCP) | nunca ACTIVE |
@@ -97,7 +165,9 @@ ads_create_ad_set(
 Guardar los 6 `ad_set_id`. Todos nacen PAUSED.
 
 ### Paso C — STOP. Los ANUNCIOS requieren media (no se pueden crear vacíos)
-El copy vive en el *creativo*, que necesita `video_id` o `image_hash`. El MCP **no sube media**. Entonces:
+El copy vive en el *creativo*, que necesita `video_id` o `image_hash`. **El MCP sube media SOLO en
+GTR 7** (`ads_creative_upload_media` + `upload_source=LOCAL_FILE`; ver §1). En las demás cuentas la
+sube el operador a mano. Entonces:
 1. La carpeta `Ads/MEDIA_[PRODUCTO]/` con los videos renombrados por conjunto (`[PRODUCTO]_[N]_[ANGULO].mp4`) **ya existe** — se creó justo después de ETAPA-0 (ver CLAUDE.md PASO 1.5), antes de saber si habría cuenta MCP. Acá solo se completa con las imágenes de los ángulos-imagen (Prompt Maestro de ETAPA-4) y un `PROMPTS_IMAGENES_[PRODUCTO].txt`.
    > Legacy: NusavaB12 (creado vía MCP antes de este fix) usa el nombre con prefijo de cuenta `Ads/MEDIA_GTR7_NUSAVAB12/` — no renombrar retroactivamente. Todo producto nuevo usa `Ads/MEDIA_[PRODUCTO]/` sin prefijo de cuenta, porque la cuenta se asigna después de ETAPA-0.
 2. El operador genera las imágenes, sube los assets de `Ads/MEDIA_[PRODUCTO]/` a la **biblioteca de medios** de la cuenta, y avisa "media subida".

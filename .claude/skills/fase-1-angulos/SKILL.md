@@ -1,6 +1,6 @@
 ---
 name: fase-1-angulos
-description: FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos, lavar video, costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña y guardar el producto en disco. Úsala cuando el operador responde "1" a la pregunta inicial, o dice "tengo transcripciones", "quiero lanzar un producto nuevo", "arrancar testeo" o "pre-testeo".
+description: FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos, lavar video, costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice "tengo transcripciones", "quiero lanzar un producto nuevo", "arrancar testeo" o "pre-testeo".
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -26,6 +26,15 @@ estructura.
 
 ---
 
+## PASO 0 — EL FLUJO DICTA (desde el 09-sep-2026)
+
+Esta skill se carga cuando `python Ads/_TOOLS/flujo.py [producto_key]` devuelve `F1.paquete`. Los
+gates de entrada (`F1.congelar_inputs`: fila, costo, ≥6 transcripciones, media) y lo que cierra el
+paquete están en `DOCTRINA/FLUJO.json`; si el runner dice BLOQUEADO, se produce lo que falta y se
+vuelve a correr. Publicar y activar son nodos aparte (`F1.publicar` → skill `publicar-meta`).
+
+---
+
 ## PASO −1 — CONGELAR INPUTS (obligatorio, antes de invocar cualquier etapa)
 
 > **Por qué:** correr el flujo con inputs que cambian a mitad de camino (costo, dosis, página,
@@ -34,7 +43,8 @@ estructura.
 > los archivos y sube `VERSION`, nunca un parche parcial.
 
 El orquestador fija este bloque y lo repite textual al inicio de cada etapa. Si falta un campo
-obligatorio → **detener** y pedirlo (no asumir ni inventar):
+obligatorio → **detener** y pedirlo (no asumir ni inventar). Los obligatorios que viven en disco los
+canta `flujo.py` (`F1.congelar_inputs`) antes de llegar acá:
 
 ```
 ━━━ INPUTS CONGELADOS — [PRODUCTO] · VERSION v1 · [FECHA] ━━━
@@ -87,10 +97,9 @@ Corre SIEMPRE primero. Inputs: producto candidato, costo Q (si se tiene), datos 
 
 ### PRE-VALIDACIÓN antes de ETAPA-0
 
-Contar transcripciones entregadas.
-- Si < 6 → "Para testear 6 ángulos necesito mínimo 6 transcripciones TXT. Actualmente tengo [N].
-  ¿Podés completar con más videos de la biblioteca?"
-- Si ≥ 6 → invocar `etapa-0`.
+Las ≥6 transcripciones las exige `flujo.py` en `F1.congelar_inputs` (predicado `glob` sobre
+`Ads/1.2 Transcripcion videos/[carpeta]/*.txt`). Si llegaron pegadas en el chat (OPCIÓN 2), el
+orquestador las guarda primero en esa carpeta: el flujo solo cuenta lo que existe en disco.
 
 ---
 

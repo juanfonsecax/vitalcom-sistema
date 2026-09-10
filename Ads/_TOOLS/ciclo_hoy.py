@@ -5,10 +5,10 @@
 El operador ejecuta SOLO este comando cada mañana:
     python Ads/_TOOLS/ciclo_hoy.py
 
-Hace todo en 3 segundos:
-  1. Corre el motor de decisiones operativo (reglas deterministas de bankroll).
-  2. Reconstruye las vistas y la consola de lanzamiento (VISTAS/APP.html).
-  3. Muestra en pantalla el plan de acción resumido del día: qué apagar, qué escalar y qué vigilar.
+Hace todo en unos segundos:
+  1. Corre el motor de decisión (dbt build + decidir.py -> _DECISIONES.json).
+  2. Sitúa cada producto en el FLUJO DECLARADO (flujo.py --todo): fase, nodo, bloqueantes, qué sigue.
+  3. Reconstruye la app (VISTAS/APP.html) con la vista del flujo como pantalla inicial.
 """
 
 import os
@@ -37,19 +37,26 @@ def main():
     print(" 🚀 VITALCOM GUATEMALA — CICLO OPERATIVO MATUTINO")
     print("=" * 80)
 
-    print("\n[1/3] Evaluando métricas y ejecutando motor de decisiones...")
-    rc, out = correr("python Ads/_TOOLS/decidir.py")
+    print("\n[1/4] Evaluando métricas y ejecutando el motor de decisión (dbt + decidir.py)...")
+    rc, out = correr("python Ads/_TOOLS/gen_decisiones.py")
     if rc != 0:
-        print("  Error al ejecutar decidir.py:\n", out)
+        print("  Error al ejecutar gen_decisiones.py:\n", out)
         return 1
     print(out)
 
-    print("\n[2/3] Sincronizando consola de lanzamiento y planes...")
+    print("\n[2/4] Situando cada producto en el flujo declarado (flujo.py --todo)...")
+    rc, out = correr("python Ads/_TOOLS/flujo.py --todo")
+    if rc != 0:
+        print("  Aviso en flujo.py:\n", out[-1500:])
+    else:
+        print(out)
+
+    print("\n[3/4] Sincronizando consola de lanzamiento y planes...")
     rc, out = correr("python Ads/_TOOLS/gen_lanzador.py")
     if rc != 0:
         print("  Aviso en gen_lanzador:\n", out)
 
-    print("\n[3/3] Actualizando aplicación completa (VISTAS/APP.html)...")
+    print("\n[4/4] Actualizando aplicación completa (VISTAS/APP.html)...")
     rc, out = correr("python Ads/_TOOLS/gen_app.py")
     if rc != 0:
         print("  Aviso en gen_app:\n", out)

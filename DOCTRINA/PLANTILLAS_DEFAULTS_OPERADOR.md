@@ -24,6 +24,9 @@
 | `[STAT_2]` | "92% volvería a comprarlo" | Satisfacción/recompra, no claim médico. |
 | `[NUMERO_CLIENTES]` | "+1,000 clientes" (o el real) | Usar el número real del operador apenas lo tenga. |
 | `[GARANTIA]` | "Si no notás cambios, te devolvemos tu dinero — sin preguntas" | Clase 22: la garantía mata la objeción "¿y si no me funciona?". |
+| `[REG_MSPAS]` | **`NS02026-GT3147`** — valor REAL, no un default | Registro sanitario del MSPAS. **Aplica a TODO el portafolio.** Entregado por el operador el 07-sep-2026. Es el único número que se escribe: nunca fabricar otro. |
+| `[REG_FDA]` | **`30045469041`** — valor REAL, no un default | Registro FDA. **Aplica a TODO el portafolio.** Entregado el 07-sep-2026. |
+| `[DIAS_GARANTIA]` | "30 días" | El operador puede dar hasta 90. Escalonar por tier (1u=30 · 2u=60 · 3u=90) está en evaluación — no usarlo hasta que lo confirme. |
 | `[ENVIO]` | "Envío gratis a toda Guatemala · 2-5 días hábiles · pagás al recibir" | Clase 7: sellos + tiempos de entrega en grande. |
 
 > **Compliance de estadísticas:** prohibido inventar ensayos clínicos ("estudio demostró

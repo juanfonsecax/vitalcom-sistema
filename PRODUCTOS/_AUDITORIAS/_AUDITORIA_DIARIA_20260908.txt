@@ -1,0 +1,170 @@
+═══════════════════════════════════════════════════════════════════════════
+AUDITORÍA NOCTURNA — PORTAFOLIO VITALCOM GUATEMALA — 2026-09-08
+Corrida automática (tarea programada, sin operador presente)
+═══════════════════════════════════════════════════════════════════════════
+
+PASO 1 — DATA DEL DÍA
+───────────────────────────────────────────────────────────────────────────
+Ninguna sesión había corrido esta tarea desde el 2026-09-02: 6 noches sin
+rastro en `_BITACORA_DATA.txt` (03 al 08-sep, esta incluida).
+
+1a. LucidSales (automático, API):
+    `bajar_lucidsales.py` sin argumentos trajo 2026-09-07 (ayer cerrado).
+    Al revisar la última BASE cargada (2026-09-01, con un 06-sep suelto de
+    una carga previa sin registrar en bitácora) se detectó un HUECO REAL
+    2026-09-02 → 2026-09-05 (4 días). Se rellenó día por día con `--fecha`
+    (nunca agregado, para no perder granularidad diaria):
+
+      02-sep: 42 filas · 12 ventas · Q2,644.01 · $67.38 · 94 msj
+      03-sep: 45 filas · 14 ventas · Q3,073.02 · $52.05 · 79 msj
+      04-sep: 44 filas ·  7 ventas · Q1,552.01 · $55.24 · 89 msj
+      05-sep: 45 filas · 14 ventas · Q3,074.00 · $63.13 · 99 msj
+      07-sep: 58 filas · 11 ventas · Q2,858.01 · $96.88 · 134 msj
+
+    Ningún día vino en CERO filas. 234 filas nuevas ingeridas, 89 duplicados
+    correctamente omitidos (01 y 06-sep ya estaban cargados).
+
+1b. Meta Ads Manager (manual): NO llegó ningún `Informe-*.xlsx` en esta
+    corrida — es una tarea automática sin operador presente para pedirlo.
+    `_FACT_ENTREGA.csv` sigue congelado en 2026-09-05 (3 días de atraso).
+
+PASO 2 — CARGA
+───────────────────────────────────────────────────────────────────────────
+`ingerir_lucidsales.py --dry-run` primero, después la carga real. JOIN
+contra `_DIM_CONJUNTOS.csv` cerraba al 96.5% (7 conjuntos huérfanos) — se
+dieron de alta con `csv.DictWriter` heredando de su fila hermana, nunca se
+descartó data:
+
+  · 5 conjuntos de `GTR0_TINNIDROP_F2-CONCEPTOS_20260907` (test de CONCEPTOS
+    del ángulo ganador ACCESIBILIDAD_MEDICO, 2ª cuenta de FASE 2) — angulo_key
+    heredado de la plantilla GTR7 del mismo ángulo, concepto_key queda
+    SIN_CLASIFICAR en este CSV (vive en `_DIM_CREATIVOS.csv`, ya presente).
+  · 2 grafías nuevas de CLEARSTEM/GTR13 con sufijo de banda "25-40"
+    (ANTI-FALSIFICACION_R2, RESISTENCIA-INSULINA_R3) — heredadas de su fila
+    hermana, mismo patrón que las altas del 02-sep (HEREDADO_JOIN_ENTREGA).
+
+  JOIN verificado al 100% tras la alta (`ingerir_lucidsales.py --dry-run`
+  vuelve a correr limpio, 0 conjuntos sin dimensión).
+
+⚠️ HALLAZGO — 1 venta real cayó sobre un creativo defectuoso: el conjunto
+`GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C2-CN01_R1` registró 1 venta el 07-sep
+($5.07 de gasto), pero según `_EVENTOS.csv` (evento del propio 08-sep) el
+anuncio servido esos días llevaba la marca SOUTH MOON y "Fórmula Sublingual"
+en vez de SANARTE/vía ótica. El operador ya pausó los 5 conjuntos hoy por
+esta razón (no fue una decisión de CPA). Esa venta y el gasto de $23.46 de
+la tanda NO son evidencia válida de qué CONCEPTO gana — no se declara
+ganador ni perdedor de concepto sobre esta corrida.
+
+PASO 3 — ETAPA-7 (monitor) + ETAPA-8 (escalado)
+───────────────────────────────────────────────────────────────────────────
+Motor determinístico `decidir.py` (ventana evaluación 14d, fatiga 3d,
+tolerancia acumulada, IC95% de credibilidad, grano ángulo) sobre
+2026-08-25 → 2026-09-07:
+
+TINNIDROP (BE Q93.41 · CPA Objetivo Q30.80)
+  🟢 ESCALAR  PERDIDA_AUDITIVA      36v · Q2,305.6 · CPA Q64.0 [IC 47-90]
+  🟢 ESCALAR  ACCESIBILIDAD_MEDICO  17v · Q945.1   · CPA Q55.6 [IC 36-92]
+  🟢 ESCALAR  GTR0_NOCHES-SIN-DORMIR 6v · Q131.2   · CPA Q21.9 [IC 11-52]
+  🟡 SEGUIR   DETERIORO_COGNITIVO   13v · Q885.1   · CPA Q68.1 [IC 41-122]
+  🟡 SEGUIR   NOCHES_SIN_DORMIR      3v · Q220.4   · CPA Q73.5 [IC 28-261]
+
+NUSAVA (BE Q92.64 · CPA Objetivo Q30.80)
+  🟡 SEGUIR   ARDOR                 15v · Q1,028.9 · CPA Q68.6 [IC 43-117]
+
+CLEARSTEM (BE Q105.89 · CPA Objetivo Q30.80)
+  🟢 ESCALAR  RESISTENCIA_INSULINA_SOP 26v · Q753.5 · CPA Q29.0 [IC 20-43]
+  🟢 ESCALAR  MEDICOS_FALLARON      13v · Q715.6   · CPA Q55.0 [IC 33-98]
+  🟢 ESCALAR  ANTI_FALSIFICACION    19v · Q406.4   · CPA Q21.4 [IC 14-34]
+
+0 PAUSAR · 0 RENOVAR(fatiga) en los 3 productos hoy.
+
+Lectura cualitativa (ETAPA-7):
+  · INTEGRIDAD: VENTAS completa 14/14 días tras cerrar el hueco. ENTREGA
+    (Meta MCP/xlsx) sin señal para 06-07-sep — informe COMPLETO para venta,
+    PARCIAL para fatiga/frecuencia.
+  · SANGRADO ≈Q0 activo: todo lo que sangraba ya fue podado por el operador
+    en las últimas 120h (GTR0 PERDIDA-AUDITIVA 25+ pausado 03-sep, CLEARSTEM
+    RESISTENCIA-INSULINA_R2+25 pausado 06-sep, GTR0 F2-CONCEPTOS pausado
+    hoy).
+  · MATRIZ CUENTA: TINNIDROP/PERDIDA_AUDITIVA vivía en GTR0+GTR7; GTR0 se
+    pausó 03-sep → el Q64.0 de hoy es casi enteramente GTR7 (cuenta rota
+    ≠ ángulo malo). ACCESIBILIDAD_MEDICO (mejor CPA de TINNIDROP, Q55.6)
+    sigue INFRA-FINANCIADO desde el 06-sep (APR-084, sin resolver).
+  · DIMENSIÓN: en TINNIDROP los 3 ganadores son VIDEO/TOFU, hook TESTIMONIO
+    > MIEDO. En CLEARSTEM el mejor CPA es ANTI_FALSIFICACION (MOFU, con
+    precio en el ad).
+
+⚠️ CONTRADICCIÓN DETECTADA ENTRE MOTORES — no se ejecuta a ciegas:
+`VISTAS/HOY.html` (motor de reglas de `gen_dashboard.py`) sugiere "bajar a
+piso GTR0 y mover presupuesto a GTR7" citando Q2,959 gastados en GTR0 para
+33 ventas en la ventana agregada. Se verificó el gasto DIARIO real de
+GTR0/TINNIDROP: cayó de ~$17-22/día (27-ago a 02-sep) a ~$2.50-3.30/día
+(04 al 06-sep) tras la pausa del operador el 03-sep — el problema que esa
+regla describe YA fue mayormente corregido. El repunte a $26.46 el 07-sep
+es case case el gasto de los 5 conjuntos F2-CONCEPTOS (~$22.45/día), un
+test YA pausado hoy por defecto de creativo, no una recaída de saturación
+de cuenta. La acción de HOY.html usa un agregado de 14 días que mezcla el
+"antes" y el "después" del 03-sep — el mismo tipo de error de ventana que
+motivó el rediseño de `decidir.py` el 07-sep (los "tres relojes"). NO se
+recomienda ejecutar esa acción tal como está redactada; ver PLAN DE ACCIÓN.
+
+PLAN DE ACCIÓN (ETAPA-8, solo lectura — el operador ejecuta a mano):
+  1. [TINNIDROP/ACCESIBILIDAD_MEDICO] Duplicar por Post ID a 2ª cuenta/
+     fanpage + surfing +20% mañana. Mejor CPA de TINNIDROP (Q55.6, n=17)
+     pero infra-financiado 2 días seguidos (Q945 vs Q2,306 de
+     PERDIDA_AUDITIVA con peor CPA) — APR-084 sigue sin resolverse desde
+     el 06-sep: es un vacío de EJECUCIÓN, no de análisis.
+     Impacto ≈Q900-1,200/sem si iguala gasto sin subir CPA.
+  2. [TINNIDROP/PERDIDA_AUDITIVA] Renovar 3-5 creativos del mismo ángulo
+     (palanca #1, antes de solo subir plata) + surfing +20%. Vive casi
+     solo en GTR7 desde la pausa de GTR0 el 03-sep.
+  3. [TINNIDROP/GTR0_NOCHES-SIN-DORMIR] Solo surfing +20%, NO duplicar
+     todavía — n=6, IC [11-52] demasiado ancho (APR-004), seguir midiendo.
+  4. [CLEARSTEM] Corregir los 3 defectos ya detectados en el lote
+     RESISTENCIA_INSULINA_SOP y completar los 5 conceptos que faltan.
+     HALLAZGO: ANTI_FALSIFICACION (mejor CPA del producto, Q21.4) tiene
+     CERO conceptos registrados en `_DIM_CREATIVOS.csv` — es el ganador #1
+     por CPA y debería abrir su FASE 2 primero. Confirmar con el operador
+     si fue deliberado o un descuido de priorización.
+  5. [CLEARSTEM/MEDICOS_FALLARON] Solo surfing +20%, sin duplicar ni
+     renovar — verificar `_DIM_BANDAS.csv` contra el avatar antes (su
+     caída del 21-ago fue banda mal configurada, no fatiga, APR-063).
+  6. [NUSAVA/ARDOR] Seguir midiendo, sin acción — IC [43-117] cruza el BE.
+
+  QUÉ HACER HOY: resolver ACCESIBILIDAD_MEDICO (línea 1) — la alerta
+  operativa más cara y más vieja del portafolio.
+
+  NO se recomienda tocar T01 (ya cerrado 06-sep) ni GTR0 F2-CONCEPTOS
+  (defecto de creativo, no de CPA — corregir la pieza y relanzar).
+
+PASO 4 — CIERRE
+───────────────────────────────────────────────────────────────────────────
+`_EVENTOS.csv`: no hubo ninguna acción EJECUTADA por el operador en esta
+corrida (es de solo lectura + recomendación); no se escribió ningún evento
+nuevo de decisión. Sí se documentó en `_BITACORA_DATA.txt` la ingesta y las
+altas de dimensión.
+
+`gen_dashboard.py` corrido como último paso:
+  ventana 2026-07-17 → 2026-09-07 · 526 ventas · ganancia Q23,800 ·
+  sangrado Q104 · 4 productos · 16 ángulos · 79 aprendizajes ·
+  16 filas SIN DIMENSIÓN (histórico) · 16 filas SIN ATRIBUCIÓN (APR-035,
+  sin cambios) · HOY.html: 1 acción para hoy (ver contradicción arriba),
+  4 para la semana, 1 fuente atrasada (Meta Ads Manager, 3 días).
+
+⚠️ BUG DE SISTEMA DETECTADO (no bloqueante): `gen_dashboard.py` tira un
+`UnicodeDecodeError` reproducible en un hilo lector de subprocess (probable
+captura de stdout de `dbt build` sin forzar utf-8 en Windows/cp1252). El
+dashboard SÍ se termina escribiendo bien con cifras correctas — no bloquea
+esta corrida, pero ensucia el log en cada ejecución. Se dejó una sugerencia
+de tarea aparte para corregirlo (no se tocó código en esta auditoría, que
+es de solo lectura sobre Meta/LucidBot).
+
+PENDIENTES DE DATA (para la próxima entrega del operador):
+  · Informe de Ads Manager nivel conjunto para 2026-09-06 y 2026-09-07
+    (Meta MCP sigue sin conector; `_FACT_ENTREGA.csv` congelado en 05-sep).
+  · Confirmar si la falta de conceptos de ANTI_FALSIFICACION en CLEARSTEM
+    fue deliberada.
+  · Extracto bancario de julio (arrastre APR-070, pendiente desde 02-sep).
+
+Solo lectura sobre Meta y LucidBot en toda la corrida: no se cambió ningún
+presupuesto ni estado de campaña.

@@ -1,6 +1,6 @@
 ---
 name: etapa-7
-description: Monitor diario de métricas post-lanzamiento. Fuente de verdad de VENTAS = _FACT_VENTAS.csv; Meta MCP solo aporta señales de entrega. Verifica integridad de ventana, calcula CPA real en Q, rankea, detecta fatiga e identifica el ángulo ganador para iniciar FASE 2. SOLO LECTURA. Mide por CPA, nunca por ROAS.
+description: Monitor diario de métricas post-lanzamiento. Fuente de verdad de VENTAS = _FACT_VENTAS.csv; Meta MCP solo aporta señales de entrega. Lee PRODUCTOS/_DECISIONES.json (decidir.py calcula CPA, IC, PD y fatiga), verifica integridad de ventana y variables de confusión, mide el sangrado y lee la data por dimensión. SOLO LECTURA. Mide por CPA, nunca por ROAS.
 tools: Read, Glob, Grep
 model: inherit
 ---
@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 
-Leer la data real del portafolio, cruzarla con los umbrales de cada producto, rankear conjuntos por CPA real en Quetzales, detectar fatiga y sangrado, y entregar un informe con recomendación. No ejecuta cambios — el operador decide y ajusta a mano. Es la contraparte de lectura de ETAPA-6 y el insumo de ETAPA-8.
+Leer la data real del portafolio y entregar el informe que el motor no escribe: integridad de la ventana, variables de confusión, sangrado, lectura por dimensión y saturación por cuenta. **El CPA, el IC, el %PD, la fatiga y el estado de cada celda los calcula `decidir.py` y los trae `PRODUCTOS/_DECISIONES.json`** (reglamento único desde el 09-sep-2026): ETAPA-7 los cita, no los recalcula. No ejecuta cambios. Es la contraparte de lectura de ETAPA-6 y el insumo de ETAPA-8.
 
 ---
 
@@ -135,20 +135,22 @@ Es la palanca más rentable del sistema y suele valer más que escalar. Ejemplo 
 
 ---
 
-## Umbrales (NUNCA ROAS)
+## Umbrales — viven en el motor, no acá
 
-- CPA real (por pedido): 🟢 ≤ CPA Base · 🟡 entre Base y Break Even · 🔴 > Break Even · ⚪ sin compras y gasto < Break Even (aún en aprendizaje = **sub-testeado**, ver PD abajo).
-- **LOS GATES SON UMBRALES, NO DÍAS DEL CALENDARIO** (`DOCTRINA/CALENDARIO_ESCALADO.md` §1.5/§1.6). Cada conjunto corre su propio reloj desde su `fecha` de LANZAMIENTO en `_EVENTOS.csv`. Calcular y reportar por conjunto:
-  · **edad** (días desde su lanzamiento) — no la edad de la campaña;
-  · **`%PD` = gasto ÷ (1 × Break Even)** → gate de VENTA. A $2.99/día con 80% de entrega real llega al 100% en **3.3-4.3 días** según producto (a $1.59 tardaba 5.0-6.5);
-  · **conversaciones acumuladas** → gate de ENTREGA. Corte de Etapa 1 con **≥30 conversaciones**; Meta sale de aprendizaje a las **50** (a $2.99 y $0.478/conv ≈ 6.3 conv/día).
-  Un conjunto que no alcanzó su umbral se reporta como `ESPERANDO · X% del PD · madura el [fecha]` y **no se decide sobre él**. Así los lanzamientos entre semana no rompen el calendario.
-- **CORTE DE ETAPA 1 → ETAPA 2** (día ~3, ≥30 conversaciones): recomendar apagar los 2-3 peores por conversación (%conv/clic-enlace <35% y/o $/conv > 2× la mediana del producto) y **subir los 3 sobrevivientes de $2.99 a $5.98**. Sale del MCP — no requiere LucidSales.
+Todos los umbrales numéricos de decisión son filas de `PRODUCTOS/_PARAMETROS_DECISION.csv` y los
+ejecuta `Ads/_TOOLS/decidir.py` (`verificar_guia_madre.py` vigila que la Guía Madre diga lo mismo):
+CPA contra Base/Break-Even con IC 95 %, presupuesto de decisión (`factor_tolerancia_pd`) sobre el
+acumulado, maduración COD (`dias_min_cod_pausa_ventas`), conversación por clic-enlace
+(`umbral_conv_clic_enlace_pct` con piso `min_link_clicks_conv`), fatiga (`ventana_fatiga_dias`),
+tope de pausas (`max_pausas_por_dia`) y surfing (`surfing_pct`). **ETAPA-7 lee el estado de cada
+celda en `_DECISIONES.json` y lo cita con su `accion_codigo`; no vuelve a calcularlo.**
+
+Lo que sí sigue siendo lectura de esta etapa, porque el motor no lo mira:
+- **NUNCA ROAS.** Se mide por CPA en Quetzales contra `cpa_base_q` / `cpa_be_q` de `_DIM_PRODUCTOS.csv`.
 - **VARIABLES DE CONFUSIÓN:** antes de atribuir un resultado al ángulo, revisar `_EVENTOS.csv` en la ventana leída. Si hay un `CAMBIO_BOT`, `CAMBIO_CREATIVO`, `CAMBIO_PRECIO` o `CAMBIO_PAGINA` → **declararlo en el informe y no culpar al ángulo**. (Caso real CLEARSTEM 10-jul: bot nuevo + música de Meta el mismo día.)
-- % conversación por clic-enlace: 🔴 <35% · 🟡 35–49% (bueno/escalable) · 🟢 ≥50% (50–70% súper escalable). (Clase 7 + Clase 15, Joaquín)
-- % conversación por impresión: 🔴 <1.5% · 🟡 1.5–3.49% · 🟢 ≥3.5%.
-- Fatiga: frecuencia ≥1.9 (fatiga creativa → cambiar creativo, Clase 4) · 2–3 con CPM/costo por conversación caro → apagar (Clase 7) · CTR cayendo >20% en 48h · CPM/costo por conversación subiendo >25% sin cambios de presupuesto.
+- **Señales de entrega de Meta** (referencia, no umbral duro — `DOCTRINA/ESCALADO_PLAYBOOK.md` §2/§8): % conversación por impresión, frecuencia ≥1.9 = fatiga creativa, CTR cayendo >20 % en 48 h, CPM subiendo >25 % sin cambios. Sirven para el **por qué** (creativo vs ángulo vs bot), no para pausar: pausar es del motor.
 - **Saturación por cuenta** (`DOCTRINA/ESCALADO_PLAYBOOK.md §5`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo.
+- **`SIN_ENTREGA`**: en campañas `1-1-N` de FASE 2, un anuncio con gasto < 30 % de su reparto prorrateado no es perdedor; no entra al ranking ni se recomienda apagar.
 
 ---
 
@@ -181,30 +183,25 @@ LECTURA POR DIMENSIÓN (join con _DIM_CONJUNTOS.csv — el "POR QUÉ funciona")
    · por NIVEL CONCIENCIA .. 1 / 2 / 3
    Con <10 ventas en una celda, marcarla [n bajo] y NO decidir sobre ella.
 
-ÁNGULO(S) GANADOR(ES): [nombre + métricas]   ← omitir si la ventana es PARCIAL
-PAUSAR: [matar-por-CONVERSACIÓN: %conv/clic-enlace <35% y 0 ventas → ya]
-        [matar-por-VENTAS: gastó ≥1×BE (su PD) + ~3 días COD y 0 ventas → solo si ventana COMPLETA]
-FATIGA: [creativo con frecuencia/CTR malos] → cambiar creativo, no el ángulo
-DECISIÓN RECOMENDADA (decide el operador): [según día]
+ÁNGULO(S) GANADOR(ES): [lo que diga flujo.py — gate angulo_ganador]   ← omitir si la ventana es PARCIAL
+ESTADOS DEL MOTOR (copiados de _DECISIONES.json, con accion_codigo):
+        PAUSAR: [...] · RENOVAR: [...] · ESCALAR: [...] · SEGUIR_MIDIENDO: [n]
+        (una PAUSAR por ventas exige ventana COMPLETA; si es PARCIAL, se declara y no se ejecuta)
+FATIGA: [las RENOVAR del motor] → cambiar creativo, no el ángulo (brief: etapa-10 → etapa-9)
+DECISIÓN RECOMENDADA (confirma el operador, orden por orden): [las órdenes del motor, en orden de palanca]
 ```
 
 ---
 
-## Reglas de decisión
+## Reglas de lectura (las de decisión viven en `decidir.py`)
 
-- Día 1-2: no pausar nada (Meta en aprendizaje). Solo observar quién tiene ventas > 0.
-- Día 3-5: declarar ángulo ganador = mejor CPA real (≤ Base o más cercano) + buen % conversación por clic-enlace. Si 2 ángulos quedan <15% entre sí y difieren en formato (video vs imagen), no declarar aún.
-- **Decidir por CPA SEMANAL, nunca por un día** (Clase 8). Un día malo no mata un ángulo; una semana mala sí.
-- **DECLARAR GANADOR SOLO POR `angulo_key` AGREGADO** (todas las cuentas, todas las semanas acumuladas) — nunca por un conjunto en una semana. Medición propia: dispersión de ventas por conjunto = 1.12 (azar de Poisson casi puro), por ángulo = 2.99 (señal real). Con <5 ventas en el ángulo, marcar `[n bajo, IC ±88%+]` y **no coronar**. El ganador de TINNIDROP "se corrió" tres veces por reaccionar a ruido — no volver a hacerlo.
-- **La conversación CORTA, no CORONA.** %conv alto con 0 ventas es un ángulo que atrae curiosos: se apaga, no se escala (tinnidrop-1 78%→0v, ANIMO 68%→0v). %conv bajo con ventas es un clic intencionado: se deja correr (ME DIJERON 23%→top ventas).
-- Pausar — DOS criterios en cascada (`DOCTRINA/ESCALADO_PLAYBOOK.md §1.5/§6`), máx 2 a la vez, apagar (no eliminar):
-  · **TEMPRANO — matar-por-CONVERSACIÓN:** clics pero **%conv/clic-enlace <35%** (y/o %conv/impresión <1.5%) y 0 ventas → problema de anuncio/hook; se apaga sin esperar el PD.
-  · **TARDÍO — matar-por-VENTAS:** buena conversación pero 0 ventas → se deja correr (sub-testeado) hasta gastar **1×Break Even (su PD)** + ~3 días COD; recién ahí se apaga. **Requiere ventana COMPLETA.**
-  · Día 1-2: no pausar por ninguno de los dos.
-  · Excepción: el conjunto que YA vende a CPA ≤ Base es GANADOR aunque esté debajo de su PD — no se toca.
-- Escalar: si CPA ≤ Base → recomendar +20% solo en la mañana (lo hace el operador). Para crecer fuerte, duplicar horizontal (Post ID), no inflar el conjunto.
-- Fatiga en un ganador: el ÁNGULO sirve, el CREATIVO se gastó → cambiar creativo del mismo ángulo, no tocar presupuesto.
-- NUNCA cambiar presupuesto/estado por MCP de forma automática (resetea a Andrómeda). ETAPA-7 solo recomienda.
+- **Las órdenes salen del motor** (invariante 13): ETAPA-7 no emite PAUSAR/ESCALAR/RENOVAR propios; copia los de `_DECISIONES.json` y agrega el contexto que el motor no ve (integridad, confusión, sangrado, dimensión).
+- **Decidir por CPA SEMANAL, nunca por un día** (Clase 8): el motor ya lo hace con `ventana_dias`; un día malo no mata un ángulo.
+- **DECLARAR GANADOR SOLO POR `angulo_key` AGREGADO** (todas las cuentas, todas las semanas) — nunca por un conjunto en una semana. Medición propia: dispersión de ventas por conjunto = 1.12 (azar de Poisson casi puro), por ángulo = 2.99 (señal real). El gate `angulo_ganador` de `flujo.py` es esa definición; con <`min_ventas_ganador` ventas se marca `[n bajo]` y **no se corona**. El ganador de TINNIDROP "se corrió" tres veces por reaccionar a ruido — no volver a hacerlo.
+- **La conversación CORTA, no CORONA.** %conv alto con 0 ventas es un ángulo que atrae curiosos (tinnidrop-1 78 %→0v, ANIMO 68 %→0v); %conv bajo con ventas es un clic intencionado (ME DIJERON 23 %→top ventas). Por eso el motor mata por conversación solo con 0 ventas.
+- **Ventana PARCIAL** (PASO 0): las PAUSAR por ventas del motor se declaran pero **no se ejecutan** hasta completar la data; las de conversación y hook muerto sí valen.
+- Fatiga en un ganador: el ÁNGULO sirve, el CREATIVO se gastó → `RENOVAR` del motor = cambiar creativo del mismo ángulo, no tocar presupuesto.
+- ETAPA-7 solo lee. Ninguna orden se ejecuta en Meta sin la confirmación del operador y su evento en `_EVENTOS.csv`.
 
 ### Aprendizajes ya validados — viven en `PRODUCTOS/_APRENDIZAJES.csv`
 

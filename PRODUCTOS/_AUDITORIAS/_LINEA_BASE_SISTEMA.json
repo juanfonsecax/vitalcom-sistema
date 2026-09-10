@@ -1,13 +1,19 @@
 {
-  "arranque_frio": 8657,
-  "claude_md": 6062,
+  "arranque_frio": 10754,
+  "claude_md": 7658,
   "fases": {
-    "fase-1-angulos": 330285,
-    "fase-2-conceptos": 413244,
-    "fase-3-escalado": 268816,
-    "ciclo-diario": 260410
+    "fase-1-angulos": 356387,
+    "fase-2-conceptos": 444387,
+    "fase-3-escalado": 285372,
+    "ciclo-diario": 270805
   },
   "nodos_dios": [
+    [
+      "CLAUDE.md",
+      9,
+      7658,
+      68922
+    ],
     [
       "PLANTILLAS_ADS.md",
       6,
@@ -15,16 +21,10 @@
       51894
     ],
     [
-      "CLAUDE.md",
-      8,
-      6062,
-      48496
-    ],
-    [
       "ESCALADO_PLAYBOOK.md",
       5,
-      8934,
-      44670
+      9101,
+      45505
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -33,16 +33,16 @@
       25449
     ],
     [
-      "CALENDARIO_ESCALADO.md",
-      3,
-      8007,
-      24021
-    ],
-    [
       "PLANTILLAS_INFOGRAFIAS.md",
       3,
       7017,
       21051
+    ],
+    [
+      "CALENDARIO_ESCALADO.md",
+      2,
+      8007,
+      16014
     ],
     [
       "PARAMETRIZACION_ADS.md",
@@ -65,8 +65,8 @@
     [
       "MCP_PLAYBOOK.md",
       2,
-      3784,
-      7568
+      5226,
+      10452
     ],
     [
       "COPYWRITING_ADS.md",
@@ -83,8 +83,8 @@
     [
       "PLANTILLAS_DEFAULTS_OPERADOR.md",
       3,
-      1549,
-      4647
+      1703,
+      5109
     ],
     [
       "LAVADO.md",
@@ -102,11 +102,13 @@
       "Ads/COPYS_COMPETENCIA.txt"
     ]
   ],
-  "sin_inherit": [],
+  "sin_inherit": [
+    "etapa-render"
+  ],
   "inventario": {
-    "agentes": 16,
-    "skills": 8,
+    "agentes": 17,
+    "skills": 10,
     "docs_raiz": 3,
-    "csv": 29
+    "csv": 33
   }
 }

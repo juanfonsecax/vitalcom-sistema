@@ -28,6 +28,11 @@
 
 ## 1.5 PRESUPUESTO DE DECISIÓN — cuánto debe gastar un conjunto antes de que "0 ventas" cuente
 
+> **Los valores vigentes viven en `PRODUCTOS/_PARAMETROS_DECISION.csv` y los ejecuta `Ads/_TOOLS/decidir.py`**
+> (`umbral_conv_clic_enlace_pct`, `min_link_clicks_conv`, `max_pausas_por_dia`, `dias_min_cod_pausa_ventas`,
+> `factor_tolerancia_pd`, `surfing_pct`). Este texto es la doctrina que los justifica; si difieren, manda el CSV
+> y `verificar_guia_madre.py` lo canta. Desde el 09-sep-2026 ninguna etapa recalcula estos umbrales en prosa.
+
 > **Por qué existe esta sección:** el sistema ya tenía los DÍAS (CALENDARIO) y la regla "gasto > Break-Even y 0 ventas → pausar" (§6), pero no CUANTIFICABA a $1.59 cuánto gasto/días necesita un conjunto para que su "0 ventas" sea un veredicto válido. Sin eso se mata a ganadores sub-testeados. Anclas: **Clase 5** (low-budget → esperar 2-3 días; "no apagar por un mal día, mirar el historial de 15 días"), **Clase 8** (Camilo: "tus productos tienen que venderte el primer día" y "gastó la mitad sin vender → apagar" — pero eso es a PRESUPUESTO ALTO), **Clase 11** (CPA SEMANAL/ponderado, no un día), + el **CPA Break-Even del costeo** (ETAPA-1).
 
 **DOS SEÑALES QUE MADURAN A RITMOS DISTINTOS — no confundirlas:**
@@ -254,6 +259,11 @@ CPA real semanal (LucidSales, del _FACT_VENTAS.csv) · integridad de ventana: X/
 ---
 
 ## 8. MÉTRICAS DE EVALUACIÓN DE TESTEO (umbrales canónicos — fuente única)
+
+> **Los valores vigentes viven en `PRODUCTOS/_PARAMETROS_DECISION.csv` y los ejecuta `Ads/_TOOLS/decidir.py`**
+> (`umbral_conv_clic_enlace_pct`, `min_link_clicks_conv`, `max_pausas_por_dia`, `dias_min_cod_pausa_ventas`,
+> `factor_tolerancia_pd`, `surfing_pct`). Este texto es la doctrina que los justifica; si difieren, manda el CSV
+> y `verificar_guia_madre.py` lo canta. Desde el 09-sep-2026 ninguna etapa recalcula estos umbrales en prosa.
 
 > Movidas desde `CLAUDE.md` el 31-jul-2026. **Este archivo es el dueño**: `etapa-6`, `etapa-7` y `etapa-8` leen los umbrales de acá, no los duplican. Sirven para diagnosticar por qué un ángulo gana o falla; el orquestador las interpreta antes de activar `etapa-3`. El operador entrega los datos de los 6 conjuntos en estos términos.
 

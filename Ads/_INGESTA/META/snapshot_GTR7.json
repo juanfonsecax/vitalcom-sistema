@@ -1,0 +1,74 @@
+{
+  "cuenta_alias": "GTR7",
+  "cuenta_id": "598687956219141",
+  "tomado_el": "2026-09-08T14:00:00-06:00",
+  "fuente": "ads_get_ad_entities (campaign + adset + ad)",
+  "ad_entities": [
+    {
+      "id": "120248708348150784",
+      "nivel": "campaign",
+      "name": "GTR7_TINNIDROP_CONCEPTOS-A_20260909",
+      "status": "PAUSED"
+    },
+    {
+      "id": "120248708351140784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_A1",
+      "status": "PAUSED"
+    },
+    {
+      "id": "120248199951130784",
+      "nivel": "campaign",
+      "name": "GTR7_NUSAVA_ESCALA-ARDOR_20260812",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248199666520784",
+      "nivel": "campaign",
+      "name": "GTR7_TINNIDROP_ESCALA_20260812",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248623719710784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R4",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248623718490784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R3",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248623716930784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R2",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248199666670784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248199666680784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248199666660784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "120248199666650784",
+      "nivel": "adset",
+      "name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3",
+      "status": "ACTIVE"
+    }
+  ]
+}

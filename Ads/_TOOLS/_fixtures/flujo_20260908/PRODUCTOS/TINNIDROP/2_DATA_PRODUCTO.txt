@@ -1,0 +1,1 @@
+FIXTURE test_flujo.py — solo importa que este archivo exista (estado del 08-sep-2026).

@@ -1,0 +1,13 @@
+FIXTURE — el caso TINNIDROP de la manana del 08-sep-2026, congelado para Ads/_TOOLS/test_flujo.py.
+
+Contiene SOLO las filas de TINNIDROP hasta el 07-sep (ventas, eventos, entrega por anuncio), sus dos
+planes tal como estaban (_PLAN_FASE2.json en esquema fase2_lean/1, 5 conjuntos x 1 concepto), la
+columna ad_id de _DIM_CREATIVOS.csv EN BLANCO (nadie la habia escrito) y stubs de los TXT.
+
+Lo que el flujo tiene que cantar solo sobre esta data, con --hoy 2026-09-08 --sin-scripts:
+  1. R3F-13: 5 conceptos GENERADOS de los 10 que pide _PARAMETROS_PUBLICACION.csv.
+  2. La estructura publicada (5 conjuntos en 1 campana) no es la doctrinal (1-1-5 + 1-1-5 + 1-2-5).
+  3. El _PLAN_FASE2.json no esta en el contrato plan/1.
+  4. Meta ya gasto $23.61 en una campana de conceptos mientras el CSV decia 'sin publicar'.
+
+NO se regenera desde la data viva: es un caso congelado, como los de test_decidir.py.

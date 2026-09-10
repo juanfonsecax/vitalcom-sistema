@@ -1,0 +1,499 @@
+{
+  "schema": "publicacion/1",
+  "generado_el": "2026-09-08T23:28:24",
+  "producto_key": "TINNIDROP",
+  "fase": 2,
+  "brazo": "A",
+  "angulo": "ACCESIBILIDAD_MEDICO",
+  "cuenta_alias": "GTR7",
+  "cuenta_id": "598687956219141",
+  "moneda": "USD",
+  "page_id": "498977893288095",
+  "estructura": "1-1-5",
+  "presupuesto_nivel": "ADSET",
+  "daily_budget_usd_por_conjunto": 6.0,
+  "daily_budget_cents": 600,
+  "banda_edad": {
+    "age_min": 45,
+    "age_max": 60,
+    "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+  },
+  "advantage_audience": 0,
+  "start_time": "2026-09-09T04:00:00-06:00",
+  "estado_al_crear": "PAUSED",
+  "plan": "PRODUCTOS\\TINNIDROP\\_PLAN_FASE2.json",
+  "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.7.2",
+  "preflight": [
+    {
+      "paso": 1,
+      "llamada": "ads_get_ad_accounts",
+      "verificar": "que GTR7 (598687956219141) tenga is_ads_mcp_enabled=true y is_queryable=true"
+    },
+    {
+      "paso": 2,
+      "llamada": "ads_get_ad_entities level=campaign",
+      "verificar": "PREGUNTARLE A META QUE YA EXISTE antes de crear nada. El CSV no es evidencia del estado de Meta: el 08-sep decia 'cero publicados' con $23.46 ya gastados. Guardar la respuesta y volver a correr este generador con --snapshot."
+    },
+    {
+      "paso": 3,
+      "llamada": "ads_get_user_pages",
+      "verificar": "que el page_id 498977893288095 exista, sea visible para el lanzador y tenga WhatsApp conectado en la cuenta GTR7"
+    },
+    {
+      "paso": 4,
+      "llamada": "ads_create_ad_set (el primero)",
+      "verificar": "es el test real de la pagina: si el primer conjunto la acepta, esta bien. ads_get_ad_account_pages puede tardar en listarla (lag de lectura)."
+    }
+  ],
+  "bloqueantes": [],
+  "avisos": [
+    "el plan dice cuenta=GTR0 y se esta publicando en GTR7. La pagina y su WhatsApp tienen que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id 498977893288095 viene del plan: confirmalo en el pre-flight antes de crear el primer conjunto."
+  ],
+  "llamadas": [
+    {
+      "n": 1,
+      "tool": "ads_create_campaign",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_name": "GTR7_TINNIDROP_CONCEPTOS-A_20260909",
+        "objective": "OUTCOME_TRAFFIC",
+        "buying_type": "AUCTION",
+        "special_ad_categories": "[]"
+      },
+      "guardar_como": "campaign_id",
+      "omitir": true,
+      "id_existente": "120248708348150784",
+      "nota": "ABO: el presupuesto NO va aca, va en el conjunto."
+    },
+    {
+      "n": 2,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_A1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-09-09T04:00:00-06:00",
+        "daily_budget": 600
+      },
+      "guardar_como": "adset_id_1",
+      "omitir": true,
+      "id_existente": "120248708351140784",
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 3,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_1",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_TINNIDROP\\TINNIDROP_F2_CN05_ACCESIBILIDA.png",
+      "nombre_en_biblioteca": "TINNIDROP_F2_CN05_ACCESIBILIDA_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 4,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "498977893288095",
+        "name": "C2-BENEFICIOS_BASE_01 A",
+        "image_hash": "{{image_hash_1}}",
+        "message": "De dar vueltas en la cama con ese pitido agudo... a volver a dormir en silencio profundo 🛌✨\n\nQuien no tiene zumbido en los oídos no entiende la desesperación de acostarse y escuchar ese timbre constante que no te deja en paz.\n\nTinnidrop no es otra pastilla genérica. Es una fórmula botánica de aplicación ótica: actúa directo en el oído, sin pasar por el estómago, para calmar la hiperexcitabilidad del nervio auditivo.\n\n🌙 ANTES: Noches en vela, dolor de cabeza y fatiga mental todo el día.\n☀️ DESPUÉS: Silencio progresivo, descanso reparador y tranquilidad en tus días.\n\n🔴 APROVECHÁ LA PROMO: 2 frascos por Q239 con Envío Gratis.\n\nPedilo hoy por WhatsApp y pagás en efectivo cuando el mensajero llegue a tu puerta 🏠👇",
+        "headline": "",
+        "description": "",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_1",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 5,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C2-BENEFICIOS_BASE_01 A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 6,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C2-BENEFICIOS_BASE_01 B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 7,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_2",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_TINNIDROP\\TINNIDROP_F2_CN01_ACCESIBILIDA.png",
+      "nombre_en_biblioteca": "TINNIDROP_F2_CN01_ACCESIBILIDA_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 8,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "498977893288095",
+        "name": "C4-TRANSFORMACION_BASE_02 A",
+        "image_hash": "{{image_hash_2}}",
+        "message": "De dar vueltas en la cama con ese pitido agudo... a volver a dormir en silencio profundo 🛌✨\n\nQuien no tiene zumbido en los oídos no entiende la desesperación de acostarse y escuchar ese timbre constante que no te deja en paz.\n\nTinnidrop no es otra pastilla genérica. Es una fórmula botánica de aplicación ótica: actúa directo en el oído, sin pasar por el estómago, para calmar la hiperexcitabilidad del nervio auditivo.\n\n🌙 ANTES: Noches en vela, dolor de cabeza y fatiga mental todo el día.\n☀️ DESPUÉS: Silencio progresivo, descanso reparador y tranquilidad en tus días.\n\n🔴 APROVECHÁ LA PROMO: 2 frascos por Q239 con Envío Gratis.\n\nPedilo hoy por WhatsApp y pagás en efectivo cuando el mensajero llegue a tu puerta 🏠👇",
+        "headline": "",
+        "description": "",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_2",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 9,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C4-TRANSFORMACION_BASE_02 A ~ TINNIDROP|ACCESIBILIDAD_ME|C4.CN01|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 10,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C4-TRANSFORMACION_BASE_02 B ~ TINNIDROP|ACCESIBILIDAD_ME|C4.CN01|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 11,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_3",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_TINNIDROP\\TINNIDROP_F2_CN02_ACCESIBILIDA.png",
+      "nombre_en_biblioteca": "TINNIDROP_F2_CN02_ACCESIBILIDA_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 12,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "498977893288095",
+        "name": "C8-PROGRESION_BASE_03 A",
+        "image_hash": "{{image_hash_3}}",
+        "message": "De dar vueltas en la cama con ese pitido agudo... a volver a dormir en silencio profundo 🛌✨\n\nQuien no tiene zumbido en los oídos no entiende la desesperación de acostarse y escuchar ese timbre constante que no te deja en paz.\n\nTinnidrop no es otra pastilla genérica. Es una fórmula botánica de aplicación ótica: actúa directo en el oído, sin pasar por el estómago, para calmar la hiperexcitabilidad del nervio auditivo.\n\n🌙 ANTES: Noches en vela, dolor de cabeza y fatiga mental todo el día.\n☀️ DESPUÉS: Silencio progresivo, descanso reparador y tranquilidad en tus días.\n\n🔴 APROVECHÁ LA PROMO: 2 frascos por Q239 con Envío Gratis.\n\nPedilo hoy por WhatsApp y pagás en efectivo cuando el mensajero llegue a tu puerta 🏠👇",
+        "headline": "",
+        "description": "",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_3",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 13,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C8-PROGRESION_BASE_03 A ~ TINNIDROP|ACCESIBILIDAD_ME|C8.CN02|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 14,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C8-PROGRESION_BASE_03 B ~ TINNIDROP|ACCESIBILIDAD_ME|C8.CN02|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 15,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_4",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_TINNIDROP\\TINNIDROP_F2_CN10_ACCESIBILIDA.png",
+      "nombre_en_biblioteca": "TINNIDROP_F2_CN10_ACCESIBILIDA_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 16,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "498977893288095",
+        "name": "C5-PRUEBA_BASE_04 A",
+        "image_hash": "{{image_hash_4}}",
+        "message": "De dar vueltas en la cama con ese pitido agudo... a volver a dormir en silencio profundo 🛌✨\n\nQuien no tiene zumbido en los oídos no entiende la desesperación de acostarse y escuchar ese timbre constante que no te deja en paz.\n\nTinnidrop no es otra pastilla genérica. Es una fórmula botánica de aplicación ótica: actúa directo en el oído, sin pasar por el estómago, para calmar la hiperexcitabilidad del nervio auditivo.\n\n🌙 ANTES: Noches en vela, dolor de cabeza y fatiga mental todo el día.\n☀️ DESPUÉS: Silencio progresivo, descanso reparador y tranquilidad en tus días.\n\n🔴 APROVECHÁ LA PROMO: 2 frascos por Q239 con Envío Gratis.\n\nPedilo hoy por WhatsApp y pagás en efectivo cuando el mensajero llegue a tu puerta 🏠👇",
+        "headline": "",
+        "description": "",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_4",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 17,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C5-PRUEBA_BASE_04 A ~ TINNIDROP|ACCESIBILIDAD_ME|C5.CN10|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 18,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C5-PRUEBA_BASE_04 B ~ TINNIDROP|ACCESIBILIDAD_ME|C5.CN10|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 19,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_5",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_TINNIDROP\\TINNIDROP_F2_CN04_ACCESIBILIDA.png",
+      "nombre_en_biblioteca": "TINNIDROP_F2_CN04_ACCESIBILIDA_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 20,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "498977893288095",
+        "name": "C2-BENEFICIOS_BASE_05 A",
+        "image_hash": "{{image_hash_5}}",
+        "message": "De dar vueltas en la cama con ese pitido agudo... a volver a dormir en silencio profundo 🛌✨\n\nQuien no tiene zumbido en los oídos no entiende la desesperación de acostarse y escuchar ese timbre constante que no te deja en paz.\n\nTinnidrop no es otra pastilla genérica. Es una fórmula botánica de aplicación ótica: actúa directo en el oído, sin pasar por el estómago, para calmar la hiperexcitabilidad del nervio auditivo.\n\n🌙 ANTES: Noches en vela, dolor de cabeza y fatiga mental todo el día.\n☀️ DESPUÉS: Silencio progresivo, descanso reparador y tranquilidad en tus días.\n\n🔴 APROVECHÁ LA PROMO: 2 frascos por Q239 con Envío Gratis.\n\nPedilo hoy por WhatsApp y pagás en efectivo cuando el mensajero llegue a tu puerta 🏠👇",
+        "headline": "",
+        "description": "",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_5",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 21,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C2-BENEFICIOS_BASE_05 A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 22,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C2-BENEFICIOS_BASE_05 B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    }
+  ],
+  "manifiesto": {
+    "campana": "GTR7_TINNIDROP_CONCEPTOS-A_20260909",
+    "conjuntos": [
+      {
+        "nombre": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_A1",
+        "posicion": 1,
+        "angulo": "ACCESIBILIDAD_MEDICO",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 6.0,
+        "anuncios": [
+          {
+            "nombre": "C2-BENEFICIOS_BASE_01 A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|?|?|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_F2_CN05_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN05_ACCESIBILIDA.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|?|?|?",
+            "orden": 1
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_01 B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|?|?|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_F2_CN05_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN05_ACCESIBILIDA.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|?|?|?",
+            "orden": 1
+          },
+          {
+            "nombre": "C4-TRANSFORMACION_BASE_02 A ~ TINNIDROP|ACCESIBILIDAD_ME|C4.CN01|?|?|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_F2_CN01_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN01_ACCESIBILIDA.png",
+            "concepto_key": "C4_TRANSFORMACION",
+            "canonico_id": "CN01_ANTES_DESPUES",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C4.CN01|?|?|?",
+            "orden": 2
+          },
+          {
+            "nombre": "C4-TRANSFORMACION_BASE_02 B ~ TINNIDROP|ACCESIBILIDAD_ME|C4.CN01|?|?|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_F2_CN01_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN01_ACCESIBILIDA.png",
+            "concepto_key": "C4_TRANSFORMACION",
+            "canonico_id": "CN01_ANTES_DESPUES",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C4.CN01|?|?|?",
+            "orden": 2
+          },
+          {
+            "nombre": "C8-PROGRESION_BASE_03 A ~ TINNIDROP|ACCESIBILIDAD_ME|C8.CN02|?|?|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_F2_CN02_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN02_ACCESIBILIDA.png",
+            "concepto_key": "C8_PROGRESION",
+            "canonico_id": "CN02_TIMELINE_PROGRESION",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C8.CN02|?|?|?",
+            "orden": 3
+          },
+          {
+            "nombre": "C8-PROGRESION_BASE_03 B ~ TINNIDROP|ACCESIBILIDAD_ME|C8.CN02|?|?|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_F2_CN02_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN02_ACCESIBILIDA.png",
+            "concepto_key": "C8_PROGRESION",
+            "canonico_id": "CN02_TIMELINE_PROGRESION",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C8.CN02|?|?|?",
+            "orden": 3
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_04 A ~ TINNIDROP|ACCESIBILIDAD_ME|C5.CN10|?|?|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_F2_CN10_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN10_ACCESIBILIDA.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN10_PRUEBA_SOCIAL",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C5.CN10|?|?|?",
+            "orden": 4
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_04 B ~ TINNIDROP|ACCESIBILIDAD_ME|C5.CN10|?|?|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_F2_CN10_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN10_ACCESIBILIDA.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN10_PRUEBA_SOCIAL",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C5.CN10|?|?|?",
+            "orden": 4
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_05 A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_F2_CN04_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN04_ACCESIBILIDA.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN04_ESCALERA_PRECIOS",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?",
+            "orden": 5
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_05 B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_F2_CN04_ACCESIBILIDA",
+            "archivo": "TINNIDROP_F2_CN04_ACCESIBILIDA.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN04_ESCALERA_PRECIOS",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?",
+            "orden": 5
+          }
+        ]
+      }
+    ],
+    "total_conjuntos": 1,
+    "total_anuncios": 10
+  }
+}

@@ -69,5 +69,7 @@
       "dispositivo_visual": "Primer plano del sello de seguridad y código de autenticidad para despejar desconfianza.",
       "prompt_sugerido": "Creativo 1080x1080 px para Meta Ads, producto TINNIDROP. Ángulo 'ACCESIBILIDAD_MEDICO'. Dispositivo: Primer plano del sello de seguridad y código de autenticidad para despejar desconfianza. Estructura: Estilo de alerta informativa: 'Exigí el producto original sellado', frasco nítido, badge oficial. Look profesional, sin parecer IA, badges de 'Envío Gratis' y 'Pagás al recibir'."
     }
-  ]
+  ],
+  "copy": "De dar vueltas en la cama con ese pitido agudo... a volver a dormir en silencio profundo 🛌✨\n\nQuien no tiene zumbido en los oídos no entiende la desesperación de acostarse y escuchar ese timbre constante que no te deja en paz.\n\nTinnidrop no es otra pastilla genérica. Es una fórmula botánica de aplicación ótica: actúa directo en el oído, sin pasar por el estómago, para calmar la hiperexcitabilidad del nervio auditivo.\n\n🌙 ANTES: Noches en vela, dolor de cabeza y fatiga mental todo el día.\n☀️ DESPUÉS: Silencio progresivo, descanso reparador y tranquilidad en tus días.\n\n🔴 APROVECHÁ LA PROMO: 2 frascos por Q239 con Envío Gratis.\n\nPedilo hoy por WhatsApp y pagás en efectivo cuando el mensajero llegue a tu puerta 🏠👇",
+  "copy_origen": "Copy CORREGIDO del HANDOFF_2026-09-08_PUBLICAR_META.md. Un solo cambio de fondo sobre el que esta vivo: 'formula botanica sublingual' -> 'de aplicacion otica'. El vivo le decia al cliente que se tomara por la boca un spray que va en el oido: contradecia al frasco, al bot y al producto fisico. En FASE 2 el copy es FIJO en los 10 conceptos (ETAPA-6): la variable es la ejecucion visual, no el texto."
 }

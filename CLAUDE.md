@@ -20,8 +20,11 @@ cada subagente: solo lleva lo que aplica siempre.
 | FASE 1 — testeo de ÁNGULOS | `fase-1-angulos` |
 | FASE 2 — testeo de CONCEPTOS | `fase-2-conceptos` |
 | FASE 3 — ESCALADO | `fase-3-escalado` |
+| **Dónde está cada producto, qué lo bloquea y qué sigue** — se corre ANTES de cargar cualquier skill | `python Ads/_TOOLS/flujo.py --todo` sobre `DOCTRINA/FLUJO.json` (el grafo declarado) |
+| Publicar la estructura de una fase en Meta por MCP | `publicar-meta` |
 | Recolección de data (nocturna) | `recopilar-lucidsales` |
 | Post-lanzamiento (diario) | `ciclo-diario` |
+| Renderizar los creativos en ChatGPT web | `generar-imagenes-chatgpt` (la ejecuta `etapa-render`) |
 
 Cada etapa es un **subagente real**, definido en `.claude/agents/ETAPA-*.md` con su `name`,
 `description`, `tools` y `model`. Se invocan con **Task** (`subagent_type` = el `name`, ej.
@@ -29,7 +32,7 @@ Cada etapa es un **subagente real**, definido en `.claude/agents/ETAPA-*.md` con
 
 ### EL SISTEMA NO DEPENDE DE UN MODELO
 
-**Las 16 etapas declaran `model: inherit`**: cada una corre en el mismo modelo que el operador esté
+**16 de las 17 etapas declaran `model: inherit`**: cada una corre en el mismo modelo que el operador esté
 usando en la sesión. Si trabaja en Opus, todo corre en Opus; si cambia a otro, todo cambia con él.
 **El sistema respeta su elección, nunca la sobrescribe.**
 
@@ -47,25 +50,34 @@ con cualquiera de ellos —o sin ninguno:
 | `VISTAS/_MANIFIESTO.json` + `Ads/_TOOLS/gen_app.py` | La aplicación está **declarada**, no escrita: qué vistas hay, quién produce cada una y a los cuántos días caduca. Agregar una vista es una fila del manifiesto. La edad que muestra sale del `mtime` del archivo, no del recuerdo de nadie. |
 | Los **CSV** como fuente única | Un dato, un dueño. Ningún modelo puede inventar una cifra que no esté ahí. |
 | `Ads/_TOOLS/gen_lanzador.py` | Nombres, presupuesto, banda de edad, fechas y gates salen de la doctrina y de los CSV. La consola **dicta**, no opina; si un dato falta lo marca como bloqueante con el nombre de quien lo produce. |
+| `DOCTRINA/FLUJO.json` + `Ads/_TOOLS/flujo.py` | **El flujo está declarado, no escrito.** Un nodo por paso, un ejecutor por nodo y un PREDICADO por gate, evaluado por código sobre los CSV. Dice en qué fase y nodo está cada producto, qué lo bloquea (con el nombre de quien lo produce) y qué sigue. **La fase se deriva de la data, nunca se declara.** `Ads/_TOOLS/test_flujo.py` congela el 08-sep-2026: cuatro gates de doctrina que un modelo leyó y no vio. |
 
 Lo que sí varía con el modelo es la **calidad de la escritura y del juicio** —copies, ángulos,
 diagnóstico de flujo—, y eso es inherente a cualquier sistema con IA: un modelo más capaz escribe
 mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 
-> Si algún día se quiere abaratar fijando modelos más baratos en las etapas mecánicas, se hace
-> cambiando `inherit` por `haiku` en `etapa-1` y `etapa-fanpage`. **Es una decisión de costo, no del
-> método**, y se revierte con una línea.
+> Abaratar las etapas mecánicas se hace fijándoles un modelo más barato en vez de `inherit`.
+> **Es una decisión de costo, no del método**, y se revierte con una línea.
+> La primera fue **`etapa-render` en `sonnet`** (07-sep-2026): adjuntar, pegar, esperar y bajar
+> archivos no necesita el modelo grande. El juicio que sí conserva —leer la imagen terminada y
+> cazar una falta de ortografía o un número de registro fabricado— es lo que impide bajarla a
+> `haiku`.
 
 **Reglas de invocación:**
+- **Antes de cargar una skill de fase, correr `python Ads/_TOOLS/flujo.py [producto_key]`.** El nodo
+  que devuelve es el que se ejecuta, con el ejecutor que declara (subagente por `Task`, skill, script
+  u operador). Sus gates **no se reinterpretan en prosa**: si dice BLOQUEADO, se produce lo que falta
+  (con el dueño que nombra) y se vuelve a correr.
 - Cada subagente recibe SOLO los inputs que necesita (contexto aislado), no el historial de sesión.
 - El detalle de proceso y formato de output de cada etapa vive en su propio archivo. El orquestador
   NO lo repite: pasa los inputs y transfiere el output completo a la siguiente etapa.
 - Las etapas marcadas "∥ PARALELO" se lanzan en un solo turno. Esperar AMBOS outputs antes de la
   etapa que las consume.
 
-**Las 16 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` ·
+**Las 17 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` ·
 `etapa-fanpage` · `etapa-3` · `etapa-4` · `etapa-5` · `etapa-6` ·
-`etapa-guardar-producto` · `etapa-7` · `etapa-8` · `etapa-9` · `etapa-10` · `etapa-11`
+`etapa-guardar-producto` · `etapa-7` · `etapa-8` · `etapa-9` · `etapa-10` · `etapa-11` ·
+`etapa-render`
 
 ---
 
@@ -79,12 +91,14 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | Copy de anuncios (hooks, compliance de copy, precio, HPPPC) | `DOCTRINA/COPYWRITING_ADS.md` |
 | Creativo visual: Prompt Maestro, 15 estilos, compliance Andrómeda, DOCTRINA DE CREATIVOS | `DOCTRINA/PLANTILLAS_ADS.md` |
 | Catálogo de los 8 `concepto_key` y su evidencia | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
+| **Cómo se RENDERIZA un creativo en ChatGPT web**: los 7 pasos medidos, los selectores, los tiempos y el gate de calidad | `.claude/skills/generar-imagenes-chatgpt/SKILL.md` — la ejecuta el subagente `etapa-render`. Dueño del método: inserción por `execCommand`, envío por `[data-testid="send-button"]` y descarga con el nombre canónico. Simular tecleo y `Enter` falla de forma intermitente y silenciosa; medido el 07-sep-2026 sobre 6 generaciones. **El sistema replica el dispositivo del ganador completo** —sellos, badges, certificaciones, estrellas, cifras de respaldo—, porque el portafolio tiene MSPAS, FDA y garantía reales. **La referencia manda también en los números de registro**: si la pieza validada muestra número, va el nuestro; si no lo muestra, el sello va sin número. Los valores reales (`[REG_MSPAS]`, `[REG_FDA]`) son de `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` y aplican a todo el portafolio |
 | Infografías del bot: motor compartido (PASO 0, variables, color, tipografía) | `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` — enruta a las plantillas |
 | Plantillas Info 1/2/3 · IMAGEN 4/5/6 | `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` · `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` |
 | Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo (§8) | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
 | Cadencia día a día, gates, regla multi-ganador, aritmética de las 3 fases (§1.5, §1.7) | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | CAPA DE DATA: los CSV, cómo leerlos, ganancia, break-even, dashboard | `DOCTRINA/DATA_PLAYBOOK.md` |
 | **Parametrización de anuncios: los 5 ejes testeables, las covariables, el protocolo de una-variable-a-la-vez** | `DOCTRINA/PARAMETRIZACION_ADS.md` — dueño de `_DIM_ANUNCIOS.csv` y `_DIM_VOCABULARIO.csv` |
+| **La identidad FÍSICA del producto: cuál es el packshot, de qué color es el envase y qué marca lleva impresa** | `PRODUCTOS/_DIM_ENVASE.csv`. **El packshot se DECLARA, nunca se adivina.** Hasta el 07-sep-2026 `armar_prompts_fase2.py` devolvía el primer archivo alfabético de `Ads/MEDIA_[PK]/` llamándolo "la foto limpia del producto"; en TINNIDROP ese archivo era un ANUNCIO con el frasco VERDE y la marca SOUTH MOON, y el prompt ordenaba copiarlo "respetando su forma y etiqueta" — de ahí salieron 5 piezas de FASE 2 con el producto equivocado. Sin fila declarada el generador **bloquea con exit 1**, no elige por su cuenta. El arreglo es la foto correcta, no una regla extra en el prompt: el prompt sigue diciendo lo de siempre —"colocá este envase real respetando su forma y etiqueta"— y la paleta de la pieza la manda el concepto, no el envase |
 | **La banda de edad REALMENTE configurada en Meta**, conjunto por conjunto, y si coincide con la que manda la doctrina | `PRODUCTOS/_DIM_BANDAS.csv` — la escribe el operador al configurar o cambiar una banda. Antes del 06-sep el único registro era un sufijo en el nombre del conjunto (`+25AÑOS`), que se perdía al renombrar |
 | **El nombre viejo de un conjunto renombrado en Meta** | `PRODUCTOS/_ALIAS_CONJUNTOS.csv` + `Ads/_TOOLS/alias.py`. El JOIN del sistema es por NOMBRE (el `ad_id` llegó corrupto en 2 006 de 2 475 filas y no vuelve), así que un renombrado partiría la serie en dos objetos distintos. Ningún consumidor escribe su propio mapeo |
 | **LA DECISIÓN de pausar o escalar** | `Ads/_TOOLS/decidir.py` + `PRODUCTOS/_PARAMETROS_DECISION.csv`. **Ninguna orden sale de un juicio.** El motor combina intervalos de credibilidad bayesiana (IC 95%) con gestión de riesgo asimétrico y detector temprano de fatiga. Devuelve un ESTADO claro (`ESCALAR` · `PAUSAR` · `RENOVAR` · `SEGUIR_MIDIENDO`). Si el intervalo cruza el break-even, no se paraliza: emite la acción de menor riesgo (mantener presupuesto y seguir midiendo) y calcula las ventas faltantes. El bloqueo por evidencia aplica estrictamente a las acciones irreversibles (pausar o escalar fuerte). **El motor corre TRES RELOJES, nunca uno solo**, y confundirlos fue el error del 07-sep-2026: `ventana_dias` (14) para calcular CPA e IC · `ventana_fatiga_dias` (3) para comparar lo reciente CONTRA esa ventana · `duracion_testeo_fase2_dias` (3) para cuánto rueda la 1-1-5 antes de coronar (Calet, 22-ago) · y la tolerancia 1× BE medida sobre el gasto ACUMULADO desde el lanzamiento, porque la pérdida se acumula y una ventana móvil la olvida. Los 3 días de Calet son una DURACIÓN DE CAMPAÑA, no una ventana de cálculo: él decide en 3 días porque corre a $15-18 USD/día y esos 3 días le traen 20-30 ventas; a $3-6 USD/día traen 1-3. **Lo que Calet fija es VOLUMEN DE EVIDENCIA, no tiempo.** Ningún ángulo con historia rentable se APAGA por una mala racha: se RENUEVA el concepto. `Ads/_TOOLS/test_decidir.py` congela esas seis reglas. |
@@ -95,7 +109,11 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
 | Las 10 FanPages y las reglas de asignación F1–F4 | `.claude/agents/ETAPA-FANPAGE.md` |
 | CONVENCIÓN DE NOMBRES y BANDA DE EDAD por avatar | `.claude/agents/ETAPA-6.md` |
-| Creación de campaña por MCP, mapeo de campos | `DOCTRINA/MCP_PLAYBOOK.md` |
+| **LA PUBLICACIÓN EN META: la secuencia exacta de llamadas y el gate que la cierra** | `Ads/_TOOLS/gen_publicacion.py` (deriva y **bloquea**) + `Ads/_TOOLS/verificar_publicacion.py` (compara Meta contra el manifiesto y **escribe los `ad_id`**) + la skill `publicar-meta` (los 5 pasos). **Era el único paso del flujo sin herramienta**: `grep -rl "ads_create" Ads/_TOOLS/` devolvía cero, y ninguna etapa tiene el conector — `ETAPA-6` declara `tools: Read`. Publicar dependía de que un modelo recordara 12 parámetros de 223 líneas de prosa. **El costo está medido:** el 06-sep se publicó una campaña, nadie escribió los `ad_id`, y el 08-sep el sistema leyó la columna vacía y concluyó "cero publicados" mientras Meta llevaba **$23.46** en 10 anuncios ACTIVE sirviendo la pieza equivocada. **El CSV no es evidencia del estado de Meta**: antes de crear, `ads_get_ad_entities` y `--snapshot`, que es toda la idempotencia que el MCP oficial no trae |
+| **Las TRANSICIONES entre pasos y sus GATES: en qué fase y nodo está cada producto** | `DOCTRINA/FLUJO.json` (el grafo) + `Ads/_TOOLS/flujo.py` (el recorrido) + `PRODUCTOS/_ESTADO_FLUJO.csv` (derivado; `TRANSICION_FLUJO` en `_EVENTOS.csv` cuando cambia). Un gate que no quepa en el vocabulario de predicados de `flujo.py` es criterio y vive en el subagente. Un hook corre `flujo.py --validar` al tocar el JSON |
+| Estructura, presupuesto, objetivo y hora **por fase** | `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` — cambiar la doctrina de lanzamiento es editar una fila, no reescribir prosa. Su dueño doctrinal sigue siendo `CALENDARIO_ESCALADO.md` §1.7.2, citado en la columna `fuente_doctrina` |
+| El inventario de cuentas publicitarias: cuál tiene MCP, cuál sube media local, en qué moneda factura | `PRODUCTOS/_DIM_CUENTAS.csv` — verificado en vivo el 08-sep. **`ads_creative_upload_media` con `LOCAL_FILE` está habilitado en UNA sola cuenta del portafolio, GTR 7**; la variable es la CUENTA, no el destino del anuncio |
+| Creación de campaña por MCP: el POR QUÉ, los gotchas y el control D+1 | `DOCTRINA/MCP_PLAYBOOK.md` — ya no se ejecuta a mano; los valores en prosa son ilustrativos y manda el CSV |
 | **LA APP: la única pantalla que el operador abre** | `VISTAS/_MANIFIESTO.json` declara las vistas · `Ads/_TOOLS/gen_app.py` las verifica contra el disco y renderiza `VISTAS/APP.html` · `Ads/_TOOLS/app_html.py` la dibuja |
 | **El LANZADOR: el flujo de 7 pasos que el operador ejecuta** | `Ads/_TOOLS/gen_lanzador.py` deriva nombres, plata, bandas y fechas desde los `_PLAN.json`; `Ads/_TOOLS/lanzador_html.py` lo dibuja, y el mismo render alimenta la app y la página suelta |
 | Contrato del plan de lanzamiento (`_PLAN.json`) y su validación | `Ads/_TOOLS/gen_plan.py` — el esquema vive en su docstring; el dueño del contenido es `ETAPA-6.md` |
@@ -174,36 +192,33 @@ de derivación en `.claude/agents/ETAPA-6.md`. Si choca con la edad de la págin
 
 ---
 
-## PREGUNTA INICIAL AL OPERADOR
+## ARRANQUE DE SESIÓN — LA FASE LA DICE LA DATA
 
-Al iniciar cualquier sesión, el orquestador SIEMPRE pregunta:
+Al iniciar cualquier sesión, el orquestador **no pregunta en qué fase está el operador: lo lee.**
 
-```
-¿En qué fase estás hoy?
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FASE 0 — BUSCAR PRODUCTO (opcional)
-No sé qué vender todavía / quiero ver qué está en tendencia.
-
-FASE 1 — PRE-TESTEO
-Tengo transcripciones TXT de videos nuevos y quiero lanzar una campaña de testeo.
-→ Necesito: producto + costo en Q + ≥6 transcripciones TXT + imagen del producto.
-  Opcional: n.º de proveedores en Dropy y anunciantes en la Biblioteca de Anuncios.
-
-FASE 2 — TESTEO DE CONCEPTOS
-Ya sé qué ángulo vende. Ahora quiero saber qué creativo lo vende más barato.
-→ Necesito: ángulo ganador (confirmado por VENTA) + métricas por conjunto
-  + 10 conceptos generados + una 2ª cuenta publicitaria.
-
-FASE 3 — ESCALADO
-Tengo concepto ganador en 2 de 2 y quiero volumen.
-→ Necesito: concepto ganador + CPA real bajo Break-Even (semanal, sobre entregados).
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Respondé con: "0" FASE 0 · "1" FASE 1 · "2" FASE 2 · "3" FASE 3
+```bash
+python Ads/_TOOLS/flujo.py --todo
 ```
 
-Según la respuesta, cargar la skill correspondiente. Si el operador adjunta un
-`PRODUCTOS/[X]/2_DATA_PRODUCTO.txt`, leerlo y ofrecer saltar a FASE 2 o relanzar testeo.
+Ese comando sitúa cada producto en el grafo declarado (`DOCTRINA/FLUJO.json`): fase, nodo actual,
+qué lo bloquea y con qué ejecutor sigue (subagente por `Task`, skill, script u operador). El
+orquestador ejecuta **ese nodo, y solo ese**. Cuando el nodo dice `skill fase-1-angulos`,
+`publicar-meta`, `recopilar-lucidsales`…, recién ahí se carga esa skill. La misma vista vive en
+la app (`VISTAS/APP.html`, vista inicial «Flujo del Sistema»).
+
+Lo único que el flujo no puede saber es un producto que todavía no existe. Si el operador llega
+con un producto sin fila en `PRODUCTOS/_DIM_PRODUCTOS.csv`, el orquestador ofrece dos puertas:
+
+```
+¿Producto nuevo?
+  "0" → FASE 0 — BUSCAR PRODUCTO (skill buscar-producto): no sé qué vender todavía.
+  "1" → FASE 1 — tengo producto + costo en Q + ≥6 transcripciones TXT + imagen del producto.
+        Se crea la fila en _DIM_PRODUCTOS.csv y flujo.py toma el control desde F1.congelar_inputs.
+```
+
+> Hasta el 09-sep-2026 el operador declaraba la fase a mano y el CSV la copiaba: `_DIM_PRODUCTOS.fase`
+> decía `ESCALADO` para un producto sin concepto ganador en 2 de 2. Esa columna quedó como bitácora;
+> la fase vigente es la de `PRODUCTOS/_ESTADO_FLUJO.csv`, que se deriva y no se escribe a mano.
 
 ---
 
@@ -251,6 +266,9 @@ en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
     `PRODUCTOS/_PARAMETROS_DECISION.csv`, y se cuenta desde el **último día CON DATA**: si esa data arrastra
     más de 2 días de rezago, la orden lo declara arriba de todo, en la consola y en la app. Una orden fechada
     hoy sobre data de hace una semana es el mismo error de ventana del 06-sep-2026, disfrazado de frescura.
+    **Ejecutar una orden en Meta por MCP requiere la confirmación explícita del operador, orden por orden**
+    (decisión del 09-sep-2026): el runner dicta, la sesión ejecuta confirmado, y después se verifica contra
+    Meta y se anexa el evento a `_EVENTOS.csv`. Nada automático sin que el operador vea la orden.
 
 ### Dos punteros que valen por una regla
 
