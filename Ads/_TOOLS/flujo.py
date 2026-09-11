@@ -127,6 +127,7 @@ class Entorno(object):
         self._json = {}
         self._motor = None
         self._params = None
+        self._alias = None
 
     # -- rutas --------------------------------------------------------------
     def ruta(self, *partes):
@@ -145,6 +146,15 @@ class Entorno(object):
                     filas = list(csv.DictReader(fh))
             self._csv[nombre] = filas
         return self._csv[nombre]
+
+    def alias(self):
+        """{nombre_viejo: nombre_canónico} del _ALIAS_CONJUNTOS.csv de ESTA base (fixture o real)."""
+        if self._alias is None:
+            if TOOLS not in sys.path:
+                sys.path.insert(0, TOOLS)
+            from alias import mapa_de
+            self._alias = mapa_de(self.csv("_ALIAS_CONJUNTOS.csv"))
+        return self._alias
 
     def json(self, ruta_rel):
         ruta = self.ruta(ruta_rel)
@@ -176,6 +186,8 @@ class Entorno(object):
                 decidir.DIM_BANDAS_PATH = os.path.join(P, "_DIM_BANDAS.csv")
                 decidir.FACT_VENTAS_PATH = os.path.join(P, "_FACT_VENTAS.csv")
                 decidir.FACT_ENTREGA_PATH = os.path.join(P, "_FACT_ENTREGA.csv")
+                decidir.FACT_ENTREGA_ANUNCIO_PATH = os.path.join(P, "_FACT_ENTREGA_ANUNCIO.csv")
+                decidir.ALIAS_PATH = os.path.join(P, "_ALIAS_CONJUNTOS.csv")
             try:
                 self._motor = decidir.analizar_portafolio()
             except Exception as e:      # el motor caído no frena el flujo: se dice
@@ -520,19 +532,33 @@ def _ev_eventos(p, ctx, env):
     return n >= lim, que
 
 
+def _ventas_base(env, pk):
+    """(fila, conjunto canónico) de las filas de _FACT_VENTAS.csv del producto que SUMAN.
+
+    BASE suma; CONTROL solapa a propósito para auditar y nunca suma (DATA_PLAYBOOK). El conjunto
+    se resuelve con _ALIAS_CONJUNTOS.csv para que un renombrado en Meta cruce con su dimensión."""
+    am = env.alias()
+    for r in env.csv("_FACT_VENTAS.csv"):
+        if (r.get("producto_key") or "").strip() != pk:
+            continue
+        if (r.get("rol_ventana") or "BASE").strip().upper() != "BASE":
+            continue
+        cj = (r.get("conjunto") or "").strip()
+        yield r, am.get(cj, cj)
+
+
 def _angulos_acumulados(env, pk):
     """VENTA y gasto acumulados por angulo_key, uniendo _FACT_VENTAS con _DIM_CONJUNTOS.
     Es la definición literal del invariante 1: el ganador se declara por VENTA agregando por
     angulo_key. Un conjunto sin dimensión agrega por su propio nombre (no se descarta data)."""
+    am = env.alias()
     ang = {}
     for r in env.csv("_DIM_CONJUNTOS.csv"):
         if (r.get("producto_key") or "").strip() == pk:
-            ang[(r.get("conjunto_meta") or "").strip()] = (r.get("angulo_key") or "").strip()
+            cm = (r.get("conjunto_meta") or "").strip()
+            ang[am.get(cm, cm)] = (r.get("angulo_key") or "").strip()
     acc = {}
-    for r in env.csv("_FACT_VENTAS.csv"):
-        if (r.get("producto_key") or "").strip() != pk:
-            continue
-        cj = (r.get("conjunto") or "").strip()
+    for r, cj in _ventas_base(env, pk):
         k = ang.get(cj) or cj
         a = acc.setdefault(k, [0.0, 0.0])
         a[0] += num(r.get("ventas"), 0.0)
@@ -584,13 +610,11 @@ def _ev_concepto_2de2(p, ctx, env):
     pk = ctx["pk"]
     mv = resolver_num(p.get("min_ventas", "@param:min_ventas_escalar"), env) or 2
     por_camp = {}
-    for r in env.csv("_FACT_VENTAS.csv"):
-        if (r.get("producto_key") or "").strip() != pk:
-            continue
+    for r, cj in _ventas_base(env, pk):
         camp = (r.get("campana") or "").strip()
         if "CONCEPTOS" not in camp.upper():
             continue
-        cpt = _concepto_de(r.get("anuncio"), r.get("conjunto"))
+        cpt = _concepto_de(r.get("anuncio"), cj)
         if not cpt:
             continue
         a = por_camp.setdefault(camp, {}).setdefault(cpt, [0.0, 0.0])
@@ -623,13 +647,11 @@ def _ev_estructura_publicada(p, ctx, env):
     esperado = publicacion_num(env, "conjuntos_fase%s" % fase)
     tok = TOKEN_FASE.get(fase, "")
     vistos = {}
-    for r in env.csv("_FACT_VENTAS.csv"):
-        if (r.get("producto_key") or "").strip() != ctx["pk"]:
-            continue
+    for r, cj in _ventas_base(env, ctx["pk"]):
         camp = (r.get("campana") or "").strip()
         if tok not in camp.upper() or num(r.get("spend_usd"), 0) <= 0:
             continue
-        vistos.setdefault(camp, set()).add((r.get("conjunto") or "").strip())
+        vistos.setdefault(camp, set()).add(cj)
     if not vistos:
         return True, "sin campañas de fase %s con gasto" % fase
     total = sum(len(v) for v in vistos.values())

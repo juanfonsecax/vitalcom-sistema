@@ -109,6 +109,54 @@ def test_tope_pausas(params):
     return 0 if ok else 1
 
 
+def test_carga_base_y_alias():
+    """La carga del motor suma solo BASE y cruza conjunto y banda por nombre canónico."""
+    import csv
+    import io
+    import tempfile
+    import decidir
+
+    tmp = tempfile.mkdtemp(prefix="decidir_g0_")
+    viejo, nuevo = "PX_ANG-A_R1 +25AÑOS", "PX_ANG-A_R1"
+
+    def escribir(nombre, cols, filas):
+        ruta = os.path.join(tmp, nombre)
+        with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(cols)
+            w.writerows(filas)
+        return ruta
+
+    rutas = {
+        "FACT_VENTAS_PATH": escribir(
+            "_FACT_VENTAS.csv",
+            ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "ventas", "mensajes", "spend_usd"],
+            [["2026-09-01", "BASE", "PX", viejo, "3", "30", "10"],
+             ["2026-09-07", "BASE", "PX", nuevo, "2", "20", "8"],
+             ["2026-09-07", "CONTROL", "PX", nuevo, "5", "50", "20"]]),
+        "DIM_CONJ_PATH": escribir("_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"],
+                                  [["PX", viejo, "ANG_A"]]),
+        "DIM_BANDAS_PATH": escribir("_DIM_BANDAS.csv", ["conjunto_meta", "coincide"], [[viejo, "NO"]]),
+        "ALIAS_PATH": escribir("_ALIAS_CONJUNTOS.csv", ["nombre_viejo", "nombre_nuevo"], [[viejo, nuevo]]),
+        "FACT_ENTREGA_ANUNCIO_PATH": os.path.join(tmp, "no_existe.csv"),
+    }
+    previo = {k: getattr(decidir, k) for k in rutas}
+    try:
+        for k, v in rutas.items():
+            setattr(decidir, k, v)
+        filas = decidir.cargar_datos_duckdb(dias=14, grano="angulo").to_dict("records")
+    finally:
+        for k, v in previo.items():
+            setattr(decidir, k, v)
+
+    ok = (len(filas) == 1 and filas[0]["celda"] == "ANG_A"
+          and int(filas[0]["ventas_acum"]) == 5 and not bool(filas[0]["banda_ok"]))
+    print(("  OK     " if ok else "  FALLA  ")
+          + "Carga: CONTROL no suma y el conjunto renombrado conserva su ángulo y su banda"
+          + ("" if ok else "\n         " + str(filas)))
+    return 0 if ok else 1
+
+
 def main():
     params = cargar_parametros()
 
@@ -129,7 +177,8 @@ def main():
                   % (nombre, esperado, estado, obtenido["accion_codigo"], porque))
 
     fallas += test_tope_pausas(params)
-    print("\n%d de %d casos pasan." % (len(CASOS) + 1 - fallas, len(CASOS) + 1))
+    fallas += test_carga_base_y_alias()
+    print("\n%d de %d casos pasan." % (len(CASOS) + 2 - fallas, len(CASOS) + 2))
     return 1 if fallas else 0
 
 

@@ -277,7 +277,7 @@
    "id": "ciclo.ordenes",
    "titulo": "Ejecutar las órdenes del motor (con confirmación) y registrarlas",
    "ejecutor": {"tipo": "mcp"},
-   "como": "Por cada PAUSAR / ESCALAR / RENOVAR: el operador confirma la orden, la sesión la ejecuta por MCP (o el operador a mano), se verifica contra Meta y se anexa el evento del día a _EVENTOS.csv. RENOVAR dispara etapa-10 → etapa-9. Sin órdenes, no hay nada que registrar.",
+   "como": "Por cada PAUSAR / ESCALAR / RENOVAR: el operador confirma la orden, la sesión la ejecuta por MCP (o el operador a mano), se verifica contra Meta y se anexa el evento del día con Ads/_TOOLS/registrar_evento.py (todo ESCALAR deja un CAMBIO_PRESUPUESTO con --antes y --despues). RENOVAR dispara etapa-10 → etapa-9. Sin órdenes, no hay nada que registrar.",
    "produce": [
     {"dato": "sin órdenes pendientes, o al menos un evento de ejecución registrado hoy",
      "predicado": {"tipo": "alguno", "de": [

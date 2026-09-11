@@ -59,9 +59,8 @@ POR QUÉ SOLO `rol_ventana=BASE`
 el acumulado del portafolio de 506 a 904 ventas (+79 %), y de forma desigual por producto
 (NUSAVA +100 %, VARICOSE +145 %, CLEARSTEM +59 %, TINNIDROP +69 %). Este script agrega solo
 BASE, y para que la diferencia no quede escondida publica `ventas_control` con lo que
-descartó. **No corrige a nadie**: `decidir.py`, `flujo.py` y `sembrar_anuncios.py` siguen
-sumando ambas (ver el handoff del 09-sep-2026); esta columna es lo que vuelve visible ese
-desvío todos los días en vez de dejarlo en un documento.
+descartó. Todos los consumidores de venta filtran BASE (`decidir.py`, `flujo.py`,
+`sembrar_anuncios.py`, `stg_ventas.sql`); la columna queda como control de integridad.
 
 USO
 ---
@@ -192,10 +191,12 @@ def serie_por_angulo(pk_filtro=None):
     deforma cualquier lectura de recencia; el prorrateo reparte mal DENTRO del tramo pero
     respeta el total y la posición en el calendario, que es lo que el ciclo de vida necesita.
     """
+    from alias import mapa_de
+    am = mapa_de(leer_csv("_ALIAS_CONJUNTOS.csv"))
     ang = {}
     for r in leer_csv("_DIM_CONJUNTOS.csv"):
-        ang[((r.get("producto_key") or "").strip(),
-             (r.get("conjunto_meta") or "").strip())] = (r.get("angulo_key") or "").strip()
+        cm = (r.get("conjunto_meta") or "").strip()
+        ang[((r.get("producto_key") or "").strip(), am.get(cm, cm))] = (r.get("angulo_key") or "").strip()
 
     serie = collections.defaultdict(lambda: collections.defaultdict(lambda: [0.0, 0.0, 0.0]))
     control = collections.Counter()
@@ -205,11 +206,12 @@ def serie_por_angulo(pk_filtro=None):
         if pk_filtro and pk != pk_filtro:
             continue
         cj = (r.get("conjunto") or "").strip()
+        cj = am.get(cj, cj)                 # un renombrado en Meta cruza con su dimensión
         if not cj or cj == "SIN_ATRIBUCION":
             continue                        # filas sintéticas de cuadre: no son una celda
         ak = ang.get((pk, cj))
         if not ak:
-            # Grafía que NO cruza con _DIM_CONJUNTOS: el gasto existe pero su ÁNGULO se pierde
+            # Grafía que NO cruza con _DIM_CONJUNTOS ni por alias: el gasto existe pero su ÁNGULO se pierde
             # y la celda se cuenta como un ángulo aparte — un ángulo fantasma que compite en el
             # ranking contra el ángulo real del que salió. Es el caso que DATA_PLAYBOOK manda
             # corregir anexando la grafía con el MISMO angulo_key (no normalizando la llave).

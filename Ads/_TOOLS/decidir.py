@@ -70,6 +70,9 @@ except (AttributeError, OSError):
 
 from scipy.stats import gamma as _gamma, fisher_exact
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from alias import mapa_de as _alias_de  # noqa: E402
+
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
 DB_PATH = os.path.join(BASE, "warehouse", "vitalcom.duckdb")
@@ -77,6 +80,7 @@ PARAMS_PATH = os.path.join(PROD, "_PARAMETROS_DECISION.csv")
 DIM_PROD_PATH = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
 DIM_CONJ_PATH = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
 DIM_BANDAS_PATH = os.path.join(PROD, "_DIM_BANDAS.csv")
+ALIAS_PATH = os.path.join(PROD, "_ALIAS_CONJUNTOS.csv")
 FACT_VENTAS_PATH = os.path.join(PROD, "_FACT_VENTAS.csv")
 FACT_ENTREGA_PATH = os.path.join(PROD, "_FACT_ENTREGA.csv")
 FACT_ENTREGA_ANUNCIO_PATH = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")  # link_clicks: la conversacion por clic-ENLACE vive aca
@@ -242,6 +246,18 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
 
     con = duckdb.connect()
 
+    # Un conjunto renombrado en Meta es el mismo objeto: hechos y dimensiones (conjuntos, bandas,
+    # entrega) se resuelven a su nombre canónico, de los dos lados del JOIN. Sin esto el nombre
+    # nuevo no cruza con la dimensión, pierde su ángulo y compite como un ángulo aparte.
+    con.execute("create temp table alias_map (viejo varchar, nuevo varchar)")
+    filas_alias = []
+    if os.path.exists(ALIAS_PATH):
+        with io.open(ALIAS_PATH, encoding="utf-8-sig", newline="") as fh:
+            filas_alias = list(csv.DictReader(fh))
+    mapa_alias = _alias_de(filas_alias)
+    if mapa_alias:
+        con.executemany("insert into alias_map values (?, ?)", list(mapa_alias.items()))
+
     f_ventas = FACT_VENTAS_PATH.replace("\\", "/")
     f_conj = DIM_CONJ_PATH.replace("\\", "/")
     f_bandas = DIM_BANDAS_PATH.replace("\\", "/")
@@ -249,9 +265,13 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
     # La banda REAL vive en _DIM_BANDAS.csv (su dueno). Si el archivo no existe todavia
     # la bandera queda en true, en vez de mentir con un false.
     if os.path.exists(DIM_BANDAS_PATH):
-        cte_bandas = ("bandas as (select trim(conjunto_meta) as conjunto, "
-                      "upper(trim(coincide)) = 'SI' as coincide "
-                      "from read_csv('%s', header=true, all_varchar=true)),") % f_bandas
+        # Una fila por conjunto canónico: dos grafías del mismo conjunto no pueden duplicar sus
+        # ventas en el JOIN. Basta una fila NO para que la banda no coincida.
+        cte_bandas = ("bandas as (select coalesce(am.nuevo, trim(b.conjunto_meta)) as conjunto, "
+                      "bool_and(upper(trim(b.coincide)) = 'SI') as coincide "
+                      "from read_csv('%s', header=true, all_varchar=true) b "
+                      "left join alias_map am on am.viejo = trim(b.conjunto_meta) "
+                      "group by 1),") % f_bandas
         join_bandas = "left join bandas b on b.conjunto = v.conjunto"
         col_banda = "coalesce(b.coincide, true)"
     else:
@@ -270,9 +290,11 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
         select e.producto_key, {col_agrup_e} as celda,
                sum(try_cast(e.link_clicks as double)) as link_clicks_acum,
                sum(try_cast(e.mensajes as double)) as mensajes_enlace_acum
-        from (select trim(producto_key) as producto_key, trim(conjunto) as conjunto,
-                     link_clicks, mensajes
-              from read_csv('{f_ent}', header=true, all_varchar=true)) e
+        from (select trim(x.producto_key) as producto_key,
+                     coalesce(am.nuevo, trim(x.conjunto)) as conjunto,
+                     x.link_clicks, x.mensajes
+              from read_csv('{f_ent}', header=true, all_varchar=true) x
+              left join alias_map am on am.viejo = trim(x.conjunto)) e
         left join dim_conj d on d.producto_key = e.producto_key and d.conjunto_meta = e.conjunto
         group by 1, 2
     )"""
@@ -294,24 +316,28 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
     with {cte_bandas}
     ventas_raw as (
         select
-            try_cast(ventana_fin as date) as fecha,
-            trim(producto_key) as producto_key,
-            trim(conjunto) as conjunto,
-            try_cast(spend_usd as double) as spend_usd,
-            try_cast(ventas as integer) as ventas,
-            try_cast(mensajes as integer) as mensajes
-        from read_csv('{f_ventas}', header=true, all_varchar=true)
-        where ventana_fin is not null and ventana_fin != ''
+            try_cast(v.ventana_fin as date) as fecha,
+            trim(v.producto_key) as producto_key,
+            coalesce(am.nuevo, trim(v.conjunto)) as conjunto,
+            try_cast(v.spend_usd as double) as spend_usd,
+            try_cast(v.ventas as integer) as ventas,
+            try_cast(v.mensajes as integer) as mensajes
+        from read_csv('{f_ventas}', header=true, all_varchar=true) v
+        left join alias_map am on am.viejo = trim(v.conjunto)
+        where v.ventana_fin is not null and v.ventana_fin != ''
+          -- BASE suma; CONTROL solapa a propósito para auditar y nunca suma (DATA_PLAYBOOK).
+          and upper(coalesce(nullif(trim(v.rol_ventana), ''), 'BASE')) = 'BASE'
     ),
     ult as (
         select max(fecha) as f from ventas_raw
     ),
     dim_conj as (
         select
-            trim(producto_key) as producto_key,
-            trim(conjunto_meta) as conjunto_meta,
-            max(trim(angulo_key)) as angulo_key
-        from read_csv('{f_conj}', header=true, all_varchar=true)
+            trim(c.producto_key) as producto_key,
+            coalesce(am.nuevo, trim(c.conjunto_meta)) as conjunto_meta,
+            max(trim(c.angulo_key)) as angulo_key
+        from read_csv('{f_conj}', header=true, all_varchar=true) c
+        left join alias_map am on am.viejo = trim(c.conjunto_meta)
         group by 1, 2
     ),
     unidos as (

@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-09",
+  "generado": "2026-09-10",
   "version": 6,
   "app": {
     "titulo": "VitalCom Guatemala",
@@ -56,12 +56,12 @@
       "src": "FLUJO.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-10",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-10"
       }
     },
     {
@@ -82,12 +82,12 @@
       "src": "../PRODUCTOS/_DECISIONES.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-10",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-10"
       }
     },
     {
@@ -108,12 +108,12 @@
       "src": "PERFILES.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-10",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-10"
       }
     },
     {
@@ -134,12 +134,12 @@
       "src": "../PRODUCTOS/_LANZADOR.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-10",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-10"
       }
     },
     {
@@ -157,11 +157,11 @@
       "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-10",
         "edad_dias": 0,
         "clase": "ninguna",
         "etiqueta": "",
-        "detalle": "no caduca · escrita 2026-09-09",
+        "detalle": "no caduca · escrita 2026-09-10",
         "chip": "c-neutro"
       }
     },

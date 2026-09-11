@@ -16,12 +16,15 @@ existen, y que el vocabulario de predicados haga lo que dice.
 
 USO:  python Ads/_TOOLS/test_flujo.py     (exit 0 = pasa, 1 = falla)
 """
+import csv
 import datetime
+import io
 import os
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from flujo import Entorno, cargar_flujo, correr, evaluar, validar, BASE_REAL  # noqa: E402
+from flujo import Entorno, cargar_flujo, correr, evaluar, validar, BASE_REAL, _angulos_acumulados  # noqa: E402
 
 FIXTURE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_fixtures", "flujo_20260908")
 HOY = datetime.date(2026, 9, 8)
@@ -40,6 +43,30 @@ def check(cond, nombre, detalle=""):
 
 def nodo(r, nid):
     return next((n for n in r["nodos"] if n["id"] == nid), None)
+
+
+def fixture_renombre_y_control():
+    """Un conjunto con dimensión solo en su nombre viejo, ventas bajo los dos nombres y una
+    ventana CONTROL que solapa. Lo correcto: 3 + 2 ventas BASE bajo ANG_A; las 5 CONTROL no."""
+    tmp = tempfile.mkdtemp(prefix="flujo_g0_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(prod)
+    viejo, nuevo = "PX_ANG-A_R1 +25AÑOS", "PX_ANG-A_R1"
+
+    def escribir(nombre, cols, filas):
+        with io.open(os.path.join(prod, nombre), "w", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(cols)
+            w.writerows(filas)
+
+    escribir("_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"], [["PX", viejo, "ANG_A"]])
+    escribir("_ALIAS_CONJUNTOS.csv", ["nombre_viejo", "nombre_nuevo"], [[viejo, nuevo]])
+    escribir("_FACT_VENTAS.csv",
+             ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "campana", "anuncio", "ventas", "spend_usd"],
+             [["2026-09-01", "BASE", "PX", viejo, "C", "a", "3", "10"],
+              ["2026-09-07", "BASE", "PX", nuevo, "C", "a", "2", "8"],
+              ["2026-09-07", "CONTROL", "PX", nuevo, "C", "a", "5", "20"]])
+    return tmp
 
 
 def main():
@@ -116,7 +143,13 @@ def main():
                        "min": "@param:no_existe"}, ctx, env)
     check(ok is None, "@param inexistente: el predicado dice que no pudo evaluar, no inventa un límite", obs)
 
-    total = 17
+    # ── D. el acumulado que decide las fases suma solo BASE y cruza por nombre canónico ──
+    acc = _angulos_acumulados(Entorno(base=fixture_renombre_y_control(), hoy=HOY, sin_scripts=True), "PX")
+    check(acc == {"ANG_A": [5.0, 18.0]},
+          "acumulado por ángulo: CONTROL no suma y el conjunto renombrado cae en su ángulo, no en uno fantasma",
+          str(acc))
+
+    total = 18
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 
