@@ -67,6 +67,7 @@ avatar_edad del ángulo   ->   banda que se configura en Meta
     45-65                ->   45-65
     45-60                ->   45-60
     35-55                ->   35-55
+    35-45                ->   35-50   (SIMULACION: fila que faltaba; la usa gen_lanzador.py)
     25-35                ->   25-40
     SIN AVATAR DE EDAD MARCADA  ->  amplio 18-65+   (única excepción)
 ```

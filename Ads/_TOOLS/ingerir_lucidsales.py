@@ -60,6 +60,7 @@ PROD_KEY = {
     "nusava": "NUSAVA",
     "varicose": "VARICOSE",
     "varices": "VARICOSE",
+    "turmeric": "TURMERIC",   # SIMULACION: sin esta linea el producto nuevo cae en SIN_CLASIFICAR
 }
 
 COLS = ["ventana_ini","ventana_fin","dias","rol_ventana","producto_key","producto",

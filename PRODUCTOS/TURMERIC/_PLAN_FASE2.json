@@ -1,0 +1,369 @@
+{
+ "schema": "plan/1",
+ "producto_key": "TURMERIC",
+ "fase": 2,
+ "version": "v1",
+ "origen": "etapa-6 FASE 2 - simulacion 2026-09-23",
+ "pagina": {
+  "nombre": "9 Huesos, Articulaciones & Vitalidad 45+",
+  "page_id": "1279576438561754"
+ },
+ "oferta": {
+  "oferta_key": "1U",
+  "precio_q": 199,
+  "texto": "1 frasco Q199 - envio gratis - pagas al recibir"
+ },
+ "concepto_control": {
+  "concepto_key": "C2_BENEFICIOS",
+  "variante": "ligera",
+  "canonico_id": "CN05_LISTA_BENEFICIOS"
+ },
+ "conjuntos": [
+  {
+   "n": 1,
+   "brazo": "A",
+   "pool": "01-05",
+   "cuenta_alias": "GTR7",
+   "angulo_key": "MANOS_RIGIDAS_AL_DESPERTAR",
+   "angulo_titulo": "Amanezco viejo aunque no lo soy",
+   "avatar_edad": "45-60",
+   "avatar_genero": "HOMBRE",
+   "nivel_conciencia": "1",
+   "formato": "IMAGEN",
+   "lleva_precio": true,
+   "archivo_creativo": null,
+   "prompt_imagen": null,
+   "anuncios": [
+    {
+     "nn": 1,
+     "creativo_id": "TURMERIC-T01_C2-BENEFICIOS_LIGERA_01",
+     "concepto_key": "C2_BENEFICIOS",
+     "variante": "LIGERA",
+     "canonico_id": "CN05_LISTA_BENEFICIOS",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_01_C2-BENEFICIOS.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 2,
+     "creativo_id": "TURMERIC-T01_C3-SINTOMA_DOLOR-PLENO_02",
+     "concepto_key": "C3_SINTOMA",
+     "variante": "DOLOR-PLENO",
+     "canonico_id": "CN07_DOLOR_A_PLENO",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_02_C3-SINTOMA.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 3,
+     "creativo_id": "TURMERIC-T01_C8-PROGRESION_TIMELINE-ARTICULACION_03",
+     "concepto_key": "C8_PROGRESION",
+     "variante": "TIMELINE-ARTICULACION",
+     "canonico_id": "CN02_TIMELINE_PROGRESION",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_03_C8-PROGRESION.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 4,
+     "creativo_id": "TURMERIC-T01_C5-PRUEBA_CAJA-ABIERTA_04",
+     "concepto_key": "C5_PRUEBA",
+     "variante": "CAJA-ABIERTA",
+     "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+     "rol_embudo": "BOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_04_C5-PRUEBA.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 5,
+     "creativo_id": "TURMERIC-T01_C9-COMPARACION_YO-MISMO_05",
+     "concepto_key": "C9_COMPARACION",
+     "variante": "YO-MISMO",
+     "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_05_C9-COMPARACION.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    }
+   ],
+   "copy": {
+    "textos": [
+     "¿Amanecés con las manos tiesas e hinchadas? 🔧\nQuerés cerrar el puño y no podés.\nAgarrás la cuchara y los dedos no te responden.\nY ya te hiciste a la idea: «es la edad».\n\nNo es la edad.\nEs inflamación que se junta en las manos mientras dormís.\n\n🌿 Cúrcuma en gotas, no en pastilla: curcumina con pimienta negra, que el cuerpo sí aprovecha, y cardo mariano.\n\n✅ Un gotero debajo de la lengua, una vez al día\n✅ Apoya la movilidad de manos y muñecas\n✅ No es de un día: se toma parejo y se nota entre la semana 2 y la 3\n✅ Q199 el frasco · envío gratis · pagás hasta que lo tenés en la mano\n\nSi trabajás con tus manos y pasás de los 45, escribinos hoy y volvé a amanecer con las manos sueltas 👉"
+    ],
+    "titulos": [
+     "No era la edad"
+    ],
+    "descripcion": "Envío gratis · Pagás en casa"
+   }
+  },
+  {
+   "n": 2,
+   "brazo": "B",
+   "pool": "06-10",
+   "cuenta_alias": "GTR7",
+   "angulo_key": "MANOS_RIGIDAS_AL_DESPERTAR",
+   "angulo_titulo": "Amanezco viejo aunque no lo soy",
+   "avatar_edad": "45-60",
+   "avatar_genero": "HOMBRE",
+   "nivel_conciencia": "1",
+   "formato": "IMAGEN",
+   "lleva_precio": true,
+   "archivo_creativo": null,
+   "prompt_imagen": null,
+   "anuncios": [
+    {
+     "nn": 6,
+     "creativo_id": "TURMERIC-T01_C2-BENEFICIOS_CHECKLIST-SINTOMAS_06",
+     "concepto_key": "C2_BENEFICIOS",
+     "variante": "CHECKLIST-SINTOMAS",
+     "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_06_C2-BENEFICIOS.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 7,
+     "creativo_id": "TURMERIC-T01_C4-TRANSFORMACION_RENDER-ARTICULACION_07",
+     "concepto_key": "C4_TRANSFORMACION",
+     "variante": "RENDER-ARTICULACION",
+     "canonico_id": "CN01_ANTES_DESPUES",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_07_C4-TRANSFORMACION.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 8,
+     "creativo_id": "TURMERIC-T01_C8-PROGRESION_TIMELINE-FRASCOS_08",
+     "concepto_key": "C8_PROGRESION",
+     "variante": "TIMELINE-FRASCOS",
+     "canonico_id": "CN02_TIMELINE_PROGRESION",
+     "rol_embudo": "BOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_08_C8-PROGRESION.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 9,
+     "creativo_id": "TURMERIC-T01_C5-PRUEBA_CRUDO-OBRA_09",
+     "concepto_key": "C5_PRUEBA",
+     "variante": "CRUDO-OBRA",
+     "canonico_id": "CN08_UGC_CRUDO",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_09_C5-PRUEBA.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 10,
+     "creativo_id": "TURMERIC-T01_C9-COMPARACION_REMEDIO-CASERO_10",
+     "concepto_key": "C9_COMPARACION",
+     "variante": "REMEDIO-CASERO",
+     "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_10_C9-COMPARACION.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    }
+   ],
+   "copy": {
+    "textos": [
+     "¿Amanecés con las manos tiesas e hinchadas? 🔧\nQuerés cerrar el puño y no podés.\nAgarrás la cuchara y los dedos no te responden.\nY ya te hiciste a la idea: «es la edad».\n\nNo es la edad.\nEs inflamación que se junta en las manos mientras dormís.\n\n🌿 Cúrcuma en gotas, no en pastilla: curcumina con pimienta negra, que el cuerpo sí aprovecha, y cardo mariano.\n\n✅ Un gotero debajo de la lengua, una vez al día\n✅ Apoya la movilidad de manos y muñecas\n✅ No es de un día: se toma parejo y se nota entre la semana 2 y la 3\n✅ Q199 el frasco · envío gratis · pagás hasta que lo tenés en la mano\n\nSi trabajás con tus manos y pasás de los 45, escribinos hoy y volvé a amanecer con las manos sueltas 👉"
+    ],
+    "titulos": [
+     "No era la edad"
+    ],
+    "descripcion": "Envío gratis · Pagás en casa"
+   }
+  },
+  {
+   "n": 3,
+   "brazo": "C",
+   "pool": "01-05",
+   "cuenta_alias": "GTR13",
+   "angulo_key": "MANOS_RIGIDAS_AL_DESPERTAR",
+   "angulo_titulo": "Amanezco viejo aunque no lo soy",
+   "avatar_edad": "45-60",
+   "avatar_genero": "HOMBRE",
+   "nivel_conciencia": "1",
+   "formato": "IMAGEN",
+   "lleva_precio": true,
+   "archivo_creativo": null,
+   "prompt_imagen": null,
+   "anuncios": [
+    {
+     "nn": 1,
+     "creativo_id": "TURMERIC-T01_C2-BENEFICIOS_LIGERA_01",
+     "concepto_key": "C2_BENEFICIOS",
+     "variante": "LIGERA",
+     "canonico_id": "CN05_LISTA_BENEFICIOS",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_01_C2-BENEFICIOS.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 2,
+     "creativo_id": "TURMERIC-T01_C3-SINTOMA_DOLOR-PLENO_02",
+     "concepto_key": "C3_SINTOMA",
+     "variante": "DOLOR-PLENO",
+     "canonico_id": "CN07_DOLOR_A_PLENO",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_02_C3-SINTOMA.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 3,
+     "creativo_id": "TURMERIC-T01_C8-PROGRESION_TIMELINE-ARTICULACION_03",
+     "concepto_key": "C8_PROGRESION",
+     "variante": "TIMELINE-ARTICULACION",
+     "canonico_id": "CN02_TIMELINE_PROGRESION",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_03_C8-PROGRESION.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 4,
+     "creativo_id": "TURMERIC-T01_C5-PRUEBA_CAJA-ABIERTA_04",
+     "concepto_key": "C5_PRUEBA",
+     "variante": "CAJA-ABIERTA",
+     "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+     "rol_embudo": "BOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_04_C5-PRUEBA.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 5,
+     "creativo_id": "TURMERIC-T01_C9-COMPARACION_YO-MISMO_05",
+     "concepto_key": "C9_COMPARACION",
+     "variante": "YO-MISMO",
+     "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_05_C9-COMPARACION.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    }
+   ],
+   "copy": {
+    "textos": [
+     "¿Amanecés con las manos tiesas e hinchadas? 🔧\nQuerés cerrar el puño y no podés.\nAgarrás la cuchara y los dedos no te responden.\nY ya te hiciste a la idea: «es la edad».\n\nNo es la edad.\nEs inflamación que se junta en las manos mientras dormís.\n\n🌿 Cúrcuma en gotas, no en pastilla: curcumina con pimienta negra, que el cuerpo sí aprovecha, y cardo mariano.\n\n✅ Un gotero debajo de la lengua, una vez al día\n✅ Apoya la movilidad de manos y muñecas\n✅ No es de un día: se toma parejo y se nota entre la semana 2 y la 3\n✅ Q199 el frasco · envío gratis · pagás hasta que lo tenés en la mano\n\nSi trabajás con tus manos y pasás de los 45, escribinos hoy y volvé a amanecer con las manos sueltas 👉"
+    ],
+    "titulos": [
+     "No era la edad"
+    ],
+    "descripcion": "Envío gratis · Pagás en casa"
+   }
+  },
+  {
+   "n": 4,
+   "brazo": "C",
+   "pool": "06-10",
+   "cuenta_alias": "GTR13",
+   "angulo_key": "MANOS_RIGIDAS_AL_DESPERTAR",
+   "angulo_titulo": "Amanezco viejo aunque no lo soy",
+   "avatar_edad": "45-60",
+   "avatar_genero": "HOMBRE",
+   "nivel_conciencia": "1",
+   "formato": "IMAGEN",
+   "lleva_precio": true,
+   "archivo_creativo": null,
+   "prompt_imagen": null,
+   "anuncios": [
+    {
+     "nn": 6,
+     "creativo_id": "TURMERIC-T01_C2-BENEFICIOS_CHECKLIST-SINTOMAS_06",
+     "concepto_key": "C2_BENEFICIOS",
+     "variante": "CHECKLIST-SINTOMAS",
+     "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_06_C2-BENEFICIOS.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 7,
+     "creativo_id": "TURMERIC-T01_C4-TRANSFORMACION_RENDER-ARTICULACION_07",
+     "concepto_key": "C4_TRANSFORMACION",
+     "variante": "RENDER-ARTICULACION",
+     "canonico_id": "CN01_ANTES_DESPUES",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_07_C4-TRANSFORMACION.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 8,
+     "creativo_id": "TURMERIC-T01_C8-PROGRESION_TIMELINE-FRASCOS_08",
+     "concepto_key": "C8_PROGRESION",
+     "variante": "TIMELINE-FRASCOS",
+     "canonico_id": "CN02_TIMELINE_PROGRESION",
+     "rol_embudo": "BOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_08_C8-PROGRESION.png",
+     "creativo_lleva_precio": true,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 9,
+     "creativo_id": "TURMERIC-T01_C5-PRUEBA_CRUDO-OBRA_09",
+     "concepto_key": "C5_PRUEBA",
+     "variante": "CRUDO-OBRA",
+     "canonico_id": "CN08_UGC_CRUDO",
+     "rol_embudo": "TOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_09_C5-PRUEBA.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    },
+    {
+     "nn": 10,
+     "creativo_id": "TURMERIC-T01_C9-COMPARACION_REMEDIO-CASERO_10",
+     "concepto_key": "C9_COMPARACION",
+     "variante": "REMEDIO-CASERO",
+     "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+     "rol_embudo": "MOFU",
+     "formato": "IMAGEN",
+     "archivo_creativo": "TURMERIC_10_C9-COMPARACION.png",
+     "creativo_lleva_precio": false,
+     "prompt_archivo": "Ads/MEDIA_TURMERIC/FASE2_MANOS_RIGIDAS_AL_DESPERTAR/PROMPTS_FASE2_MANOS_RIGIDAS_AL_DESPERTAR.txt"
+    }
+   ],
+   "copy": {
+    "textos": [
+     "¿Amanecés con las manos tiesas e hinchadas? 🔧\nQuerés cerrar el puño y no podés.\nAgarrás la cuchara y los dedos no te responden.\nY ya te hiciste a la idea: «es la edad».\n\nNo es la edad.\nEs inflamación que se junta en las manos mientras dormís.\n\n🌿 Cúrcuma en gotas, no en pastilla: curcumina con pimienta negra, que el cuerpo sí aprovecha, y cardo mariano.\n\n✅ Un gotero debajo de la lengua, una vez al día\n✅ Apoya la movilidad de manos y muñecas\n✅ No es de un día: se toma parejo y se nota entre la semana 2 y la 3\n✅ Q199 el frasco · envío gratis · pagás hasta que lo tenés en la mano\n\nSi trabajás con tus manos y pasás de los 45, escribinos hoy y volvé a amanecer con las manos sueltas 👉"
+    ],
+    "titulos": [
+     "No era la edad"
+    ],
+    "descripcion": "Envío gratis · Pagás en casa"
+   }
+  }
+ ],
+ "angulo_ganador": "MANOS_RIGIDAS_AL_DESPERTAR",
+ "destino_key": "BOT_V2"
+}

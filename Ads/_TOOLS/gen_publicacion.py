@@ -75,6 +75,7 @@ BANDA_POR_AVATAR = {
     "45-65": (45, 65),
     "45-60": (45, 60),
     "35-55": (35, 55),
+    "35-45": (35, 50),   # SIMULACION: fila que faltaba (la usa gen_lanzador.py)
     "25-35": (25, 40),
 }
 BANDA_AMPLIA = (18, 65)   # unica excepcion: angulo SIN avatar de edad marcada
@@ -177,7 +178,7 @@ def nombre_conjunto(fase, cuenta, producto, angulo, brazo, i):
     ang = angulo.replace("_", "-")
     if fase == 2:
         return "%s_%s_%s_%s%d" % (cuenta, producto, ang, brazo, i)
-    return "%s_%s_%s_R%d" % (cuenta, producto, ang, i)
+    return "%s_%s_%s_R1" % (cuenta, producto, ang)   # SIMULACION: R[N] es replica del angulo, no el orden
 
 
 def nombre_anuncio(fase, cre, orden, angulo, fmt, letra, fmod):

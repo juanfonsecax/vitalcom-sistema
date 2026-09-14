@@ -1,0 +1,316 @@
+══════════════════════════════════════════════════════════════════════════
+OPTIMIZACIÓN DE FLUJO — TURMERIC · ventana 2026-09-12 → 2026-09-21 (10 días)
+ETAPA-11 · 2026-09-22 (fecha simulada) · SIMULACIÓN end-to-end, worktree sim-turmeric
+Disparador: ángulo ganador confirmado por VENTA (MANOS_RIGIDAS_AL_DESPERTAR), nodo F2.etapa-11
+══════════════════════════════════════════════════════════════════════════
+INTEGRIDAD: bitácora SIN REGISTRO de esta ventana (continuidad verificada sobre el CSV) ·
+            JOIN 100 % (96/96 filas BASE) · confusores del listado (CAMBIO_CREATIVO /
+            CAMBIO_BOT / CAMBIO_PRODUCTO): NINGUNO · fuera del listado: 16 CAMBIO_PRESUPUESTO
+            + 2 PAUSA (ver 0.4)
+CONSISTENCIA FÍSICA ad↔destino: NO VERIFICADA. La media en disco son placeholders
+            ("SIM · TURMERIC_PACKSHOT", "SIM · TURMERIC_1_MANOS…"). No hay .mp4 del flujo ni
+            infografías renderizadas. Como el cierre no está desplomado (11.4 % contra 8.6 %
+            del portafolio), el diagnóstico sigue. El A/B NO se lanza sin esta verificación.
+COBERTURA _FACT_ENTREGA: 0 % (0 filas TURMERIC; _FACT_ENTREGA_ANUNCIO también 0) →
+            la conversación NO ES UTILIZABLE. GTR7 sí tiene MCP, así que el hueco es de
+            ingesta (ingerir_meta.py no corrió), no de la cuenta.
+CHATS: NO DISPONIBLES → diagnóstico de LOCALIZACIÓN, nunca de CAUSA.
+FLUJO REAL: PRODUCTOS/TURMERIC/1_HACER_MANUAL.txt §E (= _SIM_ETAPAS/07_etapa-5.md) + prompts
+            de infografías C7-C9 de etapa-4 dentro del mismo manual.
+
+──────────────────────────────────────────────────────────────────────────
+PASO 0 — HIGIENE
+──────────────────────────────────────────────────────────────────────────
+0.1 Ventana. En _BITACORA_DATA.txt no hay ninguna entrada de TURMERIC ni de 12→21-sep: no
+    puedo certificar la integridad desde la bitácora. En _FACT_VENTAS.csv hay 96 filas
+    BASE, 10 días seguidos sin hueco: 12 filas por día del 12 al 15 y 8 por día del 16 al
+    21, que calza con las 2 PAUSA del 16-sep. El último día con data es 21-sep, con 1 día
+    de rezago. Los días 20 y 21 NO maduraron: el pago es contra entrega y LucidSales
+    reajusta hacia atrás unos 3 días.
+0.2 rol_ventana: 96 BASE, 0 CONTROL.
+0.3 JOIN conjunto → angulo_key: 96/96 (100 %). Hueco colateral: _DIM_CONJUNTOS sigue
+    marcando estado=ACTIVO y verificado_en_csv=NO en los 6 conjuntos, incluidos los 2
+    pausados el 16-sep.
+0.4 Confusores. No hay CAMBIO_CREATIVO, CAMBIO_BOT ni CAMBIO_PRODUCTO de TURMERIC en la
+    ventana. Pero hay 16 CAMBIO_PRESUPUESTO (surfing +20 % diario). El de MANOS subió de
+    $2.99 a $18.52/día, 6.2× en 10 días. Hay además 2 PAUSA el 16-sep. Mi doctrina no los
+    lista como confusores, pero cambian la audiencia que llega al bot (ver 1.3).
+0.5 Consistencia física: NO VERIFICADA (arriba). Pasa a ser GATE del A/B (PASO 6).
+
+──────────────────────────────────────────────────────────────────────────
+1. CIERRE POR ÁNGULO (ventas ÷ mensajes, BASE, réplicas sumadas)
+──────────────────────────────────────────────────────────────────────────
+| angulo_key                  | msj | ventas | cierre | IC95 (exacto)  | estado piso    |
+|-----------------------------|-----|--------|--------|----------------|----------------|
+| MANOS_RIGIDAS_AL_DESPERTAR  | 150 |   23   | 15.3 % | 10.0 – 22.1 %  | sobre el piso  |
+| RODILLAS_DE_MAMA            |  82 |    9   | 11.0 % |  5.1 – 19.8 %  | sobre el piso  |
+| PESADEZ_DESPUES_DE_COMER    |  79 |    8   | 10.1 % |  4.5 – 19.0 %  | sobre el piso  |
+| YA_PROBE_CURCUMA_Y_NADA     |  46 |    3   |  6.5 % |  1.4 – 17.9 %  | ACUMULANDO     |
+| ESTOMAGO_POR_PASTILLAS      |  14 |    0   |  0.0 % |  0.0 – 23.2 %  | ACUMULANDO (pausado) |
+| RECUPERACION_CHAMUSCA       |   6 |    0   |  0.0 % |  0.0 – 45.9 %  | ACUMULANDO (pausado) |
+| TOTAL PRODUCTO              | 377 |   43   | 11.4 % |  8.4 – 15.1 %  |                |
+Ticket promedio Q271 (Q11,657 / 43 pedidos) · gasto $186.99.
+
+1.1 Homogeneidad entre ángulos que COMPARTEN el flujo paraguas:
+    · Los 6: χ²=6.09, gl 5, p=0.30. Hay esperados <1, así que confirmé con permutación
+      (4,000 réplicas): p=0.28.
+    · Los 3 sobre el piso: χ²=1.61, gl 2, p=0.45.
+    · MANOS contra el resto: Fisher p=0.068. MANOS contra los otros 3 vivos: p=0.14.
+    → p ≥ 0.05. La dispersión es compatible con azar. **El flujo no está demostrado
+      incongruente con ningún ángulo, así que NO se rediseña por ángulo en base a
+      evidencia.** Los IC de MANOS, RODILLAS y PESADEZ se solapan: no están ordenados.
+1.2 Referencias.
+    (a) Mejor ángulo propio: MANOS 15.3 %.
+    (b) Ventana anterior: NO EXISTE, el producto se lanzó el 12-sep.
+    (c) Mentores 15-20 % (norte).
+    TURMERIC ya cierra por encima del portafolio (11.4 % contra 8.6 %). MANOS está en el
+    piso del mentor.
+    Techo NO demostrado: si RODILLAS, PESADEZ y YA_PROBE cerraran al 15.3 % de MANOS, serían
+    +11.8 ventas sobre las mismas 207 conversaciones (+27 % del producto). Es potencial,
+    no hallazgo.
+1.3 Señal a vigilar, no veredicto. MANOS cerró 23.3 % del 12 al 17 (60 msj, 14 v) y 10.0 %
+    del 18 al 21 (90 msj, 9 v), Fisher p=0.037, mientras el presupuesto subía 6.2×.
+    Tres razones para no concluir:
+    · Es un corte hecho después de ver los datos (comparación múltiple).
+    · El 20 y el 21 (61 msj, 5 v = 8.2 %) no maduraron.
+    · Sin maduración, 18-19 dan 13.8 % (29 msj).
+    Se relee el 24-sep. Si se sostiene, el tráfico nuevo del escalado cierra peor, y eso
+    es un efecto de audiencia, no del texto.
+
+──────────────────────────────────────────────────────────────────────────
+2. MATRIZ PRE-CLIC / POST-CLIC
+──────────────────────────────────────────────────────────────────────────
+Cobertura de _FACT_ENTREGA 0 % → por doctrina, la matriz NO SE PUEDE UBICAR.
+Solo como referencia, con el campo `clicks` de _FACT_VENTAS (definición no declarada: no
+consta que sean clics al enlace). Ratio de sumas msj ÷ clics:
+  MANOS 42.0 % · RODILLAS 41.4 % · PESADEZ 39.5 % · YA_PROBE 37.7 % · ESTOMAGO 36.8 % ·
+  CHAMUSCA 31.6 % (19 clics). Producto 40.4 %.
+Si ese proxy valiera:
+  · MANOS → conversación ALTA + cierre ALTO = SANO, no tocar por evidencia.
+  · RODILLAS / PESADEZ → conversación ALTA + cierre intermedio (10-11 %). Están arriba del
+    portafolio y abajo del techo interno, con IC solapado: NO entran al cuadrante rojo
+    "el flujo pierde la venta".
+  · YA_PROBE / ESTOMAGO / CHAMUSCA → bajo el piso: ningún cuadrante.
+Conclusión de localización: **ningún ángulo está demostradamente en el cuadrante rojo.**
+Lo que hace etapa-11 en TURMERIC no es rescatar un flujo roto: es un EXPERIMENTO sobre un
+flujo que ya funciona, para intentar subir el techo.
+
+──────────────────────────────────────────────────────────────────────────
+3. CONGRUENCIA anuncio ganador (MANOS) ↔ bot paraguas — citas textuales
+──────────────────────────────────────────────────────────────────────────
+C1 DOLOR DE ENTRADA — DESAJUSTE GRAVE
+   AD : hook "¿Amanecés con las manos TIESAS e hinchadas?"
+   BOT: ELEMENTO 1 "Hola! 👋 Bienvenida/o a Sanarte… una asesora se pondrá en contacto con
+        vos." → ELEMENTO 2 video "5. Turmeric absorcion educativo" ("la curcumina se
+        absorbe muy poco sola…") → ELEMENTO 3 video "1. Turmeric rodillas mama".
+   Las manos aparecen recién en el ELEMENTO 4 (Info 1, bullet 1). La "PRIMERA FRASE DEL
+   BOT" que etapa-5 definió para MANOS ("Amanecer con las manos tiesas e hinchadas… eso
+   tiene solución") no la emite ningún elemento del flujo. Solo existe como regla
+   condicional ("si el cliente escribe primero su dolor"). El que llega de un anuncio
+   Click-to-WhatsApp casi siempre manda el mensaje pre-escrito, no su dolor, así que esa
+   regla casi nunca se dispara.
+C2 PROMESA — DESAJUSTE MEDIO
+   AD : "Apoyo natural para manos más sueltas al despertar" · "volvé a agarrar la
+        herramienta de una"
+   BOT (INT 2): "apoyo diario para bajar la inflamación que se te acumula por dentro —en
+        rodillas, manos, espalda y digestión—". Las manos quedan segundas en una lista de 4.
+        "Herramienta" y "trabajo" no aparecen. El reencuadre "no es la edad" sí está, pero
+        solo en el AUDIO ("no es cosa de la edad").
+C3 PRECIO Y OFERTA — SIN DESAJUSTE
+   El ad de MANOS no lleva precio. En YA_PROBE y CHAMUSCA, "Q199 con envío gratis · 1
+   FRASCO" coincide con el bot: "1️⃣ Tratamiento ~60 días (1x) → Q199".
+C4 CONDICIONES — DESAJUSTE GRAVE (garantía), dentro del mismo destino
+   AD : sello "30 DÍAS DE GARANTÍA" en el prompt base, idéntico en las 6 piezas, incluida
+        la de MANOS, y "✅ 30 días de garantía" en la Variación 3.
+   BOT: la Info 3 (prompt de etapa-4 en el manual, l.1046) dice "30 días de garantía ·
+        Acompañamiento del equipo", pero la FAQ P10 (l.1753) dice "Tenés nuestra garantía
+        de satisfacción: te acompañamos todo el tratamiento…", sin días.
+   Al que pregunta por la garantía del anuncio, el bot le contesta algo más vago. El bot se
+   contradice con su propia infografía. Envío gratis y "pagás al recibir": congruentes.
+C5 NIVEL DE CONCIENCIA — DESAJUSTE MEDIO
+   AD : MANOS es nivel 1 (educar: "No es que 'ya estás viejo'. Es inflamación que se va
+        juntando mientras dormís").
+   BOT: el primer contenido es el mecanismo de absorción, que es nivel 3a y responde a
+        "ya probé cúrcuma y nada", una objeción que el avatar de MANOS no tiene.
+C6 OBJECIÓN CRÍTICA — DESAJUSTE GRAVE
+   Objeción del ángulo (ficha etapa-2): "cree que es la edad"; frustraciones "pomadas,
+   agua caliente, pastillas de tienda"; miedo "que no le den las manos para llevar el
+   pisto".
+   El Video 1 resuelve OBJ-01 "ya probé cúrcuma" (MAPEO DE BARRERAS del bot). La prueba
+   congruente con MANOS existe pero está enterrada:
+   · el audio del albañil ("me levantaba con las manos hinchadas, tiesas, no podia ni
+     agarrar la cuchara") solo sale en el M2, a las 5 h de silencio;
+   · el comentario de "Selvin Ajcip… soy mecanico" está en el Testimonio 3, elemento 10.
+Mezcla de tráfico que justifica mirar esto aunque χ² no rechace (últimos 3 días, msj/día):
+   MANOS 24.0 · PESADEZ 11.7 · RODILLAS 11.7 · YA_PROBE 3.7 → el 47 % de lo que entra al
+   bot es MANOS, y el ELEMENTO 2 está calibrado para el 7 % (YA_PROBE).
+
+──────────────────────────────────────────────────────────────────────────
+4. DÓNDE SE CAE (chats)
+──────────────────────────────────────────────────────────────────────────
+NO HAY EXPORT. No se puede decir en qué elemento o interacción abandonan, qué preguntas
+quedan sin respuesta ni qué objeciones se repiten.
+Puntos de fuga posibles por diseño, sin medir:
+  (i) INT 2B, el filtro de seguridad. etapa-5 lo amplió a "cualquier medicamento diario,
+      también los del dolor", y el avatar de MANOS (y la mamá de RODILLAS) prueba "pastillas
+      de tienda".
+  (ii) La pregunta de municipio, repetida.
+Con la data cuantitativa sola, "el flujo cierra peor RODILLAS/PESADEZ" y "esos ángulos
+traen tráfico que compra menos" predicen los mismos números. No se elige entre ellas.
+
+──────────────────────────────────────────────────────────────────────────
+5. BRIEF PARA etapa-5 (orden fijo: valor → fricción → congruencia → oferta → FAQ)
+──────────────────────────────────────────────────────────────────────────
+Aplica a dos textos: BRAZO A = paraguas v1 optimizado · BRAZO B = flujo nuevo dedicado a
+MANOS. Nada se suaviza por compliance: el bot vende, y el único límite es no afirmar que
+cura una enfermedad grave nombrada.
+
+1. PROPUESTAS DE VALOR
+ 1.1 [A] Sacar las PV de ángulos muertos y reponer con los vivos.
+     Qué: reemplazar la PV3 (CHAMUSCA) y la PV4 (ESTOMAGO), los bullets 3 ("El lunes
+     después de la chamusca…") y 4 ("Una espalda que aguanta el turno") de la Info 1, y el
+     comentario "Edgar Choc: yo por la chamusca". En su lugar va una segunda PV de MANOS
+     (trabajo/herramienta) y una de RODILLAS (hija que compra).
+     Por qué: los dos ángulos están pausados desde el 16-sep (_EVENTOS) y reciben 0 msj.
+     El 93 % del tráfico reciente es MANOS+PESADEZ+RODILLAS.
+     Qué mueve: relevancia del paraguas para el tráfico real.
+ 1.2 [B] 6-8 PV construidas solo sobre la ficha de MANOS, con la fórmula
+     [problema]→[qué hace]→[resultado]. Materia prima de la ficha:
+     "no puedo ni agarrar la cuchara hasta las nueve" · "agua caliente" · "pomadas" ·
+     "pastillas de tienda" · "que no le den las manos para llevar el pisto" ·
+     "ya estoy viejo" · "inflamación que se junta de noche" · "agarrá la herramienta de una" ·
+     gotero y no otra pastilla · ~60 días por frasco.
+     Por qué: C1, C2 y C6.
+     Qué mueve: el cierre del brazo B contra el A.
+2. FRICCIÓN
+ 2.1 [A y B] Un solo pedido de municipio.
+     Qué: quitar el "¿Confirmame tu Departamento y Municipio? 😊" del final de la INT 2 y
+     cerrar con un CTA de beneficio que pida la opción.
+     Por qué: el municipio ya se pidió en el ELEMENTO 12 (o la INT 0), la INT 1 ya confirmó
+     "cobertura completa ahí", y la INT 3 lo vuelve a pedir en los campos 4-5.
+ 2.2 [A y B] Partir la INT 2 en 2-3 mensajes: refuerzo / caja "Liver" / precios.
+     Por qué: etapa-5 declara que quedó "más larga que las 2-4 líneas" (umbral cognitivo).
+ 2.3 [A y B] Prueba social real.
+     Qué: reemplazar los testimonios construidos por fotos y comentarios de compradores
+     reales.
+     Por qué: ya hay 43 pedidos. etapa-5 (hallazgo 12) pidió hacerlo "apenas haya ventas".
+     En B, prioridad a hombres de trabajo manual.
+ 2.4 [A y B] Instrumentar el filtro INT 2B (esto es configuración del operador en LucidBot,
+     no texto).
+     Qué: etiquetar cada conversación que se detiene en 2B.
+     Por qué: es la fuga de diseño más probable y hoy no se mide. El ALCANCE del filtro es
+     SEGURIDAD, no compliance: no lo toco y no lo propongo recortar. La decisión de acotarlo
+     a los paréntesis de etapa-2 (azúcar, presión, anticoagulantes) es del operador con
+     criterio médico.
+ 2.5 [A y B] Menores.
+     · Una sola presentación de la asesora: hoy está en el audio ("Soy Laura Lopez") y en el
+       ELEMENTO 12 ("Hola, soy Laura Lopez").
+     · La INT 4 "¿Confirmás que los datos están correctos?" choca con la regla "no le
+       preguntes si están bien".
+3. CONGRUENCIA
+ 3.1 [A y B] C4 GARANTÍA, lo primero.
+     Qué: un solo texto de garantía en ad, Info 3 y FAQ P10.
+     Por qué: el ad y la Info 3 dicen "30 días", la P10 dice "satisfacción".
+     Si el operador confirma 30 días, la P10 dice "Tenés 30 días de garantía", como ya
+     manda el A.0 del manual. Si no los confirma, se quita de las 6 piezas y de la Info 3
+     (eso es etapa-4, v2).
+ 3.2 [B] C1: el primer contenido después del saludo carga el dolor de las manos. Una
+     línea con la frase de apertura de MANOS, antes de cualquier video.
+ 3.3 [B] C5/C6: el Video 1 del dedicado resuelve "es la edad / ya probé pomadas y
+     pastillas" (causa: inflamación nocturna), no la absorción. El audio del albañil (hoy
+     en el M2) y el comentario del mecánico suben a la apertura. La absorción baja a la
+     FAQ P2.
+ 3.4 [A] Reordenar la apertura del paraguas: primero la causa común ("no es la edad, es
+     inflamación que se va juntando"), después el mecanismo de absorción.
+     Por qué: la mezcla de tráfico (47 % MANOS, 7 % YA_PROBE) y el C5.
+4. OFERTA Y FRAMING (agregar valor, nunca bajar precio)
+ 4.1 Definir el 🎁 del P3u o quitarlo. Hoy son "🎁🎁" sin regalo definido.
+ 4.2 "LA MÁS ELEGIDA ⭐" está sobre el P3u, y la data real lo contradice. En las 22 filas
+     de un solo pedido (de 43 pedidos): P1u 10 (45 %), P2u 7 (32 %), P3u 5 (23 %).
+     etapa-5 decide el framing, pero hoy afirma una mayoría que no existe.
+ 4.3 Subir el ticket (Q271) poniendo valor en el P2u: la 2.ª unidad cuesta Q100.
+     Es para el ticket, no para el cierre: no entra al A/B.
+5. FAQ NUEVAS: ninguna sale del PASO 4, porque no hay chats. Sale una de la auditoría,
+   no de clientes reales: "¿Y la garantía de 30 días del anuncio?" (depende de 3.1).
+
+──────────────────────────────────────────────────────────────────────────
+6. DISEÑO DEL A/B
+──────────────────────────────────────────────────────────────────────────
+6.0 CORRECCIÓN AL DISEÑO DE LA DOCTRINA (bloqueante)
+    Tal como está escrito, el brazo A recibe los otros ángulos y el brazo B recibe solo a
+    MANOS. Así la comparación mezcla ángulo con flujo: MANOS ya cierra 15.3 % contra 9.7 %
+    de los otros tres vivos con el MISMO flujo.
+    Simulado con 460 msj por brazo y flujos IDÉNTICOS, ese diseño declara que "B gana" con
+    p<0.05 el 71 % de las veces. **No mediría el flujo.**
+6.1 DISEÑO CORREGIDO — el ruteo se asigna al azar DENTRO del ángulo ganador
+    BRAZO A: conjunto nuevo MANOS → flujo paraguas v2 (PASO 5, cambios 1.1, 2.x, 3.1, 3.4).
+    BRAZO B: conjunto nuevo MANOS, gemelo del A → producto nuevo en LucidBot
+             ("Turmeric Curcumin — Manos") con el flujo dedicado (1.2, 2.x, 3.1-3.3).
+    Gemelos en todo lo demás: creativos C2 de FASE 1 de MANOS (IMA_A e IMA_B), banda 45-60,
+    Advantage+ OFF, mismo presupuesto diario (invariante 6), mismo día de arranque a las
+    4 AM, misma página 9, mismo número, mismos precios, mismo producto físico.
+    Solo se leen esos dos conjuntos. El resto del tráfico (el R1 de MANOS, PESADEZ,
+    RODILLAS, YA_PROBE) va al paraguas v2; se reporta antes/después contra la línea base de
+    esta ventana, como INDICATIVO nada más.
+    FASE 2: todas las campañas de conceptos se rutean a UN solo flujo (el A) mientras dure
+    el test. Si los conceptos nuevos entran al brazo B, B cambia creativo y flujo a la vez
+    y nada es atribuible (regla 9).
+6.2 RUTEO: LucidBot rutea por Post ID. Los dos conjuntos NO pueden compartir publicación:
+    el anuncio del brazo B se crea como publicación NUEVA con el mismo creativo y el mismo
+    copy. Se verifica ANTES de lanzar, con una conversación de prueba por brazo desde cada
+    anuncio. Si el Post ID no rutea, el test no existe.
+6.3 GATES ANTES DE LANZAR
+    · Consistencia física ad ↔ bot ↔ puerta. Hoy la media son placeholders y faltan los
+      .mp4.
+    · Garantía resuelta (3.1).
+    · Etiqueta del filtro 2B activa en los dos productos de LucidBot (2.4).
+    · Nombre y campo en _DIM_CONJUNTOS que distingan el brazo. Si no, etapa-7 y decidir.py
+      suman A+B bajo el mismo angulo_key (ver hallazgo S7).
+    · El presupuesto de los dos conjuntos lo fija decidir.py / etapa-8, no esta etapa.
+6.4 TAMAÑO DE MUESTRA (α 0.05, poder 80 %). La tabla de la doctrina (base 9 %) no aplica:
+    la base real de MANOS es 15.3 %.
+    | efecto a detectar      | msj por brazo | a ~19 msj/día por brazo |
+    |------------------------|---------------|-------------------------|
+    | 15.3 % → 25 %          |      268      | 14 días                 |
+    | 15.3 % → 22 %          |      530      | 28 días                 |
+    | 15.3 % → 20 %          |    1,032      | 54 días                 |
+    | si la base real es 10 % (1.3): 10 % → 15.3 % | 592 | 31 días     |
+    ~19 msj/día por brazo = el MANOS actual ($18.52/día a ~$0.49/msj ≈ 38 msj/día)
+    repartido en dos. Puede bajar si el costo por mensaje sube al escalar.
+6.5 LECTURA: sin mirar antes (no se decide en lecturas intermedias).
+    · Si arranca el 2026-09-24 04:00: lectura INDICATIVA al llegar a 268 msj por brazo,
+      ~2026-10-08, +3 días de maduración → 2026-10-11. Solo detecta una diferencia de 10
+      puntos o más.
+    · Lectura CONCLUSIVA para +7 puntos: 530 msj por brazo, ~2026-10-22 → 2026-10-25.
+    Si no junta el n, el resultado es indicativo, no concluyente, y se decide con el resto
+    de la evidencia.
+6.6 Co-ganadores (PESADEZ, RODILLAS). NO se replica el diseño todavía: ~12 msj/día cada
+    uno, así que 530-1,032 msj por brazo son 90-170 días. Se replica solo si B gana en
+    MANOS.
+
+──────────────────────────────────────────────────────────────────────────
+7. FILAS PARA _EVENTOS.csv (NO anexadas: se anexan el día en que se aplica cada cambio)
+──────────────────────────────────────────────────────────────────────────
+Encabezado: fecha,producto_key,cuenta_alias,campana_clave,conjunto_meta,evento,valor_antes,valor_despues,motivo,fuente_decision
+[FECHA_APLICACION],TURMERIC,GTR7,GTR7_TURMERIC_TEST_20260912,*,CAMBIO_BOT,11.4,15.3,"Brazo A del A/B de flujo: paraguas v2 — PV de ángulos pausados reemplazadas por MANOS/RODILLAS, municipio pedido una sola vez, INT 2 partida, garantía unificada, apertura con la causa antes que la absorción, etiqueta del filtro 2B",ETAPA-11 2026-09-22
+[FECHA_LANZAMIENTO],TURMERIC,GTR7,[CAMPANA_CLAVE_ETAPA-6],[CONJUNTO_BRAZO_B_ETAPA-6],LANZAMIENTO,0,[PPTO_USD_DECIDIR],"Flujo dedicado a MANOS_RIGIDAS_AL_DESPERTAR, brazo B del A/B de flujo; gemelo del conjunto del brazo A; ruteo por Post ID verificado",ETAPA-11 2026-09-22
+valor_antes/valor_despues del brazo A = cierre del paraguas en esta ventana → techo interno
+(MANOS). Es un objetivo, no una predicción.
+
+──────────────────────────────────────────────────────────────────────────
+8. TODAVÍA NO SE PUEDE DECIR
+──────────────────────────────────────────────────────────────────────────
+· YA_PROBE_CURCUMA_Y_NADA: 46 msj / 3 v. Faltan 14 msj (~4 días a 3.7/día) y 2 ventas
+  para el piso.
+· ESTOMAGO_POR_PASTILLAS (14/0) y RECUPERACION_CHAMUSCA (6/0): pausados bajo el piso. Con
+  el cierre del producto, P(0 ventas) = 18 % y 48 %: sus ceros no son evidencia de nada,
+  tampoco del filtro 2B.
+· POR QUÉ RODILLAS y PESADEZ cierran menos que MANOS: la diferencia no está demostrada
+  (p=0.45) y no hay chats.
+· Cuánto cuesta el filtro 2B en ventas: requiere la etiqueta (2.4) o chats.
+· Si MANOS pierde cierre al escalar: se relee el 24-sep, con 20-21 maduros.
+· Pre-clic contra post-clic por conversación: requiere _FACT_ENTREGA (0 % hoy).
+· Tasa de entrega por ángulo (el efecto de la caja "Liver"): etapa-2 pidió 20 o más
+  pedidos RESUELTOS por ángulo. Solo MANOS tiene 23 pedidos, y el cohorte tiene menos de
+  10 días (PRELIMINAR).
+══════════════════════════════════════════════════════════════════════════

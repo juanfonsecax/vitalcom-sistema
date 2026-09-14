@@ -1,0 +1,222 @@
+═══ TURMERIC Curcumin Gotero 60 ml (CareGem) · VERSION v1 · 2026-09-11 · COSTO Q60 · DOSIS 1 gotero (≈1 ml) al día [simulación] · page_id 1279576438561754 · campaign_id sin MCP (no publicado) ═══
+PRODUCTO: Turmeric Curcumin Gotero 60 ml — marca impresa CareGem · producto_key TURMERIC · slug_carpeta TURMERIC
+  SIMULACIÓN end-to-end del 11-sep-2026 (worktree sim-turmeric). No existe en Meta ni en LucidSales.
+FECHA_PROCESADO: 2026-09-11
+VERSION: v1   (primera corrida FASE 1; subir a v2 en cualquier rerun — nunca dejar dos versiones vivas)
+COSTO_PROVEEDOR_Q: Q60 por unidad (no combo) · fila de costeo Q60 (exacta)
+DOSIS / PRESENTACIÓN: 1 gotero (≈1 ml) al día [simulación] · frasco gotero de vidrio ámbar 60 ml, tapa negra con pipeta, etiqueta y caja amarillas CareGem ("TURMERIC CURCUMIN · Liver & Digestive Support · Whole Milk Thistle, Curcumin, Black Pepper · 2 FL OZ (60ML) DIETARY SUPPLEMENT") · rinde ≈60 días por frasco
+PROVEEDORES_DROPY: no provisto   ·   ANUNCIANTES_AD_LIBRARY: no provisto
+VALIDACION_PRODUCTO: APTO CONDICIONAL · score provisional 0.79 AMARILLO (apto mejorable) · score formal 0 hasta confirmar
+  O1 stock / O2 empaque protegido (frasco de VIDRIO) / O3 proveedor confiable — asumidos SÍ en la simulación.
+  Filtro de descarte: PASA CON ALERTA (cúrcuma en cápsula existe en GT a Q120-Q190; el gotero con cardo mariano no).
+  Recomendados 7/12 (✓ R3 R4 R6 R8 R9 R10 R12 · ✗ R1 R2 R5 R7 R11).
+  RIESGO PRINCIPAL: la caja dice "Liver & Digestive Support" (cardo mariano 600 mg principal según Amazon) y 4 de 6
+  ángulos venden inflamación/articulaciones (depende de la curcumina, secundaria) → rechazo en la puerta, cierre bajo.
+FANPAGE: Formato A · Página 9 Huesos, Articulaciones & Vitalidad 45+ · identidad Dra. Marcela Fuentes (médica de salud
+  ósea y longevidad) · page_id 1279576438561754 · https://www.facebook.com/profile.php?id=61591042546645
+  Tono: educativo-empático, voseo, "apoya / ayuda a"; escena concreta del avatar → explicación de la doctora → producto.
+  Edad de la página 45+; la banda de cada conjunto la fija el avatar_edad del ángulo (Advantage+ OFF).
+  Descartada: página 5 Detox & Hígado (Dra. Claudia Vásquez). Si en FASE 1 gana PESADEZ o ESTOMAGO → revisar la
+  asignación antes de FASE 2. Mismo nicho en la página: Vitamina D3+K2 (Sandhus).
+MCP_ACCOUNT_ID: act_598687956219141 (GTR7) · MCP_PAGE_ID: 1279576438561754 · MCP_PIXEL_ID: no aplica (no publicado)
+TASA_USD_GTQ: 7.62 (inputs congelados) — ojo: los parámetros de _DIM_COSTEO.csv usan 7.64.
+
+━━━ COSTEO (ETAPA-1 · costear.py 60 --json, exit 0 · fuente _DIM_COSTEO.csv) ━━━
+P1u Q199 + ENVÍO GRATIS
+P2u Q299 + ENVÍO GRATIS  ← OFERTA IRRESISTIBLE
+P3u Q399 + ENVÍO GRATIS + regalo  ← "la más elegida ⭐" (regalo SIN DEFINIR)
+P4u Q499 — solo referencia de upsell (probablemente extrapolado ×1.7; sin confirmar, no se usa)
+CPA_OBJETIVO: Q28.51   ·   CPA_BASE: Q30.8   ·   CPA_BREAK_EVEN: Q69.56
+Envío Q43.37 · utilidad esperada Q38.76 (USD 5.09 a CPA base; a CPA Q38.26 baja a Q31.30)
+Margen (fórmula de formato, sin envío ni devoluciones): P1u Q110.49 · P2u Q150.49 · P3u Q190.49
+Piso por pedido P1u Q181.43 (Q199 lo supera por Q17.57).
+Arquitectura: regla de arranque → múltiplo necesario 3.02× → franja costo ≥Q60 → "1U" (1 unidad viable; 2u/3u upsell).
+Consumo continuo → se vende TRATAMIENTO 1/2/3 (≈60/120/180 días), no 2x1.
+Precio en creativo: P1u Q199 en los conjuntos 3 y 5 (etapa-2 había pedido P2u Q299; se siguió P1u por ETAPA-4,
+COPYWRITING_ADS Principio 8, la decisión 1U y el bloque "1 FRASCO" del Prompt de Control).
+
+━━━ COMPONENTES (ETAPA-1B) ━━━
+- Cardo mariano (silimarina; 600 mg según Amazon, principal): antioxidante/antifibrótico hepático; evidencia humana
+  mixta (2 ensayos NCCIH sin beneficio). Riesgos: alergia a asteráceas, interacciones. → PESADEZ_DESPUES_DE_COMER.
+- Curcumina: modula la inflamación; ECA vs placebo en artrosis de rodilla; comparable a AINEs en algunos estudios;
+  piloto en futbolistas. Riesgos: digestivos a dosis alta, casos de daño hepático, interacciones.
+  → MANOS / RODILLAS_DE_MAMA / RECUPERACION_CHAMUSCA / ESTOMAGO_POR_PASTILLAS.
+- Piperina (pimienta negra): mejora la absorción de la curcumina (inhibe glucuronidación); por el mismo camino puede
+  subir el riesgo hepático. El "~20× / 2000 %" (Shoba 1998) NO se replicó → no se usa en ninguna parte.
+  → YA_PROBE_CURCUMA_Y_NADA.
+- SIN CONFIRMAR (solo Amazon): diente de león, manzanilla, jengibre, sabor naranja. No se listan hasta confirmar fórmula.
+- mg de curcumina por ml: SIN DATO (gate del operador; es eficacia, no percepción).
+DIFERENCIADOR CLAVE: gotero líquido + cardo mariano. En GT todo es cápsula/polvo (Q98-Q120); "cúrcuma + pimienta"
+ya existe (Terrae, Kémik, Q105) → la pimienta NO diferencia, el formato y el cardo sí.
+SEGURIDAD (no es compliance): riesgo hepático documentado + 3 ingredientes posibles de la familia asteráceas →
+filtro obligatorio en el bot antes de pedir datos (Interacción 2B) + indicación de postventa.
+
+━━━ ÁNGULOS FASE 1 (6 — ETAPA-2) ━━━
+Concepto FIJO en los 6: C2_BENEFICIOS "ligera" (CN05_LISTA_BENEFICIOS), IMAGEN 4:5, Prompt de Control FASE 1.
+Presupuesto igual en los 6; el orden es solo expectativa previa. Plazo en todos: "desde la semana 2-3".
+
+#1 MANOS_RIGIDAS_AL_DESPERTAR — "Amanezco viejo aunque no lo soy"
+   Creativo: IMAGEN C2 (hook tomado del video 6 "manos hinchadas trabajo", 50 % señales)
+   Avatar: hombre 45-58, albañil/mecánico/agricultor; manos hinchadas y tiesas al despertar; cree que es la edad.
+   Dolor: "Me levanto con las manos como engarrotadas, no puedo ni agarrar la cuchara hasta las nueve."
+   Deseo: agarrar la herramienta de una · Miedo: que no le den las manos para llevar el pisto.
+   Oculto: la rigidez matinal es inflamación acumulada de noche [VOZ-REAL "painful aching hands"].
+   NC 1 · RESIGNACION · HOMBRE 45-60 · saturación DESCONOCIDA · tipo emocional (identidad) sobre problema-dolor
+   Promesa: volvé a amanecer con las manos sueltas para trabajar. Hook: "¿Amanecés con las manos TIESAS e hinchadas?"
+
+#2 PESADEZ_DESPUES_DE_COMER — "Como y quedo inflada como globo"
+   Creativo: IMAGEN C2 (hook del video 4 "hígado graso pesadez", 62.5 %; el hook original con diagnóstico se descartó)
+   Avatar: mujer 42-55, come tarde y pesado, no toma; inflada, pesada, sin energía.
+   Dolor: "Como cualquier cosa y quedo inflada como globo, con la boca amarga y sin ganas de nada."
+   Oculto: "¿es el hígado o el estómago?" [VOZ-REAL 1DOC3]. ÚNICO ángulo congruente con la caja.
+   NC 1 · AGOTAMIENTO · MUJER 45-60 · DESCONOCIDA · tipo problema-dolor
+   Promesa: apoyo natural para la digestión pesada. Hook: "¿Comés y quedás inflada como GLOBO?"
+   Reencuadre: digestión pesada, NO hígado graso diagnosticado. En el ad no van "hígado graso", "desintoxica",
+   "limpia el hígado", "boca amarga". CONDICIONADO: si LucidBot no puede aplicar el filtro de seguridad, sale de FASE 1.
+
+#3 YA_PROBE_CURCUMA_Y_NADA — "Me tomé la cúrcuma y ni cosquillas"
+   Creativo: IMAGEN C2 (ángulo descubierto en ETAPA-1B; el video 5 es solo fuente del mecanismo)
+   Avatar: mixto 45-62, ya compró cúrcuma en cápsula/polvo (Kémik, GNC, mercado), la tomó un mes y nada o le cayó mal.
+   Dolor: "Compré cápsulas de cúrcuma, me las tomé un mes y nada, hasta me cayeron mal."
+   Oculto: la curcumina sola casi no se absorbe [VOZ-REAL AOL, PMRGCAuk, NRAS].
+   NC 3a · DESCONFIANZA · MIXTO 45-60 · saturación MEDIA (Terrae Cúrcuma + Pimienta Q105) · error común + comparación
+   Promesa: cúrcuma en gotas con pimienta negra y cardo mariano; no es otra cápsula. Hook: "¿Tomaste cúrcuma y no
+   sentiste NADA?" · LLEVA PRECIO Q199. Único que contradice APR-001 (hook de mecanismo) — precedente NUSAVA
+   ABSORCION (NC 3a, DESCONFIANZA, CPA Q27.8): el hook abre con el fracaso vivido, el mecanismo va en el cuerpo.
+
+#4 RODILLAS_DE_MAMA — "Mi mamá ya no quería ni ir al mercado"
+   Creativo: IMAGEN C2 (hook del video 1 "rodillas mama", 75 %, recortado)
+   Avatar (COMPRADORA): mujer 42-55 que compra para su mamá de 65-72 con desgaste de rodillas; pastillas le caen mal.
+   Dolor: "Mi mamá ya no quiere ni salir porque le duelen las rodillas, y me parte el alma verla así."
+   Oculto: ser la hija que le devuelve la independencia (amor y culpa); análogo a NUSAVA MEMORIA.
+   NC 2 · MIEDO_FUTURO · MUJER 45-60 · DESCONOCIDA · tipo emocional
+   Promesa: que tu mamá vuelva a caminar tranquila. Hook: "¿Tu mamá YA NO QUIERE ir al mercado por las rodillas?"
+   Se segmenta a la hija, no a la mamá. "Artrosis" no va en el ad.
+
+#5 RECUPERACION_CHAMUSCA — "Chamusca el domingo, lunes cojeando"
+   Creativo: IMAGEN C2 (hook del video 3 "futbol recuperacion", 75 %)
+   Avatar: hombre 33-45, chamusca del domingo desde joven; lunes piernas cargadas y rodilla inflamada.
+   Dolor: "El lunes no me puedo ni levantar de la cama después del partido."
+   Oculto: seguir siendo "de los que juegan". Sin voz real (solo estudios piloto).
+   NC 2 · AGOTAMIENTO · HOMBRE 35-45 · DESCONOCIDA · tipo resultado
+   Promesa: jugá el domingo y el lunes caminá normal. Hook: "¿Chamusca el domingo y el lunes COJEANDO?" · LLEVA PRECIO Q199.
+   Fuera de la edad de la página (45+): manda el avatar. BANDA PENDIENTE (35-45 no está en la tabla de ETAPA-6).
+
+#6 ESTOMAGO_POR_PASTILLAS — "La espalda me dolía y las pastillas me quemaban el estómago"
+   Creativo: IMAGEN C2 (hook del video 2 "ibuprofeno gastritis", 50 %, sin fármaco)
+   Avatar: hombre 42-55, 8 h de pie en bodega/ruta, casado; pastillas diarias para la espalda y ardor de estómago.
+   Dolor: "Si no me tomo la pastilla no aguanto la espalda, y si me la tomo me arde el estómago."
+   Oculto: salir de la dependencia de la pastilla. Puente con "Digestive Support" de la caja.
+   NC 2 · FRUSTRACION_MEDICA · HOMBRE 45-60 · DESCONOCIDA · tipo solución
+   Promesa: apoyo natural para la espalda cansada, con cardo mariano para la digestión.
+   Hook: "¿Las pastillas te están QUEMANDO el estómago?" · Nunca nombrar el fármaco ni decir que deje el medicamento.
+
+━━━ ÁNGULOS DESCUBIERTOS (ETAPA-1B) ━━━
+1. "La cúrcuma que sí se absorbe" (el que ya probó y le falló) → ENTRÓ a FASE 1 como #3 YA_PROBE_CURCUMA_Y_NADA.
+2. "Pastillas todos los días, ¿y tu hígado?" (cardo + curcumina; variante de ESTOMAGO_POR_PASTILLAS) — sin voz real,
+   riesgo de sugerir dejar el medicamento. No entró.
+3. "El hígado del fin de semana" (cardo) — compliance alto (alcohol + hígado), evidencia débil. No recomendado.
+DESCARTADO de etapa-0: F · DEFENSAS BAJAS (video 7, 37.5 %, sin voz real, mecanismo débil, avatar fuera de la página 45+).
+Temas del banco de voz: escepticismo con la cúrcuma (4) · digestivo atribuido al hígado (2) · manos rígidas (2) ·
+la cúrcuma también cae mal (1) · deporte y defensas (0). Voz real en inglés o de México: hooks adaptados, no copiados.
+Material de CONCEPTOS para FASE 2: video 5 (absorción/mecanismo), video 8 (anti-falsificación + oferta) y los
+6 videos testimoniales como C5_PRUEBA.
+
+━━━ BOT PARAGUAS FASE 1 (resumen de ETAPA-5 — el flujo completo copiable está en 1_HACER_MANUAL.txt §E) ━━━
+Promesa integradora: la inflamación que se va juntando por dentro, en las articulaciones y en la digestión.
+BUYER TYPE: EMOCIONAL · TIPO DE FLUJO: NARRATIVO · Barrera principal: "Ya probé cúrcuma, pastillas y pomadas y nada
+me sirvió. ¿Esto sí funciona?" (DESCONFIANZA; derivada de etapa-2/1b porque ETAPA-3 no corre en FASE 1).
+Video 1 del flujo: "5. Turmeric absorcion educativo" (autoridad/mecanismo, sin cifra) · Video 2: "1. Turmeric rodillas mama" (UGC).
+Mapeo de barreras: V1 → "ya probé y nada" · V2 → "¿le sirve a alguien como yo / mi mamá?" · Info 1 → "¿para qué me
+sirve?" · Info 2 → "¿por qué dice Liver? ¿cómo se toma?" · Info 3 → "¿es original? ¿me estafan?" · Audio → refuerza V1.
+Filtro de seguridad: Interacción 2B, antes de pedir datos, en los 6 ángulos. Si responde SÍ → "consultalo con tu médico
+y con gusto te lo apartamos" y se detiene la venta (sin inactividad). Postventa: 1 gotero, nunca doble dosis; orina
+oscura / piel u ojos amarillos / dolor lado derecho → suspender y consultar.
+[NOMBRE_TIENDA] = Sanarte (sin dueño en CSV; usado por TINNIDROP/NusavaB12/VARICOSE).
+
+━━━ DECISIONES TOMADAS Y SU PORQUÉ (no van en el HACER MANUAL) ━━━
+D-1 (etapa-2): los 6 en IMAGEN C2. Etiquetar videos testimoniales (C5_PRUEBA) como C2 sería etiqueta falsa (APR-080);
+    mezclar imagen y video mezcla formato con ángulo; nadie verificó que los videos muestren el gotero CareGem
+    (APR-024/APR-065); el video 4 dice "hígado graso". APR-003: el formato no decide, decide el ángulo.
+D-2 (etapa-2): sale DEFENSAS, entra YA_PROBE_CURCUMA_Y_NADA. Reparto final 2 hígado/digestión + 4 articulares.
+D-3 (etapa-2): ningún hook lleva cifra (44.4 % hígado graso LatAm atrae a la población de riesgo; "~20×" no replicado;
+    sin clientes, "9 de cada 10" sería inventado).
+Precio en creativo P1u Q199 (no P2u) en #3 y #5 — 2 de 6 (ideal). APR-079: todas las piezas llevan calificadores.
+Anuncios: 1 creativo × 2 anuncios A=B (el ejecutor gen_publicacion lee anuncios_por_conjunto=1 como piezas y crea A+B).
+Presupuesto $2.99/conjunto (_PARAMETROS_PUBLICACION.csv, piso de CALENDARIO §1.5); gen_lanzador dictaría ~$3.35
+    usando el costo/conversación del portafolio — se sigue el CSV.
+Garantía: "30 DÍAS DE GARANTÍA" es DEFAULT sin confirmar y está en el prompt base de las 6 piezas y en las
+    Variaciones 3; el bot usa la versión conservadora ("garantía de satisfacción"). Si se confirma, se agrega al bot;
+    si no, se quita de las 6 piezas a la vez (rerun v2, no parche).
+Infografías: título paraguas en Info 1 ("VOLVÉ A MOVERTE SUELTO Y A COMER LIGERO") porque un bot para 6 ángulos
+    no puede tener el título del dolor de cada ad. Los prompts de infografía de ETAPA-4 reemplazaron el envase
+    genérico de cápsulas de la plantilla por el packshot literal (APR-065 ALTA), quitaron "SIN EFECTOS SECUNDARIOS /
+    100 % NATURAL" y cambiaron las estadísticas default por cifras verificables (3 EN 1 · ~60 DÍAS · Q0).
+Social proof del bot: "+1,000 clientes de Sanarte" es DEFAULT a nivel tienda; testimonios del bot son construidos →
+    reemplazar por reales apenas haya ventas.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (insumo de ETAPA-7 / optimización)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+> La llave es el NOMBRE EXACTO del conjunto en Meta (de ETAPA-6). Misma llave en PRODUCTOS/_DIM_CONJUNTOS.csv.
+> Al leer Meta (CPC, CPA, CPM, conversaciones, impresiones, clics) se une por ese nombre y se agrega por angulo_key.
+
+CAMPAÑA: GTR7_TURMERIC_TEST_20260912   ·   FASE: 1 testeo de ángulos   ·   LANZAMIENTO: plan sáb 2026-09-12 04:00 (-06:00)
+  → BLOQUEADO: sin packshot ni piezas en disco y banda del conjunto 5 sin fila. Se lanza a las 4 AM del día
+    siguiente a resolver los bloqueos, nunca el mismo día.
+Objetivo: Tráfico (OUTCOME_TRAFFIC) · conversaciones · destino WhatsApp · ABO · GT · Advantage+ OFF · género TODOS · sin intereses
+CPA_OBJETIVO: Q28.51   ·   CPA_BASE: Q30.8   ·   CPA_BREAK_EVEN: Q69.56
+PRESUPUESTO/CONJUNTO: $2.99 ETAPA 1 (días 0-3) → $5.98 ETAPA 2 (3 sobrevivientes, todos a la vez)
+  6 × $2.99 = $17.94/día ≈ Q136.70
+PD (Presupuesto de Decisión) = 1× Break Even = Q69.56 = $9.13   ·   se alcanza en ~3.8 días a $2.99 con 80 % de entrega (~16-sep)
+Día 3 (15-sep): cortar los 2-3 peores por conversación (<35 % y/o $/conv > 2× la mediana). La conversación CORTA, no CORONA.
+Ganador: por VENTA en LucidSales, agregando por angulo_key.
+
+| NOMBRE_CONJUNTO (llave Meta) | Ángulo (angulo_key) | Tipo | Formato | Archivo/Prompt | Precio ad | Avatar | Banda | Hook | Estado |
+|---|---|---|---|---|---|---|---|---|---|
+| GTR7_TURMERIC_MANOS-RIGIDAS-AL-DESPERTAR_R1 | MANOS_RIGIDAS_AL_DESPERTAR | TRANSCRIPCION (video 6) | IMAGEN C2 | TURMERIC_1_MANOS_RIGIDAS_AL_DESPERTAR.png · prompt C1 | NO | hombre 45-60 trabajo manual · RESIGNACION · NC1 | 45-60 | "¿Amanecés con las manos TIESAS e hinchadas?" | PLAN — no publicado |
+| GTR7_TURMERIC_PESADEZ-DESPUES-DE-COMER_R1 | PESADEZ_DESPUES_DE_COMER | TRANSCRIPCION (video 4) | IMAGEN C2 | TURMERIC_2_PESADEZ_DESPUES_DE_COMER.png · prompt C2 | NO | mujer 45-60 come pesado · AGOTAMIENTO · NC1 | 45-60 | "¿Comés y quedás inflada como GLOBO?" | PLAN — condicionado al filtro del bot |
+| GTR7_TURMERIC_YA-PROBE-CURCUMA-Y-NADA_R1 | YA_PROBE_CURCUMA_Y_NADA | PROBLEMA_OCULTO (ETAPA-1B) | IMAGEN C2 | TURMERIC_3_YA_PROBE_CURCUMA_Y_NADA.png · prompt C3 | SÍ Q199 | mixto 45-60 ya probó cúrcuma · DESCONFIANZA · NC3a | 45-60 | "¿Tomaste cúrcuma y no sentiste NADA?" | PLAN — no publicado |
+| GTR7_TURMERIC_RODILLAS-DE-MAMA_R1 | RODILLAS_DE_MAMA | TRANSCRIPCION (video 1) | IMAGEN C2 | TURMERIC_4_RODILLAS_DE_MAMA.png · prompt C4 | NO | hija compradora 45-60 (mamá 65-72) · MIEDO_FUTURO · NC2 | 45-60 | "¿Tu mamá YA NO QUIERE ir al mercado por las rodillas?" | PLAN — no publicado |
+| GTR7_TURMERIC_RECUPERACION-CHAMUSCA_R1 | RECUPERACION_CHAMUSCA | TRANSCRIPCION (video 3) | IMAGEN C2 | TURMERIC_5_RECUPERACION_CHAMUSCA.png · prompt C5 | SÍ Q199 | hombre 35-45 fútbol de domingo · AGOTAMIENTO · NC2 | PENDIENTE (35-45 sin fila; consola propone 35-50) | "¿Chamusca el domingo y el lunes COJEANDO?" | PLAN — banda bloqueada |
+| GTR7_TURMERIC_ESTOMAGO-POR-PASTILLAS_R1 | ESTOMAGO_POR_PASTILLAS | TRANSCRIPCION (video 2) | IMAGEN C2 | TURMERIC_6_ESTOMAGO_POR_PASTILLAS.png · prompt C6 | NO | hombre 45-60 de pie todo el día · FRUSTRACION_MEDICA · NC2 | 45-60 | "¿Las pastillas te están QUEMANDO el estómago?" | PLAN — no publicado |
+
+Anuncios por conjunto: 2 (A = B, mismo creativo) → 12 anuncios. Nombres: [ANGULO-CON-GUIONES]_IMG_A / _IMG_B.
+campaign_id: sin MCP (no publicado) · ad_set_id / ad_id: no existen todavía.
+
+RESULTADOS_TESTEO: [vacío en FASE 1. Al optimizar, pegar por conjunto:
+  conjunto | clics | impresiones | conversaciones | ventas | CPC | CPM | CPA_real | %conv_clic | %conv_impresion ]
+ANGULO_GANADOR: [vacío hasta que el operador lo confirme con métricas de VENTA]
+  → al confirmarlo: conjunto ganador + avatar al que iba + por qué ganó (qué se hizo distinto).
+Pedido a ETAPA-7: con ≥20 pedidos resueltos por ángulo, comparar TASA DE ENTREGA por angulo_key (efecto de la caja
+"Liver" sobre los ángulos articulares). Leer PESADEZ y ESTOMAGO sabiendo que el filtro de seguridad puede recortar
+su cierre por diseño (el avatar de ESTOMAGO toma pastillas diarias; la mamá de RODILLAS probablemente también).
+
+━━━ DATOS DE SATURACIÓN ━━━
+ETAPA-RESEARCH Módulo B: no corrido. Ad Library "cúrcuma gotas"/"curcumina" GT: no provisto.
+Solo medido por etapa-1b: YA_PROBE_CURCUMA_Y_NADA = MEDIA (Terrae Cúrcuma + Pimienta Q105 en Kémik). Resto DESCONOCIDA.
+
+━━━ PENDIENTES QUE BLOQUEAN O CONDICIONAN EL LANZAMIENTO ━━━
+1. Packshot Ads/MEDIA_TURMERIC/TURMERIC_PACKSHOT.jpg NO existe en disco (la foto llegó solo por chat). Sin él no se
+   renderiza ninguna pieza. Las 6 piezas tampoco existen.
+2. Banda del conjunto 5 (avatar 35-45): sin fila en la tabla BANDA DE EDAD de ETAPA-6 → gen_publicacion bloquea la
+   campaña entera; gen_lanzador deriva 35-50. Falta decidir la fila (propuesta etapa-6: 35-45 → 35-50).
+3. Garantía de 30 días sin confirmar (en las 6 piezas y en las Variaciones 3).
+4. Filtro de seguridad: confirmar que LucidBot lo aplica y excluye de la inactividad a quien responde SÍ; si no, sale #2.
+5. mg de curcumina por ml y fórmula real (etiqueta vs Amazon).
+6. Regalo del P3u sin definir.
+7. Registro MSPAS "de todo el portafolio" y origen USA de CareGem sin verificar para este producto (sellos Info 3).
+8. Los .mp4 de los videos del flujo (5 y 1) no están en disco (no existe Ads/1.1 Videos/TURMERIC) y nadie verificó que
+   muestren el gotero CareGem.
+9. Número real de clientes Sanarte para la Interacción 2 (hoy "+1,000" default).
+10. Stock / empaque del vidrio / proveedor (O1-O3) asumidos en simulación.
+11. Ejecutor: gen_publicacion.py firmaría el formato como "IMA" (no "IMG"), firmaría "1U" los 4 conjuntos sin precio y
+    dejaría el destino como "?". Arreglo en el script, no en el plan.
+
+━━━ PRÓXIMA SESIÓN ━━━
+- Optimización (ETAPA-7): leer este REGISTRO + datos de Meta, unir por NOMBRE_CONJUNTO, comparar CPA real vs objetivo
+  Q28.51 / break even Q69.56 (vía decidir.py), indicar qué escalar y qué apagar.
+- FASE 2: si hay ángulo ganador confirmado por venta → fase-2-conceptos (videos 5, 8 y los testimoniales como C5_PRUEBA
+  quedan como material). Si gana PESADEZ o ESTOMAGO, revisar la fanpage (página 5) antes.
+- Nuevo testeo del mismo producto: saltar ETAPA-1 y ETAPA-1B (ya están), ir a ETAPA-0 con nuevos videos.
+- El detalle copiable (copies, prompts, bot) está en 1_HACER_MANUAL.txt.

@@ -1,74 +1,140 @@
 {
-  "cuenta_alias": "GTR7",
-  "cuenta_id": "598687956219141",
-  "tomado_el": "2026-09-08T14:00:00-06:00",
-  "fuente": "ads_get_ad_entities (campaign + adset + ad)",
-  "ad_entities": [
-    {
-      "id": "120248708348150784",
-      "nivel": "campaign",
-      "name": "GTR7_TINNIDROP_CONCEPTOS-A_20260909",
-      "status": "PAUSED"
-    },
-    {
-      "id": "120248708351140784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_A1",
-      "status": "PAUSED"
-    },
-    {
-      "id": "120248199951130784",
-      "nivel": "campaign",
-      "name": "GTR7_NUSAVA_ESCALA-ARDOR_20260812",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248199666520784",
-      "nivel": "campaign",
-      "name": "GTR7_TINNIDROP_ESCALA_20260812",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248623719710784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R4",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248623718490784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R3",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248623716930784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R2",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248199666670784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248199666680784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248199666660784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2",
-      "status": "ACTIVE"
-    },
-    {
-      "id": "120248199666650784",
-      "nivel": "adset",
-      "name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3",
-      "status": "ACTIVE"
-    }
-  ]
+ "cuenta_alias": "GTR7",
+ "cuenta_id": "598687956219141",
+ "tomado_el": "2026-09-11T15:41:49",
+ "notas": "SIMULACION: snapshot posterior a publicar",
+ "ad_entities": [
+  {
+   "id": "SIMCAMP1",
+   "nivel": "campaign",
+   "name": "GTR7_TURMERIC_TEST_20260912",
+   "status": "PAUSED"
+  },
+  {
+   "id": "SIMSET1",
+   "nivel": "adset",
+   "name": "GTR7_TURMERIC_MANOS-RIGIDAS-AL-DESPERTAR_R1",
+   "status": "PAUSED",
+   "campaign_id": "SIMCAMP1"
+  },
+  {
+   "id": "SIMSET2",
+   "nivel": "adset",
+   "name": "GTR7_TURMERIC_PESADEZ-DESPUES-DE-COMER_R1",
+   "status": "PAUSED",
+   "campaign_id": "SIMCAMP1"
+  },
+  {
+   "id": "SIMSET3",
+   "nivel": "adset",
+   "name": "GTR7_TURMERIC_YA-PROBE-CURCUMA-Y-NADA_R1",
+   "status": "PAUSED",
+   "campaign_id": "SIMCAMP1"
+  },
+  {
+   "id": "SIMSET4",
+   "nivel": "adset",
+   "name": "GTR7_TURMERIC_RODILLAS-DE-MAMA_R1",
+   "status": "PAUSED",
+   "campaign_id": "SIMCAMP1"
+  },
+  {
+   "id": "SIMSET5",
+   "nivel": "adset",
+   "name": "GTR7_TURMERIC_RECUPERACION-CHAMUSCA_R1",
+   "status": "PAUSED",
+   "campaign_id": "SIMCAMP1"
+  },
+  {
+   "id": "SIMSET6",
+   "nivel": "adset",
+   "name": "GTR7_TURMERIC_ESTOMAGO-POR-PASTILLAS_R1",
+   "status": "PAUSED",
+   "campaign_id": "SIMCAMP1"
+  },
+  {
+   "id": "SIMAD01",
+   "nivel": "ad",
+   "name": "MANOS-RIGIDAS-AL-DESPERTAR_IMA_A ~ TURMERIC|MANOS_RIGIDAS_AL|C2.CN05|NC1|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET1"
+  },
+  {
+   "id": "SIMAD02",
+   "nivel": "ad",
+   "name": "MANOS-RIGIDAS-AL-DESPERTAR_IMA_B ~ TURMERIC|MANOS_RIGIDAS_AL|C2.CN05|NC1|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET1"
+  },
+  {
+   "id": "SIMAD03",
+   "nivel": "ad",
+   "name": "PESADEZ-DESPUES-DE-COMER_IMA_A ~ TURMERIC|PESADEZ_DESPUES_|C2.CN05|NC1|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET2"
+  },
+  {
+   "id": "SIMAD04",
+   "nivel": "ad",
+   "name": "PESADEZ-DESPUES-DE-COMER_IMA_B ~ TURMERIC|PESADEZ_DESPUES_|C2.CN05|NC1|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET2"
+  },
+  {
+   "id": "SIMAD05",
+   "nivel": "ad",
+   "name": "YA-PROBE-CURCUMA-Y-NADA_IMA_A ~ TURMERIC|YA_PROBE_CURCUMA|C2.CN05|NC3A|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET3"
+  },
+  {
+   "id": "SIMAD06",
+   "nivel": "ad",
+   "name": "YA-PROBE-CURCUMA-Y-NADA_IMA_B ~ TURMERIC|YA_PROBE_CURCUMA|C2.CN05|NC3A|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET3"
+  },
+  {
+   "id": "SIMAD07",
+   "nivel": "ad",
+   "name": "RODILLAS-DE-MAMA_IMA_A ~ TURMERIC|RODILLAS_DE_MAMA|C2.CN05|NC2|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET4"
+  },
+  {
+   "id": "SIMAD08",
+   "nivel": "ad",
+   "name": "RODILLAS-DE-MAMA_IMA_B ~ TURMERIC|RODILLAS_DE_MAMA|C2.CN05|NC2|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET4"
+  },
+  {
+   "id": "SIMAD09",
+   "nivel": "ad",
+   "name": "RECUPERACION-CHAMUSCA_IMA_A ~ TURMERIC|RECUPERACION_CHA|C2.CN05|NC2|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET5"
+  },
+  {
+   "id": "SIMAD10",
+   "nivel": "ad",
+   "name": "RECUPERACION-CHAMUSCA_IMA_B ~ TURMERIC|RECUPERACION_CHA|C2.CN05|NC2|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET5"
+  },
+  {
+   "id": "SIMAD11",
+   "nivel": "ad",
+   "name": "ESTOMAGO-POR-PASTILLAS_IMA_A ~ TURMERIC|ESTOMAGO_POR_PAS|C2.CN05|NC2|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET6"
+  },
+  {
+   "id": "SIMAD12",
+   "nivel": "ad",
+   "name": "ESTOMAGO-POR-PASTILLAS_IMA_B ~ TURMERIC|ESTOMAGO_POR_PAS|C2.CN05|NC2|1U|?",
+   "status": "PAUSED",
+   "adset_id": "SIMSET6"
+  }
+ ]
 }
