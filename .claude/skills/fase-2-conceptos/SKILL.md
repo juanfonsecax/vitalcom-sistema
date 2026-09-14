@@ -1,6 +1,6 @@
 ---
 name: fase-2-conceptos
-description: FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando flujo.py sitúa al producto en un nodo F2.*, o cuando el operador dice "ya sé qué ángulo vende", "testear conceptos", "qué creativo lo vende más barato" o "tengo el ángulo ganador".
+description: "FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando flujo.py sitúa al producto en un nodo F2.*, o cuando el operador dice \"ya sé qué ángulo vende\", \"testear conceptos\", \"qué creativo lo vende más barato\" o \"tengo el ángulo ganador\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 

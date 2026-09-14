@@ -1,6 +1,6 @@
 ---
 name: etapa-5
-description: FASE 1 (Bot Paraguas integrador de 6 ángulos) y FASE 2/3 (flujo dedicado de un solo ángulo ganador) — Construye el flujo LucidBot completo (12 elementos + 5 interacciones + reglas) en voseo guatemalteco. Incluye los hechos operativos de LucidBot: la info del producto va en su campo y NO en las reglas, y el bot queda DESACTIVADO al importar de Superbodega. Corre en paralelo con ETAPA-4. Calibra voz según pagina_asignada.
+description: "FASE 1 (Bot Paraguas integrador de 6 ángulos) y FASE 2/3 (flujo dedicado de un solo ángulo ganador) — Construye el flujo LucidBot completo (12 elementos + 5 interacciones + reglas) en voseo guatemalteco. Incluye los hechos operativos de LucidBot: la info del producto va en su campo y NO en las reglas, y el bot queda DESACTIVADO al importar de Superbodega. Corre en paralelo con ETAPA-4. Calibra voz según pagina_asignada."
 tools: Read
 model: inherit
 ---

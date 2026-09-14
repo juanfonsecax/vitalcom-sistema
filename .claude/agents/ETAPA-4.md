@@ -1,6 +1,6 @@
 ---
 name: etapa-4
-description: FASE 1 y FASE 2 — En FASE 1 genera 6 copies de Meta Ads (uno por ángulo) + ad-imagen de los ángulos vírgenes + prompts de infografía del bot (leyendo DOCTRINA/PLANTILLAS_INFOGRAFIAS.md). En FASE 2 (conceptos) genera EL COPY ÚNICO de la fase más sus 3 variaciones de respaldo — no 6 copies distintos: el copy es constante de control mientras la única variable es el creativo. Corre en paralelo con ETAPA-5. Calibra tono según pagina_asignada.
+description: "FASE 1 y FASE 2 — En FASE 1 genera 6 copies de Meta Ads (uno por ángulo) + ad-imagen de los ángulos vírgenes + prompts de infografía del bot (leyendo DOCTRINA/PLANTILLAS_INFOGRAFIAS.md). En FASE 2 (conceptos) genera EL COPY ÚNICO de la fase más sus 3 variaciones de respaldo — no 6 copies distintos: el copy es constante de control mientras la única variable es el creativo. Corre en paralelo con ETAPA-5. Calibra tono según pagina_asignada."
 tools: Read
 model: inherit
 ---

@@ -1,6 +1,6 @@
 ---
 name: buscar-producto
-description: FASE 0 — Encuentra y prioriza productos candidatos ANTES de validarlos. Cubre dos rutas: evergreen (demanda estable) y ventana de evento (pico de demanda por un acontecimiento con fecha). Entrega una lista rankeada de candidatos con señales de saturación. Corre ANTES de etapa-producto. Úsalo cuando el operador dice "no sé qué vender", "buscar producto", "producto en tendencia", "producto ganador", "qué vendo ahora" o cuando hay un evento próximo que puede mover demanda.
+description: "FASE 0 — Encuentra y prioriza productos candidatos ANTES de validarlos. Cubre dos rutas: evergreen (demanda estable) y ventana de evento (pico de demanda por un acontecimiento con fecha). Entrega una lista rankeada de candidatos con señales de saturación. Corre ANTES de etapa-producto. Úsalo cuando el operador dice \"no sé qué vender\", \"buscar producto\", \"producto en tendencia\", \"producto ganador\", \"qué vendo ahora\" o cuando hay un evento próximo que puede mover demanda."
 tools: Read, Glob, Grep, WebSearch, WebFetch
 ---
 
