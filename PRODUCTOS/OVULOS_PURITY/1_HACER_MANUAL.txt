@@ -366,11 +366,11 @@ MENSAJE 2 (8-12 h — última, empujón de oferta + salida):
 Última vez que te escribo para no molestarte 🌿 Si quieres recuperar tu frescura, todavía tienes la oferta de 2 paquetes con envío gratis y pago contra entrega. Escríbeme y te lo dejo listo. Si ya no quieres más mensajes, responde STOP.
 > El video de mecanismo (modelo anatómico "cómo entra el óvulo y arrastra residuos") es POST-CLIC: va solo en el bot/remarketing, nunca en el creativo del anuncio (Meta lo lee = CPM alto + riesgo INVIMA).
 
-── E. FLUJO LUCIDBOT (ver detalle completo en el chat / Parte 3) ──
-Asesora: Valentina · Tienda: Hernatura · País: Colombia (tú, sin voseo) · Transportadoras: Interrapidísimo / Servientrega (ajustar a la tuya).
-Catálogo (4 campos), Mensaje inicial (Elementos 1-12: saludo fijo → VIDEO 1 autoridad = PODCAST (OVULOSPURITY_PROPIO_5_INTEGRAL; alt. corto 9 HN=4_RECURRENTE) / VIDEO 2 UGC persona real = 2X1 HER5 (OVULOSPURITY_PROPIO_3_PICAZON) → INFO 1/2/3 → transición → testimonios 1/2/3 → audio → cierre con ciudad), Interacciones 0-5, Inactividad (2), FAQ venta (10), FAQ postventa (5), Reglas.
-Oferta escalera: 1 paq $69.900 (+envío) · 2 paq $99.900 envío gratis ⭐ · 3 paq $129.900 envío gratis + regalo.
-[El flujo completo verbatim está entregado en el chat, Parte 3 — copiar de ahí campo por campo.]
+── E. FLUJO LUCIDBOT (ver archivo completo: FLUJO_LUCIDBOT.md) ──
+Asesora: Valentina · Tienda: Hernatura · País: Colombia (tú, sin voseo) / Guatemala (voseo) · Transportadoras: Coordinadora/Servientrega/Envía/Interrapidísimo (CO) | Gintacom/Forza (GT).
+Catálogo (4 campos), Mensaje inicial (Elementos 1-12: saludo fijo → VIDEO 1 autoridad = PODCAST / VIDEO 2 UGC persona real = 2X1 HER5 → INFO 1/2/3 → transición → testimonios 1/2/3 → audio Valentina 58s grabado → cierre con ciudad), Interacciones 0-5 (sí encadenado), Inactividad (M1 45min, M2 5h con audio clienta, M3 23h con opt-out), 10 FAQ venta, 5 FAQ postventa, Mapeo de barreras y Reglas.
+Oferta escalera: 1 paq $69.900 / Q189 · 2 paq $99.900 / Q269 envío gratis ⭐ (Héroe) · 3 paq $129.900 / Q349 envío gratis + regalo.
+[El flujo completo verbatim y listo para copiar campo por campo está documentado en FLUJO_LUCIDBOT.md de esta misma carpeta.]
 
 ── MENSAJE PRE-LLENADO (lo que la persona ENVÍA al tocar el anuncio — se configura en el destino WhatsApp del ad) ──
 FASE 1 = UNO SOLO para los 6 anuncios (máx 80 caracteres). Refuerzo estilo Joaquín, SIN "INVIMA" (alerta sanitaria en Colombia = riesgo). El refuerzo lo da "100% naturales".
