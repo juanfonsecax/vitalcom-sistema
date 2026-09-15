@@ -265,8 +265,86 @@ def adaptar(producto_key):
 OFERTAS = {"1U", "2X1", "4X2", "ESCALERA", "COMBO", "SIN_PRECIO"}
 NIVELES = {"1", "2", "3A", "3B", None}
 
+# Nombres de archivo por fase. FASE 2/3 pueden salir en el esquema "fase2_lean/1"
+# (gen_fase2_lean.py, 5 conjuntos x 1 concepto) o en un futuro esquema propio — la
+# validacion de ESE archivo se limita a los campos raiz que gen_publicacion.py YA lee
+# hoy (angulo_ganador, copy, cuenta, page_id). El array "conjuntos" de fase2_lean/1 es
+# decorativo para gen_publicacion.py (arma la estructura real desde _DIM_CREATIVOS.csv)
+# y su forma exacta es una deuda de doctrina abierta (HANDOFF_2026-09-09, item 1):
+# no se valida acá para no blindar un esquema todavia en disputa.
+NOMBRES_PLAN = {1: "_PLAN.json", 2: "_PLAN_FASE2.json", 3: "_PLAN_FASE3.json"}
 
-def validar():
+
+def descubrir_planes(ruta=None):
+    """Lista de rutas de plan a validar. Con `ruta` valida SOLO ese archivo (bug del
+    22-sep-2026: `--validar` ignoraba cualquier ruta que se le pasara). Sin `ruta`
+    escanea PRODUCTOS/*/ buscando los tres nombres posibles, no solo `_PLAN.json`
+    (bug hermano: nunca abria `_PLAN_FASE2.json` ni `_PLAN_FASE3.json`)."""
+    if ruta:
+        return [ruta] if os.path.exists(ruta) else []
+    planes = []
+    for d in sorted(os.listdir(PRODUCTOS)):
+        carpeta = os.path.join(PRODUCTOS, d)
+        if not os.path.isdir(carpeta):
+            continue
+        for nombre in NOMBRES_PLAN.values():
+            candidato = os.path.join(carpeta, nombre)
+            if os.path.exists(candidato):
+                planes.append(candidato)
+    return planes
+
+
+def validar_plan_fase1(plan, validos):
+    problemas = []
+    if plan.get("schema") != "plan/1":
+        problemas.append("schema desconocido: %r" % plan.get("schema"))
+    if plan.get("oferta", {}).get("oferta_key") not in OFERTAS:
+        problemas.append("oferta_key fuera del vocabulario: %r"
+                         % plan.get("oferta", {}).get("oferta_key"))
+    ck = plan.get("concepto_control", {}).get("concepto_key")
+    if "concepto_key" in validos and ck not in validos["concepto_key"]:
+        problemas.append("concepto_key fuera del vocabulario: %r" % ck)
+    vistos = set()
+    for c in plan.get("conjuntos", []):
+        etq = "conjunto %s" % c.get("n")
+        if c.get("angulo_key") in vistos:
+            problemas.append("%s: angulo_key duplicado %r" % (etq, c.get("angulo_key")))
+        vistos.add(c.get("angulo_key"))
+        if not re.match(r"^[A-Z0-9_]+$", c.get("angulo_key") or ""):
+            problemas.append("%s: angulo_key con caracteres invalidos %r"
+                             % (etq, c.get("angulo_key")))
+        if c.get("nivel_conciencia") not in NIVELES:
+            problemas.append("%s: nivel_conciencia %r no es 1/2/3A/3B"
+                             % (etq, c.get("nivel_conciencia")))
+    con_precio = sum(1 for c in plan.get("conjuntos", []) if c.get("lleva_precio"))
+    if plan.get("fase") == 1 and con_precio > 3:
+        problemas.append("%d conjuntos con precio; la regla de Guatemala permite max 3 (ideal 2)"
+                         % con_precio)
+    return problemas
+
+
+def validar_plan_fase2o3(plan):
+    """Solo los campos RAIZ que gen_publicacion.py ya lee para fase 2/3: angulo_ganador,
+    copy, cuenta, page_id. NO valida 'conjuntos' (ver nota de NOMBRES_PLAN)."""
+    problemas = []
+    if not (plan.get("angulo_ganador") or "").strip():
+        problemas.append("sin angulo_ganador en la raiz del plan: gen_publicacion.py bloquea "
+                         "TODOS los anuncios de la fase sin el (invariante 4)")
+    copy_val = plan.get("copy")
+    copy_ok = bool(copy_val.strip()) if isinstance(copy_val, str) else bool(copy_val)
+    if not copy_ok:
+        problemas.append("sin 'copy' en la raiz del plan: en FASE 2/3 el copy es FIJO y vive "
+                         "en el plan (ETAPA-6); _DIM_CREATIVOS.csv no tiene columna copy, asi "
+                         "que sin este campo gen_publicacion.py bloquea cada anuncio con "
+                         "{{FALTA_COPY}}")
+    if not (plan.get("cuenta") or "").strip():
+        problemas.append("sin 'cuenta' en la raiz del plan")
+    if not (plan.get("page_id") or "").strip():
+        problemas.append("sin 'page_id' en la raiz del plan")
+    return problemas
+
+
+def validar(ruta=None):
     vocab = leer_csv(VOCABULARIO)
     validos = {}
     for v in vocab:
@@ -275,45 +353,23 @@ def validar():
         if eje and val:
             validos.setdefault(eje, set()).add(val)
 
-    planes = []
-    for d in sorted(os.listdir(PRODUCTOS)):
-        ruta = os.path.join(PRODUCTOS, d, "_PLAN.json")
-        if os.path.exists(ruta):
-            planes.append(ruta)
+    planes = descubrir_planes(ruta)
     if not planes:
-        print("no hay ningun _PLAN.json todavia.")
-        return 0
+        print("no existe %s" % ruta if ruta else "no hay ningun _PLAN*.json todavia.")
+        return 0 if not ruta else 1
 
     errores = 0
-    for ruta in planes:
-        with io.open(ruta, encoding="utf-8") as fh:
+    for ruta_plan in planes:
+        with io.open(ruta_plan, encoding="utf-8") as fh:
             plan = json.load(fh)
-        print("\n%s" % ruta.replace("\\", "/"))
-        problemas = []
-        if plan.get("schema") != "plan/1":
-            problemas.append("schema desconocido: %r" % plan.get("schema"))
-        if plan.get("oferta", {}).get("oferta_key") not in OFERTAS:
-            problemas.append("oferta_key fuera del vocabulario: %r"
-                             % plan.get("oferta", {}).get("oferta_key"))
-        ck = plan.get("concepto_control", {}).get("concepto_key")
-        if "concepto_key" in validos and ck not in validos["concepto_key"]:
-            problemas.append("concepto_key fuera del vocabulario: %r" % ck)
-        vistos = set()
-        for c in plan.get("conjuntos", []):
-            etq = "conjunto %s" % c.get("n")
-            if c.get("angulo_key") in vistos:
-                problemas.append("%s: angulo_key duplicado %r" % (etq, c.get("angulo_key")))
-            vistos.add(c.get("angulo_key"))
-            if not re.match(r"^[A-Z0-9_]+$", c.get("angulo_key") or ""):
-                problemas.append("%s: angulo_key con caracteres invalidos %r"
-                                 % (etq, c.get("angulo_key")))
-            if c.get("nivel_conciencia") not in NIVELES:
-                problemas.append("%s: nivel_conciencia %r no es 1/2/3A/3B"
-                                 % (etq, c.get("nivel_conciencia")))
-        con_precio = sum(1 for c in plan.get("conjuntos", []) if c.get("lleva_precio"))
-        if plan.get("fase") == 1 and con_precio > 3:
-            problemas.append("%d conjuntos con precio; la regla de Guatemala permite max 3 (ideal 2)"
-                             % con_precio)
+        print("\n%s" % ruta_plan.replace("\\", "/"))
+        fase = plan.get("fase")
+        if fase == 1:
+            problemas = validar_plan_fase1(plan, validos)
+        elif fase in (2, 3):
+            problemas = validar_plan_fase2o3(plan)
+        else:
+            problemas = ["fase desconocida en el plan: %r" % fase]
         if problemas:
             errores += len(problemas)
             for p in problemas:
@@ -329,6 +385,8 @@ if __name__ == "__main__":
     if "--adaptar" in sys.argv:
         adaptar(sys.argv[sys.argv.index("--adaptar") + 1])
     elif "--validar" in sys.argv:
-        sys.exit(validar())
+        i = sys.argv.index("--validar")
+        ruta_pedida = sys.argv[i + 1] if i + 1 < len(sys.argv) and not sys.argv[i + 1].startswith("--") else None
+        sys.exit(validar(ruta_pedida))
     else:
         print(__doc__)

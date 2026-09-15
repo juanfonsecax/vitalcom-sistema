@@ -130,6 +130,37 @@ def extraer_copy(c):
     return "", "", "", 0
 
 
+def orden_nombre_de(piezas):
+    """creativo_id -> numero ESTABLE para el NOMBRE del anuncio (no el bookkeeping interno
+    de la corrida, que es orden_global). Agrupa por brazo preservando el ORDEN ORIGINAL del
+    CSV dentro de cada grupo — nunca reordena alfabeticamente — para que el brazo B siempre
+    numere a partir de donde termina el brazo A sin importar en que orden se publiquen.
+    Antes el numero salia de un contador local a la corrida (orden_global): publicar el
+    brazo B por separado volvia a numerar 01-05 en vez de continuar 06-10.
+
+    Con un solo brazo (o ninguno declarado, el estado de TODO el portafolio real hoy) el
+    agrupado es un no-op y el numero coincide EXACTO con el de antes de este cambio: el
+    orden de _DIM_CREATIVOS.csv no se puede alterar sin invalidar nombres ya publicados
+    en Meta (el snapshot de idempotencia matchea por nombre)."""
+    con_indice = list(enumerate(piezas))
+    ordenadas = sorted(con_indice, key=lambda t: ((t[1].get("brazo") or ""), t[0]))
+    return {r.get("creativo_id"): i for i, (_, r) in enumerate(ordenadas, 1)}
+
+
+def chequear_brazo_ambiguo(piezas, brazo_creativos, brazo_arg):
+    """None si no hay ambiguedad; el mensaje de bloqueo si hay mas de un brazo declarado en
+    _DIM_CREATIVOS.csv para este angulo y no se eligio con --brazo-creativos cual publicar.
+    Sin este chequeo, una corrida sin el flag toma las primeras piezas del CSV sin importar
+    el brazo: publicar el brazo B sin --brazo-creativos B republicaria el pool del brazo A."""
+    brazos = sorted({(r.get("brazo") or "").strip() for r in piezas if (r.get("brazo") or "").strip()})
+    if len(brazos) > 1 and not brazo_creativos:
+        return ("hay %d brazos de creativos para este angulo en _DIM_CREATIVOS.csv (%s) y no se "
+                "paso --brazo-creativos: sin especificarlo se toman las primeras piezas del CSV "
+                "sin importar el brazo, y una corrida para el brazo que no es A publicaria de "
+                "nuevo el pool del brazo A." % (len(brazos), ", ".join(brazos)))
+    return None
+
+
 def cargar_firma():
     """Importa Ads/_TOOLS/firma.py. Es el dueno de la firma; aca no se reimplementa."""
     ruta = os.path.join(TOOLS, "firma.py")
@@ -319,6 +350,7 @@ def main():
 
     unidades = []
     sin_archivo = []
+    orden_nombre_por_creativo = {}   # fase 1 no lo usa: el orden del nombre sale del contador local
 
     if fase == 1:
         plan_conj = plan.get("conjuntos") or []
@@ -354,8 +386,15 @@ def main():
                 }],
             })
     else:
-        piezas = [r for r in leer(P("_DIM_CREATIVOS.csv"))
-                  if r.get("producto_key") == pk and r.get("angulo_key") == angulo]
+        piezas_del_angulo = [r for r in leer(P("_DIM_CREATIVOS.csv"))
+                              if r.get("producto_key") == pk and r.get("angulo_key") == angulo]
+
+        orden_nombre_por_creativo = orden_nombre_de(piezas_del_angulo)
+        error_brazo = chequear_brazo_ambiguo(piezas_del_angulo, arg("--brazo-creativos"), brazo)
+        if error_brazo:
+            pq.bloquear(error_brazo, "el operador (pasar --brazo-creativos %s)" % brazo)
+
+        piezas = piezas_del_angulo
         if arg("--brazo-creativos"):
             piezas = [r for r in piezas if r.get("brazo") == arg("--brazo-creativos")]
         listas = []
@@ -485,8 +524,9 @@ def main():
         ads_conj = []
         for cre in uni["piezas"]:
             orden_global += 1
+            orden_nombre = orden_nombre_por_creativo.get(cre.get("creativo_id"), orden_global)
             fmt = (cre.get("formato") or "IMG")[:3].upper()
-            an = nombre_anuncio(fase, cre, orden_global, ang_u, fmt, "A", fmod)
+            an = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, "A", fmod)
             copy, titular, descripcion, sobrantes = extraer_copy(cre.get("copy") or plan.get("copy"))
             if not copy:
                 pq.bloquear("el anuncio '%s' no tiene copy. El copy vive en el CREATIVO de Meta y no "
@@ -534,7 +574,7 @@ def main():
             })
 
             for letra in ("A", "B"):
-                nom = nombre_anuncio(fase, cre, orden_global, ang_u, fmt, letra, fmod)
+                nom = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, letra, fmod)
                 n += 1
                 llamadas.append({
                     "n": n, "tool": "ads_create_ad",
