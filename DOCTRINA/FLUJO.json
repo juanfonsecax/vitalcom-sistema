@@ -180,7 +180,7 @@
       {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
       {"dato": "gate de reconciliación del producto", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
       {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json", "regla": "HANDOFF 08-sep: preguntarle a Meta qué existe antes de crear"},
-      {"dato": "paquete de publicación del brazo A sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "2", "--brazo", "A", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 2"}
+      {"dato": "paquete de publicación del brazo A sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "2", "--brazo", "A", "--brazo-creativos", "A", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 2"}
      ],
      "produce": [
       {"dato": "ad_id escritos en _DIM_CREATIVOS.csv para los conceptos (gate cerrado)",

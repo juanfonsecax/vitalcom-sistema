@@ -519,7 +519,7 @@ def main():
                               if r.get("producto_key") == pk and r.get("angulo_key") == angulo]
 
         orden_nombre_por_creativo = orden_nombre_de(piezas_del_angulo)
-        error_brazo = chequear_brazo_ambiguo(piezas_del_angulo, arg("--brazo-creativos"), brazo)
+        error_brazo = chequear_brazo_ambiguo(piezas_del_angulo, arg("--brazo-creativos"), brazo) if fase == 2 else None
         if error_brazo:
             pq.bloquear_publicacion(error_brazo, "el operador (pasar --brazo-creativos %s)" % brazo)
 
