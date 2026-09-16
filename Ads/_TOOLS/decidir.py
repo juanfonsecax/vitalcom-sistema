@@ -84,6 +84,10 @@ ALIAS_PATH = os.path.join(PROD, "_ALIAS_CONJUNTOS.csv")
 FACT_VENTAS_PATH = os.path.join(PROD, "_FACT_VENTAS.csv")
 FACT_ENTREGA_PATH = os.path.join(PROD, "_FACT_ENTREGA.csv")
 FACT_ENTREGA_ANUNCIO_PATH = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")  # link_clicks: la conversacion por clic-ENLACE vive aca
+# La FASE VIGENTE de cada producto. Derivada por flujo.py, nunca escrita a mano (CLAUDE.md:
+# _DIM_PRODUCTOS.fase quedo como bitacora). Se lee como CSV, no importando flujo.py: flujo.py
+# ya importa este modulo y hacerlo al reves cerraria el ciclo.
+ESTADO_FLUJO_PATH = os.path.join(PROD, "_ESTADO_FLUJO.csv")
 SALIDA_JSON = os.path.join(PROD, "_DECISIONES.json")
 # No hay SALIDA_HTML: este motor escribe JSON y nada mas. Lo dibuja VISTAS/APP.html.
 
@@ -115,6 +119,11 @@ def cargar_parametros():
         "max_pausas_por_dia": 2,
         "surfing_pct": 20.0,
         "dias_min_cod_pausa_ventas": 3,
+        # Lo usa flujo.py (concepto_2de2), no este motor, pero vive acá porque los parámetros
+        # del sistema tienen un solo CSV y flujo.py los lee por esta misma puerta. El default
+        # repite el del CSV a propósito: si la fila se borra, el gate de FASE 3 no puede volver
+        # a quedar en winner-take-all sin que nadie lo note.
+        "margen_empate_cpa_pct": 10.0,
     }
     if os.path.exists(PARAMS_PATH):
         try:
@@ -621,6 +630,72 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     }
 
 
+FASES_EN_TESTEO = ("F1", "F2")
+
+
+def cargar_fases():
+    """{producto_key: fase vigente} de _ESTADO_FLUJO.csv. Vacio si el archivo no existe."""
+    fases = {}
+    if not os.path.exists(ESTADO_FLUJO_PATH):
+        return fases
+    try:
+        with io.open(ESTADO_FLUJO_PATH, encoding="utf-8-sig", newline="") as f:
+            for r in csv.DictReader(f):
+                pk = (r.get("producto_key") or "").strip()
+                if pk:
+                    fases[pk] = (r.get("fase") or "").strip().upper()
+    except (IOError, OSError, csv.Error):
+        pass
+    return fases
+
+
+def aplicar_gate_fase(celdas, fase, pk):
+    """GATE #2: una orden de ESCALAR no es EJECUTABLE mientras el producto este en gate de testeo.
+
+    POR QUE NO SE DEGRADA EL ESTADO. Lo obvio seria convertir el ESCALAR en SEGUIR_MIDIENDO, y
+    seria un error: flujo.py corona el angulo ganador PRECISAMENTE por el ESCALAR del motor
+    (_ev_angulo_ganador). Si el motor se lo calla mientras el producto esta en F1, el producto
+    no puede salir de F1 por esa rama y el gate se muerde la cola. El ESCALAR es EVIDENCIA de
+    que la celda vende barato, y esa evidencia es valida en cualquier fase.
+
+    LO QUE SI SE BLOQUEA ES LA ACCION. El invariante 6 pide mismo presupuesto en todos los
+    conjuntos dentro de cada etapa, para no sesgar que gana por dinero: subirle el presupuesto
+    a un conjunto en pleno testeo hace ganar al que recibio mas plata, no al mejor. Y el
+    invariante 13 ya nombra mover plata como LA accion irreversible. Asi que el estado queda y
+    lo que se marca es `ejecutable`, que es lo que miran etapa-8, el operador y el runner MCP.
+
+    En la simulacion de TURMERIC el motor ordeno escalar un conjunto el dia 1, en plena FASE 1.
+
+    TRES VALORES, nunca dos: True (F3 o fuera de testeo) · False (F1/F2) · None cuando la fase
+    no esta derivada (sin fila, o sin _ESTADO_FLUJO.csv). None NO es permiso: es 'no pude
+    evaluarlo', y lo dice. Inventar un permiso donde no hay dato es lo que este sistema no hace.
+    """
+    for c in celdas:
+        if c.get("estado") != "ESCALAR":
+            c["ejecutable"] = True
+            c["bloqueo_fase"] = None
+            continue
+        if not fase:
+            c["ejecutable"] = None
+            c["bloqueo_fase"] = ("fase no derivada para %s: corré `python Ads/_TOOLS/flujo.py %s` "
+                                 "antes de mover presupuesto" % (pk, pk))
+            c["accion_sugerida"] = "⚠ FASE SIN DERIVAR — " + c["accion_sugerida"]
+        elif fase in FASES_EN_TESTEO:
+            c["ejecutable"] = False
+            c["bloqueo_fase"] = ("%s está en %s (gate de testeo): subir presupuesto a un solo "
+                                 "conjunto rompe el invariante 6 y hace ganar al que recibió más "
+                                 "plata, no al mejor" % (pk, fase))
+            c["accion_sugerida"] = (
+                "NO SUBIR PRESUPUESTO (%s en %s): la celda es rentable y esto vale como evidencia "
+                "de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). "
+                "Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: %s"
+                % (pk, fase, c["accion_sugerida"]))
+        else:
+            c["ejecutable"] = True
+            c["bloqueo_fase"] = None
+    return celdas
+
+
 def aplicar_tope_pausas(celdas, params):
     """GATE #1 (ESCALADO_PLAYBOOK 1.5): como máximo `max_pausas_por_dia` pausas por producto por
     corrida, las de mayor gasto primero. Las demás quedan PAUSAR_DIFERIDA (SEGUIR_MIDIENDO con la
@@ -651,6 +726,7 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
         params["ventana_fatiga_dias"] = dias_f
 
     prods = cargar_productos()
+    fases = cargar_fases()          # la fase VIGENTE la deriva flujo.py, no la declara el CSV
     df_celdas = cargar_datos_duckdb(dias=dias_v, grano=grano, dias_fatiga=dias_f)
 
     # FRESCURA. La ventana de evaluacion se cuenta desde el ULTIMO DIA CON DATA, no desde hoy.
@@ -738,6 +814,9 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
 
         # GATE #1: máximo de pausas por producto por corrida (las demás quedan diferidas)
         aplicar_tope_pausas(celdas_eval, params)
+        # GATE #2: en fase de testeo, un ESCALAR sigue siendo evidencia pero NO es ejecutable
+        fase_vigente = fases.get(pk, "")
+        aplicar_gate_fase(celdas_eval, fase_vigente, pk)
         for c in celdas_eval:
             estado_cat = c["estado"]
             resultado["resumen_acciones"][estado_cat] = resultado["resumen_acciones"].get(estado_cat, 0) + 1
@@ -762,6 +841,7 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
             "producto_key": pk,
             "nombre": info.get("nombre", pk),
             "estado_producto": estado_prod,
+            "fase_vigente": fase_vigente or None,   # de _ESTADO_FLUJO.csv (derivada por flujo.py)
             "cpa_objetivo_q": obj_q,
             "break_even_q": be_q,
             "celdas": celdas_eval,
@@ -786,7 +866,17 @@ def imprimir_consola(res):
     print("=" * 115)
 
     for p in res["productos"]:
-        print(f"\n[{p['producto_key']}]  Estado: {p['estado_producto']} | Break-Even: Q{p['break_even_q']:.2f} | CPA Objetivo: Q{p['cpa_objetivo_q']:.2f}")
+        fv = p.get("fase_vigente")
+        print(f"\n[{p['producto_key']}]  Estado: {p['estado_producto']} | Fase: {fv or '(sin derivar)'} | Break-Even: Q{p['break_even_q']:.2f} | CPA Objetivo: Q{p['cpa_objetivo_q']:.2f}")
+        frenadas = [c for c in p["celdas"] if c.get("ejecutable") is False]
+        sin_fase = [c for c in p["celdas"] if c.get("ejecutable") is None]
+        if frenadas:
+            print(f"  ⛔ {len(frenadas)} orden(es) de ESCALAR NO EJECUTABLES: {p['producto_key']} está en {fv}, "
+                  f"gate de testeo. Valen como EVIDENCIA de ganador; mover plata ahora sesga la medición "
+                  f"(invariante 6). Mantener presupuesto hasta cerrar la fase.")
+        if sin_fase:
+            print(f"  ⚠️  {len(sin_fase)} orden(es) de ESCALAR sin fase derivada: corré "
+                  f"`python Ads/_TOOLS/flujo.py {p['producto_key']}` antes de mover presupuesto.")
         print("-" * 115)
         print(f"  {'ESTADO':<16} {'CELDA / ÁNGULO':<28} {'VTS':>4} {'MSJ':>5} {'GASTO Q':>8} {'CPA REAL':>8} {'IC 95% Q':<15} ACCIÓN INMEDIATA")
         print("-" * 115)

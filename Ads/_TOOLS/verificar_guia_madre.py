@@ -217,6 +217,8 @@ VERIFICADORES = {
     # Desde el 09-sep-2026 estos dos ya no son literales del código: viven en el CSV.
     "MINIMO_VENTAS_PARA_ESCALAR":  (_csv_num("min_ventas_escalar"), "num"),
     "GUARDA_GANADOR_HISTORICO":    (_csv_num("min_ventas_ganador"), "num"),
+    # Empate tecnico de la regla 2 de 2 (15-sep-2026): el gate de FASE 3 dejaba de oscilar.
+    "MARGEN_EMPATE_CPA":           (_csv_num("margen_empate_cpa_pct"), "num"),
     # Reglamento único (09-sep-2026): lo que antes vivía solo en prosa
     "PORCENTAJE_SURFING_STEP":     (_csv_num("surfing_pct"), "num"),
     "UMBRAL_CONVERSACION_CLIC_ENLACE": (_csv_num("umbral_conv_clic_enlace_pct"), "num"),
