@@ -35,10 +35,17 @@ sería atribuible).
 | Prompt Maestro y los 15 estilos anti-fatiga | `DOCTRINA/PLANTILLAS_ADS.md` |
 | Precios, CPA objetivo, break even | `PRODUCTOS/[X]/2_DATA_PRODUCTO.txt` |
 | Tono y edad de la página | `.claude/agents/ETAPA-FANPAGE.md` (ya resuelto en `<pagina_asignada>`) |
+| **El perfil, los textos del creativo y el guion del bot, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1 y PASO 3) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
 
-**Nunca inventar precios, dosis, ingredientes ni cifras de prueba social.** Todo
-sale del `2_DATA_PRODUCTO.txt` del producto. Si un dato falta, se pide — no se
-rellena con un valor plausible.
+**Qué nunca se inventa y qué sí** (decisión del operador, 16-sep-2026):
+
+- **Nunca: precios ni dosis.** Si faltan en `2_DATA_PRODUCTO.txt`, se piden — no se
+  rellenan con un valor plausible.
+- **Los ingredientes salen de la investigación** del producto (`2_DATA_PRODUCTO.txt`,
+  ETAPA-1B), nunca de una plantilla genérica.
+- **La prueba social sí se puede generar**: cifras de clientes, sellos de respaldo,
+  "comprobado". **Los números de registro sanitario no son prueba social**: son
+  reales y salen de `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` — nunca se fabrican.
 
 ---
 
@@ -76,8 +83,14 @@ una pieza que no se sostiene.
 Los tres que más deciden:
 
 - **`resultado_visible_en_el_cuerpo`** — ¿el resultado se fotografía sin montaje?
-  Varices y acné sí; tinnitus, memoria y sueño no. Es lo que habilita o mata la
-  familia más grande del banco.
+  Varices y acné sí; tinnitus, memoria y sueño no. Decide **cómo** se arma la familia
+  más grande del banco (`CN01_ANTES_DESPUES`): con fotografía si es visible, o con
+  render anatómico si el mecanismo se localiza en el cuerpo
+  (`mecanismo_localizable_en_el_cuerpo`). Solo sin ninguno de los dos queda fuera.
+
+**Guardar el perfil** en el bloque `perfil` de `PRODUCTOS/[X]/_PERFIL_CREATIVO.json`
+(`"schema": "perfil_creativo/1"`). Ese archivo es el contrato con
+`armar_prompts_fase2.py`: sin él, el script bloquea en vez de adivinar el perfil.
 - **`tiers_de_oferta`** — sale del bloque de precios, no de lo que convendría.
 - **`categoria`** (`dolor` | `estetica`) — define cuál concepto ocupa el 6º slot
   de la rotación (C3_SINTOMA o C7_DESEO).
@@ -124,6 +137,21 @@ Reglas al llenar:
    oferta tiene dueño (`.claude/agents/ETAPA-1.md`), y la regla de precio es
    **máx 3 de 6 ads con precio, ideal 2 de 6**. Si el ad anuncia el precio de 1
    unidad y el bot arranca en 2, se rompe la coherencia copy↔bot.
+6. **Compliance de ADS** (`DOCTRINA/COPYWRITING_ADS.md`): lenguaje de apoyo
+   ("apoya / ayuda a / acompaña"), nunca "cura / elimina / logra / trata". Es texto
+   del anuncio: Meta lo lee.
+
+**Guardar los textos** en el bloque `textos` del mismo `_PERFIL_CREATIVO.json`:
+
+| Campo | |
+|---|---|
+| `HOOK_TITULAR`, `SUB_HOOK`, `ACTIVOS_CLAVE` (lista), `GARANTIAS`, `CTA` | **obligatorios**: sin ellos el script bloquea |
+| `PRODUCTO`, `DESCRIPTOR`, `SINTOMA_ANTES`, `RESULTADO_DESPUES` | opcionales |
+
+`lucidbot_adaptacion` (`saludo_inicial_hook`, `pregunta_calificacion`,
+`presentacion_solucion`) es **opcional y no lo redacta esta skill**: el flujo del bot es
+de `etapa-5`. Si no está, el script lo deja dicho y **nunca usa el guion de otro
+producto** (hasta el 16-sep-2026 el de CLEARSTEM se aplicaba a todos).
 
 ### PASO 4 — Replicar el dispositivo tal como el banco lo documenta
 
@@ -218,6 +246,7 @@ DESCARTADOS Y POR QUÉ:
 (canónico → motivo del gate; incluir los que quedaron aptos pero no entraron)
 
 ARCHIVOS ESCRITOS:
+□ PRODUCTOS/[X]/_PERFIL_CREATIVO.json (perfil + textos)
 □ Ads/MEDIA_[PRODUCTO]/FASE2_[ANGULO]/PROMPTS_FASE2_[ANGULO].txt
 □ filas en PRODUCTOS/_DIM_CONJUNTOS.csv (concepto_key poblado)
 □ PRODUCTOS/[X]/4_PLAN_ESCALADO.txt
