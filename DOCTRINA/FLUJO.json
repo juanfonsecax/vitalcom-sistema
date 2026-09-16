@@ -56,7 +56,7 @@
      "produce": [
       {"dato": "2_DATA_PRODUCTO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/2_DATA_PRODUCTO.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
       {"dato": "1_HACER_MANUAL.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/1_HACER_MANUAL.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
-      {"dato": "break-even calculado (cpa_be_q)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cpa_be_q", "num_min": 1}, "dueno": "etapa-1 · Ads/_TOOLS/costear.py", "regla": "invariante 2"},
+      {"dato": "break-even calculado (cpa_be_q)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cpa_be_q", "num_min": 1}, "dueno": "etapa-guardar-producto (SALIDA 5) · el numero lo calcula costear.py, etapa-1 lo usa, etapa-guardar-producto lo escribe", "regla": "invariante 2"},
       {"dato": "_PLAN.json fase 1 con ≥6 conjuntos (contrato plan/1)",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN.json", "campo": "schema", "eq": "plan/1"},

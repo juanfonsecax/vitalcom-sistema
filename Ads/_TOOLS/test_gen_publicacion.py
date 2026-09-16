@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """test_gen_publicacion.py — GATE DE LA NUMERACION Y EL BRAZO EN gen_publicacion.py.
 
-Congela dos defectos de la cadena de FASE 2 (simulación Turmeric, 22-sep-2026):
+Congela tres defectos de la cadena de FASE 2/3 (simulación Turmeric, 22-sep-2026):
 
   · orden_nombre_de(): antes el numero del nombre del anuncio salia de un contador
     LOCAL A LA CORRIDA (orden_global, reseteado a 0 en cada invocacion). Publicar el
@@ -11,6 +11,11 @@ Congela dos defectos de la cadena de FASE 2 (simulación Turmeric, 22-sep-2026):
   · chequear_brazo_ambiguo(): sin --brazo-creativos, un angulo con mas de un brazo
     declarado en _DIM_CREATIVOS.csv tomaba las primeras piezas del CSV sin avisar —
     publicar el brazo B sin el flag republicaria el pool del brazo A.
+  · nombre_conjunto()/siguiente_replica() (G0.5 punto 4.1, 15-sep-2026): el R[N] del
+    nombre salia de 'i', la posicion del conjunto DENTRO DEL LOOP de la corrida — no
+    de cuantas replicas reales ya tiene ese angulo en Meta. Republicar (una tanda mas
+    de escalado horizontal) volvia a nombrar R1, R2... encima de replicas que ya
+    existian; la simulacion tuvo que fijarlo a mano a R1 para poder avanzar (f71f9ec).
 
 USO:  python Ads/_TOOLS/test_gen_publicacion.py     (exit 0 = pasa, 1 = falla)
 """
@@ -100,6 +105,69 @@ def test_no_bloquea_con_un_solo_brazo_o_ninguno():
     return 0 if ok else 1
 
 
+def _conjunto(pk, angulo, cta, n):
+    return {"producto_key": pk, "angulo_key": angulo, "cuenta_alias": cta,
+            "conjunto_meta": "%s_%s_%s_R%d" % (cta, pk, angulo.replace("_", "-"), n)}
+
+
+def test_siguiente_replica_continua_donde_quedo_en_meta():
+    filas = [_conjunto("TINNIDROP", "PERDIDA_AUDITIVA", "GTR7", 1),
+             _conjunto("TINNIDROP", "PERDIDA_AUDITIVA", "GTR7", 2),
+             _conjunto("TINNIDROP", "PERDIDA_AUDITIVA", "GTR7", 3)]
+    n = gp.siguiente_replica(filas, "TINNIDROP", "PERDIDA_AUDITIVA", "GTR7")
+    ok = n == 4
+    print(("  OK     " if ok else "  FALLA  ")
+          + "con R1-R2-R3 ya en _DIM_CONJUNTOS.csv, la siguiente replica es R4 (no R1)"
+          + ("" if ok else f"\n         obtenido={n}"))
+    return 0 if ok else 1
+
+
+def test_siguiente_replica_sin_historial_arranca_en_1():
+    n = gp.siguiente_replica([], "PRODUCTO_NUEVO", "ANGULO_X", "GTR0")
+    ok = n == 1
+    print(("  OK     " if ok else "  FALLA  ")
+          + "sin filas para este producto+angulo+cuenta, arranca en R1"
+          + ("" if ok else f"\n         obtenido={n}"))
+    return 0 if ok else 1
+
+
+def test_siguiente_replica_no_mezcla_angulo_ni_cuenta():
+    filas = [_conjunto("TINNIDROP", "PERDIDA_AUDITIVA", "GTR7", 5),
+             _conjunto("TINNIDROP", "DETERIORO_COGNITIVO", "GTR7", 9),
+             _conjunto("TINNIDROP", "PERDIDA_AUDITIVA", "GTR1", 7)]
+    n = gp.siguiente_replica(filas, "TINNIDROP", "PERDIDA_AUDITIVA", "GTR7")
+    ok = n == 6
+    print(("  OK     " if ok else "  FALLA  ")
+          + "el R9 de otro angulo y el R7 de otra cuenta no contaminan el conteo (da R6, no R10)"
+          + ("" if ok else f"\n         obtenido={n}"))
+    return 0 if ok else 1
+
+
+def test_siguiente_replica_ignora_huecos_por_pausas():
+    """ETAPA-6.md regla 2: el numero no se reutiliza aunque R2 este pausada — el maximo
+    historico manda, nunca la cuenta de filas vivas."""
+    filas = [_conjunto("VARICOSE", "VERGUENZA_PIERNAS", "GTR7", 1),
+             _conjunto("VARICOSE", "VERGUENZA_PIERNAS", "GTR7", 2)]
+    filas[1]["estado"] = "PAUSADO"
+    n = gp.siguiente_replica(filas, "VARICOSE", "VERGUENZA_PIERNAS", "GTR7")
+    ok = n == 3
+    print(("  OK     " if ok else "  FALLA  ")
+          + "una replica pausada sigue contando para el maximo: la siguiente es R3, no reusa R2"
+          + ("" if ok else f"\n         obtenido={n}"))
+    return 0 if ok else 1
+
+
+def test_nombre_conjunto_fase2_no_cambia_de_semantica():
+    """La FASE 2 no usa siguiente_replica: 'numero' sigue siendo la posicion dentro del
+    brazo (A1, A2...), sin tocar."""
+    nombre = gp.nombre_conjunto(2, "GTR7", "TINNIDROP", "PERDIDA_AUDITIVA", "A", 3)
+    ok = nombre == "GTR7_TINNIDROP_PERDIDA-AUDITIVA_A3"
+    print(("  OK     " if ok else "  FALLA  ")
+          + "fase 2 sigue nombrando por posicion en el brazo, no por replica"
+          + ("" if ok else f"\n         obtenido={nombre!r}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_orden_estable_brazo_b_continua_donde_termina_a()
@@ -107,6 +175,11 @@ def main():
     fallas += test_bloquea_multibrazo_sin_flag()
     fallas += test_no_bloquea_con_flag_explicito()
     fallas += test_no_bloquea_con_un_solo_brazo_o_ninguno()
+    fallas += test_siguiente_replica_continua_donde_quedo_en_meta()
+    fallas += test_siguiente_replica_sin_historial_arranca_en_1()
+    fallas += test_siguiente_replica_no_mezcla_angulo_ni_cuenta()
+    fallas += test_siguiente_replica_ignora_huecos_por_pausas()
+    fallas += test_nombre_conjunto_fase2_no_cambia_de_semantica()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 
