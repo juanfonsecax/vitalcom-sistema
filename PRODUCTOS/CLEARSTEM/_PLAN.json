@@ -21,7 +21,7 @@
   "conjuntos": [
     {
       "n": 1,
-      "angulo_key": "RESISTENCIA_INSULINA",
+      "angulo_key": "RESISTENCIA_INSULINA_SOP",
       "angulo_titulo": "Acné hormonal y resistencia a la insulina (SOP)",
       "avatar_edad": "25-35",
       "avatar_genero": "MUJER",
