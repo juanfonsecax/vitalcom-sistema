@@ -189,50 +189,90 @@ No se cambia el flujo a ciegas: se corren **dos flujos en paralelo** y se mide.
 ```
 BRAZO A — PARAGUAS OPTIMIZADO
   el MISMO flujo que ya trae ventas, con los cambios del PASO 5 aplicados.
-  Sigue recibiendo el tráfico de todos los ángulos vivos.
 
 BRAZO B — DEDICADO AL ÁNGULO GANADOR
   producto NUEVO en el catálogo de LucidBot (nombre similar + el ángulo),
   flujo 100 % construido sobre el ángulo ganador por `etapa-5`.
-  Recibe SOLO los creativos de ese ángulo.
 
-RUTEO: LucidBot detecta de qué Post ID / campaña viene la conversación y la manda
-al producto-flujo configurado para esa campaña. Mismo número, misma página,
-misma oferta → lo único que cambia entre brazos es EL FLUJO.
+LOS DOS BRAZOS RECIBEN EL MISMO TRÁFICO: dos conjuntos NUEVOS y GEMELOS del ángulo ganador.
+  Mismos creativos, misma banda, Advantage+ OFF, mismo presupuesto diario (invariante 6),
+  mismo arranque a las 4 AM, misma página, mismo número, mismos precios, mismo producto
+  físico. Lo ÚNICO distinto entre los dos es a qué flujo rutea cada uno.
+
+RUTEO: LucidBot rutea por Post ID. Cada gemelo es una PUBLICACIÓN distinta (mismo creativo,
+  mismo copy, publicación nueva): si comparten publicación, comparten flujo y el test no existe.
 ```
+
+> **Por qué gemelos, y no "A = los otros ángulos, B = el ganador"** (el diseño que estuvo acá
+> hasta el 16-sep-2026): el ganador ya cierra mejor **por ser el ganador**, con el mismo flujo.
+> Ese reparto comparaba ángulos, no flujos. Medido con el Fisher de `decidir.py`, 460 mensajes
+> por brazo y los cierres de la simulación TURMERIC (el ganador cerraba 15.3 %, el resto 9.7 %):
+>
+> | Diseño | Los dos flujos | "El flujo B gana" |
+> |---|---|---|
+> | viejo: A = otros ángulos, B = ganador | **idénticos (no cambió nada)** | **70 %** |
+> | gemelos del ganador | idénticos | 1.9 % |
+> | gemelos del ganador | el B sí mejora (15.3 % → 22 %) | 70 % |
+>
+> El diseño viejo daba **lo mismo** si el flujo nuevo mejoraba que si no cambiaba nada. Lo
+> congela `Ads/_TOOLS/test_ab_flujo.py`.
+
+**El resto del tráfico** —las réplicas `R[N]` del ganador que ya corren y los otros ángulos
+vivos— va al **paraguas optimizado**, igual que hoy. Se reporta antes/después contra la línea
+base de la ventana **solo como indicativo**: no es parte de la comparación.
+
+**Mientras dure el test, toda campaña de conceptos de FASE 2 rutea a UN solo flujo (el A).** Si los
+conceptos nuevos entran al brazo B, B cambia creativo y flujo a la vez y nada es atribuible.
+
+**Se declara como EXPERIMENTO, nunca como réplica.** Dos conjuntos del mismo ángulo que corren
+distinto dejan de ser réplicas (`ETAPA-6.md`): el A/B va en `PRODUCTOS/_TESTEOS.csv` con su
+`test_id`, `variable` = `flujo`, `angulo_fijo` = el ganador, y un brazo por gemelo (`brazo_key`
+A/B, `conjuntos_meta` = el nombre exacto de su conjunto). Para **decidir por ángulo** los gemelos
+se suman como siempre (invariante 12); para **leer el A/B**, se leen separados.
 
 **Reglas duras del test:**
 - **Un solo cambio por brazo por ventana.** Si se renuevan creativos y flujo a la vez, nada es
   atribuible — el mismo error que la doctrina ya corrigió en creativos.
-- **Misma página, mismo número, mismos precios, mismo producto físico** en los dos brazos.
-- **El ruteo se verifica ANTES de lanzar**, con una conversación de prueba por brazo. Si el Post ID
-  no rutea, el test no existe y los dos brazos se contaminan.
-- **Tamaño de muestra mínimo antes de leer el resultado** (α 0.05, poder 80 %, sobre un cierre base
-  de ~9 %):
+- **El ruteo se verifica ANTES de lanzar**, con una conversación de prueba desde cada gemelo. Si el
+  Post ID no rutea, el test no existe y los dos brazos se contaminan.
+- **El tamaño de muestra se calcula con el cierre REAL del ganador, nunca con una tabla fija:**
 
-  | Efecto a detectar | msj por brazo | a 30 msj/día | a 60 msj/día |
-  |---|---|---|---|
-  | 9 % → 15 % (el del mentor) | **460** | 31 días | 16 días |
-  | 9 % → 13 % | 960 | 64 días | 32 días |
-  | 9 % → 12 % | 1,638 | 110 días | 55 días |
+  ```bash
+  python Ads/_TOOLS/ab_flujo.py --base [cierre del ganador] --objetivo [cierre esperado] --msj-dia [msj por brazo]
+  ```
 
-  > **Leer esta tabla antes de prometer un veredicto.** El A/B detecta efectos GRANDES en tiempo
-  > razonable; una mejora de 3 puntos necesita meses. Si el producto no junta el `n`, se dice que
-  > el test es **indicativo, no concluyente**, y se decide con el resto de la evidencia.
-- **Escalado del diseño:** con varios ángulos ganadores, se replica — **una campaña por ángulo, con
-  sus creativos, ruteada a su flujo dedicado**.
+  Ejemplos (α 0.05, poder 80 %, salidos de ese script):
+
+  | Cierre base → objetivo | msj por brazo |
+  |---|---|
+  | 9 % → 15 % | 460 |
+  | 9 % → 13 % | 960 |
+  | 15.3 % → 25 % | 268 |
+  | 15.3 % → 22 % | 530 |
+  | 15.3 % → 20 % | 1,032 |
+
+  > La tabla que estuvo acá asumía un cierre base de 9 % para todo producto; el ganador de TURMERIC
+  > cerraba 15.3 %. **Leer el `n` antes de prometer un veredicto:** el A/B detecta efectos GRANDES
+  > en tiempo razonable. Si el producto no junta el `n`, el test es **indicativo, no concluyente**,
+  > y se decide con el resto de la evidencia.
+- **Se lee UNA sola vez, al llegar al `n`** (más la maduración COD). Mirar antes y decidir en una
+  lectura intermedia infla el falso ganador. La lectura es Fisher sobre el cierre (ventas ÷
+  mensajes) de cada gemelo: el mismo `comparar_cierre` de `decidir.py`.
+- **Escalado del diseño:** con varios ángulos ganadores, un par de gemelos por ángulo, cada par
+  ruteado a su flujo dedicado contra el paraguas. **Se replica solo si B gana en el ángulo
+  principal:** cada par necesita su propio `n`, y en ángulos chicos eso son meses.
 
 ### PASO 7 — REGISTRAR, o el test no existe
 
 **Escribir en `_EVENTOS.csv`** (escritor CSV real, campos con comas entre comillas):
 
-| campo | brazo A | brazo B |
-|---|---|---|
-| `evento` | `CAMBIO_BOT` | `LANZAMIENTO` |
-| `conjunto_meta` | `*` | `*` |
-| `valor_antes` / `valor_despues` | cierre previo → cierre objetivo | — |
-| `motivo` | los cambios del PASO 5, en una línea | flujo dedicado a `[angulo_key]`, brazo B del A/B |
-| `fuente_decision` | `ETAPA-11 [fecha]` | `ETAPA-11 [fecha]` |
+| campo | paraguas optimizado | gemelo A | gemelo B |
+|---|---|---|---|
+| `evento` | `CAMBIO_BOT` | `LANZAMIENTO` | `LANZAMIENTO` |
+| `conjunto_meta` | `*` | el nombre exacto del gemelo A | el nombre exacto del gemelo B |
+| `valor_antes` / `valor_despues` | cierre previo → cierre objetivo | — | — |
+| `motivo` | los cambios del PASO 5, en una línea | brazo A del A/B `[test_id]`: paraguas optimizado | brazo B del A/B `[test_id]`: flujo dedicado a `[angulo_key]` |
+| `fuente_decision` | `ETAPA-11 [fecha]` | `ETAPA-11 [fecha]` | `ETAPA-11 [fecha]` |
 
 > 🔴 **Esto no es burocracia: es la precondición del aprendizaje.** En toda la serie 17-jul → 01-sep
 > hay **un solo `CAMBIO_BOT` registrado**, y es anterior a la data. Por eso hoy es imposible saber
@@ -257,7 +297,7 @@ CHATS: [n conversaciones / NO DISPONIBLES → diagnóstico de localización, no 
 3. CONGRUENCIA ad ↔ flujo       → C1-C6, cada desajuste citado textual
 4. DÓNDE SE CAE (chats)         → punto de abandono · FAQ faltantes · objeciones
 5. BRIEF PARA etapa-5           → cambios priorizados (valor → fricción → congruencia → oferta → FAQ)
-6. DISEÑO DEL A/B               → brazo A, brazo B, ruteo, n mínimo, fecha de lectura
+6. DISEÑO DEL A/B               → gemelos del ganador, ruteo, n (ab_flujo.py), test_id, fecha de lectura
 7. FILAS PARA _EVENTOS.csv      → los dos eventos, listos para anexar
 8. TODAVÍA NO SE PUEDE DECIR    → lo que está bajo el piso, con su n y cuánto falta
 ══════════════════════════════════════════════════════
@@ -273,14 +313,16 @@ carpeta del producto). El texto del flujo resultante lo escribe `etapa-5`, y lle
 ## REGLAS
 
 1. **El texto del flujo es de `etapa-5`.** Esta etapa entrega brief, nunca redacción final.
-2. **Agregar por `angulo_key`**, sumando réplicas. Nunca por conjunto-semana.
+2. **Agregar por `angulo_key`**, sumando réplicas. Nunca por conjunto-semana. (Los gemelos del A/B
+   también suman para decidir por ángulo; para leer el A/B se leen separados — PASO 6.)
 3. **Piso de evidencia:** ≥60 mensajes y ≥5 ventas por ángulo, con IC de Poisson reportado.
 4. **Cierre semanal, nunca diario.** Ventana mínima 7 días.
 5. **La conversación localiza, no corona** (APR-002).
 6. **NUNCA suavizar el flujo por compliance.** El compliance es de los ADS; el bot vende.
 7. **Verificar la consistencia física ad↔destino antes de culpar al texto** (lección VARICOSE).
 8. **Sin chats, se dice DÓNDE y nunca POR QUÉ.** La limitación se escribe, no se disimula.
-9. **Un solo cambio por brazo por ventana**, o el A/B no mide nada.
+9. **Los dos brazos del A/B son gemelos del MISMO ángulo** y cambian una sola cosa por ventana: el
+   flujo. Repartir ángulos distintos entre brazos compara ángulos, no flujos (70 % de falso ganador).
 10. **Todo cambio de flujo se loguea en `_EVENTOS.csv`** el día que se aplica.
 11. **Voseo guatemalteco** en toda propuesta de texto que vea el cliente.
 12. **Los CSV se editan con escritor CSV real**, campos con comas entre comillas dobles.
@@ -292,7 +334,7 @@ carpeta del producto). El texto del flujo resultante lo escribe `etapa-5`, y lle
 
 Corre **después de `etapa-7`** (que trae las métricas y verifica integridad) y **al confirmar el
 ángulo ganador**, es decir **entre FASE 1 y FASE 2**. Entrega el brief a **`etapa-5`**, que
-reescribe los dos flujos, y el diseño del A/B a **`etapa-6`**, que arma las campañas del brazo B.
+reescribe los dos flujos, y el diseño del A/B a **`etapa-6`**, que arma los dos conjuntos gemelos.
 
 Los cuatro lectores del ciclo no se pisan:
 - `etapa-7` mide **qué pasó** · `etapa-8` mueve **el dinero** ·

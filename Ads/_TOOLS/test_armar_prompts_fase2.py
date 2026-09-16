@@ -107,12 +107,117 @@ def test_no_quedan_diccionarios_precios_gt_hardcodeados():
     return 0 if ok else 1
 
 
+# ── _PERFIL_CREATIVO.json — el codigo ya no nombra productos (defecto residual de la simulacion,
+#    16-sep-2026). Tenia el perfil, los textos del creativo y el guion del bot escritos a mano:
+#    `if producto_key == "CLEARSTEM"`. Un producto nuevo caia en un `else` que inventaba sus
+#    ingredientes, y el guion de CLEARSTEM se aplicaba a TODOS — el paquete real de TINNIDROP
+#    saluda "Vi que te interesó Clearstem para el acné hormonal".
+
+def _con_producto(perfil_creativo=None):
+    """PROD_DIR temporal con un producto PX (carpeta PX_CARPETA) y, opcional, su perfil creativo."""
+    import json
+    tmp = tempfile.mkdtemp(prefix="ap_perfil_")
+    with open(os.path.join(tmp, "_DIM_PRODUCTOS.csv"), "w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["producto_key", "slug_carpeta"])
+        w.writerow(["PX", "PX_CARPETA"])
+    os.makedirs(os.path.join(tmp, "PX_CARPETA"))
+    if perfil_creativo is not None:
+        with open(os.path.join(tmp, "PX_CARPETA", ap.PERFIL_CREATIVO), "w", encoding="utf-8") as fh:
+            json.dump(perfil_creativo, fh)
+    return tmp
+
+
+def _bajo(tmp, fn):
+    viejo = ap.PROD_DIR
+    ap.PROD_DIR = tmp
+    try:
+        return fn(), None
+    except SystemExit as e:
+        return None, str(e)
+    finally:
+        ap.PROD_DIR = viejo
+
+
+def test_el_codigo_no_decide_por_nombre_de_producto():
+    """Ninguna comparacion del modulo contra un producto_key real: el dato vive en su archivo."""
+    import ast
+    with open(os.path.join(ap.PROD_DIR, "_DIM_PRODUCTOS.csv"), encoding="utf-8-sig") as fh:
+        claves = {r["producto_key"].upper() for r in csv.DictReader(fh)}
+    with open(ap.__file__, encoding="utf-8") as fh:
+        arbol = ast.parse(fh.read())
+    ofensivas = []
+    for n in ast.walk(arbol):
+        if isinstance(n, ast.Compare):
+            for c in [n.left] + n.comparators:
+                if isinstance(c, ast.Constant) and isinstance(c.value, str) and c.value.upper() in claves:
+                    ofensivas.append("linea %d: %r" % (n.lineno, c.value))
+    ok = not ofensivas
+    print(("  OK     " if ok else "  FALLA  ")
+          + "ninguna rama del codigo compara contra el nombre de un producto"
+          + ("" if ok else "\n         " + "; ".join(ofensivas)))
+    return 0 if ok else 1
+
+
+def test_no_queda_guion_de_bot_escrito_en_el_codigo():
+    """El guion de LucidBot sale del perfil del producto, nunca de un string del modulo."""
+    import ast
+    with open(ap.__file__, encoding="utf-8") as fh:
+        arbol = ast.parse(fh.read())
+    ofensivas = [n.lineno for n in ast.walk(arbol) if isinstance(n, ast.Dict)
+                 for k, v in zip(n.keys, n.values)
+                 if isinstance(k, ast.Constant) and k.value in ("saludo_inicial_hook", "presentacion_solucion")
+                 and isinstance(v, (ast.Constant, ast.JoinedStr))]
+    ok = not ofensivas
+    print(("  OK     " if ok else "  FALLA  ")
+          + "ningun guion de bot escrito a mano en el codigo (el de CLEARSTEM se aplicaba a todos)"
+          + ("" if ok else f"\n         lineas: {ofensivas}"))
+    return 0 if ok else 1
+
+
+def test_producto_sin_perfil_creativo_bloquea_nombrando_al_productor():
+    _, err = _bajo(_con_producto(), lambda: ap.cargar_perfil_creativo("PX"))
+    ok = bool(err) and "BLOQUEANTE" in err and "_PERFIL_CREATIVO.json" in err and "generar-conceptos" in err
+    print(("  OK     " if ok else "  FALLA  ")
+          + "producto sin _PERFIL_CREATIVO.json: bloquea y nombra a generar-conceptos, no inventa"
+          + ("" if ok else f"\n         err={err!r}"))
+    return 0 if ok else 1
+
+
+def test_perfil_sin_textos_bloquea_y_lista_los_que_faltan():
+    doc = {"schema": "perfil_creativo/1", "perfil": {}, "textos": {"HOOK_TITULAR": "x", "CTA": "y"}}
+    _, err = _bajo(_con_producto(doc), lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX"))
+    ok = (bool(err) and "SUB_HOOK" in err and "ACTIVOS_CLAVE" in err and "GARANTIAS" in err
+          and "HOOK_TITULAR" not in err.split("textos:")[1].split(".")[0])
+    print(("  OK     " if ok else "  FALLA  ")
+          + "textos incompletos: bloquea y nombra exactamente los que faltan (nunca un texto generico)"
+          + ("" if ok else f"\n         err={err!r}"))
+    return 0 if ok else 1
+
+
+def test_lo_no_declarado_del_perfil_queda_falso_no_optimista():
+    """El `else` viejo asumia resultado_visible_en_el_cuerpo=True para todo producto nuevo."""
+    doc = {"schema": "perfil_creativo/1", "perfil": {"categoria": "dolor"}, "textos": {}}
+    p, err = _bajo(_con_producto(doc), lambda: ap.obtener_perfil_producto("PX", "ANG"))
+    ok = (err is None and p["categoria"] == "dolor" and p["resultado_visible_en_el_cuerpo"] is False
+          and p["producto"] == "PX" and p["angulo_ganador"] == "ANG")
+    print(("  OK     " if ok else "  FALLA  ")
+          + "perfil: lo declarado manda y lo no declarado queda falso (regla de seleccionar_canonicos)"
+          + ("" if ok else f"\n         p={p} err={err!r}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_producto_sin_fila_bloquea_no_hereda_precios_de_otro()
     fallas += test_producto_solo_inactivo_bloquea_igual()
     fallas += test_producto_con_fila_activa_arma_la_escalera_real()
     fallas += test_no_quedan_diccionarios_precios_gt_hardcodeados()
+    fallas += test_el_codigo_no_decide_por_nombre_de_producto()
+    fallas += test_no_queda_guion_de_bot_escrito_en_el_codigo()
+    fallas += test_producto_sin_perfil_creativo_bloquea_nombrando_al_productor()
+    fallas += test_perfil_sin_textos_bloquea_y_lista_los_que_faltan()
+    fallas += test_lo_no_declarado_del_perfil_queda_falso_no_optimista()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

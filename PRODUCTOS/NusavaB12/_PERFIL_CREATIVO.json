@@ -1,0 +1,29 @@
+{
+  "schema": "perfil_creativo/1",
+  "producto_key": "NUSAVA",
+  "producido_por": "skill generar-conceptos — PASO 1 (perfil) y PASO 3 (textos)",
+  "origen": "migrado el 16-sep-2026 desde armar_prompts_fase2.py, donde estaba escrito a mano dentro del codigo. Valores identicos a los que usaba el script.",
+  "perfil": {
+    "categoria": "dolor",
+    "resultado_visible_en_el_cuerpo": false,
+    "resultado_fotografiable_sin_montaje": false,
+    "es_tratamiento_con_curva": true,
+    "tiers_de_oferta": 3,
+    "tiene_multiplicador": false,
+    "activo_estrella_con_dosis": false,
+    "mecanismo_localizable_en_el_cuerpo": true,
+    "modo_de_uso_no_obvio": false,
+    "momento_de_uso_distintivo": false,
+    "alternativa_conocida": "",
+    "prueba_social_clientes": 1000,
+    "testimonios_reales_disponibles": 0,
+    "fanpage_con_reconocimiento_local": false,
+    "sintomas_reconocibles": 3,
+    "gesto_del_dolor_fotografiable": false,
+    "beneficios_distintos": 4,
+    "frase_con_giro_disponible": false,
+    "atributos_de_producto_diferenciales": 0,
+    "avatar_fotografiable": false,
+    "nivel_conciencia_objetivo": 3
+  }
+}

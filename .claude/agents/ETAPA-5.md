@@ -606,8 +606,9 @@ En FASE 2, esta etapa recibe además el **brief de `etapa-11`** (optimizador de 
   aplicados en su orden de prioridad: **propuestas de valor primero** (M-F06), después fricción,
   congruencia ad↔bot, oferta/framing y FAQ nuevas.
 - **BRAZO B — dedicado:** el flujo de un solo ángulo que esta etapa ya sabe construir, para un
-  **producto nuevo del catálogo de LucidBot** al que se rutea por Post ID el tráfico del ángulo
-  ganador.
+  **producto nuevo del catálogo de LucidBot** al que se rutea por Post ID el tráfico de **su conjunto
+  gemelo**. Los dos brazos son gemelos del ángulo ganador: mandar a B todo el ganador y a A el resto
+  compara ángulos, no flujos (diseño y evidencia en el PASO 6 de `ETAPA-11.md`).
 
 **El texto sigue siendo de esta etapa.** `etapa-11` diagnostica y prioriza; ETAPA-5 redacta —
 misma división que `etapa-10` → `etapa-9`. Un cambio del brief que contradiga una regla dura de
