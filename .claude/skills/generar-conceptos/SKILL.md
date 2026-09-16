@@ -35,7 +35,7 @@ sería atribuible).
 | Prompt Maestro y los 15 estilos anti-fatiga | `DOCTRINA/PLANTILLAS_ADS.md` |
 | Precios, CPA objetivo, break even | `PRODUCTOS/[X]/2_DATA_PRODUCTO.txt` |
 | Tono y edad de la página | `.claude/agents/ETAPA-FANPAGE.md` (ya resuelto en `<pagina_asignada>`) |
-| **El perfil, los textos del creativo y el guion del bot, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1 y PASO 3) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
+| **El perfil y los textos del creativo, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1 y PASO 3) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
 
 **Qué nunca se inventa y qué sí** (decisión del operador, 16-sep-2026):
 
@@ -88,12 +88,13 @@ Los tres que más deciden:
   render anatómico si el mecanismo se localiza en el cuerpo
   (`mecanismo_localizable_en_el_cuerpo`). Solo sin ninguno de los dos queda fuera.
 
-**Guardar el perfil** en el bloque `perfil` de `PRODUCTOS/[X]/_PERFIL_CREATIVO.json`
-(`"schema": "perfil_creativo/1"`). Ese archivo es el contrato con
-`armar_prompts_fase2.py`: sin él, el script bloquea en vez de adivinar el perfil.
 - **`tiers_de_oferta`** — sale del bloque de precios, no de lo que convendría.
 - **`categoria`** (`dolor` | `estetica`) — define cuál concepto ocupa el 6º slot
   de la rotación (C3_SINTOMA o C7_DESEO).
+
+**Guardar el perfil** en el bloque `perfil` de `PRODUCTOS/[X]/_PERFIL_CREATIVO.json`
+(`"schema": "perfil_creativo/1"`). Ese archivo es el contrato con
+`armar_prompts_fase2.py`: sin él, el script bloquea en vez de adivinar el perfil.
 
 ### PASO 2 — Seleccionar los canónicos
 
@@ -141,17 +142,21 @@ Reglas al llenar:
    ("apoya / ayuda a / acompaña"), nunca "cura / elimina / logra / trata". Es texto
    del anuncio: Meta lo lee.
 
-**Guardar los textos** en el bloque `textos` del mismo `_PERFIL_CREATIVO.json`:
+**Guardar los textos** en el bloque `textos` del mismo `_PERFIL_CREATIVO.json`, y **declarar su
+ángulo** en `angulo_key` (idéntico al de `_DIM_CONJUNTOS.csv`). El perfil es del producto, pero los
+textos son de **un** ángulo: si el ganador cambia, el script bloquea en vez de
+usar en silencio los textos del ángulo anterior, y esta skill los vuelve a producir para el nuevo.
 
 | Campo | |
 |---|---|
 | `HOOK_TITULAR`, `SUB_HOOK`, `ACTIVOS_CLAVE` (lista), `GARANTIAS`, `CTA` | **obligatorios**: sin ellos el script bloquea |
 | `PRODUCTO`, `DESCRIPTOR`, `SINTOMA_ANTES`, `RESULTADO_DESPUES` | opcionales |
 
-`lucidbot_adaptacion` (`saludo_inicial_hook`, `pregunta_calificacion`,
-`presentacion_solucion`) es **opcional y no lo redacta esta skill**: el flujo del bot es
-de `etapa-5`. Si no está, el script lo deja dicho y **nunca usa el guion de otro
-producto** (hasta el 16-sep-2026 el de CLEARSTEM se aplicaba a todos).
+**El texto del bot NO va en este archivo.** El flujo de LucidBot tiene un solo dueño, `etapa-5`, y
+vive en `PRODUCTOS/[X]/1_HACER_MANUAL.txt`. Su regla choca con cualquier "adaptación" por ángulo:
+el saludo es **FIJO, sin el dolor del ángulo**, y **no hay pregunta de opciones** (`ETAPA-5.md`).
+El dolor va en el anuncio. (Hasta el 16-sep-2026 `armar_prompts_fase2.py` generaba un saludo con
+dolor + pregunta de calificación, escrito para CLEARSTEM y aplicado a todos: se retiró.)
 
 ### PASO 4 — Replicar el dispositivo tal como el banco lo documenta
 

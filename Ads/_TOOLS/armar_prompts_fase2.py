@@ -9,12 +9,12 @@ QUE HACE:
    - La Foto Real del producto desde Ads/MEDIA_[PRODUCTO]/
    - El JSON parametrizado con variables de dolor, precios en Q e ingredientes reales.
    - El Prompt Multimodal "Director de Arte" listo para pegar en ChatGPT / Gemini Pro.
-4. Genera además la adaptación de mensajes para LucidBot (congruencia anuncio -> bot, respetando los 13 elementos).
+4. NO escribe texto de bot: ese flujo es de etapa-5 (PRODUCTOS/[carpeta]/1_HACER_MANUAL.txt).
 
 DE DONDE SALE CADA DATO (un dato, un dueno — este script ya no nombra ningun producto)
     precios                   PRODUCTOS/_DIM_PRECIOS.csv                       (nunca se inventan)
     packshot / envase         PRODUCTOS/_DIM_ENVASE.csv
-    perfil, textos, guion     PRODUCTOS/[carpeta]/_PERFIL_CREATIVO.json        (lo escribe la skill
+    perfil y textos           PRODUCTOS/[carpeta]/_PERFIL_CREATIVO.json        (lo escribe la skill
                               generar-conceptos desde la investigacion del producto)
 Si falta cualquiera, BLOQUEA con el nombre de quien lo produce (invariante 4).
 """
@@ -222,8 +222,18 @@ def cargar_perfil_creativo(producto_key):
     return doc
 
 
-def requerir_textos(perfil_creativo, producto_key):
-    """Los textos del creativo, o BLOQUEO nombrando los que faltan. Nunca un texto generico."""
+def requerir_textos(perfil_creativo, producto_key, angulo):
+    """Los textos del creativo PARA ESTE ANGULO, o BLOQUEO. Nunca un texto generico ni de otro angulo.
+
+    El perfil (si el resultado se ve, si hay curva...) es del PRODUCTO. Los textos son de UN ANGULO: el hook de TINNIDROP ("¿cansado de gastar en consultas...?") es de
+    ACCESIBILIDAD_MEDICO. Por eso el archivo declara `angulo_key`: si el angulo ganador cambia, se
+    bloquea en vez de usar en silencio los textos del angulo anterior (16-sep-2026)."""
+    declarado = (perfil_creativo.get("angulo_key") or "").strip()
+    if declarado != angulo:
+        raise SystemExit(
+            f"BLOQUEANTE: los textos del {PERFIL_CREATIVO} de {producto_key} son del angulo "
+            f"'{declarado or '(sin declarar)'}' y se esta generando para '{angulo}'.\n"
+            f"  Los textos de un angulo no sirven para otro. Los produce {PRODUCTOR_PERFIL}, para '{angulo}'.")
     textos = perfil_creativo.get("textos") or {}
     faltan = [k for k in TEXTOS_REQUERIDOS if not textos.get(k)]
     if faltan:
@@ -276,7 +286,7 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
     # 2c. Perfil y textos DECLARADOS del producto — mismo criterio que los precios: se bloquea
     # antes de escribir un solo archivo, nunca se cae a un texto generico ni al de otro producto.
     perfil_creativo = cargar_perfil_creativo(producto_key)
-    textos = requerir_textos(perfil_creativo, producto_key)
+    textos = requerir_textos(perfil_creativo, producto_key, angulo)
 
     # 3. Selección de los 5 blueprints canónicos
     perfil = obtener_perfil_producto(producto_key, angulo, perfil_creativo)
@@ -375,27 +385,19 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
         prompts_texto.append(f"──────────────────────────────────────────────────────────────────────────────")
         prompts_texto.append(f"{prompt_ia}\n\n")
 
-    # 5. Adaptación de LucidBot para este ángulo (Congruencia extremo a extremo).
-    # El guion lo DECLARA el producto. Hasta el 16-sep estaba escrito para CLEARSTEM y se aplicaba a
-    # TODOS: el paquete de TINNIDROP saludaba "Vi que te interesó Clearstem para el acné hormonal".
-    # Sin guion declarado no se usa el de otro producto: se deja dicho y lo redacta etapa-5, que es
-    # la duena del flujo del bot. La oferta si se arma aca: sale de los precios reales y es generica.
-    guion = perfil_creativo.get("lucidbot_adaptacion") or {}
-    oferta_precio = (
-        "Hoy tenemos cobertura completa en Guatemala con PAGO CONTRA ENTREGA (pagás en efectivo al recibir):\n"
-        + "\n".join("• " + precios_reales[t] for t in ("TIER_1", "TIER_2", "TIER_3") if t in precios_reales)
-        + "\n¿A qué departamento o municipio te lo enviamos?"
-    )
-    if guion:
-        adaptacion_bot = dict(guion, angulo_ganador=angulo, oferta_precio=oferta_precio)
-    else:
-        adaptacion_bot = {
-            "angulo_ganador": angulo,
-            "estado": "SIN_GUION_DECLARADO",
-            "motivo": f"el {PERFIL_CREATIVO} de {producto_key} no trae lucidbot_adaptacion. Lo redacta "
-                      f"etapa-5 (duena del flujo del bot); no se reusa el guion de otro producto.",
-            "oferta_precio": oferta_precio,
-        }
+    # 5. El bot NO se escribe aca. El texto del flujo de LucidBot tiene un solo dueno, etapa-5, y su
+    # doctrina contradice lo que este script generaba: ETAPA-5.md manda el saludo FIJO, "SIN dolor
+    # del angulo (el saludo no cambia por angulo)", y "NO se hace la pregunta de opciones". Este
+    # script armaba "¡Hola! Vi que te interesó [producto] para [dolor]" + una pregunta de calificacion:
+    # quien lo copiara a LucidBot rompia el saludo fijo. Ademas estaba escrito para CLEARSTEM y se
+    # aplicaba a todos (16-sep-2026). Se deja solo el puntero a donde vive el flujo real.
+    carpeta = carpeta_de(producto_key)
+    adaptacion_bot = {
+        "angulo_ganador": angulo,
+        "dueno": "etapa-5 (dueno unico del texto del flujo de LucidBot)",
+        "flujo": f"PRODUCTOS/{carpeta}/1_HACER_MANUAL.txt",
+        "regla": "saludo FIJO sin dolor del angulo · sin pregunta de opciones · el dolor va en el anuncio",
+    }
 
     # Guardar archivos
     salida_txt = os.path.join(out_dir, f"PROMPTS_FASE2_{angulo}.txt")
@@ -404,16 +406,12 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
 
     salida_json = os.path.join(out_dir, f"PAQUETE_CREATIVO_{angulo}.json")
     with io.open(salida_json, "w", encoding="utf-8") as f:
-        json.dump({"producto": producto_key, "angulo": angulo, "conceptos": paquetes, "lucidbot_adaptacion": adaptacion_bot}, f, ensure_ascii=False, indent=2)
+        json.dump({"producto": producto_key, "angulo": angulo, "conceptos": paquetes, "lucidbot_flujo": adaptacion_bot}, f, ensure_ascii=False, indent=2)
 
     print(f"✅ Generados los 5 paquetes creativos multimodales en:")
     print(f"   📄 {salida_txt}")
     print(f"   📄 {salida_json}")
-    if guion:
-        print(f"\n✅ Adaptación de LucidBot generada (congruencia anuncio -> bot).")
-    else:
-        print(f"\n⚠️  Sin guion de LucidBot declarado para {producto_key}: lo redacta etapa-5. "
-              f"No se reusa el de otro producto.")
+    print(f"\n🤖 El texto del bot no se genera aca: es de etapa-5, en {adaptacion_bot['flujo']}.")
     return salida_txt, salida_json, paquetes, adaptacion_bot
 
 

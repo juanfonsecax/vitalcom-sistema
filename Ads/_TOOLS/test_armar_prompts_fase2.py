@@ -159,18 +159,24 @@ def test_el_codigo_no_decide_por_nombre_de_producto():
     return 0 if ok else 1
 
 
-def test_no_queda_guion_de_bot_escrito_en_el_codigo():
-    """El guion de LucidBot sale del perfil del producto, nunca de un string del modulo."""
+def test_el_script_no_genera_ni_lee_texto_de_bot():
+    """El flujo de LucidBot es de etapa-5. Este script armaba "¡Hola! Vi que te interesó [producto]
+    para [dolor]" + una pregunta de calificacion, contra ETAPA-5.md (saludo FIJO sin dolor, sin
+    pregunta de opciones), escrito para CLEARSTEM y aplicado a todos. No debe volver: ni como string
+    del modulo ni leido de un archivo."""
     import ast
     with open(ap.__file__, encoding="utf-8") as fh:
         arbol = ast.parse(fh.read())
-    ofensivas = [n.lineno for n in ast.walk(arbol) if isinstance(n, ast.Dict)
-                 for k, v in zip(n.keys, n.values)
-                 if isinstance(k, ast.Constant) and k.value in ("saludo_inicial_hook", "presentacion_solucion")
-                 and isinstance(v, (ast.Constant, ast.JoinedStr))]
+    claves_bot = ("saludo_inicial_hook", "pregunta_calificacion", "presentacion_solucion", "lucidbot_adaptacion")
+    docstrings = {id(n.body[0].value) for n in ast.walk(arbol)
+                  if isinstance(n, (ast.Module, ast.FunctionDef)) and n.body
+                  and isinstance(n.body[0], ast.Expr) and isinstance(n.body[0].value, ast.Constant)}
+    ofensivas = sorted({n.lineno for n in ast.walk(arbol)
+                        if isinstance(n, ast.Constant) and isinstance(n.value, str)
+                        and id(n) not in docstrings and any(k in n.value for k in claves_bot)})
     ok = not ofensivas
     print(("  OK     " if ok else "  FALLA  ")
-          + "ningun guion de bot escrito a mano en el codigo (el de CLEARSTEM se aplicaba a todos)"
+          + "el script no genera ni lee texto de bot (es de etapa-5: saludo fijo, sin pregunta de opciones)"
           + ("" if ok else f"\n         lineas: {ofensivas}"))
     return 0 if ok else 1
 
@@ -185,13 +191,34 @@ def test_producto_sin_perfil_creativo_bloquea_nombrando_al_productor():
 
 
 def test_perfil_sin_textos_bloquea_y_lista_los_que_faltan():
-    doc = {"schema": "perfil_creativo/1", "perfil": {}, "textos": {"HOOK_TITULAR": "x", "CTA": "y"}}
-    _, err = _bajo(_con_producto(doc), lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX"))
+    doc = {"schema": "perfil_creativo/1", "angulo_key": "ANG", "perfil": {}, "textos": {"HOOK_TITULAR": "x", "CTA": "y"}}
+    _, err = _bajo(_con_producto(doc), lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ANG"))
     ok = (bool(err) and "SUB_HOOK" in err and "ACTIVOS_CLAVE" in err and "GARANTIAS" in err
           and "HOOK_TITULAR" not in err.split("textos:")[1].split(".")[0])
     print(("  OK     " if ok else "  FALLA  ")
           + "textos incompletos: bloquea y nombra exactamente los que faltan (nunca un texto generico)"
           + ("" if ok else f"\n         err={err!r}"))
+    return 0 if ok else 1
+
+
+def test_textos_de_otro_angulo_bloquean():
+    """Los textos son de UN angulo: si el ganador cambia, no se usan los del angulo anterior."""
+    completos = {k: ("x" if k != "ACTIVOS_CLAVE" else ["x"]) for k in ap.TEXTOS_REQUERIDOS}
+    doc = {"schema": "perfil_creativo/1", "angulo_key": "ACCESIBILIDAD_MEDICO", "perfil": {}, "textos": completos}
+    base = _con_producto(doc)
+    t, err_ok = _bajo(base, lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ACCESIBILIDAD_MEDICO"))
+    _, err_otro = _bajo(base, lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "PERDIDA_AUDITIVA"))
+    sin = dict(doc); sin.pop("angulo_key")
+    _, err_sin = _bajo(_con_producto(sin), lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ACCESIBILIDAD_MEDICO"))
+    ok = (err_ok is None and t == completos
+          and bool(err_otro) and "ACCESIBILIDAD_MEDICO" in err_otro and "PERDIDA_AUDITIVA" in err_otro
+          and bool(err_sin) and "sin declarar" in err_sin)
+    return _check_simple(ok, "textos de un angulo: sirven para ese, bloquean para otro y sin angulo declarado",
+                         "ok=%r otro=%r sin=%r" % (err_ok, err_otro, err_sin))
+
+
+def _check_simple(ok, nombre, detalle):
+    print(("  OK     " if ok else "  FALLA  ") + nombre + ("" if ok else "\n         " + detalle))
     return 0 if ok else 1
 
 
@@ -214,9 +241,10 @@ def main():
     fallas += test_producto_con_fila_activa_arma_la_escalera_real()
     fallas += test_no_quedan_diccionarios_precios_gt_hardcodeados()
     fallas += test_el_codigo_no_decide_por_nombre_de_producto()
-    fallas += test_no_queda_guion_de_bot_escrito_en_el_codigo()
+    fallas += test_el_script_no_genera_ni_lee_texto_de_bot()
     fallas += test_producto_sin_perfil_creativo_bloquea_nombrando_al_productor()
     fallas += test_perfil_sin_textos_bloquea_y_lista_los_que_faltan()
+    fallas += test_textos_de_otro_angulo_bloquean()
     fallas += test_lo_no_declarado_del_perfil_queda_falso_no_optimista()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
