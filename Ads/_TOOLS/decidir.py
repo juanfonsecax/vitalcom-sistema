@@ -115,6 +115,11 @@ def cargar_parametros():
         "max_pausas_por_dia": 2,
         "surfing_pct": 20.0,
         "dias_min_cod_pausa_ventas": 3,
+        # Lo usa flujo.py (concepto_2de2), no este motor, pero vive acá porque los parámetros
+        # del sistema tienen un solo CSV y flujo.py los lee por esta misma puerta. El default
+        # repite el del CSV a propósito: si la fila se borra, el gate de FASE 3 no puede volver
+        # a quedar en winner-take-all sin que nadie lo note.
+        "margen_empate_cpa_pct": 10.0,
     }
     if os.path.exists(PARAMS_PATH):
         try:
