@@ -143,6 +143,17 @@ def main():
     check(not problemas, "DOCTRINA/FLUJO.json apunta solo a ejecutores y archivos que existen",
           "; ".join(problemas[:3]))
 
+    # Simulación TURMERIC: F1.paquete miraba 5 artefactos y se daba por cumplido sin página, sin
+    # piezas en disco ni copy; el bloqueo aparecía recién en F1.publicar, cargando publicar-meta
+    # para algo que se arregla en una etapa de fase-1-angulos.
+    paquete = next((n for f in cargar_flujo(env_real).get("fases", []) for n in f.get("nodos", [])
+                    if n.get("id") == "F1.paquete"), None)
+    cmds = [p.get("predicado", {}).get("cmd") or [] for p in (paquete or {}).get("produce", [])]
+    check(any("gen_publicacion.py" in " ".join(c) and "--solo-paquete" in c and "--json" not in c
+              for c in cmds),
+          "F1.paquete exige un paquete LANZABLE (gen_publicacion --solo-paquete), no solo que existan sus archivos",
+          str(cmds))
+
     # ── B. el caso del 08-sep-2026 sale solo ───────────────────────────────────
     if not os.path.isdir(FIXTURE):
         print("  FALLA  no existe el fixture %s" % FIXTURE)
@@ -255,7 +266,7 @@ def main():
           "el rótulo dice el umbral (2) aparte del denominador (3 campañas): «2 de 3» no es otra regla",
           obs_c)
 
-    total = 25
+    total = 26
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

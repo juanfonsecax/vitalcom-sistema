@@ -246,6 +246,127 @@ def test_firma_eje_se_exige_cuando_su_dueno_cierra_el_vocabulario():
     return 0 if ok else 1
 
 
+# ── ambito de los bloqueantes y --solo-paquete — el paquete que se daba por cumplido sin poder
+#    lanzarse (defecto residual de la simulacion, 16-sep-2026). F1.paquete miraba 5 artefactos y
+#    no la pagina, la banda, las piezas en disco, el copy ni la firma: decia OK, y el bloqueo
+#    aparecia recien en F1.publicar, cargando publicar-meta para algo que se arregla en una etapa.
+#    SERUM_COLAGENO_BOTOX: paquete "cumplido" sin page_id, sin sus 6 imagenes y sin nivel de conciencia.
+
+MSG_DE_PUBLICACION = ("cuenta", "metodo de pago", "factura en", "minimo de la cuenta", "lanzamiento")
+
+
+def _bloqueos_declarados():
+    """[(metodo, texto del mensaje)] de cada llamada pq.bloquear_* en gen_publicacion.py, por AST."""
+    import ast
+    with open(gp.__file__, encoding="utf-8") as fh:
+        arbol = ast.parse(fh.read())
+    out = []
+    for nodo in ast.walk(arbol):
+        if (isinstance(nodo, ast.Call) and isinstance(nodo.func, ast.Attribute)
+                and nodo.func.attr.startswith("bloquear") and nodo.args):
+            partes = [n.value for n in ast.walk(nodo.args[0])
+                      if isinstance(n, ast.Constant) and isinstance(n.value, str)]
+            nombres = [n.id for n in ast.walk(nodo.args[0]) if isinstance(n, ast.Name)]
+            out.append((nodo.func.attr, " ".join(partes) + " " + " ".join(nombres)))
+    return out
+
+
+def test_no_hay_bloquear_generico():
+    ok = not hasattr(gp.Paquete(), "bloquear")
+    print(("  OK     " if ok else "  FALLA  ")
+          + "Paquete no tiene bloquear() generico: un bloqueo nuevo sin ambito rompe, no cae del lado equivocado")
+    return 0 if ok else 1
+
+
+def test_del_ambito_separa():
+    pq = gp.Paquete()
+    pq.bloquear_paquete("sin copy", "etapa-4")
+    pq.bloquear_publicacion("sin metodo de pago", "el operador")
+    ok = ([b["falta"] for b in pq.del_ambito("paquete")] == ["sin copy"]
+          and [b["falta"] for b in pq.del_ambito("publicacion")] == ["sin metodo de pago"]
+          and len(pq.bloqueantes) == 2)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "cada bloqueante queda etiquetado y del_ambito() los separa")
+    return 0 if ok else 1
+
+
+def test_clasificacion_de_los_bloqueos_no_se_invierte():
+    """Cuenta, pago, moneda, minimo, brazo y fecha son de la PUBLICACION; todo lo demas, del PAQUETE.
+    Invertirlo manda a rehacer una fase por una cuenta, o a publicar un paquete incompleto."""
+    decl = _bloqueos_declarados()
+    malos = []
+    for metodo, texto in decl:
+        es_pub = any(k in texto for k in MSG_DE_PUBLICACION) or "error_brazo" in texto
+        if metodo == "bloquear_publicacion" and not es_pub:
+            malos.append("publicacion pero parece del paquete: " + texto[:60])
+        if metodo == "bloquear_paquete" and es_pub:
+            malos.append("paquete pero parece de la publicacion: " + texto[:60])
+    pub = sum(1 for m, _ in decl if m == "bloquear_publicacion")
+    paq = sum(1 for m, _ in decl if m == "bloquear_paquete")
+    ok = not malos and pub >= 6 and paq >= 10
+    print(("  OK     " if ok else "  FALLA  ")
+          + "clasificacion: %d bloqueo(s) de publicacion y %d de paquete, cada uno de su lado" % (pub, paq)
+          + ("" if ok else "\n         " + "\n         ".join(malos)))
+    return 0 if ok else 1
+
+
+def _fixture_producto_sin_cuenta():
+    """Un producto recien creado, como los 4 de FASE 1 del portafolio: cuenta PENDIENTE, sin plan."""
+    import csv, io, shutil, tempfile
+    tmp = tempfile.mkdtemp(prefix="genpub_paq_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(prod)
+    for nombre in ("_PARAMETROS_PUBLICACION.csv", "_DIM_CUENTAS.csv", "_DIM_VOCABULARIO.csv"):
+        shutil.copy(gp.P(nombre), os.path.join(prod, nombre))     # los CSV de sistema, reales
+    with io.open(gp.P("_DIM_PRODUCTOS.csv"), encoding="utf-8-sig", newline="") as fh:
+        cols = csv.DictReader(fh).fieldnames
+    with io.open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols)
+        w.writeheader()
+        w.writerow(dict(dict.fromkeys(cols, ""), producto_key="PX_NUEVO", cuenta_alias="PENDIENTE"))
+    return tmp
+
+
+def _correr_main(base, argv):
+    import contextlib, io
+    previo = (gp.BASE, gp.P, sys.argv)
+    gp.BASE = base
+    gp.P = lambda *a: os.path.join(base, "PRODUCTOS", *a)
+    sys.argv = ["gen_publicacion.py"] + argv
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            code = gp.main()
+        return code, buf.getvalue(), None
+    except Exception as e:                      # noqa: BLE001 — el test reporta el crash, no lo esconde
+        return None, buf.getvalue(), e
+    finally:
+        gp.BASE, gp.P, sys.argv = previo
+
+
+def test_solo_paquete_juzga_un_producto_sin_cuenta():
+    base = _fixture_producto_sin_cuenta()
+    code, out, err = _correr_main(base, ["--producto", "PX_NUEVO", "--fase", "1", "--solo-paquete"])
+    ok = (err is None and code == 1 and "NO LANZABLE" in out and "no existe _PLAN" in out
+          and "no cuentan para el paquete" in out
+          and not os.path.exists(os.path.join(base, "PRODUCTOS", "_PUBLICACION_F1.json")))
+    print(("  OK     " if ok else "  FALLA  ")
+          + "--solo-paquete con cuenta PENDIENTE: no corta ni revienta, juzga el paquete y no escribe el canonico"
+          + ("" if ok else f"\n         code={code} err={err!r}\n         out={out[:300]!r}"))
+    return 0 if ok else 1
+
+
+def test_modo_normal_sigue_cortando_sin_cuenta():
+    """Para PUBLICAR, una cuenta inexistente sigue siendo un corte inmediato: eso no cambio."""
+    base = _fixture_producto_sin_cuenta()
+    code, out, err = _correr_main(base, ["--producto", "PX_NUEVO", "--fase", "1"])
+    ok = err is None and code == 1 and "no existe en _DIM_CUENTAS.csv" in out
+    print(("  OK     " if ok else "  FALLA  ")
+          + "sin --solo-paquete, la cuenta inexistente sigue cortando la publicacion"
+          + ("" if ok else f"\n         code={code} err={err!r}\n         out={out[:200]!r}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_orden_estable_brazo_b_continua_donde_termina_a()
@@ -262,6 +383,11 @@ def main():
     fallas += test_firma_fase2_sin_ejes_de_oferta_bloquea_con_su_dueno()
     fallas += test_firma_eje_abierto_avisa_y_no_bloquea()
     fallas += test_firma_eje_se_exige_cuando_su_dueno_cierra_el_vocabulario()
+    fallas += test_no_hay_bloquear_generico()
+    fallas += test_del_ambito_separa()
+    fallas += test_clasificacion_de_los_bloqueos_no_se_invierte()
+    fallas += test_solo_paquete_juzga_un_producto_sin_cuenta()
+    fallas += test_modo_normal_sigue_cortando_sin_cuenta()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

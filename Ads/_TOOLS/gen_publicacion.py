@@ -251,7 +251,7 @@ def verificar_firma(unidades, fmod, pq):
                       "anuncios; se empieza a exigir cuando su dueno cierre el vocabulario."
                       % (eje, cuantos, dueno or "sin dueno declarado"))
         else:
-            pq.bloquear("la firma sale con %s = '%s' en %d anuncio(s) (%s). Publicado asi, ese eje "
+            pq.bloquear_paquete("la firma sale con %s = '%s' en %d anuncio(s) (%s). Publicado asi, ese eje "
                         "se pierde para siempre: la firma viaja en el nombre del anuncio y el "
                         "sistema la lee de ahi." % (eje, fmod.VACIO, cuantos, ", ".join(faltan[eje][:4])),
                         "%s -> llega al anuncio por el plan de etapa-6" % (dueno or "etapa-6"))
@@ -263,8 +263,30 @@ class Paquete(object):
         self.avisos = []
         self.preflight = []
 
-    def bloquear(self, que, dueno):
-        self.bloqueantes.append({"falta": que, "lo_produce": dueno})
+    # Todo bloqueante declara su AMBITO, y no hay un bloquear() generico a proposito: un bloqueo
+    # nuevo que no diga de quien es rompe con AttributeError en vez de caer, en silencio, del
+    # lado equivocado.
+    #
+    #   paquete      lo produce una ETAPA de la skill de la fase (plan, pagina, banda, piezas,
+    #                archivos, copy, firma). Mientras haya uno, el paquete NO esta cumplido y lo
+    #                que se vuelve a ejecutar es la skill de la fase, no publicar-meta.
+    #   publicacion  depende de la CUENTA, del CALENDARIO o del operador al publicar (MCP, pago,
+    #                moneda, minimo de la cuenta, brazo, fecha). No hace incompleto al paquete:
+    #                un paquete perfecto con la cuenta mal configurada sigue siendo un paquete
+    #                perfecto, y rehacer la FASE 1 no arregla una cuenta.
+    AMBITOS = ("paquete", "publicacion")
+
+    def _bloquear(self, que, dueno, ambito):
+        self.bloqueantes.append({"falta": que, "lo_produce": dueno, "ambito": ambito})
+
+    def bloquear_paquete(self, que, dueno):
+        self._bloquear(que, dueno, "paquete")
+
+    def bloquear_publicacion(self, que, dueno):
+        self._bloquear(que, dueno, "publicacion")
+
+    def del_ambito(self, ambito):
+        return [b for b in self.bloqueantes if b["ambito"] == ambito]
 
     def avisar(self, texto):
         self.avisos.append(texto)
@@ -324,6 +346,10 @@ def main():
     ruta_pl = arg("--plan")
     snap    = arg("--snapshot")
     salida  = arg("--salida")
+    # --solo-paquete: la pregunta de F1.paquete en FLUJO.json. ¿Lo que produjeron las ETAPAS
+    # alcanza para lanzar? Evalua todo igual, pero sale con exit 1 solo por bloqueantes de ambito
+    # 'paquete', no corta si la cuenta todavia no existe, y nunca escribe el paquete canonico.
+    solo_paquete = flag("--solo-paquete")
 
     if not pk_in or not fase:
         print(__doc__)
@@ -357,29 +383,43 @@ def main():
     cuentas = leer(P("_DIM_CUENTAS.csv"))
     alias_pedido = corto_alias(cuenta or prod.get("cuenta_alias"))
     fila_cta = next((c for c in cuentas if corto_alias(c["cuenta_alias"]) == alias_pedido), None)
-    if not fila_cta:
+    if not fila_cta and not solo_paquete:
         print("BLOQUEANTE: la cuenta '%s' no existe en _DIM_CUENTAS.csv." % alias_pedido)
         return 1
+    if not fila_cta:
+        # Sin cuenta todavia (los productos de FASE 1 nacen con cuenta_alias=PENDIENTE) el paquete
+        # igual se puede juzgar: la cuenta solo aporta moneda y minimo, que son de la publicacion.
+        # Cortar aca dejaria trabado en F1.paquete a un producto cuyo paquete esta perfecto.
+        pq.bloquear_publicacion("la cuenta '%s' no existe en _DIM_CUENTAS.csv" % alias_pedido,
+                                "el operador · _DIM_PRODUCTOS.csv columna cuenta_alias")
+        # Una fila con TODAS las columnas reales de _DIM_CUENTAS.csv (una columna nueva no rompe
+        # esto) y valores neutros: ninguno debe generar un bloqueo, porque ya se declaro arriba el
+        # unico que corresponde — que la cuenta no existe.
+        columnas = cuentas[0].keys() if cuentas else ()
+        fila_cta = dict.fromkeys(columnas, "")
+        fila_cta.update({"cuenta_alias": alias_pedido, "cuenta_id": "", "moneda": "USD",
+                         "min_daily_budget_cents": "0", "mcp_habilitado": "SI",
+                         "tiene_metodo_pago": "SI", "sube_media_local": "SI"})
     if fila_cta["mcp_habilitado"] != "SI":
-        pq.bloquear("la cuenta %s NO tiene el MCP habilitado (%s). Publicar por MCP es imposible "
+        pq.bloquear_publicacion("la cuenta %s NO tiene el MCP habilitado (%s). Publicar por MCP es imposible "
                     "en esta cuenta: o se pauta a mano, o se mueve el producto a una cuenta habilitada."
                     % (alias_pedido, fila_cta.get("notas") or "rollout"), "Meta (rollout)")
     if fila_cta["tiene_metodo_pago"] != "SI":
-        pq.bloquear("la cuenta %s no tiene metodo de pago: puede crear, no puede gastar." % alias_pedido,
+        pq.bloquear_publicacion("la cuenta %s no tiene metodo de pago: puede crear, no puede gastar." % alias_pedido,
                     "el operador, en Business Manager")
 
     moneda = fila_cta["moneda"]
     minimo = int(fila_cta["min_daily_budget_cents"])
     presu_usd = float(par["daily_budget_usd"])
     if moneda != "USD":
-        pq.bloquear("la cuenta %s factura en %s y el presupuesto de la doctrina esta en USD. "
+        pq.bloquear_publicacion("la cuenta %s factura en %s y el presupuesto de la doctrina esta en USD. "
                     "El daily_budget va SIEMPRE en la unidad menor de la moneda de la cuenta."
                     % (alias_pedido, moneda), "DOCTRINA/CALENDARIO_ESCALADO.md")
         presu_cents = None
     else:
         presu_cents = int(round(presu_usd * 100))
         if presu_cents < minimo:
-            pq.bloquear("presupuesto %d centavos < minimo de la cuenta (%d)" % (presu_cents, minimo),
+            pq.bloquear_publicacion("presupuesto %d centavos < minimo de la cuenta (%d)" % (presu_cents, minimo),
                         "_DIM_CUENTAS.csv")
 
     # ---------- 4. plan ----------------------------------------------------
@@ -392,20 +432,20 @@ def main():
         with io.open(ruta_pl, encoding="utf-8") as f:
             plan = json.load(f)
     else:
-        pq.bloquear("no existe _PLAN_FASE%d.json ni _PLAN.json en PRODUCTOS/%s/" % (fase, carpeta),
+        pq.bloquear_paquete("no existe _PLAN_FASE%d.json ni _PLAN.json en PRODUCTOS/%s/" % (fase, carpeta),
                     "etapa-6")
 
     # FASE 1 mide el ANGULO: cada conjunto lleva uno distinto y no hay ganador todavia.
     # FASE 2 y 3 miden otra cosa sobre un angulo YA GANADO: ahi el angulo es uno y es fijo.
     angulo = (plan.get("angulo_ganador") or plan.get("angulo_key") or "").strip()
     if fase in (2, 3) and not angulo:
-        pq.bloquear("el plan no declara angulo_ganador. En FASE 2 y 3 el angulo es FIJO y va en el "
+        pq.bloquear_paquete("el plan no declara angulo_ganador. En FASE 2 y 3 el angulo es FIJO y va en el "
                     "nombre del CONJUNTO; sin el, la agregacion por angulo_key se parte.", "etapa-6")
 
     # page_id: el del plan manda sobre el del producto, porque la pagina depende de la CUENTA
     page_id = str(plan.get("page_id") or prod.get("page_id") or "").strip()
     if not page_id:
-        pq.bloquear("no hay page_id", "etapa-fanpage")
+        pq.bloquear_paquete("no hay page_id", "etapa-fanpage")
     if plan.get("cuenta") and corto_alias(plan["cuenta"]) != alias_pedido:
         pq.avisar("el plan dice cuenta=%s y se esta publicando en %s. La pagina y su WhatsApp tienen "
                   "que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id %s "
@@ -431,7 +471,7 @@ def main():
     def banda_de(avatar_edad, contexto):
         b, orig = derivar_banda(avatar_edad, pk)
         if b is None:
-            pq.bloquear("%s: avatar_edad='%s' no esta en la tabla de derivacion. No se "
+            pq.bloquear_paquete("%s: avatar_edad='%s' no esta en la tabla de derivacion. No se "
                         "inventa una banda: o se agrega la fila a la tabla, o se corrige el avatar."
                         % (contexto, orig), "Ads/_TOOLS/bandas_edad.py")
             return (None, None), orig
@@ -444,14 +484,14 @@ def main():
     if fase == 1:
         plan_conj = plan.get("conjuntos") or []
         if len(plan_conj) < n_conj:
-            pq.bloquear("la FASE 1 se monta con %d angulos y el plan trae %d. Se testean 6 angulos "
+            pq.bloquear_paquete("la FASE 1 se monta con %d angulos y el plan trae %d. Se testean 6 angulos "
                         "distintos con el concepto FIJO; con menos, la comparacion entre angulos "
                         "queda incompleta." % (n_conj, len(plan_conj)), "etapa-2 (fichas de angulo)")
         ctrl = plan.get("concepto_control") or {}
         for i, c in enumerate(plan_conj[:n_conj], 1):
             ang = (c.get("angulo_key") or "").strip()
             if not ang:
-                pq.bloquear("el conjunto %d del plan no declara angulo_key" % i, "etapa-2")
+                pq.bloquear_paquete("el conjunto %d del plan no declara angulo_key" % i, "etapa-2")
                 ang = "SIN-ANGULO"
             b, orig = banda_de(c.get("avatar_edad"), "conjunto %d (%s)" % (i, ang))
             arch = (c.get("archivo_creativo") or "").strip()
@@ -481,7 +521,7 @@ def main():
         orden_nombre_por_creativo = orden_nombre_de(piezas_del_angulo)
         error_brazo = chequear_brazo_ambiguo(piezas_del_angulo, arg("--brazo-creativos"), brazo)
         if error_brazo:
-            pq.bloquear(error_brazo, "el operador (pasar --brazo-creativos %s)" % brazo)
+            pq.bloquear_publicacion(error_brazo, "el operador (pasar --brazo-creativos %s)" % brazo)
 
         piezas = piezas_del_angulo
         if arg("--brazo-creativos"):
@@ -510,7 +550,7 @@ def main():
 
         necesarias = n_conj * n_ads
         if len(listas) < necesarias:
-            pq.bloquear("hacen falta %d piezas para un %s y hay %d con archivo en disco. "
+            pq.bloquear_paquete("hacen falta %d piezas para un %s y hay %d con archivo en disco. "
                         "R3F-13: una fase no arranca sin su pool completo — sin el no hay "
                         "replicacion 'gana en 2 de 2', que es lo unico que corona un concepto."
                         % (necesarias, par["estructura"], len(listas)),
@@ -525,7 +565,7 @@ def main():
             unidades.append({"angulo": angulo, "banda": b, "origen_banda": orig, "piezas": pool})
 
     if sin_archivo:
-        pq.bloquear("%d pieza(s) declaradas no tienen su archivo en disco: %s. Sin el archivo no "
+        pq.bloquear_paquete("%d pieza(s) declaradas no tienen su archivo en disco: %s. Sin el archivo no "
                     "hay media que subir y el anuncio no se puede crear."
                     % (len(sin_archivo), ", ".join(str(s) for s in sin_archivo[:6])),
                     "etapa-render / el operador")
@@ -541,7 +581,7 @@ def main():
     hoy = datetime.date.today()
     fecha = datetime.datetime.strptime(lanz, "%Y-%m-%d").date() if lanz else hoy + datetime.timedelta(days=1)
     if fecha <= hoy:
-        pq.bloquear("lanzamiento %s no es posterior a hoy (%s). Invariante 7: siempre 4 AM del dia "
+        pq.bloquear_publicacion("lanzamiento %s no es posterior a hoy (%s). Invariante 7: siempre 4 AM del dia "
                     "SIGUIENTE, nunca el mismo dia." % (fecha, hoy), "CLAUDE.md invariante 7")
     start_time = "%sT%s:00%s" % (fecha.isoformat(), par["hora_lanzamiento"], par["tz_offset"])
 
@@ -644,7 +684,7 @@ def main():
             an = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, "A", fmod)
             copy, titular, descripcion, sobrantes = extraer_copy(cre.get("copy") or plan.get("copy"))
             if not copy:
-                pq.bloquear("el anuncio '%s' no tiene copy. El copy vive en el CREATIVO de Meta y no "
+                pq.bloquear_paquete("el anuncio '%s' no tiene copy. El copy vive en el CREATIVO de Meta y no "
                             "se puede cambiar despues: ads_update_entity no reemplaza el creativo de "
                             "un anuncio existente, hay que crear uno nuevo." % an.split(" ~ ")[0],
                             "etapa-4 (copies)")
@@ -764,6 +804,26 @@ def main():
             "total_anuncios": sum(len(c["anuncios"]) for c in manif_conj),
         },
     }
+
+    if solo_paquete:
+        # Es una verificacion, no una generacion: con una cuenta posiblemente ficticia, escribir el
+        # _PUBLICACION_F*.json canonico dejaria en disco un paquete que publicar-meta podria leer.
+        if salida:
+            with io.open(salida, "w", encoding="utf-8") as f:
+                json.dump(paquete, f, ensure_ascii=False, indent=2)
+        del_paquete = pq.del_ambito("paquete")
+        if flag("--json"):
+            print(json.dumps(paquete, ensure_ascii=False, indent=2))
+            return 1 if del_paquete else 0
+        print("PAQUETE %s · FASE %d — %s" % (pk, fase, "NO LANZABLE" if del_paquete else "LANZABLE"))
+        for b in del_paquete:
+            print("  BLOQUEANTE %s" % b["falta"])
+            print("             lo produce: %s" % b["lo_produce"])
+        otros = pq.del_ambito("publicacion")
+        if otros:
+            print("  (%d bloqueante(s) de la publicacion —cuenta, calendario, operador— no cuentan "
+                  "para el paquete: los evalua F1.publicar)" % len(otros))
+        return 1 if del_paquete else 0
 
     if not salida:
         salida = P(carpeta, "_PUBLICACION_F%d%s.json" % (fase, "" if brazo == "UNICO" else brazo))

@@ -64,7 +64,11 @@
        "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "6 ángulos × concepto fijo"},
       {"dato": "≥6 conjuntos FASE1 registrados en _DIM_CONJUNTOS.csv",
        "predicado": {"tipo": "csv", "csv": "_DIM_CONJUNTOS.csv", "where": {"producto_key": "{pk}", "fase": ["FASE1", "TESTEO"]}, "min": 6},
-       "dueno": "etapa-guardar-producto (SALIDA 4)", "regla": "un dato, un dueño"}
+       "dueno": "etapa-guardar-producto (SALIDA 4)", "regla": "un dato, un dueño"},
+      {"dato": "paquete LANZABLE: lo que las etapas produjeron alcanza para publicar (página, banda, piezas en disco, copy, firma)",
+       "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "1", "--solo-paquete"], "exit": 0},
+       "dueno": "la etapa que nombra cada bloqueante · Ads/_TOOLS/gen_publicacion.py --solo-paquete (solo los de ámbito paquete: la cuenta y la fecha los juzga F1.publicar)",
+       "regla": "un paquete que no se puede lanzar no está cumplido (simulación TURMERIC)"}
      ]
     },
     {
