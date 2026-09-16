@@ -188,6 +188,9 @@ class Entorno(object):
                 decidir.FACT_ENTREGA_PATH = os.path.join(P, "_FACT_ENTREGA.csv")
                 decidir.FACT_ENTREGA_ANUNCIO_PATH = os.path.join(P, "_FACT_ENTREGA_ANUNCIO.csv")
                 decidir.ALIAS_PATH = os.path.join(P, "_ALIAS_CONJUNTOS.csv")
+                # Sin esto, un fixture leería la fase vigente del repo REAL y el gate de fase
+                # del motor juzgaría al producto del fixture con la fase de otro producto.
+                decidir.ESTADO_FLUJO_PATH = os.path.join(P, "_ESTADO_FLUJO.csv")
             try:
                 self._motor = decidir.analizar_portafolio()
             except Exception as e:      # el motor caído no frena el flujo: se dice

@@ -1,8 +1,8 @@
 {
-  "generado": "2026-09-10",
+  "generado": "2026-09-15",
   "datos_desde": "2026-08-27",
   "datos_hasta": "2026-09-09",
-  "rezago_dias": 1,
+  "rezago_dias": 6,
   "motor": "decidir v4 (IC Bayesiana + Riesgo Asimétrico + tres relojes separados)",
   "grano": "angulo",
   "ventana_dias": 14,
@@ -20,13 +20,14 @@
       "producto_key": "CLEARSTEM",
       "nombre": "Clearstem Mindbodyskin",
       "estado_producto": "VIVO",
+      "fase_vigente": "F2",
       "cpa_objetivo_q": 30.8,
       "break_even_q": 105.89,
       "celdas": [
         {
           "estado": "ESCALAR",
           "accion_codigo": "ESCALAR_SURFING",
-          "accion_sugerida": "ESCALAR (Calet): CPA Q25.6 (Obj Q30.8) con 32 ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20% una vez al día.",
+          "accion_sugerida": "NO SUBIR PRESUPUESTO (CLEARSTEM en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: ESCALAR (Calet): CPA Q25.6 (Obj Q30.8) con 32 ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20% una vez al día.",
           "cpa_real_q": 25.6,
           "cierre_pct": 14.5,
           "pct_pd": 2299.1,
@@ -46,12 +47,14 @@
           "ventas_acum": 71.0,
           "spend_acum_q": 2434.5,
           "banda_ok": false,
-          "nombres_ok": false
+          "nombres_ok": false,
+          "ejecutable": false,
+          "bloqueo_fase": "CLEARSTEM está en F2 (gate de testeo): subir presupuesto a un solo conjunto rompe el invariante 6 y hace ganar al que recibió más plata, no al mejor"
         },
         {
           "estado": "ESCALAR",
           "accion_codigo": "ESCALAR_SURFING",
-          "accion_sugerida": "ESCALAR (Calet): CPA Q24.6 (Obj Q30.8) con 19 ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20% una vez al día.",
+          "accion_sugerida": "NO SUBIR PRESUPUESTO (CLEARSTEM en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: ESCALAR (Calet): CPA Q24.6 (Obj Q30.8) con 19 ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +20% una vez al día.",
           "cpa_real_q": 24.6,
           "cierre_pct": 22.9,
           "pct_pd": 1747.1,
@@ -71,7 +74,9 @@
           "ventas_acum": 47.0,
           "spend_acum_q": 1850.0,
           "banda_ok": true,
-          "nombres_ok": false
+          "nombres_ok": false,
+          "ejecutable": false,
+          "bloqueo_fase": "CLEARSTEM está en F2 (gate de testeo): subir presupuesto a un solo conjunto rompe el invariante 6 y hace ganar al que recibió más plata, no al mejor"
         },
         {
           "estado": "SEGUIR_MIDIENDO",
@@ -97,6 +102,8 @@
           "spend_acum_q": 2307.3,
           "banda_ok": false,
           "nombres_ok": true,
+          "ejecutable": true,
+          "bloqueo_fase": null,
           "cierre_vs_mejor": {
             "p": 0.0436,
             "significativo": true,
@@ -111,6 +118,7 @@
       "producto_key": "NUSAVA",
       "nombre": "NUSAVA B12",
       "estado_producto": "VIVO",
+      "fase_vigente": "F2",
       "cpa_objetivo_q": 30.8,
       "break_even_q": 92.64,
       "celdas": [
@@ -137,7 +145,9 @@
           "ventas_acum": 72.0,
           "spend_acum_q": 4179.3,
           "banda_ok": false,
-          "nombres_ok": false
+          "nombres_ok": false,
+          "ejecutable": true,
+          "bloqueo_fase": null
         }
       ]
     },
@@ -145,6 +155,7 @@
       "producto_key": "TINNIDROP",
       "nombre": "Tinnidrop Importado Original",
       "estado_producto": "VIVO",
+      "fase_vigente": "F2",
       "cpa_objetivo_q": 30.8,
       "break_even_q": 93.41,
       "celdas": [
@@ -171,7 +182,9 @@
           "ventas_acum": 18.0,
           "spend_acum_q": 882.9,
           "banda_ok": false,
-          "nombres_ok": true
+          "nombres_ok": true,
+          "ejecutable": true,
+          "bloqueo_fase": null
         },
         {
           "estado": "SEGUIR_MIDIENDO",
@@ -196,7 +209,9 @@
           "ventas_acum": 100.0,
           "spend_acum_q": 6281.9,
           "banda_ok": false,
-          "nombres_ok": true
+          "nombres_ok": true,
+          "ejecutable": true,
+          "bloqueo_fase": null
         },
         {
           "estado": "SEGUIR_MIDIENDO",
@@ -221,7 +236,9 @@
           "ventas_acum": 62.0,
           "spend_acum_q": 2537.1,
           "banda_ok": true,
-          "nombres_ok": false
+          "nombres_ok": false,
+          "ejecutable": true,
+          "bloqueo_fase": null
         },
         {
           "estado": "SEGUIR_MIDIENDO",
@@ -246,7 +263,9 @@
           "ventas_acum": 92.0,
           "spend_acum_q": 4709.4,
           "banda_ok": false,
-          "nombres_ok": true
+          "nombres_ok": true,
+          "ejecutable": true,
+          "bloqueo_fase": null
         }
       ]
     }
