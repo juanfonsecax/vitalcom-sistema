@@ -200,7 +200,7 @@
      "id": "F2.activar",
      "titulo": "Activar las campañas de conceptos a las 4 AM y registrar LANZAMIENTO",
      "ejecutor": {"tipo": "mcp"},
-     "como": "Activar (MCP con confirmación, o a mano), registrar LANZAMIENTO con campana_clave de conceptos, y el A/B de flujo: CAMBIO_BOT (brazo A) + LANZAMIENTO (brazo B).",
+     "como": "Activar (MCP con confirmación, o a mano), registrar LANZAMIENTO con campana_clave de conceptos, y el A/B de flujo con dos conjuntos gemelos del ganador (ETAPA-11 PASO 6): CAMBIO_BOT (paraguas) + LANZAMIENTO de cada gemelo, y su test_id en _TESTEOS.csv.",
      "produce": [
       {"dato": "gasto observado en una campaña de conceptos",
        "predicado": {"tipo": "alguno", "de": [

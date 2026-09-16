@@ -119,10 +119,10 @@ FASE 2 COMPLETADA ✓
 □ Banda de edad = avatar del ángulo · Advantage+ OFF · idéntica en las 3 campañas
 □ Filas de los 10 conceptos en _DIM_CREATIVOS.csv con ad_id (lo escribe verificar_publicacion.py --escribir)
 
-□ A/B DE FLUJO corriendo: brazo A (paraguas optimizado) ∥ brazo B (dedicado al ganador)
+□ A/B DE FLUJO corriendo: dos conjuntos GEMELOS del ganador — A → paraguas optimizado ∥ B → dedicado
 □ Ruteo por Post ID verificado con una conversación de prueba POR BRAZO
-□ CAMBIO_BOT (brazo A) y LANZAMIENTO (brazo B) anexados a _EVENTOS.csv con fecha
-□ Fecha de lectura del A/B anotada (n mínimo por brazo — tabla en ETAPA-11.md PASO 6)
+□ CAMBIO_BOT (paraguas) + LANZAMIENTO de cada gemelo anexados a _EVENTOS.csv · test_id en _TESTEOS.csv
+□ Fecha de lectura del A/B anotada (n por brazo con Ads/_TOOLS/ab_flujo.py y el cierre REAL del ganador)
 
 Ciclo de optimización (ACTIVO):
 □ ETAPA-7 → auditoría de métricas
