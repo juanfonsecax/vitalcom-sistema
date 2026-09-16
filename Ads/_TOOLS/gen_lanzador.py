@@ -20,7 +20,8 @@ DE DONDE SALE CADA COSA (un dato, un dueno)
     la firma de 5 ejes                   DOCTRINA/PARAMETRIZACION_ADS.md  seccion 3.5
     presupuesto por conjunto             DOCTRINA/CALENDARIO_ESCALADO.md  seccion 1.5
     estructura por fase                  DOCTRINA/CALENDARIO_ESCALADO.md  seccion 1.7.2
-    banda de edad                        .claude/agents/ETAPA-6.md  BANDA DE EDAD (APR-060)
+    banda de edad                        Ads/_TOOLS/bandas_edad.py (tabla) — doctrina y
+                                          evidencia en .claude/agents/ETAPA-6.md (APR-060)
     break-even y costos                  PRODUCTOS/_DIM_PRODUCTOS.csv
     historial de gasto y ventas          PRODUCTOS/_FACT_VENTAS.csv
 
@@ -38,6 +39,7 @@ DIM_PRODUCTOS = "PRODUCTOS/_DIM_PRODUCTOS.csv"
 FACT_VENTAS = "PRODUCTOS/_FACT_VENTAS.csv"
 DIM_ANUNCIOS = "PRODUCTOS/_DIM_ANUNCIOS.csv"
 EVENTOS = "PRODUCTOS/_EVENTOS.csv"
+PARAMETROS_PUBLICACION = "PRODUCTOS/_PARAMETROS_PUBLICACION.csv"
 SALIDA_JSON = "PRODUCTOS/_LANZADOR.json"
 SALIDA_HTML = "VISTAS/LANZADOR.html"
 
@@ -51,12 +53,8 @@ FACTOR_ENTREGA = 0.8         # idem, "factor de entrega real"
 PRESUPUESTO_E2 = 5.98        # ETAPA 2 del testeo: los sobrevivientes al doble
 MAX_CONJUNTOS_CON_PRECIO = 3 # ETAPA-6, regla de precio en creativo (ideal 2)
 
-BANDAS = [  # ETAPA-6 · BANDA DE EDAD · avatar_edad -> banda que se configura en Meta
-    ("45-65", "45-65"), ("45-60", "45-60"), ("35-55", "35-55"),
-    ("35-45", "35-50"), ("25-35", "25-40"), ("30-45", "30-45"),
-    ("40-55", "40-55"), ("45-55", "45-55"), ("25-45", "25-45"),
-]
-BANDA_AMPLIA = "18-65+"
+# La tabla NO se copia aca: Ads/_TOOLS/bandas_edad.py es su dueno unico (G0.5 punto 4.2).
+# ETAPA-6.md BANDA DE EDAD sigue siendo el puntero de doctrina y evidencia (APR-060).
 
 ESTRUCTURA = {  # CALENDARIO_ESCALADO seccion 1.7.2 · clases Calet 16-ago y 22-ago
     1: {"nombre": "FASE 1 · ÁNGULOS", "mide": "el ÁNGULO",
@@ -163,7 +161,11 @@ def usd_por_conversacion_portafolio(hechos):
 
 
 def presupuesto_conjunto(usd_conv):
-    """CALENDARIO_ESCALADO 1.5: 7 x (costo por conversacion), piso 2.99, techo 3.95."""
+    """CALENDARIO_ESCALADO 1.5: 7 x (costo por conversacion), piso 2.99, techo 3.95.
+
+    ALCANCE (1.5, actualizado 02-sep): 'Todo lo de esta seccion gobierna la FASE 1 ·
+    ANGULOS'. La FASE 2 tiene su propio presupuesto (fijo, ver presupuesto_fase_csv) —
+    no esta formula. Nunca llamar esto para fase != 1 (ver presupuesto_por_fase)."""
     if not usd_conv:
         return PISO_PRESUPUESTO, "piso (sin historial de conversaciones)"
     crudo = MULT_CONVERSACIONES * usd_conv
@@ -174,13 +176,40 @@ def presupuesto_conjunto(usd_conv):
     return round(crudo, 2), "7 × $%.3f/conv observado" % usd_conv
 
 
+def presupuesto_fase_csv(fase, brazo):
+    """FASE 2 y 3: el presupuesto por conjunto/campana NO se autoajusta — es fijo y vive
+    en _PARAMETROS_PUBLICACION.csv (el mismo dueno que ya usa gen_publicacion.py para
+    publicar de verdad). Sin fila VIGENTE para fase+brazo, no inventa: devuelve None."""
+    for r in leer_csv(PARAMETROS_PUBLICACION):
+        if r.get("fase") == str(fase) and r.get("brazo") == brazo and r.get("estado") == "VIGENTE":
+            return num(r.get("daily_budget_usd")), (
+                "fijo · fase %s brazo %s · %s" % (fase, brazo, r.get("fuente_doctrina") or "_PARAMETROS_PUBLICACION.csv"))
+    return None, "sin fila VIGENTE en _PARAMETROS_PUBLICACION.csv para fase=%s brazo=%s" % (fase, brazo)
+
+
+def presupuesto_por_fase(fase, usd_conv, brazo="A"):
+    """El presupuesto por conjunto SEGUN LA FASE — antes de este arreglo (G0.5 punto 4.4,
+    15-sep-2026) derivar() llamaba presupuesto_conjunto(usd_conv) para las tres fases por
+    igual, y esa formula esta ESCRITA para FASE 1 (piso $2.99, techo $3.95): en FASE 2 el
+    dato real es $6.00/conjunto (_PARAMETROS_PUBLICACION.csv) y el lanzador dictaba casi
+    la mitad. FASE 1 sigue usando la formula autoajustable (es su doctrina); FASE 2 y 3
+    leen el valor fijo de su fila en el CSV — 'A' es el brazo de referencia en FASE 2,
+    donde los tres brazos (A/B/C) valen lo mismo por diseño."""
+    if fase == 1:
+        return presupuesto_conjunto(usd_conv)
+    return presupuesto_fase_csv(fase, brazo if fase == 2 else "UNICO")
+
+
 def banda_edad(avatar_edad):
-    if not avatar_edad:
-        return BANDA_AMPLIA, "sin avatar de edad marcada — única excepción de la regla"
-    for origen, destino in BANDAS:
-        if avatar_edad.strip() == origen:
-            return destino, "derivada del avatar %s" % avatar_edad
-    return avatar_edad.strip(), "avatar %s usado tal cual (no está en la tabla de derivación)" % avatar_edad
+    sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
+    import bandas_edad as be
+    ae = (avatar_edad or "").strip()
+    if not ae:
+        return be.BANDA_AMPLIA_STR, "sin avatar de edad marcada — única excepción de la regla"
+    destino = be.banda_str(ae)
+    if destino:
+        return destino, "derivada del avatar %s" % ae
+    return ae, "avatar %s usado tal cual (no está en la tabla de derivación, Ads/_TOOLS/bandas_edad.py)" % ae
 
 
 # El DESTINO es el 5o eje y era el unico ciego al 100% del gasto (validar_parametros, 06-sep):
@@ -224,7 +253,7 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
 
     h = hechos.get(pk, {})
     usd_conv = h.get("usd_por_conversacion") or usd_conv_portafolio
-    presup, presup_por_que = presupuesto_conjunto(usd_conv)
+    presup, presup_por_que = presupuesto_por_fase(fase, usd_conv)
 
     tasa = num(prod.get("tasa"), 7.62)
     be_q = num(prod.get("cpa_be_q"))
@@ -236,6 +265,10 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
 
     # ── bloqueantes: lo que impide publicar ──────────────────────────────────
     bloqueantes = []
+    if presup is None:
+        bloqueantes.append({"que": "presupuesto por conjunto sin fila VIGENTE (%s)" % presup_por_que,
+                            "quien": "PRODUCTOS/_PARAMETROS_PUBLICACION.csv"})
+        presup = 0.0
     if not cuenta_ok:
         bloqueantes.append({"que": "cuenta publicitaria sin asignar",
                             "quien": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias"})

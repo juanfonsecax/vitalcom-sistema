@@ -46,7 +46,10 @@ UN DATO, UN DUENO — de donde sale cada parametro
     cuenta_id, moneda, min budget, sube media   PRODUCTOS/_DIM_CUENTAS.csv
     producto, page_id, cpa base y break even    PRODUCTOS/_DIM_PRODUCTOS.csv
     banda de edad                               avatar_edad de _DIM_CONJUNTOS.csv,
-                                                derivada por la tabla de ETAPA-6.md
+                                                derivada por Ads/_TOOLS/bandas_edad.py
+                                                (doctrina y evidencia: ETAPA-6.md)
+    numero de replica R[N] (fase 1 y 3)         conjunto_meta de _DIM_CONJUNTOS.csv
+                                                (siguiente_replica: nunca la posicion del loop)
     piezas, concepto_key, canonico_id           PRODUCTOS/_DIM_CREATIVOS.csv
     la FIRMA de 5 ejes                          Ads/_TOOLS/firma.py (se importa, no se copia)
     angulo ganador, page_id, copy               PRODUCTOS/[X]/_PLAN*.json (dueno: ETAPA-6)
@@ -58,7 +61,7 @@ USO
            --snapshot Ads/_INGESTA/META/snapshot_GTR7.json
     python Ads/_TOOLS/gen_publicacion.py --producto TINNIDROP --fase 2 --brazo A --cuenta GTR7 --json
 """
-import csv, io, os, sys, json, datetime, importlib.util
+import csv, io, os, re, sys, json, datetime, importlib.util
 
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
@@ -68,16 +71,11 @@ BASE  = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 TOOLS = os.path.join(BASE, "Ads", "_TOOLS")
 P     = lambda *a: os.path.join(BASE, "PRODUCTOS", *a)
 
-SCHEMA = "publicacion/1"
+if TOOLS not in sys.path:
+    sys.path.insert(0, TOOLS)
+import bandas_edad  # LA TABLA no se copia aca: Ads/_TOOLS/bandas_edad.py es su dueno unico.
 
-# ETAPA-6.md -> BANDA DE EDAD (APR-060). El unico mapeo, y su unica excepcion.
-BANDA_POR_AVATAR = {
-    "45-65": (45, 65),
-    "45-60": (45, 60),
-    "35-55": (35, 55),
-    "25-35": (25, 40),
-}
-BANDA_AMPLIA = (18, 65)   # unica excepcion: angulo SIN avatar de edad marcada
+SCHEMA = "publicacion/1"
 
 
 # ---------------------------------------------------------------- utilidades
@@ -147,6 +145,32 @@ def orden_nombre_de(piezas):
     return {r.get("creativo_id"): i for i, (_, r) in enumerate(ordenadas, 1)}
 
 
+PATRON_REPLICA = re.compile(r"_R(\d+)$")
+
+
+def siguiente_replica(filas_conjuntos, pk, angulo, cta):
+    """El proximo numero de replica R[N] para este producto+angulo+cuenta.
+
+    Dueno del dato: _DIM_CONJUNTOS.csv, el registro real de lo que ya vive en Meta —
+    nunca la posicion del conjunto DENTRO DEL LOOP de la corrida actual. Antes ese 'i'
+    local hacia que republicar (una segunda tanda, o una réplica horizontal nueva)
+    volviera a nombrar R1, R2... encima de réplicas que ya existian (simulacion
+    Turmeric, f71f9ec: hubo que fijarlo a mano a R1 para poder avanzar).
+
+    ETAPA-6.md regla 2: 'el numero de replica no se reutiliza nunca'. Sin historial
+    para esta cuenta arranca en R1."""
+    maxn = 0
+    for r in filas_conjuntos:
+        if r.get("producto_key") != pk or r.get("angulo_key") != angulo:
+            continue
+        if corto_alias(r.get("cuenta_alias")) != cta:
+            continue
+        m = PATRON_REPLICA.search((r.get("conjunto_meta") or "").strip())
+        if m:
+            maxn = max(maxn, int(m.group(1)))
+    return maxn + 1
+
+
 def chequear_brazo_ambiguo(piezas, brazo_creativos, brazo_arg):
     """None si no hay ambiguedad; el mensaje de bloqueo si hay mas de un brazo declarado en
     _DIM_CREATIVOS.csv para este angulo y no se eligio con --brazo-creativos cual publicar.
@@ -187,10 +211,11 @@ class Paquete(object):
 
 def derivar_banda(avatar_edad, pk):
     ae = (avatar_edad or "").strip()
-    if ae in BANDA_POR_AVATAR:
-        return BANDA_POR_AVATAR[ae], "avatar_edad=%s (_DIM_CONJUNTOS.csv)" % ae
     if not ae:
-        return BANDA_AMPLIA, "SIN avatar de edad marcada -> amplio 18-65 (unica excepcion de ETAPA-6)"
+        return bandas_edad.BANDA_AMPLIA_TUPLA, "SIN avatar de edad marcada -> amplio 18-65 (unica excepcion de ETAPA-6)"
+    tup = bandas_edad.banda_tupla(ae)
+    if tup:
+        return tup, "avatar_edad=%s (_DIM_CONJUNTOS.csv)" % ae
     return None, ae
 
 
@@ -204,11 +229,14 @@ def nombre_campana(fase, cuenta, producto, brazo, angulo, fecha):
     return "%s_%s_ESCALA-%s_%s" % (cuenta, producto, angulo.replace("_", "-"), d)
 
 
-def nombre_conjunto(fase, cuenta, producto, angulo, brazo, i):
+def nombre_conjunto(fase, cuenta, producto, angulo, brazo, numero):
+    """FASE 2: 'numero' es la posicion del conjunto dentro del brazo (A1, A2...).
+    FASE 1 y 3: 'numero' es el R[N] YA RESUELTO por el llamador via siguiente_replica() —
+    nunca la posicion del loop (ver PATRON_REPLICA / invariante 12)."""
     ang = angulo.replace("_", "-")
     if fase == 2:
-        return "%s_%s_%s_%s%d" % (cuenta, producto, ang, brazo, i)
-    return "%s_%s_%s_R%d" % (cuenta, producto, ang, i)
+        return "%s_%s_%s_%s%d" % (cuenta, producto, ang, brazo, numero)
+    return "%s_%s_%s_R%d" % (cuenta, producto, ang, numero)
 
 
 def nombre_anuncio(fase, cre, orden, angulo, fmt, letra, fmod):
@@ -342,9 +370,9 @@ def main():
     def banda_de(avatar_edad, contexto):
         b, orig = derivar_banda(avatar_edad, pk)
         if b is None:
-            pq.bloquear("%s: avatar_edad='%s' no esta en la tabla de derivacion de ETAPA-6. No se "
+            pq.bloquear("%s: avatar_edad='%s' no esta en la tabla de derivacion. No se "
                         "inventa una banda: o se agrega la fila a la tabla, o se corrige el avatar."
-                        % (contexto, orig), ".claude/agents/ETAPA-6.md -> BANDA DE EDAD")
+                        % (contexto, orig), "Ads/_TOOLS/bandas_edad.py")
             return (None, None), orig
         return b, orig
 
@@ -486,11 +514,23 @@ def main():
                 else "CBO: el presupuesto va aca, y los conjuntos NO llevan daily_budget.",
     })
 
+    # R[N] (fase 1 y 3) sale de lo que YA existe en _DIM_CONJUNTOS.csv para este
+    # producto+angulo+cuenta, nunca de la posicion del conjunto en este loop — ver
+    # siguiente_replica(). En fase 2 el numero sigue siendo la posicion dentro del brazo.
+    filas_conjuntos = leer(P("_DIM_CONJUNTOS.csv"))
+    base_replica, pos_en_angulo = {}, {}
+
     orden_global = 0
     for i, uni in enumerate(unidades, 1):
         ang_u = uni["angulo"]
         banda_u = uni["banda"]
-        cj = nombre_conjunto(fase, cta, pk, ang_u, brazo, i)
+        if fase == 2:
+            numero_conj = i
+        else:
+            base_replica.setdefault(ang_u, siguiente_replica(filas_conjuntos, pk, ang_u, cta))
+            pos_en_angulo[ang_u] = pos_en_angulo.get(ang_u, 0) + 1
+            numero_conj = base_replica[ang_u] + pos_en_angulo[ang_u] - 1
+        cj = nombre_conjunto(fase, cta, pk, ang_u, brazo, numero_conj)
         n += 1
         targeting = {
             "geo_locations": {"countries": ["GT"]},

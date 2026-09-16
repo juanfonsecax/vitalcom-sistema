@@ -114,6 +114,29 @@ def leer_escalera(producto_key):
     return tiers or None
 
 
+def requerir_precios_reales(producto_key):
+    """La escalera de precios REAL o BLOQUEO — nunca los precios de otro producto.
+
+    Misma clase de bug que buscar_foto_producto() (07-sep): leer_escalera() ya existia
+    desde el 08-sep para leer PRODUCTOS/_DIM_PRECIOS.csv, pero cuando devolvia None (sin
+    fila ACTIVA para este producto) el llamador caia en silencio a un PRECIOS_GT
+    hardcodeado — Q179/Q239/Q299 de TINNIDROP para cualquier producto sin fila propia, o
+    Q199/Q299/Q399 de CLEARSTEM en la adaptacion de LucidBot. Invariante 4: si falta un
+    input requerido, se detiene con el nombre de quien lo produce — nunca se asume."""
+    precios = leer_escalera(producto_key)
+    if not precios:
+        raise SystemExit(
+            f"BLOQUEANTE: {producto_key} no tiene fila ACTIVA en PRODUCTOS/_DIM_PRECIOS.csv.\n"
+            f"  Sin la escalera de precios real, no se generan los prompts: caer a los precios "
+            f"de otro producto (TINNIDROP Q179/Q239/Q299) fue exactamente el bug que "
+            f"leer_escalera() vino a cerrar el 08-sep-2026 — no se reintroduce por la puerta "
+            f"de atras con un fallback hardcodeado.\n"
+            f"  Agrega la fila de {producto_key} en PRODUCTOS/_DIM_PRECIOS.csv (unidades, "
+            f"precio_q, precio_antes_q, estado=ACTIVO) antes de generar."
+        )
+    return precios
+
+
 def buscar_foto_producto(producto_key):
     """Devuelve la ruta absoluta del packshot DECLARADO. Falla ruidoso si no lo hay."""
     envase = leer_envase(producto_key)
@@ -196,6 +219,10 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
     foto_prod_path = buscar_foto_producto(producto_key)
     foto_prod_rel = os.path.relpath(foto_prod_path, BASE).replace("\\", "/")
 
+    # 2b. Precios REALES — se bloquea ANTES de armar un solo paquete, no se descubre a
+    # medio prompt ni se cae a los de otro producto (ver requerir_precios_reales).
+    precios_reales = requerir_precios_reales(producto_key)
+
     # 3. Selección de los 5 blueprints canónicos
     perfil = obtener_perfil_producto(producto_key, angulo)
     sel_res = sc.seleccionar(perfil, n=5)
@@ -242,11 +269,6 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
                     "Glutatión + Vitamina A: Desinflaman y regeneran la piel",
                     "Diente de León: Apoya la desintoxicación hepática"
                 ],
-                "PRECIOS_GT": {
-                    "TIER_1": "1 Frasco (1 Mes) por Q199",
-                    "TIER_2": "2 Frascos (2 Meses) por Q299 (OFERTA MÁS ELEGIDA ⭐)",
-                    "TIER_3": "3 Frascos (Tratamiento Completo) por Q399"
-                },
                 "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Americano",
                 "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
             }
@@ -263,11 +285,6 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
                     "Extractos Botánicos: Calman la hiperexcitabilidad del nervio",
                     "Aplicación Ótica: Actúa directo en el oído, sin pasar por el estómago"
                 ],
-                "PRECIOS_GT": {
-                    "TIER_1": "1 Frasco por Q179",
-                    "TIER_2": "2 Frascos por Q239 (OFERTA MÁS ELEGIDA ⭐)",
-                    "TIER_3": "3 Frascos por Q299 (Tratamiento Completo)"
-                },
                 "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Sellado",
                 "CTA": "PEDÍ POR WHATSAPP CON ENVÍO GRATIS AQUÍ"
             }
@@ -278,16 +295,14 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
                 "HOOK_TITULAR": f"¡ALIVIO COMPROBADO PARA {angulo.replace('_', ' ')}!",
                 "SUB_HOOK": "Fórmula natural importada con respaldo comprobado.",
                 "ACTIVOS_CLAVE": ["Extractos botánicos certificados", "Absorción rápida"],
-                "PRECIOS_GT": {"TIER_1": "1 Unidad por Q179", "TIER_2": "2 Unidades por Q239", "TIER_3": "3 Unidades por Q299"},
                 "GARANTIAS": "Pago Contra Entrega · Envío Gratis",
                 "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
             }
 
-        # La escalera REAL manda sobre la hardcodeada de arriba: sale de _DIM_PRECIOS.csv
-        # y trae el precio ancla, para que el modelo no invente el "antes".
-        _esc = leer_escalera(producto_key)
-        if _esc:
-            variables_adaptadas["PRECIOS_GT"] = _esc
+        # La escalera de precios es SIEMPRE la real (precios_reales, validada al arrancar
+        # generar_paquete_multimodal): sale de _DIM_PRECIOS.csv y trae el precio ancla, para
+        # que el modelo no invente el "antes". Ningun bloque de arriba la hardcodea ya.
+        variables_adaptadas["PRECIOS_GT"] = precios_reales
 
         nombre_archivo = f"{producto_key}_F2_{cid.split('_')[0]}_{angulo[:12]}.png"
 
@@ -364,10 +379,8 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
         ),
         "oferta_precio": (
             "Hoy tenemos cobertura completa en Guatemala con PAGO CONTRA ENTREGA (pagás en efectivo al recibir):\n"
-            "• 1 Frasco (1 Mes): Q199\n"
-            "• 2 Frascos (2 Meses - Tratamiento Recomendado): Q299 (Ahorrás Q99 ⭐)\n"
-            "• 3 Frascos (Tratamiento Completo): Q399\n"
-            "¿A qué departamento o municipio te lo enviamos?"
+            + "\n".join("• " + precios_reales[t] for t in ("TIER_1", "TIER_2", "TIER_3") if t in precios_reales)
+            + "\n¿A qué departamento o municipio te lo enviamos?"
         )
     }
 

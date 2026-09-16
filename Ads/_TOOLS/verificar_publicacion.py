@@ -29,9 +29,12 @@ Tres veredictos por objeto:
 
 QUE ESCRIBE (solo con --escribir)
 ---------------------------------
-`ad_id` en `PRODUCTOS/_DIM_CREATIVOS.csv`, formato `adA;adB`, una fila por creativo_id.
-Backup previo, escritor CSV real (regla 11 de CLAUDE.md). Nunca pisa una fila que ya tenga un
-`ad_id` distinto sin decirlo.
+`ad_id` en `PRODUCTOS/_DIM_CREATIVOS.csv`, formato `adA;adB`, una fila por creativo_id — y junto
+con el, `estado = PUBLICADO` (ciclo de vida cerrado de ETAPA-9.md: PENDIENTE_GENERAR -> GENERADO
+-> PUBLICADO -> RETIRADO; "PUBLICADO exige ad_id real"). Nunca degrada un `RETIRADO`. No toca
+`estado_entrega`: ese campo es ENTREGADO/SIN_ENTREGA segun el gasto (DATA_PLAYBOOK.md) y lo
+escribe otro proceso, no este gate. Backup previo, escritor CSV real (regla 11 de CLAUDE.md).
+Nunca pisa una fila que ya tenga un `ad_id` distinto sin decirlo.
 
 LO QUE ESTE GATE NO REEMPLAZA
 -----------------------------
@@ -78,6 +81,44 @@ def cargar_snapshot(ruta):
             out[o["name"].strip()] = {"id": o.get("id"), "nivel": o.get("nivel", ""),
                                       "status": o.get("status") or o.get("effective_status", "")}
     return out
+
+
+def aplicar_ad_ids(rows, ids_por_creativo, ruta_pq):
+    """Escribe ad_id + la transicion de estado en las filas de _DIM_CREATIVOS.csv que
+    matchean ids_por_creativo (creativo_id -> {'A': ad_id, 'B': ad_id}).
+
+    Ciclo de vida del estado — obligatorio, sin saltos (ETAPA-9.md):
+        PENDIENTE_GENERAR -> GENERADO -> PUBLICADO -> RETIRADO
+    'PUBLICADO exige ad_id real: es el unico estado que cuenta como inventario vivo' —
+    pero nadie escribia esa transicion, y la fila se quedaba en GENERADO con un ad_id ya
+    vivo en Meta (el error de fondo que este script existe para cerrar, ver POR QUE EXISTE
+    arriba). Nunca degrada un RETIRADO. No toca estado_entrega: ese campo es
+    ENTREGADO/SIN_ENTREGA segun el gasto (DATA_PLAYBOOK.md), lo escribe otro proceso mas
+    adelante, no este gate.
+
+    Devuelve (rows, escritas, ascendidas, conflictos)."""
+    escritas, conflictos, ascendidas = 0, [], 0
+    for r in rows:
+        cid = r.get("creativo_id")
+        if cid not in ids_por_creativo:
+            continue
+        par = ids_por_creativo[cid]
+        nuevo = ";".join(par[l] for l in sorted(par))
+        viejo = (r.get("ad_id") or "").strip()
+        if viejo and viejo != nuevo:
+            conflictos.append((cid, viejo, nuevo))
+        r["ad_id"] = nuevo
+        if (r.get("estado") or "").strip() != "RETIRADO":
+            if (r.get("estado") or "").strip() != "PUBLICADO":
+                ascendidas += 1
+            r["estado"] = "PUBLICADO"
+        nota = (r.get("notas") or "").strip()
+        marca = ("|| ad_id escrito por verificar_publicacion.py el %s desde el manifiesto %s"
+                 % (datetime.date.today().isoformat(), os.path.basename(ruta_pq)))
+        if marca[:40] not in nota:
+            r["notas"] = (nota + " " + marca).strip()
+        escritas += 1
+    return rows, escritas, ascendidas, conflictos
 
 
 def main():
@@ -184,23 +225,7 @@ def main():
     stamp = datetime.datetime.now().strftime("%Y%m%d")
     shutil.copy(CREATIVOS, CREATIVOS + ".bak_publicacion_" + stamp)
 
-    escritas, conflictos = 0, []
-    for r in rows:
-        cid = r.get("creativo_id")
-        if cid not in ids_por_creativo:
-            continue
-        par = ids_por_creativo[cid]
-        nuevo = ";".join(par[l] for l in sorted(par))
-        viejo = (r.get("ad_id") or "").strip()
-        if viejo and viejo != nuevo:
-            conflictos.append((cid, viejo, nuevo))
-        r["ad_id"] = nuevo
-        nota = (r.get("notas") or "").strip()
-        marca = ("|| ad_id escrito por verificar_publicacion.py el %s desde el manifiesto %s"
-                 % (datetime.date.today().isoformat(), os.path.basename(ruta_pq)))
-        if marca[:40] not in nota:
-            r["notas"] = (nota + " " + marca).strip()
-        escritas += 1
+    rows, escritas, ascendidas, conflictos = aplicar_ad_ids(rows, ids_por_creativo, ruta_pq)
 
     with io.open(CREATIVOS, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=cols)
@@ -211,6 +236,7 @@ def main():
     print()
     print("  ESCRITO: %d fila(s) de _DIM_CREATIVOS.csv con su ad_id (backup .bak_publicacion_%s)"
           % (escritas, stamp))
+    print("  ESTADO:  %d fila(s) pasaron a PUBLICADO (ciclo de vida, ETAPA-9.md)" % ascendidas)
     if conflictos:
         print("  OJO — %d fila(s) YA tenian un ad_id distinto y se reemplazo:" % len(conflictos))
         for cid, v, nu in conflictos:
