@@ -16,6 +16,9 @@ Congela tres defectos de la cadena de FASE 2/3 (simulación Turmeric, 22-sep-202
     de cuantas replicas reales ya tiene ese angulo en Meta. Republicar (una tanda mas
     de escalado horizontal) volvia a nombrar R1, R2... encima de replicas que ya
     existian; la simulacion tuvo que fijarlo a mano a R1 para poder avanzar (f71f9ec).
+  · verificar_firma() (defecto residual de la simulacion, 16-sep-2026): un anuncio salia a
+    Meta con ejes de su firma en '?' y el publicador no lo miraba. En FASE 2/3 pasaba en el
+    100 % de los anuncios. TINNIDROP FASE 2 tenia 0 bloqueantes con TINNIDROP|...|C2.CN04|?|?|?
 
 USO:  python Ads/_TOOLS/test_gen_publicacion.py     (exit 0 = pasa, 1 = falla)
 """
@@ -168,6 +171,81 @@ def test_nombre_conjunto_fase2_no_cambia_de_semantica():
     return 0 if ok else 1
 
 
+# ── verificar_firma() — ningun anuncio sale a Meta con un eje de su firma perdido ──────────
+# El 16-sep-2026 TINNIDROP FASE 2 tenia 0 bloqueantes y estaba lista para publicar 5 anuncios
+# con la firma  TINNIDROP|ACCESIBILIDAD_ME|C2.CN04|?|?|?  . La firma viaja en el nombre del
+# anuncio: una vez en Meta, esos tres ejes no se recuperan.
+
+VOCAB_HOY = {"nivel_conciencia": (False, "ETAPA-2.md"), "oferta_key": (False, "ETAPA-1.md"),
+             "destino_key": (True, "ETAPA-11.md")}
+
+
+def _pieza_firma(**faltan):
+    p = {"creativo_id": "TINNIDROP_F2_CN04", "producto_key": "TINNIDROP",
+         "angulo_key": "ACCESIBILIDAD_MEDICO", "concepto_key": "C2_BENEFICIOS",
+         "canonico_id": "CN04", "nivel_conciencia": "2", "oferta_key": "ESCALERA",
+         "destino_key": "PARAGUAS_V2"}
+    for eje in faltan:
+        p[eje] = None
+    return p
+
+
+def _correr_gate(piezas, vocab):
+    previo = gp.vocabulario_de_ejes
+    gp.vocabulario_de_ejes = lambda: vocab
+    try:
+        pq = gp.Paquete()
+        gp.verificar_firma([{"piezas": piezas}], gp.cargar_firma(), pq)
+    finally:
+        gp.vocabulario_de_ejes = previo
+    bloq = [b for b in pq.bloqueantes if "firma" in b["falta"]]
+    avis = [a for a in pq.avisos if "firma" in a]
+    return bloq, avis
+
+
+def test_firma_completa_no_bloquea():
+    bloq, avis = _correr_gate([_pieza_firma()], VOCAB_HOY)
+    ok = not bloq and not avis
+    print(("  OK     " if ok else "  FALLA  ")
+          + "firma con los 5 ejes: ni bloquea ni avisa"
+          + ("" if ok else f"\n         bloq={bloq} avis={avis}"))
+    return 0 if ok else 1
+
+
+def test_firma_fase2_sin_ejes_de_oferta_bloquea_con_su_dueno():
+    """El caso real: las piezas de FASE 2 salen de _DIM_CREATIVOS.csv y el plan no trae los ejes."""
+    bloq, _ = _correr_gate([_pieza_firma(nivel_conciencia=1, oferta_key=1, destino_key=1)] * 5, VOCAB_HOY)
+    textos = " ".join(b["falta"] for b in bloq)
+    duenos = " ".join(b["lo_produce"] for b in bloq)
+    ok = (len(bloq) == 2 and "nivel_conciencia" in textos and "oferta_key" in textos
+          and "ETAPA-2.md" in duenos and "ETAPA-1.md" in duenos and "5 anuncio" in textos)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "firma '?|?|?' de FASE 2: bloquea nivel_conciencia y oferta_key, cada uno con su dueno"
+          + ("" if ok else f"\n         bloq={bloq}"))
+    return 0 if ok else 1
+
+
+def test_firma_eje_abierto_avisa_y_no_bloquea():
+    """destino_key esta declarado '(abierto)' en el vocabulario: exigirlo seria inventar la regla."""
+    bloq, avis = _correr_gate([_pieza_firma(destino_key=1)], VOCAB_HOY)
+    ok = not bloq and len(avis) == 1 and "destino_key" in avis[0] and "ABIERTO" in avis[0]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "destino_key vacio con vocabulario ABIERTO: avisa, no bloquea"
+          + ("" if ok else f"\n         bloq={bloq} avis={avis}"))
+    return 0 if ok else 1
+
+
+def test_firma_eje_se_exige_cuando_su_dueno_cierra_el_vocabulario():
+    """La regla sale del vocabulario, no del codigo: cuando ETAPA-11 cierre destino_key, bloquea solo."""
+    vocab_cerrado = dict(VOCAB_HOY, destino_key=(False, "ETAPA-11.md"))
+    bloq, avis = _correr_gate([_pieza_firma(destino_key=1)], vocab_cerrado)
+    ok = len(bloq) == 1 and "destino_key" in bloq[0]["falta"] and "ETAPA-11.md" in bloq[0]["lo_produce"]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "el mismo destino_key vacio BLOQUEA en cuanto el vocabulario deja de estar abierto"
+          + ("" if ok else f"\n         bloq={bloq} avis={avis}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_orden_estable_brazo_b_continua_donde_termina_a()
@@ -180,6 +258,10 @@ def main():
     fallas += test_siguiente_replica_no_mezcla_angulo_ni_cuenta()
     fallas += test_siguiente_replica_ignora_huecos_por_pausas()
     fallas += test_nombre_conjunto_fase2_no_cambia_de_semantica()
+    fallas += test_firma_completa_no_bloquea()
+    fallas += test_firma_fase2_sin_ejes_de_oferta_bloquea_con_su_dueno()
+    fallas += test_firma_eje_abierto_avisa_y_no_bloquea()
+    fallas += test_firma_eje_se_exige_cuando_su_dueno_cierra_el_vocabulario()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

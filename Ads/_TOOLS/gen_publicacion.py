@@ -196,6 +196,67 @@ def cargar_firma():
 
 # ---------------------------------------------------------------- el generador
 
+EJES_FIRMA = ("angulo_key", "concepto_key", "nivel_conciencia", "oferta_key", "destino_key")
+ABIERTO = "(abierto)"
+
+
+def vocabulario_de_ejes():
+    """{eje: (abierto?, dueno)} desde PRODUCTOS/_DIM_VOCABULARIO.csv.
+
+    Un eje esta ABIERTO si su vocabulario declara el valor '(abierto)': es una marca deliberada
+    del dueno (hoy solo destino_key, ver PARAMETRIZACION_ADS.md: "abierto: version del flujo
+    LucidBot"). Se usa esa marca y no '(vacio)', porque el vocabulario de nivel_conciencia fue
+    ingerido de datos historicos y trae '(vacio)', '3a', 'NC1' y '1-2' como si fueran valores
+    validos: describe lo que hubo, no lo que se exige. Cuando ETAPA-11 cierre el vocabulario de
+    destino, el eje deja de estar abierto y este gate empieza a bloquearlo sin tocar codigo."""
+    out = {}
+    for r in leer(P("_DIM_VOCABULARIO.csv")):
+        eje = (r.get("eje") or "").strip()
+        if eje not in EJES_FIRMA:
+            continue
+        abierto, dueno = out.get(eje, (False, ""))
+        out[eje] = (abierto or (r.get("valor") or "").strip() == ABIERTO,
+                    dueno or (r.get("dueno_del_vocabulario") or "").strip())
+    return out
+
+
+def verificar_firma(unidades, fmod, pq):
+    """GATE: ningun anuncio sale a Meta con un eje de su firma perdido.
+
+    La firma viaja en el NOMBRE del anuncio y es de donde el sistema lee despues los 5 ejes de
+    lo que se pauto. Un eje que sale como '?' se pierde PARA SIEMPRE: el nombre ya esta en Meta.
+    Hasta el 16-sep-2026 el publicador no lo miraba, y en FASE 2/3 los tres ejes de la oferta
+    salian '?' en el 100 % de los anuncios (las piezas son filas de _DIM_CREATIVOS.csv, que no
+    tiene esas columnas, y nadie se los pasaba). Simulacion TURMERIC:
+        TURMERIC|MANOS_RIGIDAS_AL|C2.CN06|?|?|?
+
+    Un eje vacio BLOQUEA, con el nombre de su dueno. Un eje que el vocabulario declara ABIERTO
+    solo AVISA: exigirlo seria inventar una regla que la doctrina todavia no fijo."""
+    vocab = vocabulario_de_ejes()
+    faltan = {}
+    for u in unidades:
+        for pieza in u["piezas"]:
+            ejes = fmod.parsear(fmod.firma(pieza))
+            for eje in EJES_FIRMA:
+                if (ejes.get(eje) or fmod.VACIO) == fmod.VACIO:
+                    faltan.setdefault(eje, []).append(pieza.get("creativo_id") or pieza.get("archivo") or "?")
+    for eje in EJES_FIRMA:
+        if eje not in faltan:
+            continue
+        abierto, dueno = vocab.get(eje, (False, ""))
+        cuantos = len(faltan[eje])
+        if abierto:
+            pq.avisar("la firma sale sin %s en %d anuncio(s): el eje esta declarado ABIERTO en "
+                      "_DIM_VOCABULARIO.csv (dueno %s), asi que no bloquea. Se pierde para esos "
+                      "anuncios; se empieza a exigir cuando su dueno cierre el vocabulario."
+                      % (eje, cuantos, dueno or "sin dueno declarado"))
+        else:
+            pq.bloquear("la firma sale con %s = '%s' en %d anuncio(s) (%s). Publicado asi, ese eje "
+                        "se pierde para siempre: la firma viaja en el nombre del anuncio y el "
+                        "sistema la lee de ahi." % (eje, fmod.VACIO, cuantos, ", ".join(faltan[eje][:4])),
+                        "%s -> llega al anuncio por el plan de etapa-6" % (dueno or "etapa-6"))
+
+
 class Paquete(object):
     def __init__(self):
         self.bloqueantes = []
@@ -425,8 +486,19 @@ def main():
         piezas = piezas_del_angulo
         if arg("--brazo-creativos"):
             piezas = [r for r in piezas if r.get("brazo") == arg("--brazo-creativos")]
+        # Los tres ejes de la oferta NO viven en _DIM_CREATIVOS.csv: son constantes de la fase y
+        # los declara el plan (mismo lugar de donde los toma la FASE 1). Sin esto la firma de toda
+        # pieza de FASE 2/3 salia '?|?|?'. Solo se completa lo vacio: si la fila trae valor, manda la fila.
+        nc_plan = next((c.get("nivel_conciencia") for c in (plan.get("conjuntos") or [])
+                        if (c.get("nivel_conciencia") or "").strip()), None)
+        ejes_plan = {"nivel_conciencia": nc_plan,
+                     "oferta_key": (plan.get("oferta") or {}).get("oferta_key"),
+                     "destino_key": plan.get("destino_key")}
         listas = []
         for r in piezas:
+            for eje, valor in ejes_plan.items():
+                if not (r.get(eje) or "").strip():
+                    r[eje] = valor
             arch = (r.get("archivo") or "").strip()
             ruta = resolver_archivo(arch)
             if ruta:
@@ -457,6 +529,9 @@ def main():
                     "hay media que subir y el anuncio no se puede crear."
                     % (len(sin_archivo), ", ".join(str(s) for s in sin_archivo[:6])),
                     "etapa-render / el operador")
+
+    # Ningun anuncio sale con un eje de su firma perdido (se pierde para siempre en Meta).
+    verificar_firma(unidades, fmod, pq)
 
     banda = unidades[0]["banda"] if unidades else (None, None)
     origen_banda = unidades[0]["origen_banda"] if unidades else "sin unidades"
