@@ -13,9 +13,10 @@
   "v5 (09-sep-2026): la vista inicial es el FLUJO — 'estás acá · esto bloquea · esto sigue' — que",
   "sale de DOCTRINA/FLUJO.json evaluado sobre los CSV por flujo.py. La fase de un producto ya no",
   "se declara: se deriva de la data.",
-  "v6 (09-sep-2026): se agrega la vista PERFILES — el ciclo de vida de cada ángulo y el riesgo de moverle el presupuesto. Sale de perfilar_angulos.py, que consume el veredicto de decidir.py y no lo recalcula: la orden sigue siendo del motor (invariante 13)."
+  "v6 (09-sep-2026): se agrega la vista PERFILES — el ciclo de vida de cada ángulo y el riesgo de moverle el presupuesto. Sale de perfilar_angulos.py, que consume el veredicto de decidir.py y no lo recalcula: la orden sigue siendo del motor (invariante 13).",
+  "v7 (18-sep-2026): se agrega el bloque `acciones` (Hito 3 de la app web). Declara, uno por uno, los botones que la app puede ofrecer: los 14 nodos de DOCTRINA/FLUJO.json más 8 comandos internos del runner. gen_app.py exige la biyección con FLUJO.json (regla V6) — un nodo nuevo en el grafo sin su acción hace inválido el manifiesto. Ninguna acción que toque Meta está habilitada todavía: se habilitan en los Hitos 4-5, en Opus (ver el diseño del Hito 3 en PRODUCTOS/_AUDITORIAS/)."
  ],
- "version": 6,
+ "version": 7,
  "app": {
   "titulo": "VitalCom Guatemala",
   "subtitulo": "sistema de lanzamiento y optimización",
@@ -142,5 +143,1004 @@
    "caduca": false,
    "pesada": false
   }
- ]
+ ],
+ "acciones": {
+  "schema": "acciones/1",
+  "reservados": [
+   "run_dir",
+   "tmp",
+   "hoy",
+   "job_id"
+  ],
+  "claude": {
+   "servidor_meta": "claude_ai_META_MCP",
+   "herramientas_base": [
+    "Task",
+    "Agent",
+    "Skill",
+    "Read",
+    "Glob",
+    "Grep",
+    "Bash",
+    "Write",
+    "Edit"
+   ],
+   "marca_pregunta": "PREGUNTA_OPERADOR:",
+   "respuesta_max_horas": 24,
+   "prompt_nodo": [
+    "Sos el orquestador de VITALCOM corriendo desde la app, sin operador en línea (trabajo {job_id}).",
+    "Ejecutá SOLO el nodo {nodo} del producto {producto_key}.",
+    "Primero corré `python Ads/_TOOLS/flujo.py {producto_key}`. Si el nodo actual no es {nodo} o está BLOQUEADO, no ejecutes nada: devolvé los bloqueantes y terminá.",
+    "Ejecutalo con su ejecutor declarado ({ejecutor}), según CLAUDE.md y su skill o su archivo de etapa.",
+    "Si necesitás una decisión del operador, no la asumas: terminá tu respuesta con una línea que empiece con `PREGUNTA_OPERADOR:` seguida de la pregunta y las opciones."
+   ]
+  },
+  "tras_escribir": [
+   "sistema.barrido_csv",
+   "sistema.refrescar_flujo",
+   "sistema.gen_app"
+  ],
+  "lista": [
+   {
+    "id": "nodo.F1.congelar_inputs",
+    "rotulo": "Cargar lo que el producto necesita",
+    "nodo": "F1.congelar_inputs",
+    "ejecutor_tipo": "operador",
+    "name": null,
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 0,
+    "datos_del_operador": [
+     {
+      "dato": "fila del producto en _DIM_PRODUCTOS.csv",
+      "accion": "producto.alta"
+     },
+     {
+      "dato": "COSTO_PROVEEDOR_Q",
+      "accion": "producto.alta"
+     },
+     {
+      "dato": "≥6 transcripciones TXT",
+      "accion": "producto.transcribir"
+     },
+     {
+      "dato": "carpeta de media del producto (imagen del frasco)",
+      "accion": "producto.alta"
+     }
+    ]
+   },
+   {
+    "id": "nodo.F1.paquete",
+    "rotulo": "Armar FASE 1 (ángulos, copy, bot y plan)",
+    "nodo": "F1.paquete",
+    "ejecutor_tipo": "skill",
+    "name": "fase-1-angulos",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/",
+     "Ads/"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 5400,
+    "herramientas": [
+     "WebSearch",
+     "WebFetch"
+    ],
+    "presupuesto_usd": 30
+   },
+   {
+    "id": "nodo.F1.publicar",
+    "rotulo": "Publicar FASE 1 en Meta (PAUSED)",
+    "nodo": "F1.publicar",
+    "ejecutor_tipo": "skill",
+    "name": "publicar-meta",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "por_orden",
+    "toca_meta": true,
+    "escribe": [
+     "Ads/_INGESTA/META/",
+     "PRODUCTOS/_DIM_CREATIVOS.csv",
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 1800,
+    "herramientas_meta": {
+     "lectura": [
+      "ads_get_ad_accounts",
+      "ads_get_ad_entities",
+      "ads_get_user_pages",
+      "ads_get_ad_account_pages",
+      "ads_get_ad_images"
+     ],
+     "escritura": [
+      "ads_create_campaign",
+      "ads_create_ad_set",
+      "ads_create_creative",
+      "ads_create_ad"
+     ]
+    },
+    "ordenes": {
+     "tipo": "paquete_publicacion",
+     "generador": "publicacion.paquete",
+     "verificador": "publicacion.verificar",
+     "evento": "LANZAMIENTO",
+     "caduca_horas": 12
+    },
+    "presupuesto_usd": 10,
+    "motivo": "Se habilita en el Hito 4, en Opus: falta el spike de ads_creative_upload_media (LOCAL_FILE abre un widget) en headless."
+   },
+   {
+    "id": "nodo.F1.activar",
+    "rotulo": "Activar FASE 1 a las 4 AM",
+    "nodo": "F1.activar",
+    "ejecutor_tipo": "mcp",
+    "name": null,
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "por_orden",
+    "toca_meta": true,
+    "escribe": [
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 600,
+    "herramientas_meta": {
+     "lectura": [
+      "ads_get_ad_entities"
+     ],
+     "escritura": [
+      "ads_activate_entity"
+     ]
+    },
+    "presupuesto_usd": 3,
+    "motivo": "Ningún script genera la orden de activación (campaña, hora, evento) ni la verifica. Hito 4/5, en Opus."
+   },
+   {
+    "id": "nodo.F2.etapa-11",
+    "rotulo": "Diagnosticar el cierre del bot",
+    "nodo": "F2.etapa-11",
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-11",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 2400,
+    "herramientas": [],
+    "presupuesto_usd": 10
+   },
+   {
+    "id": "nodo.F2.conceptos",
+    "rotulo": "Fabricar y renderizar los 10 conceptos",
+    "nodo": "F2.conceptos",
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-9",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/",
+     "Ads/"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 5400,
+    "herramientas": [],
+    "presupuesto_usd": 25,
+    "motivo": "etapa-render conduce el Chrome del operador; no está verificado que claude-in-chrome exista en una corrida headless (spike pendiente)."
+   },
+   {
+    "id": "nodo.F2.plan",
+    "rotulo": "Copy único, flujos A/B y plan de las 3 campañas",
+    "nodo": "F2.plan",
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-6",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 3600,
+    "herramientas": [],
+    "presupuesto_usd": 20
+   },
+   {
+    "id": "nodo.F2.publicar",
+    "rotulo": "Publicar las campañas de conceptos (PAUSED)",
+    "nodo": "F2.publicar",
+    "ejecutor_tipo": "skill",
+    "name": "publicar-meta",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     },
+     "brazo": {
+      "tipo": "enum",
+      "valores": [
+       "A",
+       "B",
+       "C"
+      ],
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "por_orden",
+    "toca_meta": true,
+    "escribe": [
+     "Ads/_INGESTA/META/",
+     "PRODUCTOS/_DIM_CREATIVOS.csv",
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 1800,
+    "herramientas_meta": {
+     "lectura": [
+      "ads_get_ad_accounts",
+      "ads_get_ad_entities",
+      "ads_get_user_pages",
+      "ads_get_ad_account_pages",
+      "ads_get_ad_images"
+     ],
+     "escritura": [
+      "ads_create_campaign",
+      "ads_create_ad_set",
+      "ads_create_creative",
+      "ads_create_ad"
+     ]
+    },
+    "ordenes": {
+     "tipo": "paquete_publicacion",
+     "generador": "publicacion.paquete",
+     "verificador": "publicacion.verificar",
+     "evento": "LANZAMIENTO",
+     "caduca_horas": 12
+    },
+    "presupuesto_usd": 10,
+    "motivo": "Igual que nodo.F1.publicar: Hito 4, en Opus."
+   },
+   {
+    "id": "nodo.F2.activar",
+    "rotulo": "Activar las campañas de conceptos a las 4 AM",
+    "nodo": "F2.activar",
+    "ejecutor_tipo": "mcp",
+    "name": null,
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "por_orden",
+    "toca_meta": true,
+    "escribe": [
+     "PRODUCTOS/_EVENTOS.csv",
+     "PRODUCTOS/_TESTEOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 600,
+    "herramientas_meta": {
+     "lectura": [
+      "ads_get_ad_entities"
+     ],
+     "escritura": [
+      "ads_activate_entity"
+     ]
+    },
+    "presupuesto_usd": 3,
+    "motivo": "Igual que nodo.F1.activar, más el A/B de flujo (CAMBIO_BOT + gemelos + test_id). Hito 4/5, en Opus."
+   },
+   {
+    "id": "nodo.F3.plan",
+    "rotulo": "Microángulos y plan 1-1-7",
+    "nodo": "F3.plan",
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-6",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 3600,
+    "herramientas": [
+     "WebSearch",
+     "WebFetch"
+    ],
+    "presupuesto_usd": 20
+   },
+   {
+    "id": "nodo.F3.publicar",
+    "rotulo": "Publicar el 1-1-7 CBO (PAUSED)",
+    "nodo": "F3.publicar",
+    "ejecutor_tipo": "skill",
+    "name": "publicar-meta",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "por_orden",
+    "toca_meta": true,
+    "escribe": [
+     "Ads/_INGESTA/META/",
+     "PRODUCTOS/_DIM_CREATIVOS.csv",
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 1800,
+    "herramientas_meta": {
+     "lectura": [
+      "ads_get_ad_accounts",
+      "ads_get_ad_entities",
+      "ads_get_user_pages",
+      "ads_get_ad_account_pages",
+      "ads_get_ad_images"
+     ],
+     "escritura": [
+      "ads_create_campaign",
+      "ads_create_ad_set",
+      "ads_create_creative",
+      "ads_create_ad"
+     ]
+    },
+    "ordenes": {
+     "tipo": "paquete_publicacion",
+     "generador": "publicacion.paquete",
+     "verificador": "publicacion.verificar",
+     "evento": "LANZAMIENTO",
+     "caduca_horas": 12
+    },
+    "presupuesto_usd": 10,
+    "motivo": "Igual que nodo.F1.publicar: Hito 6, en Opus."
+   },
+   {
+    "id": "nodo.ciclo.datos",
+    "rotulo": "Traer las ventas de LucidSales",
+    "nodo": "ciclo.datos",
+    "ejecutor_tipo": "skill",
+    "name": "recopilar-lucidsales",
+    "comando": null,
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_FACT_VENTAS.csv",
+     "Ads/_INGESTA/"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 1200,
+    "herramientas": [],
+    "presupuesto_usd": 5
+   },
+   {
+    "id": "nodo.ciclo.motor",
+    "rotulo": "Correr el motor de decisión",
+    "nodo": "ciclo.motor",
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_decisiones.py"
+    ],
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DECISIONES.json",
+     "warehouse/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 900,
+    "salida": "texto"
+   },
+   {
+    "id": "nodo.ciclo.ordenes",
+    "rotulo": "Ejecutar las órdenes del motor",
+    "nodo": "ciclo.ordenes",
+    "ejecutor_tipo": "mcp",
+    "name": null,
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "por_orden",
+    "toca_meta": true,
+    "escribe": [
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": false,
+    "tiempo_max_s": 600,
+    "herramientas_meta": {
+     "lectura": [
+      "ads_get_ad_entities"
+     ],
+     "escritura": [
+      "ads_update_entity"
+     ]
+    },
+    "presupuesto_usd": 3,
+    "motivo": "_DECISIONES.json trae la orden en prosa, sin entidad ni valor destino. Falta gen_ordenes.py (orden literal) y verificar_orden.py (contra Meta), ambos con test. Hito 5, en Opus."
+   },
+   {
+    "id": "producto.alta",
+    "rotulo": "Dar de alta el producto",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/alta_producto.py",
+     "--nombre",
+     "{nombre}",
+     "--costo",
+     "{costo}",
+     "--descripcion-archivo",
+     "{descripcion}",
+     "--imagen",
+     "{imagen}",
+     "--json"
+    ],
+    "parametros": {
+     "nombre": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{2,80}$",
+      "requerido": true
+     },
+     "costo": {
+      "tipo": "texto",
+      "patron": "^[0-9]{1,5}([.,][0-9]{1,2})?$",
+      "requerido": true
+     },
+     "descripcion": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "imagen": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "clave": {
+      "tipo": "texto",
+      "patron": "^[A-Z0-9_]{2,40}$",
+      "requerido": false,
+      "bandera": "--clave"
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": false,
+      "bandera": "--cuenta"
+     },
+     "moneda": {
+      "tipo": "enum",
+      "valores": [
+       "GTQ",
+       "USD",
+       "COP"
+      ],
+      "requerido": false,
+      "bandera": "--moneda"
+     },
+     "tasa": {
+      "tipo": "texto",
+      "patron": "^[0-9]{1,5}([.,][0-9]{1,4})?$",
+      "requerido": false,
+      "bandera": "--tasa"
+     },
+     "color_envase": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{1,40}$",
+      "requerido": false,
+      "bandera": "--color-envase"
+     },
+     "color_hex": {
+      "tipo": "texto",
+      "patron": "^#[0-9A-Fa-f]{6}$",
+      "requerido": false,
+      "bandera": "--color-hex"
+     },
+     "marca": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{1,60}$",
+      "requerido": false,
+      "bandera": "--marca"
+     },
+     "formato": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{1,40}$",
+      "requerido": false,
+      "bandera": "--formato"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DIM_PRODUCTOS.csv",
+     "PRODUCTOS/_DIM_ENVASE.csv",
+     "PRODUCTOS/",
+     "Ads/"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
+    "id": "producto.transcribir",
+    "rotulo": "Pasar los videos a texto",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/transcribir_videos.py",
+     "--producto",
+     "{producto_key}",
+     "--modelo",
+     "{modelo}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "modelo": {
+      "tipo": "enum",
+      "valores": [
+       "tiny",
+       "base",
+       "small",
+       "medium"
+      ],
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "Ads/1.2 Transcripcion videos/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 3600,
+    "salida": "json"
+   },
+   {
+    "id": "sistema.barrido_csv",
+    "rotulo": "Validar los CSV que cambiaron",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/hook_csv.py",
+     "--barrido"
+    ],
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/.hook_csv_mtimes.json"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "texto"
+   },
+   {
+    "id": "sistema.refrescar_flujo",
+    "rotulo": "Re-evaluar el flujo",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/flujo.py",
+     "--todo",
+     "--silencioso"
+    ],
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_FLUJO.json",
+     "PRODUCTOS/_ESTADO_FLUJO.csv",
+     "PRODUCTOS/_EVENTOS.csv",
+     "VISTAS/FLUJO.html"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 600,
+    "salida": "texto"
+   },
+   {
+    "id": "sistema.gen_app",
+    "rotulo": "Regenerar las vistas",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_app.py"
+    ],
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "VISTAS/_ESTADO.json",
+     "VISTAS/APP.html",
+     "VISTAS/PANEL.html",
+     "PRODUCTOS/_LANZADOR.json"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 600,
+    "salida": "texto"
+   },
+   {
+    "id": "publicacion.paquete",
+    "rotulo": "Generar el paquete de publicación contra el snapshot",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_publicacion.py",
+     "--producto",
+     "{producto_key}",
+     "--fase",
+     "{fase}",
+     "--brazo",
+     "{brazo}",
+     "--cuenta",
+     "{cuenta}",
+     "--snapshot",
+     "Ads/_INGESTA/META/snapshot_{cuenta}.json",
+     "--json",
+     "--salida",
+     "{run_dir}/paquete.json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "fase": {
+      "tipo": "enum",
+      "valores": [
+       "1",
+       "2",
+       "3"
+      ],
+      "requerido": true
+     },
+     "brazo": {
+      "tipo": "enum",
+      "valores": [
+       "UNICO",
+       "A",
+       "B",
+       "C"
+      ],
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "json"
+   },
+   {
+    "id": "publicacion.verificar",
+    "rotulo": "Verificar Meta contra el paquete y escribir los ad_id",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/verificar_publicacion.py",
+     "--producto",
+     "{producto_key}",
+     "--fase",
+     "{fase}",
+     "--brazo",
+     "{brazo}",
+     "--snapshot",
+     "Ads/_INGESTA/META/snapshot_{cuenta}.json",
+     "--escribir"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "fase": {
+      "tipo": "enum",
+      "valores": [
+       "1",
+       "2",
+       "3"
+      ],
+      "requerido": true
+     },
+     "brazo": {
+      "tipo": "enum",
+      "valores": [
+       "UNICO",
+       "A",
+       "B",
+       "C"
+      ],
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DIM_CREATIVOS.csv"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "texto"
+   },
+   {
+    "id": "evento.registrar",
+    "rotulo": "Registrar el evento",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/registrar_evento.py",
+     "--producto",
+     "{producto_key}",
+     "--evento",
+     "{evento}",
+     "--motivo",
+     "{motivo}",
+     "--fuente",
+     "{fuente}"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "evento": {
+      "tipo": "enum",
+      "requerido": true,
+      "valores": [
+       "LANZAMIENTO",
+       "PAUSA",
+       "CAMBIO_PRESUPUESTO",
+       "CAMBIO_CREATIVO",
+       "ORDEN_REVOCADA"
+      ]
+     },
+     "motivo": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{3,300}$",
+      "requerido": true
+     },
+     "fuente": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{3,300}$",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": false,
+      "bandera": "--cuenta"
+     },
+     "campana": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{1,120}$",
+      "requerido": false,
+      "bandera": "--campana"
+     },
+     "conjunto": {
+      "tipo": "texto",
+      "patron": "^[^\\r\\n]{1,160}$",
+      "requerido": false,
+      "bandera": "--conjunto"
+     },
+     "antes": {
+      "tipo": "texto",
+      "patron": "^[0-9.]{0,12}$",
+      "requerido": false,
+      "bandera": "--antes"
+     },
+     "despues": {
+      "tipo": "texto",
+      "patron": "^[0-9.]{0,12}$",
+      "requerido": false,
+      "bandera": "--despues"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 60,
+    "salida": "texto"
+   }
+  ]
+ }
 }

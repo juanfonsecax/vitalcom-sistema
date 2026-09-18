@@ -30,6 +30,7 @@ USO
 """
 import io
 import os
+import re
 import sys
 import json
 import datetime
@@ -40,6 +41,7 @@ os.chdir(BASE)
 sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
 
 MANIFIESTO = "VISTAS/_MANIFIESTO.json"
+FLUJO_JSON = "DOCTRINA/FLUJO.json"
 LANZADOR_JSON = "PRODUCTOS/_LANZADOR.json"
 GEN_LANZADOR = "Ads/_TOOLS/gen_lanzador.py"
 DECISIONES_JSON = "PRODUCTOS/_DECISIONES.json"
@@ -51,18 +53,45 @@ HOY = datetime.date.today()
 CAMPOS_VISTA = {"id", "seccion", "rotulo", "sub", "tipo", "render", "fuente",
                 "genera", "dueno", "caduca", "pesada"}
 
+# ── el bloque `acciones` (v7, HITO 3 de la app) ────────────────────────────────
+ACCION_ID_RE = re.compile(r"^[a-z]+(\.[A-Za-z0-9_-]+)+$")
+EJECUTOR_TIPOS_ACCION = {"script", "subagente", "skill", "mcp", "operador"}
+PARAM_TIPOS_ACCION = {"producto_key", "cuenta_alias", "enum", "texto", "archivo_temporal", "bandera"}
+RUTAS_ESCRIBE_PERMITIDAS = ("PRODUCTOS/", "Ads/", "VISTAS/", "warehouse/")
+RUTAS_ESCRIBE_PROHIBIDAS = ("DOCTRINA/", ".claude/", "app/")
+CAMPOS_ACCION_CONOCIDOS = {
+    "id", "rotulo", "nodo", "ejecutor_tipo", "name", "comando", "salida", "parametros",
+    "requiere_confirmacion", "aprobacion", "toca_meta", "herramientas", "herramientas_meta",
+    "ordenes", "escribe", "idempotente", "precondicion", "visibilidad", "habilitada", "motivo",
+    "tiempo_max_s", "presupuesto_usd", "datos_del_operador",
+}
+CAMPOS_ACCION_OBLIGATORIOS = {
+    "id", "rotulo", "nodo", "ejecutor_tipo", "parametros", "requiere_confirmacion",
+    "aprobacion", "toca_meta", "escribe", "precondicion", "visibilidad", "habilitada",
+    "tiempo_max_s",
+}
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 1 · EL MANIFIESTO, VALIDADO
 # ─────────────────────────────────────────────────────────────────────────────
 
-def leer_manifiesto():
-    if not os.path.exists(MANIFIESTO):
-        raise SystemExit("no existe %s — es el archivo que declara el sistema." % MANIFIESTO)
-    with io.open(MANIFIESTO, encoding="utf-8") as fh:
-        m = json.load(fh)
+def leer_flujo():
+    """DOCTRINA/FLUJO.json, o None si no existe (un manifiesto v6 no lo necesita)."""
+    if not os.path.exists(FLUJO_JSON):
+        return None
+    with io.open(FLUJO_JSON, encoding="utf-8") as fh:
+        return json.load(fh)
 
+
+def problemas_de_manifiesto(m, flujo):
+    """Toda la validación del manifiesto, en una función pura (sin disco, sin excepciones).
+
+    Devuelve la lista de problemas (vacía = válido). Cubre la validación de `vistas` que
+    ya existía en v6, y —cuando `version >= 7`— las reglas V1-V19 del bloque `acciones`
+    (`validar_acciones`, más abajo). `flujo` es el dict de DOCTRINA/FLUJO.json, o None.
+    """
     problemas = []
     # las llaves de arriba, antes de mirar las vistas: sin ellas el resto no se
     # puede ni evaluar, y un KeyError crudo no le dice a nadie que arreglar
@@ -73,8 +102,7 @@ def leer_manifiesto():
         if llave not in (m.get("app") or {}):
             problemas.append("falta app.%s" % llave)
     if problemas:
-        raise SystemExit("MANIFIESTO INVALIDO — %s\n  · %s"
-                         % (MANIFIESTO, "\n  · ".join(problemas)))
+        return problemas  # sin secciones/vistas no se puede seguir validando
 
     secciones = {s["id"] for s in m.get("secciones", [])}
     vistos = set()
@@ -102,10 +130,233 @@ def leer_manifiesto():
     if vi not in vistos:
         problemas.append("la vista_inicial '%s' no esta declarada" % vi)
 
+    if m.get("version", 0) >= 7:
+        problemas.extend(validar_acciones(m, flujo))
+
+    return problemas
+
+
+def leer_manifiesto():
+    if not os.path.exists(MANIFIESTO):
+        raise SystemExit("no existe %s — es el archivo que declara el sistema." % MANIFIESTO)
+    with io.open(MANIFIESTO, encoding="utf-8") as fh:
+        m = json.load(fh)
+
+    flujo = leer_flujo() if m.get("version", 0) >= 7 else None
+    problemas = problemas_de_manifiesto(m, flujo)
     if problemas:
         raise SystemExit("MANIFIESTO INVALIDO — %s\n  · %s"
                          % (MANIFIESTO, "\n  · ".join(problemas)))
     return m
+
+
+def _nodos_de_flujo_por_id(flujo):
+    """{id sin prefijo de fase: nodo} — aplana fases[].nodos[] + ciclo[]."""
+    out = {}
+    for fase in (flujo or {}).get("fases", []) or []:
+        for n in fase.get("nodos", []) or []:
+            out[n["id"]] = n
+    for n in (flujo or {}).get("ciclo", []) or []:
+        out[n["id"]] = n
+    return out
+
+
+def validar_acciones(m, flujo):
+    """Las 19 reglas del bloque `acciones` (v7). Ver el diseño del Hito 3, §2.4.
+
+    No lanza: devuelve la lista de problemas, con el número de regla al frente de cada
+    uno ("V5: ..."), para que las pruebas puedan filtrar por regla.
+    """
+    problemas = []
+    bloque = m.get("acciones")
+    if not isinstance(bloque, dict) or bloque.get("schema") != "acciones/1" or "lista" not in bloque:
+        problemas.append("V1: falta el bloque 'acciones', su schema no es 'acciones/1', o falta 'lista'")
+        return problemas
+
+    lista = bloque.get("lista") or []
+    nodos_flujo = _nodos_de_flujo_por_id(flujo)
+    ids_vistos = set()
+    ids_con_nodo = {}
+
+    for a in lista:
+        aid = a.get("id", "<sin id>")
+        d = "la acción '%s'" % aid
+
+        if aid in ids_vistos:
+            problemas.append("V2: %s está repetida" % d)
+        ids_vistos.add(aid)
+        if not ACCION_ID_RE.match(str(a.get("id", ""))):
+            problemas.append("V2: %s no cumple el patrón de id" % d)
+
+        faltan = CAMPOS_ACCION_OBLIGATORIOS - set(a)
+        if faltan:
+            problemas.append("V3: a %s le faltan los campos %s" % (d, sorted(faltan)))
+        sobra = set(a) - CAMPOS_ACCION_CONOCIDOS
+        if sobra:
+            problemas.append("V3: %s trae campos que el contrato no conoce: %s" % (d, sorted(sobra)))
+
+        ejecutor_tipo = a.get("ejecutor_tipo")
+        if ejecutor_tipo not in EJECUTOR_TIPOS_ACCION:
+            problemas.append("V4: %s tiene ejecutor_tipo '%s', fuera del vocabulario" % (d, ejecutor_tipo))
+
+        nodo_id = a.get("nodo")
+        nf = None
+        if nodo_id is not None:
+            nf = nodos_flujo.get(nodo_id)
+            if nf is None:
+                problemas.append("V5: %s apunta al nodo '%s', que no existe en FLUJO.json" % (d, nodo_id))
+            else:
+                ids_con_nodo.setdefault(nodo_id, []).append(aid)
+                ej = nf.get("ejecutor", {}) or {}
+                if ej.get("tipo") != ejecutor_tipo:
+                    problemas.append("V5: %s declara ejecutor_tipo '%s' pero FLUJO.json dice '%s' para %s"
+                                     % (d, ejecutor_tipo, ej.get("tipo"), nodo_id))
+                if ej.get("name") != a.get("name"):
+                    problemas.append("V5: %s declara name '%s' pero FLUJO.json dice '%s' para %s"
+                                     % (d, a.get("name"), ej.get("name"), nodo_id))
+                if ejecutor_tipo == "script" and ej.get("cmd") and a.get("comando") != ej.get("cmd"):
+                    problemas.append("V5: %s: el comando no coincide con el cmd de FLUJO.json para %s"
+                                     % (d, nodo_id))
+
+        comando = a.get("comando")
+        if ejecutor_tipo == "script":
+            if not comando:
+                problemas.append("V7: %s es script pero no declara 'comando'" % d)
+            else:
+                if comando[0] != "python":
+                    problemas.append("V7: %s no arranca con 'python'" % d)
+                if len(comando) < 2 or not comando[1].startswith("Ads/_TOOLS/") or not comando[1].endswith(".py"):
+                    problemas.append("V7: %s no llama a un script de Ads/_TOOLS/*.py" % d)
+                elif not os.path.exists(comando[1]):
+                    problemas.append("V7: %s referencia '%s', que no existe" % (d, comando[1]))
+                for tok in comando:
+                    if any(mala in tok for mala in ("--bare", "--dangerously-skip-permissions", "shell")):
+                        problemas.append("V7: %s trae un token prohibido: '%s'" % (d, tok))
+        else:
+            if comando is not None:
+                problemas.append("V8: %s no es script pero declara 'comando'" % d)
+            if ejecutor_tipo in ("subagente", "skill"):
+                if not a.get("name"):
+                    problemas.append("V8: %s es %s pero no declara 'name'" % (d, ejecutor_tipo))
+                if a.get("presupuesto_usd") is None:
+                    problemas.append("V8: %s es %s pero no declara 'presupuesto_usd'" % (d, ejecutor_tipo))
+
+        parametros = a.get("parametros") or {}
+        reservados = set(bloque.get("reservados") or [])
+        placeholders = set()
+        if comando:
+            for tok in comando:
+                placeholders |= set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", tok))
+        for ph in placeholders:
+            if ph in reservados:
+                continue
+            p = parametros.get(ph)
+            if p is None:
+                problemas.append("V9: %s usa {%s} en 'comando' pero no está en 'parametros' ni en 'reservados'"
+                                 % (d, ph))
+            elif p.get("bandera"):
+                problemas.append("V9: %s: el parámetro '%s' tiene 'bandera' pero aparece como {%s} en 'comando'"
+                                 % (d, ph, ph))
+        if comando is not None:
+            for pname, p in parametros.items():
+                if not p.get("bandera") and pname not in placeholders:
+                    problemas.append("V9: %s: el parámetro '%s' no tiene 'bandera' y no aparece en 'comando'"
+                                     % (d, pname))
+
+        for pname, p in parametros.items():
+            tipo = p.get("tipo")
+            if tipo not in PARAM_TIPOS_ACCION:
+                problemas.append("V10: %s: el parámetro '%s' tiene tipo '%s' fuera del vocabulario"
+                                 % (d, pname, tipo))
+                continue
+            if tipo == "enum" and not p.get("valores"):
+                problemas.append("V10: %s: el parámetro '%s' es enum sin 'valores'" % (d, pname))
+            if tipo == "texto":
+                patron = p.get("patron")
+                if not patron:
+                    problemas.append("V10: %s: el parámetro '%s' es texto sin 'patron'" % (d, pname))
+                else:
+                    try:
+                        re.compile(patron)
+                    except re.error:
+                        problemas.append("V10: %s: el parámetro '%s' tiene un patrón que no compila" % (d, pname))
+
+        requiere_confirmacion = a.get("requiere_confirmacion")
+        aprobacion = a.get("aprobacion")
+        toca_meta = a.get("toca_meta")
+        if (ejecutor_tipo == "mcp" or toca_meta) and (requiere_confirmacion is not True or aprobacion != "por_orden"):
+            problemas.append("V11: %s es mcp o toca Meta pero no exige confirmación + aprobación por_orden" % d)
+
+        herramientas = a.get("herramientas") or []
+        herramientas_meta = a.get("herramientas_meta")
+        if herramientas_meta and not toca_meta:
+            problemas.append("V12: %s declara herramientas_meta pero toca_meta es false" % d)
+        if toca_meta and not (herramientas_meta or {}).get("escritura"):
+            problemas.append("V12: %s toca_meta pero no declara herramientas_meta.escritura" % d)
+        for h in herramientas:
+            if h.startswith("mcp__") or h == "*":
+                problemas.append("V12: %s trae '%s' en 'herramientas' (las de Meta van en herramientas_meta)"
+                                 % (d, h))
+
+        ordenes = a.get("ordenes")
+        habilitada = a.get("habilitada")
+        if toca_meta and habilitada and ordenes is None:
+            problemas.append("V13: %s toca Meta, está habilitada, y no declara 'ordenes'" % d)
+        if ordenes:
+            for campo in ("generador", "verificador"):
+                oid = ordenes.get(campo)
+                oacc = next((x for x in lista if x.get("id") == oid), None)
+                if not oacc or oacc.get("ejecutor_tipo") != "script":
+                    problemas.append("V13: %s: ordenes.%s ('%s') no es una acción script declarada"
+                                     % (d, campo, oid))
+
+        for ruta in (a.get("escribe") or []):
+            if os.path.isabs(ruta) or ".." in ruta:
+                problemas.append("V14: %s: la ruta de escribe '%s' es absoluta o sube de carpeta" % (d, ruta))
+            elif ruta.startswith(RUTAS_ESCRIBE_PROHIBIDAS):
+                problemas.append("V14: %s: la ruta de escribe '%s' toca una carpeta prohibida" % (d, ruta))
+            elif not ruta.startswith(RUTAS_ESCRIBE_PERMITIDAS):
+                problemas.append("V14: %s: la ruta de escribe '%s' no empieza por PRODUCTOS/, Ads/, VISTAS/ o warehouse/"
+                                 % (d, ruta))
+
+        if ejecutor_tipo in ("subagente", "skill") and not (a.get("escribe") or []):
+            problemas.append("V15: %s es %s pero 'escribe' está vacío" % (d, ejecutor_tipo))
+
+        if a.get("visibilidad") == "interna" and nodo_id is not None:
+            problemas.append("V16: %s es interna pero tiene 'nodo' (un nodo siempre es un botón)" % d)
+
+        if ejecutor_tipo == "operador":
+            datos_nodo = set()
+            if nf:
+                datos_nodo = {r["dato"] for r in (nf.get("requiere") or [])} | {p["dato"] for p in (nf.get("produce") or [])}
+            for item in (a.get("datos_del_operador") or []):
+                if item.get("dato") not in datos_nodo:
+                    problemas.append("V17: %s: el dato '%s' no coincide con requiere/produce del nodo"
+                                     % (d, item.get("dato")))
+                accion_escritora = item.get("accion")
+                if accion_escritora is not None:
+                    oacc = next((x for x in lista if x.get("id") == accion_escritora), None)
+                    if not oacc or oacc.get("ejecutor_tipo") != "script":
+                        problemas.append("V17: %s: la acción escritora '%s' de '%s' no es un script declarado"
+                                         % (d, accion_escritora, item.get("dato")))
+
+        if habilitada is False and not a.get("motivo"):
+            problemas.append("V18: %s está deshabilitada pero no trae 'motivo'" % d)
+
+    for nid in nodos_flujo:
+        asociadas = ids_con_nodo.get(nid, [])
+        if len(asociadas) == 0:
+            problemas.append("V6: el nodo '%s' de FLUJO.json no tiene ninguna acción declarada" % nid)
+        elif len(asociadas) > 1:
+            problemas.append("V6: el nodo '%s' tiene más de una acción declarada: %s" % (nid, asociadas))
+
+    ids_por_id = {a.get("id"): a for a in lista}
+    for tid in (bloque.get("tras_escribir") or []):
+        ta = ids_por_id.get(tid)
+        if not ta or ta.get("ejecutor_tipo") != "script" or ta.get("visibilidad") != "interna" or not ta.get("idempotente"):
+            problemas.append("V19: tras_escribir '%s' no es una acción script, interna e idempotente" % tid)
+
+    return problemas
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -360,7 +611,32 @@ def escribir(estado, lanzador, decisiones, blueprints):
         print("escrito %s (redirige a la app)" % alias)
 
 
+def _cli_validar_manifiesto(como_json):
+    """--validar-manifiesto: solo valida el manifiesto (y FLUJO.json si aplica). No escribe nada."""
+    if not os.path.exists(MANIFIESTO):
+        problemas, m = ["no existe %s" % MANIFIESTO], {}
+    else:
+        with io.open(MANIFIESTO, encoding="utf-8") as fh:
+            m = json.load(fh)
+        flujo = leer_flujo() if m.get("version", 0) >= 7 else None
+        problemas = problemas_de_manifiesto(m, flujo)
+    ok = not problemas
+    if como_json:
+        print(json.dumps({"ok": ok, "version": m.get("version"), "problemas": problemas, "avisos": []},
+                         ensure_ascii=False))
+    elif ok:
+        print("· manifiesto válido (version %s)" % m.get("version"))
+    else:
+        print("MANIFIESTO INVALIDO:")
+        for p in problemas:
+            print("  · %s" % p)
+    return 0 if ok else 1
+
+
 def main():
+    if "--validar-manifiesto" in sys.argv:
+        return _cli_validar_manifiesto("--json" in sys.argv)
+
     man = leer_manifiesto()
     todo = "--todo" in sys.argv
     if todo:
