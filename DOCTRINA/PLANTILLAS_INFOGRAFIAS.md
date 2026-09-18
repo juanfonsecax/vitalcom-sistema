@@ -120,7 +120,7 @@ Antes de rellenar cualquier plantilla, analizar la imagen del producto y definir
 
 REGLAS DE SEGURIDAD:
 - Si el color primario es muy claro o pastel → usar versión oscurecida al 60% para fondos
-- Si el color primario es blanco o casi blanco → usar el color de la tapa o banda de etiqueta (ej: D3+K2 frasco blanco → tomar el dorado/amarillo de la etiqueta; NeuraZenx → amarillo; NAD+ → azul/negro; Cúrcuma → naranja)
+- Si el color primario es blanco o casi blanco → usar el color de la tapa o banda de etiqueta (ej: NeuraZenx → amarillo; NAD+ → azul/negro; Cúrcuma → naranja)
 - Los fondos oscuros de IMAGEN 2 e IMAGEN 3 nunca deben ser pasteles ni colores claros
 - **El acento estructural de las 4 piezas = [COLOR_ACENTO_PRODUCTO] (color del frasco).** Aplica a números estadísticos, triángulos, bandas, separadores, checkmarks. El verde lima #caec55 NO es el acento por defecto: solo se usa si el producto es verde/detox/salud y el lima lo complementa. Ver REGLA MAESTRA DE COLOR arriba.
 - El logo sanarte® mantiene sus letras #117200 + contorno #caec55 SOLO si esos verdes armonizan con el producto; si chocan, parametrizar el logo a la identidad de la fanpage (ver PARAMETRIZACIÓN DE MARCA). El logo nunca es el color más llamativo de la pieza.

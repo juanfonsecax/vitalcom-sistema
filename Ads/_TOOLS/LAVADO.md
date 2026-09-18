@@ -59,7 +59,7 @@ El operador puede sobreescribir el color si lo pide explícito.
 
 - **Copiar/lavar, nunca mover in situ.** El original numerado en `Ads/1.1 Videos/[PRODUCTO]/` queda **intacto** — sigue emparejado 1:1 con su transcripción en `Ads/1.2 Transcripcion videos/[PRODUCTO]/` para cualquier re-análisis futuro de `etapa-0`. Lo lavado es una copia nueva en `Ads/MEDIA_[PRODUCTO]/`, nombrada `[PRODUCTO]_[N]_[ANGULO].mp4` (N = conjunto 1-6, ANGULO = slug corto).
 - **Los ángulos vírgenes sin video** (creativo = IMAGEN) reservan su slot en la misma carpeta: `[PRODUCTO]_[N]_[ANGULO].jpg`, una vez `etapa-4` genera la imagen (Prompt Maestro). Las imágenes no pasan por el lavado (se generan limpias desde cero).
-- **No depende del MCP.** Corre para todo producto, con o sin cuenta/campaña asignada — nunca esperar a que exista `MCP_ACCOUNT_ID`. Si se espera, `1_HACER_MANUAL.txt` y `2_DATA_PRODUCTO.txt` terminan referenciando los nombres numerados crudos de `Ads/1.1 Videos/` en vez del nombre por ángulo (bug detectado y corregido en VITAMINA D3+K2, 2026-06-28).
+- **No depende del MCP.** Corre para todo producto, con o sin cuenta/campaña asignada — nunca esperar a que exista `MCP_ACCOUNT_ID`. Si se espera, `1_HACER_MANUAL.txt` y `2_DATA_PRODUCTO.txt` terminan referenciando los nombres numerados crudos de `Ads/1.1 Videos/` en vez del nombre por ángulo.
 
 ---
 

@@ -65,9 +65,6 @@ Sangrado a apagar (plan): "Dolor Emocional Masculino" $10.13/0v · "Eje Intestin
 Mejores: Anti-Falsificación Q25.9. Duplicar los ganadores ×3.
 
 ────────────────────────────────────────────────────────────────────────────
-⚠️ OVULOS_PURITY: existe carpeta PRODUCTOS/OVULOS_PURITY/ (v1 18-jul, Hernatura CO) pero NO está
-en _PORTAFOLIO.txt y no se auditó. Si ya está VIVO en Meta, decime "agregá OVULOS al tracking".
-PENDIENTES sin lanzar (no se auditan): VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX.
 
 ════════════════════════════════════════════════════════════════════════════
 QUÉ HACER MAÑANA (delta sobre el plan de hoy):

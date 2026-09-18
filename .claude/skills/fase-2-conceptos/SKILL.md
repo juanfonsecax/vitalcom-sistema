@@ -1,6 +1,6 @@
 ---
 name: fase-2-conceptos
-description: FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando flujo.py sitúa al producto en un nodo F2.*, o cuando el operador dice "ya sé qué ángulo vende", "testear conceptos", "qué creativo lo vende más barato" o "tengo el ángulo ganador".
+description: "FASE 2 — Testeo de CONCEPTOS. Con el ángulo ganador ya confirmado POR VENTA, orquesta la secuencia que fija ángulo y copy y mueve solo el creativo: optimizar el flujo del bot, fabricar los 10 conceptos, escribir el copy único y los dos flujos del A/B, y planificar las 3 campañas (1-1-5 + 1-1-5 + 1-2-5). Úsala cuando flujo.py sitúa al producto en un nodo F2.*, o cuando el operador dice \"ya sé qué ángulo vende\", \"testear conceptos\", \"qué creativo lo vende más barato\" o \"tengo el ángulo ganador\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -75,14 +75,18 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
   `<pagina_asignada>`. Output: **el copy único** de la fase (texto/título/descripción) + sus 3
   variaciones de respaldo. **No** 6 copies distintos: el copy es constante de control.
 - **`etapa-5` (FASE 2)** — Inputs: ángulo ganador (con nivel de conciencia), producto,
-  P1u/P2u/P3u, `<costo_envio_cliente>` = Q0, `<pagina_asignada>` y **el brief de `etapa-11`**. País
-  Guatemala, transportadoras GINTACOM/FORZA. Output: **los DOS flujos del A/B** — brazo A = el
-  paraguas vigente con los cambios del brief aplicados; brazo B = flujo LucidBot de un solo ángulo
-  (13 elementos) + texto fijo de M2 y GUION DEL AUDIO TESTIMONIO (voz del avatar ganador), mensaje
-  inicial = dolor exacto del ganador.
+  `producto_key`, `<pagina_asignada>` y **el brief de `etapa-11`**. El mercado, las transportadoras
+  y los precios **no se pasan a mano**: salen de `_DIM_MERCADOS.csv` y `_DIM_PRECIOS.csv`.
+  Output: **los DOS brazos del A/B** — brazo A = el paraguas vigente con los cambios del brief
+  aplicados; brazo B = las frases del ángulo ganador en `_DIM_FLUJO_BOT.csv` + sus bloques de
+  juicio (testimonios, audio, M2 con su guión de audio testimonio, FAQ).
 
-  > `etapa-5` sigue siendo el **dueño único del texto del flujo**. `etapa-11` diagnostica y
-  > prioriza; `etapa-5` redacta. Misma división que `etapa-10` → `etapa-9`.
+  > **El texto fijo es de `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`; `etapa-5` escribe el JUICIO.**
+  > `etapa-11` diagnostica y prioriza; `etapa-5` redacta. Misma división que `etapa-10` → `etapa-9`.
+  > El brief entra por las **propuestas de valor primero** (es la palanca #1 del cierre según la
+  > clase 22-ago), después fricción, congruencia ad ↔ bot, oferta y FAQ nuevas.
+  > Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` y anexar `CAMBIO_BOT` a
+  > `_EVENTOS.csv` el día que se aplica: el efecto se nota en horas.
 
 ---
 
@@ -119,10 +123,10 @@ FASE 2 COMPLETADA ✓
 □ Banda de edad = avatar del ángulo · Advantage+ OFF · idéntica en las 3 campañas
 □ Filas de los 10 conceptos en _DIM_CREATIVOS.csv con ad_id (lo escribe verificar_publicacion.py --escribir)
 
-□ A/B DE FLUJO corriendo: brazo A (paraguas optimizado) ∥ brazo B (dedicado al ganador)
+□ A/B DE FLUJO corriendo: dos conjuntos GEMELOS del ganador — A → paraguas optimizado ∥ B → dedicado
 □ Ruteo por Post ID verificado con una conversación de prueba POR BRAZO
-□ CAMBIO_BOT (brazo A) y LANZAMIENTO (brazo B) anexados a _EVENTOS.csv con fecha
-□ Fecha de lectura del A/B anotada (n mínimo por brazo — tabla en ETAPA-11.md PASO 6)
+□ CAMBIO_BOT (paraguas) + LANZAMIENTO de cada gemelo anexados a _EVENTOS.csv · test_id en _TESTEOS.csv
+□ Fecha de lectura del A/B anotada (n por brazo con Ads/_TOOLS/ab_flujo.py y el cierre REAL del ganador)
 
 Ciclo de optimización (ACTIVO):
 □ ETAPA-7 → auditoría de métricas

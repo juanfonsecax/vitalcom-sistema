@@ -19,6 +19,10 @@ rezago ≤ `rezago_max_dias`), `ciclo.motor` (`_DECISIONES.json` generado hoy) y
 (cada PAUSAR/ESCALAR/RENOVAR ejecutada **con confirmación del operador** y registrada en
 `_EVENTOS.csv`; sin evento, el nodo no se cierra). `flujo.py --todo` dice cuál de los tres falta.
 
+El evento se registra con `python Ads/_TOOLS/registrar_evento.py`, nunca a mano. Todo ESCALAR
+ejecutado deja un `CAMBIO_PRESUPUESTO` con `--antes` y `--despues` (USD/día): sin esas filas la
+elasticidad del CPA al surfing no se puede medir.
+
 > El registro maestro es ese CSV: trae estado, fase, cuenta, página, tasa, CPA base, break-even,
 > `clave_campana` y `campaign_id` en una fila por producto. `_PORTAFOLIO.txt` quedó como bitácora
 > legible (historial de decisiones y snapshots fechados) — no se lee para ejecutar.

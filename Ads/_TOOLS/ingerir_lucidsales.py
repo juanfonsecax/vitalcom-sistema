@@ -39,32 +39,69 @@ BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 PROD = os.path.join(BASE, "PRODUCTOS")
 FACT = os.path.join(PROD, "_FACT_VENTAS.csv")
 DIMC = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
+DIMP = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
+DIMCTAS = os.path.join(PROD, "_DIM_CUENTAS.csv")
 BKDIR = os.path.join(BASE, "_ARCHIVO", "backups_csv")
 
-TASA_COP_USD = 3152.5          # APR-028, medida contra banco
-CP1 = "1346891653335162"
-
-ALIAS = {
-    "598687956219141": "GTR7",
-    "1665221077707961": "GTR0",
-    "824783947334627": "GTR1",
-    "916746367261028": "GTR13",
-    "1346891653335162": "CP1",
-    "581490137794343": "GTR3",
-}
-
-# producto (LucidSales) -> producto_key del sistema
-PROD_KEY = {
-    "tinnidrop": "TINNIDROP",
-    "clearstem": "CLEARSTEM",
-    "nusava": "NUSAVA",
-    "varicose": "VARICOSE",
-    "varices": "VARICOSE",
-}
+# Tasas de conversion a USD por moneda de facturacion (APR-028, medida contra banco).
+# La cuenta y su moneda salen de _DIM_CUENTAS.csv; agregar una fila ahi con moneda
+# distinta de USD y sin tasa acá bloquea la ingesta en vez de costear mal en silencio.
+TASAS_A_USD = {"COP": 3152.5}
 
 COLS = ["ventana_ini","ventana_fin","dias","rol_ventana","producto_key","producto",
         "cuenta_id","cuenta_alias","campana","conjunto","anuncio","mensajes","clicks",
         "impresiones","spend_usd","ventas","total_q","moneda_origen","fuente","ad_id"]
+
+
+def cargar_productos(path=None):
+    """producto_key -> keywords (lower) para reconocer el nombre que manda LucidSales.
+
+    Hasta el 22-sep-2026 el mapeo era un diccionario PROD_KEY cableado a mano en este
+    archivo: un producto nuevo (Turmeric, simulación) caía en SIN_CLASIFICAR y perdía
+    120 filas / 35 ventas / $165.69 sin una sola alerta, porque nadie agregó su línea.
+    Las keywords salen de lo que YA está declarado en _DIM_PRODUCTOS.csv —el propio
+    producto_key y la primera palabra de nombre_display/slug_carpeta—, nunca de una
+    lista aparte que alguien tiene que recordar mantener sincronizada.
+    """
+    with open(path or DIMP, newline="", encoding="utf-8") as fh:
+        filas = list(csv.DictReader(fh))
+    out = {}
+    for r in filas:
+        pk = (r.get("producto_key") or "").strip()
+        if not pk:
+            continue
+        kws = {pk.lower(), pk.lower().replace("_", " ")}
+        for campo in ("nombre_display", "slug_carpeta"):
+            v = (r.get(campo) or "").strip()
+            if v:
+                primera = re.split(r"[\s_]+", v)[0].lower()
+                if len(primera) >= 4:      # evita keywords de 1-3 letras, ambiguas
+                    kws.add(primera)
+        out[pk] = sorted(k for k in kws if k)
+    return out
+
+
+def cargar_cuentas(path=None):
+    """cuenta_id -> {alias, moneda} desde _DIM_CUENTAS.csv.
+
+    alias sale de cuenta_alias SIN el espacio ("GTR 7" -> "GTR7"): el resto del
+    sistema (_FACT_VENTAS.csv, _DIM_CONJUNTOS.csv, alias.py) siempre usa el formato
+    compacto. Antes del 22-sep-2026 era un diccionario ALIAS cableado en este mismo
+    archivo — una cuenta nueva quedaba con su id crudo como alias, sin que nadie lo
+    notara hasta la auditoría.
+    """
+    with open(path or DIMCTAS, newline="", encoding="utf-8") as fh:
+        filas = list(csv.DictReader(fh))
+    out = {}
+    for r in filas:
+        cid = (r.get("cuenta_id") or "").strip()
+        if not cid:
+            continue
+        out[cid] = {
+            "alias": (r.get("cuenta_alias") or cid).strip().replace(" ", ""),
+            "moneda": (r.get("moneda") or "USD").strip().upper(),
+        }
+    return out
 
 
 def s_id(v):
@@ -100,11 +137,11 @@ def s_num(v, default=0):
         return default
 
 
-def producto_key(nombre):
+def producto_key(nombre, productos):
     n = (nombre or "").lower()
-    for k, v in PROD_KEY.items():
-        if k in n:
-            return v
+    for pk, kws in productos.items():
+        if any(kw in n for kw in kws):
+            return pk
     return "SIN_CLASIFICAR"
 
 
@@ -180,7 +217,7 @@ def registros_json(path):
     return out
 
 
-def leer_export(path, rol, fuente):
+def leer_export(path, rol, fuente, productos, cuentas):
     fecha, fin_v, dias = ventana_de_nombre(path)
     registros = (registros_json(path) if path.lower().endswith(".json")
                  else registros_xlsx(path))
@@ -190,15 +227,21 @@ def leer_export(path, rol, fuente):
         # accountTitle viene como float grande -> reconstruir el id entero
         if cuenta_id and "." in cuenta_id:
             cuenta_id = str(int(float(cuenta_id)))
-        alias = ALIAS.get(cuenta_id, cuenta_id)
+        info_cuenta = cuentas.get(cuenta_id, {})
+        alias = info_cuenta.get("alias", cuenta_id)
+        moneda = info_cuenta.get("moneda", "USD")
         spend = s_num(r.get("spend"))
-        moneda = "USD"
-        if cuenta_id == CP1:
-            moneda = "COP"
-            spend = spend / TASA_COP_USD
+        if moneda != "USD":
+            tasa = TASAS_A_USD.get(moneda)
+            if tasa is None:
+                raise SystemExit(
+                    f"Cuenta {cuenta_id} ({alias}) factura en {moneda} y no hay tasa "
+                    f"declarada en TASAS_A_USD (ingerir_lucidsales.py). Agregala antes "
+                    f"de ingerir: costear en USD sin tasa es inventar el numero.")
+            spend = spend / tasa
         filas.append({
             "ventana_ini": fecha, "ventana_fin": fin_v, "dias": dias, "rol_ventana": rol,
-            "producto_key": producto_key(r.get("producto")),
+            "producto_key": producto_key(r.get("producto"), productos),
             "producto": s_txt(r.get("producto")),
             "cuenta_id": cuenta_id, "cuenta_alias": alias,
             "campana": s_txt(r.get("campaignTitle")),
@@ -288,6 +331,9 @@ def main():
     if not archivos:
         raise SystemExit("Sin archivos. Uso: ingerir_lucidsales.py <xlsx...> | --dir <carpeta>")
 
+    productos = cargar_productos()
+    cuentas = cargar_cuentas()
+
     existentes = []
     if os.path.exists(FACT):
         with open(FACT, newline="", encoding="utf-8") as fh:
@@ -298,7 +344,7 @@ def main():
 
     nuevas, dup, resumen = [], 0, {}
     for path in archivos:
-        filas = leer_export(path, rol, fuente)
+        filas = leer_export(path, rol, fuente, productos, cuentas)
         n_ok = 0
         for f in filas:
             ks = llaves(f)
@@ -327,6 +373,12 @@ def main():
     sin_dim = sorted({f["conjunto"] for f in nuevas
                       if f["conjunto"] and alias.canonico(f["conjunto"]) not in conocidos})
 
+    # GATE DE INTEGRIDAD. Hasta el 22-sep-2026 este chequeo solo imprimía "sin dimensión"
+    # o "cierra al 100%" sin mirar SIN_CLASIFICAR: la corrida de Turmeric mostró el
+    # verde falso mientras 120 filas / 35 ventas / $165.69 quedaban invisibles para
+    # cualquier join por producto_key. Ahora ambos huecos BLOQUEAN la corrida (más abajo).
+    sin_clasificar = [f for f in nuevas if f["producto_key"] == "SIN_CLASIFICAR"]
+
     print(f"archivos: {len(archivos)} · filas nuevas: {len(nuevas)} · duplicados omitidos: {dup}")
     for d in sorted(resumen):
         r = resumen[d]
@@ -336,8 +388,21 @@ def main():
         print(f"\n⚠ {len(sin_dim)} conjuntos SIN dimensión (dar de alta en _DIM_CONJUNTOS.csv):")
         for c in sin_dim:
             print("   -", c)
-    else:
-        print("\n✅ JOIN con _DIM_CONJUNTOS cierra al 100%")
+    if sin_clasificar:
+        acumulado = {}
+        for f in sin_clasificar:
+            r = acumulado.setdefault(f["producto"] or "(sin nombre)",
+                                      {"filas": 0, "ventas": 0, "spend_usd": 0.0})
+            r["filas"] += 1
+            r["ventas"] += f["ventas"]
+            r["spend_usd"] += f["spend_usd"]
+        print(f"\n⚠ {len(sin_clasificar)} fila(s) SIN_CLASIFICAR "
+              f"(producto no reconocido en _DIM_PRODUCTOS.csv):")
+        for nombre, r in sorted(acumulado.items()):
+            print(f"   - \"{nombre}\": {r['filas']} fila(s) · {r['ventas']} venta(s) · "
+                  f"${r['spend_usd']:,.2f} spend — dar de alta la fila en _DIM_PRODUCTOS.csv")
+    if not sin_dim and not sin_clasificar:
+        print("\n✅ JOIN con _DIM_CONJUNTOS y _DIM_PRODUCTOS cierra al 100%")
 
     # GUARDARRAÍL DE SOLAPE. Cargar un export de RANGO (dias>1) con el mismo rol que los
     # diarios ya cargados suma la misma venta dos veces: la fila del tramo y la del día.
@@ -375,6 +440,14 @@ def main():
             for f in nuevas:
                 w.writerow(f)
         print(f"\n✅ {len(nuevas)} filas anexadas a _FACT_VENTAS.csv (backup en _ARCHIVO/backups_csv/)")
+
+    if sin_clasificar or sin_dim:
+        # Se escribe SIEMPRE (perder una venta real es peor que un aviso), pero la
+        # corrida sale en rojo: la ingesta nocturna no puede reportarse sana con
+        # data invisible para el join por producto o por conjunto.
+        raise SystemExit(
+            "\n⛔ Ingesta completada pero con huecos de integridad (ver arriba). "
+            "No reportar esta noche como limpia hasta resolverlos.")
 
 
 if __name__ == "__main__":

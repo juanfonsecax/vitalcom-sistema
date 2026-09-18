@@ -62,14 +62,36 @@ El operador solo necesita leer el output de este agente y replicarlo en Meta Ads
 **REGLA:** la banda de edad **se deriva del `avatar_edad` del ángulo** (`_DIM_CONJUNTOS.csv`), no se
 deja amplia por defecto.
 
+> **Fuente ejecutable única: [`Ads/_TOOLS/bandas_edad.py`](../../Ads/_TOOLS/bandas_edad.py).**
+> `gen_publicacion.py` y `gen_lanzador.py` importan esa tabla — ninguno la copia. El bloque de
+> abajo es su copia en prosa, para leer sin abrir el código; si alguna vez difieren, **manda el
+> módulo**. (Antes del 15-sep-2026 esta tabla vivía triplicada y desincronizada: este archivo y
+> `gen_publicacion.py` tenían 4 filas, `gen_lanzador.py` tenía 9 — le faltaban `35-45` y `30-45`.)
+
 ```
 avatar_edad del ángulo   ->   banda que se configura en Meta
     45-65                ->   45-65
     45-60                ->   45-60
     35-55                ->   35-55
+    35-45                ->   35-50
     25-35                ->   25-40
+    30-45                ->   30-45
+    40-55                ->   40-55
+    45-55                ->   45-55
+    25-45                ->   25-45
+    25-40                ->   25-40   (sin ensanche propio, ver nota)
+    30-40                ->   30-40   (sin ensanche propio, ver nota)
     SIN AVATAR DE EDAD MARCADA  ->  amplio 18-65+   (única excepción)
 ```
+
+> **`25-40` y `30-40` (agregadas 15-sep-2026, G0.5 punto 4.2):** el operador señaló estos dos
+> valores del vocabulario sin fila. `PRODUCTOS/CLEARSTEM/_PLAN.json` los declara como
+> `avatar_edad` de `ANTI_FALSIFICACION`/`MEDICOS_FALLARON` (`25-40`) y `TESTIMONIO_RADICAL`
+> (`30-40`) — pero `PRODUCTOS/_DIM_CONJUNTOS.csv` registra el avatar REAL medido en Meta para
+> esos mismos ángulos como `25-35`, lo que sugiere que el plan guardó la banda YA DERIVADA en el
+> campo `avatar_edad` en vez del bucket crudo. Se registraron en identidad (sin el ensanche +5 de
+> `25-35`/`35-45`, que sí tiene evidencia propia APR-060) para no bloquear la publicación; el
+> operador debe confirmar contra el avatar crudo antes de asumir que son el bucket real.
 
 - El **género** sigue amplio salvo que el producto sea inequívocamente de un solo sexo.
 - **Advantage+ Audience OFF** — sin eso Meta ignora la banda y vuelve a lo amplio.
@@ -265,7 +287,9 @@ Además del texto, ETAPA-6 escribe **`PRODUCTOS/[SLUG]/_PLAN.json`**. Es el cont
 
 Si un dato derivable aparece escrito en el JSON, se está duplicando una fuente y el próximo cambio
 de doctrina deja el plan mintiendo. **El esquema completo está en el docstring de
-`Ads/_TOOLS/gen_plan.py`.** Se valida con:
+`Ads/_TOOLS/gen_plan.py`.** En FASE 2 y 3 el archivo es `_PLAN_FASE2.json` / `_PLAN_FASE3.json`
+y lleva en la RAÍZ `angulo_ganador` y `copy` (el copy único de etapa-4), nunca dentro de cada
+conjunto. Se valida con:
 
 ```bash
 python Ads/_TOOLS/gen_plan.py --validar     # vocabulario, ángulos duplicados, regla de precio

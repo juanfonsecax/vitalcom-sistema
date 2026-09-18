@@ -113,7 +113,7 @@ def parsear_encabezado(ruta):
     """Campos de la primera linea. None si no es un encabezado reconocible.
 
     Los delimitadores de doble raya son la convencion, pero varios paquetes
-    (CLEARSTEM, VITAMINA D3+K2) los omiten y traen igual todos los campos. Se
+    (CLEARSTEM) los omiten y traen igual todos los campos. Se
     acepta la linea si es reconocible; la falta de delimitadores se reporta como
     aviso, que es otra cosa que una discrepancia de reconciliacion.
     """

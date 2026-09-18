@@ -1,6 +1,6 @@
 ---
 name: etapa-8
-description: PLAN DE ESCALADO por producto. Consume PRODUCTOS/_DECISIONES.json (el único reglamento, decidir.py) y el informe de ETAPA-7, y ordena el siguiente movimiento para vender más: optimizar flujo, surfing +20%, duplicar conjunto, Post ID, multicuenta, multifanpage, subir precio y renovar los creativos del ganador. Entrega plan accionable + brief para ETAPA-4. Solo lee y recomienda. Escalado fuerte SOLO con CPA real confirmado.
+description: "PLAN DE ESCALADO por producto. Consume PRODUCTOS/_DECISIONES.json (el único reglamento, decidir.py) y el informe de ETAPA-7, y ordena el siguiente movimiento para vender más: optimizar flujo, surfing +20%, duplicar conjunto, Post ID, multicuenta, multifanpage, subir precio y renovar los creativos del ganador. Entrega plan accionable + brief para ETAPA-4. Solo lee y recomienda. Escalado fuerte SOLO con CPA real confirmado."
 tools: Read, Glob, Grep
 model: inherit
 ---

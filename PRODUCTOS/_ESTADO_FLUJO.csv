@@ -1,9 +1,6 @@
 producto_key,fase,nodo_actual,estado,desde,bloqueantes,siguiente_ejecutor,evaluado_el
-TINNIDROP,F2,F2.etapa-11,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-11 (Task, subagent_type=etapa-11)",2026-09-09
-NUSAVA,F2,F2.etapa-11,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-11 (Task, subagent_type=etapa-11)",2026-09-09
-CLEARSTEM,F2,F2.conceptos,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-9 (Task, subagent_type=etapa-9)",2026-09-09
-VARICOSE,PAUSADO,PAUSADO,EXCEPCION,2026-09-09,0,operador,2026-09-09
-VITAMINA D3+K2,F1,F1.congelar_inputs,BLOQUEADO,2026-09-09,1,operador,2026-09-09
-Repelente_Ultrasonico,F1,F1.congelar_inputs,BLOQUEADO,2026-09-09,2,operador,2026-09-09
-SERUM_COLAGENO_BOTOX,F1,F1.congelar_inputs,BLOQUEADO,2026-09-09,1,operador,2026-09-09
-OVULOS_PURITY,F1,F1.congelar_inputs,BLOQUEADO,2026-09-09,1,operador,2026-09-09
+TINNIDROP,F2,F2.etapa-11,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-11 (Task, subagent_type=etapa-11)",2026-09-17
+NUSAVA,F2,F2.etapa-11,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-11 (Task, subagent_type=etapa-11)",2026-09-17
+CLEARSTEM,F2,F2.conceptos,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-9 (Task, subagent_type=etapa-9)",2026-09-17
+VARICOSE,PAUSADO,PAUSADO,EXCEPCION,2026-09-09,0,operador,2026-09-17
+OVULOS_PURITY,F1,F1.paquete,LISTO_PARA_EJECUTAR,2026-09-16,0,skill fase-1-angulos,2026-09-17

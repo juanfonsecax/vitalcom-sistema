@@ -17,3 +17,5 @@ from v
 left join {{ ref('stg_alias') }} a on trim(v.conjunto) = a.nombre_viejo
 where nullif(trim(v.conjunto),'') is not null
   and trim(v.conjunto) <> 'SIN_ATRIBUCION'
+  -- BASE suma; CONTROL solapa a proposito para auditar y nunca suma (DATA_PLAYBOOK).
+  and upper(coalesce(nullif(trim(v.rol_ventana),''),'BASE')) = 'BASE'

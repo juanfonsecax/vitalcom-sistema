@@ -87,7 +87,6 @@ CLEARSTEM (GTR13) — MCP OFF ❌ → sin lado-ads en vivo
    Q36.2/venta · Q54.3/entregado; mejor Anti-Falsificación Q18.5. Sin datos nuevos este run.
 
 ───────────────────────────────────────────────────────────────────────────
-PENDIENTES (no VIVO, no auditados): VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX = LISTO sin lanzar.
 ═══════════════════════════════════════════════════════════════════════════
 RECORDATORIO AL OPERADOR — pegá LucidSales (últimos 7 días, todas las campañas) para cerrar
 CPA real por venta y por entregado. Formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus.

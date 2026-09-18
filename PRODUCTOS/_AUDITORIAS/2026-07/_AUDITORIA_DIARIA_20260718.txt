@@ -111,7 +111,6 @@ VIVOS:
   · VARICOSE   → SANO. Renovar creativo MA6_2X1 (fatiga 1.92); pausar 5 conjuntos 0-ventas; surfing tras Lucid lun.
   · TINNIDROP  → SANO. Nuevo top = Pérdida auditiva (Q11.3). Pausar TENSIÓN; corregir compliance; Post ID tras Lucid lun.
   · CLEARSTEM  → sin lectura (GTR13 MCP OFF). Solo-Lucid; próximo dato lun 20-jul.
-PENDIENTES (no auditados, no VIVO): VITAMINA D3+K2 (LISTO, falta página+WhatsApp), Repelente_Ultrasonico (LISTO, falta FanPage Hogar), SERUM_COLAGENO_BOTOX (LISTO, falta page_id Belleza). OVULOS_PURITY existe carpeta pero NO está en _PORTAFOLIO → agregar fila si va a trackearse.
 
 ⚠️ RECORDATORIO AL OPERADOR — pegar LucidSales (LUN 20-jul, export 7d de TODAS las campañas):
    Formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus

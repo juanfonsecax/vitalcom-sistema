@@ -43,6 +43,7 @@ except (AttributeError, OSError):
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 GUIA = os.path.join(BASE, "DOCTRINA", "GUIA_MADRE_PARAMETRIZADA.md")
 PARAMS = os.path.join(BASE, "PRODUCTOS", "_PARAMETROS_DECISION.csv")
+PARAMS_OPT = os.path.join(BASE, "PRODUCTOS", "_PARAMETROS_OPTIMIZACION.csv")
 DECIDIR = os.path.join(BASE, "Ads", "_TOOLS", "decidir.py")
 
 RE_VAR = re.compile(r"^`([A-Z][A-Z0-9_]{3,})`$")
@@ -68,14 +69,27 @@ def leer_filas_guia():
     return filas
 
 
-def params_csv():
+def _leer_params(ruta):
     d = {}
-    with io.open(PARAMS, encoding="utf-8-sig") as f:
+    if not os.path.exists(ruta):
+        return d
+    with io.open(ruta, encoding="utf-8-sig") as f:
         for r in csv.DictReader(f):
             k = (r.get("parametro") or "").strip()
             if k:
                 d[k] = (r.get("valor") or "").strip()
     return d
+
+
+def params_csv():
+    return _leer_params(PARAMS)
+
+
+def params_opt_csv():
+    """Los parametros de la capa de optimizacion continua (perfil de angulo y su politica).
+    Viven en su propio CSV porque tienen otro dueno y otra cadencia que los del motor, pero
+    pasan por el MISMO gate: si la Guia declara un valor y el CSV dice otro, esto falla."""
+    return _leer_params(PARAMS_OPT)
 
 
 def params_efectivos():
@@ -150,6 +164,24 @@ def _csv_txt(clave):
     return f
 
 
+def _csv_opt_num(clave):
+    def f():
+        v = params_opt_csv().get(clave)
+        try:
+            return (None if v is None else float(v)), "_PARAMETROS_OPTIMIZACION.csv:%s" % clave
+        except ValueError:
+            return None, "_PARAMETROS_OPTIMIZACION.csv:%s (no numerico: %s)" % (clave, v)
+    f.csv_opt_key = clave
+    return f
+
+
+def _csv_opt_txt(clave):
+    def f():
+        return params_opt_csv().get(clave), "_PARAMETROS_OPTIMIZACION.csv:%s" % clave
+    f.csv_opt_key = clave
+    return f
+
+
 def _param_efectivo(clave):
     def f():
         v = params_efectivos().get(clave)
@@ -185,6 +217,8 @@ VERIFICADORES = {
     # Desde el 09-sep-2026 estos dos ya no son literales del código: viven en el CSV.
     "MINIMO_VENTAS_PARA_ESCALAR":  (_csv_num("min_ventas_escalar"), "num"),
     "GUARDA_GANADOR_HISTORICO":    (_csv_num("min_ventas_ganador"), "num"),
+    # Empate tecnico de la regla 2 de 2 (15-sep-2026): el gate de FASE 3 dejaba de oscilar.
+    "MARGEN_EMPATE_CPA":           (_csv_num("margen_empate_cpa_pct"), "num"),
     # Reglamento único (09-sep-2026): lo que antes vivía solo en prosa
     "PORCENTAJE_SURFING_STEP":     (_csv_num("surfing_pct"), "num"),
     "UMBRAL_CONVERSACION_CLIC_ENLACE": (_csv_num("umbral_conv_clic_enlace_pct"), "num"),
@@ -192,6 +226,18 @@ VERIFICADORES = {
     "MAX_PAUSAS_POR_DIA":          (_csv_num("max_pausas_por_dia"), "num"),
     "DIAS_MIN_COD_PAUSA_VENTAS":   (_csv_num("dias_min_cod_pausa_ventas"), "num"),
     "REZAGO_MAXIMO_DATA":          (_csv_num("rezago_max_dias"), "num"),
+    # Capa de optimizacion continua (09-sep-2026): _PARAMETROS_OPTIMIZACION.csv
+    "ELASTICIDAD_CPA_SURFING":     (_csv_opt_txt("elasticidad_cpa_surfing"), "txt"),
+    "UMBRAL_PERDIDA_ESPERADA_DIA": (_csv_opt_num("umbral_perdida_q_dia"), "num"),
+    "PROBABILIDAD_MINIMA_RENTABLE": (_csv_opt_num("p_min_rentable"), "num"),
+    "PROBABILIDAD_MAXIMA_APAGAR":  (_csv_opt_num("p_max_apagar"), "num"),
+    "DIAS_SIN_GASTO_DORMIDO":      (_csv_opt_num("dias_sin_gasto_dormido"), "num"),
+    "DIAS_SIN_GASTO_APAGADO":      (_csv_opt_num("dias_sin_gasto_apagado"), "num"),
+    "PORCENTAJE_EXPLORACION_GASTO": (_csv_opt_num("explora_pct_gasto"), "num"),
+    "MINIMO_ANGULOS_VIVOS":        (_csv_opt_num("min_angulos_vivos"), "num"),
+    "HORIZONTE_EVALUACION_ORDEN":  (_csv_opt_num("horizonte_orden_dias"), "num"),
+    "MINIMO_VENTAS_ATRIBUCION":    (_csv_opt_num("min_ventas_atribuir"), "num"),
+    "MINIMO_CREATIVOS_ATRIBUCION": (_csv_opt_num("min_creativos_atribuir"), "num"),
 }
 
 
@@ -252,11 +298,20 @@ def verificar_coherencia(filas):
     cubiertas = {getattr(leer, "csv_key", None)
                  for var, (leer, _modo) in VERIFICADORES.items()
                  if var in declaradas}
+    cubiertas_opt = {getattr(leer, "csv_opt_key", None)
+                     for var, (leer, _modo) in VERIFICADORES.items()
+                     if var in declaradas}
     texto = " ".join("%s %s %s" % (v, val, ej) for v, val, ej, _ in filas)
     for clave in params_csv():
         if clave in EXENTOS or clave in cubiertas or clave in texto:
             continue
         fallas.append("el parametro `%s` vive en _PARAMETROS_DECISION.csv, pero la Guia "
+                      "Madre no lo declara en ninguna fila" % clave)
+    # Mismo drift inverso para la capa de optimizacion continua.
+    for clave in params_opt_csv():
+        if clave in EXENTOS or clave in cubiertas_opt or clave in texto:
+            continue
+        fallas.append("el parametro `%s` vive en _PARAMETROS_OPTIMIZACION.csv, pero la Guia "
                       "Madre no lo declara en ninguna fila" % clave)
     return fallas
 

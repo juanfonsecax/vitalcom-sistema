@@ -1,393 +1,1634 @@
-═══ OVULOS PURITY (Hernatura) · VERSION v1 · 2026-07-18 · COSTO $7.000 COP · DOSIS 3 perlas/paquete (48-72h c/u) · fanpage HERNATURA CO (registrar page_id) · campaign_id SIN MCP ═══
-HACER MANUAL — ÓVULOS PURITY | FASE 1 | 2026-07-18
-Mercado: COLOMBIA · Español neutro (tú, sin voseo) · FanPage: HERNATURA (Colombia) · Lanzamiento MANUAL (sin MCP)
+═══ OVULOS_PURITY · VERSION v1 · 2026-09-16 · COSTO 7000 COP/paquete ($7.000) · DOSIS 3 perlas por paquete · page_id PENDIENTE (externa) · campaign_id SIN_MCP ═══
+HACER MANUAL — ÓVULOS PURITY HERNATURA | FASE 1 TESTEO DE ÁNGULOS | 2026-09-16
+FanPage de pauta: HERNATURA CO (externa · page_id PENDIENTE)   ·   Edad de segmentación: mujeres 25-40 (conjuntos 1, 2, 3, 5, 6) · 35-50 (conjunto 4)
+Mercado: Colombia · COP · contra entrega · Oferta: 1 paquete $41.000 + $15.000 envío · 2 paquetes $69.000 envío gratis (LA MÁS ELEGIDA) · 3 paquetes $99.000 envío gratis
 
-── A. CHECKLIST RÁPIDO ──
-[ ] Generar el ad-imagen del ángulo 6 (cólicos/ciclo) — prompt en sección C
-[ ] (Ya generadas) 3 infografías del bot — prompts de respaldo en sección C
-[ ] Configurar el flujo en LucidBot (sección E, campo por campo)
-[ ] Subir a Meta los 5 videos + la imagen del ángulo 6 y crear la campaña (sección F)
-[ ] Programar/activar la campaña a las 4 AM del día siguiente
+════════════════════════════════════════════════════════════
+── A. CHECKLIST RÁPIDO (lo que tienes que hacer) ──
+════════════════════════════════════════════════════════════
 
-── B. CREATIVOS POR CONJUNTO ──
-Los videos son PROPIOS (marca Óvulos Purity), ya validados. LAVADOS (limpieza anti-huella, ya se reusaron antes) en: Ads/MEDIA_OVULOS_PURITY_PROPIOS/ — usar SIEMPRE los lavados para subir a Meta.
-| Conjunto | Ángulo | Formato | Archivo LAVADO a subir | Precio en ad |
-|---|---|---|---|---|
-| 1_PAREJA | Rechazo de la pareja (olor en la intimidad) | VIDEO | OVULOSPURITY_PROPIO_1_PAREJA.mp4 | no |
-| 2_FLUJO | Flujo abundante + olor a pescado | VIDEO | OVULOSPURITY_PROPIO_2_FLUJO.mp4 | no |
-| 3_PICAZON | Picazón/ardor + shock detox | VIDEO | OVULOSPURITY_PROPIO_3_PICAZON.mp4 | SÍ (2x1) |
-| 4_RECURRENTE | Infección recurrente / anti-médico | VIDEO | OVULOSPURITY_PROPIO_4_RECURRENTE.mp4 | no |
-| 5_INTEGRAL | Solución integral / autoridad (8 raíces) | VIDEO | OVULOSPURITY_PROPIO_5_INTEGRAL.mp4 | no |
-| 6_CICLO | Cólicos y ciclo / equilibrio hormonal | IMAGEN | ad-imagen (sección C) | SÍ |
-Reserva (FASE 2): OVULOSPURITY_PROPIO_6_ANIMADO.mp4. Data (no anuncio): 9 transcripciones ICOLITE.
-⚠️ Los videos llevan claims fuertes que Meta lee ("clínicamente comprobado", "eliminan candidiasis", "72 horas"). Vigilar CPM por conjunto; los más expuestos: 9 HN y PODCAST. Para escalar, versión con audio/texto suavizado.
+[ ] 1. Confirmar con el proveedor QUÉ ENVASE recibe la clienta: sobre plano celeste (el de los anuncios) o bolsa doypack (tus infografías 24/26/27/28/32). Si es doypack, NO renderizar todavía: avisar para rehacer los prompts.
+[ ] 2. Generar las 6 imágenes-ad (sección C.1) adjuntando el packshot.
+[ ] 3. Generar las 3 infografías del bot (sección C.2).
+[ ] 4. Elegir los 2 videos del bot entre los de HERNATURA (sección E, Elementos 2 y 3).
+[ ] 5. Configurar el flujo en LucidBot (sección E, campo por campo).
+[ ] 6. Definir el alias de la cuenta publicitaria externa (reemplaza [CUENTA] en todos los nombres), el page_id de HERNATURA CO, el número de WhatsApp conectado y la moneda/zona horaria de la cuenta.
+[ ] 7. Crear la campaña y los 6 conjuntos en Meta (sección F) y cargar imagen + copy en los 12 anuncios (secciones B + D).
+[ ] 8. Programar a las 4:00 AM hora Colombia del día siguiente a la publicación (sección F).
+[ ] 9. Registrar la banda real de cada conjunto en PRODUCTOS/_DIM_BANDAS.csv.
 
-── C. PROMPTS DE IMAGEN ──
+════════════════════════════════════════════════════════════
+── B. CREATIVOS POR CONJUNTO (qué va en cada uno) ──
+════════════════════════════════════════════════════════════
 
-## AD-IMAGEN — CONJUNTO 6 (cólicos/ciclo) — estilo AD que convierte (Prompt Maestro, NO editorial)
-Actúa como diseñador experto en Meta Ads de alta conversión. Crea un anuncio VERTICAL 4:5 (1080x1350 px), fotorrealista, que NO parezca hecho por IA y se venda en 3 segundos. Estilo: LIFESTYLE CON PERSONA REAL (nativo, tipo UGC). Texto total < 20% del área. Todo en ESPAÑOL.
-[ADJUNTAR foto real del empaque celeste ÓVULOS PURITY]
-ESCENA: mujer latina real de 28-38 años, ropa de casa, sentada en su cama/sofá con una mano en el bajo vientre (cólico) y gesto de alivio-esperanza, MIRANDO el empaque de Óvulos Purity que sostiene en la otra mano. Luz natural de hogar, auténtica, no de revista.
-JERARQUÍA:
-1. MARCA arriba, discreta: "HERNATURA".
-2. HOOK grande, 2 líneas, con "cada mes" en azul: "¿TU CICLO ES UNA TORMENTA CADA MES?"
-3. PRODUCTO grande y nítido en la mano.
-4. BENEFICIO: "Cólicos, cambios de humor y desequilibrio — apoya tu equilibrio de forma natural."
-5. Badge pequeño: "100% NATURAL · PAGAS AL RECIBIR".
-6. TESTIMONIO en burbuja de chat pequeña (5 estrellas): "llevaba años con cólicos horribles, con esto por fin paso mi periodo tranquila".
-7. SELLO STARBURST moderado esquina superior: "SÚPER OFERTA · 2 PAQUETES $99.900 · SOLO HOY".
-8. CTA botón azul: "Escríbenos hoy 👉".
-PALETA azul médico #2A6FE0 + celeste. Tipografía bold legible ≥24pt. COMPLIANCE: nada de "cura/elimina/regula hormonas/72 horas"; usar "apoya/ayuda a/calma las molestias". Sin antes/después corporal. Que se vea real.
+| # | Conjunto en Meta | Ángulo | Formato | Archivo | Precio en ad | Banda de edad | Presupuesto/día |
+|---|---|---|---|---|---|---|---|
+| 1 | [CUENTA]_OVULOSPURITY_OLORTRASRELACIONES_R1 | El olor del día después | IMAGEN | OVULOSPURITY_1_OLORTRASRELACIONES.png | NO | 25-40 · solo mujeres | US$2.99 ($9.426 COP) |
+| 2 | [CUENTA]_OVULOSPURITY_INFECCIONQUEVUELVE_R1 | La que va y vuelve | IMAGEN | OVULOSPURITY_2_INFECCIONQUEVUELVE.png | SÍ $69.000 x2 · desde $41.000 | 25-40 · solo mujeres | US$2.99 ($9.426 COP) |
+| 3 | [CUENTA]_OVULOSPURITY_CREMASREBOTE_R1 | Ya probé de todo en la droguería | IMAGEN | OVULOSPURITY_3_CREMASREBOTE.png | SÍ $69.000 x2 · desde $41.000 | 25-40 · solo mujeres | US$2.99 ($9.426 COP) |
+| 4 | [CUENTA]_OVULOSPURITY_MELAVOYSIGUE_R1 | Me lavo y sigo oliendo | IMAGEN | OVULOSPURITY_4_MELAVOYSIGUE.png | NO | 35-50 · solo mujeres | US$2.99 ($9.426 COP) |
+| 5 | [CUENTA]_OVULOSPURITY_FLUJOPESCADO_R1 | Ese olor que se nota | IMAGEN | OVULOSPURITY_5_FLUJOPESCADO.png | NO | 25-40 · solo mujeres | US$2.99 ($9.426 COP) |
+| 6 | [CUENTA]_OVULOSPURITY_DESPUESDELAREGLA_R1 | Se acaba la regla, empieza la picazón | IMAGEN | OVULOSPURITY_6_DESPUESDELAREGLA.png | NO | 25-40 · solo mujeres | US$2.99 ($9.426 COP) |
 
-## INFOGRAFÍAS DEL BOT (respaldo — ya generadas)
-INFO 1 (hero + 6 beneficios), INFO 2 (antes/después perla + 8 plantas + modo de uso), INFO 3 (doctora + pagas al recibir + resultados + FAQ + sellos). Estilo Lactomedi premium (azul médico, serif). [Prompts completos en el historial del chat; las imágenes ya están creadas.] Recordatorio compliance INFO 3: suavizar "-99%/-96%" a "9 de cada 10 notan más frescura / 92% la recompraría" y quitar el sello FDA.
+Los 6 son imágenes (no se publica ningún video). 2 anuncios idénticos por conjunto = 12 anuncios.
 
-── D. COPIES POR CONJUNTO (pegar en Meta) ──
+════════════════════════════════════════════════════════════
+── C. PROMPTS DE IMAGEN (copiar y pegar en ChatGPT) ──
+════════════════════════════════════════════════════════════
 
-### CONJUNTO 1 · PAREJA (video 5 NUEVO) · SIN precio
-TEXTO 1:
-¿Te ha pasado que evitas la intimidad por miedo a ese olor? 🙈
+Adjunta Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_PACKSHOT.png en CADA prompt (anuncios e infografías).
+Guarda cada imagen con el nombre de archivo indicado, en Ads/MEDIA_OVULOSPURITY/.
 
-No es falta de aseo. Por dentro se acumulan flujo y residuos que el agua no alcanza a sacar, y eso genera el olor y la incomodidad.
+C.1 · ANUNCIOS DE TESTEO (6 imágenes 1080x1350, 4:5)
 
-Óvulos Purity son perlas detox de 8 raíces naturales que limpian en profundidad y te devuelven la frescura y la seguridad.
+┌─ AD 1 · OLORTRASRELACIONES · archivo: OVULOSPURITY_1_OLORTRASRELACIONES.png · lleva precio: NO
+
+Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Lo único que cambia entre ellas es el texto.
+
+Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
+Calidad: fotografía de producto de estudio, nivel catálogo de farmacia premium. NO debe parecer generado por IA: sin texto deformado, sin manos raras, sin brillos plásticos, sin viñeteado falso.
+
+ADJUNTO: FOTO DEL PRODUCTO
+Reproduce el producto EXACTAMENTE como está en la foto adjunta: un SOBRE PLANO de aluminio mate color celeste #5BB4EA con bordes sellados en relieve dentado, acompañado de 3 sobrecitos individuales cuadrados del mismo celeste decorados con hojas blancas de línea fina. Textos del sobre grande, idénticos y en este orden: "HER NATURA" (pequeño, arriba) · "OVULOS PURITY" (blanco, bold) · "FRESCURA HERNATURA" (letras con contorno) · logotipo blanco en forma de "A" con una hojita · "100% HIERBAS NATURALES" · "3 PERLAS POR PAQUETE". No lo conviertas en bolsa doypack, frasco, caja ni tubo. No lo pintes rosado ni de otro color. No rediseñes el empaque ni inventes texto sobre él.
+
+════════════════════════════════════════════════════════
+MUNDO VISUAL
+════════════════════════════════════════════════════════
+
+FONDO: color crema #F5F0D0 muy claro (NUNCA blanco puro #FFFFFF). Textura sutilísima de papel, sin degradados marcados ni destellos. Muy tenues, a opacidad casi imperceptible, unas pocas burbujas translúcidas difusas en las esquinas.
+
+PALETA: COLOR PRINCIPAL celeste #5BB4EA (el del sobre). COLOR ACENTO verde lima #D6FB93, usado solo como relleno (marcador del hook, píldoras), nunca como color de texto. NEUTRO OSCURO verde muy oscuro #0E3B2C para todo el texto. Tres colores, no más; todo lo demás son variaciones de esos tres.
+
+ILUMINACIÓN: luz suave de estudio desde arriba a la izquierda, difusa, tipo softbox grande. Sombra propia del producto corta, suave y hacia abajo-derecha. Sin sombras duras ni contraluces dramáticos.
+
+════════════════════════════════════════════════════════
+COMPOSICIÓN — 5 zonas, de arriba hacia abajo
+════════════════════════════════════════════════════════
+
+【1】 EYEBROW (banda superior, centrada)
+Texto en MAYÚSCULAS pequeñas, verde oscuro #0E3B2C, con letterspacing amplio, separado por un punto medio "·". A izquierda y derecha, un pictograma diminuto de una hoja en línea fina.
+    → TEXTO: "HER NATURA · CUIDADO ÍNTIMO FEMENINO"
+
+【2】 SELLO DE GARANTÍA (esquina superior derecha, sobre el eyebrow)
+Sello CIRCULAR de unos 130px de diámetro, en celeste #5BB4EA con acabado metalizado mate plata azulada. Borde doble: un aro exterior fino y otro interior. Adentro, en 2 líneas: el número grande "30" arriba y "DÍAS DE GARANTÍA" abajo en letra pequeña espaciada. Tres estrellitas diminutas coronando el número.
+    → TEXTO: "30 DÍAS DE GARANTÍA"
+
+【3】 HOOK (zona superior, a lo ancho, alineado a la izquierda)
+EL ELEMENTO MÁS GRANDE DE TODA LA PIEZA. Tipografía sans serif geométrica tipo Montserrat Black, en verde oscuro #0E3B2C. Máximo 2 líneas, interlineado ajustado (0.95). Las palabras "ese olor" van resaltadas con un marcador rectangular de color lima #D6FB93 detrás del texto (el texto sigue en verde oscuro), como un resaltador, para quebrar el bloque.
+    → TEXTO: "¿Después de estar con él, otra vez ese olor?"
+
+【4】 CUERPO — dos columnas que conviven
+
+  4A. COLUMNA DE BENEFICIOS (izquierda, ~42% del ancho)
+  Exactamente 4 filas, con aire generoso entre ellas. Cada fila:
+     · Ícono LINEAL (solo trazo, sin relleno, grosor uniforme de 2px, en verde oscuro #0E3B2C) dentro de un círculo de borde fino celeste #5BB4EA, fondo transparente. Diámetro ~70px. Minimalista, geométrico, tipo interfaz — NUNCA una foto, NUNCA un emoji, NUNCA un ícono 3D.
+     · A la derecha del círculo: TÍTULO en mayúsculas, bold, verde oscuro, 2-4 palabras.
+     · Debajo del título: BAJADA de una sola línea, verde oscuro al 65% de opacidad, tamaño 60% del título.
+    → LOS 4 BENEFICIOS:
+       1. Ícono: gota con un pequeño destello. Título: "FRESCA EL DÍA DESPUÉS". Bajada: "para sentirte segura y tranquila"
+       2. Ícono: dos corazones entrelazados. Título: "INTIMIDAD TRANQUILA". Bajada: "disfruta con tu pareja sin pena"
+       3. Ícono: hoja con nervaduras. Título: "8 HIERBAS NATURALES". Bajada: "con Smilax, Osthol y Borneol"
+       4. Ícono: casa simple. Título: "SIN DOLOR, EN CASA". Bajada: "3 perlas fáciles de usar"
+
+  4B. PRODUCTO (derecha, ~58% del ancho) — EL PROTAGONISTA
+  El sobre grande, nítido, de arriba abajo en su zona, ligeramente en diagonal. El sobre grande atrás y los 3 sobrecitos individuales adelante, superpuestos en abanico. Apoyado sobre un PEDESTAL circular bajo, de madera clara mate, que lo levanta del fondo. Junto a los sobrecitos, una perla de hierbas café en su malla blanca de hilo, pequeña y realista. Alrededor de la base, colocados con naturalidad (nunca simétricos, nunca flotando): unas rodajas secas de rizoma de Smilax glabra, un puñado de semillitas de Cnidium en un cuenco mini de cerámica clara y unos cristales blancos translúcidos de borneol. Detrás, muy desenfocada y a baja opacidad, una textura de hojas verdes de hierbas. NADA de texto encima del producto.
+
+【5】 PIE — dos franjas
+
+  5A. Este anuncio NO lleva precio: la esquina inferior izquierda queda como aire limpio del fondo, sin cajas, sin cifras y sin sello de oferta. La columna de beneficios y el producto conservan exactamente la misma posición y el mismo tamaño que en las piezas de la serie que sí llevan precio.
+
+  5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
+  3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda: ícono lineal a la izquierda + a la derecha TÍTULO bold en mayúsculas verde oscuro y bajada de una línea.
+    · Ícono camión: "ENVÍO A TODA COLOMBIA" / "gratis desde 2 paquetes"
+    · Ícono mano con billete: "PAGA AL RECIBIR" / "pagas cuando te llega"
+    · Ícono bandera de Colombia: "PRODUCTO DISPONIBLE" / "en Colombia"
+
+════════════════════════════════════════════════════════
+TIPOGRAFÍA
+════════════════════════════════════════════════════════
+Una sola familia sans serif geométrica (tipo Montserrat) en toda la pieza, con 3 pesos: Black para el hook, Bold para los títulos, Regular para las bajadas. Es la misma categoría de la etiqueta del sobre. Nada de serifas, nada de scripts, nada de fuentes decorativas. Tamaño mínimo legible en celular. Jerarquía sin ambigüedad: hook >> títulos > bajadas > franja.
+
+════════════════════════════════════════════════════════
+REGLAS DURAS
+════════════════════════════════════════════════════════
+· El HOOK es el elemento más grande. Nada compite con él.
+· Máximo 4 beneficios. Si sobra espacio, se deja aire; NO se agrega un quinto.
+· Texto total < 20% del área de la imagen.
+· Un solo problema por pieza. No listar varios síntomas.
+· Sin fotos de personas. Sin rostros. Sin antes/después. Sin imágenes de flujo, residuos ni anatomía.
+· Sin logos de terceros, sin sellos de organismos reales (INVIMA, FDA), sin banderas de países que no sean Colombia.
+· COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos. Prohibida la urgencia de pánico. Se habla del problema de la lectora con lenguaje de apoyo ("ayuda a", "cuidado"); NO se afirma curarlo.
+
+════════════════════════════════════════════════════════
+ENTREGA
+════════════════════════════════════════════════════════
+Una sola imagen 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60px. Revisa la ortografía de cada palabra antes de entregar.
+└─ fin AD 1
+
+┌─ AD 2 · INFECCIONQUEVUELVE · archivo: OVULOSPURITY_2_INFECCIONQUEVUELVE.png · lleva precio: SÍ ($69.000 x 2 paquetes · desde $41.000)
+
+Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Lo único que cambia entre ellas es el texto.
+
+Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
+Calidad: fotografía de producto de estudio, nivel catálogo de farmacia premium. NO debe parecer generado por IA: sin texto deformado, sin manos raras, sin brillos plásticos, sin viñeteado falso.
+
+ADJUNTO: FOTO DEL PRODUCTO
+Reproduce el producto EXACTAMENTE como está en la foto adjunta: un SOBRE PLANO de aluminio mate color celeste #5BB4EA con bordes sellados en relieve dentado, acompañado de 3 sobrecitos individuales cuadrados del mismo celeste decorados con hojas blancas de línea fina. Textos del sobre grande, idénticos y en este orden: "HER NATURA" (pequeño, arriba) · "OVULOS PURITY" (blanco, bold) · "FRESCURA HERNATURA" (letras con contorno) · logotipo blanco en forma de "A" con una hojita · "100% HIERBAS NATURALES" · "3 PERLAS POR PAQUETE". No lo conviertas en bolsa doypack, frasco, caja ni tubo. No lo pintes rosado ni de otro color. No rediseñes el empaque ni inventes texto sobre él.
+
+════════════════════════════════════════════════════════
+MUNDO VISUAL
+════════════════════════════════════════════════════════
+
+FONDO: color crema #F5F0D0 muy claro (NUNCA blanco puro #FFFFFF). Textura sutilísima de papel, sin degradados marcados ni destellos. Muy tenues, a opacidad casi imperceptible, unas pocas burbujas translúcidas difusas en las esquinas.
+
+PALETA: COLOR PRINCIPAL celeste #5BB4EA (el del sobre). COLOR ACENTO verde lima #D6FB93, usado solo como relleno (marcador del hook, píldoras), nunca como color de texto. NEUTRO OSCURO verde muy oscuro #0E3B2C para todo el texto. Tres colores, no más; todo lo demás son variaciones de esos tres.
+
+ILUMINACIÓN: luz suave de estudio desde arriba a la izquierda, difusa, tipo softbox grande. Sombra propia del producto corta, suave y hacia abajo-derecha. Sin sombras duras ni contraluces dramáticos.
+
+════════════════════════════════════════════════════════
+COMPOSICIÓN — 5 zonas, de arriba hacia abajo
+════════════════════════════════════════════════════════
+
+【1】 EYEBROW (banda superior, centrada)
+Texto en MAYÚSCULAS pequeñas, verde oscuro #0E3B2C, con letterspacing amplio, separado por un punto medio "·". A izquierda y derecha, un pictograma diminuto de una hoja en línea fina.
+    → TEXTO: "HER NATURA · CUIDADO ÍNTIMO FEMENINO"
+
+【2】 SELLO DE GARANTÍA (esquina superior derecha, sobre el eyebrow)
+Sello CIRCULAR de unos 130px de diámetro, en celeste #5BB4EA con acabado metalizado mate plata azulada. Borde doble: un aro exterior fino y otro interior. Adentro, en 2 líneas: el número grande "30" arriba y "DÍAS DE GARANTÍA" abajo en letra pequeña espaciada. Tres estrellitas diminutas coronando el número.
+    → TEXTO: "30 DÍAS DE GARANTÍA"
+
+【2B】 SELLO DE OFERTA (esquina superior izquierda, por debajo del eyebrow, sin taparlo)
+Sello tipo estrella de muchas puntas (starburst), tamaño MODERADO (~150px), rojo #E0201B con borde fino crema. Texto blanco en 2 líneas: arriba, chico, "2 PAQUETES"; abajo, grande, "ENVÍO GRATIS". No tapa el hook ni el producto.
+
+【3】 HOOK (zona superior, a lo ancho, alineado a la izquierda)
+EL ELEMENTO MÁS GRANDE DE TODA LA PIEZA. Tipografía sans serif geométrica tipo Montserrat Black, en verde oscuro #0E3B2C. Máximo 2 líneas, interlineado ajustado (0.95). La palabra "vuelve" va resaltada con un marcador rectangular de color lima #D6FB93 detrás del texto (el texto sigue en verde oscuro), como un resaltador, para quebrar el bloque.
+    → TEXTO: "¿Se quita una semana y vuelve?"
+
+【4】 CUERPO — dos columnas que conviven
+
+  4A. COLUMNA DE BENEFICIOS (izquierda, ~42% del ancho)
+  Exactamente 4 filas, con aire generoso entre ellas. Cada fila:
+     · Ícono LINEAL (solo trazo, sin relleno, grosor uniforme de 2px, en verde oscuro #0E3B2C) dentro de un círculo de borde fino celeste #5BB4EA, fondo transparente. Diámetro ~70px. Minimalista, geométrico, tipo interfaz — NUNCA una foto, NUNCA un emoji, NUNCA un ícono 3D.
+     · A la derecha del círculo: TÍTULO en mayúsculas, bold, verde oscuro, 2-4 palabras.
+     · Debajo del título: BAJADA de una sola línea, verde oscuro al 65% de opacidad, tamaño 60% del título.
+    → LOS 4 BENEFICIOS:
+       1. Ícono: escudo con una hoja. Título: "EQUILIBRIO DESDE ADENTRO". Bajada: "cuidado natural para tu zona íntima"
+       2. Ícono: pluma suave. Título: "CONFORT EN TU DÍA". Bajada: "sin estar pendiente todo el tiempo"
+       3. Ícono: calendario con 4 días marcados. Título: "TRATAMIENTO DE 4 DÍAS". Bajada: "3 perlas por paquete"
+       4. Ícono: hoja con nervaduras. Título: "8 HIERBAS NATURALES". Bajada: "con Smilax, Stemona y Osthol"
+
+  4B. PRODUCTO (derecha, ~58% del ancho) — EL PROTAGONISTA
+  DOS sobres grandes idénticos, uno detrás del otro y ligeramente desplazados, nítidos, ocupando su zona de arriba abajo, ligeramente en diagonal; los 3 sobrecitos individuales adelante, superpuestos en abanico. Apoyados sobre un PEDESTAL circular bajo, de madera clara mate, que los levanta del fondo. Junto a los sobrecitos, una perla de hierbas café en su malla blanca de hilo, pequeña y realista. Alrededor de la base, colocados con naturalidad (nunca simétricos, nunca flotando): unas raíces secas de Stemona atadas con hilo, unas rodajas secas de rizoma de Smilax glabra y una ramita de Cnidium con pequeñas flores blancas en umbela. Detrás, muy desenfocada y a baja opacidad, una textura de hojas verdes de hierbas. NADA de texto encima del producto.
+
+【5】 PIE — dos franjas
+
+  5A. BLOQUE DE PRECIO (esquina inferior izquierda)
+  Caja rectangular en verde oscuro #0E3B2C con borde fino celeste #5BB4EA.
+  Arriba, en letra pequeña verde oscuro sobre una banda lima #D6FB93: "LA MÁS ELEGIDA".
+  Debajo, el precio GIGANTE en blanco: "$69.000", con el ".000" en tamaño menor y elevado.
+  Al lado derecho, caja separada del mismo alto: "2 PAQUETES" grande y, debajo, una píldora celeste con "6 PERLAS" en chico.
+  Bajo el precio, en gris claro y SIN tachar: "o 1 paquete desde $41.000".
+
+  5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
+  3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda: ícono lineal a la izquierda + a la derecha TÍTULO bold en mayúsculas verde oscuro y bajada de una línea.
+    · Ícono camión: "ENVÍO A TODA COLOMBIA" / "gratis desde 2 paquetes"
+    · Ícono mano con billete: "PAGA AL RECIBIR" / "pagas cuando te llega"
+    · Ícono bandera de Colombia: "PRODUCTO DISPONIBLE" / "en Colombia"
+
+════════════════════════════════════════════════════════
+TIPOGRAFÍA
+════════════════════════════════════════════════════════
+Una sola familia sans serif geométrica (tipo Montserrat) en toda la pieza, con 3 pesos: Black para el hook, Bold para los títulos, Regular para las bajadas. Es la misma categoría de la etiqueta del sobre. Nada de serifas, nada de scripts, nada de fuentes decorativas. Tamaño mínimo legible en celular. Jerarquía sin ambigüedad: hook >> precio > títulos > bajadas > franja.
+
+════════════════════════════════════════════════════════
+REGLAS DURAS
+════════════════════════════════════════════════════════
+· El HOOK es el elemento más grande. Nada compite con él (el precio es grande pero menor que el hook).
+· Máximo 4 beneficios. Si sobra espacio, se deja aire; NO se agrega un quinto.
+· Texto total < 20% del área de la imagen.
+· Un solo problema por pieza. No listar varios síntomas.
+· Sin fotos de personas. Sin rostros. Sin antes/después. Sin imágenes de flujo, residuos ni anatomía.
+· Sin logos de terceros, sin sellos de organismos reales (INVIMA, FDA), sin banderas de países que no sean Colombia.
+· COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos de resultado. Prohibida la urgencia de pánico. Se habla del problema de la lectora con lenguaje de apoyo ("ayuda a", "cuidado"); NO se afirma curarlo.
+
+════════════════════════════════════════════════════════
+ENTREGA
+════════════════════════════════════════════════════════
+Una sola imagen 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60px. Revisa la ortografía y que el precio diga exactamente "$69.000" y "$41.000".
+└─ fin AD 2
+
+┌─ AD 3 · CREMASREBOTE · archivo: OVULOSPURITY_3_CREMASREBOTE.png · lleva precio: SÍ ($69.000 x 2 paquetes · desde $41.000)
+
+Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Lo único que cambia entre ellas es el texto.
+
+Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
+Calidad: fotografía de producto de estudio, nivel catálogo de farmacia premium. NO debe parecer generado por IA: sin texto deformado, sin manos raras, sin brillos plásticos, sin viñeteado falso.
+
+ADJUNTO: FOTO DEL PRODUCTO
+Reproduce el producto EXACTAMENTE como está en la foto adjunta: un SOBRE PLANO de aluminio mate color celeste #5BB4EA con bordes sellados en relieve dentado, acompañado de 3 sobrecitos individuales cuadrados del mismo celeste decorados con hojas blancas de línea fina. Textos del sobre grande, idénticos y en este orden: "HER NATURA" (pequeño, arriba) · "OVULOS PURITY" (blanco, bold) · "FRESCURA HERNATURA" (letras con contorno) · logotipo blanco en forma de "A" con una hojita · "100% HIERBAS NATURALES" · "3 PERLAS POR PAQUETE". No lo conviertas en bolsa doypack, frasco, caja ni tubo. No lo pintes rosado ni de otro color. No rediseñes el empaque ni inventes texto sobre él.
+
+════════════════════════════════════════════════════════
+MUNDO VISUAL
+════════════════════════════════════════════════════════
+
+FONDO: color crema #F5F0D0 muy claro (NUNCA blanco puro #FFFFFF). Textura sutilísima de papel, sin degradados marcados ni destellos. Muy tenues, a opacidad casi imperceptible, unas pocas burbujas translúcidas difusas en las esquinas.
+
+PALETA: COLOR PRINCIPAL celeste #5BB4EA (el del sobre). COLOR ACENTO verde lima #D6FB93, usado solo como relleno (marcador del hook, píldoras), nunca como color de texto. NEUTRO OSCURO verde muy oscuro #0E3B2C para todo el texto. Tres colores, no más; todo lo demás son variaciones de esos tres.
+
+ILUMINACIÓN: luz suave de estudio desde arriba a la izquierda, difusa, tipo softbox grande. Sombra propia del producto corta, suave y hacia abajo-derecha. Sin sombras duras ni contraluces dramáticos.
+
+════════════════════════════════════════════════════════
+COMPOSICIÓN — 5 zonas, de arriba hacia abajo
+════════════════════════════════════════════════════════
+
+【1】 EYEBROW (banda superior, centrada)
+Texto en MAYÚSCULAS pequeñas, verde oscuro #0E3B2C, con letterspacing amplio, separado por un punto medio "·". A izquierda y derecha, un pictograma diminuto de una hoja en línea fina.
+    → TEXTO: "HER NATURA · CUIDADO ÍNTIMO FEMENINO"
+
+【2】 SELLO DE GARANTÍA (esquina superior derecha, sobre el eyebrow)
+Sello CIRCULAR de unos 130px de diámetro, en celeste #5BB4EA con acabado metalizado mate plata azulada. Borde doble: un aro exterior fino y otro interior. Adentro, en 2 líneas: el número grande "30" arriba y "DÍAS DE GARANTÍA" abajo en letra pequeña espaciada. Tres estrellitas diminutas coronando el número.
+    → TEXTO: "30 DÍAS DE GARANTÍA"
+
+【2B】 SELLO DE OFERTA (esquina superior izquierda, por debajo del eyebrow, sin taparlo)
+Sello tipo estrella de muchas puntas (starburst), tamaño MODERADO (~150px), rojo #E0201B con borde fino crema. Texto blanco en 2 líneas: arriba, chico, "2 PAQUETES"; abajo, grande, "ENVÍO GRATIS". No tapa el hook ni el producto.
+
+【3】 HOOK (zona superior, a lo ancho, alineado a la izquierda)
+EL ELEMENTO MÁS GRANDE DE TODA LA PIEZA. Tipografía sans serif geométrica tipo Montserrat Black, en verde oscuro #0E3B2C. Máximo 2 líneas, interlineado ajustado (0.95). Las palabras "sigue ahí" van resaltadas con un marcador rectangular de color lima #D6FB93 detrás del texto (el texto sigue en verde oscuro), como un resaltador, para quebrar el bloque.
+    → TEXTO: "¿Cremas de droguería y sigue ahí?"
+
+【4】 CUERPO — dos columnas que conviven
+
+  4A. COLUMNA DE BENEFICIOS (izquierda, ~42% del ancho)
+  Exactamente 4 filas, con aire generoso entre ellas. Cada fila:
+     · Ícono LINEAL (solo trazo, sin relleno, grosor uniforme de 2px, en verde oscuro #0E3B2C) dentro de un círculo de borde fino celeste #5BB4EA, fondo transparente. Diámetro ~70px. Minimalista, geométrico, tipo interfaz — NUNCA una foto, NUNCA un emoji, NUNCA un ícono 3D.
+     · A la derecha del círculo: TÍTULO en mayúsculas, bold, verde oscuro, 2-4 palabras.
+     · Debajo del título: BAJADA de una sola línea, verde oscuro al 65% de opacidad, tamaño 60% del título.
+    → LOS 4 BENEFICIOS:
+       1. Ícono: hoja dentro de un círculo. Título: "ALTERNATIVA NATURAL". Bajada: "8 hierbas, sin químicos agresivos"
+       2. Ícono: pluma suave. Título: "SIN DOLOR". Bajada: "suave y fácil de usar"
+       3. Ícono: balanza equilibrada. Título: "CUIDA TU EQUILIBRIO". Bajada: "con Kochia y Borneol"
+       4. Ícono: casa simple. Título: "TRATAMIENTO EN CASA". Bajada: "3 perlas por paquete"
+
+  4B. PRODUCTO (derecha, ~58% del ancho) — EL PROTAGONISTA
+  DOS sobres grandes idénticos, uno detrás del otro y ligeramente desplazados, nítidos, ocupando su zona de arriba abajo, ligeramente en diagonal; los 3 sobrecitos individuales adelante, superpuestos en abanico. Apoyados sobre un PEDESTAL circular bajo, de madera clara mate, que los levanta del fondo. Junto a los sobrecitos, una perla de hierbas café en su malla blanca de hilo, pequeña y realista. Alrededor de la base, colocados con naturalidad (nunca simétricos, nunca flotando): un ramillete de semillas secas de Kochia scoparia, unos cristales blancos translúcidos de borneol y dos hojas verdes frescas. Detrás, muy desenfocada y a baja opacidad, una textura de hojas verdes de hierbas. NADA de texto encima del producto.
+
+【5】 PIE — dos franjas
+
+  5A. BLOQUE DE PRECIO (esquina inferior izquierda)
+  Caja rectangular en verde oscuro #0E3B2C con borde fino celeste #5BB4EA.
+  Arriba, en letra pequeña verde oscuro sobre una banda lima #D6FB93: "LA MÁS ELEGIDA".
+  Debajo, el precio GIGANTE en blanco: "$69.000", con el ".000" en tamaño menor y elevado.
+  Al lado derecho, caja separada del mismo alto: "2 PAQUETES" grande y, debajo, una píldora celeste con "6 PERLAS" en chico.
+  Bajo el precio, en gris claro y SIN tachar: "o 1 paquete desde $41.000".
+
+  5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
+  3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda: ícono lineal a la izquierda + a la derecha TÍTULO bold en mayúsculas verde oscuro y bajada de una línea.
+    · Ícono camión: "ENVÍO A TODA COLOMBIA" / "gratis desde 2 paquetes"
+    · Ícono mano con billete: "PAGA AL RECIBIR" / "pagas cuando te llega"
+    · Ícono bandera de Colombia: "PRODUCTO DISPONIBLE" / "en Colombia"
+
+════════════════════════════════════════════════════════
+TIPOGRAFÍA
+════════════════════════════════════════════════════════
+Una sola familia sans serif geométrica (tipo Montserrat) en toda la pieza, con 3 pesos: Black para el hook, Bold para los títulos, Regular para las bajadas. Es la misma categoría de la etiqueta del sobre. Nada de serifas, nada de scripts, nada de fuentes decorativas. Tamaño mínimo legible en celular. Jerarquía sin ambigüedad: hook >> precio > títulos > bajadas > franja.
+
+════════════════════════════════════════════════════════
+REGLAS DURAS
+════════════════════════════════════════════════════════
+· El HOOK es el elemento más grande. Nada compite con él (el precio es grande pero menor que el hook).
+· Máximo 4 beneficios. Si sobra espacio, se deja aire; NO se agrega un quinto.
+· Texto total < 20% del área de la imagen.
+· Un solo problema por pieza. No listar varios síntomas.
+· Sin fotos de personas. Sin rostros. Sin antes/después. Sin imágenes de flujo, residuos ni anatomía. Sin cajas ni tubos de marcas de droguería reconocibles.
+· Sin logos de terceros, sin sellos de organismos reales (INVIMA, FDA), sin banderas de países que no sean Colombia.
+· COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos de resultado. Prohibida la urgencia de pánico. Se habla del problema de la lectora con lenguaje de apoyo ("ayuda a", "cuidado"); NO se afirma curarlo.
+
+════════════════════════════════════════════════════════
+ENTREGA
+════════════════════════════════════════════════════════
+Una sola imagen 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60px. Revisa la ortografía y que el precio diga exactamente "$69.000" y "$41.000".
+└─ fin AD 3
+
+┌─ AD 4 · MELAVOYSIGUE · archivo: OVULOSPURITY_4_MELAVOYSIGUE.png · lleva precio: NO
+
+Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Lo único que cambia entre ellas es el texto.
+
+Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
+Calidad: fotografía de producto de estudio, nivel catálogo de farmacia premium. NO debe parecer generado por IA: sin texto deformado, sin manos raras, sin brillos plásticos, sin viñeteado falso.
+
+ADJUNTO: FOTO DEL PRODUCTO
+Reproduce el producto EXACTAMENTE como está en la foto adjunta: un SOBRE PLANO de aluminio mate color celeste #5BB4EA con bordes sellados en relieve dentado, acompañado de 3 sobrecitos individuales cuadrados del mismo celeste decorados con hojas blancas de línea fina. Textos del sobre grande, idénticos y en este orden: "HER NATURA" (pequeño, arriba) · "OVULOS PURITY" (blanco, bold) · "FRESCURA HERNATURA" (letras con contorno) · logotipo blanco en forma de "A" con una hojita · "100% HIERBAS NATURALES" · "3 PERLAS POR PAQUETE". No lo conviertas en bolsa doypack, frasco, caja ni tubo. No lo pintes rosado ni de otro color. No rediseñes el empaque ni inventes texto sobre él.
+
+════════════════════════════════════════════════════════
+MUNDO VISUAL
+════════════════════════════════════════════════════════
+
+FONDO: color crema #F5F0D0 muy claro (NUNCA blanco puro #FFFFFF). Textura sutilísima de papel, sin degradados marcados ni destellos. Muy tenues, a opacidad casi imperceptible, unas pocas burbujas translúcidas difusas en las esquinas.
+
+PALETA: COLOR PRINCIPAL celeste #5BB4EA (el del sobre). COLOR ACENTO verde lima #D6FB93, usado solo como relleno (marcador del hook, píldoras), nunca como color de texto. NEUTRO OSCURO verde muy oscuro #0E3B2C para todo el texto. Tres colores, no más; todo lo demás son variaciones de esos tres.
+
+ILUMINACIÓN: luz suave de estudio desde arriba a la izquierda, difusa, tipo softbox grande. Sombra propia del producto corta, suave y hacia abajo-derecha. Sin sombras duras ni contraluces dramáticos.
+
+════════════════════════════════════════════════════════
+COMPOSICIÓN — 5 zonas, de arriba hacia abajo
+════════════════════════════════════════════════════════
+
+【1】 EYEBROW (banda superior, centrada)
+Texto en MAYÚSCULAS pequeñas, verde oscuro #0E3B2C, con letterspacing amplio, separado por un punto medio "·". A izquierda y derecha, un pictograma diminuto de una hoja en línea fina.
+    → TEXTO: "HER NATURA · CUIDADO ÍNTIMO FEMENINO"
+
+【2】 SELLO DE GARANTÍA (esquina superior derecha, sobre el eyebrow)
+Sello CIRCULAR de unos 130px de diámetro, en celeste #5BB4EA con acabado metalizado mate plata azulada. Borde doble: un aro exterior fino y otro interior. Adentro, en 2 líneas: el número grande "30" arriba y "DÍAS DE GARANTÍA" abajo en letra pequeña espaciada. Tres estrellitas diminutas coronando el número.
+    → TEXTO: "30 DÍAS DE GARANTÍA"
+
+【3】 HOOK (zona superior, a lo ancho, alineado a la izquierda)
+EL ELEMENTO MÁS GRANDE DE TODA LA PIEZA. Tipografía sans serif geométrica tipo Montserrat Black, en verde oscuro #0E3B2C. Máximo 2 líneas, interlineado ajustado (0.95). Las palabras "el olor sigue" van resaltadas con un marcador rectangular de color lima #D6FB93 detrás del texto (el texto sigue en verde oscuro), como un resaltador, para quebrar el bloque.
+    → TEXTO: "¿Me lavo y el olor sigue?"
+
+【4】 CUERPO — dos columnas que conviven
+
+  4A. COLUMNA DE BENEFICIOS (izquierda, ~42% del ancho)
+  Exactamente 4 filas, con aire generoso entre ellas. Cada fila:
+     · Ícono LINEAL (solo trazo, sin relleno, grosor uniforme de 2px, en verde oscuro #0E3B2C) dentro de un círculo de borde fino celeste #5BB4EA, fondo transparente. Diámetro ~70px. Minimalista, geométrico, tipo interfaz — NUNCA una foto, NUNCA un emoji, NUNCA un ícono 3D.
+     · A la derecha del círculo: TÍTULO en mayúsculas, bold, verde oscuro, 2-4 palabras.
+     · Debajo del título: BAJADA de una sola línea, verde oscuro al 65% de opacidad, tamaño 60% del título.
+    → LOS 4 BENEFICIOS:
+       1. Ícono: gota con un pequeño destello. Título: "OLOR A LIMPIO". Bajada: "frescura que dura todo el día"
+       2. Ícono: balanza equilibrada. Título: "NO ES OTRO JABÓN". Bajada: "equilibrio para tu zona íntima"
+       3. Ícono: reloj simple. Título: "RUTINA SIMPLE". Bajada: "3 perlas, en tu casa"
+       4. Ícono: hoja con nervaduras. Título: "8 HIERBAS NATURALES". Bajada: "con Kochia, Osthol y Borneol"
+
+  4B. PRODUCTO (derecha, ~58% del ancho) — EL PROTAGONISTA
+  El sobre grande, nítido, de arriba abajo en su zona, ligeramente en diagonal. El sobre grande atrás y los 3 sobrecitos individuales adelante, superpuestos en abanico. Apoyado sobre un PEDESTAL circular bajo, de madera clara mate, que lo levanta del fondo. Junto a los sobrecitos, una perla de hierbas café en su malla blanca de hilo, pequeña y realista. Alrededor de la base, colocados con naturalidad (nunca simétricos, nunca flotando): un puñado de semillas secas de Kochia scoparia, una ramita de Cnidium con pequeñas flores blancas en umbela y unos cristales blancos translúcidos de borneol. Detrás, muy desenfocada y a baja opacidad, una textura de hojas verdes de hierbas. NADA de texto encima del producto.
+
+【5】 PIE — dos franjas
+
+  5A. Este anuncio NO lleva precio: la esquina inferior izquierda queda como aire limpio del fondo, sin cajas, sin cifras y sin sello de oferta. La columna de beneficios y el producto conservan exactamente la misma posición y el mismo tamaño que en las piezas de la serie que sí llevan precio.
+
+  5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
+  3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda: ícono lineal a la izquierda + a la derecha TÍTULO bold en mayúsculas verde oscuro y bajada de una línea.
+    · Ícono camión: "ENVÍO A TODA COLOMBIA" / "gratis desde 2 paquetes"
+    · Ícono mano con billete: "PAGA AL RECIBIR" / "pagas cuando te llega"
+    · Ícono bandera de Colombia: "PRODUCTO DISPONIBLE" / "en Colombia"
+
+════════════════════════════════════════════════════════
+TIPOGRAFÍA
+════════════════════════════════════════════════════════
+Una sola familia sans serif geométrica (tipo Montserrat) en toda la pieza, con 3 pesos: Black para el hook, Bold para los títulos, Regular para las bajadas. Es la misma categoría de la etiqueta del sobre. Nada de serifas, nada de scripts, nada de fuentes decorativas. Tamaño mínimo legible en celular. Jerarquía sin ambigüedad: hook >> títulos > bajadas > franja.
+
+════════════════════════════════════════════════════════
+REGLAS DURAS
+════════════════════════════════════════════════════════
+· El HOOK es el elemento más grande. Nada compite con él.
+· Máximo 4 beneficios. Si sobra espacio, se deja aire; NO se agrega un quinto.
+· Texto total < 20% del área de la imagen.
+· Un solo problema por pieza. No listar varios síntomas.
+· Sin fotos de personas. Sin rostros. Sin antes/después. Sin imágenes de flujo, residuos ni anatomía. Sin jabones ni toallitas de marcas reconocibles.
+· Sin logos de terceros, sin sellos de organismos reales (INVIMA, FDA), sin banderas de países que no sean Colombia.
+· COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos. Prohibida la urgencia de pánico. Se habla del problema de la lectora con lenguaje de apoyo ("ayuda a", "cuidado"); NO se afirma curarlo.
+
+════════════════════════════════════════════════════════
+ENTREGA
+════════════════════════════════════════════════════════
+Una sola imagen 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60px. Revisa la ortografía de cada palabra antes de entregar.
+└─ fin AD 4
+
+┌─ AD 5 · FLUJOPESCADO · archivo: OVULOSPURITY_5_FLUJOPESCADO.png · lleva precio: NO
+
+Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Lo único que cambia entre ellas es el texto.
+
+Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
+Calidad: fotografía de producto de estudio, nivel catálogo de farmacia premium. NO debe parecer generado por IA: sin texto deformado, sin manos raras, sin brillos plásticos, sin viñeteado falso.
+
+ADJUNTO: FOTO DEL PRODUCTO
+Reproduce el producto EXACTAMENTE como está en la foto adjunta: un SOBRE PLANO de aluminio mate color celeste #5BB4EA con bordes sellados en relieve dentado, acompañado de 3 sobrecitos individuales cuadrados del mismo celeste decorados con hojas blancas de línea fina. Textos del sobre grande, idénticos y en este orden: "HER NATURA" (pequeño, arriba) · "OVULOS PURITY" (blanco, bold) · "FRESCURA HERNATURA" (letras con contorno) · logotipo blanco en forma de "A" con una hojita · "100% HIERBAS NATURALES" · "3 PERLAS POR PAQUETE". No lo conviertas en bolsa doypack, frasco, caja ni tubo. No lo pintes rosado ni de otro color. No rediseñes el empaque ni inventes texto sobre él.
+
+════════════════════════════════════════════════════════
+MUNDO VISUAL
+════════════════════════════════════════════════════════
+
+FONDO: color crema #F5F0D0 muy claro (NUNCA blanco puro #FFFFFF). Textura sutilísima de papel, sin degradados marcados ni destellos. Muy tenues, a opacidad casi imperceptible, unas pocas burbujas translúcidas difusas en las esquinas.
+
+PALETA: COLOR PRINCIPAL celeste #5BB4EA (el del sobre). COLOR ACENTO verde lima #D6FB93, usado solo como relleno (marcador del hook, píldoras), nunca como color de texto. NEUTRO OSCURO verde muy oscuro #0E3B2C para todo el texto. Tres colores, no más; todo lo demás son variaciones de esos tres.
+
+ILUMINACIÓN: luz suave de estudio desde arriba a la izquierda, difusa, tipo softbox grande. Sombra propia del producto corta, suave y hacia abajo-derecha. Sin sombras duras ni contraluces dramáticos.
+
+════════════════════════════════════════════════════════
+COMPOSICIÓN — 5 zonas, de arriba hacia abajo
+════════════════════════════════════════════════════════
+
+【1】 EYEBROW (banda superior, centrada)
+Texto en MAYÚSCULAS pequeñas, verde oscuro #0E3B2C, con letterspacing amplio, separado por un punto medio "·". A izquierda y derecha, un pictograma diminuto de una hoja en línea fina.
+    → TEXTO: "HER NATURA · CUIDADO ÍNTIMO FEMENINO"
+
+【2】 SELLO DE GARANTÍA (esquina superior derecha, sobre el eyebrow)
+Sello CIRCULAR de unos 130px de diámetro, en celeste #5BB4EA con acabado metalizado mate plata azulada. Borde doble: un aro exterior fino y otro interior. Adentro, en 2 líneas: el número grande "30" arriba y "DÍAS DE GARANTÍA" abajo en letra pequeña espaciada. Tres estrellitas diminutas coronando el número.
+    → TEXTO: "30 DÍAS DE GARANTÍA"
+
+【3】 HOOK (zona superior, a lo ancho, alineado a la izquierda)
+EL ELEMENTO MÁS GRANDE DE TODA LA PIEZA. Tipografía sans serif geométrica tipo Montserrat Black, en verde oscuro #0E3B2C. Máximo 2 líneas, interlineado ajustado (0.95). Las palabras "se nota" van resaltadas con un marcador rectangular de color lima #D6FB93 detrás del texto (el texto sigue en verde oscuro), como un resaltador, para quebrar el bloque.
+    → TEXTO: "¿Flujo con olor que se nota?"
+
+【4】 CUERPO — dos columnas que conviven
+
+  4A. COLUMNA DE BENEFICIOS (izquierda, ~42% del ancho)
+  Exactamente 4 filas, con aire generoso entre ellas. Cada fila:
+     · Ícono LINEAL (solo trazo, sin relleno, grosor uniforme de 2px, en verde oscuro #0E3B2C) dentro de un círculo de borde fino celeste #5BB4EA, fondo transparente. Diámetro ~70px. Minimalista, geométrico, tipo interfaz — NUNCA una foto, NUNCA un emoji, NUNCA un ícono 3D.
+     · A la derecha del círculo: TÍTULO en mayúsculas, bold, verde oscuro, 2-4 palabras.
+     · Debajo del título: BAJADA de una sola línea, verde oscuro al 65% de opacidad, tamaño 60% del título.
+    → LOS 4 BENEFICIOS:
+       1. Ícono: gota con un pequeño destello. Título: "FRESCA TODO EL DÍA". Bajada: "en el trabajo y en el gym"
+       2. Ícono: camiseta deportiva simple. Título: "CÓMODA Y SEGURA". Bajada: "ponte lo que quieras"
+       3. Ícono: hoja con nervaduras. Título: "8 HIERBAS NATURALES". Bajada: "con Smilax y Borneol"
+       4. Ícono: pluma suave. Título: "SIN DOLOR". Bajada: "fáciles de usar en casa"
+
+  4B. PRODUCTO (derecha, ~58% del ancho) — EL PROTAGONISTA
+  El sobre grande, nítido, de arriba abajo en su zona, ligeramente en diagonal. El sobre grande atrás y los 3 sobrecitos individuales adelante, superpuestos en abanico. Apoyado sobre un PEDESTAL circular bajo, de madera clara mate, que lo levanta del fondo. Junto a los sobrecitos, una perla de hierbas café en su malla blanca de hilo, pequeña y realista. Alrededor de la base, colocados con naturalidad (nunca simétricos, nunca flotando): unas rodajas secas de rizoma de Smilax glabra, unos cristales blancos translúcidos de borneol con un leve brillo fresco y una ramita de hojas verdes frescas. Detrás, muy desenfocada y a baja opacidad, una textura de hojas verdes de hierbas. NADA de texto encima del producto.
+
+【5】 PIE — dos franjas
+
+  5A. Este anuncio NO lleva precio: la esquina inferior izquierda queda como aire limpio del fondo, sin cajas, sin cifras y sin sello de oferta. La columna de beneficios y el producto conservan exactamente la misma posición y el mismo tamaño que en las piezas de la serie que sí llevan precio.
+
+  5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
+  3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda: ícono lineal a la izquierda + a la derecha TÍTULO bold en mayúsculas verde oscuro y bajada de una línea.
+    · Ícono camión: "ENVÍO A TODA COLOMBIA" / "gratis desde 2 paquetes"
+    · Ícono mano con billete: "PAGA AL RECIBIR" / "pagas cuando te llega"
+    · Ícono bandera de Colombia: "PRODUCTO DISPONIBLE" / "en Colombia"
+
+════════════════════════════════════════════════════════
+TIPOGRAFÍA
+════════════════════════════════════════════════════════
+Una sola familia sans serif geométrica (tipo Montserrat) en toda la pieza, con 3 pesos: Black para el hook, Bold para los títulos, Regular para las bajadas. Es la misma categoría de la etiqueta del sobre. Nada de serifas, nada de scripts, nada de fuentes decorativas. Tamaño mínimo legible en celular. Jerarquía sin ambigüedad: hook >> títulos > bajadas > franja.
+
+════════════════════════════════════════════════════════
+REGLAS DURAS
+════════════════════════════════════════════════════════
+· El HOOK es el elemento más grande. Nada compite con él.
+· Máximo 4 beneficios. Si sobra espacio, se deja aire; NO se agrega un quinto.
+· Texto total < 20% del área de la imagen.
+· Un solo problema por pieza. No listar varios síntomas.
+· Sin fotos de personas. Sin rostros. Sin antes/después. Sin imágenes de flujo, residuos, ropa interior manchada, protectores ni anatomía. Sin pescado.
+· Sin logos de terceros, sin sellos de organismos reales (INVIMA, FDA), sin banderas de países que no sean Colombia.
+· COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos. Prohibida la urgencia de pánico. Se habla del problema de la lectora con lenguaje de apoyo ("ayuda a", "cuidado"); NO se afirma curarlo.
+
+════════════════════════════════════════════════════════
+ENTREGA
+════════════════════════════════════════════════════════
+Una sola imagen 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60px. Revisa la ortografía de cada palabra antes de entregar.
+└─ fin AD 5
+
+┌─ AD 6 · DESPUESDELAREGLA · archivo: OVULOSPURITY_6_DESPUESDELAREGLA.png · lleva precio: NO
+
+Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Lo único que cambia entre ellas es el texto.
+
+Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
+Calidad: fotografía de producto de estudio, nivel catálogo de farmacia premium. NO debe parecer generado por IA: sin texto deformado, sin manos raras, sin brillos plásticos, sin viñeteado falso.
+
+ADJUNTO: FOTO DEL PRODUCTO
+Reproduce el producto EXACTAMENTE como está en la foto adjunta: un SOBRE PLANO de aluminio mate color celeste #5BB4EA con bordes sellados en relieve dentado, acompañado de 3 sobrecitos individuales cuadrados del mismo celeste decorados con hojas blancas de línea fina. Textos del sobre grande, idénticos y en este orden: "HER NATURA" (pequeño, arriba) · "OVULOS PURITY" (blanco, bold) · "FRESCURA HERNATURA" (letras con contorno) · logotipo blanco en forma de "A" con una hojita · "100% HIERBAS NATURALES" · "3 PERLAS POR PAQUETE". No lo conviertas en bolsa doypack, frasco, caja ni tubo. No lo pintes rosado ni de otro color. No rediseñes el empaque ni inventes texto sobre él.
+
+════════════════════════════════════════════════════════
+MUNDO VISUAL
+════════════════════════════════════════════════════════
+
+FONDO: color crema #F5F0D0 muy claro (NUNCA blanco puro #FFFFFF). Textura sutilísima de papel, sin degradados marcados ni destellos. Muy tenues, a opacidad casi imperceptible, unas pocas burbujas translúcidas difusas en las esquinas.
+
+PALETA: COLOR PRINCIPAL celeste #5BB4EA (el del sobre). COLOR ACENTO verde lima #D6FB93, usado solo como relleno (marcador del hook, píldoras), nunca como color de texto. NEUTRO OSCURO verde muy oscuro #0E3B2C para todo el texto. Tres colores, no más; todo lo demás son variaciones de esos tres.
+
+ILUMINACIÓN: luz suave de estudio desde arriba a la izquierda, difusa, tipo softbox grande. Sombra propia del producto corta, suave y hacia abajo-derecha. Sin sombras duras ni contraluces dramáticos.
+
+════════════════════════════════════════════════════════
+COMPOSICIÓN — 5 zonas, de arriba hacia abajo
+════════════════════════════════════════════════════════
+
+【1】 EYEBROW (banda superior, centrada)
+Texto en MAYÚSCULAS pequeñas, verde oscuro #0E3B2C, con letterspacing amplio, separado por un punto medio "·". A izquierda y derecha, un pictograma diminuto de una hoja en línea fina.
+    → TEXTO: "HER NATURA · CUIDADO ÍNTIMO FEMENINO"
+
+【2】 SELLO DE GARANTÍA (esquina superior derecha, sobre el eyebrow)
+Sello CIRCULAR de unos 130px de diámetro, en celeste #5BB4EA con acabado metalizado mate plata azulada. Borde doble: un aro exterior fino y otro interior. Adentro, en 2 líneas: el número grande "30" arriba y "DÍAS DE GARANTÍA" abajo en letra pequeña espaciada. Tres estrellitas diminutas coronando el número.
+    → TEXTO: "30 DÍAS DE GARANTÍA"
+
+【3】 HOOK (zona superior, a lo ancho, alineado a la izquierda)
+EL ELEMENTO MÁS GRANDE DE TODA LA PIEZA. Tipografía sans serif geométrica tipo Montserrat Black, en verde oscuro #0E3B2C. Máximo 2 líneas, interlineado ajustado (0.95). La palabra "picazón" va resaltada con un marcador rectangular de color lima #D6FB93 detrás del texto (el texto sigue en verde oscuro), como un resaltador, para quebrar el bloque.
+    → TEXTO: "¿Se acaba la regla y empieza la picazón?"
+
+【4】 CUERPO — dos columnas que conviven
+
+  4A. COLUMNA DE BENEFICIOS (izquierda, ~42% del ancho)
+  Exactamente 4 filas, con aire generoso entre ellas. Cada fila:
+     · Ícono LINEAL (solo trazo, sin relleno, grosor uniforme de 2px, en verde oscuro #0E3B2C) dentro de un círculo de borde fino celeste #5BB4EA, fondo transparente. Diámetro ~70px. Minimalista, geométrico, tipo interfaz — NUNCA una foto, NUNCA un emoji, NUNCA un ícono 3D.
+     · A la derecha del círculo: TÍTULO en mayúsculas, bold, verde oscuro, 2-4 palabras.
+     · Debajo del título: BAJADA de una sola línea, verde oscuro al 65% de opacidad, tamaño 60% del título.
+    → LOS 4 BENEFICIOS:
+       1. Ícono: luna creciente con una estrella. Título: "MESES TRANQUILOS". Bajada: "después de cada periodo"
+       2. Ícono: flor de pétalos simples. Título: "PLANTAS DEL CICLO". Bajada: "Angélica, Agripalma y Chuanxiong"
+       3. Ícono: calendario con un día marcado. Título: "AL TERMINAR LA REGLA". Bajada: "el momento de usarlo"
+       4. Ícono: pluma suave. Título: "SIN DOLOR". Bajada: "natural y fácil de usar"
+
+  4B. PRODUCTO (derecha, ~58% del ancho) — EL PROTAGONISTA
+  El sobre grande, nítido, de arriba abajo en su zona, ligeramente en diagonal. El sobre grande atrás y los 3 sobrecitos individuales adelante, superpuestos en abanico. Apoyado sobre un PEDESTAL circular bajo, de madera clara mate, que lo levanta del fondo. Junto a los sobrecitos, una perla de hierbas café en su malla blanca de hilo, pequeña y realista. Alrededor de la base, colocados con naturalidad (nunca simétricos, nunca flotando): unas ramitas secas de agripalma (Leonurus) con florecitas lila apagado, unas rodajas secas de raíz de angélica y unas rodajas de rizoma de chuanxiong. Detrás, muy desenfocada y a baja opacidad, una textura de hojas verdes de hierbas. NADA de texto encima del producto.
+
+【5】 PIE — dos franjas
+
+  5A. Este anuncio NO lleva precio: la esquina inferior izquierda queda como aire limpio del fondo, sin cajas, sin cifras y sin sello de oferta. La columna de beneficios y el producto conservan exactamente la misma posición y el mismo tamaño que en las piezas de la serie que sí llevan precio.
+
+  5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
+  3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda: ícono lineal a la izquierda + a la derecha TÍTULO bold en mayúsculas verde oscuro y bajada de una línea.
+    · Ícono camión: "ENVÍO A TODA COLOMBIA" / "gratis desde 2 paquetes"
+    · Ícono mano con billete: "PAGA AL RECIBIR" / "pagas cuando te llega"
+    · Ícono bandera de Colombia: "PRODUCTO DISPONIBLE" / "en Colombia"
+
+════════════════════════════════════════════════════════
+TIPOGRAFÍA
+════════════════════════════════════════════════════════
+Una sola familia sans serif geométrica (tipo Montserrat) en toda la pieza, con 3 pesos: Black para el hook, Bold para los títulos, Regular para las bajadas. Es la misma categoría de la etiqueta del sobre. Nada de serifas, nada de scripts, nada de fuentes decorativas. Tamaño mínimo legible en celular. Jerarquía sin ambigüedad: hook >> títulos > bajadas > franja.
+
+════════════════════════════════════════════════════════
+REGLAS DURAS
+════════════════════════════════════════════════════════
+· El HOOK es el elemento más grande. Nada compite con él.
+· Máximo 4 beneficios. Si sobra espacio, se deja aire; NO se agrega un quinto.
+· Texto total < 20% del área de la imagen.
+· Un solo problema por pieza. No listar varios síntomas.
+· Sin fotos de personas. Sin rostros. Sin antes/después. Sin sangre, toallas higiénicas, flujo, residuos ni anatomía.
+· Sin logos de terceros, sin sellos de organismos reales (INVIMA, FDA), sin banderas de países que no sean Colombia.
+· COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos. Prohibida la urgencia de pánico. Se habla del problema de la lectora con lenguaje de apoyo ("ayuda a", "cuidado"); NO se afirma curarlo.
+
+════════════════════════════════════════════════════════
+ENTREGA
+════════════════════════════════════════════════════════
+Una sola imagen 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60px. Revisa la ortografía de cada palabra antes de entregar.
+└─ fin AD 6
+
+C.2 · INFOGRAFÍAS DEL BOT (3 imágenes)
+
+┌─ IMAGEN 1 · 10 beneficios · archivo: OVULOSPURITY_INFO1_BENEFICIOS.png
+Un póster de infografía de producto vertical de alta resolución y calidad profesional, formato 4:5 (1080x1350), recreando fielmente el diseño, texto y elementos descritos, optimizado para una lectura clara y sin saturación.
+
+Estilo y Layout: Un diseño de póster premium y profesional, con estética de bienestar de marca (NO clínica-plana), renderizado con alto nivel de detalle y fidelidad. El layout se organiza en una columna central con un PRODUCTO HÉROE grande y protagonista y diagramas numerados alrededor con aire/espacio entre ellos.
+
+FONDO: el fondo del póster es un degradado vertical de celeste muy claro #DCEFFB arriba a celeste #5BB4EA abajo (el color del sobre del producto). NUNCA fondo blanco plano ni gris clínico. Sobre ese fondo de color, y SOLO encima de él, se añade una micro-textura con opacidad de 2% a 5% máximo: formas circulares difusas muy pequeñas dispersas, como burbujas a escala microscópica, sin definición de borde.
+
+REGLA ABSOLUTA: Si la textura es visible a primera vista, es demasiado intensa. Reducir opacidad hasta que desaparezca del primer plano visual. La textura existe para enriquecer, no para decorar.
+
+Sección Superior (Encabezado): El encabezado es compacto pero su TÍTULO domina.
+1. TÍTULO PRINCIPAL (lo más grande y llamativo del encabezado, en bold, color crema #F5F0D0 con una sombra suave verde oscuro para que se lea sobre el celeste): "LA PAZ Y FRESCURA QUE TU ZONA ÍNTIMA NECESITA". PROHIBIDO usar "10 BENEFICIOS" o "BENEFICIOS" como título principal.
+2. KICKER pequeño encima del título, en texto chico verde oscuro #0E3B2C: "10 BENEFICIOS". Es secundario, nunca compite con el título.
+3. Botón verde oscuro #0E3B2C delgado con texto blanco pequeño: "ÓVULOS PURITY".
+El bloque de encabezado no ocupa más del ~15% de la altura, pero el TÍTULO debe leerse desde lejos. Unas pocas burbujas translúcidas y hojitas blancas de línea fina (como las del sobre) decoran discretamente, sin saturar.
+
+Elemento Central (Producto) — PRODUCTO HÉROE: el sobre ultra-realista de "ÓVULOS PURITY" se sitúa en el centro como protagonista absoluto: grande y dominante, con iluminación dramática — glow/halo celeste suave alrededor y un pódium circular blanco perlado sutil que lo hace resaltar contra el fondo. Debe quedar aire entre el sobre y los beneficios laterales para que la pieza respire, pero el sobre nunca se achica para ceder ese espacio. El sobre debe ser idéntico al de la foto adjunta: SOBRE PLANO de aluminio mate celeste #5BB4EA con bordes sellados dentados; textos "HER NATURA" (pequeño, arriba), "OVULOS PURITY" (blanco, bold), "FRESCURA HERNATURA" (letras con contorno), logotipo blanco en forma de "A" con una hojita, "100% HIERBAS NATURALES" y "3 PERLAS POR PAQUETE"; hojas blancas de línea fina. Delante del sobre, en abanico, los 3 sobrecitos individuales celestes. No es bolsa doypack, ni frasco, ni caja; no es rosado.
+
+Base del Producto: dispuesto alrededor de la base del pódium hay una disposición compacta de ingredientes naturales: rodajas secas de rizoma de Smilax glabra, semillitas de Cnidium (fuente del Osthol), un ramillete de semillas de Kochia, ramitas de agripalma con florecitas lila apagado, rodajas de raíz de angélica, cristales blancos de borneol, y una perla de hierbas café dentro de su malla blanca de hilo.
+
+Diagramas de Beneficios Numerados (dos columnas que flanquean el sobre): 10 beneficios reales y diferenciados. Puntos numerados circulares verde oscuro #0E3B2C con un aro fino celeste y números blancos, con buen espaciado entre ellos. Cada beneficio lleva un ícono ILUSTRADO A COLOR descrito como ilustración 3D die-cut, tamaño moderado (un poco más pequeña de lo que sale por defecto), estilo y tamaño uniformes entre todos. Los íconos son la única capa multicolor de la pieza; la estructura sigue en celeste y verde oscuro. Jerarquía obligatoria: el título del beneficio (en MAYÚSCULAS, verde oscuro #0E3B2C) domina en tamaño y peso; la descripción va en tipografía notablemente más pequeña, delgada y CORTA (máx 1 línea breve). En varios puntos basta el ícono + título sin descripción. Todo texto legible en celular (≥24 pts).
+
+Columna Izquierda (1-5):
+
+Ilustración 3D die-cut de una flor blanca fresca con destellos. Título: "ADIÓS AL MAL OLOR". Descripción (letra más pequeña): "Desvanece ese olor que nadie quiere"
+
+Ilustración 3D die-cut de un escudo azul con una hoja verde. Título: "COMBATE INFECCIONES Y HONGOS". Descripción (letra más pequeña): "Smilax y Stemona protegen tu flora"
+
+Ilustración 3D die-cut de un cubo de hielo celeste. Título: "CALMA LA PICAZÓN Y EL ARDOR". Descripción (letra más pequeña): "Alivio y confort en tu día a día"
+
+Ilustración 3D die-cut de una gota de agua celeste. Título: "MEJORA EL FLUJO VAGINAL".
+
+Ilustración 3D die-cut de una balanza verde equilibrada. Título: "EQUILIBRA TU pH Y TU FLORA". Descripción (letra más pequeña): "Recupera tu equilibrio natural"
+
+Columna Derecha (6-10):
+
+Ilustración 3D die-cut de burbujas celestes brillantes. Título: "DETOX Y LIMPIEZA ÍNTIMA". Descripción (letra más pequeña): "Ayuda a eliminar toxinas y residuos"
+
+Ilustración 3D die-cut de un corazón rojo. Título: "FRESCA DESPUÉS DE LA INTIMIDAD".
+
+Ilustración 3D die-cut de un calendario con una gota roja. Título: "ALIVIO MENSTRUAL". Descripción (letra más pequeña): "Agripalma y Chuanxiong calman los cólicos"
+
+Ilustración 3D die-cut de una flor lila de angélica. Título: "EQUILIBRIO HORMONAL NATURAL".
+
+Ilustración 3D die-cut de una estrella dorada. Título: "FIRMEZA Y BIENESTAR ÍNTIMO". Descripción (letra más pequeña): "Mejora la elasticidad de tu zona íntima"
+
+Abajo del producto: el logotipo de texto "HER NATURA" en verde oscuro #0E3B2C, que no sea muy grande.
+
+Sección Inferior (Pie de Página): Una barra horizontal pequeña y estrecha de color verde oscuro #0E3B2C. En el lado izquierdo: un escudo con una marca de verificación. Texto blanco: "SALUD ÍNTIMA NATURAL, TODOS LOS MESES." En el lado derecho: un ícono de hoja. Texto blanco: "FÓRMULA SEGURA Y DE ALTA CALIDAD".
+
+Tipografía: una sola familia sans serif geométrica tipo Montserrat (Black en el título, Bold en títulos de beneficio, Regular en descripciones). Sin emojis.
+
+TODO EN ESPAÑOL
+└─ fin IMAGEN 1
+
+┌─ IMAGEN 2 · Antes/después con reseñas, ingredientes y modo de uso · archivo: OVULOSPURITY_INFO2_TRANSFORMACION.png
+Un póster de infografía de producto vertical, formato 4:5 (1080x1350), alta resolución, calidad profesional, estilo wellness premium. Tipografía sans serif geométrica tipo Montserrat en toda la pieza. Fondo base blanco roto teñido ≤5% hacia celeste (no #FFFFFF plano). Las zonas de reseñas e ingredientes van en azul profundo #123A55. Todo el texto en español.
+
+Umbral cognitivo: cada zona respira, separada con aire; máximo 6 ingredientes principales con 1 línea cada uno; texto legible a ~24pt en celular.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ZONA 1 — ANTES / DESPUÉS EN RESEÑAS (50% superior del lienzo)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fondo de esta zona: degradado muy suave de azul profundo #123A55 a negro azulado. Ocupa exactamente la mitad superior del póster.
+
+HEADLINE SUPERIOR:
+Texto bold uppercase blanco, tamaño grande, centrado, con una línea delgada de 2px celeste #5BB4EA debajo como separador:
+"RESULTADOS REALES EN 4 DÍAS"
+
+FORMATO: dos tarjetas de reseña de clienta lado a lado (NO fotos de personas, NO fotos de lo que se expulsa, NO capturas que imiten la interfaz oficial de WhatsApp). Cada tarjeta: fondo blanco roto con esquinas redondeadas, 5 estrellas doradas arriba, texto de la reseña en tipografía regular oscura con ortografía natural humana, y abajo el nombre en bold. Sobre cada tarjeta, una etiqueta tipo píldora roja #E0201B con texto blanco bold.
+
+TARJETA IZQUIERDA:
+Etiqueta: "ANTES · OLOR EXTRAÑO Y pH DESCUADRADO"
+Reseña: "Hola!!! Les quería contar mi experiencia con los óvulos, durante el tratamiento no me bajo casi nada, pero ayer si me bajo algo, hasta me asusté. Yo sufría de un olor extraño, me había cambiado drásticamente el PH y hasta el momento ya no lo he sentido"
+Nombre: "Manuela, 32 años"
+
+TARJETA DERECHA:
+Etiqueta: "DESPUÉS · MEJORÓ SU pH Y LOS MALOS OLORES"
+Reseña: "Estoy muy contenta con los Óvulos, nunca me imaginé que uno estuviera tan mal por dentro Jejejeje. Ya termine y quería saber si puedo comprarlos otra vez"
+Nombre: "Paula Andrea, 30 años"
+
+Separador central: línea vertical delgada 1px con el texto "HER NATURA" pequeño centrado, en celeste.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ZONA 2 — INGREDIENTES PRINCIPALES (6 PROTAGONISTAS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fondo: azul profundo #123A55, borde superior e inferior de 1px celeste #5BB4EA.
+
+TÍTULO DE SECCIÓN centrado:
+Texto bold uppercase blanco, tamaño mediano:
+"LO QUE HAY DENTRO IMPORTA"
+Subtítulo regular pequeño, color celeste #5BB4EA:
+"8 raíces y hierbas naturales con función específica"
+
+GRILLA DE 2 COLUMNAS — 6 ingredientes principales. Cada celda compacta y con aire, fondo 15% más oscuro que #123A55, border-radius suave, padding interno cómodo. Las dos columnas separadas por 12px.
+
+ESTRUCTURA DE CADA CELDA:
+[Punto circular celeste #5BB4EA pequeño] [NOMBRE bold blanco uppercase] → [función, texto regular legible color #e5e7eb, máximo 1 línea]
+
+● OSTHOL → mejora la circulación y promueve la limpieza interna
+● STEMONA SESSILIFOLIA → antibacteriana y antifúngica, previene infecciones
+● KOCHIA SCOPARIA → desintoxica y purifica la zona íntima
+● RHIZOMA SMILACIS GLABRAE → protege y equilibra la flora vaginal
+● BORNEOL → antiinflamatorio, deja una sensación limpia y fresca
+● MOTHERWORT (AGRIPALMA) → ayuda a regular el ciclo y calmar los cólicos
+
+NOTA DE CIERRE debajo de la grilla, centrada, texto italic pequeño color #9ca3af:
+"Fórmula sinérgica — cada ingrediente potencia al otro. + 2 activos más: Angélica y Rhizoma Chuanxiong."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ZONA 3 — MODO DE USO + CIERRE (25% inferior del lienzo)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Fondo blanco roto teñido ≤5% hacia celeste. Separado de la zona central por una línea delgada de 1px celeste #5BB4EA ancho completo.
+
+TÍTULO DE SECCIÓN:
+Texto centrado bold uppercase, color #0E3B2C, tamaño mediano:
+"MODO DE USO"
+
+TRES ÍCONOS HORIZONTALES — en una sola fila centrada, espaciado igual, con una flecha delgada celeste #5BB4EA apuntando de izquierda a derecha entre ellos.
+
+Ícono 1 — Vaso de agua 3D limpio con una perla de hierbas café en su malla blanca sumergida.
+Texto: "1 MINUTO EN AGUA"
+Subtexto: "con las manos limpias"
+
+Ícono 2 — Perla de hierbas café en su malla blanca con su hilo, render 3D limpio.
+Texto: "24 HORAS DENTRO"
+Subtexto: "introdúcela lo más que puedas"
+
+Ícono 3 — Reloj análogo 3D minimalista con una flecha circular.
+Texto: "12 H DE DESCANSO"
+Subtexto: "y sigue con la próxima perla, hasta las 3"
+
+Línea pequeña centrada debajo de los íconos, color #0E3B2C regular:
+"Repite el tratamiento cada 2 meses. No usar en embarazo ni durante la menstruación."
+
+BARRA INFERIOR (texto bold pequeño color #0E3B2C):
+"SIN DOLOR · 100% HIERBAS NATURALES · FÁCIL DE USAR"
+
+Logo de texto "HER NATURA" centrado debajo, pequeño, verde oscuro #0E3B2C, no protagonista.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGLAS GLOBALES DEL DISEÑO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+- Todo el texto en español
+- Tipografía: sans serif geométrica tipo Montserrat, la misma de los anuncios
+- Sin emojis
+- Paleta estricta: celeste #5BB4EA (acento dominante), azul profundo #123A55, verde oscuro #0E3B2C, rojo #E0201B solo en las etiquetas de reseña, #FFFFFF, #6b7280
+- Sin fotos de lo que se expulsa, sin anatomía, sin sangre
+- Resolución mínima 1080x1350px
+- Estilo limpio, wellness, premium
+└─ fin IMAGEN 2
+
+┌─ IMAGEN 3 · Confianza, pago contra entrega y resultados · archivo: OVULOSPURITY_INFO3_CONFIANZA.png
+PASO 1 — FOTO BASE (generar la foto de la doctora con el packshot adjunto):
+Candid iPhone photo, highly realistic UGC style. A real Colombian Latina woman doctor in her mid-30s, wearing a clean professional white lab coat, standing in a bright modern gynecology clinic with soft natural daylight coming from the left side.
+
+COMPOSICIÓN CRÍTICA: La doctora está posicionada en el lado DERECHO del frame, ocupando desde el centro hasta el borde derecho. El lado IZQUIERDO del frame es espacio negativo limpio — sin objetos, sin personas, solo fondo de clínica desenfocado. Esta distribución es obligatoria para que el texto se superponga en el lado izquierdo sin tapar a la doctora.
+
+La doctora sostiene con ambas manos, a la altura del pecho, el sobre plano celeste #5BB4EA de la foto adjunta (textos "HER NATURA", "OVULOS PURITY", "FRESCURA HERNATURA", logo blanco en forma de "A", "100% HIERBAS NATURALES", "3 PERLAS POR PAQUETE"). El borde superior del sobre muestra claramente su sellado térmico dentado de fábrica — este detalle debe ser visible. No es frasco, ni caja, ni bolsa doypack, ni rosado.
+
+La doctora mira directo a la cámara con una sonrisa genuina, empática y confiable. Poros naturales de piel visibles, leve grano de cámara iPhone, luz natural suave. Sin filtros. Sin fondos artificiales. Aspecto 100% auténtico y humano.
+
+Aspect ratio 4:5. --style raw
+
+PASO 2 — DISEÑO EN CANVA sobre la foto del paso 1:
+Formato 1080 x 1350 px
+
+──────────────────────────────────────
+CAPA 1 — FOTO DE FONDO (100% del lienzo)
+──────────────────────────────────────
+La foto de la doctora ocupa todo el lienzo como fondo. Aplicar un degradado oscuro SOLO sobre el lado izquierdo del frame: de azul profundo #123A55 semitransparente (opacidad 65%) en el borde izquierdo a completamente transparente hacia el centro. El lado derecho donde está la doctora NO recibe degradado.
+
+──────────────────────────────────────
+CAPA 2 — CONTENIDO IZQUIERDO
+──────────────────────────────────────
+
+HEADLINE SUPERIOR:
+Texto bold uppercase blanco, tamaño grande, alineado a la izquierda, máximo 2 líneas:
+"MILES DE MUJERES YA RECUPERARON SU FRESCURA"
+Debajo: línea separadora de 2px celeste #5BB4EA, ancho 60% del lado izquierdo del frame.
+
+BLOQUE CONTRAENTREGA + GARANTÍA (PROMINENTE — primer elemento bajo el headline):
+Badge/pastilla grande con fondo celeste #5BB4EA, ícono de billete/mano + casa. Texto bold uppercase verde oscuro #0E3B2C, alto contraste:
+"PAGA AL RECIBIR"
+Subtexto regular blanco pequeño debajo:
+"Envío a toda Colombia con Coordinadora, Envía, Domina y Rapidísimo · GRATIS desde 2 paquetes · No pagas nada por adelantado"
+Inmediatamente debajo, un sello de garantía (escudo/medalla con ícono de check, celeste #5BB4EA) con texto bold pequeño blanco:
+"30 DÍAS DE GARANTÍA · SELLO 100% SATISFACCIÓN"
+
+ZOOM DE CONFIANZA:
+Un círculo estilo lupa (borde blanco de 2px, fondo interior negro semitransparente) conectado con una línea delgada blanca recta hacia el sobre que sostiene la doctora. Dentro del círculo: acercamiento macro del borde sellado térmico dentado del sobre celeste, con reflejo de luz sobre el aluminio mate. Debajo del círculo, texto pequeño celeste #5BB4EA italic: "Sellado de fábrica por HER NATURA"
+
+BLOQUE ESTADÍSTICO 1:
+Número "4,8/5" — fuente bold display, tamaño muy grande, celeste #5BB4EA. Sin borde, sin caja.
+Texto blanco regular pequeño debajo:
+"valoración promedio de nuestras clientas"
+
+BLOQUE ESTADÍSTICO 2:
+Número "+325" — mismo estilo.
+Texto blanco pequeño debajo:
+"reseñas de 5 estrellas"
+
+BLOQUE ESTADÍSTICO 3:
+Número "+10.000" — mismo estilo.
+Texto blanco pequeño debajo:
+"clientas satisfechas con su salud íntima"
+
+Espaciado entre los tres bloques: igual y generoso.
+
+──────────────────────────────────────
+TRANSICIÓN FOTO → BLOQUE CLARO
+──────────────────────────────────────
+Degradado vertical de transparente a blanco roto, altura de 50px, justo encima del bloque inferior. Sin corte brusco.
+
+──────────────────────────────────────
+CAPA 3 — BLOQUE FAQ INFERIOR (30% inferior del lienzo)
+Fondo blanco roto teñido ≤5% hacia celeste
+──────────────────────────────────────
+
+TÍTULO DE SECCIÓN:
+Texto centrado bold uppercase, color #0E3B2C, tamaño mediano:
+"RESOLVAMOS TUS DUDAS"
+Línea separadora de 1px celeste #5BB4EA ancho completo debajo del título.
+
+TRES COLUMNAS FAQ — espaciado igual, alineación centrada:
+
+COLUMNA 1:
+Pluma blanca suave 3D, render limpio sobre fondo claro, sombra suave. Sin emoji, sin clipart.
+Título bold uppercase muy pequeño, color #0E3B2C:
+"¿DUELE O ES INCÓMODO?"
+Texto regular muy pequeño, color #6b7280:
+"No. La perla es suave, entra con su malla y la retiras con el hilo."
+
+COLUMNA 2:
+Reloj análogo 3D minimalista, esfera blanca, agujas negras, caja plateada, render limpio, sombra suave. Sin emoji.
+Título bold uppercase muy pequeño, color #0E3B2C:
+"¿EN CUÁNTO TIEMPO FUNCIONA?"
+Texto regular muy pequeño, color #6b7280:
+"Muchas clientas sienten el cambio desde la primera perla. Un paquete de 3 perlas se completa en 4 días."
+
+COLUMNA 3:
+Calendario 3D con un día marcado en celeste, render limpio, sombra suave. Sin emoji, sin clipart.
+Título bold uppercase muy pequeño, color #0E3B2C:
+"¿CUÁNDO NO USARLO?"
+Texto regular muy pequeño, color #6b7280:
+"En embarazo ni durante la regla. Úsalo cuando termine tu periodo."
+
+──────────────────────────────────────
+BARRA DE CERTIFICACIONES FINAL
+Fondo blanco roto teñido ≤5% hacia celeste, borde superior 1px celeste #5BB4EA, altura compacta
+──────────────────────────────────────
+
+Tres sellos en una fila horizontal con espaciado igual. Cada sello: ícono/escudo genérico arriba + dos líneas de texto debajo. Estilo institucional limpio. No reproducir logotipos oficiales de ninguna entidad y no escribir ningún número de registro.
+
+SELLO IZQUIERDO:
+Escudo genérico con un check, en verde oscuro.
+Línea 1, bold #0E3B2C muy pequeño: "Registro sanitario INVIMA"
+Línea 2, uppercase regular #0E3B2C muy pequeño: "PRODUCTO REGISTRADO EN COLOMBIA"
+
+SELLO CENTRAL:
+Ícono de matraz de laboratorio con check.
+Línea 1, bold #0E3B2C muy pequeño: "Verificado en laboratorio"
+Línea 2, uppercase regular #0E3B2C muy pequeño: "PROBADO POR TERCEROS"
+
+SELLO DERECHO:
+Ícono de hoja dentro de un círculo.
+Línea 1, bold #0E3B2C muy pequeño: "100% hierbas naturales"
+Línea 2, uppercase regular #0E3B2C muy pequeño: "FORMULACIÓN NATURAL"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGLAS GLOBALES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Todo el texto en español, sin excepción.
+- Tipografía: sans serif geométrica tipo Montserrat, la misma de los anuncios. Nunca serif en cuerpos pequeños.
+- Sin emojis en ninguna sección.
+- Paleta estricta: celeste #5BB4EA (acento dominante: separadores, badge, los 3 números), azul profundo #123A55, verde oscuro #0E3B2C, #FFFFFF, #6b7280.
+- Los tres bloques estadísticos son el elemento visual dominante del 70% superior, en celeste #5BB4EA.
+- La foto de la doctora nunca debe verse recortada, filtrada ni artificial.
+- Resolución final mínima: 1080x1350px.
+└─ fin IMAGEN 3
+
+Si el número de registro INVIMA no está confirmado antes de publicar, en la IMAGEN 3 cambia el sello izquierdo por: "Fórmula natural" / "CONTROL DE CALIDAD".
+
+════════════════════════════════════════════════════════════
+── D. COPIES POR CONJUNTO (copiar y pegar en Meta) ──
+════════════════════════════════════════════════════════════
+
+Qué se carga en Meta en CADA anuncio (los 2 anuncios del conjunto son idénticos):
+  · Texto principal = Variación 1 · Título = el de "Resultado" · Descripción = la indicada · CTA = Enviar mensaje
+  · "Varias opciones de texto" APAGADO. Las variaciones 2 y 3 quedan de reserva.
+
+━━━ CONJUNTO 1 · [CUENTA]_OVULOSPURITY_OLORTRASRELACIONES_R1 · lleva precio: NO ━━━
+Anuncio A: OLORTRASRELACIONES_IMG_A ~ OVULOS_PUR|OLORTRASRELACION|C2.CN05|NC1|SIN_PRECIO|BOTv1
+Anuncio B: OLORTRASRELACIONES_IMG_B ~ OVULOS_PUR|OLORTRASRELACION|C2.CN05|NC1|SIN_PRECIO|BOTv1
+Imagen: OVULOSPURITY_1_OLORTRASRELACIONES.png
+CARGAR → Texto: Variación 1 · Título: Fresca el día después · Descripción: 🏠 ¡Paga al recibir!
+
+TEXTO PRINCIPAL
+
+Variación 1 (problema-solución):
+Después de estar con él… otra vez ese olor. 😣
+
+Se baña antes y después.
+Usa jabón íntimo.
+Se hizo exámenes y "no sale nada".
+Y al otro día, o a los tres días, vuelve.
+
+A muchas mujeres con pareja estable les pasa.
+No es falta de aseo. 🌿
+Es la zona íntima que se desequilibra después de la intimidad.
+
+Los Óvulos Purity de HER NATURA son 3 perlas con 8 hierbas naturales que ayudan a equilibrar la zona íntima:
+
+✅ Frescura también el día después
+✅ Sin dolor y fáciles de usar en casa
+✅ Pagas al recibir
+
+Más de 10.000 clientas ya los usan.
+Escríbenos y vuelve a disfrutar tranquila con tu pareja 👉
+
+Variación 2 (emocional):
+Lo que más miedo da no es el olor.
+Es que él lo note. 💔
+
+Que piense que no se cuida.
+Que empiece a evitar esos momentos.
+Que una misma prefiera decir "hoy no".
+
+A muchas mujeres les pasa.
+No son sucias y no están solas. 🤍
+
+Ese olor que aparece al día siguiente, aunque se laven bien, tiene otra explicación.
+
+🌿 Óvulos Purity: 8 hierbas naturales en 3 perlas que ayudan a equilibrar la zona íntima para sentirte fresca y segura.
+
+✅ Sin dolor
+✅ En la privacidad de tu casa
+✅ Pagas cuando te llegue
+
+Escríbenos y recupera la tranquilidad en tu intimidad 👉
+
+Variación 3 (prueba social):
+"Yo sufría de un olor extraño… y hasta el momento ya no lo he sentido."
+— Manuela, 32 años ⭐⭐⭐⭐⭐
+
+Muchas mujeres nos escriben por ese olor que aparece después de estar con su pareja, por más que se laven.
+
+Como Manuela, más de 10.000 clientas ya confían en HER NATURA. 💙
+
+🌿 Óvulos Purity: 3 perlas con 8 hierbas naturales
+✅ Ayudan a sentirte fresca también el día después
+✅ Sin dolor, fáciles de usar
+✅ Valoración 4,8/5 de nuestras clientas
+✅ Pagas al recibir
+
+Escríbenos hoy y siéntete tranquila con tu pareja 👉
+
+TÍTULO
+- Resultado: `Fresca el día después`
+- Curiosidad: `No es falta de aseo`
+- Diferenciación: `Tranquila con tu pareja`
+
+DESCRIPCIÓN: `🏠 ¡Paga al recibir!` · `+10.000 clientas ⭐`
+
+Lleva precio: no
+
+━━━ CONJUNTO 2 · [CUENTA]_OVULOSPURITY_INFECCIONQUEVUELVE_R1 · lleva precio: SÍ ━━━
+Anuncio A: INFECCIONQUEVUELVE_IMG_A ~ OVULOS_PUR|INFECCIONQUEVUEL|C2.CN05|NC2|ESCALERA|BOTv1
+Anuncio B: INFECCIONQUEVUELVE_IMG_B ~ OVULOS_PUR|INFECCIONQUEVUEL|C2.CN05|NC2|ESCALERA|BOTv1
+Imagen: OVULOSPURITY_2_INFECCIONQUEVUELVE.png
+CARGAR → Texto: Variación 1 · Título: Sentirte normal otra vez · Descripción: Envío gratis en 2 paquetes
+
+TEXTO PRINCIPAL
+
+Variación 1 (problema-solución con dato):
+Se quita una semana… y vuelve. 😩
+
+3 de cada 4 mujeres tendrán una infección íntima por hongos alguna vez.
+Y casi la mitad, más de una vez.
+
+Picazón. Ardor. Flujo blanco espeso.
+Consulta, pastillas, cremas… se calma y a los días regresa.
+
+No es que el cuerpo no responda:
+necesita recuperar su equilibrio. 🌿
+
+Óvulos Purity de HER NATURA: 3 perlas con 8 hierbas naturales que ayudan a cuidar la zona íntima desde adentro.
+
+✅ Tratamiento de 4 días por paquete
+✅ Desde $41.000 · 2 paquetes $69.000 con envío gratis
+✅ Pagas al recibir
+
+Escríbenos y empieza tu tratamiento para sentirte normal otra vez 👉
+
+Variación 2 (emocional):
+No solo arde.
+También agota. 😔
+
+Estar pendiente todo el día.
+Pensarlo dos veces antes de un pantalón ajustado.
+Pagar otra consulta sabiendo que en unas semanas vuelve.
+
+A muchas mujeres les pasa, y lo viven en silencio.
+No es exageración ni descuido. 💙
+
+🌿 Los Óvulos Purity combinan 8 hierbas naturales en 3 perlas para acompañar a la zona íntima a recuperar su equilibrio.
+
+✅ Sin dolor y en tu casa
+✅ 2 paquetes por $69.000 con envío gratis
+✅ O 1 paquete desde $41.000
+✅ Pagas cuando te llegue
+
+Escríbenos hoy y deja de vivir pendiente de esa molestia 👉
+
+Variación 3 (prueba social):
+"Probé los óvulos al ver los testimonios… creí que no eran ciertos, pero quedé sorprendida con los resultados." ⭐⭐⭐⭐⭐
+
+Así nos escribió una clienta que tenía mal olor, flujo incómodo y picazón.
+
+Más de 10.000 clientas · valoración 4,8/5 💙
+
+🌿 Óvulos Purity de HER NATURA
+✅ 8 hierbas naturales en 3 perlas
+✅ Recomendado: 2 paquetes, para no quedarse a mitad de camino
+✅ 2 paquetes $69.000 con envío gratis · 1 desde $41.000
+✅ Pagas al recibir
+
+Escríbenos y empieza a sentirte tranquila otra vez 👉
+
+TÍTULO
+- Resultado: `Sentirte normal otra vez`
+- Curiosidad: `Se calma y vuelve`
+- Diferenciación: `3 perlas, 8 hierbas`
+
+DESCRIPCIÓN: `Envío gratis en 2 paquetes` · `🏠 ¡Paga al recibir!`
+
+Lleva precio: sí ($69.000 por 2 paquetes, desde $41.000), en el copy y en el anuncio.
+
+━━━ CONJUNTO 3 · [CUENTA]_OVULOSPURITY_CREMASREBOTE_R1 · lleva precio: SÍ ━━━
+Anuncio A: CREMASREBOTE_IMG_A ~ OVULOS_PUR|CREMASREBOTE|C2.CN05|NC3B|ESCALERA|BOTv1
+Anuncio B: CREMASREBOTE_IMG_B ~ OVULOS_PUR|CREMASREBOTE|C2.CN05|NC3B|ESCALERA|BOTv1
+Imagen: OVULOSPURITY_3_CREMASREBOTE.png
+CARGAR → Texto: Variación 1 · Título: La alternativa natural · Descripción: Envío gratis en 2 paquetes
+
+TEXTO PRINCIPAL
+
+Variación 1 (comparación):
+Cremas, óvulos de droguería… y sigue ahí. 🙄
+
+Clotrimazol este mes.
+Otro óvulo el siguiente.
+Jabón especial, ácido bórico, lo que recomendó la vecina.
+
+Mejora unos días y el flujo con olor regresa, a veces peor.
+
+Para las mujeres que ya probaron de todo en la droguería, hay una alternativa natural: 🌿
+
+Óvulos Purity de HER NATURA
+✅ 8 hierbas naturales, sin químicos agresivos
+✅ Sin dolor y fáciles de usar
+✅ Desde $41.000 · 2 paquetes $69.000 con envío gratis
+✅ Pagas al recibir
+
+Más de 10.000 clientas ya los usan.
+Escríbenos y deja de gastar en lo que no funcionó 👉
+
+Variación 2 (emocional):
+Cada mes un óvulo distinto.
+Cada mes la misma frustración. 😞
+
+Y ese miedo callado: que tanto producto esté dañando por dentro y que ya nada haga efecto.
+
+A muchas mujeres les pasa.
+No es que su cuerpo no responda.
+Necesita otra forma de cuidarse. 🤍
+
+🌿 Los Óvulos Purity reúnen 8 hierbas naturales en 3 perlas que ayudan a equilibrar la zona íntima, sin dolor y sin complicaciones.
+
+✅ Natural y fácil de usar
+✅ 2 paquetes por $69.000 con envío gratis
+✅ O 1 paquete desde $41.000
+✅ Pagas cuando te llegue
+
+Escríbenos y dale a tu zona íntima un cuidado natural 👉
+
+Variación 3 (prueba social):
+"Nunca me imaginé que uno estuviera tan mal por dentro… Ya terminé y quería saber si puedo comprarlos otra vez."
+— Paula Andrea, 30 años ⭐⭐⭐⭐⭐
+
+Muchas mujeres nos escriben después de probar cremas, pastillas y óvulos de droguería.
+Paula Andrea, por ejemplo, ya quiere repetir. 💙
+
+Óvulos Purity de HER NATURA
+🌿 8 hierbas naturales en 3 perlas
+✅ Sin dolor · naturales · fáciles de usar
+✅ Valoración 4,8/5 · +10.000 clientas
+✅ 2 paquetes $69.000 con envío gratis · 1 desde $41.000
+✅ Pagas al recibir
+
+Escríbenos y prueba la alternativa natural que ellas eligen 👉
+
+TÍTULO
+- Resultado: `La alternativa natural`
+- Curiosidad: `Más allá de la droguería`
+- Diferenciación: `Sin dolor y natural`
+
+DESCRIPCIÓN: `Envío gratis en 2 paquetes` · `+10.000 clientas ⭐`
+
+Lleva precio: sí ($69.000 por 2 paquetes, desde $41.000), en el copy y en el anuncio.
+
+━━━ CONJUNTO 4 · [CUENTA]_OVULOSPURITY_MELAVOYSIGUE_R1 · lleva precio: NO ━━━
+Anuncio A: MELAVOYSIGUE_IMG_A ~ OVULOS_PUR|MELAVOYSIGUE|C2.CN05|NC1|SIN_PRECIO|BOTv1
+Anuncio B: MELAVOYSIGUE_IMG_B ~ OVULOS_PUR|MELAVOYSIGUE|C2.CN05|NC1|SIN_PRECIO|BOTv1
+Imagen: OVULOSPURITY_4_MELAVOYSIGUE.png
+CARGAR → Texto: Variación 1 · Título: Oler a limpio · Descripción: 🏠 ¡Paga al recibir!
+
+TEXTO PRINCIPAL
+
+Variación 1 (problema-solución con reencuadre):
+Tres baños al día.
+Jabón íntimo. Toallitas. Perfume.
+Y el olor sigue. 😣
+
+Muchas mujeres muy cuidadosas viven esto: trabajan en calor, sudan, andan en bus… y por más que se laven, no se sienten limpias.
+
+Lo que casi nadie dice:
+lavarse de más no siempre ayuda. 🌿
+A veces la zona íntima necesita equilibrio, no otro jabón.
+
+Óvulos Purity de HER NATURA: 3 perlas con 8 hierbas naturales.
+
+✅ Ayudan a equilibrar la zona íntima
+✅ Frescura para todo el día
+✅ Una rutina simple en casa
+✅ Pagas al recibir
+
+Escríbenos y vuelve a sentirte limpia y tranquila 👉
+
+Variación 2 (emocional):
+Saberse limpia…
+y aun así sentirse sucia. 😔
+
+Es el cansancio de muchas mujeres de más de 35 que se cuidan todos los días.
+
+Revisar si alguien lo nota en la oficina.
+Sentarse lejos en el bus.
+Llevar toallitas en la cartera por si acaso.
+
+No es falta de aseo. 🤍
+
+🌿 Los Óvulos Purity reúnen 8 hierbas naturales en 3 perlas que ayudan a equilibrar la zona íntima para que la frescura dure.
+
+✅ Sin dolor
+✅ Fáciles de usar en casa
+✅ Pagas cuando te llegue
+
+Escríbenos y deja de culparte por algo que tiene solución 👉
+
+Variación 3 (prueba social):
+"Gracias a ti me siento mejor de mis partes." — Judith ⭐⭐⭐⭐⭐
+
+Mujeres que se lavan varias veces al día buscan lo mismo que Judith: sentirse limpias de verdad. 💙
+
+Óvulos Purity de HER NATURA
+🌿 8 hierbas naturales en 3 perlas
+✅ Frescura que se siente
+✅ Sin dolor y fáciles de usar
+✅ +10.000 clientas · valoración 4,8/5
+✅ Pagas al recibir
+
+No es otro jabón: es equilibrio para la zona íntima.
+Escríbenos y siéntete limpia y segura otra vez 👉
+
+TÍTULO
+- Resultado: `Oler a limpio`
+- Curiosidad: `No es otro jabón`
+- Diferenciación: `8 hierbas naturales`
+
+DESCRIPCIÓN: `🏠 ¡Paga al recibir!` · `Valoración 4,8/5 ⭐`
+
+Lleva precio: no
+
+━━━ CONJUNTO 5 · [CUENTA]_OVULOSPURITY_FLUJOPESCADO_R1 · lleva precio: NO ━━━
+Anuncio A: FLUJOPESCADO_IMG_A ~ OVULOS_PUR|FLUJOPESCADO|C2.CN05|NC2|SIN_PRECIO|BOTv1
+Anuncio B: FLUJOPESCADO_IMG_B ~ OVULOS_PUR|FLUJOPESCADO|C2.CN05|NC2|SIN_PRECIO|BOTv1
+Imagen: OVULOSPURITY_5_FLUJOPESCADO.png
+CARGAR → Texto: Variación 1 · Título: Fresca todo el día · Descripción: +10.000 clientas ⭐
+
+TEXTO PRINCIPAL
+
+Variación 1 (problema-solución):
+Leggings en el gym.
+Cambiarse frente a otras.
+Sentarse, abrir las piernas…
+y ese olor que se nota. 😳
+
+Mucho flujo, olor fuerte, protector todos los días y un perfume íntimo que no lo tapa.
+
+A muchas mujeres jóvenes les pasa, y no es suciedad:
+es un desequilibrio de la zona íntima. 🌿
+
+Óvulos Purity de HER NATURA: 3 perlas con 8 hierbas naturales.
+
+✅ Ayudan a equilibrar la zona íntima
+✅ Para sentirte fresca y cómoda todo el día
+✅ Sin dolor y fáciles de usar
+✅ Pagas al recibir
+
+Escríbenos y vuelve a ponerte lo que quieras sin miedo 👉
+
+Variación 2 (emocional):
+El miedo no es al flujo.
+Es a que la persona de al lado lo note. 😔
+
+Y a los comentarios.
+A cambiarse de ropa interior dos veces al día.
+A vivir con un protector puesto "por si acaso".
+
+Esto es para las mujeres que quieren sentirse frescas en el trabajo, en la universidad y en el gym. 💙
+
+🌿 Los Óvulos Purity reúnen 8 hierbas naturales en 3 perlas que ayudan a equilibrar la zona íntima.
 
 ✅ Frescura que dura
-✅ 100% natural, te la pones en casa
+✅ Natural y sin dolor
+✅ En la privacidad de tu casa
+✅ Pagas cuando te llegue
+
+Escríbenos y siéntete segura donde estés 👉
+
+Variación 3 (prueba social):
+"Tenía mal olor… y bajó el flujo incómodo y la picazón. La verdad los súper recomiendo." ⭐⭐⭐⭐⭐
+
+Así nos escribió una clienta que los probó después de ver testimonios en Instagram.
+
+Mucho flujo, ese olor que se nota al sentarse o al cambiarse… a muchas mujeres les pasa. 💙
+
+Óvulos Purity de HER NATURA
+🌿 8 hierbas naturales en 3 perlas
+✅ Ayudan a sentirte fresca todo el día
+✅ Sin dolor y fáciles de usar
+✅ +10.000 clientas · valoración 4,8/5
 ✅ Pagas al recibir
 
-Vuelve a estar cerca sin pensar en el olor.
-Escríbenos hoy 👉
+Escríbenos y siéntete fresca todo el día 👉
 
-TEXTO 2:
-Que tu pareja note el olor es de las cosas que más inseguridad dan. 😔
+TÍTULO
+- Resultado: `Fresca todo el día`
+- Curiosidad: `No es suciedad`
+- Diferenciación: `Natural y sin dolor`
 
-Y lo peor es que ya probaste jabones, cremas y nada.
+DESCRIPCIÓN: `+10.000 clientas ⭐` · `🏠 ¡Paga al recibir!`
 
-No es tu culpa: el problema es por dentro. Óvulos Purity limpia en profundidad con 8 hierbas naturales y te devuelve la confianza en la intimidad.
+Lleva precio: no
 
-✅ Sensación de limpieza real
-✅ Discreto y fácil
-✅ Pagas cuando lo recibes
+━━━ CONJUNTO 6 · [CUENTA]_OVULOSPURITY_DESPUESDELAREGLA_R1 · lleva precio: NO ━━━
+Anuncio A: DESPUESDELAREGLA_IMG_A ~ OVULOS_PUR|DESPUESDELAREGLA|C2.CN05|NC1|SIN_PRECIO|BOTv1
+Anuncio B: DESPUESDELAREGLA_IMG_B ~ OVULOS_PUR|DESPUESDELAREGLA|C2.CN05|NC1|SIN_PRECIO|BOTv1
+Imagen: OVULOSPURITY_6_DESPUESDELAREGLA.png
+CARGAR → Texto: Variación 1 · Título: Meses más tranquilos · Descripción: 🏠 ¡Paga al recibir!
 
-Mándanos un mensaje 👉
+TEXTO PRINCIPAL
 
-TEXTO 3:
-"Ya no vivo con esa inseguridad de antes, hasta mi relación con mi pareja mejoró." 💗
-Así nos escriben.
+Variación 1 (problema-solución):
+¿Por qué justo cuando se acaba la regla empieza la picazón? 🤔
 
-Si evitas la intimidad por el olor o el flujo, no estás sola.
+Termina el periodo y a los pocos días:
+comezón, ardor y flujo blanco.
+Mes tras mes. Como un calendario.
 
-Óvulos Purity, perlas detox naturales, ayudan a limpiar a fondo y a devolverte la frescura.
+Muchas mujeres tratan cada episodio por separado… y al mes siguiente, otra vez lo mismo.
 
-✅ +40.000 mujeres ya lo probaron
-✅ 100% natural
-✅ Envío · pagas al recibir
+🌿 Óvulos Purity de HER NATURA: 3 perlas con 8 hierbas, entre ellas plantas tradicionales del ciclo femenino como Angélica y Agripalma.
 
-Escríbenos y recupera tu seguridad 👉
-
-TÍTULOS: Sin miedo al olor · No es tu culpa · Frescura natural
-DESCRIPCIÓN: 100% natural · Pagas en casa
-
-### CONJUNTO 2 · FLUJO (video 10 HN) · SIN precio
-TEXTO 1:
-¿Mucho flujo y ese olor a pescado que no se te quita? 🐟
-
-Te bañas, cambias de jabón, y vuelve. No es aseo: por dentro se acumula flujo viejo que el agua no saca.
-
-Óvulos Purity, perlas detox de 8 raíces, limpian en profundidad y equilibran tu flujo desde adentro.
-
-✅ Menos flujo, más frescura
-✅ 100% natural
+✅ Se usan al terminar la regla
+✅ Ayudan a equilibrar la zona íntima
+✅ Sin dolor y fáciles de usar
 ✅ Pagas al recibir
 
-Escríbenos hoy 👉
+Escríbenos y vive tus meses más tranquila 👉
 
-TEXTO 2:
-Vivir pendiente del flujo y del olor cansa. 😮‍💨
+Variación 2 (emocional):
+Ya da miedo que llegue la regla. 😔
 
-Cambiar de jabón o usar más protectores solo lo tapa, no lo soluciona.
+No por los cólicos.
+Por lo que viene después: la picazón, el ardor, el flujo.
+Y la idea de que va a ser así todos los meses.
 
-Óvulos Purity ayuda a limpiar lo acumulado y a devolverte la sensación de sequedad y frescura, con hierbas naturales.
+A muchas mujeres les pasa.
+No es casualidad ni exageración. 🤍
 
-✅ Frescura que dura
-✅ Fácil y discreto
-✅ Pagas cuando lo recibes
+🌿 Los Óvulos Purity reúnen 8 hierbas naturales en 3 perlas, con plantas que tradicionalmente acompañan el ciclo femenino.
 
-Mándanos un mensaje 👉
+✅ Un cuidado después de cada periodo
+✅ Natural y sin dolor
+✅ En la privacidad de tu casa
+✅ Pagas cuando te llegue
 
-TEXTO 3:
-"Antes tenía mucho flujo y ese olor me daba pena… esto fue lo único que me funcionó." 🙌
+Escríbenos y deja de tenerle miedo a tu calendario 👉
 
-Si te pasa, tiene solución natural.
+Variación 3 (prueba social):
+"¡Se ven los cambios, muchas gracias!" 😊 — Alejandra ⭐⭐⭐⭐⭐
 
-Óvulos Purity limpia a fondo y equilibra tu flora con 8 raíces naturales.
+Para las mujeres a las que la molestia íntima les llega después de cada periodo, Alejandra y más de 10.000 clientas ya eligieron un cuidado natural. 💙
 
-✅ +40.000 mujeres felices
-✅ 100% natural
-✅ Envío · pagas al recibir
-
-Escríbenos y te contamos 👉
-
-TÍTULOS: Adiós al flujo · No huele más · Frescura real
-DESCRIPCIÓN: Envío · Pagas en casa
-
-### CONJUNTO 3 · PICAZÓN + SHOCK (video 2X1 HER5) · CON PRECIO (2x1)
-TEXTO 1:
-¿Picazón, ardor y esa sensación de que algo no está bien ahí abajo? 🔥
-
-Casi siempre es flujo y residuos acumulados que el agua no saca — y por eso vuelve.
-
-Óvulos Purity, perlas detox de 8 raíces, limpian en profundidad y calman la irritación desde adentro.
-
-✅ Menos picazón y ardor
-✅ 2 paquetes por $99.900 con envío GRATIS
+Óvulos Purity de HER NATURA
+🌿 8 hierbas naturales en 3 perlas
+✅ Con Angélica, Agripalma y Chuanxiong, plantas tradicionales del ciclo
+✅ Se usan al terminar la regla
+✅ Valoración 4,8/5
 ✅ Pagas al recibir
 
-Escríbenos hoy 👉
+Escríbenos y empieza tu próximo mes más tranquila 👉
+
+TÍTULO
+- Resultado: `Meses más tranquilos`
+- Curiosidad: `No es casualidad`
+- Diferenciación: `Plantas del ciclo`
+
+DESCRIPCIÓN: `🏠 ¡Paga al recibir!` · `Valoración 4,8/5 ⭐`
+
+Lleva precio: no
+
+
+════════════════════════════════════════════════════════════
+── E. FLUJO LUCIDBOT COMPLETO (copiar y pegar en LucidBot) ──
+════════════════════════════════════════════════════════════
+
+FLUJO LUCIDBOT COMPLETO — ÓVULOS PURITY HERNATURA | BOT PARAGUAS FASE 1 (los 6 ángulos llegan al mismo bot)
+Colombia · tú · COP
+
+BLOQUE J — DATOS DEL PRODUCTO
+─────────────────────────────────────────────────────
+PRODUCTO: Óvulos Purity Hernatura (marca impresa HER NATURA)
+ÁNGULO: PARAGUAS FASE 1 — Promesa Integradora "equilibrio íntimo desde adentro" (6 ángulos)
+BUYER TYPE: EMOCIONAL
+TIPO DE FLUJO BOT: NARRATIVO
+DOLOR ATACADO: "Ya hice de todo, me lavo, me pongo cremas, y el olor, el flujo o la picazón siempre vuelven."
+BARRERA PRINCIPAL A RESOLVER: "Ya probé de todo y nada me funciona / ¿esto sí sirve?"
+PRIMERA FRASE DEL BOT: "Ese olor, ese flujo o esa picazón que vuelve aunque te cuides — eso tiene solución." (va dentro del AUDIO; el saludo es fijo)
+NIVEL DE CONCIENCIA: mixto (3 ángulos en NIVEL 1, 2 en NIVEL 2, 1 en NIVEL 3b) → el Video 1 EDUCA sobre flora y pH antes del producto
+PROMESA CENTRAL: de "olor, flujo y picazón que vuelven" → a "fresca y tranquila", con un ciclo de 4 días que se repite a los 2 meses para que no vuelva
+VELOCIDAD: 12 horas: empieza la limpieza | Día 4: ciclo terminado y frescura | 2 meses: 2º ciclo para que no vuelva
+PRECIO BASE: $41.000 + $15.000 de envío = $56.000
+ESTRUCTURA DE PRECIOS (framing tratamiento, nunca "paquete a $X"):
+  Tratamiento básico (3 perlas · 1 ciclo de 4 días) → $41.000 + $15.000 envío = $56.000
+  Tratamiento recomendado (6 perlas · 2 ciclos: hoy y a los 2 meses) → $69.000 ENVÍO GRATIS ← LA MÁS ELEGIDA
+  Tratamiento completo (9 perlas · 3 ciclos, para infecciones que vuelven seguido) → $99.000 ENVÍO GRATIS
+VIDEO 1 DEL FLUJO: [PENDIENTE archivo — elegir de HERNATURA el video que EXPLICA la causa: "si tu zona V huele mal, son bacterias", flora/pH desequilibrado] (Autoridad / educación)
+VIDEO 2 DEL FLUJO: [PENDIENTE archivo — UGC de mujer real contando que probó de todo y con las perlas se sintió fresca] (UGC)
+
+>>> LOS 4 CAMPOS DE ABAJO SE PEGAN TAL CUAL EN LA FICHA DE PRODUCTO DE LUCIDBOT
+
+DESCRIPCIÓN:
+Si el olor, el flujo o la picazón se te quitan unos días y vuelven, no es falta de aseo: tu flora íntima está desequilibrada. Las relaciones, la regla, el jabón y los óvulos de droguería le cambian el pH, y ahí aparecen las bacterias y los hongos. Los Óvulos Purity Hernatura son un detox íntimo con 8 raíces naturales que actúan desde adentro: combaten infecciones, hongos, candidiasis y vaginitis, eliminan el mal olor, regulan el flujo y calman la picazón, sin arrasar tu flora buena y sin efecto rebote. Te los pones tú misma en casa, sin dolor. En 4 días terminas tu ciclo y vuelves a sentirte fresca, limpia y tranquila: con tu pareja, en el trabajo, en el gym y después de tu regla. Más de 10.000 mujeres en Colombia ya los usan (valoración 4,8/5).
+
+MODO DE USO:
+Solo 3 perlas y en 4 días terminas tu ciclo:
+1. Lávate bien las manos.
+2. Abre el empaque y suelta el hilo hasta el final (la perla se introduce con su malla).
+3. Sumérgela 1 minuto en un vaso de agua limpia.
+4. Introdúcela lo más adentro que puedas.
+5. Déjala 24 horas, retírala con el hilo y descansa 12 horas.
+6. Pon la siguiente perla y repite hasta terminar las 3.
+Repite el ciclo cada 2 meses para que no vuelva. Úsalo al terminar tu regla, nunca con sangrado. No usar en embarazo ni lactancia. Evita relaciones durante los 4 días del ciclo.
+
+CARACTERÍSTICAS TÉCNICAS:
+- Elimina el mal olor y combate infecciones bacterianas y hongos (candidiasis, vaginitis)
+- Regula el flujo y calma la picazón y el ardor
+- Equilibra el pH y la flora vaginal sin efecto rebote
+- Frescura desde el primer uso
+- Alivia cólicos y malestar del ciclo menstrual
+- Mejora la elasticidad y firmeza de la zona íntima
+- Sin dolor, 100% hierbas naturales, fácil de usar en casa
+- Osthol: antimicrobiano y antipicazón, mejora la circulación y promueve la limpieza interna
+- Stemona Sessilifolia: antibacteriana y antifúngica, previene infecciones
+- Kochia Scoparia: desintoxicante y purificadora, calma la irritación
+- Rhizoma Smilacis Glabrae: antibacteriano y antifúngico, protege y equilibra la flora
+- Borneol: desinfectante y antiinflamatorio, sensación de frescura
+- Motherwort, Angélica y Rhizoma Chuanxiong: acompañan el ciclo menstrual, alivian cólicos y mejoran la circulación del sistema reproductivo
+- Registro INVIMA · Hecho en Colombia · Verificado en laboratorio
+
+CONTENIDO DEL PAQUETE:
+Tratamiento básico: 1 paquete HER NATURA con 3 perlas detox de hierbas en malla con hilo = 1 ciclo completo de 4 días.
+Tratamiento recomendado: 6 perlas = 2 ciclos (uno ahora y otro a los 2 meses).
+Tratamiento completo: 9 perlas = 3 ciclos.
+
+──────────────────────────────────────────────────────
+MENSAJE INICIAL — ORDEN OBLIGATORIO
+──────────────────────────────────────────────────────
+Infografías: 3 · Testimonios: 4 (dentro del rango 2-4).
+TEMPORIZADOR: 2-3 segundos entre mensajes. Máximo 5 s solo en el primer beat.
+──────────────────────────────────────────────────────
+
+ELEMENTO 1 — TEXTO (Saludo FIJO):
+¡Hola! Bienvenida a Her Natura, estamos encantadas de tenerte por acá. En un momento una asesora se pondrá en contacto contigo.
+[NOMBRE_TIENDA = "Her Natura" — confirmar nombre de tienda]
+
+ELEMENTO 2 — VIDEO 1: [archivo PENDIENTE] (Autoridad · EDUCA: el olor, flujo y picazón vienen de bacterias y del pH desequilibrado, no de falta de aseo)
+ELEMENTO 3 — VIDEO 2: [archivo PENDIENTE] (UGC · mujer real: "probé de todo y con esto me sentí fresca")
+
+ELEMENTO 4 — IMAGEN: OVULOSPURITY_INFO1_BENEFICIOS.png (prompt C.2 IMAGEN 1)
+
+ELEMENTO 5 — IMAGEN: OVULOSPURITY_INFO2_TRANSFORMACION.png (prompt C.2 IMAGEN 2)
+
+ELEMENTO 6 — IMAGEN: OVULOSPURITY_INFO3_CONFIANZA.png (prompt C.2 IMAGEN 3)
+
+ELEMENTO 7 — TEXTO (Transición):
+Mira lo que dicen las mujeres que ya las usaron
+
+ELEMENTO 8 — TESTIMONIO 1 — RECEPCIÓN (miedo a estafa)
+· TEXTO:
+hola buenas, ya me llego el paquetico, venia selladito y con todo. la verdad me daba miedo q fuera estafa pq una ve cada cosa, pero pague cuando lo tuve en la mano y todo bien
+· IMAGEN: FOTO DEL PRODUCTO RECIBIDO. Paquete celeste HER NATURA sellado, en la mano o sobre una cama o mesa de apartamento colombiano, luz natural, tipo foto de celular. Foto real, o foto IA adjuntando OVULOSPURITY_PACKSHOT.png.
+
+ELEMENTO 9 — TESTIMONIO 2 — RESULTADO + CANTIDAD (TEXTO → IMAGEN → TEXTO)
+· TEXTO 1:
+antes me tocaba vivir con protector y perfume pq el flujo me olia horrible y me daba pena hasta sentarme. ya termine el primer paquete y enserio me siento fresca otra vez
+· IMAGEN (real, el operador la busca; NUNCA IA de persona): mujer colombiana de 25 a 35 años, relajada y sonriente, en leggings o ropa cómoda (gym, casa o calle), luz natural, sensación de frescura y confianza. Sin nada gráfico.
+· TEXTO 2:
+pedi 2 paquetes pq la muchacha me explico q el segundo es a los 2 meses pa q no vuelva, mejor completo
 
-TEXTO 2:
-No vas a creer lo que tu cuerpo estaba guardando. 😮
+ELEMENTO 10 — TESTIMONIO 3 — "LO QUE ME BAJÓ" + RECOMPRA (resuelve "¿es normal lo que me sale?" y "¿funciona?")
+· TEXTO 1:
+ay no yo me asuste jajaja al 2do dia me bajo algo q nunca habia visto, uno no sabe lo q tiene por dentro hasta q lo ve. pero ya no siento ese olor y me siento normal
+· IMAGEN: FOTO DE RECOMPRA. Dos paquetes HER NATURA nuevos sobre una cama o mesa, foto de celular. Es producto: se permite foto IA adjuntando OVULOSPURITY_PACKSHOT.png. NUNCA foto de residuos.
+· TEXTO 2:
+ya termine y quiero volver a pedir pa repetirlo a los 2 meses, y de una le llevo a mi hermana q tbn sufre de eso
 
-Si vives con picazón y ardor, casi siempre es por residuos acumulados que ni sabías que tenías.
+ELEMENTO 11 — TESTIMONIO 4 — COMENTARIOS DE FACEBOOK (escepticismo + autoridad)
+· Yuliana Restrepo:
+a mi me las recomendo una amiga q es auxiliar de enfermeria, tenia la infeccion q iba y volvia cada mes y ya voy 2 meses tranquila
+· Diana Marcela Ospina:
+yo gastaba en ovulos de drogueria cada rato y nada. con estos desde la primera perla senti la diferencia, el olor se fue
+· Leidy Johana Castro:
+enserio sirven? pregunto pq ya probe cremas, pastillas y jabon intimo y a la semana otra vez lo mismo
+· Yuliana Restrepo (respuesta):
+@Leidy Johana si mija, eso me pasaba igual. hagale al tratamiento de 2 y me cuenta, a mi me cambio todo
+· SPEC: layout de comentarios de FB (foto de perfil genérica + nombre + comentario + "Me gusta · Responder"). 0 emojis.
 
-Óvulos Purity ayuda a arrastrarlos y a devolverte la comodidad y la frescura, con 8 hierbas naturales.
+ELEMENTO 12 — AUDIO (45-55 s · voz femenina colombiana cálida · SIN precio · SIN contra entrega)
+Hola, claro que sí, te cuento. Soy Laura, de Her Natura. Ese olor, ese flujo o esa picazón que se te quita y vuelve, aunque te laves y te cuides, no es falta de aseo, amiga. Es que tu flora íntima se desequilibró: las relaciones, la regla, el jabón o los óvulos de droguería le cambian el pH, y ahí empieza todo. Los Óvulos Purity trabajan justo ahí, desde adentro: combaten las bacterias y los hongos y le devuelven el equilibrio a tu zona íntima. Desde la primera perla vas a sentir la limpieza y la frescura, y olvídate del dolor o de lo complicado: te los pones tú misma, en tu casa. Imagínate estar con tu pareja, ponerte tus leggings o que llegue tu regla sin estar pendiente de nada. Es la mejor decisión para tu tranquilidad. Tienen ocho raíces naturales, como Osthol y Borneol, y registro INVIMA.
 
-✅ Limpieza que se siente
-✅ 2 paquetes $99.900, envío gratis
-✅ Pagas cuando lo recibes
+ELEMENTO 13 — CIERRE → PREGUNTA DE CIUDAD (sí #2)
+Hola, soy Laura López, hoy te atiendo yo. ¿Desde qué ciudad y departamento nos escribes?
+
+──────────────────────────────────────────────────────
+INTERACCIONES DEL BOT
+──────────────────────────────────────────────────────
+
+INTERACCIÓN 0 — PREGUNTA DE CIUDAD (solo si la clienta no respondió al Elemento 13; no repetir si ya la dio):
+¿Desde qué ciudad y departamento nos escribes?
 
-Mándanos un mensaje 👉
+INTERACCIÓN 1 — COBERTURA + VALIDACIÓN:
+¡Qué bien, desde {CIUDAD}!
+Me alegra que estés dando el paso de *cuidar tu zona íntima*, es una gran decisión por tu tranquilidad.
+Te confirmo que tenemos cobertura ahí, con envíos a toda Colombia y *pago contra entrega*. Las entregas tardan de 2 a 5 días hábiles.
+¿Quieres conocer nuestros precios?
 
-TEXTO 3:
-"Quedé impresionada con lo que salió… pero después quedé súper fresca y sin la picazón." 😳
-Así nos escriben.
+INTERACCIÓN 2 — PRECIOS:
+¡Claro!
 
-Óvulos Purity, perlas detox naturales, limpian a fondo y calman la irritación.
+Ya sabes que ese olor, el flujo o la picazón *no se quitan con más jabón* ni con otra crema de droguería.
+Y lo que más pesa no es la molestia: es *vivir pendiente de que se note y de que vuelva.*
+Los Óvulos Purity actúan *desde adentro* con 8 raíces naturales como Osthol y Borneol. Por eso *más de 10.000 mujeres* ya los usan y los califican con 4,8 de 5.
+Cuando equilibras tu flora *desde la raíz, la frescura se mantiene.*
 
-✅ +40.000 mujeres ya lo vieron
-✅ 2 paquetes $99.900 con envío gratis
-✅ Pagas en casa
+OFERTAS HASTA AGOTAR
 
-Escríbenos y compruébalo 👉
+1. Tratamiento básico (3 perlas · 1 ciclo) → $41.000 + $15.000 de envío
 
-TÍTULOS: Adiós picazón · Míralo tú misma · Limpieza profunda
-DESCRIPCIÓN: 2x $99.900 · Envío gratis
+2. Tratamiento recomendado (6 perlas · 2 ciclos: hoy y a los 2 meses) → $69.000 + ENVÍO TOTALMENTE GRATIS
+   LA MÁS ELEGIDA ⭐ — por solo $13.000 más te llevas el doble y no pagas envío
 
-### CONJUNTO 4 · INFECCIÓN RECURRENTE / ANTI-MÉDICO (video 9 HN) · SIN precio
-TEXTO 1:
-¿Infecciones que van y vuelven por más tratamientos que hagas? 😮‍💨
+3. Tratamiento completo (9 perlas · 3 ciclos, para cuando vuelve seguido) → $99.000 + ENVÍO TOTALMENTE GRATIS
 
-Muchos jabones, óvulos de farmacia y cremas terminan alterando tu flora — por eso el problema regresa.
+Y lo mejor: *pagas cuando lo recibes.*
 
-Óvulos Purity, perlas detox de 8 raíces, ayudan a limpiar y a equilibrar tu flora de forma natural.
+¿Me confirmas tu departamento y ciudad?
 
-✅ Apoyo antibacteriano natural
-✅ 100% hierbas naturales
-✅ Pagas al recibir
+INTERACCIÓN 3 — PEDIDO DE DATOS:
+¡Perfecto! Tranquila, no arriesgas nada: *pagas solo cuando tengas el producto en tus manos.*
 
-Escríbenos hoy 👉
+Antes de continuar, asegúrate de que vas a estar en casa los próximos 5 días, o de que un familiar o amiga te reciba el producto en la dirección que vas a indicar.
 
-TEXTO 2:
-No es tu culpa que nada te funcione. 💧
+Si no es así, puedes pedir que tu envío llegue a la oficina de la transportadora en tu ciudad.
 
-Muchas soluciones "de siempre" desequilibran tu flora y por eso las infecciones vuelven.
+Para continuar con tu pedido, envíame estos datos *EN UN SOLO MENSAJE Y EN EL MISMO ORDEN*:
 
-Lo que tu zona íntima necesita es equilibrio, no más químicos. Óvulos Purity lo apoya con 8 hierbas naturales.
+1. Nombre
+2. Apellido
+3. Celular de LLAMADAS
+4. Departamento
+5. Ciudad o municipio
+6. Dirección exacta (o escribe OFICINA si lo reclamas en la transportadora)
+7. Barrio
+8. ¿Cuál opción prefieres?
 
-✅ Equilibra tu pH y tu flora
-✅ Natural y fácil
-✅ Pagas cuando lo recibes
+INTERACCIÓN 4 — CONFIRMACIÓN:
+¡Todo listo!
 
-Mándanos un mensaje 👉
-
-TEXTO 3:
-"Llevaba años con eso que iba y volvía… esto fue lo único que de verdad me ayudó." 🙏
-
-Si las infecciones te vuelven una y otra vez, hay una alternativa natural.
-
-Óvulos Purity apoya el equilibrio de tu flora con 8 raíces naturales.
-
-✅ +40.000 mujeres felices
-✅ 100% natural
-✅ Envío · pagas al recibir
-
-Escríbenos y te contamos 👉
-
-TÍTULOS: Que no vuelva · No es tu culpa · Equilibrio natural
-DESCRIPCIÓN: 100% natural · Pagas en casa
-
-### CONJUNTO 5 · SOLUCIÓN INTEGRAL / AUTORIDAD (video PODCAST) · SIN precio
-TEXTO 1:
-Cada molestia íntima tiene una causa distinta — y una raíz natural que la apoya. 🌿
-
-Olor, picazón, flujo, cólicos, sequedad… casi siempre nacen del mismo desequilibrio de tu flora y tu pH.
-
-Óvulos Purity reúne 8 raíces de la medicina natural en una sola perla que limpia a fondo y reequilibra tu zona íntima.
-
-✅ 8 hierbas en 1 solo óvulo
-✅ Fácil, natural, en casa
-✅ Pagas al recibir
-
-Escríbenos hoy 👉
-
-TEXTO 2:
-¿Para qué usar jabón, cremas, pastillas y óvulos por separado? 🤔
-
-Es caro, engorroso y no ataca la raíz.
-
-Óvulos Purity combina 8 raíces naturales en una sola perla que limpia en profundidad y reequilibra tu flora y tu pH.
-
-✅ Todo en uno, natural
-✅ Sin químicos agresivos
-✅ Pagas cuando lo recibes
-
-Mándanos un mensaje 👉
-
-TEXTO 3:
-8 raíces de la medicina natural, en un solo óvulo. 🌿
-
-Osthol, Angélica, Motherwort, Borneol y más — trabajando juntas para limpiar a fondo y devolverte el equilibrio.
-
-Por eso +40.000 mujeres ya cambiaron los tratamientos de siempre por Óvulos Purity.
-
-✅ 100% natural
-✅ Envío · pagas al recibir
-
-Escríbenos y te explicamos 👉
-
-TÍTULOS: 8 raíces en 1 · Todo en uno · Solución natural
-DESCRIPCIÓN: 100% natural · Pagas en casa
-
-### CONJUNTO 6 · CÓLICOS / CICLO (imagen ángulo 6) · CON PRECIO
-TEXTO 1:
-¿Tu ciclo es una tormenta cada mes? 🌧️
-
-Cólicos fuertes, cambios de humor y esa sensación de desequilibrio no son "normales" — tu cuerpo te pide equilibrio.
-
-Óvulos Purity, con Motherwort y Angélica, apoya tu equilibrio natural y calma las molestias del ciclo.
-
-✅ Calma los cólicos
-✅ 2 paquetes por $99.900 con envío GRATIS
-✅ Pagas al recibir
-
-Escríbenos hoy 👉
-
-TEXTO 2:
-Pasar cada mes con cólicos que te tumban no debería ser tu normalidad. 😔
-
-Óvulos Purity reúne 8 raíces naturales —entre ellas Motherwort y Angélica— que apoyan tu equilibrio y calman las molestias del ciclo.
-
-✅ Menos molestias, más equilibrio
-✅ 2 paquetes $99.900, envío gratis
-✅ Pagas cuando lo recibes
-
-Mándanos un mensaje 👉
-
-TEXTO 3:
-"Llevaba años con cólicos horribles, con esto por fin paso mi periodo tranquila." 💗
-Así nos escriben.
-
-Óvulos Purity, con Motherwort y Angélica, apoya tu equilibrio natural mes a mes.
-
-✅ +40.000 mujeres felices
-✅ 2 paquetes $99.900 con envío gratis
-✅ Pagas en casa
-
-Escríbenos y te contamos 👉
-
-TÍTULOS: Adiós cólicos · Ciclo en paz · Equilibrio natural
-DESCRIPCIÓN: 2x $99.900 · Envío gratis
-
-── D2. DESCRIPCIÓN ORGÁNICA (1 sola por conjunto — para publicar el video como POST y luego pautarlo con Post ID) ──
-Uso: al publicar el video orgánico (IG/FB) va UNA sola descripción (sin título/descripción aparte). Al pautar ESE mismo post (Post ID), esta descripción = el texto del anuncio (no se puede cambiar). Las 3 variaciones + títulos de la sección D solo aplican si se crea un anuncio NUEVO en Ads Manager. Buenas prácticas: hook en la 1ª línea, CTA con palabra clave (más interacción que "link en bio"), 3-5 hashtags de nicho ROTADOS por post (no repetir el mismo set = shadowban), evitar #vaginal/#candidiasis (restringidos). Compliance suave (apoya/ayuda), porque al pautar Meta lo lee.
-
-CONJUNTO 1 · PAREJA:
-Evitaba la intimidad por miedo a ese olor… hasta que entendí que no era falta de aseo. 🙈
-
-El olor y la incomodidad casi siempre vienen de flujo y residuos que se acumulan por dentro, donde el agua no llega. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar en profundidad y a devolverte la frescura y la seguridad para volver a estar cerca sin pensarlo.
-
-¿Te pasa? Escríbenos la palabra FRESCA por mensaje directo y te contamos cómo 💬
-
-#saludfemenina #bienestaríntimo #autocuidado #frescura #mujeres
-
-CONJUNTO 2 · FLUJO:
-¿Mucho flujo y ese olor que vuelve por más que te bañes? No eres solo tú. 🐟
-
-No es aseo: por dentro se acumula flujo viejo que el agua no saca. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar a fondo y a equilibrar tu flujo desde adentro, para sentirte fresca y seca todo el día.
-
-Escríbenos la palabra INFO por mensaje directo y te explicamos 💬
-
-#saludíntima #bienestarfemenino #cuidadopersonal #frescuranatural #mujer
-
-CONJUNTO 3 · PICAZÓN (oferta):
-Vivía con picazón y ardor y pensaba que era "normal". No lo es. 🔥
-
-Casi siempre es por residuos acumulados que ni sabías que tenías. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar en profundidad y a calmar la irritación desde adentro. Hoy: 2 paquetes con envío gratis y pagas al recibir.
-
-Escríbenos la palabra QUIERO por mensaje directo 💬
-
-#saludfemenina #autocuidado #bienestaríntimo #detoxnatural #mujeres
-
-CONJUNTO 4 · RECURRENTE:
-¿Las infecciones te vuelven una y otra vez por más que hagas de todo? No es tu culpa. 💧
-
-Muchos jabones y productos "de siempre" terminan desequilibrando tu flora, y por eso el problema regresa. Los Óvulos Purity, con 8 raíces naturales, ayudan a limpiar y a devolver el equilibrio de forma natural.
-
-Escríbenos la palabra EQUILIBRIO por mensaje directo y te contamos 💬
-
-#saludíntima #cuidadoíntimo #saludnatural #bienestarfemenino #mujer
-
-CONJUNTO 5 · INTEGRAL (podcast):
-Olor, flujo, picazón, cólicos… casi todo nace del mismo desequilibrio. 🌿
-
-Por eso no necesitas 5 productos distintos. Los Óvulos Purity reúnen 8 raíces de la medicina natural en una sola perla que limpia a fondo y ayuda a reequilibrar tu zona íntima. Simple, natural y en casa.
-
-Escríbenos la palabra PURITY por mensaje directo y te explicamos 💬
-
-#bienestaríntimo #medicinanatural #saludfemenina #autocuidado #mujeres
-
-CONJUNTO 6 · CÓLICOS/CICLO (oferta):
-¿Tu ciclo es una tormenta cada mes? Cólicos, cambios de humor, desequilibrio… 🌧️
-
-No tiene que ser tu normalidad. Los Óvulos Purity, con Motherwort y Angélica entre sus 8 raíces, apoyan tu equilibrio natural y ayudan a calmar las molestias del ciclo. Hoy: 2 paquetes con envío gratis, pagas al recibir.
-
-Escríbenos la palabra CICLO por mensaje directo 💬
-
-#saludfemenina #ciclomenstrual #bienestarfemenino #autocuidado #mujeres
-
-── REMARKETING / INACTIVIDAD (máx 2, entre 7am-9pm) — el VIDEO de mecanismo va acá, NO en el ad ni dentro de los 2 videos del bot ──
-MENSAJE 1 (30-60 min sin respuesta — lleva el VIDEO de mecanismo anatómico ~20s):
-¿Te quedó alguna duda? 😊 Muchas quieren ver esto antes de decidir: mira cómo actúa la perla por dentro y todo lo que ayuda a arrastrar 👇
-[VIDEO mecanismo ~20s]
-Cuéntame y te ayudo a dejar tu pedido — recuerda que solo pagas cuando lo recibes en tus manos. 🌿
-
-MENSAJE 2 (8-12 h — última, empujón de oferta + salida):
-Última vez que te escribo para no molestarte 🌿 Si quieres recuperar tu frescura, todavía tienes la oferta de 2 paquetes con envío gratis y pago contra entrega. Escríbeme y te lo dejo listo. Si ya no quieres más mensajes, responde STOP.
-> El video de mecanismo (modelo anatómico "cómo entra el óvulo y arrastra residuos") es POST-CLIC: va solo en el bot/remarketing, nunca en el creativo del anuncio (Meta lo lee = CPM alto + riesgo INVIMA).
-
-── E. FLUJO LUCIDBOT (ver detalle completo en el chat / Parte 3) ──
-Asesora: Valentina · Tienda: Hernatura · País: Colombia (tú, sin voseo) · Transportadoras: Interrapidísimo / Servientrega (ajustar a la tuya).
-Catálogo (4 campos), Mensaje inicial (Elementos 1-12: saludo fijo → VIDEO 1 autoridad = PODCAST (OVULOSPURITY_PROPIO_5_INTEGRAL; alt. corto 9 HN=4_RECURRENTE) / VIDEO 2 UGC persona real = 2X1 HER5 (OVULOSPURITY_PROPIO_3_PICAZON) → INFO 1/2/3 → transición → testimonios 1/2/3 → audio → cierre con ciudad), Interacciones 0-5, Inactividad (2), FAQ venta (10), FAQ postventa (5), Reglas.
-Oferta escalera: 1 paq $69.900 (+envío) · 2 paq $99.900 envío gratis ⭐ · 3 paq $129.900 envío gratis + regalo.
-[El flujo completo verbatim está entregado en el chat, Parte 3 — copiar de ahí campo por campo.]
-
-── MENSAJE PRE-LLENADO (lo que la persona ENVÍA al tocar el anuncio — se configura en el destino WhatsApp del ad) ──
-FASE 1 = UNO SOLO para los 6 anuncios (máx 80 caracteres). Refuerzo estilo Joaquín, SIN "INVIMA" (alerta sanitaria en Colombia = riesgo). El refuerzo lo da "100% naturales".
-MENSAJE ÚNICO (67 car.):
-Quiero recuperar mi frescura con los Óvulos Purity 100% naturales 🌿
-(Variantes por ángulo: recién en escalado/FASE 2, no ahora. No confundir con el Elemento 1 del bot, que es la RESPUESTA del bot.)
-
-── F. CAMPAÑA META (ETAPA-6) + CHECKLIST ANTES DE LANZAR ──
-1 campaña · Objetivo TRÁFICO · Optimizar CONVERSACIONES · Destino WHATSAPP.
-6 conjuntos (ABO), mismo presupuesto en todos (recomendado ~$30.000 COP/conjunto/día; ajustable). 2 anuncios por conjunto (mismo creativo duplicado).
-Segmentación amplia 18-65, Advantage+ OFF. Programar 4 AM del día siguiente (nunca el mismo día).
-[ ] Objetivo = Tráfico (no Interacción) · "Maximizar conversaciones" verificado antes de publicar
-[ ] Desmarcar "compartir presupuesto entre conjuntos"
-[ ] Destino manual → WhatsApp (número conectado a la fanpage Hernatura)
-[ ] Desmarcar "anuncios multianunciante" y "edad desconocida"
-[ ] 6 conjuntos, 2 anuncios c/u (12 anuncios); precio solo en conjuntos 3 y 6
-[ ] Subidos los 5 videos + imagen ángulo 6; infografías cargadas en el bot
-[ ] Bot LucidBot configurado y probado; Video 1 del bot = PODCAST (autoridad), Video 2 = 2X1 HER5 / 3_PICAZON (UGC persona real)
-[ ] Programada 4 AM mañana
-AL DÍA SIGUIENTE: traer métricas por conjunto (CTR, mensajes, conversiones, CPA real) → identificar ángulo ganador → FASE 2. CPA objetivo $25.000 · break even ~$40.000. Decidir por CPA semanal, no de un día.
+Resumen de tu pedido:
+- Nombre: {NOMBRE} {APELLIDO}
+- Celular: {TEL}
+- Departamento: {DEPTO}
+- Ciudad: {CIUDAD}
+- Dirección: {DIR}
+- Barrio: {BARRIO}
+- Producto: Óvulos Purity Hernatura — {OPCIÓN}
+- Total a pagar: ${TOTAL} al recibir
+
+¿Me confirmas que los datos están correctos?
+
+INTERACCIÓN 5 — CIERRE FINAL:
+¡Listo, {NOMBRE}! Tu pedido quedó tomado.
+
+Tus Óvulos Purity van en camino. La entrega tarda de 2 a 5 días hábiles en {CIUDAD}.
+
+Recuerda: solo pagas cuando los tienes en tus manos. Empieza tu ciclo al terminar tu regla, nunca con sangrado. Si tienes cualquier duda mientras tanto, aquí estoy. ¡Ya vas a sentir la diferencia!
+
+──────────────────────────────────────────────────────
+MENSAJES DE INACTIVIDAD
+──────────────────────────────────────────────────────
+M1 — 45 min · [PROMPT 1] → video → texto fijo + botones "Hoy" / "Mañana"   (FIJO — pasar a "tú", sin voseo)
+M2 — 5 h    · [PROMPT 2] → audio testimonio → TEXTO FIJO + 2 botones
+M3 — 23 h   · [PROMPT 3] → texto fijo + botón "No me escribas más"   (FIJO — botón: "No me escribas más")
+Franja horaria: 7 AM – 9 PM, hora Colombia.
+
+TEXTO FIJO M2:
+Ese es el testimonio de una de nuestras últimas clientas.
+
+La mayoría se lleva el tratamiento de 6 perlas porque el primer ciclo limpia y equilibra, pero el que evita que el olor y la infección vuelvan es el segundo ciclo, a los 2 meses.
+
+¿Te aparto el recomendado de 6 perlas ($69.000) o el completo de 9 perlas ($99.000)? Los dos con envío gratis.
+Botones: Recomendado 6 perlas · Completo 9 perlas
+
+──────────────────────────────────────────────────────
+GUION DEL AUDIO TESTIMONIO (M2 · voz de clienta, mujer 28-35, colombiana · 50-60 s)
+──────────────────────────────────────────────────────
+Hola, bueno, muchas gracias la verdad por los óvulos, y gracias también por el detallito que me mandaron. Ya terminé el tratamiento, o sea, llevo como tres semanas desde la primera perla, y de verdad que son muy buenos, quedé súper contenta. Ya no siento ese olor, que era lo que más me tenía mal. Antes yo me bañaba, me echaba de todo y al otro día otra vez lo mismo, me daba pena hasta sentarme al lado de alguien en el bus… y ahorita no, ahorita ando tranquila, fresca, me pongo lo que quiera. Hasta con mi esposo, la verdad, ya estoy mucho más relajada, ya no ando pendiente de eso. Entonces pues muy recomendados los óvulos, y les recomiendo a ustedes también, porque no es la primera vez que les compro, ya soy clienta fija. Mi hermana también les pidió. Así que muy recomendados de verdad, bien contenta.
+
+──────────────────────────────────────────────────────
+FAQ_VENTA (10)
+──────────────────────────────────────────────────────
+P1: ¿Sirven si la infección me vuelve cada semana o cada mes?
+R: Sí, amiga, justo para eso son. Cuando vuelve es porque tu flora quedó desequilibrada. Las 8 raíces combaten bacterias y hongos y reconstruyen ese equilibrio para que no rebote. Si te vuelve seguido, lo ideal es el tratamiento recomendado o el completo: el segundo ciclo a los 2 meses es el que evita que vuelva.
+
+P2: Ya usé clotrimazol, Vaxiduo, cremas… ¿esto qué tiene de diferente?
+R: Esos tratamientos matan la infección pero también se llevan tu flora buena, y por eso a los días vuelve. Los Óvulos Purity son 100% hierbas: limpian y equilibran sin arrasar tu flora, sin dolor y sin efecto rebote. ¿Cuánto llevas gastado en droguería? Con un solo tratamiento sales de ese ciclo.
+
+P3: Me da olor después de estar con mi pareja, ¿me sirven?
+R: Sí. Ese olor no es falta de aseo ni es contagioso: el semen tiene un pH más alto que tu zona íntima (7,2 a 8 contra 3,8 a 4,5) y te lo descuadra horas o días después. Los óvulos reequilibran ese pH para que al otro día te sientas fresca.
+
+P4: Me lavo mucho y sigo con olor, ¿por qué?
+R: No eres sucia, amiga. Muchas veces es al revés: el jabón íntimo y lavarse de más quitan la protección natural. Las perlas equilibran desde adentro; después, con agua y un lavado suave es suficiente.
+
+P5: ¿Es normal lo que me sale durante o después del tratamiento?
+R: Sí, es normal y muchas clientas lo cuentan: puede bajar flujo, grumos o residuos junto con restos de las hierbas; es parte de la limpieza. Si tienes fiebre, dolor fuerte o sangrado abundante, suspende y consulta con tu médico.
+
+P6: ¿Arde o duele?
+R: No duele. Por el Borneol puedes sentir frescura o un ardor leve los primeros minutos, y es normal. Si el ardor es fuerte, hay hinchazón o picazón intensa, retira la perla, lávate con agua y suspende.
+
+P7: ¿Puedo usarlos con la regla, embarazada o lactando?
+R: Con sangrado no: empieza al terminar tu regla. En embarazo no se usan, porque algunas hierbas estimulan el útero, y tampoco durante la lactancia.
+
+P8: ¿En cuánto tiempo noto el cambio?
+R: Muchas clientas sienten la limpieza desde las primeras 12 horas y la frescura al terminar el ciclo de 4 días. Para que no vuelva, repites el ciclo a los 2 meses.
+
+P9: ¿Son originales? ¿Tienen registro?
+R: Sí, tienen registro INVIMA, están hechos en Colombia y verificados en laboratorio. Además pagas al recibir, así que ves tu producto antes de pagar.
+
+P10: Me da pena ir al ginecólogo por esto, ¿los puedo usar sola?
+R: Claro, te los pones tú misma en tu casa y esta conversación es totalmente privada. Si tienes fiebre, dolor pélvico fuerte o sangrado raro, eso sí amerita ir al médico.
+
+──────────────────────────────────────────────────────
+FAQ_POSTVENTA (5)
+──────────────────────────────────────────────────────
+P1: ¿Cuándo me llega?
+R: De 2 a 5 días hábiles según tu ciudad. Te llamamos al celular que dejaste y pagas al recibir.
+
+P2: Empecé y siento ardor, ¿sigo?
+R: Si es leve y pasa en minutos, es la frescura del Borneol y puedes seguir. Si es fuerte o hay hinchazón, retira la perla, lávate con agua y suspende.
+
+P3: ¿Cómo retiro la perla?
+R: Con el hilo, suave, a las 24 horas. Luego descansas 12 horas y pones la siguiente.
+
+P4: ¿Cuándo repito el tratamiento?
+R: Cada 2 meses, al terminar tu regla. Si pediste 6 o 9 perlas, guarda los paquetes restantes para tu siguiente ciclo.
+
+P5: ¿Puedo tener relaciones durante el tratamiento?
+R: Mejor evítalas durante los 4 días del ciclo, así las perlas trabajan sin interrupciones.
+
+──────────────────────────────────────────────────────
+REGLAS DEL BOT (campo "Reglas" — solo conversacionales)
+──────────────────────────────────────────────────────
+[IMPORTANTE: Si la clienta envía parte de sus datos, dale tiempo para que escriba los que faltan. No seas insistente.]
+[IMPORTANTE: Si la clienta indicó que reclama en oficina, ese dato reemplaza la dirección. No preguntes dirección de casa ni barrio; dile que su pedido irá a la oficina de la transportadora en su ciudad.]
+[IMPORTANTE: Si la clienta ya envió sus datos, no preguntes de nuevo qué opción quiere.]
+[IMPORTANTE: Si la clienta escribe una palabra mal, corrígela sin hacérselo notar.]
+[IMPORTANTE: Si la clienta ya escribió sus datos, no le preguntes si están bien: haz el cierre agrupando los datos con producto y precio.]
+[IMPORTANTE: Si pregunta hasta cuándo está la promoción: "Tenemos ese precio hasta agotar existencias."]
+[IMPORTANTE: Una vez confirmada la venta, solo responde preguntas. No sigas vendiendo.]
+[IMPORTANTE: Nunca insistas en la misma pregunta más de 2 veces y cambia el enfoque en el 2º intento. Ej. ciudad, 1ª vez: "Dime tu ciudad para confirmarte cobertura." 2ª vez: "Con tu ciudad te confirmo si te llega con pago contra entrega." Después, cambia de tema.]
+[IMPORTANTE: Si pide descuento en 1 paquete, NO bajes el precio: "El precio de 1 paquete no lo puedo bajar, ya es el mejor. Pero con el tratamiento de 6 perlas, por solo $13.000 más te llevas el doble y no pagas los $15.000 de envío."]
+[IMPORTANTE: Si dice "¿no era $41.000?": "Sí, el paquete cuesta $41.000 y el envío $15.000. Con 2 paquetes, a $69.000, el envío es gratis."]
+[IMPORTANTE: Si pide precio por mayor (6 o más paquetes): "Déjame confirmarte el precio por mayor con bodega." — PENDIENTE: el operador debe dar el precio desde 6 paquetes.]
+[IMPORTANTE: Si dice que pedirá después, responde solo: "¡Súper, no hay problema! Aquí estamos para cuando quieras hacer tu pedido."]
+[IMPORTANTE: Si pregunta por tienda física: "Nuestro centro de distribución trabaja solo con envíos, sin atención al público. Enviamos a toda Colombia con pago contra entrega."]
+[IMPORTANTE: Si envía GIFs, stickers o imágenes, responde amable sin describir la imagen.]
+[IMPORTANTE: Si pide audios: "En este momento no puedo enviarte audios porque el micrófono del celular está fallando."]
+[IMPORTANTE: El saludo inicial es FIJO y no menciona el dolor. Nunca abras un mensaje con el nombre del producto.]
+[IMPORTANTE — CONVERSIÓN POST-CLIC: dentro del bot usa el texto del proveedor con fuerza: detox íntimo, elimina el mal olor, combate infecciones y hongos, candidiasis, vaginitis, flujo, picazón, pH, 8 raíces, 99%, INVIMA, +10.000 clientas. Único límite: NUNCA digas que cura endometriosis, miomas o "enfermedades graves", ni que lo que se expulsa es un mioma o un tumor. Si la clienta pregunta "¿eso era un mioma?": "No te puedo decir qué es; lo que sale es parte de la limpieza, y si tienes dudas sobre miomas eso lo revisa tu médico."]
+[IMPORTANTE: Todo el texto en español de Colombia con "tú" cercano y femenino ("amiga", "te cuento", "pide", "paga al recibir"). NUNCA voseo ("vos", "pagá", "pedí", "contame").]
+[IMPORTANTE: Moneda con punto de miles ($69.000). La confirmación de ubicación usa "departamento y ciudad".]
+[IMPORTANTE: Garantía: solo "garantía de satisfacción y cambio si llega dañado o con defecto de fábrica (30 días)". NUNCA ofrezcas la devolución del 110%: es solo con tarjeta y no aplica a contra entrega.]
+[IMPORTANTE: El audio nunca menciona precio.]
+[IMPORTANTE: Si la clienta elige la opción 1, persuádela para el tratamiento de 6 perlas: el doble por $13.000 más, sin envío, y con el 2º ciclo que evita que vuelva. Si dice que le vuelve seguido, recomienda el completo de 9 perlas.]
+[IMPORTANTE: Mensajes de inactividad = 3 (45 min / 5 h / ~23 h). Ninguno reprocha el silencio. El 3º se despide con pregunta orientada al "no" y botón de salida. Si el número baja a AMARILLO, solo M1 y M3.]
+[IMPORTANTE — SIN FILTRO A/B/C/D: nunca le preguntes a la clienta cuál es su caso. Si ELLA menciona su situación, usa la explicación que le corresponde:
+ • pareja/relaciones → el pH del semen (7,2-8) descuadra el de su zona íntima (3,8-4,5) horas o días después; no es suciedad ni contagio.
+ • "vuelve"/candidiasis → los tratamientos se llevan la flora buena; recomienda 6 o 9 perlas.
+ • droguería/clotrimazol/Vaxiduo → rebote por pérdida de lactobacilos; pregúntale cuánto lleva gastado, sin inventar cifras.
+ • jabón/"me lavo mucho" → el exceso de jabón quita la protección natural; "no eres sucia"; pregúntale qué jabón usa.
+ • flujo con olor a pescado/gym/trabajo → "si tu zona huele mal, son bacterias, no suciedad"; frescura del Borneol.
+ • regla → la regla cambia el pH cada mes; úsalo al terminar, nunca con sangrado; Motherwort, Angélica y Chuanxiong alivian el ciclo.]
+[IMPORTANTE — EMBARAZO Y LACTANCIA: si dice que está embarazada o lactando, NO le vendas: "Por tu seguridad no te lo recomiendo en este momento, porque algunas hierbas estimulan el útero. Cuando termines esa etapa aquí estaré."]
+[IMPORTANTE — SANGRADO: si tiene la regla o sangrado activo, que espere a terminar para empezar el ciclo. Si el sangrado es raro o abundante fuera de la regla, recomiéndale ir al médico. Sí puede hacer el pedido ya.]
+[IMPORTANTE — ARDOR: leve y pasajero = normal (frescura del Borneol). Fuerte, con hinchazón o alergia = retirar, lavar con agua, suspender.]
+[IMPORTANTE — "¿ES NORMAL LO QUE ME SALE?": sí, es parte de la limpieza (flujo, grumos, restos de hierbas); muchas clientas lo cuentan. Si hay fiebre, dolor fuerte o sangrado abundante, suspender y consultar.]
+[IMPORTANTE — RECETA MÉDICA: si pregunta si lo puede usar junto con lo que le recetaron, no contradigas al médico: "Lo ideal es que termines lo que te recetaron y después hagas tu ciclo con las perlas para equilibrar tu flora."]
+[IMPORTANTE — PAREJA: si pregunta si su pareja debe tratarse, di que el tratamiento es para ella y que durante los 4 días del ciclo evite relaciones.]
+[IMPORTANTE — PRIVACIDAD / VERGÜENZA DEL GINECÓLOGO: valida sin juzgar ("es más común de lo que crees y no es falta de aseo"), recuerda que se lo pone ella sola en casa y que la conversación es privada. Si hay fiebre, dolor pélvico fuerte o sangrado raro, recomiéndale ir al médico.]
+[IMPORTANTE — CONDICIONAL, SOLO SI EL OPERADOR CONFIRMA: "Tu pedido llega en empaque discreto, sin indicar el contenido por fuera."]
+
+════════════════════════════════════════════════════════════
+── F. CAMPAÑA Y CHECKLIST ANTES DE LANZAR ──
+════════════════════════════════════════════════════════════
+
+CAMPAÑA
+  Nombre:        [CUENTA]_OVULOSPURITY_TEST_20260917
+  Objetivo:      Tráfico · Maximizar CONVERSACIONES · Destino WhatsApp
+  Presupuesto:   ABO (a nivel de conjunto) · DESMARCAR "compartir presupuesto entre conjuntos"
+                 US$2.99 por conjunto = $9.426 COP si la cuenta factura en COP · los 6 iguales
+  Página:        HERNATURA CO
+  Segmentación:  Colombia · Mujeres · banda por conjunto (sección B) · Advantage+ Audience OFF · sin intereses
+  Lanzamiento:   04:00 AM hora Colombia del día siguiente a publicar (si publicas el 16-sep → 17-sep 04:00;
+                 si publicas otro día, cambia la fecha del nombre de la campaña a la del lanzamiento).
+                 Si la cuenta está en hora de Guatemala: programar 03:00 hora de la cuenta. Nunca el mismo día.
+  Día ~20-sep:   se cortan 2-3 conjuntos y los que quedan suben juntos a US$5.98 ($18.852 COP) cada uno.
+
+CHECKLIST ANTES DE LANZAR
+[ ] "Maximizar CONVERSACIONES" verificado JUSTO antes de publicar (Meta lo revierte a clics)
+[ ] Destino MANUAL → WhatsApp (nunca Messenger), con el número conectado a HERNATURA CO
+[ ] El destino WhatsApp lleva el identificador de atribución de LucidSales
+[ ] DESMARCAR "anuncios multianunciantes"
+[ ] DESMARCAR "incluir personas de WhatsApp cuya edad se desconoce"
+[ ] Advantage+ Audience OFF en los 6 conjuntos
+[ ] Género = Mujeres · País = Colombia
+[ ] NO aceptar recomendaciones de Meta
+[ ] 2 anuncios por conjunto, idénticos (mismo PNG, mismo texto, mismo título, misma descripción)
+[ ] "Varias opciones de texto" APAGADO en cada anuncio
+[ ] Precio SOLO en los conjuntos 2 y 3 (imagen y copy); los otros 4 sin precio en ninguno de los dos
+[ ] Revisar los 12 anuncios uno por uno (imagen correcta, copy del ángulo correcto, sin "- Copia" en ningún nombre)
+[ ] [CUENTA] reemplazado por el alias real en campaña, conjuntos y anuncios
+[ ] Programado 04:00 AM hora Colombia
+[ ] Después de configurar: registrar la banda real de cada conjunto en PRODUCTOS/_DIM_BANDAS.csv
+[ ] Export diario DESGLOSADO POR ANUNCIO

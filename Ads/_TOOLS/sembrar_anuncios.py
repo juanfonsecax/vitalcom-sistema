@@ -13,6 +13,9 @@ Modo diagnostico por defecto. Escribe solo con --escribir.
 """
 import csv, sys, os, re, collections
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from alias import canonico   # un conjunto renombrado en Meta cruza con su dimension
+
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
     except (AttributeError, ValueError): pass
@@ -72,10 +75,13 @@ def main():
     # indice de conjuntos por nombre normalizado -> hereda el ANGULO y sus covariables
     idx = {}
     for r in C:
-        idx.setdefault((r["producto_key"], norm_txt(r["conjunto_meta"])), r)
+        idx.setdefault((r["producto_key"], norm_txt(canonico(r["conjunto_meta"]))), r)
 
     ag = collections.OrderedDict()
     for r in V:
+        # BASE suma; CONTROL solapa a proposito para auditar y nunca suma (DATA_PLAYBOOK).
+        if (r.get("rol_ventana") or "BASE").strip().upper() != "BASE":
+            continue
         an = norm_txt(r["anuncio"])
         if not an:
             continue
@@ -85,7 +91,7 @@ def main():
                               "msg": 0.0, "clk": 0.0, "imp": 0.0, "ej": r["anuncio"]})
         aid = limpio_id(r["ad_id"])
         if aid: a["ad_ids"].add(aid)
-        a["reps"].add(r["anuncio"]); a["conj"].add(norm_txt(r["conjunto"]))
+        a["reps"].add(r["anuncio"]); a["conj"].add(norm_txt(canonico(r["conjunto"])))
         a["cta"].add(r["cuenta_alias"]); a["camp"].add(r["campana"])
         a["f"] += [r["ventana_ini"], r["ventana_fin"]]
         a["spend"] += num(r["spend_usd"]); a["ventas"] += int(num(r["ventas"]))

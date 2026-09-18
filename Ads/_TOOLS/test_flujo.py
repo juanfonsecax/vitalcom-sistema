@@ -16,12 +16,16 @@ existen, y que el vocabulario de predicados haga lo que dice.
 
 USO:  python Ads/_TOOLS/test_flujo.py     (exit 0 = pasa, 1 = falla)
 """
+import csv
 import datetime
+import io
 import os
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from flujo import Entorno, cargar_flujo, correr, evaluar, validar, BASE_REAL  # noqa: E402
+from flujo import (Entorno, cargar_flujo, correr, evaluar, validar, BASE_REAL,  # noqa: E402
+                   _angulos_acumulados, _ev_angulo_ganador, _ev_concepto_2de2)
 
 FIXTURE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_fixtures", "flujo_20260908")
 HOY = datetime.date(2026, 9, 8)
@@ -42,6 +46,95 @@ def nodo(r, nid):
     return next((n for n in r["nodos"] if n["id"] == nid), None)
 
 
+def fixture_renombre_y_control():
+    """Un conjunto con dimensión solo en su nombre viejo, ventas bajo los dos nombres y una
+    ventana CONTROL que solapa. Lo correcto: 3 + 2 ventas BASE bajo ANG_A; las 5 CONTROL no."""
+    tmp = tempfile.mkdtemp(prefix="flujo_g0_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(prod)
+    viejo, nuevo = "PX_ANG-A_R1 +25AÑOS", "PX_ANG-A_R1"
+
+    def escribir(nombre, cols, filas):
+        with io.open(os.path.join(prod, nombre), "w", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(cols)
+            w.writerows(filas)
+
+    escribir("_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"], [["PX", viejo, "ANG_A"]])
+    escribir("_ALIAS_CONJUNTOS.csv", ["nombre_viejo", "nombre_nuevo"], [[viejo, nuevo]])
+    escribir("_FACT_VENTAS.csv",
+             ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "campana", "anuncio", "ventas", "spend_usd"],
+             [["2026-09-01", "BASE", "PX", viejo, "C", "a", "3", "10"],
+              ["2026-09-07", "BASE", "PX", nuevo, "C", "a", "2", "8"],
+              ["2026-09-07", "CONTROL", "PX", nuevo, "C", "a", "5", "20"]])
+    return tmp
+
+
+def _escribir_csv(prod, nombre, cols, filas):
+    with io.open(os.path.join(prod, nombre), "w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(cols)
+        w.writerows(filas)
+
+
+def fixture_escalar_flaco(ventas_nuevo=3, con_probado=True):
+    """Dos ángulos que el motor manda ESCALAR con el MISMO CPA (Q10.2, IC entero bajo BE Q90),
+    y la única diferencia es el VOLUMEN: uno tiene `ventas_nuevo` ventas de un solo día, el otro
+    6. Es el caso de TURMERIC: la regla 5 de decidir.py corona desde min_ventas_escalar (2), así
+    que un ESCALAR por sí solo no prueba que haya ganador — le falta el piso del ganador (5)."""
+    tmp = tempfile.mkdtemp(prefix="flujo_esc_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(prod)
+    _escribir_csv(prod, "_DIM_PRODUCTOS.csv",
+                  ["producto_key", "nombre_display", "estado", "fase", "cpa_base_q", "cpa_be_q", "tasa"],
+                  [["PX", "PX", "VIVO", "F1", "30", "90", "7.62"]])
+    _escribir_csv(prod, "_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"],
+                  [["PX", "GTR7_PX_NUEVO_R1", "ANG_NUEVO"], ["PX", "GTR7_PX_PROBADO_R1", "ANG_PROBADO"]])
+    _escribir_csv(prod, "_PARAMETROS_DECISION.csv", ["parametro", "valor", "unidad", "dueno", "por_que"],
+                  [["min_ventas_ganador", "5", "ventas", "test", "piso del ganador"],
+                   ["min_ventas_escalar", "2", "ventas", "test", "piso de la regla 5"]])
+    filas = [["2026-09-14", "BASE", "PX", "GTR7_PX_NUEVO_R1", "GTR7_PX_TEST_1", "a",
+              str(ventas_nuevo), "20", "%.2f" % (ventas_nuevo * 10.2 / 7.62)]]
+    if con_probado:
+        filas.append(["2026-09-14", "BASE", "PX", "GTR7_PX_PROBADO_R1", "GTR7_PX_TEST_1", "b", "6", "40", "8.0"])
+    _escribir_csv(prod, "_FACT_VENTAS.csv",
+                  ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "campana", "anuncio",
+                   "ventas", "mensajes", "spend_usd"], filas)
+    return tmp
+
+
+def fixture_conceptos_al_filo():
+    """El corte del 27-sep-2026 de la simulación de TURMERIC, con las tres campañas que manda la
+    doctrina de FASE 2 (1-1-5 + 1-1-5 + 1-2-5) y los CPA que hicieron oscilar el gate:
+
+        campaña A   nadie llega al piso de 2 ventas
+        campaña B   C2.CN06 gana sola             (CPA 2.27)
+        campaña C   C3.CN07 2.30 · C2.CN06 2.34   ← Q0.04 de diferencia: 1.7 %
+                    C9.CN14 3.50                  ← 52 % peor: no es empate y no debe contar
+
+    Winner-take-all: C corona solo a C3.CN07, nadie llega a 2 campañas y el producto vuelve de
+    FASE 3 a FASE 2. Con empate técnico: C2.CN06 replica en B y C, y el gate deja de depender de
+    un centavo. C9.CN14 no entra en ninguno de los dos casos."""
+    tmp = tempfile.mkdtemp(prefix="flujo_cpt_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(prod)
+    camp = "GTR7_TURMERIC_F2-CONCEPTOS-%s_20260924"
+
+    def fila(c, cpt, ventas, cpa):
+        return ["2026-09-27", "BASE", "TURMERIC", "GTR7_TURMERIC_ANG_R1", camp % c,
+                "ad ~ TURMERIC|ANG|%s|NC1|x" % cpt, str(ventas), "40", "%.4f" % (ventas * cpa)]
+
+    _escribir_csv(prod, "_FACT_VENTAS.csv",
+                  ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "campana", "anuncio",
+                   "ventas", "mensajes", "spend_usd"],
+                  [fila("A", "C3.CN07", 1, 2.85),          # bajo el piso: no cuenta
+                   fila("B", "C2.CN06", 2, 2.27),
+                   fila("C", "C3.CN07", 2, 2.30),
+                   fila("C", "C2.CN06", 2, 2.34),
+                   fila("C", "C9.CN14", 2, 3.50)])
+    return tmp
+
+
 def main():
     global fallas
     # ── A. el grafo real es válido ─────────────────────────────────────────────
@@ -49,6 +142,17 @@ def main():
     problemas = validar(cargar_flujo(env_real), env_real)
     check(not problemas, "DOCTRINA/FLUJO.json apunta solo a ejecutores y archivos que existen",
           "; ".join(problemas[:3]))
+
+    # Simulación TURMERIC: F1.paquete miraba 5 artefactos y se daba por cumplido sin página, sin
+    # piezas en disco ni copy; el bloqueo aparecía recién en F1.publicar, cargando publicar-meta
+    # para algo que se arregla en una etapa de fase-1-angulos.
+    paquete = next((n for f in cargar_flujo(env_real).get("fases", []) for n in f.get("nodos", [])
+                    if n.get("id") == "F1.paquete"), None)
+    cmds = [p.get("predicado", {}).get("cmd") or [] for p in (paquete or {}).get("produce", [])]
+    check(any("gen_publicacion.py" in " ".join(c) and "--solo-paquete" in c and "--json" not in c
+              for c in cmds),
+          "F1.paquete exige un paquete LANZABLE (gen_publicacion --solo-paquete), no solo que existan sus archivos",
+          str(cmds))
 
     # ── B. el caso del 08-sep-2026 sale solo ───────────────────────────────────
     if not os.path.isdir(FIXTURE):
@@ -116,7 +220,53 @@ def main():
                        "min": "@param:no_existe"}, ctx, env)
     check(ok is None, "@param inexistente: el predicado dice que no pudo evaluar, no inventa un límite", obs)
 
-    total = 17
+    # ── D. el acumulado que decide las fases suma solo BASE y cruza por nombre canónico ──
+    acc = _angulos_acumulados(Entorno(base=fixture_renombre_y_control(), hoy=HOY, sin_scripts=True), "PX")
+    check(acc == {"ANG_A": [5.0, 18.0]},
+          "acumulado por ángulo: CONTROL no suma y el conjunto renombrado cae en su ángulo, no en uno fantasma",
+          str(acc))
+
+    # ── E. el ESCALAR del motor no corona un ángulo sin el piso de ventas del ganador ──
+    # TURMERIC, sim del 14-sep-2026: 3 ventas de UN SOLO DÍA con CPA bajo dieron ESCALAR
+    # (regla 5, que corona desde min_ventas_escalar = 2) y el producto saltó de fase esa misma
+    # noche. min_ventas_ganador (5) lo pedía solo la rama histórica: un reglamento partido.
+    HOY_E = datetime.date(2026, 9, 14)
+    env_e = Entorno(base=fixture_escalar_flaco(ventas_nuevo=3, con_probado=False), hoy=HOY_E, sin_scripts=True)
+    celdas_e, _p = env_e.celdas("PX")
+    check([c["estado"] for c in celdas_e] == ["ESCALAR"],
+          "el motor SÍ manda ESCALAR con 3 ventas (la regla 5 corona desde min_ventas_escalar)",
+          str([(c["celda"], c["estado"], c["ventas"]) for c in celdas_e]))
+    ok_e, obs_e = _ev_angulo_ganador({}, {"pk": "PX"}, env_e)
+    check(ok_e is False and "descartado por volumen" in obs_e,
+          "un ESCALAR con 3 ventas NO es ángulo ganador: falta el piso de 5 y el gate lo dice",
+          obs_e)
+
+    env_e2 = Entorno(base=fixture_escalar_flaco(ventas_nuevo=3, con_probado=True), hoy=HOY_E, sin_scripts=True)
+    ok_e2, obs_e2 = _ev_angulo_ganador({}, {"pk": "PX"}, env_e2)
+    check(ok_e2 is True and "ANG_PROBADO" in obs_e2 and "ANG_NUEVO" not in obs_e2,
+          "con el mismo CPA, corona el de 6 ventas y no el de 3: el piso filtra por VOLUMEN, no por CPA",
+          obs_e2)
+
+    # ── F. el gate de FASE 3 no oscila por un centavo de CPA ──────────────────
+    # TURMERIC, sim: 25-sep ✗ · 26-sep ✓ · 27-sep ✗ · 28-sep ✓. El 26 dos conceptos empataban
+    # EXACTO (1.75 = 1.75) y desempataba el orden alfabético; el 27 se dieron vuelta por Q0.04.
+    env_c = Entorno(base=fixture_conceptos_al_filo(), hoy=datetime.date(2026, 9, 27), sin_scripts=True)
+    ok_c0, obs_c0 = _ev_concepto_2de2({"margen_empate_pct": 0}, {"pk": "TURMERIC"}, env_c)
+    check(ok_c0 is False,
+          "winner-take-all: con Q0.04 de diferencia nadie replica y el producto vuelve de F3 a F2",
+          obs_c0)
+    ok_c, obs_c = _ev_concepto_2de2({}, {"pk": "TURMERIC"}, env_c)
+    check(ok_c is True and obs_c.startswith("C2.CN06") and "empate técnico" in obs_c,
+          "empate técnico: los dos conceptos a 1.7% cuentan, C2.CN06 replica en 2 y el gate se sostiene",
+          obs_c)
+    check("C9.CN14" not in obs_c,
+          "el margen no vuelve trivial el gate: el concepto 52% peor no empata con nadie",
+          obs_c)
+    check("hacen falta 2" in obs_c and "de las 3 campañas" in obs_c,
+          "el rótulo dice el umbral (2) aparte del denominador (3 campañas): «2 de 3» no es otra regla",
+          obs_c)
+
+    total = 26
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

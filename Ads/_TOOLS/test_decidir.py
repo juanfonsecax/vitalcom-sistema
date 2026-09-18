@@ -109,6 +109,101 @@ def test_tope_pausas(params):
     return 0 if ok else 1
 
 
+def test_gate_fase():
+    """GATE #2: en fase de testeo un ESCALAR vale como EVIDENCIA pero no es EJECUTABLE.
+
+    TURMERIC, sim del 14-sep-2026: el motor ordenó escalar un conjunto el día 1, en plena
+    FASE 1. Ejecutarlo rompe el invariante 6 (mismo presupuesto en todos los conjuntos de la
+    etapa): gana el que recibió más plata, no el mejor.
+
+    Lo que este caso congela, y es lo contraintuitivo: el ESTADO NO se degrada a
+    SEGUIR_MIDIENDO. flujo.py corona el ángulo ganador por el ESCALAR del motor
+    (_ev_angulo_ganador); si el motor se lo callara en F1, el producto no podría salir de F1
+    por esa rama y el gate se mordería la cola. Se bloquea la ACCIÓN, no la evidencia."""
+    from decidir import aplicar_gate_fase
+
+    def celdas():
+        return [{"celda": "A", "estado": "ESCALAR", "accion_sugerida": "ESCALAR (Calet): duplicar campaña"},
+                {"celda": "B", "estado": "PAUSAR", "accion_sugerida": "APAGAR: quemó su PD"},
+                {"celda": "C", "estado": "SEGUIR_MIDIENDO", "accion_sugerida": "MANTENER"}]
+
+    fallas = 0
+    for fase, esperado, nombre in [
+        ("F1", False, "en FASE 1 (testeo de ángulos) el ESCALAR no se ejecuta"),
+        ("F2", False, "en FASE 2 (testeo de conceptos) tampoco"),
+        ("F3", True, "en FASE 3 (escalado) sí se ejecuta: ahí se compra volumen"),
+        ("", None, "sin fase derivada: ni bloquea ni aprueba, dice que no pudo evaluarlo"),
+    ]:
+        cs = celdas()
+        aplicar_gate_fase(cs, fase, "TURMERIC")
+        a = cs[0]
+        ok = (a["ejecutable"] is esperado and a["estado"] == "ESCALAR"
+              and (esperado is True or a["bloqueo_fase"])
+              and cs[1]["ejecutable"] is True and cs[2]["ejecutable"] is True)
+        if esperado is False:
+            ok = ok and a["accion_sugerida"].startswith("NO SUBIR PRESUPUESTO")
+        print(("  OK     " if ok else "  FALLA  ") + "Gate de fase: " + nombre
+              + ("" if ok else "\n         " + str(a)))
+        fallas += 0 if ok else 1
+
+    # El estado sobrevive al bloqueo: es lo que flujo.py necesita para coronar el ángulo.
+    cs = celdas()
+    aplicar_gate_fase(cs, "F1", "TURMERIC")
+    ok = cs[0]["estado"] == "ESCALAR" and cs[0]["ejecutable"] is False
+    print(("  OK     " if ok else "  FALLA  ")
+          + "Gate de fase: el ESCALAR bloqueado SIGUE siendo ESCALAR — flujo.py corona por él"
+          + ("" if ok else "\n         " + str(cs[0])))
+    return fallas + (0 if ok else 1)
+
+
+def test_carga_base_y_alias():
+    """La carga del motor suma solo BASE y cruza conjunto y banda por nombre canónico."""
+    import csv
+    import io
+    import tempfile
+    import decidir
+
+    tmp = tempfile.mkdtemp(prefix="decidir_g0_")
+    viejo, nuevo = "PX_ANG-A_R1 +25AÑOS", "PX_ANG-A_R1"
+
+    def escribir(nombre, cols, filas):
+        ruta = os.path.join(tmp, nombre)
+        with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(cols)
+            w.writerows(filas)
+        return ruta
+
+    rutas = {
+        "FACT_VENTAS_PATH": escribir(
+            "_FACT_VENTAS.csv",
+            ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "ventas", "mensajes", "spend_usd"],
+            [["2026-09-01", "BASE", "PX", viejo, "3", "30", "10"],
+             ["2026-09-07", "BASE", "PX", nuevo, "2", "20", "8"],
+             ["2026-09-07", "CONTROL", "PX", nuevo, "5", "50", "20"]]),
+        "DIM_CONJ_PATH": escribir("_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"],
+                                  [["PX", viejo, "ANG_A"]]),
+        "DIM_BANDAS_PATH": escribir("_DIM_BANDAS.csv", ["conjunto_meta", "coincide"], [[viejo, "NO"]]),
+        "ALIAS_PATH": escribir("_ALIAS_CONJUNTOS.csv", ["nombre_viejo", "nombre_nuevo"], [[viejo, nuevo]]),
+        "FACT_ENTREGA_ANUNCIO_PATH": os.path.join(tmp, "no_existe.csv"),
+    }
+    previo = {k: getattr(decidir, k) for k in rutas}
+    try:
+        for k, v in rutas.items():
+            setattr(decidir, k, v)
+        filas = decidir.cargar_datos_duckdb(dias=14, grano="angulo").to_dict("records")
+    finally:
+        for k, v in previo.items():
+            setattr(decidir, k, v)
+
+    ok = (len(filas) == 1 and filas[0]["celda"] == "ANG_A"
+          and int(filas[0]["ventas_acum"]) == 5 and not bool(filas[0]["banda_ok"]))
+    print(("  OK     " if ok else "  FALLA  ")
+          + "Carga: CONTROL no suma y el conjunto renombrado conserva su ángulo y su banda"
+          + ("" if ok else "\n         " + str(filas)))
+    return 0 if ok else 1
+
+
 def main():
     params = cargar_parametros()
 
@@ -129,7 +224,10 @@ def main():
                   % (nombre, esperado, estado, obtenido["accion_codigo"], porque))
 
     fallas += test_tope_pausas(params)
-    print("\n%d de %d casos pasan." % (len(CASOS) + 1 - fallas, len(CASOS) + 1))
+    fallas += test_gate_fase()          # 5 comprobaciones
+    fallas += test_carga_base_y_alias()
+    total = len(CASOS) + 7
+    print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 
 

@@ -1,6 +1,6 @@
 ---
 name: fase-1-angulos
-description: FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos, lavar video, costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice "tengo transcripciones", "quiero lanzar un producto nuevo", "arrancar testeo" o "pre-testeo".
+description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos, lavar video, costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -188,10 +188,13 @@ Lanzar ambas en el mismo turno. Esperar AMBOS outputs antes de `etapa-6`.
   **ad-imagen** (Prompt Maestro) para cada ángulo virgen + **3 infografías del bot** e IMAGEN 4
   opcional.
 - **`etapa-5` (FASE 1 — Bot Paraguas)** — Inputs: las 6 fichas (con nivel de conciencia), producto,
-  precios, `<pagina_asignada>`. Output: flujo LucidBot completo (13 elementos + 5 interacciones +
-  reglas + **texto fijo de M2 y GUION DEL AUDIO TESTIMONIO** de los mensajes de inactividad),
-  integrando los 6 ángulos con Promesa Integradora; el ELEMENTO 13 cierra con presentación +
-  pregunta de ciudad, SIN pregunta filtro A/B/C/D.
+  `producto_key`, `<pagina_asignada>`. Output: **las 9 frases del ángulo** para
+  `PRODUCTOS/_DIM_FLUJO_BOT.csv` + **los bloques de juicio** (los 4 campos del catálogo,
+  testimonios, audio, texto de M2 con su guión de audio testimonio, FAQ), integrando los 6 ángulos
+  con **Promesa Integradora**. El texto fijo, el orden de los elementos y las interacciones **no
+  son suyos**: los declara `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`.
+  Después: `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` renderiza el flujo completo en
+  `PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`. Si bloquea, produce el dato que nombra y volvé a correrlo.
 
 > **DEFAULTS DE OPERADOR:** cuando el operador no entrega días de resultado, dosis, momento de uso,
 > estadísticas, # clientes o FAQs, `etapa-4` y `etapa-5` usan los valores base de

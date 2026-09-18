@@ -1,0 +1,45 @@
+{
+  "schema": "perfil_creativo/1",
+  "producto_key": "NUSAVA",
+  "angulo_key": "ARDOR",
+  "producido_por": "skill generar-conceptos — PASO 1 (perfil) y PASO 3 (textos)",
+  "origen": "perfil migrado el 16-sep-2026 desde armar_prompts_fase2.py. Textos del angulo ARDOR extraidos el 16-sep-2026 de lo que ya produjeron sus etapas: hook, sub-hook y sintomas de los copies D-ARDOR (etapa-4, 1_HACER_MANUAL.txt); ingredientes y dosis de 2_DATA_PRODUCTO.txt con su promesa 'B12 + B1 apoyan los nervios de pies y manos'; CTA y garantias del flujo E-ARDOR (etapa-5). Lenguaje de apoyo segun COPYWRITING_ADS.md.",
+  "perfil": {
+    "categoria": "dolor",
+    "resultado_visible_en_el_cuerpo": false,
+    "resultado_fotografiable_sin_montaje": false,
+    "es_tratamiento_con_curva": true,
+    "tiers_de_oferta": 3,
+    "tiene_multiplicador": false,
+    "activo_estrella_con_dosis": false,
+    "mecanismo_localizable_en_el_cuerpo": true,
+    "modo_de_uso_no_obvio": false,
+    "momento_de_uso_distintivo": false,
+    "alternativa_conocida": "",
+    "prueba_social_clientes": 1000,
+    "testimonios_reales_disponibles": 0,
+    "fanpage_con_reconocimiento_local": false,
+    "sintomas_reconocibles": 3,
+    "gesto_del_dolor_fotografiable": false,
+    "beneficios_distintos": 4,
+    "frase_con_giro_disponible": false,
+    "atributos_de_producto_diferenciales": 0,
+    "avatar_fotografiable": false,
+    "nivel_conciencia_objetivo": 3
+  },
+  "textos": {
+    "PRODUCTO": "NUSAVA B12 líquida sublingual (60 ml)",
+    "DESCRIPTOR": "Complejo B líquido que apoya tus nervios de pies y manos",
+    "HOOK_TITULAR": "¿TE ARDEN LOS PIES DE NOCHE COMO BRASAS?",
+    "SUB_HOOK": "B12 y B1 líquidas bajo la lengua: entran directo, sin depender del estómago.",
+    "SINTOMA_ANTES": "Pies que arden de noche, manos dormidas, hormigueo y noches sin descanso",
+    "RESULTADO_DESPUES": "El ardor va cediendo, menos hormigueo y noches de descanso tranquilo",
+    "ACTIVOS_CLAVE": [
+      "B12 metilcobalamina 5000 mcg: apoya los nervios de pies y manos",
+      "B1 (tiamina) 2400 mcg: acompaña a los nervios periféricos",
+      "Líquida sublingual: se absorbe directo, sin pasar por el estómago"
+    ],
+    "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto Original Sellado",
+    "CTA": "ESCRIBINOS POR WHATSAPP Y TE ORIENTAMOS"
+  }
+}

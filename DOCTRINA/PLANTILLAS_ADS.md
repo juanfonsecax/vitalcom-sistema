@@ -36,7 +36,6 @@
 > asqueroso", los anuncios más fuertes de la competencia (ej. la rata gigante amenazante de "¡AHUYENTA RATAS Y
 > RATONES!") rinden porque el **asco/miedo crudo detiene el scroll más rápido** que una escena bonita. Es la
 > misma lógica de Andrómeda ("se vende en <3 segundos") y del hook de dolor de Mercy, llevada al extremo visual.
-> Confirmado además como palanca de testeo por la práctica del operador (2026-07-04, Repelente Ultrasónico).
 
 **Cuándo usarlo (NO en todos los ads):**
 - **1 a 2 de los 6 conjuntos por lanzamiento** llevan la variación agresiva — nunca los 6. El resto mantiene los
@@ -65,8 +64,7 @@
 - **Marca visible arriba** (misma jerarquía marca→hook→producto→beneficio→CTA que el resto).
 
 > El resto del PROMPT MAESTRO se rellena igual; para la variación agresiva, elegir el ESTILO "e-commerce viral"
-> u "oscuro de lujo/dramático" y cargar el hook de choque en el HOOK VISUAL. (Ejemplo resuelto: AD-6 del
-> Repelente Ultrasónico en `PRODUCTOS/Repelente_Ultrasonico/1_HACER_MANUAL.txt`.)
+> u "oscuro de lujo/dramático" y cargar el hook de choque en el HOOK VISUAL.
 
 ---
 

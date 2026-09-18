@@ -127,6 +127,7 @@ class Entorno(object):
         self._json = {}
         self._motor = None
         self._params = None
+        self._alias = None
 
     # -- rutas --------------------------------------------------------------
     def ruta(self, *partes):
@@ -145,6 +146,15 @@ class Entorno(object):
                     filas = list(csv.DictReader(fh))
             self._csv[nombre] = filas
         return self._csv[nombre]
+
+    def alias(self):
+        """{nombre_viejo: nombre_canónico} del _ALIAS_CONJUNTOS.csv de ESTA base (fixture o real)."""
+        if self._alias is None:
+            if TOOLS not in sys.path:
+                sys.path.insert(0, TOOLS)
+            from alias import mapa_de
+            self._alias = mapa_de(self.csv("_ALIAS_CONJUNTOS.csv"))
+        return self._alias
 
     def json(self, ruta_rel):
         ruta = self.ruta(ruta_rel)
@@ -176,6 +186,11 @@ class Entorno(object):
                 decidir.DIM_BANDAS_PATH = os.path.join(P, "_DIM_BANDAS.csv")
                 decidir.FACT_VENTAS_PATH = os.path.join(P, "_FACT_VENTAS.csv")
                 decidir.FACT_ENTREGA_PATH = os.path.join(P, "_FACT_ENTREGA.csv")
+                decidir.FACT_ENTREGA_ANUNCIO_PATH = os.path.join(P, "_FACT_ENTREGA_ANUNCIO.csv")
+                decidir.ALIAS_PATH = os.path.join(P, "_ALIAS_CONJUNTOS.csv")
+                # Sin esto, un fixture leería la fase vigente del repo REAL y el gate de fase
+                # del motor juzgaría al producto del fixture con la fase de otro producto.
+                decidir.ESTADO_FLUJO_PATH = os.path.join(P, "_ESTADO_FLUJO.csv")
             try:
                 self._motor = decidir.analizar_portafolio()
             except Exception as e:      # el motor caído no frena el flujo: se dice
@@ -520,19 +535,33 @@ def _ev_eventos(p, ctx, env):
     return n >= lim, que
 
 
+def _ventas_base(env, pk):
+    """(fila, conjunto canónico) de las filas de _FACT_VENTAS.csv del producto que SUMAN.
+
+    BASE suma; CONTROL solapa a propósito para auditar y nunca suma (DATA_PLAYBOOK). El conjunto
+    se resuelve con _ALIAS_CONJUNTOS.csv para que un renombrado en Meta cruce con su dimensión."""
+    am = env.alias()
+    for r in env.csv("_FACT_VENTAS.csv"):
+        if (r.get("producto_key") or "").strip() != pk:
+            continue
+        if (r.get("rol_ventana") or "BASE").strip().upper() != "BASE":
+            continue
+        cj = (r.get("conjunto") or "").strip()
+        yield r, am.get(cj, cj)
+
+
 def _angulos_acumulados(env, pk):
     """VENTA y gasto acumulados por angulo_key, uniendo _FACT_VENTAS con _DIM_CONJUNTOS.
     Es la definición literal del invariante 1: el ganador se declara por VENTA agregando por
     angulo_key. Un conjunto sin dimensión agrega por su propio nombre (no se descarta data)."""
+    am = env.alias()
     ang = {}
     for r in env.csv("_DIM_CONJUNTOS.csv"):
         if (r.get("producto_key") or "").strip() == pk:
-            ang[(r.get("conjunto_meta") or "").strip()] = (r.get("angulo_key") or "").strip()
+            cm = (r.get("conjunto_meta") or "").strip()
+            ang[am.get(cm, cm)] = (r.get("angulo_key") or "").strip()
     acc = {}
-    for r in env.csv("_FACT_VENTAS.csv"):
-        if (r.get("producto_key") or "").strip() != pk:
-            continue
-        cj = (r.get("conjunto") or "").strip()
+    for r, cj in _ventas_base(env, pk):
         k = ang.get(cj) or cj
         a = acc.setdefault(k, [0.0, 0.0])
         a[0] += num(r.get("ventas"), 0.0)
@@ -541,18 +570,39 @@ def _angulos_acumulados(env, pk):
 
 
 def _ev_angulo_ganador(p, ctx, env):
-    """Ganador = ESCALAR del motor en la ventana vigente, O historia rentable acumulada
-    (≥ min_ventas ventas y CPA acumulado ≤ break-even). Las dos cosas son VENTA por angulo_key."""
+    """Ganador = ESCALAR del motor en la ventana vigente, O historia rentable acumulada.
+    Las dos cosas son VENTA por angulo_key, y LAS DOS exigen el mismo piso de volumen
+    (min_ventas_ganador). Cada rama se autocontiene y trae su propia prueba de rentabilidad:
+
+      · vigente   ventas de la VENTANA ≥ mv  +  ESCALAR (reglas 5/6 de decidir.py, que ya
+                  exigen el IC 95% ENTERO bajo break-even — evidencia más fuerte que un CPA
+                  puntual, así que no se le pide además el CPA acumulado: un ángulo que
+                  quemó plata antes de arreglar el bot es costo hundido, y eso lo contabiliza
+                  CONTABILIDAD.md, no este gate).
+      · histórica ventas ACUMULADAS ≥ mv  +  CPA acumulado ≤ BE (sin IC: es un promedio, y
+                  por eso necesita toda la serie para sostenerse).
+
+    Hasta el 15-sep-2026 la rama vigente NO pedía piso de volumen: bastaba un ESCALAR. Como
+    la regla 5 corona desde min_ventas_escalar (2), un ángulo con 3 ventas de UN SOLO DÍA
+    coronaba y el producto saltaba de fase esa misma noche — medido en la simulación de
+    TURMERIC. min_ventas_ganador es literalmente «cuántas ventas hacen a un ganador»: que
+    una rama lo aplicara y la otra no era un reglamento partido en dos."""
     pk = ctx["pk"]
     mv = resolver_num(p.get("min_ventas", "@param:min_ventas_ganador"), env) or 5
     prod = next((r for r in env.csv("_DIM_PRODUCTOS.csv") if (r.get("producto_key") or "").strip() == pk), {})
     be = num(prod.get("cpa_be_q"))
     tasa = num(prod.get("tasa"), 7.62) or 7.62
     ganadores = []
+    cortos = []                       # ESCALAR que aún no llega al piso: se dice, no se esconde
     celdas, _ = env.celdas(pk)
     for c in celdas:
-        if c.get("estado") == "ESCALAR":
-            ganadores.append("%s (ESCALAR %.0fv CPA Q%s)" % (c["celda"], num(c.get("ventas"), 0), c.get("cpa_real_q")))
+        if c.get("estado") != "ESCALAR":
+            continue
+        v = num(c.get("ventas"), 0) or 0
+        if v >= mv:
+            ganadores.append("%s (ESCALAR %.0fv CPA Q%s)" % (c["celda"], v, c.get("cpa_real_q")))
+        else:
+            cortos.append("%s (ESCALAR pero %.0fv < %g)" % (c["celda"], v, mv))
     if be:
         for k, (v, s) in sorted(_angulos_acumulados(env, pk).items(), key=lambda kv: -kv[1][0]):
             if v >= mv and s > 0 and (s * tasa / v) <= be:
@@ -560,7 +610,10 @@ def _ev_angulo_ganador(p, ctx, env):
                 if not any(k in g for g in ganadores):
                     ganadores.append(et)
     if not ganadores:
-        return False, "ningún ángulo con ≥%g ventas a CPA ≤ BE ni ESCALAR vigente" % mv
+        que = "ningún ángulo con ≥%g ventas a CPA ≤ BE ni ESCALAR vigente con ≥%g ventas" % (mv, mv)
+        if cortos:
+            que += " · descartado por volumen: " + "; ".join(cortos[:3])
+        return False, que
     return True, "; ".join(ganadores[:4])
 
 
@@ -578,19 +631,39 @@ def _concepto_de(anuncio, conjunto):
 
 
 def _ev_concepto_2de2(p, ctx, env):
-    """Regla de replicación: el mismo concepto es el mejor CPA (≥ min_ventas ventas) en al menos
-    2 campañas de conceptos distintas. Fuente: _FACT_VENTAS.csv, campañas con 'CONCEPTOS' en el
-    nombre. Sin dos campañas no hay replicación posible."""
+    """Regla de replicación: el mismo concepto gana (≥ min_ventas ventas) en al menos 2 campañas
+    de conceptos distintas. Fuente: _FACT_VENTAS.csv, campañas con 'CONCEPTOS' en el nombre.
+    Sin dos campañas no hay replicación posible.
+
+    EL UMBRAL ES 2, SIEMPRE. El denominador es cuántas campañas de conceptos tienen data, y la
+    doctrina de FASE 2 son TRES (1-1-5 + 1-1-5 + 1-2-5), así que el rótulo natural de este gate
+    es «2 de 3»: es la regla 2-de-2 de siempre contada sobre tres campañas, no una variante. El
+    mensaje lo dice explícito («… de las 3 campañas con data · hacen falta 2») porque el texto
+    viejo —«gana en 2 de 3 campañas»— se leyó como si el umbral hubiera cambiado.
+
+    EMPATE TÉCNICO (15-sep-2026). Hasta hoy cada campaña coronaba UN concepto por CPA puntual
+    (`min(cand)`). Con 2-3 ventas por concepto esa diferencia es ruido, y el gate oscilaba día a
+    día — medido sobre la simulación de TURMERIC: 25-sep ✗ · 26-sep ✓ · 27-sep ✗ · 28-sep ✓. El
+    26 dos conceptos empataban EXACTO (1.75 y 1.75) y desempataba el orden alfabético; el 27 se
+    dieron vuelta por Q0.04 (1.7 %) y el producto volvió de FASE 3 a FASE 2. Un 1.7 % con 3
+    ventas no prueba replicación: es la misma razón por la que decidir.py no mueve plata con un
+    CPA puntual si el IC lo cruza (invariante 13), y entrar a FASE 3 —comprar volumen en CBO— es
+    igual de irreversible. Ahora cuenta como ganador de una campaña todo concepto dentro de
+    `margen_empate_cpa_pct` del mejor.
+
+    No se usa el IC acá, y es deliberado: con 2 ventas el intervalo de un concepto es tan ancho
+    que TODOS se solaparían con todos y el gate se volvería trivial. El margen acota el empate a
+    una banda declarada en vez de a una incertidumbre que con n chico no discrimina."""
     pk = ctx["pk"]
     mv = resolver_num(p.get("min_ventas", "@param:min_ventas_escalar"), env) or 2
+    margen = resolver_num(p.get("margen_empate_pct", "@param:margen_empate_cpa_pct"), env)
+    margen = 0.0 if margen is None else margen      # sin parámetro declarado: winner-take-all
     por_camp = {}
-    for r in env.csv("_FACT_VENTAS.csv"):
-        if (r.get("producto_key") or "").strip() != pk:
-            continue
+    for r, cj in _ventas_base(env, pk):
         camp = (r.get("campana") or "").strip()
         if "CONCEPTOS" not in camp.upper():
             continue
-        cpt = _concepto_de(r.get("anuncio"), r.get("conjunto"))
+        cpt = _concepto_de(r.get("anuncio"), cj)
         if not cpt:
             continue
         a = por_camp.setdefault(camp, {}).setdefault(cpt, [0.0, 0.0])
@@ -598,18 +671,40 @@ def _ev_concepto_2de2(p, ctx, env):
         a[1] += num(r.get("spend_usd"), 0.0)
     if len(por_camp) < 2:
         return False, "%d campaña(s) de conceptos con data · se necesitan 2 para replicar" % len(por_camp)
-    mejores = {}
-    for camp, cs in por_camp.items():
-        cand = [(s / v, c) for c, (v, s) in cs.items() if v >= mv and s > 0]
-        if cand:
-            mejores[camp] = min(cand)[1]
     conteo = {}
-    for c in mejores.values():
-        conteo[c] = conteo.get(c, 0) + 1
+    empates = []
+    for camp, cs in sorted(por_camp.items()):
+        cand = sorted((s / v, c) for c, (v, s) in cs.items() if v >= mv and s > 0)
+        if not cand:
+            continue
+        techo = cand[0][0] * (1.0 + margen / 100.0)
+        ganan = [c for cpa, c in cand if cpa <= techo + 1e-9]
+        for c in ganan:
+            conteo[c] = conteo.get(c, 0) + 1
+        if len(ganan) > 1:
+            empates.append("%s en «%s»" % (" = ".join(ganan), camp))
     if not conteo:
         return False, "ningún concepto con ≥%g ventas en ninguna campaña" % mv
-    c, n = max(conteo.items(), key=lambda kv: kv[1])
-    return n >= 2, "%s gana en %d de %d campañas" % (c, n, len(por_camp))
+    # Desempate determinista: más campañas primero y, a igualdad, el mejor CPA AGREGADO — que
+    # junta la evidencia de todas las campañas en vez de fiarse del número de una sola. El
+    # nombre entra solo como último recurso, para no depender del orden de lectura del CSV.
+    glob = {}
+    for cs in por_camp.values():
+        for c, (v, s) in cs.items():
+            a = glob.setdefault(c, [0.0, 0.0])
+            a[0] += v
+            a[1] += s
+
+    def _cpa_glob(c):
+        v, s = glob.get(c, [0.0, 0.0])
+        return (s / v) if v > 0 else float("inf")
+
+    c = min(conteo, key=lambda k: (-conteo[k], _cpa_glob(k), k))
+    n = conteo[c]
+    que = "%s replica en %d de las %d campañas con data (hacen falta 2)" % (c, n, len(por_camp))
+    if empates:
+        que += " · empate técnico dentro del %g%%: %s" % (margen, "; ".join(empates[:2]))
+    return n >= 2, que
 
 
 TOKEN_FASE = {"1": "TEST", "2": "CONCEPTOS", "3": "ESCALA"}
@@ -623,13 +718,11 @@ def _ev_estructura_publicada(p, ctx, env):
     esperado = publicacion_num(env, "conjuntos_fase%s" % fase)
     tok = TOKEN_FASE.get(fase, "")
     vistos = {}
-    for r in env.csv("_FACT_VENTAS.csv"):
-        if (r.get("producto_key") or "").strip() != ctx["pk"]:
-            continue
+    for r, cj in _ventas_base(env, ctx["pk"]):
         camp = (r.get("campana") or "").strip()
         if tok not in camp.upper() or num(r.get("spend_usd"), 0) <= 0:
             continue
-        vistos.setdefault(camp, set()).add((r.get("conjunto") or "").strip())
+        vistos.setdefault(camp, set()).add(cj)
     if not vistos:
         return True, "sin campañas de fase %s con gasto" % fase
     total = sum(len(v) for v in vistos.values())

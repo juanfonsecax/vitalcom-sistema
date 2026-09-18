@@ -92,6 +92,6 @@ Reutilizar la misma lista de estilos anti-fatiga de `PLANTILLAS_ADS.md` (minimal
 ## 5. PENDIENTES PARA REFINAR (Juan)
 - [ ] Confirmar herramientas y costos reales (Kling/PiAPI vs Seedance vs Higgsfield; créditos/mes).
 - [ ] Definir dónde entra: ¿solo FASE 2 ganador? ¿ángulos vírgenes FASE 1?
-- [ ] Piloto: 1 video sobre un ángulo de un producto vivo (NusavaB12 o D3+K2) y comparar CPA vs la versión imagen actual. **Decisión por data, no por entusiasmo.**
+- [ ] Piloto: 1 video sobre un ángulo de un producto vivo (NusavaB12) y comparar CPA vs la versión imagen actual. **Decisión por data, no por entusiasmo.**
 - [ ] Definir cómo se conecta con P3 (fanpage/personaje-marca honesto) — un personaje de marca necesita este pipeline para su contenido.
 - [ ] Recién con el piloto validado: cablear a la DOCTRINA DE CREATIVOS + ETAPA-4 + ETAPA-6 (subir VERSION del sistema).

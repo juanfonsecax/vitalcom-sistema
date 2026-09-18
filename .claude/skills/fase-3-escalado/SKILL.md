@@ -1,6 +1,6 @@
 ---
 name: fase-3-escalado
-description: FASE 3 — Escalado. Con un concepto ganador en 2 de 2 apariciones y CPA real bajo Break-Even, orquesta la compra de volumen: campaña 1-1-7 con el creativo validado ×7, expansión horizontal por Post ID, multicuenta y multi-fanpage, y el plan escrito en 4_PLAN_ESCALADO.txt. Aplica las cuatro reglas duras del escalado. Úsala cuando flujo.py sitúa al producto en un nodo F3.*, o cuando el operador dice "tengo concepto ganador", "quiero volumen", "escalar" o "subir presupuesto".
+description: "FASE 3 — Escalado. Con un concepto ganador en 2 de 2 apariciones y CPA real bajo Break-Even, orquesta la compra de volumen: campaña 1-1-7 con el creativo validado ×7, expansión horizontal por Post ID, multicuenta y multi-fanpage, y el plan escrito en 4_PLAN_ESCALADO.txt. Aplica las cuatro reglas duras del escalado. Úsala cuando flujo.py sitúa al producto en un nodo F3.*, o cuando el operador dice \"tengo concepto ganador\", \"quiero volumen\", \"escalar\" o \"subir presupuesto\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 

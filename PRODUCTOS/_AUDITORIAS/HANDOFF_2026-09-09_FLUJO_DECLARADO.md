@@ -47,8 +47,6 @@
 | NUSAVA | F2 (histórico ARDOR 130v) | `F2.etapa-11` | idem; ningún concepto generado todavía |
 | CLEARSTEM | F2 | `F2.conceptos` | 5/10 GENERADO + 4 PENDIENTE_GENERAR → etapa-9 / etapa-render |
 | VARICOSE | PAUSADO | — | reingreso solo por decisión explícita |
-| D3+K2 · Repelente · OVULOS | F1 | `F1.congelar_inputs` | falta `costo_q` (y transcripciones en Repelente) |
-| SERUM_COLAGENO_BOTOX | F1 | `F1.congelar_inputs` | 0 transcripciones en disco: el paquete se armó sin ellas |
 
 ## MEDIDO
 

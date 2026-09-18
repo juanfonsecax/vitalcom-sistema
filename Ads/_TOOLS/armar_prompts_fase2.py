@@ -9,7 +9,14 @@ QUE HACE:
    - La Foto Real del producto desde Ads/MEDIA_[PRODUCTO]/
    - El JSON parametrizado con variables de dolor, precios en Q e ingredientes reales.
    - El Prompt Multimodal "Director de Arte" listo para pegar en ChatGPT / Gemini Pro.
-4. Genera además la adaptación de mensajes para LucidBot (congruencia anuncio -> bot, respetando los 13 elementos).
+4. NO escribe texto de bot: ese flujo es de etapa-5 (PRODUCTOS/[carpeta]/1_HACER_MANUAL.txt).
+
+DE DONDE SALE CADA DATO (un dato, un dueno — este script ya no nombra ningun producto)
+    precios                   PRODUCTOS/_DIM_PRECIOS.csv                       (nunca se inventan)
+    packshot / envase         PRODUCTOS/_DIM_ENVASE.csv
+    perfil y textos           PRODUCTOS/[carpeta]/_PERFIL_CREATIVO.json        (lo escribe la skill
+                              generar-conceptos desde la investigacion del producto)
+Si falta cualquiera, BLOQUEA con el nombre de quien lo produce (invariante 4).
 """
 
 import os
@@ -114,6 +121,29 @@ def leer_escalera(producto_key):
     return tiers or None
 
 
+def requerir_precios_reales(producto_key):
+    """La escalera de precios REAL o BLOQUEO — nunca los precios de otro producto.
+
+    Misma clase de bug que buscar_foto_producto() (07-sep): leer_escalera() ya existia
+    desde el 08-sep para leer PRODUCTOS/_DIM_PRECIOS.csv, pero cuando devolvia None (sin
+    fila ACTIVA para este producto) el llamador caia en silencio a un PRECIOS_GT
+    hardcodeado — Q179/Q239/Q299 de TINNIDROP para cualquier producto sin fila propia, o
+    Q199/Q299/Q399 de CLEARSTEM en la adaptacion de LucidBot. Invariante 4: si falta un
+    input requerido, se detiene con el nombre de quien lo produce — nunca se asume."""
+    precios = leer_escalera(producto_key)
+    if not precios:
+        raise SystemExit(
+            f"BLOQUEANTE: {producto_key} no tiene fila ACTIVA en PRODUCTOS/_DIM_PRECIOS.csv.\n"
+            f"  Sin la escalera de precios real, no se generan los prompts: caer a los precios "
+            f"de otro producto (TINNIDROP Q179/Q239/Q299) fue exactamente el bug que "
+            f"leer_escalera() vino a cerrar el 08-sep-2026 — no se reintroduce por la puerta "
+            f"de atras con un fallback hardcodeado.\n"
+            f"  Agrega la fila de {producto_key} en PRODUCTOS/_DIM_PRECIOS.csv (unidades, "
+            f"precio_q, precio_antes_q, estado=ACTIVO) antes de generar."
+        )
+    return precios
+
+
 def buscar_foto_producto(producto_key):
     """Devuelve la ruta absoluta del packshot DECLARADO. Falla ruidoso si no lo hay."""
     envase = leer_envase(producto_key)
@@ -135,42 +165,95 @@ def buscar_foto_producto(producto_key):
     return ruta
 
 
-def obtener_perfil_producto(producto_key, angulo_ganador):
-    """Construye el perfil para seleccionar_canonicos.py."""
+PERFIL_CREATIVO = "_PERFIL_CREATIVO.json"
+PRODUCTOR_PERFIL = "la skill generar-conceptos (PASO 1 arma el perfil, PASO 3 los textos)"
+# Los textos que el prompt usa si o si. PRODUCTO, DESCRIPTOR, SINTOMA_ANTES y RESULTADO_DESPUES
+# viajan en variables_json pero el prompt no los pide: no se exigen.
+TEXTOS_REQUERIDOS = ("HOOK_TITULAR", "SUB_HOOK", "ACTIVOS_CLAVE", "GARANTIAS", "CTA")
+
+
+def carpeta_de(producto_key):
+    """slug_carpeta desde _DIM_PRODUCTOS.csv. Invariante 10: la carpeta nunca se adivina por el nombre."""
+    ruta = os.path.join(PROD_DIR, "_DIM_PRODUCTOS.csv")
+    if os.path.exists(ruta):
+        with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
+            for r in csv.DictReader(fh):
+                if (r.get("producto_key") or "").strip() == producto_key:
+                    return (r.get("slug_carpeta") or "").strip() or None
+    return None
+
+
+def cargar_perfil_creativo(producto_key):
+    """PRODUCTOS/[carpeta]/_PERFIL_CREATIVO.json, o BLOQUEO con el nombre de quien lo produce.
+
+    POR QUE EXISTE (16-sep-2026, defecto residual de la simulacion TURMERIC). Este script tenia
+    el perfil de cada producto, el texto de sus creativos y el guion del bot ESCRITOS A MANO en
+    el codigo: `if producto_key == "CLEARSTEM"`. Tres consecuencias medidas:
+      · un producto nuevo caia en un `else` que le inventaba los INGREDIENTES ("Extractos
+        botanicos certificados", "Absorcion rapida") en vez de leer la investigacion;
+      · el mismo `else` asumia `resultado_visible_en_el_cuerpo = True`, lo contrario de la regla
+        de su dueno (seleccionar_canonicos.py: lo no declarado es FALSO), y elegia mal las
+        plantillas de creativo;
+      · el guion de LucidBot estaba escrito para CLEARSTEM y se aplicaba a TODOS: el paquete real
+        de TINNIDROP (un spray para el oido) saluda con "Vi que te interesó Clearstem para el
+        acné hormonal".
+
+    El dato ya tenia productor: la skill generar-conceptos lee 2_DATA_PRODUCTO.txt y arma el
+    perfil (PASO 1) y los textos (PASO 3), pero los dejaba en un archivo temporal. Ahora los
+    persiste aca y este script solo los LEE: el codigo no vuelve a nombrar un producto, y un
+    producto nuevo no necesita que nadie toque Python. Es el camino a un sistema autonomo."""
+    carpeta = carpeta_de(producto_key)
+    if not carpeta:
+        raise SystemExit(
+            f"BLOQUEANTE: {producto_key} no tiene slug_carpeta en PRODUCTOS/_DIM_PRODUCTOS.csv.\n"
+            f"  La carpeta del producto se resuelve por el CSV, nunca por el nombre (invariante 10).")
+    ruta = os.path.join(PROD_DIR, carpeta, PERFIL_CREATIVO)
+    if not os.path.exists(ruta):
+        raise SystemExit(
+            f"BLOQUEANTE: falta PRODUCTOS/{carpeta}/{PERFIL_CREATIVO}.\n"
+            f"  Lo produce {PRODUCTOR_PERFIL}, leyendo la investigacion del producto.\n"
+            f"  Sin el no se generan creativos: el codigo ya no inventa el perfil ni los textos.")
+    with io.open(ruta, encoding="utf-8") as fh:
+        doc = json.load(fh)
+    if not isinstance(doc.get("perfil"), dict):
+        raise SystemExit(
+            f"BLOQUEANTE: PRODUCTOS/{carpeta}/{PERFIL_CREATIVO} no trae el bloque 'perfil'.\n"
+            f"  Lo produce {PRODUCTOR_PERFIL}.")
+    return doc
+
+
+def requerir_textos(perfil_creativo, producto_key, angulo):
+    """Los textos del creativo PARA ESTE ANGULO, o BLOQUEO. Nunca un texto generico ni de otro angulo.
+
+    El perfil (si el resultado se ve, si hay curva...) es del PRODUCTO. Los textos son de UN ANGULO: el hook de TINNIDROP ("¿cansado de gastar en consultas...?") es de
+    ACCESIBILIDAD_MEDICO. Por eso el archivo declara `angulo_key`: si el angulo ganador cambia, se
+    bloquea en vez de usar en silencio los textos del angulo anterior (16-sep-2026)."""
+    declarado = (perfil_creativo.get("angulo_key") or "").strip()
+    if declarado != angulo:
+        raise SystemExit(
+            f"BLOQUEANTE: los textos del {PERFIL_CREATIVO} de {producto_key} son del angulo "
+            f"'{declarado or '(sin declarar)'}' y se esta generando para '{angulo}'.\n"
+            f"  Los textos de un angulo no sirven para otro. Los produce {PRODUCTOR_PERFIL}, para '{angulo}'.")
+    textos = perfil_creativo.get("textos") or {}
+    faltan = [k for k in TEXTOS_REQUERIDOS if not textos.get(k)]
+    if faltan:
+        raise SystemExit(
+            f"BLOQUEANTE: el {PERFIL_CREATIVO} de {producto_key} no trae los textos: {', '.join(faltan)}.\n"
+            f"  Los produce {PRODUCTOR_PERFIL}. No se rellenan con un texto generico: los "
+            f"ingredientes salen de la investigacion, no de una plantilla.")
+    return textos
+
+
+def obtener_perfil_producto(producto_key, angulo_ganador, perfil_creativo=None):
+    """Construye el perfil para seleccionar_canonicos.py desde el perfil DECLARADO del producto.
+
+    Parte de PLANTILLA_PERFIL, asi que lo que el archivo no declara queda en su valor por defecto
+    (falso / 0): la regla de seleccionar_canonicos.py, en vez del optimismo que tenia el codigo."""
+    doc = perfil_creativo or cargar_perfil_creativo(producto_key)
     p = dict(sc.PLANTILLA_PERFIL)
+    p.update(doc["perfil"])
     p["producto"] = producto_key
     p["angulo_ganador"] = angulo_ganador
-    p["tiers_de_oferta"] = 3
-    p["prueba_social_clientes"] = 1000
-
-    if producto_key.upper() == "CLEARSTEM":
-        p["categoria"] = "dolor"
-        p["resultado_visible_en_el_cuerpo"] = True
-        p["resultado_fotografiable_sin_montaje"] = True
-        p["es_tratamiento_con_curva"] = True
-        p["activo_estrella_con_dosis"] = True
-        p["mecanismo_localizable_en_el_cuerpo"] = True
-        p["sintomas_reconocibles"] = 3
-        p["beneficios_distintos"] = 4
-    elif producto_key.upper() == "TINNIDROP":
-        p["categoria"] = "dolor"
-        p["resultado_visible_en_el_cuerpo"] = False
-        p["mecanismo_localizable_en_el_cuerpo"] = True
-        p["es_tratamiento_con_curva"] = True
-        p["sintomas_reconocibles"] = 3
-        p["beneficios_distintos"] = 4
-    elif producto_key.upper() == "NUSAVA":
-        p["categoria"] = "dolor"
-        p["resultado_visible_en_el_cuerpo"] = False
-        p["mecanismo_localizable_en_el_cuerpo"] = True
-        p["es_tratamiento_con_curva"] = True
-        p["sintomas_reconocibles"] = 3
-        p["beneficios_distintos"] = 4
-    else:
-        p["resultado_visible_en_el_cuerpo"] = True
-        p["sintomas_reconocibles"] = 2
-        p["beneficios_distintos"] = 3
-
     return p
 
 
@@ -196,8 +279,17 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
     foto_prod_path = buscar_foto_producto(producto_key)
     foto_prod_rel = os.path.relpath(foto_prod_path, BASE).replace("\\", "/")
 
+    # 2b. Precios REALES — se bloquea ANTES de armar un solo paquete, no se descubre a
+    # medio prompt ni se cae a los de otro producto (ver requerir_precios_reales).
+    precios_reales = requerir_precios_reales(producto_key)
+
+    # 2c. Perfil y textos DECLARADOS del producto — mismo criterio que los precios: se bloquea
+    # antes de escribir un solo archivo, nunca se cae a un texto generico ni al de otro producto.
+    perfil_creativo = cargar_perfil_creativo(producto_key)
+    textos = requerir_textos(perfil_creativo, producto_key, angulo)
+
     # 3. Selección de los 5 blueprints canónicos
-    perfil = obtener_perfil_producto(producto_key, angulo)
+    perfil = obtener_perfil_producto(producto_key, angulo, perfil_creativo)
     sel_res = sc.seleccionar(perfil, n=5)
     elegidos = sel_res["seleccion"]
 
@@ -228,66 +320,14 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
                 foto_base_rel = os.path.join("Ads", "_SWIPE", orig_file).replace("\\", "/")
                 dispositivo_txt = f_data.get("dispositivo_dominante", dispositivo_txt)
 
-        # Variables adaptadas al producto y ángulo
-        if producto_key.upper() == "CLEARSTEM":
-            variables_adaptadas = {
-                "PRODUCTO": "Clearstem Mindbodyskin (90 Cápsulas)",
-                "DESCRIPTOR": "Tratamiento hormonal de raíz para el acné",
-                "HOOK_TITULAR": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE CURAN CON CREMAS!",
-                "SUB_HOOK": "Ataca el exceso de sebo, la inflamación y los picos de glucosa desde adentro.",
-                "SINTOMA_ANTES": "Rostro con brotes profundos e inflamados en mandíbula, poros obstruidos y textura grasa",
-                "RESULTADO_DESPUES": "Piel limpia, calmada, textura lisa y poros cerrados sin manchas rojas",
-                "ACTIVOS_CLAVE": [
-                    "DIM: Equilibra el exceso hormonal y el sebo",
-                    "Glutatión + Vitamina A: Desinflaman y regeneran la piel",
-                    "Diente de León: Apoya la desintoxicación hepática"
-                ],
-                "PRECIOS_GT": {
-                    "TIER_1": "1 Frasco (1 Mes) por Q199",
-                    "TIER_2": "2 Frascos (2 Meses) por Q299 (OFERTA MÁS ELEGIDA ⭐)",
-                    "TIER_3": "3 Frascos (Tratamiento Completo) por Q399"
-                },
-                "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Americano",
-                "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
-            }
-        elif producto_key.upper() == "TINNIDROP":
-            variables_adaptadas = {
-                "PRODUCTO": "Tinnidrop Spray Ótico Original (Azul y Blanco)",
-                "DESCRIPTOR": "Alivio botánico del zumbido y timbre en los oídos",
-                "HOOK_TITULAR": "¿CANSADO DE GASTAR EN CONSULTAS QUE SOLO DICEN 'APRENDÉ A VIVIR CON EL ZUMBIDO'?",
-                "SUB_HOOK": "Menos de lo que cuesta una sola consulta con el especialista. Fórmula botánica de aplicación ótica.",
-                "SINTOMA_ANTES": "Pitido agudo constante, noches en vela, dolor de cabeza y recetas caras que no quitan el ruido",
-                "RESULTADO_DESPUES": "Silencio auditivo, descanso reparador en las noches y tranquilidad sin gastar de más",
-                "ACTIVOS_CLAVE": [
-                    "Ginkgo Biloba: Estimula la microcirculación en el canal auditivo",
-                    "Extractos Botánicos: Calman la hiperexcitabilidad del nervio",
-                    "Aplicación Ótica: Actúa directo en el oído, sin pasar por el estómago"
-                ],
-                "PRECIOS_GT": {
-                    "TIER_1": "1 Frasco por Q179",
-                    "TIER_2": "2 Frascos por Q239 (OFERTA MÁS ELEGIDA ⭐)",
-                    "TIER_3": "3 Frascos por Q299 (Tratamiento Completo)"
-                },
-                "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Sellado",
-                "CTA": "PEDÍ POR WHATSAPP CON ENVÍO GRATIS AQUÍ"
-            }
-        else:
-            variables_adaptadas = {
-                "PRODUCTO": f"{producto_key} Original",
-                "DESCRIPTOR": "Fórmula avanzada de alivio",
-                "HOOK_TITULAR": f"¡ALIVIO COMPROBADO PARA {angulo.replace('_', ' ')}!",
-                "SUB_HOOK": "Fórmula natural importada con respaldo comprobado.",
-                "ACTIVOS_CLAVE": ["Extractos botánicos certificados", "Absorción rápida"],
-                "PRECIOS_GT": {"TIER_1": "1 Unidad por Q179", "TIER_2": "2 Unidades por Q239", "TIER_3": "3 Unidades por Q299"},
-                "GARANTIAS": "Pago Contra Entrega · Envío Gratis",
-                "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
-            }
+        # Los textos DECLARADOS del producto (requerir_textos, validados al arrancar). Copia por
+        # concepto: abajo se le agrega PRECIOS_GT y no debe filtrarse al siguiente.
+        variables_adaptadas = dict(textos)
 
-        # La escalera REAL manda sobre la hardcodeada de arriba: sale de _DIM_PRECIOS.csv
-        # y trae el precio ancla, para que el modelo no invente el "antes".
-        _esc = leer_escalera(producto_key)
-        if _esc:
-            variables_adaptadas["PRECIOS_GT"] = _esc
+        # La escalera de precios es SIEMPRE la real (precios_reales, validada al arrancar
+        # generar_paquete_multimodal): sale de _DIM_PRECIOS.csv y trae el precio ancla, para
+        # que el modelo no invente el "antes". Ningun bloque de arriba la hardcodea ya.
+        variables_adaptadas["PRECIOS_GT"] = precios_reales
 
         nombre_archivo = f"{producto_key}_F2_{cid.split('_')[0]}_{angulo[:12]}.png"
 
@@ -345,30 +385,18 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
         prompts_texto.append(f"──────────────────────────────────────────────────────────────────────────────")
         prompts_texto.append(f"{prompt_ia}\n\n")
 
-    # 5. Adaptación de LucidBot para este ángulo (Congruencia extremo a extremo)
+    # 5. El bot NO se escribe aca. El texto del flujo de LucidBot tiene un solo dueno, etapa-5, y su
+    # doctrina contradice lo que este script generaba: ETAPA-5.md manda el saludo FIJO, "SIN dolor
+    # del angulo (el saludo no cambia por angulo)", y "NO se hace la pregunta de opciones". Este
+    # script armaba "¡Hola! Vi que te interesó [producto] para [dolor]" + una pregunta de calificacion:
+    # quien lo copiara a LucidBot rompia el saludo fijo. Ademas estaba escrito para CLEARSTEM y se
+    # aplicaba a todos (16-sep-2026). Se deja solo el puntero a donde vive el flujo real.
+    carpeta = carpeta_de(producto_key)
     adaptacion_bot = {
         "angulo_ganador": angulo,
-        "saludo_inicial_hook": (
-            "¡Hola! Vi que te interesó Clearstem para el acné hormonal y la resistencia a la insulina 🌿 "
-            "Si sentís que por más cremas que usás los brotes siguen saliendo en la mandíbula o cuello, "
-            "es porque el problema viene de adentro (picos de glucosa y exceso de sebo). "
-            "¿Hace cuánto tiempo venís lidiando con estos brotes?"
-        ),
-        "pregunta_calificacion": (
-            "Para darte la recomendación exacta: ¿has notado que empeoran antes de tu período, "
-            "después de comer carbohidratos/dulces, o cuando estás bajo mucho estrés?"
-        ),
-        "presentacion_solucion": (
-            "Exactamente por eso las cremas comunes no te han funcionado. Clearstem Mindbodyskin trabaja con "
-            "DIM natural y Glutatión que regulan las hormonas y el hígado para detener el sebo antes de que tape el poro."
-        ),
-        "oferta_precio": (
-            "Hoy tenemos cobertura completa en Guatemala con PAGO CONTRA ENTREGA (pagás en efectivo al recibir):\n"
-            "• 1 Frasco (1 Mes): Q199\n"
-            "• 2 Frascos (2 Meses - Tratamiento Recomendado): Q299 (Ahorrás Q99 ⭐)\n"
-            "• 3 Frascos (Tratamiento Completo): Q399\n"
-            "¿A qué departamento o municipio te lo enviamos?"
-        )
+        "dueno": "etapa-5 (dueno unico del texto del flujo de LucidBot)",
+        "flujo": f"PRODUCTOS/{carpeta}/1_HACER_MANUAL.txt",
+        "regla": "saludo FIJO sin dolor del angulo · sin pregunta de opciones · el dolor va en el anuncio",
     }
 
     # Guardar archivos
@@ -378,16 +406,18 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
 
     salida_json = os.path.join(out_dir, f"PAQUETE_CREATIVO_{angulo}.json")
     with io.open(salida_json, "w", encoding="utf-8") as f:
-        json.dump({"producto": producto_key, "angulo": angulo, "conceptos": paquetes, "lucidbot_adaptacion": adaptacion_bot}, f, ensure_ascii=False, indent=2)
+        json.dump({"producto": producto_key, "angulo": angulo, "conceptos": paquetes, "lucidbot_flujo": adaptacion_bot}, f, ensure_ascii=False, indent=2)
 
     print(f"✅ Generados los 5 paquetes creativos multimodales en:")
     print(f"   📄 {salida_txt}")
     print(f"   📄 {salida_json}")
-    print(f"\n✅ Adaptación de LucidBot generada (congruencia anuncio -> bot).")
+    print(f"\n🤖 El texto del bot no se genera aca: es de etapa-5, en {adaptacion_bot['flujo']}.")
     return salida_txt, salida_json, paquetes, adaptacion_bot
 
 
 if __name__ == "__main__":
-    pk = sys.argv[1] if len(sys.argv) > 1 else "CLEARSTEM"
+    if len(sys.argv) < 2:          # sin producto por defecto: el codigo no elige un producto por su nombre
+        raise SystemExit("USO: python Ads/_TOOLS/armar_prompts_fase2.py PRODUCTO_KEY [ANGULO]")
+    pk = sys.argv[1]
     ang = sys.argv[2] if len(sys.argv) > 2 else None
     generar_paquete_multimodal(pk, ang)

@@ -1,6 +1,6 @@
 {
-  "generado": "2026-09-09",
-  "version": 5,
+  "generado": "2026-09-17",
+  "version": 6,
   "app": {
     "titulo": "VitalCom Guatemala",
     "subtitulo": "sistema de lanzamiento y optimización",
@@ -56,12 +56,12 @@
       "src": "FLUJO.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -82,12 +82,38 @@
       "src": "../PRODUCTOS/_DECISIONES.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-17"
+      }
+    },
+    {
+      "id": "perfiles",
+      "seccion": "decisiones",
+      "rotulo": "Perfiles de Ángulo",
+      "sub": "ciclo de vida de cada ángulo y riesgo de mover su presupuesto",
+      "tipo": "iframe",
+      "render": null,
+      "fuente": "VISTAS/PERFILES.html",
+      "genera": "python Ads/_TOOLS/perfilar_angulos.py --html",
+      "dueno": "perfilar_angulos.py — PRODUCTOS/_ESTADO_ANGULOS.csv",
+      "caduca": {
+        "ok_dias": 1,
+        "tibia_dias": 3
+      },
+      "pesada": false,
+      "src": "PERFILES.html",
+      "estado": {
+        "existe": true,
+        "mtime": "2026-09-17",
+        "edad_dias": 0,
+        "clase": "ok",
+        "etiqueta": "hoy",
+        "chip": "c-good",
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -108,12 +134,12 @@
       "src": "../PRODUCTOS/_LANZADOR.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-09"
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -131,11 +157,11 @@
       "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-09",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ninguna",
         "etiqueta": "",
-        "detalle": "no caduca · escrita 2026-09-09",
+        "detalle": "no caduca · escrita 2026-09-17",
         "chip": "c-neutro"
       }
     },
@@ -164,79 +190,109 @@
     }
   ],
   "salud": {
-    "al_dia": 3,
+    "al_dia": 4,
     "envejecidas": 0,
     "faltantes": 0,
     "pendientes": [
       {
-        "producto": "Serum Colageno Botox",
-        "que": "cuenta publicitaria sin asignar",
-        "quien": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias",
-        "bloquea": true
-      },
-      {
-        "producto": "Serum Colageno Botox",
+        "producto": "Óvulos Purity Hernatura",
         "que": "page_id de la FanPage sin asignar",
         "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
         "bloquea": true
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 1 (CARA_CANSADA_QUITA): sin nivel_conciencia -> la firma sale con ? en NC",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "break-even sin calcular",
+        "quien": "etapa-1 · Ads/_TOOLS/costear.py",
+        "bloquea": true
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: page_id de HERNATURA CO SIN ASIGNAR (página externa, sin MCP) -> lo da el operador",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 2 (PIEL_CAMBIO_40): sin nivel_conciencia -> la firma sale con ? en NC",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: cuenta publicitaria externa sin alias ni fila en _DIM_CUENTAS.csv -> el operador define el alias que reemplaza [CUENTA] en los nombres",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 3 (LIFTING_SIN_AGUJAS): sin nivel_conciencia -> la firma sale con ? en NC",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: número de WhatsApp conectado a HERNATURA CO no confirmado",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 4 (CREMAS_HACEN_NADA): sin avatar_edad -> corre en banda amplia 18-65+",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: moneda de facturación de la cuenta sin confirmar (USD o COP). Si es COP, cargar $9.426/conjunto y convertir el gasto a USD con tasa 3152.5 al ingerir",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 4 (CREMAS_HACEN_NADA): sin nivel_conciencia -> la firma sale con ? en NC",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "hora: _PARAMETROS_PUBLICACION.csv fase 1 tz_offset=-06:00 (Guatemala); Colombia es -05:00 -> programar 04:00 hora Colombia a mano",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin avatar_edad -> corre en banda amplia 18-65+",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "estructura: _PARAMETROS_PUBLICACION.csv fase 1 dice anuncios_por_conjunto=1; ETAPA-6 y la decisión del orquestador dicen 2 (duplicado) -> se publican 2",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin nivel_conciencia -> la firma sale con ? en NC",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "oferta: el esquema solo tiene precio_q (quetzales); los precios COP viven en oferta.texto",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 6 (REAFIRMA_OVALO_FACIAL): sin nivel_conciencia -> la firma sale con ? en NC",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "oferta_key de los anuncios con precio (conj. 2 y 3): la pieza es pack de 2 $69.000 + desde $41.000; ESCALERA es el valor más cercano del vocabulario, no uno exacto",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "producto: page_id SIN ASIGNAR -> no se puede publicar",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "destino_key: BOTv1 propuesto para el bot paraguas de etapa-5 v1; confirmar",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       },
       {
-        "producto": "Serum Colageno Botox",
-        "que": "producto: cuenta publicitaria SIN ASIGNAR",
+        "producto": "Óvulos Purity Hernatura",
+        "que": "costeo: CPA objetivo y break-even en COP pendientes del flete contra entrega Colombia -> sin Presupuesto de Decisión y sin lectura de decidir.py",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "atribución: confirmar que el destino WhatsApp lleva el identificador de LucidSales y que LucidSales recibe la cuenta de Colombia",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "creativos: los 6 PNG aún no confirmados como renderizados en Ads/MEDIA_OVULOSPURITY/",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "envase: los anuncios muestran el SOBRE PLANO; las infografías viejas del operador muestran doypack -> confirmar qué envase recibe la clienta antes de publicar (APR-024)",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "cifras del proveedor sin verificar en los copies: +10.000 clientas, 4,8/5",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "bandas: la tabla de ensanche (25-35->25-40, 35-45->35-50) tiene evidencia de Guatemala (APR-060), no de Colombia",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
       }
@@ -249,39 +305,6 @@
           "sin _PLAN.json (ángulos, prompts y copies estructurados)"
         ],
         "quien": "etapa-6 — es el paso que falta siempre"
-      },
-      {
-        "producto": "Vitamina D3+K2",
-        "estado": "LISTO",
-        "falta": [
-          "sin break-even calculado",
-          "sin page_id de FanPage",
-          "sin cuenta publicitaria asignada",
-          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
-        ],
-        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
-      },
-      {
-        "producto": "Repelente Ultrasonico",
-        "estado": "LISTO",
-        "falta": [
-          "sin break-even calculado",
-          "sin page_id de FanPage",
-          "sin cuenta publicitaria asignada",
-          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
-        ],
-        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
-      },
-      {
-        "producto": "Ovulos Purity Hernatura",
-        "estado": "LISTO",
-        "falta": [
-          "sin break-even calculado",
-          "sin page_id de FanPage",
-          "sin cuenta publicitaria asignada",
-          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
-        ],
-        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
       }
     ]
   }

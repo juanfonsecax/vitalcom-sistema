@@ -91,7 +91,7 @@ Antes de rellenar cualquier plantilla, analizar la imagen del producto y definir
 
 REGLAS DE SEGURIDAD:
 - Si el color primario es muy claro o pastel → usar versión oscurecida al 60% para fondos
-- Si el color primario es blanco o casi blanco → usar el color de la tapa o banda de etiqueta (ej: D3+K2 frasco blanco → tomar el dorado/amarillo de la etiqueta; NeuraZenx → amarillo; NAD+ → azul/negro; Cúrcuma → naranja)
+- Si el color primario es blanco o casi blanco → usar el color de la tapa o banda de etiqueta (ej: NeuraZenx → amarillo; NAD+ → azul/negro; Cúrcuma → naranja)
 - Los fondos oscuros de IMAGEN 2 e IMAGEN 3 nunca deben ser pasteles ni colores claros
 - **El acento estructural de las 4 piezas = [COLOR_ACENTO_PRODUCTO] (color del frasco).** Aplica a números estadísticos, triángulos, bandas, separadores, checkmarks. El verde lima #caec55 NO es el acento por defecto: solo se usa si el producto es verde/detox/salud y el lima lo complementa. Ver REGLA MAESTRA DE COLOR arriba.
 - El logo sanarte® mantiene sus letras #117200 + contorno #caec55 SOLO si esos verdes armonizan con el producto; si chocan, parametrizar el logo a la identidad de la fanpage (ver PARAMETRIZACIÓN DE MARCA). El logo nunca es el color más llamativo de la pieza.
@@ -250,7 +250,7 @@ Sección Superior (Encabezado): El encabezado es compacto pero su TÍTULO domina
 1. **TÍTULO PRINCIPAL** (lo más grande y llamativo del encabezado, en bold, color [COLOR_BOTON_ENCABEZADO] o degradado [COLOR_DEGRADADO_ENCABEZADO]): "[HEADLINE_BENEFICIO]" — el dolor/deseo del ángulo congruente con el anuncio de Meta (ej: "TU APOYO DIARIO PARA UNA VIDA MÁS SALUDABLE", "POTENCIA TU ENERGÍA CADA DÍA"). **PROHIBIDO usar "10 BENEFICIOS" o "BENEFICIOS" como título principal** — eso es genérico y no detiene el escaneo.
 2. **KICKER pequeño** encima o al lado del título, en texto chico: "[KICKER_BENEFICIOS]" (ej: "10 BENEFICIOS", "FÓRMULA AVANZADA"). Es secundario, nunca compite con el título.
 3. **Botón [COLOR_BOTON_ENCABEZADO]** delgado con texto blanco pequeño: "[NOMBRE_PRODUCTO]".
-El bloque de encabezado no ocupa más del ~15% de la altura, pero el TÍTULO debe leerse desde lejos. [DECORACION_ENCABEZADO] pequeñas y discretas decoran sin saturar. El estilo de referencia es el de los ads winner del operador (D3+K2, Cúrcuma, NAD+, NeuraZenx): título grande de promesa/dolor + beneficios con íconos alrededor del frasco.
+El bloque de encabezado no ocupa más del ~15% de la altura, pero el TÍTULO debe leerse desde lejos. [DECORACION_ENCABEZADO] pequeñas y discretas decoran sin saturar. El estilo de referencia es el de los ads winner del operador (Cúrcuma, NAD+, NeuraZenx): título grande de promesa/dolor + beneficios con íconos alrededor del frasco.
 
 Elemento Central (Botella): Una botella de plástico blanco ultra-realista de la marca "PREMIUM WELLNESS" para "[NOMBRE_PRODUCTO]" se sitúa en el centro. La botella debe tener un tamaño ligeramente más pequeño en proporción al póster para ceder espacio visual a los laterales. La etiqueta de la botella debe ser idéntica, incluyendo la banda [COLOR_BANDA_ETIQUETA] inferior con el texto blanco "[NOMBRE_PRODUCTO]" y "SUPLEMENTO ALIMENTICIO | [CAPSULAS_CANTIDAD] CAPSULAS" en dorado. En la etiqueta de la botella debe figurar la lista de beneficios en español ([BENEFICIOS_ETIQUETA]) en texto pequeño. Un sello dorado en la etiqueta dice "[MILIGRAMOS] MG". Una etiqueta colgante negra con texto dorado "[MILIGRAMOS] MG" cuelga visiblemente del tapón en el lado izquierdo.
 

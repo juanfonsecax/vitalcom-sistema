@@ -278,7 +278,13 @@ for k, v in BE_REAL.items():                        # el BE real manda
 
 ventas   = [r for r in load("_FACT_VENTAS.csv") if r.get("rol_ventana") == "BASE"]
 entrega  = load("_FACT_ENTREGA.csv")
-dim      = {(d["producto_key"], d["conjunto_meta"]): d for d in load("_DIM_CONJUNTOS.csv")}
+# Un conjunto renombrado en Meta es el mismo objeto: ventas y dimensión se cruzan por el nombre
+# canónico de _ALIAS_CONJUNTOS.csv, o el nombre nuevo pierde su ángulo en todo el tablero.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from alias import canonico  # noqa: E402
+for _r in ventas:
+    _r["conjunto"] = canonico(_r.get("conjunto"))
+dim      = {(d["producto_key"], canonico(d["conjunto_meta"])): d for d in load("_DIM_CONJUNTOS.csv")}
 eventos  = load("_EVENTOS.csv")
 aprend   = [a for a in load("_APRENDIZAJES.csv") if a.get("estado") in ("VIGENTE", "EN_OBSERVACION")]
 
@@ -552,7 +558,7 @@ try:
             continue
         if _e.get("fecha", "") < (ult_dia or ""):
             continue                       # pausa vieja: la data ya la refleja
-        _cv, _cj = (_e.get("campana_clave") or "").strip(), (_e.get("conjunto_meta") or "").strip()
+        _cv, _cj = (_e.get("campana_clave") or "").strip(), canonico(_e.get("conjunto_meta"))
         if _cj in ("", "*"):
             for _p in [x.strip() for x in _cv.split("/")]:
                 if _p:

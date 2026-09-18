@@ -46,7 +46,10 @@ UN DATO, UN DUENO — de donde sale cada parametro
     cuenta_id, moneda, min budget, sube media   PRODUCTOS/_DIM_CUENTAS.csv
     producto, page_id, cpa base y break even    PRODUCTOS/_DIM_PRODUCTOS.csv
     banda de edad                               avatar_edad de _DIM_CONJUNTOS.csv,
-                                                derivada por la tabla de ETAPA-6.md
+                                                derivada por Ads/_TOOLS/bandas_edad.py
+                                                (doctrina y evidencia: ETAPA-6.md)
+    numero de replica R[N] (fase 1 y 3)         conjunto_meta de _DIM_CONJUNTOS.csv
+                                                (siguiente_replica: nunca la posicion del loop)
     piezas, concepto_key, canonico_id           PRODUCTOS/_DIM_CREATIVOS.csv
     la FIRMA de 5 ejes                          Ads/_TOOLS/firma.py (se importa, no se copia)
     angulo ganador, page_id, copy               PRODUCTOS/[X]/_PLAN*.json (dueno: ETAPA-6)
@@ -58,7 +61,7 @@ USO
            --snapshot Ads/_INGESTA/META/snapshot_GTR7.json
     python Ads/_TOOLS/gen_publicacion.py --producto TINNIDROP --fase 2 --brazo A --cuenta GTR7 --json
 """
-import csv, io, os, sys, json, datetime, importlib.util
+import csv, io, os, re, sys, json, datetime, importlib.util
 
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
@@ -68,16 +71,11 @@ BASE  = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__
 TOOLS = os.path.join(BASE, "Ads", "_TOOLS")
 P     = lambda *a: os.path.join(BASE, "PRODUCTOS", *a)
 
-SCHEMA = "publicacion/1"
+if TOOLS not in sys.path:
+    sys.path.insert(0, TOOLS)
+import bandas_edad  # LA TABLA no se copia aca: Ads/_TOOLS/bandas_edad.py es su dueno unico.
 
-# ETAPA-6.md -> BANDA DE EDAD (APR-060). El unico mapeo, y su unica excepcion.
-BANDA_POR_AVATAR = {
-    "45-65": (45, 65),
-    "45-60": (45, 60),
-    "35-55": (35, 55),
-    "25-35": (25, 40),
-}
-BANDA_AMPLIA = (18, 65)   # unica excepcion: angulo SIN avatar de edad marcada
+SCHEMA = "publicacion/1"
 
 
 # ---------------------------------------------------------------- utilidades
@@ -130,6 +128,63 @@ def extraer_copy(c):
     return "", "", "", 0
 
 
+def orden_nombre_de(piezas):
+    """creativo_id -> numero ESTABLE para el NOMBRE del anuncio (no el bookkeeping interno
+    de la corrida, que es orden_global). Agrupa por brazo preservando el ORDEN ORIGINAL del
+    CSV dentro de cada grupo — nunca reordena alfabeticamente — para que el brazo B siempre
+    numere a partir de donde termina el brazo A sin importar en que orden se publiquen.
+    Antes el numero salia de un contador local a la corrida (orden_global): publicar el
+    brazo B por separado volvia a numerar 01-05 en vez de continuar 06-10.
+
+    Con un solo brazo (o ninguno declarado, el estado de TODO el portafolio real hoy) el
+    agrupado es un no-op y el numero coincide EXACTO con el de antes de este cambio: el
+    orden de _DIM_CREATIVOS.csv no se puede alterar sin invalidar nombres ya publicados
+    en Meta (el snapshot de idempotencia matchea por nombre)."""
+    con_indice = list(enumerate(piezas))
+    ordenadas = sorted(con_indice, key=lambda t: ((t[1].get("brazo") or ""), t[0]))
+    return {r.get("creativo_id"): i for i, (_, r) in enumerate(ordenadas, 1)}
+
+
+PATRON_REPLICA = re.compile(r"_R(\d+)$")
+
+
+def siguiente_replica(filas_conjuntos, pk, angulo, cta):
+    """El proximo numero de replica R[N] para este producto+angulo+cuenta.
+
+    Dueno del dato: _DIM_CONJUNTOS.csv, el registro real de lo que ya vive en Meta —
+    nunca la posicion del conjunto DENTRO DEL LOOP de la corrida actual. Antes ese 'i'
+    local hacia que republicar (una segunda tanda, o una réplica horizontal nueva)
+    volviera a nombrar R1, R2... encima de réplicas que ya existian (simulacion
+    Turmeric, f71f9ec: hubo que fijarlo a mano a R1 para poder avanzar).
+
+    ETAPA-6.md regla 2: 'el numero de replica no se reutiliza nunca'. Sin historial
+    para esta cuenta arranca en R1."""
+    maxn = 0
+    for r in filas_conjuntos:
+        if r.get("producto_key") != pk or r.get("angulo_key") != angulo:
+            continue
+        if corto_alias(r.get("cuenta_alias")) != cta:
+            continue
+        m = PATRON_REPLICA.search((r.get("conjunto_meta") or "").strip())
+        if m:
+            maxn = max(maxn, int(m.group(1)))
+    return maxn + 1
+
+
+def chequear_brazo_ambiguo(piezas, brazo_creativos, brazo_arg):
+    """None si no hay ambiguedad; el mensaje de bloqueo si hay mas de un brazo declarado en
+    _DIM_CREATIVOS.csv para este angulo y no se eligio con --brazo-creativos cual publicar.
+    Sin este chequeo, una corrida sin el flag toma las primeras piezas del CSV sin importar
+    el brazo: publicar el brazo B sin --brazo-creativos B republicaria el pool del brazo A."""
+    brazos = sorted({(r.get("brazo") or "").strip() for r in piezas if (r.get("brazo") or "").strip()})
+    if len(brazos) > 1 and not brazo_creativos:
+        return ("hay %d brazos de creativos para este angulo en _DIM_CREATIVOS.csv (%s) y no se "
+                "paso --brazo-creativos: sin especificarlo se toman las primeras piezas del CSV "
+                "sin importar el brazo, y una corrida para el brazo que no es A publicaria de "
+                "nuevo el pool del brazo A." % (len(brazos), ", ".join(brazos)))
+    return None
+
+
 def cargar_firma():
     """Importa Ads/_TOOLS/firma.py. Es el dueno de la firma; aca no se reimplementa."""
     ruta = os.path.join(TOOLS, "firma.py")
@@ -141,14 +196,97 @@ def cargar_firma():
 
 # ---------------------------------------------------------------- el generador
 
+EJES_FIRMA = ("angulo_key", "concepto_key", "nivel_conciencia", "oferta_key", "destino_key")
+ABIERTO = "(abierto)"
+
+
+def vocabulario_de_ejes():
+    """{eje: (abierto?, dueno)} desde PRODUCTOS/_DIM_VOCABULARIO.csv.
+
+    Un eje esta ABIERTO si su vocabulario declara el valor '(abierto)': es una marca deliberada
+    del dueno (hoy solo destino_key, ver PARAMETRIZACION_ADS.md: "abierto: version del flujo
+    LucidBot"). Se usa esa marca y no '(vacio)', porque el vocabulario de nivel_conciencia fue
+    ingerido de datos historicos y trae '(vacio)', '3a', 'NC1' y '1-2' como si fueran valores
+    validos: describe lo que hubo, no lo que se exige. Cuando ETAPA-11 cierre el vocabulario de
+    destino, el eje deja de estar abierto y este gate empieza a bloquearlo sin tocar codigo."""
+    out = {}
+    for r in leer(P("_DIM_VOCABULARIO.csv")):
+        eje = (r.get("eje") or "").strip()
+        if eje not in EJES_FIRMA:
+            continue
+        abierto, dueno = out.get(eje, (False, ""))
+        out[eje] = (abierto or (r.get("valor") or "").strip() == ABIERTO,
+                    dueno or (r.get("dueno_del_vocabulario") or "").strip())
+    return out
+
+
+def verificar_firma(unidades, fmod, pq):
+    """GATE: ningun anuncio sale a Meta con un eje de su firma perdido.
+
+    La firma viaja en el NOMBRE del anuncio y es de donde el sistema lee despues los 5 ejes de
+    lo que se pauto. Un eje que sale como '?' se pierde PARA SIEMPRE: el nombre ya esta en Meta.
+    Hasta el 16-sep-2026 el publicador no lo miraba, y en FASE 2/3 los tres ejes de la oferta
+    salian '?' en el 100 % de los anuncios (las piezas son filas de _DIM_CREATIVOS.csv, que no
+    tiene esas columnas, y nadie se los pasaba). Simulacion TURMERIC:
+        TURMERIC|MANOS_RIGIDAS_AL|C2.CN06|?|?|?
+
+    Un eje vacio BLOQUEA, con el nombre de su dueno. Un eje que el vocabulario declara ABIERTO
+    solo AVISA: exigirlo seria inventar una regla que la doctrina todavia no fijo."""
+    vocab = vocabulario_de_ejes()
+    faltan = {}
+    for u in unidades:
+        for pieza in u["piezas"]:
+            ejes = fmod.parsear(fmod.firma(pieza))
+            for eje in EJES_FIRMA:
+                if (ejes.get(eje) or fmod.VACIO) == fmod.VACIO:
+                    faltan.setdefault(eje, []).append(pieza.get("creativo_id") or pieza.get("archivo") or "?")
+    for eje in EJES_FIRMA:
+        if eje not in faltan:
+            continue
+        abierto, dueno = vocab.get(eje, (False, ""))
+        cuantos = len(faltan[eje])
+        if abierto:
+            pq.avisar("la firma sale sin %s en %d anuncio(s): el eje esta declarado ABIERTO en "
+                      "_DIM_VOCABULARIO.csv (dueno %s), asi que no bloquea. Se pierde para esos "
+                      "anuncios; se empieza a exigir cuando su dueno cierre el vocabulario."
+                      % (eje, cuantos, dueno or "sin dueno declarado"))
+        else:
+            pq.bloquear_paquete("la firma sale con %s = '%s' en %d anuncio(s) (%s). Publicado asi, ese eje "
+                        "se pierde para siempre: la firma viaja en el nombre del anuncio y el "
+                        "sistema la lee de ahi." % (eje, fmod.VACIO, cuantos, ", ".join(faltan[eje][:4])),
+                        "%s -> llega al anuncio por el plan de etapa-6" % (dueno or "etapa-6"))
+
+
 class Paquete(object):
     def __init__(self):
         self.bloqueantes = []
         self.avisos = []
         self.preflight = []
 
-    def bloquear(self, que, dueno):
-        self.bloqueantes.append({"falta": que, "lo_produce": dueno})
+    # Todo bloqueante declara su AMBITO, y no hay un bloquear() generico a proposito: un bloqueo
+    # nuevo que no diga de quien es rompe con AttributeError en vez de caer, en silencio, del
+    # lado equivocado.
+    #
+    #   paquete      lo produce una ETAPA de la skill de la fase (plan, pagina, banda, piezas,
+    #                archivos, copy, firma). Mientras haya uno, el paquete NO esta cumplido y lo
+    #                que se vuelve a ejecutar es la skill de la fase, no publicar-meta.
+    #   publicacion  depende de la CUENTA, del CALENDARIO o del operador al publicar (MCP, pago,
+    #                moneda, minimo de la cuenta, brazo, fecha). No hace incompleto al paquete:
+    #                un paquete perfecto con la cuenta mal configurada sigue siendo un paquete
+    #                perfecto, y rehacer la FASE 1 no arregla una cuenta.
+    AMBITOS = ("paquete", "publicacion")
+
+    def _bloquear(self, que, dueno, ambito):
+        self.bloqueantes.append({"falta": que, "lo_produce": dueno, "ambito": ambito})
+
+    def bloquear_paquete(self, que, dueno):
+        self._bloquear(que, dueno, "paquete")
+
+    def bloquear_publicacion(self, que, dueno):
+        self._bloquear(que, dueno, "publicacion")
+
+    def del_ambito(self, ambito):
+        return [b for b in self.bloqueantes if b["ambito"] == ambito]
 
     def avisar(self, texto):
         self.avisos.append(texto)
@@ -156,10 +294,11 @@ class Paquete(object):
 
 def derivar_banda(avatar_edad, pk):
     ae = (avatar_edad or "").strip()
-    if ae in BANDA_POR_AVATAR:
-        return BANDA_POR_AVATAR[ae], "avatar_edad=%s (_DIM_CONJUNTOS.csv)" % ae
     if not ae:
-        return BANDA_AMPLIA, "SIN avatar de edad marcada -> amplio 18-65 (unica excepcion de ETAPA-6)"
+        return bandas_edad.BANDA_AMPLIA_TUPLA, "SIN avatar de edad marcada -> amplio 18-65 (unica excepcion de ETAPA-6)"
+    tup = bandas_edad.banda_tupla(ae)
+    if tup:
+        return tup, "avatar_edad=%s (_DIM_CONJUNTOS.csv)" % ae
     return None, ae
 
 
@@ -173,11 +312,14 @@ def nombre_campana(fase, cuenta, producto, brazo, angulo, fecha):
     return "%s_%s_ESCALA-%s_%s" % (cuenta, producto, angulo.replace("_", "-"), d)
 
 
-def nombre_conjunto(fase, cuenta, producto, angulo, brazo, i):
+def nombre_conjunto(fase, cuenta, producto, angulo, brazo, numero):
+    """FASE 2: 'numero' es la posicion del conjunto dentro del brazo (A1, A2...).
+    FASE 1 y 3: 'numero' es el R[N] YA RESUELTO por el llamador via siguiente_replica() —
+    nunca la posicion del loop (ver PATRON_REPLICA / invariante 12)."""
     ang = angulo.replace("_", "-")
     if fase == 2:
-        return "%s_%s_%s_%s%d" % (cuenta, producto, ang, brazo, i)
-    return "%s_%s_%s_R%d" % (cuenta, producto, ang, i)
+        return "%s_%s_%s_%s%d" % (cuenta, producto, ang, brazo, numero)
+    return "%s_%s_%s_R%d" % (cuenta, producto, ang, numero)
 
 
 def nombre_anuncio(fase, cre, orden, angulo, fmt, letra, fmod):
@@ -204,6 +346,10 @@ def main():
     ruta_pl = arg("--plan")
     snap    = arg("--snapshot")
     salida  = arg("--salida")
+    # --solo-paquete: la pregunta de F1.paquete en FLUJO.json. ¿Lo que produjeron las ETAPAS
+    # alcanza para lanzar? Evalua todo igual, pero sale con exit 1 solo por bloqueantes de ambito
+    # 'paquete', no corta si la cuenta todavia no existe, y nunca escribe el paquete canonico.
+    solo_paquete = flag("--solo-paquete")
 
     if not pk_in or not fase:
         print(__doc__)
@@ -237,29 +383,43 @@ def main():
     cuentas = leer(P("_DIM_CUENTAS.csv"))
     alias_pedido = corto_alias(cuenta or prod.get("cuenta_alias"))
     fila_cta = next((c for c in cuentas if corto_alias(c["cuenta_alias"]) == alias_pedido), None)
-    if not fila_cta:
+    if not fila_cta and not solo_paquete:
         print("BLOQUEANTE: la cuenta '%s' no existe en _DIM_CUENTAS.csv." % alias_pedido)
         return 1
+    if not fila_cta:
+        # Sin cuenta todavia (los productos de FASE 1 nacen con cuenta_alias=PENDIENTE) el paquete
+        # igual se puede juzgar: la cuenta solo aporta moneda y minimo, que son de la publicacion.
+        # Cortar aca dejaria trabado en F1.paquete a un producto cuyo paquete esta perfecto.
+        pq.bloquear_publicacion("la cuenta '%s' no existe en _DIM_CUENTAS.csv" % alias_pedido,
+                                "el operador · _DIM_PRODUCTOS.csv columna cuenta_alias")
+        # Una fila con TODAS las columnas reales de _DIM_CUENTAS.csv (una columna nueva no rompe
+        # esto) y valores neutros: ninguno debe generar un bloqueo, porque ya se declaro arriba el
+        # unico que corresponde — que la cuenta no existe.
+        columnas = cuentas[0].keys() if cuentas else ()
+        fila_cta = dict.fromkeys(columnas, "")
+        fila_cta.update({"cuenta_alias": alias_pedido, "cuenta_id": "", "moneda": "USD",
+                         "min_daily_budget_cents": "0", "mcp_habilitado": "SI",
+                         "tiene_metodo_pago": "SI", "sube_media_local": "SI"})
     if fila_cta["mcp_habilitado"] != "SI":
-        pq.bloquear("la cuenta %s NO tiene el MCP habilitado (%s). Publicar por MCP es imposible "
+        pq.bloquear_publicacion("la cuenta %s NO tiene el MCP habilitado (%s). Publicar por MCP es imposible "
                     "en esta cuenta: o se pauta a mano, o se mueve el producto a una cuenta habilitada."
                     % (alias_pedido, fila_cta.get("notas") or "rollout"), "Meta (rollout)")
     if fila_cta["tiene_metodo_pago"] != "SI":
-        pq.bloquear("la cuenta %s no tiene metodo de pago: puede crear, no puede gastar." % alias_pedido,
+        pq.bloquear_publicacion("la cuenta %s no tiene metodo de pago: puede crear, no puede gastar." % alias_pedido,
                     "el operador, en Business Manager")
 
     moneda = fila_cta["moneda"]
     minimo = int(fila_cta["min_daily_budget_cents"])
     presu_usd = float(par["daily_budget_usd"])
     if moneda != "USD":
-        pq.bloquear("la cuenta %s factura en %s y el presupuesto de la doctrina esta en USD. "
+        pq.bloquear_publicacion("la cuenta %s factura en %s y el presupuesto de la doctrina esta en USD. "
                     "El daily_budget va SIEMPRE en la unidad menor de la moneda de la cuenta."
                     % (alias_pedido, moneda), "DOCTRINA/CALENDARIO_ESCALADO.md")
         presu_cents = None
     else:
         presu_cents = int(round(presu_usd * 100))
         if presu_cents < minimo:
-            pq.bloquear("presupuesto %d centavos < minimo de la cuenta (%d)" % (presu_cents, minimo),
+            pq.bloquear_publicacion("presupuesto %d centavos < minimo de la cuenta (%d)" % (presu_cents, minimo),
                         "_DIM_CUENTAS.csv")
 
     # ---------- 4. plan ----------------------------------------------------
@@ -272,20 +432,20 @@ def main():
         with io.open(ruta_pl, encoding="utf-8") as f:
             plan = json.load(f)
     else:
-        pq.bloquear("no existe _PLAN_FASE%d.json ni _PLAN.json en PRODUCTOS/%s/" % (fase, carpeta),
+        pq.bloquear_paquete("no existe _PLAN_FASE%d.json ni _PLAN.json en PRODUCTOS/%s/" % (fase, carpeta),
                     "etapa-6")
 
     # FASE 1 mide el ANGULO: cada conjunto lleva uno distinto y no hay ganador todavia.
     # FASE 2 y 3 miden otra cosa sobre un angulo YA GANADO: ahi el angulo es uno y es fijo.
     angulo = (plan.get("angulo_ganador") or plan.get("angulo_key") or "").strip()
     if fase in (2, 3) and not angulo:
-        pq.bloquear("el plan no declara angulo_ganador. En FASE 2 y 3 el angulo es FIJO y va en el "
+        pq.bloquear_paquete("el plan no declara angulo_ganador. En FASE 2 y 3 el angulo es FIJO y va en el "
                     "nombre del CONJUNTO; sin el, la agregacion por angulo_key se parte.", "etapa-6")
 
     # page_id: el del plan manda sobre el del producto, porque la pagina depende de la CUENTA
     page_id = str(plan.get("page_id") or prod.get("page_id") or "").strip()
     if not page_id:
-        pq.bloquear("no hay page_id", "etapa-fanpage")
+        pq.bloquear_paquete("no hay page_id", "etapa-fanpage")
     if plan.get("cuenta") and corto_alias(plan["cuenta"]) != alias_pedido:
         pq.avisar("el plan dice cuenta=%s y se esta publicando en %s. La pagina y su WhatsApp tienen "
                   "que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id %s "
@@ -311,26 +471,27 @@ def main():
     def banda_de(avatar_edad, contexto):
         b, orig = derivar_banda(avatar_edad, pk)
         if b is None:
-            pq.bloquear("%s: avatar_edad='%s' no esta en la tabla de derivacion de ETAPA-6. No se "
+            pq.bloquear_paquete("%s: avatar_edad='%s' no esta en la tabla de derivacion. No se "
                         "inventa una banda: o se agrega la fila a la tabla, o se corrige el avatar."
-                        % (contexto, orig), ".claude/agents/ETAPA-6.md -> BANDA DE EDAD")
+                        % (contexto, orig), "Ads/_TOOLS/bandas_edad.py")
             return (None, None), orig
         return b, orig
 
     unidades = []
     sin_archivo = []
+    orden_nombre_por_creativo = {}   # fase 1 no lo usa: el orden del nombre sale del contador local
 
     if fase == 1:
         plan_conj = plan.get("conjuntos") or []
         if len(plan_conj) < n_conj:
-            pq.bloquear("la FASE 1 se monta con %d angulos y el plan trae %d. Se testean 6 angulos "
+            pq.bloquear_paquete("la FASE 1 se monta con %d angulos y el plan trae %d. Se testean 6 angulos "
                         "distintos con el concepto FIJO; con menos, la comparacion entre angulos "
                         "queda incompleta." % (n_conj, len(plan_conj)), "etapa-2 (fichas de angulo)")
         ctrl = plan.get("concepto_control") or {}
         for i, c in enumerate(plan_conj[:n_conj], 1):
             ang = (c.get("angulo_key") or "").strip()
             if not ang:
-                pq.bloquear("el conjunto %d del plan no declara angulo_key" % i, "etapa-2")
+                pq.bloquear_paquete("el conjunto %d del plan no declara angulo_key" % i, "etapa-2")
                 ang = "SIN-ANGULO"
             b, orig = banda_de(c.get("avatar_edad"), "conjunto %d (%s)" % (i, ang))
             arch = (c.get("archivo_creativo") or "").strip()
@@ -354,12 +515,30 @@ def main():
                 }],
             })
     else:
-        piezas = [r for r in leer(P("_DIM_CREATIVOS.csv"))
-                  if r.get("producto_key") == pk and r.get("angulo_key") == angulo]
+        piezas_del_angulo = [r for r in leer(P("_DIM_CREATIVOS.csv"))
+                              if r.get("producto_key") == pk and r.get("angulo_key") == angulo]
+
+        orden_nombre_por_creativo = orden_nombre_de(piezas_del_angulo)
+        error_brazo = chequear_brazo_ambiguo(piezas_del_angulo, arg("--brazo-creativos"), brazo) if fase == 2 else None
+        if error_brazo:
+            pq.bloquear_publicacion(error_brazo, "el operador (pasar --brazo-creativos %s)" % brazo)
+
+        piezas = piezas_del_angulo
         if arg("--brazo-creativos"):
             piezas = [r for r in piezas if r.get("brazo") == arg("--brazo-creativos")]
+        # Los tres ejes de la oferta NO viven en _DIM_CREATIVOS.csv: son constantes de la fase y
+        # los declara el plan (mismo lugar de donde los toma la FASE 1). Sin esto la firma de toda
+        # pieza de FASE 2/3 salia '?|?|?'. Solo se completa lo vacio: si la fila trae valor, manda la fila.
+        nc_plan = next((c.get("nivel_conciencia") for c in (plan.get("conjuntos") or [])
+                        if (c.get("nivel_conciencia") or "").strip()), None)
+        ejes_plan = {"nivel_conciencia": nc_plan,
+                     "oferta_key": (plan.get("oferta") or {}).get("oferta_key"),
+                     "destino_key": plan.get("destino_key")}
         listas = []
         for r in piezas:
+            for eje, valor in ejes_plan.items():
+                if not (r.get(eje) or "").strip():
+                    r[eje] = valor
             arch = (r.get("archivo") or "").strip()
             ruta = resolver_archivo(arch)
             if ruta:
@@ -371,7 +550,7 @@ def main():
 
         necesarias = n_conj * n_ads
         if len(listas) < necesarias:
-            pq.bloquear("hacen falta %d piezas para un %s y hay %d con archivo en disco. "
+            pq.bloquear_paquete("hacen falta %d piezas para un %s y hay %d con archivo en disco. "
                         "R3F-13: una fase no arranca sin su pool completo — sin el no hay "
                         "replicacion 'gana en 2 de 2', que es lo unico que corona un concepto."
                         % (necesarias, par["estructura"], len(listas)),
@@ -386,10 +565,13 @@ def main():
             unidades.append({"angulo": angulo, "banda": b, "origen_banda": orig, "piezas": pool})
 
     if sin_archivo:
-        pq.bloquear("%d pieza(s) declaradas no tienen su archivo en disco: %s. Sin el archivo no "
+        pq.bloquear_paquete("%d pieza(s) declaradas no tienen su archivo en disco: %s. Sin el archivo no "
                     "hay media que subir y el anuncio no se puede crear."
                     % (len(sin_archivo), ", ".join(str(s) for s in sin_archivo[:6])),
                     "etapa-render / el operador")
+
+    # Ningun anuncio sale con un eje de su firma perdido (se pierde para siempre en Meta).
+    verificar_firma(unidades, fmod, pq)
 
     banda = unidades[0]["banda"] if unidades else (None, None)
     origen_banda = unidades[0]["origen_banda"] if unidades else "sin unidades"
@@ -399,7 +581,7 @@ def main():
     hoy = datetime.date.today()
     fecha = datetime.datetime.strptime(lanz, "%Y-%m-%d").date() if lanz else hoy + datetime.timedelta(days=1)
     if fecha <= hoy:
-        pq.bloquear("lanzamiento %s no es posterior a hoy (%s). Invariante 7: siempre 4 AM del dia "
+        pq.bloquear_publicacion("lanzamiento %s no es posterior a hoy (%s). Invariante 7: siempre 4 AM del dia "
                     "SIGUIENTE, nunca el mismo dia." % (fecha, hoy), "CLAUDE.md invariante 7")
     start_time = "%sT%s:00%s" % (fecha.isoformat(), par["hora_lanzamiento"], par["tz_offset"])
 
@@ -447,11 +629,23 @@ def main():
                 else "CBO: el presupuesto va aca, y los conjuntos NO llevan daily_budget.",
     })
 
+    # R[N] (fase 1 y 3) sale de lo que YA existe en _DIM_CONJUNTOS.csv para este
+    # producto+angulo+cuenta, nunca de la posicion del conjunto en este loop — ver
+    # siguiente_replica(). En fase 2 el numero sigue siendo la posicion dentro del brazo.
+    filas_conjuntos = leer(P("_DIM_CONJUNTOS.csv"))
+    base_replica, pos_en_angulo = {}, {}
+
     orden_global = 0
     for i, uni in enumerate(unidades, 1):
         ang_u = uni["angulo"]
         banda_u = uni["banda"]
-        cj = nombre_conjunto(fase, cta, pk, ang_u, brazo, i)
+        if fase == 2:
+            numero_conj = i
+        else:
+            base_replica.setdefault(ang_u, siguiente_replica(filas_conjuntos, pk, ang_u, cta))
+            pos_en_angulo[ang_u] = pos_en_angulo.get(ang_u, 0) + 1
+            numero_conj = base_replica[ang_u] + pos_en_angulo[ang_u] - 1
+        cj = nombre_conjunto(fase, cta, pk, ang_u, brazo, numero_conj)
         n += 1
         targeting = {
             "geo_locations": {"countries": ["GT"]},
@@ -485,11 +679,12 @@ def main():
         ads_conj = []
         for cre in uni["piezas"]:
             orden_global += 1
+            orden_nombre = orden_nombre_por_creativo.get(cre.get("creativo_id"), orden_global)
             fmt = (cre.get("formato") or "IMG")[:3].upper()
-            an = nombre_anuncio(fase, cre, orden_global, ang_u, fmt, "A", fmod)
+            an = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, "A", fmod)
             copy, titular, descripcion, sobrantes = extraer_copy(cre.get("copy") or plan.get("copy"))
             if not copy:
-                pq.bloquear("el anuncio '%s' no tiene copy. El copy vive en el CREATIVO de Meta y no "
+                pq.bloquear_paquete("el anuncio '%s' no tiene copy. El copy vive en el CREATIVO de Meta y no "
                             "se puede cambiar despues: ads_update_entity no reemplaza el creativo de "
                             "un anuncio existente, hay que crear uno nuevo." % an.split(" ~ ")[0],
                             "etapa-4 (copies)")
@@ -534,7 +729,7 @@ def main():
             })
 
             for letra in ("A", "B"):
-                nom = nombre_anuncio(fase, cre, orden_global, ang_u, fmt, letra, fmod)
+                nom = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, letra, fmod)
                 n += 1
                 llamadas.append({
                     "n": n, "tool": "ads_create_ad",
@@ -609,6 +804,26 @@ def main():
             "total_anuncios": sum(len(c["anuncios"]) for c in manif_conj),
         },
     }
+
+    if solo_paquete:
+        # Es una verificacion, no una generacion: con una cuenta posiblemente ficticia, escribir el
+        # _PUBLICACION_F*.json canonico dejaria en disco un paquete que publicar-meta podria leer.
+        if salida:
+            with io.open(salida, "w", encoding="utf-8") as f:
+                json.dump(paquete, f, ensure_ascii=False, indent=2)
+        del_paquete = pq.del_ambito("paquete")
+        if flag("--json"):
+            print(json.dumps(paquete, ensure_ascii=False, indent=2))
+            return 1 if del_paquete else 0
+        print("PAQUETE %s · FASE %d — %s" % (pk, fase, "NO LANZABLE" if del_paquete else "LANZABLE"))
+        for b in del_paquete:
+            print("  BLOQUEANTE %s" % b["falta"])
+            print("             lo produce: %s" % b["lo_produce"])
+        otros = pq.del_ambito("publicacion")
+        if otros:
+            print("  (%d bloqueante(s) de la publicacion —cuenta, calendario, operador— no cuentan "
+                  "para el paquete: los evalua F1.publicar)" % len(otros))
+        return 1 if del_paquete else 0
 
     if not salida:
         salida = P(carpeta, "_PUBLICACION_F%d%s.json" % (fase, "" if brazo == "UNICO" else brazo))

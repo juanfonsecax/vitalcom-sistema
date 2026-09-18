@@ -1,6 +1,6 @@
 {
   "schema": "publicacion/1",
-  "generado_el": "2026-09-08T23:28:24",
+  "generado_el": "2026-09-16T11:51:58",
   "producto_key": "TINNIDROP",
   "fase": 2,
   "brazo": "A",
@@ -19,7 +19,7 @@
     "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
   },
   "advantage_audience": 0,
-  "start_time": "2026-09-09T04:00:00-06:00",
+  "start_time": "2026-09-17T04:00:00-06:00",
   "estado_al_crear": "PAUSED",
   "plan": "PRODUCTOS\\TINNIDROP\\_PLAN_FASE2.json",
   "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.7.2",
@@ -45,9 +45,19 @@
       "verificar": "es el test real de la pagina: si el primer conjunto la acepta, esta bien. ads_get_ad_account_pages puede tardar en listarla (lag de lectura)."
     }
   ],
-  "bloqueantes": [],
+  "bloqueantes": [
+    {
+      "falta": "la firma sale con nivel_conciencia = '?' en 5 anuncio(s) (TINNIDROP_F2_CN05_ACCESIBILIDA, TINNIDROP_F2_CN01_ACCESIBILIDA, TINNIDROP_F2_CN02_ACCESIBILIDA, TINNIDROP_F2_CN10_ACCESIBILIDA). Publicado asi, ese eje se pierde para siempre: la firma viaja en el nombre del anuncio y el sistema la lee de ahi.",
+      "lo_produce": ".claude/agents/ETAPA-2.md -> llega al anuncio por el plan de etapa-6"
+    },
+    {
+      "falta": "la firma sale con oferta_key = '?' en 5 anuncio(s) (TINNIDROP_F2_CN05_ACCESIBILIDA, TINNIDROP_F2_CN01_ACCESIBILIDA, TINNIDROP_F2_CN02_ACCESIBILIDA, TINNIDROP_F2_CN10_ACCESIBILIDA). Publicado asi, ese eje se pierde para siempre: la firma viaja en el nombre del anuncio y el sistema la lee de ahi.",
+      "lo_produce": ".claude/agents/ETAPA-1.md -> llega al anuncio por el plan de etapa-6"
+    }
+  ],
   "avisos": [
-    "el plan dice cuenta=GTR0 y se esta publicando en GTR7. La pagina y su WhatsApp tienen que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id 498977893288095 viene del plan: confirmalo en el pre-flight antes de crear el primer conjunto."
+    "el plan dice cuenta=GTR0 y se esta publicando en GTR7. La pagina y su WhatsApp tienen que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id 498977893288095 viene del plan: confirmalo en el pre-flight antes de crear el primer conjunto.",
+    "la firma sale sin destino_key en 5 anuncio(s): el eje esta declarado ABIERTO en _DIM_VOCABULARIO.csv (dueno .claude/agents/ETAPA-11.md), asi que no bloquea. Se pierde para esos anuncios; se empieza a exigir cuando su dueno cierre el vocabulario."
   ],
   "llamadas": [
     {
@@ -55,14 +65,14 @@
       "tool": "ads_create_campaign",
       "args": {
         "ad_account_id": "598687956219141",
-        "campaign_name": "GTR7_TINNIDROP_CONCEPTOS-A_20260909",
+        "campaign_name": "GTR7_TINNIDROP_CONCEPTOS-A_20260917",
         "objective": "OUTCOME_TRAFFIC",
         "buying_type": "AUCTION",
         "special_ad_categories": "[]"
       },
       "guardar_como": "campaign_id",
-      "omitir": true,
-      "id_existente": "120248708348150784",
+      "omitir": false,
+      "id_existente": null,
       "nota": "ABO: el presupuesto NO va aca, va en el conjunto."
     },
     {
@@ -77,12 +87,12 @@
         "destination_type": "WHATSAPP",
         "promoted_object": "{\"page_id\": \"498977893288095\"}",
         "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
-        "start_time": "2026-09-09T04:00:00-06:00",
+        "start_time": "2026-09-17T04:00:00-06:00",
         "daily_budget": 600
       },
       "guardar_como": "adset_id_1",
-      "omitir": true,
-      "id_existente": "120248708351140784",
+      "omitir": false,
+      "id_existente": null,
       "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
     },
     {
@@ -377,7 +387,7 @@
     }
   ],
   "manifiesto": {
-    "campana": "GTR7_TINNIDROP_CONCEPTOS-A_20260909",
+    "campana": "GTR7_TINNIDROP_CONCEPTOS-A_20260917",
     "conjuntos": [
       {
         "nombre": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_A1",

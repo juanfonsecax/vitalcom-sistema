@@ -23,26 +23,37 @@ _CSV = os.path.join(_BASE, "PRODUCTOS", "_ALIAS_CONJUNTOS.csv")
 _MAPA = None
 
 
+def mapa_de(filas):
+    """{nombre_viejo: nombre_nuevo} a partir de filas de _ALIAS_CONJUNTOS.csv, resolviendo cadenas.
+
+    Funcion pura: la usan los consumidores que leen su propia base (flujo.py sobre un fixture,
+    decidir.py con sus rutas de modulo). mapa() la aplica sobre el CSV real.
+    """
+    m = {}
+    for r in filas:
+        v = (r.get("nombre_viejo") or "").strip()
+        n = (r.get("nombre_nuevo") or "").strip()
+        if v and n and v != n:
+            m[v] = n
+    # A renombrado a B y B a C -> A debe resolver a C.
+    for k in list(m):
+        visto, v = {k}, m[k]
+        while v in m and v not in visto:
+            visto.add(v)
+            v = m[v]
+        m[k] = v
+    return m
+
+
 def mapa():
-    """{nombre_viejo: nombre_nuevo}, resolviendo cadenas de renombrados."""
+    """{nombre_viejo: nombre_nuevo} del CSV real, resolviendo cadenas de renombrados."""
     global _MAPA
     if _MAPA is None:
-        m = {}
+        filas = []
         if os.path.exists(_CSV):
             with open(_CSV, encoding="utf-8") as f:
-                for r in csv.DictReader(f):
-                    v = (r.get("nombre_viejo") or "").strip()
-                    n = (r.get("nombre_nuevo") or "").strip()
-                    if v and n and v != n:
-                        m[v] = n
-        # A renombrado a B y B a C -> A debe resolver a C.
-        for k in list(m):
-            visto, v = {k}, m[k]
-            while v in m and v not in visto:
-                visto.add(v)
-                v = m[v]
-            m[k] = v
-        _MAPA = m
+                filas = list(csv.DictReader(f))
+        _MAPA = mapa_de(filas)
     return _MAPA
 
 
