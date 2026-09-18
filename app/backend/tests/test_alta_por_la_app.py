@@ -44,36 +44,19 @@ def _script_del_repo(nombre: str) -> Path:
 
 
 @pytest.fixture()
-def sistema_falso(tmp_path: Path, base_declarada: Path, monkeypatch):
-    """Un sistema mínimo en el temporal, con el script real adentro."""
-    (tmp_path / "DOCTRINA").mkdir()
-    (tmp_path / "DOCTRINA" / "FLUJO.json").write_text("{}", encoding="utf-8")
-    (tmp_path / "PRODUCTOS").mkdir()
-    (tmp_path / "Ads" / "_TOOLS").mkdir(parents=True)
-    shutil.copy2(_script_del_repo("alta_producto.py"), tmp_path / "Ads" / "_TOOLS" / "alta_producto.py")
+def sistema_falso(sistema_de_juguete: Path) -> Path:
+    """El sistema de juguete con el `alta_producto.py` REAL adentro y los CSV vacíos del alta."""
+    shutil.copy2(_script_del_repo("alta_producto.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "alta_producto.py")
     for nombre, columnas in (("_DIM_PRODUCTOS.csv", COLUMNAS_PRODUCTOS),
                              ("_DIM_ENVASE.csv", COLUMNAS_ENVASE)):
-        with io.open(tmp_path / "PRODUCTOS" / nombre, "w", encoding="utf-8", newline="") as fh:
+        with io.open(sistema_de_juguete / "PRODUCTOS" / nombre, "w", encoding="utf-8", newline="") as fh:
             csv.writer(fh).writerow(columnas)
-
-    from vitalcom_app import config
-
-    monkeypatch.setenv("VITALCOM_BASE", str(tmp_path))
-    config.base.cache_clear()
-    try:
-        yield tmp_path
-    finally:
-        # Pase lo que pase, la caché vuelve a apuntar al sistema real: si no, las pruebas
-        # que siguen leerían una carpeta temporal ya borrada.
-        monkeypatch.setenv("VITALCOM_BASE", str(base_declarada))
-        config.base.cache_clear()
+    return sistema_de_juguete
 
 
 @pytest.fixture()
-def cliente_falso(sistema_falso: Path) -> TestClient:
-    from vitalcom_app.main import app
-
-    return TestClient(app)
+def cliente_falso(sistema_falso: Path, cliente_juguete: TestClient) -> TestClient:
+    return cliente_juguete
 
 
 def _alta(cliente: TestClient, **extra):
@@ -143,5 +126,29 @@ def test_una_descripcion_pobre_se_rechaza(cliente_falso, sistema_falso):
 def test_el_sistema_real_no_se_toco(base_declarada, sistema_falso):
     """Guarda contra el peor error posible: escribir en los CSV de verdad."""
     assert os.environ["VITALCOM_BASE"] == str(sistema_falso)
+    assert base_declarada != sistema_falso
     reales = _filas(base_declarada, "_DIM_PRODUCTOS.csv")
     assert all("CREMA_VARICES_PLUS" not in fila[0] for fila in reales[1:])
+
+
+def test_el_alta_deja_su_rastro_y_regenera_el_estado_derivado(cliente_falso, sistema_falso):
+    """El alta pasa por el runner: hay carpeta de corrida y corrió `tras_escribir`."""
+    assert _alta(cliente_falso).status_code == 201
+    corridas = list((sistema_falso / "PRODUCTOS" / "_AUDITORIAS" / "app_runs").glob("*/*_producto.alta_*"))
+    assert len(corridas) == 1
+    assert (corridas[0] / "trabajo.json").is_file() and (corridas[0] / "1.fin").is_file()
+    from sistema_de_juguete import llamadas
+
+    scripts = [c["script"] for c in llamadas(sistema_falso)]
+    assert "hook_csv.py" in scripts and "flujo.py" in scripts and "gen_app.py" in scripts
+
+
+def test_un_archivo_fuera_de_las_subidas_no_se_acepta_como_imagen(sistema_falso):
+    from vitalcom_app import acciones
+
+    accion = acciones.por_id_para_el_runner("producto.alta")
+    ajeno = sistema_falso / "PRODUCTOS" / "_DIM_PRODUCTOS.csv"
+    with pytest.raises(acciones.ErrorDeAccion) as error:
+        acciones.validar_parametros(accion, {
+            "nombre": "Crema", "costo": "60", "descripcion": str(ajeno), "imagen": str(ajeno)})
+    assert error.value.http == 422 and error.value.extra["campo"] == "descripcion"

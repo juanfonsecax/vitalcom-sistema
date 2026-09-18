@@ -18,6 +18,7 @@ from typing import Any
 from .config import python_del_sistema, ruta
 
 DIM_PRODUCTOS = ("PRODUCTOS", "_DIM_PRODUCTOS.csv")
+DIM_CUENTAS = ("PRODUCTOS", "_DIM_CUENTAS.csv")
 ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
 ESTADO_VISTAS = ("VISTAS", "_ESTADO.json")
@@ -66,6 +67,12 @@ def _leer_json(partes: tuple[str, ...]) -> Any:
 def productos() -> list[dict[str, str]]:
     """Las filas de `_DIM_PRODUCTOS.csv`, recortadas a las columnas que la pantalla usa."""
     return [{c: fila.get(c, "") for c in COLUMNAS_PRODUCTO} for fila in _leer_csv(DIM_PRODUCTOS)]
+
+
+def cuentas() -> list[dict[str, str]]:
+    """Las cuentas publicitarias de `_DIM_CUENTAS.csv`: alias, moneda y qué permite cada una."""
+    columnas = ("cuenta_alias", "cuenta_id", "moneda", "mcp_habilitado", "sube_media_local", "estado_cuenta")
+    return [{c: fila.get(c, "") for c in columnas} for fila in _leer_csv(DIM_CUENTAS)]
 
 
 def estado_flujo() -> dict[str, dict[str, str]]:

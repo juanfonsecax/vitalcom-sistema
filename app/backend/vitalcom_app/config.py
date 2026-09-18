@@ -66,3 +66,23 @@ def python_del_sistema() -> str:
     no con el venv de la app, salvo que se declare `VITALCOM_PYTHON`.
     """
     return os.environ.get("VITALCOM_PYTHON") or "python"
+
+
+def datos_de_la_app() -> Path:
+    """Dónde guarda la app su propia base de datos (DBOS). Fuera del sistema y del repo.
+
+    `VITALCOM_DATOS`, o `%LOCALAPPDATA%/VitalCom` en Windows (`~/.local/share/vitalcom` en el
+    resto). Se crea al pedirla. Nunca queda dentro de la carpeta del sistema: son datos de la
+    app, no del negocio.
+    """
+    declarada = os.environ.get("VITALCOM_DATOS")
+    if declarada:
+        carpeta = Path(declarada).expanduser().resolve()
+    elif os.environ.get("LOCALAPPDATA"):
+        carpeta = Path(os.environ["LOCALAPPDATA"]) / "VitalCom"
+    else:
+        carpeta = Path.home() / ".local" / "share" / "vitalcom"
+    if carpeta.is_relative_to(base()):
+        raise RuntimeError(f"La base de datos de la app no puede vivir dentro del sistema ({carpeta}).")
+    os.makedirs(carpeta, exist_ok=True)
+    return carpeta

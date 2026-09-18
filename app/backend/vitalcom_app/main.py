@@ -1,13 +1,16 @@
 """main.py — la API de la app y el servidor del frontend compilado.
 
 La app no calcula y no escribe: **ejecuta al que escribe**. Las lecturas salen de los
-contratos; los dos cambios que existen hoy (dar de alta un producto y transcribir sus
-videos) los hace un script de `Ads/_TOOLS/` con su propio test, detrás de la cola de
-`escrituras.py`. No hay ningún endpoint que corra un comando libre.
+contratos; todo cambio es una acción declarada en `VISTAS/_MANIFIESTO.json` que el runner
+(`workflows.py`) ejecuta detrás de la cola de escritura. No hay ningún endpoint que corra un
+comando libre.
 """
 
 from __future__ import annotations
 
+import asyncio
+import uuid
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
@@ -15,14 +18,29 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import contratos, escrituras, subidas
+from fastapi.responses import JSONResponse
+
+from . import acciones, api_acciones, contratos, subidas, workflows
+from .acciones import ErrorDeAccion
 from .config import base
 from .modelos import Costeo, Decisiones, Flujo, Producto, Salud
+
+@asynccontextmanager
+async def _ciclo_de_vida(_app: FastAPI):  # type: ignore[no-untyped-def]
+    """Al arrancar, DBOS retoma los trabajos que quedaron a medias; al cerrar, se despide."""
+    # DBOS es síncrono y no admite un event loop corriendo en su hilo: se lanza aparte.
+    await asyncio.to_thread(workflows.iniciar)
+    try:
+        yield
+    finally:
+        await asyncio.to_thread(workflows.detener)
+
 
 app = FastAPI(
     title="VitalCom",
     version="0.1.0",
-    summary="La pantalla del sistema VITALCOM Guatemala (solo lectura, Hito 1).",
+    summary="La pantalla del sistema VITALCOM Guatemala.",
+    lifespan=_ciclo_de_vida,
 )
 
 # En desarrollo el frontend corre en Vite (5173) y la API en 8000. En producción los sirve
@@ -34,6 +52,13 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+TOPE_DEL_ALTA_S = 120
+app.include_router(api_acciones.router)
+
+
+@app.exception_handler(ErrorDeAccion)
+def _accion_rechazada(_request, error: ErrorDeAccion) -> JSONResponse:  # type: ignore[no-untyped-def]
+    return JSONResponse(status_code=error.http, content=error.cuerpo())
 
 
 @app.get("/api/productos", response_model=list[Producto], tags=["productos"])
@@ -103,7 +128,7 @@ def costeo(costo_q: str) -> Costeo:
 
 
 @app.post("/api/productos", tags=["productos"], status_code=201)
-async def alta_de_producto(
+def alta_de_producto(
     nombre: str = Form(..., description="cómo se llama el producto"),
     costo: str = Form(..., description="costo del PEDIDO COMPLETO en quetzales"),
     descripcion: str = Form(..., description="la descripción extensa del operador"),
@@ -118,38 +143,44 @@ async def alta_de_producto(
     formato: str = Form(""),
     dry_run: bool = Form(False),
 ) -> dict:
-    """Da de alta el producto con `alta_producto.py` y re-evalúa el flujo.
+    """Da de alta el producto: la acción `producto.alta` por el runner, y espera su resultado.
 
     La imagen y la descripción se guardan primero en una carpeta temporal; quien las mete
-    en el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es el script.
+    en el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es `alta_producto.py`.
     """
-    campos = {
-        "nombre": nombre, "costo": costo, "clave": clave, "cuenta": cuenta, "moneda": moneda,
-        "tasa": tasa, "color_envase": color_envase, "color_hex": color_hex, "marca": marca,
-        "formato": formato,
-    }
+    opcionales = {"clave": clave, "cuenta": cuenta, "moneda": moneda, "tasa": tasa,
+                  "color_envase": color_envase, "color_hex": color_hex, "marca": marca,
+                  "formato": formato}
     try:
         with subidas.carpeta_temporal() as temporal:
             ruta_imagen = subidas.guardar(imagen.file, imagen.filename or "imagen", temporal)
             ruta_descripcion = subidas.guardar_texto(descripcion, temporal)
-            return escrituras.dar_de_alta(campos, ruta_imagen, ruta_descripcion, dry_run=dry_run)
+            accion = acciones.por_id_para_el_runner("producto.alta")
+            valores = acciones.validar_parametros(accion, {
+                "nombre": nombre, "costo": costo, "descripcion": str(ruta_descripcion),
+                "imagen": str(ruta_imagen), "dry_run": dry_run,
+                **{k: v for k, v in opcionales.items() if v.strip()},
+            })
+            job_id, _repetido = workflows.encolar(accion, valores, uuid.uuid4().hex)
+            resultado = workflows.esperar_resultado(job_id, TOPE_DEL_ALTA_S)
     except subidas.SubidaRechazada as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
-    except escrituras.SistemaOcupado as error:
-        raise HTTPException(status_code=409, detail=str(error)) from error
-    except escrituras.ErrorDeEscritura as error:
-        raise HTTPException(status_code=422, detail=str(error)) from error
+    if resultado is None:
+        raise HTTPException(
+            status_code=409,
+            detail="El alta no alcanzó a terminar: hay otro cambio en curso. Probá de nuevo en un momento.",
+        )
+    unidad = resultado["unidades"][0]
+    if resultado["estado"] != "EXITO":
+        raise HTTPException(status_code=422, detail=unidad.get("detalle") or resultado["detalle"])
+    return unidad["json"]
 
 
-@app.post("/api/productos/{producto_key}/transcribir", tags=["productos"])
-def transcribir_videos(producto_key: str, modelo: str = "small") -> dict:
-    """Pasa a texto los videos del producto con `transcribir_videos.py`, en esta máquina."""
-    try:
-        return escrituras.transcribir(producto_key, modelo=modelo)
-    except escrituras.SistemaOcupado as error:
-        raise HTTPException(status_code=409, detail=str(error)) from error
-    except escrituras.ErrorDeEscritura as error:
-        raise HTTPException(status_code=422, detail=str(error)) from error
+@app.post("/api/productos/{producto_key}/transcribir", tags=["productos"], status_code=410,
+          include_in_schema=False)
+def transcribir_videos(producto_key: str) -> dict:
+    """Ya no existe: transcribir es la acción `producto.transcribir` (202 y progreso en vivo)."""
+    raise HTTPException(status_code=410, detail="Usá POST /api/acciones/producto.transcribir.")
 
 
 @app.get("/api/sistema", tags=["sistema"])
@@ -160,8 +191,6 @@ def donde_corre() -> dict[str, str]:
 
 @app.exception_handler(contratos.ContratoAusente)
 def _contrato_ausente(_request, exc: contratos.ContratoAusente):  # type: ignore[no-untyped-def]
-    from fastapi.responses import JSONResponse
-
     return JSONResponse(status_code=503, content={"detail": str(exc)})
 
 

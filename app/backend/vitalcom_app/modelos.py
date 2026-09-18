@@ -130,3 +130,41 @@ class Costeo(Base):
     arranque: dict[str, Any] = {}
     fuente: str = ""
     origen_escalera: str = ""
+
+
+class Accion(Base):
+    """Una acción con botón, tal como la declara `VISTAS/_MANIFIESTO.json` (diseño §2.5)."""
+
+    id: str
+    rotulo: str
+    nodo: str | None = None
+    ejecutor_tipo: str
+    parametros: dict[str, Any] = {}
+    requiere_confirmacion: bool
+    aprobacion: str
+    toca_meta: bool
+    escribe: list[str] = []
+    habilitada: bool
+    motivo: str | None = None
+    tiempo_max_s: int
+    datos_del_operador: list[Any] | None = None
+    # Solo con `producto_key`: si se puede pedir ahora, y por qué sí o por qué no.
+    disponible: bool | None = None
+    por_que: dict[str, Any] | None = None
+
+
+class PedidoAccion(BaseModel):
+    """El cuerpo de `POST /api/acciones/{id}`."""
+
+    parametros: dict[str, Any] = {}
+    confirmado: bool = False
+    job_id: str | None = None
+
+
+class AccionEncolada(Base):
+    job_id: str
+    accion_id: str
+    estado: str
+    url_estado: str
+    url_eventos: str
+    repetido: bool = False

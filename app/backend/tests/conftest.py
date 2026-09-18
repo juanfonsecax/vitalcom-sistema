@@ -38,3 +38,36 @@ def cliente(base_declarada: Path) -> TestClient:
     from vitalcom_app.main import app
 
     return TestClient(app)
+
+
+@pytest.fixture()
+def sistema_de_juguete(tmp_path: Path, base_declarada: Path, monkeypatch):
+    """Un sistema de mentira (ver `sistema_de_juguete.py`) con el manifiesto v7 real adentro.
+
+    La base de datos de la app (DBOS) va a otra carpeta temporal: nunca dentro del sistema.
+    """
+    import sistema_de_juguete as juguete
+    from vitalcom_app import acciones, config
+
+    sistema = tmp_path / "sistema"
+    sistema.mkdir()
+    juguete.crear(sistema)
+    monkeypatch.setenv("VITALCOM_BASE", str(sistema))
+    monkeypatch.setenv("VITALCOM_DATOS", str(tmp_path / "datos"))
+    config.base.cache_clear()
+    acciones.olvidar_cache()
+    try:
+        yield sistema
+    finally:
+        monkeypatch.setenv("VITALCOM_BASE", str(base_declarada))
+        config.base.cache_clear()
+        acciones.olvidar_cache()
+
+
+@pytest.fixture()
+def cliente_juguete(sistema_de_juguete: Path):
+    """La app completa sobre el sistema de juguete, con DBOS lanzado (lifespan)."""
+    from vitalcom_app.main import app
+
+    with TestClient(app) as cliente:
+        yield cliente

@@ -70,9 +70,10 @@ def test_la_app_no_escribe_en_el_sistema():
     prohibido = ("csv.writer", "csv.DictWriter", "json.dump", "shutil.copy", "os.remove")
     hallazgos: list[str] = []
     for archivo in sorted(PAQUETE.rglob("*.py")):
-        # `subidas.py` escribe en el temporal y `escrituras.py` maneja el candado de la
-        # cola, también en el temporal. Cada uno tiene su prueba estructural más abajo.
-        if archivo.name in ("subidas.py", "escrituras.py"):
+        # `subidas.py` escribe en el temporal, `escrituras.py` maneja el candado de la cola
+        # (también en el temporal) y `bitacora.py` escribe SOLO bajo `app_runs/`. Cada uno
+        # tiene su prueba estructural.
+        if archivo.name in ("subidas.py", "escrituras.py", "bitacora.py"):
             continue
         codigo = archivo.read_text(encoding="utf-8")
         arbol = ast.parse(codigo, filename=str(archivo))
@@ -133,19 +134,9 @@ def test_las_subidas_solo_tocan_el_temporal():
     )
 
 
-def test_los_cambios_pasan_por_un_script_del_motor():
-    """Ningún endpoint corre un comando libre: solo scripts declarados de `Ads/_TOOLS/`."""
-    archivo = PAQUETE / "escrituras.py"
-    codigo = archivo.read_text(encoding="utf-8")
-    arbol = ast.parse(codigo, filename=str(archivo))
-    scripts = {
-        nodo.value
-        for nodo in ast.walk(arbol)
-        if isinstance(nodo, ast.Constant) and isinstance(nodo.value, str)
-        and nodo.value.endswith(".py")
-    }
-    assert scripts <= {"alta_producto.py", "transcribir_videos.py", "flujo.py"}, scripts
-    assert "shell=True" not in codigo, "nunca por shell: el comando se arma como lista"
+# Los scripts que se corren y el turno de escritura se prueban en `test_workflows.py`:
+# ningún literal `.py` en el runner (todo argv sale del manifiesto) y cada unidad que escribe
+# toma `Cola()`.
 
 
 def test_escrituras_solo_escribe_su_candado_en_el_temporal():
@@ -173,23 +164,6 @@ def test_escrituras_solo_escribe_su_candado_en_el_temporal():
                 assert id(nodo) in permitidas, (
                     f"escrituras.py:{nodo.lineno} escribe «{llamada}» fuera del candado de la cola"
                 )
-
-
-def test_escribir_pasa_por_la_cola():
-    """Un escritor a la vez (hoja §2.4): dos altas a la vez pisarían el CSV."""
-    archivo = PAQUETE / "escrituras.py"
-    arbol = ast.parse(archivo.read_text(encoding="utf-8"), filename=str(archivo))
-    for funcion in ("dar_de_alta", "transcribir"):
-        nodo = next(
-            n for n in ast.walk(arbol)
-            if isinstance(n, ast.FunctionDef) and n.name == funcion
-        )
-        usa_cola = any(
-            isinstance(hijo, ast.With)
-            and any("Cola" in ast.unparse(item.context_expr) for item in hijo.items)
-            for hijo in ast.walk(nodo)
-        )
-        assert usa_cola, f"{funcion} tiene que escribir dentro de `with Cola()`"
 
 
 def test_flujo_se_invoca_siempre_sin_escribir():
