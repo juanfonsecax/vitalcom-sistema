@@ -35,8 +35,8 @@ if "a" in sys.argv[1:]:
     correr("spikeA", "Usá la herramienta Task con subagent_type etapa-1 para costear un PRODUCTO DE PRUEBA "
            "llamado SPIKE_TEST con costo Q60, tipo suplemento, avatar mujer 35-55. Es una prueba: no escribas "
            "ningún archivo ni CSV. Devolvé la tabla de precios que te entregue el subagente.",
-           ["Task", "Agent", "Read", "Bash(python Ads/_TOOLS/costear.py:*)"])
+           ["Task", "Agent", "Read", "Bash"])
 if "b" in sys.argv[1:]:
     correr("spikeB", "Llamá SOLO a la herramienta de Meta ads_get_ad_accounts (lectura) y listá nombre, id y "
            "moneda de cada cuenta. Si esa herramienta no existe en esta sesión, decí exactamente 'NO_DISPONIBLE'.",
-           ["mcp__*"])
+           ["mcp__claude_ai_META_MCP__ads_get_ad_accounts", "ToolSearch"])
