@@ -1,0 +1,676 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VitalCom",
+    "summary": "La pantalla del sistema VITALCOM Guatemala (solo lectura, Hito 1).",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/productos": {
+      "get": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Listar Productos",
+        "description": "El portafolio: la fila del CSV más la fase y el nodo vigentes del estado derivado.\n\nLa fase que se sirve es la de `_ESTADO_FLUJO.csv` (derivada). La columna `fase` de\n`_DIM_PRODUCTOS.csv` viaja aparte, como `fase_bitacora`, para que nadie las confunda.",
+        "operationId": "listar_productos_api_productos_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Producto"
+                  },
+                  "type": "array",
+                  "title": "Response Listar Productos Api Productos Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}": {
+      "get": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Detalle Producto",
+        "description": "El recorrido completo del producto en el grafo, tal como lo evalúa `flujo.py`.",
+        "operationId": "detalle_producto_api_productos__producto_key__get",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Flujo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/decisiones": {
+      "get": {
+        "tags": [
+          "decisiones"
+        ],
+        "summary": "Listar Decisiones",
+        "description": "Las órdenes vigentes de `decidir.py`. La app las muestra; no las recalcula.",
+        "operationId": "listar_decisiones_api_decisiones_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Decisiones"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/salud": {
+      "get": {
+        "tags": [
+          "sistema"
+        ],
+        "summary": "Estado Del Sistema",
+        "description": "Qué vista está fresca y quién la produce, según `gen_app.py`.",
+        "operationId": "estado_del_sistema_api_salud_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Salud"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sistema": {
+      "get": {
+        "tags": [
+          "sistema"
+        ],
+        "summary": "Donde Corre",
+        "description": "Sobre qué carpeta está corriendo la app. Evita el error del worktree (hoja §1.2).",
+        "operationId": "donde_corre_api_sistema_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Donde Corre Api Sistema Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Decisiones": {
+        "properties": {
+          "generado": {
+            "type": "string",
+            "title": "Generado",
+            "default": ""
+          },
+          "datos_desde": {
+            "type": "string",
+            "title": "Datos Desde",
+            "default": ""
+          },
+          "datos_hasta": {
+            "type": "string",
+            "title": "Datos Hasta",
+            "default": ""
+          },
+          "rezago_dias": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rezago Dias"
+          },
+          "motor": {
+            "type": "string",
+            "title": "Motor",
+            "default": ""
+          },
+          "ventana_dias": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ventana Dias"
+          },
+          "resumen_acciones": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Resumen Acciones",
+            "default": {}
+          },
+          "productos": {
+            "items": {},
+            "type": "array",
+            "title": "Productos",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "Decisiones",
+        "description": "`_DECISIONES.json`: lo que dictó `decidir.py`. La app no lo reinterpreta."
+      },
+      "Flujo": {
+        "properties": {
+          "producto_key": {
+            "type": "string",
+            "title": "Producto Key"
+          },
+          "nombre": {
+            "type": "string",
+            "title": "Nombre",
+            "default": ""
+          },
+          "estado_producto": {
+            "type": "string",
+            "title": "Estado Producto",
+            "default": ""
+          },
+          "fase": {
+            "type": "string",
+            "title": "Fase",
+            "default": ""
+          },
+          "fase_titulo": {
+            "type": "string",
+            "title": "Fase Titulo",
+            "default": ""
+          },
+          "nodo_actual": {
+            "type": "string",
+            "title": "Nodo Actual",
+            "default": ""
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado",
+            "default": ""
+          },
+          "ejecutor": {
+            "type": "string",
+            "title": "Ejecutor",
+            "default": ""
+          },
+          "como": {
+            "type": "string",
+            "title": "Como",
+            "default": ""
+          },
+          "evaluado_el": {
+            "type": "string",
+            "title": "Evaluado El",
+            "default": ""
+          },
+          "bloqueantes": {
+            "items": {
+              "$ref": "#/components/schemas/Requisito"
+            },
+            "type": "array",
+            "title": "Bloqueantes",
+            "default": []
+          },
+          "falta_para_cumplir": {
+            "items": {
+              "$ref": "#/components/schemas/Requisito"
+            },
+            "type": "array",
+            "title": "Falta Para Cumplir",
+            "default": []
+          },
+          "entradas": {
+            "items": {},
+            "type": "array",
+            "title": "Entradas",
+            "default": []
+          },
+          "nodos": {
+            "items": {
+              "$ref": "#/components/schemas/Nodo"
+            },
+            "type": "array",
+            "title": "Nodos",
+            "default": []
+          },
+          "avisos": {
+            "items": {},
+            "type": "array",
+            "title": "Avisos",
+            "default": []
+          },
+          "ordenes": {
+            "items": {},
+            "type": "array",
+            "title": "Ordenes",
+            "default": []
+          },
+          "avance": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avance"
+          },
+          "motor": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motor"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "producto_key"
+        ],
+        "title": "Flujo",
+        "description": "Salida de `flujo.py <pk> --json`, la vista completa del producto en el grafo."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Nodo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "titulo": {
+            "type": "string",
+            "title": "Titulo",
+            "default": ""
+          },
+          "ejecutor": {
+            "type": "string",
+            "title": "Ejecutor",
+            "default": ""
+          },
+          "ejecutor_tipo": {
+            "type": "string",
+            "title": "Ejecutor Tipo",
+            "default": ""
+          },
+          "como": {
+            "type": "string",
+            "title": "Como",
+            "default": ""
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado",
+            "default": ""
+          },
+          "cumplido": {
+            "type": "boolean",
+            "title": "Cumplido",
+            "default": false
+          },
+          "ciclo": {
+            "type": "boolean",
+            "title": "Ciclo",
+            "default": false
+          },
+          "secuencia": {
+            "items": {},
+            "type": "array",
+            "title": "Secuencia",
+            "default": []
+          },
+          "produce": {
+            "items": {
+              "$ref": "#/components/schemas/Requisito"
+            },
+            "type": "array",
+            "title": "Produce",
+            "default": []
+          },
+          "avisos": {
+            "items": {},
+            "type": "array",
+            "title": "Avisos",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "Nodo"
+      },
+      "Producto": {
+        "properties": {
+          "producto_key": {
+            "type": "string",
+            "title": "Producto Key"
+          },
+          "nombre_display": {
+            "type": "string",
+            "title": "Nombre Display",
+            "default": ""
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado",
+            "default": ""
+          },
+          "cuenta_alias": {
+            "type": "string",
+            "title": "Cuenta Alias",
+            "default": ""
+          },
+          "moneda": {
+            "type": "string",
+            "title": "Moneda",
+            "default": ""
+          },
+          "costo_q": {
+            "type": "string",
+            "title": "Costo Q",
+            "default": ""
+          },
+          "precio_base_q": {
+            "type": "string",
+            "title": "Precio Base Q",
+            "default": ""
+          },
+          "cpa_base_q": {
+            "type": "string",
+            "title": "Cpa Base Q",
+            "default": ""
+          },
+          "cpa_be_q": {
+            "type": "string",
+            "title": "Cpa Be Q",
+            "default": ""
+          },
+          "campaign_id": {
+            "type": "string",
+            "title": "Campaign Id",
+            "default": ""
+          },
+          "fase_bitacora": {
+            "type": "string",
+            "title": "Fase Bitacora",
+            "default": ""
+          },
+          "fase": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fase"
+          },
+          "nodo_actual": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodo Actual"
+          },
+          "estado_flujo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estado Flujo"
+          },
+          "bloqueantes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bloqueantes"
+          },
+          "siguiente_ejecutor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Siguiente Ejecutor"
+          },
+          "evaluado_el": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evaluado El"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "producto_key"
+        ],
+        "title": "Producto",
+        "description": "Fila de `_DIM_PRODUCTOS.csv` + fase y nodo vigentes de `_ESTADO_FLUJO.csv`."
+      },
+      "Requisito": {
+        "properties": {
+          "dato": {
+            "type": "string",
+            "title": "Dato",
+            "default": ""
+          },
+          "ok": {
+            "type": "boolean",
+            "title": "Ok",
+            "default": false
+          },
+          "observado": {
+            "type": "string",
+            "title": "Observado",
+            "default": ""
+          },
+          "dueno": {
+            "type": "string",
+            "title": "Dueno",
+            "default": ""
+          },
+          "regla": {
+            "type": "string",
+            "title": "Regla",
+            "default": ""
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "Requisito"
+      },
+      "Salud": {
+        "properties": {
+          "generado": {
+            "type": "string",
+            "title": "Generado",
+            "default": ""
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          },
+          "secciones": {
+            "items": {},
+            "type": "array",
+            "title": "Secciones",
+            "default": []
+          },
+          "vistas": {
+            "items": {},
+            "type": "array",
+            "title": "Vistas",
+            "default": []
+          },
+          "salud": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salud"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "Salud",
+        "description": "`VISTAS/_ESTADO.json`: frescura por vista, calculada por gen_app.py."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
