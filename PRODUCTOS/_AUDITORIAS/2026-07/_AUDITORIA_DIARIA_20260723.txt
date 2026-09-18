@@ -10,8 +10,6 @@ Hoy es JUEVES = día de Lucid (cadencia Lun/Jue): pegar el export 7d esta noche.
 ACCESO MCP (reverificado hoy): GTR7 ✅ · GTR0 ✅ · GTR3 ✅ · GTR1 ✅ · GTR13 ❌ (sigue OFF).
 omni_purchase HOY: llega en TINNIDROP-GTR0 y VARICOSE(histórico); NULL en NUSAVA.
 
-PENDIENTES (no VIVO, no auditados): VITAMINA D3+K2, Repelente_Ultrasonico,
-SERUM_COLAGENO_BOTOX = LISTO/sin lanzar. Myo retirado.
 
 ╔═══════════════════════════════════════════════════════════════════════════╗
 ║ 1) TINNIDROP — GTR0 madre + GTR7/GTR1 satélites (FASE 3 multicuenta)        ║
@@ -115,7 +113,6 @@ RESUMEN DEL PORTAFOLIO (próximo paso por producto)
   MA2_VESTIDO + MA6_OFERTA2X1; luego horizontal Post ID con CPA real.
 • NUSAVA 🟡 débil. Pausar MA6-OFERTA; sostener ARDOR/MA7; decidir sostener vs podar con Lucid.
 • CLEARSTEM ⏳ sin MCP → depende 100% del export Lucid; venía sano (Q31).
-• LISTO sin lanzar: VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX.
 
 RECORDATORIO AL OPERADOR — pegá el export de LucidSales (7 días, todas las campañas),
 formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus.

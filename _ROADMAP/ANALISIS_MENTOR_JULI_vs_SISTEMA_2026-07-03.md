@@ -137,7 +137,7 @@ Nunca **produce video propio**. El mentor cierra exactamente ese hueco: con IA s
 2. **P2 — Eje "rol de embudo" en el banco de creativos de FASE 2** (TOFU/MOFU/BOFU ligado a los Niveles de Conciencia que ETAPA-2 ya produce). Sin tocar la lectura lean de FASE 1.
 3. **P3 — Personaje-marca honesto** en ETAPA-FANPAGE/ETAPA-5 y **nota de "mercado validado"** en ETAPA-RESEARCH. Refinamientos menores, hacer solo si sobra tiempo.
 
-**Antes de codificar nada:** validar el P1 con UN video real (frame inicial + Kling/Seedance + edición) sobre un ángulo de un producto ya vivo (ej. NusavaB12 o D3+K2), comparar CPA/% conversación contra el creativo-imagen actual, y recién ahí decidir si se sistematiza. La regla del propio sistema aplica: **decisión por data, no por entusiasmo.**
+**Antes de codificar nada:** validar el P1 con UN video real (frame inicial + Kling/Seedance + edición) sobre un ángulo de un producto ya vivo (ej. NusavaB12), comparar CPA/% conversación contra el creativo-imagen actual, y recién ahí decidir si se sistematiza. La regla del propio sistema aplica: **decisión por data, no por entusiasmo.**
 
 ---
 

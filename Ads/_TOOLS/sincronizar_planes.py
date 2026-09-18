@@ -3,7 +3,7 @@
 """sincronizar_planes.py — Construye los _PLAN.json faltantes para TINNIDROP, CLEARSTEM y NUSAVA.
 
 Permite que gen_lanzador.py renderice la consola completa de 1 clic para todo el portafolio,
-cerrando la brecha donde solo SERUM_COLAGENO_BOTOX tenía plan y los productos vivos estaban ciegos.
+cerrando la brecha donde los productos vivos no tenían plan y estaban ciegos.
 """
 
 import os

@@ -250,7 +250,6 @@ def test_firma_eje_se_exige_cuando_su_dueno_cierra_el_vocabulario():
 #    lanzarse (defecto residual de la simulacion, 16-sep-2026). F1.paquete miraba 5 artefactos y
 #    no la pagina, la banda, las piezas en disco, el copy ni la firma: decia OK, y el bloqueo
 #    aparecia recien en F1.publicar, cargando publicar-meta para algo que se arregla en una etapa.
-#    SERUM_COLAGENO_BOTOX: paquete "cumplido" sin page_id, sin sus 6 imagenes y sin nivel de conciencia.
 
 MSG_DE_PUBLICACION = ("cuenta", "metodo de pago", "factura en", "minimo de la cuenta", "lanzamiento")
 

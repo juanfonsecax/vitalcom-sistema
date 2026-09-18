@@ -90,7 +90,7 @@ Este agente es el **dueño único del SISTEMA DE FANPAGES**. ETAPA-4, ETAPA-5 y 
 - Tono: Educativo-empático. Explica el mecanismo (el calcio va al hueso, no a la arteria) antes de vender. Voseo guatemalteco. Nunca "cura" — siempre "apoya / ayuda a".
 - Lógica: el adulto 45+ con dolor óseo/articular necesita autoridad médica + empatía. Mezcla de mujeres (menopausia) y hombres (ciática estructural, cardiovascular).
 - Edad de segmentación: **45+** (densidad ósea, menopausia y dolor articular se agudizan desde los 45; mayor poder adquisitivo)
-- Productos actuales: Vitamina D3+K2 (Sandhus). Futuros del nicho: colágeno articular, magnesio, calcio+D3, glucosamina.
+- Productos del nicho: colágeno articular, magnesio, calcio+D3, glucosamina.
 - IDs Meta: page_id **1279576438561754** · URL https://www.facebook.com/profile.php?id=61591042546645
 
 **10. ⚡ Salud Nerviosa & Neuropatía**

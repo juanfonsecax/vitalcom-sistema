@@ -99,7 +99,6 @@ RESUMEN DEL PORTAFOLIO - proximo paso por producto
 - VARICOSE     -> sano. +20% MA2_VESTIDO (Q11.6); podar ARANITAS/PIERNAS/MA1; watch fatiga MA6 (1.85).
 - TINNIDROP    -> dia 5, ganadores Perdida auditiva + Deterioro; compliance ANTES de escalar.
 - CLEARSTEM    -> solo-Lucid; esperar export jueves. MCP GTR13 aun off.
-- PENDIENTES (sin lanzar): VITAMINA D3+K2, Repelente_Ultrasonico, SERUM_COLAGENO_BOTOX (LISTO). Myo retirado.
 
 ACCION OPERADOR (JUEVES): pegar export LucidSales 7d de TODAS las campanas.
    Formato ideal xlsx: adId | spend | sells | total | fulfillmentStatus.

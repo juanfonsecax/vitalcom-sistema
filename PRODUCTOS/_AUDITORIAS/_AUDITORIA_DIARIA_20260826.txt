@@ -118,7 +118,7 @@ Q618/sem de la lista está atado a esto — o se lanza o se le cambia la
 fecha; mientras tanto ensucia el registro.
 
 NusavaB12 · VARICOSE · resto: sin cambios respecto del 25-ago. VARICOSE
-sigue PAUSADO. Los LISTO (D3+K2, Repelente, Serum, Óvulos) siguen
+sigue PAUSADO. Los LISTO (Óvulos) siguen
 bloqueados por page_id/WhatsApp y no se auditan.
 
 

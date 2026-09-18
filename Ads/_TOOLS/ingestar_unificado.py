@@ -69,8 +69,6 @@ MAPA_PRODUCTO = {
     "nusava": "NUSAVA",
     "varicose": "VARICOSE",
     "varices": "VARICOSE",
-    "serum": "SERUM_COLAGENO_BOTOX",
-    "colageno": "SERUM_COLAGENO_BOTOX",
 }
 
 

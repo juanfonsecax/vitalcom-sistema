@@ -165,8 +165,6 @@ parados.**
   arreglado, porque cada lanzamiento nuevo hereda la ineficiencia del 8 %.
   ⚠️ **Pendiente: registrar esa decisión** en `_DIM_PRODUCTOS.csv` (notas) y `_EVENTOS.csv`, para
   que sea un HOLD con condición de reingreso y no deriva.
-  Los 3: VITAMINA D3+K2 (67 d), SERUM_COLAGENO_BOTOX (61 d, costeo Q33/BE Q30,80),
-  Repelente_Ultrasonico (60 d, requiere FanPage nueva de nicho hogar).
   **7 de las 10 FanPages están libres**: el bloqueo no es escasez, es cableado manual en Meta.
 - **#4 · Anomalías — DIAGNOSTICADO, correcciones pendientes.** Ver §5.
 - **#5 · Congelar el sistema** hasta que corra una FASE 1 completa y el cierre se mueva.

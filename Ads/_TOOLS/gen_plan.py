@@ -7,7 +7,7 @@ contenido creativo (angulos, prompts, copies) y los hechos del producto. NO cont
 nombres de campana, presupuestos, bandas de edad ni fechas: todo eso lo DERIVA
 gen_lanzador.py desde la doctrina y los CSV. Un dato, un dueno.
 
-    contenido creativo  -> _PLAN.json        (lo escribe etapa-6 / este adaptador)
+    contenido creativo  -> _PLAN.json        (lo escribe etapa-6)
     todo lo derivable   -> gen_lanzador.py   (nombres, plata, fechas, gates)
 
 POR QUE UN JSON Y NO EL TXT
@@ -16,14 +16,7 @@ leer con un programa. Mientras el plan viva en prosa, el operador tiene que inte
 en vez de ejecutar. El JSON hace que el mismo plan se pueda renderizar, validar contra
 _DIM_VOCABULARIO.csv y comparar entre productos.
 
-MODOS
-  1. ADAPTADOR SERUM  — parsea el unico 1_HACER_MANUAL.txt con formato regular que
-     existe hoy (SERUM_COLAGENO_BOTOX). Es de un solo uso: sirve para sembrar el
-     sistema con un plan real, no para convertirse en la via de entrada.
-  2. VALIDAR          — revisa un _PLAN.json ya escrito y reporta lo que le falta.
-
 USO
-    python Ads/_TOOLS/gen_plan.py --adaptar SERUM_COLAGENO_BOTOX
     python Ads/_TOOLS/gen_plan.py --validar            # valida todos los _PLAN.json
 
 ESQUEMA (schema "plan/1") — lo que etapa-6 debe emitir:
@@ -67,7 +60,6 @@ BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 os.chdir(BASE)
 
 PRODUCTOS = "PRODUCTOS"
-DIM_PRODUCTOS = "PRODUCTOS/_DIM_PRODUCTOS.csv"
 VOCABULARIO = "PRODUCTOS/_DIM_VOCABULARIO.csv"
 
 
@@ -76,193 +68,6 @@ def leer_csv(ruta):
         return []
     with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
         return list(csv.DictReader(fh))
-
-
-def slug_angulo(texto):
-    """'Cara cansada que no se quita' -> 'CARA_CANSADA_QUE_NO_SE_QUITA' (recortado)."""
-    t = texto.upper()
-    for a, b in [("Á", "A"), ("É", "E"), ("Í", "I"), ("Ó", "O"), ("Ú", "U"), ("Ñ", "N")]:
-        t = t.replace(a, b)
-    t = re.sub(r"[^A-Z0-9 ]", " ", t)
-    palabras = [p for p in t.split() if p not in ("QUE", "NO", "SE", "DE", "LA", "EL", "MI",
-                                                  "TU", "LOS", "LAS", "UN", "UNA", "Y", "A",
-                                                  "ME", "TE", "LE", "SU", "AL", "EN")]
-    return "_".join(palabras[:3])
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# ADAPTADOR — 1_HACER_MANUAL.txt con el formato de SERUM_COLAGENO_BOTOX
-# ─────────────────────────────────────────────────────────────────────────────
-
-def adaptar(producto_key):
-    prods = {p["producto_key"]: p for p in leer_csv(DIM_PRODUCTOS)}
-    if producto_key not in prods:
-        sys.exit("producto_key '%s' no existe en _DIM_PRODUCTOS.csv" % producto_key)
-    prod = prods[producto_key]
-    carpeta = os.path.join(PRODUCTOS, prod["slug_carpeta"])
-    fuente = os.path.join(carpeta, "1_HACER_MANUAL.txt")
-    if not os.path.exists(fuente):
-        sys.exit("no existe %s" % fuente)
-
-    with io.open(fuente, encoding="utf-8") as fh:
-        txt = fh.read()
-    lineas = txt.split("\n")
-    faltantes = []
-
-    # --- cabecera: pagina y oferta -------------------------------------------
-    pagina = None
-    m = re.search(r"^FanPage de pauta:\s*(.+)$", txt, re.M)
-    if m:
-        pagina = m.group(1).strip()
-    oferta_txt, precio_q, oferta_key = None, None, "SIN_PRECIO"
-    m = re.search(r"^Oferta:\s*(.+)$", txt, re.M)
-    if m:
-        oferta_txt = m.group(1).strip()
-        mp = re.search(r"Q\s*(\d+)", oferta_txt)
-        if mp:
-            precio_q = int(mp.group(1))
-        if re.search(r"\b2\s*x\s*1\b", oferta_txt, re.I):
-            oferta_key = "2X1"
-        elif re.search(r"\b4\s*x\s*2\b", oferta_txt, re.I):
-            oferta_key = "4X2"
-        elif precio_q:
-            oferta_key = "1U"
-
-    # --- seccion B: la tabla de conjuntos ------------------------------------
-    conjuntos = {}
-    for ln in lineas:
-        m = re.match(r"^\|\s*(\d+)\s*\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|"
-                     r"\s*([^|]*)\|\s*([^|]*)\|", ln)
-        if not m:
-            continue
-        n = int(m.group(1))
-        titulo = m.group(3).strip()
-        formato = m.group(4).strip().upper()
-        precio_col = m.group(6).strip().upper()
-        conjuntos[n] = {
-            "n": n,
-            "angulo_key": slug_angulo(titulo),
-            "angulo_titulo": titulo,
-            "avatar_edad": None,
-            "avatar_genero": "MIXTO",
-            "nivel_conciencia": None,
-            "formato": "VIDEO" if "VIDEO" in formato else "IMAGEN",
-            "lleva_precio": precio_col.startswith("S"),
-            "archivo_creativo": None,
-            "prompt_imagen": None,
-            "copy": {"textos": [], "titulos": [], "descripcion": None},
-        }
-    if not conjuntos:
-        sys.exit("no se encontro la tabla de conjuntos (seccion B)")
-
-    # --- archivos reservados --------------------------------------------------
-    for m in re.finditer(r"(%s_(\d+)_[a-z0-9]+\.(?:jpg|png|mp4))" % re.escape(producto_key), txt):
-        n = int(m.group(2))
-        if n in conjuntos:
-            conjuntos[n]["archivo_creativo"] = m.group(1)
-    for m in re.finditer(r"[·\s](_(\d+)_[a-z0-9]+\.(?:jpg|png|mp4))", txt):
-        n = int(m.group(2))
-        if n in conjuntos and not conjuntos[n]["archivo_creativo"]:
-            conjuntos[n]["archivo_creativo"] = producto_key + m.group(1)
-
-    # --- seccion C.1: prompts de imagen --------------------------------------
-    bloques = re.split(r"^━━━ AD CONJUNTO (\d+) — (.+?) ━━━$", txt, flags=re.M)
-    for i in range(1, len(bloques) - 1, 3):
-        n = int(bloques[i])
-        cuerpo = bloques[i + 2]
-        # el prompt termina donde arranca el siguiente separador de seccion
-        corte = re.search(r"^(?:━━━|─────)", cuerpo, re.M)
-        if corte:
-            cuerpo = cuerpo[:corte.start()]
-        if n in conjuntos:
-            conjuntos[n]["prompt_imagen"] = cuerpo.strip()
-            # la edad del avatar viaja dentro de la escena del prompt
-            me = (re.search(r"(\d{2})\s*-\s*(\d{2})\s*a[nñ]os", cuerpo)
-                  or re.search(r"(?:mujer|hombre|latina|latino)[^\r\n]{0,20}?"
-                               r"(\d{2})\s*-\s*(\d{2})", cuerpo, re.I))
-            if me:
-                conjuntos[n]["avatar_edad"] = "%s-%s" % (me.group(1), me.group(2))
-            if re.search(r"\bmujer\b", cuerpo, re.I) and not re.search(r"\bhombre\b", cuerpo, re.I):
-                conjuntos[n]["avatar_genero"] = "MUJER"
-            elif re.search(r"\bhombre\b", cuerpo, re.I) and not re.search(r"\bmujer\b", cuerpo, re.I):
-                conjuntos[n]["avatar_genero"] = "HOMBRE"
-
-    # --- seccion D: copies ----------------------------------------------------
-    bloques = re.split(r"^──────── CONJUNTO (\d+) — (.+?) ────────$", txt, flags=re.M)
-    for i in range(1, len(bloques) - 1, 3):
-        n = int(bloques[i])
-        cuerpo = bloques[i + 2]
-        corte = re.search(r"^(?:════|────────)", cuerpo, re.M)
-        if corte:
-            cuerpo = cuerpo[:corte.start()]
-        if n not in conjuntos:
-            continue
-        # variaciones de texto principal
-        partes = re.split(r"^Variaci[oó]n \d+[^\n]*:\s*$", cuerpo, flags=re.M)
-        textos = []
-        for p in partes[1:]:
-            fin = re.search(r"^(?:T[IÍ]TULOS?|DESCRIPCI[OÓ]N|Lleva precio)\s*:", p, re.M)
-            if fin:
-                p = p[:fin.start()]
-            p = p.strip()
-            if p:
-                textos.append(p)
-        conjuntos[n]["copy"]["textos"] = textos
-        mt = re.search(r"^T[IÍ]TULOS?\s*:\s*(.+)$", cuerpo, re.M)
-        if mt:
-            conjuntos[n]["copy"]["titulos"] = [
-                t.strip().strip('"').strip() for t in mt.group(1).split("/") if t.strip()]
-        md = re.search(r"^DESCRIPCI[OÓ]N\s*:\s*(.+)$", cuerpo, re.M)
-        if md:
-            conjuntos[n]["copy"]["descripcion"] = md.group(1).strip()
-
-    orden = [conjuntos[k] for k in sorted(conjuntos)]
-
-    # --- lo que no se pudo llenar --------------------------------------------
-    for c in orden:
-        etq = "conjunto %d (%s)" % (c["n"], c["angulo_key"])
-        if not c["prompt_imagen"] and c["formato"] == "IMAGEN":
-            faltantes.append("%s: sin prompt de imagen" % etq)
-        if not c["copy"]["textos"]:
-            faltantes.append("%s: sin texto principal" % etq)
-        if not c["archivo_creativo"]:
-            faltantes.append("%s: sin nombre de archivo de creativo" % etq)
-        if not c["avatar_edad"]:
-            faltantes.append("%s: sin avatar_edad -> corre en banda amplia 18-65+" % etq)
-        if not c["nivel_conciencia"]:
-            faltantes.append("%s: sin nivel_conciencia -> la firma sale con ? en NC" % etq)
-    if not prod.get("page_id"):
-        faltantes.append("producto: page_id SIN ASIGNAR -> no se puede publicar")
-    if not prod.get("cuenta_id"):
-        faltantes.append("producto: cuenta publicitaria SIN ASIGNAR")
-
-    plan = {
-        "schema": "plan/1",
-        "producto_key": producto_key,
-        "fase": 1,
-        "version": "v1",
-        "origen": "adaptado de %s por gen_plan.py" % fuente.replace("\\", "/"),
-        "pagina": {"nombre": pagina, "page_id": prod.get("page_id") or None},
-        "oferta": {"oferta_key": oferta_key, "precio_q": precio_q, "texto": oferta_txt},
-        "concepto_control": {"concepto_key": "C2_BENEFICIOS", "variante": "ligera",
-                             "canonico_id": "CN05_LISTA_BENEFICIOS"},
-        "conjuntos": orden,
-        "_faltantes": faltantes,
-    }
-
-    salida = os.path.join(carpeta, "_PLAN.json")
-    with io.open(salida, "w", encoding="utf-8") as fh:
-        fh.write(json.dumps(plan, ensure_ascii=False, indent=2))
-    print("escrito %s" % salida.replace("\\", "/"))
-    print("  %d conjuntos · %d con prompt · %d con copy" % (
-        len(orden),
-        sum(1 for c in orden if c["prompt_imagen"]),
-        sum(1 for c in orden if c["copy"]["textos"])))
-    if faltantes:
-        print("  %d faltantes:" % len(faltantes))
-        for f in faltantes:
-            print("    - %s" % f)
-    return plan
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -386,9 +191,7 @@ def validar(ruta=None):
 
 
 if __name__ == "__main__":
-    if "--adaptar" in sys.argv:
-        adaptar(sys.argv[sys.argv.index("--adaptar") + 1])
-    elif "--validar" in sys.argv:
+    if "--validar" in sys.argv:
         i = sys.argv.index("--validar")
         ruta_pedida = sys.argv[i + 1] if i + 1 < len(sys.argv) and not sys.argv[i + 1].startswith("--") else None
         sys.exit(validar(ruta_pedida))

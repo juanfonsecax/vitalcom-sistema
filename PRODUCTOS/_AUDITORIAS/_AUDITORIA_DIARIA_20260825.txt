@@ -164,7 +164,7 @@ CP1 (cuenta, TINNIDROP)
     no se atribuye por descarte (APR-030).
 
 NusavaB12 · VARICOSE · resto: sin cambios respecto del 24-ago. VARICOSE
-sigue PAUSADO. Los LISTO (D3+K2, Repelente, Serum, Óvulos) siguen
+sigue PAUSADO. Los LISTO (Óvulos) siguen
 bloqueados por page_id/WhatsApp y no se auditan.
 
 Test T01: figura CONFIRMADO en `_DIM_TESTS` pero no registra gasto en
