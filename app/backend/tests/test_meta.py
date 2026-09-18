@@ -301,3 +301,148 @@ def test_la_huella_es_estable_y_cambia_con_cualquier_argumento():
     cambiada = copy.deepcopy(orden)
     cambiada["llamadas"][0]["args"]["b"] = 3
     assert workflows.huella_de_la_orden(orden) != workflows.huella_de_la_orden(cambiada)
+
+
+# ── las imágenes las sube el operador a la biblioteca (decisión del 18-sep-2026) ──
+
+@pytest.fixture()
+def con_media(sistema_de_juguete: Path, cliente_juguete: TestClient) -> TestClient:
+    """F1.publicar con un paquete de dos piezas que el operador sube a mano."""
+    meta.preparar_con_media(sistema_de_juguete)
+    meta.habilitar_publicar_f1(sistema_de_juguete)
+    acciones.olvidar_cache()
+    return cliente_juguete
+
+
+def _espera_imagenes(job_id: str, vuelta: int = 1) -> dict:
+    _esperar(job_id, "ESPERA_MEDIA")
+    limite = time.monotonic() + 10
+    while time.monotonic() < limite:
+        pendiente = workflows.publicado(job_id, "pendiente")
+        if pendiente and pendiente.get("tipo") == "subida_media" and pendiente["vuelta"] == vuelta:
+            return pendiente
+        time.sleep(0.1)
+    raise AssertionError("no apareció el pedido de subir imágenes")
+
+
+def _subidas(nombres_y_hashes: dict[str, str]) -> list[dict[str, str]]:
+    return [{"hash": h, "name": f"{n}.png"} for n, h in nombres_y_hashes.items()]
+
+
+def test_publicar_espera_que_subas_las_imagenes_y_usa_sus_hashes(con_media, sistema_de_juguete):
+    assert _publicar(con_media).status_code == 202
+    pedido = _espera_imagenes(JOB)
+    assert pedido["cuenta"] == "GTR7"
+    assert [a["archivo_a_subir"] for a in pedido["archivos"]] == ["PX_1_V2.png", "PX_2_V2.png"]
+    carpeta = Path(pedido["carpeta"])
+    assert sorted(p.name for p in carpeta.iterdir()) == ["PX_1_V2.png", "PX_2_V2.png"], "listas para arrastrar"
+    assert (carpeta / "PX_1_V2.png").read_bytes() == b"imagen 1", "el archivo es la pieza, con el nombre nuevo"
+    assert _escrituras(sistema_de_juguete) == [], "esperando al operador: nada escribió en Meta"
+
+    meta.subir_a_biblioteca(sistema_de_juguete, _subidas({"PX_1_V2": "hash-uno", "PX_2_V2": "hash-dos"}))
+    assert con_media.post(f"/api/trabajos/{JOB}/media/1").status_code == 202
+
+    orden = _pendiente(JOB)
+    creativos = [c["args"]["image_hash"] for c in orden["orden"]["llamadas"] if c["tool"] == "ads_create_creative"]
+    assert creativos == ["hash-uno", "hash-dos"], "cada creativo lleva el hash de SU imagen, literal"
+    assert [(i["archivo"], i["image_hash"]) for i in orden["orden"]["imagenes"]] == [
+        ("PX_1.png", "hash-uno"), ("PX_2.png", "hash-dos")], "la orden muestra qué archivo es cada hash"
+    assert "ads_creative_upload_media" not in [c["tool"] for c in orden["orden"]["llamadas"]]
+
+    workflows.enviar_aprobacion(JOB, 1, "APROBADA", orden["hash"])
+    resultado = _terminar()
+    assert resultado["estado"] == "EXITO", resultado
+    assert _escrituras(sistema_de_juguete) == [
+        "ads_create_campaign", "ads_create_ad_set", "ads_create_creative", "ads_create_ad",
+        "ads_create_creative", "ads_create_ad"]
+    assert meta.lecturas(sistema_de_juguete).count("ads_get_ad_images") >= 2, "antes y después de subir"
+
+
+def test_un_nombre_viejo_no_se_reusa(con_media, sistema_de_juguete):
+    """La biblioteca ya tiene un PX_1_V2 (de otra vez): la pieza nueva se pide como PX_1_V3."""
+    meta.subir_a_biblioteca(sistema_de_juguete, _subidas({"PX_1_V2": "hash-viejo"}))
+    _publicar(con_media)
+    pedido = _espera_imagenes(JOB)
+    assert [a["nombre_en_biblioteca"] for a in pedido["archivos"]] == ["PX_1_V3", "PX_2_V2"]
+    meta.subir_a_biblioteca(sistema_de_juguete, _subidas({"PX_1_V3": "hash-nuevo", "PX_2_V2": "hash-dos"}))
+    workflows.avisar_media_subida(JOB, 1)
+    orden = _pendiente(JOB)
+    creativos = [c["args"]["image_hash"] for c in orden["orden"]["llamadas"] if c["tool"] == "ads_create_creative"]
+    assert creativos == ["hash-nuevo", "hash-dos"], "nunca el hash de la imagen vieja"
+
+
+def test_si_falta_una_imagen_lo_vuelve_a_pedir(con_media, sistema_de_juguete):
+    _publicar(con_media)
+    _espera_imagenes(JOB)
+    meta.subir_a_biblioteca(sistema_de_juguete, _subidas({"PX_1_V2": "hash-uno"}))
+    workflows.avisar_media_subida(JOB, 1)
+
+    segundo = _espera_imagenes(JOB, vuelta=2)
+    estados = {a["archivo_a_subir"]: a["estado"] for a in segundo["archivos"]}
+    assert estados == {"PX_1_V2.png": "OK", "PX_2_V2.png": "POR_SUBIR"}
+    assert "PX_2_V2" in segundo["faltan"][0], "dice cuál falta"
+    assert _escrituras(sistema_de_juguete) == []
+
+    meta.subir_a_biblioteca(sistema_de_juguete, _subidas({"PX_2_V2": "hash-dos"}))
+    workflows.avisar_media_subida(JOB, 2)
+    orden = _pendiente(JOB)
+    workflows.enviar_aprobacion(JOB, 1, "APROBADA", orden["hash"])
+    assert _terminar()["estado"] == "EXITO"
+
+
+def test_dos_imagenes_con_el_mismo_nombre_no_se_adivinan(con_media, sistema_de_juguete):
+    _publicar(con_media)
+    _espera_imagenes(JOB)
+    meta.subir_a_biblioteca(sistema_de_juguete, _subidas({"PX_1_V2": "hash-uno", "PX_2_V2": "hash-dos"}))
+    meta.subir_a_biblioteca(sistema_de_juguete, [{"hash": "hash-otro", "name": "PX_1_V2.png"}])
+    workflows.avisar_media_subida(JOB, 1)
+    segundo = _espera_imagenes(JOB, vuelta=2)
+    repetida = next(a for a in segundo["archivos"] if a["archivo"] == "PX_1.png")
+    assert repetida["estado"] == "REPETIDA" and repetida["hashes"] == ["hash-otro", "hash-uno"]
+    assert workflows.publicado(JOB, "estado")["estado"] == "ESPERA_MEDIA", "no pide aprobación"
+
+
+def test_si_nadie_avisa_la_subida_caduca(con_media, sistema_de_juguete):
+    meta.con_respuesta_max(sistema_de_juguete, 0.0005)  # 1,8 s
+    acciones.olvidar_cache()
+    _publicar(con_media)
+    resultado = _terminar()
+    assert resultado["estado"] == "CADUCADO", resultado
+    assert _escrituras(sistema_de_juguete) == []
+
+
+def test_si_la_lectura_no_quedo_guardada_falla_claro(con_media, sistema_de_juguete, monkeypatch):
+    monkeypatch.setenv("VITALCOM_FAKE_NO_GUARDA_IMAGENES", "1")
+    _publicar(con_media)
+    resultado = _terminar()
+    assert resultado["estado"] == "FALLIDO" and "No quedó guardada" in resultado["detalle"], resultado
+    assert workflows.publicado(JOB, "pendiente") is None, "no le pide al operador que suba con nombres sin elegir"
+
+
+def test_ya_las_subi_solo_vale_para_lo_que_se_esta_esperando(con_media, sistema_de_juguete):
+    _publicar(con_media)
+    _espera_imagenes(JOB)
+    assert con_media.post(f"/api/trabajos/{JOB}/media/2").status_code == 409, "otra vuelta"
+    assert con_media.post(f"/api/trabajos/{JOB}/aprobaciones/1",
+                          json={"decision": "APROBADA", "hash": "x"}).status_code == 409, "no hay orden todavía"
+
+
+def test_leer_la_biblioteca_solo_usa_ads_get_ad_images(con_media, sistema_de_juguete):
+    """La lectura de imágenes recibe UNA herramienta de Meta, de lectura: ni subir ni crear."""
+    _publicar(con_media)
+    _espera_imagenes(JOB)
+    lecturas = [c for c in _argv_de_claude(sistema_de_juguete)
+                if "IMAGENES_EN:" in c["argv"][c["argv"].index("-p") + 1]]
+    assert lecturas, "leyó la biblioteca"
+    for corrida in lecturas:
+        de_meta = [h for h in corrida["permitidas"] if h.startswith("mcp__")]
+        assert de_meta == ["mcp__claude_ai_META_MCP__ads_get_ad_images"], de_meta
+
+
+def test_ninguna_accion_declara_la_subida_con_ventana():
+    """LOCAL_FILE necesita una pantalla (spike F): ninguna acción de la app la puede recibir."""
+    for accion in juguete.manifiesto_real()["acciones"]["lista"]:
+        herramientas = accion.get("herramientas_meta") or {}
+        assert "ads_creative_upload_media" not in [*herramientas.get("lectura", []), *herramientas.get("escritura", [])]
+        if (accion.get("ordenes") or {}).get("tipo") == "paquete_publicacion":
+            assert "ads_get_ad_images" in herramientas["lectura"], accion["id"]

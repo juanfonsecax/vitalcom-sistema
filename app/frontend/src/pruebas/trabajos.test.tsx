@@ -154,6 +154,54 @@ test("la orden a aprobar se ve completa y aprobar manda la huella de lo que se v
   expect(envio.cuerpo).toEqual({ decision: "APROBADA", hash: ORDEN.hash, nota: "" });
 });
 
+const SUBIDA = {
+  tipo: "subida_media",
+  vuelta: 2,
+  cuenta: "GTR7",
+  cuenta_id: "598687956219141",
+  carpeta: "C:\\SISTEMA\\PRODUCTOS\\_AUDITORIAS\\app_runs\\2026-09\\x\\subir_a_meta",
+  faltan: ["falta subir 1 imagen(es): PX_2_V2"],
+  archivos: [
+    { archivo: "PX_1.png", nombre_en_biblioteca: "PX_1_V3", archivo_a_subir: "PX_1_V3.png", estado: "OK", hashes: ["h1"] },
+    { archivo: "PX_2.png", nombre_en_biblioteca: "PX_2_V2", archivo_a_subir: "PX_2_V2.png", estado: "POR_SUBIR", hashes: [] },
+  ],
+};
+
+test("las imágenes a subir se ven con su nombre exacto y la cuenta, y «Ya las subí» avisa esa vuelta", async () => {
+  respuestas["GET /api/trabajos"] = [{ ...BASE, job_id: "j4", estado: "ESPERA_MEDIA", pendiente: "subida_media" }];
+  respuestas["GET /api/trabajos/j4"] = { ...BASE, job_id: "j4", estado: "ESPERA_MEDIA", pendiente: "subida_media", pendiente_completo: SUBIDA };
+  respuestas["POST /api/trabajos/j4/media/2"] = { ok: true };
+  montar("j4");
+
+  expect(await screen.findByText("Subí estas imágenes a Meta")).toBeInTheDocument();
+  expect(screen.getByText("biblioteca de medios de la cuenta GTR7", { exact: false })).toBeInTheDocument();
+  expect(screen.getByText("Falta que subas las imágenes a Meta")).toBeInTheDocument();
+  const lista = screen.getByLabelText("Imágenes para subir");
+  expect(lista).toHaveTextContent("PX_1_V3.png");
+  expect(lista).toHaveTextContent("encontrada");
+  expect(lista).toHaveTextContent("PX_2_V2.png");
+  expect(lista).toHaveTextContent("falta subir");
+  expect(screen.getByText("· falta subir 1 imagen(es): PX_2_V2")).toBeInTheDocument();
+  expect(screen.getByText(SUBIDA.carpeta)).toBeInTheDocument();
+
+  fireEvent.click(screen.getByRole("button", { name: "Ya las subí" }));
+  await waitFor(() => expect(llamadas.some((l) => l.metodo === "POST" && l.url === "/api/trabajos/j4/media/2")).toBe(true));
+});
+
+test("la orden muestra qué archivo es cada hash", async () => {
+  const conImagenes = {
+    ...ORDEN,
+    orden: { ...ORDEN.orden, imagenes: [{ archivo: "PX_1.png", nombre_en_biblioteca: "PX_1_V3", image_hash: "hash-uno" }] },
+  };
+  respuestas["GET /api/trabajos"] = [];
+  respuestas["GET /api/trabajos/j1"] = { ...BASE, job_id: "j1", estado: "ESPERA_APROBACION", pendiente: "aprobacion", pendiente_completo: conImagenes };
+  montar("j1");
+  const imagenes = await screen.findByLabelText("Imágenes de la orden");
+  expect(imagenes).toHaveTextContent("PX_1_V3");
+  expect(imagenes).toHaveTextContent("PX_1.png");
+  expect(imagenes).toHaveTextContent("hash-uno");
+});
+
 test("rechazar manda RECHAZADA con la misma huella", async () => {
   respuestas["GET /api/trabajos"] = [];
   respuestas["GET /api/trabajos/j1"] = { ...BASE, job_id: "j1", estado: "ESPERA_APROBACION", pendiente: "aprobacion", pendiente_completo: ORDEN };

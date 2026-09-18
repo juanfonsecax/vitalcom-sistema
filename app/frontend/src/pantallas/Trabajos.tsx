@@ -3,7 +3,7 @@
  *
  * La lista es de los trabajos (más nuevos primero). Al abrir uno: su estado en palabras (con el
  * código crudo al lado), el log en vivo, y —si está esperando— la orden completa para aprobar
- * o la pregunta de Claude para responder. Aprobar solo existe acá, con la orden a la vista: la
+ * la pregunta de Claude para responder, o las imágenes que hay que subir a mano a Meta. Aprobar solo existe acá, con la orden a la vista: la
  * huella que viaja es la de lo que se está mirando, así que lo que se aprueba es lo que se vio.
  */
 import { useState } from "react";
@@ -21,6 +21,101 @@ import { Cargando, Chip, Problema, Tarjeta, cn } from "../componentes/ui";
 import { LLAMADA_DE_META, SE_REINTENTAN, trabajoEnPalabras } from "../lenguaje";
 
 const CADA_CUANTO_SE_MIRA_LA_LISTA_MS = 3000;
+
+const PENDIENTE_EN_LA_LISTA: Record<string, string> = {
+  aprobacion: "Falta tu aprobación",
+  pregunta: "Claude te hizo una pregunta",
+  subida_media: "Falta que subas las imágenes a Meta",
+};
+
+const ESTADO_DE_IMAGEN: Record<string, { texto: string; clase: string }> = {
+  POR_SUBIR: { texto: "falta subir", clase: "text-amber-300" },
+  OK: { texto: "encontrada", clase: "text-emerald-300" },
+  REPETIDA: { texto: "hay dos con este nombre", clase: "text-rose-300" },
+  SIN_LISTADO: { texto: "sin leer", clase: "text-zinc-400" },
+};
+
+function Copiar({ texto }: { texto: string }) {
+  const [hecho, setHecho] = useState(false);
+  return (
+    <button
+      type="button"
+      onClick={() => navigator.clipboard?.writeText(texto).then(() => setHecho(true))}
+      className="rounded border border-zinc-700 px-2 py-0.5 text-xs text-zinc-300 hover:border-zinc-500"
+    >
+      {hecho ? "copiado" : "copiar"}
+    </button>
+  );
+}
+
+function ImagenesParaSubir({ id, pendiente }: { id: string; pendiente: Extract<Pendiente, { tipo: "subida_media" }> }) {
+  const cola = useQueryClient();
+  const avisar = useMutation({
+    mutationFn: () => api.avisarImagenesSubidas(id, pendiente.vuelta),
+    onSettled: () => cola.invalidateQueries({ queryKey: ["trabajo", id] }),
+  });
+  const porSubir = pendiente.archivos.filter((a) => a.estado !== "OK");
+  return (
+    <Tarjeta className="space-y-4 border-amber-800 bg-amber-950/20">
+      <div>
+        <h2 className="font-medium text-amber-200">Subí estas imágenes a Meta</h2>
+        <p className="text-sm text-zinc-300">
+          Abrí la <strong>biblioteca de medios de la cuenta {pendiente.cuenta}</strong> ({pendiente.cuenta_id}) en el
+          Administrador de anuncios y subí {porSubir.length === 1 ? "este archivo" : `estos ${porSubir.length} archivos`}.
+          Están listos en la carpeta de abajo, con el nombre exacto: no les cambies el nombre. Cada nombre es nuevo, así
+          que nunca se confunde con una imagen vieja.
+        </p>
+      </div>
+      {pendiente.vuelta > 1 && pendiente.faltan.length > 0 && (
+        <div className="rounded-lg border border-rose-900 bg-rose-950/30 p-3 text-sm text-rose-200">
+          Revisé la biblioteca y todavía falta algo:
+          <ul className="mt-1 space-y-1">
+            {pendiente.faltan.map((f) => (
+              <li key={f}>· {f}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="space-y-1">
+        <p className="text-xs text-zinc-500">Carpeta con los archivos listos:</p>
+        <div className="flex items-center gap-2">
+          <code className="min-w-0 flex-1 truncate rounded bg-zinc-950 px-2 py-1 text-xs text-zinc-200" title={pendiente.carpeta}>
+            {pendiente.carpeta}
+          </code>
+          <Copiar texto={pendiente.carpeta} />
+        </div>
+      </div>
+      <ul className="space-y-1" aria-label="Imágenes para subir">
+        {pendiente.archivos.map((a) => {
+          const estado = ESTADO_DE_IMAGEN[a.estado] ?? { texto: a.estado, clase: "text-zinc-400" };
+          return (
+            <li
+              key={a.archivo}
+              className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2 text-sm"
+            >
+              <span className="font-medium text-zinc-100">{a.archivo_a_subir}</span>
+              <span className="text-xs text-zinc-500">de {a.archivo}</span>
+              <span className={cn("text-xs", estado.clase)}>{estado.texto}</span>
+            </li>
+          );
+        })}
+      </ul>
+      {avisar.error && <p className="text-sm text-rose-300">{avisar.error.message}</p>}
+      <button
+        type="button"
+        disabled={avisar.isPending}
+        onClick={() => avisar.mutate()}
+        className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:bg-zinc-800"
+      >
+        Ya las subí
+      </button>
+      <p className="text-xs text-zinc-500">
+        Al avisar, la app lee la biblioteca (solo mira, no cambia nada) y busca cada imagen por su nombre. Después te
+        muestra la orden completa para aprobar.
+      </p>
+    </Tarjeta>
+  );
+}
 
 function EstadoDeTrabajo({ estado }: { estado: string }) {
   const { texto, tono } = trabajoEnPalabras(estado);
@@ -69,9 +164,7 @@ function ListaDeTrabajos({ actual }: { actual: string | undefined }) {
               <span>{hora(trabajo.iniciado)}</span>
             </div>
             {trabajo.pendiente && (
-              <p className="mt-1 text-xs text-amber-300">
-                {trabajo.pendiente === "aprobacion" ? "Falta tu aprobación" : "Claude te hizo una pregunta"}
-              </p>
+              <p className="mt-1 text-xs text-amber-300">{PENDIENTE_EN_LA_LISTA[trabajo.pendiente] ?? "Espera algo de vos"}</p>
             )}
           </Link>
         </li>
@@ -109,6 +202,20 @@ function OrdenParaAprobar({ id, pendiente }: { id: string; pendiente: Extract<Pe
           </div>
         ))}
       </dl>
+      {orden.imagenes && orden.imagenes.length > 0 && (
+        <div>
+          <p className="text-xs text-zinc-500">Las imágenes que usa cada creativo (las que subiste):</p>
+          <ul className="mt-1 space-y-1 text-sm" aria-label="Imágenes de la orden">
+            {orden.imagenes.map((imagen) => (
+              <li key={imagen.archivo} className="flex flex-wrap gap-2">
+                <span className="text-zinc-100">{imagen.nombre_en_biblioteca}</span>
+                <span className="text-zinc-500">de {imagen.archivo}</span>
+                <code className="text-xs text-zinc-500">{imagen.image_hash}</code>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <ol className="space-y-2" aria-label="Llamadas a Meta">
         {orden.llamadas.map((llamada) => (
           <li key={llamada.n} className="rounded-lg border border-zinc-800 bg-zinc-950/60 p-3">
@@ -333,6 +440,7 @@ function DetalleDeTrabajo({ id }: { id: string }) {
 
       {pendiente?.tipo === "aprobacion" && <OrdenParaAprobar id={id} pendiente={pendiente} />}
       {pendiente?.tipo === "pregunta" && <PreguntaDeClaude id={id} pendiente={pendiente} />}
+      {pendiente?.tipo === "subida_media" && <ImagenesParaSubir id={id} pendiente={pendiente} />}
 
       <Acciones trabajo={trabajo} />
       <Resultado trabajo={trabajo} />

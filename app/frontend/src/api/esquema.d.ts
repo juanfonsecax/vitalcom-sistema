@@ -138,6 +138,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/trabajos/{job_id}/media/{vuelta}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Avisar Media Subida
+         * @description «Ya las subí»: el trabajo lee la biblioteca de Meta y confirma cada imagen por su nombre.
+         */
+        post: operations["avisar_media_subida_api_trabajos__job_id__media__vuelta__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/trabajos/{job_id}/reintentar": {
         parameters: {
             query?: never;
@@ -1290,6 +1310,40 @@ export interface operations {
                 "application/json": components["schemas"]["RespuestaDeClaude"];
             };
         };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    avisar_media_subida_api_trabajos__job_id__media__vuelta__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+                vuelta: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             202: {

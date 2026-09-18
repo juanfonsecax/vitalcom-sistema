@@ -306,7 +306,7 @@
      "caduca_horas": 12
     },
     "presupuesto_usd": 10,
-    "motivo": "Se habilita en el Hito 4, en Opus: falta el spike de ads_creative_upload_media (LOCAL_FILE abre un widget) en headless.",
+    "motivo": "Hito 4: la media ya va por la biblioteca (el operador sube a mano, la app lee el image_hash). Se habilita con la confirmación del operador.",
     "datos_del_operador": [
      {
       "dato": "cuenta publicitaria asignada",
@@ -1102,6 +1102,12 @@
      "{cuenta}",
      "--snapshot",
      "Ads/_INGESTA/META/snapshot_{cuenta}.json",
+     "--media",
+     "biblioteca",
+     "--imagenes-antes",
+     "{run_dir}/imagenes_antes.json",
+     "--imagenes-despues",
+     "{run_dir}/imagenes_despues.json",
      "--json",
      "--salida",
      "{run_dir}/paquete.json"

@@ -20,8 +20,17 @@ export type Trabajo = components["schemas"]["Trabajo"];
 export type TrabajoDetalle = components["schemas"]["TrabajoDetalle"];
 export type EstadoDeClaude = components["schemas"]["EstadoDeClaude"];
 
-/** Lo que el workflow deja pendiente para el operador: una orden a aprobar o una pregunta de Claude. */
+/** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
+ * las imágenes que tiene que subir a mano a la biblioteca de Meta. */
 export type LlamadaDeMeta = { n: number; tool: string; args: Record<string, unknown> };
+export type ImagenDeLaOrden = { archivo: string; nombre_en_biblioteca: string; image_hash: string };
+export type ImagenPorSubir = {
+  archivo: string;
+  nombre_en_biblioteca: string;
+  archivo_a_subir: string;
+  estado: "POR_SUBIR" | "OK" | "REPETIDA" | "SIN_LISTADO";
+  hashes: string[];
+};
 export type Pendiente =
   | {
       tipo: "aprobacion";
@@ -36,9 +45,19 @@ export type Pendiente =
         cuenta: string | null;
         llamadas: LlamadaDeMeta[];
         manifiesto: Record<string, unknown> | null;
+        imagenes?: ImagenDeLaOrden[];
       };
     }
-  | { tipo: "pregunta"; n: number; texto: string };
+  | { tipo: "pregunta"; n: number; texto: string }
+  | {
+      tipo: "subida_media";
+      vuelta: number;
+      cuenta: string;
+      cuenta_id: string;
+      carpeta: string;
+      archivos: ImagenPorSubir[];
+      faltan: string[];
+    };
 
 /** Un evento del progreso en vivo (SSE). */
 export type LineaEnVivo = { unidad: number; texto: string; tipo: "salida" | "error" | "comando" | "claude" };
@@ -122,6 +141,8 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ n, texto }),
     }),
+  avisarImagenesSubidas: (id: string, vuelta: number) =>
+    pedir<unknown>(`/api/trabajos/${encodeURIComponent(id)}/media/${vuelta}`, { method: "POST" }),
   reintentar: (id: string, confirmado: boolean) =>
     pedir<AccionEncolada>(`/api/trabajos/${encodeURIComponent(id)}/reintentar`, {
       method: "POST",

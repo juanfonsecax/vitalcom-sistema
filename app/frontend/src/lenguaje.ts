@@ -73,6 +73,7 @@ export const ESTADO_DE_TRABAJO: Record<string, { texto: string; tono: Tono; enCu
   CORRIENDO: { texto: "corriendo", tono: "dato", enCurso: true },
   ESPERA_APROBACION: { texto: "espera tu aprobación", tono: "aviso", enCurso: true },
   ESPERA_RESPUESTA: { texto: "espera tu respuesta", tono: "aviso", enCurso: true },
+  ESPERA_MEDIA: { texto: "espera que subas las imágenes", tono: "aviso", enCurso: true },
   EXITO: { texto: "terminó bien", tono: "bien", enCurso: false },
   SIN_CUMPLIR: { texto: "terminó, pero el paso sigue pendiente", tono: "aviso", enCurso: false },
   RECHAZADO: { texto: "lo rechazaste", tono: "neutro", enCurso: false },

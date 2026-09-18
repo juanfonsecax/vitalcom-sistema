@@ -1,11 +1,11 @@
 """trabajos.py — lo que se sabe de un trabajo y lo que el operador puede hacerle (diseño §3.6, §3.7, §3.10).
 
 Es la cara de LECTURA del runner: arma el estado que ve la pantalla a partir de DBOS (estado, eventos
-publicados por el workflow) y de la bitácora (el sello y el resultado). Las cuatro cosas que sí hacen
-algo —aprobar, responder, reintentar, cancelar— entregan al runner una decisión del operador; no
+publicados por el workflow) y de la bitácora (el sello y el resultado). Las cosas que sí hacen
+algo —aprobar, responder, avisar que subió las imágenes, reintentar, cancelar— entregan al runner una decisión del operador; no
 ejecutan nada por su cuenta.
 
-Estados que ve el operador: ENCOLADO · CORRIENDO · ESPERA_APROBACION · ESPERA_RESPUESTA · EXITO ·
+Estados que ve el operador: ENCOLADO · CORRIENDO · ESPERA_APROBACION · ESPERA_RESPUESTA · ESPERA_MEDIA · EXITO ·
 SIN_CUMPLIR · RECHAZADO · CADUCADO · FALLIDO · INTERRUMPIDO · CSV_INVALIDO · CANCELADO · OTRA_VERSION.
 """
 
@@ -20,7 +20,7 @@ from . import acciones, bitacora, workflows
 from .acciones import ErrorDeAccion
 
 ESTADOS_QUE_SE_REINTENTAN = ("FALLIDO", "INTERRUMPIDO", "CADUCADO")
-ESTADOS_EN_CURSO = ("ENCOLADO", "CORRIENDO", "ESPERA_APROBACION", "ESPERA_RESPUESTA")
+ESTADOS_EN_CURSO = ("ENCOLADO", "CORRIENDO", "ESPERA_APROBACION", "ESPERA_RESPUESTA", "ESPERA_MEDIA")
 MAXIMO_A_LISTAR = 200
 
 
@@ -146,6 +146,15 @@ def responder(job_id: str, n: int, texto: str) -> None:
     if not texto.strip():
         raise ErrorDeAccion(422, "PARAMETRO_INVALIDO", "La respuesta está vacía.", campo="texto")
     workflows.responder(job_id, n, texto.strip())
+
+
+def avisar_media_subida(job_id: str, vuelta: int) -> None:
+    """El operador dice que ya subió las imágenes a la biblioteca de Meta. El runner lo verifica leyéndola."""
+    _existente(job_id)
+    pendiente = workflows.publicado(job_id, "pendiente")
+    if not pendiente or pendiente.get("tipo") != "subida_media" or pendiente.get("vuelta") != vuelta:
+        raise ErrorDeAccion(409, "NO_ESPERA_IMAGENES", "Este trabajo no está esperando que subas imágenes.")
+    workflows.avisar_media_subida(job_id, vuelta)
 
 
 def cancelar(job_id: str) -> str:

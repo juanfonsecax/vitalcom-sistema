@@ -43,7 +43,7 @@ from .acciones import ErrorDeAccion
 from .config import base, datos_de_la_app, python_del_sistema, ruta
 from .escrituras import Cola, SistemaOcupado
 
-APP_VERSION = "wf-1"
+APP_VERSION = "wf-2"
 NOMBRE_DE_LA_APP = "vitalcom-app"
 COLA_TRABAJOS = "trabajos"
 COLA_ESCRITURA = "escritura"
@@ -51,6 +51,8 @@ SONDEO_DE_RESULTADO_S = 0.2
 MAXIMO_DE_PREGUNTAS = 5
 MAXIMO_DE_APROBACIONES = 3
 MAXIMO_DE_MENSAJES_AJENOS = 5
+MAXIMO_DE_VUELTAS_DE_MEDIA = 3
+CARPETA_DE_SUBIDA = "subir_a_meta"
 MARCA_SIN_MCP = "CUENTA_SIN_MCP"
 TOPE_DE_TEXTO_DE_CLAUDE = 4000
 TOPE_DE_ESPERA_DEL_TURNO_S = 3600
@@ -69,8 +71,11 @@ PASOS: dict[str, list[str]] = {
         "paso_cerrar", "DBOS.set_event",
     ],
     "wf_meta": [
-        "paso_sellar", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura", "paso_firmar_orden",
-        "DBOS.set_event", "DBOS.set_event", "DBOS.recv", "DBOS.set_event", "paso_registrar_rechazo",
+        "paso_sellar", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura",
+        # --media biblioteca: leer la biblioteca, elegir nombres, esperar al operador, leer los hashes
+        "enqueue:escritura", "enqueue:escritura", "paso_preparar_subida", "DBOS.set_event", "DBOS.set_event",
+        "DBOS.recv", "DBOS.set_event", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura",
+        "paso_firmar_orden", "DBOS.set_event", "DBOS.set_event", "DBOS.recv", "DBOS.set_event", "paso_registrar_rechazo",
         "paso_sellar_aprobacion", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura",
         "enqueue:escritura", "paso_preparar_evento", "enqueue:escritura", "paso_leer_flujo", "paso_cerrar",
         "DBOS.set_event",
@@ -98,6 +103,19 @@ PROMPT_EJECUCION = "\n".join([
     "Terminá con una línea `EJECUTADAS: n1,n2,…` con los n que llamaste con éxito.",
     "VARIABLES_JSON: {variables}",
     "LLAMADAS_JSON: {llamadas}",
+])
+
+# Las imágenes las sube el operador a mano (decisión del 18-sep-2026, spike F: LOCAL_FILE necesita una
+# pantalla). Claude solo LEE la biblioteca; los nombres y los hashes los resuelve `gen_publicacion.py`.
+PROMPT_IMAGENES = "\n".join([
+    "Sos el lector de la biblioteca de imágenes de Meta para la skill publicar-meta, trabajo {job_id}.",
+    "SOLO LECTURA: no subas, crees ni cambies nada en Meta.",
+    "Para cada texto de BUSCAR_JSON, llamá `ads_get_ad_images` con ad_account_id={cuenta_id}, name=<ese texto>, "
+    "limit=100 y fields=[\"name\",\"hash\"]; si la respuesta trae next_cursor, seguí pidiendo hasta que no traiga.",
+    "Guardá TODAS las imágenes que devolvió, sin filtrar ni corregir nombres, en `{destino}` con esta forma exacta: "
+    '{{"cuenta_id":"{cuenta_id}","tomado_el":"<ISO>","imagenes":[{{"hash":"…","name":"…"}}]}}',
+    "BUSCAR_JSON: {buscar}",
+    "IMAGENES_EN: {destino}",
 ])
 
 ESTADOS_FINALES = ("EXITO", "SIN_CUMPLIR", "RECHAZADO", "CADUCADO", "FALLIDO", "INTERRUMPIDO",
@@ -461,6 +479,10 @@ def _sellar_meta(accion: dict[str, Any], valores: dict[str, Any], reservados: di
         "ordenes": ordenes, "parametros": parametros, "generador": generador, "verificador": verificador,
         "argv_paquete": argv_paquete, "argv_verificar": acciones.resolver(verificador, parametros, reservados),
         "snapshot": argv_paquete[argv_paquete.index("--snapshot") + 1],
+        "imagenes": {
+            momento: argv_paquete[argv_paquete.index(f"--imagenes-{momento}") + 1]
+            for momento in ("antes", "despues") if f"--imagenes-{momento}" in argv_paquete
+        },
         "cuenta_id": cuenta.get("cuenta_id", ""), "servidor": acciones.cargar().bloque["claude"]["servidor_meta"],
         "lectura": accion["herramientas_meta"]["lectura"], "escritura": accion["herramientas_meta"]["escritura"],
     }
@@ -568,8 +590,8 @@ def paso_leer_flujo(sello: dict[str, Any]) -> dict[str, Any] | None:
 def estado_final(unidades: list[dict[str, Any]], situacion: dict[str, Any] | None) -> tuple[str, str]:
     """(estado, detalle). Pura: la cubren las pruebas sin correr nada."""
     for unidad in unidades:
-        if unidad["estado"] == "REAPROBACION_PEDIDA":
-            continue  # un paso intermedio: la orden nueva quedó aprobada o rechazada en otra unidad
+        if unidad["estado"] in ("REAPROBACION_PEDIDA", "MEDIA_PEDIDA"):
+            continue  # un paso intermedio: lo que pidió se resolvió (o no) en una unidad posterior
         if unidad["estado"] != "EXITO":
             return unidad["estado"], unidad.get("detalle", "")
         tras = unidad.get("tras") or {}
@@ -649,6 +671,12 @@ def paso_firmar_orden(sello: dict[str, Any], paquete: dict[str, Any], orden_id: 
         "cuenta": sello["parametros"].get("cuenta"), "llamadas": _llamadas_de(paquete),
         "manifiesto": paquete.get("manifiesto"),
     }
+    if paquete.get("media"):
+        # qué archivo de disco es cada hash: sin esto, el operador aprueba hashes que no puede reconocer
+        orden["imagenes"] = [
+            {"archivo": p["archivo"], "nombre_en_biblioteca": p["nombre_en_biblioteca"], "image_hash": p["image_hash"]}
+            for p in paquete["media"]["piezas"]
+        ]
     return {"orden_id": orden_id, "hash": huella_de_la_orden(orden), "orden": orden,
             "caduca_horas": meta["ordenes"]["caduca_horas"]}
 
@@ -693,6 +721,112 @@ def spec_de_lectura(sello: dict[str, Any], n: int) -> dict[str, Any]:
     return {"tipo": "claude", "accion_id": accion["id"], "idempotente": False, "escribe": ["Ads/_INGESTA/META/"],
             "tras": False, "tiempo_max_s": accion["tiempo_max_s"], "run_dir": sello["run_dir"],
             "claude": base_de_snapshot["claude"], "nombre_log": f"{n}_snapshot.jsonl", "detecta_sin_mcp": True}
+
+
+def solo_falta_media(resultado: dict[str, Any]) -> bool:
+    """El generador salió con bloqueos y TODOS son de media: lo que falta es que el operador suba."""
+    bloqueantes = (resultado.get("json") or {}).get("bloqueantes") or []
+    return resultado["estado"] == "FALLIDO" and bool(bloqueantes) and all(b.get("ambito") == "media" for b in bloqueantes)
+
+
+def spec_de_imagenes(sello: dict[str, Any], n: int, momento: str, paquete: dict[str, Any]) -> dict[str, Any]:
+    """Leer la biblioteca de imágenes de la cuenta: Claude con UNA herramienta de Meta, `ads_get_ad_images`.
+
+    Busca por el nombre BASE de cada archivo: `name` de Meta es «contiene», así que trae también los
+    `_V2`, `_V3`… que ya existan (antes) y el que el operador acaba de subir (después). Después busca
+    además cada nombre elegido, exacto: si `name` resultara exacto y no «contiene», igual lo encuentra.
+    """
+    accion, meta = sello["accion"], sello["meta"]
+    piezas = paquete["media"]["piezas"]
+    buscar = sorted({os.path.splitext(p["archivo"])[0] for p in piezas if p.get("archivo")}
+                    | {p["nombre_en_biblioteca"] for p in piezas if p.get("nombre_en_biblioteca")})
+    prompt = PROMPT_IMAGENES.format(
+        job_id=sello["job_id"], cuenta_id=meta["cuenta_id"], destino=meta["imagenes"][momento],
+        buscar=json.dumps(buscar, ensure_ascii=False))
+    herramientas = [*sello["claude"]["herramientas_base"], _nombre_de_meta(meta["servidor"], "ads_get_ad_images")]
+    return {"tipo": "claude", "accion_id": accion["id"], "idempotente": True, "escribe": [], "tras": False,
+            "tiempo_max_s": accion["tiempo_max_s"], "run_dir": sello["run_dir"], "nombre_log": f"{n}_imagenes_{momento}.jsonl",
+            "claude": {"prompt": prompt, "herramientas": herramientas, "presupuesto_usd": accion["presupuesto_usd"],
+                       "resume": None}}
+
+
+@DBOS.step()
+def paso_preparar_subida(sello: dict[str, Any], paquete: dict[str, Any], vuelta: int) -> dict[str, Any]:
+    """Lo que el operador tiene que subir: cada pieza copiada con su nombre EXACTO en una carpeta del trabajo.
+
+    Así sube arrastrando la carpeta entera, sin renombrar a mano (un nombre mal tipeado no se encuentra).
+    """
+    media = paquete["media"]
+    carpeta = ruta(sello["run_dir"]) / CARPETA_DE_SUBIDA
+    archivos = []
+    for pieza in media["piezas"]:
+        extension = os.path.splitext(pieza["archivo"])[1]
+        destino = f"{pieza['nombre_en_biblioteca']}{extension}"
+        if pieza["estado"] != "OK" and pieza.get("ruta") and ruta(pieza["ruta"]).is_file():
+            bitacora.copiar_para_subir(ruta(sello["run_dir"]), CARPETA_DE_SUBIDA, ruta(pieza["ruta"]), destino)
+        archivos.append({"archivo": pieza["archivo"], "nombre_en_biblioteca": pieza["nombre_en_biblioteca"],
+                         "archivo_a_subir": destino, "estado": pieza["estado"], "hashes": pieza.get("hashes", [])})
+    return {"tipo": "subida_media", "vuelta": vuelta, "cuenta": media["cuenta_alias"], "cuenta_id": media["cuenta_id"],
+            "carpeta": str(carpeta), "archivos": archivos,
+            "faltan": [b["falta"] for b in paquete.get("bloqueantes", [])]}
+
+
+def _pedir_subida(pedido: dict[str, Any], horas: float) -> dict[str, Any] | None:
+    """Muestra qué subir y espera el «ya las subí». None = nadie avisó a tiempo."""
+    DBOS.set_event("pendiente", pedido)
+    DBOS.set_event("estado", {"estado": "ESPERA_MEDIA", "unidad": pedido["vuelta"]})
+    aviso = DBOS.recv(f"media:{pedido['vuelta']}", timeout_seconds=horas * 3600)
+    DBOS.set_event("pendiente", None)
+    return aviso
+
+
+def _media_de_la_biblioteca(sello: dict[str, Any], unidades: list[dict[str, Any]]) -> None:
+    """--media biblioteca: leer la biblioteca, elegir los nombres, esperar al operador y leer los hashes.
+
+    Deja en `unidades[-1]` el paquete regenerado: EXITO con cada hash literal, o FALLIDO con lo que falta.
+    Nada de esto escribe en Meta: la única herramienta de Meta que se usa acá es `ads_get_ad_images`.
+    """
+    _media_pedida(unidades)
+    unidades.append(_unidad_de(sello, 21, spec_de_imagenes(sello, 21, "antes", unidades[-1]["json"])))
+    if unidades[-1]["estado"] != "EXITO":
+        return
+    unidades.append(_unidad_de(sello, 22, spec_del_paquete(sello)))
+    if not _volcado_leido(unidades, "listado_antes"):
+        return
+    horas = sello["claude"]["respuesta_max_horas"]
+    vuelta = 0
+    while solo_falta_media(unidades[-1]) and vuelta < MAXIMO_DE_VUELTAS_DE_MEDIA:
+        vuelta += 1
+        _media_pedida(unidades)
+        pedido = paso_preparar_subida(sello, unidades[-1]["json"], vuelta)
+        if _pedir_subida(pedido, horas) is None:
+            unidades.append({"estado": "CADUCADO", "detalle": "Nadie avisó que subió las imágenes a tiempo: no se llamó a nada."})
+            return
+        DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": 30 + 2 * vuelta})
+        n_lectura = 30 + 2 * vuelta
+        unidades.append(_unidad_de(sello, n_lectura, spec_de_imagenes(sello, n_lectura, "despues", unidades[-1]["json"])))
+        if unidades[-1]["estado"] != "EXITO":
+            return
+        unidades.append(_unidad_de(sello, n_lectura + 1, spec_del_paquete(sello)))
+        if not _volcado_leido(unidades, "listado_despues"):
+            return
+
+
+def _media_pedida(unidades: list[dict[str, Any]]) -> None:
+    """Ese paquete esperaba imágenes y se le pidieron: no es la falla del trabajo, es un paso intermedio."""
+    unidades[-1] = {**unidades[-1], "estado": "MEDIA_PEDIDA"}
+
+
+def _volcado_leido(unidades: list[dict[str, Any]], cual: str) -> bool:
+    """Claude dijo que leyó la biblioteca: el paquete regenerado confirma si el volcado está en disco."""
+    ultima = unidades[-1]
+    media = (ultima.get("json") or {}).get("media") or {}
+    if ultima["estado"] == "EXITO" or media.get(cual):
+        return True
+    if solo_falta_media(ultima):
+        unidades[-1] = {**ultima, "detalle": "No quedó guardada la lectura de la biblioteca de imágenes de Meta: "
+                                             "reintentá. No se llamó a nada que escriba."}
+    return False
 
 
 def spec_del_paquete(sello: dict[str, Any]) -> dict[str, Any]:
@@ -771,7 +905,8 @@ def _pedir_aprobacion(orden_id: int, firmada: dict[str, Any]) -> dict[str, Any] 
 
 @DBOS.workflow()
 def wf_meta(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[str, Any]:
-    """Publicar en Meta: snapshot → paquete → aprobación por hash → ejecución → verificación → evento.
+    """Publicar en Meta: snapshot → paquete → [imágenes subidas por el operador] → aprobación por hash →
+    ejecución → verificación → evento.
 
     Ninguna llamada de ESCRITURA ocurre sin una aprobación sellada antes (`paso_sellar_aprobacion`)
     y ninguna herramienta de escritura llega a un paso que no sea el de ejecución.
@@ -779,10 +914,11 @@ def wf_meta(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[str
     sello = paso_sellar(job_id, accion_id, parametros)
     DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": 1})
     unidades = [_unidad_de(sello, 1, spec_de_lectura(sello, 1))]
-    paquete: dict[str, Any] | None = None
     if unidades[-1]["estado"] == "EXITO":
         unidades.append(_unidad_de(sello, 2, spec_del_paquete(sello)))
-        paquete = unidades[-1].get("json")
+    if solo_falta_media(unidades[-1]):
+        _media_de_la_biblioteca(sello, unidades)
+    paquete = unidades[-1].get("json") if unidades[-1]["estado"] == "EXITO" else None
     orden_id = 0
     sigue = unidades[-1]["estado"] == "EXITO" and paquete is not None
     while sigue:
@@ -869,6 +1005,11 @@ def encolar(accion: dict[str, Any], valores: dict[str, Any], job_id: str) -> tup
 def responder(job_id: str, n: int, texto: str) -> None:
     """La respuesta del operador a la pregunta `n` de Claude (el workflow la espera con `recv`)."""
     DBOS.send(job_id, {"texto": texto}, topic=f"respuesta:{n}")
+
+
+def avisar_media_subida(job_id: str, vuelta: int) -> None:
+    """El «ya las subí» del operador (el workflow lo espera con `recv`)."""
+    DBOS.send(job_id, {"subidas": True}, topic=f"media:{vuelta}")
 
 
 def enviar_aprobacion(job_id: str, orden_id: int, decision: str, huella: str, nota: str = "") -> None:

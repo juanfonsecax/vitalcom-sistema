@@ -11,6 +11,10 @@
                      `--allowedTools` por nombre exacto (como `dontAsk`); cada una que corre anota
                      una línea en `PRODUCTOS/_meta_llamadas.log`
 
+Pedidos de publicar-meta que reconoce por su marca: `SNAPSHOT_EN:` (vuelca lo que «Meta» tiene),
+`IMAGENES_EN:` (lee la biblioteca de imágenes; `VITALCOM_FAKE_NO_GUARDA_IMAGENES=1` simula que no guardó
+el volcado) y `LLAMADAS_JSON:` (ejecuta la orden aprobada).
+
 Cada corrida anota su argv y las variables prohibidas que ve en `PRODUCTOS/_claude_argv.log`.
 """
 
@@ -101,6 +105,19 @@ elif "SNAPSHOT_EN:" in prompt:
         Path(destino).parent.mkdir(parents=True, exist_ok=True)
         Path(destino).write_text(json.dumps({"cuenta_alias": "GTR 7", "ad_entities": entidades()}), encoding="utf-8")
         texto = "SNAPSHOT_LISTO"
+elif "IMAGENES_EN:" in prompt:
+    # leer la biblioteca de imágenes: SOLO ads_get_ad_images, y vuelca lo que «Meta» tiene con esos nombres
+    destino = prompt.split("IMAGENES_EN:", 1)[1].strip().splitlines()[0].strip()
+    buscar = json.loads(prompt.split("BUSCAR_JSON:", 1)[1].strip().splitlines()[0])
+    if "mcp__claude_ai_META_MCP__ads_get_ad_images" in permitidas:
+        anotar("_meta_llamadas.log", {"herramienta": "ads_get_ad_images", "lectura": True})
+    biblioteca = Path.cwd() / "PRODUCTOS" / "_meta_imagenes.json"
+    imagenes = json.loads(biblioteca.read_text(encoding="utf-8")) if biblioteca.is_file() else []
+    encontradas = [i for i in imagenes if any(b.lower() in i["name"].lower() for b in buscar)]
+    if os.environ.get("VITALCOM_FAKE_NO_GUARDA_IMAGENES") != "1":
+        Path(destino).parent.mkdir(parents=True, exist_ok=True)
+        Path(destino).write_text(json.dumps({"imagenes": encontradas}), encoding="utf-8")
+    texto = "IMAGENES_LEIDAS"
 elif "LLAMADAS_JSON:" in prompt:
     # el paso 3: solo «corren» las herramientas que vienen por nombre exacto en --allowedTools
     llamadas = json.loads(prompt.split("LLAMADAS_JSON:", 1)[1].strip().splitlines()[0])

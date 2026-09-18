@@ -22,6 +22,7 @@ Congela tres defectos de la cadena de FASE 2/3 (simulación Turmeric, 22-sep-202
 
 USO:  python Ads/_TOOLS/test_gen_publicacion.py     (exit 0 = pasa, 1 = falla)
 """
+import json
 import os
 import sys
 
@@ -366,8 +367,157 @@ def test_modo_normal_sigue_cortando_sin_cuenta():
     return 0 if ok else 1
 
 
+# ---------------------------------------------------------------- --media biblioteca (18-sep-2026)
+#
+# El operador sube las piezas a mano a la biblioteca de la cuenta y el paquete lee cada image_hash por
+# nombre. Sin pantalla, LOCAL_FILE no sirve (spike F). Lo que estas pruebas congelan: ninguna subida
+# sale en el paquete, ningun nombre viejo se reusa, el nombre no cambia despues de subir, y dos
+# imagenes distintas con el mismo nombre bloquean.
+
+def _fixture_fase1_completa():
+    """Un producto de FASE 1 con todo en regla (plan de 6 angulos, pagina, cuenta y las 6 imagenes)."""
+    import csv, io, shutil, tempfile
+    tmp = tempfile.mkdtemp(prefix="genpub_bib_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(os.path.join(prod, "PX"))
+    os.makedirs(os.path.join(tmp, "Ads", "MEDIA_PX"))
+    for nombre in ("_PARAMETROS_PUBLICACION.csv", "_DIM_CUENTAS.csv", "_DIM_VOCABULARIO.csv"):
+        shutil.copy(gp.P(nombre), os.path.join(prod, nombre))
+    with io.open(gp.P("_DIM_PRODUCTOS.csv"), encoding="utf-8-sig", newline="") as fh:
+        cols = csv.DictReader(fh).fieldnames
+    with io.open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols)
+        w.writeheader()
+        w.writerow(dict(dict.fromkeys(cols, ""), producto_key="PX", cuenta_alias="GTR 7", page_id="111",
+                        slug_carpeta="PX", carpeta_media="MEDIA_PX"))
+    conjuntos = []
+    for i in range(1, 7):
+        archivo = "PX_%d_ANG%d.png" % (i, i)
+        with open(os.path.join(tmp, "Ads", "MEDIA_PX", archivo), "wb") as fh:
+            fh.write(b"imagen %d" % i)
+        conjuntos.append({"angulo_key": "ANG%d" % i, "avatar_edad": "35-55", "nivel_conciencia": "1",
+                          "formato": "IMAGEN", "archivo_creativo": archivo, "copy": "Copy del angulo %d" % i})
+    plan = {"producto_key": "PX", "fase": 1, "destino_key": "BOT_V1", "oferta": {"oferta_key": "ESCALERA"},
+            "concepto_control": {"concepto_key": "C2_BENEFICIOS", "variante": "ligera", "canonico_id": "CN05"},
+            "conjuntos": conjuntos}
+    with io.open(os.path.join(prod, "PX", "_PLAN.json"), "w", encoding="utf-8") as fh:
+        json.dump(plan, fh)
+    return tmp
+
+
+def _listado(base, nombre, imagenes):
+    ruta = os.path.join(base, nombre)
+    with open(ruta, "w", encoding="utf-8") as fh:
+        json.dump({"tomado_el": "2026-09-18T10:00:00-06:00", "imagenes": imagenes}, fh)
+    return ruta
+
+
+def _paquete_biblioteca(base, antes=None, despues=None):
+    salida = os.path.join(base, "paquete.json")
+    argv = ["--producto", "PX", "--fase", "1", "--cuenta", "GTR7", "--lanzamiento", "2030-01-01",
+            "--media", "biblioteca", "--salida", salida]
+    if antes:
+        argv += ["--imagenes-antes", antes]
+    if despues:
+        argv += ["--imagenes-despues", despues]
+    code, _out, err = _correr_main(base, argv)
+    paquete = None
+    if os.path.exists(salida):
+        with open(salida, encoding="utf-8") as fh:
+            paquete = json.load(fh)
+    return code, paquete, err
+
+
+def _creativos(paquete):
+    return [l["args"]["image_hash"] for l in paquete["llamadas"] if l["tool"] == "ads_create_creative"]
+
+
+def _informe(ok, texto, detalle=""):
+    print(("  OK     " if ok else "  FALLA  ") + texto + ("" if ok else "\n         " + str(detalle)[:400]))
+    return 0 if ok else 1
+
+
+def test_biblioteca_sin_listado_espera_la_lectura_y_no_sube_nada():
+    base = _fixture_fase1_completa()
+    code, pq, err = _paquete_biblioteca(base)
+    tools = [l["tool"] for l in pq["llamadas"]] if pq else []
+    ok = (err is None and code == 1 and "ads_creative_upload_media" not in tools
+          and [b["ambito"] for b in pq["bloqueantes"]] == ["media"]
+          and set(_creativos(pq)) == {"{{FALTA_HASH}}"})
+    return _informe(ok, "--media biblioteca sin volcado: ninguna subida en el paquete, un solo bloqueo de "
+                        "ambito media (falta leer la biblioteca)", (code, err, pq and pq["bloqueantes"]))
+
+
+def test_biblioteca_elige_un_nombre_que_no_existe():
+    base = _fixture_fase1_completa()
+    antes = _listado(base, "antes.json", [{"hash": "viejo2", "name": "PX_1_ANG1_V2.png"},
+                                          {"hash": "otro", "name": "OTRO_PRODUCTO_V2"}])
+    code, pq, err = _paquete_biblioteca(base, antes)
+    nombres = [p["nombre_en_biblioteca"] for p in pq["media"]["piezas"]] if pq else []
+    ok = (err is None and code == 1 and nombres[:1] == ["PX_1_ANG1_V3"]
+          and nombres[1:] == ["PX_%d_ANG%d_V2" % (i, i) for i in range(2, 7)]
+          and {p["estado"] for p in pq["media"]["piezas"]} == {"POR_SUBIR"}
+          and len(pq["bloqueantes"]) == 1 and "falta subir 6" in pq["bloqueantes"][0]["falta"])
+    return _informe(ok, "el nombre de cada pieza es el primer _V2, _V3... libre: PX_1_ANG1_V2 ya existia -> _V3",
+                    (code, err, nombres))
+
+
+def test_biblioteca_con_todo_subido_arma_el_paquete_sin_bloqueos():
+    base = _fixture_fase1_completa()
+    antes = _listado(base, "antes.json", [{"hash": "viejo2", "name": "PX_1_ANG1_V2.png"}])
+    subidas = [{"hash": "h%d" % i, "name": "PX_%d_ANG%d_V%d.png" % (i, i, 3 if i == 1 else 2)} for i in range(1, 7)]
+    despues = _listado(base, "despues.json", [{"hash": "viejo2", "name": "PX_1_ANG1_V2.png"}] + subidas)
+    code, pq, err = _paquete_biblioteca(base, antes, despues)
+    ok = (err is None and code == 0 and pq["bloqueantes"] == []
+          and _creativos(pq) == ["h%d" % i for i in range(1, 7)]
+          and "ads_creative_upload_media" not in [l["tool"] for l in pq["llamadas"]]
+          and pq["media"]["piezas"][0]["nombre_en_biblioteca"] == "PX_1_ANG1_V3")
+    return _informe(ok, "con todo subido: exit 0, cada creativo lleva SU hash literal y el nombre no se "
+                        "corrio a _V4 por estar ya en la biblioteca", (code, err, pq and pq["bloqueantes"]))
+
+
+def test_biblioteca_dos_imagenes_con_el_mismo_nombre_bloquean():
+    base = _fixture_fase1_completa()
+    antes = _listado(base, "antes.json", [])
+    subidas = [{"hash": "h%d" % i, "name": "PX_%d_ANG%d_V2" % (i, i)} for i in range(1, 7)]
+    subidas.append({"hash": "otra", "name": "PX_3_ANG3_V2.png"})
+    despues = _listado(base, "despues.json", subidas)
+    code, pq, err = _paquete_biblioteca(base, antes, despues)
+    repetida = [b for b in (pq or {}).get("bloqueantes", []) if "PX_3_ANG3_V2" in b["falta"]]
+    ok = (err is None and code == 1 and len(pq["bloqueantes"]) == 1 and repetida
+          and repetida[0]["ambito"] == "media" and "{{FALTA_HASH}}" in _creativos(pq))
+    return _informe(ok, "dos imagenes distintas con el mismo nombre: bloquea y no elige ninguna",
+                    (code, err, pq and pq["bloqueantes"]))
+
+
+def test_subida_local_sigue_igual_para_la_skill():
+    base = _fixture_fase1_completa()
+    salida = os.path.join(base, "p.json")
+    code, _out, err = _correr_main(base, ["--producto", "PX", "--fase", "1", "--cuenta", "GTR7",
+                                          "--lanzamiento", "2030-01-01", "--salida", salida])
+    with open(salida, encoding="utf-8") as fh:
+        pq = json.load(fh)
+    subidas = [l for l in pq["llamadas"] if l["tool"] == "ads_creative_upload_media"]
+    ok = (err is None and code == 0 and len(subidas) == 6 and "media" not in pq
+          and _creativos(pq)[0] == "{{image_hash_1}}")
+    return _informe(ok, "sin --media, el paquete de la skill interactiva sigue con sus 6 subidas LOCAL_FILE",
+                    (code, err, len(subidas), pq["bloqueantes"]))
+
+
+def test_media_invalida_no_arranca():
+    base = _fixture_fase1_completa()
+    code, _out, err = _correr_main(base, ["--producto", "PX", "--fase", "1", "--media", "url"])
+    return _informe(err is None and code == 2, "--media con un valor desconocido sale con 2", (code, err))
+
+
 def main():
     fallas = 0
+    fallas += test_biblioteca_sin_listado_espera_la_lectura_y_no_sube_nada()
+    fallas += test_biblioteca_elige_un_nombre_que_no_existe()
+    fallas += test_biblioteca_con_todo_subido_arma_el_paquete_sin_bloqueos()
+    fallas += test_biblioteca_dos_imagenes_con_el_mismo_nombre_bloquean()
+    fallas += test_subida_local_sigue_igual_para_la_skill()
+    fallas += test_media_invalida_no_arranca()
     fallas += test_orden_estable_brazo_b_continua_donde_termina_a()
     fallas += test_orden_estable_sin_brazo_declarado_no_rompe()
     fallas += test_bloquea_multibrazo_sin_flag()

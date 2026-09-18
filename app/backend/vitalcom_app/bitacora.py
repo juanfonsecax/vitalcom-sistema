@@ -175,6 +175,17 @@ def anotar_linea(carpeta: Path, nombre: str, texto: str) -> None:
         archivo.write((texto.rstrip("\n") + "\n").encode("utf-8"))
 
 
+def copiar_para_subir(carpeta: Path, subcarpeta: str, origen: Path, nombre: str) -> Path:
+    """Copia una pieza, con el nombre que tiene que llevar en Meta, a una subcarpeta de la corrida.
+
+    El operador la arrastra desde ahí a la biblioteca de imágenes: la copia es de él, no del sistema.
+    """
+    destino = _crear_carpeta(carpeta / _limpio(subcarpeta))
+    with _abrir(destino / _limpio(nombre), "wb") as archivo:
+        archivo.write(origen.read_bytes())
+    return destino
+
+
 def registrar_aprobacion(carpeta: Path, dato: dict[str, Any]) -> None:
     """`aprobaciones.jsonl`: quién aprobó o rechazó qué orden (hash) y cuándo. Solo se agrega."""
     anotar_linea(carpeta, "aprobaciones.jsonl", json.dumps(dato, ensure_ascii=False, default=str))

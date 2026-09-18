@@ -27,6 +27,7 @@ BACKEND = Path(__file__).resolve().parents[1]
 # `APP_VERSION` (y sin agregar la fila) hace fallar `test_version_de_workflows`.
 HUELLAS = {
     "wf-1": "b493adfba080558e38876df1c0e08f400951d8c3fae26519f92647ac447a98cf",
+    "wf-2": "25afdfd96202ac32cf4ca0d38a78b91a6af5d4aadb34c8d6aef657c515cd0b61",  # publicar espera las imágenes subidas a mano
 }
 
 JOB_A = "a" * 32

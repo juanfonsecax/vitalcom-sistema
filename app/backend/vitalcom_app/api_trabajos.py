@@ -1,4 +1,5 @@
-"""api_trabajos.py — los trabajos del runner: ver, seguir en vivo, aprobar, responder, reintentar, cancelar.
+"""api_trabajos.py — los trabajos del runner: ver, seguir en vivo, aprobar, responder, avisar que se subieron
+las imágenes, reintentar, cancelar.
 
 Todo lo que cambia algo es una DECISIÓN del operador que se le entrega al runner; ninguno de estos
 endpoints ejecuta un comando. La lectura sale de DBOS y de la bitácora (`trabajos.py`).
@@ -53,6 +54,13 @@ def decidir_orden(job_id: str, orden_id: int, decision: DecisionDeOrden) -> dict
 def responder_a_claude(job_id: str, respuesta: RespuestaDeClaude) -> dict:
     trabajos.responder(job_id, respuesta.n, respuesta.texto)
     return {"job_id": job_id, "n": respuesta.n}
+
+
+@router.post("/{job_id}/media/{vuelta}", status_code=202)
+def avisar_media_subida(job_id: str, vuelta: int) -> dict:
+    """«Ya las subí»: el trabajo lee la biblioteca de Meta y confirma cada imagen por su nombre."""
+    trabajos.avisar_media_subida(job_id, vuelta)
+    return {"job_id": job_id, "vuelta": vuelta}
 
 
 @router.post("/{job_id}/reintentar", status_code=202, response_model=AccionEncolada)

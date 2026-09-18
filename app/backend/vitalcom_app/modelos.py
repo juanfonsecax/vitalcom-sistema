@@ -182,7 +182,7 @@ class Trabajo(Base):
     terminado: str | None = None
     app_version: str = ""
     otra_version: bool = False
-    pendiente: str | None = None  # "aprobacion" | "pregunta" | None
+    pendiente: str | None = None  # "aprobacion" | "pregunta" | "subida_media" | None
 
 
 class TrabajoDetalle(Trabajo):

@@ -405,6 +405,60 @@
         }
       }
     },
+    "/api/trabajos/{job_id}/media/{vuelta}": {
+      "post": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Avisar Media Subida",
+        "description": "«Ya las subí»: el trabajo lee la biblioteca de Meta y confirma cada imagen por su nombre.",
+        "operationId": "avisar_media_subida_api_trabajos__job_id__media__vuelta__post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "vuelta",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Vuelta"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Avisar Media Subida Api Trabajos  Job Id  Media  Vuelta  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/trabajos/{job_id}/reintentar": {
       "post": {
         "tags": [

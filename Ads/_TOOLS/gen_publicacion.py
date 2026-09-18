@@ -60,6 +60,27 @@ USO
     python Ads/_TOOLS/gen_publicacion.py --producto TINNIDROP --fase 2 --brazo A --cuenta GTR7 \
            --snapshot Ads/_INGESTA/META/snapshot_GTR7.json
     python Ads/_TOOLS/gen_publicacion.py --producto TINNIDROP --fase 2 --brazo A --cuenta GTR7 --json
+    python Ads/_TOOLS/gen_publicacion.py --producto TINNIDROP --fase 1 --cuenta GTR7 --media biblioteca \
+           --imagenes-antes antes.json --imagenes-despues despues.json --json
+
+LA MEDIA — dos modos (--media)
+------------------------------
+    subida_local  (por defecto) una llamada ads_creative_upload_media con LOCAL_FILE por pieza. Abre
+                  un widget donde el operador elige el archivo: solo sirve en una sesion con pantalla
+                  y solo en la cuenta que _DIM_CUENTAS.csv marca sube_media_local=SI.
+    biblioteca    el operador sube las piezas A MANO a la biblioteca de medios de la cuenta y el
+                  paquete lee cada image_hash por NOMBRE (ads_get_ad_images, solo lectura). Es el
+                  camino de MCP_PLAYBOOK "Paso C/D" y el unico que corre sin pantalla (la app:
+                  spike F, SPIKE_UPLOAD_MEDIA_2026-09-18.md). Decision del operador, 18-sep-2026.
+                  Recibe dos volcados de la biblioteca, {"imagenes":[{"hash","name"}]}:
+                    --imagenes-antes    tomado ANTES de que el operador suba. De aca sale el nombre
+                                        de cada pieza: el primer [base]_V2, _V3... que NO exista.
+                                        Un nombre viejo nunca se reusa (08-sep: 10 anuncios con la
+                                        pieza equivocada por dos imagenes con el mismo nombre).
+                    --imagenes-despues  tomado cuando el operador dice "ya las subi". Cada nombre
+                                        tiene que aparecer con UN solo hash.
+                  Lo que falta es un bloqueante de ambito 'media': lo resuelve el operador subiendo,
+                  no rehaciendo la fase ni tocando la cuenta.
 """
 import csv, io, os, re, sys, json, datetime, importlib.util
 
@@ -185,6 +206,50 @@ def chequear_brazo_ambiguo(piezas, brazo_creativos, brazo_arg):
     return None
 
 
+MODOS_MEDIA = ("subida_local", "biblioteca")
+EXT_IMAGEN = (".png", ".jpg", ".jpeg", ".gif", ".webp")
+
+
+def nombre_normalizado(nombre):
+    """Como se compara un nombre de la biblioteca: sin espacios al borde, sin extension de imagen y
+    sin distinguir mayusculas. Meta puede guardar el nombre con o sin la extension del archivo."""
+    n = (nombre or "").strip()
+    if n.lower().endswith(EXT_IMAGEN):
+        n = os.path.splitext(n)[0]
+    return n.lower()
+
+
+def leer_listado_de_imagenes(ruta):
+    """El volcado de ads_get_ad_images: [{"hash","name"}], o None si todavia no se tomo."""
+    if not ruta or not os.path.exists(ruta):
+        return None
+    with io.open(ruta, encoding="utf-8") as f:
+        datos = json.load(f)
+    imagenes = datos if isinstance(datos, list) else datos.get("imagenes", [])
+    return [{"hash": str(i.get("hash") or "").strip(), "name": str(i.get("name") or "")}
+            for i in imagenes if i.get("hash")]
+
+
+def nombre_nuevo_en_biblioteca(base, ocupados):
+    """El primer [base]_V2, _V3... que no esta en 'ocupados' (nombres normalizados). Nunca el nombre
+    viejo: Meta guarda las dos imagenes y quedan indistinguibles por nombre (08-sep)."""
+    k = 2
+    while nombre_normalizado("%s_V%d" % (base, k)) in ocupados:
+        k += 1
+    return "%s_V%d" % (base, k)
+
+
+def hash_por_nombre(nombre, listado):
+    """(estado, hash, hashes) de 'nombre' en el volcado de despues de subir.
+    OK = un solo hash · POR_SUBIR = no esta · REPETIDA = mas de una imagen distinta con ese nombre."""
+    hashes = sorted({i["hash"] for i in listado if nombre_normalizado(i["name"]) == nombre_normalizado(nombre)})
+    if not hashes:
+        return "POR_SUBIR", None, []
+    if len(hashes) > 1:
+        return "REPETIDA", None, hashes
+    return "OK", hashes[0], hashes
+
+
 def cargar_firma():
     """Importa Ads/_TOOLS/firma.py. Es el dueno de la firma; aca no se reimplementa."""
     ruta = os.path.join(TOOLS, "firma.py")
@@ -274,7 +339,10 @@ class Paquete(object):
     #                moneda, minimo de la cuenta, brazo, fecha). No hace incompleto al paquete:
     #                un paquete perfecto con la cuenta mal configurada sigue siendo un paquete
     #                perfecto, y rehacer la FASE 1 no arregla una cuenta.
-    AMBITOS = ("paquete", "publicacion")
+    #   media        (solo --media biblioteca) las piezas que el operador todavia no subio a la
+    #                biblioteca de la cuenta, o que subio dos veces. Se resuelve subiendo, y el que
+    #                espera es el ejecutor: no es un paquete incompleto ni una cuenta mal armada.
+    AMBITOS = ("paquete", "publicacion", "media")
 
     def _bloquear(self, que, dueno, ambito):
         self.bloqueantes.append({"falta": que, "lo_produce": dueno, "ambito": ambito})
@@ -284,6 +352,9 @@ class Paquete(object):
 
     def bloquear_publicacion(self, que, dueno):
         self._bloquear(que, dueno, "publicacion")
+
+    def bloquear_media(self, que, dueno):
+        self._bloquear(que, dueno, "media")
 
     def del_ambito(self, ambito):
         return [b for b in self.bloqueantes if b["ambito"] == ambito]
@@ -350,10 +421,19 @@ def main():
     # alcanza para lanzar? Evalua todo igual, pero sale con exit 1 solo por bloqueantes de ambito
     # 'paquete', no corta si la cuenta todavia no existe, y nunca escribe el paquete canonico.
     solo_paquete = flag("--solo-paquete")
+    modo_media = arg("--media") or "subida_local"
 
     if not pk_in or not fase:
         print(__doc__)
         return 2
+    if modo_media not in MODOS_MEDIA:
+        print("--media es %s, no '%s'." % (" o ".join(MODOS_MEDIA), modo_media))
+        return 2
+    biblioteca = modo_media == "biblioteca"
+    imagenes_antes = leer_listado_de_imagenes(arg("--imagenes-antes")) if biblioteca else None
+    imagenes_despues = leer_listado_de_imagenes(arg("--imagenes-despues")) if biblioteca else None
+    ocupados = {nombre_normalizado(i["name"]) for i in (imagenes_antes or [])}
+    media_por_archivo = {}   # archivo -> su fila de paquete["media"]["piezas"] (una subida por archivo)
     fase = int(fase)
     pq = Paquete()
     fmod = cargar_firma()
@@ -635,6 +715,43 @@ def main():
     filas_conjuntos = leer(P("_DIM_CONJUNTOS.csv"))
     base_replica, pos_en_angulo = {}, {}
 
+    def llamada_de_subida_local(n_llamada, cre, orden):
+        return {
+            "n": n_llamada, "tool": "ads_creative_upload_media",
+            "args": {"ad_account_id": acct, "upload_source": "LOCAL_FILE"},
+            "guardar_como": "image_hash_%d" % orden,
+            "archivo_local": cre.get("_ruta") or "{{FALTA_ARCHIVO: %s}}" % (cre.get("archivo") or "?"),
+            "nombre_en_biblioteca": os.path.splitext(cre.get("archivo") or "SIN_ARCHIVO")[0] + "_V2",
+            "omitir": False,
+            "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta "
+                    "habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza "
+                    "vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep "
+                    "se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+                    if fila_cta["sube_media_local"] == "SI"
+                    else "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la "
+                         "biblioteca y el ejecutor lee el hash con ads_get_ad_images.",
+        }
+
+    def media_de_la_pieza(cre):
+        """--media biblioteca: la fila de la pieza en paquete["media"], una por ARCHIVO (dos anuncios
+        con la misma imagen comparten subida y hash). El nombre sale del volcado de ANTES y queda
+        fijo aunque despues el operador suba: por eso no se recalcula contra el de DESPUES."""
+        archivo = cre.get("archivo") or ""
+        if archivo in media_por_archivo:
+            return media_por_archivo[archivo]
+        base = os.path.splitext(archivo or "SIN_ARCHIVO")[0]
+        fila = {"archivo": archivo, "ruta": os.path.relpath(cre["_ruta"], BASE) if cre.get("_ruta") else None,
+                "nombre_en_biblioteca": None, "image_hash": None, "estado": "SIN_LISTADO", "hashes": []}
+        if imagenes_antes is not None:
+            fila["nombre_en_biblioteca"] = nombre_nuevo_en_biblioteca(base, ocupados)
+            ocupados.add(nombre_normalizado(fila["nombre_en_biblioteca"]))
+            fila["estado"] = "POR_SUBIR"
+            if imagenes_despues is not None:
+                fila["estado"], fila["image_hash"], fila["hashes"] = hash_por_nombre(
+                    fila["nombre_en_biblioteca"], imagenes_despues)
+        media_por_archivo[archivo] = fila
+        return fila
+
     orden_global = 0
     for i, uni in enumerate(unidades, 1):
         ang_u = uni["angulo"]
@@ -693,22 +810,12 @@ def main():
                           "la Marketing API: por MCP va una sola y el resto lo agrega el operador a "
                           "mano en el Administrador." % (an.split(" ~ ")[0], sobrantes))
 
-            n += 1
-            llamadas.append({
-                "n": n, "tool": "ads_creative_upload_media",
-                "args": {"ad_account_id": acct, "upload_source": "LOCAL_FILE"},
-                "guardar_como": "image_hash_%d" % orden_global,
-                "archivo_local": cre.get("_ruta") or "{{FALTA_ARCHIVO: %s}}" % (cre.get("archivo") or "?"),
-                "nombre_en_biblioteca": os.path.splitext(cre.get("archivo") or "SIN_ARCHIVO")[0] + "_V2",
-                "omitir": False,
-                "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta "
-                        "habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza "
-                        "vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep "
-                        "se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
-                        if fila_cta["sube_media_local"] == "SI"
-                        else "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la "
-                             "biblioteca y el ejecutor lee el hash con ads_get_ad_images.",
-            })
+            if biblioteca:
+                image_hash = media_de_la_pieza(cre)["image_hash"] or "{{FALTA_HASH}}"
+            else:
+                image_hash = "{{image_hash_%d}}" % orden_global
+                n += 1
+                llamadas.append(llamada_de_subida_local(n, cre, orden_global))
 
             n += 1
             llamadas.append({
@@ -716,7 +823,7 @@ def main():
                 "args": {
                     "ad_account_id": acct, "page_id": page_id,
                     "name": an.split(" ~ ")[0],
-                    "image_hash": "{{image_hash_%d}}" % orden_global,
+                    "image_hash": image_hash,
                     "message": copy or "{{FALTA_COPY}}",
                     "headline": titular,
                     "description": descripcion,
@@ -760,6 +867,31 @@ def main():
                            "daily_budget_usd": None if cbo else presu_usd,
                            "anuncios": ads_conj})
 
+    # ---------- 9b. media de biblioteca: lo que el operador sube a mano -----
+    media = None
+    if biblioteca:
+        piezas_media = list(media_por_archivo.values())
+        media = {"modo": "biblioteca", "cuenta_alias": cta, "cuenta_id": acct,
+                 "listado_antes": imagenes_antes is not None, "listado_despues": imagenes_despues is not None,
+                 "piezas": piezas_media}
+        donde = "la biblioteca de medios de la cuenta %s (%s)" % (cta, acct)
+        if imagenes_antes is None:
+            pq.bloquear_media("falta leer %s antes de elegir los nombres: sin ese volcado no se puede "
+                              "garantizar que ningun nombre viejo se reuse." % donde,
+                              "publicar-meta (lectura con ads_get_ad_images)")
+        else:
+            por_subir = [p["nombre_en_biblioteca"] for p in piezas_media if p["estado"] == "POR_SUBIR"]
+            repetidas = [p for p in piezas_media if p["estado"] == "REPETIDA"]
+            if por_subir:
+                pq.bloquear_media("falta subir %d imagen(es) a %s, con estos nombres exactos: %s"
+                                  % (len(por_subir), donde, ", ".join(por_subir)),
+                                  "el operador (sube a mano y avisa 'ya las subi')")
+            for p in repetidas:
+                pq.bloquear_media("en %s hay %d imagenes distintas llamadas %s (%s). Con dos contenidos bajo "
+                                  "el mismo nombre no se sabe cual es la pieza: borra la que sobra."
+                                  % (donde, len(p["hashes"]), p["nombre_en_biblioteca"], ", ".join(p["hashes"])),
+                                  "el operador (en la biblioteca de medios)")
+
     # ---------- 10. pre-flight (lo corre el ejecutor, no este script) ------
     pq.preflight = [
         {"paso": 1, "llamada": "ads_get_ad_accounts",
@@ -797,6 +929,7 @@ def main():
         "bloqueantes": pq.bloqueantes,
         "avisos": pq.avisos,
         "llamadas": llamadas,
+        **({"media": media} if media is not None else {}),
         "manifiesto": {
             "campana": camp,
             "conjuntos": manif_conj,

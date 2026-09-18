@@ -2,6 +2,11 @@
 
   * `gen_publicacion.py` falso: emite el paquete de `PRODUCTOS/_paquete_falso.json` y marca `omitir`
     lo que el snapshot ya tiene (igual que el real). Sale con 1 si el paquete trae bloqueantes.
+    Si el paquete trae `media` y se pide `--media biblioteca`, hace lo que el real: elige para cada
+    pieza el primer `_V2`, `_V3`… libre en el volcado de ANTES y busca su hash en el de DESPUÉS.
+    Lo que falta sale como bloqueante de ámbito `media`.
+  * La «biblioteca de imágenes» de la cuenta vive en `PRODUCTOS/_meta_imagenes.json`: el operador
+    «sube» con `subir_a_biblioteca()` y `fake_claude.py` la lee cuando le piden `IMAGENES_EN:`.
   * `verificar_publicacion.py` falso: exit 0 si «Meta» tiene todos los objetos que el paquete crea.
   * `fake_claude.py` es quien «llama» a las herramientas de Meta y anota lo que corrió en
     `PRODUCTOS/_meta_llamadas.log`; lo que «existe en Meta» vive en `PRODUCTOS/_meta_existente.json`.
@@ -33,6 +38,44 @@ for llamada in paquete["llamadas"]:
     llamada["omitir"] = nombre in existentes
     if llamada["omitir"]:
         llamada["id_existente"] = existentes[nombre]
+def listado(bandera):
+    ruta = valor(bandera)
+    if not ruta or not pathlib.Path(ruta).is_file():
+        return None
+    return json.loads(pathlib.Path(ruta).read_text(encoding="utf-8"))["imagenes"]
+def normal(nombre):
+    n = nombre.strip()
+    return (n.rsplit(".", 1)[0] if n.lower().endswith((".png", ".jpg", ".jpeg")) else n).lower()
+media = paquete.get("media")
+if media and valor("--media") == "biblioteca":
+    antes, despues = listado("--imagenes-antes"), listado("--imagenes-despues")
+    media["listado_antes"], media["listado_despues"] = antes is not None, despues is not None
+    ocupados = {normal(i["name"]) for i in antes or []}
+    hash_de = {}
+    for pieza in media["piezas"]:
+        base = pieza["archivo"].rsplit(".", 1)[0]
+        pieza.update({"nombre_en_biblioteca": None, "image_hash": None, "estado": "SIN_LISTADO", "hashes": []})
+        if antes is not None:
+            k = 2
+            while normal(f"{base}_V{k}") in ocupados:
+                k += 1
+            pieza["nombre_en_biblioteca"] = f"{base}_V{k}"
+            pieza["estado"] = "POR_SUBIR"
+            if despues is not None:
+                hashes = sorted({i["hash"] for i in despues if normal(i["name"]) == normal(pieza["nombre_en_biblioteca"])})
+                pieza["hashes"] = hashes
+                pieza["estado"] = "OK" if len(hashes) == 1 else "REPETIDA" if hashes else "POR_SUBIR"
+                pieza["image_hash"] = hashes[0] if len(hashes) == 1 else None
+        hash_de[pieza["archivo"]] = pieza["image_hash"] or "{{FALTA_HASH}}"
+    for llamada in paquete["llamadas"]:
+        if llamada["tool"] == "ads_create_creative":
+            llamada["args"]["image_hash"] = hash_de[llamada["archivo"]]
+    faltan = [p for p in media["piezas"] if p["estado"] != "OK"]
+    if antes is None:
+        paquete["bloqueantes"] = [{"falta": "falta leer la biblioteca", "lo_produce": "publicar-meta", "ambito": "media"}]
+    elif faltan:
+        paquete["bloqueantes"] = [{"falta": "falta subir: " + ", ".join(p["nombre_en_biblioteca"] for p in faltan),
+                                   "lo_produce": "el operador", "ambito": "media"}]
 salida = valor("--salida")
 if salida:
     pathlib.Path(salida).write_text(json.dumps(paquete), encoding="utf-8")
@@ -72,6 +115,30 @@ PAQUETE_FALSO: dict[str, Any] = {
          "guardar_como": "creative_id_1"},
         {"n": 4, "tool": "ads_create_ad",
          "args": {"ad_name": "AD1", "adset_id": "{{adset_id_1}}", "status": "PAUSED"}, "guardar_como": "ad_id_1"},
+    ],
+}
+
+# El mismo paquete, pero con dos piezas que el operador sube a mano a la biblioteca (--media biblioteca).
+PAQUETE_CON_MEDIA: dict[str, Any] = {
+    "bloqueantes": [],
+    "manifiesto": {"campana": "GTR7_PX_F1", "total_conjuntos": 1, "total_anuncios": 2},
+    "media": {"modo": "biblioteca", "cuenta_alias": "GTR7", "cuenta_id": "598687956219141", "piezas": [
+        {"archivo": "PX_1.png", "ruta": "Ads/MEDIA_PX/PX_1.png"},
+        {"archivo": "PX_2.png", "ruta": "Ads/MEDIA_PX/PX_2.png"}]},
+    "llamadas": [
+        {"n": 1, "tool": "ads_create_campaign", "args": {"campaign_name": "GTR7_PX_F1", "status": "PAUSED"},
+         "guardar_como": "campaign_id"},
+        {"n": 2, "tool": "ads_create_ad_set",
+         "args": {"ad_set_name": "CJ1", "campaign_id": "{{campaign_id}}", "status": "PAUSED"},
+         "guardar_como": "adset_id_1"},
+        {"n": 3, "tool": "ads_create_creative", "archivo": "PX_1.png",
+         "args": {"name": "CR1", "page_id": "123", "image_hash": "{{FALTA_HASH}}"}, "guardar_como": "creative_id_1"},
+        {"n": 4, "tool": "ads_create_ad",
+         "args": {"ad_name": "AD1", "adset_id": "{{adset_id_1}}", "status": "PAUSED"}, "guardar_como": "ad_id_1"},
+        {"n": 5, "tool": "ads_create_creative", "archivo": "PX_2.png",
+         "args": {"name": "CR2", "page_id": "123", "image_hash": "{{FALTA_HASH}}"}, "guardar_como": "creative_id_2"},
+        {"n": 6, "tool": "ads_create_ad",
+         "args": {"ad_name": "AD2", "adset_id": "{{adset_id_1}}", "status": "PAUSED"}, "guardar_como": "ad_id_2"},
     ],
 }
 
@@ -118,3 +185,36 @@ def llamadas_de_escritura(base: Path) -> list[dict[str, Any]]:
         return []
     filas = [json.loads(x) for x in archivo.read_text(encoding="utf-8").splitlines() if x]
     return [f for f in filas if f["herramienta"] in ESCRITURA]
+
+
+def preparar_con_media(base: Path) -> None:
+    """El juguete con un paquete que necesita dos imágenes subidas a mano, y esas imágenes en disco."""
+    preparar(base)
+    escribir_paquete(base, PAQUETE_CON_MEDIA)
+    carpeta = base / "Ads" / "MEDIA_PX"
+    carpeta.mkdir(parents=True, exist_ok=True)
+    for i in (1, 2):
+        (carpeta / f"PX_{i}.png").write_bytes(b"imagen %d" % i)
+
+
+def subir_a_biblioteca(base: Path, imagenes: list[dict[str, str]]) -> None:
+    """Simula que el operador subió estas imágenes a la biblioteca de la cuenta ({hash, name})."""
+    archivo = base / "PRODUCTOS" / "_meta_imagenes.json"
+    previas = json.loads(archivo.read_text(encoding="utf-8")) if archivo.is_file() else []
+    archivo.write_text(json.dumps([*previas, *imagenes]), encoding="utf-8")
+
+
+def con_respuesta_max(base: Path, horas: float) -> None:
+    """Otro tope para esperar al operador (el bloque `claude` del manifiesto del juguete)."""
+    manifiesto = json.loads((base / "VISTAS" / "_MANIFIESTO.json").read_text(encoding="utf-8"))
+    manifiesto["acciones"]["claude"]["respuesta_max_horas"] = horas
+    juguete.escribir_manifiesto(base, manifiesto)
+
+
+def lecturas(base: Path) -> list[str]:
+    """Las herramientas de LECTURA de Meta que se llamaron, en orden."""
+    archivo = base / "PRODUCTOS" / "_meta_llamadas.log"
+    if not archivo.is_file():
+        return []
+    filas = [json.loads(x) for x in archivo.read_text(encoding="utf-8").splitlines() if x]
+    return [f["herramienta"] for f in filas if f.get("lectura")]
