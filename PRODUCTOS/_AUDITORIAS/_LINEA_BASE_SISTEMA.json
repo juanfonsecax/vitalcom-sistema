@@ -1,18 +1,18 @@
 {
-  "arranque_frio": 10770,
-  "claude_md": 7658,
+  "arranque_frio": 11188,
+  "claude_md": 8072,
   "fases": {
-    "fase-1-angulos": 356883,
-    "fase-2-conceptos": 445747,
-    "fase-3-escalado": 285817,
-    "ciclo-diario": 271685
+    "fase-1-angulos": 353258,
+    "fase-2-conceptos": 443908,
+    "fase-3-escalado": 291515,
+    "ciclo-diario": 275599
   },
   "nodos_dios": [
     [
       "CLAUDE.md",
-      9,
-      7658,
-      68922
+      8,
+      8072,
+      64576
     ],
     [
       "PLANTILLAS_ADS.md",
@@ -23,8 +23,8 @@
     [
       "ESCALADO_PLAYBOOK.md",
       5,
-      9101,
-      45505
+      9137,
+      45685
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -33,16 +33,16 @@
       25449
     ],
     [
-      "PLANTILLAS_INFOGRAFIAS.md",
-      3,
-      7017,
-      21051
-    ],
-    [
       "CALENDARIO_ESCALADO.md",
       2,
       8007,
       16014
+    ],
+    [
+      "PLANTILLAS_INFOGRAFIAS.md",
+      2,
+      7017,
+      14034
     ],
     [
       "PARAMETRIZACION_ADS.md",
@@ -69,6 +69,12 @@
       10452
     ],
     [
+      "PLANTILLAS_FLUJO_BOT.md",
+      1,
+      7741,
+      7741
+    ],
+    [
       "COPYWRITING_ADS.md",
       2,
       3738,
@@ -83,8 +89,8 @@
     [
       "PLANTILLAS_DEFAULTS_OPERADOR.md",
       3,
-      1703,
-      5109
+      1711,
+      5133
     ],
     [
       "LAVADO.md",
@@ -109,6 +115,6 @@
     "agentes": 17,
     "skills": 10,
     "docs_raiz": 3,
-    "csv": 35
+    "csv": 37
   }
 }
