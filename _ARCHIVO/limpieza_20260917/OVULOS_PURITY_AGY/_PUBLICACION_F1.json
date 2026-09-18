@@ -1,0 +1,221 @@
+{
+  "schema": "publicacion/1",
+  "generado_el": "2026-09-16T20:18:00",
+  "producto_key": "OVULOS_PURITY_AGY",
+  "fase": 1,
+  "mercado": "COLOMBIA",
+  "moneda": "COP",
+  "brazo": "UNICO",
+  "cuenta_alias": "HERNATURA_COLOMBIA",
+  "fanpage": "HERNATURA CO",
+  "page_id": "PENDIENTE_ASIGNACION",
+  "estructura": "1-6-2",
+  "presupuesto_nivel": "ADSET",
+  "daily_budget_usd_por_conjunto": 2.99,
+  "daily_budget_cop_por_conjunto": 12000,
+  "daily_budget_cents": 299,
+  "advantage_audience": 0,
+  "start_time": "2026-09-17T04:00:00-05:00",
+  "estado_al_crear": "PAUSED",
+  "plan": "PRODUCTOS/OVULOS_PURITY_AGY/_PLAN.json",
+  "campana": {
+    "name": "HERNATURA_OVULOS-PURITY_TEST_20260917",
+    "objective": "OUTCOME_TRAFFIC",
+    "status": "PAUSED",
+    "special_ad_categories": []
+  },
+  "conjuntos": [
+    {
+      "n": 1,
+      "name": "HERNATURA_OVULOS_FLORA-ZONAV_R1",
+      "angulo_key": "CANDIDIASIS_REBOTE",
+      "daily_budget": 299,
+      "billing_event": "IMPRESSIONS",
+      "optimization_goal": "CONVERSATIONS",
+      "destination_type": "WHATSAPP",
+      "targeting": {
+        "geo_locations": {
+          "countries": ["CO"]
+        },
+        "age_min": 25,
+        "age_max": 45,
+        "genders": [2]
+      },
+      "status": "PAUSED",
+      "anuncios": [
+        {
+          "name": "FLORA-ZONAV_IMG_A",
+          "creative": "OVULOS_PURITY_1_candidiasis_rebote.jpg",
+          "headline": "Equilibrio en tu Zona V",
+          "description": "🏠 ¡Paga seguro al recibir en casa!"
+        },
+        {
+          "name": "FLORA-ZONAV_IMG_B",
+          "creative": "OVULOS_PURITY_1_candidiasis_rebote.jpg",
+          "headline": "Adiós al picor molesto",
+          "description": "🌿 100% extractos naturales"
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "name": "HERNATURA_OVULOS_FRESCURA-ZONAV_R1",
+      "angulo_key": "MAL_OLOR_INTIMO",
+      "daily_budget": 299,
+      "billing_event": "IMPRESSIONS",
+      "optimization_goal": "CONVERSATIONS",
+      "destination_type": "WHATSAPP",
+      "targeting": {
+        "geo_locations": {
+          "countries": ["CO"]
+        },
+        "age_min": 25,
+        "age_max": 40,
+        "genders": [2]
+      },
+      "status": "PAUSED",
+      "anuncios": [
+        {
+          "name": "FRESCURA-ZONAV_IMG_A",
+          "creative": "OVULOS_PURITY_2_mal_olor_intimo.jpg",
+          "headline": "Frescura íntima total",
+          "description": "⭐⭐⭐⭐⭐ +10.000 mujeres felices"
+        },
+        {
+          "name": "FRESCURA-ZONAV_IMG_B",
+          "creative": "OVULOS_PURITY_2_mal_olor_intimo.jpg",
+          "headline": "Zona V protegida",
+          "description": "🏠 ¡Pagas al recibir en casa!"
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "name": "HERNATURA_OVULOS_HUMEDAD-PROTECTORES_R1",
+      "angulo_key": "FLUJO_PROTECTORES",
+      "daily_budget": 299,
+      "billing_event": "IMPRESSIONS",
+      "optimization_goal": "CONVERSATIONS",
+      "destination_type": "WHATSAPP",
+      "targeting": {
+        "geo_locations": {
+          "countries": ["CO"]
+        },
+        "age_min": 25,
+        "age_max": 40,
+        "genders": [2]
+      },
+      "status": "PAUSED",
+      "anuncios": [
+        {
+          "name": "HUMEDAD-PROTECTORES_IMG_A",
+          "creative": "OVULOS_PURITY_3_flujo_protectores.jpg",
+          "headline": "Dile adiós al protector",
+          "description": "🚚 Envío Gratis · Paga al recibir"
+        },
+        {
+          "name": "HUMEDAD-PROTECTORES_IMG_B",
+          "creative": "OVULOS_PURITY_3_flujo_protectores.jpg",
+          "headline": "2 Paquetes x $69.000",
+          "description": "🏠 ¡Pagas al recibir en casa!"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "name": "HERNATURA_OVULOS_DETOX-BOTANICO_R1",
+      "angulo_key": "DETOX_RESIDUOS",
+      "daily_budget": 299,
+      "billing_event": "IMPRESSIONS",
+      "optimization_goal": "CONVERSATIONS",
+      "destination_type": "WHATSAPP",
+      "targeting": {
+        "geo_locations": {
+          "countries": ["CO"]
+        },
+        "age_min": 30,
+        "age_max": 50,
+        "genders": [2]
+      },
+      "status": "PAUSED",
+      "anuncios": [
+        {
+          "name": "DETOX-BOTANICO_IMG_A",
+          "creative": "OVULOS_PURITY_4_detox_residuos.jpg",
+          "headline": "Limpieza botánica pura",
+          "description": "⭐ 100% natural · Cero dolor"
+        },
+        {
+          "name": "DETOX-BOTANICO_IMG_B",
+          "creative": "OVULOS_PURITY_4_detox_residuos.jpg",
+          "headline": "Bienestar en tu Zona V",
+          "description": "🏠 ¡Pagas al recibir en casa!"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "name": "HERNATURA_OVULOS_OFERTA-RECOMENDADA_R1",
+      "angulo_key": "OFERTA_2X1",
+      "daily_budget": 299,
+      "billing_event": "IMPRESSIONS",
+      "optimization_goal": "CONVERSATIONS",
+      "destination_type": "WHATSAPP",
+      "targeting": {
+        "geo_locations": {
+          "countries": ["CO"]
+        },
+        "age_min": 25,
+        "age_max": 55,
+        "genders": [2]
+      },
+      "status": "PAUSED",
+      "anuncios": [
+        {
+          "name": "OFERTA-RECOMENDADA_IMG_A",
+          "creative": "OVULOS_PURITY_5_oferta_recomendada.jpg",
+          "headline": "2 Paquetes x $69.000",
+          "description": "🏠 ¡Pagas al recibir en casa!"
+        },
+        {
+          "name": "OFERTA-RECOMENDADA_IMG_B",
+          "creative": "OVULOS_PURITY_5_oferta_recomendada.jpg",
+          "headline": "Envío Gratis Colombia",
+          "description": "🚚 Despacho prioritario hoy"
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "name": "HERNATURA_OVULOS_CONFORT-CICLO_R1",
+      "angulo_key": "COLICOS_HORMONAL",
+      "daily_budget": 299,
+      "billing_event": "IMPRESSIONS",
+      "optimization_goal": "CONVERSATIONS",
+      "destination_type": "WHATSAPP",
+      "targeting": {
+        "geo_locations": {
+          "countries": ["CO"]
+        },
+        "age_min": 22,
+        "age_max": 40,
+        "genders": [2]
+      },
+      "status": "PAUSED",
+      "anuncios": [
+        {
+          "name": "CONFORT-CICLO_IMG_A",
+          "creative": "OVULOS_PURITY_6_colicos_hormonal.jpg",
+          "headline": "Confort en esos días",
+          "description": "🌿 100% herbal · Sin dolor"
+        },
+        {
+          "name": "CONFORT-CICLO_IMG_B",
+          "creative": "OVULOS_PURITY_6_colicos_hormonal.jpg",
+          "headline": "Alivio pélvico natural",
+          "description": "🚚 Envío Gratis · Paga al recibir"
+        }
+      ]
+    }
+  ]
+}

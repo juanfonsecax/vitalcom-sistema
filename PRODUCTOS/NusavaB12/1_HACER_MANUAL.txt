@@ -530,7 +530,8 @@ RESUMEN COPIES: con precio Q219 → 2 de 6 (COPY 1 y COPY 6) ✓ (máx 3, ideal 
 Asesora: Laura Lopez (equipo Dr. Ricardo Estrada) · tono clínico-cálido · voseo guatemalteco.
 
 ELEMENTO 1 — TEXTO (saludo inicial, ahora abre con el dolor de MEMORIA):
-"¡Hola! Bienvenida/o al equipo del Dr. Ricardo Estrada 🧬. En un momento Laura Lopez te atiende. Esos olvidos, la mente en neblina o ese cansancio que no se va, muchas veces empiezan cuando los nervios y el cerebro se quedan sin la B12 que necesitan. Y ojo: casi nunca es que falte la vitamina, es que en pastilla el cuerpo no la absorbe bien. Te comparto info importante, ¡ya vengo! ✨"
+"Hola! 👋 Bienvenida/o a Sanarte, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨"
+
 
 ELEMENTO 11 — TEXTO (puente al audio):
 "¡Hola! Soy Laura Lopez, del equipo del Dr. Ricardo Estrada. Te dejo un audio rápido para explicarte cómo esta B12 líquida te puede ayudar con la memoria y los nervios 🎧"
@@ -1152,7 +1153,8 @@ Envío gratis, paga al recibir. Brecha corta: empujar del 2X1 al 4X2.
 MODO_USO: 1.5 ml (un gotero) debajo de la lengua, 1 vez al día en la mañana, sostener 30 seg. Sabor frambuesa, sin agua.
 
 ── MENSAJE INICIAL (13 elementos) ──
-1. TEXTO saludo: "Hola! Bienvenida/o al equipo del Dr. Ricardo Estrada 🧬. En un momento Laura Lopez te va a atender. Ese hormigueo, ardor o adormecimiento que sentís —o ese cansancio que no se va— muchas veces empieza cuando los nervios se quedan sin la B12 que necesitan. Y ojo: el problema casi nunca es la vitamina, es que el cuerpo no la absorbe bien en pastilla. Te comparto info importante, ¡ya vengo! ✨"
+1. TEXTO saludo: "Hola! 👋 Bienvenida/o a Sanarte, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨"
+
 2. VIDEO 1 (autoridad absorción sublingual)  ← OBJECIÓN CRÍTICA = absorción. Este video debe ser el de autoridad sublingual.
 3. VIDEO 2 (UGC hormigueo/energía)
 4. IMAGEN INFO 1 (beneficios)
@@ -1172,19 +1174,8 @@ MODO_USO: 1.5 ml (un gotero) debajo de la lengua, 1 vez al día en la mañana, s
 11. TEXTO presentación breve + puente: "Hola! Soy Laura Lopez, del equipo del Dr. Ricardo Estrada. Te dejo un audio rapido para explicarte mejor como te puede ayudar 🎧"
 12. AUDIO (45-55 seg, SIN precio y SIN contraentrega — voz femenina GT, clonada en Lucid o natural). Estructura template: apertura calida → gran promesa → mecanismo (raiz) → beneficio + sensorial/transformacion + libera objecion → visualizacion del futuro + cierre emocional → ingredientes al final. Segunda persona ("a vos").
    GUIÓN: "Hola! Claro que si, te cuento. Ese hormigueo, ardor o adormecimiento que sentis —o ese cansancio que no se va— casi siempre es que tus nervios se quedaron sin la B12 que necesitan, y en pastilla el cuerpo no la absorbe bien. Con NUSAVA B12 eso se resuelve de forma natural: es liquido y entra directo a tu sangre debajo de la lengua, sin perderse en el estomago, asi nutre tus nervios desde adentro. Vas a ir notando como ese hormigueo va cediendo, recuperas energia y te despertas con la mente mas clara y de mejor animo. Y olvidate del rollo de tragar pastillas grandes: es una sola toma en la mañana, natural y apto aun si manejas azucar alta o presion. Imaginate volver a sentir tus pies tranquilos y andar con energia todo el dia: es la mejor decision que podes tomar por tu salud. Lleva B12 metilcobalamina, B1, B6, niacina y folato. ¡Estoy para ayudarte! 😊"
-13. PREGUNTA filtrado de dolor:
-   "Para darte la información más útil, contame: ¿cuál de estas situaciones se parece más a la tuya?
-   🅰️ Siento hormigueo, ardor o adormecimiento en pies o manos
-   🅱️ Dolor que baja de la espalda baja hacia la pierna (tipo ciática)
-   🅲️ Ánimo bajo, ansiedad o nervios de punta
-   🅳️ Otro motivo (cansancio, energía, memoria, azúcar alta…) — contame cuál"
-
-── PÁRRAFO DE REFUERZO (insertar según la opción elegida en el elemento 13) ──
-INTEGRADOR: "NUSAVA B12 es el complejo B líquido sublingual que apoya la salud de tus nervios y tu energía, con B12 metilcobalamina 5000mcg, B6, B1, niacina y folato. Entra directo a tu sangre debajo de la lengua —sin perderse en el estómago como las pastillas— y nutre las fibras nerviosas desde adentro."
-🅰️ hormigueo: "...pensado para ese hormigueo y ardor en pies y manos, con B12 5000mcg, B6, B1 y folato... por eso muchos sienten cómo esa molestia va cediendo donde las pastillas no les hacían nada."
-🅱️ ciática: "...apoya los nervios cuando tenés ese dolor que baja de la espalda a la pierna, con B12, B1 y B6... acompaña el alivio de esa molestia mejor que una pastilla común."
-🅲️ ánimo: "...apoya tu ánimo y tu sistema nervioso, con B6 3400mcg, B12 y B1... al absorberse directo debajo de la lengua tu cuerpo sí la aprovecha desde el primer día."
-🅳️ energía: "...apoya tu energía y la función de tus nervios, con B12 5000mcg, B1, niacina y folato... muchos amanecen con más energía y la mente más despierta."
+── PÁRRAFO DE REFUERZO (único, base para las frases del ángulo en el CSV) ──
+"NUSAVA B12 es el complejo B líquido sublingual que apoya la salud de tus nervios y tu energía, con B12 metilcobalamina 5000mcg, B6, B1, niacina y folato. Entra directo a tu sangre debajo de la lengua —sin perderse en el estómago como las pastillas— y nutre las fibras nerviosas desde adentro."
 
 ── INTERACCIONES (5) ──
 0. Ciudad (sí #2, preguntar EXPLÍCITO antes de precios): "¿Desde qué municipio y departamento nos escribís? 😊"

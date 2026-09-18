@@ -510,10 +510,7 @@ MENSAJE INICIAL — ORDEN (temporizador 2-3 segundos entre mensajes)
 ──────────────────────────────────────────────
 
 ELEMENTO 1 — TEXTO (saludo, SIN nombre de asesora):
-¡Hola! Bienvenida a Belleza & Piel.
-En un momento una asesora se pone en contacto con vos. ✨
-Sentís que tu piel perdió firmeza y luz — eso tiene solución, sin agujas.
-Te comparto info importante, ¡ya vengo!
+¡Hola! 👋 Bienvenida/o a *Sanarte*, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨
 
 ELEMENTO 2 — (Video 1) NO HAY VIDEO: usar INFOGRAFÍA 1 (Beneficios) como primera pieza.
 ELEMENTO 3 — (Video 2) NO HAY VIDEO: usar INFOGRAFÍA 2 (Transformación/Ingredientes/Uso).

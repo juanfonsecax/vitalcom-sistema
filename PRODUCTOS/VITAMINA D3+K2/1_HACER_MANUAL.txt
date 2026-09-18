@@ -420,10 +420,7 @@ MENSAJE INICIAL — orden obligatorio: 3 infografías + 3 testimonios. Temporiza
 mensajes (máximo 5 segundos, y solo en el primer mensaje, simulando que "la asesora está llegando").
 
 ELEMENTO 1 — TEXTO (saludo, sin nombre de asesora):
-"¡Hola! Bienvenida/o a Huesos, Articulaciones & Vitalidad 45+. 💛
-En un momento una asesora se pondrá en contacto con vos. ✨
-Esos dolores de huesos y articulaciones que cargás — eso tiene apoyo.
-Te voy a compartir información importante, ¡ya vengo!"
+"¡Hola! 👋 Bienvenida/o a *Sanarte*, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨"
 
 ELEMENTO 2 — VIDEO 1: 7. VITAMINA D3+K2.mp4 (Autoridad)
 ELEMENTO 3 — VIDEO 2: 3. VITAMINA D3+K2.mp4 (UGC)
@@ -459,18 +456,6 @@ lo dirige bien. Imaginate despertarte sin esa pesadez en las rodillas o el hombr
 actividades del día sin pensarlo dos veces. Esa es la mejor decisión para tu bienestar de todos los
 días. Trae también Quercetina, B6, Zinc y Magnesio para tus defensas y tu energía."
 
-ELEMENTO 13 — PREGUNTA DE FILTRO DE DOLOR (FASE 1 — no es "rápido o normal"):
-"Para darte la información más útil, contame: ¿cuál de estas situaciones se parece más a la tuya?
-A) Estoy en la menopausia y siento dolor en cadera, rodillas u hombros que antes no tenía
-B) Cada mañana me despierta la rigidez y el dolor en las rodillas
-C) Tomo calcio pero me preocupa que se acumule en las arterias en vez de ir a mis huesos
-D) Otro motivo"
-
-El bot usa la respuesta para personalizar el párrafo de refuerzo de la Interacción 2:
-Si elige A → mencionar el apoyo en los cambios óseos de la menopausia.
-Si elige B → mencionar el apoyo a la rigidez matutina de rodillas.
-Si elige C → mencionar que la K2 dirige el calcio al hueso y no a las arterias.
-Si elige D → usar la promesa integradora general (apoyo diario para huesos y articulaciones).
 
 INTERACCIÓN 0 — pregunta de municipio/departamento:
 "¿Desde qué municipio y departamento nos escribís? 😊"

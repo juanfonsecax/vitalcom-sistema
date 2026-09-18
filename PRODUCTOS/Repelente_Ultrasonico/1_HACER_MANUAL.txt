@@ -348,10 +348,7 @@ pisos se recomienda el pack de 2 o 3 para cobertura completa.
 MENSAJE INICIAL — ORDEN OBLIGATORIO (temporizador 2-3 seg entre mensajes):
 
 ELEMENTO 1 — TEXTO (saludo, SIN nombre de asesora):
-Hola! Bienvenida/o a Hogar Protegido. 👋
-En un momento una asesora se pondrá en contacto con vos. ✨
-Tener ratas o ratones en casa incomoda a cualquiera — eso tiene solución, sin veneno ni trampas.
-Te voy a compartir información importante, ¡ya vengo!
+¡Hola! 👋 Bienvenida/o a *Sanarte*, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto con vos. ✨
 
 ELEMENTO 2 — VIDEO 1: Repelente_6_Generico_Ultrasonico.mp4 (autoridad/educacional)
 ELEMENTO 3 — VIDEO 2: (opcional — segundo video UGC si lo conseguís)
