@@ -5,7 +5,7 @@
 
 ---
 name: auditoria-vitalcom-diaria
-description: Auditoría nocturna del portafolio VitalCom: pide los 2 exports del día, los ingiere con las herramientas, corre ETAPA-7 + ETAPA-8 y regenera el panel.
+description: Auditoría nocturna del portafolio VitalCom: baja LucidSales sola por API, pide solo el export de Meta, los ingiere con las herramientas, corre ETAPA-7 + ETAPA-8 y regenera el panel.
 ---
 
 # AUDITORÍA NOCTURNA — PORTAFOLIO VITALCOM GUATEMALA
@@ -23,25 +23,60 @@ decidir nada. La doctrina manda sobre cualquier atajo.
 
 ---
 
-## PASO 1 — PEDIR LA DATA DEL DÍA (son DOS archivos, no uno)
+> **16-sep-2026 — el MCP se descartó para esta tarea, reemplazado por API directa.** Se intentó
+> enganchar el conector MCP de Meta Ads acá (ver `_OPERADOR/ENTREGA_DE_DATA.md`). Tres corridas en
+> vivo — con el permiso de lectura ya aprobado, y hasta en una sesión recién creada — se quedaron
+> colgadas indefinidamente justo después de invocar `ads_get_ad_accounts`, nunca devolvieron nada.
+> El conector funciona perfecto en sesión interactiva pero no responde dentro de una tarea sin
+> supervisión (aprobar una herramienta MCP remota parece exigir un clic humano que acá no existe).
+> **`Ads/_TOOLS/bajar_meta_insights.py` reemplaza a esto**: pega directo a la Graph API con un token
+> de System User de solo-lectura (`ads_read`), mismo patrón que `bajar_lucidsales.py`. Publicar
+> sigue siendo 100% MCP, interactivo, con confirmación del operador — esto es solo lectura.
 
-La cadencia completa por fuente vive en `_OPERADOR/ENTREGA_DE_DATA.md`. Todas las noches
-corresponden **dos** exports, los dos de **un solo día** y los dos de **ayer**:
+## PASO 1 — LA DATA DEL DÍA
+
+> **Cambio del 07-sep-2026: LUCIDSALES YA NO SE PIDE.** Se baja solo, por API, sin abrir el panel
+> ni descargar nada. Antes esta tarea pedía DOS archivos al operador; ahora pide UNO.
+
+**1a · LucidSales — automático.** Primero de todo, y sin preguntarle nada al operador:
+
+```bash
+python "Ads/_TOOLS/bajar_lucidsales.py"
+```
+
+Trae **ayer cerrado** y escribe `Ads/_INGESTA/LUCIDSALES/report-AYER-AYER.json`. Las credenciales
+salen de `~/.config/lucidsales/.env`; la tienda es **PRIMAX GT**. El detalle del contrato y los
+modos (huecos, control semanal) viven en la skill **`recopilar-lucidsales`** — cargala si algo falla
+en vez de improvisar contra la API.
+
+**Leé lo que imprime antes de ingerir.** Si dice `CERO filas`, **no ingieras**: es fecha equivocada
+o día sin cerrar. Si dice `Ya existe report-…`, ese día ya se bajó y no se vuelve a bajar.
+
+**1b · Meta Ads Manager — automático, con red de seguridad.** Primero intentá la API directa:
+
+```bash
+python "Ads/_TOOLS/bajar_meta_insights.py"
+```
+
+Trae **ayer cerrado** de las 4 cuentas ACTIVE con `mcp_habilitado=SI` en `_DIM_CUENTAS.csv`
+(GTR7, GTR0, GTR1, GTR3), excluye lo que no sea de VitalCom (GTR7 es cuenta compartida de agencia)
+y escribe directo en `_FACT_ENTREGA.csv` / `_FACT_ENTREGA_ANUNCIO.csv` con `fuente=MetaAPI-directo`.
+No hace falta `--dry-run` primero: ya excluye lo ajeno y es idempotente por llave.
+
+**Si falla** (imprime `FALTA EL TOKEN` o cualquier error de la Graph API): esto es la red de
+seguridad, no un fallo silencioso — pedile al operador el export manual como antes:
 
 | Archivo | Qué es | Sin él no se puede |
 |---|---|---|
-| `report-AYER-AYER.xlsx` | **LucidSales** — ventas atribuidas por anuncio | saber si vendiste: es la única fuente de ventas |
 | `Informe-*.xlsx` (nivel **conjunto**, 1 día) | **Meta Ads Manager** — entrega | separar "el ad no entrega" de "el bot no cierra" |
 
 ⚠️ **Los nombres engañan y ya se confundieron una vez:** el que empieza con `report-` es
-**LucidSales**; el que empieza con `Informe-sin-título-` es **Meta**.
+**LucidSales** (y ahora lo baja el script solo); el que empieza con `Informe-sin-título-` es **Meta**.
 
-Antes de pedir, mirá qué falta de verdad:
-- último `ventana_fin` con `rol_ventana=BASE` en `PRODUCTOS/_FACT_VENTAS.csv` → eso cubre LucidSales
-- último `ventana_fin` en `PRODUCTOS/_FACT_ENTREGA.csv` → eso cubre Meta
-
-Pedí **por fecha exacta, una sola vez y todo junto**. Nunca pidas un rango ya cargado. Si no falta
-nada, decilo y seguí al PASO 3.
+Si caíste al camino manual, antes de pedirlo mirá qué falta de verdad: último `ventana_fin` en
+`PRODUCTOS/_FACT_ENTREGA.csv`. Pedí **por fecha exacta, una sola vez**. Nunca pidas un rango ya
+cargado. Si no falta nada, decilo
+y seguí al PASO 3.
 
 **Semanal (lunes):** sumá el export de Dropi de **órdenes** (`ordenes_productos_*.xlsx`, rango 60
 días móviles) y el de **cartera** (`historial de cartera-*.xlsx`). No los pidas a diario: la COD
@@ -53,10 +88,18 @@ madura ~10 días y un export diario mide un cohorte inmaduro que cambia solo.
 
 ## PASO 2 — CARGA: usá las herramientas, no escribas los CSV a mano
 
+> **Si el PASO 1b funcionó por API directa, `_FACT_ENTREGA*.csv` ya quedó escrito** —
+> `bajar_meta_insights.py` no necesita un ingestor aparte. La línea de `ingerir_meta.py` de abajo
+> es SOLO para cuando caíste al camino manual (xlsx).
+
 ```bash
-python "Ads/_TOOLS/ingerir_lucidsales.py" <report-*.xlsx>
+python "Ads/_TOOLS/ingerir_lucidsales.py" --dir "Ads/_INGESTA/LUCIDSALES"
 python "Ads/_TOOLS/ingerir_meta.py" <Informe-*.xlsx>
 ```
+
+El primero toma el `.json` que dejó el PASO 1a. También acepta un `.xlsx` bajado a mano, si alguna
+vez hay que volver al camino viejo: es la misma data y produce la misma carga (verificado el
+07-sep celda por celda contra una descarga manual del 01-sep).
 
 Los dos son **idempotentes**: anti-duplicado por llave, backup previo en `_ARCHIVO/backups_csv/`,
 y aceptan `--dry-run`. **Corré siempre `--dry-run` primero** y leé lo que reporta antes de escribir.
@@ -79,6 +122,10 @@ Lo que SÍ te toca revisar después de cargar:
 2. **Filas legítimas que NO son huecos:** ventas sin conjunto (`spend=0`, sin `ad_id`) son las filas
    sintéticas de cuadre, y `conjunto="(campaña completa)"` es un agregado de campaña. Ninguna se
    inventa ni se descarta: se reportan aparte.
+   **Desde el 07-sep se suma un tercer tipo: las VENTAS ORGÁNICAS** (`ad_id="organico"`, sin cuenta,
+   sin conjunto, `spend_usd=0`). Son ventas reales que entraron sin pauta y **antes se descartaban
+   en silencio** — el 01-sep se perdían Q198 de 9 ventas. No las trates como huecos ni las sumes al
+   costo por venta de ningún ángulo: no tienen anuncio que las haya generado.
 3. Anotá la carga en `PRODUCTOS/_BITACORA_DATA.txt` con cifras y anomalías.
 
 > **Una sola cuenta de LucidSales.** Desde el **17-ago** el operador entrega un solo export por día
@@ -118,15 +165,12 @@ ventana, **declaralo** y no atribuyas el resultado al ángulo.
 1. Auditoría en `PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_[YYYYMMDD].txt`.
 2. **Todo cambio que el operador ejecutó hoy va a `_EVENTOS.csv` con la fecha de hoy.** Un cambio
    sin evento es un cambio que después no se puede evaluar. Escribilo con `csv.writer` real.
-3. **ÚLTIMO PASO SIEMPRE** — regenerá la app:
+3. **ÚLTIMO PASO SIEMPRE** — regenerá el panel:
    ```bash
-   python "Ads/_TOOLS/gen_app.py" --todo
+   python "Ads/_TOOLS/gen_dashboard.py"
    ```
-   Un solo comando corre los 7 generadores declarados en `VISTAS/_MANIFIESTO.json` (dashboard,
-   `HOY.html`, testeos, estructura, conceptos, winners, catálogo), refresca el portafolio del
-   lanzador y reescribe `VISTAS/APP.html`, que es la única pantalla que el operador abre. Reporta
-   cuál falló, si alguno falla. Si el CSV cambió y no regeneraste, el operador está mirando data
-   vieja — y la app te lo va a decir con una insignia roja en la vista **Salud**.
+   Emite `PRODUCTOS/_DASHBOARD.html` **y** `VISTAS/HOY.html` (la vista de una pantalla). Si el CSV
+   cambió y no regeneraste, el operador está mirando data vieja.
 
 ---
 
@@ -153,7 +197,7 @@ Reglas del mensaje:
   cero ventas.
 - Nunca declares ganador ni mates un conjunto sobre una ventana incompleta.
 - Si algo contradice lo que el sistema creía, **decilo explícitamente** en vez de suavizarlo.
-- Cerrá con el link: `VISTAS/APP.html` — abre en **Hoy**, con la lista ejecutable completa.
+- Cerrá con el link: `VISTAS/HOY.html` tiene la lista ejecutable completa.
 
 **Solo lectura sobre Meta y LucidBot**: nunca cambies presupuestos ni estados. Recomendás; el
 operador ejecuta.

@@ -165,9 +165,8 @@ parados.**
   arreglado, porque cada lanzamiento nuevo hereda la ineficiencia del 8 %.
   ⚠️ **Pendiente: registrar esa decisión** en `_DIM_PRODUCTOS.csv` (notas) y `_EVENTOS.csv`, para
   que sea un HOLD con condición de reingreso y no deriva.
-  Los 4: VITAMINA D3+K2 (67 d), SERUM_COLAGENO_BOTOX (61 d, costeo Q33/BE Q30,80),
-  Repelente_Ultrasonico (60 d, requiere FanPage nueva de nicho hogar), OVULOS_PURITY (46 d,
-  **Colombia/COP contra una capa de costeo que sólo habla quetzales**).
+  Los 3: VITAMINA D3+K2 (67 d), SERUM_COLAGENO_BOTOX (61 d, costeo Q33/BE Q30,80),
+  Repelente_Ultrasonico (60 d, requiere FanPage nueva de nicho hogar).
   **7 de las 10 FanPages están libres**: el bloqueo no es escasez, es cableado manual en Meta.
 - **#4 · Anomalías — DIAGNOSTICADO, correcciones pendientes.** Ver §5.
 - **#5 · Congelar el sistema** hasta que corra una FASE 1 completa y el cierre se mueva.
@@ -216,8 +215,6 @@ Señales del repo relevantes para eso, ya detectadas:
 - **La capa de data es el activo real del proyecto**, más que las 16 etapas: 2.475 ventas, 406
   entregas, 78 aprendizajes, 65 eventos, 22 CSV **con dueño declarado**. Eso ya es un esquema de
   base de datos aunque nadie lo llamó así.
-- **`OVULOS_PURITY` es el primer tropiezo real con "otro mercado"**: Colombia en COP contra una capa
-  de costeo Q-only. Es el caso de prueba natural de la multi-moneda / multi-mercado.
 - El camino técnico hacia multi-operador sería CSV → SQLite con `operador_key`, y `costear.py` +
   `verificar_producto.py` como los dos primeros endpoints. **No dimensionado todavía.**
 
