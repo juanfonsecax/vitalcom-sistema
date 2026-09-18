@@ -1,30 +1,30 @@
 {
-  "arranque_frio": 11188,
-  "claude_md": 8072,
+  "arranque_frio": 11267,
+  "claude_md": 8151,
   "fases": {
-    "fase-1-angulos": 353258,
-    "fase-2-conceptos": 443908,
-    "fase-3-escalado": 291515,
-    "ciclo-diario": 275599
+    "fase-1-angulos": 354258,
+    "fase-2-conceptos": 445355,
+    "fase-3-escalado": 292724,
+    "ciclo-diario": 276515
   },
   "nodos_dios": [
     [
       "CLAUDE.md",
       8,
-      8072,
-      64576
+      8151,
+      65208
     ],
     [
       "PLANTILLAS_ADS.md",
       6,
-      8649,
-      51894
+      8587,
+      51522
     ],
     [
       "ESCALADO_PLAYBOOK.md",
       5,
-      9137,
-      45685
+      9220,
+      46100
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -41,8 +41,8 @@
     [
       "PLANTILLAS_INFOGRAFIAS.md",
       2,
-      7017,
-      14034
+      6999,
+      13998
     ],
     [
       "PARAMETRIZACION_ADS.md",
@@ -53,8 +53,8 @@
     [
       "PLANTILLAS_INFOGRAFIAS_FLUJO.md",
       1,
-      13014,
-      13014
+      13008,
+      13008
     ],
     [
       "DATA_PLAYBOOK.md",
@@ -95,8 +95,8 @@
     [
       "LAVADO.md",
       1,
-      1153,
-      1153
+      1137,
+      1137
     ]
   ],
   "huerfanos_md": [],

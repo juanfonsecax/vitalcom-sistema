@@ -195,18 +195,6 @@
     "faltantes": 0,
     "pendientes": [
       {
-        "producto": "Serum Colageno Botox",
-        "que": "cuenta publicitaria sin asignar",
-        "quien": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias",
-        "bloquea": true
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "page_id de la FanPage sin asignar",
-        "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
-        "bloquea": true
-      },
-      {
         "producto": "Óvulos Purity Hernatura",
         "que": "page_id de la FanPage sin asignar",
         "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
@@ -217,66 +205,6 @@
         "que": "break-even sin calcular",
         "quien": "etapa-1 · Ads/_TOOLS/costear.py",
         "bloquea": true
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 1 (CARA_CANSADA_QUITA): sin nivel_conciencia -> la firma sale con ? en NC",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 2 (PIEL_CAMBIO_40): sin nivel_conciencia -> la firma sale con ? en NC",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 3 (LIFTING_SIN_AGUJAS): sin nivel_conciencia -> la firma sale con ? en NC",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 4 (CREMAS_HACEN_NADA): sin avatar_edad -> corre en banda amplia 18-65+",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 4 (CREMAS_HACEN_NADA): sin nivel_conciencia -> la firma sale con ? en NC",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin avatar_edad -> corre en banda amplia 18-65+",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 5 (LINEAS_EXPRESION_MARCADAS): sin nivel_conciencia -> la firma sale con ? en NC",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "conjunto 6 (REAFIRMA_OVALO_FACIAL): sin nivel_conciencia -> la firma sale con ? en NC",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "producto: page_id SIN ASIGNAR -> no se puede publicar",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
-      },
-      {
-        "producto": "Serum Colageno Botox",
-        "que": "producto: cuenta publicitaria SIN ASIGNAR",
-        "quien": "etapa-4 / etapa-6",
-        "bloquea": false
       },
       {
         "producto": "Óvulos Purity Hernatura",
@@ -377,28 +305,6 @@
           "sin _PLAN.json (ángulos, prompts y copies estructurados)"
         ],
         "quien": "etapa-6 — es el paso que falta siempre"
-      },
-      {
-        "producto": "Vitamina D3+K2",
-        "estado": "NUEVO",
-        "falta": [
-          "sin break-even calculado",
-          "sin page_id de FanPage",
-          "sin cuenta publicitaria asignada",
-          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
-        ],
-        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
-      },
-      {
-        "producto": "Repelente Ultrasonico",
-        "estado": "NUEVO",
-        "falta": [
-          "sin break-even calculado",
-          "sin page_id de FanPage",
-          "sin cuenta publicitaria asignada",
-          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
-        ],
-        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
       }
     ]
   }
