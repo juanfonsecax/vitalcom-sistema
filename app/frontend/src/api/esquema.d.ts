@@ -4,6 +4,217 @@
  */
 
 export interface paths {
+    "/api/acciones": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Acciones
+         * @description Las acciones con botón. Con `producto_key`, cada una dice si está disponible ahora.
+         */
+        get: operations["listar_acciones_api_acciones_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/acciones/{accion_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Pedir Accion
+         * @description Pide una acción declarada. 202 con el `job_id`; el progreso va por `/api/trabajos/{id}`.
+         */
+        post: operations["pedir_accion_api_acciones__accion_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Trabajos
+         * @description Los trabajos, los más nuevos primero. Un pendiente de otra versión sale como `OTRA_VERSION`.
+         */
+        get: operations["listar_trabajos_api_trabajos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ver Trabajo */
+        get: operations["ver_trabajo_api_trabajos__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}/eventos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Seguir Trabajo
+         * @description El progreso en vivo (SSE). Con `Last-Event-ID` sigue desde donde quedó el navegador.
+         */
+        get: operations["seguir_trabajo_api_trabajos__job_id__eventos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}/aprobaciones/{orden_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decidir Orden
+         * @description Aprueba o rechaza UNA orden. La huella tiene que ser la de lo que la pantalla mostró.
+         */
+        post: operations["decidir_orden_api_trabajos__job_id__aprobaciones__orden_id__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}/respuesta": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Responder A Claude */
+        post: operations["responder_a_claude_api_trabajos__job_id__respuesta_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}/reintentar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reintentar Trabajo
+         * @description Un trabajo NUEVO con los mismos parámetros y corrida completa. Pasa por las mismas puertas que un pedido.
+         */
+        post: operations["reintentar_trabajo_api_trabajos__job_id__reintentar_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}/cancelar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancelar Trabajo */
+        post: operations["cancelar_trabajo_api_trabajos__job_id__cancelar_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/trabajos/{job_id}/descartar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Descartar Trabajo De Otra Version
+         * @description «Marcar fallido»: un trabajo de una versión vieja del runner no se continúa.
+         */
+        post: operations["descartar_trabajo_de_otra_version_api_trabajos__job_id__descartar_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/claude/estado": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Estado De Claude
+         * @description ¿Hay sesión de Claude? La pantalla lo mira antes de ofrecer un botón que lo necesite.
+         */
+        get: operations["estado_de_claude_api_claude_estado_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos": {
         parameters: {
             query?: never;
@@ -22,10 +233,10 @@ export interface paths {
         put?: never;
         /**
          * Alta De Producto
-         * @description Da de alta el producto con `alta_producto.py` y re-evalúa el flujo.
+         * @description Da de alta el producto: la acción `producto.alta` por el runner, y espera su resultado.
          *
          *     La imagen y la descripción se guardan primero en una carpeta temporal; quien las mete
-         *     en el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es el script.
+         *     en el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es `alta_producto.py`.
          */
         post: operations["alta_de_producto_api_productos_post"];
         delete?: never;
@@ -118,26 +329,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/productos/{producto_key}/transcribir": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Transcribir Videos
-         * @description Pasa a texto los videos del producto con `transcribir_videos.py`, en esta máquina.
-         */
-        post: operations["transcribir_videos_api_productos__producto_key__transcribir_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/sistema": {
         parameters: {
             query?: never;
@@ -162,6 +353,74 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * Accion
+         * @description Una acción con botón, tal como la declara `VISTAS/_MANIFIESTO.json` (diseño §2.5).
+         */
+        Accion: {
+            /** Id */
+            id: string;
+            /** Rotulo */
+            rotulo: string;
+            /** Nodo */
+            nodo?: string | null;
+            /** Ejecutor Tipo */
+            ejecutor_tipo: string;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: unknown;
+            };
+            /** Requiere Confirmacion */
+            requiere_confirmacion: boolean;
+            /** Aprobacion */
+            aprobacion: string;
+            /** Toca Meta */
+            toca_meta: boolean;
+            /**
+             * Escribe
+             * @default []
+             */
+            escribe: string[];
+            /** Habilitada */
+            habilitada: boolean;
+            /** Motivo */
+            motivo?: string | null;
+            /** Tiempo Max S */
+            tiempo_max_s: number;
+            /** Datos Del Operador */
+            datos_del_operador?: unknown[] | null;
+            /** Disponible */
+            disponible?: boolean | null;
+            /** Por Que */
+            por_que?: {
+                [key: string]: unknown;
+            } | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** AccionEncolada */
+        AccionEncolada: {
+            /** Job Id */
+            job_id: string;
+            /** Accion Id */
+            accion_id: string;
+            /** Estado */
+            estado: string;
+            /** Url Estado */
+            url_estado: string;
+            /** Url Eventos */
+            url_eventos: string;
+            /**
+             * Repetido
+             * @default false
+             */
+            repetido: boolean;
+        } & {
+            [key: string]: unknown;
+        };
         /** Body_alta_de_producto_api_productos_post */
         Body_alta_de_producto_api_productos_post: {
             /**
@@ -281,6 +540,18 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** DecisionDeOrden */
+        DecisionDeOrden: {
+            /** Decision */
+            decision: string;
+            /** Hash */
+            hash: string;
+            /**
+             * Nota
+             * @default
+             */
+            nota: string;
+        };
         /**
          * Decisiones
          * @description `_DECISIONES.json`: lo que dictó `decidir.py`. La app no lo reinterpreta.
@@ -333,6 +604,23 @@ export interface components {
             precio: number;
             /** Costo Pedido */
             costo_pedido: number;
+        } & {
+            [key: string]: unknown;
+        };
+        /** EstadoDeClaude */
+        EstadoDeClaude: {
+            /** Logueado */
+            logueado: boolean;
+            /**
+             * Detalle
+             * @default
+             */
+            detalle: string;
+            /**
+             * Credencial Prohibida
+             * @default []
+             */
+            credencial_prohibida: string[];
         } & {
             [key: string]: unknown;
         };
@@ -492,6 +780,26 @@ export interface components {
             [key: string]: unknown;
         };
         /**
+         * PedidoAccion
+         * @description El cuerpo de `POST /api/acciones/{id}`.
+         */
+        PedidoAccion: {
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: unknown;
+            };
+            /**
+             * Confirmado
+             * @default false
+             */
+            confirmado: boolean;
+            /** Job Id */
+            job_id?: string | null;
+        };
+        /**
          * Producto
          * @description Fila de `_DIM_PRODUCTOS.csv` + fase y nodo vigentes de `_ESTADO_FLUJO.csv`.
          */
@@ -563,6 +871,14 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** Reintento */
+        Reintento: {
+            /**
+             * Confirmado
+             * @default false
+             */
+            confirmado: boolean;
+        };
         /** Requisito */
         Requisito: {
             /**
@@ -593,6 +909,13 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** RespuestaDeClaude */
+        RespuestaDeClaude: {
+            /** N */
+            n: number;
+            /** Texto */
+            texto: string;
+        };
         /**
          * Salud
          * @description `VISTAS/_ESTADO.json`: frescura por vista, calculada por gen_app.py.
@@ -622,6 +945,117 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * Trabajo
+         * @description Un trabajo del runner, para la lista de la pantalla Trabajos.
+         */
+        Trabajo: {
+            /** Job Id */
+            job_id: string;
+            /**
+             * Accion Id
+             * @default
+             */
+            accion_id: string;
+            /**
+             * Rotulo
+             * @default
+             */
+            rotulo: string;
+            /** Producto Key */
+            producto_key?: string | null;
+            /** Estado */
+            estado: string;
+            /** Iniciado */
+            iniciado?: string | null;
+            /** Terminado */
+            terminado?: string | null;
+            /**
+             * App Version
+             * @default
+             */
+            app_version: string;
+            /**
+             * Otra Version
+             * @default false
+             */
+            otra_version: boolean;
+            /** Pendiente */
+            pendiente?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * TrabajoDetalle
+         * @description El trabajo completo: lo pendiente con todo su detalle (la orden o la pregunta) y el resultado.
+         */
+        TrabajoDetalle: {
+            /** Job Id */
+            job_id: string;
+            /**
+             * Accion Id
+             * @default
+             */
+            accion_id: string;
+            /**
+             * Rotulo
+             * @default
+             */
+            rotulo: string;
+            /** Producto Key */
+            producto_key?: string | null;
+            /** Estado */
+            estado: string;
+            /** Iniciado */
+            iniciado?: string | null;
+            /** Terminado */
+            terminado?: string | null;
+            /**
+             * App Version
+             * @default
+             */
+            app_version: string;
+            /**
+             * Otra Version
+             * @default false
+             */
+            otra_version: boolean;
+            /** Pendiente */
+            pendiente?: string | null;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: unknown;
+            };
+            /**
+             * Sello
+             * @default {}
+             */
+            sello: {
+                [key: string]: unknown;
+            };
+            /** Pendiente Completo */
+            pendiente_completo?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Unidades
+             * @default []
+             */
+            unidades: unknown[];
+            /** Resultado */
+            resultado?: {
+                [key: string]: unknown;
+            } | null;
+            /** Run Dir */
+            run_dir?: string | null;
+            /** Error */
+            error?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -644,6 +1078,362 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    listar_acciones_api_acciones_get: {
+        parameters: {
+            query?: {
+                nodo?: string | null;
+                producto_key?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Accion"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pedir_accion_api_acciones__accion_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                accion_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PedidoAccion"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccionEncolada"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    listar_trabajos_api_trabajos_get: {
+        parameters: {
+            query?: {
+                estado?: string | null;
+                producto_key?: string | null;
+                limite?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Trabajo"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    ver_trabajo_api_trabajos__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrabajoDetalle"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    seguir_trabajo_api_trabajos__job_id__eventos_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decidir_orden_api_trabajos__job_id__aprobaciones__orden_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+                orden_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DecisionDeOrden"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    responder_a_claude_api_trabajos__job_id__respuesta_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RespuestaDeClaude"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reintentar_trabajo_api_trabajos__job_id__reintentar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["Reintento"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccionEncolada"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancelar_trabajo_api_trabajos__job_id__cancelar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    descartar_trabajo_de_otra_version_api_trabajos__job_id__descartar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    estado_de_claude_api_claude_estado_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EstadoDeClaude"];
+                };
+            };
+        };
+    };
     listar_productos_api_productos_get: {
         parameters: {
             query?: never;
@@ -788,41 +1578,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Costeo"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    transcribir_videos_api_productos__producto_key__transcribir_post: {
-        parameters: {
-            query?: {
-                modelo?: string;
-            };
-            header?: never;
-            path: {
-                producto_key: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
                 };
             };
             /** @description Validation Error */

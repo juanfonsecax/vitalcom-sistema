@@ -1,11 +1,11 @@
 /**
  * main.tsx — arranque, rutas y caché.
  *
- * Tres pantallas en el Hito 1: Portafolio, Producto y Salud. Todas de solo lectura.
+ * Portafolio, Producto, Nuevo producto, Trabajos (lo que el runner hace y espera de vos) y Salud.
  */
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
 import {
   Link,
   Outlet,
@@ -18,7 +18,28 @@ import { Tablero } from "./pantallas/Tablero";
 import { ProductoDetalle } from "./pantallas/ProductoDetalle";
 import { Salud } from "./pantallas/Salud";
 import { NuevoProducto } from "./pantallas/NuevoProducto";
+import { Trabajos } from "./pantallas/Trabajos";
+import { api } from "./api/cliente";
 import "./estilos.css";
+
+/** «Trabajos» con una insignia cuando algo espera una decisión del operador. */
+function EnlaceDeTrabajos() {
+  const lista = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
+  const esperan = (lista.data ?? []).filter((t) => t.pendiente).length;
+  return (
+    <Link to="/trabajos" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
+      Trabajos
+      {esperan > 0 && (
+        <span
+          title="Trabajos que esperan tu aprobación o tu respuesta"
+          className="ml-1.5 rounded-full bg-amber-600 px-1.5 py-0.5 text-[10px] font-semibold text-white"
+        >
+          {esperan}
+        </span>
+      )}
+    </Link>
+  );
+}
 
 function Marco() {
   return (
@@ -34,6 +55,7 @@ function Marco() {
           <Link to="/nuevo" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
             Nuevo producto
           </Link>
+          <EnlaceDeTrabajos />
           <Link to="/salud" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
             Salud
           </Link>
@@ -52,6 +74,8 @@ const rutas = [
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/salud", component: Salud }),
   createRoute({ getParentRoute: () => raiz, path: "/nuevo", component: NuevoProducto }),
+  createRoute({ getParentRoute: () => raiz, path: "/trabajos", component: Trabajos }),
+  createRoute({ getParentRoute: () => raiz, path: "/trabajos/$id", component: Trabajos }),
 ];
 
 const router = createRouter({ routeTree: raiz.addChildren(rutas) });

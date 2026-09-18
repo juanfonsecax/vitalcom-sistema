@@ -11,9 +11,10 @@
 import { useEffect, useMemo, useState, type DragEvent } from "react";
 import { useMutation, useQuery, useQueryClient, type UseMutationResult } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { api, type ResultadoAlta, type ResultadoTranscripcion } from "../api/cliente";
+import { api, type AccionEncolada, type ResultadoAlta, type ResultadoTranscripcion } from "../api/cliente";
 import { TablaGuatemala } from "../componentes/TablaGuatemala";
 import { Chip, Tarjeta, cn } from "../componentes/ui";
+import { trabajoEnPalabras } from "../lenguaje";
 
 const MINIMO_DESCRIPCION = 120; // el mismo mínimo que exige alta_producto.py
 
@@ -91,6 +92,7 @@ export function NuevoProducto() {
     onSuccess: () => cola.invalidateQueries({ queryKey: ["productos"] }),
   });
 
+  // Transcribir tarda minutos: es una acción del runner (202 + un trabajo que se sigue en Trabajos).
   const transcripcion = useMutation({
     mutationFn: (clave: string) => api.transcribir(clave),
   });
@@ -285,12 +287,51 @@ export function NuevoProducto() {
   );
 }
 
+/** Sigue el trabajo de transcripción hasta que termina y dice qué pasó, con el mismo lenguaje que Trabajos. */
+function ProgresoDeTranscripcion({ trabajo }: { trabajo: string }) {
+  const detalle = useQuery({
+    queryKey: ["trabajo", trabajo],
+    queryFn: () => api.trabajo(trabajo),
+    refetchInterval: (consulta) => (trabajoEnPalabras(consulta.state.data?.estado).enCurso ? 2000 : false),
+  });
+  const estado = detalle.data?.estado ?? "ENCOLADO";
+  const { texto, tono, enCurso } = trabajoEnPalabras(estado);
+  const unidad = (detalle.data?.unidades?.[0] ?? {}) as { json?: ResultadoTranscripcion };
+  const resultado = unidad.json;
+  return (
+    <div className="space-y-2 text-sm text-zinc-300" aria-live="polite">
+      <p className="flex items-center gap-2">
+        <Chip tono={tono} titulo={estado}>{texto}</Chip>
+        <Link to="/trabajos/$id" params={{ id: trabajo }} className="text-sky-300 hover:text-sky-200">
+          Ver el progreso en vivo →
+        </Link>
+      </p>
+      {!enCurso && estado !== "EXITO" && detalle.data?.resultado && (
+        <p className="text-rose-300">{(detalle.data.resultado as { detalle?: string }).detalle}</p>
+      )}
+      {resultado && (
+        <div>
+          <p>
+            {resultado.archivos.filter((a) => a.estado === "TRANSCRITO").length} video(s) transcrito(s) con el modelo{" "}
+            {resultado.modelo}.
+          </p>
+          {resultado.sin_voz.length > 0 && (
+            <p className="mt-1 text-amber-300">
+              Casi sin voz: {resultado.sin_voz.join(", ")}. Lo que vende puede estar en el texto en pantalla.
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Listo({
   resultado,
   transcripcion,
 }: {
   resultado: ResultadoAlta;
-  transcripcion: UseMutationResult<ResultadoTranscripcion, Error, string>;
+  transcripcion: UseMutationResult<AccionEncolada, Error, string>;
 }) {
   const carpetaVideos = `Ads/1.1 Videos/${resultado.producto_key}/`;
   return (
@@ -326,25 +367,12 @@ function Listo({
           onClick={() => transcripcion.mutate(resultado.producto_key)}
           className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-200 hover:border-zinc-500 disabled:opacity-50"
         >
-          {transcripcion.isPending ? "Transcribiendo… (la primera vez baja el modelo)" : "Transcribir videos"}
+          {transcripcion.isPending ? "Pidiéndolo…" : "Transcribir videos"}
         </button>
         {transcripcion.error && (
           <p className="text-sm text-rose-300">{transcripcion.error.message}</p>
         )}
-        {transcripcion.data && (
-          <div className="text-sm text-zinc-300">
-            <p>
-              {transcripcion.data.archivos.filter((a) => a.estado === "TRANSCRITO").length} video(s)
-              transcrito(s) con el modelo {transcripcion.data.modelo}.
-            </p>
-            {transcripcion.data.sin_voz.length > 0 && (
-              <p className="mt-1 text-amber-300">
-                Casi sin voz: {transcripcion.data.sin_voz.join(", ")}. Lo que vende puede estar en
-                el texto en pantalla.
-              </p>
-            )}
-          </div>
-        )}
+        {transcripcion.data && <ProgresoDeTranscripcion trabajo={transcripcion.data.job_id} />}
       </Tarjeta>
     </div>
   );

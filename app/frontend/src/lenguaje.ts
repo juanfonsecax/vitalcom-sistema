@@ -66,3 +66,41 @@ export function rezagoEnPalabras(dias: number | null | undefined) {
   if (dias <= 2) return { texto: `data de hace ${dias} días`, tono: "aviso" as Tono };
   return { texto: `data de hace ${dias} días — decidir así es decidir a ciegas`, tono: "alto" as Tono };
 }
+
+/** Los estados de un trabajo del runner, dichos en palabras de todos los días. El código crudo se muestra al lado. */
+export const ESTADO_DE_TRABAJO: Record<string, { texto: string; tono: Tono; enCurso: boolean }> = {
+  ENCOLADO: { texto: "en la fila", tono: "dato", enCurso: true },
+  CORRIENDO: { texto: "corriendo", tono: "dato", enCurso: true },
+  ESPERA_APROBACION: { texto: "espera tu aprobación", tono: "aviso", enCurso: true },
+  ESPERA_RESPUESTA: { texto: "espera tu respuesta", tono: "aviso", enCurso: true },
+  EXITO: { texto: "terminó bien", tono: "bien", enCurso: false },
+  SIN_CUMPLIR: { texto: "terminó, pero el paso sigue pendiente", tono: "aviso", enCurso: false },
+  RECHAZADO: { texto: "lo rechazaste", tono: "neutro", enCurso: false },
+  CADUCADO: { texto: "caducó sin respuesta", tono: "aviso", enCurso: false },
+  FALLIDO: { texto: "falló", tono: "alto", enCurso: false },
+  INTERRUMPIDO: { texto: "se interrumpió a mitad", tono: "alto", enCurso: false },
+  CSV_INVALIDO: { texto: "dejó un CSV inválido", tono: "alto", enCurso: false },
+  CANCELADO: { texto: "cancelado", tono: "neutro", enCurso: false },
+  OTRA_VERSION: { texto: "quedó de una versión vieja de la app", tono: "aviso", enCurso: true },
+};
+
+export function trabajoEnPalabras(estado: string | null | undefined) {
+  if (!estado) return { texto: "sin estado", tono: "neutro" as Tono, enCurso: false };
+  return (
+    ESTADO_DE_TRABAJO[estado] ?? { texto: estado.toLowerCase().replace(/_/g, " "), tono: "neutro" as Tono, enCurso: false }
+  );
+}
+
+/** Los estados de un trabajo que se pueden volver a correr completos. */
+export const SE_REINTENTAN = ["FALLIDO", "INTERRUMPIDO", "CADUCADO"];
+
+/** Cada herramienta de Meta, dicha por lo que hace. */
+export const LLAMADA_DE_META: Record<string, string> = {
+  ads_create_campaign: "Crear la campaña",
+  ads_create_ad_set: "Crear un conjunto de anuncios",
+  ads_create_creative: "Crear un creativo",
+  ads_create_ad: "Crear un anuncio",
+  ads_creative_upload_media: "Subir una imagen o video",
+  ads_activate_entity: "Activar (empieza a gastar)",
+  ads_update_entity: "Cambiar algo que ya existe",
+};

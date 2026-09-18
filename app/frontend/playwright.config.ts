@@ -1,4 +1,6 @@
 import { defineConfig } from "@playwright/test";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 /**
  * La prueba de punta a punta corre contra el backend sirviendo el frontend COMPILADO,
@@ -16,7 +18,8 @@ export default defineConfig({
     cwd: "../backend",
     url: "http://127.0.0.1:8100/api/sistema",
     reuseExistingServer: false,
-    env: BASE ? { VITALCOM_BASE: BASE } : {},
+    // La base de datos de la app (DBOS) va a una carpeta temporal: la prueba no toca los datos del operador.
+    env: { ...(BASE ? { VITALCOM_BASE: BASE } : {}), VITALCOM_DATOS: join(tmpdir(), "vitalcom-e2e-datos") },
     timeout: 120_000,
   },
 });

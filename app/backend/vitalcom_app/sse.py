@@ -44,8 +44,21 @@ def _leer_id(ultimo: str | None) -> dict[str, int]:
     return salida
 
 
+LARGO_MAXIMO_DE_LINEA = 400
+
+
 def linea_de(nombre_de_log: str, texto: str) -> dict[str, Any] | None:
-    """Un renglón de un log → lo que ve la pantalla. None = no vale la pena mostrarlo."""
+    """Un renglón de un log → lo que ve la pantalla. None = no vale la pena mostrarlo.
+
+    Una línea larguísima (un script que vuelca un JSON entero) se recorta: el rastro completo queda en la bitácora.
+    """
+    evento = _linea_completa(nombre_de_log, texto)
+    if evento and len(evento["texto"]) > LARGO_MAXIMO_DE_LINEA:
+        evento["texto"] = evento["texto"][:LARGO_MAXIMO_DE_LINEA] + "… (sigue en la bitácora)"
+    return evento
+
+
+def _linea_completa(nombre_de_log: str, texto: str) -> dict[str, Any] | None:
     unidad = int(re.match(r"^(\d+)_", nombre_de_log).group(1))  # type: ignore[union-attr]
     if nombre_de_log.endswith(".jsonl"):
         try:

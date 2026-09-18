@@ -2,10 +2,580 @@
   "openapi": "3.1.0",
   "info": {
     "title": "VitalCom",
-    "summary": "La pantalla del sistema VITALCOM Guatemala (solo lectura, Hito 1).",
+    "summary": "La pantalla del sistema VITALCOM Guatemala.",
     "version": "0.1.0"
   },
   "paths": {
+    "/api/acciones": {
+      "get": {
+        "tags": [
+          "acciones"
+        ],
+        "summary": "Listar Acciones",
+        "description": "Las acciones con botón. Con `producto_key`, cada una dice si está disponible ahora.",
+        "operationId": "listar_acciones_api_acciones_get",
+        "parameters": [
+          {
+            "name": "nodo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Nodo"
+            }
+          },
+          {
+            "name": "producto_key",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Producto Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Accion"
+                  },
+                  "title": "Response Listar Acciones Api Acciones Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/acciones/{accion_id}": {
+      "post": {
+        "tags": [
+          "acciones"
+        ],
+        "summary": "Pedir Accion",
+        "description": "Pide una acción declarada. 202 con el `job_id`; el progreso va por `/api/trabajos/{id}`.",
+        "operationId": "pedir_accion_api_acciones__accion_id__post",
+        "parameters": [
+          {
+            "name": "accion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Accion Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PedidoAccion"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionEncolada"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos": {
+      "get": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Listar Trabajos",
+        "description": "Los trabajos, los más nuevos primero. Un pendiente de otra versión sale como `OTRA_VERSION`.",
+        "operationId": "listar_trabajos_api_trabajos_get",
+        "parameters": [
+          {
+            "name": "estado",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Estado"
+            }
+          },
+          {
+            "name": "producto_key",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Producto Key"
+            }
+          },
+          {
+            "name": "limite",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "title": "Limite"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Trabajo"
+                  },
+                  "title": "Response Listar Trabajos Api Trabajos Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}": {
+      "get": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Ver Trabajo",
+        "operationId": "ver_trabajo_api_trabajos__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrabajoDetalle"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}/eventos": {
+      "get": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Seguir Trabajo",
+        "description": "El progreso en vivo (SSE). Con `Last-Event-ID` sigue desde donde quedó el navegador.",
+        "operationId": "seguir_trabajo_api_trabajos__job_id__eventos_get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}/aprobaciones/{orden_id}": {
+      "post": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Decidir Orden",
+        "description": "Aprueba o rechaza UNA orden. La huella tiene que ser la de lo que la pantalla mostró.",
+        "operationId": "decidir_orden_api_trabajos__job_id__aprobaciones__orden_id__post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          },
+          {
+            "name": "orden_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Orden Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecisionDeOrden"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Decidir Orden Api Trabajos  Job Id  Aprobaciones  Orden Id  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}/respuesta": {
+      "post": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Responder A Claude",
+        "operationId": "responder_a_claude_api_trabajos__job_id__respuesta_post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RespuestaDeClaude"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Responder A Claude Api Trabajos  Job Id  Respuesta Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}/reintentar": {
+      "post": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Reintentar Trabajo",
+        "description": "Un trabajo NUEVO con los mismos parámetros y corrida completa. Pasa por las mismas puertas que un pedido.",
+        "operationId": "reintentar_trabajo_api_trabajos__job_id__reintentar_post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/Reintento"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Cuerpo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccionEncolada"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}/cancelar": {
+      "post": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Cancelar Trabajo",
+        "operationId": "cancelar_trabajo_api_trabajos__job_id__cancelar_post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Cancelar Trabajo Api Trabajos  Job Id  Cancelar Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trabajos/{job_id}/descartar": {
+      "post": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Descartar Trabajo De Otra Version",
+        "description": "«Marcar fallido»: un trabajo de una versión vieja del runner no se continúa.",
+        "operationId": "descartar_trabajo_de_otra_version_api_trabajos__job_id__descartar_post",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Descartar Trabajo De Otra Version Api Trabajos  Job Id  Descartar Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/claude/estado": {
+      "get": {
+        "tags": [
+          "trabajos"
+        ],
+        "summary": "Estado De Claude",
+        "description": "¿Hay sesión de Claude? La pantalla lo mira antes de ofrecer un botón que lo necesite.",
+        "operationId": "estado_de_claude_api_claude_estado_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstadoDeClaude"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/productos": {
       "get": {
         "tags": [
@@ -36,7 +606,7 @@
           "productos"
         ],
         "summary": "Alta De Producto",
-        "description": "Da de alta el producto con `alta_producto.py` y re-evalúa el flujo.\n\nLa imagen y la descripción se guardan primero en una carpeta temporal; quien las mete\nen el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es el script.",
+        "description": "Da de alta el producto: la acción `producto.alta` por el runner, y espera su resultado.\n\nLa imagen y la descripción se guardan primero en una carpeta temporal; quien las mete\nen el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es `alta_producto.py`.",
         "operationId": "alta_de_producto_api_productos_post",
         "requestBody": {
           "content": {
@@ -204,61 +774,6 @@
         }
       }
     },
-    "/api/productos/{producto_key}/transcribir": {
-      "post": {
-        "tags": [
-          "productos"
-        ],
-        "summary": "Transcribir Videos",
-        "description": "Pasa a texto los videos del producto con `transcribir_videos.py`, en esta máquina.",
-        "operationId": "transcribir_videos_api_productos__producto_key__transcribir_post",
-        "parameters": [
-          {
-            "name": "producto_key",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Producto Key"
-            }
-          },
-          {
-            "name": "modelo",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "default": "small",
-              "title": "Modelo"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": true,
-                  "title": "Response Transcribir Videos Api Productos  Producto Key  Transcribir Post"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/sistema": {
       "get": {
         "tags": [
@@ -288,6 +803,166 @@
   },
   "components": {
     "schemas": {
+      "Accion": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "rotulo": {
+            "type": "string",
+            "title": "Rotulo"
+          },
+          "nodo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodo"
+          },
+          "ejecutor_tipo": {
+            "type": "string",
+            "title": "Ejecutor Tipo"
+          },
+          "parametros": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Parametros",
+            "default": {}
+          },
+          "requiere_confirmacion": {
+            "type": "boolean",
+            "title": "Requiere Confirmacion"
+          },
+          "aprobacion": {
+            "type": "string",
+            "title": "Aprobacion"
+          },
+          "toca_meta": {
+            "type": "boolean",
+            "title": "Toca Meta"
+          },
+          "escribe": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Escribe",
+            "default": []
+          },
+          "habilitada": {
+            "type": "boolean",
+            "title": "Habilitada"
+          },
+          "motivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Motivo"
+          },
+          "tiempo_max_s": {
+            "type": "integer",
+            "title": "Tiempo Max S"
+          },
+          "datos_del_operador": {
+            "anyOf": [
+              {
+                "items": {},
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Datos Del Operador"
+          },
+          "disponible": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Disponible"
+          },
+          "por_que": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Por Que"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "rotulo",
+          "ejecutor_tipo",
+          "requiere_confirmacion",
+          "aprobacion",
+          "toca_meta",
+          "habilitada",
+          "tiempo_max_s"
+        ],
+        "title": "Accion",
+        "description": "Una acción con botón, tal como la declara `VISTAS/_MANIFIESTO.json` (diseño §2.5)."
+      },
+      "AccionEncolada": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "accion_id": {
+            "type": "string",
+            "title": "Accion Id"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "url_estado": {
+            "type": "string",
+            "title": "Url Estado"
+          },
+          "url_eventos": {
+            "type": "string",
+            "title": "Url Eventos"
+          },
+          "repetido": {
+            "type": "boolean",
+            "title": "Repetido",
+            "default": false
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "job_id",
+          "accion_id",
+          "estado",
+          "url_estado",
+          "url_eventos"
+        ],
+        "title": "AccionEncolada"
+      },
       "Body_alta_de_producto_api_productos_post": {
         "properties": {
           "nombre": {
@@ -481,6 +1156,29 @@
         "title": "Costeo",
         "description": "Salida de `costear.py --json`. Las cifras salen de `_DIM_COSTEO.csv`, nunca de acá."
       },
+      "DecisionDeOrden": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "hash": {
+            "type": "string",
+            "title": "Hash"
+          },
+          "nota": {
+            "type": "string",
+            "title": "Nota",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision",
+          "hash"
+        ],
+        "title": "DecisionDeOrden"
+      },
       "Decisiones": {
         "properties": {
           "generado": {
@@ -568,6 +1266,33 @@
           "costo_pedido"
         ],
         "title": "Escalera"
+      },
+      "EstadoDeClaude": {
+        "properties": {
+          "logueado": {
+            "type": "boolean",
+            "title": "Logueado"
+          },
+          "detalle": {
+            "type": "string",
+            "title": "Detalle",
+            "default": ""
+          },
+          "credencial_prohibida": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Credencial Prohibida",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "logueado"
+        ],
+        "title": "EstadoDeClaude"
       },
       "Flujo": {
         "properties": {
@@ -777,6 +1502,35 @@
         ],
         "title": "Nodo"
       },
+      "PedidoAccion": {
+        "properties": {
+          "parametros": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Parametros",
+            "default": {}
+          },
+          "confirmado": {
+            "type": "boolean",
+            "title": "Confirmado",
+            "default": false
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          }
+        },
+        "type": "object",
+        "title": "PedidoAccion",
+        "description": "El cuerpo de `POST /api/acciones/{id}`."
+      },
       "Producto": {
         "properties": {
           "producto_key": {
@@ -908,6 +1662,17 @@
         "title": "Producto",
         "description": "Fila de `_DIM_PRODUCTOS.csv` + fase y nodo vigentes de `_ESTADO_FLUJO.csv`."
       },
+      "Reintento": {
+        "properties": {
+          "confirmado": {
+            "type": "boolean",
+            "title": "Confirmado",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "Reintento"
+      },
       "Requisito": {
         "properties": {
           "dato": {
@@ -939,6 +1704,24 @@
         "additionalProperties": true,
         "type": "object",
         "title": "Requisito"
+      },
+      "RespuestaDeClaude": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "texto": {
+            "type": "string",
+            "title": "Texto"
+          }
+        },
+        "type": "object",
+        "required": [
+          "n",
+          "texto"
+        ],
+        "title": "RespuestaDeClaude"
       },
       "Salud": {
         "properties": {
@@ -987,6 +1770,238 @@
         "type": "object",
         "title": "Salud",
         "description": "`VISTAS/_ESTADO.json`: frescura por vista, calculada por gen_app.py."
+      },
+      "Trabajo": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "accion_id": {
+            "type": "string",
+            "title": "Accion Id",
+            "default": ""
+          },
+          "rotulo": {
+            "type": "string",
+            "title": "Rotulo",
+            "default": ""
+          },
+          "producto_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Producto Key"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "iniciado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Iniciado"
+          },
+          "terminado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terminado"
+          },
+          "app_version": {
+            "type": "string",
+            "title": "App Version",
+            "default": ""
+          },
+          "otra_version": {
+            "type": "boolean",
+            "title": "Otra Version",
+            "default": false
+          },
+          "pendiente": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pendiente"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "job_id",
+          "estado"
+        ],
+        "title": "Trabajo",
+        "description": "Un trabajo del runner, para la lista de la pantalla Trabajos."
+      },
+      "TrabajoDetalle": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "accion_id": {
+            "type": "string",
+            "title": "Accion Id",
+            "default": ""
+          },
+          "rotulo": {
+            "type": "string",
+            "title": "Rotulo",
+            "default": ""
+          },
+          "producto_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Producto Key"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado"
+          },
+          "iniciado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Iniciado"
+          },
+          "terminado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Terminado"
+          },
+          "app_version": {
+            "type": "string",
+            "title": "App Version",
+            "default": ""
+          },
+          "otra_version": {
+            "type": "boolean",
+            "title": "Otra Version",
+            "default": false
+          },
+          "pendiente": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pendiente"
+          },
+          "parametros": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Parametros",
+            "default": {}
+          },
+          "sello": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Sello",
+            "default": {}
+          },
+          "pendiente_completo": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pendiente Completo"
+          },
+          "unidades": {
+            "items": {},
+            "type": "array",
+            "title": "Unidades",
+            "default": []
+          },
+          "resultado": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resultado"
+          },
+          "run_dir": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Run Dir"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "job_id",
+          "estado"
+        ],
+        "title": "TrabajoDetalle",
+        "description": "El trabajo completo: lo pendiente con todo su detalle (la orden o la pregunta) y el resultado."
       },
       "ValidationError": {
         "properties": {
