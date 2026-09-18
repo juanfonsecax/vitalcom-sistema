@@ -287,7 +287,9 @@ Además del texto, ETAPA-6 escribe **`PRODUCTOS/[SLUG]/_PLAN.json`**. Es el cont
 
 Si un dato derivable aparece escrito en el JSON, se está duplicando una fuente y el próximo cambio
 de doctrina deja el plan mintiendo. **El esquema completo está en el docstring de
-`Ads/_TOOLS/gen_plan.py`.** Se valida con:
+`Ads/_TOOLS/gen_plan.py`.** En FASE 2 y 3 el archivo es `_PLAN_FASE2.json` / `_PLAN_FASE3.json`
+y lleva en la RAÍZ `angulo_ganador` y `copy` (el copy único de etapa-4), nunca dentro de cada
+conjunto. Se valida con:
 
 ```bash
 python Ads/_TOOLS/gen_plan.py --validar     # vocabulario, ángulos duplicados, regla de precio

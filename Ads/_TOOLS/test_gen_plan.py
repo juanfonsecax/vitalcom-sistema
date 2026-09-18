@@ -30,7 +30,6 @@ def _escribir_plan(carpeta, nombre, data):
 PLAN_FASE2_COMPLETO = {
     "schema": "fase2_lean/1", "producto_key": "X", "fase": 2,
     "angulo_ganador": "UN_ANGULO", "copy": "el copy unico de la fase",
-    "cuenta": "GTR7", "page_id": "123",
     "conjuntos": [{"n": 1}],
 }
 
@@ -96,7 +95,21 @@ def test_plan_fase2_completo_no_falla():
     problemas = gen_plan.validar_plan_fase2o3(PLAN_FASE2_COMPLETO)
     ok = problemas == []
     print(("  OK     " if ok else "  FALLA  ")
-          + "un plan de FASE 2 con angulo_ganador, copy, cuenta y page_id no genera error"
+          + "un plan de FASE 2 con angulo_ganador y copy no genera error: cuenta y page_id "
+          + "son de _DIM_PRODUCTOS.csv, no del plan"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase2_con_copy_por_conjunto_falla():
+    """Lo que escribio etapa-6 en la simulacion de Turmeric siguiendo el esquema de FASE 1:
+    el copy dentro de cada conjunto. gen_publicacion.py lo ignora y cada anuncio sale sin copy."""
+    plan = dict(PLAN_FASE2_COMPLETO, copy=None,
+                conjuntos=[{"n": 1, "copy": {"textos": ["el copy"]}}])
+    problemas = gen_plan.validar_plan_fase2o3(plan)
+    ok = len(problemas) == 1 and "copy" in problemas[0]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un plan de FASE 2 con el copy dentro de los conjuntos y no en la raiz falla"
           + ("" if ok else f"\n         problemas={problemas}"))
     return 0 if ok else 1
 
@@ -125,6 +138,7 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_plan_fase2_sin_copy_ni_angulo_ganador_falla(tmp)
     fallas += test_plan_fase2_completo_no_falla()
+    fallas += test_plan_fase2_con_copy_por_conjunto_falla()
     fallas += test_plan_fase2_no_valida_el_array_conjuntos_en_disputa()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0

@@ -53,6 +53,13 @@ ESQUEMA (schema "plan/1") — lo que etapa-6 debe emitir:
   }],
   "_faltantes": ["lo que el plan no pudo llenar"]
 }
+
+FASE 2 y 3 — _PLAN_FASE2.json / _PLAN_FASE3.json, el mismo esquema con "fase": 2|3 y dos
+campos RAIZ obligatorios, porque ahi el angulo y el copy son constantes de la fase:
+  "angulo_ganador": "ANGULO_KEY",         # el mismo en todos los conjuntos
+  "copy": {"textos": [...], "titulos": [...], "descripcion": "..."}   # el copy unico de etapa-4
+El copy va en la RAIZ, no dentro de cada conjunto: gen_publicacion.py lo lee de ahi y un copy
+por conjunto se ignora. La cuenta y el page_id NO van: son de _DIM_PRODUCTOS.csv.
 """
 import io, json, os, re, sys, csv
 
@@ -324,8 +331,9 @@ def validar_plan_fase1(plan, validos):
 
 
 def validar_plan_fase2o3(plan):
-    """Solo los campos RAIZ que gen_publicacion.py ya lee para fase 2/3: angulo_ganador,
-    copy, cuenta, page_id. NO valida 'conjuntos' (ver nota de NOMBRES_PLAN)."""
+    """Solo los campos RAIZ sin los que gen_publicacion.py bloquea en fase 2/3: angulo_ganador
+    y copy. cuenta y page_id no: el publicador los toma de _DIM_PRODUCTOS.csv y bloquea ahi,
+    con su dueno. NO valida 'conjuntos' (ver nota de NOMBRES_PLAN)."""
     problemas = []
     if not (plan.get("angulo_ganador") or "").strip():
         problemas.append("sin angulo_ganador en la raiz del plan: gen_publicacion.py bloquea "
@@ -337,10 +345,6 @@ def validar_plan_fase2o3(plan):
                          "en el plan (ETAPA-6); _DIM_CREATIVOS.csv no tiene columna copy, asi "
                          "que sin este campo gen_publicacion.py bloquea cada anuncio con "
                          "{{FALTA_COPY}}")
-    if not (plan.get("cuenta") or "").strip():
-        problemas.append("sin 'cuenta' en la raiz del plan")
-    if not (plan.get("page_id") or "").strip():
-        problemas.append("sin 'page_id' en la raiz del plan")
     return problemas
 
 

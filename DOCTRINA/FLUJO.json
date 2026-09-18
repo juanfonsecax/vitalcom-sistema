@@ -160,7 +160,9 @@
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "schema", "eq": "plan/1"},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "fase", "eq": 2},
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "conjuntos", "min_len": 1}]},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "conjuntos", "min_len": 1},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "angulo_ganador", "no_vacio": true},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "copy", "no_vacio": true}]},
        "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "gen_plan.py: el único contrato que el Lanzador y gen_publicacion consumen"}
      ],
      "avisos": [
@@ -230,7 +232,9 @@
       {"dato": "_PLAN_FASE3.json (contrato plan/1, fase 3)",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "schema", "eq": "plan/1"},
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "fase", "eq": 3}]},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "fase", "eq": 3},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "angulo_ganador", "no_vacio": true},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "copy", "no_vacio": true}]},
        "dueno": "etapa-6", "regla": "gen_plan.py"},
       {"dato": "4_PLAN_ESCALADO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"}
      ]
