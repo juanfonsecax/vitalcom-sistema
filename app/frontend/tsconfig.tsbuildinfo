@@ -1,0 +1,1 @@
+{"root":["./src/glosario.ts","./src/lenguaje.ts","./src/main.tsx","./src/api/cliente.ts","./src/api/esquema.d.ts","./src/componentes/ui.tsx","./src/pantallas/productodetalle.tsx","./src/pantallas/salud.tsx","./src/pantallas/tablero.tsx","./src/pruebas/glosario.test.ts","./src/pruebas/preparar.ts","./src/pruebas/tablero.test.tsx","./vite.config.ts"],"version":"5.9.3"}
