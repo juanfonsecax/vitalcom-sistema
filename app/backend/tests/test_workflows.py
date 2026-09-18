@@ -26,7 +26,7 @@ BACKEND = Path(__file__).resolve().parents[1]
 # Una fila por versión del runner: la huella de sus pasos. Cambiar los pasos sin subir
 # `APP_VERSION` (y sin agregar la fila) hace fallar `test_version_de_workflows`.
 HUELLAS = {
-    "wf-1": "17512437eee4a22bd378b0eb1b93acf692e831473f5d5e74f71adbf083ca0404",
+    "wf-1": "d58428d40ebbc6daadbe62fff67c7485f35a521b8b8445e701a22cee0adb0e6c",
 }
 
 JOB_A = "a" * 32
@@ -190,26 +190,37 @@ def test_caida_de_un_paso_no_idempotente_queda_interrumpido_con_rastro(sistema_d
 ORDENADORES = ("DBOS.set_event", "DBOS.recv")
 
 
-def _pasos_que_llama(arbol: ast.Module, funcion: str) -> list[str]:
-    """Los pasos, `set_event`, `recv` y `enqueue` que el cuerpo de un workflow llama, en orden."""
+def _pasos_que_llama(arbol: ast.Module, funcion: str, _vistas: frozenset[str] = frozenset()) -> list[str]:
+    """Los pasos, `set_event`, `recv` y `enqueue` que un workflow llama, en orden de ejecución.
+
+    Una función auxiliar del módulo que contiene alguno se expande en el lugar de la llamada:
+    para DBOS solo cuenta el orden en que los pasos se ejecutan, no en qué función viven.
+    """
+    funciones = {n.name: n for n in arbol.body if isinstance(n, ast.FunctionDef)}
     pasos_declarados = {
-        n.name for n in ast.walk(arbol)
-        if isinstance(n, ast.FunctionDef)
-        and any(ast.unparse(d) == "DBOS.step()" for d in n.decorator_list)
+        nombre for nombre, n in funciones.items()
+        if any(ast.unparse(d) == "DBOS.step()" for d in n.decorator_list)
     }
-    cuerpo = next(n for n in ast.walk(arbol) if isinstance(n, ast.FunctionDef) and n.name == funcion)
-    encontrados: list[tuple[int, int, str]] = []
-    for nodo in ast.walk(cuerpo):
+    workflows_declarados = {
+        nombre for nombre, n in funciones.items()
+        if any(ast.unparse(d) == "DBOS.workflow()" for d in n.decorator_list)
+    }
+    encontrados: list[tuple[int, int, list[str]]] = []
+    for nodo in ast.walk(funciones[funcion]):
         if not isinstance(nodo, ast.Call):
             continue
         nombre = ast.unparse(nodo.func)
         if nombre in pasos_declarados or nombre in ORDENADORES:
-            encontrados.append((nodo.lineno, nodo.col_offset, nombre))
+            encontrados.append((nodo.lineno, nodo.col_offset, [nombre]))
         elif isinstance(nodo.func, ast.Attribute) and nodo.func.attr == "enqueue":
             cola = ast.unparse(nodo.func.value)
             etiqueta = "escritura" if "COLA_ESCRITURA" in cola else "trabajos" if "COLA_TRABAJOS" in cola else cola
-            encontrados.append((nodo.lineno, nodo.col_offset, f"enqueue:{etiqueta}"))
-    return [nombre for _l, _c, nombre in sorted(encontrados)]
+            encontrados.append((nodo.lineno, nodo.col_offset, [f"enqueue:{etiqueta}"]))
+        elif nombre in funciones and nombre not in workflows_declarados and nombre not in _vistas:
+            expandido = _pasos_que_llama(arbol, nombre, _vistas | {funcion})
+            if expandido:
+                encontrados.append((nodo.lineno, nodo.col_offset, expandido))
+    return [paso for _l, _c, grupo in sorted(encontrados, key=lambda t: (t[0], t[1])) for paso in grupo]
 
 
 def test_version_de_workflows():

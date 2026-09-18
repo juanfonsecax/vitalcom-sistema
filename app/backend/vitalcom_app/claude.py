@@ -166,7 +166,7 @@ def armar_argv(*, prompt: str, herramientas: list[str], presupuesto_usd: float,
             "--include-hook-events", "--permission-mode", "dontAsk"]
     if resume:
         argv += ["--resume", resume]
-    argv += ["--allowedTools", *herramientas, "--max-budget-usd", str(presupuesto_usd)]
+    argv.extend(["--allowedTools", *herramientas, "--max-budget-usd", str(presupuesto_usd)])
     return argv
 
 

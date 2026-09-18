@@ -61,6 +61,18 @@ anotar("_claude_argv.log", {
     "env_prohibido": sorted(k for k in os.environ if k.startswith(("CLAUDE", "ANTHROPIC"))),
 })
 
+EXISTENTE = Path.cwd() / "PRODUCTOS" / "_meta_existente.json"
+NIVEL = {"ads_create_campaign": "campaign", "ads_create_ad_set": "adset", "ads_create_ad": "ad"}
+
+
+def entidades() -> list[dict]:
+    return json.loads(EXISTENTE.read_text(encoding="utf-8")) if EXISTENTE.is_file() else []
+
+
+def nombre_de(args: dict) -> str:
+    return args.get("campaign_name") or args.get("ad_set_name") or args.get("ad_name") or args.get("name") or ""
+
+
 emitir({"type": "system", "subtype": "init", "session_id": SESION, "model": "fake", "tools": permitidas})
 emitir({"type": "assistant", "message": {"content": [
     {"type": "tool_use", "name": "Task", "input": {"subagent_type": "etapa-fake"}}]}})
@@ -77,6 +89,45 @@ elif modo == "error":
     texto = "Algo salió mal (fake)."
 elif modo.startswith("dormir:"):
     time.sleep(float(modo.split(":", 1)[1]))
+elif "SNAPSHOT_EN:" in prompt:
+    # el paso 1 de publicar-meta: SOLO lectura, y vuelca lo que «Meta» tiene
+    destino = prompt.split("SNAPSHOT_EN:", 1)[1].strip().splitlines()[0].strip()
+    if os.environ.get("VITALCOM_FAKE_META_SIN_MCP") == "1":
+        texto = "CUENTA_SIN_MCP"
+    else:
+        for lectura in ("ads_get_ad_accounts", "ads_get_ad_entities", "ads_get_user_pages"):
+            if f"mcp__claude_ai_META_MCP__{lectura}" in permitidas:
+                anotar("_meta_llamadas.log", {"herramienta": lectura, "lectura": True})
+        Path(destino).parent.mkdir(parents=True, exist_ok=True)
+        Path(destino).write_text(json.dumps({"cuenta_alias": "GTR 7", "ad_entities": entidades()}), encoding="utf-8")
+        texto = "SNAPSHOT_LISTO"
+elif "LLAMADAS_JSON:" in prompt:
+    # el paso 3: solo «corren» las herramientas que vienen por nombre exacto en --allowedTools
+    llamadas = json.loads(prompt.split("LLAMADAS_JSON:", 1)[1].strip().splitlines()[0])
+    hechas: list[str] = []
+    texto = ""
+    for llamada in llamadas:
+        nombre = f"mcp__claude_ai_META_MCP__{llamada['tool']}"
+        emitir({"type": "assistant", "message": {"content": [
+            {"type": "tool_use", "name": nombre, "input": llamada["args"]}]}})
+        if nombre not in permitidas:
+            emitir({"type": "user", "message": {"content": [
+                {"type": "tool_result", "is_error": True, "content": "denegado"}]}})
+            final = {"subtype": "success", "is_error": True}
+            texto = f"La llamada {llamada['n']} fue denegada (fake)."
+            break
+        if os.environ.get("VITALCOM_FAKE_META_FALLA_EN") == str(llamada["n"]):
+            final = {"subtype": "success", "is_error": True}
+            texto = f"La llamada {llamada['n']} falló (fake). EJECUTADAS: {','.join(hechas)}"
+            break
+        anotar("_meta_llamadas.log", {"herramienta": llamada["tool"], "n": llamada["n"], "args": llamada["args"]})
+        if llamada["tool"] in NIVEL:
+            EXISTENTE.write_text(json.dumps([*entidades(), {
+                "id": f"id-{llamada['n']}", "nivel": NIVEL[llamada["tool"]],
+                "name": nombre_de(llamada["args"]), "status": "PAUSED"}]), encoding="utf-8")
+        hechas.append(str(llamada["n"]))
+    else:
+        texto = f"EJECUTADAS: {','.join(hechas)}"
 elif modo.startswith("llamar:"):
     for herramienta in modo.split(":", 1)[1].split(","):
         nombre = f"mcp__claude_ai_META_MCP__{herramienta}"

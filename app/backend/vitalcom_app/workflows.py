@@ -22,14 +22,16 @@ versión. `tests/test_workflows.py::test_version_de_workflows` lo vigila.
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import json
 import os
+import re
 import signal
 import subprocess
 import tempfile
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -47,6 +49,9 @@ COLA_TRABAJOS = "trabajos"
 COLA_ESCRITURA = "escritura"
 SONDEO_DE_RESULTADO_S = 0.2
 MAXIMO_DE_PREGUNTAS = 5
+MAXIMO_DE_APROBACIONES = 3
+MAXIMO_DE_MENSAJES_AJENOS = 5
+MARCA_SIN_MCP = "CUENTA_SIN_MCP"
 TOPE_DE_TEXTO_DE_CLAUDE = 4000
 TOPE_DE_ESPERA_DEL_TURNO_S = 3600
 
@@ -62,7 +67,37 @@ PASOS: dict[str, list[str]] = {
         "DBOS.recv", "DBOS.set_event", "DBOS.set_event", "enqueue:escritura", "paso_leer_flujo",
         "paso_cerrar", "DBOS.set_event",
     ],
+    "wf_meta": [
+        "paso_sellar", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura", "paso_firmar_orden",
+        "DBOS.set_event", "DBOS.set_event", "DBOS.recv", "DBOS.set_event", "paso_registrar_rechazo",
+        "paso_sellar_aprobacion", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura",
+        "enqueue:escritura", "paso_preparar_evento", "enqueue:escritura", "paso_leer_flujo", "paso_cerrar",
+        "DBOS.set_event",
+    ],
 }
+
+# Lo que se le pide a Claude en cada paso de la publicación. La skill `publicar-meta` es dueña del
+# CÓMO; el runner solo pone el CUÁNDO y la compuerta de aprobación entre el paso 2 y el 3.
+PROMPT_SNAPSHOT = "\n".join([
+    "Sos el ejecutor del paso 1 (PRE-FLIGHT) de la skill publicar-meta, trabajo {job_id}.",
+    "SOLO LECTURA: no crees, actualices ni actives nada en Meta.",
+    "1. Llamá `ads_get_ad_accounts` y verificá que la cuenta {cuenta} ({cuenta_id}) tenga is_ads_mcp_enabled "
+    "e is_queryable. Si no los tiene, terminá tu respuesta con la línea `{marca}` y nada más.",
+    "2. Llamá `ads_get_ad_entities` con level=campaign, level=adset y level=ad sobre esa cuenta.",
+    "3. Llamá `ads_get_user_pages`.",
+    "4. Guardá lo del paso 2 en `{snapshot}` con esta forma exacta: "
+    '{{"cuenta_alias":"…","cuenta_id":"…","tomado_el":"<ISO>","ad_entities":[{{"id":"…","nivel":"campaign|adset|ad","name":"…","status":"…"}}]}}',
+    "SNAPSHOT_EN: {snapshot}",
+])
+PROMPT_EJECUCION = "\n".join([
+    "Sos el ejecutor del paso 3 de la skill publicar-meta, trabajo {job_id}. El operador APROBÓ esta orden (hash {hash}).",
+    "Ejecutá EN ORDEN, de menor a mayor n, SOLO las llamadas de LLAMADAS_JSON, con sus args LITERALES. "
+    "Sustituí cada {{{{variable}}}} por el id que devolvió una llamada anterior (guardar_como) o por su valor en VARIABLES_JSON. "
+    "No agregues, no cambies ni omitas ninguna. Si una llamada falla, PARÁ ahí y decí cuál fue.",
+    "Terminá con una línea `EJECUTADAS: n1,n2,…` con los n que llamaste con éxito.",
+    "VARIABLES_JSON: {variables}",
+    "LLAMADAS_JSON: {llamadas}",
+])
 
 ESTADOS_FINALES = ("EXITO", "SIN_CUMPLIR", "RECHAZADO", "CADUCADO", "FALLIDO", "INTERRUMPIDO",
                    "CSV_INVALIDO", "CANCELADO")
@@ -188,6 +223,9 @@ def _interpretar_salida(spec: dict[str, Any], corrida: dict[str, Any]) -> dict[s
             return {**resumen, "estado": "FALLIDO",
                     "detalle": "El script no devolvió JSON: " + (corrida["stdout"] or corrida["stderr"])[-400:]}
         resumen["json"] = datos
+    if isinstance(datos, dict) and datos.get("bloqueantes"):
+        # el generador de la publicación sale con exit 1 y su JSON trae qué falta y quién lo produce
+        return {**resumen, "estado": "FALLIDO", "detalle": _detalle_de_bloqueantes({"json": datos})}
     if corrida["codigo_salida"] != 0 or (isinstance(datos, dict) and datos.get("ok") is False):
         detalle = ((datos or {}).get("detalle") if isinstance(datos, dict) else None) \
             or corrida["stderr"].strip() or corrida["stdout"].strip() or "el comando falló sin decir por qué"
@@ -209,12 +247,12 @@ def _registrar_proceso(job_id: str):  # type: ignore[no-untyped-def]
     return _al_arrancar
 
 
-def correr_claude(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
+def correr_claude(job_id: str, n: int, spec: dict[str, Any], nombre_log: str | None = None) -> dict[str, Any]:
     """Una llamada headless a Claude Code. La salida cruda va a `<n>_claude.jsonl` en la bitácora."""
     carpeta = ruta(spec["run_dir"])
     pedido = spec["claude"]
     try:
-        with bitacora.abrir_log(carpeta, f"{n}_claude.jsonl") as log:
+        with bitacora.abrir_log(carpeta, nombre_log or spec.get("nombre_log") or f"{n}_claude.jsonl") as log:
             def _escribir(linea: str) -> None:
                 log.write((linea + "\n").encode("utf-8"))
                 log.flush()
@@ -245,7 +283,99 @@ def correr_claude(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
     if not resultado.ok:
         return {**resumen, "estado": "FALLIDO",
                 "detalle": f"Claude terminó mal ({resultado.subtype}): {resultado.texto_final[-400:]}"}
+    if spec.get("detecta_sin_mcp") and MARCA_SIN_MCP in resultado.texto_final:
+        return {**resumen, "estado": "FALLIDO",
+                "detalle": "Esta cuenta se pauta a mano: Meta dice que no tiene el MCP habilitado."}
     return {**resumen, "estado": "EXITO"}
+
+
+def _nombre_de_meta(servidor: str, herramienta: str) -> str:
+    return f"mcp__{servidor}__{herramienta}"
+
+
+def _llamadas_de(paquete: dict[str, Any]) -> list[dict[str, Any]]:
+    """Las llamadas que van a Meta: las que el generador NO marcó como ya existentes."""
+    return [
+        {"n": c["n"], "tool": c["tool"], "args": c["args"]}
+        for c in paquete.get("llamadas", []) if not c.get("omitir")
+    ]
+
+
+def _clave_de_llamada(llamada: dict[str, Any]) -> tuple[int, str, str]:
+    return (llamada["n"], llamada["tool"], json.dumps(llamada["args"], sort_keys=True, ensure_ascii=False))
+
+
+def huella_de_la_orden(orden: dict[str, Any]) -> str:
+    """sha256 del JSON canónico de la orden: lo que el operador aprueba es exactamente esto."""
+    canonico = json.dumps(orden, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(canonico.encode("utf-8")).hexdigest()
+
+
+def _claude_de_lectura(job_id: str, n: int, spec: dict[str, Any], sufijo: str) -> dict[str, Any]:
+    """Snapshot fresco de Meta: Claude con SOLO herramientas de lectura."""
+    pedido = {**spec, "tipo": "claude", "claude": spec["snapshot_claude"], "detecta_sin_mcp": True}
+    return correr_claude(job_id, n, pedido, nombre_log=f"{n}_{sufijo}.jsonl")
+
+
+def correr_meta_ejecucion(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
+    """M3: el ÚNICO lugar donde Claude recibe herramientas de ESCRITURA de Meta.
+
+    Todo dentro de UN paso, en este orden: (1) la aprobación no puede haber caducado; (2) snapshot
+    fresco; (3) el paquete se regenera contra él; (4) lo que va a llamar tiene que ser un SUBCONJUNTO
+    de lo aprobado — si aparece algo nuevo, para y pide otra aprobación; (5) recién ahí, Claude
+    ejecuta esas llamadas literales, con las herramientas exactas y ninguna otra.
+    """
+    if datetime.fromisoformat(_ahora()) > datetime.fromisoformat(spec["valida_hasta"]):
+        return {"estado": "CADUCADO", "detalle": "La aprobación caducó antes de ejecutar: no se llamó a nada."}
+    snapshot = _claude_de_lectura(job_id, n, spec, "snapshot_fresco")
+    if snapshot["estado"] != "EXITO":
+        return snapshot
+    carpeta = ruta(spec["run_dir"])
+    corrida = _correr_proceso(job_id, spec["argv_paquete"], f"{n}_regenerar.log", carpeta, spec["tiempo_paquete_s"])
+    regenerado = _interpretar_salida({"salida": "json"}, corrida)
+    if regenerado["estado"] != "EXITO":
+        return {**regenerado, "detalle": _detalle_de_bloqueantes(regenerado)}
+    paquete = regenerado["json"]
+    aprobadas = {_clave_de_llamada(c) for c in spec["orden"]["llamadas"]}
+    nuevas = [c for c in _llamadas_de(paquete) if _clave_de_llamada(c) not in aprobadas]
+    if nuevas:
+        return {"estado": "PIDE_REAPROBACION", "paquete": paquete,
+                "detalle": f"Apareció {len(nuevas)} llamada(s) que no estaban en la orden aprobada: hace falta aprobar otra vez."}
+    pendientes = [c for c in paquete["llamadas"] if not c.get("omitir")]
+    if not pendientes:
+        return {"estado": "EXITO", "ejecutadas": [], "detalle": "Meta ya tiene todo: no había nada que llamar."}
+    herramientas_de_escritura = sorted({c["tool"] for c in pendientes})
+    fuera_del_manifiesto = [t for t in herramientas_de_escritura if t not in spec["escritura"]]
+    if fuera_del_manifiesto:
+        return {"estado": "FALLIDO",
+                "detalle": f"La orden usa {fuera_del_manifiesto}, que la acción no declara en herramientas_meta.escritura."}
+    variables = {c["guardar_como"]: c["id_existente"] for c in paquete["llamadas"]
+                 if c.get("omitir") and c.get("id_existente") and c.get("guardar_como")}
+    prompt = PROMPT_EJECUCION.format(
+        job_id=job_id, hash=spec["hash"], variables=json.dumps(variables, ensure_ascii=False),
+        llamadas=json.dumps(pendientes, ensure_ascii=False))
+    permitidas = [_nombre_de_meta(spec["servidor"], t) for t in [*spec["lectura"], *herramientas_de_escritura]]
+    ejecucion = correr_claude(job_id, n, {
+        "run_dir": spec["run_dir"], "tiempo_max_s": spec["tiempo_max_s"],
+        "claude": {"prompt": prompt, "herramientas": permitidas, "presupuesto_usd": spec["presupuesto_usd"],
+                   "resume": None}}, nombre_log=f"{n}_ejecucion.jsonl")
+    if ejecucion["estado"] != "EXITO":
+        return {**ejecucion, "detalle": "Una llamada a Meta falló o Claude se cortó: la secuencia quedó a medias. "
+                                        "Reintentá y retomará sin duplicar. " + ejecucion.get("detalle", "")}
+    return {**ejecucion, "ejecutadas": [c["n"] for c in pendientes]}
+
+
+def _detalle_de_bloqueantes(resumen: dict[str, Any]) -> str:
+    """Los bloqueantes del generador, con el nombre de quien produce cada dato (invariante 4)."""
+    bloqueantes = (resumen.get("json") or {}).get("bloqueantes") or []
+    if not bloqueantes:
+        return resumen.get("detalle", "")
+    return "Faltan datos: " + "; ".join(f"{b['falta']} (lo produce: {b['lo_produce']})" for b in bloqueantes)
+
+
+# Cada tipo de unidad → el NOMBRE de su corredor. Se resuelve por nombre al usarlo, no al importar: así
+# una prueba puede reemplazar el corredor (p. ej. uno que muere a mitad) y el runner lo respeta.
+_CORREDORES = {"script": "correr_script", "claude": "correr_claude", "meta_ejecucion": "correr_meta_ejecucion"}
 
 
 # ── la unidad de escritura ────────────────────────────────────────────────────
@@ -268,7 +398,7 @@ def paso_ejecutar(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
                                        "revisá el rastro y usá «Reintentar» para correrlo completo."}
                 marca.cerrar_intento_roto(_ahora())
             marca.iniciar(_ahora())
-            resumen = correr_script(job_id, n, spec) if spec["tipo"] == "script" else correr_claude(job_id, n, spec)
+            resumen = globals()[_CORREDORES[spec["tipo"]]](job_id, n, spec)
             marca.terminar(_ahora(), {"estado": resumen["estado"]})
             return resumen
     except SistemaOcupado as error:
@@ -297,13 +427,36 @@ def paso_tras_escribir(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, A
 @DBOS.workflow()
 def wf_unidad(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
     resultado = paso_ejecutar(job_id, n, spec)
-    if spec["escribe"]:
+    if spec["escribe"] and spec.get("tras", True):
         tras = paso_tras_escribir(job_id, n, spec)
         resultado = {**resultado, "tras": tras}
     return resultado
 
 
 # ── el padre de las acciones de script ────────────────────────────────────────
+
+def _sellar_meta(accion: dict[str, Any], valores: dict[str, Any], reservados: dict[str, str]) -> dict[str, Any]:
+    """Todo lo que `wf_meta` necesita, derivado del manifiesto y resuelto UNA vez (al retomar se reusa)."""
+    ordenes = accion.get("ordenes")
+    if not ordenes:
+        raise ValueError(f"«{accion['id']}» toca Meta pero no declara de dónde salen sus órdenes.")
+    fase = re.match(r"F(\d)", accion.get("nodo") or "")
+    parametros = {
+        **valores, "fase": fase.group(1) if fase else "1", "brazo": valores.get("brazo", "UNICO"),
+        "evento": ordenes["evento"],
+    }
+    generador = acciones.por_id_para_el_runner(ordenes["generador"])
+    verificador = acciones.por_id_para_el_runner(ordenes["verificador"])
+    argv_paquete = acciones.resolver(generador, parametros, reservados)
+    cuenta = next((c for c in contratos.cuentas() if c["cuenta_alias"] == valores.get("cuenta")), {})
+    return {
+        "ordenes": ordenes, "parametros": parametros, "generador": generador, "verificador": verificador,
+        "argv_paquete": argv_paquete, "argv_verificar": acciones.resolver(verificador, parametros, reservados),
+        "snapshot": argv_paquete[argv_paquete.index("--snapshot") + 1],
+        "cuenta_id": cuenta.get("cuenta_id", ""), "servidor": acciones.cargar().bloque["claude"]["servidor_meta"],
+        "lectura": accion["herramientas_meta"]["lectura"], "escritura": accion["herramientas_meta"]["escritura"],
+    }
+
 
 def _ejecutor_textual(accion: dict[str, Any], producto: str | None) -> str:
     """El texto de `ejecutor` que ya devuelve `flujo.py`; si el nodo no es el actual, el del manifiesto."""
@@ -331,10 +484,12 @@ def paso_sellar(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict
     sello = {
         "job_id": job_id, "accion": accion, "parametros": valores,
         "ejecutor": _ejecutor_textual(accion, producto),
-        "claude": acciones.cargar().bloque.get("claude") if accion["ejecutor_tipo"] in ("subagente", "skill") else None,
+        "claude": acciones.cargar().bloque.get("claude")
+        if accion["ejecutor_tipo"] in ("subagente", "skill") or accion.get("toca_meta") else None,
         "manifiesto_sha": acciones.sha_del_manifiesto(), "hoy": reservados["hoy"],
         "iniciado": iniciado, "run_dir": run_dir, "app_version": APP_VERSION,
         "argv": acciones.resolver(accion, valores, reservados) if accion["ejecutor_tipo"] == "script" else None,
+        "meta": _sellar_meta(accion, valores, reservados) if accion.get("toca_meta") else None,
     }
     bitacora.reescribir_trabajo(carpeta, {"sello": sello, "estado": "ENCOLADO"})
     return sello
@@ -405,6 +560,8 @@ def paso_leer_flujo(sello: dict[str, Any]) -> dict[str, Any] | None:
 def estado_final(unidades: list[dict[str, Any]], situacion: dict[str, Any] | None) -> tuple[str, str]:
     """(estado, detalle). Pura: la cubren las pruebas sin correr nada."""
     for unidad in unidades:
+        if unidad["estado"] == "REAPROBACION_PEDIDA":
+            continue  # un paso intermedio: la orden nueva quedó aprobada o rechazada en otra unidad
         if unidad["estado"] != "EXITO":
             return unidad["estado"], unidad.get("detalle", "")
         tras = unidad.get("tras") or {}
@@ -474,6 +631,187 @@ def wf_claude(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[s
     return resultado
 
 
+@DBOS.step()
+def paso_firmar_orden(sello: dict[str, Any], paquete: dict[str, Any], orden_id: int) -> dict[str, Any]:
+    """La orden que el operador va a ver y aprobar, con su huella. El generador no aporta la hora."""
+    meta = sello["meta"]
+    orden = {
+        "tipo": meta["ordenes"]["tipo"], "producto": sello["parametros"].get("producto_key"),
+        "fase": meta["parametros"]["fase"], "brazo": meta["parametros"]["brazo"],
+        "cuenta": sello["parametros"].get("cuenta"), "llamadas": _llamadas_de(paquete),
+        "manifiesto": paquete.get("manifiesto"),
+    }
+    return {"orden_id": orden_id, "hash": huella_de_la_orden(orden), "orden": orden,
+            "caduca_horas": meta["ordenes"]["caduca_horas"]}
+
+
+@DBOS.step()
+def paso_sellar_aprobacion(sello: dict[str, Any], firmada: dict[str, Any], aprobacion: dict[str, Any]) -> dict[str, Any]:
+    """Cuándo se aprobó y hasta cuándo vale. Una aprobación caduca: no se ejecuta sobre un estado viejo."""
+    ahora = datetime.now().astimezone()
+    valida_hasta = ahora + timedelta(hours=firmada["caduca_horas"])
+    registro = {"orden_id": firmada["orden_id"], "hash": firmada["hash"], "decision": "APROBADA",
+                "aprobada_el": ahora.isoformat(timespec="seconds"),
+                "valida_hasta": valida_hasta.isoformat(timespec="seconds"), "nota": aprobacion.get("nota", "")}
+    bitacora.registrar_aprobacion(ruta(sello["run_dir"]), {**registro, "orden": firmada["orden"]})
+    return registro
+
+
+def _unidad_de(sello: dict[str, Any], n: int, spec: dict[str, Any]) -> dict[str, Any]:
+    """Una unidad en la cola de escritura, y espera su resultado."""
+    return _cola(COLA_ESCRITURA).enqueue(wf_unidad, sello["job_id"], n, spec).get_result(
+        polling_interval_sec=SONDEO_DE_RESULTADO_S)
+
+
+def _spec_de_snapshot(sello: dict[str, Any]) -> dict[str, Any]:
+    """Claude con SOLO lectura de Meta. Ninguna herramienta de escritura llega hasta acá."""
+    accion, meta = sello["accion"], sello["meta"]
+    bloque = sello["claude"]
+    prompt = PROMPT_SNAPSHOT.format(
+        job_id=sello["job_id"], cuenta=sello["parametros"].get("cuenta"), cuenta_id=meta["cuenta_id"],
+        snapshot=meta["snapshot"], marca=MARCA_SIN_MCP)
+    herramientas = [*bloque["herramientas_base"], *[_nombre_de_meta(meta["servidor"], t) for t in meta["lectura"]]]
+    return {
+        "run_dir": sello["run_dir"], "tiempo_max_s": accion["tiempo_max_s"],
+        "claude": {"prompt": prompt, "herramientas": herramientas, "presupuesto_usd": accion["presupuesto_usd"],
+                   "resume": None},
+    }
+
+
+def spec_de_lectura(sello: dict[str, Any], n: int) -> dict[str, Any]:
+    """La unidad M1/M4: un snapshot fresco. Solo escribe el volcado, no un CSV: no dispara `tras_escribir`."""
+    accion = sello["accion"]
+    base_de_snapshot = _spec_de_snapshot(sello)
+    return {"tipo": "claude", "accion_id": accion["id"], "idempotente": False, "escribe": ["Ads/_INGESTA/META/"],
+            "tras": False, "tiempo_max_s": accion["tiempo_max_s"], "run_dir": sello["run_dir"],
+            "claude": base_de_snapshot["claude"], "nombre_log": f"{n}_snapshot.jsonl", "detecta_sin_mcp": True}
+
+
+def spec_del_paquete(sello: dict[str, Any]) -> dict[str, Any]:
+    meta = sello["meta"]
+    return {"tipo": "script", "accion_id": meta["generador"]["id"], "argv": meta["argv_paquete"],
+            "idempotente": True, "escribe": [], "tiempo_max_s": meta["generador"]["tiempo_max_s"],
+            "salida": "json", "run_dir": sello["run_dir"]}
+
+
+def spec_de_ejecucion(sello: dict[str, Any], firmada: dict[str, Any], aprobacion: dict[str, Any]) -> dict[str, Any]:
+    """M3. Todo lo que necesita viaja en el spec: el paso no vuelve a leer el manifiesto."""
+    accion, meta = sello["accion"], sello["meta"]
+    return {
+        "tipo": "meta_ejecucion", "accion_id": accion["id"], "idempotente": False, "tras": False,
+        "escribe": ["Ads/_INGESTA/META/"], "tiempo_max_s": accion["tiempo_max_s"], "run_dir": sello["run_dir"],
+        "snapshot_claude": _spec_de_snapshot(sello)["claude"], "argv_paquete": meta["argv_paquete"],
+        "tiempo_paquete_s": meta["generador"]["tiempo_max_s"], "orden": firmada["orden"], "hash": firmada["hash"],
+        "valida_hasta": aprobacion["valida_hasta"], "servidor": meta["servidor"], "lectura": meta["lectura"],
+        "escritura": meta["escritura"], "presupuesto_usd": accion["presupuesto_usd"],
+    }
+
+
+def spec_de_verificacion(sello: dict[str, Any]) -> dict[str, Any]:
+    meta = sello["meta"]
+    return {"tipo": "script", "accion_id": meta["verificador"]["id"], "argv": meta["argv_verificar"],
+            "idempotente": True, "escribe": meta["verificador"]["escribe"],
+            "tiempo_max_s": meta["verificador"]["tiempo_max_s"], "salida": "texto", "run_dir": sello["run_dir"]}
+
+
+def firma_del_evento(job_id: str, orden_id: int) -> str:
+    return f"app job={job_id} orden={orden_id}"
+
+
+def _evento_ya_registrado(firma: str) -> bool:
+    """`registrar_evento.py` no deduplica: si el proceso murió después de escribir, la firma ya está."""
+    archivo = ruta("PRODUCTOS", "_EVENTOS.csv")
+    return archivo.is_file() and firma in archivo.read_text(encoding="utf-8", errors="replace")
+
+
+@DBOS.step()
+def paso_preparar_evento(sello: dict[str, Any], orden_id: int) -> dict[str, Any] | None:
+    """M5: el evento del lanzamiento, firmado con el trabajo y la orden. None si ya está escrito."""
+    meta = sello["meta"]
+    firma = firma_del_evento(sello["job_id"], orden_id)
+    if _evento_ya_registrado(firma):
+        return None
+    registrador = acciones.por_id_para_el_runner("evento.registrar")
+    valores = {"producto_key": sello["parametros"]["producto_key"], "evento": meta["ordenes"]["evento"],
+               "motivo": "Publicación por la app: todo nació PAUSED", "fuente": f"publicar-meta · confirmado operador · {firma}"}
+    if sello["parametros"].get("cuenta"):
+        valores["cuenta"] = sello["parametros"]["cuenta"]
+    return {"tipo": "script", "accion_id": registrador["id"], "argv": acciones.resolver(registrador, valores, {}),
+            "idempotente": False, "escribe": registrador["escribe"], "tiempo_max_s": registrador["tiempo_max_s"],
+            "salida": "texto", "run_dir": sello["run_dir"]}
+
+
+@DBOS.step()
+def paso_registrar_rechazo(sello: dict[str, Any], firmada: dict[str, Any], aprobacion: dict[str, Any]) -> None:
+    bitacora.registrar_aprobacion(ruta(sello["run_dir"]), {
+        "orden_id": firmada["orden_id"], "hash": firmada["hash"], "decision": "RECHAZADA",
+        "nota": aprobacion.get("nota", "")})
+
+
+def _pedir_aprobacion(orden_id: int, firmada: dict[str, Any]) -> dict[str, Any] | None:
+    """Publica la orden y espera al operador. None = nadie aprobó ni rechazó a tiempo."""
+    DBOS.set_event("pendiente", {"tipo": "aprobacion", **firmada})
+    DBOS.set_event("estado", {"estado": "ESPERA_APROBACION", "unidad": orden_id})
+    respuesta = None
+    for _intento in range(MAXIMO_DE_MENSAJES_AJENOS):
+        respuesta = DBOS.recv(f"aprobacion:{orden_id}", timeout_seconds=firmada["caduca_horas"] * 3600)
+        if respuesta is None or respuesta.get("hash") == firmada["hash"]:
+            break  # un mensaje sobre OTRA orden no aprueba esta: se ignora y se sigue esperando
+    DBOS.set_event("pendiente", None)
+    return respuesta
+
+
+@DBOS.workflow()
+def wf_meta(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[str, Any]:
+    """Publicar en Meta: snapshot → paquete → aprobación por hash → ejecución → verificación → evento.
+
+    Ninguna llamada de ESCRITURA ocurre sin una aprobación sellada antes (`paso_sellar_aprobacion`)
+    y ninguna herramienta de escritura llega a un paso que no sea el de ejecución.
+    """
+    sello = paso_sellar(job_id, accion_id, parametros)
+    DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": 1})
+    unidades = [_unidad_de(sello, 1, spec_de_lectura(sello, 1))]
+    paquete: dict[str, Any] | None = None
+    if unidades[-1]["estado"] == "EXITO":
+        unidades.append(_unidad_de(sello, 2, spec_del_paquete(sello)))
+        paquete = unidades[-1].get("json")
+    orden_id = 0
+    sigue = unidades[-1]["estado"] == "EXITO" and paquete is not None
+    while sigue:
+        orden_id += 1
+        firmada = paso_firmar_orden(sello, paquete, orden_id)
+        aprobacion = _pedir_aprobacion(orden_id, firmada)
+        sigue = False
+        if aprobacion is None:
+            unidades.append({"estado": "CADUCADO", "detalle": "Nadie aprobó la orden a tiempo: no se llamó a nada."})
+        elif aprobacion.get("decision") != "APROBADA":
+            paso_registrar_rechazo(sello, firmada, aprobacion)
+            unidades.append({"estado": "RECHAZADO", "detalle": "El operador rechazó la orden: no se llamó a nada."})
+        else:
+            sellada = paso_sellar_aprobacion(sello, firmada, aprobacion)
+            DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": 3})
+            unidades.append(_unidad_de(sello, 3, spec_de_ejecucion(sello, firmada, sellada)))
+            if unidades[-1]["estado"] == "PIDE_REAPROBACION":
+                if orden_id < MAXIMO_DE_APROBACIONES:
+                    paquete = unidades[-1]["paquete"]
+                    unidades[-1] = {**unidades[-1], "estado": "REAPROBACION_PEDIDA"}
+                    sigue = True
+                else:
+                    unidades[-1] = {**unidades[-1], "estado": "FALLIDO",
+                                    "detalle": "La orden cambió tres veces mientras se ejecutaba: no se sigue."}
+    if unidades[-1]["estado"] == "EXITO":
+        unidades.append(_unidad_de(sello, 4, spec_de_lectura(sello, 4)))
+    if unidades[-1]["estado"] == "EXITO":
+        unidades.append(_unidad_de(sello, 5, spec_de_verificacion(sello)))
+    evento = paso_preparar_evento(sello, orden_id) if unidades[-1]["estado"] == "EXITO" else None
+    if evento is not None:
+        unidades.append(_unidad_de(sello, 6, evento))
+    situacion = paso_leer_flujo(sello)
+    resultado = paso_cerrar(sello, unidades, situacion)
+    DBOS.set_event("estado", {"estado": resultado["estado"]})
+    return resultado
+
+
 # ── lo que usan los endpoints ─────────────────────────────────────────────────
 
 _PADRES = {"script": wf_script, "subagente": wf_claude, "skill": wf_claude}
@@ -495,7 +833,7 @@ def encolar(accion: dict[str, Any], valores: dict[str, Any], job_id: str) -> tup
     """Pone el trabajo en la cola `trabajos`. Devuelve (job_id, repetido)."""
     if existe(job_id):
         return job_id, True
-    padre = _PADRES.get(accion["ejecutor_tipo"])
+    padre = wf_meta if accion.get("toca_meta") else _PADRES.get(accion["ejecutor_tipo"])
     if padre is None:
         raise ErrorDeAccion(501, "RUNNER_PENDIENTE", "Este tipo de acción todavía no está conectado al runner.")
     clave = valores.get("producto_key") or accion["id"]
@@ -513,6 +851,11 @@ def encolar(accion: dict[str, Any], valores: dict[str, Any], job_id: str) -> tup
 def responder(job_id: str, n: int, texto: str) -> None:
     """La respuesta del operador a la pregunta `n` de Claude (el workflow la espera con `recv`)."""
     DBOS.send(job_id, {"texto": texto}, topic=f"respuesta:{n}")
+
+
+def enviar_aprobacion(job_id: str, orden_id: int, decision: str, huella: str, nota: str = "") -> None:
+    """La decisión del operador sobre UNA orden, atada a la huella de lo que vio."""
+    DBOS.send(job_id, {"decision": decision, "hash": huella, "nota": nota}, topic=f"aprobacion:{orden_id}")
 
 
 def publicado(job_id: str, clave: str) -> Any:
