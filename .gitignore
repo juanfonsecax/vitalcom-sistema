@@ -98,3 +98,4 @@ app/backend/.venv/
 app/backend/.pytest_cache/
 app/backend/**/__pycache__/
 app/spikes/**/*.jsonl
+app/frontend/*.tsbuildinfo
