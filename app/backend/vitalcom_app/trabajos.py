@@ -172,10 +172,12 @@ def cancelar(job_id: str) -> str:
 
 
 def reintentar(job_id: str, confirmado: bool) -> dict[str, Any]:
-    """Un trabajo NUEVO con los mismos parámetros y corrida completa (invariante 5).
+    """Un trabajo NUEVO con los mismos parámetros (invariante 5).
 
     No se hereda ni el sello ni una aprobación: lo aprobado ayer no vale hoy. Pasa por las mismas
-    puertas que un pedido normal (confirmación, nodo listo, sesión de Claude).
+    puertas que un pedido normal (confirmación, nodo listo, sesión de Claude). Una acción con
+    `pasos` (Armar FASE 1) RETOMA: hereda los pasos que terminaron bien si los insumos no cambiaron
+    (lo decide `workflows.paso_preparar_pasos`, no esta función).
     """
     estado_dbos = _existente(job_id)
     estado = estado_visible(estado_dbos, None)
@@ -183,7 +185,12 @@ def reintentar(job_id: str, confirmado: bool) -> dict[str, Any]:
         raise ErrorDeAccion(409, "NO_SE_REINTENTA", f"Un trabajo en estado {estado} no se reintenta.")
     argumentos = _argumentos(estado_dbos)
     accion_id, parametros = argumentos[1], argumentos[2]
-    return {"accion_id": accion_id, "parametros": parametros, "confirmado": confirmado}
+    try:
+        con_pasos = bool(acciones.por_id_para_el_runner(accion_id).get("pasos"))
+    except ErrorDeAccion:
+        con_pasos = False
+    return {"accion_id": accion_id, "parametros": parametros, "confirmado": confirmado,
+            "retomar_de": job_id if con_pasos else None}
 
 
 def descartar_otra_version(job_id: str) -> str:

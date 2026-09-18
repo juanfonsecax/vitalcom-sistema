@@ -173,6 +173,18 @@
     "Primero corré `python Ads/_TOOLS/flujo.py {producto_key}`. Si el nodo actual no es {nodo} o está BLOQUEADO, no ejecutes nada: devolvé los bloqueantes y terminá.",
     "Ejecutalo con su ejecutor declarado ({ejecutor}), según CLAUDE.md y su skill o su archivo de etapa.",
     "Si necesitás una decisión del operador, no la asumas: terminá tu respuesta con una línea que empiece con `PREGUNTA_OPERADOR:` seguida de la pregunta y las opciones."
+   ],
+   "prompt_paso": [
+    "Sos el orquestador de VITALCOM corriendo desde la app, sin operador en línea (trabajo {job_id}).",
+    "Estás ejecutando la skill {skill} del producto {producto_key} DE A UN PASO: la app corre cada paso en una llamada aparte y guarda la salida completa de cada etapa en {etapas_dir}/.",
+    "Los pasos de esta corrida, en orden: {lista_pasos}. Este es el paso {n} de {de}.",
+    "Ejecutá SOLO `{etapa}`: cargá la skill {skill} y hacé lo que dice para ese paso (sus inputs y lo que el orquestador hace antes y después de esa etapa). Lo que corresponde a otro paso de la lista no lo hagas acá.{paralelo}",
+    "Si {etapas_dir}/00_INPUTS_CONGELADOS.md no existe, antes de la etapa fijá el bloque INPUTS CONGELADOS del PASO −1 de la skill y escribilo en ese archivo. Si existe, usalo tal cual y no lo cambies.",
+    "Si `{etapa}` es un subagente, invocalo con Task (subagent_type = {etapa}). Pasale los inputs que la skill declara para él como RUTAS de archivo (el bloque de inputs congelados y las salidas anteriores: {previos}) y pedile que los lea completos con Read. No los resumas ni los copies en el pedido.",
+    "Si `{etapa}` es un script, corrélo como indica la skill y respondé qué hizo y con qué resultado.",
+    "No toques Meta: publicar es otro nodo (F1.publicar).",
+    "Si necesitás una decisión del operador, no la asumas: terminá tu respuesta con una línea que empiece con `PREGUNTA_OPERADOR:` seguida de la pregunta y las opciones.",
+    "PASO_ETAPA: {etapa}"
    ]
   },
   "tras_escribir": [
@@ -180,6 +192,11 @@
    "sistema.refrescar_flujo",
    "sistema.gen_app"
   ],
+  "escritores_de_bloqueo": {
+   "cuenta": "producto.cargar_cuenta",
+   "page_id": "producto.cargar_page_id",
+   "piezas": "producto.cargar_pieza"
+  },
   "lista": [
    {
     "id": "nodo.F1.congelar_inputs",
@@ -214,7 +231,10 @@
      },
      {
       "dato": "≥6 transcripciones TXT",
-      "accion": "producto.transcribir"
+      "accion": "producto.transcribir",
+      "alternativas": [
+       "producto.cargar_transcripcion"
+      ]
      },
      {
       "dato": "carpeta de media del producto (imagen del frasco)",
@@ -251,7 +271,44 @@
      "WebSearch",
      "WebFetch"
     ],
-    "presupuesto_usd": 30
+    "presupuesto_usd": 30,
+    "pasos": [
+     [
+      "etapa-producto"
+     ],
+     [
+      "etapa-0"
+     ],
+     [
+      "Ads/_TOOLS/lavar_videos.sh"
+     ],
+     [
+      "etapa-1"
+     ],
+     [
+      "etapa-1b"
+     ],
+     [
+      "etapa-2",
+      "etapa-fanpage"
+     ],
+     [
+      "etapa-4",
+      "etapa-5"
+     ],
+     [
+      "etapa-6"
+     ],
+     [
+      "etapa-guardar-producto"
+     ]
+    ],
+    "datos_del_operador": [
+     {
+      "dato": "paquete LANZABLE: lo que las etapas produjeron alcanza para publicar (página, banda, piezas en disco, copy, firma)",
+      "accion": "producto.cargar_pieza"
+     }
+    ]
    },
    {
     "id": "nodo.F1.publicar",
@@ -994,6 +1051,110 @@
     "escribe": [
      "PRODUCTOS/_DIM_PRODUCTOS.csv",
      "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 60,
+    "salida": "json"
+   },
+   {
+    "id": "producto.cargar_pieza",
+    "rotulo": "Cargar la imagen (o el video) de un anuncio",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cargar_pieza.py",
+     "--producto",
+     "{producto_key}",
+     "--archivo",
+     "{archivo}",
+     "--origen",
+     "{origen}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "archivo": {
+      "tipo": "texto",
+      "patron": "^[^\\\\/:*?\"<>|\\r\\n]{1,160}\\.(png|jpg|jpeg|mp4|mov)$",
+      "requerido": true
+     },
+     "origen": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "reemplazar": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--reemplazar"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "Ads/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
+    "id": "producto.cargar_transcripcion",
+    "rotulo": "Cargar una transcripción TXT",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cargar_transcripcion.py",
+     "--producto",
+     "{producto_key}",
+     "--origen",
+     "{origen}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "origen": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "titulo": {
+      "tipo": "texto",
+      "patron": "^[^\\\\/:*?\"<>|\\r\\n]{1,80}$",
+      "requerido": false,
+      "bandera": "--titulo"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "Ads/1.2 Transcripcion videos/"
     ],
     "idempotente": true,
     "precondicion": "ninguna",

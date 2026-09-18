@@ -216,3 +216,123 @@ class EstadoDeClaude(Base):
     logueado: bool
     detalle: str = ""
     credencial_prohibida: list[str] = []
+
+
+# ── FASE 1 (Hito 4) ───────────────────────────────────────────────────────────
+
+class MiembroDePaso(Base):
+    etapa: str
+    salida: str
+    estado: str = "PENDIENTE"  # PENDIENTE · CORRIENDO · EXITO · HEREDADO · ESPERA_RESPUESTA · FALLIDO …
+    detalle: str | None = None
+    pregunta: str | None = None
+    duracion_s: float | None = None
+    costo_equivalente_usd: float | None = None
+
+
+class PasoDeCorrida(Base):
+    n: int
+    etapas: list[str]
+    estado: str = "PENDIENTE"
+    miembros: list[MiembroDePaso] = []
+
+
+class Corrida(Base):
+    job_id: str | None = None
+    run_dir: str
+    iniciado: str | None = None
+    estado: str | None = None
+    retomado_de: str | None = None
+    pasos: list[PasoDeCorrida] = []
+
+
+class SalidaDeEtapa(Base):
+    paso: int
+    etapa: str
+    archivo: str
+    texto: str | None = None  # lo que devolvió la etapa, textual; None si todavía no corrió
+
+
+class CorridaF1(Base):
+    """La última corrida de «Armar FASE 1»: avance y lo que devolvió cada etapa."""
+
+    producto_key: str
+    corrida: Corrida | None = None
+    inputs_congelados: str | None = None
+    etapas: list[SalidaDeEtapa] = []
+
+
+class PiezaF1(Base):
+    n: int | None = None
+    angulo_key: str | None = None
+    archivo: str | None = None
+    url: str | None = None  # None = el archivo todavía no está en disco
+
+
+class CampanaF1(Base):
+    """El lanzador del producto (`_LANZADOR.json`) y el `_PLAN.json` de origen, tal cual."""
+
+    producto_key: str
+    lanzador: dict[str, Any] | None = None
+    plan_fuente: dict[str, Any] | None = None
+    piezas: list[PiezaF1] = []
+    lanzador_generado: str | None = None
+
+
+class BloqueDeFlujo(Base):
+    titulo: str
+    pegar: str
+    instrucciones: list[str] = []
+    pendientes: list[str] = []
+
+
+class SeccionDeFlujo(Base):
+    titulo: str
+    instrucciones: list[str] = []
+    bloques: list[BloqueDeFlujo] = []
+
+
+class FlujoBot(Base):
+    """`gen_flujo_bot.py --json --parcial`: el flujo por bloques, las instrucciones `>>` aparte."""
+
+    producto_key: str
+    ok: bool
+    faltan: list[dict[str, Any]] = []
+    avisos: list[str] = []
+    prohibiciones: list[str] = []
+    encabezado: dict[str, Any] | None = None
+    secciones: list[SeccionDeFlujo] = []
+
+
+class ItemDeChecklist(Base):
+    dato: str
+    ok: bool = False
+    observado: str | None = None
+    dueno: str | None = None
+    escritores: list[str] = []
+
+
+class BloqueoDelPaquete(Base):
+    falta: str
+    lo_produce: str
+    ambito: str
+    clave: str | None = None
+    archivos: list[str] = []
+    escritor: str | None = None
+
+
+class PaqueteF1(Base):
+    bloqueantes: list[BloqueoDelPaquete] = []
+    avisos: list[str] = []
+    preflight: Any = None
+
+
+class ChecklistF1(Base):
+    """Lo que falta (de `flujo.py`) y los bloqueos del paquete (de `gen_publicacion.py`), con su escritor."""
+
+    producto_key: str
+    nodo_actual: str | None = None
+    estado: str | None = None
+    ejecutor: str | None = None
+    faltan: list[ItemDeChecklist] = []
+    paquete: PaqueteF1 | None = None

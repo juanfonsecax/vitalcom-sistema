@@ -69,6 +69,12 @@ def productos() -> list[dict[str, str]]:
     return [{c: fila.get(c, "") for c in COLUMNAS_PRODUCTO} for fila in _leer_csv(DIM_PRODUCTOS)]
 
 
+def fila_de_producto(producto_key: str) -> dict[str, str]:
+    """La fila COMPLETA de un producto (carpetas incluidas), o {} si no tiene. Solo para el runner y
+    las pantallas de FASE 1, que necesitan saber dónde viven sus transcripciones y su media."""
+    return next((fila for fila in _leer_csv(DIM_PRODUCTOS) if fila.get("producto_key") == producto_key), {})
+
+
 def cuentas() -> list[dict[str, str]]:
     """Las cuentas publicitarias de `_DIM_CUENTAS.csv`: alias, moneda y qué permite cada una."""
     columnas = ("cuenta_alias", "cuenta_id", "moneda", "mcp_habilitado", "sube_media_local", "estado_cuenta")

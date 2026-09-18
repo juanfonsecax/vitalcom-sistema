@@ -437,6 +437,34 @@ def _informe(ok, texto, detalle=""):
     return 0 if ok else 1
 
 
+def test_los_bloqueos_del_operador_llevan_su_clave():
+    """cuenta · page_id · piezas llevan `clave` (y las piezas, la lista COMPLETA de archivos): quien los
+    muestra ofrece el campo para cargar el dato sin interpretar la frase. Los demas no llevan clave."""
+    import csv, io
+    base = _fixture_fase1_completa()
+    ruta = os.path.join(base, "PRODUCTOS", "_DIM_PRODUCTOS.csv")
+    with io.open(ruta, encoding="utf-8", newline="") as fh:
+        filas = list(csv.DictReader(fh))
+    filas[0].update(page_id="", cuenta_alias="GTR 99")
+    with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(filas[0]))
+        w.writeheader()
+        w.writerows(filas)
+    for i in (2, 5):
+        os.remove(os.path.join(base, "Ads", "MEDIA_PX", "PX_%d_ANG%d.png" % (i, i)))
+    salida = os.path.join(base, "paquete.json")
+    code, _out, err = _correr_main(base, ["--producto", "PX", "--fase", "1", "--solo-paquete", "--json",
+                                          "--salida", salida])
+    with open(salida, encoding="utf-8") as fh:
+        bloqueos = json.load(fh)["bloqueantes"]
+    por_clave = {b["clave"]: b for b in bloqueos if "clave" in b}
+    ok = (err is None and code == 1 and set(por_clave) == {"cuenta", "page_id", "piezas"}
+          and por_clave["piezas"]["archivos"] == ["PX_2_ANG2.png", "PX_5_ANG5.png"]
+          and por_clave["page_id"]["ambito"] == "paquete" and por_clave["cuenta"]["ambito"] == "publicacion")
+    return _informe(ok, "los bloqueos que resuelve el operador llevan clave (cuenta, page_id, piezas con sus archivos)",
+                    (code, err, bloqueos))
+
+
 def test_biblioteca_sin_listado_espera_la_lectura_y_no_sube_nada():
     base = _fixture_fase1_completa()
     code, pq, err = _paquete_biblioteca(base)
@@ -537,6 +565,7 @@ def main():
     fallas += test_clasificacion_de_los_bloqueos_no_se_invierte()
     fallas += test_solo_paquete_juzga_un_producto_sin_cuenta()
     fallas += test_modo_normal_sigue_cortando_sin_cuenta()
+    fallas += test_los_bloqueos_del_operador_llevan_su_clave()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

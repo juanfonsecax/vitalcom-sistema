@@ -8,7 +8,7 @@ test" el bloque `acciones` nuevo (v7), y de paso cubrir la validación que ya ex
 
 Dos capas:
   1. `problemas_de_manifiesto(m, flujo)` — función pura, sin disco. Cubre la validación de
-     vistas (v6, ya existía) y las reglas V1-V19 del bloque `acciones` (v7, nueva).
+     vistas (v6, ya existía) y las reglas V1-V21 del bloque `acciones` (v7, nueva).
   2. `leer_manifiesto()` — la que usa el resto de gen_app.py: lee VISTAS/_MANIFIESTO.json y
      DOCTRINA/FLUJO.json de disco y levanta SystemExit si hay problemas. Se prueba con un
      manifiesto real del worktree y con un fixture en un directorio temporal.
@@ -443,13 +443,69 @@ def test_acciones_v7():
     m["acciones"]["tras_escribir"] = ["nodo.F1.paquete"]  # no es interna ni idempotente
     check(_problemas_que_empiezan(m, "V19:"), "tras_escribir con una acción que no es interna+idempotente → V19")
 
+    # V17 con alternativas: cada escritora alternativa también tiene que ser un script
+    m = manifiesto_v7_valido()
+    for a in _lista(m):
+        if a["id"] == "nodo.F1.congelar_inputs":
+            a["datos_del_operador"][1]["alternativas"] = ["nodo.F1.paquete"]
+    check(_problemas_que_empiezan(m, "V17:"), "una escritora alternativa que no es script → V17")
+
+    # V20 — los pasos de una skill son la secuencia de FLUJO.json, agrupada
+    test_pasos_v20()
+
+    # V21 — el escritor de cada bloqueo con clave es un script interno
+    m = manifiesto_v7_valido()
+    m["acciones"]["escritores_de_bloqueo"] = {"page_id": "sistema.barrido_csv"}
+    check(not _problemas_que_empiezan(m, "V21:"), "un escritor de bloqueo script e interno es válido")
+    m["acciones"]["escritores_de_bloqueo"] = {"page_id": "nodo.F1.paquete"}
+    check(_problemas_que_empiezan(m, "V21:"), "un escritor de bloqueo que no es script interno → V21")
+
+
+def _con_pasos(pasos, prompt=True):
+    flujo = copy.deepcopy(FLUJO_JUGUETE)
+    flujo["fases"][0]["nodos"][1].update(
+        secuencia=["etapa-0", "etapa-2", "etapa-fanpage", "etapa-6"],
+        como="La skill invoca los subagentes (etapa-2 ∥ etapa-fanpage).")
+    m = manifiesto_v7_valido()
+    if prompt:
+        m["acciones"]["claude"] = {"prompt_paso": ["Ejecutá {etapa}.", "Salidas en {etapas_dir}.", "PASO_ETAPA: {etapa}"]}
+    for a in _lista(m):
+        if a["id"] == "nodo.F1.paquete":
+            a["pasos"] = pasos
+    return m, flujo
+
+
+def test_pasos_v20():
+    buenos = [["etapa-0"], ["etapa-2", "etapa-fanpage"], ["etapa-6"]]
+    m, flujo = _con_pasos(buenos)
+    check(_problemas_que_empiezan(m, "V20:", flujo) == [], "pasos = secuencia agrupada con su paralelo declarado",
+          str(_problemas_que_empiezan(m, "V20:", flujo)))
+    m, flujo = _con_pasos([["etapa-0"], ["etapa-fanpage", "etapa-2"], ["etapa-6"]])
+    check(_problemas_que_empiezan(m, "V20:", flujo), "pasos en otro orden que la secuencia → V20")
+    m, flujo = _con_pasos([["etapa-0"], ["etapa-2"], ["etapa-fanpage", "etapa-6"]])
+    check(_problemas_que_empiezan(m, "V20:", flujo), "un paralelo que FLUJO.json no declara → V20")
+    m, flujo = _con_pasos([["etapa-0"], ["etapa-2", "etapa-fanpage"]])
+    check(_problemas_que_empiezan(m, "V20:", flujo), "falta una etapa de la secuencia → V20")
+    m, flujo = _con_pasos(buenos, prompt=False)
+    check(_problemas_que_empiezan(m, "V20:", flujo), "pasos sin acciones.claude.prompt_paso → V20")
+    flujo["fases"][0]["nodos"][1]["secuencia"] = ["etapa-0", "etapa-2", "etapa-fanpage", "etapa-inventada"]
+    m, _ = _con_pasos([["etapa-0"], ["etapa-2", "etapa-fanpage"], ["etapa-inventada"]])
+    check(any("no es un agente" in p for p in _problemas_que_empiezan(m, "V20:", flujo)),
+          "una etapa que no es un agente de .claude/agents → V20")
+    m, flujo = _con_pasos(buenos)
+    for a in _lista(m):
+        if a["id"] == "nodo.ciclo.motor":
+            a["pasos"] = [["etapa-0"]]
+    check(any("no es la acción skill" in p for p in _problemas_que_empiezan(m, "V20:", flujo)),
+          "'pasos' en una acción que no es skill → V20")
+
 
 def main():
     test_vistas_v6()
     test_leer_manifiesto_real()
     test_leer_manifiesto_fixture_invalido()
     test_acciones_v7()
-    total = 41
+    total = 51
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

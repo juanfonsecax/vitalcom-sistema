@@ -37,10 +37,27 @@ def emitir(evento: dict) -> None:
 
 
 def anotar(nombre: str, dato: dict) -> None:
+    """Agrega una línea. Con candado: dos etapas en paralelo son dos procesos, y en Windows dos `append`
+    a la vez pueden pisarse (se perdía una línea)."""
     carpeta = Path.cwd() / "PRODUCTOS"
-    if carpeta.is_dir():
+    if not carpeta.is_dir():
+        return
+    candado = carpeta / (nombre + ".candado")
+    limite = time.monotonic() + 10
+    while True:
+        try:
+            fd = os.open(candado, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+            break
+        except FileExistsError:
+            if time.monotonic() > limite:
+                raise
+            time.sleep(0.01)
+    try:
         with open(carpeta / nombre, "a", encoding="utf-8") as archivo:
             archivo.write(json.dumps(dato, ensure_ascii=False) + "\n")
+    finally:
+        os.close(fd)
+        os.remove(candado)
 
 
 def valor_de(bandera: str) -> str | None:
@@ -78,6 +95,36 @@ def nombre_de(args: dict) -> str:
 
 
 emitir({"type": "system", "subtype": "init", "session_id": SESION, "model": "fake", "tools": permitidas})
+
+if "PASO_ETAPA:" in prompt:
+    # Un paso de una skill corrida de a una etapa (wf_pasos). `VITALCOM_FAKE_PASO_MODO` es un JSON
+    # {etapa: modo} con modo exito · pregunta · error · sin_task · dormir:N. Cada corrida anota su
+    # inicio y su fin en `PRODUCTOS/_pasos.log` (así se prueba que un grupo corre a la vez).
+    etapa = prompt.split("PASO_ETAPA:", 1)[1].strip().splitlines()[0].strip()
+    modo_paso = json.loads(os.environ.get("VITALCOM_FAKE_PASO_MODO") or "{}").get(etapa, "exito")
+    inicio = time.time()
+    if modo_paso.startswith("dormir:"):
+        time.sleep(float(modo_paso.split(":", 1)[1]))
+    texto, final = f"Paso de {etapa} hecho (fake).", {"subtype": "success", "is_error": False}
+    if resume:
+        texto = f"Seguí {etapa} con: {prompt.split(chr(10))[0]}"
+    elif "/" in etapa:
+        texto = f"SCRIPT {etapa} corrido (fake)."
+    elif modo_paso != "sin_task":
+        previos = next((l for l in prompt.splitlines() if "salidas anteriores" in l), "")
+        emitir({"type": "assistant", "message": {"content": [
+            {"type": "tool_use", "id": f"t-{etapa}", "name": "Task", "input": {"subagent_type": etapa}}]}})
+        emitir({"type": "user", "message": {"content": [{"type": "tool_result", "tool_use_id": f"t-{etapa}", "content": [
+            {"type": "text", "text": f"SALIDA DE {etapa} (fake)\n{previos}"}]}]}})
+    if modo_paso == "pregunta" and not resume:
+        texto = f"{etapa} dice NO APTO.\nPREGUNTA_OPERADOR: ¿Sigo igual o cambio de producto?"
+    elif modo_paso == "error":
+        final, texto = {"subtype": "error_during_execution", "is_error": True}, f"{etapa} falló (fake)."
+    anotar("_pasos.log", {"etapa": etapa, "inicio": inicio, "fin": time.time(), "resume": resume})
+    emitir({"type": "assistant", "message": {"content": [{"type": "text", "text": texto}]}})
+    emitir({"type": "result", **final, "result": texto, "total_cost_usd": 0.01, "num_turns": 2, "session_id": SESION})
+    sys.exit(0)
+
 emitir({"type": "assistant", "message": {"content": [
     {"type": "tool_use", "name": "Task", "input": {"subagent_type": "etapa-fake"}}]}})
 

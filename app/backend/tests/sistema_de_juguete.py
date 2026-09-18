@@ -107,8 +107,14 @@ def crear(destino: Path, manifiesto: dict[str, Any] | None = None) -> Path:
     shutil.copy2(REPO / "Ads" / "_TOOLS" / "gen_app.py", destino / "Ads" / "_TOOLS" / "gen_app_real.py")
     escribir_script(destino, "gen_app.py", GEN_APP_ENVOLTORIO)
 
+    # Los agentes (V20 valida que cada paso sea uno) y los pasos que no son .py (el lavado).
+    shutil.copytree(REPO / ".claude" / "agents", destino / ".claude" / "agents")
     manifiesto = manifiesto if manifiesto is not None else manifiesto_real()
     escribir_manifiesto(destino, manifiesto)
+    for accion in (manifiesto.get("acciones") or {}).get("lista", []):
+        for paso in (e for grupo in accion.get("pasos") or [] for e in grupo if "/" in e):
+            (destino / paso).parent.mkdir(parents=True, exist_ok=True)
+            (destino / paso).write_text("# paso falso del juguete\n", encoding="utf-8")
 
     scripts = {"flujo.py"}
     for accion in (manifiesto.get("acciones") or {}).get("lista", []):

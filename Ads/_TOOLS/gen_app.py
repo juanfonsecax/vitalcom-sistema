@@ -63,7 +63,7 @@ CAMPOS_ACCION_CONOCIDOS = {
     "id", "rotulo", "nodo", "ejecutor_tipo", "name", "comando", "salida", "parametros",
     "requiere_confirmacion", "aprobacion", "toca_meta", "herramientas", "herramientas_meta",
     "ordenes", "escribe", "idempotente", "precondicion", "visibilidad", "habilitada", "motivo",
-    "tiempo_max_s", "presupuesto_usd", "datos_del_operador",
+    "tiempo_max_s", "presupuesto_usd", "datos_del_operador", "pasos",
 }
 CAMPOS_ACCION_OBLIGATORIOS = {
     "id", "rotulo", "nodo", "ejecutor_tipo", "parametros", "requiere_confirmacion",
@@ -89,7 +89,7 @@ def problemas_de_manifiesto(m, flujo):
     """Toda la validación del manifiesto, en una función pura (sin disco, sin excepciones).
 
     Devuelve la lista de problemas (vacía = válido). Cubre la validación de `vistas` que
-    ya existía en v6, y —cuando `version >= 7`— las reglas V1-V19 del bloque `acciones`
+    ya existía en v6, y —cuando `version >= 7`— las reglas V1-V21 del bloque `acciones`
     (`validar_acciones`, más abajo). `flujo` es el dict de DOCTRINA/FLUJO.json, o None.
     """
     problemas = []
@@ -161,8 +161,65 @@ def _nodos_de_flujo_por_id(flujo):
     return out
 
 
+def _nombres_de_agentes():
+    """Los `name:` de .claude/agents/*.md (el nombre con el que se invoca cada etapa por Task)."""
+    nombres = set()
+    carpeta = os.path.join(".claude", "agents")
+    if not os.path.isdir(carpeta):
+        return nombres
+    for archivo in os.listdir(carpeta):
+        if not archivo.endswith(".md"):
+            continue
+        with io.open(os.path.join(carpeta, archivo), encoding="utf-8") as fh:
+            for linea in fh.read().split("\n---", 1)[0].splitlines():
+                if linea.startswith("name:"):
+                    nombres.add(linea.split(":", 1)[1].strip())
+    return nombres
+
+
+def _problemas_de_pasos(a, nf, bloque, d):
+    """V20: los PASOS de una skill que la app corre de a una etapa por llamada.
+
+    Los pasos no son una secuencia nueva: son la `secuencia` de FLUJO.json, agrupada. Aplanados
+    tienen que ser idénticos a ella, y cada grupo de más de una etapa tiene que estar declarado
+    como paralelo («a ∥ b») en el `como` del nodo. Así la secuencia sigue teniendo un solo dueño.
+    """
+    problemas = []
+    pasos = a.get("pasos")
+    if a.get("ejecutor_tipo") != "skill" or nf is None:
+        return ["V20: %s declara 'pasos' pero no es la acción skill de un nodo" % d]
+    if not isinstance(pasos, list) or not pasos or not all(
+            isinstance(g, list) and g and all(isinstance(e, str) and e for e in g) for g in pasos):
+        return ["V20: %s: 'pasos' tiene que ser una lista de grupos (listas) de etapas" % d]
+    plano = [e for g in pasos for e in g]
+    if plano != (nf.get("secuencia") or []):
+        problemas.append("V20: %s: los pasos aplanados no son la 'secuencia' de FLUJO.json para %s"
+                         % (d, nf.get("id")))
+    como = nf.get("como") or ""
+    for g in pasos:
+        if len(g) > 1 and " ∥ ".join(g) not in como:
+            problemas.append("V20: %s: el grupo %s no está declarado como paralelo («%s») en FLUJO.json"
+                             % (d, g, " ∥ ".join(g)))
+    agentes = _nombres_de_agentes()
+    for e in plano:
+        if "/" in e:
+            if not os.path.exists(e):
+                problemas.append("V20: %s: el paso '%s' no existe" % (d, e))
+        elif e not in agentes:
+            problemas.append("V20: %s: la etapa '%s' no es un agente de .claude/agents" % (d, e))
+    prompt = (bloque.get("claude") or {}).get("prompt_paso")
+    if not isinstance(prompt, list) or not prompt or not all(isinstance(x, str) for x in prompt):
+        problemas.append("V20: %s tiene 'pasos' pero acciones.claude.prompt_paso no es una lista de líneas" % d)
+    else:
+        texto = "\n".join(prompt)
+        for marca in ("{etapa}", "{etapas_dir}", "PASO_ETAPA: {etapa}"):
+            if marca not in texto:
+                problemas.append("V20: acciones.claude.prompt_paso no trae «%s»" % marca)
+    return problemas
+
+
 def validar_acciones(m, flujo):
-    """Las 19 reglas del bloque `acciones` (v7). Ver el diseño del Hito 3, §2.4.
+    """Las 21 reglas del bloque `acciones` (v7). Ver el diseño del Hito 3, §2.4 (V20-V21: Hito 4).
 
     No lanza: devuelve la lista de problemas, con el número de regla al frente de cada
     uno ("V5: ..."), para que las pruebas puedan filtrar por regla.
@@ -335,8 +392,10 @@ def validar_acciones(m, flujo):
                 if item.get("dato") not in datos_nodo:
                     problemas.append("V17: %s: el dato '%s' no coincide con requiere/produce del nodo"
                                      % (d, item.get("dato")))
-                accion_escritora = item.get("accion")
-                if accion_escritora is not None:
+                escritoras = [item.get("accion")] + list(item.get("alternativas") or [])
+                for accion_escritora in escritoras:
+                    if accion_escritora is None:
+                        continue
                     oacc = next((x for x in lista if x.get("id") == accion_escritora), None)
                     if not oacc or oacc.get("ejecutor_tipo") != "script":
                         problemas.append("V17: %s: la acción escritora '%s' de '%s' no es un script declarado"
@@ -344,6 +403,9 @@ def validar_acciones(m, flujo):
 
         if habilitada is False and not a.get("motivo"):
             problemas.append("V18: %s está deshabilitada pero no trae 'motivo'" % d)
+
+        if "pasos" in a:
+            problemas.extend(_problemas_de_pasos(a, nf, bloque, d))
 
     for nid in nodos_flujo:
         asociadas = ids_con_nodo.get(nid, [])
@@ -357,6 +419,17 @@ def validar_acciones(m, flujo):
         ta = ids_por_id.get(tid)
         if not ta or ta.get("ejecutor_tipo") != "script" or ta.get("visibilidad") != "interna" or not ta.get("idempotente"):
             problemas.append("V19: tras_escribir '%s' no es una acción script, interna e idempotente" % tid)
+
+    # V21 — quién resuelve cada bloqueo con `clave` de gen_publicacion.py (el checklist de la app)
+    escritores = bloque.get("escritores_de_bloqueo")
+    if escritores is not None:
+        if not isinstance(escritores, dict):
+            problemas.append("V21: escritores_de_bloqueo tiene que ser un objeto {clave: acción}")
+        else:
+            for clave, aid in escritores.items():
+                ea = ids_por_id.get(aid)
+                if not ea or ea.get("ejecutor_tipo") != "script" or ea.get("visibilidad") != "interna":
+                    problemas.append("V21: escritores_de_bloqueo.%s ('%s') no es una acción script interna" % (clave, aid))
 
     return problemas
 

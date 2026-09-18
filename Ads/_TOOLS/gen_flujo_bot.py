@@ -23,6 +23,10 @@ USO
                                                       imprime SOLO lo que se pega en Lucid
   python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM --parcial
                                                       escribe marcando lo que falta
+  python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM --json [--parcial]
+                                                      el flujo POR BLOQUES para la app: en
+                                                      cada uno, lo que se pega y sus >> aparte.
+                                                      No escribe nada.
 
 LAS TRES NOTACIONES de la plantilla (una forma, un significado):
   {{variable}}        valor de un CSV. Si falta, este script BLOQUEA y nombra al dueno.
@@ -33,6 +37,7 @@ Todo lo demas es literal y no se reescribe.
 
 import csv
 import datetime
+import json
 import os
 import re
 import sys
@@ -292,6 +297,74 @@ def para_pegar(txt):
     return "\n".join(fuera).strip() + "\n"
 
 
+# Los titulos de bloque que declara la plantilla (seccion 3): cada uno abre un campo o un mensaje
+# que se pega por separado en LucidBot. Una linea en mayusculas DENTRO de un mensaje («OFERTAS
+# HASTA AGOTAR») no es un titulo: por eso la lista es cerrada y no una heuristica de mayusculas.
+# Un titulo nuevo que no este aca no pierde texto: su contenido queda dentro del bloque anterior
+# (test_gen_flujo_bot.py lo vigila comparando contra para_pegar()).
+RE_TITULO_BLOQUE = re.compile(
+    r"^(ELEMENTO \S+ — |INTERACCIÓN \d+ — |TEXTO · |TESTIMONIOS \(|AUDIO \(|INFOGRAFÍAS \(|M\d+ — |"
+    r"(DESCRIPCIÓN|MODO DE USO|CARACTERÍSTICAS TÉCNICAS|CONTENIDO DEL PAQUETE):$)")
+RE_SECCION = re.compile(r"^═+ (.+?) ═+$")
+RE_RAYA = re.compile(r"^═+$")
+RE_BLOQUE_JUICIO = re.compile(r"<<BLOQUE:(\w+)>>")
+
+
+def _limpiar_pegar(lineas):
+    fuera, previa_vacia = [], True
+    for l in lineas:
+        vacia = not l.strip()
+        if vacia and previa_vacia:
+            continue
+        fuera.append(l)
+        previa_vacia = vacia
+    return "\n".join(fuera).strip()
+
+
+def estructura(txt):
+    """El flujo renderizado, partido como se pega: secciones → bloques.
+
+    Cada bloque trae `pegar` (SIN ninguna linea `>>`), `instrucciones` (las `>>`, sin el
+    prefijo) y `pendientes` (los <<BLOQUE:x>> que escribe etapa-5). Es la misma regla de
+    `para_pegar()`, aplicada por bloque: una forma, un significado.
+    """
+    encabezado, secciones = {"lineas": [], "instrucciones": []}, []
+    seccion = bloque = None
+    for linea in txt.splitlines():
+        if RE_RAYA.match(linea):
+            continue
+        m = RE_SECCION.match(linea)
+        if m:
+            seccion = {"titulo": m.group(1).strip(), "instrucciones": [], "bloques": []}
+            secciones.append(seccion)
+            bloque = None
+            continue
+        if seccion is None:
+            if es_instruccion(linea):
+                encabezado["instrucciones"].append(linea.lstrip()[2:].strip())
+            elif linea.strip():
+                encabezado["lineas"].append(linea.strip())
+            continue
+        if not es_instruccion(linea) and RE_TITULO_BLOQUE.match(linea):
+            bloque = {"titulo": linea.strip(), "_lineas": [], "instrucciones": []}
+            seccion["bloques"].append(bloque)
+            continue
+        if es_instruccion(linea):
+            (bloque or seccion)["instrucciones"].append(linea.lstrip()[2:].strip())
+            continue
+        if bloque is None:
+            if not linea.strip():
+                continue
+            bloque = {"titulo": seccion["titulo"], "_lineas": [], "instrucciones": []}
+            seccion["bloques"].append(bloque)
+        bloque["_lineas"].append(linea)
+    for s in secciones:
+        for b in s["bloques"]:
+            b["pegar"] = _limpiar_pegar(b.pop("_lineas"))
+            b["pendientes"] = RE_BLOQUE_JUICIO.findall(b["pegar"])
+    return {"encabezado": encabezado, "secciones": secciones}
+
+
 def prohibiciones(txt):
     copy = solo_copy(txt)
     hallados = []
@@ -306,6 +379,25 @@ def prohibiciones(txt):
     if sueltas:
         hallados.append("VARIABLES SIN RESOLVER en la salida: %s" % ", ".join(sueltas))
     return hallados
+
+
+def una_json(pk, parcial=False):
+    """--json: el flujo por bloques para la app. No escribe. Bloquea igual que el render."""
+    v, faltan, avisos = resolver(pk)
+    salida = {"producto_key": pk, "ok": False, "parcial": parcial, "avisos": avisos,
+              "faltan": [{"variable": k, "lo_produce": d} for k, d in faltan], "prohibiciones": []}
+    if v is None or (faltan and not parcial):
+        print(json.dumps(salida, ensure_ascii=False, indent=2))
+        return False
+    for k, d in faltan:
+        v[k] = "‹PENDIENTE: %s — %s›" % (k, d)
+    txt = render(v)
+    salida["prohibiciones"] = prohibiciones(txt)
+    if not salida["prohibiciones"]:
+        salida["ok"] = True
+        salida.update(estructura(txt))
+    print(json.dumps(salida, ensure_ascii=False, indent=2))
+    return salida["ok"]
 
 
 def una(pk, escribir=True, parcial=False, copy=False):
@@ -357,6 +449,12 @@ def main():
     todo = "--todo" in args
     copy = "--copy" in args
     pks = [a for a in args if not a.startswith("--")]
+
+    if "--json" in args:
+        if len(pks) != 1 or validar or todo or copy:
+            print("--json va con UN producto_key y sin --validar / --todo / --copy", file=sys.stderr)
+            return 2
+        return 0 if una_json(pks[0], parcial=parcial) else 1
 
     if validar or todo:
         pks = [r["producto_key"] for r in leer("_DIM_FLUJO_BOT.csv")]

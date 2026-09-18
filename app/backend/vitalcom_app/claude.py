@@ -26,7 +26,7 @@ import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Iterable
 
 from .config import base
 
@@ -200,6 +200,48 @@ def resumir_evento(evento: dict[str, Any]) -> str | None:
     if tipo == "result":
         return f"Claude terminó: {evento.get('subtype')}"
     return None
+
+
+def _texto_del_resultado(contenido: Any) -> str:
+    if isinstance(contenido, str):
+        return contenido
+    if isinstance(contenido, list):
+        return "\n".join(b.get("text", "") for b in contenido if isinstance(b, dict) and b.get("type") == "text")
+    return ""
+
+
+def salida_de_subagente(lineas: Iterable[str], subagente: str) -> str | None:
+    """La respuesta FINAL, textual, del subagente `subagente` lanzado con Task/Agent en una corrida.
+
+    Medido el 18-sep-2026 (Hito 4): el stream-json trae, en el evento `user` de primer nivel, el
+    `tool_result` de la llamada Task con el texto completo que devolvió el subagente. La app lo guarda
+    tal cual: el orquestador no tiene que volver a copiarlo (ni puede recortarlo). Si el subagente se
+    lanzó más de una vez en la corrida, vale la última respuesta que no fue un error.
+    """
+    llamadas: set[str] = set()
+    ultima: str | None = None
+    for linea in lineas:
+        if not linea.lstrip().startswith("{"):
+            continue
+        try:
+            evento = json.loads(linea)
+        except json.JSONDecodeError:
+            continue
+        if evento.get("parent_tool_use_id"):
+            continue  # lo que pasa DENTRO del subagente no es su respuesta
+        for bloque in (evento.get("message") or {}).get("content", []) or []:
+            if not isinstance(bloque, dict):
+                continue
+            if (evento.get("type") == "assistant" and bloque.get("type") == "tool_use"
+                    and bloque.get("name") in ("Task", "Agent")
+                    and (bloque.get("input") or {}).get("subagent_type") == subagente):
+                llamadas.add(bloque.get("id", ""))
+            elif (evento.get("type") == "user" and bloque.get("type") == "tool_result"
+                  and bloque.get("tool_use_id") in llamadas and not bloque.get("is_error")):
+                texto = _texto_del_resultado(bloque.get("content")).strip()
+                if texto:
+                    ultima = texto
+    return ultima
 
 
 def correr(

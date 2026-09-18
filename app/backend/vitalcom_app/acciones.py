@@ -2,7 +2,7 @@
 
 Es el ÚNICO lugar que sabe qué es una acción (diseño Hito 3, §3.1). Hace cuatro cosas:
   1. Carga el manifiesto y le pide su validación a `gen_app.py --validar-manifiesto`: la app
-     no re-implementa las 19 reglas, solo lee el veredicto.
+     no re-implementa las 21 reglas, solo lee el veredicto.
   2. Valida los parámetros que manda el operador contra el vocabulario cerrado del manifiesto.
   3. **Resuelve el argv** de una acción de tipo `script`: la lista de tokens que el runner corre,
      sin shell. Ningún literal de comando vive fuera del manifiesto.

@@ -126,6 +126,41 @@ def test_clearstem_pasa_completo():
               "Laura" not in txt.split("ELEMENTO 2")[0])
 
 
+def test_estructura_por_bloques_no_pierde_ni_mezcla():
+    """--json: por bloques, sin perder texto y sin una sola instruccion en lo que se pega."""
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    if v is None or faltan:
+        check("CLEARSTEM resuelve para probar la estructura", False, faltan)
+        return
+    txt = G.render(v)
+    e = G.estructura(txt)
+    bloques = [b for s in e["secciones"] for b in s["bloques"]]
+    pegado = "\n".join(b["pegar"] for b in bloques)
+    check("ningun bloque lleva una linea >>",
+          not any(l.lstrip().startswith(">>") for b in bloques for l in b["pegar"].splitlines()))
+    # Todo lo que para_pegar() entrega aparece en algun lugar de la estructura: cada linea
+    # de copy es un titulo (de flujo, seccion o bloque) o parte de un `pegar`.
+    titulos = set(e["encabezado"]["lineas"]) | {s["titulo"] for s in e["secciones"]} | {b["titulo"] for b in bloques}
+    lineas_pegado = set(l.strip() for l in pegado.splitlines())
+    perdidas = [l for l in G.para_pegar(txt).splitlines()
+                if l.strip() and not G.RE_RAYA.match(l) and not G.RE_SECCION.match(l)
+                and l.strip() not in titulos and l.strip() not in lineas_pegado]
+    check("no se pierde ninguna linea de copy", not perdidas, perdidas[:3])
+    instrucciones = [l.lstrip()[2:].strip() for l in txt.splitlines() if G.es_instruccion(l)]
+    juntadas = e["encabezado"]["instrucciones"] + [i for s in e["secciones"] for i in s["instrucciones"]] \
+        + [i for b in bloques for i in b["instrucciones"]]
+    check("todas las instrucciones quedan, aparte", sorted(instrucciones) == sorted(juntadas),
+          (len(instrucciones), len(juntadas)))
+    int2 = next((b for b in bloques if b["titulo"].startswith("INTERACCIÓN 2")), None)
+    check("una linea en mayusculas dentro de un mensaje no abre bloque (OFERTAS HASTA AGOTAR)",
+          int2 is not None and "OFERTAS HASTA AGOTAR" in int2["pegar"])
+    check("los <<BLOQUE:x>> de etapa-5 quedan marcados como pendientes",
+          any("descripcion" in b["pendientes"] for b in bloques))
+    reglas = [s for s in e["secciones"] if s["titulo"].startswith("REGLAS")]
+    check("las reglas son UN bloque (un solo campo de LucidBot)",
+          len(reglas) == 1 and len(reglas[0]["bloques"]) == 1)
+
+
 def test_mercado_es_variable():
     """El mercado es variable: GT va en voseo y CO en tuteo, con su transportadora."""
     mercados = {r["mercado"]: r for r in G.leer("_DIM_MERCADOS.csv")}
@@ -151,6 +186,7 @@ def main():
                test_precio_sale_del_csv_no_del_texto,
                test_escalera_respeta_la_arquitectura_del_csv,
                test_clearstem_pasa_completo,
+               test_estructura_por_bloques_no_pierde_ni_mezcla,
                test_mercado_es_variable):
         print("\n%s" % (fn.__doc__ or fn.__name__).splitlines()[0])
         fn()

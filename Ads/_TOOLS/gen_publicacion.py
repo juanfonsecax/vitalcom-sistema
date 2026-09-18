@@ -343,15 +343,25 @@ class Paquete(object):
     #                biblioteca de la cuenta, o que subio dos veces. Se resuelve subiendo, y el que
     #                espera es el ejecutor: no es un paquete incompleto ni una cuenta mal armada.
     AMBITOS = ("paquete", "publicacion", "media")
+    # Los bloqueos que el OPERADOR resuelve cargando un dato llevan ademas una `clave` fija, para que
+    # quien los muestre (la app) ofrezca el campo correcto sin interpretar la frase de `falta`:
+    #   cuenta   la cuenta del producto no existe en _DIM_CUENTAS.csv   (cargar_cuenta.py)
+    #   page_id  no hay page_id                                           (cargar_page_id.py)
+    #   piezas   piezas declaradas sin archivo en disco, con `archivos`   (cargar_pieza.py)
+    CLAVES = ("cuenta", "page_id", "piezas")
 
-    def _bloquear(self, que, dueno, ambito):
-        self.bloqueantes.append({"falta": que, "lo_produce": dueno, "ambito": ambito})
+    def _bloquear(self, que, dueno, ambito, clave=None, **extra):
+        bloqueo = {"falta": que, "lo_produce": dueno, "ambito": ambito}
+        if clave is not None:
+            assert clave in self.CLAVES, clave
+            bloqueo.update(clave=clave, **extra)
+        self.bloqueantes.append(bloqueo)
 
-    def bloquear_paquete(self, que, dueno):
-        self._bloquear(que, dueno, "paquete")
+    def bloquear_paquete(self, que, dueno, clave=None, **extra):
+        self._bloquear(que, dueno, "paquete", clave, **extra)
 
-    def bloquear_publicacion(self, que, dueno):
-        self._bloquear(que, dueno, "publicacion")
+    def bloquear_publicacion(self, que, dueno, clave=None, **extra):
+        self._bloquear(que, dueno, "publicacion", clave, **extra)
 
     def bloquear_media(self, que, dueno):
         self._bloquear(que, dueno, "media")
@@ -471,7 +481,7 @@ def main():
         # igual se puede juzgar: la cuenta solo aporta moneda y minimo, que son de la publicacion.
         # Cortar aca dejaria trabado en F1.paquete a un producto cuyo paquete esta perfecto.
         pq.bloquear_publicacion("la cuenta '%s' no existe en _DIM_CUENTAS.csv" % alias_pedido,
-                                "el operador · _DIM_PRODUCTOS.csv columna cuenta_alias")
+                                "el operador · _DIM_PRODUCTOS.csv columna cuenta_alias", clave="cuenta")
         # Una fila con TODAS las columnas reales de _DIM_CUENTAS.csv (una columna nueva no rompe
         # esto) y valores neutros: ninguno debe generar un bloqueo, porque ya se declaro arriba el
         # unico que corresponde — que la cuenta no existe.
@@ -525,7 +535,7 @@ def main():
     # page_id: el del plan manda sobre el del producto, porque la pagina depende de la CUENTA
     page_id = str(plan.get("page_id") or prod.get("page_id") or "").strip()
     if not page_id:
-        pq.bloquear_paquete("no hay page_id", "etapa-fanpage")
+        pq.bloquear_paquete("no hay page_id", "etapa-fanpage", clave="page_id")
     if plan.get("cuenta") and corto_alias(plan["cuenta"]) != alias_pedido:
         pq.avisar("el plan dice cuenta=%s y se esta publicando en %s. La pagina y su WhatsApp tienen "
                   "que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id %s "
@@ -648,7 +658,7 @@ def main():
         pq.bloquear_paquete("%d pieza(s) declaradas no tienen su archivo en disco: %s. Sin el archivo no "
                     "hay media que subir y el anuncio no se puede crear."
                     % (len(sin_archivo), ", ".join(str(s) for s in sin_archivo[:6])),
-                    "etapa-render / el operador")
+                    "etapa-render / el operador", clave="piezas", archivos=[str(s) for s in sin_archivo])
 
     # Ningun anuncio sale con un eje de su firma perdido (se pierde para siempre en Meta).
     verificar_firma(unidades, fmod, pq)

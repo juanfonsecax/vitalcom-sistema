@@ -186,6 +186,28 @@ def copiar_para_subir(carpeta: Path, subcarpeta: str, origen: Path, nombre: str)
     return destino
 
 
+# ── una skill de a un paso: `pasos.json` y `etapas/NN_<etapa>.md` (Hito 4) ────
+
+def reescribir_en_corrida(carpeta: Path, relativo: str, texto: str) -> Path:
+    """Reescritura atómica de un archivo de la corrida (`pasos.json`, `etapas/06_etapa-2.md`).
+
+    `relativo` puede tener UNA subcarpeta; cada parte se limpia y todo queda dentro de `app_runs/`.
+    """
+    partes = [_limpio(p) for p in relativo.split("/") if p]
+    destino_carpeta = _crear_carpeta(carpeta.joinpath(*partes[:-1])) if len(partes) > 1 else _dentro(carpeta)
+    destino = _dentro(destino_carpeta / partes[-1])
+    provisorio = _dentro(destino_carpeta / (partes[-1] + ".nuevo"))
+    with open(provisorio, "wb") as archivo:
+        archivo.write(texto.encode("utf-8"))
+    os.replace(provisorio, destino)
+    return destino
+
+
+def heredar_de_corrida(origen: Path, carpeta: Path, relativo: str) -> None:
+    """Copia a esta corrida un archivo de OTRA corrida (retomar): las dos, dentro de `app_runs/`."""
+    reescribir_en_corrida(carpeta, relativo, _dentro(origen.joinpath(*relativo.split("/"))).read_text(encoding="utf-8"))
+
+
 def registrar_aprobacion(carpeta: Path, dato: dict[str, Any]) -> None:
     """`aprobaciones.jsonl`: quién aprobó o rechazó qué orden (hash) y cuándo. Solo se agrega."""
     anotar_linea(carpeta, "aprobaciones.jsonl", json.dumps(dato, ensure_ascii=False, default=str))

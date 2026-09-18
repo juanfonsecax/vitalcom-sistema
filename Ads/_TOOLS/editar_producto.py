@@ -148,6 +148,7 @@ def aplicar_escrituras(escrituras):
             if os.path.isfile(ruta):
                 with io.open(ruta, "rb") as fh:
                     originales[ruta] = fh.read()
+            os.makedirs(os.path.dirname(ruta), exist_ok=True)
             temporal = ruta + ".tmp"
             with io.open(temporal, "wb") as fh:
                 fh.write(contenido)

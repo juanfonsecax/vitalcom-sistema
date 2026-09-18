@@ -65,11 +65,14 @@ def avisar_media_subida(job_id: str, vuelta: int) -> dict:
 
 @router.post("/{job_id}/reintentar", status_code=202, response_model=AccionEncolada)
 def reintentar_trabajo(job_id: str, cuerpo: Reintento | None = None) -> AccionEncolada:
-    """Un trabajo NUEVO con los mismos parámetros y corrida completa. Pasa por las mismas puertas que un pedido."""
+    """Un trabajo NUEVO con los mismos parámetros. Pasa por las mismas puertas que un pedido.
+
+    Si la acción corre de a un paso (Armar FASE 1), retoma desde el paso que no terminó bien.
+    """
     pedido = trabajos.reintentar(job_id, bool(cuerpo and cuerpo.confirmado))
     accion, valores = api_acciones.validar_pedido(
         pedido["accion_id"], PedidoAccion(parametros=pedido["parametros"], confirmado=pedido["confirmado"]))
-    nuevo, _repetido = workflows.encolar(accion, valores, uuid.uuid4().hex)
+    nuevo, _repetido = workflows.encolar(accion, valores, uuid.uuid4().hex, retomar_de=pedido["retomar_de"])
     return AccionEncolada(
         job_id=nuevo, accion_id=accion["id"], estado="ENCOLADO",
         url_estado=f"/api/trabajos/{nuevo}", url_eventos=f"/api/trabajos/{nuevo}/eventos",

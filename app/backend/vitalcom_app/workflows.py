@@ -22,6 +22,7 @@ versión. `tests/test_workflows.py::test_version_de_workflows` lo vigila.
 from __future__ import annotations
 
 import contextlib
+import csv
 import hashlib
 import json
 import os
@@ -43,7 +44,7 @@ from .acciones import ErrorDeAccion
 from .config import base, datos_de_la_app, python_del_sistema, ruta
 from .escrituras import Cola, SistemaOcupado
 
-APP_VERSION = "wf-2"
+APP_VERSION = "wf-3"
 NOMBRE_DE_LA_APP = "vitalcom-app"
 COLA_TRABAJOS = "trabajos"
 COLA_ESCRITURA = "escritura"
@@ -69,6 +70,11 @@ PASOS: dict[str, list[str]] = {
         "paso_sellar", "DBOS.set_event", "enqueue:escritura", "DBOS.set_event", "DBOS.set_event",
         "DBOS.recv", "DBOS.set_event", "DBOS.set_event", "enqueue:escritura", "paso_leer_flujo",
         "paso_cerrar", "DBOS.set_event",
+    ],
+    "wf_pasos": [
+        "paso_sellar", "DBOS.set_event", "paso_preparar_pasos", "DBOS.set_event", "enqueue:escritura",
+        "DBOS.set_event", "DBOS.set_event", "DBOS.recv", "DBOS.set_event", "DBOS.set_event", "enqueue:escritura",
+        "enqueue:escritura", "paso_leer_flujo", "paso_cerrar", "DBOS.set_event",
     ],
     "wf_meta": [
         "paso_sellar", "DBOS.set_event", "enqueue:escritura", "enqueue:escritura",
@@ -395,7 +401,8 @@ def _detalle_de_bloqueantes(resumen: dict[str, Any]) -> str:
 
 # Cada tipo de unidad → el NOMBRE de su corredor. Se resuelve por nombre al usarlo, no al importar: así
 # una prueba puede reemplazar el corredor (p. ej. uno que muere a mitad) y el runner lo respeta.
-_CORREDORES = {"script": "correr_script", "claude": "correr_claude", "meta_ejecucion": "correr_meta_ejecucion"}
+_CORREDORES = {"script": "correr_script", "claude": "correr_claude", "meta_ejecucion": "correr_meta_ejecucion",
+               "claude_grupo": "correr_grupo"}
 
 
 # ── la unidad de escritura ────────────────────────────────────────────────────
@@ -655,6 +662,294 @@ def wf_claude(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[s
         unidad = _cola(COLA_ESCRITURA).enqueue(wf_unidad, job_id, vueltas + 1, continuacion).get_result(
             polling_interval_sec=SONDEO_DE_RESULTADO_S)
         unidades.append(unidad)
+    situacion = paso_leer_flujo(sello)
+    resultado = paso_cerrar(sello, unidades, situacion)
+    DBOS.set_event("estado", {"estado": resultado["estado"]})
+    return resultado
+
+
+# ── una skill DE A UN PASO: una llamada de Claude por etapa (diseño Hito 4, aprobado 18-sep-2026) ──
+#
+# La secuencia NO es de la app: los `pasos` del manifiesto son la `secuencia` de FLUJO.json agrupada
+# (gen_app.py, regla V20). Cada paso corre en su propia llamada headless; los de un mismo grupo, a la
+# vez. La salida textual de cada etapa se saca del registro (`claude.salida_de_subagente`) y queda en
+# `<corrida>/etapas/NN_<etapa>.md`: de ahí la leen las etapas siguientes y las pantallas.
+
+CARPETA_DE_ETAPAS = "etapas"
+ARCHIVO_DE_PASOS = "pasos.json"
+INPUTS_CONGELADOS = "00_INPUTS_CONGELADOS.md"
+# Las columnas de la fila que SON insumos del operador. Las demás (cifras de costeo, estado,
+# fase) las escribe la propia corrida: si entraran en la huella, retomar nunca sería posible.
+COLUMNAS_INSUMO = ("producto_key", "nombre_display", "slug_carpeta", "costo_q", "moneda", "tasa",
+                   "carpeta_transcripciones", "carpeta_media")
+
+
+def _es_script(etapa: str) -> bool:
+    return "/" in etapa
+
+
+def salida_del_paso(n_paso: int, etapa: str) -> str:
+    """`03_lavar_videos.md`, `06_etapa-2.md`: el archivo donde queda lo que devolvió la etapa."""
+    nombre = Path(etapa).stem if _es_script(etapa) else etapa
+    return f"{n_paso:02d}_{re.sub(r'[^A-Za-z0-9._-]+', '_', nombre)}.md"
+
+
+def _unidad_del_paso(i: int, vuelta: int = 0) -> int:
+    return 100 + 10 * i + vuelta
+
+
+def huella_de_insumos(producto_key: str) -> str:
+    """Los insumos congelados del producto (invariante 5): si cambian, no se retoma, se corre completo.
+
+    Entra la fila (solo sus columnas de insumo), cada transcripción (nombre y contenido), la fila de
+    `_DIM_ENVASE.csv` y los bytes del packshot que declara.
+    """
+    h = hashlib.sha256()
+    fila = contratos.fila_de_producto(producto_key)
+    h.update(json.dumps({c: fila.get(c, "") for c in COLUMNAS_INSUMO}, sort_keys=True).encode("utf-8"))
+    carpeta = ruta("Ads", "1.2 Transcripcion videos", fila.get("carpeta_transcripciones") or producto_key)
+    for archivo in sorted(carpeta.glob("*.txt")) if carpeta.is_dir() else []:
+        h.update(archivo.name.encode("utf-8"))
+        h.update(archivo.read_bytes())
+    envase = ruta("PRODUCTOS", "_DIM_ENVASE.csv")
+    if envase.is_file():
+        with open(envase, encoding="utf-8", newline="") as archivo_csv:
+            for fila_envase in csv.DictReader(archivo_csv):
+                if fila_envase.get("producto_key") == producto_key:
+                    h.update(json.dumps(fila_envase, sort_keys=True).encode("utf-8"))
+                    packshot = ruta(*(fila_envase.get("packshot") or "").split("/")) if fila_envase.get("packshot") else None
+                    if packshot is not None and packshot.is_file():
+                        h.update(packshot.read_bytes())
+    return h.hexdigest()
+
+
+def leer_pasos(carpeta: Path) -> dict[str, Any] | None:
+    try:
+        return json.loads((carpeta / ARCHIVO_DE_PASOS).read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+
+_lock_de_pasos = threading.Lock()
+
+
+def _anotar_paso(carpeta: Path, indice: int, cambios: dict[str, Any], miembro: str | None = None) -> None:
+    """Actualiza `pasos.json` (lo que la pantalla muestra del avance). Reescritura atómica."""
+    with _lock_de_pasos:
+        tablero = leer_pasos(carpeta) or {"pasos": []}
+        paso = tablero["pasos"][indice]
+        if miembro is None:
+            paso.update(cambios)
+        else:
+            next(m for m in paso["miembros"] if m["etapa"] == miembro).update(cambios)
+        bitacora.reescribir_en_corrida(carpeta, ARCHIVO_DE_PASOS, json.dumps(tablero, ensure_ascii=False, indent=1))
+
+
+@DBOS.step()
+def paso_preparar_pasos(sello: dict[str, Any], retomar_de: str | None) -> dict[str, Any]:
+    """La huella de los insumos, la carpeta de etapas y —si se retoma— lo que se hereda.
+
+    Se hereda SOLO si la corrida anterior es de la misma acción, el mismo producto y los mismos
+    insumos, y solo los pasos que terminaron bien, en orden: el primero que no terminó bien y todo
+    lo que sigue se corre de nuevo.
+    """
+    pasos = sello["accion"]["pasos"]
+    producto = sello["parametros"]["producto_key"]
+    carpeta = ruta(sello["run_dir"])
+    huella = huella_de_insumos(producto)
+    desde, detalle = 0, ""
+    previo_carpeta = bitacora.buscar_corrida(retomar_de) if retomar_de else None
+    previo = leer_pasos(previo_carpeta) if previo_carpeta else None
+    if retomar_de and previo is None:
+        detalle = "No encontré la corrida anterior: se corre completo."
+    elif previo is not None and (previo.get("accion_id") != sello["accion"]["id"] or previo.get("producto_key") != producto):
+        previo, detalle = None, "La corrida anterior es de otra acción u otro producto: se corre completo."
+    elif previo is not None and previo.get("huella") != huella:
+        previo, detalle = None, ("Los insumos del producto cambiaron desde la corrida anterior (costo, transcripciones o "
+                                 "foto): se corre completo, sin heredar nada (invariante 5).")
+    tablero = {"accion_id": sello["accion"]["id"], "producto_key": producto, "huella": huella,
+               "retomado_de": retomar_de if previo else None, "pasos": []}
+    heredando = previo is not None
+    for i, grupo in enumerate(pasos):
+        miembros = [{"etapa": e, "salida": salida_del_paso(i + 1, e), "estado": "PENDIENTE"} for e in grupo]
+        estado = "PENDIENTE"
+        if heredando:
+            anterior = (previo.get("pasos") or [])[i] if i < len(previo.get("pasos") or []) else None
+            archivos = [previo_carpeta / CARPETA_DE_ETAPAS / m["salida"] for m in miembros]
+            if anterior and anterior.get("estado") in ("EXITO", "HEREDADO") and all(a.is_file() for a in archivos):
+                for archivo in archivos:
+                    bitacora.heredar_de_corrida(previo_carpeta, carpeta, f"{CARPETA_DE_ETAPAS}/{archivo.name}")
+                for m in miembros:
+                    m["estado"] = "HEREDADO"
+                estado, desde = "HEREDADO", i + 1
+            else:
+                heredando = False
+        tablero["pasos"].append({"n": i + 1, "etapas": grupo, "estado": estado, "miembros": miembros})
+    if previo is not None and (previo_carpeta / CARPETA_DE_ETAPAS / INPUTS_CONGELADOS).is_file() and desde:
+        bitacora.heredar_de_corrida(previo_carpeta, carpeta, f"{CARPETA_DE_ETAPAS}/{INPUTS_CONGELADOS}")
+    if previo is not None and desde:
+        detalle = f"Retoma desde el paso {desde + 1}: los pasos 1 a {desde} se heredan de la corrida anterior."
+    bitacora.reescribir_en_corrida(carpeta, ARCHIVO_DE_PASOS, json.dumps(tablero, ensure_ascii=False, indent=1))
+    return {"huella": huella, "desde": desde, "detalle": detalle}
+
+
+def _prompt_del_paso(sello: dict[str, Any], i: int, etapa: str) -> str:
+    pasos = sello["accion"]["pasos"]
+    producto = sello["parametros"]["producto_key"]
+    fila = contratos.fila_de_producto(producto)
+    etapas_dir = f"{sello['run_dir']}/{CARPETA_DE_ETAPAS}"
+    otras = [e for e in pasos[i] if e != etapa]
+    previos = [INPUTS_CONGELADOS] + [salida_del_paso(j + 1, e) for j in range(i) for e in pasos[j]]
+    valores = {
+        "{job_id}": sello["job_id"], "{skill}": sello["accion"]["name"], "{producto_key}": producto,
+        "{slug}": fila.get("slug_carpeta") or producto, "{etapa}": etapa, "{n}": str(i + 1), "{de}": str(len(pasos)),
+        "{etapas_dir}": etapas_dir,
+        "{lista_pasos}": " → ".join(" ∥ ".join(g) for g in pasos),
+        "{paralelo}": (f" En paralelo, en otra llamada, corre `{'`, `'.join(otras)}`: no la invoques ni esperes su salida."
+                       if otras else ""),
+        "{previos}": ", ".join(f"{etapas_dir}/{p}" for p in previos),
+    }
+    texto = "\n".join(sello["claude"]["prompt_paso"])
+    for marcador, valor in valores.items():
+        texto = texto.replace(marcador, valor)
+    return texto
+
+
+def spec_de_paso(sello: dict[str, Any], i: int, *, solo: str | None = None, resume: str | None = None,
+                 prompt: str | None = None, vuelta: int = 0) -> dict[str, Any]:
+    """La unidad de un paso: una llamada de Claude por etapa del grupo, todas a la vez.
+
+    Con `solo`/`resume`/`prompt` es la continuación de UNA etapa del grupo después de una pregunta.
+    Nunca lleva herramientas de Meta (igual que `spec_de_claude`).
+    """
+    accion = sello["accion"]
+    n = _unidad_del_paso(i, vuelta)
+    base_claude = spec_de_claude(sello)["claude"]
+    miembros = []
+    for etapa in accion["pasos"][i]:
+        if solo is not None and etapa != solo:
+            continue
+        miembros.append({
+            "etapa": etapa, "es_script": _es_script(etapa), "salida": salida_del_paso(i + 1, etapa),
+            "nombre_log": f"{n}_{Path(salida_del_paso(i + 1, etapa)).stem}.jsonl",
+            "claude": {**base_claude, "prompt": prompt if prompt is not None else _prompt_del_paso(sello, i, etapa),
+                       "resume": resume},
+        })
+    return {"tipo": "claude_grupo", "accion_id": accion["id"], "idempotente": False, "escribe": accion["escribe"],
+            "tras": False, "tiempo_max_s": accion["tiempo_max_s"], "run_dir": sello["run_dir"], "indice": i,
+            "miembros": miembros}
+
+
+def _correr_miembro(job_id: str, n: int, spec: dict[str, Any], miembro: dict[str, Any]) -> dict[str, Any]:
+    carpeta = ruta(spec["run_dir"])
+    _anotar_paso(carpeta, spec["indice"], {"estado": "CORRIENDO", "log": miembro["nombre_log"]}, miembro["etapa"])
+    resumen = correr_claude(job_id, n, {**spec, "claude": miembro["claude"]}, miembro["nombre_log"])
+    resumen = {"etapa": miembro["etapa"], "salida": miembro["salida"], **resumen}
+    if resumen["estado"] == "EXITO" and not resumen.get("pregunta"):
+        # La etapa pudo correr ANTES de una pregunta (en la primera vuelta) y la continuación solo cerrar:
+        # se lee el registro de todas las vueltas de este paso, en orden, y vale la última salida.
+        propia = Path(miembro["nombre_log"]).stem.split("_", 1)[1]
+        vueltas = sorted((x for x in carpeta.glob(f"*_{propia}.jsonl")
+                          if x.name.split("_", 1)[0].isdigit() and int(x.name.split("_", 1)[0]) // 10 == n // 10),
+                         key=lambda x: int(x.name.split("_", 1)[0]))
+        lineas = [linea for x in vueltas for linea in x.read_text(encoding="utf-8", errors="replace").splitlines()]
+        texto = resumen.get("texto_final") if miembro["es_script"] else claude.salida_de_subagente(lineas, miembro["etapa"])
+        if texto:
+            bitacora.reescribir_en_corrida(carpeta, f"{CARPETA_DE_ETAPAS}/{miembro['salida']}", texto + "\n")
+        elif not (carpeta / CARPETA_DE_ETAPAS / miembro["salida"]).is_file():
+            resumen = {**resumen, "estado": "FALLIDO",
+                       "detalle": f"Claude terminó sin invocar `{miembro['etapa']}`: no hay salida de la etapa que guardar."}
+    visible = "ESPERA_RESPUESTA" if resumen["estado"] == "EXITO" and resumen.get("pregunta") else resumen["estado"]
+    _anotar_paso(carpeta, spec["indice"], {
+        "estado": visible, "detalle": resumen.get("detalle", ""), "pregunta": resumen.get("pregunta"),
+        "costo_equivalente_usd": resumen.get("costo_equivalente_usd"), "duracion_s": resumen.get("duracion_s"),
+    }, miembro["etapa"])
+    return resumen
+
+
+def _contexto_de_la_pregunta(miembro: dict[str, Any]) -> str:
+    texto = miembro.get("texto_final") or ""
+    return texto[:texto.rfind(claude.MARCA_DE_PREGUNTA)].strip()[-3000:] if claude.MARCA_DE_PREGUNTA in texto else ""
+
+
+def correr_grupo(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
+    """Las etapas de un paso, cada una en su llamada y todas a la vez. Veredicto: el peor de los miembros."""
+    carpeta = ruta(spec["run_dir"])
+    _anotar_paso(carpeta, spec["indice"], {"estado": "CORRIENDO"})
+    resultados: list[dict[str, Any] | None] = [None] * len(spec["miembros"])
+
+    def _uno(k: int) -> None:
+        resultados[k] = _correr_miembro(job_id, n, spec, spec["miembros"][k])
+
+    hilos = [threading.Thread(target=_uno, args=(k,), daemon=True) for k in range(len(spec["miembros"]))]
+    for hilo in hilos:
+        hilo.start()
+    for hilo in hilos:
+        hilo.join()
+    miembros = [r or {"estado": "FALLIDO", "detalle": "la etapa no devolvió resultado"} for r in resultados]
+    malo = next((m for m in miembros if m["estado"] != "EXITO"), None)
+    pregunta = next((m for m in miembros if m.get("pregunta")), None)
+    tablero = leer_pasos(carpeta) or {"pasos": []}
+    estados = [m["estado"] for m in tablero["pasos"][spec["indice"]]["miembros"]]
+    _anotar_paso(carpeta, spec["indice"], {
+        "estado": malo["estado"] if malo else ("ESPERA_RESPUESTA" if "ESPERA_RESPUESTA" in estados else "EXITO")})
+    return {
+        "estado": malo["estado"] if malo else "EXITO",
+        "detalle": f"{malo['etapa']}: {malo.get('detalle', '')}" if malo else "",
+        "miembros": miembros,
+        "pregunta": pregunta.get("pregunta") if pregunta else None,
+        "etapa_que_pregunta": pregunta["etapa"] if pregunta else None,
+        "session_id": pregunta.get("session_id") if pregunta else None,
+        # lo que la etapa dijo ANTES de preguntar (el porqué de un NO APTO): sin esto se decide a ciegas
+        "contexto": _contexto_de_la_pregunta(pregunta) if pregunta else None,
+    }
+
+
+@DBOS.workflow()
+def wf_pasos(job_id: str, accion_id: str, parametros: dict[str, Any], retomar_de: str | None = None) -> dict[str, Any]:
+    """Una skill de varias etapas, una llamada de Claude por etapa (los grupos, en paralelo)."""
+    sello = paso_sellar(job_id, accion_id, parametros)
+    DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": 1})
+    inicio = paso_preparar_pasos(sello, retomar_de)
+    pasos = sello["accion"]["pasos"]
+    unidades: list[dict[str, Any]] = []
+    preguntas = 0
+    for i in range(inicio["desde"], len(pasos)):
+        DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": _unidad_del_paso(i),
+                                  "paso": i + 1, "de": len(pasos), "etapas": pasos[i]})
+        unidad = _unidad_de(sello, _unidad_del_paso(i), spec_de_paso(sello, i))
+        vuelta = 0
+        while unidad["estado"] == "EXITO" and unidad.get("pregunta") and vuelta < MAXIMO_DE_PREGUNTAS:
+            vuelta += 1
+            preguntas += 1
+            DBOS.set_event("pendiente", {"tipo": "pregunta", "n": preguntas, "texto": unidad["pregunta"],
+                                         "etapa": unidad["etapa_que_pregunta"], "contexto": unidad.get("contexto")})
+            DBOS.set_event("estado", {"estado": "ESPERA_RESPUESTA", "unidad": _unidad_del_paso(i, vuelta)})
+            respuesta = DBOS.recv(f"respuesta:{preguntas}", timeout_seconds=sello["claude"]["respuesta_max_horas"] * 3600)
+            DBOS.set_event("pendiente", None)
+            if respuesta is None:
+                unidad = {**unidad, "estado": "CADUCADO", "detalle": "Nadie respondió la pregunta a tiempo."}
+                break
+            DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": _unidad_del_paso(i, vuelta),
+                                      "paso": i + 1, "de": len(pasos), "etapas": pasos[i]})
+            etapa = unidad["etapa_que_pregunta"]
+            continuacion = _unidad_de(sello, _unidad_del_paso(i, vuelta), spec_de_paso(
+                sello, i, solo=etapa, resume=unidad["session_id"], vuelta=vuelta,
+                prompt=f"{respuesta['texto']}\n\n(Seguí SOLO con el paso de `{etapa}`.)\nPASO_ETAPA: {etapa}"))
+            otros = [m for m in unidad["miembros"] if m["etapa"] != unidad["etapa_que_pregunta"]]
+            pendientes = [m for m in otros if m.get("pregunta")]
+            unidad = {**continuacion, "miembros": otros + continuacion["miembros"]}
+            if continuacion["estado"] == "EXITO" and not continuacion.get("pregunta") and pendientes:
+                siguiente = pendientes[0]
+                unidad.update(pregunta=siguiente["pregunta"], etapa_que_pregunta=siguiente["etapa"],
+                              session_id=siguiente["session_id"], contexto=_contexto_de_la_pregunta(siguiente))
+        unidades.append(unidad)
+        if unidad["estado"] != "EXITO" or unidad.get("pregunta"):
+            break
+    unidades.insert(0, {"estado": "EXITO", "detalle": inicio["detalle"], "desde": inicio["desde"]})
+    limpieza = _cola(COLA_ESCRITURA).enqueue(wf_limpieza, job_id, sello["run_dir"]).get_result(
+        polling_interval_sec=SONDEO_DE_RESULTADO_S)
+    unidades[-1] = {**unidades[-1], "tras": limpieza}
     situacion = paso_leer_flujo(sello)
     resultado = paso_cerrar(sello, unidades, situacion)
     DBOS.set_event("estado", {"estado": resultado["estado"]})
@@ -983,17 +1278,28 @@ def _activo_de(clave: str) -> str | None:
     return None
 
 
-def encolar(accion: dict[str, Any], valores: dict[str, Any], job_id: str) -> tuple[str, bool]:
-    """Pone el trabajo en la cola `trabajos`. Devuelve (job_id, repetido)."""
+def encolar(accion: dict[str, Any], valores: dict[str, Any], job_id: str,
+            retomar_de: str | None = None) -> tuple[str, bool]:
+    """Pone el trabajo en la cola `trabajos`. Devuelve (job_id, repetido).
+
+    `retomar_de` solo vale para una acción con `pasos`: el trabajo nuevo hereda los pasos que el
+    anterior terminó bien, si los insumos no cambiaron (`paso_preparar_pasos`).
+    """
     if existe(job_id):
         return job_id, True
-    padre = wf_meta if accion.get("toca_meta") else _PADRES.get(accion["ejecutor_tipo"])
+    if accion.get("pasos"):
+        padre = wf_pasos
+    else:
+        padre = wf_meta if accion.get("toca_meta") else _PADRES.get(accion["ejecutor_tipo"])
     if padre is None:
         raise ErrorDeAccion(501, "RUNNER_PENDIENTE", "Este tipo de acción todavía no está conectado al runner.")
     clave = valores.get("producto_key") or accion["id"]
     try:
         with SetWorkflowID(job_id), SetEnqueueOptions(deduplication_id=clave):
-            _cola(COLA_TRABAJOS).enqueue(padre, job_id, accion["id"], valores)
+            if padre is wf_pasos:
+                _cola(COLA_TRABAJOS).enqueue(padre, job_id, accion["id"], valores, retomar_de)
+            else:
+                _cola(COLA_TRABAJOS).enqueue(padre, job_id, accion["id"], valores)
     except DBOSQueueDeduplicatedError as error:
         raise ErrorDeAccion(
             409, "YA_EN_CURSO", f"Ya hay un trabajo en curso para «{clave}»: esperá a que termine.",

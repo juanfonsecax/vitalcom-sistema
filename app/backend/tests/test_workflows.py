@@ -28,6 +28,7 @@ BACKEND = Path(__file__).resolve().parents[1]
 HUELLAS = {
     "wf-1": "b493adfba080558e38876df1c0e08f400951d8c3fae26519f92647ac447a98cf",
     "wf-2": "25afdfd96202ac32cf4ca0d38a78b91a6af5d4aadb34c8d6aef657c515cd0b61",  # publicar espera las imágenes subidas a mano
+    "wf-3": "eb8ad85d7d1a6de342cc0e0a09c938f6e9b609c589d3126d01bf968d4ee2fe33",  # una skill de a un paso (Armar FASE 1)
 }
 
 JOB_A = "a" * 32
