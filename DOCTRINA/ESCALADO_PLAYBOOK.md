@@ -123,8 +123,9 @@ Cuando hay ganador validado, se sube por esta escalera (no todas de golpe):
    > brecha más cara del sistema (choque C-10 de la matriz). `etapa-11` corre **al confirmar el
    > ángulo ganador**, mide el **CIERRE** (mensajes → ventas) por `angulo_key` con piso de
    > evidencia, separa el problema **pre-clic** del **post-clic**, audita la congruencia ad ↔ bot
-   > punto por punto, lee los chats y entrega el **brief priorizado** a `etapa-5` — que sigue siendo
-   > el dueño único del texto del flujo.
+   > punto por punto, lee los chats y entrega el **brief priorizado** a `etapa-5` — que escribe los
+   > bloques de juicio y las frases del ángulo. El **texto fijo** del flujo es de
+   > `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` y se renderiza con `Ads/_TOOLS/gen_flujo_bot.py`.
    > **El orden de los cambios no es libre:** propuestas de valor primero (M-F06), después fricción,
    > congruencia, oferta y FAQ.
    > **Y el cambio no se hace a ciegas:** se corre un **A/B de flujo** — brazo A el paraguas

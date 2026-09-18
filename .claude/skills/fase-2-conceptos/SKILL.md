@@ -75,14 +75,18 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
   `<pagina_asignada>`. Output: **el copy único** de la fase (texto/título/descripción) + sus 3
   variaciones de respaldo. **No** 6 copies distintos: el copy es constante de control.
 - **`etapa-5` (FASE 2)** — Inputs: ángulo ganador (con nivel de conciencia), producto,
-  P1u/P2u/P3u, `<costo_envio_cliente>` = Q0, `<pagina_asignada>` y **el brief de `etapa-11`**. País
-  Guatemala, transportadoras GINTACOM/FORZA. Output: **los DOS flujos del A/B** — brazo A = el
-  paraguas vigente con los cambios del brief aplicados; brazo B = flujo LucidBot de un solo ángulo
-  (13 elementos) + texto fijo de M2 y GUION DEL AUDIO TESTIMONIO (voz del avatar ganador), mensaje
-  inicial = dolor exacto del ganador.
+  `producto_key`, `<pagina_asignada>` y **el brief de `etapa-11`**. El mercado, las transportadoras
+  y los precios **no se pasan a mano**: salen de `_DIM_MERCADOS.csv` y `_DIM_PRECIOS.csv`.
+  Output: **los DOS brazos del A/B** — brazo A = el paraguas vigente con los cambios del brief
+  aplicados; brazo B = las frases del ángulo ganador en `_DIM_FLUJO_BOT.csv` + sus bloques de
+  juicio (testimonios, audio, M2 con su guión de audio testimonio, FAQ).
 
-  > `etapa-5` sigue siendo el **dueño único del texto del flujo**. `etapa-11` diagnostica y
-  > prioriza; `etapa-5` redacta. Misma división que `etapa-10` → `etapa-9`.
+  > **El texto fijo es de `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`; `etapa-5` escribe el JUICIO.**
+  > `etapa-11` diagnostica y prioriza; `etapa-5` redacta. Misma división que `etapa-10` → `etapa-9`.
+  > El brief entra por las **propuestas de valor primero** (es la palanca #1 del cierre según la
+  > clase 22-ago), después fricción, congruencia ad ↔ bot, oferta y FAQ nuevas.
+  > Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` y anexar `CAMBIO_BOT` a
+  > `_EVENTOS.csv` el día que se aplica: el efecto se nota en horas.
 
 ---
 

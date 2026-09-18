@@ -65,8 +65,15 @@ FanPage de pauta: [página + identidad]   ·   Edad de segmentación: [XX+]
 ── D. COPIES POR CONJUNTO (copiar y pegar en Meta) ──
 [Los 6 copies COMPLETOS verbatim: 3 textos + 3 títulos + descripción por ángulo, con marca de "lleva precio: sí/no"]
 
-── E. FLUJO LUCIDBOT COMPLETO (copiar y pegar en LucidBot) ──
-[El flujo ENTERO verbatim: catálogo, 13 elementos, 5 interacciones, los 3 mensajes de inactividad (texto fijo de M2 + guion del audio testimonio), FAQs, reglas — campo por campo]
+── E. FLUJO LUCIDBOT ──
+El flujo NO se copia verbatim acá: está DECLARADO y se genera.
+  → `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` escribe `PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`
+  → `python Ads/_TOOLS/gen_flujo_bot.py [producto_key] --copy` imprime solo lo que se pega
+Lo que sí se guarda en esta sección: los BLOQUES DE JUICIO que produjo `etapa-5` y que el
+generador no inventa — los 4 campos del catálogo, los testimonios con sus textos redactados,
+el guión del audio, el texto de M2 con su audio testimonio, y las FAQ.
+⚠️ VERIFICAR ANTES DE LANZAR: si el producto se importó de Superbodega, LucidBot queda
+DESACTIVADO y el mensaje inicial no sale. Activarlo es manual.
 
 ── F. CHECKLIST ANTES DE LANZAR ──
 [Pasos finales: revisar 12 anuncios, precio donde corresponde, programar 4 AM, etc.]

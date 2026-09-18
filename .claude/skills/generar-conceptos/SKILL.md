@@ -152,11 +152,11 @@ usar en silencio los textos del ángulo anterior, y esta skill los vuelve a prod
 | `HOOK_TITULAR`, `SUB_HOOK`, `ACTIVOS_CLAVE` (lista), `GARANTIAS`, `CTA` | **obligatorios**: sin ellos el script bloquea |
 | `PRODUCTO`, `DESCRIPTOR`, `SINTOMA_ANTES`, `RESULTADO_DESPUES` | opcionales |
 
-**El texto del bot NO va en este archivo.** El flujo de LucidBot tiene un solo dueño, `etapa-5`, y
-vive en `PRODUCTOS/[X]/1_HACER_MANUAL.txt`. Su regla choca con cualquier "adaptación" por ángulo:
-el saludo es **FIJO, sin el dolor del ángulo**, y **no hay pregunta de opciones** (`ETAPA-5.md`).
-El dolor va en el anuncio. (Hasta el 16-sep-2026 `armar_prompts_fase2.py` generaba un saludo con
-dolor + pregunta de calificación, escrito para CLEARSTEM y aplicado a todos: se retiró.)
+**El texto del bot NO va en este archivo.** El flujo de LucidBot está **declarado** en
+`DOCTRINA/PLANTILLAS_FLUJO_BOT.md` y lo renderiza `Ads/_TOOLS/gen_flujo_bot.py` en
+`PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`. Su regla choca con cualquier "adaptación" por ángulo: el
+saludo es **FIJO, sin el dolor del ángulo y sin el nombre de la asesora**, y **no hay pregunta de
+opciones**. El dolor va en el anuncio. Ningún generador de creativos escribe texto de bot.
 
 ### PASO 4 — Replicar el dispositivo tal como el banco lo documenta
 
