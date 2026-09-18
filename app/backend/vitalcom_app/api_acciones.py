@@ -11,7 +11,7 @@ import uuid
 
 from fastapi import APIRouter
 
-from . import acciones, workflows
+from . import acciones, claude, workflows
 from .acciones import ErrorDeAccion
 from .modelos import Accion, AccionEncolada, PedidoAccion
 
@@ -45,7 +45,12 @@ def validar_pedido(accion_id: str, pedido: PedidoAccion) -> tuple[dict, dict]:
                             "Falta tu confirmación: esta acción cambia archivos del sistema.",
                             escribe=accion.get("escribe", []), tiempo_max_s=accion.get("tiempo_max_s"),
                             toca_meta=accion.get("toca_meta"))
-    acciones.exigir_nodo_listo(accion, valores)                           # 9 (el 8, Claude, llega con claude.py)
+    if accion["ejecutor_tipo"] in ("subagente", "skill", "mcp"):          # 8
+        try:
+            claude.exigir_sesion()
+        except claude.ClaudeNoDisponible as error:
+            raise ErrorDeAccion(503, error.codigo, error.detalle) from error
+    acciones.exigir_nodo_listo(accion, valores)                           # 9
     return accion, valores
 
 

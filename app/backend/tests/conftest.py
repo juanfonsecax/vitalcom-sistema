@@ -46,22 +46,31 @@ def sistema_de_juguete(tmp_path: Path, base_declarada: Path, monkeypatch):
 
     La base de datos de la app (DBOS) va a otra carpeta temporal: nunca dentro del sistema.
     """
+    import json
+    import sys
+
     import sistema_de_juguete as juguete
-    from vitalcom_app import acciones, config
+    from vitalcom_app import acciones, claude, config
 
     sistema = tmp_path / "sistema"
     sistema.mkdir()
     juguete.crear(sistema)
     monkeypatch.setenv("VITALCOM_BASE", str(sistema))
     monkeypatch.setenv("VITALCOM_DATOS", str(tmp_path / "datos"))
+    # Ninguna prueba llama al Claude real: el falso habla el mismo stream-json.
+    monkeypatch.setenv("VITALCOM_CLAUDE_CMD", json.dumps([sys.executable, str(Path(__file__).with_name("fake_claude.py"))]))
+    for prohibida in ("ANTHROPIC_API_KEY", "CLAUDE_CODE_OAUTH_TOKEN"):
+        monkeypatch.delenv(prohibida, raising=False)
     config.base.cache_clear()
     acciones.olvidar_cache()
+    claude.olvidar_sesion()
     try:
         yield sistema
     finally:
         monkeypatch.setenv("VITALCOM_BASE", str(base_declarada))
         config.base.cache_clear()
         acciones.olvidar_cache()
+        claude.olvidar_sesion()
 
 
 @pytest.fixture()

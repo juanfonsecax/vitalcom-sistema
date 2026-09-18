@@ -36,7 +36,7 @@ from typing import Any
 from dbos import DBOS, SetEnqueueOptions, SetWorkflowID
 from dbos._error import DBOSQueueDeduplicatedError
 
-from . import acciones, bitacora, contratos
+from . import acciones, bitacora, claude, contratos
 from .acciones import ErrorDeAccion
 from .config import base, datos_de_la_app, python_del_sistema, ruta
 from .escrituras import Cola, SistemaOcupado
@@ -46,6 +46,8 @@ NOMBRE_DE_LA_APP = "vitalcom-app"
 COLA_TRABAJOS = "trabajos"
 COLA_ESCRITURA = "escritura"
 SONDEO_DE_RESULTADO_S = 0.2
+MAXIMO_DE_PREGUNTAS = 5
+TOPE_DE_TEXTO_DE_CLAUDE = 4000
 TOPE_DE_ESPERA_DEL_TURNO_S = 3600
 
 # Los pasos que cada workflow llama, en orden. Si esta lista cambia, cambia la versión.
@@ -54,6 +56,11 @@ PASOS: dict[str, list[str]] = {
     "wf_script": [
         "paso_sellar", "DBOS.set_event", "enqueue:escritura", "paso_leer_flujo", "paso_cerrar",
         "DBOS.set_event",
+    ],
+    "wf_claude": [
+        "paso_sellar", "DBOS.set_event", "enqueue:escritura", "DBOS.set_event", "DBOS.set_event",
+        "DBOS.recv", "DBOS.set_event", "DBOS.set_event", "enqueue:escritura", "paso_leer_flujo",
+        "paso_cerrar", "DBOS.set_event",
     ],
 }
 
@@ -194,8 +201,51 @@ def correr_script(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
     return _interpretar_salida(spec, corrida)
 
 
+def _registrar_proceso(job_id: str):  # type: ignore[no-untyped-def]
+    def _al_arrancar(proceso: subprocess.Popen) -> None:
+        with _lock_de_procesos:
+            _procesos[job_id] = proceso
+
+    return _al_arrancar
+
+
 def correr_claude(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
-    return {"estado": "FALLIDO", "detalle": "Las acciones de Claude todavía no están conectadas."}
+    """Una llamada headless a Claude Code. La salida cruda va a `<n>_claude.jsonl` en la bitácora."""
+    carpeta = ruta(spec["run_dir"])
+    pedido = spec["claude"]
+    try:
+        with bitacora.abrir_log(carpeta, f"{n}_claude.jsonl") as log:
+            def _escribir(linea: str) -> None:
+                log.write((linea + "\n").encode("utf-8"))
+                log.flush()
+
+            resultado = claude.correr(
+                prompt=pedido["prompt"], herramientas=pedido["herramientas"],
+                presupuesto_usd=pedido["presupuesto_usd"], tiempo_max_s=spec["tiempo_max_s"],
+                escribir_linea=_escribir, resume=pedido.get("resume"),
+                al_arrancar=_registrar_proceso(job_id), debe_cortar=lambda: job_id in _cancelados,
+                matar=_matar_arbol,
+            )
+    except claude.ClaudeNoDisponible as error:
+        return {"estado": "FALLIDO", "detalle": error.detalle, "codigo": error.codigo}
+    finally:
+        with _lock_de_procesos:
+            _procesos.pop(job_id, None)
+    resumen: dict[str, Any] = {
+        "session_id": resultado.session_id, "pregunta": resultado.pregunta,
+        "texto_final": resultado.texto_final[-TOPE_DE_TEXTO_DE_CLAUDE:],
+        "costo_equivalente_usd": resultado.costo_equivalente_usd, "num_turns": resultado.num_turns,
+        "duracion_s": resultado.duracion_s, "subtype": resultado.subtype,
+    }
+    if resultado.subtype == "cancelado":
+        return {**resumen, "estado": "CANCELADO", "detalle": "El trabajo se canceló."}
+    if resultado.subtype == "timeout":
+        return {**resumen, "estado": "FALLIDO",
+                "detalle": f"Claude pasó del tope de {spec['tiempo_max_s']} s y se cortó."}
+    if not resultado.ok:
+        return {**resumen, "estado": "FALLIDO",
+                "detalle": f"Claude terminó mal ({resultado.subtype}): {resultado.texto_final[-400:]}"}
+    return {**resumen, "estado": "EXITO"}
 
 
 # ── la unidad de escritura ────────────────────────────────────────────────────
@@ -255,6 +305,15 @@ def wf_unidad(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
 
 # ── el padre de las acciones de script ────────────────────────────────────────
 
+def _ejecutor_textual(accion: dict[str, Any], producto: str | None) -> str:
+    """El texto de `ejecutor` que ya devuelve `flujo.py`; si el nodo no es el actual, el del manifiesto."""
+    if producto and accion.get("nodo"):
+        flujo = contratos.flujo(producto)
+        if acciones.es_el_mismo_nodo(accion["nodo"], flujo.get("nodo_actual", "")) and flujo.get("ejecutor"):
+            return flujo["ejecutor"]
+    return f"{accion['ejecutor_tipo']} `{accion.get('name')}`"
+
+
 @DBOS.step()
 def paso_sellar(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[str, Any]:
     """Todo lo no determinista, de una vez: al retomar se usa esta copia, no el disco de hoy."""
@@ -268,8 +327,11 @@ def paso_sellar(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict
         "run_dir": run_dir, "job_id": job_id, "hoy": ahora.date().isoformat(),
         "tmp": str(Path(tempfile.gettempdir()) / f"vitalcom-{job_id[:8]}"),
     }
+    producto = valores.get("producto_key")
     sello = {
         "job_id": job_id, "accion": accion, "parametros": valores,
+        "ejecutor": _ejecutor_textual(accion, producto),
+        "claude": acciones.cargar().bloque.get("claude") if accion["ejecutor_tipo"] in ("subagente", "skill") else None,
         "manifiesto_sha": acciones.sha_del_manifiesto(), "hoy": reservados["hoy"],
         "iniciado": iniciado, "run_dir": run_dir, "app_version": APP_VERSION,
         "argv": acciones.resolver(accion, valores, reservados) if accion["ejecutor_tipo"] == "script" else None,
@@ -285,6 +347,40 @@ def spec_de_script(sello: dict[str, Any]) -> dict[str, Any]:
         "idempotente": bool(accion.get("idempotente")), "escribe": accion["escribe"],
         "tiempo_max_s": accion["tiempo_max_s"], "salida": accion.get("salida", "texto"),
         "run_dir": sello["run_dir"],
+    }
+
+
+def prompt_del_nodo(sello: dict[str, Any]) -> str:
+    """El «prompt mínimo» del nodo (manifiesto `acciones.claude.prompt_nodo`); la doctrina la carga CLAUDE.md."""
+    producto = sello["parametros"].get("producto_key")
+    lineas = [
+        linea for linea in sello["claude"]["prompt_nodo"]
+        # sin producto no hay nada que consultarle a flujo.py
+        if producto or "flujo.py {producto_key}" not in linea
+    ]
+    valores = {
+        "{job_id}": sello["job_id"], "{nodo}": sello["accion"].get("nodo") or sello["accion"]["id"],
+        "{producto_key}": producto or "(acción global, sin producto)", "{ejecutor}": sello["ejecutor"],
+    }
+    texto = "\n".join(lineas)
+    for marcador, valor in valores.items():
+        texto = texto.replace(marcador, valor)
+    return texto
+
+
+def spec_de_claude(sello: dict[str, Any], *, resume: str | None = None, prompt: str | None = None) -> dict[str, Any]:
+    """Una unidad de Claude. NUNCA lleva herramientas de Meta: esas solo las recibe `wf_meta`."""
+    accion = sello["accion"]
+    herramientas = list(dict.fromkeys([*sello["claude"]["herramientas_base"], *accion.get("herramientas", [])]))
+    if any(h.startswith("mcp__") or "*" in h for h in herramientas):
+        raise ValueError("wf_claude no recibe herramientas de MCP ni comodines.")
+    return {
+        "tipo": "claude", "accion_id": accion["id"], "idempotente": False, "escribe": accion["escribe"],
+        "tiempo_max_s": accion["tiempo_max_s"], "run_dir": sello["run_dir"],
+        "claude": {
+            "prompt": prompt if prompt is not None else prompt_del_nodo(sello),
+            "herramientas": herramientas, "presupuesto_usd": accion["presupuesto_usd"], "resume": resume,
+        },
     }
 
 
@@ -316,6 +412,8 @@ def estado_final(unidades: list[dict[str, Any]], situacion: dict[str, Any] | Non
             detalle = ("El trabajo terminó, pero el barrido encontró un CSV inválido." if tras["estado"] == "CSV_INVALIDO"
                        else "El trabajo terminó, pero no se pudo regenerar el estado derivado.")
             return tras["estado"], detalle
+    if unidades and unidades[-1].get("pregunta"):
+        return "SIN_CUMPLIR", "Claude sigue esperando una respuesta después de varias preguntas."
     if situacion is not None and situacion.get("cumplido") is not True:
         return "SIN_CUMPLIR", "El paso terminó bien, pero flujo.py dice que el nodo sigue pendiente."
     return "EXITO", ""
@@ -347,9 +445,38 @@ def wf_script(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[s
     return resultado
 
 
+@DBOS.workflow()
+def wf_claude(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[str, Any]:
+    """Un nodo = UNA llamada headless. La skill es dueña de su secuencia y de sus paralelos."""
+    sello = paso_sellar(job_id, accion_id, parametros)
+    DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": 1})
+    unidad = _cola(COLA_ESCRITURA).enqueue(wf_unidad, job_id, 1, spec_de_claude(sello)).get_result(
+        polling_interval_sec=SONDEO_DE_RESULTADO_S)
+    unidades = [unidad]
+    vueltas = 0
+    while unidad["estado"] == "EXITO" and unidad.get("pregunta") and vueltas < MAXIMO_DE_PREGUNTAS:
+        vueltas += 1
+        DBOS.set_event("pendiente", {"tipo": "pregunta", "n": vueltas, "texto": unidad["pregunta"]})
+        DBOS.set_event("estado", {"estado": "ESPERA_RESPUESTA", "unidad": vueltas})
+        respuesta = DBOS.recv(f"respuesta:{vueltas}", timeout_seconds=sello["claude"]["respuesta_max_horas"] * 3600)
+        DBOS.set_event("pendiente", None)
+        if respuesta is None:
+            unidades.append({"estado": "CADUCADO", "detalle": "Nadie respondió la pregunta a tiempo."})
+            break
+        DBOS.set_event("estado", {"estado": "CORRIENDO", "unidad": vueltas + 1})
+        continuacion = spec_de_claude(sello, resume=unidad["session_id"], prompt=respuesta["texto"])
+        unidad = _cola(COLA_ESCRITURA).enqueue(wf_unidad, job_id, vueltas + 1, continuacion).get_result(
+            polling_interval_sec=SONDEO_DE_RESULTADO_S)
+        unidades.append(unidad)
+    situacion = paso_leer_flujo(sello)
+    resultado = paso_cerrar(sello, unidades, situacion)
+    DBOS.set_event("estado", {"estado": resultado["estado"]})
+    return resultado
+
+
 # ── lo que usan los endpoints ─────────────────────────────────────────────────
 
-_PADRES = {"script": wf_script}
+_PADRES = {"script": wf_script, "subagente": wf_claude, "skill": wf_claude}
 
 
 def existe(job_id: str) -> bool:
@@ -381,6 +508,16 @@ def encolar(accion: dict[str, Any], valores: dict[str, Any], job_id: str) -> tup
             job_id=_activo_de(clave),
         ) from error
     return job_id, False
+
+
+def responder(job_id: str, n: int, texto: str) -> None:
+    """La respuesta del operador a la pregunta `n` de Claude (el workflow la espera con `recv`)."""
+    DBOS.send(job_id, {"texto": texto}, topic=f"respuesta:{n}")
+
+
+def publicado(job_id: str, clave: str) -> Any:
+    """Lo último que el workflow publicó con `set_event` (`estado` o `pendiente`), sin esperar."""
+    return DBOS.get_event(job_id, clave, timeout_seconds=0)
 
 
 def esperar_resultado(job_id: str, tope_s: float) -> dict[str, Any] | None:

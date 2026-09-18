@@ -77,9 +77,13 @@ def escribir_flujo_falso(base: Path, declarado: dict[str, Any]) -> None:
     (base / "PRODUCTOS" / "_flujo_falso.json").write_text(json.dumps(declarado), encoding="utf-8")
 
 
-def flujo_listo(nodo_actual: str, estado: str = "LISTO_PARA_EJECUTAR") -> dict[str, Any]:
+def flujo_listo(nodo_actual: str, estado: str = "LISTO_PARA_EJECUTAR", cumplido: bool = False,
+                falta: list[dict[str, Any]] | None = None) -> dict[str, Any]:
+    """Lo que `flujo.py` diría de un producto cuyo nodo actual es `nodo_actual`."""
     return {"producto_key": "TINNIDROP", "nodo_actual": nodo_actual, "estado": estado,
-            "bloqueantes": [], "falta_para_cumplir": []}
+            "ejecutor": "subagente `etapa-fake` (Task, subagent_type=etapa-fake)",
+            "bloqueantes": [], "falta_para_cumplir": falta or [],
+            "nodos": [{"id": nodo_actual, "estado": "CUMPLIDO" if cumplido else estado, "cumplido": cumplido}]}
 
 
 def llamadas(base: Path) -> list[dict[str, Any]]:
