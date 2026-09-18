@@ -272,13 +272,9 @@ def adaptar(producto_key):
 OFERTAS = {"1U", "2X1", "4X2", "ESCALERA", "COMBO", "SIN_PRECIO"}
 NIVELES = {"1", "2", "3A", "3B", None}
 
-# Nombres de archivo por fase. FASE 2/3 pueden salir en el esquema "fase2_lean/1"
-# (gen_fase2_lean.py, 5 conjuntos x 1 concepto) o en un futuro esquema propio — la
-# validacion de ESE archivo se limita a los campos raiz que gen_publicacion.py YA lee
-# hoy (angulo_ganador, copy, cuenta, page_id). El array "conjuntos" de fase2_lean/1 es
-# decorativo para gen_publicacion.py (arma la estructura real desde _DIM_CREATIVOS.csv)
-# y su forma exacta es una deuda de doctrina abierta (HANDOFF_2026-09-09, item 1):
-# no se valida acá para no blindar un esquema todavia en disputa.
+# Nombres de archivo por fase. En FASE 2/3 el array "conjuntos" no se valida: la
+# estructura (1-1-5 + 1-1-5 + 1-2-5, 1-1-7) la arma gen_publicacion.py desde
+# _PARAMETROS_PUBLICACION.csv y las piezas de _DIM_CREATIVOS.csv, no desde el plan.
 NOMBRES_PLAN = {1: "_PLAN.json", 2: "_PLAN_FASE2.json", 3: "_PLAN_FASE3.json"}
 
 
@@ -335,6 +331,10 @@ def validar_plan_fase2o3(plan):
     y copy. cuenta y page_id no: el publicador los toma de _DIM_PRODUCTOS.csv y bloquea ahi,
     con su dueno. NO valida 'conjuntos' (ver nota de NOMBRES_PLAN)."""
     problemas = []
+    if plan.get("schema") != "plan/1":
+        problemas.append("schema %r: FASE 2/3 usan el contrato plan/1 (la Guia Madre fija "
+                         "1-1-5 ABO; el esquema 5 conjuntos x 1 concepto quedo retirado)"
+                         % plan.get("schema"))
     if not (plan.get("angulo_ganador") or "").strip():
         problemas.append("sin angulo_ganador en la raiz del plan: gen_publicacion.py bloquea "
                          "TODOS los anuncios de la fase sin el (invariante 4)")

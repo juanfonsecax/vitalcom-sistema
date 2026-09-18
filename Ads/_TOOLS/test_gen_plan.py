@@ -28,7 +28,7 @@ def _escribir_plan(carpeta, nombre, data):
 
 
 PLAN_FASE2_COMPLETO = {
-    "schema": "fase2_lean/1", "producto_key": "X", "fase": 2,
+    "schema": "plan/1", "producto_key": "X", "fase": 2,
     "angulo_ganador": "UN_ANGULO", "copy": "el copy unico de la fase",
     "conjuntos": [{"n": 1}],
 }
@@ -114,10 +114,21 @@ def test_plan_fase2_con_copy_por_conjunto_falla():
     return 0 if ok else 1
 
 
-def test_plan_fase2_no_valida_el_array_conjuntos_en_disputa():
-    """Deuda abierta (HANDOFF 2026-09-09): el esquema fase2_lean/1 (5x1) contradice la
-    doctrina 1-1-5+1-1-5+1-2-5 y esa disputa NO se resuelve en este gate — un array
-    'conjuntos' de cualquier forma (o vacio) no debe producir un error de este validador."""
+def test_plan_fase2_lean_falla():
+    """El esquema fase2_lean/1 (5 conjuntos x 1 concepto) contradice FASE2_ESTRUCTURA de la
+    Guia Madre (1-1-5 ABO, Calet 16-ago) y quedo retirado el 17-sep-2026."""
+    plan = dict(PLAN_FASE2_COMPLETO, schema="fase2_lean/1")
+    problemas = gen_plan.validar_plan_fase2o3(plan)
+    ok = len(problemas) == 1 and "plan/1" in problemas[0]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un plan de FASE 2 en el esquema retirado fase2_lean/1 falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase2_no_valida_el_array_conjuntos():
+    """La estructura de FASE 2/3 la arma gen_publicacion.py desde _PARAMETROS_PUBLICACION.csv
+    y _DIM_CREATIVOS.csv: un array 'conjuntos' de cualquier forma (o vacio) no es error."""
     plan = dict(PLAN_FASE2_COMPLETO, conjuntos=[])
     problemas = gen_plan.validar_plan_fase2o3(plan)
     ok = problemas == []
@@ -139,7 +150,8 @@ def main():
         fallas += test_plan_fase2_sin_copy_ni_angulo_ganador_falla(tmp)
     fallas += test_plan_fase2_completo_no_falla()
     fallas += test_plan_fase2_con_copy_por_conjunto_falla()
-    fallas += test_plan_fase2_no_valida_el_array_conjuntos_en_disputa()
+    fallas += test_plan_fase2_lean_falla()
+    fallas += test_plan_fase2_no_valida_el_array_conjuntos()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 
