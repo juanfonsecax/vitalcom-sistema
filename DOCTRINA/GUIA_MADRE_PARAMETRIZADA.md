@@ -157,7 +157,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `FASE1_OBJETIVO_CAMPANA` | `OUTCOME_TRAFFIC` / `OUTCOME_SALES` | Objetivo Meta | Clase 22-ago (Calet) | Tráfico puro | `DOCTRINA/MCP_PLAYBOOK.md` |
 | `FASE2_ESTRUCTURA` | `1-1-5 ABO` (1 Campaña · 1 Conjunto · 5 Creativos) | Estructura | **Clase 16-ago (Calet)** | CBO en testeo | `.claude/agents/ETAPA-6.md` |
 | `FASE2_TIPO_PRESUPUESTO` | `ABO` (Nivel conjunto, nunca CBO) | Tipo Ppto | **Clase 16-ago (Calet)** | CBO | `.claude/agents/ETAPA-6.md` |
-| `FASE2_PRESUPUESTO_DIA` | `$4.00 a $6.20 USD` (Q30 a Q47 / 16k-25k COP) | USD / día | **Clase 16-ago (Calet)** | $2.99 USD | `Ads/_TOOLS/gen_fase2_lean.py` |
+| `FASE2_PRESUPUESTO_DIA` | `$4.00 a $6.20 USD` (Q30 a Q47 / 16k-25k COP) | USD / día | **Clase 16-ago (Calet)** | $2.99 USD | `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` |
 | `FASE2_DURACION_TESTEO` | **`3 DÍAS`** (Dejar rodar 3 días para optimización) | Días | **Clase 22-ago (Calet)** | 7 a 14 días | `PRODUCTOS/_PARAMETROS_DECISION.csv` → `duracion_testeo_fase2_dias` |
 | `FASE2_CAMPANAS_PARALELO` | `2 a 3 campañas` (1-1-5 A, 1-1-5 B, 1-2-5 C) | Cantidad | **Clase 16-ago (Calet)** | 1 sola campaña | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | `FASE3_ESTRUCTURA` | `1-1-7 CBO` (1 Campaña · 1 Conjunto · 7 Anuncios) | Estructura | **Clase 22-ago (Calet)** | 1-1-1 o 1-7-7 | `.claude/agents/ETAPA-6.md` |

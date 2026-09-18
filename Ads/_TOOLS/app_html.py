@@ -1420,9 +1420,6 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
       document.getElementById('lanzador-consola').innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
           <button class="btn-quick" onclick="volverPortafolio()">← Volver al Portafolio</button>
-          <div style="display:flex;gap:10px;">
-            <button class="btn-quick" onclick="copiar('python Ads/_TOOLS/gen_fase2_lean.py ${{pkActivo}}')">⚡ Generar Fase 2 Lean (5 Blueprints)</button>
-          </div>
         </div>
         <div class="card">
           <div class="card-header">
@@ -1586,11 +1583,6 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
               <div class="field-label">Actualizar Lanzador</div>
               <div class="field-val">python Ads/_TOOLS/gen_lanzador.py</div>
               <button class="btn-copy" onclick="copiar('python Ads/_TOOLS/gen_lanzador.py', this)">Copiar</button>
-            </div>
-            <div class="field-row">
-              <div class="field-label">Fase 2 Lean (TINNIDROP)</div>
-              <div class="field-val">python Ads/_TOOLS/gen_fase2_lean.py TINNIDROP</div>
-              <button class="btn-copy" onclick="copiar('python Ads/_TOOLS/gen_fase2_lean.py TINNIDROP', this)">Copiar</button>
             </div>
             <div class="field-row">
               <div class="field-label">Ingesta Automática</div>
