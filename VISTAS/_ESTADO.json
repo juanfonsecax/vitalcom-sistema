@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-10",
+  "generado": "2026-09-17",
   "version": 6,
   "app": {
     "titulo": "VitalCom Guatemala",
@@ -56,12 +56,12 @@
       "src": "FLUJO.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-10",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-10"
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -82,12 +82,12 @@
       "src": "../PRODUCTOS/_DECISIONES.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-10",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-10"
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -108,12 +108,12 @@
       "src": "PERFILES.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-10",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-10"
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -134,12 +134,12 @@
       "src": "../PRODUCTOS/_LANZADOR.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-10",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-10"
+        "detalle": "hoy · escrita 2026-09-17"
       }
     },
     {
@@ -157,11 +157,11 @@
       "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-10",
+        "mtime": "2026-09-17",
         "edad_dias": 0,
         "clase": "ninguna",
         "etiqueta": "",
-        "detalle": "no caduca · escrita 2026-09-10",
+        "detalle": "no caduca · escrita 2026-09-17",
         "chip": "c-neutro"
       }
     },
@@ -204,6 +204,18 @@
         "producto": "Serum Colageno Botox",
         "que": "page_id de la FanPage sin asignar",
         "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
+        "bloquea": true
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "page_id de la FanPage sin asignar",
+        "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
+        "bloquea": true
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "break-even sin calcular",
+        "quien": "etapa-1 · Ads/_TOOLS/costear.py",
         "bloquea": true
       },
       {
@@ -265,6 +277,96 @@
         "que": "producto: cuenta publicitaria SIN ASIGNAR",
         "quien": "etapa-4 / etapa-6",
         "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: page_id de HERNATURA CO SIN ASIGNAR (página externa, sin MCP) -> lo da el operador",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: cuenta publicitaria externa sin alias ni fila en _DIM_CUENTAS.csv -> el operador define el alias que reemplaza [CUENTA] en los nombres",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: número de WhatsApp conectado a HERNATURA CO no confirmado",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "producto: moneda de facturación de la cuenta sin confirmar (USD o COP). Si es COP, cargar $9.426/conjunto y convertir el gasto a USD con tasa 3152.5 al ingerir",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "hora: _PARAMETROS_PUBLICACION.csv fase 1 tz_offset=-06:00 (Guatemala); Colombia es -05:00 -> programar 04:00 hora Colombia a mano",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "estructura: _PARAMETROS_PUBLICACION.csv fase 1 dice anuncios_por_conjunto=1; ETAPA-6 y la decisión del orquestador dicen 2 (duplicado) -> se publican 2",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "oferta: el esquema solo tiene precio_q (quetzales); los precios COP viven en oferta.texto",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "oferta_key de los anuncios con precio (conj. 2 y 3): la pieza es pack de 2 $69.000 + desde $41.000; ESCALERA es el valor más cercano del vocabulario, no uno exacto",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "destino_key: BOTv1 propuesto para el bot paraguas de etapa-5 v1; confirmar",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "costeo: CPA objetivo y break-even en COP pendientes del flete contra entrega Colombia -> sin Presupuesto de Decisión y sin lectura de decidir.py",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "atribución: confirmar que el destino WhatsApp lleva el identificador de LucidSales y que LucidSales recibe la cuenta de Colombia",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "creativos: los 6 PNG aún no confirmados como renderizados en Ads/MEDIA_OVULOSPURITY/",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "envase: los anuncios muestran el SOBRE PLANO; las infografías viejas del operador muestran doypack -> confirmar qué envase recibe la clienta antes de publicar (APR-024)",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "cifras del proveedor sin verificar en los copies: +10.000 clientas, 4,8/5",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
+      },
+      {
+        "producto": "Óvulos Purity Hernatura",
+        "que": "bandas: la tabla de ensanche (25-35->25-40, 35-45->35-50) tiene evidencia de Guatemala (APR-060), no de Colombia",
+        "quien": "etapa-4 / etapa-6",
+        "bloquea": false
       }
     ],
     "sin_plan": [
@@ -278,7 +380,7 @@
       },
       {
         "producto": "Vitamina D3+K2",
-        "estado": "LISTO",
+        "estado": "NUEVO",
         "falta": [
           "sin break-even calculado",
           "sin page_id de FanPage",
@@ -289,18 +391,7 @@
       },
       {
         "producto": "Repelente Ultrasonico",
-        "estado": "LISTO",
-        "falta": [
-          "sin break-even calculado",
-          "sin page_id de FanPage",
-          "sin cuenta publicitaria asignada",
-          "sin _PLAN.json (ángulos, prompts y copies estructurados)"
-        ],
-        "quien": "etapa-1 (costear.py), etapa-6 — es el paso que falta siempre, etapa-fanpage, operador"
-      },
-      {
-        "producto": "Ovulos Purity Hernatura",
-        "estado": "LISTO",
+        "estado": "NUEVO",
         "falta": [
           "sin break-even calculado",
           "sin page_id de FanPage",
