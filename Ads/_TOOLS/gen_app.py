@@ -325,7 +325,9 @@ def validar_acciones(m, flujo):
         if a.get("visibilidad") == "interna" and nodo_id is not None:
             problemas.append("V16: %s es interna pero tiene 'nodo' (un nodo siempre es un botón)" % d)
 
-        if ejecutor_tipo == "operador":
+        # Los datos que el operador carga los declaran los nodos `operador` (F1.congelar_inputs) y
+        # los que se BLOQUEAN por un dato suyo aunque los ejecute otro (F1.publicar sin cuenta).
+        if ejecutor_tipo == "operador" or a.get("datos_del_operador"):
             datos_nodo = set()
             if nf:
                 datos_nodo = {r["dato"] for r in (nf.get("requiere") or [])} | {p["dato"] for p in (nf.get("produce") or [])}

@@ -57,7 +57,10 @@ termina "terminó bien".
 - **Hito 4-5, en Opus:** `F1.activar`, `F2.activar` y `ciclo.ordenes` (faltan `gen_ordenes.py`,
   `verificar_orden.py` y el generador de la orden de activación).
 - Spike de `claude-in-chrome` en headless antes de habilitar `F2.conceptos` (`etapa-render`).
-- Los escritores de `cuenta_alias`, `page_id` y del costo de un producto con fila (hoy `accion: null`).
+- ~~Los escritores de `cuenta_alias`, `page_id` y del costo de un producto con fila~~ — hechos (18-sep, preparación
+  del Hito 4): `cargar_cuenta.py`, `cargar_page_id.py` y `cambiar_costo.py` con su test, declarados en el
+  manifiesto (`producto.cargar_cuenta` · `producto.cargar_page_id` · `producto.cambiar_costo`, internas) y
+  enlazados desde `F1.congelar_inputs` (costo) y `F1.publicar` (cuenta y page_id).
 - **Al mergear a `main`** (con confirmación del operador): regenerar la carpeta real. Hasta entonces la app que
   lee `../SISTEMA` ve el manifiesto v6: `GET /api/acciones` vacío y todo `POST` da 403.
 - La PR #3 (Hito 2) sigue abierta y sin mergear.

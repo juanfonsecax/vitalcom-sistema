@@ -210,7 +210,7 @@
      },
      {
       "dato": "COSTO_PROVEEDOR_Q",
-      "accion": "producto.alta"
+      "accion": "producto.cambiar_costo"
      },
      {
       "dato": "≥6 transcripciones TXT",
@@ -306,7 +306,17 @@
      "caduca_horas": 12
     },
     "presupuesto_usd": 10,
-    "motivo": "Se habilita en el Hito 4, en Opus: falta el spike de ads_creative_upload_media (LOCAL_FILE abre un widget) en headless."
+    "motivo": "Se habilita en el Hito 4, en Opus: falta el spike de ads_creative_upload_media (LOCAL_FILE abre un widget) en headless.",
+    "datos_del_operador": [
+     {
+      "dato": "cuenta publicitaria asignada",
+      "accion": "producto.cargar_cuenta"
+     },
+     {
+      "dato": "page_id de la FanPage",
+      "accion": "producto.cargar_page_id"
+     }
+    ]
    },
    {
     "id": "nodo.F1.activar",
@@ -847,6 +857,149 @@
     "visibilidad": "boton",
     "habilitada": true,
     "tiempo_max_s": 3600,
+    "salida": "json"
+   },
+   {
+    "id": "producto.cargar_cuenta",
+    "rotulo": "Asignar la cuenta publicitaria al producto",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cargar_cuenta.py",
+     "--producto",
+     "{producto_key}",
+     "--cuenta",
+     "{cuenta}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     },
+     "reemplazar": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--reemplazar"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DIM_PRODUCTOS.csv"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 60,
+    "salida": "json"
+   },
+   {
+    "id": "producto.cargar_page_id",
+    "rotulo": "Cargar la FanPage (page_id) del producto",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cargar_page_id.py",
+     "--producto",
+     "{producto_key}",
+     "--page-id",
+     "{page_id}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "page_id": {
+      "tipo": "texto",
+      "patron": "^[0-9]{10,20}$",
+      "requerido": true
+     },
+     "reemplazar": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--reemplazar"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DIM_PRODUCTOS.csv",
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 60,
+    "salida": "json"
+   },
+   {
+    "id": "producto.cambiar_costo",
+    "rotulo": "Corregir el costo del producto (antes de armar FASE 1)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cambiar_costo.py",
+     "--producto",
+     "{producto_key}",
+     "--costo",
+     "{costo}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "costo": {
+      "tipo": "texto",
+      "patron": "^[0-9]{1,5}([.,][0-9]{1,2})?$",
+      "requerido": true
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DIM_PRODUCTOS.csv",
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 60,
     "salida": "json"
    },
    {

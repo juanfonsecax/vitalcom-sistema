@@ -405,6 +405,26 @@ def test_acciones_v7():
             a["datos_del_operador"] = [{"dato": "un dato que no existe", "accion": None}]
     check(_problemas_que_empiezan(m, "V17:"), "un dato_del_operador que no está en requiere/produce → V17")
 
+    # V17 también rige en un nodo que NO es del operador (F1.publicar se bloquea por la cuenta)
+    flujo = copy.deepcopy(FLUJO_JUGUETE)
+    flujo["fases"][0]["nodos"][1]["requiere"] = [{"dato": "cuenta publicitaria asignada"}]
+    m = manifiesto_v7_valido()
+    for a in _lista(m):
+        if a["id"] == "nodo.F1.paquete":
+            a["datos_del_operador"] = [{"dato": "cuenta publicitaria asignada", "accion": "nodo.ciclo.motor"}]
+    check(_problemas_que_empiezan(m, "V17:", flujo) == [],
+          "una skill con un dato_del_operador de su requiere y una acción script es válida",
+          str(_problemas_que_empiezan(m, "V17:", flujo)))
+    for a in _lista(m):
+        if a["id"] == "nodo.F1.paquete":
+            a["datos_del_operador"] = [{"dato": "un dato que no existe", "accion": None}]
+    check(_problemas_que_empiezan(m, "V17:", flujo), "una skill con un dato que no es de su nodo → V17")
+    for a in _lista(m):
+        if a["id"] == "nodo.F1.paquete":
+            a["datos_del_operador"] = [{"dato": "cuenta publicitaria asignada", "accion": "nodo.F1.paquete"}]
+    check(_problemas_que_empiezan(m, "V17:", flujo),
+          "una skill cuyo dato apunta a una acción que no es script → V17")
+
     # V18
     m = manifiesto_v7_valido()
     for a in _lista(m):
