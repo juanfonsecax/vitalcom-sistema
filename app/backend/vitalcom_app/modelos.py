@@ -168,3 +168,51 @@ class AccionEncolada(Base):
     url_estado: str
     url_eventos: str
     repetido: bool = False
+
+
+class Trabajo(Base):
+    """Un trabajo del runner, para la lista de la pantalla Trabajos."""
+
+    job_id: str
+    accion_id: str = ""
+    rotulo: str = ""
+    producto_key: str | None = None
+    estado: str
+    iniciado: str | None = None
+    terminado: str | None = None
+    app_version: str = ""
+    otra_version: bool = False
+    pendiente: str | None = None  # "aprobacion" | "pregunta" | None
+
+
+class TrabajoDetalle(Trabajo):
+    """El trabajo completo: lo pendiente con todo su detalle (la orden o la pregunta) y el resultado."""
+
+    parametros: dict[str, Any] = {}
+    sello: dict[str, Any] = {}
+    pendiente_completo: dict[str, Any] | None = None
+    unidades: list[Any] = []
+    resultado: dict[str, Any] | None = None
+    run_dir: str | None = None
+    error: str | None = None
+
+
+class DecisionDeOrden(BaseModel):
+    decision: str  # APROBADA | RECHAZADA
+    hash: str      # la huella de la orden que la pantalla mostró
+    nota: str = ""
+
+
+class RespuestaDeClaude(BaseModel):
+    n: int
+    texto: str
+
+
+class Reintento(BaseModel):
+    confirmado: bool = False
+
+
+class EstadoDeClaude(Base):
+    logueado: bool
+    detalle: str = ""
+    credencial_prohibida: list[str] = []

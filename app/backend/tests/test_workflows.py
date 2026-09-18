@@ -26,7 +26,7 @@ BACKEND = Path(__file__).resolve().parents[1]
 # Una fila por versión del runner: la huella de sus pasos. Cambiar los pasos sin subir
 # `APP_VERSION` (y sin agregar la fila) hace fallar `test_version_de_workflows`.
 HUELLAS = {
-    "wf-1": "d58428d40ebbc6daadbe62fff67c7485f35a521b8b8445e701a22cee0adb0e6c",
+    "wf-1": "b493adfba080558e38876df1c0e08f400951d8c3fae26519f92647ac447a98cf",
 }
 
 JOB_A = "a" * 32

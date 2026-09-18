@@ -75,6 +75,35 @@ def carpeta_de_corrida(job_id: str, accion_id: str, producto_key: str | None, in
     return _crear_carpeta(raiz() / fecha[:7] / nombre)
 
 
+def buscar_corrida(job_id: str) -> Path | None:
+    """La carpeta de la corrida de un trabajo, por el final de su nombre (`_<job8>`), o None."""
+    encontradas = sorted(raiz().glob(f"*/*_{job_id[:8]}")) if raiz().is_dir() else []
+    return encontradas[-1] if encontradas else None
+
+
+def leer_incremental(carpeta: Path, nombre: str, desde: int) -> list[tuple[str, int]]:
+    """Las líneas COMPLETAS que un log ganó desde el byte `desde`, cada una con el byte donde termina. Solo lectura."""
+    try:
+        with _abrir(carpeta / nombre, "rb") as fh:
+            fh.seek(desde)
+            pedazo = fh.read()
+    except FileNotFoundError:
+        return []
+    salida: list[tuple[str, int]] = []
+    posicion = 0
+    while True:
+        fin = pedazo.find(b"\n", posicion)
+        if fin < 0:
+            return salida
+        salida.append((pedazo[posicion:fin].decode("utf-8", errors="replace").rstrip("\r"), desde + fin + 1))
+        posicion = fin + 1
+
+
+def logs_de(carpeta: Path) -> list[str]:
+    """Los logs numerados de la corrida (`<n>_….log|jsonl`), en orden; `aprobaciones.jsonl` no es uno."""
+    return sorted(x.name for x in carpeta.iterdir() if re.match(r"^\d+_.+\.(log|jsonl)$", x.name))
+
+
 def ruta_relativa(carpeta: Path) -> str:
     """La carpeta como el operador la ve: relativa a la base del sistema."""
     return carpeta.resolve().relative_to(ruta().resolve()).as_posix()

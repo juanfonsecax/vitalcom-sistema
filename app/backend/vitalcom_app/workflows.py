@@ -58,6 +58,7 @@ TOPE_DE_ESPERA_DEL_TURNO_S = 3600
 # Los pasos que cada workflow llama, en orden. Si esta lista cambia, cambia la versión.
 PASOS: dict[str, list[str]] = {
     "wf_unidad": ["paso_ejecutar", "paso_tras_escribir"],
+    "wf_limpieza": ["paso_tras_escribir"],
     "wf_script": [
         "paso_sellar", "DBOS.set_event", "enqueue:escritura", "paso_leer_flujo", "paso_cerrar",
         "DBOS.set_event",
@@ -115,6 +116,7 @@ def _ahora() -> str:
 
 def iniciar(url_de_base_de_datos: str | None = None) -> None:
     """Configura y lanza DBOS. Al lanzar, DBOS retoma los trabajos PENDING de esta versión."""
+    _cancelados.clear()  # las cancelaciones valen para esta vida de la app; cada trabajo tiene su id
     url = url_de_base_de_datos or f"sqlite:///{(datos_de_la_app() / 'dbos.sqlite').as_posix()}"
     DBOS(config={
         "name": NOMBRE_DE_LA_APP,
@@ -431,6 +433,12 @@ def wf_unidad(job_id: str, n: int, spec: dict[str, Any]) -> dict[str, Any]:
         tras = paso_tras_escribir(job_id, n, spec)
         resultado = {**resultado, "tras": tras}
     return resultado
+
+
+@DBOS.workflow()
+def wf_limpieza(job_id: str, run_dir: str) -> dict[str, Any]:
+    """Después de cancelar: una escritura a medias igual cambió el disco, así que `tras_escribir` corre."""
+    return paso_tras_escribir(job_id, 0, {"run_dir": run_dir})
 
 
 # ── el padre de las acciones de script ────────────────────────────────────────
@@ -815,6 +823,16 @@ def wf_meta(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict[str
 # ── lo que usan los endpoints ─────────────────────────────────────────────────
 
 _PADRES = {"script": wf_script, "subagente": wf_claude, "skill": wf_claude}
+
+
+def cancelar(job_id: str) -> None:
+    """Marca el trabajo como cancelado (el subproceso vivo lo ve en su próximo latido y se corta) y lo cancela en DBOS."""
+    _cancelados.add(job_id)
+    DBOS.cancel_workflow(job_id, cancel_children=True)
+
+
+def limpiar_tras_cancelar(job_id: str, run_dir: str) -> None:
+    _cola(COLA_ESCRITURA).enqueue(wf_limpieza, job_id, run_dir)
 
 
 def existe(job_id: str) -> bool:
