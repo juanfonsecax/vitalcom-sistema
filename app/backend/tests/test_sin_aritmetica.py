@@ -60,10 +60,20 @@ def test_ningun_calculo_de_negocio_en_el_paquete():
 
 
 def test_la_app_no_escribe_en_el_sistema():
-    """Hito 1 es de solo lectura: ni `open(..., 'w')`, ni escritores CSV, ni mkdir."""
+    """La app ejecuta al que escribe; no escribe ella.
+
+    Ningún módulo abre un archivo para escribir, ni usa un escritor CSV, ni crea carpetas.
+    Quien toca el sistema es siempre un script de `Ads/_TOOLS/` con su propio test.
+    La única excepción es `subidas.py`, que guarda lo que el operador arrastra a la pantalla
+    dentro de una carpeta temporal del sistema operativo; el test de abajo la acota.
+    """
     prohibido = ("csv.writer", "csv.DictWriter", "json.dump", "shutil.copy", "os.remove")
     hallazgos: list[str] = []
     for archivo in sorted(PAQUETE.rglob("*.py")):
+        # `subidas.py` escribe en el temporal y `escrituras.py` maneja el candado de la
+        # cola, también en el temporal. Cada uno tiene su prueba estructural más abajo.
+        if archivo.name in ("subidas.py", "escrituras.py"):
+            continue
         codigo = archivo.read_text(encoding="utf-8")
         arbol = ast.parse(codigo, filename=str(archivo))
         for nodo in ast.walk(arbol):
@@ -100,6 +110,86 @@ def _banderas_en_codigo(archivo: Path) -> set[str]:
         and nodo.value.startswith("--")
         and nodo not in docstrings
     }
+
+
+def test_las_subidas_solo_tocan_el_temporal():
+    """`subidas.py` escribe, pero nunca dentro del sistema.
+
+    Se verifica estructuralmente: usa `tempfile` y no sabe dónde vive el sistema, porque no
+    importa `config`. Así, una subida no puede escribir en `PRODUCTOS/` ni en `Ads/` aunque
+    alguien se equivoque más adelante.
+    """
+    archivo = PAQUETE / "subidas.py"
+    arbol = ast.parse(archivo.read_text(encoding="utf-8"), filename=str(archivo))
+    importados = {
+        (nodo.module or "") if isinstance(nodo, ast.ImportFrom) else alias.name
+        for nodo in ast.walk(arbol)
+        if isinstance(nodo, (ast.Import, ast.ImportFrom))
+        for alias in nodo.names
+    }
+    assert "tempfile" in importados, "las subidas van a una carpeta temporal"
+    assert not any("config" in nombre for nombre in importados), (
+        "subidas.py no puede conocer la carpeta del sistema: si no la conoce, no la escribe"
+    )
+
+
+def test_los_cambios_pasan_por_un_script_del_motor():
+    """Ningún endpoint corre un comando libre: solo scripts declarados de `Ads/_TOOLS/`."""
+    archivo = PAQUETE / "escrituras.py"
+    codigo = archivo.read_text(encoding="utf-8")
+    arbol = ast.parse(codigo, filename=str(archivo))
+    scripts = {
+        nodo.value
+        for nodo in ast.walk(arbol)
+        if isinstance(nodo, ast.Constant) and isinstance(nodo.value, str)
+        and nodo.value.endswith(".py")
+    }
+    assert scripts <= {"alta_producto.py", "transcribir_videos.py", "flujo.py"}, scripts
+    assert "shell=True" not in codigo, "nunca por shell: el comando se arma como lista"
+
+
+def test_escrituras_solo_escribe_su_candado_en_el_temporal():
+    """`escrituras.py` no toca archivos del sistema: lo único que abre es el lock de la cola.
+
+    Se verifica que toda llamada de escritura viva dentro de la clase `Cola` y que el
+    candado salga de `tempfile.gettempdir()`. Los cambios reales los hacen los scripts.
+    """
+    archivo = PAQUETE / "escrituras.py"
+    codigo = archivo.read_text(encoding="utf-8")
+    arbol = ast.parse(codigo, filename=str(archivo))
+    assert "tempfile.gettempdir()" in codigo, "el candado vive en el temporal, no en el repo"
+
+    cola = next(n for n in ast.walk(arbol) if isinstance(n, ast.ClassDef) and n.name == "Cola")
+    lock = next(
+        n for n in ast.walk(arbol)
+        if isinstance(n, ast.FunctionDef) and n.name == "_archivo_de_lock"
+    )
+    permitidas = {id(n) for zona in (cola, lock) for n in ast.walk(zona)}
+    escrituras = ("os.open", "os.write", "os.close")
+    for nodo in ast.walk(arbol):
+        if isinstance(nodo, ast.Call):
+            llamada = ast.unparse(nodo.func)
+            if llamada in escrituras or llamada.endswith((".unlink", ".write_text", ".mkdir")):
+                assert id(nodo) in permitidas, (
+                    f"escrituras.py:{nodo.lineno} escribe «{llamada}» fuera del candado de la cola"
+                )
+
+
+def test_escribir_pasa_por_la_cola():
+    """Un escritor a la vez (hoja §2.4): dos altas a la vez pisarían el CSV."""
+    archivo = PAQUETE / "escrituras.py"
+    arbol = ast.parse(archivo.read_text(encoding="utf-8"), filename=str(archivo))
+    for funcion in ("dar_de_alta", "transcribir"):
+        nodo = next(
+            n for n in ast.walk(arbol)
+            if isinstance(n, ast.FunctionDef) and n.name == funcion
+        )
+        usa_cola = any(
+            isinstance(hijo, ast.With)
+            and any("Cola" in ast.unparse(item.context_expr) for item in hijo.items)
+            for hijo in ast.walk(nodo)
+        )
+        assert usa_cola, f"{funcion} tiene que escribir dentro de `with Cola()`"
 
 
 def test_flujo_se_invoca_siempre_sin_escribir():

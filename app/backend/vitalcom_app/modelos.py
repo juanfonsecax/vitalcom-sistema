@@ -106,3 +106,27 @@ class Decisiones(Base):
     ventana_dias: int | None = None
     resumen_acciones: dict[str, int] = {}
     productos: list[Any] = []
+
+
+class Escalera(Base):
+    unidades: int
+    precio: float
+    costo_pedido: float
+
+
+class Costeo(Base):
+    """Salida de `costear.py --json`. Las cifras salen de `_DIM_COSTEO.csv`, nunca de acá."""
+
+    costo_ingresado: float
+    fila_usada: float
+    criterio_de_fila: str = ""
+    precio_1u: float | None = None
+    cpa_objetivo: float | None = None
+    cpa_base: float | None = None
+    cpa_break_even: float | None = None
+    valor_envio: float | None = None
+    utilidad_esperada: float | None = None
+    escalera: list[Escalera] = []
+    arranque: dict[str, Any] = {}
+    fuente: str = ""
+    origen_escalera: str = ""

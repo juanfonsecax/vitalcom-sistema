@@ -22,6 +22,7 @@ ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
 ESTADO_VISTAS = ("VISTAS", "_ESTADO.json")
 FLUJO_PY = ("Ads", "_TOOLS", "flujo.py")
+COSTEAR_PY = ("Ads", "_TOOLS", "costear.py")
 
 # Lo que la pantalla necesita de _DIM_PRODUCTOS.csv. El resto de las columnas (notas de
 # auditoría, alias de carpetas, tasas) no se sirven: la app muestra, no vuelca el CSV.
@@ -118,4 +119,21 @@ def flujo(producto_key: str, hoy: str | None = None) -> dict[str, Any]:
     if completado.returncode != 0 or not completado.stdout.strip():
         detalle = (completado.stderr or completado.stdout or "sin salida").strip()
         raise ContratoAusente(f"flujo.py falló para «{producto_key}»: {detalle[-600:]}")
+    return json.loads(completado.stdout)
+
+
+def costear(costo_q: str) -> dict[str, Any]:
+    """Corre `costear.py <costo> --json`: la tabla de precios de Guatemala.
+
+    El costo llega como texto y se pasa como texto: el script valida y decide qué fila de
+    `_DIM_COSTEO.csv` corresponde. La app no interpreta ni redondea el número.
+    """
+    completado = subprocess.run(
+        [python_del_sistema(), str(ruta(*COSTEAR_PY)), costo_q, "--json"],
+        cwd=str(ruta()), capture_output=True, text=True,
+        encoding="utf-8", errors="replace", timeout=60,
+    )
+    if completado.returncode != 0 or not completado.stdout.strip():
+        detalle = (completado.stderr or completado.stdout or "sin salida").strip()
+        raise ContratoAusente(f"costear.py no pudo costear «{costo_q}»: {detalle[-400:]}")
     return json.loads(completado.stdout)

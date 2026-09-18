@@ -20,7 +20,14 @@ export interface paths {
          */
         get: operations["listar_productos_api_productos_get"];
         put?: never;
-        post?: never;
+        /**
+         * Alta De Producto
+         * @description Da de alta el producto con `alta_producto.py` y re-evalúa el flujo.
+         *
+         *     La imagen y la descripción se guardan primero en una carpeta temporal; quien las mete
+         *     en el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es el script.
+         */
+        post: operations["alta_de_producto_api_productos_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -87,6 +94,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/costeo/{costo_q}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Costeo
+         * @description La tabla de precios de Guatemala para un costo, tal como la devuelve `costear.py`.
+         *
+         *     La app no calcula ni un centavo: pregunta y muestra. Si el costo cae entre dos filas de
+         *     `_DIM_COSTEO.csv`, el script toma la superior y lo dice en `criterio_de_fila`
+         *     (invariante 2).
+         */
+        get: operations["costeo_api_costeo__costo_q__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/transcribir": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Transcribir Videos
+         * @description Pasa a texto los videos del producto con `transcribir_videos.py`, en esta máquina.
+         */
+        post: operations["transcribir_videos_api_productos__producto_key__transcribir_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/sistema": {
         parameters: {
             query?: never;
@@ -111,6 +162,125 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Body_alta_de_producto_api_productos_post */
+        Body_alta_de_producto_api_productos_post: {
+            /**
+             * Nombre
+             * @description cómo se llama el producto
+             */
+            nombre: string;
+            /**
+             * Costo
+             * @description costo del PEDIDO COMPLETO en quetzales
+             */
+            costo: string;
+            /**
+             * Descripcion
+             * @description la descripción extensa del operador
+             */
+            descripcion: string;
+            /**
+             * Imagen
+             * @description la foto limpia del producto: el packshot
+             */
+            imagen: string;
+            /**
+             * Clave
+             * @default
+             */
+            clave: string;
+            /**
+             * Cuenta
+             * @default
+             */
+            cuenta: string;
+            /**
+             * Moneda
+             * @default GTQ
+             */
+            moneda: string;
+            /**
+             * Tasa
+             * @default
+             */
+            tasa: string;
+            /**
+             * Color Envase
+             * @default
+             */
+            color_envase: string;
+            /**
+             * Color Hex
+             * @default
+             */
+            color_hex: string;
+            /**
+             * Marca
+             * @default
+             */
+            marca: string;
+            /**
+             * Formato
+             * @default
+             */
+            formato: string;
+            /**
+             * Dry Run
+             * @default false
+             */
+            dry_run: boolean;
+        };
+        /**
+         * Costeo
+         * @description Salida de `costear.py --json`. Las cifras salen de `_DIM_COSTEO.csv`, nunca de acá.
+         */
+        Costeo: {
+            /** Costo Ingresado */
+            costo_ingresado: number;
+            /** Fila Usada */
+            fila_usada: number;
+            /**
+             * Criterio De Fila
+             * @default
+             */
+            criterio_de_fila: string;
+            /** Precio 1U */
+            precio_1u?: number | null;
+            /** Cpa Objetivo */
+            cpa_objetivo?: number | null;
+            /** Cpa Base */
+            cpa_base?: number | null;
+            /** Cpa Break Even */
+            cpa_break_even?: number | null;
+            /** Valor Envio */
+            valor_envio?: number | null;
+            /** Utilidad Esperada */
+            utilidad_esperada?: number | null;
+            /**
+             * Escalera
+             * @default []
+             */
+            escalera: components["schemas"]["Escalera"][];
+            /**
+             * Arranque
+             * @default {}
+             */
+            arranque: {
+                [key: string]: unknown;
+            };
+            /**
+             * Fuente
+             * @default
+             */
+            fuente: string;
+            /**
+             * Origen Escalera
+             * @default
+             */
+            origen_escalera: string;
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * Decisiones
          * @description `_DECISIONES.json`: lo que dictó `decidir.py`. La app no lo reinterpreta.
@@ -152,6 +322,17 @@ export interface components {
              * @default []
              */
             productos: unknown[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** Escalera */
+        Escalera: {
+            /** Unidades */
+            unidades: number;
+            /** Precio */
+            precio: number;
+            /** Costo Pedido */
+            costo_pedido: number;
         } & {
             [key: string]: unknown;
         };
@@ -483,6 +664,41 @@ export interface operations {
             };
         };
     };
+    alta_de_producto_api_productos_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_alta_de_producto_api_productos_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     detalle_producto_api_productos__producto_key__get: {
         parameters: {
             query?: never;
@@ -550,6 +766,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Salud"];
+                };
+            };
+        };
+    };
+    costeo_api_costeo__costo_q__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                costo_q: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Costeo"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    transcribir_videos_api_productos__producto_key__transcribir_post: {
+        parameters: {
+            query?: {
+                modelo?: string;
+            };
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

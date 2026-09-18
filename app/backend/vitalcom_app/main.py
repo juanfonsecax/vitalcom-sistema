@@ -1,22 +1,23 @@
-"""main.py — la API de solo lectura del Hito 1 y el servidor del frontend compilado.
+"""main.py — la API de la app y el servidor del frontend compilado.
 
-Hito 1: la app NO escribe nada. No hay endpoint que corra un comando libre; lo único que se
-ejecuta es `flujo.py --json --sin-escribir`, que es lectura. Las acciones que escriben llegan
-en el Hito 3, declaradas en `VISTAS/_MANIFIESTO.json` y detrás de una cola con lock.
+La app no calcula y no escribe: **ejecuta al que escribe**. Las lecturas salen de los
+contratos; los dos cambios que existen hoy (dar de alta un producto y transcribir sus
+videos) los hace un script de `Ads/_TOOLS/` con su propio test, detrás de la cola de
+`escrituras.py`. No hay ningún endpoint que corra un comando libre.
 """
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import contratos
+from . import contratos, escrituras, subidas
 from .config import base
-from .modelos import Decisiones, Flujo, Producto, Salud
+from .modelos import Costeo, Decisiones, Flujo, Producto, Salud
 
 app = FastAPI(
     title="VitalCom",
@@ -30,7 +31,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
-    allow_methods=["GET"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
@@ -85,6 +86,70 @@ def listar_decisiones() -> Decisiones:
 def estado_del_sistema() -> Salud:
     """Qué vista está fresca y quién la produce, según `gen_app.py`."""
     return Salud(**contratos.salud())
+
+
+@app.get("/api/costeo/{costo_q}", response_model=Costeo, tags=["productos"])
+def costeo(costo_q: str) -> Costeo:
+    """La tabla de precios de Guatemala para un costo, tal como la devuelve `costear.py`.
+
+    La app no calcula ni un centavo: pregunta y muestra. Si el costo cae entre dos filas de
+    `_DIM_COSTEO.csv`, el script toma la superior y lo dice en `criterio_de_fila`
+    (invariante 2).
+    """
+    try:
+        return Costeo(**contratos.costear(costo_q))
+    except contratos.ContratoAusente as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@app.post("/api/productos", tags=["productos"], status_code=201)
+async def alta_de_producto(
+    nombre: str = Form(..., description="cómo se llama el producto"),
+    costo: str = Form(..., description="costo del PEDIDO COMPLETO en quetzales"),
+    descripcion: str = Form(..., description="la descripción extensa del operador"),
+    imagen: UploadFile = File(..., description="la foto limpia del producto: el packshot"),
+    clave: str = Form(""),
+    cuenta: str = Form(""),
+    moneda: str = Form("GTQ"),
+    tasa: str = Form(""),
+    color_envase: str = Form(""),
+    color_hex: str = Form(""),
+    marca: str = Form(""),
+    formato: str = Form(""),
+    dry_run: bool = Form(False),
+) -> dict:
+    """Da de alta el producto con `alta_producto.py` y re-evalúa el flujo.
+
+    La imagen y la descripción se guardan primero en una carpeta temporal; quien las mete
+    en el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es el script.
+    """
+    campos = {
+        "nombre": nombre, "costo": costo, "clave": clave, "cuenta": cuenta, "moneda": moneda,
+        "tasa": tasa, "color_envase": color_envase, "color_hex": color_hex, "marca": marca,
+        "formato": formato,
+    }
+    try:
+        with subidas.carpeta_temporal() as temporal:
+            ruta_imagen = subidas.guardar(imagen.file, imagen.filename or "imagen", temporal)
+            ruta_descripcion = subidas.guardar_texto(descripcion, temporal)
+            return escrituras.dar_de_alta(campos, ruta_imagen, ruta_descripcion, dry_run=dry_run)
+    except subidas.SubidaRechazada as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except escrituras.SistemaOcupado as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except escrituras.ErrorDeEscritura as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@app.post("/api/productos/{producto_key}/transcribir", tags=["productos"])
+def transcribir_videos(producto_key: str, modelo: str = "small") -> dict:
+    """Pasa a texto los videos del producto con `transcribir_videos.py`, en esta máquina."""
+    try:
+        return escrituras.transcribir(producto_key, modelo=modelo)
+    except escrituras.SistemaOcupado as error:
+        raise HTTPException(status_code=409, detail=str(error)) from error
+    except escrituras.ErrorDeEscritura as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
 
 
 @app.get("/api/sistema", tags=["sistema"])

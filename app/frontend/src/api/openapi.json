@@ -30,6 +30,48 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Alta De Producto",
+        "description": "Da de alta el producto con `alta_producto.py` y re-evalúa el flujo.\n\nLa imagen y la descripción se guardan primero en una carpeta temporal; quien las mete\nen el sistema —y quien declara el packshot en `_DIM_ENVASE.csv`— es el script.",
+        "operationId": "alta_de_producto_api_productos_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_alta_de_producto_api_productos_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Alta De Producto Api Productos Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/productos/{producto_key}": {
@@ -119,6 +161,104 @@
         }
       }
     },
+    "/api/costeo/{costo_q}": {
+      "get": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Costeo",
+        "description": "La tabla de precios de Guatemala para un costo, tal como la devuelve `costear.py`.\n\nLa app no calcula ni un centavo: pregunta y muestra. Si el costo cae entre dos filas de\n`_DIM_COSTEO.csv`, el script toma la superior y lo dice en `criterio_de_fila`\n(invariante 2).",
+        "operationId": "costeo_api_costeo__costo_q__get",
+        "parameters": [
+          {
+            "name": "costo_q",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Costo Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Costeo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/transcribir": {
+      "post": {
+        "tags": [
+          "productos"
+        ],
+        "summary": "Transcribir Videos",
+        "description": "Pasa a texto los videos del producto con `transcribir_videos.py`, en esta máquina.",
+        "operationId": "transcribir_videos_api_productos__producto_key__transcribir_post",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          },
+          {
+            "name": "modelo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "small",
+              "title": "Modelo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Transcribir Videos Api Productos  Producto Key  Transcribir Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sistema": {
       "get": {
         "tags": [
@@ -148,6 +288,199 @@
   },
   "components": {
     "schemas": {
+      "Body_alta_de_producto_api_productos_post": {
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "title": "Nombre",
+            "description": "cómo se llama el producto"
+          },
+          "costo": {
+            "type": "string",
+            "title": "Costo",
+            "description": "costo del PEDIDO COMPLETO en quetzales"
+          },
+          "descripcion": {
+            "type": "string",
+            "title": "Descripcion",
+            "description": "la descripción extensa del operador"
+          },
+          "imagen": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "Imagen",
+            "description": "la foto limpia del producto: el packshot"
+          },
+          "clave": {
+            "type": "string",
+            "title": "Clave",
+            "default": ""
+          },
+          "cuenta": {
+            "type": "string",
+            "title": "Cuenta",
+            "default": ""
+          },
+          "moneda": {
+            "type": "string",
+            "title": "Moneda",
+            "default": "GTQ"
+          },
+          "tasa": {
+            "type": "string",
+            "title": "Tasa",
+            "default": ""
+          },
+          "color_envase": {
+            "type": "string",
+            "title": "Color Envase",
+            "default": ""
+          },
+          "color_hex": {
+            "type": "string",
+            "title": "Color Hex",
+            "default": ""
+          },
+          "marca": {
+            "type": "string",
+            "title": "Marca",
+            "default": ""
+          },
+          "formato": {
+            "type": "string",
+            "title": "Formato",
+            "default": ""
+          },
+          "dry_run": {
+            "type": "boolean",
+            "title": "Dry Run",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "nombre",
+          "costo",
+          "descripcion",
+          "imagen"
+        ],
+        "title": "Body_alta_de_producto_api_productos_post"
+      },
+      "Costeo": {
+        "properties": {
+          "costo_ingresado": {
+            "type": "number",
+            "title": "Costo Ingresado"
+          },
+          "fila_usada": {
+            "type": "number",
+            "title": "Fila Usada"
+          },
+          "criterio_de_fila": {
+            "type": "string",
+            "title": "Criterio De Fila",
+            "default": ""
+          },
+          "precio_1u": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Precio 1U"
+          },
+          "cpa_objetivo": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpa Objetivo"
+          },
+          "cpa_base": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpa Base"
+          },
+          "cpa_break_even": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cpa Break Even"
+          },
+          "valor_envio": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valor Envio"
+          },
+          "utilidad_esperada": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utilidad Esperada"
+          },
+          "escalera": {
+            "items": {
+              "$ref": "#/components/schemas/Escalera"
+            },
+            "type": "array",
+            "title": "Escalera",
+            "default": []
+          },
+          "arranque": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Arranque",
+            "default": {}
+          },
+          "fuente": {
+            "type": "string",
+            "title": "Fuente",
+            "default": ""
+          },
+          "origen_escalera": {
+            "type": "string",
+            "title": "Origen Escalera",
+            "default": ""
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "costo_ingresado",
+          "fila_usada"
+        ],
+        "title": "Costeo",
+        "description": "Salida de `costear.py --json`. Las cifras salen de `_DIM_COSTEO.csv`, nunca de acá."
+      },
       "Decisiones": {
         "properties": {
           "generado": {
@@ -211,6 +544,30 @@
         "type": "object",
         "title": "Decisiones",
         "description": "`_DECISIONES.json`: lo que dictó `decidir.py`. La app no lo reinterpreta."
+      },
+      "Escalera": {
+        "properties": {
+          "unidades": {
+            "type": "integer",
+            "title": "Unidades"
+          },
+          "precio": {
+            "type": "number",
+            "title": "Precio"
+          },
+          "costo_pedido": {
+            "type": "number",
+            "title": "Costo Pedido"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "unidades",
+          "precio",
+          "costo_pedido"
+        ],
+        "title": "Escalera"
       },
       "Flujo": {
         "properties": {
