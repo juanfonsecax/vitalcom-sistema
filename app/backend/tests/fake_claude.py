@@ -201,6 +201,21 @@ elif "LLAMADAS_JSON:" in prompt:
                 else:
                     actualizadas.append(ent)
             EXISTENTE.write_text(json.dumps(actualizadas), encoding="utf-8")
+        elif llamada["tool"] == "ads_update_entity":
+            eid = str(llamada["args"].get("entity_id") or llamada["args"].get("id", ""))
+            fields = llamada["args"].get("fields", {})
+            actualizadas = []
+            for ent in entidades():
+                if str(ent.get("id")) == eid or (not eid and ent.get("name") == nombre_de(llamada["args"])):
+                    ent_copia = dict(ent)
+                    if "status" in fields:
+                        ent_copia["status"] = str(fields["status"]).upper()
+                    if "daily_budget" in fields:
+                        ent_copia["daily_budget"] = str(fields["daily_budget"])
+                    actualizadas.append(ent_copia)
+                else:
+                    actualizadas.append(ent)
+            EXISTENTE.write_text(json.dumps(actualizadas), encoding="utf-8")
         hechas.append(str(llamada["n"]))
     else:
         texto = f"EJECUTADAS: {','.join(hechas)}"

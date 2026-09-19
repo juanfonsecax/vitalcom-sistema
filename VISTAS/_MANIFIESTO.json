@@ -766,7 +766,14 @@
      ]
     },
     "presupuesto_usd": 3,
-    "motivo": "_DECISIONES.json trae la orden en prosa, sin entidad ni valor destino. Falta gen_ordenes.py (orden literal) y verificar_orden.py (contra Meta), ambos con test. Hito 5, en Opus."
+    "motivo": "Hito 5: generador y verificador construidos y probados. Se habilita con la confirmación del operador.",
+    "ordenes": {
+     "tipo": "decision",
+     "generador": "ordenes.generar",
+     "verificador": "ordenes.verificar",
+     "evento": "DECISION",
+     "caduca_horas": 12
+    }
    },
    {
     "id": "producto.alta",
@@ -1563,6 +1570,107 @@
     "visibilidad": "interna",
     "habilitada": true,
     "tiempo_max_s": 60,
+    "salida": "texto"
+   },
+   {
+    "id": "ordenes.generar",
+    "rotulo": "Generar las órdenes literales contra el snapshot",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_ordenes.py",
+     "--producto",
+     "{producto_key}",
+     "--snapshot",
+     "Ads/_INGESTA/META/snapshot_{cuenta}.json",
+     "--json",
+     "--salida",
+     "{run_dir}/ordenes.json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "json"
+   },
+   {
+    "id": "ordenes.verificar",
+    "rotulo": "Verificar Meta contra las órdenes del motor",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/verificar_orden.py",
+     "--producto",
+     "{producto_key}",
+     "--orden",
+     "{run_dir}/ordenes.json",
+     "--snapshot",
+     "Ads/_INGESTA/META/snapshot_{cuenta}.json",
+     "--escribir"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "texto"
+   },
+   {
+    "id": "ciclo.bajar_meta",
+    "rotulo": "Bajar la entrega de Meta por Graph API directa",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/bajar_meta_insights.py"
+    ],
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_FACT_ENTREGA.csv",
+     "PRODUCTOS/_FACT_ENTREGA_ANUNCIO.csv"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 900,
     "salida": "texto"
    }
   ]

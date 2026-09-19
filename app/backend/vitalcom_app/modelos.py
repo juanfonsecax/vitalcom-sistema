@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class Base(BaseModel):
@@ -347,3 +347,43 @@ class ChecklistF1(Base):
     ejecutor: str | None = None
     faltan: list[ItemDeChecklist] = []
     paquete: PaqueteF1 | None = None
+
+
+class OrdenItem(Base):
+    producto_key: str
+    angulo_key: str
+    angulo_nombre: str = ""
+    estado: str
+    accion_codigo: str | None = None
+    frase_simple: str
+    por_que: dict[str, Any] = {}
+    bloqueo_fase: str | None = None
+    ejecutable: bool = True
+    conjuntos: list[str] = []
+
+
+class OrdenesRespuesta(Base):
+    schema_version: str = Field(alias="schema", default="")
+    rezago_dias: int = 0
+    llamadas: list[Any] = []
+    ordenes: list[OrdenItem] = []
+    bloqueantes: list[Any] = []
+    avisos: list[str] = []
+
+
+class GanadorPaso(Base):
+    nodo: str = ""
+    etapa: str = ""
+    titulo: str = ""
+    ejecutor: str = ""
+    enlace: str = ""
+
+
+class Ganador(Base):
+    producto_key: str
+    nombre: str = ""
+    fase: str = ""
+    nodo_actual: str = ""
+    angulo_ganador: str = ""
+    siguiente_paso: GanadorPaso
+

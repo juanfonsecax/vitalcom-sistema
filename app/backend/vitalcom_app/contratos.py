@@ -21,9 +21,11 @@ DIM_PRODUCTOS = ("PRODUCTOS", "_DIM_PRODUCTOS.csv")
 DIM_CUENTAS = ("PRODUCTOS", "_DIM_CUENTAS.csv")
 ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
+FLUJO_GLOBAL = ("PRODUCTOS", "_FLUJO.json")
 ESTADO_VISTAS = ("VISTAS", "_ESTADO.json")
 FLUJO_PY = ("Ads", "_TOOLS", "flujo.py")
 COSTEAR_PY = ("Ads", "_TOOLS", "costear.py")
+GEN_ORDENES_PY = ("Ads", "_TOOLS", "gen_ordenes.py")
 
 # Lo que la pantalla necesita de _DIM_PRODUCTOS.csv. El resto de las columnas (notas de
 # auditoría, alias de carpetas, tasas) no se sirven: la app muestra, no vuelca el CSV.
@@ -150,3 +152,70 @@ def costear(costo_q: str) -> dict[str, Any]:
         detalle = (completado.stderr or completado.stdout or "sin salida").strip()
         raise ContratoAusente(f"costear.py no pudo costear «{costo_q}»: {detalle[-400:]}")
     return json.loads(completado.stdout)
+
+
+def flujo_global() -> dict[str, Any]:
+    """`_FLUJO.json` tal como lo dejó `flujo.py --todo`: el estado consolidado de todos los productos."""
+    return _leer_json(FLUJO_GLOBAL)
+
+
+def ordenes(producto_key: str | None = None) -> dict[str, Any]:
+    """Corre `gen_ordenes.py --json`: órdenes literales para Meta."""
+    comando = [python_del_sistema(), str(ruta(*GEN_ORDENES_PY)), "--json"]
+    if producto_key:
+        comando += ["--producto", producto_key]
+    completado = subprocess.run(
+        comando,
+        cwd=str(ruta()),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=60,
+    )
+    if completado.returncode != 0 or not completado.stdout.strip():
+        detalle = (completado.stderr or completado.stdout or "sin salida").strip()
+        raise ContratoAusente(f"gen_ordenes.py falló: {detalle[-400:]}")
+    return json.loads(completado.stdout)
+
+
+def ganadores() -> list[dict[str, Any]]:
+    """Devuelve los productos que tienen un ángulo ganador detectado por ventas."""
+    resultado: list[dict[str, Any]] = []
+    lista_prods = []
+    try:
+        fg = flujo_global()
+        lista_prods = fg.get("productos", [])
+    except Exception:
+        lista_prods = []
+
+    for p in lista_prods:
+        pk = p.get("producto_key", "")
+        entradas = p.get("entradas", [])
+        ganador_obs = ""
+        tiene_ganador = False
+        for e in entradas:
+            if e.get("fase") == "F2" and e.get("ok"):
+                tiene_ganador = True
+                ganador_obs = e.get("observado", "")
+                break
+
+        nodo_actual = p.get("nodo_actual", "")
+        fase = p.get("fase", "")
+        if tiene_ganador or fase == "F2" or (nodo_actual and nodo_actual.startswith("F2.")):
+            resultado.append({
+                "producto_key": pk,
+                "nombre": p.get("nombre", pk),
+                "fase": fase,
+                "nodo_actual": nodo_actual,
+                "angulo_ganador": ganador_obs or "Ángulo ganador confirmado por ventas",
+                "siguiente_paso": {
+                    "nodo": nodo_actual,
+                    "etapa": "etapa-11" if nodo_actual == "F2.etapa-11" else nodo_actual,
+                    "titulo": "Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)" if nodo_actual == "F2.etapa-11" else p.get("como", "Siguiente paso en el flujo"),
+                    "ejecutor": p.get("ejecutor", "subagente etapa-11"),
+                    "enlace": f"/producto/{pk}/fase1" if fase == "F1" else f"/producto/{pk}",
+                },
+            })
+    return resultado
+

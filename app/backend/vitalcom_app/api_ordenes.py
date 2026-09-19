@@ -1,0 +1,39 @@
+"""api_ordenes.py — endpoints para las órdenes literales de Meta y ganadores detectados.
+
+La app no calcula ni decide: `gen_ordenes.py` genera las órdenes a partir de `_DECISIONES.json`
+y `flujo.py` / `_FLUJO.json` dictamina los ganadores. La app solo los sirve a la pantalla.
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from fastapi import APIRouter, HTTPException, Query
+
+from . import contratos
+from .modelos import Ganador, OrdenesRespuesta
+
+router = APIRouter(prefix="/api", tags=["ordenes"])
+
+
+@router.get("/ordenes", response_model=OrdenesRespuesta)
+def obtener_ordenes(producto: str | None = Query(None, description="Filtrar órdenes por producto_key")) -> OrdenesRespuesta:
+    """Las órdenes vigentes de Meta generadas por gen_ordenes.py.
+    
+    Traduce _DECISIONES.json a llamadas literales de Meta y motivos comprensibles para el operador.
+    """
+    try:
+        data = contratos.ordenes(producto_key=producto)
+        return OrdenesRespuesta(**data)
+    except contratos.ContratoAusente as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+
+
+@router.get("/ganadores", response_model=list[Ganador])
+def obtener_ganadores() -> list[Ganador]:
+    """Lista de productos que cuentan con ángulo ganador confirmado por ventas según el flujo."""
+    try:
+        lista = contratos.ganadores()
+        return [Ganador(**item) for item in lista]
+    except contratos.ContratoAusente as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error

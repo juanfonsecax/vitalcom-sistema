@@ -357,6 +357,48 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/ordenes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Obtener Ordenes
+         * @description Las órdenes vigentes de Meta generadas por gen_ordenes.py.
+         *
+         *     Traduce _DECISIONES.json a llamadas literales de Meta y motivos comprensibles para el operador.
+         */
+        get: operations["obtener_ordenes_api_ordenes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/ganadores": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Obtener Ganadores
+         * @description Lista de productos que cuentan con ángulo ganador confirmado por ventas según el flujo.
+         */
+        get: operations["obtener_ganadores_api_ganadores_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos": {
         parameters: {
             query?: never;
@@ -1073,6 +1115,64 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** Ganador */
+        Ganador: {
+            /** Producto Key */
+            producto_key: string;
+            /**
+             * Nombre
+             * @default
+             */
+            nombre: string;
+            /**
+             * Fase
+             * @default
+             */
+            fase: string;
+            /**
+             * Nodo Actual
+             * @default
+             */
+            nodo_actual: string;
+            /**
+             * Angulo Ganador
+             * @default
+             */
+            angulo_ganador: string;
+            siguiente_paso: components["schemas"]["GanadorPaso"];
+        } & {
+            [key: string]: unknown;
+        };
+        /** GanadorPaso */
+        GanadorPaso: {
+            /**
+             * Nodo
+             * @default
+             */
+            nodo: string;
+            /**
+             * Etapa
+             * @default
+             */
+            etapa: string;
+            /**
+             * Titulo
+             * @default
+             */
+            titulo: string;
+            /**
+             * Ejecutor
+             * @default
+             */
+            ejecutor: string;
+            /**
+             * Enlace
+             * @default
+             */
+            enlace: string;
+        } & {
+            [key: string]: unknown;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -1175,6 +1275,80 @@ export interface components {
              * @default []
              */
             avisos: unknown[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** OrdenItem */
+        OrdenItem: {
+            /** Producto Key */
+            producto_key: string;
+            /** Angulo Key */
+            angulo_key: string;
+            /**
+             * Angulo Nombre
+             * @default
+             */
+            angulo_nombre: string;
+            /** Estado */
+            estado: string;
+            /** Accion Codigo */
+            accion_codigo?: string | null;
+            /** Frase Simple */
+            frase_simple: string;
+            /**
+             * Por Que
+             * @default {}
+             */
+            por_que: {
+                [key: string]: unknown;
+            };
+            /** Bloqueo Fase */
+            bloqueo_fase?: string | null;
+            /**
+             * Ejecutable
+             * @default true
+             */
+            ejecutable: boolean;
+            /**
+             * Conjuntos
+             * @default []
+             */
+            conjuntos: string[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** OrdenesRespuesta */
+        OrdenesRespuesta: {
+            /**
+             * Schema
+             * @default
+             */
+            schema: string;
+            /**
+             * Rezago Dias
+             * @default 0
+             */
+            rezago_dias: number;
+            /**
+             * Llamadas
+             * @default []
+             */
+            llamadas: unknown[];
+            /**
+             * Ordenes
+             * @default []
+             */
+            ordenes: components["schemas"]["OrdenItem"][];
+            /**
+             * Bloqueantes
+             * @default []
+             */
+            bloqueantes: unknown[];
+            /**
+             * Avisos
+             * @default []
+             */
+            avisos: string[];
         } & {
             [key: string]: unknown;
         };
@@ -2139,6 +2313,58 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    obtener_ordenes_api_ordenes_get: {
+        parameters: {
+            query?: {
+                /** @description Filtrar órdenes por producto_key */
+                producto?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrdenesRespuesta"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    obtener_ganadores_api_ganadores_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Ganador"][];
                 };
             };
         };

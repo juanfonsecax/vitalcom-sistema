@@ -1171,8 +1171,17 @@ def paso_preparar_evento(sello: dict[str, Any], orden_id: int) -> dict[str, Any]
         return None
     registrador = acciones.por_id_para_el_runner("evento.registrar")
     fuente_nombre = sello["accion"].get("name") or "activar-meta"
-    motivo = "Publicación por la app: todo nació PAUSED" if meta["ordenes"]["tipo"] == "paquete_publicacion" else "Activación FASE 1 por la app a las 4 AM"
-    valores = {"producto_key": sello["parametros"]["producto_key"], "evento": meta["ordenes"]["evento"],
+    tipo_ord = meta["ordenes"].get("tipo")
+    if tipo_ord == "paquete_publicacion":
+        motivo = "Publicación por la app: todo nació PAUSED"
+        evento_tipo = "LANZAMIENTO"
+    elif tipo_ord == "decision":
+        motivo = "Decisión diaria del motor aplicada tras confirmación del operador"
+        evento_tipo = "PAUSA"
+    else:
+        motivo = "Activación FASE 1 por la app a las 4 AM"
+        evento_tipo = meta["ordenes"].get("evento", "LANZAMIENTO")
+    valores = {"producto_key": sello["parametros"]["producto_key"], "evento": evento_tipo,
                "motivo": motivo, "fuente": f"{fuente_nombre} · confirmado operador · {firma}"}
     if sello["parametros"].get("cuenta") or meta["parametros"].get("cuenta"):
         valores["cuenta"] = sello["parametros"].get("cuenta") or meta["parametros"].get("cuenta")
@@ -1340,3 +1349,59 @@ def esperar_resultado(job_id: str, tope_s: float) -> dict[str, Any] | None:
             return DBOS.retrieve_workflow(job_id).get_result(polling_interval_sec=SONDEO_DE_RESULTADO_S)
         time.sleep(SONDEO_DE_RESULTADO_S)
     return None
+
+
+# ── Ciclo diario y ejecución programada (Hito 5) ──────────────────────────────
+
+PASOS_CICLO_NOCTURNO = [
+    "nodo.ciclo.datos",
+    "ciclo.bajar_meta",
+    "nodo.ciclo.motor",
+    "sistema.refrescar_flujo",
+    "sistema.gen_app",
+]
+
+CRON_NOCTURNO = os.environ.get("VITALCOM_CRON_NOCTURNO", "0 2 * * *")
+
+
+def ejecutar_ciclo_nocturno(job_id: str | None = None) -> dict[str, Any]:
+    """Cadena nocturna de 5 pasos:
+    recopilar-lucidsales -> bajar_meta_insights -> gen_decisiones -> flujo --todo -> gen_app.
+    Cada paso es una acción declarada. Si un paso falla, el siguiente no corre.
+    """
+    import uuid
+    jid = job_id or uuid.uuid4().hex
+    resultados: list[dict[str, Any]] = []
+
+    for i, a_id in enumerate(PASOS_CICLO_NOCTURNO, 1):
+        acc = acciones.por_id_para_el_runner(a_id)
+        sub_id = f"{jid[:24]}-{i:02d}"
+        jid_encolado, _ = encolar(acc, {}, sub_id)
+        res = esperar_resultado(jid_encolado, float(acc.get("tiempo_max_s", 900)))
+        resultados.append({"paso": i, "accion_id": a_id, "resultado": res})
+        if res is None or res.get("estado") != "EXITO":
+            detalle = (res.get("detalle") if res else "Tiempo agotado") or f"El paso {a_id} falló."
+            return {
+                "job_id": jid,
+                "estado": "FALLIDO",
+                "paso_fallido": i,
+                "accion_fallida": a_id,
+                "detalle": detalle,
+                "pasos": resultados,
+            }
+
+    return {
+        "job_id": jid,
+        "estado": "EXITO",
+        "detalle": "Ciclo nocturno completado con éxito.",
+        "pasos": resultados,
+    }
+
+
+if os.environ.get("VITALCOM_PROGRAMAR_NOCTURNO") == "1":
+    @DBOS.scheduled(CRON_NOCTURNO)
+    def tarea_ciclo_nocturno_programado(scheduled_time: datetime, actual_time: datetime) -> None:
+        """Disparador programado de DBOS (se activa solo si VITALCOM_PROGRAMAR_NOCTURNO=1)."""
+        jid = f"nocturno-{actual_time.strftime('%Y%m%d-%H%M%S')}"
+        ejecutar_ciclo_nocturno(jid)
+

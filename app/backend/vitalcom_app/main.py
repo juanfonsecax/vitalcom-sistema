@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles
 
 from fastapi.responses import JSONResponse
 
-from . import acciones, api_acciones, api_fase1, api_trabajos, claude, contratos, subidas, workflows
+from . import acciones, api_acciones, api_fase1, api_ordenes, api_trabajos, claude, contratos, subidas, workflows
 from .acciones import ErrorDeAccion
 from .config import base
 from .modelos import Costeo, Cuenta, Decisiones, Flujo, Producto, Salud
@@ -57,6 +57,7 @@ app.include_router(api_acciones.router)
 app.include_router(api_trabajos.router)
 app.include_router(api_trabajos.router_claude)
 app.include_router(api_fase1.router)
+app.include_router(api_ordenes.router)
 
 
 @app.exception_handler(ErrorDeAccion)

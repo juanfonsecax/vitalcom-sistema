@@ -33,6 +33,9 @@ export type BloqueoDelPaquete = components["schemas"]["BloqueoDelPaquete"];
 export type PaqueteF1 = components["schemas"]["PaqueteF1"];
 export type ChecklistF1 = components["schemas"]["ChecklistF1"];
 export type Cuenta = components["schemas"]["Cuenta"];
+export type OrdenItem = components["schemas"]["OrdenItem"];
+export type OrdenesRespuesta = components["schemas"]["OrdenesRespuesta"];
+export type Ganador = components["schemas"]["Ganador"];
 
 /** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
  * las imágenes que tiene que subir a mano a la biblioteca de Meta. */
@@ -189,4 +192,7 @@ export const api = {
       { method: "POST", body: form },
     );
   },
+  ordenes: (producto?: string) =>
+    pedir<OrdenesRespuesta>(producto ? `/api/ordenes?producto=${encodeURIComponent(producto)}` : "/api/ordenes"),
+  ganadores: () => pedir<Ganador[]>("/api/ganadores"),
 };
