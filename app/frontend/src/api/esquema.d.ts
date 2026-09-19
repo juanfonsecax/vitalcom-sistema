@@ -934,6 +934,11 @@ export interface components {
              * @default []
              */
             credencial_prohibida: string[];
+            /**
+             * Meta Falso
+             * @default false
+             */
+            meta_falso: boolean;
         } & {
             [key: string]: unknown;
         };
@@ -1398,6 +1403,11 @@ export interface components {
             salud?: {
                 [key: string]: unknown;
             } | null;
+            /**
+             * Meta Falso
+             * @default false
+             */
+            meta_falso: boolean;
         } & {
             [key: string]: unknown;
         };

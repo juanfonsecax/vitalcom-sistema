@@ -64,8 +64,25 @@ def _version_de(carpeta: Path) -> tuple[int, ...]:
     return tuple(int(x) for x in re.findall(r"\d+", carpeta.name)) or (0,)
 
 
-def resolver_binario() -> list[str]:
-    """`VITALCOM_CLAUDE_CMD` → `VITALCOM_CLAUDE_EXE` → PATH → `~/.local/bin` → la app de escritorio."""
+def meta_falso() -> bool:
+    """Indica si la perilla VITALCOM_CLAUDE_CMD_META está encendida."""
+    return bool(os.environ.get("VITALCOM_CLAUDE_CMD_META"))
+
+
+def resolver_binario(herramientas: list[str] | None = None) -> list[str]:
+    """`VITALCOM_CLAUDE_CMD` → `VITALCOM_CLAUDE_EXE` → PATH → `~/.local/bin` → la app de escritorio.
+
+    Si `herramientas` incluye alguna herramienta con prefijo `mcp__` y existe la variable
+    `VITALCOM_CLAUDE_CMD_META`, se usa esa lista (Meta falso).
+    """
+    if herramientas and any(h.startswith("mcp__") for h in herramientas):
+        comando_meta = os.environ.get("VITALCOM_CLAUDE_CMD_META")
+        if comando_meta:
+            lista = json.loads(comando_meta)
+            if not isinstance(lista, list) or not all(isinstance(x, str) for x in lista) or not lista:
+                raise ClaudeNoDisponible("CLAUDE_SIN_BINARIO", "VITALCOM_CLAUDE_CMD_META tiene que ser una lista JSON de textos.")
+            return lista
+
     comando = os.environ.get("VITALCOM_CLAUDE_CMD")
     if comando:
         lista = json.loads(comando)
@@ -126,7 +143,12 @@ def estado_sesion(forzar: bool = False) -> dict[str, Any]:
     ahora = time.monotonic()
     if not forzar and _sesion["valor"] is not None and ahora < _sesion["hasta"]:
         return _sesion["valor"]
-    valor: dict[str, Any] = {"logueado": False, "detalle": "", "credencial_prohibida": credenciales_prohibidas_presentes()}
+    valor: dict[str, Any] = {
+        "logueado": False,
+        "detalle": "",
+        "credencial_prohibida": credenciales_prohibidas_presentes(),
+        "meta_falso": meta_falso(),
+    }
     try:
         completado = subprocess.run(
             [*resolver_binario(), "auth", "status"], env=entorno_del_subproceso(), cwd=str(base()),
@@ -162,7 +184,7 @@ def exigir_sesion() -> None:
 
 def armar_argv(*, prompt: str, herramientas: list[str], presupuesto_usd: float,
                resume: str | None = None) -> list[str]:
-    argv = [*resolver_binario(), "-p", prompt, "--output-format", "stream-json", "--verbose",
+    argv = [*resolver_binario(herramientas), "-p", prompt, "--output-format", "stream-json", "--verbose",
             "--include-hook-events", "--permission-mode", "dontAsk"]
     if resume:
         argv += ["--resume", resume]

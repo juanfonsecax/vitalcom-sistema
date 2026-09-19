@@ -93,6 +93,7 @@ class Salud(Base):
     secciones: list[Any] = []
     vistas: list[Any] = []
     salud: dict[str, Any] | None = None
+    meta_falso: bool = False
 
 
 class Decisiones(Base):
@@ -216,6 +217,7 @@ class EstadoDeClaude(Base):
     logueado: bool
     detalle: str = ""
     credencial_prohibida: list[str] = []
+    meta_falso: bool = False
 
 
 class Cuenta(Base):

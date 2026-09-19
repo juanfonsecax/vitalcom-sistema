@@ -2030,6 +2030,11 @@
             "type": "array",
             "title": "Credencial Prohibida",
             "default": []
+          },
+          "meta_falso": {
+            "type": "boolean",
+            "title": "Meta Falso",
+            "default": false
           }
         },
         "additionalProperties": true,
@@ -2838,6 +2843,11 @@
               }
             ],
             "title": "Salud"
+          },
+          "meta_falso": {
+            "type": "boolean",
+            "title": "Meta Falso",
+            "default": false
           }
         },
         "additionalProperties": true,

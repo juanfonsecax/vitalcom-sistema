@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles
 
 from fastapi.responses import JSONResponse
 
-from . import acciones, api_acciones, api_fase1, api_trabajos, contratos, subidas, workflows
+from . import acciones, api_acciones, api_fase1, api_trabajos, claude, contratos, subidas, workflows
 from .acciones import ErrorDeAccion
 from .config import base
 from .modelos import Costeo, Cuenta, Decisiones, Flujo, Producto, Salud
@@ -113,7 +113,7 @@ def listar_decisiones() -> Decisiones:
 @app.get("/api/salud", tags=["sistema"], response_model=Salud)
 def estado_del_sistema() -> Salud:
     """Qué vista está fresca y quién la produce, según `gen_app.py`."""
-    return Salud(**contratos.salud())
+    return Salud(**contratos.salud(), meta_falso=claude.meta_falso())
 
 
 @app.get("/api/costeo/{costo_q}", response_model=Costeo, tags=["productos"])

@@ -111,6 +111,29 @@ def test_el_binario_se_resuelve_en_orden(sistema_de_juguete, monkeypatch, tmp_pa
     assert claude.resolver_binario() == ["python", "otro.py"], "VITALCOM_CLAUDE_CMD tiene prioridad"
 
 
+def test_perilla_meta_falso_solo_aplica_a_herramientas_mcp(monkeypatch, tmp_path):
+    monkeypatch.delenv("VITALCOM_CLAUDE_CMD", raising=False)
+    monkeypatch.delenv("VITALCOM_CLAUDE_CMD_META", raising=False)
+    falso_exe = tmp_path / "claude-normal.exe"
+    falso_exe.write_text("", encoding="utf-8")
+    monkeypatch.setenv("VITALCOM_CLAUDE_EXE", str(falso_exe))
+
+    # Sin perilla, con o sin mcp__ usa el normal
+    assert claude.resolver_binario(["Read"]) == [str(falso_exe)]
+    assert claude.resolver_binario(["mcp__claude_ai_META_MCP__ads_get_ad_accounts"]) == [str(falso_exe)]
+    assert claude.meta_falso() is False
+
+    # Con la perilla puesta
+    meta_cmd = ["python", "tests/fake_claude.py"]
+    monkeypatch.setenv("VITALCOM_CLAUDE_CMD_META", json.dumps(meta_cmd))
+    assert claude.meta_falso() is True
+
+    # Llamada sin mcp__ sigue usando el normal
+    assert claude.resolver_binario(["Read", "Task"]) == [str(falso_exe)]
+    # Llamada con mcp__ usa el comando de Meta falso
+    assert claude.resolver_binario(["Read", "mcp__claude_ai_META_MCP__ads_get_ad_accounts"]) == meta_cmd
+
+
 def test_resumir_eventos_para_la_pantalla():
     assert claude.resumir_evento({"type": "assistant", "message": {"content": [
         {"type": "tool_use", "name": "Task", "input": {"subagent_type": "etapa-2"}}]}}) == "arrancó etapa-2"

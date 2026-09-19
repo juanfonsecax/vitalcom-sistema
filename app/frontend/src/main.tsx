@@ -42,9 +42,12 @@ function EnlaceDeTrabajos() {
   );
 }
 
+import { FranjaMetaFalso } from "./componentes/FranjaMetaFalso";
+
 function Marco() {
   return (
     <div className="min-h-screen">
+      <FranjaMetaFalso />
       <nav className="border-b border-zinc-800 bg-zinc-900/60">
         <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
           <span className="font-semibold tracking-tight">

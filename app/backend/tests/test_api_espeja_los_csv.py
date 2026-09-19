@@ -91,6 +91,7 @@ def test_salud_se_sirve_tal_cual(cliente, base_declarada):
     servido = cliente.get("/api/salud").json()
     assert servido["generado"] == crudo["generado"]
     assert [v["id"] for v in servido["vistas"]] == [v["id"] for v in crudo["vistas"]]
+    assert servido["meta_falso"] is False
 
 
 def test_la_app_corre_sobre_la_carpeta_real(cliente, base_declarada):

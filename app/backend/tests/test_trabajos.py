@@ -114,6 +114,17 @@ def test_el_estado_de_claude(cliente_juguete, monkeypatch):
     assert estado["logueado"] is False and "/login" in estado["detalle"]
 
 
+def test_estado_de_claude_informa_meta_falso(cliente_juguete, monkeypatch):
+    from vitalcom_app import claude
+
+    claude.olvidar_sesion()
+    assert cliente_juguete.get("/api/claude/estado").json()["meta_falso"] is False
+
+    monkeypatch.setenv("VITALCOM_CLAUDE_CMD_META", '["python", "tests/fake_claude.py"]')
+    claude.olvidar_sesion()
+    assert cliente_juguete.get("/api/claude/estado").json()["meta_falso"] is True
+
+
 # ── aprobar, rechazar, responder ──────────────────────────────────────────────
 
 @pytest.fixture()
