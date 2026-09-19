@@ -19,6 +19,20 @@ export type AccionEncolada = components["schemas"]["AccionEncolada"];
 export type Trabajo = components["schemas"]["Trabajo"];
 export type TrabajoDetalle = components["schemas"]["TrabajoDetalle"];
 export type EstadoDeClaude = components["schemas"]["EstadoDeClaude"];
+export type CorridaF1 = components["schemas"]["CorridaF1"];
+export type PasoDeCorrida = components["schemas"]["PasoDeCorrida"];
+export type MiembroDePaso = components["schemas"]["MiembroDePaso"];
+export type SalidaDeEtapa = components["schemas"]["SalidaDeEtapa"];
+export type CampanaF1 = components["schemas"]["CampanaF1"];
+export type PiezaF1 = components["schemas"]["PiezaF1"];
+export type BloqueDeFlujo = components["schemas"]["BloqueDeFlujo"];
+export type SeccionDeFlujo = components["schemas"]["SeccionDeFlujo"];
+export type FlujoBot = components["schemas"]["FlujoBot"];
+export type ItemDeChecklist = components["schemas"]["ItemDeChecklist"];
+export type BloqueoDelPaquete = components["schemas"]["BloqueoDelPaquete"];
+export type PaqueteF1 = components["schemas"]["PaqueteF1"];
+export type ChecklistF1 = components["schemas"]["ChecklistF1"];
+export type Cuenta = components["schemas"]["Cuenta"];
 
 /** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
  * las imágenes que tiene que subir a mano a la biblioteca de Meta. */
@@ -108,6 +122,7 @@ export const api = {
   producto: (clave: string) => pedir<Flujo>(`/api/productos/${encodeURIComponent(clave)}`),
   decisiones: () => pedir<Decisiones>("/api/decisiones"),
   salud: () => pedir<Salud>("/api/salud"),
+  cuentas: () => pedir<Cuenta[]>("/api/cuentas"),
   sistema: () => pedir<{ base: string }>("/api/sistema"),
   costeo: (costo: string) => pedir<Costeo>(`/api/costeo/${encodeURIComponent(costo)}`),
   alta: (formulario: FormData) =>
@@ -153,4 +168,25 @@ export const api = {
     pedir<unknown>(`/api/trabajos/${encodeURIComponent(id)}/cancelar`, { method: "POST" }),
   descartar: (id: string) =>
     pedir<unknown>(`/api/trabajos/${encodeURIComponent(id)}/descartar`, { method: "POST" }),
+  fase1Corrida: (clave: string) =>
+    pedir<CorridaF1>(`/api/productos/${encodeURIComponent(clave)}/fase1/corrida`),
+  fase1Campana: (clave: string) =>
+    pedir<CampanaF1>(`/api/productos/${encodeURIComponent(clave)}/fase1/campana`),
+  flujoBot: (clave: string) =>
+    pedir<FlujoBot>(`/api/productos/${encodeURIComponent(clave)}/flujo-bot`),
+  checklist: (clave: string) =>
+    pedir<ChecklistF1>(`/api/productos/${encodeURIComponent(clave)}/checklist`),
+  urlMedia: (clave: string, archivo: string) =>
+    `/api/productos/${encodeURIComponent(clave)}/media/${encodeURIComponent(archivo)}`,
+  cargarDato: (clave: string, accionId: string, datos: Record<string, unknown>, archivo?: File) => {
+    const form = new FormData();
+    form.append("datos", JSON.stringify(datos));
+    if (archivo) {
+      form.append("archivo", archivo);
+    }
+    return pedir<Record<string, unknown>>(
+      `/api/productos/${encodeURIComponent(clave)}/cargar/${encodeURIComponent(accionId)}`,
+      { method: "POST", body: form },
+    );
+  },
 };

@@ -169,7 +169,9 @@ export interface paths {
         put?: never;
         /**
          * Reintentar Trabajo
-         * @description Un trabajo NUEVO con los mismos parámetros y corrida completa. Pasa por las mismas puertas que un pedido.
+         * @description Un trabajo NUEVO con los mismos parámetros. Pasa por las mismas puertas que un pedido.
+         *
+         *     Si la acción corre de a un paso (Armar FASE 1), retoma desde el paso que no terminó bien.
          */
         post: operations["reintentar_trabajo_api_trabajos__job_id__reintentar_post"];
         delete?: never;
@@ -229,6 +231,126 @@ export interface paths {
         get: operations["estado_de_claude_api_claude_estado_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/fase1/corrida": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Corrida De Fase1
+         * @description La última corrida de «Armar FASE 1»: el avance por paso y lo que devolvió cada etapa, textual.
+         */
+        get: operations["corrida_de_fase1_api_productos__producto_key__fase1_corrida_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/fase1/campana": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Campana De Fase1
+         * @description Anuncios y estructura de campaña: `_LANZADOR.json` y el `_PLAN.json` de origen, tal cual.
+         */
+        get: operations["campana_de_fase1_api_productos__producto_key__fase1_campana_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/flujo-bot": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Flujo Bot
+         * @description El flujo LucidBot por bloques (`gen_flujo_bot.py --json --parcial`): lo que se pega y las `>>` aparte.
+         */
+        get: operations["flujo_bot_api_productos__producto_key__flujo_bot_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/checklist": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Checklist
+         * @description Lo que falta para seguir, cada cosa con la acción que la resuelve (si la carga el operador).
+         */
+        get: operations["checklist_api_productos__producto_key__checklist_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/media/{archivo}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Media
+         * @description Una pieza de la carpeta de media del producto (para verla en la pantalla). Nunca sale de esa carpeta.
+         */
+        get: operations["media_api_productos__producto_key__media__archivo__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/cargar/{accion_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cargar Dato
+         * @description Carga UN dato del checklist con su acción escritora y espera el resultado (como el alta).
+         */
+        post: operations["cargar_dato_api_productos__producto_key__cargar__accion_id__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -369,6 +491,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/cuentas": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Cuentas
+         * @description Las cuentas publicitarias del portafolio (_DIM_CUENTAS.csv).
+         */
+        get: operations["listar_cuentas_api_cuentas_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -441,6 +583,45 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** BloqueDeFlujo */
+        BloqueDeFlujo: {
+            /** Titulo */
+            titulo: string;
+            /** Pegar */
+            pegar: string;
+            /**
+             * Instrucciones
+             * @default []
+             */
+            instrucciones: string[];
+            /**
+             * Pendientes
+             * @default []
+             */
+            pendientes: string[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** BloqueoDelPaquete */
+        BloqueoDelPaquete: {
+            /** Falta */
+            falta: string;
+            /** Lo Produce */
+            lo_produce: string;
+            /** Ambito */
+            ambito: string;
+            /** Clave */
+            clave?: string | null;
+            /**
+             * Archivos
+             * @default []
+             */
+            archivos: string[];
+            /** Escritor */
+            escritor?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** Body_alta_de_producto_api_productos_post */
         Body_alta_de_producto_api_productos_post: {
             /**
@@ -509,6 +690,101 @@ export interface components {
              */
             dry_run: boolean;
         };
+        /** Body_cargar_dato_api_productos__producto_key__cargar__accion_id__post */
+        Body_cargar_dato_api_productos__producto_key__cargar__accion_id__post: {
+            /**
+             * Datos
+             * @default {}
+             */
+            datos: string;
+            /** Archivo */
+            archivo?: string | null;
+        };
+        /**
+         * CampanaF1
+         * @description El lanzador del producto (`_LANZADOR.json`) y el `_PLAN.json` de origen, tal cual.
+         */
+        CampanaF1: {
+            /** Producto Key */
+            producto_key: string;
+            /** Lanzador */
+            lanzador?: {
+                [key: string]: unknown;
+            } | null;
+            /** Plan Fuente */
+            plan_fuente?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Piezas
+             * @default []
+             */
+            piezas: components["schemas"]["PiezaF1"][];
+            /** Lanzador Generado */
+            lanzador_generado?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * ChecklistF1
+         * @description Lo que falta (de `flujo.py`) y los bloqueos del paquete (de `gen_publicacion.py`), con su escritor.
+         */
+        ChecklistF1: {
+            /** Producto Key */
+            producto_key: string;
+            /** Nodo Actual */
+            nodo_actual?: string | null;
+            /** Estado */
+            estado?: string | null;
+            /** Ejecutor */
+            ejecutor?: string | null;
+            /**
+             * Faltan
+             * @default []
+             */
+            faltan: components["schemas"]["ItemDeChecklist"][];
+            paquete?: components["schemas"]["PaqueteF1"] | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** Corrida */
+        Corrida: {
+            /** Job Id */
+            job_id?: string | null;
+            /** Run Dir */
+            run_dir: string;
+            /** Iniciado */
+            iniciado?: string | null;
+            /** Estado */
+            estado?: string | null;
+            /** Retomado De */
+            retomado_de?: string | null;
+            /**
+             * Pasos
+             * @default []
+             */
+            pasos: components["schemas"]["PasoDeCorrida"][];
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * CorridaF1
+         * @description La última corrida de «Armar FASE 1»: avance y lo que devolvió cada etapa.
+         */
+        CorridaF1: {
+            /** Producto Key */
+            producto_key: string;
+            corrida?: components["schemas"]["Corrida"] | null;
+            /** Inputs Congelados */
+            inputs_congelados?: string | null;
+            /**
+             * Etapas
+             * @default []
+             */
+            etapas: components["schemas"]["SalidaDeEtapa"][];
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * Costeo
          * @description Salida de `costear.py --json`. Las cifras salen de `_DIM_COSTEO.csv`, nunca de acá.
@@ -557,6 +833,23 @@ export interface components {
              * @default
              */
             origen_escalera: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** Cuenta */
+        Cuenta: {
+            /** Cuenta Alias */
+            cuenta_alias: string;
+            /** Cuenta Id */
+            cuenta_id: string;
+            /** Moneda */
+            moneda: string;
+            /** Mcp Habilitado */
+            mcp_habilitado: string;
+            /** Sube Media Local */
+            sube_media_local: string;
+            /** Estado Cuenta */
+            estado_cuenta: string;
         } & {
             [key: string]: unknown;
         };
@@ -737,10 +1030,91 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * FlujoBot
+         * @description `gen_flujo_bot.py --json --parcial`: el flujo por bloques, las instrucciones `>>` aparte.
+         */
+        FlujoBot: {
+            /** Producto Key */
+            producto_key: string;
+            /** Ok */
+            ok: boolean;
+            /**
+             * Faltan
+             * @default []
+             */
+            faltan: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Avisos
+             * @default []
+             */
+            avisos: string[];
+            /**
+             * Prohibiciones
+             * @default []
+             */
+            prohibiciones: string[];
+            /** Encabezado */
+            encabezado?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Secciones
+             * @default []
+             */
+            secciones: components["schemas"]["SeccionDeFlujo"][];
+        } & {
+            [key: string]: unknown;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** ItemDeChecklist */
+        ItemDeChecklist: {
+            /** Dato */
+            dato: string;
+            /**
+             * Ok
+             * @default false
+             */
+            ok: boolean;
+            /** Observado */
+            observado?: string | null;
+            /** Dueno */
+            dueno?: string | null;
+            /**
+             * Escritores
+             * @default []
+             */
+            escritores: string[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** MiembroDePaso */
+        MiembroDePaso: {
+            /** Etapa */
+            etapa: string;
+            /** Salida */
+            salida: string;
+            /**
+             * Estado
+             * @default PENDIENTE
+             */
+            estado: string;
+            /** Detalle */
+            detalle?: string | null;
+            /** Pregunta */
+            pregunta?: string | null;
+            /** Duracion S */
+            duracion_s?: number | null;
+            /** Costo Equivalente Usd */
+            costo_equivalente_usd?: number | null;
+        } & {
+            [key: string]: unknown;
         };
         /** Nodo */
         Nodo: {
@@ -799,6 +1173,42 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** PaqueteF1 */
+        PaqueteF1: {
+            /**
+             * Bloqueantes
+             * @default []
+             */
+            bloqueantes: components["schemas"]["BloqueoDelPaquete"][];
+            /**
+             * Avisos
+             * @default []
+             */
+            avisos: string[];
+            /** Preflight */
+            preflight?: unknown;
+        } & {
+            [key: string]: unknown;
+        };
+        /** PasoDeCorrida */
+        PasoDeCorrida: {
+            /** N */
+            n: number;
+            /** Etapas */
+            etapas: string[];
+            /**
+             * Estado
+             * @default PENDIENTE
+             */
+            estado: string;
+            /**
+             * Miembros
+             * @default []
+             */
+            miembros: components["schemas"]["MiembroDePaso"][];
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * PedidoAccion
          * @description El cuerpo de `POST /api/acciones/{id}`.
@@ -818,6 +1228,19 @@ export interface components {
             confirmado: boolean;
             /** Job Id */
             job_id?: string | null;
+        };
+        /** PiezaF1 */
+        PiezaF1: {
+            /** N */
+            n?: number | null;
+            /** Angulo Key */
+            angulo_key?: string | null;
+            /** Archivo */
+            archivo?: string | null;
+            /** Url */
+            url?: string | null;
+        } & {
+            [key: string]: unknown;
         };
         /**
          * Producto
@@ -936,6 +1359,19 @@ export interface components {
             /** Texto */
             texto: string;
         };
+        /** SalidaDeEtapa */
+        SalidaDeEtapa: {
+            /** Paso */
+            paso: number;
+            /** Etapa */
+            etapa: string;
+            /** Archivo */
+            archivo: string;
+            /** Texto */
+            texto?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * Salud
          * @description `VISTAS/_ESTADO.json`: frescura por vista, calculada por gen_app.py.
@@ -962,6 +1398,23 @@ export interface components {
             salud?: {
                 [key: string]: unknown;
             } | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** SeccionDeFlujo */
+        SeccionDeFlujo: {
+            /** Titulo */
+            titulo: string;
+            /**
+             * Instrucciones
+             * @default []
+             */
+            instrucciones: string[];
+            /**
+             * Bloques
+             * @default []
+             */
+            bloques: components["schemas"]["BloqueDeFlujo"][];
         } & {
             [key: string]: unknown;
         };
@@ -1488,6 +1941,198 @@ export interface operations {
             };
         };
     };
+    corrida_de_fase1_api_productos__producto_key__fase1_corrida_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CorridaF1"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    campana_de_fase1_api_productos__producto_key__fase1_campana_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CampanaF1"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    flujo_bot_api_productos__producto_key__flujo_bot_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FlujoBot"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    checklist_api_productos__producto_key__checklist_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChecklistF1"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    media_api_productos__producto_key__media__archivo__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+                archivo: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cargar_dato_api_productos__producto_key__cargar__accion_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+                accion_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_cargar_dato_api_productos__producto_key__cargar__accion_id__post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     listar_productos_api_productos_get: {
         parameters: {
             query?: never;
@@ -1663,6 +2308,26 @@ export interface operations {
                     "application/json": {
                         [key: string]: string;
                     };
+                };
+            };
+        };
+    };
+    listar_cuentas_api_cuentas_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Cuenta"][];
                 };
             };
         };

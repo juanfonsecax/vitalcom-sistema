@@ -19,6 +19,7 @@ import { ProductoDetalle } from "./pantallas/ProductoDetalle";
 import { Salud } from "./pantallas/Salud";
 import { NuevoProducto } from "./pantallas/NuevoProducto";
 import { Trabajos } from "./pantallas/Trabajos";
+import { Fase1 } from "./pantallas/Fase1";
 import { api } from "./api/cliente";
 import "./estilos.css";
 
@@ -72,6 +73,7 @@ const raiz = createRootRoute({ component: Marco });
 const rutas = [
   createRoute({ getParentRoute: () => raiz, path: "/", component: Tablero }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle }),
+  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: Fase1 }),
   createRoute({ getParentRoute: () => raiz, path: "/salud", component: Salud }),
   createRoute({ getParentRoute: () => raiz, path: "/nuevo", component: NuevoProducto }),
   createRoute({ getParentRoute: () => raiz, path: "/trabajos", component: Trabajos }),

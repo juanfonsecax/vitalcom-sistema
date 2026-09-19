@@ -72,14 +72,23 @@ export function ProductoDetalle() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link to="/" className="text-xs text-zinc-500 hover:text-zinc-300">
-          ← portafolio
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <div>
+          <Link to="/" className="text-xs text-zinc-500 hover:text-zinc-300">
+            ← portafolio
+          </Link>
+          <h1 className="mt-1 text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
+          <p className="text-sm text-zinc-400">
+            {d.fase_titulo} · paso actual <span className="font-mono">{d.nodo_actual}</span>
+          </p>
+        </div>
+        <Link
+          to="/producto/$clave/fase1"
+          params={{ clave }}
+          className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
+        >
+          Pantalla FASE 1 →
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
-        <p className="text-sm text-zinc-400">
-          {d.fase_titulo} · paso actual <span className="font-mono">{d.nodo_actual}</span>
-        </p>
       </div>
 
       <div className="flex flex-wrap gap-2">

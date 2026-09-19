@@ -218,6 +218,15 @@ class EstadoDeClaude(Base):
     credencial_prohibida: list[str] = []
 
 
+class Cuenta(Base):
+    cuenta_alias: str
+    cuenta_id: str
+    moneda: str
+    mcp_habilitado: str
+    sube_media_local: str
+    estado_cuenta: str
+
+
 # ── FASE 1 (Hito 4) ───────────────────────────────────────────────────────────
 
 class MiembroDePaso(Base):

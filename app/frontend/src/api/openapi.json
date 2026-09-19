@@ -465,7 +465,7 @@
           "trabajos"
         ],
         "summary": "Reintentar Trabajo",
-        "description": "Un trabajo NUEVO con los mismos parámetros y corrida completa. Pasa por las mismas puertas que un pedido.",
+        "description": "Un trabajo NUEVO con los mismos parámetros. Pasa por las mismas puertas que un pedido.\n\nSi la acción corre de a un paso (Armar FASE 1), retoma desde el paso que no terminó bien.",
         "operationId": "reintentar_trabajo_api_trabajos__job_id__reintentar_post",
         "parameters": [
           {
@@ -623,6 +623,286 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EstadoDeClaude"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/fase1/corrida": {
+      "get": {
+        "tags": [
+          "fase1"
+        ],
+        "summary": "Corrida De Fase1",
+        "description": "La última corrida de «Armar FASE 1»: el avance por paso y lo que devolvió cada etapa, textual.",
+        "operationId": "corrida_de_fase1_api_productos__producto_key__fase1_corrida_get",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CorridaF1"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/fase1/campana": {
+      "get": {
+        "tags": [
+          "fase1"
+        ],
+        "summary": "Campana De Fase1",
+        "description": "Anuncios y estructura de campaña: `_LANZADOR.json` y el `_PLAN.json` de origen, tal cual.",
+        "operationId": "campana_de_fase1_api_productos__producto_key__fase1_campana_get",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CampanaF1"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/flujo-bot": {
+      "get": {
+        "tags": [
+          "fase1"
+        ],
+        "summary": "Flujo Bot",
+        "description": "El flujo LucidBot por bloques (`gen_flujo_bot.py --json --parcial`): lo que se pega y las `>>` aparte.",
+        "operationId": "flujo_bot_api_productos__producto_key__flujo_bot_get",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlujoBot"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/checklist": {
+      "get": {
+        "tags": [
+          "fase1"
+        ],
+        "summary": "Checklist",
+        "description": "Lo que falta para seguir, cada cosa con la acción que la resuelve (si la carga el operador).",
+        "operationId": "checklist_api_productos__producto_key__checklist_get",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChecklistF1"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/media/{archivo}": {
+      "get": {
+        "tags": [
+          "fase1"
+        ],
+        "summary": "Media",
+        "description": "Una pieza de la carpeta de media del producto (para verla en la pantalla). Nunca sale de esa carpeta.",
+        "operationId": "media_api_productos__producto_key__media__archivo__get",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          },
+          {
+            "name": "archivo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Archivo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/productos/{producto_key}/cargar/{accion_id}": {
+      "post": {
+        "tags": [
+          "fase1"
+        ],
+        "summary": "Cargar Dato",
+        "description": "Carga UN dato del checklist con su acción escritora y espera el resultado (como el alta).",
+        "operationId": "cargar_dato_api_productos__producto_key__cargar__accion_id__post",
+        "parameters": [
+          {
+            "name": "producto_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Producto Key"
+            }
+          },
+          {
+            "name": "accion_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Accion Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_cargar_dato_api_productos__producto_key__cargar__accion_id__post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Cargar Dato Api Productos  Producto Key  Cargar  Accion Id  Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -853,6 +1133,32 @@
           }
         }
       }
+    },
+    "/api/cuentas": {
+      "get": {
+        "tags": [
+          "sistema"
+        ],
+        "summary": "Listar Cuentas",
+        "description": "Las cuentas publicitarias del portafolio (_DIM_CUENTAS.csv).",
+        "operationId": "listar_cuentas_api_cuentas_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Cuenta"
+                  },
+                  "type": "array",
+                  "title": "Response Listar Cuentas Api Cuentas Get"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1017,6 +1323,95 @@
         ],
         "title": "AccionEncolada"
       },
+      "BloqueDeFlujo": {
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "title": "Titulo"
+          },
+          "pegar": {
+            "type": "string",
+            "title": "Pegar"
+          },
+          "instrucciones": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Instrucciones",
+            "default": []
+          },
+          "pendientes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pendientes",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "titulo",
+          "pegar"
+        ],
+        "title": "BloqueDeFlujo"
+      },
+      "BloqueoDelPaquete": {
+        "properties": {
+          "falta": {
+            "type": "string",
+            "title": "Falta"
+          },
+          "lo_produce": {
+            "type": "string",
+            "title": "Lo Produce"
+          },
+          "ambito": {
+            "type": "string",
+            "title": "Ambito"
+          },
+          "clave": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clave"
+          },
+          "archivos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Archivos",
+            "default": []
+          },
+          "escritor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Escritor"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "falta",
+          "lo_produce",
+          "ambito"
+        ],
+        "title": "BloqueoDelPaquete"
+      },
       "Body_alta_de_producto_api_productos_post": {
         "properties": {
           "nombre": {
@@ -1094,6 +1489,263 @@
           "imagen"
         ],
         "title": "Body_alta_de_producto_api_productos_post"
+      },
+      "Body_cargar_dato_api_productos__producto_key__cargar__accion_id__post": {
+        "properties": {
+          "datos": {
+            "type": "string",
+            "title": "Datos",
+            "default": "{}"
+          },
+          "archivo": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivo"
+          }
+        },
+        "type": "object",
+        "title": "Body_cargar_dato_api_productos__producto_key__cargar__accion_id__post"
+      },
+      "CampanaF1": {
+        "properties": {
+          "producto_key": {
+            "type": "string",
+            "title": "Producto Key"
+          },
+          "lanzador": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lanzador"
+          },
+          "plan_fuente": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Fuente"
+          },
+          "piezas": {
+            "items": {
+              "$ref": "#/components/schemas/PiezaF1"
+            },
+            "type": "array",
+            "title": "Piezas",
+            "default": []
+          },
+          "lanzador_generado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lanzador Generado"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "producto_key"
+        ],
+        "title": "CampanaF1",
+        "description": "El lanzador del producto (`_LANZADOR.json`) y el `_PLAN.json` de origen, tal cual."
+      },
+      "ChecklistF1": {
+        "properties": {
+          "producto_key": {
+            "type": "string",
+            "title": "Producto Key"
+          },
+          "nodo_actual": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nodo Actual"
+          },
+          "estado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estado"
+          },
+          "ejecutor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ejecutor"
+          },
+          "faltan": {
+            "items": {
+              "$ref": "#/components/schemas/ItemDeChecklist"
+            },
+            "type": "array",
+            "title": "Faltan",
+            "default": []
+          },
+          "paquete": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaqueteF1"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "producto_key"
+        ],
+        "title": "ChecklistF1",
+        "description": "Lo que falta (de `flujo.py`) y los bloqueos del paquete (de `gen_publicacion.py`), con su escritor."
+      },
+      "Corrida": {
+        "properties": {
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          },
+          "run_dir": {
+            "type": "string",
+            "title": "Run Dir"
+          },
+          "iniciado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Iniciado"
+          },
+          "estado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estado"
+          },
+          "retomado_de": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retomado De"
+          },
+          "pasos": {
+            "items": {
+              "$ref": "#/components/schemas/PasoDeCorrida"
+            },
+            "type": "array",
+            "title": "Pasos",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "run_dir"
+        ],
+        "title": "Corrida"
+      },
+      "CorridaF1": {
+        "properties": {
+          "producto_key": {
+            "type": "string",
+            "title": "Producto Key"
+          },
+          "corrida": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Corrida"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "inputs_congelados": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inputs Congelados"
+          },
+          "etapas": {
+            "items": {
+              "$ref": "#/components/schemas/SalidaDeEtapa"
+            },
+            "type": "array",
+            "title": "Etapas",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "producto_key"
+        ],
+        "title": "CorridaF1",
+        "description": "La última corrida de «Armar FASE 1»: avance y lo que devolvió cada etapa."
       },
       "Costeo": {
         "properties": {
@@ -1209,6 +1861,45 @@
         ],
         "title": "Costeo",
         "description": "Salida de `costear.py --json`. Las cifras salen de `_DIM_COSTEO.csv`, nunca de acá."
+      },
+      "Cuenta": {
+        "properties": {
+          "cuenta_alias": {
+            "type": "string",
+            "title": "Cuenta Alias"
+          },
+          "cuenta_id": {
+            "type": "string",
+            "title": "Cuenta Id"
+          },
+          "moneda": {
+            "type": "string",
+            "title": "Moneda"
+          },
+          "mcp_habilitado": {
+            "type": "string",
+            "title": "Mcp Habilitado"
+          },
+          "sube_media_local": {
+            "type": "string",
+            "title": "Sube Media Local"
+          },
+          "estado_cuenta": {
+            "type": "string",
+            "title": "Estado Cuenta"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "cuenta_alias",
+          "cuenta_id",
+          "moneda",
+          "mcp_habilitado",
+          "sube_media_local",
+          "estado_cuenta"
+        ],
+        "title": "Cuenta"
       },
       "DecisionDeOrden": {
         "properties": {
@@ -1474,6 +2165,71 @@
         "title": "Flujo",
         "description": "Salida de `flujo.py <pk> --json`, la vista completa del producto en el grafo."
       },
+      "FlujoBot": {
+        "properties": {
+          "producto_key": {
+            "type": "string",
+            "title": "Producto Key"
+          },
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          },
+          "faltan": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Faltan",
+            "default": []
+          },
+          "avisos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Avisos",
+            "default": []
+          },
+          "prohibiciones": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prohibiciones",
+            "default": []
+          },
+          "encabezado": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encabezado"
+          },
+          "secciones": {
+            "items": {
+              "$ref": "#/components/schemas/SeccionDeFlujo"
+            },
+            "type": "array",
+            "title": "Secciones",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "producto_key",
+          "ok"
+        ],
+        "title": "FlujoBot",
+        "description": "`gen_flujo_bot.py --json --parcial`: el flujo por bloques, las instrucciones `>>` aparte."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1486,6 +2242,123 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "ItemDeChecklist": {
+        "properties": {
+          "dato": {
+            "type": "string",
+            "title": "Dato"
+          },
+          "ok": {
+            "type": "boolean",
+            "title": "Ok",
+            "default": false
+          },
+          "observado": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observado"
+          },
+          "dueno": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dueno"
+          },
+          "escritores": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Escritores",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "dato"
+        ],
+        "title": "ItemDeChecklist"
+      },
+      "MiembroDePaso": {
+        "properties": {
+          "etapa": {
+            "type": "string",
+            "title": "Etapa"
+          },
+          "salida": {
+            "type": "string",
+            "title": "Salida"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado",
+            "default": "PENDIENTE"
+          },
+          "detalle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detalle"
+          },
+          "pregunta": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pregunta"
+          },
+          "duracion_s": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duracion S"
+          },
+          "costo_equivalente_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Costo Equivalente Usd"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "etapa",
+          "salida"
+        ],
+        "title": "MiembroDePaso"
       },
       "Nodo": {
         "properties": {
@@ -1556,6 +2429,67 @@
         ],
         "title": "Nodo"
       },
+      "PaqueteF1": {
+        "properties": {
+          "bloqueantes": {
+            "items": {
+              "$ref": "#/components/schemas/BloqueoDelPaquete"
+            },
+            "type": "array",
+            "title": "Bloqueantes",
+            "default": []
+          },
+          "avisos": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Avisos",
+            "default": []
+          },
+          "preflight": {
+            "title": "Preflight"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "PaqueteF1"
+      },
+      "PasoDeCorrida": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "etapas": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Etapas"
+          },
+          "estado": {
+            "type": "string",
+            "title": "Estado",
+            "default": "PENDIENTE"
+          },
+          "miembros": {
+            "items": {
+              "$ref": "#/components/schemas/MiembroDePaso"
+            },
+            "type": "array",
+            "title": "Miembros",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "n",
+          "etapas"
+        ],
+        "title": "PasoDeCorrida"
+      },
       "PedidoAccion": {
         "properties": {
           "parametros": {
@@ -1584,6 +2518,57 @@
         "type": "object",
         "title": "PedidoAccion",
         "description": "El cuerpo de `POST /api/acciones/{id}`."
+      },
+      "PiezaF1": {
+        "properties": {
+          "n": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N"
+          },
+          "angulo_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Angulo Key"
+          },
+          "archivo": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Archivo"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "PiezaF1"
       },
       "Producto": {
         "properties": {
@@ -1777,6 +2762,41 @@
         ],
         "title": "RespuestaDeClaude"
       },
+      "SalidaDeEtapa": {
+        "properties": {
+          "paso": {
+            "type": "integer",
+            "title": "Paso"
+          },
+          "etapa": {
+            "type": "string",
+            "title": "Etapa"
+          },
+          "archivo": {
+            "type": "string",
+            "title": "Archivo"
+          },
+          "texto": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texto"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "paso",
+          "etapa",
+          "archivo"
+        ],
+        "title": "SalidaDeEtapa"
+      },
       "Salud": {
         "properties": {
           "generado": {
@@ -1824,6 +2844,36 @@
         "type": "object",
         "title": "Salud",
         "description": "`VISTAS/_ESTADO.json`: frescura por vista, calculada por gen_app.py."
+      },
+      "SeccionDeFlujo": {
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "title": "Titulo"
+          },
+          "instrucciones": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Instrucciones",
+            "default": []
+          },
+          "bloques": {
+            "items": {
+              "$ref": "#/components/schemas/BloqueDeFlujo"
+            },
+            "type": "array",
+            "title": "Bloques",
+            "default": []
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "titulo"
+        ],
+        "title": "SeccionDeFlujo"
       },
       "Trabajo": {
         "properties": {

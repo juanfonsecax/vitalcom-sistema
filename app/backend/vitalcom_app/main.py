@@ -23,7 +23,7 @@ from fastapi.responses import JSONResponse
 from . import acciones, api_acciones, api_fase1, api_trabajos, contratos, subidas, workflows
 from .acciones import ErrorDeAccion
 from .config import base
-from .modelos import Costeo, Decisiones, Flujo, Producto, Salud
+from .modelos import Costeo, Cuenta, Decisiones, Flujo, Producto, Salud
 
 @asynccontextmanager
 async def _ciclo_de_vida(_app: FastAPI):  # type: ignore[no-untyped-def]
@@ -190,6 +190,12 @@ def transcribir_videos(producto_key: str) -> dict:
 def donde_corre() -> dict[str, str]:
     """Sobre qué carpeta está corriendo la app. Evita el error del worktree (hoja §1.2)."""
     return {"base": str(base())}
+
+
+@app.get("/api/cuentas", response_model=list[Cuenta], tags=["sistema"])
+def listar_cuentas() -> list[Cuenta]:
+    """Las cuentas publicitarias del portafolio (_DIM_CUENTAS.csv)."""
+    return [Cuenta(**fila) for fila in contratos.cuentas()]
 
 
 @app.exception_handler(contratos.ContratoAusente)

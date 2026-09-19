@@ -96,3 +96,9 @@ def test_salud_se_sirve_tal_cual(cliente, base_declarada):
 def test_la_app_corre_sobre_la_carpeta_real(cliente, base_declarada):
     """La lección del 17-sep: en un worktree faltan las Ads/MEDIA_* y el estado sale falso."""
     assert Path(cliente.get("/api/sistema").json()["base"]) == base_declarada
+
+
+def test_lista_las_cuentas_del_csv(cliente, base_declarada):
+    esperado = [fila["cuenta_alias"] for fila in _csv(base_declarada, "_DIM_CUENTAS.csv")]
+    servidos = [c["cuenta_alias"] for c in cliente.get("/api/cuentas").json()]
+    assert servidos == esperado

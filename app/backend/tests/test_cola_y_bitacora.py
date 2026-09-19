@@ -166,7 +166,7 @@ def test_toda_escritura_de_la_bitacora_pasa_por_dentro():
     """Estructural: las primitivas de escritura solo viven en las funciones que llaman a `_dentro`."""
     archivo = PAQUETE / "bitacora.py"
     arbol = ast.parse(archivo.read_text(encoding="utf-8"), filename=str(archivo))
-    permitidas = {"_crear_carpeta", "_abrir", "reescribir_trabajo"}
+    permitidas = {"_crear_carpeta", "_abrir", "reescribir_trabajo", "reescribir_en_corrida"}
     primitivas = ("open", "os.replace", ".mkdir", ".write_text", ".unlink", "json.dump")
     for funcion in (n for n in ast.walk(arbol) if isinstance(n, ast.FunctionDef)):
         for nodo in ast.walk(funcion):
