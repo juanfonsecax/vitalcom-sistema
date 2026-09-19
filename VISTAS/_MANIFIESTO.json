@@ -1672,6 +1672,50 @@
     "habilitada": true,
     "tiempo_max_s": 900,
     "salida": "texto"
+   },
+   {
+    "id": "producto.reingreso_f1",
+    "rotulo": "Retornar a FASE 1 por fatiga (nuevos ángulos)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/reingreso_f1.py",
+     "--producto",
+     "{producto_key}",
+     "--motivo",
+     "{motivo}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "motivo": {
+      "tipo": "texto",
+      "requerido": false,
+      "patron": "^[^\\r\\n]{0,300}$"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "operador",
+    "habilitada": true,
+    "tiempo_max_s": 30,
+    "salida": "json"
    }
   ]
  }

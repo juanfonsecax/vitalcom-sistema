@@ -24,7 +24,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from flujo import (Entorno, cargar_flujo, correr, evaluar, validar, BASE_REAL,  # noqa: E402
+from flujo import (Entorno, cargar_flujo, correr, evaluar, situar, validar, BASE_REAL,  # noqa: E402
                    _angulos_acumulados, _ev_angulo_ganador, _ev_concepto_2de2)
 
 FIXTURE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_fixtures", "flujo_20260908")
@@ -266,10 +266,37 @@ def main():
           "el rótulo dice el umbral (2) aparte del denominador (3 campañas): «2 de 3» no es otra regla",
           obs_c)
 
-    total = 26
+    # ── G. la transición de fatiga reingresa el producto a FASE 1 ──────────────
+    # Si un producto en F2 se fatiga y el operador dispara REINGRESO_F1, el flujo
+    # debe situarlo en F1 reportando los ángulos excluidos para no repetirlos.
+    flujo_base = cargar_flujo(Entorno(base=FIXTURE, hoy=HOY, sin_scripts=True))
+    f2_def = next((f for f in flujo_base["fases"] if f["id"] == "F2"), {})
+    check(f2_def.get("reingreso") is not None and f2_def["reingreso"].get("a") == "F1",
+          "DOCTRINA/FLUJO.json declara la transición de fatiga (reingreso a F1) en FASE 2")
+
+    # Simulamos fixture con producto en F2 que recibe REINGRESO_F1
+    tmp_fatiga = fixture_escalar_flaco(ventas_nuevo=3, con_probado=True)
+    _escribir_csv(os.path.join(tmp_fatiga, "PRODUCTOS"), "_EVENTOS.csv",
+                  ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta", "evento",
+                   "valor_antes", "valor_despues", "motivo", "fuente_decision"],
+                  [["2026-09-14", "PX", "GTR7", "*", "*", "REINGRESO_F1", "F2", "F1",
+                    "Fatiga de ángulo. Excluidos: ANG_NUEVO, ANG_PROBADO", "operador (app)"]])
+
+    env_fatiga = Entorno(base=tmp_fatiga, hoy=datetime.date(2026, 9, 15), sin_scripts=True)
+    prod_fatiga = next(p for p in env_fatiga.csv("_DIM_PRODUCTOS.csv") if p.get("producto_key") == "PX")
+    sit = situar(prod_fatiga, flujo_base, env_fatiga)
+    check(sit["fase"] == "F1",
+          "producto con ganador histórico pero REINGRESO_F1 activo es situado en FASE 1",
+          str(sit.get("fase")))
+    check(sit.get("reingreso_activo") is not None and "ANG_PROBADO" in sit["reingreso_activo"].get("angulos_excluidos", []),
+          "reingreso_activo reporta los ángulos excluidos para que etapa-2 no los repita",
+          str(sit.get("reingreso_activo")))
+
+    total = 29
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
+

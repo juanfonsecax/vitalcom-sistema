@@ -82,32 +82,70 @@ export function ProductoDetalle() {
             {d.fase_titulo} · paso actual <span className="font-mono">{d.nodo_actual}</span>
           </p>
         </div>
-        <Link
-          to="/producto/$clave/fase1"
-          params={{ clave }}
-          className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
-        >
-          Pantalla FASE 1 →
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            to="/producto/$clave/fase1"
+            params={{ clave }}
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
+              d.fase === "F1"
+                ? "bg-sky-600 text-white hover:bg-sky-500"
+                : "border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+            }`}
+          >
+            FASE 1 (Ángulos)
+          </Link>
+          <Link
+            to="/producto/$clave/fase2"
+            params={{ clave }}
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
+              d.fase === "F2"
+                ? "bg-sky-600 text-white hover:bg-sky-500"
+                : "border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+            }`}
+          >
+            FASE 2 (Conceptos)
+          </Link>
+          <Link
+            to="/producto/$clave/fase3"
+            params={{ clave }}
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
+              d.fase === "F3"
+                ? "bg-sky-600 text-white hover:bg-sky-500"
+                : "border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+            }`}
+          >
+            FASE 3 (Escalado)
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {FASES.map((fase) => (
-          <div
-            key={fase.id}
-            className={`flex-1 rounded-lg border p-3 ${
-              d.fase === fase.id
-                ? "border-sky-700 bg-sky-950/40"
-                : "border-zinc-800 bg-zinc-900/40 opacity-60"
-            }`}
-          >
-            <p className="text-sm font-medium text-zinc-100">
-              {fase.rotulo}
-              <Info termino={fase.id === "F1" ? "fase_1" : fase.id === "F2" ? "fase_2" : "fase_3"} />
-            </p>
-            <p className="text-xs text-zinc-500">{fase.que}</p>
-          </div>
-        ))}
+        {FASES.map((fase) => {
+          const rutaDestino =
+            fase.id === "F1"
+              ? "/producto/$clave/fase1"
+              : fase.id === "F2"
+                ? "/producto/$clave/fase2"
+                : "/producto/$clave/fase3";
+          return (
+            <Link
+              key={fase.id}
+              to={rutaDestino}
+              params={{ clave }}
+              className={`flex-1 rounded-lg border p-3 transition-colors hover:border-zinc-700 ${
+                d.fase === fase.id
+                  ? "border-sky-700 bg-sky-950/40"
+                  : "border-zinc-800 bg-zinc-900/40 opacity-75"
+              }`}
+            >
+              <p className="text-sm font-medium text-zinc-100">
+                {fase.rotulo}
+                <Info termino={fase.id === "F1" ? "fase_1" : fase.id === "F2" ? "fase_2" : "fase_3"} />
+              </p>
+              <p className="text-xs text-zinc-500">{fase.que}</p>
+            </Link>
+          );
+        })}
       </div>
 
       {d.entradas.length > 0 && (

@@ -219,3 +219,234 @@ def ganadores() -> list[dict[str, Any]]:
             })
     return resultado
 
+
+def _angulos_probados(producto_key: str) -> list[str]:
+    """Lista ordenada de ángulos testeados por el producto."""
+    angulos = set()
+    try:
+        dim_conj = _leer_csv(("PRODUCTOS", "_DIM_CONJUNTOS.csv"))
+        for r in dim_conj:
+            if r.get("producto_key") == producto_key:
+                a = (r.get("angulo_key") or "").strip()
+                if a:
+                    angulos.add(a)
+        fact_ventas = _leer_csv(("PRODUCTOS", "_FACT_VENTAS.csv"))
+        for r in fact_ventas:
+            if r.get("producto_key") == producto_key:
+                cj = (r.get("conjunto") or "").strip()
+                for c in dim_conj:
+                    if (c.get("conjunto_meta") or "").strip() == cj:
+                        a = (c.get("angulo_key") or "").strip()
+                        if a:
+                            angulos.add(a)
+    except Exception:
+        pass
+    return sorted(angulos)
+
+
+def fase2_detalle(producto_key: str) -> dict[str, Any]:
+    """Detalles de FASE 2 para el producto: ángulo ganador, 10 conceptos con blueprints y carriles."""
+    flujo_data = flujo(producto_key)
+    entradas = flujo_data.get("entradas", [])
+    ganador_obs = ""
+    for e in entradas:
+        if e.get("fase") == "F2" and e.get("ok"):
+            ganador_obs = e.get("observado", "")
+            break
+
+    # Ganadores secundarios (#2 y #3) y órdenes del motor
+    celdas = []
+    try:
+        dec = decisiones()
+        for p in dec.get("productos", []):
+            if p.get("producto_key") == producto_key:
+                celdas = p.get("celdas", [])
+                break
+    except Exception:
+        celdas = []
+
+    carriles = []
+    for c in celdas:
+        c_est = c.get("estado", "")
+        c_nom = c.get("celda", "")
+        if c_est in ("ESCALAR", "RENOVAR"):
+            carriles.append({
+                "angulo_key": c_nom,
+                "estado_motor": c_est,
+                "accion": c.get("accion_sugerida", ""),
+                "fecha_estimada": "Escalonar ~3 días",
+            })
+
+    creativos_rows = []
+    try:
+        creativos_rows = [r for r in _leer_csv(("PRODUCTOS", "_DIM_CREATIVOS.csv")) if r.get("producto_key") == producto_key]
+    except Exception:
+        creativos_rows = []
+
+    canonicos_dict: dict[str, Any] = {}
+    try:
+        blueprints_dir = ruta("Ads", "_SWIPE", "_BLUEPRINTS", "CANONICOS")
+        if blueprints_dir.is_dir():
+            for f in blueprints_dir.glob("CN*.json"):
+                try:
+                    with f.open(encoding="utf-8") as bfh:
+                        bdata = json.load(bfh)
+                        canonicos_dict[bdata.get("canonico_id", "")] = bdata
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
+    conceptos = []
+    usados_canonicos = set()
+    for row in creativos_rows:
+        cid = row.get("canonico_id", "")
+        if cid:
+            usados_canonicos.add(cid)
+        binfo = canonicos_dict.get(cid, {})
+        arch = row.get("archivo", "")
+        media_path = ruta("Ads", f"MEDIA_{producto_key}", arch)
+        conceptos.append({
+            "creativo_id": row.get("creativo_id", ""),
+            "archivo": arch,
+            "canonico_id": cid,
+            "blueprint_nombre": binfo.get("nombre", cid or "Blueprint Canónico"),
+            "dispositivo": binfo.get("dispositivo_canonico", ""),
+            "cuando_elegirlo": binfo.get("cuando_elegirlo", ""),
+            "rol_embudo": row.get("rol_embudo", "") or binfo.get("perfil", {}).get("rol_embudo", "MOFU"),
+            "estado": row.get("estado", "PENDIENTE_GENERAR"),
+            "ad_id": row.get("ad_id", ""),
+            "archivo_existe": media_path.is_file(),
+            "notas": row.get("notas", ""),
+            "prompt": f"Director de Arte: Crea una imagen publicitaria para {producto_key} usando la estructura {cid} ({binfo.get('nombre', '')}). Ángulo: {row.get('angulo_key', ganador_obs)}."
+        })
+
+    # Si hay menos de 10, completamos hasta 10 con los blueprints canónicos disponibles
+    indice_extra = 1
+    for cid, binfo in sorted(canonicos_dict.items()):
+        if len(conceptos) >= 10:
+            break
+        if cid in usados_canonicos:
+            continue
+        arch_sug = f"{producto_key}_F2_{cid[:4]}_{indice_extra}.png"
+        conceptos.append({
+            "creativo_id": f"{producto_key}_F2_{cid[:4]}_{indice_extra}",
+            "archivo": arch_sug,
+            "canonico_id": cid,
+            "blueprint_nombre": binfo.get("nombre", cid),
+            "dispositivo": binfo.get("dispositivo_canonico", ""),
+            "cuando_elegirlo": binfo.get("cuando_elegirlo", ""),
+            "rol_embudo": "MOFU",
+            "estado": "PENDIENTE_GENERAR",
+            "ad_id": "",
+            "archivo_existe": False,
+            "notas": f"Blueprint recomendado por doctrina ({binfo.get('nombre', '')})",
+            "prompt": f"Director de Arte: Crea una imagen publicitaria para {producto_key} usando la estructura {cid} ({binfo.get('nombre', '')}). Ángulo ganador: {ganador_obs}."
+        })
+        indice_extra += 1
+
+    angulos_excl = _angulos_probados(producto_key)
+
+    return {
+        "producto_key": producto_key,
+        "fase": flujo_data.get("fase", "F2"),
+        "nodo_actual": flujo_data.get("nodo_actual", ""),
+        "angulo_ganador": ganador_obs or "Ángulo ganador confirmado por ventas",
+        "carriles_secundarios": carriles,
+        "conceptos": conceptos,
+        "total_conceptos": len(conceptos),
+        "conceptos_generados": sum(1 for c in conceptos if c.get("estado") in ("GENERADO", "PUBLICADO")),
+        "reingreso_activo": flujo_data.get("reingreso_activo"),
+        "fatiga": {
+            "ordenes": flujo_data.get("ordenes", []),
+            "angulos_probados": angulos_excl,
+            "puede_reingresar": True,
+        }
+    }
+
+
+def fase3_detalle(producto_key: str) -> dict[str, Any]:
+    """Detalles de FASE 3 para el producto: gate 2de2 con evidencia, plan CBO 1-1-7 y expansión."""
+    flujo_data = flujo(producto_key)
+    entradas = flujo_data.get("entradas", [])
+    gate_2de2_info = {"ok": False, "observado": "Sin evaluar", "regla": ""}
+    for e in entradas:
+        if e.get("fase") == "F3":
+            gate_2de2_info = {
+                "ok": bool(e.get("ok")),
+                "observado": e.get("observado", ""),
+                "regla": e.get("regla", "")
+            }
+            break
+
+    plan_txt = ruta("PRODUCTOS", producto_key, "4_PLAN_ESCALADO.txt")
+    plan_json = ruta("PRODUCTOS", producto_key, "_PLAN_FASE3.json")
+    tiene_plan = plan_txt.is_file() or plan_json.is_file()
+
+    prod_info = fila_de_producto(producto_key)
+    cuenta_primaria = prod_info.get("cuenta_alias", "GTR0")
+    page_id = prod_info.get("page_id", "")
+
+    cuentas_expansion = [cuenta_primaria]
+    try:
+        for ev in _leer_csv(("PRODUCTOS", "_EVENTOS.csv")):
+            if ev.get("producto_key") == producto_key and ev.get("evento") == "REPLICA_MULTICUENTA":
+                cta = ev.get("cuenta_alias", "")
+                if cta and cta not in cuentas_expansion:
+                    cuentas_expansion.append(cta)
+    except Exception:
+        pass
+
+    angulos_excl = _angulos_probados(producto_key)
+
+    return {
+        "producto_key": producto_key,
+        "fase": flujo_data.get("fase", "F3"),
+        "nodo_actual": flujo_data.get("nodo_actual", ""),
+        "gate_2de2": gate_2de2_info,
+        "plan_cbo": {
+            "estructura": "1-1-7 CBO",
+            "descripcion": "1 Campaña CBO, 1 Conjunto de 7 anuncios con el concepto validado en 2 de 2 × 7 hooks (microángulos)",
+            "tiene_plan": tiene_plan,
+            "estado": "GENERADO" if tiene_plan else "PENDIENTE",
+            "archivo": "4_PLAN_ESCALADO.txt" if plan_txt.is_file() else ("_PLAN_FASE3.json" if plan_json.is_file() else None)
+        },
+        "expansion": {
+            "post_id": bool(len(cuentas_expansion) > 1),
+            "cuenta_primaria": cuenta_primaria,
+            "cuentas_activas": cuentas_expansion,
+            "page_id": page_id
+        },
+        "fatiga": {
+            "angulos_probados": angulos_excl,
+            "puede_reingresar": True,
+        }
+    }
+
+
+def reingreso_f1(producto_key: str, motivo: str | None = None) -> dict[str, Any]:
+    """Ejecuta el retorno a F1 por fatiga mediante Ads/_TOOLS/reingreso_f1.py."""
+    comando = [
+        python_del_sistema(),
+        str(ruta("Ads", "_TOOLS", "reingreso_f1.py")),
+        "--producto",
+        producto_key,
+        "--json",
+    ]
+    if motivo:
+        comando += ["--motivo", motivo]
+    completado = subprocess.run(
+        comando,
+        cwd=str(ruta()),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=60,
+    )
+    if completado.returncode != 0 or not completado.stdout.strip():
+        detalle = (completado.stderr or completado.stdout or "sin salida").strip()
+        raise ContratoAusente(f"reingreso_f1.py falló para «{producto_key}»: {detalle[-400:]}")
+    return json.loads(completado.stdout)
+
+

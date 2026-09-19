@@ -468,7 +468,9 @@ def _ev_script(p, ctx, env):
 
 def _ev_decision(p, ctx, env):
     celdas, _ = env.celdas(ctx["pk"])
-    estados = p.get("estados") or []
+    estados = p.get("estados") or ([p["estado"]] if "estado" in p else [])
+    if isinstance(estados, str):
+        estados = [estados]
     mv = resolver_num(p.get("min_ventas", 0), env) or 0
     hit = [c for c in celdas if c.get("estado") in estados and num(c.get("ventas"), 0) >= mv]
     que = ", ".join("%s (%s %.0fv CPA Q%s)" % (c["celda"], c["estado"], num(c.get("ventas"), 0),
@@ -567,6 +569,25 @@ def _angulos_acumulados(env, pk):
         a[0] += num(r.get("ventas"), 0.0)
         a[1] += num(r.get("spend_usd"), 0.0)
     return acc
+
+
+def _angulos_probados(env, pk):
+    """Ángulos que el producto ya probó en el pasado (para no repetirlos al volver a F1)."""
+    angulos = set()
+    for row in env.csv("_DIM_CONJUNTOS.csv"):
+        if (row.get("producto_key") or "").strip() == pk:
+            a = (row.get("angulo_key") or "").strip()
+            if a:
+                angulos.add(a)
+    for c in env.csv("_FACT_VENTAS.csv"):
+        if (c.get("producto_key") or "").strip() == pk:
+            conj = (c.get("conjunto") or "").strip()
+            for row in env.csv("_DIM_CONJUNTOS.csv"):
+                if (row.get("conjunto_meta") or "").strip() == conj:
+                    a = (row.get("angulo_key") or "").strip()
+                    if a:
+                        angulos.add(a)
+    return sorted(angulos)
 
 
 def _ev_angulo_ganador(p, ctx, env):
@@ -865,9 +886,37 @@ def situar(prod, flujo, env):
             fase_actual = f
         else:
             break
+
+    # Si la fase alcanzada tiene declarado reingreso y hay un evento REINGRESO_F1 activo:
+    reingreso_activo = None
+    if fase_actual.get("reingreso") and fase_actual["id"] != "F1":
+        evs_reingreso = [e for e in env.csv("_EVENTOS.csv")
+                         if (e.get("producto_key") or "").strip() == pk
+                         and (e.get("evento") or "").strip() in ("REINGRESO_F1", "FATIGA_ANGULO")]
+        if evs_reingreso:
+            evs_reingreso.sort(key=lambda x: str(x.get("fecha") or ""), reverse=True)
+            ult_reingreso = evs_reingreso[0]
+            fecha_reingreso = str(ult_reingreso.get("fecha") or "")
+            lanzamientos_post = [e for e in env.csv("_EVENTOS.csv")
+                                 if (e.get("producto_key") or "").strip() == pk
+                                 and (e.get("evento") or "").strip() in ("LANZAMIENTO", "LANZAMIENTO_TEST")
+                                 and str(e.get("fecha") or "") > fecha_reingreso]
+            if not lanzamientos_post:
+                dest_id = fase_actual["reingreso"].get("a", "F1")
+                reingreso_activo = {
+                    "desde": fase_actual["id"],
+                    "a": dest_id,
+                    "fecha": fecha_reingreso,
+                    "motivo": ult_reingreso.get("motivo", ""),
+                    "regla": fase_actual["reingreso"].get("regla", ""),
+                    "angulos_excluidos": _angulos_probados(env, pk)
+                }
+                fase_actual = next((f for f in fases if f["id"] == dest_id), fases[0])
+
     res["fase"] = fase_actual["id"]
     res["fase_titulo"] = fase_actual.get("titulo", fase_actual["id"])
     res["entradas"] = entradas
+    res["reingreso_activo"] = reingreso_activo
 
     # -- los nodos de la fase: cumplido / pendiente ---------------------------
     nodos_out, actual = [], None
@@ -922,6 +971,16 @@ def situar(prod, flujo, env):
         res["avance"] = {"a": salida["a"], "ok": ok, "observado": obs, "regla": salida.get("regla", "")}
     else:
         res["avance"] = None
+
+    # -- reingreso por fatiga -------------------------------------------------
+    reingreso = fase_actual.get("reingreso")
+    if reingreso:
+        ok_r, obs_r = evaluar(reingreso["gate"], ctx, env)
+        res["reingreso"] = {"a": reingreso["a"], "ok": ok_r, "observado": obs_r,
+                            "regla": reingreso.get("regla", ""),
+                            "angulos_excluidos": _angulos_probados(env, pk)}
+    else:
+        res["reingreso"] = None
 
     # -- avisos globales: objetos de fases posteriores sin gate, etc. ----------
     avisos = []
@@ -1094,6 +1153,10 @@ def validar(flujo, env):
             _validar_predicado(f["salida"]["gate"], "fase %s.salida" % f["id"], problemas, env)
             if f["salida"].get("a") not in [x["id"] for x in flujo["fases"]]:
                 problemas.append("fase %s: salida apunta a `%s`, que no existe" % (f["id"], f["salida"].get("a")))
+        if f.get("reingreso"):
+            _validar_predicado(f["reingreso"]["gate"], "fase %s.reingreso" % f["id"], problemas, env)
+            if f["reingreso"].get("a") not in [x["id"] for x in flujo["fases"]]:
+                problemas.append("fase %s: reingreso apunta a `%s`, que no existe" % (f["id"], f["reingreso"].get("a")))
         for n in f.get("nodos", []):
             val_nodo(n, "fase %s" % f["id"])
     for n in flujo.get("ciclo", []):
@@ -1187,6 +1250,9 @@ def mermaid(flujo):
         s = f.get("salida")
         if s:
             L.append("  %s -- \"%s\" --> %s" % (f["id"], s.get("regla", "gate").replace('"', "'")[:40], s["a"]))
+        r = f.get("reingreso")
+        if r:
+            L.append("  %s -. \"%s\" .-> %s" % (f["id"], r.get("regla", "reingreso").replace('"', "'")[:35], r["a"]))
     return "\n".join(L)
 
 

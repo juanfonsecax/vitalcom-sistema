@@ -195,4 +195,89 @@ export const api = {
   ordenes: (producto?: string) =>
     pedir<OrdenesRespuesta>(producto ? `/api/ordenes?producto=${encodeURIComponent(producto)}` : "/api/ordenes"),
   ganadores: () => pedir<Ganador[]>("/api/ganadores"),
+  fase2: (clave: string) => pedir<Fase2Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase2`),
+  fase3: (clave: string) => pedir<Fase3Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase3`),
+  reingresoF1: (clave: string, motivo?: string) =>
+    pedir<{ ok: boolean; producto_key: string; fase_destino: string; angulos_excluidos: string[]; motivo: string }>(
+      `/api/productos/${encodeURIComponent(clave)}/reingreso-f1`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ motivo: motivo ?? "Ángulo agotado / fatiga" }),
+      },
+    ),
+};
+
+export type ConceptoFase2 = {
+  creativo_id: string;
+  archivo: string;
+  canonico_id: string;
+  blueprint_nombre: string;
+  dispositivo: string;
+  cuando_elegirlo: string;
+  rol_embudo: string;
+  estado: string;
+  ad_id: string;
+  archivo_existe: boolean;
+  notas: string;
+  prompt: string;
+};
+
+export type CarrilSecundario = {
+  angulo_key: string;
+  estado_motor: string;
+  accion: string;
+  fecha_estimada: string;
+};
+
+export type Fase2Detalle = {
+  producto_key: string;
+  fase: string;
+  nodo_actual: string;
+  angulo_ganador: string;
+  carriles_secundarios: CarrilSecundario[];
+  conceptos: ConceptoFase2[];
+  total_conceptos: number;
+  conceptos_generados: number;
+  reingreso_activo: {
+    desde: string;
+    a: string;
+    fecha: string;
+    motivo: string;
+    regla: string;
+    angulos_excluidos: string[];
+  } | null;
+  fatiga: {
+    ordenes: Array<{ celda: string; estado: string; accion: string }>;
+    angulos_probados: string[];
+    puede_reingresar: boolean;
+  };
+};
+
+export type Fase3Detalle = {
+  producto_key: string;
+  fase: string;
+  nodo_actual: string;
+  gate_2de2: {
+    ok: boolean;
+    observado: string;
+    regla: string;
+  };
+  plan_cbo: {
+    estructura: string;
+    descripcion: string;
+    tiene_plan: boolean;
+    estado: string;
+    archivo: string | null;
+  };
+  expansion: {
+    post_id: boolean;
+    cuenta_primaria: string;
+    cuentas_activas: string[];
+    page_id: string;
+  };
+  fatiga: {
+    angulos_probados: string[];
+    puede_reingresar: boolean;
+  };
 };

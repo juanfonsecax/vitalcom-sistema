@@ -213,7 +213,15 @@
     }
    ],
    "salida": {"a": "F3", "regla": "regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido",
-              "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}}
+              "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}},
+   "reingreso": {"a": "F1", "regla": "cuando el ángulo ganador se agota o los conceptos fallan, reingresar a F1 excluyendo los ángulos ya probados",
+                 "gate": {"tipo": "alguno", "de": [
+                   {"tipo": "eventos", "evento": ["REINGRESO_F1", "FATIGA_ANGULO"], "min": 1},
+                   {"tipo": "todos", "de": [
+                     {"tipo": "decision", "estado": "PAUSAR", "min": 1},
+                     {"tipo": "decision", "estado": ["ESCALAR", "SEGUIR_MIDIENDO", "RENOVAR"], "max": 0}
+                   ]}
+                 ]}}
   },
   {
    "id": "F3",
@@ -255,7 +263,15 @@
      ]
     }
    ],
-   "salida": null
+   "salida": null,
+   "reingreso": {"a": "F1", "regla": "cuando el escalado se agota y los microángulos no rinden, reingresar a F1 excluyendo los ángulos ya probados",
+                 "gate": {"tipo": "alguno", "de": [
+                   {"tipo": "eventos", "evento": ["REINGRESO_F1", "FATIGA_ANGULO"], "min": 1},
+                   {"tipo": "todos", "de": [
+                     {"tipo": "decision", "estado": "PAUSAR", "min": 1},
+                     {"tipo": "decision", "estado": ["ESCALAR", "SEGUIR_MIDIENDO", "RENOVAR"], "max": 0}
+                   ]}
+                 ]}}
   }
  ],
  "ciclo": [
