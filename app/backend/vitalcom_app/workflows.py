@@ -474,14 +474,15 @@ def _sellar_meta(accion: dict[str, Any], valores: dict[str, Any], reservados: di
     if not ordenes:
         raise ValueError(f"«{accion['id']}» toca Meta pero no declara de dónde salen sus órdenes.")
     fase = re.match(r"F(\d)", accion.get("nodo") or "")
+    cuenta_alias = valores.get("cuenta") or contratos.fila_de_producto(valores.get("producto_key", "")).get("cuenta_alias") or ""
     parametros = {
-        **valores, "fase": fase.group(1) if fase else "1", "brazo": valores.get("brazo", "UNICO"),
+        **valores, "cuenta": cuenta_alias, "fase": fase.group(1) if fase else "1", "brazo": valores.get("brazo", "UNICO"),
         "evento": ordenes["evento"],
     }
     generador = acciones.por_id_para_el_runner(ordenes["generador"])
     verificador = acciones.por_id_para_el_runner(ordenes["verificador"])
     argv_paquete = acciones.resolver(generador, parametros, reservados)
-    cuenta = next((c for c in contratos.cuentas() if c["cuenta_alias"] == valores.get("cuenta")), {})
+    cuenta = next((c for c in contratos.cuentas() if c["cuenta_alias"] == cuenta_alias), {})
     return {
         "ordenes": ordenes, "parametros": parametros, "generador": generador, "verificador": verificador,
         "argv_paquete": argv_paquete, "argv_verificar": acciones.resolver(verificador, parametros, reservados),
@@ -1169,10 +1170,12 @@ def paso_preparar_evento(sello: dict[str, Any], orden_id: int) -> dict[str, Any]
     if _evento_ya_registrado(firma):
         return None
     registrador = acciones.por_id_para_el_runner("evento.registrar")
+    fuente_nombre = sello["accion"].get("name") or "activar-meta"
+    motivo = "Publicación por la app: todo nació PAUSED" if meta["ordenes"]["tipo"] == "paquete_publicacion" else "Activación FASE 1 por la app a las 4 AM"
     valores = {"producto_key": sello["parametros"]["producto_key"], "evento": meta["ordenes"]["evento"],
-               "motivo": "Publicación por la app: todo nació PAUSED", "fuente": f"publicar-meta · confirmado operador · {firma}"}
-    if sello["parametros"].get("cuenta"):
-        valores["cuenta"] = sello["parametros"]["cuenta"]
+               "motivo": motivo, "fuente": f"{fuente_nombre} · confirmado operador · {firma}"}
+    if sello["parametros"].get("cuenta") or meta["parametros"].get("cuenta"):
+        valores["cuenta"] = sello["parametros"].get("cuenta") or meta["parametros"].get("cuenta")
     return {"tipo": "script", "accion_id": registrador["id"], "argv": acciones.resolver(registrador, valores, {}),
             "idempotente": False, "escribe": registrador["escribe"], "tiempo_max_s": registrador["tiempo_max_s"],
             "salida": "texto", "run_dir": sello["run_dir"]}

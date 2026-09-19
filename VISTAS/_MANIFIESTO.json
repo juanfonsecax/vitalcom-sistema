@@ -338,7 +338,7 @@
     "idempotente": false,
     "precondicion": "nodo_listo",
     "visibilidad": "boton",
-    "habilitada": false,
+    "habilitada": true,
     "tiempo_max_s": 1800,
     "herramientas_meta": {
      "lectura": [
@@ -408,7 +408,14 @@
      ]
     },
     "presupuesto_usd": 3,
-    "motivo": "Ningún script genera la orden de activación (campaña, hora, evento) ni la verifica. Hito 4/5, en Opus."
+    "motivo": "Hito 4: construida y probada con Meta falso. Se habilita con la confirmación del operador.",
+    "ordenes": {
+     "tipo": "orden_activacion",
+     "generador": "activacion.orden",
+     "verificador": "activacion.verificar",
+     "evento": "LANZAMIENTO",
+     "caduca_horas": 12
+    }
    },
    {
     "id": "nodo.F2.etapa-11",
@@ -1367,6 +1374,103 @@
     "escribe": [
      "PRODUCTOS/_DIM_CREATIVOS.csv"
     ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "texto"
+   },
+   {
+    "id": "activacion.orden",
+    "rotulo": "Generar la orden de activación a las 4 AM",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_orden_activacion.py",
+     "--producto",
+     "{producto_key}",
+     "--fase",
+     "{fase}",
+     "--cuenta",
+     "{cuenta}",
+     "--snapshot",
+     "Ads/_INGESTA/META/snapshot_{cuenta}.json",
+     "--json",
+     "--salida",
+     "{run_dir}/orden_activacion.json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "fase": {
+      "tipo": "enum",
+      "valores": [
+       "1",
+       "2",
+       "3"
+      ],
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "json"
+   },
+   {
+    "id": "activacion.verificar",
+    "rotulo": "Verificar Meta contra la orden de activación",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/verificar_activacion.py",
+     "--producto",
+     "{producto_key}",
+     "--fase",
+     "{fase}",
+     "--snapshot",
+     "Ads/_INGESTA/META/snapshot_{cuenta}.json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "fase": {
+      "tipo": "enum",
+      "valores": [
+       "1",
+       "2",
+       "3"
+      ],
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "cuenta_alias",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
     "idempotente": true,
     "precondicion": "ninguna",
     "visibilidad": "interna",

@@ -40,12 +40,13 @@ En este hito se implementó la experiencia completa de **FASE 1 (Lanzamiento Lea
 - La API expone `meta_falso: true` en `/api/salud` y `/api/claude/estado`.
 - El frontend monta en la barra superior una franja roja permanente: `META FALSO — nada llega a Meta`, asegurando visibilidad total al operador durante simulaciones.
 
-### F. Aceptación exitosa con producto TURMERIC
-- En un worktree aislado (`SISTEMA-sim-h4`, rama `sim/turmeric-h4`), se ejecutó la aceptación completa de los insumos del producto:
+### F. Aceptación TURMERIC: en curso
+- En un worktree aislado (`SISTEMA-sim-h4`, rama `sim/turmeric-h4`), se ejecutaron los pasos preliminares (A, B y C):
   - Alta exitosa de `Turmeric Curcumin Gotero 60ml` con packshot marcado (`TURMERIC · SIMULACIÓN`).
   - Carga de las 8 transcripciones reales de videos competidores vía `/api/productos/TURMERIC/cargar/producto.cargar_transcripcion`.
   - Asignación de FanPage (`1279576438561754`) vía `/api/productos/TURMERIC/cargar/producto.cargar_page_id`.
   - Validación de que el checklist reconoció todos los datos del operador y el flujo avanzó a `F1.paquete` con estado `LISTO_PARA_EJECUTAR`.
+- Los pasos D a F («Armar FASE 1», carga de piezas generadas y orden de publicación en pausa) se encuentran en ejecución.
 
 ---
 

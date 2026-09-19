@@ -30,6 +30,8 @@ if "--json" in sys.argv:
 
 # `flujo.py` falso: dice lo que la prueba declaró en PRODUCTOS/_flujo_falso.json.
 FLUJO_FALSO = '''import json, pathlib, sys
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
 BASE = pathlib.Path(__file__).resolve().parents[2]
 with open(BASE / "PRODUCTOS" / "_llamadas.log", "a", encoding="utf-8") as archivo:
     archivo.write(json.dumps({"script": "flujo.py", "argv": sys.argv[1:]}) + "\\n")
@@ -37,7 +39,7 @@ declarado = json.loads((BASE / "PRODUCTOS" / "_flujo_falso.json").read_text(enco
 if "--todo" in sys.argv or "--validar" in sys.argv:
     sys.exit(0)
 producto = next(a for a in sys.argv[1:] if not a.startswith("--"))
-print(json.dumps(declarado.get(producto) or declarado["*"], ensure_ascii=False))
+print(json.dumps(declarado.get(producto) or declarado["*"]))
 '''
 
 # `gen_app.py` del juguete: valida el manifiesto con el REAL (renombrado `gen_app_real.py`) y, para

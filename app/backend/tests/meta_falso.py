@@ -102,6 +102,52 @@ if falta:
     sys.exit(1)
 '''
 
+GEN_ACTIVACION_FALSO = '''import json, pathlib, sys
+BASE = pathlib.Path(__file__).resolve().parents[2]
+with open(BASE / "PRODUCTOS" / "_llamadas.log", "a", encoding="utf-8") as archivo:
+    archivo.write(json.dumps({"script": "gen_orden_activacion.py", "argv": sys.argv[1:]}) + "\\n")
+def valor(bandera):
+    return sys.argv[sys.argv.index(bandera) + 1] if bandera in sys.argv else None
+paquete = json.loads((BASE / "PRODUCTOS" / "_paquete_activacion_falso.json").read_text(encoding="utf-8"))
+snapshot = valor("--snapshot")
+if snapshot and pathlib.Path(snapshot).is_file():
+    for e in json.loads(pathlib.Path(snapshot).read_text(encoding="utf-8"))["ad_entities"]:
+        if e.get("id") == "120251463036910595" and e.get("status") == "ACTIVE":
+            paquete["llamadas"][0]["omitir"] = True
+            paquete["llamadas"][0]["id_existente"] = "120251463036910595"
+salida = valor("--salida")
+if salida:
+    pathlib.Path(salida).write_text(json.dumps(paquete), encoding="utf-8")
+print(json.dumps(paquete))
+sys.exit(1 if paquete.get("bloqueantes") else 0)
+'''
+
+VERIFICAR_ACTIVACION_FALSO = '''import json, pathlib, sys
+BASE = pathlib.Path(__file__).resolve().parents[2]
+with open(BASE / "PRODUCTOS" / "_llamadas.log", "a", encoding="utf-8") as archivo:
+    archivo.write(json.dumps({"script": "verificar_activacion.py", "argv": sys.argv[1:]}) + "\\n")
+def valor(bandera):
+    return sys.argv[sys.argv.index(bandera) + 1] if bandera in sys.argv else None
+snapshot = valor("--snapshot")
+if snapshot and pathlib.Path(snapshot).is_file():
+    entidades = json.loads(pathlib.Path(snapshot).read_text(encoding="utf-8"))["ad_entities"]
+    activa = any(e.get("id") == "120251463036910595" and e.get("status") == "ACTIVE" for e in entidades)
+    if activa:
+        print("OK: ACTIVE")
+        sys.exit(0)
+print("FALLA: no está ACTIVE")
+sys.exit(1)
+'''
+
+PAQUETE_ACTIVACION_FALSO: dict[str, Any] = {
+    "bloqueantes": [],
+    "manifiesto": {"campana_id": "120251463036910595", "evento": "LANZAMIENTO"},
+    "llamadas": [
+        {"n": 1, "tool": "ads_activate_entity", "args": {"entity_id": "120251463036910595"}},
+    ],
+}
+
+
 PAQUETE_FALSO: dict[str, Any] = {
     "bloqueantes": [],
     "manifiesto": {"campana": "GTR7_TINNIDROP_F1", "total_conjuntos": 1, "total_anuncios": 1},
@@ -143,6 +189,8 @@ PAQUETE_CON_MEDIA: dict[str, Any] = {
 }
 
 ESCRITURA = ("ads_create_campaign", "ads_create_ad_set", "ads_create_creative", "ads_create_ad")
+ESCRITURA_ACTIVACION = ("ads_activate_entity",)
+TODAS_LAS_ESCRITURAS = (*ESCRITURA, *ESCRITURA_ACTIVACION)
 
 
 def preparar(base: Path) -> None:
@@ -162,6 +210,31 @@ def habilitar_publicar_f1(base: Path, **cambios_a_ordenes: Any) -> None:
             accion.pop("motivo", None)
             accion["ordenes"].update(cambios_a_ordenes)
     juguete.escribir_manifiesto(base, manifiesto)
+
+
+def habilitar_activar_f1(base: Path, **cambios_a_ordenes: Any) -> None:
+    """Habilita nodo.F1.activar en el juguete para probar el mecanismo de activación."""
+    manifiesto = json.loads((base / "VISTAS" / "_MANIFIESTO.json").read_text(encoding="utf-8"))
+    for accion in manifiesto["acciones"]["lista"]:
+        if accion["id"] == "nodo.F1.activar":
+            accion["habilitada"] = True
+            accion.pop("motivo", None)
+            if cambios_a_ordenes:
+                accion["ordenes"].update(cambios_a_ordenes)
+    juguete.escribir_manifiesto(base, manifiesto)
+
+
+def preparar_activacion(base: Path, campaign_id: str = "120251463036910595") -> None:
+    """Prepara el juguete para F1.activar: scripts falsos, flujo en F1.activar y campaña PAUSED en Meta existente."""
+    juguete.escribir_script(base, "gen_orden_activacion.py", GEN_ACTIVACION_FALSO)
+    juguete.escribir_script(base, "verificar_activacion.py", VERIFICAR_ACTIVACION_FALSO)
+    (base / "PRODUCTOS" / "_paquete_activacion_falso.json").write_text(json.dumps(PAQUETE_ACTIVACION_FALSO), encoding="utf-8")
+    poner_en_meta(base, [{"id": campaign_id, "name": "GTR0_TINNIDROP_F1", "nivel": "campaign", "status": "PAUSED"}])
+    juguete.escribir_flujo_falso(base, {"*": juguete.flujo_listo("F1.activar", cumplido=True)})
+    juguete._csv(base / "PRODUCTOS" / "_DIM_PRODUCTOS.csv", juguete.COLUMNAS_PRODUCTOS, [
+        {"producto_key": "TINNIDROP", "nombre_display": "Tinnidrop", "estado": "VIVO", "cuenta_alias": "GTR 7", "campaign_id": campaign_id},
+        {"producto_key": "NUSAVA", "nombre_display": "Nusava", "estado": "VIVO", "cuenta_alias": "GTR 7"},
+    ])
 
 
 def escribir_paquete(base: Path, paquete: dict[str, Any]) -> None:
@@ -184,7 +257,7 @@ def llamadas_de_escritura(base: Path) -> list[dict[str, Any]]:
     if not archivo.is_file():
         return []
     filas = [json.loads(x) for x in archivo.read_text(encoding="utf-8").splitlines() if x]
-    return [f for f in filas if f["herramienta"] in ESCRITURA]
+    return [f for f in filas if f["herramienta"] in TODAS_LAS_ESCRITURAS]
 
 
 def preparar_con_media(base: Path) -> None:

@@ -47,8 +47,8 @@ def test_get_con_producto_dice_si_esta_disponible_y_por_que(cliente_juguete):
     assert por_id["nodo.F2.etapa-11"]["disponible"] is True, "flujo.py dice que está listo"
     assert por_id["nodo.F1.paquete"]["disponible"] is False
     assert por_id["nodo.F1.paquete"]["por_que"]["nodo_actual"] == "F2.etapa-11"
-    assert por_id["nodo.F1.publicar"]["disponible"] is False
-    assert por_id["nodo.F1.publicar"]["por_que"]["motivo"], "una deshabilitada dice su motivo"
+    assert por_id["nodo.F1.activar"]["disponible"] is False
+    assert por_id["nodo.F1.activar"]["por_que"]["motivo"], "una deshabilitada dice su motivo"
 
 
 def test_get_filtra_por_nodo_y_el_ciclo_ignora_el_prefijo_de_fase(cliente_juguete):
@@ -96,7 +96,7 @@ def test_manifiesto_v6_todo_403(cliente_juguete, sistema_de_juguete):
 
 
 def test_deshabilitada_409_con_motivo(cliente_juguete):
-    respuesta = _pedir(cliente_juguete, "nodo.F1.publicar", {"producto_key": "TINNIDROP", "cuenta": "GTR 7"},
+    respuesta = _pedir(cliente_juguete, "nodo.F1.activar", {"producto_key": "TINNIDROP"},
                        confirmado=True)
     assert respuesta.status_code == 409
     cuerpo = respuesta.json()

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 /**
  * El asistente de alta, de punta a punta, contra la carpeta REAL del sistema.
@@ -9,7 +10,7 @@ import { readFileSync } from "node:fs";
  * confirma el alta: eso escribiría en los CSV reales. El alta con escritura se prueba sobre
  * un sistema falso en `app/backend/tests/test_alta_por_la_app.py`.
  */
-const BASE = process.env.VITALCOM_BASE!;
+const BASE = process.env.VITALCOM_BASE || resolve(import.meta.dirname, "../../..");
 
 const DESCRIPCION =
   "Serum facial con vitamina C al 20% y ácido hialurónico, frasco de 30 ml con gotero. " +

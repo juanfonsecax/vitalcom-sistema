@@ -26,6 +26,9 @@ import sys
 import time
 from pathlib import Path
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 argv = sys.argv[1:]
 modo = os.environ.get("VITALCOM_FAKE_MODO", "exito")
 SESION = "fake-" + os.environ.get("VITALCOM_FAKE_SESION", "1")
@@ -189,6 +192,15 @@ elif "LLAMADAS_JSON:" in prompt:
             EXISTENTE.write_text(json.dumps([*entidades(), {
                 "id": f"id-{llamada['n']}", "nivel": NIVEL[llamada["tool"]],
                 "name": nombre_de(llamada["args"]), "status": "PAUSED"}]), encoding="utf-8")
+        elif llamada["tool"] == "ads_activate_entity":
+            eid = str(llamada["args"].get("entity_id", ""))
+            actualizadas = []
+            for ent in entidades():
+                if str(ent.get("id")) == eid or (not eid and ent.get("nivel") == "campaign"):
+                    actualizadas.append({**ent, "status": "ACTIVE"})
+                else:
+                    actualizadas.append(ent)
+            EXISTENTE.write_text(json.dumps(actualizadas), encoding="utf-8")
         hechas.append(str(llamada["n"]))
     else:
         texto = f"EJECUTADAS: {','.join(hechas)}"

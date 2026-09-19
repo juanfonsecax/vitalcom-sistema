@@ -21,6 +21,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
 from pathlib import Path
 from typing import Any, BinaryIO
 
@@ -117,14 +118,27 @@ def reescribir_trabajo(carpeta: Path, contenido: dict[str, Any]) -> None:
     provisorio = _dentro(carpeta / "trabajo.json.nuevo")
     with open(provisorio, "wb") as archivo:
         archivo.write(json.dumps(contenido, ensure_ascii=False, indent=1, default=str).encode("utf-8"))
-    os.replace(provisorio, destino)
+    for intento in range(10):
+        try:
+            os.replace(provisorio, destino)
+            return
+        except PermissionError:
+            if intento == 9:
+                raise
+            time.sleep(0.02)
 
 
 def leer_trabajo(carpeta: Path) -> dict[str, Any] | None:
-    try:
-        return json.loads(_dentro(carpeta / "trabajo.json").read_text(encoding="utf-8"))
-    except (FileNotFoundError, json.JSONDecodeError):
-        return None
+    for intento in range(10):
+        try:
+            return json.loads(_dentro(carpeta / "trabajo.json").read_text(encoding="utf-8"))
+        except PermissionError:
+            if intento == 9:
+                return None
+            time.sleep(0.02)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
+    return None
 
 
 # ── marcas de una unidad: `<n>.inicio` y `<n>.fin` ────────────────────────────

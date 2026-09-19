@@ -275,9 +275,15 @@ def test_no_hay_ejecucion_sin_aprobacion_sellada_antes():
 
 
 def test_ninguna_accion_de_meta_esta_habilitada_en_el_manifiesto_real():
-    """El Hito 3 construye el mecanismo; habilitar publicar/activar/órdenes es del Hito 4-5, en Opus."""
+    """Hito 4: F1.publicar habilitada con confirmación del operador; todas las demás de Meta siguen deshabilitadas."""
+    habilitadas_meta = {
+        accion["id"]
+        for accion in juguete.manifiesto_real()["acciones"]["lista"]
+        if (accion["toca_meta"] or accion["ejecutor_tipo"] == "mcp") and accion["habilitada"]
+    }
+    assert habilitadas_meta == {"nodo.F1.publicar"}
     for accion in juguete.manifiesto_real()["acciones"]["lista"]:
-        if accion["toca_meta"] or accion["ejecutor_tipo"] == "mcp":
+        if (accion["toca_meta"] or accion["ejecutor_tipo"] == "mcp") and accion["id"] not in habilitadas_meta:
             assert accion["habilitada"] is False and accion["motivo"], accion["id"]
 
 
@@ -446,3 +452,33 @@ def test_ninguna_accion_declara_la_subida_con_ventana():
         assert "ads_creative_upload_media" not in [*herramientas.get("lectura", []), *herramientas.get("escritura", [])]
         if (accion.get("ordenes") or {}).get("tipo") == "paquete_publicacion":
             assert "ads_get_ad_images" in herramientas["lectura"], accion["id"]
+
+
+def test_activar_con_aprobacion_ejecuta_verifica_y_registra(sistema_de_juguete, cliente_juguete):
+    """nodo.F1.activar genera orden de activación, espera aprobación, corre ads_activate_entity, verifica y registra."""
+    meta.preparar(sistema_de_juguete)
+    meta.habilitar_activar_f1(sistema_de_juguete)
+    meta.preparar_activacion(sistema_de_juguete)
+    acciones.olvidar_cache()
+
+    resp = cliente_juguete.post("/api/acciones/nodo.F1.activar", json={
+        "parametros": {"producto_key": "TINNIDROP"}, "confirmado": True, "job_id": JOB})
+    assert resp.status_code == 202
+
+    pendiente = _pendiente(JOB)
+    assert pendiente["tipo"] == "aprobacion"
+    assert pendiente["orden"]["tipo"] == "orden_activacion"
+    assert [c["tool"] for c in pendiente["orden"]["llamadas"]] == ["ads_activate_entity"]
+    assert _escrituras(sistema_de_juguete) == [], "esperando al operador: nada corrió"
+
+    workflows.enviar_aprobacion(JOB, 1, "APROBADA", pendiente["hash"], nota="activar ya")
+    resultado = _terminar()
+    assert resultado["estado"] == "EXITO", resultado
+    assert _escrituras(sistema_de_juguete) == ["ads_activate_entity"], "la llamada de activación"
+
+    scripts = [c["script"] for c in juguete.llamadas(sistema_de_juguete)]
+    assert "verificar_activacion.py" in scripts, "el gate de activación cerró"
+    evento = next(c for c in juguete.llamadas(sistema_de_juguete) if c["script"] == "registrar_evento.py")
+    assert f"app job={JOB} orden=1" in evento["argv"][evento["argv"].index("--fuente") + 1]
+    assert evento["argv"][evento["argv"].index("--evento") + 1] == "LANZAMIENTO"
+

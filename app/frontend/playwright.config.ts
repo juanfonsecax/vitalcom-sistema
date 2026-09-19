@@ -1,13 +1,13 @@
 import { defineConfig } from "@playwright/test";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 /**
  * La prueba de punta a punta corre contra el backend sirviendo el frontend COMPILADO,
  * que es como lo va a ver el operador con iniciar.bat, y sobre la carpeta REAL del sistema
  * (VITALCOM_BASE). En un worktree el estado sale falso: faltan las Ads/MEDIA_*.
  */
-const BASE = process.env.VITALCOM_BASE;
+const BASE = process.env.VITALCOM_BASE || resolve(import.meta.dirname, "../..");
 
 export default defineConfig({
   testDir: "./e2e",

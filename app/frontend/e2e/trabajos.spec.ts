@@ -27,7 +27,9 @@ test("las acciones que se ofrecen son las del manifiesto y las internas no apare
   // Con el manifiesto v6 (carpeta real todavía sin mergear) no hay ninguna; con el v7, sí.
   expect(acciones.map((a) => a.id)).not.toContain("producto.alta");
   expect(acciones.map((a) => a.id)).not.toContain("sistema.gen_app");
-  for (const accion of acciones.filter((a) => a.toca_meta)) {
-    expect(accion.habilitada, `${accion.id} toca Meta y no puede estar habilitada en el Hito 3`).toBe(false);
+  for (const accion of acciones.filter((a) => a.toca_meta && a.id !== "nodo.F1.publicar")) {
+    expect(accion.habilitada, `${accion.id} toca Meta y no puede estar habilitada sin confirmación`).toBe(false);
   }
+  const publicar = acciones.find((a) => a.id === "nodo.F1.publicar");
+  expect(publicar?.habilitada, "nodo.F1.publicar queda habilitada en Hito 4").toBe(true);
 });

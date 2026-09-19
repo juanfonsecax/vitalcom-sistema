@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
 
 /** La carpeta real del sistema; la misma que usa el servidor de esta prueba. */
-const BASE = process.env.VITALCOM_BASE!;
+const BASE = process.env.VITALCOM_BASE || resolve(import.meta.dirname, "../../..");
 
 function estadoFlujo(): Record<string, Record<string, string>> {
   const texto = readFileSync(`${BASE}/PRODUCTOS/_ESTADO_FLUJO.csv`, "utf8").trim();
