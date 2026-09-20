@@ -1069,8 +1069,8 @@ def paso_preparar_subida(sello: dict[str, Any], paquete: dict[str, Any], vuelta:
 
 def _pedir_subida(pedido: dict[str, Any], horas: float) -> dict[str, Any] | None:
     """Muestra qué subir y espera el «ya las subí». None = nadie avisó a tiempo."""
-    DBOS.set_event("pendiente", pedido)
     DBOS.set_event("estado", {"estado": "ESPERA_MEDIA", "unidad": pedido["vuelta"]})
+    DBOS.set_event("pendiente", pedido)
     aviso = DBOS.recv(f"media:{pedido['vuelta']}", timeout_seconds=horas * 3600)
     DBOS.set_event("pendiente", None)
     return aviso
@@ -1404,4 +1404,41 @@ if os.environ.get("VITALCOM_PROGRAMAR_NOCTURNO") == "1":
         """Disparador programado de DBOS (se activa solo si VITALCOM_PROGRAMAR_NOCTURNO=1)."""
         jid = f"nocturno-{actual_time.strftime('%Y%m%d-%H%M%S')}"
         ejecutar_ciclo_nocturno(jid)
+
+
+# ── Respaldo automático diario de PRODUCTOS/ (Hito 7) ─────────────────────────
+
+CRON_RESPALDO = os.environ.get("VITALCOM_CRON_RESPALDO", "0 3 * * *")
+
+
+def ejecutar_respaldo_productos(job_id: str | None = None) -> dict[str, Any]:
+    """Acción programada o manual de respaldo zip de PRODUCTOS/ con retención de 30 copias."""
+    import uuid
+    jid = job_id or uuid.uuid4().hex
+    acc = acciones.por_id_para_el_runner("sistema.respaldo_productos")
+    jid_encolado, _ = encolar(acc, {}, jid)
+    res = esperar_resultado(jid_encolado, float(acc.get("tiempo_max_s", 300)))
+    if res is None or res.get("estado") != "EXITO":
+        detalle = (res.get("detalle") if res else "Tiempo agotado") or "El respaldo de PRODUCTOS/ falló."
+        return {
+            "job_id": jid,
+            "estado": "FALLIDO",
+            "accion_fallida": "sistema.respaldo_productos",
+            "detalle": detalle,
+        }
+    return {
+        "job_id": jid,
+        "estado": "EXITO",
+        "detalle": "Respaldo de PRODUCTOS/ completado con éxito.",
+        "resultado": res,
+    }
+
+
+if os.environ.get("VITALCOM_PROGRAMAR_RESPALDO") == "1" or os.environ.get("VITALCOM_PROGRAMAR_NOCTURNO") == "1":
+    @DBOS.scheduled(CRON_RESPALDO)
+    def tarea_respaldo_productos_programado(scheduled_time: datetime, actual_time: datetime) -> None:
+        """Disparador programado de DBOS para respaldo de PRODUCTOS/."""
+        jid = f"respaldo-{actual_time.strftime('%Y%m%d-%H%M%S')}"
+        ejecutar_respaldo_productos(jid)
+
 

@@ -116,6 +116,7 @@ mejor. Pero las estructuras, los números y los gates son idénticos siempre.
 | El inventario de cuentas publicitarias: cuál tiene MCP, cuál sube media local, en qué moneda factura | `PRODUCTOS/_DIM_CUENTAS.csv` — verificado en vivo el 08-sep. **`ads_creative_upload_media` con `LOCAL_FILE` está habilitado en UNA sola cuenta del portafolio, GTR 7**; la variable es la CUENTA, no el destino del anuncio |
 | Creación de campaña por MCP: el POR QUÉ, los gotchas y el control D+1 | `DOCTRINA/MCP_PLAYBOOK.md` — ya no se ejecuta a mano; los valores en prosa son ilustrativos y manda el CSV |
 | **LA APP: la única pantalla que el operador abre** | `VISTAS/_MANIFIESTO.json` declara las vistas · `Ads/_TOOLS/gen_app.py` las verifica contra el disco y renderiza `VISTAS/APP.html` · `Ads/_TOOLS/app_html.py` la dibuja |
+| **LA APP WEB** | `app/` (lee contratos, dispara ejecutores declarados en `VISTAS/_MANIFIESTO.json`) |
 | **El LANZADOR: el flujo de 7 pasos que el operador ejecuta** | `Ads/_TOOLS/gen_lanzador.py` deriva nombres, plata, bandas y fechas desde los `_PLAN.json`; `Ads/_TOOLS/lanzador_html.py` lo dibuja, y el mismo render alimenta la app y la página suelta |
 | Contrato del plan de lanzamiento (`_PLAN.json`) y su validación | `Ads/_TOOLS/gen_plan.py` — el esquema vive en su docstring; el dueño del contenido es `ETAPA-6.md` |
 | Lavado de video (por qué, comando, colores) | `Ads/_TOOLS/LAVADO.md` |

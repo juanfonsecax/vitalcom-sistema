@@ -23,6 +23,7 @@ import { Fase1 } from "./pantallas/Fase1";
 import { Fase2 } from "./pantallas/Fase2";
 import { Fase3 } from "./pantallas/Fase3";
 import { Ordenes } from "./pantallas/Ordenes";
+import { Guia } from "./pantallas/Guia";
 import { api } from "./api/cliente";
 import "./estilos.css";
 
@@ -69,6 +70,9 @@ function Marco() {
           <Link to="/salud" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
             Salud
           </Link>
+          <Link to="/guia" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
+            Guía
+          </Link>
         </div>
       </nav>
       <main className="mx-auto max-w-6xl px-6 py-8">
@@ -87,6 +91,7 @@ const rutas = [
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase2", component: Fase2 }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase3", component: Fase3 }),
   createRoute({ getParentRoute: () => raiz, path: "/salud", component: Salud }),
+  createRoute({ getParentRoute: () => raiz, path: "/guia", component: Guia }),
   createRoute({ getParentRoute: () => raiz, path: "/nuevo", component: NuevoProducto }),
   createRoute({ getParentRoute: () => raiz, path: "/trabajos", component: Trabajos }),
   createRoute({ getParentRoute: () => raiz, path: "/trabajos/$id", component: Trabajos }),

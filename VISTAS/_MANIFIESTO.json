@@ -1716,6 +1716,35 @@
     "habilitada": true,
     "tiempo_max_s": 30,
     "salida": "json"
+   },
+   {
+    "id": "sistema.respaldo_productos",
+    "rotulo": "Crear copia de seguridad diaria de PRODUCTOS/",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/respaldo_productos.py",
+     "--json"
+    ],
+    "parametros": {
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 300,
+    "salida": "json"
    }
   ]
  }
