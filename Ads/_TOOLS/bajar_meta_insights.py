@@ -16,9 +16,17 @@ AMBITO: SOLO LECTURA. Este script nunca crea, publica ni modifica nada en Meta. 
 siendo 100% MCP, interactivo, con confirmacion del operador orden por orden (invariante 13,
 decision del 09-sep-2026). El token que usa este script no debe tener permiso ads_management.
 
-CUENTAS: se leen de PRODUCTOS/_DIM_CUENTAS.csv, filtrando mcp_habilitado=SI AND estado_cuenta=ACTIVE
-AND tiene_metodo_pago=SI. Hoy son GTR7, GTR0, GTR1, GTR3. Agregar o retirar una cuenta es editar esa
-fila — este script no tiene ninguna cuenta hardcodeada.
+CUENTAS: se leen de PRODUCTOS/_DIM_CUENTAS.csv, filtrando estado_cuenta=ACTIVE AND
+tiene_metodo_pago=SI. Hoy son GTR7, GTR0, GTR1, GTR3, GTR13. `mcp_habilitado` describe el conector
+INTERACTIVO de Meta (publicar por MCP) — esta lectura es Graph API directa y no lo usa, asi que no
+filtra por el (corregido 22-sep-2026: excluia GTR13/CLEARSTEM, que esta ACTIVE y con metodo de pago
+pero con MCP en rollout). Agregar o retirar una cuenta es editar esa fila — este script no tiene
+ninguna cuenta hardcodeada.
+
+MONEDA: `procesar_cuenta()` convierte COP a USD con `im.TASA_COP_USD` (mismo patron que
+ingerir_meta.py) ANTES de sumar nada, asi que una cuenta COP nunca se mezcla en USD sin convertir.
+Hoy ninguna cuenta COP pasa el filtro (las dos que existen en el DIM estan RETIRADA o sin metodo de
+pago), pero la conversion queda activa por si se da de alta una.
 
 FILTRADO (importante): GTR7 es una cuenta COMPARTIDA de agencia con clientes ajenos a VitalCom
 (verificado en vivo 16-sep-2026: conviven ahi DR MELAXIN, MAG, TRULY X1 GT, OLD SCHOOL VENTAS).
@@ -161,10 +169,13 @@ def num(v, default=0.0):
 
 
 def leer_cuentas_activas():
+    """Cuentas para LEER entrega por Graph API directa. No filtra por mcp_habilitado: ese campo es
+    del conector interactivo de publicacion (ver docstring del modulo), irrelevante para una
+    lectura que no pasa por MCP."""
     with open(DIMCU, encoding="utf-8") as fh:
         filas = list(csv.DictReader(fh))
-    return [r for r in filas if r.get("mcp_habilitado") == "SI"
-            and r.get("estado_cuenta") == "ACTIVE" and r.get("tiene_metodo_pago") == "SI"]
+    return [r for r in filas if r.get("estado_cuenta") == "ACTIVE"
+            and r.get("tiene_metodo_pago") == "SI"]
 
 
 def procesar_cuenta(cuenta, fecha, token, dim):
@@ -228,22 +239,37 @@ def main():
     token = token_de(a.env)
     cuentas = leer_cuentas_activas()
     if not cuentas:
-        raise SystemExit("_DIM_CUENTAS.csv no tiene ninguna cuenta ACTIVE con mcp_habilitado=SI.")
+        raise SystemExit("_DIM_CUENTAS.csv no tiene ninguna cuenta ACTIVE con tiene_metodo_pago=SI.")
 
     dim, _ = im.leer_dim()
     todos, gasto_excl_tot, n_excl_tot = [], 0.0, 0
+    fallidas = []
     for c in cuentas:
         print(f"  {c['cuenta_alias']:10} ({c['cuenta_id']}) ...", end=" ")
-        propios, gx, nx = procesar_cuenta(c, fecha, token, dim)
+        try:
+            propios, gx, nx = procesar_cuenta(c, fecha, token, dim)
+        except (SystemExit, Exception) as e:
+            # Aislamiento de fallas: una cuenta que no responde (permiso denegado, red caida) no
+            # tumba a las demas. Se reporta y se sigue; el codigo de salida queda en 1 al final.
+            msg = str(e) or repr(e)
+            print(f"FALLO: {msg}")
+            print(f"ERROR en cuenta {c['cuenta_alias']} ({c['cuenta_id']}): {msg}", file=sys.stderr)
+            fallidas.append((c["cuenta_alias"], msg))
+            continue
         gasto_excl_tot += gx
         n_excl_tot += nx
         todos.extend(propios)
         print(f"{len(propios)} anuncios propios · {nx} ajenos/sin-DIM excluidos (${gx:.2f})")
 
     print(f"\nfecha {fecha} · gasto ajeno excluido: ${gasto_excl_tot:.2f} en {n_excl_tot} anuncios")
+    if fallidas:
+        print(f"CUENTAS CON ERROR ({len(fallidas)} de {len(cuentas)}): "
+              + ", ".join(alias for alias, _ in fallidas), file=sys.stderr)
+    resultado = 1 if fallidas else 0
+
     if not todos:
         print("Sin anuncios propios ese dia.")
-        return 0
+        return resultado
 
     conjuntos = agregar_a_conjunto(todos)
 
@@ -264,10 +290,10 @@ def main():
 
     if a.dry_run:
         print("[dry-run] no se escribio nada.")
-        return 0
+        return resultado
     if not nuevos_ads and not nuevos_conj:
         print("nada que escribir (ya estaba cargado).")
-        return 0
+        return resultado
 
     os.makedirs(BKDIR, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -293,7 +319,7 @@ def main():
             for r in nuevos_ads:
                 w.writerow({c: r.get(c, "") for c in im.COLS_AD})
         print(f"escritas {len(nuevos_ads)} filas en {os.path.relpath(FACT_AD, BASE)}")
-    return 0
+    return resultado
 
 
 if __name__ == "__main__":

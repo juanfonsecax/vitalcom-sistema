@@ -35,6 +35,23 @@ python Ads/_TOOLS/bajar_lucidsales.py --dias 7 && python Ads/_TOOLS/ingerir_luci
 > ⚠️ El semanal va **siempre con `--rol CONTROL`**. Es verificación cruzada de la maduración COD
 > (~3 días), **no se suma** con las diarias: cargarlo como `BASE` duplica la semana entera.
 
+**Después de LucidSales, la ENTREGA de Meta** (impresiones, clics, gasto — la venta sigue siendo
+`_FACT_VENTAS.csv`, esto es solo la señal de entrega que usa `etapa-7`):
+
+```bash
+python Ads/_TOOLS/bajar_meta_insights.py
+```
+
+Sin argumentos trae **AYER**, todas las cuentas `estado_cuenta=ACTIVE` y `tiene_metodo_pago=SI` de
+`_DIM_CUENTAS.csv` (no filtra por `mcp_habilitado`: ese campo es del conector interactivo, no de esta
+lectura por Graph API). Anexa a `_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv` con
+`fuente=MetaAPI-directo`, con la misma anti-duplicación y backup que `ingerir_lucidsales.py`.
+
+Al final imprime un resumen por cuenta y, si alguna falló (permiso denegado, red caída), una línea
+`CUENTAS CON ERROR (...)` en stderr con el alias de cada una. **Una cuenta caída no es fatal**: las
+demás igual se escriben. El script sale con código distinto de cero si hubo alguna falla — revisar
+esa cuenta a mano, no re-correr todo a ciegas.
+
 ---
 
 ## QUÉ LEER EN LA SALIDA — y cuándo NO ingerir
