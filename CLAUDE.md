@@ -93,8 +93,8 @@ calidad de la escritura y del juicio.
 | Estructura, presupuesto, objetivo y hora por fase | `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` (doctrina en `CALENDARIO_ESCALADO.md` §1.7.2) |
 | Cuentas publicitarias: MCP, subida de media local, moneda. Media `LOCAL_FILE` solo sube en **GTR 7** | `PRODUCTOS/_DIM_CUENTAS.csv` |
 | Creación de campaña por MCP: el porqué, gotchas, control D+1 | `DOCTRINA/MCP_PLAYBOOK.md` (valores ilustrativos; manda el CSV) |
-| La app (única pantalla del operador) | `VISTAS/_MANIFIESTO.json` → `Ads/_TOOLS/gen_app.py` → `VISTAS/APP.html` (dibuja `app_html.py`) |
-| La app web | `app/` (lee contratos, dispara ejecutores declarados en `VISTAS/_MANIFIESTO.json`) |
+| La app web (la pantalla del operador) | `app/` (backend `app/backend`, frontend `app/frontend`): lee los contratos y dispara los ejecutores declarados en `VISTAS/_MANIFIESTO.json` |
+| La vista generada (respaldo sin servidor) | `VISTAS/_MANIFIESTO.json` → `Ads/_TOOLS/gen_app.py` → `VISTAS/APP.html` (dibuja `app_html.py`). La regeneran los hooks; se abre cuando la app web no está corriendo |
 | El lanzador de 7 pasos | `Ads/_TOOLS/gen_lanzador.py` + `lanzador_html.py` |
 | Contrato de `_PLAN.json` y su validación | `Ads/_TOOLS/gen_plan.py` (esquema en su docstring; contenido de `ETAPA-6.md`) |
 | Lavado de video | `Ads/_TOOLS/LAVADO.md` |
@@ -104,7 +104,7 @@ calidad de la escritura y del juicio.
 | **Texto Madre**: parámetros enseñados en clases y protocolo de ingesta | `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`, verificado por `verificar_guia_madre.py` (hook, bloquea). Un número de una clase es el envoltorio del presupuesto del mentor: antes de copiarlo, preguntar de qué es envoltorio |
 
 **Zonas:** `DOCTRINA/` · `.claude/` · `PRODUCTOS/` · `Ads/` se **leen**. `VISTAS/` se abre, no se
-lee; `VISTAS/APP.html` es la aplicación (`python Ads/_TOOLS/gen_app.py --todo`). `_CONOCIMIENTO/` ·
+lee; `VISTAS/APP.html` es el respaldo generado de la app web (`python Ads/_TOOLS/gen_app.py --todo`). `_CONOCIMIENTO/` ·
 `_OPERADOR/` · `_ROADMAP/` · `_SKILLS_FUENTE/` · `INFPRODUCTOS/` · `_ARCHIVO/` son **referencia
 humana** — el sistema no los lee.
 

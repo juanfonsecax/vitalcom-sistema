@@ -70,7 +70,7 @@ the engine does not emit the two numbers.
       new case in test_decidir.py. Then the app renders the bar "N de M ventas" from those fields only
       (test_sin_aritmetica stays green). Also fix the glossary line for SEGUIR_MIDIENDO that says
       "El motor dice cuántas faltan" when the number is absent.
-- [ ] T8 — Close-out: update CLAUDE.md "LA APP" rows so `app/` (web app) is the operator screen and
+- [x] T8 — Close-out: update CLAUDE.md "LA APP" rows so `app/` (web app) is the operator screen and
       VISTAS/APP.html is described as the generated fallback; mark
       `../HANDOFF_AUDITOR_ANTIGRAVITY.md` as superseded (Antigravity no longer used; add a first line,
       do not delete). Final full gate run, screenshots of the progress bar.
@@ -142,5 +142,17 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   pytest Ads/_TOOLS 28/28, validar ok, guia 0 failures, gen_grafo clean, pnpm 62/62, tsc clean, pytest 161
   (test_sin_aritmetica green).
 
+- T8 (route: inline — two doc rows + gate run): CLAUDE.md app rows: `app/` is the operator screen,
+  `VISTAS/APP.html` the generated fallback. `../HANDOFF_AUDITOR_ANTIGRAVITY.md` carries a first line SUPERADO
+  (outside the repo). Final gates: `pytest Ads/_TOOLS` 28/28, validar ok, guia 0 failures, gen_grafo no dead
+  routes, pnpm 62/62, app pytest 161 passed (4:53). Screenshot: app on SISTEMA-app (VITALCOM_BASE, port 8001,
+  launch config `app-api-worktree`) after `gen_decisiones.py`, "Órdenes de hoy" shows TINNIDROP bars
+  "19 de 58 ventas" (faltan ~39) and "13 de 36 ventas" (faltan ~23); _DECISIONES.json restored afterwards.
+  Found: the backend pytest process does not exit after printing its summary (a non-daemon thread keeps it
+  alive), so `uv run pytest | tail` looks hung; run it to a log file and read the summary line.
+- O1-O4 asked to the operator on 22-sep (all four at once, per his request); answers pending.
+
 ## Next step
-T8.
+Operator: in SISTEMA run `git merge --ff-only feat/app-web` (verified: no dirty file in SISTEMA overlaps the
+34 files of the merge), then `python Ads/_TOOLS/gen_decisiones.py` so the live _DECISIONES.json carries the
+new fields (bars and closing target), and delete the stale `VISTAS/PANEL.html`. Then answers O1-O4.
