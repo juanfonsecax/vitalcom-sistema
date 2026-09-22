@@ -37,7 +37,7 @@ T3 does (operator decision: F1 all-IMAGEN).
 - RDD: off (default). Delivery strategy: ask-on-risk.
 
 ## Tasks
-- [ ] T1 (P1): Meta nightly ingestion. Code done (T1/T1b), dry-run authorized and verified; stays
+- [x] T1 (P1): Meta nightly ingestion. Code done (T1/T1b), dry-run authorized and verified; stays
       unchecked until the live run in SISTEMA shows max `ventana_fin` >= today-2 (see Next step).
       - `bajar_meta_insights.py`: select accounts by `estado_cuenta=ACTIVE AND tiene_metodo_pago=SI`,
         not by `mcp_habilitado`, so GTR 13 is included.
@@ -175,6 +175,14 @@ T3 does (operator decision: F1 all-IMAGEN).
     -> exit 0. All 5 accounts read. GTR 13: 14 ads, matching LucidSales (14). Remaining for T1: the
     ff-merge, then the real backfill 06..21-sep in SISTEMA.
 
+- T1 CLOSED 22-sep: operator ff-merged (e46d8f1..8cd1a4d). Real backfill in SISTEMA, 06..21-sep day by day:
+  exit 0 all 16 days; _FACT_ENTREGA 637->1004, _FACT_ENTREGA_ANUNCIO 177->887; max ventana_fin: CLEARSTEM
+  09-21, TINNIDROP 09-21, NUSAVA 09-20 (>= today-2). Data commit in SISTEMA.
+  NEW FINDING (inferred): Meta spend exceeds LucidSales spend 06-20 sep by +6.8% TINNIDROP, +8.1% NUSAVA,
+  +11.6% CLEARSTEM. decidir.py uses LucidSales spend, so its CPAs may be understated by that much.
+  Timezone day-boundary not yet ruled out. 128/710 new ad rows have no angulo_key (ads missing from
+  _DIM_CONJUNTOS). Both are follow-ups for the operator, not part of P1.
+
 ## Next step
-T1 live run in SISTEMA, only after the operator's yes; T1 stays unchecked until that run shows
-max ventana_fin >= today-2. T3 is closed.
+Feature complete (T1-T3). Follow-ups: the spend gap Meta vs LucidSales; 128 ads without angulo_key;
+regenerate the OVULOS_PURITY F1 plan all-IMAGEN when F1.paquete runs.
