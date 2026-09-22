@@ -70,7 +70,13 @@ Also the backend suite hangs (test_meta.py / DBOS teardown), so the closing gate
       `test_ordenes_api`), frontend `pnpm test` 50/50, `pnpm build` OK. Route: inline (one screen +
       one small backend read-through, already-understood; delegating would not have reduced
       context here).
-- [ ] T4 — Verify in browser against real SISTEMA data (today's date), screenshots. Route: inline.
+- [x] T4 — Verified in browser (2026-09-22) against real SISTEMA data (backend with
+      `VITALCOM_BASE=../SISTEMA`, frontend `pnpm dev`). Engine data runs to 2026-09-20 (rezago 2 d,
+      so no per-product rezago banner, correct at threshold >2). TINNIDROP, NUSAVA, CLEARSTEM cards
+      match `flujo.py --todo` (F2, F2.etapa-11 / F2.conceptos, executor). Orders: clocks 14/3/3 d
+      match `_PARAMETROS_DECISION.csv`; IC/BE sentence matches `_DECISIONES.json`; ESCALAR+bloqueo_fase
+      headline shows "No subir presupuesto todavía"; approve buttons disabled. Screenshots delivered
+      to the operator (scratchpad t4-*.png). Route: inline.
 
 ## Acceptance criteria
 - Full backend and frontend suites finish green; test_sin_aritmetica green.
@@ -92,5 +98,23 @@ Also the backend suite hangs (test_meta.py / DBOS teardown), so the closing gate
   needs to emit both numbers itself (e.g. `ventas_actual` + `ventas_necesarias`), owned by the
   engine like everything else.
 
+## Audit of c1bd955 / da8cbe8 / 5d377ef + T4 findings (open, not yet authorized)
+- A1 (bug, confirmed in browser): `Tablero.tsx` Info termino falls back to `fase_3` for any
+  non-F1/F2 phase; VARICOSE (PAUSADO) explains "FASE 3 · se compra volumen".
+- A2 (UX contradiction, confirmed): ESCALAR+bloqueo_fase card says "No subir presupuesto" in the
+  headline but the chip "Escalar (+20%)", the narrated verdict and the glossary line all say scale.
+- A3 (gap, confirmed): `/api/productos/{k}` returns flujo.py `avisos` (e.g. TINNIDROP: Meta already
+  spent $32.61; published structure not doctrinal; F3 artefacts without gate) but ProductoDetalle
+  and the card never render them.
+- A4 (wording): RENOVAR verdict "El ángulo sigue rentable" reads false next to IC [50.6, 250.1] vs
+  BE 105.89 (Médicos Fallaron); the engine means "profitable history".
+- A5 (wrong ref): ProductoDetalle rezago banner cites "invariante 11"; rezago is invariant 13
+  (copied from pre-existing Ordenes.tsx).
+- A6 (stale comment/claim): TarjetaProducto doc says ProductoDetalle reuses it; it does not
+  (logic and `MotorInfo` type duplicated).
+- A7 (comment overclaims): on Windows pytest-timeout uses the thread method, which aborts the whole
+  run on timeout rather than failing just that test.
+- Pre-existing, out of scope: SEGUIR_MIDIENDO with `faltan_ventas` null renders "Volumen suficiente".
+
 ## Next step
-T4 — verify in browser against real SISTEMA data.
+Operator decides whether to fix A1–A6 (T5). Feature otherwise complete.
