@@ -51,6 +51,15 @@ Uso:
     python Ads/_TOOLS/bajar_meta_insights.py                 # trae AYER, todas las cuentas activas
     python Ads/_TOOLS/bajar_meta_insights.py --fecha 2026-09-15
     python Ads/_TOOLS/bajar_meta_insights.py --dry-run
+
+CODIGO DE SALIDA (T1b, 22-sep-2026) — una falla parcial NO debe tumbar la cadena nocturna completa:
+    0 = todas las cuentas respondieron OK.
+    2 = PARCIAL: al menos una cuenta OK y al menos una fallo. Las filas de las cuentas que si
+        respondieron ya se escribieron en _FACT_ENTREGA/_FACT_ENTREGA_ANUNCIO. El llamador nocturno
+        (app/backend/vitalcom_app/workflows.py, paso "ciclo.bajar_meta") trata este codigo como
+        AVISO: registra el detalle y sigue con el resto de la cadena.
+    1 = todas las cuentas fallaron, o no hay ninguna cuenta ACTIVE con metodo de pago, o un error
+        fatal antes de procesar cuentas. Este codigo SI detiene la cadena nocturna.
 """
 import sys, os, csv, json, time, shutil, argparse, datetime, warnings
 import urllib.request, urllib.parse, urllib.error
@@ -265,7 +274,16 @@ def main():
     if fallidas:
         print(f"CUENTAS CON ERROR ({len(fallidas)} de {len(cuentas)}): "
               + ", ".join(alias for alias, _ in fallidas), file=sys.stderr)
-    resultado = 1 if fallidas else 0
+    # Contrato de salida (22-sep-2026, T1b): 0 = todas las cuentas OK · 2 = parcial (al menos una
+    # OK y al menos una fallo; las filas de las que si respondieron ya se escriben) · 1 = todas
+    # las cuentas fallaron (o error fatal). El llamador nocturno (workflows.py) trata 2 como
+    # aviso que NO detiene la cadena; 1 si la detiene. Ver skill recopilar-lucidsales/SKILL.md.
+    if not fallidas:
+        resultado = 0
+    elif len(fallidas) < len(cuentas):
+        resultado = 2
+    else:
+        resultado = 1
 
     if not todos:
         print("Sin anuncios propios ese dia.")

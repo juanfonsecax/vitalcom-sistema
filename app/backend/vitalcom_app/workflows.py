@@ -1368,10 +1368,19 @@ def ejecutar_ciclo_nocturno(job_id: str | None = None) -> dict[str, Any]:
     """Cadena nocturna de 5 pasos:
     recopilar-lucidsales -> bajar_meta_insights -> gen_decisiones -> flujo --todo -> gen_app.
     Cada paso es una acción declarada. Si un paso falla, el siguiente no corre.
+
+    Excepción (T1b, 22-sep-2026): `ciclo.bajar_meta` puede fallar PARCIAL (código de salida 2 —
+    al menos una cuenta de Meta OK, al menos una caída; ver bajar_meta_insights.py). Una falla de
+    UNA cuenta (ej. permiso denegado en GTR13) no puede tumbar gen_decisiones/flujo/gen_app para
+    TODOS los productos: ese paso se registra como aviso y la cadena sigue (mismo precedente que
+    `codigo_salida == 2 and accion_id == "sistema.barrido_csv"` en paso_tras_escribir, arriba).
+    Un código de salida 1 de `ciclo.bajar_meta` (todas las cuentas fallaron) sí detiene la cadena,
+    igual que cualquier otro paso.
     """
     import uuid
     jid = job_id or uuid.uuid4().hex
     resultados: list[dict[str, Any]] = []
+    avisos: list[dict[str, Any]] = []
 
     for i, a_id in enumerate(PASOS_CICLO_NOCTURNO, 1):
         acc = acciones.por_id_para_el_runner(a_id)
@@ -1379,6 +1388,10 @@ def ejecutar_ciclo_nocturno(job_id: str | None = None) -> dict[str, Any]:
         jid_encolado, _ = encolar(acc, {}, sub_id)
         res = esperar_resultado(jid_encolado, float(acc.get("tiempo_max_s", 900)))
         resultados.append({"paso": i, "accion_id": a_id, "resultado": res})
+        if res is not None and a_id == "ciclo.bajar_meta" and res.get("codigo_salida") == 2:
+            avisos.append({"paso": i, "accion_id": a_id, "detalle": res.get("detalle") or
+                            "entrega de Meta parcial: al menos una cuenta falló."})
+            continue
         if res is None or res.get("estado") != "EXITO":
             detalle = (res.get("detalle") if res else "Tiempo agotado") or f"El paso {a_id} falló."
             return {
@@ -1388,13 +1401,18 @@ def ejecutar_ciclo_nocturno(job_id: str | None = None) -> dict[str, Any]:
                 "accion_fallida": a_id,
                 "detalle": detalle,
                 "pasos": resultados,
+                "avisos": avisos,
             }
 
+    detalle = "Ciclo nocturno completado con éxito."
+    if avisos:
+        detalle = "Ciclo nocturno completado con avisos: " + "; ".join(a["detalle"] for a in avisos)
     return {
         "job_id": jid,
         "estado": "EXITO",
-        "detalle": "Ciclo nocturno completado con éxito.",
+        "detalle": detalle,
         "pasos": resultados,
+        "avisos": avisos,
     }
 
 

@@ -49,8 +49,13 @@ lectura por Graph API). Anexa a `_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv
 
 Al final imprime un resumen por cuenta y, si alguna falló (permiso denegado, red caída), una línea
 `CUENTAS CON ERROR (...)` en stderr con el alias de cada una. **Una cuenta caída no es fatal**: las
-demás igual se escriben. El script sale con código distinto de cero si hubo alguna falla — revisar
-esa cuenta a mano, no re-correr todo a ciegas.
+demás igual se escriben.
+
+**Código de salida (T1b, 22-sep-2026):** `0` todas las cuentas OK · `2` PARCIAL (al menos una OK y
+al menos una falló; las filas de las que sí respondieron ya quedaron escritas) · `1` todas las
+cuentas fallaron, o error fatal. La cadena nocturna (`app/backend/vitalcom_app/workflows.py`, paso
+`ciclo.bajar_meta`) trata `2` como **aviso**: sigue con el resto de la cadena; `1` sí la detiene.
+Ante un `2`, revisar la cuenta a mano — no re-correr todo a ciegas.
 
 ---
 

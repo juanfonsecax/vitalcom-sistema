@@ -129,8 +129,8 @@ class TestBajarMetaInsights(unittest.TestCase):
 
     def test_main_aisla_falla_de_una_cuenta_y_sigue_con_las_demas(self):
         """Una cuenta que revienta (permiso denegado, ej. GTR13) no debe tumbar el proceso: las
-        filas de la cuenta sana se escriben igual y el codigo de salida queda en 1 (no 0), nunca
-        se toca la red real."""
+        filas de la cuenta sana se escriben igual y el codigo de salida queda en 2 (PARCIAL: al
+        menos una OK, al menos una fallo), nunca se toca la red real."""
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
         fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
         bkdir = os.path.join(self.temp_dir, "backups_csv")
@@ -166,13 +166,78 @@ class TestBajarMetaInsights(unittest.TestCase):
              patch.object(sys, "argv", argv_fake):
             codigo = bmi.main()
 
-        self.assertEqual(codigo, 1, "una cuenta fallida debe dejar el proceso en codigo != 0")
+        self.assertEqual(codigo, 2, "una falla parcial (1 de 2 cuentas) debe dejar el codigo en 2")
         self.assertTrue(os.path.exists(fact_ad), "las filas de la cuenta sana se escriben igual")
         with open(fact_ad, encoding="utf-8") as fh:
             filas = list(csv.DictReader(fh))
         self.assertEqual(len(filas), 1)
         self.assertEqual(filas[0]["cuenta_alias"], "GTR7")
         self.assertEqual(filas[0]["fuente"], "MetaAPI-directo")
+
+    def test_main_todas_las_cuentas_fallan_devuelve_1(self):
+        """Si NINGUNA cuenta respondio, no hay nada parcial que rescatar: codigo 1, la cadena
+        nocturna debe detenerse aca."""
+        fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
+        fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        bkdir = os.path.join(self.temp_dir, "backups_csv")
+
+        cuentas_fake = [
+            {"cuenta_alias": "GTR 13", "cuenta_id": "916746367261028", "moneda": "USD"},
+            {"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141", "moneda": "USD"},
+        ]
+
+        def procesar_cuenta_falla_siempre(cuenta, fecha, token, dim):
+            raise SystemExit(f"Graph API error en cuenta {cuenta['cuenta_id']}: (#10) Permission denied")
+
+        argv_fake = ["bajar_meta_insights.py", "--fecha", "2026-09-21"]
+        with patch.object(bmi, "FACT", fact), \
+             patch.object(bmi, "FACT_AD", fact_ad), \
+             patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "token_de", return_value="tok_falso"), \
+             patch.object(bmi, "leer_cuentas_activas", return_value=cuentas_fake), \
+             patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
+             patch.object(bmi, "procesar_cuenta", side_effect=procesar_cuenta_falla_siempre), \
+             patch.object(sys, "argv", argv_fake):
+            codigo = bmi.main()
+
+        self.assertEqual(codigo, 1, "si todas las cuentas fallan el codigo debe quedar en 1")
+        self.assertFalse(os.path.exists(fact_ad), "no hay filas sanas que escribir")
+
+    def test_main_todas_las_cuentas_ok_devuelve_0(self):
+        """Sin ninguna falla el codigo de salida debe ser 0 (exito total)."""
+        fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
+        fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        bkdir = os.path.join(self.temp_dir, "backups_csv")
+
+        cuentas_fake = [
+            {"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141", "moneda": "USD"},
+        ]
+
+        fila_sana = {
+            "ventana_ini": "2026-09-21", "ventana_fin": "2026-09-21", "dias": 1,
+            "producto_key": "PROD", "cuenta_id": "598687956219141", "cuenta_alias": "GTR7",
+            "campana": "Camp 1", "conjunto": "Conj 1", "anuncio": "Ad 1",
+            "mensajes": 0, "clicks_totales": 3, "link_clicks": 2, "impresiones": 40,
+            "spend_usd": 1.0, "pct_conv_clic_enlace": 0.0, "fuente": "MetaAPI-directo",
+            "firma": "", "angulo_key": "", "concepto_key": "", "canonico_id": "",
+            "nivel_conciencia": "", "oferta_key": "", "destino_key": "",
+        }
+
+        def procesar_cuenta_ok(cuenta, fecha, token, dim):
+            return [fila_sana], 0.0, 0
+
+        argv_fake = ["bajar_meta_insights.py", "--fecha", "2026-09-21"]
+        with patch.object(bmi, "FACT", fact), \
+             patch.object(bmi, "FACT_AD", fact_ad), \
+             patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "token_de", return_value="tok_falso"), \
+             patch.object(bmi, "leer_cuentas_activas", return_value=cuentas_fake), \
+             patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
+             patch.object(bmi, "procesar_cuenta", side_effect=procesar_cuenta_ok), \
+             patch.object(sys, "argv", argv_fake):
+            codigo = bmi.main()
+
+        self.assertEqual(codigo, 0, "sin fallas el codigo de salida debe ser 0")
 
 
 if __name__ == "__main__":
