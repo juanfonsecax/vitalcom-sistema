@@ -8,7 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { api, type Nodo, type Requisito } from "../api/cliente";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
-import { FASES, estadoEnPalabras, pasoCorto, quienLoHace } from "../lenguaje";
+import { FASES, estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace, rezagoEnPalabras } from "../lenguaje";
+
+/** La info del motor (`flujo.py`) que no tiene tipo propio en el OpenAPI: es un `dict` libre. */
+type MotorInfo = { rezago_dias?: number; datos_hasta?: string };
 
 function Dato({ requisito }: { requisito: Requisito }) {
   return (
@@ -69,18 +72,28 @@ export function ProductoDetalle() {
   if (flujo.isLoading) return <Cargando que={`el recorrido de ${clave}`} />;
   if (flujo.error) return <Problema error={flujo.error} />;
   const d = flujo.data!;
+  const motor = (d.motor ?? null) as MotorInfo | null;
+  const rezago = rezagoEnPalabras(motor?.rezago_dias);
+  const nodoActual = d.nodos.find((n) => n.id === d.nodo_actual);
+  const tituloDelPaso = nodoActual?.titulo || d.como || "Sin paso vigente";
+  const quien = quienLoHace(d.ejecutor);
 
   return (
     <div className="space-y-6">
+      {motor?.rezago_dias != null && motor.rezago_dias > 2 && (
+        <div className="rounded-xl border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-200">
+          <strong className="text-amber-100">Data con rezago:</strong> {rezago.texto}. Una decisión
+          sobre esto es una decisión a ciegas (invariante 11).
+        </div>
+      )}
+
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <div>
           <Link to="/" className="text-xs text-zinc-500 hover:text-zinc-300">
             ← portafolio
           </Link>
           <h1 className="mt-1 text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
-          <p className="text-sm text-zinc-400">
-            {d.fase_titulo} · paso actual <span className="font-mono">{d.nodo_actual}</span>
-          </p>
+          <p className="text-sm text-zinc-400">{d.fase_titulo}</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Link
@@ -147,6 +160,23 @@ export function ProductoDetalle() {
           );
         })}
       </div>
+
+      <Tarjeta className="border-sky-800/60 bg-sky-950/10">
+        <p className="text-xs uppercase tracking-wide text-zinc-500">En qué fase está</p>
+        <p className="mt-1 text-sm text-zinc-200">{faseEnUnaFrase(d.fase)}</p>
+        <p className="mt-3 text-xs uppercase tracking-wide text-zinc-500">El paso de ahora — y qué sigue</p>
+        <p className="mt-1 text-sm text-zinc-200">{tituloDelPaso}</p>
+        <p className="mt-1 text-xs text-zinc-500">{quien}</p>
+        {d.ejecutor && <p className="text-xs text-zinc-600">{d.ejecutor}</p>}
+        {d.bloqueantes.length > 0 && (
+          <p className="mt-1 text-xs text-amber-300">Resolver lo que frena el paso, más abajo, antes de seguir.</p>
+        )}
+        {d.nodo_actual && (
+          <p className="mt-1 font-mono text-[11px] text-zinc-600" title="Id interno del paso en el grafo">
+            {d.nodo_actual}
+          </p>
+        )}
+      </Tarjeta>
 
       {d.entradas.length > 0 && (
         <Tarjeta>

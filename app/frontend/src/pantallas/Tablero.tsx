@@ -9,15 +9,35 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { api, type Flujo, type Producto } from "../api/cliente";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
-import { ESTADO_PRODUCTO, estadoEnPalabras, pasoCorto, quienLoHace, rezagoEnPalabras } from "../lenguaje";
+import { ESTADO_PRODUCTO, estadoEnPalabras, faseEnUnaFrase, quienLoHace, rezagoEnPalabras } from "../lenguaje";
 
-function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo?: Flujo }) {
+/** La info del motor (`flujo.py`) que no tiene tipo propio en el OpenAPI: es un `dict` libre. */
+type MotorInfo = { rezago_dias?: number; datos_hasta?: string };
+
+/** La tarjeta de UN producto: en qué fase está, qué significa, quién sigue y qué lo frena.
+ * La reusan Tablero (una por producto del portafolio) y el resumen de ProductoDetalle. */
+export function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo?: Flujo }) {
   const estado = estadoEnPalabras(producto.estado_flujo);
   const bloqueantes = flujo?.bloqueantes ?? [];
   const falta = flujo?.falta_para_cumplir ?? [];
+  const motor = (flujo?.motor ?? null) as MotorInfo | null;
+  const rezagoProducto = rezagoEnPalabras(motor?.rezago_dias);
+  // El título humano del paso actual: el de SU nodo en el grafo, o si no está ahí, la frase
+  // «cómo» que ya arma flujo.py. El id crudo (F2.etapa-11) nunca es el texto principal.
+  const nodoActual = flujo?.nodos.find((n) => n.id === flujo.nodo_actual);
+  const tituloDelPaso = nodoActual?.titulo || flujo?.como || "Sin paso vigente";
+  const ejecutorCrudo = flujo?.ejecutor || producto.siguiente_ejecutor || "";
+  const quien = quienLoHace(ejecutorCrudo);
 
   return (
     <Tarjeta className="flex flex-col gap-4">
+      {motor?.rezago_dias != null && motor.rezago_dias > 2 && (
+        <div className="rounded-lg border border-amber-800 bg-amber-950/40 px-3 py-2 text-xs text-amber-200">
+          <strong className="text-amber-100">Data con rezago:</strong> {rezagoProducto.texto}. Una
+          decisión sobre esto es una decisión a ciegas.
+        </div>
+      )}
+
       <div className="flex items-start justify-between gap-3">
         <div>
           <Link
@@ -36,20 +56,26 @@ function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo?: Fluj
 
       <div>
         <p className="text-xs uppercase tracking-wide text-zinc-500">
-          Estás acá
+          En qué fase está
+          <Info termino={producto.fase === "F1" ? "fase_1" : producto.fase === "F2" ? "fase_2" : "fase_3"} />
+        </p>
+        <p className="mt-1 text-sm text-zinc-200">{faseEnUnaFrase(producto.fase)}</p>
+      </div>
+
+      <div>
+        <p className="text-xs uppercase tracking-wide text-zinc-500">
+          El paso de ahora — y qué sigue
           <Info termino="nodo" />
         </p>
         <p className="mt-1 text-sm text-zinc-200">
-          <span className="font-semibold">{producto.fase ?? "sin fase"}</span>
-          {/* Un producto fuera del recorrido normal repite fase y nodo (VARICOSE: PAUSADO,
-              PAUSADO). No se dice dos veces lo mismo. */}
-          {producto.nodo_actual && producto.nodo_actual !== producto.fase && (
-            <> · {pasoCorto(producto.nodo_actual)}</>
-          )}{" "}
-          <Chip tono={estado.tono}>{estado.texto}</Chip>
+          {tituloDelPaso} <Chip tono={estado.tono}>{estado.texto}</Chip>
         </p>
+        <p className="mt-1 text-xs text-zinc-500">{quien}</p>
+        {ejecutorCrudo && <p className="text-xs text-zinc-600">{ejecutorCrudo}</p>}
         {producto.nodo_actual && (
-          <p className="mt-1 font-mono text-[11px] text-zinc-600">{producto.nodo_actual}</p>
+          <p className="mt-1 font-mono text-[11px] text-zinc-600" title="Id interno del paso en el grafo">
+            {producto.nodo_actual}
+          </p>
         )}
       </div>
 
@@ -81,12 +107,6 @@ function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo?: Fluj
             ))}
           </ul>
         )}
-      </div>
-
-      <div>
-        <p className="text-xs uppercase tracking-wide text-zinc-500">Esto sigue</p>
-        <p className="mt-1 text-sm text-zinc-200">{quienLoHace(producto.siguiente_ejecutor)}</p>
-        <p className="text-xs text-zinc-500">{producto.siguiente_ejecutor}</p>
       </div>
 
       <p className="text-[11px] text-zinc-600">Evaluado el {producto.evaluado_el ?? "—"}</p>

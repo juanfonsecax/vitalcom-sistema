@@ -91,7 +91,9 @@ beforeEach(() => {
 test("muestra la fase y el paso vigentes tal cual llegan", async () => {
   montar();
   expect(await screen.findByText("Óvulos Purity Hernatura")).toBeInTheDocument();
-  expect(await screen.findByText("F1")).toBeInTheDocument();
+  // La fase se dice en una frase, no en la sigla cruda.
+  expect(await screen.findByText(/FASE 1 · ángulos: 6 ángulos distintos/)).toBeInTheDocument();
+  // El id crudo del nodo sigue visible, pero como dato secundario, no como texto principal.
   expect(await screen.findByText("F1.paquete")).toBeInTheDocument();
   expect(await screen.findByText("listo para ejecutar")).toBeInTheDocument();
 });
@@ -105,6 +107,23 @@ test("dice quién hace el paso siguiente, sin esconder el ejecutor crudo", async
 test("avisa la edad de la data en palabras", async () => {
   montar();
   expect(await screen.findByText(/data de hace 2 días/)).toBeInTheDocument();
+});
+
+test("avisa el rezago DE ESE PRODUCTO cuando el motor lo trae en más de 2 días", async () => {
+  servir({
+    "/api/productos": [PRODUCTO],
+    "/api/productos/OVULOS_PURITY": { ...FLUJO, motor: { rezago_dias: 5, datos_hasta: "2026-09-12" } },
+    "/api/decisiones": { generado: "2026-09-17", rezago_dias: 0, resumen_acciones: {}, productos: [] },
+  });
+  montar();
+  expect(await screen.findByText("Óvulos Purity Hernatura")).toBeInTheDocument();
+  expect(await screen.findByText(/Data con rezago:/)).toBeInTheDocument();
+});
+
+test("no avisa rezago del producto cuando el motor no trae uno viejo", async () => {
+  montar();
+  expect(await screen.findByText("Óvulos Purity Hernatura")).toBeInTheDocument();
+  expect(screen.queryByText(/Data con rezago:/)).not.toBeInTheDocument();
 });
 
 test("un bloqueante se muestra con el dueño del dato que falta", async () => {

@@ -30,6 +30,17 @@ export const FASES = [
   { id: "F3", rotulo: "FASE 3 · escalado", que: "ya no se mide: se compra volumen" },
 ] as const;
 
+const FASE_POR_ID: Record<string, (typeof FASES)[number]> = Object.fromEntries(
+  FASES.map((f) => [f.id, f]),
+);
+
+/** Qué significa la fase en una frase, para quien no se sabe el vocabulario de memoria. */
+export function faseEnUnaFrase(fase: string | null | undefined): string {
+  if (!fase) return "Todavía no tiene fase asignada.";
+  const f = FASE_POR_ID[fase];
+  return f ? `${f.rotulo}: ${f.que}.` : `Fase ${fase}.`;
+}
+
 export const ESTADO_PRODUCTO: Record<string, Tono> = {
   VIVO: "bien",
   PAUSADO: "aviso",
