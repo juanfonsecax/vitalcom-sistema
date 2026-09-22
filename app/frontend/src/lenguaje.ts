@@ -106,6 +106,43 @@ export function trabajoEnPalabras(estado: string | null | undefined) {
 /** Los estados de un trabajo que se pueden volver a correr completos. */
 export const SE_REINTENTAN = ["FALLIDO", "INTERRUMPIDO", "CADUCADO"];
 
+/** El veredicto del motor en una frase, elegido por su ESTADO (nunca por comparar números acá). */
+export const VEREDICTO_POR_ESTADO: Record<string, string> = {
+  ESCALAR: "El motor dice que la evidencia alcanza para escalar.",
+  PAUSAR: "El motor dice que la evidencia alcanza para pausar.",
+  RENOVAR: "El ángulo sigue rentable: lo que se cansó es el creativo, no el dolor que vende.",
+  SEGUIR_MIDIENDO: "Todavía no alcanza evidencia para decidir: se mantiene el presupuesto tal cual.",
+};
+
+export function veredictoDeOrden(estado: string | null | undefined): string {
+  if (!estado) return "";
+  return VEREDICTO_POR_ESTADO[estado] ?? "";
+}
+
+/**
+ * El titular de la orden, sin ambigüedad. Cuando el estado es ESCALAR pero la fase todavía no
+ * lo permite (`bloqueo_fase`), la doctrina manda NO mover presupuesto (invariante 13): el titular
+ * dice eso primero, la frase original del motor queda de contexto abajo.
+ */
+export function tituloDeOrden(
+  estado: string | null | undefined,
+  fraseSimple: string,
+  bloqueoFase: string | null | undefined,
+): string {
+  if (estado === "ESCALAR" && bloqueoFase) {
+    return "No subir presupuesto todavía: seguir midiendo en esta fase.";
+  }
+  return fraseSimple;
+}
+
+/** Los tres relojes del motor (`_PARAMETROS_DECISION.csv`), explicados en una línea cada uno.
+ * El VALOR sale siempre del contrato; acá solo va la explicación fija de qué mide cada uno. */
+export const EXPLICACION_DEL_RELOJ: Record<string, string> = {
+  ventana_dias: "Sobre cuántos días se calcula el CPA y el intervalo de confianza.",
+  ventana_fatiga_dias: "Cuántos días recientes se comparan contra la ventana, para detectar fatiga.",
+  duracion_testeo_fase2_dias: "Cuánto rueda la 1-1-5 de FASE 2 antes de coronar un concepto ganador.",
+};
+
 /** Cada herramienta de Meta, dicha por lo que hace. */
 export const LLAMADA_DE_META: Record<string, string> = {
   ads_create_campaign: "Crear la campaña",

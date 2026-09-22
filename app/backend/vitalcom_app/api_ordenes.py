@@ -24,7 +24,7 @@ def obtener_ordenes(producto: str | None = Query(None, description="Filtrar órd
     """
     try:
         data = contratos.ordenes(producto_key=producto)
-        return OrdenesRespuesta(**data)
+        return OrdenesRespuesta(**data, parametros_motor=contratos.parametros_decision())
     except contratos.ContratoAusente as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 

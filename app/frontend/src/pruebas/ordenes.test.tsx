@@ -117,6 +117,11 @@ const DATOS_ORDENES = {
   ],
   bloqueantes: [],
   avisos: [],
+  parametros_motor: [
+    { parametro: "ventana_dias", valor: "14", unidad: "dias", dueno: "GUIA_MADRE_PARAMETRIZADA.md", por_que: "" },
+    { parametro: "ventana_fatiga_dias", valor: "3", unidad: "dias", dueno: "decidir.py", por_que: "" },
+    { parametro: "duracion_testeo_fase2_dias", valor: "3", unidad: "dias", dueno: "decidir.py", por_que: "" },
+  ],
 };
 
 const GANADORES = [
@@ -186,11 +191,56 @@ beforeEach(() => {
 test("muestra las órdenes de hoy con sus estados y explicaciones", async () => {
   renderizar();
   expect(await screen.findByText("Órdenes de hoy")).toBeInTheDocument();
-  // Los 4 estados
-  expect(await screen.findByText("Subir 20% al presupuesto de Resistencia a la Insulina SOP")).toBeInTheDocument();
+  // Los 4 estados. La orden ESCALAR con bloqueo_fase muestra el titular sin ambigüedad
+  // (invariante 13: no subir presupuesto en pleno testeo), no la frase cruda del motor.
+  expect(await screen.findByText("No subir presupuesto todavía: seguir midiendo en esta fase.")).toBeInTheDocument();
+  expect(screen.getByText(/Orden original del motor: Subir 20% al presupuesto/)).toBeInTheDocument();
   expect(await screen.findByText("Pausar conjunto de Zumbido Grave")).toBeInTheDocument();
   expect(await screen.findByText("Renovar creativo para Fatiga Crónica (rotar concepto en F2)")).toBeInTheDocument();
   expect(await screen.findByText("Mantener presupuesto de Infección Recurrente: faltan ~4 ventas para decidir")).toBeInTheDocument();
+});
+
+test("narra la frase de IC vs break-even y el veredicto del motor", async () => {
+  renderizar();
+  // Tres de las cuatro órdenes traen IC y break-even completos (SEGUIR_MIDIENDO no trae IC):
+  // la frase narrada aparece en esas tres tarjetas.
+  expect((await screen.findAllByText(/Cada venta te está costando entre/)).length).toBe(3);
+  // PAUSAR: cpa_real_q 120.5, ic [98.2, 120.5, 145.0], break_even_q 93.4
+  expect(screen.getByText("Q98.2")).toBeInTheDocument();
+  expect(screen.getByText("Q145")).toBeInTheDocument();
+  // Q93.4 (el break-even de PAUSAR) aparece dos veces: en la frase narrada y en la grilla de
+  // métricas de siempre — el mismo dato, nunca recalculado.
+  expect(screen.getAllByText("Q93.4").length).toBe(2);
+  expect(screen.getByText(/evidencia alcanza para pausar/)).toBeInTheDocument();
+});
+
+test("explica cada estado con las palabras del glosario, RENOVAR incluido", async () => {
+  renderizar();
+  expect(
+    await screen.findByText(/El ángulo vende, pero el anuncio se cansó\. Se cambia el creativo/),
+  ).toBeInTheDocument();
+});
+
+test("el panel «cómo mide el motor» muestra los tres relojes con su valor real", async () => {
+  renderizar();
+  expect(await screen.findByText("Cómo mide el motor")).toBeInTheDocument();
+  expect(screen.getByText(/Sobre cuántos días se calcula el CPA/)).toBeInTheDocument();
+  expect(screen.getByText(/detectar fatiga/)).toBeInTheDocument();
+  expect(screen.getByText(/coronar un concepto ganador/)).toBeInTheDocument();
+  // El valor viene del contrato (`parametros_motor`), no inventado en la pantalla.
+  expect(screen.getAllByText("3 dias").length).toBeGreaterThanOrEqual(2);
+  expect(screen.getByText("14 dias")).toBeInTheDocument();
+});
+
+test("si un reloj no está en el contrato, la pantalla lo dice en vez de inventar un número", async () => {
+  servir({
+    "/api/ordenes": { ...DATOS_ORDENES, parametros_motor: [] },
+    "/api/ganadores": GANADORES,
+    "/api/acciones": ACCIONES,
+  });
+  renderizar();
+  expect(await screen.findByText("Cómo mide el motor")).toBeInTheDocument();
+  expect(screen.getAllByText("sin dato en el contrato").length).toBe(3);
 });
 
 test("muestra banner de alerta cuando la data tiene rezago > 2 dias", async () => {

@@ -29,6 +29,18 @@ def test_api_ordenes_devuelve_estructura_valida():
     assert primera["estado"] in ("ESCALAR", "PAUSAR", "RENOVAR", "SEGUIR_MIDIENDO")
 
 
+def test_api_ordenes_trae_los_relojes_del_motor():
+    """`parametros_motor` es `_PARAMETROS_DECISION.csv` tal cual: la pantalla explica, no inventa."""
+    res = cliente.get("/api/ordenes")
+    assert res.status_code == 200
+    parametros = res.json()["parametros_motor"]
+    assert isinstance(parametros, list) and len(parametros) > 0
+    por_nombre = {p["parametro"]: p for p in parametros}
+    for clave in ("ventana_dias", "ventana_fatiga_dias", "duracion_testeo_fase2_dias"):
+        assert clave in por_nombre, f"falta «{clave}»: no está en _PARAMETROS_DECISION.csv"
+        assert por_nombre[clave]["valor"], f"«{clave}» no trae valor"
+
+
 def test_api_ordenes_filtro_producto():
     res = cliente.get("/api/ordenes?producto=TINNIDROP")
     assert res.status_code == 200

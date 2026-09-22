@@ -362,6 +362,16 @@ class OrdenItem(Base):
     conjuntos: list[str] = []
 
 
+class ParametroMotor(Base):
+    """Una fila de `_PARAMETROS_DECISION.csv`, tal cual: un reloj o umbral del motor de decisión."""
+
+    parametro: str
+    valor: str = ""
+    unidad: str = ""
+    dueno: str = ""
+    por_que: str = ""
+
+
 class OrdenesRespuesta(Base):
     schema_version: str = Field(alias="schema", default="")
     rezago_dias: int = 0
@@ -369,6 +379,9 @@ class OrdenesRespuesta(Base):
     ordenes: list[OrdenItem] = []
     bloqueantes: list[Any] = []
     avisos: list[str] = []
+    # Los relojes del motor (ventana_dias, ventana_fatiga_dias, duracion_testeo_fase2_dias, …),
+    # leídos tal cual de `_PARAMETROS_DECISION.csv`: la pantalla los explica, no los inventa.
+    parametros_motor: list[ParametroMotor] = []
 
 
 class GanadorPaso(Base):

@@ -19,6 +19,7 @@ from .config import python_del_sistema, ruta
 
 DIM_PRODUCTOS = ("PRODUCTOS", "_DIM_PRODUCTOS.csv")
 DIM_CUENTAS = ("PRODUCTOS", "_DIM_CUENTAS.csv")
+PARAMETROS_DECISION = ("PRODUCTOS", "_PARAMETROS_DECISION.csv")
 ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
 FLUJO_GLOBAL = ("PRODUCTOS", "_FLUJO.json")
@@ -75,6 +76,15 @@ def fila_de_producto(producto_key: str) -> dict[str, str]:
     """La fila COMPLETA de un producto (carpetas incluidas), o {} si no tiene. Solo para el runner y
     las pantallas de FASE 1, que necesitan saber dónde viven sus transcripciones y su media."""
     return next((fila for fila in _leer_csv(DIM_PRODUCTOS) if fila.get("producto_key") == producto_key), {})
+
+
+def parametros_decision() -> list[dict[str, str]]:
+    """`_PARAMETROS_DECISION.csv` tal cual: los relojes y umbrales del motor de decisión.
+
+    Pura lectura de CSV, fila por fila, sin filtrar ni derivar nada (dueño: `decidir.py` /
+    `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`, verificado por `verificar_guia_madre.py`).
+    """
+    return _leer_csv(PARAMETROS_DECISION)
 
 
 def cuentas() -> list[dict[str, str]]:

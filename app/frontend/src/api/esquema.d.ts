@@ -399,6 +399,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/productos/{producto_key}/fase2": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Obtener Fase2
+         * @description Detalle completo de FASE 2: ángulo ganador, 10 conceptos con blueprints, prompts y carriles.
+         */
+        get: operations["obtener_fase2_api_productos__producto_key__fase2_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/fase3": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Obtener Fase3
+         * @description Detalle completo de FASE 3: gate 2de2 con evidencia, plan CBO 1-1-7 y expansión multicuenta.
+         */
+        get: operations["obtener_fase3_api_productos__producto_key__fase3_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/reingreso-f1": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Post Reingreso F1
+         * @description Registra el retorno a F1 por fatiga, excluyendo los ángulos ya probados.
+         */
+        post: operations["post_reingreso_f1_api_productos__producto_key__reingreso_f1_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos": {
         parameters: {
             query?: never;
@@ -1349,6 +1409,11 @@ export interface components {
              * @default []
              */
             avisos: string[];
+            /**
+             * Parametros Motor
+             * @default []
+             */
+            parametros_motor: components["schemas"]["ParametroMotor"][];
         } & {
             [key: string]: unknown;
         };
@@ -1366,6 +1431,36 @@ export interface components {
             avisos: string[];
             /** Preflight */
             preflight?: unknown;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * ParametroMotor
+         * @description Una fila de `_PARAMETROS_DECISION.csv`, tal cual: un reloj o umbral del motor de decisión.
+         */
+        ParametroMotor: {
+            /** Parametro */
+            parametro: string;
+            /**
+             * Valor
+             * @default
+             */
+            valor: string;
+            /**
+             * Unidad
+             * @default
+             */
+            unidad: string;
+            /**
+             * Dueno
+             * @default
+             */
+            dueno: string;
+            /**
+             * Por Que
+             * @default
+             */
+            por_que: string;
         } & {
             [key: string]: unknown;
         };
@@ -1492,6 +1587,15 @@ export interface components {
             evaluado_el?: string | null;
         } & {
             [key: string]: unknown;
+        };
+        /** ReingresoPeticion */
+        ReingresoPeticion: {
+            /**
+             * Motivo
+             * @description Motivo del retorno a F1
+             * @default Ángulo agotado / fatiga
+             */
+            motivo: string;
         };
         /** Reintento */
         Reintento: {
@@ -2365,6 +2469,109 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Ganador"][];
+                };
+            };
+        };
+    };
+    obtener_fase2_api_productos__producto_key__fase2_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    obtener_fase3_api_productos__producto_key__fase3_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_reingreso_f1_api_productos__producto_key__reingreso_f1_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ReingresoPeticion"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

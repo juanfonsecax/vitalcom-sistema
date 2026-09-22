@@ -8,8 +8,10 @@
  */
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { api } from "../api/cliente";
+import { api, type ParametroMotor } from "../api/cliente";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
+import { GLOSARIO } from "../glosario";
+import { EXPLICACION_DEL_RELOJ, tituloDeOrden, veredictoDeOrden } from "../lenguaje";
 
 type LlamadaMeta = {
   llamada?: number;
@@ -41,6 +43,41 @@ const TEXTO_ESTADO: Record<string, string> = {
   SEGUIR_MIDIENDO: "Seguir midiendo",
 };
 
+/** La clave del glosario para cada estado, para el «qué significa esto» de cada orden. */
+const GLOSARIO_POR_ESTADO: Record<string, keyof typeof GLOSARIO> = {
+  ESCALAR: "escalar",
+  PAUSAR: "pausar",
+  RENOVAR: "renovar",
+  SEGUIR_MIDIENDO: "seguir_midiendo",
+};
+
+/** Panel «cómo mide el motor»: los tres relojes de `_PARAMETROS_DECISION.csv`, con su valor real
+ * y una línea fija de qué mide cada uno. Si un reloj no está en el contrato, se dice así. */
+function PanelDeRelojes({ parametros }: { parametros: ParametroMotor[] }) {
+  const porNombre = Object.fromEntries(parametros.map((p) => [p.parametro, p]));
+  const relojes = Object.keys(EXPLICACION_DEL_RELOJ) as (keyof typeof EXPLICACION_DEL_RELOJ)[];
+  return (
+    <Tarjeta className="space-y-2">
+      <p className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+        Cómo mide el motor
+      </p>
+      <ul className="space-y-1.5 text-xs text-zinc-400">
+        {relojes.map((clave) => {
+          const p = porNombre[clave];
+          return (
+            <li key={clave}>
+              <span className="font-mono text-zinc-300">
+                {p ? `${p.valor} ${p.unidad}`.trim() : "sin dato en el contrato"}
+              </span>{" "}
+              — {EXPLICACION_DEL_RELOJ[clave]}
+            </li>
+          );
+        })}
+      </ul>
+    </Tarjeta>
+  );
+}
+
 export function Ordenes() {
   const consultaOrdenes = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const consultaGanadores = useQuery({ queryKey: ["ganadores"], queryFn: api.ganadores });
@@ -58,6 +95,7 @@ export function Ordenes() {
   const rezago = datos?.rezago_dias ?? 0;
   const bloqueantes = (datos?.bloqueantes ?? []) as Bloqueante[];
   const avisos = (datos?.avisos ?? []) as string[];
+  const parametrosMotor = datos?.parametros_motor ?? [];
 
   // Verificar si la acción del ciclo está habilitada en el manifiesto
   const accionCiclo = (consultaAcciones.data ?? []).find((a) => a.id === "nodo.ciclo.ordenes");
@@ -97,6 +135,8 @@ export function Ordenes() {
           </p>
         </div>
       )}
+
+      <PanelDeRelojes parametros={parametrosMotor} />
 
       {/* Banner de Ganadores detectados por venta */}
       {ganadores.length > 0 && (
@@ -157,6 +197,9 @@ export function Ordenes() {
             {ordenes.map((orden, idx) => {
               const pq = orden.por_que || {};
               const ic = pq.ic as number[] | undefined;
+              const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
+              const claveGlosario = GLOSARIO_POR_ESTADO[orden.estado];
+              const glosarioDelEstado = claveGlosario ? GLOSARIO[claveGlosario] : undefined;
               return (
                 <Tarjeta key={`${orden.producto_key}-${orden.angulo_key}-${idx}`} className="flex flex-col justify-between gap-4">
                   <div>
@@ -179,10 +222,32 @@ export function Ordenes() {
                       </Chip>
                     </div>
 
-                    {/* Explicación en español simple */}
+                    {/* Titular sin ambigüedad: qué HACER primero, la frase del motor de contexto */}
                     <div className="mt-3 rounded-lg bg-zinc-950/60 p-3 text-sm text-zinc-200 border border-zinc-800/80">
-                      {orden.frase_simple}
+                      <p className="font-semibold text-zinc-100">{titulo}</p>
+                      {titulo !== orden.frase_simple && (
+                        <p className="mt-1 text-xs text-zinc-500">Orden original del motor: {orden.frase_simple}</p>
+                      )}
                     </div>
+
+                    {/* La frase narrada: qué dicen los números, en una oración */}
+                    {ic && ic.length === 3 && pq.break_even_q != null && (
+                      <p className="mt-2 text-xs text-zinc-400">
+                        Cada venta te está costando entre{" "}
+                        <span className="font-mono text-zinc-300">Q{ic[0]}</span> y{" "}
+                        <span className="font-mono text-zinc-300">Q{ic[2]}</span>; tu techo es{" "}
+                        <span className="font-mono text-zinc-300">Q{pq.break_even_q as number}</span>.{" "}
+                        {veredictoDeOrden(orden.estado)}
+                      </p>
+                    )}
+
+                    {/* Por qué este estado, en las palabras del glosario (nunca inventadas acá) */}
+                    {glosarioDelEstado && (
+                      <p className="mt-2 text-xs text-zinc-500">
+                        <strong className="text-zinc-400">{glosarioDelEstado.rotulo}:</strong>{" "}
+                        {glosarioDelEstado.que_es}
+                      </p>
+                    )}
 
                     {/* Métricas de sustento */}
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-zinc-400">

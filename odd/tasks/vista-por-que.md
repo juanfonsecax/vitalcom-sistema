@@ -39,11 +39,37 @@ Also the backend suite hangs (test_meta.py / DBOS teardown), so the closing gate
       `[tool.pytest.ini_options]` in `app/backend/pyproject.toml` as a per-test ceiling only, so a
       genuinely hung test fails with its own traceback instead of ever blocking the suite again.
       Route: inline (mechanical, 1 file + lockfile).
-- [ ] T2 — Single product card: phase, current step in plain words, who does it, next concrete step,
-      blockers with their owner; no raw node ids as primary text. Route: delegated (writer).
-- [ ] T3 — Narrated orders: per order a sentence narrating IC vs break-even, a progress bar of current vs
-      needed sales, the three clocks (ventana_dias, ventana_fatiga_dias, duracion_testeo_fase2_dias) read from
-      the CSV, why RENOVAR vs PAUSAR, and a data-freshness warning on top. Route: delegated (writer, with T2).
+- [x] T2 — Single product card: phase, current step in plain words, who does it, next concrete step,
+      blockers with their owner; no raw node ids as primary text. Done in `Tablero.tsx`
+      (`TarjetaProducto`, exported and reusable) and `ProductoDetalle.tsx` (new resumen card at
+      top). Phase meaning from `lenguaje.faseEnUnaFrase` (reuses `FASES`); step title prefers the
+      matching node's `titulo`, falls back to `flujo.como`; WHO reuses `quienLoHace`; raw node id
+      kept as muted/secondary text only. Per-product freshness banner reads
+      `flujo.motor.rezago_dias` (untyped `dict` field already in the `Flujo` contract, cast
+      locally as `MotorInfo`) — shown when >2 days, same threshold/wording as the existing global
+      banner. Tests: `tablero.test.tsx` (+2), new `producto-detalle.test.tsx` (3 tests). Verified:
+      `pnpm test` 50/50, `pnpm build` OK. Commit: `da8cbe8`. Route: inline (2 screens + 1 shared
+      helper file, already-understood UI wiring; delegating would not have reduced context here).
+- [x] T3 — Narrated orders. Done in `Ordenes.tsx` + a new read-only contract field:
+      (a) narrated sentence "Cada venta te está costando entre Q{ic0} y Q{ic2}; tu techo es
+      Q{be}. {veredicto}" — pure string templating, `{veredicto}` chosen from `orden.estado` via
+      `lenguaje.veredictoDeOrden` (a lookup, never a numeric comparison); shown only when the order
+      already carries both `ic` (3-tuple) and `break_even_q`.
+      (b) progress bar — **not built**, reported as a contract gap below; the existing "faltan ~N
+      ventas" text is kept.
+      (c) "Cómo mide el motor" panel with the three clocks, sourced from a NEW backend field:
+      `contratos.parametros_decision()` (plain `_PARAMETROS_DECISION.csv` read-through, zero
+      computation) wired into `OrdenesRespuesta.parametros_motor` (`api_ordenes.py`); OpenAPI
+      schema regenerated (`pnpm tipos` against a locally-started backend, then stopped).
+      (d) one-liners per estado reusing `glosario.ts` (`GLOSARIO.renovar/pausar/escalar/seguir_midiendo`),
+      and the ESCALAR+`bloqueo_fase` headline ambiguity fixed via `lenguaje.tituloDeOrden`
+      ("No subir presupuesto todavía…" leads; the motor's original phrase is kept as muted
+      context) — matches invariante 13.
+      Tests: backend `test_api_ordenes_trae_los_relojes_del_motor` (new); frontend `ordenes.test.tsx`
+      (+4, one rewritten for the new headline). Verified: backend 9/9 (`test_sin_aritmetica` +
+      `test_ordenes_api`), frontend `pnpm test` 50/50, `pnpm build` OK. Route: inline (one screen +
+      one small backend read-through, already-understood; delegating would not have reduced
+      context here).
 - [ ] T4 — Verify in browser against real SISTEMA data (today's date), screenshots. Route: inline.
 
 ## Acceptance criteria
@@ -54,5 +80,17 @@ Also the backend suite hangs (test_meta.py / DBOS teardown), so the closing gate
 - 2026-09-21: feat/app-web fast-forwarded into production branch by operator (1950e19). Engine tests
   green in SISTEMA: test_flujo 29/29, test_decidir 17/17, flujo.py --validar OK.
 
+## Contract gaps found (T3b)
+- No field pairs "current sales" with "sales needed" for a progress bar. `gen_ordenes.py`'s
+  `por_que` only exposes the gap (`faltan_ventas`), not the count already achieved nor the total
+  target. Deriving the total as `ventas_actual + faltan_ventas` would be arithmetic on business
+  concepts that only the engine may compute (`test_sin_aritmetica.py` would correctly flag it if
+  done in the backend; doing it in the frontend would just move the same violation client-side).
+  `PRODUCTOS/_PARAMETROS_DECISION.csv` has `min_ventas_ganador`/`min_ventas_escalar`, but which one
+  applies to a given SEGUIR_MIDIENDO order is a business rule inside `decidir.py`, not something
+  the app should infer. If a progress bar is wanted, `gen_ordenes.py` (or `decidir.py`'s celda)
+  needs to emit both numbers itself (e.g. `ventas_actual` + `ventas_necesarias`), owned by the
+  engine like everything else.
+
 ## Next step
-T2.
+T4 — verify in browser against real SISTEMA data.

@@ -35,6 +35,7 @@ export type ChecklistF1 = components["schemas"]["ChecklistF1"];
 export type Cuenta = components["schemas"]["Cuenta"];
 export type OrdenItem = components["schemas"]["OrdenItem"];
 export type OrdenesRespuesta = components["schemas"]["OrdenesRespuesta"];
+export type ParametroMotor = components["schemas"]["ParametroMotor"];
 export type Ganador = components["schemas"]["Ganador"];
 
 /** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
