@@ -717,6 +717,11 @@ FIN ESTRUCTURA ESCALADO
   Mientras el test no cierre, el default sigue siendo DUPLICADO. Ver el TEST DE DIVERSIDAD abajo.
 - **Regla de no pausar por falta de video (DOCTRINA DE CREATIVOS):** Un ángulo cuyo creativo es IMAGEN (ad Prompt Maestro de ETAPA-4) lanza igual que uno con video. NUNCA dejar un conjunto pausado por no tener video — la imagen lo cubre. Marcar el formato de cada conjunto (VIDEO/IMAGEN), no pausarlo.
 - **Regla de lectura del ganador (confound de formato):** Leer el resultado a nivel de ÁNGULO con las métricas de conversación. Si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato (uno video, otro imagen), no declarar ganador aún: en FASE 2 probar el ángulo en un solo formato para aislar la variable. Un video validado es un creativo más fuerte que una imagen fría — tenerlo en cuenta al comparar.
+
+  > **Decisión del operador (22-sep-2026), reemplaza estas dos reglas hacia adelante:** F1 planifica
+  > los 6 conjuntos con `formato: IMAGEN` fijo (`_PLAN.json`, validado por `gen_plan.py --validar`)
+  > — el confound de formato entre ángulos ya no puede ocurrir en F1. El video queda como fuente del
+  > ángulo (`etapa-0`) y se testea en FASE 2 como un concepto más.
 - **Regla de precio (Guatemala — máx 3/6, ideal 2/6):** Máximo 3 conjuntos (idealmente 2) llevan precio P1u en copy + creativo visual. El resto sin precio en ninguno. Si un conjunto lleva precio, va en ambos (copy y creativo); si no, en ninguno. (Ajuste V5 — coherente con ETAPA-4.)
 - **Regla de métricas de observación:** El primer día de testeo busca datos, no ventas. Meta está identificando quién conecta con cada ángulo. (Clase 2 — Joaquín: "el primer día no busco venta, busco DATA")
 - **Regla del 20% matutino:** Subir el presupuesto de un conjunto rentable máximo +20% por día y SOLO en la mañana (hasta 9-10 AM). Tocarlo más tarde reinicia el aprendizaje y desoptimiza. (Clase 8, 11, 15)

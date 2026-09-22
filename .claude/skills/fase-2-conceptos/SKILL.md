@@ -21,8 +21,14 @@ sumando sus 2 apariciones** (~4.1 días a 1× BE), nunca por conjunto. Aritméti
 Catálogo de los 8 conceptos y su evidencia: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`. Se registra en
 `concepto_key` de `_DIM_CONJUNTOS.csv` (vocabulario en `DOCTRINA/DATA_PLAYBOOK.md` §1).
 
-**Secuencia:** `etapa-11` → `etapa-9` (10 conceptos) →
+**Secuencia:** `etapa-11` → `etapa-9` (10 conceptos) → [lavado si algún concepto es VIDEO] →
 (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
+
+> **Decisión del operador (22-sep-2026):** el video pasa a testearse ACÁ, como un concepto más
+> entre los 10 — ya no es el creativo de FASE 1. Cuando `etapa-9` asigna un concepto en formato
+> VIDEO, se lava antes de dejarlo `GENERADO`: `bash "Ads/_TOOLS/lavar_videos.sh" "[PRODUCTO]"
+> [OFERTA] [COLOR] "Ads/MEDIA_[PRODUCTO]" [MANIFEST]` (detalle técnico y mapa de colores en
+> `Ads/_TOOLS/LAVADO.md`). Los conceptos en IMAGEN siguen el camino normal de `etapa-render`.
 
 ---
 

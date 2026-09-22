@@ -11,6 +11,10 @@ model: inherit
 Actúa en dos modos:
 - **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `DOCTRINA/COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
 
+> **Decisión del operador (22-sep-2026):** F1 corre TODO EN IMAGEN — el ad de testeo en imagen se
+> produce para los 6 ángulos, no solo para los vírgenes; el video de cada ángulo queda como fuente
+> para FASE 2 (dueño de la regla: `Ads/_TOOLS/gen_plan.py --validar`).
+
 > **DOS SISTEMAS DE CREATIVO — no confundir:** (a) **AD DE TESTEO** = el anuncio (video o imagen Prompt Maestro) que va EN LA CAMPAÑA de Meta y detiene el scroll. (b) **INFOGRAFÍAS DEL BOT** = las imágenes informativas DENTRO del flujo de WhatsApp (después del clic). Aplicar siempre las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) del sistema a ambos.
 - **FASE 2 (Conceptos):** Produce **el copy ÚNICO** de la fase — texto, título y descripción — más sus 3 variaciones de respaldo, en formato testimonio de primera persona, construido sobre el ángulo ganador y alimentado por los microángulos de `etapa-3`.
 

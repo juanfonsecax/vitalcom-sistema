@@ -6,6 +6,10 @@
 >
 > **Cuándo se usa (ETAPA-4):**
 > - **FASE 1:** generar 1 ad-imagen por cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes/descubiertos sin video). Los ángulos con video usan el video, no necesitan ad-imagen en FASE 1.
+>   > **Decisión del operador (22-sep-2026), reemplaza la línea anterior:** FASE 1 corre TODO EN
+>   > IMAGEN — se genera 1 ad-imagen para los 6 ángulos, ninguno usa el video como creativo. El
+>   > video queda como fuente del ángulo (`etapa-0`) y se testea en FASE 2 como un concepto más.
+>   > Dueño de la regla: `Ads/_TOOLS/gen_plan.py --validar`.
 > - **FASE 2:** generar el BANCO anti-fatiga (mínimo 1 por microángulo, idealmente muchas variaciones con estilos distintos) para el escalado horizontal. Además del estilo, cada concepto declara su **ROL DE EMBUDO (TOFU/MOFU/BOFU)** según el nivel de conciencia del avatar (ver ETAPA-4 FASE 2 · `DOCTRINA/ESCALADO_PLAYBOOK.md` §4) — el banco cubre las 3 etapas para alimentar el embudo interno de la CBO.
 >
 > **Doctrina vs. prompt final:** las citas de mentor/clase que aparecen en este archivo (ej. "Clase 19, Joaquín") son criterio interno — explican el PORQUÉ de la regla para quien construye o ajusta esta plantilla. Al rellenar el PROMPT MAESTRO con las `[VARIABLES]` del producto para entregarlo en `1_HACER_MANUAL.txt`, esas citas se OMITEN — el operador solo recibe la instrucción ya resuelta, lista para pegar, sin referencias a clases.
@@ -351,6 +355,10 @@ Clase 4: "imágenes de testimonios + producto en la misma imagen dan muy buenos 
 **ESCALADO (FASE 2):** el ángulo ganador se escala con **banco de imágenes anti-fatiga** (50+, los 15 estilos de este archivo) + se **replica el video ganador vía Post ID** (si ganó un video). Acá las imágenes dominan por volumen — no se hacen 50 videos. El banco se organiza además por **ROL DE EMBUDO (TOFU/MOFU/BOFU)** mapeado al nivel de conciencia de `etapa-2`, para alimentar el embudo interno de la CBO (ver `etapa-4` FASE 2 · `DOCTRINA/ESCALADO_PLAYBOOK.md` §4). **Solo FASE 2** — FASE 1 se mantiene lean.
 
 **Nota de lectura (confound de formato):** mezclar video e imagen entre conjuntos mete un sesgo leve (un video validado es un creativo más fuerte que una imagen fría). Mitigación: leer FASE 1 a nivel de **ÁNGULO** con las métricas de conversación (robustas al formato); si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato, FASE 2 los controla probando el ganador en un solo formato. No sobre-optimizar esto en FASE 1.
+
+> **Decisión del operador (22-sep-2026):** este confound ya no puede ocurrir en F1 — los 6
+> conjuntos declaran `formato: IMAGEN` fijo (`gen_plan.py --validar` bloquea cualquier otro). La
+> nota queda como antecedente histórico de por qué se tomó la decisión.
 
 **Variación AGRESIVA / de impacto** (palanca validada por data de competencia — ver "ENFOQUE AGRESIVO / DE IMPACTO" arriba): en categorías de plaga/miedo/higiene, el creativo de CHOQUE frena el scroll más fuerte que el limpio. Regla: **1-2 de los 6 conjuntos por lanzamiento** la usan (preferente el genérico/amplio + un ángulo de MIEDO), NUNCA los 6 — se mantiene el "1 creativo por conjunto" lean y la diversidad de conceptos y entrega. Guardarraíles: compliance "ahuyenta/aleja" (no "elimina/mata"), render propio y único (no copiar la huella de la competencia = baneo silencioso). `etapa-4` la aplica en su Tarea 2.
 

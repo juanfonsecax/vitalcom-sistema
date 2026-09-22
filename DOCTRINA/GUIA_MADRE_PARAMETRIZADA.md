@@ -114,6 +114,11 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `PALANCA_NUMEROS_ESTADISTICA` | **Datos reales verificables** | Mínimo 1 de cada 6 ángulos abre con estadística o dato porcentual concreto. | Prohibido inventar fuentes. Credibilidad matemática para avatares escépticos. | `.claude/agents/ETAPA-2.md` |
 | `JERARQUIA_RANKING_ANGULOS` | **1. Respaldo Voz-Real / Oculto > 2. Emoción > 3. Baja Saturación > 4. Urgencia > 5. Directo** | Criterio estricto de priorización de ángulos para lanzar primero. | El dolor activo urgente gana sobre el deseo lejano. El ángulo emocional gana sobre el funcional. | `.claude/agents/ETAPA-2.md` |
 
+> **Precisión sobre `DIFERENCIA_ANGULO_VS_FORMATO` (decisión operador 22-sep-2026):** en FASE 1 el
+> formato también queda FIJO en IMAGEN, no solo el concepto — se mide únicamente el ángulo. El
+> formato VIDEO se testea recién en FASE 2, como un concepto más. Dueño de la regla:
+> `Ads/_TOOLS/gen_plan.py --validar`.
+
 ---
 
 ## 7. VARIABLES DE OBJECIONES Y DERRIBO CRÍTICO (OBJECTION KILLING)

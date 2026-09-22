@@ -51,7 +51,7 @@
      "id": "F1.paquete",
      "titulo": "Construir el paquete de FASE 1 (validar, clasificar, costear, ángulos, copy, bot, plan)",
      "ejecutor": {"tipo": "skill", "name": "fase-1-angulos"},
-     "secuencia": ["etapa-producto", "etapa-0", "Ads/_TOOLS/lavar_videos.sh", "etapa-1", "etapa-1b", "etapa-2", "etapa-fanpage", "etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
+     "secuencia": ["etapa-producto", "etapa-0", "etapa-1", "etapa-1b", "etapa-2", "etapa-fanpage", "etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
      "como": "La skill invoca los subagentes en ese orden (etapa-2 ∥ etapa-fanpage, etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
      "produce": [
       {"dato": "2_DATA_PRODUCTO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/2_DATA_PRODUCTO.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
@@ -137,8 +137,8 @@
      "id": "F2.conceptos",
      "titulo": "Fabricar y renderizar los conceptos del ángulo ganador",
      "ejecutor": {"tipo": "subagente", "name": "etapa-9"},
-     "secuencia": ["etapa-9", "etapa-render"],
-     "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); etapa-render las produce en ChatGPT web y las deja GENERADO con el gate de calidad corrido.",
+     "secuencia": ["etapa-9", "Ads/_TOOLS/lavar_videos.sh", "etapa-render"],
+     "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md antes de registrarlo GENERADO (decision operador 22-sep-2026: el video se testea en FASE 2, ya no en F1); etapa-render produce los conceptos IMAGEN en ChatGPT web y deja GENERADO con el gate de calidad corrido.",
      "produce": [
       {"dato": "conceptos GENERADOS (10 = A 5 + B 5, de _PARAMETROS_PUBLICACION.csv)",
        "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "estado": ["GENERADO", "PUBLICADO"]}, "min": "@publicacion:conceptos_fase2"},

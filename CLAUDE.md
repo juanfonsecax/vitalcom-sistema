@@ -125,7 +125,7 @@ Aplican a **todos los subagentes en todas las fases**.
 ### ÁNGULO vs CONCEPTO — QUÉ SE FIJA EN CADA FASE
 > **ÁNGULO = por qué duele. CONCEPTO = cómo se muestra.**
 > ```
-> FASE 1 → 6 ÁNGULOS distintos × concepto FIJO       6 conjuntos · ABO      ← mide el ÁNGULO
+> FASE 1 → 6 ÁNGULOS distintos × concepto Y formato FIJOS (IMAGEN)   6 conjuntos · ABO ← mide el ÁNGULO
 > FASE 2 → 1 ángulo ganador × 10 CONCEPTOS            1-1-5 ×2 + 1-2-5 · ABO ← mide el CONCEPTO
 > FASE 3 → 1 ángulo + 1 concepto validados × 7        1-1-7 · CBO            ← compra volumen
 > ```
@@ -134,6 +134,10 @@ Aplican a **todos los subagentes en todas las fases**.
 > - **El ángulo NO se testea en 1-1-N**: Meta reparte por clics y conversaciones, y esa señal no
 >   predice la venta. **Presupuesto protegido (conjuntos separados) cuando la variable se decide por
 >   VENTA · presupuesto libre (1-1-N) cuando se decide por ENTREGA.**
+> - **FASE 1 corre TODO EN IMAGEN** (decisión operador 22-sep-2026): los videos de competencia
+>   siguen siendo la FUENTE del ángulo (transcripciones de `etapa-0`), nunca el creativo de F1; el
+>   formato VIDEO se testea recién en FASE 2, como un concepto más. Dueño de la regla:
+>   `Ads/_TOOLS/gen_plan.py --validar` (bloquea un plan de F1 con cualquier conjunto != IMAGEN).
 
 ### TONALIDAD BASE
 Voseo guatemalteco ("vos", "te", "tu"). Coloquial, nunca formal ni genérico. Nunca sonar a anuncio

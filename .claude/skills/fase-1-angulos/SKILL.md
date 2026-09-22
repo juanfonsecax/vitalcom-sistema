@@ -1,6 +1,6 @@
 ---
 name: fase-1-angulos
-description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos, lavar video, costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
+description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos (los videos quedan como FUENTE del ángulo, no como el creativo), costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña TODO EN IMAGEN y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -11,7 +11,7 @@ tools: Read, Write, Glob, Grep, Bash, Task
 **Mueve el ÁNGULO. Todo lo demás queda fijo.**
 
 ```
-6 ÁNGULOS distintos × concepto FIJO (C2_BENEFICIOS)   ← mide el ÁNGULO
+6 ÁNGULOS distintos × concepto Y FORMATO FIJOS (IMAGEN, C2_BENEFICIOS)   ← mide el ÁNGULO
 ```
 
 **En FASE 1 los 6 ad-imagen comparten layout, paleta y estructura**; cambian solo hook,
@@ -21,7 +21,15 @@ ejecución visual varía junto con el ángulo, nada es atribuible — y con Andr
 concepto son 6 creativos únicos para Meta, que detecta duplicados por huella de contenido, no por
 estructura.
 
-**Secuencia:** `etapa-producto` → `etapa-0` → [PASO 1.5 lavado] → `etapa-1` → `etapa-1b` →
+> **Decisión del operador (22-sep-2026): FASE 1 corre TODO EN IMAGEN.** Los videos de
+> competencia que selecciona `etapa-0` siguen siendo la FUENTE del ángulo (transcripciones), pero
+> ya no son el creativo de F1: los 6 conjuntos se lanzan con ad-imagen, igual para todos los
+> ángulos. El lavado anti-copyright de video (`Ads/_TOOLS/lavar_videos.sh`) ya no corre en esta
+> fase — se mueve a FASE 2 (skill `fase-2-conceptos`), donde el video se testea como un concepto
+> más. Dueño de la regla: `Ads/_TOOLS/gen_plan.py --validar` bloquea un `_PLAN.json` de F1 con
+> cualquier conjunto cuyo `formato` no sea `IMAGEN`.
+
+**Secuencia:** `etapa-producto` → `etapa-0` → `etapa-1` → `etapa-1b` →
 (`etapa-2` ∥ `etapa-fanpage`) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
 ---
@@ -103,35 +111,13 @@ orquestador las guarda primero en esa carpeta: el flujo solo cuenta lo que exist
 
 ---
 
-## PASO 1 — `etapa-0` (pre-clasificador de creativos)
+## PASO 1 — `etapa-0` (selector de fuentes del ángulo)
 
 Inputs: las N transcripciones TXT (de `Ads/1.2 Transcripcion videos/` o pegadas).
-Output: tabla de clasificación + los 6 videos seleccionados por ángulo. → se transfiere a
-`etapa-1b` y `etapa-2`.
-
----
-
-## PASO 1.5 — LAVADO anti-copyright + sticker + renombrado por ángulo
-
-**Obligatorio. Corre SIEMPRE, independiente del MCP.** Lo ejecuta el **orquestador mismo**
-(`etapa-0` solo tiene `Read/Glob/Grep`).
-
-Inmediatamente después de que `etapa-0` entrega los 6 videos, se **lava** cada uno y queda
-renombrado en `Ads/MEDIA_[PRODUCTO]/` como `[PRODUCTO]_[N]_[ANGULO].mp4`:
-
-```bash
-bash "Ads/_TOOLS/lavar_videos.sh" "[PRODUCTO]" [OFERTA] [COLOR] "Ads/MEDIA_[PRODUCTO]" [MANIFEST]
-```
-
-- **OFERTA** = `2X1` o `NORMAL` (default si el operador no lo dice).
-- **COLOR** = automático según FanPage/categoría (mapa en `Ads/_TOOLS/LAVADO.md`).
-- **Copiar/lavar, nunca mover:** el original en `Ads/1.1 Videos/` queda intacto, emparejado 1:1 con
-  su transcripción.
-- Los ángulos vírgenes reservan slot `[PRODUCTO]_[N]_[ANGULO].jpg` (lo llena `etapa-4`).
-
-> **Por qué es obligatorio, el manifiesto, el mapa de colores y el detalle técnico:
-> `Ads/_TOOLS/LAVADO.md`.** Resumen: Meta detecta el reuso por huella de contenido (no por
-> metadata) y aplica baneo silencioso subiendo el CPM. Borrar metadata sola NO basta.
+Output: tabla de clasificación + los 6 videos seleccionados por ángulo, como FUENTE del ángulo
+(evidencia y ganchos para `etapa-1b`/`etapa-2`) — **no como creativo de F1**: el creativo de los 6
+conjuntos es siempre ad-imagen (`etapa-4`). El video de cada ángulo queda disponible para su
+concepto en FASE 2 (lavado con `Ads/_TOOLS/lavar_videos.sh` recién ahí, ver `fase-2-conceptos`).
 
 ---
 
@@ -185,8 +171,8 @@ Lanzar ambas en el mismo turno. Esperar AMBOS outputs antes de `etapa-6`.
 - **`etapa-4` (FASE 1)** — Inputs: las 6 fichas de `etapa-2` (con formato de creativo asignado),
   producto, P1u, imagen del producto, output de `etapa-1` y `etapa-1b`, `<pagina_asignada>`, datos
   del operador (días de resultado, dosis, momento de uso, estadísticas, FAQs). Output: 6 copies +
-  **ad-imagen** (Prompt Maestro) para cada ángulo virgen + **3 infografías del bot** e IMAGEN 4
-  opcional.
+  **ad-imagen** (Prompt Maestro) para los 6 ángulos (F1 es TODO IMAGEN) + **3 infografías del
+  bot** e IMAGEN 4 opcional.
 - **`etapa-5` (FASE 1 — Bot Paraguas)** — Inputs: las 6 fichas (con nivel de conciencia), producto,
   `producto_key`, `<pagina_asignada>`. Output: **las 9 frases del ángulo** para
   `PRODUCTOS/_DIM_FLUJO_BOT.csv` + **los bloques de juicio** (los 4 campos del catálogo,
@@ -205,10 +191,9 @@ Lanzar ambas en el mismo turno. Esperar AMBOS outputs antes de `etapa-6`.
 ## PASO 5 — `etapa-6` (FASE 1 — planificador de testeo)
 
 Se activa al recibir outputs de AMBAS.
-Inputs: las 6 fichas de `etapa-2`, los videos de `etapa-0`, los ads-imagen de `etapa-4`,
-`<pagina_asignada>`.
-Output: 1 campaña, 6 conjuntos, **2 anuncios por conjunto**, 4 AM día siguiente. Cada conjunto marca
-su formato (VIDEO [archivo] / IMAGEN). **Nunca pausar un conjunto por falta de video.** Incluir al
+Inputs: las 6 fichas de `etapa-2`, los ads-imagen de `etapa-4`, `<pagina_asignada>`.
+Output: 1 campaña, 6 conjuntos, **2 anuncios por conjunto**, 4 AM día siguiente. Los 6 conjuntos
+declaran `formato: IMAGEN` (F1 es TODO IMAGEN, validado por `gen_plan.py --validar`). Incluir al
 pie: "FanPage de pauta: [página asignada]".
 
 > **Si el conector Meta Ads está disponible → MODO MCP (`DOCTRINA/MCP_PLAYBOOK.md`):** además del texto, el
@@ -216,8 +201,8 @@ pie: "FanPage de pauta: [página asignada]".
 > CONVERSATIONS/WHATSAPP, ABO $2.99/conjunto, banda de edad por avatar con Advantage+ OFF, 4 AM).
 > **Pre-flight obligatorio:** cuenta `is_ads_mcp_enabled`+`is_queryable`, fanpage asignada con
 > WhatsApp conectado, IDs en `2_DATA_PRODUCTO.txt`. Los **anuncios** van en un **2º paso** (el MCP no
-> sube media): `Ads/MEDIA_[PRODUCTO]/` ya existe desde el PASO 1.5; `etapa-4` solo agrega ahí las
-> imágenes vírgenes + `PROMPTS_IMAGENES_[PRODUCTO].txt`. Cuando el operador sube los assets y avisa,
+> sube media): `etapa-4` deja las 6 imágenes en `Ads/MEDIA_[PRODUCTO]/` +
+> `PROMPTS_IMAGENES_[PRODUCTO].txt`. Cuando el operador sube los assets y avisa,
 > se crean **2 anuncios/conjunto** y se genera `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt`.
 > **Nada se activa solo.**
 
@@ -284,7 +269,7 @@ FASE 1 COMPLETADA ✓
 □ FanPage asignada (ETAPA-FANPAGE) → [Número + Nombre] ← confirmar antes de pautar
 □ Edad de segmentación recomendada → [XX+] ← configurar en Meta Ads
 □ Estructura de campaña de testeo (ETAPA-6) → crear en Meta Ads para 4 AM mañana
-□ Creativos: video lavado donde calza el ángulo · ad-imagen en los ángulos vírgenes (ninguno pausado)
+□ Creativos: ad-imagen para los 6 ángulos (F1 es TODO IMAGEN, ninguno pausado)
 □ 6 copies + 3 infografías del bot (+ IMAGEN 4 opcional) (ETAPA-4)
 □ Flujo bot paraguas (ETAPA-5) → configurar en LucidBot antes del lanzamiento
 □ Guardado en disco: PRODUCTOS/[NOMBRE]/ con 1_ + 2_ (+ 3_ si hubo MCP) ← gate de reconciliación
