@@ -21,10 +21,12 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
-# Salvavidas por prueba, no por corrida completa: una prueba que se cuelga (p. ej. un DBOS.recv
-# que nunca recibe su mensaje) falla con su propio traceback en vez de trabar toda la suite.
-# Ver odd/tasks/vista-por-que.md T1: la suite completa NO cuelga (160 passed en ~5 min limpio);
-# esto es un tope de seguridad por prueba, no un fix de un hang real.
+# Salvavidas por prueba, no por corrida completa. pytest-timeout tiene dos métodos: `signal`
+# (Unix, aísla la prueba colgada con su propio traceback) y `thread` — el único que existe en
+# Windows —, que al vencer el plazo vuelca los stacks de todos los hilos y ABORTA la corrida
+# completa (no aísla nada). Ver odd/tasks/vista-por-que.md T1: la suite completa NO cuelga (160
+# passed en ~5 min limpio); esto es un tope de 120s por prueba para no esperar indefinidamente si
+# algo sí llega a colgarse, no un fix de un hang real.
 timeout = 120
 
 [build-system]

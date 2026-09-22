@@ -193,11 +193,28 @@ test("muestra las órdenes de hoy con sus estados y explicaciones", async () => 
   expect(await screen.findByText("Órdenes de hoy")).toBeInTheDocument();
   // Los 4 estados. La orden ESCALAR con bloqueo_fase muestra el titular sin ambigüedad
   // (invariante 13: no subir presupuesto en pleno testeo), no la frase cruda del motor.
-  expect(await screen.findByText("No subir presupuesto todavía: seguir midiendo en esta fase.")).toBeInTheDocument();
+  expect(
+    await screen.findByText("No subir presupuesto: mantener el que ya tiene hasta cerrar la fase."),
+  ).toBeInTheDocument();
   expect(screen.getByText(/Orden original del motor: Subir 20% al presupuesto/)).toBeInTheDocument();
   expect(await screen.findByText("Pausar conjunto de Zumbido Grave")).toBeInTheDocument();
   expect(await screen.findByText("Renovar creativo para Fatiga Crónica (rotar concepto en F2)")).toBeInTheDocument();
   expect(await screen.findByText("Mantener presupuesto de Infección Recurrente: faltan ~4 ventas para decidir")).toBeInTheDocument();
+});
+
+test("ESCALAR con bloqueo_fase no se contradice: chip, veredicto y glosario dicen todos que no se mueve plata", async () => {
+  renderizar();
+  // El chip ya no dice "Escalar (+20%)" para esta celda: diría lo contrario del titular.
+  expect(await screen.findByText("Escalar bloqueado por fase")).toBeInTheDocument();
+  expect(screen.queryByText("Escalar (+20%)")).not.toBeInTheDocument();
+  // El veredicto narrado explica la aparente contradicción en vez de repetir "evidencia para escalar".
+  expect(
+    screen.getByText(/La celda es rentable y cuenta como evidencia de ganador, pero en pleno testeo/),
+  ).toBeInTheDocument();
+  // La línea de glosario de ESCALAR ("Poner más plata…") queda oculta en esta tarjeta; la
+  // "Nota de fase" (bloqueo_fase) sigue mostrándose como siempre.
+  expect(screen.queryByText(/Poner más plata: la evidencia alcanza/)).not.toBeInTheDocument();
+  expect(screen.getByText(/CLEARSTEM está en F2: subir presupuesto sesga la medición/)).toBeInTheDocument();
 });
 
 test("narra la frase de IC vs break-even y el veredicto del motor", async () => {
@@ -219,6 +236,36 @@ test("explica cada estado con las palabras del glosario, RENOVAR incluido", asyn
   expect(
     await screen.findByText(/El ángulo vende, pero el anuncio se cansó\. Se cambia el creativo/),
   ).toBeInTheDocument();
+});
+
+test("el veredicto narrado de RENOVAR habla de historia rentable, no de que 'sigue' rentable hoy", async () => {
+  renderizar();
+  // NUSAVA/RENOVAR trae ic + break_even_q completos → la frase narrada aparece con este veredicto.
+  expect(
+    await screen.findByText(
+      /El ángulo tiene historia rentable; lo que se cansó en los últimos días es el creativo/,
+    ),
+  ).toBeInTheDocument();
+});
+
+test("ventas faltantes: número tal cual, null en SEGUIR_MIDIENDO dice que el motor no lo calculó, null en cualquier otro estado dice 'No aplica'", async () => {
+  servir({
+    "/api/ordenes": {
+      ...DATOS_ORDENES,
+      ordenes: DATOS_ORDENES.ordenes.map((o) =>
+        o.producto_key === "OVULOS_PURITY" ? { ...o, por_que: { ...o.por_que, faltan_ventas: null } } : o,
+      ),
+    },
+    "/api/ganadores": GANADORES,
+    "/api/acciones": ACCIONES,
+  });
+  renderizar();
+  // SEGUIR_MIDIENDO sin faltan_ventas (0 ventas, o CPA pegado al break-even): el motor no calculó
+  // un conteo, y la pantalla nunca inventa "volumen suficiente" en su lugar.
+  expect(await screen.findByText("El motor no calculó cuántas faltan")).toBeInTheDocument();
+  // ESCALAR, PAUSAR y RENOVAR ya decidieron sin necesitar ese conteo (faltan_ventas: null en el
+  // fixture base): tampoco es "volumen suficiente", es que el dato no aplica a ese estado.
+  expect(screen.getAllByText("No aplica").length).toBe(3);
 });
 
 test("el panel «cómo mide el motor» muestra los tres relojes con su valor real", async () => {

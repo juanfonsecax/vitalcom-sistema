@@ -105,3 +105,24 @@ test("no avisa rezago cuando el motor no trae uno viejo", async () => {
   expect(await screen.findByText("Tinnidrop Importado Original")).toBeInTheDocument();
   expect(screen.queryByText(/Data con rezago:/)).not.toBeInTheDocument();
 });
+
+test("muestra los avisos que trae flujo.py en una tarjeta cerca del resumen", async () => {
+  servir({
+    "/api/productos/TINNIDROP": {
+      ...FLUJO_BASE,
+      avisos: [
+        "F2.publicar: Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada — …",
+      ],
+    },
+  });
+  montar();
+  expect(await screen.findByText("Avisos del recorrido")).toBeInTheDocument();
+  expect(screen.getByText(/Meta YA gastó en una campaña de conceptos/)).toBeInTheDocument();
+});
+
+test("no muestra la tarjeta de avisos cuando flujo.py no trae ninguno", async () => {
+  servir({ "/api/productos/TINNIDROP": FLUJO_BASE });
+  montar();
+  expect(await screen.findByText("Tinnidrop Importado Original")).toBeInTheDocument();
+  expect(screen.queryByText("Avisos del recorrido")).not.toBeInTheDocument();
+});

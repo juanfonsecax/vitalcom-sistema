@@ -7,11 +7,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { api, type Nodo, type Requisito } from "../api/cliente";
+import { AvisosDelRecorrido, BannerRezago, tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
-import { FASES, estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace, rezagoEnPalabras } from "../lenguaje";
-
-/** La info del motor (`flujo.py`) que no tiene tipo propio en el OpenAPI: es un `dict` libre. */
-type MotorInfo = { rezago_dias?: number; datos_hasta?: string };
+import { FASES, estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace } from "../lenguaje";
 
 function Dato({ requisito }: { requisito: Requisito }) {
   return (
@@ -73,19 +71,12 @@ export function ProductoDetalle() {
   if (flujo.error) return <Problema error={flujo.error} />;
   const d = flujo.data!;
   const motor = (d.motor ?? null) as MotorInfo | null;
-  const rezago = rezagoEnPalabras(motor?.rezago_dias);
-  const nodoActual = d.nodos.find((n) => n.id === d.nodo_actual);
-  const tituloDelPaso = nodoActual?.titulo || d.como || "Sin paso vigente";
+  const tituloDelPaso = tituloDelPasoActual(d.nodos, d.nodo_actual, d.como);
   const quien = quienLoHace(d.ejecutor);
 
   return (
     <div className="space-y-6">
-      {motor?.rezago_dias != null && motor.rezago_dias > 2 && (
-        <div className="rounded-xl border border-amber-800 bg-amber-950/40 p-3 text-sm text-amber-200">
-          <strong className="text-amber-100">Data con rezago:</strong> {rezago.texto}. Una decisión
-          sobre esto es una decisión a ciegas (invariante 11).
-        </div>
-      )}
+      <BannerRezago motor={motor} />
 
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <div>
@@ -177,6 +168,8 @@ export function ProductoDetalle() {
           </p>
         )}
       </Tarjeta>
+
+      <AvisosDelRecorrido avisos={d.avisos} />
 
       {d.entradas.length > 0 && (
         <Tarjeta>

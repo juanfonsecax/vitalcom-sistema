@@ -8,35 +8,39 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { api, type Flujo, type Producto } from "../api/cliente";
+import { AvisosDelRecorrido, BannerRezago, tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
+import type { ClaveGlosario } from "../glosario";
 import { ESTADO_PRODUCTO, estadoEnPalabras, faseEnUnaFrase, quienLoHace, rezagoEnPalabras } from "../lenguaje";
 
-/** La info del motor (`flujo.py`) que no tiene tipo propio en el OpenAPI: es un `dict` libre. */
-type MotorInfo = { rezago_dias?: number; datos_hasta?: string };
+/** La clave del glosario para la fase, o `undefined` si `producto.fase` no es F1/F2/F3 (p. ej.
+ * "PAUSADO" en un producto excepcionado como VARICOSE): sin fase válida, no hay (i) que mostrar. */
+function claveGlosarioDeFase(fase: string | null | undefined): ClaveGlosario | undefined {
+  if (fase === "F1") return "fase_1";
+  if (fase === "F2") return "fase_2";
+  if (fase === "F3") return "fase_3";
+  return undefined;
+}
 
 /** La tarjeta de UN producto: en qué fase está, qué significa, quién sigue y qué lo frena.
- * La reusan Tablero (una por producto del portafolio) y el resumen de ProductoDetalle. */
+ * Comparte con el resumen de ProductoDetalle las piezas de `componentes/resumen.tsx`
+ * (`MotorInfo`, el título del paso y el banner de rezago) — no se llaman entre sí. */
 export function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo?: Flujo }) {
   const estado = estadoEnPalabras(producto.estado_flujo);
   const bloqueantes = flujo?.bloqueantes ?? [];
   const falta = flujo?.falta_para_cumplir ?? [];
   const motor = (flujo?.motor ?? null) as MotorInfo | null;
-  const rezagoProducto = rezagoEnPalabras(motor?.rezago_dias);
-  // El título humano del paso actual: el de SU nodo en el grafo, o si no está ahí, la frase
-  // «cómo» que ya arma flujo.py. El id crudo (F2.etapa-11) nunca es el texto principal.
-  const nodoActual = flujo?.nodos.find((n) => n.id === flujo.nodo_actual);
-  const tituloDelPaso = nodoActual?.titulo || flujo?.como || "Sin paso vigente";
+  const tituloDelPaso = tituloDelPasoActual(flujo?.nodos, flujo?.nodo_actual, flujo?.como);
   const ejecutorCrudo = flujo?.ejecutor || producto.siguiente_ejecutor || "";
   const quien = quienLoHace(ejecutorCrudo);
+  const claveFase = claveGlosarioDeFase(producto.fase);
 
   return (
     <Tarjeta className="flex flex-col gap-4">
-      {motor?.rezago_dias != null && motor.rezago_dias > 2 && (
-        <div className="rounded-lg border border-amber-800 bg-amber-950/40 px-3 py-2 text-xs text-amber-200">
-          <strong className="text-amber-100">Data con rezago:</strong> {rezagoProducto.texto}. Una
-          decisión sobre esto es una decisión a ciegas.
-        </div>
-      )}
+      <BannerRezago
+        motor={motor}
+        className="rounded-lg border border-amber-800 bg-amber-950/40 px-3 py-2 text-xs text-amber-200"
+      />
 
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -57,7 +61,7 @@ export function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo
       <div>
         <p className="text-xs uppercase tracking-wide text-zinc-500">
           En qué fase está
-          <Info termino={producto.fase === "F1" ? "fase_1" : producto.fase === "F2" ? "fase_2" : "fase_3"} />
+          {claveFase && <Info termino={claveFase} />}
         </p>
         <p className="mt-1 text-sm text-zinc-200">{faseEnUnaFrase(producto.fase)}</p>
       </div>
@@ -108,6 +112,8 @@ export function TarjetaProducto({ producto, flujo }: { producto: Producto; flujo
           </ul>
         )}
       </div>
+
+      <AvisosDelRecorrido avisos={flujo?.avisos} variante="compacta" />
 
       <p className="text-[11px] text-zinc-600">Evaluado el {producto.evaluado_el ?? "—"}</p>
     </Tarjeta>

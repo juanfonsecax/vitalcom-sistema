@@ -126,6 +126,40 @@ test("no avisa rezago del producto cuando el motor no trae uno viejo", async () 
   expect(screen.queryByText(/Data con rezago:/)).not.toBeInTheDocument();
 });
 
+test("una fase que no es F1/F2/F3 (p. ej. PAUSADO, como VARICOSE) no muestra el glosario de FASE 3", async () => {
+  servir({
+    "/api/productos": [{ ...PRODUCTO, fase: "PAUSADO", estado: "PAUSADO", estado_flujo: "EXCEPCION" }],
+    "/api/productos/OVULOS_PURITY": { ...FLUJO, fase: "PAUSADO", estado: "EXCEPCION" },
+    "/api/decisiones": { generado: "2026-09-17", rezago_dias: 0, resumen_acciones: {}, productos: [] },
+  });
+  montar();
+  expect(await screen.findByText("Óvulos Purity Hernatura")).toBeInTheDocument();
+  // Antes, cualquier fase distinta de F1/F2/F3 caía por defecto en fase_3 y mostraba su glosario
+  // ("ya no se mide: se compra volumen") en un producto que ni siquiera está en FASE 3.
+  expect(screen.queryByLabelText("Qué es FASE 3")).not.toBeInTheDocument();
+  expect(screen.queryByLabelText("Qué es FASE 1")).not.toBeInTheDocument();
+  expect(screen.queryByLabelText("Qué es FASE 2")).not.toBeInTheDocument();
+});
+
+test("los avisos del recorrido aparecen como lista compacta cuando flujo.py trae alguno", async () => {
+  servir({
+    "/api/productos": [PRODUCTO],
+    "/api/productos/OVULOS_PURITY": {
+      ...FLUJO,
+      avisos: ["F2.publicar: Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada"],
+    },
+    "/api/decisiones": { generado: "2026-09-17", rezago_dias: 0, resumen_acciones: {}, productos: [] },
+  });
+  montar();
+  expect(await screen.findByText(/Meta YA gastó en una campaña de conceptos/)).toBeInTheDocument();
+});
+
+test("no muestra la sección de avisos cuando flujo.py no trae ninguno", async () => {
+  montar();
+  expect(await screen.findByText("Óvulos Purity Hernatura")).toBeInTheDocument();
+  expect(screen.queryByText(/Meta YA gastó/)).not.toBeInTheDocument();
+});
+
 test("un bloqueante se muestra con el dueño del dato que falta", async () => {
   servir({
     "/api/productos": [{ ...PRODUCTO, estado_flujo: "BLOQUEADO", bloqueantes: 1 }],

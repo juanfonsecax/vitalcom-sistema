@@ -78,6 +78,14 @@ Also the backend suite hangs (test_meta.py / DBOS teardown), so the closing gate
       headline shows "No subir presupuesto todavía"; approve buttons disabled. Screenshots delivered
       to the operator (scratchpad t4-*.png). Route: inline.
 
+- [x] T5 — Fixed audit findings A1–A6, A7 (comment only) and A8 (null `faltan_ventas` now reads
+      "El motor no calculó cuántas faltan" for SEGUIR_MIDIENDO, "No aplica" otherwise), authorized
+      by the operator 2026-09-22. Shared pieces moved to `componentes/resumen.tsx`. Verified:
+      `pnpm test` 58/58, `pnpm build` OK, backend `test_sin_aritmetica` + `test_ordenes_api` 9/9,
+      browser against real SISTEMA data (VARICOSE no FASE 3 tooltip; TINNIDROP shows its 4 flujo.py
+      avisos; blocked ESCALAR cards read "Escalar bloqueado por fase" end to end). Route: delegated
+      writer (writer trigger: 2+ non-trivial files).
+
 ## Acceptance criteria
 - Full backend and frontend suites finish green; test_sin_aritmetica green.
 - For TINNIDROP and NUSAVA the card and orders show 21-sep data and match `flujo.py --todo`.
@@ -117,4 +125,4 @@ Also the backend suite hangs (test_meta.py / DBOS teardown), so the closing gate
 - Pre-existing, out of scope: SEGUIR_MIDIENDO with `faltan_ventas` null renders "Volumen suficiente".
 
 ## Next step
-Operator decides whether to fix A1–A6 (T5). Feature otherwise complete.
+Delivery: operator fast-forwards feat/app-web into the production branch. Feature complete.

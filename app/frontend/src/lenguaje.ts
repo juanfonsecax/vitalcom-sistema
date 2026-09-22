@@ -110,11 +110,22 @@ export const SE_REINTENTAN = ["FALLIDO", "INTERRUMPIDO", "CADUCADO"];
 export const VEREDICTO_POR_ESTADO: Record<string, string> = {
   ESCALAR: "El motor dice que la evidencia alcanza para escalar.",
   PAUSAR: "El motor dice que la evidencia alcanza para pausar.",
-  RENOVAR: "El ángulo sigue rentable: lo que se cansó es el creativo, no el dolor que vende.",
+  RENOVAR:
+    "El ángulo tiene historia rentable; lo que se cansó en los últimos días es el creativo, no el dolor que vende.",
   SEGUIR_MIDIENDO: "Todavía no alcanza evidencia para decidir: se mantiene el presupuesto tal cual.",
 };
 
-export function veredictoDeOrden(estado: string | null | undefined): string {
+/** El veredicto de la CELDA ESCALAR bloqueada por fase: rentable y evidencia de ganador, pero la
+ * doctrina de fase (invariantes 6 y 13) prohíbe mover plata en pleno testeo. Nunca compara números
+ * acá — la condición es el ESTADO más la presencia de `bloqueo_fase`, ambos del motor. */
+const VEREDICTO_ESCALAR_BLOQUEADO =
+  "La celda es rentable y cuenta como evidencia de ganador, pero en pleno testeo no se mueve plata.";
+
+export function veredictoDeOrden(
+  estado: string | null | undefined,
+  bloqueoFase?: string | null,
+): string {
+  if (estado === "ESCALAR" && bloqueoFase) return VEREDICTO_ESCALAR_BLOQUEADO;
   if (!estado) return "";
   return VEREDICTO_POR_ESTADO[estado] ?? "";
 }
@@ -130,9 +141,27 @@ export function tituloDeOrden(
   bloqueoFase: string | null | undefined,
 ): string {
   if (estado === "ESCALAR" && bloqueoFase) {
-    return "No subir presupuesto todavía: seguir midiendo en esta fase.";
+    return "No subir presupuesto: mantener el que ya tiene hasta cerrar la fase.";
   }
   return fraseSimple;
+}
+
+/**
+ * Cuántas ventas faltan para que el motor pueda decidir (A8). Nunca compara ni deriva números:
+ * es una traducción de dos campos del motor —`faltan_ventas` y `estado`— a una frase.
+ *   - hay número → se dice tal cual (`~N ventas`).
+ *   - sin número y el motor sigue midiendo → el motor no llegó a calcularlo (0 ventas, o CPA
+ *     pegado al break-even; ver `decidir.py`).
+ *   - sin número y cualquier otro estado (ESCALAR, PAUSAR, RENOVAR) → el motor ya decidió sin
+ *     necesitar ese conteo.
+ */
+export function ventasFaltantesEnPalabras(
+  faltanVentas: number | null | undefined,
+  estado: string | null | undefined,
+): string {
+  if (faltanVentas != null) return `~${faltanVentas} ventas`;
+  if (estado === "SEGUIR_MIDIENDO") return "El motor no calculó cuántas faltan";
+  return "No aplica";
 }
 
 /** Los tres relojes del motor (`_PARAMETROS_DECISION.csv`), explicados en una línea cada uno.

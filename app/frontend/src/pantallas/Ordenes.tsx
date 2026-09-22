@@ -11,7 +11,7 @@ import { Link } from "@tanstack/react-router";
 import { api, type ParametroMotor } from "../api/cliente";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import { GLOSARIO } from "../glosario";
-import { EXPLICACION_DEL_RELOJ, tituloDeOrden, veredictoDeOrden } from "../lenguaje";
+import { EXPLICACION_DEL_RELOJ, tituloDeOrden, ventasFaltantesEnPalabras, veredictoDeOrden } from "../lenguaje";
 
 type LlamadaMeta = {
   llamada?: number;
@@ -130,7 +130,7 @@ export function Ordenes() {
             <span>La data tiene {rezago} días de retraso.</span>
           </div>
           <p className="mt-1 text-xs text-amber-300/80">
-            Una decisión sobre datos viejos es una decisión a ciegas (invariante 11). Se recomienda
+            Una decisión sobre datos viejos es una decisión a ciegas (invariante 13). Se recomienda
             refrescar la ingesta de LucidSales y Meta antes de autorizar cambios de presupuesto.
           </p>
         </div>
@@ -197,9 +197,17 @@ export function Ordenes() {
             {ordenes.map((orden, idx) => {
               const pq = orden.por_que || {};
               const ic = pq.ic as number[] | undefined;
+              // ESCALAR con bloqueo_fase es la celda que la doctrina frena en pleno testeo
+              // (invariante 13): chip, titular, veredicto narrado y glosario lo dicen todos igual,
+              // nunca "escalar" — solo lookup sobre ESTADO + bloqueo_fase, nunca comparar números.
+              const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
               const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
               const claveGlosario = GLOSARIO_POR_ESTADO[orden.estado];
-              const glosarioDelEstado = claveGlosario ? GLOSARIO[claveGlosario] : undefined;
+              const glosarioDelEstado = escalarBloqueado
+                ? undefined
+                : claveGlosario
+                  ? GLOSARIO[claveGlosario]
+                  : undefined;
               return (
                 <Tarjeta key={`${orden.producto_key}-${orden.angulo_key}-${idx}`} className="flex flex-col justify-between gap-4">
                   <div>
@@ -217,8 +225,8 @@ export function Ordenes() {
                           Ángulo: <span className="font-semibold text-zinc-200">{orden.angulo_nombre || orden.angulo_key}</span>
                         </p>
                       </div>
-                      <Chip tono={TONOS_ESTADO[orden.estado] ?? "neutro"}>
-                        {TEXTO_ESTADO[orden.estado] ?? orden.estado}
+                      <Chip tono={escalarBloqueado ? "aviso" : (TONOS_ESTADO[orden.estado] ?? "neutro")}>
+                        {escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ESTADO[orden.estado] ?? orden.estado)}
                       </Chip>
                     </div>
 
@@ -237,7 +245,7 @@ export function Ordenes() {
                         <span className="font-mono text-zinc-300">Q{ic[0]}</span> y{" "}
                         <span className="font-mono text-zinc-300">Q{ic[2]}</span>; tu techo es{" "}
                         <span className="font-mono text-zinc-300">Q{pq.break_even_q as number}</span>.{" "}
-                        {veredictoDeOrden(orden.estado)}
+                        {veredictoDeOrden(orden.estado, orden.bloqueo_fase)}
                       </p>
                     )}
 
@@ -272,7 +280,7 @@ export function Ordenes() {
                       <div>
                         <span className="block text-zinc-500">Ventas faltantes:</span>
                         <span className="text-zinc-300">
-                          {pq.faltan_ventas != null ? `~${pq.faltan_ventas} ventas` : "Volumen suficiente"}
+                          {ventasFaltantesEnPalabras(pq.faltan_ventas as number | null | undefined, orden.estado)}
                         </span>
                       </div>
                     </div>
