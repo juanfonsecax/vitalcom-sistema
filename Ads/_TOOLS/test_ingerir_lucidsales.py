@@ -103,6 +103,47 @@ def test_cargar_cuentas_alias_compacto(tmp):
     return 0 if ok else 1
 
 
+def test_s_id_nunca_notacion_cientifica(tmp):
+    """s_id() (22-sep-2026, T2): un id de 18 dígitos no debe salir nunca en notación
+    científica, y un float que ya perdió precisión (> 2**53) debe volver "" —
+    nunca un id falso — contando el descarte en ids_perdidos()."""
+    ing.reiniciar_ids_perdidos()
+    casos = [
+        # (entrada, esperado, descripcion)
+        ("123456789012345678", "123456789012345678", "str de 18 dígitos exacto"),
+        (123456789012345678, "123456789012345678", "int de 18 dígitos exacto"),
+        (598687956219141.0, "598687956219141", "float integral <= 2**53 (id de cuenta típico)"),
+        ("1.2345678901234568e+17", "", "str en notación científica -> irrecuperable"),
+        (None, "", "None -> vacío"),
+    ]
+    fallas = []
+    for entrada, esperado, desc in casos:
+        obtenido = ing.s_id(entrada)
+        if obtenido != esperado:
+            fallas.append(f"{desc}: s_id({entrada!r}) = {obtenido!r}, esperaba {esperado!r}")
+        if any(c in obtenido for c in ("e+", "e-", "E+", "E-")):
+            fallas.append(f"{desc}: {obtenido!r} quedó en notación científica")
+
+    # float > 2**53: no hay dígito correcto que reconstruir (Excel/JS ya lo truncó) -> "".
+    grande = float(2 ** 53) * 100  # muy por encima del límite de precisión
+    obtenido_grande = ing.s_id(grande)
+    if obtenido_grande != "":
+        fallas.append(f"float > 2**53 debía dar \"\", dio {obtenido_grande!r}")
+
+    obtenido_nan = ing.s_id(float("nan"))
+    if obtenido_nan != "":
+        fallas.append(f"NaN debía dar \"\", dio {obtenido_nan!r}")
+
+    perdidos = ing.ids_perdidos()
+    if perdidos != 2:  # el str en notación científica + el float > 2**53
+        fallas.append(f"ids_perdidos() = {perdidos}, esperaba 2")
+
+    ok = not fallas
+    print(("  OK     " if ok else "  FALLA  ") + "s_id() nunca emite notación científica ni un id falso"
+          + ("" if ok else "\n         " + "\n         ".join(fallas)))
+    return 0 if ok else 1
+
+
 def test_moneda_sin_tasa_bloquea(tmp):
     """Una cuenta nueva que factura en una moneda sin tasa declarada NO se ingiere
     como si fuera USD en silencio: bloquea con el nombre de la cuenta y la moneda."""
@@ -147,6 +188,7 @@ def _correr_main(rutas, argv):
         for k, v in rutas.items():
             setattr(ing, k, v)
         sys.argv = ["ingerir_lucidsales.py"] + argv
+        ing.reiniciar_ids_perdidos()  # cada corrida simulada empieza su propio conteo
         ing.main()
         return None
     except SystemExit as e:
@@ -209,6 +251,8 @@ def main():
         fallas += test_producto_key_variantes_reales(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_cargar_cuentas_alias_compacto(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        fallas += test_s_id_nunca_notacion_cientifica(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_moneda_sin_tasa_bloquea(tmp)
     with tempfile.TemporaryDirectory() as tmp:

@@ -104,15 +104,53 @@ def cargar_cuentas(path=None):
     return out
 
 
+_IDS_PERDIDOS = 0  # ad_id/cuenta_id irrecuperables en esta corrida (ver s_id() y el resumen final)
+_RE_NOTACION_CIENTIFICA = re.compile(r"[eE][+-]?\d+$")
+
+
+def reiniciar_ids_perdidos():
+    """Solo para pruebas: reinicia el contador global entre corridas simuladas."""
+    global _IDS_PERDIDOS
+    _IDS_PERDIDOS = 0
+
+
+def ids_perdidos():
+    return _IDS_PERDIDOS
+
+
 def s_id(v):
-    """Formatea un id sin notación científica cuando se puede (bug adId, 21-ago)."""
+    """Formatea un id de Meta (ad_id, cuenta_id) SIN notación científica — nunca un id falso.
+
+    Bug real (21-ago): `repr(float)` emitía notación científica ('1.20e+17') para todo id
+    > 1e15, y esa notación quedaba escrita tal cual en _FACT_VENTAS.csv. Corregido 22-sep: un
+    id > 2**53 YA perdió precisión en cuanto llegó como float64 (que solo sostiene ~15-17
+    dígitos significativos) — reconstruirlo con int()/round() no arregla nada, solo cambia
+    una cifra rota por OTRA cifra rota que parece válida. Para ese caso se devuelve "" (nunca
+    un id incorrecto) y se cuenta en `_IDS_PERDIDOS`, que `main()` imprime en el resumen.
+    """
+    global _IDS_PERDIDOS
     if v is None or (isinstance(v, float) and pd.isna(v)):
         return ""
+    if isinstance(v, bool):
+        return str(int(v))
+    if isinstance(v, int):
+        return str(v)
     if isinstance(v, float):
         if v != v or v in (float("inf"), float("-inf")):
             return ""
-        return repr(v) if v > 1e15 else str(int(v))
-    return str(v).strip()
+        if abs(v) > 2 ** 53:
+            _IDS_PERDIDOS += 1
+            return ""
+        return str(int(v))
+    t = str(v).strip()
+    if not t or t.lower() == "nan":
+        return ""
+    if _RE_NOTACION_CIENTIFICA.search(t):
+        # ya venía corrompido en el JSON/xlsx de origen (una corrida vieja, u otro sistema
+        # que lo formateó mal antes de llegar acá): no hay como reconstruirlo bien.
+        _IDS_PERDIDOS += 1
+        return ""
+    return t
 
 
 def s_txt(v):
@@ -192,6 +230,13 @@ def es_detalle(r):
 
 
 def registros_xlsx(path):
+    # NO se fuerza dtype=str en adId/accountTitle: el xlsx de LucidSales guarda esas celdas como
+    # NUMERO (confirmado en enriquecer_adid.py), y openpyxl ya las entrega como float64 ANTES de
+    # que pandas pueda aplicar cualquier dtype — la precisión de un id de 17-18 dígitos se pierde
+    # en Excel/openpyxl, no en Python. Forzar dtype=str acá solo convertiría ese float YA roto en
+    # un string que PARECE un id válido (dígitos finales distintos de los reales) sin disparar la
+    # detección de s_id(): sería peor que dejarlo como float, porque s_id() SÍ sabe reconocer un
+    # float > 2**53 como irrecuperable y devolver "" en vez de un id falso.
     df = pd.read_excel(path, header=3)
     return [r for r in df.to_dict("records") if es_detalle(r)]
 
@@ -380,6 +425,9 @@ def main():
     sin_clasificar = [f for f in nuevas if f["producto_key"] == "SIN_CLASIFICAR"]
 
     print(f"archivos: {len(archivos)} · filas nuevas: {len(nuevas)} · duplicados omitidos: {dup}")
+    if ids_perdidos():
+        print(f"⚠ {ids_perdidos()} id(s) irrecuperable(s) (float > 2**53 o notación científica de "
+              f"origen): quedaron en \"\" en vez de un ad_id/cuenta_id falso (ver s_id()).")
     for d in sorted(resumen):
         r = resumen[d]
         print(f"  {d}: {r['filas']:>3} filas · {r['ventas']:>3} ventas · "
