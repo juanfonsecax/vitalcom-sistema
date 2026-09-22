@@ -97,10 +97,10 @@ T3 does (operator decision: F1 all-IMAGEN).
   forcing dtype=str there would silently stringify the already-wrong float instead of letting
   `s_id()` recognize it as unrecoverable). `ingerir_meta.py` has no ad_id formatter of its own (keys
   by name signature). New test `test_s_id_nunca_notacion_cientifica` in `test_ingerir_lucidsales.py`.
-  Out of scope, flagged separately: `ingestar_unificado.py` has its own naive `ad_id.replace(".0","")`
-  formatter (no scientific-notation guard) and `enriquecer_adid.py` has its own historical-repair
-  `s_id` — neither is part of the nightly ingestion path (only referenced from the generated
-  `VISTAS/APP.html` static fallback / a one-off remediation script), so left untouched.
+  Follow-up (22-sep): `ingestar_unificado.py` was retired — no caller in `app/`, `.claude/`, hooks or
+  `warehouse/`, only a copy button in the static fallback; besides the naive ad_id formatter it
+  deduplicated on 3 fields instead of the 6-field key and invented `mensajes` as 70% of link clicks.
+  `enriquecer_adid.py` stays: diagnostic by default, hardcoded Jul-Aug map, no caller.
   Checks: `python Ads/_TOOLS/test_ingerir_lucidsales.py` -> 0 fallas; `pytest Ads/_TOOLS` -> 28
   files OK; flujo --validar OK; guia madre OK; `git status --short` clean except this doc.
 
