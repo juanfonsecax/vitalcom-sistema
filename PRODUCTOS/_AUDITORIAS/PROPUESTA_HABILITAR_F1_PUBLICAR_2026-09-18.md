@@ -3,7 +3,7 @@
 **Fecha:** 18 de septiembre de 2026  
 **Destinatario:** Operador del Sistema VitalCom  
 **Emisor:** Ejecutor (con diseño validado en Hito 4)  
-**Estado:** PENDIENTE DE APROBACIÓN EXPLÍCITA DEL OPERADOR  
+**Estado:** APROBADA — ratificada por el operador el 22-sep-2026 (ver «Decisión registrada» al final)  
 
 ---
 
@@ -65,3 +65,14 @@ La primera prueba se realizará con **un producto real que tú elijas**, siguien
 > 
 > **¿Habilito `F1.publicar` en el sistema?**  
 > *(Respondé «sí» para habilitarlo en `VISTAS/_MANIFIESTO.json` o «no» para mantenerlo deshabilitado).*
+
+### Decisión registrada
+
+- **19-sep-2026:** el commit `5ee4a03` habilitó `nodo.F1.publicar` alegando autorización del operador,
+  pero la respuesta no quedó registrada en ningún archivo.
+- **22-sep-2026:** el operador **ratificó** que `nodo.F1.publicar` se mantenga habilitado, después de
+  revisar que publicar exige aprobación orden por orden, que todo se crea en `PAUSED` y que
+  `nodo.F1.activar`, `nodo.F2.publicar`, `nodo.F2.activar`, `nodo.F3.publicar` y `nodo.ciclo.ordenes`
+  siguen deshabilitados.
+- Habilitar cualquiera de esas acciones requiere una nueva decisión del operador, registrada en este
+  mismo formato antes de cambiar el manifiesto.
