@@ -1584,11 +1584,6 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
               <div class="field-val">python Ads/_TOOLS/gen_lanzador.py</div>
               <button class="btn-copy" onclick="copiar('python Ads/_TOOLS/gen_lanzador.py', this)">Copiar</button>
             </div>
-            <div class="field-row">
-              <div class="field-label">Ingesta Automática</div>
-              <div class="field-val">python Ads/_TOOLS/ingestar_unificado.py</div>
-              <button class="btn-copy" onclick="copiar('python Ads/_TOOLS/ingestar_unificado.py', this)">Copiar</button>
-            </div>
           </div>
         </div>
 
