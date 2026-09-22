@@ -8,7 +8,6 @@ lee PRODUCTOS/_LANZADOR.json (los productos) y escribe:
 
     VISTAS/_ESTADO.json   el manifiesto + el estado real de cada vista
     VISTAS/APP.html       la app: una barra lateral, todas las vistas adentro
-    VISTAS/PANEL.html     la puerta vieja, redirige a APP.html
 
 LA SEPARACION QUE LO HACE SISTEMATICO
     _MANIFIESTO.json   EL SISTEMA     que vistas hay, quien las produce, cuando caducan
@@ -667,7 +666,7 @@ def construir(man, lanzador):
 
 
 def escribir(estado, lanzador, decisiones, blueprints):
-    from app_html import HTML, ALIAS
+    from app_html import HTML
     app = estado["app"]
     if not os.path.isdir("VISTAS"):
         os.makedirs("VISTAS")
@@ -679,11 +678,6 @@ def escribir(estado, lanzador, decisiones, blueprints):
     with io.open(app["salida"], "w", encoding="utf-8") as fh:
         fh.write(HTML(estado, lanzador, decisiones, blueprints))
     print("escrito %s" % app["salida"])
-
-    for alias in app.get("alias", []):
-        with io.open(alias, "w", encoding="utf-8") as fh:
-            fh.write(ALIAS(estado))
-        print("escrito %s (redirige a la app)" % alias)
 
 
 def _cli_validar_manifiesto(como_json):

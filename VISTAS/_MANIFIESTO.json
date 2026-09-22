@@ -21,9 +21,6 @@
   "titulo": "VitalCom Guatemala",
   "subtitulo": "sistema de lanzamiento y optimización",
   "salida": "VISTAS/APP.html",
-  "alias": [
-   "VISTAS/PANEL.html"
-  ],
   "estado": "VISTAS/_ESTADO.json",
   "vista_inicial": "flujo",
   "datos_productos": "PRODUCTOS/_LANZADOR.json",
@@ -1248,7 +1245,6 @@
     "escribe": [
      "VISTAS/_ESTADO.json",
      "VISTAS/APP.html",
-     "VISTAS/PANEL.html",
      "PRODUCTOS/_LANZADOR.json"
     ],
     "idempotente": true,

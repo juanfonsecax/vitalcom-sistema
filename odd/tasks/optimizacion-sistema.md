@@ -55,7 +55,7 @@ the engine does not emit the two numbers.
       per product, show "cierre actual vs meta" in the app product card; if no contract carries it,
       record the gap, do not compute it in the app. (b) Andromeda/compliance: canonical block stays
       in DOCTRINA/PLANTILLAS_ADS.md; ETAPA-4.md restatement becomes a pointer (pointer-level edit only).
-- [ ] T4 — Orphans and dead surface. Move `Ads/_TOOLS/gen_clasificacion.py` and
+- [x] T4 — Orphans and dead surface. Move `Ads/_TOOLS/gen_clasificacion.py` and
       `Ads/_TOOLS/ingerir_creativos.py` to `_ARCHIVO/` (verify zero callers with rg first). Retire
       `VISTAS/PANEL.html` (pure redirect) and fix any reference. Review the 1-reference scripts
       (check_huella.py, gen_estructura.py, gen_manifiesto_fichas.py, gen_vocabulario.py,
@@ -117,6 +117,14 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   ban on "descuento" (l.148), "Regla Andromeda de autenticidad" (l.331); stale "Entregar 1:1" (l.96) vs the
   4:5-only testing decision in PLANTILLAS_ADS.md. Gates: test_decidir 18/18, 29/29, validar ok, guia 0
   failures, test_gen_ordenes 4/4, pnpm 60/60, tsc clean, pytest 161.
+- T4 (route: inline — mechanical moves after rg audit): archived to `_ARCHIVO/retirado_20260922/` (with
+  _LEEME.txt): gen_clasificacion, ingerir_creativos (zero callers), gen_estructura (its output never existed),
+  gen_manifiesto_fichas (one-off, its handoff says so), sincronizar_planes (one-off). Kept check_huella and
+  gen_vocabulario (live references in _HANDOFF_CONCEPTOS.md and PARAMETRIZACION_ADS.md). PANEL.html: gen_app no
+  longer writes alias pages (ALIAS() removed, manifest alias + escribe entry removed, .gitignore lines removed).
+  Operator: after the merge delete the stale `VISTAS/PANEL.html` in SISTEMA. Found: test_gen_app.py crashes
+  with UnicodeEncodeError on a cp1252 console (pre-existing, same at HEAD); 51/51 with PYTHONIOENCODING=utf-8.
+  Gates: 29/29, 18/18, validar ok, guia 0 failures, manifest valid v7, gen_grafo clean, pytest 161.
 
 ## Next step
-T4.
+T5.

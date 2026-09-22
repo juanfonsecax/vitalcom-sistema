@@ -64,7 +64,7 @@ Ads/_SWIPE/
         ├── … hasta tanda12.py  ← el análisis visual, en dicts de Python
 
 Ads/_TOOLS/
-├── gen_manifiesto_fichas.py       ← ya corrió, no hace falta volver a correr
+├── gen_manifiesto_fichas.py       ← ya corrió; archivado en _ARCHIVO/retirado_20260922/
 └── escribir_fichas.py             ← convierte los _datos/ en los JSON
 ```
 

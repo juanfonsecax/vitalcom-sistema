@@ -32,7 +32,7 @@ Lo que no se sabe es qué CONCEPTO lo comunica mejor. Eso es lo que se mide acá
 ════════════════════════════════════════════════════════════════════════════
 LAS 3 CAMPAÑAS
 ════════════════════════════════════════════════════════════════════════════
-Estructura de FASE 2 (ver PRODUCTOS/_ESTRUCTURA.html): 1-1-5 + 1-1-5 + 1-2-5.
+Estructura de FASE 2 (ver DOCTRINA/CALENDARIO_ESCALADO.md §1.7.2): 1-1-5 + 1-1-5 + 1-2-5.
 Los mismos 10 conceptos corren DOS VECES → un concepto se corona solo si gana
 en sus 2 apariciones. Gana en 1 de 2 = ruido, se repite.
 
