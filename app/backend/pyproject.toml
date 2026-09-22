@@ -15,11 +15,17 @@ dependencies = [
 dev = [
     "pytest>=8.3",
     "httpx>=0.27",
+    "pytest-timeout>=2.3",
 ]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+# Salvavidas por prueba, no por corrida completa: una prueba que se cuelga (p. ej. un DBOS.recv
+# que nunca recibe su mensaje) falla con su propio traceback en vez de trabar toda la suite.
+# Ver odd/tasks/vista-por-que.md T1: la suite completa NO cuelga (160 passed en ~5 min limpio);
+# esto es un tope de seguridad por prueba, no un fix de un hang real.
+timeout = 120
 
 [build-system]
 requires = ["hatchling"]
