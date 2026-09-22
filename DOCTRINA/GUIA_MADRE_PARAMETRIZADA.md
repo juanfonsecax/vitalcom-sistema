@@ -222,7 +222,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 
 | Nombre de Variable | Valor Actual | Unidad | Fuente Vigente | Justificación | Archivo Ejecutor |
 |---|---|---|---|---|---|
-| `UMBRAL_CIERRE_MINIMO_BOT` | **`15% a 20%`** | Porcentaje | **Clases 16 y 22-ago (Calet)** | *"Primero el flujo, luego la estructura"*. Bajo 10% no se debe escalar. | `.claude/agents/ETAPA-11.md` |
+| `UMBRAL_CIERRE_MINIMO_BOT` | **`15% a 20%`** (BENCHMARK, no gate) | Porcentaje | **Clases 16 y 22-ago (Calet)** | *"Primero el flujo, luego la estructura"*. Es una referencia de las clases del mentor, no una regla dura: ningún script bloquea por esto — quien sí bloquea es `PROHIBIDO_ESCALAR_CIERRE_BAJO` (bajo 10% no se debe escalar), fila aparte de esta tabla. La app muestra el cierre real (`cierre_pct` de `_DECISIONES.json`) junto a este rango cuando el contrato trae ambos. | `.claude/agents/ETAPA-11.md` · `PRODUCTOS/_PARAMETROS_DECISION.csv` → `cierre_meta_min_pct` · `cierre_meta_max_pct` |
 | `TIEMPO_RESPUESTA_BOT` | `2 a 3 segundos` | Segundos | Clase 22 (Flujo) | Evitar fuga por espera en WhatsApp. | `.claude/agents/ETAPA-5.md` |
 | `CONGRUENCIA_ANUNCIO_BOT` | `100% obligatoria` | Regla | **Clases 16 y 22-ago (Calet)** | El hook y la promesa del anuncio deben ser la primera línea del bot. | `CLAUDE.md` · `.claude/agents/ETAPA-11.md` |
 | `ESTRUCTURA_BOT_ESCALADO` | `Flujo dedicado al ángulo ganador` | Estructura | Clase 22 / Joaquín | Paraguas para testear (Fase 1); dedicado para escalar (Fase 3). | `.claude/agents/ETAPA-11.md` |

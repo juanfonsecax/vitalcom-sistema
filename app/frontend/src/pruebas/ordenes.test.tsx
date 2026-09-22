@@ -49,6 +49,7 @@ const DATOS_ORDENES = {
         cpa_objetivo_q: 30.8,
         faltan_ventas: null,
         rezago_dias: 3,
+        cierre_pct: 18.2,
       },
       bloqueo_fase: "CLEARSTEM está en F2: subir presupuesto sesga la medición",
       ejecutable: false,
@@ -121,6 +122,8 @@ const DATOS_ORDENES = {
     { parametro: "ventana_dias", valor: "14", unidad: "dias", dueno: "GUIA_MADRE_PARAMETRIZADA.md", por_que: "" },
     { parametro: "ventana_fatiga_dias", valor: "3", unidad: "dias", dueno: "decidir.py", por_que: "" },
     { parametro: "duracion_testeo_fase2_dias", valor: "3", unidad: "dias", dueno: "decidir.py", por_que: "" },
+    { parametro: "cierre_meta_min_pct", valor: "15", unidad: "porcentaje", dueno: "GUIA_MADRE_PARAMETRIZADA.md", por_que: "" },
+    { parametro: "cierre_meta_max_pct", valor: "20", unidad: "porcentaje", dueno: "GUIA_MADRE_PARAMETRIZADA.md", por_que: "" },
   ],
 };
 
@@ -266,6 +269,37 @@ test("ventas faltantes: número tal cual, null en SEGUIR_MIDIENDO dice que el mo
   // ESCALAR, PAUSAR y RENOVAR ya decidieron sin necesitar ese conteo (faltan_ventas: null en el
   // fixture base): tampoco es "volumen suficiente", es que el dato no aplica a ese estado.
   expect(screen.getAllByText("No aplica").length).toBe(3);
+});
+
+test("cierre: con el dato del motor y la meta del contrato, muestra ambos; sin cierre_pct dice 'Sin datos'", async () => {
+  renderizar();
+  // CLEARSTEM trae cierre_pct 18.2 y parametros_motor trae la meta 15-20: se juntan en una frase.
+  expect(await screen.findByText("18.2 % · meta 15-20 % (referencia)")).toBeInTheDocument();
+  // TINNIDROP (PAUSAR), NUSAVA (RENOVAR) y OVULOS_PURITY (SEGUIR_MIDIENDO) no traen cierre_pct en
+  // su por_que: la pantalla nunca inventa un número ni revienta, dice que no hay dato — se cuenta
+  // por el rótulo del bloque de "Cierre" (no por el texto "Sin datos", que también usa CPA).
+  const bloquesDeCierre = await screen.findAllByText("Cierre (mensajes → ventas):");
+  expect(bloquesDeCierre).toHaveLength(4);
+  const sinDatoDeCierre = bloquesDeCierre.filter(
+    (rotulo) => rotulo.nextElementSibling?.textContent === "Sin datos",
+  );
+  expect(sinDatoDeCierre).toHaveLength(3);
+});
+
+test("cierre: si el contrato todavía no trae la meta (CSV sin regenerar), se muestra solo el cierre real", async () => {
+  servir({
+    "/api/ordenes": {
+      ...DATOS_ORDENES,
+      parametros_motor: DATOS_ORDENES.parametros_motor.filter(
+        (p) => !p.parametro.startsWith("cierre_meta"),
+      ),
+    },
+    "/api/ganadores": GANADORES,
+    "/api/acciones": ACCIONES,
+  });
+  renderizar();
+  expect(await screen.findByText("18.2 %")).toBeInTheDocument();
+  expect(screen.queryByText(/meta 15-20/)).not.toBeInTheDocument();
 });
 
 test("el panel «cómo mide el motor» muestra los tres relojes con su valor real", async () => {

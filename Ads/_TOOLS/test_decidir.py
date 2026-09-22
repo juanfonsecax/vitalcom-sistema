@@ -156,6 +156,37 @@ def test_gate_fase():
     return fallas + (0 if ok else 1)
 
 
+def test_cierre_meta_benchmark():
+    """UMBRAL_CIERRE_MINIMO_BOT es BENCHMARK, no gate (GUIA_MADRE_PARAMETRIZADA.md, T3 auditoria
+    21-sep-2026): no decide ningun ESTADO, pero el motor lo expone (cierre_meta_min_pct/max_pct)
+    para que la app muestre "cierre actual vs meta" sin inventarse el rango. Si este test se
+    rompiera porque alguien lo usó para pausar o escalar, ese es el bug: solo prueba que el
+    numero SIGUE llegando desde el contrato, nunca que decide algo."""
+    import decidir
+
+    # 1) Sin el parametro en el CSV, el motor no se queda sin meta: usa el default de la doctrina.
+    previo_path = decidir.PARAMS_PATH
+    try:
+        decidir.PARAMS_PATH = os.path.join(os.path.dirname(previo_path), "no_existe_este_archivo.csv")
+        p_sin_csv = decidir.cargar_parametros()
+    finally:
+        decidir.PARAMS_PATH = previo_path
+    ok_default = (p_sin_csv.get("cierre_meta_min_pct") == 15.0
+                  and p_sin_csv.get("cierre_meta_max_pct") == 20.0)
+
+    # 2) El _PARAMETROS_DECISION.csv real del sistema declara el mismo rango (fila agregada en T3):
+    # si alguien lo cambia ahí, el motor lo respeta, igual que cualquier otro parametro del CSV.
+    p_real = decidir.cargar_parametros()
+    ok_csv = (p_real.get("cierre_meta_min_pct") == 15.0
+              and p_real.get("cierre_meta_max_pct") == 20.0)
+
+    ok = ok_default and ok_csv
+    print(("  OK     " if ok else "  FALLA  ")
+          + "Benchmark de cierre: default 15/20 sin CSV, y _PARAMETROS_DECISION.csv los declara "
+            "igual (nunca decide un ESTADO, solo se expone en el nivel superior del portafolio)")
+    return 0 if ok else 1
+
+
 def test_carga_base_y_alias():
     """La carga del motor suma solo BASE y cruza conjunto y banda por nombre canónico."""
     import csv
@@ -225,8 +256,9 @@ def main():
 
     fallas += test_tope_pausas(params)
     fallas += test_gate_fase()          # 5 comprobaciones
+    fallas += test_cierre_meta_benchmark()
     fallas += test_carga_base_y_alias()
-    total = len(CASOS) + 7
+    total = len(CASOS) + 8
     print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

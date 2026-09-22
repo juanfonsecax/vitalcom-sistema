@@ -50,7 +50,7 @@ the engine does not emit the two numbers.
       `_CONOCIMIENTO/POSTMORTEMS/`, leaving the rule and a one-line pointer. Keep the Recency Rule of
       ESCALADO_PLAYBOOK.md (it arbitrates conflicts). verificar_guia_madre.py must stay green (it parses
       GUIA_MADRE rows — do not alter row format).
-- [ ] T3 — Prose-only rules. (a) Closing 15-20 %: label it in GUIA_MADRE as benchmark
+- [x] T3 — Prose-only rules. (a) Closing 15-20 %: label it in GUIA_MADRE as benchmark
       (not a gate) and, if `_DECISIONES.json` or an existing contract already carries closing rate
       per product, show "cierre actual vs meta" in the app product card; if no contract carries it,
       record the gap, do not compute it in the app. (b) Andromeda/compliance: canonical block stays
@@ -107,6 +107,16 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   DATA_PLAYBOOK (-304 tok). CALENDARIO_ESCALADO, PLANTILLAS_FLUJO_BOT and COPYWRITING_ADS left intact: their
   dated content is mentor citations or evidence tables the rules derive from, or literal bot template text.
   Gates green: guia 0 failures, 29/29, 17/17, validar ok, gen_grafo clean, pytest 161, pnpm 58.
+- T3 (route: delegated writer — engine + app + doctrine): UMBRAL_CIERRE_MINIMO_BOT labeled BENCHMARK (no gate).
+  New params `cierre_meta_min_pct`/`cierre_meta_max_pct` in _PARAMETROS_DECISION.csv, emitted top-level by
+  decidir.py (reach the app through `parametros_motor`); gen_ordenes passes `por_que.cierre_pct` through. App
+  renders "cierre X % · meta 15-20 % (referencia)" only with both fields; the live _DECISIONES.json gets the
+  meta after the operator regenerates it. verificar_guia_madre does not check the range numerically (needs a
+  two-parameter comparison mode; skipped). ETAPA-4.md: 3 restatements -> pointers to PLANTILLAS_ADS.md.
+  Left for the operator (unique to ETAPA-4, not in canonical docs): "nunca % clinico 70-90 %" cap (l.130),
+  ban on "descuento" (l.148), "Regla Andromeda de autenticidad" (l.331); stale "Entregar 1:1" (l.96) vs the
+  4:5-only testing decision in PLANTILLAS_ADS.md. Gates: test_decidir 18/18, 29/29, validar ok, guia 0
+  failures, test_gen_ordenes 4/4, pnpm 60/60, tsc clean, pytest 161.
 
 ## Next step
-T3.
+T4.

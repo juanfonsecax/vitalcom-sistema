@@ -199,6 +199,7 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
             cpa_real = celda.get("cpa_real_q")
             ic = celda.get("ic")
             faltan_ventas = celda.get("faltan_ventas")
+            cierre_pct = celda.get("cierre_pct")
 
             # Buscar conjuntos asociados a este ángulo
             filas_conj = dim_conjuntos.get((pk, ak), [])
@@ -222,6 +223,10 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                     "cpa_objetivo_q": obj_q,
                     "faltan_ventas": faltan_ventas,
                     "rezago_dias": rezago_dias,
+                    # Cierre real (mensajes -> ventas) tal cual lo calcula decidir.py. La meta
+                    # 15-20% (UMBRAL_CIERRE_MINIMO_BOT, benchmark no gate) viaja en
+                    # `parametros_motor` (_PARAMETROS_DECISION.csv), no acá: un solo dato, un dueño.
+                    "cierre_pct": cierre_pct,
                 },
                 "bloqueo_fase": bloqueo_fase,
                 "ejecutable": ejecutable,

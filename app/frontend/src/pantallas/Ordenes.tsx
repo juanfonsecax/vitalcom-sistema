@@ -11,7 +11,13 @@ import { Link } from "@tanstack/react-router";
 import { api, type ParametroMotor } from "../api/cliente";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import { GLOSARIO } from "../glosario";
-import { EXPLICACION_DEL_RELOJ, tituloDeOrden, ventasFaltantesEnPalabras, veredictoDeOrden } from "../lenguaje";
+import {
+  cierreEnPalabras,
+  EXPLICACION_DEL_RELOJ,
+  tituloDeOrden,
+  ventasFaltantesEnPalabras,
+  veredictoDeOrden,
+} from "../lenguaje";
 
 type LlamadaMeta = {
   llamada?: number;
@@ -96,6 +102,11 @@ export function Ordenes() {
   const bloqueantes = (datos?.bloqueantes ?? []) as Bloqueante[];
   const avisos = (datos?.avisos ?? []) as string[];
   const parametrosMotor = datos?.parametros_motor ?? [];
+  // Meta de cierre (benchmark 15-20%, UMBRAL_CIERRE_MINIMO_BOT): sale del mismo contrato que
+  // el panel de relojes, nunca hardcodeada acá. Si el operador no regeneró el CSV, no está.
+  const porNombreMotor = Object.fromEntries(parametrosMotor.map((p) => [p.parametro, p.valor]));
+  const cierreMetaMin = porNombreMotor["cierre_meta_min_pct"];
+  const cierreMetaMax = porNombreMotor["cierre_meta_max_pct"];
 
   // Verificar si la acción del ciclo está habilitada en el manifiesto
   const accionCiclo = (consultaAcciones.data ?? []).find((a) => a.id === "nodo.ciclo.ordenes");
@@ -281,6 +292,12 @@ export function Ordenes() {
                         <span className="block text-zinc-500">Ventas faltantes:</span>
                         <span className="text-zinc-300">
                           {ventasFaltantesEnPalabras(pq.faltan_ventas as number | null | undefined, orden.estado)}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="block text-zinc-500">Cierre (mensajes → ventas):</span>
+                        <span className="text-zinc-300">
+                          {cierreEnPalabras(pq.cierre_pct as number | null | undefined, cierreMetaMin, cierreMetaMax)}
                         </span>
                       </div>
                     </div>

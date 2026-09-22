@@ -124,6 +124,11 @@ def cargar_parametros():
         # repite el del CSV a propósito: si la fila se borra, el gate de FASE 3 no puede volver
         # a quedar en winner-take-all sin que nadie lo note.
         "margen_empate_cpa_pct": 10.0,
+        # Benchmark de cierre (UMBRAL_CIERRE_MINIMO_BOT, Clases 16 y 22-ago, Calet). NO es un gate:
+        # ningún caso de este archivo lo usa para decidir un ESTADO. Vive acá solo para que la app
+        # muestre "cierre actual vs meta" sin inventar el rango (T3 auditoría 21-sep-2026).
+        "cierre_meta_min_pct": 15.0,
+        "cierre_meta_max_pct": 20.0,
     }
     if os.path.exists(PARAMS_PATH):
         try:
@@ -756,6 +761,10 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
         "ventana_fatiga_dias": dias_f,
         "tolerancia_base": "acumulado",
         "nivel_confianza": float(params.get("nivel_confianza", 0.95)),
+        # Benchmark de cierre (GUIA_MADRE_PARAMETRIZADA.md, UMBRAL_CIERRE_MINIMO_BOT): referencia,
+        # no gate. Se expone acá para que la app muestre "cierre actual vs meta" sin hardcodearlo.
+        "cierre_meta_min_pct": float(params.get("cierre_meta_min_pct", 15.0)),
+        "cierre_meta_max_pct": float(params.get("cierre_meta_max_pct", 20.0)),
         "resumen_acciones": {
             "PAUSAR": 0,
             "RENOVAR": 0,

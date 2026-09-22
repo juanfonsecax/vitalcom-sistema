@@ -164,6 +164,25 @@ export function ventasFaltantesEnPalabras(
   return "No aplica";
 }
 
+/**
+ * El cierre (mensajes → ventas) de una celda, junto al benchmark de las clases del mentor
+ * (`UMBRAL_CIERRE_MINIMO_BOT`, 15-20 %, `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`). Es un
+ * BENCHMARK, no un gate: ningún script del motor bloquea por esto. Ambos números salen del
+ * contrato (`por_que.cierre_pct` de `_DECISIONES.json` vía `/api/ordenes`, y
+ * `cierre_meta_min_pct`/`cierre_meta_max_pct` de `parametros_motor`) — esto solo los junta en
+ * una frase, nunca los calcula ni los compara.
+ */
+export function cierreEnPalabras(
+  cierrePct: number | null | undefined,
+  metaMinPct: string | undefined,
+  metaMaxPct: string | undefined,
+): string {
+  if (cierrePct == null) return "Sin datos";
+  const base = `${cierrePct} %`;
+  if (!metaMinPct || !metaMaxPct) return base;
+  return `${base} · meta ${metaMinPct}-${metaMaxPct} % (referencia)`;
+}
+
 /** Los tres relojes del motor (`_PARAMETROS_DECISION.csv`), explicados en una línea cada uno.
  * El VALOR sale siempre del contrato; acá solo va la explicación fija de qué mide cada uno. */
 export const EXPLICACION_DEL_RELOJ: Record<string, string> = {
