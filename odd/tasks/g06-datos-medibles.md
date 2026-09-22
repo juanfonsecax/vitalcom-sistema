@@ -171,6 +171,10 @@ T3 does (operator decision: F1 all-IMAGEN).
     (baseline file restored with `git checkout --` right after, per the hard rule); `git status
     --short` clean except this doc.
 
+  - 22-sep, after the operator granted GTR 13 to the System User: `--fecha 2026-09-20 --dry-run`
+    -> exit 0. All 5 accounts read. GTR 13: 14 ads, matching LucidSales (14). Remaining for T1: the
+    ff-merge, then the real backfill 06..21-sep in SISTEMA.
+
 ## Next step
 T1 live run in SISTEMA, only after the operator's yes; T1 stays unchecked until that run shows
 max ventana_fin >= today-2. T3 is closed.
