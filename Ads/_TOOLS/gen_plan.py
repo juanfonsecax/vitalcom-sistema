@@ -124,6 +124,15 @@ def validar_plan_fase1(plan, validos):
         if c.get("nivel_conciencia") not in NIVELES:
             problemas.append("%s: nivel_conciencia %r no es 1/2/3A/3B"
                              % (etq, c.get("nivel_conciencia")))
+        # FASE 1 corre TODO EN IMAGEN (decision operador 22-sep-2026): mide solo el ANGULO con
+        # el concepto fijo. Los videos de competencia siguen siendo la FUENTE del angulo
+        # (transcripciones de etapa-0), no el creativo de F1; el formato VIDEO se testea recien
+        # en FASE 2, como un concepto mas.
+        if (c.get("formato") or "").strip().upper() != "IMAGEN":
+            problemas.append("%s: formato %r != IMAGEN — FASE 1 corre TODO EN IMAGEN (decision "
+                             "operador 22-sep-2026: el concepto Y el formato quedan fijos, se "
+                             "mide solo el angulo). Regenera el plan con etapa-6."
+                             % (etq, c.get("formato")))
     con_precio = sum(1 for c in plan.get("conjuntos", []) if c.get("lleva_precio"))
     if plan.get("fase") == 1 and con_precio > 3:
         problemas.append("%d conjuntos con precio; la regla de Guatemala permite max 3 (ideal 2)"

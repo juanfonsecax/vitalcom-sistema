@@ -138,8 +138,45 @@ def test_plan_fase2_no_valida_el_array_conjuntos():
     return 0 if ok else 1
 
 
+PLAN_FASE1_BASE = {
+    "schema": "plan/1", "producto_key": "X", "fase": 1,
+    "oferta": {"oferta_key": "1U"},
+    "concepto_control": {"concepto_key": "C2_BENEFICIOS"},
+}
+
+
+def test_plan_fase1_con_video_falla():
+    """Decision del operador 22-sep-2026: FASE 1 corre TODO EN IMAGEN. Un conjunto en VIDEO
+    (competidor migrado sin regenerar) tiene que bloquear, no colarse en el paquete."""
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[
+        {"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"},
+        {"n": 2, "angulo_key": "B", "nivel_conciencia": "1", "formato": "VIDEO"},
+    ])
+    problemas = gen_plan.validar_plan_fase1(plan, {})
+    ok = any("formato" in p and "IMAGEN" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un plan de FASE 1 con un conjunto en VIDEO falla (F1 es todo IMAGEN)"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_todo_imagen_no_falla_por_formato():
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[
+        {"n": i, "angulo_key": "A%d" % i, "nivel_conciencia": "1", "formato": "IMAGEN"}
+        for i in range(1, 7)
+    ])
+    problemas = gen_plan.validar_plan_fase1(plan, {})
+    ok = not any("formato" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un plan de FASE 1 con las 6 imagenes no genera error de formato"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
+    fallas += test_plan_fase1_con_video_falla()
+    fallas += test_plan_fase1_todo_imagen_no_falla_por_formato()
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_ruta_directa_valida_solo_ese_archivo(tmp)
     with tempfile.TemporaryDirectory() as tmp:

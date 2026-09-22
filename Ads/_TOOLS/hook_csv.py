@@ -100,6 +100,61 @@ def validar(ruta):
             "nunca a mano." % (os.path.basename(ruta), n, det))
 
 
+# Decision del operador (22-sep-2026): FASE 1 corre TODO EN IMAGEN — mide solo el angulo con
+# el concepto fijo; el formato VIDEO se testea recien en FASE 2. Toda fila NUEVA de
+# _DIM_CONJUNTOS.csv (no HEREDADO_*, que es data migrada de antes de la decision) tiene que
+# declarar formato y un concepto_key ya clasificado, para que el angulo y el concepto se puedan
+# atribuir por separado (dueno del contrato: gen_plan.py --validar). Filas anteriores al cutoff
+# nunca se marcan: son historia, no se reescribe hacia atras.
+CUTOFF_ATRIBUCION_CONJUNTOS = "2026-09-23"
+FORMATOS_VALIDOS_ATRIBUCION = {"IMAGEN", "VIDEO"}
+
+
+def atribucion_conjuntos_invalida(ruta):
+    """Devuelve el mensaje de falla si una fila NUEVA de _DIM_CONJUNTOS.csv (fecha_alta >=
+    CUTOFF_ATRIBUCION_CONJUNTOS, origen_angulo que no empieza con HEREDADO) no trae formato en
+    {IMAGEN, VIDEO}, o trae concepto_key vacio/SIN_CLASIFICAR, o es una fila FASE1 con formato
+    distinto de IMAGEN."""
+    if not ruta or os.path.basename(ruta).lower() != "_dim_conjuntos.csv":
+        return None
+    try:
+        with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
+            filas = list(csv.DictReader(fh))
+    except OSError:
+        return None
+    malas = []
+    for i, r in enumerate(filas, start=2):          # linea 1 es el encabezado
+        fecha = (r.get("fecha_alta") or "").strip()
+        origen = (r.get("origen_angulo") or "").strip()
+        if fecha < CUTOFF_ATRIBUCION_CONJUNTOS or origen.startswith("HEREDADO"):
+            continue
+        formato = (r.get("formato") or "").strip().upper()
+        concepto = (r.get("concepto_key") or "").strip()
+        fase = (r.get("fase") or "").strip().upper()
+        motivos = []
+        if formato not in FORMATOS_VALIDOS_ATRIBUCION:
+            motivos.append("formato %r fuera de {IMAGEN, VIDEO}" % r.get("formato"))
+        elif fase == "FASE1" and formato != "IMAGEN":
+            motivos.append("fase FASE1 con formato %r: F1 corre TODO EN IMAGEN (decision "
+                            "operador 22-sep-2026)" % r.get("formato"))
+        if not concepto or concepto == "SIN_CLASIFICAR":
+            motivos.append("concepto_key sin clasificar (%r)" % concepto)
+        if motivos:
+            malas.append("linea %d (%s/%s): %s"
+                          % (i, r.get("producto_key"), r.get("angulo_key"), "; ".join(motivos)))
+    if not malas:
+        return None
+    det = "\n".join("  " + m for m in malas[:12])
+    if len(malas) > 12:
+        det += "\n  (y %d mas)" % (len(malas) - 12)
+    return ("ATRIBUCION F1/F2 INCOMPLETA en filas nuevas de _DIM_CONJUNTOS.csv "
+            "(fecha_alta >= %s):\n%s\n"
+            "Cada fila nueva (no HEREDADO_*) necesita formato y concepto_key clasificado para "
+            "que el angulo y el concepto se puedan atribuir por separado (decision operador "
+            "22-sep-2026, gen_plan.py --validar es el dueno del contrato de FASE 1)."
+            % (CUTOFF_ATRIBUCION_CONJUNTOS, det))
+
+
 ESTADO = os.path.join(BASE, "PRODUCTOS", ".hook_csv_mtimes.json")
 
 
@@ -194,6 +249,11 @@ def main():
     if error:
         sys.stderr.write(error + "\n")
         return 2                         # bloquea y el mensaje llega a Claude
+
+    error = atribucion_conjuntos_invalida(ruta_abs)
+    if error:
+        sys.stderr.write(error + "\n")
+        return 2
 
     nombre = os.path.basename(ruta_abs)
     if not nombre.startswith(PREFIJOS_QUE_ALIMENTAN_DASHBOARD):
