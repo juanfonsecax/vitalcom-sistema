@@ -63,7 +63,7 @@ the engine does not emit the two numbers.
 - [x] T5 — One command for engine tests: add minimal pytest config so `pytest Ads/_TOOLS` runs all
       test_*.py (they are script-style today; wrap or configure without rewriting assertions).
       Document the command in DOCTRINA/DATA_PLAYBOOK.md or the owner that lists gates.
-- [ ] T6 — .gitignore `.atl/` (skill-registry cache). LucidSales ingest JSON stays tracked
+- [x] T6 — .gitignore `.atl/` (skill-registry cache). LucidSales ingest JSON stays tracked
       (16 already tracked = project convention).
 - [ ] T7 — Engine emits progress numbers. In decidir.py/gen_ordenes.py emit `ventas_actual` and
       `ventas_necesarias` per order (the threshold decidir.py actually applied for that state), with a
@@ -131,6 +131,8 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   be falsely green. Command `python -m pytest Ads/_TOOLS` documented in DATA_PLAYBOOK §6; pytest installed in
   the system Python. Result: 28 passed in 12 s; negative control (script exiting 1) reported FAILED. Also
   fixes the cp1252 crash of test_gen_app.py under the runner. App: pnpm 60, pytest 161.
+- T6 (route: inline): `.atl/` ignored; `git status` no longer lists it. Ingest JSON stays tracked. No code
+  touched, gates unchanged from T5.
 
 ## Next step
-T6.
+T7.

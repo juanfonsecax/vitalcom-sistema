@@ -97,3 +97,5 @@ app/frontend/*.tsbuildinfo
 
 # Bitácora de las corridas de la app (salida cruda; el informe de un hito es un .md versionado)
 PRODUCTOS/_AUDITORIAS/app_runs/
+# Skill-registry cache (local runtime state)
+.atl/
