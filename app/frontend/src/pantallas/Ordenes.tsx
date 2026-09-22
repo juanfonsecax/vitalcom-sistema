@@ -14,6 +14,7 @@ import { GLOSARIO } from "../glosario";
 import {
   cierreEnPalabras,
   EXPLICACION_DEL_RELOJ,
+  progresoVentasEnPalabras,
   tituloDeOrden,
   ventasFaltantesEnPalabras,
   veredictoDeOrden,
@@ -290,9 +291,29 @@ export function Ordenes() {
                       </div>
                       <div>
                         <span className="block text-zinc-500">Ventas faltantes:</span>
-                        <span className="text-zinc-300">
-                          {ventasFaltantesEnPalabras(pq.faltan_ventas as number | null | undefined, orden.estado)}
-                        </span>
+                        {pq.ventas_actual != null && pq.ventas_necesarias != null ? (
+                          <div className="mt-1">
+                            <progress
+                              className="h-1.5 w-full accent-sky-500"
+                              value={pq.ventas_actual as number}
+                              max={pq.ventas_necesarias as number}
+                              aria-label={progresoVentasEnPalabras(
+                                pq.ventas_actual as number,
+                                pq.ventas_necesarias as number,
+                              )}
+                            />
+                            <span className="text-zinc-300">
+                              {progresoVentasEnPalabras(
+                                pq.ventas_actual as number,
+                                pq.ventas_necesarias as number,
+                              )}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-zinc-300">
+                            {ventasFaltantesEnPalabras(pq.faltan_ventas as number | null | undefined, orden.estado)}
+                          </span>
+                        )}
                       </div>
                       <div>
                         <span className="block text-zinc-500">Cierre (mensajes → ventas):</span>

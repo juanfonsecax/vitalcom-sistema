@@ -109,6 +109,8 @@ const DATOS_ORDENES = {
         break_even_q: 80.0,
         cpa_objetivo_q: 35.0,
         faltan_ventas: 4,
+        ventas_actual: 3,
+        ventas_necesarias: 7,
         rezago_dias: 3,
       },
       bloqueo_fase: null,
@@ -256,7 +258,9 @@ test("ventas faltantes: número tal cual, null en SEGUIR_MIDIENDO dice que el mo
     "/api/ordenes": {
       ...DATOS_ORDENES,
       ordenes: DATOS_ORDENES.ordenes.map((o) =>
-        o.producto_key === "OVULOS_PURITY" ? { ...o, por_que: { ...o.por_que, faltan_ventas: null } } : o,
+        o.producto_key === "OVULOS_PURITY"
+          ? { ...o, por_que: { ...o.por_que, faltan_ventas: null, ventas_actual: null, ventas_necesarias: null } }
+          : o,
       ),
     },
     "/api/ganadores": GANADORES,
@@ -268,6 +272,26 @@ test("ventas faltantes: número tal cual, null en SEGUIR_MIDIENDO dice que el mo
   expect(await screen.findByText("El motor no calculó cuántas faltan")).toBeInTheDocument();
   // ESCALAR, PAUSAR y RENOVAR ya decidieron sin necesitar ese conteo (faltan_ventas: null en el
   // fixture base): tampoco es "volumen suficiente", es que el dato no aplica a ese estado.
+  expect(screen.getAllByText("No aplica").length).toBe(3);
+});
+
+test("barra de progreso de ventas: con ventas_actual y ventas_necesarias del motor, se dibuja '3 de 7 ventas'", async () => {
+  renderizar();
+  // OVULOS_PURITY (SEGUIR_MIDIENDO) trae ventas_actual: 3, ventas_necesarias: 7 en el fixture base.
+  const rotulo = "3 de 7 ventas";
+  expect(await screen.findByLabelText(rotulo)).toBeInTheDocument();
+  expect(screen.getByText(rotulo)).toBeInTheDocument();
+  const barra = screen.getByLabelText(rotulo) as HTMLProgressElement;
+  expect(barra.tagName).toBe("PROGRESS");
+  expect(barra.value).toBe(3);
+  expect(barra.max).toBe(7);
+});
+
+test("barra de progreso de ventas: sin ventas_actual/ventas_necesarias, no se dibuja la barra y sigue el texto de siempre", async () => {
+  renderizar();
+  // Las otras tres órdenes (ESCALAR, PAUSAR, RENOVAR) no traen esos campos en su por_que.
+  await screen.findByText("3 de 7 ventas");
+  expect(document.querySelectorAll("progress")).toHaveLength(1);
   expect(screen.getAllByText("No aplica").length).toBe(3);
 });
 

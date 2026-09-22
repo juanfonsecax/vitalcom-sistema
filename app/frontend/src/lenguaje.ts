@@ -165,6 +165,17 @@ export function ventasFaltantesEnPalabras(
 }
 
 /**
+ * La barra de progreso "N de M ventas" (T7, auditoria 21-sep-2026). Solo junta en una frase los
+ * dos números que decidir.py YA aplicó (`por_que.ventas_actual` / `por_que.ventas_necesarias`) —
+ * no resta, no divide, no deriva el porcentaje: eso lo hace el elemento `<progress>` nativo del
+ * navegador con esos mismos dos valores como `value`/`max`. Se llama solo cuando ambos son
+ * números (ver `Ordenes.tsx`).
+ */
+export function progresoVentasEnPalabras(ventasActual: number, ventasNecesarias: number): string {
+  return `${ventasActual} de ${ventasNecesarias} ventas`;
+}
+
+/**
  * El cierre (mensajes → ventas) de una celda, junto al benchmark de las clases del mentor
  * (`UMBRAL_CIERRE_MINIMO_BOT`, 15-20 %, `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`). Es un
  * BENCHMARK, no un gate: ningún script del motor bloquea por esto. Ambos números salen del

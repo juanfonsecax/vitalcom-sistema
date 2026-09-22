@@ -48,7 +48,7 @@ export const GLOSARIO = {
   seguir_midiendo: {
     rotulo: "SEGUIR MIDIENDO",
     que_es:
-      "No subir ni bajar el presupuesto todavía: faltan ventas para saber. El motor dice cuántas faltan.",
+      "No subir ni bajar el presupuesto todavía: faltan ventas para saber. Cuando el motor puede calcularlo, dice cuántas ventas faltan.",
     dueno: "decidir.py",
   },
   escalar: {

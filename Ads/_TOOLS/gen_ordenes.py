@@ -200,6 +200,8 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
             ic = celda.get("ic")
             faltan_ventas = celda.get("faltan_ventas")
             cierre_pct = celda.get("cierre_pct")
+            ventas_actual = celda.get("ventas_actual")
+            ventas_necesarias = celda.get("ventas_necesarias")
 
             # Buscar conjuntos asociados a este ángulo
             filas_conj = dim_conjuntos.get((pk, ak), [])
@@ -227,6 +229,11 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                     # 15-20% (UMBRAL_CIERRE_MINIMO_BOT, benchmark no gate) viaja en
                     # `parametros_motor` (_PARAMETROS_DECISION.csv), no acá: un solo dato, un dueño.
                     "cierre_pct": cierre_pct,
+                    # Umbral que decidir.py REALMENTE aplicó en esta celda (ventas de la ventana
+                    # vs. las que hacen falta para resolver el IC). None cuando el motor no
+                    # proyectó ventana en este estado — la app no dibuja la barra sin ambos.
+                    "ventas_actual": ventas_actual,
+                    "ventas_necesarias": ventas_necesarias,
                 },
                 "bloqueo_fase": bloqueo_fase,
                 "ejecutable": ejecutable,

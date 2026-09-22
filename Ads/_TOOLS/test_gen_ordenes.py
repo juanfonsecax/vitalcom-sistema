@@ -67,6 +67,8 @@ class TestGenOrdenes(unittest.TestCase):
                             "cpa_real_q": 75.0,
                             "ic": [40.0, 75.0, 120.0],
                             "faltan_ventas": 15,
+                            "ventas_actual": 3,
+                            "ventas_necesarias": 18,
                             "ejecutable": True,
                             "bloqueo_fase": None,
                         },
@@ -145,6 +147,9 @@ class TestGenOrdenes(unittest.TestCase):
             ord_medio = next(o for o in res["ordenes"] if o["angulo_key"] == "ANGULO_MEDIO")
             self.assertEqual(ord_medio["estado"], "SEGUIR_MIDIENDO")
             self.assertIn("faltan ~15 ventas", ord_medio["frase_simple"])
+            # T7: el umbral que decidir.py aplico viaja intacto en por_que, sin recalcularse acá.
+            self.assertEqual(ord_medio["por_que"]["ventas_actual"], 3)
+            self.assertEqual(ord_medio["por_que"]["ventas_necesarias"], 18)
 
         finally:
             gen_ordenes.cargar_dim_conjuntos = orig_dim

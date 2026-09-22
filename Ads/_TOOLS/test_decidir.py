@@ -187,6 +187,66 @@ def test_cierre_meta_benchmark():
     return 0 if ok else 1
 
 
+def test_progreso_ventas(params):
+    """ventas_actual/ventas_necesarias (T7, auditoria 21-sep-2026): el umbral que la app pinta
+    como barra de progreso tiene que ser EXACTAMENTE el que decidir.py aplico, nunca uno inventado
+    en el frontend. (a) en las dos ramas SEGUIR_MIDIENDO que proyectan ventana (TESTEO_PRIMERA_VENTA,
+    MANTENER_Y_MEDIR), ventas_necesarias == ventas_actual + faltan_ventas y siempre > actual: si no
+    fuera mayor la barra pintaria progreso al reves. (b) en cualquier otro estado decidido
+    (PAUSAR, ESCALAR) ambos campos son None: el motor no proyecto ese umbral ahi y no se inventa."""
+    fallas = 0
+
+    # (a) TESTEO_PRIMERA_VENTA: CPA muy por debajo del BE con 1 sola venta, la ventana SI proyecta.
+    obtenido = evaluar_celda(
+        ventas=1, mensajes=10, spend_usd=2.0, ventas_3d=1, mensajes_3d=10, spend_3d=2.0,
+        ventas_acum=1, mensajes_acum=10, spend_acum_usd=2.0,
+        be_q=BE, obj_q=OBJ, tasa=TASA, params=params)
+    ok_a1 = (obtenido["accion_codigo"] == "TESTEO_PRIMERA_VENTA"
+              and obtenido["faltan_ventas"] is not None
+              and obtenido["ventas_actual"] == 1
+              and obtenido["ventas_necesarias"] == 1 + obtenido["faltan_ventas"]
+              and obtenido["ventas_necesarias"] > obtenido["ventas_actual"])
+    print(("  OK     " if ok_a1 else "  FALLA  ")
+          + "Progreso (TESTEO_PRIMERA_VENTA): ventas_necesarias == ventas_actual + faltan_ventas, y mayor"
+          + ("" if ok_a1 else "\n         " + str(obtenido)))
+    fallas += 0 if ok_a1 else 1
+
+    # (a) MANTENER_Y_MEDIR: muestra moderada (>1 venta) con IC que aun cruza el BE.
+    obtenido2 = evaluar_celda(
+        ventas=2, mensajes=30, spend_usd=6.0, ventas_3d=2, mensajes_3d=30, spend_3d=6.0,
+        ventas_acum=2, mensajes_acum=30, spend_acum_usd=6.0,
+        be_q=BE, obj_q=OBJ, tasa=TASA, params=params)
+    ok_a2 = (obtenido2["accion_codigo"] == "MANTENER_Y_MEDIR"
+              and obtenido2["faltan_ventas"] is not None
+              and obtenido2["ventas_actual"] == 2
+              and obtenido2["ventas_necesarias"] == 2 + obtenido2["faltan_ventas"]
+              and obtenido2["ventas_necesarias"] > obtenido2["ventas_actual"])
+    print(("  OK     " if ok_a2 else "  FALLA  ")
+          + "Progreso (MANTENER_Y_MEDIR): ventas_necesarias == ventas_actual + faltan_ventas, y mayor"
+          + ("" if ok_a2 else "\n         " + str(obtenido2)))
+    fallas += 0 if ok_a2 else 1
+
+    # (b) PAUSAR y ESCALAR: el motor no proyecto ventana ahi, los dos campos salen None.
+    pausar = evaluar_celda(
+        ventas=3, mensajes=40, spend_usd=60.0, ventas_3d=1, mensajes_3d=10, spend_3d=15.0,
+        ventas_acum=3, mensajes_acum=40, spend_acum_usd=60.0,
+        be_q=BE, obj_q=OBJ, tasa=TASA, params=params)
+    escalar = evaluar_celda(
+        ventas=26, mensajes=190, spend_usd=97.0, ventas_3d=6, mensajes_3d=40, spend_3d=20.0,
+        ventas_acum=26, mensajes_acum=190, spend_acum_usd=97.0,
+        be_q=BE, obj_q=OBJ, tasa=TASA, params=params)
+    ok_b = (pausar["estado"] == "PAUSAR" and pausar["ventas_actual"] is None
+            and pausar["ventas_necesarias"] is None
+            and escalar["estado"] == "ESCALAR" and escalar["ventas_actual"] is None
+            and escalar["ventas_necesarias"] is None)
+    print(("  OK     " if ok_b else "  FALLA  ")
+          + "Progreso (PAUSAR/ESCALAR): ventas_actual y ventas_necesarias en None, el motor no proyecto ahi"
+          + ("" if ok_b else "\n         pausar=%s\n         escalar=%s" % (pausar, escalar)))
+    fallas += 0 if ok_b else 1
+
+    return fallas
+
+
 def test_carga_base_y_alias():
     """La carga del motor suma solo BASE y cruza conjunto y banda por nombre canónico."""
     import csv
@@ -257,8 +317,9 @@ def main():
     fallas += test_tope_pausas(params)
     fallas += test_gate_fase()          # 5 comprobaciones
     fallas += test_cierre_meta_benchmark()
+    fallas += test_progreso_ventas(params)  # 3 comprobaciones
     fallas += test_carga_base_y_alias()
-    total = len(CASOS) + 8
+    total = len(CASOS) + 11
     print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

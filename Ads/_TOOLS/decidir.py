@@ -183,6 +183,17 @@ def calcular_ventas_faltantes(ventas, gasto_usd, be_q, conf, horizonte, tasa):
     return None
 
 
+def _progreso_ventas(ventas, faltan):
+    """Deriva (ventas_actual, ventas_necesarias) del mismo `faltan` que ya decidió la celda.
+
+    El umbral es el que el motor REALMENTE aplicó ahí, no uno inventado: si `faltan` es None
+    (el motor no proyectó ventana) el progreso también es None — nunca un cero disfrazado.
+    """
+    if faltan is None:
+        return None, None
+    return int(ventas), int(ventas) + int(faltan)
+
+
 def comparar_cierre(a_v, a_m, b_v, b_m, alpha):
     """Fisher exacto entre dos tasas de cierre. Corta, nunca corona."""
     if min(a_m, b_m) <= 0:
@@ -463,6 +474,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 1,
         }
 
@@ -486,6 +499,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 1,
         }
 
@@ -503,6 +518,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 1,
         }
 
@@ -519,6 +536,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 2,
         }
 
@@ -537,6 +556,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
                 "pct_pd": round(pct_pd_consumido, 1),
                 "ic": ic_res,
                 "faltan_ventas": None,
+                "ventas_actual": None,
+                "ventas_necesarias": None,
                 "nivel_prioridad": 3,
             }
 
@@ -554,6 +575,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 4,
         }
 
@@ -568,6 +591,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 3,
         }
 
@@ -585,6 +610,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
                 "pct_pd": round(pct_pd_consumido, 1),
                 "ic": ic_res,
                 "faltan_ventas": None,
+                "ventas_actual": None,
+                "ventas_necesarias": None,
                 "nivel_prioridad": 2,
             }
         return {
@@ -596,11 +623,14 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": None,
+            "ventas_actual": None,
+            "ventas_necesarias": None,
             "nivel_prioridad": 2,
         }
 
     if ventas == 1:
         txt_faltan = f" Faltan ~{faltan} ventas para resolver IC." if faltan else ""
+        v_actual, v_necesarias = _progreso_ventas(ventas, faltan)
         return {
             "estado": "SEGUIR_MIDIENDO",
             "accion_codigo": "TESTEO_PRIMERA_VENTA",
@@ -610,6 +640,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             "pct_pd": round(pct_pd_consumido, 1),
             "ic": ic_res,
             "faltan_ventas": faltan,
+            "ventas_actual": v_actual,
+            "ventas_necesarias": v_necesarias,
             "nivel_prioridad": 2,
         }
 
@@ -622,6 +654,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     else:
         txt_accion = (f"MANTENER PRESUPUESTO: IC [{bajo_ic:.0f} - {alto_ic if alto_ic else 'inf'}] "
                       f"cruza BE Q{be_q:.1f}.{txt_f}")
+    v_actual, v_necesarias = _progreso_ventas(ventas, faltan)
     return {
         "estado": "SEGUIR_MIDIENDO",
         "accion_codigo": "MANTENER_Y_MEDIR",
@@ -631,6 +664,8 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         "pct_pd": round(pct_pd_consumido, 1),
         "ic": ic_res,
         "faltan_ventas": faltan,
+        "ventas_actual": v_actual,
+        "ventas_necesarias": v_necesarias,
         "nivel_prioridad": 2,
     }
 

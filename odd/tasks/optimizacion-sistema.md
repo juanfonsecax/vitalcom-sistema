@@ -65,7 +65,7 @@ the engine does not emit the two numbers.
       Document the command in DOCTRINA/DATA_PLAYBOOK.md or the owner that lists gates.
 - [x] T6 — .gitignore `.atl/` (skill-registry cache). LucidSales ingest JSON stays tracked
       (16 already tracked = project convention).
-- [ ] T7 — Engine emits progress numbers. In decidir.py/gen_ordenes.py emit `ventas_actual` and
+- [x] T7 — Engine emits progress numbers. In decidir.py/gen_ordenes.py emit `ventas_actual` and
       `ventas_necesarias` per order (the threshold decidir.py actually applied for that state), with a
       new case in test_decidir.py. Then the app renders the bar "N de M ventas" from those fields only
       (test_sin_aritmetica stays green). Also fix the glossary line for SEGUIR_MIDIENDO that says
@@ -133,6 +133,14 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   fixes the cp1252 crash of test_gen_app.py under the runner. App: pnpm 60, pytest 161.
 - T6 (route: inline): `.atl/` ignored; `git status` no longer lists it. Ingest JSON stays tracked. No code
   touched, gates unchanged from T5.
+- T7 (route: delegated writer — engine + app): decidir.py emits `ventas_actual`/`ventas_necesarias` in every
+  celda; non-null only where the engine applied a count threshold (SEGUIR_MIDIENDO TESTEO_PRIMERA_VENTA and
+  MANTENER_Y_MEDIR): actual = window sales, necesarias = actual + faltan_ventas. gen_ordenes passes them into
+  `por_que`. App renders a native `<progress value max>` + "N de M ventas" only when both are numbers; glossary
+  SEGUIR_MIDIENDO line now true when the number is absent. Real-data sample: TINNIDROP/ACCESIBILIDAD_MEDICO
+  26 de 47, TINNIDROP/DETERIORO_COGNITIVO 12 de 49, CLEARSTEM RENOVAR cells null. Gates: test_decidir 21/21,
+  pytest Ads/_TOOLS 28/28, validar ok, guia 0 failures, gen_grafo clean, pnpm 62/62, tsc clean, pytest 161
+  (test_sin_aritmetica green).
 
 ## Next step
-T7.
+T8.
