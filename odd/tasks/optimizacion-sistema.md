@@ -60,7 +60,7 @@ the engine does not emit the two numbers.
       `VISTAS/PANEL.html` (pure redirect) and fix any reference. Review the 1-reference scripts
       (check_huella.py, gen_estructura.py, gen_manifiesto_fichas.py, gen_vocabulario.py,
       sincronizar_planes.py): archive only if their single reference is dead. gen_grafo clean.
-- [ ] T5 — One command for engine tests: add minimal pytest config so `pytest Ads/_TOOLS` runs all
+- [x] T5 — One command for engine tests: add minimal pytest config so `pytest Ads/_TOOLS` runs all
       test_*.py (they are script-style today; wrap or configure without rewriting assertions).
       Document the command in DOCTRINA/DATA_PLAYBOOK.md or the owner that lists gates.
 - [ ] T6 — .gitignore `.atl/` (skill-registry cache). LucidSales ingest JSON stays tracked
@@ -125,6 +125,12 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   Operator: after the merge delete the stale `VISTAS/PANEL.html` in SISTEMA. Found: test_gen_app.py crashes
   with UnicodeEncodeError on a cp1252 console (pre-existing, same at HEAD); 51/51 with PYTHONIOENCODING=utf-8.
   Gates: 29/29, 18/18, validar ok, guia 0 failures, manifest valid v7, gen_grafo clean, pytest 161.
+- T5 (route: inline — two small config files + one doc section): `Ads/_TOOLS/conftest.py` + `pytest.ini` run
+  each test_*.py as a subprocess (same interpreter, PYTHONIOENCODING=utf-8) and pass on exit 0. Native
+  collection is off on purpose: several `def test_*` return a failure count instead of asserting and would
+  be falsely green. Command `python -m pytest Ads/_TOOLS` documented in DATA_PLAYBOOK §6; pytest installed in
+  the system Python. Result: 28 passed in 12 s; negative control (script exiting 1) reported FAILED. Also
+  fixes the cp1252 crash of test_gen_app.py under the runner. App: pnpm 60, pytest 161.
 
 ## Next step
-T5.
+T6.

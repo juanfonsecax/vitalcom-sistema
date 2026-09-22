@@ -363,3 +363,19 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 > **La tasa vigente es 3,152.5, no 4,050 (APR-028).** Historia (cómo se midió y por qué la anterior
 > estaba mal): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §5.
 > ⚠️ Ojo con el orden de magnitud: un día de CP1 puede venir como `spend = 20,068`. Son pesos (**$6.37 USD**), no dólares. Sumar la columna sin normalizar da un gasto ~125× inflado y el CPA del portafolio se vuelve basura.
+
+---
+
+## 6. LOS TESTS DEL MOTOR — UN SOLO COMANDO
+
+```bash
+python -m pytest Ads/_TOOLS            # los 28 test_*.py del motor
+python -m pytest Ads/_TOOLS -k decidir # uno solo
+```
+
+Cada `test_*.py` corre como script, con el mismo intérprete, y pasa solo si sale con código 0: el mismo
+veredicto que da corriéndolo a mano. Lo resuelve `Ads/_TOOLS/conftest.py`; ninguna aserción se reescribió.
+Requiere `pytest` en el Python del sistema (`python -m pip install pytest`, una vez). Los gates de
+coherencia que no son tests (`flujo.py --validar`, `verificar_guia_madre.py`, `gen_grafo.py`) se siguen
+corriendo aparte. La app tiene su propia suite: `uv run pytest` en `app/backend` y `pnpm test` en
+`app/frontend`.
