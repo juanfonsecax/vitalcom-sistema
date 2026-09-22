@@ -22,9 +22,9 @@ Solo LucidSales. **La ÚNICA que suma al P&L.** El operador NO la lee. De acá, 
 ### `_FACT_ENTREGA.csv` — HECHOS DE ENTREGA (capa máquina)
 Solo Meta MCP: mensajes, clics, impresiones, gasto, `pct_conv_clic_enlace`. **No tiene columnas de venta → sumarla al P&L es imposible, no solo prohibido.**
 - ⚠️ **El `conjunto` viene SIN el prefijo `[CUENTA]_[PRODUCTO]_`** que sí lleva el nombre real en Meta y en `_DIM_CONJUNTOS.csv` (la cuenta y el producto ya van en sus propias columnas). Además llega **sin tildes ni eñes** según el exportador. Por eso el mismo objeto de Meta aparece con dos grafías distintas en los dos archivos.
-  **La solución NO es normalizar la llave** (la llave sigue siendo el nombre exacto): es **anexar la grafía que falta a `_DIM_CONJUNTOS.csv` con el MISMO `angulo_key`**, como manda la regla de esa tabla. Hecho el 02-sep para 63 conjuntos (`origen_angulo=HEREDADO_JOIN_ENTREGA`): el JOIN pasó de **75 % a 100 %** y devolvió al análisis por ángulo **Q2,622 de pauta, 513 mensajes y 2,043 clics de enlace** que estaban invisibles.
-- **`conjunto = "(campaña completa)"` es una fila legítima de AGREGADO DE CAMPAÑA**, no un hueco de tracking: es gasto real de una campaña que el MCP no desglosó por conjunto. Es la contraparte de las *filas sintéticas de cuadre* de `_FACT_VENTAS.csv`. **Nunca se le inventa un `angulo_key`.** Se excluye del análisis por ángulo y se reporta aparte, igual que las otras. Al 02-sep hay 1 fila ($4.86, NUSAVA).
-> Antes ambas vivían en `_HISTORICO.csv` y sumarlo entero inflaba el gasto +27% ($296 → $377). El split del 25-jul eliminó esa clase de error; el archivo viejo quedó en `_ARCHIVO/DATA_MIGRADA/`.
+  **La solución NO es normalizar la llave** (la llave sigue siendo el nombre exacto): es **anexar la grafía que falta a `_DIM_CONJUNTOS.csv` con el MISMO `angulo_key`**, como manda la regla de esa tabla. Historia (el fix del 02-sep y su impacto en el JOIN): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
+- **`conjunto = "(campaña completa)"` es una fila legítima de AGREGADO DE CAMPAÑA**, no un hueco de tracking: es gasto real de una campaña que el MCP no desglosó por conjunto. Es la contraparte de las *filas sintéticas de cuadre* de `_FACT_VENTAS.csv`. **Nunca se le inventa un `angulo_key`.** Se excluye del análisis por ángulo y se reporta aparte, igual que las otras.
+> Historia (por qué `_FACT_ENTREGA.csv` y `_FACT_VENTAS.csv` se separaron el 25-jul): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
 
 ### `_DIM_CONJUNTOS.csv` — DIMENSIONES (capa máquina)
 Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angulo_key`, avatar, dolor, formato (VIDEO/IMAGEN), `tipo_hook`, nivel de conciencia, rol de embudo (TOFU/MOFU/BOFU), si el ad lleva precio. **Es lo que convierte la data de "cuánto gasté" en "POR QUÉ funciona".** Sin esta tabla no se puede responder qué ángulo, qué avatar, qué hook ni qué formato gana — ni dentro de un producto ni entre productos.
@@ -91,12 +91,10 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 
 ### `_EVENTOS.csv` — LOG DE ACCIONES (capa máquina)
 Qué se lanzó, pausó, escaló o cambió y cuándo. Sin esto no se puede calcular la EDAD de un conjunto (ni su %PD), ni atribuir un cambio de CPA a una acción. La `fecha` del LANZAMIENTO define el reloj propio de cada conjunto — **es lo que permite lanzar entre semana sin romper el calendario**. Los eventos `CAMBIO_BOT`/`CAMBIO_CREATIVO` son variables de confusión: si hay uno en la ventana leída, `etapa-7` lo declara y no atribuye el resultado al ángulo.
-> 🔴 **`CAMBIO_BOT` ES OBLIGATORIO Y HOY ESTÁ VACÍO (auditoría 02-sep).** En toda la serie
-> 17-jul → 01-sep hay **un solo `CAMBIO_BOT` registrado**, y es anterior al primer día de data. Por
-> eso hoy es imposible saber si algún cambio de flujo sirvió alguna vez — y el cierre es la palanca
-> más grande que le queda al sistema. **Todo cambio de flujo se loguea el día que se aplica**, lo
+> 🔴 **`CAMBIO_BOT` ES OBLIGATORIO.** **Todo cambio de flujo se loguea el día que se aplica**, lo
 > escriba `etapa-11` o lo haga el operador a mano. Un cambio sin evento es un cambio que el sistema
-> no puede evaluar. (Regla 24 de `CLAUDE.md`.)
+> no puede evaluar. Historia (la auditoría que expuso la columna vacía):
+> `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
 
 ### `_APRENDIZAJES.csv` — MEMORIA TRANSVERSAL (capa máquina)
 Lo que el sistema ya aprendió y no debe volver a pagar para descubrir: qué tipo de hook no vende, qué ángulo ya fracasó en qué producto, qué métrica no predice la venta. **Es lo que hace que el sistema mejore con el tiempo en vez de repetir errores caros.**
@@ -159,10 +157,8 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
   · **Ciclo de estado obligatorio:** `PENDIENTE_GENERAR` → `GENERADO` (el archivo existe en
     `Ads/MEDIA_[PRODUCTO]/`) → `PUBLICADO` (el anuncio existe en Meta con su `ad_id`) → `RETIRADO`.
   · ⚠️ **Alerta de dashboard:** una fila en `PENDIENTE_GENERAR` **o en `GENERADO`** por más de
-    **7 días** es una alerta, no una fila silenciosa. Caso real: 12 filas llevaban 26 días en
-    `PENDIENTE_GENERAR` cuando en verdad los 8 PNG **ya existían en disco** — lo que faltaba era
-    **publicarlos**. El cuello de botella medido no fue producir: fue publicar. Sin esta alerta,
-    la fábrica produce para el disco duro.
+    **7 días** es una alerta, no una fila silenciosa. Sin esta alerta, la fábrica produce para el
+    disco duro. Historia (el caso real que la motivó): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
 
 ---
 
@@ -191,12 +187,8 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 | `clave_campana` | El texto a buscar en los nombres de campaña de Meta (`REGLA DE BÚSQUEDA` de abajo) |
 | `campaign_id` | El `campaign_id` conocido, o `PENDIENTE` / `SIN_MCP` |
 
-> **Por qué se movieron acá.** Estas dos columnas eran los **únicos** datos que
-> `_PORTAFOLIO.txt` tenía y este CSV no: de sus 10 columnas, 8 ya estaban acá
-> (estado, fase, cuenta, tasa, CPA base, CPA BE, notas, producto). Era el mismo
-> registro maestro mantenido dos veces, uno en CSV y otro en prosa — y el 79 %
-> de ese archivo no era la tabla sino narrativa acumulada. Ahora la auditoría
-> diaria puede resolver la campaña de un producto sin leer 27 KB de prosa.
+> Historia (por qué estas dos columnas se movieron acá desde `_PORTAFOLIO.txt`):
+> `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.1.
 
 > ⚠️ **REGLA DE BÚSQUEDA DE CAMPAÑA (sigue vigente):** nunca fijar el
 > `campaign_id` a ciegas. Listar las campañas de la cuenta y tomar la ACTIVE cuyo
@@ -206,7 +198,10 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 - Al **dar de alta un producto**, `etapa-guardar-producto` escribe su fila con las 5 columnas de carpeta ya resueltas.
 - **Las carpetas NO se renombran para "emparejarlas"**: 17 referencias a rutas `MEDIA_*` viven en los `1_HACER_MANUAL.txt`/`2_DATA_PRODUCTO.txt` que el operador usa para ejecutar. Renombrar las rompería a cambio de nada — el alias hace el mismo trabajo sin tocar un byte.
 
-> ⚠️ **CSV malformado — cómo evitarlo (bug real, NUSAVA, 31-jul).** La fila de NUSAVA tenía **20 campos en vez de 17**: su campo `notas` traía comas y no estaba entrecomillado, así que cada coma abría un campo nuevo. El dashboard no lo notó porque lee columnas anteriores a `notas`, pero cualquier lector estricto rompe y la nota se truncaba. **Todo campo de texto libre con comas va entre comillas dobles.** Al editar estos CSV, escribirlos con un lector/escritor CSV real (`csv.DictWriter`), nunca a mano ni concatenando strings.
+> ⚠️ **CSV malformado — cómo evitarlo.** **Todo campo de texto libre con comas va entre comillas
+> dobles.** Al editar estos CSV, escribirlos con un lector/escritor CSV real (`csv.DictWriter`),
+> nunca a mano ni concatenando strings. Historia (el bug real que lo expuso):
+> `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.1.
 
 ---
 
@@ -279,7 +274,7 @@ contribución = TE × (precio − costo proveedor − flete − admin − otros)
 ```
 La contribución sale del **escalón** en que cayó ese pedido.
 
-> ⚠️ **La versión vieja (`ventas × BE fijo − pauta`) queda DEPRECADA.** Contaba VENTAS, no quetzales: un pedido de 3 frascos a Q299 valía igual que uno de 1 a Q179 → **subestimaba la ganancia ~73%** y hacía invisible todo el upsell del bot. Medido: Q2,302 con la vieja vs Q4,799 con la nueva sobre la misma ventana.
+> ⚠️ **La versión vieja (`ventas × BE fijo − pauta`) queda DEPRECADA.** Contaba VENTAS, no quetzales: un pedido de 3 frascos a Q299 valía igual que uno de 1 a Q179 → subestimaba la ganancia real y hacía invisible todo el upsell del bot. Historia (la medición que lo probó): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §4.
 
 - **La escalera vive en `_DIM_PRECIOS.csv`.** Es **FLEXIBLE por producto**: los productos baratos no tienen escalón de 1u — arrancan en 2x1. No forzar 1/2/3/4 para todos.
 - **Los parámetros de logística viven en `_TASA_ENTREGA.csv`**: `pct_entrega_resueltos`, `costo_devolucion_evento_q` (Q27.16), `costos_admin_q` (Q4.00), `otros_gastos_q` (Q2.08 sin identificar, colchón visible). Se cambian ahí y todo recalcula solo.
@@ -339,13 +334,13 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 3. **Llaves repetidas** — LucidSales emite **una fila por `adId`** y un mismo anuncio corre con varios. Repetición ≠ duplicado.
 4. **Test contra un CONTROL que abarque más período** — ✅ la prueba fuerte. En cada celda `(producto, conjunto)` el CONTROL **solo puede ser ≥ que la suma de las BASE** (cubre más días y tiene más maduración COD). Si alguna celda sale al revés, ahí está el doble conteo.
 
-> ✅ **RESUELTO 11-ago — la columna `ad_id` ya existe.** Antes había que volver al xlsx para distinguir "dos adId gemelos" de "la misma fila cargada dos veces". Ahora las pruebas 2 y 3 son automáticas:
+> **La columna `ad_id` hace automáticas las pruebas 2 y 3:**
 > ```
 > # 0 resultados = no hay doble conteo
 > repetidas = Counter((ventana_ini, ventana_fin, fuente, ad_id) for filas BASE con ad_id)
 > comunes   = adIds(fuente=A) & adIds(fuente=B)   # universos disjuntos => ambas suman
 > ```
-> Corrida 11-ago sobre 1,490 filas con `ad_id`: **0 llaves repetidas** y **0 adId en común** entre `LucidSales` y `LucidSales_CuentaB` — confirma que las dos cuentas suman bien y que ninguna ventana entró dos veces.
+> Historia (por qué hacía falta y la corrida que la validó): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §4.2.
 
 **Todo export que solape con una BASE existente entra como `CONTROL`, nunca como BASE.** Un agregado de N días **no se puede descomponer** en sus días: si se necesita un tramo, se pide ese tramo exacto.
 
@@ -365,5 +360,6 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 **Monedas:** `spend`/`costPerMessage`/`costPerSale` → USD · `total` (venta) → QUETZALES.
 > ⚠️ EXCEPCIÓN: la cuenta **CP1 = 1346891653335162** factura en **COP** → `spend_COP ÷ 3152.5 = spend_USD`. Sin normalizar, contamina el CPA de todo el portafolio.
 >
-> **La tasa es 3,152.5 — NO 4,050 (corregido 15-ago, APR-028).** La vieja se había *derivado* comparando campañas hermanas; la nueva se **midió** emparejando 9 cargos uno a uno entre el extracto de Meta y el del banco (el código de Meta aparece literal en el banco como `Facebk *codigo`). La 4,050 subestimaba el gasto de CP1 un **28.5%**.
+> **La tasa vigente es 3,152.5, no 4,050 (APR-028).** Historia (cómo se midió y por qué la anterior
+> estaba mal): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §5.
 > ⚠️ Ojo con el orden de magnitud: un día de CP1 puede venir como `spend = 20,068`. Son pesos (**$6.37 USD**), no dólares. Sumar la columna sin normalizar da un gasto ~125× inflado y el CPA del portafolio se vuelve basura.

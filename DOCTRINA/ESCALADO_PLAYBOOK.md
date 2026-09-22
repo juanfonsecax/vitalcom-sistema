@@ -58,8 +58,11 @@
 
 > Los valores vivos están en `PRODUCTOS/_DIM_PRODUCTOS.csv` — esta tabla es el espejo legible. Si difieren, manda el CSV.
 
-> ⚠️ **VARICOSE, dos correcciones:** (1) este archivo decía BE ~Q159 = el MARGEN BRUTO del 2x1 sin descontar envío ni RTO; (2) el Q79 que lo reemplazó era una derivación a mano. Con la tabla de costeo v2 el valor correcto es **Q83.0**, porque VARICOSE vende 2x1 → se costea por el PEDIDO (2 frascos de Q45 = Q90 de producto) y le toca la **fila Q90**, no la Q45.
-> **Por qué el cambio de presupuesto:** a $1.59 el gate del día 3 llegaba con 46-60% del PD (decidir a ciegas) y Meta no salía de aprendizaje (23 conversaciones en 7 días vs las 50 que pide). A $2.99 el gate del día 3-5 vuelve a ser válido. Aritmética completa en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5.
+> ⚠️ **VARICOSE se costea por el PEDIDO, no por la unidad:** vende 2x1 (2 frascos de Q45 = Q90 de
+> producto por pedido) → le toca la **fila Q90**, no la Q45. Historia de por qué esta tabla llegó a
+> decir otra cosa y por qué el presupuesto subió de $1.59 a $2.99:
+> `_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §1.5. Aritmética completa del
+> presupuesto en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5.
 
 > **Lectura:** el **ganador se declara solo** vendiendo bajo Base en los primeros días (MA2 de Varicose vendió a Q11.6 con ~$6 de gasto). El **perdedor** se corta por conversación en el día 3; solo se espera a su PD completo si tiene BUENA conversación pero 0 ventas (ahí el problema es cierre/ángulo, no alcance). **Nunca** se mata por el CPA de UN día — siempre semanal/ponderado (Clase 11).
 
@@ -182,9 +185,10 @@ No es "hacer más de lo mismo". Es entender **POR QUÉ ganó** y variar el conce
 
 ## 5. SATURACIÓN POR CUENTA — el test de si el ángulo VIAJA (obligatorio antes de meter volumen)
 
-> **Origen: data real de TINNIDROP, 2026-07-24.** Un ángulo ganador **NO rinde igual en todas las cuentas**. Nunca se lee agregado: se lee **cuenta por cuenta**. Esta sección la ejecuta ETAPA-8 antes de proponer cualquier duplicación, y ETAPA-7 la calcula.
-
-**El caso que originó la regla:** el video "DETERIORO COGNITIVO" dio **CPA Q20.7 en las 3 cuentas réplica** y **Q82 en la cuenta madre GTR0** — mismo video, mismo ángulo, mismo copy, misma página. La madre estaba saturada por frecuencia acumulada; las cuentas frescas lo convertían 4× mejor. Leído agregado, el ángulo parecía mediocre; leído por cuenta, era el mejor activo del producto.
+> Un ángulo ganador **NO rinde igual en todas las cuentas**. Nunca se lee agregado: se lee **cuenta
+> por cuenta**. Esta sección la ejecuta ETAPA-8 antes de proponer cualquier duplicación, y ETAPA-7 la
+> calcula. Historia (el caso TINNIDROP que originó la regla):
+> `_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §5.
 
 **PROCEDIMIENTO — matriz ÁNGULO × CUENTA:**
 1. Armar la matriz: filas = ángulos, columnas = cuentas, celdas = ventas + CPA real de esa combinación.
@@ -221,7 +225,8 @@ ETAPA-8 entrega la duplicación como **TABLA EXPLÍCITA**, nunca como "duplicá 
 
 ## 7. FASE 3 — ENTREGABLE FIJO: `PRODUCTOS/[NOMBRE]/4_PLAN_ESCALADO.txt`
 
-> **Por qué existe esta sección (diagnóstico del operador, 24-jul):** "FASE 1 está bien, pero FASE 2 y 3 se sienten perdidas." La causa real no era falta de doctrina — era que el escalado **no tenía archivo ni plantilla fija**, así que cada vez salía distinto. FASE 1 tiene 9 agentes con output de formato fijo; el escalado entregaba prosa libre. Esto lo cierra.
+> El escalado necesita archivo y plantilla fija, igual que FASE 1: sin eso cada plan sale distinto.
+> Historia: `_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §7.
 
 **ESQUEMA DE ARCHIVOS POR PRODUCTO (fijo, no cambia entre productos):**
 | Archivo | Rol | Cuándo se crea |
@@ -231,7 +236,8 @@ ETAPA-8 entrega la duplicación como **TABLA EXPLÍCITA**, nunca como "duplicá 
 | `3_CAMPAÑA_META.txt` | llave técnica: IDs de campaña/conjuntos/anuncios/creativos y Post IDs | al crear por MCP |
 | **`4_PLAN_ESCALADO.txt`** | **el plan de FASE 3** — se SOBRESCRIBE en cada ciclo de escalado | al declarar ganador |
 
-⚠️ El slot `3_` es **solo** para IDs de Meta. Nunca meter ahí el plan de escalado (bug corregido 24-jul en TINNIDROP, que tenía `3_PLAN_ESCALADO.txt`).
+⚠️ El slot `3_` es **solo** para IDs de Meta. Nunca meter ahí el plan de escalado (historia:
+`_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §7).
 
 **PLANTILLA OBLIGATORIA de `4_PLAN_ESCALADO.txt`** (ETAPA-8 la llena; se sobrescribe, no se acumulan versiones):
 ```

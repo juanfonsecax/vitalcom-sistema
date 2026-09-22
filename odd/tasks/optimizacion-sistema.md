@@ -44,7 +44,7 @@ the engine does not emit the two numbers.
       real count; invariant 2 must say what costear.py does (nearest row, tie -> upper row; owner
       ETAPA-1.md) or become a pointer; numbers owned by CSVs (ventana_dias 14, fatiga 3, F2 3 days,
       4 AM, 15-20 % closing, 8.6 %) become pointers to their owner. Evidence: gen_grafo --comparar.
-- [ ] T2 — Doctrine archaeology. In GUIA_MADRE_PARAMETRIZADA.md, ESCALADO_PLAYBOOK.md,
+- [x] T2 — Doctrine archaeology. In GUIA_MADRE_PARAMETRIZADA.md, ESCALADO_PLAYBOOK.md,
       DATA_PLAYBOOK.md, CALENDARIO_ESCALADO.md, PLANTILLAS_FLUJO_BOT.md, COPYWRITING_ADS.md: move dated
       incident narratives ("medido el...", "hasta el...", one-off anecdotes) to
       `_CONOCIMIENTO/POSTMORTEMS/`, leaving the rule and a one-line pointer. Keep the Recency Rule of
@@ -102,6 +102,11 @@ has $32.61 spent on a non-doctrinal concept structure: verify against Meta (read
   upper); invariant 7 points the hour to `_PARAMETROS_PUBLICACION.csv`; header already count-free.
   gen_grafo --comparar: CLAUDE.md 8180 -> 4829 tok, cold start 11296 -> 7945 tok. All gates green
   (29/29, 17/17, validar ok, guia 0 failures, pytest 161, pnpm 58).
+- T2 (route: delegated writer — 6 doctrine docs): stories moved to `_CONOCIMIENTO/POSTMORTEMS/*_historias.md`
+  from GUIA_MADRE (6 rows, +28 tok: pointers as long as the stories), ESCALADO_PLAYBOOK (-132 tok) and
+  DATA_PLAYBOOK (-304 tok). CALENDARIO_ESCALADO, PLANTILLAS_FLUJO_BOT and COPYWRITING_ADS left intact: their
+  dated content is mentor citations or evidence tables the rules derive from, or literal bot template text.
+  Gates green: guia 0 failures, 29/29, 17/17, validar ok, gen_grafo clean, pytest 161, pnpm 58.
 
 ## Next step
-T2.
+T3.

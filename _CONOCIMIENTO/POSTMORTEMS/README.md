@@ -9,6 +9,9 @@ dudás de una regla antes de cambiarla, leé su incidente primero.
 | Archivo | Qué guarda |
 |---|---|
 | `CLAUDE_MD_v1.1_completo.md` | CLAUDE.md íntegro antes de la poda del 22-sep-2026 (T1 de `optimizacion-sistema`), con todas sus historias. Incluye lo que ya traía el tag `v1.1-pre-poda` (16-sep-2026) más las filas EL FLUJO LUCIDBOT y LA APP WEB, agregadas entre el 16 y el 21-sep |
+| `GUIA_MADRE_PARAMETRIZADA_historias.md` | Incidentes movidos el 22-sep-2026 (T2) de `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`: ventana de evaluación vs ventana de fatiga (07-sep), el umbral de conversación que vivía solo en prosa, la simulación TURMERIC del margen de empate, y el caso VARICOSE de ángulo dormido |
+| `ESCALADO_PLAYBOOK_historias.md` | Incidentes movidos el 22-sep-2026 (T2) de `DOCTRINA/ESCALADO_PLAYBOOK.md`: las dos correcciones de Break-Even de VARICOSE y el presupuesto $1.59→$2.99, el caso TINNIDROP de saturación por cuenta, y el diagnóstico + bug del entregable de FASE 3 |
+| `DATA_PLAYBOOK_historias.md` | Incidentes movidos el 22-sep-2026 (T2) de `DOCTRINA/DATA_PLAYBOOK.md`: el split FACT del 25-jul, el fix del JOIN de conjuntos (02-sep), el CSV malformado de NUSAVA, la fórmula de ganancia vieja vs v2, el `ad_id` que automatizó el gate de doble conteo, y la corrección de la tasa COP de CP1 |
 
 ## Incidentes citados en CLAUDE.md v1.1
 
