@@ -261,14 +261,58 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     fix LucidSales' own (also potentially under-reported) per-ad spend was being summed instead
     of Meta's true conjunto total — the corrected number is the one independently reproducible
     from `_FACT_ENTREGA.csv` directly, shown in the table.
-  - **Observed side effect (not a defect, documented for transparency):** the full outer join
-    means a day where Meta spent money but LucidSales attributed zero sales now counts as a "day
-    with data" (`datos_hasta` in decidir's JSON), where before that day was invisible (no sales
-    row = no row at all). This shifted `datos_hasta`/`rezago_dias` by one day between two decidir
-    runs a few minutes apart in this session (2026-09-20/rezago 2 -> 2026-09-21/rezago 1),
-    changing which 14 days fall inside the rolling window and moving NUSAVA/ARDOR's ventas count
-    by one (23 -> 22) between runs — unrelated to the spend fix itself, and arguably more honest
-    than silently ignoring a spend-only day.
+
+  - **Review round 2 (22-sep-2026): REJECTED again — a real bug, but not the one suspected.**
+    The parent's own from-scratch check (window 2026-09-08..21, matching what my JSON reported)
+    got CLEARSTEM/MEDICOS_FALLARON CPA Q116.5 (Meta Q699.3 / 6 sales) against my reported Q174.8,
+    and flagged it as "R1 counted twice." **It was not a double count.** Tracing it end to end
+    (`gasto_por_conjunto_ventana()` alone on real data -> correct; the temp CSV it writes ->
+    correct, 12 rows for R1 summing to exactly $45.83; only `decidir.py`'s own SQL after that
+    point showed the inflated number) found the actual bug: the "Observed side effect" from the
+    previous round — Meta-only zero-sale days extending `ult` ("último día CON DATA") — was worse
+    than documented. `ult` correctly moved to 2026-09-21 (a real Meta-only day, not a phantom:
+    confirmed with a real `_FACT_ENTREGA.csv` row), but the window's `win`/`fat` SQL predicates
+    only had a LOWER bound (`v.fecha >= ult - N days`) and no UPPER bound — relying on the old
+    assumption that `ult` was always the data's true maximum date, which stopped being true once
+    Meta-only days could extend `ult` past the last day with an actual sale. The window silently
+    grew to 15 days (2026-09-07 through 2026-09-21 both included) for every celda, pulling in one
+    extra day's spend without an extra day being dropped, and the extra day happened to be
+    CLEARSTEM/MEDICOS_FALLARON's costliest — hence the outlier.
+    - **Fix:** (1) `gasto.gasto_por_conjunto_ventana()` now tags each row `tiene_fila_ventas`
+      (True only if `_FACT_VENTAS.csv` actually has a row for that key, false for a Meta-only
+      synthetic row); `escribir_conjunto_ventana_csv()` writes it as a column. (2) `decidir.py`'s
+      `ult` CTE now computes `max(fecha) from ventas_raw where tiene_fila_ventas` — anchored to
+      the last day with a REAL LucidSales row, exactly like before gasto.py existed. (3) `win`/
+      `fat` gained the missing upper bound (`and v.fecha <= ult`), so a Meta-only day beyond `ult`
+      can still be aggregated at the celda level (its spend isn't lost, per the FULL OUTER JOIN
+      design) but can never widen the evaluation window past `dias`/`dias_fatiga`.
+    - **Verified three ways, all agreeing to the cent:** decidir.py's live output; a from-scratch
+      pandas script (`sys.path` only for `alias.canonico`, no other `Ads/_TOOLS` import,
+      reproducing the parent's exact method) over window 2026-09-07..20; and the parent's own
+      numbers. All 8 angles match exactly:
+
+      | producto/ángulo | CPA (decidir, fixed) | CPA (from-scratch pandas) | CPA (parent's check) |
+      |---|---|---|---|
+      | CLEARSTEM/ANTI_FALSIFICACION | 34.4 | 34.4 | 34.4 |
+      | CLEARSTEM/MEDICOS_FALLARON | 116.5 | 116.5 | 116.5 |
+      | CLEARSTEM/RESISTENCIA_INSULINA_SOP | 36.3 | 36.3 | 36.3 |
+      | NUSAVA/ARDOR | 44.3 | 44.3 | 44.3 |
+      | TINNIDROP/ACCESIBILIDAD_MEDICO | 72.3 | 72.3 | 72.3 |
+      | TINNIDROP/DETERIORO_COGNITIVO | 74.8 | 74.8 | 74.8 |
+      | TINNIDROP/NOCHES_SIN_DORMIR | 93.4 | 93.4 | 93.4 |
+      | TINNIDROP/PERDIDA_AUDITIVA | 93.4 | 93.4 | 93.4 |
+
+      With the window fix, `decidir.py`'s own window for this data is 2026-09-07..20 (rezago 2),
+      matching the parent's assumed window exactly — resolving the NUSAVA "Q23 difference"
+      question too: it was the same one-day window-edge cause, now gone.
+    - **Regression tests added:** `test_gasto.py` ::
+      `test_dos_grafias_meta_que_canonicalizan_igual_no_duplican_con_fila_de_anuncio_presente`
+      (two `_FACT_ENTREGA.csv` rows with different raw names that canonicalize to the same
+      conjunto, plus an unrelated `_FACT_ENTREGA_ANUNCIO.csv` row for that conjunto -> conjunto
+      grain sums the two conjunto rows exactly once each, never touches the ad-grain fact).
+      `test_decidir.py` :: `test_dia_meta_only_no_corre_la_ventana_de_evaluacion` (a Meta-only day
+      two days after the last real sale, `dias=1` -> the window stays on the sale's day; the
+      Meta-only day's spend is excluded, not silently inherited into the 1-day window).
   - dbt: `fct_gasto_dia` rewritten to the same aggregate-then-join design (CTEs `ventas_agg` /
     `meta_agg` over `stg_ventas` / `stg_entrega_conjunto`, `full outer join` on the conjunto key);
     `fct_conjunto_dia` sources from it. Builds and its `not_null` tests pass in this worktree.
@@ -284,21 +328,22 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
   - ALSO (b): deployment order documented in `DOCTRINA/DATA_PLAYBOOK.md` and the
     `recopilar-lucidsales` skill — Meta re-pull (migrates `ad_id` into the CSV header via
     `upsert_fact`) before any `dbt build`, since `stg_entrega_anuncio` requires that column.
-  - Tests (script-style, rewritten for the corrected design): `test_gasto.py` (17 checks —
+  - Tests (script-style, rewritten for the corrected design): `test_gasto.py` (18 checks —
     conjunto-grain: N unmatched ads don't multiply spend, Meta-only cell still counted, two
-    distinct conjuntos don't mix, alias canonicalization, unrecognized `fuente` excluded;
-    ad-grain: ad_id beats name, scientific-notation ad_id, a renamed ad sharing an ad_id doesn't
-    duplicate, no conjunto-fallback inheritance, Meta-only ad still counted, the SAME anuncio text
-    in two campaigns doesn't collide; **the required invariant**: `SUM(effective spend) ==
-    SUM(Meta spend for covered keys) + SUM(LucidSales fallback for uncovered keys)` to the cent,
-    at both grains, with mixed multi-ad/Meta-only fixtures), `test_decidir.py` (+1, fixed to
-    include `producto_key` on the Meta-side fixture row after the redesign requires it in the
-    join key — `cargar_datos_duckdb()` uses $50 Meta spend over $10 LucidSales for the same
-    window), `test_vocabulario_estado.py` (4 checks, unchanged). `test_flujo.py` (29/29,
+    distinct conjuntos don't mix, alias canonicalization, unrecognized `fuente` excluded, two
+    Meta-side name variants that canonicalize to the same conjunto sum once each even with an
+    unrelated ad-fact row present (round-2 regression); ad-grain: ad_id beats name,
+    scientific-notation ad_id, a renamed ad sharing an ad_id doesn't duplicate, no conjunto-
+    fallback inheritance, Meta-only ad still counted, the SAME anuncio text in two campaigns
+    doesn't collide; **the required invariant**: `SUM(effective spend) == SUM(Meta spend for
+    covered keys) + SUM(LucidSales fallback for uncovered keys)` to the cent, at both grains),
+    `test_decidir.py` (+2: `cargar_datos_duckdb()` uses $50 Meta spend over $10 LucidSales for the
+    same window; a Meta-only day past the last real sale doesn't widen the window — round-2
+    regression), `test_vocabulario_estado.py` (4 checks, unchanged). `test_flujo.py` (29/29,
     including a fixture-driven regression for the campaign-collision fix) and
     `test_perfilar_angulos.py` (17/17) pass.
-  - Verification run (SISTEMA-app worktree, after the fix): `python -m pytest Ads/_TOOLS -q
-    -p no:cacheprovider` -> 33 passed. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases,
+  - Verification run (SISTEMA-app worktree, after the round-2 fix): `python -m pytest Ads/_TOOLS
+    -q -p no:cacheprovider` -> 33 passed. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases,
     20 nodos). `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas.
     `python Ads/_TOOLS/gen_grafo.py` -> clean (no orphans/dead paths), baseline restored with
     `git checkout` afterward. `dbt build` -> 27 PASS, 1 pre-existing documented ERROR
