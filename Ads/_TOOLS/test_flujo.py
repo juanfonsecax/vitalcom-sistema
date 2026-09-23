@@ -103,7 +103,15 @@ def fixture_escalar_flaco(ventas_nuevo=3, con_probado=True):
     return tmp
 
 
-def fixture_conceptos_al_filo():
+_CAMP_CONCEPTOS_AL_FILO = "GTR7_TURMERIC_F2-CONCEPTOS-%s_20260924"
+
+
+def _fila_concepto_al_filo(c, cpt, ventas, cpa, fecha_venta="2026-09-27"):
+    return [fecha_venta, "BASE", "TURMERIC", "GTR7_TURMERIC_ANG_R1", _CAMP_CONCEPTOS_AL_FILO % c,
+            "ad ~ TURMERIC|ANG|%s|NC1|x" % cpt, str(ventas), "40", "%.4f" % (ventas * cpa)]
+
+
+def fixture_conceptos_al_filo(filas_extra=None):
     """El corte del 27-sep-2026 de la simulación de TURMERIC, con las tres campañas que manda la
     doctrina de FASE 2 (1-1-5 + 1-1-5 + 1-2-5) y los CPA que hicieron oscilar el gate:
 
@@ -114,24 +122,23 @@ def fixture_conceptos_al_filo():
 
     Winner-take-all: C corona solo a C3.CN07, nadie llega a 2 campañas y el producto vuelve de
     FASE 3 a FASE 2. Con empate técnico: C2.CN06 replica en B y C, y el gate deja de depender de
-    un centavo. C9.CN14 no entra en ninguno de los dos casos."""
+    un centavo. C9.CN14 no entra en ninguno de los dos casos.
+
+    `filas_extra` agrega filas de venta adicionales (p.ej. ventas tardías del concepto ganador,
+    fechadas después de la confirmación) sin tocar el corte base."""
     tmp = tempfile.mkdtemp(prefix="flujo_cpt_")
     prod = os.path.join(tmp, "PRODUCTOS")
     os.makedirs(prod)
-    camp = "GTR7_TURMERIC_F2-CONCEPTOS-%s_20260924"
-
-    def fila(c, cpt, ventas, cpa):
-        return ["2026-09-27", "BASE", "TURMERIC", "GTR7_TURMERIC_ANG_R1", camp % c,
-                "ad ~ TURMERIC|ANG|%s|NC1|x" % cpt, str(ventas), "40", "%.4f" % (ventas * cpa)]
-
+    filas = [_fila_concepto_al_filo("A", "C3.CN07", 1, 2.85),          # bajo el piso: no cuenta
+             _fila_concepto_al_filo("B", "C2.CN06", 2, 2.27),
+             _fila_concepto_al_filo("C", "C3.CN07", 2, 2.30),
+             _fila_concepto_al_filo("C", "C2.CN06", 2, 2.34),
+             _fila_concepto_al_filo("C", "C9.CN14", 2, 3.50)]
+    if filas_extra:
+        filas += filas_extra
     _escribir_csv(prod, "_FACT_VENTAS.csv",
                   ["ventana_fin", "rol_ventana", "producto_key", "conjunto", "campana", "anuncio",
-                   "ventas", "mensajes", "spend_usd"],
-                  [fila("A", "C3.CN07", 1, 2.85),          # bajo el piso: no cuenta
-                   fila("B", "C2.CN06", 2, 2.27),
-                   fila("C", "C3.CN07", 2, 2.30),
-                   fila("C", "C2.CN06", 2, 2.34),
-                   fila("C", "C9.CN14", 2, 3.50)])
+                   "ventas", "mensajes", "spend_usd"], filas)
     return tmp
 
 
@@ -292,7 +299,110 @@ def main():
           "reingreso_activo reporta los ángulos excluidos para que etapa-2 no los repita",
           str(sit.get("reingreso_activo")))
 
-    total = 29
+    # ── H. El gate de F3 exige un CAMBIO_BOT POSTERIOR al concepto ganador — un relanzamiento
+    # viejo (variable de confusión) no lo satisface. El F2.etapa-11 real de DOCTRINA/FLUJO.json
+    # se leyó para confirmar que quedó como DIAGNÓSTICO, no como reescritura.
+    f3_def = next((f for f in flujo_base["fases"] if f["id"] == "F3"), {})
+    gate_f3 = f3_def.get("entrada", {}).get("gate", {})
+    eventos_cols = ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta",
+                     "evento", "valor_antes", "valor_despues", "motivo", "fuente_decision"]
+
+    def _fila_evento(fecha, evento, motivo="test"):
+        return [fecha, "TURMERIC", "GTR7", "*", "*", evento, "", "", motivo, "test"]
+
+    tmp_sin_bot = fixture_conceptos_al_filo()
+    env_sin_bot = Entorno(base=tmp_sin_bot, hoy=datetime.date(2026, 9, 28), sin_scripts=True)
+    ok_sb, obs_sb = evaluar(gate_f3, {"pk": "TURMERIC"}, env_sin_bot)
+    check(ok_sb is False,
+          "F3.entrada (doctrina real): concepto 2/2 sin NINGÚN CAMBIO_BOT no basta para entrar a F3",
+          obs_sb)
+
+    tmp_bot_viejo = fixture_conceptos_al_filo()
+    _escribir_csv(os.path.join(tmp_bot_viejo, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
+                  [_fila_evento("2026-09-20", "CAMBIO_BOT", "relanzamiento anterior, no relacionado")])
+    env_bot_viejo = Entorno(base=tmp_bot_viejo, hoy=datetime.date(2026, 9, 28), sin_scripts=True)
+    ok_bv, obs_bv = evaluar(gate_f3, {"pk": "TURMERIC"}, env_bot_viejo)
+    check(ok_bv is False,
+          "F3.entrada (doctrina real): un CAMBIO_BOT de ANTES del ganador (2026-09-20 < 2026-09-27, "
+          "variable de confusión) NO satisface el gate",
+          obs_bv)
+
+    tmp_bot_nuevo = fixture_conceptos_al_filo()
+    _escribir_csv(os.path.join(tmp_bot_nuevo, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
+                  [_fila_evento("2026-09-20", "CAMBIO_BOT", "relanzamiento anterior, no relacionado"),
+                   _fila_evento("2026-09-28", "CAMBIO_BOT", "reescritura hacia C2.CN06 tras 2 de 2")])
+    env_bot_nuevo = Entorno(base=tmp_bot_nuevo, hoy=datetime.date(2026, 9, 29), sin_scripts=True)
+    ok_bn, obs_bn = evaluar(gate_f3, {"pk": "TURMERIC"}, env_bot_nuevo)
+    check(ok_bn is True,
+          "F3.entrada (doctrina real): un CAMBIO_BOT fechado DESPUÉS del ganador (2026-09-28 > "
+          "2026-09-27) SÍ satisface el gate",
+          obs_bn)
+
+    # ── H2. Regresión: la fecha de confirmación del concepto ganador es ESTABLE (primer cruce
+    # del piso de replicación), no "el último día con venta". Con el CAMBIO_BOT del caso anterior
+    # (2026-09-28, posterior a la confirmación real del 2026-09-27) ya fijado, sumar ventas
+    # TARDÍAS del concepto ganador (C2.CN06), fechadas incluso DESPUÉS del propio CAMBIO_BOT, no
+    # debe correr la fecha de confirmación hacia adelante ni tumbar el gate: si la fecha fuera
+    # "el último día con venta", esta venta nueva la movería a 2026-09-30 y el CAMBIO_BOT del
+    # 2026-09-28 dejaría de ser "posterior", volteando el gate a False sin que el ganador mismo
+    # hubiera cambiado.
+    tmp_venta_tardia = fixture_conceptos_al_filo(
+        filas_extra=[_fila_concepto_al_filo("B", "C2.CN06", 3, 2.27, fecha_venta="2026-09-30")])
+    _escribir_csv(os.path.join(tmp_venta_tardia, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
+                  [_fila_evento("2026-09-28", "CAMBIO_BOT", "reescritura hacia C2.CN06 tras 2 de 2")])
+    env_venta_tardia = Entorno(base=tmp_venta_tardia, hoy=datetime.date(2026, 10, 1), sin_scripts=True)
+    ok_vt, obs_vt = evaluar(gate_f3, {"pk": "TURMERIC"}, env_venta_tardia)
+    check(ok_vt is True,
+          "F3.entrada (regresión fecha estable): ventas tardías del concepto ganador "
+          "(2026-09-30, posteriores incluso al propio CAMBIO_BOT) no mueven la fecha de "
+          "confirmación hacia adelante — el gate sigue viendo el CAMBIO_BOT como posterior",
+          obs_vt)
+
+    tmp_excepcion = fixture_conceptos_al_filo()
+    _escribir_csv(os.path.join(tmp_excepcion, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
+                  [_fila_evento("2026-09-28", "EXCEPCION_CAMBIO_BOT",
+                                "operador decide saltarse la reescritura, escala igual")])
+    env_excepcion = Entorno(base=tmp_excepcion, hoy=datetime.date(2026, 9, 29), sin_scripts=True)
+    ok_ex, obs_ex = evaluar(gate_f3, {"pk": "TURMERIC"}, env_excepcion)
+    check(ok_ex is True,
+          "F3.entrada (doctrina real): un EXCEPCION_CAMBIO_BOT posterior al ganador (waiver del "
+          "operador) también satisface el gate, sin exigir la reescritura",
+          obs_ex)
+
+    # ── I. F2.etapa-11 (doctrina real): diagnóstico de congruencia POSTERIOR al ángulo ganador,
+    # no una reescritura — usa el mismo fixture de la sección E (ANG_PROBADO gana el 2026-09-14).
+    diag_f2 = nodo({"nodos": [n for f in flujo_base["fases"] if f["id"] == "F2" for n in f["nodos"]]},
+                    "F2.etapa-11")
+    pred_diag = diag_f2["produce"][0]["predicado"] if diag_f2 else {}
+
+    tmp_diag_antes = fixture_escalar_flaco(ventas_nuevo=3, con_probado=True)
+    _escribir_csv(os.path.join(tmp_diag_antes, "PRODUCTOS"), "_EVENTOS.csv",
+                  ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta", "evento",
+                   "valor_antes", "valor_despues", "motivo", "fuente_decision"],
+                  [["2026-09-10", "PX", "GTR7", "*", "*", "DIAGNOSTICO_CONGRUENCIA", "", "",
+                    "diagnóstico corrido ANTES de que el ángulo ganara (2026-09-14)", "etapa-11"]])
+    env_diag_antes = Entorno(base=tmp_diag_antes, hoy=datetime.date(2026, 9, 16), sin_scripts=True)
+    ok_da, obs_da = evaluar(pred_diag, {"pk": "PX"}, env_diag_antes)
+    check(ok_da is False,
+          "F2.etapa-11 (doctrina real): un DIAGNOSTICO_CONGRUENCIA de ANTES del ángulo ganador "
+          "(2026-09-10 < 2026-09-14) no cumple el nodo — el diagnóstico tiene que probar que se "
+          "midió el cierre CON el ganador ya confirmado",
+          obs_da)
+
+    tmp_diag_despues = fixture_escalar_flaco(ventas_nuevo=3, con_probado=True)
+    _escribir_csv(os.path.join(tmp_diag_despues, "PRODUCTOS"), "_EVENTOS.csv",
+                  ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta", "evento",
+                   "valor_antes", "valor_despues", "motivo", "fuente_decision"],
+                  [["2026-09-15", "PX", "GTR7", "*", "*", "DIAGNOSTICO_CONGRUENCIA", "", "",
+                    "diagnóstico corrido DESPUÉS de que el ángulo ganara (2026-09-14)", "etapa-11"]])
+    env_diag_despues = Entorno(base=tmp_diag_despues, hoy=datetime.date(2026, 9, 16), sin_scripts=True)
+    ok_dd, obs_dd = evaluar(pred_diag, {"pk": "PX"}, env_diag_despues)
+    check(ok_dd is True,
+          "F2.etapa-11 (doctrina real): un DIAGNOSTICO_CONGRUENCIA de DESPUÉS del ángulo ganador "
+          "(2026-09-15 > 2026-09-14) SÍ cumple el nodo — sin exigir ninguna reescritura de flujo",
+          obs_dd)
+
+    total = 36
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

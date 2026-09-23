@@ -177,7 +177,9 @@ def test_un_nodo_de_claude_cumplido_termina_en_exito(cliente_juguete, sistema_de
 
 
 def test_el_veredicto_lo_da_flujo_no_lo_que_claude_dice(cliente_juguete, sistema_de_juguete):
-    falta = [{"dato": "CAMBIO_BOT registrado en _EVENTOS.csv", "ok": False, "dueno": "operador"}]
+    # F2.etapa-11 pide un DIAGNOSTICO_CONGRUENCIA (no un CAMBIO_BOT -- la reescritura corre en
+    # F3.entrada). El fixture solo necesita representar "algo falta".
+    falta = [{"dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv", "ok": False, "dueno": "operador"}]
     juguete.escribir_flujo_falso(sistema_de_juguete, {"*": juguete.flujo_listo("F2.etapa-11", falta=falta)})
     _pedir(cliente_juguete, job_id=JOB)
     resultado = _terminar()

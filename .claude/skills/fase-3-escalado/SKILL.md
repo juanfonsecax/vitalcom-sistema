@@ -24,10 +24,20 @@ tools: Read, Write, Glob, Grep, Bash, Task
 
 ## EL FLUJO DICTA (desde el 09-sep-2026)
 
-`python Ads/_TOOLS/flujo.py [producto_key]` mete al producto en FASE 3 solo por el gate
-`concepto_2de2`: el mismo concepto es el mejor CPA (≥ `min_ventas_escalar` ventas) en **2 de 2**
-campañas de conceptos. Un ganador de 1 de 2 es ruido, y los objetos de escalado que existan sin
-gate se cantan como avisos. Criterio del operador: flujo de caja para el ciclo COD de 4-7 días.
+`python Ads/_TOOLS/flujo.py [producto_key]` mete al producto en FASE 3 con DOS gates, los dos en
+`F3.entrada` de `DOCTRINA/FLUJO.json`:
+
+1. `concepto_2de2`: el mismo concepto es el mejor CPA (≥ `min_ventas_escalar` ventas) en **2 de 2**
+   campañas de conceptos. Un ganador de 1 de 2 es ruido.
+2. Un `CAMBIO_BOT` (la reescritura del flujo hacia el ganador, ver `F2.etapa-11` en
+   `.claude/agents/ETAPA-11.md` y `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`) fechado DESPUÉS del concepto
+   ganador — o un `EXCEPCION_CAMBIO_BOT` si el operador decide explícitamente saltarse la
+   reescritura. **El `CAMBIO_BOT` de la fase 2 (PASO 2 de `fase-2-conceptos`, el A/B paraguas
+   vs. dedicado) normalmente NO alcanza**, porque se registra ANTES de que el concepto gane en 2
+   de 2: hace falta el `CAMBIO_BOT` de la reescritura final hacia el ganador, posterior a esa fecha.
+
+Los objetos de escalado que existan sin ambos gates se cantan como avisos. Criterio del operador:
+flujo de caja para el ciclo COD de 4-7 días.
 
 ---
 

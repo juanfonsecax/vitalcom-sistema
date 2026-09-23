@@ -16,6 +16,13 @@ El sistema tiene ocho archivos de doctrina sobre estructura de campaña y ningun
 medido contra data. Esta etapa cierra ese hueco. Su producto final es el **brief** que le dice a
 `etapa-5` qué reescribir, más el **diseño del A/B** que permite saber después si el cambio sirvió.
 
+> **Diagnóstico vs. reescritura.** En `F2.etapa-11`
+> (`DOCTRINA/FLUJO.json`) esta etapa corre en modo SOLO DIAGNÓSTICO — mide el cierre y la
+> congruencia, registra `DIAGNOSTICO_CONGRUENCIA`, y NO bloquea el testeo de conceptos de F2. La
+> reescritura real (`etapa-5` redacta, el operador aplica y anexa `CAMBIO_BOT`) corre después,
+> con el concepto ganador ya confirmado en 2 de 2, y antes de entrar a FASE 3 (gate en
+> `F3.entrada` — ver `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` reglas A/E).
+
 > **Por qué existe.** Los mentores cierran 15-20 % de los mensajes (M-F01). El portafolio cierra
 > **8.6 %** medido sobre 5,090 mensajes y 439 ventas (17-jul → 01-sep-2026, serie limpia). A gasto
 > y mensajes idénticos, el 15 % son **+324 ventas y CPA de Q51.5 a Q29.6**. Ninguna palanca de

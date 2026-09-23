@@ -434,3 +434,12 @@ _DIM_PRECIOS.csv  ┘    (esta plantilla)
 **Todo cambio de flujo en un producto vivo se anexa como `CAMBIO_BOT` a `PRODUCTOS/_EVENTOS.csv`
 el día que se aplica.** El efecto se nota en horas (regla F), así que sin la fecha del cambio no
 hay forma de saber qué lo movió.
+
+**Cuándo diagnostica y cuándo reescribe (mapea reglas A/E de arriba a `DOCTRINA/FLUJO.json`):**
+el DIAGNÓSTICO de congruencia (regla E) va en `F2.etapa-11`, en paralelo al testeo de conceptos,
+y registra `DIAGNOSTICO_CONGRUENCIA` — no
+bloquea F2. La REESCRITURA (`CAMBIO_BOT`) corre DESPUÉS del concepto ganador confirmado en 2 de 2
+y ANTES de entrar a FASE 3 (regla A: el flujo va antes que la estructura, y F3 es CBO — la
+estructura más irreversible del sistema): gate en `F3.entrada`, que exige el `CAMBIO_BOT` (o un
+`EXCEPCION_CAMBIO_BOT` si el operador decide saltárselo) fechado DESPUÉS del ganador, nunca uno
+viejo que sea variable de confusión.

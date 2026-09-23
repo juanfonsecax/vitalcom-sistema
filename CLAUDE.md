@@ -232,10 +232,15 @@ No se violan en ninguna fase. El código las cita por número: **no renumerar**.
 
 ### Dos punteros que valen por una regla
 
-- **El CIERRE es la palanca más grande del sistema.** Su dueño es `etapa-11`, que corre al confirmar
-  el ángulo ganador, **antes de gastar más**; `etapa-11` diagnostica, `etapa-5` redacta. **Todo
-  cambio de flujo se loguea como `CAMBIO_BOT` en `_EVENTOS.csv` el día que se aplica.** Ante un
-  cierre desplomado, verificar PRIMERO la consistencia física ad ↔ destino.
+- **El CIERRE es la palanca más grande del sistema.** Su dueño es `etapa-11`. El DIAGNÓSTICO y la
+  REESCRITURA no corren juntos: `etapa-11` diagnostica el cierre y la congruencia anuncio↔bot en
+  **FASE 2** (nodo `F2.etapa-11`, registra `DIAGNOSTICO_CONGRUENCIA`, no bloquea el testeo de
+  conceptos), y la REESCRITURA (`etapa-5` redacta, el operador aplica y anexa `CAMBIO_BOT`) corre
+  **después del concepto ganador en 2 de 2 y antes de FASE 3** — gate en `F3.entrada` de
+  `DOCTRINA/FLUJO.json`, que exige un `CAMBIO_BOT` (o un `EXCEPCION_CAMBIO_BOT` si el operador
+  decide saltárselo) fechado DESPUÉS del ganador, nunca uno viejo. Reglas A-G del orden en
+  `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`. Ante un cierre desplomado, verificar PRIMERO la consistencia
+  física ad ↔ destino.
 - **El dinero se mide con `DOCTRINA/CONTABILIDAD.md`**, que manda sobre cualquier otro cálculo. Negocio
   CONTRA ENTREGA: cohorte ≠ caja; un cohorte de menos de 10 días es PRELIMINAR; el `MARGEN LOGÍSTICO`
   de Dropi NO es la ganancia.

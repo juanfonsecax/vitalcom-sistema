@@ -125,12 +125,14 @@
    "nodos": [
     {
      "id": "F2.etapa-11",
-     "titulo": "Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)",
+     "titulo": "Diagnosticar la congruencia del bot hacia el ángulo ganador (sin reescribir el flujo todavía)",
      "ejecutor": {"tipo": "subagente", "name": "etapa-11"},
-     "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+     "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
      "produce": [
-      {"dato": "CAMBIO_BOT registrado en _EVENTOS.csv", "predicado": {"tipo": "eventos", "evento": ["CAMBIO_BOT"], "min": 1},
-       "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)", "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"}
+      {"dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
+       "predicado": {"tipo": "eventos", "evento": ["DIAGNOSTICO_CONGRUENCIA"], "min": 1, "posterior_a": {"tipo": "angulo_ganador"}},
+       "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+       "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"}
      ]
     },
     {
@@ -227,8 +229,14 @@
    "id": "F3",
    "titulo": "FASE 3 · ESCALADO",
    "mide": "volumen — 1-1-7 · CBO · nada se mide",
-   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1)",
-               "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}},
+   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) NI sin reescribir el flujo del bot hacia ese ganador (ver F2.etapa-11 más arriba). Un CAMBIO_BOT viejo (de antes del concepto ganador, p.ej. un relanzamiento no relacionado) NO satisface este gate: tiene que estar fechado DESPUES. Si el operador decide explícitamente saltarse la reescritura, un evento EXCEPCION_CAMBIO_BOT (registrado a mano con registrar_evento.py) fechado después del ganador también lo satisface.",
+               "gate": {"tipo": "todos", "de": [
+                 {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"},
+                 {"tipo": "alguno", "de": [
+                   {"tipo": "eventos", "evento": ["CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}},
+                   {"tipo": "eventos", "evento": ["EXCEPCION_CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}}
+                 ]}
+               ]}},
    "nodos": [
     {
      "id": "F3.plan",

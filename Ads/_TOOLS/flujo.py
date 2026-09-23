@@ -513,6 +513,20 @@ def _ev_data_fresca(p, ctx, env):
 def _ev_eventos(p, ctx, env):
     ev = p.get("evento")
     evs = [ev] if isinstance(ev, str) else (ev or [])
+    # `posterior_a` filtra a eventos con fecha ESTRICTAMENTE posterior a una fecha de referencia
+    # que resuelve otra parte del sistema — nunca una fecha escrita a mano acá.
+    # `{"tipo": "<clave de RESOLVEDORES_FECHA>"}`; sin fecha de referencia resoluble (p.ej. sin
+    # ganador todavía) el gate no pasa, no se interpreta como "sin límite".
+    fecha_ref = None
+    posterior_a = p.get("posterior_a")
+    if posterior_a:
+        tipo_fecha = posterior_a.get("tipo") if isinstance(posterior_a, dict) else posterior_a
+        resolver = RESOLVEDORES_FECHA.get(tipo_fecha)
+        if resolver is None:
+            return False, "posterior_a: resolvedor de fecha desconocido '%s'" % tipo_fecha
+        fecha_ref = resolver(ctx, env)
+        if fecha_ref is None:
+            return False, "posterior_a:%s sin fecha de referencia resoluble todavía" % tipo_fecha
     filas = []
     for r in env.csv("_EVENTOS.csv"):
         if (r.get("producto_key") or "").strip() != ctx["pk"]:
@@ -524,6 +538,8 @@ def _ev_eventos(p, ctx, env):
             continue
         if "desde_dias" in p and (f is None or (env.hoy - f).days > resolver_num(p["desde_dias"], env)):
             continue
+        if fecha_ref is not None and (f is None or f <= fecha_ref):
+            continue
         cc = p.get("campana_contiene")
         if cc and fmt(cc, ctx).lower() not in (r.get("campana_clave") or "").lower():
             continue
@@ -531,6 +547,8 @@ def _ev_eventos(p, ctx, env):
     n = len(filas)
     ult = max((fecha(r.get("fecha")) for r in filas if fecha(r.get("fecha"))), default=None)
     que = "%d evento(s) %s%s" % (n, "/".join(evs) or "(cualquiera)", (" · último %s" % ult) if ult else "")
+    if fecha_ref is not None:
+        que += " · posterior a %s" % fecha_ref
     lim = resolver_num(p.get("min", 1), env)
     if "max" in p:
         return n <= resolver_num(p["max"], env), que
@@ -639,6 +657,45 @@ def _angulos_probados(env, pk):
     return sorted(angulos)
 
 
+def _angulo_ganador_info(p, ctx, env):
+    """Cálculo compartido de "quién ganó el ángulo", para que _fecha_angulo_ganador() derive su
+    fecha de la MISMA evidencia que corona al ganador, nunca de un cálculo aparte.
+
+    Devuelve {"gana": bool, "claves": [angulo_key,...], "que": str} — `claves` son las llaves
+    de angulo_key (o el nombre del conjunto, si el ángulo ganó por la rama histórica sin
+    angulo_key asignado todavía) que calificaron como ganadoras."""
+    pk = ctx["pk"]
+    mv = resolver_num(p.get("min_ventas", "@param:min_ventas_ganador"), env) or 5
+    prod = next((r for r in env.csv("_DIM_PRODUCTOS.csv") if (r.get("producto_key") or "").strip() == pk), {})
+    be = num(prod.get("cpa_be_q"))
+    tasa = num(prod.get("tasa"), 7.62) or 7.62
+    ganadores, claves = [], []
+    cortos = []                       # ESCALAR que aún no llega al piso: se dice, no se esconde
+    celdas, _ = env.celdas(pk)
+    for c in celdas:
+        if c.get("estado") != "ESCALAR":
+            continue
+        v = num(c.get("ventas"), 0) or 0
+        if v >= mv:
+            ganadores.append("%s (ESCALAR %.0fv CPA Q%s)" % (c["celda"], v, c.get("cpa_real_q")))
+            claves.append(c["celda"])
+        else:
+            cortos.append("%s (ESCALAR pero %.0fv < %g)" % (c["celda"], v, mv))
+    if be:
+        for k, (v, s) in sorted(_angulos_acumulados(env, pk).items(), key=lambda kv: -kv[1][0]):
+            if v >= mv and s > 0 and (s * tasa / v) <= be:
+                et = "%s (histórico %.0fv CPA Q%.1f ≤ BE Q%.1f)" % (k, v, s * tasa / v, be)
+                if not any(k in g for g in ganadores):
+                    ganadores.append(et)
+                    claves.append(k)
+    if not ganadores:
+        que = "ningún ángulo con ≥%g ventas a CPA ≤ BE ni ESCALAR vigente con ≥%g ventas" % (mv, mv)
+        if cortos:
+            que += " · descartado por volumen: " + "; ".join(cortos[:3])
+        return {"gana": False, "claves": [], "que": que}
+    return {"gana": True, "claves": claves, "que": "; ".join(ganadores[:4])}
+
+
 def _ev_angulo_ganador(p, ctx, env):
     """Ganador = ESCALAR del motor en la ventana vigente, O historia rentable acumulada.
     Las dos cosas son VENTA por angulo_key, y LAS DOS exigen el mismo piso de volumen
@@ -657,34 +714,51 @@ def _ev_angulo_ganador(p, ctx, env):
     coronaba y el producto saltaba de fase esa misma noche — medido en la simulación de
     TURMERIC. min_ventas_ganador es literalmente «cuántas ventas hacen a un ganador»: que
     una rama lo aplicara y la otra no era un reglamento partido en dos."""
+    info = _angulo_ganador_info(p, ctx, env)
+    return info["gana"], info["que"]
+
+
+def _fecha_angulo_ganador(ctx, env):
+    """Fecha ESTABLE en la que el ángulo ganador (gate angulo_ganador) quedó confirmado: el
+    primer día en que las ventas ACUMULADAS de los conjuntos de ese ángulo alcanzaron el piso
+    del ganador (min_ventas_ganador). Es una fecha de PRIMER CRUCE, no "el último día con venta":
+    las campañas del ángulo siguen vendiendo después de coronarlo, y un "último día" se movería
+    hacia adelante con cada venta nueva, haciendo que un CAMBIO_BOT que hoy es "posterior al
+    ganador" deje de serlo mañana sin que nada haya cambiado en el ganador mismo. Con el primer
+    cruce, una venta posterior nunca mueve la fecha ya confirmada.
+
+    Usada por F2.etapa-11 para fechar el diagnóstico de congruencia DESPUÉS del ganador — nunca
+    antes, que sería diagnosticar un ángulo que todavía no ganó."""
     pk = ctx["pk"]
-    mv = resolver_num(p.get("min_ventas", "@param:min_ventas_ganador"), env) or 5
-    prod = next((r for r in env.csv("_DIM_PRODUCTOS.csv") if (r.get("producto_key") or "").strip() == pk), {})
-    be = num(prod.get("cpa_be_q"))
-    tasa = num(prod.get("tasa"), 7.62) or 7.62
-    ganadores = []
-    cortos = []                       # ESCALAR que aún no llega al piso: se dice, no se esconde
-    celdas, _ = env.celdas(pk)
-    for c in celdas:
-        if c.get("estado") != "ESCALAR":
+    info = _angulo_ganador_info({}, ctx, env)
+    if not info["gana"] or not info["claves"]:
+        return None
+    claves = set(info["claves"])
+    mv = resolver_num("@param:min_ventas_ganador", env) or 5
+    am = env.alias()
+    ang = {}
+    for r in env.csv("_DIM_CONJUNTOS.csv"):
+        if (r.get("producto_key") or "").strip() == pk:
+            cm = (r.get("conjunto_meta") or "").strip()
+            ang[am.get(cm, cm)] = (r.get("angulo_key") or "").strip()
+    filas = []
+    for r, cj in _ventas_base(env, pk):
+        v = num(r.get("ventas"), 0) or 0
+        if v <= 0:
             continue
-        v = num(c.get("ventas"), 0) or 0
-        if v >= mv:
-            ganadores.append("%s (ESCALAR %.0fv CPA Q%s)" % (c["celda"], v, c.get("cpa_real_q")))
-        else:
-            cortos.append("%s (ESCALAR pero %.0fv < %g)" % (c["celda"], v, mv))
-    if be:
-        for k, (v, s) in sorted(_angulos_acumulados(env, pk).items(), key=lambda kv: -kv[1][0]):
-            if v >= mv and s > 0 and (s * tasa / v) <= be:
-                et = "%s (histórico %.0fv CPA Q%.1f ≤ BE Q%.1f)" % (k, v, s * tasa / v, be)
-                if not any(k in g for g in ganadores):
-                    ganadores.append(et)
-    if not ganadores:
-        que = "ningún ángulo con ≥%g ventas a CPA ≤ BE ni ESCALAR vigente con ≥%g ventas" % (mv, mv)
-        if cortos:
-            que += " · descartado por volumen: " + "; ".join(cortos[:3])
-        return False, que
-    return True, "; ".join(ganadores[:4])
+        k = ang.get(cj) or cj
+        if k not in claves:
+            continue
+        f = fecha(r.get("ventana_fin")) or fecha(r.get("ventana_ini"))
+        if f:
+            filas.append((f, v))
+    filas.sort(key=lambda t: t[0])
+    acc = 0.0
+    for f, v in filas:
+        acc += v
+        if acc >= mv:
+            return f
+    return None
 
 
 def _concepto_de(anuncio, conjunto):
@@ -698,6 +772,75 @@ def _concepto_de(anuncio, conjunto):
     if m:
         return m.group(1)
     return None
+
+
+def _concepto_ganador_info(p, ctx, env):
+    """Cálculo compartido de la regla de replicación, para que la FECHA de confirmación del
+    ganador —que necesita el gate «CAMBIO_BOT posterior al ganador» de F3— se derive EXACTAMENTE
+    de la misma evidencia que corona al concepto, nunca de un cálculo aparte que podría discrepar.
+
+    Devuelve un dict: {"gana": bool, "concepto": str|None, "n": int, "total_campanas": int,
+    "que": str, "empates": [...]}. Un concepto solo "gana" con n >= 2."""
+    pk = ctx["pk"]
+    mv = resolver_num(p.get("min_ventas", "@param:min_ventas_escalar"), env) or 2
+    margen = resolver_num(p.get("margen_empate_pct", "@param:margen_empate_cpa_pct"), env)
+    margen = 0.0 if margen is None else margen      # sin parámetro declarado: winner-take-all
+    # Grano ANUNCIO ya agregado por gasto.py (g07-cimientos T2): una fila por anuncio, con su
+    # gasto de Meta contado una sola vez -- nunca la copia del total del conjunto en cada anuncio
+    # sin match individual (ese fue el defecto de conteo múltiple que rompía este mismo gate).
+    por_camp = {}
+    for c in _celdas_anuncio_gasto(env, pk):
+        if c["producto_key"] != pk:
+            continue
+        camp = c["campana"]
+        if "CONCEPTOS" not in camp.upper():
+            continue
+        cpt = _concepto_de(c["anuncio"], c["conjunto"])
+        if not cpt:
+            continue
+        a = por_camp.setdefault(camp, {}).setdefault(cpt, [0.0, 0.0])
+        a[0] += c["ventas"]
+        a[1] += c["spend_usd"]
+    if len(por_camp) < 2:
+        return {"gana": False, "concepto": None, "n": 0, "total_campanas": len(por_camp),
+                "empates": [],
+                "que": "%d campaña(s) de conceptos con data · se necesitan 2 para replicar" % len(por_camp)}
+    conteo = {}
+    empates = []
+    for camp, cs in sorted(por_camp.items()):
+        cand = sorted((s / v, c) for c, (v, s) in cs.items() if v >= mv and s > 0)
+        if not cand:
+            continue
+        techo = cand[0][0] * (1.0 + margen / 100.0)
+        ganan = [c for cpa, c in cand if cpa <= techo + 1e-9]
+        for c in ganan:
+            conteo[c] = conteo.get(c, 0) + 1
+        if len(ganan) > 1:
+            empates.append("%s en «%s»" % (" = ".join(ganan), camp))
+    if not conteo:
+        return {"gana": False, "concepto": None, "n": 0, "total_campanas": len(por_camp),
+                "empates": empates, "que": "ningún concepto con ≥%g ventas en ninguna campaña" % mv}
+    # Desempate determinista: más campañas primero y, a igualdad, el mejor CPA AGREGADO — que
+    # junta la evidencia de todas las campañas en vez de fiarse del número de una sola. El
+    # nombre entra solo como último recurso, para no depender del orden de lectura del CSV.
+    glob = {}
+    for cs in por_camp.values():
+        for c, (v, s) in cs.items():
+            a = glob.setdefault(c, [0.0, 0.0])
+            a[0] += v
+            a[1] += s
+
+    def _cpa_glob(c):
+        v, s = glob.get(c, [0.0, 0.0])
+        return (s / v) if v > 0 else float("inf")
+
+    c = min(conteo, key=lambda k: (-conteo[k], _cpa_glob(k), k))
+    n = conteo[c]
+    que = "%s replica en %d de las %d campañas con data (hacen falta 2)" % (c, n, len(por_camp))
+    if empates:
+        que += " · empate técnico dentro del %g%%: %s" % (margen, "; ".join(empates[:2]))
+    return {"gana": n >= 2, "concepto": c, "n": n, "total_campanas": len(por_camp),
+            "empates": empates, "que": que}
 
 
 def _ev_concepto_2de2(p, ctx, env):
@@ -724,62 +867,63 @@ def _ev_concepto_2de2(p, ctx, env):
     No se usa el IC acá, y es deliberado: con 2 ventas el intervalo de un concepto es tan ancho
     que TODOS se solaparían con todos y el gate se volvería trivial. El margen acota el empate a
     una banda declarada en vez de a una incertidumbre que con n chico no discrimina."""
+    info = _concepto_ganador_info(p, ctx, env)
+    return info["gana"], info["que"]
+
+
+def _fecha_concepto_ganador(ctx, env):
+    """Fecha ESTABLE en la que el concepto ganador (gate concepto_2de2) quedó confirmado. No
+    existe un evento reservado tipo GANADOR_CONCEPTO en _EVENTOS.csv (el vocabulario de evento
+    es libre, ver registrar_evento.py) — se DERIVA determinísticamente de la misma evidencia que
+    _concepto_ganador_info() ya usa para coronarlo, pero como PRIMER CRUCE, no como "el último
+    día con venta": las campañas de CONCEPTOS siguen vendiendo después de que el concepto ya
+    replicó, y un "último día" se movería hacia adelante con cada venta nueva, haciendo que un
+    CAMBIO_BOT que hoy es "posterior al ganador" deje de serlo mañana. Por campaña, se ordenan
+    sus ventas del concepto ganador por fecha y se marca el día en que la suma ACUMULADA alcanzó
+    el piso de replicación (min_ventas_escalar); la fecha de confirmación es el día en que la
+    SEGUNDA campaña cruzó ese piso — la misma campaña que hace ganar al gate (≥2 campañas).
+
+    Sin ganador, None (el gate `posterior_a` de F3 no puede resolver una fecha de referencia y
+    por lo tanto no pasa — correcto: sin concepto ganador tampoco se puede entrar a FASE 3,
+    invariante 1)."""
     pk = ctx["pk"]
-    mv = resolver_num(p.get("min_ventas", "@param:min_ventas_escalar"), env) or 2
-    margen = resolver_num(p.get("margen_empate_pct", "@param:margen_empate_cpa_pct"), env)
-    margen = 0.0 if margen is None else margen      # sin parámetro declarado: winner-take-all
-    # Grano ANUNCIO ya agregado por gasto.py (g07-cimientos T2): una fila por anuncio, con su
-    # gasto de Meta contado una sola vez -- nunca la copia del total del conjunto en cada anuncio
-    # sin match individual (ese fue el defecto de conteo múltiple que rompía este mismo gate).
-    por_camp = {}
-    for c in _celdas_anuncio_gasto(env, pk):
-        if c["producto_key"] != pk:
-            continue
-        camp = c["campana"]
+    info = _concepto_ganador_info({}, ctx, env)
+    if not info["gana"] or not info["concepto"]:
+        return None
+    ganador = info["concepto"]
+    mv = resolver_num("@param:min_ventas_escalar", env) or 2
+    por_campana = {}
+    for r, cj in _ventas_base(env, pk):
+        camp = (r.get("campana") or "").strip()
         if "CONCEPTOS" not in camp.upper():
             continue
-        cpt = _concepto_de(c["anuncio"], c["conjunto"])
-        if not cpt:
+        v = num(r.get("ventas"), 0) or 0
+        if v <= 0:
             continue
-        a = por_camp.setdefault(camp, {}).setdefault(cpt, [0.0, 0.0])
-        a[0] += c["ventas"]
-        a[1] += c["spend_usd"]
-    if len(por_camp) < 2:
-        return False, "%d campaña(s) de conceptos con data · se necesitan 2 para replicar" % len(por_camp)
-    conteo = {}
-    empates = []
-    for camp, cs in sorted(por_camp.items()):
-        cand = sorted((s / v, c) for c, (v, s) in cs.items() if v >= mv and s > 0)
-        if not cand:
+        if _concepto_de(r.get("anuncio"), cj) != ganador:
             continue
-        techo = cand[0][0] * (1.0 + margen / 100.0)
-        ganan = [c for cpa, c in cand if cpa <= techo + 1e-9]
-        for c in ganan:
-            conteo[c] = conteo.get(c, 0) + 1
-        if len(ganan) > 1:
-            empates.append("%s en «%s»" % (" = ".join(ganan), camp))
-    if not conteo:
-        return False, "ningún concepto con ≥%g ventas en ninguna campaña" % mv
-    # Desempate determinista: más campañas primero y, a igualdad, el mejor CPA AGREGADO — que
-    # junta la evidencia de todas las campañas en vez de fiarse del número de una sola. El
-    # nombre entra solo como último recurso, para no depender del orden de lectura del CSV.
-    glob = {}
-    for cs in por_camp.values():
-        for c, (v, s) in cs.items():
-            a = glob.setdefault(c, [0.0, 0.0])
-            a[0] += v
-            a[1] += s
+        f = fecha(r.get("ventana_fin")) or fecha(r.get("ventana_ini"))
+        if f:
+            por_campana.setdefault(camp, []).append((f, v))
+    cruces = []
+    for camp, filas in por_campana.items():
+        filas.sort(key=lambda t: t[0])
+        acc = 0.0
+        for f, v in filas:
+            acc += v
+            if acc >= mv:
+                cruces.append(f)
+                break
+    if len(cruces) < 2:
+        return None
+    cruces.sort()
+    return cruces[1]
 
-    def _cpa_glob(c):
-        v, s = glob.get(c, [0.0, 0.0])
-        return (s / v) if v > 0 else float("inf")
 
-    c = min(conteo, key=lambda k: (-conteo[k], _cpa_glob(k), k))
-    n = conteo[c]
-    que = "%s replica en %d de las %d campañas con data (hacen falta 2)" % (c, n, len(por_camp))
-    if empates:
-        que += " · empate técnico dentro del %g%%: %s" % (margen, "; ".join(empates[:2]))
-    return n >= 2, que
+RESOLVEDORES_FECHA = {
+    "concepto_ganador": _fecha_concepto_ganador,
+    "angulo_ganador": _fecha_angulo_ganador,
+}
 
 
 TOKEN_FASE = {"1": "TEST", "2": "CONCEPTOS", "3": "ESCALA"}

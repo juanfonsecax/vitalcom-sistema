@@ -93,6 +93,12 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
   > clase 22-ago), después fricción, congruencia ad ↔ bot, oferta y FAQ nuevas.
   > Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` y anexar `CAMBIO_BOT` a
   > `_EVENTOS.csv` el día que se aplica: el efecto se nota en horas.
+  >
+  > **Este `CAMBIO_BOT` es el del A/B de flujo de esta fase, NO el que exige `F3.entrada`.**
+  > El gate de FASE 3 pide un `CAMBIO_BOT` fechado DESPUÉS del
+  > concepto ganador en 2 de 2 — la reescritura final hacia ese ganador, que corre cuando termina
+  > esta fase, no al arrancarla. Ver `fase-3-escalado/SKILL.md` y `F3.entrada` en
+  > `DOCTRINA/FLUJO.json`.
 
 ---
 
