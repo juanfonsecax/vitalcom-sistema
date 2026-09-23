@@ -50,6 +50,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from alias import canonico   # noqa: E402  (un renombrado en Meta no debe partir la serie)
+import upsert_fact   # noqa: E402  (UPSERT/migracion de esquema compartida, ver su docstring)
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -79,8 +80,12 @@ COLS = ["ventana_ini", "ventana_fin", "dias", "producto_key", "cuenta_id", "cuen
         "campana", "conjunto", "mensajes", "clicks_totales", "link_clicks", "impresiones",
         "spend_usd", "pct_conv_clic_enlace", "fuente"]
 
-# El nivel anuncio lleva los mismos hechos mas el nombre y los 5 ejes que viajan en la firma.
-COLS_AD = (COLS[:8] + ["anuncio", "firma", "angulo_key", "concepto_key", "canonico_id",
+# El nivel anuncio lleva los mismos hechos mas el nombre, el ad_id real de Meta y los 5
+# ejes que viajan en la firma. `ad_id` se agrego 22-sep-2026 (g07 T1): antes el JOIN con
+# _FACT_VENTAS.csv solo podia hacerse por NOMBRE, y un renombrado en Meta lo rompia. Una
+# fila escrita antes de este cambio no tiene esta columna en su CSV: leerla pasa por
+# upsert_fact.leer_migrado(), que la completa con "" — nunca se inventa el id.
+COLS_AD = (COLS[:8] + ["anuncio", "ad_id", "firma", "angulo_key", "concepto_key", "canonico_id",
                        "nivel_conciencia", "oferta_key", "destino_key"] + COLS[8:])
 
 # nombre de columna -> las variantes que ha usado el exportador
@@ -383,16 +388,16 @@ def main():
         print(f"\nescritas {len(nuevas)} filas en {os.path.relpath(FACT, BASE)}")
         print(f"backup: _ARCHIVO/backups_csv/_FACT_ENTREGA_{stamp}.csv")
     if nuevos_ads:
-        existe = os.path.exists(FACT_AD)
-        if existe:
-            shutil.copy2(FACT_AD, os.path.join(BKDIR, f"_FACT_ENTREGA_ANUNCIO_{stamp}.csv"))
-        with open(FACT_AD, "a" if existe else "w", newline="", encoding="utf-8") as fh:
-            w = csv.DictWriter(fh, fieldnames=COLS_AD)
-            if not existe:
-                w.writeheader()
-            for r in nuevos_ads:
-                w.writerow({c: r.get(c, "") for c in COLS_AD})
-        print(f"escritas {len(nuevos_ads)} filas en {os.path.relpath(FACT_AD, BASE)}")
+        # upsert_fact en vez de un append crudo (22-sep-2026, g07 T1): `nuevos_ads` ya viene
+        # deduplicado contra `ads_ex` (mas arriba), asi que en la practica esto agrega, no
+        # reemplaza — pero pasar por upsert_fact.leer_migrado() es lo que permite que un
+        # _FACT_ENTREGA_ANUNCIO.csv escrito ANTES de que existiera la columna ad_id (COLS_AD)
+        # se complete con "" en vez de romper el alineado de columnas al anexar con el header
+        # nuevo. La llave es la misma identidad anti-duplicado de siempre.
+        llave_ad = ("ventana_ini", "ventana_fin", "cuenta_alias", "campana", "conjunto",
+                    "anuncio", "fuente")
+        _, n_nuevas, _ = upsert_fact.upsert(FACT_AD, COLS_AD, llave_ad, nuevos_ads, BKDIR)
+        print(f"escritas {n_nuevas} filas en {os.path.relpath(FACT_AD, BASE)}")
     return 0
 
 

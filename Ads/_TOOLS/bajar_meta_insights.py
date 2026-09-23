@@ -36,11 +36,29 @@ aparte, nunca lo mezcla en el CSV. Si un conjunto propio nuevo todavia no esta e
 sale como excluido: revisar el conteo de excluidos si crece de golpe.
 
 MAPEO DE CAMPOS (Graph API real, no el alias del MCP — verificar contra el primer pull real):
-  spend -> spend_usd · inline_link_clicks -> link_clicks · el resto, nombres identicos.
-  "ad_name"/"campaign_name"/"adset_name" reemplazan a "name" (que en el MCP viaja por nivel).
+  spend -> spend_usd · inline_link_clicks -> link_clicks · ad_id -> ad_id · el resto, nombres
+  identicos. "ad_name"/"campaign_name"/"adset_name" reemplazan a "name" (que en el MCP viaja
+  por nivel).
+  `mensajes` YA NO se deriva de clics (22-sep-2026, g07-cimientos T1 — RETIRADO el estimado que
+  vivia aca: mensajes = tasa_conv_whatsapp x link_clicks, doctrina que sigue viva SOLO para el
+  camino xlsx de ingerir_meta.py, que no tiene "actions"). Esta API SI trae conversaciones reales
+  de mensajeria en el campo "actions": ver mensajes_de() mas abajo para el action_type exacto.
   No se pide "results"/"cost_per_result": son columnas derivadas de Ads Manager segun el
-  optimization_goal: la doctrina ya deriva mensajes = tasa_conv_whatsapp x link_clicks (ver
-  ingerir_meta.py), asi que no hacen falta aca.
+  optimization_goal, y con "actions" ya resuelto no hacen falta.
+  `ad_id` se pide y se escribe en _FACT_ENTREGA_ANUNCIO.csv (COLS_AD, dueno unico en
+  ingerir_meta.py): permite el JOIN con _FACT_VENTAS.csv por id en vez de por nombre exacto,
+  que se rompe con cada renombrado (evidencia g06, 22-sep-2026).
+
+VENTANA DE LIQUIDACION (T1, 22-sep-2026): el gasto de Meta/LucidSales a veces llega CONGELADO a
+mitad de dia (medido: 06/14/15/16/20-sep con 0.65-0.75 del gasto real; 07-11 y 17-19 en 1.000).
+Con el ingestor viejo (append + dedupe) un dia parcial quedaba mal PARA SIEMPRE: la corrida
+siguiente encontraba la misma llave y la descartaba como duplicado. Ahora, sin --fecha explicito,
+la corrida por defecto RE-CONSULTA los ultimos upsert_fact.SETTLEMENT_WINDOW_DIAS dias (hoy 3,
+ver esa constante) y REEMPLAZA por llave en vez de anexar (upsert_fact.upsert) — un dia que se
+corrige en el panel de Meta se corrige tambien aca la noche siguiente, sin re-cargar el historico
+entero. `--fecha` sigue trayendo UN dia puntual (uso manual); `--desde/--hasta` trae un tramo,
+consultando la API UN DIA A LA VEZ (Graph API onsite no agrega bien un rango multi-dia a nivel
+anuncio) y aplicando el mismo upsert por cada dia.
 
 CREDENCIALES — nunca en el repo, nunca en git, nunca en la linea de comandos.
   Se leen de la variable de entorno META_SYSTEM_USER_TOKEN, y si no esta, de un .env local
@@ -48,17 +66,18 @@ CREDENCIALES — nunca en el repo, nunca en git, nunca en la linea de comandos.
   El token debe ser de un System User con permiso ads_read UNICAMENTE sobre las cuentas activas.
 
 Uso:
-    python Ads/_TOOLS/bajar_meta_insights.py                 # trae AYER, todas las cuentas activas
+    python Ads/_TOOLS/bajar_meta_insights.py                 # ventana de liquidacion (D-1..D-N)
     python Ads/_TOOLS/bajar_meta_insights.py --fecha 2026-09-15
+    python Ads/_TOOLS/bajar_meta_insights.py --desde 2026-09-14 --hasta 2026-09-16
     python Ads/_TOOLS/bajar_meta_insights.py --dry-run
 
 CODIGO DE SALIDA (T1b, 22-sep-2026) — una falla parcial NO debe tumbar la cadena nocturna completa:
-    0 = todas las cuentas respondieron OK.
-    2 = PARCIAL: al menos una cuenta OK y al menos una fallo. Las filas de las cuentas que si
-        respondieron ya se escribieron en _FACT_ENTREGA/_FACT_ENTREGA_ANUNCIO. El llamador nocturno
-        (app/backend/vitalcom_app/workflows.py, paso "ciclo.bajar_meta") trata este codigo como
-        AVISO: registra el detalle y sigue con el resto de la cadena.
-    1 = todas las cuentas fallaron, o no hay ninguna cuenta ACTIVE con metodo de pago, o un error
+    0 = todas las cuentas (y todos los dias pedidos) respondieron OK.
+    2 = PARCIAL: al menos un intento cuenta-dia OK y al menos uno fallo. Las filas de los intentos
+        que si respondieron ya se escribieron en _FACT_ENTREGA/_FACT_ENTREGA_ANUNCIO. El llamador
+        nocturno (app/backend/vitalcom_app/workflows.py, paso "ciclo.bajar_meta") trata este codigo
+        como AVISO: registra el detalle y sigue con el resto de la cadena.
+    1 = todos los intentos fallaron, o no hay ninguna cuenta ACTIVE con metodo de pago, o un error
         fatal antes de procesar cuentas. Este codigo SI detiene la cadena nocturna.
 """
 import sys, os, csv, json, time, shutil, argparse, datetime, warnings
@@ -77,6 +96,7 @@ warnings.filterwarnings("ignore")
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ingerir_meta as im   # reusa parsear_firma, leer_dim, producto_de, COLS, COLS_AD, TASA_COP_USD
+import upsert_fact as uf    # UPSERT/migracion de esquema compartida (ver su docstring)
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -89,10 +109,19 @@ ENV_DEFAULT = os.path.join(os.path.expanduser("~"), ".config", "meta", ".env")
 TIMEOUT = 60
 
 # Nombres reales de la Graph API (nivel "ad"). "name" del MCP -> "ad_name" aca.
-FIELDS = ["ad_name", "campaign_name", "adset_name", "spend", "impressions",
-          "clicks", "inline_link_clicks", "cpm", "ctr", "frequency", "reach"]
+FIELDS = ["ad_id", "ad_name", "campaign_name", "adset_name", "spend", "impressions",
+          "clicks", "inline_link_clicks", "cpm", "ctr", "frequency", "reach", "actions"]
 
 RATE_LIMIT_CODES = {4, 17, 32, 613}
+
+# action_type de "actions" para conversaciones de mensajeria iniciadas (Messenger/WhatsApp).
+# REGLA (22-sep-2026, g07 T1): se prefiere la variante con ventana de atribucion de 7 dias
+# (la que usa el reporte estandar de Ads Manager); si Meta no la trae para ese anuncio se acepta
+# la variante sin sufijo "_7d" si esta presente. Si NINGUNA aparece, mensajes = 0 — ya no se
+# deriva de clics (ese estimado queda retirado de este camino; sigue vivo solo en el xlsx, ver
+# docstring del modulo).
+ACTION_TYPE_MENSAJES = "onsite_conversion.messaging_conversation_started_7d"
+ACTION_TYPE_MENSAJES_ALT = "onsite_conversion.messaging_conversation_started"
 
 
 def cargar_env(path):
@@ -177,6 +206,18 @@ def num(v, default=0.0):
         return default
 
 
+def mensajes_de(actions):
+    """"actions" (lista de {"action_type","value",...} de la Graph API) -> conteo de
+    conversaciones de mensajeria iniciadas. Ver ACTION_TYPE_MENSAJES para la regla completa."""
+    if not actions:
+        return 0
+    por_tipo = {a.get("action_type"): a.get("value") for a in actions if isinstance(a, dict)}
+    v = por_tipo.get(ACTION_TYPE_MENSAJES)
+    if v is None:
+        v = por_tipo.get(ACTION_TYPE_MENSAJES_ALT)
+    return int(num(v))
+
+
 def leer_cuentas_activas():
     """Cuentas para LEER entrega por Graph API directa. No filtra por mcp_habilitado: ese campo es
     del conector interactivo de publicacion (ver docstring del modulo), irrelevante para una
@@ -211,7 +252,8 @@ def procesar_cuenta(cuenta, fecha, token, dim):
             "ventana_ini": fecha, "ventana_fin": fecha, "dias": 1,
             "producto_key": pk, "cuenta_id": cuenta_id, "cuenta_alias": alias,
             "campana": campana, "conjunto": conjunto, "anuncio": anuncio,
-            "mensajes": 0, "clicks_totales": int(num(r.get("clicks"))),
+            "ad_id": r.get("ad_id") or "",
+            "mensajes": mensajes_de(r.get("actions")), "clicks_totales": int(num(r.get("clicks"))),
             "link_clicks": int(num(r.get("inline_link_clicks"))),
             "impresiones": int(num(r.get("impressions"))),
             "spend_usd": round(sp, 2), "pct_conv_clic_enlace": 0.0,
@@ -225,25 +267,64 @@ def agregar_a_conjunto(ads):
     for d in ads:
         k = (d["cuenta_alias"], d["campana"], d["conjunto"])
         a = agg.setdefault(k, {**d, "clicks_totales": 0, "link_clicks": 0,
-                                "impresiones": 0, "spend_usd": 0.0})
-        for c in ("clicks_totales", "link_clicks", "impresiones", "spend_usd"):
+                                "impresiones": 0, "spend_usd": 0.0, "mensajes": 0})
+        for c in ("clicks_totales", "link_clicks", "impresiones", "spend_usd", "mensajes"):
             a[c] += d[c]
     for a in agg.values():
         a["spend_usd"] = round(a["spend_usd"], 2)
     return [{c: a[c] for c in im.COLS} for a in agg.values()]
 
 
+def _rango_fechas(ini, fin):
+    d0, d1 = datetime.date.fromisoformat(ini), datetime.date.fromisoformat(fin)
+    if d1 < d0:
+        raise SystemExit(f"Rango invertido: {ini} > {fin}")
+    out, d = [], d0
+    while d <= d1:
+        out.append(d.isoformat())
+        d += datetime.timedelta(days=1)
+    return out
+
+
+def _clave_conjunto(fila):
+    return (fila["fuente"], fila["ventana_ini"], fila["ventana_fin"], fila["cuenta_id"],
+            fila["campana"], fila["conjunto"])
+
+
+def _clave_anuncio(fila):
+    """(fuente, ventana, cuenta, ad_id) — o la FIRMA cuando Meta no trae ad_id para ese anuncio
+    (cuenta vieja, o el nombre no llego a tener firma). Documentado en g07-cimientos T1: es la
+    llave natural del hecho de entrega por anuncio, la misma que usa el UPSERT."""
+    return (fila["fuente"], fila["ventana_ini"], fila["ventana_fin"], fila["cuenta_id"],
+            fila.get("ad_id") or fila.get("firma") or fila.get("anuncio") or "")
+
+
 def main():
     hoy = datetime.date.today()
     p = argparse.ArgumentParser(description="Baja la entrega de Meta por Graph API directa.")
-    p.add_argument("--fecha", help="dia YYYY-MM-DD. Default: ayer")
+    p.add_argument("--fecha", help="dia YYYY-MM-DD puntual. Default: ventana de liquidacion")
+    p.add_argument("--desde", help="inicio de un tramo YYYY-MM-DD (con --hasta)")
+    p.add_argument("--hasta", help="fin de un tramo YYYY-MM-DD (con --desde)")
     p.add_argument("--env", default=ENV_DEFAULT)
     p.add_argument("--dry-run", action="store_true")
     a = p.parse_args()
 
-    fecha = a.fecha or (hoy - datetime.timedelta(days=1)).isoformat()
-    if datetime.date.fromisoformat(fecha) >= hoy:
-        print(f"AVISO: {fecha} es hoy o futuro. La doctrina manda traer siempre AYER cerrado.")
+    if a.desde or a.hasta:
+        if not (a.desde and a.hasta):
+            raise SystemExit("--desde y --hasta van juntos.")
+        fechas = _rango_fechas(a.desde, a.hasta)
+    elif a.fecha:
+        fechas = [a.fecha]
+    else:
+        # Ventana de liquidacion (T1): re-consulta D-1..D-N reemplazando por llave, no un
+        # solo dia anexado. N = upsert_fact.SETTLEMENT_WINDOW_DIAS.
+        ayer = hoy - datetime.timedelta(days=1)
+        desde = ayer - datetime.timedelta(days=uf.SETTLEMENT_WINDOW_DIAS - 1)
+        fechas = _rango_fechas(desde.isoformat(), ayer.isoformat())
+
+    for f in fechas:
+        if datetime.date.fromisoformat(f) >= hoy:
+            print(f"AVISO: {f} es hoy o futuro. La doctrina manda traer siempre dias cerrados.")
 
     token = token_de(a.env)
     cuentas = leer_cuentas_activas()
@@ -252,91 +333,61 @@ def main():
 
     dim, _ = im.leer_dim()
     todos, gasto_excl_tot, n_excl_tot = [], 0.0, 0
-    fallidas = []
-    for c in cuentas:
-        print(f"  {c['cuenta_alias']:10} ({c['cuenta_id']}) ...", end=" ")
-        try:
-            propios, gx, nx = procesar_cuenta(c, fecha, token, dim)
-        except (SystemExit, Exception) as e:
-            # Aislamiento de fallas: una cuenta que no responde (permiso denegado, red caida) no
-            # tumba a las demas. Se reporta y se sigue; el codigo de salida queda en 1 al final.
-            msg = str(e) or repr(e)
-            print(f"FALLO: {msg}")
-            print(f"ERROR en cuenta {c['cuenta_alias']} ({c['cuenta_id']}): {msg}", file=sys.stderr)
-            fallidas.append((c["cuenta_alias"], msg))
-            continue
-        gasto_excl_tot += gx
-        n_excl_tot += nx
-        todos.extend(propios)
-        print(f"{len(propios)} anuncios propios · {nx} ajenos/sin-DIM excluidos (${gx:.2f})")
+    fallidas, intentos = [], 0
+    for fecha in fechas:
+        print(f"-- {fecha} --")
+        for c in cuentas:
+            intentos += 1
+            print(f"  {c['cuenta_alias']:10} ({c['cuenta_id']}) ...", end=" ")
+            try:
+                propios, gx, nx = procesar_cuenta(c, fecha, token, dim)
+            except (SystemExit, Exception) as e:
+                # Aislamiento de fallas: una cuenta que no responde (permiso denegado, red caida) no
+                # tumba a las demas ni a los demas dias. Se reporta y se sigue; el codigo de salida
+                # queda en 1 o 2 al final segun cuantos intentos fallaron.
+                msg = str(e) or repr(e)
+                print(f"FALLO: {msg}")
+                print(f"ERROR en cuenta {c['cuenta_alias']} ({c['cuenta_id']}) fecha {fecha}: {msg}",
+                      file=sys.stderr)
+                fallidas.append((fecha, c["cuenta_alias"], msg))
+                continue
+            gasto_excl_tot += gx
+            n_excl_tot += nx
+            todos.extend(propios)
+            print(f"{len(propios)} anuncios propios · {nx} ajenos/sin-DIM excluidos (${gx:.2f})")
 
-    print(f"\nfecha {fecha} · gasto ajeno excluido: ${gasto_excl_tot:.2f} en {n_excl_tot} anuncios")
+    print(f"\ngasto ajeno excluido: ${gasto_excl_tot:.2f} en {n_excl_tot} anuncios")
     if fallidas:
-        print(f"CUENTAS CON ERROR ({len(fallidas)} de {len(cuentas)}): "
-              + ", ".join(alias for alias, _ in fallidas), file=sys.stderr)
-    # Contrato de salida (22-sep-2026, T1b): 0 = todas las cuentas OK · 2 = parcial (al menos una
-    # OK y al menos una fallo; las filas de las que si respondieron ya se escriben) · 1 = todas
-    # las cuentas fallaron (o error fatal). El llamador nocturno (workflows.py) trata 2 como
-    # aviso que NO detiene la cadena; 1 si la detiene. Ver skill recopilar-lucidsales/SKILL.md.
+        detalle = ", ".join(f"{alias}@{fecha}" for fecha, alias, _ in fallidas)
+        print(f"INTENTOS CON ERROR ({len(fallidas)} de {intentos}): {detalle}", file=sys.stderr)
+    # Contrato de salida (22-sep-2026, T1b): 0 = todo OK · 2 = parcial (al menos un intento
+    # cuenta-dia OK y al menos uno fallo; las filas de los que si respondieron ya se escriben) ·
+    # 1 = todos los intentos fallaron (o error fatal). El llamador nocturno (workflows.py) trata
+    # 2 como aviso que NO detiene la cadena; 1 si la detiene. Ver skill recopilar-lucidsales/SKILL.md.
     if not fallidas:
         resultado = 0
-    elif len(fallidas) < len(cuentas):
+    elif len(fallidas) < intentos:
         resultado = 2
     else:
         resultado = 1
 
     if not todos:
-        print("Sin anuncios propios ese dia.")
+        print("Sin anuncios propios en la ventana pedida.")
         return resultado
 
     conjuntos = agregar_a_conjunto(todos)
 
-    ads_ex = list(csv.DictReader(open(FACT_AD, encoding="utf-8"))) if os.path.exists(FACT_AD) else []
-    llaves_ad = {(r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
-                  r["conjunto"], r["anuncio"], r["fuente"]) for r in ads_ex}
-    nuevos_ads = [d for d in todos if (d["ventana_ini"], d["ventana_fin"], d["cuenta_alias"],
-                  d["campana"], d["conjunto"], d["anuncio"], d["fuente"]) not in llaves_ad]
-
-    existentes = list(csv.DictReader(open(FACT, encoding="utf-8"))) if os.path.exists(FACT) else []
-    llaves = {(r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
-               r["conjunto"], r["fuente"]) for r in existentes}
-    nuevos_conj = [d for d in conjuntos if (d["ventana_ini"], d["ventana_fin"], d["cuenta_alias"],
-                   d["campana"], d["conjunto"], d["fuente"]) not in llaves]
-
-    print(f"{len(nuevos_conj)} filas conjunto nuevas · {len(nuevos_ads)} filas anuncio nuevas "
-          f"(duplicados omitidos automaticamente)")
-
     if a.dry_run:
-        print("[dry-run] no se escribio nada.")
-        return resultado
-    if not nuevos_ads and not nuevos_conj:
-        print("nada que escribir (ya estaba cargado).")
+        print(f"\n[dry-run] {len(conjuntos)} filas conjunto · {len(todos)} filas anuncio "
+              f"listas para UPSERT — no se escribio nada.")
         return resultado
 
-    os.makedirs(BKDIR, exist_ok=True)
-    stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    if nuevos_conj:
-        existe = os.path.exists(FACT)
-        if existe:
-            shutil.copy2(FACT, os.path.join(BKDIR, f"_FACT_ENTREGA_{stamp}.csv"))
-        with open(FACT, "a" if existe else "w", newline="", encoding="utf-8") as fh:
-            w = csv.DictWriter(fh, fieldnames=im.COLS)
-            if not existe:
-                w.writeheader()
-            for r in nuevos_conj:
-                w.writerow(r)
-        print(f"escritas {len(nuevos_conj)} filas en {os.path.relpath(FACT, BASE)}")
-    if nuevos_ads:
-        existe = os.path.exists(FACT_AD)
-        if existe:
-            shutil.copy2(FACT_AD, os.path.join(BKDIR, f"_FACT_ENTREGA_ANUNCIO_{stamp}.csv"))
-        with open(FACT_AD, "a" if existe else "w", newline="", encoding="utf-8") as fh:
-            w = csv.DictWriter(fh, fieldnames=im.COLS_AD)
-            if not existe:
-                w.writeheader()
-            for r in nuevos_ads:
-                w.writerow({c: r.get(c, "") for c in im.COLS_AD})
-        print(f"escritas {len(nuevos_ads)} filas en {os.path.relpath(FACT_AD, BASE)}")
+    reemp_c, nuevas_c, sc_c = uf.upsert(FACT, im.COLS, _clave_conjunto, conjuntos, BKDIR)
+    print(f"\n_FACT_ENTREGA.csv: {reemp_c} reemplazadas (dia corregido) · {nuevas_c} nuevas · "
+          f"{sc_c} sin cambio")
+    reemp_a, nuevas_a, sc_a = uf.upsert(FACT_AD, im.COLS_AD, _clave_anuncio, todos, BKDIR)
+    print(f"_FACT_ENTREGA_ANUNCIO.csv: {reemp_a} reemplazadas (dia corregido) · {nuevas_a} nuevas · "
+          f"{sc_a} sin cambio")
     return resultado
 
 

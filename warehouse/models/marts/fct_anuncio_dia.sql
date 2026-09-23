@@ -8,6 +8,7 @@ select
     cuenta_alias,
     conjunto,
     anuncio,
+    ad_id,
     firma,
     angulo_key,
     concepto_key,
@@ -21,4 +22,4 @@ select
     sum(impresiones) as impresiones,
     sum(spend_usd)   as spend_usd
 from {{ ref('stg_entrega_anuncio') }}
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14

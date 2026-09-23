@@ -11,6 +11,7 @@ select
     trim(e.campana)                                   as campana,
     coalesce(a.nombre_nuevo, trim(e.conjunto))        as conjunto,
     trim(e.anuncio)                                   as anuncio,
+    nullif(trim(e.ad_id),'')                          as ad_id,
     nullif(trim(e.firma),'')                          as firma,
     nullif(trim(e.angulo_key),'')                     as angulo_key,
     nullif(trim(e.concepto_key),'')                   as concepto_key,

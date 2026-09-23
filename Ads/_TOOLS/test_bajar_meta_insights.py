@@ -203,6 +203,140 @@ class TestBajarMetaInsights(unittest.TestCase):
         self.assertEqual(codigo, 1, "si todas las cuentas fallan el codigo debe quedar en 1")
         self.assertFalse(os.path.exists(fact_ad), "no hay filas sanas que escribir")
 
+    def test_mensajes_de_prefiere_la_variante_7d(self):
+        actions = [
+            {"action_type": "onsite_conversion.messaging_conversation_started_7d", "value": "5"},
+            {"action_type": "onsite_conversion.messaging_conversation_started", "value": "99"},
+        ]
+        self.assertEqual(bmi.mensajes_de(actions), 5)
+
+    def test_mensajes_de_acepta_la_variante_sin_sufijo_si_falta_la_7d(self):
+        actions = [{"action_type": "onsite_conversion.messaging_conversation_started", "value": "3"}]
+        self.assertEqual(bmi.mensajes_de(actions), 3)
+
+    def test_mensajes_de_sin_action_type_de_mensajeria_da_cero(self):
+        actions = [{"action_type": "link_click", "value": "40"}]
+        self.assertEqual(bmi.mensajes_de(actions), 0)
+
+    def test_mensajes_de_sin_actions_da_cero(self):
+        self.assertEqual(bmi.mensajes_de(None), 0)
+        self.assertEqual(bmi.mensajes_de([]), 0)
+
+    def test_procesar_cuenta_lleva_ad_id_y_mensajes_reales(self):
+        """procesar_cuenta() ya no hardcodea mensajes=0: sale de 'actions', y ad_id sale
+        del campo real de la Graph API (g07-cimientos T1, 22-sep-2026)."""
+        crudo = [{
+            "ad_id": "120210000000001", "ad_name": "ANGULO_A ~ PROD|ANG|C1.CN01|NC2|2X1|BOT_V1",
+            "campaign_name": "Camp 1", "adset_name": "Conj 1", "spend": "5.00",
+            "impressions": "100", "clicks": "10", "inline_link_clicks": "8",
+            "actions": [{"action_type": "onsite_conversion.messaging_conversation_started_7d",
+                         "value": "4"}],
+        }]
+        with patch.object(bmi, "insights_de", return_value=crudo):
+            propios, gx, nx = bmi.procesar_cuenta(
+                {"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141", "moneda": "USD"},
+                "2026-09-21", "tok", {"Conj 1": "PROD"})
+        self.assertEqual(len(propios), 1)
+        self.assertEqual(propios[0]["ad_id"], "120210000000001")
+        self.assertEqual(propios[0]["mensajes"], 4)
+
+    def test_rango_fechas_itera_dia_por_dia(self):
+        self.assertEqual(bmi._rango_fechas("2026-09-14", "2026-09-16"),
+                          ["2026-09-14", "2026-09-15", "2026-09-16"])
+        self.assertEqual(bmi._rango_fechas("2026-09-14", "2026-09-14"), ["2026-09-14"])
+        with self.assertRaises(SystemExit):
+            bmi._rango_fechas("2026-09-16", "2026-09-14")
+
+    def test_default_sin_argumentos_es_la_ventana_de_liquidacion(self):
+        """Sin --fecha/--desde/--hasta, main() debe consultar upsert_fact.SETTLEMENT_WINDOW_DIAS
+        dias terminando ayer — no un solo dia (T1: ventana de liquidacion nocturna)."""
+        fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
+        fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        bkdir = os.path.join(self.temp_dir, "backups_csv")
+        llamadas = []
+
+        def procesar_cuenta_registra(cuenta, fecha, token, dim):
+            llamadas.append(fecha)
+            return [], 0.0, 0
+
+        argv_fake = ["bajar_meta_insights.py"]
+        with patch.object(bmi, "FACT", fact), \
+             patch.object(bmi, "FACT_AD", fact_ad), \
+             patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "token_de", return_value="tok_falso"), \
+             patch.object(bmi, "leer_cuentas_activas",
+                          return_value=[{"cuenta_alias": "GTR 7", "cuenta_id": "1", "moneda": "USD"}]), \
+             patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
+             patch.object(bmi, "procesar_cuenta", side_effect=procesar_cuenta_registra), \
+             patch.object(sys, "argv", argv_fake):
+            bmi.main()
+
+        self.assertEqual(len(llamadas), bmi.uf.SETTLEMENT_WINDOW_DIAS)
+        self.assertEqual(len(set(llamadas)), bmi.uf.SETTLEMENT_WINDOW_DIAS,
+                          "cada dia de la ventana se consulta una sola vez")
+
+    def test_desde_hasta_consulta_cada_dia_del_tramo(self):
+        fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
+        fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        bkdir = os.path.join(self.temp_dir, "backups_csv")
+        llamadas = []
+
+        def procesar_cuenta_registra(cuenta, fecha, token, dim):
+            llamadas.append(fecha)
+            return [], 0.0, 0
+
+        argv_fake = ["bajar_meta_insights.py", "--desde", "2026-09-10", "--hasta", "2026-09-12"]
+        with patch.object(bmi, "FACT", fact), \
+             patch.object(bmi, "FACT_AD", fact_ad), \
+             patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "token_de", return_value="tok_falso"), \
+             patch.object(bmi, "leer_cuentas_activas",
+                          return_value=[{"cuenta_alias": "GTR 7", "cuenta_id": "1", "moneda": "USD"}]), \
+             patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
+             patch.object(bmi, "procesar_cuenta", side_effect=procesar_cuenta_registra), \
+             patch.object(sys, "argv", argv_fake):
+            bmi.main()
+
+        self.assertEqual(llamadas, ["2026-09-10", "2026-09-11", "2026-09-12"])
+
+    def test_re_correr_el_mismo_dia_es_idempotente(self):
+        """Correr bajar_meta_insights.py dos veces con la MISMA fila no debe crecer el
+        CSV: es el check de idempotencia explicito de T1."""
+        fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
+        fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        bkdir = os.path.join(self.temp_dir, "backups_csv")
+        fila_sana = {
+            "ventana_ini": "2026-09-21", "ventana_fin": "2026-09-21", "dias": 1,
+            "producto_key": "PROD", "cuenta_id": "598687956219141", "cuenta_alias": "GTR7",
+            "campana": "Camp 1", "conjunto": "Conj 1", "anuncio": "Ad 1", "ad_id": "999",
+            "mensajes": 2, "clicks_totales": 3, "link_clicks": 2, "impresiones": 40,
+            "spend_usd": 1.0, "pct_conv_clic_enlace": 0.0, "fuente": "MetaAPI-directo",
+            "firma": "", "angulo_key": "", "concepto_key": "", "canonico_id": "",
+            "nivel_conciencia": "", "oferta_key": "", "destino_key": "",
+        }
+
+        def procesar_cuenta_ok(cuenta, fecha, token, dim):
+            return [dict(fila_sana)], 0.0, 0
+
+        argv_fake = ["bajar_meta_insights.py", "--fecha", "2026-09-21"]
+        with patch.object(bmi, "FACT", fact), \
+             patch.object(bmi, "FACT_AD", fact_ad), \
+             patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "token_de", return_value="tok_falso"), \
+             patch.object(bmi, "leer_cuentas_activas",
+                          return_value=[{"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141",
+                                         "moneda": "USD"}]), \
+             patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
+             patch.object(bmi, "procesar_cuenta", side_effect=procesar_cuenta_ok), \
+             patch.object(sys, "argv", argv_fake):
+            bmi.main()
+            bmi.main()
+
+        with open(fact_ad, encoding="utf-8") as fh:
+            filas = list(csv.DictReader(fh))
+        self.assertEqual(len(filas), 1, "re-correr el mismo dia no debe duplicar la fila")
+        self.assertEqual(filas[0]["ad_id"], "999")
+
     def test_main_todas_las_cuentas_ok_devuelve_0(self):
         """Sin ninguna falla el codigo de salida debe ser 0 (exito total)."""
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
