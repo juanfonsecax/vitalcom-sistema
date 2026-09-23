@@ -75,6 +75,16 @@ campos RAIZ obligatorios, porque ahi el angulo y el copy son constantes de la fa
   "copy": {"textos": [...], "titulos": [...], "descripcion": "..."}   # el copy unico de etapa-4
 El copy va en la RAIZ, no dentro de cada conjunto: gen_publicacion.py lo lee de ahi y un copy
 por conjunto se ignora. La cuenta y el page_id NO van: son de _DIM_PRODUCTOS.csv.
+
+F3.exploracion (P12, T12, decision operador 22-sep-2026) — _PLAN_EXPLORACION.json, "fase":
+"EXPLORACION" (string, no 3: no es el escalado, es el mini-F1 que corre en paralelo). Mismo
+esquema que FASE 1 ("conjuntos": un angulo distinto por conjunto, sin angulo_ganador en la
+raiz), con DOS reglas propias que valida esta funcion:
+  - `exploracion_n_angulos` conjuntos (default 3, _PARAMETROS_DECISION.csv, ver
+    verificar_voz.py-style: exploracion_n_angulos_requerido() abajo).
+  - cada angulo_key es NUEVO: no puede estar entre los angulos que el producto ya probo
+    (misma exclusion que reingreso_f1.angulos_probados() — no se reimplementa).
+  - TODO EN IMAGEN, la misma regla dura que FASE 1 (mide el angulo, el formato es constante).
 """
 import io, json, os, re, sys, csv
 
@@ -85,9 +95,11 @@ TOOLS = os.path.dirname(os.path.abspath(__file__))
 if TOOLS not in sys.path:
     sys.path.insert(0, TOOLS)
 import verificar_voz  # T10: dueño de _VOZ_CLIENTE.csv y del umbral min_voz_requerido()
+import reingreso_f1   # dueño de angulos_probados(): la exclusion de F3.exploracion NO se reimplementa
 
 PRODUCTOS = "PRODUCTOS"
 VOCABULARIO = "PRODUCTOS/_DIM_VOCABULARIO.csv"
+PARAMETROS_DECISION = "PRODUCTOS/_PARAMETROS_DECISION.csv"
 
 
 def leer_csv(ruta):
@@ -107,7 +119,24 @@ NIVELES = {"1", "2", "3A", "3B", None}
 # Nombres de archivo por fase. En FASE 2/3 el array "conjuntos" no se valida: la
 # estructura (1-1-5 + 1-1-5 + 1-2-5, 1-1-7) la arma gen_publicacion.py desde
 # _PARAMETROS_PUBLICACION.csv y las piezas de _DIM_CREATIVOS.csv, no desde el plan.
-NOMBRES_PLAN = {1: "_PLAN.json", 2: "_PLAN_FASE2.json", 3: "_PLAN_FASE3.json"}
+# "EXPLORACION" no es una fase numerica (F3.exploracion corre DENTRO de fase 3): descubrir_planes()
+# solo usa los VALORES de este dict, así que una llave de texto no rompe nada.
+NOMBRES_PLAN = {1: "_PLAN.json", 2: "_PLAN_FASE2.json", 3: "_PLAN_FASE3.json",
+                "EXPLORACION": "_PLAN_EXPLORACION.json"}
+
+EXPLORACION_N_ANGULOS = 3   # default P12; overrideable por _PARAMETROS_DECISION.csv (ver abajo)
+
+
+def exploracion_n_angulos_requerido():
+    """`exploracion_n_angulos` de _PARAMETROS_DECISION.csv si la fila existe, si no el default
+    EXPLORACION_N_ANGULOS — mismo patrón que verificar_voz.min_voz_requerido()."""
+    for r in leer_csv(PARAMETROS_DECISION):
+        if (r.get("parametro") or "").strip() == "exploracion_n_angulos":
+            try:
+                return int(float(r.get("valor")))
+            except (TypeError, ValueError):
+                break
+    return EXPLORACION_N_ANGULOS
 
 
 def descubrir_planes(ruta=None):
@@ -245,6 +274,40 @@ def validar_plan_fase1(plan, validos, voz_filas=None, min_voz=None, dim_conjunto
     return problemas
 
 
+def validar_plan_exploracion(plan, angulos_probados, n_requerido=None):
+    """F3.exploracion (P12): mismo esquema por-conjunto que FASE 1 (un angulo distinto por
+    conjunto, TODO EN IMAGEN), mas la exclusion de angulos ya probados por el producto —
+    `angulos_probados` es la lista que ya calcula reingreso_f1.angulos_probados(), nunca
+    recalculada aca. NO exige angulo_ganador ni origen_angulo (T10 es una regla de FASE 1)."""
+    problemas = []
+    n_requerido = n_requerido if n_requerido is not None else exploracion_n_angulos_requerido()
+    if plan.get("schema") != "plan/1":
+        problemas.append("schema desconocido: %r" % plan.get("schema"))
+    conjuntos = plan.get("conjuntos") or []
+    if len(conjuntos) < n_requerido:
+        problemas.append("F3.exploracion pide %d angulos nuevos y el plan trae %d "
+                         "(_PARAMETROS_DECISION.csv exploracion_n_angulos)"
+                         % (n_requerido, len(conjuntos)))
+    vistos = set()
+    probados = set(angulos_probados or [])
+    for c in conjuntos:
+        etq = "conjunto %s" % c.get("n")
+        ak = c.get("angulo_key")
+        if ak in vistos:
+            problemas.append("%s: angulo_key duplicado %r" % (etq, ak))
+        vistos.add(ak)
+        if not re.match(r"^[A-Z0-9_]+$", ak or ""):
+            problemas.append("%s: angulo_key con caracteres invalidos %r" % (etq, ak))
+        if ak in probados:
+            problemas.append("%s: angulo_key %r ya fue probado por este producto — F3.exploracion "
+                             "mide angulos NUEVOS (misma exclusion que reingreso_f1.py)" % (etq, ak))
+        if (c.get("formato") or "").strip().upper() != "IMAGEN":
+            problemas.append("%s: formato %r != IMAGEN — F3.exploracion corre TODO EN IMAGEN, "
+                             "la misma regla dura de FASE 1 (mide el angulo, el formato es "
+                             "constante). Regenera el plan con etapa-6." % (etq, c.get("formato")))
+    return problemas
+
+
 def validar_plan_fase2o3(plan):
     """Solo los campos RAIZ sin los que gen_publicacion.py bloquea en fase 2/3: angulo_ganador
     y copy. cuenta y page_id no: el publicador los toma de _DIM_PRODUCTOS.csv y bloquea ahi,
@@ -295,6 +358,9 @@ def validar(ruta=None):
             problemas = validar_plan_fase1(plan, validos, voz_filas, min_voz, dim_conjuntos_filas)
         elif fase in (2, 3):
             problemas = validar_plan_fase2o3(plan)
+        elif fase == "EXPLORACION":
+            angulos_probados = reingreso_f1.angulos_probados(BASE, plan.get("producto_key") or "")
+            problemas = validar_plan_exploracion(plan, angulos_probados)
         else:
             problemas = ["fase desconocida en el plan: %r" % fase]
         if problemas:

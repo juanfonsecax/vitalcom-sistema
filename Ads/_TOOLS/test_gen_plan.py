@@ -305,6 +305,91 @@ def test_plan_fase1_no_lanzado_video_competencia_con_fuente_no_falla():
     return 0 if ok else 1
 
 
+def _plan_exploracion(conjuntos, producto_key="PX"):
+    return {"schema": "plan/1", "producto_key": producto_key, "fase": "EXPLORACION",
+            "conjuntos": conjuntos}
+
+
+def _conjunto_exploracion(n, angulo, formato="IMAGEN"):
+    return {"n": n, "angulo_key": angulo, "formato": formato}
+
+
+def test_plan_exploracion_ok_no_falla():
+    """F3.exploracion (P12): 3 ángulos nuevos, todos IMAGEN, ninguno ya probado -> sin problemas."""
+    plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_UNO"), _conjunto_exploracion(2, "ANG_DOS"),
+                               _conjunto_exploracion(3, "ANG_TRES")])
+    problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=["ANG_VIEJO"], n_requerido=3)
+    ok = problemas == []
+    print(("  OK     " if ok else "  FALLA  ") + "3 ángulos nuevos, todo IMAGEN: el plan de exploración pasa"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_exploracion_menos_angulos_que_los_requeridos_falla():
+    plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_UNO"), _conjunto_exploracion(2, "ANG_DOS")])
+    problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=[], n_requerido=3)
+    ok = any("3" in p and "2" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "F3.exploracion pide 3 ángulos (exploracion_n_angulos) y el plan trae 2 -> falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_exploracion_angulo_ya_probado_falla():
+    """La exclusión de reingreso_f1.angulos_probados() se reusa, no se reinventa: un ángulo que
+    el producto ya testeó no puede volver a entrar por F3.exploracion."""
+    plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_VIEJO"), _conjunto_exploracion(2, "ANG_DOS"),
+                               _conjunto_exploracion(3, "ANG_TRES")])
+    problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=["ANG_VIEJO"], n_requerido=3)
+    ok = any("ANG_VIEJO" in p and "ya fue probado" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un angulo_key ya probado por el producto es rechazado, no se re-testea a ciegas"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_exploracion_conjunto_video_falla():
+    """Misma regla dura que FASE 1: F3.exploracion mide el ángulo, corre TODO EN IMAGEN."""
+    plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_UNO"), _conjunto_exploracion(2, "ANG_DOS"),
+                               _conjunto_exploracion(3, "ANG_TRES", formato="VIDEO")])
+    problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=[], n_requerido=3)
+    ok = any("!= IMAGEN" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un conjunto VIDEO en F3.exploracion se rechaza, igual que en FASE 1"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_exploracion_angulo_duplicado_falla():
+    plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_UNO"), _conjunto_exploracion(2, "ANG_UNO"),
+                               _conjunto_exploracion(3, "ANG_TRES")])
+    problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=[], n_requerido=3)
+    ok = any("duplicado" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ") + "angulo_key duplicado entre los 3 conjuntos nuevos se rechaza"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_exploracion_n_angulos_requerido_default_y_override():
+    previo = gen_plan.PARAMETROS_DECISION
+    try:
+        gen_plan.PARAMETROS_DECISION = os.path.join(tempfile.mkdtemp(), "no_existe.csv")
+        default = gen_plan.exploracion_n_angulos_requerido()
+        tmp = tempfile.mkdtemp()
+        ruta = os.path.join(tmp, "_PARAMETROS_DECISION.csv")
+        with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+            fh.write("parametro,valor,unidad,dueno,por_que\r\nexploracion_n_angulos,5,angulos,test,test\r\n")
+        gen_plan.PARAMETROS_DECISION = ruta
+        override = gen_plan.exploracion_n_angulos_requerido()
+    finally:
+        gen_plan.PARAMETROS_DECISION = previo
+    ok = default == gen_plan.EXPLORACION_N_ANGULOS == 3 and override == 5
+    print(("  OK     " if ok else "  FALLA  ")
+          + "exploracion_n_angulos_requerido(): default 3 sin fila, 5 si _PARAMETROS_DECISION.csv la trae"
+          + ("" if ok else f"\n         default={default} override={override}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_plan_fase1_con_video_falla()
@@ -330,6 +415,12 @@ def main():
     fallas += test_plan_fase2_con_copy_por_conjunto_falla()
     fallas += test_plan_fase2_lean_falla()
     fallas += test_plan_fase2_no_valida_el_array_conjuntos()
+    fallas += test_plan_exploracion_ok_no_falla()
+    fallas += test_plan_exploracion_menos_angulos_que_los_requeridos_falla()
+    fallas += test_plan_exploracion_angulo_ya_probado_falla()
+    fallas += test_plan_exploracion_conjunto_video_falla()
+    fallas += test_plan_exploracion_angulo_duplicado_falla()
+    fallas += test_exploracion_n_angulos_requerido_default_y_override()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 
