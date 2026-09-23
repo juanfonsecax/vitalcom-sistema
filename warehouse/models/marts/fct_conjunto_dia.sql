@@ -1,5 +1,6 @@
 -- El hecho diario por conjunto: gasto, mensajes y VENTAS en la misma fila.
--- La venta manda (LucidSales); Meta solo aporta entrega. Un dia sin fila aqui es un dia sin gasto.
+-- La VENTA manda (LucidSales); el GASTO manda de Meta cuando hay cobertura (g07-cimientos T2,
+-- fct_gasto_dia -- espejo de Ads/_TOOLS/gasto.py). Un dia sin fila aqui es un dia sin gasto.
 select
     v.fecha,
     v.producto_key,
@@ -14,7 +15,7 @@ select
     sum(v.mensajes)   as mensajes,
     sum(v.spend_usd)  as spend_usd,
     sum(v.total_q)    as total_q
-from {{ ref('stg_ventas') }} v
+from {{ ref('fct_gasto_dia') }} v
 left join {{ ref('dim_conjunto') }} d
        on d.conjunto = v.conjunto and d.cuenta_alias = v.cuenta_alias
 group by 1,2,3,4,5,6,7,8,9

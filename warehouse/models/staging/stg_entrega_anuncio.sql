@@ -7,6 +7,7 @@ select
     cast(e.ventana_ini as date)                       as fecha_ini,
     cast(e.ventana_fin as date)                       as fecha_fin,
     trim(e.producto_key)                              as producto_key,
+    trim(e.cuenta_id)                                 as cuenta_id,
     trim(e.cuenta_alias)                              as cuenta_alias,
     trim(e.campana)                                   as campana,
     coalesce(a.nombre_nuevo, trim(e.conjunto))        as conjunto,
@@ -23,6 +24,7 @@ select
     cast(e.link_clicks as double)                     as link_clicks,
     cast(e.impresiones as double)                     as impresiones,
     cast(e.spend_usd as double)                       as spend_usd,
+    trim(e.fuente)                                     as fuente,
     (nullif(trim(e.firma),'') is not null)            as tiene_firma
 from e
 left join {{ ref('stg_alias') }} a on trim(e.conjunto) = a.nombre_viejo
