@@ -35,3 +35,10 @@ sources:
       - name: parametros_decision
         meta:
           external_location: "read_csv('../PRODUCTOS/_PARAMETROS_DECISION.csv', header=true, all_varchar=true)"
+      - name: vocabulario
+        description: >
+          Diccionario cerrado de los ejes del sistema. La escribe Ads/_TOOLS/gen_vocabulario.py
+          -- un dato, un dueno: los tests de dbt que validan un vocabulario cerrado (p.ej. el
+          estado de _DIM_PRODUCTOS) leen de aca, nunca repiten la lista en _models.yml.
+        meta:
+          external_location: "read_csv('../PRODUCTOS/_DIM_VOCABULARIO.csv', header=true, all_varchar=true)"

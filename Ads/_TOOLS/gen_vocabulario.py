@@ -77,6 +77,20 @@ for v, e, d in [
 ]:
     add("oferta_key", v, e, "TESTEABLE", "", d, ".claude/agents/ETAPA-1.md")
 
+# --- EJE estado_producto: ciclo de vida de _DIM_PRODUCTOS.csv. Cerrado, 5 valores
+# (g07-cimientos T2, 22-sep-2026: antes de esta fila el estado NUEVO de OVULOS_PURITY no tenia
+# fila en ningun vocabulario y el `accepted_values` de dbt (_models.yml) lo tenia hardcodeado
+# aparte -- dos versiones de la misma verdad. dbt ahora lee esta fila via stg_vocabulario.sql en
+# vez de repetir la lista; ver warehouse/models/staging/stg_vocabulario.sql).
+for v, e, d in [
+    ("NUEVO", "recien creado", "Fila creada en _DIM_PRODUCTOS.csv, todavia sin lanzar."),
+    ("VIVO", "campana activa", "Tiene campana corriendo que el sistema debe monitorear."),
+    ("PAUSADO", "pausado por rendimiento u operador", "Sin gasto vigente; puede reingresar."),
+    ("LISTO", "paquete listo, no lanzado", "Paso el gate de reconciliacion, falta el lanzamiento."),
+    ("ARCHIVADO", "descontinuado", "Fuera del portafolio activo; no se monitorea."),
+]:
+    add("estado_producto", v, e, "CICLO_DE_VIDA", "", d, "PRODUCTOS/_DIM_PRODUCTOS.csv")
+
 # --- EJE 5: DESTINO. Vocabulario abierto por version de flujo.
 add("destino_key", "(abierto)", "version del flujo LucidBot", "TESTEABLE", "",
     "Version del flujo a la que apunta el ad. Cambia solo con un CAMBIO_BOT en _EVENTOS.csv.",

@@ -49,6 +49,11 @@ oferta_key,4X2,cuatro por dos,TESTEABLE,,Escalon de volumen.,.claude/agents/ETAP
 oferta_key,ESCALERA,escalera de 3 tiers,TESTEABLE,,P1u / P2u / P3u en cards paralelas.,.claude/agents/ETAPA-1.md,VIGENTE
 oferta_key,COMBO,combo con otro producto,TESTEABLE,,Bundle cruzado.,.claude/agents/ETAPA-1.md,VIGENTE
 oferta_key,SIN_PRECIO,sin precio en el ad,TESTEABLE,,La oferta no aparece; se revela en el bot.,.claude/agents/ETAPA-1.md,VIGENTE
+estado_producto,NUEVO,recien creado,CICLO_DE_VIDA,,"Fila creada en _DIM_PRODUCTOS.csv, todavia sin lanzar.",PRODUCTOS/_DIM_PRODUCTOS.csv,VIGENTE
+estado_producto,VIVO,campana activa,CICLO_DE_VIDA,,Tiene campana corriendo que el sistema debe monitorear.,PRODUCTOS/_DIM_PRODUCTOS.csv,VIGENTE
+estado_producto,PAUSADO,pausado por rendimiento u operador,CICLO_DE_VIDA,,Sin gasto vigente; puede reingresar.,PRODUCTOS/_DIM_PRODUCTOS.csv,VIGENTE
+estado_producto,LISTO,"paquete listo, no lanzado",CICLO_DE_VIDA,,"Paso el gate de reconciliacion, falta el lanzamiento.",PRODUCTOS/_DIM_PRODUCTOS.csv,VIGENTE
+estado_producto,ARCHIVADO,descontinuado,CICLO_DE_VIDA,,Fuera del portafolio activo; no se monitorea.,PRODUCTOS/_DIM_PRODUCTOS.csv,VIGENTE
 destino_key,(abierto),version del flujo LucidBot,TESTEABLE,,Version del flujo a la que apunta el ad. Cambia solo con un CAMBIO_BOT en _EVENTOS.csv.,.claude/agents/ETAPA-11.md,VIGENTE
 formato,VIDEO,video,COVARIABLE,,Se congela dentro de un testeo.,DOCTRINA/PLANTILLAS_ADS.md,VIGENTE
 formato,IMAGEN,imagen estatica,COVARIABLE,,Se congela dentro de un testeo.,DOCTRINA/PLANTILLAS_ADS.md,VIGENTE

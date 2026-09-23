@@ -15,8 +15,14 @@ models:
       - name: producto_key
         data_tests: [unique, not_null]
       - name: estado
+        description: >
+          Ciclo de vida (NUEVO/VIVO/PAUSADO/LISTO/ARCHIVADO). El vocabulario cerrado vive en
+          PRODUCTOS/_DIM_VOCABULARIO.csv (eje estado_producto, Ads/_TOOLS/gen_vocabulario.py) --
+          este test lee de ahi via stg_vocabulario_estado_producto, no repite la lista.
         data_tests:
-          - accepted_values: {values: ['VIVO','PAUSADO','LISTO','ARCHIVADO']}
+          - relationships:
+              to: ref('stg_vocabulario_estado_producto')
+              field: valor
       - name: cpa_be_q
         description: Break-even. Sin el no hay decision posible sobre ningun producto VIVO.
         data_tests:

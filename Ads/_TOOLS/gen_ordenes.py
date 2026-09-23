@@ -155,6 +155,10 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
         }
 
     rezago_dias = data_dec.get("rezago_dias", 0)
+    # g07-cimientos T2 (22-sep-2026): un dbt build roto quedaba solo en stdout de
+    # gen_decisiones.py. Ahora viaja en _DECISIONES.json (capa_analitica) y de aca sube al
+    # header de órdenes / la app, que es donde el operador de verdad mira.
+    capa_analitica = data_dec.get("capa_analitica") or {"estado": "DESCONOCIDO", "detalle": ""}
     dim_conjuntos = cargar_dim_conjuntos()
     dim_productos = cargar_dim_productos()
     params = cargar_parametros()
@@ -176,6 +180,9 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
     ordenes_resumen = []
     bloqueantes = []
     avisos = []
+    if capa_analitica.get("estado") == "FALLO":
+        avisos.append("CAPA ANALITICA (dbt) FALLO: %s — el motor esta leyendo los CSV "
+                       "directamente." % capa_analitica.get("detalle", ""))
     num_llamada = 1
 
     productos_data = data_dec.get("productos", [])
@@ -360,6 +367,7 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
         "schema": "ordenes/1",
         "producto": producto_filtro or "TODOS",
         "rezago_dias": rezago_dias,
+        "capa_analitica": capa_analitica,
         "ordenes": ordenes_resumen,
         "llamadas": llamadas,
         "manifiesto": manifiesto,

@@ -96,6 +96,15 @@ class Salud(Base):
     meta_falso: bool = False
 
 
+class CapaAnalitica(Base):
+    """Estado del último `dbt build` (g07-cimientos T2). "FALLO" significa que el motor está
+    leyendo los CSV directamente y la capa analitica quedó vieja — visible aca, no solo en stdout."""
+
+    estado: str = "DESCONOCIDO"
+    detalle: str = ""
+    generado: str = ""
+
+
 class Decisiones(Base):
     """`_DECISIONES.json`: lo que dictó `decidir.py`. La app no lo reinterpreta."""
 
@@ -106,6 +115,8 @@ class Decisiones(Base):
     motor: str = ""
     ventana_dias: int | None = None
     resumen_acciones: dict[str, int] = {}
+    cobertura_gasto: dict[str, int] = {}
+    capa_analitica: CapaAnalitica | None = None
     productos: list[Any] = []
 
 
@@ -375,6 +386,7 @@ class ParametroMotor(Base):
 class OrdenesRespuesta(Base):
     schema_version: str = Field(alias="schema", default="")
     rezago_dias: int = 0
+    capa_analitica: CapaAnalitica | None = None
     llamadas: list[Any] = []
     ordenes: list[OrdenItem] = []
     bloqueantes: list[Any] = []
