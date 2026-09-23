@@ -81,7 +81,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
 - [x] T7 (P8) Tests: costear.py, registrar_evento.py, decidir.py ESCALAR_MODERADO and comparar_cierre.
 - [x] T8 (P10) Hygiene: iniciar.bat refuses an ambiguous base; verificar_publicacion requires
       effective_status=PAUSED; invariant 7 requires exactly the next day; etapa-3 status resolved.
-- [ ] T9 (P9) Folders: classes out of the repo, live backups to a gitignored `_RESPALDOS/`, dead
+- [x] T9 (P9) Folders: classes out of the repo, live backups to a gitignored `_RESPALDOS/`, dead
       `_ARCHIVO/` removed, references fixed.
 - [ ] T10 (P6) Voice of customer as data: `_VOZ_CLIENTE.csv` + `verificar_voz.py` (re-fetches the
       URL, checks the quote) + the etapa-1b output contract + angle cards cite voz_id.
@@ -610,10 +610,86 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     gen_publicacion invariant-7 exact-next-day, flujo.py `contiene` + F3.plan microángulos check
     (four separate commits, one per hygiene item).
 
+- 23-sep: T9 done (checked).
+  - **Live backups redirected `_ARCHIVO/` -> `_RESPALDOS/` (gitignored):** one shared helper,
+    `Ads/_TOOLS/upsert_fact.respaldos_dir(base, *sub)`, replaces four hardcoded paths —
+    `ingerir_meta.py` (`BKDIR`), `ingerir_lucidsales.py` (`BKDIR`), `ingestar_unificado.py`
+    (`ARCH_DIR`, now importing `upsert_fact` for it), and `bajar_meta_insights.py` (inherits it
+    via `im.BKDIR`, unchanged). Docstrings/print messages updated to say `_RESPALDOS/`.
+    `gen_grafo.py`'s `ZONAS_MUERTAS` dropped `_ARCHIVO` (gone; `_RESPALDOS` doesn't need it —
+    `construir()` only lists direct `.md` children of specific folders, non-recursive, so a
+    CSV-only backup dir at repo root is invisible to it either way). `gen_decisiones.py`'s note
+    about the retired `DECISIONES.html` view updated to say it's in git history now.
+    `verificar_guia_madre.py`'s directory-walk exclusion swapped `_ARCHIVO` for `_RESPALDOS` (same
+    reason: skip a large gitignored backup tree during the doctrine-pointer search).
+    `.gitignore`: added `_RESPALDOS/`; kept the old `_ARCHIVO/backups_csv|backups_agentes|
+    backups_data/pruebas_lavado_20260705` lines rather than deleting them — this worktree has no
+    live backup files on disk to worry about, but the main SISTEMA checkout does, and removing the
+    ignore lines before the orchestrator physically moves those files would make them show up as
+    untracked there. Explained inline in the `.gitignore` comment.
+  - **Dead `_ARCHIVO/` tree removed:** `git rm -r _ARCHIVO` — 92 tracked files (`Bases/`,
+    `CONTEXTOS_VIEJOS/`, `DATA_MIGRADA/`, `codex_superado_20260902/`, `etapas_fusionadas_20260902/`,
+    `handoffs_ejecutados/`, `hub_viejo/`, `limpieza_20260917/`, `planes_fase2_lean_retirado_20260917/`,
+    `refactor_20260731_2330/`, `retirado_20260909/`, `retirado_20260922/`, `roadmap_cumplido/`, plus
+    loose root files). Checked first: nothing in `Ads/`, `DOCTRINA/`, `.claude/`, `app/`,
+    `warehouse/`, `VISTAS/_MANIFIESTO.json`, or `CLAUDE.md` reads a path inside this tree — every
+    hit was either a doctrine/backup-path string (fixed above) or a stale pointer in a reference
+    doc (fixed below). Content stays in git history.
+  - **Classes out of the repo:** `git rm -r _CONOCIMIENTO/Finales` (27 files) — already
+    sha1-verified copied by the orchestrator to `C:\Users\juand\Documents\VITALCOM_CLASES\` before
+    this worktree started. No live code referenced it by path; only doctrine/reference docs did.
+  - **References fixed** (new path, or "moved to git history" where the pointer was to a
+    now-removed backup/snapshot file rather than the live classes):
+    `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` (ingest protocol §III step 1, unchanged otherwise),
+    `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` (§1 fuentes table F0-F5, §6 protocolo, maintenance
+    warning — added one `VITALCOM_CLASES/` = full path note instead of repeating the full path 8
+    times), `README.md` (file-map table row + rule 5/7 in "reglas de oro", which described the old
+    "move to _ARCHIVO/, don't delete" policy — updated to the new "git rm, history keeps it"
+    policy this very task follows), `CLAUDE.md` ("Zonas" line: dropped `_ARCHIVO/` from the
+    human-reference list, added a sentence for `_RESPALDOS/` being gitignored/unread),
+    `_ROADMAP/README.md` (top rule + the 2026-08-01 archived-items header, both pointed at
+    `_ARCHIVO/roadmap_cumplido/`), `_OPERADOR/_PROMPT_AUDITORIA_GENERAL.md` (authority rule 1/3 +
+    scope line — pointed at both `_CONOCIMIENTO/Finales/` and `_ARCHIVO/Bases/`),
+    `_OPERADOR/TAREA_NOCTURNA.md` (backup path in the nightly-ingest description),
+    `.claude/agents/ETAPA-7.md`, `Ads/_SWIPE/_HANDOFF_CONCEPTOS.md`, and two files under
+    `Ads/_SWIPE/_BLUEPRINTS/` (`_LEEME.md`, `_HANDOFF_FICHAS.md`) — all pointed at a specific
+    backup/retired file now only in git history.
+  - **Left untouched, with reason** (dated logs/postmortems and one excluded zone, same policy as
+    existing dated audits): `PRODUCTOS/_EVENTOS.csv` (one dated 2026-09-02 event row),
+    `PRODUCTOS/_PORTAFOLIO.txt` (two dated notes, 25-jul and 2026-07-03), `PRODUCTOS/
+    _BITACORA_DATA.txt` (dated bitácora entries), `_CONOCIMIENTO/POSTMORTEMS/*.md` (explicitly a
+    frozen-snapshot zone), `_OPERADOR/PROMPT_SESION_OPTIMIZACION_2026-09-09.md` (a dated,
+    session-specific prompt pointing at a since-removed roadmap doc), and everything under
+    `PRODUCTOS/_AUDITORIAS/**` (excluded by the task's own rg command). `Ads/_TOOLS/gen_publicacion.py`
+    matched the search pattern on unrelated identifiers (`SIN_ARCHIVO`, `FALTA_ARCHIVO`), not the
+    `_ARCHIVO/` directory — no change needed.
+  - **Tests:** two new cases in `Ads/_TOOLS/test_upsert_fact.py` —
+    `test_respaldos_dir_resuelve_bajo__RESPALDOS` (unit: the helper never returns an `_ARCHIVO`
+    path) and `test_ingestion_a_base_temporal_escribe_su_backup_en_RESPALDOS` (end-to-end: two
+    `upsert()` calls against a temp base produce a real backup file under
+    `<base>/_RESPALDOS/backups_csv/` and never create an `<base>/_ARCHIVO/`).
+  - **Verification (SISTEMA-app worktree, all foreground):**
+    `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` -> 38 passed (file count unchanged — this
+    harness counts test *files*, and both new cases live inside the existing
+    `test_upsert_fact.py`). `python Ads/_TOOLS/test_upsert_fact.py` directly -> 12/12 OK, 0 fallas,
+    exit 0. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos, 1 excepción).
+    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88 variables, 33 verificadas). `python
+    Ads/_TOOLS/gen_grafo.py` and `--comparar` -> both clean (ningún huérfano, ninguna ruta muerta);
+    `_LINEA_BASE_SISTEMA.json` untouched (`git status` confirmed no diff — the plain/`--comparar`
+    runs are read-only without `--escribir`). The `rg -n "Finales|_ARCHIVO" -g '!odd/**'`
+    check from item 4 — see "left untouched" above for what legitimately remains. Backend
+    `cd app/backend; uv run pytest -q --ignore=tests/test_meta.py` -> 141 passed, 2 warnings in
+    229.96s (0:03:49), exit 0. `git status --short` clean after every commit.
+  - **Commits:** `eec3735` (redirect `_ARCHIVO/` -> `_RESPALDOS/`, code+doctrine+gitignore),
+    `04202c6` (`git rm -r _ARCHIVO`, 92 files), `f9fc6e7` (`git rm -r _CONOCIMIENTO/Finales` +
+    all reference fixes + the two new tests, one commit — the reference fixes are only meaningful
+    together with the removal they describe, so splitting them would leave an intermediate commit
+    with dangling pointers).
+
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
 there as a `chore(data)` commit (this also fixes the `ad_id` column `stg_entrega_anuncio` needs),
 runs `dbt build` AFTER that re-pull (not before — see the new deployment-order doctrine), confirms
 `decidir.py`/the app read the corrected spend and `capa_analitica` on the merged data, then checks
 T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9 (folders)
-is next in dependency order after T8.
+is now done; T10 (voice of customer as data) is next in dependency order.
