@@ -60,6 +60,15 @@ entero. `--fecha` sigue trayendo UN dia puntual (uso manual); `--desde/--hasta` 
 consultando la API UN DIA A LA VEZ (Graph API onsite no agrega bien un rango multi-dia a nivel
 anuncio) y aplicando el mismo upsert por cada dia.
 
+El upsert por LLAVE sola no alcanza cuando la identidad de la fila CAMBIA entre corridas
+(medido en vivo: un backfill viejo sin `ad_id` convivio con el re-pull nuevo con `ad_id` —
+llaves distintas, nunca colisionan, gasto por anuncio duplicado). Por eso el upsert de
+`_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv` pasa `particion=(fuente, ventana_ini,
+ventana_fin, cuenta_id)`: declara ese re-pull como la verdad completa de esa cuenta ese dia,
+y una fila vieja de la misma cuenta/dia que no vino en la respuesta se ELIMINA, no convive.
+Una cuenta-dia que fallo no aporta ninguna fila (ver el aislamiento de fallas en `main()`),
+asi que su particion nunca se toca.
+
 CREDENCIALES — nunca en el repo, nunca en git, nunca en la linea de comandos.
   Se leen de la variable de entorno META_SYSTEM_USER_TOKEN, y si no esta, de un .env local
   (default ~/.config/meta/.env, permisos 600). Este script NO imprime jamas el token.
@@ -382,12 +391,22 @@ def main():
               f"listas para UPSERT — no se escribio nada.")
         return resultado
 
-    reemp_c, nuevas_c, sc_c = uf.upsert(FACT, im.COLS, _clave_conjunto, conjuntos, BKDIR)
-    print(f"\n_FACT_ENTREGA.csv: {reemp_c} reemplazadas (dia corregido) · {nuevas_c} nuevas · "
-          f"{sc_c} sin cambio")
-    reemp_a, nuevas_a, sc_a = uf.upsert(FACT_AD, im.COLS_AD, _clave_anuncio, todos, BKDIR)
-    print(f"_FACT_ENTREGA_ANUNCIO.csv: {reemp_a} reemplazadas (dia corregido) · {nuevas_a} nuevas · "
-          f"{sc_a} sin cambio")
+    # `particion` = (fuente, ventana_ini, ventana_fin, cuenta_id): exactamente el ambito de
+    # un intento cuenta-dia (T1, segunda vuelta). Declara ese re-pull como la VERDAD COMPLETA
+    # de esa cuenta ese dia: una fila vieja de la MISMA cuenta/dia que no vino en esta
+    # respuesta se elimina (cierra el caso real del backfill sin ad_id que duplicaba el
+    # gasto por anuncio, ver docstring de upsert_fact.py). Una cuenta-dia que fallo no
+    # aporta filas a `todos`/`conjuntos` (ver el `continue` en el bucle de mas arriba), asi
+    # que su particion nunca aparece aca y nunca se toca lo que ya habia.
+    PARTICION = ("fuente", "ventana_ini", "ventana_fin", "cuenta_id")
+    reemp_c, nuevas_c, sc_c, elim_c = uf.upsert(FACT, im.COLS, _clave_conjunto, conjuntos, BKDIR,
+                                                 particion=PARTICION)
+    print(f"\n_FACT_ENTREGA.csv: {reemp_c} reemplazadas · {nuevas_c} nuevas · "
+          f"{elim_c} eliminadas (superadas por el re-pull) · {sc_c} sin cambio")
+    reemp_a, nuevas_a, sc_a, elim_a = uf.upsert(FACT_AD, im.COLS_AD, _clave_anuncio, todos, BKDIR,
+                                                 particion=PARTICION)
+    print(f"_FACT_ENTREGA_ANUNCIO.csv: {reemp_a} reemplazadas · {nuevas_a} nuevas · "
+          f"{elim_a} eliminadas (superadas por el re-pull) · {sc_a} sin cambio")
     return resultado
 
 

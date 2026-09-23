@@ -14,7 +14,7 @@ Un solo helper para los dos ingestores — no una copia del mismo bucle en cada 
 (regla de CLAUDE.md: "un dato, un dueño"; acá aplica a la MECÁNICA de escritura).
 
 CONTRATO
-  upsert(path, cols, key, filas_nuevas, bkdir) hace:
+  upsert(path, cols, key, filas_nuevas, bkdir, particion=None) hace:
     1. Lee el CSV existente (si existe) y completa cada fila vieja a `cols` (ver
        `leer_migrado`): una columna nueva en el esquema (ej. `ad_id`) no rompe la
        lectura de filas escritas antes de que existiera — quedan con "" ahí, nunca
@@ -24,15 +24,36 @@ CONTRATO
        llave necesita lógica (ej. "ad_id si lo hay, si no la firma").
     3. Cada fila nueva REEMPLAZA a la existente con la misma llave; una llave que no
        estaba se agrega. Es upsert real, no "append si no está".
-    4. Reescribe el archivo COMPLETO. Es la única forma de que un cambio de header
+    4. `particion` (opcional): tupla de nombres de columna o función `fila -> tupla`,
+       igual forma que `key`. Sin `particion`, el contrato es el de siempre (upsert
+       por llave, nunca borra). CON `particion`, un re-pull declara la VERDAD COMPLETA
+       de cada partición que trae: toda fila EXISTENTE cuya partición aparece en
+       `filas_nuevas` y que NO matchea ninguna fila nueva por `key` se ELIMINA — ya no
+       es una corrección parcial, es un reemplazo total de esa partición (ver POR QUE
+       EXISTE más abajo). Una partición que `filas_nuevas` no toca queda intacta: un
+       intento que falló y no produjo filas nunca borra lo que ya había.
+    5. Reescribe el archivo COMPLETO. Es la única forma de que un cambio de header
        (columna nueva) y un reemplazo de fila convivan en un CSV — un CSV no admite
        dos esquemas de columnas a la vez, así que un `open(..., "a")` con el header
        viejo ya en disco corrompería el archivo en cuanto cambia `cols`.
-    5. Backup previo del archivo COMPLETO en `bkdir` (mismo patrón que los
-       ingestores existentes: nunca se pisa sin copia).
-  Devuelve (reemplazadas, nuevas, sin_cambio). Reescribir con el mismo contenido dos
-  veces seguidas dejo `reemplazadas` en 0 y `sin_cambio` en la cuenta completa — la
+    6. Backup previo del archivo COMPLETO en `bkdir` (mismo patrón que los
+       ingestores existentes: nunca se pisa sin copia). Se dispara si algo se
+       reemplazó, agregó O eliminó.
+  Devuelve (reemplazadas, nuevas, sin_cambio) sin `particion` — contrato sin cambios
+  para los llamadores existentes — o (reemplazadas, nuevas, sin_cambio, eliminadas)
+  cuando se pasa `particion`. Reescribir con el mismo contenido dos veces seguidas deja
+  `reemplazadas`/`eliminadas` en 0 y `sin_cambio` en la cuenta completa — la
   idempotencia se mide por CONTENIDO, no por que el archivo se haya vuelto a escribir.
+
+POR QUE EXISTE `particion` (22-sep-2026, g07-cimientos T1, segunda vuelta): un re-pull
+de `bajar_meta_insights.py --desde .. --hasta ..` sobre una ventana que YA tenía datos
+cargados SIN `ad_id` (un backfill viejo) reportó "0 reemplazadas · 778 nuevas": las filas
+viejas se indexan por firma/anuncio y las nuevas por ad_id, así que nunca colisionan por
+`key` — quedan LAS DOS, duplicando el gasto por anuncio. El upsert por `key` sola nunca
+puede detectar esto: no hay forma de saber, mirando solo la llave, que una fila vieja
+"debería" haber sido reemplazada por una nueva de otra llave. `particion` resuelve esto
+declarando explícitamente el ámbito que el re-pull SÍ cubre por completo (fuente +
+ventana + cuenta): dentro de ese ámbito, lo que no vino en la respuesta ya no existe.
 """
 import csv
 import datetime
@@ -89,24 +110,38 @@ def _clave(fila, key):
     return tuple(fila.get(k, "") for k in key)
 
 
-def upsert(path, cols, key, filas_nuevas, bkdir):
+def _particion_valor(fila, particion):
+    if callable(particion):
+        return particion(fila)
+    return tuple(fila.get(k, "") for k in particion)
+
+
+def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
     """UPSERT por llave natural `key` sobre el CSV de hechos en `path`.
 
     `key`: tupla de nombres de columna, o función `fila(dict) -> tupla hasheable`
     cuando la llave no es una igualdad literal de columnas (ver `bajar_meta_insights.py`
     y `ingerir_lucidsales.py` para los dos casos reales).
 
-    Devuelve (reemplazadas, nuevas, sin_cambio). No escribe nada si `filas_nuevas`
-    está vacía o si ninguna fila nueva difiere de lo que ya había Y no agrega llaves —
-    en ese caso el archivo en disco queda intacto (ni backup ni reescritura de más).
+    `particion` (opcional, misma forma que `key`): cuando se pasa, toda fila EXISTENTE
+    cuya partición coincide con la de alguna fila de `filas_nuevas`, y que ninguna fila
+    nueva reclamó por `key`, se ELIMINA — un re-pull es la verdad completa de cada
+    partición que trae (ver docstring del módulo). Sin `particion` el comportamiento es
+    el de siempre: nunca se borra nada.
+
+    Devuelve (reemplazadas, nuevas, sin_cambio) sin `particion`, o
+    (reemplazadas, nuevas, sin_cambio, eliminadas) con `particion`. No escribe nada si
+    no hubo reemplazo, alta NI baja — en ese caso el archivo en disco queda intacto (ni
+    backup ni reescritura de más).
     """
     existentes = leer_migrado(path, cols)
+    filas_completas = [_completar(f, cols) for f in filas_nuevas]
+
     indice = {_clave(f, key): i for i, f in enumerate(existentes)}
     resultado = list(existentes)
-    reemplazadas = nuevas = sin_cambio = 0
+    reemplazadas = nuevas = sin_cambio = eliminadas = 0
 
-    for fila_cruda in filas_nuevas:
-        fila = _completar(fila_cruda, cols)
+    for fila in filas_completas:
         llave = _clave(fila, key)
         if llave in indice:
             i = indice[llave]
@@ -120,7 +155,21 @@ def upsert(path, cols, key, filas_nuevas, bkdir):
             resultado.append(fila)
             nuevas += 1
 
-    if reemplazadas or nuevas:
+    if particion is not None:
+        # Particiones que este re-pull declara CUBRIR POR COMPLETO, y las llaves que
+        # trajo dentro de ellas — todo lo demas de esas particiones ya no existe.
+        particiones_tocadas = {_particion_valor(f, particion) for f in filas_completas}
+        llaves_traidas = {_clave(f, key) for f in filas_completas}
+        conservar = []
+        for f in resultado:
+            if (_particion_valor(f, particion) in particiones_tocadas
+                    and _clave(f, key) not in llaves_traidas):
+                eliminadas += 1
+                continue
+            conservar.append(f)
+        resultado = conservar
+
+    if reemplazadas or nuevas or eliminadas:
         os.makedirs(bkdir, exist_ok=True)
         if os.path.exists(path):
             stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -134,4 +183,6 @@ def upsert(path, cols, key, filas_nuevas, bkdir):
             for f in resultado:
                 w.writerow(f)
 
+    if particion is not None:
+        return reemplazadas, nuevas, sin_cambio, eliminadas
     return reemplazadas, nuevas, sin_cambio

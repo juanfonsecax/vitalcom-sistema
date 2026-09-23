@@ -337,6 +337,66 @@ class TestBajarMetaInsights(unittest.TestCase):
         self.assertEqual(len(filas), 1, "re-correr el mismo dia no debe duplicar la fila")
         self.assertEqual(filas[0]["ad_id"], "999")
 
+    def test_particion_elimina_backfill_viejo_sin_ad_id(self):
+        """Reproduce el defecto real observado en vivo (22-sep-2026, segunda vuelta de T1):
+        _FACT_ENTREGA_ANUNCIO.csv ya tenia ~710 filas de un backfill SIN ad_id para una
+        cuenta/dia; el re-pull nuevo trae la MISMA cuenta/dia CON ad_id. Antes de `particion`
+        las dos convivian (llaves distintas: firma vs ad_id) y el gasto por anuncio se
+        duplicaba. Con `particion` la fila vieja debe desaparecer y solo queda la del re-pull."""
+        fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
+        fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        bkdir = os.path.join(self.temp_dir, "backups_csv")
+
+        # Backfill viejo, escrito ANTES de que existiera ad_id: la llave real de esa fila
+        # (ver bmi._clave_anuncio) cae en la FIRMA porque ad_id llega "".
+        campos = list(bmi.im.COLS_AD)
+        fila_vieja = {c: "" for c in campos}
+        fila_vieja.update({
+            "ventana_ini": "2026-09-06", "ventana_fin": "2026-09-06", "dias": "1",
+            "producto_key": "PROD", "cuenta_id": "598687956219141", "cuenta_alias": "GTR7",
+            "campana": "Camp 1", "conjunto": "Conj 1", "anuncio": "ANGULO_A ~ PROD|ANG|C1.CN01|NC2|2X1|BOT_V1",
+            "ad_id": "", "firma": "PROD|ANG|C1.CN01|NC2|2X1|BOT_V1",
+            "mensajes": "0", "clicks_totales": "10", "link_clicks": "8", "impresiones": "100",
+            "spend_usd": "5.0", "pct_conv_clic_enlace": "0.0", "fuente": "MetaAPI-directo",
+        })
+        with open(fact_ad, "w", newline="", encoding="utf-8") as fh:
+            w = csv.DictWriter(fh, fieldnames=campos)
+            w.writeheader()
+            w.writerow(fila_vieja)
+
+        fila_repull = {
+            "ventana_ini": "2026-09-06", "ventana_fin": "2026-09-06", "dias": 1,
+            "producto_key": "PROD", "cuenta_id": "598687956219141", "cuenta_alias": "GTR7",
+            "campana": "Camp 1", "conjunto": "Conj 1", "anuncio": "ANGULO_A ~ PROD|ANG|C1.CN01|NC2|2X1|BOT_V1",
+            "ad_id": "120210000000001",
+            "mensajes": 0, "clicks_totales": 10, "link_clicks": 8, "impresiones": 100,
+            "spend_usd": 8.0, "pct_conv_clic_enlace": 0.0, "fuente": "MetaAPI-directo",
+            "firma": "", "angulo_key": "", "concepto_key": "", "canonico_id": "",
+            "nivel_conciencia": "", "oferta_key": "", "destino_key": "",
+        }
+
+        def procesar_cuenta_repull(cuenta, fecha, token, dim):
+            return [dict(fila_repull)], 0.0, 0
+
+        argv_fake = ["bajar_meta_insights.py", "--fecha", "2026-09-06"]
+        with patch.object(bmi, "FACT", fact), \
+             patch.object(bmi, "FACT_AD", fact_ad), \
+             patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "token_de", return_value="tok_falso"), \
+             patch.object(bmi, "leer_cuentas_activas",
+                          return_value=[{"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141",
+                                         "moneda": "USD"}]), \
+             patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
+             patch.object(bmi, "procesar_cuenta", side_effect=procesar_cuenta_repull), \
+             patch.object(sys, "argv", argv_fake):
+            bmi.main()
+
+        with open(fact_ad, encoding="utf-8") as fh:
+            filas = list(csv.DictReader(fh))
+        self.assertEqual(len(filas), 1, "la fila vieja sin ad_id debe desaparecer, no convivir")
+        self.assertEqual(filas[0]["ad_id"], "120210000000001")
+        self.assertEqual(float(filas[0]["spend_usd"]), 8.0, "el gasto no debe duplicarse")
+
     def test_main_todas_las_cuentas_ok_devuelve_0(self):
         """Sin ninguna falla el codigo de salida debe ser 0 (exito total)."""
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
