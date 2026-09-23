@@ -23,8 +23,8 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md §1):
   · CP1 (1346891653335162) factura en COP -> spend_COP / 3152.5 = spend_USD (APR-028).
   · ANTI-DUPLICADO por (ventana_ini, ventana_fin, cuenta_alias, campana, conjunto, fuente).
   · Llave = nombre del conjunto EXACTO como quedo en Meta, con tildes y sufijos. No normalizar.
-  · Escribe con csv writer real (regla 11 de CLAUDE.md). Backup previo en _RESPALDOS/backups_csv/
-    (T9, 22-sep-2026: reemplaza a _ARCHIVO/, jubilado — ver upsert_fact.respaldos_dir()).
+  · Escribe con csv writer real (regla 11 de CLAUDE.md). Backup previo en _RESPALDOS/backups_csv/ (ver
+    upsert_fact.respaldos_dir()).
   · Reporta el JOIN contra _DIM_CONJUNTOS.csv; un conjunto sin dimension se REPORTA, no se descarta.
 
 NIVEL ANUNCIO (06-sep-2026)

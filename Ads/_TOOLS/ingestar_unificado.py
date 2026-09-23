@@ -11,8 +11,7 @@ CÓMO FUNCIONA:
      - Aplica deduplicación estricta (no duplica si subes dos veces el mismo archivo).
      - Normaliza monedas (COP a USD para cuenta CP1).
   4. Actualiza los CSVs de hechos (_FACT_VENTAS.csv y _FACT_ENTREGA.csv).
-  5. Mueve los archivos procesados a `_RESPALDOS/procesados/` para mantener limpio el INBOX
-     (T9, 22-sep-2026: reemplaza a `_ARCHIVO/`, jubilado).
+  5. Mueve los archivos procesados a `_RESPALDOS/procesados/` para mantener limpio el INBOX.
   6. Actualiza de inmediato las decisiones y la aplicación.
 
 USO:

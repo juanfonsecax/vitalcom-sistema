@@ -45,8 +45,7 @@ Leer la data real del portafolio y entregar el informe que el motor no escribe: 
 
 ## PASO 1 — CÓMO LEER LAS TABLAS DE HECHOS
 
-> **Cambió el 2026-07-25:** `_HISTORICO.csv` se partió en dos archivos, uno por grano y por fuente. Antes había que aplicar tres reglas defensivas para no sumar mal; ahora sumar mal es **imposible por construcción**. El original quedó en el historial de git (salió del repo el 22-sep-2026, T9; antes vivía en
-`_ARCHIVO/DATA_MIGRADA/`).
+> **Cambió el 2026-07-25:** `_HISTORICO.csv` se partió en dos archivos, uno por grano y por fuente. Antes había que aplicar tres reglas defensivas para no sumar mal; ahora sumar mal es **imposible por construcción**. El original vive solo en el historial de git.
 
 | Archivo | Qué contiene | ¿Suma al P&L? |
 |---|---|---|

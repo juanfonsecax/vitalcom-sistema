@@ -11,9 +11,7 @@ mismo — una copia que nadie sabia que existia:
   · AGENTS.md, copia linea por linea de CLAUDE.md (538 vs 538).
   · .codex/agents/, tercera copia ya divergida: 13 de 17 etapas.
   · .agents/skills/, dos skills polizonas fuera de skills-lock.json, una de
-    ellas apuntando a `.Codex/agents/` — un directorio ya retirado (entonces a
-    `_ARCHIVO/`; ese directorio salio del repo el 22-sep-2026, T9 — su material
-    historico vive fuera, ver CLAUDE.md).
+    ellas apuntando a `.Codex/agents/` — un directorio ya retirado.
 
 Las tres eran invisibles hasta que un humano las miro. Este script las vuelve un
 numero. Es lo que un mapeador de codigo generico NO puede hacer, porque no sabe

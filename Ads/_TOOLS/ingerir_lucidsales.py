@@ -25,8 +25,8 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md + runbook de la auditoría):
     siempre. `rol_ventana` viaja en la llave: CONTROL nunca reemplaza a BASE ni viceversa. Ver
     `upsert_fact.py` (el helper, compartido con `bajar_meta_insights.py`).
   · La fecha sale del NOMBRE del archivo (report-YYYY-MM-DD-YYYY-MM-DD.xlsx), no del contenido.
-  · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _RESPALDOS/backups_csv/
-    (T9, 22-sep-2026: reemplaza a _ARCHIVO/, jubilado — ver upsert_fact.respaldos_dir()).
+  · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _RESPALDOS/backups_csv/ (ver
+    upsert_fact.respaldos_dir()).
   · ad_id se formatea con s_id() (no notación científica cuando se puede).
 """
 import sys, io, os, re, csv, json, datetime
