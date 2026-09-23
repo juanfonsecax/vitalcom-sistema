@@ -1,0 +1,45 @@
+TINNIDROP · PLAN DE ESCALADO (FASE 3 — escalar el ganador) · 2026-07-20
+Cuenta madre: GTR0 (act_1665221077707961, MCP ON) · Página: Sanarte · Tasa 7.62
+Break-Even Q60.5 · CPA Base Q30.8 · Precios 179/239/299 (fila Q40)
+CPA real 7d (LucidSales): Q16.5/venta · ROAS real sano · producto YA validado por ventas.
+════════════════════════════════════════════════════════════════════════════
+REGLA DE ORO: se escala lo que YA vende. NO se rehace el bot (cierra bien).
+Decidir por CPA SEMANAL, nunca por un día. Surfing máx +20%/día.
+════════════════════════════════════════════════════════════════════════════
+
+━━━ DECISIONES DEL OPERADOR (2026-07-20) — LOCK DE FASE 3 ━━━
+  · DESPLIEGUE = HORIZONTAL + SURFING. El presupuesto fuerte se mete a lo ANCHO
+    (mismo Post ID en GTR0/7/3/1) + surfing +20%/día en los que venden. NO crank
+    vertical de un solo adset (resetea aprendizaje, dispara CPA).
+  · BOT = se REGA el paraguas YA (ningún ángulo bajo el piso 35% histórico → cierra
+    bien). Bots dedicados de un solo ángulo (Pérdida auditiva, ME DIJERON) en 2-3 días.
+  · CANDADO: NO subir presupuesto ni regar a otras cuentas hasta corregir el compliance
+    del ADS (PASO 1). A escala es cuando Meta castiga. Es lo primero, sin excepción.
+  · Contexto: 800 unidades en stock + caja disponible → sí escalar fuerte, pero por ancho.
+
+━━━ VERIFICACIÓN CON CSV META (GTR0 · 11-19 jul · $76.42 · 22 compras Meta) ━━━
+| Conjunto                    | Formato | Compras | CPA real (Meta) | %conv/clic | Freq |
+|-----------------------------|---------|---------|-----------------|-----------|------|
+| Pérdida auditiva irrevers.  | VIDEO   | 8       | Q13.5           | 58%       | 1.29 |
+| ME DIJERON no tiene cura    | IMAGEN  | 6       | Q17.6           | 23%       | 1.86 |
+| Deterioro cognitivo         | VIDEO   | 3       | Q35.6           | 58%       | 1.37 |
+| Accesibilidad vs médico     | VIDEO   | 3       | Q35.8           | 64%       | 1.35 |
+| Noches sin dormir           | IMAGEN  | 2       | Q53.4 (<BE)     | 25%       | 1.51 |
+| Tensión/estrés              | IMAGEN  | 0       | — (apagado)     | 22%       | 1.30 |
+CPA global Q26.5/venta vs BE Q60.5 → SANO. Coincide con Lucid (top2 Q9-Q17).
+LECTURA CLAVE: el FORMATO no decide — el ÁNGULO decide. ME DIJERON (IMAGEN) es #2 y
+vence a 2 videos. Las imágenes se riegan con Post ID igual que los videos.
+ME DIJERON: CTR más alto (1.63%) pero %conv/clic bajo (23%) y aun así 6 ventas → clic
+muy intencionado que compra. No "arreglar" el chat; ya convierte. Freq 1.86 → renovar ya.
+
+CONJUNTOS GANADORES (los que se escalan — por venta real Lucid + Meta):
+  1) Pérdida auditiva irreversible ...... 8 ventas · Q9-13  🥇 (video "tinnidrop 6")  PRIMARIO
+  2) ME DIJERON QUE NO TIENE CURA ........ 6-7 ventas · Q10-18 🥈 (IMAGEN · ⚠ freq 1.86 renovar) PRIMARIO
+  3) Accesibilidad económica vs médico .. 3 ventas · Q22-36 (video "tinnidrop 4")  SECUNDARIO
+  4) Deterioro cognitivo / cerebro ...... 2-3 ventas · Q34-36 (video "tinnidrop 3") SECUNDARIO
+  APAGAR: TENSIÓN/ESTRÉS (0 ventas). VIGILAR: NOCHES SIN DORMIR (Q53, al filo del BE).
+  ⚠ El ganador YA NO es Accesibilidad (#4 histórico) — hoy son Pérdida auditiva + ME DIJERON.
+
+────────────────────────────────────────────────────────────────────────────
+PASO 1 — CHEQUEO DE COMPLIANCE (solo el ADS, 5 min)
+────────────────────────────────────────────────────────────────────────────

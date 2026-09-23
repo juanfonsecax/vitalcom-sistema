@@ -1,0 +1,13 @@
+━━━ COSTEO (ETAPA-1, fila Q54 - costo Q55) ━━━
+⚠️ CORRECCIÓN DE OFERTA (2026-07-07 — confirmado por operador): NUSAVA B12 SE VENDE SIEMPRE EN COMBO (2x1 o 4x2), NUNCA unidad suelta. Clasificación correcta = BAJO TICKET → 2x1/4x2 (ETAPA-1 regla 1: costo por unidad ~Q35 < Q50 → liderar con 2x1/4x2 sin 1u de entrada). La corrida v2 lo puso en 1/2/3 por el default "salud→tratamiento"; se corrige a combos.
+   · 2X1 (oferta base, mínima): 2 frascos por Q219 · costo proveedor Q55 (los 2) · ganancia bruta Q149 (~68%) · − CPA Base Q32.3 = Q116.7
+   · 4X2 (upsell): 4 frascos por Q369 · costo proveedor Q140 (las 4) · ganancia bruta Q229 · − CPA Base Q32.3 = Q196.7
+   · CPA Base Q30.80 y Break Even Q92.64 (vigentes 2026-09-02, ver _DIM_PRODUCTOS.csv). El PRECIO Q219 no cambia: esta validado contra Dropi con n=43 ordenes. Lo que cambio es el COSTO (Q70 -> Q55), y con el el break-even, que ahora se DERIVA de _DIM_PRECIOS + _TASA_ENTREGA con la tasa de entrega propia del producto (71.7%), no de la tabla.
+   · HECHO (2026-07-07, edición quirúrgica): bot (1_HACER_MANUAL) corregido a 2X1 Q219 / 4X2 Q369 (bloque PRECIOS, FAQ P10, interacción de precios, regla de upsell, testimonio de cantidad). Copies (ETAPA-4) NO se tocaron: dicen solo "Q219 con envío gratis" y Q219 no cambia (ahora = 2x1). Presentación del 4X2 = "la más elegida ⭐ tratamiento completo + regalo, la 2ª mitad casi regalada" (Clase 17 + ETAPA-5).
+OFERTA REAL (reemplaza la escalera legacy 1/2/3):
+2X1 (2 frascos): Q219 + envío gratis · costo Q55 los 2
+4X2 (4 frascos): Q369 · costo Q140 las 4
+CPA_OBJETIVO (Base, ~15% ganancia): Q32.3 ($4.24)
+CPA_BREAK_EVEN (límite, no perder): Q68.3 ($8.96)
+Márgenes por pedido (precio − costo − CPA Base): 2X1 Q116.7 · 4X2 Q196.7   [legacy 1/2/3: P1u Q116.7 · P2u Q166.7 · P3u Q206.7 — reemplazado por combos]
+

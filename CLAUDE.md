@@ -110,8 +110,9 @@ calidad de la escritura y del juicio.
 | Recolección manual de creativos · research opcional | `DOCTRINA/ETAPA-RECOLECCION.md` · `DOCTRINA/ETAPA-RESEARCH.md` |
 | Doctrina de mentores, fecha, estado y choques | `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` — consulta humana |
 | **Texto Madre**: parámetros enseñados en clases y protocolo de ingesta | `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`, verificado por `verificar_guia_madre.py` (hook, bloquea). Un número de una clase es el envoltorio del presupuesto del mentor: antes de copiarlo, preguntar de qué es envoltorio |
+| **Baseline de evals por etapa** (fixtures congelados de outputs reales + asserts deterministas) — requisito para podar prosa de `.claude/agents/ETAPA-*.md` | `evals/` (`promptfooconfig.yaml` · `run_baseline.py` · `fixtures/<etapa>/<producto>` · `asserts/<etapa>*.py`), gate en `Ads/_TOOLS/test_evals_baseline.py` |
 
-**Zonas:** `DOCTRINA/` · `.claude/` · `PRODUCTOS/` · `Ads/` se **leen**. `VISTAS/` se abre, no se
+**Zonas:** `DOCTRINA/` · `.claude/` · `PRODUCTOS/` · `Ads/` · `evals/` se **leen**. `VISTAS/` se abre, no se
 lee; `VISTAS/APP.html` es el respaldo generado de la app web (`python Ads/_TOOLS/gen_app.py --todo`). `_CONOCIMIENTO/` ·
 `_OPERADOR/` · `_ROADMAP/` · `_SKILLS_FUENTE/` · `INFPRODUCTOS/` son **referencia
 humana** — el sistema no los lee. `_RESPALDOS/` (backups y derivados EN VIVO) está

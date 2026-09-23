@@ -1,0 +1,45 @@
+━━━ COMPONENTES (ETAPA-1B) ━━━
+Nota: evidencia in vitro, animal o tradicional; sin ensayos en humanos de uso vaginal. Son hierbas de medicina tradicional china, no ayurveda.
+- Osthol (Cnidium monnieri): antipicazón (TRPV1, ratones), antifúngico, antibacteriano, activo in vitro contra Trichomonas. Dolor: "me pica tanto por la noche que no puedo dormir". CUBIERTO a medias.
+- Stemona sessilifolia (Bai Bu): alcaloides antiparasitarios y antibacterianos (no calmante). CUBIERTO.
+- Kochia scoparia (Di Fu Zi): saponinas antipicazón, antialérgicas, antiinflamatorias, antifúngicas (animales). Dolor: irritación por jabón → MELAVOYSIGUE. DESCUBIERTO.
+- Motherwort (Leonurus / agripalma): regula contracción uterina, bajó dolor menstrual en ratas; CONTRAINDICADO EN EMBARAZO. DESCUBIERTO.
+- Rhizoma Smilacis Glabrae (Tu Fu Ling): redujo inflamación del tracto genital superior en ratas (NF-κB); antibacteriano. Dolor: "me trato, se calma y vuelve". CUBIERTO.
+- Angelica (Dang Gui): uso tradicional en trastornos menstruales; "equilibrio hormonal" no demostrado en humanos. → DESPUESDELAREGLA. DESCUBIERTO.
+- Rhizoma Chuanxiong: hierba clásica para dolor menstrual. → DESPUESDELAREGLA. DESCUBIERTO.
+- Borneol: antibacteriano, antiinflamatorio; potencia absorción por mucosa y da sensación fresca; puede causar ardor en piel sensible; riesgo en embarazo. Explica el ardor durante el uso → objeción resuelta en el bot.
+Fuentes: PMC8528571 · PMID 36387775 · PMID 32726680 · PMC7868135 · ScienceDirect S0378874117307456 · MSKCC Smilax · PMC12301920 · ScienceDirect S0753332219317779 · Frontiers fphar.2021.751207.
+
+━━━ VOZ DEL CLIENTE (ETAPA-1B · banco de dolor real) ━━━
+Fuentes con señal: Doctoralia (CO, MX, ES, AR), 1DOC3 (Colombia), Quora ES. Sin señal: Reddit ES, reseñas ML Colombia, TikTok/IG/FB (login).
+Temas más repetidos: infección/candidiasis que vuelve 7 · olor tras relaciones/pareja 6 · higiene o jabón y sigue 4 · óvulos de farmacia 4 · vergüenza del ginecólogo 2 · síntomas con la regla 2 · protector diario 0.
+Infección que vuelve:
+ 1 "Ya llevo casi un mes con candidiasis se me pasa una semana y vuelve. Me he puesto ovulos y crema…" (doctoralia.es)
+ 2 "Llevo un año con candidiasis y no se me va. ¿Que puedo hacer?" (doctoralia.es)
+ 3 "LLevo más de un año con candidiasis recurrente. No encuentro modo alguno de eliminarlo…" (doctoralia.es)
+ 4 "Cuál es el tratamiento más efectivo para candidiasis recurrente? (5 años de recurrencia)" (doctoralia.com.mx)
+ 5 "Creo tener candidiasis e infección de orina a la vez, esto me ocurre cada dos por tres…" (doctoralia.es)
+ 6 "Después de la menstruación tengo los siguientes síntomas: comezón, ardor, flujo blanco…" (doctoralia.com.mx, resumen)
+ 7 "Hace unos días me dio candidiasis por qué estuve dos semanas tomando antibióticos…" (doctoralia.es)
+Olor después de las relaciones:
+ 8 "Tengo mal olor en la vagina y después de tener relaciones sexuales es peor que puede ser" (doctoralia.com.mx)
+ 9 "Porque tengo un olor horrible después de tener relaciones con mi pareja?… ese olor a putrefacción..." (1DOC3)
+ 10 "Al tener relaciones sexuales después de tres días me sale un mal olor… ya me hice exámenes y no sale nada" (1DOC3)
+ 11 "El semen de mi pareja cambia mi ph vaginal y me genera un olor fuerte días después. Debemos hacernos tratamiento con Albisec one ambos?" (1DOC3)
+ 12 "Tengo olor a pescado vaginal desde q mi pareja se viene dentro de mi…" (doctoralia.com.mx)
+ 13 "…mi novio me hizo sexo oral y me dijo que tenía un olor raro… como pescado algo así." (1DOC3)
+Me lavo y sigo oliendo:
+ 14 "cuando sudo mucho me huele a cebolla mi parte íntima y por más que me lave no se me quita…" (doctoralia.com.mx)
+ 15 "A que se deberá el mal olor vaginal? Si tengo una buena higiene día a día y aún así se da…" (doctoralia.com.mx)
+ 16 "¿Estos jabones funcionan para tratar malos olores y flujo?… El jabón intimo Nosotras con camelia…" (1DOC3)
+ 17 "Cada vez que me baño con jabón siento mucha comezón y ardor en mi area vaginal…" (doctoralia.com.mx)
+Óvulos de farmacia:
+ 18 "Tengo mal olor y flujo y ardor, no se si ponerme ovulos de clotimazol o usar los ovulos VAXIDUO…" (doctoralia.co)
+ 19 "el gynoflor óvulo ayuda a combatir el mal olor vaginal" (doctoralia.co)
+ 20 "Porque me pongo óvulo y al dia siguiente sale un mal olor?" (doctoralia.com.mx)
+ 21 "que me recomiendan para el flujo con olor, el cual al pasar los días me lastima? Me pongo ovulos…" (doctoraliar.com)
+Vergüenza del médico: 22 "Miedo a ir al ginecólogo y vergüenza." (1DOC3) · 23 "Cada vez que pienso en que tengo que ir me pongo a llorar… Me da pánico." (es.quora.com)
+Objeción de la categoría: 24 "Use un ovulo detox y estoy expulsando grumos por mi vagina antes no tenia nada d esto ni mal olor…" (doctoralia.co)
+Deseo (deducido del dolor): estar con la pareja sin pensar en el olor · terminar un tratamiento y que no vuelva · "mantenerse jugosas, frescas" (competencia 9 HN).
+PROBLEMAS OCULTOS: pH del semen (7,2-8) vs vagina (3,8-4,5) · lavarse de más arrasa la flora · óvulo de farmacia/antibiótico se lleva los lactobacilos → rebote · la regla cambia pH y hormonas cada mes.
+

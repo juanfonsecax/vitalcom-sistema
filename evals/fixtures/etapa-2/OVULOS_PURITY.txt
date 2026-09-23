@@ -1,0 +1,35 @@
+━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) ━━━
+Reglas comunes: concepto FIJO C2_BENEFICIOS ligera · CN05_LISTA_BENEFICIOS · los 6 en AD-IMAGEN 4:5 · hooks sin "¿tienes…?" · la causa oculta va solo en el bot (APR-001) · saturación ESTIMADA, no medida en Ad Library.
+
+#1 OLORTRASRELACIONES — "El olor del día después" · IMAGEN · SIN precio · NC1 · VERGUENZA · MUJER 25-35 (banda Meta 25-40) · saturación MEDIA
+   Avatar: colombiana 25-38, pareja estable, relaciones sin preservativo; se baña antes y después y al otro día o a los 2-3 días aparece olor fuerte; exámenes "no sale nada".
+   Dolor: "Estoy con él y al otro día, o a los tres días, me sale ese olor horrible. Ya me hice exámenes y no sale nada." [VOZ-REAL 9, 10]
+   Promesa: A "después huelo mal y me muero de pena" → B "disfruto con mi pareja y al otro día me siento fresca".
+   Hook: "Después de estar con él, otra vez ese olor" · swipe 5 NUEVO / ICO-LITE 5 · origen VOZ_REAL (problema oculto, reemplaza OLORPAREJA)
+#2 INFECCIONQUEVUELVE — "La que va y vuelve" · IMAGEN · CON precio · NC2 · AGOTAMIENTO · MUJER 25-35 (banda 25-40) · saturación ALTA
+   Avatar: colombiana 25-40, meses o años con picazón, ardor, flujo blanco espeso; se trata, se calma una semana y vuelve.
+   Dolor: "Se me pasa una semana y vuelve. Llevo un año así y no se me va." [VOZ-REAL 1, 2, 3]
+   Promesa: A "me trato y a la semana vuelve" → B "termino el tratamiento y vuelvo a sentirme normal". Dato: 3 de cada 4 mujeres tendrán una infección por hongos alguna vez; casi la mitad, más de una (Fisterra, Rev Iberoam Micol).
+   Hook: "Se me quita una semana y vuelve" · swipe 2X1 HER5 / ICO-LITE 8 · empujar pack 3 cuando vuelve seguido
+#3 CREMASREBOTE — "Ya probé de todo en la droguería" · IMAGEN · CON precio · NC3B · FRUSTRACION_MEDICA · MUJER 25-35 (banda 25-40) · saturación MEDIA (estimada)
+   Avatar: colombiana 25-40 que se automedica (clotrimazol, Vaxiduo, Gynoflor, ácido bórico); mejora unos días y vuelve el flujo con olor.
+   Dolor: "Me pongo el óvulo y al día siguiente sale un mal olor; ya no sé si ponerme clotrimazol o Vaxiduo." [VOZ-REAL 18, 20, 21]
+   Promesa: A "cada mes un óvulo distinto y el olor vuelve" → B "un tratamiento natural sin volver a empezar". "Sin efecto rebote" solo en el bot.
+   Hook: "Cremas y óvulos de droguería… y sigue ahí" · swipe 9 HN / ICO-LITE 9
+#4 MELAVOYSIGUE — "Me lavo y sigo oliendo" · IMAGEN · SIN precio · NC1 · VERGUENZA · MUJER 35-45 (banda 35-50) · saturación MEDIA
+   Avatar: colombiana 30-50 muy cuidadosa (2-3 baños al día, jabón íntimo, toallitas, perfume); trabaja en calor o transporte.
+   Dolor: "Por más que me lave no se me quita el olor. Tengo buena higiene y aun así." [VOZ-REAL 14, 15]
+   Promesa: A "me lavo tres veces al día y sigo sintiéndome sucia" → B "rutina simple y tranquilidad de oler a limpio".
+   Hook: "Me lavo todos los días y el olor sigue" · swipe ICO-LITE 8 y 4 · origen VOZ_REAL (reemplaza MALOLOR)
+#5 FLUJOPESCADO — "Ese olor que se nota" · IMAGEN · SIN precio · NC2 · VERGUENZA · MUJER 25-35 (banda 25-40) · saturación ALTA (estimada)
+   Avatar: colombiana 22-35, estudia o trabaja y va al gym; flujo abundante con olor a pescado al sentarse o cambiarse.
+   Dolor: "Tengo mucho flujo y huele a pescado; me huelo al abrir las piernas y el perfume no lo tapa." [competencia 10 HN / ICO-LITE 2 + VOZ-REAL 12]
+   Promesa: A "mucho flujo, olor y miedo a que se note" → B "fresca todo el día, en el trabajo y en el gym".
+   Hook: "Mucho flujo y ese olor que se nota" · swipe 10 HN / ICO-LITE 2, 3
+#6 DESPUESDELAREGLA — "Se acaba la regla, empieza la picazón" · IMAGEN · SIN precio · NC1 · MIEDO_FUTURO · MUJER 25-35 (banda 25-40) · saturación BAJA
+   Avatar: colombiana 22-40; cada mes, al terminar la regla, comezón, ardor y flujo blanco.
+   Dolor: "Cada vez que se me acaba la regla empieza la comezón, el ardor y el flujo blanco. Ya usé óvulos, pastillas y cremas." [VOZ-REAL 6, 5]
+   Promesa: A "cada mes la misma molestia" → B "meses tranquilos sin el ciclo regla-picazón". Único que usa Motherwort, Angélica, Chuanxiong.
+   Hook: "Se acaba la regla y empieza la picazón" · ángulo virgen (nadie del swipe) · reemplaza FLUJODIARIO
+Pendientes de ETAPA-2: 3 de 6 con VERGUENZA (1, 4, 5): no afecta FASE 1 (variable = angulo_key) pero no separa efecto de emoción.
+

@@ -1,0 +1,8 @@
+━━━ COSTEO (ETAPA-1 · fila Q40 · valores exactos — coinciden con los precios ya desplegados) ━━━
+Costo Q41 → cae entre fila Q40 y Q45. Los precios reales desplegados (179/239/299) son los de la fila Q40, así que el costeo operativo es fila Q40:
+  P1u: Q179 · P2u: Q239 · P3u: Q299
+  CPA_OBJETIVO (Base): Q30.8
+  CPA_BREAK_EVEN: Q60.5   ← techo de CPA real sobre la venta mínima de 1u
+(La regla conservadora "usar fila superior" daría fila Q45 → P1u Q189 y BE Q64.5. Como el producto YA vende rentable a Q179, se mantiene la fila Q40 que refleja la realidad. Si algún día sube el costo o el precio, releer ETAPA-1.)
+Margen bruto por pedido: 1u Q179−41 = Q138 · 2u Q239−82 = Q157 · 3u Q299−123 = Q176 (menos envío/RTO COD). Con CPA objetivo Q30.8 el neto por pedido es holgado.
+

@@ -1,0 +1,15 @@
+VALIDACION_PRODUCTO: APTO CONDICIONAL · score provisional 0.92 (VERDE) — detalle abajo
+
+━━━ VALIDACIÓN DE PRODUCTO (ETAPA-PRODUCTO) ━━━
+FILTRO DE DESCARTE: pasa con reserva. Dropi y Ad Library no provistos → saturación no evaluable. Señales de categoría muy vendida en Colombia ("+10.000 clientas", "+325 reseñas", alertas INVIMA 2024). Mercado tradicional con sustitutos en farmacia (clotrimazol/metronidazol) → el ángulo no compite contra el óvulo de farmacia, va por "ya probaste cremas y pastillas y vuelve". No estacional.
+D1 resuelve problema específico: SÍ (mal olor, flujo, picazón, infecciones íntimas recurrentes).
+Obligatorios: O1 stock SIN CONFIRMAR · O2 ligero/no frágil SÍ · O3 proveedor confiable SIN CONFIRMAR (INVIMA declarado sin número) · O4 no estacional SÍ.
+Recomendados (10/12 seguros): R1 micronicho ✓ · R2 innovador ✗ · R3 percepción de valor ✓ · R4 público masivo ✓ (mujeres 25-55) · R5 fuera de mercado tradicional ✓ · R6 ticket bajo ✓ (2 paq $69.000 = 21,9 USD; 1 paq $56.000 = 17,8 USD; 3 paq 31,4 USD) · R7 viral ✓ · R8 tamaño ✓ · R9 sin variaciones ✓ · R10 combos ✓ (1/2/3 + recompra cada 2 meses) · R11 WOW ✓ · R12 margen ≥3 USD PENDIENTE (flete Colombia no provisto).
+RIESGOS:
+ 1. Sanitario: INVIMA alerta 417-2024 contra óvulos/perlas detox sin registro vendidos por redes; otra alerta sobre "Óvulos Détox by Naturalistica" (el texto del proveedor dice "FRESCURA NATURALISTICA"). Confirmar número, vigencia, titular HER NATURA y tipo de registro.
+ 2. Cuenta publicitaria: salud sexual/zona íntima y atributos personales → rechazos y CPM alto. En ADS no van: "cura", "99%", "endometriosis", "enfermedades uterinas", "estrechar tu vagina", "mioma", "candidiasis recurrente", "semen".
+ 3. Contradicciones del texto del proveedor: "ayurveda" pero las hierbas son de medicina tradicional china; "envíos 100% gratuitos" vs $15.000 en 1 paquete; "devolución 110%" solo con tarjeta (no aplica a contra entrega). El bot usa UNA versión: envío gratis en 2 y 3 paquetes; garantía = cambio si llega dañado o con defecto de fábrica (30 días).
+ 4. Contra entrega + producto íntimo de impulso → más rechazo en puerta; costearlo. En bot no afirmar que se expulsa mioma/tumor.
+ 5. Uso: 24 h dentro; el bot excluye embarazo, lactancia y sangrado activo.
+Fuentes: invima.gov.co alerta 417-2024 · atlantico.gov.co alerta Naturalistica · Infobae 26-dic-2024 · El Tiempo · Agenciapi.
+

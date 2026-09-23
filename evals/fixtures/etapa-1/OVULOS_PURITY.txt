@@ -1,0 +1,10 @@
+━━━ COSTEO (ETAPA-1 no aplica: _DIM_COSTEO está en Q; el operador costeó en COP) ━━━
+P1u: 1 paquete · 3 perlas · tratamiento básico → $41.000 + $15.000 envío = paga $56.000
+P2u: 2 paquetes · 6 perlas · tratamiento recomendado → $69.000 envío gratis ← LA MÁS ELEGIDA · OFERTA OBJETIVO
+P3u: 3 paquetes · 9 perlas · tratamiento completo → $99.000 envío gratis
+Arquitectura: escalera 1/2/3 (no 2x1). En el anuncio: "desde $41.000" + pack de 2 a $69.000. Por $13.000 más la clienta lleva el doble sin envío.
+Margen bruto de producto (sin flete, CPA, admin ni devoluciones): P1u $41.000 − $7.000 = $34.000 (+ envío cobrado $15.000) · P2u $69.000 − $14.000 = $55.000 · P3u $99.000 − $21.000 = $78.000.
+El operador confirma que 2 paquetes a $69.000 es rentable.
+CPA_OBJETIVO: PENDIENTE   ·   CPA_BREAK_EVEN: PENDIENTE — dependen del flete contra entrega Colombia (no provisto). No se inventan. cpa_base_q y cpa_be_q quedan VACÍOS en _DIM_PRODUCTOS.csv.
+Presupuesto de testeo: US$2.99/conjunto = $9.426 COP (9.425,98 redondeado hacia arriba) × 6 = $56.556 COP/día. ETAPA 2 (~20-sep): US$5.98 = $18.852 COP por conjunto.
+

@@ -1,0 +1,41 @@
+━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) ━━━
+[Re-revisión ETAPA-2 v3 · 2026-06-27] Criterios de ranking actualizados: (1) voz real/problema oculto, (2) carga emocional/identidad, (3) saturación baja, (4) señales de compra, (5) ángulo directo. Bajo estos criterios: ABSORCION sigue #1 (problema oculto = mala absorción de la pastilla, dolor de voz real "boto el pisto", saturación baja). ANIMO (emocional, único de identidad pura) sube por el criterio 2: quedó #5 por nivel de conciencia bajo y saturación media, pero hay que vigilarlo de cerca en el testeo. Los 6 conjuntos lanzados NO cambian (campaña ya viva). Niveles de conciencia ahora notados con sub-estado 3a/3b cuando aplica.
+
+ÁNGULO 1 — ABSORCION "El que SÍ se absorbe" (mecanismo único)
+  Creativo: IMAGEN (NUSAVAB12_1_ABSORCION.jpg) · Precio en ad: no
+  Dolor: "Ya probé pastillas de B12 y nunca sentí nada — siento que boto el pisto"
+  Avatar: 40-58, escéptico, gastritis/digestión lenta · Nivel de conciencia 3a (conoce la B12 pero teme "botar el pisto" otra vez → reducir fricción: mecanismo único + prueba) · Saturación BAJA
+  Emoción/necesidad oculta: cansado de gastar en algo que no siente; quiere por fin SENTIR que algo le funciona (problema oculto = mala absorción de la pastilla, no la B12 en sí).
+  Promesa: B12 líquida sublingual se absorbe sin depender del estómago.
+
+ÁNGULO 2 — ARDOR "Apaga el ardor de pies y manos" (problema-dolor)
+  Creativo: VIDEO (NUSAVAB12_2_ARDOR.mp4) · Precio en ad: no
+  Dolor: "En la noche me arden los pies como brasas y se me duermen las manos"
+  Avatar: 45-62, ardor/hormigueo nocturno, posible glucosa alta · Nivel 2 · Saturación MEDIA
+  Promesa: B12 + B1 apoyan los nervios de pies y manos.
+
+ÁNGULO 3 — AZUCAR "Protegé tus nervios del azúcar" (miedo) — COMPLIANCE CRÍTICO
+  Creativo: IMAGEN (NUSAVAB12_3_AZUCAR.jpg) · Precio en ad: no
+  Dolor: "Tengo el azúcar alta y ya siento hormigueo en los pies — me da miedo perder sensibilidad"
+  Avatar: 48-65, diabético/prediabético · Nivel 2 · Saturación BAJA
+  Promesa: B1 + B12 apoyan los nervios que el azúcar debilita. NUNCA "trata/cura la diabetes" ni "baja el azúcar".
+
+ÁNGULO 4 — MEMORIA "Vitamina del nervio y la memoria" (educativo) · LLEVA PRECIO Q219
+  Creativo: VIDEO (NUSAVAB12_4_MEMORIA.mp4) · Precio en ad: Q219
+  Dolor: "Mi mamá tiene los nervios dañados y pierde memoria, y yo ando sin energía cuidándola"
+  Avatar: mujer 38-55 cuidadora / adulto 55+ con olvidos · Nivel 1 (educar) · Saturación MEDIA-ALTA
+  Promesa: B12 metilcobalamina apoya la vaina de mielina (nervios y memoria).
+
+ÁNGULO 5 — ANIMO "B12 para el ánimo y la ansiedad" (emocional)
+  Creativo: VIDEO (NUSAVAB12_5_ANIMO.mp4) · Precio en ad: no
+  Dolor: "Ando ansioso, irritable y sin foco — como apagado por dentro"
+  Avatar: 30-48, agotamiento emocional · Nivel 1-2 · Saturación MEDIA
+  Emoción/necesidad oculta: quiere volver a SENTIRSE él mismo, con energía y presente para su familia (identidad, no solo síntoma) — único ángulo de carga emocional pura del set; bajo criterios v3 es el que más conversión podría dar.
+  Promesa: B12 + B6 apoyan el sistema nervioso y la serotonina.
+
+ÁNGULO 6 — CIATICA "Calmá el nervio ciático" (problema-dolor) · LLEVA PRECIO Q219
+  Creativo: VIDEO (NUSAVAB12_6_CIATICA.mp4) · Precio en ad: Q219
+  Dolor: "Tengo ciática, ese dolor que me baja de la cintura por la pierna"
+  Avatar: 40-58 (Don Carlos, 55, trabajó de pie) · Nivel 2 · Saturación MEDIA
+  Promesa: B12 + B1 apoyan el nervio ciático.
+

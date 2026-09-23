@@ -1,0 +1,165 @@
+description: >-
+  VITALCOM — baseline congelada de evals por etapa (T11, odd/tasks/g07-cimientos.md).
+  Cada test corre un assert Python determinista sobre un fixture congelado de un
+  output REAL guardado en PRODUCTOS/. El provider `echo` solo devuelve el fixture
+  tal cual (no llama a ningún modelo): esta baseline mide contratos de output, no
+  calidad de generación. Sirve como piso: antes de podar prosa de un
+  .claude/agents/ETAPA-*.md, esta config debe seguir pasando igual sobre el mismo
+  output re-generado.
+
+providers:
+  - id: echo
+
+prompts:
+  - "{{content}}"
+
+defaultTest:
+  vars: {}
+
+tests:
+  # ---- etapa-producto ------------------------------------------------------
+  - description: "etapa-producto / OVULOS_PURITY — veredicto APTO/NO APTO + score 0-1"
+    vars:
+      content: file://fixtures/etapa-producto/OVULOS_PURITY.txt
+    assert:
+      - type: python
+        value: file://asserts/etapa-producto.py
+    metadata: {etapa: etapa-producto, producto: OVULOS_PURITY}
+
+  # ---- etapa-1 (costeo) ------------------------------------------------------
+  - description: "etapa-1 / CLEARSTEM — costeo derivado, nunca inventado"
+    vars: {content: file://fixtures/etapa-1/CLEARSTEM.txt}
+    assert: [{type: python, value: file://asserts/etapa-1.py}]
+    metadata: {etapa: etapa-1, producto: CLEARSTEM}
+  - description: "etapa-1 / NusavaB12 — costeo derivado, nunca inventado"
+    vars: {content: file://fixtures/etapa-1/NusavaB12.txt}
+    assert: [{type: python, value: file://asserts/etapa-1.py}]
+    metadata: {etapa: etapa-1, producto: NusavaB12}
+  - description: "etapa-1 / TINNIDROP — costeo derivado, nunca inventado"
+    vars: {content: file://fixtures/etapa-1/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-1.py}]
+    metadata: {etapa: etapa-1, producto: TINNIDROP}
+  - description: "etapa-1 / OVULOS_PURITY — CPA aún no derivable, declarado PENDIENTE (no inventado)"
+    vars: {content: file://fixtures/etapa-1/OVULOS_PURITY.txt}
+    assert: [{type: python, value: file://asserts/etapa-1.py}]
+    metadata: {etapa: etapa-1, producto: OVULOS_PURITY}
+
+  # ---- etapa-1b (componentes + voz del cliente) ------------------------------
+  - description: "etapa-1b / NusavaB12 — sin claim de cura no marcada"
+    vars: {content: file://fixtures/etapa-1b/NusavaB12.txt}
+    assert: [{type: python, value: file://asserts/etapa-1b.py}]
+    metadata: {etapa: etapa-1b, producto: NusavaB12}
+  - description: "etapa-1b / TINNIDROP — nota de compliance 'nunca cura/elimina' está marcada como prohibición"
+    vars: {content: file://fixtures/etapa-1b/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-1b.py}]
+    metadata: {etapa: etapa-1b, producto: TINNIDROP}
+  - description: "etapa-1b / OVULOS_PURITY — voz del cliente citada, cada cita con fuente"
+    vars: {content: file://fixtures/etapa-1b/OVULOS_PURITY.txt}
+    assert: [{type: python, value: file://asserts/etapa-1b.py}]
+    metadata: {etapa: etapa-1b, producto: OVULOS_PURITY}
+
+  # ---- etapa-2 (6 fichas de ángulo) ------------------------------------------
+  - description: "etapa-2 / CLEARSTEM — 6 ángulos con nivel de conciencia"
+    vars: {content: file://fixtures/etapa-2/CLEARSTEM.txt}
+    assert: [{type: python, value: file://asserts/etapa-2.py}]
+    metadata: {etapa: etapa-2, producto: CLEARSTEM}
+  - description: "etapa-2 / NusavaB12 — 6 ángulos con nivel de conciencia"
+    vars: {content: file://fixtures/etapa-2/NusavaB12.txt}
+    assert: [{type: python, value: file://asserts/etapa-2.py}]
+    metadata: {etapa: etapa-2, producto: NusavaB12}
+  - description: "etapa-2 / OVULOS_PURITY — 6 ángulos con nivel de conciencia"
+    vars: {content: file://fixtures/etapa-2/OVULOS_PURITY.txt}
+    assert: [{type: python, value: file://asserts/etapa-2.py}]
+    metadata: {etapa: etapa-2, producto: OVULOS_PURITY}
+
+  # ---- etapa-fanpage ----------------------------------------------------------
+  - description: "etapa-fanpage / CLEARSTEM — página asignada existe en el catálogo de 10"
+    vars: {content: file://fixtures/etapa-fanpage/CLEARSTEM.txt}
+    assert: [{type: python, value: file://asserts/etapa-fanpage.py}]
+    metadata: {etapa: etapa-fanpage, producto: CLEARSTEM}
+
+  # ---- etapa-6 (_PLAN.json) ---------------------------------------------------
+  - description: "etapa-6 / CLEARSTEM — esquema _PLAN.json"
+    vars: {content: file://fixtures/etapa-6/CLEARSTEM.json}
+    assert: [{type: python, value: file://asserts/etapa-6_schema.py}]
+    metadata: {etapa: etapa-6, producto: CLEARSTEM}
+  - description: "etapa-6 / NusavaB12 — esquema _PLAN.json"
+    vars: {content: file://fixtures/etapa-6/NusavaB12.json}
+    assert: [{type: python, value: file://asserts/etapa-6_schema.py}]
+    metadata: {etapa: etapa-6, producto: NusavaB12}
+  - description: "etapa-6 / TINNIDROP — esquema _PLAN.json"
+    vars: {content: file://fixtures/etapa-6/TINNIDROP.json}
+    assert: [{type: python, value: file://asserts/etapa-6_schema.py}]
+    metadata: {etapa: etapa-6, producto: TINNIDROP}
+  - description: "etapa-6 / OVULOS_PURITY — esquema _PLAN.json"
+    vars: {content: file://fixtures/etapa-6/OVULOS_PURITY.json}
+    assert: [{type: python, value: file://asserts/etapa-6_schema.py}]
+    metadata: {etapa: etapa-6, producto: OVULOS_PURITY}
+
+  - description: "etapa-6 / CLEARSTEM — FASE 1 todo-en-imagen"
+    vars: {content: file://fixtures/etapa-6/CLEARSTEM.json}
+    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
+    metadata:
+      etapa: etapa-6
+      producto: CLEARSTEM
+      expected_fail: true
+      reason: >-
+        Plan v1 de 2026-07-10, anterior a la decisión operador 22-sep-2026
+        ("FASE 1 corre TODO EN IMAGEN"). Mismo hallazgo que reporta hoy
+        `gen_plan.py --validar` (10 errores formato!=IMAGEN preexistentes,
+        ver odd/tasks/g07-cimientos.md T10). No se re-lanza sin regenerar
+        el plan desde etapa-6.
+  - description: "etapa-6 / NusavaB12 — FASE 1 todo-en-imagen"
+    vars: {content: file://fixtures/etapa-6/NusavaB12.json}
+    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
+    metadata:
+      etapa: etapa-6
+      producto: NusavaB12
+      expected_fail: true
+      reason: "Plan v1 anterior a la decisión 22-sep-2026 — mismo hallazgo preexistente de gen_plan.py --validar."
+  - description: "etapa-6 / TINNIDROP — FASE 1 todo-en-imagen"
+    vars: {content: file://fixtures/etapa-6/TINNIDROP.json}
+    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
+    metadata:
+      etapa: etapa-6
+      producto: TINNIDROP
+      expected_fail: true
+      reason: "Plan v1 anterior a la decisión 22-sep-2026 — mismo hallazgo preexistente de gen_plan.py --validar."
+  - description: "etapa-6 / OVULOS_PURITY — FASE 1 todo-en-imagen"
+    vars: {content: file://fixtures/etapa-6/OVULOS_PURITY.json}
+    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
+    metadata: {etapa: etapa-6, producto: OVULOS_PURITY}
+
+  # ---- etapa-5 (bot LucidBot) ---------------------------------------------------
+  - description: "etapa-5 / CLEARSTEM — bloques obligatorios, voseo, sin claims prohibidas"
+    vars: {content: file://fixtures/etapa-5/CLEARSTEM.md}
+    assert: [{type: python, value: file://asserts/etapa-5.py}]
+    metadata: {etapa: etapa-5, producto: CLEARSTEM}
+  - description: "etapa-5 / TINNIDROP — bloques obligatorios, voseo, sin claims prohibidas"
+    vars: {content: file://fixtures/etapa-5/TINNIDROP.md}
+    assert: [{type: python, value: file://asserts/etapa-5.py}]
+    metadata: {etapa: etapa-5, producto: TINNIDROP}
+
+  # ---- etapa-8 (plan de escalado) -----------------------------------------------
+  - description: "etapa-8 / TINNIDROP — Break-Even, regla de oro, surfing, ganadores con evidencia"
+    vars: {content: file://fixtures/etapa-8/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-8.py}]
+    metadata: {etapa: etapa-8, producto: TINNIDROP}
+
+  # ---- etapa-guardar-producto (invariante 8: archivos por rol) -------------------
+  - description: "etapa-guardar-producto / CLEARSTEM — solo archivos por rol declarados"
+    vars: {content: file://fixtures/etapa-guardar-producto/CLEARSTEM.json}
+    assert: [{type: python, value: file://asserts/etapa-guardar-producto.py}]
+    metadata: {etapa: etapa-guardar-producto, producto: CLEARSTEM}
+  - description: "etapa-guardar-producto / NusavaB12 — solo archivos por rol declarados"
+    vars: {content: file://fixtures/etapa-guardar-producto/NusavaB12.json}
+    assert: [{type: python, value: file://asserts/etapa-guardar-producto.py}]
+    metadata: {etapa: etapa-guardar-producto, producto: NusavaB12}
+  - description: "etapa-guardar-producto / TINNIDROP — solo archivos por rol declarados"
+    vars: {content: file://fixtures/etapa-guardar-producto/TINNIDROP.json}
+    assert: [{type: python, value: file://asserts/etapa-guardar-producto.py}]
+    metadata: {etapa: etapa-guardar-producto, producto: TINNIDROP}
+  - description: "etapa-guardar-producto / OVULOS_PURITY — solo archivos por rol declarados"
+    vars: {content: file://fixtures/etapa-guardar-producto/OVULOS_PURITY.json}
+    assert: [{type: python, value: file://asserts/etapa-guardar-producto.py}]
+    metadata: {etapa: etapa-guardar-producto, producto: OVULOS_PURITY}
