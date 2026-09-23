@@ -208,6 +208,15 @@ def chequear_brazo_ambiguo(piezas, brazo_creativos, brazo_arg):
     return None
 
 
+def fecha_lanzamiento_invalida(fecha, hoy):
+    """True salvo que `fecha` sea EXACTAMENTE el dia siguiente a `hoy`.
+
+    Invariante 7 (CLAUDE.md): el lanzamiento es SIEMPRE el dia siguiente a las 4 AM, nunca el
+    mismo dia (T8-3, 23-sep-2026: tampoco un dia mas adelante — antes solo se rechazaba
+    `fecha <= hoy`, asi que 2, 3 o N dias en el futuro pasaban el gate sin avisar)."""
+    return fecha != hoy + datetime.timedelta(days=1)
+
+
 MODOS_MEDIA = ("subida_local", "biblioteca")
 EXT_IMAGEN = (".png", ".jpg", ".jpeg", ".gif", ".webp")
 
@@ -672,10 +681,12 @@ def main():
 
     # ---------- 7. fecha de lanzamiento -----------------------------------
     hoy = datetime.date.today()
-    fecha = datetime.datetime.strptime(lanz, "%Y-%m-%d").date() if lanz else hoy + datetime.timedelta(days=1)
-    if fecha <= hoy:
-        pq.bloquear_publicacion("lanzamiento %s no es posterior a hoy (%s). Invariante 7: siempre 4 AM del dia "
-                    "SIGUIENTE, nunca el mismo dia." % (fecha, hoy), "CLAUDE.md invariante 7")
+    manana = hoy + datetime.timedelta(days=1)
+    fecha = datetime.datetime.strptime(lanz, "%Y-%m-%d").date() if lanz else manana
+    if fecha_lanzamiento_invalida(fecha, hoy):
+        pq.bloquear_publicacion("lanzamiento %s no es el dia SIGUIENTE a hoy (%s -> tenia que ser %s). "
+                    "Invariante 7: SIEMPRE el dia siguiente a las 4 AM, nunca el mismo dia ni uno "
+                    "mas adelante." % (fecha, hoy, manana), "CLAUDE.md invariante 7")
     start_time = "%sT%s:00%s" % (fecha.isoformat(), par["hora_lanzamiento"], par["tz_offset"])
 
     # ---------- 8. snapshot para idempotencia ------------------------------

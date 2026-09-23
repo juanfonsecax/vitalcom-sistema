@@ -22,12 +22,15 @@ Congela tres defectos de la cadena de FASE 2/3 (simulación Turmeric, 22-sep-202
 
 USO:  python Ads/_TOOLS/test_gen_publicacion.py     (exit 0 = pasa, 1 = falla)
 """
+import datetime
 import json
 import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_publicacion as gp  # noqa: E402
+
+MANANA = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
 import registrar_evento as re_  # noqa: E402 — mismo módulo que gp.registrar_evento (cache de sys.modules)
 import test_flujo as tf  # noqa: E402 — reusa su fixture del gate de F2 (ángulo ganador)
 
@@ -499,7 +502,7 @@ def _listado(base, nombre, imagenes):
 
 def _paquete_biblioteca(base, antes=None, despues=None):
     salida = os.path.join(base, "paquete.json")
-    argv = ["--producto", "PX", "--fase", "1", "--cuenta", "GTR7", "--lanzamiento", "2030-01-01",
+    argv = ["--producto", "PX", "--fase", "1", "--cuenta", "GTR7", "--lanzamiento", MANANA,
             "--media", "biblioteca", "--salida", salida]
     if antes:
         argv += ["--imagenes-antes", antes]
@@ -607,7 +610,7 @@ def test_subida_local_sigue_igual_para_la_skill():
     base = _fixture_fase1_completa()
     salida = os.path.join(base, "p.json")
     code, _out, err = _correr_main(base, ["--producto", "PX", "--fase", "1", "--cuenta", "GTR7",
-                                          "--lanzamiento", "2030-01-01", "--salida", salida])
+                                          "--lanzamiento", MANANA, "--salida", salida])
     with open(salida, encoding="utf-8") as fh:
         pq = json.load(fh)
     subidas = [l for l in pq["llamadas"] if l["tool"] == "ads_creative_upload_media"]
@@ -623,8 +626,45 @@ def test_media_invalida_no_arranca():
     return _informe(err is None and code == 2, "--media con un valor desconocido sale con 2", (code, err))
 
 
+# ── T8-3 (23-sep-2026): invariante 7 exige EXACTAMENTE el dia siguiente ────────────────────
+
+def test_fecha_hoy_bloquea():
+    hoy = datetime.date(2026, 9, 23)
+    ok = gp.fecha_lanzamiento_invalida(hoy, hoy) is True
+    print(("  OK     " if ok else "  FALLA  ") + "lanzamiento el mismo dia de hoy bloquea")
+    return 0 if ok else 1
+
+
+def test_fecha_manana_no_bloquea():
+    hoy = datetime.date(2026, 9, 23)
+    ok = gp.fecha_lanzamiento_invalida(hoy + datetime.timedelta(days=1), hoy) is False
+    print(("  OK     " if ok else "  FALLA  ") + "lanzamiento manana (exactamente el dia siguiente) no bloquea")
+    return 0 if ok else 1
+
+
+def test_fecha_pasado_manana_bloquea():
+    """Antes de este arreglo, `fecha <= hoy` dejaba pasar cualquier fecha 2+ dias en el futuro
+    sin avisar — invariante 7 exige el dia siguiente, no 'en algun momento futuro'."""
+    hoy = datetime.date(2026, 9, 23)
+    ok = gp.fecha_lanzamiento_invalida(hoy + datetime.timedelta(days=2), hoy) is True
+    print(("  OK     " if ok else "  FALLA  ")
+          + "lanzamiento pasado manana (2 dias en el futuro) bloquea, no solo el mismo dia o antes")
+    return 0 if ok else 1
+
+
+def test_fecha_ayer_bloquea():
+    hoy = datetime.date(2026, 9, 23)
+    ok = gp.fecha_lanzamiento_invalida(hoy - datetime.timedelta(days=1), hoy) is True
+    print(("  OK     " if ok else "  FALLA  ") + "una fecha en el pasado sigue bloqueando")
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
+    fallas += test_fecha_hoy_bloquea()
+    fallas += test_fecha_manana_no_bloquea()
+    fallas += test_fecha_pasado_manana_bloquea()
+    fallas += test_fecha_ayer_bloquea()
     fallas += test_biblioteca_sin_listado_espera_la_lectura_y_no_sube_nada()
     fallas += test_biblioteca_elige_un_nombre_que_no_existe()
     fallas += test_biblioteca_con_todo_subido_arma_el_paquete_sin_bloqueos()
