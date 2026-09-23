@@ -69,9 +69,9 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
       (b) Deployment order: `stg_entrega_anuncio` needs the `ad_id` column. After the merge, run the
           Meta re-pull (which migrates the CSV header through upsert_fact) BEFORE any dbt build. The
           nightly chain order (datos -> bajar_meta -> motor) already respects it; document it.
-- [ ] T3 Unknown ads: ingestion lists ads without a `_DIM_CONJUNTOS` row as a visible pending item
+- [x] T3 Unknown ads: ingestion lists ads without a `_DIM_CONJUNTOS` row as a visible pending item
       (not silently dropped or left without angle); the path to register them is declared.
-- [ ] T4 (P4) Bot order: F2.etapa-11 becomes a congruence diagnosis (no rewrite gate); the F3 entry
+- [x] T4 (P4) Bot order: F2.etapa-11 becomes a congruence diagnosis (no rewrite gate); the F3 entry
       requires a CAMBIO_BOT dated after the winning concept; `_ev_eventos` supports "after X".
       Doctrine: CLAUDE.md pointer + PLANTILLAS_FLUJO_BOT.md.
 - [ ] T5 (P5) Gates are locks: `registrar_evento.py` (LANZAMIENTO) and `gen_publicacion.py --fase N`
@@ -363,6 +363,15 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
   116.5 / 36.3; NUSAVA 44.3; TINNIDROP 72.3 / 74.8 / 93.4 / 93.4). Consequence: TINNIDROP
   PERDIDA_AUDITIVA sits AT break-even (Q93.4) with Meta spend. T1+T2 close after the merge and the
   live re-pull in SISTEMA.
+
+- 23-sep: T3 committed `8c90b10`, T4 committed `a2a7fa2` (route: delegated writer for the T4
+  fix). Parent review found and fixed a T4 defect before commit: the winner reference date was
+  "last day with a sale", which moves forward with every new sale and would flip the F3 gate back
+  to false; now a stable first-crossing date (regression check H2). Gates: pytest 33 passed,
+  test_flujo 36/36, flujo --validar OK, guia madre OK, gen_grafo clean, backend 136 passed (run
+  alone). FINDING (open, backend test harness): pytest finishes in ~3:20 but the process never
+  exits (something non-daemon stays alive), so `... | tail` hangs forever; and one flaky failure
+  (`_claude_argv.log.candado` lock, test_pasos) appeared only when two runs overlapped.
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
