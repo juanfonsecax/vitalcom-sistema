@@ -4,7 +4,8 @@
 
 Es el camino COMPLETO por el que una orden de pausar, escalar o renovar llega al operador:
 primero refresca la capa analitica (dbt build sobre los CSV), y recien despues corre
-Ads/_TOOLS/decidir.py, que escribe PRODUCTOS/_DECISIONES.json. La aplicacion
+Ads/_TOOLS/decidir.py --escribir, que persiste PRODUCTOS/_DECISIONES.json (T6: decidir.py
+por defecto SOLO LEE/calcula; --escribir es el flag que lo hace tocar disco). La aplicacion
 (VISTAS/APP.html) dibuja ese JSON de forma nativa.
 
 POR QUE EXISTE, si decidir.py ya corre solo:
@@ -97,7 +98,7 @@ def main():
     else:
         capa = _capa_analitica("OMITIDO", "--sin-dbt")
 
-    rc, log = correr("python Ads/_TOOLS/decidir.py", BASE)
+    rc, log = correr("python Ads/_TOOLS/decidir.py --escribir", BASE)
     if rc != 0:
         print(log[-1500:])
         return 1

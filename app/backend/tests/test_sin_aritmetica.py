@@ -167,7 +167,7 @@ def test_escrituras_solo_escribe_su_candado_en_el_temporal():
 
 
 def test_flujo_se_invoca_siempre_sin_escribir():
-    """`flujo.py` sin `--sin-escribir` tocaría `_ESTADO_FLUJO.csv` al abrir una pantalla."""
+    """`flujo.py` sin `--todo`/`--escribir` (T6: contrato de CLI) no toca `_ESTADO_FLUJO.csv`."""
     banderas = _banderas_en_codigo(PAQUETE / "contratos.py")
-    assert "--sin-escribir" in banderas
-    assert "--todo" not in banderas, "`--todo` escribe: es acción del Hito 3, no una lectura"
+    assert "--todo" not in banderas, "`--todo` es acción del Hito 3, no una lectura de pantalla"
+    assert "--escribir" not in banderas, "una consulta de lectura nunca pide el flag de escritura"

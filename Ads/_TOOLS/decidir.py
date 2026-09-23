@@ -46,11 +46,19 @@ REGLAMENTO ÚNICO (09-sep-2026):
   consume _DECISIONES.json; no recalcula nada.
 
 USO:
-    python Ads/_TOOLS/decidir.py                      # Portafolio completo
+    python Ads/_TOOLS/decidir.py                      # Portafolio completo, SOLO LECTURA
     python Ads/_TOOLS/decidir.py CLEARSTEM            # Un solo producto
     python Ads/_TOOLS/decidir.py --grano conjunto     # Desglose por conjunto
     python Ads/_TOOLS/decidir.py --dias 7             # Ventana de evaluacion personalizada
-    python Ads/_TOOLS/decidir.py --json               # Salida JSON
+    python Ads/_TOOLS/decidir.py --json               # Salida JSON por stdout
+    python Ads/_TOOLS/decidir.py --escribir           # Ademas, guarda _DECISIONES.json
+
+Contrato de CLI (T6, parejo con flujo.py y gen_grafo.py): un "mirar" nunca
+escribe. Por defecto este comando calcula e imprime (consola o `--json`) sin
+tocar disco. `--escribir` es el unico flag que persiste `_DECISIONES.json`; lo
+usa la cadena nocturna (`gen_decisiones.py`) y ningun otro caller: `flujo.py`,
+`perfilar_angulos.py` y `backtest_politica.py` llaman a `analizar_portafolio()`
+como función de Python, nunca a este `main()`, así que nunca escriben.
 """
 
 import os
@@ -986,12 +994,15 @@ def main():
     ap.add_argument("--grano", choices=["angulo", "conjunto"], default="angulo", help="Agrupación (angulo por defecto)")
     ap.add_argument("--dias", type=int, default=None, help="Días de la ventana de EVALUACION (no cambia la tolerancia acumulada)")
     ap.add_argument("--json", action="store_true", help="Emitir solo JSON por stdout")
+    ap.add_argument("--escribir", action="store_true",
+                    help="guarda _DECISIONES.json (por defecto solo lee/calcula)")
     args = ap.parse_args()
 
     res = analizar_portafolio(producto_filtro=args.producto, grano=args.grano, dias=args.dias)
 
-    with io.open(SALIDA_JSON, "w", encoding="utf-8") as f:
-        json.dump(res, f, ensure_ascii=False, indent=2)
+    if args.escribir:
+        with io.open(SALIDA_JSON, "w", encoding="utf-8") as f:
+            json.dump(res, f, ensure_ascii=False, indent=2)
 
     if args.json:
         print(json.dumps(res, ensure_ascii=False, indent=2))

@@ -544,7 +544,7 @@ def pendientes_de(lanzador):
 def leer_decisiones(refrescar=False):
     """Carga PRODUCTOS/_DECISIONES.json. Si no existe, corre el motor determinista."""
     if refrescar or not os.path.exists(DECISIONES_JSON):
-        correr("python %s" % GEN_DECISIONES)
+        correr("python %s --escribir" % GEN_DECISIONES)
     if not os.path.exists(DECISIONES_JSON):
         return {
             "generado": HOY.isoformat(),

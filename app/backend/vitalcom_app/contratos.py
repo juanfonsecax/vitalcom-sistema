@@ -116,18 +116,18 @@ def salud() -> dict[str, Any]:
 
 
 def flujo(producto_key: str, hoy: str | None = None) -> dict[str, Any]:
-    """Corre `flujo.py <pk> --json --sin-escribir` y devuelve su salida.
+    """Corre `flujo.py <pk> --json` y devuelve su salida.
 
-    `--sin-escribir` es obligatorio acá: una consulta de lectura no toca `_ESTADO_FLUJO.csv`
-    ni anota un evento. Lo que escribe el estado derivado es `flujo.py --todo`, que corre
-    como acción declarada (Hito 3), no como efecto de abrir una pantalla.
+    Un producto puntual (sin `--todo`) ya es SOLO LECTURA por contrato de CLI (T6): no toca
+    `_ESTADO_FLUJO.csv` ni anota un evento sin importar los flags. Lo que persiste el estado
+    derivado es `flujo.py --todo --escribir`, que corre como acción declarada (Hito 3), no
+    como efecto de abrir una pantalla.
     """
     comando = [
         python_del_sistema(),
         str(ruta(*FLUJO_PY)),
         producto_key,
         "--json",
-        "--sin-escribir",
         "--silencioso",
     ]
     if hoy:

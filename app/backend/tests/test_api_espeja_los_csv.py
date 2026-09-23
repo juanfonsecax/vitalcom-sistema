@@ -61,7 +61,7 @@ def test_detalle_de_producto_es_la_salida_de_flujo_py(cliente, base_declarada):
     directo = json.loads(
         subprocess.run(
             ["python", str(base_declarada / "Ads" / "_TOOLS" / "flujo.py"), pk,
-             "--json", "--sin-escribir", "--silencioso"],
+             "--json", "--silencioso"],
             cwd=str(base_declarada), capture_output=True, text=True,
             encoding="utf-8", check=True,
         ).stdout

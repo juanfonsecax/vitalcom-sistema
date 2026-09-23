@@ -19,7 +19,7 @@ cada subagente: solo lleva lo que aplica siempre.
 
 | Qué | Ejecutor |
 |---|---|
-| Dónde está cada producto, qué lo bloquea y qué sigue — **se corre ANTES de cargar cualquier skill** | `python Ads/_TOOLS/flujo.py --todo` sobre `DOCTRINA/FLUJO.json` |
+| Dónde está cada producto, qué lo bloquea y qué sigue — **se corre ANTES de cargar cualquier skill** | `python Ads/_TOOLS/flujo.py --todo --escribir` sobre `DOCTRINA/FLUJO.json` |
 | FASE 0 — buscar producto | skill `buscar-producto` |
 | FASE 1 — testeo de ÁNGULOS | skill `fase-1-angulos` |
 | FASE 2 — testeo de CONCEPTOS | skill `fase-2-conceptos` |
@@ -57,6 +57,8 @@ calidad de la escritura y del juicio.
   y `Ads/_TOOLS/registrar_evento.py --evento LANZAMIENTO` niegan la acción si `flujo.gate_entrada()`
   dice que el gate de esa fase no se cumple; solo `--excepcion "motivo"` la deja proceder, y deja
   una fila `EXCEPCION` en `_EVENTOS.csv`.
+- **Un "mirar" nunca escribe** (`flujo.py`/`decidir.py`/`gen_grafo.py`, contrato de CLI en
+  `DOCTRINA/DATA_PLAYBOOK.md` §7): cada uno necesita su `--escribir` explícito para tocar disco.
 - Cada subagente recibe SOLO los inputs que necesita, no el historial de sesión.
 - El proceso y el formato de output de cada etapa viven en su archivo; el orquestador no los repite.
 - Las etapas marcadas "∥ PARALELO" se lanzan en un solo turno; esperar AMBOS outputs antes de la
@@ -167,12 +169,18 @@ en `.claude/agents/ETAPA-6.md`. Si choca con la edad de la página, manda la del
 El orquestador **no pregunta en qué fase está el operador: lo lee.**
 
 ```bash
-python Ads/_TOOLS/flujo.py --todo
+python Ads/_TOOLS/flujo.py --todo --escribir
 ```
 
 Sitúa cada producto en el grafo: fase, nodo actual, qué lo bloquea y con qué ejecutor sigue. Se
 ejecuta **ese nodo, y solo ese**; recién ahí se carga la skill que nombra. La fase vigente es la de
 `PRODUCTOS/_ESTADO_FLUJO.csv` (derivada); `_DIM_PRODUCTOS.fase` es solo bitácora.
+
+**Contrato de CLI (T6):** `flujo.py`, `decidir.py` y `gen_grafo.py` son SOLO LECTURA por
+defecto — un "mirar" nunca escribe. Cada uno necesita su flag `--escribir` explícito para
+persistir en disco (`_ESTADO_FLUJO.csv`/`_EVENTOS.csv`/`_FLUJO.json` · `_DECISIONES.json` ·
+`_LINEA_BASE_SISTEMA.json`). El arranque de sesión de arriba SÍ escribe a propósito: el resto
+de la sesión lee ese estado derivado.
 
 Si el operador llega con un producto sin fila en `PRODUCTOS/_DIM_PRODUCTOS.csv`:
 

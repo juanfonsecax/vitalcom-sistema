@@ -58,7 +58,7 @@
    "tipo": "iframe",
    "render": null,
    "fuente": "VISTAS/FLUJO.html",
-   "genera": "python Ads/_TOOLS/flujo.py --todo",
+   "genera": "python Ads/_TOOLS/flujo.py --todo --escribir",
    "dueno": "flujo.py · DOCTRINA/FLUJO.json (el grafo declarado)",
    "caduca": {
     "ok_dias": 1,
@@ -1206,6 +1206,7 @@
      "python",
      "Ads/_TOOLS/flujo.py",
      "--todo",
+     "--escribir",
      "--silencioso"
     ],
     "parametros": {},

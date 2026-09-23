@@ -64,20 +64,31 @@ DE DÓNDE SALE CADA DATO (un dato, un dueño)
     parámetros                             PRODUCTOS/_PARAMETROS_DECISION.csv (@param:clave)
     estructura por fase                    PRODUCTOS/_PARAMETROS_PUBLICACION.csv (@publicacion:…)
 
-QUÉ ESCRIBE
+QUÉ ESCRIBE (solo con --todo --escribir — ver CONTRATO DE CLI)
 -----------
     PRODUCTOS/_FLUJO.json          el estado de todos los productos (lo dibuja la app)
     PRODUCTOS/_ESTADO_FLUJO.csv    una fila por producto: fase, nodo, desde cuándo
     PRODUCTOS/_EVENTOS.csv         una fila TRANSICION_FLUJO cada vez que un producto cambia de nodo
-    VISTAS/FLUJO.html              (con --todo) la vista, vía flujo_html.py
+    VISTAS/FLUJO.html              la vista, vía flujo_html.py
+
+CONTRATO DE CLI (T6, parejo con decidir.py y gen_grafo.py)
+------------------------------------------------------------
+Un "mirar" nunca escribe. `flujo.py PRODUCTO`, `--json`, `--validar` y `--grafo`
+ya eran solo lectura. `--todo` (el único modo que antes escribía por defecto)
+ahora también es solo lectura salvo que se pida `--escribir` explícitamente —
+ese es el único flag que toca `_ESTADO_FLUJO.csv`/`_EVENTOS.csv`/`_FLUJO.json`/
+`FLUJO.html`. `gate_entrada()` (usada por gen_publicacion.py y
+registrar_evento.py como función de Python, no CLI) sigue siendo SOLO LECTURA
+sin excepción.
 
 USO
 ---
-    python Ads/_TOOLS/flujo.py TINNIDROP            # un producto: dónde está, qué bloquea, qué sigue
-    python Ads/_TOOLS/flujo.py --todo               # los 8 productos + escribe _FLUJO.json y la vista
-    python Ads/_TOOLS/flujo.py TINNIDROP --json     # solo el JSON del producto
-    python Ads/_TOOLS/flujo.py --validar            # el JSON declarado contra el disco
-    python Ads/_TOOLS/flujo.py --grafo              # el grafo en mermaid (lo usa la vista)
+    python Ads/_TOOLS/flujo.py TINNIDROP              # un producto: dónde está, qué bloquea, qué sigue
+    python Ads/_TOOLS/flujo.py --todo                 # los 8 productos, SOLO LECTURA (no escribe nada)
+    python Ads/_TOOLS/flujo.py --todo --escribir      # ademas, persiste _FLUJO.json y la vista
+    python Ads/_TOOLS/flujo.py TINNIDROP --json       # solo el JSON del producto
+    python Ads/_TOOLS/flujo.py --validar              # el JSON declarado contra el disco (nunca escribe)
+    python Ads/_TOOLS/flujo.py --grafo                # el grafo en mermaid (lo usa la vista)
     python Ads/_TOOLS/flujo.py --base DIR --hoy 2026-09-08 --sin-scripts   # replay sobre un fixture
 """
 import argparse
@@ -1501,14 +1512,16 @@ def correr(env, productos=None):
 def main():
     ap = argparse.ArgumentParser(description="El flujo declarado del sistema")
     ap.add_argument("producto", nargs="?", help="producto_key de _DIM_PRODUCTOS.csv")
-    ap.add_argument("--todo", action="store_true", help="todos los productos + escribe _FLUJO.json y la vista")
+    ap.add_argument("--todo", action="store_true", help="todos los productos (solo lectura salvo --escribir)")
     ap.add_argument("--json", action="store_true", help="salida JSON")
     ap.add_argument("--validar", action="store_true", help="valida DOCTRINA/FLUJO.json contra el disco")
     ap.add_argument("--grafo", action="store_true", help="imprime el grafo en mermaid")
     ap.add_argument("--base", help="raíz alternativa (fixture de test)")
     ap.add_argument("--hoy", help="fecha de evaluación YYYY-MM-DD (replay)")
     ap.add_argument("--sin-scripts", action="store_true", help="no corre predicados `script`")
-    ap.add_argument("--sin-escribir", action="store_true", help="no toca _ESTADO_FLUJO.csv ni _EVENTOS.csv")
+    ap.add_argument("--escribir", action="store_true",
+                    help="con --todo, persiste _ESTADO_FLUJO.csv/_EVENTOS.csv/_FLUJO.json/FLUJO.html "
+                         "(por defecto --todo tambien solo lee)")
     ap.add_argument("--silencioso", action="store_true")
     a = ap.parse_args()
 
@@ -1548,13 +1561,13 @@ def main():
         print("=" * 96)
 
     if a.todo:
-        transiciones = [] if a.sin_escribir else escribir_estado(resultados, env)
+        transiciones = escribir_estado(resultados, env) if a.escribir else []
         salida = {"generado": env.hoy.isoformat(), "flujo_version": flujo.get("version"),
                   "grafo_mermaid": mermaid(flujo),
                   "fases": [{"id": f["id"], "titulo": f.get("titulo", f["id"]), "mide": f.get("mide", "")}
                             for f in flujo["fases"]],
                   "productos": resultados}
-        if not a.sin_escribir:
+        if a.escribir:
             with io.open(env.prod("_FLUJO.json"), "w", encoding="utf-8") as fh:
                 json.dump(salida, fh, ensure_ascii=False, indent=2)
             try:

@@ -44,8 +44,8 @@ def main():
         return 1
     print(out)
 
-    print("\n[2/4] Situando cada producto en el flujo declarado (flujo.py --todo)...")
-    rc, out = correr("python Ads/_TOOLS/flujo.py --todo")
+    print("\n[2/4] Situando cada producto en el flujo declarado (flujo.py --todo --escribir)...")
+    rc, out = correr("python Ads/_TOOLS/flujo.py --todo --escribir")
     if rc != 0:
         print("  Aviso en flujo.py:\n", out[-1500:])
     else:

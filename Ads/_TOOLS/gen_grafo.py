@@ -31,12 +31,18 @@ Que mide
 
 Como se usa
 -----------
-    python Ads/_TOOLS/gen_grafo.py                  # informe + guarda linea base
-    python Ads/_TOOLS/gen_grafo.py --comparar       # informe + delta vs la base
+    python Ads/_TOOLS/gen_grafo.py                  # informe, SOLO LECTURA
+    python Ads/_TOOLS/gen_grafo.py --comparar       # informe + delta vs la base guardada
     python Ads/_TOOLS/gen_grafo.py --estricto       # exit 1 si hay hallazgos
+    python Ads/_TOOLS/gen_grafo.py --escribir       # ademas, guarda/actualiza la linea base
 
-La regla es medir antes y despues. `--comparar` es esa regla hecha comando:
-corre antes del cambio, corre despues, y el delta sale solo.
+Contrato de CLI (T6, parejo con flujo.py y decidir.py): un "mirar" nunca
+escribe. Por defecto este comando SOLO LEE — ni siquiera reescribe la linea
+base. `--escribir` es el unico flag que toca disco (`_LINEA_BASE_SISTEMA.json`).
+`--comparar` y `--estricto` se combinan libremente con o sin `--escribir`.
+La regla es medir antes y despues: corre `--comparar` antes del cambio, corre
+`--escribir` despues del cambio para fijar la nueva base, y el delta sale solo
+la proxima vez que se compare.
 
 El modelo de costo es tokens ~= bytes / 3.6, calibrado contra la auditoria del
 2026-09-02 (CLAUDE.md: 12.903 B -> 3.580 tok). Es un TECHO: cuenta como cargado
@@ -321,7 +327,8 @@ def main():
     ap.add_argument("--comparar", action="store_true",
                     help="mostrar el delta contra la linea base guardada")
     ap.add_argument("--estricto", action="store_true", help="exit 1 si hay hallazgos")
-    ap.add_argument("--no-guardar", action="store_true", help="no reescribir la linea base")
+    ap.add_argument("--escribir", action="store_true",
+                    help="guarda/actualiza la linea base (por defecto solo lee)")
     args = ap.parse_args()
 
     r = analizar()
@@ -330,7 +337,7 @@ def main():
         previo = json.load(io.open(LINEA_BASE, encoding="utf-8"))
     print(informe(r, previo))
 
-    if not args.no_guardar:
+    if args.escribir:
         os.makedirs(os.path.dirname(LINEA_BASE), exist_ok=True)
         json.dump(r, io.open(LINEA_BASE, "w", encoding="utf-8"),
                   ensure_ascii=False, indent=2)

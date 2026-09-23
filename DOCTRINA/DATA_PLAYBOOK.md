@@ -406,3 +406,25 @@ Requiere `pytest` en el Python del sistema (`python -m pip install pytest`, una 
 coherencia que no son tests (`flujo.py --validar`, `verificar_guia_madre.py`, `gen_grafo.py`) se siguen
 corriendo aparte. La app tiene su propia suite: `uv run pytest` en `app/backend` y `pnpm test` en
 `app/frontend`.
+
+## 7. CONTRATO DE CLI — UN "MIRAR" NUNCA ESCRIBE (T6)
+
+`Ads/_TOOLS/flujo.py`, `Ads/_TOOLS/decidir.py` y `Ads/_TOOLS/gen_grafo.py` calculan sobre esta capa
+de data y por defecto SOLO LEEN: nunca tocan un archivo tracked por el hecho de haberse corrido para
+mirar algo. Cada uno separa el cómputo (función pura, sin I/O de escritura) de la escritura (un solo
+sitio en `main()`, gateado por `--escribir`):
+
+| Comando | Lee/calcula (default) | Escribe (solo con `--escribir`) |
+|---|---|---|
+| `flujo.py PRODUCTO` / `--json` / `--validar` / `--grafo` | siempre — nunca escriben, con o sin flags | nunca |
+| `flujo.py --todo` | fase/nodo/bloqueantes de todos los productos | `_ESTADO_FLUJO.csv` · `_EVENTOS.csv` · `_FLUJO.json` · `VISTAS/FLUJO.html` |
+| `decidir.py` (con o sin `--producto`/`--grano`/`--dias`/`--json`) | el portafolio de decisiones | `_DECISIONES.json` |
+| `gen_grafo.py` (con o sin `--comparar`/`--estricto`) | el mapa de coherencia del sistema | `_LINEA_BASE_SISTEMA.json` |
+
+`flujo.gate_entrada()` (llamada como función de Python por `gen_publicacion.py` y
+`registrar_evento.py`, nunca por CLI) es SOLO LECTURA sin excepción — no tiene ni necesita flag.
+Los callers que sí necesitan la escritura la piden explícitamente: la cadena nocturna
+(`ciclo_hoy.py` → `gen_decisiones.py --escribir`… → `flujo.py --todo --escribir`), la acción de
+manifiesto `sistema.refrescar_flujo` y el arranque de sesión de `CLAUDE.md`. Todo lo demás
+(`app/backend`, las skills de fase, los hooks de `.claude/settings.json`) consulta en modo lectura y
+no necesita ningún flag nuevo.
