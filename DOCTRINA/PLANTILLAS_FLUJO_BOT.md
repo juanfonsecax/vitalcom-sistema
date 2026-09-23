@@ -140,6 +140,26 @@ bot paraguas de FASE 1 la línea se omite sin bloquear.
 `3` a secas es alias sucio **AMBIGUO** (`_DIM_VOCABULARIO.csv` lo mapea a `REVISAR`: no distingue
 3A de 3B) y bloquea igual que si faltara.
 
+### 2.6 El mensaje prellenado del anuncio — derivada de `_DIM_MERCADOS.csv` + `_DIM_FLUJO_BOT.csv`
+
+`{{mensaje_prellenado_anuncio}}` **no se tipea por producto**: es "Hola, quiero más información
+de {{producto_display}} con {{registro_sanitario}}", con `registro_sanitario` sacado de
+`_DIM_MERCADOS.csv` (GT → `registro MSPAS`, CO → `registro INVIMA` — el mercado es variable, no
+doctrina; ver `test_mercado_es_variable`). Falta el registro del mercado o `producto_display` →
+**BLOQUEA** como cualquier `{{variable}}`.
+
+Es el texto que el cliente manda al tocar el anuncio Click-to-WhatsApp. Va como instrucción `>>`
+(nunca como campo de LucidBot) porque **no se configura acá**: el MCP `ads_create_creative` no
+tiene campo para el mensaje prellenado, así que es un paso manual en Ads Manager (skill
+`publicar-meta` paso 3 / `DOCTRINA/MCP_PLAYBOOK.md`). El enrutamiento del chat al producto es por
+el ID del anuncio/conjunto (integración LucidBot), nunca por el texto del primer mensaje del
+cliente (dato operador 23-sep) — por eso este texto puede declararse y cambiar libremente sin
+romper la atribución de ventas.
+
+No lleva el NÚMERO de registro (`[REG_MSPAS]`/`[REG_FDA]` en
+`DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md`), solo el nombre del organismo: la frase es corta y
+natural, como la escribiría el cliente.
+
 ---
 
 ## 3. LA PLANTILLA
@@ -155,6 +175,16 @@ FLUJO LUCIDBOT — {{producto_display}} | {{angulo_nombre}}
 >> TRATAMIENTO DE PERSONA de este flujo: {{persona}}.
 >> ANTES DE LANZAR: si el producto se importó de Superbodega, LucidBot queda DESACTIVADO
 >> y el mensaje inicial no sale. Activarlo es un paso MANUAL (clase 16-ago).
+
+>> ══ MENSAJE PRELLENADO DEL ANUNCIO — se configura a mano en Ads Manager, no en LucidBot ══
+>> El anuncio Click-to-WhatsApp lleva un mensaje prellenado: el texto que el cliente manda al
+>> tocar el anuncio. El MCP `ads_create_creative` no tiene campo para esto (DOCTRINA/MCP_PLAYBOOK.md
+>> / skill `publicar-meta` paso 3): se configura A MANO en Ads Manager, por anuncio.
+>> El enrutamiento del chat al producto es por el ID del anuncio/conjunto (integración
+>> LucidBot), nunca por este texto (dato operador 23-sep): el mensaje puede cambiar libremente
+>> sin romper la atribución. Nombrar el producto + su registro sanitario genera confianza y
+>> sube conversaciones por click al anuncio.
+>> {{mensaje_prellenado_anuncio}}
 
 ═══════════════ FICHA DEL PRODUCTO (catálogo de LucidBot) ═══════════════
 >> Los 4 campos de abajo se pegan TAL CUAL en la ficha de producto de LucidBot.

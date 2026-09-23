@@ -347,6 +347,72 @@ def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
         check("%s trae el aviso PENDIENTE cuando se le suma" % pk, aviso is not None)
 
 
+def test_mensaje_prellenado_anuncio_gt_mspas():
+    """T3: el mensaje prellenado del anuncio lleva el producto + 'registro MSPAS' en GT."""
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    check("CLEARSTEM no bloquea por mensaje_prellenado_anuncio",
+          v is not None and not any(k == "mensaje_prellenado_anuncio" for k, _ in faltan), faltan)
+    if v:
+        check("el mensaje lleva el producto y 'registro MSPAS' (GT)",
+              v.get("mensaje_prellenado_anuncio") ==
+              "Hola, quiero más información de %s con registro MSPAS" % v["producto_display"],
+              v.get("mensaje_prellenado_anuncio"))
+
+
+def test_mensaje_prellenado_anuncio_co_invima():
+    """CO usa 'registro INVIMA': el mercado es variable, no doctrina (mismo dato que persona/transportadoras)."""
+    datos = {"_DIM_FLUJO_BOT.csv": [{"producto_key": "PROD_X", "mercado": "CO",
+                                      "producto_display": "ProductoX"}]}
+    v, faltan, _ = _con_datos(datos, lambda: G.resolver("PROD_X"))
+    check("PROD_X (CO) resuelve el mercado", v is not None, faltan)
+    if v:
+        check("el mensaje lleva 'registro INVIMA' en CO",
+              v.get("mensaje_prellenado_anuncio") ==
+              "Hola, quiero más información de ProductoX con registro INVIMA",
+              v.get("mensaje_prellenado_anuncio"))
+
+
+def test_mensaje_prellenado_anuncio_sin_registro_bloquea():
+    """Mercado sin registro_sanitario declarado: bloquea como cualquier {{variable}} (invariante 4)."""
+    fila_gt_sin_registro = {"mercado": "GT", "pais": "Guatemala",
+                             "pais_cobertura": "toda Guatemala", "persona": "voseo",
+                             "registro_sanitario": "", "simbolo": "Q",
+                             "unidad_geo": "municipio y departamento", "unidad_local": "municipio",
+                             "transportadoras": "GINTACOM y FORZA",
+                             "dias_entrega": "2 a 5 dias habiles", "dias_espera_casa": "5"}
+    datos = {"_DIM_MERCADOS.csv": [fila_gt_sin_registro]}
+    v, faltan, _ = _con_datos(datos, lambda: G.resolver("CLEARSTEM"))
+    check("sin registro_sanitario, mensaje_prellenado_anuncio bloquea",
+          any(k == "mensaje_prellenado_anuncio" for k, _ in faltan), faltan)
+
+
+def test_mensaje_prellenado_anuncio_ausente_del_copy():
+    """El mensaje prellenado (se configura a mano en Ads Manager) nunca se pega en LucidBot."""
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    if v is None or faltan:
+        check("CLEARSTEM resuelve para probar --copy", False, faltan)
+        return
+    txt = G.render(v)
+    pegar = G.para_pegar(txt)
+    check("el mensaje prellenado del anuncio no aparece en --copy",
+          "Hola, quiero más información" not in pegar and "MENSAJE PRELLENADO" not in pegar,
+          pegar[:200])
+    check("la instruccion SI queda declarada en el render completo (no se pierde)",
+          "Hola, quiero más información" in txt and "MENSAJE PRELLENADO DEL ANUNCIO" in txt)
+
+
+def test_clearstem_tinnidrop_llevan_mensaje_prellenado():
+    """Productos vivos: el mensaje prellenado resuelve y lleva su nombre de producto."""
+    for pk in ("CLEARSTEM", "TINNIDROP"):
+        v, faltan, _ = G.resolver(pk)
+        check("%s no bloquea por mensaje_prellenado_anuncio" % pk,
+              v is not None and not any(k == "mensaje_prellenado_anuncio" for k, _ in faltan),
+              faltan)
+        if v:
+            check("%s lleva su producto_display en el mensaje prellenado" % pk,
+                  v["producto_display"] in v.get("mensaje_prellenado_anuncio", ""))
+
+
 def main():
     print("test_gen_flujo_bot.py — reglas del layout del bot\n")
     for fn in (test_pregunta_filtro_se_rechaza,
@@ -374,7 +440,12 @@ def main():
                test_propuestas_valor_arriba_de_20_avisa,
                test_propuestas_valor_no_declaradas_solo_avisa,
                test_propuestas_valor_ignora_lineas_vacias_e_instrucciones,
-               test_clearstem_tinnidrop_sin_propuestas_no_bloquean):
+               test_clearstem_tinnidrop_sin_propuestas_no_bloquean,
+               test_mensaje_prellenado_anuncio_gt_mspas,
+               test_mensaje_prellenado_anuncio_co_invima,
+               test_mensaje_prellenado_anuncio_sin_registro_bloquea,
+               test_mensaje_prellenado_anuncio_ausente_del_copy,
+               test_clearstem_tinnidrop_llevan_mensaje_prellenado):
         print("\n%s" % (fn.__doc__ or fn.__name__).splitlines()[0])
         fn()
     print("\n%s" % ("TODO PASA" if not FALLAS else "FALLAN %d: %s"

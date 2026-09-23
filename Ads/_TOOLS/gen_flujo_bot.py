@@ -82,6 +82,8 @@ DUENO = {
     "angulo_nombre": "_ESTADO_ANGULOS.csv (angulo ganador)",
     "escalera_ofertas": "_DIM_PRECIOS.csv (derivada)",
     "apertura_nivel": "_DIM_CONJUNTOS.csv / _DIM_VOCABULARIO.csv (nivel_conciencia del angulo ganador)",
+    "mensaje_prellenado_anuncio": "_DIM_MERCADOS.csv (registro_sanitario) + _DIM_PRODUCTOS.csv "
+                                   "(producto_display)",
     "video_1": "operador / Ads/MEDIA_[PK]", "video_2": "operador / Ads/MEDIA_[PK]",
     "lista_infografias": "operador / Ads/MEDIA_[PK]",
     "fecha_generacion": "derivada",
@@ -277,6 +279,17 @@ def resolver(pk):
               "verbo_tratar", "resultado_sostenido", "razon_tier_alto",
               "n_infografias", "n_testimonios", "fuente_testimonios"):
         v[k] = (fila.get(k) or "").strip()
+
+    # Mensaje prellenado del anuncio Click-to-WhatsApp (operador 23-sep: el enrutamiento del
+    # chat al producto es por el ID del anuncio/conjunto, NUNCA por este texto, asi que puede
+    # variar libremente). Se declara y deriva, nunca se escribe a mano por producto: nombre del
+    # producto + registro sanitario del mercado. El MCP `ads_create_creative` no tiene campo
+    # para esto (DOCTRINA/MCP_PLAYBOOK.md / skill `publicar-meta` paso 3): se configura a mano
+    # en Ads Manager, por eso va como instruccion `>>`, nunca como campo de LucidBot.
+    registro = (merc.get("registro_sanitario") or "").strip()
+    v["mensaje_prellenado_anuncio"] = (
+        "Hola, quiero más información de %s con %s" % (v["producto_display"], registro)
+        if v.get("producto_display") and registro else "")
 
     # Angulo ganador: el de mas ventas acumuladas con evidencia, nunca declarado a mano.
     cand = [r for r in leer("_ESTADO_ANGULOS.csv") if r["producto_key"] == pk]

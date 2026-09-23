@@ -70,6 +70,7 @@ Tres cosas que no se negocian:
 | **Todo nace PAUSED** | Es el candado nativo del human-in-the-loop. El doble candado es el `start_time` de las 4 AM. |
 | **El primer conjunto es el test de la página** | Si `ads_create_ad_set` lo acepta, la página está bien asignada. `ads_get_ad_account_pages` puede tardar en listarla (lag de lectura) y eso **no** es un fallo. |
 | **`ads_creative_upload_media` con `LOCAL_FILE` abre un widget** | El operador elige el archivo. Solo funciona donde `_DIM_CUENTAS.csv` dice `sube_media_local=SI`. En el resto, el operador sube a mano y vos leés el hash con `ads_get_ad_images`. **Nunca reusar el nombre de una pieza vieja** — Meta guarda las dos y quedan indistinguibles: el 08-sep se publicaron 10 anuncios con la pieza equivocada exactamente por eso. Sufijo `_V2`, `_V3`. |
+| **El mensaje prellenado del anuncio Click-to-WhatsApp se configura A MANO** | `ads_create_creative` no tiene campo para el texto que el cliente manda al tocar el anuncio (dueño de la doctrina: `DOCTRINA/MCP_PLAYBOOK.md`). El texto ya viene derivado — declaralo el operador en Ads Manager tal cual sale de `python Ads/_TOOLS/gen_flujo_bot.py [PK]` (sección "MENSAJE PRELLENADO DEL ANUNCIO"), no lo redactes a mano. |
 
 Si una llamada falla, **parar ahí**. No seguir con las siguientes: dejan huérfanos. Volvé al paso 1
 y regenerá contra un snapshot fresco — se retoma donde quedó, sin duplicar.
