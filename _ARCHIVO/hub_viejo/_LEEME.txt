@@ -1,9 +1,0 @@
-RETIRADO 2026-08-21 — reemplazado por PANEL.html (raiz) + Ads/_TOOLS/gen_panel.py
-
-_HUB.html cubria solo las 4 vistas de creativos (SISTEMA, TESTEOS, WINNERS, CATALOGO)
-y dejaba afuera el dashboard de portafolio, que es la vista que mas se usa. El panel
-nuevo unifica las SEIS vistas en un menu agrupado (OPERACION / METODO / BANCO) y usa
-la paleta de tokens del dashboard en vez de la paleta oscura fija de este hub.
-
-La logica de composicion por iframes, el badge de antiguedad, el lazy-load de la galeria
-y el fallback anti-bloqueo se conservaron tal cual en gen_panel.py.

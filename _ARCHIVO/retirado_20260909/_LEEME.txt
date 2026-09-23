@@ -1,5 +1,0 @@
-RETIRADO 2026-09-09 (flujo declarado)
-
-decidir_operativo.py: wrapper de 15 lineas hacia decidir.py; grep -rl no encontro ningun llamador fuera de si mismo.
-_DIM_CREATIVOS.csv.bak_20260908 / .bak2_20260908 / _PLAN_FASE2.json.bak_20260908: backups a mano junto a la fuente de verdad; git es el respaldo. Quedaron en _ARCHIVO/backups_csv/ (carpeta ignorada por git, la convencion de la casa).
-El worktree .claude/worktrees/competent-rhodes-3ebc55 (copia completa del repo, rama sin commits) se retiro con git worktree remove; su unico diff util (encoding utf-8 en gen_dashboard.py al llamar verificar_monedas.py) se porto a main.
