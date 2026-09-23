@@ -245,6 +245,87 @@ def test_corrida_limpia_no_bloquea(tmp):
     return 0 if ok else 1
 
 
+def test_upsert_reemplaza_dia_parcial_y_es_idempotente(tmp):
+    """El caso central de T1 (evidencia g06, 22-sep): un día llega con el gasto/ventas
+    CONGELADO a medio día y la corrida siguiente lo trae completo — debe REEMPLAZAR la
+    fila vieja (mismo ad_id), no descartarla como duplicado. Re-correr con el mismo
+    archivo una tercera vez no debe cambiar nada (idempotencia)."""
+    dimp = _escribir_csv(
+        os.path.join(tmp, "_DIM_PRODUCTOS.csv"), ["producto_key", "nombre_display", "slug_carpeta"],
+        [["TINNIDROP", "Tinnidrop Importado Original", "TINNIDROP"]])
+    dimctas = _escribir_csv(
+        os.path.join(tmp, "_DIM_CUENTAS.csv"), ["cuenta_alias", "cuenta_id", "moneda"],
+        [["GTR 0", "1665221077707961", "USD"]])
+    fact = _escribir_csv(os.path.join(tmp, "_FACT_VENTAS.csv"), ing.COLS, [])
+    dimc = _escribir_csv(os.path.join(tmp, "_DIM_CONJUNTOS.csv"), ["conjunto_meta"],
+                          [["CONJ_CONOCIDO"]])
+    bkdir = os.path.join(tmp, "backups_csv")
+    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir)
+
+    parcial = _escribir_export(
+        os.path.join(tmp, "sim-2026-09-20.json"),
+        [_fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1",
+                          sells=1, spend=7.0)])
+    salida1 = _correr_main(rutas, [parcial])
+    filas1 = list(csv.DictReader(open(fact, newline="", encoding="utf-8")))
+    ok1 = salida1 is None and len(filas1) == 1 and filas1[0]["spend_usd"] == "7.0"
+
+    completo = _escribir_export(
+        os.path.join(tmp, "sim-2026-09-20-completo.json"),
+        [_fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1",
+                          sells=1, spend=10.0)])
+    salida2 = _correr_main(rutas, [completo])
+    filas2 = list(csv.DictReader(open(fact, newline="", encoding="utf-8")))
+    ok2 = salida2 is None and len(filas2) == 1 and filas2[0]["spend_usd"] == "10.0"
+
+    salida3 = _correr_main(rutas, [completo])
+    filas3 = list(csv.DictReader(open(fact, newline="", encoding="utf-8")))
+    ok3 = salida3 is None and filas3 == filas2
+
+    ok = ok1 and ok2 and ok3
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un día corregido reemplaza la fila parcial (por ad_id) y re-correr es idempotente"
+          + ("" if ok else f"\n         ok1={ok1} ok2={ok2} ok3={ok3} "
+                            f"filas1={filas1} filas2={filas2} filas3={filas3}"))
+    return 0 if ok else 1
+
+
+def test_control_nunca_reemplaza_base_ni_viceversa(tmp):
+    """rol_ventana viaja en la llave natural: un export CONTROL (verificación semanal,
+    solapa a propósito) jamás pisa la fila BASE del mismo ad_id/día, y viceversa."""
+    dimp = _escribir_csv(
+        os.path.join(tmp, "_DIM_PRODUCTOS.csv"), ["producto_key", "nombre_display", "slug_carpeta"],
+        [["TINNIDROP", "Tinnidrop Importado Original", "TINNIDROP"]])
+    dimctas = _escribir_csv(
+        os.path.join(tmp, "_DIM_CUENTAS.csv"), ["cuenta_alias", "cuenta_id", "moneda"],
+        [["GTR 0", "1665221077707961", "USD"]])
+    fact = _escribir_csv(os.path.join(tmp, "_FACT_VENTAS.csv"), ing.COLS, [])
+    dimc = _escribir_csv(os.path.join(tmp, "_DIM_CONJUNTOS.csv"), ["conjunto_meta"],
+                          [["CONJ_CONOCIDO"]])
+    bkdir = os.path.join(tmp, "backups_csv")
+    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir)
+
+    base = _escribir_export(
+        os.path.join(tmp, "sim-2026-09-20-base.json"),
+        [_fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1",
+                          sells=1, spend=10.0)])
+    _correr_main(rutas, [base])
+
+    control = _escribir_export(
+        os.path.join(tmp, "sim-2026-09-20-control.json"),
+        [_fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1",
+                          sells=1, spend=10.0)])
+    _correr_main(rutas, [control, "--rol", "CONTROL"])
+
+    filas = list(csv.DictReader(open(fact, newline="", encoding="utf-8")))
+    roles = sorted(f["rol_ventana"] for f in filas)
+    ok = len(filas) == 2 and roles == ["BASE", "CONTROL"]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "CONTROL y BASE del mismo ad_id/día quedan como DOS filas, ninguna reemplaza a la otra"
+          + ("" if ok else f"\n         filas={filas}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     with tempfile.TemporaryDirectory() as tmp:
@@ -261,6 +342,10 @@ def main():
         fallas += test_gate_bloquea_por_conjunto_huerfano(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_corrida_limpia_no_bloquea(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        fallas += test_upsert_reemplaza_dia_parcial_y_es_idempotente(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        fallas += test_control_nunca_reemplaza_base_ni_viceversa(tmp)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

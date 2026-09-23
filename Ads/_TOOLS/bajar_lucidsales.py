@@ -3,13 +3,24 @@
 bajar_lucidsales.py — baja el export de LucidSales SIN navegador, contra su API.
 
 Uso:
-    python Ads/_TOOLS/bajar_lucidsales.py                      # ayer (1 dia)
-    python Ads/_TOOLS/bajar_lucidsales.py --dias 7             # control semanal
+    python Ads/_TOOLS/bajar_lucidsales.py                      # ventana de liquidacion (D-1..D-N)
+    python Ads/_TOOLS/bajar_lucidsales.py --dias 7             # control semanal (UN archivo, 7d)
     python Ads/_TOOLS/bajar_lucidsales.py --fecha 2026-09-05
     python Ads/_TOOLS/bajar_lucidsales.py --fecha 2026-09-01 --hasta 2026-09-06
 
 Escribe Ads/_INGESTA/LUCIDSALES/report-<ini>-<fin>.json (el JSON CRUDO de la API,
 sin transformar) y lo deja listo para ingerir_lucidsales.py.
+
+VENTANA DE LIQUIDACION (T1, 22-sep-2026): la API de LucidSales agrega por RANGO, no da una
+fila por dia dentro de un rango — por eso el control semanal (--dias 7) sigue siendo UN
+archivo de 7 dias, y por eso re-consultar D-1..D-N para corregir un dia congelado no puede
+ser "pedir un rango de N dias": tiene que ser N pedidos de 1 dia cada uno, para que cada
+archivo siga siendo compatible con ingerir_lucidsales.py --rol BASE (que ahora hace UPSERT
+por dia, ver upsert_fact.py). Por eso, sin --fecha/--desde/--hasta/--dias explicitos, la
+corrida por defecto pide upsert_fact.SETTLEMENT_WINDOW_DIAS dias SUELTOS terminando ayer,
+con `--forzar` (si no, "ya existe" no bajaria nada de nuevo la segunda vez que corre esa
+noche) — es la mitad "bajar" de la ventana de liquidacion; la otra mitad (reemplazar por
+llave) vive en ingerir_lucidsales.py.
 
 CONTRATO DE LA API  (medido en vivo el 07-sep-2026 contra panel.lucidsales.co)
   base      https://panel.lucidsales.co/b/
@@ -44,6 +55,9 @@ import sys, io, os, json, base64, argparse, datetime, urllib.request, urllib.err
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from upsert_fact import SETTLEMENT_WINDOW_DIAS  # noqa: E402  (N compartido con bajar_meta_insights.py)
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SALIDA = os.path.join(BASE, "Ads", "_INGESTA", "LUCIDSALES")
@@ -193,45 +207,22 @@ def num(f, k):
         return 0.0
 
 
-def main():
-    hoy = datetime.date.today()
-    p = argparse.ArgumentParser(description="Baja el export de LucidSales por API.")
-    p.add_argument("--fecha", help="dia (o inicio) YYYY-MM-DD. Default: ayer")
-    p.add_argument("--hasta", help="fin de ventana YYYY-MM-DD (default = --fecha)")
-    p.add_argument("--dias", type=int, default=1,
-                   help="tamano de ventana hacia atras desde --fecha. Default 1")
-    p.add_argument("--tienda", help="nombre o id de la tienda (default: LUCIDSALES_TIENDA del .env)")
-    p.add_argument("--salida", default=SALIDA)
-    p.add_argument("--env", default=ENV_DEFAULT)
-    p.add_argument("--forzar", action="store_true", help="reescribe si ya existe")
-    a = p.parse_args()
+def procesar_ventana(token, quien, tienda, ini, fin, salida, forzar):
+    """Baja UNA ventana [ini, fin] (ambos date) y la escribe en report-<ini>-<fin>.json.
 
-    fin = datetime.date.fromisoformat(a.fecha) if a.fecha else hoy - datetime.timedelta(days=1)
-    if a.hasta:
-        ini, fin = fin, datetime.date.fromisoformat(a.hasta)
-    else:
-        ini = fin - datetime.timedelta(days=a.dias - 1)
-    if ini > fin:
-        raise SystemExit(f"Ventana invalida: {ini} > {fin}")
-    if fin >= hoy:
-        print(f"AVISO: la ventana llega a {fin} (hoy o futuro). El dia en curso esta "
-              "INCOMPLETO y la doctrina manda exportar AYER cerrado.")
-
-    os.makedirs(a.salida, exist_ok=True)
-    destino = os.path.join(a.salida, f"report-{ini}-{fin}.json")
-    if os.path.exists(destino) and not a.forzar:
-        # Salida 0 A PROPOSITO: "ese dia ya esta bajado" no es un fallo, es no tener nada
-        # que hacer. Con exit 1 la rutina nocturna lo leeria como error y abortaria la
+    Devuelve True si escribio (o si ya existia y no se forzo: "nada que hacer" no es un
+    fallo), False si la API no trajo filas (para que el llamador lo marque como aviso).
+    """
+    os.makedirs(salida, exist_ok=True)
+    destino = os.path.join(salida, f"report-{ini}-{fin}.json")
+    if os.path.exists(destino) and not forzar:
+        # Salida "nada que hacer" A PROPOSITO: no es un fallo, es no tener nada que bajar
+        # de nuevo. Con exit 1 la rutina nocturna lo leeria como error y abortaria la
         # auditoria entera por una corrida repetida.
         print(f"Ya existe {os.path.basename(destino)}; no hay nada que bajar "
               f"(usa --forzar para reescribir).")
-        return
+        return True
 
-    email, pwd = credenciales(a.env)
-    token, quien = login(email, pwd)
-    del pwd
-    deseada = a.tienda or os.environ.get("LUCIDSALES_TIENDA") or cargar_env(a.env).get("LUCIDSALES_TIENDA")
-    token, tienda = elegir_tienda(token, deseada)
     filas = bajar(token, ini.isoformat(), fin.isoformat())
 
     with open(destino, "w", encoding="utf-8") as fh:
@@ -250,6 +241,62 @@ def main():
     print(f"escrito: {os.path.relpath(destino, BASE)}")
     if not filas:
         print("OJO: la API devolvio CERO filas. Revisa la fecha antes de ingerir.")
+    return bool(filas)
+
+
+def main():
+    hoy = datetime.date.today()
+    p = argparse.ArgumentParser(description="Baja el export de LucidSales por API.")
+    p.add_argument("--fecha", help="dia (o inicio) YYYY-MM-DD. Default: ventana de liquidacion")
+    p.add_argument("--hasta", help="fin de ventana YYYY-MM-DD (default = --fecha)")
+    p.add_argument("--dias", type=int, default=None,
+                   help="tamano de ventana hacia atras desde --fecha (UN archivo de N dias, "
+                        "ej. el control semanal --dias 7). Default: sin --fecha/--hasta, "
+                        "ventana de liquidacion dia por dia (ver docstring del modulo)")
+    p.add_argument("--tienda", help="nombre o id de la tienda (default: LUCIDSALES_TIENDA del .env)")
+    p.add_argument("--salida", default=SALIDA)
+    p.add_argument("--env", default=ENV_DEFAULT)
+    p.add_argument("--forzar", action="store_true", help="reescribe si ya existe")
+    a = p.parse_args()
+
+    liquidacion = not (a.fecha or a.hasta or a.dias)
+    if liquidacion:
+        ayer = hoy - datetime.timedelta(days=1)
+        ventanas = [(d, d) for d in (
+            ayer - datetime.timedelta(days=n) for n in range(SETTLEMENT_WINDOW_DIAS - 1, -1, -1)
+        )]
+        forzar_todas = True   # re-consultar es el punto: sin esto "ya existe" no traeria nada nuevo
+    else:
+        dias = a.dias or 1
+        fin = datetime.date.fromisoformat(a.fecha) if a.fecha else ayer_por_defecto(hoy)
+        if a.hasta:
+            ini, fin = fin, datetime.date.fromisoformat(a.hasta)
+        else:
+            ini = fin - datetime.timedelta(days=dias - 1)
+        if ini > fin:
+            raise SystemExit(f"Ventana invalida: {ini} > {fin}")
+        ventanas = [(ini, fin)]
+        forzar_todas = a.forzar
+
+    for ini, fin in ventanas:
+        if fin >= hoy:
+            print(f"AVISO: la ventana llega a {fin} (hoy o futuro). El dia en curso esta "
+                  "INCOMPLETO y la doctrina manda exportar dias cerrados.")
+
+    email, pwd = credenciales(a.env)
+    token, quien = login(email, pwd)
+    del pwd
+    deseada = a.tienda or os.environ.get("LUCIDSALES_TIENDA") or cargar_env(a.env).get("LUCIDSALES_TIENDA")
+    token, tienda = elegir_tienda(token, deseada)
+
+    for ini, fin in ventanas:
+        procesar_ventana(token, quien, tienda, ini, fin, a.salida, forzar_todas)
+        if len(ventanas) > 1:
+            print()
+
+
+def ayer_por_defecto(hoy):
+    return hoy - datetime.timedelta(days=1)
 
 
 if __name__ == "__main__":

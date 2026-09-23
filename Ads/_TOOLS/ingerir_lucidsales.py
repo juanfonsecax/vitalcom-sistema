@@ -16,13 +16,19 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md + runbook de la auditoría):
   · CONSERVA las ventas ORGANICAS (adId="organico", sin cuenta): son ventas reales.
   · mapeo adSetTitle->conjunto · adTitle->anuncio · sells->ventas · total->total_q · spend->spend_usd.
   · CP1 (1346891653335162) factura en COP -> spend_COP / 3152.5 = spend_USD (APR-028).
-  · ANTI-DUPLICADO por ad_id Y por nombre (basta que coincida una): el nombre no
+  · IDENTIDAD por ad_id Y por nombre (basta que coincida una, ver `llaves()`): el nombre no
     sobrevive a los renombrados y el ad_id historico quedo en notacion cientifica.
+  · UPSERT sobre ventana de liquidacion (22-sep-2026, T1): una fila cuya llave natural
+    (`clave_natural()`) ya existe en _FACT_VENTAS.csv se REEMPLAZA, no se descarta. Necesario
+    porque LucidSales a veces entrega el gasto/ventas de un dia CONGELADO a medio dia (medido
+    06/14/15/16/20-sep-2026: 0.65-0.75 del gasto real de Meta) y antes ese dia quedaba mal para
+    siempre. `rol_ventana` viaja en la llave: CONTROL nunca reemplaza a BASE ni viceversa. Ver
+    `upsert_fact.py` (el helper, compartido con `bajar_meta_insights.py`).
   · La fecha sale del NOMBRE del archivo (report-YYYY-MM-DD-YYYY-MM-DD.xlsx), no del contenido.
   · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _ARCHIVO/backups_csv/.
   · ad_id se formatea con s_id() (no notación científica cuando se puede).
 """
-import sys, io, os, re, csv, json, shutil, datetime
+import sys, io, os, re, csv, json, datetime
 
 # Windows abre la consola en cp1252: un print con un simbolo fuera de ese mapa revienta con
 # UnicodeEncodeError y el script sale con exit 1 AUNQUE el trabajo ya se completo. Es el mismo
@@ -34,6 +40,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alias
+import upsert_fact   # noqa: E402  (UPSERT sobre ventana de liquidacion, ver su docstring)
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -348,6 +355,23 @@ def llaves(f):
     return ks
 
 
+def clave_natural(f):
+    """UNA identidad por fila para el UPSERT (T1, 22-sep-2026), no las dos de `llaves()`.
+
+    `llaves()` sirve para DEDUPE ("¿ya existe con cualquiera de estas dos identidades?"),
+    que es lo que necesitaba un append-only. Un UPSERT necesita reemplazar por UNA llave
+    natural: se usa la identidad "AD" (ad_id sano) cuando existe — es la que sobrevive a
+    un renombrado — y si no la identidad "NOM" (nombre + producto), exactamente en el
+    mismo orden de preferencia que `llaves()` ya documentaba.
+
+    `rol_ventana` viaja en la llave: una fila CONTROL nunca cae en la misma llave que una
+    BASE del mismo día, así que el UPSERT nunca puede reemplazar una por la otra — la
+    invariante de DATA_PLAYBOOK ("CONTROL solapa a propósito, nunca suma") queda intacta.
+    """
+    ks = llaves(f)
+    return ks[0]
+
+
 def main():
     args = sys.argv[1:]
     rol, fuente, dry = "BASE", "LucidSales", False
@@ -383,20 +407,23 @@ def main():
     if os.path.exists(FACT):
         with open(FACT, newline="", encoding="utf-8") as fh:
             existentes = list(csv.DictReader(fh))
-    ya = set()
-    for f in existentes:
-        ya.update(llaves(f))
 
-    nuevas, dup, resumen = [], 0, {}
+    # Ya NO se compara contra `existentes` acá (22-sep-2026, T1): una fila que coincide con
+    # una llave YA EN DISCO no es un duplicado a descartar, es una CORRECCIÓN a aplicar — el
+    # UPSERT de mas abajo la reemplaza. Solo se colapsa una colisión DENTRO DE LA MISMA
+    # corrida (dos archivos de esta invocación con la misma llave; la última fila gana,
+    # igual que el `ya.update()` de antes hacía entre archivos).
+    vistas_run, nuevas, dup, resumen = {}, [], 0, {}
     for path in archivos:
         filas = leer_export(path, rol, fuente, productos, cuentas)
         n_ok = 0
         for f in filas:
-            ks = llaves(f)
-            if any(k in ya for k in ks):
+            k = clave_natural(f)
+            if k in vistas_run:
                 dup += 1
+                nuevas[vistas_run[k]] = f
                 continue
-            ya.update(ks)
+            vistas_run[k] = len(nuevas)
             nuevas.append(f)
             n_ok += 1
         d = fecha_de_nombre(path)
@@ -424,7 +451,8 @@ def main():
     # cualquier join por producto_key. Ahora ambos huecos BLOQUEAN la corrida (más abajo).
     sin_clasificar = [f for f in nuevas if f["producto_key"] == "SIN_CLASIFICAR"]
 
-    print(f"archivos: {len(archivos)} · filas nuevas: {len(nuevas)} · duplicados omitidos: {dup}")
+    print(f"archivos: {len(archivos)} · filas nuevas: {len(nuevas)} · "
+          f"duplicados dentro de la misma corrida: {dup}")
     if ids_perdidos():
         print(f"⚠ {ids_perdidos()} id(s) irrecuperable(s) (float > 2**53 o notación científica de "
               f"origen): quedaron en \"\" en vez de un ad_id/cuenta_id falso (ver s_id()).")
@@ -480,14 +508,14 @@ def main():
         return
 
     if nuevas:
-        os.makedirs(BKDIR, exist_ok=True)
-        stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        shutil.copy2(FACT, os.path.join(BKDIR, f"_FACT_VENTAS_{stamp}_pre-ingesta.csv.bak"))
-        with open(FACT, "a", newline="", encoding="utf-8") as fh:
-            w = csv.DictWriter(fh, fieldnames=COLS)
-            for f in nuevas:
-                w.writerow(f)
-        print(f"\n✅ {len(nuevas)} filas anexadas a _FACT_VENTAS.csv (backup en _ARCHIVO/backups_csv/)")
+        # UPSERT (22-sep-2026, T1) en vez de anexar a ciegas: una llave que ya estaba en
+        # _FACT_VENTAS.csv se REEMPLAZA (corrige un día que llegó con el gasto/ventas
+        # congelado a medio día — ver evidencia en el docstring del módulo), no se descarta.
+        # `clave_natural()` incluye rol_ventana: CONTROL nunca reemplaza a BASE ni viceversa.
+        reemplazadas, nuevas_disco, sin_cambio = upsert_fact.upsert(
+            FACT, COLS, clave_natural, nuevas, BKDIR)
+        print(f"\n✅ {reemplazadas} reemplazadas (día corregido) · {nuevas_disco} nuevas · "
+              f"{sin_cambio} sin cambio -> _FACT_VENTAS.csv (backup en _ARCHIVO/backups_csv/)")
 
     if sin_clasificar or sin_dim:
         # Se escribe SIEMPRE (perder una venta real es peor que un aviso), pero la
