@@ -75,6 +75,7 @@ DUENO = {
     "fuente_testimonios": "_DIM_FLUJO_BOT.csv",
     "angulo_nombre": "_ESTADO_ANGULOS.csv (angulo ganador)",
     "escalera_ofertas": "_DIM_PRECIOS.csv (derivada)",
+    "apertura_nivel": "_DIM_CONJUNTOS.csv / _DIM_VOCABULARIO.csv (nivel_conciencia del angulo ganador)",
     "video_1": "operador / Ads/MEDIA_[PK]", "video_2": "operador / Ads/MEDIA_[PK]",
     "lista_infografias": "operador / Ads/MEDIA_[PK]",
     "fecha_generacion": "derivada",
@@ -90,7 +91,21 @@ PLURAL = {"mes": "meses", "día": "días", "dia": "dias",
 MEDIA = ("video_1", "video_2", "lista_infografias")
 
 # Opcionales: la oracion funciona con o sin ellas.
-OPCIONALES = ("recaida", "razon_tier_alto")
+OPCIONALES = ("recaida", "razon_tier_alto", "apertura_nivel")
+
+# ETAPA-5 Paso 3: la apertura del flujo dedicado coincide con el nivel de conciencia del
+# angulo ganador (_DIM_CONJUNTOS.csv, vocabulario en _DIM_VOCABULARIO.csv). Este dict es el
+# UNICO dueno del texto de la regla — ETAPA-5.md y la plantilla apuntan aca, no la repiten.
+NIVELES_APERTURA = {
+    "1": ('NIVEL DE CONCIENCIA 1 del angulo ganador (no sabe la causa): el Video 1 y la 1a '
+          'infografia EDUCAN — explican la causa del sintoma antes de hablar del producto.'),
+    "2": ('NIVEL DE CONCIENCIA 2 del angulo ganador (sabe el problema, no la solucion): '
+          'dolor + "eso tiene solucion". El producto es la respuesta.'),
+    "3A": ('NIVEL DE CONCIENCIA 3A del angulo ganador (conoce el producto, teme comprar): '
+           'reducir friccion desde el arranque — contraentrega, garantia, prueba social.'),
+    "3B": ('NIVEL DE CONCIENCIA 3B del angulo ganador (conoce el producto, compara ofertas): '
+           'anclar la oferta desde el arranque.'),
+}
 
 # Prohibiciones de PLANTILLAS_FLUJO_BOT.md seccion 5, corridas sobre el texto renderizado.
 PROHIBIDO = [
@@ -195,6 +210,44 @@ def escalera(pk, fila, simbolo):
     return "\n\n".join(lineas), aviso
 
 
+def es_flujo_dedicado(pk):
+    """True si el producto ya paso F1: existe al menos un conjunto con fase != 'FASE1'.
+
+    En F1 el bot es UNICO PARAGUAS (decision operador 23-sep: nunca dos bots en F1). Sin
+    ese cruce de fase no hay angulo ganador que abra la conversacion, asi que la apertura
+    por nivel de conciencia (ETAPA-5 Paso 3) no aplica todavia.
+    """
+    return any(r["producto_key"] == pk and r.get("fase") != "FASE1"
+               for r in leer("_DIM_CONJUNTOS.csv"))
+
+
+def nivel_conciencia_angulo(pk, angulo_key):
+    """Nivel de conciencia del angulo ganador, normalizado con los alias de _DIM_VOCABULARIO.csv.
+
+    Devuelve (nivel, None) si se resolvio a un unico nivel valido, o (None, razon) si falta,
+    es ambiguo ("3" a secas mapea a REVISAR: no distingue 3A de 3B) o los conjuntos del
+    angulo no coinciden entre si.
+    """
+    alias = {r["valor"]: (r["mapea_a"] or r["valor"]) for r in leer("_DIM_VOCABULARIO.csv")
+             if r["eje"] == "nivel_conciencia"}
+    vistos = set()
+    for r in leer("_DIM_CONJUNTOS.csv"):
+        if r["producto_key"] != pk or r["angulo_key"] != angulo_key:
+            continue
+        if (r.get("estado") or "").upper() != "ACTIVO":
+            continue
+        crudo = (r.get("nivel_conciencia") or "").strip()
+        if crudo:
+            vistos.add(alias.get(crudo, crudo))
+    if not vistos:
+        return None, ("sin nivel_conciencia declarado en los conjuntos ACTIVO de %s/%s"
+                       % (pk, angulo_key))
+    if "REVISAR" in vistos or len(vistos) > 1:
+        return None, ("nivel_conciencia ambiguo o en conflicto en %s/%s: %s"
+                       % (pk, angulo_key, ", ".join(sorted(vistos))))
+    return vistos.pop(), None
+
+
 def resolver(pk):
     """Devuelve (valores, faltantes, avisos). No escribe nada."""
     flujo = {r["producto_key"]: r for r in leer("_DIM_FLUJO_BOT.csv")}
@@ -248,11 +301,30 @@ def resolver(pk):
               for k in sorted(usadas) if not v.get(k)]
     # `recaida` y `razon_tier_alto` son opcionales: CLEARSTEM las usa, TINNIDROP no.
     faltan = [f for f in faltan if f[0] not in OPCIONALES]
+
+    # Apertura por nivel de conciencia (ETAPA-5 Paso 3): solo aplica al flujo DEDICADO. En
+    # F1 (paraguas) no hay angulo ganador todavia y la linea se omite sin bloquear. En
+    # dedicado, un nivel ausente/ambiguo/en conflicto SI bloquea (a diferencia de OPCIONALES,
+    # que nunca bloquea): se agrega a mano despues del filtro de arriba.
+    v["apertura_nivel"] = ""
+    if es_flujo_dedicado(pk):
+        nivel, razon = nivel_conciencia_angulo(pk, v["angulo_nombre"])
+        if nivel:
+            v["apertura_nivel"] = NIVELES_APERTURA[nivel]
+        else:
+            faltan.append(("apertura_nivel", "%s — %s" % (DUENO["apertura_nivel"], razon)))
+
     return v, faltan, avisos
 
 
 def render(v):
     txt = plantilla()
+    # apertura_nivel vive en su PROPIA linea de instruccion ('>> {{apertura_nivel}}'), a
+    # diferencia de recaida/razon_tier_alto que van dentro de una oracion. Si esta ausente
+    # (flujo paraguas, sin angulo ganador), la linea entera se quita ANTES de sustituir: el
+    # loop de abajo ya reemplazaria el token por "" y dejaria un '>> ' vacio y colgado.
+    if not v.get("apertura_nivel"):
+        txt = re.sub(r"\n[ \t]*>>[ \t]*\{\{apertura_nivel\}\}[ \t]*\n", "\n", txt)
     for k, val in v.items():
         txt = txt.replace("{{%s}}" % k, val)
     # Limpia lineas que quedaron vacias por variables opcionales ausentes.

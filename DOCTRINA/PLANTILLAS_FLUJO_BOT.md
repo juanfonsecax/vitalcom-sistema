@@ -124,6 +124,22 @@ columna `etiqueta` (`1x` · `2x` · `3x` · `2X1` · `4X2`). Así la arquitectur
 CSV, y los productos de uso único no reciben una escalera de tres unidades iguales que
 `ETAPA-1.md` Paso 2 prohíbe.
 
+### 2.5 La apertura por nivel de conciencia — derivada de `PRODUCTOS/_DIM_CONJUNTOS.csv`
+
+`{{apertura_nivel}}` **no se tipea ni lo escribe `etapa-5`**: `gen_flujo_bot.py` resuelve el
+`nivel_conciencia` del ángulo ganador (`{{angulo_nombre}}`) sobre las filas `ACTIVO` de
+`_DIM_CONJUNTOS.csv`, normalizado con los alias de `_DIM_VOCABULARIO.csv`, y arma la instrucción
+desde el dict `NIVELES_APERTURA` — su único dueño de texto (`ETAPA-5.md` Paso 3 solo apunta acá).
+Solo aplica al **flujo dedicado** (el producto ya tiene algún conjunto fuera de `FASE1`); en el
+bot paraguas de FASE 1 la línea se omite sin bloquear.
+
+| Nivel | Falta / ambiguo / en conflicto → | Se resuelve → |
+|---|---|---|
+| `1` / `2` / `3A` / `3B` | **BLOQUEA** con exit 1, nombrando qué se encontró en `_DIM_CONJUNTOS.csv` | instrucción `>>` antes de ELEMENTO 3, coherente con la apertura del anuncio |
+
+`3` a secas es alias sucio **AMBIGUO** (`_DIM_VOCABULARIO.csv` lo mapea a `REVISAR`: no distingue
+3A de 3B) y bloquea igual que si faltara.
+
 ---
 
 ## 3. LA PLANTILLA
@@ -167,6 +183,7 @@ ELEMENTO 1 — TEXTO · SALUDO
 >> en la guía, en las novedades y en el cobro contraentrega.
 
 ELEMENTO 2 — VIDEO 1 · AUTORIDAD: {{video_1}}
+>> {{apertura_nivel}}
 ELEMENTO 3 — VIDEO 2 · UGC: {{video_2}}
 
 INFOGRAFÍAS ({{n_infografias}}): {{lista_infografias}}

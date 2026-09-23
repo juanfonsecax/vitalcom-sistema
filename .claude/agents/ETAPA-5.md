@@ -105,15 +105,14 @@ que las envuelve ya existe. La referencia de largo y tono es la fila de CLEARSTE
 
 ### Paso 3 — Calibrar la apertura al nivel de conciencia
 
-La apertura del flujo debe coincidir con la apertura del anuncio de ETAPA-4.
-
-- **NIVEL 1 (no sabe la causa):** el Video 1 y la primera infografía **EDUCAN** — explican la
-  causa del síntoma antes de hablar del producto. La gente no compra lo que no entiende que
-  necesita.
-- **NIVEL 2 (sabe el problema, no la solución):** dolor + "eso tiene solución". El producto es la
-  respuesta.
-- **NIVEL 3 (conoce el producto pero teme comprar):** reforzar la fricción desde el arranque —
-  contraentrega, garantía, prueba social, autenticidad.
+La apertura del flujo debe coincidir con la apertura del anuncio de ETAPA-4. **Esta etapa no
+redacta esa instrucción:** `Ads/_TOOLS/gen_flujo_bot.py` la resuelve solo, leyendo el
+`nivel_conciencia` del ángulo ganador en `_DIM_CONJUNTOS.csv` (normalizado con
+`_DIM_VOCABULARIO.csv`) y renderizándola como línea `>>` antes de ELEMENTO 3. El texto de la
+regla por nivel (1 educa la causa · 2 dolor + solución · 3A reduce fricción · 3B ancla la oferta)
+vive en el dict `NIVELES_APERTURA` de ese script — dueño único, ver `PLANTILLAS_FLUJO_BOT.md`
+§2.5. Si `_DIM_CONJUNTOS.csv` no trae un nivel único para el ángulo, el render bloquea: esta
+etapa no puede compensarlo a mano, hay que corregir el dato en su origen (ETAPA-2).
 
 ### Paso 4 — Escribir los bloques de juicio
 

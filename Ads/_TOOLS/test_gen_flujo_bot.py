@@ -174,6 +174,130 @@ def test_mercado_es_variable():
               "GINTACOM" not in mercados["CO"]["transportadoras"])
 
 
+def _con_datos(datos, fn):
+    """Corre fn() con G.leer(nombre) devolviendo datos[nombre] si esta declarado en el dict,
+    y los CSV reales del portafolio para cualquier otro nombre. Fixture en memoria: no toca
+    disco ni agrega filas a PRODUCTOS/*.csv (T2/T1 no cambian data, solo codigo)."""
+    original = G.leer
+
+    def falso(nombre, carpeta=G.PROD):
+        if nombre in datos:
+            return datos[nombre]
+        return original(nombre, carpeta)
+
+    G.leer = falso
+    try:
+        return fn()
+    finally:
+        G.leer = original
+
+
+VOCAB_NIVELES = [
+    {"eje": "nivel_conciencia", "valor": "1", "mapea_a": ""},
+    {"eje": "nivel_conciencia", "valor": "2", "mapea_a": ""},
+    {"eje": "nivel_conciencia", "valor": "3A", "mapea_a": ""},
+    {"eje": "nivel_conciencia", "valor": "3B", "mapea_a": ""},
+    {"eje": "nivel_conciencia", "valor": "3a", "mapea_a": "3A"},
+    {"eje": "nivel_conciencia", "valor": "3", "mapea_a": "REVISAR"},
+]
+
+
+def _conjunto(pk="PROD_X", angulo="ANG_X", fase="FASE2", estado="ACTIVO", nivel="1"):
+    return {"producto_key": pk, "angulo_key": angulo, "fase": fase, "estado": estado,
+            "nivel_conciencia": nivel}
+
+
+def test_apertura_nivel_por_cada_nivel():
+    """Los cuatro niveles resuelven a su instruccion — texto declarado en NIVELES_APERTURA."""
+    for nivel in ("1", "2", "3A", "3B"):
+        datos = {"_DIM_CONJUNTOS.csv": [_conjunto(nivel=nivel)],
+                 "_DIM_VOCABULARIO.csv": VOCAB_NIVELES}
+        resuelto, razon = _con_datos(
+            datos, lambda: G.nivel_conciencia_angulo("PROD_X", "ANG_X"))
+        check("nivel %s se resuelve sin bloquear" % nivel, resuelto == nivel and razon is None,
+              (resuelto, razon))
+        check("nivel %s trae su instruccion en NIVELES_APERTURA" % nivel,
+              nivel in G.NIVELES_APERTURA and G.NIVELES_APERTURA[nivel])
+
+
+def test_apertura_nivel_alias_se_normaliza():
+    """'3a' (alias sucio) normaliza a '3A' via _DIM_VOCABULARIO.csv, no a mano."""
+    datos = {"_DIM_CONJUNTOS.csv": [_conjunto(nivel="3a")],
+              "_DIM_VOCABULARIO.csv": VOCAB_NIVELES}
+    resuelto, razon = _con_datos(datos, lambda: G.nivel_conciencia_angulo("PROD_X", "ANG_X"))
+    check("el alias '3a' normaliza a '3A'", resuelto == "3A" and razon is None, (resuelto, razon))
+
+
+def test_apertura_nivel_ausente_bloquea():
+    """Sin nivel_conciencia declarado en los conjuntos del angulo: bloquea con la razon."""
+    datos = {"_DIM_CONJUNTOS.csv": [_conjunto(nivel="")],
+              "_DIM_VOCABULARIO.csv": VOCAB_NIVELES}
+    resuelto, razon = _con_datos(datos, lambda: G.nivel_conciencia_angulo("PROD_X", "ANG_X"))
+    check("nivel ausente bloquea", resuelto is None and razon and "sin nivel_conciencia" in razon,
+          (resuelto, razon))
+
+
+def test_apertura_nivel_ambiguo_3_a_secas_bloquea():
+    """'3' a secas mapea a REVISAR (no distingue 3A de 3B): bloquea, no elige por su cuenta."""
+    datos = {"_DIM_CONJUNTOS.csv": [_conjunto(nivel="3")],
+              "_DIM_VOCABULARIO.csv": VOCAB_NIVELES}
+    resuelto, razon = _con_datos(datos, lambda: G.nivel_conciencia_angulo("PROD_X", "ANG_X"))
+    check("'3' a secas bloquea por ambiguo", resuelto is None and razon and "ambiguo" in razon,
+          (resuelto, razon))
+
+
+def test_apertura_nivel_en_conflicto_bloquea():
+    """Dos conjuntos ACTIVO del mismo angulo con niveles distintos: bloquea, no promedia."""
+    datos = {"_DIM_CONJUNTOS.csv": [_conjunto(nivel="1"), _conjunto(nivel="2")],
+              "_DIM_VOCABULARIO.csv": VOCAB_NIVELES}
+    resuelto, razon = _con_datos(datos, lambda: G.nivel_conciencia_angulo("PROD_X", "ANG_X"))
+    check("niveles en conflicto bloquean", resuelto is None and razon and "conflicto" in razon,
+          (resuelto, razon))
+    datos_pausado = {"_DIM_CONJUNTOS.csv": [_conjunto(nivel="1"),
+                                             _conjunto(nivel="2", estado="PAUSADO")],
+                      "_DIM_VOCABULARIO.csv": VOCAB_NIVELES}
+    resuelto2, razon2 = _con_datos(
+        datos_pausado, lambda: G.nivel_conciencia_angulo("PROD_X", "ANG_X"))
+    check("un conjunto PAUSADO en conflicto no cuenta", resuelto2 == "1" and razon2 is None,
+          (resuelto2, razon2))
+
+
+def test_es_flujo_dedicado():
+    """Dedicado = existe algun conjunto fuera de FASE1 (el producto ya paso F1)."""
+    solo_f1 = {"_DIM_CONJUNTOS.csv": [_conjunto(fase="FASE1")]}
+    check("solo FASE1 no es dedicado", not _con_datos(solo_f1, lambda: G.es_flujo_dedicado("PROD_X")))
+    con_f2 = {"_DIM_CONJUNTOS.csv": [_conjunto(fase="FASE1"), _conjunto(fase="FASE2_ESCALA")]}
+    check("con un conjunto FASE2_ESCALA ya es dedicado",
+          _con_datos(con_f2, lambda: G.es_flujo_dedicado("PROD_X")))
+
+
+def test_flujo_paraguas_no_bloquea_ni_lleva_apertura():
+    """F1 (paraguas, sin angulo fuera de FASE1): sin instruccion de nivel y sin bloqueo."""
+    datos = {"_DIM_CONJUNTOS.csv": [_conjunto(pk="CLEARSTEM", angulo="RESISTENCIA_INSULINA_SOP",
+                                               fase="FASE1")]}
+    v, faltan, _ = _con_datos(datos, lambda: G.resolver("CLEARSTEM"))
+    check("flujo paraguas no bloquea por apertura_nivel",
+          not any(k == "apertura_nivel" for k, _ in faltan), faltan)
+    if v:
+        check("flujo paraguas no lleva instruccion de apertura", v.get("apertura_nivel") == "")
+        txt = G.render(v)
+        check("el render paraguas no deja el token ni la linea vacia colgando",
+              "{{apertura_nivel}}" not in txt and ">> \n" not in txt)
+
+
+def test_flujo_dedicado_clearstem_renderiza_instruccion():
+    """CLEARSTEM (dedicado, angulo ganador en nivel 1) renderiza su instruccion de apertura."""
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    check("CLEARSTEM no bloquea por apertura_nivel",
+          v is not None and not any(k == "apertura_nivel" for k, _ in faltan), faltan)
+    if v:
+        check("CLEARSTEM lleva la instruccion del NIVEL 1",
+              "NIVEL DE CONCIENCIA 1" in v.get("apertura_nivel", ""), v.get("apertura_nivel"))
+        txt = G.render(v)
+        check("la instruccion aparece antes de ELEMENTO 3",
+              "NIVEL DE CONCIENCIA 1" in txt.split("ELEMENTO 3")[0])
+
+
 def main():
     print("test_gen_flujo_bot.py — reglas del layout del bot\n")
     for fn in (test_pregunta_filtro_se_rechaza,
@@ -187,7 +311,15 @@ def main():
                test_escalera_respeta_la_arquitectura_del_csv,
                test_clearstem_pasa_completo,
                test_estructura_por_bloques_no_pierde_ni_mezcla,
-               test_mercado_es_variable):
+               test_mercado_es_variable,
+               test_apertura_nivel_por_cada_nivel,
+               test_apertura_nivel_alias_se_normaliza,
+               test_apertura_nivel_ausente_bloquea,
+               test_apertura_nivel_ambiguo_3_a_secas_bloquea,
+               test_apertura_nivel_en_conflicto_bloquea,
+               test_es_flujo_dedicado,
+               test_flujo_paraguas_no_bloquea_ni_lleva_apertura,
+               test_flujo_dedicado_clearstem_renderiza_instruccion):
         print("\n%s" % (fn.__doc__ or fn.__name__).splitlines()[0])
         fn()
     print("\n%s" % ("TODO PASA" if not FALLAS else "FALLAN %d: %s"
