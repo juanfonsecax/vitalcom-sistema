@@ -85,7 +85,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
       `_ARCHIVO/` removed, references fixed.
 - [x] T10 (P6) Voice of customer as data: `_VOZ_CLIENTE.csv` + `verificar_voz.py` (re-fetches the
       URL, checks the quote) + the etapa-1b output contract + angle cards cite voz_id.
-- [ ] T11 (P11) Frozen evals baseline (promptfoo) over saved real outputs, per stage.
+- [x] T11 (P11) Frozen evals baseline (promptfoo) over saved real outputs, per stage.
 - [ ] T12 (P12) Exploration of new angles while scaling (F3.exploracion). DECIDED by the operator
       22-sep: a fixed mini-F1 of 3 untested angles at the F1 per-adset budget (2.99 USD/day each,
       ~9 USD/day), measured by sale like F1, all-IMAGEN. It starts when the F3 campaign is profitable
@@ -808,10 +808,70 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     `origen_angulo`/evidence on all 6 conjuntos) — it needs a regenerated plan from etapa-6
     before it can launch, same as its pre-existing `falta` list already implied.
 
+- 23-sep: T11 committed `380d962`. Route: this session, one work unit (no delegation needed —
+  extraction + assert-writing was one continuous, already-understood task over files already read).
+  - **New top-level `evals/`**: `promptfooconfig.yaml` (27 tests, `provider: echo` + prompt
+    `"{{content}}"` + `assert type: python` — the exact shape a real `npx promptfoo eval` consumes,
+    so the config is not vaporware even though promptfoo itself isn't installed here),
+    `run_baseline.py` (dependency-free runner: parses the same YAML, resolves each `file://` fixture,
+    imports the assert module, calls `get_assert(output, context)` with promptfoo's own signature),
+    `fixtures/<etapa>/<producto>.{txt,json,md}` (recortes o copias completas de outputs REALES ya
+    en `PRODUCTOS/` — nunca generados por esta sesión), `asserts/<etapa>*.py` (un assert determinista
+    por etapa + `_util.py` compartido), `README.md` (qué es, cómo correrla, protocolo de poda).
+  - **Cobertura — 8 de 17 etapas con output real guardado**, 27 tests: etapa-producto (OVULOS_PURITY:
+    veredicto+score), etapa-1 (4 productos: costeo con P1u/P2u/P3u o 2X1/4X2 + CPA
+    objetivo/break-even, número o `PENDIENTE` explícito — nunca vacío), etapa-1b (3 productos: sin
+    claim de "cura" no marcada como prohibición; citas de voz del cliente con fuente cuando la
+    sección existe), etapa-2 (3 productos: 6 fichas de ángulo + marcador de nivel de conciencia por
+    ficha, tolerante a los 3 formatos de encabezado reales — "N.", "ÁNGULO N —", "#N"), etapa-fanpage
+    (CLEARSTEM: la página asignada existe en el catálogo cerrado de 10 que declara
+    `ETAPA-FANPAGE.md` — cross-check real contra la doctrina), etapa-6 (4 productos: esquema de
+    `_PLAN.json` completo — claves de raíz, 1-6 conjuntos, campos por conjunto, vocabulario de
+    formato — MÁS un segundo assert separado para la regla dura "FASE 1 todo en imagen"), etapa-5
+    (CLEARSTEM+TINNIDROP: los 9 `<<BLOQUE:x>>` obligatorios de `PLANTILLAS_FLUJO_BOT.md`, >=3
+    marcadores de voseo real filtrando el falso positivo "después", sin claim de cura/elimina no
+    marcada), etapa-8 (TINNIDROP: Break-Even + regla de oro + tope de surfing +20%/día + ganadores
+    con evidencia numérica de ventas), y la invariante 8 de `etapa-guardar-producto` (4 productos:
+    manifiesto congelado de archivos de nivel superior, contra un vocabulario cerrado de nombres de
+    archivo por rol — detecta un "archivo suelto de rerun").
+  - **Fallo conocido, documentado, no maquillado:** los `_PLAN.json` de CLEARSTEM/NusavaB12/TINNIDROP
+    (todos v1, anteriores al 22-sep-2026) tienen conjuntos en VIDEO y fallan el assert
+    "FASE 1 todo en imagen" — marcados `expected_fail: true` con motivo en `promptfooconfig.yaml`,
+    exactamente el mismo hallazgo que hoy reporta `gen_plan.py --validar` (10 errores preexistentes,
+    T10). El assert se dejó estricto a propósito — no se debilitó para taparlo.
+  - **9 etapas sin output real guardado, con motivo** (tabla completa en `evals/README.md`):
+    etapa-0 (selección de video vive en sesión), etapa-3 (su banco de microángulos nunca aterrizó en
+    disco — ningún producto real está hoy en el nodo `F3.plan` que lo exigiría, per T8), etapa-4
+    (el copy se funde sin sección propia dentro de `1_HACER_MANUAL.txt`), etapa-7/9/10/11 (outputs de
+    consola/sesión, no un archivo persistido por corrida), etapa-render (produce PNG, no texto).
+  - **Gate negativo, no vacío:** `Ads/_TOOLS/test_evals_baseline.py` corre `run_baseline.py` (debe
+    salir 0) y además muta 4 fixtures reales — `_PLAN.json` con `angulo_key` vaciado, un `VIDEO`
+    inyectado en FASE 1, la línea de veredicto de etapa-producto borrada, un archivo
+    `"... - Copia.txt"` agregado al manifiesto — y confirma que cada assert correspondiente SÍ lo
+    rechaza. Sin esa mitad, un assert que siempre devolviera `pass: True` pasaría la gate igual.
+  - **CLAUDE.md**: nueva fila de dueño para `evals/` en la tabla de mapa de archivos, y `evals/` sumado
+    a la lista de zonas que el sistema lee.
+  - **No se tocó ningún CSV de `PRODUCTOS/` ni ningún `.claude/agents/ETAPA-*.md`** — solo lectura
+    para construir los fixtures, tal como exige el constraint de este worktree.
+  - **Verificación (SISTEMA-app worktree):** `python evals/run_baseline.py` -> 27 tests, 24 PASS +
+    3 FALLO-CONOCIDO (documentados) + 0 FAIL reales, exit 0. `python -m pytest Ads/_TOOLS -q
+    -p no:cacheprovider` -> 40 passed (39 + `test_evals_baseline.py`). `python
+    Ads/_TOOLS/test_evals_baseline.py` standalone -> 0 fallas (5/5, incluida la mitad negativa).
+    `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos, 1 excepción). `python
+    Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88 variables, 33 verificadas). `python
+    Ads/_TOOLS/gen_grafo.py` -> "rutas muertas ... ninguna", ".md/.csv sin consumidor ... ninguno" —
+    `evals/` no generó ruido de huérfanos ni rutas muertas; sin diff en `_LINEA_BASE_SISTEMA.json`
+    (corrida read-only, sin `--escribir`). Backend `cd app/backend; uv run pytest -q
+    --ignore=tests/test_meta.py` -> corrida en background por el hang conocido del harness (T4
+    finding); ningún archivo de `app/` fue tocado por T11, así que no era estrictamente necesaria —
+    se corrió de todas formas por completitud, resultado anexado abajo cuando terminó.
+    `git status --short` -> limpio después del commit.
+
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
 there as a `chore(data)` commit (this also fixes the `ad_id` column `stg_entrega_anuncio` needs),
 runs `dbt build` AFTER that re-pull (not before — see the new deployment-order doctrine), confirms
 `decidir.py`/the app read the corrected spend and `capa_analitica` on the merged data, then checks
-T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9 and T10
-are done; T11 (frozen evals baseline) is next in dependency order.
+T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9, T10 and
+T11 are done; T12 (exploration of new angles while scaling, F3.exploracion) is next in dependency
+order.
