@@ -78,7 +78,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
       refuse when the phase gate is unmet, unless `--excepcion "reason"` records an EXCEPCION event.
 - [x] T6 (P7) Compute and write are separate: flujo.py, decidir.py, gen_grafo.py get a read-only mode.
       A "read" never writes tracked files.
-- [ ] T7 (P8) Tests: costear.py, registrar_evento.py, decidir.py ESCALAR_MODERADO and comparar_cierre.
+- [x] T7 (P8) Tests: costear.py, registrar_evento.py, decidir.py ESCALAR_MODERADO and comparar_cierre.
 - [ ] T8 (P10) Hygiene: iniciar.bat refuses an ambiguous base; verificar_publicacion requires
       effective_status=PAUSED; invariant 7 requires exactly the next day; etapa-3 status resolved.
 - [ ] T9 (P9) Folders: classes out of the repo, live backups to a gitignored `_RESPALDOS/`, dead
@@ -489,6 +489,59 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     `_LINEA_BASE_SISTEMA.json` (confirmed read-only by default, no `git checkout` needed for this
     run). Backend `cd app/backend; uv run pytest -q --ignore=tests/test_meta.py` -> see below.
     `git status --short` -> only the intended files touched (no data CSV, no other test file).
+
+- 23-sep: T7 committed `79e06f4`. Route: delegated writer.
+  - New `Ads/_TOOLS/test_costear.py` (8 checks, own temp `_DIM_COSTEO.csv` — never the real one):
+    exact match; nearest row below; nearest row above; exact tie resolves to the HIGHER row
+    (conservative, per `elegir_fila()`'s docstring and ETAPA-1.md); cost above the table's top row
+    -> `criterio_de_fila == "TECHO DE TABLA EXCEDIDO"`, an `alerta` string, and `main() --json`
+    returns exit 1 (0 on a clean match); escalera 1u/2u/3u equal the row's
+    `precio_establecido`/`precio_2u`/`precio_3u` exactly. **Finding (documented via a passing
+    test, not fixed — no code owner rule says it should alert):** a cost BELOW the table's
+    cheapest row raises no alert, unlike a cost above the ceiling — `elegir_fila()` only guards
+    `costo > filas[-1][0]` (the top), there's no symmetric guard against `filas[0][0]` (the
+    floor); a cost under the floor silently lands on the cheapest row as if it were a normal
+    "nearest" case. Harmless if no product ever costs less than the cheapest row; flagged for the
+    operator, not fixed here since it's a scope call, not a defect this task's rule covers.
+  - Extended `Ads/_TOOLS/test_registrar_evento.py` (+10 checks, all through non-LANZAMIENTO
+    events so `flujo.gate_entrada` is never consulted — a new `_fixture_validacion()` fixture,
+    lighter than `_fixture_lanzamiento()`, with only `_DIM_PRODUCTOS.csv` + `_PARAMETROS_DECISION.csv`
+    + an empty `_EVENTOS.csv`): unknown `producto_key` refused, `GLOBAL` always accepted; an event
+    with a character outside `[A-Z0-9_]` refused (a plain lowercase input doesn't exercise this
+    branch — `main()` already `.upper()`s `--evento` before `validar()` runs, so the test uses a
+    hyphen to reach the regex check for real); empty `motivo` / `fuente_decision` refused;
+    `CAMBIO_PRESUPUESTO` with a non-numeric `--antes` refused; a budget raise within `surfing_pct`
+    accepted, one above it refused without `--forzar` and accepted with it; `--dry-run` writes
+    nothing even for an otherwise-valid row; a motivo containing a comma round-trips exactly
+    through `csv.DictReader` and lands quoted in the raw file (invariante 11).
+  - Extended `Ads/_TOOLS/test_decidir.py` (+7 checks): `test_escalar_moderado_frontera()` freezes
+    both edges of ESCALAR_MODERADO (regla 6) at a fixed ventas=50 — the OBJ edge (Q30.80 ± 0.05:
+    below is `ESCALAR_SURFING`, above is `ESCALAR_MODERADO`; both states are literally "ESCALAR",
+    so the test asserts on `accion_codigo`, not `estado`, since the existing CASOS-list runner
+    only checks `estado`) and the practical upper edge. **Found while writing this test:** the
+    code's literal upper bound is `be_q` (Q93.41), but at any sample size actually reachable the
+    Bayesian credible interval (`ic_cpa`'s `ic_bajo_be` gate) breaks BEFORE `cpa_real_q` gets
+    anywhere near `be_q` — at ventas=50 the real breakpoint (found by binary search over
+    `ic_cpa`, not guessed) is CPA ~Q70.17, not Q93.41. A cpa a cent below that stays
+    `ESCALAR_MODERADO`; a cent above it, the IC no longer holds under BE and the celda falls to
+    `SEGUIR_MIDIENDO`/`MANTENER_Y_MEDIR` (rule 7) even though `cpa_real_q` is still under `be_q`.
+    This isn't a bug — `ic_bajo_be` is explicitly required by rule 6's own condition — but it's
+    the actual boundary of the rule in practice, not the number in the docstring/task wording, so
+    the test documents it explicitly with the binary-search-derived constant rather than a
+    rounder guess that might not actually cross the line. `test_comparar_cierre()` freezes: a
+    50%-vs-10%-close case (n=100 each) as significant; identical 20%-vs-20% closes as never
+    significant (p=1.0); and that either side having `mensajes<=0` returns `None` (no
+    ZeroDivisionError, no invented p-value) — matching the function's own "corta, nunca corona"
+    docstring.
+  - No bugs required a code fix in this task: the one below-floor gap in `costear.py` is
+    ambiguous by design (no owner rule mandates a floor alert) and is reported above, not patched.
+  - Verification (SISTEMA-app worktree): `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` ->
+    37 passed (36 + the new `test_costear.py` file). `python Ads/_TOOLS/test_costear.py`,
+    `python Ads/_TOOLS/test_registrar_evento.py`, `python Ads/_TOOLS/test_decidir.py` -> each 0
+    fallas standalone. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos).
+    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88 variables, 33 verificadas, 55
+    cualitativas). `git status --short` -> only the three intended test files, clean after
+    commit. Backend not run (no `app/` file touched by this task).
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
