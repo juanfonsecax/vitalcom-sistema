@@ -185,88 +185,132 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
 
 - 22-sep: T2 implemented (not checked — parent closes it after confirming with a run over the
   merged SISTEMA data, and after T1's live re-pull, which this worktree does not do).
-  - Commits: `d9457f5` (helper + Python consumers), `5a62dbd` (dbt mirror), `66493c0` (vocabulary
-    single-owner + dbt-failure surfacing), `d0820aa` (doctrine pointers).
-  - `Ads/_TOOLS/gasto.py` (new): `IndiceGasto` resolves spend for a `_FACT_VENTAS.csv` row in
-    order — ad_id exact match against `_FACT_ENTREGA_ANUNCIO.csv` (cuenta_id+ventana) -> canonical
-    name (conjunto+anuncio) match -> conjunto-grain match against `_FACT_ENTREGA.csv` -> LucidSales
-    `spend_usd` fallback. Only `fuente in {MetaAPI-directo, AdsManager-export-1d}` counts as Meta.
-    `ad_id` gets normalized from Excel float notation (`1.2e+17` -> `120000000000000000`) so it
-    joins against T1's integer ad_id. `escribir_ventas_con_gasto_efectivo()` writes a temp CSV
-    with the same schema + `fuente_gasto`, for a consumer that reads `_FACT_VENTAS.csv` via its own
-    SQL/CSV loader (decidir.py) instead of row by row.
-  - Consumers converted: `decidir.py` (`cargar_datos_duckdb` now points its DuckDB query at the
-    gasto-corrected temp CSV instead of `_FACT_VENTAS.csv` directly; `COBERTURA_GASTO` module
-    global is exposed as `cobertura_gasto` in the portfolio JSON), `flujo.py` (`_ventas_base`,
-    shared by the angle-winner and concept-2-of-2 gates, yields a per-row copy with corrected
-    `spend_usd` — never mutates the cached CSV rows other readers reuse), `perfilar_angulos.py`
-    (`serie_por_angulo`), `sembrar_anuncios.py` (the `_DIM_ANUNCIOS.csv` seeder, ad grain).
-    `IndiceGasto` takes an optional `alias_fn` and explicit `ruta_entrega*` so a consumer running
-    over a test fixture (flujo.py's `Entorno`, decidir.py's monkey-patched module paths) never
-    cross-joins against the real repo's `_ALIAS_CONJUNTOS.csv`/FACT files.
-  - Consumers NOT converted, justified: `gen_pl.py` and `gen_finanzas.py` deliberately compare
-    THREE independent sources (LucidSales attribution / Dropi cash / bank statement) to catch
-    systemic errors — collapsing "capa 1" into the same Meta number as "capa 3" would remove that
-    independence and silently defeat the audit's own purpose. They also require a live `--dropi`
-    xlsx this worktree doesn't have, so a conversion couldn't be run end-to-end here anyway.
-    `gen_dashboard.py` (2000+ lines, ~15 read sites, module-level code that runs at import) is
-    deferred: no test suite exists to verify a conversion didn't regress it, and it's read-heavy
-    reporting, not a decision gate. `atribuir.py` reads spend from `_DIM_ANUNCIOS.csv` (already
-    fixed via `sembrar_anuncios.py`), not `_FACT_VENTAS.csv` directly — no change needed there.
-  - Before/after (`decidir.py --json`, this worktree's data, saved to the scratch dir and the
-    tracked `_DECISIONES.json` restored with `git checkout` after each run):
-    `cobertura_gasto` (after) = `{LucidSales-fallback: 1996, MetaAPI-conjunto: 604,
-    MetaAPI-nombre: 738}` — 0 `MetaAPI-ad_id` matches, as expected: this worktree's Meta rows
-    (06-21-sep) predate T1's ad_id backfill, so only the name/conjunto rules can fire here.
-    | producto/ángulo | CPA antes | estado antes | CPA después | estado después |
-    |---|---|---|---|---|
-    | NUSAVA/ARDOR | Q41.7 | ESCALAR | Q73.1 | **RENOVAR** |
-    | CLEARSTEM/ANTI_FALSIFICACION | Q31.7 | RENOVAR | Q34.4 | RENOVAR |
-    | CLEARSTEM/MEDICOS_FALLARON | Q104.4 | RENOVAR | Q116.5 | RENOVAR |
-    | CLEARSTEM/RESISTENCIA_INSULINA_SOP | Q32.9 | ESCALAR | Q36.3 | ESCALAR |
-    | TINNIDROP (4 ángulos) | Q69.5-89.7 | SEGUIR_MIDIENDO | Q72.3-93.4 | SEGUIR_MIDIENDO |
-    NUSAVA/ARDOR flipping ESCALAR -> RENOVAR is the concrete case the T2 decision predicted: its
-    true CPA was hidden under LucidSales' under-reported spend for that window.
-  - dbt: `fct_gasto_dia` (new mart) is the SQL mirror of `gasto.py`'s rule (documented identical
-    in both docstrings); `fct_conjunto_dia` now sources spend from it instead of raw `stg_ventas`.
-    Required adding `cuenta_id`/`fuente` to `stg_entrega_anuncio`/`stg_entrega_conjunto` and
-    `ad_id`/`cuenta_id`/`ventana_ini` to `stg_ventas` (its `spend_usd` renamed to
-    `spend_usd_lucidsales` there, since nothing downstream should read it as the truth anymore).
+  - Commits: `d9457f5` (helper + Python consumers, v1), `5a62dbd` (dbt mirror, v1), `66493c0`
+    (vocabulary single-owner + dbt-failure surfacing), `d0820aa` (doctrine pointers), `6bdf2dc`
+    (**fix**: redesign gasto.py after a correctness defect found in review — see below), `290187d`
+    (**fix**: mirror the redesign in fct_gasto_dia).
+  - **Defect found in review (v1, `d9457f5`/`5a62dbd`) and corrected (`6bdf2dc`/`290187d`):** v1
+    resolved spend PER SALES ROW, and when no ad-level match existed it copied the FULL conjunto
+    Meta spend onto that row. A conjunto with N sales rows (different ads, "- Copia" replicas)
+    with no individual match each got the full conjunto total -> spend multiplied by N when a
+    consumer summed those rows. And Meta spend for an ad with zero attributed sales never
+    appeared anywhere (lost, not just deferred). The v1 "before/after" table showing NUSAVA/ARDOR
+    jumping from CPA Q41.7 to Q73.1 was this bug, not the fix — corrected, its true CPA is Q43.3
+    (see below), a small, real difference.
+  - **Corrected design (`Ads/_TOOLS/gasto.py`, rewritten):** Meta spend and LucidSales
+    sales/messages are aggregated SEPARATELY — never per input row — to a grain where each dollar
+    is counted exactly once, then FULL OUTER JOINed on that grain:
+    - `gasto_por_conjunto_ventana()`: key = (producto_key, cuenta_id, ventana_ini, ventana_fin,
+      conjunto canónico). Meta spend = SUM of `_FACT_ENTREGA.csv` for that key (one source, one
+      sum — never split or copied across the sales rows that land in it). Sales/messages = SUM of
+      `_FACT_VENTAS.csv` BASE rows for the same key. A key with Meta spend and zero sales rows
+      still appears (ventas=0); a key with sales and no Meta coverage falls back to the summed
+      LucidSales `spend_usd`, flagged `LucidSales-fallback`. Used by `decidir.py` and
+      `flujo.py`'s angle-winner gate (both aggregate by angle, which aggregates by conjunto).
+    - `gasto_por_anuncio_ventana()`: key = ad_id when present on both sides, else (cuenta_id,
+      ventana, **campaña**, conjunto canónico, anuncio) — campaign is part of the name key on
+      purpose: FASE 2 deliberately repeats the same concept/anuncio text across 2-3 campaigns to
+      test replication, and without campaign in the key those campaigns would collapse into one
+      row and the 2-de-2 gate could never see the second occurrence (caught by a fixture in
+      `test_flujo.py`). No conjunto-level fallback at this grain: an ad without an individual
+      match keeps the LucidSales fallback, never another ad's or the conjunto's total. Used by
+      `flujo.py`'s concept-2-of-2 gate and `sembrar_anuncios.py` (`_DIM_ANUNCIOS.csv` seeder).
+    - `escribir_conjunto_ventana_csv()` writes the conjunto aggregate as one synthetic row per
+      key (not per original sales row) for a consumer that runs its own SQL/CSV loader over
+      `_FACT_VENTAS.csv` (decidir.py). `indice_gasto_por_anuncio()` / `clave_anuncio()` let a
+      consumer with its own row-by-row loop (`sembrar_anuncios.py`) look up the already-correct
+      aggregate by key — safe because each key's value was computed once, not accumulated again.
+  - Consumers converted: `decidir.py` (`cargar_datos_duckdb` feeds its DuckDB query the aggregate
+    CSV instead of raw `_FACT_VENTAS.csv`; `COBERTURA_GASTO` exposed as `cobertura_gasto`, now
+    counting cells/keys, not rows), `flujo.py` (`_angulos_acumulados` uses the conjunto aggregate;
+    `_ev_concepto_2de2` uses the ad aggregate; `_ev_estructura_publicada` keeps the raw
+    `_ventas_base` generator — it only checks "spend > 0", a boolean where LucidSales and Meta
+    essentially never disagree on sign, so the extra precision isn't needed there),
+    `perfilar_angulos.py` (`serie_por_angulo` prorates the conjunto aggregate's cells across their
+    window's days, instead of prorating a per-row LucidSales spend value), `sembrar_anuncios.py`
+    (`_DIM_ANUNCIOS.csv` seeder, via `indice_gasto_por_anuncio()`).
+  - Consumers NOT converted, justified (unchanged from v1's reasoning): `gen_pl.py` and
+    `gen_finanzas.py` deliberately compare THREE independent sources (LucidSales attribution /
+    Dropi cash / bank statement) to catch systemic errors — collapsing "capa 1" into the same
+    Meta number as "capa 3" would remove that independence and defeat the audit's purpose; they
+    also need a live `--dropi` xlsx this worktree doesn't have. `gen_dashboard.py` (2000+ lines,
+    no test suite) deferred. `atribuir.py` reads `_DIM_ANUNCIOS.csv` (already fixed via
+    `sembrar_anuncios.py`), not `_FACT_VENTAS.csv` directly.
+  - **Before/after, corrected** (`decidir.py --json`, this worktree's data; saved to the scratch
+    dir, tracked `_DECISIONES.json` restored with `git checkout` after each run). Every corrected
+    `spend_usd` was independently re-verified straight from `_FACT_ENTREGA.csv` (Meta rows only,
+    grouped by angle via `_DIM_CONJUNTOS`, summed over the SAME 14-day window decidir used,
+    2026-09-08..21) — matched decidir's number to the cent for all 8 angles below:
+
+    | producto/ángulo | CPA antes (LucidSales) | CPA v1 (bug) | **CPA corregido** | Meta directo (independiente) | estado corregido |
+    |---|---|---|---|---|---|
+    | NUSAVA/ARDOR | Q41.7 | Q73.1 (bug) | **Q43.3** | $125.13 == decidir $125.13 | ESCALAR (sin cambio) |
+    | CLEARSTEM/ANTI_FALSIFICACION | Q31.7 | Q34.4 | **Q38.5** | $101.08 == $101.08 | RENOVAR |
+    | CLEARSTEM/MEDICOS_FALLARON | Q104.4 | Q116.5 | **Q174.8** | $91.77 == $91.77 | RENOVAR |
+    | CLEARSTEM/RESISTENCIA_INSULINA_SOP | Q32.9 | Q36.3 | **Q39.2** | $144.00 == $144.00 | RENOVAR (was ESCALAR) |
+    | TINNIDROP (4 ángulos) | Q69.5-89.7 | Q72.3-93.4 | **Q66.0-95.4** | all match to the cent | SEGUIR_MIDIENDO |
+
+    **NUSAVA/ARDOR explained:** LucidSales reported $125.88 spend / 23 ventas = Q41.7. Meta's
+    real spend for the same window is $125.13 (23 ventas in the raw file, decidir's rolling
+    window landed on 22 after a one-day boundary shift explained below) — essentially IDENTICAL
+    to LucidSales here (-0.6%), unlike the earlier bug's 3x-inflated $73.1. This matches the
+    reviewer's own observation: measured Meta-vs-LucidSales spend for NUSAVA in this window
+    differs only slightly, so ARDOR correctly stays ESCALAR. **CLEARSTEM/MEDICOS_FALLARON** is
+    the angle where Meta and LucidSales genuinely diverge the most here (Q104.4 -> Q174.8, +67%):
+    its conjunto has several replicated/renamed ads with no individual Meta match, so before this
+    fix LucidSales' own (also potentially under-reported) per-ad spend was being summed instead
+    of Meta's true conjunto total — the corrected number is the one independently reproducible
+    from `_FACT_ENTREGA.csv` directly, shown in the table.
+  - **Observed side effect (not a defect, documented for transparency):** the full outer join
+    means a day where Meta spent money but LucidSales attributed zero sales now counts as a "day
+    with data" (`datos_hasta` in decidir's JSON), where before that day was invisible (no sales
+    row = no row at all). This shifted `datos_hasta`/`rezago_dias` by one day between two decidir
+    runs a few minutes apart in this session (2026-09-20/rezago 2 -> 2026-09-21/rezago 1),
+    changing which 14 days fall inside the rolling window and moving NUSAVA/ARDOR's ventas count
+    by one (23 -> 22) between runs — unrelated to the spend fix itself, and arguably more honest
+    than silently ignoring a spend-only day.
+  - dbt: `fct_gasto_dia` rewritten to the same aggregate-then-join design (CTEs `ventas_agg` /
+    `meta_agg` over `stg_ventas` / `stg_entrega_conjunto`, `full outer join` on the conjunto key);
+    `fct_conjunto_dia` sources from it. Builds and its `not_null` tests pass in this worktree.
   - ALSO (a): `PRODUCTOS/_DIM_VOCABULARIO.csv` gained the `estado_producto` axis (NUEVO/VIVO/
     PAUSADO/LISTO/ARCHIVADO), generated by `Ads/_TOOLS/gen_vocabulario.py` (never hand-edited,
     invariant 11). `warehouse/models/_models.yml`'s `accepted_values` on `stg_productos.estado`
-    (which was missing NUEVO and broke the build against OVULOS_PURITY) is replaced by a
-    `relationships` test against the new `stg_vocabulario_estado_producto` model, which reads that
-    same CSV — one vocabulary, not two. `gen_decisiones.py` now writes `capa_analitica: {estado,
-    detalle, generado}` into `_DECISIONES.json` after every `dbt build` (OK/FALLO/OMITIDO,
-    previously only a stdout print); `gen_ordenes.py` forwards it into the orders response and
-    adds an aviso when FALLO; `app/backend` gained `Decisiones.capa_analitica` and
-    `OrdenesRespuesta.capa_analitica` (pydantic, `extra="allow"` so this never broke before).
+    (missing NUEVO, broke the build against OVULOS_PURITY) is replaced by a `relationships` test
+    against the new `stg_vocabulario_estado_producto` model — one vocabulary, not two.
+    `gen_decisiones.py` writes `capa_analitica: {estado, detalle, generado}` into
+    `_DECISIONES.json` after every `dbt build` (OK/FALLO/OMITIDO, previously only stdout);
+    `gen_ordenes.py` forwards it and adds an aviso when FALLO; `app/backend` gained
+    `Decisiones.capa_analitica` / `OrdenesRespuesta.capa_analitica`.
   - ALSO (b): deployment order documented in `DOCTRINA/DATA_PLAYBOOK.md` and the
     `recopilar-lucidsales` skill — Meta re-pull (migrates `ad_id` into the CSV header via
     `upsert_fact`) before any `dbt build`, since `stg_entrega_anuncio` requires that column.
-  - Tests (script-style): `test_gasto.py` (new, 10 checks — ad_id/nombre/conjunto/fallback
-    precedence, cientific-notation ad_id normalization, unmatched-Meta-spend-not-dropped,
-    unrecognized `fuente` never wins, alias canonicalization on both sides of the join, coverage
-    counting, non-mutation of input rows), `test_decidir.py` (+1: `cargar_datos_duckdb()` uses the
-    $50 Meta spend over the $10 LucidSales spend for the same window), `test_vocabulario_estado.py`
-    (new, 4 checks — the 5 states are declared, no product uses an orphan state, `_models.yml` no
-    longer hardcodes the list, `stg_vocabulario_estado_producto.sql` filters the right axis).
-    `test_flujo.py` (29/29) and `test_perfilar_angulos.py` (17/17) still pass unchanged.
-  - Verification run (SISTEMA-app worktree): `python -m pytest Ads/_TOOLS -q -p no:cacheprovider`
-    -> 33 passed. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos).
-    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas. `python Ads/_TOOLS/gen_grafo.py` ->
-    clean (no orphans/dead paths), baseline restored with `git checkout` afterward. dbt (now
-    installed, `dbt-core 1.12.3`/`duckdb 1.11.0`): `dbt parse` -> parses clean (2 pre-existing
-    `relationships` argument-nesting deprecation warnings, not introduced here). `dbt build` ->
-    26-30 of ~31-32 nodes PASS depending on run; `stg_entrega_anuncio` ERRORs ("no column named
-    ad_id") because this worktree's `_FACT_ENTREGA_ANUNCIO.csv` predates T1's ad_id column — the
-    fix needs the live re-pull in SISTEMA, exactly as documented in the new deployment-order note;
-    `fct_gasto_dia`, `fct_conjunto_dia`, `fct_anuncio_dia` and their tests SKIP as a cascade of
-    that one error. The `stg_vocabulario_estado_producto` relationships test on `estado` PASSes.
-    Backend `cd app/backend && uv run pytest -q --ignore=tests/test_meta.py` -> 136 passed in
-    228.87s. `git status --short` -> clean after every run (temp files cleaned up; `_DECISIONES.json`
-    and `_LINEA_BASE_SISTEMA.json` restored with `git checkout` where a script rewrote them).
+  - Tests (script-style, rewritten for the corrected design): `test_gasto.py` (17 checks —
+    conjunto-grain: N unmatched ads don't multiply spend, Meta-only cell still counted, two
+    distinct conjuntos don't mix, alias canonicalization, unrecognized `fuente` excluded;
+    ad-grain: ad_id beats name, scientific-notation ad_id, a renamed ad sharing an ad_id doesn't
+    duplicate, no conjunto-fallback inheritance, Meta-only ad still counted, the SAME anuncio text
+    in two campaigns doesn't collide; **the required invariant**: `SUM(effective spend) ==
+    SUM(Meta spend for covered keys) + SUM(LucidSales fallback for uncovered keys)` to the cent,
+    at both grains, with mixed multi-ad/Meta-only fixtures), `test_decidir.py` (+1, fixed to
+    include `producto_key` on the Meta-side fixture row after the redesign requires it in the
+    join key — `cargar_datos_duckdb()` uses $50 Meta spend over $10 LucidSales for the same
+    window), `test_vocabulario_estado.py` (4 checks, unchanged). `test_flujo.py` (29/29,
+    including a fixture-driven regression for the campaign-collision fix) and
+    `test_perfilar_angulos.py` (17/17) pass.
+  - Verification run (SISTEMA-app worktree, after the fix): `python -m pytest Ads/_TOOLS -q
+    -p no:cacheprovider` -> 33 passed. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases,
+    20 nodos). `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas.
+    `python Ads/_TOOLS/gen_grafo.py` -> clean (no orphans/dead paths), baseline restored with
+    `git checkout` afterward. `dbt build` -> 27 PASS, 1 pre-existing documented ERROR
+    (`stg_entrega_anuncio`: `_FACT_ENTREGA_ANUNCIO.csv` predates T1's `ad_id` column in this
+    worktree — needs the live re-pull in SISTEMA), 4 cascading SKIPs limited to the ad-level
+    models (`fct_anuncio_dia` and its tests); `fct_gasto_dia`/`fct_conjunto_dia` now BUILD and
+    PASS (they no longer depend on the broken `stg_entrega_anuncio` — conjunto grain only needs
+    `stg_entrega_conjunto`, which already has `ad_id`-independent columns).
+    `python Ads/_TOOLS/sembrar_anuncios.py` (diagnostic) -> runs clean, total gasto cubierto
+    dropped from the v1-buggy $5257 to a correct $4328 — itself confirming the fix removed
+    inflated spend. Backend `cd app/backend && uv run pytest -q --ignore=tests/test_meta.py` ->
+    136 passed (re-run after the fix). `git status --short` -> clean after every run.
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
