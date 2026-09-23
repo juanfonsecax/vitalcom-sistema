@@ -537,48 +537,71 @@ def _ev_eventos(p, ctx, env):
     return n >= lim, que
 
 
-def _indice_gasto(env):
-    """gasto.IndiceGasto cacheado en `env`, sobre los FACT de la MISMA base (real o fixture) que
-    `env` ya resuelve — nunca el _ALIAS_CONJUNTOS.csv del repo real contra un fixture de test."""
-    if getattr(env, "_gasto_idx", None) is None:
-        if TOOLS not in sys.path:
-            sys.path.insert(0, TOOLS)
-        import gasto
+def _modulo_gasto():
+    if TOOLS not in sys.path:
+        sys.path.insert(0, TOOLS)
+    import gasto
+    return gasto
+
+
+def _celdas_conjunto_gasto(env, pk):
+    """gasto.gasto_por_conjunto_ventana() cacheado en `env`, sobre los FACT de la MISMA base
+    (real o fixture) que `env` ya resuelve. Una fila por (producto,cuenta,ventana,conjunto) —
+    el gasto de Meta de esa celda se agrega UNA vez, nunca se copia por cada venta que cae ahí
+    (g07-cimientos T2, defecto de conteo múltiple encontrado en review 22-sep-2026)."""
+    if getattr(env, "_celdas_conjunto_gasto", None) is None:
+        gasto = _modulo_gasto()
         am = env.alias()
-        env._gasto_idx = gasto.IndiceGasto(
-            filas_anuncio=env.csv("_FACT_ENTREGA_ANUNCIO.csv"),
-            filas_conjunto=env.csv("_FACT_ENTREGA.csv"),
+        env._celdas_conjunto_gasto = gasto.gasto_por_conjunto_ventana(
+            filas_venta=env.csv("_FACT_VENTAS.csv"),
+            filas_entrega_conjunto=env.csv("_FACT_ENTREGA.csv"),
             alias_fn=lambda n: am.get(n, n),
         )
-    return env._gasto_idx
+    return env._celdas_conjunto_gasto
+
+
+def _celdas_anuncio_gasto(env, pk):
+    """gasto.gasto_por_anuncio_ventana() cacheado en `env`, mismo criterio que la de arriba pero
+    a grano ANUNCIO (para el análisis de CONCEPTO, que vive en el anuncio, no en el conjunto)."""
+    if getattr(env, "_celdas_anuncio_gasto", None) is None:
+        gasto = _modulo_gasto()
+        am = env.alias()
+        env._celdas_anuncio_gasto = gasto.gasto_por_anuncio_ventana(
+            filas_venta=env.csv("_FACT_VENTAS.csv"),
+            filas_entrega_anuncio=env.csv("_FACT_ENTREGA_ANUNCIO.csv"),
+            alias_fn=lambda n: am.get(n, n),
+        )
+    return env._celdas_anuncio_gasto
 
 
 def _ventas_base(env, pk):
-    """(fila, conjunto canónico) de las filas de _FACT_VENTAS.csv del producto que SUMAN.
+    """(fila, conjunto canónico) de las filas CRUDAS de _FACT_VENTAS.csv del producto que SUMAN.
 
     BASE suma; CONTROL solapa a propósito para auditar y nunca suma (DATA_PLAYBOOK). El conjunto
     se resuelve con _ALIAS_CONJUNTOS.csv para que un renombrado en Meta cruce con su dimensión.
 
-    `spend_usd` de la fila yielded NO es el de LucidSales tal cual: gasto.py lo reemplaza por el
-    de Meta cuando hay cobertura (g07-cimientos T2). Se yieldea una COPIA de la fila -- nunca se
-    muta la fila cacheada en `env.csv()`, que otros lectores del mismo producto reusan tal cual."""
+    `spend_usd` acá es el de LucidSales SIN corregir por gasto.py -- a propósito: los únicos usos
+    que quedan de este generador (_ev_estructura_publicada) solo preguntan "¿hay gasto > 0?", un
+    booleano donde LucidSales y Meta casi siempre coinciden en el signo. Un CPA de verdad usa
+    _celdas_conjunto_gasto()/_celdas_anuncio_gasto(), que agregan por separado y cruzan (full
+    outer join) en vez de resolver fila por fila -- resolver fila por fila fue el defecto de
+    conteo múltiple encontrado en review (22-sep-2026): copiar el gasto de un conjunto en cada
+    venta que cae en él, sin match individual, lo multiplicaba por cada anuncio sin match."""
     am = env.alias()
-    idx = _indice_gasto(env)
     for r in env.csv("_FACT_VENTAS.csv"):
         if (r.get("producto_key") or "").strip() != pk:
             continue
         if (r.get("rol_ventana") or "BASE").strip().upper() != "BASE":
             continue
         cj = (r.get("conjunto") or "").strip()
-        r2 = dict(r)
-        r2["spend_usd"], r2["fuente_gasto"] = idx.gasto_de(r)
-        yield r2, am.get(cj, cj)
+        yield r, am.get(cj, cj)
 
 
 def _angulos_acumulados(env, pk):
-    """VENTA y gasto acumulados por angulo_key, uniendo _FACT_VENTAS con _DIM_CONJUNTOS.
-    Es la definición literal del invariante 1: el ganador se declara por VENTA agregando por
-    angulo_key. Un conjunto sin dimensión agrega por su propio nombre (no se descarta data)."""
+    """VENTA y gasto acumulados por angulo_key, uniendo el gasto ya agregado por conjunto+ventana
+    (gasto.gasto_por_conjunto_ventana, g07-cimientos T2) con _DIM_CONJUNTOS. Es la definición
+    literal del invariante 1: el ganador se declara por VENTA agregando por angulo_key. Un
+    conjunto sin dimensión agrega por su propio nombre (no se descarta data)."""
     am = env.alias()
     ang = {}
     for r in env.csv("_DIM_CONJUNTOS.csv"):
@@ -586,11 +609,14 @@ def _angulos_acumulados(env, pk):
             cm = (r.get("conjunto_meta") or "").strip()
             ang[am.get(cm, cm)] = (r.get("angulo_key") or "").strip()
     acc = {}
-    for r, cj in _ventas_base(env, pk):
+    for c in _celdas_conjunto_gasto(env, pk):
+        if c["producto_key"] != pk:
+            continue
+        cj = c["conjunto"]
         k = ang.get(cj) or cj
         a = acc.setdefault(k, [0.0, 0.0])
-        a[0] += num(r.get("ventas"), 0.0)
-        a[1] += num(r.get("spend_usd"), 0.0)
+        a[0] += c["ventas"]
+        a[1] += c["spend_usd"]
     return acc
 
 
@@ -702,17 +728,22 @@ def _ev_concepto_2de2(p, ctx, env):
     mv = resolver_num(p.get("min_ventas", "@param:min_ventas_escalar"), env) or 2
     margen = resolver_num(p.get("margen_empate_pct", "@param:margen_empate_cpa_pct"), env)
     margen = 0.0 if margen is None else margen      # sin parámetro declarado: winner-take-all
+    # Grano ANUNCIO ya agregado por gasto.py (g07-cimientos T2): una fila por anuncio, con su
+    # gasto de Meta contado una sola vez -- nunca la copia del total del conjunto en cada anuncio
+    # sin match individual (ese fue el defecto de conteo múltiple que rompía este mismo gate).
     por_camp = {}
-    for r, cj in _ventas_base(env, pk):
-        camp = (r.get("campana") or "").strip()
+    for c in _celdas_anuncio_gasto(env, pk):
+        if c["producto_key"] != pk:
+            continue
+        camp = c["campana"]
         if "CONCEPTOS" not in camp.upper():
             continue
-        cpt = _concepto_de(r.get("anuncio"), cj)
+        cpt = _concepto_de(c["anuncio"], c["conjunto"])
         if not cpt:
             continue
         a = por_camp.setdefault(camp, {}).setdefault(cpt, [0.0, 0.0])
-        a[0] += num(r.get("ventas"), 0.0)
-        a[1] += num(r.get("spend_usd"), 0.0)
+        a[0] += c["ventas"]
+        a[1] += c["spend_usd"]
     if len(por_camp) < 2:
         return False, "%d campaña(s) de conceptos con data · se necesitan 2 para replicar" % len(por_camp)
     conteo = {}

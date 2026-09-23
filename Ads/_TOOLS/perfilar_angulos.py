@@ -199,27 +199,29 @@ def serie_por_angulo(pk_filtro=None):
         cm = (r.get("conjunto_meta") or "").strip()
         ang[((r.get("producto_key") or "").strip(), am.get(cm, cm))] = (r.get("angulo_key") or "").strip()
 
-    # spend_usd deja de ser el de LucidSales tal cual: gasto.py lo reemplaza por el de Meta
-    # cuando hay cobertura (g07-cimientos T2). PROD se lee en llamada, no en import, para
-    # respetar el monkeypatch de PROD que hacen los tests de este módulo.
-    idx_gasto = _gasto.IndiceGasto(
+    # gasto.py agrega el gasto de Meta y las ventas de LucidSales POR SEPARADO a grano
+    # (producto,cuenta,ventana,conjunto) y los cruza con un full outer join -- una celda, un
+    # gasto (g07-cimientos T2). Resolver el gasto fila-por-fila (una versión anterior de este
+    # cambio) copiaba el total del conjunto en cada anuncio sin match individual y lo multiplicaba
+    # por cada anuncio que compartía conjunto+ventana; encontrado en review 22-sep-2026.
+    ventas_rows = leer_csv("_FACT_VENTAS.csv")
+    celdas = _gasto.gasto_por_conjunto_ventana(
+        filas_venta=ventas_rows,
+        filas_entrega_conjunto=leer_csv("_FACT_ENTREGA.csv"),
         alias_fn=lambda n: am.get(n, n),
-        ruta_entrega_anuncio=os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv"),
-        ruta_entrega=os.path.join(PROD, "_FACT_ENTREGA.csv"),
     )
 
     serie = collections.defaultdict(lambda: collections.defaultdict(lambda: [0.0, 0.0, 0.0]))
     control = collections.Counter()
     huerfanos = collections.defaultdict(lambda: [0.0, 0.0])   # (pk, conjunto) -> [gasto$, ventas]
-    for r in leer_csv("_FACT_VENTAS.csv"):
-        pk = (r.get("producto_key") or "").strip()
+
+    for c in celdas:
+        pk = c["producto_key"]
         if pk_filtro and pk != pk_filtro:
             continue
-        cj = (r.get("conjunto") or "").strip()
-        cj = am.get(cj, cj)                 # un renombrado en Meta cruza con su dimensión
+        cj = c["conjunto"]
         if not cj or cj == "SIN_ATRIBUCION":
             continue                        # filas sintéticas de cuadre: no son una celda
-        spend_efectivo, _fuente = idx_gasto.gasto_de(r)
         ak = ang.get((pk, cj))
         if not ak:
             # Grafía que NO cruza con _DIM_CONJUNTOS ni por alias: el gasto existe pero su ÁNGULO se pierde
@@ -227,25 +229,38 @@ def serie_por_angulo(pk_filtro=None):
             # ranking contra el ángulo real del que salió. Es el caso que DATA_PLAYBOOK manda
             # corregir anexando la grafía con el MISMO angulo_key (no normalizando la llave).
             ak = cj
-            if (r.get("rol_ventana") or "").strip() == "BASE":
-                h = huerfanos[(pk, cj)]
-                h[0] += spend_efectivo
-                h[1] += _num(r.get("ventas"))
-        if (r.get("rol_ventana") or "").strip() != "BASE":
-            control[(pk, ak)] += int(_num(r.get("ventas")))
-            continue
+            h = huerfanos[(pk, cj)]
+            h[0] += c["spend_usd"]
+            h[1] += c["ventas"]
         try:
-            ini = datetime.date.fromisoformat((r.get("ventana_ini") or "").strip())
-            fin = datetime.date.fromisoformat((r.get("ventana_fin") or "").strip())
+            ini = datetime.date.fromisoformat(c["ventana_ini"])
+            fin = datetime.date.fromisoformat(c["ventana_fin"])
         except ValueError:
             continue
         n = max((fin - ini).days + 1, 1)
-        sp, ve, ms = spend_efectivo, _num(r.get("ventas")), _num(r.get("mensajes"))
+        sp, ve, ms = c["spend_usd"], c["ventas"], c["mensajes"]
         for i in range(n):
-            c = serie[(pk, ak)][ini + datetime.timedelta(days=i)]
-            c[0] += sp / n
-            c[1] += ve / n
-            c[2] += ms / n
+            s = serie[(pk, ak)][ini + datetime.timedelta(days=i)]
+            s[0] += sp / n
+            s[1] += ve / n
+            s[2] += ms / n
+
+    # CONTROL solapa a propósito para auditar y nunca suma al acumulado (DATA_PLAYBOOK): se
+    # cuenta aparte, sobre las filas crudas, sin pasar por el agregado de gasto (no participa
+    # de ningún CPA).
+    for r in ventas_rows:
+        pk = (r.get("producto_key") or "").strip()
+        if pk_filtro and pk != pk_filtro:
+            continue
+        if (r.get("rol_ventana") or "").strip() == "BASE":
+            continue
+        cj = (r.get("conjunto") or "").strip()
+        cj = am.get(cj, cj)
+        if not cj or cj == "SIN_ATRIBUCION":
+            continue
+        ak = ang.get((pk, cj)) or cj
+        control[(pk, ak)] += int(_num(r.get("ventas")))
+
     return serie, control, huerfanos
 
 

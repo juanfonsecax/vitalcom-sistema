@@ -25,6 +25,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 P    = lambda *a: os.path.join(BASE, "PRODUCTOS", *a)
 
 VENTAS = P("_FACT_VENTAS.csv")
+ENTREGA_ANUNCIO = P("_FACT_ENTREGA_ANUNCIO.csv")
 CONJ   = P("_DIM_CONJUNTOS.csv")
 CLASIF = P("_CLASIFICACION_ANUNCIOS.csv")
 SALIDA = P("_DIM_ANUNCIOS.csv")
@@ -72,7 +73,13 @@ def main():
     escribir = "--escribir" in sys.argv
     V = list(csv.DictReader(open(VENTAS, encoding="utf-8-sig")))
     C = list(csv.DictReader(open(CONJ,   encoding="utf-8-sig")))
-    idx_gasto = _gasto.IndiceGasto()  # spend_usd: Meta cuando hay cobertura, LucidSales si no
+    E = list(csv.DictReader(open(ENTREGA_ANUNCIO, encoding="utf-8-sig"))) if os.path.exists(ENTREGA_ANUNCIO) else []
+    # gasto.py agrega el gasto de Meta y las ventas de LucidSales POR SEPARADO a grano anuncio
+    # (ad_id, o campaña+conjunto+anuncio si no hay ad_id) y los cruza con un full outer join --
+    # cada llave se resuelve una sola vez, nunca se copia el total de otro anuncio o del
+    # conjunto completo (g07-cimientos T2, defecto de conteo múltiple encontrado en review).
+    idx_gasto = _gasto.indice_gasto_por_anuncio(filas_venta=V, filas_entrega_anuncio=E,
+                                                 alias_fn=canonico)
 
     # indice de conjuntos por nombre normalizado -> hereda el ANGULO y sus covariables
     idx = {}
@@ -96,7 +103,9 @@ def main():
         a["reps"].add(r["anuncio"]); a["conj"].add(norm_txt(canonico(r["conjunto"])))
         a["cta"].add(r["cuenta_alias"]); a["camp"].add(r["campana"])
         a["f"] += [r["ventana_ini"], r["ventana_fin"]]
-        a["spend"] += idx_gasto.gasto_de(r)[0]; a["ventas"] += int(num(r["ventas"]))
+        spend_r, _fuente_r = idx_gasto.get(_gasto.clave_anuncio(r, canonico),
+                                            (num(r.get("spend_usd")), "LucidSales-fallback"))
+        a["spend"] += spend_r; a["ventas"] += int(num(r["ventas"]))
         a["msg"] += num(r["mensajes"]); a["clk"] += num(r["clicks"]); a["imp"] += num(r["impresiones"])
 
     filas, sin_conj = [], 0

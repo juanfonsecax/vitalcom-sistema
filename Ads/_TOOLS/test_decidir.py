@@ -332,8 +332,8 @@ def test_carga_usa_el_gasto_efectivo_de_meta():
         "FACT_ENTREGA_ANUNCIO_PATH": os.path.join(tmp, "sin_entrega_anuncio.csv"),
         "FACT_ENTREGA_PATH": escribir(
             "_FACT_ENTREGA.csv",
-            ["ventana_ini", "ventana_fin", "cuenta_id", "conjunto", "spend_usd", "fuente"],
-            [["2026-09-10", "2026-09-10", "CTA1", "PY_ANG-B_R1", "50.0", "MetaAPI-directo"]]),
+            ["ventana_ini", "ventana_fin", "producto_key", "cuenta_id", "conjunto", "spend_usd", "fuente"],
+            [["2026-09-10", "2026-09-10", "PY", "CTA1", "PY_ANG-B_R1", "50.0", "MetaAPI-directo"]]),
     }
     previo = {k: getattr(decidir, k) for k in rutas}
     try:
