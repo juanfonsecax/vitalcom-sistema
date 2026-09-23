@@ -156,6 +156,91 @@ def test_gate_fase():
     return fallas + (0 if ok else 1)
 
 
+def test_escalar_moderado_frontera(params):
+    """ESCALAR_MODERADO (regla 6) es la banda "rentable pero no elegible para surfing": exige
+    ic_bajo_be (igual que ESCALAR_SURFING) y obj_q < cpa_real_q <= be_q — la única diferencia con
+    ESCALAR_SURFING (regla 5) es que ahí no entra por SURFING porque supera el objetivo.
+
+    Frontera 1 (borde inferior, el objetivo OBJ=Q30.80): a igualdad de ventas e IC, cruzar el
+    objetivo por un centavo pasa de ESCALAR_SURFING a ESCALAR_MODERADO — nunca de estado (las dos
+    reglas dan "ESCALAR"), así que hay que mirar accion_codigo, no "estado".
+
+    Frontera 2 (borde superior): el límite LITERAL del código es be_q (Q93.41), pero con
+    cualquier volumen de ventas alcanzable el intervalo de credibilidad (ic_bajo_be) se rompe
+    ANTES de que cpa_real_q llegue a be_q — es la restricción que de verdad manda en la práctica.
+    Con 50 ventas el punto de quiebre real cae en CPA ~Q70.17 (calculado por búsqueda binaria
+    sobre ic_cpa, no un número inventado): un centavo abajo sigue ESCALAR_MODERADO, un centavo
+    arriba el IC ya no queda bajo el BE y la celda cae a SEGUIR_MIDIENDO/MANTENER_Y_MEDIR — la
+    misma regla 7 que ya cubre `test_progreso_ventas`. Si esto se rompiera confirmando que
+    ESCALAR_MODERADO en la práctica SÍ llega hasta be_q, hay que revisar antes si cambió
+    ic_cpa o los parámetros de confianza, no relajar el test."""
+    fallas = 0
+
+    def _celda(cpa, ventas=50):
+        spend = cpa * ventas / TASA
+        return evaluar_celda(
+            ventas=ventas, mensajes=300, spend_usd=spend, ventas_3d=0, mensajes_3d=0, spend_3d=0,
+            ventas_acum=ventas, mensajes_acum=300, spend_acum_usd=spend,
+            be_q=BE, obj_q=OBJ, tasa=TASA, params=params)
+
+    casos = [
+        (OBJ - 0.05, "ESCALAR", "ESCALAR_SURFING", "justo bajo el objetivo: SURFING (regla 5)"),
+        (OBJ + 0.05, "ESCALAR", "ESCALAR_MODERADO", "justo sobre el objetivo: MODERADO (regla 6)"),
+        (70.11550341501658, "ESCALAR", "ESCALAR_MODERADO",
+         "justo dentro del IC bajo BE (~Q70.17 con 50 ventas): sigue MODERADO"),
+        (70.21550341501658, "SEGUIR_MIDIENDO", "MANTENER_Y_MEDIR",
+         "justo fuera del IC bajo BE: el CPA real sigue <= be_q pero el IC ya lo cruza"),
+    ]
+    for cpa, estado_esp, codigo_esp, nombre in casos:
+        r = _celda(cpa)
+        ok = r["estado"] == estado_esp and r["accion_codigo"] == codigo_esp
+        print(("  OK     " if ok else "  FALLA  ")
+              + "Frontera ESCALAR_MODERADO (CPA Q%.2f): %s" % (cpa, nombre)
+              + ("" if ok else "\n         esperado=(%s,%s) obtenido=(%s,%s)"
+                 % (estado_esp, codigo_esp, r["estado"], r["accion_codigo"])))
+        fallas += 0 if ok else 1
+    return fallas
+
+
+def test_comparar_cierre():
+    """comparar_cierre: Fisher exacto entre dos tasas de cierre (mensajes -> ventas) del bot A/B
+    de FASE 2 (etapa-11). 'Corta, nunca corona' (docstring del código): solo sirve para detectar
+    que un flujo cierra peor, nunca para declarar ganador."""
+    from decidir import comparar_cierre
+
+    fallas = 0
+
+    # Caso conocido: 50% vs 10% de cierre sobre 100 mensajes cada uno — diferencia enorme, sale
+    # significativo con cualquier alpha razonable.
+    dist = comparar_cierre(50, 100, 10, 100, 0.05)
+    ok1 = (dist is not None and dist["significativo"] is True
+           and dist["cierre_a"] == 50.0 and dist["cierre_b"] == 10.0)
+    print(("  OK     " if ok1 else "  FALLA  ")
+          + "comparar_cierre: 50% vs 10% de cierre (n=100 c/u) -> diferencia significativa"
+          + ("" if ok1 else "\n         " + str(dist)))
+    fallas += 0 if ok1 else 1
+
+    # Caso conocido: cierres idénticos (20% vs 20%) -> nunca significativo, p=1.0.
+    igual = comparar_cierre(20, 100, 20, 100, 0.05)
+    ok2 = igual is not None and igual["significativo"] is False and igual["p"] == 1.0
+    print(("  OK     " if ok2 else "  FALLA  ")
+          + "comparar_cierre: cierres idénticos (20% vs 20%) -> nunca significativo (p=1.0)"
+          + ("" if ok2 else "\n         " + str(igual)))
+    fallas += 0 if ok2 else 1
+
+    # Validación de entrada: sin mensajes de un lado (mensajes<=0) no hay tasa que comparar ->
+    # None, nunca una división por cero ni un p inventado.
+    sin_a = comparar_cierre(5, 0, 5, 10, 0.05)
+    sin_b = comparar_cierre(5, 10, 5, 0, 0.05)
+    ok3 = sin_a is None and sin_b is None
+    print(("  OK     " if ok3 else "  FALLA  ")
+          + "comparar_cierre: mensajes<=0 de cualquier lado -> None (nunca ZeroDivisionError ni p inventado)"
+          + ("" if ok3 else "\n         sin_a=%s sin_b=%s" % (sin_a, sin_b)))
+    fallas += 0 if ok3 else 1
+
+    return fallas
+
+
 def test_cierre_meta_benchmark():
     """UMBRAL_CIERRE_MINIMO_BOT es BENCHMARK, no gate (GUIA_MADRE_PARAMETRIZADA.md, T3 auditoria
     21-sep-2026): no decide ningun ESTADO, pero el motor lo expone (cierre_meta_min_pct/max_pct)
@@ -436,12 +521,14 @@ def main():
 
     fallas += test_tope_pausas(params)
     fallas += test_gate_fase()          # 5 comprobaciones
+    fallas += test_escalar_moderado_frontera(params)  # 4 comprobaciones
+    fallas += test_comparar_cierre()    # 3 comprobaciones
     fallas += test_cierre_meta_benchmark()
     fallas += test_progreso_ventas(params)  # 3 comprobaciones
     fallas += test_carga_base_y_alias()
     fallas += test_carga_usa_el_gasto_efectivo_de_meta()
     fallas += test_dia_meta_only_no_corre_la_ventana_de_evaluacion()
-    total = len(CASOS) + 13
+    total = len(CASOS) + 20
     print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

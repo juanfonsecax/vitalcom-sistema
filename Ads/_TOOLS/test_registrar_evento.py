@@ -15,6 +15,19 @@ Congela:
   · eventos que no son LANZAMIENTO (p.ej. CAMBIO_PRESUPUESTO) no piden fase ni gate: sin cambios
     de comportamiento respecto de antes de P5.
 
+T7 (auditoría 22-sep-2026) agrega las reglas de `validar()` que el archivo original no cubría,
+todas con eventos que NO son LANZAMIENTO (para no volver a pasar por flujo.gate_entrada):
+  · producto_key sin fila en _DIM_PRODUCTOS.csv se refusa; GLOBAL se acepta siempre.
+  · evento debe cumplir MAYÚSCULAS_CON_GUION_BAJO (regex `[A-Z][A-Z0-9_]*`) — `main()` ya
+    mayusculiza lo que llega por --evento, así que la refusión real solo se ve con un carácter
+    fuera del alfabeto (guion medio, espacio), no con minúsculas.
+  · motivo y fuente_decision vacíos se refusan.
+  · CAMBIO_PRESUPUESTO exige --antes/--despues numéricos.
+  · una subida de presupuesto por encima de surfing_pct se refusa salvo --forzar.
+  · --dry-run no escribe nada, ni siquiera cuando la fila sería válida.
+  · una fila con coma en el motivo hace round-trip exacto por csv (queda entre comillas en el
+    archivo, invariante 11).
+
 USO:  python Ads/_TOOLS/test_registrar_evento.py     (exit 0 = pasa, 1 = falla)
 """
 import contextlib
@@ -23,6 +36,7 @@ import datetime
 import io
 import os
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import registrar_evento as re_  # noqa: E402
@@ -50,6 +64,23 @@ def _leer_eventos(base):
         return []
     with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
         return list(csv.DictReader(fh))
+
+
+def _fixture_validacion(surfing=None):
+    """Base mínima para probar `validar()` con eventos que NO son LANZAMIENTO: no toca
+    _DIM_CONJUNTOS.csv ni _FACT_VENTAS.csv porque flujo.gate_entrada nunca se consulta acá."""
+    tmp = tempfile.mkdtemp(prefix="re_valid_")
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(prod)
+    tf._escribir_csv(prod, "_DIM_PRODUCTOS.csv", ["producto_key", "nombre_display", "estado", "fase"],
+                      [["PX", "PX", "VIVO", "F1"]])
+    filas_params = [["min_ventas_ganador", "5", "ventas", "test", "piso del ganador"]]
+    if surfing is not None:
+        filas_params.append(["surfing_pct", str(surfing), "%", "test", "tope de subida diaria"])
+    tf._escribir_csv(prod, "_PARAMETROS_DECISION.csv", ["parametro", "valor", "unidad", "dueno", "por_que"],
+                      filas_params)
+    tf._escribir_csv(prod, "_EVENTOS.csv", EVENTOS_COLS, [])
+    return tmp
 
 
 def _correr_main(base, argv):
@@ -151,6 +182,124 @@ def test_evento_no_lanzamiento_no_exige_fase_ni_gate():
                      (code, err, filas))
 
 
+def test_producto_desconocido_se_refusa():
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "NOPE", "--evento", "CAMBIO_BOT",
+                                          "--motivo", "ajuste", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 1 and not filas and "NOPE" in out
+    return _informe(ok, "producto_key sin fila en _DIM_PRODUCTOS.csv: se refusa, nada se escribe",
+                     (code, err, out[:200]))
+
+
+def test_producto_global_se_acepta():
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "GLOBAL", "--evento", "CAMBIO_BOT",
+                                          "--motivo", "ajuste global", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 0 and len(filas) == 1 and filas[0]["producto_key"] == "GLOBAL"
+    return _informe(ok, "producto_key GLOBAL se acepta siempre, aunque no tenga fila en _DIM_PRODUCTOS.csv",
+                     (code, err, filas))
+
+
+def test_evento_con_caracter_invalido_se_refusa():
+    # main() ya hace .upper() sobre --evento antes de validar, así que una minúscula normal
+    # nunca llega a fallar la regex; hace falta un carácter fuera de [A-Z0-9_] (acá, un guion).
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "cambio-bot",
+                                          "--motivo", "ajuste", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 1 and not filas and "MAYÚSCULAS" in out
+    return _informe(ok, "evento 'CAMBIO-BOT' (guion, no MAYÚSCULAS_CON_GUION_BAJO): se refusa",
+                     (code, err, out[:200]))
+
+
+def test_motivo_vacio_se_refusa():
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_BOT",
+                                          "--motivo", "", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 1 and not filas and "motivo" in out
+    return _informe(ok, "motivo vacío: se refusa, nada se escribe", (code, err, out[:200]))
+
+
+def test_fuente_vacia_se_refusa():
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_BOT",
+                                          "--motivo", "ajuste", "--fuente", "", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 1 and not filas and "fuente_decision" in out
+    return _informe(ok, "fuente_decision vacía: se refusa, nada se escribe", (code, err, out[:200]))
+
+
+def test_cambio_presupuesto_no_numerico_se_refusa():
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_PRESUPUESTO",
+                                          "--conjunto", "GTR7_PX_NUEVO_R1", "--antes", "abc", "--despues", "5",
+                                          "--motivo", "ajuste", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 1 and not filas and "numéricos" in out
+    return _informe(ok, "CAMBIO_PRESUPUESTO con --antes no numérico: se refusa", (code, err, out[:200]))
+
+
+def test_cambio_presupuesto_dentro_de_surfing_se_acepta():
+    base = _fixture_validacion(surfing=20.0)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_PRESUPUESTO",
+                                          "--conjunto", "GTR7_PX_NUEVO_R1", "--antes", "10", "--despues", "11.5",
+                                          "--motivo", "surfing", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 0 and len(filas) == 1
+    return _informe(ok, "subida de 15% con surfing_pct=20%: dentro de tolerancia, se acepta",
+                     (code, err, filas))
+
+
+def test_cambio_presupuesto_sobre_surfing_se_refusa_sin_forzar():
+    base = _fixture_validacion(surfing=20.0)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_PRESUPUESTO",
+                                          "--conjunto", "GTR7_PX_NUEVO_R1", "--antes", "10", "--despues", "13",
+                                          "--motivo", "subida grande", "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 1 and not filas and "surfing_pct" in out
+    return _informe(ok, "subida de 30% con surfing_pct=20% y SIN --forzar: se refusa",
+                     (code, err, out[:200]))
+
+
+def test_cambio_presupuesto_sobre_surfing_con_forzar_se_acepta():
+    base = _fixture_validacion(surfing=20.0)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_PRESUPUESTO",
+                                          "--conjunto", "GTR7_PX_NUEVO_R1", "--antes", "10", "--despues", "13",
+                                          "--motivo", "subida grande deliberada", "--fuente", "test",
+                                          "--fecha", "2026-09-23", "--forzar"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 0 and len(filas) == 1
+    return _informe(ok, "subida de 30% con surfing_pct=20% y --forzar: se acepta", (code, err, filas))
+
+
+def test_dry_run_no_escribe():
+    base = _fixture_validacion()
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_BOT",
+                                          "--motivo", "ajuste", "--fuente", "test", "--fecha", "2026-09-23",
+                                          "--dry-run"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 0 and not filas and "dry-run" in out
+    return _informe(ok, "--dry-run: muestra la fila y NO escribe nada, ni siendo válida",
+                     (code, err, filas, out[:200]))
+
+
+def test_motivo_con_coma_hace_round_trip_por_csv():
+    base = _fixture_validacion()
+    motivo = "ajuste, revisado por el operador"
+    code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_BOT",
+                                          "--motivo", motivo, "--fuente", "test", "--fecha", "2026-09-23"])
+    filas = _leer_eventos(base)
+    ok = err is None and code == 0 and len(filas) == 1 and filas[0]["motivo"] == motivo
+    with io.open(os.path.join(base, "PRODUCTOS", "_EVENTOS.csv"), encoding="utf-8") as fh:
+        crudo = fh.read()
+    ok = ok and ('"%s"' % motivo) in crudo
+    return _informe(ok, "motivo con coma: round-trip exacto por csv, entre comillas en el archivo (invariante 11)",
+                     (filas, crudo))
+
+
 def main():
     pruebas = [
         test_lanzamiento_gate_cumplido_registra_sin_excepcion,
@@ -160,6 +309,17 @@ def main():
         test_lanzamiento_fase_por_token_de_campana,
         test_lanzamiento_sin_fase_ni_token_pide_fase,
         test_evento_no_lanzamiento_no_exige_fase_ni_gate,
+        test_producto_desconocido_se_refusa,
+        test_producto_global_se_acepta,
+        test_evento_con_caracter_invalido_se_refusa,
+        test_motivo_vacio_se_refusa,
+        test_fuente_vacia_se_refusa,
+        test_cambio_presupuesto_no_numerico_se_refusa,
+        test_cambio_presupuesto_dentro_de_surfing_se_acepta,
+        test_cambio_presupuesto_sobre_surfing_se_refusa_sin_forzar,
+        test_cambio_presupuesto_sobre_surfing_con_forzar_se_acepta,
+        test_dry_run_no_escribe,
+        test_motivo_con_coma_hace_round_trip_por_csv,
     ]
     fallas = sum(p() for p in pruebas)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
