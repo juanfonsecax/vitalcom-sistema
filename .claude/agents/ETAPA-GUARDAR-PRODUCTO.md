@@ -190,7 +190,7 @@ Vocabularios controlados (no inventar valores nuevos sin anotarlo):
   de avatar en algo agregable — sin ellos el avatar muere en el copy y no se contrasta nunca contra
   quién compró. Con Andromeda pesan más que antes: el creativo es el targeting, así que el avatar
   solo se puede medir por lo que el creativo dice y retrata.
-- `fase`: FASE1 · FASE2
+- `fase`: FASE1 · FASE2 · FASE3 · EXPLORACION (F3.exploracion, P12 — DOCTRINA/FLUJO.json)
 - `formato`: VIDEO · IMAGEN
 - `tipo_hook`: MIEDO · EMOCIONAL · TESTIMONIO · EDUCACIONAL · MECANISMO · OFERTA · PRUEBA_SOCIAL · ANTI_FALSIFICACION
 - `nivel_conciencia`: 1 · 2 · 3 (admite 3a/3b/1-2 como en ETAPA-2). Vacío si no se declaró — **no inventarlo**.

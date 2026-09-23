@@ -207,6 +207,11 @@ ANUNCIO:   [CONCEPTO]_[FORMATO]_[1..7]              ← las 7 instancias del mis
            C6-UNBOXING_IMG_1 … C6-UNBOXING_IMG_7
 ```
 
+**F3.exploracion (P12, T12)** — mini-F1 de ángulos nuevos en paralelo al escalado: token de
+campaña `EXPLORA` (no `ESCALA`), un conjunto por ángulo nuevo como FASE 1. Detalle completo
+(gate, parámetros, esquema del plan) en `DOCTRINA/FLUJO.json` nodo `F3.exploracion` y
+`Ads/_TOOLS/gen_publicacion.py --fase 3 --brazo EXPLORACION`.
+
 **Reglas de formación (no negociables):**
 1. **`CUENTA` = el alias de la cuenta publicitaria donde el objeto REALMENTE vive** (`GTR7`, `GTR0`, `GTR1`, `GTR3`, `GTR13`, `CP1`). Nunca el nombre de otra cuenta, aunque sea réplica de una campaña que nació allá.
 2. **`ANGULO` = el `angulo_key`, idéntico entre réplicas y entre cuentas.** Es lo que permite agregar por ángulo (regla 6 de `CLAUDE.md`). Si el mismo ángulo se llama distinto en dos cuentas, la agregación se parte y el ganador se declara sobre data incompleta.

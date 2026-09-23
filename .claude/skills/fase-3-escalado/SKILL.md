@@ -90,6 +90,19 @@ sobrescribe cada ciclo y sube `v[N]`.
 
 ---
 
+## PASO 2b — Exploración paralela de ángulos nuevos (F3.exploracion, P12)
+
+**No bloquea nada de lo de arriba** — corre en paralelo, como `F2.etapa-11`. Arranca solo cuando
+`flujo.py` marca el gate propio de `F3.exploracion` cumplido (F3 rentable según `decidir.py`,
+DOCTRINA/FLUJO.json). Es un mini-F1 fijo de `exploracion_n_angulos` ángulos nuevos, TODO EN
+IMAGEN, medido por VENTA como F1. Detalle completo (gate, parámetros, esquema del plan,
+naming): `DOCTRINA/ESCALADO_PLAYBOOK.md §7b`. Secuencia: `etapa-2` → `etapa-6`
+(`_PLAN_EXPLORACION.json`) → `etapa-guardar-producto` → `publicar-meta` con
+`Ads/_TOOLS/gen_publicacion.py --fase 3 --brazo EXPLORACION`. Un ángulo ganador de esta
+exploración entra a FASE 2 por el mismo gate `angulo_ganador` que cualquier otro.
+
+---
+
 ## FIN FASE 3
 
 ```
