@@ -218,6 +218,12 @@ def main():
     check(ok is True, "json · min_len sobre el plan de FASE 1", obs)
     ok, obs = evaluar({"tipo": "no", "de": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/no_existe.txt"}}, ctx, env)
     check(ok is True, "no · niega un archivo ausente", obs)
+    ok, obs = evaluar({"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt",
+                       "contiene": "FIXTURE"}, ctx, env)
+    check(ok is True, "archivo · contiene (T8-4): encuentra un texto que si esta en el archivo", obs)
+    ok, obs = evaluar({"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt",
+                       "contiene": "MICROANGULO"}, ctx, env)
+    check(ok is False, "archivo · contiene (T8-4): NO encuentra un texto ausente, no aprueba a ciegas", obs)
     ok, obs = evaluar({"tipo": "script", "cmd": ["python", "x.py"]}, ctx, env)
     check(ok is None, "script · con --sin-scripts devuelve None (no evaluado), nunca un ✓ falso", obs)
     ok, obs = evaluar({"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv",

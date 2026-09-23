@@ -40,7 +40,7 @@ VOCABULARIO DE PREDICADOS (cerrado — ver `evaluar`)
 ---------------------------------------------------
     csv            filas de un CSV de PRODUCTOS/ que cumplen `where` (min/max/eq/distinct/sum)
     csv_campo      un valor de una fila (no_vacio / eq / in / not_in / num_min)
-    archivo        existe un archivo o carpeta (opcional: edad_max_dias)
+    archivo        existe un archivo o carpeta (opcional: edad_max_dias, contiene)
     glob           N archivos que cumplen un patrón
     json           un campo de un JSON (existe / eq / in / min_len / no_vacio)
     script         un verificador existente devuelve el exit esperado (lista de args, sin shell)
@@ -405,6 +405,16 @@ def _ev_archivo(p, ctx, env):
     dias = (env.hoy - datetime.date.fromtimestamp(os.path.getmtime(ruta))).days
     if "edad_max_dias" in p and dias > resolver_num(p["edad_max_dias"], env):
         return False, "existe pero tiene %d días (máx %g)" % (dias, resolver_num(p["edad_max_dias"], env))
+    if "contiene" in p:
+        buscado = fmt(p["contiene"], ctx)
+        try:
+            with io.open(ruta, encoding="utf-8", errors="replace") as f:
+                texto = f.read()
+        except OSError as e:
+            return False, "no se pudo leer %s: %s" % (fmt(p["ruta"], ctx), e)
+        if buscado.lower() not in texto.lower():
+            return False, "existe pero no contiene «%s»" % buscado
+        return True, "existe y contiene «%s» (hace %d día%s)" % (buscado, dias, "" if dias == 1 else "s")
     return True, "existe (hace %d día%s)" % (dias, "" if dias == 1 else "s")
 
 

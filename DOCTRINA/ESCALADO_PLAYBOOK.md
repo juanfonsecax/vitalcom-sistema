@@ -252,6 +252,10 @@ CPA real semanal (LucidSales, del _FACT_VENTAS.csv) · integridad de ventana: X/
 4. SURFING +20% — a qué conjuntos, mañana 9-10 AM
 5. POST ID / PUBLICACIÓN EN PÁGINA — IDs vigentes por ángulo ganador
 6. CREATIVOS (§4) — el POR QUÉ ganó + brief de 3-5 conceptos nuevos para ETAPA-4
+6b. BANCO DE MICROÁNGULOS (ETAPA-3, PASO 0 de fase-3-escalado) — los 8-12 MICROÁNGULOS del
+    ángulo ganador con su frase de apertura, tal como los entregó ETAPA-3 (banco de copy de la
+    expansión horizontal). Este bloque es lo que `flujo.py` verifica en `F3.plan` (T8-4,
+    23-sep-2026): sin él, el output de ETAPA-3 no queda con ningún consumidor visible en disco.
 7. PRECIO — subir gradual / mantener
 8. ORDEN DE EJECUCIÓN — checklist numerado con [ ] para tildar
 9. QUÉ APRENDIMOS — lo que NO volver a probar en este producto

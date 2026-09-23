@@ -252,7 +252,8 @@
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "angulo_ganador", "no_vacio": true},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "copy", "no_vacio": true}]},
        "dueno": "etapa-6", "regla": "gen_plan.py"},
-      {"dato": "4_PLAN_ESCALADO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"}
+      {"dato": "4_PLAN_ESCALADO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"},
+      {"dato": "4_PLAN_ESCALADO.txt trae el banco de microángulos de etapa-3 (T8-4)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt", "contiene": "MICROÁNGULO"}, "dueno": "etapa-3 (banco de copy) · etapa-guardar-producto (lo escribe)", "regla": "ESCALADO_PLAYBOOK §7 · etapa-3 nunca corrió sin consumidor visible antes de este check"}
      ]
     },
     {

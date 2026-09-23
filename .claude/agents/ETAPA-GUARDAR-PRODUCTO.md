@@ -10,6 +10,9 @@ model: inherit
 ## Cuándo se activa
 - **Fin de FASE 1** (después de ETAPA-6): crea la carpeta y sus archivos.
 - **Fin de FASE 2** (después de ETAPA-6 Fase 2): ACTUALIZA los mismos archivos con el ángulo ganador, microángulos, copies/bot/campaña de escalado, y los resultados del testeo si el operador los entregó. Sube VERSION.
+- **Fin de FASE 3** (después de ETAPA-6 Fase 3, `F3.plan`): escribe `4_PLAN_ESCALADO.txt`
+  (plantilla y BANCO DE MICROÁNGULOS de `etapa-3` en `DOCTRINA/ESCALADO_PLAYBOOK.md §7`;
+  `flujo.py` verifica que quede escrito).
 
 ⚠️ Usar el tool **Write** para crear físicamente los archivos. No basta mostrarlos en el chat — si no se escriben en disco, se pierden al cerrar la sesión.
 
