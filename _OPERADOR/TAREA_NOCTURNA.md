@@ -101,7 +101,8 @@ El primero toma el `.json` que dejó el PASO 1a. También acepta un `.xlsx` baja
 vez hay que volver al camino viejo: es la misma data y produce la misma carga (verificado el
 07-sep celda por celda contra una descarga manual del 01-sep).
 
-Los dos son **idempotentes**: anti-duplicado por llave, backup previo en `_ARCHIVO/backups_csv/`,
+Los dos son **idempotentes**: anti-duplicado por llave, backup previo en `_RESPALDOS/backups_csv/`
+(T9, 22-sep-2026: reemplaza a `_ARCHIVO/backups_csv/`),
 y aceptan `--dry-run`. **Corré siempre `--dry-run` primero** y leé lo que reporta antes de escribir.
 Pasar dos veces el mismo archivo no duplica nada: lo omite y lo dice.
 

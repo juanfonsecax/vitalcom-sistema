@@ -1,7 +1,8 @@
 # SISTEMA DE REPLICACIÓN DE CREATIVOS GANADORES v1.0
 
 > Autoría: operador, 2026-08-19. Bajado a disco el mismo día.
-> **Reemplaza a `_SISTEMA_CREATIVOS_TESTEO.md`** (movido a `_ARCHIVO/`), que usaba prompts en
+> **Reemplaza a `_SISTEMA_CREATIVOS_TESTEO.md`** (fuera del repo desde el 22-sep-2026, T9 — queda
+> en el historial de git), que usaba prompts en
 > prosa — exactamente el modo que este sistema identifica como fallido.
 
 ---

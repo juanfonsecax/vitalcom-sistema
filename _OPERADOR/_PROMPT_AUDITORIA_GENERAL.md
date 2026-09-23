@@ -9,9 +9,11 @@ Tu tarea: una AUDITORÍA GENERAL COMPLETA de todo el sistema contra las clases f
 No ejecutes el flujo de producto; solo auditá.
 
 ## REGLA DE AUTORIDAD (lo más importante, no la inviertas)
-1. Las CLASES NUMERADAS (`_CONOCIMIENTO/Finales/Clase 1…22`) son lo POSTERIOR, más reciente y especializado. **MANDAN.** Entre ellas: número más alto = más reciente = más válido.
+1. Las CLASES NUMERADAS (`Clase 1…22`, en `C:\Users\juand\Documents\VITALCOM_CLASES\` — fuera del
+   repo desde el 22-sep-2026, T9) son lo POSTERIOR, más reciente y especializado. **MANDAN.** Entre
+   ellas: número más alto = más reciente = más válido.
 2. **SKOOL CLASES 2026** (el consolidado) es la BASE/cimiento ANTERIOR a las clases. Solo manda cuando NINGUNA clase numerada toca el tema. NUNCA por encima de una clase que lo contradiga.
-3. Las "Bases" de `_ARCHIVO` son material crudo de respaldo; valen menos que las clases finales.
+3. Las "Bases" (material crudo de respaldo, hoy fuera del repo) valen menos que las clases finales.
 
 Si encontrás una regla citada como "lo más reciente = SKOOL", es un ERROR de autoridad: marcalo.
 
@@ -19,7 +21,7 @@ Si encontrás una regla citada como "lo más reciente = SKOOL", es un ERROR de a
 - Todos los subagentes: `.claude/agents/ETAPA-*.md` (0, 1, 1B, 2, 3A, 3B, 4, 5, 6, 7, FANPAGE, PRODUCTO, GUARDAR-PRODUCTO).
 - El orquestador: `CLAUDE.md`.
 - Los documentos de apoyo: `COPYWRITING_ADS.md`, `PLANTILLAS_ADS.md`, `PLANTILLAS_INFOGRAFIAS.md`, `PLANTILLAS_DEFAULTS_OPERADOR.md`, `MCP_PLAYBOOK.md`, `ETAPA-RESEARCH.md`, `ETAPA-RECOLECCION.md` y demás `.md` de la raíz.
-- Fuente de verdad: `_CONOCIMIENTO/Finales/` (clases) y, si hace falta, `_ARCHIVO/Bases/`.
+- Fuente de verdad: `C:\Users\juand\Documents\VITALCOM_CLASES\` (clases), fuera del repo.
 
 ## MÉTODO (por cada archivo)
 Para cada regla, número, umbral o afirmación que cite o implique una clase, verificá:

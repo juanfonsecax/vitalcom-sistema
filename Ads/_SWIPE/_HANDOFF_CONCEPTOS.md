@@ -89,7 +89,8 @@ los creativos del test
 
 ## 3. CAMBIOS YA APLICADOS AL SISTEMA
 
-- `PRODUCTOS/_DIM_CONJUNTOS.csv` → columna **`concepto_key`** (25 cols, 93 filas en `SIN_CLASIFICAR`). Backup en `_ARCHIVO/_DIM_CONJUNTOS_pre_concepto_key_20260818.csv`. Dashboard regenerado, JOIN cierra al 100 %.
+- `PRODUCTOS/_DIM_CONJUNTOS.csv` → columna **`concepto_key`** (25 cols, 93 filas en `SIN_CLASIFICAR`). Backup en el historial de git (salió del repo el 22-sep-2026, T9; antes vivía en
+`_ARCHIVO/_DIM_CONJUNTOS_pre_concepto_key_20260818.csv`). Dashboard regenerado, JOIN cierra al 100 %.
 - `DOCTRINA/DATA_PLAYBOOK.md` §1 → vocabulario cerrado de `concepto_key` + la tensión con la regla 6.
 - `.claude/agents/ETAPA-2.md` → regla de concepto reescrita (distingue iteración perezosa / concepto / variante) + declara `concepto_key`.
 - `.claude/agents/ETAPA-4.md` → usa el PROMPT DE CONTROL en FASE 1, **no** elige estilo anti-fatiga, lo rotula en el output.

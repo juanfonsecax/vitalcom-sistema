@@ -238,6 +238,42 @@ def test_particion_elimina_anuncio_desaparecido(tmp):
     return 0 if ok else 1
 
 
+def test_respaldos_dir_resuelve_bajo__RESPALDOS(tmp):
+    """T9 (22-sep-2026): todo backup en vivo va bajo `_RESPALDOS/`, nunca `_ARCHIVO/`
+    (retirado del repo). `respaldos_dir()` es el unico lugar que arma esa ruta —
+    los cuatro llamadores (ingerir_meta, ingerir_lucidsales, ingestar_unificado,
+    bajar_meta_insights via ingerir_meta.BKDIR) la piden en vez de cablearla."""
+    ruta = uf.respaldos_dir(tmp, "backups_csv")
+    esperada = os.path.join(tmp, "_RESPALDOS", "backups_csv")
+    ok = ruta == esperada and "_ARCHIVO" not in ruta
+    print(("  OK     " if ok else "  FALLA  ")
+          + "respaldos_dir() resuelve bajo _RESPALDOS/, no _ARCHIVO/"
+          + ("" if ok else f"\n         {ruta!r} != {esperada!r}"))
+    return 0 if ok else 1
+
+
+def test_ingestion_a_base_temporal_escribe_su_backup_en_RESPALDOS(tmp):
+    """Extremo a extremo (T9): una ingesta real sobre una BASE temporal (no el
+    _RESPALDOS/ de este repo) debe dejar su backup dentro de esa BASE bajo
+    _RESPALDOS/backups_csv/ — nunca bajo _ARCHIVO/, que ya no existe."""
+    path = os.path.join(tmp, "hechos.csv")
+    bkdir = uf.respaldos_dir(tmp, "backups_csv")
+    key = ("dia", "cuenta")
+    filas = [{"dia": "2026-09-20", "cuenta": "A", "ad_id": "1", "spend": "10.0"}]
+    uf.upsert(path, COLS, key, filas, bkdir)
+    # Una segunda corrida con un dia distinto SI dispara backup (hay escritura real).
+    filas2 = [{"dia": "2026-09-21", "cuenta": "A", "ad_id": "1", "spend": "12.0"}]
+    uf.upsert(path, COLS, key, filas2, bkdir)
+    respaldos_creado = os.path.isdir(os.path.join(tmp, "_RESPALDOS", "backups_csv"))
+    tiene_backups = respaldos_creado and len(os.listdir(os.path.join(tmp, "_RESPALDOS", "backups_csv"))) >= 1
+    archivo_no_existe = not os.path.isdir(os.path.join(tmp, "_ARCHIVO"))
+    ok = tiene_backups and archivo_no_existe
+    print(("  OK     " if ok else "  FALLA  ")
+          + "una ingesta sobre BASE temporal deja su backup bajo _RESPALDOS/, no _ARCHIVO/"
+          + ("" if ok else f"\n         respaldos_creado={respaldos_creado} tiene_backups={tiene_backups} archivo_no_existe={archivo_no_existe}"))
+    return 0 if ok else 1
+
+
 def main():
     import tempfile as _t
     pruebas = [
@@ -251,6 +287,8 @@ def main():
         test_particion_no_tocada_queda_intacta,
         test_particion_idempotente_no_reescribe,
         test_particion_elimina_anuncio_desaparecido,
+        test_respaldos_dir_resuelve_bajo__RESPALDOS,
+        test_ingestion_a_base_temporal_escribe_su_backup_en_RESPALDOS,
     ]
     fallas = 0
     for prueba in pruebas:

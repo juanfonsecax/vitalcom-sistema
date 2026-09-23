@@ -276,7 +276,8 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 Cuando asistas a una nueva clase o recibas una transcripción:
 
 1. **Guardar la transcripción:**
-   Guardar el archivo como: `_CONOCIMIENTO/Finales/Clase YYYY-MM-DD - Tema (Instructor).txt`.
+   Guardar el archivo como: `C:\Users\juand\Documents\VITALCOM_CLASES\Clase YYYY-MM-DD - Tema (Instructor).txt`
+   (T9, 22-sep-2026: las clases salieron del repo; el protocolo de ingesta no cambia).
 
 2. **Ejecutar Ingesta:**
    Pedirle al asistente:

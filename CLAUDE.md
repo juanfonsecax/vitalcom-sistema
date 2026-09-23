@@ -112,8 +112,9 @@ calidad de la escritura y del juicio.
 
 **Zonas:** `DOCTRINA/` · `.claude/` · `PRODUCTOS/` · `Ads/` se **leen**. `VISTAS/` se abre, no se
 lee; `VISTAS/APP.html` es el respaldo generado de la app web (`python Ads/_TOOLS/gen_app.py --todo`). `_CONOCIMIENTO/` ·
-`_OPERADOR/` · `_ROADMAP/` · `_SKILLS_FUENTE/` · `INFPRODUCTOS/` · `_ARCHIVO/` son **referencia
-humana** — el sistema no los lee.
+`_OPERADOR/` · `_ROADMAP/` · `_SKILLS_FUENTE/` · `INFPRODUCTOS/` son **referencia
+humana** — el sistema no los lee. `_RESPALDOS/` (backups y derivados EN VIVO, T9 22-sep-2026) está
+gitignored: no se versiona ni se lee — reemplaza a `_ARCHIVO/`, retirado del repo esa fecha.
 
 ---
 

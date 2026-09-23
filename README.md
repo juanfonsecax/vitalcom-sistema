@@ -58,12 +58,12 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 | `PRODUCTOS/_DASHBOARD.html` | **Capa humana.** Lo único que abrís a diario. Se genera con `python Ads/_TOOLS/gen_dashboard.py`. | 👤 Vos |
 | `PRODUCTOS/_PORTAFOLIO.txt` | **Registro maestro multi-producto.** La auditoría diaria lo recorre y audita cada producto VIVO. Acá se "agrega un producto al tracking". | ✅ Diario |
 | `PRODUCTOS/_AUDITORIAS/` | Informes fechados (auditorías nocturnas, planes multi-producto). Registro legible — **las métricas NO se reconstruyen desde acá**, salen del CSV. | 🔎 Consulta |
-| `_CONOCIMIENTO/Finales/` | **Base de verdad:** clases consolidadas (1–22). Fuente para auditar y construir. Regla: número mayor = más reciente = manda. | 🔎 Consulta |
+| `C:\Users\juand\Documents\VITALCOM_CLASES\` | Clases consolidadas (1–22), **fuera del repo** (T9, 22-sep-2026). Referencia humana para auditar y construir — regla: número mayor = más reciente = manda. No es "base de verdad" del sistema: el sistema no la lee. | 🔎 Consulta (fuera del repo) |
 | `_OPERADOR/` | Docs para el humano: `MI_FUNCION_OPERADOR.md` (qué hacés vos), `_PROMPT_AUDITORIA_GENERAL.md`, handoffs ya ejecutados. | ❌ |
-| `_ROADMAP/` | **Backlog: lo NO implementado.** Ver su `README.md`. Lo que se implementa se mueve a `_ARCHIVO/roadmap_cumplido/`. | ❌ |
+| `_ROADMAP/` | **Backlog: lo NO implementado.** Ver su `README.md`. | ❌ |
 | `_SKILLS_FUENTE/` | Fuente y paquetes de las 3 skills propias (3qs, analizador-creativos, monitor-pixel). Para instalar/editar, no para el flujo. | ❌ |
 | `INFPRODUCTOS/` | Activos del infoproducto "Defienda su Salud EPS" (PDFs, plantillas). **Negocio aparte**, fuera del pipeline de dropshipping. | ❌ |
-| `_ARCHIVO/` | Todo lo retirado: `Bases/` (fuentes crudas de clases) · `CONTEXTOS_VIEJOS/` · `DATA_MIGRADA/` · `roadmap_cumplido/` · `handoffs_ejecutados/` · `backups_data/` · pruebas. | 🔎 Forense |
+| `_RESPALDOS/` | Backups y derivados EN VIVO (`backups_csv/`, `procesados/`, ...), gitignored. Reemplaza a `_ARCHIVO/` (retirado del repo el 22-sep-2026, T9; su material histórico queda en el log de git). | ❌ (no versionado) |
 | `.agents/` · `skills-lock.json` | Infraestructura de tooling de skills EXTERNAS. Solo puede contener lo declarado en `skills-lock.json` (hoy: `find-skills`, de vercel-labs/skills). **Ninguna skill del sistema vive acá** — las del sistema viven en `.claude/skills/`. Si aparece otra, es un polizón: borrarla. | ❌ |
 
 ---
@@ -88,6 +88,6 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 2. **No mover ni renombrar** los docs de referencia de la raíz, ni `Ads/`, ni la estructura de `PRODUCTOS/[NOMBRE]/`: el flujo los cita por nombre/ruta.
 3. **Un producto = una carpeta** con los archivos `1_`/`2_`/`3_`/`4_`. Nada de PNG, prompts sueltos ni subcarpetas: la media va a `Ads/MEDIA_[PRODUCTO]/` (Regla 16 de `CLAUDE.md`).
 4. **`producto_key` es la llave.** Las carpetas del disco se resuelven leyendo `_DIM_PRODUCTOS.csv`, nunca adivinando por el nombre (el mismo producto tiene nombres distintos en las 4 ubicaciones).
-5. **Lo retirado se mueve a `_ARCHIVO/`, no se marca como viejo.** Un archivo marcado "SUPERSEDIDO" que se queda en su carpeta sigue costando lecturas y confunde.
+5. **Lo retirado se saca del repo (`git rm`), no se marca como viejo ni se mueve a una carpeta muerta.** Un archivo marcado "SUPERSEDIDO" que se queda en su carpeta sigue costando lecturas y confunde; el historial de git ya guarda el contenido retirado (T9, 22-sep-2026 — antes vivía en `_ARCHIVO/`, hoy fuera del repo).
 6. **Recencia:** entre clases, número mayor = más reciente = manda. La doctrina se ancla en las clases nuevas (22/20/19/15).
-7. Antes de borrar algo, verificá que tenga **0 referencias** en `CLAUDE.md` y `.claude/agents/`. Lo dudoso se **archiva**, no se borra.
+7. Antes de borrar algo, verificá que tenga **0 referencias** en `CLAUDE.md` y `.claude/agents/`. Lo dudoso se documenta acá como retirado (este README) antes de sacarlo.

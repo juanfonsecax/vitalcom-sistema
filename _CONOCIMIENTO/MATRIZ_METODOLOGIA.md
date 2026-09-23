@@ -59,14 +59,17 @@ NIVEL 0  Currículo escrito SKOOL (Mercy Pardo, módulos 1-6)     <- la base
 
 ## 1. FUENTES INDEXADAS — ordenadas por fecha
 
+> `VITALCOM_CLASES/` = `C:\Users\juand\Documents\VITALCOM_CLASES\` — fuera del repo (T9,
+> 22-sep-2026: las clases salieron de `_CONOCIMIENTO/Finales/`, que ya no existe).
+
 | ID | Fuente | Instructor | Fecha | Ubicación |
 |---|---|---|---|---|
-| **F0** | Currículo oficial SKOOL (módulos 1,2,3,5,6) | Mercy Pardo | sin fecha (base) | `_CONOCIMIENTO/Finales/SKOOL CLASES 2026 …txt` |
-| **F1** | Clases 1-22 del curso | Mercy · Joaquín · Camilo · Pipe | sin fecha individual · ingesta 2026-06-15 | `_CONOCIMIENTO/Finales/Clase N - ….txt` |
-| **F2** | Herramienta validación de productos | Mercy Pardo | sin fecha | `_CONOCIMIENTO/Finales/Herramienta - Validacion …txt` |
-| **F3** | PDF Creativos que Venden — Prompt Maestro | Joaquín | sin fecha | `_CONOCIMIENTO/Finales/PDF Creativos …txt` |
-| **F4** | **Clase 16-ago-2026** | Calet (+ Joaquín) | **2026-08-16** | `_CONOCIMIENTO/Finales/Clase 2026-08-16 …txt` |
-| **F5** | **Clase 22-ago-2026** | Calet | **2026-08-22** | `_CONOCIMIENTO/Finales/Clase 2026-08-22 …txt` |
+| **F0** | Currículo oficial SKOOL (módulos 1,2,3,5,6) | Mercy Pardo | sin fecha (base) | `VITALCOM_CLASES/SKOOL CLASES 2026 …txt` |
+| **F1** | Clases 1-22 del curso | Mercy · Joaquín · Camilo · Pipe | sin fecha individual · ingesta 2026-06-15 | `VITALCOM_CLASES/Clase N - ….txt` |
+| **F2** | Herramienta validación de productos | Mercy Pardo | sin fecha | `VITALCOM_CLASES/Herramienta - Validacion …txt` |
+| **F3** | PDF Creativos que Venden — Prompt Maestro | Joaquín | sin fecha | `VITALCOM_CLASES/PDF Creativos …txt` |
+| **F4** | **Clase 16-ago-2026** | Calet (+ Joaquín) | **2026-08-16** | `VITALCOM_CLASES/Clase 2026-08-16 …txt` |
+| **F5** | **Clase 22-ago-2026** | Calet | **2026-08-22** | `VITALCOM_CLASES/Clase 2026-08-22 …txt` |
 | **F6** | DATA PROPIA | — | continua | `PRODUCTOS/_APRENDIZAJES.csv` · `_AUDITORIAS/` |
 
 > ⚠️ **Hallazgo sobre el orden (2026-09-02).** Las 22 clases del curso base **no están ordenadas
@@ -372,7 +375,8 @@ USD -> GTQ :  1 USD = 7.62 Q          (TASA_USD_GTQ del sistema)
 ## 6. PROTOCOLO — cómo se agrega una clase nueva
 
 1. **El archivo entra con fecha en el nombre:** `Clase YYYY-MM-DD - Tema (Instructor).txt`, en
-   `_CONOCIMIENTO/Finales/`. Sin fecha en el nombre, la precedencia no se puede aplicar.
+   `VITALCOM_CLASES/` (fuera del repo, ver nota en §1). Sin fecha en el nombre, la precedencia no
+   se puede aplicar.
 2. **Se agrega la fila a §1** (FUENTES) con su ID `F[N]` y su fecha.
 3. **Se destila en afirmaciones**, una por idea, con su ID de dominio (`M-A17`, `M-D19`…).
    **Los IDs no se reciclan ni se renumeran** — una afirmación retirada queda con estado
@@ -384,6 +388,6 @@ USD -> GTQ :  1 USD = 7.62 Q          (TASA_USD_GTQ del sistema)
    Un cambio en la matriz sin cambio en el dueño deja la afirmación en `PENDIENTE`, y eso está bien:
    es visible.
 
-> **Advertencia de mantenimiento.** Esta matriz **no reemplaza** a `_CONOCIMIENTO/Finales/`:
+> **Advertencia de mantenimiento.** Esta matriz **no reemplaza** a `VITALCOM_CLASES/`:
 > las transcripciones completas siguen siendo la fuente. La matriz es el índice con estado.
 > Si una afirmación acá contradice a su transcripción, gana la transcripción y se corrige acá.

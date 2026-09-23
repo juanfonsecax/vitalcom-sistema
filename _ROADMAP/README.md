@@ -3,8 +3,10 @@
 > **Qué es esta carpeta:** el backlog. Ideas y análisis que **todavía no son parte del sistema**.
 > Ningún agente lee esto. Nada de acá está implementado — si estuviera, viviría en su archivo dueño.
 >
-> **Regla:** cuando algo de acá se implementa, se **mueve a `_ARCHIVO/roadmap_cumplido/`** el mismo día.
-> Un plan cumplido que se queda acá hace parecer pendiente algo que ya está hecho.
+> **Regla:** cuando algo de acá se implementa, se **saca del repo (`git rm`)** el mismo día — el
+> historial de git guarda el documento (T9, 22-sep-2026: antes se movía a `_ARCHIVO/roadmap_cumplido/`,
+> retirado del repo esa fecha). Un plan cumplido que se queda acá hace parecer pendiente algo que ya
+> está hecho.
 
 ---
 
@@ -31,7 +33,10 @@ Su propuesta principal (**P1 — pipeline de video UGC con IA**) sigue viva y co
 |---|---|
 | `ANALISIS_MENTOR_CALET_115_vs_SISTEMA_2026-08-21.md` | **Implementado.** La arquitectura de 3 fases vive en `CALENDARIO_ESCALADO.md` §1.7 y `.claude/agents/ETAPA-6.md`; la banda de edad en `ETAPA-6.md` → BANDA DE EDAD; la fábrica y el lector en `ETAPA-9.md`/`ETAPA-10.md`; la doctrina de origen quedó indexada en `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`. Lo único que **no** se implementó de ese documento es la `etapa-11` (optimizador de flujo) — sigue como brecha abierta en el choque C-10 de la matriz. |
 
-## Archivado el 2026-08-01 (ya cumplido, en `_ARCHIVO/roadmap_cumplido/`)
+## Archivado el 2026-08-01 (ya cumplido)
+
+> Vivió en `_ARCHIVO/roadmap_cumplido/` hasta que ese directorio salió del repo el 22-sep-2026
+> (T9) — el contenido queda en el historial de git, no en el árbol de trabajo.
 
 | Archivo | Por qué se archivó |
 |---|---|
