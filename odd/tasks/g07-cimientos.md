@@ -357,6 +357,13 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     inflated spend. Backend `cd app/backend && uv run pytest -q --ignore=tests/test_meta.py` ->
     136 passed (re-run after the fix). `git status --short` -> clean after every run.
 
+- 22-sep PARENT REVIEW of T2: rejected twice (1: a per-row conjunto spend multiplied N times;
+  2: a Meta-only day widened the decidir window from 14 to 15 days). Accepted at f92c71c: decidir.py
+  CPAs match an independent pandas computation to the decimal for all 8 angles (CLEARSTEM 34.4 /
+  116.5 / 36.3; NUSAVA 44.3; TINNIDROP 72.3 / 74.8 / 93.4 / 93.4). Consequence: TINNIDROP
+  PERDIDA_AUDITIVA sits AT break-even (Q93.4) with Meta spend. T1+T2 close after the merge and the
+  live re-pull in SISTEMA.
+
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
 there as a `chore(data)` commit (this also fixes the `ad_id` column `stg_entrega_anuncio` needs),
