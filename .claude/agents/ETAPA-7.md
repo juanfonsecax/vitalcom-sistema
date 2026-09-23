@@ -17,7 +17,8 @@ Leer la data real del portafolio y entregar el informe que el motor no escribe: 
 
 | Qué | Fuente de verdad | Por qué |
 |---|---|---|
-| **VENTAS · ingreso · CPA real** | `PRODUCTOS/_FACT_VENTAS.csv` (LucidSales normalizado) | El `actions:omni_purchase` de Meta está **ROTO** en estas cuentas (confirmado en `_PORTAFOLIO.txt`, caso Nusava). La venta COD real solo la conoce LucidSales. |
+| **VENTAS · conteo** | `PRODUCTOS/_FACT_VENTAS.csv` (LucidSales normalizado) | El `actions:omni_purchase` de Meta está **ROTO** en estas cuentas (confirmado en `_PORTAFOLIO.txt`, caso Nusava). La venta COD real solo la conoce LucidSales. |
+| **GASTO usado en el CPA real** (g07-cimientos T2, 22-sep-2026) | `Ads/_TOOLS/gasto.py` sobre Meta Graph API (`_FACT_ENTREGA*.csv`), fallback LucidSales antes de 2026-09-06 | El `spend_usd` de LucidSales queda congelado a 0.65-0.75x del gasto real algunos días; Meta es quien factura. `decidir.py` y `flujo.py` ya pasan por este helper — nunca leer `spend_usd` de `_FACT_VENTAS.csv` directo para un CPA. |
 | **ENTREGA · atención · fatiga** (CPM, CTR, frecuencia, alcance, clics-enlace, conversaciones) | Meta Ads MCP, en las cuentas que lo tienen ON | Meta sí es confiable acá. Son señales de anuncio, no de venta. |
 | **Integridad de la ventana** | `PRODUCTOS/_BITACORA_DATA.txt` | Distingue "no vendió" de "no me pasaste la data". |
 | **Umbrales por producto** (CPA Base, Break-Even, tasa, cuenta, página) | `PRODUCTOS/_DIM_PRODUCTOS.csv` | Fuente ÚNICA desde 25-jul. Antes vivían en prosa en `_PORTAFOLIO.txt` y en cada `2_DATA_PRODUCTO.txt`, y ya habían driftado (caso VARICOSE Q159 vs Q79). **No leerlos de prosa ni hardcodearlos.** La tabla de costeo completa está en `_DIM_COSTEO.csv`. |

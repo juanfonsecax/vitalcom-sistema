@@ -75,6 +75,11 @@ cuentas fallaron, o error fatal. La cadena nocturna (`app/backend/vitalcom_app/w
 `ciclo.bajar_meta`) trata `2` como **aviso**: sigue con el resto de la cadena; `1` sí la detiene.
 Ante un `2`, revisar la cuenta a mano — no re-correr todo a ciegas.
 
+**Orden de despliegue (g07-cimientos T2, 22-sep-2026):** `stg_entrega_anuncio.sql` exige la
+columna `ad_id` de `_FACT_ENTREGA_ANUNCIO.csv`. Tras un cambio de esquema, correr este re-pull de
+Meta (que migra el header vía `upsert_fact`) ANTES de cualquier `dbt build` manual — la cadena
+nocturna (`datos` → `bajar_meta` → `motor`) ya respeta este orden. Ver `DOCTRINA/DATA_PLAYBOOK.md`.
+
 ---
 
 ## QUÉ LEER EN LA SALIDA — y cuándo NO ingerir

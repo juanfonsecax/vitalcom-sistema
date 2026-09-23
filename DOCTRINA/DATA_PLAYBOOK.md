@@ -271,6 +271,24 @@ Referencia vigente (02-sep): portafolio **8.6 %** · mejor ángulo del sistema 1
 > por llave natural, ver `Ads/_TOOLS/upsert_fact.py`) en vez de solo anexar. `rol_ventana` viaja en
 > la llave de `_FACT_VENTAS.csv`: CONTROL nunca reemplaza a BASE ni viceversa.
 
+> **GASTO = Meta, no LucidSales tal cual (22-sep-2026, g07-cimientos T2).** El `spend_usd` de
+> `_FACT_VENTAS.csv` a veces queda congelado a 0.65-0.75x del gasto real de Meta el día entero;
+> Meta es quien factura. Todo consumidor de CPA (`decidir.py`, `flujo.py` gates de ganador,
+> `perfilar_angulos.py`, `sembrar_anuncios.py`, el mart dbt `fct_gasto_dia`) pasa por
+> `Ads/_TOOLS/gasto.py` — nunca lee `spend_usd` de `_FACT_VENTAS.csv` directo. Regla de join
+> (ad_id → nombre canónico → conjunto → fallback LucidSales antes de 2026-09-06): ver el
+> docstring de `gasto.py`. `gen_pl.py`/`gen_finanzas.py` (reconcilian contra banco/Dropi) y
+> `gen_dashboard.py` quedan pendientes de esa misma migración — no se tocaron en T2 por no poder
+> validarlos sin un extracto bancario real; el ganador ya cambia de estado con esta corrección
+> (ver evidencia NUSAVA/ARDOR en `odd/tasks/g07-cimientos.md`).
+>
+> **ORDEN DE DESPLIEGUE (obligatorio tras un cambio de esquema de `_FACT_ENTREGA_ANUNCIO.csv`):**
+> `stg_entrega_anuncio.sql` exige la columna `ad_id`. Después de mergear a `SISTEMA`, correr el
+> re-pull de Meta (`bajar_meta_insights.py`, que migra el header vía `upsert_fact`) ANTES de
+> cualquier `dbt build` — un build sobre el CSV viejo falla con "no column named ad_id". La
+> cadena nocturna (`datos` → `bajar_meta` → `motor`) ya respeta este orden; un `dbt build` manual
+> fuera de esa cadena debe respetarlo también.
+
 ---
 
 ## 4. FÓRMULA OFICIAL DE GANANCIA (v2 — 31-jul, TICKET REAL)

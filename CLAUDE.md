@@ -76,6 +76,7 @@ calidad de la escritura y del juicio.
 | Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
 | Cadencia día a día, gates, multi-ganador, aritmética de las 3 fases | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | Capa de data: CSV, ganancia, break-even, dashboard | `DOCTRINA/DATA_PLAYBOOK.md` |
+| Gasto (spend/impresiones/clicks/mensajes): dueño Meta Graph API vía `Ads/_TOOLS/gasto.py` (ad_id → nombre → conjunto, fallback LucidSales antes de 2026-09-06); ventas: dueño `_FACT_VENTAS.csv` | `Ads/_TOOLS/gasto.py` (espejo dbt: `warehouse/models/marts/fct_gasto_dia.sql`) |
 | Parametrización de anuncios: 5 ejes, covariables, una variable a la vez | `DOCTRINA/PARAMETRIZACION_ADS.md` (dueño de `_DIM_ANUNCIOS.csv`, `_DIM_VOCABULARIO.csv`) |
 | Identidad física del producto (packshot, color de envase, marca). **Se DECLARA, nunca se adivina**: sin fila, el generador bloquea | `PRODUCTOS/_DIM_ENVASE.csv` |
 | Banda de edad realmente configurada en Meta, por conjunto | `PRODUCTOS/_DIM_BANDAS.csv` (la escribe el operador) |
