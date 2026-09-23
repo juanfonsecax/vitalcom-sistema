@@ -1,55 +1,52 @@
--- ESPEJO SQL de Ads/_TOOLS/gasto.py (g07-cimientos T2, 22-sep-2026). Ver su docstring completo:
--- esto es la MISMA regla traducida a SQL -- si la regla cambia, cambia en los DOS lugares.
+-- ESPEJO SQL de Ads/_TOOLS/gasto.py (g07-cimientos T2, 22-sep-2026; rediseñado tras un defecto de
+-- conteo encontrado en review). Ver el docstring completo de gasto.py: esto es la MISMA regla
+-- traducida a SQL -- si la regla cambia, cambia en los DOS lugares.
 --
--- Grano: una fila por fila de stg_ventas (LucidSales), con `spend_usd` reemplazado por el de
--- Meta cuando hay cobertura para esa (cuenta_id, ventana). REGLA, en ese orden (nunca se
--- inventa plata -- invariante 2):
---   1. ad_id exacto contra stg_entrega_anuncio (cuenta_id + ventana + ad_id)
---   2. nombre exacto (cuenta_id + ventana + conjunto + anuncio) contra stg_entrega_anuncio
---   3. grano conjunto (cuenta_id + ventana + conjunto) contra stg_entrega_conjunto -- la MISMA
---      plata real cuando el anuncio individual no aparece en el export de ese dia
---   4. fallback: spend_usd_lucidsales de la propia fila (dias sin pull de Meta, antes de
---      2026-09-06, o un pull fallido)
---
--- Solo cuenta como Meta una fila cuya `fuente` sea MetaAPI-directo o AdsManager-export-1d (ver
--- gasto.FUENTES_META en el espejo Python) -- una siembra manual nunca gana sobre el fallback.
-with fuentes_meta as (
-    select unnest(['MetaAPI-directo', 'AdsManager-export-1d']) as fuente
+-- DISEÑO: el gasto de Meta y las ventas de LucidSales se AGREGAN POR SEPARADO a grano
+-- (producto_key, cuenta_id, ventana_ini, ventana_fin, conjunto) y se cruzan con un FULL OUTER
+-- JOIN. Nunca se resuelve fila por fila: una versión anterior de este modelo hacía un LEFT JOIN
+-- por fila contra el conjunto agregado y, si un conjunto tenía N filas de venta sin match
+-- individual a nivel anuncio, el JOIN devolvía N copias del mismo spend_usd agregado -- un
+-- SUM(spend_usd) posterior sobre esas N filas multiplicaba el gasto real por N. Agregando cada
+-- lado ANTES del join, cada dólar de Meta vive en una sola fila de este modelo sin importar
+-- cuántas filas de venta o de Meta lo describan por dentro.
+with ventas_agg as (
+    select
+        producto_key, cuenta_id, cuenta_alias, fecha_ini, fecha as fecha_fin, conjunto,
+        sum(ventas)                  as ventas,
+        sum(mensajes)                as mensajes,
+        sum(spend_usd_lucidsales)    as spend_usd_lucidsales,
+        sum(total_q)                 as total_q
+    from {{ ref('stg_ventas') }}
+    group by 1, 2, 3, 4, 5, 6
 ),
-ventana_ad as (
-    select cuenta_id, fecha_ini, fecha_fin, ad_id, sum(spend_usd) as spend_usd
-    from {{ ref('stg_entrega_anuncio') }}
-    where fuente in (select fuente from fuentes_meta) and ad_id is not null
-    group by 1, 2, 3, 4
-),
-ventana_nombre as (
-    select cuenta_id, fecha_ini, fecha_fin, conjunto, anuncio, sum(spend_usd) as spend_usd
-    from {{ ref('stg_entrega_anuncio') }}
-    where fuente in (select fuente from fuentes_meta)
-    group by 1, 2, 3, 4, 5
-),
-ventana_conjunto as (
-    select cuenta_id, fecha_ini, fecha_fin, conjunto, sum(spend_usd) as spend_usd
+meta_agg as (
+    select
+        producto_key, cuenta_id, cuenta_alias, fecha_ini, fecha_fin, conjunto,
+        sum(spend_usd) as spend_usd
     from {{ ref('stg_entrega_conjunto') }}
-    where fuente in (select fuente from fuentes_meta)
-    group by 1, 2, 3, 4
+    where fuente in ('MetaAPI-directo', 'AdsManager-export-1d')
+    group by 1, 2, 3, 4, 5, 6
 )
 select
-    v.*,
-    coalesce(ad.spend_usd, nom.spend_usd, conj.spend_usd, v.spend_usd_lucidsales) as spend_usd,
-    case
-        when ad.spend_usd is not null   then 'MetaAPI-ad_id'
-        when nom.spend_usd is not null  then 'MetaAPI-nombre'
-        when conj.spend_usd is not null then 'MetaAPI-conjunto'
-        else 'LucidSales-fallback'
-    end as fuente_gasto
-from {{ ref('stg_ventas') }} v
-left join ventana_ad ad
-       on ad.cuenta_id = v.cuenta_id and ad.fecha_ini = v.fecha_ini and ad.fecha_fin = v.fecha
-      and ad.ad_id = v.ad_id
-left join ventana_nombre nom
-       on nom.cuenta_id = v.cuenta_id and nom.fecha_ini = v.fecha_ini and nom.fecha_fin = v.fecha
-      and nom.conjunto = v.conjunto and nom.anuncio = v.anuncio
-left join ventana_conjunto conj
-       on conj.cuenta_id = v.cuenta_id and conj.fecha_ini = v.fecha_ini and conj.fecha_fin = v.fecha
-      and conj.conjunto = v.conjunto
+    coalesce(v.producto_key, m.producto_key)   as producto_key,
+    coalesce(v.cuenta_id, m.cuenta_id)         as cuenta_id,
+    coalesce(v.cuenta_alias, m.cuenta_alias)   as cuenta_alias,
+    coalesce(v.fecha_ini, m.fecha_ini)         as fecha_ini,
+    coalesce(v.fecha_fin, m.fecha_fin)         as fecha_fin,
+    coalesce(v.conjunto, m.conjunto)           as conjunto,
+    coalesce(v.ventas, 0)                      as ventas,
+    coalesce(v.mensajes, 0)                    as mensajes,
+    coalesce(v.total_q, 0)                     as total_q,
+    -- Meta cubre esta celda -> su suma (contada UNA vez); si no, el fallback de LucidSales ya
+    -- agregado del lado de ventas_agg. Full outer join: una celda con gasto de Meta y CERO
+    -- ventas sigue apareciendo (spend_usd_lucidsales=0 ahí, coalesce a 0 no pierde el gasto de
+    -- Meta porque `m.spend_usd` manda primero).
+    coalesce(m.spend_usd, v.spend_usd_lucidsales, 0)   as spend_usd,
+    coalesce(v.spend_usd_lucidsales, 0)                as spend_usd_lucidsales,
+    case when m.spend_usd is not null then 'MetaAPI-conjunto' else 'LucidSales-fallback' end
+                                                as fuente_gasto
+from ventas_agg v
+full outer join meta_agg m
+       on v.producto_key = m.producto_key and v.cuenta_id = m.cuenta_id
+      and v.fecha_ini = m.fecha_ini and v.fecha_fin = m.fecha_fin and v.conjunto = m.conjunto

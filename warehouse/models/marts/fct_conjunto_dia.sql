@@ -2,7 +2,7 @@
 -- La VENTA manda (LucidSales); el GASTO manda de Meta cuando hay cobertura (g07-cimientos T2,
 -- fct_gasto_dia -- espejo de Ads/_TOOLS/gasto.py). Un dia sin fila aqui es un dia sin gasto.
 select
-    v.fecha,
+    v.fecha_fin as fecha,
     v.producto_key,
     v.cuenta_alias,
     v.conjunto,
