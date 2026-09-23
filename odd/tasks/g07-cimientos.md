@@ -79,7 +79,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
 - [x] T6 (P7) Compute and write are separate: flujo.py, decidir.py, gen_grafo.py get a read-only mode.
       A "read" never writes tracked files.
 - [x] T7 (P8) Tests: costear.py, registrar_evento.py, decidir.py ESCALAR_MODERADO and comparar_cierre.
-- [ ] T8 (P10) Hygiene: iniciar.bat refuses an ambiguous base; verificar_publicacion requires
+- [x] T8 (P10) Hygiene: iniciar.bat refuses an ambiguous base; verificar_publicacion requires
       effective_status=PAUSED; invariant 7 requires exactly the next day; etapa-3 status resolved.
 - [ ] T9 (P9) Folders: classes out of the repo, live backups to a gitignored `_RESPALDOS/`, dead
       `_ARCHIVO/` removed, references fixed.
@@ -543,9 +543,77 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     cualitativas). `git status --short` -> only the three intended test files, clean after
     commit. Backend not run (no `app/` file touched by this task).
 
+- 23-sep: T8 implemented and checked (all four hygiene items).
+  1. **iniciar.bat refuses an ambiguous base.** Previously `VITALCOM_BASE=%~dp0` unconditionally,
+     so double-clicking it inside SISTEMA-app (a linked git worktree) silently read that
+     worktree's stale, never-updated CSVs. Fixed by comparing `git rev-parse --git-dir` against
+     `--git-common-dir` (they differ only in a linked worktree); on a mismatch the script refuses
+     with `exit /b 1`, names the main worktree from `git worktree list --porcelain`'s first entry,
+     and tells the operator to declare `VITALCOM_BASE` to override on purpose. Also now requires
+     `PRODUCTOS\_DIM_PRODUCTOS.csv` to exist (a worktree has `DOCTRINA/FLUJO.json` too — it's
+     versioned — but not necessarily live product data).
+     - Found the backend has the exact same gap: `app/backend/vitalcom_app/config.py`'s
+       auto-detection fallback (`_subiendo()`) walks up looking for `DOCTRINA/FLUJO.json` and
+       would accept a linked worktree just like the .bat did, for the same reason (the marker
+       file is versioned). Fixed with the same git-dir/git-common-dir comparison, applied only to
+       the auto-detected fallback — an explicit `VITALCOM_BASE` env var still overrides, matching
+       the .bat's escape valve.
+     - Tests: `Ads/_TOOLS/test_iniciar_bat.py` (new, static — asserts the .bat contains the
+       git-dir/git-common-dir check, the refusal, the `VITALCOM_BASE` escape valve, and the
+       `_DIM_PRODUCTOS.csv` check). `app/backend/tests/test_config.py` (new — builds a real git
+       repo + linked worktree under `tmp_path` and asserts `_es_worktree_vinculado()`/
+       `_subiendo()` detect and refuse it, while a git-less folder and the main worktree pass).
+     - **No behavioral test of iniciar.bat itself** (invoking it with `cmd.exe` and checking the
+       exit code): this sandbox's account (`CodexSandboxUsers`) cannot execute ANY `.bat` file —
+       confirmed with a trivial one-line `echo hi` test file outside the repo, which failed with
+       the same "not recognized as an internal or external command" error `cmd.exe` gives for a
+       blocked launch, while `.exe` invocations (`git.exe`, `cmd.exe` builtins) work fine in the
+       same directory. Documented in the test file's docstring for whoever runs this on a machine
+       where it's not blocked.
+  2. **verificar_publicacion.py requires PAUSED.** Extracted `objetos_no_pausados(filas, meta)` —
+     of the declared objects that DO exist in Meta, which ones aren't `PAUSED` (empty/missing
+     `effective_status` counts as not-PAUSED, never assumed PAUSED by omission). `main()` now
+     blocks (exit 1, before or after `--escribir`) and prints each offending object's level, name,
+     observed status and id when any exist. Tests (`test_verificar_publicacion.py`): all-PAUSED
+     passes, one ACTIVE ad blocks (and only that one is reported), missing `effective_status`
+     blocks, and an already-FALTA object isn't double-reported as also "not paused".
+  3. **Invariant 7 exactly next day.** `gen_publicacion.py` only checked `fecha <= hoy`, so a
+     launch date 2+ days out passed silently. Extracted `fecha_lanzamiento_invalida(fecha, hoy)`
+     (`True` unless `fecha == hoy + 1 day`); the two fixtures that used the placeholder
+     `"2030-01-01"` now compute tomorrow's real date (`MANANA`) instead, since they weren't
+     testing this gate. Tests (`test_gen_publicacion.py`): today blocks, tomorrow passes, day
+     after tomorrow blocks, yesterday blocks. Kept the message inline as a string literal at the
+     `pq.bloquear_publicacion(...)` call site (not built inside the helper) — the existing
+     `test_clasificacion_de_los_bloqueos_no_se_invierte` test statically parses the call's AST to
+     classify publicacion-vs-paquete bloqueos by keyword, and a `Name` reference there instead of
+     a string literal would have broken that classification.
+  4. **etapa-3 status resolved — kept in F3.plan (orchestrator decision).** etapa-3's 8-12
+     microángulos never landed anywhere on disk `flujo.py` could check — etapa-6 consumed them
+     in-session only. Extended the `archivo` predicate with an optional `contiene` substring
+     check (smallest addition to the closed vocabulary, per `flujo.py`'s own docstring rule) and
+     added a `F3.plan` produce predicate requiring `PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt` to
+     contain "MICROÁNGULO". `ESCALADO_PLAYBOOK.md §7`'s template gained an explicit `6b. BANCO DE
+     MICROÁNGULOS` section; `fase-3-escalado/SKILL.md` PASO 0 and `ETAPA-GUARDAR-PRODUCTO.md`
+     (which previously didn't mention FASE 3 at all) both point to it. Test: `test_flujo.py`
+     gained two `archivo · contiene` cases (found / not found) against the real fixture's
+     `4_PLAN_ESCALADO.txt`. Confirmed no real product currently sitting at `F3.plan` breaks: none
+     is there yet (`--todo` shows TINNIDROP already past it, flagged as an out-of-gate aviso
+     either way).
+  - Verification (SISTEMA-app worktree): `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` ->
+    38 passed. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos).
+    `python Ads/_TOOLS/flujo.py --todo` -> read-only, `git status --short` unchanged by the run.
+    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas. `python Ads/_TOOLS/gen_grafo.py`
+    -> ran clean, no tracked baseline diff. Backend
+    `cd app/backend; uv run pytest -q --ignore=tests/test_meta.py` -> 141 passed, 2 warnings in
+    232.66s (0:03:52), exit 0 (includes the 5 new `test_config.py` cases).
+  - Commits: iniciar.bat/config.py worktree refusal, verificar_publicacion PAUSED gate,
+    gen_publicacion invariant-7 exact-next-day, flujo.py `contiene` + F3.plan microángulos check
+    (four separate commits, one per hygiene item).
+
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
 there as a `chore(data)` commit (this also fixes the `ad_id` column `stg_entrega_anuncio` needs),
 runs `dbt build` AFTER that re-pull (not before — see the new deployment-order doctrine), confirms
 `decidir.py`/the app read the corrected spend and `capa_analitica` on the merged data, then checks
-T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row).
+T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9 (folders)
+is next in dependency order after T8.
