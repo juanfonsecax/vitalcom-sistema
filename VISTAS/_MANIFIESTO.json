@@ -595,6 +595,36 @@
     "motivo": "Igual que nodo.F1.activar, más el A/B de flujo (CAMBIO_BOT + gemelos + test_id). Hito 4/5, en Opus."
    },
    {
+    "id": "nodo.F3.exploracion",
+    "rotulo": "Explorar 3 ángulos nuevos en paralelo (mini-F1)",
+    "nodo": "F3.exploracion",
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-2",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/",
+     "Ads/"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 3600,
+    "herramientas": [
+     "WebSearch"
+    ],
+    "presupuesto_usd": 20
+   },
+   {
     "id": "nodo.F3.plan",
     "rotulo": "Microángulos y plan 1-1-7",
     "nodo": "F3.plan",

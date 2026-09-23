@@ -19,13 +19,14 @@ USO:  python Ads/_TOOLS/test_flujo.py     (exit 0 = pasa, 1 = falla)
 import csv
 import datetime
 import io
+import json
 import os
 import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from flujo import (Entorno, cargar_flujo, correr, evaluar, situar, validar, BASE_REAL,  # noqa: E402
-                   _angulos_acumulados, _ev_angulo_ganador, _ev_concepto_2de2)
+                   _angulos_acumulados, _ev_angulo_ganador, _ev_concepto_2de2, gate_nodo)
 
 FIXTURE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_fixtures", "flujo_20260908")
 HOY = datetime.date(2026, 9, 8)
@@ -408,7 +409,51 @@ def main():
           "(2026-09-15 > 2026-09-14) SÍ cumple el nodo — sin exigir ninguna reescritura de flujo",
           obs_dd)
 
-    total = 36
+    # ── J. F3.exploracion (P12, T12): gate propio (F3 rentable) via flujo.gate_nodo, distinto
+    # del gate de ENTRADA a F3 y sin bloquear F3.plan/F3.publicar (paralelo, como F2.etapa-11).
+    # Reusa fixture_escalar_flaco: con con_probado=True, ANG_PROBADO llega a ESCALAR con 6 ventas
+    # (>= min_ventas_escalar=2 de ese mismo fixture) — "F3 rentable". Sin ese ángulo (con_probado=
+    # False, 1 sola venta) ninguna celda llega al piso: "F3 no rentable".
+    env_expl_cerrado = Entorno(base=fixture_escalar_flaco(ventas_nuevo=1, con_probado=False),
+                                hoy=HOY_E, sin_scripts=True)
+    ok_expl_c, obs_expl_c = gate_nodo("PX", "F3.exploracion", env_expl_cerrado)
+    check(ok_expl_c is False,
+          "F3.exploracion (gate cerrado): sin ninguna celda ESCALAR con el piso de volumen, "
+          "el escalado no es rentable todavía", obs_expl_c)
+
+    env_expl_abierto = Entorno(base=fixture_escalar_flaco(ventas_nuevo=3, con_probado=True),
+                                hoy=HOY_E, sin_scripts=True)
+    ok_expl_a, obs_expl_a = gate_nodo("PX", "F3.exploracion", env_expl_abierto)
+    check(ok_expl_a is True and "ANG_PROBADO" in obs_expl_a,
+          "F3.exploracion (gate abierto): ANG_PROBADO en ESCALAR con 6 ventas (>= piso) — "
+          "el escalado SÍ es rentable, la exploración puede arrancar", obs_expl_a)
+
+    ok_nodo_desconocido, obs_nodo_desconocido = gate_nodo("PX", "F9.no_existe", env_expl_abierto)
+    check(ok_nodo_desconocido is False,
+          "gate_nodo de un id que no existe en FLUJO.json refusa, no inventa un cumplido",
+          obs_nodo_desconocido)
+
+    ok_sin_requiere, obs_sin_requiere = gate_nodo("PX", "F3.plan", env_expl_abierto)
+    check(ok_sin_requiere is True and "no declara" in obs_sin_requiere,
+          "un nodo sin `requiere` (F3.plan no declara uno) está siempre cumplido para gate_nodo",
+          obs_sin_requiere)
+
+    # gate_nodo es SOLO LECTURA, igual que gate_entrada.
+    ruta_estado_j = os.path.join(env_expl_abierto.base, "PRODUCTOS", "_ESTADO_FLUJO.csv")
+    ruta_eventos_j = os.path.join(env_expl_abierto.base, "PRODUCTOS", "_EVENTOS.csv")
+    check(not os.path.exists(ruta_estado_j) and not os.path.exists(ruta_eventos_j),
+          "gate_nodo no escribe _ESTADO_FLUJO.csv ni _EVENTOS.csv")
+
+    # F3.exploracion no aparece en ningún predicado de F3.plan/F3.publicar: es paralela, nunca
+    # una precondición de los nodos que SÍ miden el escalado (regresión estructural, doctrina real).
+    f3_plan_real = next((n for n in f3_def.get("nodos", []) if n["id"] == "F3.plan"), {})
+    f3_pub_real = next((n for n in f3_def.get("nodos", []) if n["id"] == "F3.publicar"), {})
+    texto_otros_nodos = json.dumps([f3_plan_real, f3_pub_real], ensure_ascii=False)
+    check("exploracion" not in texto_otros_nodos.lower(),
+          "F3.exploracion (doctrina real): no bloquea F3.plan ni F3.publicar — ninguno de los "
+          "dos la cita en su `requiere`/`produce`")
+
+    total = 41
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

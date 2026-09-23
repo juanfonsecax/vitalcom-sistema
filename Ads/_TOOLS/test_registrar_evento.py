@@ -171,6 +171,38 @@ def test_lanzamiento_sin_fase_ni_token_pide_fase():
     return _informe(ok, "sin --fase ni token en --campana: se detiene y pide --fase", (code, err, out[:200]))
 
 
+def test_resolver_fase_token_explora_resuelve_a_fase_3():
+    """P12/T12: fase 3 tiene DOS tokens (ESCALA y EXPLORA) — el mini-F1 de F3.exploracion nace
+    EXPLORA, no ESCALA-{angulo}, y tiene que resolver a la MISMA fase 3 que el escalado."""
+    fase, motivo = re_.resolver_fase(None, "GTR7_TURMERIC_EXPLORA_20260929")
+    ok = fase == "3" and "EXPLORA" in motivo
+    return _informe(ok, "el token EXPLORA en --campana resuelve a fase 3, igual que ESCALA", (fase, motivo))
+
+
+def test_resolver_fase_escala_sigue_resolviendo_a_fase_3():
+    fase, motivo = re_.resolver_fase(None, "GTR7_TURMERIC_ESCALA-C6-UNBOXING_20260910")
+    ok = fase == "3" and "ESCALA" in motivo
+    return _informe(ok, "el token ESCALA sigue resolviendo a fase 3 (regresión: no se rompió al agregar EXPLORA)",
+                     (fase, motivo))
+
+
+def test_resolver_fase_escala_y_explora_en_la_misma_campana_no_es_ambigua():
+    """Los dos tokens de fase 3 en el MISMO nombre resuelven a la MISMA fase — no es la
+    ambigüedad de "dos fases distintas" que sí detiene el registro (esa es entre fases
+    DIFERENTES, p.ej. TEST y CONCEPTOS a la vez)."""
+    fase, motivo = re_.resolver_fase(None, "GTR7_TURMERIC_ESCALA-EXPLORA_20260929")
+    ok = fase == "3"
+    return _informe(ok, "ESCALA y EXPLORA en el mismo nombre (mismo caso de fase 3) no son ambiguos",
+                     (fase, motivo))
+
+
+def test_resolver_fase_dos_fases_distintas_sigue_siendo_ambigua():
+    fase, motivo = re_.resolver_fase(None, "GTR7_TURMERIC_TEST_CONCEPTOS-A_20260924")
+    ok = fase is None and "ambigua" in motivo
+    return _informe(ok, "dos fases DISTINTAS (TEST y CONCEPTOS) en el mismo nombre siguen siendo ambiguas",
+                     (fase, motivo))
+
+
 def test_evento_no_lanzamiento_no_exige_fase_ni_gate():
     base = _fixture_lanzamiento(gate_cumplido=False)   # gate F2 incumplido a propósito: no debe importar
     code, out, err = _correr_main(base, ["--producto", "PX", "--evento", "CAMBIO_PRESUPUESTO",
@@ -308,6 +340,10 @@ def main():
         test_lanzamiento_gate_incumplido_con_excepcion_procede_y_registra_una_fila,
         test_lanzamiento_fase_por_token_de_campana,
         test_lanzamiento_sin_fase_ni_token_pide_fase,
+        test_resolver_fase_token_explora_resuelve_a_fase_3,
+        test_resolver_fase_escala_sigue_resolviendo_a_fase_3,
+        test_resolver_fase_escala_y_explora_en_la_misma_campana_no_es_ambigua,
+        test_resolver_fase_dos_fases_distintas_sigue_siendo_ambigua,
         test_evento_no_lanzamiento_no_exige_fase_ni_gate,
         test_producto_desconocido_se_refusa,
         test_producto_global_se_acepta,

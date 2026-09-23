@@ -18,8 +18,11 @@ GATES SON CANDADO (P5, ver flujo.gate_entrada)
 -----------------------------------------------
 `--evento LANZAMIENTO` exige que el gate de ENTRADA de la fase que se lanza esté cumplido
 (DOCTRINA/FLUJO.json, evaluado por `flujo.gate_entrada`). La fase sale de `--fase`, o si no se
-pasa, del token de fase (`TOKEN_FASE` de flujo.py: TEST/CONCEPTOS/ESCALA) dentro de
-`--campana`; si ninguna resuelve, se detiene y pide `--fase`. Con el gate incumplido, se
+pasa, del token de fase (`TOKEN_FASE` de flujo.py: TEST/CONCEPTOS/ESCALA·EXPLORA — fase 3 tiene
+los dos últimos, P12) dentro de `--campana`; si ninguna resuelve, se detiene y pide `--fase`.
+Un LANZAMIENTO de EXPLORA solo pasa el gate de ENTRADA a F3 (ya cumplido si el producto está en
+F3); el gate propio de F3.exploracion (F3 rentable, `flujo.gate_nodo`) lo exige
+`gen_publicacion.py --fase 3 --brazo EXPLORACION`, no este script. Con el gate incumplido, se
 detiene (nada se escribe) salvo que se pase `--excepcion "motivo"`: entonces el LANZAMIENTO se
 registra igual Y además queda una fila EXCEPCION en `_EVENTOS.csv` (mismo escritor, una sola
 llamada a `anexar()` por fila — invariante 11).
@@ -124,18 +127,22 @@ def anexar(fila):
 
 def resolver_fase(fase_arg, campana):
     """La fase de un LANZAMIENTO: `--fase` explícito, o el token de flujo.TOKEN_FASE
-    (TEST/CONCEPTOS/ESCALA) que aparezca en `--campana`. Ninguna de las dos -> (None, motivo)."""
+    (TEST/CONCEPTOS/ESCALA·EXPLORA) que aparezca en `--campana`. Fase 3 tiene DOS tokens posibles
+    (ESCALA y EXPLORA, P12) — ambos resuelven a fase '3', el mismo gate de entrada.
+    Ninguna de las dos -> (None, motivo)."""
     if fase_arg:
         return str(fase_arg).strip(), "explícita (--fase)"
     camp = (campana or "").upper()
-    vistos = [f for f, tok in flujo.TOKEN_FASE.items() if tok in camp]
-    if len(vistos) == 1:
-        return vistos[0], "token '%s' en --campana" % flujo.TOKEN_FASE[vistos[0]]
+    vistos = [(f, t) for f, toks in flujo.TOKEN_FASE.items() for t in toks if t in camp]
+    fases_vistas = sorted({f for f, _ in vistos})
+    if len(fases_vistas) == 1:
+        toks_hallados = [t for f, t in vistos]
+        return fases_vistas[0], "token '%s' en --campana" % "/".join(toks_hallados)
     if not vistos:
         return None, "--campana '%s' no trae ningún token de fase (%s)" % (
-            campana, "/".join(flujo.TOKEN_FASE.values()))
+            campana, "/".join(t for toks in flujo.TOKEN_FASE.values() for t in toks))
     return None, "--campana '%s' trae más de un token de fase (%s): ambigua" % (
-        campana, ", ".join(flujo.TOKEN_FASE[f] for f in vistos))
+        campana, ", ".join("%s=%s" % (f, t) for f, t in vistos))
 
 
 def registrar_excepcion(producto_key, gate, accion, motivo, fuente, fecha=None):

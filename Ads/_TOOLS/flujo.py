@@ -947,7 +947,10 @@ RESOLVEDORES_FECHA = {
 }
 
 
-TOKEN_FASE = {"1": "TEST", "2": "CONCEPTOS", "3": "ESCALA"}
+# Fase -> token(s) de CONVENCIÓN DE NOMBRES (ETAPA-6.md) que aparecen en el nombre de campaña de
+# esa fase. Fase 3 tiene DOS: ESCALA (el 1-1-7 de siempre) y EXPLORA (F3.exploracion, P12 —
+# mini-F1 de ángulos nuevos en paralelo al escalado, mismo número de fase, campaña distinta).
+TOKEN_FASE = {"1": ("TEST",), "2": ("CONCEPTOS",), "3": ("ESCALA", "EXPLORA")}
 
 
 def _ev_estructura_publicada(p, ctx, env):
@@ -956,11 +959,11 @@ def _ev_estructura_publicada(p, ctx, env):
     (el 08-sep: 5 conjuntos × 1 concepto donde la doctrina pide 1-1-5 + 1-1-5 + 1-2-5)."""
     fase = str(p.get("fase", 2))
     esperado = publicacion_num(env, "conjuntos_fase%s" % fase)
-    tok = TOKEN_FASE.get(fase, "")
+    toks = TOKEN_FASE.get(fase, ())
     vistos = {}
     for r, cj in _ventas_base(env, ctx["pk"]):
         camp = (r.get("campana") or "").strip()
-        if tok not in camp.upper() or num(r.get("spend_usd"), 0) <= 0:
+        if not any(t in camp.upper() for t in toks) or num(r.get("spend_usd"), 0) <= 0:
             continue
         vistos.setdefault(camp, set()).add(cj)
     if not vistos:
@@ -1256,6 +1259,44 @@ def gate_entrada(producto_key, fase, env=None):
     ctx = contexto(prod, env)
     ok, obs = evaluar(gate, ctx, env)
     return bool(ok), obs
+
+
+def gate_nodo(producto_key, nodo_id, env=None):
+    """¿Está cumplido el gate de EJECUCIÓN de UN NODO puntual (su `requiere`) para producto_key?
+
+    Generalización de `gate_entrada` (T5) para un gate que no es de ENTRADA a una fase sino de
+    un nodo específico dentro de ella — el caso que la crea es F3.exploracion (P12): arranca
+    solo cuando el escalado es rentable, un gate DISTINTO del gate de entrada a F3 (concepto
+    2/2 + CAMBIO_BOT), que ya está cumplido para cualquier producto que esté viendo nodos de F3.
+    Mismo principio que gate_entrada: SOLO LECTURA, evalúa exactamente el `requiere` que declara
+    DOCTRINA/FLUJO.json con el mismo `evaluar()`/`Entorno` que usa `situar()`, nunca recalcula
+    nada por su cuenta. Un nodo sin `requiere` está siempre cumplido (nada que candar).
+    Devuelve (ok: bool, observado: str)."""
+    env = env or Entorno()
+    flujo = cargar_flujo(env)
+    nodo = None
+    for f in flujo.get("fases", []):
+        for n in f.get("nodos", []):
+            if n.get("id") == nodo_id:
+                nodo = n
+                break
+        if nodo is not None:
+            break
+    if nodo is None:
+        return False, "'%s' no es un nodo de %s" % (nodo_id, FLUJO_DECLARADO)
+    requiere = nodo.get("requiere")
+    if not requiere:
+        return True, "%s no declara `requiere`" % nodo_id
+    prod = next((p for p in env.csv("_DIM_PRODUCTOS.csv")
+                 if (p.get("producto_key") or "").strip() == producto_key), None)
+    if prod is None:
+        return False, "'%s' no tiene fila en _DIM_PRODUCTOS.csv (invariante 10)" % producto_key
+    ctx = contexto(prod, env)
+    lista = _lista(requiere, ctx, env)
+    bloq = [r for r in lista if r["ok"] is False]
+    que = " | ".join("%s %s" % ("✓" if r["ok"] else "✗", "%s — %s" % (r["dato"], r["observado"]))
+                     for r in lista)
+    return (not bloq), que
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -239,6 +239,34 @@
                ]}},
    "nodos": [
     {
+     "id": "F3.exploracion",
+     "titulo": "Exploración de 3 ángulos nuevos en paralelo al escalado (mini-F1: ABO, IMAGEN, medida por VENTA)",
+     "ejecutor": {"tipo": "subagente", "name": "etapa-2"},
+     "secuencia": ["etapa-2", "etapa-6", "etapa-guardar-producto", "publicar-meta"],
+     "como": "Decisión del operador (22-sep-2026, P12): mientras F3 escala el ganador corre en PARALELO un mini-F1 fijo de @param:exploracion_n_angulos ángulos NUNCA probados por este producto (misma exclusión que reingreso_f1.py/_angulos_probados), cada uno en su propio conjunto ABO al presupuesto por-adset de la fila fase=3 brazo=EXPLORACION de _PARAMETROS_PUBLICACION.csv (el mismo monto de FASE 1, ~9 USD/día en total), TODO EN IMAGEN (regla de F1, gen_plan.py). Se mide POR VENTA agregando por angulo_key igual que F1 (invariante 1): un ganador de esta exploración entra a F2 por el MISMO gate F1→F2 (angulo_ganador) que cualquier otro ángulo, sin importar de qué conjunto salió. Este nodo NO bloquea F3.plan ni F3.publicar: corre en paralelo, como F2.etapa-11.",
+     "requiere": [
+      {"dato": "F3 rentable según decidir.py (celda ESCALAR con volumen mínimo)",
+       "predicado": {"tipo": "decision", "estados": ["ESCALAR"], "min_ventas": "@param:min_ventas_escalar", "min": 1},
+       "dueno": "Ads/_TOOLS/decidir.py", "regla": "P12: la exploración arranca solo cuando el escalado es rentable (decisión del operador 22-sep-2026)"}
+     ],
+     "produce": [
+      {"dato": "_PLAN_EXPLORACION.json con @param:exploracion_n_angulos conjuntos IMAGEN (contrato plan/1)",
+       "predicado": {"tipo": "todos", "de": [
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_EXPLORACION.json", "campo": "schema", "eq": "plan/1"},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_EXPLORACION.json", "campo": "conjuntos", "min_len": 3}]},
+       "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "ángulos no repetidos y TODO EN IMAGEN, como F1"},
+      {"dato": "conjuntos EXPLORACION registrados en _DIM_CONJUNTOS.csv",
+       "predicado": {"tipo": "csv", "csv": "_DIM_CONJUNTOS.csv", "where": {"producto_key": "{pk}", "fase": "EXPLORACION"}, "min": 3},
+       "dueno": "etapa-guardar-producto", "regla": "un dato, un dueño"},
+      {"dato": "la exploración fue publicada (LANZAMIENTO o gasto observado en la campaña EXPLORA)",
+       "predicado": {"tipo": "alguno", "de": [
+         {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "EXPLORA", "min": 1},
+         {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}", "campana": {"contiene": "EXPLORA"}}, "sum": "spend_usd", "sum_min": 0.01}]},
+       "dueno": "operador · _EVENTOS.csv / Ads/_TOOLS/gen_publicacion.py --fase 3 --brazo EXPLORACION",
+       "regla": "invariante 7 · se mide con el ciclo diario existente (ciclo.datos/ciclo.motor), sin gate aparte"}
+     ]
+    },
+    {
      "id": "F3.plan",
      "titulo": "Banco de copy (microángulos) y plan 1-1-7",
      "ejecutor": {"tipo": "subagente", "name": "etapa-6"},
