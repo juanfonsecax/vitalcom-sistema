@@ -7,8 +7,19 @@ tools: Read, Bash, Glob, Grep
 # RECOPILAR LUCIDSALES — la data entra sola
 
 **Dueña de la RECOLECCIÓN, nada más.** El mapeo de columnas, la conversión de moneda, la
-anti-duplicación y la escritura del CSV tienen dueño desde antes: `ingerir_lucidsales.py`. Acá no se
-repite ni una de esas reglas.
+identidad anti-duplicado y la escritura del CSV tienen dueño desde antes: `ingerir_lucidsales.py`
+(el UPSERT en sí vive en `Ads/_TOOLS/upsert_fact.py`, compartido con `bajar_meta_insights.py`). Acá
+no se repite ni una de esas reglas.
+
+> **Ventana de liquidación (22-sep-2026, g07-cimientos T1).** El gasto/ventas de LucidSales a
+> veces llegan CONGELADOS a medio día (medido: 06/14/15/16/20-sep-2026 con 0.65-0.75 del gasto real
+> de Meta). Por eso `bajar_lucidsales.py` **sin argumentos** ya no trae solo AYER: pide
+> `upsert_fact.SETTLEMENT_WINDOW_DIAS` (hoy 3) días **sueltos** terminando ayer, con `--forzar`
+> implícito, y `ingerir_lucidsales.py` los carga con **UPSERT** (reemplaza por llave natural en vez
+> de anexar) — un día que se corrige en el panel se corrige también acá la noche siguiente. Sigue
+> siendo UN pedido por día: la API de LucidSales agrega por rango, así que un tramo multi-día
+> (`--dias N`, el control semanal) nunca puede sustituir a N pedidos sueltos. `--fecha`/`--desde`/
+> `--hasta` puntuales no activan la ventana de liquidación: siguen trayendo exactamente lo pedido.
 
 ```
 bajar_lucidsales.py  →  report-<ini>-<fin>.json  →  ingerir_lucidsales.py  →  _FACT_VENTAS.csv
@@ -23,8 +34,10 @@ bajar_lucidsales.py  →  report-<ini>-<fin>.json  →  ingerir_lucidsales.py  �
 python Ads/_TOOLS/bajar_lucidsales.py && python Ads/_TOOLS/ingerir_lucidsales.py --dir Ads/_INGESTA/LUCIDSALES
 ```
 
-Sin argumentos, `bajar_lucidsales.py` trae **AYER cerrado** — la cadencia que manda
-`DOCTRINA/DATA_PLAYBOOK.md` (export de 1 solo día, todas las noches).
+Sin argumentos, `bajar_lucidsales.py` re-consulta la **ventana de liquidación** (ver arriba,
+D-1..D-N sueltos, hoy N=3) y `ingerir_lucidsales.py --dir ...` reemplaza por llave los días que
+hayan cambiado — la cadencia que manda `DOCTRINA/DATA_PLAYBOOK.md` (export diario, ahora con
+re-pull nocturno de los últimos días para corregir un gasto congelado a medio día).
 
 **Los lunes, además, el control semanal:**
 
@@ -42,10 +55,15 @@ python Ads/_TOOLS/bajar_lucidsales.py --dias 7 && python Ads/_TOOLS/ingerir_luci
 python Ads/_TOOLS/bajar_meta_insights.py
 ```
 
-Sin argumentos trae **AYER**, todas las cuentas `estado_cuenta=ACTIVE` y `tiene_metodo_pago=SI` de
-`_DIM_CUENTAS.csv` (no filtra por `mcp_habilitado`: ese campo es del conector interactivo, no de esta
-lectura por Graph API). Anexa a `_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv` con
-`fuente=MetaAPI-directo`, con la misma anti-duplicación y backup que `ingerir_lucidsales.py`.
+Sin argumentos re-consulta la misma **ventana de liquidación** (D-1..D-N, hoy N=3) para todas las
+cuentas `estado_cuenta=ACTIVE` y `tiene_metodo_pago=SI` de `_DIM_CUENTAS.csv` (no filtra por
+`mcp_habilitado`: ese campo es del conector interactivo, no de esta lectura por Graph API). Pide
+`ad_id` y `actions` a la Graph API (22-sep-2026, g07 T1): `ad_id` va en `_FACT_ENTREGA_ANUNCIO.csv`
+para el JOIN por id con `_FACT_VENTAS.csv`, y `mensajes` sale de la conversación de mensajería real
+(`onsite_conversion.messaging_conversation_started_7d`) — ya no se estima con clics. Hace **UPSERT**
+sobre `_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv` (reemplaza por llave, no anexa), con backup
+previo, igual que `ingerir_lucidsales.py`. `--fecha`/`--desde`/`--hasta` puntuales siguen trayendo
+exactamente lo pedido, sin activar la ventana de liquidación.
 
 Al final imprime un resumen por cuenta y, si alguna falló (permiso denegado, red caída), una línea
 `CUENTAS CON ERROR (...)` en stderr con el alias de cada una. **Una cuenta caída no es fatal**: las
@@ -62,15 +80,16 @@ Ante un `2`, revisar la cuenta a mano — no re-correr todo a ciegas.
 ## QUÉ LEER EN LA SALIDA — y cuándo NO ingerir
 
 `bajar_lucidsales.py` imprime `filas · ventas · Q · $ · msj` de la ventana. **Miralo antes de
-ingerir**, porque el ingestor anexa sin discutir:
+ingerir**, porque el ingestor hace UPSERT sin discutir (una llave que ya existía se REEMPLAZA):
 
 | Señal | Qué significa | Qué hacer |
 |---|---|---|
 | `CERO filas` | fecha equivocada, o el día no cerró | **NO ingerir.** Revisar la fecha. |
-| ventas muy debajo de lo normal | posible ventana a medio cerrar | Confirmar contra el panel antes de anexar. |
-| `Ya existe report-…` | ese día ya se bajó | No re-bajar. Si de verdad hay que rehacerlo: `--forzar`. |
+| ventas muy debajo de lo normal | posible ventana a medio cerrar | Confirmar contra el panel antes de cargar. |
+| `Ya existe report-…` | ese día ya se bajó (solo aplica a un pedido puntual: la ventana de liquidación siempre se re-baja con `--forzar`) | No re-bajar a mano. Si de verdad hay que rehacerlo: `--forzar`. |
 | `⚠ N conjuntos SIN dimensión` | hay conjuntos nuevos en Meta | Darlos de alta en `_DIM_CONJUNTOS.csv`, o el JOIN queda cojo. |
-| `duplicados omitidos` alto | el día ya estaba cargado | Normal y sano: la anti-duplicación hizo su trabajo. |
+| `N reemplazadas (día corregido)` | el UPSERT encontró la llave y la corrigió | Normal y sano dentro de la ventana de liquidación: así se arregla un día congelado. |
+| `duplicados dentro de la misma corrida` alto | dos archivos de esta misma invocación traían la misma llave | Revisar que no se haya pasado el mismo export dos veces por error. |
 
 Ante la duda, `--dry-run` en el ingestor: dice exactamente qué anexaría sin tocar el CSV.
 

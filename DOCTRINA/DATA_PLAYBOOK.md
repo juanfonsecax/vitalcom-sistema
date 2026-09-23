@@ -24,6 +24,7 @@ Solo Meta MCP: mensajes, clics, impresiones, gasto, `pct_conv_clic_enlace`. **No
 - ⚠️ **El `conjunto` viene SIN el prefijo `[CUENTA]_[PRODUCTO]_`** que sí lleva el nombre real en Meta y en `_DIM_CONJUNTOS.csv` (la cuenta y el producto ya van en sus propias columnas). Además llega **sin tildes ni eñes** según el exportador. Por eso el mismo objeto de Meta aparece con dos grafías distintas en los dos archivos.
   **La solución NO es normalizar la llave** (la llave sigue siendo el nombre exacto): es **anexar la grafía que falta a `_DIM_CONJUNTOS.csv` con el MISMO `angulo_key`**, como manda la regla de esa tabla. Historia (el fix del 02-sep y su impacto en el JOIN): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
 - **`conjunto = "(campaña completa)"` es una fila legítima de AGREGADO DE CAMPAÑA**, no un hueco de tracking: es gasto real de una campaña que el MCP no desglosó por conjunto. Es la contraparte de las *filas sintéticas de cuadre* de `_FACT_VENTAS.csv`. **Nunca se le inventa un `angulo_key`.** Se excluye del análisis por ángulo y se reporta aparte, igual que las otras.
+- **`_FACT_ENTREGA_ANUNCIO.csv` lleva `ad_id`** (agregada 22-sep-2026, g07-cimientos T1): el `ad_id` real de la Graph API, para poder unir con `_FACT_VENTAS.csv` por id en vez de por nombre exacto (un renombrado en Meta rompe el JOIN por nombre). Una fila escrita antes de esta columna la trae en `""` — nunca se inventa. `mensajes` en esa misma tabla, cuando la fuente es `MetaAPI-directo`, sale de conversaciones de mensajería REALES (`actions`, action_type `onsite_conversion.messaging_conversation_started_7d`), no de una derivación por clics — esa derivación (`tasa_conv_whatsapp x link_clicks`) sigue viva SOLO para la fuente `AdsManager-export-*d` (el camino xlsx, que no trae `actions`).
 > Historia (por qué `_FACT_ENTREGA.csv` y `_FACT_VENTAS.csv` se separaron el 25-jul): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
 
 ### `_DIM_CONJUNTOS.csv` — DIMENSIONES (capa máquina)
@@ -261,6 +262,14 @@ Referencia vigente (02-sep): portafolio **8.6 %** · mejor ángulo del sistema 1
 (CLEARSTEM/ANTI_FALSIFICACION) · umbral de los mentores 15-20 % (M-F01).
 
 **UN SOLO ESCRITOR.** La tarea programada de **Cowork** es la única auditoría nocturna que escribe al CSV y a la bitácora. No crear una segunda tarea equivalente (Cron del chat u otra sesión): la misma noche entraría dos veces = doble conteo real. Antes de anexar, verificar que (ventana, producto_key, conjunto, fuente) no exista ya.
+
+> **VENTANA DE LIQUIDACIÓN, no append-only puro (22-sep-2026, g07-cimientos T1).** El gasto/ventas
+> de un día a veces llega CONGELADO a medio día (medido: 06/14/15/16/20-sep-2026 con 0.65-0.75 del
+> gasto real de Meta) y antes quedaba mal para siempre — la anti-duplicación descartaba la corrida
+> siguiente por "ya cargado". Ahora `bajar_meta_insights.py` e `ingerir_lucidsales.py` re-consultan
+> los últimos `upsert_fact.SETTLEMENT_WINDOW_DIAS` días cada noche y hacen **UPSERT** (reemplazan
+> por llave natural, ver `Ads/_TOOLS/upsert_fact.py`) en vez de solo anexar. `rol_ventana` viaja en
+> la llave de `_FACT_VENTAS.csv`: CONTROL nunca reemplaza a BASE ni viceversa.
 
 ---
 
