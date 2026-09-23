@@ -83,7 +83,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
       effective_status=PAUSED; invariant 7 requires exactly the next day; etapa-3 status resolved.
 - [x] T9 (P9) Folders: classes out of the repo, live backups to a gitignored `_RESPALDOS/`, dead
       `_ARCHIVO/` removed, references fixed.
-- [ ] T10 (P6) Voice of customer as data: `_VOZ_CLIENTE.csv` + `verificar_voz.py` (re-fetches the
+- [x] T10 (P6) Voice of customer as data: `_VOZ_CLIENTE.csv` + `verificar_voz.py` (re-fetches the
       URL, checks the quote) + the etapa-1b output contract + angle cards cite voz_id.
 - [ ] T11 (P11) Frozen evals baseline (promptfoo) over saved real outputs, per stage.
 - [ ] T12 (P12) Exploration of new angles while scaling (F3.exploracion). DECIDED by the operator
@@ -686,10 +686,114 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     together with the removal they describe, so splitting them would leave an intermediate commit
     with dangling pointers).
 
+- 23-sep: T10 committed (`6917ba5` schema+verifier, `295a997` gen_plan rule+doctrine).
+  - **Schema owner + validator (`Ads/_TOOLS/verificar_voz.py`, new):** columns exactly as the
+    task specified (`producto_key, voz_id, variable, cita_textual, url, fuente_tipo,
+    fecha_captura, pais, idioma, nivel_conciencia, embudo, angulo_key, estado,
+    verificado_el`). No income column — documented in the module docstring: a citer's income
+    adds nothing to whether the pain is real (the citation + URL already carry that), and it
+    would be a third party's sensitive data riding along for no verification benefit; income
+    segmentation, if ever needed, belongs in ETAPA-2's avatar (an estimated range), never a
+    real person's figure.
+    - Row rules (`validar_filas`): `url` required and `http(s)://`; `cita_textual` required;
+      `variable`/`fuente_tipo`/`embudo`/`estado` validated against their closed vocabularies;
+      `voz_id` unique per `producto_key` (the same id in two different products is fine).
+    - Verification (`verificar_fila`, `normalizar`): re-fetches the URL with stdlib
+      `urllib.request` (10s timeout, a plain User-Agent, GET only, no auth — `fetch_default`),
+      normalizes both the quote and the page (lowercase, HTML-unescape, strip tags, strip
+      accents via `unicodedata`, strip punctuation, collapse whitespace) and checks substring
+      containment. Found -> `VERIFICADA` + today's date; not found or any fetch exception ->
+      `NO_VERIFICADA` with the reason string (never crashes, never verified by omission). The
+      fetch is an injectable parameter (`fetch=`) — no test touches the network.
+    - Dedupe/frequency (`contar_frecuencia`): counts quotes by
+      `(producto_key, variable, normalizar(cita_textual))` — a simple normalized-text match is
+      enough to see which pain/desire repeats without needing fuzzy similarity.
+    - CLI: read-only by default (this repo's T6 contract — `--escribir` is the only flag that
+      writes), `--producto` scopes verification, exits non-zero if ANY row in the file fails
+      schema (schema integrity is global, not per-product). `--escribir` persists
+      estado/verificado_el through `upsert_fact.upsert()` (key `producto_key,voz_id`), backup
+      under `_RESPALDOS/` via `upsert_fact.respaldos_dir()` — no second CSV writer.
+    - Writer entry point for etapa-1b: `--agregar-json file.json` (`agregar_pendientes()`)
+      appends rows forced to `estado=PENDIENTE`; refuses (writes nothing) on any schema
+      violation, and refuses a `voz_id` that already exists for that `producto_key` so a
+      re-run can never silently overwrite evidence already verified.
+    - `min_voz_requerido()`: reads `min_voz_verificada_por_angulo` from
+      `_PARAMETROS_DECISION.csv` if the row exists, else the named constant
+      `MIN_VOZ_VERIFICADA_POR_ANGULO = 3` — never writes that row itself (the orchestrator's
+      job, in the main checkout, per the task note).
+  - **etapa-1b output contract:** `.claude/agents/ETAPA-1B.md` gets a pointer paragraph right
+    after the [VOZ-REAL]/[DESEO-REAL] extraction rule: findings go to
+    `verificar_voz.py --agregar-json ... --escribir`, then `verificar_voz.py --producto X
+    --escribir` before etapa-2 uses them. Prose otherwise untouched.
+    `.claude/skills/fase-1-angulos/SKILL.md` PASO 2B gained the same two-command sequence
+    right after `etapa-1b`'s output line, before PASO 3 (`etapa-2` ∥ `etapa-fanpage`).
+  - **Angle cards cite evidence, enforced in code:** `gen_plan.py`'s `_PLAN.json` schema
+    docstring gained `origen_angulo` (`VOZ_CLIENTE|VIDEO_COMPETENCIA`), `voz_ids` and
+    `fuente_transcripcion` per conjunto, plus an "ORIGEN DEL ANGULO" section explaining the
+    rule and why it's version-gated. `validar_origen_angulo()` (new) checks: `origen_angulo`
+    must be one of the two values; `VOZ_CLIENTE` must cite `voz_ids` that exist in
+    `_VOZ_CLIENTE.csv` for that `producto_key`, with `>= min_voz_requerido()` of them
+    `VERIFICADA`; `VIDEO_COMPETENCIA` must carry a non-empty `fuente_transcripcion` (the field
+    `ETAPA-2.md`'s ficha already had informally as "Creativo asignado: VIDEO: nombre de
+    archivo" — now it also flows into the JSON plan, not just the ficha prose).
+    - **Legacy plans are spared deterministically, not by date:** the rule only runs when
+      `_version_num(plan.get("version")) >= 2`. Every real `_PLAN.json` on disk today (`git
+      grep` confirmed: CLEARSTEM, NusavaB12, OVULOS_PURITY, TINNIDROP) carries
+      `"version": "v1"`, so none of them is newly evaluated against the rule — verified by
+      re-running `gen_plan.py --validar` before and after: same 10 pre-existing `formato !=
+      IMAGEN` errors, zero new ones, OVULOS_PURITY still the only "ok" plan. A future plan
+      that etapa-6 emits with `"version": "v2"` (or higher) opts in. This was chosen over
+      reading `_ESTADO_FLUJO.csv`'s current fase (rejected: would make `gen_plan.py` import a
+      derived CSV it has no other reason to read, and "already past F1" is a moving target as
+      products advance) or gating on "plan being generated" (rejected: `--validar` is a batch
+      scan over files already on disk, it has no notion of "just generated" — every plan it
+      sees was generated at some point). The plan's own schema version is self-contained,
+      deterministic from the file alone, and is literally the field the docstring already
+      calls out as the schema identifier.
+    - Vocabulary note: `ORIGENES_ANGULO` is a fixed Python set in `gen_plan.py`, same pattern
+      as the pre-existing `OFERTAS`/`NIVELES` sets — not a `_DIM_VOCABULARIO.csv` axis, since
+      it's a JSON-plan-only field, not a `_DIM_CONJUNTOS.csv` column (that CSV's own
+      `origen_angulo` column already holds unrelated free-text values from other tooling —
+      confirmed by inspecting it — so no attempt was made to unify with it here).
+  - `ETAPA-2.md`: one line added to the ficha template — "Origen del ángulo (T10 — va al
+    `_PLAN.json` de ETAPA-6): [VOZ_CLIENTE: voz_id ... / VIDEO_COMPETENCIA: archivo ...]".
+  - `CLAUDE.md`: new file-ownership row for `_VOZ_CLIENTE.csv`/`verificar_voz.py`, worded with
+    an explicit "GENERA" verb next to the path — `gen_grafo.py`'s dead-route/insumo heuristic
+    reads verb context, and the CSV doesn't exist yet in this worktree by design (T10 point 1
+    note: it's created by the first writer run in the main checkout). Confirmed:
+    `gen_grafo.py` classifies it as an expected insumo ("aun no entrego"), not a dead route.
+  - **Tests** (script-style, tmp dirs, no network): `Ads/_TOOLS/test_verificar_voz.py` (new, 18
+    checks) — schema violations (empty/non-http url, empty quote, all four enums, duplicate
+    voz_id per product, same voz_id across products is fine); `normalizar()` accents/HTML/tags;
+    `verificar_fila()` found/not-found/fetch-error via injected `fetch`; `contar_frecuencia()`
+    groups near-identical quotes; `main()` without `--escribir` leaves the CSV byte-identical
+    and creates no `_RESPALDOS/`; `persistir_verificaciones()` writes + backs up;
+    `agregar_pendientes()` adds valid PENDIENTE rows, rejects an invalid row, rejects a
+    duplicate `voz_id`; `min_voz_requerido()` default and CSV override.
+    `Ads/_TOOLS/test_gen_plan.py` (+7 checks): v1 legacy plan untouched by the new rule; v2
+    without `origen_angulo` fails; v2 `VOZ_CLIENTE` under/at the threshold fails/passes; an
+    unknown cited `voz_id` fails; v2 `VIDEO_COMPETENCIA` without/with `fuente_transcripcion`
+    fails/passes.
+  - **Verification (SISTEMA-app worktree, all foreground):**
+    `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` -> 39 passed (38 + the new test file).
+    `python Ads/_TOOLS/test_verificar_voz.py` and `test_gen_plan.py` standalone -> 0 fallas
+    each. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos, 1 excepción).
+    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88 variables, 33 verificadas).
+    `python Ads/_TOOLS/gen_grafo.py` -> "rutas muertas ... ninguna" (the `_VOZ_CLIENTE.csv`
+    mentions correctly land under "insumos que el operador aun no entrego"), no tracked
+    baseline diff (ran read-only, no `--escribir`). `python Ads/_TOOLS/gen_plan.py --validar`
+    over the real plans -> 10 ERROR lines before and after this task (identical, pre-existing
+    `formato != IMAGEN` findings; zero new failures). Backend not run — no `app/` file touched.
+    `git status --short` clean after both commits.
+  - **Open question for the operator:** `_DIM_CONJUNTOS.csv`'s existing `origen_angulo` column
+    already holds heterogeneous free-text values (`HEREDADO_*`, filenames, `PROBLEMA_OCULTO`,
+    `NO`, ...) unrelated to this task's two-value enum — flagged here, not touched, since T10's
+    scope is the `_PLAN.json` schema (`gen_plan.py`), not that CSV's column.
+
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
 there as a `chore(data)` commit (this also fixes the `ad_id` column `stg_entrega_anuncio` needs),
 runs `dbt build` AFTER that re-pull (not before — see the new deployment-order doctrine), confirms
 `decidir.py`/the app read the corrected spend and `capa_analitica` on the merged data, then checks
-T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9 (folders)
-is now done; T10 (voice of customer as data) is next in dependency order.
+T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9 and T10
+are done; T11 (frozen evals baseline) is next in dependency order.
