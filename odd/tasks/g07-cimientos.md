@@ -729,27 +729,35 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     right after `etapa-1b`'s output line, before PASO 3 (`etapa-2` ∥ `etapa-fanpage`).
   - **Angle cards cite evidence, enforced in code:** `gen_plan.py`'s `_PLAN.json` schema
     docstring gained `origen_angulo` (`VOZ_CLIENTE|VIDEO_COMPETENCIA`), `voz_ids` and
-    `fuente_transcripcion` per conjunto, plus an "ORIGEN DEL ANGULO" section explaining the
-    rule and why it's version-gated. `validar_origen_angulo()` (new) checks: `origen_angulo`
-    must be one of the two values; `VOZ_CLIENTE` must cite `voz_ids` that exist in
-    `_VOZ_CLIENTE.csv` for that `producto_key`, with `>= min_voz_requerido()` of them
-    `VERIFICADA`; `VIDEO_COMPETENCIA` must carry a non-empty `fuente_transcripcion` (the field
-    `ETAPA-2.md`'s ficha already had informally as "Creativo asignado: VIDEO: nombre de
-    archivo" — now it also flows into the JSON plan, not just the ficha prose).
-    - **Legacy plans are spared deterministically, not by date:** the rule only runs when
-      `_version_num(plan.get("version")) >= 2`. Every real `_PLAN.json` on disk today (`git
-      grep` confirmed: CLEARSTEM, NusavaB12, OVULOS_PURITY, TINNIDROP) carries
-      `"version": "v1"`, so none of them is newly evaluated against the rule — verified by
-      re-running `gen_plan.py --validar` before and after: same 10 pre-existing `formato !=
-      IMAGEN` errors, zero new ones, OVULOS_PURITY still the only "ok" plan. A future plan
-      that etapa-6 emits with `"version": "v2"` (or higher) opts in. This was chosen over
-      reading `_ESTADO_FLUJO.csv`'s current fase (rejected: would make `gen_plan.py` import a
-      derived CSV it has no other reason to read, and "already past F1" is a moving target as
-      products advance) or gating on "plan being generated" (rejected: `--validar` is a batch
-      scan over files already on disk, it has no notion of "just generated" — every plan it
-      sees was generated at some point). The plan's own schema version is self-contained,
-      deterministic from the file alone, and is literally the field the docstring already
-      calls out as the schema identifier.
+    `fuente_transcripcion` per conjunto, plus an "ORIGEN DEL ANGULO" section stating the rule.
+    `validar_origen_angulo()` (new) checks: `origen_angulo` must be one of the two values;
+    `VOZ_CLIENTE` must cite `voz_ids` that exist in `_VOZ_CLIENTE.csv` for that `producto_key`,
+    with `>= min_voz_requerido()` of them `VERIFICADA`; `VIDEO_COMPETENCIA` must carry a
+    non-empty `fuente_transcripcion` (the field `ETAPA-2.md`'s ficha already had informally as
+    "Creativo asignado: VIDEO: nombre de archivo" — now it also flows into the JSON plan, not
+    just the ficha prose).
+    - **Legacy exemption, corrected after review (was version-gated, now data-derived):** the
+      first pass gated the rule on `plan.get("version") >= "v2"` and was REJECTED — nothing
+      emits `"version": "v2"` (the docstring example and etapa-6 both stay on `v1`), so the
+      rule would never run in practice, and CLAUDE.md invariant 5 bumps `VERSION` on every
+      rerun of an existing plan, so re-running an OLD product's plan would flip it to `v2` and
+      retro-fail it while a brand-new plan stays on `v1` and escapes — the exemption tracked
+      the wrong key entirely. Replaced with `ya_lanzo_fase1(producto_key, filas_dim_conjuntos)`:
+      a product is exempt only when `_DIM_CONJUNTOS.csv` has a row with `fase=FASE1` AND
+      `verificado_en_csv=SI` for it — the existing signal `ETAPA-GUARDAR-PRODUCTO.md` already
+      documents ("SI si el `conjunto_meta` ya aparece en `_FACT_VENTAS.csv` o
+      `_FACT_ENTREGA.csv`... NO si todavía es solo diseño"), reused as-is rather than inventing
+      new parsing or a new CSV coupling. A `FASE1` row existing is NOT enough by itself: FASE 1
+      always writes its 6 conjuntos with `verificado_en_csv=NO` at close (real case:
+      OVULOS_PURITY's 6 rows, notas literally say "SIN PUBLICAR"), so a never-launched product
+      with a `_PLAN.json` on disk isn't fooled by merely having dimension rows.
+      - **Consequence, confirmed intentional:** re-running `gen_plan.py --validar` now shows
+        OVULOS_PURITY (a real `_PLAN.json` on disk, never actually launched — all its FASE1
+        rows are `verificado_en_csv=NO`) newly failing with 6 `origen_angulo` errors, one per
+        conjunto — it never cited any evidence. CLEARSTEM/NusavaB12/TINNIDROP (each has at
+        least one `verificado_en_csv=SI` FASE1 row) are unaffected: the same 10 pre-existing
+        `formato != IMAGEN` errors as before this task, zero new ones. Total ERROR lines: 10 ->
+        16 (the 6 new OVULOS_PURITY ones), exactly and only for the never-launched product.
     - Vocabulary note: `ORIGENES_ANGULO` is a fixed Python set in `gen_plan.py`, same pattern
       as the pre-existing `OFERTAS`/`NIVELES` sets — not a `_DIM_VOCABULARIO.csv` axis, since
       it's a JSON-plan-only field, not a `_DIM_CONJUNTOS.csv` column (that CSV's own
@@ -770,25 +778,35 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     and creates no `_RESPALDOS/`; `persistir_verificaciones()` writes + backs up;
     `agregar_pendientes()` adds valid PENDIENTE rows, rejects an invalid row, rejects a
     duplicate `voz_id`; `min_voz_requerido()` default and CSV override.
-    `Ads/_TOOLS/test_gen_plan.py` (+7 checks): v1 legacy plan untouched by the new rule; v2
-    without `origen_angulo` fails; v2 `VOZ_CLIENTE` under/at the threshold fails/passes; an
-    unknown cited `voz_id` fails; v2 `VIDEO_COMPETENCIA` without/with `fuente_transcripcion`
-    fails/passes.
-  - **Verification (SISTEMA-app worktree, all foreground):**
+    `Ads/_TOOLS/test_gen_plan.py` (+9 checks, rewritten after the review fix):
+    `ya_lanzo_fase1()` itself — `verificado_en_csv=NO` does NOT count as launched (the
+    OVULOS_PURITY regression), `verificado_en_csv=SI` does; a launched product's plan without
+    `origen_angulo` doesn't fail; a never-launched product's plan without it fails, and so does
+    one absent from `_DIM_CONJUNTOS.csv` entirely (no false "launched" from silence);
+    `VOZ_CLIENTE` under/at the threshold fails/passes; an unknown cited `voz_id` fails;
+    `VIDEO_COMPETENCIA` without/with `fuente_transcripcion` fails/passes. The two pre-existing
+    format tests were updated to pass a "launched" fixture so they stay focused on `formato`
+    only.
+  - **Verification (SISTEMA-app worktree, all foreground, re-run after the review fix):**
     `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` -> 39 passed (38 + the new test file).
     `python Ads/_TOOLS/test_verificar_voz.py` and `test_gen_plan.py` standalone -> 0 fallas
-    each. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos, 1 excepción).
-    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88 variables, 33 verificadas).
-    `python Ads/_TOOLS/gen_grafo.py` -> "rutas muertas ... ninguna" (the `_VOZ_CLIENTE.csv`
-    mentions correctly land under "insumos que el operador aun no entrego"), no tracked
-    baseline diff (ran read-only, no `--escribir`). `python Ads/_TOOLS/gen_plan.py --validar`
-    over the real plans -> 10 ERROR lines before and after this task (identical, pre-existing
-    `formato != IMAGEN` findings; zero new failures). Backend not run — no `app/` file touched.
-    `git status --short` clean after both commits.
+    each (18 and 19 checks respectively). `python Ads/_TOOLS/flujo.py --validar` -> valid (3
+    fases, 20 nodos, 1 excepción). `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88
+    variables, 33 verificadas). `python Ads/_TOOLS/gen_grafo.py` -> "rutas muertas ... ninguna"
+    (the `_VOZ_CLIENTE.csv` mentions correctly land under "insumos que el operador aun no
+    entrego"), no tracked baseline diff (ran read-only, no `--escribir`).
+    `python Ads/_TOOLS/gen_plan.py --validar` over the real plans -> 16 ERROR lines (was 10
+    before T10 touched `gen_plan.py` at all): the same 10 pre-existing `formato != IMAGEN`
+    findings across CLEARSTEM/NusavaB12/TINNIDROP, plus 6 NEW, INTENDED `origen_angulo` errors
+    on OVULOS_PURITY (never launched — see above). Backend not run — no `app/` file touched.
+    `git status --short` clean after every commit.
   - **Open question for the operator:** `_DIM_CONJUNTOS.csv`'s existing `origen_angulo` column
     already holds heterogeneous free-text values (`HEREDADO_*`, filenames, `PROBLEMA_OCULTO`,
     `NO`, ...) unrelated to this task's two-value enum — flagged here, not touched, since T10's
-    scope is the `_PLAN.json` schema (`gen_plan.py`), not that CSV's column.
+    scope is the `_PLAN.json` schema (`gen_plan.py`), not that CSV's column. Separately:
+    OVULOS_PURITY's `_PLAN.json` now fails `gen_plan.py --validar` for real (missing
+    `origen_angulo`/evidence on all 6 conjuntos) — it needs a regenerated plan from etapa-6
+    before it can launch, same as its pre-existing `falta` list already implied.
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
