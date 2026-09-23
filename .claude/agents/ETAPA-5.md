@@ -89,7 +89,11 @@ Es el insumo de todo lo demás. Fórmula:
 > dormís de corrido y amanecés con energía."*
 
 Alimentan los bullets de las infografías, el guión del audio y las FAQ. **Nunca ingredientes
-sueltos.**
+sueltos.** Se escriben, una por línea, en `<<BLOQUE:propuestas_valor>>` (PLANTILLAS_FLUJO_BOT.md
+§3, junto a INFOGRAFÍAS) — es una lista de trabajo para armar las imágenes, **nunca se pega** en
+LucidBot. `Ads/_TOOLS/gen_flujo_bot.py --propuestas ARCHIVO` las cuenta: menos de 6 bloquea el
+render; sin declararlas todavía, queda PENDIENTE (aviso, no bloquea — así CLEARSTEM y TINNIDROP
+siguen renderizando mientras se retrocompletan).
 
 ### Paso 2 — Llenar las frases del ángulo en el CSV
 

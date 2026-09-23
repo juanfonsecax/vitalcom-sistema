@@ -27,6 +27,12 @@ USO
                                                       el flujo POR BLOQUES para la app: en
                                                       cada uno, lo que se pega y sus >> aparte.
                                                       No escribe nada.
+  python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM --propuestas propuestas.txt
+                                                      cuenta las propuestas de valor del archivo
+                                                      (una por linea): <6 BLOQUEA, 6-20 pasa,
+                                                      >20 avisa. Sin este flag queda PENDIENTE
+                                                      (aviso, nunca bloquea). Va con UN
+                                                      producto_key, sin --validar/--todo.
 
 LAS TRES NOTACIONES de la plantilla (una forma, un significado):
   {{variable}}        valor de un CSV. Si falta, este script BLOQUEA y nombra al dueno.
@@ -437,6 +443,39 @@ def estructura(txt):
     return {"encabezado": encabezado, "secciones": secciones}
 
 
+# Clase 22-ago regla D / ETAPA-5 Paso 1: 6-8 propuestas de valor mueven el cierre mas que
+# hooks o testimonios. Viven DENTRO de las infografias (imagenes), nunca en el texto que se
+# pega en LucidBot — por eso esta cuenta no las lee de _DIM_FLUJO_BOT.csv (un dato ahi
+# bloquearia CLEARSTEM/TINNIDROP hasta que el operador declare la columna, y esta tarea no
+# toca PRODUCTOS/*.csv) sino de un texto que el propio comando recibe (--propuestas ARCHIVO,
+# una propuesta por linea). Sin ese archivo, la cuenta queda PENDIENTE: nunca bloquea.
+MIN_PROPUESTAS_VALOR = 6
+AVISO_PROPUESTAS_VALOR = 20
+
+
+def propuestas_valor_lineas(texto):
+    """Una propuesta de valor por linea. Vacias y lineas '>>' (instruccion) no cuentan."""
+    if not texto:
+        return []
+    return [l.strip() for l in texto.splitlines() if l.strip() and not es_instruccion(l)]
+
+
+def validar_propuestas_valor(texto):
+    """(bloqueo, aviso). `texto=None` (no declaradas todavia) SIEMPRE aviso, nunca bloqueo:
+    los productos vivos sin este dato declarado (CLEARSTEM, TINNIDROP) siguen renderizando."""
+    if texto is None:
+        return None, ("propuestas_valor no declaradas todavia — etapa-5 Paso 1 escribe 6-8 en "
+                       "<<BLOQUE:propuestas_valor>> (PENDIENTE, no bloquea)")
+    n = len(propuestas_valor_lineas(texto))
+    if n < MIN_PROPUESTAS_VALOR:
+        return ("propuestas_valor: %d declarada(s), van 6-8 (ETAPA-5 Paso 1 / clase 22-ago "
+                "regla D — lo que mas mueve el cierre)" % n), None
+    if n > AVISO_PROPUESTAS_VALOR:
+        return None, ("propuestas_valor: %d declaradas, arriba de %d puede saturar las "
+                       "infografias" % (n, AVISO_PROPUESTAS_VALOR))
+    return None, None
+
+
 def prohibiciones(txt):
     copy = solo_copy(txt)
     hallados = []
@@ -453,9 +492,12 @@ def prohibiciones(txt):
     return hallados
 
 
-def una_json(pk, parcial=False):
+def una_json(pk, parcial=False, propuestas=None):
     """--json: el flujo por bloques para la app. No escribe. Bloquea igual que el render."""
     v, faltan, avisos = resolver(pk)
+    bloqueo_prop, aviso_prop = validar_propuestas_valor(propuestas)
+    if aviso_prop:
+        avisos.append(aviso_prop)
     salida = {"producto_key": pk, "ok": False, "parcial": parcial, "avisos": avisos,
               "faltan": [{"variable": k, "lo_produce": d} for k, d in faltan], "prohibiciones": []}
     if v is None or (faltan and not parcial):
@@ -465,6 +507,8 @@ def una_json(pk, parcial=False):
         v[k] = "‹PENDIENTE: %s — %s›" % (k, d)
     txt = render(v)
     salida["prohibiciones"] = prohibiciones(txt)
+    if bloqueo_prop:
+        salida["prohibiciones"].append(bloqueo_prop)
     if not salida["prohibiciones"]:
         salida["ok"] = True
         salida.update(estructura(txt))
@@ -472,8 +516,11 @@ def una_json(pk, parcial=False):
     return salida["ok"]
 
 
-def una(pk, escribir=True, parcial=False, copy=False):
+def una(pk, escribir=True, parcial=False, copy=False, propuestas=None):
     v, faltan, avisos = resolver(pk)
+    bloqueo_prop, aviso_prop = validar_propuestas_valor(propuestas)
+    if aviso_prop:
+        avisos.append(aviso_prop)
     print("\n─── %s ───" % pk)
     for a in avisos:
         print("  aviso: %s" % a)
@@ -489,6 +536,8 @@ def una(pk, escribir=True, parcial=False, copy=False):
 
     txt = render(v)
     malos = prohibiciones(txt)
+    if bloqueo_prop:
+        malos.append(bloqueo_prop)
     if malos:
         print("  RECHAZADO por prohibiciones:")
         for m in malos:
@@ -520,13 +569,29 @@ def main():
     validar = "--validar" in args
     todo = "--todo" in args
     copy = "--copy" in args
+
+    propuestas = None
+    if "--propuestas" in args:
+        i = args.index("--propuestas")
+        if i + 1 >= len(args):
+            print("--propuestas necesita una ruta de archivo (una propuesta por linea)",
+                  file=sys.stderr)
+            return 2
+        with open(args[i + 1], encoding="utf-8") as fh:
+            propuestas = fh.read()
+        del args[i:i + 2]
+
     pks = [a for a in args if not a.startswith("--")]
 
     if "--json" in args:
         if len(pks) != 1 or validar or todo or copy:
             print("--json va con UN producto_key y sin --validar / --todo / --copy", file=sys.stderr)
             return 2
-        return 0 if una_json(pks[0], parcial=parcial) else 1
+        return 0 if una_json(pks[0], parcial=parcial, propuestas=propuestas) else 1
+
+    if propuestas is not None and (len(pks) != 1 or validar or todo):
+        print("--propuestas va con UN producto_key y sin --validar / --todo", file=sys.stderr)
+        return 2
 
     if validar or todo:
         pks = [r["producto_key"] for r in leer("_DIM_FLUJO_BOT.csv")]
@@ -535,7 +600,7 @@ def main():
         return 0
 
     ok = sum(1 for pk in pks
-             if una(pk, escribir=not validar, parcial=parcial, copy=copy))
+             if una(pk, escribir=not validar, parcial=parcial, copy=copy, propuestas=propuestas))
     if not copy:
         print("\n%d/%d producto(s) %s" % (ok, len(pks),
                                           "pasan" if validar else "renderizados"))

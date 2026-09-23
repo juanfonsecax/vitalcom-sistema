@@ -191,6 +191,11 @@ INFOGRAFÍAS ({{n_infografias}}): {{lista_infografias}}
 >> Van SIN PRECIO, en 1080x1350 (4:5).
 >> LO QUE MÁS MUEVE EL CIERRE VA ACÁ: muchas PROPUESTAS DE VALOR, no ingredientes sueltos.
 >> Fórmula de cada una: [problema concreto del avatar] -> [qué hace el producto] -> [resultado].
+>> Van DENTRO de las infografías (imagen), nunca en el texto que se pega en LucidBot — por eso
+>> <<BLOQUE:propuestas_valor>> es una lista de trabajo para armar las imágenes, no un campo que
+>> se copie. Una propuesta por línea, 6-8 (clase 22-ago regla D). `gen_flujo_bot.py --propuestas
+>> ARCHIVO` las cuenta: menos de 6 BLOQUEA, sin el archivo queda PENDIENTE (aviso, no bloquea).
+<<BLOQUE:propuestas_valor>>
 >> Dentro del bot no hay límite de compliance ni de umbral cognitivo: la prioridad es CONVERTIR.
 >> ORDEN SEGÚN EL BUYER TYPE del avatar: nicho EMOCIONAL -> la prueba de transformación
 >> (antes/después o momento) va PRIMERO y los ingredientes después. Nicho TÉCNICO -> los
@@ -410,6 +415,7 @@ solo declara dónde van y la regla dura que el gate sí puede verificar.
 | `audio` | Guión de 45-55 seg | **sin precio** · sin contraentrega · segunda persona |
 | `m2` | Texto del 2º mensaje de inactividad | dos niveles de oferta, nunca tres |
 | `faq_venta` · `faq_postventa` | Preguntas reales del avatar | lenguaje de apoyo |
+| `propuestas_valor` | Lista de trabajo (una por línea) para las infografías — nunca se pega | `gen_flujo_bot.py --propuestas ARCHIVO`: menos de 6 **BLOQUEA**; sin declarar, PENDIENTE (aviso) |
 
 **`fuente_testimonios`.** Material real (`REAL`) gana a material fabricado (`REDACTADO`). La
 columna existe para poder medir la diferencia.

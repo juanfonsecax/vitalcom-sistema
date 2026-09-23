@@ -298,6 +298,55 @@ def test_flujo_dedicado_clearstem_renderiza_instruccion():
               "NIVEL DE CONCIENCIA 1" in txt.split("ELEMENTO 3")[0])
 
 
+def test_propuestas_valor_menos_de_6_bloquea():
+    """Fórmula problema->que hace->resultado, pero menos de 6 declaradas: BLOQUEA."""
+    texto = "\n".join(["problema %d -> hace X -> resultado" % i for i in range(5)])
+    bloqueo, aviso = G.validar_propuestas_valor(texto)
+    check("menos de 6 propuestas bloquea", bloqueo is not None and "6" in bloqueo, bloqueo)
+    check("un bloqueo no trae aviso a la vez", aviso is None, aviso)
+
+
+def test_propuestas_valor_6_a_8_pasa():
+    """6-8 declaradas: pasa sin bloqueo ni aviso."""
+    for n in (6, 7, 8):
+        texto = "\n".join(["problema %d -> hace X -> resultado" % i for i in range(n)])
+        bloqueo, aviso = G.validar_propuestas_valor(texto)
+        check("%d propuestas pasa sin bloqueo ni aviso" % n, bloqueo is None and aviso is None,
+              (bloqueo, aviso))
+
+
+def test_propuestas_valor_arriba_de_20_avisa():
+    """Mas de 20 no bloquea, pero avisa que puede saturar las infografias."""
+    texto = "\n".join(["propuesta %d" % i for i in range(21)])
+    bloqueo, aviso = G.validar_propuestas_valor(texto)
+    check("mas de 20 no bloquea", bloqueo is None, bloqueo)
+    check("mas de 20 avisa", aviso is not None and "21" in aviso, aviso)
+
+
+def test_propuestas_valor_no_declaradas_solo_avisa():
+    """T2: sin declarar (None) es WARNING, nunca bloqueo — CLEARSTEM/TINNIDROP siguen rindiendo."""
+    bloqueo, aviso = G.validar_propuestas_valor(None)
+    check("no declaradas nunca bloquea", bloqueo is None, bloqueo)
+    check("no declaradas avisa PENDIENTE", aviso is not None and "PENDIENTE" in aviso, aviso)
+
+
+def test_propuestas_valor_ignora_lineas_vacias_e_instrucciones():
+    """Lineas vacias y '>>' no cuentan como propuesta declarada."""
+    texto = "p1\n\n>> nota para etapa-5\np2\np3\np4\np5\np6\n"
+    n = len(G.propuestas_valor_lineas(texto))
+    check("cuenta solo las 6 lineas de propuesta", n == 6, n)
+
+
+def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
+    """Productos vivos sin propuestas_valor declaradas (sin --propuestas): siguen renderizando."""
+    for pk in ("CLEARSTEM", "TINNIDROP"):
+        v, faltan, avisos = G.resolver(pk)
+        bloqueo, aviso = G.validar_propuestas_valor(None)
+        check("%s no bloquea por propuestas_valor sin declarar" % pk,
+              v is not None and not faltan and bloqueo is None, (faltan, bloqueo))
+        check("%s trae el aviso PENDIENTE cuando se le suma" % pk, aviso is not None)
+
+
 def main():
     print("test_gen_flujo_bot.py — reglas del layout del bot\n")
     for fn in (test_pregunta_filtro_se_rechaza,
@@ -319,7 +368,13 @@ def main():
                test_apertura_nivel_en_conflicto_bloquea,
                test_es_flujo_dedicado,
                test_flujo_paraguas_no_bloquea_ni_lleva_apertura,
-               test_flujo_dedicado_clearstem_renderiza_instruccion):
+               test_flujo_dedicado_clearstem_renderiza_instruccion,
+               test_propuestas_valor_menos_de_6_bloquea,
+               test_propuestas_valor_6_a_8_pasa,
+               test_propuestas_valor_arriba_de_20_avisa,
+               test_propuestas_valor_no_declaradas_solo_avisa,
+               test_propuestas_valor_ignora_lineas_vacias_e_instrucciones,
+               test_clearstem_tinnidrop_sin_propuestas_no_bloquean):
         print("\n%s" % (fn.__doc__ or fn.__name__).splitlines()[0])
         fn()
     print("\n%s" % ("TODO PASA" if not FALLAS else "FALLAN %d: %s"
