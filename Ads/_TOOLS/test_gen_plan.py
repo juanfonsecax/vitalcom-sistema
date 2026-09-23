@@ -145,6 +145,18 @@ PLAN_FASE1_BASE = {
 }
 
 
+def _dim_lanzado(producto):
+    """Una fila de _DIM_CONJUNTOS.csv que confirma que `producto` YA lanzo FASE 1 de verdad
+    (verificado_en_csv=SI — ver docstring de gen_plan.ya_lanzo_fase1)."""
+    return [{"producto_key": producto, "fase": "FASE1", "verificado_en_csv": "SI"}]
+
+
+def _dim_no_lanzado(producto):
+    """Caso real OVULOS_PURITY: la fila EXISTE (FASE 1 la crea como diseño al cerrar) pero
+    verificado_en_csv sigue en NO porque todavia no gasto — no cuenta como lanzado."""
+    return [{"producto_key": producto, "fase": "FASE1", "verificado_en_csv": "NO"}]
+
+
 def test_plan_fase1_con_video_falla():
     """Decision del operador 22-sep-2026: FASE 1 corre TODO EN IMAGEN. Un conjunto en VIDEO
     (competidor migrado sin regenerar) tiene que bloquear, no colarse en el paquete."""
@@ -152,7 +164,7 @@ def test_plan_fase1_con_video_falla():
         {"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"},
         {"n": 2, "angulo_key": "B", "nivel_conciencia": "1", "formato": "VIDEO"},
     ])
-    problemas = gen_plan.validar_plan_fase1(plan, {})
+    problemas = gen_plan.validar_plan_fase1(plan, {}, dim_conjuntos_filas=_dim_lanzado("X"))
     ok = any("formato" in p and "IMAGEN" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
           + "un plan de FASE 1 con un conjunto en VIDEO falla (F1 es todo IMAGEN)"
@@ -165,7 +177,7 @@ def test_plan_fase1_todo_imagen_no_falla_por_formato():
         {"n": i, "angulo_key": "A%d" % i, "nivel_conciencia": "1", "formato": "IMAGEN"}
         for i in range(1, 7)
     ])
-    problemas = gen_plan.validar_plan_fase1(plan, {})
+    problemas = gen_plan.validar_plan_fase1(plan, {}, dim_conjuntos_filas=_dim_lanzado("X"))
     ok = not any("formato" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
           + "un plan de FASE 1 con las 6 imagenes no genera error de formato"
@@ -187,34 +199,63 @@ def _voz_fila(producto, voz_id, estado):
     return {"producto_key": producto, "voz_id": voz_id, "estado": estado}
 
 
-def test_plan_fase1_v1_legacy_no_exige_origen_angulo():
-    """Grandfathering (T10): un plan version 'v1' (todos los reales emitidos hasta hoy) no
-    trae origen_angulo/voz_ids y no debe empezar a fallar por eso."""
-    plan = dict(PLAN_FASE1_BASE, version="v1",
+def test_ya_lanzo_fase1_solo_cuenta_verificado_en_csv_si():
+    """Caso real OVULOS_PURITY (encontrado al revisar T10): sus 6 conjuntos de FASE 1 ya
+    existen en _DIM_CONJUNTOS.csv pero con verificado_en_csv=NO ('SIN PUBLICAR' en las notas
+    reales) — eso NO es un lanzamiento, solo diseño. Congela la regla que evita el falso
+    positivo de "tiene fila -> ya lanzó"."""
+    no_lanzado = gen_plan.ya_lanzo_fase1("OVULOS_PURITY", _dim_no_lanzado("OVULOS_PURITY"))
+    lanzado = gen_plan.ya_lanzo_fase1("TINNIDROP", _dim_lanzado("TINNIDROP"))
+    ok = no_lanzado is False and lanzado is True
+    print(("  OK     " if ok else "  FALLA  ")
+          + "verificado_en_csv=NO no cuenta como lanzado; verificado_en_csv=SI si"
+          + ("" if ok else f"\n         no_lanzado={no_lanzado} lanzado={lanzado}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_producto_lanzado_no_exige_origen_angulo():
+    """Un producto que YA lanzó FASE 1 de verdad (data real, no solo un _PLAN.json en disco)
+    no se re-castiga retroactivamente: su plan sin origen_angulo/voz_ids no falla por eso."""
+    plan = dict(PLAN_FASE1_BASE,
                 conjuntos=[{"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"}])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3, _dim_lanzado("X"))
     ok = problemas == []
     print(("  OK     " if ok else "  FALLA  ")
-          + "un plan version v1 (legacy) no exige origen_angulo ni voz_ids"
+          + "un producto que ya lanzó FASE 1 no exige origen_angulo ni voz_ids"
           + ("" if ok else f"\n         problemas={problemas}"))
     return 0 if ok else 1
 
 
-def test_plan_fase1_v2_sin_origen_angulo_falla():
-    plan = dict(PLAN_FASE1_BASE, version="v2",
+def test_plan_fase1_producto_no_lanzado_sin_origen_angulo_falla():
+    """Caso OVULOS_PURITY: tiene _PLAN.json en disco pero NUNCA lanzó de verdad (sin fila
+    verificado_en_csv=SI) — su plan SI debe cumplir la regla de evidencia."""
+    plan = dict(PLAN_FASE1_BASE,
                 conjuntos=[{"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"}])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3, _dim_no_lanzado("X"))
     ok = any("origen_angulo" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
-          + "un plan version v2 sin origen_angulo declarado falla"
+          + "un producto sin lanzamiento real (aunque tenga _PLAN.json) exige origen_angulo"
           + ("" if ok else f"\n         problemas={problemas}"))
     return 0 if ok else 1
 
 
-def test_plan_fase1_v2_voz_cliente_bajo_el_minimo_falla():
+def test_plan_fase1_producto_no_lanzado_sin_registro_en_dim_conjuntos_tambien_falla():
+    """Un producto que ni siquiera aparece en _DIM_CONJUNTOS.csv (nunca llegó a ETAPA-GUARDAR-
+    PRODUCTO) tampoco escapa la regla — la ausencia total no es evidencia de lanzamiento."""
+    plan = dict(PLAN_FASE1_BASE,
+                conjuntos=[{"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"}])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3, [])
+    ok = any("origen_angulo" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un producto ausente de _DIM_CONJUNTOS.csv tampoco escapa la regla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_no_lanzado_voz_cliente_bajo_el_minimo_falla():
     voz_filas = [_voz_fila("X", "V1", "VERIFICADA"), _voz_fila("X", "V2", "PENDIENTE")]
-    plan = dict(PLAN_FASE1_BASE, version="v2", conjuntos=[_conjunto_voz(1, "A", ["V1", "V2"])])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 3)
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[_conjunto_voz(1, "A", ["V1", "V2"])])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 3, _dim_no_lanzado("X"))
     ok = any("VOZ_CLIENTE" in p and "1" in p and "3" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
           + "origen VOZ_CLIENTE con menos voz_id VERIFICADA que el mínimo falla"
@@ -222,11 +263,10 @@ def test_plan_fase1_v2_voz_cliente_bajo_el_minimo_falla():
     return 0 if ok else 1
 
 
-def test_plan_fase1_v2_voz_cliente_cumple_el_minimo_no_falla():
+def test_plan_fase1_no_lanzado_voz_cliente_cumple_el_minimo_no_falla():
     voz_filas = [_voz_fila("X", "V%d" % i, "VERIFICADA") for i in range(1, 4)]
-    plan = dict(PLAN_FASE1_BASE, version="v2",
-                conjuntos=[_conjunto_voz(1, "A", ["V1", "V2", "V3"])])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 3)
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[_conjunto_voz(1, "A", ["V1", "V2", "V3"])])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 3, _dim_no_lanzado("X"))
     ok = problemas == []
     print(("  OK     " if ok else "  FALLA  ")
           + "origen VOZ_CLIENTE con exactamente el mínimo de voz_id VERIFICADA no falla"
@@ -234,10 +274,10 @@ def test_plan_fase1_v2_voz_cliente_cumple_el_minimo_no_falla():
     return 0 if ok else 1
 
 
-def test_plan_fase1_v2_voz_id_desconocido_falla():
+def test_plan_fase1_no_lanzado_voz_id_desconocido_falla():
     voz_filas = [_voz_fila("X", "V1", "VERIFICADA")]
-    plan = dict(PLAN_FASE1_BASE, version="v2", conjuntos=[_conjunto_voz(1, "A", ["V1", "V999"])])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 1)
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[_conjunto_voz(1, "A", ["V1", "V999"])])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 1, _dim_no_lanzado("X"))
     ok = any("V999" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
           + "citar un voz_id que no existe en _VOZ_CLIENTE.csv para ese producto falla"
@@ -245,9 +285,9 @@ def test_plan_fase1_v2_voz_id_desconocido_falla():
     return 0 if ok else 1
 
 
-def test_plan_fase1_v2_video_competencia_sin_fuente_falla():
-    plan = dict(PLAN_FASE1_BASE, version="v2", conjuntos=[_conjunto_video(1, "A", "")])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+def test_plan_fase1_no_lanzado_video_competencia_sin_fuente_falla():
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[_conjunto_video(1, "A", "")])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3, _dim_no_lanzado("X"))
     ok = any("fuente_transcripcion" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
           + "origen VIDEO_COMPETENCIA sin fuente_transcripcion falla"
@@ -255,10 +295,9 @@ def test_plan_fase1_v2_video_competencia_sin_fuente_falla():
     return 0 if ok else 1
 
 
-def test_plan_fase1_v2_video_competencia_con_fuente_no_falla():
-    plan = dict(PLAN_FASE1_BASE, version="v2",
-                conjuntos=[_conjunto_video(1, "A", "NUSAVAB12_2_ARDOR.mp4")])
-    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+def test_plan_fase1_no_lanzado_video_competencia_con_fuente_no_falla():
+    plan = dict(PLAN_FASE1_BASE, conjuntos=[_conjunto_video(1, "A", "NUSAVAB12_2_ARDOR.mp4")])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3, _dim_no_lanzado("X"))
     ok = problemas == []
     print(("  OK     " if ok else "  FALLA  ")
           + "origen VIDEO_COMPETENCIA con fuente_transcripcion no vacía no falla"
@@ -270,13 +309,15 @@ def main():
     fallas = 0
     fallas += test_plan_fase1_con_video_falla()
     fallas += test_plan_fase1_todo_imagen_no_falla_por_formato()
-    fallas += test_plan_fase1_v1_legacy_no_exige_origen_angulo()
-    fallas += test_plan_fase1_v2_sin_origen_angulo_falla()
-    fallas += test_plan_fase1_v2_voz_cliente_bajo_el_minimo_falla()
-    fallas += test_plan_fase1_v2_voz_cliente_cumple_el_minimo_no_falla()
-    fallas += test_plan_fase1_v2_voz_id_desconocido_falla()
-    fallas += test_plan_fase1_v2_video_competencia_sin_fuente_falla()
-    fallas += test_plan_fase1_v2_video_competencia_con_fuente_no_falla()
+    fallas += test_ya_lanzo_fase1_solo_cuenta_verificado_en_csv_si()
+    fallas += test_plan_fase1_producto_lanzado_no_exige_origen_angulo()
+    fallas += test_plan_fase1_producto_no_lanzado_sin_origen_angulo_falla()
+    fallas += test_plan_fase1_producto_no_lanzado_sin_registro_en_dim_conjuntos_tambien_falla()
+    fallas += test_plan_fase1_no_lanzado_voz_cliente_bajo_el_minimo_falla()
+    fallas += test_plan_fase1_no_lanzado_voz_cliente_cumple_el_minimo_no_falla()
+    fallas += test_plan_fase1_no_lanzado_voz_id_desconocido_falla()
+    fallas += test_plan_fase1_no_lanzado_video_competencia_sin_fuente_falla()
+    fallas += test_plan_fase1_no_lanzado_video_competencia_con_fuente_no_falla()
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_ruta_directa_valida_solo_ese_archivo(tmp)
     with tempfile.TemporaryDirectory() as tmp:

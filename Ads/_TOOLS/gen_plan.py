@@ -43,7 +43,7 @@ ESQUEMA (schema "plan/1") — lo que etapa-6 debe emitir:
       "archivo_creativo": "NOMBRE.jpg",
       "prompt_imagen": "...",               # null si el creativo es un video ya existente
       "copy": {"textos": ["...", "..."], "titulos": ["..."], "descripcion": "..."},
-      "origen_angulo": "VOZ_CLIENTE|VIDEO_COMPETENCIA",   # T10 (solo exigido en version>=2)
+      "origen_angulo": "VOZ_CLIENTE|VIDEO_COMPETENCIA",
       "voz_ids": ["V001", "V004"],           # si origen_angulo=VOZ_CLIENTE: voz_id de
                                               # _VOZ_CLIENTE.csv que sostienen el angulo
       "fuente_transcripcion": "NUSAVAB12_2_ARDOR.mp4"  # si origen_angulo=VIDEO_COMPETENCIA:
@@ -52,11 +52,8 @@ ESQUEMA (schema "plan/1") — lo que etapa-6 debe emitir:
   "_faltantes": ["lo que el plan no pudo llenar"]
 }
 
-ORIGEN DEL ANGULO (T10, g07-cimientos, 23-sep-2026) — solo en planes "version" >= 2:
-Un angulo candidato puede venir de dos motores (ETAPA-1B/ETAPA-0, ver ese docstring): minado de
-VOZ DEL CLIENTE o un video de competencia ya transcrito. Auditoria H5 (22-sep): sin evidencia
-citada, un agente puede inventar un dolor y nada lo detecta. Cada conjunto de un plan de FASE 1
-declara su `origen_angulo` y cita su evidencia:
+ORIGEN DEL ANGULO — cada conjunto de un plan de FASE 1 declara `origen_angulo` y cita su
+evidencia, salvo que el producto ya haya lanzado FASE 1 de verdad:
   - VOZ_CLIENTE  -> `voz_ids` debe listar >= N voz_id con estado VERIFICADA en
                     PRODUCTOS/_VOZ_CLIENTE.csv para ese producto_key (N =
                     verificar_voz.min_voz_requerido(), default 3, overrideable por la fila
@@ -64,12 +61,13 @@ declara su `origen_angulo` y cita su evidencia:
   - VIDEO_COMPETENCIA -> `fuente_transcripcion` no vacio (el archivo/transcripcion de
                     ETAPA-0 que sostiene el angulo — FASE 1 corre todo en IMAGEN, pero el
                     video sigue siendo la FUENTE del angulo, CLAUDE.md).
-Por que solo version>=2: los planes YA EMITIDOS (siempre "version": "v1" hasta esta fecha) no
-tenian estos campos porque la regla no existia — exigirlos retroactivamente bloquearia
-productos que ya pasaron FASE 1 sin que nadie pueda corregir un plan que ya cumplio su proposito.
-"version" es un campo propio del esquema (no una fecha ni el estado en _ESTADO_FLUJO.csv): un
-plan nuevo que etapa-6 emita con "version": "v2" (o superior) opta a la regla; el v1 existente
-queda grandfathered para siempre, gate deterministico y sin acoplarse a otro CSV.
+  - EXCEPCION: un producto que ya LANZO FASE 1 (`_DIM_CONJUNTOS.csv` tiene un conjunto con
+                    `fase=FASE1` y `verificado_en_csv=SI` — ETAPA-GUARDAR-PRODUCTO.md: esa
+                    columna es SI solo cuando el conjunto ya aparece en data real de Meta o
+                    LucidSales, nunca por diseño) queda exento: su plan ya cumplio su proposito
+                    y no se re-castiga retroactivamente. Un producto sin ese registro real —
+                    aunque ya tenga un `_PLAN.json` en disco, todavia sin publicar — SI debe
+                    cumplir la regla (`ya_lanzo_fase1()`).
 
 FASE 2 y 3 — _PLAN_FASE2.json / _PLAN_FASE3.json, el mismo esquema con "fase": 2|3 y dos
 campos RAIZ obligatorios, porque ahi el angulo y el copy son constantes de la fase:
@@ -132,16 +130,37 @@ def descubrir_planes(ruta=None):
 
 
 ORIGENES_ANGULO = {"VOZ_CLIENTE", "VIDEO_COMPETENCIA"}
-VERSION_MIN_ORIGEN_EVIDENCIA = 2  # T10: version >= esto exige origen_angulo + evidencia citada
+DIM_CONJUNTOS = "PRODUCTOS/_DIM_CONJUNTOS.csv"
+# Vocabulario de la columna `fase` de _DIM_CONJUNTOS.csv (dato real en disco: "FASE1"), con
+# variantes toleradas por si alguna vez se escribe distinto.
+FASE1_DIM_CONJUNTOS = {"FASE1", "F1", "1"}
 
 
-def _version_num(v):
-    """"v1" -> 1, "v2" -> 2, cualquier otra cosa (ausente, no numerica) -> 1 (legacy, nunca
-    se re-castiga retroactivamente — ver docstring del modulo, seccion ORIGEN DEL ANGULO)."""
-    try:
-        return int(str(v).strip().lower().lstrip("v"))
-    except (TypeError, ValueError):
-        return 1
+def ya_lanzo_fase1(producto_key, filas_dim_conjuntos):
+    """True si el producto ya LANZO de verdad su FASE 1 — no si solo tiene un `_PLAN.json` en
+    disco ni si `_DIM_CONJUNTOS.csv` ya tiene sus 6 conjuntos como DISEÑO.
+
+    Dueño del criterio: ETAPA-GUARDAR-PRODUCTO.md — "`verificado_en_csv`: SI si el
+    `conjunto_meta` ya aparece en `_FACT_VENTAS.csv` o `_FACT_ENTREGA.csv` (llave confirmada
+    contra data real) · NO si todavía es solo diseño". FASE 1, al cerrar, siempre escribe sus 6
+    filas con `verificado_en_csv=NO` (caso real: OVULOS_PURITY, "SIN PUBLICAR" en sus notas) —
+    por eso NO basta con que exista la fila; hace falta el SI que solo pone la data real.
+
+    Se rechazó version del esquema del plan como llave (rejected en review):
+    nada emite `"version": "v2"` (ni el docstring de este módulo, ni etapa-6), así que la regla
+    nunca corría; y la invariante 5 de CLAUDE.md sube `VERSION` en cada rerun de un plan, así
+    que el rerun de un producto VIEJO también terminaría en v2 y se re-castigaría, mientras un
+    plan nuevo se queda en v1 y escapa — la llave equivocada. `_DIM_CONJUNTOS.csv` es data que
+    el sistema ya posee y ya interpreta con este mismo significado en otro lugar (ETAPA-GUARDAR-
+    PRODUCTO.md), así que no hay parsing nuevo que inventar ni CSV nuevo que acoplar."""
+    for r in filas_dim_conjuntos or []:
+        if (r.get("producto_key") or "").strip() != producto_key:
+            continue
+        if (r.get("fase") or "").strip().upper() not in FASE1_DIM_CONJUNTOS:
+            continue
+        if (r.get("verificado_en_csv") or "").strip().upper() == "SI":
+            return True
+    return False
 
 
 def validar_origen_angulo(plan, voz_filas, min_voz):
@@ -184,7 +203,7 @@ def validar_origen_angulo(plan, voz_filas, min_voz):
     return problemas
 
 
-def validar_plan_fase1(plan, validos, voz_filas=None, min_voz=None):
+def validar_plan_fase1(plan, validos, voz_filas=None, min_voz=None, dim_conjuntos_filas=None):
     problemas = []
     if plan.get("schema") != "plan/1":
         problemas.append("schema desconocido: %r" % plan.get("schema"))
@@ -219,7 +238,7 @@ def validar_plan_fase1(plan, validos, voz_filas=None, min_voz=None):
     if plan.get("fase") == 1 and con_precio > 3:
         problemas.append("%d conjuntos con precio; la regla de Guatemala permite max 3 (ideal 2)"
                          % con_precio)
-    if _version_num(plan.get("version")) >= VERSION_MIN_ORIGEN_EVIDENCIA:
+    if not ya_lanzo_fase1(plan.get("producto_key"), dim_conjuntos_filas):
         problemas.extend(validar_origen_angulo(
             plan, voz_filas if voz_filas is not None else [],
             min_voz if min_voz is not None else verificar_voz.MIN_VOZ_VERIFICADA_POR_ANGULO))
@@ -264,6 +283,7 @@ def validar(ruta=None):
 
     voz_filas = verificar_voz.leer_csv()
     min_voz = verificar_voz.min_voz_requerido()
+    dim_conjuntos_filas = leer_csv(DIM_CONJUNTOS)
 
     errores = 0
     for ruta_plan in planes:
@@ -272,7 +292,7 @@ def validar(ruta=None):
         print("\n%s" % ruta_plan.replace("\\", "/"))
         fase = plan.get("fase")
         if fase == 1:
-            problemas = validar_plan_fase1(plan, validos, voz_filas, min_voz)
+            problemas = validar_plan_fase1(plan, validos, voz_filas, min_voz, dim_conjuntos_filas)
         elif fase in (2, 3):
             problemas = validar_plan_fase2o3(plan)
         else:
