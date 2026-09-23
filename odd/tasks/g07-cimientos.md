@@ -419,7 +419,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
   - Open question for the operator: `Ads/_TOOLS/ingestar_unificado.py:268` still derives
     `mensajes` from clicks (flagged under T1, unrelated to T5) — untouched here, out of scope.
 
-- 23-sep: T6 committed. Write map (before this change):
+- 23-sep: T6 committed `854318d`. Write map (before this change):
   - `flujo.py`: `--todo` (only) wrote `_ESTADO_FLUJO.csv`/`_EVENTOS.csv` (`escribir_estado()`) and
     `_FLUJO.json`/`VISTAS/FLUJO.html` (`main()`), gated by a pre-existing opt-out `--sin-escribir`.
     `flujo.py PRODUCTO`, `--json` (without `--todo`), `--validar` and `--grafo` never wrote —
