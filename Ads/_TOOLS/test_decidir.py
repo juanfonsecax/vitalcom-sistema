@@ -353,6 +353,68 @@ def test_carga_usa_el_gasto_efectivo_de_meta():
     return 0 if ok else 1
 
 
+def test_dia_meta_only_no_corre_la_ventana_de_evaluacion():
+    """Regresion de review round 2 (22-sep-2026): gasto.py agrega una celda por Meta aunque
+    LucidSales no haya escrito ninguna fila ese dia (full outer join). Si `ult` ("ultimo dia CON
+    DATA", que corta la ventana) se calculara sobre ESA celda, un dia donde Meta gasto pero nadie
+    vendio corria la ventana un dia y le sumaba su gasto de mas -- eso fue exactamente el CPA mal
+    calculado de CLEARSTEM/MEDICOS_FALLARON (Q174.8 en vez de Q116.5) en la ronda anterior de
+    review. `ult` tiene que seguir anclado al ultimo dia con una fila REAL de LucidSales, y la
+    ventana no debe colar ningun dia posterior a ese."""
+    import csv
+    import io
+    import tempfile
+    import decidir
+
+    tmp = tempfile.mkdtemp(prefix="decidir_g07t2_ventana_")
+
+    def escribir(nombre, cols, filas):
+        ruta = os.path.join(tmp, nombre)
+        with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(cols)
+            w.writerows(filas)
+        return ruta
+
+    # Una sola venta el 09-10 ($10 Meta). Meta TAMBIEN gasto $99 el 09-12 -- DOS dias despues,
+    # sin ninguna fila de venta ese dia. Con dias=1, la ventana debe ser SOLO 09-10: el gasto del
+    # 09-12 no debe aparecer en spend_usd ni correr "hasta" mas alla de 09-10.
+    rutas = {
+        "FACT_VENTAS_PATH": escribir(
+            "_FACT_VENTAS.csv",
+            ["ventana_ini", "ventana_fin", "rol_ventana", "producto_key", "cuenta_id",
+             "conjunto", "anuncio", "ad_id", "ventas", "mensajes", "spend_usd"],
+            [["2026-09-10", "2026-09-10", "BASE", "PZ", "CTA1", "PZ_ANG-C_R1", "ANU1", "",
+              "1", "10", "10.0"]]),
+        "DIM_CONJ_PATH": escribir("_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"],
+                                  [["PZ", "PZ_ANG-C_R1", "ANG_C"]]),
+        "DIM_BANDAS_PATH": os.path.join(tmp, "sin_bandas.csv"),
+        "ALIAS_PATH": os.path.join(tmp, "sin_alias.csv"),
+        "FACT_ENTREGA_ANUNCIO_PATH": os.path.join(tmp, "sin_entrega_anuncio.csv"),
+        "FACT_ENTREGA_PATH": escribir(
+            "_FACT_ENTREGA.csv",
+            ["ventana_ini", "ventana_fin", "producto_key", "cuenta_id", "conjunto", "spend_usd", "fuente"],
+            [["2026-09-10", "2026-09-10", "PZ", "CTA1", "PZ_ANG-C_R1", "10.0", "MetaAPI-directo"],
+             ["2026-09-12", "2026-09-12", "PZ", "CTA1", "PZ_ANG-C_R1", "99.0", "MetaAPI-directo"]]),
+    }
+    previo = {k: getattr(decidir, k) for k in rutas}
+    try:
+        for k, v in rutas.items():
+            setattr(decidir, k, v)
+        filas = decidir.cargar_datos_duckdb(dias=1, grano="angulo").to_dict("records")
+    finally:
+        for k, v in previo.items():
+            setattr(decidir, k, v)
+
+    ok = (len(filas) == 1 and filas[0]["spend_usd"] == 10.0
+          and str(filas[0]["hasta"])[:10] == "2026-09-10")
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un dia Meta-only DESPUES del ultimo dia con venta no corre la ventana ni le suma su "
+            "gasto ($99 del 09-12 excluido, spend_usd sigue en $10)"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
 def main():
     params = cargar_parametros()
 
@@ -378,7 +440,8 @@ def main():
     fallas += test_progreso_ventas(params)  # 3 comprobaciones
     fallas += test_carga_base_y_alias()
     fallas += test_carga_usa_el_gasto_efectivo_de_meta()
-    total = len(CASOS) + 12
+    fallas += test_dia_meta_only_no_corre_la_ventana_de_evaluacion()
+    total = len(CASOS) + 13
     print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

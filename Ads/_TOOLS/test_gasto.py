@@ -134,6 +134,36 @@ def test_alias_canonicaliza_los_dos_lados_del_join():
         alias._MAPA = mapa_original if mapa_original else None
 
 
+def test_dos_grafias_meta_que_canonicalizan_igual_no_duplican_con_fila_de_anuncio_presente():
+    """Regresion de review round 2 (22-sep-2026, caso real CLEARSTEM/MEDICOS_FALLARON): DOS filas
+    de _FACT_ENTREGA.csv con grafias DISTINTAS que canonicalizan al MISMO conjunto (p.ej. una
+    grafia vieja pre-rename y su "- Copia"), MAS una fila de _FACT_ENTREGA_ANUNCIO.csv para ese
+    mismo conjunto -- el grano CONJUNTO debe sumar las dos grafias exactamente una vez cada una
+    (nunca tres), y nunca sumarle encima el gasto del grano ANUNCIO (son dos funciones separadas,
+    gasto_por_conjunto_ventana() ni siquiera lee el fact de anuncio)."""
+    import alias
+    viejo, nuevo = "GTR13_TEST_R1 + 25ANOS - Copia", "GTR13_TEST_R1"
+    mapa_original = dict(alias._MAPA or {})
+    try:
+        alias._MAPA = {viejo: nuevo}
+        filas_conjunto = [
+            _fila_entrega_conjunto(conjunto=viejo, spend_usd="30.0"),   # grafia vieja
+            _fila_entrega_conjunto(conjunto=nuevo, spend_usd="20.0"),   # grafia ya canonica
+        ]
+        filas_anuncio = [_fila_entrega_anuncio(conjunto=nuevo, spend_usd="999.0")]  # otro grano
+        filas = gasto.gasto_por_conjunto_ventana(
+            filas_venta=[_venta(conjunto=nuevo, spend_usd="1.0")],
+            filas_entrega_conjunto=filas_conjunto,
+        )
+        ok = len(filas) == 1 and filas[0]["conjunto"] == nuevo and filas[0]["spend_usd"] == 50.0
+        print(("  OK     " if ok else "  FALLA  ") + "dos grafias Meta que canonicalizan al mismo "
+              "conjunto se suman UNA vez cada una (30+20=50), sin importar que exista una fila de "
+              "anuncio para el mismo conjunto (grano separado)" + ("" if ok else f"\n         {filas}"))
+        return 0 if ok else 1
+    finally:
+        alias._MAPA = mapa_original if mapa_original else None
+
+
 def test_fuente_no_reconocida_no_cuenta_como_meta():
     filas = gasto.gasto_por_conjunto_ventana(
         filas_venta=[_venta(spend_usd="10.0")],
@@ -325,6 +355,7 @@ def main():
         test_conjunto_sin_cobertura_meta_cae_a_lucidsales,
         test_conjuntos_distintos_no_se_mezclan,
         test_alias_canonicaliza_los_dos_lados_del_join,
+        test_dos_grafias_meta_que_canonicalizan_igual_no_duplican_con_fila_de_anuncio_presente,
         test_fuente_no_reconocida_no_cuenta_como_meta,
         test_anuncio_ad_id_gana_y_se_cuenta_una_vez,
         test_anuncio_ad_id_normaliza_notacion_cientifica,

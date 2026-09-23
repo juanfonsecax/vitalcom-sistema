@@ -355,11 +355,16 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
         join_entrega = ""
 
     # Los dos cortes se cuentan desde el ULTIMO DIA CON DATA e incluyen ese dia (>=, no >):
-    # con `>` la ventana entregaba dias-1 dias y mentia en el encabezado.
+    # con `>` la ventana entregaba dias-1 dias y mentia en el encabezado. El corte de arriba
+    # (`<= ult`) es NUEVO (g07-cimientos T2, encontrado en review 22-sep-2026): `ult` ahora se
+    # calcula SOLO sobre dias con una fila real de LucidSales (ver la CTE `ult`), pero gasto.py
+    # puede agregar celdas de dias MAS RECIENTES que `ult` cuando Meta gasto y LucidSales todavia
+    # no escribio nada ese dia. Sin el `<=` esas celdas colaban sin limite superior y la ventana
+    # terminaba siendo mas ancha que `dias` (contaminando el CPA con un dia de mas).
     dias = max(int(dias), 1)
     dias_fatiga = max(min(int(dias_fatiga), dias - 1), 1) if dias > 1 else 1
-    win = f"v.fecha >= (select f from ult) - interval {dias - 1} day"
-    fat = f"v.fecha >= (select f from ult) - interval {dias_fatiga - 1} day"
+    win = f"v.fecha >= (select f from ult) - interval {dias - 1} day and v.fecha <= (select f from ult)"
+    fat = f"v.fecha >= (select f from ult) - interval {dias_fatiga - 1} day and v.fecha <= (select f from ult)"
 
     sql = f"""
     with {cte_bandas}
@@ -370,7 +375,13 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
             coalesce(am.nuevo, trim(v.conjunto)) as conjunto,
             try_cast(v.spend_usd as double) as spend_usd,
             try_cast(v.ventas as integer) as ventas,
-            try_cast(v.mensajes as integer) as mensajes
+            try_cast(v.mensajes as integer) as mensajes,
+            -- gasto.py agrega una celda por Meta aunque LucidSales no haya escrito ninguna fila
+            -- ese dia (full outer join, para no perder gasto real). "el ultimo dia CON DATA" que
+            -- corta la ventana de evaluacion tiene que seguir significando lo que significaba
+            -- antes de gasto.py -- un dia con una fila de LucidSales -- y no correrse por un dia
+            -- donde solo Meta gasto y nadie vendio (encontrado en review, 22-sep-2026).
+            coalesce(nullif(trim(v.tiene_fila_ventas), ''), '1') = '1' as tiene_fila_ventas
         from read_csv('{f_ventas}', header=true, all_varchar=true) v
         left join alias_map am on am.viejo = trim(v.conjunto)
         where v.ventana_fin is not null and v.ventana_fin != ''
@@ -378,7 +389,7 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
           and upper(coalesce(nullif(trim(v.rol_ventana), ''), 'BASE')) = 'BASE'
     ),
     ult as (
-        select max(fecha) as f from ventas_raw
+        select max(fecha) as f from ventas_raw where tiene_fila_ventas
     ),
     dim_conj as (
         select

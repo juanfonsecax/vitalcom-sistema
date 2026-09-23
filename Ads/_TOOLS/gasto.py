@@ -180,6 +180,15 @@ def gasto_por_conjunto_ventana(filas_venta=None, filas_entrega_conjunto=None, al
             "conjunto": conj, "ventas": v["ventas"], "mensajes": v["mensajes"],
             "spend_usd": spend, "spend_usd_lucidsales": v["spend_lucidsales"],
             "fuente_gasto": fuente,
+            # True si esta celda tiene una fila propia de _FACT_VENTAS.csv (aunque sea de 0
+            # ventas); False si existe solo porque Meta gastó ahi y nadie la reporto todavia.
+            # decidir.py usa esto para que "el ultimo dia CON DATA" (que corta la ventana de
+            # evaluacion) siga significando lo mismo que antes de este modulo -- un dia donde
+            # LucidSales escribio una fila -- y no se corra por un dia donde Meta gasto pero
+            # LucidSales aun no reporto nada (encontrado en review, 22-sep-2026: un conjunto sin
+            # fila de venta ese dia estaba corriendo la ventana un dia y cambiando el denominador
+            # de ventas del CPA, aunque el spend en si nunca estuvo mal contado).
+            "tiene_fila_ventas": k in ventas_agg,
         })
     return filas
 
@@ -203,13 +212,15 @@ def escribir_conjunto_ventana_csv(ruta_salida=None, filas_venta=None, filas_entr
         os.close(fd)
 
     cols = ["ventana_ini", "ventana_fin", "rol_ventana", "producto_key", "cuenta_id", "conjunto",
-            "ventas", "mensajes", "spend_usd", "spend_usd_lucidsales", "fuente_gasto"]
+            "ventas", "mensajes", "spend_usd", "spend_usd_lucidsales", "fuente_gasto",
+            "tiene_fila_ventas"]
     with io.open(ruta_salida, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         for r in filas:
             r2 = dict(r)
             r2["rol_ventana"] = "BASE"
+            r2["tiene_fila_ventas"] = "1" if r.get("tiene_fila_ventas") else "0"
             w.writerow(r2)
 
     return ruta_salida, cobertura
