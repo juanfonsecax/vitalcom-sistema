@@ -1576,8 +1576,8 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
             </div>
             <div class="field-row">
               <div class="field-label">Motor Decisiones</div>
-              <div class="field-val">python Ads/_TOOLS/decidir.py</div>
-              <button class="btn-copy" onclick="copiar('python Ads/_TOOLS/decidir.py', this)">Copiar</button>
+              <div class="field-val">python Ads/_TOOLS/gen_decisiones.py</div>
+              <button class="btn-copy" onclick="copiar('python Ads/_TOOLS/gen_decisiones.py', this)">Copiar</button>
             </div>
             <div class="field-row">
               <div class="field-label">Actualizar Lanzador</div>
