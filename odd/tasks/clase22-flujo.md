@@ -48,14 +48,19 @@ stresses.
   reads (formula problem -> what the product does -> result). Fewer than 6 declared -> block;
   none declared yet -> warning (not a block) so live products keep rendering. Doctrine updated
   (template + ETAPA-5 + ETAPA-11 checklist). Route: delegated (same writer).
-- [ ] T3 — Prefilled WhatsApp message (product name + MSPAS registration). BLOCKED on an
-  operator fact: whether LucidBot routes the chat by the text of the first customer message. The
-  Meta MCP `ads_create_creative` has no field for it, so it would be a manual step.
+- [x] T3 — Prefilled WhatsApp message (product name + sanitary registration). Operator fact
+  (23-sep): LucidBot routes the chat to the product by the ad/campaign ID integration, NOT by
+  the text of the first customer message, so the prefilled text can change freely. The Meta MCP
+  `ads_create_creative` has no field for it, so it stays a manual step in Ads Manager. Route:
+  delegated (2+ non-trivial files).
 
 ## Acceptance criteria
 - T1: a test with a dedicated fixture shows each level's instruction; missing or conflicting
   level blocks; the umbrella flow renders without it; CLEARSTEM/TINNIDROP still pass.
 - T2: tests show <6 -> block, 6-8 -> pass, undeclared -> warning only.
+- T3: tests show the text renders with the product name and GT registry; CO market yields
+  INVIMA; missing registry blocks; the section is absent from `--copy`; CLEARSTEM/TINNIDROP
+  still pass.
 - Full suite green.
 
 ## Backlog (deferred, not authorized)
@@ -101,4 +106,55 @@ stresses.
     true`, new aviso "propuestas_valor no declaradas todavia... (PENDIENTE, no bloquea)".
     `gen_flujo_bot.py CLEARSTEM --copy --propuestas <5-line file>` — correctly RECHAZADO
     ("5 declarada(s), van 6-8"). `verificar_guia_madre.py` — exit 0, "Sin fallas".
-- T3 remains BLOCKED on the operator fact noted above (out of this writer's scope).
+- 23-sep: T3 delivered by delegated writer (route: delegated, trigger: 2+ non-trivial files —
+  gen_flujo_bot.py + test_gen_flujo_bot.py + PLANTILLAS_FLUJO_BOT.md + _DIM_MERCADOS.csv +
+  publicar-meta/SKILL.md). Commit `fa8b565` — feat(gen_flujo_bot): derive the ad's prefilled
+  WhatsApp message with the sanitary registry.
+  - Unblocked by the operator fact (23-sep): LucidBot routes the chat to the product by the
+    ad/campaign ID integration, not by the text of the customer's first message, so the
+    prefilled text can change freely.
+  - Added `registro_sanitario` to `PRODUCTOS/_DIM_MERCADOS.csv` (GT `registro MSPAS`, CO
+    `registro INVIMA`) with the python csv writer, only after confirming SISTEMA's copy of that
+    CSV was byte-identical and `git -C SISTEMA status --short` was clean (both true — edit
+    proceeded in SISTEMA-app only, per the constraint that data changes reach SISTEMA through
+    the operator's ff-merge).
+  - `mensaje_prellenado_anuncio` is derived in `resolver()` (never typed per product): product
+    name + `registro_sanitario`, e.g. "Hola, quiero más información de CLEARSTEM con registro
+    MSPAS". Rendered as an all-`>>`-instruction block (own labeled header "MENSAJE PRELLENADO
+    DEL ANUNCIO — se configura a mano en Ads Manager, no en LucidBot") placed in the template
+    header, before "FICHA DEL PRODUCTO". Design note: it is NOT a raw `═` section like the
+    others, because `para_pegar()` (used by `--copy`) does not strip section-title raya lines
+    (only `es_instruccion` lines) — an existing quirk visible today in how `--copy` already
+    prints e.g. "FICHA DEL PRODUCTO" as literal text. Making the whole block `>>` avoids
+    touching that shared function and guarantees the new text can never leak into `--copy`,
+    without changing any other section's existing behavior.
+  - No raw registration NUMBER in the text (`[REG_MSPAS]`/`[REG_FDA]` stay in
+    `PLANTILLAS_DEFAULTS_OPERADOR.md`), only the organism name, per the task's requirement to
+    keep the phrase short and natural.
+  - Manual-step pointer: added ONE row to `.claude/skills/publicar-meta/SKILL.md` step 3 ("Tres
+    cosas que no se negocian" table), next to the existing `ads_creative_upload_media` manual-step
+    row — it's the actual execution runbook around `ads_create_creative`, not a doctrine/gotchas
+    file (`MCP_PLAYBOOK.md`) or a per-product template (`ETAPA-GUARDAR-PRODUCTO.md`). Points to
+    the rendered text (`gen_flujo_bot.py [PK]`, "MENSAJE PRELLENADO DEL ANUNCIO" section) instead
+    of restating it.
+  - JSON contract: no new top-level field. The block is picked up through the existing
+    `encabezado.instrucciones` list (verified with `gen_flujo_bot.py CLEARSTEM --json`), so
+    `app/backend`'s `dict[str, Any] | None` schema for `encabezado` stays backward compatible
+    unchanged.
+  - Verification: `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` — 40 passed (unchanged
+    item count, new checks run inside `test_gen_flujo_bot.py`'s single item).
+    `python Ads/_TOOLS/test_gen_flujo_bot.py` — all checks green, incl. 12 new ones (GT ->
+    "registro MSPAS", fixture CO -> "registro INVIMA", missing registry blocks, absent from
+    `--copy`, present in the full render, CLEARSTEM/TINNIDROP both resolve and carry their
+    product name). `gen_flujo_bot.py --validar` — 2/5, unchanged (CLEARSTEM/TINNIDROP pass; the
+    other 3 block on the same pre-existing unrelated missing data as before — confirmed
+    `mensaje_prellenado_anuncio` is not among their listed blockers, and the real CO product
+    OVULOS_PURITY resolves its registry too). `gen_flujo_bot.py CLEARSTEM --json` — `ok: true`,
+    `faltan: []`, confirmed no file written (`git status` clean for `PRODUCTOS/CLEARSTEM/`).
+    `verificar_guia_madre.py` — exit 0, "Sin fallas". `app/backend`: `uv run pytest -q
+    --ignore=tests/test_meta.py` — launched with a 120s foreground timeout per the runner note
+    (known to hang after ~3:20); it moved to background before finishing within this session.
+    `test_fase1_api.py`'s `gen_flujo_bot.py`-touching test uses a **fake** stub script
+    (`FLUJO_BOT_FALSO`), not the real generator, and asserts only on `dict`-typed fields — read
+    as evidence the JSON contract change is inert there, but the actual backend suite result is
+    PENDING (not confirmed pass/fail by this session).
