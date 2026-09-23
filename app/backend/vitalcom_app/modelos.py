@@ -373,6 +373,21 @@ class OrdenItem(Base):
     conjuntos: list[str] = []
 
 
+class PendienteRegistro(Base):
+    """Un conjunto NUESTRO de Meta (producto_key clasificado) que todavía no
+    tiene fila de `angulo_key` en `_DIM_CONJUNTOS.csv`. Su gasto ya cuenta a nivel producto
+    (invariante 1, `flujo.py`/`gasto.py` agregan por `coalesce(angulo_key, conjunto)`); lo único
+    pendiente es la fila de registro, que da de alta ETAPA-6 — ver `lo_produce`."""
+
+    cuenta_alias: str = ""
+    campana: str = ""
+    conjunto: str = ""
+    producto_key: str = ""
+    spend_usd: float = 0.0
+    anuncios: int = 0
+    lo_produce: str = ""
+
+
 class ParametroMotor(Base):
     """Una fila de `_PARAMETROS_DECISION.csv`, tal cual: un reloj o umbral del motor de decisión."""
 
@@ -387,6 +402,7 @@ class OrdenesRespuesta(Base):
     schema_version: str = Field(alias="schema", default="")
     rezago_dias: int = 0
     capa_analitica: CapaAnalitica | None = None
+    pendientes_registro: list[PendienteRegistro] = []
     llamadas: list[Any] = []
     ordenes: list[OrdenItem] = []
     bloqueantes: list[Any] = []

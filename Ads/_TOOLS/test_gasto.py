@@ -91,6 +91,26 @@ def test_meta_sin_ninguna_venta_se_cuenta_igual():
     return 0 if ok else 1
 
 
+def test_conjunto_sin_dim_todavia_cuenta_a_nivel_producto():
+    """Un conjunto NUESTRO (producto_key ya clasificado por producto_de(), via patron de nombre
+    o DIM) que TODAVIA no tiene fila de angulo_key en
+    _DIM_CONJUNTOS.csv sigue apareciendo en el gasto de su producto_key — esta funcion trabaja
+    al grano (producto_key, cuenta_id, ventana, conjunto), nunca consulta _DIM_CONJUNTOS.csv, asi
+    que un conjunto sin dimension NO se pierde ni se excluye: solo le falta el angulo, que es un
+    problema de REGISTRO (lo cierra ETAPA-6), no de conteo de plata."""
+    filas = gasto.gasto_por_conjunto_ventana(
+        filas_venta=[_venta(conjunto="CONJUNTO_SIN_DIM_TODAVIA", spend_usd="10.0")],
+        filas_entrega_conjunto=[_fila_entrega_conjunto(conjunto="CONJUNTO_SIN_DIM_TODAVIA",
+                                                        spend_usd="80.0")],
+    )
+    ok = (len(filas) == 1 and filas[0]["producto_key"] == "PX" and filas[0]["spend_usd"] == 80.0
+          and filas[0]["conjunto"] == "CONJUNTO_SIN_DIM_TODAVIA")
+    print(("  OK     " if ok else "  FALLA  ") + "un conjunto sin fila en _DIM_CONJUNTOS.csv sigue "
+          "contando su gasto bajo su producto_key (no se descarta por falta de registro)"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
 def test_conjunto_sin_cobertura_meta_cae_a_lucidsales():
     filas = gasto.gasto_por_conjunto_ventana(
         filas_venta=[_venta(spend_usd="7.0"), _venta(anuncio="ANU_B", spend_usd="3.0")],
@@ -352,6 +372,7 @@ def main():
         test_conjunto_meta_gana_y_se_cuenta_una_sola_vez,
         test_n_anuncios_sin_match_no_multiplican_el_gasto_del_conjunto,
         test_meta_sin_ninguna_venta_se_cuenta_igual,
+        test_conjunto_sin_dim_todavia_cuenta_a_nivel_producto,
         test_conjunto_sin_cobertura_meta_cae_a_lucidsales,
         test_conjuntos_distintos_no_se_mezclan,
         test_alias_canonicaliza_los_dos_lados_del_join,

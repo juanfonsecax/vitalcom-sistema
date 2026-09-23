@@ -112,6 +112,60 @@ def cargar_dim_productos():
         }
 
 
+def cargar_pendientes_registro():
+    """Anuncios NUESTROS de Meta (`producto_key` clasificado, via _DIM_CONJUNTOS.csv o via el
+    patron de nombre de PROD_KEY — ver producto_de() en ingerir_meta.py) cuyo conjunto todavia
+    no tiene fila de `angulo_key` en _DIM_CONJUNTOS.csv.
+
+    NO confundir con un anuncio AJENO: la cuenta GTR7 es compartida con clientes de agencia
+    (DR MELAXIN, MAG, TRULY X1 GT, OLD SCHOOL VENTAS — ver el docstring FILTRADO de
+    bajar_meta_insights.py). Un ajeno no clasifica ningun producto_key (producto_de() devuelve
+    SIN_CLASIFICAR) y bajar_meta_insights.py ya lo excluye antes de que llegue aca — no aparece
+    en `_FACT_ENTREGA_ANUNCIO.csv` y por lo tanto tampoco en esta lista. Lo que SI aparece aca es
+    NUESTRO, ya gasta plata, y solo le falta la fila de registro.
+
+    Quien cierra el pendiente: ETAPA-6 (el planificador de lanzamiento, dueño unico de
+    _DIM_CONJUNTOS.csv y de la CONVENCION DE NOMBRES) da de alta la fila que falta con un
+    escritor CSV real (invariante 11) — nunca a mano.
+    """
+    ruta = P("_FACT_ENTREGA_ANUNCIO.csv")
+    if not os.path.exists(ruta):
+        return []
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import ingerir_meta as im  # un solo dueño de producto_de()/leer_dim()/canonico(), no se copia
+
+    _, con_angulo = im.leer_dim()
+    agg = {}
+    with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
+        for r in csv.DictReader(fh):
+            pk = (r.get("producto_key") or "").strip()
+            conj = (r.get("conjunto") or "").strip()
+            if not pk or pk == "SIN_CLASIFICAR" or not conj:
+                continue
+            if conj in con_angulo or im.canonico(conj) in con_angulo:
+                continue   # ya tiene angulo_key declarado en _DIM_CONJUNTOS.csv
+            clave = (r.get("cuenta_alias") or "", r.get("campana") or "", conj)
+            a = agg.setdefault(clave, {
+                "cuenta_alias": r.get("cuenta_alias") or "",
+                "campana": r.get("campana") or "",
+                "conjunto": conj,
+                "producto_key": pk,
+                "spend_usd": 0.0,
+                "anuncios": 0,
+                "lo_produce": "ETAPA-6 / _DIM_CONJUNTOS.csv",
+            })
+            try:
+                a["spend_usd"] += float(r.get("spend_usd") or 0)
+            except (TypeError, ValueError):
+                pass
+            a["anuncios"] += 1
+    salida = list(agg.values())
+    for a in salida:
+        a["spend_usd"] = round(a["spend_usd"], 2)
+    salida.sort(key=lambda x: -x["spend_usd"])
+    return salida
+
+
 def cargar_parametros():
     p = {"surfing_pct": 20.0}
     ruta = P("_PARAMETROS_DECISION.csv")
@@ -152,6 +206,7 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
             "llamadas": [],
             "bloqueantes": [{"falta": f"archivo {dec_path}", "lo_produce": "decidir.py / gen_decisiones.py", "ambito": "decisiones"}],
             "avisos": [],
+            "pendientes_registro": [],
         }
 
     rezago_dias = data_dec.get("rezago_dias", 0)
@@ -183,6 +238,15 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
     if capa_analitica.get("estado") == "FALLO":
         avisos.append("CAPA ANALITICA (dbt) FALLO: %s — el motor esta leyendo los CSV "
                        "directamente." % capa_analitica.get("detalle", ""))
+    pendientes_registro = cargar_pendientes_registro()
+    if pendientes_registro:
+        gasto_pend = sum(p["spend_usd"] for p in pendientes_registro)
+        avisos.append(
+            "%d conjunto(s) NUESTRO(S) sin registrar en _DIM_CONJUNTOS.csv ($%.2f de gasto "
+            "sin angulo_key, ya contado a nivel producto): %s — lo produce ETAPA-6."
+            % (len(pendientes_registro), gasto_pend,
+               ", ".join(p["conjunto"] for p in pendientes_registro[:5]))
+        )
     num_llamada = 1
 
     productos_data = data_dec.get("productos", [])
@@ -368,6 +432,7 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
         "producto": producto_filtro or "TODOS",
         "rezago_dias": rezago_dias,
         "capa_analitica": capa_analitica,
+        "pendientes_registro": pendientes_registro,
         "ordenes": ordenes_resumen,
         "llamadas": llamadas,
         "manifiesto": manifiesto,
@@ -422,6 +487,12 @@ def main():
             print(f"    X {b['falta']}")
             print(f"      lo produce: {b['lo_produce']}")
         return 1
+
+    if res.get("avisos"):
+        print()
+        print(f"  AVISOS ({len(res['avisos'])}):")
+        for av in res["avisos"]:
+            print(f"    ! {av}")
 
     return 0
 

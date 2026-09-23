@@ -21,10 +21,17 @@ import gen_ordenes  # noqa: E402
 class TestGenOrdenes(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
+        # cargar_pendientes_registro() lee la _FACT_ENTREGA_ANUNCIO.csv REAL del repo (no toma
+        # ruta_decisiones). Los tests de este archivo prueban otra cosa y no deben acoplarse a la
+        # data real -> se aisla por default; TestPendientesRegistro (mas abajo) la restaura para
+        # probarla de verdad con sus propios fixtures.
+        self._orig_pendientes = gen_ordenes.cargar_pendientes_registro
+        gen_ordenes.cargar_pendientes_registro = lambda: []
 
     def tearDown(self):
         import shutil
         shutil.rmtree(self.temp_dir, ignore_errors=True)
+        gen_ordenes.cargar_pendientes_registro = self._orig_pendientes
 
     def test_ordenes_pausar_y_escalar_con_snapshot(self):
         decisiones_fixture = {
@@ -301,6 +308,99 @@ class TestGenOrdenes(unittest.TestCase):
             self.assertTrue(any("sesga medición" in a for a in res["avisos"]))
         finally:
             gen_ordenes.cargar_dim_conjuntos = orig_dim
+
+
+class TestPendientesRegistro(unittest.TestCase):
+    """Conjuntos NUESTROS (producto_key clasificado) sin fila de angulo_key en
+    _DIM_CONJUNTOS.csv deben salir como pendiente visible, distintos de un AJENO
+    (SIN_CLASIFICAR, que bajar_meta_insights.py ya excluye antes de llegar al CSV)."""
+
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self._orig_P = gen_ordenes.P
+        gen_ordenes.P = lambda *a: os.path.join(self.temp_dir, *a)
+
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        import ingerir_meta as im
+        self._im = im
+        self._orig_leer_dim = im.leer_dim
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.temp_dir, ignore_errors=True)
+        gen_ordenes.P = self._orig_P
+        self._im.leer_dim = self._orig_leer_dim
+
+    def _escribir_fact_ad(self, filas):
+        cols = ["cuenta_alias", "campana", "conjunto", "producto_key", "spend_usd"]
+        ruta = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
+        import csv as _csv
+        with io.open(ruta, "w", newline="", encoding="utf-8") as fh:
+            w = _csv.DictWriter(fh, fieldnames=cols)
+            w.writeheader()
+            for f in filas:
+                w.writerow(f)
+
+    def test_conjunto_nuestro_sin_dim_sale_pendiente(self):
+        # "Conjunto Nuevo" es nuestro (producto_key=TINNIDROP) pero no está en con_angulo.
+        self._escribir_fact_ad([
+            {"cuenta_alias": "GTR7", "campana": "GTR7_TINNIDROP_TEST", "conjunto": "Conjunto Nuevo",
+             "producto_key": "TINNIDROP", "spend_usd": "10.50"},
+            {"cuenta_alias": "GTR7", "campana": "GTR7_TINNIDROP_TEST", "conjunto": "Conjunto Nuevo",
+             "producto_key": "TINNIDROP", "spend_usd": "4.50"},
+        ])
+        self._im.leer_dim = lambda: ({}, set())
+
+        pend = gen_ordenes.cargar_pendientes_registro()
+        self.assertEqual(len(pend), 1)
+        self.assertEqual(pend[0]["conjunto"], "Conjunto Nuevo")
+        self.assertEqual(pend[0]["producto_key"], "TINNIDROP")
+        self.assertEqual(pend[0]["spend_usd"], 15.0)
+        self.assertEqual(pend[0]["anuncios"], 2)
+        self.assertEqual(pend[0]["lo_produce"], "ETAPA-6 / _DIM_CONJUNTOS.csv")
+
+    def test_conjunto_ya_registrado_no_sale_pendiente(self):
+        self._escribir_fact_ad([
+            {"cuenta_alias": "GTR7", "campana": "GTR7_TINNIDROP_TEST", "conjunto": "Conjunto Viejo",
+             "producto_key": "TINNIDROP", "spend_usd": "10.00"},
+        ])
+        self._im.leer_dim = lambda: ({}, {"Conjunto Viejo"})
+
+        pend = gen_ordenes.cargar_pendientes_registro()
+        self.assertEqual(pend, [])
+
+    def test_ajeno_sin_clasificar_no_sale_pendiente(self):
+        # Un ajeno (cliente de agencia) nunca clasifica producto_key: SIN_CLASIFICAR, o vacio.
+        self._escribir_fact_ad([
+            {"cuenta_alias": "GTR7", "campana": "DR MELAXIN CAMPAIGN", "conjunto": "DR MELAXIN AD SET",
+             "producto_key": "SIN_CLASIFICAR", "spend_usd": "99.00"},
+        ])
+        self._im.leer_dim = lambda: ({}, set())
+
+        pend = gen_ordenes.cargar_pendientes_registro()
+        self.assertEqual(pend, [])
+
+    def test_aviso_y_gasto_llegan_al_resultado_de_generar_ordenes(self):
+        self._escribir_fact_ad([
+            {"cuenta_alias": "GTR7", "campana": "GTR7_TINNIDROP_TEST", "conjunto": "Conjunto Nuevo",
+             "producto_key": "TINNIDROP", "spend_usd": "12.00"},
+        ])
+        self._im.leer_dim = lambda: ({}, set())
+
+        dec_path = os.path.join(self.temp_dir, "decisiones.json")
+        with io.open(dec_path, "w", encoding="utf-8") as fh:
+            json.dump({"generado": "2026-09-22", "rezago_dias": 0, "productos": []}, fh)
+
+        orig_dim_conj = gen_ordenes.cargar_dim_conjuntos
+        gen_ordenes.cargar_dim_conjuntos = lambda: {}
+        try:
+            res = gen_ordenes.generar_ordenes(ruta_decisiones=dec_path)
+        finally:
+            gen_ordenes.cargar_dim_conjuntos = orig_dim_conj
+
+        self.assertEqual(len(res["pendientes_registro"]), 1)
+        self.assertEqual(res["pendientes_registro"][0]["spend_usd"], 12.0)
+        self.assertTrue(any("Conjunto Nuevo" in a and "ETAPA-6" in a for a in res["avisos"]))
 
 
 if __name__ == "__main__":
