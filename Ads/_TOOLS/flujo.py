@@ -537,19 +537,42 @@ def _ev_eventos(p, ctx, env):
     return n >= lim, que
 
 
+def _indice_gasto(env):
+    """gasto.IndiceGasto cacheado en `env`, sobre los FACT de la MISMA base (real o fixture) que
+    `env` ya resuelve — nunca el _ALIAS_CONJUNTOS.csv del repo real contra un fixture de test."""
+    if getattr(env, "_gasto_idx", None) is None:
+        if TOOLS not in sys.path:
+            sys.path.insert(0, TOOLS)
+        import gasto
+        am = env.alias()
+        env._gasto_idx = gasto.IndiceGasto(
+            filas_anuncio=env.csv("_FACT_ENTREGA_ANUNCIO.csv"),
+            filas_conjunto=env.csv("_FACT_ENTREGA.csv"),
+            alias_fn=lambda n: am.get(n, n),
+        )
+    return env._gasto_idx
+
+
 def _ventas_base(env, pk):
     """(fila, conjunto canónico) de las filas de _FACT_VENTAS.csv del producto que SUMAN.
 
     BASE suma; CONTROL solapa a propósito para auditar y nunca suma (DATA_PLAYBOOK). El conjunto
-    se resuelve con _ALIAS_CONJUNTOS.csv para que un renombrado en Meta cruce con su dimensión."""
+    se resuelve con _ALIAS_CONJUNTOS.csv para que un renombrado en Meta cruce con su dimensión.
+
+    `spend_usd` de la fila yielded NO es el de LucidSales tal cual: gasto.py lo reemplaza por el
+    de Meta cuando hay cobertura (g07-cimientos T2). Se yieldea una COPIA de la fila -- nunca se
+    muta la fila cacheada en `env.csv()`, que otros lectores del mismo producto reusan tal cual."""
     am = env.alias()
+    idx = _indice_gasto(env)
     for r in env.csv("_FACT_VENTAS.csv"):
         if (r.get("producto_key") or "").strip() != pk:
             continue
         if (r.get("rol_ventana") or "BASE").strip().upper() != "BASE":
             continue
         cj = (r.get("conjunto") or "").strip()
-        yield r, am.get(cj, cj)
+        r2 = dict(r)
+        r2["spend_usd"], r2["fuente_gasto"] = idx.gasto_de(r)
+        yield r2, am.get(cj, cj)
 
 
 def _angulos_acumulados(env, pk):

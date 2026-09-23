@@ -15,6 +15,7 @@ import csv, sys, os, re, collections
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from alias import canonico   # un conjunto renombrado en Meta cruza con su dimension
+import gasto as _gasto        # fuente unica del spend_usd (g07-cimientos T2)
 
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
@@ -71,6 +72,7 @@ def main():
     escribir = "--escribir" in sys.argv
     V = list(csv.DictReader(open(VENTAS, encoding="utf-8-sig")))
     C = list(csv.DictReader(open(CONJ,   encoding="utf-8-sig")))
+    idx_gasto = _gasto.IndiceGasto()  # spend_usd: Meta cuando hay cobertura, LucidSales si no
 
     # indice de conjuntos por nombre normalizado -> hereda el ANGULO y sus covariables
     idx = {}
@@ -94,7 +96,7 @@ def main():
         a["reps"].add(r["anuncio"]); a["conj"].add(norm_txt(canonico(r["conjunto"])))
         a["cta"].add(r["cuenta_alias"]); a["camp"].add(r["campana"])
         a["f"] += [r["ventana_ini"], r["ventana_fin"]]
-        a["spend"] += num(r["spend_usd"]); a["ventas"] += int(num(r["ventas"]))
+        a["spend"] += idx_gasto.gasto_de(r)[0]; a["ventas"] += int(num(r["ventas"]))
         a["msg"] += num(r["mensajes"]); a["clk"] += num(r["clicks"]); a["imp"] += num(r["impresiones"])
 
     filas, sin_conj = [], 0

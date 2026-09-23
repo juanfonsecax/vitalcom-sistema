@@ -277,6 +277,7 @@ def test_carga_base_y_alias():
         "DIM_BANDAS_PATH": escribir("_DIM_BANDAS.csv", ["conjunto_meta", "coincide"], [[viejo, "NO"]]),
         "ALIAS_PATH": escribir("_ALIAS_CONJUNTOS.csv", ["nombre_viejo", "nombre_nuevo"], [[viejo, nuevo]]),
         "FACT_ENTREGA_ANUNCIO_PATH": os.path.join(tmp, "no_existe.csv"),
+        "FACT_ENTREGA_PATH": os.path.join(tmp, "no_existe2.csv"),
     }
     previo = {k: getattr(decidir, k) for k in rutas}
     try:
@@ -292,6 +293,63 @@ def test_carga_base_y_alias():
     print(("  OK     " if ok else "  FALLA  ")
           + "Carga: CONTROL no suma y el conjunto renombrado conserva su ángulo y su banda"
           + ("" if ok else "\n         " + str(filas)))
+    return 0 if ok else 1
+
+
+def test_carga_usa_el_gasto_efectivo_de_meta():
+    """g07-cimientos T2: el CPA que arma cargar_datos_duckdb() ya NO es el spend_usd de
+    LucidSales tal cual -- pasa por gasto.py, que lo reemplaza por el de Meta cuando hay
+    cobertura. Sin esto, decidir.py seguiria decidiendo sobre un gasto que puede estar congelado
+    a 0.65-0.75x del real (evidencia 06/14/15/16/20-sep-2026)."""
+    import csv
+    import io
+    import tempfile
+    import decidir
+
+    tmp = tempfile.mkdtemp(prefix="decidir_g07t2_")
+
+    def escribir(nombre, cols, filas):
+        ruta = os.path.join(tmp, nombre)
+        with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+            w = csv.writer(fh)
+            w.writerow(cols)
+            w.writerows(filas)
+        return ruta
+
+    # LucidSales dice $10 de gasto; Meta (MetaAPI-directo, mismo conjunto/ventana) dice $50.
+    # decidir.py tiene que usar los $50 -- eso es exactamente lo que rompio el CPA de NUSAVA/ARDOR.
+    rutas = {
+        "FACT_VENTAS_PATH": escribir(
+            "_FACT_VENTAS.csv",
+            ["ventana_ini", "ventana_fin", "rol_ventana", "producto_key", "cuenta_id",
+             "conjunto", "anuncio", "ad_id", "ventas", "mensajes", "spend_usd"],
+            [["2026-09-10", "2026-09-10", "BASE", "PY", "CTA1", "PY_ANG-B_R1", "ANU1", "",
+              "1", "10", "10.0"]]),
+        "DIM_CONJ_PATH": escribir("_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"],
+                                  [["PY", "PY_ANG-B_R1", "ANG_B"]]),
+        "DIM_BANDAS_PATH": os.path.join(tmp, "sin_bandas.csv"),
+        "ALIAS_PATH": os.path.join(tmp, "sin_alias.csv"),
+        "FACT_ENTREGA_ANUNCIO_PATH": os.path.join(tmp, "sin_entrega_anuncio.csv"),
+        "FACT_ENTREGA_PATH": escribir(
+            "_FACT_ENTREGA.csv",
+            ["ventana_ini", "ventana_fin", "cuenta_id", "conjunto", "spend_usd", "fuente"],
+            [["2026-09-10", "2026-09-10", "CTA1", "PY_ANG-B_R1", "50.0", "MetaAPI-directo"]]),
+    }
+    previo = {k: getattr(decidir, k) for k in rutas}
+    try:
+        for k, v in rutas.items():
+            setattr(decidir, k, v)
+        filas = decidir.cargar_datos_duckdb(dias=14, grano="angulo").to_dict("records")
+        cobertura = dict(decidir.COBERTURA_GASTO)
+    finally:
+        for k, v in previo.items():
+            setattr(decidir, k, v)
+
+    ok = (len(filas) == 1 and float(filas[0]["spend_usd"]) == 50.0
+          and cobertura == {"MetaAPI-conjunto": 1})
+    print(("  OK     " if ok else "  FALLA  ")
+          + "cargar_datos_duckdb() usa el gasto de Meta ($50), no el de LucidSales ($10)"
+          + ("" if ok else "\n         filas=%s cobertura=%s" % (filas, cobertura)))
     return 0 if ok else 1
 
 
@@ -319,7 +377,8 @@ def main():
     fallas += test_cierre_meta_benchmark()
     fallas += test_progreso_ventas(params)  # 3 comprobaciones
     fallas += test_carga_base_y_alias()
-    total = len(CASOS) + 11
+    fallas += test_carga_usa_el_gasto_efectivo_de_meta()
+    total = len(CASOS) + 12
     print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

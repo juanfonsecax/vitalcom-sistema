@@ -192,11 +192,21 @@ def serie_por_angulo(pk_filtro=None):
     respeta el total y la posición en el calendario, que es lo que el ciclo de vida necesita.
     """
     from alias import mapa_de
+    import gasto as _gasto
     am = mapa_de(leer_csv("_ALIAS_CONJUNTOS.csv"))
     ang = {}
     for r in leer_csv("_DIM_CONJUNTOS.csv"):
         cm = (r.get("conjunto_meta") or "").strip()
         ang[((r.get("producto_key") or "").strip(), am.get(cm, cm))] = (r.get("angulo_key") or "").strip()
+
+    # spend_usd deja de ser el de LucidSales tal cual: gasto.py lo reemplaza por el de Meta
+    # cuando hay cobertura (g07-cimientos T2). PROD se lee en llamada, no en import, para
+    # respetar el monkeypatch de PROD que hacen los tests de este módulo.
+    idx_gasto = _gasto.IndiceGasto(
+        alias_fn=lambda n: am.get(n, n),
+        ruta_entrega_anuncio=os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv"),
+        ruta_entrega=os.path.join(PROD, "_FACT_ENTREGA.csv"),
+    )
 
     serie = collections.defaultdict(lambda: collections.defaultdict(lambda: [0.0, 0.0, 0.0]))
     control = collections.Counter()
@@ -209,6 +219,7 @@ def serie_por_angulo(pk_filtro=None):
         cj = am.get(cj, cj)                 # un renombrado en Meta cruza con su dimensión
         if not cj or cj == "SIN_ATRIBUCION":
             continue                        # filas sintéticas de cuadre: no son una celda
+        spend_efectivo, _fuente = idx_gasto.gasto_de(r)
         ak = ang.get((pk, cj))
         if not ak:
             # Grafía que NO cruza con _DIM_CONJUNTOS ni por alias: el gasto existe pero su ÁNGULO se pierde
@@ -218,7 +229,7 @@ def serie_por_angulo(pk_filtro=None):
             ak = cj
             if (r.get("rol_ventana") or "").strip() == "BASE":
                 h = huerfanos[(pk, cj)]
-                h[0] += _num(r.get("spend_usd"))
+                h[0] += spend_efectivo
                 h[1] += _num(r.get("ventas"))
         if (r.get("rol_ventana") or "").strip() != "BASE":
             control[(pk, ak)] += int(_num(r.get("ventas")))
@@ -229,7 +240,7 @@ def serie_por_angulo(pk_filtro=None):
         except ValueError:
             continue
         n = max((fin - ini).days + 1, 1)
-        sp, ve, ms = _num(r.get("spend_usd")), _num(r.get("ventas")), _num(r.get("mensajes"))
+        sp, ve, ms = spend_efectivo, _num(r.get("ventas")), _num(r.get("mensajes"))
         for i in range(n):
             c = serie[(pk, ak)][ini + datetime.timedelta(days=i)]
             c[0] += sp / n

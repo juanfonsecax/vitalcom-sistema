@@ -72,6 +72,12 @@ from scipy.stats import gamma as _gamma, fisher_exact
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from alias import mapa_de as _alias_de  # noqa: E402
+import gasto as _gasto  # noqa: E402 -- fuente unica del spend_usd (g07-cimientos T2)
+
+# Cobertura de la ultima corrida de cargar_datos_duckdb(): {fuente_gasto: n_filas}. La lee
+# analizar_portafolio() para reportarla en el JSON (ver gasto.py: nunca se debe usar el
+# spend_usd de _FACT_VENTAS.csv sin decir de donde salio de verdad).
+COBERTURA_GASTO = {}
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -283,7 +289,21 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
     if mapa_alias:
         con.executemany("insert into alias_map values (?, ?)", list(mapa_alias.items()))
 
-    f_ventas = FACT_VENTAS_PATH.replace("\\", "/")
+    # spend_usd deja de ser el de _FACT_VENTAS.csv (LucidSales) tal cual: gasto.py lo reemplaza
+    # por el de Meta cuando hay cobertura (ad_id -> nombre -> conjunto), y solo cae a LucidSales
+    # en los dias sin pull de Meta. Ver Ads/_TOOLS/gasto.py para la regla completa y por que.
+    # El CSV temporal se limpia al final de esta funcion (variable _ruta_ventas_gasto).
+    global COBERTURA_GASTO
+    # Rutas del MODULO (no las constantes de gasto.py): flujo.py las monkey-parchea para correr
+    # el motor sobre un fixture de test (Entorno.motor()); sin esto un fixture leería el gasto
+    # de Meta del repo real y contaminaría el resultado del test.
+    _ruta_ventas_gasto, COBERTURA_GASTO = _gasto.escribir_ventas_con_gasto_efectivo(
+        ruta_ventas=FACT_VENTAS_PATH,
+        ruta_entrega_anuncio=FACT_ENTREGA_ANUNCIO_PATH,
+        ruta_entrega=FACT_ENTREGA_PATH,
+    )
+
+    f_ventas = _ruta_ventas_gasto.replace("\\", "/")
     f_conj = DIM_CONJ_PATH.replace("\\", "/")
     f_bandas = DIM_BANDAS_PATH.replace("\\", "/")
 
@@ -411,6 +431,10 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
     """
     df = con.execute(sql).fetchdf()
     con.close()
+    try:
+        os.remove(_ruta_ventas_gasto)
+    except OSError:
+        pass
     return df
 
 
@@ -800,6 +824,9 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
         # no gate. Se expone acá para que la app muestre "cierre actual vs meta" sin hardcodearlo.
         "cierre_meta_min_pct": float(params.get("cierre_meta_min_pct", 15.0)),
         "cierre_meta_max_pct": float(params.get("cierre_meta_max_pct", 20.0)),
+        # De donde salio el spend_usd de cada fila de venta (g07-cimientos T2, Ads/_TOOLS/gasto.py):
+        # MetaAPI-ad_id/nombre/conjunto = Meta Graph API; LucidSales-fallback = dias sin pull de Meta.
+        "cobertura_gasto": dict(COBERTURA_GASTO),
         "resumen_acciones": {
             "PAUSAR": 0,
             "RENOVAR": 0,
