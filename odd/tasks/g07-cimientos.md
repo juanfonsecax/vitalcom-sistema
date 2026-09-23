@@ -59,6 +59,16 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
       reports, dbt models) takes spend from Meta facts joined by ad_id, with the LucidSales fallback
       before 2026-09-06. One helper, not N copies. Doctrine owner rows updated (CLAUDE.md map,
       DATA_PLAYBOOK). Check: tests; before/after of `_DECISIONES.json` explained.
+      ALSO (found 22-sep while checking T1 with dbt):
+      (a) The production `dbt build` fails. `warehouse/models/_models.yml:19` accepts estado
+          VIVO/PAUSADO/LISTO/ARCHIVADO, but `_DIM_PRODUCTOS.csv` uses NUEVO (OVULOS_PURITY).
+          `gen_decisiones.py:57` degrades to a printed warning, so the analytics layer silently goes
+          stale. Fix: a single owner for the product-state vocabulary (the dbt test and flujo.py read
+          it, no copies), and a failing dbt build must be visible where the operator looks (orders
+          header / app), not only on stdout.
+      (b) Deployment order: `stg_entrega_anuncio` needs the `ad_id` column. After the merge, run the
+          Meta re-pull (which migrates the CSV header through upsert_fact) BEFORE any dbt build. The
+          nightly chain order (datos -> bajar_meta -> motor) already respects it; document it.
 - [ ] T3 Unknown ads: ingestion lists ads without a `_DIM_CONJUNTOS` row as a visible pending item
       (not silently dropped or left without angle); the path to register them is declared.
 - [ ] T4 (P4) Bot order: F2.etapa-11 becomes a congruence diagnosis (no rewrite gate); the F3 entry
