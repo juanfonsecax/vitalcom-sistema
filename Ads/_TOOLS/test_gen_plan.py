@@ -173,10 +173,110 @@ def test_plan_fase1_todo_imagen_no_falla_por_formato():
     return 0 if ok else 1
 
 
+def _conjunto_voz(n, angulo, voz_ids):
+    return {"n": n, "angulo_key": angulo, "nivel_conciencia": "1", "formato": "IMAGEN",
+            "origen_angulo": "VOZ_CLIENTE", "voz_ids": voz_ids}
+
+
+def _conjunto_video(n, angulo, fuente):
+    return {"n": n, "angulo_key": angulo, "nivel_conciencia": "1", "formato": "IMAGEN",
+            "origen_angulo": "VIDEO_COMPETENCIA", "fuente_transcripcion": fuente}
+
+
+def _voz_fila(producto, voz_id, estado):
+    return {"producto_key": producto, "voz_id": voz_id, "estado": estado}
+
+
+def test_plan_fase1_v1_legacy_no_exige_origen_angulo():
+    """Grandfathering (T10): un plan version 'v1' (todos los reales emitidos hasta hoy) no
+    trae origen_angulo/voz_ids y no debe empezar a fallar por eso."""
+    plan = dict(PLAN_FASE1_BASE, version="v1",
+                conjuntos=[{"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"}])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+    ok = problemas == []
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un plan version v1 (legacy) no exige origen_angulo ni voz_ids"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_v2_sin_origen_angulo_falla():
+    plan = dict(PLAN_FASE1_BASE, version="v2",
+                conjuntos=[{"n": 1, "angulo_key": "A", "nivel_conciencia": "1", "formato": "IMAGEN"}])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+    ok = any("origen_angulo" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un plan version v2 sin origen_angulo declarado falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_v2_voz_cliente_bajo_el_minimo_falla():
+    voz_filas = [_voz_fila("X", "V1", "VERIFICADA"), _voz_fila("X", "V2", "PENDIENTE")]
+    plan = dict(PLAN_FASE1_BASE, version="v2", conjuntos=[_conjunto_voz(1, "A", ["V1", "V2"])])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 3)
+    ok = any("VOZ_CLIENTE" in p and "1" in p and "3" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "origen VOZ_CLIENTE con menos voz_id VERIFICADA que el mínimo falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_v2_voz_cliente_cumple_el_minimo_no_falla():
+    voz_filas = [_voz_fila("X", "V%d" % i, "VERIFICADA") for i in range(1, 4)]
+    plan = dict(PLAN_FASE1_BASE, version="v2",
+                conjuntos=[_conjunto_voz(1, "A", ["V1", "V2", "V3"])])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 3)
+    ok = problemas == []
+    print(("  OK     " if ok else "  FALLA  ")
+          + "origen VOZ_CLIENTE con exactamente el mínimo de voz_id VERIFICADA no falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_v2_voz_id_desconocido_falla():
+    voz_filas = [_voz_fila("X", "V1", "VERIFICADA")]
+    plan = dict(PLAN_FASE1_BASE, version="v2", conjuntos=[_conjunto_voz(1, "A", ["V1", "V999"])])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, voz_filas, 1)
+    ok = any("V999" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "citar un voz_id que no existe en _VOZ_CLIENTE.csv para ese producto falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_v2_video_competencia_sin_fuente_falla():
+    plan = dict(PLAN_FASE1_BASE, version="v2", conjuntos=[_conjunto_video(1, "A", "")])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+    ok = any("fuente_transcripcion" in p for p in problemas)
+    print(("  OK     " if ok else "  FALLA  ")
+          + "origen VIDEO_COMPETENCIA sin fuente_transcripcion falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
+def test_plan_fase1_v2_video_competencia_con_fuente_no_falla():
+    plan = dict(PLAN_FASE1_BASE, version="v2",
+                conjuntos=[_conjunto_video(1, "A", "NUSAVAB12_2_ARDOR.mp4")])
+    problemas = gen_plan.validar_plan_fase1(plan, {}, [], 3)
+    ok = problemas == []
+    print(("  OK     " if ok else "  FALLA  ")
+          + "origen VIDEO_COMPETENCIA con fuente_transcripcion no vacía no falla"
+          + ("" if ok else f"\n         problemas={problemas}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_plan_fase1_con_video_falla()
     fallas += test_plan_fase1_todo_imagen_no_falla_por_formato()
+    fallas += test_plan_fase1_v1_legacy_no_exige_origen_angulo()
+    fallas += test_plan_fase1_v2_sin_origen_angulo_falla()
+    fallas += test_plan_fase1_v2_voz_cliente_bajo_el_minimo_falla()
+    fallas += test_plan_fase1_v2_voz_cliente_cumple_el_minimo_no_falla()
+    fallas += test_plan_fase1_v2_voz_id_desconocido_falla()
+    fallas += test_plan_fase1_v2_video_competencia_sin_fuente_falla()
+    fallas += test_plan_fase1_v2_video_competencia_con_fuente_no_falla()
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_ruta_directa_valida_solo_ese_archivo(tmp)
     with tempfile.TemporaryDirectory() as tmp:

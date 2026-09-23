@@ -146,6 +146,11 @@ Inputs: nombre del producto, lista de componentes/ingredientes (operador), outpu
 Output: BANCO DE DOLOR REAL ([VOZ-REAL]) + ángulos DESCUBIERTOS/CUBIERTOS. → se transfiere a
 `etapa-2` y `etapa-fanpage`.
 
+**Después de `etapa-1b` (T10):** volcar cada frase [VOZ-REAL]/[DESEO-REAL] con URL a
+`_VOZ_CLIENTE.csv` vía `python Ads/_TOOLS/verificar_voz.py --agregar-json hallazgos.json
+--escribir`, y correr `python Ads/_TOOLS/verificar_voz.py --producto [PRODUCTO] --escribir`
+para que verifique cada URL contra su cita antes de que `etapa-2` construya las fichas.
+
 ---
 
 ## PASO 3 — `etapa-2` ∥ `etapa-fanpage` (PARALELO)

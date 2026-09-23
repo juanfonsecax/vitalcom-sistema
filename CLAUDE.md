@@ -93,6 +93,7 @@ calidad de la escritura y del juicio.
 | Entrega a nivel ANUNCIO con los 5 ejes parseados | `PRODUCTOS/_FACT_ENTREGA_ANUNCIO.csv` ← `Ads/_TOOLS/ingerir_meta.py` |
 | Contabilidad: 3 vistas, estado de resultados, maduración de 10 días | `DOCTRINA/CONTABILIDAD.md` + `PRODUCTOS/_PARAMETROS_FINANZAS.csv` |
 | Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
+| **Voz del cliente como dato** (cita textual + URL, verificable, nunca prosa suelta) | `Ads/_TOOLS/verificar_voz.py` GENERA `PRODUCTOS/_VOZ_CLIENTE.csv` (esquema en su docstring; re-descarga la URL y confirma que la cita está ahí). `etapa-1b` es el único que agrega filas, vía `--agregar-json` (nunca a mano); `gen_plan.py --validar` exige que cada ángulo de un `_PLAN.json` en `version >= 2` cite su origen (voz verificada o video de competencia) |
 | Las 10 FanPages y las reglas F1–F4 | `.claude/agents/ETAPA-FANPAGE.md` |
 | Convención de nombres y banda de edad por avatar | `.claude/agents/ETAPA-6.md` |
 | **Publicación en Meta**: secuencia de llamadas y gate de cierre. **El CSV no es evidencia del estado de Meta**: antes de crear, `ads_get_ad_entities` y `--snapshot` | `Ads/_TOOLS/gen_publicacion.py` (deriva y bloquea) + `verificar_publicacion.py` (compara y escribe los `ad_id`) + skill `publicar-meta` |

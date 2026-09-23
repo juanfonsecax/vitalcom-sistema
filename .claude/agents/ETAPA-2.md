@@ -146,6 +146,7 @@ Para cada ángulo, en orden de mayor a menor potencial:
 ÁNGULO [N] — [NOMBRE DEL ÁNGULO]
 Ranking: #[posición] de 6
 Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (DOCTRINA/PLANTILLAS_ADS.md) — ángulo virgen sin video]
+Origen del ángulo (T10 — va al `_PLAN.json` de ETAPA-6): [VOZ_CLIENTE: voz_id de `_VOZ_CLIENTE.csv` que lo sostienen / VIDEO_COMPETENCIA: archivo de ETAPA-0 que lo sostiene]
 ═══════════════════════════════════════════
 
 AVATAR

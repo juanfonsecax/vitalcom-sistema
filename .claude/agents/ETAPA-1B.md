@@ -59,6 +59,13 @@ Antes de tocar los ingredientes, investigar el **dolor real** de la gente que su
 
 Marcar las frases con **[VOZ-REAL]** / **[DESEO-REAL]** y, si se puede, la fuente. Son la materia prima más valiosa: de acá salen hooks y ángulos que conectan en 3 segundos.
 
+> **Contrato de salida (T10):** cada frase [VOZ-REAL]/[DESEO-REAL] con URL se entrega como fila
+> que genera `PRODUCTOS/_VOZ_CLIENTE.csv` — nunca se edita ese CSV a mano. Al terminar el minado,
+> volcar los hallazgos a un JSON y correr `python Ads/_TOOLS/verificar_voz.py --agregar-json
+> hallazgos.json --escribir` (esquema y contrato completos en el docstring de ese script),
+> y después `python Ads/_TOOLS/verificar_voz.py --producto [PRODUCTO] --escribir` para que
+> re-descargue cada URL y marque VERIFICADA/NO_VERIFICADA la cita antes de que `etapa-2` la use.
+
 > Si una búsqueda no arroja nada útil, documentar "sin señal externa para [tema]" y seguir — no bloquear la etapa ni inventar.
 
 ### Paso 1 — Analizar cada componente

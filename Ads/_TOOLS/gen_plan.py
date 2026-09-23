@@ -42,10 +42,34 @@ ESQUEMA (schema "plan/1") — lo que etapa-6 debe emitir:
       "lleva_precio": true|false,
       "archivo_creativo": "NOMBRE.jpg",
       "prompt_imagen": "...",               # null si el creativo es un video ya existente
-      "copy": {"textos": ["...", "..."], "titulos": ["..."], "descripcion": "..."}
+      "copy": {"textos": ["...", "..."], "titulos": ["..."], "descripcion": "..."},
+      "origen_angulo": "VOZ_CLIENTE|VIDEO_COMPETENCIA",   # T10 (solo exigido en version>=2)
+      "voz_ids": ["V001", "V004"],           # si origen_angulo=VOZ_CLIENTE: voz_id de
+                                              # _VOZ_CLIENTE.csv que sostienen el angulo
+      "fuente_transcripcion": "NUSAVAB12_2_ARDOR.mp4"  # si origen_angulo=VIDEO_COMPETENCIA:
+                                              # el video/transcripcion de ETAPA-0 de origen
   }],
   "_faltantes": ["lo que el plan no pudo llenar"]
 }
+
+ORIGEN DEL ANGULO (T10, g07-cimientos, 23-sep-2026) — solo en planes "version" >= 2:
+Un angulo candidato puede venir de dos motores (ETAPA-1B/ETAPA-0, ver ese docstring): minado de
+VOZ DEL CLIENTE o un video de competencia ya transcrito. Auditoria H5 (22-sep): sin evidencia
+citada, un agente puede inventar un dolor y nada lo detecta. Cada conjunto de un plan de FASE 1
+declara su `origen_angulo` y cita su evidencia:
+  - VOZ_CLIENTE  -> `voz_ids` debe listar >= N voz_id con estado VERIFICADA en
+                    PRODUCTOS/_VOZ_CLIENTE.csv para ese producto_key (N =
+                    verificar_voz.min_voz_requerido(), default 3, overrideable por la fila
+                    `min_voz_verificada_por_angulo` de _PARAMETROS_DECISION.csv).
+  - VIDEO_COMPETENCIA -> `fuente_transcripcion` no vacio (el archivo/transcripcion de
+                    ETAPA-0 que sostiene el angulo — FASE 1 corre todo en IMAGEN, pero el
+                    video sigue siendo la FUENTE del angulo, CLAUDE.md).
+Por que solo version>=2: los planes YA EMITIDOS (siempre "version": "v1" hasta esta fecha) no
+tenian estos campos porque la regla no existia — exigirlos retroactivamente bloquearia
+productos que ya pasaron FASE 1 sin que nadie pueda corregir un plan que ya cumplio su proposito.
+"version" es un campo propio del esquema (no una fecha ni el estado en _ESTADO_FLUJO.csv): un
+plan nuevo que etapa-6 emita con "version": "v2" (o superior) opta a la regla; el v1 existente
+queda grandfathered para siempre, gate deterministico y sin acoplarse a otro CSV.
 
 FASE 2 y 3 — _PLAN_FASE2.json / _PLAN_FASE3.json, el mismo esquema con "fase": 2|3 y dos
 campos RAIZ obligatorios, porque ahi el angulo y el copy son constantes de la fase:
@@ -58,6 +82,11 @@ import io, json, os, re, sys, csv
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.chdir(BASE)
+
+TOOLS = os.path.dirname(os.path.abspath(__file__))
+if TOOLS not in sys.path:
+    sys.path.insert(0, TOOLS)
+import verificar_voz  # T10: dueño de _VOZ_CLIENTE.csv y del umbral min_voz_requerido()
 
 PRODUCTOS = "PRODUCTOS"
 VOCABULARIO = "PRODUCTOS/_DIM_VOCABULARIO.csv"
@@ -102,7 +131,60 @@ def descubrir_planes(ruta=None):
     return planes
 
 
-def validar_plan_fase1(plan, validos):
+ORIGENES_ANGULO = {"VOZ_CLIENTE", "VIDEO_COMPETENCIA"}
+VERSION_MIN_ORIGEN_EVIDENCIA = 2  # T10: version >= esto exige origen_angulo + evidencia citada
+
+
+def _version_num(v):
+    """"v1" -> 1, "v2" -> 2, cualquier otra cosa (ausente, no numerica) -> 1 (legacy, nunca
+    se re-castiga retroactivamente — ver docstring del modulo, seccion ORIGEN DEL ANGULO)."""
+    try:
+        return int(str(v).strip().lower().lstrip("v"))
+    except (TypeError, ValueError):
+        return 1
+
+
+def validar_origen_angulo(plan, voz_filas, min_voz):
+    """T10: cada conjunto de un plan de FASE 1 en version>=2 cita de donde sale su angulo.
+    `voz_filas` son las filas crudas de _VOZ_CLIENTE.csv (dict con producto_key/voz_id/estado);
+    `min_voz` es el umbral (verificar_voz.min_voz_requerido())."""
+    problemas = []
+    producto = plan.get("producto_key")
+    verificadas = {
+        f.get("voz_id") for f in voz_filas
+        if f.get("producto_key") == producto and f.get("estado") == "VERIFICADA"
+    }
+    todas = {f.get("voz_id") for f in voz_filas if f.get("producto_key") == producto}
+    for c in plan.get("conjuntos", []):
+        etq = "conjunto %s" % c.get("n")
+        origen = (c.get("origen_angulo") or "").strip().upper()
+        if origen not in ORIGENES_ANGULO:
+            problemas.append("%s: origen_angulo %r fuera de %s (T10: cada angulo declara su "
+                             "evidencia — voz del cliente o video de competencia)"
+                             % (etq, c.get("origen_angulo"), sorted(ORIGENES_ANGULO)))
+            continue
+        if origen == "VOZ_CLIENTE":
+            citados = [v for v in (c.get("voz_ids") or []) if v]
+            desconocidos = [v for v in citados if v not in todas]
+            verificados_citados = [v for v in citados if v in verificadas]
+            if desconocidos:
+                problemas.append("%s: voz_ids %s no existen en _VOZ_CLIENTE.csv para %r"
+                                 % (etq, desconocidos, producto))
+            if len(verificados_citados) < min_voz:
+                problemas.append(
+                    "%s: origen VOZ_CLIENTE cita %d voz_id VERIFICADA, se requieren %d "
+                    "(_PARAMETROS_DECISION.csv min_voz_verificada_por_angulo, default "
+                    "verificar_voz.MIN_VOZ_VERIFICADA_POR_ANGULO=%d)"
+                    % (etq, len(verificados_citados), min_voz,
+                       verificar_voz.MIN_VOZ_VERIFICADA_POR_ANGULO))
+        elif origen == "VIDEO_COMPETENCIA":
+            if not (c.get("fuente_transcripcion") or "").strip():
+                problemas.append("%s: origen VIDEO_COMPETENCIA sin fuente_transcripcion (el "
+                                 "video/transcripcion de ETAPA-0 que sostiene el angulo)" % etq)
+    return problemas
+
+
+def validar_plan_fase1(plan, validos, voz_filas=None, min_voz=None):
     problemas = []
     if plan.get("schema") != "plan/1":
         problemas.append("schema desconocido: %r" % plan.get("schema"))
@@ -137,6 +219,10 @@ def validar_plan_fase1(plan, validos):
     if plan.get("fase") == 1 and con_precio > 3:
         problemas.append("%d conjuntos con precio; la regla de Guatemala permite max 3 (ideal 2)"
                          % con_precio)
+    if _version_num(plan.get("version")) >= VERSION_MIN_ORIGEN_EVIDENCIA:
+        problemas.extend(validar_origen_angulo(
+            plan, voz_filas if voz_filas is not None else [],
+            min_voz if min_voz is not None else verificar_voz.MIN_VOZ_VERIFICADA_POR_ANGULO))
     return problemas
 
 
@@ -176,6 +262,9 @@ def validar(ruta=None):
         print("no existe %s" % ruta if ruta else "no hay ningun _PLAN*.json todavia.")
         return 0 if not ruta else 1
 
+    voz_filas = verificar_voz.leer_csv()
+    min_voz = verificar_voz.min_voz_requerido()
+
     errores = 0
     for ruta_plan in planes:
         with io.open(ruta_plan, encoding="utf-8") as fh:
@@ -183,7 +272,7 @@ def validar(ruta=None):
         print("\n%s" % ruta_plan.replace("\\", "/"))
         fase = plan.get("fase")
         if fase == 1:
-            problemas = validar_plan_fase1(plan, validos)
+            problemas = validar_plan_fase1(plan, validos, voz_filas, min_voz)
         elif fase in (2, 3):
             problemas = validar_plan_fase2o3(plan)
         else:
