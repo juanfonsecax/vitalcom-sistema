@@ -86,7 +86,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
 - [x] T10 (P6) Voice of customer as data: `_VOZ_CLIENTE.csv` + `verificar_voz.py` (re-fetches the
       URL, checks the quote) + the etapa-1b output contract + angle cards cite voz_id.
 - [x] T11 (P11) Frozen evals baseline (promptfoo) over saved real outputs, per stage.
-- [ ] T12 (P12) Exploration of new angles while scaling (F3.exploracion). DECIDED by the operator
+- [x] T12 (P12) Exploration of new angles while scaling (F3.exploracion). DECIDED by the operator
       22-sep: a fixed mini-F1 of 3 untested angles at the F1 per-adset budget (2.99 USD/day each,
       ~9 USD/day), measured by sale like F1, all-IMAGEN. It starts when the F3 campaign is profitable
       per decidir.py. Parameters live in `_PARAMETROS_PUBLICACION.csv` / `_PARAMETROS_DECISION.csv`
@@ -867,11 +867,137 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     se corrió de todas formas por completitud, resultado anexado abajo cuando terminó.
     `git status --short` -> limpio después del commit.
 
+- 23-sep: T12 committed (`dadf00c` flujo+gate, `60a67db` gen_plan, `a4cb555` gen_publicacion,
+  `9f71289` docs). Route: this session, direct (no delegated writer — one coherent design, no
+  unresolved product decision left after re-reading the operator's 22-sep P12 decision).
+  - **Node (`DOCTRINA/FLUJO.json`, F3, first in `nodos` — same non-blocking placement as
+    `F2.etapa-11`):** `F3.exploracion`. `ejecutor` = subagente `etapa-2` (produces the new angle
+    cards); `secuencia` = `etapa-2 -> etapa-6 -> etapa-guardar-producto -> publicar-meta`.
+    `requiere` = ONE `decision` predicate (`estados: [ESCALAR], min_ventas: @param:min_ventas_escalar,
+    min: 1`) — this is the EXISTING `decision` predicate vocabulary (`_ev_decision` in flujo.py,
+    already used elsewhere), reused verbatim: no new predicate type, no CPA recomputed. Since
+    `decidir.py`'s default `grano` is `angulo` (confirmed by reading `analizar_portafolio()`),
+    a celda's `estado` IS the angle's state — "F3 rentable" is read directly from the same
+    ESCALAR verdict `flujo.py` already uses to crown F1's winner, nothing invented for F3.
+    `produce` = 3 checks: `_PLAN_EXPLORACION.json` (schema plan/1, >=3 conjuntos), >=3
+    `_DIM_CONJUNTOS.csv` rows with `fase=EXPLORACION`, and publication evidence (LANZAMIENTO or
+    spend on a campaign containing EXPLORA) — the last one doubles as "measured": once launched,
+    the EXISTING `ciclo.datos`/`ciclo.motor` nodes measure it like any other campaign (aggregated
+    by `angulo_key`), no separate measurement gate was needed.
+  - **Gate (P12's "starts only when F3 is profitable"):** `flujo.gate_nodo(pk, nodo_id, env)`
+    (new, generalizes T5's `gate_entrada` from "a fase's entrada gate" to "any one node's
+    `requiere`", read-only, same `evaluar()`/`Entorno`). Reused by `gen_publicacion.py --fase 3
+    --brazo EXPLORACION`, which checks it IN ADDITION to the existing F3 entrada gate (concept
+    2/2 + CAMBIO_BOT) — they are different gates: entrada-to-F3 can be met while F3.exploracion's
+    own gate (profitability) isn't, and vice versa is impossible (exploracion only ever runs
+    inside F3). Same lock contract as T5: refuses without `--excepcion`, registers exactly one
+    EXCEPCION row against `F3.exploracion` (not `F3.entrada`) when overridden.
+  - **Winner path (documented, no new machinery):** a winning exploration angle is crowned by the
+    SAME `angulo_ganador` gate that crowns any F1 angle (`_ev_angulo_ganador` aggregates by
+    `angulo_key` via `_angulos_acumulados`/`_celdas_conjunto_gasto`, which don't look at `fase` at
+    all) — it enters F2 exactly like any other F1 winner. No parallel promotion path was built or
+    needed.
+  - **Naming (`ETAPA-6.md` CONVENCIONs, `gen_publicacion.py`):** campaign token `EXPLORA` (not
+    `ESCALA-{angulo}`, since exploration carries several angles, not one). `TOKEN_FASE` in
+    flujo.py changed from `{fase: token}` to `{fase: (tokens,)}` — fase 3 now maps to
+    `("ESCALA", "EXPLORA")` — with both call sites fixed: `_ev_estructura_publicada` (checks
+    `any(t in camp for t in toks)`) and `registrar_evento.resolver_fase()` (same, plus the
+    "ambiguous" message only fires across DIFFERENT fases, not across a fase's own sibling
+    tokens — verified by a regression test: `ESCALA-EXPLORA` in one name resolves to fase 3
+    cleanly, `TEST_CONCEPTOS-A` in one name is still ambiguous).
+  - **Plan validation (`gen_plan.py`):** `_PLAN_EXPLORACION.json`, `"fase": "EXPLORACION"`
+    (string, not 3 — added to `NOMBRES_PLAN` as a non-numeric key; `descubrir_planes()` only
+    iterates `.values()`, so this didn't need a signature change). `validar_plan_exploracion()`:
+    exactly FASE 1's per-conjunto shape (no `angulo_ganador`/`origen_angulo` at the root — T10 is
+    a FASE-1-only rule), `exploracion_n_angulos` conjuntos (default 3, overridable via
+    `_PARAMETROS_DECISION.csv`, read by the new `exploracion_n_angulos_requerido()` — same pattern
+    as `verificar_voz.min_voz_requerido()`), no duplicate `angulo_key`, TODO EN IMAGEN (same
+    message shape as FASE 1's rule), and each `angulo_key` excluded via
+    `reingreso_f1.angulos_probados(BASE, producto_key)` — imported and called directly, not
+    reimplemented (the task's explicit instruction).
+  - **Publication (`gen_publicacion.py`):** `--fase 3 --brazo EXPLORACION` is a new BRANCH inside
+    the existing fase-3 path, not a new `--fase` value (a fase's own gate machinery, naming and
+    `_PARAMETROS_PUBLICACION.csv` schema all stay `fase=3`; only `brazo` distinguishes it, same as
+    FASE 2's A/B/C brazos already do). Concretely: plan file resolution reads
+    `_PLAN_EXPLORACION.json` instead of `_PLAN_FASE3.json`; the `angulo_ganador`-required check is
+    skipped for this brazo; the unit-building branch (`if fase == 1: ...`) is extended to
+    `if fase == 1 or exploracion:` so EXPLORACION gets ONE CONJUNTO PER ANGLE (reusing FASE 1's
+    exact per-conjunto/per-angle loop, including `siguiente_replica()`'s R[N] numbering, which was
+    already generic per-angle and needed no change) instead of FASE 3's one-angle-times-7 loop;
+    `nombre_campana()` gets an explicit `fase == 3 and brazo == "EXPLORACION"` branch returning the
+    `EXPLORA` token. The structure/budget (3 conjuntos, 1 ad each, 2.99 USD/day ABO) is READ from
+    the fase=3 brazo=EXPLORACION row of `_PARAMETROS_PUBLICACION.csv` through the EXISTING
+    `par["conjuntos"]`/`par["daily_budget_usd"]`/`par["presupuesto_nivel"]` lookups — no new
+    reading code, no hardcoded 2.99 anywhere (verified by a test that reruns with 5.55 in the CSV
+    and gets 5.55 back).
+  - **Data rows the orchestrator must add in SISTEMA (exact header-compatible CSV lines, never
+    written by this worktree — invariant 4/11, a real CSV writer in the main checkout):**
+    - `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` (header: `fase,brazo,estructura,conjuntos,
+      anuncios_por_conjunto,daily_budget_usd,presupuesto_nivel,objetivo,optimization_goal,
+      destination_type,billing_event,buying_type,advantage_audience,hora_lanzamiento,tz_offset,
+      estado,fuente_doctrina,notas`):
+      ```
+      3,EXPLORACION,3-1-1,3,1,2.99,ADSET,OUTCOME_TRAFFIC,CONVERSATIONS,WHATSAPP,IMPRESSIONS,AUCTION,0,04:00,-06:00,VIGENTE,"CALENDARIO_ESCALADO.md / ESCALADO_PLAYBOOK.md S7b (P12, decision operador 22-sep-2026)","Mini-F1 de angulos nuevos en paralelo al escalado. Mismo presupuesto por-adset que FASE 1 (invariante 6 no aplica entre fases distintas, pero se reusa el mismo numero a proposito). ABO, un conjunto por angulo nuevo."
+      ```
+    - `PRODUCTOS/_PARAMETROS_DECISION.csv` (header: `parametro,valor,unidad,dueno,por_que`):
+      ```
+      exploracion_n_angulos,3,angulos,operador (P12),"Mini-F1 fijo mientras F3 escala, decision operador 22-sep-2026 - Ads/_TOOLS/gen_plan.py::validar_plan_exploracion() lo lee, default 3 si falta la fila"
+      ```
+    - Missing either row: `gen_publicacion.py`/`gen_plan.py --validar` already name exactly which
+      row and which owner is missing (verified by test — no silent default budget, invariant 4).
+  - **Tests (script-style, tmp dirs, no data CSV touched):**
+    - `test_flujo.py` section J (5 checks): `gate_nodo` closed (no ESCALAR meeting the volume
+      floor) / open (reuses `fixture_escalar_flaco`'s ANG_PROBADO at 6 ventas) / unknown node id
+      refuses / a node without `requiere` (F3.plan) is always met / read-only (no
+      `_ESTADO_FLUJO.csv`/`_EVENTOS.csv` writes) — plus a structural regression asserting
+      `F3.plan`/`F3.publicar`'s real `requiere`/`produce` never cite `F3.exploracion` (the
+      "doesn't block" contract, checked against the ACTUAL `DOCTRINA/FLUJO.json`, not a fixture).
+    - `test_gen_plan.py` (6 checks): a valid 3-angle IMAGE plan passes; fewer than
+      `exploracion_n_angulos` conjuntos fails naming both numbers; an already-probed `angulo_key`
+      fails; a VIDEO conjunto fails; a duplicate `angulo_key` fails;
+      `exploracion_n_angulos_requerido()` default 3 / CSV override to 5.
+    - `test_gen_publicacion.py` (6 checks): missing `_PARAMETROS_PUBLICACION.csv` row blocks
+      naming `fase=3 brazo=EXPLORACION`; the budget in the JSON output changes with the CSV
+      (2.99 -> 5.55, proving it isn't hardcoded) and the campaign carries `EXPLORA`; the built
+      package has 3 distinct-angle conjuntos (`angulo: "VARIOS..."`, not one fixed angle); the
+      OWN gate (F3 profitable) blocks without `--excepcion` even though the F3 ENTRADA gate (2/2 +
+      CAMBIO_BOT) is separately met, using a real fixture where `decidir.py` naturally has no
+      ESCALAR celda (empirically confirmed, not assumed); the same gate + `--excepcion` registers
+      one EXCEPCION against `F3.exploracion`; the gate met (forced via a monkeypatch of
+      `flujo.gate_nodo`, since building a full decidir.py ESCALAR-for-F3 fixture added no coverage
+      beyond section J's `gate_nodo` tests) publishes without asking for `--excepcion`.
+    - `test_registrar_evento.py` (4 checks): `EXPLORA` token resolves to fase 3; `ESCALA` still
+      does (regression); `ESCALA` and `EXPLORA` together in ONE name (fase 3's own two tokens) is
+      NOT ambiguous; two DIFFERENT fases' tokens in one name (`TEST`+`CONCEPTOS`) still is.
+  - **Verification (SISTEMA-app worktree, all foreground):** `python -m pytest Ads/_TOOLS -q
+    -p no:cacheprovider` -> 40 passed (unchanged file count — all new checks live inside existing
+    test files). `python Ads/_TOOLS/test_flujo.py` -> 41/41. `python Ads/_TOOLS/test_gen_plan.py`
+    -> 0 fallas. `python Ads/_TOOLS/test_gen_publicacion.py` -> 0 fallas.
+    `python Ads/_TOOLS/test_registrar_evento.py` -> 0 fallas. `python Ads/_TOOLS/flujo.py
+    --validar` -> valid (3 fases, **21 nodos** — was 20, +F3.exploracion). `python
+    Ads/_TOOLS/flujo.py --todo` -> read-only, `git status --short` unchanged by the run.
+    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas (88 variables, 33 verificadas).
+    `python Ads/_TOOLS/gen_grafo.py` -> "rutas muertas ... ninguna", no diff on
+    `_LINEA_BASE_SISTEMA.json`. `python evals/run_baseline.py` -> 27 tests, TOTAL=27 PASS=24
+    FALLO-CONOCIDO=3 FAIL=0 (unchanged from T11 — F3.exploracion added no eval fixtures, out of
+    this task's scope). Backend not run — no `app/` file touched by T12.
+    `git status --short` -> clean after each commit.
+  - **Found and fixed before commit (self-review):** the new node in `DOCTRINA/FLUJO.json` made
+    `VISTAS/_MANIFIESTO.json`'s own gate (`gen_app.py`'s V6: every FLUJO.json node needs exactly
+    one declared action) fail — `test_gen_app.py` caught it immediately. Fixed by adding
+    `nodo.F3.exploracion` to the manifest (same shape as `nodo.F2.etapa-11`, since both are
+    subagente-executed, non-blocking, parallel nodes) in the same commit as the node itself.
+  - **Left for the operator / out of scope, flagged, not fixed:** none new. The `ingestar_unificado.py`
+    click-derived-messages finding (T1) and the `EXCEPCION_CAMBIO_BOT` vs. generic `EXCEPCION`
+    duality (T5) are pre-existing and untouched by this task.
+
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
 there as a `chore(data)` commit (this also fixes the `ad_id` column `stg_entrega_anuncio` needs),
 runs `dbt build` AFTER that re-pull (not before — see the new deployment-order doctrine), confirms
 `decidir.py`/the app read the corrected spend and `capa_analitica` on the merged data, then checks
 T1 and T2 and moves to T3 (unknown ads: register ads missing a `_DIM_CONJUNTOS` row). T9, T10 and
-T11 are done; T12 (exploration of new angles while scaling, F3.exploracion) is next in dependency
-order.
+T11 are done. **T12 is done** (code committed in this worktree; the two new parameter rows above
+still need to land in SISTEMA as a data commit before F3.exploracion can actually run on a real
+product). All 12 tasks of g07-cimientos are now implemented; the feature is ready for the parent's
+final merge, data landing (T1/T2/T12 rows) and archive.
