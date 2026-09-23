@@ -76,7 +76,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
       Doctrine: CLAUDE.md pointer + PLANTILLAS_FLUJO_BOT.md.
 - [x] T5 (P5) Gates are locks: `registrar_evento.py` (LANZAMIENTO) and `gen_publicacion.py --fase N`
       refuse when the phase gate is unmet, unless `--excepcion "reason"` records an EXCEPCION event.
-- [ ] T6 (P7) Compute and write are separate: flujo.py, decidir.py, gen_grafo.py get a read-only mode.
+- [x] T6 (P7) Compute and write are separate: flujo.py, decidir.py, gen_grafo.py get a read-only mode.
       A "read" never writes tracked files.
 - [ ] T7 (P8) Tests: costear.py, registrar_evento.py, decidir.py ESCALAR_MODERADO and comparar_cierre.
 - [ ] T8 (P10) Hygiene: iniciar.bat refuses an ambiguous base; verificar_publicacion requires
@@ -418,6 +418,77 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
     clean after commit.
   - Open question for the operator: `Ads/_TOOLS/ingestar_unificado.py:268` still derives
     `mensajes` from clicks (flagged under T1, unrelated to T5) — untouched here, out of scope.
+
+- 23-sep: T6 committed. Write map (before this change):
+  - `flujo.py`: `--todo` (only) wrote `_ESTADO_FLUJO.csv`/`_EVENTOS.csv` (`escribir_estado()`) and
+    `_FLUJO.json`/`VISTAS/FLUJO.html` (`main()`), gated by a pre-existing opt-out `--sin-escribir`.
+    `flujo.py PRODUCTO`, `--json` (without `--todo`), `--validar` and `--grafo` never wrote —
+    already read-only. `gate_entrada()` (called as a Python function by `gen_publicacion.py` and
+    `registrar_evento.py`, never via CLI) was and remains SOLO LECTURA.
+  - `decidir.py`: `main()` wrote `_DECISIONES.json` **unconditionally**, on every invocation
+    (bare, `--json`, `--grano`, `--dias` — no opt-out existed). `analizar_portafolio()` itself was
+    already pure; only the CLI wrapper wrote. `gen_decisiones.py` is not an independent writer —
+    it's an orchestrator that runs `dbt build` then subprocess-calls `decidir.py` (the real
+    writer) and patches the same JSON afterward with `capa_analitica`.
+  - `gen_grafo.py`: `main()` wrote `_LINEA_BASE_SISTEMA.json` by default, with a pre-existing
+    opt-out `--no-guardar`. `analizar()` itself was already pure. No caller anywhere in the repo
+    invokes `gen_grafo.py` (confirmed by search across `app/backend`, `.claude/settings.json`,
+    `VISTAS/_MANIFIESTO.json`, skills, `Ads/_TOOLS/*.py`) — it's operator/session-run only.
+  - **Contract chosen (uniform across the three): reading is the default; `--escribir` is the
+    only flag that writes.** Rationale: `decidir.py` had zero opt-out and needed one either way;
+    `gen_grafo.py` has no callers so flipping its default is free; `flujo.py`'s `--todo` already
+    had a live opt-out (`--sin-escribir`) used by exactly the callers that need the write, so
+    inverting it to an opt-in (`--escribir`) with the same call sites updated was no more
+    invasive than adding the opt-out was originally. `--sin-escribir` and `--no-guardar` were
+    removed (not kept as deprecated aliases) so the CLI has one flag name, one semantics, across
+    all three scripts. `flujo.gate_entrada()` needed no change — function-call callers never hit
+    `main()`'s argparse at all, so no flag applies to them.
+  - **Callers found and updated** (grep across the whole repo for `flujo.py --todo`, `decidir.py`,
+    `--sin-escribir`, `--no-guardar`):
+    - `Ads/_TOOLS/gen_decisiones.py` → `decidir.py` invocation now `--escribir` (nightly chain).
+    - `Ads/_TOOLS/ciclo_hoy.py` → `flujo.py --todo` now `flujo.py --todo --escribir` (nightly chain).
+    - `Ads/_TOOLS/gen_app.py:leer_decisiones()` → lazy refresh (`refrescar=True` or file missing)
+      now calls `decidir.py --escribir`, otherwise it would generate a `_DECISIONES.json` that
+      never lands on disk and the same lazy check would loop forever.
+    - `VISTAS/_MANIFIESTO.json` → the `flujo` vista's `"genera"` field and the
+      `sistema.refrescar_flujo` action's `"comando"` (whose own declared `"escribe"` list already
+      named `_FLUJO.json`/`_ESTADO_FLUJO.csv`/`_EVENTOS.csv`/`FLUJO.html`) both now carry
+      `--escribir`.
+    - `CLAUDE.md` → the session-start doctrine command (`ARRANQUE DE SESIÓN` and the pointer
+      table row) now reads `flujo.py --todo --escribir` — this is the one place a session
+      deliberately wants the persisted state, since the rest of the session reads
+      `_ESTADO_FLUJO.csv` as ground truth. Added a `DOCTRINA/DATA_PLAYBOOK.md` §7 pointer under
+      "Reglas de invocación".
+    - `app/backend/vitalcom_app/contratos.py:flujo()` → dropped the now-invalid `--sin-escribir`
+      (a single-product query without `--todo` was already read-only regardless of flags; the
+      flag would now be a hard argparse error, not a silent no-op).
+    - `app/backend/tests/test_api_espeja_los_csv.py` and
+      `app/backend/tests/test_sin_aritmetica.py::test_flujo_se_invoca_siempre_sin_escribir` →
+      updated to the new contract (the latter now asserts contratos.py names neither `--todo` nor
+      `--escribir`, via the same AST-literal helper it already used, so a docstring mention can't
+      false-positive it).
+  - `DOCTRINA/DATA_PLAYBOOK.md` gained §7 "CONTRATO DE CLI — un mirar nunca escribe" (the table of
+    what each script computes vs. persists, and who is allowed to ask for `--escribir`).
+  - Tests (script-style, new `Ads/_TOOLS/test_cli_solo_lectura.py`, 14 checks, tmp dirs / tmp
+    JSON paths only — the `gen_grafo.py` ones run against the real repo since it always
+    `os.chdir()`s to it and has no fixture hook, and restore the real `_LINEA_BASE_SISTEMA.json`
+    byte-for-byte in a `finally` regardless of outcome): per script, read mode leaves the target
+    file byte-identical or absent, and `--escribir` writes it (flujo.py via its `--base` fixture
+    hook reusing `test_flujo.fixture_escalar_flaco()`; decidir.py via monkeypatching
+    `decidir.SALIDA_JSON`, matching the existing `PARAMS_PATH`-monkeypatch pattern in
+    `test_decidir.py`; gen_grafo.py via subprocess against the live repo); running `flujo.py
+    --todo` twice without `--escribir` stays a no-op (idempotent no-write); `analizar_portafolio()`
+    never writes under any `SALIDA_JSON` value; and 7 static AST/regex checks that
+    `gen_decisiones.py`, `ciclo_hoy.py`, `gen_app.py`, `VISTAS/_MANIFIESTO.json` (both spots) and
+    `CLAUDE.md` all pass `--escribir` where they need to, while `contratos.py` never does.
+  - Verification (SISTEMA-app worktree): `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` ->
+    36 passed (35 + the new file). `python Ads/_TOOLS/test_cli_solo_lectura.py` standalone -> 0
+    fallas. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20 nodos).
+    `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas. `python Ads/_TOOLS/gen_grafo.py`
+    (default, no flags) -> ran clean, `git status --short` showed no change to
+    `_LINEA_BASE_SISTEMA.json` (confirmed read-only by default, no `git checkout` needed for this
+    run). Backend `cd app/backend; uv run pytest -q --ignore=tests/test_meta.py` -> see below.
+    `git status --short` -> only the intended files touched (no data CSV, no other test file).
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
