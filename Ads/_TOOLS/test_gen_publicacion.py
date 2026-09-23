@@ -659,6 +659,165 @@ def test_fecha_ayer_bloquea():
     return 0 if ok else 1
 
 
+# ---------------------------------------------------------------- P12/T12: F3.exploracion
+#
+# El mini-F1 de ángulos nuevos que corre en paralelo al escalado. Dos gates distintos:
+#   1. el de ENTRADA a F3 (concepto 2/2 + CAMBIO_BOT posterior) — ya lo cubre el bloque de arriba.
+#   2. el PROPIO de F3.exploracion (flujo.gate_nodo: F3 rentable según decidir.py) — nuevo aquí.
+# Y una regla mecánica: el presupuesto/estructura salen de _PARAMETROS_PUBLICACION.csv
+# (fase=3 brazo=EXPLORACION), nunca hardcodeados.
+
+def _fixture_f3_exploracion_base(con_fila_parametros=True, presupuesto="2.99"):
+    """Producto en F3 (2/2 + CAMBIO_BOT posterior, mismo caso que _fixture_fase2_con_gate pero
+    para F3) con los CSV reales de cuenta/vocabulario y, salvo que se pida lo contrario, una fila
+    fase=3 brazo=EXPLORACION en _PARAMETROS_PUBLICACION.csv (una copia, nunca el CSV real)."""
+    import csv, io, shutil
+    tmp = tf.fixture_conceptos_al_filo()
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(os.path.join(prod, "TURMERIC"))
+    with io.open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["producto_key", "nombre_display", "estado", "fase"])
+        w.writerow(["TURMERIC", "TURMERIC", "VIVO", "F3"])
+    eventos_cols = ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta",
+                     "evento", "valor_antes", "valor_despues", "motivo", "fuente_decision"]
+    with io.open(os.path.join(prod, "_EVENTOS.csv"), "w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(eventos_cols)
+        w.writerow(["2026-09-28", "TURMERIC", "GTR7", "*", "*", "CAMBIO_BOT", "", "",
+                    "reescritura hacia C2.CN06 tras 2 de 2", "test"])
+    for nombre in ("_DIM_CUENTAS.csv", "_DIM_VOCABULARIO.csv"):
+        shutil.copy(gp.P(nombre), os.path.join(prod, nombre))
+    with io.open(gp.P("_PARAMETROS_PUBLICACION.csv"), encoding="utf-8-sig", newline="") as fh:
+        r = csv.DictReader(fh)
+        filas = list(r)
+        cols = r.fieldnames
+    with io.open(os.path.join(prod, "_PARAMETROS_PUBLICACION.csv"), "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols)
+        w.writeheader()
+        w.writerows(filas)
+        if con_fila_parametros:
+            fila = dict(dict.fromkeys(cols, ""), fase="3", brazo="EXPLORACION", estructura="3-1-1",
+                        conjuntos="3", anuncios_por_conjunto="1", daily_budget_usd=presupuesto,
+                        presupuesto_nivel="ADSET", objetivo="OUTCOME_TRAFFIC",
+                        optimization_goal="CONVERSATIONS", destination_type="WHATSAPP",
+                        billing_event="IMPRESSIONS", buying_type="AUCTION", advantage_audience="0",
+                        hora_lanzamiento="04:00", tz_offset="-06:00", estado="VIGENTE",
+                        fuente_doctrina="test P12", notas="fixture de test")
+            w.writerow(fila)
+    plan = {"schema": "plan/1", "producto_key": "TURMERIC", "fase": "EXPLORACION",
+            "conjuntos": [
+                {"n": 1, "angulo_key": "ANG_NUEVO_UNO", "formato": "IMAGEN", "avatar_edad": None,
+                 "archivo_creativo": "", "copy": "copy 1"},
+                {"n": 2, "angulo_key": "ANG_NUEVO_DOS", "formato": "IMAGEN", "avatar_edad": None,
+                 "archivo_creativo": "", "copy": "copy 2"},
+                {"n": 3, "angulo_key": "ANG_NUEVO_TRES", "formato": "IMAGEN", "avatar_edad": None,
+                 "archivo_creativo": "", "copy": "copy 3"},
+            ]}
+    with io.open(os.path.join(prod, "TURMERIC", "_PLAN_EXPLORACION.json"), "w", encoding="utf-8") as fh:
+        json.dump(plan, fh)
+    return tmp
+
+
+def test_exploracion_sin_fila_de_parametros_bloquea_nombrando_fase_y_brazo():
+    base = _fixture_f3_exploracion_base(con_fila_parametros=False)
+    code, out, err = _correr_main(base, ["--producto", "TURMERIC", "--fase", "3", "--brazo",
+                                          "EXPLORACION", "--solo-paquete"])
+    ok = (err is None and code == 1
+          and "no hay fila VIGENTE en _PARAMETROS_PUBLICACION.csv para fase=3 brazo=EXPLORACION" in out)
+    return _informe(ok, "sin fila fase=3 brazo=EXPLORACION en _PARAMETROS_PUBLICACION.csv: BLOQUEANTE nombrando fase y brazo",
+                    (code, err, out[:300]))
+
+
+def _correr_con_gate_propio_forzado(base, argv):
+    """El gate propio de F3.exploracion (flujo.gate_nodo) se prueba aparte (ver los tests
+    dedicados más abajo); acá se fuerza a True para poder mirar el PAQUETE que arma
+    gen_publicacion.py sin repetir la construcción de un fixture de decidir.py completo."""
+    original = gp.flujo.gate_nodo
+    gp.flujo.gate_nodo = lambda pk, nid, env=None: (True, "test: F3 rentable")
+    try:
+        return _correr_main(base, argv)
+    finally:
+        gp.flujo.gate_nodo = original
+
+
+def test_exploracion_presupuesto_sale_del_csv_no_hardcodeado():
+    base299 = _fixture_f3_exploracion_base(presupuesto="2.99")
+    code, out, err = _correr_con_gate_propio_forzado(
+        base299, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION", "--cuenta", "GTR7", "--json"])
+    paquete = json.loads(out) if err is None and out.strip() else {}
+    ok299 = (err is None and paquete.get("daily_budget_usd_por_conjunto") == 2.99
+             and paquete.get("presupuesto_nivel") == "ADSET" and "EXPLORA" in paquete.get("manifiesto", {}).get("campana", ""))
+
+    base555 = _fixture_f3_exploracion_base(presupuesto="5.55")
+    code2, out2, err2 = _correr_con_gate_propio_forzado(
+        base555, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION", "--cuenta", "GTR7", "--json"])
+    paquete2 = json.loads(out2) if err2 is None and out2.strip() else {}
+    ok555 = err2 is None and paquete2.get("daily_budget_usd_por_conjunto") == 5.55
+
+    ok = ok299 and ok555
+    return _informe(ok, "el presupuesto de F3.exploracion sale de _PARAMETROS_PUBLICACION.csv "
+                    "(2.99 y 5.55, no un valor fijo en el código) y la campaña nace EXPLORA",
+                    (code, err, paquete.get("daily_budget_usd_por_conjunto"),
+                     code2, err2, paquete2.get("daily_budget_usd_por_conjunto")))
+
+
+def test_exploracion_arma_tres_conjuntos_con_angulos_distintos():
+    base = _fixture_f3_exploracion_base()
+    code, out, err = _correr_con_gate_propio_forzado(
+        base, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION", "--cuenta", "GTR7", "--json"])
+    paquete = json.loads(out) if err is None and out.strip() else {}
+    conj = paquete.get("manifiesto", {}).get("conjuntos", [])
+    angulos = {c.get("angulo") for c in conj}
+    ok = (err is None and len(conj) == 3 and angulos == {"ANG_NUEVO_UNO", "ANG_NUEVO_DOS", "ANG_NUEVO_TRES"}
+          and paquete.get("angulo", "").startswith("VARIOS"))
+    return _informe(ok, "F3.exploracion arma UN CONJUNTO POR ÁNGULO (como FASE 1), no un ángulo fijo ×N",
+                    (code, err, conj, paquete.get("angulo")))
+
+
+def test_exploracion_gate_propio_incumplido_bloquea_sin_excepcion():
+    """Este fixture no tiene ninguna celda ESCALAR para TURMERIC (decidir.py sin _DIM_CONJUNTOS.csv
+    ni _PARAMETROS_DECISION.csv no corona nada): el gate propio de F3.exploracion está cerrado
+    aunque el gate de ENTRADA a F3 (2/2 + CAMBIO_BOT) esté cumplido — son gates DISTINTOS."""
+    base = _fixture_f3_exploracion_base()
+    ok_natural, _ = gp.flujo.gate_nodo("TURMERIC", "F3.exploracion", gp.flujo.Entorno(base=base))
+    code, out, err = _correr_main(base, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION",
+                                          "--cuenta", "GTR7"])
+    eventos = _leer_eventos(base)   # solo el CAMBIO_BOT que ya trae el fixture (F3.entrada) — cero EXCEPCION
+    ok = (ok_natural is False and err is None and code == 1
+          and "el gate de F3.exploracion no esta cumplido" in out
+          and len(eventos) == 1 and all(e["evento"] != "EXCEPCION" for e in eventos))
+    return _informe(ok, "gate propio de F3.exploracion incumplido (F3 no rentable) sin --excepcion: refusa, no escribe nada",
+                    (ok_natural, code, err, out[:300], eventos))
+
+
+def test_exploracion_gate_propio_con_excepcion_registra_F3_exploracion():
+    base = _fixture_f3_exploracion_base()
+    code, out, err = _correr_main(base, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION",
+                                          "--cuenta", "GTR7", "--excepcion", "el operador arranca antes"])
+    eventos = _leer_eventos(base)
+    exc = [e for e in eventos if e["evento"] == "EXCEPCION"]
+    ok = (err is None and len(exc) == 1 and exc[0]["valor_antes"] == "F3.exploracion"
+          and exc[0]["valor_despues"] == "gen_publicacion --fase 3 --brazo EXPLORACION")
+    return _informe(ok, "gate propio de F3.exploracion incumplido + --excepcion: procede y registra "
+                    "EXACTAMENTE una EXCEPCION contra 'F3.exploracion' (no 'F3.entrada')",
+                    (code, err, eventos))
+
+
+def test_exploracion_gate_propio_cumplido_no_pide_excepcion():
+    """Cuando decidir.py SÍ ve el escalado rentable (gate_nodo True), F3.exploracion publica
+    sin necesitar --excepcion — se verifica inyectando el resultado ya probado en
+    test_flujo.py::gate_nodo, sin repetir la construcción de un fixture de decidir.py completo."""
+    base = _fixture_f3_exploracion_base()
+    code, out, err = _correr_con_gate_propio_forzado(
+        base, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION", "--cuenta", "GTR7"])
+    eventos = _leer_eventos(base)
+    ok = (err is None and len(eventos) == 1 and all(e["evento"] != "EXCEPCION" for e in eventos)
+          and "F3.exploracion" not in out)
+    return _informe(ok, "gate propio de F3.exploracion cumplido: publica sin pedir --excepcion ni EXCEPCION",
+                    (code, err, out[:200], eventos))
+
+
 def main():
     fallas = 0
     fallas += test_fecha_hoy_bloquea()
@@ -695,6 +854,12 @@ def main():
     fallas += test_gate_incumplido_excepcion_vacia_refusa_igual()
     fallas += test_gate_incumplido_con_excepcion_procede_y_registra_una_excepcion()
     fallas += test_los_bloqueos_del_operador_llevan_su_clave()
+    fallas += test_exploracion_sin_fila_de_parametros_bloquea_nombrando_fase_y_brazo()
+    fallas += test_exploracion_presupuesto_sale_del_csv_no_hardcodeado()
+    fallas += test_exploracion_arma_tres_conjuntos_con_angulos_distintos()
+    fallas += test_exploracion_gate_propio_incumplido_bloquea_sin_excepcion()
+    fallas += test_exploracion_gate_propio_con_excepcion_registra_F3_exploracion()
+    fallas += test_exploracion_gate_propio_cumplido_no_pide_excepcion()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 
