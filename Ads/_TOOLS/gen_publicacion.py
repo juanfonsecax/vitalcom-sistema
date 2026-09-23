@@ -95,6 +95,8 @@ P     = lambda *a: os.path.join(BASE, "PRODUCTOS", *a)
 if TOOLS not in sys.path:
     sys.path.insert(0, TOOLS)
 import bandas_edad  # LA TABLA no se copia aca: Ads/_TOOLS/bandas_edad.py es su dueno unico.
+import flujo             # gate_entrada: el unico juez de "se cumple el gate de entrada a la fase N"
+import registrar_evento  # registrar_excepcion: el unico escritor de una fila EXCEPCION en _EVENTOS.csv
 
 SCHEMA = "publicacion/1"
 
@@ -427,6 +429,7 @@ def main():
     ruta_pl = arg("--plan")
     snap    = arg("--snapshot")
     salida  = arg("--salida")
+    excepcion = (arg("--excepcion") or "").strip()
     # --solo-paquete: la pregunta de F1.paquete en FLUJO.json. ¿Lo que produjeron las ETAPAS
     # alcanza para lanzar? Evalua todo igual, pero sale con exit 1 solo por bloqueantes de ambito
     # 'paquete', no corta si la cuenta todavia no existe, y nunca escribe el paquete canonico.
@@ -967,6 +970,25 @@ def main():
             print("  (%d bloqueante(s) de la publicacion —cuenta, calendario, operador— no cuentan "
                   "para el paquete: los evalua F1.publicar)" % len(otros))
         return 1 if del_paquete else 0
+
+    # ---------- P5: el gate de entrada a la fase es un CANDADO, no un aviso -------------------
+    # (solo aca: --solo-paquete ya volvio arriba y NUNCA emite el paquete canonico).
+    ok_gate, obs_gate = flujo.gate_entrada(pk, fase, flujo.Entorno(base=BASE))
+    if not ok_gate and not excepcion:
+        print("BLOQUEANTE: el gate de entrada a F%d no esta cumplido: %s" % (fase, obs_gate))
+        print("            Invariante: la fase se abre por el gate declarado en DOCTRINA/FLUJO.json, "
+              "nunca por decision del operador o del modelo.")
+        print("            Si es deliberado, repetir con --excepcion \"motivo\": queda una fila "
+              "EXCEPCION en _EVENTOS.csv y la publicacion sigue.")
+        return 1
+    if not ok_gate:
+        ok_ev, errores_ev = registrar_evento.registrar_excepcion(
+            pk, "F%d.entrada" % fase, "gen_publicacion --fase %d" % fase, excepcion,
+            "Ads/_TOOLS/gen_publicacion.py")
+        if not ok_ev:
+            print("BLOQUEANTE: no se pudo registrar la EXCEPCION:\n  · " + "\n  · ".join(errores_ev))
+            return 1
+        print("EXCEPCION registrada: F%d.entrada -> gen_publicacion --fase %d (%s)" % (fase, fase, excepcion))
 
     if not salida:
         salida = P(carpeta, "_PUBLICACION_F%d%s.json" % (fase, "" if brazo == "UNICO" else brazo))

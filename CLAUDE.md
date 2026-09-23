@@ -53,6 +53,10 @@ calidad de la escritura y del juicio.
 - **Antes de cargar una skill de fase, correr `python Ads/_TOOLS/flujo.py [producto_key]`.** Se
   ejecuta el nodo que devuelve, con el ejecutor que declara. Sus gates **no se reinterpretan en
   prosa**: si dice BLOQUEADO, se produce lo que falta (con el dueño que nombra) y se vuelve a correr.
+- **Los gates de entrada de fase son candado, no aviso.** `Ads/_TOOLS/gen_publicacion.py --fase N`
+  y `Ads/_TOOLS/registrar_evento.py --evento LANZAMIENTO` niegan la acción si `flujo.gate_entrada()`
+  dice que el gate de esa fase no se cumple; solo `--excepcion "motivo"` la deja proceder, y deja
+  una fila `EXCEPCION` en `_EVENTOS.csv`.
 - Cada subagente recibe SOLO los inputs que necesita, no el historial de sesión.
 - El proceso y el formato de output de cada etapa viven en su archivo; el orquestador no los repite.
 - Las etapas marcadas "∥ PARALELO" se lanzan en un solo turno; esperar AMBOS outputs antes de la
@@ -90,7 +94,7 @@ calidad de la escritura y del juicio.
 | Las 10 FanPages y las reglas F1–F4 | `.claude/agents/ETAPA-FANPAGE.md` |
 | Convención de nombres y banda de edad por avatar | `.claude/agents/ETAPA-6.md` |
 | **Publicación en Meta**: secuencia de llamadas y gate de cierre. **El CSV no es evidencia del estado de Meta**: antes de crear, `ads_get_ad_entities` y `--snapshot` | `Ads/_TOOLS/gen_publicacion.py` (deriva y bloquea) + `verificar_publicacion.py` (compara y escribe los `ad_id`) + skill `publicar-meta` |
-| Transiciones entre pasos y sus gates | `DOCTRINA/FLUJO.json` + `Ads/_TOOLS/flujo.py` + `PRODUCTOS/_ESTADO_FLUJO.csv` (derivado). Un gate que no quepa en los predicados de `flujo.py` es criterio y vive en el subagente |
+| Transiciones entre pasos y sus gates | `DOCTRINA/FLUJO.json` + `Ads/_TOOLS/flujo.py` + `PRODUCTOS/_ESTADO_FLUJO.csv` (derivado). Un gate que no quepa en los predicados de `flujo.py` es criterio y vive en el subagente. `flujo.gate_entrada(producto_key, fase)` es el juez único de "¿se cumple el gate de entrada?" (solo lectura) — lo llaman `gen_publicacion.py --fase N` y `registrar_evento.py --evento LANZAMIENTO` para negar la acción salvo `--excepcion "motivo"` (queda un evento `EXCEPCION` en `_EVENTOS.csv`) |
 | Estructura, presupuesto, objetivo y hora por fase | `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` (doctrina en `CALENDARIO_ESCALADO.md` §1.7.2) |
 | Cuentas publicitarias: MCP, subida de media local, moneda. Media `LOCAL_FILE` solo sube en **GTR 7** | `PRODUCTOS/_DIM_CUENTAS.csv` |
 | Creación de campaña por MCP: el porqué, gotchas, control D+1 | `DOCTRINA/MCP_PLAYBOOK.md` (valores ilustrativos; manda el CSV) |

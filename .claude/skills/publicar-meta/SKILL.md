@@ -24,6 +24,11 @@ generador debió haberlo bloqueado.
 python Ads/_TOOLS/gen_publicacion.py --producto [PK] --fase [N] --brazo [A|B|C|UNICO] --cuenta [ALIAS]
 ```
 
+Si el gate de ENTRADA de esa fase (`DOCTRINA/FLUJO.json`, evaluado por `flujo.gate_entrada`) no
+está cumplido, `gen_publicacion.py` se niega con exit 1 y nombra el gate: no es un aviso, es un
+candado. Si el operador confirma que quiere seguir igual, repetir el mismo comando agregando
+`--excepcion "motivo"` — el paquete se genera Y queda una fila `EXCEPCION` en `_EVENTOS.csv`.
+
 Lee el bloque `preflight` del paquete y corré sus llamadas:
 
 1. `ads_get_ad_accounts` → la cuenta tiene `is_ads_mcp_enabled` y `is_queryable`.

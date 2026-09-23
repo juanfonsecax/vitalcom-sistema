@@ -1205,6 +1205,38 @@ def situar(prod, flujo, env):
     return res
 
 
+def gate_entrada(producto_key, fase, env=None):
+    """¿Está cumplido el gate de ENTRADA a `fase` (1/2/3 o "F1"/"F2"/"F3") para `producto_key`?
+
+    EL DUEÑO ÚNICO de esta pregunta: la evalúa exactamente como `situar()` evalúa `entradas`,
+    sobre el mismo `evaluar()`/`Entorno`, pero sin recorrer nodos ni escribir nada — a
+    diferencia de `correr()`/`escribir_estado()`, que sí tocan `_ESTADO_FLUJO.csv` y
+    `_EVENTOS.csv`, esta función es SOLO LECTURA. La usan gen_publicacion.py y
+    registrar_evento.py para negar (o exigir `--excepcion`) una acción cuyo gate de fase no
+    se cumplió: las fases se abren por el gate declarado en DOCTRINA/FLUJO.json, nunca por
+    decisión del operador o del modelo.
+
+    Una fase sin gate de entrada (F1, la primera) está siempre cumplida.
+    Devuelve (ok: bool, observado: str)."""
+    env = env or Entorno()
+    flujo = cargar_flujo(env)
+    fase_id = str(fase) if str(fase).upper().startswith("F") else "F%s" % fase
+    f = next((x for x in flujo["fases"] if x["id"] == fase_id), None)
+    if f is None:
+        return False, "'%s' no es una fase de %s" % (fase_id, FLUJO_DECLARADO)
+    entrada = f.get("entrada") or {}
+    gate = entrada.get("gate")
+    if not gate:
+        return True, "%s no declara gate de entrada" % fase_id
+    prod = next((p for p in env.csv("_DIM_PRODUCTOS.csv")
+                 if (p.get("producto_key") or "").strip() == producto_key), None)
+    if prod is None:
+        return False, "'%s' no tiene fila en _DIM_PRODUCTOS.csv (invariante 10)" % producto_key
+    ctx = contexto(prod, env)
+    ok, obs = evaluar(gate, ctx, env)
+    return bool(ok), obs
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 4 · ESTADO EN DISCO: _ESTADO_FLUJO.csv + evento de transición
 # ─────────────────────────────────────────────────────────────────────────────

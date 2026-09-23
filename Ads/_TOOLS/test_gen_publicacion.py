@@ -28,6 +28,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_publicacion as gp  # noqa: E402
+import registrar_evento as re_  # noqa: E402 — mismo módulo que gp.registrar_evento (cache de sys.modules)
+import test_flujo as tf  # noqa: E402 — reusa su fixture del gate de F2 (ángulo ganador)
 
 
 def _pieza(creativo_id, brazo):
@@ -329,9 +331,14 @@ def _fixture_producto_sin_cuenta():
 
 def _correr_main(base, argv):
     import contextlib, io
-    previo = (gp.BASE, gp.P, sys.argv)
+    # registrar_evento es el MISMO módulo que gp.registrar_evento (cache de sys.modules): sus
+    # rutas también hay que apuntarlas al fixture, o la EXCEPCION (P5) caería en el repo real.
+    previo = (gp.BASE, gp.P, re_.BASE, re_.PROD, re_.EVENTOS, sys.argv)
     gp.BASE = base
     gp.P = lambda *a: os.path.join(base, "PRODUCTOS", *a)
+    re_.BASE = base
+    re_.PROD = os.path.join(base, "PRODUCTOS")
+    re_.EVENTOS = os.path.join(re_.PROD, "_EVENTOS.csv")
     sys.argv = ["gen_publicacion.py"] + argv
     buf = io.StringIO()
     try:
@@ -341,7 +348,7 @@ def _correr_main(base, argv):
     except Exception as e:                      # noqa: BLE001 — el test reporta el crash, no lo esconde
         return None, buf.getvalue(), e
     finally:
-        gp.BASE, gp.P, sys.argv = previo
+        gp.BASE, gp.P, re_.BASE, re_.PROD, re_.EVENTOS, sys.argv = previo
 
 
 def test_solo_paquete_juzga_un_producto_sin_cuenta():
@@ -365,6 +372,84 @@ def test_modo_normal_sigue_cortando_sin_cuenta():
           + "sin --solo-paquete, la cuenta inexistente sigue cortando la publicacion"
           + ("" if ok else f"\n         code={code} err={err!r}\n         out={out[:200]!r}"))
     return 0 if ok else 1
+
+
+# ---------------------------------------------------------------- P5: el gate de fase es candado
+#
+# F2 mide por ANGULO GANADOR (invariante 1). El fixture reproduce el caso de test_flujo.py
+# (fixture_escalar_flaco): dos angulos con el MISMO CPA bajo break-even; `con_probado=True` le da
+# a ANG_PROBADO el piso de volumen (min_ventas_ganador) y el gate se cumple; `con_probado=False`
+# lo deja corto y el gate no se cumple. No se necesita un _PLAN.json completo para llegar hasta el
+# gate: gen_publicacion ya escribe el paquete canonico aun con bloqueantes de plan/pagina/piezas
+# (invariante 4 — se declaran, no cortan la corrida), asi que el fixture se queda minimo.
+
+def _fixture_fase2_con_gate(gate_cumplido):
+    """Reusa Ads/_TOOLS/test_flujo.py::fixture_escalar_flaco — el mismo caso (dos ángulos, mismo
+    CPA bajo break-even, `con_probado` decide si ANG_PROBADO llega al piso de volumen) — y le
+    agrega solo lo que gen_publicacion.py necesita para no cortar antes de llegar al gate: los
+    CSV reales de cuenta/publicación, la carpeta PRODUCTOS/PX y un _EVENTOS.csv con header."""
+    import csv, io, shutil
+    tmp = tf.fixture_escalar_flaco(ventas_nuevo=3, con_probado=gate_cumplido)
+    prod = os.path.join(tmp, "PRODUCTOS")
+    os.makedirs(os.path.join(prod, "PX"))
+    for nombre in ("_PARAMETROS_PUBLICACION.csv", "_DIM_CUENTAS.csv", "_DIM_VOCABULARIO.csv"):
+        shutil.copy(gp.P(nombre), os.path.join(prod, nombre))
+    with io.open(os.path.join(prod, "_EVENTOS.csv"), "w", encoding="utf-8", newline="") as fh:
+        csv.writer(fh).writerow(["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta",
+                                  "evento", "valor_antes", "valor_despues", "motivo", "fuente_decision"])
+    return tmp
+
+
+def _leer_eventos(base):
+    import csv, io
+    ruta = os.path.join(base, "PRODUCTOS", "_EVENTOS.csv")
+    with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
+        return list(csv.DictReader(fh))
+
+
+def test_gate_cumplido_escribe_el_paquete():
+    base = _fixture_fase2_con_gate(gate_cumplido=True)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--fase", "2", "--cuenta", "GTR7"])
+    escrito = os.path.exists(os.path.join(base, "PRODUCTOS", "PX", "_PUBLICACION_F2A.json"))
+    eventos = _leer_eventos(base)
+    ok = err is None and escrito and not eventos and "gate de entrada" not in out
+    return _informe(ok, "gate de F2 cumplido: el paquete se escribe y no hay fila EXCEPCION",
+                    (code, err, escrito, eventos, out[:200]))
+
+
+def test_gate_incumplido_sin_excepcion_no_escribe_nada():
+    base = _fixture_fase2_con_gate(gate_cumplido=False)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--fase", "2", "--cuenta", "GTR7"])
+    escrito = os.path.exists(os.path.join(base, "PRODUCTOS", "PX", "_PUBLICACION_F2A.json"))
+    eventos = _leer_eventos(base)
+    ok = err is None and code == 1 and not escrito and not eventos and "gate de entrada a F2" in out
+    return _informe(ok, "gate de F2 incumplido sin --excepcion: refusa, no escribe el paquete ni un evento",
+                    (code, err, escrito, eventos, out[:300]))
+
+
+def test_gate_incumplido_excepcion_vacia_refusa_igual():
+    base = _fixture_fase2_con_gate(gate_cumplido=False)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--fase", "2", "--cuenta", "GTR7",
+                                          "--excepcion", ""])
+    escrito = os.path.exists(os.path.join(base, "PRODUCTOS", "PX", "_PUBLICACION_F2A.json"))
+    ok = err is None and code == 1 and not escrito
+    return _informe(ok, "--excepcion \"\" (vacío) se trata como ausente: refusa igual", (code, err, escrito))
+
+
+def test_gate_incumplido_con_excepcion_procede_y_registra_una_excepcion():
+    base = _fixture_fase2_con_gate(gate_cumplido=False)
+    code, out, err = _correr_main(base, ["--producto", "PX", "--fase", "2", "--cuenta", "GTR7",
+                                          "--excepcion", "el operador decide seguir sin el gate"])
+    escrito = os.path.exists(os.path.join(base, "PRODUCTOS", "PX", "_PUBLICACION_F2A.json"))
+    eventos = _leer_eventos(base)
+    exc = [e for e in eventos if e["evento"] == "EXCEPCION"]
+    ok = (err is None and escrito and len(eventos) == 1 and len(exc) == 1
+          and exc[0]["valor_antes"] == "F2.entrada"
+          and exc[0]["valor_despues"] == "gen_publicacion --fase 2"
+          and exc[0]["motivo"] == "el operador decide seguir sin el gate"
+          and exc[0]["fuente_decision"] == "Ads/_TOOLS/gen_publicacion.py")
+    return _informe(ok, "gate incumplido + --excepcion: escribe el paquete y anexa EXACTAMENTE una EXCEPCION",
+                    (code, err, escrito, eventos))
 
 
 # ---------------------------------------------------------------- --media biblioteca (18-sep-2026)
@@ -565,6 +650,10 @@ def main():
     fallas += test_clasificacion_de_los_bloqueos_no_se_invierte()
     fallas += test_solo_paquete_juzga_un_producto_sin_cuenta()
     fallas += test_modo_normal_sigue_cortando_sin_cuenta()
+    fallas += test_gate_cumplido_escribe_el_paquete()
+    fallas += test_gate_incumplido_sin_excepcion_no_escribe_nada()
+    fallas += test_gate_incumplido_excepcion_vacia_refusa_igual()
+    fallas += test_gate_incumplido_con_excepcion_procede_y_registra_una_excepcion()
     fallas += test_los_bloqueos_del_operador_llevan_su_clave()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
