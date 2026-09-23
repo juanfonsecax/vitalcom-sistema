@@ -52,10 +52,11 @@ def test_la_corrida_muestra_el_avance_y_lo_que_devolvio_cada_etapa(cliente_jugue
     resultado = workflows.esperar_resultado(JOB, 120)
     assert resultado["estado"] == "EXITO", (resultado["detalle"], resultado["unidades"][-1])
     datos = cliente_juguete.get("/api/productos/TINNIDROP/fase1/corrida").json()
-    assert datos["corrida"]["job_id"] == JOB and len(datos["corrida"]["pasos"]) == 9
+    # F1.paquete corre TODO EN IMAGEN (decisión operador 22-sep-2026): 8 pasos, sin ningún script.
+    assert datos["corrida"]["job_id"] == JOB and len(datos["corrida"]["pasos"]) == 8
     por_etapa = {e["etapa"]: e for e in datos["etapas"]}
     assert por_etapa["etapa-1b"]["texto"].startswith("SALIDA DE etapa-1b (fake)")
-    assert por_etapa["etapa-2"]["paso"] == por_etapa["etapa-fanpage"]["paso"] == 6
+    assert por_etapa["etapa-2"]["paso"] == por_etapa["etapa-fanpage"]["paso"] == 5
 
 
 def test_flujo_bot_y_checklist_son_los_de_sus_scripts(cliente_juguete, sistema_de_juguete):

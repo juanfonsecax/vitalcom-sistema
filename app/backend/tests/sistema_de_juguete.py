@@ -66,9 +66,18 @@ def manifiesto_real() -> dict[str, Any]:
     return json.loads((REPO / "VISTAS" / "_MANIFIESTO.json").read_text(encoding="utf-8"))
 
 
+def flujo_real() -> dict[str, Any]:
+    return json.loads((REPO / "DOCTRINA" / "FLUJO.json").read_text(encoding="utf-8"))
+
+
 def escribir_manifiesto(base: Path, manifiesto: dict[str, Any]) -> None:
     destino = base / "VISTAS" / "_MANIFIESTO.json"
     destino.write_text(json.dumps(manifiesto, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def escribir_flujo(base: Path, flujo: dict[str, Any]) -> None:
+    destino = base / "DOCTRINA" / "FLUJO.json"
+    destino.write_text(json.dumps(flujo, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def escribir_script(base: Path, nombre: str, codigo: str) -> None:
@@ -102,10 +111,15 @@ def _csv(destino: Path, columnas: list[str], filas: list[dict[str, str]]) -> Non
         escritor.writerows(filas)
 
 
-def crear(destino: Path, manifiesto: dict[str, Any] | None = None) -> Path:
+def crear(destino: Path, manifiesto: dict[str, Any] | None = None, flujo: dict[str, Any] | None = None) -> Path:
+    """`flujo` reemplaza el `DOCTRINA/FLUJO.json` real (p. ej. para una prueba que necesita su
+    propio `FLUJO.json`, autoconsistente con un `manifiesto` propio — V20 exige que coincidan)."""
     for carpeta in ("DOCTRINA", "VISTAS", "PRODUCTOS", "Ads/_TOOLS", "PRODUCTOS/_AUDITORIAS"):
         (destino / carpeta).mkdir(parents=True, exist_ok=True)
-    shutil.copy2(REPO / "DOCTRINA" / "FLUJO.json", destino / "DOCTRINA" / "FLUJO.json")
+    if flujo is not None:
+        escribir_flujo(destino, flujo)
+    else:
+        shutil.copy2(REPO / "DOCTRINA" / "FLUJO.json", destino / "DOCTRINA" / "FLUJO.json")
     shutil.copy2(REPO / "Ads" / "_TOOLS" / "gen_app.py", destino / "Ads" / "_TOOLS" / "gen_app_real.py")
     escribir_script(destino, "gen_app.py", GEN_APP_ENVOLTORIO)
 

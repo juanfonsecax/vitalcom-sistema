@@ -18,16 +18,46 @@ import json
 import time
 from pathlib import Path
 
+import pytest
 import sistema_de_juguete as juguete
 
 from vitalcom_app import claude, workflows
 
 JOB = "a" * 32
-PASOS = [["etapa-producto"], ["etapa-0"], ["Ads/_TOOLS/lavar_videos.sh"], ["etapa-1"], ["etapa-1b"],
-         ["etapa-2", "etapa-fanpage"], ["etapa-4", "etapa-5"], ["etapa-6"], ["etapa-guardar-producto"]]
-SALIDAS = ["01_etapa-producto.md", "02_etapa-0.md", "03_lavar_videos.md", "04_etapa-1.md", "05_etapa-1b.md",
-           "06_etapa-2.md", "06_etapa-fanpage.md", "07_etapa-4.md", "07_etapa-5.md", "08_etapa-6.md",
-           "09_etapa-guardar-producto.md"]
+
+# La secuencia REAL de F1.paquete (DOCTRINA/FLUJO.json ∧ VISTAS/_MANIFIESTO.json): FASE 1 corre TODO
+# EN IMAGEN (decisión operador 22-sep-2026, commit d70fe33) y ya no lleva ningún script — el lavado
+# de video pasó a FASE 2, cuando se produce un concepto de video.
+PASOS_REALES = [["etapa-producto"], ["etapa-0"], ["etapa-1"], ["etapa-1b"],
+                ["etapa-2", "etapa-fanpage"], ["etapa-4", "etapa-5"], ["etapa-6"],
+                ["etapa-guardar-producto"]]
+
+# Un paso de tipo script ya no existe en la secuencia real de F1.paquete, pero el comportamiento de
+# UN paso script (numeración de salidas, «SCRIPT ...» en el registro, ninguna herramienta de Meta)
+# sigue siendo parte del contrato de `wf_pasos` — lo prueban las pruebas que usan
+# `SISTEMA_CON_PASO_SCRIPT` más abajo, con su propio manifiesto y `FLUJO.json` de juguete
+# (autoconsistentes entre sí), en vez de depender de que `lavar_videos.sh` siga en la secuencia real.
+PASOS_CON_SCRIPT = [["etapa-producto"], ["etapa-0"], ["Ads/_TOOLS/lavar_videos.sh"], ["etapa-1"],
+                    ["etapa-1b"], ["etapa-2", "etapa-fanpage"], ["etapa-4", "etapa-5"], ["etapa-6"],
+                    ["etapa-guardar-producto"]]
+SALIDAS_CON_SCRIPT = ["01_etapa-producto.md", "02_etapa-0.md", "03_lavar_videos.md", "04_etapa-1.md",
+                      "05_etapa-1b.md", "06_etapa-2.md", "06_etapa-fanpage.md", "07_etapa-4.md",
+                      "07_etapa-5.md", "08_etapa-6.md", "09_etapa-guardar-producto.md"]
+
+
+def _sistema_con_paso_script() -> dict:
+    """Manifiesto y `FLUJO.json` de juguete: F1.paquete con `PASOS_CON_SCRIPT`, autoconsistentes
+    entre sí (V20 exige que los `pasos` aplanados sean la `secuencia` de FLUJO.json)."""
+    manifiesto = juguete.manifiesto_real()
+    flujo = juguete.flujo_real()
+    accion = next(a for a in manifiesto["acciones"]["lista"] if a["id"] == "nodo.F1.paquete")
+    nodo = next(n for f in flujo["fases"] for n in f["nodos"] if n["id"] == "F1.paquete")
+    accion["pasos"] = PASOS_CON_SCRIPT
+    nodo["secuencia"] = [etapa for grupo in PASOS_CON_SCRIPT for etapa in grupo]
+    return {"manifiesto": manifiesto, "flujo": flujo}
+
+
+SISTEMA_CON_PASO_SCRIPT = _sistema_con_paso_script()
 
 
 def _pedir(cliente, job_id=JOB):
@@ -62,9 +92,10 @@ def _tablero(base: Path, resultado: dict) -> dict:
 def test_el_manifiesto_real_declara_los_pasos_de_la_secuencia():
     """Los pasos del manifiesto son la secuencia de FLUJO.json con sus dos paralelos (V20 lo valida)."""
     accion = next(a for a in juguete.manifiesto_real()["acciones"]["lista"] if a["id"] == "nodo.F1.paquete")
-    assert accion["pasos"] == PASOS
+    assert accion["pasos"] == PASOS_REALES
 
 
+@pytest.mark.parametrize("sistema_de_juguete", [SISTEMA_CON_PASO_SCRIPT], indirect=True)
 def test_los_pasos_corren_en_orden_y_los_grupos_a_la_vez(cliente_juguete, sistema_de_juguete, monkeypatch):
     _listo(sistema_de_juguete)
     monkeypatch.setenv("VITALCOM_FAKE_PASO_MODO", json.dumps({"etapa-2": "dormir:1.5", "etapa-fanpage": "dormir:1.5"}))
@@ -83,14 +114,15 @@ def test_los_pasos_corren_en_orden_y_los_grupos_a_la_vez(cliente_juguete, sistem
     assert max(dos["fin"], fan["fin"]) <= min(por_etapa["etapa-4"]["inicio"], por_etapa["etapa-5"]["inicio"])
 
     carpeta = sistema_de_juguete / resultado["run_dir"] / "etapas"
-    assert sorted(x.name for x in carpeta.iterdir()) == SALIDAS
+    assert sorted(x.name for x in carpeta.iterdir()) == SALIDAS_CON_SCRIPT
     assert (carpeta / "06_etapa-2.md").read_text(encoding="utf-8").startswith("SALIDA DE etapa-2 (fake)")
     assert "SCRIPT Ads/_TOOLS/lavar_videos.sh" in (carpeta / "03_lavar_videos.md").read_text(encoding="utf-8")
     tablero = _tablero(sistema_de_juguete, resultado)
-    assert [p["estado"] for p in tablero["pasos"]] == ["EXITO"] * len(PASOS)
+    assert [p["estado"] for p in tablero["pasos"]] == ["EXITO"] * len(PASOS_CON_SCRIPT)
     assert tablero["producto_key"] == "TINNIDROP" and tablero["retomado_de"] is None
 
 
+@pytest.mark.parametrize("sistema_de_juguete", [SISTEMA_CON_PASO_SCRIPT], indirect=True)
 def test_cada_paso_recibe_las_rutas_de_lo_anterior_y_ninguna_herramienta_de_meta(cliente_juguete, sistema_de_juguete):
     _listo(sistema_de_juguete)
     _pedir(cliente_juguete)
@@ -104,7 +136,7 @@ def test_cada_paso_recibe_las_rutas_de_lo_anterior_y_ninguna_herramienta_de_meta
         assert "WebSearch" in corrida["permitidas"], "las herramientas de la acción llegan a cada paso"
         if "PASO_ETAPA:" in prompt:
             prompts[prompt.split("PASO_ETAPA:", 1)[1].strip()] = prompt
-    assert set(prompts) == {e for g in PASOS for e in g}
+    assert set(prompts) == {e for g in PASOS_CON_SCRIPT for e in g}
     etapas_dir = f"{resultado['run_dir']}/etapas"
     uno_b = prompts["etapa-1b"]
     assert f"{etapas_dir}/00_INPUTS_CONGELADOS.md" in uno_b and f"{etapas_dir}/04_etapa-1.md" in uno_b
@@ -136,6 +168,7 @@ def test_una_pregunta_de_una_etapa_espera_la_respuesta_y_sigue(cliente_juguete, 
         "la salida de la etapa estaba en la vuelta de ANTES de la pregunta"
 
 
+@pytest.mark.parametrize("sistema_de_juguete", [SISTEMA_CON_PASO_SCRIPT], indirect=True)
 def test_un_paso_que_falla_corta_y_reintentar_retoma_desde_ahi(cliente_juguete, sistema_de_juguete, monkeypatch):
     _listo(sistema_de_juguete, cumplido=False)
     monkeypatch.setenv("VITALCOM_FAKE_PASO_MODO", json.dumps({"etapa-1b": "error"}))
@@ -159,7 +192,7 @@ def test_un_paso_que_falla_corta_y_reintentar_retoma_desde_ahi(cliente_juguete, 
     assert [p["estado"] for p in tablero["pasos"]] == ["HEREDADO"] * 4 + ["EXITO"] * 5
     assert tablero["retomado_de"] == JOB
     assert "Retoma desde el paso 5" in segundo["unidades"][0]["detalle"]
-    assert sorted(x.name for x in (sistema_de_juguete / segundo["run_dir"] / "etapas").iterdir()) == SALIDAS
+    assert sorted(x.name for x in (sistema_de_juguete / segundo["run_dir"] / "etapas").iterdir()) == SALIDAS_CON_SCRIPT
 
 
 def test_si_cambian_los_insumos_reintentar_corre_completo(cliente_juguete, sistema_de_juguete, monkeypatch):

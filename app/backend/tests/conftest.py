@@ -41,10 +41,14 @@ def cliente(base_declarada: Path) -> TestClient:
 
 
 @pytest.fixture()
-def sistema_de_juguete(tmp_path: Path, base_declarada: Path, monkeypatch):
+def sistema_de_juguete(tmp_path: Path, base_declarada: Path, monkeypatch, request):
     """Un sistema de mentira (ver `sistema_de_juguete.py`) con el manifiesto v7 real adentro.
 
     La base de datos de la app (DBOS) va a otra carpeta temporal: nunca dentro del sistema.
+    Con `@pytest.mark.parametrize("sistema_de_juguete", [{"manifiesto": ..., "flujo": ...}],
+    indirect=True)` una prueba puede instalar su propio manifiesto y/o `FLUJO.json` (autoconsistentes
+    entre sí: V20 exige que coincidan) en vez de los reales — p. ej. para conservar la cobertura de
+    un paso de tipo script sin atarla a la secuencia real de una fase.
     """
     import json
     import sys
@@ -54,7 +58,8 @@ def sistema_de_juguete(tmp_path: Path, base_declarada: Path, monkeypatch):
 
     sistema = tmp_path / "sistema"
     sistema.mkdir()
-    juguete.crear(sistema)
+    personalizado = getattr(request, "param", None) or {}
+    juguete.crear(sistema, manifiesto=personalizado.get("manifiesto"), flujo=personalizado.get("flujo"))
     monkeypatch.setenv("VITALCOM_BASE", str(sistema))
     monkeypatch.setenv("VITALCOM_DATOS", str(tmp_path / "datos"))
     # Ninguna prueba llama al Claude real: el falso habla el mismo stream-json.
