@@ -74,7 +74,7 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
 - [x] T4 (P4) Bot order: F2.etapa-11 becomes a congruence diagnosis (no rewrite gate); the F3 entry
       requires a CAMBIO_BOT dated after the winning concept; `_ev_eventos` supports "after X".
       Doctrine: CLAUDE.md pointer + PLANTILLAS_FLUJO_BOT.md.
-- [ ] T5 (P5) Gates are locks: `registrar_evento.py` (LANZAMIENTO) and `gen_publicacion.py --fase N`
+- [x] T5 (P5) Gates are locks: `registrar_evento.py` (LANZAMIENTO) and `gen_publicacion.py --fase N`
       refuse when the phase gate is unmet, unless `--excepcion "reason"` records an EXCEPCION event.
 - [ ] T6 (P7) Compute and write are separate: flujo.py, decidir.py, gen_grafo.py get a read-only mode.
       A "read" never writes tracked files.
@@ -372,6 +372,52 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
   alone). FINDING (open, backend test harness): pytest finishes in ~3:20 but the process never
   exits (something non-daemon stays alive), so `... | tail` hangs forever; and one flaky failure
   (`_claude_argv.log.candado` lock, test_pasos) appeared only when two runs overlapped.
+
+- 23-sep: T5 committed `1792398`. `flujo.gate_entrada(producto_key, fase, env=None)` (new,
+  Ads/_TOOLS/flujo.py) is the single read-only judge of "is fase's entry gate met": it reuses
+  `cargar_flujo()`/`contexto()`/`evaluar()` exactly as `situar()` does, never touches
+  `_ESTADO_FLUJO.csv` or `_EVENTOS.csv`, and returns `(True, "F1 no declara gate de entrada")`
+  for a phase with no gate. `gen_publicacion.py --fase N` calls it right after the
+  `--solo-paquete` return (so a readiness check never triggers it — only a real publish does)
+  and before writing the canonical `_PUBLICACION_F*.json`; `registrar_evento.py --evento
+  LANZAMIENTO` resolves the phase from `--fase` or, failing that, from the `TOKEN_FASE` token
+  (TEST/CONCEPTOS/ESCALA) inside `--campana` (new `resolver_fase()`), refusing if neither
+  resolves. Both refuse with a non-zero exit and write nothing when the gate is unmet, unless
+  `--excepcion "motivo"` is given (an empty string counts as not given) — then the action
+  proceeds and exactly one `EXCEPCION` row (`valor_antes`=the refused gate, e.g. `F2.entrada`;
+  `valor_despues`=the action that proceeded) is appended through a new
+  `registrar_evento.registrar_excepcion()`, which reuses the existing `validar()`/`anexar()`
+  pair — no second CSV writer. T4's `EXCEPCION_CAMBIO_BOT` alternative inside F3's own gate
+  predicate is untouched, left as its own thing per the task note (not unified with this
+  generic `EXCEPCION`, flagged for the operator).
+  - Doctrine: CLAUDE.md gained a "Reglas de invocación" bullet and an ownership-map note under
+    "Transiciones entre pasos y sus gates"; `.claude/skills/publicar-meta/SKILL.md` step 1
+    notes the refusal and the `--excepcion` flag. `.claude/agents/ETAPA-*.md` untouched.
+  - Tests (script-style, tmp fixtures only, no data CSV in SISTEMA-app touched): new
+    `test_gate_entrada.py` (8 checks: F1 always-ok, F2 angulo_ganador met/unmet reusing
+    `test_flujo.fixture_escalar_flaco`, F3 concepto_2de2+CAMBIO_BOT met/unmet reusing
+    `test_flujo.fixture_conceptos_al_filo`, unknown product, unknown phase, and a read-only
+    check comparing `_ESTADO_FLUJO.csv`/`_EVENTOS.csv` existence before/after); new
+    `test_registrar_evento.py` (7 checks: gate met registers plain, gate unmet refuses and
+    writes nothing, empty `--excepcion` refuses the same way, gate unmet + `--excepcion`
+    registers LANZAMIENTO plus exactly one EXCEPCION row with the right fields, phase from the
+    campaign token, missing phase asks for `--fase`, a non-LANZAMIENTO event skips the gate
+    entirely); extended `test_gen_publicacion.py` with 4 checks mirroring the same four
+    scenarios end-to-end through `gp.main()` (gate met writes the canonical package; gate unmet
+    writes nothing; empty exception refuses; gate unmet + exception writes the package and
+    exactly one EXCEPCION row) — its `_correr_main()` helper now also monkeypatches
+    `registrar_evento.BASE/PROD/EVENTOS` (the same cached module `gen_publicacion` imports),
+    since P5 makes the two scripts share that writer.
+  - Verification (SISTEMA-app worktree): `python -m pytest Ads/_TOOLS -q -p no:cacheprovider`
+    -> 35 passed (33 + the 2 new files). `python Ads/_TOOLS/test_gate_entrada.py`,
+    `python Ads/_TOOLS/test_registrar_evento.py`, `python Ads/_TOOLS/test_gen_publicacion.py`
+    -> each 0 fallas standalone. `python Ads/_TOOLS/flujo.py --validar` -> valid (3 fases, 20
+    nodos). `python Ads/_TOOLS/verificar_guia_madre.py` -> sin fallas. `python
+    Ads/_TOOLS/gen_grafo.py` -> clean (no orphans/dead paths), baseline restored with
+    `git checkout --` afterward. Backend not run (no `app/` file touched). `git status --short`
+    clean after commit.
+  - Open question for the operator: `Ads/_TOOLS/ingestar_unificado.py:268` still derives
+    `mensajes` from clicks (flagged under T1, unrelated to T5) — untouched here, out of scope.
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
