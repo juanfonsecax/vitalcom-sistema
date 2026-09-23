@@ -25,7 +25,8 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md + runbook de la auditoría):
     siempre. `rol_ventana` viaja en la llave: CONTROL nunca reemplaza a BASE ni viceversa. Ver
     `upsert_fact.py` (el helper, compartido con `bajar_meta_insights.py`).
   · La fecha sale del NOMBRE del archivo (report-YYYY-MM-DD-YYYY-MM-DD.xlsx), no del contenido.
-  · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _ARCHIVO/backups_csv/.
+  · Escribe con csv writer real (regla 22 de CLAUDE.md). Backup previo en _RESPALDOS/backups_csv/
+    (T9, 22-sep-2026: reemplaza a _ARCHIVO/, jubilado — ver upsert_fact.respaldos_dir()).
   · ad_id se formatea con s_id() (no notación científica cuando se puede).
 """
 import sys, io, os, re, csv, json, datetime
@@ -48,7 +49,7 @@ FACT = os.path.join(PROD, "_FACT_VENTAS.csv")
 DIMC = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
 DIMP = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
 DIMCTAS = os.path.join(PROD, "_DIM_CUENTAS.csv")
-BKDIR = os.path.join(BASE, "_ARCHIVO", "backups_csv")
+BKDIR = upsert_fact.respaldos_dir(BASE, "backups_csv")
 
 # Tasas de conversion a USD por moneda de facturacion (APR-028, medida contra banco).
 # La cuenta y su moneda salen de _DIM_CUENTAS.csv; agregar una fila ahi con moneda
@@ -515,7 +516,7 @@ def main():
         reemplazadas, nuevas_disco, sin_cambio = upsert_fact.upsert(
             FACT, COLS, clave_natural, nuevas, BKDIR)
         print(f"\n✅ {reemplazadas} reemplazadas (día corregido) · {nuevas_disco} nuevas · "
-              f"{sin_cambio} sin cambio -> _FACT_VENTAS.csv (backup en _ARCHIVO/backups_csv/)")
+              f"{sin_cambio} sin cambio -> _FACT_VENTAS.csv (backup en _RESPALDOS/backups_csv/)")
 
     if sin_clasificar or sin_dim:
         # Se escribe SIEMPRE (perder una venta real es peor que un aviso), pero la

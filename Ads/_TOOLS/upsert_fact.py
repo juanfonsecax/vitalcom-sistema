@@ -68,6 +68,20 @@ import shutil
 SETTLEMENT_WINDOW_DIAS = 3
 
 
+def respaldos_dir(base, *sub):
+    """Ruta bajo `_RESPALDOS/` (T9, 22-sep-2026) para un backup o derivado EN VIVO —
+    nunca datos de entrada del sistema (eso es `PRODUCTOS/`) ni doctrina (eso es
+    `DOCTRINA/`). `_RESPALDOS/` está en `.gitignore`: no se versiona, cada máquina
+    tiene el suyo. Reemplaza a `_ARCHIVO/`, que quedó jubilado (T9): `_ARCHIVO/`
+    mezclaba respaldos en vivo con material histórico muerto, y terminó siendo el
+    ZONAS_MUERTAS más grande del grafo (`gen_grafo.py`). `*sub` son los mismos
+    nombres de subcarpeta de siempre (`backups_csv`, `procesados`, ...) — un dato,
+    un dueño: los cuatro llamadores (`ingerir_meta.py`, `ingerir_lucidsales.py`,
+    `ingestar_unificado.py`, y `bajar_meta_insights.py` vía `ingerir_meta.BKDIR`)
+    piden esta función en vez de cablear `_ARCHIVO` o `_RESPALDOS` cada uno."""
+    return os.path.join(base, "_RESPALDOS", *sub)
+
+
 def _texto(v):
     """Normaliza un valor al TEXTO que terminaria escrito en el CSV (csv.writer hace
     str() de cualquier cosa que no sea ya str). Sin esto, una fila recien calculada en

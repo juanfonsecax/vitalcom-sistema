@@ -11,7 +11,8 @@ CÓMO FUNCIONA:
      - Aplica deduplicación estricta (no duplica si subes dos veces el mismo archivo).
      - Normaliza monedas (COP a USD para cuenta CP1).
   4. Actualiza los CSVs de hechos (_FACT_VENTAS.csv y _FACT_ENTREGA.csv).
-  5. Mueve los archivos procesados a `_ARCHIVO/procesados/` para mantener limpio el INBOX.
+  5. Mueve los archivos procesados a `_RESPALDOS/procesados/` para mantener limpio el INBOX
+     (T9, 22-sep-2026: reemplaza a `_ARCHIVO/`, jubilado).
   6. Actualiza de inmediato las decisiones y la aplicación.
 
 USO:
@@ -40,12 +41,15 @@ warnings.filterwarnings("ignore")
 
 import pandas as pd
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import upsert_fact   # noqa: E402  (respaldos_dir() compartido, ver T9 en su docstring)
+
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.chdir(BASE)
 
 INBOX_DIR = os.path.join(BASE, "INBOX")
 PROD_DIR = os.path.join(BASE, "PRODUCTOS")
-ARCH_DIR = os.path.join(BASE, "_ARCHIVO", "procesados")
+ARCH_DIR = upsert_fact.respaldos_dir(BASE, "procesados")
 
 FACT_VENTAS = os.path.join(PROD_DIR, "_FACT_VENTAS.csv")
 FACT_ENTREGA = os.path.join(PROD_DIR, "_FACT_ENTREGA.csv")
@@ -329,7 +333,7 @@ def archivar_procesado(ruta_archivo):
     destino = os.path.join(destino_dir, nombre)
     try:
         shutil.move(ruta_archivo, destino)
-        print(f"    📦 Archivado en: _ARCHIVO/procesados/{mes_actual}/{nombre}")
+        print(f"    📦 Archivado en: _RESPALDOS/procesados/{mes_actual}/{nombre}")
     except Exception as e:
         print(f"    Aviso: No se pudo mover {nombre}: {e}")
 

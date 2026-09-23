@@ -57,6 +57,14 @@ venv/
 *.bak
 *.bak-*
 *.bak_*
+# _RESPALDOS/ (T9, 22-sep-2026): destino unico de todo backup/derivado EN VIVO
+# (backups_csv/, procesados/, ...) — reemplaza a _ARCHIVO/, que ademas mezclaba
+# eso con material historico muerto y ya salio del repo (ver mapa de archivos
+# de CLAUDE.md). Las lineas _ARCHIVO/... de abajo quedan hasta que el operador
+# mueva los backups en vivo que ya existen en disco en el checkout principal
+# (fuera de este worktree) a _RESPALDOS/ — quitarlas antes haria que esos
+# archivos viejos aparecieran como "sin trackear" en ese checkout.
+_RESPALDOS/
 _ARCHIVO/backups_csv/
 _ARCHIVO/backups_agentes/
 _ARCHIVO/backups_data/

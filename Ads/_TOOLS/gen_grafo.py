@@ -11,11 +11,13 @@ mismo — una copia que nadie sabia que existia:
   · AGENTS.md, copia linea por linea de CLAUDE.md (538 vs 538).
   · .codex/agents/, tercera copia ya divergida: 13 de 17 etapas.
   · .agents/skills/, dos skills polizonas fuera de skills-lock.json, una de
-    ellas apuntando a `.Codex/agents/` — un directorio ya retirado a _ARCHIVO/.
+    ellas apuntando a `.Codex/agents/` — un directorio ya retirado (entonces a
+    `_ARCHIVO/`; ese directorio salio del repo el 22-sep-2026, T9 — su material
+    historico vive fuera, ver CLAUDE.md).
 
 Las tres eran invisibles hasta que un humano las miro. Este script las vuelve un
 numero. Es lo que un mapeador de codigo generico NO puede hacer, porque no sabe
-que en este repo `_ARCHIVO/` esta jubilado y `.claude/` corre: se probo Graphify
+que en este repo `.claude/` corre y lo jubilado no existe: se probo Graphify
 el 2026-09-03 y el 26 % de su grafo salia de zonas muertas, rankeando el
 COPYWRITING_ADS.md retirado igual que el vivo.
 
@@ -71,8 +73,12 @@ BYTES_POR_TOKEN = 3.6
 LINEA_BASE = os.path.join("PRODUCTOS", "_AUDITORIAS", "_LINEA_BASE_SISTEMA.json")
 
 # Zonas que CLAUDE.md declara referencia humana: el sistema NO las ejecuta.
-# Sin esto, un mapeador cuenta lo jubilado igual que lo vivo.
-ZONAS_MUERTAS = ("_ARCHIVO", "_ROADMAP", "_OPERADOR", "_CONOCIMIENTO",
+# Sin esto, un mapeador cuenta lo jubilado igual que lo vivo. `_ARCHIVO` salio
+# de esta lista el 22-sep-2026 (T9): el directorio ya no existe en el repo, y
+# `_RESPALDOS/` (su reemplazo para backups en vivo, gitignored) no necesita
+# entrar aca — no tiene .md ni lo alcanza `construir()` (solo lista archivos
+# EN los directorios declarados, no recursivo).
+ZONAS_MUERTAS = ("_ROADMAP", "_OPERADOR", "_CONOCIMIENTO",
                  "_SKILLS_FUENTE", "INFPRODUCTOS", "graphify-out", ".git")
 # .md de raiz que son para el humano, no para el flujo. No son huerfanos.
 DOCS_HUMANOS = ("README.md", "AGENTS.md")

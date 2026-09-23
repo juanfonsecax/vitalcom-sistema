@@ -23,7 +23,8 @@ Reglas que implementa (DOCTRINA/DATA_PLAYBOOK.md §1):
   · CP1 (1346891653335162) factura en COP -> spend_COP / 3152.5 = spend_USD (APR-028).
   · ANTI-DUPLICADO por (ventana_ini, ventana_fin, cuenta_alias, campana, conjunto, fuente).
   · Llave = nombre del conjunto EXACTO como quedo en Meta, con tildes y sufijos. No normalizar.
-  · Escribe con csv writer real (regla 11 de CLAUDE.md). Backup previo en _ARCHIVO/backups_csv/.
+  · Escribe con csv writer real (regla 11 de CLAUDE.md). Backup previo en _RESPALDOS/backups_csv/
+    (T9, 22-sep-2026: reemplaza a _ARCHIVO/, jubilado — ver upsert_fact.respaldos_dir()).
   · Reporta el JOIN contra _DIM_CONJUNTOS.csv; un conjunto sin dimension se REPORTA, no se descarta.
 
 NIVEL ANUNCIO (06-sep-2026)
@@ -57,7 +58,7 @@ PROD = os.path.join(BASE, "PRODUCTOS")
 FACT = os.path.join(PROD, "_FACT_ENTREGA.csv")
 FACT_AD = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")
 DIMC = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
-BKDIR = os.path.join(BASE, "_ARCHIVO", "backups_csv")
+BKDIR = upsert_fact.respaldos_dir(BASE, "backups_csv")
 
 TASA_COP_USD = 3152.5          # APR-028, medida contra el banco
 CP1 = "1346891653335162"
@@ -386,7 +387,7 @@ def main():
             for r in nuevas:
                 w.writerow(r)
         print(f"\nescritas {len(nuevas)} filas en {os.path.relpath(FACT, BASE)}")
-        print(f"backup: _ARCHIVO/backups_csv/_FACT_ENTREGA_{stamp}.csv")
+        print(f"backup: _RESPALDOS/backups_csv/_FACT_ENTREGA_{stamp}.csv")
     if nuevos_ads:
         # upsert_fact en vez de un append crudo (22-sep-2026, g07 T1): `nuevos_ads` ya viene
         # deduplicado contra `ads_ex` (mas arriba), asi que en la practica esto agrega, no

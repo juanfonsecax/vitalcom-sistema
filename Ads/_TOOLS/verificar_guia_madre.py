@@ -113,7 +113,10 @@ def num(texto):
 def buscar_por_nombre(nombre):
     """Resuelve un puntero suelto (sin ruta) a su ubicacion real, o None."""
     for dp, dirs, archivos in os.walk(BASE):
-        dirs[:] = [d for d in dirs if d not in (".git", "_ARCHIVO", "node_modules")]
+        # _RESPALDOS (T9, 22-sep-2026): reemplaza a _ARCHIVO como carpeta de
+        # backups en vivo, gitignored — mismo motivo de exclusion (no es
+        # doctrina, solo serian falsos positivos y ruido en la busqueda).
+        dirs[:] = [d for d in dirs if d not in (".git", "_RESPALDOS", "node_modules")]
         if nombre in archivos:
             return os.path.relpath(os.path.join(dp, nombre), BASE).replace("\\", "/")
     return None

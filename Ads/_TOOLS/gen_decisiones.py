@@ -18,8 +18,9 @@ NO DIBUJA HTML. Hasta el 07-sep-2026 tambien renderizaba VISTAS/DECISIONES.html,
 segunda superficie para los mismos datos que quedo a la deriva: seguia pintando el estado
 INDECIDIBLE_ESTRUCTURAL que el motor unificado ya no emite, no conocia RENOVAR, y crasheaba
 con KeyError('por_que') contra el contrato actual del motor. Nadie lo noto porque solo se
-invocaba como fallback. La vista retirada vive en _ARCHIVO/. Un dato, un dueno: las
-decisiones se ven en la app.
+invocaba como fallback. La vista retirada salio del repo el 22-sep-2026 (T9, junto con el
+resto de `_ARCHIVO/`) — queda en el historial de git, no en el arbol de trabajo. Un dato,
+un dueno: las decisiones se ven en la app.
 
 USO:
     python Ads/_TOOLS/gen_decisiones.py           # warehouse + motor
