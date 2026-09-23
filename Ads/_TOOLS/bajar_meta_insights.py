@@ -272,9 +272,12 @@ def procesar_cuenta(cuenta, fecha, token, dim):
 
 
 def agregar_a_conjunto(ads):
+    """Suma las filas de anuncio al grano conjunto. Agrupa por la MISMA llave natural del hecho
+    (`_clave_conjunto`: fuente, ventana, cuenta, campaña, conjunto): un tramo de varios días
+    trae filas de cada día, y un día nunca se suma dentro de otro."""
     agg = {}
     for d in ads:
-        k = (d["cuenta_alias"], d["campana"], d["conjunto"])
+        k = _clave_conjunto(d)
         a = agg.setdefault(k, {**d, "clicks_totales": 0, "link_clicks": 0,
                                 "impresiones": 0, "spend_usd": 0.0, "mensajes": 0})
         for c in ("clicks_totales", "link_clicks", "impresiones", "spend_usd", "mensajes"):

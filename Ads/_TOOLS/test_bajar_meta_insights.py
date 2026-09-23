@@ -127,6 +127,21 @@ class TestBajarMetaInsights(unittest.TestCase):
         self.assertEqual(c["impresiones"], 150)
         self.assertEqual(c["spend_usd"], 3.75)
 
+    def test_agregar_a_conjunto_no_funde_dias_distintos(self):
+        base = {
+            "cuenta_alias": "GTR7", "campana": "Camp 1", "conjunto": "Conj 1", "anuncio": "Ad 1",
+            "clicks_totales": 1, "link_clicks": 1, "impresiones": 10, "producto_key": "PROD",
+            "dias": 1, "cuenta_id": "123", "mensajes": 2, "pct_conv_clic_enlace": 0.0,
+            "fuente": "MetaAPI-directo",
+        }
+        ads = [
+            {**base, "ventana_ini": "2026-09-06", "ventana_fin": "2026-09-06", "spend_usd": 4.0},
+            {**base, "ventana_ini": "2026-09-07", "ventana_fin": "2026-09-07", "spend_usd": 6.0},
+        ]
+        res = sorted(bmi.agregar_a_conjunto(ads), key=lambda r: r["ventana_ini"])
+        self.assertEqual([(r["ventana_ini"], r["spend_usd"]) for r in res],
+                         [("2026-09-06", 4.0), ("2026-09-07", 6.0)])
+
     def test_main_aisla_falla_de_una_cuenta_y_sigue_con_las_demas(self):
         """Una cuenta que revienta (permiso denegado, ej. GTR13) no debe tumbar el proceso: las
         filas de la cuenta sana se escriben igual y el codigo de salida queda en 2 (PARCIAL: al
