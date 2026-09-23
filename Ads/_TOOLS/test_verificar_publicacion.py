@@ -99,6 +99,69 @@ def test_fila_sin_ad_id_declarado_no_cambia():
     return 0 if ok else 1
 
 
+# ── T8-2 (23-sep-2026): todo objeto declarado que existe en Meta tiene que estar PAUSED ────
+
+def _filas_declaradas():
+    return [("CAMPANA", "GTR7_PX_F1", "OK", "c1"),
+            ("CONJUNTO", "GTR7_PX_F1_ANG1", "OK", "s1"),
+            ("ANUNCIO", "GTR7_PX_F1_ANG1_A1", "OK", "a1")]
+
+
+def test_todo_paused_pasa_el_gate():
+    filas = _filas_declaradas()
+    meta = {"GTR7_PX_F1": {"status": "PAUSED"},
+            "GTR7_PX_F1_ANG1": {"status": "PAUSED"},
+            "GTR7_PX_F1_ANG1_A1": {"status": "PAUSED"}}
+    no_pausados = vp.objetos_no_pausados(filas, meta)
+    ok = no_pausados == []
+    print(("  OK     " if ok else "  FALLA  ")
+          + "los 3 objetos PAUSED en Meta: el gate no reporta ninguno"
+          + ("" if ok else f"\n         no_pausados={no_pausados}"))
+    return 0 if ok else 1
+
+
+def test_un_anuncio_active_bloquea():
+    filas = _filas_declaradas()
+    meta = {"GTR7_PX_F1": {"status": "PAUSED"},
+            "GTR7_PX_F1_ANG1": {"status": "PAUSED"},
+            "GTR7_PX_F1_ANG1_A1": {"status": "ACTIVE"}}
+    no_pausados = vp.objetos_no_pausados(filas, meta)
+    ok = (len(no_pausados) == 1 and no_pausados[0][0] == "ANUNCIO"
+          and no_pausados[0][1] == "GTR7_PX_F1_ANG1_A1" and no_pausados[0][3] == "ACTIVE")
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un anuncio ACTIVE se reporta solo (no los otros dos que si estan PAUSED)"
+          + ("" if ok else f"\n         no_pausados={no_pausados}"))
+    return 0 if ok else 1
+
+
+def test_sin_effective_status_no_pasa():
+    """Un objeto sin `status`/`effective_status` en el snapshot NUNCA se asume PAUSED —
+    fallar en silencio seria peor que no verificar nada."""
+    filas = _filas_declaradas()
+    meta = {"GTR7_PX_F1": {"status": "PAUSED"},
+            "GTR7_PX_F1_ANG1": {"status": "PAUSED"},
+            "GTR7_PX_F1_ANG1_A1": {}}
+    no_pausados = vp.objetos_no_pausados(filas, meta)
+    ok = (len(no_pausados) == 1 and no_pausados[0][1] == "GTR7_PX_F1_ANG1_A1"
+          and no_pausados[0][3] == "SIN effective_status")
+    print(("  OK     " if ok else "  FALLA  ")
+          + "sin effective_status en el snapshot: se reporta, NUNCA se asume PAUSED"
+          + ("" if ok else f"\n         no_pausados={no_pausados}"))
+    return 0 if ok else 1
+
+
+def test_objetos_faltantes_no_entran_al_chequeo_de_paused():
+    """Un objeto que ni siquiera existe en Meta (estado FALTA en `filas`) ya lo bloquea el gate
+    de existencia — no tiene sentido, ademas, reportarlo como 'no pausado'."""
+    filas = [("ANUNCIO", "GTR7_PX_F1_ANG1_A9", "FALTA", "")]
+    no_pausados = vp.objetos_no_pausados(filas, {})
+    ok = no_pausados == []
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un objeto FALTA no se reporta tambien como 'no pausado' (el gate de existencia ya lo cubre)"
+          + ("" if ok else f"\n         no_pausados={no_pausados}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_generado_con_ad_id_pasa_a_publicado()
@@ -107,6 +170,10 @@ def main():
     fallas += test_ya_publicado_no_se_recuenta_como_ascenso()
     fallas += test_estado_entrega_no_se_toca()
     fallas += test_fila_sin_ad_id_declarado_no_cambia()
+    fallas += test_todo_paused_pasa_el_gate()
+    fallas += test_un_anuncio_active_bloquea()
+    fallas += test_sin_effective_status_no_pasa()
+    fallas += test_objetos_faltantes_no_entran_al_chequeo_de_paused()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

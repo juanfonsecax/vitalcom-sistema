@@ -27,6 +27,11 @@ Tres veredictos por objeto:
     NO_DECLARADO existe en la campana y el manifiesto no lo pedia -> alguien creo algo a mano,
                  o una corrida anterior lo dejo. Se REPORTA, nunca se borra.
 
+GATE DE ESTADO (T8-2, 23-sep-2026): ademas de existir, todo objeto declarado tiene que estar
+PAUSED en el snapshot (invariante 12: nace PAUSED). Un objeto ACTIVE, o sin `effective_status`
+en el snapshot (nunca se asume PAUSED por ausencia), bloquea el gate igual que un FALTA —
+`objetos_no_pausados()`.
+
 QUE ESCRIBE (solo con --escribir)
 ---------------------------------
 `ad_id` en `PRODUCTOS/_DIM_CREATIVOS.csv`, formato `adA;adB`, una fila por creativo_id — y junto
@@ -80,6 +85,22 @@ def cargar_snapshot(ruta):
         if o.get("name"):
             out[o["name"].strip()] = {"id": o.get("id"), "nivel": o.get("nivel", ""),
                                       "status": o.get("status") or o.get("effective_status", "")}
+    return out
+
+
+def objetos_no_pausados(filas, meta):
+    """De los objetos DECLARADOS que SI existen en Meta (estado=='OK' en `filas`), los que NO
+    estan PAUSED. Devuelve (nivel, nombre, id, estado_observado) — `estado_observado` es
+    'SIN effective_status' cuando el snapshot no trajo ese campo (nunca se asume PAUSED por
+    ausencia: eso seria fallar en silencio, T8-2). Todo objeto que este sistema crea nace PAUSED
+    (invariante 12); uno ACTIVE o sin status leido de Meta no pasa el gate."""
+    out = []
+    for nivel, nombre, estado, oid in filas:
+        if estado != "OK":
+            continue
+        status = (meta.get(nombre) or {}).get("status")
+        if status != "PAUSED":
+            out.append((nivel, nombre, oid, status or "SIN effective_status"))
     return out
 
 
@@ -183,6 +204,10 @@ def main():
                      if n.startswith(prefijo) and n not in declarados
                      and man["campana"].split("_")[2] in n]
 
+    # Todo objeto declarado que SI existe en Meta tiene que estar PAUSED (invariante 12); si el
+    # snapshot lo trae ACTIVE ya esta gastando sin confirmacion del operador.
+    no_pausados = objetos_no_pausados(filas, meta)
+
     print("=" * 78)
     print("GATE DE PUBLICACION  ·  %s  ·  FASE %d brazo %s  ·  %s"
           % (pk, fase, brazo, pq["cuenta_alias"]))
@@ -209,6 +234,16 @@ def main():
         print("  X La secuencia quedo A MEDIAS. NO ACTIVAR.")
         print("    Volve a correr gen_publicacion.py con --snapshot: las llamadas de lo que ya")
         print("    existe se marcan 'omitir' y solo se crea lo que falta. No se republica encima.")
+        return 1
+
+    if no_pausados:
+        print()
+        print("  X %d objeto(s) declarado(s) NO estan PAUSED en Meta:" % len(no_pausados))
+        for nivel, nombre, oid, estado_obs in no_pausados:
+            print("    ! %-9s %-52s %-12s id=%s" % (nivel, nombre[:52], estado_obs, oid))
+        print("    Todo objeto creado por este sistema nace PAUSED (invariante 12). Un objeto")
+        print("    ACTIVE o sin effective_status en el snapshot NO pasa el gate: podria estar")
+        print("    gastando sin confirmacion del operador. NO ACTIVAR.")
         return 1
 
     # ---------- escritura de los ad_id ------------------------------------
