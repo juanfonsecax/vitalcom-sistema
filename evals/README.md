@@ -131,24 +131,14 @@ cuando `ciclo-diario` ya corría `etapa-7` + `etapa-8` en la misma pasada y
 las presentaba sin separación — es el output real más parecido a lo que hoy
 produce la etapa fusionada.
 
-**Hallazgo, no se tapó:** ese fixture PASA `asserts/etapa-7.py` pero FALLA 3
-de los 4 chequeos de `asserts/etapa-8.py` (`Break-Even`, `regla de oro`, "N
-ventas" con la palabra completa) porque ya usa el formato compacto de
-`decidir.py` ("BE Qxx", "36v") en vez de reimprimir esas palabras — que es
-exactamente lo que el Goal 1 de T3 pide (citar los números de `decidir.py`
-en vez de re-derivarlos/re-imprimirlos). El test queda `expected_fail: true`
-con el detalle en `promptfooconfig.yaml`. **No se debilitó `asserts/etapa-8.py`
-para taparlo** — la plantilla nueva de `ETAPA-7.md` (PASO 5 y el formato del
-"Informe diario") sí pide esas tres piezas como vocabulario fijo de la
-prosa de juicio (no como números re-derivados), así que un re-run real
-contra la plantilla fusionada podría cerrar el hueco; eso queda pendiente
-del re-run del parent sobre inputs congelados (mismo patrón que T1/T2: el
-writer no puede invocar a la etapa contra Claude real).
+El fixture fusionado es un output real de la etapa fusionada y pasa los dos
+asserts (`etapa-7.py` y `etapa-8.py`) sin debilitar ninguno. Su fuente está en
+`fixtures/etapa-7/SOURCE_FUSIONADO.txt`.
 
 ## Protocolo de poda (para cuando se toque un prompt de ETAPA-*.md)
 
 1. Correr `python evals/run_baseline.py` ANTES de tocar nada — confirma que
-   arranca en verde (26/28, con los 2 fallos conocidos de arriba).
+   arranca en verde (27/28, con el fallo conocido de arriba).
 2. Cambiar el prompt.
 3. Re-correr la etapa sobre los MISMOS inputs congelados que produjeron el
    fixture (mismo producto, mismos insumos — nunca un producto nuevo, eso no

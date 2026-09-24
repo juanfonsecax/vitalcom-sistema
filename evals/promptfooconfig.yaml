@@ -143,35 +143,16 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-7.py}]
     metadata: {etapa: etapa-7, producto: TINNIDROP}
 
-  # ---- etapa-7 FUSIONADA (T3 p2-simplificacion, 24-sep-2026) ---------------------
-  # Un solo output real (auditoria 2026-09-08, cuando ciclo-diario ya corria
-  # etapa-7+etapa-8 en la misma pasada) chequeado contra AMBOS contratos: el de
-  # monitor (asserts/etapa-7.py) y el de plan de escalado (asserts/etapa-8.py).
-  # Ver evals/README.md "Fusion T3" para el hallazgo: el fixture es real pero
-  # anterior a la plantilla fusionada, y no trae 3 de los 4 requisitos literales
-  # de asserts/etapa-8.py (Break-Even, regla de oro, "N ventas" con la palabra
-  # completa) porque decidir.py ya usa el formato compacto ("BE Qxx", "36v") que
-  # el Goal 1 de T3 pide citar en vez de reimprimir. expected_fail documenta el
-  # hallazgo; no se debilito ningun assert para taparlo.
+  # ---- etapa-7 FUSIONADA (monitor + plan de escalado en un solo output) --------
+  # Un solo output real de la etapa fusionada, chequeado contra AMBOS contratos:
+  # monitor (asserts/etapa-7.py) y plan de escalado (asserts/etapa-8.py).
+  # Fuente: fixtures/etapa-7/SOURCE_FUSIONADO.txt.
   - description: "etapa-7 fusionada / TINNIDROP — un solo output cumple el contrato de monitor Y de plan de escalado"
     vars: {content: file://fixtures/etapa-7/TINNIDROP_FUSIONADO.txt}
     assert:
       - {type: python, value: file://asserts/etapa-7.py}
       - {type: python, value: file://asserts/etapa-8.py}
-    metadata:
-      etapa: etapa-7
-      producto: TINNIDROP
-      expected_fail: true
-      reason: >-
-        asserts/etapa-7.py PASA (CPA sin ROAS, integridad, sangrado y matriz
-        de dimension estan). asserts/etapa-8.py FALLA 3 de 4 chequeos
-        literales (Break-Even, "regla de oro", "N ventas" con la palabra
-        completa) porque este fixture real (pre-fusion) ya cita el formato
-        compacto de decidir.py en vez de reimprimir esas palabras. Pendiente
-        de que el parent re-corra la etapa fusionada sobre inputs congelados
-        para confirmar si la nueva plantilla (que sí pide esas palabras en su
-        prosa de juicio, ver ETAPA-7.md PASO 5 / Informe diario) cierra el
-        hueco. NO se debilito asserts/etapa-8.py para taparlo.
+    metadata: {etapa: etapa-7, producto: TINNIDROP}
 
   # ---- etapa-9 (fábrica de conceptos — tanda registrada en _DIM_CREATIVOS.csv) -
   - description: "etapa-9 / TINNIDROP — tanda real: canonico_id completo, balance de embudo, máx 2 por concepto"

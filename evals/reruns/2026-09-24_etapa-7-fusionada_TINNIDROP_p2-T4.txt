@@ -1,0 +1,73 @@
+# Re-run etapa-7 (fused) · TINNIDROP · p2-T4 (archaeology cleanup) · 2026-09-24
+# Same package as the T3 re-run: decidir table evals/reruns/2026-09-24_decidir_TINNIDROP_tabla.txt +
+# _DECISIONES.json + _EVENTOS.csv + _DIM_CONJUNTOS.csv + _ALIAS_CONJUNTOS.csv + _BITACORA_DATA.txt +
+# _FACT_VENTAS.csv + _FACT_ENTREGA.csv + _APRENDIZAJES.csv. Live data through 2026-09-22 (the 09-08
+# snapshot was never frozen). Read-only; no Meta tools. Parent transcription: same content and
+# numbers, markdown tables flattened to lines and bullets condensed; the full raw output is in the session log.
+
+[TABLA DETERMINÍSTICA — salida de decidir.py, congelada en evals/reruns/2026-09-24_decidir_TINNIDROP_tabla.txt]
+
+ MOTOR DE DECISIÓN UNIFICADO (Evaluación: 14d | Fatiga: 3d | Tolerancia: acumulada | IC 95% | Grano: angulo)
+ Data: 2026-09-09 → 2026-09-22  (generado 2026-09-24)
+[TINNIDROP]  Estado: VIVO | Fase: F2 | Break-Even: Q93.41 | CPA Objetivo: Q30.80
+  ESTADO            CELDA / ÁNGULO         VTS  MSJ  GASTO Q  CPA REAL  IC 95% Q   ACCIÓN
+  [SEGUIR_MIDIENDO] ACCESIBILIDAD_MEDICO   21   170  1502.7   Q71.6     [48-112]   MANTENER PRESUPUESTO (no subir) · faltan ~37 vts
+  [SEGUIR_MIDIENDO] PERDIDA_AUDITIVA       13   191  1120.1   Q86.2     [52-154]   MANTENER PRESUPUESTO (no subir) · CPA cerca del BE
+  [SEGUIR_MIDIENDO] DETERIORO_COGNITIVO    10   107   887.7   Q88.8     [50-173]   MANTENER PRESUPUESTO (no subir) · CPA cerca del BE
+  [SEGUIR_MIDIENDO] NOCHES_SIN_DORMIR       6    43   367.0   Q61.2     [30-146]   MANTENER PRESUPUESTO (no subir) · faltan ~18 vts
+
+# INFORME DIARIO — TINNIDROP · FASE 2 · 2026-09-24
+
+INTEGRIDAD DE VENTANA: 7 de 7 días (COMPLETA) — 16→22-sep presentes en _FACT_VENTAS.csv (BASE diarias, contiguas); la ventana del motor 14d (09→22) también completa. Rezago: 2 días (último día con data 2026-09-22) — no supera el umbral de declaración de la invariante 13. Hueco de REGISTRO (no de data): _BITACORA_DATA.txt no tiene ninguna fila después de 2026-09-08; la integridad se verificó en _FACT_VENTAS.csv, no en la bitácora. Ponerla al día.
+
+Gasto ventana: $508.86 = Q3,877.5 · Ventas atribuidas: 50 · Ingreso: (el motor no lo trae; ver gen_dashboard) · Ganancia: ≈Q793 (= 50 × BE Q93.41 − Q3,877.5) · 3 ventas orgánicas sin atribución (10, 14 y 16-sep) fuera de toda celda. Break-Even Q93.41 · CPA Objetivo Q30.80 (citados de _DECISIONES.json). [APR-071] a revalidar: tasa de entrega TINNIDROP bajó a 85.2% → el break-even real debería subir; el Q93.41 de _DIM_PRODUCTOS.csv es v4, previo a ese aprendizaje. REGLA DE ORO: se escala lo que YA vende.
+
+VARIABLES DE CONFUSIÓN: _EVENTOS.csv no registra ningún CAMBIO_* de TINNIDROP en la ventana. Pero hay tres confusores en la data:
+1. GTR7 dejó de entregar el 2026-09-21 — 0 impresiones / 0 gasto en todos sus conjuntos (Meta y LucidSales coinciden); el 20-sep ya había entregado a la mitad (~$1.8–2.0 por conjunto vs ~$3.5 normal). Volvió el 22-sep. GTR7 carga ACCESIBILIDAD_MEDICO y PERDIDA_AUDITIVA (68% del gasto). Ningún evento lo explica → primero verificar cobro/método de pago de GTR7 ([APR-058]), no el ángulo. Cae dentro de la ventana de fatiga 3d (20→22): esa ventana no es limpia para esas dos celdas.
+2. ACCESIBILIDAD_MEDICO: 1 venta tardía el 10-sep con gasto $0 atribuida a GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C1-CN05_R1 — la tanda FASE 2 pausada el 08-sep por el creativo defectuoso (marca SOUTH MOON, vía "sublingual"). No es evidencia de concepto.
+3. PERDIDA_AUDITIVA: 1 venta tardía el 16-sep con gasto $0 de GTR0_..._PERDIDA-AUDITIVA_R2 +25AÑOS (pausado el 03-sep).
+
+SANGRADO: Q0 (0% del gasto) — ninguna celda del motor tiene 0 ventas; a nivel conjunto, los dos conjuntos F2 de GTR0 que siguen dando señal tuvieron gasto $0 en ventana. No hay sangrado que podar hoy.
+
+## LECTURA POR DIMENSIÓN (JOIN con _DIM_CONJUNTOS.csv)
+SIN DIMENSIÓN: 0 filas — el JOIN cierra al 100% (GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1 cruza vía _ALIAS_CONJUNTOS.csv con su nombre anterior "... +25AÑOS").
+⚠️ En esta ventana cada ángulo lleva un solo hook, un solo formato y un solo rol → cada corte es colineal con el ángulo; NO son evidencia independiente del ángulo.
+- Tipo de hook: TESTIMONIO 21v CPA Q71.6 · MIEDO 23v CPA Q87.3 · EMOCIONAL 6v CPA Q61.2 [n bajo]
+- Formato: VIDEO 44v CPA Q79.8 · IMAGEN 6v CPA Q61.2 [n bajo] — no decide
+- Rol de embudo: MOFU 21v CPA Q71.6 · TOFU 29v CPA Q81.9
+- Precio en el ad: todos SIN precio — sin corte posible
+- Nivel de conciencia: NC3 21v CPA Q71.6 · NC2 29v CPA Q81.9
+Calidad del DIM: los 16 conjuntos con concepto_key=SIN_CLASIFICAR aunque la firma del anuncio sí trae el concepto; DETERIORO figura NC2 en el DIM y NC1 en la firma. Reportado, no corregido acá.
+%conv/clic-enlace: pct_conv_clic_enlace llega 0.0 en todas las filas MetaAPI-directo (defecto de ingesta); además [APR-009]: en TINNIDROP la conversación no predice la venta → no se corta por conversación.
+
+## MATRIZ ÁNGULO × CUENTA
+ACCESIBILIDAD_MEDICO → GTR7 · PERDIDA_AUDITIVA → GTR7 · DETERIORO_COGNITIVO → GTR1 · NOCHES_SIN_DORMIR → GTR0. Los 4 son LOCAL (1 cuenta c/u); GTR13 y CP1 sin filas de TINNIDROP. Sin lectura de saturación por cuenta posible.
+
+## ÁNGULO GANADOR
+ACCESIBILIDAD_MEDICO (el ganador con que TINNIDROP entró a F2): 21v, CPA Q71.6 en ventana; 80v acumuladas sobre Q3,926.3 según _DECISIONES.json. No se re-corona ni se corre hoy: el IC cruza el BE y [APR-010] (el ganador de TINNIDROP ya se corrió 3 veces por ruido).
+
+## ESTADOS DEL MOTOR
+PAUSAR: ninguna · RENOVAR: ninguna · ESCALAR: ninguna · SEGUIR_MIDIENDO: 4 (todas MANTENER_Y_MEDIR).
+Banderas: banda_ok=false en PERDIDA_AUDITIVA, DETERIORO_COGNITIVO y NOCHES_SIN_DORMIR; nombres_ok=false en ACCESIBILIDAD_MEDICO; typo "OCHES-SIN-DORMIR_IMG_B" en el anuncio de GTR0.
+Cierre por celda (cierre_pct): ACCESIBILIDAD 12.4% · PERDIDA 6.8% · DETERIORO 9.3% · NOCHES 14.0% — todos bajo la meta 15–20%.
+FATIGA: ningún RENOVAR; la ventana 3d está contaminada por el apagón de GTR7 del 21-sep.
+
+## PLAN DE ESCALADO — Fase: FASE 2 (DEFINICIÓN de concepto, detenida)
+1. PAUSAR: ninguno.
+2. OPTIMIZAR FLUJO: sí — vía ETAPA-11 + ETAPA-5, no creativo. PERDIDA_AUDITIVA es "muchos chats, pocas ventas" (191 msj, 6.8% cierre); en todo el producto el cierre va bajo la meta 15–20%.
+3. SURFING +20%: aún no — ninguna celda ESCALAR; IC cruza el BE en las cuatro; producto en F2 (invariante 6); escalado intradía sigue CONGELADO (C-02).
+4. ESCALAR HORIZONTAL: esperar CPA confirmado. No existe PRODUCTOS/TINNIDROP/3_CAMPAÑA_META.txt → no hay Post ID registrado para replicar.
+5. CREATIVOS (variable #1): el ganador ACCESIBILIDAD_MEDICO engancha por frustración médica ("gastó plata en médicos y el pitido sigue") en testimonio video (tinnidrop4), MOFU, NC3, avatar 45–60. El freno real: la tanda F2 (GTR0_TINNIDROP_F2-CONCEPTOS_20260907) lleva pausada desde el 08-sep por el defecto de marca/vía → el testeo de conceptos no está midiendo nada. Pedir a etapa-10 el brief del relanzamiento (5 concepto_key del evento del 06-sep, creativo corregido: marca SANARTE, vía ótica, también en el copy) y que lo produzca etapa-9. No se improvisa el brief acá.
+6. PRECIO: mantener.
+
+## QUÉ HACER HOY
+- Confirmar por qué GTR7 no entregó el 21-sep (cobro/método de pago) antes de leer cualquier tendencia de ACCESIBILIDAD_MEDICO o PERDIDA_AUDITIVA.
+- Relanzar la tanda F2 con el creativo corregido: lleva 16 días detenida.
+
+## DECISIÓN RECOMENDADA (la confirma el operador, orden por orden)
+1. MANTENER_Y_MEDIR en las 4 celdas (no subir ni bajar presupuesto).
+2. Diagnóstico de cierre de PERDIDA_AUDITIVA con etapa-11.
+3. Relanzamiento de FASE 2 con el brief de etapa-10 y la producción de etapa-9.
+4. Pendientes de registro: poner al día _BITACORA_DATA.txt (09→22-sep); anotar en _EVENTOS.csv la anomalía de entrega de GTR7 del 20–21-sep; arreglar la ingesta de pct_conv_clic_enlace; corregir el typo "OCHES" en GTR0.
+
+Solo lectura y recomendación: no se escribió ningún archivo ni se llamó a ninguna herramienta de Meta.

@@ -1,0 +1,55 @@
+# Re-run etapa-2 · OVULOS_PURITY · p2-T4 (archaeology cleanup) · 2026-09-24
+# Frozen inputs: PRODUCTOS/OVULOS_PURITY/0_INPUTS_CONGELADOS.md + 2_DATA_PRODUCTO.txt lines 1-88
+# (validacion, costeo, componentes, voz del cliente, swipe) + _DIM_FANPAGES.csv + _DIM_VOCABULARIO.csv.
+# No web search. Model: session model (etapa declares model: inherit). Parent transcription of the
+# 6 fichas' header/classification lines and the pagina_asignada block; full prose in the session log.
+
+ÁNGULO 1 — "MI NOVIO ME DIJO QUE HUELO RARO" (olor tras la intimidad)
+angulo_key: OLOR_TRAS_RELACIONES · Ranking #1 · IMAGEN · C2_BENEFICIOS
+Origen: VOZ_CLIENTE banco #8-#13 · VIDEO_COMPETENCIA 5 NUEVO + 10 HN
+Nivel de conciencia: NIVEL 1 — siente el síntoma, no conoce la causa → EDUCAR
+avatar_genero: MUJER · avatar_edad: 25-35 · emocion_dominante: VERGUENZA
+Hook: "Mi novio me dijo que olía raro"
+
+ÁNGULO 2 — "SE ME QUITA UNA SEMANA Y VUELVE" (la molestia que regresa)
+angulo_key: INFECCION_QUE_VUELVE · Ranking #2 · IMAGEN · C2_BENEFICIOS
+Origen: VOZ_CLIENTE banco #1-#5, #7 (+ #18, #20, #21) · componente Rhizoma Smilacis Glabrae
+Nivel de conciencia: NIVEL 2 — conoce el problema, no encontró solución que funcione
+avatar_genero: MUJER · avatar_edad: 35-45 · emocion_dominante: FRUSTRACION_MEDICA
+Hook: "Cremas, óvulos, pastillas… ¿y sigue ahí?"
+
+ÁNGULO 3 — "ME LAVO Y SIGO OLIENDO" (el exceso de jabón)
+angulo_key: ME_LAVO_Y_SIGUE · Ranking #3 · IMAGEN (virgen) · C2_BENEFICIOS
+Origen: VOZ_CLIENTE banco #14-#17 · componente Kochia scoparia (DESCUBIERTO)
+Nivel de conciencia: NIVEL 1 — cree que es falta de higiene; no sabe que el lavado es la causa → EDUCAR
+avatar_genero: MUJER · avatar_edad: 25-35 · emocion_dominante: CURIOSIDAD
+Hook: "Me lavo tres veces y sigo oliendo"
+
+ÁNGULO 4 — "PICA, DUELE Y HUELE… Y NO SÉ POR QUÉ"
+angulo_key: PICA_DUELE_HUELE · Ranking #4 · IMAGEN · C2_BENEFICIOS
+Origen: VIDEO_COMPETENCIA 2X1 HER5 (75 % señales) · VOZ_CLIENTE #18, #21 · componente Osthol
+Nivel de conciencia: NIVEL 1 — síntoma sin causa ni solución conocida
+avatar_genero: MUJER · avatar_edad: 35-45 · emocion_dominante: AGOTAMIENTO
+Hook: "Picazón, flujo y olor: 3 señales de alerta"
+
+ÁNGULO 5 — "CADA VEZ QUE ME BAJA LA REGLA EMPIEZA"
+angulo_key: DESPUES_DE_LA_REGLA · Ranking #5 · IMAGEN (virgen) · C2_BENEFICIOS
+Origen: VOZ_CLIENTE banco #6 · componentes Angelica, Rhizoma Chuanxiong, Motherwort (DESCUBIERTOS)
+Nivel de conciencia: NIVEL 1 — no conecta la molestia con el ciclo
+avatar_genero: MUJER · avatar_edad: 25-35 · emocion_dominante: CURIOSIDAD
+Hook: "¿Te pasa justo después de la regla?"
+
+ÁNGULO 6 — "FRESCA Y JUGOSA" (el deseo)
+angulo_key: FRESCA_Y_JUGOSA · Ranking #6 · IMAGEN · C2_BENEFICIOS
+Origen: VIDEO_COMPETENCIA 9 HN (63 % señales) · deseo deducido del banco
+Nivel de conciencia: NIVEL 2 — sabe lo que quiere, no conoce una rutina natural
+avatar_genero: MUJER · avatar_edad: 35-45 · emocion_dominante: CURIOSIDAD
+Hook: "El ritual de 4 días para sentirte fresca"
+
+<pagina_asignada>
+PÁGINA ASIGNADA: HERNATURA CO (externa, fuera del catálogo de 10 de _DIM_FANPAGES.csv) — DECISIÓN DEL OPERADOR, no reasignada por ETAPA-2
+Tono: tú colombiano, cercano, femenino, confesional. Banda real por avatar_edad del ángulo, Advantage+ OFF: 25-35 (ángulos 1, 3, 5) · 35-45 (ángulos 2, 4, 6).
+Pendiente: page_id PENDIENTE, cuenta externa sin MCP, publicación manual.
+</pagina_asignada>
+
+Declared by the etapa, not invented: saturación DESCONOCIDA (no Ad Library), CPA objetivo/BE PENDIENTE (flete CO), INVIMA number pending.
