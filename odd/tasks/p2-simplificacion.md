@@ -741,7 +741,12 @@ Etapas T4c edited without a fixture (per T4d's own list, disclosed not hidden): 
 `etapa-1`, `etapa-3`, `etapa-10`, `etapa-11`, `etapa-render`. `etapa-11` additionally has the
 non-eval `test_ab_flujo.py` structural gate, which already passed (see Verification above).
 
+- [ ] T5 — gen_flujo_bot fixes found by the etapa-11 diagnosis (operator-approved 2026-09-24): (a) the flow's
+  angle comes from the product's F2 winning angle, not max(ventas_acum), so the nivel_conciencia
+  opening is the winner's; (b) an empty {{recaida}} no longer leaves "— ." in customer text; (c) the
+  prueba_social sentence reads correctly with a value like "más de N personas"; TINNIDROP prueba_social =
+  "más de 10,200 personas" (operator picked the figure used by the live ads). Also TINNIDROP brand = SANARTE
+  (operator decision 24-sep) in 2_DATA_PRODUCTO.txt. Route: delegated writer.
+
 ## Next step
-T4d — the parent re-runs the fixture-backed etapas above on their frozen inputs and confirms the
-existing asserts still pass, then runs `gen_grafo.py --comparar` once more for a final sanity
-check. After T4d, T4e (read-only re-packaging proposal) is the last open item.
+T4 done (T4a-T4e). Next: T5 writer, then the P4 UI plan (SISTEMA-app).
