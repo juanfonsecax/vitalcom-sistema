@@ -690,7 +690,7 @@ def _fixture_f3_exploracion_base(con_fila_parametros=True, presupuesto="2.99"):
         shutil.copy(gp.P(nombre), os.path.join(prod, nombre))
     with io.open(gp.P("_PARAMETROS_PUBLICACION.csv"), encoding="utf-8-sig", newline="") as fh:
         r = csv.DictReader(fh)
-        filas = list(r)
+        filas = [f for f in r if not (f["fase"] == "3" and f["brazo"] == "EXPLORACION")]
         cols = r.fieldnames
     with io.open(os.path.join(prod, "_PARAMETROS_PUBLICACION.csv"), "w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
