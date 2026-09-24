@@ -231,6 +231,101 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
   - etapa-7/8 re-run deferred to T3 (they get fused). etapa-guardar-producto not re-run (writes disk);
     its read-set change is one pointer line.
 
+- 2026-09-24: T3 writer pass done (fuse + wire deterministic table + consumers + evals).
+  Checkbox left UNCHECKED per Config: the writer cannot re-run the fused etapa against real
+  Claude — same pattern as T1/T2.
+
+  **What was cut vs kept.** Both files' doctrine rules moved into the new
+  `.claude/agents/ETAPA-7.md` verbatim (window integrity PASO 0-1, MCP signals PASO 2, sangrado
+  PASO 3, palancas A-D, replicar ganador §C, diagnostico cruzado §D, aprendizajes read/write,
+  ETAPA-10/9 connection, CPA-never-ROAS, strong-scaling-only-with-confirmed-CPA). Cut: the
+  duplicated "solo lee", "CPA semanal nunca un dia" and "escalado fuerte solo con CPA real"
+  reminders that both files repeated; the etapa-7->etapa-8 handoff line ("alimenta a ETAPA-8");
+  etapa-8's own umbral re-statements already owned by `_PARAMETROS_DECISION.csv` (kept as
+  citations, not re-derivations). `.claude/agents/ETAPA-8.md` deleted.
+
+  **Deterministic table (Goal 2).** `Ads/_TOOLS/decidir.py` already had a console printer
+  (`imprimir_consola()`, default mode without `--json`) with Break-Even, CPA Objetivo, per-celda
+  estado/ventas/gasto/CPA/IC/accion_sugerida — exactly the "operator sees numbers now, from code"
+  requirement. No new script needed. New ETAPA-7.md PASO 4 tells the etapa to run it and cite it,
+  never reprint the numbers in prose. `.claude/skills/ciclo-diario/SKILL.md` now has a
+  "Tabla determinística — SIEMPRE primero" section wiring `python Ads/_TOOLS/decidir.py` before
+  invoking etapa-7, with its output pasted first in the daily audit.
+
+  **Consumers updated:** `CLAUDE.md` (15 etapas, 14 inherit), `README.md` (both etapa-list
+  mentions), `.claude/skills/{ciclo-diario,fase-2-conceptos,fase-3-escalado}/SKILL.md`,
+  `.claude/agents/{ETAPA-10,ETAPA-11}.md` (CONEXIÓN sections), `DOCTRINA/{CALENDARIO_ESCALADO,
+  DATA_PLAYBOOK,GUIA_MADRE_PARAMETRIZADA,PLANTILLAS_ADS}.md` pointer rows, the
+  `DOCTRINA/ESCALADO_PLAYBOOK.md` index table's "Quién lo lee" column, `Ads/_TOOLS/{decidir.py,
+  gen_publicacion.py,gen_dashboard.py}` comments, `PRODUCTOS/_PARAMETROS_DECISION.csv` (2 cells,
+  edited with `csv` module per invariant 11). `DOCTRINA/FLUJO.json` and `VISTAS/_MANIFIESTO.json`
+  never mentioned etapa-8 by name — nothing to change there. No app/backend test references
+  `etapa-8`. `_APRENDIZAJES.csv` (44 historical rows tagged `etapa-8`) left untouched — it's
+  historical data, not a doctrine pointer; the new ETAPA-7.md filter matches
+  `'etapa-7' IN consumido_por OR 'etapa-8' IN consumido_por` for backward compatibility instead.
+  `PRODUCTOS/_PORTAFOLIO.txt` and `_BITACORA_DATA.txt` still mention ETAPA-8 (found by grep) but
+  are bitácora/historical-reference files, not named in T3's consumer list — left untouched,
+  flagged here for a future pass if desired. `.atl/skill-registry.md` is an external cache
+  (no generator script found in this repo) — left untouched, will refresh on its own mechanism.
+
+  **Correction mid-task:** first pass also edited doctrine TEXT inside `DOCTRINA/ESCALADO/*.md`
+  (replacing "ETAPA-8" with "ETAPA-7" in 6 section files) — this broke
+  `test_split_doctrina.py::test_escalado_playbook_es_verbatim` (T2's byte-for-byte guarantee
+  against the frozen pre-split monolith). Reverted with `git checkout --`; only the
+  `ESCALADO_PLAYBOOK.md` INDEX file's "Quién lo lee" column (not verbatim-checked) was updated
+  instead. Lesson: doctrine section files are frozen text, not live pointers — pointers live one
+  level up, in the index or in the consuming agent/skill.
+
+  **Evals — assert conflict found and reported, not papered over.** Kept `asserts/etapa-7.py`
+  and `asserts/etapa-8.py` unchanged in strength, plus their original fixtures/tests. Added one
+  new promptfoo test, `etapa-7 fusionada / TINNIDROP`, running a single REAL fixture
+  (`evals/fixtures/etapa-7/TINNIDROP_FUSIONADO.txt` — the PASO 3 block of
+  `_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt`, from when `ciclo-diario` already ran etapa-7 and
+  etapa-8 in one pass without separating them) against BOTH asserts via promptfoo's existing
+  multi-item `assert:` list (`run_baseline.py` already ANDs them — no runner change needed).
+  Result: `asserts/etapa-7.py` PASSES; `asserts/etapa-8.py` FAILS 2 of 4 checks (`Break-Even`
+  and `regla de oro`, literal substrings) because this real fixture already uses decidir.py's
+  compact format (`BE Qxx`, `36v`) instead of spelling those words out — exactly the number-citing
+  behavior Goal 1 asks for. Marked `expected_fail: true` with the exact conflict documented in
+  `promptfooconfig.yaml` and `evals/README.md` §"Fusión T3", per the instruction to stop and
+  report rather than weaken the assert. The new `ETAPA-7.md` template (PASO 5 / "Informe diario")
+  DOES ask for those exact words as fixed vocabulary in the judgment prose (not as re-derived
+  numbers) — so a real re-run against the fused template may well close this gap; that
+  verification needs the parent's re-run against real Claude, same limitation as T1/T2.
+
+  **Verification run:**
+  - `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` → 42/42 passed (same count as T2 close;
+    the mid-task doctrine-text revert brought `test_split_doctrina.py` back from 1 fail to green).
+  - `python evals/run_baseline.py` → TOTAL=31 PASS=26 FALLO-CONOCIDO(documentado)=5 FAIL=0 (was
+    30/26/4/0 after T2; +1 test, +1 documented expected_fail, zero real fails, zero regressions).
+  - `python Ads/_TOOLS/gen_grafo.py --comparar --escribir` → 15 agentes (was 16); zero orphans;
+    `fase-3-escalado` −4,820 tok · `ciclo-diario` −4,775 tok (ETAPA-8.md no longer inherited);
+    `fase-1-angulos` +263 tok · `fase-2-conceptos` +395 tok (CLAUDE.md text growth, not new
+    agent reads — negligible, <0.15% of either budget). Baseline re-saved with `--escribir`.
+  - `python Ads/_TOOLS/flujo.py --todo` → same 5 products, same nodes/gates/sequences (spot-checked
+    CLEARSTEM, VARICOSE, OVULOS_PURITY) — no flujo/gate logic touched, only which agent name does
+    the monitoring+escalado.
+  - `python Ads/_TOOLS/verificar_guia_madre.py` → exit 0 (well, non-fatal exit path — same output
+    text), same single pre-existing finding (`exploracion_n_angulos`), unrelated to this change.
+  - No app/backend files reference `etapa-8` — no `uv run pytest` needed for this task.
+
+  **NOT done (belongs to the parent orchestrator per Config):** re-running the fused `etapa-7`
+  against real Claude, on the frozen 2026-09-08 audit inputs, to (a) confirm the new template
+  still produces a monitor+plan output structurally equivalent to the pre-fusion pair and (b)
+  settle the `Break-Even`/`regla de oro` question above. **Frozen-inputs package for that
+  re-run:** `PRODUCTOS/_DECISIONES.json` (already regenerated fresh by `decidir.py --escribir`
+  this session — TINNIDROP/CLEARSTEM/NUSAVA data through 2026-09-22, NOT the 2026-09-08 window the
+  fixture was frozen from, since `0_INPUTS_CONGELADOS.md`-style freezing wasn't done for
+  etapa-7/8 inputs at the time per T2's own follow-up finding) + `PRODUCTOS/_FACT_VENTAS.csv` /
+  `_FACT_ENTREGA.csv` filtered to 2026-08-25→2026-09-07 (the fixture's window) + `_BITACORA_DATA.txt`
+  + `_EVENTOS.csv` + `_DIM_CONJUNTOS.csv` + `PRODUCTOS/TINNIDROP/3_CAMPAÑA_META.txt`. Since the
+  exact 2026-09-08 snapshot of those CSVs isn't separately frozen, today's live data is the
+  closest available substitute and should be explicitly flagged as such in the re-run's evidence
+  (same caveat T2 raised for the CLEARSTEM/etapa-2 re-run).
+
+  Commits: `9b36246` (fuse agents+skills), `59e08f8` (doctrine/tool pointers), `6171b02`
+  (regenerated views+baseline), `b7d74d9` (evals fused fixture+config).
+
 ## Next step
-T2 verification (parent re-runs the etapas listed above on frozen inputs), then T3 (fuse
-etapa-7 + etapa-8), delegated writer.
+T3 verification (parent re-runs fused etapa-7 on frozen/available inputs, resolves the
+Break-Even/regla-de-oro assert question above).
