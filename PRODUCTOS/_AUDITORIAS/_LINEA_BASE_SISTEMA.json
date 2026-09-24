@@ -1,18 +1,18 @@
 {
-  "arranque_frio": 8902,
-  "claude_md": 5872,
+  "arranque_frio": 8901,
+  "claude_md": 5886,
   "fases": {
-    "fase-1-angulos": 289169,
-    "fase-2-conceptos": 377470,
-    "fase-3-escalado": 236895,
-    "ciclo-diario": 214973
+    "fase-1-angulos": 289432,
+    "fase-2-conceptos": 377865,
+    "fase-3-escalado": 232075,
+    "ciclo-diario": 210198
   },
   "nodos_dios": [
     [
       "CLAUDE.md",
       8,
-      5872,
-      46976
+      5886,
+      47088
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -29,8 +29,8 @@
     [
       "CALENDARIO_ESCALADO.md",
       2,
-      8013,
-      16026
+      8016,
+      16032
     ],
     [
       "PLANTILLAS_INFOGRAFIAS.md",
@@ -53,8 +53,8 @@
     [
       "DATA_PLAYBOOK.md",
       1,
-      11874,
-      11874
+      11917,
+      11917
     ],
     [
       "MCP_PLAYBOOK.md",
@@ -111,6 +111,12 @@
       2482
     ],
     [
+      "08_PLAN_ENTREGABLE.md",
+      2,
+      898,
+      1796
+    ],
+    [
       "PLANTILLAS_ADS.md",
       2,
       736,
@@ -127,12 +133,6 @@
       2,
       535,
       1070
-    ],
-    [
-      "08_PLAN_ENTREGABLE.md",
-      1,
-      898,
-      898
     ],
     [
       "06_ESTILOS_ANTIFATIGA.md",
@@ -190,7 +190,7 @@
     "etapa-render"
   ],
   "inventario": {
-    "agentes": 16,
+    "agentes": 15,
     "skills": 9,
     "docs_raiz": 3,
     "csv": 39

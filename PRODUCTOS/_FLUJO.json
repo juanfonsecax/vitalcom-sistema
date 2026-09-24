@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-23",
+  "generado": "2026-09-24",
   "flujo_version": 1,
   "grafo_mermaid": "flowchart TD\n  subgraph F1[\"FASE 1 · TESTEO DE ÁNGULOS\"]\n    F1_congelar_inputs[\"Congelar los inputs del producto\"]\n    F1_paquete[\"Construir el paquete de FASE 1 (valida\"]\n    F1_congelar_inputs --> F1_paquete\n    F1_publicar[\"Publicar la estructura de FASE 1 en Me\"]\n    F1_paquete --> F1_publicar\n    F1_activar[\"Activar a las 4 AM del día siguiente y\"]\n    F1_publicar --> F1_activar\n    F1_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F1_activar --> F1_ciclo_datos\n    F1_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F1_ciclo_datos --> F1_ciclo_motor\n    F1_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F1_ciclo_motor --> F1_ciclo_ordenes\n    F1_ciclo_ordenes -. cada día .-> F1_ciclo_datos\n  end\n  subgraph F2[\"FASE 2 · TESTEO DE CONCEPTOS\"]\n    F2_etapa-11[\"Diagnosticar la congruencia del bot ha\"]\n    F2_conceptos[\"Fabricar y renderizar los conceptos de\"]\n    F2_etapa-11 --> F2_conceptos\n    F2_plan[\"Copy único, los dos flujos del A/B y e\"]\n    F2_conceptos --> F2_plan\n    F2_publicar[\"Publicar las campañas de conceptos en \"]\n    F2_plan --> F2_publicar\n    F2_activar[\"Activar las campañas de conceptos a la\"]\n    F2_publicar --> F2_activar\n    F2_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F2_activar --> F2_ciclo_datos\n    F2_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F2_ciclo_datos --> F2_ciclo_motor\n    F2_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F2_ciclo_motor --> F2_ciclo_ordenes\n    F2_ciclo_ordenes -. cada día .-> F2_ciclo_datos\n  end\n  subgraph F3[\"FASE 3 · ESCALADO\"]\n    F3_exploracion[\"Exploración de 3 ángulos nuevos en par\"]\n    F3_plan[\"Banco de copy (microángulos) y plan 1-\"]\n    F3_exploracion --> F3_plan\n    F3_publicar[\"Publicar el 1-1-7 CBO en Meta (PAUSED)\"]\n    F3_plan --> F3_publicar\n    F3_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F3_publicar --> F3_ciclo_datos\n    F3_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F3_ciclo_datos --> F3_ciclo_motor\n    F3_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F3_ciclo_motor --> F3_ciclo_ordenes\n    F3_ciclo_ordenes -. cada día .-> F3_ciclo_datos\n  end\n  F1 -- \"invariante 1: el ganador se declara por \" --> F2\n  F2 -- \"regla de replicación: un concepto gana e\" --> F3\n  F2 -. \"cuando el ángulo ganador se agota o\" .-> F1\n  F3 -. \"cuando el escalado se agota y los m\" .-> F1",
   "fases": [
@@ -26,7 +26,7 @@
       "estado_producto": "VIVO",
       "cuenta": "GTR0",
       "fase_csv": "ESCALADO",
-      "evaluado_el": "2026-09-23",
+      "evaluado_el": "2026-09-24",
       "fase": "F2",
       "fase_titulo": "FASE 2 · TESTEO DE CONCEPTOS",
       "entradas": [
@@ -253,14 +253,14 @@
       "avisos": [
         "F2.publicar: Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada — suma spend_usd = 32.61 (22 filas) · esperado ≥ 0.01",
         "F2.publicar: la estructura publicada NO es la de la doctrina — 5 conjunto(s) en 1 campaña(s) · doctrina: 4 conjuntos (1-1-5 + 1-1-5 + 1-2-5)",
-        "F3.plan: existe «4_PLAN_ESCALADO.txt» (existe (hace 65 días)) sin haber pasado el gate de entrada a F3",
+        "F3.plan: existe «4_PLAN_ESCALADO.txt» (existe (hace 66 días)) sin haber pasado el gate de entrada a F3",
         "F3.publicar: existe «LANZAMIENTO de escalado registrado con su presupuesto inicial» (4 evento(s) LANZAMIENTO · último 2026-09-03) sin haber pasado el gate de entrada a F3"
       ],
       "ordenes": [],
       "motor": {
-        "generado": "2026-09-23",
+        "generado": "2026-09-24",
         "datos_hasta": "2026-09-22",
-        "rezago_dias": 1,
+        "rezago_dias": 2,
         "seguir_midiendo": 4
       }
     },
@@ -270,7 +270,7 @@
       "estado_producto": "VIVO",
       "cuenta": "GTR7",
       "fase_csv": "ESCALADO",
-      "evaluado_el": "2026-09-23",
+      "evaluado_el": "2026-09-24",
       "fase": "F2",
       "fase_titulo": "FASE 2 · TESTEO DE CONCEPTOS",
       "entradas": [
@@ -491,9 +491,9 @@
         }
       ],
       "motor": {
-        "generado": "2026-09-23",
+        "generado": "2026-09-24",
         "datos_hasta": "2026-09-22",
-        "rezago_dias": 1,
+        "rezago_dias": 2,
         "seguir_midiendo": 0
       }
     },
@@ -503,7 +503,7 @@
       "estado_producto": "VIVO",
       "cuenta": "GTR13",
       "fase_csv": "DEFINICION",
-      "evaluado_el": "2026-09-23",
+      "evaluado_el": "2026-09-24",
       "fase": "F2",
       "fase_titulo": "FASE 2 · TESTEO DE CONCEPTOS",
       "entradas": [
@@ -755,9 +755,9 @@
         }
       ],
       "motor": {
-        "generado": "2026-09-23",
+        "generado": "2026-09-24",
         "datos_hasta": "2026-09-22",
-        "rezago_dias": 1,
+        "rezago_dias": 2,
         "seguir_midiendo": 0
       }
     },
@@ -767,7 +767,7 @@
       "estado_producto": "PAUSADO",
       "cuenta": "GTR7",
       "fase_csv": "ESCALADO",
-      "evaluado_el": "2026-09-23",
+      "evaluado_el": "2026-09-24",
       "fase": "PAUSADO",
       "fase_titulo": "Producto PAUSADO por decisión del operador",
       "nodo_actual": "PAUSADO",
@@ -787,7 +787,7 @@
       "estado_producto": "NUEVO",
       "cuenta": "EXTERNA",
       "fase_csv": "",
-      "evaluado_el": "2026-09-23",
+      "evaluado_el": "2026-09-24",
       "fase": "F1",
       "fase_titulo": "FASE 1 · TESTEO DE ÁNGULOS",
       "entradas": [
@@ -833,7 +833,7 @@
             {
               "dato": "carpeta de media del producto (imagen del frasco)",
               "ok": true,
-              "observado": "existe (hace 7 días)",
+              "observado": "existe (hace 8 días)",
               "dueno": "operador · Ads/MEDIA_[PRODUCTO]/",
               "regla": "invariante 8"
             }
@@ -864,14 +864,14 @@
             {
               "dato": "2_DATA_PRODUCTO.txt",
               "ok": true,
-              "observado": "existe (hace 6 días)",
+              "observado": "existe (hace 7 días)",
               "dueno": "etapa-guardar-producto",
               "regla": "invariante 8"
             },
             {
               "dato": "1_HACER_MANUAL.txt",
               "ok": true,
-              "observado": "existe (hace 6 días)",
+              "observado": "existe (hace 7 días)",
               "dueno": "etapa-guardar-producto",
               "regla": "invariante 8"
             },
@@ -1022,9 +1022,9 @@
       "avisos": [],
       "ordenes": [],
       "motor": {
-        "generado": "2026-09-23",
+        "generado": "2026-09-24",
         "datos_hasta": "2026-09-22",
-        "rezago_dias": 1,
+        "rezago_dias": 2,
         "seguir_midiendo": 0
       }
     }

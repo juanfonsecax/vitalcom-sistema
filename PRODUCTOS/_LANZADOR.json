@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-23",
+  "generado": "2026-09-24",
   "usd_por_conversacion_portafolio": 0.56,
   "estructura": {
     "1": {
@@ -113,14 +113,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-24",
-          "legible": "24-sep-2026",
+          "fecha": "2026-09-25",
+          "legible": "25-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "GTR0_TINNIDROP_TEST_20260924",
+            "nombre": "GTR0_TINNIDROP_TEST_20260925",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -353,7 +353,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "24-sep",
+            "fecha": "25-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -361,7 +361,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "25-sep → 26-sep",
+            "fecha": "26-sep → 27-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -369,7 +369,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "27-sep",
+            "fecha": "28-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -377,7 +377,7 @@
           {
             "orden": 3.8792817037110865,
             "dia": "Día 3.9",
-            "fecha": "28-sep",
+            "fecha": "29-sep",
             "que": "PRESUPUESTO DE DECISIÓN alcanzado",
             "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición",
             "manda": "export de LucidSales"
@@ -385,7 +385,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "28-sep",
+            "fecha": "29-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
@@ -473,14 +473,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-24",
-          "legible": "24-sep-2026",
+          "fecha": "2026-09-25",
+          "legible": "25-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "GTR7_NUSAVAB12_TEST_20260924",
+            "nombre": "GTR7_NUSAVAB12_TEST_20260925",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -602,7 +602,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "24-sep",
+            "fecha": "25-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -610,7 +610,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "25-sep → 26-sep",
+            "fecha": "26-sep → 27-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -618,7 +618,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "27-sep",
+            "fecha": "28-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -626,7 +626,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "28-sep",
+            "fecha": "29-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
@@ -634,7 +634,7 @@
           {
             "orden": 4.379495790691869,
             "dia": "Día 4.4",
-            "fecha": "29-sep",
+            "fecha": "30-sep",
             "que": "PRESUPUESTO DE DECISIÓN alcanzado",
             "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición",
             "manda": "export de LucidSales"
@@ -722,14 +722,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-24",
-          "legible": "24-sep-2026",
+          "fecha": "2026-09-25",
+          "legible": "25-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "GTR13_CLEARSTEM_TEST_20260924",
+            "nombre": "GTR13_CLEARSTEM_TEST_20260925",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -962,7 +962,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "24-sep",
+            "fecha": "25-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -970,7 +970,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "25-sep → 26-sep",
+            "fecha": "26-sep → 27-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -978,7 +978,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "27-sep",
+            "fecha": "28-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -986,7 +986,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "28-sep",
+            "fecha": "29-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
@@ -994,7 +994,7 @@
           {
             "orden": 4.397571347885312,
             "dia": "Día 4.4",
-            "fecha": "29-sep",
+            "fecha": "30-sep",
             "que": "PRESUPUESTO DE DECISIÓN alcanzado",
             "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición",
             "manda": "export de LucidSales"
@@ -1094,14 +1094,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-24",
-          "legible": "24-sep-2026",
+          "fecha": "2026-09-25",
+          "legible": "25-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "EXTERNA_OVULOS_TEST_20260924",
+            "nombre": "EXTERNA_OVULOS_TEST_20260925",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -1346,7 +1346,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "24-sep",
+            "fecha": "25-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -1354,7 +1354,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "25-sep → 26-sep",
+            "fecha": "26-sep → 27-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -1362,7 +1362,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "27-sep",
+            "fecha": "28-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -1370,7 +1370,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "28-sep",
+            "fecha": "29-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
