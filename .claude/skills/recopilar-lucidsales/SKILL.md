@@ -11,8 +11,8 @@ identidad anti-duplicado y la escritura del CSV tienen dueño desde antes: `inge
 (el UPSERT en sí vive en `Ads/_TOOLS/upsert_fact.py`, compartido con `bajar_meta_insights.py`). Acá
 no se repite ni una de esas reglas.
 
-> **Ventana de liquidación (22-sep-2026, g07-cimientos T1).** El gasto/ventas de LucidSales a
-> veces llegan CONGELADOS a medio día (medido: 06/14/15/16/20-sep-2026 con 0.65-0.75 del gasto real
+> **Ventana de liquidación.** El gasto/ventas de LucidSales a
+> veces llegan CONGELADOS a medio día (medido en varios días recientes: 0.65-0.75 del gasto real
 > de Meta). Por eso `bajar_lucidsales.py` **sin argumentos** ya no trae solo AYER: pide
 > `upsert_fact.SETTLEMENT_WINDOW_DIAS` (hoy 3) días **sueltos** terminando ayer, con `--forzar`
 > implícito, y `ingerir_lucidsales.py` los carga con **UPSERT** (reemplaza por llave natural en vez
@@ -58,7 +58,7 @@ python Ads/_TOOLS/bajar_meta_insights.py
 Sin argumentos re-consulta la misma **ventana de liquidación** (D-1..D-N, hoy N=3) para todas las
 cuentas `estado_cuenta=ACTIVE` y `tiene_metodo_pago=SI` de `_DIM_CUENTAS.csv` (no filtra por
 `mcp_habilitado`: ese campo es del conector interactivo, no de esta lectura por Graph API). Pide
-`ad_id` y `actions` a la Graph API (22-sep-2026, g07 T1): `ad_id` va en `_FACT_ENTREGA_ANUNCIO.csv`
+`ad_id` y `actions` a la Graph API: `ad_id` va en `_FACT_ENTREGA_ANUNCIO.csv`
 para el JOIN por id con `_FACT_VENTAS.csv`, y `mensajes` sale de la conversación de mensajería real
 (`onsite_conversion.messaging_conversation_started_7d`) — ya no se estima con clics. Hace **UPSERT**
 sobre `_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv` (reemplaza por llave, no anexa), con backup
@@ -69,13 +69,13 @@ Al final imprime un resumen por cuenta y, si alguna falló (permiso denegado, re
 `CUENTAS CON ERROR (...)` en stderr con el alias de cada una. **Una cuenta caída no es fatal**: las
 demás igual se escriben.
 
-**Código de salida (T1b, 22-sep-2026):** `0` todas las cuentas OK · `2` PARCIAL (al menos una OK y
+**Código de salida:** `0` todas las cuentas OK · `2` PARCIAL (al menos una OK y
 al menos una falló; las filas de las que sí respondieron ya quedaron escritas) · `1` todas las
 cuentas fallaron, o error fatal. La cadena nocturna (`app/backend/vitalcom_app/workflows.py`, paso
 `ciclo.bajar_meta`) trata `2` como **aviso**: sigue con el resto de la cadena; `1` sí la detiene.
 Ante un `2`, revisar la cuenta a mano — no re-correr todo a ciegas.
 
-**Orden de despliegue (g07-cimientos T2, 22-sep-2026):** `stg_entrega_anuncio.sql` exige la
+**Orden de despliegue:** `stg_entrega_anuncio.sql` exige la
 columna `ad_id` de `_FACT_ENTREGA_ANUNCIO.csv`. Tras un cambio de esquema, correr este re-pull de
 Meta (que migra el header vía `upsert_fact`) ANTES de cualquier `dbt build` manual — la cadena
 nocturna (`datos` → `bajar_meta` → `motor`) ya respeta este orden. Ver `DOCTRINA/DATA_PLAYBOOK.md`.
@@ -137,13 +137,13 @@ en los claims del token, no asumido.
 > ⚠️ **`auth/getshopname` devuelve el `apiKey` y el `botApiKey` de cada tienda EN CLARO**, junto al
 > nombre. Es una fuga del lado de LucidSales, no del sistema. `bajar_lucidsales.py` extrae solo `id`
 > y `Nombre` y descarta el resto sin imprimirlo ni guardarlo. **Nunca volcar esa respuesta completa
-> a la consola, a un archivo ni a un chat.** (Detectado el 07-sep-2026; conviene rotar esas keys.)
+> a la consola, a un archivo ni a un chat.** (Conviene rotar esas keys.)
 
 ---
 
 ## EL CONTRATO DE LA API — medido, no supuesto
 
-Verificado en vivo contra `panel.lucidsales.co` el **07-sep-2026**. Vive en el docstring de
+Verificado en vivo contra `panel.lucidsales.co`. Vive en el docstring de
 `bajar_lucidsales.py`; el resumen operativo:
 
 | Pieza | Valor |
@@ -186,4 +186,4 @@ escriben los scripts. No hay que acordarse de nada.
 
 Con la data fresca, sigue **`ciclo-diario`**. Y vale su propia regla: `decidir.py` cuenta desde el
 **último día CON DATA**. Si la recolección se saltó días, las órdenes salen fechadas hoy sobre data
-vieja — el error de ventana del 06-sep-2026 disfrazado de frescura. **Recolectar antes de decidir.**
+vieja — el error clásico de ventana disfrazado de frescura. **Recolectar antes de decidir.**

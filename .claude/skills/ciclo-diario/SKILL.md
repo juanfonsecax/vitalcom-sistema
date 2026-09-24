@@ -47,7 +47,7 @@ reimprime en prosa.
 
 ---
 
-## `etapa-7` — Monitor Y decisión de escalado (fusionadas, T3 p2-simplificación 24-sep-2026)
+## `etapa-7` — Monitor Y decisión de escalado (fusionadas)
 
 Cada mañana (campaña ≥24h activa) o como tarea programada, sobre la tabla de arriba: lee los
 conjuntos, verifica integridad y variables de confusión, mide el sangrado, rankea por dimensión, y
@@ -58,7 +58,7 @@ citado de `etapa-10` si ya corrió). Solo lee y recomienda — nunca toca presup
 **Escalado fuerte SOLO con CPA real confirmado.**
 
 - **Robustez de lectura:** no fijar el `campaign_id` a ciegas. El operador pausa/renombra/duplica
-  campañas (caso NusavaB12: la campaña viva era un duplicado manual "…- Copia"). Debe **listar las
+  campañas (caso real: la campaña viva era un duplicado manual "…- Copia"). Debe **listar las
   campañas de la cuenta y tomar la ACTIVE cuyo nombre contenga el producto**, y verificar gasto > 0.
 - **Sin CPA (tracking roto):** si `omni_purchase` sale "Not available", rankear PROVISIONAL por
   eficiencia de conversación y NO declarar ganador oficial ni escalar fuerte.
@@ -78,8 +78,8 @@ No espera a la FASE 2: produce **≥6 ejecuciones/día** desde los 22 blueprints
 por rol de embudo, y las registra en `_DIM_CREATIVOS.csv` con su ciclo de vida.
 
 **Audita los atascos antes de producir** — una pieza `GENERADO` que lleva más de 7 días sin `ad_id`
-es una alerta, porque el cuello de botella medido no fue producir sino **publicar** (7 de 8 PNG de
-TINNIDROP llevaban 26 días en disco).
+es una alerta, porque el cuello de botella medido no fue producir sino **publicar** (caso real: 7 de
+8 PNG generados llevaban 26 días en disco sin pautarse).
 
 El llenado lo hace la skill `generar-conceptos`.
 
@@ -123,14 +123,14 @@ skill `fase-2-conceptos`, PASO 0).
 
 ---
 
-## EL DASHBOARD SE REGENERA SOLO (desde 2026-09-02)
+## EL DASHBOARD SE REGENERA SOLO
 
 Ya no hay que acordarse: un hook `PostToolUse` valida todo CSV escrito en `PRODUCTOS/` y regenera el
 dashboard (774 ms). Cubre las escrituras con Write/Edit y, por barrido de `mtime`, también las que
 hace cualquier script — `ingerir_lucidsales.py` incluido.
 
 Si el CSV queda malformado el hook **bloquea** con el detalle del error: no se puede dejar una fila
-corrupta como la de NUSAVA del 31-jul. Para forzarlo a mano:
+corrupta como pasó en un caso real. Para forzarlo a mano:
 
 ```bash
 python Ads/_TOOLS/gen_dashboard.py
@@ -144,6 +144,6 @@ Los informes por producto van a `PRODUCTOS/[NOMBRE]/`. **Todo informe fechado** 
 nocturnas, planes multi-producto) va a **`PRODUCTOS/_AUDITORIAS/`**, nunca suelto en la raíz. Son
 registro histórico legible: **prohibido reconstruir métricas desde ahí** (eso sale del CSV).
 
-**Retención: automática desde 2026-09-02.** Un hook `SessionStart` corre
+**Retención: automática.** Un hook `SessionStart` corre
 `Ads/_TOOLS/archivar_auditorias.py` y colapsa a subcarpeta mensual (`2026-07/`) todo lo anterior a
 30 días. **Nada se borra**, solo se mueve. Ya no depende de que alguien lo recuerde.

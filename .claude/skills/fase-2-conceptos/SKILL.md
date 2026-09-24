@@ -24,7 +24,7 @@ Catálogo de los 8 conceptos y su evidencia: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`
 **Secuencia:** `etapa-11` → `etapa-9` (10 conceptos) → [lavado si algún concepto es VIDEO] →
 (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
-> **Decisión del operador (22-sep-2026):** el video pasa a testearse ACÁ, como un concepto más
+> **El video pasa a testearse ACÁ, como un concepto más**
 > entre los 10 — ya no es el creativo de FASE 1. Cuando `etapa-9` asigna un concepto en formato
 > VIDEO, se lava antes de dejarlo `GENERADO`: `bash "Ads/_TOOLS/lavar_videos.sh" "[PRODUCTO]"
 > [OFERTA] [COLOR] "Ads/MEDIA_[PRODUCTO]" [MANIFEST]` (detalle técnico y mapa de colores en
@@ -32,7 +32,7 @@ Catálogo de los 8 conceptos y su evidencia: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`
 
 ---
 
-## EL FLUJO DICTA (desde el 09-sep-2026)
+## EL FLUJO DICTA
 
 `python Ads/_TOOLS/flujo.py [producto_key]` decide si el producto está en FASE 2 (gate de entrada:
 ángulo ganador **por VENTA** agregando por `angulo_key`) y en qué nodo va: `F2.etapa-11` →
@@ -61,8 +61,7 @@ de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID)
 ---
 
 > ⚠️ **`etapa-3` NO corre en esta fase.** Los microángulos que produce ya no arman conjuntos: son el
-> banco de copy de la FASE 3. Corrían acá por herencia del diseño anterior al 2026-09-02, gastando
-> dos invocaciones en el camino crítico para alimentar algo que esta fase no consume. En FASE 2 el
+> banco de copy de la FASE 3. En FASE 2 el
 > copy es **uno solo y fijo** para los 10 anuncios — es la constante de control.
 
 ---
@@ -89,8 +88,8 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
 
   > **El texto fijo es de `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`; `etapa-5` escribe el JUICIO.**
   > `etapa-11` diagnostica y prioriza; `etapa-5` redacta. Misma división que `etapa-10` → `etapa-9`.
-  > El brief entra por las **propuestas de valor primero** (es la palanca #1 del cierre según la
-  > clase 22-ago), después fricción, congruencia ad ↔ bot, oferta y FAQ nuevas.
+  > El brief entra por las **propuestas de valor primero** (es la palanca #1 del cierre),
+  > después fricción, congruencia ad ↔ bot, oferta y FAQ nuevas.
   > Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` y anexar `CAMBIO_BOT` a
   > `_EVENTOS.csv` el día que se aplica: el efecto se nota en horas.
   >

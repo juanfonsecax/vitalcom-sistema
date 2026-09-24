@@ -29,9 +29,8 @@ Cierra el hueco entre **el prompt** y **el archivo en disco**. `etapa-9` y
 
 ## REGLA DE ORO: TODO POR JAVASCRIPT, CASI NADA POR PANTALLA
 
-Medido el 07-sep-2026 sobre 6 generaciones: **simular clicks y tecleo falla de
-forma intermitente y silenciosa**; ejecutar JS en la página no falla y además no
-gasta contexto en capturas.
+**Simular clicks y tecleo falla de forma intermitente y silenciosa**; ejecutar JS
+en la página no falla y además no gasta contexto en capturas.
 
 | No hagas esto | Hacé esto |
 |---|---|
@@ -53,7 +52,7 @@ Los screenshots quedan solo para diagnosticar cuando algo ya falló.
 
    > ⚠ **Esa pregunta se hace en la sesión principal, NO dentro de `etapa-render`.**
    > Los subagentes no tienen `AskUserQuestion`: si la etapa la necesita, se traba
-   > sin poder preguntar (pasó el 07-sep-2026).
+   > sin poder preguntar.
    >
    > **El orquestador elige el navegador ANTES de invocar la etapa** (`switch_browser`
    > o `select_browser`). Esa selección persiste a nivel de cuenta, así que la etapa
@@ -68,7 +67,7 @@ Los screenshots quedan solo para diagnosticar cuando algo ya falló.
 
 ---
 
-## EL FLUJO — 7 PASOS, TODOS EJECUTADOS Y MEDIDOS (07-sep-2026)
+## EL FLUJO — 7 PASOS, TODOS EJECUTADOS Y MEDIDOS
 
 ### 1 · Conectar y abrir pestaña propia
 ```
@@ -171,13 +170,11 @@ P=$(ls -t "$HOME/Downloads"/*.png 2>/dev/null | head -1)
 (el `find -mmin +3` descarta un PNG viejo que ya estuviera en Downloads: si el más reciente
 no bajó en los últimos 3 minutos, la descarga no ocurrió.)
 
-> 🔴 **Esto costó tres corridas el 08-sep-2026.** El paso hacía
-> `test -f "$HOME/Downloads/<NOMBRE>.png"`, con el nombre canónico. Como Chrome guardaba con
-> otro nombre, el test daba falso y `etapa-render` reportaba "descarga bloqueada, diálogo
-> nativo de Windows" — dos veces, con cuatro métodos distintos probados en vano. **El archivo
-> estaba en Downloads desde el principio.** CN01 se dio por perdida y se recuperó a mano.
-> Si el `fetch` devolvió `ok:true` y bytes, el archivo bajó: buscalo por fecha antes de
-> declarar cualquier bloqueo.
+> 🔴 **No verificar con `test -f "$HOME/Downloads/<NOMBRE>.png"` con el nombre canónico:**
+> Chrome puede guardar con otro nombre, el test da falso y `etapa-render` reporta "descarga
+> bloqueada, diálogo nativo de Windows" cuando el archivo ya estaba en Downloads desde el
+> principio. Si el `fetch` devolvió `ok:true` y bytes, el archivo bajó: buscalo por fecha antes
+> de declarar cualquier bloqueo.
 > ⚠ **Se perdió una generación entera por saltarse esto.** El `a.click()` inicia
 > una descarga asíncrona: si se cierra la pestaña o se navega antes de que Chrome
 > escriba el archivo, **el blob muere y hay que regenerar** (2,5 min y una
@@ -217,7 +214,7 @@ Los números reales aplican a **todo el portafolio** y viven en
 - `[REG_MSPAS]` = **NS02026-GT3147**
 - `[REG_FDA]` = **30045469041**
 
-**Esos son los únicos que se escriben.** El 07-sep el modelo, por su cuenta,
+**Esos son los únicos que se escriben.** En un caso real el modelo, por su cuenta,
 inventó `No. NS02025-GT2599` — un número que no es de nadie. Si en una pieza
 aparece un registro que no coincide con los de arriba, se regenera. No es una
 restricción de concepto: es que el número tiene un valor correcto y hay que
@@ -265,7 +262,7 @@ Presupuestar **~2,5 min por imagen** (5 conceptos ≈ 15 min).
 3. **No instala nada.** En particular **no** `chrome-use` /
    `agent-browser-stealth`: su función es falsificar el token de Cloudflare
    Turnstile y pide una extensión con acceso a todo el Chrome del operador
-   —incluido Meta Ads y el banco. Auditado y descartado el 07-sep-2026.
+   —incluido Meta Ads y el banco. Auditado y descartado.
 4. **Una pestaña propia**, creada por la skill y cerrada al terminar —
    después de confirmar las descargas.
 5. **No escribe en `_DIM_CREATIVOS.csv`.** Ese es el dueño de `etapa-9`.

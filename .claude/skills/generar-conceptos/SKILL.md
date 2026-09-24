@@ -37,7 +37,7 @@ sería atribuible).
 | Tono y edad de la página | `.claude/agents/ETAPA-2.md` §ASIGNACIÓN DE FANPAGE (ya resuelto en `<pagina_asignada>`) |
 | **El perfil y los textos del creativo, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1 y PASO 3) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
 
-**Qué nunca se inventa y qué sí** (decisión del operador, 16-sep-2026):
+**Qué nunca se inventa y qué sí:**
 
 - **Nunca: precios ni dosis.** Si faltan en `2_DATA_PRODUCTO.txt`, se piden — no se
   rellenan con un valor plausible.

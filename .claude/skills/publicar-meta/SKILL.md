@@ -11,7 +11,7 @@ decide ni un valor. Si esta skill tiene que *elegir* algo, es que el paquete est
 generador debió haberlo bloqueado.
 
 > **La regla que gobierna todo lo de abajo:** *el CSV no es evidencia del estado de Meta.*
-> Antes de crear, **preguntarle a Meta qué existe** — cuesta una llamada. El 08-sep se estuvo a
+> Antes de crear, **preguntarle a Meta qué existe** — cuesta una llamada. Caso real: se estuvo a
 > punto de duplicar una campaña viva con $23.46 gastados porque el CSV decía "cero publicados".
 
 ---
@@ -69,7 +69,7 @@ Tres cosas que no se negocian:
 |---|---|
 | **Todo nace PAUSED** | Es el candado nativo del human-in-the-loop. El doble candado es el `start_time` de las 4 AM. |
 | **El primer conjunto es el test de la página** | Si `ads_create_ad_set` lo acepta, la página está bien asignada. `ads_get_ad_account_pages` puede tardar en listarla (lag de lectura) y eso **no** es un fallo. |
-| **`ads_creative_upload_media` con `LOCAL_FILE` abre un widget** | El operador elige el archivo. Solo funciona donde `_DIM_CUENTAS.csv` dice `sube_media_local=SI`. En el resto, el operador sube a mano y vos leés el hash con `ads_get_ad_images`. **Nunca reusar el nombre de una pieza vieja** — Meta guarda las dos y quedan indistinguibles: el 08-sep se publicaron 10 anuncios con la pieza equivocada exactamente por eso. Sufijo `_V2`, `_V3`. |
+| **`ads_creative_upload_media` con `LOCAL_FILE` abre un widget** | El operador elige el archivo. Solo funciona donde `_DIM_CUENTAS.csv` dice `sube_media_local=SI`. En el resto, el operador sube a mano y vos leés el hash con `ads_get_ad_images`. **Nunca reusar el nombre de una pieza vieja** — Meta guarda las dos y quedan indistinguibles: en un caso real se publicaron 10 anuncios con la pieza equivocada exactamente por eso. Sufijo `_V2`, `_V3`. |
 | **El mensaje prellenado del anuncio Click-to-WhatsApp se configura A MANO** | `ads_create_creative` no tiene campo para el texto que el cliente manda al tocar el anuncio (dueño de la doctrina: `DOCTRINA/MCP_PLAYBOOK.md`). El texto ya viene derivado — declaralo el operador en Ads Manager tal cual sale de `python Ads/_TOOLS/gen_flujo_bot.py [PK]` (sección "MENSAJE PRELLENADO DEL ANUNCIO"), no lo redactes a mano. |
 
 Si una llamada falla, **parar ahí**. No seguir con las siguientes: dejan huérfanos. Volvé al paso 1
@@ -103,5 +103,5 @@ Sale con exit 1 si falta cualquier objeto declarado. **Con exit 1 no se activa n
 - **No juzga si la campaña debía existir.** Eso lo decidió `etapa-6` y lo validó el generador.
 - **No crea conjuntos de cero cuando hay uno que ya trackea.** Regla anti-ceguera del
   `MCP_PLAYBOOK`: si hay un conjunto con `destination_type=WHATSAPP` + `promoted_object` que ya
-  trae ventas, se le agregan los anuncios nuevos ahí. La tanda creada de cero el 27-jul quedó
+  trae ventas, se le agregan los anuncios nuevos ahí. Caso real: una tanda creada de cero quedó
   100% ciega y quemó $166 sin medir nada.

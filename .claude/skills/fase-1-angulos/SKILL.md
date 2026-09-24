@@ -21,7 +21,7 @@ ejecución visual varía junto con el ángulo, nada es atribuible — y con Andr
 concepto son 6 creativos únicos para Meta, que detecta duplicados por huella de contenido, no por
 estructura.
 
-> **Decisión del operador (22-sep-2026): FASE 1 corre TODO EN IMAGEN.** Los videos de
+> **FASE 1 corre TODO EN IMAGEN.** Los videos de
 > competencia que selecciona `etapa-0` siguen siendo la FUENTE del ángulo (transcripciones), pero
 > ya no son el creativo de F1: los 6 conjuntos se lanzan con ad-imagen, igual para todos los
 > ángulos. El lavado anti-copyright de video (`Ads/_TOOLS/lavar_videos.sh`) ya no corre en esta
@@ -34,7 +34,7 @@ estructura.
 
 ---
 
-## PASO 0 — EL FLUJO DICTA (desde el 09-sep-2026)
+## PASO 0 — EL FLUJO DICTA
 
 Esta skill se carga cuando `python Ads/_TOOLS/flujo.py [producto_key]` devuelve `F1.paquete`. Los
 gates de entrada (`F1.congelar_inputs`: fila, costo, ≥6 transcripciones, media) y lo que cierra el
@@ -78,7 +78,7 @@ MCP_ACCOUNT_ID / MCP_PAGE_ID / MCP_PIXEL_ID:  [si se creará campaña por MCP]
 - Videos descargados → `Ads/1.1 Videos/[PRODUCTO]/`
 - Transcripciones `.txt` (generadas con `Ads/Prompt-Gemini.txt` en Gemini) →
   `Ads/1.2 Transcripcion videos/[PRODUCTO]/`
-- Mismo nombre y número que el video (`5. Nusava B12.mp4` → `5. Nusava B12.txt`).
+- Mismo nombre y número que el video (`5. NombreProducto.mp4` → `5. NombreProducto.txt`).
 - `etapa-0` las detecta ahí automáticamente. El operador solo indica: producto, costo Q e imagen.
 
 **OPCIÓN 2 — Texto en el chat:** pegar el contenido de cada transcripción, identificando cada video
@@ -219,7 +219,7 @@ conversación) → ETAPA 2 días 4-8 = 3 sobrevivientes × **$5.98**. Mismo gast
 venta ~2× más rápido. Fórmula autoajustable `presupuesto/día = 7 × (costo por conversación
 observado)`, **piso $2.99 · techo $3.95**. Detalle en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5.
 
-**Anuncios por conjunto:** 2, nunca 1. Qué va en el 2º está **EN PRUEBA desde 31-jul** (DUPLICADO vs
+**Anuncios por conjunto:** 2, nunca 1. Qué va en el 2º está **EN PRUEBA** (DUPLICADO vs
 DOS CONCEPTOS del mismo ángulo). **Default vigente = DUPLICADO.** Diseño del test en
 `.claude/agents/ETAPA-6.md`.
 
@@ -243,7 +243,7 @@ reconciliación**, el paso NO está completo.
 
 ---
 
-## ENTREGA INTERACTIVA EN EL CHAT (default — preferencia del operador 09-jul)
+## ENTREGA INTERACTIVA EN EL CHAT (default — preferencia del operador)
 
 Los TXT SIEMPRE se escriben completos en disco. PERO además, tras cerrar `etapa-guardar-producto`,
 el orquestador entrega el contenido de EJECUCIÓN de `1_HACER_MANUAL.txt` **en el chat, parte por
