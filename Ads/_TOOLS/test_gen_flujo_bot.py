@@ -208,6 +208,94 @@ def _conjunto(pk="PROD_X", angulo="ANG_X", fase="FASE2", estado="ACTIVO", nivel=
             "nivel_conciencia": nivel}
 
 
+def _creativo(pk="PROD_X", angulo="ANG_X", concepto="C2_BENEFICIOS"):
+    return {"producto_key": pk, "angulo_key": angulo, "concepto_key": concepto}
+
+
+def test_angulo_ganador_f2_un_solo_angulo():
+    """Un solo angulo con concepto real de FASE 2 en _DIM_CREATIVOS.csv: ese manda, aunque
+    haya otro angulo todavia en el paraguas (concepto SIN_CLASIFICAR)."""
+    datos = {"_DIM_CREATIVOS.csv": [_creativo(concepto="C2_BENEFICIOS"),
+                                     _creativo(concepto="C4_TRANSFORMACION"),
+                                     _creativo(angulo="OTRO_ANG", concepto="SIN_CLASIFICAR")]}
+    angulo, razon = _con_datos(datos, lambda: G.angulo_ganador_f2("PROD_X"))
+    check("un solo angulo de FASE 2 manda", angulo == "ANG_X" and razon is None, (angulo, razon))
+
+
+def test_angulo_ganador_f2_ambiguo_bloquea():
+    """Dos angulos distintos con concepto real de FASE 2 a la vez: bloquea, no elige por su
+    cuenta (un flujo dedicado no puede abrir con dos angulos)."""
+    datos = {"_DIM_CREATIVOS.csv": [_creativo(angulo="ANG_A", concepto="C2_BENEFICIOS"),
+                                     _creativo(angulo="ANG_B", concepto="C4_TRANSFORMACION")]}
+    angulo, razon = _con_datos(datos, lambda: G.angulo_ganador_f2("PROD_X"))
+    check("dos angulos de FASE 2 bloquean",
+          angulo is None and razon and "ANG_A" in razon and "ANG_B" in razon, (angulo, razon))
+
+
+def test_angulo_ganador_f2_sin_datos_usa_paraguas():
+    """Sin ninguna fila con concepto real todavia (solo SIN_CLASIFICAR, F1): (None, None) —
+    el paraguas sigue con su criterio historico, sin bloquear."""
+    datos = {"_DIM_CREATIVOS.csv": [_creativo(concepto="SIN_CLASIFICAR")]}
+    angulo, razon = _con_datos(datos, lambda: G.angulo_ganador_f2("PROD_X"))
+    check("sin concepto de FASE 2 todavia, no bloquea (paraguas)",
+          angulo is None and razon is None, (angulo, razon))
+
+
+def test_clearstem_tinnidrop_angulo_de_fase_2():
+    """Los dos productos vivos: el angulo del flujo es el que quedo FIJO en el testeo de
+    CONCEPTOS de FASE 2 (evidencia real en _DIM_CREATIVOS.csv), nunca el de mas ventas
+    historicas (hallazgo T5 — antes TINNIDROP renderizaba PERDIDA_AUDITIVA, 111v, en vez de
+    su ganador real ACCESIBILIDAD_MEDICO)."""
+    v_cs, _, _ = G.resolver("CLEARSTEM")
+    check("CLEARSTEM resuelve al angulo de FASE 2 (RESISTENCIA_INSULINA_SOP)",
+          v_cs is not None and v_cs.get("angulo_nombre") == "RESISTENCIA_INSULINA_SOP",
+          v_cs.get("angulo_nombre") if v_cs else None)
+    v_tn, faltan_tn, _ = G.resolver("TINNIDROP")
+    check("TINNIDROP resuelve al angulo de FASE 2 (ACCESIBILIDAD_MEDICO), no al de mas ventas",
+          v_tn is not None and v_tn.get("angulo_nombre") == "ACCESIBILIDAD_MEDICO",
+          v_tn.get("angulo_nombre") if v_tn else None)
+
+
+def test_recaida_vacia_no_deja_guion_colgando():
+    """Flujo dedicado sin {{recaida}} declarada (TINNIDROP): la clausula completa se cae,
+    sin '— .' ni doble espacio colgando en el texto que ve el cliente (hallazgo T5)."""
+    v, faltan, _ = G.resolver("TINNIDROP")
+    check("TINNIDROP resuelve para probar recaida vacia", v is not None, faltan)
+    if v:
+        txt = G.render(v)
+        check("no queda '— .' colgando", "— ." not in txt,
+              [l for l in txt.splitlines() if "— ." in l])
+        check("la oracion cierra limpia, sin doble espacio, con el asterisco y el punto",
+              "no se quita con gotas comunes ni con lo de siempre*." in txt, txt)
+
+
+def test_recaida_presente_se_pega_igual():
+    """CLEARSTEM SI declara recaida: sigue pegandose igual que antes (regresion)."""
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    check("CLEARSTEM resuelve para probar recaida presente", v is not None and not faltan, faltan)
+    if v:
+        txt = G.render(v)
+        check("CLEARSTEM sigue llevando su recaida declarada",
+              "no se quita con cremas ni con jabones* — vuelve siempre al mismo lugar." in txt, txt)
+
+
+def test_prueba_social_frase_lee_natural():
+    """La frase fija de prueba_social lee natural con un valor 'mas de N personas', para
+    CLEARSTEM y para TINNIDROP con la cifra que decidio el operador (hallazgo T5)."""
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    check("CLEARSTEM resuelve para probar prueba_social", v is not None and not faltan, faltan)
+    if v:
+        txt = G.render(v)
+        check("CLEARSTEM: 'Por eso ya son *más de 12,000 personas* con resultados reales.'",
+              "Por eso ya son *más de 12,000 personas* con resultados reales." in txt, txt)
+    v2, _, _ = G.resolver("TINNIDROP")
+    check("TINNIDROP resuelve para probar prueba_social", v2 is not None, v2)
+    if v2:
+        txt2 = G.render(v2)
+        check("TINNIDROP: 'Por eso ya son *más de 10,200 personas* con resultados reales.'",
+              "Por eso ya son *más de 10,200 personas* con resultados reales." in txt2, txt2)
+
+
 def test_apertura_nivel_por_cada_nivel():
     """Los cuatro niveles resuelven a su instruccion — texto declarado en NIVELES_APERTURA."""
     for nivel in ("1", "2", "3A", "3B"):
@@ -341,7 +429,18 @@ def test_propuestas_valor_ignora_lineas_vacias_e_instrucciones():
 def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
     """Productos vivos SIN seccion PROPUESTAS DE VALOR en su 2_DATA_PRODUCTO.txt real (todavia
     no retrocompletada) y sin --propuestas: el camino automatico las resuelve por
-    _DIM_PRODUCTOS.csv (invariante 10) y solo avisa PENDIENTE — nunca bloquea."""
+    _DIM_PRODUCTOS.csv (invariante 10) y solo avisa PENDIENTE — propuestas_valor nunca bloquea
+    por si sola, para ninguno de los dos.
+
+    TINNIDROP no pasa una() completo hoy: su angulo ganador de FASE 2 (ACCESIBILIDAD_MEDICO,
+    hallazgo T5) declara `nivel_conciencia='3'` en _DIM_CONJUNTOS.csv, alias AMBIGUO
+    (`_DIM_VOCABULARIO.csv` lo mapea a REVISAR — no distingue 3A de 3B) — bloquea por
+    apertura_nivel, un gate deliberado y anterior a T5 (nivel_conciencia_angulo), no por
+    propuestas_valor. Antes de T5 esto quedaba oculto porque el angulo mal elegido
+    (PERDIDA_AUDITIVA, nivel '2', sin ambiguedad) nunca disparaba el gate. Corregir el dato de
+    `_DIM_CONJUNTOS.csv` (`_DIM_ANUNCIOS.csv` ya trae '3A' para ese angulo, per el diagnostico
+    de etapa-11 en `_AUDITORIAS/_FLUJO_TINNIDROP_20260924.txt` §0.1/§3-C5) es una decision de
+    contenido de CSV fuera del alcance de T5 — reportado, no adivinado."""
     for pk in ("CLEARSTEM", "TINNIDROP"):
         v, faltan, avisos = G.resolver(pk)
         persistidas = G.propuestas_persistidas(pk)
@@ -349,10 +448,16 @@ def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
               persistidas is None, persistidas)
         bloqueo, aviso = G.validar_propuestas_valor(persistidas)
         check("%s no bloquea por propuestas_valor sin declarar (camino automatico)" % pk,
-              v is not None and not faltan and bloqueo is None, (faltan, bloqueo))
+              v is not None and bloqueo is None, (v is not None, bloqueo))
         check("%s trae el aviso PENDIENTE cuando se le suma" % pk, aviso is not None)
-        ok = G.una(pk, escribir=False)
-        check("%s pasa una() completo sin --propuestas (candado automatico, no bloquea)" % pk, ok)
+
+    ok = G.una("CLEARSTEM", escribir=False)
+    check("CLEARSTEM pasa una() completo sin --propuestas (candado automatico, no bloquea)", ok)
+
+    v_tn, faltan_tn, _ = G.resolver("TINNIDROP")
+    ok_tn = G.una("TINNIDROP", escribir=False)
+    check("TINNIDROP SOLO bloquea por apertura_nivel (gap de dato disclosed, no propuestas)",
+          not ok_tn and [k for k, _ in faltan_tn] == ["apertura_nivel"], faltan_tn)
 
 
 def _con_carpeta(pk, slug, contenido_2data, fn):
@@ -590,7 +695,14 @@ def main():
                test_mensaje_prellenado_anuncio_co_invima,
                test_mensaje_prellenado_anuncio_sin_registro_bloquea,
                test_mensaje_prellenado_anuncio_ausente_del_copy,
-               test_clearstem_tinnidrop_llevan_mensaje_prellenado):
+               test_clearstem_tinnidrop_llevan_mensaje_prellenado,
+               test_angulo_ganador_f2_un_solo_angulo,
+               test_angulo_ganador_f2_ambiguo_bloquea,
+               test_angulo_ganador_f2_sin_datos_usa_paraguas,
+               test_clearstem_tinnidrop_angulo_de_fase_2,
+               test_recaida_vacia_no_deja_guion_colgando,
+               test_recaida_presente_se_pega_igual,
+               test_prueba_social_frase_lee_natural):
         print("\n%s" % (fn.__doc__ or fn.__name__).splitlines()[0])
         fn()
     print("\n%s" % ("TODO PASA" if not FALLAS else "FALLAN %d: %s"

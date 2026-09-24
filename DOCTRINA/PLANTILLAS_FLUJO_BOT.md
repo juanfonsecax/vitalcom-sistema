@@ -281,7 +281,7 @@ Ya sabés que {{dolor_angulo}} *no se quita con {{solucion_fallida}}* — {{reca
 
 Y lo que más pesa no {{sintoma_superficial}}: es *{{consecuencia_emocional}}.*
 
-{{producto_display}} actúa *desde la raíz* con {{mecanismo_1}} y {{mecanismo_2}}. Por eso tiene *{{prueba_social}}* de gente con resultados reales.
+{{producto_display}} actúa *desde la raíz* con {{mecanismo_1}} y {{mecanismo_2}}. Por eso ya son *{{prueba_social}}* con resultados reales.
 
 Cuando {{verbo_tratar}} *desde la raíz, {{resultado_sostenido}}.* ✨
 
