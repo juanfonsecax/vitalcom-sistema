@@ -459,7 +459,91 @@ Of these, only `etapa-2`, `etapa-4`, `etapa-6`, `etapa-7`, `etapa-guardar-produc
 per T4d's list — `etapa-1b` changed prose inheritance (ETAPA-RESEARCH.md) but has no fixture, so
 per T4d it "changes prose only and cannot be re-verified" (disclosed, not hidden).
 
+### T4b — writer W2 evidence (commits cce951c, 9f92425, 7c89f72, 938b061, 61a7fbc)
+
+Route: delegated writer W2 — trigger: 2+ non-trivial files (4 docs commits + 1 chore commit,
+16 doctrine files touched). Finished the DOCTRINA files W1 deliberately left out: the two
+verbatim-hash-gated folders (`DOCTRINA/ESCALADO/*.md`, `DOCTRINA/PLANTILLAS_ADS_SECCIONES/*.md`)
+plus their index files, `PLANTILLAS_INFOGRAFIAS*.md`, `PLANTILLAS_FLUJO_BOT.md` and
+`ETAPA-RECOLECCION.md`. `.claude/agents` and `.claude/skills` are out of scope for this pass
+(reserved for W3/T4c).
+
+**Work unit 1 — `DOCTRINA/ESCALADO/*.md` + `ESCALADO_PLAYBOOK.md` index (commit cce951c).**
+Removed date tags, incident narration ("Historia: …POSTMORTEMS…" pointers, "Decisión del
+operador (DD-mmm)", "(clase DD-ago)" mentor-class citations, "actualizada DD-mmm-YYYY") from
+`00`→`10` section files and the index heading, keeping every rule, threshold and number
+identical. The `test_split_doctrina.py` verbatim gate covers these section files (not the
+index): recomputed `ESCALADO_SHA256` with the test's own `reconstruir()`/`sha256()` logic and
+updated the constant + comment in the same commit, exactly as its docstring requires.
+
+**Work unit 2 — `DOCTRINA/PLANTILLAS_ADS_SECCIONES/*.md` + `PLANTILLAS_ADS.md` index (commit
+9f92425).** Same pattern: date tags and origin narration removed from `00_INTRO`,
+`01_COMPLIANCE_ANDROMEDA`, `03_CUAL_PROMPT_USAR`, `04_PROMPT_CONTROL_FASE1`, `10_ELEMENTOS_EXTRA`,
+`11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN` and the index heading. Recomputed and updated
+`PLANTILLAS_SHA256` in the same commit.
+
+**Work unit 3 — `PLANTILLAS_INFOGRAFIAS*.md` (commit 7c89f72).** Removed date tags and origin
+narration from `PLANTILLAS_INFOGRAFIAS.md` (§ADAPTACIÓN POR ÁNGULO, §PASO 0, §tipografía) and
+`_FLUJO.md`/`_OPCIONALES.md`. Genericized the "Nusava B12 = SIEMPRE 2x1" and "(ej. Nusava: …)"
+teaching examples per the E-class rule (kept the numbers/behavior, dropped the product name).
+`PLANTILLAS_DEFAULTS_OPERADOR.md` left untouched on purpose: its only 2 inventory hits are the
+`[REG_MSPAS]`/`[REG_FDA]` real registry values and their entrega dates — F-anchor, never touched.
+
+**Work unit 4 — `PLANTILLAS_FLUJO_BOT.md` + `ETAPA-RECOLECCION.md` (commits 938b061, 61a7fbc).**
+`PLANTILLAS_FLUJO_BOT.md`: dropped the mentor-quote/evidence column from the §0 "LO QUE MANDAN
+LAS DOS CLASES DE AGOSTO" rules table (A-L), keeping the rule column verbatim and the `#`/heading
+structure untouched (checked `§0` is cross-referenced from `ETAPA-5.md`/`contratos.py`, so the
+heading itself was not renamed). Verified first that `gen_flujo_bot.py`/`test_gen_flujo_bot.py`
+only parse "## 3. LA PLANTILLA" (the `{{var}}`/`<<BLOQUE:x>>`/`>>` block) — the A-L table lives
+outside it, so removing its citation column is safe. Left every `>>` instruction line inside
+"## 3. LA PLANTILLA" byte-for-byte untouched, including the ones carrying `(clase 16-ago)` /
+`(dato operador 23-sep)` tags (lines 177, 184, 191, 226, 389, 397) — those are parsed template
+content, not prose, per the writer's brief. Removed one date tag from a prose paragraph outside
+the template (line ~156). `ETAPA-RECOLECCION.md`: genericized the `5. Nusava B12.mp4` filename
+example. `DOCTRINA/PARAMETRIZACION_ADS.md` judged and left untouched: re-judged its 2 inventory
+hits (`**Fecha:** 2026-09-06`, `## 7. DEUDA ABIERTA (al 2026-09-06)`) as "as of" data snapshots,
+not incident/decision narration — same call W1 made, confirmed rather than assumed.
+
+**Verification after every commit:** `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` → 42
+passed on all 4 units · `python Ads/_TOOLS/test_split_doctrina.py` → 5/5 PASS after unit 1 and
+unit 2 (hash re-frozen) · `python Ads/_TOOLS/test_gen_flujo_bot.py` → TODO PASA after unit 4 ·
+`python Ads/_TOOLS/gen_flujo_bot.py --validar` → 2/5 productos pasan, identical shape/blockers
+before and after unit 4 (prose-only edit, no template line touched) · `python
+Ads/_TOOLS/verificar_guia_madre.py` → same 1 pre-existing failure (`exploracion_n_angulos`
+undeclared) on all 4 units · `python Ads/_TOOLS/gen_grafo.py --comparar` → no orphans, no dead
+routes, every delta negative, on all 4 units · `python evals/run_baseline.py` → `TOTAL=28
+PASS=26 FALLO-CONOCIDO=2 FAIL=0` unchanged across all 4 units. Baseline re-saved with
+`--escribir` after unit 4 (commit 61a7fbc).
+
+**Token deltas (gen_grafo --comparar vs the 801f650/T4-open baseline, W1+W2 combined):**
+fase-1 −4,739 (289,432→284,693) · fase-2 −5,963 (377,865→371,902) · fase-3 −3,888
+(232,110→228,222) · ciclo-diario −3,046 (210,233→207,187) · cold start −42 (8,901→8,859).
+Read-only `gen_grafo.py --comparar` immediately after the baseline save confirmed all deltas at
+`=` (0), i.e. the saved baseline matches disk exactly.
+
+**Etapas that inherit each file W2 changed (grepped `.claude/agents/*.md` and
+`.claude/skills/*/SKILL.md` for the filename):**
+- `DOCTRINA/ESCALADO/{02,04,06,08,09,10}_*.md` + index → via `ESCALADO_PLAYBOOK.md`'s own "Quién
+  lo lee" column: `etapa-6`, `etapa-7`, `etapa-10`, `etapa-11`, `etapa-guardar-producto`,
+  `fase-2-conceptos`, `fase-3-escalado`, `generar-conceptos` (§02 has no agent reader — only
+  `decidir.py` over the CSV).
+- `DOCTRINA/PLANTILLAS_ADS_SECCIONES/{00,01,03,04,10,11}_*.md` + index → `etapa-2`
+  (`11_DOCTRINA_CREATIVOS...`), `etapa-4` (`01_COMPLIANCE_ANDROMEDA`, `04_PROMPT_CONTROL_FASE1`,
+  `11_DOCTRINA_CREATIVOS...`), `etapa-9` (`01_COMPLIANCE_ANDROMEDA`, `11_DOCTRINA_CREATIVOS...`).
+  `00_INTRO`/`03_CUAL_PROMPT_USAR`/`10_ELEMENTOS_EXTRA` have no direct agent citation (reached
+  only via the index/whole-file path).
+- `PLANTILLAS_INFOGRAFIAS.md` → `etapa-4`, `etapa-guardar-producto`.
+- `PLANTILLAS_INFOGRAFIAS_FLUJO.md`, `PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` → `etapa-4`.
+- `PLANTILLAS_FLUJO_BOT.md` → `etapa-5`, `etapa-11`, skills `fase-1-angulos`, `fase-2-conceptos`,
+  `fase-3-escalado`, `generar-conceptos`.
+- `ETAPA-RECOLECCION.md` → skill `fase-1-angulos`.
+Of these, per T4d's fixture list: `etapa-2`, `etapa-4`, `etapa-6`, `etapa-7`,
+`etapa-guardar-producto` have fixtures to re-run against; `etapa-5`, `etapa-9`, `etapa-10`,
+`etapa-11` are mixed (some have fixtures per T4d's earlier list, `etapa-5`/`etapa-11` do not) —
+T4d's own per-etapa list is the source of truth, this is only the file→etapa map for it.
+
 ## Next step
-T4c — .claude/agents + .claude/skills cleanup, writer W2 (after W1). T4b left the ESCALADO/
-verbatim folder, PLANTILLAS_ADS_SECCIONES/ verbatim folder, and the four other DOCTRINA files
-listed above as an optional follow-up.
+T4c — .claude/agents + .claude/skills cleanup, writer W3 (after W1+W2). All DOCTRINA/CLAUDE.md
+archaeology cleanup (T4b) is now closed by W1+W2: nothing left unedited except files judged
+not-archaeology (`PARAMETRIZACION_ADS.md`, `PLANTILLAS_DEFAULTS_OPERADOR.md`'s REG values, GUIA
+MADRE's Fuente column).
