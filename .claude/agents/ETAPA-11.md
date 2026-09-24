@@ -346,8 +346,9 @@ Corre **después de `etapa-7`** (que trae las métricas y verifica integridad) y
 ángulo ganador**, es decir **entre FASE 1 y FASE 2**. Entrega el brief a **`etapa-5`**, que
 reescribe los dos flujos, y el diseño del A/B a **`etapa-6`**, que arma los dos conjuntos gemelos.
 
-Los cuatro lectores del ciclo no se pisan:
-- `etapa-7` mide **qué pasó** · `etapa-8` mueve **el dinero** ·
+Los tres lectores del ciclo no se pisan:
+- `etapa-7` mide **qué pasó** y mueve **el dinero** (monitor + escalado fusionados, T3
+  p2-simplificacion 24-sep-2026) ·
 - `etapa-10` mueve **el diseño del creativo** (pre-clic) · **`etapa-11` mueve el flujo** (post-clic).
 
 `etapa-10` y `etapa-11` son las dos mitades de la misma pregunta: la primera pregunta por qué la

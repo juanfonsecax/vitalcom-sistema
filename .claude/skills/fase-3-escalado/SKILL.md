@@ -18,7 +18,7 @@ tools: Read, Write, Glob, Grep, Bash, Task
 `1-7-7` si el inventario de creativos lo sostiene.
 
 **Secuencia:** `etapa-3` (banco de copy) → `etapa-6` (FASE 3) →
-`etapa-guardar-producto` → ciclo `etapa-7` / `etapa-8` / `etapa-10`
+`etapa-guardar-producto` → ciclo `etapa-7` (monitor + escalado fusionados) / `etapa-10`
 
 ---
 

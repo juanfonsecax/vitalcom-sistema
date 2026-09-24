@@ -141,8 +141,7 @@ FASE 2 COMPLETADA ✓
 □ Fecha de lectura del A/B anotada (n por brazo con Ads/_TOOLS/ab_flujo.py y el cierre REAL del ganador)
 
 Ciclo de optimización (ACTIVO):
-□ ETAPA-7 → auditoría de métricas
-□ ETAPA-8 → decisión de creativos y escalado
+□ ETAPA-7 → auditoría de métricas + decisión de creativos y escalado (fusionadas)
 □ ETAPA-10 → lectura concepto ↔ métrica (por qué ganó lo que ganó)
 □ ETAPA-11 → optimización de flujo (por qué, habiendo escrito, no compran)
 
