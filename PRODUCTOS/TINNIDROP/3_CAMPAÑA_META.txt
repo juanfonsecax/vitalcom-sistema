@@ -1,0 +1,120 @@
+═══ TINNIDROP (Tinnitus Relief Spray · envase «South Meon» EN DISPUTA, ver RECONCILIACIÓN en 2_DATA · importado) · VERSION v3 (re-empaquetado al contrato por rol) · 2026-09-24 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id 120251463036910595 (registro _DIM_PRODUCTOS; campañas vivas en 3_CAMPAÑA_META) ═══
+MAPA DE CAMPAÑA — TINNIDROP | FASE 2 (nodo F2.etapa-11) | armado 2026-09-24
+Solo IDs que YA existen en la data del repo. Ningún ID se infirió. Lo que falta está en la sección FALTANTES.
+Fuente de cada ID entre corchetes: [DIM_PROD]=_DIM_PRODUCTOS.csv · [DIM_CTA]=_DIM_CUENTAS.csv · [2_DATA]=2_DATA_PRODUCTO.txt ·
+  [HANDOFF]=_AUDITORIAS/HANDOFF_2026-09-08_PUBLICAR_META.md · [DIM_CREA]=_DIM_CREATIVOS.csv · [FACT_AD]=_FACT_ENTREGA_ANUNCIO.csv
+  (nombres de conjunto/anuncio EXACTOS como vienen en la fuente, sin normalizar).
+
+── CUENTAS ──
+GTR 0 · act_1665221077707961 · USD · Negocio AMG 2 · 523977064022240 · MCP SI · sin subida de media local  [DIM_CTA]
+GTR 7 · act_598687956219141  · USD · Negocio AMG 5 · 1207290087231971                                    [DIM_CTA]
+GTR 1 · act_824783947334627  · USD · Negocio AMG 2 · 523977064022240                                     [DIM_CTA]
+(CP1 y GTR13 aparecen en el historial de ventas; sin IDs de campaña TINNIDROP en la data.)
+
+── FANPAGE ──
+Sanarte · page_id 498977893288095  [DIM_PROD · 2_DATA l.19, confirmado vía MCP 20-jul]
+WhatsApp del anuncio: FALTANTE · MCP_PIXEL_ID: FALTANTE
+
+Lectura ETAPA-7: CPA real = (amount_spent ÷ ventas LucidSales) × TASA 7.62, vs CPA Base Q30.80 / Break Even Q93.41 [DIM_PROD].
+El JOIN con la data es por NOMBRE de conjunto (invariante 12); los IDs de abajo son para operar por MCP.
+
+════════════════════════════════════════════════════════════════
+A. FASE 2 — CAMPAÑA DE CONCEPTOS PUBLICADA (GTR 0) · PAUSED desde 2026-09-08
+════════════════════════════════════════════════════════════════
+Campaña: GTR0_TINNIDROP_F2-CONCEPTOS_20260907 · campaign_id 120257730530160595  [HANDOFF · DIM_CREA]
+Creada 06-sep 22:39 · arrancó 07-sep 05:10 · 5 conjuntos PAUSED el 08-sep (creativo servido = versión 06-sep con marca SOUTH MOON
+y copy "sublingual"; evento PAUSA en _EVENTOS.csv 2026-09-08). Ángulo fijo ACCESIBILIDAD_MEDICO · IMAGEN · lleva precio SI [DIM_CREA].
+
+| Conjunto (nombre exacto)                          | ad_set_id          | creativo_id                     | ad_id A            | ad_id B            |
+|---------------------------------------------------|--------------------|---------------------------------|--------------------|--------------------|
+| GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C1-CN05_R1    | 120257730530360595 | TINNIDROP_F2_CN05_ACCESIBILIDA  | 120257730530170595 | 120257730653480595 |
+| GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C2-CN01_R1    | 120257730644580595 | TINNIDROP_F2_CN01_ACCESIBILIDA  | 120257730644650595 | 120257730663970595 |
+| GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C3-CN02_R1    | 120257730644640595 | TINNIDROP_F2_CN02_ACCESIBILIDA  | 120257730644590595 | 120257730709910595 |
+| GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C4-CN10_R1    | 120257730644610595 | TINNIDROP_F2_CN10_ACCESIBILIDA  | 120257730644620595 | 120257730726010595 |
+| GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C5-CN04_R1    | 120257730644630595 | TINNIDROP_F2_CN04_ACCESIBILIDA  | 120257730644600595 | 120257730716350595 |
+Nombres de anuncio en Meta: "TINNIDROP_F2_CNxx_ACCESIBILIDA A" / "... B" (sin firma de 5 ejes) [FACT_AD].
+
+════════════════════════════════════════════════════════════════
+B. CAMPAÑAS DE ESCALA MULTICUENTA (creadas 2026-08-12) — campaign_id y ad_set_id FALTANTES
+════════════════════════════════════════════════════════════════
+ad_id tomados de [FACT_AD]; "entrega" = primera → última ventana con fila en ese archivo (no es un estado leído de Meta).
+
+GTR7_TINNIDROP_ESCALA_20260812 · campaign_id FALTANTE · cuenta GTR 7
+| Conjunto (nombre exacto)                  | Anuncio                      | ad_id              | entrega              |
+|-------------------------------------------|------------------------------|--------------------|----------------------|
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1    | ACCESIBILIDAD-MEDICO_VID_A   | 120248199666470784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1    | ACCESIBILIDAD-MEDICO_VID_B   | 120248199666460784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R2    | ACCESIBILIDAD-MEDICO_VID_A   | 120248623716950784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R2    | ACCESIBILIDAD-MEDICO_VID_B   | 120248623716940784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R3    | ACCESIBILIDAD-MEDICO_VID_A   | 120248623718480784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R3    | ACCESIBILIDAD-MEDICO_VID_B   | 120248623718500784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R4    | ACCESIBILIDAD-MEDICO_VID_A   | 120248623719720784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R4    | ACCESIBILIDAD-MEDICO_VID_B   | 120248623719700784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1        | PERDIDA-AUDITIVA_VID_A       | 120248199666480784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1        | PERDIDA-AUDITIVA_VID_B       | 120248199666500784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2        | PERDIDA-AUDITIVA_VID_A       | 120248199666420784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2        | PERDIDA-AUDITIVA_VID_B       | 120248199666360784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3        | PERDIDA-AUDITIVA_VID_A       | 120248199666400784 | 2026-09-06 → 09-22   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3        | PERDIDA-AUDITIVA_VID_B       | 120248199666490784 | 2026-09-06 → 09-18   |
+
+GTR1_TINNIDROP_ESCALA_20260812 · campaign_id FALTANTE · cuenta GTR 1
+| Conjunto (nombre exacto)                  | Anuncio                      | ad_id              | entrega              |
+|-------------------------------------------|------------------------------|--------------------|----------------------|
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1     | DETERIORO-COGNITIVO_VID_A    | 120251429077930706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1     | DETERIORO-COGNITIVO_VID_B    | 120251429077780706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R2     | DETERIORO-COGNITIVO_VID_A    | 120251429077750706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R2     | DETERIORO-COGNITIVO_VID_B    | 120251429077890706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R3     | DETERIORO-COGNITIVO_VID_A    | 120251429077850706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R3     | DETERIORO-COGNITIVO_VID_B    | 120251429077860706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R4     | DETERIORO-COGNITIVO_VID_A    | 120251429077880706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R4     | DETERIORO-COGNITIVO_VID_B    | 120251429077940706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R5     | DETERIORO-COGNITIVO_VID_A    | 120251429077760706 | 2026-09-06 → 09-22   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R5     | DETERIORO-COGNITIVO_VID_B    | 120251429077870706 | 2026-09-06 → 09-22   |
+
+GTR0_TINNIDROP_ESCALA_20260812 · campaign_id FALTANTE · cuenta GTR 0
+| Conjunto (nombre exacto)                          | Anuncio                   | ad_id              | entrega              |
+|---------------------------------------------------|---------------------------|--------------------|----------------------|
+| GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1               | NOCHES-SIN-DORMIR_IMG_A   | 120257177915710595 | 2026-09-06 → 09-22   |
+| GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1               | OCHES-SIN-DORMIR_IMG_B    | 120257177915570595 | 2026-09-06 → 09-22   |
+| GTR0_TINNIDROP_PERDIDA-AUDITIVA_R3 +25AÑOS        | tinnidrop 6               | 120257177915810595 | 2026-09-07 → 09-07   |
+| GTR0_TINNIDROP_PERDIDA-AUDITIVA_R4 +25AÑOS        | tinnidrop 6               | 120257177915690595 | 2026-09-06 → 09-06   |
+(GTR0 PERDIDA-AUDITIVA_R1..R4 +25AÑOS apagados por el operador el 03-sep — evento PAUSA en _EVENTOS.csv.
+ El anuncio "OCHES-SIN-DORMIR_IMG_B" lleva el typo tal cual está en Meta.)
+
+════════════════════════════════════════════════════════════════
+C. CAMPAÑAS HISTÓRICAS DE GTR 0 (FASE 1 y re-testeo)
+════════════════════════════════════════════════════════════════
+campaign_id 120251463036910595 · GTR 0 · FASE 1 original (desde 5-may-2026) · nombre en Meta FALTANTE  [DIM_PROD · 2_DATA l.89]
+campaign_id 120256219801430595 · GTR 0 · "🟩 TINIDROP GTR0 - 1.59 - TEST" (re-testeo v2, julio)            [2_DATA l.21, l.200]
+
+Post IDs (effective_object_story_id) extraídos 20-jul de la campaña 120256219801430595 — verbatim de 2_DATA l.23-29:
+| Conjunto / ángulo            | Ad vivo (mejor)        | Formato | Post ID                             |
+|------------------------------|------------------------|---------|-------------------------------------|
+| Pérdida auditiva (tinnidrop6)| tinnidrop 6 - Copia    | VIDEO   | 498977893288095_122222002100566196  |
+| Pérdida auditiva (2º ad)     | tinnidrop 6            | VIDEO   | 498977893288095_122222002094566196  |
+| ME DIJERON no tiene cura     | CONJUNTO 5 - Copia     | IMAGEN  | 498977893288095_122222001908566196  |
+| Accesibilidad (tinnidrop4)   | tinnidrop 4 - Copia    | VIDEO   | 498977893288095_122222002070566196  |
+| Deterioro cognitivo          | tinnidrop 3            | VIDEO   | 498977893288095_122222001974566196  |
+
+════════════════════════════════════════════════════════════════
+D. PLANES DE PUBLICACIÓN SIN EJECUTAR (sin IDs: no hay rastro en la data)
+════════════════════════════════════════════════════════════════
+_PUBLICACION_F2A.json (16-sep) · GTR7_TINNIDROP_CONCEPTOS-A_20260917 · 1-1-5 · $6.00/conjunto · 45-60 · 2 bloqueantes (firma con
+  nivel_conciencia y oferta_key en "?"). No aparece en _EVENTOS.csv, _FACT_ENTREGA*.csv ni _FACT_VENTAS.csv.
+_PUBLICACION_F3.json (08-sep) · GTR7_TINNIDROP_ESCALA-_20260909 · 1-1-7 · 2 bloqueantes (sin angulo_ganador, 0 de 7 piezas).
+  No aparece en la data.
+Campañas A/B/C de 5_FASE2_CONCEPTOS.txt (21-ago, GTR7/GTR1 "..._CONCEPTOS-ACCESIBILIDAD_20260822"): no aparecen en la data.
+
+════════════════════════════════════════════════════════════════
+FALTANTES (no se inventan — se leen de Meta por MCP o los da el operador)
+════════════════════════════════════════════════════════════════
+- campaign_id de GTR7_TINNIDROP_ESCALA_20260812, GTR1_TINNIDROP_ESCALA_20260812, GTR0_TINNIDROP_ESCALA_20260812.
+- ad_set_id de todos los conjuntos de la sección B.
+- ad_id de GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1/R2 +25AÑOS y GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1/R2 +25AÑOS.
+- Nombre en Meta y estado actual de la campaña 120251463036910595 (la que figura en _DIM_PRODUCTOS.csv).
+- creative_id / video_id de todos los anuncios.
+- WhatsApp del anuncio y MCP_PIXEL_ID.
+- Estado actual de cada objeto: este archivo no lee Meta; antes de actuar, `ads_get_ad_entities` (el CSV no es evidencia de Meta).
+
+RESULTADOS_TESTEO: en 2_DATA_PRODUCTO.txt (auditorías fechadas) y en PRODUCTOS/_FACT_*.csv — lo lee ETAPA-7.
+ANGULO_GANADOR: ACCESIBILIDAD_MEDICO (FASE 1; ángulo fijo de FASE 2) · CONCEPTO_GANADOR: pendiente (0 campañas de conceptos con réplica 2 de 2).

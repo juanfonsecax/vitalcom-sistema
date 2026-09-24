@@ -1,7 +1,7 @@
-═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id nuevo (re-testeo) / histórico 120251463036910595 (GTR 0) ═══
+═══ TINNIDROP (Tinnitus Relief Spray · envase «South Meon» EN DISPUTA, ver RECONCILIACIÓN en 2_DATA · importado) · VERSION v3 (re-empaquetado al contrato por rol) · 2026-09-24 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id 120251463036910595 (registro _DIM_PRODUCTOS; campañas vivas en 3_CAMPAÑA_META) ═══
 PRODUCTO: Tinnidrop — spray natural para el alivio del tinnitus (zumbido/acúfeno). Producto importado, marca de empaque "South Meon". Se vende como "original".
 FECHA_PROCESADO: 2026-07-10
-VERSION: v1 (producto YA LANZADO antes de entrar al sistema — este archivo formaliza su ingreso + audita el testeo GTR0 que ya corrió)
+VERSION: v3 (2026-09-24 — re-empaquetado al contrato de archivos por rol, sin correr fase nueva) · historial: v1 2026-07-10 ingreso del producto · v2 2026-07-10 re-testeo híbrido [antes esta línea decía v1 y el encabezado v2]
 COSTO_PROVEEDOR_Q: Q41 por unidad
 DOSIS / PRESENTACIÓN: spray 60ml (2 fl oz) · 1 aplicación por uso, directo al canal auditivo sin inserción profunda · mañana y noche (2 veces/día), uso continuo
 PROVEEDORES_DROPY: no provisto
@@ -603,3 +603,66 @@ POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q, tramo 21-25):
 
 ⚠️ 24 y 25-ago aún no maduran del todo (COD ~3 días): sus cifras son un piso.
    21-23-ago ya son definitivos.
+
+═══════════════════════════════════════════════════════════════════════════
+ESTADO FASE 2 — 2026-09-24
+═══════════════════════════════════════════════════════════════════════════
+2026-09-24 · F2 · nodo F2.etapa-11 (SOLO DIAGNÓSTICO) corrido sobre data hasta 2026-09-22 →
+  informe PRODUCTOS/_AUDITORIAS/_FLUJO_TINNIDROP_20260924.txt.
+  Veredicto del informe: el flujo NO es donde se pierde la venta hoy; ACCESIBILIDAD_MEDICO cierra 11.8 % (20/169,
+  IC95 7.2–18.3, ventana limpia 09→22-sep sin el lote F2-CONCEPTOS) y el deterioro es pre-clic (costo por mensaje
+  +78 % tras la duplicación x3 del 03-sep). Congruencia anuncio↔bot PROVISIONAL (el texto real cargado en LucidBot
+  no está en el repo). Consistencia física ad↔destino NO VERIFICADA.
+  Pendiente del operador: registrar el evento DIAGNOSTICO_CONGRUENCIA con registrar_evento.py (fila en §7 del
+  informe) — flujo.py todavía marca el nodo como no cumplido.
+  PROPUESTAS DE VALOR: todavía no existen como output de etapa-5 (la reescritura corre después del concepto
+  ganador 2 de 2 y antes de F3). Las 6 "candidatas" del §5 del informe son un brief, no output de etapa-5.
+
+━━━ FASE 2 — LO QUE EXISTE (ángulo fijo ACCESIBILIDAD_MEDICO) ━━━
+· 5_FASE2_CONCEPTOS.txt (21-ago): plan de 3 campañas GTR7/GTR1 "..._CONCEPTOS-ACCESIBILIDAD_20260822" con 10
+  conceptos C01–C10. No aparece en la data: no se publicó así.
+· PUBLICADO: GTR0_TINNIDROP_F2-CONCEPTOS_20260907 (campaign_id 120257730530160595) · 5 conjuntos × 1 concepto
+  (CN05, CN01, CN02, CN10, CN04) × 2 anuncios · creado 06-sep, PAUSED 08-sep (creativo servido con marca SOUTH
+  MOON y copy "sublingual"). Según el informe de etapa-11: $32.61 · 48 msj · 2 ventas, excluido del diagnóstico.
+  Estructura fuera de doctrina (5 conjuntos en 1 campaña; doctrina 1-1-5 + 1-1-5 + 1-2-5) y solo 5 de 10 conceptos.
+· _PUBLICACION_F2A.json (16-sep): plan GTR7_TINNIDROP_CONCEPTOS-A_20260917 con 2 bloqueantes. Sin rastro en la data.
+· _PLAN_FASE2.json: no existe en la carpeta (flujo.py lo exige en F2.plan).
+· IDs de Meta de todo lo anterior: 3_CAMPAÑA_META.txt.
+
+━━━ REGISTRO DE CONJUNTOS VIGENTE (llave = nombre exacto en Meta) ━━━
+Fuente: _FACT_ENTREGA_ANUNCIO.csv (con entrega entre 06-sep y 22-sep) + _DIM_CONJUNTOS.csv. IDs en 3_CAMPAÑA_META.txt.
+| Conjunto                                        | Cuenta | Ángulo              | Formato | Estado según data                      |
+|-------------------------------------------------|--------|---------------------|---------|----------------------------------------|
+| GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1..R4      | GTR7   | ACCESIBILIDAD_MEDICO| VIDEO   | entregando al 22-sep                   |
+| GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1..R3          | GTR7   | PERDIDA_AUDITIVA    | VIDEO   | entregando al 22-sep                   |
+| GTR1_TINNIDROP_DETERIORO-COGNITIVO_R1..R5       | GTR1   | DETERIORO_COGNITIVO | VIDEO   | entregando al 22-sep                   |
+| GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1             | GTR0   | NOCHES_SIN_DORMIR   | IMAGEN  | entregando al 22-sep                   |
+| GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1..R4 +25AÑOS  | GTR0   | PERDIDA_AUDITIVA    | VIDEO   | apagados por el operador 03-sep        |
+| GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_C1..C5-*_R1 | GTR0   | ACCESIBILIDAD_MEDICO| IMAGEN  | PAUSED 08-sep (lote F2 defectuoso)     |
+
+═══════════════════════════════════════════════════════════════════════════
+RECONCILIACIÓN 2026-09-24 (gate invariante 9) — DISCREPANCIAS ABIERTAS, NO CORREGIDAS
+═══════════════════════════════════════════════════════════════════════════
+Ninguna cifra se cambió en este re-empaquetado. Cada punto necesita decisión del operador o de la etapa dueña.
+1. PRECIO 1u: Q178 (1_HACER_MANUAL copies, bot INT 2, FAQ P8, catálogo) · Q179 (_DIM_PRECIOS.csv, 5_FASE2,
+   4_PLAN, COSTEO de este archivo) · "Q178-179" (PRECIOS DESPLEGADOS de este archivo). 2u Q239 y 3u Q299 coinciden.
+2. MARCA DEL ENVASE: "South Meon" (este archivo, l.2 y encabezado) · "South Moon" (video tinnidrop4 y creativo
+   servido en F2; 5_FASE2 dice "AZUL Y BLANCO (South Moon)") · SANARTE (_DIM_ENVASE.csv 07-sep, foto del operador).
+   Consistencia física sin verificar: foto de la unidad despachada + fotograma de tinnidrop4.
+3. PRUEBA SOCIAL: "+10,200" (copies de los conjuntos 4-6, INFO 3 opción B) · "+12,000" (bot INT 2, INFO 3 opción A,
+   _DIM_FLUJO_BOT.prueba_social "más de 12,000 personas").
+4. BREAK EVEN: Q60.5 (COSTEO de este archivo, 4_PLAN) · Q71.56 (5_FASE2) · Q93.41 (_DIM_PRODUCTOS.csv, vigente;
+   las auditorías de agosto citan Q86.2–Q94.6 por recálculo del mix). CPA Base Q30.8 coincide en todos.
+5. PROVEEDORES_DROPY: "no provisto" — sin número.
+6. campaign_id: _DIM_PRODUCTOS.csv apunta a 120251463036910595 (FASE 1 original de GTR0); las campañas que
+   entregan hoy son las ESCALA_20260812 (GTR7/GTR1/GTR0), cuyo campaign_id no está en la data.
+7. FANPAGE: Sanarte (498977893288095) coincide en los 3 archivos y en _DIM_PRODUCTOS.csv, pero NO tiene fila en
+   _DIM_FANPAGES.csv. WhatsApp del anuncio y pixel: sin registrar.
+8. COSTO Q41 y DOSIS (spray 60ml, 2 aplicaciones/día) coinciden en todos los archivos.
+9. Este archivo (l.232) remite a "3_PLAN_ESCALADO.txt"; el archivo real es 4_PLAN_ESCALADO.txt.
+
+━━━ PRÓXIMA SESIÓN ━━━
+- Nodo actual (flujo.py): F2.etapa-11 → falta que el operador registre DIAGNOSTICO_CONGRUENCIA. Después: F2.conceptos
+  (10 conceptos, hay 5) → F2.plan (_PLAN_FASE2.json) → F2.publicar.
+- Antes de que etapa-5 escriba: resolver los puntos 1, 2 y 3 de la RECONCILIACIÓN.
+- Optimización (ETAPA-7): unir por nombre de conjunto contra _FACT_*.csv; IDs para MCP en 3_CAMPAÑA_META.txt.
