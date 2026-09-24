@@ -369,12 +369,43 @@ ciclo-diario 210,233 · cold start 8,901.
   pre-22-sep plans). Route: delegated writer W1.
 - [x] T4b — DOCTRINA/** + CLAUDE.md cleanup. Route: delegated writer W1 (this pass).
 - [x] T4c — .claude/agents + .claude/skills cleanup. Route: delegated writer W3 (after W1+W2).
-- [ ] T4d — Pruning protocol: the parent re-runs every etapa that has a fixture and whose
+- [x] T4d — CLOSED 2026-09-24 by the parent. Re-runs on frozen inputs, all asserts PASS:
+  etapa-2 OVULOS_PURITY (0_INPUTS_CONGELADOS + 2_DATA lines 1-88; 6 fichas, 12 awareness markers;
+  4 of 6 angles match the old fixture, the 2 others vary as a judgment etapa does) · etapa-6
+  OVULOS_PURITY (schema + image-only PASS; the harness did not persist the raw output, so the
+  saved JSON is a parent skeleton with the checked keys and the long strings elided) · fused
+  etapa-7 TINNIDROP (same package as T3; PASSES etapa-7 AND etapa-8 on its own; it replaced the
+  pre-fusion fixture and closed that expected_fail in 56a34c4) · etapa-9 TINNIDROP dry run (6
+  rows, 3 funnel roles, no concept >2; no writes to PRODUCTOS) · etapa-4 OVULOS_PURITY checked by
+  reading (6x3 TEXTO + 3 TITULOS + DESCRIPCION, WhatsApp CTA, price in 2/6, no banned word in ad
+  copy). NOT re-run: etapa-5 (prompt unchanged; only the quote column of its template left) and
+  guardar-producto (writes disk). Etapas without a fixture (0, 1, 3, 10, 11, render) changed
+  prose only and cannot be re-verified. Gates: pytest 42 passed · evals 28/27/1/0 ·
+  verificar_guia_madre only the pre-existing `exploracion_n_angulos`.
+  Final tokens vs 801f650: f1 289,432->284,165 (-5,267) · f2 377,865->371,192 (-6,673) ·
+  f3 232,110->227,457 (-4,653) · ciclo 210,233->206,687 (-3,546) · cold start 8,901->8,859.
+  Data findings from the re-runs (operator, not T4): GTR7 delivered $0 on 2026-09-21 (68% of
+  TINNIDROP spend) · the TINNIDROP F2 batch has been paused since 08-sep over the SOUTH MOON/sublingual
+  creative · _PARAMETROS_PUBLICACION F1 anuncios_por_conjunto=1 vs ETAPA-6 duplicate=2 · tz_offset
+  -06:00 applied to Colombia · the OVULOS etapa-4 infographic signs a review with an invented
+  name "Laura M." (use the real name or "clienta Hernatura") · CLEARSTEM R1-R4 sitting in
+  PENDIENTE_GENERAR since 26-jul.
+  T4d as planned — Pruning protocol: the parent re-runs every etapa that has a fixture and whose
   prompt or inherited doctrine changed (2, 4, 5, 6, 7, 9, guardar-producto) on the frozen
   inputs. The new output must pass the same assert. Then run gen_grafo --comparar. Etapas
   without a fixture (0, 1, 1b, 3, 10, 11, render, producto) change prose only and cannot be
   re-verified. This is disclosed, not hidden.
 - [ ] T4e — Proposal (read-only): which live products to re-package, with sales/spend data kept.
+  Proposal delivered 24-sep. Operator APPROVED re-packaging TINNIDROP and CLEARSTEM (24-sep).
+  Not re-running F1 (both products are past it). For each product, after the T4d re-runs finish
+  (so their frozen reads are not disturbed): `flujo.py <P>` → the real node `F2.etapa-11`
+  (DIAGNOSTICO_CONGRUENCIA) → `etapa-guardar-producto` re-saves the folder to the current contract
+  (4 role files, a PROPUESTAS DE VALOR section only if propositions already exist, since etapa-5
+  writes them after the 2-of-2 winner). Sales and spend live in the _FACT_* CSVs and are not
+  touched. NUSAVA only needs its 9 bot data points; VARICOSE (paused) and OVULOS_PURITY (in F1)
+  are out.
+  Follow-up (outside T4): `gen_plan.py --validar` should mark F1 plans of products past F1 as
+  historical instead of failing them forever.
 
 ### T4a — writer W1 evidence (commit 50e0329)
 
