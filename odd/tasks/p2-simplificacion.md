@@ -824,7 +824,43 @@ non-eval `test_ab_flujo.py` structural gate, which already passed (see Verificat
   single pre-existing finding (`exploracion_n_angulos`) · `evals/run_baseline.py` → 28/27/1/0
   (unchanged; those fixtures are frozen text, not live `gen_flujo_bot` output).
 
+## T6 — Ambiguous nivel_conciencia "3" (authorized 2026-09-24: operator "arréglelo bien, no haga un parche")
+- [x] T6 — Root cause: `_DIM_VOCABULARIO.csv` maps "3" to REVISAR (it cannot tell 3A from 3B), but
+  `validar_parametros.py` only reports it as a soft "alias sucio", so "3" leaked into 4 angles and
+  only surfaced when `gen_flujo_bot.py --validar` needed the level. Fix at the root, not one cell:
+  (a) reclassify every ambiguous row by the ETAPA-2 definitions (level 3 = the avatar already knows
+  the PRODUCT; all these rows are also MOFU, which the vocabulary ties to level 2, not 3):
+  TINNIDROP/ACCESIBILIDAD_MEDICO → 2 (fed up with doctors, does not know the product) ·
+  TINNIDROP/ME_DIJERON_NO_CURA → 2 · CLEARSTEM/TESTIMONIO_RADICAL → 2 ·
+  CLEARSTEM/ANTI_FALSIFICACION → 3A (avatar "conoce el producto viral y teme comprar una
+  falsificación") · NUSAVA/ABSORCION "3a" → 3A (alias normalization). Applied to both
+  `_DIM_CONJUNTOS.csv` and `_DIM_ANUNCIOS.csv` with the python `csv` module (invariant 11).
+  (b) `validar_parametros.py`: an alias whose `mapea_a` is REVISAR becomes a HARD violation, and the
+  gate also checks `_DIM_CONJUNTOS.csv`, so "3" cannot come back. (c) Tests for (b).
+  Route: delegated writer (2+ non-trivial files). Checks: `gen_flujo_bot.py --validar`,
+  `test_gen_flujo_bot.py`, `validar_parametros.py`, `pytest Ads/_TOOLS -q`.
+  Note: this reverses the earlier "recommend 3A" for ACCESIBILIDAD_MEDICO; 3A requires knowing the
+  product, and that avatar does not.
+
+  **Evidence (2026-09-24):** commits `c08e84a` (data fix, both CSVs) and `627a396` (hard REVISAR
+  gate + `_DIM_CONJUNTOS.csv` coverage + tests). CSV diff: `_DIM_CONJUNTOS.csv` 35 cells changed
+  (33× TINNIDROP: 12 ACCESIBILIDAD_MEDICO + 21 ME_DIJERON_NO_CURA "3"→"2" · CLEARSTEM
+  ANTI_FALSIFICACION 5× "3"→"3A" · CLEARSTEM TESTIMONIO_RADICAL 1× "3"→"2" · NUSAVA ABSORCION 1×
+  "3a"→"3A"); `_DIM_ANUNCIOS.csv` 19 cells changed (TINNIDROP ACCESIBILIDAD_MEDICO 10× incl. the
+  one row that was "3A"→"2", ME_DIJERON_NO_CURA 5×, CLEARSTEM ANTI_FALSIFICACION 2× "3"→"3A" —
+  its "3A" row was already correct). `git diff --word-diff` confirmed every changed line differs
+  only in the `nivel_conciencia` cell; no row in either file keeps "3"/"3a"/"3b" afterward.
+  Checks — `gen_flujo_bot.py --validar`: 1/5 → 2/5 pass (TINNIDROP now resolves) ·
+  `gen_flujo_bot.py TINNIDROP --copy`: no crash, no write, `>>` apertura instruction line
+  stripped from the pasted text by design (`para_pegar`); the plain (non-`--copy`) render
+  confirmed the resolved instruction is the level-2 text ("NIVEL DE CONCIENCIA 2 ... dolor + 'eso
+  tiene solucion'") — that generated file was reverted, not committed · `test_gen_flujo_bot.py`:
+  TODO PASA (rewrote the TINNIDROP fixture-truth test: it now asserts `una()` passes and
+  `nivel_conciencia_angulo` resolves to "2") · `validar_parametros.py`: OK, 0 duros, 3 blandos
+  (pre-existing unrelated aliases: TINNIDROP/TENSION_ESTRES "1-2", NUSAVA/ANIMO "1-2",
+  VARICOSE/CALAMBRES_NOCTURNOS "NC2" — not touched, out of scope) · `pytest Ads/_TOOLS -q`: 42 → 43
+  passed (added `test_validar_parametros.py`) · `verificar_producto.py TINNIDROP`: PASA, todo
+  reconcilia.
+
 ## Next step
-T5 done. Follow-ups for whoever picks this up next: (1) an explicit operator decision on
-`_DIM_CONJUNTOS.csv` nivel_conciencia for TINNIDROP/ACCESIBILIDAD_MEDICO (T5 found it ambiguous —
-see T5's note above; not guessed or edited here); (2) the P4 UI plan (SISTEMA-app).
+T6 done. Next is the P4 UI plan in `../SISTEMA-app`.
