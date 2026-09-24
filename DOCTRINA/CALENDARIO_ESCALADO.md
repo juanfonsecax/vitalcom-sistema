@@ -29,29 +29,21 @@
 
 > **En una línea:** paraguas para descubrir, dedicado para escalar. 2-3 ganadores = 2-3 FASE 2 escalonadas, no 3 campañas a un bot común.
 
-> 🔴 **EJECUTOR ASIGNADO 02-sep: `etapa-11`.** Este principio estaba escrito y nadie lo ejecutaba
-> contra data — el paso "dedicar el bot" no tenía dueño, ni método, ni forma de comprobarse.
-> Ahora `etapa-11` corre al confirmar el ángulo ganador, mide el cierre y **diseña el A/B** que lo
-> pone a prueba. Ver `.claude/agents/ETAPA-11.md`.
+> 🔴 **EJECUTOR ASIGNADO: `etapa-11`.** `etapa-11` corre al confirmar el ángulo ganador, mide el
+> cierre y **diseña el A/B** que lo pone a prueba. Ver `.claude/agents/ETAPA-11.md`.
 >
-> ⚠️ **Y el principio está SIN VERIFICAR con data propia — se ejecuta como hipótesis, no como
-> hecho.** Medido el 02-sep sobre la serie 17-jul → 01-sep: las campañas de **un solo ángulo**
-> cerraron **7.2 %** y las de **≥2 ángulos** cerraron **9.0 %** — al revés de lo que predice el
-> principio; y dentro de TINNIDROP, el único producto con ambos regímenes y `n` usable, la
-> diferencia es nula (7.96 % vs 8.32 %, Fisher p = 1.000).
-> **Eso NO refuta el principio:** `_EVENTOS.csv` no registra ni un `CAMBIO_BOT` para esos
-> productos y el checklist de LucidBot de la FASE 2 de NUSAVA quedó sin marcar, así que no hay
-> evidencia de que el flujo dedicado se haya cargado alguna vez. Lo medido es "un ángulo apuntando
-> al mismo flujo paraguas", que no es la hipótesis.
+> ⚠️ **El principio está SIN VERIFICAR con data propia — se ejecuta como hipótesis, no como
+> hecho**, porque medir si un ángulo apunta a un flujo dedicado de verdad requiere que
+> `_EVENTOS.csv` registre el `CAMBIO_BOT` y el checklist de LucidBot esté marcado; sin eso no hay
+> forma de distinguir "un ángulo con flujo dedicado" de "un ángulo apuntando al mismo paraguas".
 > **Por eso el brazo B del A/B existe:** para testearlo en serio, una sola vez y bien.
-> Detalle: `PRODUCTOS/_AUDITORIAS/_VERIFICACION_BRECHA_CIERRE_20260902.txt`.
 
 ---
 
-## 1.5 EL PRESUPUESTO ES LO QUE HACE VÁLIDOS LOS GATES (recalibrado 2026-07-25 con data propia)
+## 1.5 EL PRESUPUESTO ES LO QUE HACE VÁLIDOS LOS GATES (calibrado con data propia)
 
-> 🔴 **ALCANCE (actualizado 2026-09-02).** Todo lo de esta sección gobierna la **FASE 1 · ÁNGULOS**.
-> Desde el 02-sep el sistema tiene **tres** fases, y la FASE 2 (conceptos) tiene su propio
+> 🔴 **ALCANCE.** Todo lo de esta sección gobierna la **FASE 1 · ÁNGULOS**.
+> El sistema tiene **tres** fases, y la FASE 2 (conceptos) tiene su propio
 > presupuesto y su propio Presupuesto de Decisión, calculado **por anuncio y no por conjunto**.
 > Ver **§1.7**. Las dos reglas duras de abajo (decidir por `angulo_key` · la conversación corta
 > pero no corona) siguen valiendo para las tres fases.
@@ -117,7 +109,7 @@ CONJUNTO (todas las cuentas) . dispersión 1.89  ← señal débil
 | **VENTA** | LucidSales | **domingo** (export 7d) **+ el día que se lanza algo nuevo** | conjunto alcanza su PD + ~3d COD | matar-por-ventas · declarar ganador · escalar |
 | **APRENDIZAJE** | acumulado (`_DIM_CONJUNTOS.csv`) | mensual | 30d+ | qué hook / formato / avatar / rol de embudo gana en general |
 
-**CADENCIA DE INGESTA (decidida 25-jul):**
+**CADENCIA DE INGESTA:**
 - **Domingo** — export LucidSales de 7 días. Es la ingesta principal y la única tarea recurrente del operador.
 - **El día que se lanza producto o ángulo nuevo** — export extra, para fijar la **línea base** del lanzamiento y registrar el evento en `_EVENTOS.csv`. Sin esa línea base no se puede separar "el nuevo funciona" de "la semana fue buena".
 - **Entre semana no se pide nada.** El reloj de ENTREGA cubre fatiga y matar-por-conversación solo.
@@ -126,12 +118,10 @@ CONJUNTO (todas las cuentas) . dispersión 1.89  ← señal débil
 
 ---
 
-## 1.7 LA ARQUITECTURA DE 3 FASES (nueva — 2026-09-02)
+## 1.7 LA ARQUITECTURA DE 3 FASES
 
-> **De dónde sale:** clases del **16-ago** y **22-ago-2026** (Calet), destiladas en
-> `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` como M-A06 a M-A13. **Qué la justifica en data propia:**
-> la dispersión 1.12 de §1.5 (el testeo por conjunto no mide el creativo) y APR-057 (el techo de
-> Q597/día es inventario de creativos, no mercado).
+> **Qué la justifica en data propia:** la dispersión 1.12 de §1.5 (el testeo por conjunto no mide
+> el creativo) y APR-057 (el techo de Q597/día es inventario de creativos, no mercado).
 
 ### 1.7.1 · La regla que decide qué estructura va en cada fase
 
