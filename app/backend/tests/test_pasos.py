@@ -27,9 +27,11 @@ JOB = "a" * 32
 
 # La secuencia REAL de F1.paquete (DOCTRINA/FLUJO.json ∧ VISTAS/_MANIFIESTO.json): FASE 1 corre TODO
 # EN IMAGEN (decisión operador 22-sep-2026, commit d70fe33) y ya no lleva ningún script — el lavado
-# de video pasó a FASE 2, cuando se produce un concepto de video.
+# de video pasó a FASE 2, cuando se produce un concepto de video. `etapa-fanpage` se eliminó (T1
+# p2-simplificacion, 23-sep-2026): su juicio de asignación de FanPage se absorbió en `etapa-2`, que
+# ya no corre en paralelo con nadie en este paso.
 PASOS_REALES = [["etapa-producto"], ["etapa-0"], ["etapa-1"], ["etapa-1b"],
-                ["etapa-2", "etapa-fanpage"], ["etapa-4", "etapa-5"], ["etapa-6"],
+                ["etapa-2"], ["etapa-4", "etapa-5"], ["etapa-6"],
                 ["etapa-guardar-producto"]]
 
 # Un paso de tipo script ya no existe en la secuencia real de F1.paquete, pero el comportamiento de
@@ -38,10 +40,10 @@ PASOS_REALES = [["etapa-producto"], ["etapa-0"], ["etapa-1"], ["etapa-1b"],
 # `SISTEMA_CON_PASO_SCRIPT` más abajo, con su propio manifiesto y `FLUJO.json` de juguete
 # (autoconsistentes entre sí), en vez de depender de que `lavar_videos.sh` siga en la secuencia real.
 PASOS_CON_SCRIPT = [["etapa-producto"], ["etapa-0"], ["Ads/_TOOLS/lavar_videos.sh"], ["etapa-1"],
-                    ["etapa-1b"], ["etapa-2", "etapa-fanpage"], ["etapa-4", "etapa-5"], ["etapa-6"],
+                    ["etapa-1b"], ["etapa-2"], ["etapa-4", "etapa-5"], ["etapa-6"],
                     ["etapa-guardar-producto"]]
 SALIDAS_CON_SCRIPT = ["01_etapa-producto.md", "02_etapa-0.md", "03_lavar_videos.md", "04_etapa-1.md",
-                      "05_etapa-1b.md", "06_etapa-2.md", "06_etapa-fanpage.md", "07_etapa-4.md",
+                      "05_etapa-1b.md", "06_etapa-2.md", "07_etapa-4.md",
                       "07_etapa-5.md", "08_etapa-6.md", "09_etapa-guardar-producto.md"]
 
 
@@ -98,20 +100,19 @@ def test_el_manifiesto_real_declara_los_pasos_de_la_secuencia():
 @pytest.mark.parametrize("sistema_de_juguete", [SISTEMA_CON_PASO_SCRIPT], indirect=True)
 def test_los_pasos_corren_en_orden_y_los_grupos_a_la_vez(cliente_juguete, sistema_de_juguete, monkeypatch):
     _listo(sistema_de_juguete)
-    monkeypatch.setenv("VITALCOM_FAKE_PASO_MODO", json.dumps({"etapa-2": "dormir:1.5", "etapa-fanpage": "dormir:1.5"}))
+    monkeypatch.setenv("VITALCOM_FAKE_PASO_MODO", json.dumps({"etapa-2": "dormir:1.5"}))
     assert _pedir(cliente_juguete).status_code == 202
     resultado = _terminar()
     assert resultado["estado"] == "EXITO", resultado
 
     corridas = _corridas(sistema_de_juguete)
-    assert [c["etapa"] for c in corridas if c["etapa"] not in ("etapa-2", "etapa-fanpage", "etapa-4", "etapa-5")] == [
+    assert [c["etapa"] for c in corridas if c["etapa"] not in ("etapa-2", "etapa-4", "etapa-5")] == [
         "etapa-producto", "etapa-0", "Ads/_TOOLS/lavar_videos.sh", "etapa-1", "etapa-1b", "etapa-6",
         "etapa-guardar-producto"]
     por_etapa = {c["etapa"]: c for c in corridas}
-    dos, fan = por_etapa["etapa-2"], por_etapa["etapa-fanpage"]
-    assert dos["inicio"] < fan["fin"] and fan["inicio"] < dos["fin"], "etapa-2 y etapa-fanpage no corrieron a la vez"
-    assert por_etapa["etapa-1b"]["fin"] <= min(dos["inicio"], fan["inicio"]), "un grupo arrancó antes que el paso previo"
-    assert max(dos["fin"], fan["fin"]) <= min(por_etapa["etapa-4"]["inicio"], por_etapa["etapa-5"]["inicio"])
+    dos = por_etapa["etapa-2"]
+    assert por_etapa["etapa-1b"]["fin"] <= dos["inicio"], "un grupo arrancó antes que el paso previo"
+    assert dos["fin"] <= min(por_etapa["etapa-4"]["inicio"], por_etapa["etapa-5"]["inicio"])
 
     carpeta = sistema_de_juguete / resultado["run_dir"] / "etapas"
     assert sorted(x.name for x in carpeta.iterdir()) == SALIDAS_CON_SCRIPT
@@ -141,7 +142,7 @@ def test_cada_paso_recibe_las_rutas_de_lo_anterior_y_ninguna_herramienta_de_meta
     uno_b = prompts["etapa-1b"]
     assert f"{etapas_dir}/00_INPUTS_CONGELADOS.md" in uno_b and f"{etapas_dir}/04_etapa-1.md" in uno_b
     assert f"{etapas_dir}/06_etapa-2.md" not in uno_b, "un paso no recibe salidas que todavía no existen"
-    assert "En paralelo, en otra llamada, corre `etapa-fanpage`" in prompts["etapa-2"]
+    assert "En paralelo" not in prompts["etapa-2"]
     assert "En paralelo" not in prompts["etapa-6"]
     assert "paso 8 de 9" in prompts["etapa-6"]
 
@@ -218,10 +219,10 @@ def test_si_cambian_los_insumos_reintentar_corre_completo(cliente_juguete, siste
 
 def test_si_claude_no_invoca_la_etapa_el_paso_falla(cliente_juguete, sistema_de_juguete, monkeypatch):
     _listo(sistema_de_juguete)
-    monkeypatch.setenv("VITALCOM_FAKE_PASO_MODO", json.dumps({"etapa-fanpage": "sin_task"}))
+    monkeypatch.setenv("VITALCOM_FAKE_PASO_MODO", json.dumps({"etapa-2": "sin_task"}))
     _pedir(cliente_juguete)
     resultado = _terminar()
-    assert resultado["estado"] == "FALLIDO" and "sin invocar `etapa-fanpage`" in resultado["detalle"], resultado
+    assert resultado["estado"] == "FALLIDO" and "sin invocar `etapa-2`" in resultado["detalle"], resultado
     assert "etapa-4" not in [c["etapa"] for c in _corridas(sistema_de_juguete)]
 
 
@@ -236,10 +237,10 @@ def test_la_salida_del_subagente_sale_del_registro_textual():
         ev("user", [{"type": "tool_result", "tool_use_id": "t1", "content": [{"type": "text", "text": "PRIMERA"}]}]),
         ev("assistant", [{"type": "tool_use", "id": "t2", "name": "Agent", "input": {"subagent_type": "etapa-2"}}]),
         ev("user", [{"type": "tool_result", "tool_use_id": "t2", "is_error": True, "content": "se cortó"}]),
-        ev("assistant", [{"type": "tool_use", "id": "t3", "name": "Task", "input": {"subagent_type": "etapa-fanpage"}}]),
+        ev("assistant", [{"type": "tool_use", "id": "t3", "name": "Task", "input": {"subagent_type": "etapa-guardar-producto"}}]),
         ev("user", [{"type": "tool_result", "tool_use_id": "t3", "content": "DE OTRA ETAPA"}]),
         "no es json",
     ]
     assert claude.salida_de_subagente(lineas, "etapa-2") == "PRIMERA"
-    assert claude.salida_de_subagente(lineas, "etapa-fanpage") == "DE OTRA ETAPA"
+    assert claude.salida_de_subagente(lineas, "etapa-guardar-producto") == "DE OTRA ETAPA"
     assert claude.salida_de_subagente(lineas, "etapa-6") is None

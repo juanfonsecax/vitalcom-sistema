@@ -567,7 +567,7 @@ def main():
     # page_id: el del plan manda sobre el del producto, porque la pagina depende de la CUENTA
     page_id = str(plan.get("page_id") or prod.get("page_id") or "").strip()
     if not page_id:
-        pq.bloquear_paquete("no hay page_id", "etapa-fanpage", clave="page_id")
+        pq.bloquear_paquete("no hay page_id", "etapa-2", clave="page_id")
     if plan.get("cuenta") and corto_alias(plan["cuenta"]) != alias_pedido:
         pq.avisar("el plan dice cuenta=%s y se esta publicando en %s. La pagina y su WhatsApp tienen "
                   "que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id %s "

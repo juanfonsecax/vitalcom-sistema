@@ -91,7 +91,7 @@ El texto del anuncio está visible en Ads Library. Copiá el copy de los 10 de M
 
 ### B. Pantallazo de la FanPage de la competencia — ÚTIL
 Captura grande de 1-2 páginas fuertes del nicho (foto, bio, productos, tono).
-- **Para qué:** ETAPA-FANPAGE (calibración de identidad/tono) y edad de segmentación. Pasarlo en el chat.
+- **Para qué:** ETAPA-2 (calibración de identidad/tono en su asignación de FanPage) y edad de segmentación. Pasarlo en el chat.
 
 ### C. Imagen del producto — OBLIGATORIO
 Siempre en el chat (adjunta o link). La usa ETAPA-4 (Director de Arte: colores etiqueta/frasco) y ETAPA-1B.

@@ -34,7 +34,7 @@ sería atribuible).
 | Vocabulario de `concepto_key` y rotación de FASE 2 | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` PARTE III |
 | Prompt Maestro y los 15 estilos anti-fatiga | `DOCTRINA/PLANTILLAS_ADS.md` |
 | Precios, CPA objetivo, break even | `PRODUCTOS/[X]/2_DATA_PRODUCTO.txt` |
-| Tono y edad de la página | `.claude/agents/ETAPA-FANPAGE.md` (ya resuelto en `<pagina_asignada>`) |
+| Tono y edad de la página | `.claude/agents/ETAPA-2.md` §ASIGNACIÓN DE FANPAGE (ya resuelto en `<pagina_asignada>`) |
 | **El perfil y los textos del creativo, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1 y PASO 3) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
 
 **Qué nunca se inventa y qué sí** (decisión del operador, 16-sep-2026):
@@ -55,7 +55,7 @@ sería atribuible).
 PRODUCTO:            [nombre exacto, debe existir en PRODUCTOS/]
 ANGULO_GANADOR:      [angulo_key confirmado por VENTA, agregado por angulo_key]
 N_CONCEPTOS:         [default 10 — los 10 de la estructura 1-1-5 + 1-1-5 + 1-2-5]
-PAGINA_ASIGNADA:     [de ETAPA-FANPAGE]
+PAGINA_ASIGNADA:     [de ETAPA-2]
 ```
 
 Si falta el ángulo ganador → **detener** y pedirlo. Si el producto no tiene

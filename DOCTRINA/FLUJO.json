@@ -51,8 +51,8 @@
      "id": "F1.paquete",
      "titulo": "Construir el paquete de FASE 1 (validar, clasificar, costear, ángulos, copy, bot, plan)",
      "ejecutor": {"tipo": "skill", "name": "fase-1-angulos"},
-     "secuencia": ["etapa-producto", "etapa-0", "etapa-1", "etapa-1b", "etapa-2", "etapa-fanpage", "etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
-     "como": "La skill invoca los subagentes en ese orden (etapa-2 ∥ etapa-fanpage, etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
+     "secuencia": ["etapa-producto", "etapa-0", "etapa-1", "etapa-1b", "etapa-2", "etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
+     "como": "La skill invoca los subagentes en ese orden (etapa-2 ya incluye la asignación de FanPage — absorbida de la extinta etapa-fanpage, T1 p2-simplificacion; etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
      "produce": [
       {"dato": "2_DATA_PRODUCTO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/2_DATA_PRODUCTO.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
       {"dato": "1_HACER_MANUAL.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/1_HACER_MANUAL.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
@@ -78,7 +78,7 @@
      "como": "Pre-flight contra Meta (snapshot), regenerar el paquete contra ese snapshot, ejecutar las llamadas en orden, cerrar el gate con verificar_publicacion.py --escribir.",
      "requiere": [
       {"dato": "cuenta publicitaria asignada", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias", "regla": "invariante 4"},
-      {"dato": "page_id de la FanPage", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "page_id", "no_vacio": true}, "dueno": "etapa-fanpage + operador · _DIM_PRODUCTOS.csv columna page_id", "regla": "invariante 4"},
+      {"dato": "page_id de la FanPage", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "page_id", "no_vacio": true}, "dueno": "etapa-2 + operador · _DIM_PRODUCTOS.csv columna page_id", "regla": "invariante 4"},
       {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
       {"dato": "gate de reconciliación del producto", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "etapa-guardar-producto · Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
       {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json (publicar-meta paso 1)", "regla": "HANDOFF 08-sep: el CSV no es evidencia del estado de Meta"},

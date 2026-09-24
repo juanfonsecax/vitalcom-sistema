@@ -32,11 +32,12 @@ cada subagente: solo lleva lo que aplica siempre.
 Cada etapa es un **subagente real** en `.claude/agents/ETAPA-*.md`. Se invoca con **Task**
 (`subagent_type` = su `name`, ej. `etapa-0`) — nunca por ruta de archivo.
 
-**Las 17 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` ·
-`etapa-fanpage` · `etapa-3` · `etapa-4` · `etapa-5` · `etapa-6` · `etapa-guardar-producto` ·
+**Las 16 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` (incluye la
+asignación de FanPage, absorbida de la extinta `etapa-fanpage` — T1 p2-simplificacion) · `etapa-3` ·
+`etapa-4` · `etapa-5` · `etapa-6` · `etapa-guardar-producto` ·
 `etapa-7` · `etapa-8` · `etapa-9` · `etapa-10` · `etapa-11` · `etapa-render`
 
-**Modelo:** 16 etapas declaran `model: inherit` (corren en el modelo que eligió el operador; el
+**Modelo:** 15 etapas declaran `model: inherit` (corren en el modelo que eligió el operador; el
 sistema nunca lo sobrescribe). `etapa-render` corre en `sonnet`: es trabajo mecánico, pero necesita
 leer la imagen terminada, por eso no baja a `haiku`. Fijar un modelo más barato a una etapa es una
 decisión de costo, no del método.
@@ -94,7 +95,8 @@ calidad de la escritura y del juicio.
 | Contabilidad: 3 vistas, estado de resultados, maduración de 10 días | `DOCTRINA/CONTABILIDAD.md` + `PRODUCTOS/_PARAMETROS_FINANZAS.csv` |
 | Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
 | **Voz del cliente como dato** (cita textual + URL, verificable, nunca prosa suelta) | `Ads/_TOOLS/verificar_voz.py` GENERA `PRODUCTOS/_VOZ_CLIENTE.csv` (esquema en su docstring; re-descarga la URL y confirma que la cita está ahí). `etapa-1b` es el único que agrega filas, vía `--agregar-json` (nunca a mano); `gen_plan.py --validar` exige que cada ángulo de un `_PLAN.json` en `version >= 2` cite su origen (voz verificada o video de competencia) |
-| Las 10 FanPages y las reglas F1–F4 | `.claude/agents/ETAPA-FANPAGE.md` |
+| Datos de las 10 FanPages (identidad, tono, edad de orientación, page_id, productos del nicho) | `PRODUCTOS/_DIM_FANPAGES.csv` |
+| El JUICIO de asignación de FanPage (reglas F1–F5) y su output `<pagina_asignada>` (absorbido de la extinta `etapa-fanpage`, T1 p2-simplificacion) | `.claude/agents/ETAPA-2.md` |
 | Convención de nombres y banda de edad por avatar | `.claude/agents/ETAPA-6.md` |
 | **Publicación en Meta**: secuencia de llamadas y gate de cierre. **El CSV no es evidencia del estado de Meta**: antes de crear, `ads_get_ad_entities` y `--snapshot` | `Ads/_TOOLS/gen_publicacion.py` (deriva y bloquea) + `verificar_publicacion.py` (compara y escribe los `ad_id`) + skill `publicar-meta` |
 | Transiciones entre pasos y sus gates | `DOCTRINA/FLUJO.json` + `Ads/_TOOLS/flujo.py` + `PRODUCTOS/_ESTADO_FLUJO.csv` (derivado). Un gate que no quepa en los predicados de `flujo.py` es criterio y vive en el subagente. `flujo.gate_entrada(producto_key, fase)` es el juez único de "¿se cumple el gate de entrada?" (solo lectura) — lo llaman `gen_publicacion.py --fase N` y `registrar_evento.py --evento LANZAMIENTO` para negar la acción salvo `--excepcion "motivo"` (queda un evento `EXCEPCION` en `_EVENTOS.csv`) |

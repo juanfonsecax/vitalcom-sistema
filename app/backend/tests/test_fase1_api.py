@@ -29,7 +29,7 @@ print(json.dumps({"producto_key": sys.argv[1], "ok": True, "faltan": [], "avisos
 
 GEN_PUBLICACION_FALSO = '''import json, sys
 print(json.dumps({"bloqueantes": [
-    {"falta": "no hay page_id", "lo_produce": "etapa-fanpage", "ambito": "paquete", "clave": "page_id"},
+    {"falta": "no hay page_id", "lo_produce": "etapa-2", "ambito": "paquete", "clave": "page_id"},
     {"falta": "2 pieza(s) sin archivo", "lo_produce": "etapa-render / el operador", "ambito": "paquete",
      "clave": "piezas", "archivos": ["TINNIDROP_1_A.png", "TINNIDROP_2_B.png"]},
     {"falta": "la firma sale con ?", "lo_produce": "etapa-6", "ambito": "paquete"}],
@@ -56,7 +56,7 @@ def test_la_corrida_muestra_el_avance_y_lo_que_devolvio_cada_etapa(cliente_jugue
     assert datos["corrida"]["job_id"] == JOB and len(datos["corrida"]["pasos"]) == 8
     por_etapa = {e["etapa"]: e for e in datos["etapas"]}
     assert por_etapa["etapa-1b"]["texto"].startswith("SALIDA DE etapa-1b (fake)")
-    assert por_etapa["etapa-2"]["paso"] == por_etapa["etapa-fanpage"]["paso"] == 5
+    assert por_etapa["etapa-2"]["paso"] == 5
 
 
 def test_flujo_bot_y_checklist_son_los_de_sus_scripts(cliente_juguete, sistema_de_juguete):

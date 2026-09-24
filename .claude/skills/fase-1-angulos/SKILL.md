@@ -1,6 +1,6 @@
 ---
 name: fase-1-angulos
-description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos (los videos quedan como FUENTE del ángulo, no como el creativo), costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña TODO EN IMAGEN y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
+description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos (los videos quedan como FUENTE del ángulo, no como el creativo), costear, minar voz del cliente, construir las 6 fichas de ángulo (etapa-2 también asigna la FanPage), escribir copies e infografías, construir el bot paraguas, planificar la campaña TODO EN IMAGEN y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -30,7 +30,7 @@ estructura.
 > cualquier conjunto cuyo `formato` no sea `IMAGEN`.
 
 **Secuencia:** `etapa-producto` → `etapa-0` → `etapa-1` → `etapa-1b` →
-(`etapa-2` ∥ `etapa-fanpage`) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
+`etapa-2` (incluye la asignación de FanPage) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
 ---
 
@@ -144,7 +144,7 @@ Inputs: nombre del producto, lista de componentes/ingredientes (operador), outpu
   ingrediente.
 
 Output: BANCO DE DOLOR REAL ([VOZ-REAL]) + ángulos DESCUBIERTOS/CUBIERTOS. → se transfiere a
-`etapa-2` y `etapa-fanpage`.
+`etapa-2`.
 
 **Después de `etapa-1b` (T10):** volcar cada frase [VOZ-REAL]/[DESEO-REAL] con URL a
 `_VOZ_CLIENTE.csv` vía `python Ads/_TOOLS/verificar_voz.py --agregar-json hallazgos.json
@@ -153,17 +153,18 @@ para que verifique cada URL contra su cita antes de que `etapa-2` construya las 
 
 ---
 
-## PASO 3 — `etapa-2` ∥ `etapa-fanpage` (PARALELO)
+## PASO 3 — `etapa-2` (ángulos + asignación de FanPage)
 
-Lanzar ambas en el mismo turno, inmediatamente después de `etapa-1b`.
+Se invoca inmediatamente después de `etapa-1b`.
 
 - **`etapa-2`** — Inputs: output de `etapa-0`, `etapa-1`, `etapa-1b` (ángulos descubiertos **+ BANCO
-  DE DOLOR REAL**), componentes, y `<datos_saturacion>` (opcional; si no se entrega, marca
-  saturación DESCONOCIDA). Output: 6 fichas de ángulo rankeadas — cada una con su **clasificación
-  medible** (`avatar_genero`, `avatar_edad`, `emocion_dominante`, vocabulario cerrado de
-  `DOCTRINA/DATA_PLAYBOOK.md` §1). Los ángulos con respaldo de voz real rankean por encima de los teóricos.
-- **`etapa-fanpage`** — Inputs: nombre del producto, componentes de `etapa-1b`, ángulos de
-  `etapa-0`. Output: `<pagina_asignada>` (Formato A o B).
+  DE DOLOR REAL**), componentes, nombre del producto, y `<datos_saturacion>` (opcional; si no se
+  entrega, marca saturación DESCONOCIDA). Output: 6 fichas de ángulo rankeadas — cada una con su
+  **clasificación medible** (`avatar_genero`, `avatar_edad`, `emocion_dominante`, vocabulario
+  cerrado de `DOCTRINA/DATA_PLAYBOOK.md` §1) — más `<pagina_asignada>` (Formato A o B), resuelta
+  contra `PRODUCTOS/_DIM_FANPAGES.csv` con las reglas F1-F5 (absorbidas de la extinta
+  `etapa-fanpage`, T1 p2-simplificacion). Los ángulos con respaldo de voz real rankean por encima de
+  los teóricos.
   - ⚠️ Si entrega **Formato B** (sin página ideal): alertar al operador antes de continuar. No
     bloquear, pero marcar como pendiente.
 
@@ -271,7 +272,7 @@ parte**. División del trabajo: el orquestador guarda la data y analiza; el **op
 ```
 FASE 1 COMPLETADA ✓
 
-□ FanPage asignada (ETAPA-FANPAGE) → [Número + Nombre] ← confirmar antes de pautar
+□ FanPage asignada (ETAPA-2) → [Número + Nombre] ← confirmar antes de pautar
 □ Edad de segmentación recomendada → [XX+] ← configurar en Meta Ads
 □ Estructura de campaña de testeo (ETAPA-6) → crear en Meta Ads para 4 AM mañana
 □ Creativos: ad-imagen para los 6 ángulos (F1 es TODO IMAGEN, ninguno pausado)
@@ -287,7 +288,7 @@ VERIFICACIÓN DE COHERENCIA COPY ↔ BOT (antes de lanzar):
 □ El framing de oferta usa "tratamiento de X días" y "la más elegida" para P3u en el bot
 □ Cada conjunto tiene 2 anuncios
 
-⚠️ Si ETAPA-FANPAGE entregó Formato B, crear la página antes de lanzar.
+⚠️ Si ETAPA-2 entregó Formato B en su asignación de FanPage, crear la página antes de lanzar.
 ⚠️ Identificar el ángulo ganador y volver con métricas para FASE 2.
 ⚠️ NO continuar con FASE 2 sin datos de testeo confirmados.
 ⚠️ Al confirmar el ángulo ganador, traer también el EXPORT DE CHATS de LucidBot de la

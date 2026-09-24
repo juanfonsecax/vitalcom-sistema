@@ -159,7 +159,7 @@ Paleta por defecto de marca (sanarte® — ver PARAMETRIZACIÓN DE MARCA para ad
 **ORDEN DE DETECCIÓN (de mayor a menor prioridad):**
 1. **Branding / etiqueta del producto** — la categoría tipográfica del frasco manda. Es la fuente del producto y se repite en todas sus piezas.
 2. **Tus ads de referencia / campañas que ya funcionaron** (si el operador los pasa) — solo para afinar la categoría si la etiqueta es ambigua.
-3. **Identidad de la fanpage asignada** (ETAPA-FANPAGE) — respaldo si el frasco no da una categoría clara.
+3. **Identidad de la fanpage asignada** (ETAPA-2) — respaldo si el frasco no da una categoría clara.
 4. **Default validado:** sans-serif moderna (Inter/Poppins), bold en titulares.
 
 **PASO WEB OPCIONAL (siguiente nivel):** si se quiere afinar, buscar en internet el logo/estilo de **la fanpage o de marcas de EE.UU. del nicho que facturan** (Clase 19: "mirar marcas de EE.UU. que facturan millones") e identificar su **categoría** tipográfica. ⚠️ Realismo: los generadores de IA NO reproducen una fuente con licencia exacta — aproximan por categoría. Por eso el objetivo es fijar la CATEGORÍA correcta y repetirla, no "clonar" un .ttf.

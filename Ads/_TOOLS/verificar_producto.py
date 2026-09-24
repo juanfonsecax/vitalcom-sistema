@@ -254,7 +254,7 @@ def verificar(key, dim):
                         % (estado, COMILLA_A, (fila.get("cuenta_alias") or "vacio"), COMILLA_B))
         if _pendiente(fila.get("page_id")):
             disc.append("estado %s pero page_id esta en %s%s%s: sin fanpage no se puede "
-                        "publicar (dueno del dato: etapa-fanpage + el operador)"
+                        "publicar (dueno del dato: etapa-2 + el operador)"
                         % (estado, COMILLA_A, (fila.get("page_id") or "vacio"), COMILLA_B))
     if estado.upper() == "VIVO" and _pendiente(fila.get("campaign_id")):
         disc.append("esta VIVO pero su fila no declara campaign_id: la ingesta de metricas "

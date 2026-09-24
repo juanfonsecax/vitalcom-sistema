@@ -274,7 +274,7 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
                             "quien": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias"})
     if not (prod.get("page_id") or (plan.get("pagina") or {}).get("page_id")):
         bloqueantes.append({"que": "page_id de la FanPage sin asignar",
-                            "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id"})
+                            "quien": "etapa-2 · _DIM_PRODUCTOS.csv columna page_id"})
     if not be_q:
         bloqueantes.append({"que": "break-even sin calcular",
                             "quien": "etapa-1 · Ads/_TOOLS/costear.py"})
@@ -484,7 +484,7 @@ def falta_para_plan(prod, carpeta):
     if not num(prod.get("cpa_be_q")):
         f.append({"que": "sin break-even calculado", "quien": "etapa-1 (costear.py)"})
     if not (prod.get("page_id") or "").strip():
-        f.append({"que": "sin page_id de FanPage", "quien": "etapa-fanpage"})
+        f.append({"que": "sin page_id de FanPage", "quien": "etapa-2"})
     cta = (prod.get("cuenta_alias") or "").strip().upper()
     if not cta or cta == "PENDIENTE":
         f.append({"que": "sin cuenta publicitaria asignada", "quien": "operador"})
