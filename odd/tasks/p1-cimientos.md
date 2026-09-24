@@ -51,9 +51,42 @@ proof that the migration changes nothing.
     (Sep rows in this batch fall outside the authorized 07-01..09-05 network window or predate it
     with no spend; Sep overall already has near-full ad_id coverage per the problem statement.)
   - Commits: `d45dd2d` (script+tests), `03eb58d` (generated map + staging data).
-- [ ] T3 — Eval fixtures from real outputs for etapas without baseline that already ran
+- [x] T3 — Eval fixtures from real outputs for etapas without baseline that already ran
   (candidates: etapa-0, etapa-4, etapa-7, etapa-9, etapa-10). Route: delegated (writer).
   Check: `python evals/run_baseline.py` exit 0, new tests PASS.
+  Done 23-sep-2026. Covered 3 of 5 candidates with real, previously-unfound fixtures
+  (`evals/README.md`'s own prior "9 of 17 uncovered" table was wrong about these three —
+  the outputs exist, just not where the table's original search looked):
+  | Etapa | Real fixture | Assert |
+  |---|---|---|
+  | etapa-4 | `PRODUCTOS/TINNIDROP/1_HACER_MANUAL.txt:305-349` (PARTE 4 copy, 3 new conjuntos) | `evals/asserts/etapa-4.py`: 3 TEXTO + 3 TÍTULOS + DESCRIPCIÓN per conjunto, CTA to WhatsApp, no banned words in the actual ad copy |
+  | etapa-7 | `PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt:58-96` ("Lectura cualitativa (ETAPA-7)" inside a real ciclo-diario run) | `evals/asserts/etapa-7.py`: CPA cited, never ROAS, window integrity, quantified sangrado, per-account/dimension reading |
+  | etapa-9 | `PRODUCTOS/_DIM_CREATIVOS.csv`, real tanda (producto_key=TINNIDROP, fecha_alta=2026-09-06, 5 rows) | `evals/asserts/etapa-9.py`: canonico_id required, funnel-role balance (not a single role), max 2 executions per concepto_key |
+  Skipped (no real output found on disk, confirmed by a fresh search this session,
+  not just the prior README claim): etapa-0 (only session-consumed video ranking
+  found; no persisted 3-table ETAPA-0.md output for any product) and etapa-10 (no
+  persisted "LECTURA CONCEPTO ↔ MÉTRICA" brief; closest artifact is `atribuir.py`'s
+  own attribution rows cited as `fuente` in `_APRENDIZAJES.csv`, which is the tool's
+  output, not this etapa's).
+  Honest finding, not weakened: the etapa-4 fixture's real TÍTULO
+  `"¿Te dijeron que no hay cura?"` uses the word "cura", banned by
+  `DOCTRINA/COPYWRITING_ADS.md` §PRINCIPIO 7 — marked `expected_fail: true` with
+  the reason in `promptfooconfig.yaml`, same pattern as the pre-existing etapa-6
+  cases. The assert was NOT narrowed to hide it.
+  Also fixed a latent encoding bug in `Ads/_TOOLS/test_evals_baseline.py`
+  (subprocess output was decoded with the Windows default codec instead of
+  utf-8, matching the fix `conftest.py` already applies elsewhere) — needed
+  because the new fixtures' real emoji/accents exposed it.
+  Evidence:
+  - `python evals/run_baseline.py` before: `TOTAL=27 PASS=24 FALLO-CONOCIDO=3 FAIL=0`.
+    After: `TOTAL=30 PASS=26 FALLO-CONOCIDO(documentado)=4 FAIL=0`, exit 0.
+  - Each new assert proven to fail on a deliberately broken copy of its fixture
+    in a temp/in-memory scratch (never committed): etapa-4 with a TEXTO variant
+    removed → fails "menos de 3 variaciones"; etapa-7 with CPA replaced by ROAS
+    → fails "el informe menciona ROAS"; etapa-9 with canonico_id blanked on one
+    row → fails "filas sin canonico_id".
+  - `python -m pytest Ads/_TOOLS -q` → 41 passed.
+  - Commits: `e2f6085` (fixtures + asserts + config + README), `f4449f7` (encoding fix).
 - [ ] T4 — Install Postgres locally. BLOCKED: needs operator permission (download + system install).
 - [ ] T5 — Schema (tenant_id on every table) + idempotent loader CSV -> Postgres. Route: delegated.
   Check: row counts equal per table; second run inserts 0.
@@ -75,7 +108,8 @@ proof that the migration changes nothing.
 - 2026-09-23: data commit `25b67ea` (LucidSales + Meta 20-22 sep) on base branch; branch
   `feat/p1-cimientos` created. T1 found already done.
 - 2026-09-23: T2 done — commits `d45dd2d`, `03eb58d`. See T2 evidence above.
+- 2026-09-23: T3 done — commits `e2f6085`, `f4449f7`. See T3 evidence above.
 
 ## Next step
-T3 (eval fixtures) or T5 (Postgres schema+loader) — delegated writers. T4 still needs operator
-permission to install Postgres locally.
+T5 (Postgres schema+loader) — delegated writer. T4 still needs operator permission to install
+Postgres locally.
