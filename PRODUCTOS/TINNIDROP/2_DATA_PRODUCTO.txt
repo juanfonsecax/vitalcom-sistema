@@ -1,5 +1,5 @@
-═══ TINNIDROP (Tinnitus Relief Spray · envase «South Meon» EN DISPUTA, ver RECONCILIACIÓN en 2_DATA · importado) · VERSION v3 (re-empaquetado al contrato por rol) · 2026-09-24 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id 120251463036910595 (registro _DIM_PRODUCTOS; campañas vivas en 3_CAMPAÑA_META) ═══
-PRODUCTO: Tinnidrop — spray natural para el alivio del tinnitus (zumbido/acúfeno). Producto importado, marca de empaque "South Meon". Se vende como "original".
+═══ TINNIDROP (Tinnitus Relief Spray · envase SANARTE, decisión del operador 2026-09-24 (_DIM_ENVASE.csv) — el video en corrida tinnidrop4 todavía muestra "South Moon": desajuste físico ad↔destino a resolver reemplazando ese creativo · importado) · VERSION v3 (re-empaquetado al contrato por rol) · 2026-09-24 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id 120251463036910595 (registro _DIM_PRODUCTOS; campañas vivas en 3_CAMPAÑA_META) ═══
+PRODUCTO: Tinnidrop — spray natural para el alivio del tinnitus (zumbido/acúfeno). Producto importado, marca de empaque SANARTE (decisión del operador 2026-09-24, _DIM_ENVASE.csv). Se vende como "original".
 FECHA_PROCESADO: 2026-07-10
 VERSION: v3 (2026-09-24 — re-empaquetado al contrato de archivos por rol, sin correr fase nueva) · historial: v1 2026-07-10 ingreso del producto · v2 2026-07-10 re-testeo híbrido [antes esta línea decía v1 y el encabezado v2]
 COSTO_PROVEEDOR_Q: Q41 por unidad
@@ -229,7 +229,7 @@ DECISIÓN FASE 3 (operador 20-jul): ESCALAR FUERTE por ANCHO (horizontal + surfi
  · Bot = regar el paraguas YA; bots dedicados de un solo ángulo (Pérdida auditiva, ME DIJERON) en 2-3 días.
  · CANDADO DURO antes de subir plata: corregir compliance del ADS (videos con claims médicos en audio/pantalla; sellos FDA/Min.Salud, %87/93, timelines "primer día/14 días" en infografías post-clic son secundarios pero limpiar los del propio ADS es obligatorio). A escala es cuando Meta castiga.
  · Anti-fatiga prioritario: ME DIJERON freq 1.86 → video/imagen fresca del mismo ángulo pronto.
- · Plan de ejecución completo en 3_PLAN_ESCALADO.txt.
+ · Plan de ejecución completo en 4_PLAN_ESCALADO.txt.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 RESULTADOS_TESTEO — AUDITORÍA 2026-07-21 (LucidSales 14→21 jul, FUSIONADO)
@@ -646,11 +646,13 @@ RECONCILIACIÓN 2026-09-24 (gate invariante 9) — DISCREPANCIAS ABIERTAS, NO CO
 Ninguna cifra se cambió en este re-empaquetado. Cada punto necesita decisión del operador o de la etapa dueña.
 1. PRECIO 1u: Q178 (1_HACER_MANUAL copies, bot INT 2, FAQ P8, catálogo) · Q179 (_DIM_PRECIOS.csv, 5_FASE2,
    4_PLAN, COSTEO de este archivo) · "Q178-179" (PRECIOS DESPLEGADOS de este archivo). 2u Q239 y 3u Q299 coinciden.
-2. MARCA DEL ENVASE: "South Meon" (este archivo, l.2 y encabezado) · "South Moon" (video tinnidrop4 y creativo
-   servido en F2; 5_FASE2 dice "AZUL Y BLANCO (South Moon)") · SANARTE (_DIM_ENVASE.csv 07-sep, foto del operador).
-   Consistencia física sin verificar: foto de la unidad despachada + fotograma de tinnidrop4.
-3. PRUEBA SOCIAL: "+10,200" (copies de los conjuntos 4-6, INFO 3 opción B) · "+12,000" (bot INT 2, INFO 3 opción A,
-   _DIM_FLUJO_BOT.prueba_social "más de 12,000 personas").
+2. MARCA DEL ENVASE: RESUELTA — SANARTE (decisión del operador 2026-09-24, _DIM_ENVASE.csv; este archivo,
+   l.2 y encabezado). Queda ABIERTO el desajuste físico: el video en corrida tinnidrop4 y el creativo servido
+   en F2 muestran "South Moon" (5_FASE2 dice "AZUL Y BLANCO (South Moon)") — se resuelve reemplazando ese
+   creativo, no cambiando la marca declarada.
+3. PRUEBA SOCIAL: RESUELTA — "más de 10,200 personas" (decisión del operador 2026-09-24: la cifra que usan
+   los anuncios vivos; _DIM_FLUJO_BOT.prueba_social actualizado, copies de los conjuntos 4-6 y INFO 3 opción B
+   ya la traían). INFO 3 opción A queda desactualizada con "+12,000" — corregirla no es parte de este gate.
 4. BREAK EVEN: Q60.5 (COSTEO de este archivo, 4_PLAN) · Q71.56 (5_FASE2) · Q93.41 (_DIM_PRODUCTOS.csv, vigente;
    las auditorías de agosto citan Q86.2–Q94.6 por recálculo del mix). CPA Base Q30.8 coincide en todos.
 5. PROVEEDORES_DROPY: "no provisto" — sin número.
@@ -659,7 +661,7 @@ Ninguna cifra se cambió en este re-empaquetado. Cada punto necesita decisión d
 7. FANPAGE: Sanarte (498977893288095) coincide en los 3 archivos y en _DIM_PRODUCTOS.csv, pero NO tiene fila en
    _DIM_FANPAGES.csv. WhatsApp del anuncio y pixel: sin registrar.
 8. COSTO Q41 y DOSIS (spray 60ml, 2 aplicaciones/día) coinciden en todos los archivos.
-9. Este archivo (l.232) remite a "3_PLAN_ESCALADO.txt"; el archivo real es 4_PLAN_ESCALADO.txt.
+9. RESUELTA — este archivo remitía a "3_PLAN_ESCALADO.txt"; corregido a 4_PLAN_ESCALADO.txt (l.232).
 
 ━━━ PRÓXIMA SESIÓN ━━━
 - Nodo actual (flujo.py): F2.etapa-11 → falta que el operador registre DIAGNOSTICO_CONGRUENCIA. Después: F2.conceptos
