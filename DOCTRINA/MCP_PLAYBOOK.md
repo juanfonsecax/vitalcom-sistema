@@ -1,17 +1,17 @@
 # MCP_PLAYBOOK — Creación de campañas de testeo vía Meta Ads MCP
 
-**Estado:** VERIFICADO en producción (primer caso: NusavaB12 en GTR 7, 2026-06-21).
+**Estado:** VERIFICADO en producción.
 **Alcance:** este playbook convierte la salida de ETAPA-6 en una campaña **real creada en Meta, en estado PAUSED**, para cualquier producto.
 
-> 🔧 **ESTE DOCUMENTO YA NO SE EJECUTA A MANO (2026-09-08).** Era prosa que un modelo tenía que
-> leer y recordar entera, y eso costó caro: el 06-sep se publicó una campaña, nadie escribió los
-> `ad_id`, y el 08-sep el sistema creía "cero publicados" con **$23.46 ya gastados**.
+> 🔧 **ESTE DOCUMENTO YA NO SE EJECUTA A MANO.** Dejar la ejecución en prosa que un modelo tiene
+> que leer y recordar entera arriesga que se publique una campaña sin que nadie escriba los
+> `ad_id`, y que el sistema crea "cero publicados" mientras Meta ya está gastando.
 > Ahora la ejecución tiene herramientas:
 >
 > | Pieza | Qué hace |
 > |---|---|
 > | `Ads/_TOOLS/gen_publicacion.py` | Deriva la secuencia EXACTA de llamadas MCP desde los CSV y el `_PLAN.json`. **Bloquea con exit 1 si falta un dato**, con el nombre de su dueño. Emite además el **manifiesto** de lo que debe existir en Meta al terminar. |
-> | `Ads/_TOOLS/verificar_publicacion.py` | El gate: compara Meta contra el manifiesto y **escribe los `ad_id` en `_DIM_CREATIVOS.csv`**. Es el paso que nadie hizo el 06-sep. |
+> | `Ads/_TOOLS/verificar_publicacion.py` | El gate: compara Meta contra el manifiesto y **escribe los `ad_id` en `_DIM_CREATIVOS.csv`**. Es el paso que, sin este gate, queda sin hacer. |
 > | `.claude/skills/publicar-meta/SKILL.md` | El procedimiento de 5 pasos que ejecuta las llamadas. |
 > | `PRODUCTOS/_PARAMETROS_PUBLICACION.csv` | Estructura, presupuesto, objetivo y hora **por fase**. Cambiar la doctrina = editar una fila. |
 > | `PRODUCTOS/_DIM_CUENTAS.csv` | El inventario de cuentas, machine-readable. |
@@ -23,7 +23,7 @@
 **Qué hace y qué no hace el conector:**
 
 - **Todo lo que crea nace PAUSED.** No hay forma de crear en ACTIVE, y ese es el candado nativo del human-in-the-loop.
-- **Sí puede activar.** `ads_activate_entity` existe y funciona (verificado 2026-09-08). Que active el operador es **política de este sistema, no un límite de la herramienta** — hasta hoy este documento decía "nunca activa", y eso escondía una palanca real.
+- **Sí puede activar.** `ads_activate_entity` existe y funciona. Que active el operador es **política de este sistema, no un límite de la herramienta**.
 - **No mueve presupuesto ni estado de algo vivo de forma automática.** Eso sigue en pie, y su dueño es `decidir.py` (invariante 13).
 - **No tiene idempotencia ni memoria entre sesiones.** Publicar dos veces duplica. Lo cubre `gen_publicacion.py --snapshot`.
 
@@ -48,7 +48,7 @@ TASA_USD_GTQ   : [tasa del día, ej. 7.62]
 
 ### Inventario de cuentas — el dueño es `PRODUCTOS/_DIM_CUENTAS.csv`
 
-> La tabla de abajo quedó como **espejo legible** de la lectura en vivo del 2026-09-08. El dato que
+> La tabla de abajo es un **espejo legible** de la lectura en vivo de las cuentas. El dato que
 > el sistema usa sale del CSV, que `gen_publicacion.py` lee para resolver `cuenta_id`, moneda,
 > mínimo de presupuesto y si la cuenta sube media local. Una tabla en prosa se desincroniza en
 > silencio; un CSV lo cobra un hook.
@@ -69,11 +69,11 @@ TASA_USD_GTQ   : [tasa del día, ej. 7.62]
 > ⚠️ **CLEARSTEM vive en GTR 13, que NO tiene MCP.** No se puede publicar por MCP en absoluto —
 > ni crear campaña, ni conjuntos, ni anuncios. Todo a mano, o se mueve a una cuenta habilitada.
 
-### 🔴 LA SUBIDA DE MEDIA SOLO FUNCIONA EN GTR 7 (medido 2026-09-08)
+### 🔴 LA SUBIDA DE MEDIA SOLO FUNCIONA EN GTR 7
 
 `ads_creative_upload_media` con `upload_source=LOCAL_FILE` abre un widget donde el operador elige
 los archivos y devuelve los hashes. **Está habilitado en una sola cuenta del portafolio.** Probado
-el mismo día, con el mismo llamado, sin campaña ni destino de por medio:
+con el mismo llamado, sin campaña ni destino de por medio:
 
 ```
 GTR 7 (598687956219141)  ->  {"result_kind":"LOCAL_FILE", "ui_enabled":true}   ✅
@@ -98,8 +98,8 @@ y ocurre **antes** de que exista campaña alguna — no sabe si el ad irá a Wha
    (`CALENDARIO_ESCALADO` §1.7.2: la C va en OTRA cuenta para no competirse en la subasta).
 
 > ⚠️ **Nunca reusar el nombre de archivo al subir una versión corregida.** Meta guarda las dos y
-> quedan indistinguibles por nombre: el 08-sep se publicaron 10 anuncios con la pieza del 06-sep
-> porque el PNG regenerado tenía el mismo nombre que el viejo. Usar sufijo `_V2`, `_V3`.
+> quedan indistinguibles por nombre: un PNG regenerado con el mismo nombre que el viejo puede
+> terminar publicado en anuncios que debían usar la versión corregida. Usar sufijo `_V2`, `_V3`.
 
 ---
 
@@ -123,8 +123,8 @@ Si falta cualquiera → detener y pedirlo. No inventar IDs.
 | destination_type | `WHATSAPP` | |
 | promoted_object | `{"page_id": MCP_PAGE_ID}` | |
 | billing_event | `IMPRESSIONS` | |
-| daily_budget | **sale de `_PARAMETROS_PUBLICACION.csv`**, por fase y brazo | F1 $2.99 · F2 $6.00/conjunto · F3 $15.00 CBO. Convertir: `cents = round(USD*100)`, y siempre en la **unidad menor de la moneda de la cuenta** (CP1 factura en COP). ⚠️ **El $1.59 que decía esta fila está DEPRECADO** por `ETAPA-6.md`: no sacaba a Meta de aprendizaje. Eran dos dueños diciendo cosas distintas; ahora el dueño es el CSV. |
-| targeting | `{"geo_locations":{"countries":["GT"]},"age_min":[MIN],"age_max":[MAX],"targeting_automation":{"advantage_audience":0}}` | 🔴 **`age_min`/`age_max` salen del `avatar_edad` del ángulo**, no son 18-65 fijos (corregido 02-sep, APR-060: mismo ángulo y creativo, Q473.6/venta a 25+ contra Q30.6 a 45-60). Tabla de derivación en `ETAPA-6.md` → BANDA DE EDAD. Amplio 18-65 solo si el ángulo no tiene avatar de edad marcada. Advantage+ **siempre** OFF: sin eso Meta ignora la banda. |
+| daily_budget | **sale de `_PARAMETROS_PUBLICACION.csv`**, por fase y brazo | F1 $2.99 · F2 $6.00/conjunto · F3 $15.00 CBO. Convertir: `cents = round(USD*100)`, y siempre en la **unidad menor de la moneda de la cuenta** (CP1 factura en COP). El dueño único de esta cifra es el CSV, nunca esta prosa. |
+| targeting | `{"geo_locations":{"countries":["GT"]},"age_min":[MIN],"age_max":[MAX],"targeting_automation":{"advantage_audience":0}}` | 🔴 **`age_min`/`age_max` salen del `avatar_edad` del ángulo**, no son 18-65 fijos (APR-060: mismo ángulo y creativo, Q473.6/venta a 25+ contra Q30.6 a 45-60). Tabla de derivación en `ETAPA-6.md` → BANDA DE EDAD. Amplio 18-65 solo si el ángulo no tiene avatar de edad marcada. Advantage+ **siempre** OFF: sin eso Meta ignora la banda. |
 | start_time | `[mañana]T04:00:00-06:00` | 4 AM día siguiente, hora Guatemala (UTC-6) |
 | status | **PAUSED** (default del MCP) | nunca ACTIVE |
 
@@ -209,8 +209,8 @@ Comparar contra **CPA Base / CPA Break Even** (ETAPA-1). Zonas: 🟢 ≤ Base ·
 - La página debe estar (a) accesible por el lanzador y (b) asignada a la cuenta, con WhatsApp.
 - Todo nace PAUSED: es el candado nativo del human-in-the-loop. El doble candado es el `start_time` 4 AM.
 - **Anuncios (2º paso, tras media):** imágenes por `ads_create_creative` necesitan `link_url=https://wa.me/<NUMERO>` + CTA `WHATSAPP_MESSAGE`.
-  > ⚠️ **EL `wa.me` NO SUSTITUYE AL DESTINO NATIVO — ES LA CAUSA #1 SOSPECHADA DE LA TANDA CIEGA DEL 27-JUL (APR-035).** El `link_url` solo es válido cuando el **conjunto** ya lleva `destination_type=WHATSAPP` + `promoted_object={"page_id":…}`: ahí Meta enruta por Click-to-WhatsApp y el mensaje entrante llega con el bloque `referral` (`source_id` = ad_id, `ctwa_clid`) que es **lo único que LucidBot usa para atribuir**. Si el conjunto NO tiene ese destino, el `wa.me` abre el WhatsApp correcto y el número funciona perfecto — pero el mensaje llega **sin `referral`** y el conjunto nace **ciego**: gasta, trae conversaciones reales y marca 0 ventas para siempre. **Verificar el destino del CONJUNTO antes de poner el `link_url`, nunca al revés.**
-  > 🛡️ **REGLA ANTI-CEGUERA: no crear conjuntos de cero.** DUPLICAR uno que ya trackea y cambiarle solo el creativo — así el destino bueno se hereda. La migración del 12-ago duplicó todo el portafolio y trackea al 100%; la tanda creada de cero el 27-jul (00:11:08–00:11:23, 15 segundos) quedó 100% ciega. Videos: `ads_create_ad` con `object_story_spec.video_data` + `image_url`=miniatura (de `ads_get_ad_videos(fields=["picture"])`); el CTA `WHATSAPP_MESSAGE` va **sin** `value.link` (el destino lo enruta el conjunto). Saltos de línea del copy = `\n`. 2 anuncios idénticos/conjunto.
+  > ⚠️ **EL `wa.me` NO SUSTITUYE AL DESTINO NATIVO (APR-035).** El `link_url` solo es válido cuando el **conjunto** ya lleva `destination_type=WHATSAPP` + `promoted_object={"page_id":…}`: ahí Meta enruta por Click-to-WhatsApp y el mensaje entrante llega con el bloque `referral` (`source_id` = ad_id, `ctwa_clid`) que es **lo único que LucidBot usa para atribuir**. Si el conjunto NO tiene ese destino, el `wa.me` abre el WhatsApp correcto y el número funciona perfecto — pero el mensaje llega **sin `referral`** y el conjunto nace **ciego**: gasta, trae conversaciones reales y marca 0 ventas para siempre. **Verificar el destino del CONJUNTO antes de poner el `link_url`, nunca al revés.**
+  > 🛡️ **REGLA ANTI-CEGUERA: no crear conjuntos de cero.** DUPLICAR uno que ya trackea y cambiarle solo el creativo — así el destino bueno se hereda: un conjunto creado de cero puede quedar 100% ciego en cuestión de segundos si el destino no se configuró primero. Videos: `ads_create_ad` con `object_story_spec.video_data` + `image_url`=miniatura (de `ads_get_ad_videos(fields=["picture"])`); el CTA `WHATSAPP_MESSAGE` va **sin** `value.link` (el destino lo enruta el conjunto). Saltos de línea del copy = `\n`. 2 anuncios idénticos/conjunto.
 - **Número de WhatsApp:** no hay tool que lo lea de la página; lo da el operador (Administrador → Destino del anuncio). Formato `502XXXXXXXX`.
 - **Actualizar copy:** `ads_update_entity(entity_type="ad", fields={"creative":{...}})` — `creative_id` para imagen, `object_story_spec` para video.
 - **BORRADOR no existe por API:** el MCP solo deja PAUSED (publicado, sin gastar). El "1 de 5" (varias opciones de texto/título por anuncio) tampoco por API → 1 texto/anuncio vía MCP, el resto lo agrega el operador a mano.
@@ -220,7 +220,7 @@ Comparar contra **CPA Base / CPA Break Even** (ETAPA-1). Zonas: 🟢 ≤ Base ·
 
 ## 7.5 CONTROL D+1 DE TRACKING (obligatorio tras CADA tanda nueva)
 
-> **Por qué existe:** un conjunto ciego es indistinguible de un conjunto malo. Gasta igual, trae conversaciones reales y marca **0 ventas** — y ese cero es un artefacto, no un veredicto (APR-034). La tanda del 27-jul gastó **$166 en 8 conjuntos 100% ciegos** antes de que alguien lo notara, y se llevó puesta la renovación creativa entera de TINNIDROP: 8 hooks que nunca se midieron.
+> **Por qué existe:** un conjunto ciego es indistinguible de un conjunto malo. Gasta igual, trae conversaciones reales y marca **0 ventas** — y ese cero es un artefacto, no un veredicto (APR-034). Una tanda ciega llegó a gastar **$166 en 8 conjuntos 100% ciegos** antes de que alguien lo notara, y se llevó puesta una renovación creativa entera: 8 hooks que nunca se midieron.
 
 **Al día siguiente de lanzar cualquier tanda nueva** (campaña, conjuntos duplicados, anuncios nuevos), antes de mirar rendimiento:
 

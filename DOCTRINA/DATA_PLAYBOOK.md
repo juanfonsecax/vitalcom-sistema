@@ -1,6 +1,6 @@
 # DATA_PLAYBOOK — LA CAPA DE DATA (fuente única)
 
-> **Qué es esto:** cómo está organizada la data del sistema, qué rol cumple cada archivo, cómo se lee sin sacar cifras falsas y cómo se calcula la ganancia. **Salió de `CLAUDE.md` el 31-jul-2026** (refactor de organización): era el 26% del orquestador y se cargaba en cada sesión aunque no se tocara data.
+> **Qué es esto:** cómo está organizada la data del sistema, qué rol cumple cada archivo, cómo se lee sin sacar cifras falsas y cómo se calcula la ganancia.
 >
 > **Quién lo lee:** `etapa-7` (al leer y decidir escalado), `etapa-guardar-producto` (al escribir), `etapa-2` y `etapa-4` (aprendizajes, antes de diseñar), y la auditoría nocturna. El orquestador solo necesita saber que existe.
 >
@@ -10,27 +10,26 @@
 
 ## 1. LOS ARCHIVOS Y SU ROL (no confundir)
 
-Todos viven en `PRODUCTOS/`. Creados 24-jul · split FACT 25-jul · DIM_PRECIOS 31-jul.
+Todos viven en `PRODUCTOS/`.
 
 ### `_FACT_VENTAS.csv` — HECHOS DE VENTA (capa máquina)
 Solo LucidSales. **La ÚNICA que suma al P&L.** El operador NO la lee. De acá, y SOLO de acá, salen el CPA semanal, la tendencia y la ganancia. Prohibido reconstruir métricas leyendo auditorías en prosa.
 - `rol_ventana` = **BASE** (no solapa con otra BASE → suma) o **CONTROL** (solapa a propósito, ej. el export de verificación → solo verifica, NUNCA suma). La regla de ingesta garantiza que las BASE no se solapen: `ventana_ini = ventana_fin de la última BASE + 1 día`.
 - **Sin columnas derivadas.** `cpa_q` y `cierre_pct` se eliminaron: el CPA se CALCULA siempre, nunca se lee.
-- **`ad_id`** (agregada 11-ago) — el `adId` de LucidSales, la identidad real de la fila. **Es lo que permite probar que no hay doble conteo sin volver al xlsx.** Va vacía solo en las filas sintéticas de cuadre (ver abajo); toda fila con anuncio atribuido la lleva. Al cargar una ventana nueva, poblarla siempre.
-- **Filas sintéticas de cuadre:** el detalle del xlsx suma MENOS que el bloque `Resumen` (LucidSales no atribuye toda venta a un ad). La diferencia se carga como filas con `conjunto`/`anuncio` vacíos, `spend_usd`=0 y `ad_id` vacío, para que el P&L cuadre con el total real. Son legítimas y NO se les inventa un `ad_id`. Medido 11-ago: 6 filas en la ventana 03→10-ago (Q1,192) y 8 en 31-jul→02-ago (Q1,921).
+- **`ad_id`** — el `adId` de LucidSales, la identidad real de la fila. **Es lo que permite probar que no hay doble conteo sin volver al xlsx.** Va vacía solo en las filas sintéticas de cuadre (ver abajo); toda fila con anuncio atribuido la lleva. Al cargar una ventana nueva, poblarla siempre.
+- **Filas sintéticas de cuadre:** el detalle del xlsx suma MENOS que el bloque `Resumen` (LucidSales no atribuye toda venta a un ad). La diferencia se carga como filas con `conjunto`/`anuncio` vacíos, `spend_usd`=0 y `ad_id` vacío, para que el P&L cuadre con el total real. Son legítimas y NO se les inventa un `ad_id`.
 
 ### `_FACT_ENTREGA.csv` — HECHOS DE ENTREGA (capa máquina)
 Solo Meta MCP: mensajes, clics, impresiones, gasto, `pct_conv_clic_enlace`. **No tiene columnas de venta → sumarla al P&L es imposible, no solo prohibido.**
 - ⚠️ **El `conjunto` viene SIN el prefijo `[CUENTA]_[PRODUCTO]_`** que sí lleva el nombre real en Meta y en `_DIM_CONJUNTOS.csv` (la cuenta y el producto ya van en sus propias columnas). Además llega **sin tildes ni eñes** según el exportador. Por eso el mismo objeto de Meta aparece con dos grafías distintas en los dos archivos.
-  **La solución NO es normalizar la llave** (la llave sigue siendo el nombre exacto): es **anexar la grafía que falta a `_DIM_CONJUNTOS.csv` con el MISMO `angulo_key`**, como manda la regla de esa tabla. Historia (el fix del 02-sep y su impacto en el JOIN): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
+  **La solución NO es normalizar la llave** (la llave sigue siendo el nombre exacto): es **anexar la grafía que falta a `_DIM_CONJUNTOS.csv` con el MISMO `angulo_key`**, como manda la regla de esa tabla.
 - **`conjunto = "(campaña completa)"` es una fila legítima de AGREGADO DE CAMPAÑA**, no un hueco de tracking: es gasto real de una campaña que el MCP no desglosó por conjunto. Es la contraparte de las *filas sintéticas de cuadre* de `_FACT_VENTAS.csv`. **Nunca se le inventa un `angulo_key`.** Se excluye del análisis por ángulo y se reporta aparte, igual que las otras.
-- **`_FACT_ENTREGA_ANUNCIO.csv` lleva `ad_id`** (agregada 22-sep-2026, g07-cimientos T1): el `ad_id` real de la Graph API, para poder unir con `_FACT_VENTAS.csv` por id en vez de por nombre exacto (un renombrado en Meta rompe el JOIN por nombre). Una fila escrita antes de esta columna la trae en `""` — nunca se inventa. `mensajes` en esa misma tabla, cuando la fuente es `MetaAPI-directo`, sale de conversaciones de mensajería REALES (`actions`, action_type `onsite_conversion.messaging_conversation_started_7d`), no de una derivación por clics — esa derivación (`tasa_conv_whatsapp x link_clicks`) sigue viva SOLO para la fuente `AdsManager-export-*d` (el camino xlsx, que no trae `actions`).
-> Historia (por qué `_FACT_ENTREGA.csv` y `_FACT_VENTAS.csv` se separaron el 25-jul): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
+- **`_FACT_ENTREGA_ANUNCIO.csv` lleva `ad_id`**: el `ad_id` real de la Graph API, para poder unir con `_FACT_VENTAS.csv` por id en vez de por nombre exacto (un renombrado en Meta rompe el JOIN por nombre). Una fila escrita antes de esta columna la trae en `""` — nunca se inventa. `mensajes` en esa misma tabla, cuando la fuente es `MetaAPI-directo`, sale de conversaciones de mensajería REALES (`actions`, action_type `onsite_conversion.messaging_conversation_started_7d`), no de una derivación por clics — esa derivación (`tasa_conv_whatsapp x link_clicks`) sigue viva SOLO para la fuente `AdsManager-export-*d` (el camino xlsx, que no trae `actions`).
 
 ### `_DIM_CONJUNTOS.csv` — DIMENSIONES (capa máquina)
 Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angulo_key`, avatar, dolor, formato (VIDEO/IMAGEN), `tipo_hook`, nivel de conciencia, rol de embudo (TOFU/MOFU/BOFU), si el ad lleva precio. **Es lo que convierte la data de "cuánto gasté" en "POR QUÉ funciona".** Sin esta tabla no se puede responder qué ángulo, qué avatar, qué hook ni qué formato gana — ni dentro de un producto ni entre productos.
 
-**Tres campos obligatorios de vocabulario CERRADO** (agregados 31-jul) — los declara `etapa-2` en su ficha de ángulo y los escribe `etapa-guardar-producto`:
+**Tres campos obligatorios de vocabulario CERRADO** — los declara `etapa-2` en su ficha de ángulo y los escribe `etapa-guardar-producto`:
 
 | Campo | Valores permitidos |
 |---|---|
@@ -38,7 +37,7 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 | `avatar_edad` | 25-35 · 35-45 · 45-60 · 60+ — el bucket **DOMINANTE**, no el rango completo |
 | `emocion_dominante` | MIEDO_FUTURO · VERGUENZA · RESIGNACION · FRUSTRACION_MEDICA · DESCONFIANZA · AGOTAMIENTO · CURIOSIDAD |
 
-**Cuarto campo cerrado — `concepto_key`** (agregado 18-ago). El ÁNGULO dice *por qué duele*; el **CONCEPTO** dice *cómo se muestra*. Son ortogonales y hasta ahora solo se trackeaba el primero, así que un conjunto podía ganar por su ángulo o por su ejecución visual y no había forma de saber cuál.
+**Cuarto campo cerrado — `concepto_key`.** El ÁNGULO dice *por qué duele*; el **CONCEPTO** dice *cómo se muestra*. Son ortogonales: un conjunto puede ganar por su ángulo o por su ejecución visual, y este campo es lo que distingue cuál.
 
 | Campo | Valores permitidos |
 |---|---|
@@ -47,13 +46,13 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 > **Dueño único del catálogo: `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`** — ahí viven la firma de cada concepto, su rol de embudo y la evidencia de mercado (**v2: 133 creativos únicos de 39 anunciantes**, cruzando una muestra por supervivencia y otra por variedad visual). No duplicar las definiciones acá.
 > ⚠️ Con 8 valores y 12-24 conjuntos/mes cada concepto recibe 1,5-3 observaciones mensuales — **por debajo del umbral de la regla 6**. Por eso la rotación de FASE 2 usa 6 de los 8 por producto (C2 y C1 siempre + 4 rotativos), no los 8. Detalle en el catálogo, última sección.
 > **Regla de fase:** FASE 1 fija `concepto_key = C2_BENEFICIOS` en los 6 conjuntos (mide ÁNGULO, así que el concepto es la constante). FASE 2 fija el ángulo ganador y **varía el concepto** — ahí la columna empieza a acumular. Las 93 filas anteriores al 18-ago quedan en `SIN_CLASIFICAR`: no se retroclasifican de memoria.
-> 🔴 **Actualizado 2026-09-02 — dónde vive el `concepto_key` según la fase.** Con la arquitectura de
+> 🔴 **Dónde vive el `concepto_key` según la fase.** Con la arquitectura de
 > 3 fases, en FASE 2 el concepto **ya no distingue conjuntos: distingue ANUNCIOS** (5 por conjunto).
 > Por eso el `concepto_key` de FASE 2 se registra en **`_DIM_CREATIVOS.csv`**, no en
 > `_DIM_CONJUNTOS.csv` — ahí el ángulo es constante en toda la fase. Leer el concepto a nivel de
 > conjunto en FASE 2 devuelve un solo valor repetido y no mide nada.
 
-**Quinto y sexto campos cerrados — `brazo` y `estado_entrega`** (agregados 02-sep, para la FASE 2 de conceptos):
+**Quinto y sexto campos cerrados — `brazo` y `estado_entrega`**, para la FASE 2 de conceptos:
 
 | Campo | Valores permitidos | Dónde vive |
 |---|---|---|
@@ -81,10 +80,10 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 
 > **Diccionario de emociones:** MIEDO_FUTURO = teme que empeore o sea irreversible · VERGUENZA = lo esconde de los demás · RESIGNACION = ya se rindió · FRUSTRACION_MEDICA = pagó especialistas y sigue igual · DESCONFIANZA = teme que sea falso o no funcione · AGOTAMIENTO = cansado, sin energía · CURIOSIDAD = no sabía que su problema tenía esa causa (educacional/mecanismo).
 
-- **POR QUÉ:** `etapa-2` produce una ficha rica (perfil, situación, dolor activo, deseo, miedos, frustraciones) pero antes solo sobrevivían `avatar` y `dolor_nucleo` como **texto libre** — 28 y 33 valores distintos en 54 conjuntos, imposibles de agregar. Toda esa investigación se usaba para escribir el copy y **después se perdía**: nunca se contrastaba contra quién compró. Estos 3 campos la vuelven aprendible y **transferible entre productos** (si la vergüenza vende en várices, se prueba vergüenza en acné).
+- **POR QUÉ:** `etapa-2` produce una ficha rica (perfil, situación, dolor activo, deseo, miedos, frustraciones); dejar `avatar` y `dolor_nucleo` como texto libre los vuelve imposibles de agregar y la investigación se usa para escribir el copy pero **se pierde**: nunca se contrasta contra quién compró. Estos 3 campos la vuelven aprendible y **transferible entre productos** (si la vergüenza vende en várices, se prueba vergüenza en acné).
 - ⚠️ **Pesan más por ANDROMEDA (2026):** Meta ya NO segmenta por audiencia — **el creativo ES el targeting**. Andromeda lee el anuncio y de ahí deduce a quién mostrárselo; la calidad del creativo explica ~56% del resultado (más que segmentación + presupuesto + placement juntos), y el algoritmo ignora la definición de audiencia si las señales del creativo apuntan a otro lado. El avatar ya no se controla desde la cajita de segmentación: se controla desde lo que el creativo DICE y a quién RETRATA. Medirlo es lo único que queda para saber a quién le estás hablando de verdad.
 - **`etapa-2` y `etapa-4` CONSULTAN el dashboard antes de diseñar** (`_DASHBOARD.html` → «Por qué funciona — cada producto»): trae el CPA real por emoción, género y edad, por producto y del portafolio. Si una emoción ya fracasó 2 veces en la categoría, no se vuelve a proponer; si viene ganando en otro producto del mismo nicho, es candidata a probar.
-- **Ejes que NO se guardan como categoría** (decisión 31-jul): `deseo`, `miedos` y `frustraciones` de la ficha, y el banco de 15 tipos de ángulo. Motivo: con 117 ventas cada eje nuevo fragmenta la muestra y toda celda queda con 1-3 ventas = ruido de Poisson. Se retoman cuando el portafolio pase de ~10 productos. Siguen en `2_DATA_PRODUCTO.txt` como prosa para escribir el copy.
+- **Ejes que NO se guardan como categoría:** `deseo`, `miedos` y `frustraciones` de la ficha, y el banco de 15 tipos de ángulo. Motivo: con 117 ventas cada eje nuevo fragmenta la muestra y toda celda queda con 1-3 ventas = ruido de Poisson. Se retoman cuando el portafolio pase de ~10 productos. Siguen en `2_DATA_PRODUCTO.txt` como prosa para escribir el copy.
 - **Llave = `conjunto_meta` EXACTO como quedó en Meta**, sufijos incluidos (`- Copia`, `- Copia 2`). No normalizar. Dos nombres del mismo ángulo = dos filas con el MISMO `angulo_key`.
 - **Agregar SIEMPRE por `angulo_key`**, nunca por `conjunto`.
 - La escribe `etapa-guardar-producto` al cerrar cada fase (esquema y vocabularios en su archivo, SALIDA 4). `etapa-7` hace el JOIN antes de rankear y **anexa** cualquier conjunto que aparezca en datos y falte acá.
@@ -94,12 +93,11 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 Qué se lanzó, pausó, escaló o cambió y cuándo. Sin esto no se puede calcular la EDAD de un conjunto (ni su %PD), ni atribuir un cambio de CPA a una acción. La `fecha` del LANZAMIENTO define el reloj propio de cada conjunto — **es lo que permite lanzar entre semana sin romper el calendario**. Los eventos `CAMBIO_BOT`/`CAMBIO_CREATIVO` son variables de confusión: si hay uno en la ventana leída, `etapa-7` lo declara y no atribuye el resultado al ángulo.
 > 🔴 **`CAMBIO_BOT` ES OBLIGATORIO.** **Todo cambio de flujo se loguea el día que se aplica**, lo
 > escriba `etapa-11` o lo haga el operador a mano. Un cambio sin evento es un cambio que el sistema
-> no puede evaluar. Historia (la auditoría que expuso la columna vacía):
-> `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
+> no puede evaluar.
 
 ### `_APRENDIZAJES.csv` — MEMORIA TRANSVERSAL (capa máquina)
 Lo que el sistema ya aprendió y no debe volver a pagar para descubrir: qué tipo de hook no vende, qué ángulo ya fracasó en qué producto, qué métrica no predice la venta. **Es lo que hace que el sistema mejore con el tiempo en vez de repetir errores caros.**
-- Antes vivían hardcodeados en el prompt de `etapa-7`. Con 4 productos se sostenía; con 20 el agente se vuelve un basurero de excepciones contradictorias. Son DATA, no instrucciones.
+- Son DATA, no instrucciones: no viven hardcodeadas en el prompt de ninguna etapa.
 - **Lo leen** `etapa-2` y `etapa-4` (al DISEÑAR: no proponer lo que ya fracasó) y `etapa-7` (al LEER y al decidir escalado). Filtro: `estado=VIGENTE AND (alcance=GLOBAL OR producto_key=[X]) AND '[agente]' IN consumido_por` — para filas anteriores al 24-sep-2026 el agente sigue siendo `etapa-7` O `etapa-8` (misma etapa, fusionada en T3 p2-simplificacion).
 - **Lo escribe** `etapa-7` cuando un patrón se repite en ≥2 ventanas o ≥2 productos.
 - `confianza` ALTA = restricción dura · MEDIA = prior fuerte, se puede contradecir justificando · BAJA/EN_OBSERVACION = solo seguir midiendo. **Un aprendizaje BAJA nunca justifica cambiar una regla del sistema.**
@@ -111,7 +109,7 @@ Qué días entró data y cuáles faltan. ⚠️ Con días 🔴 en la ventana: NO
 ### `_GANANCIAS.txt` — LOG HISTÓRICO LEGIBLE
 Una línea por día/ventana, más las notas de decisión que valga la pena conservar. Ya NO es la vista principal (esa es el dashboard). Mantener CORTO (últimos 30 días; lo viejo colapsado a resumen mensual). Nada de listados de campañas acá.
 
-### CAPA DE FACTURACIÓN — ¿lo que Meta COBRA = lo que Meta dice que GASTÉ? (16-ago)
+### CAPA DE FACTURACIÓN — ¿lo que Meta COBRA = lo que Meta dice que GASTÉ?
 > Cadencia **semanal, domingos**. Responde dos preguntas que suelen mezclarse; la primera casi siempre da OK y la segunda es donde está la plata.
 
 - `_DIM_BM.csv` — **Business Manager → cuentas publicitarias**. La tarjeta vive a nivel **BM**, no de cuenta: un BM puede tener varias cuentas (AMG 2 tiene GTR0+GTR1+GTR2) y su tarjeta paga cualquiera de ellas. Por eso la conciliación **bancaria** se hace por BM y recién adentro se reparte por cuenta según gasto devengado. Confirmado con data: MC-8931 pagaba GTR1 **y** GTR0, las dos de AMG 2.
@@ -139,7 +137,7 @@ Meta cobra al cruzar **umbrales de gasto acumulado** ($25→$50→$100→$250) o
 
 **Corre con:** `python Ads/_TOOLS/conciliar_facturacion.py [ini] [fin]` → escribe `_AUDITORIAS/_CONCILIACION_[YYYYMMDD].txt`. Ningún número se escribe a mano.
 
-### `_ESTADO_META.csv` — QUÉ ESTÁ ENCENDIDO (declarado, no inferido) — 16-ago
+### `_ESTADO_META.csv` — QUÉ ESTÁ ENCENDIDO (declarado, no inferido)
 Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OFF) · conjuntos_activos · fecha_confirmado · fuente`.
 **Manda sobre cualquier inferencia.** El sistema no puede deducir el estado: la data de ventas va 1-3 días atrás (por eso el dashboard llegó a pedir apagar campañas ya pausadas) y en **GTR13 y CP1 no hay MCP**, así que no hay nada que leer. Si el archivo no existe, `gen_dashboard.py` cae al fallback de "gastó en el último día". Actualizarlo cuesta 30 segundos y es lo que hace confiable la lista de acciones.
 
@@ -159,13 +157,13 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
     `Ads/MEDIA_[PRODUCTO]/`) → `PUBLICADO` (el anuncio existe en Meta con su `ad_id`) → `RETIRADO`.
   · ⚠️ **Alerta de dashboard:** una fila en `PENDIENTE_GENERAR` **o en `GENERADO`** por más de
     **7 días** es una alerta, no una fila silenciosa. Sin esta alerta, la fábrica produce para el
-    disco duro. Historia (el caso real que la motivó): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.
+    disco duro.
 
 ---
 
-## 1.1 MAPA DE CARPETAS — `producto_key` ↔ filesystem (31-jul)
+## 1.1 MAPA DE CARPETAS — `producto_key` ↔ filesystem
 
-**El problema:** el mismo producto vive en 4 lugares del disco con nombres distintos. NUSAVA tenía **cinco grafías**: `producto_key=NUSAVA` · `PRODUCTOS/NusavaB12` · `Ads/1.1 Videos/NUSAVA B12` · `Ads/MEDIA_GTR7_NUSAVAB12` · y el sub-lote `NUSABA B12 ARDOR` (con typo). Con 4 productos se sostiene de memoria; con 20 el JOIN se vuelve adivinanza — el mismo error que agregar por `producto` en vez de `producto_key`.
+**El problema:** el mismo producto vive en 4 lugares del disco con nombres distintos. Un producto puede llegar a tener **cinco grafías**: `producto_key=PRODUCTO` · `PRODUCTOS/Producto` · `Ads/1.1 Videos/PRODUCTO` · `Ads/MEDIA_GTR7_PRODUCTO` · y un sub-lote con typo. Con 4 productos se sostiene de memoria; con 20 el JOIN se vuelve adivinanza — el mismo error que agregar por `producto` en vez de `producto_key`.
 
 **La solución: `_DIM_PRODUCTOS.csv` es el traductor.** Cinco columnas resuelven cualquier ruta desde el `producto_key`:
 
@@ -181,28 +179,24 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 - **Nunca adivinar la carpeta de un producto por su nombre.** Se resuelve leyendo esta tabla. Si un producto no está, se agrega la fila — no se asume.
 - **`producto_key` es la llave y no cambia nunca.** Las carpetas del disco pueden llamarse como sea; lo que las une es esta tabla.
 
-### 1.1b — Y también resuelve la campaña (añadido 2026-09-02)
+### 1.1b — Y también resuelve la campaña
 
 | Columna | Para qué |
 |---|---|
 | `clave_campana` | El texto a buscar en los nombres de campaña de Meta (`REGLA DE BÚSQUEDA` de abajo) |
 | `campaign_id` | El `campaign_id` conocido, o `PENDIENTE` / `SIN_MCP` |
 
-> Historia (por qué estas dos columnas se movieron acá desde `_PORTAFOLIO.txt`):
-> `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.1.
-
-> ⚠️ **REGLA DE BÚSQUEDA DE CAMPAÑA (sigue vigente):** nunca fijar el
+> ⚠️ **REGLA DE BÚSQUEDA DE CAMPAÑA:** nunca fijar el
 > `campaign_id` a ciegas. Listar las campañas de la cuenta y tomar la ACTIVE cuyo
-> nombre contenga `clave_campana` **con gasto > 0** — el operador pausa, renombra
-> y duplica (caso NusavaB12: la campaña viva era un duplicado manual `…- Copia`).
+> nombre contenga `clave_campana` **con gasto > 0** — un duplicado manual (`…- Copia`)
+> de una campaña pausada y renombrada por el operador puede quedar como la única viva.
 > El `campaign_id` de esta tabla es una pista, no la verdad.
 - Al **dar de alta un producto**, `etapa-guardar-producto` escribe su fila con las 5 columnas de carpeta ya resueltas.
 - **Las carpetas NO se renombran para "emparejarlas"**: 17 referencias a rutas `MEDIA_*` viven en los `1_HACER_MANUAL.txt`/`2_DATA_PRODUCTO.txt` que el operador usa para ejecutar. Renombrar las rompería a cambio de nada — el alias hace el mismo trabajo sin tocar un byte.
 
 > ⚠️ **CSV malformado — cómo evitarlo.** **Todo campo de texto libre con comas va entre comillas
 > dobles.** Al editar estos CSV, escribirlos con un lector/escritor CSV real (`csv.DictWriter`),
-> nunca a mano ni concatenando strings. Historia (el bug real que lo expuso):
-> `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §1.1.
+> nunca a mano ni concatenando strings.
 
 ---
 
@@ -210,7 +204,7 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 
 **Lo único que el operador abre a diario.** Panel visual: ganancia neta, **PLAN DE ACCIÓN («Qué tenés que hacer»)**, P&L por producto, día a día, ranking por ÁNGULO, sangrado (plata sobre la mesa), cortes por hook/formato/embudo/precio y aprendizajes vigentes. Responsive y con tema claro/oscuro — se lee igual en el celular.
 
-> ⚠️ **CÓMO LEE EL OPERADOR (confirmado 31-jul):** Juan NO lee los TXT ni el informe largo. Su flujo real es: pega la data → cierra el chat → abre el dashboard. Todo lo que él tenga que EJECUTAR va en el dashboard, no en prosa. El chat se mantiene en 3-4 líneas.
+> ⚠️ **CÓMO LEE EL OPERADOR:** Juan NO lee los TXT ni el informe largo. Su flujo real es: pega la data → cierra el chat → abre el dashboard. Todo lo que él tenga que EJECUTAR va en el dashboard, no en prosa. El chat se mantiene en 3-4 líneas.
 
 **Sección «QUÉ TENÉS QUE HACER» (motor de acciones, arriba de todo).** Se DERIVA de los CSV con 8 reglas del playbook — nunca se escribe a mano:
 
@@ -234,12 +228,12 @@ Cada fila trae CUÁNDO (hoy / esta semana / cuando puedas), QUÉ y DÓNDE (produ
 
 ---
 
-## 3. CÓMO LEER EL CSV — 4 REGLAS OBLIGATORIAS (25-jul · regla (d) agregada 02-sep)
+## 3. CÓMO LEER EL CSV — 4 REGLAS OBLIGATORIAS
 
 El archivo mezcla filas de dos orígenes y agregarlo mal da cifras falsas:
 
 **(a) Filtrar por `fuente` SIEMPRE.** `fuente=LucidSales*` = ventas reales, **la única que suma al P&L**. `fuente=MCP*` = solo entrega (mensajes/clics/impresiones/gasto), con `ventas`/`total_q` VACÍAS y **su gasto YA contado en las filas LucidSales** → NUNCA sumarla.
-> Prueba 25-jul: sumar sin filtrar da $377 en vez de $296 (+27% de gasto fantasma, ~Q615 de ganancia borrada).
+> Prueba: sumar sin filtrar da $377 en vez de $296 (+27% de gasto fantasma, ~Q615 de ganancia borrada).
 
 **(b) Agregar por `producto_key`** (TINNIDROP/VARICOSE/CLEARSTEM/NUSAVA), nunca por `producto` — el nombre crudo de LucidSales parte el mismo producto en varios ("Varicose Veins Ointment" vs "Varicose 2x1 oferta VER").
 
@@ -258,29 +252,27 @@ Es el KPI que gobierna `etapa-11`. Cuatro trampas, todas medidas:
 - **Cierre ≠ venta cobrada.** Una venta COD que se devuelve no es venta: el cierre del bot y la
   tasa de entrega son cosas distintas y no se mezclan (`_TASA_ENTREGA.csv` · `DOCTRINA/CONTABILIDAD.md`).
 
-Referencia vigente (02-sep): portafolio **8.6 %** · mejor ángulo del sistema 18.1 %
+Referencia vigente: portafolio **8.6 %** · mejor ángulo del sistema 18.1 %
 (CLEARSTEM/ANTI_FALSIFICACION) · umbral de los mentores 15-20 % (M-F01).
 
 **UN SOLO ESCRITOR.** La tarea programada de **Cowork** es la única auditoría nocturna que escribe al CSV y a la bitácora. No crear una segunda tarea equivalente (Cron del chat u otra sesión): la misma noche entraría dos veces = doble conteo real. Antes de anexar, verificar que (ventana, producto_key, conjunto, fuente) no exista ya.
 
-> **VENTANA DE LIQUIDACIÓN, no append-only puro (22-sep-2026, g07-cimientos T1).** El gasto/ventas
-> de un día a veces llega CONGELADO a medio día (medido: 06/14/15/16/20-sep-2026 con 0.65-0.75 del
-> gasto real de Meta) y antes quedaba mal para siempre — la anti-duplicación descartaba la corrida
-> siguiente por "ya cargado". Ahora `bajar_meta_insights.py` e `ingerir_lucidsales.py` re-consultan
-> los últimos `upsert_fact.SETTLEMENT_WINDOW_DIAS` días cada noche y hacen **UPSERT** (reemplazan
-> por llave natural, ver `Ads/_TOOLS/upsert_fact.py`) en vez de solo anexar. `rol_ventana` viaja en
-> la llave de `_FACT_VENTAS.csv`: CONTROL nunca reemplaza a BASE ni viceversa.
+> **VENTANA DE LIQUIDACIÓN, no append-only puro.** El gasto/ventas de un día a veces llega
+> CONGELADO a medio día (0.65-0.75 del gasto real de Meta) y quedaría mal para siempre si la
+> anti-duplicación descartara la corrida siguiente por "ya cargado". `bajar_meta_insights.py` e
+> `ingerir_lucidsales.py` re-consultan los últimos `upsert_fact.SETTLEMENT_WINDOW_DIAS` días cada
+> noche y hacen **UPSERT** (reemplazan por llave natural, ver `Ads/_TOOLS/upsert_fact.py`) en vez
+> de solo anexar. `rol_ventana` viaja en la llave de `_FACT_VENTAS.csv`: CONTROL nunca reemplaza a
+> BASE ni viceversa.
 
-> **GASTO = Meta, no LucidSales tal cual (22-sep-2026, g07-cimientos T2).** El `spend_usd` de
-> `_FACT_VENTAS.csv` a veces queda congelado a 0.65-0.75x del gasto real de Meta el día entero;
-> Meta es quien factura. Todo consumidor de CPA (`decidir.py`, `flujo.py` gates de ganador,
-> `perfilar_angulos.py`, `sembrar_anuncios.py`, el mart dbt `fct_gasto_dia`) pasa por
-> `Ads/_TOOLS/gasto.py` — nunca lee `spend_usd` de `_FACT_VENTAS.csv` directo. Regla de join
-> (ad_id → nombre canónico → conjunto → fallback LucidSales antes de 2026-09-06): ver el
-> docstring de `gasto.py`. `gen_pl.py`/`gen_finanzas.py` (reconcilian contra banco/Dropi) y
-> `gen_dashboard.py` quedan pendientes de esa misma migración — no se tocaron en T2 por no poder
-> validarlos sin un extracto bancario real; el ganador ya cambia de estado con esta corrección
-> (ver evidencia NUSAVA/ARDOR en `odd/tasks/g07-cimientos.md`).
+> **GASTO = Meta, no LucidSales tal cual.** El `spend_usd` de `_FACT_VENTAS.csv` a veces queda
+> congelado a 0.65-0.75x del gasto real de Meta el día entero; Meta es quien factura. Todo
+> consumidor de CPA (`decidir.py`, `flujo.py` gates de ganador, `perfilar_angulos.py`,
+> `sembrar_anuncios.py`, el mart dbt `fct_gasto_dia`) pasa por `Ads/_TOOLS/gasto.py` — nunca lee
+> `spend_usd` de `_FACT_VENTAS.csv` directo. Regla de join (ad_id → nombre canónico → conjunto →
+> fallback LucidSales antes de 2026-09-06): ver el docstring de `gasto.py`. `gen_pl.py`/
+> `gen_finanzas.py` (reconcilian contra banco/Dropi) y `gen_dashboard.py` quedan pendientes de esa
+> misma migración: no se pueden validar sin un extracto bancario real.
 >
 > **ORDEN DE DESPLIEGUE (obligatorio tras un cambio de esquema de `_FACT_ENTREGA_ANUNCIO.csv`):**
 > `stg_entrega_anuncio.sql` exige la columna `ad_id`. Después de mergear a `SISTEMA`, correr el
@@ -291,7 +283,7 @@ Referencia vigente (02-sep): portafolio **8.6 %** · mejor ángulo del sistema 1
 
 ---
 
-## 4. FÓRMULA OFICIAL DE GANANCIA (v2 — 31-jul, TICKET REAL)
+## 4. FÓRMULA OFICIAL DE GANANCIA (TICKET REAL)
 
 ```
 ganancia = Σ contribución de cada venta − pauta Q
@@ -301,13 +293,13 @@ contribución = TE × (precio − costo proveedor − flete − admin − otros)
 ```
 La contribución sale del **escalón** en que cayó ese pedido.
 
-> ⚠️ **La versión vieja (`ventas × BE fijo − pauta`) queda DEPRECADA.** Contaba VENTAS, no quetzales: un pedido de 3 frascos a Q299 valía igual que uno de 1 a Q179 → subestimaba la ganancia real y hacía invisible todo el upsell del bot. Historia (la medición que lo probó): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §4.
+> ⚠️ **La versión vieja (`ventas × BE fijo − pauta`) queda DEPRECADA.** Contaba VENTAS, no quetzales: un pedido de 3 frascos a Q299 valía igual que uno de 1 a Q179 → subestimaba la ganancia real y hacía invisible todo el upsell del bot.
 
 - **La escalera vive en `_DIM_PRECIOS.csv`.** Es **FLEXIBLE por producto**: los productos baratos no tienen escalón de 1u — arrancan en 2x1. No forzar 1/2/3/4 para todos.
 - **Los parámetros de logística viven en `_TASA_ENTREGA.csv`**: `pct_entrega_resueltos`, `costo_devolucion_evento_q` (Q27.16), `costos_admin_q` (Q4.00), `otros_gastos_q` (Q2.08 sin identificar, colchón visible). Se cambian ahí y todo recalcula solo.
 
-> ### ‼️ LA TASA DE ENTREGA ES **POR PRODUCTO**, NO UNA SOLA (v3 — 11-ago)
-> Medido sobre **304 órdenes** de Dropi (01-jul → 07-ago), la entrega NO es homogénea:
+> ### ‼️ LA TASA DE ENTREGA ES **POR PRODUCTO**, NO UNA SOLA
+> Medido sobre **304 órdenes** de Dropi, la entrega NO es homogénea:
 > **CLEARSTEM 95.8% · TINNIDROP 90.4% · VARICOSE 74.2% · NUSAVA 71.7%** — 24 puntos de spread contra un global de 86.2%.
 > Costear todo con la global movía el break-even real **−19.5% en NUSAVA y +16.3% en CLEARSTEM**, e **invertía el ranking de productos** (NUSAVA pasaba por el más rentable cuando es de los peores).
 > · `_TASA_ENTREGA.csv` tiene columna **`producto_key`**; `GLOBAL` es el fallback.
@@ -317,7 +309,7 @@ La contribución sale del **escalón** en que cayó ese pedido.
 - **Unidades por pedido = se INFIEREN del ticket**, interpolando sobre la escalera. Funciona aunque una fila del reporte agrupe varias ventas (Q209 = promedio de un 1u y un 2u) porque las escaleras son lineales.
 - **Nunca presentar la contribución BRUTA como "ganancia"** (sin descontar flete, admin ni devolución) — eso sí infla la cifra.
 
-### Hechos de costo verificados (304 órdenes reales de Dropi, 01-jul → 07-ago · act. 11-ago)
+### Hechos de costo verificados (304 órdenes reales de Dropi)
 - Comisión de plataforma: **0%** (confirmado en las 304)
 - `flete = Q31.42 + Q2.70 × unidades` — **validado por escalón**: 1u +0.3% · 2u +1.8% · 3u +0.7% · 4u +4.2% contra el real. Promedio Q35.81/orden sobre 1.51 u/orden. **No se toca.**
 - **El tamaño del pedido NO aumenta la devolución**: 1u 86.0% · 2u 83.9% · 3u **94.7%** · 4u 83.3% de entrega. → el upsell del bot se puede seguir empujando sin castigo logístico.
@@ -326,15 +318,15 @@ La contribución sale del **escalón** en que cayó ese pedido.
 
 ### Break-Even
 **Se DERIVA de `_DIM_PRECIOS.csv` + `_TASA_ENTREGA.csv`.** El valor en `_DIM_PRODUCTOS.csv` es solo **FALLBACK**: el script recalcula el ponderado real desde el mix efectivamente vendido.
-> Los v3 del 31-jul subieron 21-57% vs los v2 porque el v2 asumía un precio único y un flete de Q41-47 (el real es Q35.5). Los v2 se conservan en `cpa_be_anterior_q`. Consecuencia operativa: **podés pagar bastante más por venta de lo que creías**, y el Presupuesto de Decisión (1×BE) sube igual — un conjunto necesita gastar más antes de que su cero cuente como veredicto.
+> El valor vigente (`v3`) sube 21-57% vs el anterior (`v2`) porque `v2` asumía un precio único y un flete de Q41-47 (el real es Q35.5). El `v2` se conserva en `cpa_be_anterior_q`. Consecuencia operativa: **podés pagar bastante más por venta de lo que creías**, y el Presupuesto de Decisión (1×BE) sube igual — un conjunto necesita gastar más antes de que su cero cuente como veredicto.
 > **Las cifras vigentes se leen del CSV, no de acá** — por eso este archivo no las lista.
 
 - **VARICOSE entra por la fila Q90**, no Q45: vende 2x1 (2 frascos de Q45 = Q90 de producto por pedido a Q249). Los productos en combo se costean por el PEDIDO, no por la unidad.
-- **Tasa de entrega** en `_TASA_ENTREGA.csv`, mensual. ⚠️ El % de «ENTREGADO» de Dropi es sobre el TOTAL e incluye pedidos EN TRÁNSITO — leerlo como tasa de entrega subestima el negocio. La cifra válida se calcula sobre estados RESUELTOS (jul-2026: 85.1% entrega / 14.0% devolución vs 17% asumido → supuesto bien calibrado).
+- **Tasa de entrega** en `_TASA_ENTREGA.csv`, mensual. ⚠️ El % de «ENTREGADO» de Dropi es sobre el TOTAL e incluye pedidos EN TRÁNSITO — leerlo como tasa de entrega subestima el negocio. La cifra válida se calcula sobre estados RESUELTOS (85.1% entrega / 14.0% devolución vs 17% asumido → supuesto bien calibrado).
 
 ---
 
-## 4.1 LAS DOS FUENTES DE VENTA — NO SON SUSTITUTOS Y NUNCA SE SUMAN (11-ago)
+## 4.1 LAS DOS FUENTES DE VENTA — NO SON SUSTITUTOS Y NUNCA SE SUMAN
 
 | | **LUCIDSALES** | **DROPI** |
 |---|---|---|
@@ -343,16 +335,16 @@ La contribución sale del **escalón** en que cayó ese pedido.
 | No ve | lo orgánico, el recontacto, el remarketing | de qué anuncio vino la venta |
 | Grano | fila por `adId` | fila por orden |
 
-**Medido 11-ago:** Dropi 73 órdenes / Q16,749 contra LucidSales 61 ventas / Q13,541 en el mismo tramo.
+**Medido:** Dropi 73 órdenes / Q16,749 contra LucidSales 61 ventas / Q13,541 en el mismo tramo.
 **VARICOSE vendió 5 veces con pauta CERO y LucidSales atribuyó 1** → un P&L construido solo sobre LucidSales **subestima**.
 
-> ⛔ **PROHIBIDO cruzar Dropi con LucidSales día contra día.** La columna `FECHA` de Dropi es **la fecha de CARGA EN LOTE**, no la de la venta. Prueba: 33 órdenes creadas en 29 minutos el 05-ago, 21 en 31 min el 07, 19 en **2 minutos** el 11. Los días en cero entre lotes NO son días sin ventas. Solo se comparan por acumulado.
+> ⛔ **PROHIBIDO cruzar Dropi con LucidSales día contra día.** La columna `FECHA` de Dropi es **la fecha de CARGA EN LOTE**, no la de la venta. Prueba: 33 órdenes creadas en 29 minutos, 21 en 31 min, 19 en **2 minutos**, en lotes distintos. Los días en cero entre lotes NO son días sin ventas. Solo se comparan por acumulado.
 >
-> ⚠️ **La columna `GANANCIA` de Dropi NO es el P&L.** Solo se llena en estado `ENTREGADO` (43/44 y 11/11 verificado), o sea que va **~5 días atrasada** e ignora todo lo que está en tránsito. Además es margen bruto: no descuenta admin, ni el evento de devolución, ni el flete de las devueltas, ni **un solo quetzal de pauta**. El P&L válido es el de §4.
+> ⚠️ **La columna `GANANCIA` de Dropi NO es el P&L.** Solo se llena en estado `ENTREGADO` (verificado 43/44 y 11/11 en la muestra), o sea que va **~5 días atrasada** e ignora todo lo que está en tránsito. Además es margen bruto: no descuenta admin, ni el evento de devolución, ni el flete de las devueltas, ni **un solo quetzal de pauta**. El P&L válido es el de §4.
 >
-> 🕐 **La demora de carga a Dropi es un costo real, no un detalle administrativo.** Con carga en lote el pedido puede esperar hasta 4 días antes de salir a ruta; en contraentrega el cliente se enfría y sube la devolución. En julio la carga era casi diaria; en agosto se abrieron huecos de 3-4 días. **Volver a carga diaria.**
+> 🕐 **La demora de carga a Dropi es un costo real, no un detalle administrativo.** Con carga en lote el pedido puede esperar hasta 4 días antes de salir a ruta; en contraentrega el cliente se enfría y sube la devolución. Los huecos de varios días entre cargas suben la devolución frente a la carga diaria. **Cargar diario.**
 
-## 4.2 AUDITORÍA DE INTEGRIDAD — CÓMO PROBAR QUE NO HAY DOBLE CONTEO (11-ago)
+## 4.2 AUDITORÍA DE INTEGRIDAD — CÓMO PROBAR QUE NO HAY DOBLE CONTEO
 
 Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 
@@ -367,7 +359,6 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 > repetidas = Counter((ventana_ini, ventana_fin, fuente, ad_id) for filas BASE con ad_id)
 > comunes   = adIds(fuente=A) & adIds(fuente=B)   # universos disjuntos => ambas suman
 > ```
-> Historia (por qué hacía falta y la corrida que la validó): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §4.2.
 
 **Todo export que solape con una BASE existente entra como `CONTROL`, nunca como BASE.** Un agregado de N días **no se puede descomponer** en sus días: si se necesita un tramo, se pide ese tramo exacto.
 
@@ -377,7 +368,7 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 
 **Cadencia:** LucidSales se pega **todas las noches con export de 1 SOLO DÍA (ayer)**. Recordatorio 8 PM, auditoría 9 PM. Los lunes además el export de 7 días como control cruzado de maduración COD (~3 días) — se carga con `dias=7` y NO se suma con las diarias (doble conteo), solo verifica.
 
-> ⭐ **CAMBIO 2026-08-16 — SE ACABA LA SEGUNDA CUENTA DE LUCIDSALES.** El 16-ago fue el **último día con dos bots**. Desde el **17-ago** el operador entrega **un solo export por día**, de un único bot.
+> ⭐ **UNA SOLA CUENTA DE LUCIDSALES DESDE EL 17-ago-2026.** El 16-ago-2026 fue el **último día con dos bots**. Desde el **17-ago** el operador entrega **un solo export por día**, de un único bot.
 > · Las ventanas **hasta el 16-ago inclusive** siguen necesitando **las dos** fuentes (`LucidSales` y `LucidSales_CuentaB`) — son universos disjuntos y **ambas suman** (APR-021). No borrar ni fusionar el histórico.
 > · Desde el **17-ago** existe una sola `fuente` y la regla de contigüidad por fuente se simplifica a una sola serie.
 > · ⚠️ **Al comparar tramos que cruzan el 16-ago, declararlo:** una caída de ventas o de gasto trackeado a partir del 17 puede ser el cambio de estructura de bots y no una caída real del negocio. Verificar contra la **cobertura** de la capa de facturación antes de atribuirlo al rendimiento.
@@ -387,8 +378,7 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 **Monedas:** `spend`/`costPerMessage`/`costPerSale` → USD · `total` (venta) → QUETZALES.
 > ⚠️ EXCEPCIÓN: la cuenta **CP1 = 1346891653335162** factura en **COP** → `spend_COP ÷ 3152.5 = spend_USD`. Sin normalizar, contamina el CPA de todo el portafolio.
 >
-> **La tasa vigente es 3,152.5, no 4,050 (APR-028).** Historia (cómo se midió y por qué la anterior
-> estaba mal): `_CONOCIMIENTO/POSTMORTEMS/DATA_PLAYBOOK_historias.md` §5.
+> **La tasa vigente es 3,152.5, no 4,050 (APR-028).**
 > ⚠️ Ojo con el orden de magnitud: un día de CP1 puede venir como `spend = 20,068`. Son pesos (**$6.37 USD**), no dólares. Sumar la columna sin normalizar da un gasto ~125× inflado y el CPA del portafolio se vuelve basura.
 
 ---

@@ -49,8 +49,7 @@ El sistema venía usando 3 días, que es el ciclo de la *entrega*, no el de la
 ## 2. LAS TRES VISTAS — NUNCA SE MEZCLAN
 
 Cada una responde una pregunta distinta. Usar la equivocada es el error más caro
-del sistema (y ya se cometió: el 02-sep se etiquetó como «caja» un cálculo que
-era de cohorte).
+del sistema: etiquetar como «caja» un cálculo que en realidad es de cohorte.
 
 ### VISTA A — COHORTE (por fecha de ORDEN) → *«¿la pauta de esta semana rindió?»*
 
@@ -64,7 +63,7 @@ apagar, escalar, coronar un ángulo.
 
 ### VISTA B — CAJA (por fecha del MOVIMIENTO) → *«¿cuánto dinero entró de verdad?»*
 
-✅ **HABILITADA desde el 02-sep**, con el **historial de cartera de Dropi**.
+✅ **HABILITADA**, con el **historial de cartera de Dropi**.
 
 Ese archivo es el **libro de caja** del negocio: cada fila es plata que se movió
 de verdad, fechada por **cuándo ocurrió**, no por cuándo se tomó la orden.
@@ -252,9 +251,9 @@ cada venta entregada hay `(1−TE)/TE` devoluciones que alguien tiene que pagar.
 | 4 | **Dropi — historial de cartera** | mensual | **la vista de CAJA** + costo REAL de devolución | no hay caja; la devolución vuelve a ser un promedio |
 | 5 | **Extracto bancario** (Relay) | mensual | pauta realmente cobrada + gastos fijos | no hay cierre real; la cobertura no se puede medir |
 
-⚠️ **El export de Dropi debe ser de 60 días móviles, no del mes calendario.** El
-del 02-sep venía filtrado desde el 01-ago, y por eso no trae las órdenes de julio
-entregadas en agosto — que es exactamente el arrastre que hay que medir.
+⚠️ **El export de Dropi debe ser de 60 días móviles, no del mes calendario.** Un
+export filtrado por mes calendario no trae las órdenes del mes anterior
+entregadas en el mes actual — que es exactamente el arrastre que hay que medir.
 
 ⚠️ **El extracto bancario no se concilia por mes calendario** (APR-070). Meta
 cobra por umbral y con días de retraso: el extracto de agosto no tenía ningún

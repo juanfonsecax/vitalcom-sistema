@@ -1,6 +1,6 @@
 # PROTOCOLO DE FACTURACIÓN — QUÉ PASAR, CUÁNDO Y CÓMO
 
-> Creado 16-ago-2026 a pedido del operador. Responde: *"¿qué exactamente te paso para que esto corra siempre igual?"*
+> Responde: *"¿qué exactamente te paso para que esto corra siempre igual?"*
 > Dueño de la doctrina de data: `DOCTRINA/DATA_PLAYBOOK.md` → "CAPA DE FACTURACIÓN". Este archivo es **solo el checklist de entrega**.
 
 ---
@@ -8,7 +8,7 @@
 ## LA REGLA DE ORO
 
 **Extracto > pantallazo.** Un pantallazo se lee bien pero **nunca prueba que esté completo**.
-El 16-ago los pantallazos de Nu cubrían 7 de 15 días y aun así destaparon Q1,600 de gasto no registrado — imaginate lo que falta en los 8 días que no se veían.
+Pantallazos de Nu que cubrían 7 de 15 días aun así destaparon Q1,600 de gasto no registrado — imaginate lo que falta en los días que no se ven.
 Si la app deja exportar (CSV/Excel/PDF), **siempre exportar**. El pantallazo es el plan B, no el plan A.
 
 ---
@@ -34,7 +34,7 @@ Si la app deja exportar (CSV/Excel/PDF), **siempre exportar**. El pantallazo es 
 
 ## SI TIENE QUE SER PANTALLAZO — EL MÉTODO DEL SOLAPE
 
-El método que usó el operador el 16-ago **es correcto y se conserva** (APR-046):
+El método que usa el operador **es correcto y se conserva** (APR-046):
 
 > En cada captura, la **última fila** de la pantalla anterior aparece repetida como **primera** de la siguiente. Eso prueba que no quedó ningún movimiento en el hueco entre capturas.
 
@@ -46,7 +46,7 @@ Cómo se deduplica sin romper nada:
 
 **Lo que sí o sí debe verse en la captura:** fecha · monto · **de qué cuenta/BM es** · y —si el banco lo muestra— el código del cargo. Si la captura corta la etiqueta de cuenta, el cargo entra como `POR_ATRIBUIR` y no se puede usar para conciliar.
 
-**No hace falta** que digas a mano a qué tarjeta o BM corresponde cada cargo: Relay ya lo etiqueta y el extracto de Meta también. Decirlo a mano es justo el camino que llevó al error del 15-ago (US$117.88 atribuidos a una cuenta fantasma, APR-030).
+**No hace falta** que digas a mano a qué tarjeta o BM corresponde cada cargo: Relay ya lo etiqueta y el extracto de Meta también. Decirlo a mano es justo el camino que lleva al error de atribuir cargos a una cuenta fantasma (US$117.88 en un caso real, APR-030).
 
 ---
 
