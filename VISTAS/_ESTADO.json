@@ -1,13 +1,10 @@
 {
-  "generado": "2026-09-21",
-  "version": 6,
+  "generado": "2026-09-23",
+  "version": 7,
   "app": {
     "titulo": "VitalCom Guatemala",
     "subtitulo": "sistema de lanzamiento y optimización",
     "salida": "VISTAS/APP.html",
-    "alias": [
-      "VISTAS/PANEL.html"
-    ],
     "estado": "VISTAS/_ESTADO.json",
     "vista_inicial": "flujo",
     "datos_productos": "PRODUCTOS/_LANZADOR.json",
@@ -46,7 +43,7 @@
       "tipo": "iframe",
       "render": null,
       "fuente": "VISTAS/FLUJO.html",
-      "genera": "python Ads/_TOOLS/flujo.py --todo",
+      "genera": "python Ads/_TOOLS/flujo.py --todo --escribir",
       "dueno": "flujo.py · DOCTRINA/FLUJO.json (el grafo declarado)",
       "caduca": {
         "ok_dias": 1,
@@ -56,12 +53,12 @@
       "src": "FLUJO.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-21",
+        "mtime": "2026-09-23",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-21"
+        "detalle": "hoy · escrita 2026-09-23"
       }
     },
     {
@@ -82,12 +79,12 @@
       "src": "../PRODUCTOS/_DECISIONES.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-21",
+        "mtime": "2026-09-23",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-21"
+        "detalle": "hoy · escrita 2026-09-23"
       }
     },
     {
@@ -108,12 +105,12 @@
       "src": "PERFILES.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-21",
+        "mtime": "2026-09-23",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-21"
+        "detalle": "hoy · escrita 2026-09-23"
       }
     },
     {
@@ -134,12 +131,12 @@
       "src": "../PRODUCTOS/_LANZADOR.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-21",
+        "mtime": "2026-09-23",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-21"
+        "detalle": "hoy · escrita 2026-09-23"
       }
     },
     {
@@ -157,11 +154,11 @@
       "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-21",
+        "mtime": "2026-09-23",
         "edad_dias": 0,
         "clase": "ninguna",
         "etiqueta": "",
-        "detalle": "no caduca · escrita 2026-09-21",
+        "detalle": "no caduca · escrita 2026-09-23",
         "chip": "c-neutro"
       }
     },
@@ -197,7 +194,7 @@
       {
         "producto": "Óvulos Purity Hernatura",
         "que": "page_id de la FanPage sin asignar",
-        "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id",
+        "quien": "etapa-2 · _DIM_PRODUCTOS.csv columna page_id",
         "bloquea": true
       },
       {

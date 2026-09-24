@@ -44,6 +44,49 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
 ## Progress
 - 2026-09-23: P1 fast-forward merged into `feat/optimizacion-continua-perfil-angulos` (2e7ef15).
   Branch `feat/p2-simplificacion` created.
+- 2026-09-23: T1 writer pass done (data + absorb + delete + consumers + evals). NOT yet re-run
+  against real Claude on frozen CLEARSTEM inputs — that step is the parent's, per Config below.
+  Evidence:
+  - `PRODUCTOS/_DIM_FANPAGES.csv` created (real csv.DictWriter, invariant 11): 10 rows,
+    columns `pagina_num,pagina_nombre,identidad,rol,tono,logica,edad_orientacion,page_id,productos_nicho`.
+    Values copied verbatim from the deleted `ETAPA-FANPAGE.md` (no doctrine reworded).
+  - `.claude/agents/ETAPA-2.md` absorbed the judgment: new §ASIGNACIÓN DE FANPAGE with reglas
+    F1-F5 verbatim, reading `PRODUCTOS/_DIM_FANPAGES.csv` instead of an embedded list, emitting the
+    same `<pagina_asignada>` Formato A/Formato B block ETAPA-4/5/6 already consume.
+  - `.claude/agents/ETAPA-FANPAGE.md` deleted.
+  - Consumers updated: `CLAUDE.md` (16 etapas, owner-map rows), `DOCTRINA/FLUJO.json`
+    (secuencia + "como" + page_id "dueno"), `VISTAS/_MANIFIESTO.json` (pasos: etapa-2 alone, no
+    longer parallel), `.claude/skills/fase-1-angulos/SKILL.md` (PASO 3 rewritten, checklist),
+    `.claude/skills/generar-conceptos/SKILL.md`, `DOCTRINA/PLANTILLAS_ADS.md`,
+    `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`, `DOCTRINA/ETAPA-RECOLECCION.md`, `README.md`,
+    `Ads/_TOOLS/{cargar_page_id.py,gen_lanzador.py,gen_publicacion.py,verificar_producto.py,
+    LAVADO.md,test_gen_app.py}`, `app/backend/tests/{test_pasos.py,test_fase1_api.py}`,
+    `db/tables.py` (+ regenerated `db/schema.sql`). Generated files (`VISTAS/APP.html`,
+    `PRODUCTOS/_FLUJO.json`, `_LANZADOR.json`, `VISTAS/_ESTADO.json`) regenerated via
+    `python Ads/_TOOLS/gen_app.py --todo`, never hand-edited. `_ROADMAP/`, `_OPERADOR/` and
+    historical `PRODUCTOS/<P>/*.txt` / `_AUDITORIAS/` left untouched.
+  - Evals: `evals/asserts/etapa-fanpage.py` retargeted to cross-check against
+    `PRODUCTOS/_DIM_FANPAGES.csv` (was: doctrina text of the now-deleted agent) — assert not
+    weakened, same catalog, same fixture. Documented in `evals/README.md` under a new
+    "Retargeting T1" section and in `promptfooconfig.yaml`'s comment for that test.
+  - Verification run (see final report to orchestrator for full command output):
+    `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` → 41/41 passed.
+    `python evals/run_baseline.py` → TOTAL=30 PASS=26 FALLO-CONOCIDO=4 FAIL=0 (unchanged).
+    `python Ads/_TOOLS/gen_grafo.py --comparar` → no orphaned .md/.csv; `fase-1-angulos` cost
+    -21907 tok (ETAPA-FANPAGE.md no longer inherited); 16 agentes (was 17).
+    `python Ads/_TOOLS/flujo.py --todo` → same 5 products, same nodes/gates (only cosmetic
+    "como"/secuencia text changed on F1.paquete).
+    `python Ads/_TOOLS/verificar_guia_madre.py` → exit 0, same single pre-existing finding
+    (`exploracion_n_angulos`), unrelated to this change.
+    `uv run pytest tests/test_pasos.py tests/test_fase1_api.py` (app/backend) → 15/15 passed.
+  - NOT done (belongs to the parent orchestrator per Config: "Re-running an etapa is done by the
+    parent orchestrator"): the actual CLEARSTEM re-run of `etapa-2` against real Claude to confirm
+    it reproduces the same page as `evals/fixtures/etapa-fanpage/CLEARSTEM.txt`
+    ("Página 4 ✨ Belleza & Piel — Astrid García"). See the writer's final report for the exact
+    frozen-inputs package to use for that re-run.
 
 ## Next step
-T1 (delegated writer).
+Parent orchestrator re-runs `etapa-2` on CLEARSTEM's frozen FASE 1 inputs (package in the T1
+writer's final report) and checks the output still assigns "Belleza & Piel" and still passes
+`evals/asserts/etapa-2.py` + the retargeted `evals/asserts/etapa-fanpage.py`. Only then check off T1
+and move to T2.

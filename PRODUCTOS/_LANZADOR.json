@@ -1,6 +1,6 @@
 {
-  "generado": "2026-09-21",
-  "usd_por_conversacion_portafolio": 0.557,
+  "generado": "2026-09-23",
+  "usd_por_conversacion_portafolio": 0.56,
   "estructura": {
     "1": {
       "nombre": "FASE 1 · ÁNGULOS",
@@ -52,14 +52,14 @@
       "cuenta": "GTR0",
       "cpa_be_q": 93.41,
       "historial": {
-        "spend_usd": 3741.99,
-        "ventas": 594,
-        "mensajes": 6611,
+        "spend_usd": 3783.35,
+        "ventas": 600,
+        "mensajes": 6666,
         "cierre_pct": 9.0,
-        "usd_por_conversacion": 0.566,
-        "ultima_ventana": "2026-09-20"
+        "usd_por_conversacion": 0.568,
+        "ultima_ventana": "2026-09-22"
       },
-      "cpa_acumulado_q": 48.0,
+      "cpa_acumulado_q": 48.05,
       "tiene_plan": true,
       "carpeta": "PRODUCTOS/TINNIDROP",
       "plan": {
@@ -89,18 +89,18 @@
         },
         "presupuesto": {
           "por_conjunto_usd": 3.95,
-          "por_que": "techo · 7 × $0.566/conv = $3.96, por encima del techo",
+          "por_que": "techo · 7 × $0.568/conv = $3.98, por encima del techo",
           "etapa2_usd": 5.98,
           "total_dia_usd": 23.7,
           "dias_a_pd": 3.9
         },
         "historial": {
-          "spend_usd": 3741.99,
-          "ventas": 594,
-          "mensajes": 6611,
+          "spend_usd": 3783.35,
+          "ventas": 600,
+          "mensajes": 6666,
           "cierre_pct": 9.0,
-          "usd_por_conversacion": 0.566,
-          "ultima_ventana": "2026-09-20"
+          "usd_por_conversacion": 0.568,
+          "ultima_ventana": "2026-09-22"
         },
         "oferta": {
           "oferta_key": "ESCALERA",
@@ -113,14 +113,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-22",
-          "legible": "22-sep-2026",
+          "fecha": "2026-09-24",
+          "legible": "24-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "GTR0_TINNIDROP_TEST_20260922",
+            "nombre": "GTR0_TINNIDROP_TEST_20260924",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -353,7 +353,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "22-sep",
+            "fecha": "24-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -361,7 +361,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "23-sep → 24-sep",
+            "fecha": "25-sep → 26-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -369,7 +369,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "25-sep",
+            "fecha": "27-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -377,7 +377,7 @@
           {
             "orden": 3.8792817037110865,
             "dia": "Día 3.9",
-            "fecha": "26-sep",
+            "fecha": "28-sep",
             "que": "PRESUPUESTO DE DECISIÓN alcanzado",
             "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición",
             "manda": "export de LucidSales"
@@ -385,7 +385,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "26-sep",
+            "fecha": "28-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
@@ -412,14 +412,14 @@
       "cuenta": "GTR7",
       "cpa_be_q": 92.64,
       "historial": {
-        "spend_usd": 1168.27,
+        "spend_usd": 1174.85,
         "ventas": 164,
-        "mensajes": 2364,
+        "mensajes": 2370,
         "cierre_pct": 6.9,
-        "usd_por_conversacion": 0.494,
-        "ultima_ventana": "2026-09-20"
+        "usd_por_conversacion": 0.496,
+        "ultima_ventana": "2026-09-22"
       },
-      "cpa_acumulado_q": 54.28,
+      "cpa_acumulado_q": 54.59,
       "tiene_plan": true,
       "carpeta": "PRODUCTOS/NusavaB12",
       "plan": {
@@ -448,19 +448,19 @@
           "tasa": 7.62
         },
         "presupuesto": {
-          "por_conjunto_usd": 3.46,
-          "por_que": "7 × $0.494/conv observado",
+          "por_conjunto_usd": 3.47,
+          "por_que": "7 × $0.496/conv observado",
           "etapa2_usd": 5.98,
-          "total_dia_usd": 10.38,
+          "total_dia_usd": 10.41,
           "dias_a_pd": 4.4
         },
         "historial": {
-          "spend_usd": 1168.27,
+          "spend_usd": 1174.85,
           "ventas": 164,
-          "mensajes": 2364,
+          "mensajes": 2370,
           "cierre_pct": 6.9,
-          "usd_por_conversacion": 0.494,
-          "ultima_ventana": "2026-09-20"
+          "usd_por_conversacion": 0.496,
+          "ultima_ventana": "2026-09-22"
         },
         "oferta": {
           "oferta_key": "2X1",
@@ -473,14 +473,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-22",
-          "legible": "22-sep-2026",
+          "fecha": "2026-09-24",
+          "legible": "24-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "GTR7_NUSAVAB12_TEST_20260922",
+            "nombre": "GTR7_NUSAVAB12_TEST_20260924",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -491,8 +491,8 @@
             "angulo_key": "ARDOR",
             "angulo_titulo": "Ardor y hormigueo en pies y manos (neuropatía)",
             "nombre": "GTR7_NUSAVAB12_ARDOR_R1",
-            "presupuesto_usd": 3.46,
-            "presupuesto_centavos": 346,
+            "presupuesto_usd": 3.47,
+            "presupuesto_centavos": 347,
             "banda_edad": "45-65",
             "banda_por_que": "derivada del avatar 45-65",
             "genero": "MIXTO",
@@ -528,8 +528,8 @@
             "angulo_key": "MEMORIA_NIEBLA",
             "angulo_titulo": "Pérdida de memoria y concentración",
             "nombre": "GTR7_NUSAVAB12_MEMORIA-NIEBLA_R1",
-            "presupuesto_usd": 3.46,
-            "presupuesto_centavos": 346,
+            "presupuesto_usd": 3.47,
+            "presupuesto_centavos": 347,
             "banda_edad": "45-65",
             "banda_por_que": "derivada del avatar 45-65",
             "genero": "MIXTO",
@@ -565,8 +565,8 @@
             "angulo_key": "FATIGA_CRONICA",
             "angulo_titulo": "Cansancio extremo y falta de energía",
             "nombre": "GTR7_NUSAVAB12_FATIGA-CRONICA_R1",
-            "presupuesto_usd": 3.46,
-            "presupuesto_centavos": 346,
+            "presupuesto_usd": 3.47,
+            "presupuesto_centavos": 347,
             "banda_edad": "35-55",
             "banda_por_que": "derivada del avatar 35-55",
             "genero": "MIXTO",
@@ -602,7 +602,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "22-sep",
+            "fecha": "24-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -610,7 +610,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "23-sep → 24-sep",
+            "fecha": "25-sep → 26-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -618,7 +618,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "25-sep",
+            "fecha": "27-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -626,15 +626,15 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "26-sep",
+            "fecha": "28-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
           },
           {
-            "orden": 4.392153292977106,
+            "orden": 4.379495790691869,
             "dia": "Día 4.4",
-            "fecha": "27-sep",
+            "fecha": "29-sep",
             "que": "PRESUPUESTO DE DECISIÓN alcanzado",
             "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición",
             "manda": "export de LucidSales"
@@ -661,14 +661,14 @@
       "cuenta": "GTR13",
       "cpa_be_q": 105.89,
       "historial": {
-        "spend_usd": 1654.27,
-        "ventas": 272,
-        "mensajes": 2429,
+        "spend_usd": 1711.98,
+        "ventas": 278,
+        "mensajes": 2484,
         "cierre_pct": 11.2,
-        "usd_por_conversacion": 0.681,
-        "ultima_ventana": "2026-09-20"
+        "usd_por_conversacion": 0.689,
+        "ultima_ventana": "2026-09-22"
       },
-      "cpa_acumulado_q": 46.34,
+      "cpa_acumulado_q": 46.93,
       "tiene_plan": true,
       "carpeta": "PRODUCTOS/CLEARSTEM",
       "plan": {
@@ -698,18 +698,18 @@
         },
         "presupuesto": {
           "por_conjunto_usd": 3.95,
-          "por_que": "techo · 7 × $0.681/conv = $4.77, por encima del techo",
+          "por_que": "techo · 7 × $0.689/conv = $4.82, por encima del techo",
           "etapa2_usd": 5.98,
           "total_dia_usd": 23.7,
           "dias_a_pd": 4.4
         },
         "historial": {
-          "spend_usd": 1654.27,
-          "ventas": 272,
-          "mensajes": 2429,
+          "spend_usd": 1711.98,
+          "ventas": 278,
+          "mensajes": 2484,
           "cierre_pct": 11.2,
-          "usd_por_conversacion": 0.681,
-          "ultima_ventana": "2026-09-20"
+          "usd_por_conversacion": 0.689,
+          "ultima_ventana": "2026-09-22"
         },
         "oferta": {
           "oferta_key": "ESCALERA",
@@ -722,14 +722,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-22",
-          "legible": "22-sep-2026",
+          "fecha": "2026-09-24",
+          "legible": "24-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "GTR13_CLEARSTEM_TEST_20260922",
+            "nombre": "GTR13_CLEARSTEM_TEST_20260924",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -962,7 +962,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "22-sep",
+            "fecha": "24-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -970,7 +970,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "23-sep → 24-sep",
+            "fecha": "25-sep → 26-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -978,7 +978,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "25-sep",
+            "fecha": "27-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -986,7 +986,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "26-sep",
+            "fecha": "28-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
@@ -994,7 +994,7 @@
           {
             "orden": 4.397571347885312,
             "dia": "Día 4.4",
-            "fecha": "27-sep",
+            "fecha": "29-sep",
             "que": "PRESUPUESTO DE DECISIÓN alcanzado",
             "hace": "recién acá un '0 ventas' es veredicto y no falta de exposición",
             "manda": "export de LucidSales"
@@ -1076,10 +1076,10 @@
           "tasa": 3152.5
         },
         "presupuesto": {
-          "por_conjunto_usd": 3.9,
-          "por_que": "7 × $0.557/conv observado",
+          "por_conjunto_usd": 3.92,
+          "por_que": "7 × $0.560/conv observado",
           "etapa2_usd": 5.98,
-          "total_dia_usd": 23.4,
+          "total_dia_usd": 23.52,
           "dias_a_pd": null
         },
         "historial": null,
@@ -1094,14 +1094,14 @@
           "canonico_id": "CN05_LISTA_BENEFICIOS"
         },
         "lanzamiento": {
-          "fecha": "2026-09-22",
-          "legible": "22-sep-2026",
+          "fecha": "2026-09-24",
+          "legible": "24-sep-2026",
           "hora": "4:00 AM"
         },
         "campanas": [
           {
             "rol": "única",
-            "nombre": "EXTERNA_OVULOS_TEST_20260922",
+            "nombre": "EXTERNA_OVULOS_TEST_20260924",
             "objetivo": "Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp",
             "presupuesto": "ABO — el presupuesto vive en el conjunto"
           }
@@ -1112,8 +1112,8 @@
             "angulo_key": "OLORTRASRELACIONES",
             "angulo_titulo": "El olor del día después",
             "nombre": "EXTERNA_OVULOS_OLORTRASRELACIONES_R1",
-            "presupuesto_usd": 3.9,
-            "presupuesto_centavos": 390,
+            "presupuesto_usd": 3.92,
+            "presupuesto_centavos": 392,
             "banda_edad": "25-40",
             "banda_por_que": "derivada del avatar 25-35",
             "genero": "MUJER",
@@ -1151,8 +1151,8 @@
             "angulo_key": "INFECCIONQUEVUELVE",
             "angulo_titulo": "La que va y vuelve",
             "nombre": "EXTERNA_OVULOS_INFECCIONQUEVUELVE_R1",
-            "presupuesto_usd": 3.9,
-            "presupuesto_centavos": 390,
+            "presupuesto_usd": 3.92,
+            "presupuesto_centavos": 392,
             "banda_edad": "25-40",
             "banda_por_que": "derivada del avatar 25-35",
             "genero": "MUJER",
@@ -1190,8 +1190,8 @@
             "angulo_key": "CREMASREBOTE",
             "angulo_titulo": "Ya probé de todo en la droguería",
             "nombre": "EXTERNA_OVULOS_CREMASREBOTE_R1",
-            "presupuesto_usd": 3.9,
-            "presupuesto_centavos": 390,
+            "presupuesto_usd": 3.92,
+            "presupuesto_centavos": 392,
             "banda_edad": "25-40",
             "banda_por_que": "derivada del avatar 25-35",
             "genero": "MUJER",
@@ -1229,8 +1229,8 @@
             "angulo_key": "MELAVOYSIGUE",
             "angulo_titulo": "Me lavo y sigo oliendo",
             "nombre": "EXTERNA_OVULOS_MELAVOYSIGUE_R1",
-            "presupuesto_usd": 3.9,
-            "presupuesto_centavos": 390,
+            "presupuesto_usd": 3.92,
+            "presupuesto_centavos": 392,
             "banda_edad": "35-50",
             "banda_por_que": "derivada del avatar 35-45",
             "genero": "MUJER",
@@ -1268,8 +1268,8 @@
             "angulo_key": "FLUJOPESCADO",
             "angulo_titulo": "Ese olor que se nota",
             "nombre": "EXTERNA_OVULOS_FLUJOPESCADO_R1",
-            "presupuesto_usd": 3.9,
-            "presupuesto_centavos": 390,
+            "presupuesto_usd": 3.92,
+            "presupuesto_centavos": 392,
             "banda_edad": "25-40",
             "banda_por_que": "derivada del avatar 25-35",
             "genero": "MUJER",
@@ -1307,8 +1307,8 @@
             "angulo_key": "DESPUESDELAREGLA",
             "angulo_titulo": "Se acaba la regla, empieza la picazón",
             "nombre": "EXTERNA_OVULOS_DESPUESDELAREGLA_R1",
-            "presupuesto_usd": 3.9,
-            "presupuesto_centavos": 390,
+            "presupuesto_usd": 3.92,
+            "presupuesto_centavos": 392,
             "banda_edad": "25-40",
             "banda_por_que": "derivada del avatar 25-35",
             "genero": "MUJER",
@@ -1346,7 +1346,7 @@
           {
             "orden": 0,
             "dia": "Día 0",
-            "fecha": "22-sep",
+            "fecha": "24-sep",
             "que": "Lanza a las 4 AM",
             "hace": "nada — no se toca nada más hoy",
             "manda": null
@@ -1354,7 +1354,7 @@
           {
             "orden": 1,
             "dia": "Días 1-2",
-            "fecha": "23-sep → 24-sep",
+            "fecha": "25-sep → 26-sep",
             "que": "Meta está en aprendizaje",
             "hace": "observar clics-enlace y %conv. NO pausar, NO escalar",
             "manda": "nada — el reloj de ENTREGA es automático"
@@ -1362,7 +1362,7 @@
           {
             "orden": 3,
             "dia": "Día 3",
-            "fecha": "25-sep",
+            "fecha": "27-sep",
             "que": "GATE 1 · corte por conversación",
             "hace": "apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98",
             "manda": "export de Meta Ads Manager (no hace falta LucidSales)"
@@ -1370,7 +1370,7 @@
           {
             "orden": 4,
             "dia": "Día 4",
-            "fecha": "26-sep",
+            "fecha": "28-sep",
             "que": "GATE 2 · validación",
             "hace": "ya hay CPA formándose; arranca FASE 2 del ganador #1",
             "manda": "export de LucidSales de 7 días"
@@ -1395,7 +1395,7 @@
         "bloqueantes": [
           {
             "que": "page_id de la FanPage sin asignar",
-            "quien": "etapa-fanpage · _DIM_PRODUCTOS.csv columna page_id"
+            "quien": "etapa-2 · _DIM_PRODUCTOS.csv columna page_id"
           },
           {
             "que": "break-even sin calcular",

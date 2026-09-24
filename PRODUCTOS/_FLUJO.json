@@ -1,7 +1,7 @@
 {
-  "generado": "2026-09-21",
+  "generado": "2026-09-23",
   "flujo_version": 1,
-  "grafo_mermaid": "flowchart TD\n  subgraph F1[\"FASE 1 · TESTEO DE ÁNGULOS\"]\n    F1_congelar_inputs[\"Congelar los inputs del producto\"]\n    F1_paquete[\"Construir el paquete de FASE 1 (valida\"]\n    F1_congelar_inputs --> F1_paquete\n    F1_publicar[\"Publicar la estructura de FASE 1 en Me\"]\n    F1_paquete --> F1_publicar\n    F1_activar[\"Activar a las 4 AM del día siguiente y\"]\n    F1_publicar --> F1_activar\n    F1_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F1_activar --> F1_ciclo_datos\n    F1_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F1_ciclo_datos --> F1_ciclo_motor\n    F1_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F1_ciclo_motor --> F1_ciclo_ordenes\n    F1_ciclo_ordenes -. cada día .-> F1_ciclo_datos\n  end\n  subgraph F2[\"FASE 2 · TESTEO DE CONCEPTOS\"]\n    F2_etapa-11[\"Optimizar el CIERRE del bot hacia el á\"]\n    F2_conceptos[\"Fabricar y renderizar los conceptos de\"]\n    F2_etapa-11 --> F2_conceptos\n    F2_plan[\"Copy único, los dos flujos del A/B y e\"]\n    F2_conceptos --> F2_plan\n    F2_publicar[\"Publicar las campañas de conceptos en \"]\n    F2_plan --> F2_publicar\n    F2_activar[\"Activar las campañas de conceptos a la\"]\n    F2_publicar --> F2_activar\n    F2_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F2_activar --> F2_ciclo_datos\n    F2_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F2_ciclo_datos --> F2_ciclo_motor\n    F2_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F2_ciclo_motor --> F2_ciclo_ordenes\n    F2_ciclo_ordenes -. cada día .-> F2_ciclo_datos\n  end\n  subgraph F3[\"FASE 3 · ESCALADO\"]\n    F3_plan[\"Banco de copy (microángulos) y plan 1-\"]\n    F3_publicar[\"Publicar el 1-1-7 CBO en Meta (PAUSED)\"]\n    F3_plan --> F3_publicar\n    F3_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F3_publicar --> F3_ciclo_datos\n    F3_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F3_ciclo_datos --> F3_ciclo_motor\n    F3_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F3_ciclo_motor --> F3_ciclo_ordenes\n    F3_ciclo_ordenes -. cada día .-> F3_ciclo_datos\n  end\n  F1 -- \"invariante 1: el ganador se declara por \" --> F2\n  F2 -- \"regla de replicación: un concepto gana e\" --> F3\n  F2 -. \"cuando el ángulo ganador se agota o\" .-> F1\n  F3 -. \"cuando el escalado se agota y los m\" .-> F1",
+  "grafo_mermaid": "flowchart TD\n  subgraph F1[\"FASE 1 · TESTEO DE ÁNGULOS\"]\n    F1_congelar_inputs[\"Congelar los inputs del producto\"]\n    F1_paquete[\"Construir el paquete de FASE 1 (valida\"]\n    F1_congelar_inputs --> F1_paquete\n    F1_publicar[\"Publicar la estructura de FASE 1 en Me\"]\n    F1_paquete --> F1_publicar\n    F1_activar[\"Activar a las 4 AM del día siguiente y\"]\n    F1_publicar --> F1_activar\n    F1_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F1_activar --> F1_ciclo_datos\n    F1_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F1_ciclo_datos --> F1_ciclo_motor\n    F1_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F1_ciclo_motor --> F1_ciclo_ordenes\n    F1_ciclo_ordenes -. cada día .-> F1_ciclo_datos\n  end\n  subgraph F2[\"FASE 2 · TESTEO DE CONCEPTOS\"]\n    F2_etapa-11[\"Diagnosticar la congruencia del bot ha\"]\n    F2_conceptos[\"Fabricar y renderizar los conceptos de\"]\n    F2_etapa-11 --> F2_conceptos\n    F2_plan[\"Copy único, los dos flujos del A/B y e\"]\n    F2_conceptos --> F2_plan\n    F2_publicar[\"Publicar las campañas de conceptos en \"]\n    F2_plan --> F2_publicar\n    F2_activar[\"Activar las campañas de conceptos a la\"]\n    F2_publicar --> F2_activar\n    F2_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F2_activar --> F2_ciclo_datos\n    F2_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F2_ciclo_datos --> F2_ciclo_motor\n    F2_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F2_ciclo_motor --> F2_ciclo_ordenes\n    F2_ciclo_ordenes -. cada día .-> F2_ciclo_datos\n  end\n  subgraph F3[\"FASE 3 · ESCALADO\"]\n    F3_exploracion[\"Exploración de 3 ángulos nuevos en par\"]\n    F3_plan[\"Banco de copy (microángulos) y plan 1-\"]\n    F3_exploracion --> F3_plan\n    F3_publicar[\"Publicar el 1-1-7 CBO en Meta (PAUSED)\"]\n    F3_plan --> F3_publicar\n    F3_ciclo_datos[\"Recolectar la data del día (LucidSales\"]\n    F3_publicar --> F3_ciclo_datos\n    F3_ciclo_motor[\"Correr el motor de decisión (dbt build\"]\n    F3_ciclo_datos --> F3_ciclo_motor\n    F3_ciclo_ordenes[\"Ejecutar las órdenes del motor (con co\"]\n    F3_ciclo_motor --> F3_ciclo_ordenes\n    F3_ciclo_ordenes -. cada día .-> F3_ciclo_datos\n  end\n  F1 -- \"invariante 1: el ganador se declara por \" --> F2\n  F2 -- \"regla de replicación: un concepto gana e\" --> F3\n  F2 -. \"cuando el ángulo ganador se agota o\" .-> F1\n  F3 -. \"cuando el escalado se agota y los m\" .-> F1",
   "fases": [
     {
       "id": "F1",
@@ -26,40 +26,40 @@
       "estado_producto": "VIVO",
       "cuenta": "GTR0",
       "fase_csv": "ESCALADO",
-      "evaluado_el": "2026-09-21",
+      "evaluado_el": "2026-09-23",
       "fase": "F2",
       "fase_titulo": "FASE 2 · TESTEO DE CONCEPTOS",
       "entradas": [
         {
           "fase": "F2",
           "ok": true,
-          "observado": "PERDIDA_AUDITIVA (histórico 109v CPA Q65.7 ≤ BE Q93.4); DETERIORO_COGNITIVO (histórico 100v CPA Q53.3 ≤ BE Q93.4); ACCESIBILIDAD_MEDICO (histórico 80v CPA Q46.4 ≤ BE Q93.4); ME_DIJERON_NO_CURA (histórico 22v CPA Q48.6 ≤ BE Q93.4)",
+          "observado": "PERDIDA_AUDITIVA (histórico 111v CPA Q66.0 ≤ BE Q93.4); DETERIORO_COGNITIVO (histórico 102v CPA Q54.3 ≤ BE Q93.4); ACCESIBILIDAD_MEDICO (histórico 80v CPA Q49.1 ≤ BE Q93.4); NOCHES_SIN_DORMIR (histórico 24v CPA Q51.3 ≤ BE Q93.4)",
           "regla": "invariante 1: no entrar a FASE 2 sin ángulo ganador por VENTA"
         },
         {
           "fase": "F3",
           "ok": false,
-          "observado": "1 campaña(s) de conceptos con data · se necesitan 2 para replicar",
-          "regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1)"
+          "observado": "✗ 1 campaña(s) de conceptos con data · se necesitan 2 para replicar | ✗ posterior_a:concepto_ganador sin fecha de referencia resoluble todavía | posterior_a:concepto_ganador sin fecha de referencia resoluble todavía",
+          "regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) NI sin reescribir el flujo del bot hacia ese ganador (ver F2.etapa-11 más arriba). Un CAMBIO_BOT viejo (de antes del concepto ganador, p.ej. un relanzamiento no relacionado) NO satisface este gate: tiene que estar fechado DESPUES. Si el operador decide explícitamente saltarse la reescritura, un evento EXCEPCION_CAMBIO_BOT (registrado a mano con registrar_evento.py) fechado después del ganador también lo satisface."
         }
       ],
       "reingreso_activo": null,
       "nodos": [
         {
           "id": "F2.etapa-11",
-          "titulo": "Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)",
+          "titulo": "Diagnosticar la congruencia del bot hacia el ángulo ganador (sin reescribir el flujo todavía)",
           "ciclo": false,
           "ejecutor": "subagente `etapa-11` (Task, subagent_type=etapa-11)",
           "ejecutor_tipo": "subagente",
-          "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+          "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
           "secuencia": [],
           "produce": [
             {
-              "dato": "CAMBIO_BOT registrado en _EVENTOS.csv",
+              "dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
               "ok": false,
-              "observado": "0 evento(s) CAMBIO_BOT",
-              "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)",
-              "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"
+              "observado": "0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24",
+              "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+              "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"
             }
           ],
           "cumplido": false,
@@ -73,9 +73,10 @@
           "ciclo": false,
           "ejecutor": "subagente `etapa-9` (Task, subagent_type=etapa-9)",
           "ejecutor_tipo": "subagente",
-          "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); etapa-render las produce en ChatGPT web y las deja GENERADO con el gate de calidad corrido.",
+          "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md antes de registrarlo GENERADO (decision operador 22-sep-2026: el video se testea en FASE 2, ya no en F1); etapa-render produce los conceptos IMAGEN en ChatGPT web y deja GENERADO con el gate de calidad corrido.",
           "secuencia": [
             "etapa-9",
+            "Ads/_TOOLS/lavar_videos.sh",
             "etapa-render"
           ],
           "produce": [
@@ -218,15 +219,15 @@
       "nodo_actual": "F2.etapa-11",
       "estado": "LISTO_PARA_EJECUTAR",
       "ejecutor": "subagente `etapa-11` (Task, subagent_type=etapa-11)",
-      "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+      "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
       "bloqueantes": [],
       "falta_para_cumplir": [
         {
-          "dato": "CAMBIO_BOT registrado en _EVENTOS.csv",
+          "dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
           "ok": false,
-          "observado": "0 evento(s) CAMBIO_BOT",
-          "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)",
-          "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"
+          "observado": "0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24",
+          "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+          "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"
         }
       ],
       "avance": {
@@ -252,13 +253,13 @@
       "avisos": [
         "F2.publicar: Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada — suma spend_usd = 32.61 (22 filas) · esperado ≥ 0.01",
         "F2.publicar: la estructura publicada NO es la de la doctrina — 5 conjunto(s) en 1 campaña(s) · doctrina: 4 conjuntos (1-1-5 + 1-1-5 + 1-2-5)",
-        "F3.plan: existe «4_PLAN_ESCALADO.txt» (existe (hace 63 días)) sin haber pasado el gate de entrada a F3",
+        "F3.plan: existe «4_PLAN_ESCALADO.txt» (existe (hace 65 días)) sin haber pasado el gate de entrada a F3",
         "F3.publicar: existe «LANZAMIENTO de escalado registrado con su presupuesto inicial» (4 evento(s) LANZAMIENTO · último 2026-09-03) sin haber pasado el gate de entrada a F3"
       ],
       "ordenes": [],
       "motor": {
-        "generado": "2026-09-21",
-        "datos_hasta": "2026-09-20",
+        "generado": "2026-09-23",
+        "datos_hasta": "2026-09-22",
         "rezago_dias": 1,
         "seguir_midiendo": 4
       }
@@ -269,40 +270,40 @@
       "estado_producto": "VIVO",
       "cuenta": "GTR7",
       "fase_csv": "ESCALADO",
-      "evaluado_el": "2026-09-21",
+      "evaluado_el": "2026-09-23",
       "fase": "F2",
       "fase_titulo": "FASE 2 · TESTEO DE CONCEPTOS",
       "entradas": [
         {
           "fase": "F2",
           "ok": true,
-          "observado": "ARDOR (ESCALAR 23v CPA Q41.7)",
+          "observado": "ARDOR (ESCALAR 22v CPA Q43.8)",
           "regla": "invariante 1: no entrar a FASE 2 sin ángulo ganador por VENTA"
         },
         {
           "fase": "F3",
           "ok": false,
-          "observado": "0 campaña(s) de conceptos con data · se necesitan 2 para replicar",
-          "regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1)"
+          "observado": "✗ 0 campaña(s) de conceptos con data · se necesitan 2 para replicar | ✗ posterior_a:concepto_ganador sin fecha de referencia resoluble todavía | posterior_a:concepto_ganador sin fecha de referencia resoluble todavía",
+          "regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) NI sin reescribir el flujo del bot hacia ese ganador (ver F2.etapa-11 más arriba). Un CAMBIO_BOT viejo (de antes del concepto ganador, p.ej. un relanzamiento no relacionado) NO satisface este gate: tiene que estar fechado DESPUES. Si el operador decide explícitamente saltarse la reescritura, un evento EXCEPCION_CAMBIO_BOT (registrado a mano con registrar_evento.py) fechado después del ganador también lo satisface."
         }
       ],
       "reingreso_activo": null,
       "nodos": [
         {
           "id": "F2.etapa-11",
-          "titulo": "Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)",
+          "titulo": "Diagnosticar la congruencia del bot hacia el ángulo ganador (sin reescribir el flujo todavía)",
           "ciclo": false,
           "ejecutor": "subagente `etapa-11` (Task, subagent_type=etapa-11)",
           "ejecutor_tipo": "subagente",
-          "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+          "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
           "secuencia": [],
           "produce": [
             {
-              "dato": "CAMBIO_BOT registrado en _EVENTOS.csv",
+              "dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
               "ok": false,
-              "observado": "0 evento(s) CAMBIO_BOT",
-              "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)",
-              "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"
+              "observado": "0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24",
+              "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+              "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"
             }
           ],
           "cumplido": false,
@@ -316,9 +317,10 @@
           "ciclo": false,
           "ejecutor": "subagente `etapa-9` (Task, subagent_type=etapa-9)",
           "ejecutor_tipo": "subagente",
-          "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); etapa-render las produce en ChatGPT web y las deja GENERADO con el gate de calidad corrido.",
+          "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md antes de registrarlo GENERADO (decision operador 22-sep-2026: el video se testea en FASE 2, ya no en F1); etapa-render produce los conceptos IMAGEN en ChatGPT web y deja GENERADO con el gate de calidad corrido.",
           "secuencia": [
             "etapa-9",
+            "Ads/_TOOLS/lavar_videos.sh",
             "etapa-render"
           ],
           "produce": [
@@ -445,15 +447,15 @@
       "nodo_actual": "F2.etapa-11",
       "estado": "LISTO_PARA_EJECUTAR",
       "ejecutor": "subagente `etapa-11` (Task, subagent_type=etapa-11)",
-      "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+      "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
       "bloqueantes": [],
       "falta_para_cumplir": [
         {
-          "dato": "CAMBIO_BOT registrado en _EVENTOS.csv",
+          "dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
           "ok": false,
-          "observado": "0 evento(s) CAMBIO_BOT",
-          "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)",
-          "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"
+          "observado": "0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24",
+          "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+          "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"
         }
       ],
       "avance": {
@@ -483,14 +485,14 @@
         {
           "celda": "ARDOR",
           "estado": "ESCALAR",
-          "accion": "NO SUBIR PRESUPUESTO (NUSAVA en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: MANTENER / ESCALA LEVE: CPA rentable Q41.7 bajo BE Q92.6. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.",
-          "ventas": 23.0,
-          "cpa_real_q": 41.7
+          "accion": "NO SUBIR PRESUPUESTO (NUSAVA en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: MANTENER / ESCALA LEVE: CPA rentable Q43.8 bajo BE Q92.6. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.",
+          "ventas": 22.0,
+          "cpa_real_q": 43.8
         }
       ],
       "motor": {
-        "generado": "2026-09-21",
-        "datos_hasta": "2026-09-20",
+        "generado": "2026-09-23",
+        "datos_hasta": "2026-09-22",
         "rezago_dias": 1,
         "seguir_midiendo": 0
       }
@@ -501,44 +503,45 @@
       "estado_producto": "VIVO",
       "cuenta": "GTR13",
       "fase_csv": "DEFINICION",
-      "evaluado_el": "2026-09-21",
+      "evaluado_el": "2026-09-23",
       "fase": "F2",
       "fase_titulo": "FASE 2 · TESTEO DE CONCEPTOS",
       "entradas": [
         {
           "fase": "F2",
           "ok": true,
-          "observado": "RESISTENCIA_INSULINA_SOP (ESCALAR 30v CPA Q32.9); ANTI_FALSIFICACION (histórico 60v CPA Q39.5 ≤ BE Q105.9); MEDICOS_FALLARON (histórico 40v CPA Q69.2 ≤ BE Q105.9)",
+          "observado": "RESISTENCIA_INSULINA_SOP (ESCALAR 27v CPA Q41.0); ANTI_FALSIFICACION (ESCALAR 20v CPA Q38.8); MEDICOS_FALLARON (histórico 40v CPA Q74.4 ≤ BE Q105.9)",
           "regla": "invariante 1: no entrar a FASE 2 sin ángulo ganador por VENTA"
         },
         {
           "fase": "F3",
           "ok": false,
-          "observado": "0 campaña(s) de conceptos con data · se necesitan 2 para replicar",
-          "regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1)"
+          "observado": "✗ 0 campaña(s) de conceptos con data · se necesitan 2 para replicar | ✗ posterior_a:concepto_ganador sin fecha de referencia resoluble todavía | posterior_a:concepto_ganador sin fecha de referencia resoluble todavía",
+          "regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) NI sin reescribir el flujo del bot hacia ese ganador (ver F2.etapa-11 más arriba). Un CAMBIO_BOT viejo (de antes del concepto ganador, p.ej. un relanzamiento no relacionado) NO satisface este gate: tiene que estar fechado DESPUES. Si el operador decide explícitamente saltarse la reescritura, un evento EXCEPCION_CAMBIO_BOT (registrado a mano con registrar_evento.py) fechado después del ganador también lo satisface."
         }
       ],
       "reingreso_activo": null,
       "nodos": [
         {
           "id": "F2.etapa-11",
-          "titulo": "Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)",
+          "titulo": "Diagnosticar la congruencia del bot hacia el ángulo ganador (sin reescribir el flujo todavía)",
           "ciclo": false,
           "ejecutor": "subagente `etapa-11` (Task, subagent_type=etapa-11)",
           "ejecutor_tipo": "subagente",
-          "como": "Diagnostica el cierre por ángulo, audita la congruencia anuncio ↔ bot y entrega el brief a etapa-5. Todo cambio de flujo se registra como CAMBIO_BOT el día que se aplica.",
+          "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
           "secuencia": [],
           "produce": [
             {
-              "dato": "CAMBIO_BOT registrado en _EVENTOS.csv",
-              "ok": true,
-              "observado": "1 evento(s) CAMBIO_BOT · último 2026-07-10",
-              "dueno": "etapa-11 (diagnostica) → etapa-5 (redacta) → operador (aplica y registra)",
-              "regla": "CLAUDE.md: el CIERRE es la palanca más grande; sin CAMBIO_BOT el cambio no se puede evaluar"
+              "dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
+              "ok": false,
+              "observado": "0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24",
+              "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+              "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"
             }
           ],
-          "cumplido": true,
-          "estado": "CUMPLIDO",
+          "cumplido": false,
+          "estado": "LISTO_PARA_EJECUTAR",
+          "requiere": [],
           "avisos": []
         },
         {
@@ -547,9 +550,10 @@
           "ciclo": false,
           "ejecutor": "subagente `etapa-9` (Task, subagent_type=etapa-9)",
           "ejecutor_tipo": "subagente",
-          "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); etapa-render las produce en ChatGPT web y las deja GENERADO con el gate de calidad corrido.",
+          "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md antes de registrarlo GENERADO (decision operador 22-sep-2026: el video se testea en FASE 2, ya no en F1); etapa-render produce los conceptos IMAGEN en ChatGPT web y deja GENERADO con el gate de calidad corrido.",
           "secuencia": [
             "etapa-9",
+            "Ads/_TOOLS/lavar_videos.sh",
             "etapa-render"
           ],
           "produce": [
@@ -562,8 +566,7 @@
             }
           ],
           "cumplido": false,
-          "estado": "LISTO_PARA_EJECUTAR",
-          "requiere": [],
+          "estado": "PENDIENTE",
           "avisos": [
             {
               "dato": "conceptos registrados pero sin renderizar (PENDIENTE_GENERAR)",
@@ -690,18 +693,18 @@
           "avisos": []
         }
       ],
-      "nodo_actual": "F2.conceptos",
+      "nodo_actual": "F2.etapa-11",
       "estado": "LISTO_PARA_EJECUTAR",
-      "ejecutor": "subagente `etapa-9` (Task, subagent_type=etapa-9)",
-      "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); etapa-render las produce en ChatGPT web y las deja GENERADO con el gate de calidad corrido.",
+      "ejecutor": "subagente `etapa-11` (Task, subagent_type=etapa-11)",
+      "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
       "bloqueantes": [],
       "falta_para_cumplir": [
         {
-          "dato": "conceptos GENERADOS (10 = A 5 + B 5, de _PARAMETROS_PUBLICACION.csv)",
+          "dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
           "ok": false,
-          "observado": "5 fila(s) · esperado ≥ 10",
-          "dueno": "etapa-9 (filas) + etapa-render (PNG)",
-          "regla": "R3F-13: FASE 2 necesita 10 conceptos publicables o no arranca"
+          "observado": "0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24",
+          "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
+          "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"
         }
       ],
       "avance": {
@@ -730,30 +733,30 @@
       ],
       "ordenes": [
         {
-          "celda": "ANTI_FALSIFICACION",
-          "estado": "RENOVAR",
-          "accion": "RENOVAR CREATIVO (FASE 2): Ángulo probado (60 vts acumuladas a CPA Q39.5 bajo BE Q105.9) pero los últimos 3d sangran (Q156 con 1 vts). Mantener ángulo y rotar concepto — NO apagar.",
-          "ventas": 22.0,
-          "cpa_real_q": 31.7
-        },
-        {
           "celda": "MEDICOS_FALLARON",
           "estado": "RENOVAR",
-          "accion": "RENOVAR CREATIVO (FASE 2): Ángulo probado (40 vts acumuladas a CPA Q69.2 bajo BE Q105.9) pero los últimos 3d sangran (Q151 con 0 vts). Mantener ángulo y rotar concepto — NO apagar.",
-          "ventas": 6.0,
-          "cpa_real_q": 104.4
+          "accion": "RENOVAR CREATIVO (FASE 2): Ángulo probado (40 vts acumuladas a CPA Q74.4 bajo BE Q105.9) pero los últimos 3d sangran (Q177 con 0 vts). Mantener ángulo y rotar concepto — NO apagar.",
+          "ventas": 4.0,
+          "cpa_real_q": 176.1
         },
         {
           "celda": "RESISTENCIA_INSULINA_SOP",
           "estado": "ESCALAR",
-          "accion": "NO SUBIR PRESUPUESTO (CLEARSTEM en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: MANTENER / ESCALA LEVE: CPA rentable Q32.9 bajo BE Q105.9. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.",
-          "ventas": 30.0,
-          "cpa_real_q": 32.9
+          "accion": "NO SUBIR PRESUPUESTO (CLEARSTEM en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: MANTENER / ESCALA LEVE: CPA rentable Q41.0 bajo BE Q105.9. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.",
+          "ventas": 27.0,
+          "cpa_real_q": 41.0
+        },
+        {
+          "celda": "ANTI_FALSIFICACION",
+          "estado": "ESCALAR",
+          "accion": "NO SUBIR PRESUPUESTO (CLEARSTEM en F2): la celda es rentable y esto vale como evidencia de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: MANTENER / ESCALA LEVE: CPA rentable Q38.8 bajo BE Q105.9. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.",
+          "ventas": 20.0,
+          "cpa_real_q": 38.8
         }
       ],
       "motor": {
-        "generado": "2026-09-21",
-        "datos_hasta": "2026-09-20",
+        "generado": "2026-09-23",
+        "datos_hasta": "2026-09-22",
         "rezago_dias": 1,
         "seguir_midiendo": 0
       }
@@ -764,7 +767,7 @@
       "estado_producto": "PAUSADO",
       "cuenta": "GTR7",
       "fase_csv": "ESCALADO",
-      "evaluado_el": "2026-09-21",
+      "evaluado_el": "2026-09-23",
       "fase": "PAUSADO",
       "fase_titulo": "Producto PAUSADO por decisión del operador",
       "nodo_actual": "PAUSADO",
@@ -784,7 +787,7 @@
       "estado_producto": "NUEVO",
       "cuenta": "EXTERNA",
       "fase_csv": "",
-      "evaluado_el": "2026-09-21",
+      "evaluado_el": "2026-09-23",
       "fase": "F1",
       "fase_titulo": "FASE 1 · TESTEO DE ÁNGULOS",
       "entradas": [
@@ -830,7 +833,7 @@
             {
               "dato": "carpeta de media del producto (imagen del frasco)",
               "ok": true,
-              "observado": "existe (hace 5 días)",
+              "observado": "existe (hace 7 días)",
               "dueno": "operador · Ads/MEDIA_[PRODUCTO]/",
               "regla": "invariante 8"
             }
@@ -845,15 +848,13 @@
           "ciclo": false,
           "ejecutor": "skill `fase-1-angulos`",
           "ejecutor_tipo": "skill",
-          "como": "La skill invoca los subagentes en ese orden (etapa-2 ∥ etapa-fanpage, etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
+          "como": "La skill invoca los subagentes en ese orden (etapa-2 ya incluye la asignación de FanPage — absorbida de la extinta etapa-fanpage, T1 p2-simplificacion; etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
           "secuencia": [
             "etapa-producto",
             "etapa-0",
-            "Ads/_TOOLS/lavar_videos.sh",
             "etapa-1",
             "etapa-1b",
             "etapa-2",
-            "etapa-fanpage",
             "etapa-4",
             "etapa-5",
             "etapa-6",
@@ -863,14 +864,14 @@
             {
               "dato": "2_DATA_PRODUCTO.txt",
               "ok": true,
-              "observado": "existe (hace 4 días)",
+              "observado": "existe (hace 6 días)",
               "dueno": "etapa-guardar-producto",
               "regla": "invariante 8"
             },
             {
               "dato": "1_HACER_MANUAL.txt",
               "ok": true,
-              "observado": "existe (hace 4 días)",
+              "observado": "existe (hace 6 días)",
               "dueno": "etapa-guardar-producto",
               "regla": "invariante 8"
             },
@@ -993,7 +994,7 @@
       "nodo_actual": "F1.paquete",
       "estado": "LISTO_PARA_EJECUTAR",
       "ejecutor": "skill `fase-1-angulos`",
-      "como": "La skill invoca los subagentes en ese orden (etapa-2 ∥ etapa-fanpage, etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
+      "como": "La skill invoca los subagentes en ese orden (etapa-2 ya incluye la asignación de FanPage — absorbida de la extinta etapa-fanpage, T1 p2-simplificacion; etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
       "bloqueantes": [],
       "falta_para_cumplir": [
         {
@@ -1021,8 +1022,8 @@
       "avisos": [],
       "ordenes": [],
       "motor": {
-        "generado": "2026-09-21",
-        "datos_hasta": "2026-09-20",
+        "generado": "2026-09-23",
+        "datos_hasta": "2026-09-22",
         "rezago_dias": 1,
         "seguir_midiendo": 0
       }
