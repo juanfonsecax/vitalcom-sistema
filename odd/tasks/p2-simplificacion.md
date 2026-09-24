@@ -741,12 +741,90 @@ Etapas T4c edited without a fixture (per T4d's own list, disclosed not hidden): 
 `etapa-1`, `etapa-3`, `etapa-10`, `etapa-11`, `etapa-render`. `etapa-11` additionally has the
 non-eval `test_ab_flujo.py` structural gate, which already passed (see Verification above).
 
-- [ ] T5 — gen_flujo_bot fixes found by the etapa-11 diagnosis (operator-approved 2026-09-24): (a) the flow's
+- [x] T5 — gen_flujo_bot fixes found by the etapa-11 diagnosis (operator-approved 2026-09-24): (a) the flow's
   angle comes from the product's F2 winning angle, not max(ventas_acum), so the nivel_conciencia
   opening is the winner's; (b) an empty {{recaida}} no longer leaves "— ." in customer text; (c) the
   prueba_social sentence reads correctly with a value like "más de N personas"; TINNIDROP prueba_social =
   "más de 10,200 personas" (operator picked the figure used by the live ads). Also TINNIDROP brand = SANARTE
   (operator decision 24-sep) in 2_DATA_PRODUCTO.txt. Route: delegated writer.
 
+  DONE 2026-09-24 (delegated writer, verified). Commits: `4a8b04c` (code+template+tests),
+  `0eee028` (chore: TINNIDROP data).
+
+  **(a) Angle source.** New `angulo_ganador_f2(pk)` in `Ads/_TOOLS/gen_flujo_bot.py`: groups
+  `_DIM_CREATIVOS.csv` rows by `angulo_key` where `concepto_key` is a real blueprint (not empty,
+  not `SIN_CLASIFICAR`) — those rows only exist once a product is in FASE 2 concept-testing or its
+  escalado, per doctrine "1 ángulo ganador × 10 CONCEPTOS", so a single distinct angle there IS the
+  F2 winner. Exactly one → it wins; several distinct → blocks naming all of them; none yet → falls
+  back unchanged to the historical paraguas criterion (max ventas_acum), so FASE-1-only products are
+  untouched. Chosen over `_DIM_CONJUNTOS.csv fase=="FASE2"` (doesn't exist for CLEARSTEM — its F2
+  rows are stored as `FASE2_ESCALA`, which is ambiguous: 3 distinct angles) and over
+  `_PLAN_FASE2.json` (doesn't exist on disk for either live product). Verified against real data:
+  `G.resolver("CLEARSTEM")["angulo_nombre"] == "RESISTENCIA_INSULINA_SOP"`,
+  `G.resolver("TINNIDROP")["angulo_nombre"] == "ACCESIBILIDAD_MEDICO"` (was `PERDIDA_AUDITIVA`,
+  111v, before the fix).
+
+  **Found and disclosed, not silently patched:** fixing the angle for TINNIDROP surfaces a
+  pre-existing data gap. `nivel_conciencia_angulo()` (unchanged, pre-T5 code) now reads
+  ACCESIBILIDAD_MEDICO's real declared level from `_DIM_CONJUNTOS.csv`: `'3'`, an alias
+  `_DIM_VOCABULARIO.csv` maps to `REVISAR` (ambiguous — doesn't distinguish 3A/3B) — so
+  `apertura_nivel` now blocks TINNIDROP in `--validar`. Before T5 this was masked because the
+  wrongly-chosen angle (PERDIDA_AUDITIVA) declares an unambiguous `'2'`. The etapa-11 report
+  (`PRODUCTOS/_AUDITORIAS/_FLUJO_TINNIDROP_20260924.txt` §0.1, §3‑C5) already flags this exact
+  mismatch and notes `_DIM_ANUNCIOS.csv` carries `'3A'` for that angle. T5's brief lists four named
+  fixes (a–d); resolving *which* CSV should be corrected (and to what) is a content decision the
+  brief doesn't authorize — per its own "if the data makes this impossible or ambiguous, STOP and
+  report instead of guessing," this was NOT guessed or edited. `--validar` now: CLEARSTEM PASA,
+  TINNIDROP BLOQUEADO (1 dato: `apertura_nivel`, reason names the ambiguity) — down from 2/5 to
+  1/5 passing overall, entirely from this one disclosed, pre-existing gap. Next step for whoever
+  picks this up: an explicit operator decision on `_DIM_CONJUNTOS.csv` nivel_conciencia for
+  ACCESIBILIDAD_MEDICO/TINNIDROP (3A per `_DIM_ANUNCIOS.csv`, or re-verify).
+
+  **(b) Empty `{{recaida}}`.** Root cause: `render()`'s cleanup regexes ran AFTER the generic
+  per-key substitution had already replaced `{{recaida}}`/`{{razon_tier_alto}}` with `""`, so the
+  literal token the cleanup searched for no longer existed. Moved the OPCIONALES cleanup before the
+  generic substitution loop. TINNIDROP (no `recaida` declared) now renders "...no se quita con
+  gotas comunes ni con lo de siempre*." — clean, no "— .", no double space. CLEARSTEM (has
+  `recaida`) unchanged: "...cremas ni con jabones* — vuelve siempre al mismo lugar."
+
+  **(c) prueba_social sentence.** `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` §3 template line rewritten
+  from "Por eso tiene *{{prueba_social}}* de gente con resultados reales." (broken agreement) to
+  "Por eso ya son *{{prueba_social}}* con resultados reales." — same variable, no CSV shape change.
+  `PRODUCTOS/_DIM_FLUJO_BOT.csv` TINNIDROP `prueba_social` → "más de 10,200 personas" (python `csv`
+  module, single-cell diff, invariant 11). CLEARSTEM's value left untouched at "más de 12,000
+  personas" per the brief.
+
+  **(d) TINNIDROP `2_DATA_PRODUCTO.txt`.** Header + PRODUCTO line: brand set to SANARTE, citing
+  "decisión del operador 2026-09-24" and `_DIM_ENVASE.csv`, with a kept one-line note that the
+  running creative `tinnidrop4` still shows "South Moon" on screen (a physical ad↔destination
+  mismatch to close by replacing that creative, not by changing the declared brand). Fixed the
+  stale `3_PLAN_ESCALADO.txt` pointer to `4_PLAN_ESCALADO.txt` (l.232). For consistency, also
+  closed out the two other RECONCILIACIÓN items this same operator decision settles (marca del
+  envase, prueba social) and the plan-file-pointer item, marking each RESUELTA rather than leaving
+  a header saying SANARTE while the reconciliation table below it still called it disputed.
+
+  **Tests** (`Ads/_TOOLS/test_gen_flujo_bot.py`, `check()`/`_con_datos()` style, no new fixture
+  files): `angulo_ganador_f2` unit tests (single angle wins · two distinct angles block naming both
+  · no F2 concept rows falls back without blocking) · real-data check that CLEARSTEM/TINNIDROP both
+  resolve to their true F2 winner · recaída-empty-drops-clean and recaída-present-regression ·
+  prueba_social sentence for both products. Rewrote
+  `test_clearstem_tinnidrop_sin_propuestas_no_bloquean` to stop conflating "propuestas_valor never
+  blocks alone" (still true, still asserted for both) with "the whole product resolves with zero
+  `faltan`" (no longer true for TINNIDROP, for the disclosed reason above, not a propuestas
+  regression) — it now asserts TINNIDROP's only blocker is `apertura_nivel`.
+
+  **Verification:** `pytest Ads/_TOOLS -q` → 42 passed (was 42 passed before; no count change, one
+  test rewritten not removed) · `test_gen_flujo_bot.py` → TODO PASA · `gen_flujo_bot.py --validar`
+  → before 2/5 (CLEARSTEM, TINNIDROP), after 1/5 (CLEARSTEM only; TINNIDROP's new, disclosed
+  `apertura_nivel` block above) · `gen_flujo_bot.py CLEARSTEM --copy` → header unchanged, prices
+  Q198/Q289/Q389, prueba_social sentence reads right, recaída clause unchanged · `gen_flujo_bot.py
+  TINNIDROP --copy --parcial` (plain `--copy` blocks per the disclosed gap) → header "Tinnidrop |
+  ACCESIBILIDAD_MEDICO", no "— .", "Por eso ya son *más de 10,200 personas* con resultados reales."
+  · `verificar_producto.py TINNIDROP` → PASA, todo reconcilia · `verificar_guia_madre.py` → same
+  single pre-existing finding (`exploracion_n_angulos`) · `evals/run_baseline.py` → 28/27/1/0
+  (unchanged; those fixtures are frozen text, not live `gen_flujo_bot` output).
+
 ## Next step
-T4 done (T4a-T4e). Next: T5 writer, then the P4 UI plan (SISTEMA-app).
+T5 done. Follow-ups for whoever picks this up next: (1) an explicit operator decision on
+`_DIM_CONJUNTOS.csv` nivel_conciencia for TINNIDROP/ACCESIBILIDAD_MEDICO (T5 found it ambiguous —
+see T5's note above; not guessed or edited here); (2) the P4 UI plan (SISTEMA-app).
