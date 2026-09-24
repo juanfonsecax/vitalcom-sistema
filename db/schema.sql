@@ -393,6 +393,31 @@ ALTER TABLE raw.dim_envase ADD COLUMN IF NOT EXISTS verificado_el TEXT;
 ALTER TABLE raw.dim_envase ADD COLUMN IF NOT EXISTS fuente TEXT;
 ALTER TABLE raw.dim_envase ADD COLUMN IF NOT EXISTS notas TEXT;
 
+-- dim_fanpages <- PRODUCTOS/_DIM_FANPAGES.csv
+CREATE TABLE IF NOT EXISTS raw.dim_fanpages (
+    id BIGSERIAL PRIMARY KEY,
+    tenant_id TEXT NOT NULL DEFAULT 'vitalcom',
+    pagina_num TEXT,
+    pagina_nombre TEXT,
+    identidad TEXT,
+    rol TEXT,
+    tono TEXT,
+    logica TEXT,
+    edad_orientacion TEXT,
+    page_id TEXT,
+    productos_nicho TEXT,
+    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS pagina_num TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS pagina_nombre TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS identidad TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS rol TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS tono TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS logica TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS edad_orientacion TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS page_id TEXT;
+ALTER TABLE raw.dim_fanpages ADD COLUMN IF NOT EXISTS productos_nicho TEXT;
+
 -- dim_flujo_bot <- PRODUCTOS/_DIM_FLUJO_BOT.csv
 CREATE TABLE IF NOT EXISTS raw.dim_flujo_bot (
     id BIGSERIAL PRIMARY KEY,

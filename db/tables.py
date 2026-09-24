@@ -36,6 +36,7 @@ TABLE_SPECS = [
     ("dim_bm", "_DIM_BM.csv", False),
     ("dim_cuentas", "_DIM_CUENTAS.csv", False),
     ("dim_envase", "_DIM_ENVASE.csv", False),
+    ("dim_fanpages", "_DIM_FANPAGES.csv", False),
     ("dim_flujo_bot", "_DIM_FLUJO_BOT.csv", False),
     ("dim_gastos", "_DIM_GASTOS.csv", False),
     ("dim_mercados", "_DIM_MERCADOS.csv", False),
