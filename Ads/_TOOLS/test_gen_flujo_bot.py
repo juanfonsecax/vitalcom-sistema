@@ -432,15 +432,14 @@ def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
     _DIM_PRODUCTOS.csv (invariante 10) y solo avisa PENDIENTE — propuestas_valor nunca bloquea
     por si sola, para ninguno de los dos.
 
-    TINNIDROP no pasa una() completo hoy: su angulo ganador de FASE 2 (ACCESIBILIDAD_MEDICO,
-    hallazgo T5) declara `nivel_conciencia='3'` en _DIM_CONJUNTOS.csv, alias AMBIGUO
-    (`_DIM_VOCABULARIO.csv` lo mapea a REVISAR — no distingue 3A de 3B) — bloquea por
-    apertura_nivel, un gate deliberado y anterior a T5 (nivel_conciencia_angulo), no por
-    propuestas_valor. Antes de T5 esto quedaba oculto porque el angulo mal elegido
-    (PERDIDA_AUDITIVA, nivel '2', sin ambiguedad) nunca disparaba el gate. Corregir el dato de
-    `_DIM_CONJUNTOS.csv` (`_DIM_ANUNCIOS.csv` ya trae '3A' para ese angulo, per el diagnostico
-    de etapa-11 en `_AUDITORIAS/_FLUJO_TINNIDROP_20260924.txt` §0.1/§3-C5) es una decision de
-    contenido de CSV fuera del alcance de T5 — reportado, no adivinado."""
+    TINNIDROP pasa una() completo hoy (T6): su angulo ganador de FASE 2
+    (ACCESIBILIDAD_MEDICO, hallazgo T5) declaraba `nivel_conciencia='3'` en
+    _DIM_CONJUNTOS.csv, alias AMBIGUO (`_DIM_VOCABULARIO.csv` lo mapea a REVISAR — no
+    distingue 3A de 3B) y bloqueaba por apertura_nivel. T6 corrigio el dato en la raiz por
+    las definiciones de ETAPA-2 (MOFU, avatar que no conoce el producto todavia -> nivel 2,
+    no 3): `_DIM_CONJUNTOS.csv` y `_DIM_ANUNCIOS.csv` ahora declaran '2' para ese angulo, sin
+    ambiguedad, y `nivel_conciencia_angulo()` resuelve limpio. `apertura_nivel` ya no bloquea
+    a TINNIDROP; la instruccion que arma es la del nivel 2 ('dolor + "eso tiene solucion"')."""
     for pk in ("CLEARSTEM", "TINNIDROP"):
         v, faltan, avisos = G.resolver(pk)
         persistidas = G.propuestas_persistidas(pk)
@@ -454,10 +453,12 @@ def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
     ok = G.una("CLEARSTEM", escribir=False)
     check("CLEARSTEM pasa una() completo sin --propuestas (candado automatico, no bloquea)", ok)
 
-    v_tn, faltan_tn, _ = G.resolver("TINNIDROP")
     ok_tn = G.una("TINNIDROP", escribir=False)
-    check("TINNIDROP SOLO bloquea por apertura_nivel (gap de dato disclosed, no propuestas)",
-          not ok_tn and [k for k, _ in faltan_tn] == ["apertura_nivel"], faltan_tn)
+    check("TINNIDROP pasa una() completo tambien (T6 resolvio apertura_nivel)", ok_tn)
+
+    nivel, razon = G.nivel_conciencia_angulo("TINNIDROP", "ACCESIBILIDAD_MEDICO")
+    check("TINNIDROP/ACCESIBILIDAD_MEDICO resuelve a nivel 2, sin ambiguedad",
+          nivel == "2" and razon is None, (nivel, razon))
 
 
 def _con_carpeta(pk, slug, contenido_2data, fn):
