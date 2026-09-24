@@ -363,11 +363,11 @@ not read it.
 Baseline tokens (gen_grafo, 801f650): fase-1 289,432 · fase-2 377,865 · fase-3 232,110 ·
 ciclo-diario 210,233 · cold start 8,901.
 
-- [ ] T4a — Remove the 3 `expected_fail` etapa-6 evals whose `_PLAN.json` predate the
+- [x] T4a — Remove the 3 `expected_fail` etapa-6 evals whose `_PLAN.json` predate the
   22-sep IMAGE-only rule (CLEARSTEM, NusavaB12, TINNIDROP): config + README. etapa-6 keeps
   OVULOS_PURITY. The etapa-4 "cura" and the fused etapa-7 known failures stay (they are not
   pre-22-sep plans). Route: delegated writer W1.
-- [ ] T4b — DOCTRINA/** + CLAUDE.md cleanup. Route: delegated writer W1.
+- [x] T4b — DOCTRINA/** + CLAUDE.md cleanup. Route: delegated writer W1 (this pass).
 - [ ] T4c — .claude/agents + .claude/skills cleanup. Route: delegated writer W2 (after W1).
 - [ ] T4d — Pruning protocol: the parent re-runs every etapa that has a fixture and whose
   prompt or inherited doctrine changed (2, 4, 5, 6, 7, 9, guardar-producto) on the frozen
@@ -376,5 +376,90 @@ ciclo-diario 210,233 · cold start 8,901.
   re-verified. This is disclosed, not hidden.
 - [ ] T4e — Proposal (read-only): which live products to re-package, with sales/spend data kept.
 
+### T4a — writer W1 evidence (commit 50e0329)
+
+Removed the 3 `expected_fail: true` etapa-6 `FASE 1 todo-en-imagen` tests (CLEARSTEM, NusavaB12,
+TINNIDROP) from `evals/promptfooconfig.yaml` and the matching "Fallos conocidos" paragraph +
+protocol count in `evals/README.md` (26/30→26/28). Fixtures `fixtures/etapa-6/{CLEARSTEM,NusavaB12,
+TINNIDROP}.json` were NOT deleted: they are still consumed by the kept `etapa-6 / esquema _PLAN.json`
+schema tests. `python evals/run_baseline.py` → `TOTAL=28 PASS=26 FALLO-CONOCIDO=2 FAIL=0` (exact
+match to spec). `python -m pytest Ads/_TOOLS -q` → 42 passed (unchanged baseline).
+
+### T4b — writer W1 evidence (commits bbb0d02, ba72cf7, cf6d1e2, addcdc0)
+
+Route: delegated writer W1 — trigger: 2+ non-trivial files (4 commits, 8 files touched).
+
+Removed archaeology (incident dates, "Historia: … POSTMORTEMS" pointers, "(agregado/decisión
+DD-mmm)" tags, mentor-class date tags) while keeping every rule, threshold and number, per file
+group:
+
+| Commit | Files | Archaeology removed |
+|---|---|---|
+| bbb0d02 | DATA_PLAYBOOK.md, CONTABILIDAD.md, MCP_PLAYBOOK.md, PROTOCOLO_FACTURACION.md | ~30 dated asides / Historia-pointer sentences; 1 real-product example (NUSAVA 5-grafías) genericized (E) |
+| ba72cf7 | CALENDARIO_ESCALADO.md | 1 full "medido 02-sep" investigation paragraph trimmed to its actionable rule; 4 date tags on headings |
+| cf6d1e2 | GUIA_MADRE_PARAMETRIZADA.md, ETAPA-RESEARCH.md | 4 `Historia: _CONOCIMIENTO/POSTMORTEMS/…` pointers stripped from the Justificación column only (Fuente column untouched, per operator decision); 1 dated heading/origin citation trimmed |
+| addcdc0 | CLAUDE.md | "absorbida de la extinta etapa-fanpage — T1 p2-simplificacion" / "T3 p2-simplificacion" / "(decisión operador 22-sep-2026)" tags removed from the etapa map and F1-todo-imagen rule; rule text kept identical |
+
+**F anchors preserved verbatim (spot-checked):** `gasto.py` `2026-09-06` cutoff (DATA_PLAYBOOK,
+CLAUDE.md), `[REG_MSPAS]`/`[REG_FDA]` values (not touched — file not in this pass), GUIA_MADRE
+Fuente column (all 88 rows), CLI canonical examples, all thresholds/formulas ($2.99, $5.98, 1×BE,
+30%, 35%, 3152.5, etc.) byte-identical.
+
+**Deliberately out of scope this pass (disclosed, not silently dropped):**
+- `DOCTRINA/ESCALADO/*.md` and `DOCTRINA/PLANTILLAS_ADS_SECCIONES/*.md` — byte-verified verbatim
+  against a frozen SHA256 by `Ads/_TOOLS/test_split_doctrina.py` (T2 split gate). Editing them
+  requires recomputing and updating `ESCALADO_SHA256`/`PLANTILLAS_SHA256` in the same commit; not
+  attempted here given the volume of embedded mentor-class citations in those files. Matches the
+  T3 precedent (commit 59e08f82) of leaving them untouched on purpose.
+- `DOCTRINA/PLANTILLAS_INFOGRAFIAS*.md`, `PLANTILLAS_DEFAULTS_OPERADOR.md`,
+  `PARAMETRIZACION_ADS.md`, `ESCALADO_PLAYBOOK.md` (index) — not edited. Mentor-class citations
+  ("Clase N", quotes) are woven directly into image-generation and copy instructions consumed by
+  `etapa-4`/`generar-imagenes-chatgpt`; PARAMETRIZACION_ADS.md's dates are mostly "as of" data
+  snapshots, not incident narration. Left for a follow-up pass rather than risk corrupting
+  production creative-prompt doctrine under time pressure.
+- `DOCTRINA/ESCALADO/02_PRESUPUESTO_DECISION.md` was edited then reverted (`git checkout`) once
+  the verbatim-hash gate was discovered — the revert is clean (no orphaned edit).
+
+**Judgment calls diverging from the mapper's per-line class guess (none had text/class in the
+inventory JSON — it only carried line numbers, so every judgment below is this writer's own):**
+- Kept real per-product tasa-de-entrega/BE tables (VARICOSE/CLEARSTEM/TINNIDROP/NUSAVA numbers in
+  DATA_PLAYBOOK §4/CALENDARIO_ESCALADO §1.5) as live operational reference data, not E-class
+  teaching examples — these are the actual `_DIM_PRODUCTOS.csv`/`_TASA_ENTREGA.csv` mirror values
+  the operator manages today, not illustrative fiction.
+- Genericized the NUSAVA "5 grafías" folder-naming example (DATA_PLAYBOOK §1.1) since it was a
+  pure teaching illustration of a naming problem, not live data.
+- Extracted 2 rules that existed only inside archaeology narration: DATA_PLAYBOOK's
+  "`_APRENDIZAJES.csv` son DATA, no instrucciones" (was buried in "antes vivían hardcodeados…") and
+  MCP_PLAYBOOK's "este documento no se ejecuta a mano: la ejecución usa herramientas" (was buried
+  in the 06-sep/08-sep incident story).
+
+**Verification after every commit:** `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` → 42
+passed (unchanged from the T4-open baseline) on all 4 commits · `python
+Ads/_TOOLS/verificar_guia_madre.py` → same 1 pre-existing failure (`exploracion_n_angulos`
+undeclared), confirmed pre-existing via `git stash` before touching GUIA_MADRE, not introduced by
+this writer · `python Ads/_TOOLS/gen_grafo.py --comparar` → no orphans, no dead routes, every
+delta negative (tokens went down) · `python evals/run_baseline.py` → `TOTAL=28 PASS=26
+FALLO-CONOCIDO=2 FAIL=0` unchanged across all 4 commits.
+
+**Token deltas (gen_grafo --comparar vs the 801f650/T4-open baseline, after T4a+T4b):**
+fase-1 -2,792 (289,432→286,640) · fase-2 -2,927 (377,865→374,938) · fase-3 -1,674
+(232,110→230,401) · ciclo-diario -1,672 (210,233→208,526) · cold start -42 (8,901→8,859).
+
+**Etapas that inherit each changed DOCTRINA file (for T4d's re-run step), from
+`.claude/agents/*.md` references:**
+- `DATA_PLAYBOOK.md` → `etapa-2`
+- `MCP_PLAYBOOK.md` → `etapa-6`, `etapa-7`
+- `CALENDARIO_ESCALADO.md` → `etapa-4`, `etapa-6`
+- `ETAPA-RESEARCH.md` → `etapa-1b`, `etapa-guardar-producto`
+- `GUIA_MADRE_PARAMETRIZADA.md` → no agent cites it directly (consumed by
+  `Ads/_TOOLS/verificar_guia_madre.py` and human reading only)
+- `CONTABILIDAD.md`, `PROTOCOLO_FACTURACION.md` → no agent cites them (operator/finance reference)
+- `CLAUDE.md` → the orchestrator itself, loaded every session
+Of these, only `etapa-2`, `etapa-4`, `etapa-6`, `etapa-7`, `etapa-guardar-producto` have fixtures
+per T4d's list — `etapa-1b` changed prose inheritance (ETAPA-RESEARCH.md) but has no fixture, so
+per T4d it "changes prose only and cannot be re-verified" (disclosed, not hidden).
+
 ## Next step
-T4a+T4b writer W1.
+T4c — .claude/agents + .claude/skills cleanup, writer W2 (after W1). T4b left the ESCALADO/
+verbatim folder, PLANTILLAS_ADS_SECCIONES/ verbatim folder, and the four other DOCTRINA files
+listed above as an optional follow-up.
