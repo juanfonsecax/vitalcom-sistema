@@ -20,22 +20,22 @@ python Ads/_TOOLS/gen_flujo_bot.py --validar          # gate de todo el portafol
 
 ## 0. LO QUE MANDAN LAS DOS CLASES DE AGOSTO
 
-Son la fuente vigente. Las citas son textuales de la transcripción, no paráfrasis.
+Son la fuente vigente.
 
-| # | Regla | Cita |
-|---|---|---|
-| **A** | **El flujo va ANTES que la estructura de campaña.** Ninguna estructura salva un flujo malo. | *"Ustedes lo que se deben preocupar ahorita más que estructura de campaña es el flujo de venta, porque al yo tener un flujo de venta, yo puedo colocar cualquier estructura y cualquier estructura me va a vender. Pero si yo tengo un mal flujo o un flujo desoptimizado, cualquier estructura que ustedes coloquen no les va a funcionar. Porque el tráfico va igual."* (16-ago) |
-| **B** | **El objetivo de cierre es 15-20 %**, y la condición es ser rentable. | *"yo primero me tengo que enfocar es que mi porcentaje de conversión esté en un 18, en un 20, en un 15 y que yo sea rentable."* (16-ago) |
-| **C** | **PROHIBIDO escalar con cierre bajo.** Escalar un cierre malo escala el error. | *"Uno no puede escalar algo. Si uno tiene un cierre de cinco, uno escala y va a escalar malos resultados, malas métricas… el cierre más bajo, por lo tanto las ventas van a ser bajas, el CPA se va a subir."* (22-ago) |
-| **D** | **Lo que más mueve el cierre son las PROPUESTAS DE VALOR.** No los hooks, no los testimonios. Es la respuesta directa a *"¿en qué te centrás para optimizar el flujo?"*. | *"lo que yo más me centro es en las propuestas de valor, en las imágenes, colocarle en todas muchas propuestas de valor, atacando todo, resaltando lo que van a recibir, venderle el resultado, meterles muchos beneficios, convencerlo de decirle tantos beneficios, tantas propuestas de valor que el cliente diga: 'no, este es el producto perfecto y voy a comprarlo'."* (22-ago) |
-| **E** | **Cierre bajo → primer diagnóstico es CONGRUENCIA anuncio ↔ flujo**, no reescribir copy. | *"si tú tienes un cierre bajo, uno empieza a analizar: bueno, qué anuncio está llegando, ver si ese anuncio concuerda con lo que tengo en el flujo, y ahí donde yo hago la optimización."* (22-ago) · *"el ángulo que tenemos del flujo no está muy encaminado al hígado graso… la gente de pronto llega y ahí pierde la emoción de comprar."* (16-ago) |
-| **F** | **Un cambio de flujo se nota en HORAS, no en semanas.** Por eso se loguea el día que se aplica. | *"tú haces un cambio y eso se nota… si tú haces una buena optimización, optimizás en la mañana y ya al mediodía van a llegar más ventas, el cierre te va a subir porque hiciste esos cambios."* (22-ago) |
-| **G** | **La investigación de mercado previa evita rehacer el flujo.** | *"Si tú haces una buena investigación de mercado, un análisis de mercado desde el inicio, probablemente no te toque cambiar casi ni siquiera el flujo. Tú te centras en sacar creativo."* (22-ago) |
-| **H** | **Ningún flujo está terminado.** Aun uno que vende puede subir. | *"a veces uno dice: no, yo tengo mi flujo optimizado porque me llegan ventas — pero el flujo siempre puede subir más."* (22-ago) |
-| **I** | **La información del producto NO va en las reglas.** Las reglas son solo CONVERSACIONALES. | *"la información de producto no va en la regla… en las reglas va reglas conversacionales: cómo le va a dar el precio, cómo le va a pedir la ciudad, cuándo se la va a pedir. En las reglas no va nada formativo."* (16-ago) |
-| **J** | **LucidBot queda DESACTIVADO al importar de Superbodega.** El flujo se ve cargado y el mensaje inicial no sale. Activarlo es manual. | *"cuando se importan los productos, él solamente queda activado para el IA… traía desactivado LucidBot. Tienes que activarle LucidBot para que él mande lo del mensaje inicial."* (16-ago) |
-| **K** | **Las FAQ crecen leyendo los chats reales.** No se quedan en el banco inicial. | *"yo le agrego por lo general cinco generales, y a medida que las personas… viendo el chat uno va agregándolas también."* (16-ago) |
-| **L** | **El CIERRE no corona: corta.** Caso medido en clase — mismo creativo duplicado, mismo gasto: uno con 4 mensajes cerró 2 (50 %), el otro cerró al 25 % pero hizo 5 ventas. La orden fue diversificar conceptos del que **vendió más**, no del que cerró mejor. | *"el de dos ventas le llegaron cuatro mensajes y cerró dos, mientras que el otro estaba cerrando apenas al 25 %… — haz el ejercicio que acabamos de hacer: comienza a validar lo mismo que te está funcionando en diferentes conceptos."* (16-ago) |
+| # | Regla |
+|---|---|
+| **A** | **El flujo va ANTES que la estructura de campaña.** Ninguna estructura salva un flujo malo. |
+| **B** | **El objetivo de cierre es 15-20 %**, y la condición es ser rentable. |
+| **C** | **PROHIBIDO escalar con cierre bajo.** Escalar un cierre malo escala el error. |
+| **D** | **Lo que más mueve el cierre son las PROPUESTAS DE VALOR.** No los hooks, no los testimonios. Es la respuesta directa a *"¿en qué te centrás para optimizar el flujo?"*. |
+| **E** | **Cierre bajo → primer diagnóstico es CONGRUENCIA anuncio ↔ flujo**, no reescribir copy. |
+| **F** | **Un cambio de flujo se nota en HORAS, no en semanas.** Por eso se loguea el día que se aplica. |
+| **G** | **La investigación de mercado previa evita rehacer el flujo.** |
+| **H** | **Ningún flujo está terminado.** Aun uno que vende puede subir. |
+| **I** | **La información del producto NO va en las reglas.** Las reglas son solo CONVERSACIONALES. |
+| **J** | **LucidBot queda DESACTIVADO al importar de Superbodega.** El flujo se ve cargado y el mensaje inicial no sale. Activarlo es manual. |
+| **K** | **Las FAQ crecen leyendo los chats reales.** No se quedan en el banco inicial. |
+| **L** | **El CIERRE no corona: corta.** Caso medido en clase — mismo creativo duplicado, mismo gasto: uno con 4 mensajes cerró 2 (50 %), el otro cerró al 25 % pero hizo 5 ventas. La orden fue diversificar conceptos del que **vendió más**, no del que cerró mejor. |
 
 > **Choque registrado (C-06).** La regla **D** pide *"muchas propuestas de valor, atacando todo"*;
 > la Clase 22 pide no romper el **umbral cognitivo**. Se resuelve por ubicación: **dentro del bot
@@ -153,7 +153,7 @@ Es el texto que el cliente manda al tocar el anuncio Click-to-WhatsApp. Va como 
 tiene campo para el mensaje prellenado, así que es un paso manual en Ads Manager (skill
 `publicar-meta` paso 3 / `DOCTRINA/MCP_PLAYBOOK.md`). El enrutamiento del chat al producto es por
 el ID del anuncio/conjunto (integración LucidBot), nunca por el texto del primer mensaje del
-cliente (dato operador 23-sep) — por eso este texto puede declararse y cambiar libremente sin
+cliente — por eso este texto puede declararse y cambiar libremente sin
 romper la atribución de ventas.
 
 No lleva el NÚMERO de registro (`[REG_MSPAS]`/`[REG_FDA]` en
