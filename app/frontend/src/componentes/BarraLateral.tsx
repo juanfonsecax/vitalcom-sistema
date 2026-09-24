@@ -29,6 +29,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
+  SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
@@ -67,8 +68,10 @@ function AlternadorTema() {
         render={
           <SidebarMenuButton>
             {actual.icono}
-            <span>Tema: {actual.etiqueta}</span>
-            <ChevronsUpDown className="ml-auto size-3.5 opacity-60" />
+            <span className="flex min-w-0 flex-1 items-center justify-between gap-2 group-data-[collapsible=icon]:hidden">
+              <span className="truncate">Tema: {actual.etiqueta}</span>
+              <ChevronsUpDown className="size-3.5 shrink-0 opacity-60" />
+            </span>
           </SidebarMenuButton>
         }
       />
@@ -100,6 +103,7 @@ function BarraLateral() {
           <span className="truncate group-data-[collapsible=icon]:hidden">
             VitalCom <span className="text-muted-foreground">Guatemala</span>
           </span>
+          <SidebarTrigger className="ml-auto hidden md:flex" />
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -147,6 +151,7 @@ function BarraLateral() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
