@@ -1,0 +1,17 @@
+Fuente: PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt, líneas 58-138
+("PASO 3 — ETAPA-7 (monitor) + ETAPA-8 (escalado)" hasta el bloque
+"QUÉ HACER HOY", antes de "PASO 4 — CIERRE"). Auditoría real generada
+2026-09-08 por la corrida nocturna de `ciclo-diario` (que YA invocaba a
+etapa-7 + etapa-8 en la misma pasada y las presentaba en una sola sección
+continua, sin separación) — es el output real más parecido a lo que produce
+la etapa fusionada desde el 24-sep-2026 (T3, `odd/tasks/p2-simplificacion.md`).
+Recorte congelado 24-sep-2026 para evals/.
+
+Este fixture es real (no inventado), pero es ANTERIOR a la fusión: usa la
+tabla determinística en su formato compacto (BE Qxx, "36v") en vez del
+formato que la nueva plantilla de ETAPA-7.md pide para su prosa de juicio
+(citar "Break-Even Qxx", el rótulo "REGLA DE ORO: se escala lo que YA vende"
+y "[n] ventas" con la palabra completa). Por eso está marcado
+`expected_fail: true` en `promptfooconfig.yaml` contra `asserts/etapa-8.py`
+— ver evals/README.md, sección "Fusión T3 (etapa-7+etapa-8)", para el
+detalle del conflicto y qué falta para que un re-run real lo cierre.

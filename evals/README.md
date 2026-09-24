@@ -57,7 +57,8 @@ compatible con ambos.
 | etapa-6 (`_PLAN.json`) | CLEARSTEM, NusavaB12, TINNIDROP, OVULOS_PURITY | `_PLAN.json` completo |
 | etapa-5 (bot LucidBot) | CLEARSTEM, TINNIDROP | `FLUJO_LUCIDBOT.md` completo |
 | etapa-7 (monitor diario) | TINNIDROP | `_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt` §PASO 3 — bloque "Lectura cualitativa (ETAPA-7)" |
-| etapa-8 (plan de escalado) | TINNIDROP | `4_PLAN_ESCALADO.txt` (extracto) |
+| etapa-7 fusionada (monitor + escalado, T3 p2-simplificacion) | TINNIDROP | `_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt` §PASO 3 completo, ver "Fusión T3" abajo |
+| etapa-8 (plan de escalado, histórico — hoy es etapa-7) | TINNIDROP | `4_PLAN_ESCALADO.txt` (extracto) |
 | etapa-9 (fábrica de conceptos) | TINNIDROP | `_DIM_CREATIVOS.csv`, tanda real (`producto_key=TINNIDROP`, `fecha_alta=2026-09-06`, 5 filas) |
 | etapa-guardar-producto (invariante 8) | los 4 productos | manifiesto congelado de archivos de nivel superior en `PRODUCTOS/<P>/` |
 
@@ -118,6 +119,40 @@ sigue exigiendo que una de las 10 páginas reales aparezca citada en el output.
 El ID del test (`etapa-fanpage / CLEARSTEM`) se mantiene por honestidad
 histórica del fixture; su contrato de facto hoy es el `<pagina_asignada>` que
 produce `etapa-2`.
+
+## Fusión T3 (p2-simplificacion, 24-sep-2026) — `etapa-7` + `etapa-8`
+
+`.claude/agents/ETAPA-8.md` se eliminó: su lógica de palancas (PASO 5 de la
+nueva `ETAPA-7.md`) y su sección de aprendizajes se absorbieron en
+`etapa-7`, que ya monitoreaba y ya era la etapa que `ciclo-diario` invocaba
+en la misma pasada que `etapa-8` (nunca corrían separadas). Los dos fixtures
+y asserts viejos (`fixtures/etapa-7/TINNIDROP.txt` + `asserts/etapa-7.py`,
+`fixtures/etapa-8/TINNIDROP.txt` + `asserts/etapa-8.py`) se dejaron **sin
+tocar y con la misma fuerza** — siguen probando sus contratos originales
+sobre outputs reales e históricos.
+
+Se agregó un tercer test, `etapa-7 fusionada / TINNIDROP`, que corre un solo
+fixture contra **los dos asserts** (`promptfooconfig.yaml` ya soporta una
+lista de `assert` por test; `run_baseline.py` los evalúa con AND lógico sin
+tocar el runner). El fixture (`fixtures/etapa-7/TINNIDROP_FUSIONADO.txt`) es
+real: el bloque completo de PASO 3 de `_AUDITORIA_DIARIA_20260908.txt`, de
+cuando `ciclo-diario` ya corría `etapa-7` + `etapa-8` en la misma pasada y
+las presentaba sin separación — es el output real más parecido a lo que hoy
+produce la etapa fusionada.
+
+**Hallazgo, no se tapó:** ese fixture PASA `asserts/etapa-7.py` pero FALLA 3
+de los 4 chequeos de `asserts/etapa-8.py` (`Break-Even`, `regla de oro`, "N
+ventas" con la palabra completa) porque ya usa el formato compacto de
+`decidir.py` ("BE Qxx", "36v") en vez de reimprimir esas palabras — que es
+exactamente lo que el Goal 1 de T3 pide (citar los números de `decidir.py`
+en vez de re-derivarlos/re-imprimirlos). El test queda `expected_fail: true`
+con el detalle en `promptfooconfig.yaml`. **No se debilitó `asserts/etapa-8.py`
+para taparlo** — la plantilla nueva de `ETAPA-7.md` (PASO 5 y el formato del
+"Informe diario") sí pide esas tres piezas como vocabulario fijo de la
+prosa de juicio (no como números re-derivados), así que un re-run real
+contra la plantilla fusionada podría cerrar el hueco; eso queda pendiente
+del re-run del parent sobre inputs congelados (mismo patrón que T1/T2: el
+writer no puede invocar a la etapa contra Claude real).
 
 ## Protocolo de poda (para cuando se toque un prompt de ETAPA-*.md)
 
