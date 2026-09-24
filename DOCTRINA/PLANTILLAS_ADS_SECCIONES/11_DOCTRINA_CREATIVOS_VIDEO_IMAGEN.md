@@ -1,6 +1,6 @@
 ## DOCTRINA DE CREATIVOS (VIDEO vs IMAGEN) — regla de asignación
 
-> Movida desde `CLAUDE.md` el 31-jul-2026. **Este archivo es el dueño.** `etapa-2` y `etapa-6` la citan como "DOCTRINA DE CREATIVOS del sistema" y leen el detalle de acá.
+> **Este archivo es el dueño.** `etapa-2` y `etapa-6` la citan como "DOCTRINA DE CREATIVOS del sistema" y leen el detalle de acá.
 >
 > "Sistemático" = regla de decisión consistente, **NO** formato uniforme. La asignación es determinista y se aplica igual a todo producto.
 
@@ -18,9 +18,8 @@
 
 **Nota de lectura (confound de formato):** mezclar video e imagen entre conjuntos mete un sesgo leve (un video validado es un creativo más fuerte que una imagen fría). Mitigación: leer FASE 1 a nivel de **ÁNGULO** con las métricas de conversación (robustas al formato); si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato, FASE 2 los controla probando el ganador en un solo formato. No sobre-optimizar esto en FASE 1.
 
-> **Decisión del operador (22-sep-2026):** este confound ya no puede ocurrir en F1 — los 6
-> conjuntos declaran `formato: IMAGEN` fijo (`gen_plan.py --validar` bloquea cualquier otro). La
-> nota queda como antecedente histórico de por qué se tomó la decisión.
+> **Este confound ya no puede ocurrir en F1** — los 6
+> conjuntos declaran `formato: IMAGEN` fijo (`gen_plan.py --validar` bloquea cualquier otro).
 
 **Variación AGRESIVA / de impacto** (palanca validada por data de competencia — ver "ENFOQUE AGRESIVO / DE IMPACTO" arriba): en categorías de plaga/miedo/higiene, el creativo de CHOQUE frena el scroll más fuerte que el limpio. Regla: **1-2 de los 6 conjuntos por lanzamiento** la usan (preferente el genérico/amplio + un ángulo de MIEDO), NUNCA los 6 — se mantiene el "1 creativo por conjunto" lean y la diversidad de conceptos y entrega. Guardarraíles: compliance "ahuyenta/aleja" (no "elimina/mata"), render propio y único (no copiar la huella de la competencia = baneo silencioso). `etapa-4` la aplica en su Tarea 2.
 

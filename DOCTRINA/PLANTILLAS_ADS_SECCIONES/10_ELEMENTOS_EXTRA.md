@@ -1,4 +1,4 @@
-## ELEMENTOS EXTRA DEL AD-IMAGEN (validados operador 10-jul + mentores Clase 4/14/19)
+## ELEMENTOS EXTRA DEL AD-IMAGEN
 
 > Estos dos elementos se suman a la jerarquía del Prompt Maestro. Nacen de la práctica del operador (que ya le funcionaba) confirmada contra las clases. Aplican a TODO producto.
 

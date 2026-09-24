@@ -29,10 +29,11 @@ os.chdir(BASE)
 
 # sha256 del archivo ORIGINAL (monolitico) el 24-sep-2026, antes del split de T2.
 # Congelado con: python -c "import hashlib; print(hashlib.sha256(open(p,'rb').read()).hexdigest())"
-# ESCALADO_SHA256 re-congelado en T4b (2026-09-24): el operador autorizo remover la narracion
-# arqueologica de DOCTRINA/ESCALADO/*.md manteniendo la regla; el texto cambio a proposito.
+# ESCALADO_SHA256 y PLANTILLAS_SHA256 re-congelados en T4b (2026-09-24): el operador autorizo
+# remover la narracion arqueologica de DOCTRINA/ESCALADO/*.md y DOCTRINA/PLANTILLAS_ADS_SECCIONES/*.md
+# manteniendo la regla; el texto cambio a proposito.
 ESCALADO_SHA256 = "f4f442b728d82f9324ecf815ed87a14cd9e5c9b92cef92463e547d8a64f27c3e"
-PLANTILLAS_SHA256 = "7067a64f5cce5fceb86c3b2547feb06bad8aa674ba7699518c81b05c5a4f4d18"
+PLANTILLAS_SHA256 = "e4503a723a015618ccb7c12f43dbcf49227ea72610d675dcbf56e73c0cf339d0"
 
 # Orden EXACTO de reconstruccion — el nombre de archivo ya lo fija (prefijo numerico),
 # pero se declara explicito para que un archivo nuevo mal nombrado no se cuele fuera de orden.

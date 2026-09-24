@@ -6,7 +6,7 @@
 >
 > **Cuándo se usa (ETAPA-4):**
 > - **FASE 1:** generar 1 ad-imagen por cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes/descubiertos sin video). Los ángulos con video usan el video, no necesitan ad-imagen en FASE 1.
->   > **Decisión del operador (22-sep-2026), reemplaza la línea anterior:** FASE 1 corre TODO EN
+>   > **Reemplaza la línea anterior:** FASE 1 corre TODO EN
 >   > IMAGEN — se genera 1 ad-imagen para los 6 ángulos, ninguno usa el video como creativo. El
 >   > video queda como fuente del ángulo (`etapa-0`) y se testea en FASE 2 como un concepto más.
 >   > Dueño de la regla: `Ads/_TOOLS/gen_plan.py --validar`.

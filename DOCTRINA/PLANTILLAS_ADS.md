@@ -1,4 +1,4 @@
-# PLANTILLAS_ADS — ÍNDICE (T2 p2-simplificacion, 24-sep-2026)
+# PLANTILLAS_ADS — ÍNDICE
 
 > Este archivo dejó de llevar la plantilla completa: es un ÍNDICE. El texto original (verbatim,
 > sin reescribir ni una palabra) vive partido por sección en `DOCTRINA/PLANTILLAS_ADS_SECCIONES/`,
