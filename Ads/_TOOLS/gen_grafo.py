@@ -139,7 +139,8 @@ def frontmatter(texto):
 def construir():
     """Devuelve el indice de .md y el grafo de agentes y skills con lo que consumen."""
     indice = {}
-    for carpeta in (".", "DOCTRINA", "Ads/_TOOLS", "Ads/_SWIPE", "PRODUCTOS"):
+    for carpeta in (".", "DOCTRINA", "DOCTRINA/ESCALADO", "DOCTRINA/PLANTILLAS_ADS_SECCIONES",
+                    "Ads/_TOOLS", "Ads/_SWIPE", "PRODUCTOS"):
         if os.path.isdir(carpeta):
             for f in os.listdir(carpeta):
                 if f.endswith(".md"):
