@@ -143,27 +143,91 @@ proof that the migration changes nothing.
     runs produced byte-identical decision payloads (aside from `generado`) across every product,
     angle, and cell in the current portfolio.
 
-- [ ] T5b — REOPENED by parent review 2026-09-23. T5 delivered a verbatim text mirror (one table
-  per CSV). That is a valid RAW layer, but it is not the approved model (producto -> angulo ->
-  creativo/concepto -> anuncio with name history -> typed daily facts), and parity over a
-  verbatim mirror is close to a tautology: it proves the round trip, not that the model holds
-  what `decidir.py` needs. Scope: rename the mirror schema to `raw`; build the normalized,
-  typed `core` layer from `raw` (FKs, name history replacing `_ALIAS_CONJUNTOS`); export the
-  CSV shapes decidir reads FROM `core`, and rerun the parity gate against that export.
-- [ ] T2b — The historic map joins to ventas by key + FIFO row order (150 duplicate-key groups).
-  Positional joins break on any reorder. Give each venta row a stable identity carried by the
-  map and join on it.
+- [x] T2b — DONE 23-sep-2026 (reopening). The historic map joined ventas by key + FIFO row order
+  (150 duplicate-key groups); a positional join breaks on any reorder. Added `venta_uid`: a
+  sha256 of each venta row's full content (`Ads/_TOOLS/venta_identidad.py`, a dependency-free
+  module so `db/cargar.py`, running in the psycopg venv without pandas, can import it without
+  pulling `mapear_ad_id_hist.py`'s pandas-based chain), with an occurrence counter for the 9
+  groups (22 rows) of byte-identical duplicate rows confirmed to exist in the real CSV.
+  `mapear_ad_id_hist.py` emits it as a new column of `_MAPA_AD_ID_HIST.csv` (regenerated from
+  cached staging, no network); `db/cargar.py:enriquecer_venta()` joins on it (plain dict, no
+  FIFO queue).
+  Evidence:
+  - Coverage unchanged: 670 verified / 724 nombre / 1360 ad_id / 653 sin_atribuir (3407 rows).
+  - Reorder test (both `Ads/_TOOLS/test_mapear_ad_id_hist.py` and `db/test_db.py`): shuffling
+    `_FACT_VENTAS.csv` rows leaves every attribution unchanged.
+  - `git diff --stat PRODUCTOS/` after regenerating the map: only `_MAPA_AD_ID_HIST.csv` changed
+    (new `venta_uid` column), nothing else.
+  - Commit: `b7c2136`.
+- [x] T5b — DONE 23-sep-2026 (reopened by parent review). T5 delivered a verbatim text mirror
+  (one table per CSV); parity over that mirror proved the round trip, not that the approved
+  normalized model (producto -> angulo -> creativo/concepto -> conjunto/anuncio with name
+  history -> typed daily facts) holds what `decidir.py` needs.
+  - Renamed the T5 mirror schema `core` -> `raw` (verbatim, audit/staging layer). `db/schema.sql`
+    carries a one-time `DO $mig$` migration block: on a base that still has the old `core` and no
+    `raw`, it renames it and drops `venta`'s 2 T5 enrichment columns (that logic now lives only
+    in the new `core`). No-op on a fresh base or one already migrated.
+  - Built a typed, normalized `core` FROM `raw` (`db/nucleo.py:construir_core()`, same
+    transaction as the loader, idempotent DELETE+INSERT per tenant): `tenant`, `producto`,
+    `cuenta`, `angulo` (now a physical table, unique per tenant+producto+angulo_key, attributes
+    from `_DIM_CONJUNTOS.csv`), `catalogo_concepto` (distinct concepto_key; its full attributes
+    stay in `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`, prose, out of scope same as T5),
+    `conjunto_nombre_hist` (replaces `_ALIAS_CONJUNTOS.csv`/`alias.py` semantics; `valid_to`
+    stays NULL — `alias.py` resolves by dict, not date range, documented honestly), `conjunto`,
+    `creativo`, `anuncio` (distinct from `entrega_anuncio_dia`, which already carries
+    ad_id/angulo_key/concepto_key/canonico_id), typed `entrega_conjunto_dia`,
+    `entrega_anuncio_dia`, `venta` (numeric/date types, FKs, `metodo_atribucion`, `venta_uid`
+    from T2b), `evento`, `decision` (no CSV owner, lives only in core), `parametro_decision`,
+    `parametro_finanzas`, `banda`, `estado_flujo` (the last 6 needed because `decidir.py` reads
+    their CSVs directly). Unresolvable FKs stay NULL and are counted, never invented — e.g.
+    `_DIM_CONJUNTOS.csv` and `_DIM_CUENTAS.csv` disagree on `cuenta_alias` spacing (`"GTR7"` vs
+    `"GTR 7"`, join normalizes it) but 19/173 `conjunto` rows still can't resolve `cuenta_id`
+    (multi-account composite aliases like `"GTR0/GTR7/GTR13/CP1"`, and `"EXTERNA"` with no
+    `_DIM_CUENTAS.csv` row) — documented in `db/README.md`, not papered over.
+  - Rewrote `db/exportar.py`: `exportar_raw_todo()` keeps the T5 full audit export (from `raw`);
+    new `exportar_core_decidir()` reconstructs, FROM `core`, exactly the 9 CSVs `decidir.py`
+    (via `gasto.py`/`alias.py`) reads directly (`_PARAMETROS_DECISION.csv`, `_DIM_PRODUCTOS.csv`,
+    `_DIM_CONJUNTOS.csv`, `_DIM_BANDAS.csv`, `_ALIAS_CONJUNTOS.csv`, `_FACT_VENTAS.csv`,
+    `_FACT_ENTREGA.csv`, `_FACT_ENTREGA_ANUNCIO.csv`, `_ESTADO_FLUJO.csv` — scoped to exactly
+    what decidir's import chain reads, confirmed by reading `decidir.py`'s own path constants and
+    its explicit `_gasto.escribir_conjunto_ventana_csv(ruta_ventas=..., ruta_entrega=...)` call,
+    which bypasses `gasto.py`'s own hardcoded paths).
+  - Parity gate (T6) rebuilt on `core`: `test_db.py::test_parity_gate_decidir_exportado_igual_a_real`
+    now calls `exportar_core_decidir()`, never falls back to `raw`.
+  Evidence:
+  - `"..\SISTEMA-app\app\backend\.venv\Scripts\python.exe" db/cargar.py` run twice: identical
+    `raw` counts, identical `core` table counts, identical FK-unresolved counts, identical
+    raw->core conservation report both times.
+  - Fact conservation: raw vs core row counts equal for `venta` (3407), `entrega_anuncio_dia`
+    (955), `entrega_conjunto_dia` (1046) — every raw fact row lands exactly once in core.
+    Cent-exact sums verified by direct SQL: `venta.spend_usd` 6978.9473 both sides,
+    `entrega_conjunto_dia.spend_usd` 3684.37 both sides, `entrega_anuncio_dia.spend_usd`
+    1473.01 both sides, `venta.ventas` 1089 both sides.
+  - `core.venta.metodo_atribucion`: ad_id=1360, ad_id_verificado_gasto=670, nombre=724,
+    sin_atribuir=653 — matches T2/T2b exactly.
+  - Parity: `decidir.py --json` on the real repo vs. on `exportar_core_decidir()`'s output —
+    identical JSON except `generado`, verified both via `db/test_db.py` (pytest, Postgres) and a
+    manual subprocess run producing a byte-identical diff (0 differences).
+  - `"..\SISTEMA-app\app\backend\.venv\Scripts\python.exe" -m pytest db/test_db.py -q` → 21
+    passed (pure mapping/reorder tests + idempotency + reconciliation + fact conservation +
+    metodo_atribucion + T6 parity + raw audit export, all against the real local Postgres).
+  - `python -m pytest Ads/_TOOLS -q` → 41 passed. `python evals/run_baseline.py` → exit 0
+    (`TOTAL=30 PASS=26 FALLO-CONOCIDO(documentado)=4 FAIL=0`).
+  - `git diff --stat PRODUCTOS/` shows no change from T5b work (only the T2b regenerated
+    `_MAPA_AD_ID_HIST.csv`, committed separately in `b7c2136`).
 
 ## Acceptance
-- T2 map exists with per-month verified coverage and zero unverified ad_id claims.
-- Eval baseline: more etapas covered, exit 0.
-- T6 parity identical. DONE — see T6 evidence above.
+- T2 map exists with per-month verified coverage and zero unverified ad_id claims. DONE.
+- Eval baseline: more etapas covered, exit 0. DONE.
+- T6 parity identical — on the NORMALIZED `core` layer, not a verbatim mirror. DONE (T5b).
+- T2b: venta attribution is stable under reordering, no more positional dependency. DONE.
 
 ## Config
 - TDD: off (default, same as prior ODD docs). Tests ship with every change.
 - RDD: off (`gentle-ai review mode status`: default). Delivery: work-unit commits on
   `feat/p1-cimientos`; operator merges.
-- Forecast: ~900 authored lines across T2/T3/T5/T6.
+- Forecast: ~900 authored lines across T2/T3/T5/T6; T2b/T5b reopening added ~1250 more
+  (db/nucleo.py is the bulk of it — a full typed schema + build + reconciliation).
 
 ## Progress
 - 2026-09-23: data commit `25b67ea` (LucidSales + Meta 20-22 sep) on base branch; branch
@@ -174,7 +238,13 @@ proof that the migration changes nothing.
 ## Progress (cont.)
 - 2026-09-23: T4/T5/T6 done — commit `0869332` (db/schema.sql, tables.py, cargar.py, exportar.py,
   test_db.py, decidir.py DECIDIR_PROD_DIR override). See T4/T5/T6 evidence above.
+- 2026-09-23: T2b done — commit `b7c2136` (venta_identidad.py, mapear_ad_id_hist.py, cargar.py,
+  test_mapear_ad_id_hist.py, regenerated `_MAPA_AD_ID_HIST.csv`). See T2b evidence above.
+- 2026-09-23: T5b done — db/nucleo.py (new), db/tables.py, db/cargar.py, db/exportar.py,
+  db/test_db.py, db/schema.sql, db/README.md rewritten for the raw/core split. See T5b evidence
+  above.
 
 ## Next step
-T2b then T5b (delegated writer). P1 is NOT closed until the parity gate passes on the
-normalized `core` layer.
+P1-cimientos is CLOSED: all tasks (T1-T6, T2b, T5b) are done and the parity gate passes on the
+normalized `core` layer, not a verbatim mirror. P2 (pruning against the eval baseline) is next,
+whenever the operator starts it.
