@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test("la guía de uso abre desde la barra de navegación y muestra sus 3 secciones", async ({ page }) => {
-  await page.goto("/");
-  // Clic en el enlace Guía del navbar
+test("la guía de uso abre desde Ajustes y muestra sus 3 secciones", async ({ page }) => {
+  await page.goto("/ajustes");
+  // Clic en el enlace Guía de Ajustes (la barra lateral solo tiene Hoy/Productos/Resultados/Ajustes)
   await page.getByRole("link", { name: "Guía", exact: true }).click();
   await expect(page).toHaveURL(/\/guia/);
 

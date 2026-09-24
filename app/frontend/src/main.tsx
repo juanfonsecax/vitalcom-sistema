@@ -1,19 +1,14 @@
 /**
  * main.tsx — arranque, rutas y caché.
  *
- * Portafolio, Producto, Nuevo producto, Trabajos (lo que el runner hace y espera de vos) y Salud.
+ * Navegación por las preguntas del operador (Hoy / Productos / Resultados / Ajustes,
+ * ver componentes/BarraLateral.tsx). Las pantallas viejas (Fase1/2/3, Trabajos, Salud,
+ * Guía, Órdenes, Nuevo producto) siguen en sus URLs de siempre, alcanzables desde Ajustes.
  */
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
-import {
-  Link,
-  Outlet,
-  RouterProvider,
-  createRootRoute,
-  createRoute,
-  createRouter,
-} from "@tanstack/react-router";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Outlet, RouterProvider, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
 import { Tablero } from "./pantallas/Tablero";
 import { ProductoDetalle } from "./pantallas/ProductoDetalle";
 import { Salud } from "./pantallas/Salud";
@@ -24,67 +19,26 @@ import { Fase2 } from "./pantallas/Fase2";
 import { Fase3 } from "./pantallas/Fase3";
 import { Ordenes } from "./pantallas/Ordenes";
 import { Guia } from "./pantallas/Guia";
-import { api } from "./api/cliente";
-import "./estilos.css";
-
-/** «Trabajos» con una insignia cuando algo espera una decisión del operador. */
-function EnlaceDeTrabajos() {
-  const lista = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
-  const esperan = (lista.data ?? []).filter((t) => t.pendiente).length;
-  return (
-    <Link to="/trabajos" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
-      Trabajos
-      {esperan > 0 && (
-        <span
-          title="Trabajos que esperan tu aprobación o tu respuesta"
-          className="ml-1.5 rounded-full bg-amber-600 px-1.5 py-0.5 text-[10px] font-semibold text-white"
-        >
-          {esperan}
-        </span>
-      )}
-    </Link>
-  );
-}
-
+import { Resultados } from "./pantallas/Resultados";
+import { Ajustes } from "./pantallas/Ajustes";
 import { FranjaMetaFalso } from "./componentes/FranjaMetaFalso";
+import { Marco as MarcoBarraLateral } from "./componentes/BarraLateral";
+import "./estilos.css";
 
 function Marco() {
   return (
-    <div className="min-h-screen">
-      <FranjaMetaFalso />
-      <nav className="border-b border-zinc-800 bg-zinc-900/60">
-        <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3">
-          <span className="font-semibold tracking-tight">
-            VitalCom <span className="text-zinc-500">Guatemala</span>
-          </span>
-          <Link to="/" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
-            Portafolio
-          </Link>
-          <Link to="/ordenes" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
-            Órdenes de hoy
-          </Link>
-          <Link to="/nuevo" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
-            Nuevo producto
-          </Link>
-          <EnlaceDeTrabajos />
-          <Link to="/salud" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
-            Salud
-          </Link>
-          <Link to="/guia" className="text-sm text-zinc-400 hover:text-zinc-100" activeProps={{ className: "text-sm text-sky-300" }}>
-            Guía
-          </Link>
-        </div>
-      </nav>
-      <main className="mx-auto max-w-6xl px-6 py-8">
-        <Outlet />
-      </main>
-    </div>
+    <MarcoBarraLateral banner={<FranjaMetaFalso />}>
+      <Outlet />
+    </MarcoBarraLateral>
   );
 }
 
 const raiz = createRootRoute({ component: Marco });
 const rutas = [
   createRoute({ getParentRoute: () => raiz, path: "/", component: Tablero }),
+  createRoute({ getParentRoute: () => raiz, path: "/productos", component: Tablero }),
+  createRoute({ getParentRoute: () => raiz, path: "/resultados", component: Resultados }),
+  createRoute({ getParentRoute: () => raiz, path: "/ajustes", component: Ajustes }),
   createRoute({ getParentRoute: () => raiz, path: "/ordenes", component: Ordenes }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: Fase1 }),
