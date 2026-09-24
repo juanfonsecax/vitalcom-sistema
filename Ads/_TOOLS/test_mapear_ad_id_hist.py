@@ -269,6 +269,70 @@ def test_dias_necesarios_ignora_cuentas_no_reconocidas():
     return 0 if ok else 1
 
 
+# ── asignar_venta_uids / identidad estable de fila (P1-cimientos T2b) ───────────────────────────
+
+def test_asignar_venta_uids_mismo_contenido_mismo_hash_base():
+    a = {"x": "1", "y": "2"}
+    b = {"x": "1", "y": "2"}
+    c = {"x": "1", "y": "3"}
+    uids = m.asignar_venta_uids([a, b, c])
+    ok = uids[0].split("-")[0] == uids[1].split("-")[0] != uids[2].split("-")[0]
+    print(("  OK     " if ok else "  FALLA  ") + "asignar_venta_uids() da el mismo hash base a "
+          "filas con el mismo contenido y uno distinto si el contenido difiere"
+          + ("" if ok else f"\n         {uids}"))
+    return 0 if ok else 1
+
+
+def test_asignar_venta_uids_duplicados_exactos_reciben_sufijo_de_ocurrencia():
+    fila = {"x": "1", "y": "2"}
+    uids = m.asignar_venta_uids([dict(fila), dict(fila), dict(fila)])
+    ok = (len(set(uids)) == 3 and "-" not in uids[0]
+          and uids[1] == uids[0] + "-1" and uids[2] == uids[0] + "-2")
+    print(("  OK     " if ok else "  FALLA  ") + "3 filas identicas byte-a-byte reciben 3 "
+          "venta_uid distintos (sufijo de ocurrencia 0/1/2)" + ("" if ok else f"\n         {uids}"))
+    return 0 if ok else 1
+
+
+def test_asignar_venta_uids_estable_ante_reordenamiento():
+    # "x":"1" se repite (duplicado exacto) -- ver docstring de venta_identidad.py sobre por que
+    # el CONJUNTO de uids no cambia aunque el sufijo de ocurrencia se reparta distinto al revés.
+    filas = [{"x": "1"}, {"x": "2"}, {"x": "1"}, {"x": "3"}]
+    uids_fwd = m.asignar_venta_uids(filas)
+    uids_rev = m.asignar_venta_uids(list(reversed(filas)))
+    ok = set(uids_fwd) == set(uids_rev)
+    print(("  OK     " if ok else "  FALLA  ") + "el conjunto de venta_uid no cambia si se "
+          "reordena el archivo completo (incluye el par duplicado)"
+          + ("" if ok else f"\n         {sorted(uids_fwd)} vs {sorted(uids_rev)}"))
+    return 0 if ok else 1
+
+
+def test_leer_ventas_sin_ad_id_adjunta_venta_uid_y_construir_mapa_lo_propaga():
+    cols = ["ventana_ini", "ventana_fin", "dias", "rol_ventana", "producto_key", "producto",
+            "cuenta_id", "cuenta_alias", "campana", "conjunto", "anuncio", "mensajes",
+            "clicks", "impresiones", "spend_usd", "ventas", "total_q", "moneda_origen",
+            "fuente", "ad_id"]
+    filas = [{c: "" for c in cols} for _ in range(2)]
+    for i, f in enumerate(filas):
+        f.update(rol_ventana="BASE", ad_id="", anuncio="AD%d" % i, conjunto="C1",
+                  cuenta_alias="CTA1", ventana_ini="2026-07-01", ventana_fin="2026-07-01")
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = os.path.join(tmp, "_FACT_VENTAS.csv")
+        with open(ruta, "w", encoding="utf-8", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=cols)
+            w.writeheader()
+            for f in filas:
+                w.writerow(f)
+        seleccionadas = m.leer_ventas_sin_ad_id(ruta)
+        ok_uid = len(seleccionadas) == 2 and all(f.get("_venta_uid") for f in seleccionadas)
+        mapa = m.construir_mapa(seleccionadas, {}, {})
+        ok_prop = (all(r.get("venta_uid") for r in mapa)
+                   and {f["_venta_uid"] for f in seleccionadas} == {r["venta_uid"] for r in mapa})
+    ok = ok_uid and ok_prop
+    print(("  OK     " if ok else "  FALLA  ") + "leer_ventas_sin_ad_id() adjunta venta_uid y "
+          "construir_mapa() lo escribe en la columna venta_uid del mapa")
+    return 0 if ok else 1
+
+
 def main():
     pruebas = [
         test_ad_id_valido_exige_solo_digitos_y_largo,
@@ -291,6 +355,10 @@ def main():
         test_facts_nunca_se_tocan,
         test_construir_indice_meta_aisla_una_cuenta_que_falla,
         test_dias_necesarios_ignora_cuentas_no_reconocidas,
+        test_asignar_venta_uids_mismo_contenido_mismo_hash_base,
+        test_asignar_venta_uids_duplicados_exactos_reciben_sufijo_de_ocurrencia,
+        test_asignar_venta_uids_estable_ante_reordenamiento,
+        test_leer_ventas_sin_ad_id_adjunta_venta_uid_y_construir_mapa_lo_propaga,
     ]
     fallas = sum(p() for p in pruebas)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")

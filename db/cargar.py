@@ -27,6 +27,12 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tables as T  # noqa: E402
 
+# venta_identidad.py es un módulo SIN dependencias externas (a proposito: mapear_ad_id_hist.py
+# arrastra pandas via bajar_meta_insights/ingerir_meta, ausente en el venv de psycopg que corre
+# este archivo). Ver su docstring.
+sys.path.insert(0, os.path.join(T.BASE_DIR, "Ads", "_TOOLS"))
+from venta_identidad import asignar_venta_uids  # noqa: E402
+
 
 def cargar_env(path=None):
     """Lee ~/.config/vitalcom_db/.env (KEY=VALUE, puede traer CRLF) sin nunca imprimirlo."""
@@ -69,10 +75,6 @@ def leer_filas(path):
         return list(csv.DictReader(f))
 
 
-def _clave_ad_id_hist(fila):
-    return tuple((fila.get(k) or "").strip() for k in T.MAPA_AD_ID_HIST_KEY)
-
-
 def ad_id_valido(v):
     """Mismo criterio que Ads/_TOOLS/mapear_ad_id_hist.py:ad_id_valido — solo dígitos, largo>=10."""
     v = (v or "").strip()
@@ -82,8 +84,8 @@ def ad_id_valido(v):
 def enriquecer_venta(filas_venta, filas_mapa):
     """Calcula (ad_id_resuelto, metodo_atribucion) por fila de _FACT_VENTAS.csv.
 
-    NUNCA pisa el ad_id original (queda verbatim en su propia columna): esto solo agrega una
-    columna nueva. Regla (T2/T5, ver odd/tasks/p1-cimientos.md):
+    NUNCA pisa el ad_id original (se reconstruye verbatim aparte): esto solo agrega dos valores
+    derivados. Regla (T2/T5, ver odd/tasks/p1-cimientos.md):
       - ad_id original válido               -> metodo='ad_id',                 resuelto=original
       - rol_ventana==BASE, ad_id inválido,
         resuelto por el mapa (verificado)   -> metodo='ad_id_verificado_gasto', resuelto=map.ad_id
@@ -92,29 +94,30 @@ def enriquecer_venta(filas_venta, filas_mapa):
       - cualquier otro caso (no está en el
         mapa, o no es BASE)                 -> metodo='sin_atribuir',           resuelto=None
 
-    La llave (ventana_ini, cuenta_alias, conjunto, anuncio) NO es única en
-    _MAPA_AD_ID_HIST.csv: 150 grupos de filas la repiten (varias ventas BASE distintas caen en
-    la misma ventana+conjunto+anuncio). `Ads/_TOOLS/mapear_ad_id_hist.py:construir_mapa()` escribe
-    una fila del mapa POR CADA fila BASE sin ad_id válido (mismo conteo, 1394) y las ORDENA con un
-    sort ESTABLE por esa misma llave — así que dentro de cada grupo de llave repetida, el orden
-    relativo de las filas del mapa es el mismo que el de las filas de venta que las originaron.
-    Por eso acá se hace un join key+cola (FIFO) en vez de un dict simple: un dict con última-fila-
-    gana perdería 1 de cada ~1394 correspondencias cuando la llave se repite (confirmado: producía
-    671/723 en vez de los 670/724 reales de T2)."""
-    colas = {}
-    for fila in filas_mapa:
-        colas.setdefault(_clave_ad_id_hist(fila), []).append(fila)
+    JOIN por `venta_uid` (P1-cimientos T2b, reapertura 23-sep-2026), NO por posición. La llave
+    natural del mapa (ventana_ini, cuenta_alias, conjunto, anuncio) se repite en 150 grupos de
+    _MAPA_AD_ID_HIST.csv, así que un join posicional (key + cola FIFO) dependía de que el ORDEN de
+    _FACT_VENTAS.csv nunca cambiara entre la corrida que generó el mapa y esta. `venta_uid` es un
+    hash del contenido COMPLETO de cada fila de venta (ver Ads/_TOOLS/venta_identidad.py):
+    sobrevive a un reordenamiento porque no depende de la posición. Se recalcula acá sobre
+    `filas_venta` en el orden en que llega la lista — el resultado no cambia si esa lista viene en
+    otro orden (test: test_enriquecer_venta_estable_ante_reordenamiento)."""
+    mapa_por_uid = {}
+    for m in filas_mapa:
+        uid = (m.get("venta_uid") or "").strip()
+        if uid:
+            mapa_por_uid[uid] = m
 
+    uids = asignar_venta_uids(filas_venta)
     resultados = []
-    for fila in filas_venta:
+    for fila, uid in zip(filas_venta, uids):
         ad_id_orig = (fila.get("ad_id") or "").strip()
         if ad_id_valido(ad_id_orig):
             resultados.append((ad_id_orig, "ad_id"))
             continue
         if (fila.get("rol_ventana") or "").strip() == "BASE":
-            cola = colas.get(_clave_ad_id_hist(fila))
-            if cola:
-                m = cola.pop(0)
+            m = mapa_por_uid.get(uid)
+            if m:
                 metodo = (m.get("metodo") or "").strip()
                 resuelto = (m.get("ad_id") or "").strip() or None
                 if metodo == "ad_id_verificado_gasto":

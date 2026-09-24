@@ -53,6 +53,7 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alias as al  # noqa: E402
 import bajar_meta_insights as bmi  # noqa: E402
+from venta_identidad import asignar_venta_uids  # noqa: E402 -- dueño único (T2b), ver su docstring
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -67,9 +68,13 @@ RANGO_AUTORIZADO_INI = "2026-07-01"
 RANGO_AUTORIZADO_FIN = "2026-09-05"
 
 COLS = ["ventana_ini", "ventana_fin", "cuenta_alias", "conjunto", "anuncio", "ad_id",
-        "metodo", "motivo", "spend_lucid", "spend_meta"]
+        "metodo", "motivo", "spend_lucid", "spend_meta", "venta_uid"]
 
 MOTIVOS = ("sin_candidato", "ambiguo", "gasto_no_coincide", "sin_gasto")
+
+# `asignar_venta_uids` (identidad estable de fila, P1-cimientos T2b) vive en su propio módulo
+# `venta_identidad.py` — ver su docstring para el porqué (db/cargar.py la necesita sin arrastrar
+# la cadena de imports de este archivo, que llega hasta pandas vía bajar_meta_insights).
 
 
 # ── lectura ──────────────────────────────────────────────────────────────────────────────────
@@ -100,10 +105,19 @@ def cuenta_id_de(fila):
 
 
 def leer_ventas_sin_ad_id(path=VENTAS_CSV):
+    """Filas BASE sin ad_id válido, cada una con su `_venta_uid` ya calculado sobre el archivo
+    COMPLETO (T2b): el uid se asigna antes de filtrar, para que dos corridas de este script sobre
+    el mismo _FACT_VENTAS.csv (con o sin otras filas ya resueltas) den el mismo uid por fila."""
     with open(path, encoding="utf-8") as f:
-        filas = list(csv.DictReader(f))
-    return [r for r in filas
-            if r.get("rol_ventana") == "BASE" and not ad_id_valido(r.get("ad_id"))]
+        todas = list(csv.DictReader(f))
+    uids = asignar_venta_uids(todas)
+    seleccionadas = []
+    for fila, uid in zip(todas, uids):
+        if fila.get("rol_ventana") == "BASE" and not ad_id_valido(fila.get("ad_id")):
+            fila = dict(fila)
+            fila["_venta_uid"] = uid
+            seleccionadas.append(fila)
+    return seleccionadas
 
 
 def leer_cuentas(path=CUENTAS_CSV):
@@ -290,7 +304,7 @@ def construir_mapa(filas, indice_meta, alias_map):
             "cuenta_alias": f.get("cuenta_alias", ""), "conjunto": f.get("conjunto", ""),
             "anuncio": f.get("anuncio", ""), "ad_id": r["ad_id"], "metodo": r["metodo"],
             "motivo": r["motivo"], "spend_lucid": f.get("spend_usd", ""),
-            "spend_meta": r["spend_meta"],
+            "spend_meta": r["spend_meta"], "venta_uid": f.get("_venta_uid", ""),
         })
     # Orden determinista: mismo input -> mismo CSV byte a byte (idempotente).
     filas_out.sort(key=lambda r: (r["ventana_ini"], r["cuenta_alias"], r["conjunto"], r["anuncio"]))
