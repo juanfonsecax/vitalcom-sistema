@@ -18,7 +18,7 @@ WhatsApp). Este índice y sus secciones son los ANUNCIOS que detienen el scroll 
 | 3 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/03_CUAL_PROMPT_USAR.md` | Qué prompt usar según la fase (tabla FASE 1 vs FASE 2) | lectura humana / onboarding |
 | 4 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/04_PROMPT_CONTROL_FASE1.md` | PROMPT DE CONTROL — FASE 1 (el mismo para los 6 conjuntos) | `etapa-4` FASE 1 |
 | 5 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/05_PROMPT_MAESTRO_FASE2.md` | PROMPT MAESTRO — FASE 2 | `etapa-4` FASE 2, `etapa-9`, `generar-conceptos` |
-| 6 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/06_ESTILOS_ANTIFATIGA.md` | Los 15 estilos anti-fatiga (solo FASE 2) | `etapa-4`, `etapa-6`, `etapa-8`, `etapa-9`, `generar-conceptos` |
+| 6 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/06_ESTILOS_ANTIFATIGA.md` | Los 15 estilos anti-fatiga (solo FASE 2) | `etapa-4`, `etapa-6`, `etapa-7`, `etapa-9`, `generar-conceptos` |
 | 7 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/07_HOOK_VISUAL.md` | Fórmula y estructuras de hook visual | `etapa-4` |
 | 8 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/08_MAPA_VARIABLES.md` | Mapa de variables por fuente | `etapa-4` |
 | 9 | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/09_CONEXION.md` | Quién lee este archivo y para qué | lectura humana / onboarding |

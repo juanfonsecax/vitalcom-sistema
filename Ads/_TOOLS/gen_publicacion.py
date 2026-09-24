@@ -11,8 +11,8 @@ parametros. Un grep lo dice todo:
 
     grep -rl "ads_create" Ads/_TOOLS/     ->  cero resultados
 
-Y ninguna etapa tiene siquiera acceso al conector: ETAPA-6 declara `tools: Read`, ETAPA-7 y
-ETAPA-8 `Read, Glob, Grep`. La descripcion de ETAPA-7 dice que "Meta MCP aporta senales de
+Y ninguna etapa tiene siquiera acceso al conector: ETAPA-6 declara `tools: Read`, ETAPA-7
+`Read, Glob, Grep`. La descripcion de ETAPA-7 dice que "Meta MCP aporta senales de
 entrega" y no puede llamarlo.
 
 El costo de eso esta medido. El 06-sep se publico una campana de TINNIDROP, nadie escribio el

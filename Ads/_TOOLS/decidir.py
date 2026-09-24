@@ -40,9 +40,9 @@ ESTADOS:
 
 REGLAMENTO ÚNICO (09-sep-2026):
   Hasta esa fecha el 35 % de conversación por clic-enlace, el presupuesto de decisión con sus ~3
-  días COD, el máximo de 2 pausas por día y el +20 % de surfing vivían SOLO en prosa (ETAPA-8.md,
+  días COD, el máximo de 2 pausas por día y el +20 % de surfing vivían SOLO en prosa (ETAPA-7.md,
   ESCALADO_PLAYBOOK.md) y este motor no los conocía: dos reglamentos. Hoy todos son filas de
-  _PARAMETROS_DECISION.csv, este motor los ejecuta y verificar_guia_madre.py los vigila. ETAPA-8
+  _PARAMETROS_DECISION.csv, este motor los ejecuta y verificar_guia_madre.py los vigila. ETAPA-7
   consume _DECISIONES.json; no recalcula nada.
 
 USO:
@@ -756,7 +756,7 @@ def aplicar_gate_fase(celdas, fase, pk):
     conjuntos dentro de cada etapa, para no sesgar que gana por dinero: subirle el presupuesto
     a un conjunto en pleno testeo hace ganar al que recibio mas plata, no al mejor. Y el
     invariante 13 ya nombra mover plata como LA accion irreversible. Asi que el estado queda y
-    lo que se marca es `ejecutable`, que es lo que miran etapa-8, el operador y el runner MCP.
+    lo que se marca es `ejecutable`, que es lo que miran etapa-7, el operador y el runner MCP.
 
     En la simulacion de TURMERIC el motor ordeno escalar un conjunto el dia 1, en plena FASE 1.
 

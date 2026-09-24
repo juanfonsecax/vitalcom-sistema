@@ -2,7 +2,7 @@
 
 > **Qué es esto:** cómo está organizada la data del sistema, qué rol cumple cada archivo, cómo se lee sin sacar cifras falsas y cómo se calcula la ganancia. **Salió de `CLAUDE.md` el 31-jul-2026** (refactor de organización): era el 26% del orquestador y se cargaba en cada sesión aunque no se tocara data.
 >
-> **Quién lo lee:** `etapa-7` y `etapa-8` (al leer), `etapa-guardar-producto` (al escribir), `etapa-2` y `etapa-4` (aprendizajes, antes de diseñar), y la auditoría nocturna. El orquestador solo necesita saber que existe.
+> **Quién lo lee:** `etapa-7` (al leer y decidir escalado), `etapa-guardar-producto` (al escribir), `etapa-2` y `etapa-4` (aprendizajes, antes de diseñar), y la auditoría nocturna. El orquestador solo necesita saber que existe.
 >
 > **Regla madre:** los números viven en los CSV. **Prohibido hardcodearlos en un script o en prosa** — dos fuentes de verdad para el mismo número = drift garantizado.
 
@@ -100,8 +100,8 @@ Qué se lanzó, pausó, escaló o cambió y cuándo. Sin esto no se puede calcul
 ### `_APRENDIZAJES.csv` — MEMORIA TRANSVERSAL (capa máquina)
 Lo que el sistema ya aprendió y no debe volver a pagar para descubrir: qué tipo de hook no vende, qué ángulo ya fracasó en qué producto, qué métrica no predice la venta. **Es lo que hace que el sistema mejore con el tiempo en vez de repetir errores caros.**
 - Antes vivían hardcodeados en el prompt de `etapa-7`. Con 4 productos se sostenía; con 20 el agente se vuelve un basurero de excepciones contradictorias. Son DATA, no instrucciones.
-- **Lo leen** `etapa-2` y `etapa-4` (al DISEÑAR: no proponer lo que ya fracasó) y `etapa-7`/`etapa-8` (al LEER). Filtro: `estado=VIGENTE AND (alcance=GLOBAL OR producto_key=[X]) AND '[agente]' IN consumido_por`.
-- **Lo escribe** `etapa-8` cuando un patrón se repite en ≥2 ventanas o ≥2 productos.
+- **Lo leen** `etapa-2` y `etapa-4` (al DISEÑAR: no proponer lo que ya fracasó) y `etapa-7` (al LEER y al decidir escalado). Filtro: `estado=VIGENTE AND (alcance=GLOBAL OR producto_key=[X]) AND '[agente]' IN consumido_por` — para filas anteriores al 24-sep-2026 el agente sigue siendo `etapa-7` O `etapa-8` (misma etapa, fusionada en T3 p2-simplificacion).
+- **Lo escribe** `etapa-7` cuando un patrón se repite en ≥2 ventanas o ≥2 productos.
 - `confianza` ALTA = restricción dura · MEDIA = prior fuerte, se puede contradecir justificando · BAJA/EN_OBSERVACION = solo seguir midiendo. **Un aprendizaje BAJA nunca justifica cambiar una regla del sistema.**
 - Todo aprendizaje lleva `revisar_despues_de` — caducan. Un aprendizaje contradicho NO se borra: pasa a `estado=SUPERSEDIDO` y se crea el que lo reemplaza.
 

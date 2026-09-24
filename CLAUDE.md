@@ -32,12 +32,13 @@ cada subagente: solo lleva lo que aplica siempre.
 Cada etapa es un **subagente real** en `.claude/agents/ETAPA-*.md`. Se invoca con **Task**
 (`subagent_type` = su `name`, ej. `etapa-0`) — nunca por ruta de archivo.
 
-**Las 16 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` (incluye la
+**Las 15 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` (incluye la
 asignación de FanPage, absorbida de la extinta `etapa-fanpage` — T1 p2-simplificacion) · `etapa-3` ·
 `etapa-4` · `etapa-5` · `etapa-6` · `etapa-guardar-producto` ·
-`etapa-7` · `etapa-8` · `etapa-9` · `etapa-10` · `etapa-11` · `etapa-render`
+`etapa-7` (fusiona el extinto monitor/decisión — T3 p2-simplificacion) · `etapa-9` · `etapa-10` ·
+`etapa-11` · `etapa-render`
 
-**Modelo:** 15 etapas declaran `model: inherit` (corren en el modelo que eligió el operador; el
+**Modelo:** 14 etapas declaran `model: inherit` (corren en el modelo que eligió el operador; el
 sistema nunca lo sobrescribe). `etapa-render` corre en `sonnet`: es trabajo mecánico, pero necesita
 leer la imagen terminada, por eso no baja a `haiku`. Fijar un modelo más barato a una etapa es una
 decisión de costo, no del método.

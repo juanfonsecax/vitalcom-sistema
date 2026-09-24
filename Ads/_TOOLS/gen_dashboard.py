@@ -2043,7 +2043,7 @@ footer code{font-family:var(--mono)}
 <details class="fold">
   <summary><h2>Lo que el sistema ya aprendió</h2><span class="sub">__NAPR__ reglas vigentes · abrilo solo si querés revisarlas</span></summary>
   <p class="sub">Memoria acumulada. <strong>Alta</strong> = restricción dura · <strong>media</strong> = prior fuerte · <strong>baja</strong> = solo seguir midiendo, nunca cambiar una regla.
-    Esto lo lee el sistema solo (ETAPA-2 y ETAPA-4 al diseñar, ETAPA-7 y ETAPA-8 al leer) — no hace falta que vos lo repases.</p>
+    Esto lo lee el sistema solo (ETAPA-2 y ETAPA-4 al diseñar, ETAPA-7 al leer) — no hace falta que vos lo repases.</p>
   <ul class="aprs">__ROWSAPR__</ul>
 </details>
 
