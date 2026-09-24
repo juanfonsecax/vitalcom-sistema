@@ -1,9 +1,9 @@
 ## 3. PALANCAS DE ESCALADO — en el orden que las aplican los mentores
 
-> 🔴 **ESTRUCTURA DE ARRANQUE DEL ESCALADO — actualizada 2026-09-02.** El escalado (FASE 3) ya no
+> 🔴 **ESTRUCTURA DE ARRANQUE DEL ESCALADO.** El escalado (FASE 3) ya no
 > arranca con 6 conjuntos de microángulos: arranca con **1-1-7** — una campaña, un conjunto, el
-> creativo validado **siete veces** (Post ID o subido de cero), a **$15-18/día**. Fuente: M-A10
-> (clase 22-ago). Spec completo en `.claude/agents/ETAPA-6.md` → *Output FASE 3*.
+> creativo validado **siete veces** (Post ID o subido de cero), a **$15-18/día**. Fuente: M-A10.
+> Spec completo en `.claude/agents/ETAPA-6.md` → *Output FASE 3*.
 > Las palancas de abajo se aplican **sobre** esa estructura, no en vez de ella.
 >
 > **Cuatro reglas nuevas que gobiernan toda esta sección:**
@@ -23,9 +23,7 @@
 Cuando hay ganador validado, se sube por esta escalera (no todas de golpe):
 
 1. **Optimizar el flujo hacia el ángulo ganador** (Clase 15 + **Clase 22, la más reciente de flujo**): apuntar el bot de Lucid al ángulo con más clics, **apagar los conjuntos de ángulos que no funcionan** (a veces sirven 2-3). Sube la conversión y baja el CPA — "convertir más sin gastar más" (Clase 22). Esto va PRIMERO, antes de gastar más. **Cómo optimizar el flujo (Clase 22):** título impactante + beneficio + resultado deseado congruentes con el anuncio (si el flujo dice algo distinto a lo pauteado → efecto rebote, se sale); reducir fricción (garantía 30 días, CTA con beneficio, prueba social con imágenes de uso); 6-8 propuestas de valor (Problema+Solución+Resultado); respetar el **umbral cognitivo** (no saturar la imagen); **momentos** antes→después; responder en 2-3 seg (no 15). Detalle en ETAPA-5.
-   > 🔴 **ESTA PALANCA YA TIENE DUEÑO Y MÉTODO (02-sep): `.claude/agents/ETAPA-11.md`.** Hasta hoy
-   > estaba enumerada sin decir cómo se mide, con qué se compara ni quién la ejecuta — y era la
-   > brecha más cara del sistema (choque C-10 de la matriz). `etapa-11` corre **al confirmar el
+   > 🔴 **ESTA PALANCA TIENE DUEÑO Y MÉTODO: `.claude/agents/ETAPA-11.md`.** `etapa-11` corre **al confirmar el
    > ángulo ganador**, mide el **CIERRE** (mensajes → ventas) por `angulo_key` con piso de
    > evidencia, separa el problema **pre-clic** del **post-clic**, audita la congruencia ad ↔ bot
    > punto por punto, lee los chats y entrega el **brief priorizado** a `etapa-5` — que escribe los
@@ -40,17 +38,17 @@ Cuando hay ganador validado, se sube por esta escalera (no todas de golpe):
    > ⚠️ **Nunca suavizar el flujo por compliance** — eso aplica solo a los ADS. Post-clic la
    > prioridad es conversión.
 2. **Surfing del 20% diario** (Clase 8 y 15): cada mañana, a **TODO lo que vendió**, subir **+20%** del presupuesto del conjunto. Nunca más de 20% (desoptimiza). Es la optimización diaria por default.
-   > ⚠️ **El +20 % VARIAS veces al día** (M-B03, clase 22-ago: subir cada 2-3 horas hasta las 2-3 PM
-   > mientras el CPA siga bajo) está **CONGELADO**, no rechazado. Razón: APR-057 — la ventana
-   > 14-16 ago subió el gasto **+63 %** y compró **0.3 ventas/día más**, partiendo la ganancia al
-   > medio. El mentor escala rápido **porque tiene el banco de conceptos alimentando la campaña**;
-   > copiar su cadencia sin su línea de producción reproduce el 14-16 de agosto.
+   > ⚠️ **El +20 % varias veces al día** (subir cada 2-3 horas hasta las 2-3 PM
+   > mientras el CPA siga bajo) está **CONGELADO**, no rechazado: subir el gasto rápido sin una
+   > línea de producción de creativos detrás desoptimiza el CPA — el mentor escala rápido
+   > **porque tiene el banco de conceptos alimentando la campaña**; copiar su cadencia sin su
+   > línea de producción no rinde igual.
    > **Se descongela cuando la fábrica (`etapa-9`) sostenga ≥6 creativos/día.** Ver choque C-02 de
    > `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 3. **Renovar/crear creativos del ángulo ganador** (Camilo: "la variable #1 del éxito"): mandar a hacer **10-40 creativos** más del mismo ángulo con conceptos/formatos distintos. Ver §4. Es la palanca más importante para sostener CPA bajo al escalar.
 4. **Duplicar el CONJUNTO ganador** (Clase 8, agresivo): 16k→32k→64k (o el equivalente en Q). Sube el CPA un poco; compensar con creativos nuevos. A veces se duplica ×4 y salen 5 conjuntos; no todos venden, 2-3 sí.
 5. **Post ID / publicar en la página** para conservar **prueba social** (Clase 15 + Clase 8): el anuncio ganador acumula likes/comentarios. Duplicar con **Post ID** ("usar publicación existente") o —mejor hoy porque Meta a veces borra reacciones al duplicar— **publicar el creativo directo en la fanpage** y usar "crear anuncio con publicación existente"; al llevarlo a otra cuenta hereda las reacciones sin Post ID.
-   > 🔴 **HECHO NUEVO DE PLATAFORMA (M-C07, clase 22-ago).** **En campañas con objetivo Ventas
+   > 🔴 **HECHO DE PLATAFORMA.** **En campañas con objetivo Ventas
    > (`OUTCOME_SALES`) Meta ya no deja extraer el Post ID** — los posts se volvieron dinámicos.
    > Tráfico e Interacción sí lo siguen dando. **Workaround:** duplicar el anuncio en una campaña
    > NUEVA (no dentro de la misma), esperar a que pase revisión y ahí sacar el Post ID.

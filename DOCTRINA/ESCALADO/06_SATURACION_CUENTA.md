@@ -2,8 +2,7 @@
 
 > Un ángulo ganador **NO rinde igual en todas las cuentas**. Nunca se lee agregado: se lee **cuenta
 > por cuenta**. Esta sección la ejecuta ETAPA-8 antes de proponer cualquier duplicación, y ETAPA-7 la
-> calcula. Historia (el caso TINNIDROP que originó la regla):
-> `_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §5.
+> calcula.
 
 **PROCEDIMIENTO — matriz ÁNGULO × CUENTA:**
 1. Armar la matriz: filas = ángulos, columnas = cuentas, celdas = ventas + CPA real de esa combinación.

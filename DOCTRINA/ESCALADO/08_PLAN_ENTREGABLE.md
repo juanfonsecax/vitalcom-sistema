@@ -1,7 +1,6 @@
 ## 7. FASE 3 — ENTREGABLE FIJO: `PRODUCTOS/[NOMBRE]/4_PLAN_ESCALADO.txt`
 
 > El escalado necesita archivo y plantilla fija, igual que FASE 1: sin eso cada plan sale distinto.
-> Historia: `_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §7.
 
 **ESQUEMA DE ARCHIVOS POR PRODUCTO (fijo, no cambia entre productos):**
 | Archivo | Rol | Cuándo se crea |
@@ -11,8 +10,7 @@
 | `3_CAMPAÑA_META.txt` | llave técnica: IDs de campaña/conjuntos/anuncios/creativos y Post IDs | al crear por MCP |
 | **`4_PLAN_ESCALADO.txt`** | **el plan de FASE 3** — se SOBRESCRIBE en cada ciclo de escalado | al declarar ganador |
 
-⚠️ El slot `3_` es **solo** para IDs de Meta. Nunca meter ahí el plan de escalado (historia:
-`_CONOCIMIENTO/POSTMORTEMS/ESCALADO_PLAYBOOK_historias.md` §7).
+⚠️ El slot `3_` es **solo** para IDs de Meta. Nunca meter ahí el plan de escalado.
 
 **PLANTILLA OBLIGATORIA de `4_PLAN_ESCALADO.txt`** (ETAPA-8 la llena; se sobrescribe, no se acumulan versiones):
 ```
@@ -29,8 +27,8 @@ CPA real semanal (LucidSales, del _FACT_VENTAS.csv) · integridad de ventana: X/
 6. CREATIVOS (§4) — el POR QUÉ ganó + brief de 3-5 conceptos nuevos para ETAPA-4
 6b. BANCO DE MICROÁNGULOS (ETAPA-3, PASO 0 de fase-3-escalado) — los 8-12 MICROÁNGULOS del
     ángulo ganador con su frase de apertura, tal como los entregó ETAPA-3 (banco de copy de la
-    expansión horizontal). Este bloque es lo que `flujo.py` verifica en `F3.plan` (T8-4,
-    23-sep-2026): sin él, el output de ETAPA-3 no queda con ningún consumidor visible en disco.
+    expansión horizontal). Este bloque es lo que `flujo.py` verifica en `F3.plan`: sin él, el
+    output de ETAPA-3 no queda con ningún consumidor visible en disco.
 7. PRECIO — subir gradual / mantener
 8. ORDEN DE EJECUCIÓN — checklist numerado con [ ] para tildar
 9. QUÉ APRENDIMOS — lo que NO volver a probar en este producto

@@ -1,6 +1,6 @@
 ## 7b. EXPLORACIÓN DE ÁNGULOS NUEVOS MIENTRAS SE ESCALA (F3.exploracion, P12)
 
-Decisión del operador, 22-sep-2026: escalar el ganador no significa dejar de buscar el próximo.
+Escalar el ganador no significa dejar de buscar el próximo.
 Mientras F3 escala, corre en PARALELO un mini-F1 FIJO de `exploracion_n_angulos`
 (`_PARAMETROS_DECISION.csv`, default 3) ángulos que el producto **nunca probó** — misma
 exclusión que `reingreso_f1.py`/`_angulos_probados()` — cada uno en su propio conjunto ABO al

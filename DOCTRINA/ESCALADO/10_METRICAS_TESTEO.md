@@ -3,9 +3,9 @@
 > **Los valores vigentes viven en `PRODUCTOS/_PARAMETROS_DECISION.csv` y los ejecuta `Ads/_TOOLS/decidir.py`**
 > (`umbral_conv_clic_enlace_pct`, `min_link_clicks_conv`, `max_pausas_por_dia`, `dias_min_cod_pausa_ventas`,
 > `factor_tolerancia_pd`, `surfing_pct`). Este texto es la doctrina que los justifica; si difieren, manda el CSV
-> y `verificar_guia_madre.py` lo canta. Desde el 09-sep-2026 ninguna etapa recalcula estos umbrales en prosa.
+> y `verificar_guia_madre.py` lo canta. Ninguna etapa recalcula estos umbrales en prosa.
 
-> Movidas desde `CLAUDE.md` el 31-jul-2026. **Este archivo es el dueño**: `etapa-6`, `etapa-7` y `etapa-8` leen los umbrales de acá, no los duplican. Sirven para diagnosticar por qué un ángulo gana o falla; el orquestador las interpreta antes de activar `etapa-3`. El operador entrega los datos de los 6 conjuntos en estos términos.
+> **Este archivo es el dueño**: `etapa-6`, `etapa-7` y `etapa-8` leen los umbrales de acá, no los duplican. Sirven para diagnosticar por qué un ángulo gana o falla; el orquestador las interpreta antes de activar `etapa-3`. El operador entrega los datos de los 6 conjuntos en estos términos.
 
 **Métrica 1 — % Conversación por Clic en Enlace** *(la más importante)* — `Conversaciones ÷ Clics × 100`
 - < 35% → problema en el flujo del bot o incoherencia anuncio-bot (revisar `etapa-5`)

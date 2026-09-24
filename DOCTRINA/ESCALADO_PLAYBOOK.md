@@ -1,4 +1,4 @@
-# ESCALADO_PLAYBOOK — ÍNDICE (T2 p2-simplificacion, 24-sep-2026)
+# ESCALADO_PLAYBOOK — ÍNDICE
 
 > Este archivo dejó de llevar la doctrina completa: es un ÍNDICE. El texto original (verbatim, sin
 > reescribir ni una palabra) vive partido por sección en `DOCTRINA/ESCALADO/`, un archivo por
