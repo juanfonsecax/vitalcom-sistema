@@ -368,7 +368,7 @@ ciclo-diario 210,233 · cold start 8,901.
   OVULOS_PURITY. The etapa-4 "cura" and the fused etapa-7 known failures stay (they are not
   pre-22-sep plans). Route: delegated writer W1.
 - [x] T4b — DOCTRINA/** + CLAUDE.md cleanup. Route: delegated writer W1 (this pass).
-- [ ] T4c — .claude/agents + .claude/skills cleanup. Route: delegated writer W2 (after W1).
+- [x] T4c — .claude/agents + .claude/skills cleanup. Route: delegated writer W3 (after W1+W2).
 - [ ] T4d — Pruning protocol: the parent re-runs every etapa that has a fixture and whose
   prompt or inherited doctrine changed (2, 4, 5, 6, 7, 9, guardar-producto) on the frozen
   inputs. The new output must pass the same assert. Then run gen_grafo --comparar. Etapas
@@ -542,8 +542,167 @@ Of these, per T4d's fixture list: `etapa-2`, `etapa-4`, `etapa-6`, `etapa-7`,
 `etapa-11` are mixed (some have fixtures per T4d's earlier list, `etapa-5`/`etapa-11` do not) —
 T4d's own per-etapa list is the source of truth, this is only the file→etapa map for it.
 
+### T4c — writer W3 evidence (commits 05da541, 541fc22, 3c92512, eab196b, a471498)
+
+Route: delegated writer W3 — trigger: 2+ non-trivial files (4 content commits across 17 files +
+1 chore commit). Scope: `.claude/agents/*.md` (15 files) and `.claude/skills/*/SKILL.md` (9
+files) — the only zones T4b's writers left untouched. Read `arqueologia_inventario.json` from
+the mapper's scratchpad (line-numbered per-file hits, no text/class — every judgment below is
+this writer's own, re-derived from context, same as W1/W2 report).
+
+**Work unit 1 — ETAPA-2/4/6 creation etapas (commit 05da541).** ETAPA-2.md: dropped the
+`(absorbido de ETAPA-FANPAGE, T1 p2-simplificacion)` heading tag, the "idéntico al que producía
+antes ETAPA-FANPAGE" narration, `(corregida 02-sep)`/`(agregado 02-sep — M-E06, clase 22-ago)`/
+`(regla corregida 19-ago …)` tags, and genericized the TINNIDROP `[APR-008]` example.
+ETAPA-4.md: dropped `(22-sep-2026)`/`(19-ago)` decision tags and the "Cambio del 02-sep-2026"
+paragraph, keeping only the still-live rule (ángulo+copy fijos en FASE 2, microángulos alimentan
+FASE 3/etapa-9). ETAPA-6.md (largest, 20 date hits + 6 product hits): dropped date tags on 3
+headings (`BANDA DE EDAD`, `TRES REGLAS…`, `Reglas de la arquitectura de 3 fases`,
+`OUTPUT OBLIGATORIO…`), the "(Antes del 15-sep-2026 esta tabla vivía triplicada…)" and "Por qué
+existe (caso real 2026-08-01)" incident paragraphs (compressed to the still-true rationale),
+M-A10/M-B03 mentor-class date suffixes, and genericized `tinnidrop 6` / `tinnidrop 6 - Copia` to
+`producto 6`. **Fixed one stale reference found in passing** (not just archaeology): ETAPA-6.md
+line 104 still pointed at the deleted `ETAPA-FANPAGE.md` (T1 removed that file, but this pointer
+survived) — repointed to `ETAPA-2.md §ASIGNACIÓN DE FANPAGE`, the current owner. ETAPA-5.md: **no
+edits** — its 3 product hits (CLEARSTEM ×2, TINNIDROP ×1) are live operational-status references
+("CLEARSTEM y TINNIDROP siguen renderizando mientras se retrocompletan") and a canonical fixture
+pointer ("la referencia de largo y tono es la fila de CLEARSTEM"), not archaeology; no date hits.
+
+**Work unit 2 — ETAPA-7/9/GUARDAR-PRODUCTO ops etapas (commit 541fc22).** ETAPA-7.md: dropped the
+T3-fusion history paragraph ("Antes esto eran dos etapas… se fusionaron el 24-sep-2026"), 5 more
+date/task-tag citations (`g07-cimientos T2, 22-sep-2026`, `desde 25-jul`, `cambió el
+2026-07-25`, `auditadas 02-sep…Q2,622`, `decisión del 09-sep-2026`), and genericized 4 examples
+(`caso Nusava`, `caso real CLEARSTEM 10-jul`, `TINNIDROP "se corrió" tres veces`, `tinnidrop-1
+78%→0v`). Kept the `gasto.py` `2026-09-06` cutoff verbatim (F-anchor) and the `APR-009 en
+TINNIDROP` citation (real per-product learning row, not narration). ETAPA-9.md: compressed the
+"Por qué existe" origin story (14 subagentes, 8 doctrina, 64 aprendizajes, 15 CSV vs 19
+creativos) to the still-actionable benchmark numbers, genericized the TINNIDROP-26-jul PNG
+example (kept 8/1/7/26 as numbers), and replaced the M-D06 "clase 16-ago" mentor quote with a
+present-tense statement of the technique — verified steps 1-3 below it already carry the full
+method, so nothing was lost. ETAPA-GUARDAR-PRODUCTO.md: genericized the `31-jul` NUSAVA
+`csv.DictWriter` bug example (kept 20/17 field counts) and replaced the stale "Estado al
+2026-09-02: 7 de 8 productos pasan" snapshot (a point-in-time status, not a rule, and one that
+predates today) with a dateless, product-generic illustration of the same silent-drift failure
+mode.
+
+**Work unit 3 — remaining .claude/agents (0, 1, 3, 10, 11, render, producto) (commit 3c92512).**
+ETAPA-0.md: 1 date tag removed. ETAPA-1.md: `UNA SOLA ESCALERA`/`COSTEO_COMPLETO_VITALCOM`/
+`GARANTÍA COMO PALANCA` headings de-dated; genericized 3 repeated TINNIDROP/NUSAVA/CLEARSTEM
+row-selection worked examples and 2 VARICOSE combo-pricing examples (all numbers kept
+byte-identical). ETAPA-3.md: compressed the `etapa-3a`/`etapa-3b` merge-history story to a
+present-tense justification (the input/output chaining argument, without the `2026-09-02` merge
+date). ETAPA-10.md: dropped `clase 22-ago` and the T3-fusion tag. ETAPA-11.md (7 date hits + 2
+product hits — most sensitive file, protected by `test_ab_flujo.py`'s PASO 6/7 token gate):
+removed `Decisión del operador (02-sep)`, the `hasta el 16-sep-2026` design-history tag (kept the
+GEMELOS evidence table and every protected token untouched), and genericized the VARICOSE
+envase-mismatch example in both places it appears (PASO 0 and the Reglas fijas list) so the two
+stay consistent. Left the two `17-jul → 01-sep-2026` close-rate measurement windows untouched —
+they define the actual evidence window behind the 8.6%/15-20% numbers, not incident narration
+(same call as APR-060 tables W1/W2 kept). ETAPA-RENDER.md: removed the 1 incident date
+("Pasó el 07-sep-2026 en la primera corrida"). ETAPA-1B.md and ETAPA-PRODUCTO.md: confirmed
+clean (0 hits in the mapper inventory, 0 found on a manual date-pattern re-scan).
+
+**Work unit 4 — .claude/skills/*/SKILL.md (commit eab196b).** 8 of 9 skills had hits
+(`buscar-producto` had none). `ciclo-diario`: 3 headings de-dated, `caso NusavaB12`/`TINNIDROP
+26 días`/`NUSAVA del 31-jul` genericized. `fase-1-angulos`/`fase-2-conceptos`/`fase-3-escalado`:
+the shared `## EL FLUJO DICTA (desde el 09-sep-2026)` heading de-dated identically in all three
+(not renamed structurally, just the date suffix — none of the three headings are cross-referenced
+by name elsewhere); genericized the `5. Nusava B12.mp4` filename example (same pattern W2 used
+for `ETAPA-RECOLECCION.md`) and dropped the `T8-4 (23-sep-2026)`/`clase 22-ago` tags.
+`generar-conceptos`: 1 decision-date tag removed. `generar-imagenes-chatgpt` (6 hits): compressed
+the "Esto costó tres corridas el 08-sep-2026" CN01 incident narrative to its operative rule,
+dropped 2 more incident dates, kept the REG_MSPAS/REG_FDA values untouched (F-anchor).
+`publicar-meta`: genericized 3 incident examples ($23.46/10 anuncios/$166) to "caso real",
+numbers kept. `recopilar-lucidsales` (10 hits, the most in any skill): de-dated 4 headings/labels,
+compressed a 5-date calibration list (`06/14/15/16/20-sep-2026`) to its operative percentage
+range (0.65-0.75), and de-dated 2 more incident notes. Left the 2 `--fecha 2026-09-0N` CLI
+canonical examples untouched (F-anchor).
+
+**Frontmatter cases found:** none. No agent or skill frontmatter (`name`/`description`/`tools`/
+`model`) carried a date or archaeology tag in this scope.
+
+**Judgment calls diverging from a literal per-hit read (mapper inventory had no text/class, only
+line numbers — every call below is this writer's own):**
+- Kept measurement-window evidence with real dates where the dates ARE the definition of the
+  measured window (ETAPA-11's `17-jul → 01-sep-2026` close-rate series; ETAPA-7's `APR-060`-style
+  evidence is already handled by W1/W2's ESCALADO split). Removed dates that were pure "when this
+  was decided/detected/changed" tags layered on top of an already-stated rule.
+- Fixed the dead `ETAPA-FANPAGE.md` pointer in ETAPA-6.md (a T1-leftover bug, not just
+  archaeology) rather than leaving a broken reference under an archaeology-only mandate.
+- Replaced ETAPA-GUARDAR-PRODUCTO.md's stale "Estado al 2026-09-02: 7 de 8 productos pasan"
+  status line rather than just stripping its date, since the claim itself is a point-in-time
+  snapshot (not a standing rule) that is likely already false 3 weeks later; kept the underlying
+  illustration of what silent drift looks like.
+- Left ETAPA-5.md fully unedited — its only 3 inventory hits are live operational references, not
+  narration, so there was nothing to remove without inventing a change.
+
+**Verification after every commit:** `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` → 42
+passed on all 4 commits (unchanged from the T4-open baseline) · `python
+Ads/_TOOLS/test_ab_flujo.py` → 0 fallas after the ETAPA-11.md/ETAPA-5.md edits (GEMELOS,
+ab_flujo.py, _TESTEOS.csv, test_id all present in PASO 6; old-design phrase absent; ETAPA-5 still
+has `gemelo`) · `python Ads/_TOOLS/verificar_guia_madre.py` → same 1 pre-existing failure
+(`exploracion_n_angulos`) on all 4 commits · `python Ads/_TOOLS/gen_grafo.py --comparar` → no
+orphans, no dead routes, every delta negative or zero, on all 4 commits · `python
+evals/run_baseline.py` → `TOTAL=28 PASS=26 FALLO-CONOCIDO=2 FAIL=0` unchanged across all 4
+commits · `python Ads/_TOOLS/flujo.py --todo` (read-only, no `--escribir`) → same 5 products, same
+node names/gates/sequences before and after every commit (spot-checked OVULOS_PURITY throughout).
+Baseline re-saved with `--escribir` in a separate `chore(auditorias)` commit (a471498), matching
+W2's pattern.
+
+**Token deltas — T4c-only (gen_grafo --comparar vs the T4-open-after-T4b baseline, i.e. after
+W1+W2's `284,693 / 371,902 / 228,222 / 207,187 / 8,859`):**
+fase-1 −528 (284,693→284,165) · fase-2 −710 (371,902→371,192) · fase-3 −765 (228,222→227,457) ·
+ciclo-diario −500 (207,187→206,687) · cold start = (8,859→8,859, unchanged).
+
+**ABSOLUTE per-phase totals and deltas vs the ORIGINAL 801f650 baseline (f1 289,432 · f2 377,865
+· f3 232,110 · ciclo 210,233 · cold start 8,901), computed explicitly as instructed:**
+
+| Phase | 801f650 baseline | Current (end of T4c) | Delta |
+|---|---|---|---|
+| fase-1-angulos | 289,432 | 284,165 | **−5,267** |
+| fase-2-conceptos | 377,865 | 371,192 | **−6,673** |
+| fase-3-escalado | 232,110 | 227,457 | **−4,653** |
+| ciclo-diario | 210,233 | 206,687 | **−3,546** |
+| arranque en frío (cold start) | 8,901 | 8,859 | **−42** |
+
+Zero orphans (`.md sin consumidor: ninguno`), zero dead routes, 15 agentes / 9 skills / 39 CSV
+(unchanged inventory shape from T3's close).
+
+## T4d — fixture package for the parent's re-run (this section is data for T4d, not T4d itself)
+
+For each fixture-backed etapa T4c touched, the fixture path(s) and the frozen-input package that
+produced them (per `evals/README.md`'s "Protocolo de poda" and the P2 doc's T1-T3 re-run notes):
+
+- **`etapa-2`** — `evals/fixtures/etapa-2/{CLEARSTEM,NusavaB12,OVULOS_PURITY}.txt`. Frozen inputs:
+  each product's `2_DATA_PRODUCTO.txt` §ÁNGULOS/§CONJUNTOS sections (T2's own list; unchanged by
+  T4c) + `PRODUCTOS/_DIM_FANPAGES.csv` for the FanPage assignment section T4c edited.
+- **`etapa-4`** — `evals/fixtures/etapa-4/TINNIDROP.txt` (+ `SOURCE.txt`). Frozen inputs:
+  `PRODUCTOS/TINNIDROP/1_HACER_MANUAL.txt` §PARTE 4, same as T2's list — T4c only touched
+  ETAPA-4.md's F1/F2 framing prose, not the copy-structure rules the fixture checks.
+- **`etapa-6`** — `evals/fixtures/etapa-6/{CLEARSTEM,NusavaB12,TINNIDROP,OVULOS_PURITY}.json` —
+  full `_PLAN.json` inputs per product, same as T2's list. T4c edited BANDA DE EDAD, CONVENCIÓN DE
+  NOMBRES and the FASE 3 escalado block; the `_PLAN.json` schema/values referenced are unchanged.
+- **`etapa-7`** — `evals/fixtures/etapa-7/{TINNIDROP,TINNIDROP_FUSIONADO}.txt` (+ `SOURCE*.txt`).
+  Frozen inputs: `PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt` §PASO 3 (T2's list) for the
+  non-fused fixture; the `TINNIDROP_FUSIONADO` fixture is T3's own frozen 2026-09-08 audit excerpt.
+  T4c only touched ETAPA-7.md's sourcing/history prose (JERARQUÍA DE FUENTES framing, PASO 1
+  callouts) — no PASO 4/5 template wording changed, so both existing asserts (`etapa-7.py`,
+  `etapa-8.py` via the fused test) should still apply unchanged.
+- **`etapa-9`** — `evals/fixtures/etapa-9/TINNIDROP.csv` (+ `SOURCE.txt`). Frozen inputs:
+  `PRODUCTOS/_DIM_CREATIVOS.csv` tanda inputs for TINNIDROP, day 2026-09-06 (T2's list). T4c edited
+  the "Por qué existe" rationale and the PASO 2-BIS video-to-image technique framing, not PASO 3's
+  delegated-fill contract the assert checks.
+- **`etapa-guardar-producto`** — `evals/fixtures/etapa-guardar-producto/{CLEARSTEM,NusavaB12,
+  TINNIDROP,OVULOS_PURITY}.json`. Frozen inputs: each product's top-level file manifest (T2's
+  list). T4c only touched SALIDA 5's bug-example/status-snapshot prose, not the file-role
+  vocabulary or the gate script's behavior.
+- **`etapa-5`** — not re-run-relevant: T4c made no edits to ETAPA-5.md.
+
+Etapas T4c edited without a fixture (per T4d's own list, disclosed not hidden): `etapa-0`,
+`etapa-1`, `etapa-3`, `etapa-10`, `etapa-11`, `etapa-render`. `etapa-11` additionally has the
+non-eval `test_ab_flujo.py` structural gate, which already passed (see Verification above).
+
 ## Next step
-T4c — .claude/agents + .claude/skills cleanup, writer W3 (after W1+W2). All DOCTRINA/CLAUDE.md
-archaeology cleanup (T4b) is now closed by W1+W2: nothing left unedited except files judged
-not-archaeology (`PARAMETRIZACION_ADS.md`, `PLANTILLAS_DEFAULTS_OPERADOR.md`'s REG values, GUIA
-MADRE's Fuente column).
+T4d — the parent re-runs the fixture-backed etapas above on their frozen inputs and confirms the
+existing asserts still pass, then runs `gen_grafo.py --comparar` once more for a final sanity
+check. After T4d, T4e (read-only re-packaging proposal) is the last open item.
