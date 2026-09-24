@@ -72,8 +72,8 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-2.py}]
     metadata: {etapa: etapa-2, producto: OVULOS_PURITY}
 
-  # ---- etapa-fanpage ----------------------------------------------------------
-  - description: "etapa-fanpage / CLEARSTEM — página asignada existe en el catálogo de 10"
+  # ---- etapa-fanpage (retargeted T1 p2-simplificacion: el juicio hoy vive en etapa-2, ver evals/README.md) ----
+  - description: "etapa-fanpage / CLEARSTEM — página asignada existe en el catálogo de 10 (hoy PRODUCTOS/_DIM_FANPAGES.csv)"
     vars: {content: file://fixtures/etapa-fanpage/CLEARSTEM.txt}
     assert: [{type: python, value: file://asserts/etapa-fanpage.py}]
     metadata: {etapa: etapa-fanpage, producto: CLEARSTEM}

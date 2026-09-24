@@ -52,7 +52,7 @@ compatible con ambos.
 | etapa-1 (costeo) | CLEARSTEM, NusavaB12, TINNIDROP, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §COSTEO |
 | etapa-1b (componentes/voz) | NusavaB12, TINNIDROP, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §COMPONENTES / §VOZ DEL CLIENTE |
 | etapa-2 (6 ángulos) | CLEARSTEM, NusavaB12, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §ÁNGULOS / §CONJUNTOS |
-| etapa-fanpage | CLEARSTEM | `2_DATA_PRODUCTO.txt` §FANPAGE ASIGNADA |
+| etapa-fanpage (retargeted, T1 p2-simplificacion — ver nota abajo) | CLEARSTEM | `2_DATA_PRODUCTO.txt` §FANPAGE ASIGNADA |
 | etapa-4 (copy FASE 1) | TINNIDROP | `1_HACER_MANUAL.txt` §PARTE 4 — MEDIA + COPIES DE LOS 6 CONJUNTOS (los 3 conjuntos nuevos) |
 | etapa-6 (`_PLAN.json`) | CLEARSTEM, NusavaB12, TINNIDROP, OVULOS_PURITY | `_PLAN.json` completo |
 | etapa-5 (bot LucidBot) | CLEARSTEM, TINNIDROP | `FLUJO_LUCIDBOT.md` completo |
@@ -101,6 +101,23 @@ este eval no existía ningún chequeo automatizado de compliance de copy. El
 assert quedó estricto: el hallazgo queda documentado en
 `promptfooconfig.yaml` para que quien toque `ETAPA-4.md` decida si el título
 se corrige, no se reescribió el fixture ni se relajó el assert para taparlo.
+
+## Retargeting T1 (p2-simplificacion, 23-sep-2026) — `etapa-fanpage`
+
+El agente `.claude/agents/ETAPA-FANPAGE.md` se eliminó: sus 10 páginas pasaron a
+DATA en `PRODUCTOS/_DIM_FANPAGES.csv` y su JUICIO de asignación (reglas F1-F5)
+se absorbió en `.claude/agents/ETAPA-2.md` §ASIGNACIÓN DE FANPAGE, que emite el
+mismo bloque `<pagina_asignada>` que consumían ETAPA-4/5/6. El fixture
+`fixtures/etapa-fanpage/CLEARSTEM.txt` sigue siendo el output REAL congelado
+del agente extinto (no se reescribe: sigue probando el mismo contrato de
+formato). Lo único que cambió es `asserts/etapa-fanpage.py`: antes cruzaba el
+nombre de página contra la doctrina de `ETAPA-FANPAGE.md` (ya no existe); ahora
+cruza contra `PRODUCTOS/_DIM_FANPAGES.csv` (columna `pagina_nombre`) — el
+mismo catálogo cerrado, ahora en su dueño de datos. El assert no se debilitó:
+sigue exigiendo que una de las 10 páginas reales aparezca citada en el output.
+El ID del test (`etapa-fanpage / CLEARSTEM`) se mantiene por honestidad
+histórica del fixture; su contrato de facto hoy es el `<pagina_asignada>` que
+produce `etapa-2`.
 
 ## Protocolo de poda (para cuando se toque un prompt de ETAPA-*.md)
 
