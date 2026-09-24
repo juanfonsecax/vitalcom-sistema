@@ -53,6 +53,14 @@ stresses.
   the text of the first customer message, so the prefilled text can change freely. The Meta MCP
   `ads_create_creative` has no field for it, so it stays a manual step in Ads Manager. Route:
   delegated (2+ non-trivial files).
+- [x] T4 — Value propositions: real automatic lock (operator-approved 23-sep). T2's
+  `--propuestas ARCHIVO` flag never ran on its own — etapa-5 writes the propositions in chat and
+  nothing persisted them, so the count was opt-in, not a lock. `etapa-guardar-producto` now
+  persists them verbatim into a "PROPUESTAS DE VALOR" section of `2_DATA_PRODUCTO.txt`, and
+  `gen_flujo_bot.py` resolves the product's folder via `_DIM_PRODUCTOS.csv` (invariant 10) and
+  reads that section automatically, with no flag. Route: delegated (trigger: 2+ non-trivial
+  files — gen_flujo_bot.py + test_gen_flujo_bot.py + PLANTILLAS_FLUJO_BOT.md +
+  ETAPA-GUARDAR-PRODUCTO.md + ETAPA-5.md + ETAPA-11.md).
 
 ## Acceptance criteria
 - T1: a test with a dedicated fixture shows each level's instruction; missing or conflicting
@@ -61,6 +69,9 @@ stresses.
 - T3: tests show the text renders with the product name and GT registry; CO market yields
   INVIMA; missing registry blocks; the section is absent from `--copy`; CLEARSTEM/TINNIDROP
   still pass.
+- T4: tests show persisted <6 -> block, 6-20 -> pass, >20 -> warn, section/file/folder absent ->
+  warning only; folder resolved via `_DIM_PRODUCTOS.csv` (not by name); `--propuestas ARCHIVO`
+  still overrides persisted data; CLEARSTEM/TINNIDROP (no section declared yet) still pass.
 - Full suite green.
 
 ## Backlog (deferred, not authorized)
@@ -158,3 +169,35 @@ stresses.
     (`FLUJO_BOT_FALSO`), not the real generator, and asserts only on `dict`-typed fields — read
     as evidence the JSON contract change is inert there, but the actual backend suite result is
     PENDING (not confirmed pass/fail by this session).
+- 23-sep: T4 delivered by delegated writer (route: delegated, trigger: 2+ non-trivial files —
+  gen_flujo_bot.py + test_gen_flujo_bot.py + PLANTILLAS_FLUJO_BOT.md +
+  ETAPA-GUARDAR-PRODUCTO.md + ETAPA-5.md + ETAPA-11.md). Commit `94ad12e` — feat(gen_flujo_bot):
+  read persisted value propositions from 2_DATA_PRODUCTO. A prior attempt on this task died from
+  a rate limit before writing anything; tree was clean at `8d2f64d` when this attempt started.
+  - Design — persistence format: a `━━━ PROPUESTAS DE VALOR (ETAPA-5 Paso 1) ━━━` section in
+    `2_DATA_PRODUCTO.txt`, same "━━━ TITULO ━━━" style already used for COSTEO/COMPONENTES in
+    that file (`ETAPA-GUARDAR-PRODUCTO.md` ARCHIVO 2 template + gate row 9). One proposition per
+    line, closed by the next `━`-prefixed line or EOF — no dependency on a fixed rule length
+    (the file already uses rules of different lengths for different sections). etapa-5's Paso 1
+    now says explicitly to deliver a clean, unnumbered, uncommented list so
+    etapa-guardar-producto transcribes it verbatim (invariant 3).
+  - Design — folder resolution: added `gen_flujo_bot.py:carpeta_de(pk)`, same pattern as
+    `armar_prompts_fase2.py:carpeta_de()` (reads `slug_carpeta` from `_DIM_PRODUCTOS.csv`,
+    invariant 10) — no shared importable helper exists between `Ads/_TOOLS` scripts for this, so
+    the established per-script pattern was followed rather than inventing a new one.
+  - Design — `--propuestas ARCHIVO` kept, not removed: it still earns its place as an explicit,
+    single-run override to test a draft list before `etapa-guardar-producto` persists it. Changed
+    from "the only path" (T2) to "override of the automatic path": `una()`/`una_json()` now use
+    `propuestas if propuestas is not None else propuestas_persistidas(pk)`.
+  - Verification: `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` — 40 passed (unchanged
+    item count). `python Ads/_TOOLS/test_gen_flujo_bot.py` — all checks green, incl. 10 new ones
+    (persisted <6/6-8/>20, section/file/folder absent all warn-only, `carpeta_de` resolves by
+    CSV key not by name, `una()`/`una_json()` block/pass automatically with no flag, the flag
+    still overrides persisted data). `python Ads/_TOOLS/test_evals_baseline.py` — 0 failures,
+    `etapa-guardar-producto.py` baseline still passes unaffected (its fixtures assert file
+    presence, not 2_DATA_PRODUCTO.txt content). `gen_flujo_bot.py --validar` — 2/5, unchanged
+    (CLEARSTEM/TINNIDROP pass; new PENDIENTE aviso for propuestas_valor confirmed non-blocking).
+    `gen_flujo_bot.py CLEARSTEM --json` — `ok: true`, `faltan: []`, confirmed no file written
+    (`git status` clean for `PRODUCTOS/CLEARSTEM/`). `verificar_guia_madre.py` — exit 0, "Sin
+    fallas". `app/backend` tests skipped per the runner note (known to hang); this task's JSON
+    contract is unchanged (no new top-level field), so the skip was not re-evaluated.
