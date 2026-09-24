@@ -88,8 +88,15 @@ import gasto as _gasto  # noqa: E402 -- fuente unica del spend_usd (g07-cimiento
 # spend_usd de _FACT_VENTAS.csv sin decir de donde salio de verdad).
 COBERTURA_GASTO = {}
 
+# DECIDIR_PROD_DIR (P1-cimientos T6, 23-sep-2026): override MÍNIMO y retro-compatible del
+# directorio PRODUCTOS/ que lee este módulo. Sin variable de entorno, el comportamiento es
+# EXACTAMENTE el de siempre (BASE/PRODUCTOS del repo real). flujo.py ya monkey-parchea estas
+# mismas constantes de módulo para correr el motor sobre un fixture (ver Entorno.motor()); esta
+# variable existe para el caso donde no hay un proceso Python vivo para monkey-parchear —
+# el gate de paridad de db/test_db.py corre decidir.py en un subproceso aparte (con scipy y
+# duckdb, que no viven en el venv de psycopg) y necesita apuntarlo a una base exportada.
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PROD = os.path.join(BASE, "PRODUCTOS")
+PROD = os.environ.get("DECIDIR_PROD_DIR") or os.path.join(BASE, "PRODUCTOS")
 DB_PATH = os.path.join(BASE, "warehouse", "vitalcom.duckdb")
 PARAMS_PATH = os.path.join(PROD, "_PARAMETROS_DECISION.csv")
 DIM_PROD_PATH = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
