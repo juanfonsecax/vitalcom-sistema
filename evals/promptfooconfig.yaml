@@ -146,6 +146,38 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-8.py}]
     metadata: {etapa: etapa-8, producto: TINNIDROP}
 
+  # ---- etapa-4 (copy FASE 1, 6 conjuntos) ------------------------------------
+  - description: "etapa-4 / TINNIDROP — 3 TEXTO + 3 TÍTULOS + DESCRIPCIÓN por conjunto, CTA a WhatsApp, sin palabras que banean"
+    vars: {content: file://fixtures/etapa-4/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-4.py}]
+    metadata:
+      etapa: etapa-4
+      producto: TINNIDROP
+      expected_fail: true
+      reason: >-
+        Uno de los 3 TÍTULOS del conjunto "ME DIJERON QUE NO TIENE CURA" es
+        literalmente "¿Te dijeron que no hay cura?" — usa la palabra "cura",
+        que DOCTRINA/COPYWRITING_ADS.md §PRINCIPIO 7 lista para evitar, aunque
+        sea una pregunta retórica citando la objeción del cliente y no un
+        claim afirmativo del producto. Output real (presente desde la línea
+        base 02-sep-2026), nunca corregido porque hoy no hay ningún chequeo
+        automatizado de compliance de copy — este assert es el primero. No se
+        reescribe el fixture ni se relaja el assert: el hallazgo queda
+        documentado para que quien toque ETAPA-4.md decida si el título se
+        corrige.
+
+  # ---- etapa-7 (monitor diario) -----------------------------------------------
+  - description: "etapa-7 / TINNIDROP — CPA citado sin ROAS, integridad, sangrado y lectura por dimensión"
+    vars: {content: file://fixtures/etapa-7/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-7.py}]
+    metadata: {etapa: etapa-7, producto: TINNIDROP}
+
+  # ---- etapa-9 (fábrica de conceptos — tanda registrada en _DIM_CREATIVOS.csv) -
+  - description: "etapa-9 / TINNIDROP — tanda real: canonico_id completo, balance de embudo, máx 2 por concepto"
+    vars: {content: file://fixtures/etapa-9/TINNIDROP.csv}
+    assert: [{type: python, value: file://asserts/etapa-9.py}]
+    metadata: {etapa: etapa-9, producto: TINNIDROP}
+
   # ---- etapa-guardar-producto (invariante 8: archivos por rol) -------------------
   - description: "etapa-guardar-producto / CLEARSTEM — solo archivos por rol declarados"
     vars: {content: file://fixtures/etapa-guardar-producto/CLEARSTEM.json}

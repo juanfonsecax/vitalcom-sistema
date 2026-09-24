@@ -44,7 +44,7 @@ El runner propio y `promptfoo eval` leen la MISMA config y deben coincidir en
 qué test pasa y cuál falla: el provider `echo` + `assert type: python` es
 compatible con ambos.
 
-## Cobertura — 8 de las 17 etapas
+## Cobertura — 11 de las 17 etapas
 
 | Etapa | Productos cubiertos | Fixture (fuente real) |
 |---|---|---|
@@ -53,26 +53,30 @@ compatible con ambos.
 | etapa-1b (componentes/voz) | NusavaB12, TINNIDROP, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §COMPONENTES / §VOZ DEL CLIENTE |
 | etapa-2 (6 ángulos) | CLEARSTEM, NusavaB12, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §ÁNGULOS / §CONJUNTOS |
 | etapa-fanpage | CLEARSTEM | `2_DATA_PRODUCTO.txt` §FANPAGE ASIGNADA |
+| etapa-4 (copy FASE 1) | TINNIDROP | `1_HACER_MANUAL.txt` §PARTE 4 — MEDIA + COPIES DE LOS 6 CONJUNTOS (los 3 conjuntos nuevos) |
 | etapa-6 (`_PLAN.json`) | CLEARSTEM, NusavaB12, TINNIDROP, OVULOS_PURITY | `_PLAN.json` completo |
 | etapa-5 (bot LucidBot) | CLEARSTEM, TINNIDROP | `FLUJO_LUCIDBOT.md` completo |
+| etapa-7 (monitor diario) | TINNIDROP | `_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt` §PASO 3 — bloque "Lectura cualitativa (ETAPA-7)" |
 | etapa-8 (plan de escalado) | TINNIDROP | `4_PLAN_ESCALADO.txt` (extracto) |
+| etapa-9 (fábrica de conceptos) | TINNIDROP | `_DIM_CREATIVOS.csv`, tanda real (`producto_key=TINNIDROP`, `fecha_alta=2026-09-06`, 5 filas) |
 | etapa-guardar-producto (invariante 8) | los 4 productos | manifiesto congelado de archivos de nivel superior en `PRODUCTOS/<P>/` |
 
-**Sin output real guardado en disco, por lo que no tienen fixture (9 de 17):**
+Cada fixture nuevo (`etapa-4`, `etapa-7`, `etapa-9`) trae un `SOURCE.txt` en su
+carpeta con la ruta exacta y la fecha del output real del que se recortó —
+las demás etapas ya documentaban su fuente en esta misma tabla desde T11.
+
+**Sin output real guardado en disco, por lo que no tienen fixture (6 de 17):**
 
 | Etapa | Por qué no hay output guardado |
 |---|---|
-| etapa-0 | Selección de 6 videos: vive en la sesión, se consume por etapa-2/etapa-6 y no se persiste como archivo propio. |
+| etapa-0 | Selección de 6 videos: vive en la sesión, se consume por etapa-2/etapa-6 y no se persiste como archivo propio. Se buscó de nuevo en T3 (odd/tasks/p1-cimientos.md) en `2_DATA_PRODUCTO.txt` y en las carpetas de transcripciones — ningún producto tiene guardadas las 3 tablas de ETAPA-0.md (clasificación completa / agrupación por ángulo / ranking final); solo sobrevive el ranking de RE-TESTEO (etapa-7/8), que es un output distinto. |
 | etapa-3 | Su banco de 8-12 microángulos históricamente no aterrizaba en disco (ver T8 item 4); hoy solo se exige que `4_PLAN_ESCALADO.txt` contenga la palabra "MICROÁNGULO" para pasar el gate `F3.plan` de `flujo.py` — ningún producto real está hoy en ese nodo (T8 lo confirma), así que no hay un `4_PLAN_ESCALADO.txt` real con esa sección para congelar. |
-| etapa-4 (copy) | El copy final se funde dentro de `1_HACER_MANUAL.txt` sin una sección delimitada que se pueda atribuir solo a esta etapa sin arrastrar contenido de etapa-5/etapa-6. |
-| etapa-7 | Monitor de métricas: su output es la lectura de `_DECISIONES.json` en la conversación, no un archivo propio. |
-| etapa-9 | Su output es la consola de la tanda del día (texto de sesión) + filas en `_DIM_CREATIVOS.csv` (dato, no prosa de etapa) — no hay un artefacto de texto libre guardado por tanda. |
-| etapa-10 | Brief de lectura concepto↔métrica: se entrega en sesión a etapa-9, no se encontró un archivo propio persistido por producto. |
+| etapa-10 | Brief de lectura concepto↔métrica (las 6 secciones de ETAPA-10.md, incluida la matriz ángulo×concepto y el brief EXPLOTAR/EXPLORAR/NO REPETIR para etapa-9): se entrega en sesión, se buscó de nuevo en T3 en `_AUDITORIAS/`, `_APRENDIZAJES.csv` y los HANDOFF de optimización — lo más cercano que persiste es el output de `atribuir.py` (código, no prosa de esta etapa) citado como `fuente` en `_APRENDIZAJES.csv`; no hay un informe propio guardado. |
 | etapa-11 | Brief de cierre del bot: mismo caso que etapa-10, output de sesión consumido por etapa-5. |
 | etapa-render | Produce imágenes PNG, no texto — fuera del alcance de un assert de contrato textual/JSON. |
 
 Si una futura sesión localiza un output real guardado para alguna de estas
-nueve, se agrega su fixture + assert siguiendo el mismo patrón — este README
+cinco, se agrega su fixture + assert siguiendo el mismo patrón — este README
 y `promptfooconfig.yaml` son quienes registran la cobertura real, no una lista
 aparte.
 
@@ -87,10 +91,21 @@ hoy reporta `python Ads/_TOOLS/gen_plan.py --validar` (10 errores
 assert se dejó estricto a propósito: relanzar cualquiera de esos productos
 exige regenerar el plan desde etapa-6, no reescribir el eval para que pase.
 
+`etapa-4 / TINNIDROP — FASE 1 todo-en-imagen`: uno de los 3 TÍTULOS del
+conjunto "ME DIJERON QUE NO TIENE CURA" es literalmente `"¿Te dijeron que no
+hay cura?"` — usa la palabra "cura", que `DOCTRINA/COPYWRITING_ADS.md`
+§PRINCIPIO 7 lista para evitar, aunque sea una pregunta retórica citando la
+objeción del cliente y no un claim afirmativo. Es un output real, presente
+desde la línea base del repo (02-sep-2026); nunca se corrigió porque hasta
+este eval no existía ningún chequeo automatizado de compliance de copy. El
+assert quedó estricto: el hallazgo queda documentado en
+`promptfooconfig.yaml` para que quien toque `ETAPA-4.md` decida si el título
+se corrige, no se reescribió el fixture ni se relajó el assert para taparlo.
+
 ## Protocolo de poda (para cuando se toque un prompt de ETAPA-*.md)
 
 1. Correr `python evals/run_baseline.py` ANTES de tocar nada — confirma que
-   arranca en verde (24/27, con los 3 fallos conocidos de arriba).
+   arranca en verde (26/30, con los 4 fallos conocidos de arriba).
 2. Cambiar el prompt.
 3. Re-correr la etapa sobre los MISMOS inputs congelados que produjeron el
    fixture (mismo producto, mismos insumos — nunca un producto nuevo, eso no

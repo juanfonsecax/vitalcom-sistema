@@ -1,0 +1,8 @@
+Fuente: PRODUCTOS/_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt, líneas 58-96
+("PASO 3 — ETAPA-7 (monitor) + ETAPA-8 (escalado)" hasta el bloque
+"Lectura cualitativa (ETAPA-7):"). Auditoría real generada 2026-09-08 por la
+corrida nocturna de `ciclo-diario` (que invoca a etapa-7 + etapa-8 en la
+misma pasada); recorte congelado 23-sep-2026 para evals/.
+Output real de ETAPA-7.md: cita el CPA/IC que trae `_DECISIONES.json`,
+nunca ROAS, y agrega lo que el motor no calcula (integridad de ventana,
+sangrado, matriz cuenta, lectura por dimensión).

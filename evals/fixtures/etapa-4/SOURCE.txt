@@ -1,0 +1,6 @@
+Fuente: PRODUCTOS/TINNIDROP/1_HACER_MANUAL.txt, líneas 305-349
+("PARTE 4 — MEDIA + COPIES DE LOS 6 CONJUNTOS" → los 3 conjuntos nuevos:
+NOCHES SIN DORMIR / "ME DIJERON QUE NO TIENE CURA" / TENSIÓN-ESTRÉS).
+Presente en el repo desde el commit b7aeb9e (02-sep-2026, línea base del
+sistema); recorte congelado 23-sep-2026 para evals/.
+Output real de ETAPA-4.md, MODO FASE 1, Tarea 1 (6 Copies de testeo).
