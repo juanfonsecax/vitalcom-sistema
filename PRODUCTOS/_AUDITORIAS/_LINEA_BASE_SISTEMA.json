@@ -1,18 +1,18 @@
 {
-  "arranque_frio": 8901,
-  "claude_md": 5886,
+  "arranque_frio": 8859,
+  "claude_md": 5844,
   "fases": {
-    "fase-1-angulos": 289432,
-    "fase-2-conceptos": 377865,
-    "fase-3-escalado": 232075,
-    "ciclo-diario": 210198
+    "fase-1-angulos": 284693,
+    "fase-2-conceptos": 371902,
+    "fase-3-escalado": 228222,
+    "ciclo-diario": 207187
   },
   "nodos_dios": [
     [
       "CLAUDE.md",
       8,
-      5886,
-      47088
+      5844,
+      46752
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -23,20 +23,20 @@
     [
       "PLANTILLAS_FLUJO_BOT.md",
       2,
-      9105,
-      18210
+      8291,
+      16582
     ],
     [
       "CALENDARIO_ESCALADO.md",
       2,
-      8016,
-      16032
+      7766,
+      15532
     ],
     [
       "PLANTILLAS_INFOGRAFIAS.md",
       2,
-      6997,
-      13994
+      6939,
+      13878
     ],
     [
       "PARAMETRIZACION_ADS.md",
@@ -47,20 +47,20 @@
     [
       "PLANTILLAS_INFOGRAFIAS_FLUJO.md",
       1,
-      13008,
-      13008
+      13001,
+      13001
     ],
     [
       "DATA_PLAYBOOK.md",
       1,
-      11917,
-      11917
+      11288,
+      11288
     ],
     [
       "MCP_PLAYBOOK.md",
       2,
-      5226,
-      10452
+      5105,
+      10210
     ],
     [
       "COPYWRITING_ADS.md",
@@ -71,8 +71,8 @@
     [
       "PLANTILLAS_INFOGRAFIAS_OPCIONALES.md",
       1,
-      6052,
-      6052
+      6041,
+      6041
     ],
     [
       "PLANTILLAS_DEFAULTS_OPERADOR.md",
@@ -83,26 +83,26 @@
     [
       "04_PALANCAS.md",
       2,
-      2305,
-      4610
+      2213,
+      4426
     ],
     [
       "10_METRICAS_TESTEO.md",
       4,
-      810,
-      3240
-    ],
-    [
-      "11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md",
-      3,
-      1017,
-      3051
+      793,
+      3172
     ],
     [
       "04_PROMPT_CONTROL_FASE1.md",
       1,
-      2987,
-      2987
+      2980,
+      2980
+    ],
+    [
+      "11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md",
+      3,
+      973,
+      2919
     ],
     [
       "05_PROMPT_MAESTRO_FASE2.md",
@@ -113,14 +113,14 @@
     [
       "08_PLAN_ENTREGABLE.md",
       2,
-      898,
-      1796
+      850,
+      1700
     ],
     [
       "PLANTILLAS_ADS.md",
       2,
-      736,
-      1472
+      726,
+      1452
     ],
     [
       "LAVADO.md",
@@ -131,8 +131,8 @@
     [
       "01_COMPLIANCE_ANDROMEDA.md",
       2,
-      535,
-      1070
+      526,
+      1052
     ],
     [
       "06_ESTILOS_ANTIFATIGA.md",
@@ -161,8 +161,8 @@
     [
       "06_SATURACION_CUENTA.md",
       1,
-      471,
-      471
+      438,
+      438
     ]
   ],
   "huerfanos_md": [],
