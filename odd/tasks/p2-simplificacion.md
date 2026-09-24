@@ -341,5 +341,40 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
   account status); _BITACORA_DATA.txt has no entry after 2026-09-08; DIM inconsistencies
   (DETERIORO nivel_conciencia 2 vs NC1 in ad signature, ACC concepto SIN_CLASIFICAR).
 
+- 2026-09-24: P2 T1-T3 fast-forward merged into `feat/optimizacion-continua-perfil-angulos`
+  (2e7ef15 -> 801f650). T4 opened on the same branch.
+
+## T4 — Archaeology cleanup (authorized 2026-09-24)
+Operator: "Reescribí cada regla en su forma vigente, sin la historia que la produjo". Scope:
+`.claude/agents/*.md`, `.claude/skills/*/SKILL.md`, `DOCTRINA/**/*.md`, `CLAUDE.md`. Not
+`_CONOCIMIENTO/`, fixtures or code.
+
+Inventory (read-only mapper, 801f650): 50 files, 118 product mentions + 281 date tokens.
+Classes: A archaeology (remove, keep the rule) ~273 · F functional (never touch) ~33 ·
+E teaching example (keep, make generic) ~88. Raw inventory in the session scratchpad
+(`arqueologia_inventario.json`); the F list is copied into each writer's brief.
+F anchors: gasto.py cutoff `2026-09-06` (CLAUDE.md, ETAPA-7, DATA_PLAYBOOK) · real paths that
+gen_grafo.py RE_RUTA checks on disk · `[REG_MSPAS]`/`[REG_FDA]` values · the `### PASO 6/7` headings
+and tokens that test_ab_flujo.py greps in ETAPA-11/ETAPA-5 · CLI canonical examples.
+Decision: the "Fuente" column of GUIA_MADRE_PARAMETRIZADA.md stays. It is parameter
+provenance ("preguntar de qué es envoltorio"), not narration, and verificar_guia_madre.py does
+not read it.
+
+Baseline tokens (gen_grafo, 801f650): fase-1 289,432 · fase-2 377,865 · fase-3 232,110 ·
+ciclo-diario 210,233 · cold start 8,901.
+
+- [ ] T4a — Remove the 3 `expected_fail` etapa-6 evals whose `_PLAN.json` predate the
+  22-sep IMAGE-only rule (CLEARSTEM, NusavaB12, TINNIDROP): config + README. etapa-6 keeps
+  OVULOS_PURITY. The etapa-4 "cura" and the fused etapa-7 known failures stay (they are not
+  pre-22-sep plans). Route: delegated writer W1.
+- [ ] T4b — DOCTRINA/** + CLAUDE.md cleanup. Route: delegated writer W1.
+- [ ] T4c — .claude/agents + .claude/skills cleanup. Route: delegated writer W2 (after W1).
+- [ ] T4d — Pruning protocol: the parent re-runs every etapa that has a fixture and whose
+  prompt or inherited doctrine changed (2, 4, 5, 6, 7, 9, guardar-producto) on the frozen
+  inputs. The new output must pass the same assert. Then run gen_grafo --comparar. Etapas
+  without a fixture (0, 1, 1b, 3, 10, 11, render, producto) change prose only and cannot be
+  re-verified. This is disclosed, not hidden.
+- [ ] T4e — Proposal (read-only): which live products to re-package, with sales/spend data kept.
+
 ## Next step
-P2 complete. Operator merges `feat/p2-simplificacion`; next gate per plan: P3 (writers to Postgres) and/or P4 (UI).
+T4a+T4b writer W1.
