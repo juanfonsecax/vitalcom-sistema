@@ -5,7 +5,7 @@ Estas 4 plantillas son el sistema de infografías definitivo y validado.
 El formato, estructura e instrucciones de cada plantilla son **FIJOS** — no modificar ni resumir.
 Solo reemplazar los valores entre `[ ]` con los datos del producto actual.
 
-> **⭐ ADAPTACIÓN POR ÁNGULO EN FASE 2 (regla operador, 08-jul):** cuando el bot es DEDICADO a un solo ángulo (FASE 2, escalado), las infografías del flujo se entregan como **prompts COMPLETOS ya adaptados al ángulo dedicado**, no como deltas ni instrucciones ("cambiá X"). Qué se adapta y qué NO:
+> **⭐ ADAPTACIÓN POR ÁNGULO EN FASE 2:** cuando el bot es DEDICADO a un solo ángulo (FASE 2, escalado), las infografías del flujo se entregan como **prompts COMPLETOS ya adaptados al ángulo dedicado**, no como deltas ni instrucciones ("cambiá X"). Qué se adapta y qué NO:
 > - **INFO 1 (beneficios):** título = dolor/deseo del ángulo + el beneficio de ese ángulo pasa a ser el **#1** de la lista.
 > - **INFO 2 (transformación + ingredientes + modo de uso):** SOLO la ZONA 1 (antes/después) se adapta al ángulo (reseña o evidencia de ESE dolor→resultado). Las ZONAS 2 (ingredientes) y 3 (modo de uso) NO cambian.
 > - **INFO 3 (confianza):** cambia solo el HEADLINE y el 1er bloque estadístico al ángulo; contraentrega, garantía, FAQ y certificaciones NO cambian.
@@ -30,7 +30,7 @@ Solo reemplazar los valores entre `[ ]` con los datos del producto actual.
 
 ## ⭐ PASO 0 — ANÁLISIS DEL PRODUCTO (MOTOR ÚNICO — CORRER ANTES DE TODO)
 
-> **Por qué:** una sola lectura de la imagen del frasco define la identidad visual de TODA la campaña — las 4 infografías Y los ads de Meta. Lo que hace que los ads del proveedor "conecten" no es un truco por pieza: es que todas nacen del mismo ADN visual del producto. Antes existían pasos sueltos (color por un lado, tipografía por otro) que se contradecían; esto los unifica. (Decisión del operador 2026-06-29.)
+> **Por qué:** una sola lectura de la imagen del frasco define la identidad visual de TODA la campaña — las 4 infografías Y los ads de Meta. Lo que hace que los ads del proveedor "conecten" no es un truco por pieza: es que todas nacen del mismo ADN visual del producto.
 
 **Analizar la imagen del producto UNA vez y congelar estos 4 ejes. Todo lo demás se deriva de aquí — no se vuelve a decidir por pieza:**
 
@@ -152,7 +152,7 @@ Paleta por defecto de marca (sanarte® — ver PARAMETRIZACIÓN DE MARCA para ad
 
 **REGLA DURA:** se fija **UNA familia tipográfica por PRODUCTO** (el "kit") y se usa **idéntica en las 4 infografías, en los ads de Meta (DOCTRINA/PLANTILLAS_ADS.md) y en cualquier landing de ese producto**. No cambiar de fuente entre piezas del mismo producto. Nunca mezclar más de 2 familias en una pieza; nunca serif en cuerpos pequeños (ilegible).
 
-**¿Tipografía de quién? → DEL BRANDING DEL PRODUCTO (decisión del operador, 2026-06-29).** Se extrae la **categoría tipográfica de la etiqueta/branding del frasco** y esa se usa en TODAS las piezas de ese producto. Motivo operativo: el operador lanza muchísimos ads/productos y no puede gestionar una tipografía distinta por fanpage — anclar la fuente al producto es más rápido, escalable y mantiene la coherencia de embudo (ad → bot → landing) donde de verdad importa: **dentro de la secuencia de un mismo producto** (principio de Clase 22 — "misma fuente = una sola marca/secuencia"). Se sacrifica a propósito la consistencia entre productos de una misma fanpage; el operador lo aceptó.
+**¿Tipografía de quién? → DEL BRANDING DEL PRODUCTO.** Se extrae la **categoría tipográfica de la etiqueta/branding del frasco** y esa se usa en TODAS las piezas de ese producto. Motivo operativo: el operador lanza muchísimos ads/productos y no puede gestionar una tipografía distinta por fanpage — anclar la fuente al producto es más rápido, escalable y mantiene la coherencia de embudo (ad → bot → landing) donde de verdad importa: **dentro de la secuencia de un mismo producto** (principio de Clase 22 — "misma fuente = una sola marca/secuencia"). Se sacrifica a propósito la consistencia entre productos de una misma fanpage; el operador lo aceptó.
 
 > ⚠️ **Caveat técnico (no negociable):** la IA NO reproduce la fuente con licencia exacta de la etiqueta — aproxima por **CATEGORÍA**. El objetivo es identificar la categoría correcta del frasco (sans geométrica / humanista / serif elegante / display condensada) y repetirla, no "clonar" el .ttf del fabricante.
 
