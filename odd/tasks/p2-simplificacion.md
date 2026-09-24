@@ -26,7 +26,7 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
 `python Ads/_TOOLS/gen_grafo.py --comparar` before/after for the token delta.
 
 ## Tasks
-- [ ] T1 — `PRODUCTOS/_DIM_FANPAGES.csv` (10 pages: identity, tone, age orientation, page_id,
+- [x] T1 — `PRODUCTOS/_DIM_FANPAGES.csv` (10 pages: identity, tone, age orientation, page_id,
   niche products) + etapa-2 chooses `pagina_asignada` with rules F1-F5; remove
   `.claude/agents/ETAPA-FANPAGE.md`; update every consumer (FLUJO.json, skills, CLAUDE.md
   etapa list, gen_publicacion/gen_lanzador/verificar_producto, app tests). Route: delegated
@@ -85,8 +85,17 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
     ("Página 4 ✨ Belleza & Piel — Astrid García"). See the writer's final report for the exact
     frozen-inputs package to use for that re-run.
 
+- 2026-09-23: T1 CLOSED by parent. Protocol re-run: etapa-2 (session model) on CLEARSTEM frozen
+  inputs (evals/fixtures/etapa-1/CLEARSTEM.txt, 2_DATA_PRODUCTO.txt sections 1 and 3,
+  _DIM_FANPAGES.csv, saturacion DESCONOCIDA, no WebSearch) assigned Página 4 Belleza & Piel,
+  identical to the old etapa-fanpage fixture. Output kept in
+  evals/reruns/2026-09-23_etapa-2_CLEARSTEM_p2-T1.txt (6 fichas + pagina_asignada; the parent
+  joined the tone bullets into one line when transcribing; preface/summary table omitted).
+  etapa-2 assert PASS (6 fichas, 19 conciencia markers). Found the retargeted etapa-fanpage assert
+  was weak (any catalog name anywhere passed: it matched 'Salud Hormonal Femenina', cited only to
+  be discarded). Strengthened: parses the assigning line and checks number+name against the CSV.
+  Rerun and fixture PASS (#4); wrong number and missing assignment FAIL. Baseline 30/26/4/0,
+  test_evals_baseline 6 passed.
+
 ## Next step
-Parent orchestrator re-runs `etapa-2` on CLEARSTEM's frozen FASE 1 inputs (package in the T1
-writer's final report) and checks the output still assigns "Belleza & Piel" and still passes
-`evals/asserts/etapa-2.py` + the retargeted `evals/asserts/etapa-fanpage.py`. Only then check off T1
-and move to T2.
+T2 (split god nodes), delegated writer.

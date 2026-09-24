@@ -1,0 +1,271 @@
+═══════════════════════════════════════════
+ÁNGULO 1 — "LA CARA QUE NO QUERÉS QUE TE VEAN" (Dolor Emocional Masculino)
+Ranking: #1 de 6
+Creativo asignado: IMAGEN (C2_BENEFICIOS, PROMPT DE CONTROL FASE 1). Fuente del ángulo: VIDEO V13 (Clearstem13).
+Origen del ángulo: VIDEO_COMPETENCIA V13
+angulo_key sugerido: DOLOR_EMOCIONAL_MASCULINO · concepto_key: C2_BENEFICIOS
+═══════════════════════════════════════════
+
+AVATAR
+- **Perfil:** hombre guatemalteco de 22-33 años.
+- **Situación:** trabaja de cara al público o está saliendo con alguien. Tiene granos rojos y dolorosos en mandíbula y barbilla, que ya no son "cosa de adolescente".
+- **Dolor activo:** "Ya tengo casi 30 y sigo con la cara llena de granos, me da pena que me vean de cerca."
+- **Deseo detrás del dolor:** "Poder ver a la gente a los ojos sin pensar en mi cara."
+- **Miedos:** "Que me queden marcas para siempre y que la gente piense que soy sucio."
+- **Frustraciones:** "Jabón, cremas de farmacia, hasta la de mi hermana… nada."
+- **Emoción / necesidad oculta:** recuperar la seguridad masculina. Nadie le habla a él: todo el acné se vende a mujeres.
+- **Nivel de conciencia:** NIVEL 2 (sabe el problema, no la solución).
+
+CLASIFICACIÓN MEDIBLE
+- avatar_genero: HOMBRE
+- avatar_edad: 25-35
+- emocion_dominante: VERGUENZA
+
+ÁNGULO
+- **Nombre:** La cara que no querés que te vean
+- **Tipo:** emocional
+- **Nivel de saturación:** DESCONOCIDA
+- **Justificación:** falta el dato del operador. Hablarle al hombre es territorio poco común en la categoría, pero no está verificado.
+- **Por qué es #1:** es el más emocional y el más eficiente del histórico ($4.70 por compra, 7 compras con $32.91). La muestra es chica y casi no recibió presupuesto.
+
+PROMESA DEL ANUNCIO
+- **Punto A → Punto B:** "me escondo la cara" → (CLEARSTEM) → "me miro al espejo y salgo tranquilo"
+- **Hook directo:** "¿Sigues con granos en la mandíbula a tu edad?"
+- **Promesa central:** un suplemento que trabaja desde adentro, sobre la causa hormonal del acné del hombre adulto.
+- **Resultado en tiempo:** progresivo con uso continuo. El timeline exacto no viene en los inputs congelados: el operador debe confirmarlo.
+
+COHERENCIA CON FLUJO LUCIDBOT
+- **Primera frase TEXTO:** "Esos granos en la mandíbula que no se van con nada, eso tiene solución."
+- **Primera frase AUDIO:** "Hola, claro que sí, te cuento. Ese acné de mandíbula que te da pena y no se va con cremas…"
+- **Nota de coherencia:** el bot debe hablarle a un HOMBRE (no "amiga"). Tiene que explicar por qué el acné adulto es hormonal y por qué las cremas no llegan a esa causa, sin cambiar a lenguaje de belleza femenina.
+
+PRECIO DE REFERENCIA
+P2u irresistible: Q299 con envío gratis
+
+═══════════════════════════════════════════
+ÁNGULO 2 — "NO ES TU PIEL, SON TUS HORMONAS" (Acné Hormonal desde DIM)
+Ranking: #2 de 6
+Creativo asignado: IMAGEN (C2_BENEFICIOS). Ángulo virgen: ningún video de ETAPA-0 lo ataca.
+Origen del ángulo: SIN voz_id ni video. Es un ángulo desde componente (DIM). ⚠️ `gen_plan.py --validar` (plan versión ≥2) exige origen: ETAPA-1B debe agregar voz verificada a `_VOZ_CLIENTE.csv` antes de congelar el plan.
+angulo_key sugerido: ACNE_HORMONAL_DIM · concepto_key: C2_BENEFICIOS
+═══════════════════════════════════════════
+
+AVATAR
+- **Perfil:** mujer guatemalteca de 25-35 años.
+- **Situación:** los brotes le salen en barbilla y mandíbula y empeoran antes de la regla, o empezaron después de dejar las pastillas anticonceptivas.
+- **Dolor activo:** "Cada mes, antes de mi regla, me salen los mismos granos en la barbilla y no sé por qué."
+- **Deseo detrás del dolor:** "Tener la piel estable todo el mes, sin estar esperando el próximo brote."
+- **Miedos:** "Tener que volver a tomar hormonas o pastillas fuertes para controlarlo."
+- **Frustraciones:** "Limpiezas faciales, sérums, cambiar de jabón… me dura una semana."
+- **Emoción / necesidad oculta:** no sabía que la causa está adentro. Sentir que por fin entiende su cuerpo.
+- **Nivel de conciencia:** NIVEL 1 (no conoce la causa: hay que educarla).
+
+CLASIFICACIÓN MEDIBLE
+- avatar_genero: MUJER
+- avatar_edad: 25-35
+- emocion_dominante: CURIOSIDAD
+
+ÁNGULO
+- **Nombre:** No es tu piel, son tus hormonas
+- **Tipo:** educativo / problema oculto (mecanismo único)
+- **Nivel de saturación:** DESCONOCIDA
+- **Justificación:** ninguno de los 7 videos ataca la causa hormonal desde un componente. Es el candidato a "mina de oro" (Clase 12).
+
+PROMESA DEL ANUNCIO
+- **Punto A → Punto B:** "brote cada mes sin saber por qué" → (DIM ayuda a equilibrar el estrógeno) → "piel estable y control de mi cuerpo"
+- **Hook directo:** "Si te sale en la barbilla, no es tu piel."
+- **Promesa central:** apoyar el equilibrio hormonal que dispara el acné de barbilla y mandíbula, sin hormonas sintéticas.
+- **Resultado en tiempo:** se mide ciclo a ciclo. El timeline exacto lo confirma el operador.
+
+COHERENCIA CON FLUJO LUCIDBOT
+- **Primera frase TEXTO:** "Esos granos en la barbilla que te salen cada mes antes de tu regla, eso tiene solución."
+- **Primera frase AUDIO:** "Hola, claro que sí, te cuento. Ese acné que te sale en la barbilla cada mes tiene que ver con tus hormonas…"
+- **Nota de coherencia:** el bot debe abrir con DIM y el equilibrio hormonal, no con cúrcuma ni con "piel bonita". Tiene que aclarar que no contiene hormonas.
+
+PRECIO DE REFERENCIA
+P2u irresistible: Q299 con envío gratis
+
+═══════════════════════════════════════════
+ÁNGULO 3 — "PROBÉ DE TODO Y ESTO FUE LO ÚNICO" (Testimonio Radical)
+Ranking: #3 de 6
+Creativo asignado: IMAGEN (C2_BENEFICIOS). Fuente del ángulo: VIDEO V10 (Clearstem10).
+Origen del ángulo: VIDEO_COMPETENCIA V10
+angulo_key sugerido: TESTIMONIO_RADICAL · concepto_key: C2_BENEFICIOS
+═══════════════════════════════════════════
+
+AVATAR
+- **Perfil:** mujer guatemalteca de 28-38 años.
+- **Situación:** lleva años con acné adulto y ha gastado en tratamientos. Ya casi se resignó a que "así es su piel".
+- **Dolor activo:** "Ya llevo años con esto, gasté en de todo y sigo igual."
+- **Deseo detrás del dolor:** "Salir sin maquillaje sin sentir que todos me ven los granos."
+- **Miedos:** "Que me quede así para siempre, con marcas."
+- **Frustraciones:** "Cremas caras, tratamientos, dietas… nada me funcionó en serio."
+- **Emoción / necesidad oculta:** volver a creer que tiene arreglo, al ver a alguien igual a ella que sí lo logró.
+- **Nivel de conciencia:** NIVEL 2 (sabe el problema, no la solución).
+
+CLASIFICACIÓN MEDIBLE
+- avatar_genero: MUJER
+- avatar_edad: 25-35
+- emocion_dominante: RESIGNACION
+
+ÁNGULO
+- **Nombre:** Probé de todo y esto fue lo único
+- **Tipo:** prueba social / resultado
+- **Nivel de saturación:** DESCONOCIDA
+- **Justificación:** falta el dato del operador.
+- **Evidencia histórica:** el mejor volumen del producto (16 compras, $7.11 por compra, apenas debajo del break-even).
+
+PROMESA DEL ANUNCIO
+- **Punto A → Punto B:** "ya me rendí con mi piel" → (CLEARSTEM desde adentro) → "me reconozco otra vez en el espejo"
+- **Hook directo:** "Probé todo para el acné. Esto sí."
+- **Promesa central:** cuando las cremas no alcanzan, un suplemento que trabaja la causa desde adentro.
+- **Resultado en tiempo:** el timeline lo confirma el operador. No se inventa.
+
+COHERENCIA CON FLUJO LUCIDBOT
+- **Primera frase TEXTO:** "Si ya probaste de todo para el acné y nada te funcionó, eso tiene solución."
+- **Primera frase AUDIO:** "Hola, claro que sí, te cuento. Si ya probaste cremas y tratamientos y seguís igual…"
+- **Nota de coherencia:** el bot debe validar la frustración ("no es tu culpa") y mostrar testimonios reales temprano, antes del mecanismo.
+
+PRECIO DE REFERENCIA
+P2u irresistible: Q299 con envío gratis
+
+═══════════════════════════════════════════
+ÁNGULO 4 — "CUIDADO CON EL FALSO" (Anti-Falsificación)
+Ranking: #4 de 6
+Creativo asignado: IMAGEN (C2_BENEFICIOS). Fuente del ángulo: VIDEO V3 (Clearstem3).
+Origen del ángulo: VIDEO_COMPETENCIA V3
+angulo_key sugerido: ANTI_FALSIFICACION · concepto_key: C2_BENEFICIOS
+═══════════════════════════════════════════
+
+AVATAR
+- **Perfil:** mujer guatemalteca de 25-35 años.
+- **Situación:** ya vio CLEARSTEM en redes y lo quiere, pero desconfía de comprar por Facebook y de los productos "piratas".
+- **Dolor activo:** "Lo quiero probar pero me da miedo que me manden uno falso."
+- **Deseo detrás del dolor:** "Tener el original y saber que no tiré mi dinero."
+- **Miedos:** "Que sea imitación, que no haga nada o que me dañe la piel."
+- **Frustraciones:** "Ya me han vendido cosas por internet que no eran lo que decían."
+- **Emoción / necesidad oculta:** sentirse una compradora lista, no una más a la que estafaron.
+- **Nivel de conciencia:** NIVEL 3a (conoce el producto pero teme comprar: reducir fricción).
+
+CLASIFICACIÓN MEDIBLE
+- avatar_genero: MUJER
+- avatar_edad: 25-35
+- emocion_dominante: DESCONFIANZA
+
+ÁNGULO
+- **Nombre:** Cuidado con el falso
+- **Tipo:** garantía / autoridad (reducción de fricción)
+- **Nivel de saturación:** DESCONOCIDA
+- **Justificación:** falta el dato del operador.
+- **Evidencia histórica:** la mayor densidad de compra (18.2%) y $6.07 por compra. Rankea #4 porque es funcional, no emocional, y solo le sirve a un avatar de nivel 3.
+
+PROMESA DEL ANUNCIO
+- **Punto A → Punto B:** "miedo a que me estafen" → (original + pago contra entrega) → "tranquila con lo que compré"
+- **Hook directo:** "¿Cómo saber si tu CLEARSTEM es original?"
+- **Promesa central:** el original, con pago al recibir: no arriesgás nada.
+- **Resultado en tiempo:** confianza inmediata en la compra. El resultado en la piel usa el timeline del operador.
+
+COHERENCIA CON FLUJO LUCIDBOT
+- **Primera frase TEXTO:** "Si te da miedo que te llegue uno falso, eso tiene solución."
+- **Primera frase AUDIO:** "Hola, claro que sí, te cuento. Sé que da miedo comprar y que te llegue uno falso…"
+- **Nota de coherencia:** el bot debe abrir con originalidad y pago contra entrega antes de los ingredientes. Si el anuncio promete "original", el bot no puede saltar directo al mecanismo.
+
+PRECIO DE REFERENCIA
+P2u irresistible: Q299 con envío gratis
+
+═══════════════════════════════════════════
+ÁNGULO 5 — "TUS GRANOS SALEN CUANDO ESTÁS ESTRESADA" (Acné por Estrés desde 5-HTP)
+Ranking: #5 de 6
+Creativo asignado: IMAGEN (C2_BENEFICIOS). Ángulo virgen: ningún video de ETAPA-0 lo ataca.
+Origen del ángulo: SIN voz_id ni video. Es un ángulo desde componente (5-HTP). ⚠️ Falta respaldo para `gen_plan.py --validar`: ETAPA-1B debe aportar voz verificada.
+angulo_key sugerido: ACNE_ESTRES_5HTP · concepto_key: C2_BENEFICIOS
+═══════════════════════════════════════════
+
+AVATAR
+- **Perfil:** mujer guatemalteca de 25-35 años.
+- **Situación:** trabaja, estudia o las dos cosas, y duerme mal. Nota que en semanas pesadas (exámenes, cierre de mes, problemas) le brota la cara.
+- **Dolor activo:** "Cada vez que ando estresada me explota la cara, justo cuando menos lo necesito."
+- **Deseo detrás del dolor:** "Que la presión del trabajo no se me vea en la cara."
+- **Miedos:** "Que el estrés no se vaya y los brotes tampoco."
+- **Frustraciones:** "Me cuido la piel pero el estrés gana siempre."
+- **Emoción / necesidad oculta:** un círculo vicioso (estrés → granos → más estrés) que nadie le explicó. Quiere sentir control.
+- **Nivel de conciencia:** NIVEL 1 (no conoce la causa).
+
+CLASIFICACIÓN MEDIBLE
+- avatar_genero: MUJER
+- avatar_edad: 25-35
+- emocion_dominante: AGOTAMIENTO
+
+ÁNGULO
+- **Nombre:** Tus granos salen cuando estás estresada
+- **Tipo:** problema oculto / educativo
+- **Nivel de saturación:** DESCONOCIDA
+- **Justificación:** ningún video conecta el estrés con el 5-HTP. Rankea #5 porque es puramente teórico: no tiene voz real ni ventas históricas.
+
+PROMESA DEL ANUNCIO
+- **Punto A → Punto B:** "estrés que se me ve en la cara" → (5-HTP apoya el manejo del estrés + DIM y cúrcuma) → "piel tranquila aunque la semana no lo esté"
+- **Hook directo:** "¿Te brota la cara cuando andás estresada?"
+- **Promesa central:** apoyar desde adentro el ciclo estrés-brote que ninguna crema toca.
+- **Resultado en tiempo:** el timeline lo confirma el operador.
+
+COHERENCIA CON FLUJO LUCIDBOT
+- **Primera frase TEXTO:** "Esos brotes que te salen cuando andás estresada, eso tiene solución."
+- **Primera frase AUDIO:** "Hola, claro que sí, te cuento. Ese acné que te sale en las semanas de más estrés…"
+- **Nota de coherencia:** el bot debe abrir con el 5-HTP y el estrés, y después sumar DIM. No debe abrir con hormonas ni con belleza genérica.
+
+PRECIO DE REFERENCIA
+P2u irresistible: Q299 con envío gratis
+
+═══════════════════════════════════════════
+ÁNGULO 6 — "LOS MÉDICOS NO ME LO QUITARON" (Médicos Fallaron)
+Ranking: #6 de 6
+Creativo asignado: IMAGEN (C2_BENEFICIOS). Fuente del ángulo: VIDEO V2 (Clearstem2) + V14 (variante).
+Origen del ángulo: VIDEO_COMPETENCIA V2, V14
+angulo_key sugerido: MEDICOS_FALLARON · concepto_key: C2_BENEFICIOS
+═══════════════════════════════════════════
+
+AVATAR
+- **Perfil:** mujer guatemalteca de 25-35 años (también hay hombres).
+- **Situación:** fue al dermatólogo y a veces también al ginecólogo o al endocrinólogo. Tomó antibióticos o usó cremas recetadas, y el acné volvió.
+- **Dolor activo:** "Ya fui al dermatólogo, gasté en consultas y medicinas y el acné volvió."
+- **Deseo detrás del dolor:** "Una solución que ataque la raíz, no que me lo tape un mes."
+- **Miedos:** "Seguir gastando en consultas sin resultado, o terminar en tratamientos más fuertes."
+- **Frustraciones:** "Antibióticos, cremas recetadas… funcionan mientras las uso y después vuelve."
+- **Emoción / necesidad oculta:** sentirse escuchada. Nadie le explicó por qué vuelve.
+- **Nivel de conciencia:** NIVEL 2 (sabe el problema, no la solución).
+
+CLASIFICACIÓN MEDIBLE
+- avatar_genero: MUJER
+- avatar_edad: 25-35
+- emocion_dominante: FRUSTRACION_MEDICA
+
+ÁNGULO
+- **Nombre:** Los médicos no me lo quitaron
+- **Tipo:** problema-dolor / comparación
+- **Nivel de saturación:** DESCONOCIDA
+- **Justificación:** falta el dato del operador.
+- **Evidencia histórica:** trae las conversaciones más baratas ($0.59) pero cierra mal (5.9%). Queda arriba del break-even: $9.91 y $13.31 por compra contra BE de $7.86. Chat barato no es venta. Entra al top 6 porque el ángulo comunica. El cierre depende del bot y del creativo.
+
+PROMESA DEL ANUNCIO
+- **Punto A → Punto B:** "gasté en especialistas y sigo igual" → (CLEARSTEM trabaja hormonas, hígado y estrés) → "por fin algo que va a la raíz"
+- **Hook directo:** "Fuiste al dermatólogo y el acné volvió."
+- **Promesa central:** cuando el tratamiento de afuera no alcanza, apoyar la causa desde adentro.
+- **Resultado en tiempo:** el timeline lo confirma el operador.
+
+COHERENCIA CON FLUJO LUCIDBOT
+- **Primera frase TEXTO:** "Si ya fuiste al dermatólogo y el acné volvió, eso tiene solución."
+- **Primera frase AUDIO:** "Hola, claro que sí, te cuento. Si ya gastaste en consultas y el acné regresó…"
+- **Nota de coherencia:** es el ángulo con peor cierre. El bot debe explicar por qué vuelve (causa interna) y cerrar con fuerza (oferta de 3 y contra entrega). Aquí el cuello de botella es el bot, no el anuncio. Nunca debe desacreditar a los médicos.
+
+PRECIO DE REFERENCIA
+P2u irresistible: Q299 con envío gratis
+
+<pagina_asignada>
+PÁGINA ASIGNADA: 4 Belleza & Piel
+Identidad activa: Astrid García, especialista en belleza natural
+Tono para esta campaña: el tono de la página (aspiracional, suave, no clínico) se ajusta al acné con F4. Abre confesional y educativo primero: nombra el brote de barbilla o mandíbula y la vergüenza, y después explica la causa interna. Se puede decir "ayuda", "apoya", "desde adentro", voseo. NO se dice "cura", "elimina el acné", tono de vendedor, ni "belleza perfecta" aspiracional pura. Ángulo masculino (Á1): la página no fija género; el creativo segmenta.
+Edad de segmentación recomendada: 25-35. El CSV orienta 30+ (colágeno/cabello), pero por F5 manda el `avatar_edad` de los ángulos: los 6 caen en el bucket 25-35. Advantage+ Audience OFF.
+Razón de asignación: el comprador principal es un adulto joven, hombre o mujer, que compra por la PIEL, no una mujer que compra por la salud hormonal en sí. Con F1 y F2, Belleza & Piel cubre ambos géneros y tiene más volumen. La página 3 (Salud Hormonal Femenina) dejaría fuera al avatar masculino, que es el ángulo #1.
+Productos del mismo nicho ya en página: Ouhoe Natural Herbs, Multi Collagen (polvo y cápsulas), Neocell Collagen, Advanced Hair Growth, Lemme Grow, Bearvana Biotin Gummies
+⚠️ `page_id` está vacío para la página 4 en `PRODUCTOS/_DIM_FANPAGES.csv`. Hay que completarlo antes de publicar.
+</pagina_asignada>
