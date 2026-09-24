@@ -135,6 +135,12 @@ ANGULO_GANADOR: [vacío hasta que el operador lo confirme con métricas]
 ━━━ DATOS DE SATURACIÓN ━━━
 [resultado de ETAPA-RESEARCH Módulo B si se corrió, o "no corrido"]
 
+━━━ PROPUESTAS DE VALOR (ETAPA-5 Paso 1) ━━━
+[una propuesta por línea, TRANSCRITA VERBATIM del <<BLOQUE:propuestas_valor>> que entregó
+etapa-5 — invariante 3, nunca resumir ni reescribir. Fórmula: problema concreto del avatar ->
+qué hace el producto -> resultado. Sin esta sección, gen_flujo_bot.py queda PENDIENTE (aviso,
+no bloquea); con ella, cuenta 6-8 y bloquea el render con menos de 6.]
+
 ━━━ PRÓXIMA SESIÓN ━━━
 - Optimización (ETAPA-7): leer este REGISTRO + datos de Meta, comparar CPA real vs objetivo/break even, indicar qué escalar y qué apagar.
 - FASE 2: si hay ángulo ganador confirmado + métricas → ir directo a ETAPA-3.
@@ -270,6 +276,7 @@ solo el encabezado) y coinciden con los INPUTS CONGELADOS del orquestador:
 | 6 | campaign_id + 6 ad_set_id | 3_CAMPAÑA · REGISTRO DE CONJUNTOS de 2_DATA |
 | 7 | NOMBRE_CONJUNTO de cada conjunto (exacto) | REGISTRO DE CONJUNTOS de 2_DATA · `_DIM_CONJUNTOS.csv` · 3_CAMPAÑA |
 | 8 | ángulo · formato · precio_en_ad de cada conjunto | 2_DATA · `_DIM_CONJUNTOS.csv` (mismo valor, sin excepción) |
+| 9 | PROPUESTAS DE VALOR (si etapa-5 las entregó) | 2_DATA sección "PROPUESTAS DE VALOR" transcribe **verbatim** el `<<BLOQUE:propuestas_valor>>` de 1_HACER_MANUAL — mismo texto, mismo orden, sin resumir (invariante 3) |
 
 **Si hay UNA discrepancia → corregir y reescribir; NO entregar.** Reportar al operador qué se reconcilió. Si el operador cambió un input (costo, dosis, página) después de una corrida previa, eso es un **rerun**: subir VERSION y rehacer los archivos completos.
 

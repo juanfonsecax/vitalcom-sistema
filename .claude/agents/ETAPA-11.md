@@ -178,8 +178,9 @@ más reciente de flujo (M-F06), por encima de hooks y testimonios:
 
 1. **PROPUESTAS DE VALOR** — 6-8, fórmula `[problema concreto del avatar] → [qué hace el producto]
    → [resultado deseado]`. Se revisan las que hay, se reemplazan las genéricas. La cuenta no es
-   a ojo: `gen_flujo_bot.py --propuestas ARCHIVO` (dueño en `PLANTILLAS_FLUJO_BOT.md` §3/§4)
-   bloquea con menos de 6.
+   a ojo: `etapa-guardar-producto` las persiste en `2_DATA_PRODUCTO.txt` (sección "PROPUESTAS DE
+   VALOR") y `gen_flujo_bot.py` las lee y bloquea sola con menos de 6, sin flag (dueño en
+   `PLANTILLAS_FLUJO_BOT.md` §3/§4; `--propuestas ARCHIVO` queda como override manual).
 2. **FRICCIÓN** — garantía, CTA con beneficio, prueba social con imágenes de uso, velocidad de
    respuesta, umbral cognitivo (una idea por mensaje, nunca un párrafo en INT 1 e INT 3).
 3. **CONGRUENCIA** — los desajustes C1-C6 del PASO 3, en orden de gravedad (C3 y C4 primero: un

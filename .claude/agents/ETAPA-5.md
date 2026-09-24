@@ -91,9 +91,14 @@ Es el insumo de todo lo demás. Fórmula:
 Alimentan los bullets de las infografías, el guión del audio y las FAQ. **Nunca ingredientes
 sueltos.** Se escriben, una por línea, en `<<BLOQUE:propuestas_valor>>` (PLANTILLAS_FLUJO_BOT.md
 §3, junto a INFOGRAFÍAS) — es una lista de trabajo para armar las imágenes, **nunca se pega** en
-LucidBot. `Ads/_TOOLS/gen_flujo_bot.py --propuestas ARCHIVO` las cuenta: menos de 6 bloquea el
-render; sin declararlas todavía, queda PENDIENTE (aviso, no bloquea — así CLEARSTEM y TINNIDROP
-siguen renderizando mientras se retrocompletan).
+LucidBot. **Entregarlas como lista limpia**, una propuesta por línea, sin numerar ni comentar
+(invariante 3: nunca resumir) — así `etapa-guardar-producto` las transcribe **verbatim** a la
+sección "PROPUESTAS DE VALOR" de `PRODUCTOS/[PK]/2_DATA_PRODUCTO.txt` (`ETAPA-GUARDAR-PRODUCTO.md`),
+y desde ahí `Ads/_TOOLS/gen_flujo_bot.py` las lee y cuenta SOLO, sin flag: menos de 6 bloquea el
+render; sin la sección persistida todavía, queda PENDIENTE (aviso, no bloquea — así CLEARSTEM y
+TINNIDROP siguen renderizando mientras se retrocompletan). `--propuestas ARCHIVO` sigue
+disponible como override manual de una sola corrida (probar un archivo antes de que
+`etapa-guardar-producto` lo persista), pero el candado real ya no depende de ese flag.
 
 ### Paso 2 — Llenar las frases del ángulo en el CSV
 

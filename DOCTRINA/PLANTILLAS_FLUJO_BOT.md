@@ -223,8 +223,11 @@ INFOGRAFÍAS ({{n_infografias}}): {{lista_infografias}}
 >> Fórmula de cada una: [problema concreto del avatar] -> [qué hace el producto] -> [resultado].
 >> Van DENTRO de las infografías (imagen), nunca en el texto que se pega en LucidBot — por eso
 >> <<BLOQUE:propuestas_valor>> es una lista de trabajo para armar las imágenes, no un campo que
->> se copie. Una propuesta por línea, 6-8 (clase 22-ago regla D). `gen_flujo_bot.py --propuestas
->> ARCHIVO` las cuenta: menos de 6 BLOQUEA, sin el archivo queda PENDIENTE (aviso, no bloquea).
+>> se copie. Una propuesta por línea, 6-8 (clase 22-ago regla D). `etapa-guardar-producto` las
+>> persiste verbatim en `PRODUCTOS/[PK]/2_DATA_PRODUCTO.txt`, sección "PROPUESTAS DE VALOR"
+>> (`ETAPA-GUARDAR-PRODUCTO.md`), y `gen_flujo_bot.py` las lee y cuenta SOLO de ahí, sin flag:
+>> menos de 6 BLOQUEA, sin la sección queda PENDIENTE (aviso, no bloquea). `--propuestas ARCHIVO`
+>> sigue existiendo como override manual de una sola corrida (probar antes de persistir).
 <<BLOQUE:propuestas_valor>>
 >> Dentro del bot no hay límite de compliance ni de umbral cognitivo: la prioridad es CONVERTIR.
 >> ORDEN SEGÚN EL BUYER TYPE del avatar: nicho EMOCIONAL -> la prueba de transformación
@@ -445,7 +448,7 @@ solo declara dónde van y la regla dura que el gate sí puede verificar.
 | `audio` | Guión de 45-55 seg | **sin precio** · sin contraentrega · segunda persona |
 | `m2` | Texto del 2º mensaje de inactividad | dos niveles de oferta, nunca tres |
 | `faq_venta` · `faq_postventa` | Preguntas reales del avatar | lenguaje de apoyo |
-| `propuestas_valor` | Lista de trabajo (una por línea) para las infografías — nunca se pega | `gen_flujo_bot.py --propuestas ARCHIVO`: menos de 6 **BLOQUEA**; sin declarar, PENDIENTE (aviso) |
+| `propuestas_valor` | Lista de trabajo (una por línea) para las infografías — nunca se pega | `etapa-guardar-producto` la persiste en `2_DATA_PRODUCTO.txt` (sección "PROPUESTAS DE VALOR"); `gen_flujo_bot.py` la lee sola y cuenta: menos de 6 **BLOQUEA**; sin la sección, PENDIENTE (aviso). `--propuestas ARCHIVO` override manual, opcional |
 
 **`fuente_testimonios`.** Material real (`REAL`) gana a material fabricado (`REDACTADO`). La
 columna existe para poder medir la diferencia.

@@ -7,6 +7,7 @@ USO:  python Ads/_TOOLS/test_gen_flujo_bot.py     (exit 0 = pasa, 1 = falla)
 
 import os
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_flujo_bot as G  # noqa: E402
@@ -338,13 +339,148 @@ def test_propuestas_valor_ignora_lineas_vacias_e_instrucciones():
 
 
 def test_clearstem_tinnidrop_sin_propuestas_no_bloquean():
-    """Productos vivos sin propuestas_valor declaradas (sin --propuestas): siguen renderizando."""
+    """Productos vivos SIN seccion PROPUESTAS DE VALOR en su 2_DATA_PRODUCTO.txt real (todavia
+    no retrocompletada) y sin --propuestas: el camino automatico las resuelve por
+    _DIM_PRODUCTOS.csv (invariante 10) y solo avisa PENDIENTE — nunca bloquea."""
     for pk in ("CLEARSTEM", "TINNIDROP"):
         v, faltan, avisos = G.resolver(pk)
-        bloqueo, aviso = G.validar_propuestas_valor(None)
-        check("%s no bloquea por propuestas_valor sin declarar" % pk,
+        persistidas = G.propuestas_persistidas(pk)
+        check("%s no tiene la seccion persistida todavia (fixture real)" % pk,
+              persistidas is None, persistidas)
+        bloqueo, aviso = G.validar_propuestas_valor(persistidas)
+        check("%s no bloquea por propuestas_valor sin declarar (camino automatico)" % pk,
               v is not None and not faltan and bloqueo is None, (faltan, bloqueo))
         check("%s trae el aviso PENDIENTE cuando se le suma" % pk, aviso is not None)
+        ok = G.una(pk, escribir=False)
+        check("%s pasa una() completo sin --propuestas (candado automatico, no bloquea)" % pk, ok)
+
+
+def _con_carpeta(pk, slug, contenido_2data, fn):
+    """Fixture en tmpdir: crea (o no) PRODUCTOS/[slug]/2_DATA_PRODUCTO.txt y apunta G.PROD ahi,
+    con _DIM_PRODUCTOS.csv resolviendo pk -> slug (invariante 10). No toca el PRODUCTOS/ real —
+    `contenido_2data=None` simula el archivo ausente."""
+    with tempfile.TemporaryDirectory() as tmp:
+        carpeta = os.path.join(tmp, slug)
+        os.makedirs(carpeta, exist_ok=True)
+        if contenido_2data is not None:
+            with open(os.path.join(carpeta, "2_DATA_PRODUCTO.txt"), "w", encoding="utf-8") as fh:
+                fh.write(contenido_2data)
+        datos = {"_DIM_PRODUCTOS.csv": [{"producto_key": pk, "slug_carpeta": slug}]}
+        prod_original, G.PROD = G.PROD, tmp
+        try:
+            return _con_datos(datos, fn)
+        finally:
+            G.PROD = prod_original
+
+
+def _cuerpo_propuestas(n):
+    """Solo el CUERPO (sin cabecera '━━━'): lo que propuestas_persistidas() ya devuelve
+    despues de recortar la seccion, y lo mismo que recibe validar_propuestas_valor()."""
+    return "\n".join("problema %d concreto -> hace X -> resultado" % i for i in range(n)) + "\n"
+
+
+def _seccion_propuestas(n, titulo="━━━ PROPUESTAS DE VALOR (ETAPA-5 Paso 1) ━━━"):
+    """La seccion COMPLETA (con cabecera), tal como queda escrita en 2_DATA_PRODUCTO.txt."""
+    return titulo + "\n" + _cuerpo_propuestas(n)
+
+
+def _con_propuestas_persistidas(texto, fn):
+    """Monkeypatchea G.propuestas_persistidas() para probar una()/una_json() end-to-end (con
+    datos REALES de CLEARSTEM en todo lo demas) sin la colision de _con_carpeta: resolver()
+    hace varios leer() con carpeta=PROD por default de argumento (fijado al importar el modulo,
+    no dinamico), asi que mutar G.PROD a mitad de sesion le rompe esas otras lecturas. Esta
+    fixture aisla SOLO la funcion bajo prueba, como _con_datos aisla SOLO leer()."""
+    original = G.propuestas_persistidas
+    G.propuestas_persistidas = lambda pk: texto
+    try:
+        return fn()
+    finally:
+        G.propuestas_persistidas = original
+
+
+def test_carpeta_de_resuelve_por_dim_productos_no_por_nombre():
+    """Invariante 10: la carpeta sale de _DIM_PRODUCTOS.csv, nunca se adivina del producto_key."""
+    datos = {"_DIM_PRODUCTOS.csv": [{"producto_key": "PROD_X", "slug_carpeta": "Carpeta Rara XYZ"}]}
+    carpeta = _con_datos(datos, lambda: G.carpeta_de("PROD_X"))
+    check("carpeta_de lee slug_carpeta del CSV, no adivina del producto_key",
+          carpeta == "Carpeta Rara XYZ", carpeta)
+    check("sin fila en _DIM_PRODUCTOS, carpeta_de devuelve None",
+          _con_datos({"_DIM_PRODUCTOS.csv": []}, lambda: G.carpeta_de("PROD_INEXISTENTE")) is None)
+
+
+def test_propuestas_persistidas_menos_de_6_bloquea():
+    """Seccion persistida en 2_DATA_PRODUCTO.txt con 5 propuestas: BLOQUEA sin pasar --propuestas."""
+    contenido = "━━━ ANTES ━━━\notro dato\n\n" + _seccion_propuestas(5) + "\n━━━ DESPUES ━━━\nmas dato\n"
+    texto = _con_carpeta("PROD_X", "TMP_PROD", contenido,
+                          lambda: G.propuestas_persistidas("PROD_X"))
+    check("la seccion se lee del archivo persistido", texto is not None)
+    bloqueo, aviso = G.validar_propuestas_valor(texto)
+    check("5 propuestas persistidas bloquea", bloqueo is not None and "6" in bloqueo, bloqueo)
+
+
+def test_propuestas_persistidas_6_a_8_pasa():
+    """6-8 propuestas persistidas: pasa sin bloqueo ni aviso, igual que con --propuestas."""
+    for n in (6, 7, 8):
+        contenido = _seccion_propuestas(n)
+        texto = _con_carpeta("PROD_X", "TMP_PROD", contenido,
+                              lambda: G.propuestas_persistidas("PROD_X"))
+        bloqueo, aviso = G.validar_propuestas_valor(texto)
+        check("%d propuestas persistidas pasa sin bloqueo ni aviso" % n,
+              bloqueo is None and aviso is None, (bloqueo, aviso))
+
+
+def test_propuestas_persistidas_arriba_de_20_avisa():
+    """Mas de 20 persistidas no bloquea, pero avisa saturacion de infografias."""
+    contenido = _seccion_propuestas(21)
+    texto = _con_carpeta("PROD_X", "TMP_PROD", contenido,
+                          lambda: G.propuestas_persistidas("PROD_X"))
+    bloqueo, aviso = G.validar_propuestas_valor(texto)
+    check("mas de 20 persistidas no bloquea", bloqueo is None, bloqueo)
+    check("mas de 20 persistidas avisa", aviso is not None and "21" in aviso, aviso)
+
+
+def test_propuestas_persistidas_seccion_ausente_solo_avisa():
+    """2_DATA_PRODUCTO.txt existe pero sin la seccion: PENDIENTE (aviso, nunca bloqueo)."""
+    contenido = "━━━ COSTEO ━━━\notro dato, sin la seccion de propuestas\n"
+    texto = _con_carpeta("PROD_X", "TMP_PROD", contenido,
+                          lambda: G.propuestas_persistidas("PROD_X"))
+    check("sin la seccion, propuestas_persistidas devuelve None", texto is None)
+    bloqueo, aviso = G.validar_propuestas_valor(texto)
+    check("seccion ausente solo avisa PENDIENTE",
+          bloqueo is None and aviso is not None and "PENDIENTE" in aviso, aviso)
+
+
+def test_propuestas_persistidas_archivo_o_carpeta_ausente_solo_avisa():
+    """Sin 2_DATA_PRODUCTO.txt (o sin slug_carpeta): None, nunca bloqueo — mismo camino PENDIENTE."""
+    texto = _con_carpeta("PROD_X", "TMP_PROD", None, lambda: G.propuestas_persistidas("PROD_X"))
+    check("sin el archivo, propuestas_persistidas devuelve None", texto is None)
+    check("sin slug_carpeta, propuestas_persistidas devuelve None",
+          _con_datos({"_DIM_PRODUCTOS.csv": []}, lambda: G.propuestas_persistidas("PROD_X")) is None)
+
+
+def test_una_bloquea_automatico_sin_flag_propuestas():
+    """CLEARSTEM (real, resuelve completo) con 5 propuestas persistidas: una() bloquea SOLO
+    con la data persistida, sin pasar --propuestas — el candado dejo de ser opt-in."""
+    ok = _con_propuestas_persistidas(_cuerpo_propuestas(5),
+                                      lambda: G.una("CLEARSTEM", escribir=False))
+    check("una() bloquea automaticamente por la seccion persistida, sin --propuestas", not ok)
+
+
+def test_una_json_pasa_automatico_con_6_persistidas_sin_flag():
+    """Mismo camino automatico pero con 6 (>=6): una_json() pasa sin --propuestas."""
+    ok = _con_propuestas_persistidas(_cuerpo_propuestas(6), lambda: G.una_json("CLEARSTEM"))
+    check("una_json() pasa automaticamente con 6 propuestas persistidas, sin --propuestas", ok)
+
+
+def test_flag_propuestas_sigue_pisando_lo_persistido():
+    """--propuestas ARCHIVO sigue siendo un override valido de una sola corrida (no queda
+    redundante): pisa lo persistido aunque haya una seccion distinta en 2_DATA_PRODUCTO.txt."""
+    persistidas = _cuerpo_propuestas(8)  # pasaria sola
+    override_bloquea = "\n".join("solo %d" % i for i in range(3))  # 3 < 6, bloquea
+    ok = _con_propuestas_persistidas(
+        persistidas,
+        lambda: G.una("CLEARSTEM", escribir=False, propuestas=override_bloquea))
+    check("--propuestas explicito pisa lo persistido y bloquea con 3", not ok)
 
 
 def test_mensaje_prellenado_anuncio_gt_mspas():
@@ -441,6 +577,15 @@ def main():
                test_propuestas_valor_no_declaradas_solo_avisa,
                test_propuestas_valor_ignora_lineas_vacias_e_instrucciones,
                test_clearstem_tinnidrop_sin_propuestas_no_bloquean,
+               test_carpeta_de_resuelve_por_dim_productos_no_por_nombre,
+               test_propuestas_persistidas_menos_de_6_bloquea,
+               test_propuestas_persistidas_6_a_8_pasa,
+               test_propuestas_persistidas_arriba_de_20_avisa,
+               test_propuestas_persistidas_seccion_ausente_solo_avisa,
+               test_propuestas_persistidas_archivo_o_carpeta_ausente_solo_avisa,
+               test_una_bloquea_automatico_sin_flag_propuestas,
+               test_una_json_pasa_automatico_con_6_persistidas_sin_flag,
+               test_flag_propuestas_sigue_pisando_lo_persistido,
                test_mensaje_prellenado_anuncio_gt_mspas,
                test_mensaje_prellenado_anuncio_co_invima,
                test_mensaje_prellenado_anuncio_sin_registro_bloquea,

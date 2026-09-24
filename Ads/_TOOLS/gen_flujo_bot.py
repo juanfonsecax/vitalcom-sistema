@@ -28,10 +28,17 @@ USO
                                                       cada uno, lo que se pega y sus >> aparte.
                                                       No escribe nada.
   python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM --propuestas propuestas.txt
-                                                      cuenta las propuestas de valor del archivo
-                                                      (una por linea): <6 BLOQUEA, 6-20 pasa,
-                                                      >20 avisa. Sin este flag queda PENDIENTE
-                                                      (aviso, nunca bloquea). Va con UN
+                                                      SOBRESCRIBE, solo para esta corrida, las
+                                                      propuestas de valor que cuenta el gate (una
+                                                      por linea). Uso: probar un archivo antes de
+                                                      que etapa-guardar-producto lo persista. Sin
+                                                      este flag (el camino normal) el gate lee
+                                                      solas las propuestas ya persistidas en
+                                                      PRODUCTOS/[carpeta]/2_DATA_PRODUCTO.txt,
+                                                      seccion "PROPUESTAS DE VALOR" (la escribe
+                                                      etapa-guardar-producto desde el bloque de
+                                                      etapa-5). Ninguna de las dos declaradas →
+                                                      PENDIENTE (aviso, nunca bloquea). Va con UN
                                                       producto_key, sin --validar/--todo.
 
 LAS TRES NOTACIONES de la plantilla (una forma, un significado):
@@ -460,10 +467,50 @@ def estructura(txt):
 # hooks o testimonios. Viven DENTRO de las infografias (imagenes), nunca en el texto que se
 # pega en LucidBot — por eso esta cuenta no las lee de _DIM_FLUJO_BOT.csv (un dato ahi
 # bloquearia CLEARSTEM/TINNIDROP hasta que el operador declare la columna, y esta tarea no
-# toca PRODUCTOS/*.csv) sino de un texto que el propio comando recibe (--propuestas ARCHIVO,
-# una propuesta por linea). Sin ese archivo, la cuenta queda PENDIENTE: nunca bloquea.
+# toca PRODUCTOS/*.csv) sino de la seccion "PROPUESTAS DE VALOR" que etapa-guardar-producto
+# persiste en 2_DATA_PRODUCTO.txt (ver propuestas_persistidas()), con --propuestas ARCHIVO como
+# override manual de una sola corrida. Sin ninguna de las dos, la cuenta queda PENDIENTE: nunca
+# bloquea.
 MIN_PROPUESTAS_VALOR = 6
 AVISO_PROPUESTAS_VALOR = 20
+
+# Cabecera de la seccion que persiste etapa-guardar-producto en 2_DATA_PRODUCTO.txt (ARCHIVO 2,
+# formato "━━━ TITULO ━━━" — mismo estilo que COSTEO/COMPONENTES en ese archivo). Cierra en la
+# proxima linea que abre con "━" o en el fin del archivo: no depende de una longitud fija de raya.
+RE_SECCION_PROPUESTAS = re.compile(r"^━+\s*PROPUESTAS DE VALOR\b.*$", re.M)
+RE_SECCION_2DATA = re.compile(r"^━+", re.M)
+
+
+def carpeta_de(pk):
+    """slug_carpeta desde _DIM_PRODUCTOS.csv. Invariante 10: la carpeta nunca se adivina por el
+    nombre — mismo patron que armar_prompts_fase2.py:carpeta_de()."""
+    for r in leer("_DIM_PRODUCTOS.csv"):
+        if r.get("producto_key") == pk:
+            return (r.get("slug_carpeta") or "").strip() or None
+    return None
+
+
+def propuestas_persistidas(pk):
+    """Las propuestas de valor que etapa-guardar-producto ya persistio en
+    PRODUCTOS/[carpeta]/2_DATA_PRODUCTO.txt, seccion "PROPUESTAS DE VALOR" (una por linea,
+    transcritas verbatim del <<BLOQUE:propuestas_valor>> de etapa-5, invariante 3).
+
+    None si no hay slug_carpeta, no existe el archivo o no existe la seccion — nunca bloquea,
+    lo cuenta validar_propuestas_valor() igual que "no declaradas todavia".
+    """
+    carpeta = carpeta_de(pk)
+    if not carpeta:
+        return None
+    ruta = os.path.join(PROD, carpeta, "2_DATA_PRODUCTO.txt")
+    if not os.path.exists(ruta):
+        return None
+    texto = open(ruta, encoding="utf-8").read()
+    m = RE_SECCION_PROPUESTAS.search(texto)
+    if not m:
+        return None
+    resto = texto[m.end():]
+    fin = RE_SECCION_2DATA.search(resto)
+    return resto[:fin.start()] if fin else resto
 
 
 def propuestas_valor_lineas(texto):
@@ -508,7 +555,8 @@ def prohibiciones(txt):
 def una_json(pk, parcial=False, propuestas=None):
     """--json: el flujo por bloques para la app. No escribe. Bloquea igual que el render."""
     v, faltan, avisos = resolver(pk)
-    bloqueo_prop, aviso_prop = validar_propuestas_valor(propuestas)
+    efectivas = propuestas if propuestas is not None else propuestas_persistidas(pk)
+    bloqueo_prop, aviso_prop = validar_propuestas_valor(efectivas)
     if aviso_prop:
         avisos.append(aviso_prop)
     salida = {"producto_key": pk, "ok": False, "parcial": parcial, "avisos": avisos,
@@ -531,7 +579,8 @@ def una_json(pk, parcial=False, propuestas=None):
 
 def una(pk, escribir=True, parcial=False, copy=False, propuestas=None):
     v, faltan, avisos = resolver(pk)
-    bloqueo_prop, aviso_prop = validar_propuestas_valor(propuestas)
+    efectivas = propuestas if propuestas is not None else propuestas_persistidas(pk)
+    bloqueo_prop, aviso_prop = validar_propuestas_valor(efectivas)
     if aviso_prop:
         avisos.append(aviso_prop)
     print("\n─── %s ───" % pk)
