@@ -33,9 +33,9 @@ Cada etapa es un **subagente real** en `.claude/agents/ETAPA-*.md`. Se invoca co
 (`subagent_type` = su `name`, ej. `etapa-0`) — nunca por ruta de archivo.
 
 **Las 15 etapas:** `etapa-producto` · `etapa-0` · `etapa-1` · `etapa-1b` · `etapa-2` (incluye la
-asignación de FanPage, absorbida de la extinta `etapa-fanpage` — T1 p2-simplificacion) · `etapa-3` ·
+asignación de FanPage) · `etapa-3` ·
 `etapa-4` · `etapa-5` · `etapa-6` · `etapa-guardar-producto` ·
-`etapa-7` (fusiona el extinto monitor/decisión — T3 p2-simplificacion) · `etapa-9` · `etapa-10` ·
+`etapa-7` (monitor de métricas y motor de decisión de escalado, en una sola pasada) · `etapa-9` · `etapa-10` ·
 `etapa-11` · `etapa-render`
 
 **Modelo:** 14 etapas declaran `model: inherit` (corren en el modelo que eligió el operador; el
@@ -97,7 +97,7 @@ calidad de la escritura y del juicio.
 | Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
 | **Voz del cliente como dato** (cita textual + URL, verificable, nunca prosa suelta) | `Ads/_TOOLS/verificar_voz.py` GENERA `PRODUCTOS/_VOZ_CLIENTE.csv` (esquema en su docstring; re-descarga la URL y confirma que la cita está ahí). `etapa-1b` es el único que agrega filas, vía `--agregar-json` (nunca a mano); `gen_plan.py --validar` exige que cada ángulo de un `_PLAN.json` en `version >= 2` cite su origen (voz verificada o video de competencia) |
 | Datos de las 10 FanPages (identidad, tono, edad de orientación, page_id, productos del nicho) | `PRODUCTOS/_DIM_FANPAGES.csv` |
-| El JUICIO de asignación de FanPage (reglas F1–F5) y su output `<pagina_asignada>` (absorbido de la extinta `etapa-fanpage`, T1 p2-simplificacion) | `.claude/agents/ETAPA-2.md` |
+| El JUICIO de asignación de FanPage (reglas F1–F5) y su output `<pagina_asignada>` | `.claude/agents/ETAPA-2.md` |
 | Convención de nombres y banda de edad por avatar | `.claude/agents/ETAPA-6.md` |
 | **Publicación en Meta**: secuencia de llamadas y gate de cierre. **El CSV no es evidencia del estado de Meta**: antes de crear, `ads_get_ad_entities` y `--snapshot` | `Ads/_TOOLS/gen_publicacion.py` (deriva y bloquea) + `verificar_publicacion.py` (compara y escribe los `ad_id`) + skill `publicar-meta` |
 | Transiciones entre pasos y sus gates | `DOCTRINA/FLUJO.json` + `Ads/_TOOLS/flujo.py` + `PRODUCTOS/_ESTADO_FLUJO.csv` (derivado). Un gate que no quepa en los predicados de `flujo.py` es criterio y vive en el subagente. `flujo.gate_entrada(producto_key, fase)` es el juez único de "¿se cumple el gate de entrada?" (solo lectura) — lo llaman `gen_publicacion.py --fase N` y `registrar_evento.py --evento LANZAMIENTO` para negar la acción salvo `--excepcion "motivo"` (queda un evento `EXCEPCION` en `_EVENTOS.csv`) |
@@ -147,7 +147,7 @@ Aplican a **todos los subagentes en todas las fases**.
 > - **El ángulo NO se testea en 1-1-N**: Meta reparte por clics y conversaciones, y esa señal no
 >   predice la venta. **Presupuesto protegido (conjuntos separados) cuando la variable se decide por
 >   VENTA · presupuesto libre (1-1-N) cuando se decide por ENTREGA.**
-> - **FASE 1 corre TODO EN IMAGEN** (decisión operador 22-sep-2026): los videos de competencia
+> - **FASE 1 corre TODO EN IMAGEN:** los videos de competencia
 >   siguen siendo la FUENTE del ángulo (transcripciones de `etapa-0`), nunca el creativo de F1; el
 >   formato VIDEO se testea recién en FASE 2, como un concepto más. Dueño de la regla:
 >   `Ads/_TOOLS/gen_plan.py --validar` (bloquea un plan de F1 con cualquier conjunto != IMAGEN).
