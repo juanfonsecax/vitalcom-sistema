@@ -1,30 +1,18 @@
 {
-  "arranque_frio": 11296,
-  "claude_md": 8180,
+  "arranque_frio": 8902,
+  "claude_md": 5872,
   "fases": {
-    "fase-1-angulos": 354743,
-    "fase-2-conceptos": 445848,
-    "fase-3-escalado": 293227,
-    "ciclo-diario": 276918
+    "fase-1-angulos": 289169,
+    "fase-2-conceptos": 377470,
+    "fase-3-escalado": 236895,
+    "ciclo-diario": 214973
   },
   "nodos_dios": [
     [
       "CLAUDE.md",
       8,
-      8180,
-      65440
-    ],
-    [
-      "PLANTILLAS_ADS.md",
-      6,
-      8587,
-      51522
-    ],
-    [
-      "ESCALADO_PLAYBOOK.md",
-      5,
-      9220,
-      46100
+      5872,
+      46976
     ],
     [
       "_CATALOGO_CONCEPTOS.md",
@@ -33,22 +21,28 @@
       25449
     ],
     [
+      "PLANTILLAS_FLUJO_BOT.md",
+      2,
+      9105,
+      18210
+    ],
+    [
       "CALENDARIO_ESCALADO.md",
       2,
-      8007,
-      16014
+      8013,
+      16026
     ],
     [
       "PLANTILLAS_INFOGRAFIAS.md",
       2,
-      6999,
-      13998
+      6997,
+      13994
     ],
     [
       "PARAMETRIZACION_ADS.md",
       3,
-      4358,
-      13074
+      4363,
+      13089
     ],
     [
       "PLANTILLAS_INFOGRAFIAS_FLUJO.md",
@@ -59,20 +53,14 @@
     [
       "DATA_PLAYBOOK.md",
       1,
-      10831,
-      10831
+      11874,
+      11874
     ],
     [
       "MCP_PLAYBOOK.md",
       2,
       5226,
       10452
-    ],
-    [
-      "PLANTILLAS_FLUJO_BOT.md",
-      1,
-      7741,
-      7741
     ],
     [
       "COPYWRITING_ADS.md",
@@ -93,10 +81,88 @@
       5133
     ],
     [
+      "04_PALANCAS.md",
+      2,
+      2305,
+      4610
+    ],
+    [
+      "10_METRICAS_TESTEO.md",
+      4,
+      810,
+      3240
+    ],
+    [
+      "11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md",
+      3,
+      1017,
+      3051
+    ],
+    [
+      "04_PROMPT_CONTROL_FASE1.md",
+      1,
+      2987,
+      2987
+    ],
+    [
+      "05_PROMPT_MAESTRO_FASE2.md",
+      2,
+      1241,
+      2482
+    ],
+    [
+      "PLANTILLAS_ADS.md",
+      2,
+      736,
+      1472
+    ],
+    [
       "LAVADO.md",
       1,
-      1137,
-      1137
+      1136,
+      1136
+    ],
+    [
+      "01_COMPLIANCE_ANDROMEDA.md",
+      2,
+      535,
+      1070
+    ],
+    [
+      "08_PLAN_ENTREGABLE.md",
+      1,
+      898,
+      898
+    ],
+    [
+      "06_ESTILOS_ANTIFATIGA.md",
+      4,
+      188,
+      752
+    ],
+    [
+      "05_REPLICAR_GANADOR.md",
+      1,
+      748,
+      748
+    ],
+    [
+      "07_MATRIZ_DUPLICACION.md",
+      1,
+      547,
+      547
+    ],
+    [
+      "03_SENALES_DECISION.md",
+      1,
+      532,
+      532
+    ],
+    [
+      "06_SATURACION_CUENTA.md",
+      1,
+      471,
+      471
     ]
   ],
   "huerfanos_md": [],
@@ -104,17 +170,29 @@
   "rutas_muertas": [],
   "insumos_faltantes": [
     [
+      ".claude/agents/ETAPA-1B.md",
+      "PRODUCTOS/_VOZ_CLIENTE.csv"
+    ],
+    [
+      "./CLAUDE.md",
+      "PRODUCTOS/_VOZ_CLIENTE.csv"
+    ],
+    [
       "DOCTRINA/ETAPA-RECOLECCION.md",
       "Ads/COPYS_COMPETENCIA.txt"
+    ],
+    [
+      "CLAUDE.md",
+      "PRODUCTOS/_VOZ_CLIENTE.csv"
     ]
   ],
   "sin_inherit": [
     "etapa-render"
   ],
   "inventario": {
-    "agentes": 17,
-    "skills": 10,
+    "agentes": 16,
+    "skills": 9,
     "docs_raiz": 3,
-    "csv": 37
+    "csv": 39
   }
 }
