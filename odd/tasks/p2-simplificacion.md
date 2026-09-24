@@ -395,7 +395,15 @@ ciclo-diario 210,233 · cold start 8,901.
   inputs. The new output must pass the same assert. Then run gen_grafo --comparar. Etapas
   without a fixture (0, 1, 1b, 3, 10, 11, render, producto) change prose only and cannot be
   re-verified. This is disclosed, not hidden.
-- [ ] T4e — Proposal (read-only): which live products to re-package, with sales/spend data kept.
+- [x] T4e — DONE 2026-09-24 (d838e6e). etapa-11 ran F2.etapa-11 diagnosis for both products (reports in
+  _AUDITORIAS/_FLUJO_{TINNIDROP,CLEARSTEM}_20260924.txt). etapa-guardar-producto created 3_CAMPAÑA_META.txt
+  with repo-sourced IDs only and refreshed headers from CSV owners; verificar_producto 1/1 each; no CSV
+  touched. Pending operator: register both DIAGNOSTICO_CONGRUENCIA events (the flujo.py node stays open until
+  then); settle price, brand and social proof discrepancies; load Dropi prices into the CLEARSTEM bot. Found
+  bug (not fixed, awaiting approval): gen_flujo_bot.py picks the angle by max(ventas_acum) instead of the F2
+  winner (it renders TINNIDROP as PERDIDA_AUDITIVA nivel 2), and an empty {{recaida}} leaves "— .".
+  Follow-up: the etapa-guardar-producto/TINNIDROP.json fixture does not list 3_CAMPAÑA_META.txt.
+  Original scope: Proposal (read-only): which live products to re-package, with sales/spend data kept.
   Proposal delivered 24-sep. Operator APPROVED re-packaging TINNIDROP and CLEARSTEM (24-sep).
   Not re-running F1 (both products are past it). For each product, after the T4d re-runs finish
   (so their frozen reads are not disturbed): `flujo.py <P>` → the real node `F2.etapa-11`
