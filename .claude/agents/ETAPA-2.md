@@ -149,7 +149,7 @@ Para cada ángulo, en orden de mayor a menor potencial:
 ═══════════════════════════════════════════
 ÁNGULO [N] — [NOMBRE DEL ÁNGULO]
 Ranking: #[posición] de 6
-Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (DOCTRINA/PLANTILLAS_ADS.md) — ángulo virgen sin video]
+Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md) — ángulo virgen sin video]
 Origen del ángulo (T10 — va al `_PLAN.json` de ETAPA-6): [VOZ_CLIENTE: voz_id de `_VOZ_CLIENTE.csv` que lo sostienen / VIDEO_COMPETENCIA: archivo de ETAPA-0 que lo sostiene]
 ═══════════════════════════════════════════
 
@@ -306,9 +306,9 @@ Otros productos futuros que podrían ir ahí: [ejemplos del mismo nicho]
   
   **FASE 1 → concepto FIJO `C2_BENEFICIOS` en los 6 conjuntos, 6 variantes distintas.** FASE 1 mide el ÁNGULO: si el concepto también cambia entre conjuntos, ángulo y ejecución se mueven juntos y el resultado no es atribuible a ninguno de los dos. Con Andrómeda el creativo explica ~56 % del resultado, o sea que la ejecución pesa **más** que el ángulo — moverla es perder el testeo entero. Los 6 creativos comparten layout, paleta y estructura, y se diferencian en hook, beneficios y props: **son 6 conceptos-variante, no 6 iteraciones**, y la diversidad de entrega que premia Andrómeda se mantiene.
   - **FASE 2 → ángulo FIJO (el ganador), 6 CONCEPTOS distintos.** Ahí sí se abre el abanico y se rotan los 15 estilos anti-fatiga.
-  - Prompt de cada fase en `DOCTRINA/PLANTILLAS_ADS.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2).
+  - Prompt de cada fase en `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2, ver ETAPA-4).
 - **Declarar `concepto_key` en cada ficha de ángulo** para que `etapa-guardar-producto` lo escriba en `_DIM_CONJUNTOS.csv`. En FASE 1 es `C2_BENEFICIOS` en las 6 fichas. Vocabulario cerrado en `DOCTRINA/DATA_PLAYBOOK.md` §1.
-- **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `DOCTRINA/PLANTILLAS_ADS.md`)
+- **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md`)
 
 ---
 

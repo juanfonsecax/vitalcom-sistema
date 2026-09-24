@@ -51,7 +51,7 @@ Inputs: ficha del ángulo ganador + output de `etapa-2`.
 Output: mapa de sub-dolores y objeciones + 8-12 microángulos con su frase de apertura.
 
 **T8-4 (23-sep-2026): `etapa-guardar-producto` tiene que volcar este output en la sección
-6b (BANCO DE MICROÁNGULOS) de `4_PLAN_ESCALADO.txt`** (plantilla en `ESCALADO_PLAYBOOK.md §7`).
+6b (BANCO DE MICROÁNGULOS) de `4_PLAN_ESCALADO.txt`** (plantilla en `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md §7`).
 `flujo.py` verifica en `F3.plan` que ese archivo contenga «MICROÁNGULO»; sin eso, el trabajo de
 `etapa-3` no queda con ningún rastro verificable en disco.
 
@@ -83,7 +83,7 @@ Output: **1-1-7** — una campaña, un conjunto, el creativo validado ×7, **$15
 
 ## PASO 2 — `etapa-guardar-producto`
 
-Escribe `4_PLAN_ESCALADO.txt` en `PRODUCTOS/[NOMBRE]/` (plantilla en `DOCTRINA/ESCALADO_PLAYBOOK.md` §7). Se
+Escribe `4_PLAN_ESCALADO.txt` en `PRODUCTOS/[NOMBRE]/` (plantilla en `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md` §7). Se
 sobrescribe cada ciclo y sube `v[N]`.
 
 ⚠️ El slot `3_` es **solo** para IDs de Meta. Nunca meter ahí el plan de escalado.
@@ -96,7 +96,7 @@ sobrescribe cada ciclo y sube `v[N]`.
 `flujo.py` marca el gate propio de `F3.exploracion` cumplido (F3 rentable según `decidir.py`,
 DOCTRINA/FLUJO.json). Es un mini-F1 fijo de `exploracion_n_angulos` ángulos nuevos, TODO EN
 IMAGEN, medido por VENTA como F1. Detalle completo (gate, parámetros, esquema del plan,
-naming): `DOCTRINA/ESCALADO_PLAYBOOK.md §7b`. Secuencia: `etapa-2` → `etapa-6`
+naming): `DOCTRINA/ESCALADO/09_EXPLORACION_PARALELA.md §7b`. Secuencia: `etapa-2` → `etapa-6`
 (`_PLAN_EXPLORACION.json`) → `etapa-guardar-producto` → `publicar-meta` con
 `Ads/_TOOLS/gen_publicacion.py --fase 3 --brazo EXPLORACION`. Un ángulo ganador de esta
 exploración entra a FASE 2 por el mismo gate `angulo_ganador` que cualquier otro.

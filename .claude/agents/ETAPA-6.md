@@ -391,7 +391,7 @@ QUÉ OBSERVAR AL DÍA SIGUIENTE
 ──────────────────────────────────────────────────────
 Para identificar el ángulo ganador, revisar por conjunto:
 
-MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `DOCTRINA/ESCALADO_PLAYBOOK.md` §8 → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
+MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md` → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
 1. % Conversación por Clic en enlace = Conversaciones ÷ Clics × 100  (la más importante)
    → <35% problema de flujo/coherencia · 35-49% bueno/escalable · ≥50% (50-70%) excelente y súper escalable
 2. % Conversación por Impresión = Conversaciones ÷ Impresiones × 100
@@ -735,7 +735,7 @@ FIN ESTRUCTURA ESCALADO
   > Matiz de objetivo (Clase 15): en el TESTEO el objetivo es Tráfico (Mercy: "Interacción nunca me funcionó"). En el ESCALADO con Post ID, Joaquín en Clase 15 crea la campaña de réplica con objetivo **Interacción**. Este sistema mantiene Tráfico por defecto; usar Interacción para Post ID solo si el operador lo valida.
 - **Regla de límite por fanpage:** Hasta ~250 anuncios activos por fanpage. Pasado ese punto, abrir nueva fanpage del mismo nicho/identidad. El ganador solo se replica en fanpages del mismo nicho. (Clase 15)
 - **Regla de los dos modos de escalado:** El operador elige modo AGRESIVO (Mercy — duplicar y multicuenta rápido) o PROGRESIVO (Joaquín — +20% matutino y duplicar solo tras 2-3 días estables). No mezclar criterios a mitad del escalado. (Clase 8, 11, 15)
-- **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `DOCTRINA/PLANTILLAS_ADS.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
+- **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `DOCTRINA/PLANTILLAS_ADS_SECCIONES/06_ESTILOS_ANTIFATIGA.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
   > ⚠️ **NO APLICA A FASE 1.** Los 6 conjuntos con 1 creativo cada uno son el instrumento de MEDICIÓN: si se meten 3 creativos por conjunto se pierde saber qué ángulo ganó. Andromeda premia diversidad, pero el objetivo de FASE 1 es aprender, no entregar barato. Sacrificar la atribución ahí sale más caro que el CPM que se ahorra.
 - **TEST DE DIVERSIDAD CONCEPTUAL (abierto 2026-07-31, leer antes de cerrarlo):** TINNIDROP corre
   4 réplicas equivalentes (2🟦 CP1 · 3🟦 GTR1 · 4🟦 GTR7 · 5🟦) con los mismos ángulos, la misma

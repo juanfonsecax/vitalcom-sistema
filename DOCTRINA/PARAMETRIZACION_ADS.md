@@ -203,7 +203,7 @@ Es exactamente el diseño que el operador describe: se fija todo menos una cosa.
 
 | Freno | Regla | De dónde sale |
 |---|---|---|
-| **No testeado** | celda con gasto < 1 × CPA break-even no se lee: no perdió, no se testeó | `ESCALADO_PLAYBOOK.md` §7 |
+| **No testeado** | celda con gasto < 1 × CPA break-even no se lee: no perdió, no se testeó | `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md` §7 |
 | **Empate estadístico** | bandas de CPA (±1σ sobre n ventas) que se tocan → no se declara ganador, y dice cuántas ventas faltan | este archivo |
 | **Confounding** | si cada nivel del eje tiene un único valor distinto en otro eje, avisa que **no es atribuible** | este archivo |
 

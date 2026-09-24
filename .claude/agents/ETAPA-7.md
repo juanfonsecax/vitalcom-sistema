@@ -149,8 +149,8 @@ celda en `_DECISIONES.json` y lo cita con su `accion_codigo`; no vuelve a calcul
 Lo que sí sigue siendo lectura de esta etapa, porque el motor no lo mira:
 - **NUNCA ROAS.** Se mide por CPA en Quetzales contra `cpa_base_q` / `cpa_be_q` de `_DIM_PRODUCTOS.csv`.
 - **VARIABLES DE CONFUSIÓN:** antes de atribuir un resultado al ángulo, revisar `_EVENTOS.csv` en la ventana leída. Si hay un `CAMBIO_BOT`, `CAMBIO_CREATIVO`, `CAMBIO_PRECIO` o `CAMBIO_PAGINA` → **declararlo en el informe y no culpar al ángulo**. (Caso real CLEARSTEM 10-jul: bot nuevo + música de Meta el mismo día.)
-- **Señales de entrega de Meta** (referencia, no umbral duro — `DOCTRINA/ESCALADO_PLAYBOOK.md` §2/§8): % conversación por impresión, frecuencia ≥1.9 = fatiga creativa, CTR cayendo >20 % en 48 h, CPM subiendo >25 % sin cambios. Sirven para el **por qué** (creativo vs ángulo vs bot), no para pausar: pausar es del motor.
-- **Saturación por cuenta** (`DOCTRINA/ESCALADO_PLAYBOOK.md §5`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo.
+- **Señales de entrega de Meta** (referencia, no umbral duro — `DOCTRINA/ESCALADO/03_SENALES_DECISION.md` y `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md`): % conversación por impresión, frecuencia ≥1.9 = fatiga creativa, CTR cayendo >20 % en 48 h, CPM subiendo >25 % sin cambios. Sirven para el **por qué** (creativo vs ángulo vs bot), no para pausar: pausar es del motor.
+- **Saturación por cuenta** (`DOCTRINA/ESCALADO/06_SATURACION_CUENTA.md`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo.
 - **`SIN_ENTREGA`**: en campañas `1-1-N` de FASE 2, un anuncio con gasto < 30 % de su reparto prorrateado no es perdedor; no entra al ranking ni se recomienda apagar.
 
 ---
@@ -228,7 +228,7 @@ Aplicarlos como restricciones sobre la lectura y **citar el `id`** cuando uno ca
 - Escribir resultados en el bloque RESULTADOS_TESTEO de `2_DATA_PRODUCTO.txt` (y `3_CAMPAÑA_META.txt` si existe).
 - El informe alimenta a **ETAPA-8**, que decide las palancas de escalado.
 - Al confirmar ganador con ventana COMPLETA: "El ángulo ganador es [nombre]" → ORCHESTRATOR inicia FASE 2 — **ETAPA-11 primero**, después TESTEO DE CONCEPTOS (ETAPA-3 → ETAPA-9).
-- 🔴 **ETAPA-11 corre ANTES que 3A.** Optimizar el flujo es la palanca #1 (`DOCTRINA/ESCALADO_PLAYBOOK.md` §3) y va antes de gastar más: el cierre del portafolio va en 8.6 % contra el 15-20 % de los mentores. Al entregar el ganador, **pedir también el export de chats de LucidBot** de la ventana de testeo — es el input que le permite a ETAPA-11 decir POR QUÉ se pierde la venta y no solo DÓNDE.
+- 🔴 **ETAPA-11 corre ANTES que 3A.** Optimizar el flujo es la palanca #1 (`DOCTRINA/ESCALADO/04_PALANCAS.md`) y va antes de gastar más: el cierre del portafolio va en 8.6 % contra el 15-20 % de los mentores. Al entregar el ganador, **pedir también el export de chats de LucidBot** de la ventana de testeo — es el input que le permite a ETAPA-11 decir POR QUÉ se pierde la venta y no solo DÓNDE.
 - **Precondición que hay que decir al entregar el ganador:** la FASE 2 necesita **10 conceptos publicables** y una **segunda cuenta** para la campaña de réplica. Si no existen, el ganador queda confirmado pero la fase no arranca — se corre `etapa-9` primero.
 - **Y una advertencia de lectura que aplica desde el 02-sep:** en las campañas `1-1-N` de FASE 2, un anuncio con gasto acumulado < 30 % de su reparto prorrateado es **`SIN_ENTREGA`**, no perdedor. No incluirlo en el ranking ni recomendarlo para apagar.
 - (Opcional) Salud de señales del pixel/dataset: la skill `monitor-pixel`.

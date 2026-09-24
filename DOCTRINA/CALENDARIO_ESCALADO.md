@@ -169,7 +169,7 @@ replicación.
 
 > ⚠️ **Por qué la campaña C va en OTRA cuenta.** A, B y C con los mismos creativos, la misma página
 > y la misma audiencia compiten entre sí en la subasta y se suben el CPM mutuamente. Correr C en
-> otra cuenta convierte ese confound en la validación multicuenta de `DOCTRINA/ESCALADO_PLAYBOOK.md` §3.6.
+> otra cuenta convierte ese confound en la validación multicuenta de `DOCTRINA/ESCALADO/04_PALANCAS.md` §3.6.
 
 ### 1.7.3 · REGLA DE LECTURA DE LA FASE 2 — la replicación
 
@@ -245,7 +245,7 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 - **NO pausar. NO escalar. NO renovar creativo.** Meta está en aprendizaje (~50 conversiones para salir). El **CPA alto es NORMAL** porque el flujo aún no está optimizado (bot con muchos ángulos).
 - **Única excepción de apagado (Camilo, presupuesto alto):** si se pautó con presupuesto alto y a mediodía ya gastó la mitad **sin una sola venta en ningún anuncio del conjunto** → apagar ese conjunto. **A $2.99 se es paciente igual: esperar al día 3.**
 - ETAPA-8 en Día 1-2 **no decide escalado** — solo reporta quién apunta a ganar.
-- **PRESUPUESTO DE DECISIÓN (ver §1.5 y `DOCTRINA/ESCALADO_PLAYBOOK.md` §1.5):** a $2.99/día un conjunto alcanza **1 CPA Break-Even (su PD)** recién al día **3.3-4.3** según producto → en el día 1-2 **"0 ventas" NO es señal de matar**. Lo que SÍ se lee ya es la **conversación** (clics→chats), que a $2.99 acumula ~6.3 conv/día: un conjunto con %conv/clic-enlace muy bajo o $/conv caro se corta por ahí (anuncio/hook), sin esperar el PD. Matar-por-ventas es solo para el que ya gastó su PD y sigue en 0.
+- **PRESUPUESTO DE DECISIÓN (ver §1.5 y `DOCTRINA/ESCALADO/02_PRESUPUESTO_DECISION.md` §1.5):** a $2.99/día un conjunto alcanza **1 CPA Break-Even (su PD)** recién al día **3.3-4.3** según producto → en el día 1-2 **"0 ventas" NO es señal de matar**. Lo que SÍ se lee ya es la **conversación** (clics→chats), que a $2.99 acumula ~6.3 conv/día: un conjunto con %conv/clic-enlace muy bajo o $/conv caro se corta por ahí (anuncio/hook), sin esperar el PD. Matar-por-ventas es solo para el que ya gastó su PD y sigue en 0.
 
 ### 🟨 VENTANA 2 — DÍA 3 (GATE #1: DEFINICIÓN + CORTE DE ETAPA 1) · *optimizar flujo + podar + concentrar*
 > Primer punto de decisión real. Se decide por CPA **semanal parcial** + conversación, nunca por el CPA de un día suelto.
@@ -265,7 +265,7 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 ### 🟩 VENTANA 4 — DÍA 5+ (ESCALADO) · *solo con CPA real rentable sostenido + flujo de caja*
 > **Gate a DÍA 5 (Guatemala, entrega COD ~3 días).** La cuenta: los pedidos de los días 1-2 entregan ~día 4-5 → el **primer lote de ventas ENTREGADAS confirmadas** ya está para el día 5. No es día 3 porque el pedido debe estar **pedido Y entregado** antes de ser plata confirmada; no hay que esperar día 7 porque en Guatemala se entrega en 3, no en 4-7 (Colombia).
 > ⚠️ **Guardarraíl:** día 5 es el gate más TEMPRANO, no automático. Abre solo si el **CPA sobre entregados está confirmado con volumen** (cruzar con LucidSales) **y agregado por `angulo_key`, no por conjunto** (§1.5). Si las entregas vienen flacas (1-2 ventas) → **esperar 1-2 días**, nunca regar horizontal sobre 1-2 ventas: con ese n el IC es ±139%.
-> Palancas del `DOCTRINA/ESCALADO_PLAYBOOK.md` §3, en orden, no todas de golpe. Requisito de entrada: **CPA sobre entregados ≤ Base con volumen + caja para sostener ~3 días de retorno COD.**
+> Palancas del `DOCTRINA/ESCALADO/04_PALANCAS.md` §3, en orden, no todas de golpe. Requisito de entrada: **CPA sobre entregados ≤ Base con volumen + caja para sostener ~3 días de retorno COD.**
 1. **Surfing +20% diario** a TODO lo que vende (cada mañana; nunca más de 20% → desoptimiza).
 2. **Post ID / publicar el creativo en la fanpage** → conservar prueba social → **regar el ganador en 4→9 cuentas** (mejor "publicación existente" que Post ID: Meta a veces borra reacciones al duplicar).
 3. **Duplicar el conjunto ganador** (Camilo, agresivo: 16k→32k→64k) — **solo con flujo de caja**. El CPA sube un poco; se compensa con **creativos nuevos**.

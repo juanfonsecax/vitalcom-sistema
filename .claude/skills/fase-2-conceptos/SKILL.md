@@ -53,7 +53,7 @@ de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID)
 `_EVENTOS.csv`.
 
 > **Por qué va primero y no después:** optimizar el flujo es la palanca #1 de
-> `DOCTRINA/ESCALADO_PLAYBOOK.md` §3 y va **antes de gastar más**. El cierre del portafolio está en 8.6 %
+> `DOCTRINA/ESCALADO/04_PALANCAS.md` §3 y va **antes de gastar más**. El cierre del portafolio está en 8.6 %
 > contra el 15-20 % de los mentores; a mensajes y gasto idénticos, el 15 % son **+324 ventas y CPA
 > de Q51.5 a Q29.6**. Ninguna palanca de estructura se acerca. Su brief entra a `etapa-5` en el
 > PASO 2, que redacta **los dos flujos** del A/B.

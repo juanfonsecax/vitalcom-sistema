@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 Actúa en dos modos:
-- **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `DOCTRINA/COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
+- **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `DOCTRINA/COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt de Control de `DOCTRINA/PLANTILLAS_ADS_SECCIONES/04_PROMPT_CONTROL_FASE1.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
 
 > **Decisión del operador (22-sep-2026):** F1 corre TODO EN IMAGEN — el ad de testeo en imagen se
 > produce para los 6 ángulos, no solo para los vírgenes; el video de cada ángulo queda como fuente
@@ -82,7 +82,7 @@ Citar en el output el `id` de cada aprendizaje aplicado.
 
 #### Tarea 1 — 6 Copies de testeo
 
-Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META ADS BASE del sistema: **copy → `DOCTRINA/COPYWRITING_ADS.md`** (fuente única) · **creativo → `DOCTRINA/PLANTILLAS_ADS.md`** (compliance Andrómeda + DOCTRINA DE CREATIVOS).
+Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META ADS BASE del sistema: **copy → `DOCTRINA/COPYWRITING_ADS.md`** (fuente única) · **creativo → `DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md` + `11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md`** (compliance Andrómeda + DOCTRINA DE CREATIVOS).
 
 **Estructura de cada copy — seguir `DOCTRINA/COPYWRITING_ADS.md` (fuente única, extraída de las clases de los mentores: Andrómeda/Joaquín, Hooks/Mercy, HPPPC):**
 - **(1) TEXTO PRINCIPAL — 3 variaciones, una por enfoque (problema-solución / emocional / prueba social).** El copy se le escribe a **META**, no al cliente: cada síntoma/beneficio/avatar es una **señal** de segmentación. Cada copy le habla a **UN avatar específico** ("si pasás de los 50 y trabajaste de pie…"), no a todos — directos convierten 20-25% vs 4% genéricos. Estructura **HPPPC**: Hook (dolor/deseo, saca el primer SÍ) → Problema + síntomas concretos + reencuadre → Promesa + mecanismo único + "resultados que sí se sienten" (microángulos) → Prueba (autoridad/testimonio/prueba social) → **CTA = ORDEN con beneficio** hacia WhatsApp (nunca pregunta ni el nombre del producto). **Formato anti-muro**: líneas cortas, saltos de línea, emojis de ritmo (1 cada 2-4 líneas), viñetas ✅ — NUNCA un párrafo ("la gente no lee párrafos"). 80-130 palabras (Meta lo lee para segmentar; el cliente lo escanea). Lenguaje de **apoyo**, sin palabras que banean ("cura/elimina/logra/transforma en X días"). Regla de precio (Guatemala): MÁXIMO 3 de 6 con P1u (ideal 2); si lleva precio va en copy Y creativo, si no en ninguno. Plantilla visual y checklist completo en `DOCTRINA/COPYWRITING_ADS.md`.
@@ -91,13 +91,13 @@ Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META
 
 #### Tarea 2 — AD(S) DE TESTEO EN IMAGEN (solo ángulos con creativo = IMAGEN)
 
-Para cada ángulo cuyo `Creativo asignado` (de ETAPA-2) sea **IMAGEN** (ángulos vírgenes/descubiertos sin video), generar 1 ad de testeo leyendo `DOCTRINA/PLANTILLAS_ADS.md` → **PROMPT DE CONTROL FASE 1** (no el Prompt Maestro, que es de FASE 2). Los ángulos con creativo = VIDEO NO necesitan ad-imagen en FASE 1 (usan su video).
+Para cada ángulo cuyo `Creativo asignado` (de ETAPA-2) sea **IMAGEN** (ángulos vírgenes/descubiertos sin video), generar 1 ad de testeo leyendo `DOCTRINA/PLANTILLAS_ADS_SECCIONES/04_PROMPT_CONTROL_FASE1.md` → **PROMPT DE CONTROL FASE 1** (no el Prompt Maestro, que es de FASE 2). Los ángulos con creativo = VIDEO NO necesitan ad-imagen en FASE 1 (usan su video).
 
 > ⚠️ **CONCEPTO FIJO EN FASE 1 (19-ago).** Los ad-imagen de testeo comparten **la misma plantilla**: concepto `C2_BENEFICIOS` variante ligera, mismo layout, misma paleta, misma estructura. Solo cambian **hook, los 4 beneficios, props y avatar**. **NO elegir un estilo anti-fatiga distinto por ad** — eso es de FASE 2. Razón: FASE 1 mide el ÁNGULO; si la ejecución visual también cambia, el resultado no es atribuible. Detalle y evidencia en `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`.
 
 - Rellenar las [VARIABLES] del Prompt Maestro con los datos del ángulo (hook, dolor, avatar, beneficio), el producto (nombre, formato, colores de etiqueta) y la identidad de `<pagina_asignada>` (tono y color de acento).
 - **NO** elegir estilo anti-fatiga: en FASE 1 la composición es idéntica en los 6 (los 15 estilos son de FASE 2).
-- Aplicar las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) — fuente única: `DOCTRINA/PLANTILLAS_ADS.md` § REGLAS DE COMPLIANCE CREATIVO (ANDRÓMEDA). Jerarquía propia de este ad-imagen de testeo: **marca→hook→producto→beneficio→prueba social→CTA→oferta** (Clase 19, Joaquín — la MARCA/fanpage visible arriba da confianza y es señal para Andrómeda). Entregar 1:1 y describir adaptaciones 4:5 y 9:16.
+- Aplicar las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) — fuente única: `DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md`. Jerarquía propia de este ad-imagen de testeo: **marca→hook→producto→beneficio→prueba social→CTA→oferta** (Clase 19, Joaquín — la MARCA/fanpage visible arriba da confianza y es señal para Andrómeda). Entregar 1:1 y describir adaptaciones 4:5 y 9:16.
 - **GATE antes de entregar cada ad-imagen:** preguntarse "¿este creativo rompe el scroll, sí o no?". Si no rompe el scroll, reescribir el prompt — no entregarlo (Clase 14, Mercy: un creativo que no detiene el scroll es plata botada).
 - Regla de precio: el ad lleva precio P1u solo si su ángulo es uno de los conjuntos con precio (máx 3/6, ideal 2/6) — coherente con su copy.
 
@@ -155,7 +155,7 @@ Si el operador no entregó alguna variable del grupo `Operador` (estadísticas c
 
 #### Tarea 2 — Conceptos creativos diversos (anti-fatiga visual — Clase 14, 19)
 
-> Usar el **Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS.md`** (15 estilos + reglas de compliance Andrómeda) como base de cada concepto. Este es el BANCO de imágenes para el escalado horizontal multicuenta de FASE 2.
+> Usar el **Prompt Maestro de `DOCTRINA/PLANTILLAS_ADS_SECCIONES/05_PROMPT_MAESTRO_FASE2.md`** (15 estilos en `06_ESTILOS_ANTIFATIGA.md` + reglas de compliance en `01_COMPLIANCE_ANDROMEDA.md`) como base de cada concepto. Este es el BANCO de imágenes para el escalado horizontal multicuenta de FASE 2.
 
 Andrómeda penaliza la fatiga: cada concepto distinto = una segmentación distinta. Además de los videos del ángulo ganador y de las infografías, generar conceptos de IMAGEN variados que alimentan el escalado horizontal multicuenta (ETAPA-6 Fase 2). **PRIMER EJE — FORMATO** (mínimo un concepto por cada uno):
 - **TESTIMONIO:** reseña/captura con antes→después (usar MOMENTOS DE TRANSFORMACIÓN de ETAPA-3).
@@ -334,8 +334,8 @@ Lleva precio: [sí / no]
 - **Regla de precio (Guatemala):** MÁXIMO 3 copies llevan precio P1u + creativo visual con precio (idealmente solo 2 de 6); el resto sin precio en copy ni en creativo. La regla es solidaria: si un conjunto tiene precio, va en ambos lados; si no tiene, en ninguno. Quien llega al chat ya aceptó el valor. (Ajuste V5 — el precio en publicación no rinde igual en Guatemala; usar como filtro de avatar, no como gancho masivo.)
 - **Regla Andrómeda de autenticidad:** Los copies deben sonar como WhatsApp o Facebook de una persona real — no como publicidad. Si suena a anuncio, reescribir. 
 - **Regla de diversidad de microángulos:** Nunca usar el mismo microángulo en dos copies. Cada copy ataca un sub-dolor diferente.
-- **Regla anti-fatiga (FASE 2):** cada concepto COMPLETAMENTE distinto al anterior — regla y lista de ejes a variar en `DOCTRINA/PLANTILLAS_ADS.md` § REGLAS DE COMPLIANCE CREATIVO (ANDRÓMEDA) y § LOS 15 ESTILOS ANTI-FATIGA. Andrómeda lee el creativo como segmentación: conceptos repetidos saturan la audiencia y suben el CPM. (Clase 14, 19)
-- **Regla de rol de embudo (FASE 2 únicamente):** El banco del ángulo ganador cubre **TOFU/MOFU/BOFU** (mapeados al nivel de conciencia de ETAPA-2) antes de multiplicar por estilo. Un creativo = un rol + un formato. En salud/COD el BOFU cierra con **garantía / tratamiento / contraentrega** (compliance Andrómeda: `DOCTRINA/PLANTILLAS_ADS.md` § REGLAS DE COMPLIANCE CREATIVO). **FASE 1 se mantiene lean** (1 concepto por conjunto para leer por ángulo sin sesgo) — este eje NO aplica en testeo.
+- **Regla anti-fatiga (FASE 2):** cada concepto COMPLETAMENTE distinto al anterior — regla y lista de ejes a variar en `DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md` y `06_ESTILOS_ANTIFATIGA.md`. Andrómeda lee el creativo como segmentación: conceptos repetidos saturan la audiencia y suben el CPM. (Clase 14, 19)
+- **Regla de rol de embudo (FASE 2 únicamente):** El banco del ángulo ganador cubre **TOFU/MOFU/BOFU** (mapeados al nivel de conciencia de ETAPA-2) antes de multiplicar por estilo. Un creativo = un rol + un formato. En salud/COD el BOFU cierra con **garantía / tratamiento / contraentrega** (compliance Andrómeda: `DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md`). **FASE 1 se mantiene lean** (1 concepto por conjunto para leer por ángulo sin sesgo) — este eje NO aplica en testeo.
 - **FASE 2 únicamente — NUNCA activar sin ángulo ganador confirmado.** (Flujo del sistema)
 
 ---

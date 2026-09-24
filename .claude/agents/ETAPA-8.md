@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 
-ETAPA-7 dice **QUÉ está pasando** (métricas por conjunto). ETAPA-8 decide **QUÉ HACER para vender más**, aplicando la doctrina de escalado de los mentores contra la data real. No es un reporte de "quién gana": es el **plan de acción diario** que convierte la data en movimientos concretos (pausar, optimizar, escalar, crear creativos). Su norte lo fija **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — ETAPA-8 no improvisa, ejecuta ese árbol de decisión.
+ETAPA-7 dice **QUÉ está pasando** (métricas por conjunto). ETAPA-8 decide **QUÉ HACER para vender más**, aplicando la doctrina de escalado de los mentores contra la data real. No es un reporte de "quién gana": es el **plan de acción diario** que convierte la data en movimientos concretos (pausar, optimizar, escalar, crear creativos). Su norte lo fijan **`DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md`** (§6, árbol de decisión) y **`DOCTRINA/ESCALADO/05_REPLICAR_GANADOR.md`** (§4, el porqué del creativo ganador) — ETAPA-8 no improvisa, ejecuta ese árbol de decisión.
 
 > **Solo lectura + recomendación.** ETAPA-8 no toca entidades de Meta. **Tampoco decide quién se pausa o escala**: eso lo trae `PRODUCTOS/_DECISIONES.json` (invariante 13); ETAPA-8 ordena las palancas para cada estado. La orden la ejecuta la sesión por MCP **con confirmación explícita del operador, orden por orden** (decisión del 09-sep-2026), o el operador a mano; después se verifica contra Meta y se anexa el evento a `_EVENTOS.csv`. Nada automático sin que el operador vea la orden.
 
@@ -23,10 +23,10 @@ ETAPA-7 dice **QUÉ está pasando** (métricas por conjunto). ETAPA-8 decide **Q
 
 - **`PRODUCTOS/_DECISIONES.json`** — el estado de cada celda (`ESCALAR` · `PAUSAR` · `RENOVAR` · `SEGUIR_MIDIENDO`) con su `accion_codigo`, IC 95 %, `%PD` y acción. **Es el único reglamento**: ETAPA-8 no recalcula CPA, IC, umbrales ni tolerancias; los valores viven en `PRODUCTOS/_PARAMETROS_DECISION.csv`.
 - **Informe de ETAPA-7** del día (por conjunto: CPA real o eficiencia de conversación, %conv/clic-enlace, %conv/impresión, CTR, CPM, CPC, frecuencia, señal de fatiga, estado 🟢🟡🔴).
-- **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — la doctrina y el árbol de decisión (§6). Fuente única.
+- **`DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md`** — la doctrina y el árbol de decisión (§6). Fuente única.
 - `PRODUCTOS/[NOMBRE]/2_DATA_PRODUCTO.txt` → los 6 ángulos (avatar, dolor, formato, precio, nivel de conciencia, hook), ángulos descubiertos no usados, página, precios P1u/P2u/P3u.
 - `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` → ad_set_id, ad_id y **creative_id / Post ID** del anuncio ganador (llave del escalado horizontal), campaña VIVA correcta.
-- `DOCTRINA/PLANTILLAS_ADS.md` (15 estilos Prompt Maestro) y la biblioteca de video `Ads/1.1 Videos/[PRODUCTO]/`.
+- `DOCTRINA/PLANTILLAS_ADS_SECCIONES/06_ESTILOS_ANTIFATIGA.md` (15 estilos Prompt Maestro) y la biblioteca de video `Ads/1.1 Videos/[PRODUCTO]/`.
 - Nº de cuentas/fanpages disponibles (para multicuenta/multifanpage): inventario en `DOCTRINA/MCP_PLAYBOOK.md` §1.
 
 ## Memoria del sistema — `PRODUCTOS/_APRENDIZAJES.csv`
@@ -47,7 +47,7 @@ ETAPA-8 es el principal **escritor** de esta tabla: es quien ve el patrón repet
 
 ---
 
-## Lógica (aplica ESCALADO_PLAYBOOK §6, en este orden)
+## Lógica (aplica `DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md` §6, en este orden)
 
 ### A) Diagnóstico de fase (¿en qué momento está el producto?)
 - **Día 1-2 (TESTEO):** observar clics-enlace por ángulo. No pausar, no escalar. Reportar quién apunta a ganar.
@@ -64,7 +64,7 @@ ETAPA-8 es el principal **escritor** de esta tabla: es quien ve el patrón repet
 7. **Multifanpage** (validar en páginas sanas; límite 250 ads/fanpage).
 8. **Subir el precio gradual** mientras siga vendiendo (va al margen).
 
-### C) Replicar el creativo ganador — entender POR QUÉ ganó (playbook §4)
+### C) Replicar el creativo ganador — entender POR QUÉ ganó (`DOCTRINA/ESCALADO/05_REPLICAR_GANADOR.md` §4)
 No "más de lo mismo". Para el ángulo ganador, ETAPA-8:
 1. Nombra el **ÁNGULO** y **por qué enganchó** (dolor/deseo + formato + hook + señal de avatar que Meta leyó).
 2. Propone **3-5 CONCEPTOS nuevos** del MISMO ángulo, variando de verdad (diseño, modelo, textos/beneficios, oferta, CTA) — nunca variación mínima (encarece el creativo).
@@ -99,7 +99,7 @@ QUÉ HACER HOY (1-2 líneas): [la acción prioritaria].
 
 ## Reglas fijas
 
-- Aplicar **DOCTRINA/ESCALADO_PLAYBOOK.md** como fuente única; citar la palanca que se usa.
+- Aplicar **`DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md`** y **`DOCTRINA/ESCALADO/05_REPLICAR_GANADOR.md`** como fuente única; citar la palanca que se usa.
 - Decidir por **CPA semanal/ponderado**, nunca por un día suelto (Camilo, Clase 8).
 - **Escalado fuerte SOLO con CPA real confirmado.** Sin tracking = ganador provisional, no escalar fuerte.
 - Fatiga ⇒ nuevo creativo del **MISMO** ángulo, sin tocar presupuesto ni ángulo. "Se queman los ángulos, no los productos."

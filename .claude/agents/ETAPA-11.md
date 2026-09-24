@@ -56,7 +56,7 @@ por conjunto-semana) — es decir, **entre FASE 1 y FASE 2**.
 
 > **No se espera a que el cierre baje.** Decisión del operador (02-sep): en cuanto hay indicios de
 > que un ángulo funciona, es el momento de explotarlo. Optimizar el flujo es la palanca #1 del
-> escalado (`DOCTRINA/ESCALADO_PLAYBOOK.md` §3) y va **antes** de gastar más.
+> escalado (`DOCTRINA/ESCALADO/04_PALANCAS.md` §3) y va **antes** de gastar más.
 
 ---
 
@@ -116,7 +116,7 @@ cierre = ventas ÷ mensajes          (ambos de _FACT_VENTAS.csv, filas BASE)
 
 ### PASO 2 — SEPARAR PRE-CLIC DE POST-CLIC (la matriz diagnóstica)
 
-Cruzar el `%conv/clic-enlace` de `_FACT_ENTREGA.csv` (umbral 35 %, `DOCTRINA/ESCALADO_PLAYBOOK.md` §8)
+Cruzar el `%conv/clic-enlace` de `_FACT_ENTREGA.csv` (umbral 35 %, `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md` §8)
 contra el cierre del PASO 1:
 
 | | cierre ALTO | cierre BAJO |
