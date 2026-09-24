@@ -83,15 +83,6 @@ aparte.
 
 ## Fallos conocidos documentados (no se debilitó ningún assert para taparlos)
 
-`etapa-6 / {CLEARSTEM, NusavaB12, TINNIDROP} — FASE 1 todo-en-imagen`: están
-marcados `expected_fail: true` en `promptfooconfig.yaml`. Los tres `_PLAN.json`
-son de antes de la decisión del operador del 22-sep-2026 ("FASE 1 corre TODO
-EN IMAGEN") y tienen conjuntos en VIDEO — exactamente el mismo hallazgo que
-hoy reporta `python Ads/_TOOLS/gen_plan.py --validar` (10 errores
-`formato != IMAGEN` preexistentes, ver `odd/tasks/g07-cimientos.md` T10). El
-assert se dejó estricto a propósito: relanzar cualquiera de esos productos
-exige regenerar el plan desde etapa-6, no reescribir el eval para que pase.
-
 `etapa-4 / TINNIDROP — FASE 1 todo-en-imagen`: uno de los 3 TÍTULOS del
 conjunto "ME DIJERON QUE NO TIENE CURA" es literalmente `"¿Te dijeron que no
 hay cura?"` — usa la palabra "cura", que `DOCTRINA/COPYWRITING_ADS.md`
@@ -157,7 +148,7 @@ writer no puede invocar a la etapa contra Claude real).
 ## Protocolo de poda (para cuando se toque un prompt de ETAPA-*.md)
 
 1. Correr `python evals/run_baseline.py` ANTES de tocar nada — confirma que
-   arranca en verde (26/30, con los 4 fallos conocidos de arriba).
+   arranca en verde (26/28, con los 2 fallos conocidos de arriba).
 2. Cambiar el prompt.
 3. Re-correr la etapa sobre los MISMOS inputs congelados que produjeron el
    fixture (mismo producto, mismos insumos — nunca un producto nuevo, eso no

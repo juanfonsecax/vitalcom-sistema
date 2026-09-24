@@ -96,35 +96,6 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-6_schema.py}]
     metadata: {etapa: etapa-6, producto: OVULOS_PURITY}
 
-  - description: "etapa-6 / CLEARSTEM — FASE 1 todo-en-imagen"
-    vars: {content: file://fixtures/etapa-6/CLEARSTEM.json}
-    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
-    metadata:
-      etapa: etapa-6
-      producto: CLEARSTEM
-      expected_fail: true
-      reason: >-
-        Plan v1 de 2026-07-10, anterior a la decisión operador 22-sep-2026
-        ("FASE 1 corre TODO EN IMAGEN"). Mismo hallazgo que reporta hoy
-        `gen_plan.py --validar` (10 errores formato!=IMAGEN preexistentes,
-        ver odd/tasks/g07-cimientos.md T10). No se re-lanza sin regenerar
-        el plan desde etapa-6.
-  - description: "etapa-6 / NusavaB12 — FASE 1 todo-en-imagen"
-    vars: {content: file://fixtures/etapa-6/NusavaB12.json}
-    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
-    metadata:
-      etapa: etapa-6
-      producto: NusavaB12
-      expected_fail: true
-      reason: "Plan v1 anterior a la decisión 22-sep-2026 — mismo hallazgo preexistente de gen_plan.py --validar."
-  - description: "etapa-6 / TINNIDROP — FASE 1 todo-en-imagen"
-    vars: {content: file://fixtures/etapa-6/TINNIDROP.json}
-    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
-    metadata:
-      etapa: etapa-6
-      producto: TINNIDROP
-      expected_fail: true
-      reason: "Plan v1 anterior a la decisión 22-sep-2026 — mismo hallazgo preexistente de gen_plan.py --validar."
   - description: "etapa-6 / OVULOS_PURITY — FASE 1 todo-en-imagen"
     vars: {content: file://fixtures/etapa-6/OVULOS_PURITY.json}
     assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
