@@ -227,9 +227,9 @@ El campo `<datos_saturacion>` en ETAPA-2 recibe exactamente esto:
 
 ---
 
-## Refinamiento — leer la SITUACIÓN validada, no solo el ángulo (aporte externo, 2026-07-03)
+## Refinamiento — leer la SITUACIÓN validada, no solo el ángulo
 
-> Origen: análisis del mentor de moda/IA (`_ROADMAP/ANALISIS_MENTOR_JULI_vs_SISTEMA_2026-07-03.md`, §3.4). Su meta-jugada: no copiar el PRODUCTO del competidor escalado, sino la **situación validada** de su avatar (dolor + deseo + estructura de oferta que ya probó que convierte), y servirla con un producto/ángulo diferenciado. Aterrizado a NUESTRO modelo (salud / COD / Guatemala), sin cambiar el flujo — es una lectura extra sobre lo que el Módulo B (o la búsqueda manual del operador en la Ad Library) ya trae.
+> La meta-jugada: no copiar el PRODUCTO del competidor escalado, sino la **situación validada** de su avatar (dolor + deseo + estructura de oferta que ya probó que convierte), y servirla con un producto/ángulo diferenciado. Aterrizado a NUESTRO modelo (salud / COD / Guatemala), sin cambiar el flujo — es una lectura extra sobre lo que el Módulo B (o la búsqueda manual del operador en la Ad Library) ya trae.
 
 Cuando se detecte un competidor **escalado** (varios anuncios activos con recorrido, la MISMA situación de avatar repetida en varios copies), extraer y pasar a ETAPA-2 —además de la saturación— estos tres elementos:
 
