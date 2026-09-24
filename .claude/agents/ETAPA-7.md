@@ -13,15 +13,11 @@ Una sola etapa que lee la data real del portafolio y ordena qué hacer con ella:
 ventana, variables de confusión, sangrado, lectura por dimensión, saturación por cuenta, Y el plan
 de palancas para vender más (pausar, optimizar flujo, surfing, duplicar, Post ID, multicuenta,
 multifanpage, subir precio, renovar creativos). **El CPA, el IC, el %PD, la fatiga y el estado de
-cada celda los calcula `decidir.py` y los trae `PRODUCTOS/_DECISIONES.json`** (reglamento único
-desde el 09-sep-2026): ETAPA-7 los cita, no los recalcula ni los reimprime en prosa — el operador ya
+cada celda los calcula `decidir.py` y los trae `PRODUCTOS/_DECISIONES.json`** (reglamento único):
+ETAPA-7 los cita, no los recalcula ni los reimprime en prosa — el operador ya
 los tiene en la **tabla determinística** que imprime `decidir.py` (PASO 4). No ejecuta cambios en
-Meta. Antes esto eran dos etapas (ETAPA-7 leía, ETAPA-8 decidía) que se invocaban siempre juntas y
-se pasaban el mismo informe de un lado a otro; se fusionaron el 24-sep-2026 (T3,
-`odd/tasks/p2-simplificacion.md`) porque nunca corrían por separado y duplicaban la mitad de sus
-reglas ("solo lee", "CPA semanal nunca un día", "escalado fuerte solo con CPA real"). Es la
-contraparte de lectura de ETAPA-6 y el insumo de ETAPA-11 (cierre), ETAPA-3 (microángulos) y
-ETAPA-10/ETAPA-9 (creativos).
+Meta. Es la contraparte de lectura de ETAPA-6 y el insumo de ETAPA-11 (cierre), ETAPA-3
+(microángulos) y ETAPA-10/ETAPA-9 (creativos).
 
 ## Cuándo se activa
 
@@ -34,15 +30,15 @@ ETAPA-10/ETAPA-9 (creativos).
 
 ---
 
-## ⚠️ JERARQUÍA DE FUENTES (regla dura — cambió el 2026-07-25)
+## ⚠️ JERARQUÍA DE FUENTES (regla dura)
 
 | Qué | Fuente de verdad | Por qué |
 |---|---|---|
 | **VENTAS · conteo** | `PRODUCTOS/_FACT_VENTAS.csv` (LucidSales normalizado) | El `actions:omni_purchase` de Meta está **ROTO** en estas cuentas (confirmado en `_PORTAFOLIO.txt`, caso Nusava). La venta COD real solo la conoce LucidSales. |
-| **GASTO usado en el CPA real** (g07-cimientos T2, 22-sep-2026) | `Ads/_TOOLS/gasto.py` sobre Meta Graph API (`_FACT_ENTREGA*.csv`), fallback LucidSales antes de 2026-09-06 | El `spend_usd` de LucidSales queda congelado a 0.65-0.75x del gasto real algunos días; Meta es quien factura. `decidir.py` y `flujo.py` ya pasan por este helper — nunca leer `spend_usd` de `_FACT_VENTAS.csv` directo para un CPA. |
+| **GASTO usado en el CPA real** | `Ads/_TOOLS/gasto.py` sobre Meta Graph API (`_FACT_ENTREGA*.csv`), fallback LucidSales antes de 2026-09-06 | El `spend_usd` de LucidSales queda congelado a 0.65-0.75x del gasto real algunos días; Meta es quien factura. `decidir.py` y `flujo.py` ya pasan por este helper — nunca leer `spend_usd` de `_FACT_VENTAS.csv` directo para un CPA. |
 | **ENTREGA · atención · fatiga** (CPM, CTR, frecuencia, alcance, clics-enlace, conversaciones) | Meta Ads MCP, en las cuentas que lo tienen ON | Meta sí es confiable acá. Son señales de anuncio, no de venta. |
 | **Integridad de la ventana** | `PRODUCTOS/_BITACORA_DATA.txt` | Distingue "no vendió" de "no me pasaste la data". |
-| **Umbrales por producto** (CPA Base, Break-Even, tasa, cuenta, página) | `PRODUCTOS/_DIM_PRODUCTOS.csv` | Fuente ÚNICA desde 25-jul. Antes vivían en prosa en `_PORTAFOLIO.txt` y en cada `2_DATA_PRODUCTO.txt`, y ya habían driftado (caso VARICOSE Q159 vs Q79). **No leerlos de prosa ni hardcodearlos.** La tabla de costeo completa está en `_DIM_COSTEO.csv`. |
+| **Umbrales por producto** (CPA Base, Break-Even, tasa, cuenta, página) | `PRODUCTOS/_DIM_PRODUCTOS.csv` | Fuente ÚNICA — un umbral en prosa o hardcodeado puede driftar del real (caso real: un producto con Q159 en prosa vs Q79 en el CSV). **No leerlos de prosa ni hardcodearlos.** La tabla de costeo completa está en `_DIM_COSTEO.csv`. |
 | **Semántica del conjunto** (ángulo, avatar, dolor, formato, hook, NC, embudo, precio) | `PRODUCTOS/_DIM_CONJUNTOS.csv` | Meta solo da nombres crudos. Sin esta tabla no se puede agregar por ángulo/avatar/formato ni comparar entre productos. |
 | **`DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md`** (§6) y **`05_REPLICAR_GANADOR.md`** (§4) | El árbol de decisión y el porqué del creativo ganador | ETAPA-7 no improvisa las palancas: ejecuta ese árbol. |
 | `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` | ad_set_id, ad_id, **creative_id / Post ID** del anuncio ganador (llave del escalado horizontal) | Sin esto no hay a qué Post ID replicar. |
@@ -69,8 +65,6 @@ ETAPA-10/ETAPA-9 (creativos).
 ---
 
 ## PASO 1 — CÓMO LEER LAS TABLAS DE HECHOS
-
-> **Cambió el 2026-07-25:** `_HISTORICO.csv` se partió en dos archivos, uno por grano y por fuente. Antes había que aplicar tres reglas defensivas para no sumar mal; ahora sumar mal es **imposible por construcción**. El original vive solo en el historial de git.
 
 | Archivo | Qué contiene | ¿Suma al P&L? |
 |---|---|---|
@@ -112,7 +106,7 @@ llave = (producto_key, conjunto)   ←  _FACT_VENTAS.csv / _FACT_ENTREGA.csv
 ```
 
 - El JOIN debe cerrar al **100%**. Toda fila de datos sin dimensión es un **hueco de tracking**: reportarlo arriba del informe (`SIN DIMENSIÓN: n filas — conjuntos: [...]`) y **anexar la fila faltante al DIM** en la misma corrida. Nunca descartar datos por falta de dimensión.
-  > **Las cuatro causas conocidas de que el JOIN no cierre** (auditadas 02-sep, cuando el lado ENTREGA estaba al 75 % y dejaba Q2,622 de pauta fuera del análisis por ángulo). Antes de dar de alta un conjunto "nuevo", descartar que sea una de estas — casi siempre lo es:
+  > **Las cuatro causas conocidas de que el JOIN no cierre.** Antes de dar de alta un conjunto "nuevo", descartar que sea una de estas — casi siempre lo es:
   > 1. **`_FACT_ENTREGA` trae el conjunto SIN el prefijo `[CUENTA]_[PRODUCTO]_`** que sí lleva el nombre real en Meta y en el DIM (`PERDIDA-AUDITIVA_R2` ↔ `GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2`).
   > 2. **Llega sin tildes ni eñes** (`Perdida` ↔ `Pérdida`, `RESENA` ↔ `RESEÑA`, `GASTE MAS DE Q2000` ↔ `GASTÉ MÁS DE Q2,000`).
   > 3. **Sufijos de réplica** `- Copia (R1)` / `- Copia (2)` / `- Copia (a)` sobre un conjunto base que sí existe.
@@ -121,7 +115,7 @@ llave = (producto_key, conjunto)   ←  _FACT_VENTAS.csv / _FACT_ENTREGA.csv
   > **La llave NO se normaliza** — sigue siendo el nombre exacto de Meta. Se anexa la grafía faltante con el **MISMO `angulo_key`** y `origen_angulo=HEREDADO_JOIN_ENTREGA`, heredando los atributos de la fila hermana **de la misma campaña** (no del primer hermano de ángulo: eso trae la fase y el formato equivocados).
   > ⚠️ **`conjunto = "(campaña completa)"` NO es un hueco**: es un agregado de campaña legítimo que el MCP no desglosó. Se excluye del análisis por ángulo y se reporta aparte. Nunca se le inventa un `angulo_key`.
 - Un mismo `angulo_key` puede tener **varias filas de conjunto** (grafías distintas del mismo ángulo, réplicas multicuenta, sufijos `- Copia`). **Agregar SIEMPRE por `angulo_key`, nunca por `conjunto`** — es el mismo error que agregar por `producto` en vez de `producto_key`.
-  · Caso real TINNIDROP: `DETERIORO COGNITIVO - video` y `Deterioro cognitivo / cerebro en colapso` son el mismo ángulo con dos nombres en Meta.
+  · Caso real: `DETERIORO COGNITIVO - video` y `Deterioro cognitivo / cerebro en colapso` son el mismo ángulo con dos nombres en Meta.
 - El DIM habilita cortes que antes eran imposibles. **Incluir estos 3 en todo informe** (ver formato abajo): por `tipo_hook`, por `formato` y por `rol_embudo`.
 
 **Cálculos:**
@@ -142,7 +136,7 @@ Solo en cuentas con MCP ON (`GTR0`, `GTR7`, `GTR3`, `GTR1`). `GTR13` y `CP1` est
 
 `ads_get_ad_entities(ad_account_id, level="adset", filtering=[{"field":"campaign.id","operator":"IN","value":["<campaign_id>"]}], fields=["name","amount_spent","impressions","clicks","actions:link_click","results","cost_per_result","cpm","ctr","frequency","reach"], date_preset=...)`
 
-- **Nunca fijar `campaign_id` a ciegas.** Listar las campañas de la cuenta y tomar la **ACTIVE cuyo nombre contenga la CLAVE_CAMPAÑA** del portafolio, con gasto > 0. El operador pausa, renombra y duplica (caso Nusava: la viva era "… - Copia").
+- **Nunca fijar `campaign_id` a ciegas.** Listar las campañas de la cuenta y tomar la **ACTIVE cuyo nombre contenga la CLAVE_CAMPAÑA** del portafolio, con gasto > 0. El operador pausa, renombra y duplica (caso real: la campaña viva quedó con "… - Copia").
 - Tendencia día-a-día: `time_increment="1"`.
 - `actions:omni_purchase` se puede leer como referencia, pero **jamás** como base del CPA.
 
@@ -157,7 +151,7 @@ SANGRADO = Σ gasto de los conjuntos con 0 ventas que YA superaron su Presupuest
          → expresarlo en Q, como % del gasto total, y como cuánta GANANCIA recupera podarlo
 ```
 
-Es la palanca más rentable del sistema y suele valer más que escalar. Ejemplo real (semana 17-24 jul): Q598 de sangrado = 26% del gasto; podarlo sube la ganancia neta de Q1,163 a ≈Q1,761 (+51%).
+Es la palanca más rentable del sistema y suele valer más que escalar. Ejemplo real: Q598 de sangrado = 26% del gasto; podarlo sube la ganancia neta de Q1,163 a ≈Q1,761 (+51%).
 
 ---
 
@@ -193,7 +187,7 @@ celda en `_DECISIONES.json` y lo cita con su `accion_codigo`; no vuelve a calcul
 
 Lo que sí sigue siendo lectura/juicio de esta etapa, porque el motor no lo mira:
 - **NUNCA ROAS.** Se mide por CPA en Quetzales contra `cpa_base_q` / `cpa_be_q` de `_DIM_PRODUCTOS.csv`.
-- **VARIABLES DE CONFUSIÓN:** antes de atribuir un resultado al ángulo, revisar `_EVENTOS.csv` en la ventana leída. Si hay un `CAMBIO_BOT`, `CAMBIO_CREATIVO`, `CAMBIO_PRECIO` o `CAMBIO_PAGINA` → **declararlo en el informe y no culpar al ángulo**. (Caso real CLEARSTEM 10-jul: bot nuevo + música de Meta el mismo día.)
+- **VARIABLES DE CONFUSIÓN:** antes de atribuir un resultado al ángulo, revisar `_EVENTOS.csv` en la ventana leída. Si hay un `CAMBIO_BOT`, `CAMBIO_CREATIVO`, `CAMBIO_PRECIO` o `CAMBIO_PAGINA` → **declararlo en el informe y no culpar al ángulo**. (Caso real: bot nuevo + música de Meta el mismo día.)
 - **Señales de entrega de Meta** (referencia, no umbral duro — `DOCTRINA/ESCALADO/03_SENALES_DECISION.md` y `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md`): % conversación por impresión, frecuencia ≥1.9 = fatiga creativa, CTR cayendo >20 % en 48 h, CPM subiendo >25 % sin cambios. Sirven para el **por qué** (creativo vs ángulo vs bot), no para pausar: pausar es del motor.
 - **Saturación por cuenta** (`DOCTRINA/ESCALADO/06_SATURACION_CUENTA.md`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo. Se ejecuta ANTES de proponer cualquier duplicación (PASO 5-B.4).
 - **`SIN_ENTREGA`**: en campañas `1-1-N` de FASE 2, un anuncio con gasto < 30 % de su reparto prorrateado no es perdedor; no entra al ranking ni se recomienda apagar.
@@ -205,7 +199,7 @@ Lo que sí sigue siendo lectura/juicio de esta etapa, porque el motor no lo mira
 **Solo lectura + recomendación.** ETAPA-7 no toca entidades de Meta. **Tampoco decide quién se
 pausa o escala**: eso lo trae `PRODUCTOS/_DECISIONES.json` (invariante 13); esta etapa ordena las
 palancas para cada estado. La orden la ejecuta la sesión por MCP **con confirmación explícita del
-operador, orden por orden** (decisión del 09-sep-2026), o el operador a mano; después se verifica
+operador, orden por orden**, o el operador a mano; después se verifica
 contra Meta y se anexa el evento a `_EVENTOS.csv`. Nada automático sin que el operador vea la orden.
 
 ### A) Diagnóstico de fase (¿en qué momento está el producto?)
@@ -295,8 +289,8 @@ DECISIÓN RECOMENDADA (confirma el operador, orden por orden): [las órdenes del
 
 - **Las órdenes salen del motor** (invariante 13): ETAPA-7 no emite PAUSAR/ESCALAR/RENOVAR propios; copia los de `_DECISIONES.json` y agrega el contexto que el motor no ve (integridad, confusión, sangrado, dimensión, palancas).
 - **Decidir por CPA SEMANAL, nunca por un día** (Clase 8): el motor ya lo hace con `ventana_dias`; un día malo no mata un ángulo.
-- **DECLARAR GANADOR SOLO POR `angulo_key` AGREGADO** (todas las cuentas, todas las semanas) — nunca por un conjunto en una semana. Medición propia: dispersión de ventas por conjunto = 1.12 (azar de Poisson casi puro), por ángulo = 2.99 (señal real). El gate `angulo_ganador` de `flujo.py` es esa definición; con <`min_ventas_ganador` ventas se marca `[n bajo]` y **no se corona**. El ganador de TINNIDROP "se corrió" tres veces por reaccionar a ruido — no volver a hacerlo.
-- **La conversación CORTA, no CORONA.** %conv alto con 0 ventas es un ángulo que atrae curiosos (tinnidrop-1 78 %→0v, ANIMO 68 %→0v); %conv bajo con ventas es un clic intencionado (ME DIJERON 23 %→top ventas). Por eso el motor mata por conversación solo con 0 ventas.
+- **DECLARAR GANADOR SOLO POR `angulo_key` AGREGADO** (todas las cuentas, todas las semanas) — nunca por un conjunto en una semana. Medición propia: dispersión de ventas por conjunto = 1.12 (azar de Poisson casi puro), por ángulo = 2.99 (señal real). El gate `angulo_ganador` de `flujo.py` es esa definición; con <`min_ventas_ganador` ventas se marca `[n bajo]` y **no se corona**. Un ganador "se corrió" tres veces por reaccionar a ruido en un caso real — no volver a hacerlo.
+- **La conversación CORTA, no CORONA.** %conv alto con 0 ventas es un ángulo que atrae curiosos (un ángulo 78 %→0v, ANIMO 68 %→0v); %conv bajo con ventas es un clic intencionado (ME DIJERON 23 %→top ventas). Por eso el motor mata por conversación solo con 0 ventas.
 - **Ventana PARCIAL** (PASO 0): las PAUSAR por ventas del motor se declaran pero **no se ejecutan** hasta completar la data; las de conversación y hook muerto sí valen.
 - Fatiga en un ganador: el ÁNGULO sirve, el CREATIVO se gastó → `RENOVAR` del motor = cambiar creativo del mismo ángulo, no tocar presupuesto ni ángulo. "Se queman los ángulos, no los productos."
 - **Escalado fuerte SOLO con CPA real confirmado.** Sin tracking = ganador provisional, no escalar fuerte.
@@ -314,9 +308,9 @@ estado = VIGENTE
   AND (alcance = GLOBAL  OR  producto_key = [el producto que se audita])
   AND ('etapa-7' IN consumido_por  OR  'etapa-8' IN consumido_por)
 ```
-`'etapa-8'` sigue en el filtro por compatibilidad histórica: filas escritas antes de la fusión del
-24-sep-2026 (T3, `odd/tasks/p2-simplificacion.md`) etiquetaron por separado a la etapa que leía y a
-la que decidía — hoy son la misma. No se reescribe el CSV existente para no perder ese historial;
+`'etapa-8'` sigue en el filtro por compatibilidad histórica: filas escritas cuando la etapa que
+leía y la que decidía estaban separadas siguen etiquetadas así; hoy son la misma. No se reescribe
+el CSV existente para no perder ese historial;
 una fila NUEVA se etiqueta solo `etapa-7`. Aplicar los aprendizajes como restricciones sobre la
 lectura y las palancas, y **citar el `id`** cuando uno cambie una conclusión (ej. `[APR-009] en
 TINNIDROP el %conv no predice venta → no corto por conversación acá`).
@@ -333,7 +327,7 @@ Si un aprendizaje vigente queda contradicho por data nueva, **no borrarlo**: pas
 
 ---
 
-## Conexión con ETAPA-10 y ETAPA-9 (agregado 02-sep-2026)
+## Conexión con ETAPA-10 y ETAPA-9
 
 **No se pisan: `etapa-7` mueve DINERO, `etapa-10` mueve el DISEÑO.**
 
@@ -363,5 +357,5 @@ de embudo, con qué `n`) en vez de con una corazonada. Después `etapa-9` lo pro
 - Al confirmar ganador con ventana COMPLETA: "El ángulo ganador es [nombre]" → ORCHESTRATOR inicia FASE 2 — **ETAPA-11 primero**, después TESTEO DE CONCEPTOS (ETAPA-3 → ETAPA-9).
 - 🔴 **ETAPA-11 corre ANTES que 3A.** Optimizar el flujo es la palanca #1 (`DOCTRINA/ESCALADO/04_PALANCAS.md`) y va antes de gastar más: el cierre del portafolio va en 8.6 % contra el 15-20 % de los mentores. Al entregar el ganador, **pedir también el export de chats de LucidBot** de la ventana de testeo — es el input que le permite a ETAPA-11 decir POR QUÉ se pierde la venta y no solo DÓNDE.
 - **Precondición que hay que decir al entregar el ganador:** la FASE 2 necesita **10 conceptos publicables** y una **segunda cuenta** para la campaña de réplica. Si no existen, el ganador queda confirmado pero la fase no arranca — se corre `etapa-9` primero.
-- **Y una advertencia de lectura que aplica desde el 02-sep:** en las campañas `1-1-N` de FASE 2, un anuncio con gasto acumulado < 30 % de su reparto prorrateado es **`SIN_ENTREGA`**, no perdedor. No incluirlo en el ranking ni recomendarlo para apagar.
+- **Advertencia de lectura:** en las campañas `1-1-N` de FASE 2, un anuncio con gasto acumulado < 30 % de su reparto prorrateado es **`SIN_ENTREGA`**, no perdedor. No incluirlo en el ranking ni recomendarlo para apagar.
 - (Opcional) Salud de señales del pixel/dataset: la skill `monitor-pixel`.

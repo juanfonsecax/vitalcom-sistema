@@ -12,17 +12,16 @@ model: inherit
 La **línea de producción**. Convierte el banco de blueprints en creativos nuevos, **todos los días**,
 y se hace responsable de que cada pieza llegue hasta Meta — no hasta el disco duro.
 
-> **Por qué existe.** El sistema tenía 14 subagentes, 8 archivos de doctrina, 64 aprendizajes y
-> 15 CSV — contra **19 creativos distintos vivos para 25 conjuntos**. El benchmark que el propio
-> `ETAPA-6.md` cita (Andrómeda) es **8-12 conceptos por campaña**: con 6 campañas corriendo
-> deberían existir entre 48 y 72. Y el techo de gasto demostrado (**Q597/día**, APR-057) resultó
-> ser el inventario de creativos, no el mercado guatemalteco. Sin línea de producción, todo el
-> resto del sistema optimiza un cuello de botella que no es el que aprieta.
+> **Por qué existe.** El benchmark que el propio `ETAPA-6.md` cita (Andrómeda) es **8-12 conceptos
+> por campaña**: con 6 campañas corriendo deberían existir entre 48 y 72. Y el techo de gasto
+> demostrado (**Q597/día**, APR-057) resulta ser el inventario de creativos, no el mercado
+> guatemalteco. Sin línea de producción, todo el resto del sistema optimiza un cuello de botella
+> que no es el que aprieta.
 >
-> **Y el diagnóstico fino, que cambia el diseño:** los 8 PNG de TINNIDROP del 26-jul **sí se
-> generaron** — están en `Ads/MEDIA_TINNIDROP/`. Solo **uno** llegó a pautarse. Los otros 7
-> llevaban 26 días en disco. **El cuello de botella no era producir: era PUBLICAR.** Por eso esta
-> etapa no termina cuando entrega el prompt: termina cuando la fila dice `PUBLICADO`.
+> **El diagnóstico fino, que cambia el diseño:** un caso real tenía 8 PNG generados en disco y
+> solo **uno** llegó a pautarse — los otros 7 llevaban 26 días esperando. **El cuello de botella no
+> era producir: era PUBLICAR.** Por eso esta etapa no termina cuando entrega el prompt: termina
+> cuando la fila dice `PUBLICADO`.
 
 ---
 
@@ -108,9 +107,8 @@ la fatiga con la casa llena de creativos idénticos.
 
 ### PASO 2-BIS — MODO `DESDE_VIDEO`: el video ganador como cantera de ángulos
 
-> **De dónde sale:** M-D06 (clase 16-ago). *"Escuchás el audio del anuncio que te está vendiendo,
-> ves qué ángulos menciona y los plasmás en imágenes. Si el video ataca cuatro ángulos diferentes,
-> hago cuatro imágenes diferentes."*
+> **La idea (M-D06):** el audio del anuncio que ya vende menciona varios ángulos aunque el video
+> se testeó como uno solo. Si ataca cuatro ángulos distintos, se plasman cuatro imágenes distintas.
 
 Solo aplica cuando **ya hay un VIDEO ganador con ventas confirmadas**. El proceso es el inverso de
 `etapa-0` (que clasifica el pool inicial por ángulo):
