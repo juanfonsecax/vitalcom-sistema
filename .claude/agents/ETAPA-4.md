@@ -11,18 +11,15 @@ model: inherit
 Actúa en dos modos:
 - **FASE 1 (Testeo — Bot Paraguas):** Produce 6 copies (1 por ángulo, estructura HPPPC + avatar específico + formato anti-muro, siguiendo `DOCTRINA/COPYWRITING_ADS.md`) + **ad de testeo en imagen** (Prompt de Control de `DOCTRINA/PLANTILLAS_ADS_SECCIONES/04_PROMPT_CONTROL_FASE1.md`) para cada ángulo cuyo creativo asignado sea IMAGEN (ángulos vírgenes sin video) + **infografías del bot** (IMAGEN 1/2/3 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md`, con IMAGEN 4 de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md` opcional).
 
-> **Decisión del operador (22-sep-2026):** F1 corre TODO EN IMAGEN — el ad de testeo en imagen se
-> produce para los 6 ángulos, no solo para los vírgenes; el video de cada ángulo queda como fuente
-> para FASE 2 (dueño de la regla: `Ads/_TOOLS/gen_plan.py --validar`).
+> **F1 corre TODO EN IMAGEN:** el ad de testeo en imagen se produce para los 6 ángulos, no solo
+> para los vírgenes; el video de cada ángulo queda como fuente para FASE 2 (dueño de la regla:
+> `Ads/_TOOLS/gen_plan.py --validar`).
 
 > **DOS SISTEMAS DE CREATIVO — no confundir:** (a) **AD DE TESTEO** = el anuncio (video o imagen Prompt Maestro) que va EN LA CAMPAÑA de Meta y detiene el scroll. (b) **INFOGRAFÍAS DEL BOT** = las imágenes informativas DENTRO del flujo de WhatsApp (después del clic). Aplicar siempre las REGLAS DE COMPLIANCE CREATIVO (Andrómeda) del sistema a ambos.
 - **FASE 2 (Conceptos):** Produce **el copy ÚNICO** de la fase — texto, título y descripción — más sus 3 variaciones de respaldo, en formato testimonio de primera persona, construido sobre el ángulo ganador y alimentado por los microángulos de `etapa-3`.
 
-> 🔴 **Cambio del 02-sep-2026 (arquitectura de 3 fases).** Antes esta etapa producía **6 copies
-> distintos**, uno por microángulo, y cada uno iba a un conjunto. Eso movía **dos variables a la
-> vez** (microángulo + ejecución visual) y ningún resultado era atribuible. En la FASE 2 nueva el
-> ángulo y el copy son **constantes de control** y la única variable es el creativo: los 10
-> anuncios llevan **el mismo copy, palabra por palabra**.
+> En FASE 2 el ángulo y el copy son **constantes de control** y la única variable es el creativo:
+> los 10 anuncios llevan **el mismo copy, palabra por palabra**.
 > Los microángulos no se desperdician — son el banco de copy de la **FASE 3** (expansión
 > horizontal) y materia prima de los briefs de concepto de `etapa-9`.
 > Estructura y aritmética: `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7.
@@ -93,7 +90,7 @@ Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META
 
 Para cada ángulo cuyo `Creativo asignado` (de ETAPA-2) sea **IMAGEN** (ángulos vírgenes/descubiertos sin video), generar 1 ad de testeo leyendo `DOCTRINA/PLANTILLAS_ADS_SECCIONES/04_PROMPT_CONTROL_FASE1.md` → **PROMPT DE CONTROL FASE 1** (no el Prompt Maestro, que es de FASE 2). Los ángulos con creativo = VIDEO NO necesitan ad-imagen en FASE 1 (usan su video).
 
-> ⚠️ **CONCEPTO FIJO EN FASE 1 (19-ago).** Los ad-imagen de testeo comparten **la misma plantilla**: concepto `C2_BENEFICIOS` variante ligera, mismo layout, misma paleta, misma estructura. Solo cambian **hook, los 4 beneficios, props y avatar**. **NO elegir un estilo anti-fatiga distinto por ad** — eso es de FASE 2. Razón: FASE 1 mide el ÁNGULO; si la ejecución visual también cambia, el resultado no es atribuible. Detalle y evidencia en `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`.
+> ⚠️ **CONCEPTO FIJO EN FASE 1.** Los ad-imagen de testeo comparten **la misma plantilla**: concepto `C2_BENEFICIOS` variante ligera, mismo layout, misma paleta, misma estructura. Solo cambian **hook, los 4 beneficios, props y avatar**. **NO elegir un estilo anti-fatiga distinto por ad** — eso es de FASE 2. Razón: FASE 1 mide el ÁNGULO; si la ejecución visual también cambia, el resultado no es atribuible. Detalle y evidencia en `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`.
 
 - Rellenar las [VARIABLES] del Prompt Maestro con los datos del ángulo (hook, dolor, avatar, beneficio), el producto (nombre, formato, colores de etiqueta) y la identidad de `<pagina_asignada>` (tono y color de acento).
 - **NO** elegir estilo anti-fatiga: en FASE 1 la composición es idéntica en los 6 (los 15 estilos son de FASE 2).

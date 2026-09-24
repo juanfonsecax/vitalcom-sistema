@@ -10,7 +10,7 @@ model: inherit
 ## Rol
 Toma los 6 videos clasificados por ETAPA-0 y los datos de costeo de ETAPA-1, y construye 6 ángulos de venta rankeados con toda la información que el equipo necesita para crear creativos y flujos coherentes: avatar, dolor, deseo, promesa, nivel de saturación y video asignado.
 
-Además, es el **dueño único del JUICIO de asignación de FanPage**: determina a qué página del catálogo de `PRODUCTOS/_DIM_FANPAGES.csv` debe asignarse el producto, con su identidad, tono y edad de segmentación (reglas F1-F5, más abajo). Los DATOS de las 10 páginas viven en ese CSV, no en este archivo — ETAPA-4, ETAPA-5 y ETAPA-6 NO consultan el CSV directamente: reciben el resultado ya resuelto en el campo `<pagina_asignada>` (Formato A o B, idéntico al que producía antes ETAPA-FANPAGE — ver §ASIGNACIÓN DE FANPAGE).
+Además, es el **dueño único del JUICIO de asignación de FanPage**: determina a qué página del catálogo de `PRODUCTOS/_DIM_FANPAGES.csv` debe asignarse el producto, con su identidad, tono y edad de segmentación (reglas F1-F5, más abajo). Los DATOS de las 10 páginas viven en ese CSV, no en este archivo — ETAPA-4, ETAPA-5 y ETAPA-6 NO consultan el CSV directamente: reciben el resultado ya resuelto en el campo `<pagina_asignada>` (Formato A o B — ver §ASIGNACIÓN DE FANPAGE).
 
 ---
 
@@ -55,7 +55,7 @@ estado = VIGENTE
   AND 'etapa-2' IN consumido_por
 ```
 
-- Un aprendizaje con `confianza=ALTA` es una **restricción dura**: no proponer ángulos que lo violen. Ej. `[APR-008]` descarta los ángulos educacionales/mecanismo en TINNIDROP tras 3 fracasos.
+- Un aprendizaje con `confianza=ALTA` es una **restricción dura**: no proponer ángulos que lo violen. Ej. `[APR-008]` descarta los ángulos educacionales/mecanismo en un producto tras 3 fracasos.
 - Con `confianza=MEDIA` es una **prior fuerte**: se puede proponer igual, pero hay que justificar por qué este caso es distinto y decirlo en la ficha.
 - Con `confianza=BAJA` o `estado=EN_OBSERVACION` es solo contexto — no condiciona el diseño.
 - Si el `revisar_despues_de` ya pasó, tratarlo como MEDIA y anotarlo (el mercado se mueve; un aprendizaje viejo no es ley eterna).
@@ -227,7 +227,7 @@ P2u irresistible: Q[precio] con envío gratis
 
 ---
 
-## ASIGNACIÓN DE FANPAGE (absorbido de ETAPA-FANPAGE, T1 p2-simplificacion)
+## ASIGNACIÓN DE FANPAGE
 
 Después de rankear los 6 ángulos, resolver a qué página de pauta del catálogo `PRODUCTOS/_DIM_FANPAGES.csv`
 (10 filas: `pagina_num, pagina_nombre, identidad, rol, tono, logica, edad_orientacion, page_id, productos_nicho`)
@@ -239,7 +239,7 @@ debe asignarse el producto. Leer ese CSV — nunca inventar una página ni copia
 - **Regla F2 — Doble audiencia:** Si aplica para 2 páginas, elegir la de mayor volumen de audiencia estimada.
 - **Regla F3 — Sin página ideal:** Si el producto NO encaja en ninguna de las 10 páginas, NO asignar a la más cercana por defecto — usar Formato B obligatoriamente.
 - **Regla F4 — Tono por identidad:** Doctor/a en tema sensible → nunca sonar a vendedor, siempre educativo primero. Persona que lo vivió → historia personal antes del producto. Coach → resultado visual + método, energía alta.
-- **Regla F5 — Edad de la página = orientación; la banda la fija el ÁNGULO** (corregida 02-sep): la "edad de segmentación" (columna `edad_orientacion` del CSV) de cada página es ORIENTACIÓN del comprador principal. El **default de lanzamiento es la banda derivada del `avatar_edad` del ángulo, con Advantage+ Audience OFF** (`ETAPA-6.md` → BANDA DE EDAD); si las dos difieren, manda la del ángulo por ser más específica. El viejo default amplio 18-65+ (operacionalización del principio de Andrómeda/Clase 19 — "el creativo segmenta"; los números 18-65/Advantage+ OFF son decisión del operador, no cifras literales de la clase; la data decide el piso real), salvo que el operador decida aplicar el piso de la página a mano (criterio Mercy/Clase 6 por poder adquisitivo). No contradecir ETAPA-6: la página orienta, ETAPA-6/MCP fija el lanzamiento.
+- **Regla F5 — Edad de la página = orientación; la banda la fija el ÁNGULO:** la "edad de segmentación" (columna `edad_orientacion` del CSV) de cada página es ORIENTACIÓN del comprador principal. El **default de lanzamiento es la banda derivada del `avatar_edad` del ángulo, con Advantage+ Audience OFF** (`ETAPA-6.md` → BANDA DE EDAD); si las dos difieren, manda la del ángulo por ser más específica. El viejo default amplio 18-65+ (operacionalización del principio de Andrómeda/Clase 19 — "el creativo segmenta"; los números 18-65/Advantage+ OFF son decisión del operador, no cifras literales de la clase; la data decide el piso real), salvo que el operador decida aplicar el piso de la página a mano (criterio Mercy/Clase 6 por poder adquisitivo). No contradecir ETAPA-6: la página orienta, ETAPA-6/MCP fija el lanzamiento.
 
 ### Proceso interno
 
@@ -282,7 +282,7 @@ Otros productos futuros que podrían ir ahí: [ejemplos del mismo nicho]
 
 ## Reglas
 
-- **La OFERTA es un ángulo de venta, no solo un concepto** (agregado 02-sep — M-E06, clase 22-ago).
+- **La OFERTA es un ángulo de venta, no solo un concepto.**
   Un cliente puede comprar porque le duele algo *o* porque el 3×2 le pareció irresistible: son dos
   territorios de decisión distintos y ambos son legítimos. Hoy el sistema lo trata solo como
   ejecución visual (`C1_OFERTA`). **Si el operador reporta que sus creativos que venden son de
@@ -298,8 +298,8 @@ Otros productos futuros que podrían ir ahí: [ejemplos del mismo nicho]
 - **Regla del nivel de conciencia:** Definir siempre en qué nivel está el avatar (no sabe el problema / lo sabe sin solución / conoce el producto: 3a teme comprar → reducir fricción, o 3b compara ofertas → oferta-escasez). Determina cómo abre el anuncio y el flujo, y qué ángulo usar. (Clase 12 y 22)
 - **Regla Andrómeda — el creativo es la segmentación:** El copy y el creativo se escriben para que META encuentre al avatar, no para hablarle directo al cliente. Cada señal (dolor, beneficio, edad, ingrediente) le dice a Meta a quién mostrar el anuncio. (CLASE 19 Andrómeda)
 - **No repetir el mismo ángulo en dos conjuntos.** Cada conjunto de testeo lleva un ángulo diferente. Eso no cambia.
-- **⚠️ CONCEPTO ≠ ITERACIÓN PEREZOSA — regla corregida 19-ago (antes decía "un concepto visual distinto por conjunto"):**
-  La Clase 2 dice *"las iteraciones murieron, los conceptos reinan"* y es cierta, pero se estaba aplicando a la fase equivocada. Hay que separar tres cosas:
+- **⚠️ CONCEPTO ≠ ITERACIÓN PEREZOSA:**
+  Las iteraciones perezosas mueren, los conceptos reinan — pero eso se aplica a FASE 2, no a FASE 1. Hay que separar tres cosas:
   - **ITERACIÓN PEREZOSA** = la misma imagen con otro título, color o tipografía. **Prohibida siempre.** Es lo que la clase condena.
   - **CONCEPTO** = el dispositivo visual dominante (oferta · beneficios · síntoma · antes-después · prueba · progresión · deseo · comparación). Vocabulario cerrado y evidencia en `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`.
   - **VARIANTE** = mismo concepto, relleno distinto (hook, props, paleta, avatar). **Son creativos únicos para Meta**, que detecta duplicados por huella de contenido, no por estructura (`Ads/_TOOLS/LAVADO.md`).
