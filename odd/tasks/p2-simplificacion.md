@@ -32,7 +32,7 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
   etapa list, gen_publicacion/gen_lanzador/verificar_producto, app tests). Route: delegated
   writer (cross-cutting, 10+ files). Check: etapa-2 re-run on CLEARSTEM frozen inputs picks
   the same page as `evals/fixtures/etapa-fanpage/CLEARSTEM.txt`; full test suite + evals green.
-- [ ] T2 — Split god nodes by section. Route: delegated writer. Check: gen_grafo --comparar
+- [x] T2 — Split god nodes by section. Route: delegated writer. Check: gen_grafo --comparar
   shows fewer inherited tokens; re-run of affected etapas with baselines passes.
 - [ ] T3 — Fuse etapa-7 + etapa-8. Route: delegated writer. Check: re-run on the frozen
   2026-09-08 audit inputs passes both etapa-7 and etapa-8 asserts.
@@ -211,6 +211,25 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
     once — the opposite of ESCALADO/PLANTILLAS_ADS, which had multiple genuinely light-touch
     consumers). This needs its own explicit user decision before any edit, since CLAUDE.md is
     explicitly OUT of scope for T2 content edits.
+
+- 2026-09-24: T2 CLOSED by parent.
+  - Verbatim: parent diffed original ESCALADO_PLAYBOOK/PLANTILLAS_ADS (HEAD before 491869d) against
+    the concatenated section files after stripping CR: zero differences.
+  - Re-run etapa-9 (TINNIDROP, day 2026-09-06, dry run, no writes; git status clean): 6 rows,
+    assert PASS (canonico_id complete, 3 funnel roles, no concepto >2). Evidence
+    evals/reruns/2026-09-24_etapa-9_TINNIDROP_p2-T2.csv. Compliance held in all 6 prompts.
+  - Re-run etapa-4 FASE 1 on the CLEARSTEM chain (the TINNIDROP fixture's original inputs were never
+    frozen): 6 angulos x 3 TEXTO variations + 3 TITULOS + DESCRIPCION, CTA 'Escribinos' in all,
+    price in 2 of 6, no banned word in ad copy. Checked by parent reading, NOT by the assert: the
+    etapa-4 assert is coupled to the saved-manual layout ('★ CONJUNTO N', 'TEXTO 1'), not to the raw
+    etapa output. Follow-up: make the assert accept the raw output layout.
+  - Finding on the T1 re-run inputs: the T1 etapa-2 package omitted ETAPA-1B voice of customer, so
+    the re-run dropped RESISTENCIA_INSULINA_SOP (the original fixture had it, validated by voz;
+    best historic CLEARSTEM angle). Not a prune regression; the T1 page conclusion stands (page is
+    chosen by comprador principal). Follow-up: freeze each etapa's full input package at production
+    time (PRODUCTOS/<P>/0_INPUTS_CONGELADOS.md already exists for OVULOS_PURITY) so re-runs are exact.
+  - etapa-7/8 re-run deferred to T3 (they get fused). etapa-guardar-producto not re-run (writes disk);
+    its read-set change is one pointer line.
 
 ## Next step
 T2 verification (parent re-runs the etapas listed above on frozen inputs), then T3 (fuse
