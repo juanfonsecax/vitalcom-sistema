@@ -1,0 +1,128 @@
+[
+  {
+    "ad_id": "120246893776450784",
+    "ad_name": "ARDOR_B",
+    "adset_name": "ARDOR_NUSAVAB12_TEST",
+    "spend": 1.23
+  },
+  {
+    "ad_id": "120246893776460784",
+    "ad_name": "ARDOR_A",
+    "adset_name": "ARDOR_NUSAVAB12_TEST",
+    "spend": 0.4
+  },
+  {
+    "ad_id": "120247187081330784",
+    "ad_name": "VARICOSE_2_VERGUENZA-PIERNAS_A - Copia",
+    "adset_name": "VERGUENZA-PIERNAS_VARICOSE_TEST",
+    "spend": 0.0
+  },
+  {
+    "ad_id": "120247375784460784",
+    "ad_name": "MA6 · precio SÍ Q249/Q389",
+    "adset_name": "VERGUENZA_MA6_OFERTA2X1",
+    "spend": 0.0
+  },
+  {
+    "ad_id": "120247375784480784",
+    "ad_name": "MA1 · precio SÍ Q249",
+    "adset_name": "VERGUENZA_MA5_RESIGNACION",
+    "spend": 0.0
+  },
+  {
+    "ad_id": "120247508124150784",
+    "ad_name": "MA5_AZUCAR",
+    "adset_name": "MA5-AZUCAR",
+    "spend": 0.86
+  },
+  {
+    "ad_id": "120247508124200784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4",
+    "adset_name": "MA7-ARDORVIDEO",
+    "spend": 0.41
+  },
+  {
+    "ad_id": "120247508124210784",
+    "ad_name": "MA4_DEPIE",
+    "adset_name": "MA4-DEPIE",
+    "spend": 0.91
+  },
+  {
+    "ad_id": "120247508133990784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "MA6-OFERTA",
+    "spend": 1.7
+  },
+  {
+    "ad_id": "120247508468920784",
+    "ad_name": "MA2_ARDORNOCHE - Copia",
+    "adset_name": "MA2-ARDORNOCHE",
+    "spend": 1.71
+  },
+  {
+    "ad_id": "120247508471230784",
+    "ad_name": "MA4_DEPIE - Copia",
+    "adset_name": "MA4-DEPIE",
+    "spend": 0.84
+  },
+  {
+    "ad_id": "120247508472600784",
+    "ad_name": "MA5_AZUCAR - Copia",
+    "adset_name": "MA5-AZUCAR",
+    "spend": 0.72
+  },
+  {
+    "ad_id": "120247508474300784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4 - Copia",
+    "adset_name": "MA7-ARDORVIDEO",
+    "spend": 1.18
+  },
+  {
+    "ad_id": "120247634423990784",
+    "ad_name": "tinnidrop 6",
+    "adset_name": "Pérdida auditiva irreversible",
+    "spend": 0.52
+  },
+  {
+    "ad_id": "120247634582720784",
+    "ad_name": "tinnidrop 4",
+    "adset_name": "Accesibilidad económica vs. médico - Copia 2",
+    "spend": 1.52
+  },
+  {
+    "ad_id": "120247634582760784",
+    "ad_name": "tinnidrop 3",
+    "adset_name": "DETERIORO COGNITIVO - video",
+    "spend": 0.13
+  },
+  {
+    "ad_id": "120247634582770784",
+    "ad_name": "CONJUNTO 5 — \"ME DIJERON QUE NO TIENE CURA\" - Copia",
+    "adset_name": "ME DIJERON QUE NO TIENE CURA - Copia",
+    "spend": 1.49
+  },
+  {
+    "ad_id": "120247634796250784",
+    "ad_name": "tinnidrop 6 - Copia",
+    "adset_name": "Pérdida auditiva irreversible",
+    "spend": 1.13
+  },
+  {
+    "ad_id": "120247634798070784",
+    "ad_name": "CONJUNTO 5 — \"ME DIJERON QUE NO TIENE CURA\" - Copia 2",
+    "adset_name": "ME DIJERON QUE NO TIENE CURA - Copia",
+    "spend": 0.11
+  },
+  {
+    "ad_id": "120247634799760784",
+    "ad_name": "tinnidrop 3 - Copia",
+    "adset_name": "DETERIORO COGNITIVO - video",
+    "spend": 1.37
+  },
+  {
+    "ad_id": "120247634801430784",
+    "ad_name": "tinnidrop 4 - Copia",
+    "adset_name": "Accesibilidad económica vs. médico - Copia 2",
+    "spend": 0.17
+  }
+]

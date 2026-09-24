@@ -1,0 +1,104 @@
+[
+  {
+    "ad_id": "120247634801430784",
+    "ad_name": "tinnidrop 4 - Copia",
+    "adset_name": "Accesibilidad económica vs. médico - Copia 2",
+    "spend": 0.0
+  },
+  {
+    "ad_id": "120247728670170784",
+    "ad_name": "MA6_OFERTA - Copia",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 0.0
+  },
+  {
+    "ad_id": "120248199666360784",
+    "ad_name": "PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1",
+    "adset_name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R2",
+    "spend": 4.62
+  },
+  {
+    "ad_id": "120248199666400784",
+    "ad_name": "PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1",
+    "adset_name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R3",
+    "spend": 4.85
+  },
+  {
+    "ad_id": "120248199666460784",
+    "ad_name": "ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1",
+    "adset_name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1",
+    "spend": 1.43
+  },
+  {
+    "ad_id": "120248199666470784",
+    "ad_name": "ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C5|NC3A|SIN_PRECIO|BOT_V1",
+    "adset_name": "GTR7_TINNIDROP_ACCESIBILIDAD-MEDICO_R1",
+    "spend": 3.24
+  },
+  {
+    "ad_id": "120248199666500784",
+    "ad_name": "PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1",
+    "adset_name": "GTR7_TINNIDROP_PERDIDA-AUDITIVA_R1",
+    "spend": 4.74
+  },
+  {
+    "ad_id": "120248199950840784",
+    "ad_name": "ARDOR_IMG_B ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R4",
+    "spend": 1.07
+  },
+  {
+    "ad_id": "120248199951030784",
+    "ad_name": "ARDOR_IMG_A ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R3",
+    "spend": 1.73
+  },
+  {
+    "ad_id": "120248199951040784",
+    "ad_name": "ARDOR_IMG_A ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R4",
+    "spend": 1.58
+  },
+  {
+    "ad_id": "120248199951050784",
+    "ad_name": "ARDOR_IMG_B ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R3",
+    "spend": 0.81
+  },
+  {
+    "ad_id": "120248199951060784",
+    "ad_name": "ARDOR_IMG_B ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R2",
+    "spend": 2.23
+  },
+  {
+    "ad_id": "120248199951070784",
+    "ad_name": "ARDOR_IMG_A ~ NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOT_V1",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R2",
+    "spend": 3.58
+  },
+  {
+    "ad_id": "120248199951080784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R1",
+    "spend": 3.58
+  },
+  {
+    "ad_id": "120248199951110784",
+    "ad_name": "MA6_OFERTA - Copia",
+    "adset_name": "GTR7_NUSAVA_ARDOR_R1",
+    "spend": 2.28
+  },
+  {
+    "ad_id": "120248199951120784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4",
+    "adset_name": "GTR7-MA7-ARDORVIDEO",
+    "spend": 0.4
+  },
+  {
+    "ad_id": "120248199951140784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4 - Copia",
+    "adset_name": "GTR7-MA7-ARDORVIDEO",
+    "spend": 4.21
+  }
+]
