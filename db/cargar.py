@@ -20,7 +20,6 @@ import argparse
 import csv
 import hashlib
 import io
-import json
 import os
 import sys
 
@@ -132,6 +131,8 @@ def enriquecer_venta(filas_venta, filas_mapa):
 
 
 def cargar_tabla(cur, tenant_id, tabla, archivo, opcional, productos_dir):
+    """Carga un CSV verbatim en su tabla espejo de `raw` (T5b: raw ya no tiene columnas extra ni
+    casos especiales — el enriquecimiento de venta vive en `core`, ver db/nucleo.py)."""
     path = os.path.join(productos_dir, archivo)
     if not os.path.exists(path):
         if not opcional:
@@ -145,31 +146,16 @@ def cargar_tabla(cur, tenant_id, tabla, archivo, opcional, productos_dir):
 
     header = [csv_col for csv_col, _ in pares]
     header_sql = [sql_col for _, sql_col in pares]
-    extra = T.EXTRA_COLUMNS.get(tabla, [])
-    cols_final = header_sql + extra
 
-    cur.execute("TRUNCATE TABLE core.%s" % tabla)
+    cur.execute("TRUNCATE TABLE raw.%s" % tabla)
     if not filas:
         return 0, (sha256_de(path) if os.path.exists(path) else None)
 
-    filas_mapa = None
-    if tabla == "venta":
-        ruta_mapa = os.path.join(productos_dir, "_MAPA_AD_ID_HIST.csv")
-        filas_mapa = leer_filas(ruta_mapa) if os.path.exists(ruta_mapa) else []
-        enriquecidas = enriquecer_venta(filas, filas_mapa)
+    col_list = ", ".join(['"%s"' % c for c in (["tenant_id"] + header_sql)])
+    placeholders = ", ".join(["%s"] * (1 + len(header_sql)))
+    sql = "INSERT INTO raw.%s (%s) VALUES (%s)" % (tabla, col_list, placeholders)
 
-    col_list = ", ".join(['"%s"' % c for c in (["tenant_id"] + cols_final)])
-    placeholders = ", ".join(["%s"] * (1 + len(cols_final)))
-    sql = "INSERT INTO core.%s (%s) VALUES (%s)" % (tabla, col_list, placeholders)
-
-    rows_out = []
-    for i, fila in enumerate(filas):
-        valores = [fila.get(c, "") for c in header]
-        if tabla == "venta":
-            resuelto, metodo = enriquecidas[i]
-            valores = valores + [resuelto, metodo]
-        rows_out.append(tuple([tenant_id] + valores))
-
+    rows_out = [tuple([tenant_id] + [fila.get(c, "") for c in header]) for fila in filas]
     cur.executemany(sql, rows_out)
     return len(filas), sha256_de(path)
 
@@ -194,59 +180,62 @@ def _pares_de(path, tabla):
     return pares
 
 
-def cargar_decision(cur, tenant_id, decisiones_json):
-    cur.execute("TRUNCATE TABLE core.decision")
-    if not os.path.exists(decisiones_json):
-        return False
-    with io.open(decisiones_json, encoding="utf-8") as f:
-        payload = json.load(f)
-    fecha = payload.get("generado")
-    cur.execute(
-        "INSERT INTO core.decision (tenant_id, fecha, payload) VALUES (%s, %s, %s)",
-        (tenant_id, fecha, json.dumps(payload, ensure_ascii=False)),
-    )
-    return True
-
-
 def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", env=None):
-    """Punto de entrada reutilizable (tests, gate de paridad). Devuelve {tabla: n_filas}."""
+    """Punto de entrada reutilizable (tests, gate de paridad). Carga `raw.*` desde los CSV y, EN
+    LA MISMA TRANSACCIÓN, construye `core.*` desde `raw.*` (T5b, db/nucleo.py). Devuelve
+    {"raw": {tabla: n_filas}, "core": reporte_de_reconciliacion}."""
+    import nucleo as N  # import tardío: nucleo importa `cargar.enriquecer_venta`, evita el ciclo
+
     productos_dir = productos_dir or T.PRODUCTOS_DIR
     decisiones_json = decisiones_json or os.path.join(productos_dir, "_DECISIONES.json")
 
-    conteos = {}
+    conteos_raw = {}
     con = conectar(env)
     try:
         with con:
             with con.cursor() as cur:
                 for tabla, archivo, opcional in T.TABLE_SPECS:
                     n, sha = cargar_tabla(cur, tenant_id, tabla, archivo, opcional, productos_dir)
-                    conteos[tabla] = n
+                    conteos_raw[tabla] = n
                     path = os.path.join(productos_dir, archivo)
                     cur.execute(
-                        "INSERT INTO core.raw_import (tenant_id, archivo, sha256, filas) "
+                        "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
                         "VALUES (%s, %s, %s, %s)",
                         (tenant_id, archivo, sha, n),
                     )
-                tiene_decision = cargar_decision(cur, tenant_id, decisiones_json)
-                conteos["decision"] = 1 if tiene_decision else 0
+                reporte_core = N.construir_core(cur, tenant_id, decisiones_json)
     finally:
         con.close()
-    return conteos
+    return {"raw": conteos_raw, "core": reporte_core}
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Carga PRODUCTOS/*.csv a Postgres (schema core)")
+    ap = argparse.ArgumentParser(description="Carga PRODUCTOS/*.csv a Postgres (raw -> core)")
     ap.add_argument("--productos-dir", default=None, help="default: PRODUCTOS/ del repo")
     ap.add_argument("--decisiones-json", default=None, help="default: <productos-dir>/_DECISIONES.json")
     ap.add_argument("--tenant", default="vitalcom")
     args = ap.parse_args()
 
-    conteos = cargar_todo(args.productos_dir, args.decisiones_json, args.tenant)
+    resultado = cargar_todo(args.productos_dir, args.decisiones_json, args.tenant)
+    conteos = resultado["raw"]
     total = sum(conteos.values())
+    print("-- raw --")
     for tabla, n in sorted(conteos.items()):
         print("%-32s %6d" % (tabla, n))
     print("-" * 40)
     print("%-32s %6d" % ("TOTAL", total))
+
+    reporte = resultado["core"]
+    print("\n-- core (reconciliación) --")
+    for tabla, n in sorted(reporte["tablas"].items()):
+        print("%-32s %6d" % (tabla, n))
+    print("\nFK sin resolver:")
+    for k, v in sorted(reporte["fk_sin_resolver"].items()):
+        print("  %-32s %6d" % (k, v))
+    print("\nConservación raw -> core (hechos):")
+    for tabla, c in sorted(reporte["conservacion"].items()):
+        print("  %-24s raw=%-6d core=%-6d %s"
+              % (tabla, c["raw"], c["core"], "OK" if c["igual"] else "DIFERENCIA"))
     return 0
 
 

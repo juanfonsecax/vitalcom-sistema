@@ -1,36 +1,21 @@
 # -*- coding: utf-8 -*-
-"""tables.py — fuente única de la lista de tablas core.* y su CSV dueño (P1-cimientos T5/T6).
+"""tables.py — fuente única de la lista de tablas raw.* y su CSV dueño (P1-cimientos T5/T6/T5b).
 
 Un dato, un dueño (CLAUDE.md): los CSV en PRODUCTOS/ siguen siendo la fuente de verdad durante
-P1. Cada tabla es un espejo FIEL de su CSV — mismas columnas, mismo orden, texto verbatim — más
-`tenant_id` (single tenant "vitalcom", RLS no habilitado todavía) y un `id` bigserial. No hay
-columnas tipadas/derivadas salvo las listadas en EXTRA_COLUMNS, porque el consumidor real
-(decidir.py, vía gasto.py y alias.py) hace su propio `try_cast` al leer el CSV — convertir acá
-sería una segunda fuente de verdad para el mismo número.
+P1. Cada tabla de este módulo es un espejo FIEL, VERBATIM, de su CSV en el schema `raw` — mismas
+columnas, mismo orden, texto tal cual — más `tenant_id` (single tenant "vitalcom", RLS no
+habilitado todavía) y un `id` bigserial. `raw` es la capa de auditoría/staging (T5b la renombró
+desde `core`, donde vivía en T5); no tiene columnas tipadas, derivadas ni enriquecidas — eso es
+exactamente lo que la separa de `core` (ver db/nucleo.py), que construye el modelo normalizado y
+tipado A PARTIR de `raw` en la misma transacción de carga.
 
 `cargar.py` y `exportar.py` leen el header real de cada CSV en tiempo de ejecución (nunca lo
 hardcodean): si el CSV real cambia de columnas, ambos se adaptan solos. `schema.sql` fue
 generado una vez a partir de esos mismos headers (ver el bloque al pie de este archivo,
 `si __name__ == "__main__"`) y se re-genera corriendo este archivo si un CSV agrega/quita una
-columna — no hay una tercera copia de la lista de columnas.
-
-Columnas EXTRA (no vienen del CSV, las calcula `cargar.py` al cargar):
-  - venta.ad_id_resuelto      — ad_id recuperado por Ads/_TOOLS/mapear_ad_id_hist.py cuando el
-                                 original no es válido. NUNCA pisa el `ad_id` original: ese queda
-                                 verbatim en su propia columna para poder reproducir el CSV byte
-                                 a byte (exportar.py reconstruye `_FACT_VENTAS.csv` con el `ad_id`
-                                 original, nunca con el resuelto).
-  - venta.metodo_atribucion   — 'ad_id' | 'ad_id_verificado_gasto' | 'nombre' | 'sin_atribuir'.
-
-Tablas deliberadamente NO creadas en P1 (evidencia, no elegancia):
-  - `angulo` como tabla física: sus columnas ya viven 1:1 en `conjunto` (espejo de
-    _DIM_CONJUNTOS.csv, que ya trae angulo_key/avatar/dolor_nucleo/etc. por fila). Separarlas en
-    una tabla propia sin que ningún lector real lo necesite todavía (P3 está fuera de alcance)
-    sería inventar una segunda fuente para el mismo dato. `schema.sql` deja la VIEW
-    `core.angulo` (distinct por producto_key+angulo_key) para cuando un consumidor la necesite.
-  - `catalogo_concepto`: su dueño real es `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` (prosa, no CSV).
-    No hay CSV que copiar sin inventar estructura que el .md no declara — se deja fuera de P1 y
-    se anota en README.md.
+columna — no hay una tercera copia de la lista de columnas. Ese mismo bloque le agrega el DDL de
+`core` (db/nucleo.py:CORE_DDL_SQL) al final, así que `schema.sql` sigue siendo el único archivo
+que aplica `psql -f` (ver README).
 """
 
 import os
@@ -82,9 +67,9 @@ TABLE_SPECS = [
     ("evento", "_EVENTOS.csv", False),
 ]
 
-EXTRA_COLUMNS = {
-    "venta": ["ad_id_resuelto", "metodo_atribucion"],
-}
+# `raw` no tiene columnas extra: es un espejo verbatim puro (T5b). El enriquecimiento de venta
+# (ad_id_resuelto/metodo_atribucion/venta_uid) vive SOLO en core.venta — ver db/nucleo.py.
+EXTRA_COLUMNS = {}
 
 # {tabla: {columna_csv: columna_sql}} — solo para el choque de nombre con las columnas propias
 # de la tabla (`id`, `tenant_id`, `loaded_at`). _APRENDIZAJES.csv trae su propia columna `id`
@@ -94,11 +79,9 @@ COLUMN_RENAMES = {
     "aprendizajes": {"id": "id_csv"},
 }
 
-# Llave natural del mapa histórico (Ads/_TOOLS/mapear_ad_id_hist.py), documentada en
-# odd/tasks/p1-cimientos.md T2: ventana_ini + cuenta_alias + conjunto + anuncio -> ad_id, metodo.
-MAPA_AD_ID_HIST_KEY = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
-
 METODOS_ATRIBUCION = ("ad_id", "ad_id_verificado_gasto", "nombre", "sin_atribuir")
+
+RAW_SCHEMA = "raw"
 
 
 def ruta_csv(nombre_archivo):
@@ -162,20 +145,41 @@ def columnas_tabla(tabla, archivo, opcional):
 
 
 if __name__ == "__main__":
-    # Regenera db/schema.sql a partir de los headers REALES de PRODUCTOS/*.csv. Correr a mano
-    # cuando un CSV cambie de columnas; no lo ejecuta cargar.py ni exportar.py (schema.sql es un
-    # artefacto versionado, no algo que se reescriba en cada carga).
+    # Regenera db/schema.sql a partir de los headers REALES de PRODUCTOS/*.csv (schema `raw`) +
+    # el DDL fijo del modelo normalizado (schema `core`, db/nucleo.py). Correr a mano cuando un
+    # CSV cambie de columnas; no lo ejecuta cargar.py ni exportar.py (schema.sql es un artefacto
+    # versionado, no algo que se reescriba en cada carga).
     import datetime
 
+    import nucleo as N  # noqa: E402
+
     out = []
-    out.append("-- schema.sql — generado por db/tables.py (%s). DDL idempotente, esquema core."
+    out.append("-- schema.sql — generado por db/tables.py (%s). DDL idempotente."
                 % datetime.date.today().isoformat())
-    out.append("-- Un dato, un dueño: cada tabla es un espejo verbatim de su CSV en PRODUCTOS/,")
-    out.append("-- más tenant_id (single tenant 'vitalcom') e id. Ver tables.py para el porqué.")
+    out.append("-- schema `raw`: espejo verbatim de cada CSV de PRODUCTOS/, más tenant_id (single")
+    out.append("-- tenant 'vitalcom') e id. schema `core`: modelo normalizado/tipado construido A")
+    out.append("-- PARTIR de `raw` por db/nucleo.py. Ver tables.py y nucleo.py para el porqué.")
     out.append("")
-    out.append("CREATE SCHEMA IF NOT EXISTS core;")
+    out.append("-- Migración única T5b: si esta base todavía tiene el `core` de T5 (el espejo")
+    out.append("-- verbatim original, antes de que existiera un `raw`), renombrarlo a `raw` en vez")
+    out.append("-- de perder su historia/ids. Sin efecto en una base que ya tiene `raw` (incluida")
+    out.append("-- una base nueva, donde ninguno de los dos existe todavía).")
+    out.append("DO $mig$")
+    out.append("BEGIN")
+    out.append("  IF EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'core')")
+    out.append("     AND NOT EXISTS (SELECT 1 FROM pg_namespace WHERE nspname = 'raw') THEN")
+    out.append("    EXECUTE 'ALTER SCHEMA core RENAME TO raw';")
+    out.append("    -- el `core` de T5 tenía 2 columnas de enriquecimiento en `venta` que `raw`")
+    out.append("    -- (verbatim puro, T5b) no debe tener -- ese enriquecimiento ahora vive solo")
+    out.append("    -- en el `core` normalizado nuevo (ver nucleo.py).")
+    out.append("    EXECUTE 'ALTER TABLE raw.venta DROP COLUMN IF EXISTS ad_id_resuelto';")
+    out.append("    EXECUTE 'ALTER TABLE raw.venta DROP COLUMN IF EXISTS metodo_atribucion';")
+    out.append("  END IF;")
+    out.append("END $mig$;")
     out.append("")
-    out.append("CREATE TABLE IF NOT EXISTS core.raw_import (")
+    out.append("CREATE SCHEMA IF NOT EXISTS %s;" % RAW_SCHEMA)
+    out.append("")
+    out.append("CREATE TABLE IF NOT EXISTS %s.raw_import (" % RAW_SCHEMA)
     out.append("    id BIGSERIAL PRIMARY KEY,")
     out.append("    tenant_id TEXT NOT NULL DEFAULT 'vitalcom',")
     out.append("    archivo TEXT NOT NULL,")
@@ -184,36 +188,25 @@ if __name__ == "__main__":
     out.append("    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()")
     out.append(");")
     out.append("")
-    out.append("CREATE TABLE IF NOT EXISTS core.decision (")
-    out.append("    id BIGSERIAL PRIMARY KEY,")
-    out.append("    tenant_id TEXT NOT NULL DEFAULT 'vitalcom',")
-    out.append("    fecha TEXT,")
-    out.append("    payload JSONB NOT NULL,")
-    out.append("    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()")
-    out.append(");")
-    out.append("")
 
     for tabla, archivo, opcional in TABLE_SPECS:
         cols = columnas_tabla(tabla, archivo, opcional)
         out.append("-- %s <- PRODUCTOS/%s" % (tabla, archivo))
-        out.append("CREATE TABLE IF NOT EXISTS core.%s (" % tabla)
+        out.append("CREATE TABLE IF NOT EXISTS %s.%s (" % (RAW_SCHEMA, tabla))
         out.append("    id BIGSERIAL PRIMARY KEY,")
         out.append("    tenant_id TEXT NOT NULL DEFAULT 'vitalcom',")
         for c in cols:
             out.append("    %s TEXT," % c)
         out.append("    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()")
         out.append(");")
+        # ADD COLUMN IF NOT EXISTS por cada columna: si el CSV real le agregó una columna nueva
+        # (p.ej. _MAPA_AD_ID_HIST.csv:venta_uid, T2b) a una tabla que YA existía de una corrida
+        # anterior, CREATE TABLE IF NOT EXISTS no la habría agregado por sí solo.
+        for c in cols:
+            out.append("ALTER TABLE %s.%s ADD COLUMN IF NOT EXISTS %s TEXT;" % (RAW_SCHEMA, tabla, c))
         out.append("")
 
-    out.append("-- Vista de conveniencia: ángulos distintos ya presentes en `conjunto`")
-    out.append("-- (_DIM_CONJUNTOS.csv). No es una tabla física — nada la carga ni la exporta;")
-    out.append("-- ver la nota en tables.py sobre por qué `angulo` no es tabla en P1.")
-    out.append("CREATE OR REPLACE VIEW core.angulo AS")
-    out.append("SELECT DISTINCT tenant_id, producto_key, angulo_key, angulo_nombre, avatar,")
-    out.append("       dolor_nucleo, emocion_dominante, avatar_edad, avatar_genero,")
-    out.append("       nivel_conciencia, NULL::text AS deseo")
-    out.append("FROM core.conjunto")
-    out.append("WHERE angulo_key IS NOT NULL AND angulo_key <> '';")
+    out.append(N.CORE_DDL_SQL)
     out.append("")
 
     schema_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.sql")
