@@ -269,7 +269,8 @@ LECTURA POR DIMENSIÓN (join con _DIM_CONJUNTOS.csv — el "POR QUÉ funciona")
 MATRIZ ÁNGULO × CUENTA (si el producto corre en >1 cuenta)
    [ángulo] → VIAJA (vende en ≥3) / LOCAL (1-2) / MURIENDO (fatiga de creativo)
 
-ÁNGULO(S) GANADOR(ES): [lo que diga flujo.py — gate angulo_ganador]   ← omitir si la ventana es PARCIAL
+ÁNGULO(S) GANADOR(ES): [angulo_key] (Nv, CPA Q[..] acumulado) — lo que diga flujo.py, gate angulo_ganador   ← omitir si la ventana es PARCIAL
+   (cada CPA se escribe "CPA Q[..]", nunca un "Q[..]" suelto: la medida es CPA, no ROAS)
 ESTADOS DEL MOTOR (citados de la tabla de PASO 4, con accion_codigo):
         PAUSAR: [...] · RENOVAR: [...] · ESCALAR: [...] · SEGUIR_MIDIENDO: [n]
         (una PAUSAR por ventas exige ventana COMPLETA; si es PARCIAL, se declara y no se ejecuta)

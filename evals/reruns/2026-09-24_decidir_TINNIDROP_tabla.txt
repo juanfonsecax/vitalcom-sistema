@@ -1,0 +1,18 @@
+===================================================================================================================
+ MOTOR DE DECISIÓN UNIFICADO — VITALCOM GUATEMALA (Evaluación: 14d | Fatiga: 3d | Tolerancia: acumulada | IC 95% | Grano: angulo)
+ Data: 2026-09-09 → 2026-09-22  (generado 2026-09-24)
+ Resumen:  🔴 PAUSAR: 0  |  🔵 RENOVAR (FATIGA): 0  |  🟢 ESCALAR: 0  |  🟡 SEGUIR MIDIENDO: 4
+===================================================================================================================
+
+[TINNIDROP]  Estado: VIVO | Fase: F2 | Break-Even: Q93.41 | CPA Objetivo: Q30.80
+-------------------------------------------------------------------------------------------------------------------
+  ESTADO           CELDA / ÁNGULO                VTS   MSJ  GASTO Q CPA REAL IC 95% Q        ACCIÓN INMEDIATA
+-------------------------------------------------------------------------------------------------------------------
+  [SEGUIR_MIDIENDO] ACCESIBILIDAD_MEDICO           21   170   1502.7    Q71.6 [48-112]        MANTENER PRESUPUESTO (no subir): CPA Q71.6 bajo BE Q93.4, pero el IC [48-112.2] lo cruza. Faltan ~37 ventas al CPA actual para resolver IC.
+  [SEGUIR_MIDIENDO] PERDIDA_AUDITIVA               13   191   1120.1    Q86.2 [52-154]        MANTENER PRESUPUESTO (no subir): CPA Q86.2 bajo BE Q93.4, pero el IC [52-153.7] lo cruza. El CPA observado está cerca del BE.
+  [SEGUIR_MIDIENDO] DETERIORO_COGNITIVO            10   107    887.7    Q88.8 [50-173]        MANTENER PRESUPUESTO (no subir): CPA Q88.8 bajo BE Q93.4, pero el IC [50-172.7] lo cruza. El CPA observado está cerca del BE.
+  [SEGUIR_MIDIENDO] NOCHES_SIN_DORMIR               6    43    367.0    Q61.2 [30-146]        MANTENER PRESUPUESTO (no subir): CPA Q61.2 bajo BE Q93.4, pero el IC [30-146.5] lo cruza. Faltan ~18 ventas al CPA actual para resolver IC.
+
+===================================================================================================================
+ SÍNTESIS COMPLETA: Cero parálisis por falta de muestra · Cero decisiones irreversibles sin evidencia.
+===================================================================================================================

@@ -1,0 +1,111 @@
+[TABLA DETERMINÍSTICA: `ciclo-diario` ya pegó arriba la salida de `python Ads/_TOOLS/decidir.py TINNIDROP` (generada 2026-09-24, ventana 2026-09-09 → 2026-09-22). Acá no se vuelve a imprimir. Lo que sigue la cita por estado y `accion_codigo`.]
+
+INFORME DIARIO — TINNIDROP · Día 44 de GTR0/GTR1/GTR7_TINNIDROP_ESCALA_20260812 · 2026-09-24
+INTEGRIDAD DE VENTANA: 7 de 7 días (16→22-sep); 14 de 14 días de la ventana del motor (09→22-sep)
+   COMPLETA según los datos: hay filas BASE de TINNIDROP en _FACT_VENTAS.csv todos los días y ningún día en rojo.
+   Lo que falta anotar: _BITACORA_DATA.txt no tiene ninguna entrada después del 2026-09-08. Hay que
+   registrar la ingesta del 09→22-sep, porque la integridad hoy sale de _FACT_VENTAS.csv y no de la bitácora.
+   REZAGO: 2 días (datos hasta 22-sep). Es justo el tope de rezago_max_dias=2: la orden vale, pero queda declarado.
+MCP de Meta: NO DISPONIBLE en esta corrida. Queda sin hacer lo siguiente:
+   - PASO 2: CPM, CTR, frecuencia y alcance.
+   - Identificar la campaña ACTIVE con gasto por cuenta.
+   - Verificar que GTR0_TINNIDROP_F2-CONCEPTOS_20260907 sigue PAUSED.
+   - Leer el creative_id / Post ID.
+Campañas: GTR7 / GTR1 / GTR0 _TINNIDROP_ESCALA_20260812. F2-CONCEPTOS está PAUSED desde el 08-sep
+   (evento PAUSA: marca SOUTH MOON y vía "sublingual" equivocadas en imagen y copy).
+Gasto: $508.86 / Q3,877.5 (suma de las 4 celdas del motor) · Ventas: 50 atribuidas + 3 sin atribución = 53
+Ingreso: Q11,586 (53 ventas, Σ total_q; Q10,989 son de las 50 atribuidas)
+GANANCIA: Q793 con las 50 atribuidas (50 × BE − gasto) · Q1,073 si se cuentan las 3 sin atribución
+   Es PRELIMINAR: la cohorte tiene menos de 10 días de maduración COD y manda CONTABILIDAD.md.
+Break-Even Q93.41 · CPA Objetivo Q30.80 (según decidir) · REGLA DE ORO: se escala lo que YA vende.
+
+SANGRADO: Q0 (0% del gasto). Los 16 conjuntos que el motor agrega tienen ventas en la ventana, o tuvieron
+   gasto cero (C3-CN02, de F2 pausada). Podar no recupera nada hoy.
+
+LECTURA POR DIMENSIÓN (join con _DIM_CONJUNTOS.csv; NOCHES-SIN-DORMIR y PERDIDA R2 +25AÑOS cierran por _ALIAS_CONJUNTOS)
+   SIN DIMENSIÓN: 3 filas de venta sin cuenta, campaña ni conjunto (10-sep, 14-sep y 16-sep; 3 ventas, Q597).
+      Son ventas de LucidSales sin anuncio atribuido. No se les puede crear una fila en el DIM y no son
+      "(campaña completa)". Se reportan aparte y el motor no las ve.
+   AVISO: cada ángulo corre con UN solo creativo. Por eso todos estos cortes son el mismo ranking de
+      ángulos con otra etiqueta: no aportan información independiente y no se decide sobre ellos.
+   · por TIPO DE HOOK ...... TESTIMONIO 21v Q71.6 · MIEDO 23v Q87.3 · EMOCIONAL 6v Q61.2 [n bajo]
+   · por FORMATO ........... VIDEO 44v Q79.8 · IMAGEN 6v Q61.2 [n bajo]   (APR-003: el formato no decide)
+   · por ROL DE EMBUDO ..... MOFU 21v Q71.6 · TOFU 29v Q81.9 · BOFU sin celda
+   · por PRECIO EN EL AD ... SIN precio 50v Q77.6 · CON precio: sin celda, no hay contraste
+   · por NIVEL CONCIENCIA .. NC3 21v Q71.6 · NC2 29v Q81.9
+        Inconsistencia: DETERIORO_COGNITIVO figura como NC2 en el DIM y como NC1 en la firma del anuncio.
+        Corregirlo en el DIM.
+   Cierre del producto: 50/511 = 9.8%, contra un benchmark de 15-20%. Por celda: ACCESIBILIDAD 12.4 ·
+   NOCHES 14.0 · DETERIORO 9.3 · PERDIDA 6.8. Las cuatro quedan bajo el piso.
+
+MATRIZ ÁNGULO × CUENTA
+   ACCESIBILIDAD_MEDICO → LOCAL (solo GTR7 vivo; 1 venta tardía de F2 GTR0 pausada)
+   PERDIDA_AUDITIVA     → LOCAL (solo GTR7 vivo; 1 venta tardía de GTR0 R2 +25, pausada el 03-sep)
+   DETERIORO_COGNITIVO  → LOCAL (solo GTR1)
+   NOCHES_SIN_DORMIR    → LOCAL (solo GTR0)
+   La réplica en 4 cuentas del 20-jul quedó en una cuenta por ángulo. La saturación por cuenta
+   (06_SATURACION_CUENTA) no se puede medir: ningún ángulo corre en 2 cuentas o más.
+
+VARIABLES DE CONFUSIÓN: _EVENTOS.csv no registra ningún CAMBIO_BOT, CAMBIO_CREATIVO, CAMBIO_PRECIO ni
+   CAMBIO_PAGINA de TINNIDROP entre el 09 y el 22-sep. El último evento es la PAUSA de F2 del 08-sep: le sacó
+   pauta a GTR0, pero no toca las celdas ESCALA. Las 2 ventas en conjuntos pausados (10-sep y 16-sep, con
+   gasto 0) son maduración COD, no entrega.
+
+ÁNGULO(S) GANADOR(ES), según el gate angulo_ganador de flujo.py (histórico ≥5v y CPA ≤ BE):
+   PERDIDA_AUDITIVA (111v, Q66.0) · DETERIORO_COGNITIVO (102v, Q54.3) · ACCESIBILIDAD_MEDICO (80v, Q49.1)
+   · NOCHES_SIN_DORMIR (24v, Q51.3).
+   [APR-010] Los tres primeros son UN cluster (frustración médica / miedo), no ganadores que se destronan.
+   El ángulo que lleva FASE 2 sigue siendo ACCESIBILIDAD_MEDICO: mejor CPA acumulado y mejor CPA de la ventana
+   entre los tres grandes [APR-084].
+
+ESTADOS DEL MOTOR (citados de la tabla de PASO 4):
+   PAUSAR: ninguna · RENOVAR: ninguna · ESCALAR: ninguna
+   SEGUIR_MIDIENDO: 4, todas con MANTENER_Y_MEDIR:
+      ACCESIBILIDAD_MEDICO (faltan ~37 ventas) · PERDIDA_AUDITIVA (CPA cerca del BE)
+      · DETERIORO_COGNITIVO (CPA cerca del BE) · NOCHES_SIN_DORMIR (faltan ~18 ventas)
+   Marcas del motor: banda_ok=false en PERDIDA, DETERIORO y NOCHES (bandas no homogéneas entre réplicas:
+      revisar _DIM_BANDAS.csv) · nombres_ok=false en ACCESIBILIDAD_MEDICO.
+
+FATIGA: el motor no emite RENOVAR. Pero las 4 celdas venden más caro en la ventana que en su acumulado:
+   ACCESIBILIDAD Q49.1→71.6 (+46%) · PERDIDA Q66.0→86.2 (+31%) · DETERIORO Q54.3→88.8 (+64%)
+   · NOCHES Q51.3→61.2 (+19%).
+   Son los mismos videos (tinnidrop3/4/6) desde el 12-ago. No se puede confirmar con frecuencia ni CTR
+   porque no hay MCP. Es una señal para preparar la renovación, no una orden.
+   [APR-071, a revalidar] El BE Q93.41 viene de una tasa de entrega de 90.4%. Con agosto cerrado la tasa
+   es 85.2%. Correr costear.py antes de leer PERDIDA y DETERIORO como "bajo BE".
+
+PLAN DE ESCALADO — Fase: ESCALADO de hecho (ángulo validado) / flujo.py = F2, nodo F2.etapa-11
+1) PAUSAR: ninguna. [APR-009] En TINNIDROP tampoco se corta por conversación sin cruzarla con ventas.
+2) OPTIMIZAR FLUJO: SÍ, y es la palanca de hoy. Con un cierre de 9.8% el cuello está en el bot, no en la pauta.
+   El nodo F2.etapa-11 de flujo.py está LISTO_PARA_EJECUTAR y todavía no hay ningún DIAGNOSTICO_CONGRUENCIA.
+   En F2 solo se diagnostica: la reescritura (CAMBIO_BOT) va después del concepto ganador 2 de 2.
+   Pedir el export de chats de LucidBot del 09→22-sep.
+3) SURFING +20%: aún no, porque no hay celdas en ESCALAR. El escalado intradía sigue congelado (C-02).
+4) ESCALAR HORIZONTAL: esperar CPA real resuelto (los 4 IC cruzan el BE).
+   [APR-084] Reasignar presupuesto hacia ACCESIBILIDAD_MEDICO sería mover plata sin un ESCALAR del motor
+   (invariante 13): no se ejecuta. Además ya tiene 38.8% del gasto del producto.
+   No existe PRODUCTOS/TINNIDROP/3_CAMPAÑA_META.txt. Falta el creative_id / Post ID del ganador, y sin MCP
+   no se puede leer. Los ad_id de ACCESIBILIDAD que tienen ventas en la ventana (R1 a R4, VID_A/VID_B)
+   están en _FACT_VENTAS.csv.
+5) CREATIVOS (variable #1): el ángulo es ACCESIBILIDAD_MEDICO. Gana porque el video testimonio tinnidrop4
+   le habla a un avatar de 45-60 años con conciencia NC3 y rol MOFU: ya gastó en otorrinos sin resultado.
+   El producto le llega como alivio económico frente al sistema médico, no como explicación del mecanismo.
+   Recordatorio [APR-008]: nada educacional ni de mecanismo.
+   La palanca real es terminar la FASE 2, que está parada desde hace 16 días:
+      - F2.conceptos: 5 de 10 conceptos GENERADOS.
+      - F2.plan: no existe _PLAN_FASE2.json.
+   El brief formal se pide a etapa-10 → etapa-9. Esta etapa no lo improvisa. Direcciones para ese brief:
+      a) "La cuenta del otorrino": recibos de consultas y audiometrías tachados frente a 1 frasco.
+      b) Testimonio nuevo en 9:16 con OTRA persona: la esposa que acompañó a 3 especialistas.
+      c) Reseña o captura de chat como prueba social, IMAGEN 1:1.
+      d) Versión CON PRECIO (179/239/299, "menos que una consulta"), BOFU.
+   Antes de producir, revisar los 8 PNG de renovación que ya están GENERADOS y nunca se publicaron (evento del 03-sep).
+6) PRECIO: mantener 179/239/299. El CPA viene subiendo en las 4 celdas y ninguna está en ESCALAR.
+
+QUÉ HACER HOY: correr etapa-11 (diagnóstico de cierre y congruencia anuncio↔bot con los chats del 09→22-sep)
+   y destrabar F2.conceptos (etapa-10 → etapa-9) para relanzar la 1-1-5 de ACCESIBILIDAD_MEDICO.
+   La pauta de las celdas ESCALA se deja como está.
+DECISIÓN RECOMENDADA (la confirma el operador, orden por orden): ninguna orden de pausa ni de presupuesto
+   en Meta. Las 4 celdas quedan en MANTENER_Y_MEDIR.
+   Tareas de datos (no son órdenes en Meta): (1) anotar en la bitácora la ingesta del 09→22-sep;
+   (2) corregir el NC de DETERIORO en el DIM y las bandas con banda_ok=false; (3) revalidar el BE con la tasa de entrega de 85.2%.

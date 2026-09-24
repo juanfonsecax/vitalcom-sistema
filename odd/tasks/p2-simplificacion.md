@@ -34,7 +34,7 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
   the same page as `evals/fixtures/etapa-fanpage/CLEARSTEM.txt`; full test suite + evals green.
 - [x] T2 — Split god nodes by section. Route: delegated writer. Check: gen_grafo --comparar
   shows fewer inherited tokens; re-run of affected etapas with baselines passes.
-- [ ] T3 — Fuse etapa-7 + etapa-8. Route: delegated writer. Check: re-run on the frozen
+- [x] T3 — Fuse etapa-7 + etapa-8. Route: delegated writer. Check: re-run on the frozen
   2026-09-08 audit inputs passes both etapa-7 and etapa-8 asserts.
 
 ## Config
@@ -326,6 +326,20 @@ undocumented failure reverts the prune; asserts are never weakened. Plus
   Commits: `9b36246` (fuse agents+skills), `59e08f8` (doctrine/tool pointers), `6171b02`
   (regenerated views+baseline), `b7d74d9` (evals fused fixture+config).
 
+- 2026-09-24: T3 CLOSED by parent. Writer commits 9b36246 59e08f8 6171b02 b7d74d9 c7f4b2a (etapa-8 deleted,
+  15 etapas; ciclo-diario prints `decidir.py` table first; _PARAMETROS_DECISION.csv: only 2 description
+  texts renamed ETAPA-8 -> ETAPA-7, no value changed). Parent re-ran the fused etapa-7 on TINNIDROP with
+  today's data (the 2026-09-08 inputs were never frozen) twice; the second run after making the
+  "CPA Q[..]" format explicit in the winners template line of ETAPA-7.md.
+  Asserts on the real deliverable: judgment alone fails etapa-7 (no literal "CPA Q<n>": numbers now
+  live in the table by design); table alone fails both; table + judgment PASSES etapa-7 AND etapa-8.
+  That is the operator's contract (code owns numbers, agent owns judgment). Evidence:
+  evals/reruns/2026-09-24_decidir_TINNIDROP_tabla.txt + evals/reruns/2026-09-24_etapa-7-fusionada_TINNIDROP_p2-T3.txt.
+  Follow-up: config tests for etapa-7/8 should evaluate table + judgment as one deliverable.
+  Data findings from the re-runs (operator/ingest, not P2): `pct_conv_clic_enlace` arrives 0.0 in every
+  MetaAPI-directo row of _FACT_ENTREGA (ingest defect); GTR7 delivered $0 on 2026-09-21 (check billing /
+  account status); _BITACORA_DATA.txt has no entry after 2026-09-08; DIM inconsistencies
+  (DETERIORO nivel_conciencia 2 vs NC1 in ad signature, ACC concepto SIN_CLASIFICAR).
+
 ## Next step
-T3 verification (parent re-runs fused etapa-7 on frozen/available inputs, resolves the
-Break-Even/regla-de-oro assert question above).
+P2 complete. Operator merges `feat/p2-simplificacion`; next gate per plan: P3 (writers to Postgres) and/or P4 (UI).
