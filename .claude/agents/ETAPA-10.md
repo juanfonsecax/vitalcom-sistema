@@ -119,7 +119,7 @@ rendimiento por cada nivel de cada atributo:
 | `densidad` | baja / alta | el choque C-06: umbral cognitivo vs "muchas propuestas de valor" |
 | `estetica` | cartel / editorial / UGC / … | ¿producción pulida o cruda? |
 | `formato` | 1:1 / 4:5 / 2:3 | |
-| `lleva_precio` | SÍ / NO | el M-D16 de la clase 22-ago |
+| `lleva_precio` | SÍ / NO | el M-D16 |
 | `tiene_testimonio` | SÍ / NO | |
 | `tipo_hook` | EMOCIONAL / MIEDO / … | |
 | `avatar_edad` | banda | cruza con APR-060 |
@@ -252,7 +252,6 @@ EXCLUIDOS POR SIN_ENTREGA: [n] anuncios · [Q] de gasto
 
 ## CONEXIÓN
 
-Corre **después de `etapa-7`** (que trae las métricas, verifica integridad Y decide el escalado —
-fusionadas T3 p2-simplificacion 24-sep-2026) y **antes de `etapa-9`** (que produce la tanda
-siguiente). `etapa-7` decide el escalado; esta decide **qué se fabrica**. Son complementarias y no
+Corre **después de `etapa-7`** (que trae las métricas, verifica integridad Y decide el escalado)
+y **antes de `etapa-9`** (que produce la tanda siguiente). `etapa-7` decide el escalado; esta decide **qué se fabrica**. Son complementarias y no
 se pisan: `etapa-7` mueve dinero, `etapa-10` mueve el diseño.

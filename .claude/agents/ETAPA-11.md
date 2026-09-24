@@ -54,7 +54,7 @@ medido contra data. Esta etapa cierra ese hueco. Su producto final es el **brief
 **Al confirmar el ángulo ganador por VENTA** (agregado por `angulo_key`, nunca por conversación ni
 por conjunto-semana) — es decir, **entre FASE 1 y FASE 2**.
 
-> **No se espera a que el cierre baje.** Decisión del operador (02-sep): en cuanto hay indicios de
+> **No se espera a que el cierre baje.** En cuanto hay indicios de
 > que un ángulo funciona, es el momento de explotarlo. Optimizar el flujo es la palanca #1 del
 > escalado (`DOCTRINA/ESCALADO/04_PALANCAS.md` §3) y va **antes** de gastar más.
 
@@ -92,7 +92,7 @@ declarando que el diagnóstico es de LOCALIZACIÓN y no de CAUSA.
    `CAMBIO_BOT`, `CAMBIO_PRODUCTO`. Si hay una, el resultado no se atribuye al flujo.
 5. 🔴 **VERIFICAR PRIMERO LA CONSISTENCIA FÍSICA ad ↔ destino.** Antes de culpar al texto del
    flujo: ¿el producto que muestra el anuncio es el que muestra el bot y el que llega a la puerta?
-   VARICOSE perdió el cierre de 7.9 % a 2.1 % porque el proveedor cambió el envase y nadie lo
+   Un producto perdió el cierre de 7.9 % a 2.1 % porque el proveedor cambió el envase y nadie lo
    notó; el diagnóstico de "precio/escalera" fue equivocado durante semanas. **Ante un cierre
    desplomado, esta verificación va antes que cualquier análisis de texto.**
 
@@ -213,8 +213,8 @@ RUTEO: LucidBot rutea por Post ID. Cada gemelo es una PUBLICACIÓN distinta (mis
   mismo copy, publicación nueva): si comparten publicación, comparten flujo y el test no existe.
 ```
 
-> **Por qué gemelos, y no "A = los otros ángulos, B = el ganador"** (el diseño que estuvo acá
-> hasta el 16-sep-2026): el ganador ya cierra mejor **por ser el ganador**, con el mismo flujo.
+> **Por qué gemelos, y no "A = los otros ángulos, B = el ganador"** (el diseño anterior): el
+> ganador ya cierra mejor **por ser el ganador**, con el mismo flujo.
 > Ese reparto comparaba ángulos, no flujos. Medido con el Fisher de `decidir.py`, 460 mensajes
 > por brazo y los cierres de la simulación TURMERIC (el ganador cerraba 15.3 %, el resto 9.7 %):
 >
@@ -329,7 +329,7 @@ carpeta del producto). El texto del flujo resultante lo escribe `etapa-5`, y lle
 4. **Cierre semanal, nunca diario.** Ventana mínima 7 días.
 5. **La conversación localiza, no corona** (APR-002).
 6. **NUNCA suavizar el flujo por compliance.** El compliance es de los ADS; el bot vende.
-7. **Verificar la consistencia física ad↔destino antes de culpar al texto** (lección VARICOSE).
+7. **Verificar la consistencia física ad↔destino antes de culpar al texto** (lección de un caso real).
 8. **Sin chats, se dice DÓNDE y nunca POR QUÉ.** La limitación se escribe, no se disimula.
 9. **Los dos brazos del A/B son gemelos del MISMO ángulo** y cambian una sola cosa por ventana: el
    flujo. Repartir ángulos distintos entre brazos compara ángulos, no flujos (70 % de falso ganador).
@@ -347,8 +347,7 @@ Corre **después de `etapa-7`** (que trae las métricas y verifica integridad) y
 reescribe los dos flujos, y el diseño del A/B a **`etapa-6`**, que arma los dos conjuntos gemelos.
 
 Los tres lectores del ciclo no se pisan:
-- `etapa-7` mide **qué pasó** y mueve **el dinero** (monitor + escalado fusionados, T3
-  p2-simplificacion 24-sep-2026) ·
+- `etapa-7` mide **qué pasó** y mueve **el dinero** (monitor + escalado fusionados) ·
 - `etapa-10` mueve **el diseño del creativo** (pre-clic) · **`etapa-11` mueve el flujo** (post-clic).
 
 `etapa-10` y `etapa-11` son las dos mitades de la misma pregunta: la primera pregunta por qué la

@@ -13,17 +13,15 @@ Dos trabajos en un solo turno, porque entre ellos no hay ninguna decisión que
 tomar: **(FASE A)** investiga el ángulo ganador en profundidad y **(FASE B)**
 convierte ese mapa en 8-12 microángulos listos para usar.
 
-> **Por qué es una sola etapa.** Hasta el 2026-09-02 esto eran `etapa-3a` y
-> `etapa-3b`. El input de `3b` era literalmente el output de `3a`, sus cuatro
-> pasos solo seleccionaban y reformateaban ese inventario, y no tenía búsqueda
-> web: era encadenamiento de prompts sin nada en medio que justificara el corte,
-> pagando dos veces el contexto de arranque.
+> **Por qué es una sola etapa.** Separar investigación de construcción de microángulos sería
+> encadenar dos prompts sin nada en medio que justifique el corte: el input de la construcción es
+> literalmente el output de la investigación, y sus pasos solo seleccionan y reformatean ese
+> inventario — pagando dos veces el contexto de arranque sin ganar nada a cambio.
 
 > **Por qué corre en FASE 3 y no en FASE 2.** Su output es el **banco de copy de
 > la expansión horizontal**. La FASE 2 mide el CREATIVO con ángulo y copy FIJOS
-> —un solo copy para los diez anuncios—, así que ahí los microángulos no arman
-> nada: hasta el rediseño del 2026-09-02 corrían en su camino crítico sin que
-> nada consumiera el resultado. Su consumidor real es la FASE 3.
+> —un solo copy para los diez anuncios—, así que ahí los microángulos no arman nada. Su
+> consumidor real es la FASE 3.
 
 ---
 

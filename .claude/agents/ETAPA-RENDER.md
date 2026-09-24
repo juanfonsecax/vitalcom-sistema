@@ -44,9 +44,8 @@ de cuenta: la heredás. Arrancá directo en `navigate`.
 
 Si llamás `list_connected_browsers` y ves varios, la regla te obliga a preguntar cuál
 usar — y **no tenés `AskUserQuestion`**, así que te quedás trabada sin poder avanzar.
-Pasó el 07-sep-2026 en la primera corrida. La comprobación real de que estás en el
-navegador correcto es simple: si al abrir `chatgpt.com` no aparece la cuenta logueada,
-detenete y decilo.
+La comprobación real de que estás en el navegador correcto es simple: si al abrir
+`chatgpt.com` no aparece la cuenta logueada, detenete y decilo.
 
 Por cada concepto a renderizar:
 
