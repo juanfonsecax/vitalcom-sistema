@@ -143,6 +143,17 @@ proof that the migration changes nothing.
     runs produced byte-identical decision payloads (aside from `generado`) across every product,
     angle, and cell in the current portfolio.
 
+- [ ] T5b — REOPENED by parent review 2026-09-23. T5 delivered a verbatim text mirror (one table
+  per CSV). That is a valid RAW layer, but it is not the approved model (producto -> angulo ->
+  creativo/concepto -> anuncio with name history -> typed daily facts), and parity over a
+  verbatim mirror is close to a tautology: it proves the round trip, not that the model holds
+  what `decidir.py` needs. Scope: rename the mirror schema to `raw`; build the normalized,
+  typed `core` layer from `raw` (FKs, name history replacing `_ALIAS_CONJUNTOS`); export the
+  CSV shapes decidir reads FROM `core`, and rerun the parity gate against that export.
+- [ ] T2b — The historic map joins to ventas by key + FIFO row order (150 duplicate-key groups).
+  Positional joins break on any reorder. Give each venta row a stable identity carried by the
+  map and join on it.
+
 ## Acceptance
 - T2 map exists with per-month verified coverage and zero unverified ad_id claims.
 - Eval baseline: more etapas covered, exit 0.
@@ -165,5 +176,5 @@ proof that the migration changes nothing.
   test_db.py, decidir.py DECIDIR_PROD_DIR override). See T4/T5/T6 evidence above.
 
 ## Next step
-P1 tasks (T1-T6) all done. Gate 1 of 6 closed pending operator review/merge of
-`feat/p1-cimientos`. P2 (pruning etapas' prose using the eval baseline) is next per the roadmap.
+T2b then T5b (delegated writer). P1 is NOT closed until the parity gate passes on the
+normalized `core` layer.
