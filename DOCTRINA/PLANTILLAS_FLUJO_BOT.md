@@ -487,9 +487,11 @@ _DIM_PRECIOS.csv  ┘    (esta plantilla)
 | El diagnóstico de por qué no cierra y el brief de qué cambiar | `.claude/agents/ETAPA-11.md` |
 | Las reglas congeladas | `Ads/_TOOLS/test_gen_flujo_bot.py` |
 
-**Todo cambio de flujo en un producto vivo se anexa como `CAMBIO_BOT` a `PRODUCTOS/_EVENTOS.csv`
-el día que se aplica.** El efecto se nota en horas (regla F), así que sin la fecha del cambio no
-hay forma de saber qué lo movió.
+**Todo cambio de flujo en un producto vivo se registra como `CAMBIO_BOT` el día que se aplica**,
+con `python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento CAMBIO_BOT --motivo
+"[qué cambió]" --fuente "[quién y cuándo]"` — nunca a mano en `PRODUCTOS/_EVENTOS.csv` (P3 T4: es
+un espejo regenerado desde Postgres, ver `db/escribir.py`). El efecto se nota en horas (regla F),
+así que sin la fecha del cambio no hay forma de saber qué lo movió.
 
 **Cuándo diagnostica y cuándo reescribe (mapea reglas A/E de arriba a `DOCTRINA/FLUJO.json`):**
 el DIAGNÓSTICO de congruencia (regla E) va en `F2.etapa-11`, en paralelo al testeo de conceptos,

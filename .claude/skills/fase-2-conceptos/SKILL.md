@@ -49,8 +49,8 @@ Inputs: `producto_key`, el `angulo_key` ganador con su ficha, la ventana de test
 semanal de chats de LucidBot (si lo hay) y `1_HACER_MANUAL.txt` con el texto real del flujo.
 
 Output: diagnóstico del CIERRE por ángulo + **brief priorizado para `etapa-5`** + **diseño del A/B
-de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID) + las filas para
-`_EVENTOS.csv`.
+de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID) + los comandos
+`registrar_evento.py` listos para correr (nunca filas escritas a mano en `_EVENTOS.csv`).
 
 > **Por qué va primero y no después:** optimizar el flujo es la palanca #1 de
 > `DOCTRINA/ESCALADO/04_PALANCAS.md` §3 y va **antes de gastar más**. El cierre del portafolio está en 8.6 %
@@ -90,8 +90,10 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
   > `etapa-11` diagnostica y prioriza; `etapa-5` redacta. Misma división que `etapa-10` → `etapa-9`.
   > El brief entra por las **propuestas de valor primero** (es la palanca #1 del cierre),
   > después fricción, congruencia ad ↔ bot, oferta y FAQ nuevas.
-  > Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` y anexar `CAMBIO_BOT` a
-  > `_EVENTOS.csv` el día que se aplica: el efecto se nota en horas.
+  > Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` y registrar `CAMBIO_BOT` el día
+  > que se aplica con `python Ads/_TOOLS/registrar_evento.py --producto [producto_key] --evento
+  > CAMBIO_BOT --motivo "[qué cambió]" --fuente "etapa-5 [fecha]"` — nunca a mano en `_EVENTOS.csv`
+  > (P3 T4: es un espejo regenerado desde Postgres): el efecto se nota en horas.
   >
   > **Este `CAMBIO_BOT` es el del A/B de flujo de esta fase, NO el que exige `F3.entrada`.**
   > El gate de FASE 3 pide un `CAMBIO_BOT` fechado DESPUÉS del

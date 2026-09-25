@@ -67,8 +67,10 @@ Las dos clases de agosto son la fuente vigente y están completas en
    rentable. Con cierre bajo no se escala: se arregla el flujo.
 3. **Cierre bajo → primer diagnóstico es congruencia anuncio ↔ flujo.** Si el ángulo del flujo no
    es el del ad, el cliente pierde la emoción de comprar. Verificar eso antes de tocar una línea.
-4. **Un cambio de flujo se nota en horas.** Por eso todo cambio se anexa como `CAMBIO_BOT` a
-   `PRODUCTOS/_EVENTOS.csv` el día que se aplica.
+4. **Un cambio de flujo se nota en horas.** Por eso todo cambio se registra como `CAMBIO_BOT` el
+   día que se aplica, con `python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento
+   CAMBIO_BOT --motivo "[qué cambió]" --fuente "ETAPA-5 [fecha]"` — nunca a mano en
+   `PRODUCTOS/_EVENTOS.csv` (P3 T4: es un espejo regenerado desde Postgres).
 
 **El compliance es de los ADS, no del bot.** Todo lo post-clic —bot, audio, infografías,
 testimonios— Meta no lo lee: no afecta CPM, entrega ni riesgo de cuenta. Dentro del bot la

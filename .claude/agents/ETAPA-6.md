@@ -744,9 +744,11 @@ FIN ESTRUCTURA ESCALADO
   · ⚠️ Con 4 réplicas y pocas ventas por celda esto NO da significancia estadística sola: es una
     señal direccional. Si el tratamiento gana ≥20% en CPA sostenido 2 ventanas, se cambia el default.
     Si queda a <15%, se declara empate y se mantiene el duplicado.
-  · Registrar en `PRODUCTOS/_EVENTOS.csv` una fila `CAMBIO_CREATIVO` por cada réplica que se toque,
-    con motivo "test diversidad conceptual brazo TRATAMIENTO" — si no, ETAPA-7 va a leer el cambio
-    como si fuera el ángulo.
+  · Registrar con `python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento
+    CAMBIO_CREATIVO --conjunto [réplica] --motivo "test diversidad conceptual brazo TRATAMIENTO"
+    --fuente "ETAPA-6 [fecha]"` una fila por cada réplica que se toque — nunca a mano (P3 T4: el
+    CSV es un espejo regenerado desde Postgres, ver `db/escribir.py`) — si no, ETAPA-7 va a leer
+    el cambio como si fuera el ángulo.
   · Al cerrarlo, escribir el resultado en `PRODUCTOS/_APRENDIZAJES.csv` (alcance GLOBAL) y actualizar
     esta regla y la de CLAUDE.md nº 9.
 

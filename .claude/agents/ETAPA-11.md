@@ -274,15 +274,23 @@ se suman como siempre (invariante 12); para **leer el A/B**, se leen separados.
 
 ### PASO 7 — REGISTRAR, o el test no existe
 
-**Escribir en `_EVENTOS.csv`** (escritor CSV real, campos con comas entre comillas):
+**Registrar con `python Ads/_TOOLS/registrar_evento.py`, nunca a mano** (P3 T4: `_EVENTOS.csv` es
+un espejo regenerado desde Postgres; anexar una fila por fuera de este comando rompe la próxima
+escritura del sistema — guardia de drift en `db/escribir.py`). Tres llamadas, una por fila:
 
-| campo | paraguas optimizado | gemelo A | gemelo B |
-|---|---|---|---|
-| `evento` | `CAMBIO_BOT` | `LANZAMIENTO` | `LANZAMIENTO` |
-| `conjunto_meta` | `*` | el nombre exacto del gemelo A | el nombre exacto del gemelo B |
-| `valor_antes` / `valor_despues` | cierre previo → cierre objetivo | — | — |
-| `motivo` | los cambios del PASO 5, en una línea | brazo A del A/B `[test_id]`: paraguas optimizado | brazo B del A/B `[test_id]`: flujo dedicado a `[angulo_key]` |
-| `fuente_decision` | `ETAPA-11 [fecha]` | `ETAPA-11 [fecha]` | `ETAPA-11 [fecha]` |
+```
+python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento CAMBIO_BOT \
+    --conjunto "*" --antes "[cierre previo]" --despues "[cierre objetivo]" \
+    --motivo "[los cambios del PASO 5, en una línea]" --fuente "ETAPA-11 [fecha]"
+
+python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento LANZAMIENTO \
+    --conjunto "[nombre exacto del gemelo A]" \
+    --motivo "brazo A del A/B [test_id]: paraguas optimizado" --fuente "ETAPA-11 [fecha]"
+
+python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento LANZAMIENTO \
+    --conjunto "[nombre exacto del gemelo B]" \
+    --motivo "brazo B del A/B [test_id]: flujo dedicado a [angulo_key]" --fuente "ETAPA-11 [fecha]"
+```
 
 > 🔴 **Esto no es burocracia: es la precondición del aprendizaje.** En toda la serie 17-jul → 01-sep
 > hay **un solo `CAMBIO_BOT` registrado**, y es anterior a la data. Por eso hoy es imposible saber
@@ -308,7 +316,7 @@ CHATS: [n conversaciones / NO DISPONIBLES → diagnóstico de localización, no 
 4. DÓNDE SE CAE (chats)         → punto de abandono · FAQ faltantes · objeciones
 5. BRIEF PARA etapa-5           → cambios priorizados (valor → fricción → congruencia → oferta → FAQ)
 6. DISEÑO DEL A/B               → gemelos del ganador, ruteo, n (ab_flujo.py), test_id, fecha de lectura
-7. FILAS PARA _EVENTOS.csv      → los dos eventos, listos para anexar
+7. COMANDOS registrar_evento.py → los dos eventos, listos para correr (nunca a mano)
 8. TODAVÍA NO SE PUEDE DECIR    → lo que está bajo el piso, con su n y cuánto falta
 ══════════════════════════════════════════════════════
 ```
