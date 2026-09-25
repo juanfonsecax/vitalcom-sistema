@@ -2,10 +2,17 @@
 """gen_pl.py — Estado de resultados del sistema. Implementa DOCTRINA/CONTABILIDAD.md.
 
   python Ads/_TOOLS/gen_pl.py --dropi <ordenes.xlsx> [--banco <extracto.pdf>]
-                              [--desde YYYY-MM-DD] [--hasta YYYY-MM-DD]
+                              [--desde YYYY-MM-DD] [--hasta YYYY-MM-DD] [--json]
 
 Determinista por diseño: mismos archivos de entrada -> mismos números de salida.
 Ningún parámetro vive acá dentro: todos salen de `_PARAMETROS_FINANZAS.csv`.
+
+Con `--json`: además del reporte de siempre (que igual se escribe en
+`_AUDITORIAS/_PL_<ini>_<fin>.txt`), serializa EXACTAMENTE los mismos números —
+ningún cálculo nuevo — en `_AUDITORIAS/_PL_<ini>_<fin>.json` y los imprime en
+stdout (para el runner de la app, que lee `salida: "json"`). Con `--json` el
+stdout es SOLO el JSON: el reporte humano no se imprime dos veces, ya quedó
+en el .txt.
 
 Produce, en este orden fijo (DOCTRINA/CONTABILIDAD.md §3):
     venta bruta entregada · costo de producto · flete
@@ -22,7 +29,7 @@ Y la economía unitaria por producto, con el break-even DERIVADO (§4).
 Verifica las 5 reglas de integridad de §6 y ABORTA si alguna falla: es preferible
 no dar un número a dar uno que no cuadra.
 """
-import csv, io, os, re, sys, collections, datetime
+import csv, io, json, os, re, sys, collections, datetime
 
 for _s in (sys.stdout, sys.stderr):
     try:
@@ -150,6 +157,7 @@ def main():
         return a[a.index(flag) + 1] if flag in a else d
     dropi = opt("--dropi"); banco = opt("--banco"); cartera = opt("--cartera")
     ini   = opt("--desde", "2026-08-01"); fin = opt("--hasta", "2026-08-31")
+    quiere_json = "--json" in a
     if not dropi:
         sys.exit("Falta --dropi <ordenes.xlsx>. Es la fuente de la venta real (DOCTRINA/CONTABILIDAD.md §5).")
 
@@ -180,6 +188,21 @@ def main():
 
     # ── rango de órdenes que trae el export: ¿alcanza para la vista de CAJA? ──
     trae_previo = df.f_orden.min() < pd.Timestamp(ini)
+
+    # ── js: mismos números que L, para --json (T4a) — nunca un cálculo aparte ──
+    js = {
+        "periodo": {"desde": ini, "hasta": fin, "generado": hoy.isoformat()},
+        "vista_a_cohorte": {
+            "preliminar": not maduro,
+            "edad_dias": edad,
+            "dias_maduro_umbral": DIAS_MADURO,
+            "ordenes_total": len(m),
+            "entregadas": len(ent),
+            "devueltas": len(dev),
+            "en_transito": len(tra),
+            "pct_resuelto": pct_res,
+        },
+    }
 
     L = []
     W = 68
@@ -228,6 +251,18 @@ def main():
     c_otr   = len(ent) * C_OTROS
     m_contr = m_log - c_dev - c_adm - c_otr
 
+    js["vista_a_cohorte"]["estado_de_resultados"] = {
+        "venta_bruta_entregada_q": venta,
+        "costo_producto_q": costo,
+        "flete_q": flete,
+        "margen_logistico_q": m_log,
+        "costo_devoluciones_q": c_dev,
+        "origen_costo_devoluciones": origen_dev,
+        "costo_personal_q": c_adm,
+        "otros_gastos_q": c_otr,
+        "margen_contribucion_q": m_contr,
+    }
+
     L += ["─" * W]
     L += ["  (+) VENTA BRUTA ENTREGADA               %s" % q(venta),
           "  (−) Costo de producto                   %s" % q(-costo),
@@ -249,6 +284,12 @@ def main():
     pauta_usd = sum(fl(r["spend_usd"]) for r in v)
     pauta_q   = pauta_usd * TASA_Q
     m_oper    = m_contr - pauta_q
+    js["vista_a_cohorte"]["estado_de_resultados"].update({
+        "publicidad_usd": pauta_usd,
+        "tasa_usd_gtq": TASA_Q,
+        "publicidad_q": pauta_q,
+        "margen_operativo_q": m_oper,
+    })
     L += ["",
           "  (−) Publicidad Meta ($%.2f × %.2f)    %s" % (pauta_usd, TASA_Q, q(-pauta_q)),
           "      " + "·" * 56,
@@ -313,6 +354,14 @@ def main():
                                "del mes se cobraron en el extracto ANTERIOR. Para cerrar el arrastre "
                                "hace falta el extracto del mes previo.")
     neto = m_oper - fijos
+    js["vista_a_cohorte"]["estado_de_resultados"].update({
+        "gastos_fijos_q": fijos,
+        "gastos_fijos_detalle": [{"nombre": n, "monto_usd": v_, "categoria": c} for n, v_, c in det_fijos],
+        "resultado_neto_q": neto,
+        "retiros_personales_q": retiros,
+        "retiros_personales_detalle": [{"nombre": n, "monto_usd": v_, "categoria": c} for n, v_, c in det_retiros],
+        "cargos_sin_clasificar": [{"nombre": n, "monto_usd": v_} for n, v_ in sin_confirmar],
+    })
     L += ["", "  (−) Gastos fijos del negocio            %s" % q(-fijos)]
     for nom, val, cat in sorted(det_fijos, key=lambda x: -x[1]):
         L.append("        {:<24} ${:>8,.2f}  {}".format(nom[:24], val, cat))
@@ -350,6 +399,7 @@ def main():
     for r in v:
         cpa_prod[r["producto_key"]] += fl(r["spend_usd"]) * TASA_Q
         ven_prod[r["producto_key"]] += int(fl(r["ventas"]))
+    js["vista_a_cohorte"]["economia_unitaria"] = []
     for pk, g in sorted(ent.groupby("pk"), key=lambda kv: -len(kv[1])):
         n_e = len(g)
         n_d = len(dev[dev.pk == pk])
@@ -360,6 +410,20 @@ def main():
         dev_amort = ((1 - te) / te) * C_DEVOL if te else 0.0
         be   = tick - cos - fle - dev_amort - C_ADMIN - C_OTROS
         cpa  = cpa_prod[pk] / ven_prod[pk] if ven_prod[pk] else 0.0
+        js["vista_a_cohorte"]["economia_unitaria"].append({
+            "producto_key": pk,
+            "pct_entrega": 100 * te,
+            "entregadas": n_e,
+            "devueltas": n_d,
+            "ticket_promedio_q": tick,
+            "costo_producto_q": cos,
+            "flete_q": fle,
+            "devolucion_amortizada_q": dev_amort,
+            "admin_y_otros_q": C_ADMIN + C_OTROS,
+            "margen_antes_publicidad_q": be,
+            "cpa_real_q": cpa,
+            "ganancia_por_venta_q": be - cpa,
+        })
         L += ["  %s   (entrega %.1f%% · %d entregadas / %d devueltas)" % (pk, 100 * te, n_e, n_d),
               "     Precio de venta (ticket promedio)      %s" % q(tick),
               "     − Costo del producto                   %s" % q(-cos),
@@ -377,6 +441,7 @@ def main():
     # ── VISTA B — CAJA (por fecha del movimiento de dinero, §2) ──
     L += ["═" * W, "VISTA B — CAJA (¿cuánto dinero entró de verdad en la ventana?)", "═" * W]
     if car is None:
+        js["vista_b_caja"] = None
         L += ["🔴 NO SE PUEDE CALCULAR: falta el HISTORIAL DE CARTERA de Dropi (--cartera).",
               "   Lo de arriba es COHORTE: mide si la pauta rindió, no el saldo de la cuenta.", ""]
     else:
@@ -391,6 +456,17 @@ def main():
         adm_caja = len(e_gan) * (C_ADMIN + C_OTROS)
         pauta_caja = (sum(t["monto"] for t in mov if "Facebook" in t["nombre"]
                           and ini <= str(t["fecha"]) <= fin) * TASA_Q) if banco else None
+        js["vista_b_caja"] = {
+            "entradas_ganancia_ordenes_q": entra,
+            "n_entradas_ganancia_ordenes": len(e_gan),
+            "cobros_devolucion_q": sale_d,
+            "n_cobros_devolucion": len(s_dev),
+            "otras_salidas_q": sale_o,
+            "n_otras_salidas": len(s_otr),
+            "neto_acreditado_cartera_q": caja_dropi,
+            "personal_y_otros_q": adm_caja,
+            "publicidad_cobrada_banco_q": pauta_caja,
+        }
         L += ["  Fuente: historial de cartera de Dropi — movimientos REALES de dinero,",
               "  fechados por cuándo ocurrieron (no por cuándo se tomó la orden).", "",
               "  (+) Entradas por ganancia de órdenes (%3d)  %s" % (len(e_gan), q(entra)),
@@ -405,6 +481,10 @@ def main():
             if fijos:
                 L.append("  (−) Gastos fijos del negocio                %s" % q(-fijos))
             caja_neg = caja_dropi - adm_caja - pauta_caja - fijos
+            js["vista_b_caja"]["gastos_fijos_q"] = fijos
+            js["vista_b_caja"]["caja_que_genero_el_negocio_q"] = caja_neg
+            js["vista_b_caja"]["retiros_personales_q"] = retiros
+            js["vista_b_caja"]["caja_que_quedo_en_la_cuenta_q"] = caja_neg - retiros
             L += ["      " + "═" * 56,
                   "  (=) CAJA QUE GENERÓ EL NEGOCIO              %s" % q(caja_neg)]
             if retiros:
@@ -413,12 +493,22 @@ def main():
                       "  (=) CAJA QUE QUEDÓ EN LA CUENTA             %s" % q(caja_neg - retiros)]
             L.append("")
         else:
+            js["vista_b_caja"]["caja_antes_de_publicidad_q"] = caja_dropi - adm_caja
             L += ["      " + "═" * 56,
                   "  (=) CAJA ANTES DE PUBLICIDAD                %s" % q(caja_dropi - adm_caja), ""]
         # el arrastre: cuántos movimientos vienen de órdenes de ANTES de la ventana
         prev = e_gan.merge(df[["ID", "f_orden"]], left_on="ORDEN ID", right_on="ID", how="left")
         n_prev = int((prev.f_orden < pd.Timestamp(ini)).sum())
         d_prev = float(prev[prev.f_orden < pd.Timestamp(ini)]["MONTO"].sum())
+        js["vista_b_caja"]["arrastre"] = {
+            "n_acreditaciones_previas": n_prev,
+            "n_acreditaciones_total": len(e_gan),
+            "monto_previo_q": d_prev,
+        }
+        js["vista_b_caja"]["cohorte_vs_caja_q"] = {
+            "cohorte_margen_contribucion_q": m_contr,
+            "caja_antes_de_publicidad_q": caja_dropi - adm_caja,
+        }
         L += ["  ARRASTRE: %d de las %d acreditaciones (%s) vienen de órdenes tomadas ANTES"
               % (n_prev, len(e_gan), q(d_prev)),
               "  del %s. Eso es exactamente lo que la vista de COHORTE no ve: se vendió un" % ini,
@@ -427,10 +517,17 @@ def main():
               % (q(m_contr), q(caja_dropi - adm_caja)),
               "  No tienen por qué coincidir y ninguna está mal: miden cosas distintas.", ""]
 
+    js["alertas"] = list(alertas)
+
     if alertas:
         L += ["─" * W, "NOTAS"] + ["  ⚠ " + x for x in alertas] + [""]
 
     # ── integridad (§6) ──
+    js["integridad"] = {
+        "cuadre_dropi": not any("cuadre de Dropi" in x for x in fallos),
+        "cuadre_extracto": (not any("extracto" in x for x in fallos)) if banco else None,
+        "maduracion": maduro,
+    }
     L += ["─" * W, "VERIFICACIÓN DE INTEGRIDAD"]
     L.append("  %s Cuadre de Dropi (venta−producto−flete = GANANCIA)"
              % ("✅" if not any("cuadre de Dropi" in x for x in fallos) else "❌"))
@@ -447,6 +544,9 @@ def main():
         difs = int(((cr.loc[hay, "MONTO"] - cr.loc[hay, "GANANCIA"]).abs() > 0.01).sum())
         huerf = int((~hay).sum())
         ok = (difs == 0 and huerf == 0)
+        js["integridad"]["cruce_cartera"] = {
+            "movimientos": len(cr), "descuadres": difs, "sin_orden": huerf, "ok": ok,
+        }
         L.append("  %s Cruce cartera↔órdenes (%d movimientos, %d descuadres, %d sin orden)"
                  % ("✅" if ok else "❌", len(cr), difs, huerf))
         if difs:
@@ -458,12 +558,25 @@ def main():
         L.append("  ❌ " + x)
     L.append("─" * W)
 
+    js["fallos"] = list(fallos)
+    js["ok"] = not fallos
+
     txt = "\n".join(L) + "\n"
     os.makedirs(AUD, exist_ok=True)
-    out = os.path.join(AUD, "_PL_%s_%s.txt" % (ini.replace("-", ""), fin.replace("-", "")))
+    base_nombre = "_PL_%s_%s" % (ini.replace("-", ""), fin.replace("-", ""))
+    out = os.path.join(AUD, base_nombre + ".txt")
     io.open(out, "w", encoding="utf-8").write(txt)
-    print(txt)
-    print("escrito:", out)
+
+    if quiere_json:
+        out_json = os.path.join(AUD, base_nombre + ".json")
+        cuerpo_json = json.dumps(js, ensure_ascii=False, indent=2)
+        io.open(out_json, "w", encoding="utf-8").write(cuerpo_json + "\n")
+        # stdout es SOLO el JSON (el runner de la app lo interpreta como `salida: "json"`):
+        # el reporte humano ya quedó en el .txt de arriba, no se duplica acá.
+        print(json.dumps(js, ensure_ascii=False))
+    else:
+        print(txt)
+        print("escrito:", out)
     if fallos:
         sys.exit("\n❌ INTEGRIDAD FALLIDA — los números de arriba NO son confiables.")
 

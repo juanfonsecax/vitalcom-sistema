@@ -56,6 +56,14 @@ writes business data: it reads contracts and runs declared executors (existing r
   keep working. Route: delegated writer.
 - [ ] T4 — Resultados: new backend endpoint reading the accounting layer, cohorts < 10 days
   flagged preliminary; KPI cards + charts.
+  Decided 24-sep by the methodology (CONTABILIDAD.md rules over any other calculation): the screen
+  shows the real P&L from `gen_pl.py` (views A/B/C), never `gen_finanzas.py` attribution (capa 1,
+  can be inflated) and never ROAS. `gen_pl.py` needs a manual Dropi export (bank/cartera optional),
+  so: T4a — additive read-only `--json` output in `gen_pl.py` (same numbers, test) persisted next
+  to its `.txt` report; T4b — upload endpoint (existing `UploadFile` precedent) that runs it, a
+  GET that reads the latest persisted result, and the screen with a "Cargar export de Dropi"
+  action and the date of the last run. Note: the app runs the tools of the folder it points to;
+  the real folder only gets `--json` once this branch reaches its branch.
 - [ ] T5 — Ajustes: accounts, fanpages; system health, jobs and guide hidden here.
 
 ## Acceptance
