@@ -50,12 +50,12 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
 - TDD: off (default). Tests ship with every change. RDD: off. Delivery strategy: ask-on-risk.
 
 ## Tasks (dependency order)
-- [ ] T1 Data layer: Meta facts carry `ad_id` and real messaging conversations (Graph `actions`,
+- [x] T1 Data layer: Meta facts carry `ad_id` and real messaging conversations (Graph `actions`,
       messaging_conversation_started). Ingestion of Meta and LucidSales becomes an idempotent UPSERT
       over a settlement window (nightly re-pull of D-1..D-3, replace rows by key), not append-only.
       Then re-pull 06-21 in SISTEMA. Check: messages > 0 and close to LucidSales `mensajes`; ad_id
       filled; re-running a day changes nothing (idempotent); partial days get corrected.
-- [ ] T2 Spend source of truth: every CPA consumer (decidir.py, flujo.py winner gates, finance
+- [x] T2 Spend source of truth: every CPA consumer (decidir.py, flujo.py winner gates, finance
       reports, dbt models) takes spend from Meta facts joined by ad_id, with the LucidSales fallback
       before 2026-09-06. One helper, not N copies. Doctrine owner rows updated (CLAUDE.md map,
       DATA_PLAYBOOK). Check: tests; before/after of `_DECISIONES.json` explained.
@@ -990,6 +990,19 @@ LucidSales spend stays only as a fallback for days without Meta coverage (before
   - **Left for the operator / out of scope, flagged, not fixed:** none new. The `ingestar_unificado.py`
     click-derived-messages finding (T1) and the `EXCEPCION_CAMBIO_BOT` vs. generic `EXCEPCION`
     duality (T5) are pre-existing and untouched by this task.
+
+### T1 + T2 closed (25-sep-2026, parent, data commit 9c31fe6)
+Evidence on the real SISTEMA folder, main line: Meta re-pulled per day 06-24 sep (`MetaAPI-directo`);
+settlement window 22-24 via `bajar_meta_insights.py` (no args) → 24 replaced / 86 new; an immediate
+second run → 0 replaced · 0 new · 132 unchanged (idempotent). `ad_id` filled on every Meta row from
+06-sep (the 177 rows without it are the 02-05 sep Ads Manager exports, before the API source).
+Messages from Graph `actions` equal LucidSales `mensajes` exactly on 20/21/22/23-sep (82/50/73/119);
+24-sep 108 vs 84 is LucidSales still settling (corrected by the next nightly window). LucidSales
+window 22-24 upserted: 89 replaced · 84 new · JOIN 100%. `gen_decisiones.py`: dbt build PASS=32
+ERROR=0 (the NUEVO-state failure of T2(a) no longer reproduces), `_DECISIONES.json` data 11→24 sep,
+rezago 1 day, spend coverage by source in `cobertura_gasto` (Meta conjunto vs LucidSales fallback
+before 06-sep). The deployment order of T2(b) is documented in the recopilar-lucidsales skill and
+DATA_PLAYBOOK.
 
 ## Next step
 T1 and T2 code are done; parent merges into SISTEMA (`git merge --ff-only`), re-pulls 06-21-sep
