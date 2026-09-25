@@ -1,4 +1,10 @@
-═══ TINNIDROP (Tinnitus Relief Spray · South Meon, importado) · VERSION v2 (re-testeo híbrido) · 2026-07-10 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id nuevo (re-testeo) ═══
+═══ TINNIDROP (Tinnitus Relief Spray · envase «South Meon» EN DISPUTA, ver RECONCILIACIÓN en 2_DATA · importado) · VERSION v3 (re-empaquetado al contrato por rol) · 2026-09-24 · COSTO Q41/u · DOSIS spray 60ml · 2 aplicaciones/día directo al oído · page_id 498977893288095 (Sanarte) · campaign_id 120251463036910595 (registro _DIM_PRODUCTOS; campañas vivas en 3_CAMPAÑA_META) ═══
+ESTADO VIGENTE (2026-09-24 · FASE 2, nodo F2.etapa-11):
+  · La campaña de conceptos publicada (GTR0_TINNIDROP_F2-CONCEPTOS_20260907) está PAUSED desde el 08-sep. IDs en 3_CAMPAÑA_META.txt.
+  · Guía de ejecución de FASE 2: 5_FASE2_CONCEPTOS.txt.
+  · Flujo LucidBot: se genera con `python Ads/_TOOLS/gen_flujo_bot.py TINNIDROP` → FLUJO_LUCIDBOT.md (--copy imprime solo lo que se pega).
+  · Lo de abajo es el paquete del RE-TESTEO FASE 1 (julio), ya ejecutado; se conserva como respaldo.
+
 GUÍA DE EJECUCIÓN MANUAL — RE-TESTEO FASE 1 (bot paraguas de 6 ángulos)
 Orden de ejecución: (1) prompts de imagen → (2) flujo LucidBot → (3) subir media → (4) conjuntos+copies+precio → (5) duplicar→WhatsApp + activar 4 AM.
 

@@ -86,7 +86,8 @@ DUENO = {
     "resultado_sostenido": "etapa-5", "razon_tier_alto": "etapa-5",
     "n_infografias": "_DIM_FLUJO_BOT.csv", "n_testimonios": "_DIM_FLUJO_BOT.csv",
     "fuente_testimonios": "_DIM_FLUJO_BOT.csv",
-    "angulo_nombre": "_ESTADO_ANGULOS.csv (angulo ganador)",
+    "angulo_nombre": "_DIM_CREATIVOS.csv (angulo con concepto de FASE 2) / "
+                      "_ESTADO_ANGULOS.csv (paraguas F1, mas ventas acumuladas)",
     "escalera_ofertas": "_DIM_PRECIOS.csv (derivada)",
     "apertura_nivel": "_DIM_CONJUNTOS.csv / _DIM_VOCABULARIO.csv (nivel_conciencia del angulo ganador)",
     "mensaje_prellenado_anuncio": "_DIM_MERCADOS.csv (registro_sanitario) + _DIM_PRODUCTOS.csv "
@@ -263,6 +264,39 @@ def nivel_conciencia_angulo(pk, angulo_key):
     return vistos.pop(), None
 
 
+def angulo_ganador_f2(pk):
+    """El angulo que el flujo DEDICADO debe abrir: el que quedo FIJO en el testeo de
+    CONCEPTOS de FASE 2 (doctrina CLAUDE.md "1 angulo ganador x 10 CONCEPTOS"), no el de mas
+    ventas historicas.
+
+    Fuente: `_DIM_CREATIVOS.csv`. Una fila con `concepto_key` real (no vacio, no
+    SIN_CLASIFICAR) es una pieza de un blueprint de concepto — la FABRICA (etapa-9) solo los
+    asigna a un angulo que YA esta en testeo de conceptos o ya lo gano (FASE 2 o su escalado),
+    nunca a un angulo todavia en el paraguas de FASE 1. Agrupar esas filas por `angulo_key` da
+    el angulo fijo de esa fase sin re-derivarlo de ventas ni de `_DIM_CONJUNTOS.csv` (esa
+    columna no distingue FASE2 de su escalado con el mismo criterio en todos los productos:
+    ver hallazgo T5).
+
+    Devuelve (angulo, None) con exactamente un angulo distinto · (None, None) si todavia no
+    hay ninguna fila asi (el producto sigue en el paraguas de FASE 1: usar el criterio
+    historico) · (None, razon) si hay MAS DE UNO (bloquea: un flujo dedicado no puede abrir
+    con dos angulos a la vez)."""
+    angulos = sorted({
+        (r.get("angulo_key") or "").strip()
+        for r in leer("_DIM_CREATIVOS.csv")
+        if r.get("producto_key") == pk
+        and (r.get("concepto_key") or "").strip().upper() not in ("", "SIN_CLASIFICAR")
+        and (r.get("angulo_key") or "").strip()
+    })
+    if not angulos:
+        return None, None
+    if len(angulos) > 1:
+        return None, ("%d angulos distintos con concepto de FASE 2 en _DIM_CREATIVOS.csv "
+                       "(%s) — el flujo dedicado necesita UN angulo ganador fijo"
+                       % (len(angulos), ", ".join(angulos)))
+    return angulos[0], None
+
+
 def resolver(pk):
     """Devuelve (valores, faltantes, avisos). No escribe nada."""
     flujo = {r["producto_key"]: r for r in leer("_DIM_FLUJO_BOT.csv")}
@@ -298,14 +332,24 @@ def resolver(pk):
         "Hola, quiero más información de %s con %s" % (v["producto_display"], registro)
         if v.get("producto_display") and registro else "")
 
-    # Angulo ganador: el de mas ventas acumuladas con evidencia, nunca declarado a mano.
-    cand = [r for r in leer("_ESTADO_ANGULOS.csv") if r["producto_key"] == pk]
-    def ventas(r):
-        try:
-            return float(r.get("ventas_acum") or 0)
-        except ValueError:
-            return 0.0
-    v["angulo_nombre"] = max(cand, key=ventas)["angulo_key"] if cand else ""
+    # Angulo del flujo: el ganador FIJO de FASE 2 manda (angulo_ganador_f2, arriba). Sin
+    # ninguna pieza de concepto de FASE 2 todavia, el producto sigue en el paraguas de FASE 1
+    # y se usa el criterio historico (mas ventas acumuladas) que nunca gatea nada mas alla
+    # del titulo del flujo. Un empate ambiguo entre varios angulos de FASE 2 BLOQUEA (se
+    # agrega a `faltan` mas abajo, junto a la razon completa): nunca se elige por su cuenta.
+    angulo_f2, razon_f2 = angulo_ganador_f2(pk)
+    if angulo_f2:
+        v["angulo_nombre"] = angulo_f2
+    elif razon_f2:
+        v["angulo_nombre"] = ""
+    else:
+        cand = [r for r in leer("_ESTADO_ANGULOS.csv") if r["producto_key"] == pk]
+        def ventas(r):
+            try:
+                return float(r.get("ventas_acum") or 0)
+            except ValueError:
+                return 0.0
+        v["angulo_nombre"] = max(cand, key=ventas)["angulo_key"] if cand else ""
 
     esc, aviso_esc = escalera(pk, fila, v["simbolo"] or "Q")
     v["escalera_ofertas"] = esc or ""
@@ -327,6 +371,11 @@ def resolver(pk):
               for k in sorted(usadas) if not v.get(k)]
     # `recaida` y `razon_tier_alto` son opcionales: CLEARSTEM las usa, TINNIDROP no.
     faltan = [f for f in faltan if f[0] not in OPCIONALES]
+    # angulo_nombre ambiguo entre varios angulos de FASE 2: la razon completa (que angulos y
+    # cuantos) manda sobre el mensaje generico de DUENO.
+    if razon_f2:
+        faltan = [f for f in faltan if f[0] != "angulo_nombre"]
+        faltan.append(("angulo_nombre", "_DIM_CREATIVOS.csv (angulo de FASE 2) — %s" % razon_f2))
 
     # Apertura por nivel de conciencia (ETAPA-5 Paso 3): solo aplica al flujo DEDICADO. En
     # F1 (paraguas) no hay angulo ganador todavia y la linea se omite sin bloquear. En
@@ -351,11 +400,17 @@ def render(v):
     # loop de abajo ya reemplazaria el token por "" y dejaria un '>> ' vacio y colgado.
     if not v.get("apertura_nivel"):
         txt = re.sub(r"\n[ \t]*>>[ \t]*\{\{apertura_nivel\}\}[ \t]*\n", "\n", txt)
+    # `recaida`/`razon_tier_alto` OPCIONALES: la limpieza corre ANTES de la sustitucion
+    # generica de abajo, sobre el token `{{...}}` todavia literal. Corrida despues (como
+    # antes), el loop generico ya habia puesto v[k]="" en su lugar y el patron que esta
+    # limpieza busca ("{{recaida}}") ya no existia — dejaba "— ." colgando en el INT 2 de
+    # un flujo sin recaida (hallazgo T5).
+    if not v.get("recaida"):
+        txt = txt.replace(" — {{recaida}}", "")
+    if not v.get("razon_tier_alto"):
+        txt = re.sub(r"\n[ \t]*\{\{razon_tier_alto\}\}[ \t]*\n", "\n", txt)
     for k, val in v.items():
         txt = txt.replace("{{%s}}" % k, val)
-    # Limpia lineas que quedaron vacias por variables opcionales ausentes.
-    txt = re.sub(r"\n\s*\{\{(?:recaida|razon_tier_alto)\}\}\s*\n", "\n", txt)
-    txt = txt.replace(" — {{recaida}}", "").replace("{{razon_tier_alto}}", "")
     return txt
 
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """cargar_page_id.py — carga el page_id de la FanPage de un producto que ya tiene fila.
 
-Dato de DOCTRINA/FLUJO.json F1.publicar: «page_id de la FanPage». Dueno del dato: etapa-fanpage
+Dato de DOCTRINA/FLUJO.json F1.publicar: «page_id de la FanPage». Dueno del dato: etapa-2
 (decide QUE pagina le toca al producto) + el operador (que es quien tiene el id en Meta). Este
 script no elige la pagina: guarda la que el operador entrega.
 

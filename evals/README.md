@@ -44,7 +44,7 @@ El runner propio y `promptfoo eval` leen la MISMA config y deben coincidir en
 qué test pasa y cuál falla: el provider `echo` + `assert type: python` es
 compatible con ambos.
 
-## Cobertura — 8 de las 17 etapas
+## Cobertura — 11 de las 17 etapas
 
 | Etapa | Productos cubiertos | Fixture (fuente real) |
 |---|---|---|
@@ -52,45 +52,93 @@ compatible con ambos.
 | etapa-1 (costeo) | CLEARSTEM, NusavaB12, TINNIDROP, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §COSTEO |
 | etapa-1b (componentes/voz) | NusavaB12, TINNIDROP, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §COMPONENTES / §VOZ DEL CLIENTE |
 | etapa-2 (6 ángulos) | CLEARSTEM, NusavaB12, OVULOS_PURITY | `2_DATA_PRODUCTO.txt` §ÁNGULOS / §CONJUNTOS |
-| etapa-fanpage | CLEARSTEM | `2_DATA_PRODUCTO.txt` §FANPAGE ASIGNADA |
+| etapa-fanpage (retargeted, T1 p2-simplificacion — ver nota abajo) | CLEARSTEM | `2_DATA_PRODUCTO.txt` §FANPAGE ASIGNADA |
+| etapa-4 (copy FASE 1) | TINNIDROP | `1_HACER_MANUAL.txt` §PARTE 4 — MEDIA + COPIES DE LOS 6 CONJUNTOS (los 3 conjuntos nuevos) |
 | etapa-6 (`_PLAN.json`) | CLEARSTEM, NusavaB12, TINNIDROP, OVULOS_PURITY | `_PLAN.json` completo |
 | etapa-5 (bot LucidBot) | CLEARSTEM, TINNIDROP | `FLUJO_LUCIDBOT.md` completo |
-| etapa-8 (plan de escalado) | TINNIDROP | `4_PLAN_ESCALADO.txt` (extracto) |
+| etapa-7 (monitor diario) | TINNIDROP | `_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt` §PASO 3 — bloque "Lectura cualitativa (ETAPA-7)" |
+| etapa-7 fusionada (monitor + escalado, T3 p2-simplificacion) | TINNIDROP | `_AUDITORIAS/_AUDITORIA_DIARIA_20260908.txt` §PASO 3 completo, ver "Fusión T3" abajo |
+| etapa-8 (plan de escalado, histórico — hoy es etapa-7) | TINNIDROP | `4_PLAN_ESCALADO.txt` (extracto) |
+| etapa-9 (fábrica de conceptos) | TINNIDROP | `_DIM_CREATIVOS.csv`, tanda real (`producto_key=TINNIDROP`, `fecha_alta=2026-09-06`, 5 filas) |
 | etapa-guardar-producto (invariante 8) | los 4 productos | manifiesto congelado de archivos de nivel superior en `PRODUCTOS/<P>/` |
 
-**Sin output real guardado en disco, por lo que no tienen fixture (9 de 17):**
+Cada fixture nuevo (`etapa-4`, `etapa-7`, `etapa-9`) trae un `SOURCE.txt` en su
+carpeta con la ruta exacta y la fecha del output real del que se recortó —
+las demás etapas ya documentaban su fuente en esta misma tabla desde T11.
+
+**Sin output real guardado en disco, por lo que no tienen fixture (6 de 17):**
 
 | Etapa | Por qué no hay output guardado |
 |---|---|
-| etapa-0 | Selección de 6 videos: vive en la sesión, se consume por etapa-2/etapa-6 y no se persiste como archivo propio. |
+| etapa-0 | Selección de 6 videos: vive en la sesión, se consume por etapa-2/etapa-6 y no se persiste como archivo propio. Se buscó de nuevo en T3 (odd/tasks/p1-cimientos.md) en `2_DATA_PRODUCTO.txt` y en las carpetas de transcripciones — ningún producto tiene guardadas las 3 tablas de ETAPA-0.md (clasificación completa / agrupación por ángulo / ranking final); solo sobrevive el ranking de RE-TESTEO (etapa-7/8), que es un output distinto. |
 | etapa-3 | Su banco de 8-12 microángulos históricamente no aterrizaba en disco (ver T8 item 4); hoy solo se exige que `4_PLAN_ESCALADO.txt` contenga la palabra "MICROÁNGULO" para pasar el gate `F3.plan` de `flujo.py` — ningún producto real está hoy en ese nodo (T8 lo confirma), así que no hay un `4_PLAN_ESCALADO.txt` real con esa sección para congelar. |
-| etapa-4 (copy) | El copy final se funde dentro de `1_HACER_MANUAL.txt` sin una sección delimitada que se pueda atribuir solo a esta etapa sin arrastrar contenido de etapa-5/etapa-6. |
-| etapa-7 | Monitor de métricas: su output es la lectura de `_DECISIONES.json` en la conversación, no un archivo propio. |
-| etapa-9 | Su output es la consola de la tanda del día (texto de sesión) + filas en `_DIM_CREATIVOS.csv` (dato, no prosa de etapa) — no hay un artefacto de texto libre guardado por tanda. |
-| etapa-10 | Brief de lectura concepto↔métrica: se entrega en sesión a etapa-9, no se encontró un archivo propio persistido por producto. |
+| etapa-10 | Brief de lectura concepto↔métrica (las 6 secciones de ETAPA-10.md, incluida la matriz ángulo×concepto y el brief EXPLOTAR/EXPLORAR/NO REPETIR para etapa-9): se entrega en sesión, se buscó de nuevo en T3 en `_AUDITORIAS/`, `_APRENDIZAJES.csv` y los HANDOFF de optimización — lo más cercano que persiste es el output de `atribuir.py` (código, no prosa de esta etapa) citado como `fuente` en `_APRENDIZAJES.csv`; no hay un informe propio guardado. |
 | etapa-11 | Brief de cierre del bot: mismo caso que etapa-10, output de sesión consumido por etapa-5. |
 | etapa-render | Produce imágenes PNG, no texto — fuera del alcance de un assert de contrato textual/JSON. |
 
 Si una futura sesión localiza un output real guardado para alguna de estas
-nueve, se agrega su fixture + assert siguiendo el mismo patrón — este README
+cinco, se agrega su fixture + assert siguiendo el mismo patrón — este README
 y `promptfooconfig.yaml` son quienes registran la cobertura real, no una lista
 aparte.
 
 ## Fallos conocidos documentados (no se debilitó ningún assert para taparlos)
 
-`etapa-6 / {CLEARSTEM, NusavaB12, TINNIDROP} — FASE 1 todo-en-imagen`: están
-marcados `expected_fail: true` en `promptfooconfig.yaml`. Los tres `_PLAN.json`
-son de antes de la decisión del operador del 22-sep-2026 ("FASE 1 corre TODO
-EN IMAGEN") y tienen conjuntos en VIDEO — exactamente el mismo hallazgo que
-hoy reporta `python Ads/_TOOLS/gen_plan.py --validar` (10 errores
-`formato != IMAGEN` preexistentes, ver `odd/tasks/g07-cimientos.md` T10). El
-assert se dejó estricto a propósito: relanzar cualquiera de esos productos
-exige regenerar el plan desde etapa-6, no reescribir el eval para que pase.
+`etapa-4 / TINNIDROP — FASE 1 todo-en-imagen`: uno de los 3 TÍTULOS del
+conjunto "ME DIJERON QUE NO TIENE CURA" es literalmente `"¿Te dijeron que no
+hay cura?"` — usa la palabra "cura", que `DOCTRINA/COPYWRITING_ADS.md`
+§PRINCIPIO 7 lista para evitar, aunque sea una pregunta retórica citando la
+objeción del cliente y no un claim afirmativo. Es un output real, presente
+desde la línea base del repo (02-sep-2026); nunca se corrigió porque hasta
+este eval no existía ningún chequeo automatizado de compliance de copy. El
+assert quedó estricto: el hallazgo queda documentado en
+`promptfooconfig.yaml` para que quien toque `ETAPA-4.md` decida si el título
+se corrige, no se reescribió el fixture ni se relajó el assert para taparlo.
+
+## Retargeting T1 (p2-simplificacion, 23-sep-2026) — `etapa-fanpage`
+
+El agente `.claude/agents/ETAPA-FANPAGE.md` se eliminó: sus 10 páginas pasaron a
+DATA en `PRODUCTOS/_DIM_FANPAGES.csv` y su JUICIO de asignación (reglas F1-F5)
+se absorbió en `.claude/agents/ETAPA-2.md` §ASIGNACIÓN DE FANPAGE, que emite el
+mismo bloque `<pagina_asignada>` que consumían ETAPA-4/5/6. El fixture
+`fixtures/etapa-fanpage/CLEARSTEM.txt` sigue siendo el output REAL congelado
+del agente extinto (no se reescribe: sigue probando el mismo contrato de
+formato). Lo único que cambió es `asserts/etapa-fanpage.py`: antes cruzaba el
+nombre de página contra la doctrina de `ETAPA-FANPAGE.md` (ya no existe); ahora
+cruza contra `PRODUCTOS/_DIM_FANPAGES.csv` (columna `pagina_nombre`) — el
+mismo catálogo cerrado, ahora en su dueño de datos. El assert no se debilitó:
+sigue exigiendo que una de las 10 páginas reales aparezca citada en el output.
+El ID del test (`etapa-fanpage / CLEARSTEM`) se mantiene por honestidad
+histórica del fixture; su contrato de facto hoy es el `<pagina_asignada>` que
+produce `etapa-2`.
+
+## Fusión T3 (p2-simplificacion, 24-sep-2026) — `etapa-7` + `etapa-8`
+
+`.claude/agents/ETAPA-8.md` se eliminó: su lógica de palancas (PASO 5 de la
+nueva `ETAPA-7.md`) y su sección de aprendizajes se absorbieron en
+`etapa-7`, que ya monitoreaba y ya era la etapa que `ciclo-diario` invocaba
+en la misma pasada que `etapa-8` (nunca corrían separadas). Los dos fixtures
+y asserts viejos (`fixtures/etapa-7/TINNIDROP.txt` + `asserts/etapa-7.py`,
+`fixtures/etapa-8/TINNIDROP.txt` + `asserts/etapa-8.py`) se dejaron **sin
+tocar y con la misma fuerza** — siguen probando sus contratos originales
+sobre outputs reales e históricos.
+
+Se agregó un tercer test, `etapa-7 fusionada / TINNIDROP`, que corre un solo
+fixture contra **los dos asserts** (`promptfooconfig.yaml` ya soporta una
+lista de `assert` por test; `run_baseline.py` los evalúa con AND lógico sin
+tocar el runner). El fixture (`fixtures/etapa-7/TINNIDROP_FUSIONADO.txt`) es
+real: el bloque completo de PASO 3 de `_AUDITORIA_DIARIA_20260908.txt`, de
+cuando `ciclo-diario` ya corría `etapa-7` + `etapa-8` en la misma pasada y
+las presentaba sin separación — es el output real más parecido a lo que hoy
+produce la etapa fusionada.
+
+El fixture fusionado es un output real de la etapa fusionada y pasa los dos
+asserts (`etapa-7.py` y `etapa-8.py`) sin debilitar ninguno. Su fuente está en
+`fixtures/etapa-7/SOURCE_FUSIONADO.txt`.
 
 ## Protocolo de poda (para cuando se toque un prompt de ETAPA-*.md)
 
 1. Correr `python evals/run_baseline.py` ANTES de tocar nada — confirma que
-   arranca en verde (24/27, con los 3 fallos conocidos de arriba).
+   arranca en verde (27/28, con el fallo conocido de arriba).
 2. Cambiar el prompt.
 3. Re-correr la etapa sobre los MISMOS inputs congelados que produjeron el
    fixture (mismo producto, mismos insumos — nunca un producto nuevo, eso no

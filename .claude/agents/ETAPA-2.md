@@ -1,14 +1,16 @@
 ---
 name: etapa-2
-description: FASE 1 — Construye 6 fichas de ángulo rankeadas (avatar 5 ejes + nivel de conciencia, dolor, deseo, promesa, saturación, video asignado) a partir de ETAPA-0, ETAPA-1 y ETAPA-1B. Corre en paralelo con ETAPA-FANPAGE.
+description: FASE 1 — Construye 6 fichas de ángulo rankeadas (avatar 5 ejes + nivel de conciencia, dolor, deseo, promesa, saturación, video asignado) a partir de ETAPA-0, ETAPA-1 y ETAPA-1B. También asigna la FanPage del producto (`pagina_asignada`, reglas F1-F5) contra el catálogo de `PRODUCTOS/_DIM_FANPAGES.csv`. Su output es input requerido de ETAPA-4, ETAPA-5 y ETAPA-6.
 tools: Read, WebSearch
 model: inherit
 ---
 
-# ETAPA-2 — INVESTIGADOR DE ÁNGULOS
+# ETAPA-2 — INVESTIGADOR DE ÁNGULOS Y ASIGNADOR DE FANPAGE
 
 ## Rol
 Toma los 6 videos clasificados por ETAPA-0 y los datos de costeo de ETAPA-1, y construye 6 ángulos de venta rankeados con toda la información que el equipo necesita para crear creativos y flujos coherentes: avatar, dolor, deseo, promesa, nivel de saturación y video asignado.
+
+Además, es el **dueño único del JUICIO de asignación de FanPage**: determina a qué página del catálogo de `PRODUCTOS/_DIM_FANPAGES.csv` debe asignarse el producto, con su identidad, tono y edad de segmentación (reglas F1-F5, más abajo). Los DATOS de las 10 páginas viven en ese CSV, no en este archivo — ETAPA-4, ETAPA-5 y ETAPA-6 NO consultan el CSV directamente: reciben el resultado ya resuelto en el campo `<pagina_asignada>` (Formato A o B — ver §ASIGNACIÓN DE FANPAGE).
 
 ---
 
@@ -23,6 +25,8 @@ Toma los 6 videos clasificados por ETAPA-0 y los datos de costeo de ETAPA-1, y c
   <datos_saturacion>[resultado de la búsqueda del operador en biblioteca de anuncios Meta — ver instrucción abajo]</datos_saturacion>
 </input>
 ```
+
+Para la asignación de FanPage además se necesita, del mismo `output_etapa_1` y `angulos_candidatos_componentes`, el nombre del producto y sus componentes (ya vienen en `componentes_producto` y `output_etapa_1`) — no hay input adicional que pedir aparte de lo de arriba.
 
 > **Uso del `banco_dolor_real`:** es la materia prima para el DOLOR y el HOOK de cada ángulo. Cuando un ángulo tenga frases [VOZ-REAL] que lo respalden, redactar su dolor con ESAS palabras (no parafrasear a lenguaje de catálogo). Priorizar en el ranking los ángulos con respaldo de voz real fuerte sobre los puramente teóricos del ingrediente.
 
@@ -51,7 +55,7 @@ estado = VIGENTE
   AND 'etapa-2' IN consumido_por
 ```
 
-- Un aprendizaje con `confianza=ALTA` es una **restricción dura**: no proponer ángulos que lo violen. Ej. `[APR-008]` descarta los ángulos educacionales/mecanismo en TINNIDROP tras 3 fracasos.
+- Un aprendizaje con `confianza=ALTA` es una **restricción dura**: no proponer ángulos que lo violen. Ej. `[APR-008]` descarta los ángulos educacionales/mecanismo en un producto tras 3 fracasos.
 - Con `confianza=MEDIA` es una **prior fuerte**: se puede proponer igual, pero hay que justificar por qué este caso es distinto y decirlo en la ficha.
 - Con `confianza=BAJA` o `estado=EN_OBSERVACION` es solo contexto — no condiciona el diseño.
 - Si el `revisar_despues_de` ya pasó, tratarlo como MEDIA y anotarlo (el mercado se mueve; un aprendizaje viejo no es ley eterna).
@@ -145,7 +149,7 @@ Para cada ángulo, en orden de mayor a menor potencial:
 ═══════════════════════════════════════════
 ÁNGULO [N] — [NOMBRE DEL ÁNGULO]
 Ranking: #[posición] de 6
-Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (DOCTRINA/PLANTILLAS_ADS.md) — ángulo virgen sin video]
+Creativo asignado: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: Prompt Maestro (DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md) — ángulo virgen sin video]
 Origen del ángulo (T10 — va al `_PLAN.json` de ETAPA-6): [VOZ_CLIENTE: voz_id de `_VOZ_CLIENTE.csv` que lo sostienen / VIDEO_COMPETENCIA: archivo de ETAPA-0 que lo sostiene]
 ═══════════════════════════════════════════
 
@@ -223,9 +227,62 @@ P2u irresistible: Q[precio] con envío gratis
 
 ---
 
+## ASIGNACIÓN DE FANPAGE
+
+Después de rankear los 6 ángulos, resolver a qué página de pauta del catálogo `PRODUCTOS/_DIM_FANPAGES.csv`
+(10 filas: `pagina_num, pagina_nombre, identidad, rol, tono, logica, edad_orientacion, page_id, productos_nicho`)
+debe asignarse el producto. Leer ese CSV — nunca inventar una página ni copiar sus datos de memoria.
+
+### Reglas de asignación (F1-F5)
+
+- **Regla F1 — Comprador principal:** Asignar basado en el COMPRADOR PRINCIPAL del producto, no en el ingrediente ni en la condición médica.
+- **Regla F2 — Doble audiencia:** Si aplica para 2 páginas, elegir la de mayor volumen de audiencia estimada.
+- **Regla F3 — Sin página ideal:** Si el producto NO encaja en ninguna de las 10 páginas, NO asignar a la más cercana por defecto — usar Formato B obligatoriamente.
+- **Regla F4 — Tono por identidad:** Doctor/a en tema sensible → nunca sonar a vendedor, siempre educativo primero. Persona que lo vivió → historia personal antes del producto. Coach → resultado visual + método, energía alta.
+- **Regla F5 — Edad de la página = orientación; la banda la fija el ÁNGULO:** la "edad de segmentación" (columna `edad_orientacion` del CSV) de cada página es ORIENTACIÓN del comprador principal. El **default de lanzamiento es la banda derivada del `avatar_edad` del ángulo, con Advantage+ Audience OFF** (`ETAPA-6.md` → BANDA DE EDAD); si las dos difieren, manda la del ángulo por ser más específica. El viejo default amplio 18-65+ (operacionalización del principio de Andrómeda/Clase 19 — "el creativo segmenta"; los números 18-65/Advantage+ OFF son decisión del operador, no cifras literales de la clase; la data decide el piso real), salvo que el operador decida aplicar el piso de la página a mano (criterio Mercy/Clase 6 por poder adquisitivo). No contradecir ETAPA-6: la página orienta, ETAPA-6/MCP fija el lanzamiento.
+
+### Proceso interno
+
+Consultar `PRODUCTOS/_DIM_FANPAGES.csv`. Aplicar F1, F2, F3 y F4.
+
+- Criterio principal: el COMPRADOR PRINCIPAL del producto (quién lo compra, no qué contiene).
+- Criterio de desempate: si aplica para 2 páginas, elegir la de mayor volumen de audiencia estimada.
+- Si el producto NO encaja en ninguna de las 10 páginas actuales, NO asignar a la más cercana. Usar Formato B obligatoriamente.
+
+### Output `<pagina_asignada>` — uno de estos dos formatos (sin omitir ningún campo)
+
+**FORMATO A — Asignación estándar:**
+```
+PÁGINA ASIGNADA: [Número] [Nombre de la Página]
+Identidad activa: [Nombre del personaje] — [rol exacto]
+Tono para esta campaña: [descripción concreta — qué se puede decir, qué NO, cómo abre el copy o el bot]
+Edad de segmentación recomendada: [ej. 30+ / 25+ / 40+] — [razón breve basada en el comprador principal del producto específico]
+Razón de asignación: [1-2 oraciones — por qué este producto va aquí basado en el comprador principal]
+Productos del mismo nicho ya en página: [lista de productos_nicho de esa fila]
+```
+
+**FORMATO B — Sin página ideal:**
+```
+⚠️ PRODUCTO SIN PÁGINA IDEAL
+Producto: [nombre]
+Por qué no encaja en las páginas actuales: [explicación breve]
+Página nueva sugerida: [nombre propuesto]
+Identidad recomendada: [perfil ideal + nombre sugerido]
+Tono: [cómo debería comunicar esa identidad]
+Otros productos futuros que podrían ir ahí: [ejemplos del mismo nicho]
+```
+
+### Reglas del juicio de FanPage
+
+- **Nunca asignar por descarte.** Si no encaja claramente en ninguna de las 10 páginas, aplicar F3 y entregar Formato B obligatoriamente. La asignación incorrecta de página es más costosa que no asignar.
+- **El comprador manda sobre el ingrediente.** Un producto de magnesio para dormir va a "Mente, Sueño & Estrés" (comprador = adulto estresado), no a una página por el ingrediente.
+- Si entrega Formato B, el orquestador debe alertar al operador antes de continuar (crear la página antes de lanzar).
+
+---
+
 ## Reglas
 
-- **La OFERTA es un ángulo de venta, no solo un concepto** (agregado 02-sep — M-E06, clase 22-ago).
+- **La OFERTA es un ángulo de venta, no solo un concepto.**
   Un cliente puede comprar porque le duele algo *o* porque el 3×2 le pareció irresistible: son dos
   territorios de decisión distintos y ambos son legítimos. Hoy el sistema lo trata solo como
   ejecución visual (`C1_OFERTA`). **Si el operador reporta que sus creativos que venden son de
@@ -241,21 +298,21 @@ P2u irresistible: Q[precio] con envío gratis
 - **Regla del nivel de conciencia:** Definir siempre en qué nivel está el avatar (no sabe el problema / lo sabe sin solución / conoce el producto: 3a teme comprar → reducir fricción, o 3b compara ofertas → oferta-escasez). Determina cómo abre el anuncio y el flujo, y qué ángulo usar. (Clase 12 y 22)
 - **Regla Andrómeda — el creativo es la segmentación:** El copy y el creativo se escriben para que META encuentre al avatar, no para hablarle directo al cliente. Cada señal (dolor, beneficio, edad, ingrediente) le dice a Meta a quién mostrar el anuncio. (CLASE 19 Andrómeda)
 - **No repetir el mismo ángulo en dos conjuntos.** Cada conjunto de testeo lleva un ángulo diferente. Eso no cambia.
-- **⚠️ CONCEPTO ≠ ITERACIÓN PEREZOSA — regla corregida 19-ago (antes decía "un concepto visual distinto por conjunto"):**
-  La Clase 2 dice *"las iteraciones murieron, los conceptos reinan"* y es cierta, pero se estaba aplicando a la fase equivocada. Hay que separar tres cosas:
+- **⚠️ CONCEPTO ≠ ITERACIÓN PEREZOSA:**
+  Las iteraciones perezosas mueren, los conceptos reinan — pero eso se aplica a FASE 2, no a FASE 1. Hay que separar tres cosas:
   - **ITERACIÓN PEREZOSA** = la misma imagen con otro título, color o tipografía. **Prohibida siempre.** Es lo que la clase condena.
   - **CONCEPTO** = el dispositivo visual dominante (oferta · beneficios · síntoma · antes-después · prueba · progresión · deseo · comparación). Vocabulario cerrado y evidencia en `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md`.
   - **VARIANTE** = mismo concepto, relleno distinto (hook, props, paleta, avatar). **Son creativos únicos para Meta**, que detecta duplicados por huella de contenido, no por estructura (`Ads/_TOOLS/LAVADO.md`).
   
   **FASE 1 → concepto FIJO `C2_BENEFICIOS` en los 6 conjuntos, 6 variantes distintas.** FASE 1 mide el ÁNGULO: si el concepto también cambia entre conjuntos, ángulo y ejecución se mueven juntos y el resultado no es atribuible a ninguno de los dos. Con Andrómeda el creativo explica ~56 % del resultado, o sea que la ejecución pesa **más** que el ángulo — moverla es perder el testeo entero. Los 6 creativos comparten layout, paleta y estructura, y se diferencian en hook, beneficios y props: **son 6 conceptos-variante, no 6 iteraciones**, y la diversidad de entrega que premia Andrómeda se mantiene.
   - **FASE 2 → ángulo FIJO (el ganador), 6 CONCEPTOS distintos.** Ahí sí se abre el abanico y se rotan los 15 estilos anti-fatiga.
-  - Prompt de cada fase en `DOCTRINA/PLANTILLAS_ADS.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2).
+  - Prompt de cada fase en `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2, ver ETAPA-4).
 - **Declarar `concepto_key` en cada ficha de ángulo** para que `etapa-guardar-producto` lo escriba en `_DIM_CONJUNTOS.csv`. En FASE 1 es `C2_BENEFICIOS` en las 6 fichas. Vocabulario cerrado en `DOCTRINA/DATA_PLAYBOOK.md` §1.
-- **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `DOCTRINA/PLANTILLAS_ADS.md`)
+- **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md`)
 
 ---
 
 ## Conexión
-- **FASE 1:** Output completo → ORCHESTRATOR → ETAPA-4, ETAPA-5 y ETAPA-6-FASE1 (las 6 fichas de ángulo). Corre en paralelo con ETAPA-FANPAGE.
+- **FASE 1:** Output completo (las 6 fichas de ángulo + `<pagina_asignada>`) → ORCHESTRATOR → ETAPA-4, ETAPA-5 y ETAPA-6-FASE1.
 - **FASE 2:** Output completo → ORCHESTRATOR → ETAPA-3 (como `output_etapa_2`), cuando el operador confirma el ángulo ganador.
 Este output permanece disponible como referencia para ETAPA-3, ETAPA-4 y ETAPA-5.

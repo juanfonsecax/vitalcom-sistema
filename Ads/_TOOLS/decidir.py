@@ -40,9 +40,9 @@ ESTADOS:
 
 REGLAMENTO ÚNICO (09-sep-2026):
   Hasta esa fecha el 35 % de conversación por clic-enlace, el presupuesto de decisión con sus ~3
-  días COD, el máximo de 2 pausas por día y el +20 % de surfing vivían SOLO en prosa (ETAPA-8.md,
+  días COD, el máximo de 2 pausas por día y el +20 % de surfing vivían SOLO en prosa (ETAPA-7.md,
   ESCALADO_PLAYBOOK.md) y este motor no los conocía: dos reglamentos. Hoy todos son filas de
-  _PARAMETROS_DECISION.csv, este motor los ejecuta y verificar_guia_madre.py los vigila. ETAPA-8
+  _PARAMETROS_DECISION.csv, este motor los ejecuta y verificar_guia_madre.py los vigila. ETAPA-7
   consume _DECISIONES.json; no recalcula nada.
 
 USO:
@@ -88,8 +88,15 @@ import gasto as _gasto  # noqa: E402 -- fuente unica del spend_usd (g07-cimiento
 # spend_usd de _FACT_VENTAS.csv sin decir de donde salio de verdad).
 COBERTURA_GASTO = {}
 
+# DECIDIR_PROD_DIR (P1-cimientos T6, 23-sep-2026): override MÍNIMO y retro-compatible del
+# directorio PRODUCTOS/ que lee este módulo. Sin variable de entorno, el comportamiento es
+# EXACTAMENTE el de siempre (BASE/PRODUCTOS del repo real). flujo.py ya monkey-parchea estas
+# mismas constantes de módulo para correr el motor sobre un fixture (ver Entorno.motor()); esta
+# variable existe para el caso donde no hay un proceso Python vivo para monkey-parchear —
+# el gate de paridad de db/test_db.py corre decidir.py en un subproceso aparte (con scipy y
+# duckdb, que no viven en el venv de psycopg) y necesita apuntarlo a una base exportada.
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-PROD = os.path.join(BASE, "PRODUCTOS")
+PROD = os.environ.get("DECIDIR_PROD_DIR") or os.path.join(BASE, "PRODUCTOS")
 DB_PATH = os.path.join(BASE, "warehouse", "vitalcom.duckdb")
 PARAMS_PATH = os.path.join(PROD, "_PARAMETROS_DECISION.csv")
 DIM_PROD_PATH = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
@@ -749,7 +756,7 @@ def aplicar_gate_fase(celdas, fase, pk):
     conjuntos dentro de cada etapa, para no sesgar que gana por dinero: subirle el presupuesto
     a un conjunto en pleno testeo hace ganar al que recibio mas plata, no al mejor. Y el
     invariante 13 ya nombra mover plata como LA accion irreversible. Asi que el estado queda y
-    lo que se marca es `ejecutable`, que es lo que miran etapa-8, el operador y el runner MCP.
+    lo que se marca es `ejecutable`, que es lo que miran etapa-7, el operador y el runner MCP.
 
     En la simulacion de TURMERIC el motor ordeno escalar un conjunto el dia 1, en plena FASE 1.
 

@@ -79,7 +79,7 @@ Esto es un sistema de investigación de avatar **muy por encima del promedio**. 
 El sistema **sí sabe** que los conceptos importan. Está escrito en dos lugares:
 
 - `ETAPA-2.md` línea 231: *"un ángulo = un CONCEPTO creativo distinto por conjunto — no la misma imagen con otro título/color/fuente. **Las iteraciones murieron, los conceptos reinan**"* (Clase 2)
-- `DOCTRINA/ESCALADO_PLAYBOOK.md` §4: *"Conservar el ángulo, variar el CONCEPTO"* · *"Se copia el POR QUÉ vendió, no el creativo"* (Clase 20)
+- `DOCTRINA/ESCALADO/05_REPLICAR_GANADOR.md` §4: *"Conservar el ángulo, variar el CONCEPTO"* · *"Se copia el POR QUÉ vendió, no el creativo"* (Clase 20)
 
 Pero comparemos cómo trata el sistema a cada dimensión:
 

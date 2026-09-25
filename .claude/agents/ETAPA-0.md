@@ -10,8 +10,8 @@ model: inherit
 ## Rol
 Analiza N transcripciones TXT de videos de biblioteca, detecta ángulos de venta presentes en cada video, agrupa por ángulo y selecciona los 6 mejores videos para testeo (1 por ángulo), rankeados por densidad de señales de compra.
 
-> **Decisión del operador (22-sep-2026):** los 6 videos que esta etapa selecciona son la FUENTE del
-> ángulo (evidencia, ganchos, voz del cliente), no el creativo de FASE 1 — F1 corre TODO EN IMAGEN.
+> **Los 6 videos que esta etapa selecciona son la FUENTE del
+> ángulo** (evidencia, ganchos, voz del cliente), no el creativo de FASE 1 — F1 corre TODO EN IMAGEN.
 > El video queda disponible para testearse como concepto en FASE 2 (dueño: skill `fase-2-conceptos`).
 
 ---

@@ -1,0 +1,131 @@
+ETAPA-11 · OPTIMIZADOR DE FLUJO · TINNIDROP · data hasta 2026-09-22 · nodo F2.etapa-11 (SOLO DIAGNÓSTICO)
+Generado 2026-09-24 por etapa-11 (solo lectura). Persistido por el orquestador (invariante 8).
+
+VEREDICTO: con la data disponible, el flujo NO es donde TINNIDROP pierde la venta hoy. El ángulo de F2
+(ACCESIBILIDAD_MEDICO) cierra igual que antes; lo que se deterioró es el costo por mensaje (pre-clic).
+
+INTEGRIDAD: _FACT_VENTAS con ventana BASE diaria sin huecos 07→22-sep · _BITACORA_DATA.txt SIN entradas
+  después del 08-sep (la ingesta sí consta en git) · JOIN 100 % de mensajes, pero solo por una regla de
+  rescate (0.3) · confusores: lote de conceptos F2 con creativo defectuoso (07-08 sep) y GTR7 en $0 el
+  21-sep · ningún CAMBIO_BOT.
+CONSISTENCIA FÍSICA ad↔destino: NO VERIFICADA (tres fuentes se contradicen, 0.5). El cierre no se desplomó,
+  el diagnóstico sigue, pero el brief queda condicionado a esa verificación.
+COBERTURA _FACT_ENTREGA: 100 % de conjuntos y gasto; 553 msj Meta vs 510 LucidSales → utilizable.
+CHATS: NO DISPONIBLES → dice DÓNDE se pierde la venta, nunca POR QUÉ.
+TEXTO REAL CARGADO EN LUCIDBOT: NO ESTÁ EN EL REPO (1_HACER_MANUAL.txt PARTE 3). La congruencia se auditó
+  contra el flujo de referencia y el renderizado: PROVISIONAL.
+
+0. HIGIENE
+0.1 Ángulo ganador: ACCESIBILIDAD_MEDICO (2_DATA_PRODUCTO.txt l.128; _PUBLICACION_F2A.json; mejor CPA
+  acumulado de los vivos Q49.1 y p_rentable 0.887 en _ESTADO_ANGULOS.csv). DISCREPANCIA: gen_flujo_bot.py
+  elige el ángulo por max(ventas_acum) (l.308) → renderiza "Tinnidrop | PERDIDA_AUDITIVA" (111v vs 80v) con
+  la instrucción de NIVEL DE CONCIENCIA 2; ACCESIBILIDAD es nivel 3 (_DIM_CONJUNTOS) / 3A (_DIM_ANUNCIOS).
+  decidir.py (09→22-sep): ningún ángulo en ESCALAR, los cuatro en SEGUIR_MIDIENDO.
+0.2 GTR7 en $0 el 21-sep: CONFIRMADO (5 filas spend 0 / 0 msj; ACCESIBILIDAD-MEDICO_R2 sin fila; en
+  _FACT_VENTAS 0 msj y 1 venta de chats previos). Sin evento en _EVENTOS.csv. Resta volumen, no sesga.
+  Lote GTR0_TINNIDROP_F2-CONCEPTOS_20260907: CONFIRMADO en pausa desde 08-sep (SOUTH MOON / "sublingual");
+  48 msj, 2 ventas, $32.61, todo en ACCESIBILIDAD_MEDICO → EXCLUIDO del diagnóstico. Una de sus 2 ventas
+  (10-sep) tiene 0 mensajes. Ventana limpia: 09→22-sep sin el lote (la misma de decidir.py).
+0.3 JOIN: GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1-R4 y GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1 llegan sin el sufijo
+  "+25AÑOS", sin fila exacta en _DIM_CONJUNTOS ni alias en _ALIAS_CONJUNTOS.csv; cierran solo por regla de
+  rescate. 3 ventas sin conjunto en ventana (10, 14 y 16-sep).
+0.4 Confusores: ningún CAMBIO_BOT/CAMBIO_CREATIVO/CAMBIO_PRODUCTO de TINNIDROP en ventana.
+0.5 Consistencia física NO VERIFICADA: el video ganador (tinnidrop4) muestra empaque "South Moon" con sellos
+  "CLINICALLY TESTED"; _DIM_ENVASE.csv (07-sep, foto del operador) dice SANARTE, frasco blanco etiqueta azul;
+  la cabecera de 2_DATA_PRODUCTO.txt dice "South Meon". Cierre de ACCESIBILIDAD estable 12-16 %/semana
+  desde ISO 30 y 9.3 % en la 38 (n=86, dentro del ruido): si el desajuste existe, pesa igual desde julio.
+  Resolver ANTES de que etapa-5 escriba: foto de la unidad despachada + fotograma de tinnidrop4 (operador).
+
+1. CIERRE POR ÁNGULO (ventana limpia 09→22-sep, BASE, réplicas sumadas)
+  ACCESIBILIDAD_MEDICO   169 msj · 20 v · 11.8 % · IC95 7.2–18.3  · CPA Q71.6 · 38.4 % del gasto
+  PERDIDA_AUDITIVA       191 msj · 13 v ·  6.8 % · IC95 3.6–11.6  · CPA Q86.2 · 29.1 %
+  DETERIORO_COGNITIVO    107 msj · 10 v ·  9.3 % · IC95 4.5–17.2  · CPA Q88.8 · 23.0 %
+  NOCHES_SIN_DORMIR       43 msj ·  6 v · 14.0 % · IC95 5.1–30.4  · CPA Q61.2 ·  9.5 %  (acumulando: <60 msj)
+  PRODUCTO               510 msj · 49 v ·  9.6 % · IC95 7.1–12.7
+  Homogeneidad χ² (3 sobre el piso): χ²=2.71, p=0.257 → no se rediseña por ángulo. ACCESIBILIDAD vs PERDIDA
+  (Fisher) p=0.10. En la serie completa desde 17-jul sí hay heterogeneidad (p<0.0001), por PERDIDA_AUDITIVA.
+  CLAVE: ACCESIBILIDAD 14.4 % (17-ago→02-sep, n=118) → 11.8 % (04→22-sep, n=254), p=0.50: el cierre no
+  cambió; el costo por mensaje subió 78 % ($0.57 → $1.02) tras la duplicación x3 del 03-sep. El CPA se
+  duplicó por el anuncio, no por el flujo → etapa-7.
+  Referencias: (a) techo propio 11.8 % → 60 ventas en vez de 49 (+11, +23 %) en 14 días; (b) ventana
+  anterior 17-ago→06-sep 8.4 % (117/1,390), IC solapados; (c) norte de mentores 15 % → 77 ventas (+28).
+
+2. PRE-CLIC vs POST-CLIC (umbral conversación 35 %; cierre ALTO ≥ 9.6 % del producto)
+  ACCESIBILIDAD_MEDICO  33.3 % / 11.8 % → conversación baja + cierre alto: el flujo compensa al anuncio
+  PERDIDA_AUDITIVA      32.8 % /  6.8 % → anuncio + flujo: primero el anuncio
+  DETERIORO_COGNITIVO   28.6 % /  9.3 % → anuncio + flujo, en el borde
+  NOCHES_SIN_DORMIR     20.5 % / 14.0 % → conversación baja + cierre alto (n chico)
+  Ningún ángulo en "conversación alta + cierre bajo" (terreno de esta etapa). La conversación localiza,
+  no predice el cierre (APR-002).
+
+3. CONGRUENCIA ANUNCIO ↔ FLUJO — ACCESIBILIDAD_MEDICO (PROVISIONAL)
+  Anuncio: video tinnidrop4 + copy "tinidrop 4" (texto no está en el repo; 1_HACER_MANUAL.txt l.315: "Q178").
+  C1 Dolor de entrada: DESAJUSTE. Anuncio: "Esto me costó menos que una ida al médico y me devolvió la
+    tranquilidad." El Video 1 figura ‹DECLARAR: video_1› en el render; en la referencia es
+    TINNIDROP_1_ANTIMEDICO.mp4, el mismo creativo del anuncio (el cliente lo vería dos veces).
+  C2 Promesa: DESAJUSTE. Anuncio: plata y médicos ("menos que una ida al médico", "llevo años probando
+    cosas", "no requiere receta"). INT 2 renderizada: "Ya sabés que ese zumbido no se quita con gotas
+    comunes ni con lo de siempre — ." La solución fallida es "gotas", no "consultas".
+  C3 Precio/oferta: ROJO para la reescritura. Copy Q178 · referencia Q178 · render Q179 (_DIM_PRECIOS).
+    Defectos visibles en el render: "más de 12,000 personas de gente con resultados reales" (choca con
+    "+10,200" de otros copies) y el "— ." colgando.
+  C4 Entrega: CONGRUENTE (envío gratis + contraentrega ↔ INT 1 "pago contraentrega, 2 a 5 días hábiles").
+  C5 Nivel de conciencia: DESAJUSTE (ángulo 3/3A; el render instruye nivel 2 por el error de 0.1).
+  C6 Objeción "¿funciona si el médico no me resolvió?": resuelta en la referencia (video anti-médico); en
+    el render el video está sin declarar. Se perdió la escalera de garantía 90/180 pedida el 10-jul: el
+    render solo dice "90 días" en INT 3.
+
+4. DÓNDE SE CAE LA VENTA: no se puede responder sin export de chats. No se inventa evidencia.
+
+5. BRIEF PARA ETAPA-5 (se aplica en la reescritura: después del concepto 2 de 2 y antes de F3; voseo;
+   nada se suaviza por compliance)
+  Precondiciones que no son de etapa-5:
+  P1 gen_flujo_bot.py (código): el {{recaida}} vacío se sustituye antes de la limpieza (l.353-358) y deja
+    "— ."; la selección del ángulo debe salir del ángulo de F2, no de max(ventas_acum).
+  P2 Operador: _DIM_FLUJO_BOT.prueba_social con UNA cifra que funcione con "de gente" e igual a la de los
+    anuncios (10,200 o 12,000); decidir Q178 o Q179; cargar duracion_1u (vacío); verificación física 0.5.
+  1. Propuestas de valor (2_DATA_PRODUCTO.txt no tiene la sección PROPUESTAS DE VALOR). Candidatas para el
+     brazo B:
+     1) Ya gastaste en consultas y pastillas y seguís igual → actúa directo en tu oído, sin receta → dejás
+        de gastar en citas que no resuelven.
+     2) Una ida al otorrino te cuesta más que el tratamiento → Q178 con envío gratis y pagás al recibirlo →
+        cuidás tu oído sin descuadrar el mes.
+     3) Llevás años probando cosas → ingredientes vegetales que trabajan circulación y tensión → por fin
+        algo que se siente sin efectos raros.
+     4) Te da miedo otra estafa → llega sellado y pagás hasta tenerlo en la mano → no arriesgás nada.
+     5) El zumbido te roba la concentración → baja el ruido y el estrés → más claridad en tu día.
+     6) Lo dejás a medias y volvés a empezar → el tratamiento de 3 cubre el uso continuo con 180 días de
+        garantía → terminás lo que empezaste (el video dice "tan barata que pedí otra de repuesto").
+  2. Fricción: devolver la garantía 90/180 a la oferta de INT 2; CTA de INT 1 ("¿Deseás conocer nuestros
+     precios?") con beneficio.
+  3. Congruencia: primero C3 (precio único y cifra social única); después C2 (en el brazo B la solución
+     fallida son "consultas/otorrinos"); después C5 (apertura 3A); declarar el Video 1.
+  4. Oferta: "tratamiento de X días" cuando exista duracion_1u. "LA MÁS ELEGIDA" ya está.
+  5. FAQ nuevas: ninguna (sin chats no hay evidencia).
+
+6. DISEÑO DEL A/B (T03)
+  Dos conjuntos nuevos y gemelos de ACCESIBILIDAD_MEDICO en GTR7, cada uno con su Post ID, mismo tinnidrop4 y
+  mismo copy; banda 45-60, Advantage+ OFF, mismo presupuesto (~$3.26/día por réplica hoy), 4 AM.
+  Brazo A: paraguas optimizado. Brazo B: producto nuevo en el catálogo con flujo dedicado a ACCESIBILIDAD.
+  Ruteo probado con una conversación desde cada gemelo antes de lanzar, visible en LucidSales.
+  _TESTEOS.csv: variable=flujo, angulo_fijo=ACCESIBILIDAD_MEDICO.
+  Muestra (ab_flujo.py, base 11.1 % acumulado, n=721): 11.1→20 % = 260 msj/brazo (87 días a ~3 msj/día) ·
+  →18 % = 409 (137 días) · →16.6 % = 619 (207 días). A 6 msj/día por brazo, el 20 % baja a 44 días.
+  Con ~12 msj/día en todo el ángulo el test es INDICATIVO, no concluyente. Se lee una sola vez, al llegar al
+  n, con Fisher (comparar_cierre).
+
+7. FILA PARA PRODUCTOS/_EVENTOS.csv (DIAGNOSTICO_CONGRUENCIA) — la registra el operador con registrar_evento.py
+  2026-09-24,TINNIDROP,*,*,*,DIAGNOSTICO_CONGRUENCIA,11.8,,"F2 diagnostico sin reescritura. Angulo
+  ACCESIBILIDAD_MEDICO cierre 11.8% (20/169, IC95 7.2-18.3) ventana limpia 09-22 sep sin lote F2-CONCEPTOS
+  defectuoso; producto 9.6% (49/510); chi2 p=0.257 sin heterogeneidad; cierre estable (14.4%->11.8% p=0.50)
+  y costo/msj +78% post duplicacion 03-sep => el deterioro es pre-clic. Congruencia provisional (texto real
+  del bot no disponible): C1/C2/C5 desajuste (render usa PERDIDA_AUDITIVA nivel 2), C3 Q178 copy vs Q179
+  render + prueba social 10,200 vs 12,000, C4 ok, C6 depende del Video 1 sin declarar. Consistencia fisica
+  NO verificada (video South Moon vs envase SANARTE). Sin chats: donde, no por que.",ETAPA-11 2026-09-24
+
+8. TODAVÍA NO SE PUEDE DECIR
+  Por qué se cae la venta (falta el export de chats) · si C1/C2/C5/C6 existen en el bot real (falta el
+  export del flujo cargado) · si hay desajuste físico (foto + fotograma) · NOCHES_SIN_DORMIR (faltan 17 msj
+  para el piso) · orden entre ACCESIBILIDAD, NOCHES y DETERIORO (IC solapados).
+  Fuera del alcance de esta etapa: sin evento por el $0 de GTR7 del 21-sep; bitácora sin entradas 09→22-sep;
+  faltan alias de los conjuntos GTR0 sin "+25AÑOS"; 3 ventas sin conjunto.

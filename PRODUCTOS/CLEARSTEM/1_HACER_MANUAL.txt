@@ -1,12 +1,12 @@
-CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id 120245469370810609 ("🟩 CLEARSTEM - WP - NEW TEST", GTR13)
+═══ CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id 120245469370810609 ("🟩 CLEARSTEM - WP - NEW TEST", GTR13) ═══
 ════════════════════════════════════════════════════════════════════════
 1_HACER_MANUAL — TODO LO QUE EJECUTÁS A MANO, EN ORDEN
 ════════════════════════════════════════════════════════════════════════
 FanPage de pauta: #4 ✨ Belleza & Piel — Astrid García
 Tono: confesional + educativo (no aspiracional puro) · voseo guatemalteco
 Cuenta: GTR 13 (916746367261028) — ⚠️ MCP OFF, se monitorea solo por LucidSales
-Precios: 1u Q199 · 2u Q299 (OFERTA IRRESISTIBLE) · 3u Q399 (LA MÁS ELEGIDA ⭐)
-CPA Objetivo Q30.8 · CPA Break-Even Q60.5 · Presupuesto $1.59/conjunto
+Precios (cobro real Dropi): 1u Q198 · 2u Q289 (OFERTA IRRESISTIBLE) · 3u Q389.01 (LA MÁS ELEGIDA ⭐)   [fuente: _DIM_PRECIOS.csv, recalibrado 2026-08-11 · antes Q199/Q299/Q399]
+CPA Objetivo Q30.8 · CPA Break-Even Q105.89 [fuente: _DIM_PRODUCTOS.csv cpa_be_q · _DECISIONES.json 2026-09-24 · antes Q60.5] · Presupuesto $1.59/conjunto
 
 ────────────────────────────────────────────────────────────────────────
 PARTE 0 — QUÉ CAMBIA EN ESTE CICLO (leer antes de tocar nada)

@@ -43,9 +43,11 @@ def test_baseline_pasa_sobre_los_outputs_reales():
     """`run_baseline.py` sobre la config real debe salir 0: ningún test NO
     marcado `expected_fail` puede estar en rojo — ese es el piso que protege
     la poda de prosa de ETAPA-*.md (T11 es la razón de existir de esta gate)."""
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
     proc = subprocess.run(
         [sys.executable, os.path.join(EVALS_DIR, "run_baseline.py")],
-        cwd=EVALS_DIR, capture_output=True, text=True,
+        cwd=EVALS_DIR, env=env, capture_output=True, text=True,
+        encoding="utf-8", errors="replace",
     )
     ok = proc.returncode == 0
     return _informe(ok, "run_baseline.py sobre promptfooconfig.yaml sale 0 (sin FAIL reales)",

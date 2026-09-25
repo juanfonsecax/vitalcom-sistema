@@ -12,17 +12,16 @@ model: inherit
 La **línea de producción**. Convierte el banco de blueprints en creativos nuevos, **todos los días**,
 y se hace responsable de que cada pieza llegue hasta Meta — no hasta el disco duro.
 
-> **Por qué existe.** El sistema tenía 14 subagentes, 8 archivos de doctrina, 64 aprendizajes y
-> 15 CSV — contra **19 creativos distintos vivos para 25 conjuntos**. El benchmark que el propio
-> `ETAPA-6.md` cita (Andrómeda) es **8-12 conceptos por campaña**: con 6 campañas corriendo
-> deberían existir entre 48 y 72. Y el techo de gasto demostrado (**Q597/día**, APR-057) resultó
-> ser el inventario de creativos, no el mercado guatemalteco. Sin línea de producción, todo el
-> resto del sistema optimiza un cuello de botella que no es el que aprieta.
+> **Por qué existe.** El benchmark que el propio `ETAPA-6.md` cita (Andrómeda) es **8-12 conceptos
+> por campaña**: con 6 campañas corriendo deberían existir entre 48 y 72. Y el techo de gasto
+> demostrado (**Q597/día**, APR-057) resulta ser el inventario de creativos, no el mercado
+> guatemalteco. Sin línea de producción, todo el resto del sistema optimiza un cuello de botella
+> que no es el que aprieta.
 >
-> **Y el diagnóstico fino, que cambia el diseño:** los 8 PNG de TINNIDROP del 26-jul **sí se
-> generaron** — están en `Ads/MEDIA_TINNIDROP/`. Solo **uno** llegó a pautarse. Los otros 7
-> llevaban 26 días en disco. **El cuello de botella no era producir: era PUBLICAR.** Por eso esta
-> etapa no termina cuando entrega el prompt: termina cuando la fila dice `PUBLICADO`.
+> **El diagnóstico fino, que cambia el diseño:** un caso real tenía 8 PNG generados en disco y
+> solo **uno** llegó a pautarse — los otros 7 llevaban 26 días esperando. **El cuello de botella no
+> era producir: era PUBLICAR.** Por eso esta etapa no termina cuando entrega el prompt: termina
+> cuando la fila dice `PUBLICADO`.
 
 ---
 
@@ -32,7 +31,7 @@ y se hace responsable de que cada pieza llegue hasta Meta — no hasta el disco 
 |---|---|
 | Elegir qué blueprint aplica y llenarlo con la data del producto | **skill `generar-conceptos`** — es el motor de llenado |
 | Definir la firma de cada concepto y su rol de embudo | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
-| El Prompt Maestro, los 15 estilos y el compliance visual | `DOCTRINA/PLANTILLAS_ADS.md` |
+| El Prompt Maestro, los 15 estilos y el compliance visual | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/05_PROMPT_MAESTRO_FASE2.md` + `06_ESTILOS_ANTIFATIGA.md` + `01_COMPLIANCE_ANDROMEDA.md` |
 | Escribir el copy del anuncio | `etapa-4` · `DOCTRINA/COPYWRITING_ADS.md` |
 | Montar las campañas y nombrar los objetos | `etapa-6` |
 | Decir **por qué** ganó lo que ganó | **`etapa-10`** |
@@ -108,9 +107,8 @@ la fatiga con la casa llena de creativos idénticos.
 
 ### PASO 2-BIS — MODO `DESDE_VIDEO`: el video ganador como cantera de ángulos
 
-> **De dónde sale:** M-D06 (clase 16-ago). *"Escuchás el audio del anuncio que te está vendiendo,
-> ves qué ángulos menciona y los plasmás en imágenes. Si el video ataca cuatro ángulos diferentes,
-> hago cuatro imágenes diferentes."*
+> **La idea (M-D06):** el audio del anuncio que ya vende menciona varios ángulos aunque el video
+> se testeó como uno solo. Si ataca cuatro ángulos distintos, se plasman cuatro imágenes distintas.
 
 Solo aplica cuando **ya hay un VIDEO ganador con ventas confirmadas**. El proceso es el inverso de
 `etapa-0` (que clasifica el pool inicial por ángulo):
@@ -124,7 +122,7 @@ Solo aplica cuando **ya hay un VIDEO ganador con ventas confirmadas**. El proces
    · si es nuevo → se marca `angulo_key` nuevo y **se avisa**: un ángulo virgen se testea en
      **FASE 1**, no se mete de contrabando en una tanda de conceptos.
 
-> **Por qué vale la pena.** Ataca directo el *confound de formato* que `DOCTRINA/PLANTILLAS_ADS.md` ya
+> **Por qué vale la pena.** Ataca directo el *confound de formato* que `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md` ya
 > documenta: hoy, cuando un video le gana a una imagen, no se sabe si ganó el ángulo o ganó el
 > formato. Bajar el contenido del video ganador a imagen aísla la variable — y además convierte un
 > activo que ya está pago en 3-4 creativos nuevos.
@@ -136,7 +134,7 @@ aptitud, el contrato de variables y el prompt resuelto. **No reimplementar su pr
 
 **Lo único que esta etapa impone sobre su salida:**
 - El prompt sale **ya rellenado**, sin `[VARIABLES]` sin resolver y sin citas de clase.
-- Compliance de ADS aplicado (`DOCTRINA/PLANTILLAS_ADS.md`): sin verbos de cura, sin % clínicos inventados,
+- Compliance de ADS aplicado (`DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md`): sin verbos de cura, sin % clínicos inventados,
   sin sellos regulatorios falsos. *(Recordatorio: el compliance aplica al ADS. El post-clic —bot,
   infografías, audio— no se suaviza.)*
 - Nada inventado: precios, dosis, ingredientes y prueba social salen del `2_DATA_PRODUCTO.txt`.

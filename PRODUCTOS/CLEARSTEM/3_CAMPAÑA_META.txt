@@ -1,0 +1,97 @@
+═══ CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id 120245469370810609 ("🟩 CLEARSTEM - WP - NEW TEST", GTR13) ═══
+MAPA DE CAMPAÑA — CLEARSTEM | FASE 2 (nodo F2.etapa-11, fuente _ESTADO_FLUJO.csv 2026-09-24)
+Archivo creado 2026-09-24 al re-empaquetar (T4e p2-simplificacion). Solo IDs que ya existen en la data
+del repo, cada uno con su fuente. Lo que no está en la data queda como FALTA — no se inventa.
+
+Cuenta: GTR 13 · act_916746367261028 · USD   ·   Negocio: AMG 9 · 941347687954885   (fuente: _DIM_CUENTAS.csv)
+  mcp_habilitado=NO · sube_media_local=NO → no se publica por MCP. La lectura de gasto sí llega por
+  Meta Graph API (filas MetaAPI-directo en _FACT_ENTREGA_ANUNCIO.csv desde 2026-09-06).
+FanPage: Astrid García · 823825257480758   (fuente: _DIM_PRODUCTOS.csv page_id)
+WhatsApp: FALTA (no está en la data del repo)
+MCP_PIXEL_ID: FALTA
+
+── CAMPAÑAS ──
+campaign_id 120245469370810609   (fuente: _DIM_PRODUCTOS.csv campaign_id)
+  ⚠️ NOMBRE SIN CONFIRMAR: el encabezado de 1_/2_ lo rotula "🟩 CLEARSTEM - WP - NEW TEST", pero la nota
+  de _DIM_PRODUCTOS.csv (06-sep) pide el campaign_id de GTR13_CLEARSTEM_ESCALA_20260812, y este ID es del
+  mismo lote de creación que los ad_id de ESCALA (1202454693708406xx). Inferencia, no verificada contra Meta.
+  El operador confirma en Ads Manager a qué campaña pertenece.
+
+GTR13_CLEARSTEM_ESCALA_20260812 · estado ON (fuente: _ESTADO_META.csv, confirmado 2026-08-20)
+  campaign_id: ver arriba (sin confirmar)
+🟩 CLEARSTEM - WP - NEW TEST · estado OFF (fuente: _ESTADO_META.csv, 2026-08-16)
+  campaign_id: ver arriba (sin confirmar)
+
+Objetivo, presupuesto por conjunto y hora de inicio de estas campañas: FALTA (no hay snapshot de Meta en
+el repo; GTR13 sin MCP).
+
+── CONJUNTOS Y ANUNCIOS DE GTR13_CLEARSTEM_ESCALA_20260812 ──
+ad_id: _FACT_ENTREGA_ANUNCIO.csv, fuente MetaAPI-directo, con gasto hasta la fecha indicada.
+ad_set_id: FALTA en todos (ninguna tabla del repo lo guarda).
+Banda: _DIM_BANDAS.csv (DEDUCIDA del nombre; el operador la confirma en Meta) o sufijo del nombre.
+
+GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R1 · ad_set_id FALTA · banda 25-35 · IMAGEN · sin precio
+  RESISTENCIA-INSULINA_IMG_A ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1 · 120245469371060609 (hasta 2026-09-22)
+  RESISTENCIA-INSULINA_IMG_B ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1 · 120245469371140609 (hasta 2026-09-22)
+GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R2 +25años · ad_set_id FALTA · banda 25+ · IMAGEN · sin precio
+  imagen nueva · 120245469489550609 (hasta 2026-09-22)
+  imagen nueva - Copia · 120245469489560609 (hasta 2026-09-22)
+GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R3 25-40 · ad_set_id FALTA · banda 25-40 (nombre) · IMAGEN · sin precio
+  RESISTENCIA-INSULINA_IMG_A ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1 · 120245953574900609 (hasta 2026-09-22)
+  RESISTENCIA-INSULINA_IMG_B ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1 · 120245953574920609 (hasta 2026-09-22)
+GTR13_CLEARSTEM_ANTI-FALSIFICACION_R1 · ad_set_id FALTA · banda 25-35 · VIDEO Clearstem3 (Post ID) · sin precio
+  ANTI-FALSIFICACION_VID_A ~ CLEARSTEM|ANTI_FALSIFICACI|C9|NC3A|SIN_PRECIO|BOT_V1 · 120245469371050609 (hasta 2026-09-22)
+  ANTI-FALSIFICACION_VID_B ~ CLEARSTEM|ANTI_FALSIFICACI|C9|NC3A|SIN_PRECIO|BOT_V1 · 120245469370840609 (hasta 2026-09-22)
+GTR13_CLEARSTEM_ANTI-FALSIFICACION_R2 25-40 · ad_set_id FALTA · banda 25-40 (nombre) · VIDEO Clearstem3 (Post ID) · sin precio
+  ANTI-FALSIFICACION_VID_A ~ CLEARSTEM|ANTI_FALSIFICACI|C9|NC3A|SIN_PRECIO|BOT_V1 · 120245953508520609 (hasta 2026-09-22)
+  ANTI-FALSIFICACION_VID_B ~ CLEARSTEM|ANTI_FALSIFICACI|C9|NC3A|SIN_PRECIO|BOT_V1 · 120245953508500609 (hasta 2026-09-22)
+GTR13_CLEARSTEM_MEDICOS-FALLARON_R1 + 25AÑOS - Copia · ad_set_id FALTA · banda 25+ · VIDEO Clearstem2 (Post ID) · sin precio
+  ⚠️ "- Copia" vivo: renombrar a R3 (invariante 12).
+  video Clearstem2 · 120245469571340609 (hasta 2026-09-22)
+  video Clearstem2 - Copia · 120245469571350609 (hasta 2026-09-22)
+GTR13_CLEARSTEM_MEDICOS-FALLARON_R2 + 25AÑOS · ad_set_id FALTA · banda 25+ · VIDEO Clearstem2 (Post ID) · sin precio
+  video Clearstem2 · 120245469371080609 (hasta 2026-09-22)
+  video Clearstem2 - Copia · 120245469371070609 (hasta 2026-09-20)
+GTR13_CLEARSTEM_ANTI-FALSIFICACION_R12 + 25  AÑOS · ad_set_id FALTA · banda 25+ · VIDEO Clearstem3 (Post ID)
+  video Clearstem3 - Copia · 120245469496620609 (fuente: _MAPA_AD_ID_HIST.csv, gasto 2026-08-14 → 2026-08-16)
+
+── HISTÓRICO: 🟩 CLEARSTEM - WP - NEW TEST (OFF) ──
+ad_id: _MAPA_AD_ID_HIST.csv, metodo ad_id_verificado_gasto (ventanas 2026-07-17 → 2026-08-16). ad_set_id FALTA.
+Anti-Falsificación
+  video Clearstem3 · 120244613997420609
+  video Clearstem3 - Copia · 120244614069360609
+Anti-Falsificación - Copia
+  video Clearstem3 · 120244983821920609 · 120244983821960609 · 120244983821790609
+  video Clearstem3 - Copia · 120244983821970609 · 120244983821990609 · 120244983821910609
+Médicos Fallaron
+  video Clearstem2 · 120244613997430609
+  video Clearstem2 - Copia · 120244614065970609
+Médicos Fallaron - Copia
+  video Clearstem2 · 120244983821860609 · 120244983821840609 · 120244983821800609
+  video Clearstem2 - Copia · 120244983821850609 · 120244983821870609 · 120244983821810609
+Resistencia a la Insulina / SOP
+  imagen nueva - Copia · 120244614069920609
+Resistencia a la Insulina / SOP - Copia
+  imagen nueva · 120244983821820609 · 120244983821830609 · 120244983821880609
+  imagen nueva - Copia · 120244983821900609 · 120244983821890609 · 120244983821940609
+Testimonio Radical
+  video Clearstem10 · 120244613997450609
+  video Clearstem10 - Copia · 120244614068360609
+Eje Intestino-Piel (PODADO)
+  imagen nueva) — sin precio · 120244613997380609
+  imagen nueva) — sin precio - Copia · 120244614067210609
+Dolor Emocional Masculino: ad_id FALTA (en _MAPA_AD_ID_HIST.csv solo aparece por nombre, sin ad_id verificado).
+
+⚠️ _DIM_ANUNCIOS.csv trae además IDs terminados en ...0592 / ...0608 (ej. 120245469371070592,
+   120245469371080608). No aparecen en las filas MetaAPI-directo: parecen el mismo ID redondeado al pasar
+   por un número de coma flotante. No se listan acá como IDs reales.
+
+── FASE 1 PLANIFICADA, NO PUBLICADA ──
+_PUBLICACION_F1.json (2026-09-08) deriva GTR13_CLEARSTEM_TEST_20260909 (6-1-1, $2.99/conjunto, PAUSED).
+No trae ningún ID de Meta: no se publicó (GTR13 sin MCP).
+
+Lectura ETAPA-7: CPA real = (spend_usd ÷ ventas de _FACT_VENTAS.csv) × 7.62, vía decidir.py; nunca omni_purchase.
+
+RESULTADOS_TESTEO: [vacío — lo lee ETAPA-7 / decidir.py]
+ANGULO_GANADOR: RESISTENCIA_INSULINA_SOP, co-ganador ANTI_FALSIFICACION (por venta; _DIM_PRODUCTOS.csv nota
+  06-sep y _FLUJO_CLEARSTEM_20260924.txt). Concepto ganador 2 de 2: PENDIENTE.

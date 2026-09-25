@@ -50,7 +50,7 @@ Reglas:
 1. Descargar los 20-21 videos a `Ads/1.1 Videos/`.
 2. Gemini analiza todos y genera un `.txt` por video en `Ads/1.2 Transcripcion videos/`.
 3. Nombre del video = nombre de la transcripción (mismo número):
-   `5. Nusava B12.mp4` → `5. Nusava B12.txt`.
+   `5. [NOMBRE_PRODUCTO].mp4` → `5. [NOMBRE_PRODUCTO].txt`.
 4. Numerar en orden (1, 2, 3 … 21).
 
 ---
@@ -91,7 +91,7 @@ El texto del anuncio está visible en Ads Library. Copiá el copy de los 10 de M
 
 ### B. Pantallazo de la FanPage de la competencia — ÚTIL
 Captura grande de 1-2 páginas fuertes del nicho (foto, bio, productos, tono).
-- **Para qué:** ETAPA-FANPAGE (calibración de identidad/tono) y edad de segmentación. Pasarlo en el chat.
+- **Para qué:** ETAPA-2 (calibración de identidad/tono en su asignación de FanPage) y edad de segmentación. Pasarlo en el chat.
 
 ### C. Imagen del producto — OBLIGATORIO
 Siempre en el chat (adjunta o link). La usa ETAPA-4 (Director de Arte: colores etiqueta/frasco) y ETAPA-1B.

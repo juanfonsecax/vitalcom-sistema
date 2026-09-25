@@ -31,7 +31,7 @@ bash "Ads/_TOOLS/lavar_videos.sh" "[PRODUCTO]" [OFERTA] [COLOR] "Ads/MEDIA_[PROD
 
 **OFERTA** = `2X1` (sticker "2X1 / SOLO HOY") o `NORMAL` (sticker "MEGA OFERTA / SOLO HOY"). El operador lo indica al arrancar; si no lo dice, default `NORMAL`.
 
-**COLOR = automático** según la FanPage/categoría (la resuelve el orquestador con `<pagina_asignada>` de `etapa-fanpage`, o la categoría del producto):
+**COLOR = automático** según la FanPage/categoría (la resuelve el orquestador con `<pagina_asignada>` de `etapa-2`, o la categoría del producto):
 
 | Categoría | Color |
 |---|---|

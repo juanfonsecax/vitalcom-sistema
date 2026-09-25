@@ -1,0 +1,6 @@
+Fuente: re-corrida de la etapa-7 fusionada sobre TINNIDROP (protocolo de poda, p2-T4, 2026-09-24),
+copia de evals/reruns/2026-09-24_etapa-7-fusionada_TINNIDROP_p2-T4.txt.
+Insumos: la tabla de decidir.py congelada en evals/reruns/2026-09-24_decidir_TINNIDROP_tabla.txt +
+_DECISIONES.json, _EVENTOS.csv, _DIM_CONJUNTOS.csv, _ALIAS_CONJUNTOS.csv, _BITACORA_DATA.txt,
+_FACT_VENTAS.csv, _FACT_ENTREGA.csv y _APRENDIZAJES.csv con data hasta 2026-09-22.
+Transcripcion del parent: mismo contenido y cifras; las tablas markdown se aplanaron a lineas.

@@ -464,8 +464,8 @@ def test_acciones_v7():
 def _con_pasos(pasos, prompt=True):
     flujo = copy.deepcopy(FLUJO_JUGUETE)
     flujo["fases"][0]["nodos"][1].update(
-        secuencia=["etapa-0", "etapa-2", "etapa-fanpage", "etapa-6"],
-        como="La skill invoca los subagentes (etapa-2 ∥ etapa-fanpage).")
+        secuencia=["etapa-0", "etapa-2", "etapa-4", "etapa-6"],
+        como="La skill invoca los subagentes (etapa-2 ∥ etapa-4).")
     m = manifiesto_v7_valido()
     if prompt:
         m["acciones"]["claude"] = {"prompt_paso": ["Ejecutá {etapa}.", "Salidas en {etapas_dir}.", "PASO_ETAPA: {etapa}"]}
@@ -476,20 +476,20 @@ def _con_pasos(pasos, prompt=True):
 
 
 def test_pasos_v20():
-    buenos = [["etapa-0"], ["etapa-2", "etapa-fanpage"], ["etapa-6"]]
+    buenos = [["etapa-0"], ["etapa-2", "etapa-4"], ["etapa-6"]]
     m, flujo = _con_pasos(buenos)
     check(_problemas_que_empiezan(m, "V20:", flujo) == [], "pasos = secuencia agrupada con su paralelo declarado",
           str(_problemas_que_empiezan(m, "V20:", flujo)))
-    m, flujo = _con_pasos([["etapa-0"], ["etapa-fanpage", "etapa-2"], ["etapa-6"]])
+    m, flujo = _con_pasos([["etapa-0"], ["etapa-4", "etapa-2"], ["etapa-6"]])
     check(_problemas_que_empiezan(m, "V20:", flujo), "pasos en otro orden que la secuencia → V20")
-    m, flujo = _con_pasos([["etapa-0"], ["etapa-2"], ["etapa-fanpage", "etapa-6"]])
+    m, flujo = _con_pasos([["etapa-0"], ["etapa-2"], ["etapa-4", "etapa-6"]])
     check(_problemas_que_empiezan(m, "V20:", flujo), "un paralelo que FLUJO.json no declara → V20")
-    m, flujo = _con_pasos([["etapa-0"], ["etapa-2", "etapa-fanpage"]])
+    m, flujo = _con_pasos([["etapa-0"], ["etapa-2", "etapa-4"]])
     check(_problemas_que_empiezan(m, "V20:", flujo), "falta una etapa de la secuencia → V20")
     m, flujo = _con_pasos(buenos, prompt=False)
     check(_problemas_que_empiezan(m, "V20:", flujo), "pasos sin acciones.claude.prompt_paso → V20")
-    flujo["fases"][0]["nodos"][1]["secuencia"] = ["etapa-0", "etapa-2", "etapa-fanpage", "etapa-inventada"]
-    m, _ = _con_pasos([["etapa-0"], ["etapa-2", "etapa-fanpage"], ["etapa-inventada"]])
+    flujo["fases"][0]["nodos"][1]["secuencia"] = ["etapa-0", "etapa-2", "etapa-4", "etapa-inventada"]
+    m, _ = _con_pasos([["etapa-0"], ["etapa-2", "etapa-4"], ["etapa-inventada"]])
     check(any("no es un agente" in p for p in _problemas_que_empiezan(m, "V20:", flujo)),
           "una etapa que no es un agente de .claude/agents → V20")
     m, flujo = _con_pasos(buenos)

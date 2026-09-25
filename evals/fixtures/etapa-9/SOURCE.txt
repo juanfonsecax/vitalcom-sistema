@@ -1,0 +1,8 @@
+Fuente: PRODUCTOS/_DIM_CREATIVOS.csv, las 5 filas con producto_key=TINNIDROP
+y fecha_alta=2026-09-06 (tanda real de FASE 2, ángulo ACCESIBILIDAD_MEDICO,
+estado GENERADO). Recorte congelado 23-sep-2026 para evals/ — nunca se editó
+el CSV real, solo se copiaron esas filas con su encabezado.
+Output real de ETAPA-9.md: no existe una prosa libre de esta etapa persistida
+en disco (vive en sesión), pero SÍ persisten las filas que registra en
+_DIM_CREATIVOS.csv — ahí vive el contrato verificable (canonico_id, balance
+de rol_embudo, máximo 2 ejecuciones por concepto_key).

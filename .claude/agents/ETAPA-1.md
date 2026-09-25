@@ -38,7 +38,7 @@ completan de memoria.** Si el script falla o alerta de techo de tabla excedido (
 reportar — no estimar.
 
 > En productos COMBO (2x1, 4x2) el costo que entra es el del **PEDIDO COMPLETO**, no el de la
-> unidad: VARICOSE vende 2 frascos de Q45 → se pasa `90`, no `45`.
+> unidad: un producto que vende 2 frascos de Q45 → se pasa `90`, no `45`.
 
 Lo que el script **no** decide y sigue siendo trabajo de esta etapa: la **arquitectura de oferta**
 (Paso 2) según tipo de producto y nivel de conciencia del avatar, y la lectura de la tabla de abajo
@@ -46,7 +46,7 @@ cuando hace falta explicar de dónde viene un número.
 
 ### Paso 1 — La tabla de referencia (espejo legible, no fuente)
 
-> **UNA SOLA ESCALERA (unificado 2026-09-02).** La fuente única es
+> **UNA SOLA ESCALERA.** La fuente única es
 > `PRODUCTOS/_DIM_COSTEO.csv`, columnas `precio_establecido`, `precio_2u`, `precio_3u` y
 > `origen_escalera`. La tabla de abajo es su espejo legible: **si difiere del output de
 > `costear.py`, manda el script.**
@@ -65,10 +65,10 @@ cuando hace falta explicar de dónde viene un número.
 | 2 | `PRODUCTOS/_DIM_COSTEO.csv` vía `costear.py` | Producto **nuevo**, sin ventas todavía. |
 | 3 | La tabla de abajo | Solo lectura humana. Nunca se copia a mano a un archivo de producto. |
 
-**Regla de selección de fila:** la **más cercana** al costo; en empate, la superior. TINNIDROP Q41 →
-fila Q40 · NUSAVA Q55 → fila Q54 · CLEARSTEM Q57 → empata (54 y 60) → fila Q60. Nunca se interpola.
+**Regla de selección de fila:** la **más cercana** al costo; en empate, la superior. Un producto con costo Q41 →
+fila Q40 · uno con Q55 → fila Q54 · uno con Q57 → empata (54 y 60) → fila Q60. Nunca se interpola.
 
-# COSTEO_COMPLETO_VITALCOM — Tabla Maestra (v2 · actualizada 2026-07-25)
+# COSTEO_COMPLETO_VITALCOM — Tabla Maestra (v2)
 
 > **Fuente:** `COSTEOS GT PRO.xlsx` del operador. La tabla completa con TODAS las columnas intermedias (envío, gastos, utilidad, % de ingreso) está en **`PRODUCTOS/_DIM_COSTEO.csv`** — de ahí la lee el dashboard. Acá va el resumen operativo.
 >
@@ -106,9 +106,9 @@ Parámetros vigentes: tasa de despacho **97%** · devoluciones **17%** · public
 
 > El BE es, por definición, el CPA donde la ganancia queda en CERO (ya consume toda la utilidad esperada). No es un objetivo: es el techo.
 
-**Regla de aproximación:** la fila **más cercana** al costo; **en empate, la superior** (conservador). Lo aplica `costear.py`, no se hace a ojo. Casos reales: TINNIDROP Q41 → fila Q40 · NUSAVA Q55 → fila Q54 · CLEARSTEM Q57 → empata entre Q54 y Q60 → fila Q60. **Nunca se interpola.**
+**Regla de aproximación:** la fila **más cercana** al costo; **en empate, la superior** (conservador). Lo aplica `costear.py`, no se hace a ojo. Casos reales: un producto con costo Q41 → fila Q40 · uno con Q55 → fila Q54 · uno con Q57 → empata entre Q54 y Q60 → fila Q60. **Nunca se interpola.**
 
-**Productos en COMBO (2x1 / 4x2):** el costo que entra a la tabla es el del PEDIDO COMPLETO, no el de la unidad. Ej. VARICOSE vende 2 frascos de Q45 → **producto Q90 → fila Q90** (precio Q249, BE Q83.0), no la fila Q45.
+**Productos en COMBO (2x1 / 4x2):** el costo que entra a la tabla es el del PEDIDO COMPLETO, no el de la unidad. Ej. un producto que vende 2 frascos de Q45 → **producto Q90 → fila Q90** (precio Q249, BE Q83.0), no la fila Q45.
 
 ⚠️ **La tasa de entrega real se verifica cada mes** contra `PRODUCTOS/_TASA_ENTREGA.csv`. Ojo al leerla: el % de "ENTREGADO" que muestra Dropi es sobre el TOTAL e incluye pedidos **en tránsito**. El % de devolución que importa se calcula sobre **estados RESUELTOS** (entregado + devolución + cancelado). Julio-2026: 85.1% de entrega / 14.0% de devolución sobre resueltos → el supuesto de 17% está bien calibrado.
 
@@ -131,7 +131,7 @@ Parámetros vigentes: tasa de despacho **97%** · devoluciones **17%** · public
 
 ### Paso 2.5 — REGLA DE ARRANQUE: ¿1 unidad o directo en 2x1? (aritmética del múltiplo)
 
-> Derivada 31-jul-2026, vale para TODO producto nuevo. Movida desde `CLAUDE.md` — **este archivo es el dueño.** Es la versión numérica de la matriz del Paso 2: cuando el Paso 2 deja duda, esto la resuelve.
+> Vale para TODO producto nuevo. Movida desde `CLAUDE.md` — **este archivo es el dueño.** Es la versión numérica de la matriz del Paso 2: cuando el Paso 2 deja duda, esto la resuelve.
 
 Lo decide el **múltiplo del costo que habría que cobrar por UNA unidad**, no el margen — a cualquier costo el margen cierra. Los ~Q40 fijos de logística (flete Q34 + admin Q4 + otros Q2) **no bajan con el precio**, así que en un producto barato ese múltiplo se dispara y el precio deja de ser creíble para la categoría.
 
@@ -200,7 +200,7 @@ Los valores P1u, P2u, P3u, CPA objetivo y CPA break even, y la ARQUITECTURA DE O
 
 ---
 
-## GARANTÍA COMO PALANCA DE OFERTA (operador 10-jul — validada en landing, portada al bot)
+## GARANTÍA COMO PALANCA DE OFERTA (validada en landing, portada al bot)
 Cuando el operador ofrece una garantía REAL, se usa como reductor de fricción Y como palanca de upsell escalonada por cantidad (probado en landing del operador):
 - **Baseline** (todas las cantidades): X días de garantía de satisfacción → va en la INFOGRAFÍA 3 (confianza) como sello.
 - **Escalera por cantidad** (empuja al combo, SOLO en el mensaje de oferta del bot, NUNCA en la imagen): 1u y 2u = X días · 3u = 2X días (ej. 90 / 180). El "más garantía" es otro motivo para llevar el tratamiento completo, encima del precio y el regalo.

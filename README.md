@@ -28,7 +28,7 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 1. **Vos das la materia prima:** producto (un problema/dolor fuerte y específico) + transcripciones en `Ads/1.2 Transcripcion videos/[PRODUCTO]/` (mínimo 6, ideal ~20) + 4 inputs (nombre, costo Q, dosis, foto del frasco).
 2. **El sistema corre FASE 1** y te deja el paquete en `PRODUCTOS/[PRODUCTO]/` + (si hay MCP) el esqueleto de campaña real en Meta **en PAUSED**.
 3. **Vos ejecutás lo manual** (según `1_HACER_MANUAL.txt`): generás las imágenes, subís los assets a Meta, configurás el LucidBot y **activás la campaña a las 4 AM** (nada se lanza solo).
-4. **El sistema se encarga del post-lanzamiento:** cada mañana la tarea programada recorre `PRODUCTOS/_PORTAFOLIO.txt`, lee las métricas (ETAPA-7) y entrega el **PLAN DE ESCALADO** (ETAPA-8). Vos ejecutás; el sistema nunca toca campañas vivas.
+4. **El sistema se encarga del post-lanzamiento:** cada mañana la tarea programada recorre `PRODUCTOS/_PORTAFOLIO.txt`, lee las métricas y entrega el **PLAN DE ESCALADO** (ETAPA-7). Vos ejecutás; el sistema nunca toca campañas vivas.
 5. **Vos leés el `_DASHBOARD.html`** — es la capa humana: ganancia, «Qué tenés que hacer», P&L y ranking por ángulo. Se **genera** desde los CSV, nunca se escribe a mano.
 
 ---
@@ -72,11 +72,11 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 
 **FASE 0 (opcional) — Buscar producto:** skill `buscar-producto` → candidatos rankeados.
 
-**FASE 1 — Pre-testeo:** `etapa-producto` → `etapa-0` → **[PASO 1.5 lavado de videos]** → `etapa-1` → `etapa-1b` → (`etapa-2` ∥ `etapa-fanpage`) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
+**FASE 1 — Pre-testeo:** `etapa-producto` → `etapa-0` → **[PASO 1.5 lavado de videos]** → `etapa-1` → `etapa-1b` → `etapa-2` (incluye la asignación de FanPage) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
 **FASE 2 — Post-testeo / Escalado:** `etapa-3` → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
-**Ciclo de optimización (diario):** `etapa-7` (lee métricas) → `etapa-8` (PLAN DE ESCALADO) → `etapa-10` (por qué ganó lo que ganó → brief) → `etapa-9` (produce ≥6 creativos) → anexar al CSV → **regenerar el dashboard** (último paso siempre).
+**Ciclo de optimización (diario):** `decidir.py` (tabla determinística) → `etapa-7` (lee métricas y entrega el PLAN DE ESCALADO) → `etapa-10` (por qué ganó lo que ganó → brief) → `etapa-9` (produce ≥6 creativos) → anexar al CSV → **regenerar el dashboard** (último paso siempre).
 
 **Optimización de flujo (al confirmar ángulo ganador, entre FASE 1 y FASE 2):** `etapa-11` mide el **CIERRE** (mensajes → ventas), separa el problema pre-clic del post-clic, audita la congruencia ad ↔ bot, lee los chats y entrega el brief a `etapa-5` + el **A/B de flujo** (paraguas optimizado vs dedicado al ganador, ruteado por Post ID). Es la palanca más grande que le queda al sistema: el cierre va en **8.6 %** contra el **15-20 %** de los mentores.
 

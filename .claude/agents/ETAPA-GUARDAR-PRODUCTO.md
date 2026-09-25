@@ -11,7 +11,7 @@ model: inherit
 - **Fin de FASE 1** (después de ETAPA-6): crea la carpeta y sus archivos.
 - **Fin de FASE 2** (después de ETAPA-6 Fase 2): ACTUALIZA los mismos archivos con el ángulo ganador, microángulos, copies/bot/campaña de escalado, y los resultados del testeo si el operador los entregó. Sube VERSION.
 - **Fin de FASE 3** (después de ETAPA-6 Fase 3, `F3.plan`): escribe `4_PLAN_ESCALADO.txt`
-  (plantilla y BANCO DE MICROÁNGULOS de `etapa-3` en `DOCTRINA/ESCALADO_PLAYBOOK.md §7`;
+  (plantilla y BANCO DE MICROÁNGULOS de `etapa-3` en `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md §7`;
   `flujo.py` verifica que quede escrito).
 
 ⚠️ Usar el tool **Write** para crear físicamente los archivos. No basta mostrarlos en el chat — si no se escriben en disco, se pierden al cerrar la sesión.
@@ -235,7 +235,7 @@ Además de los umbrales (`cpa_be_q`, `cpa_base_q`, tasa, cuenta, page_id), relle
 - Se escriben con el **nombre EXACTO de la carpeta en disco**, tal como está — no se normaliza ni se corrige. La tabla se adapta al disco, no al revés.
 - **Las carpetas NO se renombran para emparejarlas**: los `1_HACER_MANUAL.txt` referencian rutas `MEDIA_*` que el operador usa para ejecutar.
 - Si el producto todavía no tiene alguna carpeta (ej. sin videos), se deja vacío y se anota en `carpetas_extra`.
-- ⚠️ **Escribir este CSV con un escritor CSV real** (`csv.DictWriter`), nunca a mano: el campo `notas` lleva comas y **debe ir entre comillas dobles**. (Bug real 31-jul: la fila NUSAVA quedó con 20 campos en vez de 17 y la nota se truncaba.)
+- ⚠️ **Escribir este CSV con un escritor CSV real** (`csv.DictWriter`), nunca a mano: el campo `notas` lleva comas y **debe ir entre comillas dobles**. (Bug real: una fila quedó con 20 campos en vez de 17 y la nota se truncaba.)
 
 ---
 
@@ -256,10 +256,10 @@ El script compara el encabezado de `1_`/`2_`/`3_` entre sí y contra `_DIM_PRODU
 que el producto tenga fila en `_PORTAFOLIO.txt`. Las líneas `[!]` son avisos (un `page_id PENDIENTE`
 no bloquea el guardado, pero sí impide pautar); las `[x]` son discrepancias y bloquean.
 
-> Estado al 2026-09-02: 7 de 8 productos pasan. NUSAVA falla porque su `3_CAMPAÑA_META.txt` quedó
-> en `v2 / 2026-06-22` con el `campaign_id` viejo mientras `1_` y `2_` están en `v4`, y porque los
-> tres encabezados dicen `COSTO Q70` contra el `costo_q=55` que `_DIM_PRODUCTOS.csv` corrigió el
-> 31-jul. Es el tipo de deriva silenciosa que a ojo no se veía.
+> Caso real del tipo de deriva silenciosa que a ojo no se ve: un producto falló el gate porque su
+> `3_CAMPAÑA_META.txt` quedó en una versión vieja con el `campaign_id` desactualizado mientras
+> `1_` y `2_` ya estaban en la versión nueva, y porque los tres encabezados seguían citando un
+> costo que `_DIM_PRODUCTOS.csv` ya había corregido.
 
 ### PASO 2 — Lo que el script todavía no cubre
 

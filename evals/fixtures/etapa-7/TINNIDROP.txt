@@ -1,0 +1,39 @@
+PASO 3 — ETAPA-7 (monitor) + ETAPA-8 (escalado)
+───────────────────────────────────────────────────────────────────────────
+Motor determinístico `decidir.py` (ventana evaluación 14d, fatiga 3d,
+tolerancia acumulada, IC95% de credibilidad, grano ángulo) sobre
+2026-08-25 → 2026-09-07:
+
+TINNIDROP (BE Q93.41 · CPA Objetivo Q30.80)
+  🟢 ESCALAR  PERDIDA_AUDITIVA      36v · Q2,305.6 · CPA Q64.0 [IC 47-90]
+  🟢 ESCALAR  ACCESIBILIDAD_MEDICO  17v · Q945.1   · CPA Q55.6 [IC 36-92]
+  🟢 ESCALAR  GTR0_NOCHES-SIN-DORMIR 6v · Q131.2   · CPA Q21.9 [IC 11-52]
+  🟡 SEGUIR   DETERIORO_COGNITIVO   13v · Q885.1   · CPA Q68.1 [IC 41-122]
+  🟡 SEGUIR   NOCHES_SIN_DORMIR      3v · Q220.4   · CPA Q73.5 [IC 28-261]
+
+NUSAVA (BE Q92.64 · CPA Objetivo Q30.80)
+  🟡 SEGUIR   ARDOR                 15v · Q1,028.9 · CPA Q68.6 [IC 43-117]
+
+CLEARSTEM (BE Q105.89 · CPA Objetivo Q30.80)
+  🟢 ESCALAR  RESISTENCIA_INSULINA_SOP 26v · Q753.5 · CPA Q29.0 [IC 20-43]
+  🟢 ESCALAR  MEDICOS_FALLARON      13v · Q715.6   · CPA Q55.0 [IC 33-98]
+  🟢 ESCALAR  ANTI_FALSIFICACION    19v · Q406.4   · CPA Q21.4 [IC 14-34]
+
+0 PAUSAR · 0 RENOVAR(fatiga) en los 3 productos hoy.
+
+Lectura cualitativa (ETAPA-7):
+  · INTEGRIDAD: VENTAS completa 14/14 días tras cerrar el hueco. ENTREGA
+    (Meta MCP/xlsx) sin señal para 06-07-sep — informe COMPLETO para venta,
+    PARCIAL para fatiga/frecuencia.
+  · SANGRADO ≈Q0 activo: todo lo que sangraba ya fue podado por el operador
+    en las últimas 120h (GTR0 PERDIDA-AUDITIVA 25+ pausado 03-sep, CLEARSTEM
+    RESISTENCIA-INSULINA_R2+25 pausado 06-sep, GTR0 F2-CONCEPTOS pausado
+    hoy).
+  · MATRIZ CUENTA: TINNIDROP/PERDIDA_AUDITIVA vivía en GTR0+GTR7; GTR0 se
+    pausó 03-sep → el Q64.0 de hoy es casi enteramente GTR7 (cuenta rota
+    ≠ ángulo malo). ACCESIBILIDAD_MEDICO (mejor CPA de TINNIDROP, Q55.6)
+    sigue INFRA-FINANCIADO desde el 06-sep (APR-084, sin resolver).
+  · DIMENSIÓN: en TINNIDROP los 3 ganadores son VIDEO/TOFU, hook TESTIMONIO
+    > MIEDO. En CLEARSTEM el mejor CPA es ANTI_FALSIFICACION (MOFU, con
+    precio en el ad).
+

@@ -1,6 +1,6 @@
 # CALENDARIO_ESCALADO — LA CADENCIA DÍA-A-DÍA DEL ESCALADO (fuente única del "cuándo")
 
-> **Qué es esto.** `DOCTRINA/ESCALADO_PLAYBOOK.md` dice **QUÉ** palancas existen y **por qué**. Este archivo dice **CUÁNDO** se jala cada una: el ritmo temporal (Día 0 → 3 → 6 → 9 → semana 2+) con **gates de decisión** — igual que la secuencia de FASE 1, pero para optimizar. ETAPA-7 (lee) y ETAPA-8 (decide) ejecutan este calendario contra la data real. **No inventa nada:** cada ventana está anclada a la clase que la respalda.
+> **Qué es esto.** `DOCTRINA/ESCALADO_PLAYBOOK.md` dice **QUÉ** palancas existen y **por qué**. Este archivo dice **CUÁNDO** se jala cada una: el ritmo temporal (Día 0 → 3 → 6 → 9 → semana 2+) con **gates de decisión** — igual que la secuencia de FASE 1, pero para optimizar. ETAPA-7 (lee y decide, fusionada T3 p2-simplificacion 24-sep-2026) ejecuta este calendario contra la data real. **No inventa nada:** cada ventana está anclada a la clase que la respalda.
 >
 > **Fuentes (recencia manda):** Clase 22 (flujo, la más reciente) · Clase 20 (réplica del ganador) · Clase 19 (estructura de anuncio) · **Clase 15 (Joaquín — escalado progresivo, Post ID, multicuenta; la más reciente de escalado)** · Clase 8 (Camilo — CPA semanal, duplicación, precio, flujo de caja). Los montos de las clases están en COP; el sistema opera en **Q (Guatemala)** y **$2.99/conjunto en ETAPA 1 · $5.98 en ETAPA 2** (ver §1.5) — el método manda, la cifra no.
 
@@ -29,29 +29,21 @@
 
 > **En una línea:** paraguas para descubrir, dedicado para escalar. 2-3 ganadores = 2-3 FASE 2 escalonadas, no 3 campañas a un bot común.
 
-> 🔴 **EJECUTOR ASIGNADO 02-sep: `etapa-11`.** Este principio estaba escrito y nadie lo ejecutaba
-> contra data — el paso "dedicar el bot" no tenía dueño, ni método, ni forma de comprobarse.
-> Ahora `etapa-11` corre al confirmar el ángulo ganador, mide el cierre y **diseña el A/B** que lo
-> pone a prueba. Ver `.claude/agents/ETAPA-11.md`.
+> 🔴 **EJECUTOR ASIGNADO: `etapa-11`.** `etapa-11` corre al confirmar el ángulo ganador, mide el
+> cierre y **diseña el A/B** que lo pone a prueba. Ver `.claude/agents/ETAPA-11.md`.
 >
-> ⚠️ **Y el principio está SIN VERIFICAR con data propia — se ejecuta como hipótesis, no como
-> hecho.** Medido el 02-sep sobre la serie 17-jul → 01-sep: las campañas de **un solo ángulo**
-> cerraron **7.2 %** y las de **≥2 ángulos** cerraron **9.0 %** — al revés de lo que predice el
-> principio; y dentro de TINNIDROP, el único producto con ambos regímenes y `n` usable, la
-> diferencia es nula (7.96 % vs 8.32 %, Fisher p = 1.000).
-> **Eso NO refuta el principio:** `_EVENTOS.csv` no registra ni un `CAMBIO_BOT` para esos
-> productos y el checklist de LucidBot de la FASE 2 de NUSAVA quedó sin marcar, así que no hay
-> evidencia de que el flujo dedicado se haya cargado alguna vez. Lo medido es "un ángulo apuntando
-> al mismo flujo paraguas", que no es la hipótesis.
+> ⚠️ **El principio está SIN VERIFICAR con data propia — se ejecuta como hipótesis, no como
+> hecho**, porque medir si un ángulo apunta a un flujo dedicado de verdad requiere que
+> `_EVENTOS.csv` registre el `CAMBIO_BOT` y el checklist de LucidBot esté marcado; sin eso no hay
+> forma de distinguir "un ángulo con flujo dedicado" de "un ángulo apuntando al mismo paraguas".
 > **Por eso el brazo B del A/B existe:** para testearlo en serio, una sola vez y bien.
-> Detalle: `PRODUCTOS/_AUDITORIAS/_VERIFICACION_BRECHA_CIERRE_20260902.txt`.
 
 ---
 
-## 1.5 EL PRESUPUESTO ES LO QUE HACE VÁLIDOS LOS GATES (recalibrado 2026-07-25 con data propia)
+## 1.5 EL PRESUPUESTO ES LO QUE HACE VÁLIDOS LOS GATES (calibrado con data propia)
 
-> 🔴 **ALCANCE (actualizado 2026-09-02).** Todo lo de esta sección gobierna la **FASE 1 · ÁNGULOS**.
-> Desde el 02-sep el sistema tiene **tres** fases, y la FASE 2 (conceptos) tiene su propio
+> 🔴 **ALCANCE.** Todo lo de esta sección gobierna la **FASE 1 · ÁNGULOS**.
+> El sistema tiene **tres** fases, y la FASE 2 (conceptos) tiene su propio
 > presupuesto y su propio Presupuesto de Decisión, calculado **por anuncio y no por conjunto**.
 > Ver **§1.7**. Las dos reglas duras de abajo (decidir por `angulo_key` · la conversación corta
 > pero no corona) siguen valiendo para las tres fases.
@@ -117,7 +109,7 @@ CONJUNTO (todas las cuentas) . dispersión 1.89  ← señal débil
 | **VENTA** | LucidSales | **domingo** (export 7d) **+ el día que se lanza algo nuevo** | conjunto alcanza su PD + ~3d COD | matar-por-ventas · declarar ganador · escalar |
 | **APRENDIZAJE** | acumulado (`_DIM_CONJUNTOS.csv`) | mensual | 30d+ | qué hook / formato / avatar / rol de embudo gana en general |
 
-**CADENCIA DE INGESTA (decidida 25-jul):**
+**CADENCIA DE INGESTA:**
 - **Domingo** — export LucidSales de 7 días. Es la ingesta principal y la única tarea recurrente del operador.
 - **El día que se lanza producto o ángulo nuevo** — export extra, para fijar la **línea base** del lanzamiento y registrar el evento en `_EVENTOS.csv`. Sin esa línea base no se puede separar "el nuevo funciona" de "la semana fue buena".
 - **Entre semana no se pide nada.** El reloj de ENTREGA cubre fatiga y matar-por-conversación solo.
@@ -126,12 +118,10 @@ CONJUNTO (todas las cuentas) . dispersión 1.89  ← señal débil
 
 ---
 
-## 1.7 LA ARQUITECTURA DE 3 FASES (nueva — 2026-09-02)
+## 1.7 LA ARQUITECTURA DE 3 FASES
 
-> **De dónde sale:** clases del **16-ago** y **22-ago-2026** (Calet), destiladas en
-> `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md` como M-A06 a M-A13. **Qué la justifica en data propia:**
-> la dispersión 1.12 de §1.5 (el testeo por conjunto no mide el creativo) y APR-057 (el techo de
-> Q597/día es inventario de creativos, no mercado).
+> **Qué la justifica en data propia:** la dispersión 1.12 de §1.5 (el testeo por conjunto no mide
+> el creativo) y APR-057 (el techo de Q597/día es inventario de creativos, no mercado).
 
 ### 1.7.1 · La regla que decide qué estructura va en cada fase
 
@@ -169,7 +159,7 @@ replicación.
 
 > ⚠️ **Por qué la campaña C va en OTRA cuenta.** A, B y C con los mismos creativos, la misma página
 > y la misma audiencia compiten entre sí en la subasta y se suben el CPM mutuamente. Correr C en
-> otra cuenta convierte ese confound en la validación multicuenta de `DOCTRINA/ESCALADO_PLAYBOOK.md` §3.6.
+> otra cuenta convierte ese confound en la validación multicuenta de `DOCTRINA/ESCALADO/04_PALANCAS.md` §3.6.
 
 ### 1.7.3 · REGLA DE LECTURA DE LA FASE 2 — la replicación
 
@@ -232,7 +222,7 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 
 ## 2. EL CALENDARIO — VENTANA POR VENTANA
 
-> Día 0 = lanzamiento de la campaña de testeo (FASE 1 / ETAPA-6), a las **4 AM**. El calendario empieza a contar desde ahí **por conjunto** (no por campaña — ver §1.6). Cada mañana corre **ETAPA-7 (lee) → ETAPA-8 (decide)** — manual o como tarea programada.
+> Día 0 = lanzamiento de la campaña de testeo (FASE 1 / ETAPA-6), a las **4 AM**. El calendario empieza a contar desde ahí **por conjunto** (no por campaña — ver §1.6). Cada mañana corre **ETAPA-7 (lee y decide)** — manual o como tarea programada.
 
 ### 🟦 VENTANA 0 — DÍA 0 (LANZAMIENTO, 4 AM)
 - La campaña de testeo ya está creada (6 conjuntos, 6 ángulos distintos, 2 anuncios/conjunto, **$2.99/conjunto — ETAPA 1, ver §1.5**, **banda de edad derivada del avatar del ángulo**, Advantage+ OFF).
@@ -244,8 +234,8 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 - **ETAPA-7 cada mañana (solo lectura):** mirar por conjunto los **clics-enlace** y el **%conv/clic-enlace**. Nada de CPA todavía como veredicto.
 - **NO pausar. NO escalar. NO renovar creativo.** Meta está en aprendizaje (~50 conversiones para salir). El **CPA alto es NORMAL** porque el flujo aún no está optimizado (bot con muchos ángulos).
 - **Única excepción de apagado (Camilo, presupuesto alto):** si se pautó con presupuesto alto y a mediodía ya gastó la mitad **sin una sola venta en ningún anuncio del conjunto** → apagar ese conjunto. **A $2.99 se es paciente igual: esperar al día 3.**
-- ETAPA-8 en Día 1-2 **no decide escalado** — solo reporta quién apunta a ganar.
-- **PRESUPUESTO DE DECISIÓN (ver §1.5 y `DOCTRINA/ESCALADO_PLAYBOOK.md` §1.5):** a $2.99/día un conjunto alcanza **1 CPA Break-Even (su PD)** recién al día **3.3-4.3** según producto → en el día 1-2 **"0 ventas" NO es señal de matar**. Lo que SÍ se lee ya es la **conversación** (clics→chats), que a $2.99 acumula ~6.3 conv/día: un conjunto con %conv/clic-enlace muy bajo o $/conv caro se corta por ahí (anuncio/hook), sin esperar el PD. Matar-por-ventas es solo para el que ya gastó su PD y sigue en 0.
+- ETAPA-7 en Día 1-2 **no decide escalado** — solo reporta quién apunta a ganar.
+- **PRESUPUESTO DE DECISIÓN (ver §1.5 y `DOCTRINA/ESCALADO/02_PRESUPUESTO_DECISION.md` §1.5):** a $2.99/día un conjunto alcanza **1 CPA Break-Even (su PD)** recién al día **3.3-4.3** según producto → en el día 1-2 **"0 ventas" NO es señal de matar**. Lo que SÍ se lee ya es la **conversación** (clics→chats), que a $2.99 acumula ~6.3 conv/día: un conjunto con %conv/clic-enlace muy bajo o $/conv caro se corta por ahí (anuncio/hook), sin esperar el PD. Matar-por-ventas es solo para el que ya gastó su PD y sigue en 0.
 
 ### 🟨 VENTANA 2 — DÍA 3 (GATE #1: DEFINICIÓN + CORTE DE ETAPA 1) · *optimizar flujo + podar + concentrar*
 > Primer punto de decisión real. Se decide por CPA **semanal parcial** + conversación, nunca por el CPA de un día suelto.
@@ -260,12 +250,12 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 - **Arranca FASE 2 del sistema sobre el ganador #1** (ETAPA-3 → 4 → 5): microángulos + **bot dedicado de un solo ángulo** + banco de creativos anti-fatiga (TOFU/MOFU/BOFU). Si hay ganador #2/#3 → sus FASE 2 se **escalonan cada ~3 días** (§1).
 - **VALIDAR el ganador en DISTINTAS fanpages/cuentas** (Joaquín): replicar la campaña ganadora en las 4 cuentas/fanpages. **⚠️ En esta fase NO se sube presupuesto** — se valida que funcione a largo plazo (regla explícita Joaquín, Clase 15 Q&A). El +20% es solo para lo ya validado.
 - **"Cuando vende en las 4 → SÚPER WINNER"** → habilita el escalado fuerte de la Ventana 4.
-- **Empezar el banco de creativos del ganador** (Camilo: la variable #1): mandar a hacer **10-40 creativos** del mismo ángulo, conceptos/formatos distintos, entendiendo POR QUÉ ganó (Clase 20: "se copia el por qué vendió, no el creativo"). Brief lo arma ETAPA-8, lo ejecuta ETAPA-4.
+- **Empezar el banco de creativos del ganador** (Camilo: la variable #1): mandar a hacer **10-40 creativos** del mismo ángulo, conceptos/formatos distintos, entendiendo POR QUÉ ganó (Clase 20: "se copia el por qué vendió, no el creativo"). Brief lo arma ETAPA-7, lo ejecuta ETAPA-4.
 
 ### 🟩 VENTANA 4 — DÍA 5+ (ESCALADO) · *solo con CPA real rentable sostenido + flujo de caja*
 > **Gate a DÍA 5 (Guatemala, entrega COD ~3 días).** La cuenta: los pedidos de los días 1-2 entregan ~día 4-5 → el **primer lote de ventas ENTREGADAS confirmadas** ya está para el día 5. No es día 3 porque el pedido debe estar **pedido Y entregado** antes de ser plata confirmada; no hay que esperar día 7 porque en Guatemala se entrega en 3, no en 4-7 (Colombia).
 > ⚠️ **Guardarraíl:** día 5 es el gate más TEMPRANO, no automático. Abre solo si el **CPA sobre entregados está confirmado con volumen** (cruzar con LucidSales) **y agregado por `angulo_key`, no por conjunto** (§1.5). Si las entregas vienen flacas (1-2 ventas) → **esperar 1-2 días**, nunca regar horizontal sobre 1-2 ventas: con ese n el IC es ±139%.
-> Palancas del `DOCTRINA/ESCALADO_PLAYBOOK.md` §3, en orden, no todas de golpe. Requisito de entrada: **CPA sobre entregados ≤ Base con volumen + caja para sostener ~3 días de retorno COD.**
+> Palancas del `DOCTRINA/ESCALADO/04_PALANCAS.md` §3, en orden, no todas de golpe. Requisito de entrada: **CPA sobre entregados ≤ Base con volumen + caja para sostener ~3 días de retorno COD.**
 1. **Surfing +20% diario** a TODO lo que vende (cada mañana; nunca más de 20% → desoptimiza).
 2. **Post ID / publicar el creativo en la fanpage** → conservar prueba social → **regar el ganador en 4→9 cuentas** (mejor "publicación existente" que Post ID: Meta a veces borra reacciones al duplicar).
 3. **Duplicar el conjunto ganador** (Camilo, agresivo: 16k→32k→64k) — **solo con flujo de caja**. El CPA sube un poco; se compensa con **creativos nuevos**.
@@ -275,7 +265,7 @@ conceptos a la vez.** No correr FASE 2 de dos productos la misma semana.
 
 ### ♻️ CICLO PERMANENTE (cada mañana, indefinido)
 Una vez en escalado, el ritmo diario no para:
-- **ETAPA-7 lee → ETAPA-8 decide.** Surfing +20% a lo que vende. **CPA SEMANAL siempre** (no pánico diario).
+- **ETAPA-7 lee y decide.** Surfing +20% a lo que vende. **CPA SEMANAL siempre** (no pánico diario).
 - **Fatiga** (frecuencia ≥1.9 / CTR cae >20% en 48h) → **renovar creativo del MISMO ángulo**, sin tocar presupuesto ni ángulo.
 - **Ventas bajan de golpe** → **Biblioteca de Anuncios** (competencia nueva) → responder con **nuevos creativos/ángulos/oferta**, **NO apagar** (apagar desoptimiza y la competencia te quita clientes; Meta es estable).
 - **CPA real sobre ENTREGADOS, no vendidos** (Clase 8): de 100 vendidos → ~70 despachados → ~60 entregados; sumar fletes de falsos/devoluciones. Ahí vive la rentabilidad real.

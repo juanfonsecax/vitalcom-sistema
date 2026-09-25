@@ -1,0 +1,212 @@
+[
+  {
+    "ad_id": "120246893776450784",
+    "ad_name": "ARDOR_B",
+    "adset_name": "ARDOR_NUSAVAB12_TEST",
+    "spend": 0.45
+  },
+  {
+    "ad_id": "120246893776460784",
+    "ad_name": "ARDOR_A",
+    "adset_name": "ARDOR_NUSAVAB12_TEST",
+    "spend": 1.43
+  },
+  {
+    "ad_id": "120247508124200784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4",
+    "adset_name": "MA7-ARDORVIDEO",
+    "spend": 0.23
+  },
+  {
+    "ad_id": "120247508124210784",
+    "ad_name": "MA4_DEPIE",
+    "adset_name": "MA4-DEPIE",
+    "spend": 0.88
+  },
+  {
+    "ad_id": "120247508133990784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "MA6-OFERTA",
+    "spend": 1.65
+  },
+  {
+    "ad_id": "120247508471230784",
+    "ad_name": "MA4_DEPIE - Copia",
+    "adset_name": "MA4-DEPIE",
+    "spend": 0.81
+  },
+  {
+    "ad_id": "120247508474300784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4 - Copia",
+    "adset_name": "MA7-ARDORVIDEO",
+    "spend": 1.62
+  },
+  {
+    "ad_id": "120247634423990784",
+    "ad_name": "tinnidrop 6",
+    "adset_name": "Pérdida auditiva irreversible",
+    "spend": 1.36
+  },
+  {
+    "ad_id": "120247634582720784",
+    "ad_name": "tinnidrop 4",
+    "adset_name": "Accesibilidad económica vs. médico - Copia 2",
+    "spend": 1.74
+  },
+  {
+    "ad_id": "120247634582760784",
+    "ad_name": "tinnidrop 3",
+    "adset_name": "DETERIORO COGNITIVO - video",
+    "spend": 1.85
+  },
+  {
+    "ad_id": "120247634796250784",
+    "ad_name": "tinnidrop 6 - Copia",
+    "adset_name": "Pérdida auditiva irreversible",
+    "spend": 0.51
+  },
+  {
+    "ad_id": "120247634801430784",
+    "ad_name": "tinnidrop 4 - Copia",
+    "adset_name": "Accesibilidad económica vs. médico - Copia 2",
+    "spend": 0.09
+  },
+  {
+    "ad_id": "120247728345500784",
+    "ad_name": "tinnidrop 3",
+    "adset_name": "DETERIORO COGNITIVO - video - Copia",
+    "spend": 0.0
+  },
+  {
+    "ad_id": "120247728609700784",
+    "ad_name": "tinnidrop 6",
+    "adset_name": "Pérdida auditiva irreversible - Copia",
+    "spend": 0.34
+  },
+  {
+    "ad_id": "120247728609730784",
+    "ad_name": "tinnidrop 6 - Copia",
+    "adset_name": "Pérdida auditiva irreversible - Copia",
+    "spend": 1.01
+  },
+  {
+    "ad_id": "120247728609740784",
+    "ad_name": "tinnidrop 6 - Copia",
+    "adset_name": "Pérdida auditiva irreversible - Copia",
+    "spend": 1.54
+  },
+  {
+    "ad_id": "120247728609750784",
+    "ad_name": "tinnidrop 6",
+    "adset_name": "Pérdida auditiva irreversible - Copia",
+    "spend": 0.75
+  },
+  {
+    "ad_id": "120247728670140784",
+    "ad_name": "MA6_OFERTA - Copia",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 0.7
+  },
+  {
+    "ad_id": "120247728670160784",
+    "ad_name": "MA6_OFERTA - Copia",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 0.71
+  },
+  {
+    "ad_id": "120247728670170784",
+    "ad_name": "MA6_OFERTA - Copia",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 0.61
+  },
+  {
+    "ad_id": "120247728670180784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 1.09
+  },
+  {
+    "ad_id": "120247728670190784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 0.95
+  },
+  {
+    "ad_id": "120247728670200784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "MA6-OFERTA - Copia",
+    "spend": 0.94
+  },
+  {
+    "ad_id": "120247920855970784",
+    "ad_name": "MA6 · precio SÍ Q249/Q389 - Copia",
+    "adset_name": "VERGUENZA_MA6_OFERTA2X1",
+    "spend": 0.54
+  },
+  {
+    "ad_id": "120247920855990784",
+    "ad_name": "MA6 · precio SÍ Q249/Q389",
+    "adset_name": "VERGUENZA_MA6_OFERTA2X1",
+    "spend": 0.73
+  },
+  {
+    "ad_id": "120247920856010784",
+    "ad_name": "VERGUENZA_MA2_VESTIDO",
+    "adset_name": "VERGUENZA_MA2_VESTIDO",
+    "spend": 1.62
+  },
+  {
+    "ad_id": "120247920856020784",
+    "ad_name": "MA1 · precio SÍ Q249 - Copia",
+    "adset_name": "VERGUENZA_MA5_RESIGNACION",
+    "spend": 0.49
+  },
+  {
+    "ad_id": "120247920856050784",
+    "ad_name": "MA1 · precio SÍ Q249",
+    "adset_name": "VERGUENZA_MA5_RESIGNACION",
+    "spend": 0.72
+  },
+  {
+    "ad_id": "120247920884180784",
+    "ad_name": "VARICOSE_2_VERGUENZA-PIERNAS_A - Copia",
+    "adset_name": "VERGUENZA-PIERNAS_VARICOSE_TEST",
+    "spend": 0.17
+  },
+  {
+    "ad_id": "120247920884220784",
+    "ad_name": "VARICOSE_4_MIEDO-CIRUGIA_A - Copia",
+    "adset_name": "MIEDO-CIRUGIA_VARICOSE_TEST",
+    "spend": 1.69
+  },
+  {
+    "ad_id": "120247920884230784",
+    "ad_name": "VARICOSE_2_VERGUENZA-PIERNAS_A",
+    "adset_name": "VERGUENZA-PIERNAS_VARICOSE_TEST",
+    "spend": 1.76
+  },
+  {
+    "ad_id": "120247920884240784",
+    "ad_name": "VARICOSE_1_MANCHAS-OSCURAS_B - Copia",
+    "adset_name": "MANCHAS-OSCURAS_VARICOSE_TEST",
+    "spend": 1.17
+  },
+  {
+    "ad_id": "120247920884260784",
+    "ad_name": "VARICOSE_1_MANCHAS-OSCURAS_B",
+    "adset_name": "MANCHAS-OSCURAS_VARICOSE_TEST",
+    "spend": 0.24
+  },
+  {
+    "ad_id": "120247920884290784",
+    "ad_name": "VARICOSE_3_CALAMBRES-NOCTURNOS_A - Copia",
+    "adset_name": "CALAMBRES-NOCTURNOS_VARICOSE_TEST F",
+    "spend": 0.55
+  },
+  {
+    "ad_id": "120247920884310784",
+    "ad_name": "VARICOSE_3_CALAMBRES-NOCTURNOS_A",
+    "adset_name": "CALAMBRES-NOCTURNOS_VARICOSE_TEST F",
+    "spend": 0.66
+  }
+]

@@ -11,8 +11,8 @@ parametros. Un grep lo dice todo:
 
     grep -rl "ads_create" Ads/_TOOLS/     ->  cero resultados
 
-Y ninguna etapa tiene siquiera acceso al conector: ETAPA-6 declara `tools: Read`, ETAPA-7 y
-ETAPA-8 `Read, Glob, Grep`. La descripcion de ETAPA-7 dice que "Meta MCP aporta senales de
+Y ninguna etapa tiene siquiera acceso al conector: ETAPA-6 declara `tools: Read`, ETAPA-7
+`Read, Glob, Grep`. La descripcion de ETAPA-7 dice que "Meta MCP aporta senales de
 entrega" y no puede llamarlo.
 
 El costo de eso esta medido. El 06-sep se publico una campana de TINNIDROP, nadie escribio el
@@ -567,7 +567,7 @@ def main():
     # page_id: el del plan manda sobre el del producto, porque la pagina depende de la CUENTA
     page_id = str(plan.get("page_id") or prod.get("page_id") or "").strip()
     if not page_id:
-        pq.bloquear_paquete("no hay page_id", "etapa-fanpage", clave="page_id")
+        pq.bloquear_paquete("no hay page_id", "etapa-2", clave="page_id")
     if plan.get("cuenta") and corto_alias(plan["cuenta"]) != alias_pedido:
         pq.avisar("el plan dice cuenta=%s y se esta publicando en %s. La pagina y su WhatsApp tienen "
                   "que estar asignados a la cuenta DONDE SE PUBLICA, no a la del plan. El page_id %s "

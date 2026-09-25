@@ -1,0 +1,128 @@
+ETAPA-11 · OPTIMIZADOR DE FLUJO · CLEARSTEM · ventana 22-ago → 22-sep-2026 · nodo F2.etapa-11 (SOLO DIAGNÓSTICO)
+Generado 2026-09-24 por etapa-11 (solo lectura; la fila del evento se validó con registrar_evento.py
+--dry-run). Persistido por el orquestador (invariante 8).
+
+SÍNTESIS: el bot no es neutro entre ángulos. Está armado alrededor de ANTI_FALSIFICACION, y el ganador
+RESISTENCIA_INSULINA_SOP cierra casi la mitad con el mismo flujo (14.6 % vs 27.4 %, Fisher p=0.0006). Objetivo
+realista: llevar RESISTENCIA al cierre que ANTI_FALSIFICACION ya logra con este bot. Sin chats no se separa
+si el flujo cierra mal a RESISTENCIA o si ese ángulo trae tráfico que compra menos.
+
+INTEGRIDAD: 2026-09-13 sin filas BASE de CLEARSTEM; Meta API trae ese día una fila con gasto $0 (parece día
+  sin entrega, no hueco; no verificado). JOIN conjunto→angulo_key 100 % de lo atribuido; fuera quedan 5
+  ventas orgánicas SIN_ATRIBUCION (23-ago, 25-ago, 01-sep, 02-sep, 05-sep).
+  Confusores: sin CAMBIO_BOT en ventana (el único es del 10-jul). Sí hay dos: (1) banda de edad: conjuntos
+  25-40 abiertos el 08-sep y los 25+ siguen gastando pese a la ORDEN_PAUSA del 06-sep; (2) ads renombrados
+  con firma BOT_V1 hacia el 05-sep sin CAMBIO_CREATIVO registrado.
+CONSISTENCIA FÍSICA ad↔destino: NO VERIFICABLE (CLEARSTEM sin fila en _DIM_ENVASE.csv). El cierre no está
+  desplomado (16 % del producto vs 8.6 % del portafolio): el diagnóstico sigue, pero etapa-5 no reescribe
+  hasta que el operador declare el envase.
+COBERTURA _FACT_ENTREGA: ~100 % (833 msj Meta vs 820 LucidSales); existe desde 17-ago → serie completa al 53 %.
+CHATS: NO DISPONIBLES → diagnóstico de LOCALIZACIÓN, no de CAUSA.
+
+GANADOR (invariante 1: por VENTA agregando por angulo_key), serie 17-jul → 22-sep de decidir.py:
+  RESISTENCIA_INSULINA_SOP  93 v · CPA acum Q37.3 · 14d Q41.0 (27 v) · ESCALAR
+  ANTI_FALSIFICACION        63 v · CPA acum Q40.8 · 14d Q38.8 (20 v) · ESCALAR
+  Ganador: RESISTENCIA_INSULINA_SOP (48 % más ventas, CPA acumulado menor; gen_flujo_bot.py ya lo renderiza y
+  los conceptos F2 CN01/02/04/05/10 son de ese ángulo). ANTI_FALSIFICACION co-ganador. MEDICOS_FALLARON en
+  RENOVAR, nunca corrió en su banda.
+
+1. CIERRE POR ÁNGULO (BASE, réplicas sumadas, IC95 Wilson)
+  ANTI_FALSIFICACION        168 msj · 46 v · 27.4 % · IC 21.2–34.6 · 14d 29.9 % (20/67)
+  RESISTENCIA_INSULINA_SOP  424 msj · 62 v · 14.6 % · IC 11.6–18.3 · 14d 17.4 % (27/155)
+  MEDICOS_FALLARON (25+)    228 msj · 18 v ·  7.9 % · IC 5.1–12.1  · 14d  4.8 % (4/83)
+  Mismo flujo para los tres: χ²=28.6, 2 gl, p<0.001 → el flujo no es neutro; los IC de RESISTENCIA y
+  ANTI_FALSIFICACION no se solapan. Control por banda: RESISTENCIA solo en 25-35/25-40 (R1+R3) 16.1 %
+  (41/254) vs 27.4 %, Fisher p=0.007: la banda explica parte de la brecha, no toda.
+  Referencias: (a) techo propio 27.4 % (ANTI_FALSIFICACION); (b) serie completa de RESISTENCIA 12.6 % (93/736);
+  (c) mentores 15-20 %.
+
+2. PRE-CLIC / POST-CLIC (ratio de sumas, umbral conversación/clic 35 %)
+  ANTI_FALSIFICACION        41.1 % / 27.4 % → SANO, no tocar
+  RESISTENCIA_INSULINA_SOP  32.8 % / 14.6 % → borde de los dos lados; cuadrante AD + FLUJO (el ad nivel 1
+    atrae curiosos); el problema principal de cierre es post-clic
+  MEDICOS_FALLARON          43.2 % /  7.9 % → el flujo pierde la venta, pero mezclado con banda 25+ y
+    RENOVAR: no se diagnostica por flujo hasta que corra en 25-35
+  La conversación no predice el cierre (r=−0.23): solo ubica.
+
+3. CONGRUENCIA ANUNCIO ↔ BOT (ganador RESISTENCIA)
+  Limitación: se comparó el copy de la Parte 2, conjunto 5, y el PROMPT B de 1_HACER_MANUAL.txt, no el ad que
+  corre (GTR13 sin MCP; el creativo RESISTENCIA-INSULINA_IMG_A/B no está en disco).
+  C1 Dolor de entrada — FALLA. Ad: "¿Acné en la mandíbula + periodos irregulares + vello donde no debería?" /
+    "Dejaste los anticonceptivos y se te vino el mundo encima." Bot: Video 1 Clearstem18 ("Sigues despertando
+    con esos brotes dolorosos en la mandíbula…") y Video 2 Clearstem19 ("esto es falso, falso, falsísimo").
+    SOP, regla irregular, vello y anticonceptivos solo aparecen en el FAQ, si la clienta pregunta.
+  C2 Promesa — FALLA. Ad: "No son tres problemas distintos. Puede ser uno solo: desbalance hormonal." INT 2:
+    "lo que más pesa… es evitar las fotos, la pena de que te vean de cerca, tener que planear el maquillaje"
+    (dolor genérico, no el de SOP).
+  C3 Precio — FALLA entre bot y cobro (el ad de RESISTENCIA va sin precio): bot cargado Q199/Q299/Q399 vs
+    _DIM_PRECIOS.csv (Dropi) Q198/Q289/Q389.01. gen_flujo_bot.py ya renderiza Q198/289/389: el bot cargado
+    está desactualizado. El concepto CN04 de F2 lleva la escalera: debe coincidir con el bot antes de publicar.
+  C4 Entrega — OK. Ad "Pagás al recibir", "Envío gratis" ↔ INT 1 "pago contraentrega… 2 a 5 días hábiles",
+    "ENVÍO TOTALMENTE GRATIS".
+  C5 Nivel de conciencia — FALLA. El ad es nivel 1 (educa la causa); el bot abre con autoridad y
+    anti-falsificación (nivel 3). El render de gen_flujo_bot lo exige: "NIVEL DE CONCIENCIA 1… el Video 1 y la
+    1a infografia EDUCAN — explican la causa del sintoma antes de hablar del producto."
+  C6 Objeción crítica — FALLA. Del copy salen "¿tiene hormonas? / ¿sirve si dejé los anticonceptivos?". El
+    Video 1 no las toca; la respuesta existe en el FAQ ("No aporta hormonas: apoya el equilibrio de las tuyas
+    con DIM"), pero es reactiva.
+  Lectura: el Video 2 y el Testimonio 1 ("me di cuenta que es el original") están pensados para
+  ANTI_FALSIFICACION. Congruente con la brecha de cierre; sin chats, no probado como causa.
+
+4. DÓNDE SE CAE (chats): NO DISPONIBLE. No se inventa.
+
+5. BRIEF PARA ETAPA-5 (reescritura después del concepto 2 de 2 y antes de F3; no se aplica ahora)
+  1. Propuestas de valor: gen_flujo_bot.py avisa "propuestas_valor no declaradas todavia"; la Info 1 tiene 4
+     beneficios genéricos. Hacen falta 6-8 del avatar SOP (problema → qué hace el producto → resultado):
+     - acné de la mandíbula que vuelve antes de la regla → DIM apoya el equilibrio hormonal → dejás de esperar
+       el brote de cada mes;
+     - dejaste los anticonceptivos y volvió → apoya tus hormonas sin aportar hormonas → sin volver a otra
+       pastilla hormonal;
+     - acné, regla irregular y vello → un solo origen hormonal → una sola toma para los tres;
+     - granos que duelen por debajo → cúrcuma y glutatión desinflaman → menos inflamación visible;
+     - estrés que dispara los brotes → 5-HTP;
+     - cremas que resecan → trabaja desde adentro → sin irritación.
+     Por qué: 13 puntos de brecha contra ANTI_FALSIFICACION con el mismo bot.
+  2. Fricción: (a) corregir el render de prueba social ("más de 12,000 personas de gente con resultados
+     reales", error que sale del valor prueba_social de _DIM_FLUJO_BOT.csv; además choca con "+3,000 reseñas"
+     del bot cargado): declarar una sola cifra; (b) la garantía de 90 días está solo en INT 3: moverla o
+     repetirla antes de pedir los datos; (c) una idea por mensaje en INT 1.
+  3. Congruencia (en orden de gravedad): C3 cargar Q198/289/389 de Dropi; C1/C5 Video 1 y 1ª infografía
+     educan la causa hormonal y el SOP; C2 el dolor de INT 2 pasa a "regla irregular + acné + vello = un solo
+     problema"; C6 "no aporta hormonas" dicho sin que pregunte, antes del precio. El material anti-falsificación
+     queda en segundo lugar.
+  4. Oferta: agregar valor, nunca bajar precio; P3u como "3 meses = 3 ciclos" (la venta de 3u tiene n=1 en
+     _DIM_PRECIOS.csv).
+  5. FAQ: solo "¿Sirve si tengo resistencia a la insulina?" (el ad lo nombra textualmente y el FAQ solo cubre
+     SOP). Ninguna otra sin chats.
+  Nada se suaviza por compliance: todo es post-clic.
+
+6. DISEÑO DEL A/B (test_id propuesto T03, variable flujo, angulo_fijo RESISTENCIA_INSULINA_SOP)
+  Brazo A: paraguas actual con el brief aplicado. Brazo B: producto nuevo en el catálogo de LucidBot con
+  flujo 100 % RESISTENCIA. Tráfico: dos conjuntos nuevos y gemelos, idénticos salvo el flujo (concepto
+  ganador 2/2, banda 25-35, Advantage+ OFF, mismo presupuesto, 4 AM, misma página y número, Post ID propio
+  cada uno; ruteo verificado con una conversación de prueba desde cada uno).
+  Muestra (ab_flujo.py, base 14.6 %): → 27.4 % = 158 msj/brazo; → 22 % = 428 msj/brazo. A ~4 msj/día por
+  conjunto: 40 o 107 días + 10 de maduración COD. Solo detecta efectos grandes; si no se junta el n, es
+  indicativo. Lectura única con Fisher (comparar_cierre). Mientras dure, los conceptos de F2 rutean solo al A.
+  El test corre en la reescritura, después del concepto 2/2; no ahora.
+
+7. FILA PARA _EVENTOS.csv (validada con dry-run; la registra el operador)
+  2026-09-24,CLEARSTEM,GTR13,GTR13_CLEARSTEM_ESCALA_20260812,*,DIAGNOSTICO_CONGRUENCIA,"cierre
+  RESISTENCIA_INSULINA_SOP 14.6% (62/424 msj, 22-ago a 22-sep, IC95 11.6-18.3)","objetivo 27.4% = cierre de
+  ANTI_FALSIFICACION con el MISMO flujo (46/168, IC95 21.2-34.6)","SOLO DIAGNOSTICO F2, sin reescritura. Flujo
+  NO neutro: chi2 homogeneidad entre los 3 angulos vivos p<0.001. Matriz: RESISTENCIA conv/clic 32.8% (bajo
+  35%) con cierre 14.6%; ANTI_FALSIFICACION 41.1% / 27.4% (SANO). Congruencia: el bot esta construido sobre
+  ANTI_FALSIFICACION (Video 2 Clearstem19 'falso falsisimo', Testimonio 1 'es el original') y no nombra SOP,
+  regla irregular, vello ni anticonceptivos fuera del FAQ (C1, C2, C5, C6 fallan para el ganador). Precios
+  cargados Q199/299/399 vs Dropi Q198/289/389.01 (C3). Sin export de chats: diagnostico de LOCALIZACION, no
+  de causa. Consistencia fisica ad-destino NO verificable: CLEARSTEM sin fila en _DIM_ENVASE.csv. Brief para
+  etapa-5 y A/B gemelo para cuando haya concepto ganador 2/2.",ETAPA-11 2026-09-24
+
+8. LO QUE TODAVÍA NO SE PUEDE DECIR
+  Por qué cierra peor RESISTENCIA (falta el export semanal de chats) · si el flujo cierra mal a
+  MEDICOS_FALLARON (0 msj en 25-35 en la ventana) · consistencia física (falta la fila en _DIM_ENVASE.csv).
+  Para etapa-7 (higiene, no es de este nodo): los conjuntos 25+ de RESISTENCIA R2 y MEDICOS R1/R2 siguen
+  gastando pese a la ORDEN_PAUSA del 06-sep (128 msj entre 09 y 22-sep); sigue vivo
+  "GTR13_CLEARSTEM_MEDICOS-FALLARON_R1 + 25AÑOS - Copia" y hay anuncios con "- Copia" en el nombre
+  (invariante 12); la cabecera de 1_HACER_MANUAL.txt está vieja (break-even Q60.5 cuando es Q105.89, precios
+  de julio).

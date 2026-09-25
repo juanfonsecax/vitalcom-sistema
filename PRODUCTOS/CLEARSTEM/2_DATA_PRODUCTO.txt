@@ -1,4 +1,4 @@
-CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id 120245469370810609 ("🟩 CLEARSTEM - WP - NEW TEST", GTR13)
+═══ CLEARSTEM Mindbodyskin · VERSION v2 · 2026-07-25 · COSTO Q57 · DOSIS 2-3 caps/día (1ra comida) · page_id 823825257480758 (Astrid García) · campaign_id 120245469370810609 ("🟩 CLEARSTEM - WP - NEW TEST", GTR13) ═══
 (v1 = 2026-07-10 relanzamiento · v2 = 2026-07-25 se completa 1_HACER_MANUAL.txt + copies + prompts + flujo)
 ════════════════════════════════════════════════════════════════════════
 
@@ -441,3 +441,20 @@ POR ÁNGULO (pauta Q · ventas · CPA · ganancia Q, tramo 21-25):
 
 ⚠️ 24 y 25-ago aún no maduran del todo (COD ~3 días): sus cifras son un piso.
    21-23-ago ya son definitivos.
+
+═══════════════════════════════════════════════════════════════════════════
+ESTADO F2 — 2026-09-24 (re-empaquetado al contrato de carpeta, T4e p2-simplificacion)
+═══════════════════════════════════════════════════════════════════════════
+FASE VIGENTE: F2 · nodo F2.etapa-11 (fuente: _ESTADO_FLUJO.csv, evaluado 2026-09-24).
+DIAGNÓSTICO DEL DÍA: PRODUCTOS/_AUDITORIAS/_FLUJO_CLEARSTEM_20260924.txt (etapa-11, SOLO DIAGNÓSTICO,
+  ventana 22-ago → 22-sep). Ganador por venta RESISTENCIA_INSULINA_SOP, co-ganador ANTI_FALSIFICACION;
+  concepto ganador 2 de 2: PENDIENTE. Los números viven en decidir.py / PRODUCTOS/_DECISIONES.json,
+  no se copian acá.
+VALORES VIGENTES (manda el CSV; las secciones históricas de arriba NO se reescriben):
+  · Precios cobrados: 1u Q198 · 2u Q289 · 3u Q389.01 (fuente: _DIM_PRECIOS.csv). El 2) COSTEO de
+    arriba (Q199/Q299/Q399) es el precio planificado de julio.
+  · CPA Break-Even: Q105.89 (fuente: _DIM_PRODUCTOS.csv cpa_be_q · _DECISIONES.json 2026-09-24).
+    El Q60.5 de arriba es el BE de julio.
+  · Campaña viva: GTR13_CLEARSTEM_ESCALA_20260812 (fuente: _ESTADO_META.csv). IDs de Meta conocidos
+    y faltantes: 3_CAMPAÑA_META.txt.
+PROPUESTAS DE VALOR: no existen todavía — etapa-5 no corrió.

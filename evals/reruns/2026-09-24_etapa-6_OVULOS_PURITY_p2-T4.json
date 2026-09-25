@@ -1,0 +1,173 @@
+{
+  "_nota": "SKELETON transcribed by the parent from the etapa-6 re-run of 2026-09-24 (p2-T4). Every key and the values the etapa-6 asserts check are as returned; the long prompt_imagen strings and the 3 copy texts per conjunto are elided (the etapa returned them in full). The raw output was not persisted by the harness.",
+  "schema": "plan/1",
+  "producto_key": "OVULOS_PURITY",
+  "fase": 1,
+  "version": "v1",
+  "pagina": {
+    "nombre": "HERNATURA CO",
+    "page_id": null
+  },
+  "oferta": {
+    "oferta_key": "ESCALERA",
+    "precio_q": null,
+    "texto": "1 paquete $41.000 + $15.000 envio · 2 paquetes $69.000 envio gratis · 3 paquetes $99.000"
+  },
+  "concepto_control": {
+    "concepto_key": "C2_BENEFICIOS",
+    "variante": "ligera",
+    "canonico_id": "CN05_LISTA_BENEFICIOS"
+  },
+  "conjuntos": [
+    {
+      "n": 1,
+      "angulo_key": "OLORTRASRELACIONES",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "1",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "OVULOSPURITY_1_OLORTRASRELACIONES.png",
+      "prompt_imagen": "<elided: full Prompt de Control FASE 1>",
+      "copy": {
+        "textos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "titulos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "descripcion": "<elided>"
+      },
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 2,
+      "angulo_key": "INFECCIONQUEVUELVE",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "2",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "OVULOSPURITY_2_INFECCIONQUEVUELVE.png",
+      "prompt_imagen": "<elided: full Prompt de Control FASE 1>",
+      "copy": {
+        "textos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "titulos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "descripcion": "<elided>"
+      },
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 3,
+      "angulo_key": "CREMASREBOTE",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "3B",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "OVULOSPURITY_3_CREMASREBOTE.png",
+      "prompt_imagen": "<elided: full Prompt de Control FASE 1>",
+      "copy": {
+        "textos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "titulos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "descripcion": "<elided>"
+      },
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 4,
+      "angulo_key": "MELAVOYSIGUE",
+      "avatar_edad": "35-45",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "1",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "OVULOSPURITY_4_MELAVOYSIGUE.png",
+      "prompt_imagen": "<elided: full Prompt de Control FASE 1>",
+      "copy": {
+        "textos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "titulos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "descripcion": "<elided>"
+      },
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 5,
+      "angulo_key": "FLUJOPESCADO",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "2",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "OVULOSPURITY_5_FLUJOPESCADO.png",
+      "prompt_imagen": "<elided: full Prompt de Control FASE 1>",
+      "copy": {
+        "textos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "titulos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "descripcion": "<elided>"
+      },
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 6,
+      "angulo_key": "DESPUESDELAREGLA",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MUJER",
+      "nivel_conciencia": "1",
+      "formato": "IMAGEN",
+      "lleva_precio": false,
+      "archivo_creativo": "OVULOSPURITY_6_DESPUESDELAREGLA.png",
+      "prompt_imagen": "<elided: full Prompt de Control FASE 1>",
+      "copy": {
+        "textos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "titulos": [
+          "<elided>",
+          "<elided>",
+          "<elided>"
+        ],
+        "descripcion": "<elided>"
+      },
+      "origen_angulo": "VOZ_CLIENTE"
+    }
+  ]
+}

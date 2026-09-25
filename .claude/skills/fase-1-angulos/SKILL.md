@@ -1,6 +1,6 @@
 ---
 name: fase-1-angulos
-description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos (los videos quedan como FUENTE del ángulo, no como el creativo), costear, minar voz del cliente, construir las 6 fichas de ángulo, asignar FanPage, escribir copies e infografías, construir el bot paraguas, planificar la campaña TODO EN IMAGEN y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
+description: "FASE 1 — Pre-testeo. Orquesta la secuencia completa que convierte transcripciones de video en una campaña de testeo de 6 ÁNGULOS lista para lanzar: validar producto, clasificar creativos (los videos quedan como FUENTE del ángulo, no como el creativo), costear, minar voz del cliente, construir las 6 fichas de ángulo (etapa-2 también asigna la FanPage), escribir copies e infografías, construir el bot paraguas, planificar la campaña TODO EN IMAGEN y guardar el producto en disco. Úsala cuando flujo.py devuelve el nodo F1.paquete, o cuando el operador dice \"tengo transcripciones\", \"quiero lanzar un producto nuevo\", \"arrancar testeo\" o \"pre-testeo\"."
 tools: Read, Write, Glob, Grep, Bash, Task
 ---
 
@@ -21,7 +21,7 @@ ejecución visual varía junto con el ángulo, nada es atribuible — y con Andr
 concepto son 6 creativos únicos para Meta, que detecta duplicados por huella de contenido, no por
 estructura.
 
-> **Decisión del operador (22-sep-2026): FASE 1 corre TODO EN IMAGEN.** Los videos de
+> **FASE 1 corre TODO EN IMAGEN.** Los videos de
 > competencia que selecciona `etapa-0` siguen siendo la FUENTE del ángulo (transcripciones), pero
 > ya no son el creativo de F1: los 6 conjuntos se lanzan con ad-imagen, igual para todos los
 > ángulos. El lavado anti-copyright de video (`Ads/_TOOLS/lavar_videos.sh`) ya no corre en esta
@@ -30,11 +30,11 @@ estructura.
 > cualquier conjunto cuyo `formato` no sea `IMAGEN`.
 
 **Secuencia:** `etapa-producto` → `etapa-0` → `etapa-1` → `etapa-1b` →
-(`etapa-2` ∥ `etapa-fanpage`) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
+`etapa-2` (incluye la asignación de FanPage) → (`etapa-4` ∥ `etapa-5`) → `etapa-6` → `etapa-guardar-producto`
 
 ---
 
-## PASO 0 — EL FLUJO DICTA (desde el 09-sep-2026)
+## PASO 0 — EL FLUJO DICTA
 
 Esta skill se carga cuando `python Ads/_TOOLS/flujo.py [producto_key]` devuelve `F1.paquete`. Los
 gates de entrada (`F1.congelar_inputs`: fila, costo, ≥6 transcripciones, media) y lo que cierra el
@@ -78,7 +78,7 @@ MCP_ACCOUNT_ID / MCP_PAGE_ID / MCP_PIXEL_ID:  [si se creará campaña por MCP]
 - Videos descargados → `Ads/1.1 Videos/[PRODUCTO]/`
 - Transcripciones `.txt` (generadas con `Ads/Prompt-Gemini.txt` en Gemini) →
   `Ads/1.2 Transcripcion videos/[PRODUCTO]/`
-- Mismo nombre y número que el video (`5. Nusava B12.mp4` → `5. Nusava B12.txt`).
+- Mismo nombre y número que el video (`5. NombreProducto.mp4` → `5. NombreProducto.txt`).
 - `etapa-0` las detecta ahí automáticamente. El operador solo indica: producto, costo Q e imagen.
 
 **OPCIÓN 2 — Texto en el chat:** pegar el contenido de cada transcripción, identificando cada video
@@ -144,7 +144,7 @@ Inputs: nombre del producto, lista de componentes/ingredientes (operador), outpu
   ingrediente.
 
 Output: BANCO DE DOLOR REAL ([VOZ-REAL]) + ángulos DESCUBIERTOS/CUBIERTOS. → se transfiere a
-`etapa-2` y `etapa-fanpage`.
+`etapa-2`.
 
 **Después de `etapa-1b` (T10):** volcar cada frase [VOZ-REAL]/[DESEO-REAL] con URL a
 `_VOZ_CLIENTE.csv` vía `python Ads/_TOOLS/verificar_voz.py --agregar-json hallazgos.json
@@ -153,17 +153,18 @@ para que verifique cada URL contra su cita antes de que `etapa-2` construya las 
 
 ---
 
-## PASO 3 — `etapa-2` ∥ `etapa-fanpage` (PARALELO)
+## PASO 3 — `etapa-2` (ángulos + asignación de FanPage)
 
-Lanzar ambas en el mismo turno, inmediatamente después de `etapa-1b`.
+Se invoca inmediatamente después de `etapa-1b`.
 
 - **`etapa-2`** — Inputs: output de `etapa-0`, `etapa-1`, `etapa-1b` (ángulos descubiertos **+ BANCO
-  DE DOLOR REAL**), componentes, y `<datos_saturacion>` (opcional; si no se entrega, marca
-  saturación DESCONOCIDA). Output: 6 fichas de ángulo rankeadas — cada una con su **clasificación
-  medible** (`avatar_genero`, `avatar_edad`, `emocion_dominante`, vocabulario cerrado de
-  `DOCTRINA/DATA_PLAYBOOK.md` §1). Los ángulos con respaldo de voz real rankean por encima de los teóricos.
-- **`etapa-fanpage`** — Inputs: nombre del producto, componentes de `etapa-1b`, ángulos de
-  `etapa-0`. Output: `<pagina_asignada>` (Formato A o B).
+  DE DOLOR REAL**), componentes, nombre del producto, y `<datos_saturacion>` (opcional; si no se
+  entrega, marca saturación DESCONOCIDA). Output: 6 fichas de ángulo rankeadas — cada una con su
+  **clasificación medible** (`avatar_genero`, `avatar_edad`, `emocion_dominante`, vocabulario
+  cerrado de `DOCTRINA/DATA_PLAYBOOK.md` §1) — más `<pagina_asignada>` (Formato A o B), resuelta
+  contra `PRODUCTOS/_DIM_FANPAGES.csv` con las reglas F1-F5 (absorbidas de la extinta
+  `etapa-fanpage`, T1 p2-simplificacion). Los ángulos con respaldo de voz real rankean por encima de
+  los teóricos.
   - ⚠️ Si entrega **Formato B** (sin página ideal): alertar al operador antes de continuar. No
     bloquear, pero marcar como pendiente.
 
@@ -218,7 +219,7 @@ conversación) → ETAPA 2 días 4-8 = 3 sobrevivientes × **$5.98**. Mismo gast
 venta ~2× más rápido. Fórmula autoajustable `presupuesto/día = 7 × (costo por conversación
 observado)`, **piso $2.99 · techo $3.95**. Detalle en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5.
 
-**Anuncios por conjunto:** 2, nunca 1. Qué va en el 2º está **EN PRUEBA desde 31-jul** (DUPLICADO vs
+**Anuncios por conjunto:** 2, nunca 1. Qué va en el 2º está **EN PRUEBA** (DUPLICADO vs
 DOS CONCEPTOS del mismo ángulo). **Default vigente = DUPLICADO.** Diseño del test en
 `.claude/agents/ETAPA-6.md`.
 
@@ -242,7 +243,7 @@ reconciliación**, el paso NO está completo.
 
 ---
 
-## ENTREGA INTERACTIVA EN EL CHAT (default — preferencia del operador 09-jul)
+## ENTREGA INTERACTIVA EN EL CHAT (default — preferencia del operador)
 
 Los TXT SIEMPRE se escriben completos en disco. PERO además, tras cerrar `etapa-guardar-producto`,
 el orquestador entrega el contenido de EJECUCIÓN de `1_HACER_MANUAL.txt` **en el chat, parte por
@@ -271,7 +272,7 @@ parte**. División del trabajo: el orquestador guarda la data y analiza; el **op
 ```
 FASE 1 COMPLETADA ✓
 
-□ FanPage asignada (ETAPA-FANPAGE) → [Número + Nombre] ← confirmar antes de pautar
+□ FanPage asignada (ETAPA-2) → [Número + Nombre] ← confirmar antes de pautar
 □ Edad de segmentación recomendada → [XX+] ← configurar en Meta Ads
 □ Estructura de campaña de testeo (ETAPA-6) → crear en Meta Ads para 4 AM mañana
 □ Creativos: ad-imagen para los 6 ángulos (F1 es TODO IMAGEN, ninguno pausado)
@@ -287,7 +288,7 @@ VERIFICACIÓN DE COHERENCIA COPY ↔ BOT (antes de lanzar):
 □ El framing de oferta usa "tratamiento de X días" y "la más elegida" para P3u en el bot
 □ Cada conjunto tiene 2 anuncios
 
-⚠️ Si ETAPA-FANPAGE entregó Formato B, crear la página antes de lanzar.
+⚠️ Si ETAPA-2 entregó Formato B en su asignación de FanPage, crear la página antes de lanzar.
 ⚠️ Identificar el ángulo ganador y volver con métricas para FASE 2.
 ⚠️ NO continuar con FASE 2 sin datos de testeo confirmados.
 ⚠️ Al confirmar el ángulo ganador, traer también el EXPORT DE CHATS de LucidBot de la

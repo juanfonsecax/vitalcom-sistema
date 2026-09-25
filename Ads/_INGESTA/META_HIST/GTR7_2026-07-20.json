@@ -1,0 +1,152 @@
+[
+  {
+    "ad_id": "120246893776450784",
+    "ad_name": "ARDOR_B",
+    "adset_name": "ARDOR_NUSAVAB12_TEST",
+    "spend": 1.79
+  },
+  {
+    "ad_id": "120246893776460784",
+    "ad_name": "ARDOR_A",
+    "adset_name": "ARDOR_NUSAVAB12_TEST",
+    "spend": 0.03
+  },
+  {
+    "ad_id": "120247186801580784",
+    "ad_name": "VARICOSE_1_MANCHAS-OSCURAS_B",
+    "adset_name": "MANCHAS-OSCURAS_VARICOSE_TEST",
+    "spend": 0.04
+  },
+  {
+    "ad_id": "120247186801650784",
+    "ad_name": "VARICOSE_4_MIEDO-CIRUGIA_A",
+    "adset_name": "MIEDO-CIRUGIA_VARICOSE_TEST",
+    "spend": 0.11
+  },
+  {
+    "ad_id": "120247187081330784",
+    "ad_name": "VARICOSE_2_VERGUENZA-PIERNAS_A - Copia",
+    "adset_name": "VERGUENZA-PIERNAS_VARICOSE_TEST",
+    "spend": 0.59
+  },
+  {
+    "ad_id": "120247187082210784",
+    "ad_name": "VARICOSE_1_MANCHAS-OSCURAS_B - Copia",
+    "adset_name": "MANCHAS-OSCURAS_VARICOSE_TEST",
+    "spend": 0.44
+  },
+  {
+    "ad_id": "120247187088260784",
+    "ad_name": "VARICOSE_4_MIEDO-CIRUGIA_A - Copia",
+    "adset_name": "MIEDO-CIRUGIA_VARICOSE_TEST",
+    "spend": 0.36
+  },
+  {
+    "ad_id": "120247375784460784",
+    "ad_name": "MA6 · precio SÍ Q249/Q389",
+    "adset_name": "VERGUENZA_MA6_OFERTA2X1",
+    "spend": 0.21
+  },
+  {
+    "ad_id": "120247375784470784",
+    "ad_name": "VERGUENZA_MA2_VESTIDO",
+    "adset_name": "VERGUENZA_MA2_VESTIDO",
+    "spend": 0.46
+  },
+  {
+    "ad_id": "120247375784480784",
+    "ad_name": "MA1 · precio SÍ Q249",
+    "adset_name": "VERGUENZA_MA5_RESIGNACION",
+    "spend": 0.43
+  },
+  {
+    "ad_id": "120247375784490784",
+    "ad_name": "VERGUENZA_MA4_MANCHAS",
+    "adset_name": "VERGUENZA_MA4_MANCHAS",
+    "spend": 0.19
+  },
+  {
+    "ad_id": "120247376023200784",
+    "ad_name": "MA6 · precio SÍ Q249/Q389 - Copia",
+    "adset_name": "VERGUENZA_MA6_OFERTA2X1",
+    "spend": 0.31
+  },
+  {
+    "ad_id": "120247376027640784",
+    "ad_name": "VERGUENZA_MA4_MANCHAS - Copia",
+    "adset_name": "VERGUENZA_MA4_MANCHAS",
+    "spend": 0.39
+  },
+  {
+    "ad_id": "120247376028720784",
+    "ad_name": "MA1 · precio SÍ Q249 - Copia",
+    "adset_name": "VERGUENZA_MA5_RESIGNACION",
+    "spend": 0.25
+  },
+  {
+    "ad_id": "120247507971450784",
+    "ad_name": "MA1_COMPLEJOB",
+    "adset_name": "MA1-COMPLEJOB",
+    "spend": 0.57
+  },
+  {
+    "ad_id": "120247508124150784",
+    "ad_name": "MA5_AZUCAR",
+    "adset_name": "MA5-AZUCAR",
+    "spend": 1.13
+  },
+  {
+    "ad_id": "120247508124200784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4",
+    "adset_name": "MA7-ARDORVIDEO",
+    "spend": 0.79
+  },
+  {
+    "ad_id": "120247508124210784",
+    "ad_name": "MA4_DEPIE",
+    "adset_name": "MA4-DEPIE",
+    "spend": 0.88
+  },
+  {
+    "ad_id": "120247508124230784",
+    "ad_name": "MA3_HORMIGUEO",
+    "adset_name": "MA3-HORMIGUEO",
+    "spend": 0.96
+  },
+  {
+    "ad_id": "120247508133990784",
+    "ad_name": "MA6_OFERTA",
+    "adset_name": "MA6-OFERTA",
+    "spend": 2.04
+  },
+  {
+    "ad_id": "120247508467270784",
+    "ad_name": "MA1_COMPLEJOB - Copia",
+    "adset_name": "MA1-COMPLEJOB",
+    "spend": 0.71
+  },
+  {
+    "ad_id": "120247508468920784",
+    "ad_name": "MA2_ARDORNOCHE - Copia",
+    "adset_name": "MA2-ARDORNOCHE",
+    "spend": 2.03
+  },
+  {
+    "ad_id": "120247508471230784",
+    "ad_name": "MA4_DEPIE - Copia",
+    "adset_name": "MA4-DEPIE",
+    "spend": 0.8
+  },
+  {
+    "ad_id": "120247508472600784",
+    "ad_name": "MA5_AZUCAR - Copia",
+    "adset_name": "MA5-AZUCAR",
+    "spend": 0.87
+  },
+  {
+    "ad_id": "120247508474300784",
+    "ad_name": "NUSAVAB12_2_ARDOR.mp4 - Copia",
+    "adset_name": "MA7-ARDORVIDEO",
+    "spend": 1.2
+  }
+]

@@ -9,7 +9,7 @@ model: inherit
 
 ## Rol
 Produce la estructura de campaña lista para crear en Meta Ads. Opera en **tres modos**
-(arquitectura de 3 fases, 2026-09-02 — cadencia y aritmética en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7):
+(cadencia y aritmética en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7):
 
 | Modo | Qué mide | Estructura | Variable que se mueve | Todo lo demás |
 |---|---|---|---|---|
@@ -22,12 +22,9 @@ variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cu
 **ENTREGA**.* Por eso el 1-1-5 va en conceptos y **nunca** en ángulos — ver `DOCTRINA/CALENDARIO_ESCALADO.md`
 §1.7.1 y el choque C-09 de `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 
-> ⚠️ **Qué pasó con los MICROÁNGULOS.** Hasta el 02-sep, "FASE 2" nombraba una campaña de 6
-> microángulos del ganador (`etapa-3`). Eso **movía dos variables a la vez**
-> (microángulo + ejecución visual) y nada era atribuible. En la arquitectura de 3 fases los
-> microángulos **no arman conjuntos**: son el banco de copy y de briefs que alimenta (a) el copy
-> de las campañas de FASE 3 y (b) la siguiente tanda de conceptos. `etapa-3`/`etapa-3` siguen
-> corriendo con el mismo output; cambia quién lo consume.
+> ⚠️ **Los MICROÁNGULOS no arman conjuntos.** Son el banco de copy y de briefs que alimenta (a) el
+> copy de las campañas de FASE 3 y (b) la siguiente tanda de conceptos. `etapa-3` sigue produciéndolos
+> con el mismo output; lo que cambia es quién los consume.
 
 El operador solo necesita leer el output de este agente y replicarlo en Meta Ads.
 
@@ -40,7 +37,7 @@ El operador solo necesita leer el output de este agente y replicarlo en Meta Ads
 
 ---
 
-## BANDA DE EDAD (nueva — 2026-09-02 · corrige la constante de segmentación amplia)
+## BANDA DE EDAD (corrige la constante de segmentación amplia)
 
 > **Por qué cambia.** Andrómeda dice que el creativo segmenta y de ahí salió la constante
 > "amplio 18-65+" de `CLAUDE.md`. **Es correcta en su núcleo y equivocada en su consecuencia
@@ -65,8 +62,7 @@ deja amplia por defecto.
 > **Fuente ejecutable única: [`Ads/_TOOLS/bandas_edad.py`](../../Ads/_TOOLS/bandas_edad.py).**
 > `gen_publicacion.py` y `gen_lanzador.py` importan esa tabla — ninguno la copia. El bloque de
 > abajo es su copia en prosa, para leer sin abrir el código; si alguna vez difieren, **manda el
-> módulo**. (Antes del 15-sep-2026 esta tabla vivía triplicada y desincronizada: este archivo y
-> `gen_publicacion.py` tenían 4 filas, `gen_lanzador.py` tenía 9 — le faltaban `35-45` y `30-45`.)
+> módulo**.
 
 ```
 avatar_edad del ángulo   ->   banda que se configura en Meta
@@ -84,7 +80,7 @@ avatar_edad del ángulo   ->   banda que se configura en Meta
     SIN AVATAR DE EDAD MARCADA  ->  amplio 18-65+   (única excepción)
 ```
 
-> **`25-40` y `30-40` (agregadas 15-sep-2026, G0.5 punto 4.2):** el operador señaló estos dos
+> **`25-40` y `30-40`:** el operador señaló estos dos
 > valores del vocabulario sin fila. `PRODUCTOS/CLEARSTEM/_PLAN.json` los declara como
 > `avatar_edad` de `ANTI_FALSIFICACION`/`MEDICOS_FALLARON` (`25-40`) y `TESTIMONIO_RADICAL`
 > (`30-40`) — pero `PRODUCTOS/_DIM_CONJUNTOS.csv` registra el avatar REAL medido en Meta para
@@ -101,15 +97,15 @@ avatar_edad del ángulo   ->   banda que se configura en Meta
 - **Excepción para medir:** si el operador quiere volver a testear una banda, se declara como test
   en `_TESTEOS.csv` con su `test_id` — nunca como una réplica más.
 
-> ⚠️ Esta regla **no reemplaza** a `ETAPA-FANPAGE.md`, que ya asigna una edad por página. Cuando
-> las dos difieren, manda la del **avatar del ángulo** (es más específica) y se anota la
-> discrepancia en las notas del conjunto.
+> ⚠️ Esta regla **no reemplaza** la edad por página que asigna `ETAPA-2.md` §ASIGNACIÓN DE
+> FANPAGE. Cuando las dos difieren, manda la del **avatar del ángulo** (es más específica) y se
+> anota la discrepancia en las notas del conjunto.
 
 ---
 
 ## CONVENCIÓN DE NOMBRES (dueño único — vale para MCP y para pauteo manual)
 
-> **Por qué existe (caso real 2026-08-01):** el operador tenía la campaña `4🟦 TINIDROP GTR0 - 1.59 - 4 WINERS` **viviendo en GTR 7**, no en GTR 0 — el nombre mentía sobre su propia cuenta. Y en una misma campaña convivían 4 conjuntos llamados `DETERIORO COGNITIVO - video - Copia`, indistinguibles entre sí en el CSV exportado. Sin identidad en el nombre, ni el operador ni ETAPA-7 pueden saber de qué cuenta, qué ángulo y qué réplica habla cada fila.
+> **Por qué existe:** sin identidad en el nombre, ni el operador ni ETAPA-7 pueden saber de qué cuenta, qué ángulo y qué réplica habla cada fila del CSV exportado — un nombre que no declara su cuenta puede vivir en la cuenta equivocada sin que se note, y dos conjuntos con nombres indistinguibles no se pueden separar en el análisis.
 
 **Los tres niveles:**
 
@@ -128,11 +124,10 @@ ANUNCIO:   [ANGULO]_[FORMATO]_[A|B] ~ [FIRMA]
            PERDIDA-AUDITIVA_IMG_A ~ TINNIDROP|PERDIDA_AUDITIVA|C3.CN07|NC2|SIN_PRECIO|BOTv1
 ```
 
-### TRES REGLAS QUE SALIERON DE LA LIMPIEZA DEL 06-sep-2026
+### TRES REGLAS DE LA CONVENCIÓN DE NOMBRES
 
-La auditoría de ese día encontró **0 de 48 anuncios vivos con el nombre correcto** y 10 de 23
-conjuntos con un parámetro de segmentación escrito a mano en el nombre, en cuatro ortografías
-(`+25AÑOS`, `+ 25AÑOS`, `+25años`, `+ EDAD MIN +25`). De ahí:
+Un parámetro de segmentación escrito a mano en el nombre del conjunto se escribe distinto cada
+vez y no es consultable. De ahí:
 
 1. **Ningún parámetro configurable viaja en el nombre.** El nombre lleva IDENTIDAD (cuenta,
    producto, ángulo, réplica); la banda de edad, el presupuesto y el objetivo son configuración y
@@ -146,7 +141,7 @@ conjuntos con un parámetro de segmentación escrito a mano en el nombre, en cua
 
 3. **Se renombra ANTES de publicar, siempre.** Un `- Copia` publicado ya rompió el invariante 12
    y, si cae en el mismo conjunto que su original, deja dos anuncios con el mismo nombre — que es
-   como quedaron `tinnidrop 6` y `tinnidrop 6 - Copia`. Un renombrado posterior se registra en
+   como quedan `producto 6` y `producto 6 - Copia`. Un renombrado posterior se registra en
    **`PRODUCTOS/_ALIAS_CONJUNTOS.csv`** para no partir la serie histórica.
 
 > **El export diario se baja desglosado por ANUNCIO, no por conjunto.** `ingerir_meta.py` deriva
@@ -270,7 +265,7 @@ Las réplicas de un mismo ángulo son **idénticas por diseño** (mismo creativo
 
 ---
 
-## OUTPUT OBLIGATORIO — `PRODUCTOS/[X]/_PLAN.json` (nuevo · 2026-09-06)
+## OUTPUT OBLIGATORIO — `PRODUCTOS/[X]/_PLAN.json`
 
 > **Por qué existe.** El texto-estructura de abajo es legible pero no es ejecutable: cada producto
 > lo escribió distinto y ninguno se puede leer con un programa. Mientras el plan viva solo en prosa,
@@ -321,7 +316,7 @@ Objetivo de campaña: Tráfico (OUTCOME_TRAFFIC) · Optimización de rendimiento
 Tipo de presupuesto: ABO (presupuesto por conjunto, no por campaña)
 Lanzamiento: 4 AM del día [FECHA DÍA SIGUIENTE]
 ⚠️ NUNCA lanzar el mismo día. Siempre programar para 4 AM. (Regla Joaquín/Angi)
-Segmentación: **banda de edad derivada del `avatar_edad` del ángulo** (ver BANDA DE EDAD arriba), Advantage+ OFF, sin intereses — el creativo segmenta (Andrómeda, Clase 19). ⚠️ Corregido 02-sep: el amplio 18-65+ queda **solo** para ángulos sin avatar de edad marcada. APR-060 midió Q473.6/venta a 25+ contra Q30.6 a 45-60 con el mismo ángulo y el mismo creativo — esperar a que "la data suba el piso después" costó ~24 ventas en 4 días.
+Segmentación: **banda de edad derivada del `avatar_edad` del ángulo** (ver BANDA DE EDAD arriba), Advantage+ OFF, sin intereses — el creativo segmenta (Andrómeda, Clase 19). El amplio 18-65+ queda **solo** para ángulos sin avatar de edad marcada. APR-060 midió Q473.6/venta a 25+ contra Q30.6 a 45-60 con el mismo ángulo y el mismo creativo — esperar a que "la data suba el piso después" costó ~24 ventas en 4 días.
 
 ESTRUCTURA
 1 campaña → 6 conjuntos de anuncios → 2 anuncios por conjunto (mismo creativo duplicado)
@@ -391,7 +386,7 @@ QUÉ OBSERVAR AL DÍA SIGUIENTE
 ──────────────────────────────────────────────────────
 Para identificar el ángulo ganador, revisar por conjunto:
 
-MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `DOCTRINA/ESCALADO_PLAYBOOK.md` §8 → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
+MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md` → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
 1. % Conversación por Clic en enlace = Conversaciones ÷ Clics × 100  (la más importante)
    → <35% problema de flujo/coherencia · 35-49% bueno/escalable · ≥50% (50-70%) excelente y súper escalable
 2. % Conversación por Impresión = Conversaciones ÷ Impresiones × 100
@@ -477,10 +472,10 @@ GUARDARRAÍL DE ENTREGA:
 
 ## Output FASE 3 — Campaña de ESCALADO (1-1-7 CBO)
 
-> 🔴 **Reescrito el 2026-09-02.** La estructura canónica de escalado pasa a ser **1-1-7**: una
-> campaña, un conjunto, **el creativo ganador siete veces**. Fuente: M-A10 (clase 22-ago).
-> El bloque de "6 conjuntos por microángulo" que sigue más abajo queda como **expansión
-> horizontal**, no como el arranque del escalado.
+> 🔴 **La estructura canónica de escalado es 1-1-7:** una campaña, un conjunto, **el creativo
+> ganador siete veces**. Fuente: M-A10.
+> El bloque de "6 conjuntos por microángulo" que sigue más abajo es **expansión
+> horizontal**, no el arranque del escalado.
 
 ```
 ══════════════════════════════════════════════════════
@@ -506,7 +501,7 @@ DUPLICACIÓN (cuando la campaña "agarró carretera"):
   Duplicar a $60 quema el aprendizaje y arranca cara.
 
 SUBIDA DE PRESUPUESTO: +20 % UNA vez al día, solo en la mañana.
-  ⚠️ El +20 % varias veces al día (M-B03, clase 22-ago) está CONGELADO — ver choque C-02.
+  ⚠️ El +20 % varias veces al día (M-B03) está CONGELADO — ver choque C-02.
      Se descongela cuando la fábrica de creativos sostenga ≥6 creativos/día.
 
 MUERTE DE LA CAMPAÑA (M-B09):
@@ -663,7 +658,7 @@ FIN ESTRUCTURA ESCALADO
 
 ## Reglas
 
-### Reglas de la arquitectura de 3 fases (nuevas — 2026-09-02)
+### Reglas de la arquitectura de 3 fases
 
 > Estas mandan sobre cualquier regla de abajo que las contradiga. Trazabilidad de cada una en
 > `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
@@ -714,7 +709,7 @@ FIN ESTRUCTURA ESCALADO
   · **DUPLICADO (default histórico):** el mismo creativo dos veces. Mecanismo de Mercy en Clase 6
     ("darle opciones a Meta"); el sistema lo viene usando y el CPA baja. El porcentaje exacto NO
     aparece en las clases auditadas — no citar un número.
-  · **DOS CONCEPTOS (variante en prueba desde 31-jul):** dos creativos conceptualmente distintos
+  · **DOS CONCEPTOS (variante en prueba):** dos creativos conceptualmente distintos
     del MISMO ángulo. Mismo número de anuncios, mismo presupuesto, misma estructura — pero el doble
     de entradas de recuperación para Andromeda, que en 2026 rankea por creativo y no por audiencia
     (la calidad del creativo explica ~56% del resultado y el benchmark es 8-12 conceptos distintos
@@ -723,21 +718,21 @@ FIN ESTRUCTURA ESCALADO
 - **Regla de no pausar por falta de video (DOCTRINA DE CREATIVOS):** Un ángulo cuyo creativo es IMAGEN (ad Prompt Maestro de ETAPA-4) lanza igual que uno con video. NUNCA dejar un conjunto pausado por no tener video — la imagen lo cubre. Marcar el formato de cada conjunto (VIDEO/IMAGEN), no pausarlo.
 - **Regla de lectura del ganador (confound de formato):** Leer el resultado a nivel de ÁNGULO con las métricas de conversación. Si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato (uno video, otro imagen), no declarar ganador aún: en FASE 2 probar el ángulo en un solo formato para aislar la variable. Un video validado es un creativo más fuerte que una imagen fría — tenerlo en cuenta al comparar.
 
-  > **Decisión del operador (22-sep-2026), reemplaza estas dos reglas hacia adelante:** F1 planifica
+  > **Reemplaza estas dos reglas hacia adelante:** F1 planifica
   > los 6 conjuntos con `formato: IMAGEN` fijo (`_PLAN.json`, validado por `gen_plan.py --validar`)
   > — el confound de formato entre ángulos ya no puede ocurrir en F1. El video queda como fuente del
   > ángulo (`etapa-0`) y se testea en FASE 2 como un concepto más.
 - **Regla de precio (Guatemala — máx 3/6, ideal 2/6):** Máximo 3 conjuntos (idealmente 2) llevan precio P1u en copy + creativo visual. El resto sin precio en ninguno. Si un conjunto lleva precio, va en ambos (copy y creativo); si no, en ninguno. (Ajuste V5 — coherente con ETAPA-4.)
-- **Regla de métricas de observación:** El primer día de testeo busca datos, no ventas. Meta está identificando quién conecta con cada ángulo. (Clase 2 — Joaquín: "el primer día no busco venta, busco DATA")
+- **Regla de métricas de observación:** El primer día de testeo busca datos, no ventas. Meta está identificando quién conecta con cada ángulo.
 - **Regla del 20% matutino:** Subir el presupuesto de un conjunto rentable máximo +20% por día y SOLO en la mañana (hasta 9-10 AM). Tocarlo más tarde reinicia el aprendizaje y desoptimiza. (Clase 8, 11, 15)
 - **Regla del escalado horizontal:** Para crecer en volumen no se infla el conjunto ganador — se replica horizontalmente (duplicar conjunto, más fanpages, más cuentas) usando el MISMO Post ID para acumular prueba social. (Clase 8, 11, 15)
 - **Regla del Post ID:** Las réplicas del anuncio ganador usan "publicación existente" (mismo Post ID) para que likes/comentarios/reproducciones se acumulen en una sola publicación = más prueba social, menor CPM. Moderar comentarios antes de replicar. (Clase 11, 15)
   > Matiz de objetivo (Clase 15): en el TESTEO el objetivo es Tráfico (Mercy: "Interacción nunca me funcionó"). En el ESCALADO con Post ID, Joaquín en Clase 15 crea la campaña de réplica con objetivo **Interacción**. Este sistema mantiene Tráfico por defecto; usar Interacción para Post ID solo si el operador lo valida.
 - **Regla de límite por fanpage:** Hasta ~250 anuncios activos por fanpage. Pasado ese punto, abrir nueva fanpage del mismo nicho/identidad. El ganador solo se replica en fanpages del mismo nicho. (Clase 15)
 - **Regla de los dos modos de escalado:** El operador elige modo AGRESIVO (Mercy — duplicar y multicuenta rápido) o PROGRESIVO (Joaquín — +20% matutino y duplicar solo tras 2-3 días estables). No mezclar criterios a mitad del escalado. (Clase 8, 11, 15)
-- **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `DOCTRINA/PLANTILLAS_ADS.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
+- **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `DOCTRINA/PLANTILLAS_ADS_SECCIONES/06_ESTILOS_ANTIFATIGA.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
   > ⚠️ **NO APLICA A FASE 1.** Los 6 conjuntos con 1 creativo cada uno son el instrumento de MEDICIÓN: si se meten 3 creativos por conjunto se pierde saber qué ángulo ganó. Andromeda premia diversidad, pero el objetivo de FASE 1 es aprender, no entregar barato. Sacrificar la atribución ahí sale más caro que el CPM que se ahorra.
-- **TEST DE DIVERSIDAD CONCEPTUAL (abierto 2026-07-31, leer antes de cerrarlo):** TINNIDROP corre
+- **TEST DE DIVERSIDAD CONCEPTUAL (activo, leer antes de cerrarlo):** TINNIDROP corre
   4 réplicas equivalentes (2🟦 CP1 · 3🟦 GTR1 · 4🟦 GTR7 · 5🟦) con los mismos ángulos, la misma
   página y el mismo presupuesto. Es un experimento natural que no cuesta pauta extra:
   · **CONTROL** — 2🟦 y 3🟦 se quedan con el duplicado (2 anuncios idénticos por conjunto).

@@ -28,7 +28,7 @@ atributos explican la diferencia y cuáles son ruido. Su producto final es el **
 - **No toca nada en Meta.** Solo lectura. Ni presupuestos, ni estados, ni anuncios.
 - **No declara ganador de ÁNGULO** — eso es `etapa-7` + regla 6 de `CLAUDE.md` (agregar por
   `angulo_key`, decidir por venta).
-- **No mide por ROAS.** Se mide por **CPA real** y por cierre. (`DOCTRINA/ESCALADO_PLAYBOOK.md` §8)
+- **No mide por ROAS.** Se mide por **CPA real** y por cierre. (`DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md` §8)
 - **No produce creativos.** Entrega el brief; produce `etapa-9`.
 
 ---
@@ -119,7 +119,7 @@ rendimiento por cada nivel de cada atributo:
 | `densidad` | baja / alta | el choque C-06: umbral cognitivo vs "muchas propuestas de valor" |
 | `estetica` | cartel / editorial / UGC / … | ¿producción pulida o cruda? |
 | `formato` | 1:1 / 4:5 / 2:3 | |
-| `lleva_precio` | SÍ / NO | el M-D16 de la clase 22-ago |
+| `lleva_precio` | SÍ / NO | el M-D16 |
 | `tiene_testimonio` | SÍ / NO | |
 | `tipo_hook` | EMOCIONAL / MIEDO / … | |
 | `avatar_edad` | banda | cruza con APR-060 |
@@ -252,6 +252,6 @@ EXCLUIDOS POR SIN_ENTREGA: [n] anuncios · [Q] de gasto
 
 ## CONEXIÓN
 
-Corre **después de `etapa-7`** (que trae las métricas y verifica integridad) y **antes de
-`etapa-9`** (que produce la tanda siguiente). `etapa-8` decide el escalado; esta decide **qué se
-fabrica**. Son complementarias y no se pisan: `etapa-8` mueve dinero, `etapa-10` mueve el diseño.
+Corre **después de `etapa-7`** (que trae las métricas, verifica integridad Y decide el escalado)
+y **antes de `etapa-9`** (que produce la tanda siguiente). `etapa-7` decide el escalado; esta decide **qué se fabrica**. Son complementarias y no
+se pisan: `etapa-7` mueve dinero, `etapa-10` mueve el diseño.

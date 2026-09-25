@@ -72,8 +72,8 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-2.py}]
     metadata: {etapa: etapa-2, producto: OVULOS_PURITY}
 
-  # ---- etapa-fanpage ----------------------------------------------------------
-  - description: "etapa-fanpage / CLEARSTEM — página asignada existe en el catálogo de 10"
+  # ---- etapa-fanpage (retargeted T1 p2-simplificacion: el juicio hoy vive en etapa-2, ver evals/README.md) ----
+  - description: "etapa-fanpage / CLEARSTEM — página asignada existe en el catálogo de 10 (hoy PRODUCTOS/_DIM_FANPAGES.csv)"
     vars: {content: file://fixtures/etapa-fanpage/CLEARSTEM.txt}
     assert: [{type: python, value: file://asserts/etapa-fanpage.py}]
     metadata: {etapa: etapa-fanpage, producto: CLEARSTEM}
@@ -96,35 +96,6 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-6_schema.py}]
     metadata: {etapa: etapa-6, producto: OVULOS_PURITY}
 
-  - description: "etapa-6 / CLEARSTEM — FASE 1 todo-en-imagen"
-    vars: {content: file://fixtures/etapa-6/CLEARSTEM.json}
-    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
-    metadata:
-      etapa: etapa-6
-      producto: CLEARSTEM
-      expected_fail: true
-      reason: >-
-        Plan v1 de 2026-07-10, anterior a la decisión operador 22-sep-2026
-        ("FASE 1 corre TODO EN IMAGEN"). Mismo hallazgo que reporta hoy
-        `gen_plan.py --validar` (10 errores formato!=IMAGEN preexistentes,
-        ver odd/tasks/g07-cimientos.md T10). No se re-lanza sin regenerar
-        el plan desde etapa-6.
-  - description: "etapa-6 / NusavaB12 — FASE 1 todo-en-imagen"
-    vars: {content: file://fixtures/etapa-6/NusavaB12.json}
-    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
-    metadata:
-      etapa: etapa-6
-      producto: NusavaB12
-      expected_fail: true
-      reason: "Plan v1 anterior a la decisión 22-sep-2026 — mismo hallazgo preexistente de gen_plan.py --validar."
-  - description: "etapa-6 / TINNIDROP — FASE 1 todo-en-imagen"
-    vars: {content: file://fixtures/etapa-6/TINNIDROP.json}
-    assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
-    metadata:
-      etapa: etapa-6
-      producto: TINNIDROP
-      expected_fail: true
-      reason: "Plan v1 anterior a la decisión 22-sep-2026 — mismo hallazgo preexistente de gen_plan.py --validar."
   - description: "etapa-6 / OVULOS_PURITY — FASE 1 todo-en-imagen"
     vars: {content: file://fixtures/etapa-6/OVULOS_PURITY.json}
     assert: [{type: python, value: file://asserts/etapa-6_formato_imagen.py}]
@@ -140,11 +111,54 @@ tests:
     assert: [{type: python, value: file://asserts/etapa-5.py}]
     metadata: {etapa: etapa-5, producto: TINNIDROP}
 
-  # ---- etapa-8 (plan de escalado) -----------------------------------------------
+  # ---- etapa-8 (plan de escalado, histórico — la etapa hoy es etapa-7) ------------
   - description: "etapa-8 / TINNIDROP — Break-Even, regla de oro, surfing, ganadores con evidencia"
     vars: {content: file://fixtures/etapa-8/TINNIDROP.txt}
     assert: [{type: python, value: file://asserts/etapa-8.py}]
     metadata: {etapa: etapa-8, producto: TINNIDROP}
+
+  # ---- etapa-4 (copy FASE 1, 6 conjuntos) ------------------------------------
+  - description: "etapa-4 / TINNIDROP — 3 TEXTO + 3 TÍTULOS + DESCRIPCIÓN por conjunto, CTA a WhatsApp, sin palabras que banean"
+    vars: {content: file://fixtures/etapa-4/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-4.py}]
+    metadata:
+      etapa: etapa-4
+      producto: TINNIDROP
+      expected_fail: true
+      reason: >-
+        Uno de los 3 TÍTULOS del conjunto "ME DIJERON QUE NO TIENE CURA" es
+        literalmente "¿Te dijeron que no hay cura?" — usa la palabra "cura",
+        que DOCTRINA/COPYWRITING_ADS.md §PRINCIPIO 7 lista para evitar, aunque
+        sea una pregunta retórica citando la objeción del cliente y no un
+        claim afirmativo del producto. Output real (presente desde la línea
+        base 02-sep-2026), nunca corregido porque hoy no hay ningún chequeo
+        automatizado de compliance de copy — este assert es el primero. No se
+        reescribe el fixture ni se relaja el assert: el hallazgo queda
+        documentado para que quien toque ETAPA-4.md decida si el título se
+        corrige.
+
+  # ---- etapa-7 (monitor diario) -----------------------------------------------
+  - description: "etapa-7 / TINNIDROP — CPA citado sin ROAS, integridad, sangrado y lectura por dimensión"
+    vars: {content: file://fixtures/etapa-7/TINNIDROP.txt}
+    assert: [{type: python, value: file://asserts/etapa-7.py}]
+    metadata: {etapa: etapa-7, producto: TINNIDROP}
+
+  # ---- etapa-7 FUSIONADA (monitor + plan de escalado en un solo output) --------
+  # Un solo output real de la etapa fusionada, chequeado contra AMBOS contratos:
+  # monitor (asserts/etapa-7.py) y plan de escalado (asserts/etapa-8.py).
+  # Fuente: fixtures/etapa-7/SOURCE_FUSIONADO.txt.
+  - description: "etapa-7 fusionada / TINNIDROP — un solo output cumple el contrato de monitor Y de plan de escalado"
+    vars: {content: file://fixtures/etapa-7/TINNIDROP_FUSIONADO.txt}
+    assert:
+      - {type: python, value: file://asserts/etapa-7.py}
+      - {type: python, value: file://asserts/etapa-8.py}
+    metadata: {etapa: etapa-7, producto: TINNIDROP}
+
+  # ---- etapa-9 (fábrica de conceptos — tanda registrada en _DIM_CREATIVOS.csv) -
+  - description: "etapa-9 / TINNIDROP — tanda real: canonico_id completo, balance de embudo, máx 2 por concepto"
+    vars: {content: file://fixtures/etapa-9/TINNIDROP.csv}
+    assert: [{type: python, value: file://asserts/etapa-9.py}]
+    metadata: {etapa: etapa-9, producto: TINNIDROP}
 
   # ---- etapa-guardar-producto (invariante 8: archivos por rol) -------------------
   - description: "etapa-guardar-producto / CLEARSTEM — solo archivos por rol declarados"
