@@ -179,7 +179,10 @@ function Header({ d }: { d: Flujo }) {
             {claveGlosarioFase && <Info termino={claveGlosarioFase} />}
           </Badge>
         </div>
-        <p className="text-sm text-muted-foreground">{faseEnUnaFrase(d.fase)}</p>
+        <div>
+          {d.fase_titulo && <p className="text-sm font-medium">{d.fase_titulo}</p>}
+          <p className="text-sm text-muted-foreground">{faseEnUnaFrase(d.fase)}</p>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div>

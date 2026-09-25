@@ -105,6 +105,8 @@ test("resume la fase en una frase y el paso de ahora con su título humano, no e
   // El header (nombre, fase, paso de ahora) es siempre visible, sin importar la pestaña abierta.
   expect(await screen.findByText("Tinnidrop Importado Original")).toBeInTheDocument();
   expect(await screen.findByText(/FASE 2 · conceptos: el ángulo ganador, 10 conceptos\./)).toBeInTheDocument();
+  // El título de la fase tal como lo nombra flujo.py (FLUJO.json), no solo el código "F2".
+  expect(screen.getByText("FASE 2 · TESTEO DE CONCEPTOS")).toBeInTheDocument();
   expect(await screen.findAllByText("Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)")).toHaveLength(1);
   expect((await screen.findAllByText("lo hace Claude")).length).toBeGreaterThanOrEqual(1);
   // El id crudo sigue presente, pero como dato secundario, nunca el único texto del paso.
