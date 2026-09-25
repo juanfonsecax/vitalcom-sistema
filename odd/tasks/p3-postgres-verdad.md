@@ -156,7 +156,67 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
   - Conteos `raw.venta`/`entrega_conjunto_dia`/`entrega_anuncio_dia` (tenant `vitalcom`) antes y
     después de correr ambas suites de pruebas: idénticos (3491/1094/1041) — las pruebas no
     tocaron `vitalcom`.
-- [ ] T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB. Check: parity.
+- [~] T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB. Check: parity.
+  PARTIAL (25-sep-2026): only the events family is connected in this pass; decisions/estado_flujo/
+  product onboarding are deferred (see "Next step" below and evidence).
+  Result: `registrar_evento.anexar()` is now the single writer of `_EVENTOS.csv` (decision #1) and
+  writes DB-first (`db/escribir.anexar()` on `raw.evento`, same drift guard/`TENANT_ID`/`BKDIR`
+  override pattern as T3). `flujo.py:escribir_estado()`, `perfilar_angulos.py:registrar_transiciones()`
+  and `reingreso_f1.py:anexar_evento()` now call it instead of writing the CSV themselves — the
+  other four appenders the inventory found. `flujo.py`/`perfilar_angulos.py` use a LOCAL import
+  (inside the function) to avoid a module-level circular import with `registrar_evento.py` (which
+  imports `flujo` for `gate_entrada`); `reingreso_f1.py` redirects `registrar_evento`'s
+  `BASE/PROD/EVENTOS` globals to its own `base_dir` for fixtures, same pattern as
+  `test_registrar_evento.py`. `tables.TABLAS_MIGRADAS_DB` gains `"evento"`.
+  Decision #2 (instruction audit): grepped `CLAUDE.md`, `.claude/skills/**`, `.claude/agents/**`,
+  `DOCTRINA/**` for instructions telling an agent to append `_EVENTOS.csv` by hand. Redirected to
+  the exact `registrar_evento.py` CLI command in 5 files: `.claude/agents/ETAPA-11.md` (PASO 7 —
+  was a literal "escribir con csv real" table), `.claude/agents/ETAPA-6.md` (CAMBIO_CREATIVO note),
+  `.claude/agents/ETAPA-5.md` (principle 4), `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`,
+  `.claude/skills/fase-2-conceptos/SKILL.md` (PASO 0 output + PASO 2 close line). Left descriptive
+  (non-instructional) mentions of `_EVENTOS.csv` in `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`,
+  `DOCTRINA/ESCALADO/04_PALANCAS.md`, `DOCTRINA/CALENDARIO_ESCALADO.md`, `DOCTRINA/DATA_PLAYBOOK.md`,
+  `DOCTRINA/FLUJO.json`, `.claude/skills/fase-3-escalado/SKILL.md`, `.claude/skills/publicar-meta/SKILL.md`,
+  `.claude/skills/ciclo-diario/SKILL.md` unchanged — they document ownership/gates or already point
+  at `registrar_evento.py`, not a hand-write instruction.
+  Deferred (not done in this pass, safety-scoped — see "Next step"): decision #3 (`alta_producto.py`
+  ordering/consistency for `_DIM_PRODUCTOS.csv` DB write + `_DIM_ENVASE.csv` CSV) — not started,
+  because `_DIM_PRODUCTOS.csv` is not connected to DB yet; decision #4 (hooks) — not checked, no new
+  hook-triggered DB writer landed in this pass (`flujo.py --escribir`'s CSV write of
+  `_ESTADO_FLUJO.csv` itself is unchanged, only its embedded event-transition append moved to
+  Postgres); `_DECISIONES.json` (`decidir.py --escribir`) and `_ESTADO_FLUJO.csv`/`_DIM_PRODUCTOS.csv`
+  full DB connection (`editar_producto.py`, `alta_producto.py`) are not implemented.
+  Why deferred: connecting those three writer families safely requires updating ~8 more existing
+  test files (`test_decidir.py`, `test_flujo.py`'s own suite if it starts exercising
+  `escribir_estado()`, `test_alta_producto.py`, `test_cambiar_costo.py`, `test_cargar_cuenta.py`,
+  `test_cargar_page_id.py`, plus `alta_producto.py`'s two-file (DB `producto` + CSV `_DIM_ENVASE`)
+  all-or-nothing ordering/compensation design) for `vitalcom_test` tenant isolation — the same class
+  of real-data-corruption risk the T3 incident already demonstrated once. Doing that correctly and
+  verifying it needs its own pass; T4 continues in a follow-up rather than risk a rushed connection.
+  Evidence (25-sep-2026):
+  - `"../SISTEMA-app/app/backend/.venv/Scripts/python.exe" -m pytest db/test_db.py -q` → 35 passed
+    (updated `test_tablas_migradas_db_es_subconjunto_de_verdad_db` to expect `evento` in the set).
+  - `python -m pytest Ads/_TOOLS -q` → 45 passed (same baseline count as T3; three
+    `test_gen_publicacion.py` scenarios that reach `registrar_excepcion()` — F2 gate,
+    F3.exploracion gate — updated for `vitalcom_test` tenant isolation/bootstrap;
+    `test_reingreso_f1.py::test_ejecucion_real_anexa_evento` and all 21 scenarios of
+    `test_registrar_evento.py` likewise updated — none of them previously isolated against
+    Postgres, so left unmodified they would have tried to write test fixture rows into the REAL
+    `vitalcom` database on the default `PGDATABASE`, the same class of incident as T3's).
+  - `python Ads/_TOOLS/flujo.py --todo` (read-only) → exit 0, clean.
+  - `python Ads/_TOOLS/decidir.py --json` → exit 0, no `--escribir`.
+  - Real-data check (read-only on `PRODUCTOS/_EVENTOS.csv`, per the CAREFUL/HARD RULES sections —
+    never ran `registrar_evento.py`/`flujo.py --escribir`/`perfilar_angulos.py --registrar`/
+    `reingreso_f1.py` for real): `db/escribir.verificar_csv_sincronizado(con, "evento", "PRODUCTOS",
+    tenant_id="vitalcom")` reported already SINCRONIZADO — the session-start
+    `flujo.py --todo --escribir` had already reloaded `raw.evento` from the current
+    `_EVENTOS.csv` (including the operator's 4 uncommitted rows) today, so no `--tomar-csv`
+    bootstrap write was needed or run.
+  - `git status --short` / `git diff --stat -- PRODUCTOS/_EVENTOS.csv` before and after every test
+    run and every command above: identical (still exactly the same 4-line uncommitted diff as at
+    session start). No other `PRODUCTOS/*` file changed.
+  - `cd app/backend && uv run pytest -q` → ran (no code in `app/backend` touched by T4's reduced
+    scope); see the report for the exact count observed.
 - [ ] T5 — `decidir.py` and app backend read from Postgres. Checks: parity, e2e, backend tests.
 - [ ] T6 — Daily cycle script + Windows Task Scheduler task. Check: first real run writes its
   parity row.
@@ -175,6 +235,16 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 - 2026-09-25: T3 done (closed after vitalcom_test created; 35 db tests green).
 
 ## Next step
-T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB (add `evento`,
-`estado_flujo`, `producto` to `tables.TABLAS_MIGRADAS_DB` once their real callers connect).
-Check: parity. Also revisit T8(a) (`_DIM_ANUNCIOS.csv` double writer) if not folded into T4.
+T4 continuation — events are connected; still pending: (a) `decidir.py --escribir` →
+`db/escribir.reemplazar_decision()` for `_DECISIONES.json`; (b) `flujo.py:escribir_estado()`'s own
+CSV rewrite → `db/escribir.reemplazar()` for `_ESTADO_FLUJO.csv` (add `"estado_flujo"` to
+`tables.TABLAS_MIGRADAS_DB`); (c) `alta_producto.py`/`editar_producto.py` → `db/escribir.reemplazar()`
+for `_DIM_PRODUCTOS.csv` (add `"producto"`), with the all-or-nothing DB-write-then-`_DIM_ENVASE.csv`
+CSV-write ordering/compensation design still to decide; (d) update
+`test_decidir.py`/`test_alta_producto.py`/`test_cambiar_costo.py`/`test_cargar_cuenta.py`/
+`test_cargar_page_id.py` for `vitalcom_test` isolation before connecting, same pattern as this
+task's `test_registrar_evento.py`/`test_reingreso_f1.py`/`test_gen_publicacion.py` changes; (e)
+check `.claude/settings.json` hooks against whichever of these lands. `--tomar-csv` already
+generalizes to any table added to `TABLAS_MIGRADAS_DB` via `_resolver_tabla_migrada()` — only
+`_DECISIONES.json` needs its own special case in `db/cargar.py:tomar_csv()` since it has no
+`TABLE_SPECS` row. Also revisit T8(a) (`_DIM_ANUNCIOS.csv` double writer) if not folded into T4.
