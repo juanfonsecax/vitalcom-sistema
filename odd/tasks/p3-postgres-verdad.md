@@ -88,9 +88,12 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
   Route: delegated writer (trigger: 2+ non-trivial files — `db/escribir.py` new, `db/tables.py`,
   `db/nucleo.py`, `db/cargar.py`, `Ads/_TOOLS/upsert_fact.py`, `db/test_db.py`, `db/schema.sql`,
   `db/README.md` all touched).
-- [ ] T3 — `ingerir_lucidsales.py` / `ingerir_meta.py` / `bajar_meta_insights.py` write DB then
+- [x] T3 — `ingerir_lucidsales.py` / `ingerir_meta.py` / `bajar_meta_insights.py` write DB then
   mirror. Check: `decidir` parity green on real data.
-  STATUS PARTIAL (orchestrator readback 25-sep): code committed `238a75b`, real-data no-op green,
+  CLOSED 25-sep after operator created `vitalcom_test`: `python -m pytest db/test_db.py -q` →
+  35 passed; same with SISTEMA-app venv → 35 passed; real `vitalcom` raw counts after tests
+  3491/1094/1041 (unchanged); 3 fact CSVs clean vs HEAD.
+  Was PARTIAL (orchestrator readback 25-sep): code committed `238a75b`, real-data no-op green,
   `Ads/_TOOLS` 45 passed, but `db/test_db.py` = 18 passed / 17 SKIPPED (includes the T2
   byte-identity tests): database `vitalcom_test` does not exist and role `vitalcom` lacks
   CREATEDB. Blocked on operator running once, as Postgres superuser:
@@ -169,7 +172,7 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 
 - 2026-09-25: T2 done.
 
-- 2026-09-25: T3 code done; db tests blocked on missing vitalcom_test (partial).
+- 2026-09-25: T3 done (closed after vitalcom_test created; 35 db tests green).
 
 ## Next step
 T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB (add `evento`,
