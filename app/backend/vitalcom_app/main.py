@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import uuid
-from contextlib import asynccontextmanager
+from contextlib import ExitStack, asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
@@ -23,7 +23,7 @@ from fastapi.responses import JSONResponse
 from . import acciones, api_acciones, api_fase1, api_fases, api_ordenes, api_trabajos, claude, contratos, subidas, workflows
 from .acciones import ErrorDeAccion
 from .config import base
-from .modelos import Costeo, Cuenta, Decisiones, Flujo, Producto, Salud
+from .modelos import Costeo, Cuenta, Decisiones, Flujo, Producto, Resultados, Salud
 
 @asynccontextmanager
 async def _ciclo_de_vida(_app: FastAPI):  # type: ignore[no-untyped-def]
@@ -53,6 +53,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 TOPE_DEL_ALTA_S = 120
+TOPE_DEL_PL_S = 120
 app.include_router(api_acciones.router)
 app.include_router(api_trabajos.router)
 app.include_router(api_trabajos.router_claude)
@@ -198,6 +199,66 @@ def donde_corre() -> dict[str, str]:
 def listar_cuentas() -> list[Cuenta]:
     """Las cuentas publicitarias del portafolio (_DIM_CUENTAS.csv)."""
     return [Cuenta(**fila) for fila in contratos.cuentas()]
+
+
+@app.get("/api/resultados", response_model=Resultados, tags=["resultados"])
+def resultados() -> Resultados:
+    """El P&L más reciente que dejó `gen_pl.py --json` (T4a): VISTA A/B, tal cual las decidió el
+    script. 404 (no 503: es un estado normal de arranque, no una falla del sistema) cuando
+    nadie cargó todavía el export de Dropi (DOCTRINA/CONTABILIDAD.md §5)."""
+    try:
+        return Resultados(**contratos.resultados())
+    except contratos.ContratoAusente as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+@app.post("/api/resultados/cargar", tags=["resultados"], status_code=201)
+def cargar_resultados(
+    dropi: UploadFile = File(..., description="export de órdenes de Dropi (--dropi, obligatorio)"),
+    banco: UploadFile | None = File(None, description="extracto bancario de Relay, opcional"),
+    cartera: UploadFile | None = File(None, description="historial de cartera de Dropi, opcional"),
+    desde: str = Form(""),
+    hasta: str = Form(""),
+) -> dict:
+    """Corre la acción `resultados.cargar_pl`: `gen_pl.py --json` sobre lo que sube el operador.
+
+    Los archivos se guardan primero en carpetas temporales del sistema operativo (una por
+    archivo, igual que el alta de producto) y quien los mete al sistema es `gen_pl.py`, que
+    además escribe el `.txt` y el `.json` en `PRODUCTOS/_AUDITORIAS/`.
+    """
+    try:
+        with ExitStack() as pila:
+            ruta_dropi = subidas.guardar(
+                dropi.file, dropi.filename or "dropi.xlsx", pila.enter_context(subidas.carpeta_temporal())
+            )
+            valores_crudos = {"dropi": str(ruta_dropi), "desde": desde, "hasta": hasta}
+            if banco is not None:
+                ruta_banco = subidas.guardar(
+                    banco.file, banco.filename or "banco.pdf", pila.enter_context(subidas.carpeta_temporal())
+                )
+                valores_crudos["banco"] = str(ruta_banco)
+            if cartera is not None:
+                ruta_cartera = subidas.guardar(
+                    cartera.file, cartera.filename or "cartera.xlsx", pila.enter_context(subidas.carpeta_temporal())
+                )
+                valores_crudos["cartera"] = str(ruta_cartera)
+            accion = acciones.por_id_para_el_runner("resultados.cargar_pl")
+            valores = acciones.validar_parametros(
+                accion, {k: v for k, v in valores_crudos.items() if not isinstance(v, str) or v.strip()}
+            )
+            job_id, _repetido = workflows.encolar(accion, valores, uuid.uuid4().hex)
+            resultado = workflows.esperar_resultado(job_id, TOPE_DEL_PL_S)
+    except subidas.SubidaRechazada as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    if resultado is None:
+        raise HTTPException(
+            status_code=409,
+            detail="La carga no alcanzó a terminar: hay otro cambio en curso. Probá de nuevo en un momento.",
+        )
+    unidad = resultado["unidades"][0]
+    if resultado["estado"] != "EXITO":
+        raise HTTPException(status_code=422, detail=unidad.get("detalle") or resultado["detalle"])
+    return unidad["json"]
 
 
 @app.exception_handler(contratos.ContratoAusente)

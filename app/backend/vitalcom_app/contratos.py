@@ -24,6 +24,7 @@ ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
 FLUJO_GLOBAL = ("PRODUCTOS", "_FLUJO.json")
 ESTADO_VISTAS = ("VISTAS", "_ESTADO.json")
+AUDITORIAS = ("PRODUCTOS", "_AUDITORIAS")
 FLUJO_PY = ("Ads", "_TOOLS", "flujo.py")
 COSTEAR_PY = ("Ads", "_TOOLS", "costear.py")
 GEN_ORDENES_PY = ("Ads", "_TOOLS", "gen_ordenes.py")
@@ -113,6 +114,23 @@ def salud() -> dict[str, Any]:
     La frescura la calcula `gen_app.py` desde el `mtime` del archivo. La app no la recalcula.
     """
     return _leer_json(ESTADO_VISTAS)
+
+
+def resultados() -> dict[str, Any]:
+    """El `_PL_<ini>_<fin>.json` más reciente que dejó `gen_pl.py --json` (T4a).
+
+    El nombre del archivo ordena por fecha (`_PL_YYYYMMDD_YYYYMMDD.json`), así que el último
+    del orden alfabético es el período más nuevo cargado — nada se recalcula ni se compara por
+    edad acá, eso ya lo decidió `gen_pl.py` y viaja en el propio JSON (`vista_a_cohorte.preliminar`).
+    """
+    carpeta = ruta(*AUDITORIAS)
+    archivos = sorted(carpeta.glob("_PL_*.json")) if carpeta.is_dir() else []
+    if not archivos:
+        raise ContratoAusente(
+            "no hay ningún _PL_<ini>_<fin>.json en _AUDITORIAS/: falta cargar el export de Dropi."
+        )
+    with archivos[-1].open(encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def flujo(producto_key: str, hoy: str | None = None) -> dict[str, Any]:

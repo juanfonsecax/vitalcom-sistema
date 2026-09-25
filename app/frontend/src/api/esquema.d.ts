@@ -613,6 +613,52 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/resultados": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Resultados
+         * @description El P&L más reciente que dejó `gen_pl.py --json` (T4a): VISTA A/B, tal cual las decidió el
+         *     script. 404 (no 503: es un estado normal de arranque, no una falla del sistema) cuando
+         *     nadie cargó todavía el export de Dropi (DOCTRINA/CONTABILIDAD.md §5).
+         */
+        get: operations["resultados_api_resultados_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/resultados/cargar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cargar Resultados
+         * @description Corre la acción `resultados.cargar_pl`: `gen_pl.py --json` sobre lo que sube el operador.
+         *
+         *     Los archivos se guardan primero en carpetas temporales del sistema operativo (una por
+         *     archivo, igual que el alta de producto) y quien los mete al sistema es `gen_pl.py`, que
+         *     además escribe el `.txt` y el `.json` en `PRODUCTOS/_AUDITORIAS/`.
+         */
+        post: operations["cargar_resultados_api_resultados_cargar_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -802,6 +848,34 @@ export interface components {
             /** Archivo */
             archivo?: string | null;
         };
+        /** Body_cargar_resultados_api_resultados_cargar_post */
+        Body_cargar_resultados_api_resultados_cargar_post: {
+            /**
+             * Dropi
+             * @description export de órdenes de Dropi (--dropi, obligatorio)
+             */
+            dropi: string;
+            /**
+             * Banco
+             * @description extracto bancario de Relay, opcional
+             */
+            banco?: string | null;
+            /**
+             * Cartera
+             * @description historial de cartera de Dropi, opcional
+             */
+            cartera?: string | null;
+            /**
+             * Desde
+             * @default
+             */
+            desde: string;
+            /**
+             * Hasta
+             * @default
+             */
+            hasta: string;
+        };
         /**
          * CampanaF1
          * @description El lanzador del producto (`_LANZADOR.json`) y el `_PLAN.json` de origen, tal cual.
@@ -824,6 +898,30 @@ export interface components {
             piezas: components["schemas"]["PiezaF1"][];
             /** Lanzador Generado */
             lanzador_generado?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * CapaAnalitica
+         * @description Estado del último `dbt build` (g07-cimientos T2). "FALLO" significa que el motor está
+         *     leyendo los CSV directamente y la capa analitica quedó vieja — visible aca, no solo en stdout.
+         */
+        CapaAnalitica: {
+            /**
+             * Estado
+             * @default DESCONOCIDO
+             */
+            estado: string;
+            /**
+             * Detalle
+             * @default
+             */
+            detalle: string;
+            /**
+             * Generado
+             * @default
+             */
+            generado: string;
         } & {
             [key: string]: unknown;
         };
@@ -1003,6 +1101,14 @@ export interface components {
             resumen_acciones: {
                 [key: string]: number;
             };
+            /**
+             * Cobertura Gasto
+             * @default {}
+             */
+            cobertura_gasto: {
+                [key: string]: number;
+            };
+            capa_analitica?: components["schemas"]["CapaAnalitica"] | null;
             /**
              * Productos
              * @default []
@@ -1389,6 +1495,12 @@ export interface components {
              * @default 0
              */
             rezago_dias: number;
+            capa_analitica?: components["schemas"]["CapaAnalitica"] | null;
+            /**
+             * Pendientes Registro
+             * @default []
+             */
+            pendientes_registro: components["schemas"]["PendienteRegistro"][];
             /**
              * Llamadas
              * @default []
@@ -1502,6 +1614,52 @@ export interface components {
             confirmado: boolean;
             /** Job Id */
             job_id?: string | null;
+        };
+        /**
+         * PendienteRegistro
+         * @description Un conjunto NUESTRO de Meta (producto_key clasificado) que todavía no
+         *     tiene fila de `angulo_key` en `_DIM_CONJUNTOS.csv`. Su gasto ya cuenta a nivel producto
+         *     (invariante 1, `flujo.py`/`gasto.py` agregan por `coalesce(angulo_key, conjunto)`); lo único
+         *     pendiente es la fila de registro, que da de alta ETAPA-6 — ver `lo_produce`.
+         */
+        PendienteRegistro: {
+            /**
+             * Cuenta Alias
+             * @default
+             */
+            cuenta_alias: string;
+            /**
+             * Campana
+             * @default
+             */
+            campana: string;
+            /**
+             * Conjunto
+             * @default
+             */
+            conjunto: string;
+            /**
+             * Producto Key
+             * @default
+             */
+            producto_key: string;
+            /**
+             * Spend Usd
+             * @default 0
+             */
+            spend_usd: number;
+            /**
+             * Anuncios
+             * @default 0
+             */
+            anuncios: number;
+            /**
+             * Lo Produce
+             * @default
+             */
+            lo_produce: string;
+        } & {
+            [key: string]: unknown;
         };
         /** PiezaF1 */
         PiezaF1: {
@@ -1641,6 +1799,59 @@ export interface components {
             n: number;
             /** Texto */
             texto: string;
+        };
+        /**
+         * Resultados
+         * @description Salida de `gen_pl.py --json` (T4a): el estado de resultados real, DOCTRINA/CONTABILIDAD.md.
+         *
+         *     `vista_a_cohorte` y `vista_b_caja` quedan como dict libre: su forma exacta la fija
+         *     `gen_pl.py`, no la app (regla de oro: la app no calcula ni redefine el contrato). La
+         *     bandera de cohorte PRELIMINAR vive en `vista_a_cohorte["preliminar"]`, tal cual la decide
+         *     el script con `dias_cohorte_maduro` de `_PARAMETROS_FINANZAS.csv`.
+         */
+        Resultados: {
+            /**
+             * Periodo
+             * @default {}
+             */
+            periodo: {
+                [key: string]: unknown;
+            };
+            /**
+             * Vista A Cohorte
+             * @default {}
+             */
+            vista_a_cohorte: {
+                [key: string]: unknown;
+            };
+            /** Vista B Caja */
+            vista_b_caja?: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Alertas
+             * @default []
+             */
+            alertas: string[];
+            /**
+             * Integridad
+             * @default {}
+             */
+            integridad: {
+                [key: string]: unknown;
+            };
+            /**
+             * Fallos
+             * @default []
+             */
+            fallos: string[];
+            /**
+             * Ok
+             * @default true
+             */
+            ok: boolean;
+        } & {
+            [key: string]: unknown;
         };
         /** SalidaDeEtapa */
         SalidaDeEtapa: {
@@ -2771,6 +2982,61 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Cuenta"][];
+                };
+            };
+        };
+    };
+    resultados_api_resultados_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resultados"];
+                };
+            };
+        };
+    };
+    cargar_resultados_api_resultados_cargar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_cargar_resultados_api_resultados_cargar_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

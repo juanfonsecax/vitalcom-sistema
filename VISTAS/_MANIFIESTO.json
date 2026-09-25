@@ -1769,6 +1769,60 @@
     "habilitada": true,
     "tiempo_max_s": 300,
     "salida": "json"
+   },
+   {
+    "id": "resultados.cargar_pl",
+    "rotulo": "Cargar export de Dropi y calcular el P&L",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_pl.py",
+     "--dropi",
+     "{dropi}",
+     "--json"
+    ],
+    "parametros": {
+     "dropi": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "banco": {
+      "tipo": "archivo_temporal",
+      "requerido": false,
+      "bandera": "--banco"
+     },
+     "cartera": {
+      "tipo": "archivo_temporal",
+      "requerido": false,
+      "bandera": "--cartera"
+     },
+     "desde": {
+      "tipo": "texto",
+      "patron": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "requerido": false,
+      "bandera": "--desde"
+     },
+     "hasta": {
+      "tipo": "texto",
+      "patron": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "requerido": false,
+      "bandera": "--hasta"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_AUDITORIAS/"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
    }
   ]
  }

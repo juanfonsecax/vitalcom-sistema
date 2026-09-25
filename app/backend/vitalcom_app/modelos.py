@@ -144,6 +144,24 @@ class Costeo(Base):
     origen_escalera: str = ""
 
 
+class Resultados(Base):
+    """Salida de `gen_pl.py --json` (T4a): el estado de resultados real, DOCTRINA/CONTABILIDAD.md.
+
+    `vista_a_cohorte` y `vista_b_caja` quedan como dict libre: su forma exacta la fija
+    `gen_pl.py`, no la app (regla de oro: la app no calcula ni redefine el contrato). La
+    bandera de cohorte PRELIMINAR vive en `vista_a_cohorte["preliminar"]`, tal cual la decide
+    el script con `dias_cohorte_maduro` de `_PARAMETROS_FINANZAS.csv`.
+    """
+
+    periodo: dict[str, Any] = {}
+    vista_a_cohorte: dict[str, Any] = {}
+    vista_b_caja: dict[str, Any] | None = None
+    alertas: list[str] = []
+    integridad: dict[str, Any] = {}
+    fallos: list[str] = []
+    ok: bool = True
+
+
 class Accion(Base):
     """Una acción con botón, tal como la declara `VISTAS/_MANIFIESTO.json` (diseño §2.5)."""
 
