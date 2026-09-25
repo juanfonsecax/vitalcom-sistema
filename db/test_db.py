@@ -22,6 +22,14 @@ import tempfile
 
 import pytest
 
+# P3 T3, aislamiento de pruebas (CRITICO): TODAS las pruebas de este archivo corren contra
+# `vitalcom_test`, nunca contra `vitalcom` (que desde T3 sostiene la VERDAD real de venta/
+# entrega_conjunto_dia/entrega_anuncio_dia). Se fuerza ANTES de importar `cargar` -- que lee
+# PGDATABASE recien en `conectar()`/`cargar_env()`, y esa da prioridad a `os.environ` sobre el
+# `.env` de disco (ver su docstring) -- asi que esto alcanza para redirigir TODA conexion de este
+# proceso sin tocar la config real del operador ni pisar `~/.config/vitalcom_db/.env`.
+os.environ["PGDATABASE"] = "vitalcom_test"
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tables as T  # noqa: E402
 import cargar as C  # noqa: E402
@@ -32,6 +40,34 @@ import nucleo as N  # noqa: E402
 TOOLS_DIR = os.path.join(T.BASE_DIR, "Ads", "_TOOLS")
 sys.path.insert(0, TOOLS_DIR)
 import upsert_fact as UF  # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    """Crea `vitalcom_test` si no existe y le aplica schema.sql (`CREATE DATABASE` no copia el
+    esquema de ninguna otra base). Si Postgres no es alcanzable no hace nada -- `DB_DISPONIBLE`
+    (mas abajo) se encarga de saltar toda prueba que lo necesite, con mensaje claro."""
+    try:
+        if C.asegurar_base_de_datos("vitalcom_test"):
+            C.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro(env=None):
+    """GUARDIA (P3 T3, critico): igual que `C.conectar()`, pero rehusa devolver una conexion a
+    `vitalcom` -- la base REAL con la verdad de P3. Ninguna prueba de este archivo debe truncar o
+    reescribir esa base; esto es el segundo cinturon ademas del override de PGDATABASE de arriba
+    (por si algun `.env`/entorno externo lo pisara)."""
+    con = C.conectar(env)
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "P3 T3: una prueba intento conectarse a 'vitalcom' (la base REAL) en vez de "
+            "'vitalcom_test'. Abortado antes de tocar nada -- revisa PGDATABASE.")
+    return con
 
 
 # ── grupo 1: funciones puras ────────────────────────────────────────────────
@@ -191,7 +227,7 @@ def _env_db_disponible():
     if not os.path.exists(ruta) and "PGHOST" not in os.environ:
         return False
     try:
-        con = C.conectar()
+        con = _conectar_seguro()
         con.close()
         return True
     except Exception:
@@ -203,8 +239,20 @@ requiere_db = pytest.mark.skipif(not DB_DISPONIBLE, reason="Postgres no accesibl
                                   "(sin ~/.config/vitalcom_db/.env o conexión rechazada)")
 
 
+def _bootstrap_migradas_desde_csv_real(tenant_id="vitalcom"):
+    """Siembra las tablas YA MIGRADAS (P3 T3: `tables.TABLAS_MIGRADAS_DB` -- venta/
+    entrega_conjunto_dia/entrega_anuncio_dia) en `vitalcom_test` desde el CSV REAL de
+    PRODUCTOS/. `cargar_todo()` ya NO las recarga (ver su docstring): las pruebas de integracion
+    que dependen de su contenido real (paridad, conservacion, atribucion) necesitan este bootstrap
+    explicito primero -- exactamente lo que haria el operador con `db/cargar.py --tomar-csv` antes
+    de la primera corrida real. Idempotente: se puede llamar varias veces en la misma sesion."""
+    for tabla in sorted(T.TABLAS_MIGRADAS_DB):
+        C.tomar_csv(tabla, tenant_id=tenant_id)
+
+
 @requiere_db
 def test_cargar_es_idempotente_en_conteo_de_filas():
+    _bootstrap_migradas_desde_csv_real()
     r1 = C.cargar_todo()
     r2 = C.cargar_todo()
     assert r1["raw"] == r2["raw"]
@@ -226,6 +274,7 @@ def test_cargar_es_idempotente_en_conteo_de_filas():
 def test_core_conserva_todas_las_filas_raw_de_los_3_hechos():
     """T5b: cada fila `raw` de venta/entrega_anuncio_dia/entrega_conjunto_dia aterriza EXACTAMENTE
     una vez en `core` (nunca se descarta por no resolver un FK)."""
+    _bootstrap_migradas_desde_csv_real()
     r = C.cargar_todo()
     for tabla in ("venta", "entrega_anuncio_dia", "entrega_conjunto_dia"):
         c = r["core"]["conservacion"][tabla]
@@ -236,8 +285,9 @@ def test_core_conserva_todas_las_filas_raw_de_los_3_hechos():
 def test_venta_metodo_atribucion_coincide_con_T2():
     """Verificación de odd/tasks/p1-cimientos.md: ad_id válido + 670 verificados por gasto +
     resto nombre/sin_atribuir, sin inventar ni un ad_id. Vive en core.venta desde T5b."""
+    _bootstrap_migradas_desde_csv_real()
     C.cargar_todo()
-    con = C.conectar()
+    con = _conectar_seguro()
     try:
         with con.cursor() as cur:
             cur.execute(
@@ -322,6 +372,7 @@ def test_parity_gate_decidir_exportado_igual_a_real():
     if not python_exe:
         pytest.skip("no se encontró un intérprete con scipy+duckdb para correr decidir.py")
 
+    _bootstrap_migradas_desde_csv_real()
     C.cargar_todo()
     tmp = tempfile.mkdtemp(prefix="vitalcom_parity_core_")
     try:
@@ -341,6 +392,7 @@ def test_parity_gate_decidir_exportado_igual_a_real():
 def test_exportar_raw_todo_sigue_disponible_para_auditoria():
     """El exportador raw completo (T5) sigue existiendo como capa de auditoría/staging, separado
     del exportador core/decidir (T5b)."""
+    _bootstrap_migradas_desde_csv_real()
     C.cargar_todo()
     tmp = tempfile.mkdtemp(prefix="vitalcom_raw_export_")
     try:
@@ -392,14 +444,17 @@ def test_fusionar_es_la_misma_semantica_que_upsert_sobre_un_csv(tmp_path):
 
 def _limpiar_tenant_test(tenant_id=TENANT_TEST_T2):
     """Deja las tablas DB-truth (raw + core) sin filas de `tenant_id`, para que cada prueba de
-    `db/escribir.py` arranque de un estado conocido sin depender del orden de ejecución."""
-    con = C.conectar()
+    `db/escribir.py` arranque de un estado conocido sin depender del orden de ejecución. También
+    limpia `raw.raw_import` (P3 T3): el guardia de drift mide "¿ya se importó?" por ese log, así
+    que una prueba que necesita simular "nunca se importó" necesita este log también en cero."""
+    con = _conectar_seguro()
     try:
         with con:
             with con.cursor() as cur:
                 for tabla in T.TABLAS_VERDAD_DB:
                     cur.execute("DELETE FROM raw.%s WHERE tenant_id = %%s" % tabla, (tenant_id,))
                 cur.execute("DELETE FROM raw.decisiones_json WHERE tenant_id = %s", (tenant_id,))
+                cur.execute("DELETE FROM raw.raw_import WHERE tenant_id = %s", (tenant_id,))
                 N.construir_core(cur, tenant_id)
     finally:
         con.close()
@@ -431,8 +486,9 @@ def test_espejo_es_byte_identico_a_los_7_archivos_db_truth():
     DB-truth (T1) — mismo header, mismo orden de filas y columnas, mismo terminador de línea,
     mismo encoding. Si un archivo no calza, el hallazgo es del EXPORTADOR o del archivo fuente,
     nunca algo que este test deba ocultar."""
+    _bootstrap_migradas_desde_csv_real()
     C.cargar_todo()
-    con = C.conectar()
+    con = _conectar_seguro()
     try:
         with tempfile.TemporaryDirectory() as tmp:
             for tabla, archivo in DB_TRUTH_CSVS.items():
@@ -462,7 +518,7 @@ def test_escribir_upsert_idempotente_y_conserva_posicion():
     al final), agrega al final las llaves nuevas, y repetir la misma corrida es idempotente (0
     reemplazos / 0 altas) sin cambiar el conteo de filas en `raw` NI en `core`."""
     _limpiar_tenant_test()
-    con = C.conectar()
+    con = _conectar_seguro()
     key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
     cols = _cols_venta()
     try:
@@ -521,7 +577,7 @@ def test_escribir_upsert_mirror_byte_identico_al_de_upsert_fact():
     """El espejo que regenera `escribir.upsert(prod_dir=...)` debe ser byte-idéntico al CSV que
     produce `upsert_fact.upsert()` sobre los mismos datos y el mismo `key`."""
     _limpiar_tenant_test()
-    con = C.conectar()
+    con = _conectar_seguro()
     key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
     cols = _cols_venta()
     try:
@@ -550,7 +606,7 @@ def test_escribir_particion_elimina_igual_que_upsert_fact():
     """`particion` en `escribir.upsert()` se comporta igual que en `upsert_fact.upsert()`: un
     re-pull declara su ámbito como la verdad completa y elimina lo que ese ámbito ya no trae."""
     _limpiar_tenant_test()
-    con = C.conectar()
+    con = _conectar_seguro()
     key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
     particion = ("ventana_ini", "cuenta_alias", "conjunto")
     cols = _cols_venta()
@@ -577,7 +633,7 @@ def test_escribir_falla_a_mitad_hace_rollback_y_no_toca_el_espejo(monkeypatch):
     `ErrorEscritura`, (b) dejar `raw` como estaba ANTES del intento (rollback real de Postgres,
     no un rollback simulado) y (c) NUNCA tocar el archivo de espejo — el commit nunca ocurrió."""
     _limpiar_tenant_test()
-    con = C.conectar()
+    con = _conectar_seguro()
     key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
     cols = _cols_venta()
     try:
@@ -616,7 +672,7 @@ def test_cargar_todo_incluir_verdad_db_false_deja_intactas_las_tablas_verdad():
     es single-tenant hoy): si `incluir_verdad_db=False` no la protegiera, esa fila desaparecería
     aunque pertenezca a un tenant distinto del que carga `cargar_todo()`."""
     _limpiar_tenant_test()
-    con = C.conectar()
+    con = _conectar_seguro()
     key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
     try:
         f1 = _fila_venta_completa(anuncio="AD1")
@@ -626,7 +682,7 @@ def test_cargar_todo_incluir_verdad_db_false_deja_intactas_las_tablas_verdad():
 
     C.cargar_todo(incluir_verdad_db=False)
 
-    con2 = C.conectar()
+    con2 = _conectar_seguro()
     try:
         with con2.cursor() as cur:
             cur.execute("SELECT count(*) FROM raw.venta WHERE tenant_id = %s",
@@ -636,3 +692,151 @@ def test_cargar_todo_incluir_verdad_db_false_deja_intactas_las_tablas_verdad():
         con2.close()
     assert n == 1, "cargar_todo(incluir_verdad_db=False) truncó una tabla DB-truth"
     _limpiar_tenant_test()
+
+
+# ── grupo 4: P3 T3 — TABLAS_MIGRADAS_DB, guardia de drift, --tomar-csv ──────
+
+def test_tablas_migradas_db_es_subconjunto_de_verdad_db():
+    assert T.TABLAS_MIGRADAS_DB <= T.TABLAS_VERDAD_DB
+    assert T.TABLAS_MIGRADAS_DB == {"venta", "entrega_conjunto_dia", "entrega_anuncio_dia"}
+
+
+@requiere_db
+def test_cargar_todo_nunca_recarga_tablas_migradas_pase_lo_que_pase_con_incluir_verdad_db():
+    """P3 T3: a diferencia de las tablas VERDAD_DB no migradas (gobernadas por
+    `incluir_verdad_db`), las MIGRADAS se saltan SIEMPRE de la recarga generica desde CSV -- ni
+    siquiera `incluir_verdad_db=True` (el default) las toca. Se prueba con una fila propia
+    (`TENANT_TEST_T2`) que `cargar_tabla()` TRUNCATE-earia si no estuviera protegida."""
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    try:
+        f1 = _fila_venta_completa(anuncio="AD1")
+        W.upsert(con, "venta", [f1], key, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+
+    C.cargar_todo()  # incluir_verdad_db=True (default) -- ANTES de T3 esto habria recargado venta
+
+    con2 = _conectar_seguro()
+    try:
+        with con2.cursor() as cur:
+            cur.execute("SELECT count(*) FROM raw.venta WHERE tenant_id = %s", (TENANT_TEST_T2,))
+            n = cur.fetchone()[0]
+    finally:
+        con2.close()
+    assert n == 1, "cargar_todo() por defecto no debe tocar una tabla ya MIGRADA"
+    _limpiar_tenant_test()
+
+
+@requiere_db
+def test_verificar_csv_sincronizado_bloquea_si_nunca_se_importo():
+    """Primera corrida (P3 T3, critico): sin ninguna fila en `raw.raw_import` para este
+    tenant/archivo, el guardia aborta -- incluso si el CSV en disco esta vacio (0 filas), porque
+    lo que se mide es "¿alguna vez se importo?", no el conteo."""
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            cols = _cols_venta()
+            with open(os.path.join(tmp, "_FACT_VENTAS.csv"), "w", newline="", encoding="utf-8") as f:
+                import csv as _csv
+                w = _csv.DictWriter(f, fieldnames=cols)
+                w.writeheader()
+            with pytest.raises(W.DriftDetectado, match="nunca se importo"):
+                W.verificar_csv_sincronizado(con, "venta", tmp, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_verificar_csv_sincronizado_bloquea_si_csv_difiere_del_esperado():
+    """El CSV en disco fue editado a mano (o quedo desactualizado): el guardia detecta la
+    diferencia byte a byte y aborta, sin importar que la tabla SI se haya importado antes."""
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    try:
+        f1 = _fila_venta_completa(anuncio="AD1")
+        with tempfile.TemporaryDirectory() as tmp:
+            W.upsert(con, "venta", [f1], key, prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            # Marca "ya se importo" a mano (sin esto el guardia fallaria antes por "nunca se
+            # importo", que es otro caso ya cubierto arriba).
+            with con.cursor() as cur:
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (TENANT_TEST_T2, "_FACT_VENTAS.csv", "x", 1))
+            con.commit()
+            # Edita el mirror a mano -- exactamente lo que el guardia debe detectar.
+            with open(os.path.join(tmp, "_FACT_VENTAS.csv"), "a", encoding="utf-8") as f:
+                f.write("linea editada a mano\n")
+            with pytest.raises(W.DriftDetectado, match="byte-identico"):
+                W.verificar_csv_sincronizado(con, "venta", tmp, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_verificar_csv_sincronizado_pasa_cuando_csv_coincide():
+    """Caso feliz: recien escrito el espejo por `upsert(prod_dir=...)`, el guardia no debe
+    abortar -- es exactamente la secuencia que un llamador real corre antes de la SIGUIENTE
+    escritura."""
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    try:
+        f1 = _fila_venta_completa(anuncio="AD1")
+        with tempfile.TemporaryDirectory() as tmp:
+            W.upsert(con, "venta", [f1], key, prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            with con.cursor() as cur:
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (TENANT_TEST_T2, "_FACT_VENTAS.csv", "x", 1))
+            con.commit()
+            W.verificar_csv_sincronizado(con, "venta", tmp, tenant_id=TENANT_TEST_T2)  # no explota
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_tomar_csv_importa_y_satisface_el_guardia():
+    """`db/cargar.py --tomar-csv` (P3 T3): recarga UNA tabla migrada desde su CSV y dejar el
+    guardia de drift satisfecho para la siguiente escritura -- es la recuperacion deliberada que
+    los mensajes de `DriftDetectado` recomiendan."""
+    _limpiar_tenant_test()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            cols = _cols_venta()
+            fila = _fila_venta_completa(anuncio="AD1")
+            import csv as _csv
+            with open(os.path.join(tmp, "_FACT_VENTAS.csv"), "w", newline="", encoding="utf-8") as f:
+                w = _csv.DictWriter(f, fieldnames=cols)
+                w.writeheader()
+                w.writerow(fila)
+
+            archivo, n, reporte = C.tomar_csv("venta", productos_dir=tmp, tenant_id=TENANT_TEST_T2)
+            assert archivo == "_FACT_VENTAS.csv"
+            assert n == 1
+
+            con = _conectar_seguro()
+            try:
+                W.verificar_csv_sincronizado(con, "venta", tmp, tenant_id=TENANT_TEST_T2)
+            finally:
+                con.close()
+
+        with pytest.raises(ValueError):
+            C.tomar_csv("conjunto", tenant_id=TENANT_TEST_T2)  # no migrada -- rechazado
+    finally:
+        _limpiar_tenant_test()
+
+
+def test_asegurar_base_de_datos_es_idempotente():
+    """No debe fallar si `vitalcom_test` ya existe (es exactamente el caso normal: la crea la
+    primera vez que corre este archivo y la reutiliza en cada corrida siguiente)."""
+    if not DB_DISPONIBLE:
+        pytest.skip("Postgres no accesible en este entorno")
+    assert C.asegurar_base_de_datos("vitalcom_test") is True
+    assert C.asegurar_base_de_datos("vitalcom_test") is True

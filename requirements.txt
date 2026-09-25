@@ -6,3 +6,4 @@ scipy            # intervalos de credibilidad (gamma) y Fisher exacto en decidir
 duckdb           # motor del warehouse
 dbt-core
 dbt-duckdb
+psycopg[binary]  # cliente de Postgres (db/), verdad de P3 para venta/entrega_conjunto_dia/entrega_anuncio_dia

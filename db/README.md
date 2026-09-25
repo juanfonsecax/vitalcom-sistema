@@ -294,6 +294,113 @@ Diseño (ver `odd/tasks/p3-postgres-verdad.md`):
   `Ads/_TOOLS/test_upsert_fact.py`, sin cambios); `db/escribir.upsert()` la reusa tal cual sobre
   `raw.*` en vez de un CSV — un dato, un dueño de la SEMÁNTICA de merge.
 
+## P3 T3 — primeros llamadores reales conectados (`venta`, `entrega_conjunto_dia`, `entrega_anuncio_dia`)
+
+T3 conecta los tres primeros escritores reales del inventario de T1 a `db/escribir.py`:
+`Ads/_TOOLS/ingerir_lucidsales.py` (`_FACT_VENTAS.csv` → `venta`) e
+`Ads/_TOOLS/ingerir_meta.py` / `Ads/_TOOLS/bajar_meta_insights.py` (`_FACT_ENTREGA.csv` →
+`entrega_conjunto_dia`, `_FACT_ENTREGA_ANUNCIO.csv` → `entrega_anuncio_dia`). Desde T3 estos tres
+escriben SIEMPRE por `db/escribir.upsert()` (nunca directo al CSV); `PRODUCTOS/_FACT_VENTAS.csv`,
+`_FACT_ENTREGA.csv` y `_FACT_ENTREGA_ANUNCIO.csv` son el ESPEJO. `ingerir_meta.py` cambió además de
+mecánica: su nivel CONJUNTO era un `append` crudo (nunca pasaba por `upsert_fact`) — ahora entra
+por la misma llave natural que ya usaba para el anti-duplicado (`LLAVE_CONJUNTO` en el módulo),
+vía `db/escribir.upsert()`.
+
+**`prod_dir` sale de `FACT`/`FACT_AD`, nunca de la constante `PROD`.** Los tres módulos calculan
+`prod_dir = os.path.dirname(FACT)` (o `FACT_AD`) dentro de `main()`, no usan la constante `PROD`
+directamente en la escritura. Es a propósito: las pruebas monkeypatchean `FACT`/`FACT_AD` a un
+directorio temporal (`patch.object(im, "FACT", ...)`), y si el mirror se regenerara sobre `PROD`
+igual, escribiría en `PRODUCTOS/` real sin importar el monkeypatch — exactamente el defecto que
+apareció en vivo durante el desarrollo de T3 (pruebas con datos ficticios pisando y mezclándose
+con `PRODUCTOS/_FACT_ENTREGA*.csv`/`_FACT_VENTAS.csv` reales; corregido, ver
+`odd/tasks/p3-postgres-verdad.md` T3 para el detalle completo del incidente y la limpieza).
+
+### `tables.TABLAS_MIGRADAS_DB` — "elegible" vs. "ya conectado"
+
+`tables.TABLAS_VERDAD_DB` (T2) es el conjunto ELEGIBLE completo (las 6 tablas + `decisiones_json`
+aparte). `tables.TABLAS_MIGRADAS_DB` (T3, nuevo) es el subconjunto ya CONECTADO a un llamador
+real: hoy `{venta, entrega_conjunto_dia, entrega_anuncio_dia}`; T4 sumará `evento`,
+`estado_flujo`, `producto` cuando `registrar_evento.py`/`flujo.py`/`alta_producto.py` también
+escriban por `db/escribir.py`. La distinción importa para `db/cargar.py`: una recarga GENÉRICA
+(`cargar_todo()`, sin flags — el uso más común) **nunca** vuelve a cargar desde CSV una tabla de
+`TABLAS_MIGRADAS_DB`, pase lo que pase con `incluir_verdad_db` (clobbearía la verdad que ya
+escribió el llamador real); las tablas `TABLAS_VERDAD_DB` que TODAVÍA no se conectaron siguen el
+comportamiento de T2 (gobernado por `incluir_verdad_db`, `True` por defecto = se recargan como en
+P1, porque su llamador real sigue escribiendo el CSV directo hasta T4).
+
+### Guardia de drift (`db/escribir.verificar_csv_sincronizado()`)
+
+Antes de CUALQUIER escritura sobre una tabla migrada, los tres llamadores corren este guardia.
+Aborta con `escribir.DriftDetectado` (nunca escribe nada) en dos casos:
+
+1. **Nunca se importó.** Se mide por `raw.raw_import` (el log que ya llenaban `cargar_tabla()` y
+   ahora también `cargar.tomar_csv()`) filtrando por `(tenant_id, archivo)` — NO por
+   `count(*) FROM raw.<tabla> == 0`: un tenant/producto legítimamente nuevo puede empezar con cero
+   filas de verdad, y medir por conteo bloquearía para siempre aunque ya se hubiera hecho el
+   bootstrap sobre un CSV vacío. Es el caso de la primera corrida real: `raw.venta` está vacía
+   porque nadie corrió el bootstrap todavía.
+2. **El CSV no es byte-idéntico** a lo que la base exportaría ahora para esa tabla (alguien lo
+   editó a mano, o la base quedó desactualizada frente a un cambio externo).
+
+En ambos casos el mensaje trae la recuperación exacta: `python db/cargar.py --tomar-csv <archivo>`.
+
+### `db/cargar.py --tomar-csv <archivo|tabla>`
+
+Recarga UNA sola tabla de `TABLAS_MIGRADAS_DB` desde su CSV en disco — deliberado, nunca
+automático. Dos usos: el bootstrap inicial (antes de la primera corrida real de T3, importar el
+CSV que hoy YA es la verdad) y la recuperación cuando el guardia de drift aborta. Reconstruye
+`core` entero en la misma transacción, igual que `cargar_todo()`. Rechaza con `ValueError`
+cualquier tabla que no esté en `TABLAS_MIGRADAS_DB` (no es una forma general de recargar
+cualquier CSV — para eso está `cargar_todo()`).
+
+```
+"..\SISTEMA-app\app\backend\.venv\Scripts\python.exe" db/cargar.py --tomar-csv _FACT_VENTAS.csv
+```
+
+### Backup del mirror (`bkdir`)
+
+`db/escribir.upsert()`/`anexar()`/`reemplazar()` aceptan ahora `bkdir` (opcional, antes solo
+`prod_dir`): si se pasa, y hay un cambio que reescribe el mirror, copia el mirror ACTUAL a `bkdir`
+justo ANTES de reemplazarlo — mismo patrón y nombrado que `upsert_fact.upsert()`. Es explícito (no
+se infiere de `prod_dir`) para que una prueba con `prod_dir` en un directorio temporal no termine
+escribiendo en el `_RESPALDOS/` real del repo. Los tres llamadores reales de T3 pasan
+`bkdir=BKDIR` (su `_RESPALDOS/backups_csv/` de siempre) para conservar el mismo colchón de
+seguridad que tenían con `upsert_fact.upsert()`.
+
+### Aislamiento de pruebas — `vitalcom_test`
+
+Desde T3, `vitalcom` sostiene VERDAD real. Ninguna prueba corre contra ella:
+
+- `db/test_db.py` fuerza `os.environ["PGDATABASE"] = "vitalcom_test"` al importar el módulo
+  (antes de que nada intente conectar) y crea/aplica el esquema con
+  `cargar.asegurar_base_de_datos("vitalcom_test")` + `cargar.aplicar_schema(dbname="vitalcom_test")`
+  si hace falta. `_conectar_seguro()` es el segundo cinturón: rehúsa devolver una conexión cuyo
+  `dbname` sea `vitalcom`.
+- Las pruebas de `Ads/_TOOLS` que ahora escriben por Postgres (`test_ingerir_lucidsales.py`,
+  `test_bajar_meta_insights.py`) hacen lo mismo (mismo override de `PGDATABASE`) y además aíslan
+  cada escenario en su propio `TENANT_ID` (los tres llamadores reales exponen ese nombre como
+  constante de módulo, sobreescribible), para no interferir entre sí dentro del mismo proceso.
+- `cargar.asegurar_base_de_datos(nombre, env=None)` crea la base si no existe (conectando a la
+  base de mantenimiento `postgres`, o si falla, a `vitalcom`, con `autocommit=True` — `CREATE
+  DATABASE` no puede correr dentro de una transacción). `cargar.aplicar_schema(env=None,
+  dbname=None)` aplica `db/schema.sql` completo sobre la base indicada (idempotente, igual que el
+  propio archivo).
+
+**Setup único pendiente en este entorno (encontrado en T3, no resuelto acá):** el rol `vitalcom`
+de `~/.config/vitalcom_db/.env` NO tiene `CREATEDB` (`SELECT rolcreatedb FROM pg_roles WHERE
+rolname='vitalcom'` → `false`) ni es superusuario, así que `asegurar_base_de_datos("vitalcom_test")`
+no puede crear la base — devuelve `False` (nunca falla ni cae de vuelta a `vitalcom`) y las
+pruebas que dependen de Postgres se SALTAN con mensaje claro, no fallan en falso ni corren contra
+la base real. Para que corran de verdad, el operador corre UNA vez, con un rol con privilegios
+(`postgres`):
+```sql
+ALTER ROLE vitalcom CREATEDB;
+-- o, equivalente, sin tocar el rol:
+CREATE DATABASE vitalcom_test OWNER vitalcom;
+```
+Después de eso, `db/test_db.py` y las pruebas de `Ads/_TOOLS` que tocan Postgres crean/reusan
+`vitalcom_test` solas, sin más intervención.
+
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
 - Ningún lector ni escritor real (decidir.py, flujo.py, gen_*.py, etc.) lee de Postgres: siguen

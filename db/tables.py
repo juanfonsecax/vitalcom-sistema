@@ -88,6 +88,22 @@ TABLAS_VERDAD_DB = {
     "producto",
 }
 
+# P3 T3: subconjunto de TABLAS_VERDAD_DB ya CONECTADO a un llamador real via db/escribir.py — no
+# solo "elegible" (eso es TABLAS_VERDAD_DB completo desde T2), sino efectivamente en producción
+# con Postgres como verdad. Distinción explícita porque `db/cargar.py` necesita saber, para SU
+# recarga genérica de PRODUCTOS/*.csv, cuáles tablas NUNCA debe volver a pisar desde el CSV
+# (clobbearía la verdad que ya escribió un llamador real) y cuáles TODAVÍA deben recargarse desde
+# el CSV como en P1 (porque su llamador real sigue escribiendo el CSV directo, hasta T4).
+# T3 conecta ingerir_lucidsales.py (`venta`) e ingerir_meta.py/bajar_meta_insights.py
+# (`entrega_conjunto_dia`, `entrega_anuncio_dia`). T4 sumará `evento`, `estado_flujo`, `producto`
+# cuando sus llamadores reales (registrar_evento.py, flujo.py, alta_producto.py/editar_producto.py)
+# también escriban por db/escribir.py.
+TABLAS_MIGRADAS_DB = {
+    "venta",
+    "entrega_conjunto_dia",
+    "entrega_anuncio_dia",
+}
+
 # {tabla: {columna_csv: columna_sql}} — solo para el choque de nombre con las columnas propias
 # de la tabla (`id`, `tenant_id`, `loaded_at`). _APRENDIZAJES.csv trae su propia columna `id`
 # (el id de la fila de aprendizaje, no el bigserial de Postgres); se renombra a `id_csv` en SQL,

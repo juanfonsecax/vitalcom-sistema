@@ -112,6 +112,13 @@ PROD = os.path.join(BASE, "PRODUCTOS")
 DIMCU = os.path.join(PROD, "_DIM_CUENTAS.csv")
 FACT, FACT_AD, BKDIR = im.FACT, im.FACT_AD, im.BKDIR
 
+# P3 T3: mismo camino de escritura que ingerir_meta.py (db/escribir.py, Postgres es la verdad).
+sys.path.insert(0, os.path.join(BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import escribir as db_escribir  # noqa: E402
+
+TENANT_ID = im.TENANT_ID
+
 API_VERSION = "v21.0"
 API = f"https://graph.facebook.com/{API_VERSION}"
 ENV_DEFAULT = os.path.join(os.path.expanduser("~"), ".config", "meta", ".env")
@@ -401,15 +408,43 @@ def main():
     # gasto por anuncio, ver docstring de upsert_fact.py). Una cuenta-dia que fallo no
     # aporta filas a `todos`/`conjuntos` (ver el `continue` en el bucle de mas arriba), asi
     # que su particion nunca aparece aca y nunca se toca lo que ya habia.
+    #
+    # P3 T3: mismo camino de Postgres que ingerir_meta.py -- db/escribir.upsert() acepta
+    # `particion` con la misma semantica que upsert_fact.upsert() (fusionar() es compartida).
     PARTICION = ("fuente", "ventana_ini", "ventana_fin", "cuenta_id")
-    reemp_c, nuevas_c, sc_c, elim_c = uf.upsert(FACT, im.COLS, _clave_conjunto, conjuntos, BKDIR,
-                                                 particion=PARTICION)
-    print(f"\n_FACT_ENTREGA.csv: {reemp_c} reemplazadas · {nuevas_c} nuevas · "
-          f"{elim_c} eliminadas (superadas por el re-pull) · {sc_c} sin cambio")
-    reemp_a, nuevas_a, sc_a, elim_a = uf.upsert(FACT_AD, im.COLS_AD, _clave_anuncio, todos, BKDIR,
-                                                 particion=PARTICION)
-    print(f"_FACT_ENTREGA_ANUNCIO.csv: {reemp_a} reemplazadas · {nuevas_a} nuevas · "
-          f"{elim_a} eliminadas (superadas por el re-pull) · {sc_a} sin cambio")
+    # El directorio de escritura sale de FACT/FACT_AD (nunca de la constante PROD): ver el mismo
+    # comentario en ingerir_meta.py -- las pruebas monkeypatchean FACT/FACT_AD a un directorio
+    # temporal, y escribir sobre PROD igual pisaria PRODUCTOS/ real.
+    prod_dir_conjunto = os.path.dirname(FACT)
+    prod_dir_anuncio = os.path.dirname(FACT_AD)
+    try:
+        con = db_cargar.conectar()
+    except Exception as exc:
+        print(f"\n⛔ Postgres no disponible: no se pudo escribir _FACT_ENTREGA*.csv (nunca se "
+              f"escribe el CSV directo). Detalle: {exc}", file=sys.stderr)
+        return 1
+    try:
+        db_escribir.verificar_csv_sincronizado(con, "entrega_conjunto_dia", prod_dir_conjunto,
+                                                tenant_id=TENANT_ID)
+        reemp_c, nuevas_c, sc_c, elim_c = db_escribir.upsert(
+            con, "entrega_conjunto_dia", conjuntos, key=_clave_conjunto, particion=PARTICION,
+            prod_dir=prod_dir_conjunto, bkdir=BKDIR, tenant_id=TENANT_ID)
+        print(f"\n_FACT_ENTREGA.csv: {reemp_c} reemplazadas · {nuevas_c} nuevas · "
+              f"{elim_c} eliminadas (superadas por el re-pull) · {sc_c} sin cambio "
+              f"(Postgres es la verdad)")
+        db_escribir.verificar_csv_sincronizado(con, "entrega_anuncio_dia", prod_dir_anuncio,
+                                                tenant_id=TENANT_ID)
+        reemp_a, nuevas_a, sc_a, elim_a = db_escribir.upsert(
+            con, "entrega_anuncio_dia", todos, key=_clave_anuncio, particion=PARTICION,
+            prod_dir=prod_dir_anuncio, bkdir=BKDIR, tenant_id=TENANT_ID)
+        print(f"_FACT_ENTREGA_ANUNCIO.csv: {reemp_a} reemplazadas · {nuevas_a} nuevas · "
+              f"{elim_a} eliminadas (superadas por el re-pull) · {sc_a} sin cambio "
+              f"(Postgres es la verdad)")
+    except db_escribir.ErrorEscritura as exc:
+        print(f"\n⛔ {exc}", file=sys.stderr)
+        return 1
+    finally:
+        con.close()
     return resultado
 
 

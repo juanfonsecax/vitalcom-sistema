@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""test_bajar_meta_insights.py — Pruebas unitarias para bajar_meta_insights.py (Hito 5)."""
+"""test_bajar_meta_insights.py — Pruebas unitarias para bajar_meta_insights.py (Hito 5).
+
+P3 T3 — aislamiento de Postgres (CRÍTICO, ver db/README.md "Aislamiento de pruebas"):
+`bajar_meta_insights.py` ahora escribe `_FACT_ENTREGA*.csv` a través de Postgres
+(`db/escribir.py`), nunca directo al CSV. Estas pruebas NUNCA deben tocar la base real
+`vitalcom` (sostiene la verdad real de P3 desde T3): se fuerza `PGDATABASE=vitalcom_test` ANTES
+de importar `bajar_meta_insights`, se verifica que la conexión resultante NO sea `vitalcom`, y
+cada escenario que escribe usa su propio `TENANT_ID` (vía `bmi.TENANT_ID`). Si `vitalcom_test` no
+existe y el rol no tiene `CREATEDB` (caso real de este entorno), esas pruebas se SALTAN.
+"""
 import csv
 import os
 import sys
 import tempfile
 import unittest
+import uuid
 from unittest.mock import patch
 
 for _s in (sys.stdout, sys.stderr):
@@ -14,8 +24,79 @@ for _s in (sys.stdout, sys.stderr):
     except (AttributeError, ValueError):
         pass
 
+# P3 T3: forzar ANTES de importar bajar_meta_insights (que importa ingerir_meta -> db/cargar.py).
+os.environ["PGDATABASE"] = "vitalcom_test"
+
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import bajar_meta_insights as bmi  # noqa: E402
+
+sys.path.insert(0, os.path.join(bmi.BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import nucleo as db_nucleo      # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    """GUARDIA (P3 T3, crítico): rehúsa devolver una conexión a `vitalcom` real."""
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "P3 T3: test_bajar_meta_insights.py intentó conectarse a 'vitalcom' en vez de "
+            "'vitalcom_test'. Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _tenant_unico(nombre):
+    return "test_bajarmeta_%s_%s" % (nombre, uuid.uuid4().hex[:8])
+
+
+def _bootstrap_entrega(prod_dir, tenant_id):
+    """Crea (vacíos, si hace falta) y siembra en Postgres `_FACT_ENTREGA.csv`/
+    `_FACT_ENTREGA_ANUNCIO.csv` para `tenant_id` -- satisface el guardia de drift antes de que
+    `bmi.main()` escriba, igual que `db/cargar.py --tomar-csv` en producción."""
+    for archivo, cols in (("_FACT_ENTREGA.csv", bmi.im.COLS),
+                          ("_FACT_ENTREGA_ANUNCIO.csv", bmi.im.COLS_AD)):
+        path = os.path.join(prod_dir, archivo)
+        if not os.path.exists(path):
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                w = csv.DictWriter(f, fieldnames=cols)
+                w.writeheader()
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                for tabla, archivo in (("entrega_conjunto_dia", "_FACT_ENTREGA.csv"),
+                                        ("entrega_anuncio_dia", "_FACT_ENTREGA_ANUNCIO.csv")):
+                    n, sha = db_cargar.cargar_tabla(cur, tenant_id, tabla, archivo, False, prod_dir)
+                    cur.execute(
+                        "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                        "VALUES (%s, %s, %s, %s)", (tenant_id, archivo, sha, n))
+                db_nucleo.construir_core(cur, tenant_id)
+    finally:
+        con.close()
 
 
 class TestBajarMetaInsights(unittest.TestCase):
@@ -146,9 +227,13 @@ class TestBajarMetaInsights(unittest.TestCase):
         """Una cuenta que revienta (permiso denegado, ej. GTR13) no debe tumbar el proceso: las
         filas de la cuenta sana se escriben igual y el codigo de salida queda en 2 (PARCIAL: al
         menos una OK, al menos una fallo), nunca se toca la red real."""
+        if not DB_DISPONIBLE:
+            self.skipTest("Postgres/vitalcom_test no disponible en este entorno")
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
         fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
         bkdir = os.path.join(self.temp_dir, "backups_csv")
+        tenant = _tenant_unico("aisla_falla")
+        _bootstrap_entrega(self.temp_dir, tenant)
 
         cuentas_fake = [
             {"cuenta_alias": "GTR 13", "cuenta_id": "916746367261028", "moneda": "USD"},
@@ -174,6 +259,7 @@ class TestBajarMetaInsights(unittest.TestCase):
         with patch.object(bmi, "FACT", fact), \
              patch.object(bmi, "FACT_AD", fact_ad), \
              patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "TENANT_ID", tenant), \
              patch.object(bmi, "token_de", return_value="tok_falso"), \
              patch.object(bmi, "leer_cuentas_activas", return_value=cuentas_fake), \
              patch.object(bmi.im, "leer_dim", return_value=({}, {})), \
@@ -317,9 +403,13 @@ class TestBajarMetaInsights(unittest.TestCase):
     def test_re_correr_el_mismo_dia_es_idempotente(self):
         """Correr bajar_meta_insights.py dos veces con la MISMA fila no debe crecer el
         CSV: es el check de idempotencia explicito de T1."""
+        if not DB_DISPONIBLE:
+            self.skipTest("Postgres/vitalcom_test no disponible en este entorno")
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
         fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
         bkdir = os.path.join(self.temp_dir, "backups_csv")
+        tenant = _tenant_unico("re_correr_idempotente")
+        _bootstrap_entrega(self.temp_dir, tenant)
         fila_sana = {
             "ventana_ini": "2026-09-21", "ventana_fin": "2026-09-21", "dias": 1,
             "producto_key": "PROD", "cuenta_id": "598687956219141", "cuenta_alias": "GTR7",
@@ -337,6 +427,7 @@ class TestBajarMetaInsights(unittest.TestCase):
         with patch.object(bmi, "FACT", fact), \
              patch.object(bmi, "FACT_AD", fact_ad), \
              patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "TENANT_ID", tenant), \
              patch.object(bmi, "token_de", return_value="tok_falso"), \
              patch.object(bmi, "leer_cuentas_activas",
                           return_value=[{"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141",
@@ -358,9 +449,12 @@ class TestBajarMetaInsights(unittest.TestCase):
         cuenta/dia; el re-pull nuevo trae la MISMA cuenta/dia CON ad_id. Antes de `particion`
         las dos convivian (llaves distintas: firma vs ad_id) y el gasto por anuncio se
         duplicaba. Con `particion` la fila vieja debe desaparecer y solo queda la del re-pull."""
+        if not DB_DISPONIBLE:
+            self.skipTest("Postgres/vitalcom_test no disponible en este entorno")
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
         fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
         bkdir = os.path.join(self.temp_dir, "backups_csv")
+        tenant = _tenant_unico("particion_backfill")
 
         # Backfill viejo, escrito ANTES de que existiera ad_id: la llave real de esa fila
         # (ver bmi._clave_anuncio) cae en la FIRMA porque ad_id llega "".
@@ -378,6 +472,7 @@ class TestBajarMetaInsights(unittest.TestCase):
             w = csv.DictWriter(fh, fieldnames=campos)
             w.writeheader()
             w.writerow(fila_vieja)
+        _bootstrap_entrega(self.temp_dir, tenant)  # siembra el backfill viejo como verdad actual
 
         fila_repull = {
             "ventana_ini": "2026-09-06", "ventana_fin": "2026-09-06", "dias": 1,
@@ -397,6 +492,7 @@ class TestBajarMetaInsights(unittest.TestCase):
         with patch.object(bmi, "FACT", fact), \
              patch.object(bmi, "FACT_AD", fact_ad), \
              patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "TENANT_ID", tenant), \
              patch.object(bmi, "token_de", return_value="tok_falso"), \
              patch.object(bmi, "leer_cuentas_activas",
                           return_value=[{"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141",
@@ -414,9 +510,13 @@ class TestBajarMetaInsights(unittest.TestCase):
 
     def test_main_todas_las_cuentas_ok_devuelve_0(self):
         """Sin ninguna falla el codigo de salida debe ser 0 (exito total)."""
+        if not DB_DISPONIBLE:
+            self.skipTest("Postgres/vitalcom_test no disponible en este entorno")
         fact = os.path.join(self.temp_dir, "_FACT_ENTREGA.csv")
         fact_ad = os.path.join(self.temp_dir, "_FACT_ENTREGA_ANUNCIO.csv")
         bkdir = os.path.join(self.temp_dir, "backups_csv")
+        tenant = _tenant_unico("todas_ok")
+        _bootstrap_entrega(self.temp_dir, tenant)
 
         cuentas_fake = [
             {"cuenta_alias": "GTR 7", "cuenta_id": "598687956219141", "moneda": "USD"},
@@ -439,6 +539,7 @@ class TestBajarMetaInsights(unittest.TestCase):
         with patch.object(bmi, "FACT", fact), \
              patch.object(bmi, "FACT_AD", fact_ad), \
              patch.object(bmi, "BKDIR", bkdir), \
+             patch.object(bmi, "TENANT_ID", tenant), \
              patch.object(bmi, "token_de", return_value="tok_falso"), \
              patch.object(bmi, "leer_cuentas_activas", return_value=cuentas_fake), \
              patch.object(bmi.im, "leer_dim", return_value=({}, {})), \

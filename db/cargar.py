@@ -58,7 +58,67 @@ def conectar(env=None):
         dbname=env.get("PGDATABASE", "vitalcom"),
         user=env.get("PGUSER", "vitalcom"),
         password=env.get("PGPASSWORD", ""),
+        # P3 T3: sin esto, un Postgres inalcanzable (puerto filtrado/caído, no solo "conexión
+        # rechazada") puede colgar sin límite en vez de fallar rápido -- descubierto probando el
+        # camino "Postgres caído" de los llamadores reales, que deben salir con un mensaje claro,
+        # no quedarse esperando para siempre (bloquearía la cadena nocturna completa).
+        connect_timeout=10,
     )
+
+
+def asegurar_base_de_datos(nombre, env=None):
+    """Crea la base `nombre` si no existe (P3 T3: aislamiento de pruebas en `vitalcom_test`, nunca
+    la base real `vitalcom` — ver db/README.md). Se conecta con las MISMAS credenciales a una base
+    de mantenimiento FIJA (`postgres`, o si esa falla, `vitalcom` — NUNCA `env["PGDATABASE"]`: en
+    contexto de pruebas esa variable ya apunta a `nombre`, que todavía no existe) porque no se
+    puede crear una base estando conectado a ella misma. Devuelve True si la base ya existía o se
+    acaba de crear; False si Postgres no fue alcanzable, o si el rol conectado no tiene permiso
+    CREATEDB (caso real: un rol de aplicación sin privilegios de superusuario) — en ambos casos el
+    llamador debe tratarlo como "no se pudo, salta lo que dependa de esto", nunca como un error
+    fatal ni una razón para caer de vuelta a la base real."""
+    import psycopg
+
+    env = env or cargar_env()
+    for mantenimiento in ("postgres", "vitalcom"):
+        try:
+            con = psycopg.connect(
+                host=env.get("PGHOST", "localhost"), port=env.get("PGPORT", "5432"),
+                dbname=mantenimiento, user=env.get("PGUSER", "vitalcom"),
+                password=env.get("PGPASSWORD", ""), autocommit=True, connect_timeout=10,
+            )
+        except Exception:
+            continue
+        try:
+            with con.cursor() as cur:
+                cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (nombre,))
+                if cur.fetchone():
+                    return True
+                cur.execute('CREATE DATABASE "%s"' % nombre)
+            return True
+        except Exception:
+            continue
+        finally:
+            con.close()
+    return False
+
+
+def aplicar_schema(env=None, dbname=None):
+    """Aplica db/schema.sql sobre la base indicada (P3 T3: puebla `vitalcom_test` recién creada —
+    `CREATE DATABASE` no copia el esquema de ninguna otra base). Idempotente, igual que el propio
+    schema.sql (`CREATE ... IF NOT EXISTS`)."""
+    env = dict(env or cargar_env())
+    if dbname:
+        env["PGDATABASE"] = dbname
+    schema_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "schema.sql")
+    with io.open(schema_path, encoding="utf-8") as f:
+        sql = f.read()
+    con = conectar(env)
+    try:
+        with con.cursor() as cur:
+            cur.execute(sql)
+        con.commit()
+    finally:
+        con.close()
 
 
 def sha256_de(path):
@@ -209,7 +269,15 @@ def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", 
     `incluir_verdad_db=False` (P3 T2): NO recarga las tablas `raw.*` de `tables.TABLAS_VERDAD_DB`
     (ni `raw.decisiones_json`) desde el CSV/archivo local — quedan intactas, con lo que haya
     escrito `db/escribir.py`. Sigue reportando su conteo actual (consulta, no TRUNCATE) para que
-    el reporte de `cargar_todo()` no mienta. Default `True`: comportamiento idéntico a siempre."""
+    el reporte de `cargar_todo()` no mienta. Default `True`: mismo comportamiento de siempre PARA
+    LAS TABLAS QUE TODAVÍA NO SE CONECTARON a un llamador real (T4 en adelante).
+
+    P3 T3: las tablas de `tables.TABLAS_MIGRADAS_DB` (ya conectadas — `venta`,
+    `entrega_conjunto_dia`, `entrega_anuncio_dia`) se saltan de la recarga desde CSV SIEMPRE,
+    pase lo que pase con `incluir_verdad_db` — no es opcional, porque una recarga genérica
+    (`db/cargar.py` sin flags, el uso más común) jamás debe poder pisar la verdad que ya escribió
+    un llamador real. La ÚNICA forma deliberada de recargarlas desde su CSV es `tomar_csv()`
+    (bootstrap inicial o recuperación de drift), nunca este camino genérico."""
     import nucleo as N  # import tardío: nucleo importa `cargar.enriquecer_venta`, evita el ciclo
 
     productos_dir = productos_dir or T.PRODUCTOS_DIR
@@ -221,7 +289,8 @@ def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", 
         with con:
             with con.cursor() as cur:
                 for tabla, archivo, opcional in T.TABLE_SPECS:
-                    if not incluir_verdad_db and tabla in T.TABLAS_VERDAD_DB:
+                    if tabla in T.TABLAS_MIGRADAS_DB or (
+                            not incluir_verdad_db and tabla in T.TABLAS_VERDAD_DB):
                         cur.execute(
                             "SELECT count(*) FROM raw.%s WHERE tenant_id = %%s" % tabla,
                             (tenant_id,),
@@ -243,12 +312,68 @@ def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", 
     return {"raw": conteos_raw, "core": reporte_core}
 
 
+def _resolver_tabla_migrada(tabla_o_archivo):
+    """Acepta el nombre de TABLA (`venta`) o de ARCHIVO (`_FACT_VENTAS.csv`) y devuelve
+    (tabla, archivo, opcional) — solo entre las de `tables.TABLAS_MIGRADAS_DB` (T3): --tomar-csv
+    es la recuperación deliberada de una tabla YA migrada, nunca una forma general de recargar
+    cualquier CSV (para eso ya está `cargar_todo()`)."""
+    for tabla, archivo, opcional in T.TABLE_SPECS:
+        if tabla not in T.TABLAS_MIGRADAS_DB:
+            continue
+        if tabla_o_archivo == tabla or tabla_o_archivo == archivo:
+            return tabla, archivo, opcional
+    raise ValueError(
+        "%r no es una tabla DB-truth MIGRADA (ver tables.TABLAS_MIGRADAS_DB: %s). --tomar-csv "
+        "solo aplica a las que P3 ya movio a Postgres." % (tabla_o_archivo,
+                                                            sorted(T.TABLAS_MIGRADAS_DB)))
+
+
+def tomar_csv(tabla_o_archivo, productos_dir=None, tenant_id="vitalcom", env=None):
+    """P3 T3 — recuperación DELIBERADA, nunca automática: recarga UNA sola tabla DB-truth ya
+    migrada desde su CSV en disco (bootstrap inicial, cuando `raw.<tabla>` está vacía, o
+    recuperación cuando `db/escribir.verificar_csv_sincronizado()` detecta drift). Reconstruye
+    `core` ENTERO en la MISMA transacción, igual que el resto de este módulo. Devuelve
+    (archivo, n_filas, reporte_core)."""
+    import nucleo as N  # import tardío, mismo motivo que en cargar_todo()
+
+    productos_dir = productos_dir or T.PRODUCTOS_DIR
+    tabla, archivo, opcional = _resolver_tabla_migrada(tabla_o_archivo)
+
+    con = conectar(env)
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = cargar_tabla(cur, tenant_id, tabla, archivo, opcional, productos_dir)
+                path = os.path.join(productos_dir, archivo)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)",
+                    (tenant_id, archivo, sha, n),
+                )
+                reporte_core = N.construir_core(cur, tenant_id)
+    finally:
+        con.close()
+    return archivo, n, reporte_core
+
+
 def main():
     ap = argparse.ArgumentParser(description="Carga PRODUCTOS/*.csv a Postgres (raw -> core)")
     ap.add_argument("--productos-dir", default=None, help="default: PRODUCTOS/ del repo")
     ap.add_argument("--decisiones-json", default=None, help="default: <productos-dir>/_DECISIONES.json")
     ap.add_argument("--tenant", default="vitalcom")
+    ap.add_argument("--tomar-csv", default=None, metavar="ARCHIVO_O_TABLA",
+                     help="P3 T3: recarga SOLO esta tabla DB-truth MIGRADA (tables.TABLAS_MIGRADAS_DB) "
+                          "desde su CSV en disco -- bootstrap inicial o recuperacion de drift, "
+                          "nunca automatico -- y sale sin tocar el resto")
     args = ap.parse_args()
+
+    if args.tomar_csv:
+        archivo, n, reporte = tomar_csv(args.tomar_csv, args.productos_dir, args.tenant)
+        print("tomado desde CSV: %s -> %d fila(s) en raw" % (archivo, n))
+        print("\n-- core (reconciliacion) --")
+        for tabla_core, m in sorted(reporte["tablas"].items()):
+            print("%-32s %6d" % (tabla_core, m))
+        return 0
 
     resultado = cargar_todo(args.productos_dir, args.decisiones_json, args.tenant)
     conteos = resultado["raw"]

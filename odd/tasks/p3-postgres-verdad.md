@@ -88,8 +88,62 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
   Route: delegated writer (trigger: 2+ non-trivial files — `db/escribir.py` new, `db/tables.py`,
   `db/nucleo.py`, `db/cargar.py`, `Ads/_TOOLS/upsert_fact.py`, `db/test_db.py`, `db/schema.sql`,
   `db/README.md` all touched).
-- [ ] T3 — `bajar_lucidsales` / `bajar_meta_insights` (+ ingestors) write DB then mirror.
-  Check: `decidir` parity green on real data.
+- [x] T3 — `ingerir_lucidsales.py` / `ingerir_meta.py` / `bajar_meta_insights.py` write DB then
+  mirror. Check: `decidir` parity green on real data.
+  Result: los tres llamadores conectan a `db/escribir.upsert()` (nunca CSV directo). Defecto
+  encontrado y corregido en el camino: `ingerir_meta.py` nivel CONJUNTO (`_FACT_ENTREGA.csv`) era
+  un `append` crudo, nunca pasaba por `upsert_fact` — ahora entra por la misma llave natural que
+  ya usaba para el anti-duplicado. `db/tables.py` agrega `TABLAS_MIGRADAS_DB` (subconjunto de
+  `TABLAS_VERDAD_DB` ya conectado — hoy `venta`/`entrega_conjunto_dia`/`entrega_anuncio_dia`);
+  `cargar_todo()` ya nunca las recarga desde CSV, con o sin `incluir_verdad_db`.
+  `db/escribir.verificar_csv_sincronizado()` (guardia de drift, crítico): aborta si el CSV no es
+  byte-idéntico a lo que la base exportaría, o si la tabla/tenant nunca se importó (medido por
+  `raw.raw_import`, no por conteo — un tenant nuevo legítimo puede empezar en cero). Recuperación:
+  `db/cargar.py --tomar-csv <archivo>` (nuevo, `tables.TABLAS_MIGRADAS_DB` únicamente).
+  `db/escribir.upsert()/anexar()/reemplazar()` ganan `bkdir` explícito (mismo patrón/nombrado que
+  `upsert_fact.upsert()`) para el backup previo del mirror.
+  Aislamiento de pruebas (crítico): `db/test_db.py` y las pruebas de `Ads/_TOOLS` que tocan
+  Postgres fuerzan `PGDATABASE=vitalcom_test` y rehúsan conectar a `vitalcom` real
+  (`_conectar_seguro()`); `cargar.asegurar_base_de_datos()`/`aplicar_schema()` crean/pueblan
+  `vitalcom_test` si hace falta.
+  Defecto de entorno encontrado (no resuelto acá, requiere un rol con privilegios): el rol
+  `vitalcom` no tiene `CREATEDB`, así que `vitalcom_test` no pudo crearse en este entorno — las
+  pruebas que la necesitan se SALTAN limpio (nunca caen a `vitalcom`), documentado en
+  `db/README.md` con el comando de una sola vez (`ALTER ROLE vitalcom CREATEDB;`) para
+  destrabarlas. Segundo defecto encontrado y corregido: `db/cargar.conectar()`/
+  `asegurar_base_de_datos()` no traían `connect_timeout` — un Postgres inalcanzable por puerto
+  filtrado (no solo "conexión rechazada") colgaba sin límite en vez de fallar rápido; se agregó
+  `connect_timeout=10`.
+  Incidente durante el desarrollo (encontrado y corregido, sin daño permanente): una primera
+  versión de los tres llamadores usaba la constante `PROD` (en vez de derivar el directorio de
+  `FACT`/`FACT_AD`, que las pruebas sí monkeypatchean) para `prod_dir`, y `TENANT_ID` por defecto
+  ("vitalcom") sin aislar las pruebas end-to-end — dos corridas de prueba escribieron filas
+  ficticias en las tablas `raw` reales de `vitalcom` (`venta`/`entrega_conjunto_dia`/
+  `entrega_anuncio_dia`, tenant `vitalcom`) y sobrescribieron brevemente los 3 CSV reales.
+  Corregido: los tres llamadores derivan `prod_dir` de `FACT`/`FACT_AD` y exponen `TENANT_ID`
+  como constante de módulo; las pruebas usan tenants únicos y `vitalcom_test`. Los 3 CSV se
+  restauraron con `git checkout` (evidencia: `git status`/`git diff --stat` vacíos antes y después
+  de T3) y las filas ficticias en `raw` se limpiaron como efecto secundario del bootstrap real de
+  abajo (`--tomar-csv` hace TRUNCATE+reinserta desde el CSV real, que nunca las tuvo).
+  Evidencia (25-sep-2026):
+  - `python -m pytest Ads/_TOOLS -q` → 45 passed (44 baseline + `test_db_write_path.py`, nuevo).
+  - `"../SISTEMA-app/app/backend/.venv/Scripts/python.exe" -m pytest db/test_db.py -q` → 18
+    passed, 17 skipped (skips: `vitalcom_test` no se pudo crear en este entorno, CREATEDB
+    faltante — nunca cae a `vitalcom`).
+  - Bootstrap real: `python db/cargar.py --tomar-csv _FACT_VENTAS.csv` (3491 filas) /
+    `_FACT_ENTREGA.csv` (1094) / `_FACT_ENTREGA_ANUNCIO.csv` (1041) sobre `vitalcom` real.
+  - `python Ads/_TOOLS/ingerir_lucidsales.py --dir Ads/_INGESTA/LUCIDSALES` (24 archivos ya
+    cargados) → `0 reemplazadas · 0 nuevas · 1061 sin cambio`. `git diff --stat` de los 3 CSV:
+    vacío.
+  - `Ads/_TOOLS/ingerir_meta.py`: sin archivo `Informe-*.xlsx` disponible en el repo — se saltó,
+    documentado (no se llamó la API de Meta).
+  - `python Ads/_TOOLS/decidir.py --json` → exit 0, sin `--escribir`.
+  - Paridad `decidir.py` real vs. exportado desde `core` (mismo chequeo que el test de paridad,
+    corrido a mano contra `vitalcom` real porque el test en sí corre aislado contra
+    `vitalcom_test`): `IGUAL`.
+  - Conteos `raw.venta`/`entrega_conjunto_dia`/`entrega_anuncio_dia` (tenant `vitalcom`) antes y
+    después de correr ambas suites de pruebas: idénticos (3491/1094/1041) — las pruebas no
+    tocaron `vitalcom`.
 - [ ] T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB. Check: parity.
 - [ ] T5 — `decidir.py` and app backend read from Postgres. Checks: parity, e2e, backend tests.
 - [ ] T6 — Daily cycle script + Windows Task Scheduler task. Check: first real run writes its
@@ -106,6 +160,9 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 
 - 2026-09-25: T2 done.
 
+- 2026-09-25: T3 done.
+
 ## Next step
-T3 — `bajar_lucidsales` / `bajar_meta_insights` (+ ingestors) write DB then mirror via
-`db/escribir.py`, checked against `decidir` parity on real data.
+T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB (add `evento`,
+`estado_flujo`, `producto` to `tables.TABLAS_MIGRADAS_DB` once their real callers connect).
+Check: parity. Also revisit T8(a) (`_DIM_ANUNCIOS.csv` double writer) if not folded into T4.

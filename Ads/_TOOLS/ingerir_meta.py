@@ -38,7 +38,7 @@ La firma se lee del nombre — " ~ producto|angulo|concepto.canonico|NC|oferta|d
 ad_id llego corrupto en 2006 de 2475 filas historicas y el JOIN por id es irrecuperable.
 Un anuncio sin firma NO se descarta: entra con los ejes vacios y se cuenta como deuda.
 """
-import sys, io, os, re, csv, glob, shutil, datetime, warnings
+import sys, io, os, re, csv, glob, datetime, warnings
 
 # Windows abre la consola en cp1252: un print con un simbolo fuera de ese mapa revienta con
 # UnicodeEncodeError y el script sale con exit 1 AUNQUE el trabajo ya se completo (bug real del
@@ -59,6 +59,21 @@ FACT = os.path.join(PROD, "_FACT_ENTREGA.csv")
 FACT_AD = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")
 DIMC = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
 BKDIR = upsert_fact.respaldos_dir(BASE, "backups_csv")
+
+# P3 T3: _FACT_ENTREGA.csv / _FACT_ENTREGA_ANUNCIO.csv pasan a Postgres (core.entrega_conjunto_dia
+# / core.entrega_anuncio_dia); el CSV en PRODUCTOS/ es el ESPEJO, regenerado por db/escribir.py
+# despues del commit. Nunca se cae de vuelta al append/upsert directo sobre el archivo si Postgres
+# falla. TENANT_ID: punto de override para pruebas, nunca toca `vitalcom` real (ver
+# db/README.md, "aislamiento de pruebas").
+sys.path.insert(0, os.path.join(BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import escribir as db_escribir  # noqa: E402
+
+TENANT_ID = "vitalcom"
+
+# Llave natural del hecho de entrega a nivel CONJUNTO (misma tupla que el set `llaves` de mas
+# abajo usaba para el anti-duplicado): P3 T3, ahora tambien la llave de `db_escribir.upsert()`.
+LLAVE_CONJUNTO = ("ventana_ini", "ventana_fin", "cuenta_alias", "campana", "conjunto", "fuente")
 
 TASA_COP_USD = 3152.5          # APR-028, medida contra el banco
 CP1 = "1346891653335162"
@@ -378,27 +393,50 @@ def main():
         print("\nnada que escribir.")
         return 0
 
-    os.makedirs(BKDIR, exist_ok=True)
-    stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    if nuevas:
-        shutil.copy2(FACT, os.path.join(BKDIR, f"_FACT_ENTREGA_{stamp}.csv"))
-        with open(FACT, "a", newline="", encoding="utf-8") as fh:
-            w = csv.DictWriter(fh, fieldnames=COLS)
-            for r in nuevas:
-                w.writerow(r)
-        print(f"\nescritas {len(nuevas)} filas en {os.path.relpath(FACT, BASE)}")
-        print(f"backup: _RESPALDOS/backups_csv/_FACT_ENTREGA_{stamp}.csv")
-    if nuevos_ads:
-        # upsert_fact en vez de un append crudo (22-sep-2026, g07 T1): `nuevos_ads` ya viene
-        # deduplicado contra `ads_ex` (mas arriba), asi que en la practica esto agrega, no
-        # reemplaza — pero pasar por upsert_fact.leer_migrado() es lo que permite que un
-        # _FACT_ENTREGA_ANUNCIO.csv escrito ANTES de que existiera la columna ad_id (COLS_AD)
-        # se complete con "" en vez de romper el alineado de columnas al anexar con el header
-        # nuevo. La llave es la misma identidad anti-duplicado de siempre.
-        llave_ad = ("ventana_ini", "ventana_fin", "cuenta_alias", "campana", "conjunto",
-                    "anuncio", "fuente")
-        _, n_nuevas, _ = upsert_fact.upsert(FACT_AD, COLS_AD, llave_ad, nuevos_ads, BKDIR)
-        print(f"escritas {n_nuevas} filas en {os.path.relpath(FACT_AD, BASE)}")
+    # P3 T3: ambos hechos pasan por Postgres (db/escribir.py), nunca directo al CSV. `nuevas`/
+    # `nuevos_ads` ya vienen deduplicados contra `existentes`/`ads_ex` (leidos del CSV mas arriba,
+    # que el guardia de drift ya valida como espejo fiel de la base): el upsert por llave sobre
+    # `raw.*` reproduce exactamente el mismo resultado que el append/upsert_fact de antes, solo
+    # que el almacen cambia. El guardia de drift corre PRIMERO para cada tabla que se vaya a tocar.
+    try:
+        con = db_cargar.conectar()
+    except Exception as exc:
+        print(f"\n⛔ Postgres no disponible: no se pudo escribir _FACT_ENTREGA*.csv (nunca se "
+              f"escribe el CSV directo). Detalle: {exc}", file=sys.stderr)
+        return 1
+    # El directorio de escritura sale de FACT/FACT_AD (nunca de la constante PROD): las pruebas
+    # monkeypatchean FACT/FACT_AD a un directorio temporal (patch.object(im, "FACT", ...)), y si
+    # el mirror se regenerara sobre PROD igual, escribiria en la carpeta PRODUCTOS/ real aunque la
+    # prueba haya redirigido FACT -- exactamente el defecto encontrado en vivo durante T3 (una
+    # prueba con datos ficticios pisando/mezclando PRODUCTOS/_FACT_ENTREGA*.csv reales).
+    prod_dir_conjunto = os.path.dirname(FACT)
+    prod_dir_anuncio = os.path.dirname(FACT_AD)
+    try:
+        if nuevas:
+            db_escribir.verificar_csv_sincronizado(con, "entrega_conjunto_dia", prod_dir_conjunto,
+                                                    tenant_id=TENANT_ID)
+            _, n_nuevas_c, _ = db_escribir.upsert(
+                con, "entrega_conjunto_dia", nuevas, key=LLAVE_CONJUNTO, prod_dir=prod_dir_conjunto,
+                bkdir=BKDIR, tenant_id=TENANT_ID)
+            print(f"\nescritas {n_nuevas_c} filas en {os.path.relpath(FACT, BASE)} "
+                  f"(Postgres es la verdad; espejo regenerado)")
+        if nuevos_ads:
+            # Misma identidad anti-duplicado de siempre (22-sep-2026, g07 T1): `nuevos_ads` ya
+            # viene deduplicado contra `ads_ex`, asi que en la practica esto agrega, no reemplaza.
+            llave_ad = ("ventana_ini", "ventana_fin", "cuenta_alias", "campana", "conjunto",
+                        "anuncio", "fuente")
+            db_escribir.verificar_csv_sincronizado(con, "entrega_anuncio_dia", prod_dir_anuncio,
+                                                    tenant_id=TENANT_ID)
+            _, n_nuevas_a, _ = db_escribir.upsert(
+                con, "entrega_anuncio_dia", nuevos_ads, key=llave_ad, prod_dir=prod_dir_anuncio,
+                bkdir=BKDIR, tenant_id=TENANT_ID)
+            print(f"escritas {n_nuevas_a} filas en {os.path.relpath(FACT_AD, BASE)} "
+                  f"(Postgres es la verdad; espejo regenerado)")
+    except db_escribir.ErrorEscritura as exc:
+        print(f"\n⛔ {exc}", file=sys.stderr)
+        return 1
+    finally:
+        con.close()
     return 0
 
 

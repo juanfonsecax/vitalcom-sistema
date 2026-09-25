@@ -51,6 +51,17 @@ DIMP = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
 DIMCTAS = os.path.join(PROD, "_DIM_CUENTAS.csv")
 BKDIR = upsert_fact.respaldos_dir(BASE, "backups_csv")
 
+# P3 T3: la VERDAD de _FACT_VENTAS.csv pasa a vivir en Postgres (raw.venta / core.venta); el CSV
+# en PRODUCTOS/ se vuelve el ESPEJO, regenerado por db/escribir.py DESPUES del commit. Nunca se
+# cae de vuelta a escribir el CSV a mano si Postgres falla (ver db/escribir.py, punto 4 de su
+# docstring). TENANT_ID es un punto de override para pruebas (test_ingerir_lucidsales.py aisla
+# cada escenario en su propio tenant dentro de `vitalcom_test`, nunca toca `vitalcom` real).
+sys.path.insert(0, os.path.join(BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import escribir as db_escribir  # noqa: E402
+
+TENANT_ID = "vitalcom"
+
 # Tasas de conversion a USD por moneda de facturacion (APR-028, medida contra banco).
 # La cuenta y su moneda salen de _DIM_CUENTAS.csv; agregar una fila ahi con moneda
 # distinta de USD y sin tasa acá bloquea la ingesta en vez de costear mal en silencio.
@@ -513,10 +524,34 @@ def main():
         # _FACT_VENTAS.csv se REEMPLAZA (corrige un día que llegó con el gasto/ventas
         # congelado a medio día — ver evidencia en el docstring del módulo), no se descarta.
         # `clave_natural()` incluye rol_ventana: CONTROL nunca reemplaza a BASE ni viceversa.
-        reemplazadas, nuevas_disco, sin_cambio = upsert_fact.upsert(
-            FACT, COLS, clave_natural, nuevas, BKDIR)
+        #
+        # P3 T3: la escritura pasa por Postgres (db/escribir.py), nunca directo al CSV. El
+        # guardia de drift corre PRIMERO: si el CSV en disco no coincide con lo que la base
+        # exportaría (o nunca se hizo el bootstrap), aborta sin escribir nada.
+        # El directorio de escritura sale de FACT (nunca de la constante PROD): las pruebas
+        # monkeypatchean FACT a un directorio temporal (ver `_correr_main` en
+        # test_ingerir_lucidsales.py), y escribir sobre PROD igual pisaria PRODUCTOS/ real --
+        # exactamente el defecto encontrado en vivo durante T3 (datos ficticios de una prueba
+        # mezclados con PRODUCTOS/_FACT_VENTAS.csv real).
+        prod_dir = os.path.dirname(FACT)
+        try:
+            con = db_cargar.conectar()
+        except Exception as exc:
+            raise SystemExit(
+                f"\n⛔ Postgres no disponible: no se pudo escribir _FACT_VENTAS.csv (nunca se "
+                f"escribe el CSV directo). Detalle: {exc}")
+        try:
+            db_escribir.verificar_csv_sincronizado(con, "venta", prod_dir, tenant_id=TENANT_ID)
+            reemplazadas, nuevas_disco, sin_cambio = db_escribir.upsert(
+                con, "venta", nuevas, key=clave_natural, prod_dir=prod_dir, bkdir=BKDIR,
+                tenant_id=TENANT_ID)
+        except db_escribir.ErrorEscritura as exc:
+            raise SystemExit(f"\n⛔ {exc}")
+        finally:
+            con.close()
         print(f"\n✅ {reemplazadas} reemplazadas (día corregido) · {nuevas_disco} nuevas · "
-              f"{sin_cambio} sin cambio -> _FACT_VENTAS.csv (backup en _RESPALDOS/backups_csv/)")
+              f"{sin_cambio} sin cambio -> _FACT_VENTAS.csv (Postgres es la verdad; espejo "
+              f"regenerado en PRODUCTOS/, backup previo en _RESPALDOS/backups_csv/)")
 
     if sin_clasificar or sin_dim:
         # Se escribe SIEMPRE (perder una venta real es peor que un aviso), pero la

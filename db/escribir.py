@@ -41,17 +41,20 @@ capa nunca abre ni cierra la conexión, esa es responsabilidad del llamador):
         con.close()
 """
 import csv
+import datetime
 import io
 import json
 import os
+import shutil
 import sys
+import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nucleo as N  # noqa: E402
 import tables as T  # noqa: E402
 
 sys.path.insert(0, os.path.join(T.BASE_DIR, "Ads", "_TOOLS"))
-from upsert_fact import _completar, fusionar  # noqa: E402
+from upsert_fact import _completar, fusionar, respaldos_dir  # noqa: E402
 
 
 class ErrorEscritura(RuntimeError):
@@ -61,6 +64,13 @@ class ErrorEscritura(RuntimeError):
     la siguiente tabla; por eso acá el rollback es explícito con `conn.rollback()`). Quien reciba
     este error NUNCA debe interpretar esto como \"entonces escribo el CSV a mano\" — ver docstring
     del módulo, punto 4."""
+
+
+class DriftDetectado(ErrorEscritura):
+    """P3 T3 — GUARDIA DE DRIFT: el CSV en disco no es BYTE-IDÉNTICO a lo que la base exportaría
+    para esta tabla DB-truth, o esta tabla/tenant NUNCA se importó como verdad (primera corrida,
+    ver `raw.raw_import`). Nunca se escribe nada — ni `raw` ni el espejo — hasta resolverlo a
+    propósito con `db/cargar.py --tomar-csv <archivo>` (ver `verificar_csv_sincronizado()`)."""
 
 
 def _en_transaccion(conn, cuerpo, tabla, verbo):
@@ -173,15 +183,103 @@ def leer_decision_actual(conn, tenant_id="vitalcom"):
     return json.loads(fila[0])
 
 
-def _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir):
+def _filas_espejo(conn, tenant_id, tabla):
+    """(archivo, cols, filas) que el espejo de `tabla` debería tener HOY para `tenant_id`, leído
+    de `raw.<tabla>` en su orden real — la pieza compartida entre regenerar el espejo de verdad
+    y solo RENDERIZARLO en memoria para comparar (`verificar_csv_sincronizado`)."""
     archivo, opcional = _spec_de(tabla)
     cols = T.columnas_tabla(tabla, archivo, opcional)
     with conn.cursor() as cur:
         filas = _leer_raw(cur, tenant_id, tabla, cols)
+    return archivo, cols, filas
+
+
+def _render_espejo_bytes(conn, tenant_id, tabla):
+    """Bytes exactos que produciría el espejo de `tabla` para `tenant_id` AHORA MISMO, sin tocar
+    ningún archivo real — se escribe a un temp file (mismo formato que `_escribir_csv_atomico`) y
+    se descarta. Lo usa `verificar_csv_sincronizado()` para comparar sin arriesgar el CSV real."""
+    archivo, cols, filas = _filas_espejo(conn, tenant_id, tabla)
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, archivo)
+        _escribir_csv_atomico(path, cols, filas)
+        with open(path, "rb") as f:
+            return f.read()
+
+
+def _respaldar_mirror(prod_dir, archivo, bkdir):
+    """Copia el mirror ACTUAL (si ya existe) a `bkdir` justo ANTES de reemplazarlo — mismo patrón
+    y mismo nombrado que `upsert_fact.upsert()` (T3): ningún escritor de este módulo pisa un CSV
+    sin dejar copia previa. `bkdir` es explícito (nunca inferido) para que una prueba con
+    `prod_dir` en un directorio temporal no termine escribiendo en el `_RESPALDOS/` real del
+    repo — el mismo motivo por el que `upsert_fact.upsert()` también recibe `bkdir` como parámetro."""
+    path = os.path.join(prod_dir, archivo)
+    if not os.path.exists(path):
+        return
+    os.makedirs(bkdir, exist_ok=True)
+    stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    nombre = archivo[:-4] if archivo.lower().endswith(".csv") else archivo
+    shutil.copy2(path, os.path.join(bkdir, "%s_%s.csv" % (nombre, stamp)))
+
+
+def _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir, bkdir=None):
+    archivo, cols, filas = _filas_espejo(conn, tenant_id, tabla)
+    if bkdir:
+        _respaldar_mirror(prod_dir, archivo, bkdir)
     _escribir_csv_atomico(os.path.join(prod_dir, archivo), cols, filas)
 
 
-def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, tenant_id="vitalcom"):
+def verificar_csv_sincronizado(conn, tabla, prod_dir, tenant_id="vitalcom"):
+    """GUARDIA DE DRIFT (P3 T3, crítico): se corre ANTES de cualquier escritura sobre una tabla
+    DB-truth migrada (`tables.TABLAS_MIGRADAS_DB`). Dos formas de abortar, misma excepción
+    (`DriftDetectado`, nunca se escribe nada — ni `raw` ni el espejo):
+
+      1. Esta tabla/tenant NUNCA se importó como verdad (`raw.raw_import` no tiene ninguna fila
+         para `(tenant_id, archivo)`): es la primera corrida, nadie corrió el bootstrap
+         (`db/cargar.py --tomar-csv <archivo>`). Se mide por el LOG de importación, no por
+         `count(*)==0` en `raw.<tabla>`: un tenant nuevo legítimo puede empezar con cero filas de
+         verdad, y comparar solo el conteo bloquearía para siempre aunque ya se hubiera corrido
+         `--tomar-csv` sobre un CSV vacío.
+      2. El CSV en `prod_dir` no es BYTE-IDÉNTICO a lo que la base exportaría ahora para esa tabla:
+         alguien lo editó a mano, o la base quedó desactualizada frente a un cambio externo.
+
+    En ambos casos el mensaje trae la recuperación EXACTA (`--tomar-csv`), nunca una reparación
+    automática — ver `db/cargar.py:tomar_csv()`."""
+    _exigir_verdad_db(tabla)
+    archivo, _ = _spec_de(tabla)
+    comando = "python db/cargar.py --tomar-csv %s" % archivo
+    # "Ya se importó al menos una vez" se mide con `raw.raw_import` (audita cada carga real,
+    # `cargar_tabla()`), NO con `count(*) FROM raw.<tabla> == 0`: un producto/tenant legítimamente
+    # nuevo empieza con 0 filas de verdad, y comparar solo el conteo bloquearía PARA SIEMPRE aunque
+    # el operador ya hubiera corrido `--tomar-csv` sobre un CSV vacío (0 filas antes y después del
+    # bootstrap son indistinguibles por conteo). `raw_import` sí distingue "nunca se importó" de
+    # "se importó y trajo cero filas".
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT count(*) FROM raw.raw_import WHERE tenant_id = %s AND archivo = %s",
+            (tenant_id, archivo))
+        importado = cur.fetchone()[0] > 0
+    if not importado:
+        raise DriftDetectado(
+            "%s (raw.%s) nunca se importo como verdad para tenant %r: es la primera corrida, "
+            "nadie corrio el bootstrap. Corre PRIMERO, a mano:\n  %s\nNunca se importa solo "
+            "porque nadie lo hizo antes." % (archivo, tabla, tenant_id, comando))
+    real_path = os.path.join(prod_dir, archivo)
+    if not os.path.exists(real_path):
+        raise DriftDetectado(
+            "%s no existe en %s pero raw.%s SI tiene filas para tenant %r: el espejo se "
+            "desincronizo. Recupera con:\n  %s" % (archivo, prod_dir, tabla, tenant_id, comando))
+    esperado = _render_espejo_bytes(conn, tenant_id, tabla)
+    with open(real_path, "rb") as f:
+        real = f.read()
+    if real != esperado:
+        raise DriftDetectado(
+            "%s en %s NO es byte-identico a lo que la base exportaria para raw.%s (alguien lo "
+            "edito a mano, o la base quedo desactualizada). Nunca se escribe nada hasta resolver "
+            "esto. Recupera con:\n  %s" % (archivo, prod_dir, tabla, comando))
+
+
+def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, bkdir=None,
+           tenant_id="vitalcom"):
     """UPSERT (misma semántica que `upsert_fact.upsert()`, vía `fusionar()`) sobre `raw.<tabla>`,
     con reconstrucción de `core` en LA MISMA transacción. Devuelve (reemplazadas, nuevas,
     sin_cambio) sin `particion`, o +eliminadas con `particion` — igual contrato que
@@ -211,14 +309,14 @@ def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, tenant
     eliminadas = contador["eliminadas"]
 
     if prod_dir and (reemplazadas or nuevas or eliminadas):
-        _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir)
+        _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir, bkdir)
 
     if particion is not None:
         return reemplazadas, nuevas, sin_cambio, eliminadas
     return reemplazadas, nuevas, sin_cambio
 
 
-def anexar(conn, tabla, filas, prod_dir=None, tenant_id="vitalcom"):
+def anexar(conn, tabla, filas, prod_dir=None, bkdir=None, tenant_id="vitalcom"):
     """APPEND puro (para `_EVENTOS.csv`: nunca se reemplaza ni se borra una fila existente, solo
     se agregan). Reconstruye `core` en la misma transacción y, si `prod_dir` se pasa y hay filas,
     regenera el espejo completo (equivalente en bytes a un `a`ppend real: mismo header, mismas
@@ -241,11 +339,11 @@ def anexar(conn, tabla, filas, prod_dir=None, tenant_id="vitalcom"):
     _en_transaccion(conn, _cuerpo, tabla, "anexar")
 
     if prod_dir and filas_completas:
-        _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir)
+        _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir, bkdir)
     return len(filas_completas)
 
 
-def reemplazar(conn, tabla, filas, prod_dir=None, tenant_id="vitalcom"):
+def reemplazar(conn, tabla, filas, prod_dir=None, bkdir=None, tenant_id="vitalcom"):
     """REESCRITURA COMPLETA (para `_ESTADO_FLUJO.csv`/`_DIM_PRODUCTOS.csv`: el escritor real
     siempre vuelve a escribir el archivo entero, no hace merge por llave). Reconstruye `core` en
     la misma transacción; con `prod_dir`, regenera el espejo siempre (igual que el escritor real,
@@ -261,7 +359,7 @@ def reemplazar(conn, tabla, filas, prod_dir=None, tenant_id="vitalcom"):
     _en_transaccion(conn, _cuerpo, tabla, "reemplazar")
 
     if prod_dir:
-        _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir)
+        _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir, bkdir)
     return len(filas_completas)
 
 

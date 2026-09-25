@@ -16,15 +16,96 @@ Dos arreglos, dos gates:
      clasificar: perder una venta real es peor que un aviso.
 
 USO:  python Ads/_TOOLS/test_ingerir_lucidsales.py     (exit 0 = pasa, 1 = falla)
+
+P3 T3 — aislamiento de Postgres (CRÍTICO, ver db/README.md "Aislamiento de pruebas"):
+`ingerir_lucidsales.py` ahora escribe `_FACT_VENTAS.csv` a través de Postgres
+(`db/escribir.py`), nunca directo al CSV. Las pruebas de este archivo NUNCA deben tocar la base
+real `vitalcom` (sostiene la verdad real de P3 desde T3): se fuerza `PGDATABASE=vitalcom_test`
+ANTES de importar `ingerir_lucidsales` (que a su vez importa `db/cargar.py`/`db/escribir.py`), se
+verifica que la conexión resultante NO sea `vitalcom`, y cada escenario usa su propio
+`TENANT_ID` (vía `ing.TENANT_ID`, que `_correr_main` ya sabe sobreescribir) para no interferir con
+otros escenarios de este mismo archivo. Si `vitalcom_test` no existe y el rol no tiene permiso
+`CREATEDB` (caso real de este entorno — ver db/README.md), las pruebas que necesitan Postgres se
+SALTAN con aviso, nunca caen de vuelta a `vitalcom`.
 """
 import csv
 import json
 import os
 import sys
 import tempfile
+import uuid
+
+# P3 T3: forzar ANTES de importar ingerir_lucidsales (que importa db/cargar.py -- su
+# `cargar_env()` da prioridad a `os.environ` sobre el `.env` de disco, ver su docstring).
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ingerir_lucidsales as ing  # noqa: E402
+
+sys.path.insert(0, os.path.join(ing.BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import escribir as db_escribir  # noqa: E402
+import nucleo as db_nucleo      # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    """GUARDIA (P3 T3, crítico): igual que `db_cargar.conectar()`, pero rehúsa devolver una
+    conexión a `vitalcom` -- la base REAL con la verdad de P3. Ninguna prueba de este archivo debe
+    escribir ahí."""
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "P3 T3: una prueba de test_ingerir_lucidsales.py intentó conectarse a 'vitalcom' en "
+            "vez de 'vitalcom_test'. Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _tenant_unico(nombre):
+    return "test_lucidsales_%s_%s" % (nombre, uuid.uuid4().hex[:8])
+
+
+def _bootstrap_db(prod_dir, tenant_id):
+    """Siembra raw.venta (P3 T3) con lo que YA hay en `<prod_dir>/_FACT_VENTAS.csv` -- satisface
+    el guardia de drift para la corrida de `ing.main()` que sigue, igual que
+    `db/cargar.py --tomar-csv` haría en producción antes de la primera escritura real. Registra
+    también en `raw.raw_import` (igual que `tomar_csv()`/`cargar_todo()`): el guardia mide "¿ya se
+    importó?" por ese log, no por el conteo de filas (ver `db/escribir.verificar_csv_sincronizado`)."""
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant_id, "venta", "_FACT_VENTAS.csv", False,
+                                                 prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant_id, "_FACT_VENTAS.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant_id)
+    finally:
+        con.close()
 
 
 def _escribir_csv(path, header, filas):
@@ -163,7 +244,7 @@ def test_moneda_sin_tasa_bloquea(tmp):
         return 0 if ok else 1
 
 
-def _fixture_flujo(tmp, filas_export, conjuntos_conocidos):
+def _fixture_flujo(tmp, filas_export, conjuntos_conocidos, nombre="flujo"):
     dimp = _escribir_csv(
         os.path.join(tmp, "_DIM_PRODUCTOS.csv"),
         ["producto_key", "nombre_display", "slug_carpeta"],
@@ -178,7 +259,10 @@ def _fixture_flujo(tmp, filas_export, conjuntos_conocidos):
         ["conjunto_meta"], [[c] for c in conjuntos_conocidos])
     export = _escribir_export(os.path.join(tmp, "sim-2026-09-14.json"), filas_export)
     bkdir = os.path.join(tmp, "backups_csv")
-    return dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir), export
+    tenant = _tenant_unico(nombre)
+    _bootstrap_db(tmp, tenant)  # P3 T3: satisface el guardia de drift para el main() que sigue
+    return dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir,
+                TENANT_ID=tenant), export
 
 
 def _correr_main(rutas, argv):
@@ -202,11 +286,15 @@ def _correr_main(rutas, argv):
 def test_gate_bloquea_sin_perder_las_filas_buenas(tmp):
     """Turmeric (SIN_CLASIFICAR) mezclado con una fila buena de TINNIDROP: el proceso
     tiene que SALIR EN ROJO, pero las dos filas quedan escritas en _FACT_VENTAS.csv."""
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     filas = [
         _fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1"),
         _fila_lucidsales("Turmeric Curcumin Importado", "1665221077707961", "CONJ_CONOCIDO", "AD_2", "ad_2"),
     ]
-    rutas, export = _fixture_flujo(tmp, filas, conjuntos_conocidos=["CONJ_CONOCIDO"])
+    rutas, export = _fixture_flujo(tmp, filas, conjuntos_conocidos=["CONJ_CONOCIDO"],
+                                    nombre="bloquea_sin_perder")
     salida = _correr_main(rutas, [export])
 
     escritas = list(csv.DictReader(open(rutas["FACT"], newline="", encoding="utf-8")))
@@ -222,8 +310,12 @@ def test_gate_bloquea_sin_perder_las_filas_buenas(tmp):
 def test_gate_bloquea_por_conjunto_huerfano(tmp):
     """Un conjunto que no está en _DIM_CONJUNTOS.csv también bloquea, aunque el
     producto sí esté clasificado — antes solo emitía una advertencia y seguía verde."""
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     filas = [_fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_HUERFANO", "AD_1", "ad_1")]
-    rutas, export = _fixture_flujo(tmp, filas, conjuntos_conocidos=["OTRO_CONJUNTO"])
+    rutas, export = _fixture_flujo(tmp, filas, conjuntos_conocidos=["OTRO_CONJUNTO"],
+                                    nombre="conjunto_huerfano")
     salida = _correr_main(rutas, [export])
     ok = salida is not None and salida.code != 0
     print(("  OK     " if ok else "  FALLA  ")
@@ -235,8 +327,12 @@ def test_gate_bloquea_por_conjunto_huerfano(tmp):
 def test_corrida_limpia_no_bloquea(tmp):
     """Regresión: cuando todo clasifica y el conjunto es conocido, la corrida sigue
     pasando sin bloquear — el gate nuevo no puede convertirse en un falso rojo."""
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     filas = [_fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1")]
-    rutas, export = _fixture_flujo(tmp, filas, conjuntos_conocidos=["CONJ_CONOCIDO"])
+    rutas, export = _fixture_flujo(tmp, filas, conjuntos_conocidos=["CONJ_CONOCIDO"],
+                                    nombre="corrida_limpia")
     salida = _correr_main(rutas, [export])
     ok = salida is None
     print(("  OK     " if ok else "  FALLA  ")
@@ -250,6 +346,9 @@ def test_upsert_reemplaza_dia_parcial_y_es_idempotente(tmp):
     CONGELADO a medio día y la corrida siguiente lo trae completo — debe REEMPLAZAR la
     fila vieja (mismo ad_id), no descartarla como duplicado. Re-correr con el mismo
     archivo una tercera vez no debe cambiar nada (idempotencia)."""
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     dimp = _escribir_csv(
         os.path.join(tmp, "_DIM_PRODUCTOS.csv"), ["producto_key", "nombre_display", "slug_carpeta"],
         [["TINNIDROP", "Tinnidrop Importado Original", "TINNIDROP"]])
@@ -260,7 +359,9 @@ def test_upsert_reemplaza_dia_parcial_y_es_idempotente(tmp):
     dimc = _escribir_csv(os.path.join(tmp, "_DIM_CONJUNTOS.csv"), ["conjunto_meta"],
                           [["CONJ_CONOCIDO"]])
     bkdir = os.path.join(tmp, "backups_csv")
-    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir)
+    tenant = _tenant_unico("upsert_parcial")
+    _bootstrap_db(tmp, tenant)
+    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir, TENANT_ID=tenant)
 
     parcial = _escribir_export(
         os.path.join(tmp, "sim-2026-09-20.json"),
@@ -293,6 +394,9 @@ def test_upsert_reemplaza_dia_parcial_y_es_idempotente(tmp):
 def test_control_nunca_reemplaza_base_ni_viceversa(tmp):
     """rol_ventana viaja en la llave natural: un export CONTROL (verificación semanal,
     solapa a propósito) jamás pisa la fila BASE del mismo ad_id/día, y viceversa."""
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     dimp = _escribir_csv(
         os.path.join(tmp, "_DIM_PRODUCTOS.csv"), ["producto_key", "nombre_display", "slug_carpeta"],
         [["TINNIDROP", "Tinnidrop Importado Original", "TINNIDROP"]])
@@ -303,7 +407,9 @@ def test_control_nunca_reemplaza_base_ni_viceversa(tmp):
     dimc = _escribir_csv(os.path.join(tmp, "_DIM_CONJUNTOS.csv"), ["conjunto_meta"],
                           [["CONJ_CONOCIDO"]])
     bkdir = os.path.join(tmp, "backups_csv")
-    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir)
+    tenant = _tenant_unico("control_vs_base")
+    _bootstrap_db(tmp, tenant)
+    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir, TENANT_ID=tenant)
 
     base = _escribir_export(
         os.path.join(tmp, "sim-2026-09-20-base.json"),
