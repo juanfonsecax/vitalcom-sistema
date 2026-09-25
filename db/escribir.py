@@ -278,6 +278,58 @@ def verificar_csv_sincronizado(conn, tabla, prod_dir, tenant_id="vitalcom"):
             "esto. Recupera con:\n  %s" % (archivo, prod_dir, tabla, comando))
 
 
+def verificar_decision_sincronizada(conn, prod_dir, tenant_id="vitalcom"):
+    """GUARDIA DE DRIFT para `_DECISIONES.json` (P3 T4): mismo contrato que
+    `verificar_csv_sincronizado()`, pero para el blob de `raw.decisiones_json`, que no tiene fila
+    en `tables.TABLE_SPECS` (no es un espejo columna por columna) — por eso no puede reusar
+    `_spec_de()`/`_render_espejo_bytes()` y se prueba aparte.
+
+    Aborta con `DriftDetectado`, nunca escribe nada, si:
+      1. esta tabla/tenant NUNCA se importó como verdad (`raw.raw_import` sin fila para
+         `(tenant_id, "_DECISIONES.json")` — primera corrida, falta el bootstrap
+         `db/cargar.py --tomar-csv _DECISIONES.json`).
+      2. el archivo en disco no es BYTE-IDÉNTICO a lo que `reemplazar_decision()` escribiría
+         ahora para el payload actual de `raw.decisiones_json` (edición a mano, o base
+         desactualizada)."""
+    archivo = "_DECISIONES.json"
+    comando = "python db/cargar.py --tomar-csv %s" % archivo
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT count(*) FROM raw.raw_import WHERE tenant_id = %s AND archivo = %s",
+            (tenant_id, archivo))
+        importado = cur.fetchone()[0] > 0
+    if not importado:
+        raise DriftDetectado(
+            "%s (raw.decisiones_json) nunca se importo como verdad para tenant %r: es la "
+            "primera corrida, nadie corrio el bootstrap. Corre PRIMERO, a mano:\n  %s"
+            % (archivo, tenant_id, comando))
+    real_path = os.path.join(prod_dir, archivo)
+    payload = leer_decision_actual(conn, tenant_id)
+    if payload is None:
+        if os.path.exists(real_path):
+            raise DriftDetectado(
+                "%s existe en %s pero raw.decisiones_json no tiene ninguna fila para tenant %r: "
+                "el espejo se desincronizo. Recupera con:\n  %s"
+                % (archivo, prod_dir, tenant_id, comando))
+        return
+    if not os.path.exists(real_path):
+        raise DriftDetectado(
+            "%s no existe en %s pero raw.decisiones_json SI tiene contenido para tenant %r: el "
+            "espejo se desincronizo. Recupera con:\n  %s" % (archivo, prod_dir, tenant_id, comando))
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = os.path.join(tmp, archivo)
+        _escribir_json_atomico(tmp_path, payload)
+        with open(tmp_path, "rb") as f:
+            esperado = f.read()
+    with open(real_path, "rb") as f:
+        real = f.read()
+    if real != esperado:
+        raise DriftDetectado(
+            "%s en %s NO es byte-identico a lo que raw.decisiones_json exportaria (alguien lo "
+            "edito a mano, o la base quedo desactualizada). Nunca se escribe nada hasta resolver "
+            "esto. Recupera con:\n  %s" % (archivo, prod_dir, comando))
+
+
 def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, bkdir=None,
            tenant_id="vitalcom"):
     """UPSERT (misma semántica que `upsert_fact.upsert()`, vía `fusionar()`) sobre `raw.<tabla>`,

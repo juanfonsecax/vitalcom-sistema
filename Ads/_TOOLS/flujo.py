@@ -67,8 +67,10 @@ DE DÓNDE SALE CADA DATO (un dato, un dueño)
 QUÉ ESCRIBE (solo con --todo --escribir — ver CONTRATO DE CLI)
 -----------
     PRODUCTOS/_FLUJO.json          el estado de todos los productos (lo dibuja la app)
-    PRODUCTOS/_ESTADO_FLUJO.csv    una fila por producto: fase, nodo, desde cuándo
+    PRODUCTOS/_ESTADO_FLUJO.csv    una fila por producto: fase, nodo, desde cuándo (P3 T4: ESPEJO
+                                    de raw.estado_flujo -- db/escribir.reemplazar(), nunca CSV directo)
     PRODUCTOS/_EVENTOS.csv         una fila TRANSICION_FLUJO cada vez que un producto cambia de nodo
+                                    (P3 T4: vía registrar_evento.anexar(), ESPEJO de raw.evento)
     VISTAS/FLUJO.html              la vista, vía flujo_html.py
 
 CONTRATO DE CLI (T6, parejo con decidir.py y gen_grafo.py)
@@ -117,6 +119,10 @@ FLUJO_DECLARADO = os.path.join("DOCTRINA", "FLUJO.json")
 EVENTO_TRANSICION = "TRANSICION_FLUJO"
 CAMPOS_ESTADO = ["producto_key", "fase", "nodo_actual", "estado", "desde", "bloqueantes",
                  "siguiente_ejecutor", "evaluado_el"]
+
+# P3 T4: TENANT_ID es el único punto de override para pruebas aisladas (mismo patrón que
+# registrar_evento.py/ingerir_lucidsales.py) -- nunca toca `vitalcom` real desde una prueba.
+TENANT_ID = "vitalcom"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1321,10 +1327,35 @@ def escribir_estado(resultados, env, registrar_eventos=True):
         })
         if ant and not misma:
             transiciones.append((pk, ant, r))
-    with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=CAMPOS_ESTADO)
-        w.writeheader()
-        w.writerows(filas)
+
+    # P3 T4: _ESTADO_FLUJO.csv pasa a Postgres -- la VERDAD vive en raw.estado_flujo, el CSV en
+    # PRODUCTOS/ es el ESPEJO, regenerado por db/escribir.py DESPUÉS del commit. Import LOCAL
+    # (nunca al tope del módulo): mantiene el camino de SOLO LECTURA de flujo.py libre de
+    # psycopg -- esta función solo corre bajo --escribir, igual que el import de
+    # registrar_evento más abajo. El backup del mirror usa `env.base` (nunca el `backups_csv`
+    # real del repo) para que un fixture de prueba jamás lo toque.
+    db_dir = os.path.join(BASE_REAL, "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import cargar as db_cargar  # noqa: E402
+    import escribir as db_escribir  # noqa: E402
+
+    prod_dir = os.path.dirname(ruta)
+    bkdir = os.path.join(env.base, "backups_csv")
+    try:
+        con = db_cargar.conectar()
+    except Exception as exc:
+        raise SystemExit(
+            "\n⛔ Postgres no disponible: no se pudo escribir _ESTADO_FLUJO.csv (nunca se "
+            "escribe el CSV directo). Detalle: %s" % exc)
+    try:
+        db_escribir.verificar_csv_sincronizado(con, "estado_flujo", prod_dir, tenant_id=TENANT_ID)
+        db_escribir.reemplazar(con, "estado_flujo", filas, prod_dir=prod_dir, bkdir=bkdir,
+                                tenant_id=TENANT_ID)
+    except db_escribir.ErrorEscritura as exc:
+        raise SystemExit("\n⛔ %s" % exc)
+    finally:
+        con.close()
     env._csv.pop("_ESTADO_FLUJO.csv", None)
 
     if registrar_eventos and transiciones:

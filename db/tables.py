@@ -97,14 +97,19 @@ TABLAS_VERDAD_DB = {
 # T3 conecta ingerir_lucidsales.py (`venta`) e ingerir_meta.py/bajar_meta_insights.py
 # (`entrega_conjunto_dia`, `entrega_anuncio_dia`). T4 conecta `evento` (registrar_evento.py,
 # ahora el único escritor de _EVENTOS.csv; flujo.py/perfilar_angulos.py/reingreso_f1.py llaman su
-# `anexar()` en vez de escribir el CSV por su cuenta). `estado_flujo`/`producto` quedan
-# pendientes (decidir.py/flujo.py --escribir y alta_producto.py/editar_producto.py siguen
-# escribiendo su CSV directo) para un T4 posterior o T5.
+# `anexar()` en vez de escribir el CSV por su cuenta) y `estado_flujo` (flujo.py:escribir_estado()
+# escribe por `db/escribir.reemplazar()`, el CSV es el espejo). `producto` (`_DIM_PRODUCTOS.csv`,
+# `alta_producto.py`/`editar_producto.py`) queda pendiente para un T4 posterior o T5.
+# `_DECISIONES.json` (`decidir.py --escribir` -> `db/escribir.reemplazar_decision()`) no aparece
+# acá: no tiene fila en TABLE_SPECS (ver `raw.decisiones_json` en el bloque de abajo), así que
+# nunca puede ser parte de este set columna-por-columna — su propio guardia de drift vive en
+# `db/escribir.verificar_decision_sincronizada()`.
 TABLAS_MIGRADAS_DB = {
     "venta",
     "entrega_conjunto_dia",
     "entrega_anuncio_dia",
     "evento",
+    "estado_flujo",
 }
 
 # {tabla: {columna_csv: columna_sql}} — solo para el choque de nombre con las columnas propias

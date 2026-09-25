@@ -698,9 +698,10 @@ def test_cargar_todo_incluir_verdad_db_false_deja_intactas_las_tablas_verdad():
 
 def test_tablas_migradas_db_es_subconjunto_de_verdad_db():
     assert T.TABLAS_MIGRADAS_DB <= T.TABLAS_VERDAD_DB
-    # P3 T4: `evento` se suma (registrar_evento.py conectado); `estado_flujo`/`producto` quedan
-    # pendientes -- ver tables.py y odd/tasks/p3-postgres-verdad.md.
-    assert T.TABLAS_MIGRADAS_DB == {"venta", "entrega_conjunto_dia", "entrega_anuncio_dia", "evento"}
+    # P3 T4 (continuación): `estado_flujo` se suma (flujo.py:escribir_estado() conectado);
+    # `producto` queda pendiente -- ver tables.py y odd/tasks/p3-postgres-verdad.md.
+    assert T.TABLAS_MIGRADAS_DB == {"venta", "entrega_conjunto_dia", "entrega_anuncio_dia",
+                                     "evento", "estado_flujo"}
 
 
 @requiere_db
@@ -842,3 +843,207 @@ def test_asegurar_base_de_datos_es_idempotente():
         pytest.skip("Postgres no accesible en este entorno")
     assert C.asegurar_base_de_datos("vitalcom_test") is True
     assert C.asegurar_base_de_datos("vitalcom_test") is True
+
+
+# ── grupo 5: P3 T4 (continuación) — estado_flujo y _DECISIONES.json conectados ──────
+
+def _cols_estado_flujo():
+    return T.columnas_tabla("estado_flujo", "_ESTADO_FLUJO.csv", False)
+
+
+def _fila_estado_flujo(**over):
+    cols = _cols_estado_flujo()
+    base = {c: "" for c in cols}
+    base.update({
+        "producto_key": "TESTP3", "fase": "1", "nodo_actual": "F1.paquete",
+        "estado": "EN_CURSO", "desde": "2026-09-25", "bloqueantes": "0",
+        "siguiente_ejecutor": "etapa-2", "evaluado_el": "2026-09-25",
+    })
+    base.update(over)
+    return {c: base.get(c, "") for c in cols}
+
+
+@requiere_db
+def test_escribir_reemplazar_estado_flujo_reescribe_todo_no_acumula():
+    """`escribir.reemplazar()` (flujo.py:escribir_estado(), P3 T4) reescribe TODO el contenido en
+    cada corrida -- nunca hace merge por llave, igual que el `csv.DictWriter` que reemplazó."""
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    cols = _cols_estado_flujo()
+    try:
+        f1 = _fila_estado_flujo(producto_key="P1")
+        with tempfile.TemporaryDirectory() as tmp:
+            n1 = W.reemplazar(con, "estado_flujo", [f1], prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            assert n1 == 1
+            with con.cursor() as cur:
+                filas = W._leer_raw(cur, TENANT_TEST_T2, "estado_flujo", cols)
+            assert [f["producto_key"] for f in filas] == ["P1"]
+
+            f2 = _fila_estado_flujo(producto_key="P2")
+            n2 = W.reemplazar(con, "estado_flujo", [f2], prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            assert n2 == 1
+            with con.cursor() as cur:
+                filas = W._leer_raw(cur, TENANT_TEST_T2, "estado_flujo", cols)
+            assert [f["producto_key"] for f in filas] == ["P2"], (
+                "reemplazar() debe reescribir TODO, no acumular filas viejas")
+
+            ref_dir = os.path.join(tmp, "ref")
+            os.makedirs(ref_dir)
+            W._escribir_csv_atomico(os.path.join(ref_dir, "_ESTADO_FLUJO.csv"), cols, [f2])
+            with open(os.path.join(ref_dir, "_ESTADO_FLUJO.csv"), "rb") as f:
+                esperado = f.read()
+            with open(os.path.join(tmp, "_ESTADO_FLUJO.csv"), "rb") as f:
+                espejo = f.read()
+            assert espejo == esperado
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_verificar_csv_sincronizado_estado_flujo_bloquea_y_pasa():
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    try:
+        f1 = _fila_estado_flujo(producto_key="P1")
+        with tempfile.TemporaryDirectory() as tmp:
+            with pytest.raises(W.DriftDetectado, match="nunca se importo"):
+                W.verificar_csv_sincronizado(con, "estado_flujo", tmp, tenant_id=TENANT_TEST_T2)
+
+            W.reemplazar(con, "estado_flujo", [f1], prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            with con.cursor() as cur:
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (TENANT_TEST_T2, "_ESTADO_FLUJO.csv", "x", 1))
+            con.commit()
+            W.verificar_csv_sincronizado(con, "estado_flujo", tmp, tenant_id=TENANT_TEST_T2)  # no explota
+
+            with open(os.path.join(tmp, "_ESTADO_FLUJO.csv"), "a", encoding="utf-8") as f:
+                f.write("linea editada a mano\n")
+            with pytest.raises(W.DriftDetectado, match="byte-identico"):
+                W.verificar_csv_sincronizado(con, "estado_flujo", tmp, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_tomar_csv_estado_flujo_importa_y_satisface_el_guardia():
+    _limpiar_tenant_test()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            cols = _cols_estado_flujo()
+            fila = _fila_estado_flujo(producto_key="P1")
+            import csv as _csv
+            with open(os.path.join(tmp, "_ESTADO_FLUJO.csv"), "w", newline="", encoding="utf-8") as f:
+                w = _csv.DictWriter(f, fieldnames=cols)
+                w.writeheader()
+                w.writerow(fila)
+
+            archivo, n, reporte = C.tomar_csv("estado_flujo", productos_dir=tmp,
+                                               tenant_id=TENANT_TEST_T2)
+            assert archivo == "_ESTADO_FLUJO.csv"
+            assert n == 1
+
+            con = _conectar_seguro()
+            try:
+                W.verificar_csv_sincronizado(con, "estado_flujo", tmp, tenant_id=TENANT_TEST_T2)
+            finally:
+                con.close()
+    finally:
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_escribir_reemplazar_decision_mirror_byte_identico_a_decidir():
+    """`escribir.reemplazar_decision()` (decidir.py --escribir, P3 T4) debe producir un
+    `_DECISIONES.json` byte-idéntico al que escribiría decidir.py directamente
+    (`json.dump(res, f, ensure_ascii=False, indent=2)`, ver su docstring), y `leer_decision_actual()`
+    debe devolver el mismo payload de vuelta."""
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    try:
+        payload = {"generado": "2026-09-25T00:00:00", "portafolio": [{"producto": "P1", "cpa": 10}]}
+        with tempfile.TemporaryDirectory() as tmp:
+            W.reemplazar_decision(con, payload, prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            with open(os.path.join(tmp, "_DECISIONES.json"), "rb") as f:
+                espejo = f.read()
+
+            ref_path = os.path.join(tmp, "ref_DECISIONES.json")
+            with open(ref_path, "w", encoding="utf-8") as f:
+                json.dump(payload, f, ensure_ascii=False, indent=2)
+            with open(ref_path, "rb") as f:
+                esperado = f.read()
+            assert espejo == esperado
+            assert W.leer_decision_actual(con, TENANT_TEST_T2) == payload
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_verificar_decision_sincronizada_bloquea_si_nunca_se_importo():
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            with pytest.raises(W.DriftDetectado, match="nunca se importo"):
+                W.verificar_decision_sincronizada(con, tmp, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_verificar_decision_sincronizada_pasa_cuando_coincide_y_bloquea_si_difiere():
+    _limpiar_tenant_test()
+    con = _conectar_seguro()
+    try:
+        payload = {"generado": "x", "portafolio": []}
+        with tempfile.TemporaryDirectory() as tmp:
+            W.reemplazar_decision(con, payload, prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            with con.cursor() as cur:
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (TENANT_TEST_T2, "_DECISIONES.json", "x", 1))
+            con.commit()
+            W.verificar_decision_sincronizada(con, tmp, tenant_id=TENANT_TEST_T2)  # no explota
+
+            with open(os.path.join(tmp, "_DECISIONES.json"), "a", encoding="utf-8") as f:
+                f.write(" ")
+            with pytest.raises(W.DriftDetectado, match="byte-identico"):
+                W.verificar_decision_sincronizada(con, tmp, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_tomar_csv_decisiones_json_bootstrap_y_guardia():
+    _limpiar_tenant_test()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            payload = {"generado": "y", "portafolio": []}
+            with open(os.path.join(tmp, "_DECISIONES.json"), "w", encoding="utf-8") as f:
+                json.dump(payload, f, ensure_ascii=False, indent=2)
+
+            archivo, n, reporte = C.tomar_csv("_DECISIONES.json", productos_dir=tmp,
+                                               tenant_id=TENANT_TEST_T2)
+            assert archivo == "_DECISIONES.json"
+            assert n == 1
+
+            con = _conectar_seguro()
+            try:
+                assert W.leer_decision_actual(con, TENANT_TEST_T2) == payload
+                W.verificar_decision_sincronizada(con, tmp, tenant_id=TENANT_TEST_T2)
+            finally:
+                con.close()
+
+            archivo2, n2, _ = C.tomar_csv("decisiones_json", productos_dir=tmp,
+                                          tenant_id=TENANT_TEST_T2)
+            assert archivo2 == "_DECISIONES.json" and n2 == 1
+
+        with pytest.raises(ValueError):
+            C.tomar_csv("dim_bandas", tenant_id=TENANT_TEST_T2)  # ni migrada ni decisiones_json
+    finally:
+        _limpiar_tenant_test()

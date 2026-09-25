@@ -19,8 +19,17 @@ estático de que los callers que SÍ necesitan la escritura (cadena nocturna, ac
 arranque de sesión) piden `--escribir` explícitamente — así un cambio futuro que rompa alguno de
 los dos lados sale solo, sin que alguien tenga que notar el `git status` sucio a mano.
 
+P3 T4 (continuación) — `flujo.py --todo --escribir` y `decidir.py --escribir` ahora escriben
+PRIMERO en Postgres (`db/escribir.reemplazar()`/`reemplazar_decision()`) y regeneran su mirror
+CSV/JSON después del commit. Aislamiento CRÍTICO (mismo patrón que
+`Ads/_TOOLS/test_registrar_evento.py`): fuerza `PGDATABASE=vitalcom_test`, y cada escenario de
+escritura bootstrapea `raw.estado_flujo`/`raw.decisiones_json` en su PROPIO tenant único (nunca
+`vitalcom` real) antes de correr el escritor real. Se salta con aviso si `vitalcom_test` no está
+disponible en este entorno.
+
 USO:  python Ads/_TOOLS/test_cli_solo_lectura.py     (exit 0 = pasa, 1 = falla)
 """
+import csv
 import io
 import json
 import os
@@ -28,6 +37,13 @@ import re
 import subprocess
 import sys
 import tempfile
+import uuid
+
+# Aislamiento CRÍTICO: forzar vitalcom_test ANTES de que cualquier prueba de escritura llame a
+# `db_cargar.conectar()` (decidir.py/flujo.py importan `db/` de forma LOCAL, recién dentro de
+# `--escribir`, así que alcanza con fijarlo acá, a nivel de módulo -- mismo motivo que
+# test_registrar_evento.py/db/test_db.py).
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import decidir  # noqa: E402
@@ -35,6 +51,36 @@ import flujo  # noqa: E402
 import test_flujo as tf  # noqa: E402
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+sys.path.insert(0, os.path.join(BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import nucleo as db_nucleo      # noqa: E402
+
+
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_cli_solo_lectura.py intento conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _tenant_unico(nombre):
+    return "test_cli_%s_%s" % (nombre, uuid.uuid4().hex[:8])
 
 
 def _informe(ok, texto, detalle=""):
@@ -70,9 +116,44 @@ def test_flujo_todo_sin_escribir_no_toca_disco():
                          "_FLUJO.json/FLUJO.html", [r for r in rutas if os.path.exists(r)])
 
 
+def _bootstrap_estado_flujo(prod_dir, tenant):
+    """Deja `raw.estado_flujo`/`raw.raw_import` satisfechos para `tenant` -- equivalente a
+    `db/cargar.py --tomar-csv estado_flujo` -- a partir de un `_ESTADO_FLUJO.csv` vacío (solo
+    header) recién creado en `prod_dir`, para que `verificar_csv_sincronizado()` no aborte por
+    "nunca se importó" en la primera escritura real de la prueba. Mismo patrón que
+    `test_registrar_evento.py::_bootstrap_evento()`."""
+    ruta = os.path.join(prod_dir, "_ESTADO_FLUJO.csv")
+    if not os.path.exists(ruta):
+        with io.open(ruta, "w", encoding="utf-8", newline="") as fh:
+            csv.writer(fh).writerow(flujo.CAMPOS_ESTADO)
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant, "estado_flujo", "_ESTADO_FLUJO.csv",
+                                                 False, prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_ESTADO_FLUJO.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
+
+
 def test_flujo_todo_con_escribir_si_escribe():
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     tmp = tf.fixture_escalar_flaco()
-    rc = _correr_flujo_todo(tmp, ["--escribir"])
+    prod_dir = os.path.join(tmp, "PRODUCTOS")
+    tenant = _tenant_unico("flujo_estado")
+    _bootstrap_estado_flujo(prod_dir, tenant)
+    previo_tenant = flujo.TENANT_ID
+    flujo.TENANT_ID = tenant
+    try:
+        rc = _correr_flujo_todo(tmp, ["--escribir"])
+    finally:
+        flujo.TENANT_ID = previo_tenant
     estado, eventos, flujo_json, html = _rutas_flujo(tmp)
     ok = (rc == 0 and os.path.isfile(estado) and os.path.isfile(flujo_json) and os.path.isfile(html))
     return _informe(ok, "flujo.py --todo --escribir sí persiste _ESTADO_FLUJO.csv/_FLUJO.json/FLUJO.html",
@@ -117,10 +198,42 @@ def test_decidir_sin_escribir_no_toca_disco():
                          (rc, os.path.exists(destino)))
 
 
+def _bootstrap_decision(prod_dir, tenant):
+    """Deja `raw.decisiones_json`/`raw.raw_import` satisfechos para `tenant` -- equivalente a
+    `db/cargar.py --tomar-csv _DECISIONES.json` -- a partir de un `_DECISIONES.json` mínimo (`{}`)
+    recién creado en `prod_dir`, para que `verificar_decision_sincronizada()` no aborte por
+    "nunca se importó" en la primera escritura real de la prueba."""
+    ruta = os.path.join(prod_dir, "_DECISIONES.json")
+    if not os.path.exists(ruta):
+        with io.open(ruta, "w", encoding="utf-8") as fh:
+            json.dump({}, fh, ensure_ascii=False, indent=2)
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                db_cargar.cargar_decisiones_json(cur, tenant, ruta, incluir_verdad_db=True)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_DECISIONES.json", None, 1))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
+
+
 def test_decidir_con_escribir_si_escribe():
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     with tempfile.TemporaryDirectory(prefix="decidir_json_") as tmp:
         destino = os.path.join(tmp, "_DECISIONES.json")
-        rc = _correr_decidir(destino, ["--escribir"])
+        tenant = _tenant_unico("decidir")
+        _bootstrap_decision(tmp, tenant)
+        previo_tenant = decidir.TENANT_ID
+        decidir.TENANT_ID = tenant
+        try:
+            rc = _correr_decidir(destino, ["--escribir"])
+        finally:
+            decidir.TENANT_ID = previo_tenant
         ok = rc == 0 and os.path.isfile(destino)
         if ok:
             with io.open(destino, encoding="utf-8") as fh:

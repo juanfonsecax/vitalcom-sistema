@@ -113,6 +113,16 @@ ESTADO_FLUJO_PATH = os.path.join(PROD, "_ESTADO_FLUJO.csv")
 SALIDA_JSON = os.path.join(PROD, "_DECISIONES.json")
 # No hay SALIDA_HTML: este motor escribe JSON y nada mas. Lo dibuja VISTAS/APP.html.
 
+# P3 T4: `--escribir` ahora escribe PRIMERO en Postgres (`raw.decisiones_json`, vía
+# `db/escribir.reemplazar_decision()`) y regenera `_DECISIONES.json` como ESPEJO recién después
+# del commit -- nunca al revés (ver db/escribir.py, punto 4 de su docstring). TENANT_ID es el
+# único punto de override para pruebas aisladas (mismo patrón que registrar_evento.py/
+# ingerir_lucidsales.py) -- nunca toca `vitalcom` real desde una prueba. El import de `db/` es
+# LOCAL a `main()` (nunca al tope del módulo): el gate de paridad (`db/test_db.py`) corre este
+# archivo en un subproceso con scipy+duckdb que NO tiene psycopg, y ese camino nunca pasa por
+# `--escribir` -- mantenerlo así evita que decidir.py deje de ser importable ahí.
+TENANT_ID = "vitalcom"
+
 TASA_Q_USD_DEFAULT = 7.62
 
 
@@ -1008,8 +1018,29 @@ def main():
     res = analizar_portafolio(producto_filtro=args.producto, grano=args.grano, dias=args.dias)
 
     if args.escribir:
-        with io.open(SALIDA_JSON, "w", encoding="utf-8") as f:
-            json.dump(res, f, ensure_ascii=False, indent=2)
+        # P3 T4: escribe SIEMPRE por Postgres (db/escribir.py) -- la verdad vive en
+        # raw.decisiones_json, _DECISIONES.json es el ESPEJO regenerado tras el commit. Import
+        # LOCAL (nunca al tope del módulo, ver el comentario junto a TENANT_ID más arriba).
+        db_dir = os.path.join(BASE, "db")
+        if db_dir not in sys.path:
+            sys.path.insert(0, db_dir)
+        import cargar as db_cargar  # noqa: E402
+        import escribir as db_escribir  # noqa: E402
+
+        prod_dir = os.path.dirname(SALIDA_JSON)
+        try:
+            con = db_cargar.conectar()
+        except Exception as exc:
+            raise SystemExit(
+                "\n⛔ Postgres no disponible: no se pudo escribir _DECISIONES.json (nunca se "
+                "escribe el CSV directo). Detalle: %s" % exc)
+        try:
+            db_escribir.verificar_decision_sincronizada(con, prod_dir, tenant_id=TENANT_ID)
+            db_escribir.reemplazar_decision(con, res, prod_dir=prod_dir, tenant_id=TENANT_ID)
+        except db_escribir.ErrorEscritura as exc:
+            raise SystemExit("\n⛔ %s" % exc)
+        finally:
+            con.close()
 
     if args.json:
         print(json.dumps(res, ensure_ascii=False, indent=2))

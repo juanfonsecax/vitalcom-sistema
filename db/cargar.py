@@ -329,14 +329,38 @@ def _resolver_tabla_migrada(tabla_o_archivo):
 
 
 def tomar_csv(tabla_o_archivo, productos_dir=None, tenant_id="vitalcom", env=None):
-    """P3 T3 — recuperación DELIBERADA, nunca automática: recarga UNA sola tabla DB-truth ya
-    migrada desde su CSV en disco (bootstrap inicial, cuando `raw.<tabla>` está vacía, o
-    recuperación cuando `db/escribir.verificar_csv_sincronizado()` detecta drift). Reconstruye
-    `core` ENTERO en la MISMA transacción, igual que el resto de este módulo. Devuelve
-    (archivo, n_filas, reporte_core)."""
+    """P3 T3/T4 — recuperación DELIBERADA, nunca automática: recarga UNA sola tabla DB-truth ya
+    migrada desde su CSV/archivo en disco (bootstrap inicial, cuando `raw.<tabla>` está vacía, o
+    recuperación cuando el guardia de drift correspondiente lo detecta). Reconstruye `core`
+    ENTERO en la MISMA transacción, igual que el resto de este módulo. Devuelve
+    (archivo, n_filas, reporte_core).
+
+    `_DECISIONES.json` (P3 T4) es un caso especial: no tiene fila en `tables.TABLE_SPECS` (no es
+    un espejo columna por columna, ver `tables.py`), así que no pasa por `_resolver_tabla_migrada`/
+    `cargar_tabla` — se carga con `cargar_decisiones_json()`, el mismo camino que usa
+    `cargar_todo()`, y su drift se vigila con `escribir.verificar_decision_sincronizada()`."""
     import nucleo as N  # import tardío, mismo motivo que en cargar_todo()
 
     productos_dir = productos_dir or T.PRODUCTOS_DIR
+
+    if tabla_o_archivo in ("decisiones_json", "_DECISIONES.json"):
+        decisiones_json = os.path.join(productos_dir, "_DECISIONES.json")
+        con = conectar(env)
+        try:
+            with con:
+                with con.cursor() as cur:
+                    cargar_decisiones_json(cur, tenant_id, decisiones_json, incluir_verdad_db=True)
+                    n = 1 if os.path.exists(decisiones_json) else 0
+                    cur.execute(
+                        "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                        "VALUES (%s, %s, %s, %s)",
+                        (tenant_id, "_DECISIONES.json", None, n),
+                    )
+                    reporte_core = N.construir_core(cur, tenant_id)
+        finally:
+            con.close()
+        return "_DECISIONES.json", n, reporte_core
+
     tabla, archivo, opcional = _resolver_tabla_migrada(tabla_o_archivo)
 
     con = conectar(env)
@@ -362,8 +386,9 @@ def main():
     ap.add_argument("--decisiones-json", default=None, help="default: <productos-dir>/_DECISIONES.json")
     ap.add_argument("--tenant", default="vitalcom")
     ap.add_argument("--tomar-csv", default=None, metavar="ARCHIVO_O_TABLA",
-                     help="P3 T3: recarga SOLO esta tabla DB-truth MIGRADA (tables.TABLAS_MIGRADAS_DB) "
-                          "desde su CSV en disco -- bootstrap inicial o recuperacion de drift, "
+                     help="P3 T3/T4: recarga SOLO esta tabla DB-truth MIGRADA (tables.TABLAS_MIGRADAS_DB, "
+                          "o '_DECISIONES.json'/'decisiones_json', caso especial sin fila en TABLE_SPECS) "
+                          "desde su CSV/archivo en disco -- bootstrap inicial o recuperacion de drift, "
                           "nunca automatico -- y sale sin tocar el resto")
     args = ap.parse_args()
 

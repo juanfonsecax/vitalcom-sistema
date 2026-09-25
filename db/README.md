@@ -319,9 +319,9 @@ con `PRODUCTOS/_FACT_ENTREGA*.csv`/`_FACT_VENTAS.csv` reales; corregido, ver
 
 `tables.TABLAS_VERDAD_DB` (T2) es el conjunto ELEGIBLE completo (las 6 tablas + `decisiones_json`
 aparte). `tables.TABLAS_MIGRADAS_DB` (T3, nuevo) es el subconjunto ya CONECTADO a un llamador
-real: hoy `{venta, entrega_conjunto_dia, entrega_anuncio_dia}`; T4 sumará `evento`,
-`estado_flujo`, `producto` cuando `registrar_evento.py`/`flujo.py`/`alta_producto.py` también
-escriban por `db/escribir.py`. La distinción importa para `db/cargar.py`: una recarga GENÉRICA
+real: hoy `{venta, entrega_conjunto_dia, entrega_anuncio_dia, evento, estado_flujo}`; queda
+pendiente `producto` para cuando `alta_producto.py`/`editar_producto.py` también escriban por
+`db/escribir.py` (ver "P3 T4 (continuación)" abajo). La distinción importa para `db/cargar.py`: una recarga GENÉRICA
 (`cargar_todo()`, sin flags — el uso más común) **nunca** vuelve a cargar desde CSV una tabla de
 `TABLAS_MIGRADAS_DB`, pase lo que pase con `incluir_verdad_db` (clobbearía la verdad que ya
 escribió el llamador real); las tablas `TABLAS_VERDAD_DB` que TODAVÍA no se conectaron siguen el
@@ -423,10 +423,9 @@ el CSV por su cuenta:
 
 `tables.TABLAS_MIGRADAS_DB` suma `"evento"` (T3 tenía solo los tres hechos). `_ESTADO_FLUJO.csv`
 (`flujo.py:escribir_estado()`, la reescritura del propio archivo, no el evento de transición que
-ya se movió) y `_DIM_PRODUCTOS.csv`/`_DECISIONES.json` **quedan pendientes** — sus escritores
-reales (`flujo.py`, `decidir.py --escribir`, `alta_producto.py`/`editar_producto.py`) siguen
-escribiendo su CSV directo. Ver `odd/tasks/p3-postgres-verdad.md` T4 para el detalle y lo que
-falta.
+ya se movió) y `_DIM_PRODUCTOS.csv`/`_DECISIONES.json` **quedan pendientes en este pase** — ver
+"P3 T4 (continuación)" abajo para `_ESTADO_FLUJO.csv`/`_DECISIONES.json`; `_DIM_PRODUCTOS.csv`
+sigue pendiente (`alta_producto.py`/`editar_producto.py` siguen escribiendo su CSV directo).
 
 Instrucciones que le decían a un agente que anexara `_EVENTOS.csv` "a mano" (sin pasar por
 `registrar_evento.py`) se redirigieron al comando CLI exacto en:
@@ -437,6 +436,37 @@ drift, un anexo a mano haría abortar la próxima escritura real.
 Bootstrap real (25-sep-2026): `PRODUCTOS/_EVENTOS.csv` ya estaba sincronizado con `raw.evento`
 (la corrida de sesión `flujo.py --todo --escribir` ya lo había recargado hoy) — verificado con
 `db/escribir.verificar_csv_sincronizado()` sin escribir nada; no hizo falta `--tomar-csv`.
+
+## P3 T4 (continuación) — `estado_flujo` y `_DECISIONES.json` conectados
+
+Sigue a la sección anterior: conecta los dos escritores que quedaron pendientes ahí.
+
+- `flujo.py:escribir_estado()` ya no reescribe `_ESTADO_FLUJO.csv` con `csv.DictWriter` directo:
+  ahora llama `db/escribir.verificar_csv_sincronizado()` + `db/escribir.reemplazar(con,
+  "estado_flujo", filas, prod_dir=..., bkdir=...)` con import LOCAL (mismo motivo que el import
+  local de `registrar_evento` en la misma función — evita un ciclo a nivel de módulo y mantiene
+  el camino de SOLO LECTURA de `flujo.py` libre de `psycopg`, porque esta rama solo corre bajo
+  `--escribir`). `TENANT_ID` (constante de módulo, junto a `CAMPOS_ESTADO`) es el único punto de
+  override para pruebas aisladas; el backup del mirror usa `env.base` (nunca el `backups_csv`
+  real) para que un fixture jamás lo toque. `tables.TABLAS_MIGRADAS_DB` suma `"estado_flujo"`.
+- `decidir.py --escribir` ya no escribe `_DECISIONES.json` con `json.dump` directo: llama
+  `db/escribir.verificar_decision_sincronizada()` + `db/escribir.reemplazar_decision(con, res,
+  prod_dir=..., tenant_id=...)`, import LOCAL dentro de `main()` — `_DECISIONES.json` no tiene
+  fila en `tables.TABLE_SPECS` (es un blob de una sola fila, no un espejo columna por columna),
+  así que nunca puede entrar a `TABLAS_MIGRADAS_DB`/`TABLAS_VERDAD_DB` de la forma genérica; su
+  propio guardia de drift (`verificar_decision_sincronizada()`) vive aparte, y
+  `db/cargar.py --tomar-csv _DECISIONES.json` (o `decisiones_json`) es su recuperación
+  deliberada — caso especial en `tomar_csv()`, documentado en su docstring.
+  El import es LOCAL a `main()`, nunca al tope del módulo, por la misma razón que T3/T4
+  documentan en varios lugares de este archivo: el gate de paridad (`db/test_db.py`) corre
+  `decidir.py` en un SUBPROCESO con scipy+duckdb que no tiene `psycopg`, y ese subproceso nunca
+  pasa por `--escribir` — un import a nivel de módulo rompería esa separación.
+- Aislamiento de pruebas: `Ads/_TOOLS/test_cli_solo_lectura.py` fuerza `PGDATABASE=vitalcom_test`
+  y aísla cada escenario de escritura (`test_flujo_todo_con_escribir_si_escribe`,
+  `test_decidir_con_escribir_si_escribe`) en su propio tenant único, bootstrapeando primero
+  `raw.estado_flujo`/`raw.decisiones_json` (equivalente a `--tomar-csv`) para que el guardia de
+  drift no aborte en la primera escritura de la prueba — mismo patrón que
+  `test_registrar_evento.py` (T4, primera pasada).
 
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
