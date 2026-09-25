@@ -88,8 +88,17 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
   Route: delegated writer (trigger: 2+ non-trivial files — `db/escribir.py` new, `db/tables.py`,
   `db/nucleo.py`, `db/cargar.py`, `Ads/_TOOLS/upsert_fact.py`, `db/test_db.py`, `db/schema.sql`,
   `db/README.md` all touched).
-- [x] T3 — `ingerir_lucidsales.py` / `ingerir_meta.py` / `bajar_meta_insights.py` write DB then
+- [ ] T3 — `ingerir_lucidsales.py` / `ingerir_meta.py` / `bajar_meta_insights.py` write DB then
   mirror. Check: `decidir` parity green on real data.
+  STATUS PARTIAL (orchestrator readback 25-sep): code committed `238a75b`, real-data no-op green,
+  `Ads/_TOOLS` 45 passed, but `db/test_db.py` = 18 passed / 17 SKIPPED (includes the T2
+  byte-identity tests): database `vitalcom_test` does not exist and role `vitalcom` lacks
+  CREATEDB. Blocked on operator running once, as Postgres superuser:
+  `CREATE DATABASE vitalcom_test OWNER vitalcom;`. Re-run db tests, then check T3.
+  Incident during T3 (writer report, verified by orchestrator): early test runs wrote fixture rows
+  into real `vitalcom` raw and overwrote the 3 fact CSVs; CSVs restored from HEAD (they had no
+  uncommitted changes), raw re-bootstrapped from them. Readback: 3 fact CSVs have no diff vs
+  HEAD, row counts 3491/1094/1041 match the bootstrap; `_EVENTOS.csv` untouched (mtime 24-sep).
   Result: los tres llamadores conectan a `db/escribir.upsert()` (nunca CSV directo). Defecto
   encontrado y corregido en el camino: `ingerir_meta.py` nivel CONJUNTO (`_FACT_ENTREGA.csv`) era
   un `append` crudo, nunca pasaba por `upsert_fact` — ahora entra por la misma llave natural que
@@ -160,7 +169,7 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 
 - 2026-09-25: T2 done.
 
-- 2026-09-25: T3 done.
+- 2026-09-25: T3 code done; db tests blocked on missing vitalcom_test (partial).
 
 ## Next step
 T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB (add `evento`,
