@@ -98,8 +98,11 @@ TABLAS_VERDAD_DB = {
 # (`entrega_conjunto_dia`, `entrega_anuncio_dia`). T4 conecta `evento` (registrar_evento.py,
 # ahora el único escritor de _EVENTOS.csv; flujo.py/perfilar_angulos.py/reingreso_f1.py llaman su
 # `anexar()` en vez de escribir el CSV por su cuenta) y `estado_flujo` (flujo.py:escribir_estado()
-# escribe por `db/escribir.reemplazar()`, el CSV es el espejo). `producto` (`_DIM_PRODUCTOS.csv`,
-# `alta_producto.py`/`editar_producto.py`) queda pendiente para un T4 posterior o T5.
+# escribe por `db/escribir.reemplazar()`, el CSV es el espejo). T4 continuación parte 2 conecta
+# `producto` (`_DIM_PRODUCTOS.csv`): `alta_producto.py:aplicar()` (fila nueva) y
+# `editar_producto.py:aplicar_escrituras()` (fila existente, compartido por
+# `cambiar_costo.py`/`cargar_cuenta.py`/`cargar_page_id.py`) escriben por `db/escribir.reemplazar()`;
+# `_DIM_ENVASE.csv` sigue en disco (regla de "editado a mano" — ver db/README.md, T1).
 # `_DECISIONES.json` (`decidir.py --escribir` -> `db/escribir.reemplazar_decision()`) no aparece
 # acá: no tiene fila en TABLE_SPECS (ver `raw.decisiones_json` en el bloque de abajo), así que
 # nunca puede ser parte de este set columna-por-columna — su propio guardia de drift vive en
@@ -110,6 +113,7 @@ TABLAS_MIGRADAS_DB = {
     "entrega_anuncio_dia",
     "evento",
     "estado_flujo",
+    "producto",
 }
 
 # {tabla: {columna_csv: columna_sql}} — solo para el choque de nombre con las columnas propias
