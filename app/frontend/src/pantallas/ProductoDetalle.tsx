@@ -1,15 +1,63 @@
 /**
- * Producto — la línea de tiempo F1 → F2 → F3 con el paso actual resaltado.
+ * ProductoDetalle — la ficha de UN producto: un header con lo esencial (nombre, fase, paso de
+ * ahora, bloqueante) y pestañas (P4/T3) — Resumen (el recorrido F1→F2→F3 completo, antes toda
+ * la pantalla) y una por fase (Fase 1/2/3), que renderizan las pantallas viejas de cada fase
+ * SIN reescribirlas: Fase1/2/3 absorben acá su navegación, no su contenido.
+ *
+ * Las pestañas son URL-driven: `/producto/$clave/faseN` sigue siendo una URL real (el operador
+ * la puede compartir o recargar) que selecciona la pestaña N; `/producto/$clave` a secas
+ * selecciona la fase VIGENTE del producto (`d.fase`), o Resumen si no tiene ninguna. Nunca hay
+ * un estado de pestaña que no sea, al mismo tiempo, una URL.
  *
  * Todo lo que se ve sale de `flujo.py <pk> --json`: los pasos, su estado, lo que cada uno
  * produce y quién es el dueño de cada dato. La pantalla no reordena ni completa nada.
  */
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useParams } from "@tanstack/react-router";
-import { api, type Nodo, type Requisito } from "../api/cliente";
+import { Link, useLocation, useNavigate, useParams } from "@tanstack/react-router";
+import { api, type Flujo, type Nodo, type Requisito } from "../api/cliente";
 import { AvisosDelRecorrido, BannerRezago, tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
-import { FASES, estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace } from "../lenguaje";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import type { ClaveGlosario } from "../glosario";
+import { estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace } from "../lenguaje";
+import { Fase1 } from "./Fase1";
+import { Fase2 } from "./Fase2";
+import { Fase3 } from "./Fase3";
+
+type TabId = "resumen" | "fase1" | "fase2" | "fase3";
+
+const CLAVE_GLOSARIO_DE_FASE: Record<string, ClaveGlosario | undefined> = {
+  F1: "fase_1",
+  F2: "fase_2",
+  F3: "fase_3",
+};
+
+/** La fase vigente (`d.fase`), como pestaña por defecto. Una fase fuera de F1/F2/F3 (p. ej.
+ * PAUSADO, como VARICOSE) cae en Resumen: no hay pestaña de fase que le corresponda. */
+function tabDeFase(fase: string | null | undefined): TabId {
+  if (fase === "F1") return "fase1";
+  if (fase === "F2") return "fase2";
+  if (fase === "F3") return "fase3";
+  return "resumen";
+}
+
+/** La pestaña que dice la URL, o `null` cuando la URL es la ficha a secas (`/producto/$clave`) —
+ * ahí manda la fase vigente (`tabDeFase`), no un default fijo. */
+function tabDeRuta(pathname: string): TabId | null {
+  if (pathname.endsWith("/fase1")) return "fase1";
+  if (pathname.endsWith("/fase2")) return "fase2";
+  if (pathname.endsWith("/fase3")) return "fase3";
+  return null;
+}
+
+const RUTA_DE_TAB: Record<TabId, "/producto/$clave" | "/producto/$clave/fase1" | "/producto/$clave/fase2" | "/producto/$clave/fase3"> = {
+  resumen: "/producto/$clave",
+  fase1: "/producto/$clave/fase1",
+  fase2: "/producto/$clave/fase2",
+  fase3: "/producto/$clave/fase3",
+};
 
 function Dato({ requisito }: { requisito: Requisito }) {
   return (
@@ -63,112 +111,12 @@ function Paso({ nodo, esActual }: { nodo: Nodo; esActual: boolean }) {
   );
 }
 
-export function ProductoDetalle() {
-  const { clave } = useParams({ from: "/producto/$clave" });
-  const flujo = useQuery({ queryKey: ["flujo", clave], queryFn: () => api.producto(clave) });
-
-  if (flujo.isLoading) return <Cargando que={`el recorrido de ${clave}`} />;
-  if (flujo.error) return <Problema error={flujo.error} />;
-  const d = flujo.data!;
-  const motor = (d.motor ?? null) as MotorInfo | null;
-  const tituloDelPaso = tituloDelPasoActual(d.nodos, d.nodo_actual, d.como);
-  const quien = quienLoHace(d.ejecutor);
-
+/** El contenido de la pestaña Resumen: el recorrido F1→F2→F3 completo — lo que ANTES era toda
+ * la pantalla (entradas para pasar de fase, bloqueantes del paso, avisos y la línea de tiempo
+ * nodo por nodo). Nada de esto cambió de cálculo, solo de lugar (ahora vive bajo una pestaña). */
+function Resumen({ d }: { d: Flujo }) {
   return (
-    <div className="space-y-6">
-      <BannerRezago motor={motor} />
-
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <div>
-          <Link to="/" className="text-xs text-zinc-500 hover:text-zinc-300">
-            ← portafolio
-          </Link>
-          <h1 className="mt-1 text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
-          <p className="text-sm text-zinc-400">{d.fase_titulo}</p>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Link
-            to="/producto/$clave/fase1"
-            params={{ clave }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
-              d.fase === "F1"
-                ? "bg-sky-600 text-white hover:bg-sky-500"
-                : "border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
-            }`}
-          >
-            FASE 1 (Ángulos)
-          </Link>
-          <Link
-            to="/producto/$clave/fase2"
-            params={{ clave }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
-              d.fase === "F2"
-                ? "bg-sky-600 text-white hover:bg-sky-500"
-                : "border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
-            }`}
-          >
-            FASE 2 (Conceptos)
-          </Link>
-          <Link
-            to="/producto/$clave/fase3"
-            params={{ clave }}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
-              d.fase === "F3"
-                ? "bg-sky-600 text-white hover:bg-sky-500"
-                : "border border-zinc-700 bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
-            }`}
-          >
-            FASE 3 (Escalado)
-          </Link>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        {FASES.map((fase) => {
-          const rutaDestino =
-            fase.id === "F1"
-              ? "/producto/$clave/fase1"
-              : fase.id === "F2"
-                ? "/producto/$clave/fase2"
-                : "/producto/$clave/fase3";
-          return (
-            <Link
-              key={fase.id}
-              to={rutaDestino}
-              params={{ clave }}
-              className={`flex-1 rounded-lg border p-3 transition-colors hover:border-zinc-700 ${
-                d.fase === fase.id
-                  ? "border-sky-700 bg-sky-950/40"
-                  : "border-zinc-800 bg-zinc-900/40 opacity-75"
-              }`}
-            >
-              <p className="text-sm font-medium text-zinc-100">
-                {fase.rotulo}
-                <Info termino={fase.id === "F1" ? "fase_1" : fase.id === "F2" ? "fase_2" : "fase_3"} />
-              </p>
-              <p className="text-xs text-zinc-500">{fase.que}</p>
-            </Link>
-          );
-        })}
-      </div>
-
-      <Tarjeta className="border-sky-800/60 bg-sky-950/10">
-        <p className="text-xs uppercase tracking-wide text-zinc-500">En qué fase está</p>
-        <p className="mt-1 text-sm text-zinc-200">{faseEnUnaFrase(d.fase)}</p>
-        <p className="mt-3 text-xs uppercase tracking-wide text-zinc-500">El paso de ahora — y qué sigue</p>
-        <p className="mt-1 text-sm text-zinc-200">{tituloDelPaso}</p>
-        <p className="mt-1 text-xs text-zinc-500">{quien}</p>
-        {d.ejecutor && <p className="text-xs text-zinc-600">{d.ejecutor}</p>}
-        {d.bloqueantes.length > 0 && (
-          <p className="mt-1 text-xs text-amber-300">Resolver lo que frena el paso, más abajo, antes de seguir.</p>
-        )}
-        {d.nodo_actual && (
-          <p className="mt-1 font-mono text-[11px] text-zinc-600" title="Id interno del paso en el grafo">
-            {d.nodo_actual}
-          </p>
-        )}
-      </Tarjeta>
-
+    <div className="space-y-6 pt-4">
       <AvisosDelRecorrido avisos={d.avisos} />
 
       {d.entradas.length > 0 && (
@@ -201,6 +149,161 @@ export function ProductoDetalle() {
           <Paso key={nodo.id} nodo={nodo} esActual={nodo.id === d.nodo_actual} />
         ))}
       </div>
+    </div>
+  );
+}
+
+/** El header (nombre, fase, paso de ahora, bloqueante) — depende de `flujo.py`, así que solo
+ * se puede pintar cuando esa consulta ya resolvió. Separado del resto para que NO bloquee a
+ * Fase1/2/3: cuando la URL ya trae el sufijo de fase (`tabDeUrl`), esas pantallas arrancan sus
+ * propias consultas de una vez, en paralelo con esta — nunca esperan a que el header cargue. */
+function Header({ d }: { d: Flujo }) {
+  const motor = (d.motor ?? null) as MotorInfo | null;
+  const tituloDelPaso = tituloDelPasoActual(d.nodos, d.nodo_actual, d.como);
+  const quien = quienLoHace(d.ejecutor);
+  const estado = estadoEnPalabras(d.estado);
+  const primerBloqueante = d.bloqueantes[0];
+  const claveGlosarioFase = d.fase ? CLAVE_GLOSARIO_DE_FASE[d.fase] : undefined;
+
+  return (
+    <>
+      <BannerRezago motor={motor} />
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
+            <p className="text-sm text-muted-foreground">{d.producto_key}</p>
+          </div>
+          <Badge variant="outline" title={faseEnUnaFrase(d.fase)}>
+            {d.fase ?? "sin fase"}
+            {claveGlosarioFase && <Info termino={claveGlosarioFase} />}
+          </Badge>
+        </div>
+        <p className="text-sm text-muted-foreground">{faseEnUnaFrase(d.fase)}</p>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+              El paso de ahora — y qué sigue
+              <Info termino="nodo" />
+            </p>
+            <p className="mt-1 text-sm">
+              {tituloDelPaso} <Chip tono={estado.tono}>{estado.texto}</Chip>
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">{quien}</p>
+            {d.ejecutor && <p className="text-xs text-muted-foreground/70">{d.ejecutor}</p>}
+            {d.nodo_actual && (
+              <p className="mt-1 font-mono text-[11px] text-muted-foreground/70" title="Id interno del paso en el grafo">
+                {d.nodo_actual}
+              </p>
+            )}
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+              Esto te bloquea
+              <Info termino="bloqueante" />
+            </p>
+            {primerBloqueante ? (
+              <p className="mt-1 text-sm">
+                {primerBloqueante.dato}
+                <span className="block text-xs text-muted-foreground">
+                  lo produce {primerBloqueante.dueno}
+                  {d.bloqueantes.length > 1 ? ` (+${d.bloqueantes.length - 1} más)` : ""}
+                </span>
+              </p>
+            ) : (
+              <p className="mt-1 text-sm text-estado-escalar">Nada lo frena.</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function ProductoDetalle() {
+  const { clave } = useParams({ strict: false }) as { clave: string };
+  const location = useLocation();
+  const navigate = useNavigate();
+  const flujo = useQuery({ queryKey: ["flujo", clave], queryFn: () => api.producto(clave) });
+  // "Resumen" no tiene una URL propia distinta de la ficha a secas (`/producto/$clave` es,
+  // a la vez, la URL de Resumen Y la de "sin sufijo de fase" — de ahí el default a la fase
+  // vigente). Por eso, cuando el operador la elige a mano estando ya en esa URL, hace falta
+  // este estado local para que la pestaña cambie sin depender de una URL que no puede cambiar.
+  // La URL manda apenas trae un sufijo de fase — `tabDeUrl` siempre le gana a este estado.
+  const [tabManual, setTabManual] = useState<TabId | null>(null);
+
+  const d = flujo.data;
+  // Sin sufijo de fase en la URL, la pestaña por defecto es la fase VIGENTE (`d.fase`) — pero
+  // esa fase todavía no se conoce mientras `flujo` carga, así que el default cae en Resumen
+  // hasta que llegue (nunca se bloquea la pantalla entera por esto).
+  const tabDeUrl = tabDeRuta(location.pathname);
+  const tabActiva: TabId = tabDeUrl ?? tabManual ?? tabDeFase(d?.fase);
+
+  function cambiarTab(siguiente: string) {
+    if (siguiente === tabActiva) return;
+    const destino = siguiente as TabId;
+    if (destino === "resumen") {
+      setTabManual("resumen");
+      if (tabDeUrl) navigate({ to: "/producto/$clave", params: { clave } });
+      return;
+    }
+    setTabManual(null);
+    navigate({ to: RUTA_DE_TAB[destino], params: { clave } });
+  }
+
+  return (
+    <div className="space-y-6">
+      <Link to="/productos" className="text-xs text-muted-foreground hover:text-foreground">
+        ← productos
+      </Link>
+
+      {/* Header (P4/T3): nombre, fase, paso de ahora y bloqueante — siempre visible, sin
+          importar qué pestaña esté abierta. Depende de `flujo.py`: mientras esa consulta está en
+          vuelo, NO retiene a Fase1/2/3 (ver el comentario de `Header` más arriba). */}
+      {flujo.isLoading ? (
+        <Cargando que={`el recorrido de ${clave}`} />
+      ) : flujo.error ? (
+        <Problema error={flujo.error} />
+      ) : (
+        <Header d={d!} />
+      )}
+
+      <Tabs value={tabActiva} onValueChange={cambiarTab}>
+        <TabsList>
+          <TabsTrigger value="resumen">Resumen</TabsTrigger>
+          <TabsTrigger value="fase1">Fase 1</TabsTrigger>
+          <TabsTrigger value="fase2">Fase 2</TabsTrigger>
+          <TabsTrigger value="fase3">Fase 3</TabsTrigger>
+        </TabsList>
+        {/* Un solo panel, cuyo contenido cambia con la pestaña — así solo la fase abierta hace
+            sus fetches (Fase1/2/3 son pantallas pesadas, no conviene montarlas las cuatro). */}
+        <TabsContent value={tabActiva}>
+          {tabActiva === "resumen" &&
+            (flujo.isLoading ? (
+              <Cargando que="el recorrido" />
+            ) : flujo.error ? (
+              <Problema error={flujo.error} />
+            ) : (
+              <Resumen d={d!} />
+            ))}
+          {tabActiva === "fase1" && (
+            <div className="pt-4">
+              <Fase1 />
+            </div>
+          )}
+          {tabActiva === "fase2" && (
+            <div className="pt-4">
+              <Fase2 clave={clave} />
+            </div>
+          )}
+          {tabActiva === "fase3" && (
+            <div className="pt-4">
+              <Fase3 clave={clave} />
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

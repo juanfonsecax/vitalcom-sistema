@@ -1336,7 +1336,10 @@ function TabChecklist({
 
 /* ──────────────── PANTALLA PRINCIPAL FASE 1 ──────────────── */
 export function Fase1() {
-  const { clave } = useParams({ from: "/producto/$clave/fase1" });
+  // strict: false (no un "from" fijo) porque ProductoDetalle (P4/T3) puede montar esta pantalla
+  // como la pestaña "Fase 1" mientras la URL activa es la ficha a secas (`/producto/$clave`),
+  // no necesariamente `/producto/$clave/fase1` — igual que ya hacían Fase2 y Fase3.
+  const { clave } = useParams({ strict: false }) as { clave: string };
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabId>("avance");
 
@@ -1376,37 +1379,15 @@ export function Fase1() {
 
   return (
     <div className="space-y-6">
+      {/* Sin breadcrumb propio ni "Ver recorrido en el grafo": ProductoDetalle (P4/T3) ya los da
+          — esta pantalla vive dentro de su pestaña "Fase 1", nunca sola. */}
       <div>
-        <div className="flex items-center gap-2 text-xs text-zinc-500">
-          <Link to="/" className="hover:text-zinc-300">
-            ← portafolio
-          </Link>
-          <span>/</span>
-          <Link
-            to="/producto/$clave"
-            params={{ clave }}
-            className="hover:text-zinc-300"
-          >
-            {clave}
-          </Link>
-        </div>
-        <div className="mt-1 flex flex-wrap items-baseline justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold text-zinc-100">
-              FASE 1 · {clave}
-            </h1>
-            <p className="text-sm text-zinc-400">
-              6 ángulos × 1 concepto fijo · Investigación, Anuncios, Bot y Lanzador
-            </p>
-          </div>
-          <Link
-            to="/producto/$clave"
-            params={{ clave }}
-            className="rounded border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
-          >
-            Ver recorrido en el grafo
-          </Link>
-        </div>
+        <h1 className="text-2xl font-bold text-zinc-100">
+          FASE 1 · {clave}
+        </h1>
+        <p className="text-sm text-zinc-400">
+          6 ángulos × 1 concepto fijo · Investigación, Anuncios, Bot y Lanzador
+        </p>
       </div>
 
       {/* Selector de pestañas */}

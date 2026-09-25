@@ -1,6 +1,6 @@
 /**
- * resumen.tsx — las piezas del resumen de UN producto, compartidas por Tablero (`TarjetaProducto`)
- * y por ProductoDetalle: qué es `motor` (el `dict` libre de `flujo.py`), el título humano del
+ * resumen.tsx — las piezas del resumen de UN producto, compartidas por Productos.tsx, Hoy.tsx
+ * y ProductoDetalle: qué es `motor` (el `dict` libre de `flujo.py`), el título humano del
  * paso vigente, el banner de rezago de ESE producto, y los avisos que trae el recorrido.
  */
 import type { Nodo } from "../api/cliente";

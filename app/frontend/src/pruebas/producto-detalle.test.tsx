@@ -1,11 +1,16 @@
 /**
- * producto-detalle.test.tsx — pruebas del resumen de ProductoDetalle (T2, vista-por-que).
+ * producto-detalle.test.tsx — pruebas de ProductoDetalle (T2 resumen + T3 pestañas).
  *
- * Verifica que la tarjeta de resumen diga, en una frase: en qué fase está, cuál es el paso de
- * ahora (título humano, no el id crudo), quién lo hace, y que avise cuando la data del motor
- * tiene más de 2 días de rezago. Todo sale de `flujo.py` (mock de `/api/productos/{clave}`).
+ * T2: la tarjeta de resumen dice, en una frase: en qué fase está, cuál es el paso de ahora
+ * (título humano, no el id crudo), quién lo hace, y avisa cuando la data del motor tiene más de
+ * 2 días de rezago. Todo sale de `flujo.py` (mock de `/api/productos/{clave}`).
+ *
+ * T3: el header (nombre, fase, paso, bloqueante) es siempre visible sin importar la pestaña;
+ * la pestaña activa la decide la URL (`/fase1|2|3` → esa pestaña) o, a falta de sufijo, la fase
+ * vigente del producto (`d.fase`) — nunca al revés. El contenido del recorrido completo (avisos,
+ * entradas, línea de tiempo nodo por nodo) vive ahora bajo la pestaña "Resumen".
  */
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   RouterProvider,
@@ -60,12 +65,21 @@ function servir(respuestas: Record<string, unknown>) {
   );
 }
 
-function montar(clave = "TINNIDROP") {
+/** Registra las cuatro rutas reales de la ficha (igual que `main.tsx`, P4/T3: un solo
+ * componente para Resumen y cada fase) para que la navegación entre pestañas funcione tal
+ * cual en producción. */
+function montar(rutaInicial = "/producto/TINNIDROP") {
   const raiz = createRootRoute();
-  const ruta = createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle });
+  const rutas = [
+    createRoute({ getParentRoute: () => raiz, path: "/productos", component: () => null }),
+    createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle }),
+    createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: ProductoDetalle }),
+    createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase2", component: ProductoDetalle }),
+    createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase3", component: ProductoDetalle }),
+  ];
   const router = createRouter({
-    routeTree: raiz.addChildren([ruta]),
-    history: createMemoryHistory({ initialEntries: [`/producto/${clave}`] }),
+    routeTree: raiz.addChildren(rutas),
+    history: createMemoryHistory({ initialEntries: [rutaInicial] }),
   });
   const cliente = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(
@@ -75,19 +89,33 @@ function montar(clave = "TINNIDROP") {
   );
 }
 
+/** Abre la pestaña Resumen — necesario porque, con `fase: "F2"`, la pestaña por defecto es
+ * "Fase 2" (P4/T3: el default es la fase vigente, no Resumen). Espera primero a que `flujo.py`
+ * resuelva (el header, que depende de esa consulta, ya está pintado): mientras está en vuelo el
+ * default es Resumen (para no bloquear la pantalla), y hacer clic ANTES de eso sería un clic
+ * sobre la pestaña ya activa — un no-op que el propio `cambiarTab` descarta. */
+async function abrirResumen() {
+  await screen.findByRole("heading", { level: 1 });
+  fireEvent.click(screen.getByRole("tab", { name: "Resumen" }));
+}
+
 test("resume la fase en una frase y el paso de ahora con su título humano, no el id crudo", async () => {
   servir({ "/api/productos/TINNIDROP": FLUJO_BASE });
   montar();
+  // El header (nombre, fase, paso de ahora) es siempre visible, sin importar la pestaña abierta.
   expect(await screen.findByText("Tinnidrop Importado Original")).toBeInTheDocument();
   expect(await screen.findByText(/FASE 2 · conceptos: el ángulo ganador, 10 conceptos\./)).toBeInTheDocument();
-  // El título humano del paso aparece en el resumen de arriba Y en su tarjeta del recorrido:
-  // ninguna de las dos veces es el id crudo (F2.etapa-11).
-  expect(
-    await screen.findAllByText("Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)"),
-  ).toHaveLength(2);
+  expect(await screen.findAllByText("Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)")).toHaveLength(1);
   expect((await screen.findAllByText("lo hace Claude")).length).toBeGreaterThanOrEqual(1);
   // El id crudo sigue presente, pero como dato secundario, nunca el único texto del paso.
   expect((await screen.findAllByText("F2.etapa-11")).length).toBeGreaterThanOrEqual(1);
+
+  // Al abrir Resumen, el mismo título humano aparece TAMBIÉN en su tarjeta del recorrido: dos
+  // veces en total, ninguna de las dos el id crudo.
+  await abrirResumen();
+  expect(
+    await screen.findAllByText("Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)"),
+  ).toHaveLength(2);
 });
 
 test("avisa cuando la data del motor tiene más de 2 días de rezago", async () => {
@@ -116,6 +144,7 @@ test("muestra los avisos que trae flujo.py en una tarjeta cerca del resumen", as
     },
   });
   montar();
+  await abrirResumen();
   expect(await screen.findByText("Avisos del recorrido")).toBeInTheDocument();
   expect(screen.getByText(/Meta YA gastó en una campaña de conceptos/)).toBeInTheDocument();
 });
@@ -123,6 +152,52 @@ test("muestra los avisos que trae flujo.py en una tarjeta cerca del resumen", as
 test("no muestra la tarjeta de avisos cuando flujo.py no trae ninguno", async () => {
   servir({ "/api/productos/TINNIDROP": FLUJO_BASE });
   montar();
+  await abrirResumen();
   expect(await screen.findByText("Tinnidrop Importado Original")).toBeInTheDocument();
   expect(screen.queryByText("Avisos del recorrido")).not.toBeInTheDocument();
+});
+
+test("el header dice el bloqueante y su dueño, y la pestaña Resumen los repite en su propia tarjeta", async () => {
+  servir({
+    "/api/productos/TINNIDROP": {
+      ...FLUJO_BASE,
+      bloqueantes: [
+        { dato: "carpeta de media del producto", ok: false, observado: "no existe", dueno: "operador", regla: "invariante 8" },
+      ],
+    },
+  });
+  montar();
+  expect(await screen.findAllByText("carpeta de media del producto")).toHaveLength(1);
+  expect(screen.getByText(/lo produce operador/)).toBeInTheDocument();
+});
+
+test("pestañas — P4/T3: la URL manda cuando trae sufijo de fase (/fase2 → pestaña Fase 2)", async () => {
+  servir({ "/api/productos/TINNIDROP": FLUJO_BASE });
+  montar("/producto/TINNIDROP/fase2");
+  const tabFase2 = await screen.findByRole("tab", { name: "Fase 2" });
+  expect(tabFase2).toHaveAttribute("aria-selected", "true");
+  expect(screen.getByRole("tab", { name: "Resumen" })).toHaveAttribute("aria-selected", "false");
+});
+
+test("pestañas — P4/T3: sin sufijo de fase, el default es la fase VIGENTE del producto, no Resumen", async () => {
+  servir({ "/api/productos/TINNIDROP": { ...FLUJO_BASE, fase: "F1" } });
+  montar("/producto/TINNIDROP");
+  // Mientras `flujo.py` está en vuelo, el default es Resumen (para no bloquear la pantalla);
+  // recién con el header pintado se conoce la fase vigente y la pestaña puede recalcularse.
+  await screen.findByRole("heading", { level: 1 });
+  expect(screen.getByRole("tab", { name: "Fase 1" })).toHaveAttribute("aria-selected", "true");
+});
+
+test("pestañas — P4/T3: una fase fuera de F1/F2/F3 (p. ej. PAUSADO) cae en Resumen por defecto", async () => {
+  servir({ "/api/productos/TINNIDROP": { ...FLUJO_BASE, fase: "PAUSADO", estado: "EXCEPCION" } });
+  montar("/producto/TINNIDROP");
+  await screen.findByRole("heading", { level: 1 });
+  expect(screen.getByRole("tab", { name: "Resumen" })).toHaveAttribute("aria-selected", "true");
+});
+
+test("pestañas — hacer clic en Fase 1 navega a la URL de esa fase", async () => {
+  servir({ "/api/productos/TINNIDROP": FLUJO_BASE });
+  montar("/producto/TINNIDROP");
+  fireEvent.click(await screen.findByRole("tab", { name: "Fase 1" }));
+  expect(await screen.findByRole("tab", { name: "Fase 1" })).toHaveAttribute("aria-selected", "true");
 });

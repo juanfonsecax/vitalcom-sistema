@@ -82,15 +82,11 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
 
   return (
     <div className="space-y-6">
-      {/* Encabezado */}
+      {/* Encabezado — sin "Volver a la ficha": ProductoDetalle (P4/T3) ya da esa vuelta, esta
+          pantalla vive dentro de su pestaña "Fase 2". */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800 pb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <Link to="/producto/$clave" params={{ clave }} className="text-xs text-zinc-400 hover:text-zinc-200">
-              ← Volver a la ficha de {clave}
-            </Link>
-          </div>
-          <h1 className="mt-1 text-2xl font-bold text-zinc-100">
+          <h1 className="text-2xl font-bold text-zinc-100">
             FASE 2 · Testeo de Conceptos ({clave})
           </h1>
           <p className="text-sm text-zinc-400">

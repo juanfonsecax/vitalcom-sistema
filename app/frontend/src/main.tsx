@@ -2,22 +2,21 @@
  * main.tsx — arranque, rutas y caché.
  *
  * Navegación por las preguntas del operador (Hoy / Productos / Resultados / Ajustes,
- * ver componentes/BarraLateral.tsx). Las pantallas viejas (Fase1/2/3, Trabajos, Salud,
- * Guía, Órdenes, Nuevo producto) siguen en sus URLs de siempre, alcanzables desde Ajustes.
+ * ver componentes/BarraLateral.tsx). Productos (P4/T3) es una tabla; Fase1/2/3 quedaron
+ * absorbidas NAVEGACIONALMENTE dentro de ProductoDetalle, como pestañas — sus URLs viejas
+ * (`/producto/$clave/faseN`) siguen funcionando. Trabajos, Salud, Guía, Órdenes y Nuevo
+ * producto siguen en sus URLs de siempre, alcanzables desde Ajustes.
  */
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, RouterProvider, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
 import { Hoy } from "./pantallas/Hoy";
-import { Tablero } from "./pantallas/Tablero";
+import { Productos } from "./pantallas/Productos";
 import { ProductoDetalle } from "./pantallas/ProductoDetalle";
 import { Salud } from "./pantallas/Salud";
 import { NuevoProducto } from "./pantallas/NuevoProducto";
 import { Trabajos } from "./pantallas/Trabajos";
-import { Fase1 } from "./pantallas/Fase1";
-import { Fase2 } from "./pantallas/Fase2";
-import { Fase3 } from "./pantallas/Fase3";
 import { Ordenes } from "./pantallas/Ordenes";
 import { Guia } from "./pantallas/Guia";
 import { Resultados } from "./pantallas/Resultados";
@@ -37,14 +36,16 @@ function Marco() {
 const raiz = createRootRoute({ component: Marco });
 const rutas = [
   createRoute({ getParentRoute: () => raiz, path: "/", component: Hoy }),
-  createRoute({ getParentRoute: () => raiz, path: "/productos", component: Tablero }),
+  createRoute({ getParentRoute: () => raiz, path: "/productos", component: Productos }),
   createRoute({ getParentRoute: () => raiz, path: "/resultados", component: Resultados }),
   createRoute({ getParentRoute: () => raiz, path: "/ajustes", component: Ajustes }),
   createRoute({ getParentRoute: () => raiz, path: "/ordenes", component: Ordenes }),
+  // Las cuatro rutas del producto comparten un solo componente: ProductoDetalle lee el pathname
+  // para decidir la pestaña activa (Resumen/Fase 1/2/3) — ver su docstring (P4/T3).
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle }),
-  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: Fase1 }),
-  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase2", component: Fase2 }),
-  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase3", component: Fase3 }),
+  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: ProductoDetalle }),
+  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase2", component: ProductoDetalle }),
+  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase3", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/salud", component: Salud }),
   createRoute({ getParentRoute: () => raiz, path: "/guia", component: Guia }),
   createRoute({ getParentRoute: () => raiz, path: "/nuevo", component: NuevoProducto }),
