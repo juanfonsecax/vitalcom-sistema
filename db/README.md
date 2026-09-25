@@ -182,6 +182,54 @@ desde el staging ya cacheado, sin red); `db/cargar.py:enriquecer_venta()` la cal
 FIFO). Coverage sin cambios: 670 verificados por gasto / 724 por nombre / 1360 con ad_id original
 / 653 sin atribuir, sobre 3407 filas.
 
+## P3 — inventario de escritores (T1, 2026-09-25)
+
+Qué programa escribe cada archivo de `PRODUCTOS/` y qué destino tiene en P3. Regla que decide la
+columna "P3": un archivo que el operador edita a mano **queda en CSV** (entra por `raw` como hoy)
+hasta P3b; solo pasa a Postgres lo que escriben exclusivamente los programas. Un archivo
+**derivado** (recalculado entero desde otros datos) no es fuente de verdad: sigue siendo un
+archivo generado.
+
+### Pasan a Postgres (`core` es la verdad, el CSV es espejo)
+
+| Archivo | Escritor actual | Modo | Tabla `core` | Tarea |
+|---|---|---|---|---|
+| `_FACT_VENTAS.csv` | `ingerir_lucidsales.py:516` → `upsert_fact.upsert()` | upsert | `venta` | T3 |
+| `_FACT_ENTREGA.csv` | `ingerir_meta.py:400` / `bajar_meta_insights.py:405` → `upsert_fact.upsert()` | upsert | `entrega_conjunto_dia` | T3 |
+| `_FACT_ENTREGA_ANUNCIO.csv` | `ingerir_meta.py:400` / `bajar_meta_insights.py:409` → `upsert_fact.upsert()` | upsert | `entrega_anuncio_dia` | T3 |
+| `_EVENTOS.csv` | `registrar_evento.py:113 anexar()` y `:148 registrar_excepcion()` (la llama `gen_publicacion.py`), `flujo.py:1329`, `perfilar_angulos.py:434` (`--registrar`), `reingreso_f1.py:63` | append (5 escritores sin helper común) | `evento` | T4 |
+| `_DECISIONES.json` | `decidir.py:1010` (`--escribir`) | reescritura | `decision` | T4 |
+| `_ESTADO_FLUJO.csv` | `flujo.py:1306 escribir_estado()` (`--todo --escribir`) | reescritura | `estado_flujo` | T4 |
+| `_DIM_PRODUCTOS.csv` | `alta_producto.py:269` (fila nueva; la dispara la app vía `_MANIFIESTO.json`), `editar_producto.py:141` (lo llaman `cambiar_costo.py`, `cargar_cuenta.py`, `cargar_page_id.py`) | reescritura atómica | `producto` | T4 |
+
+`upsert_fact.upsert()` (`upsert_fact.py:131`) es el único escritor de los tres hechos: es el punto
+natural donde cambiar el destino en T3.
+
+### Quedan en CSV durante P3
+
+- **Editados a mano por el operador** (sin escritor en el código): `_DIM_COSTEO`, `_DIM_CONJUNTOS`,
+  `_DIM_BANDAS`, `_ALIAS_CONJUNTOS`, `_DIM_BM`, `_DIM_CUENTAS`, `_DIM_FANPAGES`, `_DIM_FLUJO_BOT`,
+  `_DIM_GASTOS`, `_DIM_MERCADOS`, `_DIM_PRECIOS`, `_DIM_TARJETAS`, `_ESTADO_META`,
+  `_FACT_FACTURACION`, `_FACT_FACTURACION_AGREGADO`, `_FACT_PAUTA_REAL`, `_FACT_SALDOS`,
+  `_FACT_SEMANAL`, `_PARAMETROS_DECISION`, `_PARAMETROS_FINANZAS`, `_PARAMETROS_OPTIMIZACION`,
+  `_PARAMETROS_PUBLICACION`, `_TASA_ENTREGA`, `_TESTEOS`, `_CLASIFICACION_ANUNCIOS`,
+  `_APRENDIZAJES`.
+- **Híbridos (mano + programa)**, quedan en CSV por la misma regla:
+  - `_DIM_CREATIVOS.csv`: el operador crea las filas y `verificar_publicacion.py:263` reescribe el
+    archivo para completar `ad_id`.
+  - `_DIM_ENVASE.csv`: `alta_producto.py:275` escribe la fila del producto nuevo y el operador la
+    corrige a mano.
+- **Derivados** (se recalculan enteros; no son verdad): `_DIM_ANUNCIOS` (`sembrar_anuncios.py:188`
+  y `firma.py:174`: dos escritores de reescritura completa sobre el mismo archivo),
+  `_ESTADO_ANGULOS` (`perfilar_angulos.py:424`), `_DIM_VOCABULARIO` (`gen_vocabulario.py:115`),
+  `_MAPA_AD_ID_HIST` (`mapear_ad_id_hist.py:315`), `_FLUJO.json` (`flujo.py:1622`).
+- **Sin archivo todavía:** `_VOZ_CLIENTE.csv` (escritor `verificar_voz.py` → `upsert_fact`; no
+  tiene tabla `core`).
+- **Sin uso:** `_MAPEO_CREATIVOS.csv` (solo aparece en `db/tables.py`).
+
+El backend de la app no escribe ningún CSV (`app/backend/vitalcom_app/contratos.py:3`): toda
+escritura pasa por un ejecutor de `Ads/_TOOLS/` declarado en `VISTAS/_MANIFIESTO.json`.
+
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
 - Ningún lector ni escritor real (decidir.py, flujo.py, gen_*.py, etc.) lee de Postgres: siguen
