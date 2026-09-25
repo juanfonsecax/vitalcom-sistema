@@ -16,9 +16,17 @@ test("la pantalla de FASE 2 para TINNIDROP muestra el ángulo ganador, carril se
   // 2. Ángulo ganador y nodo actual del motor
   await expect(page.getByText("Ángulo Ganador Coronado por Ventas")).toBeVisible();
 
-  // 3. Carriles secundarios escalonados
-  await expect(page.getByText(/Carriles Escalonados/i)).toBeVisible();
-  await expect(page.getByText("ACCESIBILIDAD_MEDICO", { exact: true }).first()).toBeVisible();
+  // 3. Carriles secundarios escalonados: dependen de la data viva, así que la prueba lee lo mismo
+  //    que la pantalla (GET fase2) en vez de fijar qué ángulo va de secundario.
+  const detalle = await (await page.request.get("/api/productos/TINNIDROP/fase2")).json();
+  await expect(page.getByRole("heading", { name: detalle.angulo_ganador, exact: true })).toBeVisible();
+  const carriles = detalle.carriles_secundarios as { angulo_key: string }[];
+  if (carriles.length > 0) {
+    await expect(page.getByText(/Carriles Escalonados/i)).toBeVisible();
+    await expect(page.getByText(carriles[0].angulo_key, { exact: true }).first()).toBeVisible();
+  } else {
+    await expect(page.getByText(/Carriles Escalonados/i)).toHaveCount(0);
+  }
 
   // 4. Módulo de fatiga y botón de reingreso
   await expect(page.getByText(/Ciclo de Fatiga & Renovación/i)).toBeVisible();

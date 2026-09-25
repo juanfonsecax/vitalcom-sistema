@@ -36,7 +36,7 @@ test("el tablero muestra los productos reales con su fase y su paso", async ({ p
 
 test("el estado de OVULOS_PURITY coincide con flujo.py", async ({ page }) => {
   const directo = JSON.parse(
-    execFileSync("python", [`${BASE}/Ads/_TOOLS/flujo.py`, "OVULOS_PURITY", "--json", "--sin-escribir", "--silencioso"], {
+    execFileSync("python", [`${BASE}/Ads/_TOOLS/flujo.py`, "OVULOS_PURITY", "--json", "--silencioso"], {
       cwd: BASE,
       encoding: "utf8",
     }),
