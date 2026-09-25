@@ -156,7 +156,7 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
   - Conteos `raw.venta`/`entrega_conjunto_dia`/`entrega_anuncio_dia` (tenant `vitalcom`) antes y
     después de correr ambas suites de pruebas: idénticos (3491/1094/1041) — las pruebas no
     tocaron `vitalcom`.
-- [~] T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB. Check: parity.
+- [x] T4 — Events, decisions, `_ESTADO_FLUJO`, product onboarding write DB. Check: parity.
   PARTIAL (25-sep-2026): only the events family is connected in this pass; decisions/estado_flujo/
   product onboarding are deferred (see "Next step" below and evidence).
   Result: `registrar_evento.anexar()` is now the single writer of `_EVENTOS.csv` (decision #1) and
@@ -300,7 +300,12 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 - [ ] T8 — Defects found during P3: (a) `_DIM_ANUNCIOS.csv` has two full-rewrite writers
   (`sembrar_anuncios.py:188`, `firma.py:174`) — verify whether one clobbers the other and fix;
   (b) Claude task `auditoria-vitalcom-diaria` stops after its first command and its SKILL.md
-  still names ETAPA-8 — fixed together with T6.
+  still names ETAPA-8 — fixed together with T6;
+  (c) pre-existing defect surfaced by `hook_csv.py` on every edit to `decidir.py`/`flujo.py`:
+  `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` doesn't declare the `exploracion_n_angulos` parameter that
+  `_PARAMETROS_DECISION.csv` already has (introduced in commit `0d15d0d`, before this session, no
+  uncommitted diff on either file) — out of P3's authorized scope, flagged during T4 and T4
+  continuation, still unfixed.
 
 ## Progress
 - 2026-09-25: branch created, feature document created.
@@ -311,22 +316,59 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 - 2026-09-25: T3 done (closed after vitalcom_test created; 35 db tests green).
 - 2026-09-25: T4 continuation, part 1 — `estado_flujo`/`_DECISIONES.json` connected (commit
   `faf0bf3`); `producto` deferred, see "Next step".
+- 2026-09-25: T4 continuation, part 2 — `producto` connected, T4 CLOSED. `db/tables.py` adds
+  `"producto"` to `TABLAS_MIGRADAS_DB` (commit `cf3a004`). `alta_producto.py`/`editar_producto.py`
+  write `_DIM_PRODUCTOS.csv` through `db/escribir.reemplazar()` with the staged-temp + commit +
+  replace ordering the design called for (commit `99af471`). `test_alta_producto.py`/
+  `test_cambiar_costo.py`/`test_cargar_cuenta.py`/`test_cargar_page_id.py` isolated against
+  `vitalcom_test`, unique tenant per file, failure-injection scenarios rewritten for the new
+  two-phase write (commit `6610c23`). Found and fixed during verification (not part of the
+  original design, real bug): `app/backend/tests/test_alta_por_la_app.py` copies the real
+  `alta_producto.py` into a throwaway toy system with no sibling `db/` package — the import
+  crashed 4 previously-passing backend tests (422 instead of 201). Fixed by adding this repo's
+  `db/` to `PYTHONPATH` for the subprocess (not by duplicating `db/` into the fixture, which would
+  have cascaded into copying its `Ads/_TOOLS` dependencies too — `venta_identidad.py`,
+  `upsert_fact.py`) and isolating that test file against `vitalcom_test` the same way (commit
+  `e192481`). Confirmed: `config.python_del_sistema()` (what the app uses to launch
+  `alta_producto.py`, `VISTAS/_MANIFIESTO.json:809`) resolves to the system `python` on PATH,
+  which has `psycopg` in this environment.
+  Evidence (25-sep-2026):
+  - `"../SISTEMA-app/app/backend/.venv/Scripts/python.exe" -m pytest db/test_db.py -q` → 42 passed
+    (same as T4 continuation part 1's baseline — no new db/test_db.py tests needed: the byte-
+    identity/drift-guard tests added in T2 already cover all 7 `TABLAS_VERDAD_DB` tables
+    generically, `producto` included).
+  - `python -m pytest Ads/_TOOLS -q` → 45 passed (same baseline count — the 4 test files were
+    rewritten in place, not added).
+  - `cd app/backend && uv run pytest -q` → 171 passed, 4 failed (`test_alta_por_la_app.py`, the
+    `ModuleNotFoundError` above) before the fix.
+  - Orchestrator incident during verification: multiple concurrent full `uv run pytest` runs
+    (this writer's own background run plus the orchestrator's own run, started in parallel)
+    starved shared resources and left orphaned `fake_claude.py` child processes behind, which is
+    what kept a `pytest` process alive after printing its summary — NOT a leak introduced by this
+    task's code. Confirmed clean: after killing every stray `python.exe` (checked via
+    `Get-CimInstance Win32_Process`, none left, no `pg_stat_activity` rows on `vitalcom`/
+    `vitalcom_test` either), the flaky `test_pasos.py::test_cada_paso_recibe_las_rutas_de_lo_
+    anterior_y_ninguna_herramienta_de_meta` scenario the orchestrator saw fail passed on its own
+    in isolation — confirming it was resource contention, not a regression from `producto`.
+  - `timeout 900 uv run pytest -q`, run ONCE and alone (checked `Get-CimInstance Win32_Process`
+    for stray `python.exe` first) → **175 passed, 0 failed, exited cleanly on its own** in 307s —
+    full baseline restored, no hang.
+  - `python Ads/_TOOLS/flujo.py --todo` (read-only) → exit 0, clean.
+  - `python Ads/_TOOLS/decidir.py --json` (read-only) → exit 0, clean.
+  - Real-data check: session-start `flujo.py --todo --escribir` had NOT bootstrapped
+    `raw.producto`; running the required `db/test_db.py` suite triggered
+    `_bootstrap_migradas_desde_csv_real()` (now iterating `producto` too, tenant `vitalcom`) as a
+    side effect, which is exactly the sanctioned bootstrap (`db/cargar.py --tomar-csv
+    _DIM_PRODUCTOS.csv`, run generically). Verified after: `verificar_csv_sincronizado(con,
+    "producto", "PRODUCTOS", tenant_id="vitalcom")` → SINCRONIZADO; `raw.producto` row count for
+    tenant `vitalcom` = 5, matching `_DIM_PRODUCTOS.csv`'s real row count (5) exactly.
+  - `git status --short` / `git diff --stat -- PRODUCTOS/` before and after every test run and
+    command above: identical throughout (same 5-file diff as at session start — the pre-existing
+    uncommitted `_EVENTOS.csv`/`_DECISIONES.json`/`_AUDITORIAS` changes, untouched; no other
+    `PRODUCTOS/*` file changed). Real `vitalcom` `raw.producto` row count for tenant `vitalcom`
+    (5) identical before and after both pytest suites.
 
 ## Next step
-T4 continuation, part 2 — only `producto` (`_DIM_PRODUCTOS.csv`) remains: (a)
-`alta_producto.py`/`editar_producto.py` → `db/escribir.reemplazar()` for `_DIM_PRODUCTOS.csv` (add
-`"producto"` to `tables.TABLAS_MIGRADAS_DB`), with the all-or-nothing DB-write-then-
-`_DIM_ENVASE.csv` CSV-write ordering/compensation design (write envase to a temp file first,
-commit the DB product write + regenerate the `_DIM_PRODUCTOS.csv` mirror, then `os.replace` the
-envase temp into place; an explicit Spanish recovery message if that final replace fails after the
-DB commit) — `alta_producto.py:aplicar()`'s own rollback branch and `editar_producto.py`'s shared
-`aplicar_escrituras()` (used by `cambiar_costo.py`/`cargar_cuenta.py`/`cargar_page_id.py`, which
-writes `_DIM_PRODUCTOS.csv` bytes alongside TXT files in one `{ruta: bytes}` batch) both need
-surgery, not just a new call site; (b) update `test_alta_producto.py`/`test_cambiar_costo.py`/
-`test_cargar_cuenta.py`/`test_cargar_page_id.py` for `vitalcom_test` isolation BEFORE connecting,
-same pattern as this task's `test_registrar_evento.py`/`test_cli_solo_lectura.py` changes; (c)
-confirm the interpreter `VISTAS/_MANIFIESTO.json` uses to launch `alta_producto.py` has `psycopg`;
-(d) check `.claude/settings.json` hooks against whichever of these lands. `--tomar-csv` already
-generalizes to any table added to `TABLAS_MIGRADAS_DB` via `_resolver_tabla_migrada()`, and the
-`_DECISIONES.json` special case (no `TABLE_SPECS` row) is done. Also revisit T8(a)
-(`_DIM_ANUNCIOS.csv` double writer) if not folded into T4.
+T5 — `decidir.py` and app backend read from Postgres (parity, e2e, backend tests). Also revisit
+T8(a) (`_DIM_ANUNCIOS.csv` double writer) if not folded into T4, and T8(c) (the
+`exploracion_n_angulos` doc-drift defect flagged during T4, still unfixed).

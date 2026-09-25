@@ -424,8 +424,8 @@ el CSV por su cuenta:
 `tables.TABLAS_MIGRADAS_DB` suma `"evento"` (T3 tenía solo los tres hechos). `_ESTADO_FLUJO.csv`
 (`flujo.py:escribir_estado()`, la reescritura del propio archivo, no el evento de transición que
 ya se movió) y `_DIM_PRODUCTOS.csv`/`_DECISIONES.json` **quedan pendientes en este pase** — ver
-"P3 T4 (continuación)" abajo para `_ESTADO_FLUJO.csv`/`_DECISIONES.json`; `_DIM_PRODUCTOS.csv`
-sigue pendiente (`alta_producto.py`/`editar_producto.py` siguen escribiendo su CSV directo).
+"P3 T4 (continuación)" abajo para `_ESTADO_FLUJO.csv`/`_DECISIONES.json`, y "P3 T4 (continuación
+parte 2)" para `_DIM_PRODUCTOS.csv` (`alta_producto.py`/`editar_producto.py`).
 
 Instrucciones que le decían a un agente que anexara `_EVENTOS.csv` "a mano" (sin pasar por
 `registrar_evento.py`) se redirigieron al comando CLI exacto en:
@@ -467,6 +467,52 @@ Sigue a la sección anterior: conecta los dos escritores que quedaron pendientes
   `raw.estado_flujo`/`raw.decisiones_json` (equivalente a `--tomar-csv`) para que el guardia de
   drift no aborte en la primera escritura de la prueba — mismo patrón que
   `test_registrar_evento.py` (T4, primera pasada).
+
+## P3 T4 (continuación parte 2) — `producto` conectado (`alta_producto.py`/`editar_producto.py`)
+
+Cierra la familia `_DIM_PRODUCTOS.csv`: la VERDAD pasa a `raw.producto`/`core.producto`, el CSV es
+el espejo. `_DIM_ENVASE.csv` sigue en disco (regla "editado a mano" de T1) y las carpetas/TXT del
+paquete también — solo la fila de `_DIM_PRODUCTOS.csv` cambia de almacén.
+
+- `tables.py`: `"producto"` se suma a `TABLAS_MIGRADAS_DB` (ya estaba en `TABLAS_VERDAD_DB` desde
+  T2). `--tomar-csv _DIM_PRODUCTOS.csv` funciona sin cambios (genérico vía `_resolver_tabla_migrada`).
+- `editar_producto.py` (usado por `cambiar_costo.py`/`cargar_cuenta.py`/`cargar_page_id.py`, los
+  tres escritores que completan una fila YA existente): `aplicar_escrituras()` divide el batch
+  `{ruta: bytes}` en DOS ALMACENES, sin adivinar por nombre de archivo — `base` (la misma raíz que
+  recibió `planear()`) determina la ÚNICA ruta que va a Postgres
+  (`ruta_productos_csv(base)`); el resto (TXT del paquete) sigue el `.tmp` + `os.replace()` de
+  siempre. ORDEN: (1) valida (ya lo hizo `planear()`); (2) stagea TODOS los archivos que NO son la
+  base a `.tmp` — nada real cambia todavía; (3) `db/escribir.verificar_csv_sincronizado()` +
+  `db/escribir.reemplazar()` (commit) y regenera el espejo `_DIM_PRODUCTOS.csv`; (4) recién ahí
+  `os.replace()` de los `.tmp` restantes. Una falla ANTES del paso 3 no toca Postgres y descarta
+  los `.tmp` (nada cambia, como antes). Una falla EN el paso 4 (Postgres YA comiteó) no se
+  deshace — sale con `Rechazo` y un mensaje en español que nombra exactamente qué `.tmp` quedó
+  pendiente de reemplazar a mano; nunca se pierde el commit ya hecho.
+- `alta_producto.py:aplicar()` (fila NUEVA): mismo orden de tres fases — (1) crea carpetas y
+  stagea packshot/`2_DATA_PRODUCTO.txt`/`_DIM_ENVASE.csv` a `.tmp`; (2) `_escribir_producto_alta()`
+  agrega la fila nueva a las que ya leyó `planear()` y reemplaza `raw.producto` entero (mismo
+  contrato que el `escribir_csv()` que reemplazaba antes); (3) `os.replace()` de los tres `.tmp`.
+  Una falla en (1)/(2) deshace carpetas/`.tmp` (nada se crea, como antes). Una falla en (3) es
+  RECUPERABLE, no un rollback: el producto ya existe en `raw.producto`, y el mensaje nombra los
+  archivos `.tmp` pendientes.
+- `TENANT_ID` (constante de módulo en `alta_producto.py` y `editar_producto.py`, mismo patrón que
+  T3/T4): se referencia por NOMBRE dentro de las funciones (nunca como default de parámetro) para
+  que un monkeypatch de módulo surta efecto en la próxima llamada — igual que
+  `flujo.py`/`decidir.py`/`registrar_evento.py`.
+- Aislamiento de pruebas: `test_alta_producto.py`, `test_cambiar_costo.py`, `test_cargar_cuenta.py`
+  y `test_cargar_page_id.py` fuerzan `PGDATABASE=vitalcom_test`, bootstrapean `raw.producto`/
+  `raw.raw_import` en un tenant único por archivo de prueba (mismo patrón que
+  `test_registrar_evento.py`) y se saltan limpio con aviso si `vitalcom_test` no está disponible.
+  Las inyecciones de falla "antes de Postgres" usan una carpeta en el lugar del `.tmp` esperado (en
+  vez de parchear `os.replace`, que es el MISMO objeto módulo `os` que usa `db/escribir.py`
+  internamente — parchearlo sin filtrar reventaría también el mirror interno); las de "después de
+  Postgres" parchean `os.replace` filtrando por el sufijo `.tmp` propio de `editar_producto.py`/
+  `alta_producto.py` (nunca el `.tmp-escribir` interno de `db/escribir.py`, que corre ANTES, dentro
+  del commit).
+- Confirmado (25-sep-2026): el intérprete que la app usa para lanzar `alta_producto.py`
+  (`config.python_del_sistema()` → `VITALCOM_PYTHON` o, por defecto, el `python` del PATH — nunca
+  el venv de la app) tiene `psycopg` instalado en este entorno (mismo intérprete que ya usan
+  `flujo.py`/`decidir.py --escribir` desde T3/T4).
 
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
