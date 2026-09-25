@@ -60,6 +60,8 @@ COLUMNAS_PRODUCTOS = [
 ]
 COLUMNAS_CUENTAS = ["cuenta_alias", "cuenta_id", "moneda", "mcp_habilitado", "sube_media_local",
                     "estado_cuenta"]
+COLUMNAS_FANPAGES = ["pagina_num", "pagina_nombre", "identidad", "rol", "tono", "logica",
+                     "edad_orientacion", "page_id", "productos_nicho"]
 
 
 def manifiesto_real() -> dict[str, Any]:
@@ -152,3 +154,10 @@ def crear(destino: Path, manifiesto: dict[str, Any] | None = None, flujo: dict[s
     ])
     _csv(destino / "PRODUCTOS" / "_ESTADO_FLUJO.csv", ["producto_key", "fase", "nodo_actual", "estado"], [])
     return destino
+
+
+def escribir_fanpages(base: Path, filas: list[dict[str, str]]) -> None:
+    """`_DIM_FANPAGES.csv` no lo crea `crear()` por defecto (la carpeta puede no tenerlo
+    todavía, ver `contratos.fanpages`): quien necesite probar el caso con archivo lo escribe
+    con esto."""
+    _csv(base / "PRODUCTOS" / "_DIM_FANPAGES.csv", COLUMNAS_FANPAGES, filas)

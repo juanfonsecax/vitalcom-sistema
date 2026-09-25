@@ -258,6 +258,18 @@ class Cuenta(Base):
     estado_cuenta: str
 
 
+class FanPage(Base):
+    pagina_num: str
+    pagina_nombre: str
+    identidad: str
+    rol: str
+    tono: str
+    logica: str
+    edad_orientacion: str
+    page_id: str
+    productos_nicho: str
+
+
 # ── FASE 1 (Hito 4) ───────────────────────────────────────────────────────────
 
 class MiembroDePaso(Base):

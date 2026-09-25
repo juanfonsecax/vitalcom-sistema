@@ -103,3 +103,26 @@ def test_lista_las_cuentas_del_csv(cliente, base_declarada):
     esperado = [fila["cuenta_alias"] for fila in _csv(base_declarada, "_DIM_CUENTAS.csv")]
     servidos = [c["cuenta_alias"] for c in cliente.get("/api/cuentas").json()]
     assert servidos == esperado
+
+
+def test_fanpages_vacio_si_la_carpeta_no_tiene_el_csv(cliente, base_declarada):
+    """`_DIM_FANPAGES.csv` se declaró en otra rama de SISTEMA; este worktree todavía no lo
+    tiene. El endpoint no truena con un 503 como `cuentas()`: devuelve lista vacía (T5)."""
+    assert not (base_declarada / "PRODUCTOS" / "_DIM_FANPAGES.csv").is_file()
+    respuesta = cliente.get("/api/fanpages")
+    assert respuesta.status_code == 200
+    assert respuesta.json() == []
+
+
+def test_fanpages_lista_el_csv_cuando_existe(cliente_juguete, sistema_de_juguete):
+    import sistema_de_juguete as juguete
+
+    juguete.escribir_fanpages(sistema_de_juguete, [
+        {"pagina_num": "1", "pagina_nombre": "Fitness Masculino",
+         "identidad": "Sebastian Mora - entrenador de elite", "rol": "entrenador de elite",
+         "tono": "Motivacional, directo.", "logica": "El hombre compra a quien admira.",
+         "edad_orientacion": "25+", "page_id": "", "productos_nicho": "Creatine Monohydrate"},
+    ])
+    servidos = cliente_juguete.get("/api/fanpages").json()
+    assert [f["pagina_nombre"] for f in servidos] == ["Fitness Masculino"]
+    assert servidos[0]["edad_orientacion"] == "25+"

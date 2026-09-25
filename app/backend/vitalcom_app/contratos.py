@@ -19,6 +19,7 @@ from .config import python_del_sistema, ruta
 
 DIM_PRODUCTOS = ("PRODUCTOS", "_DIM_PRODUCTOS.csv")
 DIM_CUENTAS = ("PRODUCTOS", "_DIM_CUENTAS.csv")
+DIM_FANPAGES = ("PRODUCTOS", "_DIM_FANPAGES.csv")
 PARAMETROS_DECISION = ("PRODUCTOS", "_PARAMETROS_DECISION.csv")
 ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
@@ -92,6 +93,18 @@ def cuentas() -> list[dict[str, str]]:
     """Las cuentas publicitarias de `_DIM_CUENTAS.csv`: alias, moneda y qué permite cada una."""
     columnas = ("cuenta_alias", "cuenta_id", "moneda", "mcp_habilitado", "sube_media_local", "estado_cuenta")
     return [{c: fila.get(c, "") for c in columnas} for fila in _leer_csv(DIM_CUENTAS)]
+
+
+def fanpages() -> list[dict[str, str]]:
+    """Las FanPages de `_DIM_FANPAGES.csv`: identidad, tono, edad de orientación y productos del
+    nicho. A diferencia de `cuentas()`, un archivo ausente no es una falla del sistema — la
+    carpeta que corre la app puede no tener todavía esa declaración (Ajustes/T5) — así que
+    devuelve lista vacía en vez de levantar `ContratoAusente`."""
+    if not ruta(*DIM_FANPAGES).is_file():
+        return []
+    columnas = ("pagina_num", "pagina_nombre", "identidad", "rol", "tono", "logica",
+                "edad_orientacion", "page_id", "productos_nicho")
+    return [{c: fila.get(c, "") for c in columnas} for fila in _leer_csv(DIM_FANPAGES)]
 
 
 def estado_flujo() -> dict[str, dict[str, str]]:

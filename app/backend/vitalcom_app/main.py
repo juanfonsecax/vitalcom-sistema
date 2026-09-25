@@ -23,7 +23,7 @@ from fastapi.responses import JSONResponse
 from . import acciones, api_acciones, api_fase1, api_fases, api_ordenes, api_trabajos, claude, contratos, subidas, workflows
 from .acciones import ErrorDeAccion
 from .config import base
-from .modelos import Costeo, Cuenta, Decisiones, Flujo, Producto, Resultados, Salud
+from .modelos import Costeo, Cuenta, Decisiones, FanPage, Flujo, Producto, Resultados, Salud
 
 @asynccontextmanager
 async def _ciclo_de_vida(_app: FastAPI):  # type: ignore[no-untyped-def]
@@ -199,6 +199,13 @@ def donde_corre() -> dict[str, str]:
 def listar_cuentas() -> list[Cuenta]:
     """Las cuentas publicitarias del portafolio (_DIM_CUENTAS.csv)."""
     return [Cuenta(**fila) for fila in contratos.cuentas()]
+
+
+@app.get("/api/fanpages", response_model=list[FanPage], tags=["sistema"])
+def listar_fanpages() -> list[FanPage]:
+    """Las FanPages declaradas (_DIM_FANPAGES.csv). Lista vacía, nunca un error, cuando la
+    carpeta sobre la que corre la app todavía no tiene ese archivo (T5)."""
+    return [FanPage(**fila) for fila in contratos.fanpages()]
 
 
 @app.get("/api/resultados", response_model=Resultados, tags=["resultados"])
