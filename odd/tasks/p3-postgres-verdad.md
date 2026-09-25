@@ -77,7 +77,7 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
   (b) `with conn:` (psycopg3) closes the connection on an exception instead of just rolling back,
   which would break reusing `conn` for the next write or for reading state after a failure. Fixed:
   explicit `conn.commit()`/`conn.rollback()` in `escribir._en_transaccion()`.
-  Evidence (25-sep, see commit below):
+  Evidence (25-sep, commit `59a906e`):
   - `"../SISTEMA-app/app/backend/.venv/Scripts/python.exe" -m pytest db/test_db.py -q` → 28 passed
     (Postgres reachable; includes 8 new T2 tests: byte-identity of all 7 DB-truth files, upsert
     idempotency+position, mirror byte-identity vs `upsert_fact`, `particion` deletion, rollback +
