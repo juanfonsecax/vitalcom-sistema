@@ -39,7 +39,7 @@ writes business data: it reads contracts and runs declared executors (existing r
 - Chain strategy (operator, 24-sep, after T3 passed ~3k authored lines): `feature-branch-chain`
   targeting `feat/app-web`, one PR per task. Slice boundaries (commits per PR):
   PR1 T1 `bb969d3..b1669fe` · PR2 T2 `f15f419..6774bbe` · PR3 T3 `d81a021..2e7e79e` ·
-  PR4 T4 (pending) · PR5 T5 (pending). Push/PR creation remains the operator's decision.
+  PR4 T4 `afa5325..3206053` · PR5 T5 (pending). Push/PR creation remains the operator's decision.
 
 ## Tasks
 - [x] T1 — Shell: install shadcn/ui (Base UI), Linear-style tokens (light + dark), sidebar layout
@@ -54,7 +54,7 @@ writes business data: it reads contracts and runs declared executors (existing r
   (Resumen · Fase actual · …) that render the existing phase screens restyled by the tokens; their
   internals (Fase1.tsx is 1469 lines) are not rewritten in T3. Legacy `/producto/$clave/faseN` URLs
   keep working. Route: delegated writer.
-- [ ] T4 — Resultados: new backend endpoint reading the accounting layer, cohorts < 10 days
+- [x] T4 — Resultados: new backend endpoint reading the accounting layer, cohorts < 10 days
   flagged preliminary; KPI cards + charts.
   Decided 24-sep by the methodology (CONTABILIDAD.md rules over any other calculation): the screen
   shows the real P&L from `gen_pl.py` (views A/B/C), never `gen_finanzas.py` attribution (capa 1,
@@ -372,6 +372,121 @@ task's.
 above were not anticipated by the brief but were required to make the table it asked for actually
 work with a real pointer, not just `fireEvent` in jsdom.
 
+### T4 evidence (24-sep-2026)
+
+**Product-decision stop, before any code.** The brief assumed a read-only owner script the
+backend could shell out to on demand. Mapping `Ads/_TOOLS/gen_pl.py` (the actual implementation
+of CONTABILIDAD.md's three views) and `gen_finanzas.py` found neither fit: `gen_pl.py` needs a
+manual Dropi export (`--dropi <xlsx>`, weekly cadence, 60-day moving window, CONTABILIDAD.md §5 —
+not an API pull) and had no machine-readable output; `gen_finanzas.py`'s zero-argument path *is*
+automatic and already emits a CSV, but its own docstring calls it "CAPA 1 — LucidSales (lo que
+los ADS atribuyen)" and warns the number can be inflated versus real cash — not one of the three
+CONTABILIDAD.md views, and with no cohort-maturity concept at all. Stopped and asked the parent
+instead of guessing. Decision (methodology over any other calculation): option (a), the real P&L
+only — never `gen_finanzas.py`/`_FACT_SEMANAL.csv`, never ROAS, split into T4a/T4b.
+
+**T4a** — `afa5325` feat(finanzas): read-only `--json` output for gen_pl.
+`Ads/_TOOLS/gen_pl.py` gained a `--json` flag that serializes exactly the numbers already
+computed for VISTA A (estado de resultados, economía unitaria) and VISTA B (caja), plus the
+`preliminar` flag from the script's own `dias_cohorte_maduro` logic, into
+`_AUDITORIAS/_PL_<ini>_<fin>.json` next to the existing `.txt`. No number changes, no new
+calculations — every JSON field is a value the script already had a local variable for. With
+`--json`, stdout carries only the JSON (needed for the app's `salida: "json"` runner contract,
+which does `json.loads(stdout)`); without it, behavior is byte-for-byte as before. New
+`Ads/_TOOLS/test_gen_pl.py` (unittest-style, matching `test_respaldo_productos.py`): builds a
+synthetic Dropi xlsx with openpyxl, asserts the JSON numbers equal the VISTA A formula recomputed
+from the module's own `C_DEVOL`/`C_ADMIN`/`C_OTROS`/`DIAS_MADURO` (never hardcoded), asserts
+`preliminar` flips correctly for an old vs. a `today - 2 days` window, and asserts the `.json`
+file is absent when `--json` is omitted.
+
+**T4b** — `16ef2ea` + `8dcd2b7` feat(backend), `3206053` feat(frontend).
+- `VISTAS/_MANIFIESTO.json`: new action `resultados.cargar_pl` (additive, `visibilidad: interna`,
+  `nodo: null`, `precondicion: ninguna` — it isn't tied to any product's `flujo.py` node), comando
+  `gen_pl.py --dropi {dropi} --json` plus `--banco`/`--cartera`/`--desde`/`--hasta` as optional
+  bandera params. Validated clean against `gen_app.py --validar-manifiesto --json` (all 21 rules).
+- `app/backend/vitalcom_app/main.py`: `POST /api/resultados/cargar` (multipart: `dropi` required,
+  `banco`/`cartera` optional) saves each upload to its own `subidas.carpeta_temporal()` — never
+  the same folder, since `subidas.guardar()` always names the file `subida<ext>` and three xlsx/pdf
+  uploads would collide — then runs `resultados.cargar_pl` through the same
+  `acciones.validar_parametros` → `workflows.encolar` → `esperar_resultado` path as
+  `POST /api/productos` (alta de producto). `GET /api/resultados` serves the latest persisted
+  `_PL_*.json` (`contratos.resultados()`, pure `glob`+`sorted`, no arithmetic — verified by the
+  existing `test_sin_aritmetica.py` AST gate) as a typed `Resultados` model; 404 (not the generic
+  503 `ContratoAusente` handler) when none exists yet, since "nobody uploaded an export" is a
+  normal first-run state, not a system failure. `GET /api/resultados/historial` lists every
+  persisted period oldest-to-newest for the trend chart — the only new surface beyond the
+  original brief, added because `gen_pl.py`'s JSON is single-period and the brief asked for a
+  trend chart; each point is a period the operator actually loaded, never an interpolation.
+- `openpyxl` added as an `app/backend` **dev** dependency (`uv add --dev`) — the backend's
+  runtime deps stay minimal; only the test suite needs to build a synthetic Dropi xlsx.
+- New `app/backend/tests/test_resultados_api.py`: same pattern as `test_alta_por_la_app.py` — the
+  toy system's real v7 manifest, with the REAL `gen_pl.py` copied over the generic stub and a
+  seeded `_PARAMETROS_FINANZAS.csv`. Covers 404 with no prior upload, a full upload → JSON →
+  `_AUDITORIAS/*.json`+`*.txt` on disk → `GET` round-trip, a missing-`dropi` 422, and the
+  historial endpoint accumulating one entry per upload.
+- `app/frontend/src/pantallas/Resultados.tsx`: KPI cards (`dashboard-01` `SectionCards` pattern)
+  for venta bruta, margen logístico, margen de contribución and resultado neto, each carrying a
+  "Preliminar" badge straight from `vista_a_cohorte.preliminar` (never recomputed); a Recharts
+  line chart (`GET /api/resultados/historial`) of margen de contribución / resultado neto by
+  period, with an explicit "still one period" note instead of a chart with a single point; a
+  TanStack Table of `economia_unitaria` per product — copying `Productos.tsx`'s T3-safe pattern
+  (module-level `CORE_ROW_MODEL`/`SORTED_ROW_MODEL`, a real `useMemo`) precisely because that bug
+  (inline row-model calls hanging real clicks) is exactly the kind of defect a second table could
+  reintroduce; below 768px it renders stacked cards via `useIsMobile()`, same as `Productos.tsx`.
+  A permanent "Cargar export de Dropi" card (dropi/banco/cartera file inputs + desde/hasta) is
+  always visible, with or without prior data, since `gen_pl.py` never runs on its own. Added 4
+  glossary terms (`cohorte_preliminar`, `margen_logistico`, `margen_contribucion`,
+  `resultado_neto`, `vista_cohorte`, `vista_caja`) so every money term on screen carries its `(i)`
+  explanation, matching the existing glossary convention. Added shadcn `chart` + `label`
+  components (Recharts is a new dependency, pulled in by the `chart` component).
+
+**Deviations from the brief:** the `/api/resultados/historial` endpoint (see above) was not in
+the original brief; added because the brief's own "chart of the trend by period" requirement had
+no data source without it once `gen_finanzas.py` was ruled out. Nothing else added beyond scope.
+
+**Verification:**
+- `python -m pytest Ads/_TOOLS -q` → 40 passed before this task's changes (confirmed via
+  `git stash`), **41 passed** after (`test_gen_pl.py`'s 3 unittest methods + 1 whole-file
+  script-item, net +1 over baseline per pytest's own counting convention — see
+  `Ads/_TOOLS/conftest.py`). No leftover `_PL_*.json`/`.txt` files in `PRODUCTOS/_AUDITORIAS/`
+  after the run (`git status` clean).
+- `cd app/backend && uv run pytest -q tests/test_resultados_api.py` → 4 passed. Also reran the
+  gates most likely to catch a mistake in this task: `test_sin_aritmetica.py` (5 passed — the new
+  `contratos.resultados()`/`historial_resultados()` do no arithmetic), `test_alta_por_la_app.py` +
+  `test_fase1_api.py` (20 passed — the `UploadFile`-to-temp-folder path this task reused is
+  unaffected), `test_acciones_api.py` (19 passed — the new manifest action didn't break argv
+  resolution for existing ones), `test_workflows.py` (12 passed), `test_config.py` (5 passed).
+  Full suite not run (T1's note: DBOS/workflow tests exceed this session's command timeouts).
+- `cd app/frontend && pnpm test` → 14 files, **85 passed** (6 new in
+  `src/pruebas/resultados.test.tsx`: empty state with a disabled submit button, KPI amounts with
+  and without the Preliminar badge, the per-product table's red/green ganancia-por-venta coloring,
+  the "needs a second period" chart note, and a real error rendered as `Problema` — never the
+  empty state — for a non-404 failure).
+- `cd app/frontend && pnpm build` → `tsc -b && vite build` clean, no type errors.
+- `pnpm exec playwright test --reporter=line --workers=1` → **12 passed, 2 failed** (new
+  `e2e/resultados.spec.ts` passes). Both failures are pre-existing and NOT caused by this task:
+  `tablero.spec.ts`'s `--sin-escribir` flag (T2's known failure, unchanged) and
+  `fases_2_3.spec.ts`'s FASE 2 test for TINNIDROP (T3's known failure — confirmed pre-existing by
+  checking `_ESTADO_FLUJO.csv` at the parent commit `501bf38`, before any T4 change: TINNIDROP was
+  already sitting at `F2.etapa-11`, not the FASE 3 the older `fases_2_3.spec.ts` test for it
+  expects; unrelated to Resultados). The FASE 3 TINNIDROP sub-test flaked once (real-backend
+  latency, same root cause T3 already named) and passed clean on rerun.
+  Also fixed one bug in `resultados.spec.ts` itself before it passed: shadcn's `CardTitle` renders
+  a `<div>`, not an `<h*>`, so `getByRole("heading", {name: "Cargar export de Dropi"})` never
+  matches — switched to `getByText`.
+- Browser check (Chrome via the Browser pane, `pnpm dev` on :5173, real backend, no export
+  uploaded to this checkout): desktop screenshot confirms the empty-state alert and the upload
+  card render correctly; 375×812 confirms `document.documentElement.scrollWidth === 375` (no
+  horizontal scroll) via `javascript_tool` (a screenshot at that width tiled oddly in the pane —
+  a capture artifact, not a real layout bug, ruled out by the `scrollWidth` check). The
+  data-populated KPI/chart/table states are exercised by the unit tests above, not by a live
+  upload in the browser (no real Dropi export available in this session).
+
+**Authored lines** (`git diff --stat 501bf38..HEAD`, excluding vendored `chart.tsx`/`label.tsx`,
+`esquema.d.ts`, and the two lockfiles): ~1281 insertions across 15 files. Above the ~400-line
+heuristic — advisory, not a gate, per its own text — driven by one genuinely new screen (KPI
+cards + chart + table + upload form) plus its two test files; no scope creep beyond the
+`/historial` addition already explained above.
+
 ## Next step
-T4 — Resultados: new backend endpoint reading the accounting layer, cohorts < 10 days flagged
-preliminary; KPI cards + charts.
+T5 — Ajustes: accounts, fanpages; system health, jobs and guide hidden here.
