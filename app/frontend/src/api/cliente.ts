@@ -37,6 +37,7 @@ export type OrdenItem = components["schemas"]["OrdenItem"];
 export type OrdenesRespuesta = components["schemas"]["OrdenesRespuesta"];
 export type ParametroMotor = components["schemas"]["ParametroMotor"];
 export type Ganador = components["schemas"]["Ganador"];
+export type Resultados = components["schemas"]["Resultados"];
 
 /** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
  * las imágenes que tiene que subir a mano a la biblioteca de Meta. */
@@ -198,6 +199,10 @@ export const api = {
   ganadores: () => pedir<Ganador[]>("/api/ganadores"),
   fase2: (clave: string) => pedir<Fase2Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase2`),
   fase3: (clave: string) => pedir<Fase3Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase3`),
+  resultados: () => pedir<Resultados>("/api/resultados"),
+  historialResultados: () => pedir<Resultados[]>("/api/resultados/historial"),
+  cargarResultados: (formulario: FormData) =>
+    pedir<Resultados>("/api/resultados/cargar", { method: "POST", body: formulario }),
   reingresoF1: (clave: string, motivo?: string) =>
     pedir<{ ok: boolean; producto_key: string; fase_destino: string; angulos_excluidos: string[]; motivo: string }>(
       `/api/productos/${encodeURIComponent(clave)}/reingreso-f1`,

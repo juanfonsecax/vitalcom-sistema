@@ -125,6 +125,38 @@ export const GLOSARIO = {
       "El rango de edad configurado en Meta. Sale del avatar del ángulo, con Advantage+ apagado.",
     dueno: "ETAPA-6.md · _DIM_BANDAS.csv",
   },
+  cohorte_preliminar: {
+    rotulo: "cohorte preliminar",
+    que_es:
+      "Este es negocio CONTRA ENTREGA: las devoluciones tardan ~8 días en confirmarse. Un período de menos de 10 días todavía puede bajar cuando esas devoluciones lleguen — no declarar ganador ni apagar nada con un número preliminar.",
+    dueno: "DOCTRINA/CONTABILIDAD.md · gen_pl.py (dias_cohorte_maduro)",
+  },
+  margen_logistico: {
+    rotulo: "margen logístico",
+    que_es:
+      "Lo que el panel de Dropi llama «Ganancias»: venta menos producto menos flete. Todavía no descuenta devoluciones, personal ni pauta — no es tu ganancia.",
+    dueno: "DOCTRINA/CONTABILIDAD.md §3",
+  },
+  margen_contribucion: {
+    rotulo: "margen de contribución",
+    que_es: "El margen logístico ya menos devoluciones, personal y otros gastos. Todavía no descuenta la pauta.",
+    dueno: "DOCTRINA/CONTABILIDAD.md §3",
+  },
+  resultado_neto: {
+    rotulo: "resultado neto",
+    que_es: "Lo último de la cadena: ya descontó producto, flete, devoluciones, personal, pauta y gastos fijos.",
+    dueno: "DOCTRINA/CONTABILIDAD.md §3",
+  },
+  vista_cohorte: {
+    rotulo: "vista cohorte",
+    que_es: "Agrupa por la fecha en que se HIZO la orden: «¿rindió la pauta de esta ventana?». No es lo mismo que la caja.",
+    dueno: "DOCTRINA/CONTABILIDAD.md §2 · VISTA A",
+  },
+  vista_caja: {
+    rotulo: "vista caja",
+    que_es: "Agrupa por la fecha en que el dinero SE MOVIÓ de verdad (cartera de Dropi). Responde «¿cuánto entró?», no «¿rindió la pauta?».",
+    dueno: "DOCTRINA/CONTABILIDAD.md §2 · VISTA B",
+  },
 } as const satisfies Record<string, Termino>;
 
 export type ClaveGlosario = keyof typeof GLOSARIO;
