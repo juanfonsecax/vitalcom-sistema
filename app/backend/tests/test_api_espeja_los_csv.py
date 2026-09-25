@@ -105,11 +105,18 @@ def test_lista_las_cuentas_del_csv(cliente, base_declarada):
     assert servidos == esperado
 
 
-def test_fanpages_vacio_si_la_carpeta_no_tiene_el_csv(cliente, base_declarada):
-    """`_DIM_FANPAGES.csv` se declaró en otra rama de SISTEMA; este worktree todavía no lo
-    tiene. El endpoint no truena con un 503 como `cuentas()`: devuelve lista vacía (T5)."""
-    assert not (base_declarada / "PRODUCTOS" / "_DIM_FANPAGES.csv").is_file()
-    respuesta = cliente.get("/api/fanpages")
+def test_fanpages_espeja_el_csv_de_la_carpeta(cliente, base_declarada):
+    ruta = base_declarada / "PRODUCTOS" / "_DIM_FANPAGES.csv"
+    esperado = [fila["pagina_nombre"] for fila in _csv(base_declarada, "_DIM_FANPAGES.csv")] if ruta.is_file() else []
+    servidos = [f["pagina_nombre"] for f in cliente.get("/api/fanpages").json()]
+    assert servidos == esperado
+
+
+def test_fanpages_vacio_si_la_carpeta_no_tiene_el_csv(cliente_juguete, sistema_de_juguete):
+    """Una carpeta sin `_DIM_FANPAGES.csv` no truena con un 503 como `cuentas()`: devuelve lista
+    vacía. `crear()` no escribe ese CSV, así que el sistema de juguete es ese caso."""
+    assert not (sistema_de_juguete / "PRODUCTOS" / "_DIM_FANPAGES.csv").is_file()
+    respuesta = cliente_juguete.get("/api/fanpages")
     assert respuesta.status_code == 200
     assert respuesta.json() == []
 
