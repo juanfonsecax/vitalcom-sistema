@@ -613,6 +613,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/fanpages": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Fanpages
+         * @description Las FanPages declaradas (_DIM_FANPAGES.csv). Lista vacía, nunca un error, cuando la
+         *     carpeta sobre la que corre la app todavía no tiene ese archivo (T5).
+         */
+        get: operations["listar_fanpages_api_fanpages_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/resultados": {
         parameters: {
             query?: never;
@@ -1168,6 +1189,29 @@ export interface components {
              * @default false
              */
             meta_falso: boolean;
+        } & {
+            [key: string]: unknown;
+        };
+        /** FanPage */
+        FanPage: {
+            /** Pagina Num */
+            pagina_num: string;
+            /** Pagina Nombre */
+            pagina_nombre: string;
+            /** Identidad */
+            identidad: string;
+            /** Rol */
+            rol: string;
+            /** Tono */
+            tono: string;
+            /** Logica */
+            logica: string;
+            /** Edad Orientacion */
+            edad_orientacion: string;
+            /** Page Id */
+            page_id: string;
+            /** Productos Nicho */
+            productos_nicho: string;
         } & {
             [key: string]: unknown;
         };
@@ -3003,6 +3047,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Cuenta"][];
+                };
+            };
+        };
+    };
+    listar_fanpages_api_fanpages_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FanPage"][];
                 };
             };
         };
