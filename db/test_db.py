@@ -698,7 +698,9 @@ def test_cargar_todo_incluir_verdad_db_false_deja_intactas_las_tablas_verdad():
 
 def test_tablas_migradas_db_es_subconjunto_de_verdad_db():
     assert T.TABLAS_MIGRADAS_DB <= T.TABLAS_VERDAD_DB
-    assert T.TABLAS_MIGRADAS_DB == {"venta", "entrega_conjunto_dia", "entrega_anuncio_dia"}
+    # P3 T4: `evento` se suma (registrar_evento.py conectado); `estado_flujo`/`producto` quedan
+    # pendientes -- ver tables.py y odd/tasks/p3-postgres-verdad.md.
+    assert T.TABLAS_MIGRADAS_DB == {"venta", "entrega_conjunto_dia", "entrega_anuncio_dia", "evento"}
 
 
 @requiere_db

@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""registrar_evento.py — el único escritor manual de PRODUCTOS/_EVENTOS.csv.
+"""registrar_evento.py — el único escritor de PRODUCTOS/_EVENTOS.csv (CLI del operador/agentes) y,
+desde P3 T4, el ÚNICO punto de escritura del sistema entero: `anexar()` la usan también
+`flujo.py`, `perfilar_angulos.py` y `reingreso_f1.py` en vez de reescribir el CSV cada uno por su
+cuenta (antes había cinco copias del mismo `csv.DictWriter`+CRLF).
 
 Todo cambio que se ejecuta en Meta o en el bot deja una fila: sin ella el cambio no se puede
 evaluar después. El caso que obliga a tener esta herramienta es el surfing: es la acción diaria
 por defecto y `_EVENTOS.csv` no tenía un solo CAMBIO_PRESUPUESTO, así que la elasticidad del CPA
 al presupuesto no se puede medir y ninguna política de asignación se puede validar.
 
-Valida antes de escribir y escribe con csv.DictWriter (invariante 11):
+`anexar()` (P3 T4) escribe SIEMPRE por Postgres (`db/escribir.py`): la verdad vive en
+`raw.evento`, `_EVENTOS.csv` es el ESPEJO regenerado tras el commit — nunca se cae de vuelta a
+escribir el CSV a mano si Postgres falla. Ver su docstring para el guardia de drift.
+
+Valida antes de escribir (invariante 11):
     · producto_key existe en _DIM_PRODUCTOS.csv (o GLOBAL)
     · evento es una palabra en MAYÚSCULAS_CON_GUION_BAJO
     · motivo y fuente_decision no vacíos
@@ -56,8 +63,21 @@ TOOLS = os.path.join(BASE, "Ads", "_TOOLS")
 if TOOLS not in sys.path:
     sys.path.insert(0, TOOLS)
 import flujo  # gate_entrada: el único juez de "¿se cumple el gate de entrada a la fase N?"
+import upsert_fact  # respaldos_dir(): mismo nombrado/patrón de backup que el resto de P3
+
+sys.path.insert(0, os.path.join(BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import escribir as db_escribir  # noqa: E402
+
 COLS = ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta", "evento",
         "valor_antes", "valor_despues", "motivo", "fuente_decision"]
+
+# P3 T4: la VERDAD de _EVENTOS.csv pasa a vivir en Postgres (raw.evento / core.evento); el CSV en
+# PRODUCTOS/ se vuelve el ESPEJO, regenerado por db/escribir.py DESPUÉS del commit. TENANT_ID/
+# BKDIR son puntos de override para pruebas (mismo patrón que ingerir_lucidsales.py, T3): aíslan
+# cada escenario en su propio tenant dentro de `vitalcom_test`, nunca tocan `vitalcom` real.
+TENANT_ID = "vitalcom"
+BKDIR = upsert_fact.respaldos_dir(BASE, "backups_csv")
 
 
 def leer(nombre):
@@ -110,19 +130,39 @@ def validar(fila, forzar):
     return errores
 
 
-def anexar(fila):
-    # El archivo termina en CRLF (convención de la casa); si no, la fila nueva quedaría pegada.
-    if os.path.exists(EVENTOS):
-        with io.open(EVENTOS, "rb") as fh:
-            fh.seek(0, os.SEEK_END)
-            if fh.tell():
-                fh.seek(-1, os.SEEK_END)
-                sin_salto = fh.read(1) != b"\n"
-        if sin_salto:
-            with io.open(EVENTOS, "ab") as fh:
-                fh.write(b"\r\n")
-    with io.open(EVENTOS, "a", encoding="utf-8", newline="") as fh:
-        csv.DictWriter(fh, fieldnames=COLS, lineterminator="\r\n").writerow(fila)
+def anexar(filas):
+    """ÚNICO escritor de _EVENTOS.csv (P3 T4, invariante 11 + "un dato, un dueño"): antes había
+    CINCO copias independientes de este mismo CRLF+DictWriter (acá, flujo.py:escribir_estado,
+    perfilar_angulos.py:registrar_transiciones, reingreso_f1.py:anexar_evento, y esta misma
+    función llamada por gen_publicacion.py vía registrar_excepcion()). Los otros tres módulos
+    ahora llaman esta función en vez de reescribir el CSV por su cuenta.
+
+    Acepta UNA fila (dict) o VARIAS (list[dict]) — flujo.py y perfilar_angulos.py pueden anexar
+    varias transiciones de una sola corrida; se escriben todas en UNA sola transacción. Escribe
+    SIEMPRE por Postgres (db/escribir.py): la verdad vive en `raw.evento`, el CSV en PRODUCTOS/ es
+    el ESPEJO regenerado después del commit. Postgres no disponible, o falla el guardia de
+    drift/la transacción -> SystemExit con mensaje claro; NUNCA se cae de vuelta a escribir el CSV
+    a mano (ver db/escribir.py, punto 4 de su docstring). Devuelve la cantidad de filas escritas."""
+    if isinstance(filas, dict):
+        filas = [filas]
+    if not filas:
+        return 0
+    prod_dir = os.path.dirname(EVENTOS)
+    try:
+        con = db_cargar.conectar()
+    except Exception as exc:
+        raise SystemExit(
+            "\n⛔ Postgres no disponible: no se pudo escribir _EVENTOS.csv (nunca se escribe "
+            "el CSV directo). Detalle: %s" % exc)
+    try:
+        db_escribir.verificar_csv_sincronizado(con, "evento", prod_dir, tenant_id=TENANT_ID)
+        n = db_escribir.anexar(con, "evento", filas, prod_dir=prod_dir, bkdir=BKDIR,
+                                tenant_id=TENANT_ID)
+    except db_escribir.ErrorEscritura as exc:
+        raise SystemExit("\n⛔ %s" % exc)
+    finally:
+        con.close()
+    return n
 
 
 def resolver_fase(fase_arg, campana):

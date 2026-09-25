@@ -433,23 +433,26 @@ def escribir(perfiles):
 
 def registrar_transiciones(perfiles):
     """Anexa TRANSICION_ANGULO a _EVENTOS.csv. Solo con --registrar: una corrida de lectura
-    nunca escribe en el log de acciones."""
+    nunca escribe en el log de acciones. Escribe vía `registrar_evento.anexar()` (P3 T4): el
+    ÚNICO escritor de _EVENTOS.csv — import local para no cargar registrar_evento (que a su vez
+    importa flujo.py) en cada corrida de solo lectura de este módulo."""
     ev = os.path.join(PROD, "_EVENTOS.csv")
     if not os.path.exists(ev):
         return 0
-    with io.open(ev, encoding="utf-8-sig", newline="") as f:
-        cols = next(csv.reader(f))
     nuevas = [p for p in perfiles if p["estado_anterior"] and p["estado_anterior"] != p["estado"]]
     if not nuevas:
         return 0
     hoy = datetime.date.today().isoformat()
-    with io.open(ev, "a", encoding="utf-8", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=cols, extrasaction="ignore")
-        for p in nuevas:
-            w.writerow({"fecha": hoy, "producto_key": p["producto_key"],
-                        "conjunto_meta": p["angulo_key"], "evento": "TRANSICION_ANGULO",
-                        "valor_antes": p["estado_anterior"], "valor_despues": p["estado"],
-                        "motivo": p["evidencia"], "fuente_decision": "perfilar_angulos.py"})
+    # registrar_evento.anexar() (vía db/escribir.py) completa con "" cualquier columna que falte
+    # acá (cuenta_alias, campana_clave...) — mismo comportamiento que el DictWriter de antes
+    # (restval="" por defecto).
+    filas = [{"fecha": hoy, "producto_key": p["producto_key"],
+              "conjunto_meta": p["angulo_key"], "evento": "TRANSICION_ANGULO",
+              "valor_antes": p["estado_anterior"], "valor_despues": p["estado"],
+              "motivo": p["evidencia"], "fuente_decision": "perfilar_angulos.py"}
+             for p in nuevas]
+    import registrar_evento  # noqa: E402 (import local, ver docstring)
+    registrar_evento.anexar(filas)
     return len(nuevas)
 
 

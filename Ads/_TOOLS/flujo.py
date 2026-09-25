@@ -1328,22 +1328,33 @@ def escribir_estado(resultados, env, registrar_eventos=True):
     env._csv.pop("_ESTADO_FLUJO.csv", None)
 
     if registrar_eventos and transiciones:
-        ruta_ev = env.prod("_EVENTOS.csv")
-        campos = None
-        with io.open(ruta_ev, encoding="utf-8-sig", newline="") as fh:
-            campos = next(csv.reader(fh))
-        with io.open(ruta_ev, "a", encoding="utf-8", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=campos)
-            for pk, ant, r in transiciones:
-                w.writerow({
-                    "fecha": env.hoy.isoformat(), "producto_key": pk,
-                    "cuenta_alias": r.get("cuenta") or "", "campana_clave": "*", "conjunto_meta": "*",
-                    "evento": EVENTO_TRANSICION,
-                    "valor_antes": "%s / %s" % (ant.get("fase"), ant.get("nodo_actual")),
-                    "valor_despues": "%s / %s" % (r["fase"], r.get("nodo_actual")),
-                    "motivo": "flujo.py: el nodo actual cambió al evaluar la data del %s" % env.hoy.isoformat(),
-                    "fuente_decision": "Ads/_TOOLS/flujo.py",
-                })
+        # P3 T4: registrar_evento.anexar() es el ÚNICO escritor de _EVENTOS.csv — escribe siempre
+        # por Postgres, nunca CSV directo. Import LOCAL (no al tope del módulo): registrar_evento
+        # importa flujo.py (para gate_entrada), así que un import a nivel de módulo acá crearía un
+        # ciclo de importación; un import diferido, dentro de la función, es seguro porque para
+        # cuando esta función se llama ambos módulos ya terminaron de inicializarse.
+        import registrar_evento
+        filas = [{
+            "fecha": env.hoy.isoformat(), "producto_key": pk,
+            "cuenta_alias": r.get("cuenta") or "", "campana_clave": "*", "conjunto_meta": "*",
+            "evento": EVENTO_TRANSICION,
+            "valor_antes": "%s / %s" % (ant.get("fase"), ant.get("nodo_actual")),
+            "valor_despues": "%s / %s" % (r["fase"], r.get("nodo_actual")),
+            "motivo": "flujo.py: el nodo actual cambió al evaluar la data del %s" % env.hoy.isoformat(),
+            "fuente_decision": "Ads/_TOOLS/flujo.py",
+        } for pk, ant, r in transiciones]
+        # registrar_evento apunta por defecto al repo REAL (su propio BASE/PROD/EVENTOS); cuando
+        # `env.base` es otra raíz (fixtures de prueba), se redirige temporalmente -- mismo patrón
+        # que reingreso_f1.py:anexar_evento().
+        previo = (registrar_evento.BASE, registrar_evento.PROD, registrar_evento.EVENTOS)
+        registrar_evento.BASE = env.base
+        registrar_evento.PROD = os.path.join(env.base, "PRODUCTOS")
+        registrar_evento.EVENTOS = os.path.join(registrar_evento.PROD, "_EVENTOS.csv")
+        try:
+            registrar_evento.anexar(filas)
+        finally:
+            (registrar_evento.BASE, registrar_evento.PROD,
+             registrar_evento.EVENTOS) = previo
     return transiciones
 
 

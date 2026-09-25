@@ -95,13 +95,16 @@ TABLAS_VERDAD_DB = {
 # (clobbearía la verdad que ya escribió un llamador real) y cuáles TODAVÍA deben recargarse desde
 # el CSV como en P1 (porque su llamador real sigue escribiendo el CSV directo, hasta T4).
 # T3 conecta ingerir_lucidsales.py (`venta`) e ingerir_meta.py/bajar_meta_insights.py
-# (`entrega_conjunto_dia`, `entrega_anuncio_dia`). T4 sumará `evento`, `estado_flujo`, `producto`
-# cuando sus llamadores reales (registrar_evento.py, flujo.py, alta_producto.py/editar_producto.py)
-# también escriban por db/escribir.py.
+# (`entrega_conjunto_dia`, `entrega_anuncio_dia`). T4 conecta `evento` (registrar_evento.py,
+# ahora el único escritor de _EVENTOS.csv; flujo.py/perfilar_angulos.py/reingreso_f1.py llaman su
+# `anexar()` en vez de escribir el CSV por su cuenta). `estado_flujo`/`producto` quedan
+# pendientes (decidir.py/flujo.py --escribir y alta_producto.py/editar_producto.py siguen
+# escribiendo su CSV directo) para un T4 posterior o T5.
 TABLAS_MIGRADAS_DB = {
     "venta",
     "entrega_conjunto_dia",
     "entrega_anuncio_dia",
+    "evento",
 }
 
 # {tabla: {columna_csv: columna_sql}} — solo para el choque de nombre con las columnas propias

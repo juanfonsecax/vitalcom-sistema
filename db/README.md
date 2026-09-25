@@ -401,6 +401,43 @@ CREATE DATABASE vitalcom_test OWNER vitalcom;
 Después de eso, `db/test_db.py` y las pruebas de `Ads/_TOOLS` que tocan Postgres crean/reusan
 `vitalcom_test` solas, sin más intervención.
 
+## P3 T4 — `evento` conectado (`registrar_evento.py`, único escritor de `_EVENTOS.csv`)
+
+T4 conecta el primer escritor de la familia `_EVENTOS.csv`. Antes había CINCO copias
+independientes del mismo `csv.DictWriter` con CRLF (`registrar_evento.py:anexar()`/
+`registrar_excepcion()`, `flujo.py:escribir_estado()`, `perfilar_angulos.py:registrar_transiciones()`,
+`reingreso_f1.py:anexar_evento()`). Ahora `registrar_evento.anexar()` es el ÚNICO escritor: acepta
+una fila (dict) o varias (list[dict]) y escribe SIEMPRE por Postgres (`db/escribir.anexar()`), con
+el mismo guardia de drift y el mismo patrón `TENANT_ID`/`BKDIR` de override para pruebas que T3.
+`flujo.py`, `perfilar_angulos.py` y `reingreso_f1.py` ahora llaman esta función en vez de reescribir
+el CSV por su cuenta:
+
+- `reingreso_f1.py:anexar_evento()` redirige temporalmente `registrar_evento.BASE/PROD/EVENTOS` a
+  `base_dir` (para fixtures de prueba) y llama `registrar_evento.anexar(fila)`.
+- `perfilar_angulos.py:registrar_transiciones()` importa `registrar_evento` de forma LOCAL (dentro
+  de la función, no al tope del módulo) y le pasa la lista de filas de transición.
+- `flujo.py:escribir_estado()` hace lo mismo (import local) — necesario porque `registrar_evento.py`
+  importa `flujo` (para `gate_entrada`); un import a nivel de módulo en `flujo.py` crearía un ciclo.
+  Un import diferido dentro de la función es seguro porque para cuando se llama, ambos módulos ya
+  terminaron de inicializarse.
+
+`tables.TABLAS_MIGRADAS_DB` suma `"evento"` (T3 tenía solo los tres hechos). `_ESTADO_FLUJO.csv`
+(`flujo.py:escribir_estado()`, la reescritura del propio archivo, no el evento de transición que
+ya se movió) y `_DIM_PRODUCTOS.csv`/`_DECISIONES.json` **quedan pendientes** — sus escritores
+reales (`flujo.py`, `decidir.py --escribir`, `alta_producto.py`/`editar_producto.py`) siguen
+escribiendo su CSV directo. Ver `odd/tasks/p3-postgres-verdad.md` T4 para el detalle y lo que
+falta.
+
+Instrucciones que le decían a un agente que anexara `_EVENTOS.csv` "a mano" (sin pasar por
+`registrar_evento.py`) se redirigieron al comando CLI exacto en:
+`.claude/agents/ETAPA-11.md`, `.claude/agents/ETAPA-6.md`, `.claude/agents/ETAPA-5.md`,
+`DOCTRINA/PLANTILLAS_FLUJO_BOT.md`, `.claude/skills/fase-2-conceptos/SKILL.md` — con el guardia de
+drift, un anexo a mano haría abortar la próxima escritura real.
+
+Bootstrap real (25-sep-2026): `PRODUCTOS/_EVENTOS.csv` ya estaba sincronizado con `raw.evento`
+(la corrida de sesión `flujo.py --todo --escribir` ya lo había recargado hoy) — verificado con
+`db/escribir.verificar_csv_sincronizado()` sin escribir nada; no hizo falta `--tomar-csv`.
+
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
 - Ningún lector ni escritor real (decidir.py, flujo.py, gen_*.py, etc.) lee de Postgres: siguen

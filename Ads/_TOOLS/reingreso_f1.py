@@ -31,6 +31,9 @@ except (AttributeError, OSError):
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD_DIR = os.path.join(BASE_DIR, "PRODUCTOS")
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import registrar_evento as RE  # noqa: E402  (único escritor de _EVENTOS.csv, P3 T4)
+
 
 def leer_csv(ruta):
     if not os.path.exists(ruta):
@@ -61,22 +64,18 @@ def angulos_probados(base_dir, pk):
 
 
 def anexar_evento(base_dir, fila):
-    eventos_path = os.path.join(base_dir, "PRODUCTOS", "_EVENTOS.csv")
-    cols = ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta", "evento",
-            "valor_antes", "valor_despues", "motivo", "fuente_decision"]
-    if os.path.exists(eventos_path):
-        with io.open(eventos_path, "rb") as fh:
-            fh.seek(0, os.SEEK_END)
-            if fh.tell():
-                fh.seek(-1, os.SEEK_END)
-                sin_salto = fh.read(1) != b"\n"
-            else:
-                sin_salto = False
-        if sin_salto:
-            with io.open(eventos_path, "ab") as fh:
-                fh.write(b"\r\n")
-    with io.open(eventos_path, "a", encoding="utf-8", newline="") as fh:
-        csv.DictWriter(fh, fieldnames=cols, lineterminator="\r\n").writerow(fila)
+    """Anexa por el ÚNICO escritor de _EVENTOS.csv (P3 T4): `registrar_evento.anexar()`, que
+    escribe siempre por Postgres (nunca CSV directo). Cuando `base_dir` no es el repo real
+    (fixtures de prueba), apunta temporalmente los globals de `registrar_evento` a esa base —
+    mismo patrón que usa su propio test_registrar_evento.py — y los restaura después."""
+    previo = (RE.BASE, RE.PROD, RE.EVENTOS)
+    RE.BASE = base_dir
+    RE.PROD = os.path.join(base_dir, "PRODUCTOS")
+    RE.EVENTOS = os.path.join(RE.PROD, "_EVENTOS.csv")
+    try:
+        RE.anexar(fila)
+    finally:
+        RE.BASE, RE.PROD, RE.EVENTOS = previo
 
 
 def ejecutar_reingreso(pk, motivo=None, base_dir=None, dry_run=False):

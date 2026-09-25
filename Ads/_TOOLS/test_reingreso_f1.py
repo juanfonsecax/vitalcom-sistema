@@ -7,9 +7,67 @@ import os
 import sys
 import tempfile
 import unittest
+import uuid
+
+# P3 T4: reingreso_f1.anexar_evento() ahora escribe por registrar_evento.anexar() -> Postgres.
+# Aislamiento CRÍTICO (mismo patrón que db/test_db_write_path.py): forzar vitalcom_test ANTES de
+# importar nada que pueda conectar, para nunca tocar `vitalcom` real.
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from reingreso_f1 import ejecutar_reingreso, angulos_probados
+import reingreso_f1 as rf  # noqa: E402 (acceso a RE.db_cargar vía el módulo)
+
+sys.path.insert(0, os.path.join(rf.BASE_DIR, "db"))
+import cargar as db_cargar  # noqa: E402
+import nucleo as db_nucleo  # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_reingreso_f1.py intentó conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _bootstrap_evento(prod_dir, tenant):
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant, "evento", "_EVENTOS.csv", False, prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_EVENTOS.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
 
 
 class TestReingresoF1(unittest.TestCase):
@@ -57,7 +115,17 @@ class TestReingresoF1(unittest.TestCase):
         self.assertEqual(len(filas), 1)
 
     def test_ejecucion_real_anexa_evento(self):
-        res = ejecutar_reingreso("TEST_PROD", motivo="Fatiga probada", base_dir=self.tmp, dry_run=False)
+        if not DB_DISPONIBLE:
+            self.skipTest("Postgres/vitalcom_test no disponible en este entorno")
+        tenant = "test_reingreso_%s" % uuid.uuid4().hex[:8]
+        _bootstrap_evento(self.prod_dir, tenant)
+        previo = (rf.RE.TENANT_ID, rf.RE.BKDIR)
+        rf.RE.TENANT_ID = tenant
+        rf.RE.BKDIR = os.path.join(self.tmp, "backups_csv")
+        try:
+            res = ejecutar_reingreso("TEST_PROD", motivo="Fatiga probada", base_dir=self.tmp, dry_run=False)
+        finally:
+            rf.RE.TENANT_ID, rf.RE.BKDIR = previo
         self.assertTrue(res["ok"])
         with io.open(os.path.join(self.prod_dir, "_EVENTOS.csv"), encoding="utf-8") as fh:
             filas = list(csv.DictReader(fh))

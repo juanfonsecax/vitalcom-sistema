@@ -26,6 +26,12 @@ import datetime
 import json
 import os
 import sys
+import uuid
+
+# P3 T4: registrar_evento.anexar() (que usa este archivo indirectamente vía registrar_excepcion())
+# escribe siempre por Postgres. Aislamiento CRÍTICO, mismo patrón que test_db_write_path.py: fuerza
+# vitalcom_test ANTES de importar nada que pueda conectar, para nunca tocar `vitalcom` real.
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_publicacion as gp  # noqa: E402
@@ -33,6 +39,59 @@ import gen_publicacion as gp  # noqa: E402
 MANANA = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
 import registrar_evento as re_  # noqa: E402 — mismo módulo que gp.registrar_evento (cache de sys.modules)
 import test_flujo as tf  # noqa: E402 — reusa su fixture del gate de F2 (ángulo ganador)
+
+sys.path.insert(0, os.path.join(re_.BASE, "db"))
+import cargar as db_cargar      # noqa: E402
+import nucleo as db_nucleo      # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_gen_publicacion.py intentó conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _bootstrap_evento(prod_dir, tenant):
+    """Bootstrap mínimo de raw.evento/raw.raw_import para que verificar_csv_sincronizado() no
+    aborte por 'nunca se importó' -- mismo patrón que test_db_write_path.py::_fixture()."""
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant, "evento", "_EVENTOS.csv", False, prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_EVENTOS.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
 
 
 def _pieza(creativo_id, brazo):
@@ -332,16 +391,21 @@ def _fixture_producto_sin_cuenta():
     return tmp
 
 
-def _correr_main(base, argv):
+def _correr_main(base, argv, tenant=None):
     import contextlib, io
     # registrar_evento es el MISMO módulo que gp.registrar_evento (cache de sys.modules): sus
     # rutas también hay que apuntarlas al fixture, o la EXCEPCION (P5) caería en el repo real.
-    previo = (gp.BASE, gp.P, re_.BASE, re_.PROD, re_.EVENTOS, sys.argv)
+    # P3 T4: registrar_evento.anexar() escribe por Postgres -- TENANT_ID/BKDIR también se
+    # redirigen cuando el escenario va a escribir de verdad (tenant != None).
+    previo = (gp.BASE, gp.P, re_.BASE, re_.PROD, re_.EVENTOS, re_.TENANT_ID, re_.BKDIR, sys.argv)
     gp.BASE = base
     gp.P = lambda *a: os.path.join(base, "PRODUCTOS", *a)
     re_.BASE = base
     re_.PROD = os.path.join(base, "PRODUCTOS")
     re_.EVENTOS = os.path.join(re_.PROD, "_EVENTOS.csv")
+    if tenant:
+        re_.TENANT_ID = tenant
+        re_.BKDIR = os.path.join(base, "backups_csv")
     sys.argv = ["gen_publicacion.py"] + argv
     buf = io.StringIO()
     try:
@@ -351,7 +415,8 @@ def _correr_main(base, argv):
     except Exception as e:                      # noqa: BLE001 — el test reporta el crash, no lo esconde
         return None, buf.getvalue(), e
     finally:
-        gp.BASE, gp.P, re_.BASE, re_.PROD, re_.EVENTOS, sys.argv = previo
+        (gp.BASE, gp.P, re_.BASE, re_.PROD, re_.EVENTOS, re_.TENANT_ID, re_.BKDIR,
+         sys.argv) = previo
 
 
 def test_solo_paquete_juzga_un_producto_sin_cuenta():
@@ -440,9 +505,15 @@ def test_gate_incumplido_excepcion_vacia_refusa_igual():
 
 
 def test_gate_incumplido_con_excepcion_procede_y_registra_una_excepcion():
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     base = _fixture_fase2_con_gate(gate_cumplido=False)
+    tenant = "test_genpub_%s" % uuid.uuid4().hex[:8]
+    _bootstrap_evento(os.path.join(base, "PRODUCTOS"), tenant)
     code, out, err = _correr_main(base, ["--producto", "PX", "--fase", "2", "--cuenta", "GTR7",
-                                          "--excepcion", "el operador decide seguir sin el gate"])
+                                          "--excepcion", "el operador decide seguir sin el gate"],
+                                   tenant=tenant)
     escrito = os.path.exists(os.path.join(base, "PRODUCTOS", "PX", "_PUBLICACION_F2A.json"))
     eventos = _leer_eventos(base)
     exc = [e for e in eventos if e["evento"] == "EXCEPCION"]
@@ -792,9 +863,15 @@ def test_exploracion_gate_propio_incumplido_bloquea_sin_excepcion():
 
 
 def test_exploracion_gate_propio_con_excepcion_registra_F3_exploracion():
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     base = _fixture_f3_exploracion_base()
+    tenant = "test_genpub_expl_%s" % uuid.uuid4().hex[:8]
+    _bootstrap_evento(os.path.join(base, "PRODUCTOS"), tenant)
     code, out, err = _correr_main(base, ["--producto", "TURMERIC", "--fase", "3", "--brazo", "EXPLORACION",
-                                          "--cuenta", "GTR7", "--excepcion", "el operador arranca antes"])
+                                          "--cuenta", "GTR7", "--excepcion", "el operador arranca antes"],
+                                   tenant=tenant)
     eventos = _leer_eventos(base)
     exc = [e for e in eventos if e["evento"] == "EXCEPCION"]
     ok = (err is None and len(exc) == 1 and exc[0]["valor_antes"] == "F3.exploracion"
