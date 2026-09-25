@@ -11,10 +11,20 @@ import csv
 import io
 import os
 import shutil
+import sys
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
+
+# P3 T4 (continuación parte 2): alta_producto.py real ahora escribe _DIM_PRODUCTOS.csv por
+# Postgres (db/escribir.py) -- estas pruebas tienen que aislarse contra `vitalcom_test`, nunca
+# tocar `vitalcom` real, mismo patrón que Ads/_TOOLS/test_alta_producto.py.
+DB_DIR = str(Path(__file__).resolve().parents[3] / "db")
+if DB_DIR not in sys.path:
+    sys.path.insert(0, DB_DIR)
+import cargar as db_cargar  # noqa: E402
+import nucleo as db_nucleo  # noqa: E402
 
 COLUMNAS_PRODUCTOS = [
     "producto_key", "nombre_display", "slug_carpeta", "estado", "fase", "cuenta_alias",
@@ -43,14 +53,70 @@ def _script_del_repo(nombre: str) -> Path:
     return repo / "Ads" / "_TOOLS" / nombre
 
 
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_alta_por_la_app.py intentó conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _bootstrap_producto_vacio(prod_dir: Path) -> None:
+    """`raw.producto` (tenant `vitalcom`, el default del script real) queda SINCRONIZADO con el
+    _DIM_PRODUCTOS.csv recién escrito (solo encabezado) -- para que el guardia de drift de
+    db/escribir.py no aborte en la primera alta de cada prueba. Aísla en `vitalcom_test`, nunca
+    toca `vitalcom` real (ver _conectar_seguro)."""
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, "vitalcom", "producto", "_DIM_PRODUCTOS.csv",
+                                                 False, str(prod_dir))
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", ("vitalcom", "_DIM_PRODUCTOS.csv", sha, n))
+                db_nucleo.construir_core(cur, "vitalcom")
+    finally:
+        con.close()
+
+
 @pytest.fixture()
-def sistema_falso(sistema_de_juguete: Path) -> Path:
-    """El sistema de juguete con el `alta_producto.py` REAL adentro y los CSV vacíos del alta."""
+def sistema_falso(sistema_de_juguete: Path, monkeypatch) -> Path:
+    """El sistema de juguete con el `alta_producto.py` REAL adentro y los CSV vacíos del alta.
+
+    P3 T4 (continuación parte 2): el script real ahora escribe por Postgres -- fuerza
+    `PGDATABASE=vitalcom_test` (heredado por el subproceso que lanza la app) y bootstrapea
+    `raw.producto` ahí antes de la primera alta. Se salta con aviso si `vitalcom_test` no está
+    disponible en este entorno (mismo criterio que Ads/_TOOLS/test_alta_producto.py).
+
+    `db/` es código REAL versionado (nunca datos): en vez de duplicarlo dentro de la carpeta de
+    mentira (que arrastraría también sus dependencias de Ads/_TOOLS, ej. venta_identidad.py,
+    upsert_fact.py), se agrega el `db/` de ESTE repositorio a `PYTHONPATH` -- el subproceso que
+    corre el `alta_producto.py` copiado encuentra ahí el paquete real, y ese mismo `db/tables.py`
+    real resuelve su propia raíz (`BASE_DIR`) desde SU `__file__`, así que también encuentra el
+    `Ads/_TOOLS` real para sus propias dependencias."""
+    monkeypatch.setenv("PGDATABASE", "vitalcom_test")
+    pythonpath_previo = os.environ.get("PYTHONPATH", "")
+    monkeypatch.setenv("PYTHONPATH", os.pathsep.join(
+        p for p in (DB_DIR, pythonpath_previo) if p))
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+    try:
+        _conectar_seguro().close()
+    except Exception as exc:
+        pytest.skip("Postgres/vitalcom_test no disponible en este entorno: %s" % exc)
+
     shutil.copy2(_script_del_repo("alta_producto.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "alta_producto.py")
     for nombre, columnas in (("_DIM_PRODUCTOS.csv", COLUMNAS_PRODUCTOS),
                              ("_DIM_ENVASE.csv", COLUMNAS_ENVASE)):
         with io.open(sistema_de_juguete / "PRODUCTOS" / nombre, "w", encoding="utf-8", newline="") as fh:
             csv.writer(fh).writerow(columnas)
+    _bootstrap_producto_vacio(sistema_de_juguete / "PRODUCTOS")
     return sistema_de_juguete
 
 
