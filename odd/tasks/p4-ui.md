@@ -39,7 +39,8 @@ writes business data: it reads contracts and runs declared executors (existing r
 - Chain strategy (operator, 24-sep, after T3 passed ~3k authored lines): `feature-branch-chain`
   targeting `feat/app-web`, one PR per task. Slice boundaries (commits per PR):
   PR1 T1 `bb969d3..b1669fe` · PR2 T2 `f15f419..6774bbe` · PR3 T3 `d81a021..2e7e79e` ·
-  PR4 T4 `afa5325..3206053` · PR5 T5 (pending). Push/PR creation remains the operator's decision.
+  PR4 T4 `afa5325..3206053` · PR5 T5 `610de13..2d634b3`. Push/PR creation remains the operator's
+  decision.
 
 ## Tasks
 - [x] T1 — Shell: install shadcn/ui (Base UI), Linear-style tokens (light + dark), sidebar layout
@@ -64,7 +65,7 @@ writes business data: it reads contracts and runs declared executors (existing r
   GET that reads the latest persisted result, and the screen with a "Cargar export de Dropi"
   action and the date of the last run. Note: the app runs the tools of the folder it points to;
   the real folder only gets `--json` once this branch reaches its branch.
-- [ ] T5 — Ajustes: accounts, fanpages; system health, jobs and guide hidden here.
+- [x] T5 — Ajustes: accounts, fanpages; system health, jobs and guide hidden here.
 
 ## Acceptance
 Operator can run a full day without the chat; every confirmed order lands as an event.
@@ -488,5 +489,91 @@ heuristic — advisory, not a gate, per its own text — driven by one genuinely
 cards + chart + table + upload form) plus its two test files; no scope creep beyond the
 `/historial` addition already explained above.
 
+### T5 evidence (24-sep-2026)
+
+Commits on `feat/p4-ui`:
+- `610de13` feat(backend): read-only `/api/fanpages`
+- `2d634b3` feat(frontend): Ajustes with accounts, fanpages and system section
+
+**`_DIM_FANPAGES.csv` was absent from this worktree** — confirmed with `ls PRODUCTOS/` before
+writing any code: it lives in `SISTEMA` on `feat/p2-simplificacion` (10 rows: `pagina_num`,
+`pagina_nombre`, `identidad`, `rol`, `tono`, `logica`, `edad_orientacion`, `page_id`,
+`productos_nicho` — read from that branch's real CSV to get the exact schema, never guessed).
+Per the brief, the endpoint has to survive that: `contratos.cuentas()` raises `ContratoAusente`
+(→ 503) when its CSV is missing, but the new `contratos.fanpages()` checks `ruta(*DIM_FANPAGES
+).is_file()` first and returns `[]` instead — the only contract function in the file that
+deliberately treats a missing CSV as a normal state rather than a system failure, since T5 is
+the first screen expected to run before the operator ever declares that file in this checkout.
+
+**Backend** — `GET /api/fanpages` (`app/backend/vitalcom_app/main.py`), new `FanPage` pydantic
+model (`modelos.py`, all 9 CSV columns as `str`, same shape as `Cuenta`). New
+`app/backend/tests/test_api_espeja_los_csv.py::test_fanpages_vacio_si_la_carpeta_no_tiene_el_csv`
+asserts the empty-list path against this worktree's REAL absence of the file (not a fixture);
+`test_fanpages_lista_el_csv_cuando_existe` uses the toy system (new
+`sistema_de_juguete.escribir_fanpages()` helper + `COLUMNAS_FANPAGES`, not wired into `crear()`
+by default — the toy system's baseline stays fileless too, matching the real default) to prove
+rows mirror the CSV once one exists.
+
+**Frontend.** `Ajustes.tsx` rewritten from the T1 link-grid into three `Card` sections:
+1. **Cuentas publicitarias** — `GET /api/cuentas`, a plain shadcn `Table` (no TanStack — the
+   brief's own call, these lists are small and static-shaped, not sortable/filterable data).
+2. **FanPages** — `GET /api/fanpages`; three states: loading (`Cargando`), a real error
+   (`Problema`, reused from `componentes/ui.tsx`), and empty (`Todavía no hay FanPages
+   declaradas en _DIM_FANPAGES.csv.` — exact copy the brief specified) vs. populated rows.
+3. **Sistema** — the same five legacy links T1 built (`Órdenes de hoy`, `Trabajos` with its
+   pending-jobs `Badge`, `Salud del sistema`, `Guía`, `Nuevo producto`), plus a monospace
+   `Corriendo sobre: <base>` line from `GET /api/sistema` — de-emphasized under its own card so
+   it reads as "the machinery", not the screen's main content.
+Both tables render twice — a `sm:hidden` stacked-card version and a `hidden sm:table` version —
+picked by Tailwind's breakpoint (not `useIsMobile()` like `Productos.tsx`/`Resultados.tsx`):
+plain CSS visibility was enough here since neither table has interactive row logic (sorting,
+click-to-navigate) that would risk two live copies reacting to the same input; confirmed no
+double-firing risk since these rows render nothing but static text.
+
+**Types.** Regenerated `src/api/esquema.d.ts` via `pnpm dlx openapi-typescript` against a
+throwaway backend on port 8010 (port 8000 turned out to be occupied by an unrelated app on this
+machine, "ViralRadar" — not a SISTEM component; picked a free port instead of touching it) with
+`VITALCOM_BASE` forced to this worktree (auto-detection refuses to run from a linked worktree by
+design). Diff is purely additive (+64 lines, the new `FanPage` schema + its route/operation
+entries) — no existing type changed shape. Added `FanPage` export + `api.fanpages()` to
+`cliente.ts`, same pattern as `Cuenta`/`api.cuentas()`.
+
+**Verification:**
+- `cd app/backend && uv run pytest -q tests/test_api_espeja_los_csv.py` → 12 passed (2 new).
+  Also reran `tests/test_sin_aritmetica.py` (5 passed — `contratos.fanpages()` does no
+  arithmetic, just an `is_file()` check and a CSV read).
+- `cd app/frontend && pnpm test` → 15 files, 90 passed (5 new in `src/pruebas/ajustes.test.tsx`:
+  cuentas rows, FanPages empty state, FanPages rows, the five system links + the base-folder
+  line, and the Trabajos badge counting only entries with a non-null `pendiente`). Fixed one
+  assertion mid-task: `findByText` on a value that appears in both the mobile-card and the
+  desktop-table markup at once (jsdom doesn't hide either by CSS) throws on multiple matches —
+  switched to `findAllByText`/`getAllByText` where a value can legitimately appear twice.
+- `cd app/frontend && pnpm build` → `tsc -b && vite build` clean, no type errors.
+- `pnpm exec playwright test --reporter=line --workers=1` → **13 passed, 2 failed** (new
+  `e2e/ajustes.spec.ts` passes; both failures are the same pre-existing ones T2/T3 already
+  named: `tablero.spec.ts`'s `--sin-escribir` flag and `fases_2_3.spec.ts`'s "Carriles
+  Escalonados" timeout for TINNIDROP). One bug caught and fixed before it passed: `ajustes.spec.ts`
+  first used `getByRole("heading", ...)` for the three `CardTitle`s, which shadcn renders as a
+  `<div>` — the exact same gotcha T4 already hit and documented for `resultados.spec.ts`; switched
+  to `getByText(..., { exact: true })`.
+- Browser check (Chrome via the Browser pane, `pnpm dev` on :5173, no backend on that port — same
+  accepted state as T1-T4's browser checks): desktop screenshot confirms the three cards render
+  in order with the expected `Problema` cards (no backend reachable); 375×812 confirms
+  `document.documentElement.scrollWidth === 375` (no horizontal scroll), cards stack cleanly.
+  Real-data rendering (cuentas rows, the FanPages empty-state copy, the system links, the base
+  line) was confirmed instead through the Playwright run above, against the real backend and this
+  worktree's real (fanpages-less) `PRODUCTOS/` — not started as a manual second backend on :8000,
+  per the task's instruction not to touch the SISTEM `app-api` launch config or the unrelated
+  process already using that port.
+
+**Deviations from the brief:** none. `_DIM_FANPAGES.csv` being absent here was anticipated by the
+brief itself ("Check whether the file exists... If an endpoint doesn't exist, add..."); handled
+exactly as specified, nothing extra added beyond the read-only endpoint and the three sections.
+
+**Authored lines** (`git diff --stat f6a920f..HEAD`, excluding the generated `esquema.d.ts`
+diff): ~330 insertions across 7 files. Within the ~400-line heuristic.
+
 ## Next step
-T5 — Ajustes: accounts, fanpages; system health, jobs and guide hidden here.
+P4 feature complete; pending operator decisions: push + PR chain PR1–PR5 into `feat/app-web`,
+then merge `feat/app-web` into the main line; acceptance test = operate a full day without the
+chat.
