@@ -36,6 +36,10 @@ writes business data: it reads contracts and runs declared executors (existing r
 - RDD: off (decided by default, `gentle-ai review mode status` 24-sep).
 - Delivery strategy: ask-on-risk. Forecast > 400 authored lines across the feature (generated
   shadcn component copies excluded) → chain strategy to be asked before the first PR.
+- Chain strategy (operator, 24-sep, after T3 passed ~3k authored lines): `feature-branch-chain`
+  targeting `feat/app-web`, one PR per task. Slice boundaries (commits per PR):
+  PR1 T1 `bb969d3..b1669fe` · PR2 T2 `f15f419..6774bbe` · PR3 T3 `d81a021..2e7e79e` ·
+  PR4 T4 (pending) · PR5 T5 (pending). Push/PR creation remains the operator's decision.
 
 ## Tasks
 - [x] T1 — Shell: install shadcn/ui (Base UI), Linear-style tokens (light + dark), sidebar layout
