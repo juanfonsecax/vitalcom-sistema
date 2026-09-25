@@ -9,6 +9,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, RouterProvider, createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
+import { Hoy } from "./pantallas/Hoy";
 import { Tablero } from "./pantallas/Tablero";
 import { ProductoDetalle } from "./pantallas/ProductoDetalle";
 import { Salud } from "./pantallas/Salud";
@@ -35,7 +36,7 @@ function Marco() {
 
 const raiz = createRootRoute({ component: Marco });
 const rutas = [
-  createRoute({ getParentRoute: () => raiz, path: "/", component: Tablero }),
+  createRoute({ getParentRoute: () => raiz, path: "/", component: Hoy }),
   createRoute({ getParentRoute: () => raiz, path: "/productos", component: Tablero }),
   createRoute({ getParentRoute: () => raiz, path: "/resultados", component: Resultados }),
   createRoute({ getParentRoute: () => raiz, path: "/ajustes", component: Ajustes }),

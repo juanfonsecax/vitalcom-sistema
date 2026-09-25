@@ -9,13 +9,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { api, type ParametroMotor } from "../api/cliente";
-import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
-import { GLOSARIO } from "../glosario";
+import { Cargando, Chip, Problema, Tarjeta } from "../componentes/ui";
 import {
   cierreEnPalabras,
   EXPLICACION_DEL_RELOJ,
+  glosarioDeOrden,
   progresoVentasEnPalabras,
+  TEXTO_ORDEN,
   tituloDeOrden,
+  TONO_ORDEN,
   ventasFaltantesEnPalabras,
   veredictoDeOrden,
 } from "../lenguaje";
@@ -34,28 +36,6 @@ type Bloqueante = {
   falta?: string;
   lo_produce?: string;
   ambito?: string;
-};
-
-const TONOS_ESTADO: Record<string, Tono> = {
-  ESCALAR: "bien",
-  PAUSAR: "alto",
-  RENOVAR: "aviso",
-  SEGUIR_MIDIENDO: "dato",
-};
-
-const TEXTO_ESTADO: Record<string, string> = {
-  ESCALAR: "Escalar (+20%)",
-  PAUSAR: "Pausar",
-  RENOVAR: "Renovar creativo",
-  SEGUIR_MIDIENDO: "Seguir midiendo",
-};
-
-/** La clave del glosario para cada estado, para el «qué significa esto» de cada orden. */
-const GLOSARIO_POR_ESTADO: Record<string, keyof typeof GLOSARIO> = {
-  ESCALAR: "escalar",
-  PAUSAR: "pausar",
-  RENOVAR: "renovar",
-  SEGUIR_MIDIENDO: "seguir_midiendo",
 };
 
 /** Panel «cómo mide el motor»: los tres relojes de `_PARAMETROS_DECISION.csv`, con su valor real
@@ -214,12 +194,7 @@ export function Ordenes() {
               // nunca "escalar" — solo lookup sobre ESTADO + bloqueo_fase, nunca comparar números.
               const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
               const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
-              const claveGlosario = GLOSARIO_POR_ESTADO[orden.estado];
-              const glosarioDelEstado = escalarBloqueado
-                ? undefined
-                : claveGlosario
-                  ? GLOSARIO[claveGlosario]
-                  : undefined;
+              const glosarioDelEstado = glosarioDeOrden(orden.estado, orden.bloqueo_fase);
               return (
                 <Tarjeta key={`${orden.producto_key}-${orden.angulo_key}-${idx}`} className="flex flex-col justify-between gap-4">
                   <div>
@@ -237,8 +212,8 @@ export function Ordenes() {
                           Ángulo: <span className="font-semibold text-zinc-200">{orden.angulo_nombre || orden.angulo_key}</span>
                         </p>
                       </div>
-                      <Chip tono={escalarBloqueado ? "aviso" : (TONOS_ESTADO[orden.estado] ?? "neutro")}>
-                        {escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ESTADO[orden.estado] ?? orden.estado)}
+                      <Chip tono={escalarBloqueado ? "aviso" : (TONO_ORDEN[orden.estado] ?? "neutro")}>
+                        {escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ORDEN[orden.estado] ?? orden.estado)}
                       </Chip>
                     </div>
 

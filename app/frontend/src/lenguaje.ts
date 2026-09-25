@@ -5,6 +5,7 @@
  * color. El valor crudo (`LISTO_PARA_EJECUTAR`, `F2.etapa-11`) siempre se sigue mostrando
  * al lado, para que lo que se ve en la app y lo que dice la consola sean lo mismo.
  */
+import { GLOSARIO, type ClaveGlosario } from "./glosario";
 import type { Tono } from "./componentes/ui";
 
 export const ESTADO_EN_PALABRAS: Record<string, { texto: string; tono: Tono }> = {
@@ -144,6 +145,39 @@ export function tituloDeOrden(
     return "No subir presupuesto: mantener el que ya tiene hasta cerrar la fase.";
   }
   return fraseSimple;
+}
+
+/** El tono (color) de cada estado de orden — compartido por Ordenes.tsx y Hoy.tsx: nunca se
+ * decide dos veces qué color dice cada ESTADO del motor. */
+export const TONO_ORDEN: Record<string, Tono> = {
+  ESCALAR: "bien",
+  PAUSAR: "alto",
+  RENOVAR: "aviso",
+  SEGUIR_MIDIENDO: "dato",
+};
+
+/** El texto corto de cada estado de orden, para el chip. */
+export const TEXTO_ORDEN: Record<string, string> = {
+  ESCALAR: "Escalar (+20%)",
+  PAUSAR: "Pausar",
+  RENOVAR: "Renovar creativo",
+  SEGUIR_MIDIENDO: "Seguir midiendo",
+};
+
+const GLOSARIO_POR_ESTADO_ORDEN: Record<string, ClaveGlosario> = {
+  ESCALAR: "escalar",
+  PAUSAR: "pausar",
+  RENOVAR: "renovar",
+  SEGUIR_MIDIENDO: "seguir_midiendo",
+};
+
+/** La entrada del glosario para el ESTADO de una orden, o `undefined` si no aplica. Una celda
+ * ESCALAR bloqueada por fase nunca la trae: repetir "poner más plata" (glosario de ESCALAR)
+ * contradice el titular, que ya dice que no se mueve presupuesto (ver `tituloDeOrden`). */
+export function glosarioDeOrden(estado: string | null | undefined, bloqueoFase?: string | null) {
+  if (estado === "ESCALAR" && bloqueoFase) return undefined;
+  const clave = estado ? GLOSARIO_POR_ESTADO_ORDEN[estado] : undefined;
+  return clave ? GLOSARIO[clave] : undefined;
 }
 
 /**

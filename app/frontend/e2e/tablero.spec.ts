@@ -22,7 +22,8 @@ function estadoFlujo(): Record<string, Record<string, string>> {
 
 test("el tablero muestra los productos reales con su fase y su paso", async ({ page }) => {
   const estado = estadoFlujo();
-  await page.goto("/");
+  // El Tablero vive en /productos desde P4/T1; "/" es ahora la pantalla Hoy.
+  await page.goto("/productos");
   await expect(page.getByRole("heading", { name: "Portafolio" })).toBeVisible();
 
   for (const [clave, fila] of Object.entries(estado)) {
@@ -50,7 +51,7 @@ test("el estado de OVULOS_PURITY coincide con flujo.py", async ({ page }) => {
 });
 
 test("el glosario explica un término al hacer clic en la (i)", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/productos");
   await page.getByRole("button", { name: /Qué es el punto exacto|Qué es paso del flujo/ }).first().click();
   await expect(page.getByRole("tooltip").first()).toContainText("grafo declarado");
 });
