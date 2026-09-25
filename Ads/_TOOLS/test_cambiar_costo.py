@@ -13,7 +13,15 @@ Congela lo que cambiar_costo.py no puede romper nunca:
   · el resto del CSV queda intacto, --dry-run no toca nada, volver a correr no cambia nada y
     una falla a mitad no deja restos.
 
-USO:  python Ads/_TOOLS/test_cambiar_costo.py     (exit 0 = pasa, 1 = falla)
+P3 T4 (continuación parte 2) — `editar_producto.aplicar_escrituras()` escribe la fila de
+_DIM_PRODUCTOS.csv por Postgres (db/escribir.py): la VERDAD pasa a raw.producto/core.producto.
+Aislamiento CRÍTICO (mismo patrón que test_registrar_evento.py/test_alta_producto.py): fuerza
+`PGDATABASE=vitalcom_test` ANTES de conectar, bootstrapea raw.producto/raw.raw_import en su
+PROPIO tenant único para esta corrida (el fixture usa `alta_producto.py` de verdad, que también
+escribe por Postgres bajo el mismo tenant) y nunca toca `vitalcom` real. Se salta con aviso si
+`vitalcom_test` no está disponible en este entorno.
+
+USO:  python Ads/_TOOLS/test_cambiar_costo.py     (exit 0 = pasa/salta, 1 = falla)
 """
 
 import csv
@@ -23,10 +31,71 @@ import os
 import shutil
 import sys
 import tempfile
+import uuid
+
+# Aislamiento CRÍTICO: forzar vitalcom_test ANTES de conectar.
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alta_producto  # noqa: E402
 import cambiar_costo  # noqa: E402
+
+DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "db")
+sys.path.insert(0, DB_DIR)
+import cargar as db_cargar  # noqa: E402
+import nucleo as db_nucleo  # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_cambiar_costo.py intentó conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _tenant_unico():
+    return "test_costo_%s" % uuid.uuid4().hex[:8]
+
+
+def _bootstrap_producto(prod_dir, tenant):
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant, "producto", "_DIM_PRODUCTOS.csv",
+                                                 False, prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_DIM_PRODUCTOS.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
 
 COLUMNAS_PRODUCTOS = [
     "producto_key", "nombre_display", "slug_carpeta", "estado", "fase", "cuenta_alias",
@@ -92,6 +161,14 @@ def _fixture(base):
     descripcion = os.path.join(base, "desc.txt")
     with io.open(descripcion, "w", encoding="utf-8") as fh:
         fh.write(DESCRIPCION)
+
+    # P3 T4 continuación parte 2: raw.producto (tenant único, nunca `vitalcom` real) tiene que
+    # estar sincronizado con el CSV de arriba ANTES del primer alta real.
+    tenant = _tenant_unico()
+    alta_producto.TENANT_ID = tenant
+    cambiar_costo.ep.TENANT_ID = tenant
+    _bootstrap_producto(os.path.join(base, "PRODUCTOS"), tenant)
+
     codigo = alta_producto.main(["--nombre", "Serum Vitamina C", "--costo", "60",
                                  "--descripcion-archivo", descripcion, "--imagen", imagen,
                                  "--base", base, "--hoy", "2026-09-17"])
@@ -130,6 +207,10 @@ def caso(nombre, funcion, fallas):
 
 
 def main():
+    if not DB_DISPONIBLE:
+        print("GATE DEL CAMBIO DE COSTO")
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     fallas = []
     base = tempfile.mkdtemp(prefix="costo_test_")
     datos = _p("SERUM_VITAMINA_C", "2_DATA_PRODUCTO.txt")
@@ -197,18 +278,13 @@ def main():
             assert codigo == 0 and json.loads(salida)["aplicado"] is False
             assert antes == (_leer(base, "PRODUCTOS/_DIM_PRODUCTOS.csv"), _leer(base, datos))
 
-        def una_falla_a_mitad_deja_todo_como_estaba():
+        def una_falla_ANTES_de_postgres_deja_todo_como_estaba():
+            """P3 T4 continuación parte 2: si el TXT no se puede STAGEAR (fase 1, antes de tocar
+            Postgres), nada cambia -- ni el CSV (Postgres nunca se toca) ni el TXT."""
             antes = (_leer(base, "PRODUCTOS/_DIM_PRODUCTOS.csv"), _leer(base, datos))
-            original = cambiar_costo.ep.os.replace
-            llamadas = {"n": 0}
-
-            def replace_que_falla_a_la_segunda(origen, destino):
-                llamadas["n"] += 1
-                if llamadas["n"] == 2:
-                    raise OSError("disco lleno (simulado)")
-                return original(origen, destino)
-
-            cambiar_costo.ep.os.replace = replace_que_falla_a_la_segunda
+            ruta_datos_abs = os.path.join(base, *datos.split("/"))
+            ruta_tmp = ruta_datos_abs + ".tmp"
+            os.makedirs(ruta_tmp)  # una carpeta en el lugar del .tmp: escribirlo ahi falla siempre
             try:
                 try:
                     _en_silencio(lambda: _correr(base, "SERUM_VITAMINA_C", "77"))
@@ -216,11 +292,40 @@ def main():
                 except OSError:
                     pass
             finally:
-                cambiar_costo.ep.os.replace = original
+                os.rmdir(ruta_tmp)
             assert antes == (_leer(base, "PRODUCTOS/_DIM_PRODUCTOS.csv"), _leer(base, datos)), \
-                "el CSV y el TXT tienen que volver a como estaban"
-            assert llamadas["n"] >= 2, "la falla tenia que ocurrir con un archivo ya escrito"
-            assert not [n for r, _, fs in os.walk(base) for n in fs if n.endswith(".tmp")], "no puede quedar un temporal"
+                "el CSV y el TXT tienen que quedar como estaban"
+
+        def una_falla_DESPUES_de_postgres_es_recuperable():
+            """P3 T4 continuación parte 2: si Postgres YA comiteó el nuevo costo y el
+            os.replace() final del TXT falla, NO se deshace (el CSV mirror YA trae el costo
+            nuevo): sale con exit 1 y deja el .tmp del TXT para terminar a mano."""
+            datos_antes = _leer(base, datos)
+            original = cambiar_costo.ep.os.replace
+
+            def replace_que_falla_para_el_resto(origen, destino):
+                # Filtra por el sufijo ".tmp" de editar_producto.py (nunca el ".tmp-escribir" de
+                # db/escribir.py, que corre ANTES, dentro del commit).
+                if str(origen).endswith(".tmp"):
+                    raise OSError("disco lleno (simulado)")
+                return original(origen, destino)
+
+            cambiar_costo.ep.os.replace = replace_que_falla_para_el_resto
+            try:
+                codigo, salida = _en_silencio(lambda: _correr(base, "SERUM_VITAMINA_C", "81", "--json"))
+            finally:
+                cambiar_costo.ep.os.replace = original
+            assert codigo == 1, salida
+            assert "Postgres ya qued" in json.loads(salida)["detalle"], salida
+            assert _fila(base, "SERUM_VITAMINA_C")["costo_q"] == "81", \
+                "Postgres (y su espejo) SI tenian que quedar con el costo nuevo"
+            assert _leer(base, datos) == datos_antes, \
+                "el TXT NO se reemplazo (se quedo con el costo de la corrida anterior)"
+            tmp_restantes = [os.path.join(r, n) for r, _, fs in os.walk(base) for n in fs
+                              if n.endswith(".tmp")]
+            assert tmp_restantes, "tiene que quedar el .tmp del TXT para terminar a mano"
+            for ruta_tmp in tmp_restantes:
+                os.remove(ruta_tmp)
 
         print("GATE DEL CAMBIO DE COSTO")
         for nombre, funcion in (
@@ -236,7 +341,8 @@ def main():
             ("rechaza un producto sin fila", rechaza_producto_sin_fila),
             ("volver a correr no cambia nada", volver_a_correr_no_cambia_nada),
             ("--dry-run no toca el disco", dry_run_no_toca_nada),
-            ("una falla a mitad deja todo como estaba", una_falla_a_mitad_deja_todo_como_estaba),
+            ("una falla ANTES de Postgres deja todo como estaba", una_falla_ANTES_de_postgres_deja_todo_como_estaba),
+            ("una falla DESPUES de Postgres es recuperable, no se deshace", una_falla_DESPUES_de_postgres_es_recuperable),
         ):
             caso(nombre, funcion, fallas)
     finally:

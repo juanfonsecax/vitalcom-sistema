@@ -12,7 +12,14 @@ Congela lo que cargar_page_id.py no puede romper nunca:
   · un _PLAN.json con otro page_id se AVISA (gen_publicacion.py le da prioridad);
   · el resto del CSV queda intacto, --dry-run no toca nada y una falla a mitad no deja restos.
 
-USO:  python Ads/_TOOLS/test_cargar_page_id.py     (exit 0 = pasa, 1 = falla)
+P3 T4 (continuación parte 2) — `editar_producto.aplicar_escrituras()` escribe la fila de
+_DIM_PRODUCTOS.csv por Postgres (db/escribir.py): la VERDAD pasa a raw.producto/core.producto.
+Aislamiento CRÍTICO (mismo patrón que test_registrar_evento.py/test_alta_producto.py): fuerza
+`PGDATABASE=vitalcom_test` ANTES de conectar, bootstrapea raw.producto/raw.raw_import en su
+PROPIO tenant único para esta corrida y nunca toca `vitalcom` real. Se salta con aviso si
+`vitalcom_test` no está disponible en este entorno.
+
+USO:  python Ads/_TOOLS/test_cargar_page_id.py     (exit 0 = pasa/salta, 1 = falla)
 """
 
 import csv
@@ -22,10 +29,71 @@ import os
 import shutil
 import sys
 import tempfile
+import uuid
+
+# Aislamiento CRÍTICO: forzar vitalcom_test ANTES de conectar.
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import cargar_page_id  # noqa: E402
 import verificar_producto  # noqa: E402
+
+DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "db")
+sys.path.insert(0, DB_DIR)
+import cargar as db_cargar  # noqa: E402
+import nucleo as db_nucleo  # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_cargar_page_id.py intentó conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _tenant_unico():
+    return "test_pageid_%s" % uuid.uuid4().hex[:8]
+
+
+def _bootstrap_producto(prod_dir, tenant):
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant, "producto", "_DIM_PRODUCTOS.csv",
+                                                 False, prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_DIM_PRODUCTOS.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
 
 COLUMNAS_PRODUCTOS = [
     "producto_key", "nombre_display", "slug_carpeta", "estado", "fase", "cuenta_alias",
@@ -90,6 +158,9 @@ def _fixture(base):
         _escribir(base, _p("SERUM_UNO", nombre), _encabezado("PENDIENTE (externa)") + CUERPO)
     _escribir(base, _p("SOLO_ALTA", "2_DATA_PRODUCTO.txt"), "ALTA\r\nsin encabezado de paquete\r\n")
     _escribir(base, _p("CON_PAGINA", "1_HACER_MANUAL.txt"), _encabezado(f"{OTRA} (Astrid García)") + CUERPO)
+    tenant = _tenant_unico()
+    cargar_page_id.ep.TENANT_ID = tenant
+    _bootstrap_producto(os.path.join(base, "PRODUCTOS"), tenant)
 
 
 def _fila(base, clave):
@@ -121,6 +192,10 @@ def caso(nombre, funcion, fallas):
 
 
 def main():
+    if not DB_DISPONIBLE:
+        print("GATE DE LA CARGA DEL page_id")
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     fallas = []
     base = tempfile.mkdtemp(prefix="page_test_")
     try:
@@ -208,21 +283,15 @@ def main():
             assert _en_silencio(lambda: _correr(base, "CON_PAGINA", OTRA, "--reemplazar", "--dry-run"))[0] == 0
             assert antes == (_leer(base, "PRODUCTOS/_DIM_PRODUCTOS.csv"), _leer(base, _p("SOLO_ALTA", "2_DATA_PRODUCTO.txt")))
 
-        def una_falla_a_mitad_deja_todo_como_estaba():
+        def una_falla_ANTES_de_postgres_deja_todo_como_estaba():
+            """P3 T4 continuación parte 2: si UNO de los TXT no se puede STAGEAR (fase 1, antes
+            de tocar Postgres), nada cambia -- ni el CSV (Postgres nunca se toca) ni ningún TXT."""
             _escribir(base, _p("CON_PAGINA", "2_DATA_PRODUCTO.txt"), _encabezado(f"{NUEVA}") + CUERPO)
             archivos = ("PRODUCTOS/_DIM_PRODUCTOS.csv", _p("CON_PAGINA", "1_HACER_MANUAL.txt"),
                         _p("CON_PAGINA", "2_DATA_PRODUCTO.txt"))
             antes = [_leer(base, a) for a in archivos]
-            original = cargar_page_id.ep.os.replace
-            llamadas = {"n": 0}
-
-            def replace_que_falla_a_la_segunda(origen, destino):
-                llamadas["n"] += 1
-                if llamadas["n"] == 2:
-                    raise OSError("disco lleno (simulado)")
-                return original(origen, destino)
-
-            cargar_page_id.ep.os.replace = replace_que_falla_a_la_segunda
+            ruta_tmp = os.path.join(base, *_p("CON_PAGINA", "1_HACER_MANUAL.txt").split("/")) + ".tmp"
+            os.makedirs(ruta_tmp)  # una carpeta en el lugar del .tmp: escribirlo ahi falla siempre
             try:
                 try:
                     _en_silencio(lambda: _correr(base, "CON_PAGINA", "222222222222222", "--reemplazar"))
@@ -230,10 +299,41 @@ def main():
                 except OSError:
                     pass
             finally:
+                os.rmdir(ruta_tmp)
+            assert [_leer(base, a) for a in archivos] == antes, "todo tiene que quedar como estaba"
+            assert not [n for r, _, fs in os.walk(base) for n in fs if n.endswith(".tmp")], \
+                "no puede quedar un temporal"
+
+        def una_falla_DESPUES_de_postgres_es_recuperable():
+            """P3 T4 continuación parte 2: si Postgres YA comiteó el nuevo page_id y el
+            os.replace() final de los TXT falla, NO se deshace (el CSV mirror YA trae el page_id
+            nuevo): sale con exit 1 y deja el/los .tmp para terminar a mano."""
+            archivos_txt = (_p("CON_PAGINA", "1_HACER_MANUAL.txt"), _p("CON_PAGINA", "2_DATA_PRODUCTO.txt"))
+            antes_txt = [_leer(base, a) for a in archivos_txt]
+            original = cargar_page_id.ep.os.replace
+
+            def replace_que_falla_para_el_resto(origen, destino):
+                if str(origen).endswith(".tmp"):
+                    raise OSError("disco lleno (simulado)")
+                return original(origen, destino)
+
+            cargar_page_id.ep.os.replace = replace_que_falla_para_el_resto
+            try:
+                codigo, salida = _en_silencio(
+                    lambda: _correr(base, "CON_PAGINA", "333333333333333", "--reemplazar", "--json"))
+            finally:
                 cargar_page_id.ep.os.replace = original
-            assert [_leer(base, a) for a in archivos] == antes, "todo tiene que volver a como estaba"
-            assert llamadas["n"] >= 2, "la falla tenia que ocurrir con un archivo ya escrito"
-            assert not [n for r, _, fs in os.walk(base) for n in fs if n.endswith(".tmp")], "no puede quedar un temporal"
+            assert codigo == 1, salida
+            assert "Postgres ya qued" in json.loads(salida)["detalle"], salida
+            assert _fila(base, "CON_PAGINA")["page_id"] == "333333333333333", \
+                "Postgres (y su espejo) SI tenian que quedar con el page_id nuevo"
+            assert [_leer(base, a) for a in archivos_txt] == antes_txt, \
+                "los TXT NO se reemplazaron (se quedaron con el page_id de la corrida anterior)"
+            tmp_restantes = [os.path.join(r, n) for r, _, fs in os.walk(base) for n in fs
+                              if n.endswith(".tmp")]
+            assert tmp_restantes, "tiene que quedar al menos un .tmp para terminar a mano"
+            for ruta_tmp in tmp_restantes:
+                os.remove(ruta_tmp)
 
         print("GATE DE LA CARGA DEL page_id")
         for nombre, funcion in (
@@ -250,7 +350,8 @@ def main():
             ("volver a correr no cambia nada", volver_a_correr_no_cambia_nada),
             ("avisa si el _PLAN.json trae otra pagina", avisa_si_el_plan_trae_otra_pagina),
             ("--dry-run no toca el disco", dry_run_no_toca_nada),
-            ("una falla a mitad deja todo como estaba", una_falla_a_mitad_deja_todo_como_estaba),
+            ("una falla ANTES de Postgres deja todo como estaba", una_falla_ANTES_de_postgres_deja_todo_como_estaba),
+            ("una falla DESPUES de Postgres es recuperable, no se deshace", una_falla_DESPUES_de_postgres_es_recuperable),
         ):
             caso(nombre, funcion, fallas)
     finally:

@@ -13,7 +13,14 @@ Congela lo que el alta no puede romper nunca:
   · --dry-run no toca nada;
   · si algo falla a mitad, no queda medio producto escrito.
 
-USO:  python Ads/_TOOLS/test_alta_producto.py     (exit 0 = pasa, 1 = falla)
+P3 T4 (continuación parte 2) — `alta_producto.aplicar()` escribe la fila del producto por
+Postgres (db/escribir.py): la VERDAD de _DIM_PRODUCTOS.csv pasa a raw.producto/core.producto.
+Aislamiento CRÍTICO (mismo patrón que test_registrar_evento.py): fuerza `PGDATABASE=vitalcom_test`
+ANTES de conectar, bootstrapea raw.producto/raw.raw_import en su PROPIO tenant único para esta
+corrida y nunca toca `vitalcom` real. Se salta con aviso si `vitalcom_test` no está disponible en
+este entorno (defecto de entorno documentado en db/README.md: rol sin CREATEDB).
+
+USO:  python Ads/_TOOLS/test_alta_producto.py     (exit 0 = pasa/salta, 1 = falla)
 """
 
 import csv
@@ -22,9 +29,75 @@ import os
 import shutil
 import sys
 import tempfile
+import uuid
+
+# Aislamiento CRÍTICO: forzar vitalcom_test ANTES de conectar -- nunca debe conectar a `vitalcom`
+# real durante estas pruebas.
+os.environ["PGDATABASE"] = "vitalcom_test"
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import alta_producto  # noqa: E402
+
+DB_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "db")
+sys.path.insert(0, DB_DIR)
+import cargar as db_cargar  # noqa: E402
+import nucleo as db_nucleo  # noqa: E402
+
+
+def _preparar_base_de_pruebas():
+    try:
+        if db_cargar.asegurar_base_de_datos("vitalcom_test"):
+            db_cargar.aplicar_schema(dbname="vitalcom_test")
+    except Exception:
+        pass
+
+
+_preparar_base_de_pruebas()
+
+
+def _conectar_seguro():
+    con = db_cargar.conectar()
+    if con.info.dbname == "vitalcom":
+        con.close()
+        raise RuntimeError(
+            "test_alta_producto.py intentó conectarse a 'vitalcom' en vez de 'vitalcom_test'. "
+            "Abortado antes de tocar nada.")
+    return con
+
+
+def _db_disponible():
+    try:
+        con = _conectar_seguro()
+        con.close()
+        return True
+    except Exception:
+        return False
+
+
+DB_DISPONIBLE = _db_disponible()
+
+
+def _tenant_unico():
+    return "test_alta_%s" % uuid.uuid4().hex[:8]
+
+
+def _bootstrap_producto(prod_dir, tenant):
+    """Carga el _DIM_PRODUCTOS.csv YA escrito por el fixture en raw.producto, bajo `tenant`, y
+    deja el registro en raw.raw_import -- para que verificar_csv_sincronizado() no aborte por
+    "nunca se importó" en la primera escritura real de la prueba. Mismo patrón que
+    test_registrar_evento.py::_bootstrap_evento()."""
+    con = _conectar_seguro()
+    try:
+        with con:
+            with con.cursor() as cur:
+                n, sha = db_cargar.cargar_tabla(cur, tenant, "producto", "_DIM_PRODUCTOS.csv",
+                                                 False, prod_dir)
+                cur.execute(
+                    "INSERT INTO raw.raw_import (tenant_id, archivo, sha256, filas) "
+                    "VALUES (%s, %s, %s, %s)", (tenant, "_DIM_PRODUCTOS.csv", sha, n))
+                db_nucleo.construir_core(cur, tenant)
+    finally:
+        con.close()
 
 COLUMNAS_PRODUCTOS = [
     "producto_key", "nombre_display", "slug_carpeta", "estado", "fase", "cuenta_alias",
@@ -44,7 +117,9 @@ DESCRIPCION = (
 
 
 def _fixture(carpeta):
-    """Una copia minima del sistema: los dos CSV con su encabezado y una imagen."""
+    """Una copia minima del sistema: los dos CSV con su encabezado y una imagen. Bootstrapea
+    raw.producto (P3 T4 continuación parte 2) en un tenant único para esta corrida y apunta
+    alta_producto.TENANT_ID ahí -- nunca toca `vitalcom` real."""
     os.makedirs(os.path.join(carpeta, "PRODUCTOS"))
     os.makedirs(os.path.join(carpeta, "Ads"))
     for nombre, columnas, filas in (
@@ -61,6 +136,9 @@ def _fixture(carpeta):
     descripcion = os.path.join(carpeta, "desc.txt")
     with io.open(descripcion, "w", encoding="utf-8") as fh:
         fh.write(DESCRIPCION)
+    tenant = _tenant_unico()
+    alta_producto.TENANT_ID = tenant
+    _bootstrap_producto(os.path.join(carpeta, "PRODUCTOS"), tenant)
     return imagen, descripcion
 
 
@@ -87,6 +165,10 @@ def caso(nombre, funcion, fallas):
 
 
 def main():
+    if not DB_DISPONIBLE:
+        print("GATE DEL ALTA DE PRODUCTOS")
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
     fallas = []
     base = tempfile.mkdtemp(prefix="alta_test_")
     try:
@@ -170,17 +252,15 @@ def main():
             assert alta_producto.clave_desde_nombre("Té Chino  del  Dr. Ming") == \
                 "TE_CHINO_DEL_DR_MING"
 
-        def falla_a_mitad_no_deja_producto_a_medias():
-            """Si el segundo CSV no se puede escribir, el primero vuelve como estaba."""
+        def falla_antes_de_postgres_no_deja_producto_a_medias():
+            """P3 T4 continuación parte 2: si un artefacto de disco (acá, _DIM_ENVASE.csv) no se
+            puede STAGEAR (fase 1, antes de tocar Postgres), la base nunca se toca: no queda ni
+            la fila en raw.producto ni ningún .tmp."""
             antes = _leer(base, "_DIM_PRODUCTOS.csv")
             original = alta_producto.escribir_csv
-            estado = {"llamadas": 0}
 
             def escribir_que_falla(ruta, encabezado, filas):
-                estado["llamadas"] += 1
-                if estado["llamadas"] == 2:  # el de _DIM_ENVASE.csv
-                    raise OSError("disco lleno (simulado)")
-                return original(ruta, encabezado, filas)
+                raise OSError("disco lleno (simulado)")
 
             alta_producto.escribir_csv = escribir_que_falla
             try:
@@ -198,9 +278,65 @@ def main():
                 alta_producto.escribir_csv = original
             assert _leer(base, "_DIM_PRODUCTOS.csv") == antes, \
                 "_DIM_PRODUCTOS.csv tiene que volver a como estaba"
-            assert not os.path.isfile(os.path.join(
-                base, "Ads", "MEDIA_PRODUCTOROTO", "PRODUCTO_ROTO_PACKSHOT.png")), \
+            carpeta_media = os.path.join(base, "Ads", "MEDIA_PRODUCTOROTO")
+            assert not os.path.isfile(os.path.join(carpeta_media, "PRODUCTO_ROTO_PACKSHOT.png")), \
                 "el packshot copiado tiene que borrarse"
+            if os.path.isdir(carpeta_media):
+                assert not any(n.endswith(".tmp") for n in os.listdir(carpeta_media)), \
+                    "no puede quedar un .tmp"
+            con = _conectar_seguro()
+            try:
+                with con.cursor() as cur:
+                    cur.execute(
+                        "SELECT count(*) FROM raw.producto WHERE tenant_id=%s AND producto_key=%s",
+                        (alta_producto.TENANT_ID, "PRODUCTO_ROTO"))
+                    assert cur.fetchone()[0] == 0, "Postgres nunca se tenia que tocar"
+            finally:
+                con.close()
+
+        def falla_despues_de_postgres_es_recuperable():
+            """P3 T4 continuación parte 2: si Postgres YA comiteó la fila y el os.replace() final
+            falla, el alta NO se deshace (la verdad ya vive en raw.producto): sale con exit 1 y un
+            mensaje de RECUPERACIÓN explícito, dejando el .tmp para terminar a mano."""
+            import json as _json
+            original = alta_producto.os.replace
+
+            def replace_que_falla_para_los_tmp_del_alta(origen, destino):
+                # Filtra por el sufijo ".tmp" propio de este módulo (nunca el ".tmp-escribir" de
+                # db/escribir.py, que corre ANTES, dentro del commit): solo intercepta el
+                # os.replace() de la fase 3 (posterior al commit), nunca el mirror interno.
+                if str(origen).endswith(".tmp"):
+                    raise OSError("disco lleno (simulado)")
+                return original(origen, destino)
+
+            alta_producto.os.replace = replace_que_falla_para_los_tmp_del_alta
+            salida = io.StringIO()
+            real_stdout, sys.stdout = sys.stdout, salida
+            try:
+                codigo = alta_producto.main([
+                    "--nombre", "Producto Recuperable", "--costo", "60",
+                    "--descripcion-archivo", descripcion, "--imagen", imagen,
+                    "--base", base, "--hoy", "2026-09-17", "--json"])
+            finally:
+                sys.stdout = real_stdout
+                alta_producto.os.replace = original
+            assert codigo == 1, salida.getvalue()
+            detalle = _json.loads(salida.getvalue())["detalle"]
+            assert "ya quedó de alta en Postgres" in detalle, detalle
+            con = _conectar_seguro()
+            try:
+                with con.cursor() as cur:
+                    cur.execute(
+                        "SELECT count(*) FROM raw.producto WHERE tenant_id=%s AND producto_key=%s",
+                        (alta_producto.TENANT_ID, "PRODUCTO_RECUPERABLE"))
+                    assert cur.fetchone()[0] == 1, "Postgres SI tenia que quedar con la fila"
+            finally:
+                con.close()
+            tmp_restantes = [os.path.join(r, n) for r, _, fs in os.walk(base) for n in fs
+                              if n.endswith(".tmp")]
+            assert tmp_restantes, "tiene que quedar al menos un .tmp para terminar a mano"
+            for ruta_tmp in tmp_restantes:
+                os.remove(ruta_tmp)  # limpieza de la corrida (la recuperación real seria renombrar)
 
         print("GATE DEL ALTA DE PRODUCTOS")
         for nombre, funcion in (
@@ -215,7 +351,8 @@ def main():
             ("rechaza un costo que no es numero", rechaza_costo_no_numerico),
             ("--dry-run no toca el disco", dry_run_no_toca_nada),
             ("la clave se deriva sin acentos", la_clave_se_deriva_sin_acentos),
-            ("una falla a mitad no deja restos", falla_a_mitad_no_deja_producto_a_medias),
+            ("una falla ANTES de Postgres no deja restos", falla_antes_de_postgres_no_deja_producto_a_medias),
+            ("una falla DESPUES de Postgres es recuperable, no se deshace", falla_despues_de_postgres_es_recuperable),
         ):
             caso(nombre, funcion, fallas)
     finally:
