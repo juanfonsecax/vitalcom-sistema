@@ -116,6 +116,20 @@ def salud() -> dict[str, Any]:
     return _leer_json(ESTADO_VISTAS)
 
 
+def historial_resultados() -> list[dict[str, Any]]:
+    """Todos los `_PL_<ini>_<fin>.json` que dejó `gen_pl.py --json` (T4a), del más viejo al más
+    nuevo por nombre de archivo. Para el gráfico de tendencia por período: cada punto es un
+    período que el operador realmente cargó, nunca una interpolación ni una serie inventada.
+    """
+    carpeta = ruta(*AUDITORIAS)
+    archivos = sorted(carpeta.glob("_PL_*.json")) if carpeta.is_dir() else []
+    salida = []
+    for archivo in archivos:
+        with archivo.open(encoding="utf-8") as fh:
+            salida.append(json.load(fh))
+    return salida
+
+
 def resultados() -> dict[str, Any]:
     """El `_PL_<ini>_<fin>.json` más reciente que dejó `gen_pl.py --json` (T4a).
 

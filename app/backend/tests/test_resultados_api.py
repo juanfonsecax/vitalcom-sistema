@@ -114,3 +114,22 @@ def test_cargar_y_leer_el_pl_real(cliente_falso: TestClient, sistema_falso: Path
 def test_dropi_faltante_es_422(cliente_falso: TestClient) -> None:
     respuesta = cliente_falso.post("/api/resultados/cargar", data={})
     assert respuesta.status_code == 422
+
+
+def test_historial_acumula_cada_periodo_cargado(cliente_falso: TestClient) -> None:
+    assert cliente_falso.get("/api/resultados/historial").json() == []
+
+    for mes in (3, 4):
+        ini = datetime.date(2024, mes, 1)
+        fin = ini + datetime.timedelta(days=1)
+        respuesta = cliente_falso.post(
+            "/api/resultados/cargar",
+            data={"desde": ini.isoformat(), "hasta": fin.isoformat()},
+            files={"dropi": ("ordenes.xlsx", _dropi_xlsx_bytes(ini),
+                              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")},
+        )
+        assert respuesta.status_code == 201, respuesta.text
+
+    historial = cliente_falso.get("/api/resultados/historial").json()
+    assert len(historial) == 2
+    assert [h["periodo"]["desde"] for h in historial] == ["2024-03-01", "2024-04-01"]

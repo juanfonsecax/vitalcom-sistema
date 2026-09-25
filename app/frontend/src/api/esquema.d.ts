@@ -635,6 +635,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/resultados/historial": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Historial De Resultados
+         * @description Todos los períodos que `gen_pl.py --json` dejó en `_AUDITORIAS/` (T4a), del más viejo al
+         *     más nuevo: el gráfico de tendencia de la pantalla los lee de acá, nunca de una interpolación.
+         */
+        get: operations["historial_de_resultados_api_resultados_historial_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/resultados/cargar": {
         parameters: {
             query?: never;
@@ -3002,6 +3023,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Resultados"];
+                };
+            };
+        };
+    };
+    historial_de_resultados_api_resultados_historial_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Resultados"][];
                 };
             };
         };

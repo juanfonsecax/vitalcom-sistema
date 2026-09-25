@@ -212,6 +212,13 @@ def resultados() -> Resultados:
         raise HTTPException(status_code=404, detail=str(error)) from error
 
 
+@app.get("/api/resultados/historial", response_model=list[Resultados], tags=["resultados"])
+def historial_de_resultados() -> list[Resultados]:
+    """Todos los períodos que `gen_pl.py --json` dejó en `_AUDITORIAS/` (T4a), del más viejo al
+    más nuevo: el gráfico de tendencia de la pantalla los lee de acá, nunca de una interpolación."""
+    return [Resultados(**dato) for dato in contratos.historial_resultados()]
+
+
 @app.post("/api/resultados/cargar", tags=["resultados"], status_code=201)
 def cargar_resultados(
     dropi: UploadFile = File(..., description="export de órdenes de Dropi (--dropi, obligatorio)"),
