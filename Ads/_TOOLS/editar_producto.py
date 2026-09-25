@@ -44,6 +44,14 @@ try:
 except Exception:
     pass
 
+# P3 T4 (continuación parte 2): _DIM_PRODUCTOS.csv pasa a Postgres -- la VERDAD vive en
+# raw.producto, el CSV en PRODUCTOS/ es el ESPEJO regenerado por db/escribir.py DESPUÉS del
+# commit. TENANT_ID es el único punto de override para pruebas aisladas (mismo patrón que
+# flujo.py/decidir.py/registrar_evento.py, T3/T4): se referencia por NOMBRE dentro de las
+# funciones de abajo (nunca como default de parámetro) para que un monkeypatch de módulo
+# (`ep.TENANT_ID = tenant`) surta efecto en la próxima llamada.
+TENANT_ID = "vitalcom"
+
 # Los tres archivos que verificar_producto.py lee. Solo su PRIMERA linea (el encabezado con
 # COSTO / page_id / campaign_id) se compara contra el CSV.
 ARCHIVOS_DEL_PAQUETE = ("1_HACER_MANUAL.txt", "2_DATA_PRODUCTO.txt", "3_CAMPAÑA_META.txt")
@@ -138,37 +146,132 @@ def a_bytes(texto):
     return texto.encode("utf-8")
 
 
-def aplicar_escrituras(escrituras):
-    """Escribe {ruta: bytes} todo o nada: si una falla, las que ya se escribieron vuelven a
-    como estaban. Cada archivo se escribe a un temporal y se reemplaza de una vez."""
-    originales = {}
+def ruta_productos_csv(base):
+    return os.path.join(base, "PRODUCTOS", "_DIM_PRODUCTOS.csv")
+
+
+def _leer_csv_bytes(contenido):
+    """(encabezado, filas) de unos bytes de CSV ya armados por `csv_con_cambios()` -- el mismo
+    formato que produce ese escritor (CRLF, utf-8), leído de vuelta sin tocar el disco."""
+    texto = contenido.decode("utf-8")
+    filas = list(csv.reader(io.StringIO(texto, newline="")))
+    if not filas:
+        return [], []
+    return filas[0], filas[1:]
+
+
+def _escribir_producto_en_db(contenido_productos, base):
+    """La mitad DB del batch dividido (P3 T4 continuación parte 2): reescribe raw.producto ENTERO
+    con las filas que traía el CSV que se iba a escribir (mismo contenido que antes se volcaba
+    directo a disco), reconstruye `core` y regenera el espejo `_DIM_PRODUCTOS.csv` DESPUÉS del
+    commit -- ver db/escribir.py, diseño P3. `contenido_productos` son los bytes exactos que
+    `csv_con_cambios()` ya calculó (ninguna cifra se recalcula acá, solo cambia el ALMACÉN)."""
+    db_dir = os.path.join(BASE_POR_DEFECTO, "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import cargar as db_cargar  # noqa: E402  (import LOCAL, igual que flujo.py:escribir_estado)
+    import escribir as db_escribir  # noqa: E402
+    import tables as db_tables  # noqa: E402
+
+    encabezado, filas_texto = _leer_csv_bytes(contenido_productos)
+    cols = db_tables.columnas_tabla("producto", "_DIM_PRODUCTOS.csv", False)
+    if encabezado != cols:
+        raise Rechazo(
+            "el encabezado de _DIM_PRODUCTOS.csv que se iba a escribir no coincide con las "
+            "columnas de raw.producto (%s vs %s): actualizá este escritor." % (encabezado, cols))
+    filas = [dict(zip(encabezado, f)) for f in filas_texto]
+
+    prod_dir = os.path.join(base, "PRODUCTOS")
+    bkdir = os.path.join(base, "backups_csv")
+    try:
+        con = db_cargar.conectar()
+    except Exception as exc:
+        raise Rechazo(
+            "Postgres no disponible: no se pudo escribir _DIM_PRODUCTOS.csv (nunca se escribe "
+            "el CSV directo). Detalle: %s" % exc)
+    try:
+        db_escribir.verificar_csv_sincronizado(con, "producto", prod_dir, tenant_id=TENANT_ID)
+        db_escribir.reemplazar(con, "producto", filas, prod_dir=prod_dir, bkdir=bkdir,
+                                tenant_id=TENANT_ID)
+    except db_escribir.ErrorEscritura as exc:
+        raise Rechazo(str(exc))
+    finally:
+        con.close()
+
+
+def _escribir_temporales(escrituras):
+    """Escribe cada {ruta: bytes} a un `.tmp` junto al original -- fase de STAGING, antes de
+    tocar Postgres (ORDEN, P3 T4 continuación parte 2: valida -> stagea los archivos que NO son
+    la base -> escribe/comitea Postgres -> recién ahí reemplaza los `.tmp`). Si alguno falla,
+    borra los `.tmp` que ya se alcanzaron a escribir y relanza: nada real cambió todavía."""
+    temporales = {}
     try:
         for ruta, contenido in escrituras.items():
-            originales[ruta] = None
-            if os.path.isfile(ruta):
-                with io.open(ruta, "rb") as fh:
-                    originales[ruta] = fh.read()
             os.makedirs(os.path.dirname(ruta), exist_ok=True)
             temporal = ruta + ".tmp"
             with io.open(temporal, "wb") as fh:
                 fh.write(contenido)
-            os.replace(temporal, ruta)
+            temporales[ruta] = temporal
     except Exception:
-        for ruta, antes in originales.items():
-            try:
-                if antes is None:
-                    if os.path.isfile(ruta):
-                        os.remove(ruta)
-                else:
-                    with io.open(ruta, "wb") as fh:
-                        fh.write(antes)
-            except OSError:
-                pass
-            try:
-                os.remove(ruta + ".tmp")
-            except OSError:
-                pass
+        _descartar_temporales(temporales)
         raise
+    return temporales
+
+
+def _descartar_temporales(temporales):
+    for temporal in temporales.values():
+        try:
+            os.remove(temporal)
+        except OSError:
+            pass
+
+
+def _confirmar_temporales(temporales):
+    """`os.replace()` de cada `.tmp` YA COMITEADO en Postgres. Si uno falla a mitad, Postgres ya
+    quedó escrito -- nunca se reintenta en silencio: se informa EXACTAMENTE qué archivo(s)
+    quedaron en `.tmp` para terminar el reemplazo a mano (nunca se pierde el commit ya hecho)."""
+    hechos = []
+    for ruta, temporal in temporales.items():
+        try:
+            os.replace(temporal, ruta)
+            hechos.append(ruta)
+        except OSError as exc:
+            pendientes = [r for r in temporales if r not in hechos]
+            raise Rechazo(
+                "Postgres ya quedó escrito, pero no se pudo terminar de reemplazar en disco: "
+                + ", ".join(pendientes) +
+                ". El archivo temporal (.tmp) sigue junto al original -- renombralo a mano "
+                "(quitando el sufijo .tmp) para terminar. Detalle: %s" % exc)
+
+
+def aplicar_escrituras(escrituras, base):
+    """Escribe {ruta: bytes} todo o nada, ahora en DOS ALMACENES (P3 T4 continuación parte 2):
+    `_DIM_PRODUCTOS.csv`, si viene en `escrituras`, va a Postgres (raw.producto es la VERDAD,
+    el CSV es el espejo regenerado por db/escribir.py); el resto ({ruta: bytes} de los TXT del
+    paquete) sigue en disco con el mismo patrón de siempre. `base` es explícito (nunca se
+    adivina por el nombre de archivo): es la misma raíz que ya recibió `planear()`, y de ahí sale
+    la ÚNICA ruta que este módulo trata como la tabla DB-truth (`ruta_productos_csv(base)`).
+
+    ORDEN, nunca se invierte:
+      1. valida (ya lo hizo `planear()` antes de llegar acá);
+      2. escribe TODOS los archivos que NO son la base a un `.tmp` (staging, nada real cambia);
+      3. escribe/comitea Postgres y regenera el espejo `_DIM_PRODUCTOS.csv`;
+      4. recién ahí `os.replace()` de los `.tmp` restantes.
+    Si Postgres falla: se borran los `.tmp`, nada cambió. Si un `os.replace()` final falla
+    DESPUÉS del commit de Postgres: mensaje explícito en español con el/los archivo(s) (ver
+    `_confirmar_temporales`), exit != 0, nunca silencioso."""
+    ruta_csv = ruta_productos_csv(base)
+    contenido_productos = escrituras.get(ruta_csv)
+    resto = {r: c for r, c in escrituras.items() if r != ruta_csv}
+
+    temporales = _escribir_temporales(resto)
+    try:
+        if contenido_productos is not None:
+            _escribir_producto_en_db(contenido_productos, base)
+    except Exception:
+        _descartar_temporales(temporales)
+        raise
+    _confirmar_temporales(temporales)
 
 
 # ------------------------------------------------------------------ la CLI
@@ -195,7 +298,7 @@ def ejecutar(args, planear, salida_legible):
         plan = planear(args)
         aplicado = bool(plan["_escrituras"]) and not args.dry_run
         if aplicado:
-            aplicar_escrituras(plan["_escrituras"])
+            aplicar_escrituras(plan["_escrituras"], args.base)
     except Rechazo as rechazo:
         if args.json:
             print(json.dumps({"ok": False, "detalle": str(rechazo)}, ensure_ascii=False))

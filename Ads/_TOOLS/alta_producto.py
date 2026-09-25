@@ -59,6 +59,14 @@ BASE_POR_DEFECTO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 EXTENSIONES_IMAGEN = (".jpg", ".jpeg", ".png", ".webp")
 MINIMO_DESCRIPCION = 120  # una descripcion de dos lineas no alcanza para investigar nada
 
+# P3 T4 (continuación parte 2): _DIM_PRODUCTOS.csv pasa a Postgres -- la VERDAD vive en
+# raw.producto, el CSV en PRODUCTOS/ es el ESPEJO regenerado por db/escribir.py DESPUÉS del
+# commit. TENANT_ID es el único punto de override para pruebas aisladas (mismo patrón que
+# flujo.py/decidir.py/registrar_evento.py/editar_producto.py, T3/T4): se referencia por NOMBRE
+# dentro de las funciones de abajo, nunca como default de parámetro, para que un monkeypatch de
+# módulo (`alta_producto.TENANT_ID = tenant`) surta efecto en la próxima llamada.
+TENANT_ID = "vitalcom"
+
 
 class Rechazo(Exception):
     """Lo que falta o no cuadra. Se dice y se detiene; no se asume (invariante 4)."""
@@ -242,8 +250,66 @@ DESCRIPCIÓN ENTREGADA POR EL OPERADOR
 """
 
 
+def _escribir_producto_alta(base, encabezado, filas, fila_producto):
+    """Escribe la fila nueva del producto en raw.producto (P3 T4 continuación parte 2): la VERDAD
+    de _DIM_PRODUCTOS.csv pasa a Postgres, el CSV real se regenera como espejo DESPUÉS del
+    commit. `filas` son las que YA existían al planear (las mismas que el guardia de drift exige
+    que estén sincronizadas con raw.producto); se les agrega la fila nueva y se reemplaza la
+    tabla ENTERA -- exactamente lo que hacía `escribir_csv()` con el archivo completo antes."""
+    db_dir = os.path.join(BASE_POR_DEFECTO, "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import cargar as db_cargar  # noqa: E402  (import LOCAL, igual que flujo.py:escribir_estado)
+    import escribir as db_escribir  # noqa: E402
+
+    filas_dict = [dict(zip(encabezado, f)) for f in filas]
+    filas_dict.append(dict(fila_producto))
+    prod_dir = os.path.join(base, "PRODUCTOS")
+    bkdir = os.path.join(base, "backups_csv")
+    try:
+        con = db_cargar.conectar()
+    except Exception as exc:
+        raise Rechazo(
+            "Postgres no disponible: no se pudo dar de alta el producto en la base (nunca se "
+            "escribe _DIM_PRODUCTOS.csv directo). Detalle: %s" % exc)
+    try:
+        db_escribir.verificar_csv_sincronizado(con, "producto", prod_dir, tenant_id=TENANT_ID)
+        db_escribir.reemplazar(con, "producto", filas_dict, prod_dir=prod_dir, bkdir=bkdir,
+                                tenant_id=TENANT_ID)
+    except db_escribir.ErrorEscritura as exc:
+        raise Rechazo(str(exc))
+    finally:
+        con.close()
+
+
+def _deshacer(hechos):
+    for tipo, ruta in reversed(hechos):
+        try:
+            if tipo == "temporal":
+                os.remove(ruta)
+            elif tipo == "carpeta":
+                os.rmdir(ruta)
+        except OSError:
+            pass
+
+
 def aplicar(base, plan):
-    """Escribe el alta. Si algo falla a mitad, deshace lo que ya habia hecho."""
+    """Escribe el alta, todo o nada, en DOS ALMACENES (P3 T4 continuación parte 2): la fila de
+    _DIM_PRODUCTOS.csv va a Postgres (raw.producto es la VERDAD); la carpeta del producto, el
+    packshot, 2_DATA_PRODUCTO.txt y _DIM_ENVASE.csv (editado a mano, sigue en disco) usan el
+    mismo `.tmp` + `os.replace()` de siempre.
+
+    ORDEN, nunca se invierte:
+      1. valida todo (ya lo hizo `planear()`, por eso --dry-run es honesto);
+      2. escribe TODOS los artefactos de disco a un `.tmp` -- nada real existe todavía;
+      3. escribe/comitea Postgres (la fila del producto) y regenera el espejo
+         _DIM_PRODUCTOS.csv;
+      4. recién ahí `os.replace()` de los `.tmp` (packshot, 2_DATA_PRODUCTO.txt, _DIM_ENVASE.csv).
+    Si Postgres NUNCA llega a comitear (falla antes, o el guardia de drift bloquea): se deshacen
+    los `.tmp` y las carpetas creadas, no queda nada. Si Postgres YA comiteó y un `os.replace()`
+    final falla: mensaje explícito en español con el/los archivo(s) pendientes, exit != 0, nunca
+    silencioso -- el producto ya existe en la base de verdad, hay que terminar el reemplazo a
+    mano."""
     encabezado, filas, encabezado_envase, filas_envase = plan["_encabezados"]
     hechos = []
     try:
@@ -255,43 +321,50 @@ def aplicar(base, plan):
                 hechos.append(("carpeta", carpeta))
 
         destino_packshot = os.path.join(base, plan["packshot"].replace("/", os.sep))
-        shutil.copy2(plan["_imagen_origen"], destino_packshot)
-        hechos.append(("archivo", destino_packshot))
+        tmp_packshot = destino_packshot + ".tmp"
+        shutil.copy2(plan["_imagen_origen"], tmp_packshot)
+        hechos.append(("temporal", tmp_packshot))
 
         archivo_datos = os.path.join(base, plan["archivo_datos"])
-        with io.open(archivo_datos, "w", encoding="utf-8") as fh:
+        tmp_datos = archivo_datos + ".tmp"
+        with io.open(tmp_datos, "w", encoding="utf-8") as fh:
             fh.write(CABECERA_DATOS.format(
                 nombre=plan["nombre_display"], clave=plan["producto_key"], hoy=plan["_hoy"],
                 costo=plan["costo_q"], packshot=plan["packshot"],
                 descripcion=plan["_descripcion"],
             ))
-        hechos.append(("archivo", archivo_datos))
-
-        productos_csv = os.path.join(base, "PRODUCTOS", "_DIM_PRODUCTOS.csv")
-        escribir_csv(productos_csv, encabezado,
-                     filas + [[plan["fila_producto"][c] for c in encabezado]])
-        hechos.append(("csv", productos_csv))
+        hechos.append(("temporal", tmp_datos))
 
         envase_csv = os.path.join(base, "PRODUCTOS", "_DIM_ENVASE.csv")
-        escribir_csv(envase_csv, encabezado_envase,
+        tmp_envase = envase_csv + ".tmp"
+        escribir_csv(tmp_envase, encabezado_envase,
                      filas_envase + [[plan["fila_envase"][c] for c in encabezado_envase]])
-        hechos.append(("csv", envase_csv))
+        hechos.append(("temporal", tmp_envase))
     except Exception:
-        for tipo, ruta in reversed(hechos):
-            try:
-                if tipo == "archivo":
-                    os.remove(ruta)
-                elif tipo == "carpeta":
-                    os.rmdir(ruta)
-            except OSError:
-                pass
-        # Los CSV se reescriben enteros: si el primero quedo escrito y el segundo fallo,
-        # se restauran desde lo que se leyo al planear.
-        for ruta, cab, fs in ((os.path.join(base, "PRODUCTOS", "_DIM_PRODUCTOS.csv"), encabezado, filas),
-                              (os.path.join(base, "PRODUCTOS", "_DIM_ENVASE.csv"), encabezado_envase, filas_envase)):
-            if any(h[1] == ruta for h in hechos):
-                escribir_csv(ruta, cab, fs)
+        _deshacer(hechos)
         raise
+
+    try:
+        _escribir_producto_alta(base, encabezado, filas, plan["fila_producto"])
+    except Exception:
+        _deshacer(hechos)
+        raise
+
+    # Postgres YA comiteó: de acá en más, cualquier falla es de RECUPERACIÓN (el producto ya
+    # existe en la base de verdad), nunca de deshacer.
+    pendientes = {tmp_packshot: destino_packshot, tmp_datos: archivo_datos, tmp_envase: envase_csv}
+    hechos_replace = []
+    for origen_tmp, destino in pendientes.items():
+        try:
+            os.replace(origen_tmp, destino)
+            hechos_replace.append(destino)
+        except OSError as exc:
+            faltan = [d for o, d in pendientes.items() if os.path.exists(o)]
+            raise Rechazo(
+                "%s ya quedó de alta en Postgres (raw.producto), pero no se pudo terminar de "
+                "reemplazar en disco: %s. Los archivos .tmp siguen junto al original -- "
+                "renombralos a mano (quitando el sufijo .tmp) para terminar el alta. "
+                "Detalle: %s" % (plan["producto_key"], ", ".join(faltan), exc))
     return plan
 
 
