@@ -45,7 +45,11 @@ writes business data: it reads contracts and runs declared executors (existing r
 - [x] T2 — Hoy: stale-data banner · decidir.py orders with per-order confirm · flujo.py next
   step per product. Uses existing endpoints. Route: delegated writer (2+ non-trivial files).
   Checks: pnpm test, pnpm build, Playwright e2e, browser check desktop + 375px.
-- [ ] T3 — Productos: table + product detail (angles, concepts, results); absorbs Fase1/2/3.
+- [x] T3 — Productos: table + product detail (angles, concepts, results); absorbs Fase1/2/3.
+  Scope decided 24-sep: Fase1/2/3 are absorbed NAVIGATIONALLY — the product detail gets tabs
+  (Resumen · Fase actual · …) that render the existing phase screens restyled by the tokens; their
+  internals (Fase1.tsx is 1469 lines) are not rewritten in T3. Legacy `/producto/$clave/faseN` URLs
+  keep working. Route: delegated writer.
 - [ ] T4 — Resultados: new backend endpoint reading the accounting layer, cohorts < 10 days
   flagged preliminary; KPI cards + charts.
 - [ ] T5 — Ajustes: accounts, fanpages; system health, jobs and guide hidden here.
@@ -228,5 +232,134 @@ card alert collapsible -y`) — no new npm dependencies beyond what T1 already i
 `app/frontend/dist`) had already finished (10/12 passed, output file non-empty) by the time this
 task read it, so no wait loop was needed before running `pnpm build`.
 
+### T3 evidence (24-sep-2026)
+
+Commits on `feat/p4-ui`:
+- `d81a021` feat(frontend): products table with TanStack Table
+- `44cc6cf` feat(frontend): product detail with URL-driven phase tabs
+
+**`/productos` — the table.** New `src/pantallas/Productos.tsx` replaces `Tablero.tsx` (deleted,
+along with `tablero.test.tsx`) as the `/productos` route's component. Installed
+`@tanstack/react-table@8` (pinned to v8 on purpose — the current `9.x` on npm ships a different,
+subscription-based `useTable` API under a new default export and moves the familiar
+`useReactTable`/`getCoreRowModel` API behind a `legacy` entrypoint; v8 is the one that matches the
+brief's reference implementation, openstatusHQ/data-table-filters) and the shadcn `table`
+component. Columns: Producto (name + key, links to `/producto/$clave`), Fase (short code badge,
+full sentence as `title`), Paso actual (human title + raw `nodo_actual`, plus a `rezago` chip when
+that PRODUCT's own `flujo.py` motor reports > 2 days — the per-card signal `BannerRezago` used to
+give in Tablero, now inline instead of a full banner), Estado, Esto lo frena (first bloqueante +
+dueño, reusing the exact phrasing `Hoy.tsx`'s `FilaSiguientePaso` already uses — never recomputed
+a second way), Sigue. Sorting via TanStack's own column headers (Fase/Estado etc., not
+"bloqueante" — that one has no single sort key); a plain-text filter box matches product key, name,
+fase or estado. "Nuevo producto" still links to `/nuevo`. Desktop renders the dense `<table>`;
+below 768px it renders stacked `Card`s instead — picked by `useIsMobile()` (the same hook the
+shadcn `Sidebar` already uses in T1), a JS decision, not a CSS `hidden`/`md:block` pair: the
+Sidebar's own precedent (confirmed by rereading `barra_lateral.test.tsx`) avoids ever having two
+copies of the same row in the DOM, which would otherwise break single-match queries in tests and
+(as this task's own bug below shows) is worth avoiding for other reasons too.
+
+**A real bug, not just a test artifact: clicks silently hanging on `/productos`.** Getting the
+Playwright suite green here took most of this task's time. `pnpm test` and `pnpm build` were clean
+early on, but `e2e/tablero.spec.ts`'s glosario test — clicking the `(i)` next to "Paso actual" —
+hung for the full 60s test timeout with no error, no console output, nothing in the DOM to explain
+it. Bisected with a disposable `e2e/diag.spec.ts` (deleted before finishing, never committed):
+- First finding (real, fixed): the `(i)` (`Info`, from `componentes/ui.tsx`) was nested inside the
+  column header's own sort-toggle `<button>` — two interactive controls, one inside the other, is
+  invalid HTML. Browsers silently reshape the accessibility tree for nested buttons, and
+  `getByRole('button', {name:...})` was resolving to the outer sort button wearing the inner one's
+  label. Fixed by moving `Info` OUT as a sibling `<span>`, never inside the sortable `<button>`.
+  This alone did not fix the hang.
+- Second finding (the real bug): `page.mouse.up()` itself — not Playwright's actionability
+  checks, not hit-testing (`elementFromPoint` was correct, hover worked, `trial: true` and
+  `force: true` clicks both hung identically) — never resolved. A synthetic `dispatchEvent("click")`
+  worked instantly; only real mouse-synthesized clicks hung. Bisected by disabling pieces of the
+  page one at a time against the real backend (`uv run uvicorn`, `VITALCOM_BASE` pointed at this
+  worktree): clicking the **unrelated, untouched** Sidebar's own "Toggle Sidebar" button hung too,
+  on `/productos` only — identical code click-tested fine on `/producto/OVULOS_PURITY` and `/`.
+  Removing the rendered `<Table>` (forcing the mobile card branch) did **not** fix it. Removing the
+  `Input` did **not** fix it. Removing the `useReactTable(...)` call entirely did fix it — isolating
+  the cause to the hook itself, independent of what it renders. Root cause:
+  `getCoreRowModel()`/`getSortedRowModel()` were being called *inline inside the render* — copied
+  straight from the common tutorial pattern — which TanStack Table's own docs warn against
+  (it allocates a new row-model function every render); combined with `data` being a freshly
+  allocated array every render too (the per-row `useQueries` results were being remapped inline,
+  not memoized), a real native mousedown/mouseup sequence into this component reliably left the
+  page's input pipeline stuck, though never with a thrown error, a console message, or (usually) an
+  actual `page.on("crash")` event — just dead air. Fixed by hoisting both row-model calls to
+  module-level constants (`CORE_ROW_MODEL`/`SORTED_ROW_MODEL`, called once) and by genuinely
+  memoizing the row array (`useMemo` keyed on `productos.data` and the spread of each per-row
+  query's `.data`, not on a fresh array reference every render). Confirmed fixed: the glosario
+  test's real click now completes in under a second, live-verified again in the Browser pane
+  (tooltip opens correctly), and a full single-worker Playwright run no longer has this failure.
+  This is the kind of defect that never shows up in `pnpm test` (jsdom's `fireEvent.click` is
+  synthetic and unaffected) — only a real click, in a real browser, finds it.
+
+**`/producto/$clave` — tabs.** `ProductoDetalle.tsx` now renders a header (always visible: name,
+fase badge + glossary, current step + owner, first blocker + owner — the exact fields the brief
+named) and a shadcn `Tabs` with Resumen / Fase 1 / Fase 2 / Fase 3. Resumen is the screen's former
+entire body (avisos, "para pasar de fase", bloqueantes, the node-by-node timeline) — moved
+under a tab, not recalculated. Fase1/Fase2/Fase3 render the existing screens unmodified except for
+removing their own now-redundant "← portafolio" breadcrumb / "Ver recorrido en el grafo" / "← Volver
+a la ficha de {clave}" links (Fase3's "← Ver FASE 2" cross-link stays — `fases_2_3.spec.ts` asserts
+it, and it is not chrome duplicated by the tabs). `Fase1.tsx`'s `useParams({from: "/producto/$clave/fase1"})`
+became `useParams({strict:false})` — one line, needed so it can mount as the "Fase 1" tab's content
+while the actual matched route is the bare `/producto/$clave` (see below); `Fase2`/`Fase3` already
+used that pattern. All four `/producto/$clave[/faseN]` routes in `main.tsx` now point at
+`ProductoDetalle`.
+
+Active tab: an explicit `/faseN` suffix in the URL always wins; without one, the tab defaults to
+the product's current phase (`flujo.py`'s `fase`, mapped F1→Fase 1 etc.), falling back to Resumen
+while that query is still loading or for a fase outside F1/F2/F3 (PAUSADO, as VARICOSE). Resumen
+has no URL distinct from the bare route, so choosing it explicitly (when the default landed on a
+phase tab) needed one bit of local state (`tabManual`) that the URL always overrides the moment it
+carries a phase suffix — covered by dedicated tests, not just asserted informally.
+**Performance regression caught and fixed before it shipped:** the first version gated Fase1/2/3's
+mount behind `ProductoDetalle`'s own `flujo.py` query (`if (flujo.isLoading) return <Cargando/>`
+wrapped everything) — this doubled real latency for the legacy `/faseN` URLs (which used to mount
+Fase1/2/3 directly, no wrapper query) and broke `fase1.spec.ts`/`fases_2_3.spec.ts`'s 5s heading
+timeouts against the real backend. Fixed by only gating the header (a separate `Header` component)
+and the Resumen tab's own content — Fase1/2/3 mount and fire their own queries immediately
+whenever the URL names their phase, never waiting on the wrapper's query.
+
+**Verification:**
+- `cd app/frontend && pnpm test` → 13 files, 79 tests passed (11 new in `productos.test.tsx`:
+  per-row fase/paso/estado/sigue text, bloqueante with owner, "Nada lo frena", per-row rezago chip
+  with its title, text filter (match + empty state), row and "Nuevo producto" links, the glosario
+  button, and a sort-toggle test that reorders two rows by clicking the Fase header once. Extended
+  `producto-detalle.test.tsx` in place — same assertions as T2 left them, adapted to open the
+  correct tab first — plus 5 new tests for URL-driven vs. default-phase tab selection and
+  navigation).
+- `cd app/frontend && pnpm build` → `tsc -b && vite build` clean, no type errors.
+- `pnpm exec playwright test --reporter=line` (single worker, `--workers=1`, after the multi-worker
+  run showed contention flakiness unrelated to this task — `ordenes.spec.ts`/`hoy.spec.ts` failing
+  under load and passing alone, confirmed by rerunning them in isolation): **11 passed, 2 failed**,
+  both on the pre-existing/known list — `tablero.spec.ts`'s `--sin-escribir` flag test, and
+  `fases_2_3.spec.ts`'s FASE 2 test (heading now renders in time; it now times out one assertion
+  later, on "Carriles Escalonados", same underlying real-backend-latency root cause the brief
+  already named as known). `fase1.spec.ts` and the glosario test — both previously failing during
+  this task's own debugging — pass cleanly now.
+- Browser check (Chrome via the Browser pane, real backend on a throwaway port against this
+  worktree, `pnpm build` output): desktop screenshot confirms the table, sorting, the rezago chip,
+  and the glossary tooltip (clicked live, not just via Playwright) all render correctly; 375×812
+  confirms `document.documentElement.scrollWidth === 375` (no horizontal scroll) with the mobile
+  card layout; `/producto/TINNIDROP` confirms the header, the default "Fase 2" tab (matching its
+  real `fase`), and clicking into "Resumen" all render as designed.
+- `cd app/backend && uv run pytest` → not run this task (no backend files touched; T1/T2 already
+  established the full suite's runtime exceeds this session's command timeouts).
+
+**Authored lines** (`git diff --stat`, both commits, excluding `src/components/ui/*` — the
+vendored shadcn `table.tsx`/`tabs.tsx`): 910 insertions, 532 deletions across 11 files (deleting
+`Tablero.tsx` + its 187-line test accounts for most of the deletions). This is above the ~400-line
+planning heuristic; per its own text this is advisory, not a gate — the two genuine sub-features
+(the table, and the tab restructuring) each stayed close to a normal task's size on their own, and
+the bulk of the overage is the bug investigation's fix plus the two tests files it required, not
+scope creep. Delivery strategy (chain vs. single PR) is the parent orchestrator's call, not this
+task's.
+
+**Deviations from the brief:** none in scope. The nested-button and non-memoized-row-model fixes
+above were not anticipated by the brief but were required to make the table it asked for actually
+work with a real pointer, not just `fireEvent` in jsdom.
+
 ## Next step
-T3 — Productos: table + product detail (angles, concepts, results); absorbs Fase1/2/3.
+T4 — Resultados: new backend endpoint reading the accounting layer, cohorts < 10 days flagged
+preliminary; KPI cards + charts.
