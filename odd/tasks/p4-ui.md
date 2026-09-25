@@ -574,6 +574,12 @@ exactly as specified, nothing extra added beyond the read-only endpoint and the 
 diff): ~330 insertions across 7 files. Within the ~400-line heuristic.
 
 ## Next step
-P4 feature complete; pending operator decisions: push + PR chain PR1–PR5 into `feat/app-web`,
-then merge `feat/app-web` into the main line; acceptance test = operate a full day without the
-chat.
+Merged 24-sep-2026 (operator OK, local only, nothing pushed): feat/p2-simplificacion fast-forwarded
+into feat/optimizacion-continua-perfil-angulos (bde1584); feat/p4-ui fast-forwarded into
+feat/app-web; main line merged into feat/app-web (dc88a18, no conflicts); two fanpages tests fixed
+to not assume the CSV is absent (244f60c); main line fast-forwarded to feat/app-web. Checks on the
+merge: Ads/_TOOLS 44 passed, test_gen_flujo_bot TODO PASA, validar_parametros exit 0, flujo.py
+--validar OK, backend 173 passed + fixed test file 13 passed, pnpm test 90, build clean, Playwright
+13/15 (2 stale specs: tablero `--sin-escribir`, fases_2_3 TINNIDROP F3 vs F2). Pending operator
+decisions: push to GitHub; switch the real SISTEMA folder to the main line; acceptance = operate a
+full day without the chat. Follow-up: fix the 2 stale e2e specs.
