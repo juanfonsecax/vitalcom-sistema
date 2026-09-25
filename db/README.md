@@ -230,6 +230,70 @@ natural donde cambiar el destino en T3.
 El backend de la app no escribe ningún CSV (`app/backend/vitalcom_app/contratos.py:3`): toda
 escritura pasa por un ejecutor de `Ads/_TOOLS/` declarado en `VISTAS/_MANIFIESTO.json`.
 
+## P3 T2 — capa de escritura Postgres + espejo CSV (`db/escribir.py`)
+
+Construye el sentido inverso (Postgres -> verdad, CSV -> espejo) para las 7 tablas DB-truth de T1
+(`_FACT_VENTAS`, `_FACT_ENTREGA`, `_FACT_ENTREGA_ANUNCIO`, `_EVENTOS`, `_DECISIONES.json`,
+`_ESTADO_FLUJO`, `_DIM_PRODUCTOS`). **T2 no conecta ningún llamador real** (`ingerir_*`,
+`bajar_*`, `flujo.py`, `decidir.py`, `registrar_evento.py`, `alta_producto.py` siguen escribiendo
+CSV directo) — eso es T3/T4. Uso:
+
+```python
+import sys
+sys.path.insert(0, "db")
+import cargar, escribir
+
+con = cargar.conectar()
+try:
+    # upsert por llave, misma mecánica que Ads/_TOOLS/upsert_fact.upsert() (fusionar(), compartida)
+    reemp, nuevas, sin_cambio = escribir.upsert(
+        con, "venta", filas_nuevas,
+        key=("ventana_ini", "cuenta_alias", "conjunto", "anuncio"),
+        prod_dir=PRODUCTOS_DIR,  # regenera PRODUCTOS/_FACT_VENTAS.csv tras el commit
+    )
+
+    # append puro (_EVENTOS.csv: nunca reemplaza una fila existente)
+    escribir.anexar(con, "evento", filas_evento, prod_dir=PRODUCTOS_DIR)
+
+    # reescritura completa (_ESTADO_FLUJO.csv / _DIM_PRODUCTOS.csv: el escritor real siempre
+    # reescribe el archivo entero, no hace merge por llave)
+    escribir.reemplazar(con, "estado_flujo", filas_estado, prod_dir=PRODUCTOS_DIR)
+
+    # _DECISIONES.json (sin CSV/tabla raw columna-por-columna propia -- vive en raw.decisiones_json)
+    escribir.reemplazar_decision(con, payload_decidir, prod_dir=PRODUCTOS_DIR)
+finally:
+    con.close()
+```
+
+Diseño (ver `odd/tasks/p3-postgres-verdad.md`):
+- La verdad vive en `raw.<tabla>` (filas verbatim); cada llamada reconstruye `core` ENTERO desde
+  `raw` con `nucleo.construir_core()`, en LA MISMA transacción — nunca se duplica esa lógica.
+- El mirror se regenera SOLO después de que el COMMIT ya ocurrió, escrito atómico (`.tmp-escribir`
+  + `os.replace`), y es byte-idéntico al que produce hoy el escritor real de ese archivo (CRLF,
+  utf-8 sin BOM). Probado por `test_espejo_es_byte_identico_a_los_7_archivos_db_truth` sobre los
+  7 archivos reales de `PRODUCTOS/`.
+- `_DECISIONES.json` no tiene fila en `tables.TABLE_SPECS` (no es un espejo columna-por-columna):
+  vive en `raw.decisiones_json` (texto verbatim, una fila) — `db/cargar.py:cargar_decisiones_json()`
+  la carga desde disco, `escribir.reemplazar_decision()` la reescribe. **El mirror y
+  `core.decision` NUNCA se regeneran leyendo `core.decision.payload`**: esa columna es `JSONB`, y
+  Postgres no garantiza el orden de claves de un objeto JSONB al leerlo de vuelta (defecto real
+  encontrado en T2 al comparar bytes) — `escribir.leer_decision_actual()` lee siempre de
+  `raw.decisiones_json.contenido`.
+- Postgres no disponible, o cualquier paso de la transacción falla -> `escribir.ErrorEscritura`.
+  NUNCA cae de vuelta a escribir el CSV a mano. El rollback es EXPLÍCITO (`conn.rollback()`), no
+  el `with conn:` de psycopg3: ese context manager deja la conexión CERRADA ante una excepción, lo
+  que rompería reusar `conn` para la siguiente escritura o para leer el estado tras el error
+  (otro hallazgo de T2, ver `test_escribir_falla_a_mitad_hace_rollback_y_no_toca_el_espejo`).
+- `cargar.cargar_todo(incluir_verdad_db=False)` (T2) deja intactas las tablas `raw.*` de
+  `tables.TABLAS_VERDAD_DB` (y `raw.decisiones_json`) — necesario para T3/T4, donde `cargar_todo()`
+  seguirá recargando el resto de `PRODUCTOS/*.csv` (editados a mano) sin pisar lo que ya escribió
+  `db/escribir.py`. Con el default (`True`), el comportamiento es idéntico al de siempre.
+- `Ads/_TOOLS/upsert_fact.py:fusionar()` (T2) es la mecánica PURA de merge extraída de
+  `upsert_fact.upsert()` — sin I/O, sin backup. `upsert()` es ahora un wrapper delgado de disco
+  sobre `fusionar()` (mismo contrato, mismos valores de retorno, probado en
+  `Ads/_TOOLS/test_upsert_fact.py`, sin cambios); `db/escribir.upsert()` la reusa tal cual sobre
+  `raw.*` en vez de un CSV — un dato, un dueño de la SEMÁNTICA de merge.
+
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
 - Ningún lector ni escritor real (decidir.py, flujo.py, gen_*.py, etc.) lee de Postgres: siguen

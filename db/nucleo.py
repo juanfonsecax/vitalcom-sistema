@@ -462,10 +462,16 @@ def _fetchall_dict(cur, sql, params):
     return [dict(zip(cols, row)) for row in cur.fetchall()]
 
 
-def construir_core(cur, tenant_id, decisiones_json=None):
+def construir_core(cur, tenant_id):
     """Construye `core.*` desde `raw.*` para `tenant_id`, en la MISMA transacción que ya tiene
     abierta `cargar.cargar_todo()`. Devuelve un reporte de reconciliación honesto: conteos por
-    tabla, filas con FK sin resolver (con la razón) y conservación raw->core para los hechos."""
+    tabla, filas con FK sin resolver (con la razón) y conservación raw->core para los hechos.
+
+    P3 T2: ya no recibe una ruta de `_DECISIONES.json` en disco — `core.decision` se arma desde
+    `raw.decisiones_json` (texto verbatim, cargado por `cargar.cargar_decisiones_json()` en la
+    MISMA transacción antes de llamar acá). `_DECISIONES.json` no tiene CSV dueño, así que esta
+    es la única forma de que su verdad viva en Postgres (ver tables.TABLAS_VERDAD_DB) sin volver
+    a leer el archivo del disco en cada reconstrucción de `core`."""
     _vaciar_core(cur, tenant_id)
     reporte = {"tablas": {}, "fk_sin_resolver": {}, "conservacion": {}}
 
@@ -874,11 +880,15 @@ def construir_core(cur, tenant_id, decisiones_json=None):
     reporte["fk_sin_resolver"]["venta.conjunto_id"] = sin_conjunto
     reporte["fk_sin_resolver"]["venta.anuncio_id"] = sin_anuncio
 
-    # decision (snapshot de _DECISIONES.json, si existe) -----------------------------------------
-    if decisiones_json and os.path.exists(decisiones_json):
+    # decision (snapshot de raw.decisiones_json, si existe) ---------------------------------------
+    cur.execute(
+        "SELECT contenido FROM raw.decisiones_json WHERE tenant_id = %s ORDER BY id DESC LIMIT 1",
+        (tenant_id,),
+    )
+    fila_decision = cur.fetchone()
+    if fila_decision and fila_decision[0]:
         import json
-        with io.open(decisiones_json, encoding="utf-8") as f:
-            payload = json.load(f)
+        payload = json.loads(fila_decision[0])
         cur.execute(
             "INSERT INTO core.decision (tenant_id, fecha, payload) VALUES (%s, %s, %s)",
             (tenant_id, payload.get("generado"), json.dumps(payload, ensure_ascii=False)),

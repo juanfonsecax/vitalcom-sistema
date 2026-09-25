@@ -180,10 +180,36 @@ def _pares_de(path, tabla):
     return pares
 
 
-def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", env=None):
+def cargar_decisiones_json(cur, tenant_id, decisiones_json, incluir_verdad_db=True):
+    """Carga el TEXTO VERBATIM de `_DECISIONES.json` en `raw.decisiones_json` (P3 T2). No pasa
+    por `cargar_tabla`/`TABLE_SPECS`: ese archivo no tiene columnas propias, es un blob de una
+    sola fila por corrida (TRUNCATE + insert, igual patrón que el resto de `raw`).
+
+    `incluir_verdad_db=False` (T2, `cargar_todo`) NO TOCA la tabla: es la tabla DB-truth de
+    `_DECISIONES.json`, y una recarga completa la pisaría con el contenido del archivo local,
+    perdiendo lo que `db/escribir.reemplazar_decision()` ya haya escrito ahí."""
+    if not incluir_verdad_db:
+        return
+    cur.execute("DELETE FROM raw.decisiones_json WHERE tenant_id = %s", (tenant_id,))
+    if decisiones_json and os.path.exists(decisiones_json):
+        with io.open(decisiones_json, encoding="utf-8") as f:
+            contenido = f.read()
+        cur.execute(
+            "INSERT INTO raw.decisiones_json (tenant_id, contenido) VALUES (%s, %s)",
+            (tenant_id, contenido),
+        )
+
+
+def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", env=None,
+                 incluir_verdad_db=True):
     """Punto de entrada reutilizable (tests, gate de paridad). Carga `raw.*` desde los CSV y, EN
     LA MISMA TRANSACCIÓN, construye `core.*` desde `raw.*` (T5b, db/nucleo.py). Devuelve
-    {"raw": {tabla: n_filas}, "core": reporte_de_reconciliacion}."""
+    {"raw": {tabla: n_filas}, "core": reporte_de_reconciliacion}.
+
+    `incluir_verdad_db=False` (P3 T2): NO recarga las tablas `raw.*` de `tables.TABLAS_VERDAD_DB`
+    (ni `raw.decisiones_json`) desde el CSV/archivo local — quedan intactas, con lo que haya
+    escrito `db/escribir.py`. Sigue reportando su conteo actual (consulta, no TRUNCATE) para que
+    el reporte de `cargar_todo()` no mienta. Default `True`: comportamiento idéntico a siempre."""
     import nucleo as N  # import tardío: nucleo importa `cargar.enriquecer_venta`, evita el ciclo
 
     productos_dir = productos_dir or T.PRODUCTOS_DIR
@@ -195,6 +221,13 @@ def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", 
         with con:
             with con.cursor() as cur:
                 for tabla, archivo, opcional in T.TABLE_SPECS:
+                    if not incluir_verdad_db and tabla in T.TABLAS_VERDAD_DB:
+                        cur.execute(
+                            "SELECT count(*) FROM raw.%s WHERE tenant_id = %%s" % tabla,
+                            (tenant_id,),
+                        )
+                        conteos_raw[tabla] = cur.fetchone()[0]
+                        continue
                     n, sha = cargar_tabla(cur, tenant_id, tabla, archivo, opcional, productos_dir)
                     conteos_raw[tabla] = n
                     path = os.path.join(productos_dir, archivo)
@@ -203,7 +236,8 @@ def cargar_todo(productos_dir=None, decisiones_json=None, tenant_id="vitalcom", 
                         "VALUES (%s, %s, %s, %s)",
                         (tenant_id, archivo, sha, n),
                     )
-                reporte_core = N.construir_core(cur, tenant_id, decisiones_json)
+                cargar_decisiones_json(cur, tenant_id, decisiones_json, incluir_verdad_db)
+                reporte_core = N.construir_core(cur, tenant_id)
     finally:
         con.close()
     return {"raw": conteos_raw, "core": reporte_core}

@@ -128,25 +128,18 @@ def _particion_valor(fila, particion):
     return tuple(fila.get(k, "") for k in particion)
 
 
-def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
-    """UPSERT por llave natural `key` sobre el CSV de hechos en `path`.
+def fusionar(existentes, filas_nuevas, cols, key, particion=None):
+    """MECÁNICA PURA de merge (P3 T2): sin I/O, sin backup, sin escribir nada — la parte de
+    `upsert()` que `db/escribir.py` necesita reusar tal cual para hacer lo mismo sobre `raw.*`
+    de Postgres en vez de un CSV. `upsert()` (abajo) es ahora un wrapper delgado de disco sobre
+    esta función: un dato, un dueño de la SEMÁNTICA de merge, dos escritores de almacenamiento.
 
-    `key`: tupla de nombres de columna, o función `fila(dict) -> tupla hasheable`
-    cuando la llave no es una igualdad literal de columnas (ver `bajar_meta_insights.py`
-    y `ingerir_lucidsales.py` para los dos casos reales).
-
-    `particion` (opcional, misma forma que `key`): cuando se pasa, toda fila EXISTENTE
-    cuya partición coincide con la de alguna fila de `filas_nuevas`, y que ninguna fila
-    nueva reclamó por `key`, se ELIMINA — un re-pull es la verdad completa de cada
-    partición que trae (ver docstring del módulo). Sin `particion` el comportamiento es
-    el de siempre: nunca se borra nada.
-
-    Devuelve (reemplazadas, nuevas, sin_cambio) sin `particion`, o
-    (reemplazadas, nuevas, sin_cambio, eliminadas) con `particion`. No escribe nada si
-    no hubo reemplazo, alta NI baja — en ese caso el archivo en disco queda intacto (ni
-    backup ni reescritura de más).
+    Recibe `existentes`/`filas_nuevas` en cualquier forma (se completan acá a `cols`, igual que
+    antes). Devuelve (resultado, reemplazadas, nuevas, sin_cambio, eliminadas) — SIEMPRE con
+    `eliminadas` (0 si no se pasó `particion`), a diferencia de `upsert()` que mantiene su
+    contrato histórico de tupla de largo variable para no romper a sus llamadores.
     """
-    existentes = leer_migrado(path, cols)
+    existentes = [_completar(f, cols) for f in existentes]
     filas_completas = [_completar(f, cols) for f in filas_nuevas]
 
     indice = {_clave(f, key): i for i, f in enumerate(existentes)}
@@ -180,6 +173,34 @@ def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
                 continue
             conservar.append(f)
         resultado = conservar
+
+    return resultado, reemplazadas, nuevas, sin_cambio, eliminadas
+
+
+def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
+    """UPSERT por llave natural `key` sobre el CSV de hechos en `path`.
+
+    `key`: tupla de nombres de columna, o función `fila(dict) -> tupla hasheable`
+    cuando la llave no es una igualdad literal de columnas (ver `bajar_meta_insights.py`
+    y `ingerir_lucidsales.py` para los dos casos reales).
+
+    `particion` (opcional, misma forma que `key`): cuando se pasa, toda fila EXISTENTE
+    cuya partición coincide con la de alguna fila de `filas_nuevas`, y que ninguna fila
+    nueva reclamó por `key`, se ELIMINA — un re-pull es la verdad completa de cada
+    partición que trae (ver docstring del módulo). Sin `particion` el comportamiento es
+    el de siempre: nunca se borra nada.
+
+    Devuelve (reemplazadas, nuevas, sin_cambio) sin `particion`, o
+    (reemplazadas, nuevas, sin_cambio, eliminadas) con `particion`. No escribe nada si
+    no hubo reemplazo, alta NI baja — en ese caso el archivo en disco queda intacto (ni
+    backup ni reescritura de más).
+
+    La MECÁNICA de merge vive en `fusionar()` (arriba, P3 T2) — este wrapper solo lee el CSV
+    existente y escribe el resultado a disco.
+    """
+    existentes = leer_migrado(path, cols)
+    resultado, reemplazadas, nuevas, sin_cambio, eliminadas = fusionar(
+        existentes, filas_nuevas, cols, key, particion)
 
     if reemplazadas or nuevas or eliminadas:
         os.makedirs(bkdir, exist_ok=True)

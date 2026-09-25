@@ -1,4 +1,4 @@
--- schema.sql — generado por db/tables.py (2026-09-23). DDL idempotente.
+-- schema.sql — generado por db/tables.py (2026-09-25). DDL idempotente.
 -- schema `raw`: espejo verbatim de cada CSV de PRODUCTOS/, más tenant_id (single
 -- tenant 'vitalcom') e id. schema `core`: modelo normalizado/tipado construido A
 -- PARTIR de `raw` por db/nucleo.py. Ver tables.py y nucleo.py para el porqué.
@@ -28,6 +28,13 @@ CREATE TABLE IF NOT EXISTS raw.raw_import (
     archivo TEXT NOT NULL,
     sha256 TEXT,
     filas INTEGER NOT NULL DEFAULT 0,
+    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS raw.decisiones_json (
+    id BIGSERIAL PRIMARY KEY,
+    tenant_id TEXT NOT NULL DEFAULT 'vitalcom',
+    contenido TEXT NOT NULL,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

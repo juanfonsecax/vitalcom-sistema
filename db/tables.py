@@ -72,6 +72,22 @@ TABLE_SPECS = [
 # (ad_id_resuelto/metodo_atribucion/venta_uid) vive SOLO en core.venta — ver db/nucleo.py.
 EXTRA_COLUMNS = {}
 
+# P3 T2: tablas `raw` cuya VERDAD pasa a vivir en Postgres (db/escribir.py) desde T3/T4 — el CSV
+# en PRODUCTOS/ se vuelve un ESPEJO regenerado desde `raw`, no la fuente. Nombres de tabla `raw`
+# (== nombre de tabla `core`, ver db/nucleo.py) de las 6 que sí tienen fila en TABLE_SPECS; la
+# séptima (`_DECISIONES.json`) no tiene CSV dueño y vive en `raw.decisiones_json` aparte (ver
+# abajo) — no aplica `columnas_tabla()` porque no es un espejo columna-por-columna de un CSV.
+# El resto de TABLE_SPECS sigue entrando por CSV -> raw -> core como en P1 (editado a mano,
+# híbrido o derivado — ver db/README.md "P3 — inventario de escritores", T1).
+TABLAS_VERDAD_DB = {
+    "venta",
+    "entrega_conjunto_dia",
+    "entrega_anuncio_dia",
+    "evento",
+    "estado_flujo",
+    "producto",
+}
+
 # {tabla: {columna_csv: columna_sql}} — solo para el choque de nombre con las columnas propias
 # de la tabla (`id`, `tenant_id`, `loaded_at`). _APRENDIZAJES.csv trae su propia columna `id`
 # (el id de la fila de aprendizaje, no el bigserial de Postgres); se renombra a `id_csv` en SQL,
@@ -186,6 +202,19 @@ if __name__ == "__main__":
     out.append("    archivo TEXT NOT NULL,")
     out.append("    sha256 TEXT,")
     out.append("    filas INTEGER NOT NULL DEFAULT 0,")
+    out.append("    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()")
+    out.append(");")
+    out.append("")
+
+    # raw.decisiones_json (P3 T2): texto VERBATIM de _DECISIONES.json. No tiene CSV dueño (no
+    # está en TABLE_SPECS: no es un espejo columna-por-columna, es un blob de una sola fila) —
+    # db/cargar.py la carga desde disco por fuera del loop de TABLE_SPECS, y desde T2 también la
+    # escribe db/escribir.reemplazar_decision(). db/nucleo.py:construir_core() arma core.decision
+    # leyendo de acá, nunca del archivo en disco.
+    out.append("CREATE TABLE IF NOT EXISTS %s.decisiones_json (" % RAW_SCHEMA)
+    out.append("    id BIGSERIAL PRIMARY KEY,")
+    out.append("    tenant_id TEXT NOT NULL DEFAULT 'vitalcom',")
+    out.append("    contenido TEXT NOT NULL,")
     out.append("    loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()")
     out.append(");")
     out.append("")

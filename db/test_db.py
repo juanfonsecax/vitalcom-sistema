@@ -26,8 +26,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import tables as T  # noqa: E402
 import cargar as C  # noqa: E402
 import exportar as E  # noqa: E402
+import escribir as W  # noqa: E402
+import nucleo as N  # noqa: E402
 
 TOOLS_DIR = os.path.join(T.BASE_DIR, "Ads", "_TOOLS")
+sys.path.insert(0, TOOLS_DIR)
+import upsert_fact as UF  # noqa: E402
 
 
 # ── grupo 1: funciones puras ────────────────────────────────────────────────
@@ -349,3 +353,286 @@ def test_exportar_raw_todo_sigue_disponible_para_auditoria():
         assert "ad_id_resuelto" not in header and "metodo_atribucion" not in header
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+
+
+# ── grupo 3: db/escribir.py — capa de escritura Postgres (P3 T2) ────────────
+
+# tabla `raw`/`core` -> archivo CSV, para las 6 de las 7 del set DB-truth (T1) que sí tienen fila
+# en TABLE_SPECS. La séptima, `_DECISIONES.json`, no tiene tabla `raw` columna-por-columna (vive
+# en `raw.decisiones_json`, un blob) y se prueba aparte.
+DB_TRUTH_CSVS = {
+    "venta": "_FACT_VENTAS.csv",
+    "entrega_conjunto_dia": "_FACT_ENTREGA.csv",
+    "entrega_anuncio_dia": "_FACT_ENTREGA_ANUNCIO.csv",
+    "evento": "_EVENTOS.csv",
+    "estado_flujo": "_ESTADO_FLUJO.csv",
+    "producto": "_DIM_PRODUCTOS.csv",
+}
+
+TENANT_TEST_T2 = "test_p3_t2"
+
+
+def test_fusionar_es_la_misma_semantica_que_upsert_sobre_un_csv(tmp_path):
+    """P3 T2: `upsert_fact.fusionar()` (la mecánica pura que ahora comparten `upsert_fact.upsert()`
+    y `db/escribir.py`) debe producir exactamente el mismo resultado, sobre los mismos datos, que
+    `upsert()` sobre un CSV real — es la garantía de que extraer la función no cambió nada."""
+    cols = ["dia", "cuenta", "ad_id", "spend"]
+    key = ("dia", "cuenta")
+    filas = [{"dia": "2026-09-20", "cuenta": "A", "ad_id": "1", "spend": "10.0"}]
+
+    resultado, reemp, nuevas, sc, elim = UF.fusionar([], filas, cols, key)
+    assert (reemp, nuevas, sc, elim) == (0, 1, 0, 0)
+
+    path = str(tmp_path / "hechos.csv")
+    bkdir = str(tmp_path / "bk")
+    reemp2, nuevas2, sc2 = UF.upsert(path, cols, key, filas, bkdir)
+    assert (reemp2, nuevas2, sc2) == (0, 1, 0)
+    assert UF.leer_migrado(path, cols) == resultado
+
+
+def _limpiar_tenant_test(tenant_id=TENANT_TEST_T2):
+    """Deja las tablas DB-truth (raw + core) sin filas de `tenant_id`, para que cada prueba de
+    `db/escribir.py` arranque de un estado conocido sin depender del orden de ejecución."""
+    con = C.conectar()
+    try:
+        with con:
+            with con.cursor() as cur:
+                for tabla in T.TABLAS_VERDAD_DB:
+                    cur.execute("DELETE FROM raw.%s WHERE tenant_id = %%s" % tabla, (tenant_id,))
+                cur.execute("DELETE FROM raw.decisiones_json WHERE tenant_id = %s", (tenant_id,))
+                N.construir_core(cur, tenant_id)
+    finally:
+        con.close()
+
+
+def _cols_venta():
+    return T.columnas_tabla("venta", "_FACT_VENTAS.csv", False)
+
+
+def _fila_venta_completa(**over):
+    cols = _cols_venta()
+    base = {c: "" for c in cols}
+    base.update({
+        "ventana_ini": "2026-09-01", "ventana_fin": "2026-09-01", "dias": "1",
+        "rol_ventana": "BASE", "producto_key": "TESTP3", "producto": "Test P3",
+        "cuenta_id": "1", "cuenta_alias": "TESTCTA", "campana": "CAMP", "conjunto": "CONJ",
+        "anuncio": "AD1", "mensajes": "1", "clicks": "1", "impresiones": "10",
+        "spend_usd": "1.0", "ventas": "1", "total_q": "10", "moneda_origen": "GTQ",
+        "fuente": "test", "ad_id": "",
+    })
+    base.update(over)
+    return {c: base.get(c, "") for c in cols}
+
+
+@requiere_db
+def test_espejo_es_byte_identico_a_los_7_archivos_db_truth():
+    """P3 T2, check central de T2: sobre la data REAL ya cargada a Postgres, el espejo que
+    regenera `db/escribir.py` debe reproducir byte a byte cada uno de los 7 archivos del set
+    DB-truth (T1) — mismo header, mismo orden de filas y columnas, mismo terminador de línea,
+    mismo encoding. Si un archivo no calza, el hallazgo es del EXPORTADOR o del archivo fuente,
+    nunca algo que este test deba ocultar."""
+    C.cargar_todo()
+    con = C.conectar()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            for tabla, archivo in DB_TRUTH_CSVS.items():
+                W._regenerar_espejo_csv(con, "vitalcom", tabla, tmp)
+                with open(os.path.join(tmp, archivo), "rb") as f:
+                    espejo = f.read()
+                with open(os.path.join(T.PRODUCTOS_DIR, archivo), "rb") as f:
+                    real = f.read()
+                assert espejo == real, "%s: el espejo difiere byte a byte del real" % archivo
+
+            payload = W.leer_decision_actual(con, "vitalcom")
+            assert payload, "raw.decisiones_json debería tener contenido tras cargar_todo()"
+            W._escribir_json_atomico(os.path.join(tmp, "_DECISIONES.json"), payload)
+            with open(os.path.join(tmp, "_DECISIONES.json"), "rb") as f:
+                espejo = f.read()
+            with open(os.path.join(T.PRODUCTOS_DIR, "_DECISIONES.json"), "rb") as f:
+                real = f.read()
+            assert espejo == real, "_DECISIONES.json: el espejo difiere byte a byte del real"
+    finally:
+        con.close()
+
+
+@requiere_db
+def test_escribir_upsert_idempotente_y_conserva_posicion():
+    """`escribir.upsert()` sobre `raw.venta` se comporta EXACTAMENTE como `upsert_fact.upsert()`
+    sobre el CSV equivalente: reemplaza por llave conservando la POSICIÓN de la fila (no la manda
+    al final), agrega al final las llaves nuevas, y repetir la misma corrida es idempotente (0
+    reemplazos / 0 altas) sin cambiar el conteo de filas en `raw` NI en `core`."""
+    _limpiar_tenant_test()
+    con = C.conectar()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    cols = _cols_venta()
+    try:
+        f1 = _fila_venta_completa(anuncio="AD1", spend_usd="1.0")
+        f2 = _fila_venta_completa(anuncio="AD2", spend_usd="2.0")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            path_ref = os.path.join(tmp, "ref.csv")
+            bkdir = os.path.join(tmp, "bk")
+            UF.upsert(path_ref, cols, key, [f1, f2], bkdir)
+
+            reemp, nuevas, sc = W.upsert(con, "venta", [f1, f2], key, tenant_id=TENANT_TEST_T2)
+            assert (reemp, nuevas, sc) == (0, 2, 0)
+
+            f1_corregida = _fila_venta_completa(anuncio="AD1", spend_usd="9.0")
+            UF.upsert(path_ref, cols, key, [f1_corregida], bkdir)
+            reemp2, nuevas2, sc2 = W.upsert(con, "venta", [f1_corregida], key,
+                                             tenant_id=TENANT_TEST_T2)
+            assert (reemp2, nuevas2, sc2) == (1, 0, 0)
+
+            with con.cursor() as cur:
+                filas_db = W._leer_raw(cur, TENANT_TEST_T2, "venta", cols)
+            filas_ref = UF.leer_migrado(path_ref, cols)
+            assert [f["anuncio"] for f in filas_db] == ["AD1", "AD2"]
+            assert [f["anuncio"] for f in filas_db] == [f["anuncio"] for f in filas_ref]
+            assert filas_db[0]["spend_usd"] == "9.0"
+
+            with con.cursor() as cur:
+                cur.execute("SELECT count(*) FROM raw.venta WHERE tenant_id = %s",
+                            (TENANT_TEST_T2,))
+                n_raw_antes = cur.fetchone()[0]
+                cur.execute("SELECT count(*) FROM core.venta WHERE tenant_id = %s",
+                            (TENANT_TEST_T2,))
+                n_core_antes = cur.fetchone()[0]
+
+            reemp3, nuevas3, sc3 = W.upsert(con, "venta", [f1_corregida, f2], key,
+                                             tenant_id=TENANT_TEST_T2)
+            assert (reemp3, nuevas3, sc3) == (0, 0, 2)
+
+            with con.cursor() as cur:
+                cur.execute("SELECT count(*) FROM raw.venta WHERE tenant_id = %s",
+                            (TENANT_TEST_T2,))
+                n_raw_despues = cur.fetchone()[0]
+                cur.execute("SELECT count(*) FROM core.venta WHERE tenant_id = %s",
+                            (TENANT_TEST_T2,))
+                n_core_despues = cur.fetchone()[0]
+            assert n_raw_antes == n_raw_despues == 2
+            assert n_core_antes == n_core_despues == 2
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_escribir_upsert_mirror_byte_identico_al_de_upsert_fact():
+    """El espejo que regenera `escribir.upsert(prod_dir=...)` debe ser byte-idéntico al CSV que
+    produce `upsert_fact.upsert()` sobre los mismos datos y el mismo `key`."""
+    _limpiar_tenant_test()
+    con = C.conectar()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    cols = _cols_venta()
+    try:
+        filas = [_fila_venta_completa(anuncio="AD1"), _fila_venta_completa(anuncio="AD2")]
+        with tempfile.TemporaryDirectory() as tmp:
+            path_ref = os.path.join(tmp, "_FACT_VENTAS.csv")
+            bkdir = os.path.join(tmp, "bk")
+            UF.upsert(path_ref, cols, key, filas, bkdir)
+
+            prod_dir = os.path.join(tmp, "mirror")
+            os.makedirs(prod_dir, exist_ok=True)
+            W.upsert(con, "venta", filas, key, prod_dir=prod_dir, tenant_id=TENANT_TEST_T2)
+
+            with open(path_ref, "rb") as f:
+                ref_bytes = f.read()
+            with open(os.path.join(prod_dir, "_FACT_VENTAS.csv"), "rb") as f:
+                espejo_bytes = f.read()
+            assert espejo_bytes == ref_bytes
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_escribir_particion_elimina_igual_que_upsert_fact():
+    """`particion` en `escribir.upsert()` se comporta igual que en `upsert_fact.upsert()`: un
+    re-pull declara su ámbito como la verdad completa y elimina lo que ese ámbito ya no trae."""
+    _limpiar_tenant_test()
+    con = C.conectar()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    particion = ("ventana_ini", "cuenta_alias", "conjunto")
+    cols = _cols_venta()
+    try:
+        dos = [_fila_venta_completa(anuncio="AD1"), _fila_venta_completa(anuncio="AD2")]
+        W.upsert(con, "venta", dos, key, tenant_id=TENANT_TEST_T2)
+
+        solo_uno = [_fila_venta_completa(anuncio="AD1")]
+        reemp, nuevas, sc, elim = W.upsert(con, "venta", solo_uno, key, particion=particion,
+                                            tenant_id=TENANT_TEST_T2)
+        assert elim == 1
+        with con.cursor() as cur:
+            filas = W._leer_raw(cur, TENANT_TEST_T2, "venta", cols)
+        assert [f["anuncio"] for f in filas] == ["AD1"]
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_escribir_falla_a_mitad_hace_rollback_y_no_toca_el_espejo(monkeypatch):
+    """Si algo falla DESPUÉS de reescribir `raw` pero antes de terminar la transacción (acá:
+    `construir_core` simulado a propósito), `escribir.upsert()` debe (a) levantar
+    `ErrorEscritura`, (b) dejar `raw` como estaba ANTES del intento (rollback real de Postgres,
+    no un rollback simulado) y (c) NUNCA tocar el archivo de espejo — el commit nunca ocurrió."""
+    _limpiar_tenant_test()
+    con = C.conectar()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    cols = _cols_venta()
+    try:
+        f1 = _fila_venta_completa(anuncio="AD1")
+        W.upsert(con, "venta", [f1], key, tenant_id=TENANT_TEST_T2)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            mirror_path = os.path.join(tmp, "_FACT_VENTAS.csv")
+            assert not os.path.exists(mirror_path)
+
+            def _rompe(*a, **kw):
+                raise RuntimeError("boom-test (P3 T2, rollback esperado)")
+
+            monkeypatch.setattr(W.N, "construir_core", _rompe)
+            f2 = _fila_venta_completa(anuncio="AD2")
+            with pytest.raises(W.ErrorEscritura):
+                W.upsert(con, "venta", [f2], key, prod_dir=tmp, tenant_id=TENANT_TEST_T2)
+            monkeypatch.undo()  # restaurar YA: la limpieza de más abajo vuelve a llamar construir_core
+
+            assert not os.path.exists(mirror_path), "el espejo no debe existir tras un rollback"
+
+        with con.cursor() as cur:
+            filas = W._leer_raw(cur, TENANT_TEST_T2, "venta", cols)
+        assert [f["anuncio"] for f in filas] == ["AD1"], (
+            "raw.venta debe quedar como antes del intento fallido (rollback)")
+    finally:
+        con.close()
+        _limpiar_tenant_test()
+
+
+@requiere_db
+def test_cargar_todo_incluir_verdad_db_false_deja_intactas_las_tablas_verdad():
+    """P3 T2: `cargar_todo(incluir_verdad_db=False)` no debe disparar el TRUNCATE de ninguna
+    tabla de `tables.TABLAS_VERDAD_DB` — se prueba con una fila de otro tenant (`test_p3_t2`)
+    porque `cargar_tabla()` hace `TRUNCATE TABLE raw.<tabla>` (sin filtrar por tenant, el sistema
+    es single-tenant hoy): si `incluir_verdad_db=False` no la protegiera, esa fila desaparecería
+    aunque pertenezca a un tenant distinto del que carga `cargar_todo()`."""
+    _limpiar_tenant_test()
+    con = C.conectar()
+    key = ("ventana_ini", "cuenta_alias", "conjunto", "anuncio")
+    try:
+        f1 = _fila_venta_completa(anuncio="AD1")
+        W.upsert(con, "venta", [f1], key, tenant_id=TENANT_TEST_T2)
+    finally:
+        con.close()
+
+    C.cargar_todo(incluir_verdad_db=False)
+
+    con2 = C.conectar()
+    try:
+        with con2.cursor() as cur:
+            cur.execute("SELECT count(*) FROM raw.venta WHERE tenant_id = %s",
+                        (TENANT_TEST_T2,))
+            n = cur.fetchone()[0]
+    finally:
+        con2.close()
+    assert n == 1, "cargar_todo(incluir_verdad_db=False) truncó una tabla DB-truth"
+    _limpiar_tenant_test()
