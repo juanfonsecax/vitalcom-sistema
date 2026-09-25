@@ -217,6 +217,82 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
     session start). No other `PRODUCTOS/*` file changed.
   - `cd app/backend && uv run pytest -q` → ran (no code in `app/backend` touched by T4's reduced
     scope); see the report for the exact count observed.
+
+- [~] T4 continuation (25-sep-2026, same day) — `estado_flujo` and `_DECISIONES.json` connected.
+  STILL PARTIAL: `producto` (`_DIM_PRODUCTOS.csv`) deliberately NOT attempted this pass — see
+  "Deferred" below, same risk class the previous pass already flagged.
+  Result: `flujo.py:escribir_estado()` no longer writes `_ESTADO_FLUJO.csv` with a direct
+  `csv.DictWriter` — it now calls `db/escribir.verificar_csv_sincronizado()` +
+  `db/escribir.reemplazar(con, "estado_flujo", filas, prod_dir=..., bkdir=env.base/backups_csv,
+  tenant_id=TENANT_ID)`, import LOCAL inside the function (same reason as the existing
+  `registrar_evento` import a few lines below it: avoids a module-level import cycle and keeps
+  flujo.py's SOLO LECTURA path psycopg-free, since this branch only runs under `--escribir`).
+  `decidir.py --escribir` no longer writes `_DECISIONES.json` with a direct `json.dump()` — it
+  calls `db/escribir.verificar_decision_sincronizada()` (new) + `db/escribir.reemplazar_decision(
+  con, res, prod_dir=..., tenant_id=TENANT_ID)`, import LOCAL inside `main()` under
+  `if args.escribir:` (decidir.py's read-only path is still imported psycopg-free by the parity
+  gate's subprocess, which never passes `--escribir`). `tables.TABLAS_MIGRADAS_DB` gains
+  `"estado_flujo"`. `_DECISIONES.json` has no `TABLE_SPECS` row (blob, not a column-by-column
+  mirror), so it can never join `TABLAS_MIGRADAS_DB`/`TABLAS_VERDAD_DB` the generic way; its own
+  drift guard is the new `db/escribir.verificar_decision_sincronizada()`, and
+  `db/cargar.py --tomar-csv _DECISIONES.json` (or `decisiones_json`) is its special-cased
+  bootstrap/recovery inside `tomar_csv()` (no `TABLE_SPECS` row to resolve against).
+  Both `TENANT_ID` module constants (`flujo.py`, `decidir.py`) are the only override points for
+  test isolation, same pattern as `registrar_evento.py`/`ingerir_lucidsales.py` (T3/T4).
+  Deferred (not attempted this pass, same risk class the previous pass flagged for `_DIM_PRODUCTOS.csv`):
+  `producto` — `alta_producto.py`/`editar_producto.py` still write `_DIM_PRODUCTOS.csv` directly.
+  Read both files in full this pass: `alta_producto.py`'s `aplicar()` is its own all-or-nothing
+  sequence (folders + packshot copy + `2_DATA_PRODUCTO.txt` + two CSVs, `_DIM_PRODUCTOS.csv` and
+  `_DIM_ENVASE.csv`, with manual rollback on exception) — the two-file DB-write-then-CSV-write
+  ordering/compensation design the task called for (write `_DIM_ENVASE.csv` to a temp file first,
+  commit the DB write of the product, regenerate the `_DIM_PRODUCTOS.csv` mirror, THEN
+  `os.replace` the envase temp into place, with an explicit Spanish recovery message if that final
+  replace fails after the DB commit) touches `aplicar()`'s exception/rollback branch directly.
+  `editar_producto.py` is a SHARED generic engine (`aplicar_escrituras()`, a single
+  `{ruta: bytes}` all-or-nothing writer used by THREE callers — `cambiar_costo.py`,
+  `cargar_cuenta.py`, `cargar_page_id.py`) that writes `_DIM_PRODUCTOS.csv` bytes together with
+  the product's TXT package files in one `{ruta: bytes}` batch; special-casing just the CSV path
+  inside that shared engine to go through Postgres while keeping the TXT files' all-or-nothing
+  semantics is a structural change to code three other real writers depend on, not an isolated
+  edit. Doing this correctly still needs, per the previous pass's own assessment: updating
+  `test_alta_producto.py`/`test_cambiar_costo.py`/`test_cargar_cuenta.py`/`test_cargar_page_id.py`
+  for `vitalcom_test` isolation BEFORE connecting (same pattern as this task's
+  `test_registrar_evento.py`/`test_cli_solo_lectura.py` changes), confirming the app's
+  `alta_producto.py` launcher interpreter (`VISTAS/_MANIFIESTO.json`) has `psycopg`, and deciding
+  the exact compensation wording — none of which fits safely alongside T4's other two connections
+  in the same reasoning pass without rushing the one part of P3 that writes irreversibly to a
+  product's onboarding record. Treating this as its own follow-up (T4 continuation part 2, or
+  folded into T5) is a deliberate scope decision, not a tool refusal.
+  Evidence (25-sep-2026):
+  - `"../SISTEMA-app/app/backend/.venv/Scripts/python.exe" -m pytest db/test_db.py -q` → 42 passed
+    (35 baseline + 7 new: `estado_flujo` reemplazar/drift-guard/tomar-csv parity with `venta`'s
+    pattern, `reemplazar_decision()`/`verificar_decision_sincronizada()` byte-identity + drift +
+    `tomar-csv _DECISIONES.json` bootstrap, `TABLAS_MIGRADAS_DB` assertion updated).
+  - `python -m pytest Ads/_TOOLS -q` → 45 passed (same count as the T4-first-pass baseline —
+    `test_cli_solo_lectura.py`'s `test_flujo_todo_con_escribir_si_escribe`/
+    `test_decidir_con_escribir_si_escribe` were rewritten in place, not added, to bootstrap
+    `raw.estado_flujo`/`raw.decisiones_json` in a unique `vitalcom_test` tenant before running the
+    real writer, mirroring `test_registrar_evento.py`'s `_bootstrap_evento()` pattern).
+  - Real-data bootstrap+writer run (25-sep-2026): drift check against real `vitalcom` found
+    `estado_flujo` already SINCRONIZADO (session-start `flujo.py --todo --escribir` had already
+    loaded it) and `_DECISIONES.json` never-imported (first run) →
+    `python db/cargar.py --tomar-csv _DECISIONES.json` (1 fila) → both guards green → ran the one
+    authorized real writer, `python Ads/_TOOLS/decidir.py --escribir` (exit 0) → drift guards for
+    both tables green again afterward. `raw` counts for
+    `venta`/`entrega_conjunto_dia`/`entrega_anuncio_dia`/`evento`/`estado_flujo` identical
+    before/after (3491/1094/1041/89/5). `git diff --stat` shows only `PRODUCTOS/_DECISIONES.json`
+    changed (11 lines) plus the pre-existing untouched 4-line `_EVENTOS.csv` diff;
+    `_ESTADO_FLUJO.csv`/`_DIM_PRODUCTOS.csv` untouched.
+  - `python Ads/_TOOLS/flujo.py --todo` (read-only) → exit 0, no `PRODUCTOS/*` change.
+  - `python Ads/_TOOLS/decidir.py --json` (read-only) → exit 0, no `PRODUCTOS/*` change.
+  - `cd app/backend && uv run pytest -q` → ran in background (no `app/backend` code touched this
+    pass either); see the report for the exact count observed.
+  - Unrelated pre-existing defect surfaced by the `hook_csv.py` PostToolUse guard on every edit to
+    `decidir.py` in this pass: `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` doesn't declare the
+    `exploracion_n_angulos` parameter that `_PARAMETROS_DECISION.csv` already has (introduced in
+    commit `0d15d0d`, before this session, no uncommitted diff on either file) — out of this
+    task's authorized scope (only `decidir.py`/`flujo.py` persistence), left unfixed and flagged
+    here rather than silently worked around.
 - [ ] T5 — `decidir.py` and app backend read from Postgres. Checks: parity, e2e, backend tests.
 - [ ] T6 — Daily cycle script + Windows Task Scheduler task. Check: first real run writes its
   parity row.
@@ -233,18 +309,24 @@ staged: `PRODUCTOS/_EVENTOS.csv`, `.claude/launch.json`, `.claude/settings.local
 - 2026-09-25: T2 done.
 
 - 2026-09-25: T3 done (closed after vitalcom_test created; 35 db tests green).
+- 2026-09-25: T4 continuation, part 1 — `estado_flujo`/`_DECISIONES.json` connected (commit
+  `faf0bf3`); `producto` deferred, see "Next step".
 
 ## Next step
-T4 continuation — events are connected; still pending: (a) `decidir.py --escribir` →
-`db/escribir.reemplazar_decision()` for `_DECISIONES.json`; (b) `flujo.py:escribir_estado()`'s own
-CSV rewrite → `db/escribir.reemplazar()` for `_ESTADO_FLUJO.csv` (add `"estado_flujo"` to
-`tables.TABLAS_MIGRADAS_DB`); (c) `alta_producto.py`/`editar_producto.py` → `db/escribir.reemplazar()`
-for `_DIM_PRODUCTOS.csv` (add `"producto"`), with the all-or-nothing DB-write-then-`_DIM_ENVASE.csv`
-CSV-write ordering/compensation design still to decide; (d) update
-`test_decidir.py`/`test_alta_producto.py`/`test_cambiar_costo.py`/`test_cargar_cuenta.py`/
-`test_cargar_page_id.py` for `vitalcom_test` isolation before connecting, same pattern as this
-task's `test_registrar_evento.py`/`test_reingreso_f1.py`/`test_gen_publicacion.py` changes; (e)
-check `.claude/settings.json` hooks against whichever of these lands. `--tomar-csv` already
-generalizes to any table added to `TABLAS_MIGRADAS_DB` via `_resolver_tabla_migrada()` — only
-`_DECISIONES.json` needs its own special case in `db/cargar.py:tomar_csv()` since it has no
-`TABLE_SPECS` row. Also revisit T8(a) (`_DIM_ANUNCIOS.csv` double writer) if not folded into T4.
+T4 continuation, part 2 — only `producto` (`_DIM_PRODUCTOS.csv`) remains: (a)
+`alta_producto.py`/`editar_producto.py` → `db/escribir.reemplazar()` for `_DIM_PRODUCTOS.csv` (add
+`"producto"` to `tables.TABLAS_MIGRADAS_DB`), with the all-or-nothing DB-write-then-
+`_DIM_ENVASE.csv` CSV-write ordering/compensation design (write envase to a temp file first,
+commit the DB product write + regenerate the `_DIM_PRODUCTOS.csv` mirror, then `os.replace` the
+envase temp into place; an explicit Spanish recovery message if that final replace fails after the
+DB commit) — `alta_producto.py:aplicar()`'s own rollback branch and `editar_producto.py`'s shared
+`aplicar_escrituras()` (used by `cambiar_costo.py`/`cargar_cuenta.py`/`cargar_page_id.py`, which
+writes `_DIM_PRODUCTOS.csv` bytes alongside TXT files in one `{ruta: bytes}` batch) both need
+surgery, not just a new call site; (b) update `test_alta_producto.py`/`test_cambiar_costo.py`/
+`test_cargar_cuenta.py`/`test_cargar_page_id.py` for `vitalcom_test` isolation BEFORE connecting,
+same pattern as this task's `test_registrar_evento.py`/`test_cli_solo_lectura.py` changes; (c)
+confirm the interpreter `VISTAS/_MANIFIESTO.json` uses to launch `alta_producto.py` has `psycopg`;
+(d) check `.claude/settings.json` hooks against whichever of these lands. `--tomar-csv` already
+generalizes to any table added to `TABLAS_MIGRADAS_DB` via `_resolver_tabla_migrada()`, and the
+`_DECISIONES.json` special case (no `TABLE_SPECS` row) is done. Also revisit T8(a)
+(`_DIM_ANUNCIOS.csv` double writer) if not folded into T4.
