@@ -83,18 +83,19 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   with `--racha`; the Claude audit message shows `RACHA: N/7` (same rule, read from the CSV).
   Checks: runner 26/26, tools 46 passed, real `--racha` → 1/7 (2026-09-25).
   Pending: 7 consecutive green days → earliest 2026-10-01. That closes P3.
-- [ ] T8 — Defects found during P3:
+- [x] T8 — Defects found during P3:
   (a) DONE `63ea89c`: confirmed clobber — `firma.py --generar` added a `firma` column and
   `sembrar_anuncios.py --escribir` dropped it (fixed column list; real file had 0/56 firmas).
   Seeder is now the single writer and derives `firma`; `firma.py --generar` only prints.
   Checks: seeder on a temp copy → 56/56 with firma, real file md5 unchanged, tools 46 passed.
   Note: 0/56 firmas complete — `destino_key` is empty in every row (data gap, not code);
-  (b) Claude task `auditoria-vitalcom-diaria` stops after its first command and its SKILL.md still
-  names ETAPA-8 — fix with T6;
-  (c) `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` doesn't declare `exploracion_n_angulos`, which
-  `_PARAMETROS_DECISION.csv` has (since `0d15d0d`); `hook_csv.py` flags it on every edit to
-  `decidir.py`/`flujo.py`.
+  (b) DONE with T6 (`584d82a`): Claude audit task read-only, no Bash, etapa-7 only;
+  (c) DONE `0060970`: `EXPLORACION_N_ANGULOS` declared in the Guía Madre (section 9) as a system
+  rule (P12, 23-sep, operator decision — no mentor class) and registered in
+  `verificar_guia_madre.py` so its value is compared against the CSV (34 verified, was 33).
+  Checks: checker "Sin fallas"; negative test with 4 on a temp copy → flagged; tools 46 passed.
 
 ## Next step
 Let the streak run (`python Ads/_TOOLS/ciclo_diario.py --racha`); check on 26-sep that the
-scheduled task fired on its own. Meanwhile: T8(c), T5 e2e. e2e for T5 still pending (frontend `node_modules` missing).
+scheduled task fired on its own. Only open item besides the streak: T5 e2e (frontend
+`node_modules` missing).
