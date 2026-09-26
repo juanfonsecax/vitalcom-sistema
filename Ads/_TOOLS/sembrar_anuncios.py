@@ -16,6 +16,7 @@ import csv, sys, os, re, collections
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from alias import canonico   # un conjunto renombrado en Meta cruza con su dimension
 import gasto as _gasto        # fuente unica del spend_usd (g07-cimientos T2)
+from firma import firma as _firma  # la firma se DERIVA de la fila: este archivo es su unico escritor
 
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
@@ -36,7 +37,7 @@ MANUALES = ["concepto_key", "canonico_id", "nivel_conciencia", "oferta_key", "de
 
 COLS = [
     # identidad
-    "producto_key","anuncio_norm","anuncio_ejemplo","ad_ids","conjunto_norm","cuenta_alias","campana",
+    "producto_key","anuncio_norm","anuncio_ejemplo","firma","ad_ids","conjunto_norm","cuenta_alias","campana",
     # EJE 1-3: lo que se testea
     "angulo_key","concepto_key","canonico_id","nivel_conciencia",
     # EJE 4-5: lo que casi nunca se registra y mueve el CPA
@@ -170,6 +171,10 @@ def main():
         f["notas"] = (cl.get("evidencia", "") + " | " + cl.get("notas", "")).strip(" |")
         aplicadas += 1
     print("campos manuales conservados: %d | clasificaciones aplicadas: %d" % (conservados, aplicadas))
+
+    # La firma se calcula DESPUES de los dos merges: resume los 5 ejes ya definitivos de la fila.
+    for f in filas:
+        f["firma"] = _firma(f)
 
     filas.sort(key=lambda r: (r["producto_key"], -r["spend_usd"]))
     G = sum(r["spend_usd"] for r in filas)

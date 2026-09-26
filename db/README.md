@@ -219,8 +219,8 @@ natural donde cambiar el destino en T3.
     archivo para completar `ad_id`.
   - `_DIM_ENVASE.csv`: `alta_producto.py:275` escribe la fila del producto nuevo y el operador la
     corrige a mano.
-- **Derivados** (se recalculan enteros; no son verdad): `_DIM_ANUNCIOS` (`sembrar_anuncios.py:188`
-  y `firma.py:174`: dos escritores de reescritura completa sobre el mismo archivo),
+- **Derivados** (se recalculan enteros; no son verdad): `_DIM_ANUNCIOS` (`sembrar_anuncios.py --escribir`,
+  único escritor; también persiste la columna `firma`, que `firma.py` solo calcula y muestra),
   `_ESTADO_ANGULOS` (`perfilar_angulos.py:424`), `_DIM_VOCABULARIO` (`gen_vocabulario.py:115`),
   `_MAPA_AD_ID_HIST` (`mapear_ad_id_hist.py:315`), `_FLUJO.json` (`flujo.py:1622`).
 - **Sin archivo todavía:** `_VOZ_CLIENTE.csv` (escritor `verificar_voz.py` → `upsert_fact`; no

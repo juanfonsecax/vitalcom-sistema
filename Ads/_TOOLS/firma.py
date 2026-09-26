@@ -10,7 +10,7 @@ LucidSales o del MCP. Si la parametrizacion viaja en el nombre, el cruce no se p
 no depende de que nadie mantenga una tabla paralela al dia.
 
 Uso:
-  python firma.py --generar            # calcula la firma de cada fila de _DIM_ANUNCIOS
+  python firma.py --generar            # muestra la firma de cada fila (la escribe sembrar_anuncios.py)
   python firma.py --parsear "NUSAVA|ARDOR|C1.CN03|NC2|2X1|BOTv1"
   python firma.py --ficha "MA6_OFERTA" # el BANNER de una pieza, con su resultado
   python firma.py --banner [--producto P]   # el banner de todas, ordenado por gasto
@@ -166,15 +166,14 @@ def main():
         return
 
     if "--generar" in sys.argv:
-        cols = list(A[0].keys())
-        if "firma" not in cols:
-            cols.insert(cols.index("anuncio_ejemplo") + 1, "firma")
+        # Solo muestra. La columna `firma` de _DIM_ANUNCIOS.csv la escribe UNICAMENTE
+        # sembrar_anuncios.py --escribir: dos escritores de archivo completo se borraban
+        # la columna uno al otro.
         for r in A:
             r["firma"] = firma(r)
-        with open(P("_DIM_ANUNCIOS.csv"), "w", newline="", encoding="utf-8") as fh:
-            w = csv.DictWriter(fh, fieldnames=cols); w.writeheader(); w.writerows(A)
         completas = sum(1 for r in A if VACIO not in r["firma"])
-        print("firmas escritas: %d   completas (5 ejes llenos): %d" % (len(A), completas))
+        print("firmas calculadas: %d   completas (5 ejes llenos): %d" % (len(A), completas))
+        print("(no se escribe nada: la columna la persiste sembrar_anuncios.py --escribir)")
         for r in sorted(A, key=lambda x: -num(x["spend_usd"]))[:12]:
             print("   $%7.2f  %s" % (num(r["spend_usd"]), r["firma"]))
         return
