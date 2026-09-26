@@ -30,7 +30,7 @@ split CLAUDE.md) are out of scope until real token usage is measured.
 - [x] T4 "Traer las ventas de LucidSales" button runs a script, not an LLM skill. It is the manual
       fallback when the 5 AM automation fails, so it must be deterministic and free.
       Route: delegated (manifest, workflows.py, FLUJO.json, test_claude.py, glosario: 4+ files).
-- [ ] T5 Measure real token usage per session/subagent from Claude Code transcripts (read-only
+- [x] T5 Measure real token usage per session/subagent from Claude Code transcripts (read-only
       tool). Route: inline (one new file).
 
 ## Checks
@@ -72,3 +72,8 @@ split CLAUDE.md) are out of scope until real token usage is measured.
 
 ## Next step
 Observe the 2026-09-27 07:11 run: message still carries profit, sales and CPA.
+- T5: `Ads/_TOOLS/medir_tokens.py` (read-only) + `test_medir_tokens.py` 4/4. Real usage 2026-09-01..26:
+  13,230 model calls. ~97% of context is development sessions (principal + general-purpose);
+  business stages combined ~3% (largest: etapa-render 41M, etapa-7 27M context tokens, mostly
+  cache reads). Cache reads 3,030M vs cache writes 72M vs uncached input 33K: caching dominates.
+  Conclusion: the audit's premise (runtime doctrine is the main spend) does not hold on real data.
