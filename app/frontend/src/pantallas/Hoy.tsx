@@ -183,7 +183,7 @@ function TarjetaOrdenDelDia({ orden, cicloHabilitado }: { orden: OrdenItem; cicl
           </div>
         </div>
         {orden.bloqueo_fase && (
-          <p className="rounded border border-estado-seguir/40 bg-estado-seguir/10 p-2 text-estado-seguir-foreground">
+          <p className="rounded border border-estado-seguir/40 bg-estado-seguir/10 p-2 text-estado-seguir">
             <strong>Nota de fase:</strong> {orden.bloqueo_fase}
           </p>
         )}

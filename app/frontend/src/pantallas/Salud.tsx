@@ -50,7 +50,7 @@ export function Salud() {
           {salud.data?.generado}.
         </p>
         {sistema.data && (
-          <p className="mt-1 font-mono text-[11px] text-zinc-600">
+          <p className="mt-1 font-mono text-[11px] text-zinc-400">
             corriendo sobre {sistema.data.base}
           </p>
         )}
@@ -62,16 +62,16 @@ export function Salud() {
             <div className="flex items-start justify-between gap-2">
               <div>
                 <p className="font-medium text-zinc-100">{vista.rotulo}</p>
-                <p className="text-xs text-zinc-500">{vista.sub}</p>
+                <p className="text-xs text-zinc-400">{vista.sub}</p>
               </div>
               <Chip tono={TONO_POR_CLASE[vista.estado?.clase ?? ""] ?? "neutro"}>
                 {vista.estado?.existe ? (vista.estado?.etiqueta ?? "sin fecha") : "no existe"}
               </Chip>
             </div>
             {vista.estado?.detalle && (
-              <p className="text-xs text-zinc-500">{vista.estado.detalle}</p>
+              <p className="text-xs text-zinc-400">{vista.estado.detalle}</p>
             )}
-            {vista.dueno && <p className="text-xs text-zinc-500">Lo produce: {vista.dueno}</p>}
+            {vista.dueno && <p className="text-xs text-zinc-400">Lo produce: {vista.dueno}</p>}
             {vista.genera && (
               <code className="rounded bg-zinc-950 px-2 py-1 text-[11px] text-zinc-400">
                 {vista.genera}

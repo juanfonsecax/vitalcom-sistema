@@ -77,7 +77,7 @@ function ImagenesParaSubir({ id, pendiente }: { id: string; pendiente: Extract<P
         </div>
       )}
       <div className="space-y-1">
-        <p className="text-xs text-zinc-500">Carpeta con los archivos listos:</p>
+        <p className="text-xs text-zinc-400">Carpeta con los archivos listos:</p>
         <div className="flex items-center gap-2">
           <code className="min-w-0 flex-1 truncate rounded bg-zinc-950 px-2 py-1 text-xs text-zinc-200" title={pendiente.carpeta}>
             {pendiente.carpeta}
@@ -94,7 +94,7 @@ function ImagenesParaSubir({ id, pendiente }: { id: string; pendiente: Extract<P
               className="flex flex-wrap items-baseline justify-between gap-2 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2 text-sm"
             >
               <span className="font-medium text-zinc-100">{a.archivo_a_subir}</span>
-              <span className="text-xs text-zinc-500">de {a.archivo}</span>
+              <span className="text-xs text-zinc-400">de {a.archivo}</span>
               <span className={cn("text-xs", estado.clase)}>{estado.texto}</span>
             </li>
           );
@@ -109,7 +109,7 @@ function ImagenesParaSubir({ id, pendiente }: { id: string; pendiente: Extract<P
       >
         Ya las subí
       </button>
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-400">
         Al avisar, la app lee la biblioteca (solo mira, no cambia nada) y busca cada imagen por su nombre. Después te
         muestra la orden completa para aprobar.
       </p>
@@ -141,7 +141,7 @@ function ListaDeTrabajos({ actual }: { actual: string | undefined }) {
   if (lista.isPending) return <Cargando que="los trabajos" />;
   if (lista.error) return <Problema error={lista.error} />;
   if (lista.data.length === 0) {
-    return <p className="text-sm text-zinc-500">No hay trabajos todavía. Cuando pidas una acción, aparece acá.</p>;
+    return <p className="text-sm text-zinc-400">No hay trabajos todavía. Cuando pidas una acción, aparece acá.</p>;
   }
   return (
     <ul className="space-y-2" aria-label="Trabajos">
@@ -159,7 +159,7 @@ function ListaDeTrabajos({ actual }: { actual: string | undefined }) {
               <span className="font-medium text-zinc-100">{trabajo.rotulo || trabajo.accion_id}</span>
               <EstadoDeTrabajo estado={trabajo.estado} />
             </div>
-            <div className="mt-1 flex justify-between text-xs text-zinc-500">
+            <div className="mt-1 flex justify-between text-xs text-zinc-400">
               <span>{trabajo.producto_key ?? "sin producto"}</span>
               <span>{hora(trabajo.iniciado)}</span>
             </div>
@@ -197,20 +197,20 @@ function OrdenParaAprobar({ id, pendiente }: { id: string; pendiente: Extract<Pe
           ["Cuenta", orden.cuenta],
         ].map(([rotulo, valor]) => (
           <div key={rotulo}>
-            <dt className="text-xs text-zinc-500">{rotulo}</dt>
+            <dt className="text-xs text-zinc-400">{rotulo}</dt>
             <dd className="text-zinc-100">{valor ?? "—"}</dd>
           </div>
         ))}
       </dl>
       {orden.imagenes && orden.imagenes.length > 0 && (
         <div>
-          <p className="text-xs text-zinc-500">Las imágenes que usa cada creativo (las que subiste):</p>
+          <p className="text-xs text-zinc-400">Las imágenes que usa cada creativo (las que subiste):</p>
           <ul className="mt-1 space-y-1 text-sm" aria-label="Imágenes de la orden">
             {orden.imagenes.map((imagen) => (
               <li key={imagen.archivo} className="flex flex-wrap gap-2">
                 <span className="text-zinc-100">{imagen.nombre_en_biblioteca}</span>
-                <span className="text-zinc-500">de {imagen.archivo}</span>
-                <code className="text-xs text-zinc-500">{imagen.image_hash}</code>
+                <span className="text-zinc-400">de {imagen.archivo}</span>
+                <code className="text-xs text-zinc-400">{imagen.image_hash}</code>
               </li>
             ))}
           </ul>
@@ -220,9 +220,9 @@ function OrdenParaAprobar({ id, pendiente }: { id: string; pendiente: Extract<Pe
         {orden.llamadas.map((llamada) => (
           <li key={llamada.n} className="rounded-lg border border-zinc-800 bg-zinc-950/60 p-3">
             <div className="flex items-baseline gap-2 text-sm">
-              <span className="text-zinc-500">{llamada.n}.</span>
+              <span className="text-zinc-400">{llamada.n}.</span>
               <span className="font-medium text-zinc-100">{LLAMADA_DE_META[llamada.tool] ?? llamada.tool}</span>
-              <code className="text-xs text-zinc-500">{llamada.tool}</code>
+              <code className="text-xs text-zinc-400">{llamada.tool}</code>
             </div>
             <pre className="mt-1 overflow-x-auto text-xs text-zinc-400">{JSON.stringify(llamada.args, null, 2)}</pre>
           </li>
@@ -231,7 +231,7 @@ function OrdenParaAprobar({ id, pendiente }: { id: string; pendiente: Extract<Pe
           <li className="text-sm text-zinc-400">Meta ya tiene todo: no hay nada nuevo que crear.</li>
         )}
       </ol>
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-400">
         Huella de esta orden: <code>{pendiente.hash.slice(0, 12)}</code>. La aprobación vale {pendiente.caduca_horas} horas
         desde que la das; pasado ese tiempo se vuelve a pedir.
       </p>
@@ -352,7 +352,7 @@ function Acciones({ trabajo }: { trabajo: TrabajoDetalle }) {
         </p>
       )}
       {SE_REINTENTAN.includes(trabajo.estado) && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           Reintentar corre todo desde cero con los mismos datos. Una aprobación de antes no se hereda.
         </p>
       )}
@@ -379,7 +379,7 @@ function Resultado({ trabajo }: { trabajo: TrabajoDetalle }) {
             {falta.map((f) => (
               <li key={f.dato}>
                 · {f.dato}
-                {f.dueno && <span className="text-zinc-500"> — lo produce: {f.dueno}</span>}
+                {f.dueno && <span className="text-zinc-400"> — lo produce: {f.dueno}</span>}
               </li>
             ))}
           </ul>
@@ -388,14 +388,14 @@ function Resultado({ trabajo }: { trabajo: TrabajoDetalle }) {
       {trabajo.unidades.map((unidad, i) => {
         const u = unidad as { costo_equivalente_usd?: number | null; unidad_n?: number };
         return u.costo_equivalente_usd != null ? (
-          <p key={i} className="text-xs text-zinc-500">
+          <p key={i} className="text-xs text-zinc-400">
             Claude, paso {u.unidad_n ?? i + 1}: costo equivalente US${u.costo_equivalente_usd} en precio de API — con tu suscripción no
             se cobra.
           </p>
         ) : null;
       })}
       {trabajo.run_dir && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           Rastro completo en <code>{trabajo.run_dir}</code>
         </p>
       )}
@@ -430,9 +430,9 @@ function DetalleDeTrabajo({ id }: { id: string }) {
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-xl font-semibold">{trabajo.rotulo || trabajo.accion_id}</h1>
           <EstadoDeTrabajo estado={trabajo.estado} />
-          <code className="text-xs text-zinc-500">{trabajo.estado}</code>
+          <code className="text-xs text-zinc-400">{trabajo.estado}</code>
         </div>
-        <p className="text-sm text-zinc-500">
+        <p className="text-sm text-zinc-400">
           {trabajo.producto_key ?? "sin producto"} · empezó {hora(trabajo.iniciado)}
           {trabajo.terminado ? ` · terminó ${hora(trabajo.terminado)}` : ""}
         </p>
@@ -448,13 +448,13 @@ function DetalleDeTrabajo({ id }: { id: string }) {
       <Tarjeta className="space-y-2">
         <div className="flex items-center justify-between">
           <h2 className="font-medium text-zinc-100">Lo que va pasando</h2>
-          <span className="text-xs text-zinc-500">{progreso.conectado ? "en vivo" : "sin conexión en vivo"}</span>
+          <span className="text-xs text-zinc-400">{progreso.conectado ? "en vivo" : "sin conexión en vivo"}</span>
         </div>
         <pre
           aria-label="Registro en vivo"
           className="max-h-96 overflow-auto rounded-lg bg-zinc-950 p-3 text-xs leading-relaxed"
         >
-          {progreso.lineas.length === 0 && <span className="text-zinc-600">Todavía no hay líneas.</span>}
+          {progreso.lineas.length === 0 && <span className="text-zinc-400">Todavía no hay líneas.</span>}
           {progreso.lineas.map((linea, i) => (
             <div
               key={i}
@@ -465,7 +465,7 @@ function DetalleDeTrabajo({ id }: { id: string }) {
                 linea.tipo === "salida" && "text-zinc-300",
               )}
             >
-              <span className="text-zinc-600">{linea.unidad}· </span>
+              <span className="text-zinc-400">{linea.unidad}· </span>
               {linea.texto}
             </div>
           ))}
@@ -498,13 +498,13 @@ export function Trabajos() {
         </div>
         <EstadoDeClaude />
       </header>
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-400">
         Si tenés una sesión de Claude Code abierta trabajando en el sistema, esperá a que termine antes de pedir una
         acción acá: no comparten turno de escritura.
       </p>
       <div className="grid gap-6 lg:grid-cols-[22rem_1fr]">
         <ListaDeTrabajos actual={id} />
-        <div className="min-w-0">{id ? <DetalleDeTrabajo id={id} key={id} /> : <p className="text-sm text-zinc-500">Elegí un trabajo de la lista.</p>}</div>
+        <div className="min-w-0">{id ? <DetalleDeTrabajo id={id} key={id} /> : <p className="text-sm text-zinc-400">Elegí un trabajo de la lista.</p>}</div>
       </div>
     </div>
   );

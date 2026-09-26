@@ -8,8 +8,8 @@
 /*
  * Tokens Linear-style: gris neutro para fondo/texto, UN acento (índigo) para lo interactivo,
  * y cuatro tokens semánticos de estado que Ads/_TOOLS/decidir.py ya nombra (ESCALAR, PAUSAR,
- * SEGUIR_MIDIENDO, RENOVAR). El tema claro es la base; `.dark` en <html> lo invierte
- * (alternador en el pie de la barra lateral, persistido en localStorage).
+ * SEGUIR_MIDIENDO, RENOVAR). La app corre solo en oscuro: `index.html` fija `.dark` en <html>
+ * desde el primer pintado. Los tokens claros quedan para cuando se retome el tema claro.
  */
 :root {
   color-scheme: light;

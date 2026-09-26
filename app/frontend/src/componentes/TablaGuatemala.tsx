@@ -56,7 +56,7 @@ export function TablaGuatemala({ costeo }: { costeo: Costeo }) {
 
       <table className="w-full text-sm" data-testid="escalera">
         <thead>
-          <tr className="text-left text-xs uppercase tracking-wide text-zinc-500">
+          <tr className="text-left text-xs uppercase tracking-wide text-zinc-400">
             <th className="pb-2 font-medium">Oferta</th>
             <th className="pb-2 font-medium">Precio</th>
             <th className="pb-2 font-medium">Costo del pedido</th>
@@ -77,25 +77,25 @@ export function TablaGuatemala({ costeo }: { costeo: Costeo }) {
 
       <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4" data-testid="umbrales">
         <div>
-          <dt className="text-xs text-zinc-500">
+          <dt className="text-xs text-zinc-400">
             CPA objetivo
             <Info termino="cpa" />
           </dt>
           <dd className="text-zinc-100">{q(costeo.cpa_objetivo)}</dd>
         </div>
         <div>
-          <dt className="text-xs text-zinc-500">
+          <dt className="text-xs text-zinc-400">
             Break-even
             <Info termino="break_even" />
           </dt>
           <dd className="font-semibold text-zinc-100">{q(costeo.cpa_break_even)}</dd>
         </div>
         <div>
-          <dt className="text-xs text-zinc-500">Envío</dt>
+          <dt className="text-xs text-zinc-400">Envío</dt>
           <dd className="text-zinc-100">{q(costeo.valor_envio)}</dd>
         </div>
         <div>
-          <dt className="text-xs text-zinc-500">Ganancia por pedido de 1u</dt>
+          <dt className="text-xs text-zinc-400">Ganancia por pedido de 1u</dt>
           <dd className="text-zinc-100">{q(costeo.utilidad_esperada)}</dd>
         </div>
       </dl>
@@ -106,7 +106,7 @@ export function TablaGuatemala({ costeo }: { costeo: Costeo }) {
           {arranque.nota}
         </p>
       )}
-      <p className="text-[11px] text-zinc-600">
+      <p className="text-[11px] text-zinc-400">
         Fuente: {costeo.fuente} · escalera {costeo.origen_escalera}. Estas cifras se muestran para
         decidir; las guarda etapa-guardar-producto al cerrar el paquete de FASE 1.
       </p>

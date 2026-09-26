@@ -50,7 +50,7 @@ function Pasos({ actual, ir }: { actual: number; ir: (n: number) => void }) {
               "rounded-lg border px-3 py-1.5 text-sm",
               i === actual && "border-sky-700 bg-sky-950/40 text-sky-200",
               i < actual && "border-zinc-700 text-zinc-300 hover:border-zinc-500",
-              i > actual && "border-zinc-800 text-zinc-600",
+              i > actual && "border-zinc-800 text-zinc-400",
             )}
           >
             {i + 1}. {nombre}
@@ -164,7 +164,7 @@ export function NuevoProducto() {
                 onChange={(e) => setImagen(e.target.files?.[0] ?? null)}
               />
             </label>
-            <p className="text-xs text-zinc-500">
+            <p className="text-xs text-zinc-400">
               Esta foto queda declarada como el packshot: es la que usan los creativos. Que sea el
               envase real, sin anuncio encima.
             </p>
@@ -185,7 +185,7 @@ export function NuevoProducto() {
             />
           </label>
           <div className="flex items-center justify-between text-xs">
-            <span className="text-zinc-500">Conviene incluir:</span>
+            <span className="text-zinc-400">Conviene incluir:</span>
             <Chip tono={descripcion.trim().length >= MINIMO_DESCRIPCION ? "bien" : "aviso"}>
               {descripcion.trim().length} / {MINIMO_DESCRIPCION} caracteres mínimos
             </Chip>
@@ -204,7 +204,7 @@ export function NuevoProducto() {
             <label className="block max-w-xs">
               <span className="text-sm text-zinc-300">Costo del pedido completo, en quetzales</span>
               <div className="mt-1 flex items-center rounded-lg border border-zinc-700 bg-zinc-950 focus-within:border-sky-600">
-                <span className="pl-3 text-zinc-500">Q</span>
+                <span className="pl-3 text-zinc-400">Q</span>
                 <input
                   value={costo}
                   inputMode="decimal"
@@ -214,12 +214,12 @@ export function NuevoProducto() {
                 />
               </div>
             </label>
-            <p className="mt-2 text-xs text-zinc-500">
+            <p className="mt-2 text-xs text-zinc-400">
               Si se vende en combo (2x1), va el costo de TODO el pedido: VARICOSE vende 2 frascos de
               Q45, así que va 90.
             </p>
           </Tarjeta>
-          {costeo.isFetching && <p className="text-sm text-zinc-500">Consultando la tabla…</p>}
+          {costeo.isFetching && <p className="text-sm text-zinc-400">Consultando la tabla…</p>}
           {costeo.error && <p className="text-sm text-rose-300">{(costeo.error as Error).message}</p>}
           {costeo.data && costoDemorado === costo && <TablaGuatemala costeo={costeo.data} />}
         </div>
@@ -239,7 +239,7 @@ export function NuevoProducto() {
             </li>
             <li>Tocá «Transcribir videos»: se pasan a texto acá mismo, sin subirlos a ningún lado.</li>
           </ol>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-400">
             La transcripción toma lo que se ESCUCHA. Si un video no tiene voz y todo está en texto
             en pantalla, la app te lo avisa.
           </p>

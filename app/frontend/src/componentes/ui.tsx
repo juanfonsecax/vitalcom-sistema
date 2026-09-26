@@ -79,7 +79,7 @@ export function Info({ termino }: { termino: ClaveGlosario }) {
         >
           <strong className="block text-zinc-100">{rotulo}</strong>
           {que_es}
-          {dueno && <em className="mt-1 block not-italic text-zinc-500">Lo produce: {dueno}</em>}
+          {dueno && <em className="mt-1 block not-italic text-zinc-400">Lo produce: {dueno}</em>}
         </span>
       )}
     </span>
@@ -87,7 +87,7 @@ export function Info({ termino }: { termino: ClaveGlosario }) {
 }
 
 export function Cargando({ que }: { que: string }) {
-  return <p className="animate-pulse text-sm text-zinc-500">Leyendo {que}…</p>;
+  return <p className="animate-pulse text-sm text-zinc-400">Leyendo {que}…</p>;
 }
 
 export function Problema({ error }: { error: unknown }) {

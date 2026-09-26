@@ -9,17 +9,15 @@
  * Colapsa a solo-íconos en escritorio (SidebarTrigger) y se vuelve panel off-canvas
  * (Sheet) bajo 768px — ambos comportamientos vienen del componente `Sidebar` de shadcn/ui.
  */
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarCheck, ChevronsUpDown, Laptop, Moon, Package, Settings, SlidersHorizontal, Sun } from "lucide-react";
+import { CalendarCheck, Package, Settings, SlidersHorizontal } from "lucide-react";
 
 import { api } from "../api/cliente";
-import { useTema, type Tema } from "./tema";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -32,13 +30,6 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
 
 type ClaveNav = "hoy" | "productos" | "resultados" | "ajustes";
 
@@ -51,41 +42,6 @@ function claveActiva(ruta: string): ClaveNav {
   return RUTAS_AJUSTES.some((base) => ruta === base || ruta.startsWith(`${base}/`)) ? "ajustes" : "hoy";
 }
 
-const OPCIONES_TEMA: { valor: Tema; etiqueta: string; icono: ReactNode }[] = [
-  { valor: "light", etiqueta: "Claro", icono: <Sun className="size-4" /> },
-  { valor: "dark", etiqueta: "Oscuro", icono: <Moon className="size-4" /> },
-  { valor: "system", etiqueta: "Del sistema", icono: <Laptop className="size-4" /> },
-];
-
-/** Alternador claro/oscuro/sistema, en el pie de la barra lateral. */
-function AlternadorTema() {
-  const { tema, setTema } = useTema();
-  const [abierto, setAbierto] = useState(false);
-  const actual = OPCIONES_TEMA.find((o) => o.valor === tema) ?? OPCIONES_TEMA[2];
-  return (
-    <DropdownMenu open={abierto} onOpenChange={setAbierto}>
-      <DropdownMenuTrigger
-        render={
-          <SidebarMenuButton>
-            {actual.icono}
-            <span className="flex min-w-0 flex-1 items-center justify-between gap-2 group-data-[collapsible=icon]:hidden">
-              <span className="truncate">Tema: {actual.etiqueta}</span>
-              <ChevronsUpDown className="size-3.5 shrink-0 opacity-60" />
-            </span>
-          </SidebarMenuButton>
-        }
-      />
-      <DropdownMenuContent align="start" className="w-48">
-        {OPCIONES_TEMA.map((opcion) => (
-          <DropdownMenuItem key={opcion.valor} onClick={() => setTema(opcion.valor)}>
-            {opcion.icono}
-            {opcion.etiqueta}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 function BarraLateral() {
   const { pathname } = useLocation();
@@ -143,14 +99,6 @@ function BarraLateral() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <Separator className="mb-1" />
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <AlternadorTema />
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );

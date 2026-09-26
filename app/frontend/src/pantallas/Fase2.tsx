@@ -165,7 +165,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             <h3 className="text-sm font-semibold text-zinc-200">
               Carriles Escalonados · Ganadores Secundarios (#2 y #3)
             </h3>
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-zinc-400">
               Cadencia: ~3 días de separación (CALENDARIO_ESCALADO §1)
             </span>
           </div>

@@ -67,7 +67,7 @@ function Dato({ requisito }: { requisito: Requisito }) {
       </span>
       <span>
         <span className="text-zinc-200">{requisito.dato}</span>
-        <span className="block text-xs text-zinc-500">
+        <span className="block text-xs text-zinc-400">
           {requisito.observado}
           {requisito.dueno && <> · lo produce {requisito.dueno}</>}
         </span>
@@ -95,9 +95,9 @@ function Paso({ nodo, esActual }: { nodo: Nodo; esActual: boolean }) {
         </h3>
         <Chip tono={estado.tono}>{estado.texto}</Chip>
       </div>
-      <p className="mt-1 font-mono text-[11px] text-zinc-600">{nodo.id}</p>
+      <p className="mt-1 font-mono text-[11px] text-zinc-400">{nodo.id}</p>
       <p className="mt-2 text-sm text-zinc-400">{nodo.como}</p>
-      <p className="mt-2 text-xs text-zinc-500">
+      <p className="mt-2 text-xs text-zinc-400">
         {quienLoHace(nodo.ejecutor_tipo)} · {nodo.ejecutor}
       </p>
       {nodo.produce.length > 0 && (
@@ -121,7 +121,7 @@ function Resumen({ d }: { d: Flujo }) {
 
       {d.entradas.length > 0 && (
         <Tarjeta>
-          <p className="text-xs uppercase tracking-wide text-zinc-500">
+          <p className="text-xs uppercase tracking-wide text-zinc-400">
             Para pasar a la fase siguiente
             <Info termino="ganador_por_venta" />
           </p>
@@ -194,9 +194,9 @@ function Header({ d }: { d: Flujo }) {
               {tituloDelPaso} <Chip tono={estado.tono}>{estado.texto}</Chip>
             </p>
             <p className="mt-1 text-xs text-muted-foreground">{quien}</p>
-            {d.ejecutor && <p className="text-xs text-muted-foreground/70">{d.ejecutor}</p>}
+            {d.ejecutor && <p className="text-xs text-muted-foreground">{d.ejecutor}</p>}
             {d.nodo_actual && (
-              <p className="mt-1 font-mono text-[11px] text-muted-foreground/70" title="Id interno del paso en el grafo">
+              <p className="mt-1 font-mono text-[11px] text-muted-foreground" title="Id interno del paso en el grafo">
                 {d.nodo_actual}
               </p>
             )}

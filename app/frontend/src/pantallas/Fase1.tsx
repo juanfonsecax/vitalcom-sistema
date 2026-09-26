@@ -90,7 +90,7 @@ export function formatearNegrita(texto: string): React.ReactNode {
 export function TextoLegible({ texto }: { texto: string | null | undefined }) {
   if (!texto) {
     return (
-      <p className="text-xs italic text-zinc-500">
+      <p className="text-xs italic text-zinc-400">
         Pendiente: esta etapa todavía no ha generado contenido.
       </p>
     );
@@ -236,7 +236,7 @@ function TabAvance({
                 /trabajos/{c.job_id}
               </Link>
               {c.retomado_de && (
-                <span className="text-zinc-500">
+                <span className="text-zinc-400">
                   (retomado de {c.retomado_de.slice(0, 8)})
                 </span>
               )}
@@ -408,7 +408,7 @@ function TabInvestigacion({ corrida }: { corrida: CorridaF1 | undefined }) {
         <h3 className="text-lg font-semibold text-sky-400">
           Investigación de mercado y voz del cliente (etapa-1b)
         </h3>
-        <p className="mb-4 text-xs text-zinc-500">
+        <p className="mb-4 text-xs text-zinc-400">
           Salida textual estructurada de etapa-1b: dolores, deseos, objeciones y testimonios de la
           competencia.
         </p>
@@ -419,7 +419,7 @@ function TabInvestigacion({ corrida }: { corrida: CorridaF1 | undefined }) {
         <h3 className="text-lg font-semibold text-sky-400">
           Costeo y arquitectura de oferta (etapa-1)
         </h3>
-        <p className="mb-4 text-xs text-zinc-500">
+        <p className="mb-4 text-xs text-zinc-400">
           Estructura de precios de Guatemala, CPA objetivo y break-even.
         </p>
         <TextoLegible texto={etapa1?.texto} />
@@ -429,7 +429,7 @@ function TabInvestigacion({ corrida }: { corrida: CorridaF1 | undefined }) {
         <h3 className="text-lg font-semibold text-sky-400">
           Transcripciones y ángulos iniciales (etapa-0)
         </h3>
-        <p className="mb-4 text-xs text-zinc-500">
+        <p className="mb-4 text-xs text-zinc-400">
           Extracción de testimonios y ángulos desde los videos de la competencia.
         </p>
         <TextoLegible texto={etapa0?.texto} />
@@ -473,26 +473,26 @@ function TabAngulos({
               <div className="border-b border-zinc-800 pb-2">
                 <span className="font-mono text-xs text-sky-400">Ángulo {c.n || index + 1}</span>
                 <h3 className="text-base font-semibold text-zinc-100">{c.angulo_titulo}</h3>
-                <p className="font-mono text-xs text-zinc-500">{c.angulo_key}</p>
+                <p className="font-mono text-xs text-zinc-400">{c.angulo_key}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="rounded bg-zinc-950/60 p-2">
-                  <span className="text-zinc-500">Avatar:</span>
+                  <span className="text-zinc-400">Avatar:</span>
                   <p className="font-medium text-zinc-200">
                     {c.avatar_genero} · {c.avatar_edad}
                   </p>
                 </div>
                 <div className="rounded bg-zinc-950/60 p-2">
-                  <span className="text-zinc-500">Nivel de conciencia:</span>
+                  <span className="text-zinc-400">Nivel de conciencia:</span>
                   <p className="font-medium text-zinc-200">{c.nivel_conciencia}</p>
                 </div>
                 <div className="rounded bg-zinc-950/60 p-2">
-                  <span className="text-zinc-500">Formato:</span>
+                  <span className="text-zinc-400">Formato:</span>
                   <p className="font-medium text-zinc-200">{c.formato}</p>
                 </div>
                 <div className="rounded bg-zinc-950/60 p-2">
-                  <span className="text-zinc-500">Embudo:</span>
+                  <span className="text-zinc-400">Embudo:</span>
                   <p className="text-amber-400 font-medium">Pendiente de decisión</p>
                 </div>
               </div>
@@ -510,13 +510,13 @@ function TabAngulos({
                     <TextoLegible texto={textoAngulo} />
                   ) : etapa2?.texto ? (
                     <div className="space-y-1">
-                      <span className="text-zinc-500 italic">
+                      <span className="text-zinc-400 italic">
                         (Mostrando salida general de etapa-2)
                       </span>
                       <TextoLegible texto={etapa2.texto} />
                     </div>
                   ) : (
-                    <p className="italic text-zinc-500">Sin salida de etapa-2 todavía.</p>
+                    <p className="italic text-zinc-400">Sin salida de etapa-2 todavía.</p>
                   )}
                 </div>
               </div>
@@ -597,7 +597,7 @@ function TabAnuncios({
                         className="max-h-64 rounded object-contain"
                       />
                     )}
-                    <span className="mt-1 font-mono text-[11px] text-zinc-500">
+                    <span className="mt-1 font-mono text-[11px] text-zinc-400">
                       {pieza.archivo}
                     </span>
                   </div>
@@ -606,7 +606,7 @@ function TabAnuncios({
                     <span className="text-sm font-semibold text-amber-300">
                       falta la pieza
                     </span>
-                    <span className="mt-1 font-mono text-xs text-zinc-500">
+                    <span className="mt-1 font-mono text-xs text-zinc-400">
                       {cj.archivo_creativo || "Archivo no encontrado"}
                     </span>
                     <p className="mt-2 text-xs text-zinc-400">
@@ -743,7 +743,7 @@ function TabFlujoBot({
           </h3>
 
           {sec.instrucciones && sec.instrucciones.length > 0 && (
-            <div className="rounded bg-zinc-950/60 p-2.5 text-xs text-zinc-500 space-y-0.5">
+            <div className="rounded bg-zinc-950/60 p-2.5 text-xs text-zinc-400 space-y-0.5">
               {sec.instrucciones.map((inst, iIdx) => (
                 <p key={iIdx}>&gt;&gt; {inst}</p>
               ))}
@@ -760,11 +760,11 @@ function TabFlujoBot({
 
                 {/* Lo que se pega: instrucciones NO van acá */}
                 <div>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400">
                     Texto para pegar en LucidBot:
                   </span>
                   <pre className="mt-1 max-h-56 overflow-y-auto whitespace-pre-wrap rounded bg-zinc-950 p-3 font-mono text-xs text-zinc-200 border border-zinc-800">
-                    {b.pegar || <span className="italic text-zinc-600">(Bloque vacío)</span>}
+                    {b.pegar || <span className="italic text-zinc-400">(Bloque vacío)</span>}
                   </pre>
                 </div>
 
@@ -786,7 +786,7 @@ function TabFlujoBot({
 
                 {/* Instrucciones >> completamente aparte, en gris */}
                 {b.instrucciones && b.instrucciones.length > 0 && (
-                  <div className="rounded border border-zinc-800/80 bg-zinc-900/40 p-2 text-xs text-zinc-500">
+                  <div className="rounded border border-zinc-800/80 bg-zinc-900/40 p-2 text-xs text-zinc-400">
                     <span className="block font-semibold text-zinc-400">
                       Instrucciones operativas (NO se pegan en LucidBot):
                     </span>
@@ -837,15 +837,15 @@ function TabCampana({
         {campanas.map((c: any, idx: number) => (
           <div key={idx} className="grid grid-cols-1 gap-2 text-xs md:grid-cols-3">
             <div className="rounded bg-zinc-950 p-2.5">
-              <span className="text-zinc-500">Nombre en Meta:</span>
+              <span className="text-zinc-400">Nombre en Meta:</span>
               <p className="font-mono font-medium text-zinc-200">{c.nombre}</p>
             </div>
             <div className="rounded bg-zinc-950 p-2.5">
-              <span className="text-zinc-500">Objetivo:</span>
+              <span className="text-zinc-400">Objetivo:</span>
               <p className="font-medium text-zinc-200">{c.objetivo}</p>
             </div>
             <div className="rounded bg-zinc-950 p-2.5">
-              <span className="text-zinc-500">Lanzamiento programado:</span>
+              <span className="text-zinc-400">Lanzamiento programado:</span>
               <p className="font-medium text-amber-300">
                 {lanzamiento?.fecha || lanzamiento?.legible || "Día siguiente"} · 4:00 AM
               </p>
@@ -916,7 +916,7 @@ function TabCampana({
               </p>
               {cj.anuncios && cj.anuncios.length > 0 && (
                 <div className="mt-2 space-y-1 text-xs">
-                  <span className="text-zinc-500">Anuncios:</span>
+                  <span className="text-zinc-400">Anuncios:</span>
                   <ul className="space-y-0.5 font-mono text-[11px] text-zinc-300">
                     {cj.anuncios.map((ad: any, aIdx: number) => (
                       <li key={aIdx} className="rounded bg-zinc-950 px-2 py-0.5">
@@ -1020,7 +1020,7 @@ function TabChecklist({
                         onChange={(e) =>
                           setValoresTexto((prev) => ({ ...prev, page_id: e.target.value }))
                         }
-                        className="rounded border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-sky-500"
+                        className="rounded border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-sky-500"
                       />
                       <button
                         type="button"
@@ -1151,7 +1151,7 @@ function TabChecklist({
               return (
                 <div key={idx} className="rounded-lg border border-zinc-800 bg-zinc-950/60 p-3">
                   <span className="text-sm font-medium text-zinc-200">{b.falta}</span>
-                  <p className="text-xs text-zinc-500">lo produce: {b.lo_produce || "etapa"}</p>
+                  <p className="text-xs text-zinc-400">lo produce: {b.lo_produce || "etapa"}</p>
                 </div>
               );
             })}
@@ -1176,7 +1176,7 @@ function TabChecklist({
               {preflightList.map((pf: any, idx: number) => (
                 <li key={idx} className="flex items-center justify-between">
                   <span>{String(pf.verificar || JSON.stringify(pf))}</span>
-                  <span className="text-zinc-500 italic">se verifica al publicar (contra Meta)</span>
+                  <span className="text-zinc-400 italic">se verifica al publicar (contra Meta)</span>
                 </li>
               ))}
             </ul>
@@ -1236,7 +1236,7 @@ function TabChecklist({
                           placeholder="Título opcional"
                           value={tituloTranscripcion}
                           onChange={(e) => setTituloTranscripcion(e.target.value)}
-                          className="rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-200 placeholder:text-zinc-600 focus:outline-none"
+                          className="rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-200 placeholder:text-zinc-500 focus:outline-none"
                         />
                         <button
                           type="button"
@@ -1283,7 +1283,7 @@ function TabChecklist({
                         </button>
                       </div>
                       {archivosTranscripcion.length > 0 && (
-                        <p className="text-[11px] text-zinc-500">
+                        <p className="text-[11px] text-zinc-400">
                           Seleccionados: {archivosTranscripcion.map((f) => f.name).join(", ")}
                         </p>
                       )}
@@ -1320,7 +1320,7 @@ function TabChecklist({
                   )}
 
                   {!tieneTranscripcion && !tieneCosto && (
-                    <p className="text-xs text-zinc-500">
+                    <p className="text-xs text-zinc-400">
                       lo produce: {item.dueno || "etapa"}
                     </p>
                   )}
@@ -1406,7 +1406,7 @@ export function Fase1() {
           >
             {t.label}
             {t.badge !== undefined && t.badge > 0 && (
-              <span className="rounded-full bg-amber-600 px-1.5 py-0.2 text-[10px] font-bold text-white">
+              <span className="rounded-full bg-amber-500 px-1.5 py-0.2 text-[10px] font-bold text-zinc-950">
                 {t.badge}
               </span>
             )}

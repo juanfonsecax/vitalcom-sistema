@@ -94,7 +94,7 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
           </div>
 
           <div className="rounded-lg bg-zinc-900/80 p-3 text-right">
-            <span className="text-[11px] uppercase text-zinc-500">Evidencia del Motor</span>
+            <span className="text-[11px] uppercase text-zinc-400">Evidencia del Motor</span>
             <div className="mt-1 font-mono text-xs font-semibold text-zinc-200">
               {d.gate_2de2.observado || "Sin datos de replicación"}
             </div>
@@ -145,16 +145,16 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
           </p>
           <div className="rounded-lg bg-zinc-950 p-3 text-xs space-y-2">
             <div>
-              <span className="text-zinc-500">Cuenta Principal:</span>{" "}
+              <span className="text-zinc-400">Cuenta Principal:</span>{" "}
               <span className="font-mono font-semibold text-zinc-200">{d.expansion.cuenta_primaria}</span>
             </div>
             <div>
-              <span className="text-zinc-500">Cuentas con réplica ({d.expansion.cuentas_activas.length}):</span>{" "}
+              <span className="text-zinc-400">Cuentas con réplica ({d.expansion.cuentas_activas.length}):</span>{" "}
               <span className="font-mono text-zinc-300">{d.expansion.cuentas_activas.join(", ")}</span>
             </div>
             {d.expansion.page_id && (
               <div>
-                <span className="text-zinc-500">FanPage ID:</span>{" "}
+                <span className="text-zinc-400">FanPage ID:</span>{" "}
                 <span className="font-mono text-zinc-300">{d.expansion.page_id}</span>
               </div>
             )}

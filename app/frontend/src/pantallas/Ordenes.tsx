@@ -174,14 +174,14 @@ export function Ordenes() {
             Acciones recomendadas ({ordenes.length})
           </h2>
           {!cicloHabilitado && (
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-zinc-400">
               Ejecución automática en Meta deshabilitada por doctrina (modo manual/revisión).
             </span>
           )}
         </div>
 
         {ordenes.length === 0 ? (
-          <Tarjeta className="py-8 text-center text-zinc-500">
+          <Tarjeta className="py-8 text-center text-zinc-400">
             No hay órdenes pendientes para hoy. El motor midió y todas las campañas continúan su curso.
           </Tarjeta>
         ) : (
@@ -221,7 +221,7 @@ export function Ordenes() {
                     <div className="mt-3 rounded-lg bg-zinc-950/60 p-3 text-sm text-zinc-200 border border-zinc-800/80">
                       <p className="font-semibold text-zinc-100">{titulo}</p>
                       {titulo !== orden.frase_simple && (
-                        <p className="mt-1 text-xs text-zinc-500">Orden original del motor: {orden.frase_simple}</p>
+                        <p className="mt-1 text-xs text-zinc-400">Orden original del motor: {orden.frase_simple}</p>
                       )}
                     </div>
 
@@ -238,7 +238,7 @@ export function Ordenes() {
 
                     {/* Por qué este estado, en las palabras del glosario (nunca inventadas acá) */}
                     {glosarioDelEstado && (
-                      <p className="mt-2 text-xs text-zinc-500">
+                      <p className="mt-2 text-xs text-zinc-400">
                         <strong className="text-zinc-400">{glosarioDelEstado.rotulo}:</strong>{" "}
                         {glosarioDelEstado.que_es}
                       </p>
@@ -247,25 +247,25 @@ export function Ordenes() {
                     {/* Métricas de sustento */}
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-zinc-400">
                       <div>
-                        <span className="block text-zinc-500">CPA Observado:</span>
+                        <span className="block text-zinc-400">CPA Observado:</span>
                         <span className="font-semibold text-zinc-200">
                           {pq.cpa_real_q != null ? `Q${pq.cpa_real_q}` : "Sin datos"}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-zinc-500">Break-even:</span>
+                        <span className="block text-zinc-400">Break-even:</span>
                         <span className="font-semibold text-zinc-200">
                           {pq.break_even_q != null ? `Q${pq.break_even_q}` : "No fijado"}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-zinc-500">Intervalo 95%:</span>
+                        <span className="block text-zinc-400">Intervalo 95%:</span>
                         <span className="font-mono text-zinc-300">
                           {ic && ic.length === 3 ? `[${ic[0]}, ${ic[2]}]` : "No disponible"}
                         </span>
                       </div>
                       <div>
-                        <span className="block text-zinc-500">Ventas faltantes:</span>
+                        <span className="block text-zinc-400">Ventas faltantes:</span>
                         {pq.ventas_actual != null && pq.ventas_necesarias != null ? (
                           <div className="mt-1">
                             <progress
@@ -291,7 +291,7 @@ export function Ordenes() {
                         )}
                       </div>
                       <div>
-                        <span className="block text-zinc-500">Cierre (mensajes → ventas):</span>
+                        <span className="block text-zinc-400">Cierre (mensajes → ventas):</span>
                         <span className="text-zinc-300">
                           {cierreEnPalabras(pq.cierre_pct as number | null | undefined, cierreMetaMin, cierreMetaMax)}
                         </span>
@@ -308,7 +308,7 @@ export function Ordenes() {
 
                   {/* Acciones de confirmación */}
                   <div className="flex items-center justify-between border-t border-zinc-800 pt-3">
-                    <span className="text-xs text-zinc-500">
+                    <span className="text-xs text-zinc-400">
                       {orden.ejecutable ? "Listo para revisión" : "Solo informativo"}
                     </span>
                     <div className="flex gap-2">
