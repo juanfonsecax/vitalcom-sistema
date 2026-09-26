@@ -60,7 +60,11 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   503. Test overrides: `DECIDIR_TENANT_ID`, `VITALCOM_DB_TENANT`; backend conftest forces `csv`.
   Checks (25-sep): db 46 passed · tools 45 passed · backend 176 passed · real
   `decidir.py --json` db vs csv: IGUAL (orchestrator re-ran it) · protected files untouched.
-  e2e NOT run: `app/frontend` has no `node_modules` (needs setup) — pending.
+  e2e (25-sep): `pnpm install --frozen-lockfile` + `pnpm build`, then Playwright against the real
+  system (all specs read-only; PRODUCTOS md5 + git status identical before/after). Parallel run
+  was flaky: Postgres 3 failed, CSV 1 failed; serial 15/15 in both. DB mode costs ~+400 ms per
+  flujo.py/decidir.py call (connect + materialize). Fixed `workers: 1` → 15/15 (`1fdad25`).
+  Follow-up (not P3): speed up DB-mode reads (reuse a connection, avoid re-materializing).
 - [x] T6 — Daily cycle script + Windows Task Scheduler task. Code done: `db4dc1d`, `d5ae1f5`,
   `584d82a`. `Ads/_TOOLS/ciclo_diario.py` (preflight drift guards → bajar/ingerir LucidSales →
   Monday control → bajar_meta_insights → ciclo_hoy → gen_dashboard → postcheck guards + decidir
@@ -97,5 +101,4 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
 
 ## Next step
 Let the streak run (`python Ads/_TOOLS/ciclo_diario.py --racha`); check on 26-sep that the
-scheduled task fired on its own. Only open item besides the streak: T5 e2e (frontend
-`node_modules` missing).
+scheduled task fired on its own. Only open item: the streak. Follow-up outside P3: DB-mode read speed.
