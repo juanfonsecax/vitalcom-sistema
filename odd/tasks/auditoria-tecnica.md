@@ -24,9 +24,9 @@ split CLAUDE.md) are out of scope until real token usage is measured.
 - Route: all tasks inline (1-3 files each, already understood).
 
 ## Tasks
-- [ ] T1 Fix `_ev_decision` list handling + regression test in `test_flujo.py`.
-- [ ] T2 Align GUIA_MADRE price row with COPYWRITING_ADS and register a verifier.
-- [ ] T3 Nightly task reads the aggregate; raw facts only by targeted query.
+- [x] T1 Fix `_ev_decision` list handling + regression test in `test_flujo.py`.
+- [x] T2 Align GUIA_MADRE price row with COPYWRITING_ADS and register a verifier.
+- [x] T3 Nightly task reads the aggregate; raw facts only by targeted query.
 
 ## Checks
 - `python Ads/_TOOLS/test_flujo.py`
@@ -34,3 +34,9 @@ split CLAUDE.md) are out of scope until real token usage is measured.
 - `python Ads/_TOOLS/flujo.py --todo` shows no "error evaluando decision".
 
 ## Progress / evidence
+- T1 e151330: RED observed (40/41), GREEN 41/41; live `flujo.py --todo` shows 0 "error evaluando".
+- T2 781c37f: `verificar_guia_madre.py` exit 0; simulated drift (1 of 6) fails with exit 1.
+- T3: repo copy updated. Profit is derivable from `_DECISIONES.json` (ETAPA-7.md:126), and
+  etapa-7 reads the fact CSVs itself, so the session-level raw read was pure duplication.
+  PENDING: the scheduler runs a separate copy at
+  `~/.claude/scheduled-tasks/auditoria-vitalcom-diaria/SKILL.md`; syncing it needs operator OK.

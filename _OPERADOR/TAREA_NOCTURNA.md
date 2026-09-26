@@ -48,11 +48,16 @@ Leé la ÚLTIMA fila con `fecha` = hoy en `PRODUCTOS/_CORRIDAS_DIARIAS.csv`.
 correr nada de esto):
 
 - `PRODUCTOS/_DECISIONES.json` — CPA, IC 95%, break-even y `accion_sugerida` por producto/ángulo.
-- `PRODUCTOS/_FACT_VENTAS.csv`, `_FACT_ENTREGA.csv`, `_FACT_ENTREGA_ANUNCIO.csv` — el detalle que
-  sustenta esas cifras.
-- `PRODUCTOS/_EVENTOS.csv` — declarar cualquier `CAMBIO_BOT`/`CAMBIO_CREATIVO`/`CAMBIO_PRODUCTO`
-  dentro de la ventana, para no atribuirle el resultado al ángulo.
-- `PRODUCTOS/_APRENDIZAJES.csv` (`estado=VIGENTE`).
+  Es el agregado completo: ventas, `spend_q` y `break_even_q` por celda. La ganancia del mensaje
+  sale de ahí con la fórmula de `ETAPA-7.md` (Σ ventas × `break_even_q` − Σ `spend_q`).
+- `PRODUCTOS/_EVENTOS.csv` — solo con **Grep** por las fechas de la ventana
+  (`datos_desde`..`datos_hasta` de `_DECISIONES.json`), nunca entero: declarar cualquier
+  `CAMBIO_BOT`/`CAMBIO_CREATIVO`/`CAMBIO_PRODUCTO` dentro de la ventana, para no atribuirle el
+  resultado al ángulo.
+- `PRODUCTOS/_APRENDIZAJES.csv` — solo con **Grep** por `VIGENTE`, nunca entero.
+
+Los `_FACT_*.csv` **no se leen en esta sesión**: `etapa-7` es la dueña del detalle y los consulta
+ella misma. Leerlos acá paga dos veces el mismo dato.
 
 ## PASO 2 — ETAPA-7 (monitor y decisión de escalado, fusionadas)
 
