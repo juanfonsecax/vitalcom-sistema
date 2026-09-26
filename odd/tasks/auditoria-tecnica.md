@@ -68,7 +68,7 @@ split CLAUDE.md) are out of scope until real token usage is measured.
   `pasos_reales`'s prefix, Monday control) · `python Ads/_TOOLS/test_gen_app.py` 51/51 (manifest
   still valid) · backend `.venv` pytest: `test_claude.py` 20/20, `test_ciclo_nocturno.py` 2/2,
   `test_workflows.py`+`test_acciones_api.py` 31/31 · `recopilar_lucidsales.py --dry-run` prints
-  the 2-step plan (4 on a simulated Monday). Commit: a5be5a5.
+  the 2-step plan (4 on a simulated Monday). Commit: 5836337.
 
 ## Next step
 Observe the 2026-09-27 07:11 run: message still carries profit, sales and CPA.
