@@ -40,6 +40,8 @@ except (AttributeError, OSError):
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 WH = os.path.join(BASE, "warehouse")
 JSON = os.path.join(BASE, "PRODUCTOS", "_DECISIONES.json")
+# Mismo tenant y mismo override que decidir.py (DECIDIR_TENANT_ID).
+TENANT_ID = os.environ.get("DECIDIR_TENANT_ID") or "vitalcom"
 
 
 def correr(cmd, cwd, env=None):
@@ -61,20 +63,31 @@ def _capa_analitica(estado, detalle):
 
 
 def _escribir_capa_analitica(capa):
-    """Inyecta `capa_analitica` en PRODUCTOS/_DECISIONES.json ya escrito por decidir.py.
+    """Inyecta `capa_analitica` en la decision que decidir.py acaba de escribir.
 
     decidir.py no conoce el resultado de dbt (corre despues, en un proceso aparte) -- por eso
-    esto post-procesa el JSON en vez de que decidir.py lo reciba como argumento."""
-    if not os.path.exists(JSON):
-        return
+    esto post-procesa la decision en vez de que decidir.py la reciba como argumento.
+    P3: la verdad es raw.decisiones_json. Se lee de Postgres, se inyecta y se reescribe por
+    db/escribir.reemplazar_decision(), que regenera _DECISIONES.json como espejo. Escribir el
+    JSON directo en disco dejaba el espejo distinto de la base (lo detecta la guardia de drift).
+    Postgres caido -> error, nunca escritura directa del JSON."""
+    db_dir = os.path.join(BASE, "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import cargar as db_cargar  # noqa: E402
+    import escribir as db_escribir  # noqa: E402
+
+    prod_dir = os.path.dirname(JSON)
+    con = db_cargar.conectar()
     try:
-        with open(JSON, encoding="utf-8") as f:
-            data = json.load(f)
-    except (OSError, ValueError):
-        return
-    data["capa_analitica"] = capa
-    with open(JSON, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        db_escribir.verificar_decision_sincronizada(con, prod_dir, tenant_id=TENANT_ID)
+        data = db_escribir.leer_decision_actual(con, tenant_id=TENANT_ID)
+        if data is None:
+            return
+        data["capa_analitica"] = capa
+        db_escribir.reemplazar_decision(con, data, prod_dir=prod_dir, tenant_id=TENANT_ID)
+    finally:
+        con.close()
 
 
 def main():

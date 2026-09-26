@@ -151,9 +151,10 @@ def ejecutar_paso_real(paso, log_fh):
 
 # ── preflight / postcheck (inyectables: los tests nunca tocan Postgres real) ────────────────────
 
-def preflight_real():
+def preflight_real(etapa="preflight"):
     """Conecta a Postgres y verifica que cada tabla migrada y `_DECISIONES.json` están
-    sincronizados con su CSV espejo. Nunca cae a CSV: una falla acá es ROJO, punto."""
+    sincronizados con su CSV espejo. Nunca cae a CSV: una falla acá es ROJO, punto.
+    `etapa` solo nombra en el mensaje dónde falló (preflight o postcheck)."""
     import cargar as db_cargar  # noqa: E402  (db/cargar.py)
     import escribir as db_escribir  # noqa: E402  (db/escribir.py)
     import tables as db_tables  # noqa: E402  (db/tables.py)
@@ -166,7 +167,7 @@ def preflight_real():
             db_escribir.verificar_csv_sincronizado(con, tabla, PROD, tenant_id=TENANT_ID)
         db_escribir.verificar_decision_sincronizada(con, PROD, tenant_id=TENANT_ID)
     except db_escribir.ErrorEscritura as exc:
-        return False, "Guardia de drift falló en preflight: %s" % exc
+        return False, "Guardia de drift falló en %s: %s" % (etapa, exc)
     finally:
         con.close()
     return True, ""
@@ -188,9 +189,9 @@ def postcheck_real():
 
     Devuelve (ok, paridad, detalle) donde paridad es IGUAL / DISTINTO / NO_CORRIDA.
     """
-    ok, detalle = preflight_real()
+    ok, detalle = preflight_real(etapa="postcheck")
     if not ok:
-        return False, "NO_CORRIDA", "Guardia de drift falló en postcheck: %s" % detalle
+        return False, "NO_CORRIDA", detalle
     try:
         db = _decidir_json({})
         csv_ = _decidir_json({"VITALCOM_FUENTE": "csv"})
@@ -226,7 +227,8 @@ def _escribir_fila(ruta_csv, fila):
         w = csv.writer(fh)
         if nuevo:
             w.writerow(COLUMNAS)
-        w.writerow([fila.get(c, "") for c in COLUMNAS])
+        # Una fila = una línea: los saltos dentro del detalle mezclaban CRLF y LF en el CSV.
+        w.writerow([" ".join(str(fila.get(c, "")).split()) for c in COLUMNAS])
 
 
 # ── el corredor: puro en su lógica de estados, inyectado en I/O para que los tests no toquen disco real ──
