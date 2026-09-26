@@ -712,9 +712,12 @@
     "id": "nodo.ciclo.datos",
     "rotulo": "Traer las ventas de LucidSales",
     "nodo": "ciclo.datos",
-    "ejecutor_tipo": "skill",
-    "name": "recopilar-lucidsales",
-    "comando": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/recopilar_lucidsales.py"
+    ],
     "parametros": {},
     "requiere_confirmacion": false,
     "aprobacion": "ninguna",
@@ -728,8 +731,7 @@
     "visibilidad": "boton",
     "habilitada": true,
     "tiempo_max_s": 1200,
-    "herramientas": [],
-    "presupuesto_usd": 5
+    "salida": "texto"
    },
    {
     "id": "nodo.ciclo.motor",

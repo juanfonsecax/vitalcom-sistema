@@ -33,6 +33,11 @@ bajar_lucidsales.py  →  report-<ini>-<fin>.json  →  ingerir_lucidsales.py  �
 > semanal → `bajar_meta_insights.py`. Lo de abajo sigue funcionando igual para una corrida manual
 > (un hueco, un `--fecha` puntual, o depurar algo a mano).
 
+> **El botón "Traer las ventas de LucidSales" de la app (T4, 26-sep-2026) ya NO corre esta skill:**
+> corre `Ads/_TOOLS/recopilar_lucidsales.py` (`ejecutor_tipo: script`, gratis y determinístico —
+> antes gastaba una sesión de Claude para dos comandos que no necesitaban ningún juicio). Esta
+> skill sigue viva para el uso manual por CLI de abajo (un hueco, un `--fecha` puntual, depurar).
+
 ## LA CORRIDA NOCTURNA (lo normal, o a mano)
 
 ```bash

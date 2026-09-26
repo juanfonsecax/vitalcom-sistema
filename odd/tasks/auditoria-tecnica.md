@@ -27,6 +27,11 @@ split CLAUDE.md) are out of scope until real token usage is measured.
 - [x] T1 Fix `_ev_decision` list handling + regression test in `test_flujo.py`.
 - [x] T2 Align GUIA_MADRE price row with COPYWRITING_ADS and register a verifier.
 - [x] T3 Nightly task reads the aggregate; raw facts only by targeted query.
+- [x] T4 "Traer las ventas de LucidSales" button runs a script, not an LLM skill. It is the manual
+      fallback when the 5 AM automation fails, so it must be deterministic and free.
+      Route: delegated (manifest, workflows.py, FLUJO.json, test_claude.py, glosario: 4+ files).
+- [ ] T5 Measure real token usage per session/subagent from Claude Code transcripts (read-only
+      tool). Route: inline (one new file).
 
 ## Checks
 - `python Ads/_TOOLS/test_flujo.py`
@@ -41,6 +46,29 @@ split CLAUDE.md) are out of scope until real token usage is measured.
   The scheduler runs a separate copy at
   `~/.claude/scheduled-tasks/auditoria-vitalcom-diaria/SKILL.md`; synced 2026-09-26 with operator OK
   (diff vs repo body: identical).
+
+- T4: new `Ads/_TOOLS/recopilar_lucidsales.py` (script, no LLM) reuses `ciclo_diario.pasos_lucidsales(hoy)`
+  (extracted from `pasos_reales`, single owner) — same argv as the nightly run's LucidSales leg,
+  nothing else. Decision: it skips `ciclo_diario.py`'s Postgres preflight/postcheck and the
+  `_CORRIDAS_DIARIAS.csv` row on purpose — `ingerir_lucidsales.py` already runs its own drift
+  guard (`db_escribir.verificar_csv_sincronizado`) before writing a single row, so a second guard
+  here would be redundant, and `_CORRIDAS_DIARIAS.csv` is the summary of one *complete* nightly
+  run (T7), not of a partial LucidSales-only fallback. Updated consumers: `VISTAS/_MANIFIESTO.json`
+  (`nodo.ciclo.datos` → `ejecutor_tipo: script`, mirrors `nodo.ciclo.motor`'s shape),
+  `DOCTRINA/FLUJO.json` (`ciclo.datos` executor → script), `app/backend/vitalcom_app/workflows.py`
+  (docstring only — `_PADRES` already routes by `ejecutor_tipo` generically, no special-casing
+  needed), `app/backend/tests/test_claude.py` (`test_una_accion_global_no_le_pide_a_flujo_un_producto`
+  now builds a `sello` by hand for `nodo.F2.etapa-11` and calls `workflows.prompt_del_nodo`
+  directly, since no other enabled skill/subagente action is global — `nodo.ciclo.datos` was the
+  only one), `.claude/skills/recopilar-lucidsales/SKILL.md` (one note: the skill stays for manual
+  CLI use only). `glosario.ts` line 109 documents the "rezago" doctrine owned by
+  `recopilar-lucidsales`'s SKILL.md, not the app button, so left unchanged.
+  Checks: `python Ads/_TOOLS/test_flujo.py` 41/41 · `python Ads/_TOOLS/verificar_guia_madre.py`
+  exit 0 · `python Ads/_TOOLS/test_ciclo_diario.py` 28/28 (2 new: `pasos_lucidsales` mirrors
+  `pasos_reales`'s prefix, Monday control) · `python Ads/_TOOLS/test_gen_app.py` 51/51 (manifest
+  still valid) · backend `.venv` pytest: `test_claude.py` 20/20, `test_ciclo_nocturno.py` 2/2,
+  `test_workflows.py`+`test_acciones_api.py` 31/31 · `recopilar_lucidsales.py --dry-run` prints
+  the 2-step plan (4 on a simulated Monday). Commit: a5be5a5.
 
 ## Next step
 Observe the 2026-09-27 07:11 run: message still carries profit, sales and CPA.

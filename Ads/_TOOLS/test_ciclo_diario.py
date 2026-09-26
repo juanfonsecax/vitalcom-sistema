@@ -289,6 +289,29 @@ def test_pasos_reales_bajar_meta_insights_declara_aviso_2():
     assert meta["codigos_aviso"] == (2,)
 
 
+# ── pasos_lucidsales: única fuente compartida con recopilar_lucidsales.py (T4) ───────────────
+
+def test_pasos_lucidsales_es_el_mismo_arranque_de_pasos_reales():
+    martes = datetime.date(2026, 9, 22)
+    solo_lucidsales = cd.pasos_lucidsales(martes)
+    nombres_lucidsales = [p["nombre"] for p in solo_lucidsales]
+    nombres_reales = [p["nombre"] for p in cd.pasos_reales(martes)]
+    assert nombres_lucidsales == nombres_reales[:len(nombres_lucidsales)]
+    assert "bajar_meta_insights" not in nombres_lucidsales
+    assert "ciclo_hoy" not in nombres_lucidsales
+    assert "gen_dashboard" not in nombres_lucidsales
+
+
+def test_pasos_lucidsales_lunes_agrega_control_con_rol_control():
+    lunes = datetime.date(2026, 9, 21)
+    pasos = cd.pasos_lucidsales(lunes)
+    nombres = [p["nombre"] for p in pasos]
+    assert nombres == ["bajar_lucidsales", "ingerir_lucidsales",
+                       "bajar_lucidsales_control", "ingerir_lucidsales_control"]
+    control = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_control")
+    assert "--rol" in control["argv"] and "CONTROL" in control["argv"]
+
+
 # ── el CSV: header se crea una sola vez ──────────────────────────────────────────────────────
 
 def test_escribir_fila_crea_header_una_sola_vez():

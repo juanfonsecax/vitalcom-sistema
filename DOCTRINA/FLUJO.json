@@ -315,12 +315,12 @@
   {
    "id": "ciclo.datos",
    "titulo": "Recolectar la data del día (LucidSales por API)",
-   "ejecutor": {"tipo": "skill", "name": "recopilar-lucidsales"},
-   "como": "bajar_lucidsales.py + ingerir_lucidsales.py. La ventana se cuenta desde el último día CON DATA; con más de 2 días de rezago ninguna orden vale.",
+   "ejecutor": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/recopilar_lucidsales.py"]},
+   "como": "bajar_lucidsales.py + ingerir_lucidsales.py (mismos pasos que ciclo_diario.py, vía pasos_lucidsales()). La ventana se cuenta desde el último día CON DATA; con más de 2 días de rezago ninguna orden vale.",
    "produce": [
     {"dato": "ventas del producto con rezago ≤ @param:rezago_max_dias",
      "predicado": {"tipo": "data_fresca", "csv": "_FACT_VENTAS.csv", "col": "ventana_fin", "where": {"producto_key": "{pk}"}, "max_rezago_dias": "@param:rezago_max_dias"},
-     "dueno": "skill recopilar-lucidsales · Ads/_TOOLS/bajar_lucidsales.py", "regla": "invariante 13: una orden sobre data vieja es el error de ventana del 06-sep"}
+     "dueno": "Ads/_TOOLS/recopilar_lucidsales.py · bajar_lucidsales.py", "regla": "invariante 13: una orden sobre data vieja es el error de ventana del 06-sep"}
    ]
   },
   {

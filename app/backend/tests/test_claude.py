@@ -208,11 +208,17 @@ def test_el_prompt_del_nodo_sale_del_manifiesto(cliente_juguete, sistema_de_jugu
     assert "--bare" not in corrida["argv"]
 
 
-def test_una_accion_global_no_le_pide_a_flujo_un_producto(cliente_juguete, sistema_de_juguete):
-    _pedir(cliente_juguete, "nodo.ciclo.datos", parametros={}, job_id=JOB)
-    _terminar()
-    corrida = _argv_de_claude(sistema_de_juguete)[0]
-    prompt = corrida["argv"][corrida["argv"].index("-p") + 1]
+def test_una_accion_global_no_le_pide_a_flujo_un_producto(sistema_de_juguete):
+    # `prompt_del_nodo` en sí (no la ruta HTTP): una acción SIN producto (nodo.ciclo.datos, el
+    # botón "Traer las ventas de LucidSales", pasó a ejecutor_tipo=script en T4 y ya no corre
+    # por wf_claude) es el único caso "global" real del manifiesto. La acción de este test
+    # (nodo.F2.etapa-11, un subagente que SÍ requiere producto_key) se construye a mano SIN
+    # parámetros para seguir cubriendo el comportamiento genérico de wf_claude ante una acción
+    # global, sin depender de que exista un botón de skill/subagente sin producto.
+    accion = acciones.buscar("nodo.F2.etapa-11", interna_ok=True)
+    sello = {"job_id": JOB, "accion": accion, "parametros": {}, "ejecutor": "x",
+             "claude": acciones.cargar().bloque["claude"], "run_dir": "r"}
+    prompt = workflows.prompt_del_nodo(sello)
     assert "flujo.py" not in prompt and "acción global" in prompt
 
 

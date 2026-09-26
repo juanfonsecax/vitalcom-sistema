@@ -18,6 +18,13 @@ decidir, regenerar) sin necesitar ningún permiso interactivo; Claude solo entra
 lectura, a interpretar lo que este script ya dejó escrito (ver T8b: el prompt de la tarea
 programada).
 
+FALLBACK MANUAL DE LUCIDSALES (T4, 26-sep-2026): `Ads/_TOOLS/recopilar_lucidsales.py` corre SOLO
+los pasos de `pasos_lucidsales()` (bajar + ingerir, y el control semanal los lunes) — es el botón
+"Traer las ventas de LucidSales" de la app, ahora `ejecutor_tipo: script` en vez de una sesión de
+Claude para dos comandos deterministas. Comparte la lista de pasos con este módulo (`pasos_lucidsales()`
+es su única fuente); no corre el preflight/postcheck de Postgres de este archivo ni escribe fila en
+`_CORRIDAS_DIARIAS.csv` (ver el docstring de `recopilar_lucidsales.py` para el porqué).
+
 DUPLICACIÓN CONOCIDA (reportada, no resuelta acá): `app/backend/vitalcom_app/workflows.py`
 (`PASOS_CICLO_NOCTURNO`/`ejecutar_ciclo_nocturno`) ya modela una cadena nocturna casi idéntica
 (`nodo.ciclo.datos` -> `ciclo.bajar_meta` -> `nodo.ciclo.motor` -> `sistema.refrescar_flujo` ->
@@ -105,8 +112,11 @@ def _paso(nombre, argv, codigos_aviso=()):
     return {"nombre": nombre, "argv": argv, "codigos_aviso": tuple(codigos_aviso)}
 
 
-def pasos_reales(hoy):
-    """La cadena de la corrida nocturna real, en orden. `hoy` decide el control semanal (lunes)."""
+def pasos_lucidsales(hoy):
+    """Los pasos de LucidSales de la cadena nocturna, en orden. `hoy` decide el control semanal
+    (lunes). ÚNICA fuente de esta sub-secuencia: la reusa también `recopilar_lucidsales.py`, el
+    fallback manual del botón "Traer las ventas de LucidSales" (T4, 26-sep-2026) — un dato, un
+    dueño, para no tener dos copias de la cadena que puedan divergir."""
     py = sys.executable
     ingesta_dir = os.path.join(BASE, "Ads", "_INGESTA", "LUCIDSALES")
     pasos = [
@@ -120,6 +130,13 @@ def pasos_reales(hoy):
         pasos.append(_paso("ingerir_lucidsales_control",
                             [py, os.path.join(TOOLS, "ingerir_lucidsales.py"),
                              "--dir", ingesta_dir, "--rol", "CONTROL"]))
+    return pasos
+
+
+def pasos_reales(hoy):
+    """La cadena de la corrida nocturna real, en orden. `hoy` decide el control semanal (lunes)."""
+    py = sys.executable
+    pasos = list(pasos_lucidsales(hoy))
     pasos.append(_paso("bajar_meta_insights", [py, os.path.join(TOOLS, "bajar_meta_insights.py")],
                         codigos_aviso=(2,)))
     pasos.append(_paso("ciclo_hoy", [py, os.path.join(TOOLS, "ciclo_hoy.py")]))

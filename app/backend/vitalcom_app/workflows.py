@@ -1366,8 +1366,13 @@ CRON_NOCTURNO = os.environ.get("VITALCOM_CRON_NOCTURNO", "0 2 * * *")
 
 def ejecutar_ciclo_nocturno(job_id: str | None = None) -> dict[str, Any]:
     """Cadena nocturna de 5 pasos:
-    recopilar-lucidsales -> bajar_meta_insights -> gen_decisiones -> flujo --todo -> gen_app.
+    recopilar_lucidsales.py -> bajar_meta_insights -> gen_decisiones -> flujo --todo -> gen_app.
     Cada paso es una acción declarada. Si un paso falla, el siguiente no corre.
+
+    `nodo.ciclo.datos` es `ejecutor_tipo: script` desde T4 (26-sep-2026): antes era `skill`
+    (una sesión de Claude para dos comandos deterministas) y corría por `wf_claude`; ahora
+    `_PADRES` la enruta por `wf_script`, sin ningún caso especial acá — el mapeo genérico por
+    `ejecutor_tipo` ya alcanza.
 
     Excepción (T1b, 22-sep-2026): `ciclo.bajar_meta` puede fallar PARCIAL (código de salida 2 —
     al menos una cuenta de Meta OK, al menos una caída; ver bajar_meta_insights.py). Una falla de
