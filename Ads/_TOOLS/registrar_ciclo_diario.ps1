@@ -45,7 +45,11 @@ if (-not (Test-Path $ScriptCiclo)) {
     throw "No encuentro $ScriptCiclo -- revisa que este script siga en Ads/_TOOLS/ del repo real."
 }
 
-$PythonExe = (Get-Command python -ErrorAction SilentlyContinue).Source
+# Ruta real del interprete (no el acceso directo de WindowsApps), resuelta por el propio python.
+$PythonExe = $null
+if (Get-Command python -ErrorAction SilentlyContinue) {
+    $PythonExe = (& python -c "import sys; print(sys.executable)").Trim()
+}
 if (-not $PythonExe) {
     throw "No encuentro 'python' en el PATH de este usuario. Instalalo o corre esto desde una " +
           "terminal donde 'python --version' funcione, y volve a intentar."
@@ -56,7 +60,10 @@ $Accion = New-ScheduledTaskAction -Execute $PythonExe `
     -WorkingDirectory $RaizRepo
 
 $TriggerDiario = New-ScheduledTaskTrigger -Daily -At "05:00"
-$TriggerLogon = New-ScheduledTaskTrigger -AtLogOn
+# -User limita el disparador a este usuario: sin el, aplica a cualquier usuario y Windows
+# exige administrador (Register-ScheduledTask: Access is denied).
+$Usuario = "$env:USERDOMAIN\$env:USERNAME"
+$TriggerLogon = New-ScheduledTaskTrigger -AtLogOn -User $Usuario
 
 $Configuracion = New-ScheduledTaskSettingsSet `
     -StartWhenAvailable `
@@ -64,7 +71,7 @@ $Configuracion = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Hours 1) `
     -DontStopOnIdleEnd
 
-$Principal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" -LogonType Interactive
+$Principal = New-ScheduledTaskPrincipal -UserId $Usuario -LogonType Interactive
 
 Register-ScheduledTask -TaskName $NombreTarea `
     -Action $Accion `
