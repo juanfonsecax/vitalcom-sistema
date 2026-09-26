@@ -170,6 +170,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `FASE3_OBJETIVO_CAMPANA` | `OUTCOME_SALES` (Maximizar conversaciones WhatsApp) | Objetivo Meta | **Clase 22-ago (Calet)** | Tráfico | `DOCTRINA/MCP_PLAYBOOK.md` |
 | `FASE3_METODO_ESCALADO_1` | **Duplicación horizontal al ppto inicial** ($15 USD) | Método | **Clase 22-ago (Calet)** | Escala vertical ciega | `Ads/_TOOLS/decidir.py` |
 | `FASE3_METODO_ESCALADO_2` | **Surfing +20% una vez al día, en la mañana** (Calet enseña intradía +20% mañana + mediodía; el intradía está **CONGELADO** hasta que la fábrica sostenga ≥6 creativos/día — choque C-02 de `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`) | Método | **Clase 22-ago (Calet)** | Escala vertical ciega | `Ads/_TOOLS/decidir.py` · `.claude/skills/fase-3-escalado/SKILL.md` |
+| `EXPLORACION_N_ANGULOS` | `3 ángulos` | Ángulos (mini-F1 fijo en paralelo al escalado: 1 conjunto ABO por ángulo nunca probado, presupuesto por conjunto de FASE 1, todo en IMAGEN) | Regla Operativa Sistema (P12, 23-sep-2026) — decisión del operador, no de una clase | — | `PRODUCTOS/_PARAMETROS_DECISION.csv` → `exploracion_n_angulos` · `Ads/_TOOLS/gen_plan.py` (`validar_plan_exploracion()`) · `DOCTRINA/ESCALADO/09_EXPLORACION_PARALELA.md` |
 
 ---
 
