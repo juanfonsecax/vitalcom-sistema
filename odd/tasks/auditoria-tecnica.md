@@ -38,5 +38,9 @@ split CLAUDE.md) are out of scope until real token usage is measured.
 - T2 781c37f: `verificar_guia_madre.py` exit 0; simulated drift (1 of 6) fails with exit 1.
 - T3: repo copy updated. Profit is derivable from `_DECISIONES.json` (ETAPA-7.md:126), and
   etapa-7 reads the fact CSVs itself, so the session-level raw read was pure duplication.
-  PENDING: the scheduler runs a separate copy at
-  `~/.claude/scheduled-tasks/auditoria-vitalcom-diaria/SKILL.md`; syncing it needs operator OK.
+  The scheduler runs a separate copy at
+  `~/.claude/scheduled-tasks/auditoria-vitalcom-diaria/SKILL.md`; synced 2026-09-26 with operator OK
+  (diff vs repo body: identical).
+
+## Next step
+Observe the 2026-09-27 07:11 run: message still carries profit, sales and CPA.
