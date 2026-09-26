@@ -82,6 +82,7 @@ archivo (`_AUDITORIA_DIARIA_*.txt`, `_DASHBOARD.html`, etc.; eso ya lo cubre `ci
 ```
 AUDITORÍA [fecha] · ganancia Q±X (Q±Y/día) · N ventas · CPA QZ
 INTEGRIDAD: [qué entró / qué falta / si el día quedó AMARILLO, por qué]
+RACHA: N/7 días verdes seguidos (cierre de P3)
 
 QUÉ HACER HOY
 1. [acción concreta: producto, cuenta, conjunto, cuánto]
@@ -91,6 +92,10 @@ APAGAR:  [conjunto — motivo — ahorro/sem]
 ESCALAR: [conjunto — CPA vs BE — +20%]
 ⚠️ [el riesgo del día, si lo hay]
 ```
+
+`RACHA`: contá hacia atrás desde hoy los días consecutivos de `_CORRIDAS_DIARIAS.csv` cuya
+ÚLTIMA fila del día es VERDE o AMARILLO; un día faltante o que termina en ROJO corta. Es la
+misma regla de `ciclo_diario.py --racha`. Con 7 o más, decí que P3 cumplió su criterio de cierre.
 
 Reglas del mensaje:
 - **Números del CSV/JSON, jamás de memoria.** Si un dato falta, decilo — no lo estimes.

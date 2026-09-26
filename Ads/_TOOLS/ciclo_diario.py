@@ -220,6 +220,39 @@ def fila_de_hoy(ruta_csv, hoy_iso):
     return filas[-1] if filas else None
 
 
+# ── racha de días verdes (P3 T7): el criterio de cierre de P3 ─────────────────────────────────
+#
+# Un día es VERDE si su ÚLTIMA corrida es VERDE o AMARILLO (un ROJO corregido el mismo día con
+# una corrida verde posterior cuenta: el ciclo del día terminó completo). Un día faltante o que
+# termina en ROJO corta la racha. Si hoy todavía no corrió, la racha que llega a ayer sigue viva.
+
+DIAS_PARA_CERRAR_P3 = 7
+
+
+def racha_verde(ruta_csv, hoy):
+    """Devuelve (dias, ultimo_dia_iso) de la racha de días verdes consecutivos que termina hoy,
+    o ayer si hoy todavía no tiene fila. (0, None) si no hay racha."""
+    ultimo_por_dia = {}
+    for f in _leer_corridas(ruta_csv):
+        ultimo_por_dia[f.get("fecha", "")] = f.get("estado", "")
+    dia = hoy if hoy.isoformat() in ultimo_por_dia else hoy - datetime.timedelta(days=1)
+    dias, ultimo = 0, None
+    while ultimo_por_dia.get(dia.isoformat()) in ("VERDE", "AMARILLO"):
+        ultimo = ultimo or dia.isoformat()
+        dias += 1
+        dia -= datetime.timedelta(days=1)
+    return dias, ultimo
+
+
+def texto_racha(ruta_csv, hoy):
+    dias, ultimo = racha_verde(ruta_csv, hoy)
+    if dias >= DIAS_PARA_CERRAR_P3:
+        return "Racha: %d días verdes seguidos (hasta %s) — criterio de cierre de P3 cumplido." % (
+            dias, ultimo)
+    return "Racha: %d/%d días verdes seguidos%s." % (
+        dias, DIAS_PARA_CERRAR_P3, " (hasta %s)" % ultimo if ultimo else "")
+
+
 def _escribir_fila(ruta_csv, fila):
     nuevo = not os.path.isfile(ruta_csv)
     os.makedirs(os.path.dirname(ruta_csv), exist_ok=True)
@@ -292,10 +325,17 @@ def main(argv=None):
                      help="Sale en 0 sin hacer nada si hoy ya tiene una fila VERDE/AMARILLO.")
     ap.add_argument("--dry-run", action="store_true",
                      help="Imprime el plan de pasos y no corre ni escribe nada.")
+    ap.add_argument("--racha", action="store_true",
+                     help="Solo imprime la racha de días verdes seguidos (criterio de cierre de P3).")
     a = ap.parse_args(argv)
 
     hoy = datetime.date.today()
     hoy_iso = hoy.isoformat()
+
+    if a.racha:
+        print(texto_racha(CORRIDAS_CSV, hoy))
+        return 0
+
     pasos = pasos_reales(hoy)
 
     if a.dry_run:
@@ -312,6 +352,7 @@ def main(argv=None):
         if fila is not None and fila.get("estado") in ("VERDE", "AMARILLO"):
             print("Ya hay una corrida %s para %s (%s): no se repite." %
                   (fila.get("estado"), hoy_iso, fila.get("fin")))
+            print(texto_racha(CORRIDAS_CSV, hoy))
             return 0
 
     os.makedirs(LOGDIR, exist_ok=True)
@@ -324,6 +365,7 @@ def main(argv=None):
     print("%s %s · paso_fallido=%s · paridad=%s · %s" % (
         fila["fecha"], fila["estado"], fila["paso_fallido"] or "-", fila["paridad"], fila["detalle"]))
     print("Log completo: %s" % os.path.relpath(log_path, BASE))
+    print(texto_racha(CORRIDAS_CSV, hoy))
     return 0 if fila["estado"] in ("VERDE", "AMARILLO") else 1
 
 

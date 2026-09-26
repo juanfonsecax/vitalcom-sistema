@@ -201,6 +201,70 @@ def test_fila_de_hoy_toma_la_ultima_del_dia():
         assert fila["detalle"] == "segunda corrida"
 
 
+# ── racha de días verdes (T7) ─────────────────────────────────────────────────────────────────
+
+def _corridas(tmp, filas):
+    ruta = os.path.join(tmp, "_CORRIDAS_DIARIAS.csv")
+    for fecha, estado in filas:
+        cd._escribir_fila(ruta, {"fecha": fecha, "inicio": "a", "fin": "b", "estado": estado,
+                                  "paso_fallido": "", "paridad": "IGUAL", "detalle": ""})
+    return ruta
+
+
+def test_racha_sin_archivo_es_cero():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = os.path.join(tmp, "_CORRIDAS_DIARIAS.csv")
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (0, None)
+
+
+def test_racha_cuenta_dias_consecutivos_y_amarillo_suma():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = _corridas(tmp, [("2026-09-23", "VERDE"), ("2026-09-24", "AMARILLO"),
+                               ("2026-09-25", "VERDE")])
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (3, "2026-09-25")
+
+
+def test_racha_rojo_corregido_el_mismo_dia_cuenta():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = _corridas(tmp, [("2026-09-25", "ROJO"), ("2026-09-25", "VERDE")])
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (1, "2026-09-25")
+
+
+def test_racha_dia_que_termina_en_rojo_corta():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = _corridas(tmp, [("2026-09-23", "VERDE"), ("2026-09-24", "VERDE"),
+                               ("2026-09-24", "ROJO"), ("2026-09-25", "VERDE")])
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (1, "2026-09-25")
+
+
+def test_racha_dia_faltante_corta():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = _corridas(tmp, [("2026-09-22", "VERDE"), ("2026-09-23", "VERDE"),
+                               ("2026-09-25", "VERDE")])
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (1, "2026-09-25")
+
+
+def test_racha_hoy_sin_correr_mantiene_la_de_ayer():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = _corridas(tmp, [("2026-09-23", "VERDE"), ("2026-09-24", "VERDE")])
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (2, "2026-09-24")
+
+
+def test_racha_hoy_en_rojo_es_cero():
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = _corridas(tmp, [("2026-09-24", "VERDE"), ("2026-09-25", "ROJO")])
+        assert cd.racha_verde(ruta, datetime.date(2026, 9, 25)) == (0, None)
+
+
+def test_texto_racha_anuncia_cierre_con_siete_dias():
+    with tempfile.TemporaryDirectory() as tmp:
+        inicio = datetime.date(2026, 9, 19)
+        ruta = _corridas(tmp, [((inicio + datetime.timedelta(days=i)).isoformat(), "VERDE")
+                               for i in range(7)])
+        texto = cd.texto_racha(ruta, datetime.date(2026, 9, 25))
+        assert "7 días" in texto and "cumplido" in texto, texto
+
+
 # ── plan de pasos: lunes agrega el control semanal, el resto de días no ─────────────────────
 
 def test_pasos_reales_entre_semana_no_trae_control():
