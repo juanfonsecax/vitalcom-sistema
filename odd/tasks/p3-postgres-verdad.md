@@ -84,8 +84,11 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   Checks: runner 26/26, tools 46 passed, real `--racha` → 1/7 (2026-09-25).
   Pending: 7 consecutive green days → earliest 2026-10-01. That closes P3.
 - [ ] T8 — Defects found during P3:
-  (a) `_DIM_ANUNCIOS.csv` has two full-rewrite writers (`sembrar_anuncios.py:188`, `firma.py:174`)
-  — verify whether one clobbers the other and fix;
+  (a) DONE `63ea89c`: confirmed clobber — `firma.py --generar` added a `firma` column and
+  `sembrar_anuncios.py --escribir` dropped it (fixed column list; real file had 0/56 firmas).
+  Seeder is now the single writer and derives `firma`; `firma.py --generar` only prints.
+  Checks: seeder on a temp copy → 56/56 with firma, real file md5 unchanged, tools 46 passed.
+  Note: 0/56 firmas complete — `destino_key` is empty in every row (data gap, not code);
   (b) Claude task `auditoria-vitalcom-diaria` stops after its first command and its SKILL.md still
   names ETAPA-8 — fix with T6;
   (c) `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` doesn't declare `exploracion_n_angulos`, which
@@ -94,4 +97,4 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
 
 ## Next step
 Let the streak run (`python Ads/_TOOLS/ciclo_diario.py --racha`); check on 26-sep that the
-scheduled task fired on its own. Meanwhile: T8(a), T8(c), T5 e2e. e2e for T5 still pending (frontend `node_modules` missing).
+scheduled task fired on its own. Meanwhile: T8(c), T5 e2e. e2e for T5 still pending (frontend `node_modules` missing).
