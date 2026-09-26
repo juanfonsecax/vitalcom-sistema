@@ -11,11 +11,13 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
-from .config import python_del_sistema, ruta
+from .config import python_del_sistema, ruta, base
 
 DIM_PRODUCTOS = ("PRODUCTOS", "_DIM_PRODUCTOS.csv")
 DIM_CUENTAS = ("PRODUCTOS", "_DIM_CUENTAS.csv")
@@ -53,7 +55,64 @@ class ContratoAusente(RuntimeError):
     """Falta un archivo que produce el motor. La app lo dice; no lo inventa ni lo crea."""
 
 
+# P3 T5: archivo -> tabla DB-truth (`db/tables.py:TABLAS_MIGRADAS_DB`) que lo espeja. Solo estos
+# cuatro CSV se leen por Postgres cuando `VITALCOM_FUENTE=db` (default); el resto de PRODUCTOS/
+# (dimensiones editadas a mano: _DIM_CONJUNTOS, _DIM_CUENTAS, _DIM_FANPAGES,
+# _PARAMETROS_DECISION, _DIM_CREATIVOS...) sigue leyéndose del CSV real, sin tocar. `_DECISIONES
+# .json` no tiene fila acá: no es un espejo columna-por-columna (ver `_leer_json`).
+TABLA_DB_POR_ARCHIVO = {
+    "_DIM_PRODUCTOS.csv": "producto",
+    "_ESTADO_FLUJO.csv": "estado_flujo",
+    "_FACT_VENTAS.csv": "venta",
+    "_EVENTOS.csv": "evento",
+}
+
+
+def _fuente() -> str:
+    """`VITALCOM_FUENTE=db` (default) o `csv` — mismo contrato que `Ads/_TOOLS/decidir.py`."""
+    return (os.environ.get("VITALCOM_FUENTE") or "db").strip().lower()
+
+
+def _tenant_db() -> str:
+    """`vitalcom` (single tenant, ver `db/tables.py`) salvo que una prueba aislada declare
+    `VITALCOM_DB_TENANT` (mismo patrón de override que `registrar_evento.py`/
+    `ingerir_lucidsales.py`: nunca toca el tenant real desde una prueba)."""
+    return os.environ.get("VITALCOM_DB_TENANT") or "vitalcom"
+
+
+def _modulo_db():
+    """Importa `db/leer.py` DEL SISTEMA (nunca uno instalado en el venv de la app): se agrega
+    `base()/db` a `sys.path` una sola vez, igual que ya hace `tests/test_alta_por_la_app.py`
+    para `db/` en subprocesos."""
+    db_dir = str(base() / "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import leer as db_leer  # noqa: E402
+
+    return db_leer
+
+
+def _conectar_db():
+    """Conexión a Postgres para un lector `db`. Postgres inalcanzable NUNCA cae de vuelta al CSV
+    en silencio (sería exactamente el defecto que P3 corrige) — se dice como `ContratoAusente`,
+    que ya mapea a HTTP 503 (ver `main.py:_contrato_ausente`)."""
+    db_leer = _modulo_db()
+    try:
+        return db_leer, db_leer.conectar()
+    except Exception as exc:
+        raise ContratoAusente(
+            f"VITALCOM_FUENTE=db (default) pero Postgres no está disponible: {exc}"
+        ) from exc
+
+
 def _leer_csv(partes: tuple[str, ...]) -> list[dict[str, str]]:
+    tabla = TABLA_DB_POR_ARCHIVO.get(partes[-1]) if len(partes) == 2 and partes[0] == "PRODUCTOS" else None
+    if tabla and _fuente() != "csv":
+        db_leer, con = _conectar_db()
+        try:
+            return db_leer.filas(con, tabla, tenant_id=_tenant_db())
+        finally:
+            con.close()
     archivo = ruta(*partes)
     if not archivo.is_file():
         raise ContratoAusente(f"falta {Path(*partes)}")
@@ -62,6 +121,15 @@ def _leer_csv(partes: tuple[str, ...]) -> list[dict[str, str]]:
 
 
 def _leer_json(partes: tuple[str, ...]) -> Any:
+    if partes == DECISIONES and _fuente() != "csv":
+        db_leer, con = _conectar_db()
+        try:
+            payload = db_leer.decision(con, tenant_id=_tenant_db())
+        finally:
+            con.close()
+        if payload is None:
+            raise ContratoAusente(f"falta {Path(*partes)}")
+        return payload
     archivo = ruta(*partes)
     if not archivo.is_file():
         raise ContratoAusente(f"falta {Path(*partes)}")

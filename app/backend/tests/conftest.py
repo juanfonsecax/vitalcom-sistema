@@ -30,6 +30,11 @@ def _base_del_sistema() -> Path:
 def base_declarada() -> Path:
     base = _base_del_sistema()
     os.environ["VITALCOM_BASE"] = str(base)
+    # P3 T5: contratos.py lee producto/estado_flujo/venta/evento por Postgres cuando
+    # VITALCOM_FUENTE=db (default). Los sistemas de juguete de este archivo son fixtures CSV
+    # sin Postgres detrás -- fuerza "csv" para toda la sesión, así las pruebas existentes no
+    # cambian. La única prueba que ejercita el modo "db" lo redeclara ella misma con monkeypatch.
+    os.environ["VITALCOM_FUENTE"] = "csv"
     return base
 
 
