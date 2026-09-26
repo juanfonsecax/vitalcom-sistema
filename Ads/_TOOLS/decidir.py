@@ -69,6 +69,7 @@ import json
 import argparse
 import datetime
 import math
+import tempfile
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -121,7 +122,77 @@ SALIDA_JSON = os.path.join(PROD, "_DECISIONES.json")
 # LOCAL a `main()` (nunca al tope del módulo): el gate de paridad (`db/test_db.py`) corre este
 # archivo en un subproceso con scipy+duckdb que NO tiene psycopg, y ese camino nunca pasa por
 # `--escribir` -- mantenerlo así evita que decidir.py deje de ser importable ahí.
-TENANT_ID = "vitalcom"
+# DECIDIR_TENANT_ID (P3 T5): mismo override, pero por VARIABLE DE ENTORNO -- una prueba que
+# monkey-parcha `decidir.TENANT_ID` en proceso (test_cli_solo_lectura.py) no alcanza a un
+# subproceso (el gate de paridad de db/test_db.py corre este archivo en uno aparte, con
+# scipy+duckdb); sin esto, la lectura en modo "db" (ver _activar_fuente_db_si_corresponde) de un
+# subproceso siempre caería sobre el tenant real "vitalcom". Default idéntico a siempre.
+TENANT_ID = os.environ.get("DECIDIR_TENANT_ID") or "vitalcom"
+
+# P3 T5: `VITALCOM_FUENTE` decide de dónde LEE este motor las 5 tablas DB-truth que ya escribe
+# Postgres (`tables.TABLAS_MIGRADAS_DB`: producto/estado_flujo/venta/entrega_conjunto_dia/
+# entrega_anuncio_dia) -- "db" (default) o "csv". El resto de PRODUCTOS/ (dimensiones editadas a
+# mano: _DIM_CONJUNTOS, _DIM_BANDAS, _ALIAS_CONJUNTOS, _PARAMETROS_DECISION) NUNCA pasa por acá:
+# sigue viniendo del CSV real, tal como hoy. `DECIDIR_PROD_DIR` (T6, fixtures/gate de paridad)
+# sigue ganando SIEMPRE: si alguien ya redirigió `PROD` a mano (la variable de entorno, o el
+# monkeypatch de módulo que hace `flujo.py:Entorno.motor()` sobre un fixture), este motor nunca
+# se mete a buscar Postgres -- leería una base que no tiene nada que ver con el fixture. Por eso
+# `analizar_portafolio()` compara `PROD` contra la ruta real ANTES de activar el modo DB: si ya
+# no coincide, alguien más decidió de dónde se lee y este motor lo respeta tal cual.
+# NUNCA cae de vuelta a CSV en silencio si Postgres no responde en modo "db": revienta con un
+# mensaje claro (mismo criterio que `--escribir`, ver el comentario de arriba).
+FUENTE_DB_ENV = "VITALCOM_FUENTE"
+TABLAS_FUENTE_DB = ("producto", "estado_flujo", "venta", "entrega_conjunto_dia",
+                     "entrega_anuncio_dia")
+_FUENTE_DB_ACTIVADA = False
+_TMP_FUENTE_DB = None  # referencia viva del TemporaryDirectory -- se borra solo al salir del proceso
+
+
+def _fuente_efectiva():
+    return (os.environ.get(FUENTE_DB_ENV) or "db").strip().lower()
+
+
+def _activar_fuente_db_si_corresponde():
+    """Si `VITALCOM_FUENTE` (o su default) pide "db" y nadie redirigió `PROD` a mano todavía,
+    materializa las 5 tablas DB-truth desde Postgres a un directorio temporal y rebinda SOLO esas
+    5 rutas de módulo -- el resto (`PARAMS_PATH`, `DIM_CONJ_PATH`, `DIM_BANDAS_PATH`,
+    `ALIAS_PATH`) sigue leyendo el CSV real de `PROD`, sin tocar. Se corre una sola vez por
+    proceso (`_FUENTE_DB_ACTIVADA`); `analizar_portafolio()` la llama al principio."""
+    global _FUENTE_DB_ACTIVADA, _TMP_FUENTE_DB
+    global DIM_PROD_PATH, ESTADO_FLUJO_PATH, FACT_VENTAS_PATH, FACT_ENTREGA_PATH
+    global FACT_ENTREGA_ANUNCIO_PATH
+    if _FUENTE_DB_ACTIVADA:
+        return
+    if _fuente_efectiva() == "csv":
+        return
+    if PROD != os.path.join(BASE, "PRODUCTOS"):
+        # DECIDIR_PROD_DIR explícito, o flujo.py corriendo sobre un fixture: CSV siempre.
+        return
+    db_dir = os.path.join(BASE, "db")
+    if db_dir not in sys.path:
+        sys.path.insert(0, db_dir)
+    import leer as _leer  # noqa: E402
+
+    try:
+        con = _leer.conectar()
+    except Exception as exc:
+        raise SystemExit(
+            "\n⛔ VITALCOM_FUENTE=db (default) pero Postgres no está disponible: no se pudo leer "
+            "producto/estado_flujo/venta/entrega. Corré con VITALCOM_FUENTE=csv para leer los "
+            "espejos CSV en su lugar, o revisá la conexión. Detalle: %s" % exc)
+    try:
+        _TMP_FUENTE_DB = tempfile.TemporaryDirectory(prefix="decidir_fuente_db_")
+        rutas = _leer.materializar(con, TABLAS_FUENTE_DB, _TMP_FUENTE_DB.name, tenant_id=TENANT_ID)
+    finally:
+        con.close()
+
+    DIM_PROD_PATH = rutas["producto"]
+    ESTADO_FLUJO_PATH = rutas["estado_flujo"]
+    FACT_VENTAS_PATH = rutas["venta"]
+    FACT_ENTREGA_PATH = rutas["entrega_conjunto_dia"]
+    FACT_ENTREGA_ANUNCIO_PATH = rutas["entrega_anuncio_dia"]
+    _FUENTE_DB_ACTIVADA = True
+
 
 TASA_Q_USD_DEFAULT = 7.62
 
@@ -818,6 +889,7 @@ def aplicar_tope_pausas(celdas, params):
 
 
 def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
+    _activar_fuente_db_si_corresponde()
     params = cargar_parametros()
     if dias:
         params["ventana_dias"] = dias
