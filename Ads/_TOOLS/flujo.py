@@ -495,7 +495,7 @@ def _ev_script(p, ctx, env):
 
 def _ev_decision(p, ctx, env):
     celdas, _ = env.celdas(ctx["pk"])
-    estados = p.get("estados") or ([p["estado"]] if "estado" in p else [])
+    estados = p.get("estados") or p.get("estado") or []
     if isinstance(estados, str):
         estados = [estados]
     mv = resolver_num(p.get("min_ventas", 0), env) or 0

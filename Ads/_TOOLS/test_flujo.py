@@ -250,6 +250,12 @@ def main():
     check([c["estado"] for c in celdas_e] == ["ESCALAR"],
           "el motor SÍ manda ESCALAR con 3 ventas (la regla 5 corona desde min_ventas_escalar)",
           str([(c["celda"], c["estado"], c["ventas"]) for c in celdas_e]))
+    # the reentry gate in FLUJO.json declares "estado" as a LIST under the singular key
+    pred_reingreso = {"tipo": "decision", "estado": ["ESCALAR", "SEGUIR_MIDIENDO", "RENOVAR"], "max": 0}
+    ok_ri, obs_ri = evaluar(pred_reingreso, {"pk": "PX"}, env_e)
+    check(ok_ri is False and "error" not in obs_ri and "ESCALAR" in obs_ri,
+          "gate de reingreso: 'estado' como lista se evalúa (no revienta) y ve la celda viva",
+          obs_ri)
     ok_e, obs_e = _ev_angulo_ganador({}, {"pk": "PX"}, env_e)
     check(ok_e is False and "descartado por volumen" in obs_e,
           "un ESCALAR con 3 ventas NO es ángulo ganador: falta el piso de 5 y el gate lo dice",
