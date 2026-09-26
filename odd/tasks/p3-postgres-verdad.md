@@ -61,8 +61,16 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   Checks (25-sep): db 46 passed · tools 45 passed · backend 176 passed · real
   `decidir.py --json` db vs csv: IGUAL (orchestrator re-ran it) · protected files untouched.
   e2e NOT run: `app/frontend` has no `node_modules` (needs setup) — pending.
-- [ ] T6 — Daily cycle script + Windows Task Scheduler task; runs the drift guard before
-  `decidir.py`. Check: first real run writes its parity row. Includes T8(b).
+- [~] T6 — Daily cycle script + Windows Task Scheduler task. Code done: `db4dc1d`, `d5ae1f5`,
+  `584d82a`. `Ads/_TOOLS/ciclo_diario.py` (preflight drift guards → bajar/ingerir LucidSales →
+  Monday control → bajar_meta_insights → ciclo_hoy → gen_dashboard → postcheck guards + decidir
+  db-vs-csv parity; always appends a row to `PRODUCTOS/_CORRIDAS_DIARIAS.csv`, VERDE/AMARILLO/ROJO;
+  AMARILLO = Meta PARTIAL, counts as green). `registrar_ciclo_diario.ps1` (daily 05:00 + at logon,
+  StartWhenAvailable, `--si-falta-hoy`). Standalone on purpose; backend `workflows.py`
+  `PASOS_CICLO_NOCTURNO` models a similar chain inside the app (duplication noted, not refactored).
+  Checks: tools 46 passed · `--dry-run` exit 0 · no real run. Pending: operator authorizes
+  registration + first real run writes its row. T8(b) done in `584d82a` (live task prompt edited
+  outside the repo: read-only, no Bash, etapa-7 only).
 - [ ] T7 — 7-consecutive-green-days counter. Closes P3.
 - [ ] T8 — Defects found during P3:
   (a) `_DIM_ANUNCIOS.csv` has two full-rewrite writers (`sembrar_anuncios.py:188`, `firma.py:174`)
@@ -74,4 +82,5 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   `decidir.py`/`flujo.py`.
 
 ## Next step
-T6 — daily cycle script + Windows Task Scheduler (+ T8b). e2e for T5 still pending.
+Operator: register the Task Scheduler task and allow the first real run of `ciclo_diario.py`.
+Then T7. e2e for T5 still pending (frontend `node_modules` missing).
