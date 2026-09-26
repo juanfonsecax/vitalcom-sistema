@@ -218,7 +218,7 @@ NIVEL 1 │ Clases 1 a 22 curso base (Joaquín · Camilo · Mercy Pardo)        
 | `CONCEPTOS_POR_ANGULO` | `10 conceptos distintos` | Cantidad | **Clase 16-ago (Calet)** | El ángulo se mantiene fijo; se prueban 10 formas visuales de mostrarlo. | `Ads/_SWIPE/_CATALOGO_CONCEPTOS.md` |
 | `BLUEPRINTS_CANONICOS` | `22 blueprints validados` | Cantidad | Auditoría Portafolio GT | Plantillas visuales probadas en Guatemala. | `Ads/_SWIPE/_BLUEPRINTS/` |
 | `PRODUCCION_CREATIVA_DIARIA` | `≥ 6 creativos / día` | Piezas | Sistema Fábrica Creativa | Mantener stock fresco para rotar conceptos ante fatiga. | `.claude/agents/ETAPA-9.md` |
-| `REGLA_PRECIO_EN_ANUNCIO` | `SIN PRECIO` (Máx 1 de cada 6) | Regla | **Clase 22-ago (Calet)** | El anuncio vende el dolor y la solución; el precio se da en el bot. | `DOCTRINA/COPYWRITING_ADS.md` |
+| `REGLA_PRECIO_EN_ANUNCIO` | `MÁX 3 DE 6` copies con precio P1u (ideal 2/6) | Regla | Clase 22-ago (Calet) pedía sin precio; la data (APR-005) no lo respalda | El precio filtra avatar: quien llega al chat ya aceptó el valor. Si un conjunto lleva precio, va en copy y creativo. | `DOCTRINA/COPYWRITING_ADS.md` |
 | `REGLA_LONGITUD_TITULO` | `≤ 27 caracteres (2-3 palabras)` | Texto | Clase 14 (Pipe) / Calet | Títulos directos e hiper-legibles para avatares 45+. | `DOCTRINA/COPYWRITING_ADS.md` |
 | `FORMATO_CREATIVO_ESCALADO` | `Imágenes tan válidas como Videos` | Formato | **Clases 16 y 22-ago (Calet)** | Las imágenes 1080x1080 escalan a CBO con igual o mejor CPA que video. | `DOCTRINA/PLANTILLAS_ADS.md` |
 

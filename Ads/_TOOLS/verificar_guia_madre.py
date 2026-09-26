@@ -199,6 +199,15 @@ def _literal_fuente(patron, etiqueta):
     return f
 
 
+def _literal_doc(ruta, patron, etiqueta):
+    """Extrae un numero de la doctrina duena de una regla (cuando el dueno es prosa, no CSV)."""
+    def f():
+        txt = io.open(os.path.join(BASE, ruta), encoding="utf-8").read()
+        m = re.search(patron, txt)
+        return (float(m.group(1)) if m else None), "%s (%s)" % (ruta, etiqueta)
+    return f
+
+
 # variable de la Guia -> (como leer el valor REAL, modo de comparacion).
 # El valor DECLARADO siempre sale de la fila de la Guia, nunca de aca: si este archivo
 # hardcodeara los numeros, solo moveria el problema de lugar.
@@ -242,6 +251,8 @@ VERIFICADORES = {
     "HORIZONTE_EVALUACION_ORDEN":  (_csv_opt_num("horizonte_orden_dias"), "num"),
     "MINIMO_VENTAS_ATRIBUCION":    (_csv_opt_num("min_ventas_atribuir"), "num"),
     "MINIMO_CREATIVOS_ATRIBUCION": (_csv_opt_num("min_creativos_atribuir"), "num"),
+    "REGLA_PRECIO_EN_ANUNCIO":     (_literal_doc("DOCTRINA/COPYWRITING_ADS.md",
+                                                 r"M[aá]ximo \*\*(\d+) de 6\*\*", "copies con precio"), "num"),
 }
 
 
