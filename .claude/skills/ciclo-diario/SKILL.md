@@ -10,6 +10,11 @@ No va en la secuencia de FASE 1/2/3. Es lo que corre **después de lanzar**, tod
 
 **Recorre `PRODUCTOS/_DIM_PRODUCTOS.csv` y audita CADA producto en `estado=VIVO`**, no uno solo.
 
+> **La cadena determinística ya corre sola (P3 T6):** `Ads/_TOOLS/ciclo_diario.py`, disparado por
+> Task Scheduler, encadena la recolección de datos con `ciclo_hoy.py` y `gen_dashboard.py`, y deja
+> una fila en `PRODUCTOS/_CORRIDAS_DIARIAS.csv` (VERDE/AMARILLO/ROJO) que cuenta para T7. Correrlo
+> a mano sigue funcionando igual, para depurar o para una corrida fuera de horario:
+
 ```bash
 python Ads/_TOOLS/ciclo_hoy.py        # motor (dbt + decidir) → flujo.py --todo → lanzador → app
 ```

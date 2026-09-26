@@ -28,7 +28,12 @@ bajar_lucidsales.py  →  report-<ini>-<fin>.json  →  ingerir_lucidsales.py  �
 
 ---
 
-## LA CORRIDA NOCTURNA (lo normal)
+> **La cadena nocturna corre sola (P3 T6):** `Ads/_TOOLS/ciclo_diario.py`, disparado por Task
+> Scheduler, ya encadena `bajar_lucidsales.py` → `ingerir_lucidsales.py` → (lunes) el control
+> semanal → `bajar_meta_insights.py`. Lo de abajo sigue funcionando igual para una corrida manual
+> (un hueco, un `--fecha` puntual, o depurar algo a mano).
+
+## LA CORRIDA NOCTURNA (lo normal, o a mano)
 
 ```bash
 python Ads/_TOOLS/bajar_lucidsales.py && python Ads/_TOOLS/ingerir_lucidsales.py --dir Ads/_INGESTA/LUCIDSALES
