@@ -1332,8 +1332,9 @@ def escribir_estado(resultados, env, registrar_eventos=True):
     # PRODUCTOS/ es el ESPEJO, regenerado por db/escribir.py DESPUÉS del commit. Import LOCAL
     # (nunca al tope del módulo): mantiene el camino de SOLO LECTURA de flujo.py libre de
     # psycopg -- esta función solo corre bajo --escribir, igual que el import de
-    # registrar_evento más abajo. El backup del mirror usa `env.base` (nunca el `backups_csv`
-    # real del repo) para que un fixture de prueba jamás lo toque.
+    # registrar_evento más abajo. El backup del mirror cuelga de `env.base` (nunca del repo
+    # real) para que un fixture de prueba jamás lo toque, bajo `_RESPALDOS/` como los demás
+    # escritores (`upsert_fact.respaldos_dir`, gitignored).
     db_dir = os.path.join(BASE_REAL, "db")
     if db_dir not in sys.path:
         sys.path.insert(0, db_dir)
@@ -1341,7 +1342,7 @@ def escribir_estado(resultados, env, registrar_eventos=True):
     import escribir as db_escribir  # noqa: E402
 
     prod_dir = os.path.dirname(ruta)
-    bkdir = os.path.join(env.base, "backups_csv")
+    bkdir = os.path.join(env.base, "_RESPALDOS", "backups_csv")
     try:
         con = db_cargar.conectar()
     except Exception as exc:
