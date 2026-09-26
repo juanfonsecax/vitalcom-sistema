@@ -35,6 +35,7 @@ import tables as T  # noqa: E402
 import cargar as C  # noqa: E402
 import exportar as E  # noqa: E402
 import escribir as W  # noqa: E402
+import leer as L  # noqa: E402
 import nucleo as N  # noqa: E402
 
 TOOLS_DIR = os.path.join(T.BASE_DIR, "Ads", "_TOOLS")
@@ -1047,3 +1048,120 @@ def test_tomar_csv_decisiones_json_bootstrap_y_guardia():
             C.tomar_csv("dim_bandas", tenant_id=TENANT_TEST_T2)  # ni migrada ni decisiones_json
     finally:
         _limpiar_tenant_test()
+
+
+# ── grupo 4: db/leer.py — lectores de Ads/_TOOLS/decidir.py y el backend (P3 T5) ────────────────
+
+TENANT_TEST_T5 = "test_p3_t5"
+
+
+@requiere_db
+def test_leer_filas_coincide_con_el_espejo_privado_de_escribir():
+    """`leer.filas()` es SOLO una fachada pública de `escribir._filas_espejo()` — nunca una
+    segunda implementación del mapeo columna-por-columna."""
+    _limpiar_tenant_test(TENANT_TEST_T5)
+    try:
+        con = _conectar_seguro()
+        try:
+            W.upsert(con, "producto",
+                     [{"producto_key": "T5PROD", "nombre_display": "Producto T5", "estado": "VIVO"}],
+                     key=("producto_key",), tenant_id=TENANT_TEST_T5)
+            esperado = W._filas_espejo(con, TENANT_TEST_T5, "producto")[2]
+            obtenido = L.filas(con, "producto", tenant_id=TENANT_TEST_T5)
+            assert obtenido == esperado
+            assert obtenido[0]["producto_key"] == "T5PROD"
+        finally:
+            con.close()
+    finally:
+        _limpiar_tenant_test(TENANT_TEST_T5)
+
+
+@requiere_db
+def test_leer_decision_coincide_con_leer_decision_actual():
+    _limpiar_tenant_test(TENANT_TEST_T5)
+    try:
+        con = _conectar_seguro()
+        try:
+            assert L.decision(con, tenant_id=TENANT_TEST_T5) is None
+            payload = {"generado": "2026-09-25", "productos": []}
+            W.reemplazar_decision(con, payload, tenant_id=TENANT_TEST_T5)
+            assert L.decision(con, tenant_id=TENANT_TEST_T5) == payload
+            assert L.decision(con, tenant_id=TENANT_TEST_T5) == W.leer_decision_actual(
+                con, TENANT_TEST_T5)
+        finally:
+            con.close()
+    finally:
+        _limpiar_tenant_test(TENANT_TEST_T5)
+
+
+@requiere_db
+def test_leer_materializar_escribe_espejos_byte_identicos(tmp_path):
+    _limpiar_tenant_test(TENANT_TEST_T5)
+    try:
+        con = _conectar_seguro()
+        try:
+            W.upsert(con, "producto",
+                     [{"producto_key": "T5MAT", "nombre_display": "Materializado", "estado": "VIVO"}],
+                     key=("producto_key",), tenant_id=TENANT_TEST_T5)
+            W.reemplazar(con, "estado_flujo",
+                         [{"producto_key": "T5MAT", "fase": "F1", "nodo_actual": "F1.paquete",
+                           "estado": "LISTO"}],
+                         tenant_id=TENANT_TEST_T5)
+            rutas = L.materializar(con, ["producto", "estado_flujo"], str(tmp_path),
+                                    tenant_id=TENANT_TEST_T5)
+            assert set(rutas) == {"producto", "estado_flujo"}
+            for tabla in rutas:
+                esperado = W._render_espejo_bytes(con, TENANT_TEST_T5, tabla)
+                with open(rutas[tabla], "rb") as f:
+                    assert f.read() == esperado
+        finally:
+            con.close()
+    finally:
+        _limpiar_tenant_test(TENANT_TEST_T5)
+
+
+@requiere_db
+def test_parity_gate_decidir_modo_db_igual_a_modo_csv_tenant_aislado():
+    """P3 T5: `decidir.py --json` leyendo las 5 tablas DB-truth desde Postgres
+    (`VITALCOM_FUENTE=db`, el default) da EXACTAMENTE el mismo resultado que leyéndolas del CSV
+    real (`VITALCOM_FUENTE=csv`) -- sobre un tenant de PRUEBA aislado en `vitalcom_test`
+    (`DECIDIR_TENANT_ID`), sembrado VERBATIM desde los CSV reales de `PRODUCTOS/`. Nunca toca el
+    tenant real "vitalcom" ni la base real (a diferencia de una corrida manual del operador, que sí
+    puede leer "vitalcom" real -- ver `test_decidir_prod_dir_override_es_retrocompatible` y el
+    hallazgo real documentado en el reporte de T5)."""
+    python_exe = _python_con_scipy_y_duckdb()
+    if not python_exe:
+        pytest.skip("no se encontró un intérprete con scipy+duckdb para correr decidir.py")
+
+    _limpiar_tenant_test(TENANT_TEST_T5)
+    try:
+        for tabla in sorted(T.TABLAS_MIGRADAS_DB):
+            C.tomar_csv(tabla, tenant_id=TENANT_TEST_T5)
+
+        env_csv = dict(os.environ)
+        env_csv["VITALCOM_FUENTE"] = "csv"
+        r_csv = subprocess.run(
+            [python_exe, os.path.join(TOOLS_DIR, "decidir.py"), "--json"],
+            capture_output=True, text=True, encoding="utf-8", env=env_csv, cwd=T.BASE_DIR,
+            timeout=120,
+        )
+        assert r_csv.returncode == 0, "decidir.py --json (csv) salió con error:\n%s" % r_csv.stderr
+        resultado_csv = json.loads(r_csv.stdout)
+
+        env_db = dict(os.environ)
+        env_db.pop("VITALCOM_FUENTE", None)  # default "db"
+        env_db["DECIDIR_TENANT_ID"] = TENANT_TEST_T5
+        r_db = subprocess.run(
+            [python_exe, os.path.join(TOOLS_DIR, "decidir.py"), "--json"],
+            capture_output=True, text=True, encoding="utf-8", env=env_db, cwd=T.BASE_DIR,
+            timeout=120,
+        )
+        assert r_db.returncode == 0, "decidir.py --json (db) salió con error:\n%s" % r_db.stderr
+        resultado_db = json.loads(r_db.stdout)
+
+        assert _quitar_generado(resultado_db) == _quitar_generado(resultado_csv), (
+            "el resultado de decidir.py difiere entre VITALCOM_FUENTE=db (tenant de prueba) y "
+            "VITALCOM_FUENTE=csv (mismos CSV reales)"
+        )
+    finally:
+        _limpiar_tenant_test(TENANT_TEST_T5)

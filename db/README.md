@@ -514,10 +514,58 @@ paquete también — solo la fila de `_DIM_PRODUCTOS.csv` cambia de almacén.
   el venv de la app) tiene `psycopg` instalado en este entorno (mismo intérprete que ya usan
   `flujo.py`/`decidir.py --escribir` desde T3/T4).
 
+## Lectura desde Postgres (T5)
+
+Hasta T4 los seis escritores reales quedaron conectados a Postgres, pero los dos LECTORES reales
+del sistema (`Ads/_TOOLS/decidir.py` y el backend de la app, `app/backend/vitalcom_app/
+contratos.py`) seguían leyendo el ESPEJO CSV directo del disco. T5 los conecta a la base — sin
+tocar las dimensiones editadas a mano (`_DIM_CONJUNTOS`, `_DIM_BANDAS`, `_ALIAS_CONJUNTOS`,
+`_PARAMETROS_DECISION`, `_DIM_CREATIVOS`...), que siguen viniendo del CSV real, tal como hoy.
+
+- **`db/leer.py`** (nuevo): API pública de lectura, reusando lo que ya existía en
+  `db/escribir.py` — nunca una segunda implementación del mapeo columna-por-columna.
+  `filas(conn, tabla, tenant_id)` es una fachada de `escribir._filas_espejo()` (lo mismo que ya usa
+  el guardia de drift); `decision(conn, tenant_id)` delega en `escribir.leer_decision_actual()`;
+  `materializar(conn, tablas, out_dir, tenant_id)` escribe el espejo CSV de cada tabla a un
+  directorio (para un lector que necesita un ARCHIVO real, como `decidir.py` vía DuckDB
+  `read_csv`), byte-idéntico a `escribir._escribir_csv_atomico()`.
+- **`Ads/_TOOLS/decidir.py`**: `VITALCOM_FUENTE=db` (default) | `csv` decide de dónde lee las 5
+  tablas DB-truth que ya escribe Postgres (`producto`, `estado_flujo`, `venta`,
+  `entrega_conjunto_dia`, `entrega_anuncio_dia`). En modo "db",
+  `_activar_fuente_db_si_corresponde()` corre UNA vez por proceso, al principio de
+  `analizar_portafolio()`: materializa esas 5 tablas a un directorio temporal (`db.leer.
+  materializar()`) y rebinda SOLO esas 5 rutas de módulo (`DIM_PROD_PATH`, `ESTADO_FLUJO_PATH`,
+  `FACT_VENTAS_PATH`, `FACT_ENTREGA_PATH`, `FACT_ENTREGA_ANUNCIO_PATH`) — `PARAMS_PATH`,
+  `DIM_CONJ_PATH`, `DIM_BANDAS_PATH` y `ALIAS_PATH` no se tocan, siguen leyendo `PROD` (el CSV
+  real). Se salta la activación (queda en CSV) si `DECIDIR_PROD_DIR` ya redirigió `PROD` a mano, o
+  si `flujo.py:Entorno.motor()` ya lo hizo sobre un fixture (comparación exacta contra la ruta real
+  `BASE/PRODUCTOS`) — así `flujo.py` corriendo sobre `test_flujo.py` sigue en CSV sin ningún cambio
+  en `flujo.py`. Postgres inalcanzable en modo "db" NUNCA cae de vuelta a CSV en silencio: revienta
+  con `SystemExit` y un mensaje claro (mismo criterio que `--escribir`). `DECIDIR_TENANT_ID`
+  (nuevo, mismo patrón que `DECIDIR_PROD_DIR`) sobreescribe el tenant que lee el modo "db" —
+  necesario para el gate de paridad, que corre `decidir.py` en un SUBPROCESO aparte donde
+  monkey-parchear `decidir.TENANT_ID` en proceso no alcanza.
+- **Backend (`contratos.py`)**: `VITALCOM_FUENTE=db` (default) | `csv`, mismo contrato.
+  `TABLA_DB_POR_ARCHIVO` mapea los cuatro CSV con tabla DB-truth que la app lee
+  (`_DIM_PRODUCTOS.csv`, `_ESTADO_FLUJO.csv`, `_FACT_VENTAS.csv`, `_EVENTOS.csv`) — `_leer_csv()`
+  y `_leer_json()` (para `_DECISIONES.json`) los desvían a `db/leer.py` cuando corresponde; el
+  resto de `PRODUCTOS/*.csv` sigue por el camino de siempre. `VITALCOM_DB_TENANT` (nuevo) sobre-
+  escribe el tenant fijo `"vitalcom"` — solo para pruebas aisladas contra `vitalcom_test`, nunca
+  en producción. Postgres inalcanzable en modo "db" se dice como `ContratoAusente`, que ya mapea a
+  HTTP 503 (`main.py:_contrato_ausente`) — nunca un CSV leído en silencio.
+  `app/backend/tests/conftest.py` fuerza `VITALCOM_FUENTE=csv` para toda la sesión de pruebas (los
+  sistemas de juguete son fixtures CSV sin Postgres detrás); `test_lectura_desde_postgres.py` es la
+  única que ejercita el modo "db", con un tenant único bootstrapeado en `vitalcom_test`.
+- Verificado con datos reales (25-sep-2026): `python Ads/_TOOLS/decidir.py --json` con
+  `VITALCOM_FUENTE=db` (leyendo Postgres real) y con `VITALCOM_FUENTE=csv` (leyendo
+  `PRODUCTOS/*.csv` real) dan el MISMO resultado byte a byte (salvo `generado`) — la garantía de
+  que el espejo es fiel también se sostiene en el camino de lectura, no solo en el de escritura.
+
 ## Qué NO hace esto todavía (fuera de alcance de P1)
 
-- Ningún lector ni escritor real (decidir.py, flujo.py, gen_*.py, etc.) lee de Postgres: siguen
-  leyendo los CSV. Cambiar eso es P3.
+- (Vigente hasta P3 T5) Ningún lector real leía de Postgres, solo escritores: `decidir.py` y el
+  backend de la app ya leen Postgres por defecto desde T5 (ver "Lectura desde Postgres" arriba);
+  `flujo.py`, `gen_*.py` y el resto siguen leyendo los CSV directo.
 - No hay Row-Level Security ni más de un tenant: `tenant_id='vitalcom'` es un valor fijo, no una
   política.
 - No hay `UPDATE`/`upsert` incremental: cada carga es un reemplazo completo (`raw` y `core`). Para
