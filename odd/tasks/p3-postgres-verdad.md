@@ -77,7 +77,12 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   repo-root `backups_csv/` → `_RESPALDOS/backups_csv/` `d04612c`. Recovery: `db/cargar.py
   --tomar-csv _DECISIONES.json`.
   Second real run 25-sep 21:01 → **VERDE, paridad IGUAL**. Checks: tools 46 passed.
-- [ ] T7 — 7-consecutive-green-days counter. Closes P3.
+- [~] T7 — 7-consecutive-green-days counter. Code done `5b975ec`: `ciclo_diario.racha_verde()`
+  (a day is green if its LAST row is VERDE/AMARILLO; missing or ROJO-ending day breaks; today
+  without a row keeps yesterday's streak), printed after every run, on `--si-falta-hoy` skip and
+  with `--racha`; the Claude audit message shows `RACHA: N/7` (same rule, read from the CSV).
+  Checks: runner 26/26, tools 46 passed, real `--racha` → 1/7 (2026-09-25).
+  Pending: 7 consecutive green days → earliest 2026-10-01. That closes P3.
 - [ ] T8 — Defects found during P3:
   (a) `_DIM_ANUNCIOS.csv` has two full-rewrite writers (`sembrar_anuncios.py:188`, `firma.py:174`)
   — verify whether one clobbers the other and fix;
@@ -88,5 +93,5 @@ files: `PRODUCTOS/_EVENTOS.csv`, `PRODUCTOS/_DECISIONES.json`, `PRODUCTOS/_AUDIT
   `decidir.py`/`flujo.py`.
 
 ## Next step
-T7 — counter over `PRODUCTOS/_CORRIDAS_DIARIAS.csv` (day 1 green = 2026-09-25). Watch the
-scheduled task fire on its own on 26-sep. e2e for T5 still pending (frontend `node_modules` missing).
+Let the streak run (`python Ads/_TOOLS/ciclo_diario.py --racha`); check on 26-sep that the
+scheduled task fired on its own. Meanwhile: T8(a), T8(c), T5 e2e. e2e for T5 still pending (frontend `node_modules` missing).
