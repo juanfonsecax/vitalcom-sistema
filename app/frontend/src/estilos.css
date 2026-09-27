@@ -189,4 +189,37 @@
   .dark [data-slot="card"] {
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
   }
+  /* Celebración: cuando un producto pasa a ESCALAR desde otro estado desde tu última
+     visita, su tarjeta recibe una lluvia breve de confeti — una sola vez por transición.
+     Guardada tras prefers-reduced-motion: quien pide menos movimiento no la ve. */
+  @media (prefers-reduced-motion: no-preference) {
+    .celebracion {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .celebracion span {
+      position: absolute;
+      top: -10px;
+      width: 5px;
+      height: 9px;
+      border-radius: 1px;
+      animation: confeti-cae 1.8s ease-in forwards;
+    }
+  }
+}
+
+@keyframes confeti-cae {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(var(--dx, 0px), 72px, 0) rotate(var(--giro, 220deg));
+    opacity: 0;
+  }
 }

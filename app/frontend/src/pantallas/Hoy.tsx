@@ -14,6 +14,7 @@
  * negocio (glosario por estado, título sin ambigüedad de una orden ESCALAR bloqueada, quién
  * hace cada paso).
  */
+import { useEffect, useState, type CSSProperties } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { AlertTriangle, BellRing, ChevronDown } from "lucide-react";
@@ -56,6 +57,60 @@ const CLASE_ESTADO_ORDEN: Record<string, string> = {
   RENOVAR: "bg-estado-renovar text-estado-renovar-foreground",
   SEGUIR_MIDIENDO: "bg-estado-seguir text-estado-seguir-foreground",
 };
+
+/** Celebración (E3): las claves de los ángulos que acaban de entrar en ESCALAR respecto de
+ * tu última visita. La comparación es de PANTALLA — qué estado se mostró la vez anterior
+ * (localStorage) contra el que trae el motor hoy —, nada que el motor no haya dicho ya.
+ * La primera visita no celebra: sin línea base no hay transición que celebrar. */
+const CLAVE_CELEBRACION = "vitalcom-celebraciones-v1";
+
+function usarEscalaresNuevos(ordenes: OrdenItem[]) {
+  const [nuevos, setNuevos] = useState<string[]>([]);
+  useEffect(() => {
+    if (ordenes.length === 0) return;
+    let previos: Record<string, string> = {};
+    try {
+      previos = JSON.parse(window.localStorage.getItem(CLAVE_CELEBRACION) ?? "{}") as Record<string, string>;
+    } catch {
+      previos = {};
+    }
+    const actuales: Record<string, string> = {};
+    const recien: string[] = [];
+    for (const orden of ordenes) {
+      const clave = `${orden.producto_key}|${orden.angulo_key}`;
+      actuales[clave] = orden.estado;
+      if (
+        orden.estado === "ESCALAR" &&
+        !orden.bloqueo_fase &&
+        previos[clave] !== undefined &&
+        previos[clave] !== "ESCALAR"
+      ) {
+        recien.push(clave);
+      }
+    }
+    try {
+      window.localStorage.setItem(CLAVE_CELEBRACION, JSON.stringify(actuales));
+    } catch {
+      /* sin espacio en localStorage se pierde la celebración, nunca la pantalla */
+    }
+    if (recien.length > 0) setNuevos(recien);
+  }, [ordenes]);
+  return nuevos;
+}
+
+/** Las 16 piezas del confeti, fijas (sin azar): posiciones y giros predeterminados para que
+ * la celebración sea igual en cada visita y no haya sorpresas entre navegadas. */
+const CONFETI: { left: number; dx: number; giro: number; delay: number }[] = Array.from(
+  { length: 16 },
+  (_, i) => ({
+    left: 6 + i * 6,
+    dx: ((i * 7) % 29) - 14,
+    giro: 120 + i * 15,
+    delay: i * 16,
+  }),
+);
+
+const COLORES_CONFETI = ["var(--estado-escalar)", "var(--estado-seguir)", "var(--primary)"];
 
 /** El banner de rezago de arriba de todo: sale de `_DECISIONES.json`, no de las órdenes. Un
  * `rezago_dias` ausente se trata como desconocido — nunca como "fresco". */
@@ -138,10 +193,12 @@ function TarjetaOrdenDelDia({
   orden,
   cicloHabilitado,
   indice = 0,
+  celebrar = false,
 }: {
   orden: OrdenItem;
   cicloHabilitado: boolean;
   indice?: number;
+  celebrar?: boolean;
 }) {
   const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
   const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
@@ -154,9 +211,27 @@ function TarjetaOrdenDelDia({
   return (
     <Card
       data-testid="tarjeta-orden"
-      className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards motion-safe:duration-300 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5"
+      className={`relative motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards motion-safe:duration-300 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5${celebrar ? " ring-1 ring-estado-escalar/40" : ""}`}
       style={{ animationDelay: `${Math.min(indice, 8) * 60}ms` }}
     >
+      {celebrar && (
+        <span data-testid="celebracion-escalar" className="celebracion" aria-hidden="true">
+          {CONFETI.map((pieza, i) => (
+            <span
+              key={i}
+              style={
+                {
+                  left: `${pieza.left}%`,
+                  backgroundColor: COLORES_CONFETI[i % COLORES_CONFETI.length],
+                  animationDelay: `${pieza.delay}ms`,
+                  "--dx": `${pieza.dx}px`,
+                  "--giro": `${pieza.giro}deg`,
+                } as CSSProperties
+              }
+            />
+          ))}
+        </span>
+      )}
       <CardHeader className="gap-2">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -324,6 +399,8 @@ function SeccionOrdenes() {
   const ordenesQuery = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const accionesQuery = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
   const trabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
+  const ordenes = ordenesQuery.data?.ordenes ?? [];
+  const recienEscalaron = usarEscalaresNuevos(ordenes);
 
   if (ordenesQuery.isLoading) {
     return (
@@ -335,7 +412,6 @@ function SeccionOrdenes() {
   }
   if (ordenesQuery.error) return <Problema error={ordenesQuery.error} />;
 
-  const ordenes = ordenesQuery.data?.ordenes ?? [];
   const accionCiclo = (accionesQuery.data ?? []).find((a) => a.id === ACCION_CICLO_ORDENES);
   const cicloHabilitado = accionCiclo?.habilitada ?? false;
   const pendientes = (trabajos.data ?? []).filter((t) => t.pendiente).length;
@@ -364,6 +440,7 @@ function SeccionOrdenes() {
               orden={orden}
               cicloHabilitado={cicloHabilitado}
               indice={i}
+              celebrar={recienEscalaron.includes(`${orden.producto_key}|${orden.angulo_key}`)}
             />
           ))}
         </div>

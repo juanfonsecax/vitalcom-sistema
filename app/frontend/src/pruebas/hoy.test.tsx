@@ -264,6 +264,17 @@ test("el glosario del estado queda plegado: el «¿Qué es…?» lo despliega", 
   ).toBeInTheDocument();
 });
 
+test("un ángulo que acaba de entrar en ESCALAR se celebra una sola vez", async () => {
+  window.localStorage.setItem(
+    "vitalcom-celebraciones-v1",
+    JSON.stringify({ "CLEARSTEM|RESISTENCIA_INSULINA_SOP": "SEGUIR_MIDIENDO" }),
+  );
+  montar();
+  expect(await screen.findByTestId("celebracion-escalar")).toBeInTheDocument();
+  // La segunda visita ya no celebra: la transición quedó registrada.
+  window.localStorage.removeItem("vitalcom-celebraciones-v1");
+});
+
 test("qué sigue por producto: muestra fase, paso y el bloqueante con su dueño; sin bloqueante lo dice", async () => {
   montar();
   expect(await screen.findByText("ClearStem")).toBeInTheDocument();
