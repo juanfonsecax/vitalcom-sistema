@@ -17,7 +17,17 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { AlertTriangle, BellRing, ChevronDown } from "lucide-react";
+import {
+  AlertTriangle,
+  BellRing,
+  ChevronDown,
+  CircleCheck,
+  Hourglass,
+  Power,
+  RefreshCw,
+  TrendingUp,
+  type LucideIcon,
+} from "lucide-react";
 
 import { api, type OrdenItem, type Producto } from "../api/cliente";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -27,7 +37,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
 import { tituloDelPasoActual } from "../componentes/resumen";
-import { Problema } from "../componentes/ui";
+import { cn, Problema } from "../componentes/ui";
 import {
   glosarioDeOrden,
   progresoVentasEnPalabras,
@@ -56,6 +66,16 @@ const CLASE_ESTADO_ORDEN: Record<string, string> = {
   PAUSAR: "bg-estado-pausar text-estado-pausar-foreground",
   RENOVAR: "bg-estado-renovar text-estado-renovar-foreground",
   SEGUIR_MIDIENDO: "bg-estado-seguir text-estado-seguir-foreground",
+};
+
+/** El filete de color a la izquierda de cada tarjeta de orden: el estado se lee de reojo,
+ * antes de leer una sola palabra. Una celda ESCALAR bloqueada por fase toma el filete de
+ * "esperar" (ámbar), igual que su badge. */
+const FILETE_ESTADO_ORDEN: Record<string, string> = {
+  ESCALAR: "border-l-estado-escalar",
+  PAUSAR: "border-l-estado-pausar",
+  RENOVAR: "border-l-estado-renovar",
+  SEGUIR_MIDIENDO: "border-l-estado-seguir",
 };
 
 /** Celebración (E3): las claves de los ángulos que acaban de entrar en ESCALAR respecto de
@@ -213,7 +233,12 @@ function TarjetaOrdenDelDia({
   return (
     <Card
       data-testid="tarjeta-orden"
-      className={`relative motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards motion-safe:duration-300 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5${celebrar ? " ring-1 ring-estado-escalar/40" : ""}`}
+      className={cn(
+        "relative border-l-4 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards motion-safe:duration-300 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5",
+        escalarBloqueado ? FILETE_ESTADO_ORDEN.SEGUIR_MIDIENDO : (FILETE_ESTADO_ORDEN[orden.estado] ?? "border-l-border"),
+        orden.estado === "ESCALAR" && !escalarBloqueado && "brillo-escalar",
+        celebrar && "ring-1 ring-estado-escalar/40",
+      )}
       style={{ animationDelay: `${Math.min(indice, 8) * 60}ms` }}
     >
       {celebrar && (
@@ -261,7 +286,10 @@ function TarjetaOrdenDelDia({
             <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
               CPA observado
             </span>
-            <span className="text-xl font-semibold tabular-nums text-foreground">
+            <span
+              key={String(pq.cpa_real_q)}
+              className="block text-2xl font-bold tabular-nums text-foreground motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-300"
+            >
               {pq.cpa_real_q != null ? `Q${pq.cpa_real_q}` : "Sin datos"}
             </span>
           </div>
@@ -269,7 +297,10 @@ function TarjetaOrdenDelDia({
             <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
               Break-even
             </span>
-            <span className="text-xl font-semibold tabular-nums text-foreground">
+            <span
+              key={String(pq.break_even_q)}
+              className="block text-2xl font-bold tabular-nums text-foreground motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-300"
+            >
               {pq.break_even_q != null ? `Q${pq.break_even_q}` : "No fijado"}
             </span>
           </div>
@@ -331,21 +362,84 @@ function FilaEnMedicion({ orden }: { orden: OrdenItem }) {
   );
 }
 
-/** La franja que resume el día en un vistazo: cuántas órdenes piden cada acción, contadas de
- * las mismas órdenes que se pintan abajo (es contar tarjetas, no calcular el negocio: los
- * estados ya los decidió `decidir.py`). Si Trabajos tiene algo esperando al operador, se
- * avisa acá — antes ese aviso vivía solo en la insignia de Ajustes. */
-const ETIQUETA_FRANJA: Record<string, string> = {
-  PAUSAR: "pausar",
-  ESCALAR: "escalar",
-  RENOVAR: "renovar",
+/** La Cabina: el resumen del día como tarjetas grandes — una por estado de decisión, con su
+ * color, su ícono y su brillo. Se cuentan de las mismas órdenes que se pintan abajo (es
+ * contar tarjetas, no calcular el negocio: los estados ya los decidió `decidir.py`).
+ * Si Trabajos tiene algo esperando al operador, también ocupa su tarjeta — y su aviso
+ * vive acá, no escondido en Ajustes. */
+const RESUMEN_DE_ESTADO: Record<string, { icono: LucideIcon; etiqueta: string; clases: string }> = {
+  PAUSAR: {
+    icono: Power,
+    etiqueta: "Pausar",
+    clases: "border-estado-pausar/40 bg-estado-pausar/10 text-estado-pausar brillo-pausar",
+  },
+  ESCALAR: {
+    icono: TrendingUp,
+    etiqueta: "Escalar",
+    clases: "border-estado-escalar/40 bg-estado-escalar/10 text-estado-escalar brillo-escalar",
+  },
+  RENOVAR: {
+    icono: RefreshCw,
+    etiqueta: "Renovar",
+    clases: "border-estado-renovar/40 bg-estado-renovar/10 text-estado-renovar brillo-renovar",
+  },
+  MIDIENDO: {
+    icono: Hourglass,
+    etiqueta: "Midiendo",
+    clases: "border-estado-seguir/40 bg-estado-seguir/10 text-estado-seguir",
+  },
 };
 
-const CLASE_FRANJA: Record<string, string> = {
-  PAUSAR: "text-estado-pausar",
-  ESCALAR: "text-estado-escalar",
-  RENOVAR: "text-estado-renovar",
-};
+const CLASES_ENTRADA_RESUMEN =
+  "motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:fill-mode-backwards motion-safe:duration-300";
+
+function TarjetaResumen({
+  icono: Icono,
+  etiqueta,
+  cantidad,
+  clases,
+  indice,
+  testid,
+  enlace,
+}: {
+  icono: LucideIcon;
+  etiqueta: string;
+  cantidad: number;
+  clases: string;
+  indice: number;
+  testid?: string;
+  enlace?: string;
+}) {
+  const cuerpo = (
+    <>
+      <Icono className="size-5" />
+      <p className="mt-2 text-4xl font-bold tabular-nums leading-none">{cantidad}</p>
+      <p className="mt-1.5 text-sm font-medium">{etiqueta}</p>
+    </>
+  );
+  const base = cn(
+    "relative overflow-hidden rounded-xl border p-4 transition-transform motion-safe:hover:-translate-y-1",
+    clases,
+    CLASES_ENTRADA_RESUMEN,
+  );
+  if (enlace) {
+    return (
+      <Link
+        to={enlace}
+        data-testid={testid}
+        className={base}
+        style={{ animationDelay: `${indice * 70}ms` }}
+      >
+        {cuerpo}
+      </Link>
+    );
+  }
+  return (
+    <div data-testid={testid} className={base} style={{ animationDelay: `${indice * 70}ms` }}>
+      {cuerpo}
+    </div>
+  );
+}
 
 function FranjaDelDia({
   ordenes,
@@ -360,42 +454,51 @@ function FranjaDelDia({
     if (orden.estado === "SEGUIR_MIDIENDO") enMedicion += 1;
     else conteo[orden.estado] = (conteo[orden.estado] ?? 0) + 1;
   }
-  const acciones = (["PAUSAR", "ESCALAR", "RENOVAR"] as const).filter((clave) => (conteo[clave] ?? 0) > 0);
+
+  const tarjetas: { estado: string; cantidad: number }[] = [];
+  for (const estado of ["PAUSAR", "ESCALAR", "RENOVAR"] as const) {
+    if ((conteo[estado] ?? 0) > 0) tarjetas.push({ estado, cantidad: conteo[estado] });
+  }
+  if (enMedicion > 0) tarjetas.push({ estado: "MIDIENDO", cantidad: enMedicion });
 
   return (
-    <div
-      data-testid="franja-hoy"
-      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/60 p-4"
-    >
-      <div>
-        <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Hoy te toca</p>
-        {acciones.length === 0 && enMedicion === 0 ? (
-          <p className="mt-1 text-lg font-semibold">Ninguna acción sobre Meta</p>
-        ) : (
-          <p className="mt-1 flex flex-wrap items-baseline gap-x-5 gap-y-1 text-2xl font-bold">
-            {acciones.map((clave) => (
-              <span key={clave} className="flex items-baseline gap-1">
-                <span className={`tabular-nums ${CLASE_FRANJA[clave]}`}>{conteo[clave]}</span>
-                <span className="text-sm font-semibold text-muted-foreground">{ETIQUETA_FRANJA[clave]}</span>
-              </span>
-            ))}
-            {enMedicion > 0 && (
-              <span className="flex items-baseline gap-1">
-                <span className="tabular-nums text-estado-seguir">{enMedicion}</span>
-                <span className="text-sm font-semibold text-muted-foreground">midiendo</span>
-              </span>
-            )}
-          </p>
-        )}
-      </div>
-      {pendientesDeTrabajos > 0 && (
-        <Link
-          to="/trabajos"
-          className="inline-flex items-center gap-2 rounded-lg border border-estado-seguir/40 bg-estado-seguir/10 px-3 py-1.5 text-sm text-estado-seguir transition-colors hover:bg-estado-seguir/20"
+    <div data-testid="franja-hoy" className="space-y-2">
+      <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Hoy te toca</p>
+      {tarjetas.length === 0 && pendientesDeTrabajos === 0 ? (
+        <div
+          className={`flex items-center gap-3 rounded-xl border border-border bg-card/60 p-4 ${CLASES_ENTRADA_RESUMEN}`}
         >
-          <BellRing className="size-4" />
-          {pendientesDeTrabajos} {pendientesDeTrabajos === 1 ? "espera" : "esperan"} tu revisión en Trabajos
-        </Link>
+          <CircleCheck className="size-5 text-estado-escalar" />
+          <p className="text-sm font-medium">Ninguna acción sobre Meta hoy — el motor midió y todas las celdas siguen su curso.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {tarjetas.map((t, i) => {
+            const resumen = RESUMEN_DE_ESTADO[t.estado];
+            return (
+              <TarjetaResumen
+                key={t.estado}
+                icono={resumen.icono}
+                etiqueta={resumen.etiqueta}
+                cantidad={t.cantidad}
+                clases={resumen.clases}
+                indice={i}
+                testid={`resumen-${t.estado.toLowerCase()}`}
+              />
+            );
+          })}
+          {pendientesDeTrabajos > 0 && (
+            <TarjetaResumen
+              icono={BellRing}
+              etiqueta="esperan tu revisión en Trabajos"
+              cantidad={pendientesDeTrabajos}
+              clases="border-estado-seguir/40 bg-estado-seguir/10 text-estado-seguir"
+              indice={tarjetas.length}
+              testid="resumen-trabajos"
+              enlace="/trabajos"
+            />
+          )}
+        </div>
       )}
     </div>
   );

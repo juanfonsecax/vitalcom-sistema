@@ -213,14 +213,17 @@ test("estado vacío: sin órdenes accionables lo dice en vez de mostrar tarjetas
   expect(await screen.findByText(/No hay órdenes que pidan una acción hoy/)).toBeInTheDocument();
 });
 
-test("la franja del día resume las órdenes en un vistazo: 1 pausar, 1 escalar y 1 midiendo", async () => {
+test("la franja del día resume las órdenes en tarjetas grandes: 1 Pausar, 1 Escalar y 1 Midiendo", async () => {
   montar();
   const franja = await screen.findByTestId("franja-hoy");
   expect(within(franja).getByText("Hoy te toca")).toBeInTheDocument();
+  expect(within(franja).getByTestId("resumen-pausar")).toBeInTheDocument();
+  expect(within(franja).getByTestId("resumen-escalar")).toBeInTheDocument();
+  expect(within(franja).getByTestId("resumen-midiendo")).toBeInTheDocument();
   expect(within(franja).getAllByText("1")).toHaveLength(3);
-  expect(within(franja).getByText("pausar")).toBeInTheDocument();
-  expect(within(franja).getByText("escalar")).toBeInTheDocument();
-  expect(within(franja).getByText("midiendo")).toBeInTheDocument();
+  expect(within(franja).getByText("Pausar")).toBeInTheDocument();
+  expect(within(franja).getByText("Escalar")).toBeInTheDocument();
+  expect(within(franja).getByText("Midiendo")).toBeInTheDocument();
 });
 
 test("la franja avisa cuando Trabajos tiene algo esperando al operador", async () => {
@@ -231,7 +234,10 @@ test("la franja avisa cuando Trabajos tiene algo esperando al operador", async (
     ],
   });
   montar();
-  expect(await screen.findByText(/2 esperan tu revisión en Trabajos/)).toBeInTheDocument();
+  const franja = await screen.findByTestId("franja-hoy");
+  const tarjeta = within(franja).getByTestId("resumen-trabajos");
+  expect(within(tarjeta).getByText("2")).toBeInTheDocument();
+  expect(within(tarjeta).getByText("esperan tu revisión en Trabajos")).toBeInTheDocument();
 });
 
 test("orden ejecutable con el ciclo deshabilitado: lo dice en texto, sin botones muertos", async () => {
