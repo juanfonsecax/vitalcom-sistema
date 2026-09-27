@@ -70,8 +70,17 @@ pushd "%RAIZ%app\backend"
 call uv sync --quiet || (echo [X] uv sync fallo & popd & pause & exit /b 1)
 popd
 
-if not exist "%RAIZ%app\frontend\dist\index.html" (
-  echo [2/3] Compilando la pantalla ^(solo la primera vez^)...
+rem La pantalla se recompila si no existe o si algun archivo del codigo es mas
+rem nuevo que la version compilada (si no, un cambio de codigo nunca se ve).
+set "COMPILAR="
+if not exist "%RAIZ%app\frontend\dist\index.html" set "COMPILAR=1"
+if not defined COMPILAR (
+  powershell -NoProfile -Command "$d=(Get-Item -LiteralPath '%RAIZ%app\frontend\dist\index.html').LastWriteTime; $n=Get-ChildItem -LiteralPath '%RAIZ%app\frontend\src','%RAIZ%app\frontend\index.html','%RAIZ%app\frontend\package.json' -Recurse -File | Where-Object { $_.LastWriteTime -gt $d } | Select-Object -First 1; if ($n) { exit 1 } else { exit 0 }"
+  if errorlevel 1 set "COMPILAR=1"
+)
+
+if defined COMPILAR (
+  echo [2/3] Compilando la pantalla ^(el codigo cambio desde la ultima vez^)...
   where pnpm >nul 2>nul || (
     echo [X] Falta pnpm. Instalalo con:  npm install -g pnpm
     pause
@@ -82,7 +91,7 @@ if not exist "%RAIZ%app\frontend\dist\index.html" (
   call pnpm build || (echo [X] pnpm build fallo & popd & pause & exit /b 1)
   popd
 ) else (
-  echo [2/3] La pantalla ya esta compilada.
+  echo [2/3] La pantalla compilada esta al dia.
 )
 
 echo [3/3] Levantando http://localhost:8000 ...
