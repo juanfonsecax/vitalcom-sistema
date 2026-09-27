@@ -12,10 +12,19 @@ import { api, type ParametroMotor } from "../api/cliente";
 import { Button } from "@/components/ui/button";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   cierreEnPalabras,
   EXPLICACION_DEL_RELOJ,
   glosarioDeOrden,
   progresoVentasEnPalabras,
+  quienLoHace,
   TEXTO_ORDEN,
   tituloDeOrden,
   ventasFaltantesEnPalabras,
@@ -49,6 +58,19 @@ type Bloqueante = {
   ambito?: string;
 };
 
+/** Un conjunto NUESTRO de Meta que todavía no tiene su fila de registro (`pendientes_registro`,
+ * gen_ordenes.py): su gasto ya cuenta a nivel producto; lo único pendiente es la fila de
+ * `angulo_key` en _DIM_CONJUNTOS.csv, que da de alta la etapa que la produce (`lo_produce`). */
+type PendienteRegistro = {
+  cuenta_alias: string;
+  campana: string;
+  conjunto: string;
+  producto_key: string;
+  spend_usd: number;
+  anuncios: number;
+  lo_produce: string;
+};
+
 /** Panel «cómo mide el motor»: los tres relojes de `_PARAMETROS_DECISION.csv`, con su valor real
  * y una línea fija de qué mide cada uno. Si un reloj no está en el contrato, se dice así. */
 function PanelDeRelojes({ parametros }: { parametros: ParametroMotor[] }) {
@@ -76,6 +98,55 @@ function PanelDeRelojes({ parametros }: { parametros: ParametroMotor[] }) {
   );
 }
 
+/** «Conjuntos de Meta sin registrar»: advertencia operativa, no una orden. Lista cada
+ * conjunto pendiente tal cual lo manda gen_ordenes.py — la pantalla no agrega ni calcula
+ * nada; «La registra» traduce `lo_produce` con `quienLoHace` y guarda el valor crudo en el
+ * `title` de la celda. Sin pendientes no se renderiza nada (cero ruido). */
+function ConjuntosSinRegistrar({ pendientes }: { pendientes: PendienteRegistro[] }) {
+  if (pendientes.length === 0) return null;
+  return (
+    <div data-testid="pendientes-registro">
+      <Tarjeta className="border-estado-seguir/40 bg-estado-seguir/10">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-estado-seguir">
+          Conjuntos de Meta sin registrar
+        </h2>
+        <p className="mt-1 text-xs text-amber-300/80">
+          Su gasto ya cuenta en el producto; solo falta su fila de registro, que da de alta la
+          etapa que la produce.
+        </p>
+        <Table className="mt-3">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Conjunto</TableHead>
+              <TableHead>Campaña</TableHead>
+              <TableHead>Cuenta</TableHead>
+              <TableHead>Producto</TableHead>
+              <TableHead className="text-right">Gastó (USD)</TableHead>
+              <TableHead className="text-right">Anuncios</TableHead>
+              <TableHead>La registra</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {pendientes.map((p) => (
+              <TableRow key={`${p.cuenta_alias}-${p.conjunto}`}>
+                <TableCell className="font-mono text-xs">{p.conjunto}</TableCell>
+                <TableCell className="text-xs">{p.campana}</TableCell>
+                <TableCell className="text-xs">{p.cuenta_alias}</TableCell>
+                <TableCell className="text-xs">{p.producto_key}</TableCell>
+                <TableCell className="text-right tabular-nums text-xs">{p.spend_usd}</TableCell>
+                <TableCell className="text-right tabular-nums text-xs">{p.anuncios}</TableCell>
+                <TableCell className="text-xs" title={p.lo_produce}>
+                  {quienLoHace(p.lo_produce)}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Tarjeta>
+    </div>
+  );
+}
+
 export function Ordenes() {
   const consultaOrdenes = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const consultaGanadores = useQuery({ queryKey: ["ganadores"], queryFn: api.ganadores });
@@ -93,6 +164,7 @@ export function Ordenes() {
   const rezago = datos?.rezago_dias ?? 0;
   const bloqueantes = (datos?.bloqueantes ?? []) as Bloqueante[];
   const avisos = (datos?.avisos ?? []) as string[];
+  const pendientes = (datos?.pendientes_registro ?? []) as PendienteRegistro[];
   const parametrosMotor = datos?.parametros_motor ?? [];
   // Meta de cierre (benchmark 15-20%, UMBRAL_CIERRE_MINIMO_BOT): sale del mismo contrato que
   // el panel de relojes, nunca hardcodeada acá. Si el operador no regeneró el CSV, no está.
@@ -138,6 +210,8 @@ export function Ordenes() {
           </p>
         </div>
       )}
+
+      <ConjuntosSinRegistrar pendientes={pendientes} />
 
       <PanelDeRelojes parametros={parametrosMotor} />
 

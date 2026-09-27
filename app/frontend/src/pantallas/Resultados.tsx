@@ -241,6 +241,151 @@ function GraficoDeTendencia() {
   );
 }
 
+/** VISTA B · CAJA (DOCTRINA/CONTABILIDAD.md §2): cuánto dinero se movió de verdad en la
+ * ventana, según el historial de cartera de Dropi. Dict libre cuyo dueño es `gen_pl.py`
+ * (T4a): esta tarjeta pinta las claves tal cual vienen y se salta en silencio cualquier
+ * fila que el script no mandó — nunca calcula ni rellena. Los prefijos (+)/(−)/(=) son
+ * rótulos de dirección; el monto crudo de cada fila es del script, tal cual. */
+type FilaDeCaja = { signo: string; rotulo: string; valor: number; heroe?: boolean };
+
+function TarjetaCaja({ caja }: { caja: Record<string, unknown> | null | undefined }) {
+  const numero = (
+    datos: Record<string, unknown> | null | undefined,
+    clave: string,
+  ): number | undefined => {
+    const valor = datos?.[clave];
+    return typeof valor === "number" && Number.isFinite(valor) ? valor : undefined;
+  };
+  const objeto = (
+    datos: Record<string, unknown> | null | undefined,
+    clave: string,
+  ): Record<string, unknown> | undefined => {
+    const valor = datos?.[clave];
+    return typeof valor === "object" && valor !== null ? (valor as Record<string, unknown>) : undefined;
+  };
+
+  const filas: FilaDeCaja[] = [];
+  const nEntradas = numero(caja, "n_entradas_ganancia_ordenes");
+  const entradas = numero(caja, "entradas_ganancia_ordenes_q");
+  if (entradas !== undefined) {
+    filas.push({
+      signo: "(+)",
+      rotulo: `Entradas por ganancia de órdenes${nEntradas !== undefined ? ` (${nEntradas})` : ""}`,
+      valor: entradas,
+    });
+  }
+  const nDevoluciones = numero(caja, "n_cobros_devolucion");
+  const devoluciones = numero(caja, "cobros_devolucion_q");
+  if (devoluciones !== undefined) {
+    filas.push({
+      signo: "(−)",
+      rotulo: `Cobros de devolución${nDevoluciones !== undefined ? ` (${nDevoluciones})` : ""}`,
+      valor: devoluciones,
+    });
+  }
+  const nOtrasSalidas = numero(caja, "n_otras_salidas");
+  const otrasSalidas = numero(caja, "otras_salidas_q");
+  if (otrasSalidas !== undefined && nOtrasSalidas !== undefined && nOtrasSalidas > 0) {
+    filas.push({ signo: "(−)", rotulo: `Otras salidas (${nOtrasSalidas})`, valor: otrasSalidas });
+  }
+  const neto = numero(caja, "neto_acreditado_cartera_q");
+  if (neto !== undefined) {
+    filas.push({ signo: "(=)", rotulo: "Neto acreditado en la cartera", valor: neto, heroe: true });
+  }
+  const personal = numero(caja, "personal_y_otros_q");
+  if (personal !== undefined) {
+    filas.push({ signo: "(−)", rotulo: "Personal y otros", valor: personal });
+  }
+  const publicidad = numero(caja, "publicidad_cobrada_banco_q");
+  if (publicidad !== undefined) {
+    filas.push({ signo: "(−)", rotulo: "Publicidad cobrada por el banco", valor: publicidad });
+    const gastosFijos = numero(caja, "gastos_fijos_q");
+    if (gastosFijos !== undefined) {
+      filas.push({ signo: "(−)", rotulo: "Gastos fijos del negocio", valor: gastosFijos });
+    }
+    const cajaDelNegocio = numero(caja, "caja_que_genero_el_negocio_q");
+    if (cajaDelNegocio !== undefined) {
+      filas.push({
+        signo: "(=)",
+        rotulo: "Caja que generó el negocio",
+        valor: cajaDelNegocio,
+        heroe: true,
+      });
+    }
+    const retiros = numero(caja, "retiros_personales_q");
+    if (retiros !== undefined) {
+      filas.push({ signo: "(−)", rotulo: "Retiros personales (no son del negocio)", valor: retiros });
+    }
+    const enLaCuenta = numero(caja, "caja_que_quedo_en_la_cuenta_q");
+    if (enLaCuenta !== undefined) {
+      filas.push({ signo: "(=)", rotulo: "Caja que quedó en la cuenta", valor: enLaCuenta, heroe: true });
+    }
+  } else {
+    const antesDePublicidad = numero(caja, "caja_antes_de_publicidad_q");
+    if (antesDePublicidad !== undefined) {
+      filas.push({
+        signo: "(=)",
+        rotulo: "Caja antes de publicidad",
+        valor: antesDePublicidad,
+        heroe: true,
+      });
+    }
+  }
+
+  const arrastre = objeto(caja, "arrastre");
+  const cohorteVsCaja = objeto(caja, "cohorte_vs_caja_q");
+  const notaArrastre = arrastre
+    ? `Arrastre: ${numero(arrastre, "n_acreditaciones_previas") ?? "—"} de ${numero(arrastre, "n_acreditaciones_total") ?? "—"} acreditaciones (${formatoQ(numero(arrastre, "monto_previo_q"))}) vienen de órdenes tomadas antes de la ventana — eso es exactamente lo que la vista de cohorte no ve.`
+    : null;
+  const notaCohorteVsCaja = cohorteVsCaja
+    ? `Cohorte vs caja en esta ventana: ${formatoQ(numero(cohorteVsCaja, "cohorte_margen_contribucion_q"))} vs ${formatoQ(numero(cohorteVsCaja, "caja_antes_de_publicidad_q"))}. No tienen por qué coincidir y ninguna está mal: miden cosas distintas.`
+    : null;
+
+  return (
+    <Card data-testid="caja-vista-b">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-1 text-base">
+          Caja de la ventana
+          <Info termino="vista_caja" />
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {!caja ? (
+          <p className="text-sm text-muted-foreground">
+            No se puede calcular la caja: falta el historial de cartera de Dropi. Lo que muestran
+            las tarjetas de arriba es cohorte — mide si la pauta rindió, no el saldo de la cuenta.
+          </p>
+        ) : (
+          <>
+            <dl className="space-y-1.5">
+              {filas.map((fila) => (
+                <div
+                  key={fila.rotulo}
+                  className={"flex items-baseline justify-between gap-4" + (fila.heroe ? " border-t pt-2" : "")}
+                >
+                  <dt className={"text-sm " + (fila.heroe ? "font-medium" : "text-muted-foreground")}>
+                    <span className="mr-1.5 font-mono text-xs text-muted-foreground">{fila.signo}</span>
+                    {fila.rotulo}
+                  </dt>
+                  <dd className={"tabular-nums " + (fila.heroe ? "text-xl font-semibold" : "text-sm")}>
+                    {formatoQ(fila.valor)}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            {(notaArrastre || notaCohorteVsCaja) && (
+              <div className="mt-4 space-y-1 border-t pt-3">
+                {notaArrastre && <p className="text-xs text-muted-foreground">{notaArrastre}</p>}
+                {notaCohorteVsCaja && <p className="text-xs text-muted-foreground">{notaCohorteVsCaja}</p>}
+              </div>
+            )}
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 /** La tabla de economía unitaria por producto — mismo patrón seguro que `Productos.tsx` (T3):
  * row-models a nivel de módulo, datos memoizados de verdad, tarjetas en vez de `<table>` bajo
  * 768px para nunca duplicar la fila en el DOM. */
@@ -475,6 +620,7 @@ export function Resultados() {
               <GraficoDeTendencia />
             </CardContent>
           </Card>
+          <TarjetaCaja caja={resultados.data.vista_b_caja} />
           <Card>
             <CardHeader>
               <CardTitle className="text-base">Economía unitaria por producto</CardTitle>

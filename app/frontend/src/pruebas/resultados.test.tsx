@@ -62,6 +62,54 @@ const RESULTADOS_PRELIMINAR = {
   vista_a_cohorte: { ...RESULTADOS_MADURO.vista_a_cohorte, preliminar: true, edad_dias: 2 },
 };
 
+/** VISTA B · CAJA completa, tal cual la emite `gen_pl.py` con cartera Y extracto bancario:
+ * los montos de salida viajan POSITIVOS (el signo lo lleva el rótulo (−) de la cascada) y
+ * cada subtotal respeta la fórmula del script — 8500 − 320 − 150 = 8030; 8030 − 510 − 3800 − 0
+ * = 3720; 3720 − 2000 = 1720. La cohorte_vs_caja repite el margen de contribución de la
+ * VISTA A del mismo período (4500): es el mismo m_contr del script, no un número nuevo. */
+const CAJA_COMPLETA = {
+  entradas_ganancia_ordenes_q: 8500,
+  n_entradas_ganancia_ordenes: 34,
+  cobros_devolucion_q: 320,
+  n_cobros_devolucion: 2,
+  otras_salidas_q: 150,
+  n_otras_salidas: 1,
+  neto_acreditado_cartera_q: 8030,
+  personal_y_otros_q: 510,
+  publicidad_cobrada_banco_q: 3800,
+  gastos_fijos_q: 0,
+  caja_que_genero_el_negocio_q: 3720,
+  retiros_personales_q: 2000,
+  caja_que_quedo_en_la_cuenta_q: 1720,
+  arrastre: { n_acreditaciones_previas: 6, n_acreditaciones_total: 34, monto_previo_q: 1450 },
+  cohorte_vs_caja_q: { cohorte_margen_contribucion_q: 4500, caja_antes_de_publicidad_q: 7520 },
+};
+
+const RESULTADOS_CON_CAJA = {
+  ...RESULTADOS_MADURO,
+  vista_b_caja: CAJA_COMPLETA,
+};
+
+/** Sin extracto bancario (`publicidad_cobrada_banco_q: null`): el script NO emite las
+ * claves de la rama del banco, solo `caja_antes_de_publicidad_q` (8030 − 510 = 7520). */
+const RESULTADOS_SIN_BANCO = {
+  ...RESULTADOS_MADURO,
+  vista_b_caja: {
+    entradas_ganancia_ordenes_q: 8500,
+    n_entradas_ganancia_ordenes: 34,
+    cobros_devolucion_q: 320,
+    n_cobros_devolucion: 2,
+    otras_salidas_q: 150,
+    n_otras_salidas: 1,
+    neto_acreditado_cartera_q: 8030,
+    personal_y_otros_q: 510,
+    publicidad_cobrada_banco_q: null,
+    caja_antes_de_publicidad_q: 7520,
+    arrastre: { n_acreditaciones_previas: 6, n_acreditaciones_total: 34, monto_previo_q: 1450 },
+    cohorte_vs_caja_q: { cohorte_margen_contribucion_q: 4500, caja_antes_de_publicidad_q: 7520 },
+  },
+};
+
 function servir(respuestas: Record<string, unknown | { estado: number }>) {
   vi.stubGlobal(
     "fetch",
@@ -136,4 +184,30 @@ test("un error real (no 404) se muestra como falla del sistema, nunca como estad
   montar();
   expect(await screen.findByText(/no pude leer el sistema/i)).toBeInTheDocument();
   expect(screen.queryByText(/todavía no hay ningún export de dropi cargado/i)).not.toBeInTheDocument();
+});
+
+test("sin historial de cartera, la tarjeta de caja explica por qué no se puede calcular (palabra de gen_pl.py)", async () => {
+  servir({ "/api/resultados": RESULTADOS_MADURO, "/api/resultados/historial": [RESULTADOS_MADURO] });
+  montar();
+  expect(await screen.findByText(/falta el historial de cartera de dropi/i)).toBeInTheDocument();
+});
+
+test("con cartera y banco, la cascada de caja muestra los tres héroes y el arrastre, montos tal cual", async () => {
+  servir({ "/api/resultados": RESULTADOS_CON_CAJA, "/api/resultados/historial": [RESULTADOS_CON_CAJA] });
+  montar();
+  expect(await screen.findByText("Neto acreditado en la cartera")).toBeInTheDocument();
+  expect(screen.getByTestId("caja-vista-b")).toBeInTheDocument();
+  expect(screen.getByText("Caja que generó el negocio")).toBeInTheDocument();
+  expect(screen.getByText("Caja que quedó en la cuenta")).toBeInTheDocument();
+  expect(screen.getByText(/Q\s?8,030/)).toBeInTheDocument();
+  expect(screen.getByText(/vienen de órdenes tomadas antes de la ventana/)).toBeInTheDocument();
+  expect(screen.getByText(/\(Q\s?1,450\)/)).toBeInTheDocument();
+});
+
+test("sin extracto bancario, la caja termina en 'Caja antes de publicidad' y no inventa la rama del banco", async () => {
+  servir({ "/api/resultados": RESULTADOS_SIN_BANCO, "/api/resultados/historial": [RESULTADOS_SIN_BANCO] });
+  montar();
+  expect(await screen.findByText("Caja antes de publicidad")).toBeInTheDocument();
+  expect(screen.queryByText("Caja que generó el negocio")).not.toBeInTheDocument();
+  expect(screen.queryByText("Caja que quedó en la cuenta")).not.toBeInTheDocument();
 });

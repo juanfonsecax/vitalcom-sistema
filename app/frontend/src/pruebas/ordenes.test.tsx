@@ -22,6 +22,7 @@ import { Ordenes } from "../pantallas/Ordenes";
 const DATOS_ORDENES = {
   schema: "ordenes/1",
   rezago_dias: 3,
+  pendientes_registro: [],
   llamadas: [
     {
       llamada: 1,
@@ -152,6 +153,30 @@ const ACCIONES = [
     rotulo: "Ejecutar órdenes en Meta",
     habilitada: false,
     motivo: "Deshabilitado por doctrina: revisión manual requerida",
+  },
+];
+
+/** `pendientes_registro` tal cual lo emite gen_ordenes.py: conjuntos NUESTROS cuyo gasto ya
+ * cuenta a nivel producto pero sin fila de `angulo_key`; `lo_produce` trae el paso dueño del
+ * registro (etapa-6) con el archivo que da de alta. */
+const PENDIENTES_REGISTRO = [
+  {
+    cuenta_alias: "GTR 7",
+    campana: "LUMINIVA · F1 · TEST",
+    conjunto: "LUMINIVA · SIN-REGISTRO",
+    producto_key: "LUMINIVA",
+    spend_usd: 12.34,
+    anuncios: 3,
+    lo_produce: "ETAPA-6 / _DIM_CONJUNTOS.csv",
+  },
+  {
+    cuenta_alias: "GTR 7",
+    campana: "COLLAGENIX · F1 · TEST",
+    conjunto: "COLLAGENIX · SIN-REGISTRO",
+    producto_key: "COLLAGENIX",
+    spend_usd: 8.5,
+    anuncios: 2,
+    lo_produce: "ETAPA-6 / _DIM_CONJUNTOS.csv",
   },
 ];
 
@@ -370,4 +395,27 @@ test("los botones de acción respetan si el nodo está deshabilitado en manifies
   for (const b of botonesAprobar) {
     expect(b).toBeDisabled();
   }
+});
+
+test("sin conjuntos pendientes de registro no se muestra la tarjeta (cero ruido visual)", async () => {
+  renderizar();
+  await screen.findByText("Órdenes de hoy");
+  expect(screen.queryByTestId("pendientes-registro")).not.toBeInTheDocument();
+});
+
+test("lista los conjuntos de Meta sin registrar con su gasto y quién da de alta la fila", async () => {
+  servir({
+    "/api/ordenes": { ...DATOS_ORDENES, pendientes_registro: PENDIENTES_REGISTRO },
+    "/api/ganadores": GANADORES,
+    "/api/acciones": ACCIONES,
+  });
+  renderizar();
+  expect(await screen.findByTestId("pendientes-registro")).toBeInTheDocument();
+  expect(screen.getByText("Conjuntos de Meta sin registrar")).toBeInTheDocument();
+  expect(screen.getByText(/Su gasto ya cuenta en el producto/)).toBeInTheDocument();
+  // Filas tal cual el fixture: conjunto (font-mono), gasto y el paso que registra.
+  expect(screen.getByText("LUMINIVA · SIN-REGISTRO")).toBeInTheDocument();
+  expect(screen.getByText("COLLAGENIX · SIN-REGISTRO")).toBeInTheDocument();
+  expect(screen.getByText("12.34")).toBeInTheDocument();
+  expect(screen.getAllByText("ETAPA-6 / _DIM_CONJUNTOS.csv")).toHaveLength(2);
 });
