@@ -13,6 +13,8 @@ import { useMutation, useQuery, useQueryClient, type UseMutationResult } from "@
 import { Link } from "@tanstack/react-router";
 import { api, type AccionEncolada, type ResultadoAlta, type ResultadoTranscripcion } from "../api/cliente";
 import { TablaGuatemala } from "../componentes/TablaGuatemala";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Chip, Tarjeta, cn } from "../componentes/ui";
 import { trabajoEnPalabras } from "../lenguaje";
 
@@ -130,11 +132,11 @@ export function NuevoProducto() {
         <Tarjeta className="space-y-4">
           <label className="block">
             <span className="text-sm text-zinc-300">Nombre del producto</span>
-            <input
+            <Input
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Ej.: Serum Vitamina C"
-              className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-zinc-100 outline-none focus:border-sky-600"
+              className="mt-1"
             />
           </label>
           <div
@@ -180,7 +182,7 @@ export function NuevoProducto() {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
               rows={10}
-              className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-sky-600"
+              className="mt-1 flex min-h-16 w-full rounded-lg border border-input bg-input/30 px-3 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 outline-none"
               placeholder="Mientras más cuentes, mejores ángulos salen."
             />
           </label>
@@ -203,14 +205,16 @@ export function NuevoProducto() {
           <Tarjeta>
             <label className="block max-w-xs">
               <span className="text-sm text-zinc-300">Costo del pedido completo, en quetzales</span>
-              <div className="mt-1 flex items-center rounded-lg border border-zinc-700 bg-zinc-950 focus-within:border-sky-600">
-                <span className="pl-3 text-zinc-400">Q</span>
-                <input
+              <div className="relative mt-1">
+                <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  Q
+                </span>
+                <Input
                   value={costo}
                   inputMode="decimal"
                   onChange={(e) => setCosto(e.target.value.replace(",", "."))}
                   aria-label="Costo en quetzales"
-                  className="w-full bg-transparent px-2 py-2 text-zinc-100 outline-none"
+                  className="pl-6"
                 />
               </div>
             </label>
@@ -264,23 +268,21 @@ export function NuevoProducto() {
           ← Atrás
         </button>
         {paso < PASOS.length - 1 ? (
-          <button
+          <Button
             type="button"
             disabled={!puedeSeguir}
             onClick={() => setPaso((p) => p + 1)}
-            className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:bg-zinc-800 disabled:text-zinc-500"
           >
             Siguiente →
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             type="button"
             disabled={alta.isPending}
             onClick={() => alta.mutate()}
-            className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 disabled:bg-zinc-800"
           >
             {alta.isPending ? "Dando de alta…" : "Dar de alta el producto"}
-          </button>
+          </Button>
         )}
       </div>
     </div>
@@ -345,13 +347,17 @@ function Listo({
           <li>· packshot declarado: <code className="text-zinc-400">{resultado.packshot}</code></li>
           <li>· descripción guardada en <code className="text-zinc-400">{resultado.archivo_datos}</code></li>
         </ul>
-        <Link
-          to="/producto/$clave"
-          params={{ clave: resultado.producto_key }}
-          className="mt-4 inline-block rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
+        <Button
+          className="mt-4"
+          render={
+            <Link
+              to="/producto/$clave"
+              params={{ clave: resultado.producto_key }}
+            />
+          }
         >
           Ver dónde quedó en el flujo →
-        </Link>
+        </Button>
       </Tarjeta>
 
       <Tarjeta className="space-y-3">
@@ -361,14 +367,14 @@ function Listo({
           Las transcripciones quedan en{" "}
           <code className="text-zinc-200">{resultado.carpeta_transcripciones}</code>.
         </p>
-        <button
+        <Button
           type="button"
+          variant="outline"
           disabled={transcripcion.isPending}
           onClick={() => transcripcion.mutate(resultado.producto_key)}
-          className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-200 hover:border-zinc-500 disabled:opacity-50"
         >
           {transcripcion.isPending ? "Pidiéndolo…" : "Transcribir videos"}
-        </button>
+        </Button>
         {transcripcion.error && (
           <p className="text-sm text-rose-300">{transcripcion.error.message}</p>
         )}

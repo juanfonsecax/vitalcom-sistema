@@ -9,7 +9,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { api, type ParametroMotor } from "../api/cliente";
-import { Cargando, Chip, Problema, Tarjeta } from "../componentes/ui";
+import { Button } from "@/components/ui/button";
+import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import {
   cierreEnPalabras,
   EXPLICACION_DEL_RELOJ,
@@ -17,10 +18,20 @@ import {
   progresoVentasEnPalabras,
   TEXTO_ORDEN,
   tituloDeOrden,
-  TONO_ORDEN,
   ventasFaltantesEnPalabras,
   veredictoDeOrden,
 } from "../lenguaje";
+
+/** El tono de decisión de cada estado de orden: los cuatro colores reservados del sistema
+ * (estado-escalar/pausar/seguir/renovar de `src/estilos.css`), uno por `decidir.py`, nunca
+ * reinventado por pantalla. Una celda ESCALAR bloqueada por fase toma el tono de "esperar"
+ * (seguir, ámbar), no el de escalar — igual que `CLASE_ESTADO_ORDEN` en Hoy.tsx. */
+const TONO_DECISION: Record<string, Tono> = {
+  ESCALAR: "escalar",
+  PAUSAR: "pausar",
+  RENOVAR: "renovar",
+  SEGUIR_MIDIENDO: "seguir",
+};
 
 type LlamadaMeta = {
   llamada?: number;
@@ -154,12 +165,16 @@ export function Ordenes() {
                     <span className="block font-medium text-zinc-300">Siguiente paso doctrinal:</span>
                     <span>{g.siguiente_paso?.titulo || "etapa-11 → FASE 2"}</span>
                   </div>
-                  <Link
-                    to={g.siguiente_paso?.enlace || `/producto/${g.producto_key}`}
-                    className="inline-flex items-center rounded-lg bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-emerald-600"
+                  <Button
+                    size="sm"
+                    render={
+                      <Link
+                        to={g.siguiente_paso?.enlace || `/producto/${g.producto_key}`}
+                      />
+                    }
                   >
                     Ir al flujo
-                  </Link>
+                  </Button>
                 </div>
               </Tarjeta>
             ))}
@@ -212,7 +227,7 @@ export function Ordenes() {
                           Ángulo: <span className="font-semibold text-zinc-200">{orden.angulo_nombre || orden.angulo_key}</span>
                         </p>
                       </div>
-                      <Chip tono={escalarBloqueado ? "aviso" : (TONO_ORDEN[orden.estado] ?? "neutro")}>
+                      <Chip tono={escalarBloqueado ? "seguir" : (TONO_DECISION[orden.estado] ?? "neutro")}>
                         {escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ORDEN[orden.estado] ?? orden.estado)}
                       </Chip>
                     </div>
@@ -312,22 +327,23 @@ export function Ordenes() {
                       {orden.ejecutable ? "Listo para revisión" : "Solo informativo"}
                     </span>
                     <div className="flex gap-2">
-                      <button
+                      <Button
                         type="button"
+                        variant="outline"
+                        size="sm"
                         disabled={!cicloHabilitado || !orden.ejecutable}
-                        className="rounded bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300 hover:bg-zinc-700 disabled:opacity-40 disabled:cursor-not-allowed"
                         title={!cicloHabilitado ? "Ejecución deshabilitada en manifiesto" : "Rechazar orden"}
                       >
                         Rechazar
-                      </button>
-                      <button
+                      </Button>
+                      <Button
                         type="button"
+                        size="sm"
                         disabled={!cicloHabilitado || !orden.ejecutable}
-                        className="rounded bg-sky-700 px-3 py-1 text-xs font-semibold text-white hover:bg-sky-600 disabled:opacity-40 disabled:cursor-not-allowed"
                         title={!cicloHabilitado ? "Ejecución deshabilitada en manifiesto" : "Aprobar orden en Meta"}
                       >
                         Aprobar
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </Tarjeta>

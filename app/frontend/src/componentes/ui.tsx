@@ -27,6 +27,10 @@ const TONOS = {
   aviso: "bg-amber-950 text-amber-300 border-amber-800",
   alto: "bg-rose-950 text-rose-300 border-rose-800",
   dato: "bg-sky-950 text-sky-300 border-sky-800",
+  escalar: "border-estado-escalar/40 bg-estado-escalar/10 text-estado-escalar",
+  pausar: "border-estado-pausar/40 bg-estado-pausar/10 text-estado-pausar",
+  seguir: "border-estado-seguir/40 bg-estado-seguir/10 text-estado-seguir",
+  renovar: "border-estado-renovar/40 bg-estado-renovar/10 text-estado-renovar",
 } as const;
 
 export type Tono = keyof typeof TONOS;

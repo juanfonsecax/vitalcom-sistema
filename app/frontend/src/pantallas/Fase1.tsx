@@ -21,6 +21,8 @@ import {
   type FlujoBot,
   type PasoDeCorrida,
 } from "../api/cliente";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Problema, Tarjeta, cn, type Tono } from "../componentes/ui";
 
 export type TabId =
@@ -245,22 +247,21 @@ function TabAvance({
         </div>
         <div className="flex flex-wrap items-center gap-3">
           {c?.job_id && c.estado === "FALLIDO" && (
-            <button
+            <Button
               type="button"
+              variant="outline"
               onClick={() => reintentar.mutate(c.job_id!)}
               disabled={reintentar.isPending}
-              className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-500 disabled:opacity-50"
             >
               {reintentar.isPending ? "Retomando…" : "Retomar"}
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             type="button"
             onClick={() => setConfirmando(true)}
-            className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500"
           >
             Armar FASE 1
-          </button>
+          </Button>
         </div>
       </Tarjeta>
 
@@ -314,21 +315,20 @@ function TabAvance({
             Modificará archivos en <code>PRODUCTOS/</code> y <code>Ads/</code>.
           </p>
           <div className="mt-4 flex gap-3">
-            <button
+            <Button
               type="button"
               onClick={() => armar.mutate()}
               disabled={armar.isPending}
-              className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-50"
             >
               {armar.isPending ? "Iniciando…" : "Sí, confirmar y ejecutar"}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
               onClick={() => setConfirmando(false)}
-              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-800"
             >
               Cancelar
-            </button>
+            </Button>
           </div>
         </Tarjeta>
       )}
@@ -1013,16 +1013,15 @@ function TabChecklist({
                       <Chip tono="alto">Falta Page ID</Chip>
                     </div>
                     <div className="flex gap-2 items-center">
-                      <input
+                      <Input
                         type="text"
                         placeholder="Ej: 1279576438561754"
                         value={valor}
                         onChange={(e) =>
                           setValoresTexto((prev) => ({ ...prev, page_id: e.target.value }))
                         }
-                        className="rounded border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-sky-500"
                       />
-                      <button
+                      <Button
                         type="button"
                         onClick={() =>
                           handleCargar(
@@ -1033,10 +1032,9 @@ function TabChecklist({
                           )
                         }
                         disabled={!valor.trim() || cargando === "page_id"}
-                        className="rounded bg-sky-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-50"
                       >
                         {cargando === "page_id" ? "Guardando…" : "Guardar Page ID"}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 );
@@ -1058,7 +1056,7 @@ function TabChecklist({
                         onChange={(e) =>
                           setValoresTexto((prev) => ({ ...prev, cuenta: e.target.value }))
                         }
-                        className="rounded border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-sm text-zinc-100 focus:outline-none focus:border-sky-500"
+                        className="flex h-9 w-full rounded-lg border border-input bg-input/30 px-3 text-sm"
                       >
                         {cuentas.length > 0 ? (
                           cuentas.map((c) => (
@@ -1076,7 +1074,7 @@ function TabChecklist({
                           </>
                         )}
                       </select>
-                      <button
+                      <Button
                         type="button"
                         onClick={() =>
                           handleCargar(
@@ -1087,10 +1085,9 @@ function TabChecklist({
                           )
                         }
                         disabled={cargando === "cuenta"}
-                        className="rounded bg-sky-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-50"
                       >
                         {cargando === "cuenta" ? "Guardando…" : "Asignar cuenta"}
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 );
@@ -1128,16 +1125,16 @@ function TabChecklist({
                                 }}
                                 className="text-xs text-zinc-400 file:mr-2 file:rounded file:border-0 file:bg-zinc-800 file:px-2 file:py-1 file:text-xs file:text-zinc-200"
                               />
-                              <button
+                              <Button
                                 type="button"
+                                size="sm"
                                 onClick={() =>
                                   handleCargar("producto.cargar_pieza", { archivo: arch }, file, keyCarga)
                                 }
                                 disabled={!file || cargando === keyCarga}
-                                className="rounded bg-sky-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-sky-500 disabled:opacity-50"
                               >
                                 {cargando === keyCarga ? "Subiendo…" : "Subir pieza"}
-                              </button>
+                              </Button>
                             </div>
                           </div>
                         );
@@ -1231,15 +1228,16 @@ function TabChecklist({
                           }}
                           className="text-xs text-zinc-400 file:mr-2 file:rounded file:border-0 file:bg-zinc-800 file:px-2 file:py-1 file:text-xs file:text-zinc-200"
                         />
-                        <input
+                        <Input
                           type="text"
                           placeholder="Título opcional"
                           value={tituloTranscripcion}
                           onChange={(e) => setTituloTranscripcion(e.target.value)}
-                          className="rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs text-zinc-200 placeholder:text-zinc-500 focus:outline-none"
+                          className="max-w-xs"
                         />
-                        <button
+                        <Button
                           type="button"
+                          size="sm"
                           onClick={async () => {
                             if (archivosTranscripcion.length === 0) return;
                             setCargando("transcripcion");
@@ -1275,12 +1273,11 @@ function TabChecklist({
                           disabled={
                             archivosTranscripcion.length === 0 || cargando === "transcripcion"
                           }
-                          className="rounded bg-sky-600 px-3 py-1 text-xs font-medium text-white hover:bg-sky-500 disabled:opacity-50"
                         >
                           {cargando === "transcripcion"
                             ? "Subiendo…"
                             : `Subir TXT (${archivosTranscripcion.length || 0})`}
-                        </button>
+                        </Button>
                       </div>
                       {archivosTranscripcion.length > 0 && (
                         <p className="text-[11px] text-zinc-400">
@@ -1292,17 +1289,18 @@ function TabChecklist({
 
                   {tieneCosto && (
                     <div className="mt-2 flex items-center gap-2 rounded bg-zinc-950 p-2 text-xs">
-                      <input
+                      <Input
                         type="number"
                         placeholder="Costo en Q"
                         value={valoresTexto["costo"] ?? ""}
                         onChange={(e) =>
                           setValoresTexto((prev) => ({ ...prev, costo: e.target.value }))
                         }
-                        className="w-32 rounded border border-zinc-700 bg-zinc-900 px-2 py-1 text-zinc-100 focus:outline-none"
+                        className="w-32"
                       />
-                      <button
+                      <Button
                         type="button"
+                        size="sm"
                         onClick={() =>
                           handleCargar(
                             "producto.cambiar_costo",
@@ -1312,10 +1310,9 @@ function TabChecklist({
                           )
                         }
                         disabled={!valoresTexto["costo"] || cargando === "costo"}
-                        className="rounded bg-sky-600 px-3 py-1 text-xs font-medium text-white hover:bg-sky-500 disabled:opacity-50"
                       >
                         {cargando === "costo" ? "Guardando…" : "Guardar costo"}
-                      </button>
+                      </Button>
                     </div>
                   )}
 
@@ -1400,13 +1397,13 @@ export function Fase1() {
             className={cn(
               "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
               tab === t.id
-                ? "bg-sky-600 text-white"
-                : "text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100",
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
             )}
           >
             {t.label}
             {t.badge !== undefined && t.badge > 0 && (
-              <span className="rounded-full bg-amber-500 px-1.5 py-0.2 text-[10px] font-bold text-zinc-950">
+              <span className="rounded-full bg-estado-seguir px-1.5 py-0.2 text-[10px] font-bold text-estado-seguir-foreground">
                 {t.badge}
               </span>
             )}

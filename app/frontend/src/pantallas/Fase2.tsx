@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { api, type ConceptoFase2 } from "../api/cliente";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta, type Tono } from "../componentes/ui";
 
 const TONOS_ESTADO: Record<string, Tono> = {
@@ -197,12 +199,13 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
               Si el ángulo ganador se cansa o las órdenes del motor emiten <span className="font-mono text-amber-300">RENOVAR</span>, rotamos creativos en F2. Si el ángulo ya no rinde, volvemos a FASE 1 con ángulos frescos.
             </p>
           </div>
-          <button
+          <Button
             onClick={() => setModalReingreso(true)}
-            className="rounded-lg border border-amber-700 bg-amber-900/60 px-3 py-1.5 text-xs font-semibold text-amber-100 hover:bg-amber-800"
+            variant="outline"
+            size="sm"
           >
             Nuevos ángulos para este producto →
-          </button>
+          </Button>
         </div>
 
         {/* Modal / Diálogo de Confirmación de Reingreso */}
@@ -219,27 +222,28 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             </div>
             <div className="mt-3">
               <label className="text-xs text-zinc-400">Motivo del reingreso:</label>
-              <input
+              <Input
                 type="text"
                 value={motivoReingreso}
                 onChange={(e) => setMotivoReingreso(e.target.value)}
-                className="mt-1 w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs text-zinc-200"
+                className="mt-1"
               />
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <button
+              <Button
                 onClick={() => setModalReingreso(false)}
-                className="rounded px-3 py-1 text-xs text-zinc-400 hover:text-zinc-200"
+                variant="outline"
+                size="sm"
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
+                size="sm"
                 disabled={mutacionReingreso.isPending}
                 onClick={() => mutacionReingreso.mutate(motivoReingreso)}
-                className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
               >
                 {mutacionReingreso.isPending ? "Registrando..." : "Sí, volver a F1"}
-              </button>
+              </Button>
             </div>
           </div>
         )}

@@ -249,7 +249,7 @@ export function Ajustes() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-lg font-semibold tracking-tight">Ajustes</h1>
+        <h1 className="text-2xl font-semibold">Ajustes</h1>
         <p className="text-sm text-muted-foreground">
           Cuentas, FanPages y la maquinaria del sistema, en un solo lugar.
         </p>

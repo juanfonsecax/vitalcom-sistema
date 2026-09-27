@@ -190,6 +190,7 @@ function TarjetasKpi({ datos }: { datos: ResultadosDatos }) {
               <Badge variant="outline" className="border-estado-seguir text-estado-seguir">
                 Preliminar
               </Badge>
+              <Info termino="cohorte_preliminar" />
             </CardFooter>
           )}
         </Card>
@@ -439,7 +440,7 @@ export function Resultados() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-lg font-semibold tracking-tight">Resultados</h1>
+        <h1 className="text-2xl font-semibold">Resultados</h1>
         <p className="text-sm text-muted-foreground">
           El estado de resultados real, tal como lo manda DOCTRINA/CONTABILIDAD.md — nunca ROAS
           ni la atribución semanal de los anuncios.

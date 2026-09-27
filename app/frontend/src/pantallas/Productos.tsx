@@ -110,6 +110,7 @@ const columnas: ColumnDef<Fila>[] = [
     // glosario de "nodo" se agrega afuera, como hermano, en el render del <TableHead>.
     header: "Paso actual",
     cell: ({ getValue, row }) => {
+      const motor = (row.original.flujo?.motor ?? null) as MotorInfo | null;
       const rezago = rezagoDeFila(row.original.flujo);
       return (
         <div>
@@ -117,7 +118,7 @@ const columnas: ColumnDef<Fila>[] = [
             {getValue<string>()}
             {rezago && (
               <Chip tono="aviso" titulo={rezago}>
-                rezago
+                {motor?.rezago_dias}d de rezago
               </Chip>
             )}
           </p>
@@ -264,6 +265,7 @@ export function Productos() {
             const quien = quienLoHace(flujo?.ejecutor || producto.siguiente_ejecutor);
             const paso = tituloDelPasoActual(flujo?.nodos, flujo?.nodo_actual ?? producto.nodo_actual, flujo?.como);
             const rezagoFila = rezagoDeFila(flujo);
+            const diasRezago = ((flujo?.motor ?? null) as MotorInfo | null)?.rezago_dias ?? null;
             return (
               <Link key={producto.producto_key} to="/producto/$clave" params={{ clave: producto.producto_key }}>
                 <Card>
@@ -284,7 +286,7 @@ export function Productos() {
                       {paso}
                       {rezagoFila && (
                         <Chip tono="aviso" titulo={rezagoFila}>
-                          rezago
+                          {diasRezago}d de rezago
                         </Chip>
                       )}
                       {producto.nodo_actual && (

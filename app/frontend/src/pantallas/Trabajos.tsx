@@ -17,6 +17,7 @@ import {
   type TrabajoDetalle,
 } from "../api/cliente";
 import { usarProgreso } from "../api/progreso";
+import { Button } from "@/components/ui/button";
 import { Cargando, Chip, Problema, Tarjeta, cn } from "../componentes/ui";
 import { LLAMADA_DE_META, SE_REINTENTAN, trabajoEnPalabras } from "../lenguaje";
 
@@ -101,14 +102,13 @@ function ImagenesParaSubir({ id, pendiente }: { id: string; pendiente: Extract<P
         })}
       </ul>
       {avisar.error && <p className="text-sm text-rose-300">{avisar.error.message}</p>}
-      <button
+      <Button
         type="button"
         disabled={avisar.isPending}
         onClick={() => avisar.mutate()}
-        className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:bg-zinc-800"
       >
         Ya las subí
-      </button>
+      </Button>
       <p className="text-xs text-zinc-400">
         Al avisar, la app lee la biblioteca (solo mira, no cambia nada) y busca cada imagen por su nombre. Después te
         muestra la orden completa para aprobar.
@@ -237,22 +237,22 @@ function OrdenParaAprobar({ id, pendiente }: { id: string; pendiente: Extract<Pe
       </p>
       {decidir.error && <p className="text-sm text-rose-300">{decidir.error.message}</p>}
       <div className="flex gap-3">
-        <button
+        <Button
           type="button"
           disabled={decidir.isPending}
           onClick={() => decidir.mutate("APROBADA")}
-          className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 disabled:bg-zinc-800"
         >
           Aprobar (queda en pausa)
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
+          variant="outline"
+          className="text-destructive"
           disabled={decidir.isPending}
           onClick={() => decidir.mutate("RECHAZADA")}
-          className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-200 hover:border-zinc-500 disabled:opacity-50"
         >
           Rechazar
-        </button>
+        </Button>
       </div>
     </Tarjeta>
   );
@@ -275,17 +275,16 @@ function PreguntaDeClaude({ id, pendiente }: { id: string; pendiente: Extract<Pe
         onChange={(e) => setTexto(e.target.value)}
         rows={3}
         aria-label="Tu respuesta"
-        className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-100 outline-none focus:border-sky-600"
+        className="flex min-h-16 w-full rounded-lg border border-input bg-input/30 px-3 py-2 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 outline-none"
       />
       {responder.error && <p className="text-sm text-rose-300">{responder.error.message}</p>}
-      <button
+      <Button
         type="button"
         disabled={responder.isPending || texto.trim() === ""}
         onClick={() => responder.mutate()}
-        className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:bg-zinc-800 disabled:text-zinc-500"
       >
         Responder
-      </button>
+      </Button>
     </Tarjeta>
   );
 }
@@ -315,33 +314,55 @@ function Acciones({ trabajo }: { trabajo: TrabajoDetalle }) {
       <div className="flex flex-wrap gap-3">
         {trabajo.otra_version && (
           <>
-            <button type="button" onClick={() => descartar.mutate()} className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-200 hover:border-zinc-500">
+            <Button
+              type="button"
+              variant="outline"
+              className="text-destructive"
+              onClick={() => descartar.mutate()}
+            >
               Marcar fallido
-            </button>
-            <button type="button" onClick={() => empezarDeNuevo.mutate()} className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500">
+            </Button>
+            <Button type="button" onClick={() => empezarDeNuevo.mutate()}>
               Empezar de nuevo
-            </button>
+            </Button>
           </>
         )}
         {SE_REINTENTAN.includes(trabajo.estado) && (
-          <button type="button" onClick={() => reintentar.mutate()} disabled={reintentar.isPending} className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-500 disabled:opacity-50">
+          <Button
+            type="button"
+            onClick={() => reintentar.mutate()}
+            disabled={reintentar.isPending}
+          >
             Reintentar completo
-          </button>
+          </Button>
         )}
         {enCurso && !trabajo.otra_version && !seguro && (
-          <button type="button" onClick={() => setSeguro(true)} className="rounded-lg border border-zinc-700 px-4 py-2 text-sm text-zinc-300 hover:border-rose-700 hover:text-rose-300">
+          <Button
+            type="button"
+            variant="outline"
+            className="text-destructive"
+            onClick={() => setSeguro(true)}
+          >
             Cancelar trabajo
-          </button>
+          </Button>
         )}
         {enCurso && !trabajo.otra_version && seguro && (
           <>
             <span className="self-center text-sm text-zinc-300">¿Seguro? Se corta lo que esté corriendo.</span>
-            <button type="button" onClick={() => cancelar.mutate()} className="rounded-lg bg-rose-700 px-4 py-2 text-sm font-medium text-white hover:bg-rose-600">
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => cancelar.mutate()}
+            >
               Sí, cancelar
-            </button>
-            <button type="button" onClick={() => setSeguro(false)} className="rounded-lg px-3 py-2 text-sm text-zinc-400 hover:text-zinc-100">
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => setSeguro(false)}
+            >
               No
-            </button>
+            </Button>
           </>
         )}
       </div>

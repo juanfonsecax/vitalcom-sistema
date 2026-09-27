@@ -168,7 +168,8 @@ test("avisa el rezago DE ESE producto cuando su propio motor lo trae en más de 
   });
   montar();
   const filaOvulos = (await screen.findByText("Óvulos Purity Hernatura")).closest("tr")!;
-  expect(await within(filaOvulos).findByText("rezago")).toHaveAttribute(
+  // El chip ahora muestra el conteo a la vista ("5d de rezago"), no solo en el tooltip.
+  expect(await within(filaOvulos).findByText("5d de rezago")).toHaveAttribute(
     "title",
     expect.stringContaining("5 días"),
   );

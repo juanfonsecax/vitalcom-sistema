@@ -11,6 +11,8 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { api } from "../api/cliente";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
 
 export function Fase3({ clave: claveProp }: { clave?: string }) {
@@ -173,12 +175,13 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
               Si la frecuencia sube, el CPA se degrada y los 7 microángulos ya se agotaron, podemos reiniciar el ciclo buscando ángulos frescos en FASE 1.
             </p>
           </div>
-          <button
+          <Button
             onClick={() => setModalReingreso(true)}
-            className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-zinc-200 hover:bg-zinc-700"
+            variant="outline"
+            size="sm"
           >
             Nuevos ángulos para este producto →
-          </button>
+          </Button>
         </div>
 
         {/* Modal de Reingreso */}
@@ -195,27 +198,28 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
             </div>
             <div className="mt-3">
               <label className="text-xs text-zinc-400">Motivo:</label>
-              <input
+              <Input
                 type="text"
                 value={motivoReingreso}
                 onChange={(e) => setMotivoReingreso(e.target.value)}
-                className="mt-1 w-full rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs text-zinc-200"
+                className="mt-1"
               />
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <button
+              <Button
                 onClick={() => setModalReingreso(false)}
-                className="rounded px-3 py-1 text-xs text-zinc-400 hover:text-zinc-200"
+                variant="outline"
+                size="sm"
               >
                 Cancelar
-              </button>
-              <button
+              </Button>
+              <Button
+                size="sm"
                 disabled={mutacionReingreso.isPending}
                 onClick={() => mutacionReingreso.mutate(motivoReingreso)}
-                className="rounded bg-amber-600 px-3 py-1 text-xs font-semibold text-white hover:bg-amber-500"
               >
                 {mutacionReingreso.isPending ? "Registrando..." : "Confirmar retorno a F1"}
-              </button>
+              </Button>
             </div>
           </div>
         )}
