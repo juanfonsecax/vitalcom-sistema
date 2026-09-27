@@ -12,10 +12,11 @@ test("«/» muestra Hoy: banner de datos, órdenes del motor y qué sigue por pr
   const lineaFresca = page.getByText(/^Datos hasta \d{4}-\d{2}-\d{2}\.$/);
   await expect(banner.or(lineaFresca).first()).toBeVisible();
 
-  // Sección 2: las órdenes del motor, o el estado vacío si no hay ninguna accionable hoy.
+  // Sección 2: la franja que resume el día, las órdenes del motor, o el estado vacío.
   await expect(page.getByRole("heading", { name: "Órdenes de hoy" })).toBeVisible();
+  await expect(page.getByTestId("franja-hoy")).toBeVisible();
   const sinOrdenes = page.getByText(/No hay órdenes que pidan una acción hoy/);
-  const tarjetaDeOrden = page.getByRole("button", { name: "Aprobar" }).first();
+  const tarjetaDeOrden = page.getByTestId("tarjeta-orden").first();
   await expect(sinOrdenes.or(tarjetaDeOrden)).toBeVisible();
 
   // Sección 3: al menos un producto real, cada uno como enlace a su detalle.

@@ -16,7 +16,7 @@
  */
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { AlertTriangle, ChevronDown } from "lucide-react";
+import { AlertTriangle, BellRing, ChevronDown } from "lucide-react";
 
 import { api, type OrdenItem, type Producto } from "../api/cliente";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -128,9 +128,21 @@ function BannerDatos() {
   );
 }
 
-/** Una tarjeta de orden, compacta: el mismo titular sin ambigüedad y el mismo glosario por
- * ESTADO que `Ordenes.tsx` (`lenguaje.ts`), nunca recalculados acá. */
-function TarjetaOrdenDelDia({ orden, cicloHabilitado }: { orden: OrdenItem; cicloHabilitado: boolean }) {
+/** Una tarjeta de orden: el mismo titular sin ambigüedad y el mismo glosario por ESTADO
+ * que `Ordenes.tsx` (`lenguaje.ts`), nunca recalculados acá. El par CPA ↔ break-even es
+ * el protagonista visual — es la pregunta que toda orden contesta — y el glosario queda
+ * plegado en un "¿Qué es…?" para no tapar el número con prosa. Los botones Aprobar/Rechazar
+ * que antes no hacían nada se reemplazan por UN camino claro: si la orden se puede ejecutar,
+ * el botón manda a Trabajos, que es donde vive el flujo real de aprobación. */
+function TarjetaOrdenDelDia({
+  orden,
+  cicloHabilitado,
+  indice = 0,
+}: {
+  orden: OrdenItem;
+  cicloHabilitado: boolean;
+  indice?: number;
+}) {
   const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
   const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
   const glosarioDelEstado = glosarioDeOrden(orden.estado, orden.bloqueo_fase);
@@ -140,7 +152,11 @@ function TarjetaOrdenDelDia({ orden, cicloHabilitado }: { orden: OrdenItem; cicl
   const texto = escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ORDEN[orden.estado] ?? orden.estado);
 
   return (
-    <Card>
+    <Card
+      data-testid="tarjeta-orden"
+      className="motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards motion-safe:duration-300 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5"
+      style={{ animationDelay: `${Math.min(indice, 8) * 60}ms` }}
+    >
       <CardHeader className="gap-2">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -159,56 +175,53 @@ function TarjetaOrdenDelDia({ orden, cicloHabilitado }: { orden: OrdenItem; cicl
             {texto}
           </Badge>
         </div>
-        <CardTitle className="text-sm font-semibold">{titulo}</CardTitle>
+        <CardTitle className="text-base font-semibold">{titulo}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2 text-xs text-muted-foreground">
-        {veredicto && <p>{veredicto}</p>}
-        {glosarioDelEstado && (
-          <p>
-            <strong className="text-foreground">{glosarioDelEstado.rotulo}:</strong> {glosarioDelEstado.que_es}
-          </p>
-        )}
-        <div className="grid grid-cols-2 gap-2">
+      <CardContent className="space-y-3">
+        {veredicto && <p className="text-sm text-muted-foreground">{veredicto}</p>}
+        <div className="grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
           <div>
-            <span className="block">CPA observado</span>
-            <span className="font-medium text-foreground">
+            <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+              CPA observado
+            </span>
+            <span className="text-xl font-semibold tabular-nums text-foreground">
               {pq.cpa_real_q != null ? `Q${pq.cpa_real_q}` : "Sin datos"}
             </span>
           </div>
           <div>
-            <span className="block">Break-even</span>
-            <span className="font-medium text-foreground">
+            <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+              Break-even
+            </span>
+            <span className="text-xl font-semibold tabular-nums text-foreground">
               {pq.break_even_q != null ? `Q${pq.break_even_q}` : "No fijado"}
             </span>
           </div>
         </div>
+        {glosarioDelEstado && (
+          <Collapsible>
+            <CollapsibleTrigger className="text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground">
+              ¿Qué es «{glosarioDelEstado.rotulo}»?
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <p className="mt-1 text-xs text-muted-foreground">{glosarioDelEstado.que_es}</p>
+            </CollapsibleContent>
+          </Collapsible>
+        )}
         {orden.bloqueo_fase && (
           <p className="rounded border border-estado-seguir/40 bg-estado-seguir/10 p-2 text-estado-seguir">
             <strong>Nota de fase:</strong> {orden.bloqueo_fase}
           </p>
         )}
       </CardContent>
-      <div className="flex items-center justify-between border-t px-(--card-spacing) pt-3 text-xs">
+      <div className="flex items-center justify-between gap-2 border-t px-(--card-spacing) pt-3 text-xs">
         <span className="text-muted-foreground">{orden.ejecutable ? "Listo para revisión" : "Solo informativo"}</span>
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={!cicloHabilitado || !orden.ejecutable}
-            title={!cicloHabilitado ? "Ejecución deshabilitada en manifiesto" : "Rechazar orden"}
-          >
-            Rechazar
+        {orden.ejecutable && cicloHabilitado ? (
+          <Button size="sm" render={<Link to="/trabajos" />}>
+            Revisar y aprobar en Trabajos
           </Button>
-          <Button
-            type="button"
-            size="sm"
-            disabled={!cicloHabilitado || !orden.ejecutable}
-            title={!cicloHabilitado ? "Ejecución deshabilitada en manifiesto" : "Aprobar orden en Meta"}
-          >
-            Aprobar
-          </Button>
-        </div>
+        ) : orden.ejecutable && !cicloHabilitado ? (
+          <span className="text-right text-muted-foreground">Ejecución deshabilitada en el manifiesto</span>
+        ) : null}
       </div>
     </Card>
   );
@@ -235,11 +248,82 @@ function FilaEnMedicion({ orden }: { orden: OrdenItem }) {
   );
 }
 
+/** La franja que resume el día en un vistazo: cuántas órdenes piden cada acción, contadas de
+ * las mismas órdenes que se pintan abajo (es contar tarjetas, no calcular el negocio: los
+ * estados ya los decidió `decidir.py`). Si Trabajos tiene algo esperando al operador, se
+ * avisa acá — antes ese aviso vivía solo en la insignia de Ajustes. */
+const ETIQUETA_FRANJA: Record<string, string> = {
+  PAUSAR: "pausar",
+  ESCALAR: "escalar",
+  RENOVAR: "renovar",
+};
+
+const CLASE_FRANJA: Record<string, string> = {
+  PAUSAR: "text-estado-pausar",
+  ESCALAR: "text-estado-escalar",
+  RENOVAR: "text-estado-renovar",
+};
+
+function FranjaDelDia({
+  ordenes,
+  pendientesDeTrabajos,
+}: {
+  ordenes: OrdenItem[];
+  pendientesDeTrabajos: number;
+}) {
+  const conteo: Record<string, number> = {};
+  let enMedicion = 0;
+  for (const orden of ordenes) {
+    if (orden.estado === "SEGUIR_MIDIENDO") enMedicion += 1;
+    else conteo[orden.estado] = (conteo[orden.estado] ?? 0) + 1;
+  }
+  const acciones = (["PAUSAR", "ESCALAR", "RENOVAR"] as const).filter((clave) => (conteo[clave] ?? 0) > 0);
+
+  return (
+    <div
+      data-testid="franja-hoy"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-card/60 p-4"
+    >
+      <div>
+        <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Hoy te toca</p>
+        {acciones.length === 0 && enMedicion === 0 ? (
+          <p className="mt-1 text-lg font-semibold">Ninguna acción sobre Meta</p>
+        ) : (
+          <p className="mt-1 flex flex-wrap items-baseline gap-x-5 gap-y-1 text-2xl font-bold">
+            {acciones.map((clave) => (
+              <span key={clave} className="flex items-baseline gap-1">
+                <span className={`tabular-nums ${CLASE_FRANJA[clave]}`}>{conteo[clave]}</span>
+                <span className="text-sm font-semibold text-muted-foreground">{ETIQUETA_FRANJA[clave]}</span>
+              </span>
+            ))}
+            {enMedicion > 0 && (
+              <span className="flex items-baseline gap-1">
+                <span className="tabular-nums text-estado-seguir">{enMedicion}</span>
+                <span className="text-sm font-semibold text-muted-foreground">midiendo</span>
+              </span>
+            )}
+          </p>
+        )}
+      </div>
+      {pendientesDeTrabajos > 0 && (
+        <Link
+          to="/trabajos"
+          className="inline-flex items-center gap-2 rounded-lg border border-estado-seguir/40 bg-estado-seguir/10 px-3 py-1.5 text-sm text-estado-seguir transition-colors hover:bg-estado-seguir/20"
+        >
+          <BellRing className="size-4" />
+          {pendientesDeTrabajos} {pendientesDeTrabajos === 1 ? "espera" : "esperan"} tu revisión en Trabajos
+        </Link>
+      )}
+    </div>
+  );
+}
+
 /** Sección 2: las órdenes de hoy. Agrupa por si piden una acción o no — nunca reordena por
  * número, solo por ESTADO (invariante 13: la conversación corta, nunca corona). */
 function SeccionOrdenes() {
   const ordenesQuery = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const accionesQuery = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
+  const trabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
 
   if (ordenesQuery.isLoading) {
     return (
@@ -254,6 +338,7 @@ function SeccionOrdenes() {
   const ordenes = ordenesQuery.data?.ordenes ?? [];
   const accionCiclo = (accionesQuery.data ?? []).find((a) => a.id === ACCION_CICLO_ORDENES);
   const cicloHabilitado = accionCiclo?.habilitada ?? false;
+  const pendientes = (trabajos.data ?? []).filter((t) => t.pendiente).length;
 
   const accionables = ordenes
     .filter((o) => o.estado !== "SEGUIR_MIDIENDO")
@@ -262,6 +347,8 @@ function SeccionOrdenes() {
 
   return (
     <div className="space-y-4">
+      <FranjaDelDia ordenes={ordenes} pendientesDeTrabajos={pendientes} />
+
       {accionables.length === 0 ? (
         <Card>
           <CardContent className="py-6 text-center text-sm text-muted-foreground">
@@ -276,6 +363,7 @@ function SeccionOrdenes() {
               key={`${orden.producto_key}-${orden.angulo_key}-${i}`}
               orden={orden}
               cicloHabilitado={cicloHabilitado}
+              indice={i}
             />
           ))}
         </div>

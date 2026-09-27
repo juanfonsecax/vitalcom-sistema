@@ -160,6 +160,7 @@ function servirBase(overrides: Record<string, unknown> = {}) {
     "/api/productos": [PRODUCTO_A, PRODUCTO_B],
     "/api/productos/CLEARSTEM": FLUJO_A,
     "/api/productos/TINNIDROP": FLUJO_B,
+    "/api/trabajos": [],
     ...overrides,
   });
 }
@@ -209,6 +210,58 @@ test("estado vacío: sin órdenes accionables lo dice en vez de mostrar tarjetas
   });
   montar();
   expect(await screen.findByText(/No hay órdenes que pidan una acción hoy/)).toBeInTheDocument();
+});
+
+test("la franja del día resume las órdenes en un vistazo: 1 pausar, 1 escalar y 1 midiendo", async () => {
+  montar();
+  const franja = await screen.findByTestId("franja-hoy");
+  expect(within(franja).getByText("Hoy te toca")).toBeInTheDocument();
+  expect(within(franja).getAllByText("1")).toHaveLength(3);
+  expect(within(franja).getByText("pausar")).toBeInTheDocument();
+  expect(within(franja).getByText("escalar")).toBeInTheDocument();
+  expect(within(franja).getByText("midiendo")).toBeInTheDocument();
+});
+
+test("la franja avisa cuando Trabajos tiene algo esperando al operador", async () => {
+  servirBase({
+    "/api/trabajos": [
+      { id: "t1", pendiente: true },
+      { id: "t2", pendiente: true },
+    ],
+  });
+  montar();
+  expect(await screen.findByText(/2 esperan tu revisión en Trabajos/)).toBeInTheDocument();
+});
+
+test("orden ejecutable con el ciclo deshabilitado: lo dice en texto, sin botones muertos", async () => {
+  montar();
+  const notas = await screen.findAllByText("Ejecución deshabilitada en el manifiesto");
+  expect(notas).toHaveLength(2);
+  expect(screen.queryByRole("button", { name: "Aprobar" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Rechazar" })).not.toBeInTheDocument();
+});
+
+test("orden ejecutable con el ciclo habilitado: un solo botón claro que manda a Trabajos", async () => {
+  servirBase({
+    "/api/acciones": [
+      { id: "nodo.ciclo.ordenes", rotulo: "Ejecutar órdenes en Meta", habilitada: true, motivo: null },
+      { id: "nodo.ciclo.datos", rotulo: "Traer las ventas de LucidSales", habilitada: true, motivo: null },
+    ],
+  });
+  montar();
+  const enlaces = await screen.findAllByRole("link", { name: "Revisar y aprobar en Trabajos" });
+  expect(enlaces).toHaveLength(2);
+});
+
+test("el glosario del estado queda plegado: el «¿Qué es…?» lo despliega", async () => {
+  montar();
+  const seccion = (await screen.findByRole("heading", { name: "Órdenes de hoy" })).closest("section")!;
+  const disparadores = await within(seccion).findAllByText(/¿Qué es «/);
+  expect(disparadores.length).toBeGreaterThanOrEqual(1);
+  await disparadores[0].click();
+  expect(
+    await within(seccion).findByText("Apagar: gastó de más sin vender lo suficiente y la evidencia ya alcanza para cortar."),
+  ).toBeInTheDocument();
 });
 
 test("qué sigue por producto: muestra fase, paso y el bloqueante con su dueño; sin bloqueante lo dice", async () => {
