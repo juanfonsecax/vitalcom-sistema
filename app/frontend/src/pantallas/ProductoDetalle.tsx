@@ -84,7 +84,7 @@ function Paso({ nodo, esActual }: { nodo: Nodo; esActual: boolean }) {
         esActual
           ? "border-sky-700 bg-sky-950/30 ring-1 ring-sky-800"
           : nodo.estado === "NO_APLICA"
-            ? "opacity-50"
+            ? "border-dashed"
             : undefined
       }
     >
