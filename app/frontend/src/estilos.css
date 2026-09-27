@@ -6,10 +6,13 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Tokens Linear-style: gris neutro para fondo/texto, UN acento (índigo) para lo interactivo,
- * y cuatro tokens semánticos de estado que Ads/_TOOLS/decidir.py ya nombra (ESCALAR, PAUSAR,
- * SEGUIR_MIDIENDO, RENOVAR). La app corre solo en oscuro: `index.html` fija `.dark` en <html>
- * desde el primer pintado. Los tokens claros quedan para cuando se retome el tema claro.
+ * Tokens Linear-style: gris CÁLIDO para fondo/texto (matiz ámbar perceptible —
+ * espresso en las superficies, marfil en el texto), UN acento (índigo) para lo
+ * interactivo, y cuatro tokens semánticos de estado que Ads/_TOOLS/decidir.py ya nombra
+ * (ESCALAR, PAUSAR, SEGUIR_MIDIENDO, RENOVAR). La luminosidad de cada token no cambia:
+ * el contraste queda exactamente igual. La app corre solo en oscuro: `index.html` fija
+ * `.dark` en <html> desde el primer pintado. Los tokens claros quedan para cuando se
+ * retome el tema claro.
  */
 :root {
   color-scheme: light;
@@ -36,7 +39,7 @@
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.5rem;
+  --radius: 1rem;
   --sidebar: oklch(0.98 0 0);
   --sidebar-foreground: oklch(0.18 0 0);
   --sidebar-primary: oklch(0.5 0.16 264);
@@ -59,36 +62,39 @@
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.16 0 0);
-  --foreground: oklch(0.94 0 0);
-  --card: oklch(0.19 0 0);
-  --card-foreground: oklch(0.94 0 0);
-  --popover: oklch(0.19 0 0);
-  --popover-foreground: oklch(0.94 0 0);
+  /* Neutros con matiz cálido VISIBLE (hue 70-75): espresso oscuro en las superficies,
+     marfil en el texto. Misma luminosidad que el gris original — el contraste 4.5:1
+     no se mueve; solo cambia la temperatura. */
+  --background: oklch(0.16 0.022 70);
+  --foreground: oklch(0.94 0.02 75);
+  --card: oklch(0.19 0.024 70);
+  --card-foreground: oklch(0.94 0.02 75);
+  --popover: oklch(0.19 0.024 70);
+  --popover-foreground: oklch(0.94 0.02 75);
   --primary: oklch(0.72 0.14 264);
-  --primary-foreground: oklch(0.16 0 0);
-  --secondary: oklch(0.26 0 0);
-  --secondary-foreground: oklch(0.94 0 0);
-  --muted: oklch(0.26 0 0);
-  --muted-foreground: oklch(0.64 0 0);
+  --primary-foreground: oklch(0.16 0.022 70);
+  --secondary: oklch(0.26 0.024 70);
+  --secondary-foreground: oklch(0.94 0.02 75);
+  --muted: oklch(0.26 0.024 70);
+  --muted-foreground: oklch(0.64 0.024 75);
   --accent: oklch(0.27 0.04 264);
   --accent-foreground: oklch(0.88 0.08 264);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(0.94 0.025 75 / 11%);
+  --input: oklch(0.94 0.025 75 / 16%);
   --ring: oklch(0.72 0.14 264);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.14 0 0);
-  --sidebar-foreground: oklch(0.94 0 0);
+  --chart-1: oklch(0.87 0.02 75);
+  --chart-2: oklch(0.556 0.02 75);
+  --chart-3: oklch(0.439 0.02 75);
+  --chart-4: oklch(0.371 0.02 75);
+  --chart-5: oklch(0.269 0.02 75);
+  --sidebar: oklch(0.14 0.02 70);
+  --sidebar-foreground: oklch(0.94 0.02 75);
   --sidebar-primary: oklch(0.72 0.14 264);
-  --sidebar-primary-foreground: oklch(0.16 0 0);
-  --sidebar-accent: oklch(0.24 0 0);
-  --sidebar-accent-foreground: oklch(0.94 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-primary-foreground: oklch(0.16 0.022 70);
+  --sidebar-accent: oklch(0.24 0.024 70);
+  --sidebar-accent-foreground: oklch(0.94 0.02 75);
+  --sidebar-border: oklch(0.94 0.025 75 / 11%);
   --sidebar-ring: oklch(0.72 0.14 264);
 
   --estado-escalar: oklch(0.66 0.15 155);
@@ -167,5 +173,20 @@
   }
   html {
     @apply font-sans;
+  }
+  /* Amanecer: una luz ámbar tenue que entra por arriba de la pantalla. Es el "aura"
+     de skalah.ai, calibrada para un tablero de dinero: presente, sin competir con la data. */
+  .dark body {
+    background-image: radial-gradient(
+      80rem 22rem at 50% -12rem,
+      oklch(0.8 0.1 75 / 10%),
+      transparent 65%
+    );
+    background-repeat: no-repeat;
+  }
+  /* Elevación por luz, no por sombra: un filete de luz arriba de cada tarjeta.
+     La `Tarjeta` artesanal lleva el mismo data-slot para recibir la misma luz. */
+  .dark [data-slot="card"] {
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
   }
 }

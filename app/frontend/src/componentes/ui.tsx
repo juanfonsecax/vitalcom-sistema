@@ -15,7 +15,7 @@ export function cn(...clases: (string | false | undefined)[]) {
 
 export function Tarjeta({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div className={cn("rounded-xl border border-zinc-800 bg-zinc-900/60 p-5", className)}>
+    <div data-slot="card" className={cn("rounded-xl border border-border bg-card p-5", className)}>
       {children}
     </div>
   );
@@ -68,18 +68,18 @@ export function Info({ termino }: { termino: ClaveGlosario }) {
         aria-expanded={abierto}
         onClick={() => setAbierto((v) => !v)}
         onBlur={() => setAbierto(false)}
-        className="ml-1 h-4 w-4 rounded-full border border-zinc-600 text-[10px] leading-none text-zinc-400 hover:border-zinc-400 hover:text-zinc-200"
+        className="ml-1 h-4 w-4 rounded-full border border-muted-foreground/60 text-[10px] leading-none text-muted-foreground hover:border-foreground hover:text-foreground transition-colors"
       >
         i
       </button>
       {abierto && (
         <span
           role="tooltip"
-          className="absolute left-1/2 z-20 mt-2 w-72 -translate-x-1/2 rounded-lg border border-zinc-700 bg-zinc-900 p-3 text-xs font-normal text-zinc-200 shadow-xl"
+          className="absolute left-1/2 z-20 mt-2 w-72 -translate-x-1/2 rounded-lg border border-border bg-popover p-3 text-xs font-normal text-foreground shadow-xl"
         >
-          <strong className="block text-zinc-100">{rotulo}</strong>
+          <strong className="block text-foreground">{rotulo}</strong>
           {que_es}
-          {dueno && <em className="mt-1 block not-italic text-zinc-400">Lo produce: {dueno}</em>}
+          {dueno && <em className="mt-1 block not-italic text-muted-foreground">Lo produce: {dueno}</em>}
         </span>
       )}
     </span>
@@ -87,7 +87,7 @@ export function Info({ termino }: { termino: ClaveGlosario }) {
 }
 
 export function Cargando({ que }: { que: string }) {
-  return <p className="animate-pulse text-sm text-zinc-400">Leyendo {que}…</p>;
+  return <p className="animate-pulse text-sm text-muted-foreground">Leyendo {que}…</p>;
 }
 
 export function Problema({ error }: { error: unknown }) {
