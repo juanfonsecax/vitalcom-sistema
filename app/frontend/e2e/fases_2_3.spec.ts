@@ -10,8 +10,10 @@ test("la pantalla de FASE 2 para TINNIDROP muestra el ángulo ganador, carril se
 
   await page.goto("/producto/TINNIDROP/fase2");
 
-  // 1. Cabecera principal de FASE 2
-  await expect(page.getByRole("heading", { name: /FASE 2 · Testeo de Conceptos \(TINNIDROP\)/i })).toBeVisible();
+  // 1. Cabecera principal de FASE 2. El primer golpe del endpoint contra el servidor recién
+  //    levantado puede tardar más que los 5s default (flujo documentado en playwright.config);
+  //    se le da aire a la espera, no se debilita lo que se afirma.
+  await expect(page.getByRole("heading", { name: /FASE 2 · Testeo de Conceptos \(TINNIDROP\)/i })).toBeVisible({ timeout: 15_000 });
 
   // 2. Ángulo ganador y nodo actual del motor
   await expect(page.getByText("Ángulo Ganador Coronado por Ventas")).toBeVisible();

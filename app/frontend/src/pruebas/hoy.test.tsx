@@ -300,6 +300,35 @@ test("un ángulo que acaba de entrar en ESCALAR se celebra una sola vez", async 
   window.localStorage.removeItem("vitalcom-celebraciones-v1");
 });
 
+test("una orden ESCALAR bloqueada por fase se explica en palabras humanas y manda a la ficha", async () => {
+  servirBase({
+    "/api/ordenes": {
+      ...ORDENES_BASE,
+      ordenes: [
+        {
+          producto_key: "CLEARSTEM",
+          angulo_key: "RESISTENCIA_INSULINA_SOP",
+          angulo_nombre: "Resistencia a la Insulina SOP",
+          estado: "ESCALAR",
+          accion_codigo: "ESCALAR_SURFING",
+          frase_simple: "Subir 20% al presupuesto",
+          por_que: { cpa_real_q: 27.3, break_even_q: 105.89 },
+          bloqueo_fase:
+            "F2.gate — testeo de 1 solo conjunto rompe el invariante; hace ganador al que recibió más plata, no al mejor.",
+          ejecutable: false,
+          conjuntos: [],
+        },
+      ],
+    },
+  });
+  montar();
+  expect(await screen.findByText(/ya es rentable y vale como ganador/i)).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Ver el avance de su fase" })).toBeInTheDocument();
+  // La nota técnica del motor queda accesible, plegada bajo su enlace.
+  (await screen.findByText(/Ver la nota técnica del motor/i)).click();
+  expect(await screen.findByText(/F2\.gate/)).toBeInTheDocument();
+});
+
 test("qué sigue por producto: muestra fase, paso y el bloqueante con su dueño; sin bloqueante lo dice", async () => {
   montar();
   expect(await screen.findByText("ClearStem")).toBeInTheDocument();

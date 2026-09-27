@@ -295,21 +295,26 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
                 </p>
               )}
 
-              {/* Caja de Prompt Resuelto */}
-              <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-2.5">
-                <div className="mb-1 flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">
-                    Prompt Multimodal Listo
+              {/* Caja de Prompt Resuelto — el prompt DEFINITIVO, completo y listo para copiar
+                  tal cual en el creador de imágenes con IA (ver skill generar-imagenes-chatgpt). */}
+              <div className="rounded-lg border border-border bg-muted/40 p-2.5">
+                <div className="mb-1 flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    Prompt definitivo — copiar y pegar
                   </span>
                   <button
                     onClick={() => copiarPrompt(c.creativo_id, c.prompt)}
-                    className="rounded border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-[11px] font-medium text-zinc-200 hover:bg-zinc-700"
+                    className="shrink-0 rounded-lg border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
                   >
-                    {copiadoId === c.creativo_id ? "✓ Copiado" : "Copiar Prompt"}
+                    {copiadoId === c.creativo_id ? "Copiado" : "Copiar"}
                   </button>
                 </div>
-                <p className="line-clamp-3 font-mono text-[11px] text-zinc-300">
+                <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-foreground">
                   {c.prompt}
+                </pre>
+                <p className="mt-1.5 text-[11px] text-muted-foreground">
+                  Pegalo tal cual en tu creador de imágenes con IA (ChatGPT web) y adjuntá la foto del
+                  producto. Cuando la imagen esté lista, subila acá mismo.
                 </p>
               </div>
 

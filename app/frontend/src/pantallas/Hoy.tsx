@@ -281,6 +281,14 @@ function TarjetaOrdenDelDia({
       </CardHeader>
       <CardContent className="space-y-3">
         {veredicto && <p className="text-sm text-muted-foreground">{veredicto}</p>}
+        {escalarBloqueado && (
+          <p className="rounded-lg border border-estado-seguir/40 bg-estado-seguir/10 p-2.5 text-sm text-estado-seguir">
+            <strong>¿Qué significa esto?</strong> Este ángulo ya es rentable y vale como ganador —
+            pero tu metodología prohíbe subirle presupuesto mientras la fase de testeo sigue abierta.
+            Hoy no se hace nada con esta orden: seguí el testeo, y el presupuesto se sube cuando la
+            fase cierre.
+          </p>
+        )}
         <div className="grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
           <div>
             <span className="block text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
@@ -316,9 +324,16 @@ function TarjetaOrdenDelDia({
           </Collapsible>
         )}
         {orden.bloqueo_fase && (
-          <p className="rounded border border-estado-seguir/40 bg-estado-seguir/10 p-2 text-estado-seguir">
-            <strong>Nota de fase:</strong> {orden.bloqueo_fase}
-          </p>
+          <Collapsible>
+            <CollapsibleTrigger className="text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground">
+              Ver la nota técnica del motor
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <p className="mt-1 rounded border border-estado-seguir/40 bg-estado-seguir/10 p-2 text-xs text-estado-seguir">
+                <strong>Nota de fase:</strong> {orden.bloqueo_fase}
+              </p>
+            </CollapsibleContent>
+          </Collapsible>
         )}
       </CardContent>
       <div className="flex items-center justify-between gap-2 border-t px-(--card-spacing) pt-3 text-xs">
@@ -335,7 +350,23 @@ function TarjetaOrdenDelDia({
           )
         ) : orden.ejecutable && !cicloHabilitado ? (
           <span className="text-right text-muted-foreground">Ejecución deshabilitada en el manifiesto</span>
-        ) : null}
+        ) : escalarBloqueado ? (
+          <Button
+            size="sm"
+            variant="outline"
+            render={<Link to="/producto/$clave" params={{ clave: orden.producto_key }} />}
+          >
+            Ver el avance de su fase
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            variant="outline"
+            render={<Link to="/producto/$clave" params={{ clave: orden.producto_key }} />}
+          >
+            Ver el producto
+          </Button>
+        )}
       </div>
     </Card>
   );

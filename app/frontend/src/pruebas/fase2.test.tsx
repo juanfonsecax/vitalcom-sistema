@@ -164,10 +164,10 @@ test("botón de copiar prompt invoca clipboard.writeText", async () => {
   renderizar("TINNIDROP");
 
   await waitFor(() => {
-    expect(screen.getAllByText("Copiar Prompt").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Copiar").length).toBeGreaterThan(0);
   });
 
-  const botones = screen.getAllByText("Copiar Prompt");
+  const botones = screen.getAllByText("Copiar");
   fireEvent.click(botones[0]);
 
   expect(writeTextMock).toHaveBeenCalledWith(
@@ -175,7 +175,7 @@ test("botón de copiar prompt invoca clipboard.writeText", async () => {
   );
 
   await waitFor(() => {
-    expect(screen.getByText("✓ Copiado")).toBeDefined();
+    expect(screen.getByText("Copiado")).toBeDefined();
   });
 });
 

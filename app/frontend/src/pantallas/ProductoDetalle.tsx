@@ -15,10 +15,12 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate, useParams } from "@tanstack/react-router";
+import { ChevronDown } from "lucide-react";
 import { api, type Flujo, type Nodo, type Requisito } from "../api/cliente";
 import { AvisosDelRecorrido, BannerRezago, tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
 import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { ClaveGlosario } from "../glosario";
 import { estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace } from "../lenguaje";
@@ -66,8 +68,8 @@ function Dato({ requisito }: { requisito: Requisito }) {
         {requisito.ok ? "✓" : "✗"}
       </span>
       <span>
-        <span className="text-zinc-200">{requisito.dato}</span>
-        <span className="block text-xs text-zinc-400">
+        <span className="text-foreground">{requisito.dato}</span>
+        <span className="block text-xs text-muted-foreground">
           {requisito.observado}
           {requisito.dueno && <> · lo produce {requisito.dueno}</>}
         </span>
@@ -82,26 +84,26 @@ function Paso({ nodo, esActual }: { nodo: Nodo; esActual: boolean }) {
     <Tarjeta
       className={
         esActual
-          ? "border-sky-700 bg-sky-950/30 ring-1 ring-sky-800"
+          ? "border-primary/40 bg-primary/10 ring-1 ring-primary/30"
           : nodo.estado === "NO_APLICA"
             ? "border-dashed"
             : undefined
       }
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="font-medium text-zinc-100">
-          {esActual && <span className="mr-2 text-sky-400">▸ estás acá</span>}
+        <h3 className="font-medium text-foreground">
+          {esActual && <span className="mr-2 text-primary">▸ estás acá</span>}
           {nodo.titulo || pasoCorto(nodo.id)}
         </h3>
         <Chip tono={estado.tono}>{estado.texto}</Chip>
       </div>
-      <p className="mt-1 font-mono text-[11px] text-zinc-400">{nodo.id}</p>
-      <p className="mt-2 text-sm text-zinc-400">{nodo.como}</p>
-      <p className="mt-2 text-xs text-zinc-400">
+      <p className="mt-1 font-mono text-[11px] text-muted-foreground">{nodo.id}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{nodo.como}</p>
+      <p className="mt-2 text-xs text-muted-foreground">
         {quienLoHace(nodo.ejecutor_tipo)} · {nodo.ejecutor}
       </p>
       {nodo.produce.length > 0 && (
-        <ul className="mt-3 space-y-2 border-t border-zinc-800 pt-3">
+        <ul className="mt-3 space-y-2 border-t border-border pt-3">
           {nodo.produce.map((r) => (
             <Dato key={r.dato} requisito={r} />
           ))}
@@ -111,18 +113,22 @@ function Paso({ nodo, esActual }: { nodo: Nodo; esActual: boolean }) {
   );
 }
 
-/** El contenido de la pestaña Resumen: el recorrido F1→F2→F3 completo — lo que ANTES era toda
- * la pantalla (entradas para pasar de fase, bloqueantes del paso, avisos y la línea de tiempo
- * nodo por nodo). Nada de esto cambió de cálculo, solo de lugar (ahora vive bajo una pestaña). */
+/** El contenido de la pestaña Resumen — para el humano, no para el motor: qué falta para
+ * avanzar, qué frena, dónde está parado el producto, y el recorrido técnico COMPLETO
+ * plegado (accesible, pero sin apagar a nadie). Nada cambió de cálculo: es la misma data
+ * de `flujo.py`, contada en el orden en que el operador la necesita. */
 function Resumen({ d }: { d: Flujo }) {
+  const actual = d.nodos.find((n) => n.id === d.nodo_actual) ?? null;
+  const demas = d.nodos.filter((n) => n.id !== d.nodo_actual);
+
   return (
     <div className="space-y-6 pt-4">
       <AvisosDelRecorrido avisos={d.avisos} />
 
       {d.entradas.length > 0 && (
         <Tarjeta>
-          <p className="text-xs uppercase tracking-wide text-zinc-400">
-            Para pasar a la fase siguiente
+          <p className="text-sm font-semibold text-foreground">
+            Qué falta para pasar a la siguiente fase
             <Info termino="ganador_por_venta" />
           </p>
           <ul className="mt-2 space-y-2">
@@ -144,11 +150,28 @@ function Resumen({ d }: { d: Flujo }) {
         </Tarjeta>
       )}
 
-      <div className="space-y-3">
-        {d.nodos.map((nodo) => (
-          <Paso key={nodo.id} nodo={nodo} esActual={nodo.id === d.nodo_actual} />
-        ))}
-      </div>
+      {actual && (
+        <div className="space-y-2">
+          <p className="text-[10px] font-medium uppercase tracking-wide text-muted-foreground">Estás acá</p>
+          <Paso nodo={actual} esActual />
+        </div>
+      )}
+
+      {demas.length > 0 && (
+        <Collapsible>
+          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/50">
+            <span>Ver el recorrido técnico completo ({demas.length} pasos)</span>
+            <ChevronDown className="size-4" />
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <div className="mt-3 space-y-3">
+              {demas.map((nodo) => (
+                <Paso key={nodo.id} nodo={nodo} esActual={false} />
+              ))}
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      )}
     </div>
   );
 }
