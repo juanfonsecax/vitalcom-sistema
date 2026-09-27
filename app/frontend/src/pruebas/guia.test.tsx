@@ -12,8 +12,8 @@ test("la pantalla Guia se renderiza con sus tres secciones clave", () => {
 
 test("la guía explica las pantallas y estados doctrinales", () => {
   render(<Guia />);
-  expect(screen.getByText("Portafolio (Inicio)")).toBeInTheDocument();
-  expect(screen.getByText("Órdenes de hoy")).toBeInTheDocument();
+  expect(screen.getByText("Hoy — tu día en un vistazo")).toBeInTheDocument();
+  expect(screen.getByText("Órdenes")).toBeInTheDocument();
   expect(screen.getByText("Nuevo producto")).toBeInTheDocument();
   expect(screen.getByText("LISTO")).toBeInTheDocument();
   expect(screen.getByText("BLOQUEADO")).toBeInTheDocument();

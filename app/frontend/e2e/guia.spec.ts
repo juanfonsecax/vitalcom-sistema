@@ -13,7 +13,7 @@ test("la guía de uso abre desde Ajustes y muestra sus 3 secciones", async ({ pa
   await expect(page.getByRole("heading", { name: "¿Qué hacer si algo falla o se detiene?" })).toBeVisible();
 
   // Vocabulario y estados
-  await expect(page.getByText("Portafolio (Inicio)")).toBeVisible();
+  await expect(page.getByText("Hoy — tu día en un vistazo")).toBeVisible();
   await expect(page.getByText("SEGUIR MIDIENDO")).toBeVisible();
   await expect(page.getByText("VITALCOM_RESPALDOS")).toBeVisible();
 });
