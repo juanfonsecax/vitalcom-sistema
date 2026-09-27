@@ -565,7 +565,15 @@ export function Hoy() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Órdenes de hoy</h2>
+        <div className="flex items-baseline justify-between gap-3">
+          <h2 className="text-lg font-semibold">Órdenes de hoy</h2>
+          <Link
+            to="/ordenes"
+            className="shrink-0 text-xs text-muted-foreground underline-offset-2 transition-colors hover:text-foreground hover:underline"
+          >
+            Detalle extendido del motor en Órdenes →
+          </Link>
+        </div>
         <SeccionOrdenes />
       </section>
 

@@ -1,10 +1,10 @@
 /**
  * barra_lateral.test.tsx — el marco de navegación.
  *
- * Lo que se verifica: que las cuatro secciones fijas (Hoy · Productos · Resultados · Ajustes)
- * estén siempre presentes, y que la sección de la URL actual quede marcada activa — incluso
- * cuando la URL es una hija de Productos (`/producto/$clave`), que sigue viva pero ya no
- * tiene su propio ítem en la barra.
+ * Lo que se verifica: que las cinco secciones fijas (Hoy · Productos · Resultados ·
+ * Trabajos · Ajustes) estén siempre presentes, y que la sección de la URL actual quede
+ * marcada activa — incluso cuando la URL es una hija de Productos (`/producto/$clave`)
+ * o de Trabajos (`/trabajos/$id`), que siguen vivas sin ítem propio en la barra.
  */
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -33,6 +33,8 @@ function montar(ruta: string) {
     createRoute({ getParentRoute: () => raiz, path: "/productos", component: paginaVacia }),
     createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: paginaVacia }),
     createRoute({ getParentRoute: () => raiz, path: "/resultados", component: paginaVacia }),
+    createRoute({ getParentRoute: () => raiz, path: "/trabajos", component: paginaVacia }),
+    createRoute({ getParentRoute: () => raiz, path: "/trabajos/$id", component: paginaVacia }),
     createRoute({ getParentRoute: () => raiz, path: "/ajustes", component: paginaVacia }),
   ];
   const router = createRouter({
@@ -51,12 +53,21 @@ beforeEach(() => {
   servir();
 });
 
-test("la barra lateral muestra exactamente las cuatro secciones fijas", async () => {
+test("la barra lateral muestra exactamente las cinco secciones fijas", async () => {
   montar("/");
   expect(await screen.findByRole("link", { name: "Hoy" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Productos" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Resultados" })).toBeInTheDocument();
+  expect(screen.getByRole("link", { name: "Trabajos" })).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Ajustes" })).toBeInTheDocument();
+});
+
+test("marca Trabajos activo en /trabajos/$id, aunque esa ruta no tenga ítem propio", async () => {
+  montar("/trabajos/job-1");
+  const trabajos = await screen.findByRole("link", { name: "Trabajos" });
+  const hoy = screen.getByRole("link", { name: "Hoy" });
+  expect(trabajos).toHaveAttribute("data-active");
+  expect(hoy).not.toHaveAttribute("data-active");
 });
 
 test("marca Hoy activo en la raíz", async () => {

@@ -26,9 +26,10 @@ test("Ajustes muestra las tres secciones: Cuentas, FanPages y Sistema", async ({
     ).toBeVisible();
   }
 
-  // Los enlaces de siempre siguen accesibles desde acá.
+  // Los enlaces de siempre siguen accesibles desde acá. «Trabajos» existe dos veces desde
+  // que subió al menú lateral (barra + grid de Sistema): el de acá es el del contenido.
   await expect(page.getByRole("link", { name: "Órdenes de hoy" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Trabajos" })).toBeVisible();
+  await expect(page.getByRole("main").getByRole("link", { name: "Trabajos" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Salud del sistema" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Guía", exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "Nuevo producto" })).toBeVisible();

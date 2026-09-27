@@ -11,8 +11,9 @@ test("la pantalla Trabajos abre, dice que no hay trabajos y muestra el estado de
   await expect(page.getByRole("heading", { name: "Trabajos", level: 1 })).toBeVisible();
   await expect(page.getByText("No hay trabajos todavía")).toBeVisible();
   await expect(page.getByText(/Claude: /)).toBeVisible();
-  // Trabajos vive bajo Ajustes en la barra lateral (Hoy/Productos/Resultados/Ajustes).
-  await expect(page.getByRole("link", { name: "Ajustes", exact: true })).toBeVisible();
+  // Trabajos tiene su propia entrada en la barra lateral (Hoy/Productos/Resultados/Trabajos/Ajustes),
+  // con la insignia de pendientes.
+  await expect(page.getByRole("link", { name: "Trabajos", exact: true }).first()).toBeVisible();
 });
 
 test("una acción que no está declarada en el manifiesto es un 403", async ({ request }) => {
