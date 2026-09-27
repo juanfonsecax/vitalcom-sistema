@@ -194,11 +194,13 @@ function TarjetaOrdenDelDia({
   cicloHabilitado,
   indice = 0,
   celebrar = false,
+  trabajoPendiente,
 }: {
   orden: OrdenItem;
   cicloHabilitado: boolean;
   indice?: number;
   celebrar?: boolean;
+  trabajoPendiente?: string;
 }) {
   const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
   const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
@@ -291,9 +293,15 @@ function TarjetaOrdenDelDia({
       <div className="flex items-center justify-between gap-2 border-t px-(--card-spacing) pt-3 text-xs">
         <span className="text-muted-foreground">{orden.ejecutable ? "Listo para revisión" : "Solo informativo"}</span>
         {orden.ejecutable && cicloHabilitado ? (
-          <Button size="sm" render={<Link to="/trabajos" />}>
-            Revisar y aprobar en Trabajos
-          </Button>
+          trabajoPendiente ? (
+            <Button size="sm" render={<Link to="/trabajos/$id" params={{ id: trabajoPendiente }} />}>
+              Revisar y aprobar en Trabajos
+            </Button>
+          ) : (
+            <Button size="sm" render={<Link to="/trabajos" />}>
+              Revisar y aprobar en Trabajos
+            </Button>
+          )
         ) : orden.ejecutable && !cicloHabilitado ? (
           <span className="text-right text-muted-foreground">Ejecución deshabilitada en el manifiesto</span>
         ) : null}
@@ -416,6 +424,17 @@ function SeccionOrdenes() {
   const cicloHabilitado = accionCiclo?.habilitada ?? false;
   const pendientes = (trabajos.data ?? []).filter((t) => t.pendiente).length;
 
+  /** Si el producto ya tiene un trabajo esperando aprobación, el botón de su orden lleva
+   * directo a ESE trabajo (el más nuevo primero) en vez de a la lista general. La
+   * aprobación sigue existiendo una sola vez — en Trabajos, con la orden a la vista y
+   * confirmación orden por orden; acá solo se acorta el camino, nunca se aprueba directo. */
+  const trabajoPendientePorProducto = new Map<string, string>();
+  for (const t of trabajos.data ?? []) {
+    if (t.pendiente && t.producto_key && !trabajoPendientePorProducto.has(t.producto_key)) {
+      trabajoPendientePorProducto.set(t.producto_key, t.job_id);
+    }
+  }
+
   const accionables = ordenes
     .filter((o) => o.estado !== "SEGUIR_MIDIENDO")
     .sort((a, b) => (PRIORIDAD_ACCIONABLE[a.estado] ?? 99) - (PRIORIDAD_ACCIONABLE[b.estado] ?? 99));
@@ -441,6 +460,7 @@ function SeccionOrdenes() {
               cicloHabilitado={cicloHabilitado}
               indice={i}
               celebrar={recienEscalaron.includes(`${orden.producto_key}|${orden.angulo_key}`)}
+              trabajoPendiente={trabajoPendientePorProducto.get(orden.producto_key)}
             />
           ))}
         </div>

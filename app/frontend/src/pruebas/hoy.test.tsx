@@ -139,6 +139,7 @@ function montar() {
     createRoute({ getParentRoute: () => raiz, path: "/", component: Hoy }),
     createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: () => null }),
     createRoute({ getParentRoute: () => raiz, path: "/trabajos", component: () => null }),
+    createRoute({ getParentRoute: () => raiz, path: "/trabajos/$id", component: () => null }),
   ];
   const router = createRouter({
     routeTree: raiz.addChildren(rutas),
@@ -251,6 +252,24 @@ test("orden ejecutable con el ciclo habilitado: un solo botón claro que manda a
   montar();
   const enlaces = await screen.findAllByRole("link", { name: "Revisar y aprobar en Trabajos" });
   expect(enlaces).toHaveLength(2);
+});
+
+test("si el producto ya tiene un trabajo esperando aprobación, el botón lleva directo a él", async () => {
+  servirBase({
+    "/api/trabajos": [
+      { job_id: "job-1", pendiente: "Falta tu aprobación", producto_key: "TINNIDROP" },
+    ],
+    "/api/acciones": [
+      { id: "nodo.ciclo.ordenes", rotulo: "Ejecutar órdenes en Meta", habilitada: true, motivo: null },
+      { id: "nodo.ciclo.datos", rotulo: "Traer las ventas de LucidSales", habilitada: true, motivo: null },
+    ],
+  });
+  montar();
+  const enlaces = await screen.findAllByRole("link", { name: "Revisar y aprobar en Trabajos" });
+  // La orden PAUSAR de TINNIDROP va primero en el orden accionable: su botón cae directo
+  // en SU trabajo; la de CLEARSTEM, sin trabajo pendiente, va a la lista general.
+  expect(enlaces[0]).toHaveAttribute("href", "/trabajos/job-1");
+  expect(enlaces[1]).toHaveAttribute("href", "/trabajos");
 });
 
 test("el glosario del estado queda plegado: el «¿Qué es…?» lo despliega", async () => {
