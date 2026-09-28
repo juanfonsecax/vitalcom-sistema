@@ -48,18 +48,18 @@ UN DATO, UN DUENO — de donde sale cada parametro
     banda de edad                               avatar_edad de _DIM_CONJUNTOS.csv,
                                                 derivada por Ads/_TOOLS/bandas_edad.py
                                                 (doctrina y evidencia: ETAPA-6.md)
-    numero de replica R[N] (fase 1 y 3)         conjunto_meta de _DIM_CONJUNTOS.csv
+    numero de replica R[N] (fase 1 y 4)         conjunto_meta de _DIM_CONJUNTOS.csv
                                                 (siguiente_replica: nunca la posicion del loop)
     piezas, concepto_key, canonico_id           PRODUCTOS/_DIM_CREATIVOS.csv
     la FIRMA de 5 ejes                          Ads/_TOOLS/firma.py (se importa, no se copia)
     angulo ganador, page_id, copy               PRODUCTOS/[X]/_PLAN*.json (dueno: ETAPA-6)
     nombres de campana/conjunto/anuncio         .claude/agents/ETAPA-6.md CONVENCION DE NOMBRES
 
-F3.exploracion (P12, T12) — `--fase 3 --brazo EXPLORACION`: el mini-F1 de ángulos nuevos que
-corre en paralelo al escalado. Mismo `--fase 3` (mismo gate de ENTRADA a F3), pero lee
+F4.exploracion (P12, T12) — `--fase 4 --brazo EXPLORACION`: el mini-F1 de ángulos nuevos que
+corre en paralelo al escalado. Mismo `--fase 4` (mismo gate de ENTRADA a F4), pero lee
 `_PLAN_EXPLORACION.json` (no `_PLAN_FASE3.json`), arma un conjunto POR ÁNGULO como FASE 1 (no
-un ángulo fijo ×7), su fila de `_PARAMETROS_PUBLICACION.csv` es fase=3 brazo=EXPLORACION, y
-además del gate de entrada a F3 exige el gate propio de F3.exploracion (F3 rentable según
+un ángulo fijo ×7), su fila de `_PARAMETROS_PUBLICACION.csv` es fase=4 brazo=EXPLORACION, y
+además del gate de entrada a F4 exige el gate propio de F4.exploracion (F4 rentable según
 decidir.py, `flujo.gate_nodo`). La campaña nace `EXPLORA`, no `ESCALA-{angulo}`.
 
 USO
@@ -404,15 +404,17 @@ def derivar_banda(avatar_edad, pk):
 def nombre_campana(fase, cuenta, producto, brazo, angulo, fecha):
     """CONVENCION DE NOMBRES — ETAPA-6.md. Separador de campos '_', dentro del campo solo '-'.
 
-    fase 3 + brazo EXPLORACION (P12, T12): la campaña de la exploración paralela de ángulos
+    fase 4 + brazo EXPLORACION (P12, T12): la campaña de la exploración paralela de ángulos
     nuevos NO lleva el token ESCALA (no es escalado, y ESCALA-{angulo} no aplica: la exploración
-    trae VARIOS ángulos, no uno fijo) — token propio EXPLORA, mismo patrón que TEST en FASE 1."""
+    trae VARIOS ángulos, no uno fijo) — token propio EXPLORA, mismo patrón que TEST en FASE 1.
+    FASE 3 (optimización del flujo del bot) nunca llama esta función: no publica estructura
+    nueva en Meta (el ganador de F2 sigue corriendo al mismo presupuesto)."""
     d = fecha.strftime("%Y%m%d")
     if fase == 1:
         return "%s_%s_TEST_%s" % (cuenta, producto, d)
     if fase == 2:
         return "%s_%s_CONCEPTOS-%s_%s" % (cuenta, producto, brazo, d)
-    if fase == 3 and brazo == "EXPLORACION":
+    if fase == 4 and brazo == "EXPLORACION":
         return "%s_%s_EXPLORA_%s" % (cuenta, producto, d)
     return "%s_%s_ESCALA-%s_%s" % (cuenta, producto, angulo.replace("_", "-"), d)
 
@@ -539,7 +541,7 @@ def main():
 
     # ---------- 4. plan ----------------------------------------------------
     carpeta = prod.get("slug_carpeta") or pk
-    exploracion = fase == 3 and brazo == "EXPLORACION"
+    exploracion = fase == 4 and brazo == "EXPLORACION"
     if not ruta_pl:
         if exploracion:
             cand = [P(carpeta, "_PLAN_EXPLORACION.json")]
@@ -556,7 +558,7 @@ def main():
         pq.bloquear_paquete("no existe _PLAN_FASE%d.json ni _PLAN.json en PRODUCTOS/%s/" % (fase, carpeta),
                     "etapa-6")
 
-    # FASE 1 y la EXPLORACION de F3 (P12) miden el ANGULO: cada conjunto lleva uno distinto y no
+    # FASE 1 y la EXPLORACION de F4 (P12) miden el ANGULO: cada conjunto lleva uno distinto y no
     # hay ganador todavia. FASE 2 y 3-ESCALA miden otra cosa sobre un angulo YA GANADO: ahi el
     # angulo es uno y es fijo.
     angulo = (plan.get("angulo_ganador") or plan.get("angulo_key") or "").strip()
@@ -607,7 +609,7 @@ def main():
         plan_conj = plan.get("conjuntos") or []
         if len(plan_conj) < n_conj:
             if exploracion:
-                pq.bloquear_paquete("F3.exploracion se monta con %d angulos nuevos (_PARAMETROS_DECISION.csv "
+                pq.bloquear_paquete("F4.exploracion se monta con %d angulos nuevos (_PARAMETROS_DECISION.csv "
                             "exploracion_n_angulos) y el plan trae %d." % (n_conj, len(plan_conj)),
                             "etapa-2 (fichas de angulo)")
             else:
@@ -962,7 +964,7 @@ def main():
         "generado_el": datetime.datetime.now().isoformat(timespec="seconds"),
         "producto_key": pk, "fase": fase, "brazo": brazo,
         "angulo": angulo if (fase in (2, 3) and not exploracion) else
-                  "VARIOS (uno por conjunto — F1/F3.exploracion miden el angulo)",
+                  "VARIOS (uno por conjunto — F1/F4.exploracion miden el angulo)",
         "cuenta_alias": cta, "cuenta_id": acct, "moneda": moneda,
         "page_id": page_id,
         "estructura": par["estructura"],
@@ -1027,28 +1029,28 @@ def main():
             return 1
         print("EXCEPCION registrada: F%d.entrada -> gen_publicacion --fase %d (%s)" % (fase, fase, excepcion))
 
-    # ---------- P12: el gate propio de F3.exploracion (F3 rentable) es OTRO candado ------------
-    # distinto del gate de entrada a F3 de arriba (concepto 2/2 + CAMBIO_BOT): ese ya esta
-    # cumplido para cualquier producto que este viendo nodos de F3. F3.exploracion ademas exige
+    # ---------- P12: el gate propio de F4.exploracion (F4 rentable) es OTRO candado ------------
+    # distinto del gate de entrada a F4 de arriba (concepto 2/2 + CAMBIO_BOT): ese ya esta
+    # cumplido para cualquier producto que este viendo nodos de F4. F4.exploracion ademas exige
     # que el escalado sea rentable (decidir.py), gate leido con flujo.gate_nodo (T12), nunca
     # recalculado aca.
     if exploracion:
-        ok_expl, obs_expl = flujo.gate_nodo(pk, "F3.exploracion", flujo.Entorno(base=BASE))
+        ok_expl, obs_expl = flujo.gate_nodo(pk, "F4.exploracion", flujo.Entorno(base=BASE))
         if not ok_expl and not excepcion:
-            print("BLOQUEANTE: el gate de F3.exploracion no esta cumplido: %s" % obs_expl)
-            print("            P12: la exploracion arranca solo cuando el escalado (F3) es rentable "
+            print("BLOQUEANTE: el gate de F4.exploracion no esta cumplido: %s" % obs_expl)
+            print("            P12: la exploracion arranca solo cuando el escalado (F4) es rentable "
                   "segun decidir.py.")
             print("            Si es deliberado, repetir con --excepcion \"motivo\": queda una fila "
                   "EXCEPCION en _EVENTOS.csv y la publicacion sigue.")
             return 1
         if not ok_expl:
             ok_ev, errores_ev = registrar_evento.registrar_excepcion(
-                pk, "F3.exploracion", "gen_publicacion --fase 3 --brazo EXPLORACION", excepcion,
+                pk, "F4.exploracion", "gen_publicacion --fase 4 --brazo EXPLORACION", excepcion,
                 "Ads/_TOOLS/gen_publicacion.py")
             if not ok_ev:
                 print("BLOQUEANTE: no se pudo registrar la EXCEPCION:\n  · " + "\n  · ".join(errores_ev))
                 return 1
-            print("EXCEPCION registrada: F3.exploracion -> gen_publicacion --fase 3 --brazo EXPLORACION (%s)"
+            print("EXCEPCION registrada: F4.exploracion -> gen_publicacion --fase 4 --brazo EXPLORACION (%s)"
                   % excepcion)
 
     if not salida:

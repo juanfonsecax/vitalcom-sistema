@@ -120,22 +120,24 @@ def test_gate_fase():
     SEGUIR_MIDIENDO. flujo.py corona el ángulo ganador por el ESCALAR del motor
     (_ev_angulo_ganador); si el motor se lo callara en F1, el producto no podría salir de F1
     por esa rama y el gate se mordería la cola. Se bloquea la ACCIÓN, no la evidencia."""
-    from decidir import aplicar_gate_fase
+    from decidir import aplicar_gate_fase, cargar_parametros
 
     def celdas():
         return [{"celda": "A", "estado": "ESCALAR", "accion_sugerida": "ESCALAR (Calet): duplicar campaña"},
                 {"celda": "B", "estado": "PAUSAR", "accion_sugerida": "APAGAR: quemó su PD"},
                 {"celda": "C", "estado": "SEGUIR_MIDIENDO", "accion_sugerida": "MANTENER"}]
 
+    params = cargar_parametros()
     fallas = 0
     for fase, esperado, texto_esperado, nombre in [
         ("F1", False, "FASE 2", "en FASE 1 (testeo de ángulos) el ESCALAR no se ejecuta"),
-        ("F2", False, "CAMBIO_BOT", "en FASE 2 (testeo de conceptos) tampoco"),
-        ("F3", True, None, "en FASE 3 (escalado) sí se ejecuta: ahí se compra volumen"),
+        ("F2", False, "FASE 3", "en FASE 2 (testeo de conceptos) tampoco"),
+        ("F3", False, "CAMBIO_BOT", "en FASE 3 (optimización del flujo) tampoco: falta confirmar que el bot cierra"),
+        ("F4", True, None, "en FASE 4 (escalado) sí se ejecuta: ahí se compra volumen"),
         ("", None, "flujo.py", "sin fase derivada: ni bloquea ni aprueba, dice que no pudo evaluarlo"),
     ]:
         cs = celdas()
-        aplicar_gate_fase(cs, fase, "TURMERIC")
+        aplicar_gate_fase(cs, fase, "TURMERIC", params)
         a = cs[0]
         ok = (a["ejecutable"] is esperado and a["estado"] == "ESCALAR"
               and (esperado is True or a["bloqueo_fase"])
@@ -522,7 +524,7 @@ def main():
                   % (nombre, esperado, estado, obtenido["accion_codigo"], porque))
 
     fallas += test_tope_pausas(params)
-    fallas += test_gate_fase()          # 5 comprobaciones
+    fallas += test_gate_fase()          # 6 comprobaciones
     fallas += test_escalar_moderado_frontera(params)  # 4 comprobaciones
     fallas += test_comparar_cierre()    # 3 comprobaciones
     fallas += test_cierre_meta_benchmark()
@@ -530,7 +532,7 @@ def main():
     fallas += test_carga_base_y_alias()
     fallas += test_carga_usa_el_gasto_efectivo_de_meta()
     fallas += test_dia_meta_only_no_corre_la_ventana_de_evaluacion()
-    total = len(CASOS) + 20
+    total = len(CASOS) + 21
     print("\n%d de %d casos pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

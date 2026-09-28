@@ -50,6 +50,8 @@ VOCABULARIO DE PREDICADOS (cerrado — ver `evaluar`)
     eventos        filas de _EVENTOS.csv del producto (evento, hoy, desde_dias, campana_contiene)
     angulo_ganador ángulo ganador POR VENTA agregando por angulo_key (invariante 1)
     concepto_2de2  concepto que gana en 2 de 2 campañas de conceptos (regla de replicación)
+    cierre_post_cambio_bot  mensajes y cierre % desde el último CAMBIO_BOT/EXCEPCION_CAMBIO_BOT
+                   vigente (gate F3→F4, PROHIBIDO_ESCALAR_CIERRE_BAJO)
     estructura_publicada  conjuntos observados en Meta vs los de _PARAMETROS_PUBLICACION.csv
     todos / alguno / no   composición
 
@@ -345,8 +347,8 @@ def _campo(d, ruta):
 # ─────────────────────────────────────────────────────────────────────────────
 
 TIPOS = ("csv", "csv_campo", "archivo", "glob", "json", "script", "decision", "decisiones_json",
-         "data_fresca", "eventos", "angulo_ganador", "concepto_2de2", "estructura_publicada",
-         "todos", "alguno", "no")
+         "data_fresca", "eventos", "angulo_ganador", "concepto_2de2", "cierre_post_cambio_bot",
+         "estructura_publicada", "todos", "alguno", "no")
 
 
 def evaluar(pred, ctx, env):
@@ -947,16 +949,84 @@ def _fecha_concepto_ganador(ctx, env):
     return cruces[1]
 
 
+def _fecha_cambio_bot(ctx, env):
+    """Fecha del CAMBIO_BOT (o EXCEPCION_CAMBIO_BOT) MÁS RECIENTE, posterior al concepto ganador —
+    el estado ACTUAL del bot, no el primer intento. Un producto puede pasar por varias
+    iteraciones de F3.reescribir (PROHIBIDO_ESCALAR_CIERRE_BAJO: si el cierre no llega al piso, se
+    reescribe de nuevo); `cierre_post_cambio_bot` siempre mide desde la reescritura VIGENTE, nunca
+    desde una vieja que ya se reemplazó.
+
+    Sin concepto ganador todavía, o sin CAMBIO_BOT/EXCEPCION_CAMBIO_BOT posterior a él, None —
+    igual que _fecha_concepto_ganador(), None no es "sin límite": es "no hay fecha de la que
+    contar todavía", y el predicado que lo consume no pasa."""
+    fecha_ref = _fecha_concepto_ganador(ctx, env)
+    if fecha_ref is None:
+        return None
+    pk = ctx["pk"]
+    fechas = []
+    for r in env.csv("_EVENTOS.csv"):
+        if (r.get("producto_key") or "").strip() != pk:
+            continue
+        if (r.get("evento") or "").strip() not in ("CAMBIO_BOT", "EXCEPCION_CAMBIO_BOT"):
+            continue
+        f = fecha(r.get("fecha"))
+        if f and f > fecha_ref:
+            fechas.append(f)
+    return max(fechas) if fechas else None
+
+
 RESOLVEDORES_FECHA = {
     "concepto_ganador": _fecha_concepto_ganador,
     "angulo_ganador": _fecha_angulo_ganador,
+    "cambio_bot": _fecha_cambio_bot,
 }
 
 
+def _ev_cierre_post_cambio_bot(p, ctx, env):
+    """GATE DURO F3→F4 (PROHIBIDO_ESCALAR_CIERRE_BAJO, Clase 22-ago Calet, decisión del operador
+    28-sep-2026): no se compra volumen sobre un bot que todavía no cierra.
+
+    Cuenta MENSAJES y VENTAS a nivel PRODUCTO (no angulo_key) desde _FACT_VENTAS.csv, filtrando a
+    las filas cuya `ventana_ini` es POSTERIOR al último CAMBIO_BOT/EXCEPCION_CAMBIO_BOT vigente
+    (_fecha_cambio_bot — ya posterior al concepto ganador). Grano PRODUCTO, no angulo_key: en F3 el
+    ángulo y el concepto ya están fijos (un solo ganador corriendo, invariante 1), así que no hace
+    falta separar por angulo_key como en _angulos_acumulados() — separar ahí exigiría mapear cada
+    conjunto/ventana al ángulo Y cortar por fecha en la MISMA fila (_DIM_CONJUNTOS no trae fecha),
+    y la fila de _FACT_VENTAS.csv ya es un solo ángulo por construcción en esta fase. Reusa
+    _ventas_base() (invariante 11: nunca se sobrescriben filas a mano) — mismas filas BASE que
+    _angulos_acumulados()/decidir.py, nunca un segundo camino de agregación.
+
+    Sin CAMBIO_BOT/EXCEPCION_CAMBIO_BOT posterior al ganador todavía: no pasa, y lo dice (todavía
+    no hay fecha de corte — F3.reescribir es el nodo que la produce)."""
+    pk = ctx["pk"]
+    fecha_cb = _fecha_cambio_bot(ctx, env)
+    if fecha_cb is None:
+        return False, "sin CAMBIO_BOT (ni EXCEPCION_CAMBIO_BOT) posterior al concepto ganador todavía"
+    mensajes = 0.0
+    ventas = 0.0
+    for r, _cj in _ventas_base(env, pk):
+        vi = fecha(r.get("ventana_ini"))
+        if vi is None or vi <= fecha_cb:
+            continue
+        mensajes += num(r.get("mensajes"), 0) or 0
+        ventas += num(r.get("ventas"), 0) or 0
+    cierre = (ventas / mensajes * 100.0) if mensajes > 0 else None
+    min_msj = resolver_num(p.get("min_mensajes", "@param:min_mensajes_cierre"), env)
+    min_msj = 30 if min_msj is None else min_msj
+    min_cierre = resolver_num(p.get("min_cierre_pct", "@param:cierre_min_escalar_pct"), env)
+    min_cierre = 10.0 if min_cierre is None else min_cierre
+    ok = mensajes >= min_msj and cierre is not None and cierre >= min_cierre
+    que = "desde CAMBIO_BOT %s: %d mensaje(s) (≥%g) · cierre %s%% (≥%g%%)" % (
+        fecha_cb, int(mensajes), min_msj, ("%.1f" % cierre) if cierre is not None else "s/d", min_cierre)
+    return ok, que
+
+
 # Fase -> token(s) de CONVENCIÓN DE NOMBRES (ETAPA-6.md) que aparecen en el nombre de campaña de
-# esa fase. Fase 3 tiene DOS: ESCALA (el 1-1-7 de siempre) y EXPLORA (F3.exploracion, P12 —
+# esa fase. FASE 3 (optimización del flujo del bot) no publica estructura nueva en Meta: el
+# ganador de F2 sigue corriendo al mismo presupuesto (invariante 6), así que no tiene token propio.
+# FASE 4 (escalado, ex-F3) tiene DOS: ESCALA (el 1-1-7 de siempre) y EXPLORA (F4.exploracion, P12 —
 # mini-F1 de ángulos nuevos en paralelo al escalado, mismo número de fase, campaña distinta).
-TOKEN_FASE = {"1": ("TEST",), "2": ("CONCEPTOS",), "3": ("ESCALA", "EXPLORA")}
+TOKEN_FASE = {"1": ("TEST",), "2": ("CONCEPTOS",), "4": ("ESCALA", "EXPLORA")}
 
 
 def _ev_estructura_publicada(p, ctx, env):
@@ -1013,6 +1083,7 @@ _EVALUADORES = {
     "json": _ev_json, "script": _ev_script, "decision": _ev_decision,
     "decisiones_json": _ev_decisiones_json, "data_fresca": _ev_data_fresca, "eventos": _ev_eventos,
     "angulo_ganador": _ev_angulo_ganador, "concepto_2de2": _ev_concepto_2de2,
+    "cierre_post_cambio_bot": _ev_cierre_post_cambio_bot,
     "estructura_publicada": _ev_estructura_publicada,
     "todos": _ev_todos, "alguno": _ev_alguno, "no": _ev_no,
 }

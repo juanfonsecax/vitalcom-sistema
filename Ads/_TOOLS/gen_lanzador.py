@@ -81,7 +81,7 @@ ESTRUCTURA = {  # CALENDARIO_ESCALADO seccion 1.7.2 · clases Calet 16-ago y 22-
                   "«siempre me tomaba un solo anuncio y me quedaba la duda, los cuatro anuncios "
                   "restantes ¿dónde están?». En CBO Meta corona uno solo; en prueba de creativo "
                   "pueden salir dos o tres ganadores.")},
-    3: {"nombre": "FASE 3 · ESCALADO", "mide": "volumen",
+    4: {"nombre": "FASE 4 · ESCALADO", "mide": "volumen",
         "forma": "1-1-7 CBO (el ganador ×7)",
         "notacion": "1-1-7 · CBO", "presupuesto": "LIBRE",
         "decide": "CPA semanal sobre ENTREGADOS", "campanas": 1,
@@ -177,7 +177,7 @@ def presupuesto_conjunto(usd_conv):
 
 
 def presupuesto_fase_csv(fase, brazo):
-    """FASE 2 y 3: el presupuesto por conjunto/campana NO se autoajusta — es fijo y vive
+    """FASE 2 y 4: el presupuesto por conjunto/campana NO se autoajusta — es fijo y vive
     en _PARAMETROS_PUBLICACION.csv (el mismo dueno que ya usa gen_publicacion.py para
     publicar de verdad). Sin fila VIGENTE para fase+brazo, no inventa: devuelve None."""
     for r in leer_csv(PARAMETROS_PUBLICACION):
@@ -192,7 +192,7 @@ def presupuesto_por_fase(fase, usd_conv, brazo="A"):
     15-sep-2026) derivar() llamaba presupuesto_conjunto(usd_conv) para las tres fases por
     igual, y esa formula esta ESCRITA para FASE 1 (piso $2.99, techo $3.95): en FASE 2 el
     dato real es $6.00/conjunto (_PARAMETROS_PUBLICACION.csv) y el lanzador dictaba casi
-    la mitad. FASE 1 sigue usando la formula autoajustable (es su doctrina); FASE 2 y 3
+    la mitad. FASE 1 sigue usando la formula autoajustable (es su doctrina); FASE 2 y 4
     leen el valor fijo de su fila en el CSV — 'A' es el brazo de referencia en FASE 2,
     donde los tres brazos (A/B/C) valen lo mismo por diseño."""
     if fase == 1:

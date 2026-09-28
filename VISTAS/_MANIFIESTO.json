@@ -594,9 +594,63 @@
     "motivo": "Igual que nodo.F1.activar, más el A/B de flujo (CAMBIO_BOT + gemelos + test_id). Hito 4/5, en Opus."
    },
    {
-    "id": "nodo.F3.exploracion",
+    "id": "nodo.F3.reescribir",
+    "rotulo": "Reescribir el flujo LucidBot hacia el concepto ganador",
+    "nodo": "F3.reescribir",
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-5",
+    "comando": null,
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DIM_FLUJO_BOT.csv",
+     "PRODUCTOS/_EVENTOS.csv"
+    ],
+    "idempotente": false,
+    "precondicion": "nodo_listo",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 2400,
+    "herramientas": [],
+    "presupuesto_usd": 10,
+    "motivo": "etapa-5 redacta los bloques de juicio; el operador APLICA el cambio en LucidBot a mano (no es un objeto de Meta) y anexa CAMBIO_BOT/EXCEPCION_CAMBIO_BOT con registrar_evento.py."
+   },
+   {
+    "id": "nodo.F3.medir_cierre",
+    "rotulo": "Medir el cierre del bot reescrito",
+    "nodo": "F3.medir_cierre",
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/gen_decisiones.py"
+    ],
+    "parametros": {},
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/_DECISIONES.json",
+     "warehouse/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 900,
+    "salida": "texto"
+   },
+   {
+    "id": "nodo.F4.exploracion",
     "rotulo": "Explorar 3 ángulos nuevos en paralelo (mini-F1)",
-    "nodo": "F3.exploracion",
+    "nodo": "F4.exploracion",
     "ejecutor_tipo": "subagente",
     "name": "etapa-2",
     "comando": null,
@@ -624,9 +678,9 @@
     "presupuesto_usd": 20
    },
    {
-    "id": "nodo.F3.plan",
+    "id": "nodo.F4.plan",
     "rotulo": "Microángulos y plan 1-1-7",
-    "nodo": "F3.plan",
+    "nodo": "F4.plan",
     "ejecutor_tipo": "subagente",
     "name": "etapa-6",
     "comando": null,
@@ -654,9 +708,9 @@
     "presupuesto_usd": 20
    },
    {
-    "id": "nodo.F3.publicar",
+    "id": "nodo.F4.publicar",
     "rotulo": "Publicar el 1-1-7 CBO (PAUSED)",
-    "nodo": "F3.publicar",
+    "nodo": "F4.publicar",
     "ejecutor_tipo": "skill",
     "name": "publicar-meta",
     "comando": null,

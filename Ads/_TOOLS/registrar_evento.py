@@ -25,11 +25,11 @@ GATES SON CANDADO (P5, ver flujo.gate_entrada)
 -----------------------------------------------
 `--evento LANZAMIENTO` exige que el gate de ENTRADA de la fase que se lanza esté cumplido
 (DOCTRINA/FLUJO.json, evaluado por `flujo.gate_entrada`). La fase sale de `--fase`, o si no se
-pasa, del token de fase (`TOKEN_FASE` de flujo.py: TEST/CONCEPTOS/ESCALA·EXPLORA — fase 3 tiene
+pasa, del token de fase (`TOKEN_FASE` de flujo.py: TEST/CONCEPTOS/ESCALA·EXPLORA — fase 4 tiene
 los dos últimos, P12) dentro de `--campana`; si ninguna resuelve, se detiene y pide `--fase`.
-Un LANZAMIENTO de EXPLORA solo pasa el gate de ENTRADA a F3 (ya cumplido si el producto está en
-F3); el gate propio de F3.exploracion (F3 rentable, `flujo.gate_nodo`) lo exige
-`gen_publicacion.py --fase 3 --brazo EXPLORACION`, no este script. Con el gate incumplido, se
+Un LANZAMIENTO de EXPLORA solo pasa el gate de ENTRADA a F4 (ya cumplido si el producto está en
+F4); el gate propio de F4.exploracion (F4 rentable, `flujo.gate_nodo`) lo exige
+`gen_publicacion.py --fase 4 --brazo EXPLORACION`, no este script. Con el gate incumplido, se
 detiene (nada se escribe) salvo que se pase `--excepcion "motivo"`: entonces el LANZAMIENTO se
 registra igual Y además queda una fila EXCEPCION en `_EVENTOS.csv` (mismo escritor, una sola
 llamada a `anexar()` por fila — invariante 11).
@@ -38,7 +38,7 @@ USO
     python Ads/_TOOLS/registrar_evento.py --producto TINNIDROP --evento CAMBIO_PRESUPUESTO \\
         --cuenta GTR0 --conjunto GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1 --antes 4.49 --despues 5.39 \\
         --motivo "ESCALAR del motor: surfing +20%" --fuente "decidir.py 2026-09-11 · confirmado operador"
-    python Ads/_TOOLS/registrar_evento.py --producto TINNIDROP --evento LANZAMIENTO --fase 3 \\
+    python Ads/_TOOLS/registrar_evento.py --producto TINNIDROP --evento LANZAMIENTO --fase 4 \\
         --motivo "..." --fuente "..." --excepcion "el operador decide escalar sin el gate"
     ... --dry-run      # muestra la fila y no escribe
 """
@@ -167,8 +167,8 @@ def anexar(filas):
 
 def resolver_fase(fase_arg, campana):
     """La fase de un LANZAMIENTO: `--fase` explícito, o el token de flujo.TOKEN_FASE
-    (TEST/CONCEPTOS/ESCALA·EXPLORA) que aparezca en `--campana`. Fase 3 tiene DOS tokens posibles
-    (ESCALA y EXPLORA, P12) — ambos resuelven a fase '3', el mismo gate de entrada.
+    (TEST/CONCEPTOS/ESCALA·EXPLORA) que aparezca en `--campana`. Fase 4 tiene DOS tokens posibles
+    (ESCALA y EXPLORA, P12) — ambos resuelven a fase '4', el mismo gate de entrada.
     Ninguna de las dos -> (None, motivo)."""
     if fase_arg:
         return str(fase_arg).strip(), "explícita (--fase)"
@@ -189,7 +189,7 @@ def registrar_excepcion(producto_key, gate, accion, motivo, fuente, fecha=None):
     """La ÚNICA forma de anexar una fila EXCEPCION: reusa `validar()`/`anexar()`, el mismo
     escritor de todo `_EVENTOS.csv` (invariante 11) — no se duplica la escritura de CSV.
     `gate` es el gate incumplido (p.ej. 'F3.entrada'); `accion` es lo que procedió igual
-    (p.ej. 'LANZAMIENTO' o 'gen_publicacion --fase 3'). Devuelve (ok, errores)."""
+    (p.ej. 'LANZAMIENTO' o 'gen_publicacion --fase 4'). Devuelve (ok, errores)."""
     fila = {"fecha": fecha or datetime.date.today().isoformat(), "producto_key": producto_key.strip(),
             "cuenta_alias": "*", "campana_clave": "*", "conjunto_meta": "*", "evento": "EXCEPCION",
             "valor_antes": gate, "valor_despues": accion, "motivo": (motivo or "").strip(),

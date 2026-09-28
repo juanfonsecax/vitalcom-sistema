@@ -33,7 +33,7 @@ def _parametros_publicacion(tmp):
          "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.7.2"},
         {"fase": "2", "brazo": "C", "daily_budget_usd": "6.00", "estado": "VIGENTE",
          "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.7.2"},
-        {"fase": "3", "brazo": "UNICO", "daily_budget_usd": "15.00", "estado": "VIGENTE",
+        {"fase": "4", "brazo": "UNICO", "daily_budget_usd": "15.00", "estado": "VIGENTE",
          "fuente_doctrina": "ESCALADO_PLAYBOOK.md"},
     ]
     cols = ["fase", "brazo", "daily_budget_usd", "estado", "fuente_doctrina"]
@@ -62,18 +62,18 @@ def test_fase2_ya_no_dicta_la_mitad():
     return 0 if ok else 1
 
 
-def test_fase3_lee_el_valor_fijo_de_escalado():
+def test_fase4_lee_el_valor_fijo_de_escalado():
     with tempfile.TemporaryDirectory() as tmp:
         ruta = _parametros_publicacion(tmp)
         viejo = gl.PARAMETROS_PUBLICACION
         gl.PARAMETROS_PUBLICACION = ruta
         try:
-            presup, por_que = gl.presupuesto_por_fase(3, 0.478)
+            presup, por_que = gl.presupuesto_por_fase(4, 0.478)
         finally:
             gl.PARAMETROS_PUBLICACION = viejo
     ok = presup == 15.0
     print(("  OK     " if ok else "  FALLA  ")
-          + "FASE 3 dicta $15.00 (CBO, ESCALADO_PLAYBOOK.md), no la formula autoajustable de FASE 1"
+          + "FASE 4 dicta $15.00 (CBO, ESCALADO_PLAYBOOK.md), no la formula autoajustable de FASE 1"
           + ("" if ok else f"\n         obtenido={presup!r} por_que={por_que!r}"))
     return 0 if ok else 1
 
@@ -119,7 +119,7 @@ def test_fase_sin_fila_vigente_no_inventa():
 def main():
     fallas = 0
     fallas += test_fase2_ya_no_dicta_la_mitad()
-    fallas += test_fase3_lee_el_valor_fijo_de_escalado()
+    fallas += test_fase4_lee_el_valor_fijo_de_escalado()
     fallas += test_fase1_sigue_usando_la_formula_autoajustable()
     fallas += test_fase_sin_fila_vigente_no_inventa()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")

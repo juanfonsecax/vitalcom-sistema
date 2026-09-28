@@ -203,8 +203,9 @@ def main():
     check(r["avance"] is not None and r["avance"]["ok"] is False and "2" in r["avance"]["observado"],
           "para pasar a FASE 3 hace falta replicación en 2 campañas, y solo hay 1",
           str(r.get("avance")))
-    check(any("F3." in a and "sin haber pasado el gate" in a for a in r["avisos"]),
-          "los objetos de FASE 3 (4_PLAN_ESCALADO.txt, LANZAMIENTO de escala) se cantan como fuera de gate")
+    check(any("F4." in a and "sin haber pasado el gate" in a for a in r["avisos"]),
+          "los objetos de FASE 4 (4_PLAN_ESCALADO.txt, LANZAMIENTO de escala) se cantan como fuera de gate — "
+          "ex-FASE 3, renombrada por las cuatro fases (28-sep-2026)")
 
     # ── C. el vocabulario de predicados hace lo que dice ───────────────────────
     ctx = {"pk": "TINNIDROP", "slug": "TINNIDROP", "cuenta": "GTR0"}
@@ -312,11 +313,14 @@ def main():
           "reingreso_activo reporta los ángulos excluidos para que etapa-2 no los repita",
           str(sit.get("reingreso_activo")))
 
-    # ── H. El gate de F3 exige un CAMBIO_BOT POSTERIOR al concepto ganador — un relanzamiento
-    # viejo (variable de confusión) no lo satisface. El F2.etapa-11 real de DOCTRINA/FLUJO.json
+    # ── H. Cuatro fases (28-sep-2026): F3.entrada ya NO exige CAMBIO_BOT (solo concepto 2/2 —
+    # ver test_gate_entrada.py::test_f3_concepto_2de2_basta_sin_cambio_bot); el gate que exige un
+    # CAMBIO_BOT POSTERIOR al concepto ganador —y que un relanzamiento viejo (variable de
+    # confusión) no lo satisface— se movió a F4.entrada. El F2.etapa-11 real de DOCTRINA/FLUJO.json
     # se leyó para confirmar que quedó como DIAGNÓSTICO, no como reescritura.
     f3_def = next((f for f in flujo_base["fases"] if f["id"] == "F3"), {})
-    gate_f3 = f3_def.get("entrada", {}).get("gate", {})
+    f4_def = next((f for f in flujo_base["fases"] if f["id"] == "F4"), {})
+    gate_f4 = f4_def.get("entrada", {}).get("gate", {})
     eventos_cols = ["fecha", "producto_key", "cuenta_alias", "campana_clave", "conjunto_meta",
                      "evento", "valor_antes", "valor_despues", "motivo", "fuente_decision"]
 
@@ -325,18 +329,18 @@ def main():
 
     tmp_sin_bot = fixture_conceptos_al_filo()
     env_sin_bot = Entorno(base=tmp_sin_bot, hoy=datetime.date(2026, 9, 28), sin_scripts=True)
-    ok_sb, obs_sb = evaluar(gate_f3, {"pk": "TURMERIC"}, env_sin_bot)
+    ok_sb, obs_sb = evaluar(gate_f4, {"pk": "TURMERIC"}, env_sin_bot)
     check(ok_sb is False,
-          "F3.entrada (doctrina real): concepto 2/2 sin NINGÚN CAMBIO_BOT no basta para entrar a F3",
+          "F4.entrada (doctrina real): concepto 2/2 sin NINGÚN CAMBIO_BOT no basta para entrar a F4",
           obs_sb)
 
     tmp_bot_viejo = fixture_conceptos_al_filo()
     _escribir_csv(os.path.join(tmp_bot_viejo, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
                   [_fila_evento("2026-09-20", "CAMBIO_BOT", "relanzamiento anterior, no relacionado")])
     env_bot_viejo = Entorno(base=tmp_bot_viejo, hoy=datetime.date(2026, 9, 28), sin_scripts=True)
-    ok_bv, obs_bv = evaluar(gate_f3, {"pk": "TURMERIC"}, env_bot_viejo)
+    ok_bv, obs_bv = evaluar(gate_f4, {"pk": "TURMERIC"}, env_bot_viejo)
     check(ok_bv is False,
-          "F3.entrada (doctrina real): un CAMBIO_BOT de ANTES del ganador (2026-09-20 < 2026-09-27, "
+          "F4.entrada (doctrina real): un CAMBIO_BOT de ANTES del ganador (2026-09-20 < 2026-09-27, "
           "variable de confusión) NO satisface el gate",
           obs_bv)
 
@@ -345,41 +349,43 @@ def main():
                   [_fila_evento("2026-09-20", "CAMBIO_BOT", "relanzamiento anterior, no relacionado"),
                    _fila_evento("2026-09-28", "CAMBIO_BOT", "reescritura hacia C2.CN06 tras 2 de 2")])
     env_bot_nuevo = Entorno(base=tmp_bot_nuevo, hoy=datetime.date(2026, 9, 29), sin_scripts=True)
-    ok_bn, obs_bn = evaluar(gate_f3, {"pk": "TURMERIC"}, env_bot_nuevo)
-    check(ok_bn is True,
-          "F3.entrada (doctrina real): un CAMBIO_BOT fechado DESPUÉS del ganador (2026-09-28 > "
-          "2026-09-27) SÍ satisface el gate",
+    ok_bn, obs_bn = evaluar(gate_f4, {"pk": "TURMERIC"}, env_bot_nuevo)
+    check(ok_bn is False and "mensaje" in obs_bn,
+          "F4.entrada (doctrina real): un CAMBIO_BOT fechado DESPUÉS del ganador (2026-09-28 > "
+          "2026-09-27) satisface (a) pero SIN mensajes/cierre posteriores el gate sigue sin cumplirse",
           obs_bn)
 
     # ── H2. Regresión: la fecha de confirmación del concepto ganador es ESTABLE (primer cruce
     # del piso de replicación), no "el último día con venta". Con el CAMBIO_BOT del caso anterior
     # (2026-09-28, posterior a la confirmación real del 2026-09-27) ya fijado, sumar ventas
     # TARDÍAS del concepto ganador (C2.CN06), fechadas incluso DESPUÉS del propio CAMBIO_BOT, no
-    # debe correr la fecha de confirmación hacia adelante ni tumbar el gate: si la fecha fuera
-    # "el último día con venta", esta venta nueva la movería a 2026-09-30 y el CAMBIO_BOT del
-    # 2026-09-28 dejaría de ser "posterior", volteando el gate a False sin que el ganador mismo
-    # hubiera cambiado.
+    # debe correr la fecha de confirmación hacia adelante: si la fecha fuera "el último día con
+    # venta", esta venta nueva la movería a 2026-09-30 y el CAMBIO_BOT del 2026-09-28 dejaría de
+    # ser "posterior". Se comprueba sobre `_fecha_cambio_bot` (la misma fecha que usa
+    # cierre_post_cambio_bot), no sobre el gate F4 completo — ese ya quedó cubierto en H.
+    from flujo import _fecha_cambio_bot  # noqa: E402 (import local, evita ciclo con el tope del módulo)
     tmp_venta_tardia = fixture_conceptos_al_filo(
         filas_extra=[_fila_concepto_al_filo("B", "C2.CN06", 3, 2.27, fecha_venta="2026-09-30")])
     _escribir_csv(os.path.join(tmp_venta_tardia, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
                   [_fila_evento("2026-09-28", "CAMBIO_BOT", "reescritura hacia C2.CN06 tras 2 de 2")])
     env_venta_tardia = Entorno(base=tmp_venta_tardia, hoy=datetime.date(2026, 10, 1), sin_scripts=True)
-    ok_vt, obs_vt = evaluar(gate_f3, {"pk": "TURMERIC"}, env_venta_tardia)
-    check(ok_vt is True,
-          "F3.entrada (regresión fecha estable): ventas tardías del concepto ganador "
+    fecha_cb_vt = _fecha_cambio_bot({"pk": "TURMERIC"}, env_venta_tardia)
+    check(fecha_cb_vt == datetime.date(2026, 9, 28),
+          "F4.entrada (regresión fecha estable): ventas tardías del concepto ganador "
           "(2026-09-30, posteriores incluso al propio CAMBIO_BOT) no mueven la fecha de "
-          "confirmación hacia adelante — el gate sigue viendo el CAMBIO_BOT como posterior",
-          obs_vt)
+          "confirmación hacia adelante — el CAMBIO_BOT del 28 sigue viéndose como posterior",
+          str(fecha_cb_vt))
 
     tmp_excepcion = fixture_conceptos_al_filo()
     _escribir_csv(os.path.join(tmp_excepcion, "PRODUCTOS"), "_EVENTOS.csv", eventos_cols,
                   [_fila_evento("2026-09-28", "EXCEPCION_CAMBIO_BOT",
                                 "operador decide saltarse la reescritura, escala igual")])
     env_excepcion = Entorno(base=tmp_excepcion, hoy=datetime.date(2026, 9, 29), sin_scripts=True)
-    ok_ex, obs_ex = evaluar(gate_f3, {"pk": "TURMERIC"}, env_excepcion)
-    check(ok_ex is True,
-          "F3.entrada (doctrina real): un EXCEPCION_CAMBIO_BOT posterior al ganador (waiver del "
-          "operador) también satisface el gate, sin exigir la reescritura",
+    ok_ex, obs_ex = evaluar(gate_f4, {"pk": "TURMERIC"}, env_excepcion)
+    check(ok_ex is False and "mensaje" in obs_ex,
+          "F4.entrada (doctrina real): un EXCEPCION_CAMBIO_BOT posterior al ganador (waiver del "
+          "operador) satisface (a) sin exigir la reescritura, pero (b)/(c) — mensajes y cierre — "
+          "siguen pendientes",
           obs_ex)
 
     # ── I. F2.etapa-11 (doctrina real): diagnóstico de congruencia POSTERIOR al ángulo ganador,
@@ -415,23 +421,24 @@ def main():
           "(2026-09-15 > 2026-09-14) SÍ cumple el nodo — sin exigir ninguna reescritura de flujo",
           obs_dd)
 
-    # ── J. F3.exploracion (P12, T12): gate propio (F3 rentable) via flujo.gate_nodo, distinto
-    # del gate de ENTRADA a F3 y sin bloquear F3.plan/F3.publicar (paralelo, como F2.etapa-11).
-    # Reusa fixture_escalar_flaco: con con_probado=True, ANG_PROBADO llega a ESCALAR con 6 ventas
-    # (>= min_ventas_escalar=2 de ese mismo fixture) — "F3 rentable". Sin ese ángulo (con_probado=
-    # False, 1 sola venta) ninguna celda llega al piso: "F3 no rentable".
+    # ── J. F4.exploracion (P12, T12; ex-F3.exploracion): gate propio (F4 rentable) via
+    # flujo.gate_nodo, distinto del gate de ENTRADA a F4 y sin bloquear F4.plan/F4.publicar
+    # (paralelo, como F2.etapa-11). Reusa fixture_escalar_flaco: con con_probado=True,
+    # ANG_PROBADO llega a ESCALAR con 6 ventas (>= min_ventas_escalar=2 de ese mismo fixture) —
+    # "F4 rentable". Sin ese ángulo (con_probado=False, 1 sola venta) ninguna celda llega al
+    # piso: "F4 no rentable".
     env_expl_cerrado = Entorno(base=fixture_escalar_flaco(ventas_nuevo=1, con_probado=False),
                                 hoy=HOY_E, sin_scripts=True)
-    ok_expl_c, obs_expl_c = gate_nodo("PX", "F3.exploracion", env_expl_cerrado)
+    ok_expl_c, obs_expl_c = gate_nodo("PX", "F4.exploracion", env_expl_cerrado)
     check(ok_expl_c is False,
-          "F3.exploracion (gate cerrado): sin ninguna celda ESCALAR con el piso de volumen, "
+          "F4.exploracion (gate cerrado): sin ninguna celda ESCALAR con el piso de volumen, "
           "el escalado no es rentable todavía", obs_expl_c)
 
     env_expl_abierto = Entorno(base=fixture_escalar_flaco(ventas_nuevo=3, con_probado=True),
                                 hoy=HOY_E, sin_scripts=True)
-    ok_expl_a, obs_expl_a = gate_nodo("PX", "F3.exploracion", env_expl_abierto)
+    ok_expl_a, obs_expl_a = gate_nodo("PX", "F4.exploracion", env_expl_abierto)
     check(ok_expl_a is True and "ANG_PROBADO" in obs_expl_a,
-          "F3.exploracion (gate abierto): ANG_PROBADO en ESCALAR con 6 ventas (>= piso) — "
+          "F4.exploracion (gate abierto): ANG_PROBADO en ESCALAR con 6 ventas (>= piso) — "
           "el escalado SÍ es rentable, la exploración puede arrancar", obs_expl_a)
 
     ok_nodo_desconocido, obs_nodo_desconocido = gate_nodo("PX", "F9.no_existe", env_expl_abierto)
@@ -439,9 +446,9 @@ def main():
           "gate_nodo de un id que no existe en FLUJO.json refusa, no inventa un cumplido",
           obs_nodo_desconocido)
 
-    ok_sin_requiere, obs_sin_requiere = gate_nodo("PX", "F3.plan", env_expl_abierto)
+    ok_sin_requiere, obs_sin_requiere = gate_nodo("PX", "F4.plan", env_expl_abierto)
     check(ok_sin_requiere is True and "no declara" in obs_sin_requiere,
-          "un nodo sin `requiere` (F3.plan no declara uno) está siempre cumplido para gate_nodo",
+          "un nodo sin `requiere` (F4.plan no declara uno) está siempre cumplido para gate_nodo",
           obs_sin_requiere)
 
     # gate_nodo es SOLO LECTURA, igual que gate_entrada.
@@ -450,16 +457,27 @@ def main():
     check(not os.path.exists(ruta_estado_j) and not os.path.exists(ruta_eventos_j),
           "gate_nodo no escribe _ESTADO_FLUJO.csv ni _EVENTOS.csv")
 
-    # F3.exploracion no aparece en ningún predicado de F3.plan/F3.publicar: es paralela, nunca
+    # F4.exploracion no aparece en ningún predicado de F4.plan/F4.publicar: es paralela, nunca
     # una precondición de los nodos que SÍ miden el escalado (regresión estructural, doctrina real).
-    f3_plan_real = next((n for n in f3_def.get("nodos", []) if n["id"] == "F3.plan"), {})
-    f3_pub_real = next((n for n in f3_def.get("nodos", []) if n["id"] == "F3.publicar"), {})
-    texto_otros_nodos = json.dumps([f3_plan_real, f3_pub_real], ensure_ascii=False)
+    f4_plan_real = next((n for n in f4_def.get("nodos", []) if n["id"] == "F4.plan"), {})
+    f4_pub_real = next((n for n in f4_def.get("nodos", []) if n["id"] == "F4.publicar"), {})
+    texto_otros_nodos = json.dumps([f4_plan_real, f4_pub_real], ensure_ascii=False)
     check("exploracion" not in texto_otros_nodos.lower(),
-          "F3.exploracion (doctrina real): no bloquea F3.plan ni F3.publicar — ninguno de los "
+          "F4.exploracion (doctrina real): no bloquea F4.plan ni F4.publicar — ninguno de los "
           "dos la cita en su `requiere`/`produce`")
 
-    total = 41
+    # ── K. F3 (optimización del flujo del bot): concepto 2/2 basta para entrar, y F3.reescribir/
+    # F3.medir_cierre son los nodos que producen lo que antes exigía F3.entrada.
+    check(f3_def.get("titulo", "").startswith("FASE 3"),
+          "DOCTRINA/FLUJO.json: F3 (ex-escalado) pasa a ser la fase de optimización del flujo",
+          f3_def.get("titulo"))
+    nodos_f3 = {n["id"] for n in f3_def.get("nodos", [])}
+    check(nodos_f3 == {"F3.reescribir", "F3.medir_cierre"},
+          "F3 declara exactamente F3.reescribir y F3.medir_cierre", str(nodos_f3))
+    check(f3_def.get("salida", {}).get("a") == "F4",
+          "F3 sale hacia F4 (no un F3 duplicado)", str(f3_def.get("salida")))
+
+    total = 44
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

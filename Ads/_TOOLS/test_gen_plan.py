@@ -61,7 +61,7 @@ def test_escaneo_encuentra_plan_fase2_y_fase3(tmp):
     p1 = _escribir_plan(carpeta, "_PLAN.json", {"schema": "plan/1", "fase": 1, "conjuntos": [],
                                                   "oferta": {"oferta_key": "1U"}})
     p2 = _escribir_plan(carpeta, "_PLAN_FASE2.json", PLAN_FASE2_COMPLETO)
-    p3 = _escribir_plan(carpeta, "_PLAN_FASE3.json", dict(PLAN_FASE2_COMPLETO, fase=3))
+    p3 = _escribir_plan(carpeta, "_PLAN_FASE3.json", dict(PLAN_FASE2_COMPLETO, fase=4))
     previo = gen_plan.PRODUCTOS
     try:
         gen_plan.PRODUCTOS = tmp
@@ -315,7 +315,7 @@ def _conjunto_exploracion(n, angulo, formato="IMAGEN"):
 
 
 def test_plan_exploracion_ok_no_falla():
-    """F3.exploracion (P12): 3 ángulos nuevos, todos IMAGEN, ninguno ya probado -> sin problemas."""
+    """F4.exploracion (P12): 3 ángulos nuevos, todos IMAGEN, ninguno ya probado -> sin problemas."""
     plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_UNO"), _conjunto_exploracion(2, "ANG_DOS"),
                                _conjunto_exploracion(3, "ANG_TRES")])
     problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=["ANG_VIEJO"], n_requerido=3)
@@ -330,14 +330,14 @@ def test_plan_exploracion_menos_angulos_que_los_requeridos_falla():
     problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=[], n_requerido=3)
     ok = any("3" in p and "2" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
-          + "F3.exploracion pide 3 ángulos (exploracion_n_angulos) y el plan trae 2 -> falla"
+          + "F4.exploracion pide 3 ángulos (exploracion_n_angulos) y el plan trae 2 -> falla"
           + ("" if ok else f"\n         problemas={problemas}"))
     return 0 if ok else 1
 
 
 def test_plan_exploracion_angulo_ya_probado_falla():
     """La exclusión de reingreso_f1.angulos_probados() se reusa, no se reinventa: un ángulo que
-    el producto ya testeó no puede volver a entrar por F3.exploracion."""
+    el producto ya testeó no puede volver a entrar por F4.exploracion."""
     plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_VIEJO"), _conjunto_exploracion(2, "ANG_DOS"),
                                _conjunto_exploracion(3, "ANG_TRES")])
     problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=["ANG_VIEJO"], n_requerido=3)
@@ -349,13 +349,13 @@ def test_plan_exploracion_angulo_ya_probado_falla():
 
 
 def test_plan_exploracion_conjunto_video_falla():
-    """Misma regla dura que FASE 1: F3.exploracion mide el ángulo, corre TODO EN IMAGEN."""
+    """Misma regla dura que FASE 1: F4.exploracion mide el ángulo, corre TODO EN IMAGEN."""
     plan = _plan_exploracion([_conjunto_exploracion(1, "ANG_UNO"), _conjunto_exploracion(2, "ANG_DOS"),
                                _conjunto_exploracion(3, "ANG_TRES", formato="VIDEO")])
     problemas = gen_plan.validar_plan_exploracion(plan, angulos_probados=[], n_requerido=3)
     ok = any("!= IMAGEN" in p for p in problemas)
     print(("  OK     " if ok else "  FALLA  ")
-          + "un conjunto VIDEO en F3.exploracion se rechaza, igual que en FASE 1"
+          + "un conjunto VIDEO en F4.exploracion se rechaza, igual que en FASE 1"
           + ("" if ok else f"\n         problemas={problemas}"))
     return 0 if ok else 1
 

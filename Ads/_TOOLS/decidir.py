@@ -232,6 +232,10 @@ def cargar_parametros():
         # muestre "cierre actual vs meta" sin inventar el rango (T3 auditoría 21-sep-2026).
         "cierre_meta_min_pct": 15.0,
         "cierre_meta_max_pct": 20.0,
+        # Gate duro de FASE 3 -> FASE 4 (PROHIBIDO_ESCALAR_CIERRE_BAJO, Clase 22-ago Calet):
+        # a diferencia de cierre_meta_min_pct/max_pct (benchmark, nunca bloquea), este SÍ es un
+        # gate — flujo.py lo usa en el predicado `cierre_post_cambio_bot` de F4.entrada.
+        "cierre_min_escalar_pct": 10.0,
     }
     if os.path.exists(PARAMS_PATH):
         try:
@@ -805,7 +809,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     }
 
 
-FASES_EN_TESTEO = ("F1", "F2")
+FASES_EN_TESTEO = ("F1", "F2", "F3")
 
 
 def cargar_fases():
@@ -824,7 +828,7 @@ def cargar_fases():
     return fases
 
 
-def aplicar_gate_fase(celdas, fase, pk):
+def aplicar_gate_fase(celdas, fase, pk, params=None):
     """GATE #2: una orden de ESCALAR no es EJECUTABLE mientras el producto este en gate de testeo.
 
     POR QUE NO SE DEGRADA EL ESTADO. Lo obvio seria convertir el ESCALAR en SEGUIR_MIDIENDO, y
@@ -841,10 +845,17 @@ def aplicar_gate_fase(celdas, fase, pk):
 
     En la simulacion de TURMERIC el motor ordeno escalar un conjunto el dia 1, en plena FASE 1.
 
-    TRES VALORES, nunca dos: True (F3 o fuera de testeo) · False (F1/F2) · None cuando la fase
+    Con las 4 fases (decisión 28-sep-2026): F3 (optimización del flujo del bot) tambien testea —
+    escalar ahi compraria volumen antes de confirmar que el bot reescrito cierra, y por eso queda
+    en FASES_EN_TESTEO junto a F1/F2. Solo F4 (escalado) ejecuta.
+
+    TRES VALORES, nunca dos: True (F4 o fuera de testeo) · False (F1/F2/F3) · None cuando la fase
     no esta derivada (sin fila, o sin _ESTADO_FLUJO.csv). None NO es permiso: es 'no pude
     evaluarlo', y lo dice. Inventar un permiso donde no hay dato es lo que este sistema no hace.
     """
+    params = params or {}
+    min_msj = params.get("min_mensajes_cierre", 30)
+    min_cierre = params.get("cierre_min_escalar_pct", 10)
     for c in celdas:
         if c.get("estado") != "ESCALAR":
             c["ejecutable"] = True
@@ -858,12 +869,21 @@ def aplicar_gate_fase(celdas, fase, pk):
             c["accion_sugerida"] = "⚠ FASE SIN DERIVAR — " + c["accion_sugerida"]
         elif fase in FASES_EN_TESTEO:
             c["ejecutable"] = False
-            if fase == "F2":
+            if fase == "F3":
+                c["bloqueo_fase"] = (
+                    "%s ya es ganador (rentable, evidencia confirmada), pero está en FASE 3 "
+                    "optimizando el flujo del bot hacia el concepto ganador: si le subís "
+                    "presupuesto ahora, escalás antes de confirmar que el bot reescrito cierra. "
+                    "Para desbloquearlo: aplicá el CAMBIO_BOT (o registrá la EXCEPCION_CAMBIO_BOT) "
+                    "y esperá ≥%s mensajes con cierre ≥%s%% para pasar a FASE 4 (escalado)."
+                    % (pk, min_msj, min_cierre))
+            elif fase == "F2":
                 c["bloqueo_fase"] = (
                     "%s ya es ganador (rentable, evidencia confirmada), pero está en FASE 2 "
                     "testeando conceptos: si le subís presupuesto ahora, gana el conjunto que "
                     "recibió más plata, no el mejor concepto. Para desbloquearlo: terminá el "
-                    "testeo hasta que un concepto gane 2 de 2 y registrá el CAMBIO_BOT."
+                    "testeo hasta que un concepto gane 2 de 2, lo que pasa el producto a FASE 3 "
+                    "(optimización del flujo del bot)."
                     % pk)
             else:
                 c["bloqueo_fase"] = (
@@ -1010,7 +1030,7 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
         aplicar_tope_pausas(celdas_eval, params)
         # GATE #2: en fase de testeo, un ESCALAR sigue siendo evidencia pero NO es ejecutable
         fase_vigente = fases.get(pk, "")
-        aplicar_gate_fase(celdas_eval, fase_vigente, pk)
+        aplicar_gate_fase(celdas_eval, fase_vigente, pk, params)
         for c in celdas_eval:
             estado_cat = c["estado"]
             resultado["resumen_acciones"][estado_cat] = resultado["resumen_acciones"].get(estado_cat, 0) + 1

@@ -227,25 +227,72 @@
   },
   {
    "id": "F3",
-   "titulo": "FASE 3 · ESCALADO",
+   "titulo": "FASE 3 · OPTIMIZACIÓN DE FLUJO LUCIDBOT",
+   "mide": "el CIERRE del bot hacia el concepto ganador — el ángulo y el concepto ya no se mueven; el presupuesto sigue igual que en F2 (invariante 6)",
+   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) — SIN exigir todavía el CAMBIO_BOT: reescribir el bot es justamente el trabajo de esta fase, no su requisito de entrada. Decisión del operador 28-sep-2026 (cuatro fases): el gate viejo de F3.entrada (concepto 2/2 + CAMBIO_BOT) se separa en dos — este es solo el primero.",
+               "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}},
+   "nodos": [
+    {
+     "id": "F3.reescribir",
+     "titulo": "Reescribir el flujo LucidBot hacia el concepto ganador (etapa-5 redacta, el operador aplica)",
+     "ejecutor": {"tipo": "subagente", "name": "etapa-5"},
+     "como": "Consume el brief de F2.etapa-11 (DIAGNOSTICO_CONGRUENCIA) y las PALANCA_1/DIAGNOSTICO_1 de la Clase 22-ago Calet: etapa-5 redacta los bloques de juicio del flujo hacia el ángulo+concepto ganador (PLANTILLAS_FLUJO_BOT.md reglas A-G), el operador APLICA el cambio en LucidBot a mano (esto NO es un objeto de Meta, no hay MCP) y anexa el evento CAMBIO_BOT con Ads/_TOOLS/registrar_evento.py. Si el operador decide explícitamente saltarse la reescritura, registra EXCEPCION_CAMBIO_BOT con el motivo en su lugar — ambos eventos sirven de fecha de corte para F3.medir_cierre y para el gate de F4.entrada.",
+     "produce": [
+      {"dato": "CAMBIO_BOT (o EXCEPCION_CAMBIO_BOT) registrado en _EVENTOS.csv, fechado después del concepto ganador",
+       "predicado": {"tipo": "alguno", "de": [
+         {"tipo": "eventos", "evento": ["CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}},
+         {"tipo": "eventos", "evento": ["EXCEPCION_CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}}
+       ]},
+       "dueno": "etapa-5 (redacta) → operador (aplica en LucidBot y registra el evento con registrar_evento.py)",
+       "regla": "reglas A-G de PLANTILLAS_FLUJO_BOT.md · un CAMBIO_BOT viejo (de antes del concepto ganador) no satisface este gate"}
+     ]
+    },
+    {
+     "id": "F3.medir_cierre",
+     "titulo": "Medir el cierre del flujo reescrito (mensajes → ventas) hasta que llegue al piso",
+     "ejecutor": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_decisiones.py"]},
+     "como": "Corre con el ciclo diario existente (ciclo.datos/ciclo.motor), sin gate de ejecución aparte: los mensajes y ventas posteriores al CAMBIO_BOT/EXCEPCION_CAMBIO_BOT se cuentan automáticamente cada corrida. Si el cierre sigue bajo @param:cierre_min_escalar_pct al llegar a @param:min_mensajes_cierre mensajes, el producto se queda en FASE 3 para otra iteración de F3.reescribir (PROHIBIDO_ESCALAR_CIERRE_BAJO, Clase 22-ago Calet) — nunca se fuerza F4 con un CAMBIO_BOT viejo.",
+     "produce": [
+      {"dato": "≥@param:min_mensajes_cierre mensajes con cierre ≥@param:cierre_min_escalar_pct% desde el último CAMBIO_BOT/EXCEPCION_CAMBIO_BOT (benchmark de referencia 15-20%, @param:cierre_meta_min_pct/@param:cierre_meta_max_pct, nunca bloquea)",
+       "predicado": {"tipo": "cierre_post_cambio_bot", "min_mensajes": "@param:min_mensajes_cierre", "min_cierre_pct": "@param:cierre_min_escalar_pct"},
+       "dueno": "Ads/_TOOLS/decidir.py (mensajes/ventas) · Ads/_TOOLS/flujo.py (el predicado corta la fecha en el CAMBIO_BOT)",
+       "regla": "PROHIBIDO_ESCALAR_CIERRE_BAJO — mismo gate que F4.entrada (b)+(c), declarado acá para que F3 muestre su propio avance antes de intentar F4"}
+     ]
+    }
+   ],
+   "salida": {"a": "F4", "regla": "PROHIBIDO_ESCALAR_CIERRE_BAJO (Clase 22-ago Calet): no se compra volumen sobre un bot que todavía no cierra",
+              "gate": {"tipo": "cierre_post_cambio_bot", "min_mensajes": "@param:min_mensajes_cierre", "min_cierre_pct": "@param:cierre_min_escalar_pct"}},
+   "reingreso": {"a": "F1", "regla": "cuando el ángulo ganador se agota o el concepto falla en pleno F3, reingresar a F1 excluyendo los ángulos ya probados",
+                 "gate": {"tipo": "alguno", "de": [
+                   {"tipo": "eventos", "evento": ["REINGRESO_F1", "FATIGA_ANGULO"], "min": 1},
+                   {"tipo": "todos", "de": [
+                     {"tipo": "decision", "estado": "PAUSAR", "min": 1},
+                     {"tipo": "decision", "estado": ["ESCALAR", "SEGUIR_MIDIENDO", "RENOVAR"], "max": 0}
+                   ]}
+                 ]}}
+  },
+  {
+   "id": "F4",
+   "titulo": "FASE 4 · ESCALADO",
    "mide": "volumen — 1-1-7 · CBO · nada se mide",
-   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) NI sin reescribir el flujo del bot hacia ese ganador (ver F2.etapa-11 más arriba). Un CAMBIO_BOT viejo (de antes del concepto ganador, p.ej. un relanzamiento no relacionado) NO satisface este gate: tiene que estar fechado DESPUES. Si el operador decide explícitamente saltarse la reescritura, un evento EXCEPCION_CAMBIO_BOT (registrado a mano con registrar_evento.py) fechado después del ganador también lo satisface.",
+   "entrada": {"regla": "no entrar a FASE 4 sin concepto ganador en 2 de 2 (invariante 1), NI sin haber reescrito el flujo del bot hacia ese ganador Y confirmado que cierra (PROHIBIDO_ESCALAR_CIERRE_BAJO, Clase 22-ago Calet): (a) un CAMBIO_BOT (o EXCEPCION_CAMBIO_BOT si el operador decide saltarse la reescritura) fechado DESPUÉS del concepto ganador — un CAMBIO_BOT viejo (p.ej. un relanzamiento no relacionado) no satisface esto; (b) ≥@param:min_mensajes_cierre mensajes recibidos DESPUÉS de ese CAMBIO_BOT/EXCEPCION_CAMBIO_BOT; (c) cierre sobre esos mismos mensajes ≥@param:cierre_min_escalar_pct%. El benchmark 15-20% (@param:cierre_meta_min_pct/@param:cierre_meta_max_pct) se muestra como referencia de las clases, nunca bloquea — el gate duro es @param:cierre_min_escalar_pct. Bajo el piso, el producto se queda en FASE 3 para otra iteración de reescritura.",
                "gate": {"tipo": "todos", "de": [
                  {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"},
                  {"tipo": "alguno", "de": [
                    {"tipo": "eventos", "evento": ["CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}},
                    {"tipo": "eventos", "evento": ["EXCEPCION_CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}}
-                 ]}
+                 ]},
+                 {"tipo": "cierre_post_cambio_bot", "min_mensajes": "@param:min_mensajes_cierre", "min_cierre_pct": "@param:cierre_min_escalar_pct"}
                ]}},
    "nodos": [
     {
-     "id": "F3.exploracion",
+     "id": "F4.exploracion",
      "titulo": "Exploración de 3 ángulos nuevos en paralelo al escalado (mini-F1: ABO, IMAGEN, medida por VENTA)",
      "ejecutor": {"tipo": "subagente", "name": "etapa-2"},
      "secuencia": ["etapa-2", "etapa-6", "etapa-guardar-producto", "publicar-meta"],
-     "como": "Decisión del operador (22-sep-2026, P12): mientras F3 escala el ganador corre en PARALELO un mini-F1 fijo de @param:exploracion_n_angulos ángulos NUNCA probados por este producto (misma exclusión que reingreso_f1.py/_angulos_probados), cada uno en su propio conjunto ABO al presupuesto por-adset de la fila fase=3 brazo=EXPLORACION de _PARAMETROS_PUBLICACION.csv (el mismo monto de FASE 1, ~9 USD/día en total), TODO EN IMAGEN (regla de F1, gen_plan.py). Se mide POR VENTA agregando por angulo_key igual que F1 (invariante 1): un ganador de esta exploración entra a F2 por el MISMO gate F1→F2 (angulo_ganador) que cualquier otro ángulo, sin importar de qué conjunto salió. Este nodo NO bloquea F3.plan ni F3.publicar: corre en paralelo, como F2.etapa-11.",
+     "como": "Decisión del operador (22-sep-2026, P12): mientras F4 escala el ganador corre en PARALELO un mini-F1 fijo de @param:exploracion_n_angulos ángulos NUNCA probados por este producto (misma exclusión que reingreso_f1.py/_angulos_probados), cada uno en su propio conjunto ABO al presupuesto por-adset de la fila fase=4 brazo=EXPLORACION de _PARAMETROS_PUBLICACION.csv (el mismo monto de FASE 1, ~9 USD/día en total), TODO EN IMAGEN (regla de F1, gen_plan.py). Se mide POR VENTA agregando por angulo_key igual que F1 (invariante 1): un ganador de esta exploración entra a F2 por el MISMO gate F1→F2 (angulo_ganador) que cualquier otro ángulo, sin importar de qué conjunto salió. Este nodo NO bloquea F4.plan ni F4.publicar: corre en paralelo, como F2.etapa-11.",
      "requiere": [
-      {"dato": "F3 rentable según decidir.py (celda ESCALAR con volumen mínimo)",
+      {"dato": "F4 rentable según decidir.py (celda ESCALAR con volumen mínimo)",
        "predicado": {"tipo": "decision", "estados": ["ESCALAR"], "min_ventas": "@param:min_ventas_escalar", "min": 1},
        "dueno": "Ads/_TOOLS/decidir.py", "regla": "P12: la exploración arranca solo cuando el escalado es rentable (decisión del operador 22-sep-2026)"}
      ],
@@ -262,21 +309,21 @@
        "predicado": {"tipo": "alguno", "de": [
          {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "EXPLORA", "min": 1},
          {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}", "campana": {"contiene": "EXPLORA"}}, "sum": "spend_usd", "sum_min": 0.01}]},
-       "dueno": "operador · _EVENTOS.csv / Ads/_TOOLS/gen_publicacion.py --fase 3 --brazo EXPLORACION",
+       "dueno": "operador · _EVENTOS.csv / Ads/_TOOLS/gen_publicacion.py --fase 4 --brazo EXPLORACION",
        "regla": "invariante 7 · se mide con el ciclo diario existente (ciclo.datos/ciclo.motor), sin gate aparte"}
      ]
     },
     {
-     "id": "F3.plan",
+     "id": "F4.plan",
      "titulo": "Banco de copy (microángulos) y plan 1-1-7",
      "ejecutor": {"tipo": "subagente", "name": "etapa-6"},
      "secuencia": ["etapa-3", "etapa-6", "etapa-guardar-producto"],
      "como": "etapa-3 produce los 8-12 microángulos (banco de copy de la expansión horizontal); etapa-6 planifica el 1-1-7 con el creativo validado ×7; guardar escribe 4_PLAN_ESCALADO.txt.",
      "produce": [
-      {"dato": "_PLAN_FASE3.json (contrato plan/1, fase 3)",
+      {"dato": "_PLAN_FASE3.json (contrato plan/1, fase 4 — nombre de archivo histórico de cuando esta fase era F3; el campo `fase` interno ya dice 4, ver B2/doctrina para una eventual renombrada del archivo)",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "schema", "eq": "plan/1"},
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "fase", "eq": 3},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "fase", "eq": 4},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "angulo_ganador", "no_vacio": true},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "copy", "no_vacio": true}]},
        "dueno": "etapa-6", "regla": "gen_plan.py"},
@@ -285,13 +332,13 @@
      ]
     },
     {
-     "id": "F3.publicar",
+     "id": "F4.publicar",
      "titulo": "Publicar el 1-1-7 CBO en Meta (PAUSED)",
      "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
      "requiere": [
       {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv", "regla": "MCP_PLAYBOOK"},
       {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión (publicar-meta paso 1)", "regla": "HANDOFF 08-sep"},
-      {"dato": "paquete de publicación de FASE 3 sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "3", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 3"}
+      {"dato": "paquete de publicación de FASE 4 sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "4", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 4"}
      ],
      "produce": [
       {"dato": "LANZAMIENTO de escalado registrado con su presupuesto inicial",
