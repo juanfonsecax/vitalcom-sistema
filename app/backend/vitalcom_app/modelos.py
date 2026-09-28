@@ -458,3 +458,65 @@ class Ganador(Base):
     angulo_ganador: str = ""
     siguiente_paso: GanadorPaso
 
+
+class CarrilSecundario(Base):
+    angulo_key: str = ""
+    estado_motor: str = ""
+    accion: str = ""
+    fecha_estimada: str = ""
+
+
+class ConceptoFase2(Base):
+    """Un concepto de la galería de FASE 2. El prompt es el REAL de `armar_prompts_fase2.py`
+    (`prompt_origen="paquete"`) o None con `comando_generar` cuando todavía no existe — nunca
+    un prompt inventado (ver `contratos.resolver_prompt_fase2`)."""
+
+    creativo_id: str = ""
+    archivo: str = ""
+    canonico_id: str = ""
+    blueprint_nombre: str = ""
+    dispositivo: str = ""
+    cuando_elegirlo: str = ""
+    rol_embudo: str = ""
+    estado: str = ""
+    ad_id: str = ""
+    archivo_existe: bool = False
+    notas: str = ""
+    prompt: str | None = None
+    prompt_origen: str = "pendiente"
+    referencia_url: str | None = None
+    comando_generar: str | None = None
+
+
+class FatigaFase2(Base):
+    ordenes: list[dict[str, Any]] = []
+    angulos_probados: list[str] = []
+    puede_reingresar: bool = True
+
+
+class ReingresoActivo(Base):
+    """`flujo.py`: un reingreso a F1 activo (evento REINGRESO_F1/FATIGA_ANGULO sin lanzamiento
+    posterior), tal cual lo arma `flujo.py:reingreso_activo`."""
+
+    desde: str = ""
+    a: str = ""
+    fecha: str = ""
+    motivo: str = ""
+    regla: str = ""
+    angulos_excluidos: list[str] = []
+
+
+class Fase2Detalle(Base):
+    """`contratos.fase2_detalle`: ángulo ganador, 10 conceptos con prompt real y carriles."""
+
+    producto_key: str
+    fase: str = ""
+    nodo_actual: str = ""
+    angulo_ganador: str = ""
+    carriles_secundarios: list[CarrilSecundario] = []
+    conceptos: list[ConceptoFase2] = []
+    total_conceptos: int = 0
+    conceptos_generados: int = 0
+    reingreso_activo: ReingresoActivo | None = None
+    fatiga: FatigaFase2 | None = None
+

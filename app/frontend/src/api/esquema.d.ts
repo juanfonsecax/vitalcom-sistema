@@ -459,6 +459,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/swipe/{ruta_imagen}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Swipe Imagen
+         * @description Una imagen de referencia del banco de swipe (`Ads/_SWIPE/`), para la galería de FASE 2 y
+         *     FASE 1. Nunca sale de esa carpeta (path traversal, ruta absoluta o extensión ajena → 404).
+         */
+        get: operations["swipe_imagen_api_swipe__ruta_imagen__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos": {
         parameters: {
             query?: never;
@@ -967,6 +988,31 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** CarrilSecundario */
+        CarrilSecundario: {
+            /**
+             * Angulo Key
+             * @default
+             */
+            angulo_key: string;
+            /**
+             * Estado Motor
+             * @default
+             */
+            estado_motor: string;
+            /**
+             * Accion
+             * @default
+             */
+            accion: string;
+            /**
+             * Fecha Estimada
+             * @default
+             */
+            fecha_estimada: string;
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * ChecklistF1
          * @description Lo que falta (de `flujo.py`) y los bloqueos del paquete (de `gen_publicacion.py`), con su escritor.
@@ -986,6 +1032,82 @@ export interface components {
              */
             faltan: components["schemas"]["ItemDeChecklist"][];
             paquete?: components["schemas"]["PaqueteF1"] | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * ConceptoFase2
+         * @description Un concepto de la galería de FASE 2. El prompt es el REAL de `armar_prompts_fase2.py`
+         *     (`prompt_origen="paquete"`) o None con `comando_generar` cuando todavía no existe — nunca
+         *     un prompt inventado (ver `contratos.resolver_prompt_fase2`).
+         */
+        ConceptoFase2: {
+            /**
+             * Creativo Id
+             * @default
+             */
+            creativo_id: string;
+            /**
+             * Archivo
+             * @default
+             */
+            archivo: string;
+            /**
+             * Canonico Id
+             * @default
+             */
+            canonico_id: string;
+            /**
+             * Blueprint Nombre
+             * @default
+             */
+            blueprint_nombre: string;
+            /**
+             * Dispositivo
+             * @default
+             */
+            dispositivo: string;
+            /**
+             * Cuando Elegirlo
+             * @default
+             */
+            cuando_elegirlo: string;
+            /**
+             * Rol Embudo
+             * @default
+             */
+            rol_embudo: string;
+            /**
+             * Estado
+             * @default
+             */
+            estado: string;
+            /**
+             * Ad Id
+             * @default
+             */
+            ad_id: string;
+            /**
+             * Archivo Existe
+             * @default false
+             */
+            archivo_existe: boolean;
+            /**
+             * Notas
+             * @default
+             */
+            notas: string;
+            /** Prompt */
+            prompt?: string | null;
+            /**
+             * Prompt Origen
+             * @default pendiente
+             */
+            prompt_origen: string;
+            /** Referencia Url */
+            referencia_url?: string | null;
+            /** Comando Generar */
+            comando_generar?: string | null;
         } & {
             [key: string]: unknown;
         };
@@ -1212,6 +1334,75 @@ export interface components {
             page_id: string;
             /** Productos Nicho */
             productos_nicho: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * Fase2Detalle
+         * @description `contratos.fase2_detalle`: ángulo ganador, 10 conceptos con prompt real y carriles.
+         */
+        Fase2Detalle: {
+            /** Producto Key */
+            producto_key: string;
+            /**
+             * Fase
+             * @default
+             */
+            fase: string;
+            /**
+             * Nodo Actual
+             * @default
+             */
+            nodo_actual: string;
+            /**
+             * Angulo Ganador
+             * @default
+             */
+            angulo_ganador: string;
+            /**
+             * Carriles Secundarios
+             * @default []
+             */
+            carriles_secundarios: components["schemas"]["CarrilSecundario"][];
+            /**
+             * Conceptos
+             * @default []
+             */
+            conceptos: components["schemas"]["ConceptoFase2"][];
+            /**
+             * Total Conceptos
+             * @default 0
+             */
+            total_conceptos: number;
+            /**
+             * Conceptos Generados
+             * @default 0
+             */
+            conceptos_generados: number;
+            reingreso_activo?: components["schemas"]["ReingresoActivo"] | null;
+            fatiga?: components["schemas"]["FatigaFase2"] | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** FatigaFase2 */
+        FatigaFase2: {
+            /**
+             * Ordenes
+             * @default []
+             */
+            ordenes: {
+                [key: string]: unknown;
+            }[];
+            /**
+             * Angulos Probados
+             * @default []
+             */
+            angulos_probados: string[];
+            /**
+             * Puede Reingresar
+             * @default true
+             */
+            puede_reingresar: boolean;
         } & {
             [key: string]: unknown;
         };
@@ -1808,6 +1999,45 @@ export interface components {
             siguiente_ejecutor?: string | null;
             /** Evaluado El */
             evaluado_el?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * ReingresoActivo
+         * @description `flujo.py`: un reingreso a F1 activo (evento REINGRESO_F1/FATIGA_ANGULO sin lanzamiento
+         *     posterior), tal cual lo arma `flujo.py:reingreso_activo`.
+         */
+        ReingresoActivo: {
+            /**
+             * Desde
+             * @default
+             */
+            desde: string;
+            /**
+             * A
+             * @default
+             */
+            a: string;
+            /**
+             * Fecha
+             * @default
+             */
+            fecha: string;
+            /**
+             * Motivo
+             * @default
+             */
+            motivo: string;
+            /**
+             * Regla
+             * @default
+             */
+            regla: string;
+            /**
+             * Angulos Excluidos
+             * @default []
+             */
+            angulos_excluidos: string[];
         } & {
             [key: string]: unknown;
         };
@@ -2766,9 +2996,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["Fase2Detalle"];
                 };
             };
             /** @description Validation Error */
@@ -2840,6 +3068,35 @@ export interface operations {
                         [key: string]: unknown;
                     };
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    swipe_imagen_api_swipe__ruta_imagen__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                ruta_imagen: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

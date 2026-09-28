@@ -367,6 +367,112 @@ def _angulos_probados(producto_key: str) -> list[str]:
     return sorted(angulos)
 
 
+# ── prompt REAL de FASE 2 (join contra el paquete de armar_prompts_fase2.py) ──────────────────
+
+FASE2_PREFIJO = "FASE2_"
+PAQUETE_PREFIJO = "PAQUETE_CREATIVO_"
+EXTENSIONES_SWIPE = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def _localizar_carpeta_fase2(carpeta_media: str, angulo_key: str) -> Path | None:
+    """La carpeta `FASE2_<ángulo>` que arma `armar_prompts_fase2.py`, para este ángulo.
+
+    Esa carpeta la nombra el ángulo que detectó el script en `_DECISIONES.json` AL MOMENTO de
+    generar el paquete. El `angulo_key` de `_DIM_CREATIVOS.csv` puede llevar un sufijo agregado
+    después (ej. `RESISTENCIA_INSULINA_SOP` vs. carpeta `FASE2_RESISTENCIA_INSULINA`): por eso
+    primero se intenta la carpeta EXACTA y, si no existe, se cae a la única `FASE2_*` que haya
+    (doctrina: FASE 2 testea un solo ángulo ganador a la vez) o, si hay varias, a la que
+    comparte el ángulo con `angulo_key` hasta un límite de `_`. Nunca inventa una carpeta: si
+    nada calza, devuelve None y el llamador reporta "pendiente".
+    """
+    if not carpeta_media or not angulo_key:
+        return None
+    raiz = ruta("Ads", carpeta_media)
+    if not raiz.is_dir():
+        return None
+    candidatas = sorted(p for p in raiz.glob(f"{FASE2_PREFIJO}*") if p.is_dir())
+    if not candidatas:
+        return None
+    exacta = raiz / f"{FASE2_PREFIJO}{angulo_key}"
+    if exacta in candidatas:
+        return exacta
+    if len(candidatas) == 1:
+        return candidatas[0]
+    for candidata in candidatas:
+        nombre_angulo = candidata.name[len(FASE2_PREFIJO):]
+        if (angulo_key == nombre_angulo
+                or angulo_key.startswith(nombre_angulo + "_")
+                or nombre_angulo.startswith(angulo_key + "_")):
+            return candidata
+    return None
+
+
+def _leer_paquete_fase2(carpeta: Path) -> dict[str, Any] | None:
+    for archivo in sorted(carpeta.glob(f"{PAQUETE_PREFIJO}*.json")):
+        try:
+            with archivo.open(encoding="utf-8") as fh:
+                return json.load(fh)
+        except (OSError, json.JSONDecodeError):
+            continue
+    return None
+
+
+def _comando_armar_prompts_fase2(producto_key: str, angulo_key: str) -> str:
+    return f"python Ads/_TOOLS/armar_prompts_fase2.py {producto_key} {angulo_key}"
+
+
+def _url_de_swipe(ruta_relativa: str) -> str | None:
+    """URL servida por `GET /api/swipe/<ruta>` para un `foto_base_competidor` relativo
+    (ej. "Ads/_SWIPE/_IMG/Camila_Recomienda/15_....jpg"). None si no viene bajo Ads/_SWIPE/."""
+    if not ruta_relativa:
+        return None
+    normalizada = ruta_relativa.replace("\\", "/").strip()
+    prefijo = "Ads/_SWIPE/"
+    if not normalizada.startswith(prefijo):
+        return None
+    from urllib.parse import quote
+    return "/api/swipe/" + quote(normalizada[len(prefijo):])
+
+
+def resolver_prompt_fase2(producto_key: str, carpeta_media: str, angulo_key: str, canonico_id: str) -> dict[str, Any]:
+    """El prompt REAL (+ imagen de referencia) del paquete que produjo `armar_prompts_fase2.py`
+    para este concepto, o el comando exacto para generarlo si todavía no existe. Nunca fabrica
+    un prompt genérico (ver `Ads/MEDIA_{producto}/FASE2_{angulo}/PAQUETE_CREATIVO_{angulo}.json`)."""
+    comando = _comando_armar_prompts_fase2(producto_key, angulo_key)
+    pendiente = {"prompt": None, "prompt_origen": "pendiente", "referencia_url": None, "comando_generar": comando}
+    carpeta = _localizar_carpeta_fase2(carpeta_media, angulo_key)
+    if carpeta is None:
+        return pendiente
+    paquete = _leer_paquete_fase2(carpeta)
+    if not paquete:
+        return pendiente
+    for item in paquete.get("conceptos", []):
+        if item.get("canonico_id") == canonico_id:
+            return {
+                "prompt": item.get("prompt_director_de_arte"),
+                "prompt_origen": "paquete",
+                "referencia_url": _url_de_swipe(item.get("foto_base_competidor", "")),
+                "comando_generar": None,
+            }
+    return pendiente
+
+
+def ruta_de_swipe(ruta_relativa: str) -> Path | None:
+    """Un archivo de imagen bajo `Ads/_SWIPE/`, o None si no existe, tiene mala extensión, o
+    intenta salir de esa carpeta (traversal, ruta absoluta, symlink). Nunca sirve otra cosa."""
+    if not ruta_relativa or Path(ruta_relativa).is_absolute():
+        return None
+    raiz = ruta("Ads", "_SWIPE").resolve()
+    try:
+        candidato = (raiz / ruta_relativa).resolve()
+        candidato.relative_to(raiz)
+    except (OSError, ValueError):
+        return None
+    if candidato.suffix.lower() not in EXTENSIONES_SWIPE:
+        return None
+    return candidato if candidato.is_file() else None
+
+
 def fase2_detalle(producto_key: str) -> dict[str, Any]:
     """Detalles de FASE 2 para el producto: ángulo ganador, 10 conceptos con blueprints y carriles."""
     flujo_data = flujo(producto_key)
@@ -420,6 +526,8 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
     except Exception:
         pass
 
+    carpeta_media = fila_de_producto(producto_key).get("carpeta_media", "") or f"MEDIA_{producto_key}"
+
     conceptos = []
     usados_canonicos = set()
     for row in creativos_rows:
@@ -428,7 +536,9 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             usados_canonicos.add(cid)
         binfo = canonicos_dict.get(cid, {})
         arch = row.get("archivo", "")
-        media_path = ruta("Ads", f"MEDIA_{producto_key}", arch)
+        media_path = ruta("Ads", carpeta_media, arch)
+        angulo_key = row.get("angulo_key", "") or ganador_obs
+        paquete = resolver_prompt_fase2(producto_key, carpeta_media, angulo_key, cid)
         conceptos.append({
             "creativo_id": row.get("creativo_id", ""),
             "archivo": arch,
@@ -441,7 +551,7 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             "ad_id": row.get("ad_id", ""),
             "archivo_existe": media_path.is_file(),
             "notas": row.get("notas", ""),
-            "prompt": f"Director de Arte: Crea una imagen publicitaria para {producto_key} usando la estructura {cid} ({binfo.get('nombre', '')}). Ángulo: {row.get('angulo_key', ganador_obs)}."
+            **paquete,
         })
 
     # Si hay menos de 10, completamos hasta 10 con los blueprints canónicos disponibles
@@ -452,6 +562,7 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         if cid in usados_canonicos:
             continue
         arch_sug = f"{producto_key}_F2_{cid[:4]}_{indice_extra}.png"
+        paquete = resolver_prompt_fase2(producto_key, carpeta_media, ganador_obs, cid)
         conceptos.append({
             "creativo_id": f"{producto_key}_F2_{cid[:4]}_{indice_extra}",
             "archivo": arch_sug,
@@ -464,7 +575,7 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             "ad_id": "",
             "archivo_existe": False,
             "notas": f"Blueprint recomendado por doctrina ({binfo.get('nombre', '')})",
-            "prompt": f"Director de Arte: Crea una imagen publicitaria para {producto_key} usando la estructura {cid} ({binfo.get('nombre', '')}). Ángulo ganador: {ganador_obs}."
+            **paquete,
         })
         indice_extra += 1
 

@@ -216,51 +216,11 @@ export const api = {
     ),
 };
 
-export type ConceptoFase2 = {
-  creativo_id: string;
-  archivo: string;
-  canonico_id: string;
-  blueprint_nombre: string;
-  dispositivo: string;
-  cuando_elegirlo: string;
-  rol_embudo: string;
-  estado: string;
-  ad_id: string;
-  archivo_existe: boolean;
-  notas: string;
-  prompt: string;
-};
-
-export type CarrilSecundario = {
-  angulo_key: string;
-  estado_motor: string;
-  accion: string;
-  fecha_estimada: string;
-};
-
-export type Fase2Detalle = {
-  producto_key: string;
-  fase: string;
-  nodo_actual: string;
-  angulo_ganador: string;
-  carriles_secundarios: CarrilSecundario[];
-  conceptos: ConceptoFase2[];
-  total_conceptos: number;
-  conceptos_generados: number;
-  reingreso_activo: {
-    desde: string;
-    a: string;
-    fecha: string;
-    motivo: string;
-    regla: string;
-    angulos_excluidos: string[];
-  } | null;
-  fatiga: {
-    ordenes: Array<{ celda: string; estado: string; accion: string }>;
-    angulos_probados: string[];
-    puede_reingresar: boolean;
-  };
-};
+export type ConceptoFase2 = components["schemas"]["ConceptoFase2"];
+export type CarrilSecundario = components["schemas"]["CarrilSecundario"];
+export type FatigaFase2 = components["schemas"]["FatigaFase2"];
+export type ReingresoActivo = components["schemas"]["ReingresoActivo"];
+export type Fase2Detalle = components["schemas"]["Fase2Detalle"];
 
 export type Fase3Detalle = {
   producto_key: string;

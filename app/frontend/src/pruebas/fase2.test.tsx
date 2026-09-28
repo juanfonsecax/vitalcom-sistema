@@ -98,6 +98,9 @@ const FASE2_MOCK = {
       rol_embudo: "TOFU",
       dispositivo: "Comparativa visual directa",
       prompt: "Fotografía publicitaria hiperrealista dividida al medio...",
+      prompt_origen: "paquete",
+      referencia_url: "/api/swipe/_IMG/Camila_Recomienda/15_foto.jpg",
+      comando_generar: null,
       archivo: "TINNIDROP_F2_C01.png",
       archivo_existe: true,
       estado: "GENERADO",
@@ -109,7 +112,10 @@ const FASE2_MOCK = {
       blueprint_nombre: "Social Proof Wall",
       rol_embudo: "BOFU",
       dispositivo: "Capturas de chats de clientes satisfechos",
-      prompt: "Collage limpio con 3 testimonios...",
+      prompt: null,
+      prompt_origen: "pendiente",
+      referencia_url: null,
+      comando_generar: "python Ads/_TOOLS/armar_prompts_fase2.py TINNIDROP ACCESIBILIDAD_MEDICO",
       archivo: "TINNIDROP_F2_C02.png",
       archivo_existe: false,
       estado: "PENDIENTE_GENERAR",
@@ -177,6 +183,30 @@ test("botón de copiar prompt invoca clipboard.writeText", async () => {
   await waitFor(() => {
     expect(screen.getByText("Copiado")).toBeDefined();
   });
+});
+
+test("concepto pendiente muestra el comando de armar_prompts_fase2.py, nunca un prompt inventado", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  await waitFor(() => {
+    expect(screen.getByText("Prompt pendiente de generar")).toBeDefined();
+  });
+
+  expect(
+    screen.getByText("python Ads/_TOOLS/armar_prompts_fase2.py TINNIDROP ACCESIBILIDAD_MEDICO"),
+  ).toBeDefined();
+});
+
+test("concepto con paquete muestra la imagen de referencia y el botón de copiar imagen", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  await waitFor(() => {
+    expect(screen.getByAltText("Referencia de swipe para C01")).toBeDefined();
+  });
+
+  expect(screen.getByText("Copiar imagen")).toBeDefined();
 });
 
 test("modal de reingreso por fatiga confirma y envía mutación a F1", async () => {

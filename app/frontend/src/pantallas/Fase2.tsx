@@ -31,10 +31,12 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
   });
 
   const [copiadoId, setCopiadoId] = useState<string | null>(null);
+  const [imagenCopiadaId, setImagenCopiadaId] = useState<string | null>(null);
   const [subiendoArchivo, setSubiendoArchivo] = useState<string | null>(null);
   const [mensajeSubida, setMensajeSubida] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
   const [modalReingreso, setModalReingreso] = useState(false);
   const [motivoReingreso, setMotivoReingreso] = useState("Ángulo agotado / fatiga de ventas");
+  const [imagenAmpliada, setImagenAmpliada] = useState<string | null>(null);
 
   const mutacionReingreso = useMutation({
     mutationFn: (motivo: string) => api.reingresoF1(clave, motivo),
@@ -56,6 +58,40 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
       setCopiadoId(id);
       setTimeout(() => setCopiadoId(null), 2500);
     });
+  };
+
+  // Copiar la imagen de referencia al portapapeles como PNG (Clipboard API exige image/png,
+  // la referencia del swipe suele venir en .jpg). Si el navegador no soporta escribir imágenes
+  // al portapapeles (ClipboardItem / canvas), se descarga el archivo en su lugar.
+  const copiarImagen = async (id: string, url: string) => {
+    try {
+      if (typeof ClipboardItem === "undefined" || !navigator.clipboard?.write) {
+        throw new Error("Clipboard de imágenes no disponible en este navegador");
+      }
+      const respuesta = await fetch(url);
+      const blob = await respuesta.blob();
+      const bitmap = await createImageBitmap(blob);
+      const canvas = document.createElement("canvas");
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("No se pudo preparar el canvas");
+      ctx.drawImage(bitmap, 0, 0);
+      const pngBlob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!pngBlob) throw new Error("No se pudo convertir la imagen a PNG");
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": pngBlob })]);
+      setImagenCopiadaId(id);
+      setTimeout(() => setImagenCopiadaId(null), 2500);
+    } catch {
+      // Sin soporte de portapapeles de imágenes: se descarga el archivo para que el operador
+      // la adjunte a mano.
+      const enlace = document.createElement("a");
+      enlace.href = url;
+      enlace.download = url.split("/").pop() || "referencia.jpg";
+      document.body.appendChild(enlace);
+      enlace.click();
+      enlace.remove();
+    }
   };
 
   const subirImagen = async (concepto: ConceptoFase2, archivo: File) => {
@@ -218,7 +254,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
               El producto reingresará a FASE 1 para investigar y testear una nueva tanda de 6 ángulos. Se excluirán automáticamente los ángulos que ya corrieron:
             </p>
             <div className="mt-2 rounded bg-zinc-950 p-2 font-mono text-xs text-zinc-400">
-              {d.fatiga.angulos_probados.join(", ") || "Ningún ángulo previo registrado"}
+              {(d.fatiga?.angulos_probados ?? []).join(", ") || "Ningún ángulo previo registrado"}
             </div>
             <div className="mt-3">
               <label className="text-xs text-zinc-400">Motivo del reingreso:</label>
@@ -295,28 +331,74 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
                 </p>
               )}
 
-              {/* Caja de Prompt Resuelto — el prompt DEFINITIVO, completo y listo para copiar
-                  tal cual en el creador de imágenes con IA (ver skill generar-imagenes-chatgpt). */}
-              <div className="rounded-lg border border-border bg-muted/40 p-2.5">
-                <div className="mb-1 flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    Prompt definitivo — copiar y pegar
-                  </span>
+              {/* Imagen de referencia del swipe (IMAGEN 1 del prompt): la estructura ganadora
+                  que hay que replicar. Click para ampliar. */}
+              {c.referencia_url && (
+                <div className="overflow-hidden rounded-lg border border-border">
                   <button
-                    onClick={() => copiarPrompt(c.creativo_id, c.prompt)}
-                    className="shrink-0 rounded-lg border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
+                    type="button"
+                    onClick={() => setImagenAmpliada(c.referencia_url!)}
+                    className="block w-full"
+                    title="Ver referencia en tamaño completo"
                   >
-                    {copiadoId === c.creativo_id ? "Copiado" : "Copiar"}
+                    <img
+                      src={c.referencia_url}
+                      alt={`Referencia de swipe para ${c.canonico_id}`}
+                      className="h-32 w-full object-cover object-top"
+                    />
                   </button>
+                  <div className="flex items-center justify-between gap-2 bg-muted/40 px-2 py-1">
+                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Imagen de referencia (IMAGEN 1)
+                    </span>
+                    <button
+                      onClick={() => copiarImagen(c.creativo_id, c.referencia_url!)}
+                      className="shrink-0 rounded border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {imagenCopiadaId === c.creativo_id ? "Copiada" : "Copiar imagen"}
+                    </button>
+                  </div>
                 </div>
-                <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-foreground">
-                  {c.prompt}
-                </pre>
-                <p className="mt-1.5 text-[11px] text-muted-foreground">
-                  Pegalo tal cual en tu creador de imágenes con IA (ChatGPT web) y adjuntá la foto del
-                  producto. Cuando la imagen esté lista, subila acá mismo.
-                </p>
-              </div>
+              )}
+
+              {/* Caja de Prompt Resuelto — el prompt REAL de armar_prompts_fase2.py (nunca uno
+                  inventado); si todavía no se generó el paquete, se muestra el comando exacto. */}
+              {c.prompt_origen === "paquete" && c.prompt ? (
+                <div className="rounded-lg border border-border bg-muted/40 p-2.5">
+                  <div className="mb-1 flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      Prompt definitivo — copiar y pegar
+                    </span>
+                    <button
+                      onClick={() => copiarPrompt(c.creativo_id, c.prompt!)}
+                      className="shrink-0 rounded-lg border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {copiadoId === c.creativo_id ? "Copiado" : "Copiar"}
+                    </button>
+                  </div>
+                  <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-foreground">
+                    {c.prompt}
+                  </pre>
+                  <p className="mt-1.5 text-[11px] text-muted-foreground">
+                    Pegá la imagen de referencia + este prompt junto con la foto del producto en tu
+                    creador de imágenes con IA (ChatGPT web). Cuando la imagen esté lista, subila acá
+                    mismo.
+                  </p>
+                </div>
+              ) : (
+                <div className="rounded-lg border border-amber-800/50 bg-amber-950/20 p-2.5">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+                    Prompt pendiente de generar
+                  </span>
+                  <p className="mt-1 text-[11px] text-amber-200/90">
+                    Todavía no existe el paquete creativo de este ángulo. Corré este comando para
+                    generarlo (nunca se inventa un prompt genérico):
+                  </p>
+                  <pre className="mt-1.5 overflow-x-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-amber-100">
+                    {c.comando_generar}
+                  </pre>
+                </div>
+              )}
 
               {/* Botón de Carga de Imagen */}
               <div className="flex items-center justify-between pt-1 text-xs">
@@ -344,6 +426,20 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
           ))}
         </div>
       </div>
+
+      {/* Lightbox — imagen de referencia ampliada */}
+      {imagenAmpliada && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+          onClick={() => setImagenAmpliada(null)}
+        >
+          <img
+            src={imagenAmpliada}
+            alt="Referencia de swipe ampliada"
+            className="max-h-full max-w-full rounded-lg border border-zinc-700 object-contain"
+          />
+        </div>
+      )}
     </div>
   );
 }

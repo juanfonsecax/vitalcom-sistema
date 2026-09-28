@@ -60,6 +60,7 @@ app.include_router(api_trabajos.router_claude)
 app.include_router(api_fase1.router)
 app.include_router(api_ordenes.router)
 app.include_router(api_fases.router)
+app.include_router(api_fases.router_swipe)
 
 
 @app.exception_handler(ErrorDeAccion)
