@@ -31,7 +31,7 @@ import {
 
 import { api, ErrorDeContrato, type Resultados as ResultadosDatos } from "../api/cliente";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Info, Problema } from "../componentes/ui";
+import { cn, Info, Problema } from "../componentes/ui";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -167,34 +167,59 @@ function TarjetasKpi({ datos }: { datos: ResultadosDatos }) {
   const preliminar = Boolean((datos.vista_a_cohorte as Record<string, unknown> | undefined)?.["preliminar"]);
   if (!er) return null;
 
-  const tarjetas: { titulo: string; termino: Parameters<typeof Info>[0]["termino"]; valor: number | undefined }[] = [
+  const tarjetas: {
+    titulo: string;
+    termino: Parameters<typeof Info>[0]["termino"];
+    valor: number | undefined;
+    esNeto?: boolean;
+  }[] = [
     { titulo: "Venta bruta entregada", termino: "vista_cohorte", valor: er.venta_bruta_entregada_q },
     { titulo: "Margen logístico", termino: "margen_logistico", valor: er.margen_logistico_q },
     { titulo: "Margen de contribución", termino: "margen_contribucion", valor: er.margen_contribucion_q },
-    { titulo: "Resultado neto", termino: "resultado_neto", valor: er.resultado_neto_q },
+    { titulo: "Resultado neto", termino: "vista_cohorte", valor: er.resultado_neto_q, esNeto: true },
   ];
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {tarjetas.map((tarjeta) => (
-        <Card key={tarjeta.titulo}>
-          <CardHeader>
-            <CardDescription className="flex items-center">
-              {tarjeta.titulo}
-              <Info termino={tarjeta.termino} />
-            </CardDescription>
-            <CardTitle className="text-2xl font-semibold tabular-nums">{formatoQ(tarjeta.valor)}</CardTitle>
-          </CardHeader>
-          {preliminar && (
-            <CardFooter>
-              <Badge variant="outline" className="border-estado-seguir text-estado-seguir">
-                Preliminar
-              </Badge>
-              <Info termino="cohorte_preliminar" />
-            </CardFooter>
-          )}
-        </Card>
-      ))}
+      {tarjetas.map((tarjeta) => {
+        const valor = tarjeta.valor;
+        // El resultado neto es EL número de la pantalla: se colorea por signo con el mismo
+        // criterio que la tabla de economía unitaria, y su tarjeta lleva el brillo que la
+        // vuelve protagonista. En cero o sin dato no hay nada que celebrar ni que frenar:
+        // primer plano neutro, sin brillo.
+        const positivo = tarjeta.esNeto && valor != null && valor > 0;
+        const negativo = tarjeta.esNeto && valor != null && valor < 0;
+        return (
+          <Card key={tarjeta.titulo} className={cn(positivo && "brillo-escalar", negativo && "brillo-pausar")}>
+            <CardHeader>
+              <CardDescription className="flex items-center">
+                {tarjeta.titulo}
+                <Info termino={tarjeta.termino} />
+              </CardDescription>
+              <CardTitle className="text-3xl font-bold tabular-nums">
+                <span
+                  key={String(valor)}
+                  className={cn(
+                    "inline-block motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-300",
+                    positivo && "text-estado-escalar",
+                    negativo && "text-estado-pausar",
+                  )}
+                >
+                  {formatoQ(valor)}
+                </span>
+              </CardTitle>
+            </CardHeader>
+            {preliminar && (
+              <CardFooter>
+                <Badge variant="outline" className="border-estado-seguir text-estado-seguir">
+                  Preliminar
+                </Badge>
+                <Info termino="cohorte_preliminar" />
+              </CardFooter>
+            )}
+          </Card>
+        );
+      })}
     </div>
   );
 }

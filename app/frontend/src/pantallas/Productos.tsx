@@ -45,9 +45,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { estadoEnPalabras, faseEnUnaFrase, quienLoHace, rezagoEnPalabras } from "../lenguaje";
+import { ESTADO_PRODUCTO, estadoEnPalabras, faseEnUnaFrase, quienLoHace, rezagoEnPalabras } from "../lenguaje";
+import type { ClaveGlosario } from "../glosario";
 
 type Fila = { producto: Producto; flujo?: Flujo };
+
+/** El término del glosario de cada fase, para el (i) de la celda Fase — el mismo mapa que usa
+ * la ficha del producto (`ProductoDetalle.tsx`), nunca una segunda opinión. Fases fuera de
+ * F1/F2/F3 no llevan (i): no hay glosario que mostrar. */
+const CLAVE_GLOSARIO_DE_FASE: Record<string, ClaveGlosario | undefined> = {
+  F1: "fase_1",
+  F2: "fase_2",
+  F3: "fase_3",
+};
 
 // Ver el docstring de arriba: llamadas UNA vez, nunca dentro de `Productos()`.
 const CORE_ROW_MODEL = getCoreRowModel<Fila>();
@@ -94,10 +104,14 @@ const columnas: ColumnDef<Fila>[] = [
     header: "Fase",
     cell: ({ row }) => {
       const fase = row.original.producto.fase;
+      const termino = CLAVE_GLOSARIO_DE_FASE[fase ?? ""];
       return (
-        <Badge variant="outline" title={faseEnUnaFrase(fase)}>
-          {fase ?? "sin fase"}
-        </Badge>
+        <span className="inline-flex items-center">
+          <Badge variant="outline" title={faseEnUnaFrase(fase)}>
+            {fase ?? "sin fase"}
+          </Badge>
+          {termino && <Info termino={termino} />}
+        </span>
       );
     },
   },
@@ -134,8 +148,14 @@ const columnas: ColumnDef<Fila>[] = [
     accessorFn: (f) => f.producto.estado_flujo ?? "",
     header: "Estado",
     cell: ({ row }) => {
-      const estado = estadoEnPalabras(row.original.producto.estado_flujo);
-      return <Chip tono={estado.tono}>{estado.texto}</Chip>;
+      const p = row.original.producto;
+      const estado = estadoEnPalabras(p.estado_flujo);
+      return (
+        <span className="inline-flex flex-wrap items-center gap-1">
+          <Chip tono={estado.tono}>{estado.texto}</Chip>
+          {p.estado && <Chip tono={ESTADO_PRODUCTO[p.estado] ?? "neutro"}>{p.estado}</Chip>}
+        </span>
+      );
     },
   },
   {
@@ -219,6 +239,9 @@ export function Productos() {
 
   const rezago = rezagoEnPalabras(decisiones.data?.rezago_dias);
   const filasRenderizadas = tabla.getRowModel().rows;
+  // Contar filas no es calcular el negocio: se cuenta lo que hay en pantalla y cuántas de
+  // esas filas muestran bloqueantes — el mismo campo que lee la columna "Esto lo frena".
+  const frenados = filasRenderizadas.filter((fila) => (fila.original.flujo?.bloqueantes?.length ?? 0) > 0).length;
 
   return (
     <div className="space-y-6">
@@ -229,6 +252,11 @@ export function Productos() {
             Dónde está cada producto, qué lo bloquea y qué sigue. La fase se deriva de la data;
             nadie la declara a mano.
           </p>
+          {filasRenderizadas.length > 0 && (
+            <p className="text-xs text-muted-foreground">
+              {`${filasRenderizadas.length} producto${filasRenderizadas.length === 1 ? "" : "s"} · ${frenados} frenado${frenados === 1 ? "" : "s"}`}
+            </p>
+          )}
         </div>
         <Chip tono={rezago.tono} titulo="Hasta cuándo llega la data de ventas">
           {rezago.texto}
@@ -250,8 +278,15 @@ export function Productos() {
 
       {filasRenderizadas.length === 0 ? (
         <Card>
-          <CardContent className="py-6 text-center text-sm text-muted-foreground">
-            {busqueda ? "Ningún producto coincide con la búsqueda." : "Todavía no hay productos cargados."}
+          <CardContent className="space-y-4 py-6 text-center text-sm text-muted-foreground">
+            {busqueda ? (
+              "Ningún producto coincide con la búsqueda."
+            ) : (
+              <>
+                <p>Todavía no hay productos cargados.</p>
+                <Button render={<Link to="/nuevo" />}>Dar de alta un producto</Button>
+              </>
+            )}
           </CardContent>
         </Card>
       ) : esMovil ? (
@@ -268,7 +303,7 @@ export function Productos() {
             const diasRezago = ((flujo?.motor ?? null) as MotorInfo | null)?.rezago_dias ?? null;
             return (
               <Link key={producto.producto_key} to="/producto/$clave" params={{ clave: producto.producto_key }}>
-                <Card>
+                <Card className="transition-colors hover:bg-muted/50">
                   <CardContent className="space-y-2 pt-4 text-sm">
                     <div className="flex items-start justify-between gap-2">
                       <div>
@@ -279,7 +314,12 @@ export function Productos() {
                         <Badge variant="outline" title={faseEnUnaFrase(producto.fase)}>
                           {producto.fase ?? "sin fase"}
                         </Badge>
-                        <Chip tono={estado.tono}>{estado.texto}</Chip>
+                        <span className="flex flex-wrap justify-end gap-1">
+                          <Chip tono={estado.tono}>{estado.texto}</Chip>
+                          {producto.estado && (
+                            <Chip tono={ESTADO_PRODUCTO[producto.estado] ?? "neutro"}>{producto.estado}</Chip>
+                          )}
+                        </span>
                       </div>
                     </div>
                     <p>

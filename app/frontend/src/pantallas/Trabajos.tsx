@@ -18,6 +18,7 @@ import {
 } from "../api/cliente";
 import { usarProgreso } from "../api/progreso";
 import { Button } from "@/components/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Cargando, Chip, Problema, Tarjeta, cn } from "../componentes/ui";
 import { LLAMADA_DE_META, SE_REINTENTAN, trabajoEnPalabras } from "../lenguaje";
 
@@ -224,9 +225,28 @@ function OrdenParaAprobar({ id, pendiente }: { id: string; pendiente: Extract<Pe
               <span className="font-medium text-zinc-100">{LLAMADA_DE_META[llamada.tool] ?? llamada.tool}</span>
               <code className="text-xs text-zinc-400">{llamada.tool}</code>
             </div>
-            <pre className="mt-1 overflow-x-auto text-xs text-zinc-400">{JSON.stringify(llamada.args, null, 2)}</pre>
           </li>
         ))}
+        {orden.llamadas.length > 0 && (
+          <li>
+            {/* El JSON literal de cada llamada queda accesible, plegado a un clic — lo primero
+                que se lee es qué se va a hacer, no el crudo de la llamada. */}
+            <Collapsible>
+              <CollapsibleTrigger className="text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground">
+                Ver las llamadas literales de Meta
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="mt-1 space-y-2 rounded-lg border border-zinc-800 bg-zinc-950/60 p-3">
+                  {orden.llamadas.map((llamada) => (
+                    <pre key={llamada.n} className="overflow-x-auto text-xs text-zinc-400">
+                      {JSON.stringify(llamada.args, null, 2)}
+                    </pre>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          </li>
+        )}
         {orden.llamadas.length === 0 && (
           <li className="text-sm text-zinc-400">Meta ya tiene todo: no hay nada nuevo que crear.</li>
         )}

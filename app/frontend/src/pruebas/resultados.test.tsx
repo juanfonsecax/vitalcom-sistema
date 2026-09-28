@@ -164,6 +164,44 @@ test("un período por debajo de dias_cohorte_maduro se marca Preliminar (no lo c
   expect(screen.getAllByText("Preliminar").length).toBeGreaterThan(0);
 });
 
+test("un resultado neto positivo se pinta con el tono de escalar y su tarjeta lleva el brillo", async () => {
+  servir({ "/api/resultados": RESULTADOS_MADURO, "/api/resultados/historial": [RESULTADOS_MADURO] });
+  montar();
+  const neto = await screen.findByText(/Q\s?3,000/);
+  expect(neto.className).toContain("text-estado-escalar");
+  expect(neto.closest('[data-slot="card"]')!.className).toContain("brillo-escalar");
+});
+
+test("un resultado neto negativo se pinta con el tono de pausar y su tarjeta lleva ese brillo", async () => {
+  const conPerdida = {
+    ...RESULTADOS_MADURO,
+    vista_a_cohorte: {
+      ...RESULTADOS_MADURO.vista_a_cohorte,
+      estado_de_resultados: { ...RESULTADOS_MADURO.vista_a_cohorte.estado_de_resultados, resultado_neto_q: -1200 },
+    },
+  };
+  servir({ "/api/resultados": conPerdida, "/api/resultados/historial": [conPerdida] });
+  montar();
+  const neto = await screen.findByText(/-Q\s?1,200/);
+  expect(neto.className).toContain("text-estado-pausar");
+  expect(neto.closest('[data-slot="card"]')!.className).toContain("brillo-pausar");
+});
+
+test("un resultado neto en cero queda neutro: sin color de signo y sin brillo", async () => {
+  const enCero = {
+    ...RESULTADOS_MADURO,
+    vista_a_cohorte: {
+      ...RESULTADOS_MADURO.vista_a_cohorte,
+      estado_de_resultados: { ...RESULTADOS_MADURO.vista_a_cohorte.estado_de_resultados, resultado_neto_q: 0 },
+    },
+  };
+  servir({ "/api/resultados": enCero, "/api/resultados/historial": [enCero] });
+  montar();
+  const neto = await screen.findByText(/^Q\s?0$/);
+  expect(neto.className).not.toContain("text-estado");
+  expect(neto.closest('[data-slot="card"]')!.className).not.toContain("brillo");
+});
+
 test("la tabla de economía unitaria marca en rojo la ganancia por venta negativa", async () => {
   servir({ "/api/resultados": RESULTADOS_MADURO, "/api/resultados/historial": [RESULTADOS_MADURO] });
   montar();

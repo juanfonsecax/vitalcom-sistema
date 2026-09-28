@@ -143,9 +143,11 @@ test("la orden a aprobar se ve completa y aprobar manda la huella de lo que se v
   expect(await screen.findByText("Esperando tu aprobación")).toBeInTheDocument();
   expect(screen.getByText("Todo nace en pausa", { exact: false })).toBeInTheDocument();
   const llamadasVistas = screen.getByLabelText("Llamadas a Meta");
+  // Lo legible de cada llamada se ve directo; el JSON crudo queda accesible, plegado a un clic.
   expect(llamadasVistas).toHaveTextContent("Crear la campaña");
-  expect(llamadasVistas).toHaveTextContent("GTR7_TINNIDROP_F1");
   expect(llamadasVistas).toHaveTextContent("Crear un conjunto de anuncios");
+  (await screen.findByText(/Ver las llamadas literales de Meta/i)).click();
+  await waitFor(() => expect(llamadasVistas).toHaveTextContent("GTR7_TINNIDROP_F1"));
   expect(screen.getByText(ORDEN.hash.slice(0, 12))).toBeInTheDocument();
 
   fireEvent.click(screen.getByRole("button", { name: /Aprobar/ }));

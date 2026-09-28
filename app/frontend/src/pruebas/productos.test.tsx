@@ -198,6 +198,35 @@ test("el botón «Nuevo producto» enlaza a /nuevo", async () => {
   expect(boton).toHaveAttribute("href", "/nuevo");
 });
 
+test("el portafolio vacío ofrece dar de alta un producto, no un callejón sin salida", async () => {
+  servir({
+    "/api/productos": [],
+    "/api/decisiones": { generado: "2026-09-17", rezago_dias: 2, datos_hasta: "2026-09-15", resumen_acciones: {}, productos: [] },
+  });
+  montar();
+  expect(await screen.findByText("Todavía no hay productos cargados.")).toBeInTheDocument();
+  const cta = screen.getByRole("link", { name: "Dar de alta un producto" });
+  expect(cta).toHaveAttribute("href", "/nuevo");
+});
+
+test("bajo el título, la línea de orientación cuenta lo que hay en pantalla", async () => {
+  montar();
+  // 2 filas renderizadas; TINNIDROP es la única con bloqueantes cargados.
+  expect(await screen.findByText("2 productos · 1 frenado")).toBeInTheDocument();
+});
+
+test("la fase lleva su (i) del glosario en la fila, igual que en la ficha", async () => {
+  montar();
+  expect(await screen.findByRole("button", { name: "Qué es FASE 1" })).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Qué es FASE 2" })).toBeInTheDocument();
+});
+
+test("el estado de vida del producto (VIVO, NUEVO…) se ve tal cual, junto al del flujo", async () => {
+  montar();
+  const filaOvulos = (await screen.findByText("Óvulos Purity Hernatura")).closest("tr")!;
+  expect(within(filaOvulos).getByText("NUEVO")).toBeInTheDocument();
+});
+
 test("cada producto enlaza a su ficha", async () => {
   montar();
   const enlace = await screen.findByRole("link", { name: /Óvulos Purity Hernatura/ });
