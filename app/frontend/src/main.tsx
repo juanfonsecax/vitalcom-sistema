@@ -40,12 +40,13 @@ const rutas = [
   createRoute({ getParentRoute: () => raiz, path: "/resultados", component: Resultados }),
   createRoute({ getParentRoute: () => raiz, path: "/ajustes", component: Ajustes }),
   createRoute({ getParentRoute: () => raiz, path: "/ordenes", component: Ordenes }),
-  // Las cuatro rutas del producto comparten un solo componente: ProductoDetalle lee el pathname
-  // para decidir la pestaña activa (Resumen/Fase 1/2/3) — ver su docstring (P4/T3).
+  // Las cinco rutas del producto comparten un solo componente: ProductoDetalle lee el pathname
+  // para decidir la pestaña activa (Resumen/Fase 1/2/3/4) — ver su docstring (P4/T3).
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase2", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase3", component: ProductoDetalle }),
+  createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase4", component: ProductoDetalle }),
   createRoute({ getParentRoute: () => raiz, path: "/salud", component: Salud }),
   createRoute({ getParentRoute: () => raiz, path: "/guia", component: Guia }),
   createRoute({ getParentRoute: () => raiz, path: "/nuevo", component: NuevoProducto }),

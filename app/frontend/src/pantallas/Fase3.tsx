@@ -1,19 +1,25 @@
 /**
- * Fase3.tsx — Pantalla de FASE 3: Escalado CBO 1-1-7 y Expansión.
+ * Fase3.tsx — Pantalla de FASE 3: optimización del flujo LucidBot.
  *
- * Muestra:
- *  1. Semáforo del gate «concepto ganador en 2 de 2» con la evidencia real de flujo.py.
- *  2. Estructura 1-1-7 CBO explicada en lenguaje simple.
- *  3. Expansión horizontal por Post ID, multicuenta y multifanpage.
- *  4. Botón de retorno a F1 en caso de agotamiento del escalado.
+ * El ángulo y el concepto ya están validados (concepto ganador 2 de 2, el mismo gate de
+ * siempre): acá la variable es el FLUJO del bot, no la estructura de Meta ni el presupuesto
+ * (invariante 6, mismo presupuesto). Muestra:
+ *  1. Semáforo del gate de entrada (concepto ganador en 2 de 2) — igual al que usaba FASE 4.
+ *  2. Qué hacer: etapa-5 reescribe el flujo hacia el ganador (`F3.reescribir`), con el botón real
+ *     de la acción cuando el manifiesto la habilita.
+ *  3. Los eventos CAMBIO_BOT/EXCEPCION_CAMBIO_BOT registrados.
+ *  4. El gate duro de salida hacia FASE 4 (`gate_f4`, PROHIBIDO_ESCALAR_CIERRE_BAJO): mensajes,
+ *     cierre % contra el piso de 10 % y el benchmark de referencia 15-20 %, tal como lo calculó
+ *     `flujo.py` — esta pantalla no resta, no divide, no compara: solo muestra los campos del
+ *     contrato.
  */
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { api } from "../api/cliente";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
+import { cierreEnPalabras } from "../lenguaje";
 
 export function Fase3({ clave: claveProp }: { clave?: string }) {
   const params = useParams({ strict: false }) as { clave?: string };
@@ -24,15 +30,23 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
     queryFn: () => api.fase3(clave),
   });
 
-  const [modalReingreso, setModalReingreso] = useState(false);
-  const [motivoReingreso, setMotivoReingreso] = useState("Escalado agotado / fatiga de microángulos");
+  const [confirmando, setConfirmando] = useState(false);
+  const [errorAccion, setErrorAccion] = useState<string | null>(null);
 
-  const mutacionReingreso = useMutation({
-    mutationFn: (motivo: string) => api.reingresoF1(clave, motivo),
+  const accionesQuery = useQuery({
+    queryKey: ["acciones", "F3.reescribir", clave],
+    queryFn: () => api.acciones("F3.reescribir", clave),
+  });
+  const accionReescribir = (accionesQuery.data || []).find((a) => a.id === "nodo.F3.reescribir");
+
+  const reescribir = useMutation({
+    mutationFn: () => api.pedirAccion("nodo.F3.reescribir", { producto_key: clave }, true),
     onSuccess: () => {
-      setModalReingreso(false);
-      queryClient.invalidateQueries({ queryKey: ["fase3", clave] });
-      queryClient.invalidateQueries({ queryKey: ["producto", clave] });
+      setConfirmando(false);
+      queryClient.invalidateQueries({ queryKey: ["acciones", "F3.reescribir", clave] });
+    },
+    onError: (err) => {
+      setErrorAccion(err instanceof Error ? err.message : String(err));
     },
   });
 
@@ -42,7 +56,10 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
   const d = consulta.data;
   if (!d) return null;
 
-  const gateCumplido = d.gate_2de2.ok;
+  const gateEntrada = d.entrada.ok;
+  const gate = d.gate_f4;
+  const tieneCambioBot = d.eventos_cambio_bot.length > 0;
+  const gateF4Cumplido = d.entrada_f4.ok;
 
   return (
     <div className="space-y-6">
@@ -51,10 +68,10 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-800 pb-4">
         <div>
           <h1 className="text-2xl font-bold text-zinc-100">
-            FASE 3 · Escalado CBO ({clave})
+            FASE 3 · Flujo LucidBot ({clave})
           </h1>
           <p className="text-sm text-zinc-400">
-            Estructura 1-1-7 CBO · Presupuesto a nivel campaña · Replicación por Post ID · <Info termino="fase_3" />
+            Ángulo y concepto ya validados, mismo presupuesto · se optimiza el CIERRE del bot · <Info termino="fase_3" />
           </p>
         </div>
 
@@ -66,15 +83,20 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
           >
             ← Ver FASE 2 (Conceptos)
           </Link>
+          <Link
+            to="/producto/$clave/fase4"
+            params={{ clave }}
+            className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-700"
+          >
+            Ver FASE 4 (Escalado) →
+          </Link>
         </div>
       </div>
 
-      {/* Semáforo del Gate: Concepto Ganador en 2 de 2 */}
+      {/* Semáforo del Gate de Entrada: Concepto Ganador en 2 de 2 (el mismo de siempre) */}
       <Tarjeta
         className={`border-2 p-5 ${
-          gateCumplido
-            ? "border-emerald-600 bg-emerald-950/20"
-            : "border-amber-600/80 bg-amber-950/20"
+          gateEntrada ? "border-emerald-600 bg-emerald-950/20" : "border-amber-600/80 bg-amber-950/20"
         }`}
       >
         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -83,146 +105,202 @@ export function Fase3({ clave: claveProp }: { clave?: string }) {
               <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
                 Gate de Entrada a FASE 3
               </span>
-              <Chip tono={gateCumplido ? "bien" : "aviso"}>
-                {gateCumplido ? "✓ GATE CUMPLIDO" : "⚠ GATE PENDIENTE"}
+              <Chip tono={gateEntrada ? "bien" : "aviso"}>
+                {gateEntrada ? "✓ GATE CUMPLIDO" : "⚠ GATE PENDIENTE"}
               </Chip>
             </div>
-            <h2 className="text-lg font-bold text-zinc-100">
-              Concepto Ganador Replicado en 2 de 2
-            </h2>
+            <h2 className="text-lg font-bold text-zinc-100">Concepto Ganador Replicado en 2 de 2</h2>
             <p className="text-xs text-zinc-300">
-              {d.gate_2de2.regla || "Regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido."}
+              {d.entrada.regla || "Regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido."}
             </p>
           </div>
-
           <div className="rounded-lg bg-zinc-900/80 p-3 text-right">
             <span className="text-[11px] uppercase text-zinc-400">Evidencia del Motor</span>
             <div className="mt-1 font-mono text-xs font-semibold text-zinc-200">
-              {d.gate_2de2.observado || "Sin datos de replicación"}
+              {d.entrada.observado || "Sin datos de replicación"}
             </div>
           </div>
         </div>
       </Tarjeta>
 
-      {/* Estructura CBO 1-1-7 */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <Tarjeta className="space-y-3">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-            <h3 className="text-sm font-bold text-zinc-200">Estructura de Campaña 1-1-7 CBO</h3>
-            <Chip tono={d.plan_cbo.tiene_plan ? "bien" : "aviso"}>
-              {d.plan_cbo.estado}
-            </Chip>
-          </div>
-          <p className="text-xs text-zinc-400">
-            {d.plan_cbo.descripcion}
-          </p>
-          <div className="rounded-lg bg-zinc-950 p-3 text-xs text-zinc-300 space-y-1.5">
-            <div>
-              <span className="font-semibold text-zinc-400">1 Campaña CBO:</span> Presupuesto inicial optimizado automáticamente por Meta.
-            </div>
-            <div>
-              <span className="font-semibold text-zinc-400">1 Conjunto de Anuncios:</span> Audiencia abierta de Guatemala (+25 años).
-            </div>
-            <div>
-              <span className="font-semibold text-zinc-400">7 Anuncios Gemelos:</span> La misma imagen ganadora con 7 hooks/microángulos distintos para maximizar alcance.
-            </div>
-          </div>
-          {d.plan_cbo.archivo && (
-            <div className="text-[11px] text-emerald-400 font-mono">
-              ✓ Archivo de plan generado: {d.plan_cbo.archivo}
-            </div>
-          )}
-        </Tarjeta>
+      {/* Qué hacer en esta fase */}
+      <Tarjeta className="space-y-3">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+          <h3 className="text-sm font-bold text-zinc-200">
+            Reescribir el flujo hacia el ángulo + concepto ganador
+          </h3>
+          <Chip tono={d.nodo_reescribir?.cumplido ? "bien" : "aviso"}>
+            {d.nodo_reescribir?.cumplido ? "CUMPLIDO" : d.nodo_reescribir ? "PENDIENTE" : "N/D"}
+          </Chip>
+        </div>
+        <ol className="list-decimal space-y-1.5 pl-5 text-xs text-zinc-300">
+          <li>
+            <strong className="text-zinc-100">etapa-11</strong> ya diagnosticó el cierre y la
+            congruencia anuncio↔bot en FASE 2 (<code className="text-zinc-400">F2.etapa-11</code>,
+            evento <code className="text-zinc-400">DIAGNOSTICO_CONGRUENCIA</code>).
+          </li>
+          <li>
+            <strong className="text-zinc-100">etapa-5</strong> redacta los bloques de juicio del
+            flujo (<code className="text-zinc-400">PLANTILLAS_FLUJO_BOT.md</code> reglas A-G) a
+            partir de ese brief.
+          </li>
+          <li>
+            Vos aplicás el cambio en LucidBot a mano (no es un objeto de Meta, no hay MCP) y anexás
+            el evento <code className="text-zinc-400">CAMBIO_BOT</code> — o{" "}
+            <code className="text-zinc-400">EXCEPCION_CAMBIO_BOT</code> si decidís saltarte la
+            reescritura — con <code className="text-zinc-400">registrar_evento.py</code>.
+          </li>
+        </ol>
 
-        {/* Expansión Horizontal */}
-        <Tarjeta className="space-y-3">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
-            <h3 className="text-sm font-bold text-zinc-200">Expansión Horizontal (Multi-Cuenta)</h3>
-            <Chip tono={d.expansion.post_id ? "bien" : "dato"}>
-              {d.expansion.post_id ? "Post ID Activo" : "Cuenta Principal"}
-            </Chip>
-          </div>
-          <p className="text-xs text-zinc-400">
-            Replicación de la pieza ganadora en cuentas secundarias usando el mismo <span className="font-mono text-zinc-300">post_id</span> para compartir prueba social (likes, comentarios y compartidos).
-          </p>
-          <div className="rounded-lg bg-zinc-950 p-3 text-xs space-y-2">
-            <div>
-              <span className="text-zinc-400">Cuenta Principal:</span>{" "}
-              <span className="font-mono font-semibold text-zinc-200">{d.expansion.cuenta_primaria}</span>
-            </div>
-            <div>
-              <span className="text-zinc-400">Cuentas con réplica ({d.expansion.cuentas_activas.length}):</span>{" "}
-              <span className="font-mono text-zinc-300">{d.expansion.cuentas_activas.join(", ")}</span>
-            </div>
-            {d.expansion.page_id && (
-              <div>
-                <span className="text-zinc-400">FanPage ID:</span>{" "}
-                <span className="font-mono text-zinc-300">{d.expansion.page_id}</span>
-              </div>
+        {accionReescribir && (
+          <div className="flex flex-wrap items-center gap-3 border-t border-zinc-800 pt-3">
+            <Button
+              type="button"
+              size="sm"
+              onClick={() => setConfirmando(true)}
+              disabled={accionReescribir.disponible === false}
+            >
+              Reescribir el flujo (etapa-5)
+            </Button>
+            {accionReescribir.disponible === false && accionReescribir.por_que && (
+              <span className="text-xs text-amber-300">
+                {String((accionReescribir.por_que as Record<string, unknown>)?.motivo ?? "No disponible todavía")}
+              </span>
             )}
           </div>
-        </Tarjeta>
-      </div>
+        )}
 
-      {/* Módulo de Fatiga en Escalado */}
-      <Tarjeta className="border-zinc-800 bg-zinc-900/40 p-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-200">
-              ¿El escalado llegó a su techo?
-            </h3>
-            <p className="mt-1 text-xs text-zinc-400">
-              Si la frecuencia sube, el CPA se degrada y los 7 microángulos ya se agotaron, podemos reiniciar el ciclo buscando ángulos frescos en FASE 1.
-            </p>
+        {errorAccion && (
+          <div className="rounded-lg border border-rose-900 bg-rose-950/40 p-3 text-sm text-rose-300">
+            <strong>Error:</strong> {errorAccion}
           </div>
-          <Button
-            onClick={() => setModalReingreso(true)}
-            variant="outline"
-            size="sm"
-          >
-            Nuevos ángulos para este producto →
-          </Button>
-        </div>
+        )}
 
-        {/* Modal de Reingreso */}
-        {modalReingreso && (
-          <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-4 shadow-xl">
-            <h4 className="text-sm font-bold text-zinc-100">
-              Confirmar retorno a FASE 1 desde FASE 3
-            </h4>
+        {confirmando && (
+          <div className="rounded-lg border border-amber-700 bg-amber-950/30 p-3">
+            <h4 className="font-semibold text-amber-200">¿Confirmar la reescritura del flujo?</h4>
             <p className="mt-1 text-xs text-zinc-300">
-              Se iniciará una nueva investigación para descubrir ángulos frescos. Se excluirán los ángulos históricos:
+              Esta acción llama a Claude Code (etapa-5) para redactar los bloques de juicio del
+              flujo LucidBot. Modifica <code>PRODUCTOS/_DIM_FLUJO_BOT.csv</code>; el CAMBIO_BOT en
+              sí lo registrás vos después de aplicarlo a mano en LucidBot.
             </p>
-            <div className="mt-2 rounded bg-zinc-950 p-2 font-mono text-xs text-zinc-400">
-              {d.fatiga.angulos_probados.join(", ") || "Ningún ángulo previo"}
-            </div>
-            <div className="mt-3">
-              <label className="text-xs text-zinc-400">Motivo:</label>
-              <Input
-                type="text"
-                value={motivoReingreso}
-                onChange={(e) => setMotivoReingreso(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
+            <div className="mt-3 flex gap-2">
               <Button
-                onClick={() => setModalReingreso(false)}
-                variant="outline"
+                type="button"
                 size="sm"
+                onClick={() => reescribir.mutate()}
+                disabled={reescribir.isPending}
               >
-                Cancelar
+                {reescribir.isPending ? "Iniciando…" : "Sí, confirmar y ejecutar"}
               </Button>
-              <Button
-                size="sm"
-                disabled={mutacionReingreso.isPending}
-                onClick={() => mutacionReingreso.mutate(motivoReingreso)}
-              >
-                {mutacionReingreso.isPending ? "Registrando..." : "Confirmar retorno a F1"}
+              <Button type="button" size="sm" variant="outline" onClick={() => setConfirmando(false)}>
+                Cancelar
               </Button>
             </div>
           </div>
         )}
+      </Tarjeta>
+
+      {/* Eventos CAMBIO_BOT registrados */}
+      <Tarjeta className="space-y-3">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+          <h3 className="text-sm font-bold text-zinc-200">
+            Eventos <Info termino="cambio_bot" />
+          </h3>
+          <Chip tono={tieneCambioBot ? "bien" : "aviso"}>
+            {tieneCambioBot ? `${d.eventos_cambio_bot.length} registrado(s)` : "Ninguno todavía"}
+          </Chip>
+        </div>
+        {tieneCambioBot ? (
+          <ul className="space-y-1.5 text-xs text-zinc-300">
+            {d.eventos_cambio_bot.map((ev, i) => (
+              <li key={i} className="rounded bg-zinc-950 p-2">
+                <span className="font-mono font-semibold text-zinc-100">{ev.evento}</span>{" "}
+                <span className="text-zinc-400">· {ev.fecha}</span>
+                {ev.motivo && <div className="mt-0.5 text-zinc-400">{ev.motivo}</div>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-xs text-zinc-400">
+            Todavía no hay <code className="text-zinc-300">CAMBIO_BOT</code> ni{" "}
+            <code className="text-zinc-300">EXCEPCION_CAMBIO_BOT</code> registrado para este
+            producto. Se registra con{" "}
+            <code className="text-zinc-300">
+              python Ads/_TOOLS/registrar_evento.py --producto {clave || "&lt;PK&gt;"} --evento CAMBIO_BOT
+            </code>{" "}
+            el mismo día que apliques el cambio en LucidBot.
+          </p>
+        )}
+      </Tarjeta>
+
+      {/* Gate duro de salida hacia FASE 4: cierre post-CAMBIO_BOT */}
+      <Tarjeta
+        className={`space-y-3 border-2 p-5 ${
+          gateF4Cumplido ? "border-emerald-600 bg-emerald-950/20" : "border-amber-600/80 bg-amber-950/20"
+        }`}
+      >
+        <div className="flex flex-wrap items-start justify-between gap-4 border-b border-zinc-800 pb-2">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                Gate duro hacia FASE 4
+              </span>
+              <Chip tono={gateF4Cumplido ? "bien" : "aviso"}>
+                {gateF4Cumplido ? "✓ DESBLOQUEA FASE 4" : "⚠ SE QUEDA EN FASE 3"}
+              </Chip>
+            </div>
+            <h3 className="text-sm font-bold text-zinc-200">
+              <Info termino="cierre_post_cambio_bot" />
+            </h3>
+          </div>
+        </div>
+
+        {gate ? (
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg bg-zinc-950 p-3 text-xs text-zinc-300 space-y-1">
+              <div>
+                <span className="text-zinc-400">Mensajes desde el CAMBIO_BOT:</span>{" "}
+                <span className="font-mono font-semibold text-zinc-100">
+                  {gate.mensajes ?? "s/d"}
+                </span>{" "}
+                <span className="text-zinc-500">(mínimo {gate.min_mensajes ?? "?"})</span>
+              </div>
+              <div>
+                <span className="text-zinc-400">Ventas en esa ventana:</span>{" "}
+                <span className="font-mono font-semibold text-zinc-100">{gate.ventas ?? "s/d"}</span>
+              </div>
+              <div>
+                <span className="text-zinc-400">Fecha de corte:</span>{" "}
+                <span className="font-mono text-zinc-200">{gate.fecha_cambio_bot ?? "sin CAMBIO_BOT todavía"}</span>
+              </div>
+            </div>
+            <div className="rounded-lg bg-zinc-950 p-3 text-xs text-zinc-300 space-y-1">
+              <div>
+                <span className="text-zinc-400">Cierre observado:</span>{" "}
+                <span className="font-mono font-semibold text-zinc-100">
+                  {cierreEnPalabras(
+                    gate.cierre_pct ?? null,
+                    gate.cierre_meta_min_pct != null ? String(gate.cierre_meta_min_pct) : undefined,
+                    gate.cierre_meta_max_pct != null ? String(gate.cierre_meta_max_pct) : undefined,
+                  )}
+                </span>
+              </div>
+              <div>
+                <span className="text-zinc-400">Piso duro (PROHIBIDO_ESCALAR_CIERRE_BAJO):</span>{" "}
+                <span className="font-mono font-semibold text-zinc-100">{gate.min_cierre_pct ?? "?"} %</span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs text-zinc-400">
+            Todavía no hay data de este gate: el producto ni siquiera entró a FASE 3.
+          </p>
+        )}
+
+        <p className="text-[11px] text-zinc-500">
+          {gate?.explicacion || d.entrada_f4.observado}
+        </p>
       </Tarjeta>
     </div>
   );

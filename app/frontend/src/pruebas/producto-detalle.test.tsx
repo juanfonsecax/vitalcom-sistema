@@ -6,7 +6,7 @@
  * 2 días de rezago. Todo sale de `flujo.py` (mock de `/api/productos/{clave}`).
  *
  * T3: el header (nombre, fase, paso, bloqueante) es siempre visible sin importar la pestaña;
- * la pestaña activa la decide la URL (`/fase1|2|3` → esa pestaña) o, a falta de sufijo, la fase
+ * la pestaña activa la decide la URL (`/fase1|2|3|4` → esa pestaña) o, a falta de sufijo, la fase
  * vigente del producto (`d.fase`) — nunca al revés. El contenido del recorrido completo (avisos,
  * entradas, línea de tiempo nodo por nodo) vive ahora bajo la pestaña "Resumen".
  */
@@ -65,7 +65,7 @@ function servir(respuestas: Record<string, unknown>) {
   );
 }
 
-/** Registra las cuatro rutas reales de la ficha (igual que `main.tsx`, P4/T3: un solo
+/** Registra las cinco rutas reales de la ficha (igual que `main.tsx`, P4/T3: un solo
  * componente para Resumen y cada fase) para que la navegación entre pestañas funcione tal
  * cual en producción. */
 function montar(rutaInicial = "/producto/TINNIDROP") {
@@ -76,6 +76,7 @@ function montar(rutaInicial = "/producto/TINNIDROP") {
     createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase1", component: ProductoDetalle }),
     createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase2", component: ProductoDetalle }),
     createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase3", component: ProductoDetalle }),
+    createRoute({ getParentRoute: () => raiz, path: "/producto/$clave/fase4", component: ProductoDetalle }),
   ];
   const router = createRouter({
     routeTree: raiz.addChildren(rutas),
@@ -190,7 +191,7 @@ test("pestañas — P4/T3: sin sufijo de fase, el default es la fase VIGENTE del
   expect(screen.getByRole("tab", { name: "Fase 1" })).toHaveAttribute("aria-selected", "true");
 });
 
-test("pestañas — P4/T3: una fase fuera de F1/F2/F3 (p. ej. PAUSADO) cae en Resumen por defecto", async () => {
+test("pestañas — P4/T3: una fase fuera de F1/F2/F3/F4 (p. ej. PAUSADO) cae en Resumen por defecto", async () => {
   servir({ "/api/productos/TINNIDROP": { ...FLUJO_BASE, fase: "PAUSADO", estado: "EXCEPCION" } });
   montar("/producto/TINNIDROP");
   await screen.findByRole("heading", { level: 1 });

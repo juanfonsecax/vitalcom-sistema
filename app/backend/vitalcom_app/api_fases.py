@@ -1,4 +1,4 @@
-"""api_fases.py — endpoints para FASE 2, FASE 3 y el ciclo de fatiga / reingreso."""
+"""api_fases.py — endpoints para FASE 2, FASE 3, FASE 4 y el ciclo de fatiga / reingreso."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from . import contratos
-from .modelos import Fase2Detalle
+from .modelos import Fase2Detalle, Fase3Detalle, Fase4Detalle
 
 router = APIRouter(prefix="/api/productos", tags=["fases"])
 router_swipe = APIRouter(prefix="/api/swipe", tags=["fases"])
@@ -40,11 +40,24 @@ def swipe_imagen(ruta_imagen: str) -> FileResponse:
     return FileResponse(encontrado)
 
 
-@router.get("/{producto_key}/fase3")
-def obtener_fase3(producto_key: str) -> dict[str, Any]:
-    """Detalle completo de FASE 3: gate 2de2 con evidencia, plan CBO 1-1-7 y expansión multicuenta."""
+@router.get("/{producto_key}/fase3", response_model=Fase3Detalle)
+def obtener_fase3(producto_key: str) -> Fase3Detalle:
+    """Detalle completo de FASE 3 (optimización del flujo LucidBot): gate de entrada, estado de
+    F3.reescribir/F3.medir_cierre, eventos CAMBIO_BOT y el gate duro de salida hacia FASE 4."""
     try:
-        return contratos.fase3_detalle(producto_key)
+        return Fase3Detalle(**contratos.fase3_detalle(producto_key))
+    except contratos.ContratoAusente as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=str(error)) from error
+
+
+@router.get("/{producto_key}/fase4", response_model=Fase4Detalle)
+def obtener_fase4(producto_key: str) -> Fase4Detalle:
+    """Detalle completo de FASE 4 (escalado): gate 2de2+CAMBIO_BOT+cierre, plan CBO 1-1-7 y
+    expansión multicuenta. Ex-`/fase3`, renombrada B3 (28-sep-2026, cuatro fases)."""
+    try:
+        return Fase4Detalle(**contratos.fase4_detalle(producto_key))
     except contratos.ContratoAusente as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
     except Exception as error:

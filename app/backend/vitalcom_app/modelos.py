@@ -532,3 +532,81 @@ class Fase2Detalle(Base):
     reingreso_activo: ReingresoActivo | None = None
     fatiga: FatigaFase2 | None = None
 
+
+class EventoCambioBot(Base):
+    """Una fila de `_EVENTOS.csv` con evento CAMBIO_BOT o EXCEPCION_CAMBIO_BOT."""
+
+    evento: str = ""
+    fecha: str = ""
+    motivo: str = ""
+
+
+class CierrePostCambioBot(Base):
+    """`Ads/_TOOLS/flujo.py:medir_cierre_post_cambio_bot` — el gate duro F3→F4
+    (PROHIBIDO_ESCALAR_CIERRE_BAJO): mensajes/ventas/cierre% desde el último CAMBIO_BOT (o
+    EXCEPCION_CAMBIO_BOT) vigente, los umbrales que se le exigen y el benchmark 15-20% de
+    referencia (nunca gate). Estos campos SON el cálculo del motor, pasados tal cual — la app
+    nunca los deriva de nuevo."""
+
+    fecha_cambio_bot: str | None = None
+    mensajes: float | None = None
+    ventas: float | None = None
+    cierre_pct: float | None = None
+    min_mensajes: float | None = None
+    min_cierre_pct: float | None = None
+    cierre_meta_min_pct: float | None = None
+    cierre_meta_max_pct: float | None = None
+    ok: bool = False
+    explicacion: str = ""
+
+
+class Fase3Detalle(Base):
+    """`contratos.fase3_detalle`: FASE 3, optimización del flujo LucidBot hacia el ángulo+concepto
+    ganador. Gate de entrada (el de siempre, concepto 2de2), los dos nodos de la fase
+    (`F3.reescribir`/`F3.medir_cierre`), los eventos CAMBIO_BOT registrados y el gate duro de
+    salida hacia FASE 4 (`gate_f4`), calculado por el motor."""
+
+    producto_key: str
+    fase: str = ""
+    nodo_actual: str = ""
+    entrada: Requisito
+    nodo_reescribir: Nodo | None = None
+    nodo_medir_cierre: Nodo | None = None
+    eventos_cambio_bot: list[EventoCambioBot] = []
+    gate_f4: CierrePostCambioBot | None = None
+    entrada_f4: Requisito
+
+
+class PlanCbo(Base):
+    estructura: str = ""
+    descripcion: str = ""
+    tiene_plan: bool = False
+    estado: str = ""
+    archivo: str | None = None
+
+
+class ExpansionEscalado(Base):
+    post_id: bool = False
+    cuenta_primaria: str = ""
+    cuentas_activas: list[str] = []
+    page_id: str = ""
+
+
+class FatigaEscalado(Base):
+    angulos_probados: list[str] = []
+    puede_reingresar: bool = True
+
+
+class Fase4Detalle(Base):
+    """`contratos.fase4_detalle` (ex-`fase3_detalle` antes de las cuatro fases, B3): FASE 4,
+    escalado. Gate de entrada 2de2+CAMBIO_BOT+cierre (`flujo.py:F4.entrada`), plan CBO 1-1-7 y
+    expansión multicuenta."""
+
+    producto_key: str
+    fase: str = ""
+    nodo_actual: str = ""
+    gate_2de2: Requisito
+    plan_cbo: PlanCbo
+    expansion: ExpansionEscalado
+    fatiga: FatigaEscalado
+

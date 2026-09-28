@@ -1,13 +1,14 @@
 /**
- * fase3.test.tsx — Pruebas unitarias de la pantalla Fase3 (Hito 6).
+ * fase3.test.tsx — Pruebas unitarias de la pantalla Fase3 (FASE 3, optimización del flujo
+ * LucidBot; B3 de las cuatro fases).
  *
  * Verifica:
- * 1. Semáforo del gate 2de2 (cumplido o pendiente) con evidencia del motor.
- * 2. Visualización de la estructura 1-1-7 CBO y su desglose.
- * 3. Expansión horizontal por Post ID, multicuenta y multifanpage.
- * 4. Botón de reingreso a FASE 1 por agotamiento del escalado.
+ * 1. Semáforo del gate de entrada (concepto 2de2) cumplido o pendiente.
+ * 2. Sin CAMBIO_BOT todavía: lo dice y muestra cómo registrarlo.
+ * 3. Con CAMBIO_BOT pero cierre bajo el piso: el gate F4 sigue sin desbloquear.
+ * 4. Con CAMBIO_BOT y cierre sobre el piso: el gate F4 desbloquea FASE 4.
  */
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   RouterProvider,
@@ -20,28 +21,13 @@ import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { Fase3 } from "../pantallas/Fase3";
 
 let respuestas: Record<string, unknown> = {};
-let llamadasFetch: { url: string; metodo: string; cuerpo?: any }[] = [];
 
 function simularFetch() {
   vi.stubGlobal(
     "fetch",
-    vi.fn(async (url: string, opciones?: RequestInit) => {
-      const ruta = new URL(url, "http://localhost").pathname;
-      const metodo = opciones?.method ?? "GET";
-      let cuerpoParseado: any = undefined;
-      if (opciones?.body && typeof opciones.body === "string") {
-        try {
-          cuerpoParseado = JSON.parse(opciones.body);
-        } catch {
-          cuerpoParseado = opciones.body;
-        }
-      }
-      llamadasFetch.push({
-        url: ruta,
-        metodo,
-        cuerpo: cuerpoParseado,
-      });
-      const cuerpo = respuestas[`${metodo} ${ruta}`];
+    vi.fn(async (url: string) => {
+      const ruta = new URL(url, "http://localhost").pathname + new URL(url, "http://localhost").search;
+      const cuerpo = respuestas[`GET ${ruta}`] ?? respuestas[`GET ${ruta.split("?")[0]}`];
       return {
         ok: cuerpo !== undefined,
         status: cuerpo === undefined ? 404 : 200,
@@ -73,60 +59,48 @@ function renderizar(clave = "TINNIDROP") {
   );
 }
 
-const FASE3_MOCK_PENDIENTE = {
+const BASE = {
   producto_key: "TINNIDROP",
-  fase: "FASE 3",
-  nodo_actual: "F2.etapa-11",
-  gate_2de2: {
-    ok: false,
-    observado: "El producto se encuentra en FASE 2. Se requiere ganador replicado en 2 tandas.",
-    regla: "Regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido.",
-  },
-  plan_cbo: {
-    estructura: "1-1-7 CBO",
-    descripcion: "1 Campaña CBO, 1 Conjunto de 7 anuncios con el concepto validado en 2 de 2 × 7 hooks",
-    tiene_plan: false,
-    estado: "PENDIENTE",
-    archivo: null,
-  },
-  expansion: {
-    post_id: false,
-    cuenta_primaria: "act_vitalcom_gt",
-    cuentas_activas: ["act_vitalcom_gt"],
-    page_id: "vitalcom_salud_gt",
-  },
-  fatiga: {
-    angulos_probados: ["ACCESIBILIDAD_MEDICO", "NOCHES_SIN_DORMIR"],
-    puede_reingresar: true,
-  },
-};
-
-const FASE3_MOCK_CUMPLIDO = {
-  ...FASE3_MOCK_PENDIENTE,
-  nodo_actual: "F3.cbo",
-  gate_2de2: {
+  fase: "F3",
+  nodo_actual: "F3.medir_cierre",
+  entrada: {
     ok: true,
-    observado: "Concepto C01 validado en 2 de 2 tandas con ROAS superior.",
+    observado: "Concepto C01 validado en 2 de 2 tandas.",
     regla: "Regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido.",
   },
-  plan_cbo: {
-    estructura: "1-1-7 CBO",
-    descripcion: "1 Campaña CBO con presupuesto optimizado",
-    tiene_plan: true,
-    estado: "GENERADO",
-    archivo: "4_PLAN_ESCALADO.txt",
+  nodo_reescribir: {
+    id: "F3.reescribir",
+    titulo: "Reescribir",
+    ejecutor: "etapa-5",
+    ejecutor_tipo: "subagente",
+    como: "",
+    estado: "CUMPLIDO",
+    cumplido: true,
+    ciclo: false,
+    secuencia: [],
+    produce: [],
   },
-  expansion: {
-    post_id: true,
-    cuenta_primaria: "act_vitalcom_gt",
-    cuentas_activas: ["act_vitalcom_gt", "act_vitalcom_respaldo"],
-    page_id: "vitalcom_salud_gt",
+  nodo_medir_cierre: {
+    id: "F3.medir_cierre",
+    titulo: "Medir cierre",
+    ejecutor: "script",
+    ejecutor_tipo: "script",
+    como: "",
+    estado: "PENDIENTE",
+    cumplido: false,
+    ciclo: false,
+    secuencia: [],
+    produce: [],
   },
+  eventos_cambio_bot: [] as { evento: string; fecha: string; motivo: string }[],
+  gate_f4: null as Record<string, unknown> | null,
+  entrada_f4: { ok: false, observado: "sin CAMBIO_BOT todavía", regla: "" },
 };
 
 beforeEach(() => {
-  respuestas = {};
-  llamadasFetch = [];
+  respuestas = {
+    "GET /api/acciones": [],
+  };
   simularFetch();
 });
 
@@ -134,67 +108,64 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test("muestra gate 2de2 como pendiente con su mensaje doctrinario", async () => {
-  respuestas["GET /api/productos/TINNIDROP/fase3"] = FASE3_MOCK_PENDIENTE;
-  renderizar("TINNIDROP");
-
-  await waitFor(() => {
-    expect(screen.getByText(/FASE 3 · Escalado CBO \(TINNIDROP\)/i)).toBeDefined();
-  });
-
-  expect(screen.getByText("⚠ GATE PENDIENTE")).toBeDefined();
-  expect(
-    screen.getByText(/El producto se encuentra en FASE 2. Se requiere ganador replicado en 2 tandas./i),
-  ).toBeDefined();
-  expect(screen.getByText("Estructura de Campaña 1-1-7 CBO")).toBeDefined();
-  expect(screen.getByText("PENDIENTE")).toBeDefined();
-  expect(screen.getAllByText("act_vitalcom_gt").length).toBeGreaterThan(0);
-});
-
-test("muestra gate 2de2 como cumplido y plan CBO generado", async () => {
-  respuestas["GET /api/productos/TINNIDROP/fase3"] = FASE3_MOCK_CUMPLIDO;
-  renderizar("TINNIDROP");
-
-  await waitFor(() => {
-    expect(screen.getByText("✓ GATE CUMPLIDO")).toBeDefined();
-  });
-
-  expect(
-    screen.getByText(/Concepto C01 validado en 2 de 2 tandas con ROAS superior./i),
-  ).toBeDefined();
-  expect(screen.getByText("GENERADO")).toBeDefined();
-  expect(screen.getByText(/4_PLAN_ESCALADO.txt/i)).toBeDefined();
-  expect(screen.getByText("Post ID Activo")).toBeDefined();
-});
-
-test("botón de reingreso a F1 desde Fase 3 abre modal y ejecuta POST", async () => {
-  respuestas["GET /api/productos/TINNIDROP/fase3"] = FASE3_MOCK_CUMPLIDO;
-  respuestas["POST /api/productos/TINNIDROP/reingreso-f1"] = {
-    producto_key: "TINNIDROP",
-    ok: true,
-    nodo_destino: "F1.etapa-0",
-    angulos_excluidos: ["ACCESIBILIDAD_MEDICO", "NOCHES_SIN_DORMIR"],
-    motivo: "Escalado agotado / fatiga de microángulos",
+test("sin CAMBIO_BOT: dice que falta registrarlo y no desbloquea FASE 4", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase3"] = {
+    ...BASE,
+    gate_f4: {
+      fecha_cambio_bot: null, mensajes: null, ventas: null, cierre_pct: null,
+      min_mensajes: 30, min_cierre_pct: 10, cierre_meta_min_pct: 15, cierre_meta_max_pct: 20,
+      ok: false,
+      explicacion: "sin CAMBIO_BOT (ni EXCEPCION_CAMBIO_BOT) posterior al concepto ganador todavía",
+    },
   };
-
   renderizar("TINNIDROP");
 
   await waitFor(() => {
-    expect(screen.getByText("Nuevos ángulos para este producto →")).toBeDefined();
+    expect(screen.getByText(/FASE 3 · Flujo LucidBot \(TINNIDROP\)/i)).toBeDefined();
   });
 
-  fireEvent.click(screen.getByText("Nuevos ángulos para este producto →"));
+  expect(screen.getByText("✓ GATE CUMPLIDO")).toBeDefined();
+  expect(screen.getByText("Ninguno todavía")).toBeDefined();
+  expect(screen.getByText("⚠ SE QUEDA EN FASE 3")).toBeDefined();
+});
 
-  expect(screen.getByText(/Confirmar retorno a FASE 1 desde FASE 3/i)).toBeDefined();
-  expect(screen.getByText(/ACCESIBILIDAD_MEDICO, NOCHES_SIN_DORMIR/i)).toBeDefined();
-
-  fireEvent.click(screen.getByText("Confirmar retorno a F1"));
+test("CAMBIO_BOT registrado pero cierre bajo el piso: sigue en FASE 3", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase3"] = {
+    ...BASE,
+    eventos_cambio_bot: [{ evento: "CAMBIO_BOT", fecha: "2026-09-20", motivo: "reescritura etapa-5" }],
+    gate_f4: {
+      fecha_cambio_bot: "2026-09-20", mensajes: 40, ventas: 2, cierre_pct: 5.0,
+      min_mensajes: 30, min_cierre_pct: 10, cierre_meta_min_pct: 15, cierre_meta_max_pct: 20,
+      ok: false,
+      explicacion: "desde CAMBIO_BOT 2026-09-20: 40 mensaje(s) (≥30) · cierre 5.0% (≥10%)",
+    },
+  };
+  renderizar("TINNIDROP");
 
   await waitFor(() => {
-    const llamada = llamadasFetch.find(
-      (l) => l.url === "/api/productos/TINNIDROP/reingreso-f1" && l.metodo === "POST",
-    );
-    expect(llamada).toBeDefined();
-    expect(llamada?.cuerpo?.motivo).toBe("Escalado agotado / fatiga de microángulos");
+    expect(screen.getByText("1 registrado(s)")).toBeDefined();
+  });
+
+  expect(screen.getByText("⚠ SE QUEDA EN FASE 3")).toBeDefined();
+  expect(screen.getByText(/desde CAMBIO_BOT 2026-09-20/i)).toBeDefined();
+});
+
+test("CAMBIO_BOT registrado y cierre sobre el piso: desbloquea FASE 4", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase3"] = {
+    ...BASE,
+    fase: "F4",
+    eventos_cambio_bot: [{ evento: "CAMBIO_BOT", fecha: "2026-09-15", motivo: "reescritura etapa-5" }],
+    gate_f4: {
+      fecha_cambio_bot: "2026-09-15", mensajes: 40, ventas: 6, cierre_pct: 15.0,
+      min_mensajes: 30, min_cierre_pct: 10, cierre_meta_min_pct: 15, cierre_meta_max_pct: 20,
+      ok: true,
+      explicacion: "desde CAMBIO_BOT 2026-09-15: 40 mensaje(s) (≥30) · cierre 15.0% (≥10%)",
+    },
+    entrada_f4: { ok: true, observado: "todo cumplido", regla: "" },
+  };
+  renderizar("TINNIDROP");
+
+  await waitFor(() => {
+    expect(screen.getByText("✓ DESBLOQUEA FASE 4")).toBeDefined();
   });
 });

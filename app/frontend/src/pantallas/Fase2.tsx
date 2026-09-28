@@ -99,7 +99,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             params={{ clave }}
             className="rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-200 hover:bg-zinc-700"
           >
-            Ver FASE 3 (Escalado) →
+            Ver FASE 3 (Flujo LucidBot) →
           </Link>
         </div>
       </div>

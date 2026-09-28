@@ -28,7 +28,8 @@ export function estadoEnPalabras(estado: string | null | undefined) {
 export const FASES = [
   { id: "F1", rotulo: "FASE 1 · ángulos", que: "6 ángulos distintos, un concepto fijo" },
   { id: "F2", rotulo: "FASE 2 · conceptos", que: "el ángulo ganador, 10 conceptos" },
-  { id: "F3", rotulo: "FASE 3 · escalado", que: "ya no se mide: se compra volumen" },
+  { id: "F3", rotulo: "FASE 3 · flujo LucidBot", que: "ángulo y concepto fijos, se optimiza el cierre del bot" },
+  { id: "F4", rotulo: "FASE 4 · escalado", que: "ya no se mide: se compra volumen" },
 ] as const;
 
 const FASE_POR_ID: Record<string, (typeof FASES)[number]> = Object.fromEntries(

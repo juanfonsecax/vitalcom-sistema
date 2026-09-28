@@ -41,7 +41,7 @@ PROHIBIDO_ESCALAR_CIERRE_BAJO (no scaling under 10% close), which no script enfo
 - [x] B2 Doctrine: CLAUDE.md, CALENDARIO_ESCALADO.md, GUIA_MADRE rows, skills (new fase-3-flujo,
       fase-3-escalado → fase-4-escalado), affected ETAPA-*.md pointers, verificar_guia_madre green.
       (route: delegated writer)
-- [ ] B3 App: backend endpoints (fase3 = flujo, fase4 = escalado), frontend screens/tabs/lenguaje, tests, e2e.
+- [x] B3 App: backend endpoints (fase3 = flujo, fase4 = escalado), frontend screens/tabs/lenguaje, tests, e2e.
       (route: delegated writer)
 - [ ] B4 Integration: run flujo.py/decidir.py read-only against a copy of the live data, full test
       suites, report to operator before merge. (route: parent + per-action workers)
@@ -322,6 +322,106 @@ detail endpoint — its own naming is now stale, `plan_cbo`/1-1-7 content) defau
 become `"F4"` once B3 rewires this endpoint for the new phase split; left untouched here since it's
 functional app logic, not a doctrine pointer, and squarely in B3's scope per the task's own split.
 
+### B3 (done, 28-sep-2026)
+
+**Engine (`Ads/_TOOLS/flujo.py`)**: extracted the gate's math out of the predicate into a new
+`medir_cierre_post_cambio_bot(pk, ctx, env, min_mensajes, min_cierre_pct)` that returns a
+structured dict (`fecha_cambio_bot`, `mensajes`, `ventas`, `cierre_pct`, `min_mensajes`,
+`min_cierre_pct`, `cierre_meta_min_pct`/`max_pct`, `ok`, `explicacion`) instead of just
+`(ok, texto)`. `_ev_cierre_post_cambio_bot` (the predicate used by `F4.entrada` and
+`F3.medir_cierre`) now just calls it and unpacks `(ok, explicacion)` — same single calculation,
+one more consumer. `situar()` attaches this dict as `res["cierre_post_cambio_bot"]` whenever the
+product's current fase is F3 or F4 (`None` otherwise), so `flujo.py --json` exposes it without the
+app ever recomputing mensajes/ventas/cierre% itself (regla de oro `contratos.py`). `test_flujo.py`/
+`test_gate_entrada.py` unaffected (48/48 still green, verified before touching the app layer).
+
+**Backend**: `contratos.fase3_detalle()` is now the FLOW phase — entrada gate (concepto 2de2, same
+as before), `F3.reescribir`/`F3.medir_cierre` node state (`None` once the product already moved to
+F4, since `flujo.py --json` only returns the CURRENT fase's nodes — documented in the function's
+docstring), CAMBIO_BOT/EXCEPCION_CAMBIO_BOT events from `_EVENTOS.csv`, and `gate_f4` = the
+structured dict straight from `flujo_data["cierre_post_cambio_bot"]` (never recalculated) plus the
+`F4` entrada. The OLD `fase3_detalle()` (escalado) was renamed to `fase4_detalle()`, filtering
+`entradas`/defaults on `"F4"` instead of `"F3"`. `api_fases.py`: `/fase3` now serves the new flow
+contract, `/fase4` (new route) serves the renamed one — both with `response_model` (previously
+`/fase3` had none). New Pydantic models in `modelos.py`: `EventoCambioBot`, `CierrePostCambioBot`,
+`Fase3Detalle`, plus `PlanCbo`/`ExpansionEscalado`/`FatigaEscalado`/`Fase4Detalle` (the old dict-only
+endpoint got modeled properly for the first time). `VISTAS/_MANIFIESTO.json` checked: no `/fase3`
+or `/fase4` references there (those actions are `nodo.F3.reescribir`/`nodo.F3.medir_cierre`,
+already wired by B1/B2) — no manifest change needed.
+
+**Frontend**: `api/cliente.ts` gained `api.fase4()` and typed exports for the new schemas (regenerated
+`esquema.d.ts` via `pnpm exec openapi-typescript` against a worktree-local backend — see
+Verification). `git mv Fase3.tsx → Fase4.tsx` (component renamed `Fase4`, hook to `api.fase4`,
+labels FASE 3→FASE 4, gate label, back-link now points to `/fase3`); new `Fase3.tsx` for the flow
+phase: entry gate semaphore, "what to do" steps (etapa-11 brief already done in F2 → etapa-5
+rewrites → operator applies + registers CAMBIO_BOT) with the REAL `nodo.F3.reescribir` action
+button (same `api.acciones`/`api.pedirAccion` pattern as `Fase1.tsx`, including the
+disponible/por_que blocked-reason card), the CAMBIO_BOT events list (with the exact
+`registrar_evento.py` command shown when empty), and the F4 gate gauge (mensajes/min, ventas,
+cierre % via the existing `cierreEnPalabras` helper + the 15-20% benchmark, piso 10%, explicación
+tal cual el motor la mandó). `ProductoDetalle.tsx`: 5 tabs now (Resumen/F1/F2/F3/F4),
+`CLAVE_GLOSARIO_DE_FASE`/`tabDeFase`/`tabDeRuta`/`RUTA_DE_TAB` extended for F4. `main.tsx`: new
+route `/producto/$clave/fase4`. `lenguaje.ts` `FASES` array gained F3 (flujo LucidBot) between F2
+and the renumbered F4 (escalado). `glosario.ts`: `fase_3` rewritten for the flow phase, new
+`fase_4`, `cambio_bot`, `cierre_post_cambio_bot` terms. `Fase2.tsx`: its "Ver FASE 3" link already
+pointed at `/fase3` (unaffected by the rename) — only its label ("Escalado"→"Flujo LucidBot") was
+stale, fixed. `Guia.tsx`: ficha chip and phase-method card now describe 4 phases with what unlocks
+each (F1 evidencia de venta, F2 concepto 2de2 en ~3 días, F3 CAMBIO_BOT, F4 CAMBIO_BOT+≥30
+mensajes+≥10% cierre).
+
+**Tests**: `test_fases_api.py` — renamed the old real-data TINNIDROP test to `/fase4`, added a new
+real-data `/fase3` test (TINNIDROP sits in F2 today, so the flow screen still responds with
+pending gates, never a 500), plus 3 fixture-based tests (`patch("vitalcom_app.contratos.flujo")` +
+`_leer_csv`, no real data touched) covering: no CAMBIO_BOT yet, CAMBIO_BOT registered but cierre
+below the 10% floor, and CAMBIO_BOT + cierre above the floor unlocking F4 — per the task's explicit
+"with/without CAMBIO_BOT and below/above threshold" requirement. Frontend: `fase4.test.tsx`
+(renamed from `fase3.test.tsx`, F3→F4 throughout, mock endpoint path `/fase4`), new
+`fase3.test.tsx` (3 cases mirroring the backend fixtures), `producto-detalle.test.tsx` updated for
+5 tabs. E2E: `git mv fases_2_3.spec.ts → fases_2_3_4.spec.ts`, the old FASE 3 test became the FASE 4
+test (`/fase4`, same assertions), new FASE 3 test reads the live `/api/productos/TINNIDROP/fase3`
+contract instead of hardcoding a verdict (TINNIDROP has no CAMBIO_BOT in this worktree's data,
+confirmed by grep on `_EVENTOS.csv` before writing the assertions).
+
+**Verification (all green)**:
+- `app/backend`: `uv run pytest tests/test_fases_api.py -q` → 7 passed; full suite
+  `uv run pytest -q` → **197 passed** in 322s (no server/tests left running afterward — see the
+  two stray-background-process notes below).
+- `app/frontend`: `node_modules` already present (no install needed) → `pnpm test` → **124 passed**
+  (16 files); `pnpm build` (`tsc -b && vite build`) → typecheck + build clean; `pnpm exec
+  playwright test` → **16 passed**, including the 3 rewritten `fases_2_3_4.spec.ts` cases. The e2e
+  webServer command (`playwright.config.ts`) runs `uv run uvicorn vitalcom_app.main:app` from
+  `../backend` with cwd resolved relative to `app/frontend` — i.e. **this worktree's own backend
+  code**, not the live SISTEMA folder; `VITALCOM_BASE` defaults to two levels up from
+  `app/frontend` (the worktree root itself), so data read is this worktree's own committed
+  `PRODUCTOS/`/`Ads/` snapshot, confirmed by the config's own comment and by TINNIDROP's real F2
+  state matching what the new FASE 3 e2e test asserts.
+- Repo root: `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` → **48 passed** (unchanged count,
+  confirming the `flujo.py` refactor didn't touch its public predicate behavior). `gen_app.py
+  --todo` not run: no test or hook required VISTAS regeneration (`git status` confirms zero
+  `VISTAS/`/`PRODUCTOS/` churn survived this session).
+- Types were regenerated the project way: started `uv run uvicorn` on the worktree's own code with
+  `VITALCOM_BASE` forced to the worktree (main.py refuses to run from a linked worktree otherwise —
+  a real safety check, not a bug), then `pnpm exec openapi-typescript http://127.0.0.1:<port>
+  /openapi.json -o src/api/esquema.d.ts`, confirmed `Fase3Detalle`/`Fase4Detalle`/
+  `CierrePostCambioBot`/`EventoCambioBot` landed in the generated schema before touching
+  `cliente.ts`.
+- Stray processes note: two early `uv run pytest -q` background launches (before this session
+  learned the output-buffering quirk with piped `| tail`) were left running concurrently and
+  stepped on each other's SQLite/CSV locks, making all three hang; found via
+  `Get-CimInstance Win32_Process`/`taskkill` and killed before the clean, single full-suite run
+  reported above. No test or app code was affected — purely a local process-management mistake in
+  this session, not a code defect.
+
+**Changed files** (one line each): `Ads/_TOOLS/flujo.py` · `app/backend/vitalcom_app/contratos.py`
+· `modelos.py` · `api_fases.py` · `app/backend/tests/test_fases_api.py` ·
+`app/frontend/src/api/cliente.ts` · `esquema.d.ts` (regenerated) · `glosario.ts` · `lenguaje.ts` ·
+`main.tsx` · `pantallas/Fase2.tsx` · `pantallas/Fase3.tsx` (new, flow phase) ·
+`pantallas/Fase4.tsx` (renamed from `Fase3.tsx`, ex-escalado) · `pantallas/Guia.tsx` ·
+`pantallas/ProductoDetalle.tsx` · `pruebas/fase3.test.tsx` (new) · `pruebas/fase4.test.tsx`
+(renamed) · `pruebas/producto-detalle.test.tsx` · `e2e/fases_2_3_4.spec.ts` (renamed from
+`fases_2_3.spec.ts`).
+
 ## Next step
-B3 (app) can now proceed off the doctrine contracts landed in B2, using the concrete
-`fase3_detalle()` finding above as its starting point.
+B4: full read-only run against a copy of live data before merge (per the plan), plus a final
+review that B3's app changes and B1/B2's engine/doctrine changes agree end-to-end before opening
+the PR out of this worktree.

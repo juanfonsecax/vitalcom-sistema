@@ -65,13 +65,13 @@ export function Guia() {
           <Tarjeta className="space-y-2">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">Ficha del producto</h3>
-              <Chip tono="dato">Resumen · Fase 1 · 2 · 3</Chip>
+              <Chip tono="dato">Resumen · Fase 1 · 2 · 3 · 4</Chip>
             </div>
             <p className="text-sm text-muted-foreground">
               Cada producto tiene su ficha con pestañas. El <strong>Resumen</strong> muestra dónde
               está parado, qué falta para avanzar y el recorrido completo. Las pestañas de fase
-              traen el trabajo específico: armado de la FASE 1, tablero de conceptos de la FASE 2 o
-              el plan de escalado de la FASE 3.
+              traen el trabajo específico: armado de la FASE 1, tablero de conceptos de la FASE 2,
+              la reescritura del flujo del bot en la FASE 3 o el plan de escalado de la FASE 4.
             </p>
           </Tarjeta>
 
@@ -124,22 +124,31 @@ export function Guia() {
 
           <Tarjeta className="space-y-2">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold">Fases 1, 2 y 3</h3>
+              <h3 className="font-semibold">Fases 1, 2, 3 y 4</h3>
               <Chip tono="bien">El método</Chip>
             </div>
             <ul className="space-y-1.5 text-sm text-muted-foreground">
               <li>
                 • <strong className="text-foreground">FASE 1 (Ángulos):</strong> seis ángulos de
-                venta con un mismo concepto fijo, para descubrir qué dolor compra la gente.
+                venta con un mismo concepto fijo, para descubrir qué dolor compra la gente. Se
+                desbloquea con evidencia de venta por ángulo.
               </li>
               <li>
                 • <strong className="text-foreground">FASE 2 (Conceptos):</strong> toma el ángulo
                 ganador y le testea diez conceptos visuales, con prompts listos para copiar y
-                generar las imágenes.
+                generar las imágenes. Se desbloquea cuando un concepto gana en 2 de 2 pruebas
+                seguidas (~3 días de la 1-1-5).
               </li>
               <li>
-                • <strong className="text-foreground">FASE 3 (Escalado):</strong> cuando un concepto
-                ganó en 2 de 2 pruebas seguidas, se compra volumen con la campaña CBO 1-1-7.
+                • <strong className="text-foreground">FASE 3 (Flujo LucidBot):</strong> ángulo y
+                concepto ya validados, mismo presupuesto — se reescribe el flujo del bot hacia el
+                ganador (CAMBIO_BOT) y se mide el cierre hasta llegar al piso.
+              </li>
+              <li>
+                • <strong className="text-foreground">FASE 4 (Escalado):</strong> se desbloquea con
+                el CAMBIO_BOT registrado más ≥30 mensajes con cierre ≥10 % desde ese cambio
+                (PROHIBIDO_ESCALAR_CIERRE_BAJO); recién ahí se compra volumen con la campaña CBO
+                1-1-7.
               </li>
             </ul>
           </Tarjeta>

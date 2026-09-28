@@ -1,8 +1,8 @@
 /**
  * ProductoDetalle — la ficha de UN producto: un header con lo esencial (nombre, fase, paso de
- * ahora, bloqueante) y pestañas (P4/T3) — Resumen (el recorrido F1→F2→F3 completo, antes toda
- * la pantalla) y una por fase (Fase 1/2/3), que renderizan las pantallas viejas de cada fase
- * SIN reescribirlas: Fase1/2/3 absorben acá su navegación, no su contenido.
+ * ahora, bloqueante) y pestañas (P4/T3) — Resumen (el recorrido F1→F2→F3→F4 completo, antes toda
+ * la pantalla) y una por fase (Fase 1/2/3/4), que renderizan las pantallas viejas de cada fase
+ * SIN reescribirlas: Fase1/2/3/4 absorben acá su navegación, no su contenido.
  *
  * Las pestañas son URL-driven: `/producto/$clave/faseN` sigue siendo una URL real (el operador
  * la puede compartir o recargar) que selecciona la pestaña N; `/producto/$clave` a secas
@@ -27,21 +27,24 @@ import { estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace } from "../len
 import { Fase1 } from "./Fase1";
 import { Fase2 } from "./Fase2";
 import { Fase3 } from "./Fase3";
+import { Fase4 } from "./Fase4";
 
-type TabId = "resumen" | "fase1" | "fase2" | "fase3";
+type TabId = "resumen" | "fase1" | "fase2" | "fase3" | "fase4";
 
 const CLAVE_GLOSARIO_DE_FASE: Record<string, ClaveGlosario | undefined> = {
   F1: "fase_1",
   F2: "fase_2",
   F3: "fase_3",
+  F4: "fase_4",
 };
 
-/** La fase vigente (`d.fase`), como pestaña por defecto. Una fase fuera de F1/F2/F3 (p. ej.
+/** La fase vigente (`d.fase`), como pestaña por defecto. Una fase fuera de F1/F2/F3/F4 (p. ej.
  * PAUSADO, como VARICOSE) cae en Resumen: no hay pestaña de fase que le corresponda. */
 function tabDeFase(fase: string | null | undefined): TabId {
   if (fase === "F1") return "fase1";
   if (fase === "F2") return "fase2";
   if (fase === "F3") return "fase3";
+  if (fase === "F4") return "fase4";
   return "resumen";
 }
 
@@ -51,14 +54,19 @@ function tabDeRuta(pathname: string): TabId | null {
   if (pathname.endsWith("/fase1")) return "fase1";
   if (pathname.endsWith("/fase2")) return "fase2";
   if (pathname.endsWith("/fase3")) return "fase3";
+  if (pathname.endsWith("/fase4")) return "fase4";
   return null;
 }
 
-const RUTA_DE_TAB: Record<TabId, "/producto/$clave" | "/producto/$clave/fase1" | "/producto/$clave/fase2" | "/producto/$clave/fase3"> = {
+const RUTA_DE_TAB: Record<
+  TabId,
+  "/producto/$clave" | "/producto/$clave/fase1" | "/producto/$clave/fase2" | "/producto/$clave/fase3" | "/producto/$clave/fase4"
+> = {
   resumen: "/producto/$clave",
   fase1: "/producto/$clave/fase1",
   fase2: "/producto/$clave/fase2",
   fase3: "/producto/$clave/fase3",
+  fase4: "/producto/$clave/fase4",
 };
 
 function Dato({ requisito }: { requisito: Requisito }) {
@@ -301,9 +309,10 @@ export function ProductoDetalle() {
           <TabsTrigger value="fase1">Fase 1</TabsTrigger>
           <TabsTrigger value="fase2">Fase 2</TabsTrigger>
           <TabsTrigger value="fase3">Fase 3</TabsTrigger>
+          <TabsTrigger value="fase4">Fase 4</TabsTrigger>
         </TabsList>
         {/* Un solo panel, cuyo contenido cambia con la pestaña — así solo la fase abierta hace
-            sus fetches (Fase1/2/3 son pantallas pesadas, no conviene montarlas las cuatro). */}
+            sus fetches (Fase1/2/3/4 son pantallas pesadas, no conviene montarlas las cinco). */}
         <TabsContent value={tabActiva}>
           {tabActiva === "resumen" &&
             (flujo.isLoading ? (
@@ -326,6 +335,11 @@ export function ProductoDetalle() {
           {tabActiva === "fase3" && (
             <div className="pt-4">
               <Fase3 clave={clave} />
+            </div>
+          )}
+          {tabActiva === "fase4" && (
+            <div className="pt-4">
+              <Fase4 clave={clave} />
             </div>
           )}
         </TabsContent>

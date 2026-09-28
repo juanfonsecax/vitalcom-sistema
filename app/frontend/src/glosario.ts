@@ -82,8 +82,26 @@ export const GLOSARIO = {
   fase_3: {
     rotulo: "FASE 3",
     que_es:
-      "Ya no se mide: se compra volumen del ángulo y el concepto validados, con una campaña 1-1-7.",
-    dueno: "fase-3-escalado",
+      "El ángulo y el concepto ya están validados, mismo presupuesto: la variable es el flujo LucidBot. Se reescribe hacia el ganador (CAMBIO_BOT) y se mide el cierre, hasta que llegue al piso del 10 %.",
+    dueno: "fase-3-flujo",
+  },
+  fase_4: {
+    rotulo: "FASE 4",
+    que_es:
+      "Ya no se mide: se compra volumen del ángulo, el concepto y el flujo ya validados, con una campaña 1-1-7.",
+    dueno: "fase-4-escalado",
+  },
+  cambio_bot: {
+    rotulo: "CAMBIO_BOT",
+    que_es:
+      "El evento que marca que el flujo LucidBot ya se reescribió hacia el ángulo y concepto ganadores. Sin fecha posterior al concepto ganador, no cuenta para el gate de FASE 4.",
+    dueno: "Ads/_TOOLS/registrar_evento.py · PLANTILLAS_FLUJO_BOT.md",
+  },
+  cierre_post_cambio_bot: {
+    rotulo: "cierre post-CAMBIO_BOT",
+    que_es:
+      "Mensajes → ventas contados DESPUÉS del último CAMBIO_BOT. Gate duro: bajo 10 % no se escala (PROHIBIDO_ESCALAR_CIERRE_BAJO). El 15-20 % es solo un benchmark de referencia.",
+    dueno: "Ads/_TOOLS/flujo.py · GUIA_MADRE_PARAMETRIZADA.md",
   },
   uno_uno_cinco: {
     rotulo: "1-1-5",

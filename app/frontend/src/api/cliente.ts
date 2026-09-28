@@ -201,6 +201,7 @@ export const api = {
   ganadores: () => pedir<Ganador[]>("/api/ganadores"),
   fase2: (clave: string) => pedir<Fase2Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase2`),
   fase3: (clave: string) => pedir<Fase3Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase3`),
+  fase4: (clave: string) => pedir<Fase4Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase4`),
   resultados: () => pedir<Resultados>("/api/resultados"),
   historialResultados: () => pedir<Resultados[]>("/api/resultados/historial"),
   cargarResultados: (formulario: FormData) =>
@@ -222,30 +223,11 @@ export type FatigaFase2 = components["schemas"]["FatigaFase2"];
 export type ReingresoActivo = components["schemas"]["ReingresoActivo"];
 export type Fase2Detalle = components["schemas"]["Fase2Detalle"];
 
-export type Fase3Detalle = {
-  producto_key: string;
-  fase: string;
-  nodo_actual: string;
-  gate_2de2: {
-    ok: boolean;
-    observado: string;
-    regla: string;
-  };
-  plan_cbo: {
-    estructura: string;
-    descripcion: string;
-    tiene_plan: boolean;
-    estado: string;
-    archivo: string | null;
-  };
-  expansion: {
-    post_id: boolean;
-    cuenta_primaria: string;
-    cuentas_activas: string[];
-    page_id: string;
-  };
-  fatiga: {
-    angulos_probados: string[];
-    puede_reingresar: boolean;
-  };
-};
+export type EventoCambioBot = components["schemas"]["EventoCambioBot"];
+export type CierrePostCambioBot = components["schemas"]["CierrePostCambioBot"];
+export type Fase3Detalle = components["schemas"]["Fase3Detalle"];
+
+export type PlanCbo = components["schemas"]["PlanCbo"];
+export type ExpansionEscalado = components["schemas"]["ExpansionEscalado"];
+export type FatigaEscalado = components["schemas"]["FatigaEscalado"];
+export type Fase4Detalle = components["schemas"]["Fase4Detalle"];

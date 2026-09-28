@@ -627,12 +627,70 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
 
 
 def fase3_detalle(producto_key: str) -> dict[str, Any]:
-    """Detalles de FASE 3 para el producto: gate 2de2 con evidencia, plan CBO 1-1-7 y expansión."""
+    """Detalles de FASE 3 (optimización de flujo LucidBot) para el producto: el gate de entrada
+    (concepto 2de2, igual al de siempre), el estado de sus dos nodos (`F3.reescribir` reescribe el
+    bot, `F3.medir_cierre` mide mensajes→ventas después del CAMBIO_BOT), los eventos CAMBIO_BOT/
+    EXCEPCION_CAMBIO_BOT registrados, y el gate duro de salida hacia FASE 4
+    (`cierre_post_cambio_bot`) EXACTAMENTE como lo calculó `flujo.py` — esta función nunca
+    recalcula mensajes, ventas ni cierre %, solo lee el campo estructurado que `flujo.py --json`
+    ya trae (regla de oro del archivo: la app no hace aritmética de negocio)."""
+    flujo_data = flujo(producto_key)
+    entradas = flujo_data.get("entradas", [])
+
+    def _entrada(fase_id: str) -> dict[str, Any]:
+        for e in entradas:
+            if e.get("fase") == fase_id:
+                return {
+                    "ok": bool(e.get("ok")),
+                    "observado": e.get("observado", ""),
+                    "regla": e.get("regla", ""),
+                }
+        return {"ok": False, "observado": "Sin evaluar", "regla": ""}
+
+    nodos = flujo_data.get("nodos", [])
+    nodo_reescribir = next((n for n in nodos if n.get("id") == "F3.reescribir"), None)
+    nodo_medir_cierre = next((n for n in nodos if n.get("id") == "F3.medir_cierre"), None)
+
+    eventos_cambio_bot = []
+    try:
+        for ev in _leer_csv(("PRODUCTOS", "_EVENTOS.csv")):
+            if ev.get("producto_key") == producto_key and ev.get("evento") in ("CAMBIO_BOT", "EXCEPCION_CAMBIO_BOT"):
+                eventos_cambio_bot.append({
+                    "evento": ev.get("evento", ""),
+                    "fecha": ev.get("fecha", ""),
+                    "motivo": ev.get("motivo", ""),
+                })
+    except Exception:
+        eventos_cambio_bot = []
+    eventos_cambio_bot.sort(key=lambda e: e.get("fecha", ""))
+
+    return {
+        "producto_key": producto_key,
+        "fase": flujo_data.get("fase", "F3"),
+        "nodo_actual": flujo_data.get("nodo_actual", ""),
+        "entrada": _entrada("F3"),
+        "nodo_reescribir": nodo_reescribir,
+        "nodo_medir_cierre": nodo_medir_cierre,
+        "eventos_cambio_bot": eventos_cambio_bot,
+        # Estructurado por `medir_cierre_post_cambio_bot` (Ads/_TOOLS/flujo.py): fecha_cambio_bot,
+        # mensajes, ventas, cierre_pct, min_mensajes, min_cierre_pct, cierre_meta_min_pct/max_pct
+        # (benchmark 15-20%, nunca gate), ok, explicacion. None si el producto todavía no llegó a F3.
+        "gate_f4": flujo_data.get("cierre_post_cambio_bot"),
+        "entrada_f4": _entrada("F4"),
+    }
+
+
+def fase4_detalle(producto_key: str) -> dict[str, Any]:
+    """Detalles de FASE 4 (escalado) para el producto: gate de entrada (concepto 2de2 + CAMBIO_BOT
+    + cierre_post_cambio_bot, `flujo.py:F4.entrada`), plan CBO 1-1-7 y expansión.
+
+    Ex-`fase3_detalle` (renombrada B3, decisión del operador 28-sep-2026: FASE 3 pasó a ser la
+    optimización del flujo del bot, FASE 4 es el escalado de siempre)."""
     flujo_data = flujo(producto_key)
     entradas = flujo_data.get("entradas", [])
     gate_2de2_info = {"ok": False, "observado": "Sin evaluar", "regla": ""}
     for e in entradas:
-        if e.get("fase") == "F3":
+        if e.get("fase") == "F4":
             gate_2de2_info = {
                 "ok": bool(e.get("ok")),
                 "observado": e.get("observado", ""),
@@ -662,7 +720,7 @@ def fase3_detalle(producto_key: str) -> dict[str, Any]:
 
     return {
         "producto_key": producto_key,
-        "fase": flujo_data.get("fase", "F3"),
+        "fase": flujo_data.get("fase", "F4"),
         "nodo_actual": flujo_data.get("nodo_actual", ""),
         "gate_2de2": gate_2de2_info,
         "plan_cbo": {

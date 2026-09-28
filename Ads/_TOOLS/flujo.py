@@ -982,7 +982,7 @@ RESOLVEDORES_FECHA = {
 }
 
 
-def _ev_cierre_post_cambio_bot(p, ctx, env):
+def medir_cierre_post_cambio_bot(pk, ctx, env, min_mensajes=None, min_cierre_pct=None):
     """GATE DURO F3→F4 (PROHIBIDO_ESCALAR_CIERRE_BAJO, Clase 22-ago Calet, decisión del operador
     28-sep-2026): no se compra volumen sobre un bot que todavía no cierra.
 
@@ -996,12 +996,29 @@ def _ev_cierre_post_cambio_bot(p, ctx, env):
     _ventas_base() (invariante 11: nunca se sobrescriben filas a mano) — mismas filas BASE que
     _angulos_acumulados()/decidir.py, nunca un segundo camino de agregación.
 
-    Sin CAMBIO_BOT/EXCEPCION_CAMBIO_BOT posterior al ganador todavía: no pasa, y lo dice (todavía
-    no hay fecha de corte — F3.reescribir es el nodo que la produce)."""
-    pk = ctx["pk"]
+    ÚNICA función que calcula este número: `_ev_cierre_post_cambio_bot` (predicado de gate) y
+    `contratos.fase3_detalle()` (pantalla F3 de la app) llaman ACÁ, nunca reimplementan la cuenta
+    (regla de oro de `contratos.py`: la app no hace aritmética de negocio). Devuelve un dict con
+    los valores estructurados (mensajes, ventas, cierre_pct, umbrales, el benchmark 15-20% de
+    referencia y el veredicto) MÁS el mismo texto `explicacion` que el predicado usa como
+    `observado` — un solo cálculo, dos consumidores.
+
+    Sin CAMBIO_BOT/EXCEPCION_CAMBIO_BOT posterior al ganador todavía: `ok=False`, `mensajes`/
+    `ventas`/`cierre_pct`/`fecha_cambio_bot` en None, y lo dice (todavía no hay fecha de corte —
+    F3.reescribir es el nodo que la produce)."""
+    min_msj = 30 if min_mensajes is None else min_mensajes
+    min_cierre = 10.0 if min_cierre_pct is None else min_cierre_pct
+    benchmark_min = resolver_num("@param:cierre_meta_min_pct", env)
+    benchmark_max = resolver_num("@param:cierre_meta_max_pct", env)
     fecha_cb = _fecha_cambio_bot(ctx, env)
     if fecha_cb is None:
-        return False, "sin CAMBIO_BOT (ni EXCEPCION_CAMBIO_BOT) posterior al concepto ganador todavía"
+        return {
+            "fecha_cambio_bot": None, "mensajes": None, "ventas": None, "cierre_pct": None,
+            "min_mensajes": min_msj, "min_cierre_pct": min_cierre,
+            "cierre_meta_min_pct": benchmark_min, "cierre_meta_max_pct": benchmark_max,
+            "ok": False,
+            "explicacion": "sin CAMBIO_BOT (ni EXCEPCION_CAMBIO_BOT) posterior al concepto ganador todavía",
+        }
     mensajes = 0.0
     ventas = 0.0
     for r, _cj in _ventas_base(env, pk):
@@ -1011,14 +1028,24 @@ def _ev_cierre_post_cambio_bot(p, ctx, env):
         mensajes += num(r.get("mensajes"), 0) or 0
         ventas += num(r.get("ventas"), 0) or 0
     cierre = (ventas / mensajes * 100.0) if mensajes > 0 else None
-    min_msj = resolver_num(p.get("min_mensajes", "@param:min_mensajes_cierre"), env)
-    min_msj = 30 if min_msj is None else min_msj
-    min_cierre = resolver_num(p.get("min_cierre_pct", "@param:cierre_min_escalar_pct"), env)
-    min_cierre = 10.0 if min_cierre is None else min_cierre
     ok = mensajes >= min_msj and cierre is not None and cierre >= min_cierre
     que = "desde CAMBIO_BOT %s: %d mensaje(s) (≥%g) · cierre %s%% (≥%g%%)" % (
         fecha_cb, int(mensajes), min_msj, ("%.1f" % cierre) if cierre is not None else "s/d", min_cierre)
-    return ok, que
+    return {
+        "fecha_cambio_bot": fecha_cb.isoformat(), "mensajes": mensajes, "ventas": ventas,
+        "cierre_pct": cierre, "min_mensajes": min_msj, "min_cierre_pct": min_cierre,
+        "cierre_meta_min_pct": benchmark_min, "cierre_meta_max_pct": benchmark_max,
+        "ok": ok, "explicacion": que,
+    }
+
+
+def _ev_cierre_post_cambio_bot(p, ctx, env):
+    """Wrapper de predicado sobre `medir_cierre_post_cambio_bot` — mismo cálculo, forma (ok,
+    observado) que el resto de `_EVALUADORES`."""
+    min_msj = resolver_num(p.get("min_mensajes", "@param:min_mensajes_cierre"), env)
+    min_cierre = resolver_num(p.get("min_cierre_pct", "@param:cierre_min_escalar_pct"), env)
+    d = medir_cierre_post_cambio_bot(ctx["pk"], ctx, env, min_mensajes=min_msj, min_cierre_pct=min_cierre)
+    return d["ok"], d["explicacion"]
 
 
 # Fase -> token(s) de CONVENCIÓN DE NOMBRES (ETAPA-6.md) que aparecen en el nombre de campaña de
@@ -1216,6 +1243,14 @@ def situar(prod, flujo, env):
     res["fase_titulo"] = fase_actual.get("titulo", fase_actual["id"])
     res["entradas"] = entradas
     res["reingreso_activo"] = reingreso_activo
+    # Detalle estructurado del gate F3→F4 (mensajes/ventas/cierre% + benchmark), mismo cálculo que
+    # `_ev_cierre_post_cambio_bot` — se expone siempre que el producto ya pasó F2 (tiene concepto
+    # ganador) para que la pantalla F3 muestre su avance aunque el producto siga en F3/F4/F1
+    # (reingreso). `None` en F1/F2 sin ganador: `medir_cierre_post_cambio_bot` ya lo dice solo.
+    if fase_actual["id"] in ("F3", "F4"):
+        res["cierre_post_cambio_bot"] = medir_cierre_post_cambio_bot(pk, ctx, env)
+    else:
+        res["cierre_post_cambio_bot"] = None
 
     # -- los nodos de la fase: cumplido / pendiente ---------------------------
     nodos_out, actual = [], None

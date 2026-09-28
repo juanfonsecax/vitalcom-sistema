@@ -428,9 +428,31 @@ export interface paths {
         };
         /**
          * Obtener Fase3
-         * @description Detalle completo de FASE 3: gate 2de2 con evidencia, plan CBO 1-1-7 y expansión multicuenta.
+         * @description Detalle completo de FASE 3 (optimización del flujo LucidBot): gate de entrada, estado de
+         *     F3.reescribir/F3.medir_cierre, eventos CAMBIO_BOT y el gate duro de salida hacia FASE 4.
          */
         get: operations["obtener_fase3_api_productos__producto_key__fase3_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/productos/{producto_key}/fase4": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Obtener Fase4
+         * @description Detalle completo de FASE 4 (escalado): gate 2de2+CAMBIO_BOT+cierre, plan CBO 1-1-7 y
+         *     expansión multicuenta. Ex-`/fase3`, renombrada B3 (28-sep-2026, cuatro fases).
+         */
+        get: operations["obtener_fase4_api_productos__producto_key__fase4_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1039,6 +1061,44 @@ export interface components {
             [key: string]: unknown;
         };
         /**
+         * CierrePostCambioBot
+         * @description `Ads/_TOOLS/flujo.py:medir_cierre_post_cambio_bot` — el gate duro F3→F4
+         *     (PROHIBIDO_ESCALAR_CIERRE_BAJO): mensajes/ventas/cierre% desde el último CAMBIO_BOT (o
+         *     EXCEPCION_CAMBIO_BOT) vigente, los umbrales que se le exigen y el benchmark 15-20% de
+         *     referencia (nunca gate). Estos campos SON el cálculo del motor, pasados tal cual — la app
+         *     nunca los deriva de nuevo.
+         */
+        CierrePostCambioBot: {
+            /** Fecha Cambio Bot */
+            fecha_cambio_bot?: string | null;
+            /** Mensajes */
+            mensajes?: number | null;
+            /** Ventas */
+            ventas?: number | null;
+            /** Cierre Pct */
+            cierre_pct?: number | null;
+            /** Min Mensajes */
+            min_mensajes?: number | null;
+            /** Min Cierre Pct */
+            min_cierre_pct?: number | null;
+            /** Cierre Meta Min Pct */
+            cierre_meta_min_pct?: number | null;
+            /** Cierre Meta Max Pct */
+            cierre_meta_max_pct?: number | null;
+            /**
+             * Ok
+             * @default false
+             */
+            ok: boolean;
+            /**
+             * Explicacion
+             * @default
+             */
+            explicacion: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
          * ConceptoFase2
          * @description Un concepto de la galería de FASE 2. El prompt es el REAL de `armar_prompts_fase2.py`
          *     (`prompt_origen="paquete"`) o None con `comando_generar` cuando todavía no existe — nunca
@@ -1317,6 +1377,54 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * EventoCambioBot
+         * @description Una fila de `_EVENTOS.csv` con evento CAMBIO_BOT o EXCEPCION_CAMBIO_BOT.
+         */
+        EventoCambioBot: {
+            /**
+             * Evento
+             * @default
+             */
+            evento: string;
+            /**
+             * Fecha
+             * @default
+             */
+            fecha: string;
+            /**
+             * Motivo
+             * @default
+             */
+            motivo: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** ExpansionEscalado */
+        ExpansionEscalado: {
+            /**
+             * Post Id
+             * @default false
+             */
+            post_id: boolean;
+            /**
+             * Cuenta Primaria
+             * @default
+             */
+            cuenta_primaria: string;
+            /**
+             * Cuentas Activas
+             * @default []
+             */
+            cuentas_activas: string[];
+            /**
+             * Page Id
+             * @default
+             */
+            page_id: string;
+        } & {
+            [key: string]: unknown;
+        };
         /** FanPage */
         FanPage: {
             /** Pagina Num */
@@ -1384,6 +1492,80 @@ export interface components {
             conceptos_generados: number;
             reingreso_activo?: components["schemas"]["ReingresoActivo"] | null;
             fatiga?: components["schemas"]["FatigaFase2"] | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * Fase3Detalle
+         * @description `contratos.fase3_detalle`: FASE 3, optimización del flujo LucidBot hacia el ángulo+concepto
+         *     ganador. Gate de entrada (el de siempre, concepto 2de2), los dos nodos de la fase
+         *     (`F3.reescribir`/`F3.medir_cierre`), los eventos CAMBIO_BOT registrados y el gate duro de
+         *     salida hacia FASE 4 (`gate_f4`), calculado por el motor.
+         */
+        Fase3Detalle: {
+            /** Producto Key */
+            producto_key: string;
+            /**
+             * Fase
+             * @default
+             */
+            fase: string;
+            /**
+             * Nodo Actual
+             * @default
+             */
+            nodo_actual: string;
+            entrada: components["schemas"]["Requisito"];
+            nodo_reescribir?: components["schemas"]["Nodo"] | null;
+            nodo_medir_cierre?: components["schemas"]["Nodo"] | null;
+            /**
+             * Eventos Cambio Bot
+             * @default []
+             */
+            eventos_cambio_bot: components["schemas"]["EventoCambioBot"][];
+            gate_f4?: components["schemas"]["CierrePostCambioBot"] | null;
+            entrada_f4: components["schemas"]["Requisito"];
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * Fase4Detalle
+         * @description `contratos.fase4_detalle` (ex-`fase3_detalle` antes de las cuatro fases, B3): FASE 4,
+         *     escalado. Gate de entrada 2de2+CAMBIO_BOT+cierre (`flujo.py:F4.entrada`), plan CBO 1-1-7 y
+         *     expansión multicuenta.
+         */
+        Fase4Detalle: {
+            /** Producto Key */
+            producto_key: string;
+            /**
+             * Fase
+             * @default
+             */
+            fase: string;
+            /**
+             * Nodo Actual
+             * @default
+             */
+            nodo_actual: string;
+            gate_2de2: components["schemas"]["Requisito"];
+            plan_cbo: components["schemas"]["PlanCbo"];
+            expansion: components["schemas"]["ExpansionEscalado"];
+            fatiga: components["schemas"]["FatigaEscalado"];
+        } & {
+            [key: string]: unknown;
+        };
+        /** FatigaEscalado */
+        FatigaEscalado: {
+            /**
+             * Angulos Probados
+             * @default []
+             */
+            angulos_probados: string[];
+            /**
+             * Puede Reingresar
+             * @default true
+             */
+            puede_reingresar: boolean;
         } & {
             [key: string]: unknown;
         };
@@ -1930,6 +2112,33 @@ export interface components {
             archivo?: string | null;
             /** Url */
             url?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** PlanCbo */
+        PlanCbo: {
+            /**
+             * Estructura
+             * @default
+             */
+            estructura: string;
+            /**
+             * Descripcion
+             * @default
+             */
+            descripcion: string;
+            /**
+             * Tiene Plan
+             * @default false
+             */
+            tiene_plan: boolean;
+            /**
+             * Estado
+             * @default
+             */
+            estado: string;
+            /** Archivo */
+            archivo?: string | null;
         } & {
             [key: string]: unknown;
         };
@@ -3056,9 +3265,38 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        [key: string]: unknown;
-                    };
+                    "application/json": components["schemas"]["Fase3Detalle"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    obtener_fase4_api_productos__producto_key__fase4_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Fase4Detalle"];
                 };
             };
             /** @description Validation Error */
