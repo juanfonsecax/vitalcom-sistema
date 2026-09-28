@@ -34,8 +34,9 @@ import {
 
 /** El tono de decisión de cada estado de orden: los cuatro colores reservados del sistema
  * (estado-escalar/pausar/seguir/renovar de `src/estilos.css`), uno por `decidir.py`, nunca
- * reinventado por pantalla. Una celda ESCALAR bloqueada por fase toma el tono de "esperar"
- * (seguir, ámbar), no el de escalar — igual que `CLASE_ESTADO_ORDEN` en Hoy.tsx. */
+ * reinventado por pantalla. Una celda ESCALAR bloqueada por fase ES un ganador (rentable,
+ * evidencia confirmada): toma el tono de escalar (verde), igual que `CLASE_ESTADO_ORDEN` en
+ * Hoy.tsx — lo que espera es la acción de subir presupuesto, nunca el veredicto. */
 const TONO_DECISION: Record<string, Tono> = {
   ESCALAR: "escalar",
   PAUSAR: "pausar",
@@ -306,7 +307,7 @@ export function Ordenes() {
                           Ángulo: <span className="font-semibold text-zinc-200">{orden.angulo_nombre || orden.angulo_key}</span>
                         </p>
                       </div>
-                      <Chip tono={escalarBloqueado ? "seguir" : (TONO_DECISION[orden.estado] ?? "neutro")}>
+                      <Chip tono={escalarBloqueado ? "escalar" : (TONO_DECISION[orden.estado] ?? "neutro")}>
                         {escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ORDEN[orden.estado] ?? orden.estado)}
                       </Chip>
                     </div>
@@ -394,8 +395,8 @@ export function Ordenes() {
 
                     {/* Bloqueo de fase o advertencia */}
                     {orden.bloqueo_fase && (
-                      <div className="mt-3 rounded border border-amber-900/50 bg-amber-950/20 p-2 text-xs text-amber-300">
-                        <strong>Nota de fase:</strong> {orden.bloqueo_fase}
+                      <div className="mt-3 rounded border border-estado-escalar/40 bg-estado-escalar/10 p-2 text-xs text-estado-escalar">
+                        <strong>Qué falta para escalar:</strong> {orden.bloqueo_fase}
                       </div>
                     )}
                   </div>

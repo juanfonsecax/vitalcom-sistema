@@ -128,11 +128,11 @@ def test_gate_fase():
                 {"celda": "C", "estado": "SEGUIR_MIDIENDO", "accion_sugerida": "MANTENER"}]
 
     fallas = 0
-    for fase, esperado, nombre in [
-        ("F1", False, "en FASE 1 (testeo de ángulos) el ESCALAR no se ejecuta"),
-        ("F2", False, "en FASE 2 (testeo de conceptos) tampoco"),
-        ("F3", True, "en FASE 3 (escalado) sí se ejecuta: ahí se compra volumen"),
-        ("", None, "sin fase derivada: ni bloquea ni aprueba, dice que no pudo evaluarlo"),
+    for fase, esperado, texto_esperado, nombre in [
+        ("F1", False, "FASE 2", "en FASE 1 (testeo de ángulos) el ESCALAR no se ejecuta"),
+        ("F2", False, "CAMBIO_BOT", "en FASE 2 (testeo de conceptos) tampoco"),
+        ("F3", True, None, "en FASE 3 (escalado) sí se ejecuta: ahí se compra volumen"),
+        ("", None, "flujo.py", "sin fase derivada: ni bloquea ni aprueba, dice que no pudo evaluarlo"),
     ]:
         cs = celdas()
         aplicar_gate_fase(cs, fase, "TURMERIC")
@@ -142,6 +142,8 @@ def test_gate_fase():
               and cs[1]["ejecutable"] is True and cs[2]["ejecutable"] is True)
         if esperado is False:
             ok = ok and a["accion_sugerida"].startswith("NO SUBIR PRESUPUESTO")
+        if texto_esperado:
+            ok = ok and texto_esperado in a["bloqueo_fase"]
         print(("  OK     " if ok else "  FALLA  ") + "Gate de fase: " + nombre
               + ("" if ok else "\n         " + str(a)))
         fallas += 0 if ok else 1

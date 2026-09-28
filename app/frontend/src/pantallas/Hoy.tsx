@@ -77,24 +77,27 @@ function claveResumenOrden(orden: OrdenItem): string {
 
 /** El color de cada estado de orden con los tokens de status del sistema (T1,
  * `src/estilos.css`): uno por `decidir.py`, nunca reinventado por pantalla. Una celda ESCALAR
- * bloqueada por fase toma el color de "esperar" (ámbar), no el de escalar. */
+ * bloqueada por fase ES un ganador (rentable, evidencia confirmada) — toma el color de escalar
+ * (verde), no el de "esperar": lo único que espera es la acción de subir presupuesto, nunca el
+ * veredicto. El brillo sí queda reservado para el ESCALAR accionable (ver `brillo-escalar` más
+ * abajo), para no confundir "ya ganó" con "andá a tocarlo hoy". */
 const CLASE_ESTADO_ORDEN: Record<string, string> = {
   ESCALAR: "bg-estado-escalar text-estado-escalar-foreground",
   PAUSAR: "bg-estado-pausar text-estado-pausar-foreground",
   RENOVAR: "bg-estado-renovar text-estado-renovar-foreground",
   SEGUIR_MIDIENDO: "bg-estado-seguir text-estado-seguir-foreground",
-  ESCALAR_EN_ESPERA: "bg-estado-seguir text-estado-seguir-foreground",
+  ESCALAR_EN_ESPERA: "bg-estado-escalar text-estado-escalar-foreground",
 };
 
 /** El filete de color a la izquierda de cada tarjeta de orden: el estado se lee de reojo,
  * antes de leer una sola palabra. Una celda ESCALAR bloqueada por fase toma el filete de
- * "esperar" (ámbar), igual que su badge. */
+ * escalar (verde), igual que su badge — ver nota de `CLASE_ESTADO_ORDEN`. */
 const FILETE_ESTADO_ORDEN: Record<string, string> = {
   ESCALAR: "border-l-estado-escalar",
   PAUSAR: "border-l-estado-pausar",
   RENOVAR: "border-l-estado-renovar",
   SEGUIR_MIDIENDO: "border-l-estado-seguir",
-  ESCALAR_EN_ESPERA: "border-l-estado-seguir",
+  ESCALAR_EN_ESPERA: "border-l-estado-escalar",
 };
 
 /** Celebración (E3): las claves de los ángulos que acaban de entrar en ESCALAR respecto de
@@ -246,7 +249,7 @@ function TarjetaOrdenDelDia({
   const glosarioDelEstado = glosarioDeOrden(orden.estado, orden.bloqueo_fase);
   const veredicto = veredictoDeOrden(orden.estado, orden.bloqueo_fase);
   const pq = orden.por_que ?? {};
-  const clase = escalarBloqueado ? CLASE_ESTADO_ORDEN.SEGUIR_MIDIENDO : (CLASE_ESTADO_ORDEN[orden.estado] ?? "");
+  const clase = escalarBloqueado ? CLASE_ESTADO_ORDEN.ESCALAR_EN_ESPERA : (CLASE_ESTADO_ORDEN[orden.estado] ?? "");
   const texto = escalarBloqueado ? "Escalar bloqueado por fase" : (TEXTO_ORDEN[orden.estado] ?? orden.estado);
 
   return (
@@ -254,7 +257,7 @@ function TarjetaOrdenDelDia({
       data-testid="tarjeta-orden"
       className={cn(
         "relative border-l-4 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-2 motion-safe:fill-mode-backwards motion-safe:duration-300 motion-safe:transition-transform motion-safe:hover:-translate-y-0.5",
-        escalarBloqueado ? FILETE_ESTADO_ORDEN.SEGUIR_MIDIENDO : (FILETE_ESTADO_ORDEN[orden.estado] ?? "border-l-border"),
+        escalarBloqueado ? FILETE_ESTADO_ORDEN.ESCALAR_EN_ESPERA : (FILETE_ESTADO_ORDEN[orden.estado] ?? "border-l-border"),
         orden.estado === "ESCALAR" && !escalarBloqueado && "brillo-escalar",
         celebrar && "ring-1 ring-estado-escalar/40",
       )}
@@ -301,8 +304,8 @@ function TarjetaOrdenDelDia({
       <CardContent className="space-y-3">
         {veredicto && <p className="text-sm text-muted-foreground">{veredicto}</p>}
         {escalarBloqueado && (
-          <p className="rounded-lg border border-estado-seguir/40 bg-estado-seguir/10 p-2.5 text-sm text-estado-seguir">
-            <strong>Bloqueado por fase:</strong> {orden.bloqueo_fase}
+          <p className="rounded-lg border border-estado-escalar/40 bg-estado-escalar/10 p-2.5 text-sm text-estado-escalar">
+            <strong>Qué falta para escalar:</strong> {orden.bloqueo_fase}
           </p>
         )}
         <div className="grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
@@ -417,7 +420,7 @@ const RESUMEN_DE_ESTADO: Record<string, { icono: LucideIcon; etiqueta: string; c
   ESCALAR_EN_ESPERA: {
     icono: Hourglass,
     etiqueta: "Escalar en espera",
-    clases: "border-estado-seguir/40 bg-estado-seguir/10 text-estado-seguir",
+    clases: "border-estado-escalar/40 bg-estado-escalar/10 text-estado-escalar",
   },
   RENOVAR: {
     icono: RefreshCw,

@@ -439,7 +439,7 @@ test("una orden ESCALAR bloqueada por fase muestra tal cual la nota del motor, n
   // El texto visible es el que manda la API tal cual, con un rótulo neutro — nunca la prosa
   // vieja ("ya es rentable y vale como ganador…") que la pantalla escribía por su cuenta.
   expect(await screen.findByText(NOTA_DEL_MOTOR)).toBeInTheDocument();
-  expect(screen.getByText("Bloqueado por fase:")).toBeInTheDocument();
+  expect(screen.getByText("Qué falta para escalar:")).toBeInTheDocument();
   expect(screen.queryByText(/ya es rentable y vale como ganador/i)).not.toBeInTheDocument();
   // El fold redundante ("Ver la nota técnica del motor") desaparece: la nota ya está a la vista.
   expect(screen.queryByText(/Ver la nota técnica del motor/i)).not.toBeInTheDocument();

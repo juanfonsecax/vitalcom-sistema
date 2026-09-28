@@ -852,19 +852,29 @@ def aplicar_gate_fase(celdas, fase, pk):
             continue
         if not fase:
             c["ejecutable"] = None
-            c["bloqueo_fase"] = ("fase no derivada para %s: corré `python Ads/_TOOLS/flujo.py %s` "
-                                 "antes de mover presupuesto" % (pk, pk))
+            c["bloqueo_fase"] = ("No sabemos en qué fase está %s todavía: corré "
+                                 "`python Ads/_TOOLS/flujo.py %s` para saberlo antes de tocar "
+                                 "presupuesto" % (pk, pk))
             c["accion_sugerida"] = "⚠ FASE SIN DERIVAR — " + c["accion_sugerida"]
         elif fase in FASES_EN_TESTEO:
             c["ejecutable"] = False
-            c["bloqueo_fase"] = ("%s está en %s (gate de testeo): subir presupuesto a un solo "
-                                 "conjunto rompe el invariante 6 y hace ganar al que recibió más "
-                                 "plata, no al mejor" % (pk, fase))
+            if fase == "F2":
+                c["bloqueo_fase"] = (
+                    "%s ya es ganador (rentable, evidencia confirmada), pero está en FASE 2 "
+                    "testeando conceptos: si le subís presupuesto ahora, gana el conjunto que "
+                    "recibió más plata, no el mejor concepto. Para desbloquearlo: terminá el "
+                    "testeo hasta que un concepto gane 2 de 2 y registrá el CAMBIO_BOT."
+                    % pk)
+            else:
+                c["bloqueo_fase"] = (
+                    "%s ya es ganador (rentable, evidencia confirmada), pero está en FASE 1 "
+                    "testeando ángulos: si le subís presupuesto ahora, gana el conjunto que "
+                    "recibió más plata, no el mejor ángulo. Para desbloquearlo: terminá FASE 1 "
+                    "y pasá a FASE 2 con el ángulo ganador." % pk)
             c["accion_sugerida"] = (
-                "NO SUBIR PRESUPUESTO (%s en %s): la celda es rentable y esto vale como evidencia "
-                "de ganador, pero mover plata en pleno testeo sesga la medición (invariante 6). "
-                "Mantener el presupuesto que ya tiene hasta cerrar la fase. Orden original: %s"
-                % (pk, fase, c["accion_sugerida"]))
+                "NO SUBIR PRESUPUESTO todavía: %s. Mantené el presupuesto que ya tiene hasta "
+                "entonces. Orden original del motor: %s"
+                % (c["bloqueo_fase"].rstrip("."), c["accion_sugerida"]))
         else:
             c["ejecutable"] = True
             c["bloqueo_fase"] = None
