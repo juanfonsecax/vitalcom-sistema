@@ -61,7 +61,7 @@ de flujo** (brazo A paraguas optimizado ∥ brazo B dedicado, ruteo por Post ID)
 ---
 
 > ⚠️ **`etapa-3` NO corre en esta fase.** Los microángulos que produce ya no arman conjuntos: son el
-> banco de copy de la FASE 3. En FASE 2 el
+> banco de copy de la FASE 4 (escalado). En FASE 2 el
 > copy es **uno solo y fijo** para los 10 anuncios — es la constante de control.
 
 ---
@@ -95,11 +95,10 @@ Output: **10 ejecuciones** (prompt de imagen resuelto + fila en `_DIM_CREATIVOS.
   > CAMBIO_BOT --motivo "[qué cambió]" --fuente "etapa-5 [fecha]"` — nunca a mano en `_EVENTOS.csv`
   > (P3 T4: es un espejo regenerado desde Postgres): el efecto se nota en horas.
   >
-  > **Este `CAMBIO_BOT` es el del A/B de flujo de esta fase, NO el que exige `F3.entrada`.**
-  > El gate de FASE 3 pide un `CAMBIO_BOT` fechado DESPUÉS del
-  > concepto ganador en 2 de 2 — la reescritura final hacia ese ganador, que corre cuando termina
-  > esta fase, no al arrancarla. Ver `fase-3-escalado/SKILL.md` y `F3.entrada` en
-  > `DOCTRINA/FLUJO.json`.
+  > **Este `CAMBIO_BOT` es el del A/B de flujo de esta fase, NO el que exige `F4.entrada`.**
+  > La reescritura final hacia el ganador es FASE 3 completa (no un paso más de esta fase): corre
+  > DESPUÉS del concepto ganador en 2 de 2, con su propio `CAMBIO_BOT` fechado posterior a ese
+  > ganador. Ver `fase-3-flujo/SKILL.md` y `F4.entrada` en `DOCTRINA/FLUJO.json`.
 
 ---
 

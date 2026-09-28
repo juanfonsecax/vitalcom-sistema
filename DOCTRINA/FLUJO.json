@@ -229,7 +229,7 @@
    "id": "F3",
    "titulo": "FASE 3 · OPTIMIZACIÓN DE FLUJO LUCIDBOT",
    "mide": "el CIERRE del bot hacia el concepto ganador — el ángulo y el concepto ya no se mueven; el presupuesto sigue igual que en F2 (invariante 6)",
-   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) — SIN exigir todavía el CAMBIO_BOT: reescribir el bot es justamente el trabajo de esta fase, no su requisito de entrada. Decisión del operador 28-sep-2026 (cuatro fases): el gate viejo de F3.entrada (concepto 2/2 + CAMBIO_BOT) se separa en dos — este es solo el primero.",
+   "entrada": {"regla": "no entrar a FASE 3 sin concepto ganador en 2 de 2 (invariante 1) — SIN exigir todavía el CAMBIO_BOT: reescribir el bot es justamente el trabajo de esta fase, no su requisito de entrada.",
                "gate": {"tipo": "concepto_2de2", "min_ventas": "@param:min_ventas_escalar"}},
    "nodos": [
     {
@@ -320,12 +320,12 @@
      "secuencia": ["etapa-3", "etapa-6", "etapa-guardar-producto"],
      "como": "etapa-3 produce los 8-12 microángulos (banco de copy de la expansión horizontal); etapa-6 planifica el 1-1-7 con el creativo validado ×7; guardar escribe 4_PLAN_ESCALADO.txt.",
      "produce": [
-      {"dato": "_PLAN_FASE3.json (contrato plan/1, fase 4 — nombre de archivo histórico de cuando esta fase era F3; el campo `fase` interno ya dice 4, ver B2/doctrina para una eventual renombrada del archivo)",
+      {"dato": "_PLAN_FASE4.json (contrato plan/1, fase 4)",
        "predicado": {"tipo": "todos", "de": [
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "schema", "eq": "plan/1"},
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "fase", "eq": 4},
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "angulo_ganador", "no_vacio": true},
-         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE3.json", "campo": "copy", "no_vacio": true}]},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "schema", "eq": "plan/1"},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "fase", "eq": 4},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "angulo_ganador", "no_vacio": true},
+         {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "copy", "no_vacio": true}]},
        "dueno": "etapa-6", "regla": "gen_plan.py"},
       {"dato": "4_PLAN_ESCALADO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"},
       {"dato": "4_PLAN_ESCALADO.txt trae el banco de microángulos de etapa-3 (T8-4)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt", "contiene": "MICROÁNGULO"}, "dueno": "etapa-3 (banco de copy) · etapa-guardar-producto (lo escribe)", "regla": "ESCALADO_PLAYBOOK §7 · etapa-3 nunca corrió sin consumidor visible antes de este check"}

@@ -20,7 +20,7 @@ Actúa en dos modos:
 
 > En FASE 2 el ángulo y el copy son **constantes de control** y la única variable es el creativo:
 > los 10 anuncios llevan **el mismo copy, palabra por palabra**.
-> Los microángulos no se desperdician — son el banco de copy de la **FASE 3** (expansión
+> Los microángulos no se desperdician — son el banco de copy de la **FASE 4** (expansión
 > horizontal) y materia prima de los briefs de concepto de `etapa-9`.
 > Estructura y aritmética: `DOCTRINA/CALENDARIO_ESCALADO.md` §1.7.
 

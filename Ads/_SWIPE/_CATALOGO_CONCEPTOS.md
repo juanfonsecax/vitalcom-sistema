@@ -348,7 +348,8 @@ lo más distinto que apareció. Cero elementos de anuncio: ni precio, ni badge, 
 ```
 FASE 1 → 6 ÁNGULOS distintos  ×  concepto FIJO C2_BENEFICIOS      ← mide el ÁNGULO
 FASE 2 → 1 ángulo (el ganador) × 10 CONCEPTOS distintos           ← mide el CONCEPTO
-FASE 3 → 1 ángulo + 1 concepto, ambos validados × 7 instancias    ← compra volumen
+FASE 3 → 1 ángulo + 1 concepto validados, mismo presupuesto       ← mide el CIERRE del flujo
+FASE 4 → 1 ángulo + 1 concepto validados × 7 instancias           ← compra volumen
 ```
 
 > 🔴 **Actualizado 02-sep-2026 — la FASE 2 ahora tiene estructura de campaña, no solo un número.**

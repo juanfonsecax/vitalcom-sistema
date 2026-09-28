@@ -496,8 +496,9 @@ así que sin la fecha del cambio no hay forma de saber qué lo movió.
 **Cuándo diagnostica y cuándo reescribe (mapea reglas A/E de arriba a `DOCTRINA/FLUJO.json`):**
 el DIAGNÓSTICO de congruencia (regla E) va en `F2.etapa-11`, en paralelo al testeo de conceptos,
 y registra `DIAGNOSTICO_CONGRUENCIA` — no
-bloquea F2. La REESCRITURA (`CAMBIO_BOT`) corre DESPUÉS del concepto ganador confirmado en 2 de 2
-y ANTES de entrar a FASE 3 (regla A: el flujo va antes que la estructura, y F3 es CBO — la
-estructura más irreversible del sistema): gate en `F3.entrada`, que exige el `CAMBIO_BOT` (o un
-`EXCEPCION_CAMBIO_BOT` si el operador decide saltárselo) fechado DESPUÉS del ganador, nunca uno
-viejo que sea variable de confusión.
+bloquea F2. La REESCRITURA (`CAMBIO_BOT`) es su propia fase, **FASE 3** (nodo `F3.reescribir`):
+corre DESPUÉS del concepto ganador confirmado en 2 de 2 y ANTES de entrar a FASE 4 (regla A: el
+flujo va antes que la estructura, y F4 es CBO — la estructura más irreversible del sistema): gate
+en `F4.entrada`, que exige el `CAMBIO_BOT` (o un `EXCEPCION_CAMBIO_BOT` si el operador decide
+saltárselo) fechado DESPUÉS del ganador, nunca uno viejo que sea variable de confusión — MÁS el
+cierre medido después de ese cambio por encima de `cierre_min_escalar_pct`.

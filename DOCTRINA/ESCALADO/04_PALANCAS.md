@@ -1,9 +1,9 @@
 ## 3. PALANCAS DE ESCALADO — en el orden que las aplican los mentores
 
-> 🔴 **ESTRUCTURA DE ARRANQUE DEL ESCALADO.** El escalado (FASE 3) ya no
+> 🔴 **ESTRUCTURA DE ARRANQUE DEL ESCALADO.** El escalado (FASE 4) ya no
 > arranca con 6 conjuntos de microángulos: arranca con **1-1-7** — una campaña, un conjunto, el
 > creativo validado **siete veces** (Post ID o subido de cero), a **$15-18/día**. Fuente: M-A10.
-> Spec completo en `.claude/agents/ETAPA-6.md` → *Output FASE 3*.
+> Spec completo en `.claude/agents/ETAPA-6.md` → *Output FASE 4*.
 > Las palancas de abajo se aplican **sobre** esa estructura, no en vez de ella.
 >
 > **Cuatro reglas nuevas que gobiernan toda esta sección:**

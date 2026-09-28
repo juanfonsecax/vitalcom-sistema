@@ -341,7 +341,7 @@ Cuando el diagnóstico de la sección D concluye *"hay que renovar el creativo"*
 improvisa el brief**: lo pide a `etapa-10`, que responde con evidencia (qué `canonico_id`, qué rol
 de embudo, con qué `n`) en vez de con una corazonada. Después `etapa-9` lo produce.
 
-⚠️ Y dos lecturas nuevas que aplican desde la arquitectura de 3 fases:
+⚠️ Y dos lecturas nuevas que aplican desde la arquitectura de campaña (F1/F2/F4 — F3 no publica estructura nueva):
 - En campañas `1-1-N`, un anuncio con gasto < 30 % de su reparto prorrateado es **`SIN_ENTREGA`**:
   no se recomienda apagarlo ni cuenta como perdedor.
 - **El escalado intradía (+20 % varias veces al día) está CONGELADO.** Aunque el CPA lo permita, no

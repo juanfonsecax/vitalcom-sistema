@@ -47,7 +47,7 @@ Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angul
 > ⚠️ Con 8 valores y 12-24 conjuntos/mes cada concepto recibe 1,5-3 observaciones mensuales — **por debajo del umbral de la regla 6**. Por eso la rotación de FASE 2 usa 6 de los 8 por producto (C2 y C1 siempre + 4 rotativos), no los 8. Detalle en el catálogo, última sección.
 > **Regla de fase:** FASE 1 fija `concepto_key = C2_BENEFICIOS` en los 6 conjuntos (mide ÁNGULO, así que el concepto es la constante). FASE 2 fija el ángulo ganador y **varía el concepto** — ahí la columna empieza a acumular. Las 93 filas anteriores al 18-ago quedan en `SIN_CLASIFICAR`: no se retroclasifican de memoria.
 > 🔴 **Dónde vive el `concepto_key` según la fase.** Con la arquitectura de
-> 3 fases, en FASE 2 el concepto **ya no distingue conjuntos: distingue ANUNCIOS** (5 por conjunto).
+> 4 fases, en FASE 2 el concepto **ya no distingue conjuntos: distingue ANUNCIOS** (5 por conjunto).
 > Por eso el `concepto_key` de FASE 2 se registra en **`_DIM_CREATIVOS.csv`**, no en
 > `_DIM_CONJUNTOS.csv` — ahí el ángulo es constante en toda la fase. Leer el concepto a nivel de
 > conjunto en FASE 2 devuelve un solo valor repetido y no mide nada.

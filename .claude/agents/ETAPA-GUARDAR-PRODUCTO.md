@@ -10,7 +10,7 @@ model: inherit
 ## Cuándo se activa
 - **Fin de FASE 1** (después de ETAPA-6): crea la carpeta y sus archivos.
 - **Fin de FASE 2** (después de ETAPA-6 Fase 2): ACTUALIZA los mismos archivos con el ángulo ganador, microángulos, copies/bot/campaña de escalado, y los resultados del testeo si el operador los entregó. Sube VERSION.
-- **Fin de FASE 3** (después de ETAPA-6 Fase 3, `F3.plan`): escribe `4_PLAN_ESCALADO.txt`
+- **Fin de FASE 4** (después de ETAPA-6 Fase 4, `F4.plan`): escribe `4_PLAN_ESCALADO.txt`
   (plantilla y BANCO DE MICROÁNGULOS de `etapa-3` en `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md §7`;
   `flujo.py` verifica que quede escrito).
 
@@ -196,7 +196,8 @@ Vocabularios controlados (no inventar valores nuevos sin anotarlo):
   de avatar en algo agregable — sin ellos el avatar muere en el copy y no se contrasta nunca contra
   quién compró. Con Andromeda pesan más que antes: el creativo es el targeting, así que el avatar
   solo se puede medir por lo que el creativo dice y retrata.
-- `fase`: FASE1 · FASE2 · FASE3 · EXPLORACION (F3.exploracion, P12 — DOCTRINA/FLUJO.json)
+- `fase`: FASE1 · FASE2 · FASE4 · EXPLORACION (F4.exploracion, P12 — DOCTRINA/FLUJO.json). FASE 3
+  (optimización de flujo) no publica estructura nueva en Meta, así que no aporta valor propio acá.
 - `formato`: VIDEO · IMAGEN
 - `tipo_hook`: MIEDO · EMOCIONAL · TESTIMONIO · EDUCACIONAL · MECANISMO · OFERTA · PRUEBA_SOCIAL · ANTI_FALSIFICACION
 - `nivel_conciencia`: 1 · 2 · 3 (admite 3a/3b/1-2 como en ETAPA-2). Vacío si no se declaró — **no inventarlo**.

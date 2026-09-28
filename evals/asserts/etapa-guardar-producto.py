@@ -29,7 +29,7 @@ PERMITIDOS_EXACTOS = {
     "FLUJO_LUCIDBOT.md",
     "_PLAN.json",
     "_PLAN_FASE2.json",
-    "_PLAN_FASE3.json",
+    "_PLAN_FASE4.json",
     "_PERFIL_CREATIVO.json",
 }
 PERMITIDOS_PATRON = re.compile(r"^_PUBLICACION_F[0-9A-Z]+\.json$")

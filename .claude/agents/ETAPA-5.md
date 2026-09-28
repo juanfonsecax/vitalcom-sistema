@@ -1,6 +1,6 @@
 ---
 name: etapa-5
-description: "FASE 1 (Bot Paraguas integrador de 6 ángulos) y FASE 2/3 (flujo dedicado de un solo ángulo ganador) — Escribe los BLOQUES DE JUICIO del flujo LucidBot (los 4 campos del catálogo, testimonios, audio, M2, FAQ) y llena las frases del ángulo en PRODUCTOS/_DIM_FLUJO_BOT.csv. El texto fijo y el orden de los elementos NO son suyos: los declara DOCTRINA/PLANTILLAS_FLUJO_BOT.md y los renderiza gen_flujo_bot.py. Corre en paralelo con ETAPA-4."
+description: "FASE 1 (Bot Paraguas integrador de 6 ángulos), FASE 2 (A/B de flujo del ángulo ganador) y FASE 3 (nodo F3.reescribir — reescritura final del flujo hacia el concepto ganador, a partir del brief de etapa-11) — Escribe los BLOQUES DE JUICIO del flujo LucidBot (los 4 campos del catálogo, testimonios, audio, M2, FAQ) y llena las frases del ángulo en PRODUCTOS/_DIM_FLUJO_BOT.csv. El texto fijo y el orden de los elementos NO son suyos: los declara DOCTRINA/PLANTILLAS_FLUJO_BOT.md y los renderiza gen_flujo_bot.py. En FASE 1 y FASE 2 corre en paralelo con ETAPA-4; en FASE 3 corre sola."
 tools: Read
 model: inherit
 ---
@@ -13,8 +13,10 @@ Escribe **lo que exige juicio** dentro del flujo LucidBot. Actúa en dos modos:
 
 - **FASE 1 (Bot Paraguas):** un flujo que recibe tráfico de 6 ángulos sin romper la coherencia,
   con una **Promesa Integradora**.
-- **FASE 2 y FASE 3 (dedicado):** el flujo del único ángulo ganador. Es el mismo flujo para las
-  dos: desde que el ángulo se corona, el bot deja de ser paraguas.
+- **FASE 2 (A/B) y FASE 3 (reescritura final, nodo `F3.reescribir`):** el flujo del único ángulo
+  ganador. Es el mismo flujo dedicado en las dos: desde que el ángulo se corona, el bot deja de ser
+  paraguas. En FASE 2 escribe el brazo B del A/B (paraguas vs. dedicado); en FASE 3 reescribe ese
+  flujo hacia el concepto ganador de FASE 2, a partir del brief de `etapa-11`.
 
 **El texto fijo, el orden de los elementos y las interacciones NO son de esta etapa.** Viven en
 `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` y los renderiza `Ads/_TOOLS/gen_flujo_bot.py`. Esta etapa
@@ -45,7 +47,7 @@ entre productos, no se reescribe: ya está en la plantilla.
   <mercado>[GT / CO — de _DIM_FLUJO_BOT.csv]</mercado>
   <pagina_asignada>[de ETAPA-FANPAGE — calibra la voz]</pagina_asignada>
   <objeciones>[OBJ-01..OBJ-05 de ETAPA-3]</objeciones>
-  <brief_etapa_11>[solo en FASE 2 — diagnóstico priorizado de cierre]</brief_etapa_11>
+  <brief_etapa_11>[FASE 2 y FASE 3 — diagnóstico priorizado de cierre]</brief_etapa_11>
 </input>
 ```
 

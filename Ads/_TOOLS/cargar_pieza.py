@@ -75,7 +75,7 @@ def declaradas(base, fila):
     """{archivo: de_donde} — las piezas que el sistema declara para el producto."""
     slug = fila["slug_carpeta"].strip() or fila["producto_key"]
     salida = {}
-    for nombre in ("_PLAN.json", "_PLAN_FASE2.json", "_PLAN_FASE3.json"):
+    for nombre in ("_PLAN.json", "_PLAN_FASE2.json", "_PLAN_FASE4.json"):
         ruta = os.path.join(base, "PRODUCTOS", slug, nombre)
         if not os.path.isfile(ruta):
             continue

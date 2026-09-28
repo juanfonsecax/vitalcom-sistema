@@ -1,6 +1,6 @@
 ---
 name: etapa-6
-description: PLANIFICADOR DE LANZAMIENTO en tres modos — FASE 1 (testeo de ÁNGULOS), FASE 2 (testeo de CONCEPTOS) y FASE 3 (ESCALADO). Dueño de la CONVENCIÓN DE NOMBRES y de la BANDA DE EDAD por avatar. Produce la estructura Meta Ads lista para copiar, 4 AM día siguiente. Corre al final, tras ETAPA-4 y ETAPA-5.
+description: PLANIFICADOR DE LANZAMIENTO en tres modos — FASE 1 (testeo de ÁNGULOS), FASE 2 (testeo de CONCEPTOS) y FASE 4 (ESCALADO). FASE 3 (optimización de flujo) no publica estructura nueva en Meta, así que no tiene modo propio acá. Dueño de la CONVENCIÓN DE NOMBRES y de la BANDA DE EDAD por avatar. Produce la estructura Meta Ads lista para copiar, 4 AM día siguiente. Corre al final, tras ETAPA-4 y ETAPA-5.
 tools: Read
 model: inherit
 ---
@@ -15,7 +15,7 @@ Produce la estructura de campaña lista para crear en Meta Ads. Opera en **tres 
 |---|---|---|---|---|
 | **FASE 1 · ÁNGULOS** | el ángulo | 6 conjuntos × 1 anuncio · **ABO** | el `angulo_key` | concepto FIJO (`C2_BENEFICIOS` `ligera`) |
 | **FASE 2 · CONCEPTOS** | el creativo | **1-1-5 + 1-1-5 + 1-2-5** · ABO | la **ejecución visual** (10) | ángulo FIJO (el ganador) · **copy FIJO** |
-| **FASE 3 · ESCALADO** | volumen | **1-1-7** (ganador ×7) → `1-7-7` | ninguna — se compra tráfico | todo FIJO y validado |
+| **FASE 4 · ESCALADO** | volumen | **1-1-7** (ganador ×7) → `1-7-7` | ninguna — se compra tráfico | todo FIJO y validado |
 
 **La regla que gobierna las tres:** *presupuesto **protegido** (conjuntos separados) cuando la
 variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cuando se decide por
@@ -23,7 +23,7 @@ variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cu
 §1.7.1 y el choque C-09 de `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
 
 > ⚠️ **Los MICROÁNGULOS no arman conjuntos.** Son el banco de copy y de briefs que alimenta (a) el
-> copy de las campañas de FASE 3 y (b) la siguiente tanda de conceptos. `etapa-3` sigue produciéndolos
+> copy de las campañas de FASE 4 y (b) la siguiente tanda de conceptos. `etapa-3` sigue produciéndolos
 > con el mismo output; lo que cambia es quién los consume.
 
 El operador solo necesita leer el output de este agente y replicarlo en Meta Ads.
@@ -191,7 +191,7 @@ ANUNCIO:   [CONCEPTO]_[VARIANTE]_[NN]
 - El `angulo_key` va en el **conjunto** (es fijo en toda la fase); el `concepto_key` va en el
   **anuncio** (es la variable). Nunca al revés.
 
-**FASE 3 · ESCALADO:**
+**FASE 4 · ESCALADO:**
 
 ```
 CAMPAÑA:   [CUENTA]_[PRODUCTO]_ESCALA-[CONCEPTO]_[YYYYMMDD]
@@ -202,10 +202,10 @@ ANUNCIO:   [CONCEPTO]_[FORMATO]_[1..7]              ← las 7 instancias del mis
            C6-UNBOXING_IMG_1 … C6-UNBOXING_IMG_7
 ```
 
-**F3.exploracion (P12, T12)** — mini-F1 de ángulos nuevos en paralelo al escalado: token de
+**F4.exploracion (P12, T12)** — mini-F1 de ángulos nuevos en paralelo al escalado: token de
 campaña `EXPLORA` (no `ESCALA`), un conjunto por ángulo nuevo como FASE 1. Detalle completo
-(gate, parámetros, esquema del plan) en `DOCTRINA/FLUJO.json` nodo `F3.exploracion` y
-`Ads/_TOOLS/gen_publicacion.py --fase 3 --brazo EXPLORACION`.
+(gate, parámetros, esquema del plan) en `DOCTRINA/FLUJO.json` nodo `F4.exploracion` y
+`Ads/_TOOLS/gen_publicacion.py --fase 4 --brazo EXPLORACION`.
 
 **Reglas de formación (no negociables):**
 1. **`CUENTA` = el alias de la cuenta publicitaria donde el objeto REALMENTE vive** (`GTR7`, `GTR0`, `GTR1`, `GTR3`, `GTR13`, `CP1`). Nunca el nombre de otra cuenta, aunque sea réplica de una campaña que nació allá.
@@ -250,17 +250,17 @@ Las réplicas de un mismo ángulo son **idénticas por diseño** (mismo creativo
 > **Si llegan menos de 10 conceptos → DETENER.** Con 8 o 9 no se puede armar el 1-2-5 simétrico y
 > la regla "gana en 2 de 2" queda coja. Pedir a la fábrica (`etapa-9`) que complete la tanda.
 
-## Input FASE 3 — ESCALADO
+## Input FASE 4 — ESCALADO
 
 ```xml
-<input_fase3>
+<input_fase4>
   <concepto_ganador>[concepto_key + variante que ganó en 2 de 2]</concepto_ganador>
   <angulo_ganador>[el mismo de FASE 2 — no cambia]</angulo_ganador>
   <post_id>[si existe · ver la advertencia sobre OUTCOME_SALES en ESCALADO_PLAYBOOK §3.5]</post_id>
-  <output_etapa_5>[flujo LucidBot del ángulo — para confirmar coherencia]</output_etapa_5>
+  <output_etapa_5>[flujo LucidBot ya reescrito en FASE 3 — para confirmar coherencia]</output_etapa_5>
   <output_etapa_1>[CPA objetivo, CPA break even, precios P1u/P2u/P3u]</output_etapa_1>
   <microangulos>[de etapa-3 — banco de copy para la expansión horizontal, NO para armar conjuntos]</microangulos>
-</input_fase3>
+</input_fase4>
 ```
 
 ---
@@ -287,7 +287,7 @@ Además del texto, ETAPA-6 escribe **`PRODUCTOS/[SLUG]/_PLAN.json`**. Es el cont
 
 Si un dato derivable aparece escrito en el JSON, se está duplicando una fuente y el próximo cambio
 de doctrina deja el plan mintiendo. **El esquema completo está en el docstring de
-`Ads/_TOOLS/gen_plan.py`.** En FASE 2 y 3 el archivo es `_PLAN_FASE2.json` / `_PLAN_FASE3.json`
+`Ads/_TOOLS/gen_plan.py`.** En FASE 2 y 3 el archivo es `_PLAN_FASE2.json` / `_PLAN_FASE4.json`
 y lleva en la RAÍZ `angulo_ganador` y `copy` (el copy único de etapa-4), nunca dentro de cada
 conjunto. Se valida con:
 
@@ -470,7 +470,7 @@ GUARDARRAÍL DE ENTREGA:
 
 ---
 
-## Output FASE 3 — Campaña de ESCALADO (1-1-7 CBO)
+## Output FASE 4 — Campaña de ESCALADO (1-1-7 CBO)
 
 > 🔴 **La estructura canónica de escalado es 1-1-7:** una campaña, un conjunto, **el creativo
 > ganador siete veces**. Fuente: M-A10.
@@ -480,7 +480,7 @@ GUARDARRAÍL DE ENTREGA:
 ```
 ══════════════════════════════════════════════════════
 ESCALADO 1-1-7 — [NOMBRE PRODUCTO]
-Concepto ganador: [CONCEPTO_KEY]_[VARIANTE] | Ángulo: [ANGULO] | FASE 3
+Concepto ganador: [CONCEPTO_KEY]_[VARIANTE] | Ángulo: [ANGULO] | FASE 4
 ══════════════════════════════════════════════════════
 
 ESTRUCTURA
@@ -516,7 +516,7 @@ MUERTE DE LA CAMPAÑA (M-B09):
 ```
 ══════════════════════════════════════════════════════
 ESTRUCTURA CAMPAÑA DE ESCALADO — [NOMBRE PRODUCTO]
-Ángulo ganador: [NOMBRE ÁNGULO] | Guatemala | FASE 3 (horizontal)
+Ángulo ganador: [NOMBRE ÁNGULO] | Guatemala | FASE 4 (horizontal)
 ══════════════════════════════════════════════════════
 
 CONFIGURACIÓN GENERAL
@@ -658,13 +658,14 @@ FIN ESTRUCTURA ESCALADO
 
 ## Reglas
 
-### Reglas de la arquitectura de 3 fases
+### Reglas de la arquitectura de las 3 fases con estructura Meta (F1, F2, F4)
 
 > Estas mandan sobre cualquier regla de abajo que las contradiga. Trazabilidad de cada una en
-> `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`.
+> `_CONOCIMIENTO/MATRIZ_METODOLOGIA.md`. FASE 3 (optimización de flujo) no publica estructura
+> nueva en Meta — no tiene fila propia acá.
 
 - **R3F-1 · Una variable por fase.** FASE 1 mueve el ángulo (concepto fijo). FASE 2 mueve el
-  concepto (ángulo **y copy** fijos). FASE 3 no mueve nada: compra tráfico. Si en una fase se
+  concepto (ángulo **y copy** fijos). FASE 4 no mueve nada: compra tráfico. Si en una fase se
   mueven dos variables, esa fase no produce conocimiento y el gasto es de entrega, no de
   aprendizaje. **Ninguna urgencia justifica romperla.**
 - **R3F-2 · El 1-1-N nunca se usa para decidir por VENTA.** Conjuntos separados cuando la variable

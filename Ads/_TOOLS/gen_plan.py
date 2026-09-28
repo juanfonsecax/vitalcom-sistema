@@ -69,8 +69,7 @@ evidencia, salvo que el producto ya haya lanzado FASE 1 de verdad:
                     aunque ya tenga un `_PLAN.json` en disco, todavia sin publicar — SI debe
                     cumplir la regla (`ya_lanzo_fase1()`).
 
-FASE 2 y 4 — _PLAN_FASE2.json / _PLAN_FASE3.json (nombre historico de cuando esta fase era F3;
-campo "fase" interno ya dice 4), el mismo esquema con "fase": 2|4 y dos
+FASE 2 y 4 — _PLAN_FASE2.json / _PLAN_FASE4.json, el mismo esquema con "fase": 2|4 y dos
 campos RAIZ obligatorios, porque ahi el angulo y el copy son constantes de la fase:
   "angulo_ganador": "ANGULO_KEY",         # el mismo en todos los conjuntos
   "copy": {"textos": [...], "titulos": [...], "descripcion": "..."}   # el copy unico de etapa-4
@@ -122,7 +121,7 @@ NIVELES = {"1", "2", "3A", "3B", None}
 # _PARAMETROS_PUBLICACION.csv y las piezas de _DIM_CREATIVOS.csv, no desde el plan.
 # "EXPLORACION" no es una fase numerica (F4.exploracion corre DENTRO de fase 4): descubrir_planes()
 # solo usa los VALORES de este dict, así que una llave de texto no rompe nada.
-NOMBRES_PLAN = {1: "_PLAN.json", 2: "_PLAN_FASE2.json", 4: "_PLAN_FASE3.json",
+NOMBRES_PLAN = {1: "_PLAN.json", 2: "_PLAN_FASE2.json", 4: "_PLAN_FASE4.json",
                 "EXPLORACION": "_PLAN_EXPLORACION.json"}
 
 EXPLORACION_N_ANGULOS = 3   # default P12; overrideable por _PARAMETROS_DECISION.csv (ver abajo)
@@ -144,7 +143,7 @@ def descubrir_planes(ruta=None):
     """Lista de rutas de plan a validar. Con `ruta` valida SOLO ese archivo (bug del
     22-sep-2026: `--validar` ignoraba cualquier ruta que se le pasara). Sin `ruta`
     escanea PRODUCTOS/*/ buscando los tres nombres posibles, no solo `_PLAN.json`
-    (bug hermano: nunca abria `_PLAN_FASE2.json` ni `_PLAN_FASE3.json`)."""
+    (bug hermano: nunca abria `_PLAN_FASE2.json` ni `_PLAN_FASE4.json`)."""
     if ruta:
         return [ruta] if os.path.exists(ruta) else []
     planes = []

@@ -19,9 +19,11 @@ medido contra data. Esta etapa cierra ese hueco. Su producto final es el **brief
 > **Diagnóstico vs. reescritura.** En `F2.etapa-11`
 > (`DOCTRINA/FLUJO.json`) esta etapa corre en modo SOLO DIAGNÓSTICO — mide el cierre y la
 > congruencia, registra `DIAGNOSTICO_CONGRUENCIA`, y NO bloquea el testeo de conceptos de F2. La
-> reescritura real (`etapa-5` redacta, el operador aplica y anexa `CAMBIO_BOT`) corre después,
-> con el concepto ganador ya confirmado en 2 de 2, y antes de entrar a FASE 3 (gate en
-> `F3.entrada` — ver `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` reglas A/E).
+> reescritura real es su propia fase, **FASE 3** (nodo `F3.reescribir`): `etapa-5` redacta el
+> flujo a partir del brief de esta etapa, el operador aplica y anexa `CAMBIO_BOT`, ya con el
+> concepto ganador confirmado en 2 de 2 — ver `.claude/skills/fase-3-flujo/SKILL.md` y
+> `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` reglas A/E. Si el diagnóstico de F2 sigue vigente para el
+> ganador, FASE 3 lo reutiliza directo; si no, `etapa-11` corre de nuevo ahí para refrescarlo.
 
 > **Por qué existe.** Los mentores cierran 15-20 % de los mensajes (M-F01). El portafolio cierra
 > **8.6 %** medido sobre 5,090 mensajes y 439 ventas (17-jul → 01-sep-2026, serie limpia). A gasto

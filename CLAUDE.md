@@ -2,8 +2,8 @@
 
 ## Rol
 
-Coordina el flujo de **tres fases** (ÁNGULOS → CONCEPTOS → ESCALADO) para crear y lanzar productos
-de dropshipping COD en Guatemala. El orquestador NO ejecuta tareas operativas: detecta el nodo
+Coordina el flujo de **cuatro fases** (ÁNGULOS → CONCEPTOS → FLUJO LUCIDBOT → ESCALADO) para crear
+y lanzar productos de dropshipping COD en Guatemala. El orquestador NO ejecuta tareas operativas: detecta el nodo
 activo, **carga su skill**, invoca a los subagentes de etapa en orden, transfiere outputs
 estructurados entre ellos y detiene el flujo si falta un input requerido.
 
@@ -23,7 +23,8 @@ cada subagente: solo lleva lo que aplica siempre.
 | FASE 0 — buscar producto | skill `buscar-producto` |
 | FASE 1 — testeo de ÁNGULOS | skill `fase-1-angulos` |
 | FASE 2 — testeo de CONCEPTOS | skill `fase-2-conceptos` |
-| FASE 3 — ESCALADO | skill `fase-3-escalado` |
+| FASE 3 — optimización de flujo LucidBot | skill `fase-3-flujo` |
+| FASE 4 — ESCALADO | skill `fase-4-escalado` |
 | Publicar la estructura de una fase en Meta por MCP | skill `publicar-meta` |
 | Recolección de data (nocturna) | skill `recopilar-lucidsales` |
 | Post-lanzamiento (diario) | skill `ciclo-diario` |
@@ -82,7 +83,7 @@ calidad de la escritura y del juicio.
 | El flujo LucidBot: su texto, qué parte es variable y qué parte es instrucción. **Declarado, no escrito** | `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` (layout) + `PRODUCTOS/_DIM_FLUJO_BOT.csv` y `_DIM_MERCADOS.csv` (valores) + `Ads/_TOOLS/gen_flujo_bot.py` (renderiza y bloquea). Tres notaciones: `{{variable}}` sale de un CSV y bloquea con exit 1 si falta · `<<BLOQUE:x>>` lo escribe `etapa-5` · una línea `>>` es INSTRUCCIÓN y nunca se pega. Texto fijo no se reescribe por producto; precios se derivan de `_DIM_PRECIOS.csv`; el mercado (`GT`/`CO`) es variable, no doctrina. `test_gen_flujo_bot.py` congela las reglas |
 | Infografías del bot: motor compartido | `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` → `_FLUJO.md` (Info 1/2/3) · `_OPCIONALES.md` (IMAGEN 4/5/6) |
 | Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
-| Cadencia día a día, gates, multi-ganador, aritmética de las 3 fases | `DOCTRINA/CALENDARIO_ESCALADO.md` |
+| Cadencia día a día, gates, multi-ganador, aritmética de las 4 fases | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | Capa de data: CSV, ganancia, break-even, dashboard | `DOCTRINA/DATA_PLAYBOOK.md` |
 | Gasto (spend/impresiones/clicks/mensajes): dueño Meta Graph API vía `Ads/_TOOLS/gasto.py` (ad_id → nombre → conjunto, fallback LucidSales antes de 2026-09-06); ventas: dueño `_FACT_VENTAS.csv` | `Ads/_TOOLS/gasto.py` (espejo dbt: `warehouse/models/marts/fct_gasto_dia.sql`) |
 | Parametrización de anuncios: 5 ejes, covariables, una variable a la vez | `DOCTRINA/PARAMETRIZACION_ADS.md` (dueño de `_DIM_ANUNCIOS.csv`, `_DIM_VOCABULARIO.csv`) |
@@ -134,14 +135,16 @@ Aplican a **todos los subagentes en todas las fases**.
 - **FORMATO CREATIVO:** tipo de presentación (testimonio, educacional, prueba social, oferta). NO es
   el ángulo.
 - **CONCEPTO:** cómo se muestra. Ortogonal al ángulo.
-- **MICRO-ÁNGULO** (FASE 3): avatar ultra-específico dentro del ángulo ganador.
+- **MICRO-ÁNGULO** (FASE 4): avatar ultra-específico dentro del ángulo ganador.
 
 ### ÁNGULO vs CONCEPTO — QUÉ SE FIJA EN CADA FASE
 > **ÁNGULO = por qué duele. CONCEPTO = cómo se muestra.**
 > ```
 > FASE 1 → 6 ÁNGULOS distintos × concepto Y formato FIJOS (IMAGEN)   6 conjuntos · ABO ← mide el ÁNGULO
 > FASE 2 → 1 ángulo ganador × 10 CONCEPTOS            1-1-5 ×2 + 1-2-5 · ABO ← mide el CONCEPTO
-> FASE 3 → 1 ángulo + 1 concepto validados × 7        1-1-7 · CBO            ← compra volumen
+> FASE 3 → 1 ángulo + 1 concepto validados, mismo presupuesto · la variable es el flujo LucidBot
+>          (CAMBIO_BOT) ← mide el CIERRE
+> FASE 4 → 1 ángulo + 1 concepto validados × 7        1-1-7 · CBO            ← compra volumen
 > ```
 > - **El 1-1-5 va en FASE 2 y en ABO. Nunca en FASE 1 y nunca en CBO**: en CBO Meta corona un solo
 >   anuncio y los demás no reciben entrega.
@@ -207,7 +210,8 @@ No se violan en ninguna fase. El código las cita por número: **no renumerar**.
 
 1. **El ganador se declara por VENTA, agregando por `angulo_key`** — nunca por conversación ni por
    conjunto-semana. La conversación sirve para CORTAR, nunca para CORONAR. No entrar a FASE 2 sin
-   ángulo ganador; no entrar a FASE 3 sin concepto ganador en 2 de 2.
+   ángulo ganador; no entrar a FASE 3 sin concepto ganador en 2 de 2; no entrar a FASE 4 sin cierre
+   ≥ `cierre_min_escalar_pct` medido después del `CAMBIO_BOT`.
 2. **Nunca inventar cifras de costeo.** Salen de `Ads/_TOOLS/costear.py` sobre `PRODUCTOS/_DIM_COSTEO.csv`:
    fila más cercana al costo; en empate, la superior (conservador). Arquitectura de oferta en
    `.claude/agents/ETAPA-1.md`.
@@ -254,10 +258,13 @@ No se violan en ninguna fase. El código las cita por número: **no renumerar**.
 - **El CIERRE es la palanca más grande del sistema.** Su dueño es `etapa-11`. El DIAGNÓSTICO y la
   REESCRITURA no corren juntos: `etapa-11` diagnostica el cierre y la congruencia anuncio↔bot en
   **FASE 2** (nodo `F2.etapa-11`, registra `DIAGNOSTICO_CONGRUENCIA`, no bloquea el testeo de
-  conceptos), y la REESCRITURA (`etapa-5` redacta, el operador aplica y anexa `CAMBIO_BOT`) corre
-  **después del concepto ganador en 2 de 2 y antes de FASE 3** — gate en `F3.entrada` de
-  `DOCTRINA/FLUJO.json`, que exige un `CAMBIO_BOT` (o un `EXCEPCION_CAMBIO_BOT` si el operador
-  decide saltárselo) fechado DESPUÉS del ganador, nunca uno viejo. Reglas A-G del orden en
+  conceptos) y entrega el brief priorizado. La REESCRITURA es **FASE 3** (nodo `F3.reescribir`):
+  `etapa-5` redacta los BLOQUES DE JUICIO del flujo a partir de ese brief, el operador aplica y
+  anexa `CAMBIO_BOT` (o `EXCEPCION_CAMBIO_BOT` si decide saltárselo) — nunca uno viejo, siempre
+  fechado DESPUÉS del concepto ganador. El gate que compra volumen es `F4.entrada` de
+  `DOCTRINA/FLUJO.json`: exige ese `CAMBIO_BOT`/`EXCEPCION_CAMBIO_BOT` MÁS el cierre medido después
+  de él por encima de `cierre_min_escalar_pct` (≥30 mensajes). Por debajo del umbral, el producto se
+  queda en FASE 3 para otra iteración del flujo — nunca sube presupuesto. Reglas A-G del orden en
   `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`. Ante un cierre desplomado, verificar PRIMERO la consistencia
   física ad ↔ destino.
 - **El dinero se mide con `DOCTRINA/CONTABILIDAD.md`**, que manda sobre cualquier otro cálculo. Negocio

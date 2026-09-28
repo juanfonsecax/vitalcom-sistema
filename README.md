@@ -39,7 +39,7 @@ en **tres fases**: **ÁNGULOS (FASE 1)** → **CONCEPTOS (FASE 2)** → **ESCALA
 |---|---|---|
 | `CLAUDE.md` | **Cerebro / orquestador.** Detecta la fase, invoca los subagentes en orden y transfiere outputs. Se carga cada sesión — por eso se mantiene delgado: coordina, no guarda doctrina de detalle. | ✅ Siempre |
 | `.claude/agents/` | Las **17 etapas** `ETAPA-*.md` (PRODUCTO, 0, 1, 1B, 2, **3** microángulos, 4, 5, 6, 7, 8, **9** fábrica de conceptos, **10** lector concepto↔métrica, **11** optimizador de flujo, FANPAGE, GUARDAR-PRODUCTO). Todas con `model: inherit`. | ✅ Vía Task |
-| `.claude/skills/` | Las **10 skills**: `buscar-producto` (FASE 0) · `fase-1-angulos` · `fase-2-conceptos` · `fase-3-escalado` · `ciclo-diario` (auditoría diaria) · `generar-conceptos` · `find-skills`. **La doctrina de cada fase vive acá, no en `CLAUDE.md`.** | ✅ Al invocar |
+| `.claude/skills/` | Las skills: `buscar-producto` (FASE 0) · `fase-1-angulos` · `fase-2-conceptos` · `fase-3-flujo` · `fase-4-escalado` · `ciclo-diario` (auditoría diaria) · `generar-conceptos` · `find-skills`. **La doctrina de cada fase vive acá, no en `CLAUDE.md`.** | ✅ Al invocar |
 | `DOCTRINA/` | **Los 15 documentos dueños.** Los agentes los leen **por ruta** durante el flujo. Movidos de la raíz el 2026-09-03; si alguno se mueve otra vez, `python Ads/_TOOLS/gen_grafo.py` canta las referencias que quedaron colgando. | ✅ Bajo demanda |
 | ├ `COPYWRITING_ADS.md` | **Dueño único del COPY**: HPPPC, banco de hooks, anti-muro, título/descripción, compliance, precio. La usa ETAPA-4. | ✅ |
 | ├ `PLANTILLAS_ADS.md` | **Dueño único del CREATIVO**: Prompt Maestro, 15 estilos anti-fatiga, compliance Andrómeda y la **DOCTRINA DE CREATIVOS** (video vs imagen). | ✅ |

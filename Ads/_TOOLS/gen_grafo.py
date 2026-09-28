@@ -206,7 +206,7 @@ def analizar():
         return total
 
     fases = {n: costo_fase(n) for n in
-             ("fase-1-angulos", "fase-2-conceptos", "fase-3-escalado", "ciclo-diario")}
+             ("fase-1-angulos", "fase-2-conceptos", "fase-3-flujo", "fase-4-escalado", "ciclo-diario")}
 
     lectores = collections.Counter()
     for a in agentes.values():

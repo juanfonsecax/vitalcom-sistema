@@ -57,7 +57,7 @@ UN DATO, UN DUENO — de donde sale cada parametro
 
 F4.exploracion (P12, T12) — `--fase 4 --brazo EXPLORACION`: el mini-F1 de ángulos nuevos que
 corre en paralelo al escalado. Mismo `--fase 4` (mismo gate de ENTRADA a F4), pero lee
-`_PLAN_EXPLORACION.json` (no `_PLAN_FASE3.json`), arma un conjunto POR ÁNGULO como FASE 1 (no
+`_PLAN_EXPLORACION.json` (no `_PLAN_FASE4.json`), arma un conjunto POR ÁNGULO como FASE 1 (no
 un ángulo fijo ×7), su fila de `_PARAMETROS_PUBLICACION.csv` es fase=4 brazo=EXPLORACION, y
 además del gate de entrada a F4 exige el gate propio de F4.exploracion (F4 rentable según
 decidir.py, `flujo.gate_nodo`). La campaña nace `EXPLORA`, no `ESCALA-{angulo}`.

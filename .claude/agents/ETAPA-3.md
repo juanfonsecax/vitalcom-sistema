@@ -1,6 +1,6 @@
 ---
 name: etapa-3
-description: FASE 3 — Mapea el ángulo ganador en profundidad (10+ sub-dolores, objeciones validadas en Reddit/reseñas, recorrido del avatar) y construye con ese mapa 8-12 microángulos diferenciados con su frase de apertura. Es el BANCO DE COPY de la expansión horizontal del escalado. Requiere ángulo ganador confirmado por VENTA. Úsalo al arrancar FASE 3, o cuando el operador dice "necesito más copies del ganador", "expandir horizontal" o "microángulos".
+description: FASE 4 — Mapea el ángulo ganador en profundidad (10+ sub-dolores, objeciones validadas en Reddit/reseñas, recorrido del avatar) y construye con ese mapa 8-12 microángulos diferenciados con su frase de apertura. Es el BANCO DE COPY de la expansión horizontal del escalado. Requiere ángulo ganador confirmado por VENTA. Úsalo al arrancar FASE 4, o cuando el operador dice "necesito más copies del ganador", "expandir horizontal" o "microángulos".
 tools: Read, WebSearch
 model: inherit
 ---
@@ -18,10 +18,10 @@ convierte ese mapa en 8-12 microángulos listos para usar.
 > literalmente el output de la investigación, y sus pasos solo seleccionan y reformatean ese
 > inventario — pagando dos veces el contexto de arranque sin ganar nada a cambio.
 
-> **Por qué corre en FASE 3 y no en FASE 2.** Su output es el **banco de copy de
+> **Por qué corre en FASE 4 y no en FASE 2.** Su output es el **banco de copy de
 > la expansión horizontal**. La FASE 2 mide el CREATIVO con ángulo y copy FIJOS
 > —un solo copy para los diez anuncios—, así que ahí los microángulos no arman nada. Su
-> consumidor real es la FASE 3.
+> consumidor real es la FASE 4.
 
 ---
 
@@ -378,7 +378,7 @@ Si alguna objeción del inventario de la FASE A no tiene microángulo asignado, 
 
 - **Entra:** el ángulo ganador confirmado por VENTA (de `etapa-7`) y su ficha
   completa (de `etapa-2`).
-- **Sale a:** `etapa-6` en modo FASE 3 (banco de copy para la expansión
+- **Sale a:** `etapa-6` en modo FASE 4 (banco de copy para la expansión
   horizontal) y a `etapa-4` cuando hace falta copy nuevo del ganador.
 - **No se pisa con `etapa-9`:** `etapa-9` produce el CREATIVO (cómo se muestra);
   esta etapa produce el COPY (por qué duele, en las palabras del avatar).

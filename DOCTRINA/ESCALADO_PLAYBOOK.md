@@ -20,8 +20,8 @@ gates día 0→3→6→7+). Este índice y sus secciones son el QUÉ.
 | 5 | `DOCTRINA/ESCALADO/05_REPLICAR_GANADOR.md` | §4 Replicar el creativo ganador (el porqué, no el creativo) | `etapa-7` |
 | 6 | `DOCTRINA/ESCALADO/06_SATURACION_CUENTA.md` | §5 Saturación por cuenta (matriz ángulo×cuenta) | `etapa-7` |
 | 7 | `DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md` | §6 Matriz de duplicación — cuánto volumen y dónde | `etapa-7` |
-| 8 | `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md` | §7 Entregable fijo `4_PLAN_ESCALADO.txt` (plantilla) | `etapa-6`, `etapa-7`, `etapa-guardar-producto`, `fase-3-escalado`, `generar-conceptos` |
-| 9 | `DOCTRINA/ESCALADO/09_EXPLORACION_PARALELA.md` | §7b Exploración de ángulos nuevos mientras se escala (F3.exploracion) | `fase-3-escalado` |
+| 8 | `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md` | §7 Entregable fijo `4_PLAN_ESCALADO.txt` (plantilla) | `etapa-6`, `etapa-7`, `etapa-guardar-producto`, `fase-4-escalado`, `generar-conceptos` |
+| 9 | `DOCTRINA/ESCALADO/09_EXPLORACION_PARALELA.md` | §7b Exploración de ángulos nuevos mientras se escala (F4.exploracion) | `fase-4-escalado` |
 | 10 | `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md` | §8 Métricas de evaluación de testeo (umbrales canónicos) | `etapa-6`, `etapa-7`, `etapa-10`, `etapa-11` |
 
 Los valores vigentes de PD y umbrales de testeo (§§1.5/8) viven en

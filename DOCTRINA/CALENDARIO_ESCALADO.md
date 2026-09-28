@@ -43,10 +43,10 @@
 ## 1.5 EL PRESUPUESTO ES LO QUE HACE VÁLIDOS LOS GATES (calibrado con data propia)
 
 > 🔴 **ALCANCE.** Todo lo de esta sección gobierna la **FASE 1 · ÁNGULOS**.
-> El sistema tiene **tres** fases, y la FASE 2 (conceptos) tiene su propio
+> El sistema tiene **cuatro** fases, y la FASE 2 (conceptos) tiene su propio
 > presupuesto y su propio Presupuesto de Decisión, calculado **por anuncio y no por conjunto**.
 > Ver **§1.7**. Las dos reglas duras de abajo (decidir por `angulo_key` · la conversación corta
-> pero no corona) siguen valiendo para las tres fases.
+> pero no corona) siguen valiendo para las cuatro fases.
 
 > **El hallazgo:** el calendario de los mentores (día 3 podar, día 5 escalar) nació con **Q54/día por conjunto**. El sistema corría **$1.59/día = Q12.12** — 4.5× menos. Con ese presupuesto el día 3 tenía apenas **46-60% del Presupuesto de Decisión**, o sea que *decidir al día 3 era tirar una moneda*. No estaba mal el calendario: estaba mal el presupuesto que lo alimentaba.
 
@@ -118,7 +118,7 @@ CONJUNTO (todas las cuentas) . dispersión 1.89  ← señal débil
 
 ---
 
-## 1.7 LA ARQUITECTURA DE 3 FASES
+## 1.7 LA ARQUITECTURA DE 4 FASES
 
 > **Qué la justifica en data propia:** la dispersión 1.12 de §1.5 (el testeo por conjunto no mide
 > el creativo) y APR-057 (el techo de Q597/día es inventario de creativos, no mercado).
@@ -137,13 +137,14 @@ presupuesto LIBRE     (1-1-N, Meta reparte)  <=  la variable se decide por ENTRE
   entrega más barato. Ahí el criterio de Meta (CTR/CPM/conversación) **sí está alineado** con el
   objetivo, y se puede soltar el presupuesto.
 
-### 1.7.2 · Las tres fases
+### 1.7.2 · Las cuatro fases
 
 | Fase | Qué mide | Estructura | Presupuesto | Decide por |
 |---|---|---|---|---|
 | **1 · ÁNGULOS** | el ángulo | 6 conjuntos × 1 ángulo · **ABO** · concepto **FIJO** (`C2_BENEFICIOS` variante `ligera`) | $2.99 → $5.98 (§1.5, dos etapas) | **VENTA**, agregada por `angulo_key` |
 | **2 · CONCEPTOS** | el creativo | **1-1-5 + 1-1-5 + 1-2-5** · ABO · ángulo **FIJO** (el ganador) | $6 + $6 + $12 = **$24/día** | **REPLICACIÓN**: gana en 2 de 2 |
-| **3 · ESCALADO** | volumen | **1-1-7 CBO** (el ganador ×7) → `1-7-7` si el inventario lo permite | $15-18/día · +20 % con gate | **CPA semanal** sobre ENTREGADOS |
+| **3 · FLUJO LUCIDBOT** | el cierre | ninguna estructura nueva en Meta — el concepto ganador sigue corriendo | **el mismo de FASE 2**, sin subir | mensajes/cierre ≥ `min_mensajes_cierre`/`cierre_min_escalar_pct` tras el `CAMBIO_BOT`, medido en **horas**, no días — se itera hasta cumplir el gate |
+| **4 · ESCALADO** | volumen | **1-1-7 CBO** (el ganador ×7) → `1-7-7` si el inventario lo permite | $15-18/día · +20 % con gate | **CPA semanal** sobre ENTREGADOS |
 
 **La FASE 2 en detalle (10 conceptos, tres campañas):**
 

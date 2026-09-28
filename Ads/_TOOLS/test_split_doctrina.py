@@ -32,7 +32,10 @@ os.chdir(BASE)
 # ESCALADO_SHA256 y PLANTILLAS_SHA256 re-congelados en T4b (2026-09-24): el operador autorizo
 # remover la narracion arqueologica de DOCTRINA/ESCALADO/*.md y DOCTRINA/PLANTILLAS_ADS_SECCIONES/*.md
 # manteniendo la regla; el texto cambio a proposito.
-ESCALADO_SHA256 = "f4f442b728d82f9324ecf815ed87a14cd9e5c9b92cef92463e547d8a64f27c3e"
+# ESCALADO_SHA256 re-congelado (28-sep-2026, cuatro fases B2): 04_PALANCAS.md, 08_PLAN_ENTREGABLE.md
+# y 09_EXPLORACION_PARALELA.md pasaron sus referencias de "FASE 3"/F3.* (que ahora es la fase de
+# optimizacion de flujo) a "FASE 4"/F4.* (escalado) — cambio de doctrina a proposito.
+ESCALADO_SHA256 = "9d57666adc147da6f835a6a85981281a2e74186442c6e4c5f3bb43a433961857"
 PLANTILLAS_SHA256 = "e4503a723a015618ccb7c12f43dbcf49227ea72610d675dcbf56e73c0cf339d0"
 
 # Orden EXACTO de reconstruccion — el nombre de archivo ya lo fija (prefijo numerico),

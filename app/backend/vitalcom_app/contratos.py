@@ -641,7 +641,7 @@ def fase3_detalle(producto_key: str) -> dict[str, Any]:
             break
 
     plan_txt = ruta("PRODUCTOS", producto_key, "4_PLAN_ESCALADO.txt")
-    plan_json = ruta("PRODUCTOS", producto_key, "_PLAN_FASE3.json")
+    plan_json = ruta("PRODUCTOS", producto_key, "_PLAN_FASE4.json")
     tiene_plan = plan_txt.is_file() or plan_json.is_file()
 
     prod_info = fila_de_producto(producto_key)
@@ -670,7 +670,7 @@ def fase3_detalle(producto_key: str) -> dict[str, Any]:
             "descripcion": "1 Campaña CBO, 1 Conjunto de 7 anuncios con el concepto validado en 2 de 2 × 7 hooks (microángulos)",
             "tiene_plan": tiene_plan,
             "estado": "GENERADO" if tiene_plan else "PENDIENTE",
-            "archivo": "4_PLAN_ESCALADO.txt" if plan_txt.is_file() else ("_PLAN_FASE3.json" if plan_json.is_file() else None)
+            "archivo": "4_PLAN_ESCALADO.txt" if plan_txt.is_file() else ("_PLAN_FASE4.json" if plan_json.is_file() else None)
         },
         "expansion": {
             "post_id": bool(len(cuentas_expansion) > 1),

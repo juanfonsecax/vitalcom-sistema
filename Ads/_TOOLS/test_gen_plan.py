@@ -61,7 +61,7 @@ def test_escaneo_encuentra_plan_fase2_y_fase3(tmp):
     p1 = _escribir_plan(carpeta, "_PLAN.json", {"schema": "plan/1", "fase": 1, "conjuntos": [],
                                                   "oferta": {"oferta_key": "1U"}})
     p2 = _escribir_plan(carpeta, "_PLAN_FASE2.json", PLAN_FASE2_COMPLETO)
-    p3 = _escribir_plan(carpeta, "_PLAN_FASE3.json", dict(PLAN_FASE2_COMPLETO, fase=4))
+    p3 = _escribir_plan(carpeta, "_PLAN_FASE4.json", dict(PLAN_FASE2_COMPLETO, fase=4))
     previo = gen_plan.PRODUCTOS
     try:
         gen_plan.PRODUCTOS = tmp
@@ -70,7 +70,7 @@ def test_escaneo_encuentra_plan_fase2_y_fase3(tmp):
         gen_plan.PRODUCTOS = previo
     ok = encontrados == {p1, p2, p3}
     print(("  OK     " if ok else "  FALLA  ")
-          + "el escaneo por defecto encuentra _PLAN.json, _PLAN_FASE2.json y _PLAN_FASE3.json"
+          + "el escaneo por defecto encuentra _PLAN.json, _PLAN_FASE2.json y _PLAN_FASE4.json"
           + ("" if ok else f"\n         obtenido={encontrados}"))
     return 0 if ok else 1
 
