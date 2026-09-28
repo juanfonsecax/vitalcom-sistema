@@ -43,7 +43,7 @@ PROHIBIDO_ESCALAR_CIERRE_BAJO (no scaling under 10% close), which no script enfo
       (route: delegated writer)
 - [x] B3 App: backend endpoints (fase3 = flujo, fase4 = escalado), frontend screens/tabs/lenguaje, tests, e2e.
       (route: delegated writer)
-- [ ] B4 Integration: run flujo.py/decidir.py read-only against a copy of the live data, full test
+- [x] B4 Integration: run flujo.py/decidir.py read-only against a copy of the live data, full test
       suites, report to operator before merge. (route: parent + per-action workers)
 
 ## Acceptance
@@ -421,7 +421,14 @@ confirmed by grep on `_EVENTOS.csv` before writing the assertions).
 (renamed) · `pruebas/producto-detalle.test.tsx` · `e2e/fases_2_3_4.spec.ts` (renamed from
 `fases_2_3.spec.ts`).
 
+### B4 (done)
+Live data (uncommitted PRODUCTOS files of SISTEMA) copied into the worktree read-only; `flujo.py --todo`
+and `decidir.py` run on live (old engine) vs worktree (new engine): same fase for all 5 products
+(TINNIDROP/NUSAVA/CLEARSTEM F2, OVULOS_PURITY F1, VARICOSE paused), same 34-line decision table;
+only diff = bloqueo_fase text of CLEARSTEM/NUSAVA now pointing to FASE 3. Worktree data restored
+(`git checkout -- PRODUCTOS`); live folder untouched (21 PRODUCTOS status lines, same as before).
+Commits: 8dd3e50 (B1) · 4adee98 (B2) · 76b6ae0 (B3).
+
 ## Next step
-B4: full read-only run against a copy of live data before merge (per the plan), plus a final
-review that B3's app changes and B1/B2's engine/doctrine changes agree end-to-end before opening
-the PR out of this worktree.
+Operator go-ahead to fast-forward feat/dashboard-visual to feat/cuatro-fases in the live folder, then
+`python Ads/_TOOLS/flujo.py --todo --escribir` so _ESTADO_FLUJO.csv/_FLUJO.json carry the new phases.
