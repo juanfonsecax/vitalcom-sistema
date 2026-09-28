@@ -26,7 +26,8 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from flujo import (Entorno, cargar_flujo, correr, evaluar, situar, validar, BASE_REAL,  # noqa: E402
-                   _angulos_acumulados, _ev_angulo_ganador, _ev_concepto_2de2, gate_nodo)
+                   _angulos_acumulados, _ev_angulo_ganador, _ev_concepto_2de2, gate_nodo,
+                   ranking_ganadores)
 
 FIXTURE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_fixtures", "flujo_20260908")
 HOY = datetime.date(2026, 9, 8)
@@ -267,6 +268,22 @@ def main():
     check(ok_e2 is True and "ANG_PROBADO" in obs_e2 and "ANG_NUEVO" not in obs_e2,
           "con el mismo CPA, corona el de 6 ventas y no el de 3: el piso filtra por VOLUMEN, no por CPA",
           obs_e2)
+
+    # ── E2. la cola de ganadores: #1 = el ESCALAR con más ventas de la ventana; el resto por acumuladas ──
+    class _EnvRanking:
+        def celdas(self, pk):
+            return [{"celda": "A_HIST", "estado": "RENOVAR", "ventas": 1, "ventas_acum": 90},
+                    {"celda": "B_ESC", "estado": "ESCALAR", "ventas": 25, "cpa_real_q": 50, "ventas_acum": 60},
+                    {"celda": "C_ESC", "estado": "ESCALAR", "ventas": 12, "cpa_real_q": 40, "ventas_acum": 200}], {}
+    import flujo as _flujo
+    _acum0 = _flujo._angulos_acumulados
+    _flujo._angulos_acumulados = lambda env, pk: {"D_SOLO_HISTORIA": [70.0, 1.0]}
+    try:
+        orden = ranking_ganadores({"claves": ["A_HIST", "C_ESC", "D_SOLO_HISTORIA", "B_ESC"]}, _EnvRanking(), "PX")
+    finally:
+        _flujo._angulos_acumulados = _acum0
+    check(orden == ["B_ESC", "C_ESC", "A_HIST", "D_SOLO_HISTORIA"],
+          "ranking: tras el #1, ventas acumuladas descendente (C 200 > A 90 > D 70)", str(orden))
 
     # ── F. el gate de FASE 3 no oscila por un centavo de CPA ──────────────────
     # TURMERIC, sim: 25-sep ✗ · 26-sep ✓ · 27-sep ✗ · 28-sep ✓. El 26 dos conceptos empataban

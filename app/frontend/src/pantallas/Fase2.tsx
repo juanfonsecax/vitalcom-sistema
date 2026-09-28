@@ -2,15 +2,25 @@
  * Fase2.tsx — Pantalla de FASE 2: Testeo de Conceptos y Ciclo de Fatiga.
  *
  * Muestra:
- *  1. Ganador #1 con sus métricas.
- *  2. Carriles de ganadores secundarios (#2 y #3) escalonados (~3 días).
- *  3. Galería de 10 conceptos con blueprints de origen, prompts listos para copiar y subida manual.
- *  4. Módulo de fatiga creativa (RENOVAR) y botón «Nuevos ángulos para este producto» (retorno a F1 excluyendo probados).
+ *  1. El ángulo #1, en testeo de conceptos ahora, con sus cifras clave.
+ *  2. Los ganadores en fila (#2, #3…): cada uno tendrá su propia Fase 2, escalonada.
+ *  3. Los ángulos que no funcionaron, con la etiqueta que dicen los datos.
+ *  4. Galería de conceptos agrupada por ángulo (arranca en el #1), prompts listos para copiar y subida manual.
+ *  5. Ciclo de fatiga: las órdenes concretas del motor (RENOVAR) y el botón «Nuevos ángulos para este producto».
  */
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
 import { api, type ConceptoFase2 } from "../api/cliente";
+import { trabajoPendientePorProducto } from "../componentes/resumen";
+import {
+  AnguloEnTesteoAhora,
+  AngulosEnFila,
+  AngulosQueNoFuncionaron,
+  OrdenesDeRenovacion,
+  type OrdenMotor,
+} from "../componentes/angulosFase2";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta, type Tono } from "../componentes/ui";
@@ -31,6 +41,8 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
     queryFn: () => api.fase2(clave),
   });
 
+  const trabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos });
+  const [anguloElegido, setAnguloElegido] = useState<string | null>(null);
   const [subiendoArchivo, setSubiendoArchivo] = useState<string | null>(null);
   const [mensajeSubida, setMensajeSubida] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
   const [modalReingreso, setModalReingreso] = useState(false);
@@ -51,6 +63,28 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
 
   const d = consulta.data;
   if (!d) return null;
+
+  // El backend ya decidió rol y orden de cada ángulo; acá solo se reparten en bloques.
+  const angulos = d.angulos ?? [];
+  const principal = angulos.find((a) => a.rol === "ganador_activo");
+  const enFila = angulos.filter((a) => a.rol === "ganador_en_fila");
+  const noFuncionaron = angulos.filter((a) => a.rol === "perdedor" || a.rol === "midiendo");
+  const trabajoPendiente = trabajoPendientePorProducto(trabajos.data).get(clave);
+
+  // Galería agrupada por ángulo, en el orden de los ángulos; arranca en el #1.
+  const clavesDeConceptos = Array.from(new Set(d.conceptos.map((c) => c.angulo_key || "")));
+  const ordenAngulos = angulos.map((a) => a.angulo_key);
+  const gruposGaleria = [
+    ...ordenAngulos.filter((k) => clavesDeConceptos.includes(k)),
+    ...clavesDeConceptos.filter((k) => !ordenAngulos.includes(k)),
+  ];
+  const grupoActivo =
+    anguloElegido && gruposGaleria.includes(anguloElegido)
+      ? anguloElegido
+      : gruposGaleria.includes(principal?.angulo_key ?? "")
+        ? (principal?.angulo_key ?? "")
+        : (gruposGaleria[0] ?? "");
+  const conceptosVisibles = d.conceptos.filter((c) => (c.angulo_key || "") === grupoActivo);
 
   const subirImagen = async (concepto: ConceptoFase2, archivo: File) => {
     setSubiendoArchivo(concepto.creativo_id);
@@ -133,54 +167,10 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
         </div>
       )}
 
-      {/* Ángulo Ganador Principal */}
-      <Tarjeta className="border-emerald-800/50 bg-emerald-950/20">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
-              Ángulo Ganador Coronado por Ventas
-            </span>
-            <h2 className="text-lg font-bold text-zinc-100">{d.angulo_ganador}</h2>
-            <p className="mt-1 text-xs text-zinc-400">
-              Este ángulo se mantiene fijo para todos los conceptos de esta fase.
-            </p>
-          </div>
-          <div className="text-right">
-            <span className="text-xs text-zinc-400">Paso actual</span>
-            <div className="font-mono text-sm font-semibold text-emerald-300">
-              {d.nodo_actual || "Al día"}
-            </div>
-          </div>
-        </div>
-      </Tarjeta>
-
-      {/* Carriles Escalonados para Ganadores Secundarios */}
-      {d.carriles_secundarios.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-zinc-200">
-              Carriles Escalonados · Ganadores Secundarios (#2 y #3)
-            </h3>
-            <span className="text-xs text-zinc-400">
-              Cadencia: ~3 días de separación (CALENDARIO_ESCALADO §1)
-            </span>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {d.carriles_secundarios.map((c) => (
-              <Tarjeta key={c.angulo_key} className="border-zinc-800 bg-zinc-900/40 p-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-semibold text-zinc-200">{c.angulo_key}</span>
-                  <Chip tono="aviso">{c.estado_motor}</Chip>
-                </div>
-                <p className="mt-2 text-xs text-zinc-400">{c.accion || "Ganador en lista para escalonar"}</p>
-                <div className="mt-3 text-right text-xs text-amber-400">
-                  ⏱ {c.fecha_estimada}
-                </div>
-              </Tarjeta>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Cada ángulo en su propio bloque: el #1 en testeo ahora, los demás en fila o descartados. */}
+      <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} />
+      <AngulosEnFila angulos={enFila} />
+      <AngulosQueNoFuncionaron angulos={noFuncionaron} trabajoPendiente={trabajoPendiente} />
 
       {/* Alertas de Fatiga y Botón de Retorno a F1 */}
       <Tarjeta className="border-amber-800/40 bg-amber-950/20 p-4">
@@ -189,9 +179,19 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             <h3 className="text-sm font-semibold text-amber-200">
               Ciclo de Fatiga & Renovación
             </h3>
-            <p className="mt-1 text-xs text-zinc-300">
-              Si el ángulo ganador se cansa o las órdenes del motor emiten <span className="font-mono text-amber-300">RENOVAR</span>, rotamos creativos en F2. Si el ángulo ya no rinde, volvemos a FASE 1 con ángulos frescos.
-            </p>
+            <OrdenesDeRenovacion ordenes={(d.fatiga?.ordenes ?? []) as OrdenMotor[]} />
+            <Collapsible>
+              <CollapsibleTrigger className="mt-3 text-xs text-zinc-400 underline underline-offset-2 hover:text-zinc-200">
+                ¿Cómo funciona la renovación?
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <p className="mt-1 text-xs text-zinc-300">
+                  Si un ángulo ganador se cansa o el motor emite <span className="font-mono text-amber-300">RENOVAR</span>,
+                  se rotan los creativos en FASE 2 y el ángulo se mantiene. Si el ángulo ya no rinde, se vuelve a FASE 1
+                  con ángulos frescos.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
           </div>
           <Button
             onClick={() => setModalReingreso(true)}
@@ -260,15 +260,36 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-base font-bold text-zinc-100">
-            Galería de Conceptos ({d.conceptos.length} de 10)
+            Galería de Conceptos ({conceptosVisibles.length} de 10)
           </h2>
           <span className="text-xs text-zinc-400">
             Copiá el prompt, generá en tu IA favorita (ChatGPT web, Midjourney) y subí la pieza terminada.
           </span>
         </div>
 
+        {gruposGaleria.length > 1 && (
+          <div className="mb-3 flex flex-wrap gap-2" role="tablist" aria-label="Ángulo de la galería">
+            {gruposGaleria.map((k) => (
+              <button
+                key={k}
+                type="button"
+                role="tab"
+                aria-selected={k === grupoActivo}
+                onClick={() => setAnguloElegido(k)}
+                className={`rounded-full border px-3 py-1 font-mono text-xs ${
+                  k === grupoActivo
+                    ? "border-emerald-700 bg-emerald-950/50 text-emerald-200"
+                    : "border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800"
+                }`}
+              >
+                {k || "Sin ángulo"}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="grid gap-4 md:grid-cols-2">
-          {d.conceptos.map((c, i) => (
+          {conceptosVisibles.map((c, i) => (
             <Tarjeta key={c.creativo_id || i} className="space-y-3 border-zinc-800 bg-zinc-900/50">
               <div className="flex items-start justify-between gap-2 border-b border-zinc-800 pb-2">
                 <div>

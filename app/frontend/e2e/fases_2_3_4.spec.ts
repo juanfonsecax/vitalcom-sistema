@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("la pantalla de FASE 2 para TINNIDROP muestra el ángulo ganador, carril secundario y conceptos sin ejecutar mutaciones", async ({ page }) => {
+test("la pantalla de FASE 2 para TINNIDROP muestra el #1 en testeo, la fila de ganadores y los conceptos sin ejecutar mutaciones", async ({ page }) => {
   let llamadasPost = 0;
   page.on("request", (req) => {
     if (req.method() === "POST") {
@@ -15,19 +15,30 @@ test("la pantalla de FASE 2 para TINNIDROP muestra el ángulo ganador, carril se
   //    se le da aire a la espera, no se debilita lo que se afirma.
   await expect(page.getByRole("heading", { name: /FASE 2 · Testeo de Conceptos \(TINNIDROP\)/i })).toBeVisible({ timeout: 15_000 });
 
-  // 2. Ángulo ganador y nodo actual del motor
-  await expect(page.getByText("Ángulo Ganador Coronado por Ventas")).toBeVisible();
-
-  // 3. Carriles secundarios escalonados: dependen de la data viva, así que la prueba lee lo mismo
-  //    que la pantalla (GET fase2) en vez de fijar qué ángulo va de secundario.
+  // 2. Los ángulos dependen de la data viva: la prueba lee lo mismo que la pantalla (GET fase2)
+  //    en vez de fijar cuál va de #1, cuál en fila y cuáles no funcionaron.
   const detalle = await (await page.request.get("/api/productos/TINNIDROP/fase2")).json();
-  await expect(page.getByRole("heading", { name: detalle.angulo_ganador, exact: true })).toBeVisible();
-  const carriles = detalle.carriles_secundarios as { angulo_key: string }[];
-  if (carriles.length > 0) {
-    await expect(page.getByText(/Carriles Escalonados/i)).toBeVisible();
-    await expect(page.getByText(carriles[0].angulo_key, { exact: true }).first()).toBeVisible();
+  const angulos = detalle.angulos as { angulo_key: string; rol: string }[];
+  const principal = angulos.find((a) => a.rol === "ganador_activo");
+  if (principal) {
+    await expect(page.getByText("En testeo de conceptos ahora")).toBeVisible();
+    await expect(page.getByTestId("angulo-en-testeo").getByText(principal.angulo_key, { exact: true })).toBeVisible();
   } else {
-    await expect(page.getByText(/Carriles Escalonados/i)).toHaveCount(0);
+    await expect(page.getByText("Todavía no hay un ángulo ganador")).toBeVisible();
+  }
+
+  // 3. Ganadores en fila y ángulos que no funcionaron, cada uno en su bloque
+  const enFila = angulos.filter((a) => a.rol === "ganador_en_fila");
+  if (enFila.length > 0) {
+    await expect(page.getByTestId("angulos-en-fila").getByText(enFila[0].angulo_key, { exact: true })).toBeVisible();
+  } else {
+    await expect(page.getByTestId("angulos-en-fila")).toHaveCount(0);
+  }
+  const descartados = angulos.filter((a) => a.rol === "perdedor" || a.rol === "midiendo");
+  if (descartados.length > 0) {
+    await expect(page.getByText("Ángulos que no funcionaron")).toBeVisible();
+  } else {
+    await expect(page.getByTestId("angulos-no-funcionaron")).toHaveCount(0);
   }
 
   // 4. Módulo de fatiga y botón de reingreso

@@ -471,11 +471,31 @@ class Ganador(Base):
     siguiente_paso: GanadorPaso
 
 
-class CarrilSecundario(Base):
-    angulo_key: str = ""
-    estado_motor: str = ""
-    accion: str = ""
-    fecha_estimada: str = ""
+class AnguloFase2(Base):
+    """Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
+    (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`."""
+
+    angulo_key: str
+    rol: str = "midiendo"  # ganador_activo | ganador_en_fila | perdedor | midiendo
+    posicion: int | None = None
+    etiqueta: str = ""
+    estado_angulo: str = ""
+    dias_sin_gasto: int | None = None
+    ultimo_dia_gasto: str = ""
+    estado: str | None = None
+    accion_codigo: str | None = None
+    accion_sugerida: str | None = None
+    ventas: float | None = None
+    ventas_acum: float | None = None
+    cpa_real_q: float | None = None
+    ic: list[float] | None = None
+    cierre_pct: float | None = None
+    spend_q: float | None = None
+    spend_acum_q: float | None = None
+    nivel_prioridad: int | None = None
+    faltan_ventas: float | None = None
+    ejecutable: bool | None = None
+    bloqueo_fase: str | None = None
 
 
 class ConceptoFase2(Base):
@@ -486,6 +506,7 @@ class ConceptoFase2(Base):
     creativo_id: str = ""
     archivo: str = ""
     canonico_id: str = ""
+    angulo_key: str = ""
     blueprint_nombre: str = ""
     dispositivo: str = ""
     cuando_elegirlo: str = ""
@@ -519,13 +540,14 @@ class ReingresoActivo(Base):
 
 
 class Fase2Detalle(Base):
-    """`contratos.fase2_detalle`: ángulo ganador, 10 conceptos con prompt real y carriles."""
+    """`contratos.fase2_detalle`: todos los ángulos con su rol, 10 conceptos con prompt real y las
+    órdenes del motor. `angulo_ganador` es el `angulo_key` del #1 (vacío si aún no hay ganador)."""
 
     producto_key: str
     fase: str = ""
     nodo_actual: str = ""
     angulo_ganador: str = ""
-    carriles_secundarios: list[CarrilSecundario] = []
+    angulos: list[AnguloFase2] = []
     conceptos: list[ConceptoFase2] = []
     total_conceptos: int = 0
     conceptos_generados: int = 0

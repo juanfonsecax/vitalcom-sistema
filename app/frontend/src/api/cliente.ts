@@ -218,7 +218,7 @@ export const api = {
 };
 
 export type ConceptoFase2 = components["schemas"]["ConceptoFase2"];
-export type CarrilSecundario = components["schemas"]["CarrilSecundario"];
+export type AnguloFase2 = components["schemas"]["AnguloFase2"];
 export type FatigaFase2 = components["schemas"]["FatigaFase2"];
 export type ReingresoActivo = components["schemas"]["ReingresoActivo"];
 export type Fase2Detalle = components["schemas"]["Fase2Detalle"];

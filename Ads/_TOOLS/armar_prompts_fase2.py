@@ -40,6 +40,13 @@ SWIPE_DIR = os.path.join(BASE, "Ads", "_SWIPE")
 DECISIONES_JSON = os.path.join(PROD_DIR, "_DECISIONES.json")
 
 
+def orden_ganador(celda):
+    """Llave de orden del ángulo que va PRIMERO a FASE 2: más ventas, y a igualdad, CPA real más
+    bajo. Dueño único del criterio: lo usa `detectar_angulo_ganador` y `flujo.ranking_ganadores`
+    (la cola de ganadores que muestra la pantalla de FASE 2)."""
+    return (-(celda.get("ventas") or 0), celda.get("cpa_real_q") or 999)
+
+
 def detectar_angulo_ganador(producto_key):
     """Lee _DECISIONES.json y extrae el ángulo con mejor volumen y CPA en estado ESCALAR."""
     if not os.path.exists(DECISIONES_JSON):
@@ -63,7 +70,7 @@ def detectar_angulo_ganador(producto_key):
             return None, "No hay celdas registradas"
             
     # Ordenar por ventas descendente y CPA real ascendente
-    ganador = sorted(escalables, key=lambda x: (-x.get("ventas", 0), x.get("cpa_real_q") or 999))[0]
+    ganador = sorted(escalables, key=orden_ganador)[0]
     return ganador["celda"], ganador
 
 

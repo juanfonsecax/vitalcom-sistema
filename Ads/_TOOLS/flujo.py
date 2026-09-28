@@ -725,6 +725,29 @@ def _angulo_ganador_info(p, ctx, env):
     return {"gana": True, "claves": claves, "que": "; ".join(ganadores[:4])}
 
 
+def ranking_ganadores(info, env, pk):
+    """Los ángulos ganadores del gate `angulo_ganador` (`info["claves"]`), en orden de fila para
+    FASE 2: el #1 es el que `armar_prompts_fase2.orden_ganador` corona entre los ESCALAR
+    (más ventas de la ventana, luego CPA real más bajo); el resto va por ventas acumuladas
+    descendente y, a igualdad, por nombre. Determinista: misma data, mismo orden."""
+    if TOOLS not in sys.path:
+        sys.path.insert(0, TOOLS)
+    from armar_prompts_fase2 import orden_ganador
+    celdas, _ = env.celdas(pk)
+    por_celda = {c.get("celda"): c for c in celdas}
+    acum = _angulos_acumulados(env, pk)
+
+    def ventas_acum(k):
+        v = num((por_celda.get(k) or {}).get("ventas_acum"))
+        return v if v is not None else acum.get(k, [0.0, 0.0])[0]
+
+    claves = list(info.get("claves") or [])
+    escalar = [k for k in claves if (por_celda.get(k) or {}).get("estado") == "ESCALAR"]
+    cabeza = sorted(escalar, key=lambda k: orden_ganador(por_celda[k]))[:1]
+    resto = sorted((k for k in claves if k not in cabeza), key=lambda k: (-ventas_acum(k), k))
+    return cabeza + resto
+
+
 def _ev_angulo_ganador(p, ctx, env):
     """Ganador = ESCALAR del motor en la ventana vigente, O historia rentable acumulada.
     Las dos cosas son VENTA por angulo_key, y LAS DOS exigen el mismo piso de volumen
@@ -1243,6 +1266,11 @@ def situar(prod, flujo, env):
     res["fase_titulo"] = fase_actual.get("titulo", fase_actual["id"])
     res["entradas"] = entradas
     res["reingreso_activo"] = reingreso_activo
+    # Ángulos ganadores del gate F2 en orden de fila (#1 en F2 ahora, el resto en cola).
+    f2 = next((f for f in fases if f["id"] == "F2"), None)
+    if f2 and f2["entrada"]["gate"].get("tipo") == "angulo_ganador":
+        info_g = _angulo_ganador_info(f2["entrada"]["gate"], ctx, env)
+        res["angulos_ganadores"] = ranking_ganadores(info_g, env, pk) if info_g["gana"] else []
     # Detalle estructurado del gate F3→F4 (mensajes/ventas/cierre% + benchmark), mismo cálculo que
     # `_ev_cierre_post_cambio_bot` — se expone siempre que el producto ya pasó F2 (tiene concepto
     # ganador) para que la pantalla F3 muestre su avance aunque el producto siga en F3/F4/F1

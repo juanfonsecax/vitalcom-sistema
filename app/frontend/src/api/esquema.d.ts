@@ -816,6 +816,69 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * AnguloFase2
+         * @description Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
+         *     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`.
+         */
+        AnguloFase2: {
+            /** Angulo Key */
+            angulo_key: string;
+            /**
+             * Rol
+             * @default midiendo
+             */
+            rol: string;
+            /** Posicion */
+            posicion?: number | null;
+            /**
+             * Etiqueta
+             * @default
+             */
+            etiqueta: string;
+            /**
+             * Estado Angulo
+             * @default
+             */
+            estado_angulo: string;
+            /** Dias Sin Gasto */
+            dias_sin_gasto?: number | null;
+            /**
+             * Ultimo Dia Gasto
+             * @default
+             */
+            ultimo_dia_gasto: string;
+            /** Estado */
+            estado?: string | null;
+            /** Accion Codigo */
+            accion_codigo?: string | null;
+            /** Accion Sugerida */
+            accion_sugerida?: string | null;
+            /** Ventas */
+            ventas?: number | null;
+            /** Ventas Acum */
+            ventas_acum?: number | null;
+            /** Cpa Real Q */
+            cpa_real_q?: number | null;
+            /** Ic */
+            ic?: number[] | null;
+            /** Cierre Pct */
+            cierre_pct?: number | null;
+            /** Spend Q */
+            spend_q?: number | null;
+            /** Spend Acum Q */
+            spend_acum_q?: number | null;
+            /** Nivel Prioridad */
+            nivel_prioridad?: number | null;
+            /** Faltan Ventas */
+            faltan_ventas?: number | null;
+            /** Ejecutable */
+            ejecutable?: boolean | null;
+            /** Bloqueo Fase */
+            bloqueo_fase?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** BloqueDeFlujo */
         BloqueDeFlujo: {
             /** Titulo */
@@ -1013,31 +1076,6 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
-        /** CarrilSecundario */
-        CarrilSecundario: {
-            /**
-             * Angulo Key
-             * @default
-             */
-            angulo_key: string;
-            /**
-             * Estado Motor
-             * @default
-             */
-            estado_motor: string;
-            /**
-             * Accion
-             * @default
-             */
-            accion: string;
-            /**
-             * Fecha Estimada
-             * @default
-             */
-            fecha_estimada: string;
-        } & {
-            [key: string]: unknown;
-        };
         /**
          * ChecklistF1
          * @description Lo que falta (de `flujo.py`) y los bloqueos del paquete (de `gen_publicacion.py`), con su escritor.
@@ -1120,6 +1158,11 @@ export interface components {
              * @default
              */
             canonico_id: string;
+            /**
+             * Angulo Key
+             * @default
+             */
+            angulo_key: string;
             /**
              * Blueprint Nombre
              * @default
@@ -1450,7 +1493,8 @@ export interface components {
         };
         /**
          * Fase2Detalle
-         * @description `contratos.fase2_detalle`: ángulo ganador, 10 conceptos con prompt real y carriles.
+         * @description `contratos.fase2_detalle`: todos los ángulos con su rol, 10 conceptos con prompt real y las
+         *     órdenes del motor. `angulo_ganador` es el `angulo_key` del #1 (vacío si aún no hay ganador).
          */
         Fase2Detalle: {
             /** Producto Key */
@@ -1471,10 +1515,10 @@ export interface components {
              */
             angulo_ganador: string;
             /**
-             * Carriles Secundarios
+             * Angulos
              * @default []
              */
-            carriles_secundarios: components["schemas"]["CarrilSecundario"][];
+            angulos: components["schemas"]["AnguloFase2"][];
             /**
              * Conceptos
              * @default []

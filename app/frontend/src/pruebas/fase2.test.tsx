@@ -2,7 +2,7 @@
  * fase2.test.tsx — Pruebas unitarias de la pantalla Fase2 (Hito 6).
  *
  * Verifica:
- * 1. Muestra el ángulo ganador y los carriles secundarios escalonados.
+ * 1. Muestra el #1 en testeo, los ganadores en fila y los ángulos que no funcionaron.
  * 2. Galería de 10 conceptos con blueprints, chips de rol y prompts.
  * 3. Botón para copiar el prompt al portapapeles.
  * 4. Modal de confirmación para reingreso a FASE 1 por fatiga y envío de la mutación.
@@ -74,24 +74,85 @@ function renderizar(clave = "TINNIDROP") {
   );
 }
 
+const ANGULO_BASE = {
+  posicion: null,
+  etiqueta: "",
+  estado_angulo: "",
+  dias_sin_gasto: 0,
+  ultimo_dia_gasto: "2026-09-25",
+  estado: null,
+  accion_sugerida: null,
+  ventas_acum: null,
+  cpa_real_q: null,
+  cierre_pct: null,
+  ic: null,
+  spend_acum_q: null,
+};
+
 const FASE2_MOCK = {
   producto_key: "TINNIDROP",
   fase: "FASE 2",
   nodo_actual: "F2.etapa-11",
   angulo_ganador: "ACCESIBILIDAD_MEDICO",
   conceptos_generados: 10,
-  carriles_secundarios: [
+  angulos: [
     {
+      ...ANGULO_BASE,
+      angulo_key: "ACCESIBILIDAD_MEDICO",
+      rol: "ganador_activo",
+      posicion: 1,
+      estado: "ESCALAR",
+      estado_angulo: "ESCALANDO",
+      ventas_acum: 91,
+      cpa_real_q: 41.5,
+      cierre_pct: 18.2,
+      ic: [30, 41.5, 60],
+      accion_sugerida: "NO SUBIR PRESUPUESTO todavía",
+    },
+    {
+      ...ANGULO_BASE,
       angulo_key: "NOCHES_SIN_DORMIR",
-      estado_motor: "GANADOR_SECUNDARIO",
-      orden: "RENOVAR",
-      fecha_estimada: "Esperar ~3 días tras arranque de ACCESIBILIDAD_MEDICO",
-      accion: "En cola para nuevo ad set en FASE 2",
+      rol: "ganador_en_fila",
+      posicion: 2,
+      estado: "RENOVAR",
+      ventas_acum: 24,
+      cpa_real_q: 77,
+    },
+    {
+      ...ANGULO_BASE,
+      angulo_key: "DETERIORO_COGNITIVO",
+      rol: "ganador_en_fila",
+      posicion: 3,
+      ventas_acum: 105,
+    },
+    {
+      ...ANGULO_BASE,
+      angulo_key: "ME_DIJERON_NO_CURA",
+      rol: "perdedor",
+      etiqueta: "ya apagado (40 días sin gastar)",
+      estado_angulo: "APAGADO_ABANDONO",
+      dias_sin_gasto: 40,
+    },
+    {
+      ...ANGULO_BASE,
+      angulo_key: "MANCHAS_OSCURAS",
+      rol: "perdedor",
+      etiqueta: "el motor ordena pausarlo",
+      estado: "PAUSAR",
+      accion_sugerida: "PAUSAR: el costo por venta supera el break-even",
+    },
+    {
+      ...ANGULO_BASE,
+      angulo_key: "VERGUENZA_PIERNAS",
+      rol: "midiendo",
+      etiqueta: "midiendo",
+      estado: "SEGUIR_MIDIENDO",
     },
   ],
   conceptos: [
     {
       creativo_id: "TINNIDROP_F2_C01",
+      angulo_key: "ACCESIBILIDAD_MEDICO",
       canonico_id: "C01",
       blueprint_id: "BP-01",
       blueprint_nombre: "Before / After Split",
@@ -107,6 +168,7 @@ const FASE2_MOCK = {
     },
     {
       creativo_id: "TINNIDROP_F2_C02",
+      angulo_key: "ACCESIBILIDAD_MEDICO",
       canonico_id: "C02",
       blueprint_id: "BP-04",
       blueprint_nombre: "Social Proof Wall",
@@ -122,9 +184,11 @@ const FASE2_MOCK = {
     },
   ],
   fatiga: {
-    ordenes_activas: ["RENOVAR"],
+    ordenes: [
+      { celda: "NOCHES_SIN_DORMIR", estado: "RENOVAR", accion: "RENOVAR CREATIVO: rotá el concepto, no apagues" },
+      { celda: "ACCESIBILIDAD_MEDICO", estado: "ESCALAR", accion: "NO SUBIR PRESUPUESTO todavía" },
+    ],
     angulos_probados: ["ACCESIBILIDAD_MEDICO", "NOCHES_SIN_DORMIR"],
-    mensaje: "El motor emitió ordenes de fatiga creativa (RENOVAR).",
   },
   reingreso_activo: null,
 };
@@ -139,7 +203,7 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test("renderiza el ángulo ganador, carril secundario y la galería de conceptos", async () => {
+test("renderiza el #1 en testeo, la fila, los que no funcionaron y la galería", async () => {
   respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
   renderizar("TINNIDROP");
 
@@ -147,10 +211,23 @@ test("renderiza el ángulo ganador, carril secundario y la galería de conceptos
     expect(screen.getByText(/FASE 2 · Testeo de Conceptos \(TINNIDROP\)/i)).toBeDefined();
   });
 
-  expect(screen.getByText("ACCESIBILIDAD_MEDICO")).toBeDefined();
+  // (a) el #1, con sus cifras clave
+  const hero = await screen.findByTestId("angulo-en-testeo");
+  expect(hero.textContent).toContain("En testeo de conceptos ahora");
+  expect(hero.textContent).toContain("ACCESIBILIDAD_MEDICO");
+  expect(hero.textContent).toContain("91");
+  expect(hero.textContent).toContain("Q41.5");
+  expect(hero.textContent).toContain("18.2%");
   expect(screen.getByText("F2.etapa-11")).toBeDefined();
-  expect(screen.getByText("NOCHES_SIN_DORMIR")).toBeDefined();
-  expect(screen.getByText(/Esperar ~3 días/i)).toBeDefined();
+
+  // (b) en fila: #2 y #3, con la regla y sin fechas inventadas
+  const fila = screen.getByTestId("angulos-en-fila");
+  expect(fila.textContent).toContain("NOCHES_SIN_DORMIR");
+  expect(fila.textContent).toContain("DETERIORO_COGNITIVO");
+  expect(fila.textContent).toContain("#2 en la fila");
+  expect(fila.textContent).toContain("#3 en la fila");
+  expect(screen.getAllByText(/Entra a su propia Fase 2 cuando el #1 cierre la suya/i)).toHaveLength(2);
+  expect(screen.queryByText(/Esperar ~3 días/i)).toBeNull();
 
   // Conceptos
   expect(screen.getByText("Before / After Split")).toBeDefined();
@@ -158,6 +235,79 @@ test("renderiza el ángulo ganador, carril secundario y la galería de conceptos
   expect(screen.getByText("C01")).toBeDefined();
   expect(screen.getByText("C02")).toBeDefined();
   expect(screen.getByText("✓ En disco")).toBeDefined();
+});
+
+test("los ángulos que no funcionaron llevan la etiqueta que dicen los datos", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  respuestas["GET /api/trabajos"] = [
+    { job_id: "job-77", producto_key: "TINNIDROP", pendiente: { tipo: "aprobacion" } },
+  ];
+  renderizar("TINNIDROP");
+
+  const lista = await screen.findByTestId("angulos-no-funcionaron");
+  expect(lista.textContent).toContain("ME_DIJERON_NO_CURA");
+  expect(lista.textContent).toContain("ya apagado (40 días sin gastar)");
+  expect(lista.textContent).toContain("MANCHAS_OSCURAS");
+  expect(lista.textContent).toContain("el motor ordena pausarlo");
+  expect(lista.textContent).toContain("VERGUENZA_PIERNAS");
+  expect(lista.textContent).toContain("midiendo");
+  // la orden de pausa lleva a Trabajos, donde vive la aprobación
+  await waitFor(() => {
+    const enlace = screen.getByRole("link", { name: "Revisar en Trabajos" });
+    expect(enlace.getAttribute("href")).toContain("/trabajos/job-77");
+  });
+  // el detalle técnico sigue ahí, plegado
+  expect(screen.getAllByText("Ver detalle técnico").length).toBeGreaterThan(0);
+});
+
+test("la fatiga muestra la orden concreta del motor como «Qué hacer» y pliega la doctrina", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  const bloque = await screen.findByTestId("ordenes-renovar");
+  expect(bloque.textContent).toContain("Qué hacer");
+  expect(bloque.textContent).toContain("NOCHES_SIN_DORMIR");
+  expect(bloque.textContent).toContain("RENOVAR CREATIVO: rotá el concepto, no apagues");
+  // solo las órdenes de renovar; la de escalar no es de este bloque
+  expect(bloque.textContent).not.toContain("NO SUBIR PRESUPUESTO");
+  expect(screen.getByText("¿Cómo funciona la renovación?")).toBeDefined();
+});
+
+test("la galería agrupa por ángulo y arranca en el #1", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    conceptos: [
+      ...FASE2_MOCK.conceptos,
+      {
+        ...FASE2_MOCK.conceptos[0],
+        creativo_id: "TINNIDROP_F2_N01",
+        angulo_key: "NOCHES_SIN_DORMIR",
+        canonico_id: "N01",
+        blueprint_nombre: "Testimonio de noche",
+      },
+    ],
+  };
+  renderizar("TINNIDROP");
+
+  const pestanas = await screen.findAllByRole("tab");
+  expect(pestanas.map((t) => t.textContent)).toEqual(["ACCESIBILIDAD_MEDICO", "NOCHES_SIN_DORMIR"]);
+  expect(pestanas[0].getAttribute("aria-selected")).toBe("true");
+  expect(screen.getByText("Before / After Split")).toBeDefined();
+  expect(screen.queryByText("Testimonio de noche")).toBeNull();
+
+  fireEvent.click(pestanas[1]);
+  expect(screen.getByText("Testimonio de noche")).toBeDefined();
+  expect(screen.queryByText("Before / After Split")).toBeNull();
+});
+
+test("sin ganador no inventa un #1 y lo dice", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = { ...FASE2_MOCK, angulo_ganador: "", angulos: [] };
+  renderizar("TINNIDROP");
+
+  await waitFor(() => {
+    expect(screen.getByText("Todavía no hay un ángulo ganador")).toBeDefined();
+  });
+  expect(screen.queryByTestId("angulos-en-fila")).toBeNull();
 });
 
 test("botón de copiar prompt invoca clipboard.writeText", async () => {

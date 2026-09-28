@@ -25,6 +25,7 @@ DIM_FANPAGES = ("PRODUCTOS", "_DIM_FANPAGES.csv")
 DIM_REFERENCIA_F1 = ("PRODUCTOS", "_DIM_REFERENCIA_F1.csv")
 PARAMETROS_DECISION = ("PRODUCTOS", "_PARAMETROS_DECISION.csv")
 ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
+ESTADO_ANGULOS = ("PRODUCTOS", "_ESTADO_ANGULOS.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
 FLUJO_GLOBAL = ("PRODUCTOS", "_FLUJO.json")
 ESTADO_VISTAS = ("VISTAS", "_ESTADO.json")
@@ -500,38 +501,107 @@ def ruta_de_swipe(ruta_relativa: str) -> Path | None:
     return candidato if candidato.is_file() else None
 
 
-def fase2_detalle(producto_key: str) -> dict[str, Any]:
-    """Detalles de FASE 2 para el producto: ángulo ganador, 10 conceptos con blueprints y carriles."""
-    flujo_data = flujo(producto_key)
-    entradas = flujo_data.get("entradas", [])
-    ganador_obs = ""
-    for e in entradas:
-        if e.get("fase") == "F2" and e.get("ok"):
-            ganador_obs = e.get("observado", "")
-            break
+# Campos del veredicto del motor (`_DECISIONES.json`, una celda = un ángulo) que se pasan tal cual.
+CAMPOS_VEREDICTO = (
+    "estado", "accion_codigo", "accion_sugerida", "ventas", "ventas_acum", "cpa_real_q", "ic",
+    "cierre_pct", "spend_q", "spend_acum_q", "nivel_prioridad", "faltan_ventas", "ejecutable",
+    "bloqueo_fase",
+)
 
-    # Ganadores secundarios (#2 y #3) y órdenes del motor
-    celdas = []
+
+def _celdas_del_producto(producto_key: str) -> list[dict[str, Any]]:
     try:
-        dec = decisiones()
-        for p in dec.get("productos", []):
+        for p in decisiones().get("productos", []):
             if p.get("producto_key") == producto_key:
-                celdas = p.get("celdas", [])
-                break
+                return list(p.get("celdas", []))
     except Exception:
-        celdas = []
+        pass
+    return []
 
-    carriles = []
-    for c in celdas:
-        c_est = c.get("estado", "")
-        c_nom = c.get("celda", "")
-        if c_est in ("ESCALAR", "RENOVAR"):
-            carriles.append({
-                "angulo_key": c_nom,
-                "estado_motor": c_est,
-                "accion": c.get("accion_sugerida", ""),
-                "fecha_estimada": "Escalonar ~3 días",
-            })
+
+def _estado_angulos_del_producto(producto_key: str) -> dict[str, dict[str, str]]:
+    """`_ESTADO_ANGULOS.csv` (lo escribe `perfilar_angulos.py`) por angulo_key, solo este producto.
+    Archivo ausente = sin perfil todavía: la pantalla lo dice, no lo inventa."""
+    try:
+        filas = _leer_csv(ESTADO_ANGULOS)
+    except ContratoAusente:
+        return {}
+    return {f.get("angulo_key", ""): f for f in filas if f.get("producto_key") == producto_key}
+
+
+def _entero_o_none(texto: Any) -> int | None:
+    try:
+        return int(float(str(texto).strip()))
+    except (TypeError, ValueError):
+        return None
+
+
+def _es_apagado(estado_angulo: str) -> bool:
+    return estado_angulo.startswith("APAGADO") or estado_angulo == "DORMIDO"
+
+
+def angulos_de_fase2(producto_key: str, ganadores: list[str]) -> list[dict[str, Any]]:
+    """TODOS los ángulos que el producto testeó en FASE 1, cada uno con su rol y el veredicto del
+    motor. La app no elige ni ordena por su cuenta: junta tres fuentes que ya decidieron.
+
+    Universo: unión de las celdas de `_DECISIONES.json` (el veredicto vigente de `decidir.py`)
+    y las filas de `_ESTADO_ANGULOS.csv` (el estado de vida de cada ángulo, `perfilar_angulos.py`).
+
+    Ganadores y su orden: `ganadores` es `flujo.py` -> `angulos_ganadores`, la lista que sale de la
+    MISMA evidencia del gate `angulo_ganador` que abre FASE 2 (`_angulo_ganador_info`), ya
+    ordenada por `flujo.ranking_ganadores`: #1 es el ESCALAR con más ventas de la ventana y menor
+    CPA real (el criterio de `armar_prompts_fase2.orden_ganador`, el mismo que elige el ángulo del
+    paquete de prompts); del #2 en adelante, por ventas acumuladas descendente. Acá solo se
+    respeta ese orden: `posicion` es el lugar en la lista.
+
+    Roles: `ganador_activo` (posicion 1, en testeo de conceptos ahora) · `ganador_en_fila`
+    (posicion 2, 3…: cada ganador tiene su propia FASE 2, escalonadas ~3 días, DOCTRINA/
+    CALENDARIO_ESCALADO.md §1) · `perdedor` (ya apagado, o el motor ordena PAUSAR) · `midiendo`
+    (no ganó y todavía gasta sin orden de pausa).
+    """
+    celdas = {c.get("celda", ""): c for c in _celdas_del_producto(producto_key)}
+    perfiles = _estado_angulos_del_producto(producto_key)
+    claves_ganadoras = [g for g in ganadores if g]
+    resto = sorted((set(celdas) | set(perfiles)) - set(claves_ganadoras) - {""})
+    salida: list[dict[str, Any]] = []
+    for lugar, clave in enumerate(claves_ganadoras + resto, start=1):
+        celda = celdas.get(clave, {})
+        perfil = perfiles.get(clave, {})
+        es_ganador = clave in claves_ganadoras
+        estado_angulo = perfil.get("estado", "")
+        dias_sin_gasto = _entero_o_none(perfil.get("dias_sin_gasto"))
+        if es_ganador:
+            rol = "ganador_activo" if lugar == 1 else "ganador_en_fila"
+            etiqueta = ""
+        elif _es_apagado(estado_angulo):
+            rol = "perdedor"
+            etiqueta = "ya apagado" if dias_sin_gasto is None else f"ya apagado ({dias_sin_gasto} días sin gastar)"
+        elif celda.get("estado") == "PAUSAR":
+            rol = "perdedor"
+            etiqueta = "el motor ordena pausarlo"
+        else:
+            rol = "midiendo"
+            etiqueta = "midiendo"
+        fila = {
+            "angulo_key": clave,
+            "rol": rol,
+            "posicion": lugar if es_ganador else None,
+            "etiqueta": etiqueta,
+            "estado_angulo": estado_angulo,
+            "dias_sin_gasto": dias_sin_gasto,
+            "ultimo_dia_gasto": perfil.get("ultimo_dia_gasto", ""),
+        }
+        for campo in CAMPOS_VEREDICTO:
+            fila[campo] = celda.get(campo)
+        salida.append(fila)
+    return salida
+
+
+def fase2_detalle(producto_key: str) -> dict[str, Any]:
+    """Detalles de FASE 2 para el producto: ángulos con su rol, 10 conceptos y órdenes del motor."""
+    flujo_data = flujo(producto_key)
+    angulos = angulos_de_fase2(producto_key, list(flujo_data.get("angulos_ganadores") or []))
+    principal = next((a["angulo_key"] for a in angulos if a["rol"] == "ganador_activo"), "")
 
     creativos_rows = []
     try:
@@ -564,12 +634,13 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         binfo = canonicos_dict.get(cid, {})
         arch = row.get("archivo", "")
         media_path = ruta("Ads", carpeta_media, arch)
-        angulo_key = row.get("angulo_key", "") or ganador_obs
+        angulo_key = row.get("angulo_key", "") or principal
         paquete = resolver_prompt_fase2(producto_key, carpeta_media, angulo_key, cid)
         conceptos.append({
             "creativo_id": row.get("creativo_id", ""),
             "archivo": arch,
             "canonico_id": cid,
+            "angulo_key": angulo_key,
             "blueprint_nombre": binfo.get("nombre", cid or "Blueprint Canónico"),
             "dispositivo": binfo.get("dispositivo_canonico", ""),
             "cuando_elegirlo": binfo.get("cuando_elegirlo", ""),
@@ -589,11 +660,12 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         if cid in usados_canonicos:
             continue
         arch_sug = f"{producto_key}_F2_{cid[:4]}_{indice_extra}.png"
-        paquete = resolver_prompt_fase2(producto_key, carpeta_media, ganador_obs, cid)
+        paquete = resolver_prompt_fase2(producto_key, carpeta_media, principal, cid)
         conceptos.append({
             "creativo_id": f"{producto_key}_F2_{cid[:4]}_{indice_extra}",
             "archivo": arch_sug,
             "canonico_id": cid,
+            "angulo_key": principal,
             "blueprint_nombre": binfo.get("nombre", cid),
             "dispositivo": binfo.get("dispositivo_canonico", ""),
             "cuando_elegirlo": binfo.get("cuando_elegirlo", ""),
@@ -612,8 +684,8 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         "producto_key": producto_key,
         "fase": flujo_data.get("fase", "F2"),
         "nodo_actual": flujo_data.get("nodo_actual", ""),
-        "angulo_ganador": ganador_obs or "Ángulo ganador confirmado por ventas",
-        "carriles_secundarios": carriles,
+        "angulo_ganador": principal,
+        "angulos": angulos,
         "conceptos": conceptos,
         "total_conceptos": len(conceptos),
         "conceptos_generados": sum(1 for c in conceptos if c.get("estado") in ("GENERADO", "PUBLICADO")),
