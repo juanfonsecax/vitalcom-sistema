@@ -5,6 +5,8 @@
  * 1. Las instrucciones >> van aparte y NO entran en el texto copiado al portapapeles.
  * 2. El checklist muestra un campo de archivo por cada pieza faltante.
  * 3. En avatares y ángulos se muestra la frase requerida sobre el embudo TOFU/MOFU/BOFU.
+ * 4. En Anuncios, el aviso "falta la pieza" es un botón que lleva al Checklist y deja a la
+ *    vista el input del archivo exacto.
  */
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -363,4 +365,92 @@ test("el botón Armar FASE 1 pide confirmación antes de llamar a la API", async
       confirmado: true,
     });
   });
+});
+
+test("«falta la pieza»: el botón lleva al Checklist y deja a la vista el input del archivo exacto", async () => {
+  respuestas["GET /api/productos/TURMERIC/fase1/corrida"] = {
+    producto_key: "TURMERIC",
+    corrida: null,
+    etapas: [],
+  };
+  respuestas["GET /api/productos/TURMERIC/fase1/campana"] = {
+    producto_key: "TURMERIC",
+    lanzador: null,
+    plan_fuente: {
+      conjuntos: [
+        {
+          n: 1,
+          angulo_key: "HIGADO_GRASO",
+          angulo_titulo: "Hígado graso y digestión",
+          nombre: "Conjunto 1 — Hígado graso",
+          formato: "IMAGEN",
+          lleva_precio: true,
+          archivo_creativo: "TURMERIC_P1.png",
+          copy: {
+            textos: ["¿Te pasa que ya no sabés qué comer sin sentirte pesado?"],
+            titulos: ["Título 1"],
+            descripcion: "Descripción del anuncio",
+          },
+        },
+      ],
+    },
+    piezas: [],
+  };
+  respuestas["GET /api/productos/TURMERIC/flujo-bot"] = {
+    producto_key: "TURMERIC",
+    ok: true,
+    secciones: [],
+  };
+  respuestas["GET /api/productos/TURMERIC/checklist"] = {
+    producto_key: "TURMERIC",
+    nodo_actual: "F1.publicar",
+    estado: "BLOQUEADO",
+    ejecutor: "operador",
+    faltan: [],
+    paquete: {
+      bloqueantes: [
+        {
+          falta: "falta 1 pieza creativa en disco",
+          lo_produce: "operador",
+          ambito: "media",
+          clave: "piezas",
+          archivos: ["TURMERIC_P1.png"],
+          escritor: "producto.cargar_pieza",
+        },
+      ],
+      avisos: [],
+      preflight: null,
+    },
+  };
+
+  // jsdom no implementa `scrollIntoView`: el stub registra el `aria-label` de lo que se pidió
+  // llevar a la vista, y se restaura al terminar para no filtrarlo a las demás pruebas.
+  const scrolles: string[] = [];
+  const original = window.HTMLElement.prototype.scrollIntoView;
+  window.HTMLElement.prototype.scrollIntoView = function (this: HTMLElement) {
+    scrolles.push(this.getAttribute("aria-label") ?? this.id);
+  };
+  try {
+    renderizar("TURMERIC");
+
+    // Ir a Anuncios (la barra tarda un tick en montarse): el conjunto declara
+    // TURMERIC_P1.png y ninguna pieza está cargada.
+    fireEvent.click(await screen.findByText("Anuncios"));
+    await waitFor(() => {
+      expect(screen.getByText("falta la pieza")).toBeInTheDocument();
+    });
+
+    // El aviso ya no es solo texto: es un botón que lleva al Checklist marcando ese archivo.
+    fireEvent.click(screen.getByRole("button", { name: "Subirla en el Checklist" }));
+
+    // El Checklist queda activo, con el input del archivo exacto en su fila marcada…
+    const input = await screen.findByLabelText("Subir archivo para TURMERIC_P1.png");
+    expect(input).toBeInTheDocument();
+    expect(screen.getByText("falta 1 pieza creativa en disco")).toBeInTheDocument();
+    expect(input.closest("[data-archivo='TURMERIC_P1.png']")).not.toBeNull();
+    // …y el scroll lo deja a la vista.
+    await waitFor(() => expect(scrolles).toContain("Subir archivo para TURMERIC_P1.png"));
+  } finally {
+    window.HTMLElement.prototype.scrollIntoView = original;
+  }
 });

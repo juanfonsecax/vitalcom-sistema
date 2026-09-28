@@ -5,12 +5,14 @@
  *  a) Avance (los 9 pasos, botón Armar FASE 1 y Reintentar)
  *  b) Investigación (salidas de etapa-1b, etapa-1 y etapa-0 legibles)
  *  c) Avatares y ángulos (fichas con nivel de conciencia, sin TOFU/MOFU/BOFU, y texto de etapa-2)
- *  d) Anuncios (copies, imagen o aviso de falta de pieza, y prompt_imagen con Copiar)
+ *  d) Anuncios (copies, imagen o aviso de falta de pieza con botón que lleva al Checklist
+ *     resaltando el archivo exacto, y prompt_imagen con Copiar)
  *  e) Flujo LucidBot (bloques con Copiar, instrucciones >> aparte y nunca en el copiado)
  *  f) Estructura de campaña (campaña, conjuntos, lanzamiento 4 AM, presupuesto, bloqueantes)
- *  g) Checklist (faltantes y bloqueos con su escritor: page_id, cuenta, piezas individuales, transcripciones)
+ *  g) Checklist (faltantes y bloqueos con su escritor: page_id, cuenta, piezas individuales,
+ *     transcripciones; resalta el archivo que Anuncios señaló)
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import {
@@ -531,8 +533,11 @@ function TabAngulos({
 /* ──────────────── Pestaña Anuncios ──────────────── */
 function TabAnuncios({
   campana,
+  onIrAChecklist,
 }: {
   campana: CampanaF1 | undefined;
+  /** Lleva al Checklist marcando el archivo cuya pieza falta; sin archivo no hay resaltado. */
+  onIrAChecklist: (archivo?: string) => void;
 }) {
   const lanzadorConjuntos =
     (campana?.lanzador as any)?.plan?.conjuntos ||
@@ -609,9 +614,17 @@ function TabAnuncios({
                     <span className="mt-1 font-mono text-xs text-zinc-400">
                       {cj.archivo_creativo || "Archivo no encontrado"}
                     </span>
-                    <p className="mt-2 text-xs text-zinc-400">
-                      Podés subirla en la pestaña <strong>Checklist</strong>.
-                    </p>
+                    {/* El aviso no queda en habla: el mismo bloque te lleva al lugar exacto
+                        donde se resuelve (Checklist, fila de este archivo). */}
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      className="mt-2"
+                      onClick={() => onIrAChecklist(cj.archivo_creativo || undefined)}
+                    >
+                      Subirla en el Checklist
+                    </Button>
                   </div>
                 )}
 
@@ -939,10 +952,15 @@ function TabChecklist({
   clave,
   checklist,
   onRecargar,
+  resaltarArchivo,
 }: {
   clave: string;
   checklist: ChecklistF1 | undefined;
   onRecargar: () => void;
+  /** El archivo que Anuncios señaló con "falta la pieza": su fila entra en escena con un
+   * anillo ámbar y el scroll la deja a la vista. Si el plan no declara ese archivo, no se
+   * inventa nada: solo no hay resaltado. */
+  resaltarArchivo?: string | null;
 }) {
   const [valoresTexto, setValoresTexto] = useState<Record<string, string>>({});
   const [archivosSeleccionados, setArchivosSeleccionados] = useState<Record<string, File>>({});
@@ -950,6 +968,15 @@ function TabChecklist({
   const [tituloTranscripcion, setTituloTranscripcion] = useState<string>("");
   const [cargando, setCargando] = useState<string | null>(null);
   const [mensaje, setMensaje] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
+
+  // Bajar hasta el input del archivo señalado. Dependemos también de `checklist` porque las
+  // filas nacen de él: si todavía está cargando cuando se llega, el efecto repite al llegar
+  // la data. `scrollIntoView` con encadenado opcional por jsdom, que no lo implementa.
+  useEffect(() => {
+    if (!resaltarArchivo) return;
+    const input = document.querySelector(`[aria-label="Subir archivo para ${resaltarArchivo}"]`);
+    input?.scrollIntoView?.({ behavior: "smooth", block: "center" });
+  }, [resaltarArchivo, checklist]);
 
   // Obtener cuentas de la API (_DIM_CUENTAS)
   const cuentasQuery = useQuery({
@@ -1109,7 +1136,13 @@ function TabChecklist({
                         return (
                           <div
                             key={arch}
-                            className="flex flex-wrap items-center justify-between gap-2 rounded border border-zinc-800 bg-zinc-900/60 p-2"
+                            data-archivo={arch}
+                            className={cn(
+                              "flex flex-wrap items-center justify-between gap-2 rounded border border-zinc-800 bg-zinc-900/60 p-2",
+                              // El anillo ámbar marca la fila exacta que Anuncios señaló; es
+                              // el mismo tono de aviso de "falta la pieza", no un color nuevo.
+                              resaltarArchivo === arch && "ring-2 ring-amber-500/70",
+                            )}
                           >
                             <span className="font-mono text-xs text-zinc-300">{arch}</span>
                             <div className="flex items-center gap-2">
@@ -1339,6 +1372,10 @@ export function Fase1() {
   const { clave } = useParams({ strict: false }) as { clave: string };
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabId>("avance");
+  // El archivo cuyo input hay que resaltar en el Checklist cuando Anuncios dice "falta la
+  // pieza". Se limpia cuando el operador cambia de pestaña a mano (barra de pestañas); el
+  // salto programático desde Anuncios NO pasa por esa barra, así que no se limpia solo.
+  const [archivoASubir, setArchivoASubir] = useState<string | null>(null);
 
   const corrida = useQuery({
     queryKey: ["fase1-corrida", clave],
@@ -1393,7 +1430,10 @@ export function Fase1() {
           <button
             key={t.id}
             type="button"
-            onClick={() => setTab(t.id)}
+            onClick={() => {
+              setTab(t.id);
+              setArchivoASubir(null);
+            }}
             className={cn(
               "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
               tab === t.id
@@ -1423,7 +1463,15 @@ export function Fase1() {
       {tab === "angulos" && (
         <TabAngulos campana={campana.data} corrida={corrida.data} />
       )}
-      {tab === "anuncios" && <TabAnuncios campana={campana.data} />}
+      {tab === "anuncios" && (
+        <TabAnuncios
+          campana={campana.data}
+          onIrAChecklist={(archivo) => {
+            setArchivoASubir(archivo ?? null);
+            setTab("checklist");
+          }}
+        />
+      )}
       {tab === "flujo-bot" && (
         <TabFlujoBot
           flujoBot={flujoBot.data}
@@ -1440,6 +1488,7 @@ export function Fase1() {
             campana.refetch();
             corrida.refetch();
           }}
+          resaltarArchivo={archivoASubir}
         />
       )}
     </div>
