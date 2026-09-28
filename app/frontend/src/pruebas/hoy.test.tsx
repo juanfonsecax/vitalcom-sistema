@@ -5,9 +5,11 @@
  *   1. banner de rezago (fresco / con rezago / desconocido);
  *   2. órdenes accionables antes que SEGUIR_MIDIENDO (colapsado);
  *   3. estado vacío cuando no hay órdenes accionables;
- *   4. filas de "qué sigue" con su bloqueante y su dueño.
+ *   4. filas de "qué sigue" con su bloqueante y su dueño;
+ *   5. las tarjetas de la franja bajan hasta su sección de estado, y «Midiendo» abre el
+ *      grupo colapsado antes de bajar.
  */
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   RouterProvider,
@@ -166,6 +168,19 @@ function servirBase(overrides: Record<string, unknown> = {}) {
   });
 }
 
+/** jsdom no implementa `scrollIntoView`: el stub registra a qué elemento se pidió llevar a la
+ * vista (su `aria-label` o su `id`) y devuelve la función que lo restaura, para que no se
+ * filtre a las demás pruebas del archivo. */
+function stubScrollIntoView(registro: string[]) {
+  const original = window.HTMLElement.prototype.scrollIntoView;
+  window.HTMLElement.prototype.scrollIntoView = function (this: HTMLElement) {
+    registro.push(this.getAttribute("aria-label") ?? this.id);
+  };
+  return () => {
+    window.HTMLElement.prototype.scrollIntoView = original;
+  };
+}
+
 beforeEach(() => {
   servirBase();
 });
@@ -238,6 +253,38 @@ test("la franja avisa cuando Trabajos tiene algo esperando al operador", async (
   const tarjeta = within(franja).getByTestId("resumen-trabajos");
   expect(within(tarjeta).getByText("2")).toBeInTheDocument();
   expect(within(tarjeta).getByText("esperan tu revisión en Trabajos")).toBeInTheDocument();
+});
+
+test("tocar la tarjeta «Escalar» de la franja baja hasta su grupo de órdenes", async () => {
+  const scrolles: string[] = [];
+  const restaurar = stubScrollIntoView(scrolles);
+  try {
+    montar();
+    (await screen.findByTestId("resumen-escalar")).click();
+    await waitFor(() => expect(scrolles).toContain("seccion-ESCALAR"));
+    expect(document.getElementById("seccion-ESCALAR")).toBeInTheDocument();
+  } finally {
+    restaurar();
+  }
+});
+
+test("tocar la tarjeta «Midiendo» abre el grupo colapsado y baja hasta él", async () => {
+  const scrolles: string[] = [];
+  const restaurar = stubScrollIntoView(scrolles);
+  try {
+    montar();
+    const tarjeta = await screen.findByTestId("resumen-midiendo");
+    // Cerrado, la fila de la celda que se sigue midiendo no está en el documento.
+    expect(screen.queryByText("OVULOS_PURITY")).not.toBeInTheDocument();
+    tarjeta.click();
+    // Al abrirse el grupo, la fila queda a la vista…
+    expect(await screen.findByText("OVULOS_PURITY")).toBeInTheDocument();
+    // …y el scroll baja hasta la sección MIDIENDO.
+    await waitFor(() => expect(scrolles).toContain("seccion-MIDIENDO"));
+    expect(document.getElementById("seccion-MIDIENDO")).toBeInTheDocument();
+  } finally {
+    restaurar();
+  }
 });
 
 test("orden ejecutable con el ciclo deshabilitado: lo dice en texto, sin botones muertos", async () => {

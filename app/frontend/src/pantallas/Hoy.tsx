@@ -3,8 +3,9 @@
  * metodología (CLAUDE.md, invariante 13), no la preferencia de diseño:
  *   1. ¿Está fresca la data?     banner de rezago de `_DECISIONES.json`, arriba de todo.
  *   2. ¿Qué ordena el motor hoy?  las órdenes de `decidir.py` (`/api/ordenes`), accionables
- *      primero (PAUSAR, ESCALAR, RENOVAR); SEGUIR_MIDIENDO queda colapsado, porque solo dice
- *      "esperá".
+ *      primero (PAUSAR, ESCALAR, RENOVAR), agrupadas en una sección por estado — la tarjeta
+ *      grande de cada estado (arriba) baja hasta la suya; SEGUIR_MIDIENDO queda colapsado,
+ *      porque solo dice "esperá", y su tarjeta es la que lo abre.
  *   3. ¿Qué sigue en cada producto?  el nodo de `flujo.py` (`/api/productos`), con su
  *      bloqueante y quién lo produce.
  *
@@ -396,8 +397,9 @@ function FilaEnMedicion({ orden }: { orden: OrdenItem }) {
 /** La Cabina: el resumen del día como tarjetas grandes — una por estado de decisión, con su
  * color, su ícono y su brillo. Se cuentan de las mismas órdenes que se pintan abajo (es
  * contar tarjetas, no calcular el negocio: los estados ya los decidió `decidir.py`).
- * Si Trabajos tiene algo esperando al operador, también ocupa su tarjeta — y su aviso
- * vive acá, no escondido en Ajustes. */
+ * Cada tarjeta de estado se toca y baja hasta SU sección de órdenes (`onIrASeccion`); la de
+ * Trabajos sigue siendo un enlace a `/trabajos`. Si Trabajos tiene algo esperando al operador,
+ * también ocupa su tarjeta — y su aviso vive acá, no escondido en Ajustes. */
 const RESUMEN_DE_ESTADO: Record<string, { icono: LucideIcon; etiqueta: string; clases: string }> = {
   PAUSAR: {
     icono: Power,
@@ -424,6 +426,11 @@ const RESUMEN_DE_ESTADO: Record<string, { icono: LucideIcon; etiqueta: string; c
 const CLASES_ENTRADA_RESUMEN =
   "motion-safe:animate-in motion-safe:fade-in motion-safe:zoom-in-95 motion-safe:fill-mode-backwards motion-safe:duration-300";
 
+/** Una tarjeta del resumen: con `enlace` navega (Trabajos), con `alHacerClick` se toca y baja
+ * hasta su grupo de órdenes de la sección 2, y sin ninguna de las dos queda quieta, solo para
+ * leer. El botón copia intactas las clases de la tarjeta (mismo color, brillo y animación)
+ * más lo que un botón de ancho completo alineado a la izquierda necesita, con el foco visible
+ * que ya usa el `Button` del sistema (`ui/button.tsx`). */
 function TarjetaResumen({
   icono: Icono,
   etiqueta,
@@ -432,6 +439,7 @@ function TarjetaResumen({
   indice,
   testid,
   enlace,
+  alHacerClick,
 }: {
   icono: LucideIcon;
   etiqueta: string;
@@ -440,6 +448,7 @@ function TarjetaResumen({
   indice: number;
   testid?: string;
   enlace?: string;
+  alHacerClick?: () => void;
 }) {
   const cuerpo = (
     <>
@@ -453,6 +462,22 @@ function TarjetaResumen({
     clases,
     CLASES_ENTRADA_RESUMEN,
   );
+  if (alHacerClick) {
+    return (
+      <button
+        type="button"
+        data-testid={testid}
+        onClick={alHacerClick}
+        className={cn(
+          base,
+          "w-full text-left cursor-pointer outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50",
+        )}
+        style={{ animationDelay: `${indice * 70}ms` }}
+      >
+        {cuerpo}
+      </button>
+    );
+  }
   if (enlace) {
     return (
       <Link
@@ -475,9 +500,11 @@ function TarjetaResumen({
 function FranjaDelDia({
   ordenes,
   pendientesDeTrabajos,
+  onIrASeccion,
 }: {
   ordenes: OrdenItem[];
   pendientesDeTrabajos: number;
+  onIrASeccion?: (estado: string) => void;
 }) {
   const conteo: Record<string, number> = {};
   let enMedicion = 0;
@@ -515,6 +542,7 @@ function FranjaDelDia({
                 clases={resumen.clases}
                 indice={i}
                 testid={`resumen-${t.estado.toLowerCase()}`}
+                alHacerClick={() => onIrASeccion?.(t.estado)}
               />
             );
           })}
@@ -535,14 +563,19 @@ function FranjaDelDia({
   );
 }
 
-/** Sección 2: las órdenes de hoy. Agrupa por si piden una acción o no — nunca reordena por
- * número, solo por ESTADO (invariante 13: la conversación corta, nunca corona). */
+/** Sección 2: las órdenes de hoy. Nunca reordena por número, solo por ESTADO (invariante 13:
+ * la conversación corta, nunca corona): una sección por estado en el orden de
+ * `PRIORIDAD_ACCIONABLE` (PAUSAR → ESCALAR → RENOVAR), cada una con el badge del color de su
+ * tarjeta grande, para que arriba y abajo se lea el mismo idioma. Las tarjetas de la franja
+ * bajan hasta su sección (`irASeccion`); "Siguen midiendo" nace cerrado, controlado, y la
+ * tarjeta «Midiendo» es la única que lo abre antes de bajar. */
 function SeccionOrdenes() {
   const ordenesQuery = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const accionesQuery = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
   const trabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
   const ordenes = ordenesQuery.data?.ordenes ?? [];
   const recienEscalaron = usarEscalaresNuevos(ordenes);
+  const [midiendoAbierto, setMidiendoAbierto] = useState(false);
 
   if (ordenesQuery.isLoading) {
     return (
@@ -574,9 +607,32 @@ function SeccionOrdenes() {
     .sort((a, b) => (PRIORIDAD_ACCIONABLE[a.estado] ?? 99) - (PRIORIDAD_ACCIONABLE[b.estado] ?? 99));
   const enMedicion = ordenes.filter((o) => o.estado === "SEGUIR_MIDIENDO");
 
+  /** El viaje de una tarjeta de la franja hasta sus órdenes. «Midiendo» primero abre el grupo
+   * colapsado (cerrado no tendría adónde bajar); el scroll espera un tick a que el panel
+   * termine de montarse, y el encadenado opcional de `scrollIntoView` es por jsdom, que no lo
+   * implementa. El ancla (`seccion-XXX`) existe solo cuando la sección tiene contenido. */
+  const irASeccion = (estado: string) => {
+    if (estado === "MIDIENDO") setMidiendoAbierto(true);
+    window.setTimeout(() => {
+      document.getElementById(`seccion-${estado}`)?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
+  // Las accionables ya vienen ordenadas por PRIORIDAD_ACCIONABLE: agrupar las consecutivas
+  // del mismo estado produce una sección por estado, en el orden que fija la metodología.
+  const grupos: { estado: string; ordenes: OrdenItem[] }[] = [];
+  for (const orden of accionables) {
+    const ultimo = grupos[grupos.length - 1];
+    if (ultimo && ultimo.estado === orden.estado) {
+      ultimo.ordenes.push(orden);
+    } else {
+      grupos.push({ estado: orden.estado, ordenes: [orden] });
+    }
+  }
+
   return (
     <div className="space-y-4">
-      <FranjaDelDia ordenes={ordenes} pendientesDeTrabajos={pendientes} />
+      <FranjaDelDia ordenes={ordenes} pendientesDeTrabajos={pendientes} onIrASeccion={irASeccion} />
 
       {accionables.length === 0 ? (
         <Card>
@@ -586,34 +642,50 @@ function SeccionOrdenes() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-3 md:grid-cols-2">
-          {accionables.map((orden, i) => (
-            <TarjetaOrdenDelDia
-              key={`${orden.producto_key}-${orden.angulo_key}-${i}`}
-              orden={orden}
-              cicloHabilitado={cicloHabilitado}
-              indice={i}
-              celebrar={recienEscalaron.includes(`${orden.producto_key}|${orden.angulo_key}`)}
-              trabajoPendiente={trabajoPendientePorProducto.get(orden.producto_key)}
-            />
-          ))}
-        </div>
+        grupos.map((grupo) => {
+          const etiqueta = RESUMEN_DE_ESTADO[grupo.estado]?.etiqueta ?? TEXTO_ORDEN[grupo.estado] ?? grupo.estado;
+          const clase = CLASE_ESTADO_ORDEN[grupo.estado] ?? "";
+          return (
+            <section key={grupo.estado} id={`seccion-${grupo.estado}`} className="scroll-mt-6 space-y-3">
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className={`border-transparent ${clase}`}>
+                  {etiqueta}
+                </Badge>
+                <span className="text-xs text-muted-foreground">{grupo.ordenes.length} celda(s)</span>
+              </div>
+              <div className="grid gap-3 md:grid-cols-2">
+                {grupo.ordenes.map((orden, i) => (
+                  <TarjetaOrdenDelDia
+                    key={`${orden.producto_key}-${orden.angulo_key}-${i}`}
+                    orden={orden}
+                    cicloHabilitado={cicloHabilitado}
+                    indice={i}
+                    celebrar={recienEscalaron.includes(`${orden.producto_key}|${orden.angulo_key}`)}
+                    trabajoPendiente={trabajoPendientePorProducto.get(orden.producto_key)}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })
       )}
 
       {enMedicion.length > 0 && (
-        <Collapsible>
-          <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border px-3 py-2 text-sm text-muted-foreground hover:bg-muted/50">
-            <span>Siguen midiendo ({enMedicion.length})</span>
-            <ChevronDown className="size-4" />
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <ul className="mt-2 rounded-lg border">
-              {enMedicion.map((orden, i) => (
-                <FilaEnMedicion key={`${orden.producto_key}-${orden.angulo_key}-${i}`} orden={orden} />
-              ))}
-            </ul>
-          </CollapsibleContent>
-        </Collapsible>
+        <div id="seccion-MIDIENDO" className="scroll-mt-6">
+          <Collapsible open={midiendoAbierto} onOpenChange={setMidiendoAbierto}>
+            <CollapsibleTrigger className="flex w-full items-center justify-between rounded-lg border px-3 py-2 text-sm text-muted-foreground hover:bg-muted/50">
+              <span>Siguen midiendo ({enMedicion.length})</span>
+              <ChevronDown className="size-4" />
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <ul className="mt-2 rounded-lg border">
+                {enMedicion.map((orden, i) => (
+                  <FilaEnMedicion key={`${orden.producto_key}-${orden.angulo_key}-${i}`} orden={orden} />
+                ))}
+              </ul>
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
       )}
     </div>
   );
