@@ -7,9 +7,7 @@ test("la pantalla de órdenes abre, muestra las órdenes de hoy y sus detalles",
   // Debe haber acciones recomendadas listadas
   await expect(page.getByText(/Acciones recomendadas/i)).toBeVisible();
 
-  // El botón de aprobar debe estar deshabilitado porque el ciclo no está habilitado
-  const botonAprobar = page.getByRole("button", { name: "Aprobar" }).first();
-  if (await botonAprobar.isVisible()) {
-    await expect(botonAprobar).toBeDisabled();
-  }
+  // La aprobación vive solo en Trabajos: no hay botones Aprobar/Rechazar muertos en esta pantalla.
+  await expect(page.getByRole("button", { name: "Aprobar" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Rechazar" })).toHaveCount(0);
 });

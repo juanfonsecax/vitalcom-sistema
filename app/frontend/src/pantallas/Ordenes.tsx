@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { api, type ParametroMotor } from "../api/cliente";
 import { Button } from "@/components/ui/button";
+import { trabajoPendientePorProducto } from "../componentes/resumen";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import {
   Table,
@@ -151,6 +152,7 @@ export function Ordenes() {
   const consultaOrdenes = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const consultaGanadores = useQuery({ queryKey: ["ganadores"], queryFn: api.ganadores });
   const consultaAcciones = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
+  const consultaTrabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos });
 
   if (consultaOrdenes.isLoading || consultaGanadores.isLoading) {
     return <Cargando que="las órdenes del día" />;
@@ -175,6 +177,9 @@ export function Ordenes() {
   // Verificar si la acción del ciclo está habilitada en el manifiesto
   const accionCiclo = (consultaAcciones.data ?? []).find((a) => a.id === "nodo.ciclo.ordenes");
   const cicloHabilitado = accionCiclo?.habilitada ?? false;
+  // El trabajo pendiente de aprobación más nuevo por producto (mismo mapeo que Hoy.tsx, nunca
+  // recalculado dos veces): el botón de la orden cae directo en SU trabajo cuando hay uno.
+  const trabajoPendiente = trabajoPendientePorProducto(consultaTrabajos.data);
 
   return (
     <div className="space-y-8">
@@ -395,30 +400,37 @@ export function Ordenes() {
                     )}
                   </div>
 
-                  {/* Acciones de confirmación */}
+                  {/* La aprobación vive solo en Trabajos (con la orden a la vista y confirmación
+                      orden por orden): acá un único camino claro, nunca un botón que no hace
+                      nada. Mismo patrón de deep-link que Hoy.tsx (commit a5c4140). */}
                   <div className="flex items-center justify-between border-t border-zinc-800 pt-3">
                     <span className="text-xs text-zinc-400">
                       {orden.ejecutable ? "Listo para revisión" : "Solo informativo"}
                     </span>
-                    <div className="flex gap-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        disabled={!cicloHabilitado || !orden.ejecutable}
-                        title={!cicloHabilitado ? "Ejecución deshabilitada en manifiesto" : "Rechazar orden"}
-                      >
-                        Rechazar
+                    {orden.ejecutable && cicloHabilitado ? (
+                      trabajoPendiente.get(orden.producto_key) ? (
+                        <Button
+                          size="sm"
+                          render={
+                            <Link to="/trabajos/$id" params={{ id: trabajoPendiente.get(orden.producto_key)! }} />
+                          }
+                        >
+                          Revisar y aprobar en Trabajos
+                        </Button>
+                      ) : (
+                        <Button size="sm" render={<Link to="/trabajos" />}>
+                          Revisar y aprobar en Trabajos
+                        </Button>
+                      )
+                    ) : orden.ejecutable && !cicloHabilitado ? (
+                      <span className="text-right text-xs text-zinc-400">
+                        Ejecución deshabilitada en el manifiesto
+                      </span>
+                    ) : (
+                      <Button size="sm" variant="outline" render={<Link to="/trabajos" />}>
+                        Ver en Trabajos
                       </Button>
-                      <Button
-                        type="button"
-                        size="sm"
-                        disabled={!cicloHabilitado || !orden.ejecutable}
-                        title={!cicloHabilitado ? "Ejecución deshabilitada en manifiesto" : "Aprobar orden en Meta"}
-                      >
-                        Aprobar
-                      </Button>
-                    </div>
+                    )}
                   </div>
                 </Tarjeta>
               );

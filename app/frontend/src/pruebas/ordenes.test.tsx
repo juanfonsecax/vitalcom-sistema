@@ -198,8 +198,10 @@ function servir(respuestas: Record<string, unknown>) {
 function renderizar() {
   const raiz = createRootRoute();
   const rutaOrdenes = createRoute({ getParentRoute: () => raiz, path: "/ordenes", component: Ordenes });
+  const rutaTrabajos = createRoute({ getParentRoute: () => raiz, path: "/trabajos", component: () => null });
+  const rutaTrabajo = createRoute({ getParentRoute: () => raiz, path: "/trabajos/$id", component: () => null });
   const router = createRouter({
-    routeTree: raiz.addChildren([rutaOrdenes]),
+    routeTree: raiz.addChildren([rutaOrdenes, rutaTrabajos, rutaTrabajo]),
     history: createMemoryHistory({ initialEntries: ["/ordenes"] }),
   });
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -215,6 +217,7 @@ beforeEach(() => {
     "/api/ordenes": DATOS_ORDENES,
     "/api/ganadores": GANADORES,
     "/api/acciones": ACCIONES,
+    "/api/trabajos": [],
   });
 });
 
@@ -290,6 +293,7 @@ test("ventas faltantes: número tal cual, null en SEGUIR_MIDIENDO dice que el mo
     },
     "/api/ganadores": GANADORES,
     "/api/acciones": ACCIONES,
+    "/api/trabajos": [],
   });
   renderizar();
   // SEGUIR_MIDIENDO sin faltan_ventas (0 ventas, o CPA pegado al break-even): el motor no calculó
@@ -345,6 +349,7 @@ test("cierre: si el contrato todavía no trae la meta (CSV sin regenerar), se mu
     },
     "/api/ganadores": GANADORES,
     "/api/acciones": ACCIONES,
+    "/api/trabajos": [],
   });
   renderizar();
   expect(await screen.findByText("18.2 %")).toBeInTheDocument();
@@ -367,6 +372,7 @@ test("si un reloj no está en el contrato, la pantalla lo dice en vez de inventa
     "/api/ordenes": { ...DATOS_ORDENES, parametros_motor: [] },
     "/api/ganadores": GANADORES,
     "/api/acciones": ACCIONES,
+    "/api/trabajos": [],
   });
   renderizar();
   expect(await screen.findByText("Cómo mide el motor")).toBeInTheDocument();
@@ -387,14 +393,30 @@ test("anuncia ganadores detectados por venta y su enlace al siguiente paso", asy
   expect(screen.getByText(/Optimizar el CIERRE del bot/)).toBeInTheDocument();
 });
 
-test("los botones de acción respetan si el nodo está deshabilitado en manifiesto", async () => {
+test("no hay botones Aprobar/Rechazar muertos: la aprobación vive solo en Trabajos", async () => {
   renderizar();
-  const botonesAprobar = await screen.findAllByRole("button", { name: "Aprobar" });
-  expect(botonesAprobar.length).toBeGreaterThan(0);
-  // Todos deben estar deshabilitados porque cicloHabilitado es false
-  for (const b of botonesAprobar) {
-    expect(b).toBeDisabled();
-  }
+  await screen.findByText("Órdenes de hoy");
+  expect(screen.queryByRole("button", { name: "Aprobar" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Rechazar" })).not.toBeInTheDocument();
+  // Con el ciclo deshabilitado en manifiesto (ACCIONES del fixture), la orden PAUSAR ejecutable
+  // lo dice en texto en vez de ofrecer un botón que no puede hacer nada.
+  expect(await screen.findByText("Ejecución deshabilitada en el manifiesto")).toBeInTheDocument();
+});
+
+test("con el ciclo habilitado, la orden ejecutable manda a Trabajos — directo a SU trabajo si ya hay uno pendiente", async () => {
+  const ACCIONES_HABILITADAS = [
+    { id: "nodo.ciclo.ordenes", rotulo: "Ejecutar órdenes en Meta", habilitada: true, motivo: null },
+  ];
+  servir({
+    "/api/ordenes": DATOS_ORDENES,
+    "/api/ganadores": GANADORES,
+    "/api/acciones": ACCIONES_HABILITADAS,
+    "/api/trabajos": [{ job_id: "job-9", pendiente: "Falta tu aprobación", producto_key: "TINNIDROP" }],
+  });
+  renderizar();
+  const enlace = await screen.findByRole("link", { name: "Revisar y aprobar en Trabajos" });
+  // TINNIDROP (PAUSAR, ejecutable) ya tiene un trabajo pendiente: el botón cae directo en él.
+  expect(enlace).toHaveAttribute("href", "/trabajos/job-9");
 });
 
 test("sin conjuntos pendientes de registro no se muestra la tarjeta (cero ruido visual)", async () => {
@@ -408,6 +430,7 @@ test("lista los conjuntos de Meta sin registrar con su gasto y quién da de alta
     "/api/ordenes": { ...DATOS_ORDENES, pendientes_registro: PENDIENTES_REGISTRO },
     "/api/ganadores": GANADORES,
     "/api/acciones": ACCIONES,
+    "/api/trabajos": [],
   });
   renderizar();
   expect(await screen.findByTestId("pendientes-registro")).toBeInTheDocument();

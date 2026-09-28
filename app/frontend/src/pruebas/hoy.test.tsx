@@ -241,6 +241,72 @@ test("la franja del día resume las órdenes en tarjetas grandes: 1 Pausar, 1 Es
   expect(within(franja).getByText("Midiendo")).toBeInTheDocument();
 });
 
+test("un ESCALAR bloqueado por fase no cuenta ni agrupa junto al ESCALAR accionable", async () => {
+  servirBase({
+    "/api/ordenes": {
+      ...ORDENES_BASE,
+      ordenes: [
+        ...ORDENES_BASE.ordenes,
+        {
+          producto_key: "TINNIDROP",
+          angulo_key: "PERDIDA_AUDITIVA",
+          angulo_nombre: "Pérdida Auditiva",
+          estado: "ESCALAR",
+          accion_codigo: "ESCALAR_SURFING",
+          frase_simple: "Subir 20% al presupuesto",
+          por_que: { cpa_real_q: 40, break_even_q: 90 },
+          bloqueo_fase: "TINNIDROP está en F2: subir presupuesto sesga la medición",
+          ejecutable: false,
+          conjuntos: [],
+        },
+      ],
+    },
+  });
+  montar();
+  const franja = await screen.findByTestId("franja-hoy");
+  // La tarjeta verde "Escalar" solo cuenta el ESCALAR accionable de CLEARSTEM (1), nunca el
+  // bloqueado de TINNIDROP — ese cae en su propia tarjeta "Escalar en espera" (1).
+  expect(within(within(franja).getByTestId("resumen-escalar")).getByText("1")).toBeInTheDocument();
+  const tarjetaEnEspera = within(franja).getByTestId("resumen-escalar_en_espera");
+  expect(within(tarjetaEnEspera).getByText("1")).toBeInTheDocument();
+  expect(within(tarjetaEnEspera).getByText("Escalar en espera")).toBeInTheDocument();
+
+  // Las dos secciones de órdenes existen y cada orden aparece una sola vez: nada desaparece al
+  // partir el grupo ESCALAR en dos.
+  const seccionEscalar = document.getElementById("seccion-ESCALAR")!;
+  const seccionEnEspera = document.getElementById("seccion-ESCALAR_EN_ESPERA")!;
+  expect(within(seccionEscalar).getByText("Subir 20% al presupuesto")).toBeInTheDocument();
+  expect(within(seccionEnEspera).getByText("No subir presupuesto: mantener el que ya tiene hasta cerrar la fase.")).toBeInTheDocument();
+  // 3 tarjetas accionables (PAUSAR, ESCALAR, ESCALAR_EN_ESPERA); SEGUIR_MIDIENDO va colapsado,
+  // sin tarjeta — ninguna orden se pierde ni se pinta dos veces.
+  expect(screen.getAllByTestId("tarjeta-orden")).toHaveLength(3);
+});
+
+test("tocar la tarjeta «Escalar en espera» de la franja baja hasta su propia sección", async () => {
+  const scrolles: string[] = [];
+  const restaurar = stubScrollIntoView(scrolles);
+  try {
+    servirBase({
+      "/api/ordenes": {
+        ...ORDENES_BASE,
+        ordenes: [
+          {
+            ...ORDENES_BASE.ordenes[2],
+            bloqueo_fase: "CLEARSTEM está en F2: subir presupuesto sesga la medición",
+            ejecutable: false,
+          },
+        ],
+      },
+    });
+    montar();
+    (await screen.findByTestId("resumen-escalar_en_espera")).click();
+    await waitFor(() => expect(scrolles).toContain("seccion-ESCALAR_EN_ESPERA"));
+    expect(document.getElementById("seccion-ESCALAR_EN_ESPERA")).toBeInTheDocument();
+  } finally {
+    restaurar();
+  }
+});
+
 test("la franja avisa cuando Trabajos tiene algo esperando al operador", async () => {
   servirBase({
     "/api/trabajos": [
@@ -347,7 +413,9 @@ test("un ángulo que acaba de entrar en ESCALAR se celebra una sola vez", async 
   window.localStorage.removeItem("vitalcom-celebraciones-v1");
 });
 
-test("una orden ESCALAR bloqueada por fase se explica en palabras humanas y manda a la ficha", async () => {
+test("una orden ESCALAR bloqueada por fase muestra tal cual la nota del motor, no una prosa inventada", async () => {
+  const NOTA_DEL_MOTOR =
+    "F2.gate — testeo de 1 solo conjunto rompe el invariante; hace ganador al que recibió más plata, no al mejor.";
   servirBase({
     "/api/ordenes": {
       ...ORDENES_BASE,
@@ -360,8 +428,7 @@ test("una orden ESCALAR bloqueada por fase se explica en palabras humanas y mand
           accion_codigo: "ESCALAR_SURFING",
           frase_simple: "Subir 20% al presupuesto",
           por_que: { cpa_real_q: 27.3, break_even_q: 105.89 },
-          bloqueo_fase:
-            "F2.gate — testeo de 1 solo conjunto rompe el invariante; hace ganador al que recibió más plata, no al mejor.",
+          bloqueo_fase: NOTA_DEL_MOTOR,
           ejecutable: false,
           conjuntos: [],
         },
@@ -369,11 +436,14 @@ test("una orden ESCALAR bloqueada por fase se explica en palabras humanas y mand
     },
   });
   montar();
-  expect(await screen.findByText(/ya es rentable y vale como ganador/i)).toBeInTheDocument();
+  // El texto visible es el que manda la API tal cual, con un rótulo neutro — nunca la prosa
+  // vieja ("ya es rentable y vale como ganador…") que la pantalla escribía por su cuenta.
+  expect(await screen.findByText(NOTA_DEL_MOTOR)).toBeInTheDocument();
+  expect(screen.getByText("Bloqueado por fase:")).toBeInTheDocument();
+  expect(screen.queryByText(/ya es rentable y vale como ganador/i)).not.toBeInTheDocument();
+  // El fold redundante ("Ver la nota técnica del motor") desaparece: la nota ya está a la vista.
+  expect(screen.queryByText(/Ver la nota técnica del motor/i)).not.toBeInTheDocument();
   expect(screen.getByRole("link", { name: "Ver el avance de su fase" })).toBeInTheDocument();
-  // La nota técnica del motor queda accesible, plegada bajo su enlace.
-  (await screen.findByText(/Ver la nota técnica del motor/i)).click();
-  expect(await screen.findByText(/F2\.gate/)).toBeInTheDocument();
 });
 
 test("qué sigue por producto: muestra fase, paso y el bloqueante con su dueño; sin bloqueante lo dice", async () => {

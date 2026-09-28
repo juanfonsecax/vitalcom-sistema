@@ -3,12 +3,28 @@
  * y ProductoDetalle: qué es `motor` (el `dict` libre de `flujo.py`), el título humano del
  * paso vigente, el banner de rezago de ESE producto, y los avisos que trae el recorrido.
  */
-import type { Nodo } from "../api/cliente";
+import type { Nodo, Trabajo } from "../api/cliente";
 import { rezagoEnPalabras } from "../lenguaje";
 import { Tarjeta } from "./ui";
 
 /** La info del motor (`flujo.py`) que no tiene tipo propio en el OpenAPI: es un `dict` libre. */
 export type MotorInfo = { rezago_dias?: number; datos_hasta?: string };
+
+/**
+ * El trabajo pendiente de aprobación MÁS NUEVO por producto (`GET /api/trabajos`), para que el
+ * botón «Revisar y aprobar en Trabajos» de cualquier orden caiga directo en SU trabajo cuando
+ * hay uno esperando, en vez de mandar siempre a la lista general. Un único lugar: Hoy.tsx y
+ * Ordenes.tsx leen de acá, nunca recalculan el mapeo cada uno por su lado.
+ */
+export function trabajoPendientePorProducto(trabajos: Trabajo[] | undefined): Map<string, string> {
+  const mapa = new Map<string, string>();
+  for (const t of trabajos ?? []) {
+    if (t.pendiente && t.producto_key && !mapa.has(t.producto_key)) {
+      mapa.set(t.producto_key, t.job_id);
+    }
+  }
+  return mapa;
+}
 
 /**
  * El título humano del paso vigente: el que declara su nodo en el grafo, o si ese nodo no

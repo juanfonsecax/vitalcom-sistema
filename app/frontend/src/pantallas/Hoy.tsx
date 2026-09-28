@@ -37,7 +37,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
-import { tituloDelPasoActual } from "../componentes/resumen";
+import { tituloDelPasoActual, trabajoPendientePorProducto } from "../componentes/resumen";
 import { cn, Problema } from "../componentes/ui";
 import {
   glosarioDeOrden,
@@ -56,8 +56,24 @@ const ACCION_REFRESCAR_DATOS = "nodo.ciclo.datos";
 const ACCION_CICLO_ORDENES = "nodo.ciclo.ordenes";
 
 /** El orden fijo de las órdenes accionables (invariante 13): PAUSAR corta primero, ESCALAR y
- * RENOVAR ponen o mueven plata. SEGUIR_MIDIENDO nunca entra acá — significa "todavía no". */
-const PRIORIDAD_ACCIONABLE: Record<string, number> = { PAUSAR: 0, ESCALAR: 1, RENOVAR: 2 };
+ * RENOVAR ponen o mueven plata. Un ESCALAR bloqueado por fase (`ESCALAR_EN_ESPERA`) va justo
+ * después de ESCALAR: es evidencia de ganador, pero hoy no se toca — nunca antes de PAUSAR, que
+ * sí es accionable hoy. SEGUIR_MIDIENDO nunca entra acá — significa "todavía no". */
+const PRIORIDAD_ACCIONABLE: Record<string, number> = {
+  PAUSAR: 0,
+  ESCALAR: 1,
+  ESCALAR_EN_ESPERA: 2,
+  RENOVAR: 3,
+};
+
+/** La clave de agrupación/resumen de una orden: el `estado` que manda `decidir.py`, salvo un
+ * ESCALAR bloqueado por fase (`orden.bloqueo_fase`), que se cuenta y agrupa aparte
+ * (`ESCALAR_EN_ESPERA`) porque hoy no es accionable — la tarjeta verde de Escalar solo cuenta
+ * lo que de verdad se puede subir hoy. La condición es únicamente ESTADO + `bloqueo_fase`, los
+ * dos campos que ya manda el motor: nunca se recalcula ni se compara un número acá. */
+function claveResumenOrden(orden: OrdenItem): string {
+  return orden.estado === "ESCALAR" && orden.bloqueo_fase ? "ESCALAR_EN_ESPERA" : orden.estado;
+}
 
 /** El color de cada estado de orden con los tokens de status del sistema (T1,
  * `src/estilos.css`): uno por `decidir.py`, nunca reinventado por pantalla. Una celda ESCALAR
@@ -67,6 +83,7 @@ const CLASE_ESTADO_ORDEN: Record<string, string> = {
   PAUSAR: "bg-estado-pausar text-estado-pausar-foreground",
   RENOVAR: "bg-estado-renovar text-estado-renovar-foreground",
   SEGUIR_MIDIENDO: "bg-estado-seguir text-estado-seguir-foreground",
+  ESCALAR_EN_ESPERA: "bg-estado-seguir text-estado-seguir-foreground",
 };
 
 /** El filete de color a la izquierda de cada tarjeta de orden: el estado se lee de reojo,
@@ -77,6 +94,7 @@ const FILETE_ESTADO_ORDEN: Record<string, string> = {
   PAUSAR: "border-l-estado-pausar",
   RENOVAR: "border-l-estado-renovar",
   SEGUIR_MIDIENDO: "border-l-estado-seguir",
+  ESCALAR_EN_ESPERA: "border-l-estado-seguir",
 };
 
 /** Celebración (E3): las claves de los ángulos que acaban de entrar en ESCALAR respecto de
@@ -284,10 +302,7 @@ function TarjetaOrdenDelDia({
         {veredicto && <p className="text-sm text-muted-foreground">{veredicto}</p>}
         {escalarBloqueado && (
           <p className="rounded-lg border border-estado-seguir/40 bg-estado-seguir/10 p-2.5 text-sm text-estado-seguir">
-            <strong>¿Qué significa esto?</strong> Este ángulo ya es rentable y vale como ganador —
-            pero tu metodología prohíbe subirle presupuesto mientras la fase de testeo sigue abierta.
-            Hoy no se hace nada con esta orden: seguí el testeo, y el presupuesto se sube cuando la
-            fase cierre.
+            <strong>Bloqueado por fase:</strong> {orden.bloqueo_fase}
           </p>
         )}
         <div className="grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
@@ -321,18 +336,6 @@ function TarjetaOrdenDelDia({
             </CollapsibleTrigger>
             <CollapsibleContent>
               <p className="mt-1 text-xs text-muted-foreground">{glosarioDelEstado.que_es}</p>
-            </CollapsibleContent>
-          </Collapsible>
-        )}
-        {orden.bloqueo_fase && (
-          <Collapsible>
-            <CollapsibleTrigger className="text-xs text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground">
-              Ver la nota técnica del motor
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <p className="mt-1 rounded border border-estado-seguir/40 bg-estado-seguir/10 p-2 text-xs text-estado-seguir">
-                <strong>Nota de fase:</strong> {orden.bloqueo_fase}
-              </p>
             </CollapsibleContent>
           </Collapsible>
         )}
@@ -410,6 +413,11 @@ const RESUMEN_DE_ESTADO: Record<string, { icono: LucideIcon; etiqueta: string; c
     icono: TrendingUp,
     etiqueta: "Escalar",
     clases: "border-estado-escalar/40 bg-estado-escalar/10 text-estado-escalar brillo-escalar",
+  },
+  ESCALAR_EN_ESPERA: {
+    icono: Hourglass,
+    etiqueta: "Escalar en espera",
+    clases: "border-estado-seguir/40 bg-estado-seguir/10 text-estado-seguir",
   },
   RENOVAR: {
     icono: RefreshCw,
@@ -510,11 +518,14 @@ function FranjaDelDia({
   let enMedicion = 0;
   for (const orden of ordenes) {
     if (orden.estado === "SEGUIR_MIDIENDO") enMedicion += 1;
-    else conteo[orden.estado] = (conteo[orden.estado] ?? 0) + 1;
+    else {
+      const clave = claveResumenOrden(orden);
+      conteo[clave] = (conteo[clave] ?? 0) + 1;
+    }
   }
 
   const tarjetas: { estado: string; cantidad: number }[] = [];
-  for (const estado of ["PAUSAR", "ESCALAR", "RENOVAR"] as const) {
+  for (const estado of ["PAUSAR", "ESCALAR", "ESCALAR_EN_ESPERA", "RENOVAR"] as const) {
     if ((conteo[estado] ?? 0) > 0) tarjetas.push({ estado, cantidad: conteo[estado] });
   }
   if (enMedicion > 0) tarjetas.push({ estado: "MIDIENDO", cantidad: enMedicion });
@@ -595,16 +606,14 @@ function SeccionOrdenes() {
    * directo a ESE trabajo (el más nuevo primero) en vez de a la lista general. La
    * aprobación sigue existiendo una sola vez — en Trabajos, con la orden a la vista y
    * confirmación orden por orden; acá solo se acorta el camino, nunca se aprueba directo. */
-  const trabajoPendientePorProducto = new Map<string, string>();
-  for (const t of trabajos.data ?? []) {
-    if (t.pendiente && t.producto_key && !trabajoPendientePorProducto.has(t.producto_key)) {
-      trabajoPendientePorProducto.set(t.producto_key, t.job_id);
-    }
-  }
+  const trabajoPendiente = trabajoPendientePorProducto(trabajos.data);
 
   const accionables = ordenes
     .filter((o) => o.estado !== "SEGUIR_MIDIENDO")
-    .sort((a, b) => (PRIORIDAD_ACCIONABLE[a.estado] ?? 99) - (PRIORIDAD_ACCIONABLE[b.estado] ?? 99));
+    .sort(
+      (a, b) =>
+        (PRIORIDAD_ACCIONABLE[claveResumenOrden(a)] ?? 99) - (PRIORIDAD_ACCIONABLE[claveResumenOrden(b)] ?? 99),
+    );
   const enMedicion = ordenes.filter((o) => o.estado === "SEGUIR_MIDIENDO");
 
   /** El viaje de una tarjeta de la franja hasta sus órdenes. «Midiendo» primero abre el grupo
@@ -622,11 +631,12 @@ function SeccionOrdenes() {
   // del mismo estado produce una sección por estado, en el orden que fija la metodología.
   const grupos: { estado: string; ordenes: OrdenItem[] }[] = [];
   for (const orden of accionables) {
+    const clave = claveResumenOrden(orden);
     const ultimo = grupos[grupos.length - 1];
-    if (ultimo && ultimo.estado === orden.estado) {
+    if (ultimo && ultimo.estado === clave) {
       ultimo.ordenes.push(orden);
     } else {
-      grupos.push({ estado: orden.estado, ordenes: [orden] });
+      grupos.push({ estado: clave, ordenes: [orden] });
     }
   }
 
@@ -661,7 +671,7 @@ function SeccionOrdenes() {
                     cicloHabilitado={cicloHabilitado}
                     indice={i}
                     celebrar={recienEscalaron.includes(`${orden.producto_key}|${orden.angulo_key}`)}
-                    trabajoPendiente={trabajoPendientePorProducto.get(orden.producto_key)}
+                    trabajoPendiente={trabajoPendiente.get(orden.producto_key)}
                   />
                 ))}
               </div>
