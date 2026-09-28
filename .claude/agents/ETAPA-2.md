@@ -308,6 +308,11 @@ Otros productos futuros que podrían ir ahí: [ejemplos del mismo nicho]
   - **FASE 2 → ángulo FIJO (el ganador), 6 CONCEPTOS distintos.** Ahí sí se abre el abanico y se rotan los 15 estilos anti-fatiga.
   - Prompt de cada fase en `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md` (PROMPT DE CONTROL FASE 1 · PROMPT MAESTRO FASE 2, ver ETAPA-4).
 - **Declarar `concepto_key` en cada ficha de ángulo** para que `etapa-guardar-producto` lo escriba en `_DIM_CONJUNTOS.csv`. En FASE 1 es `C2_BENEFICIOS` en las 6 fichas. Vocabulario cerrado en `DOCTRINA/DATA_PLAYBOOK.md` §1.
+- **Elegir la imagen de referencia `ligera` del producto (una sola, para las 6 fichas):** de las 3
+  referencias `ligera` de `Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/`, elegir la que más calza con el avatar/dolor del producto y registrarla con
+  `python Ads/_TOOLS/referencia_f1.py --elegir <PRODUCTO> <REFERENCIA> --motivo "..."` — dueño único
+  del dato: `Ads/_TOOLS/referencia_f1.py` (`PRODUCTOS/_DIM_REFERENCIA_F1.csv`). Sin esta elección el
+  paquete de FASE 1 queda incompleto: las 6 fichas usan la misma referencia, nunca una por ángulo.
 - **Regla de asignación de creativo (determinista):** Por cada ángulo, asignar VIDEO si un video de ETAPA-0 lo cubre, o IMAGEN (Prompt Maestro) si es ángulo virgen sin video. Nunca pausar ni descartar un ángulo por falta de video. (DOCTRINA DE CREATIVOS — `DOCTRINA/PLANTILLAS_ADS_SECCIONES/11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md`)
 
 ---

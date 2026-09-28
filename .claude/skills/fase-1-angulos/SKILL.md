@@ -167,6 +167,9 @@ Se invoca inmediatamente después de `etapa-1b`.
   los teóricos.
   - ⚠️ Si entrega **Formato B** (sin página ideal): alertar al operador antes de continuar. No
     bloquear, pero marcar como pendiente.
+  - **`etapa-2` también elige y registra la imagen de referencia `ligera` fija del producto** (una
+    sola, para las 6 fichas) con `python Ads/_TOOLS/referencia_f1.py --elegir ...` — regla completa
+    en `.claude/agents/ETAPA-2.md`.
 
 ---
 

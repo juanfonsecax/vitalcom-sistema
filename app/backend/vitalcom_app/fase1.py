@@ -101,8 +101,10 @@ def campana(producto_key: str) -> dict[str, Any]:
         archivo = conjunto.get("archivo_creativo")
         piezas.append({"n": conjunto.get("n"), "angulo_key": conjunto.get("angulo_key"), "archivo": archivo,
                        "url": _url_de_media(producto_key, carpeta_media, archivo)})
+    referencia = contratos.referencia_f1(producto_key)
     return {"producto_key": producto_key, "lanzador": lanzador, "plan_fuente": plan_fuente, "piezas": piezas,
-            "lanzador_generado": (contratos._leer_json(LANZADOR).get("generado") if ruta(*LANZADOR).is_file() else None)}
+            "lanzador_generado": (contratos._leer_json(LANZADOR).get("generado") if ruta(*LANZADOR).is_file() else None),
+            "referencia_f1": referencia["referencia"], "comando_elegir_referencia_f1": referencia["comando_elegir"]}
 
 
 def ruta_de_media(producto_key: str, archivo: str) -> Path | None:

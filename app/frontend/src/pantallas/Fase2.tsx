@@ -14,6 +14,7 @@ import { api, type ConceptoFase2 } from "../api/cliente";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta, type Tono } from "../componentes/ui";
+import { BotonCopiarTexto, ImagenDeReferencia, Lightbox } from "../componentes/copiar";
 
 const TONOS_ESTADO: Record<string, Tono> = {
   GENERADO: "bien",
@@ -30,8 +31,6 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
     queryFn: () => api.fase2(clave),
   });
 
-  const [copiadoId, setCopiadoId] = useState<string | null>(null);
-  const [imagenCopiadaId, setImagenCopiadaId] = useState<string | null>(null);
   const [subiendoArchivo, setSubiendoArchivo] = useState<string | null>(null);
   const [mensajeSubida, setMensajeSubida] = useState<{ tipo: "ok" | "error"; texto: string } | null>(null);
   const [modalReingreso, setModalReingreso] = useState(false);
@@ -52,47 +51,6 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
 
   const d = consulta.data;
   if (!d) return null;
-
-  const copiarPrompt = (id: string, texto: string) => {
-    navigator.clipboard.writeText(texto).then(() => {
-      setCopiadoId(id);
-      setTimeout(() => setCopiadoId(null), 2500);
-    });
-  };
-
-  // Copiar la imagen de referencia al portapapeles como PNG (Clipboard API exige image/png,
-  // la referencia del swipe suele venir en .jpg). Si el navegador no soporta escribir imágenes
-  // al portapapeles (ClipboardItem / canvas), se descarga el archivo en su lugar.
-  const copiarImagen = async (id: string, url: string) => {
-    try {
-      if (typeof ClipboardItem === "undefined" || !navigator.clipboard?.write) {
-        throw new Error("Clipboard de imágenes no disponible en este navegador");
-      }
-      const respuesta = await fetch(url);
-      const blob = await respuesta.blob();
-      const bitmap = await createImageBitmap(blob);
-      const canvas = document.createElement("canvas");
-      canvas.width = bitmap.width;
-      canvas.height = bitmap.height;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("No se pudo preparar el canvas");
-      ctx.drawImage(bitmap, 0, 0);
-      const pngBlob: Blob | null = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-      if (!pngBlob) throw new Error("No se pudo convertir la imagen a PNG");
-      await navigator.clipboard.write([new ClipboardItem({ "image/png": pngBlob })]);
-      setImagenCopiadaId(id);
-      setTimeout(() => setImagenCopiadaId(null), 2500);
-    } catch {
-      // Sin soporte de portapapeles de imágenes: se descarga el archivo para que el operador
-      // la adjunte a mano.
-      const enlace = document.createElement("a");
-      enlace.href = url;
-      enlace.download = url.split("/").pop() || "referencia.jpg";
-      document.body.appendChild(enlace);
-      enlace.click();
-      enlace.remove();
-    }
-  };
 
   const subirImagen = async (concepto: ConceptoFase2, archivo: File) => {
     setSubiendoArchivo(concepto.creativo_id);
@@ -334,31 +292,12 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
               {/* Imagen de referencia del swipe (IMAGEN 1 del prompt): la estructura ganadora
                   que hay que replicar. Click para ampliar. */}
               {c.referencia_url && (
-                <div className="overflow-hidden rounded-lg border border-border">
-                  <button
-                    type="button"
-                    onClick={() => setImagenAmpliada(c.referencia_url!)}
-                    className="block w-full"
-                    title="Ver referencia en tamaño completo"
-                  >
-                    <img
-                      src={c.referencia_url}
-                      alt={`Referencia de swipe para ${c.canonico_id}`}
-                      className="h-32 w-full object-cover object-top"
-                    />
-                  </button>
-                  <div className="flex items-center justify-between gap-2 bg-muted/40 px-2 py-1">
-                    <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Imagen de referencia (IMAGEN 1)
-                    </span>
-                    <button
-                      onClick={() => copiarImagen(c.creativo_id, c.referencia_url!)}
-                      className="shrink-0 rounded border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
-                    >
-                      {imagenCopiadaId === c.creativo_id ? "Copiada" : "Copiar imagen"}
-                    </button>
-                  </div>
-                </div>
+                <ImagenDeReferencia
+                  url={c.referencia_url}
+                  alt={`Referencia de swipe para ${c.canonico_id}`}
+                  etiqueta="Imagen de referencia (IMAGEN 1)"
+                  onAmpliar={setImagenAmpliada}
+                />
               )}
 
               {/* Caja de Prompt Resuelto — el prompt REAL de armar_prompts_fase2.py (nunca uno
@@ -369,12 +308,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
                     <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Prompt definitivo — copiar y pegar
                     </span>
-                    <button
-                      onClick={() => copiarPrompt(c.creativo_id, c.prompt!)}
-                      className="shrink-0 rounded-lg border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground transition-colors hover:bg-accent"
-                    >
-                      {copiadoId === c.creativo_id ? "Copiado" : "Copiar"}
-                    </button>
+                    <BotonCopiarTexto texto={c.prompt!} />
                   </div>
                   <pre className="max-h-56 overflow-y-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-foreground">
                     {c.prompt}
@@ -429,16 +363,11 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
 
       {/* Lightbox — imagen de referencia ampliada */}
       {imagenAmpliada && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
-          onClick={() => setImagenAmpliada(null)}
-        >
-          <img
-            src={imagenAmpliada}
-            alt="Referencia de swipe ampliada"
-            className="max-h-full max-w-full rounded-lg border border-zinc-700 object-contain"
-          />
-        </div>
+        <Lightbox
+          url={imagenAmpliada}
+          alt="Referencia de swipe ampliada"
+          onCerrar={() => setImagenAmpliada(null)}
+        />
       )}
     </div>
   );

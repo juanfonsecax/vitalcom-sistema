@@ -961,6 +961,9 @@ export interface components {
             piezas: components["schemas"]["PiezaF1"][];
             /** Lanzador Generado */
             lanzador_generado?: string | null;
+            referencia_f1?: components["schemas"]["ReferenciaF1"] | null;
+            /** Comando Elegir Referencia F1 */
+            comando_elegir_referencia_f1?: string | null;
         } & {
             [key: string]: unknown;
         };
@@ -1999,6 +2002,32 @@ export interface components {
             siguiente_ejecutor?: string | null;
             /** Evaluado El */
             evaluado_el?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * ReferenciaF1
+         * @description La referencia `ligera` fija de FASE 1 elegida para el producto (una sola, para las 6
+         *     fichas de ángulo) — `PRODUCTOS/_DIM_REFERENCIA_F1.csv`, dueño único `referencia_f1.py`.
+         */
+        ReferenciaF1: {
+            /**
+             * Archivo
+             * @default
+             */
+            archivo: string;
+            /** Url */
+            url?: string | null;
+            /**
+             * Motivo
+             * @default
+             */
+            motivo: string;
+            /**
+             * Elegido El
+             * @default
+             */
+            elegido_el: string;
         } & {
             [key: string]: unknown;
         };

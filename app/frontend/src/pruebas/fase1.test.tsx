@@ -454,3 +454,82 @@ test("«falta la pieza»: el botón lleva al Checklist y deja a la vista el inpu
     window.HTMLElement.prototype.scrollIntoView = original;
   }
 });
+
+test("Anuncios: sin referencia elegida muestra el aviso pendiente + el comando exacto", async () => {
+  respuestas["GET /api/productos/TURMERIC/fase1/corrida"] = {
+    producto_key: "TURMERIC",
+    corrida: null,
+    etapas: [],
+  };
+  respuestas["GET /api/productos/TURMERIC/fase1/campana"] = {
+    producto_key: "TURMERIC",
+    lanzador: null,
+    plan_fuente: null,
+    piezas: [],
+    referencia_f1: null,
+    comando_elegir_referencia_f1:
+      'python Ads/_TOOLS/referencia_f1.py --elegir TURMERIC <REFERENCIA> --motivo "..."',
+  };
+  respuestas["GET /api/productos/TURMERIC/flujo-bot"] = { producto_key: "TURMERIC", ok: true, secciones: [] };
+  respuestas["GET /api/productos/TURMERIC/checklist"] = {
+    producto_key: "TURMERIC",
+    nodo_actual: "F1.paquete",
+    faltan: [],
+    paquete: null,
+  };
+
+  renderizar("TURMERIC");
+  fireEvent.click(await screen.findByText("Anuncios"));
+
+  await waitFor(() => {
+    expect(screen.getByText("Referencia `ligera` pendiente de elegir")).toBeInTheDocument();
+  });
+  expect(
+    screen.getByText(
+      'python Ads/_TOOLS/referencia_f1.py --elegir TURMERIC <REFERENCIA> --motivo "..."',
+    ),
+  ).toBeInTheDocument();
+});
+
+test("Anuncios: con referencia elegida muestra la imagen, el motivo y permite copiarla", async () => {
+  respuestas["GET /api/productos/TURMERIC/fase1/corrida"] = {
+    producto_key: "TURMERIC",
+    corrida: null,
+    etapas: [],
+  };
+  respuestas["GET /api/productos/TURMERIC/fase1/campana"] = {
+    producto_key: "TURMERIC",
+    lanzador: null,
+    plan_fuente: null,
+    piezas: [],
+    referencia_f1: {
+      archivo: "ligera__Camila-Recomienda__15_1364693855873597.jpg",
+      url: "/api/swipe/_BANCO_CREATIVOS/C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg",
+      motivo: "avatar mujer 25-40, dolor de piel",
+      elegido_el: "2026-09-28",
+    },
+    comando_elegir_referencia_f1: null,
+  };
+  respuestas["GET /api/productos/TURMERIC/flujo-bot"] = { producto_key: "TURMERIC", ok: true, secciones: [] };
+  respuestas["GET /api/productos/TURMERIC/checklist"] = {
+    producto_key: "TURMERIC",
+    nodo_actual: "F1.paquete",
+    faltan: [],
+    paquete: null,
+  };
+
+  renderizar("TURMERIC");
+  fireEvent.click(await screen.findByText("Anuncios"));
+
+  await waitFor(() => {
+    expect(screen.getByText("avatar mujer 25-40, dolor de piel")).toBeInTheDocument();
+  });
+  expect(screen.getByText("Elegida el 2026-09-28")).toBeInTheDocument();
+  const imagen = screen.getByAltText(
+    "Referencia ligera elegida (ligera__Camila-Recomienda__15_1364693855873597.jpg)",
+  ) as HTMLImageElement;
+  expect(imagen.src).toContain(
+    "/api/swipe/_BANCO_CREATIVOS/C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg",
+  );
+  expect(screen.getByText("Copiar imagen")).toBeInTheDocument();
+});

@@ -321,6 +321,16 @@ class PiezaF1(Base):
     url: str | None = None  # None = el archivo todavía no está en disco
 
 
+class ReferenciaF1(Base):
+    """La referencia `ligera` fija de FASE 1 elegida para el producto (una sola, para las 6
+    fichas de ángulo) — `PRODUCTOS/_DIM_REFERENCIA_F1.csv`, dueño único `referencia_f1.py`."""
+
+    archivo: str = ""
+    url: str | None = None
+    motivo: str = ""
+    elegido_el: str = ""
+
+
 class CampanaF1(Base):
     """El lanzador del producto (`_LANZADOR.json`) y el `_PLAN.json` de origen, tal cual."""
 
@@ -329,6 +339,8 @@ class CampanaF1(Base):
     plan_fuente: dict[str, Any] | None = None
     piezas: list[PiezaF1] = []
     lanzador_generado: str | None = None
+    referencia_f1: ReferenciaF1 | None = None
+    comando_elegir_referencia_f1: str | None = None
 
 
 class BloqueDeFlujo(Base):

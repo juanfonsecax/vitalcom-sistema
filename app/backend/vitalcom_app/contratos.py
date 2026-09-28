@@ -22,6 +22,7 @@ from .config import python_del_sistema, ruta, base
 DIM_PRODUCTOS = ("PRODUCTOS", "_DIM_PRODUCTOS.csv")
 DIM_CUENTAS = ("PRODUCTOS", "_DIM_CUENTAS.csv")
 DIM_FANPAGES = ("PRODUCTOS", "_DIM_FANPAGES.csv")
+DIM_REFERENCIA_F1 = ("PRODUCTOS", "_DIM_REFERENCIA_F1.csv")
 PARAMETROS_DECISION = ("PRODUCTOS", "_PARAMETROS_DECISION.csv")
 ESTADO_FLUJO = ("PRODUCTOS", "_ESTADO_FLUJO.csv")
 DECISIONES = ("PRODUCTOS", "_DECISIONES.json")
@@ -455,6 +456,32 @@ def resolver_prompt_fase2(producto_key: str, carpeta_media: str, angulo_key: str
                 "comando_generar": None,
             }
     return pendiente
+
+
+def _comando_elegir_referencia_f1(producto_key: str) -> str:
+    return f'python Ads/_TOOLS/referencia_f1.py --elegir {producto_key} <REFERENCIA> --motivo "..."'
+
+
+def referencia_f1(producto_key: str) -> dict[str, Any]:
+    """La referencia `ligera` fija de FASE 1 elegida para este producto (`_DIM_REFERENCIA_F1.csv`,
+    dueño único `Ads/_TOOLS/referencia_f1.py`), o `referencia: None` + el comando exacto para
+    elegirla si todavía no hay fila. Nunca fabrica una referencia."""
+    comando = _comando_elegir_referencia_f1(producto_key)
+    if not ruta(*DIM_REFERENCIA_F1).is_file():
+        return {"referencia": None, "comando_elegir": comando}
+    for fila in _leer_csv(DIM_REFERENCIA_F1):
+        if fila.get("producto_key") == producto_key:
+            archivo = fila.get("referencia", "")
+            return {
+                "referencia": {
+                    "archivo": archivo,
+                    "url": _url_de_swipe(f"Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/{archivo}"),
+                    "motivo": fila.get("motivo", ""),
+                    "elegido_el": fila.get("elegido_el", ""),
+                },
+                "comando_elegir": None,
+            }
+    return {"referencia": None, "comando_elegir": comando}
 
 
 def ruta_de_swipe(ruta_relativa: str) -> Path | None:

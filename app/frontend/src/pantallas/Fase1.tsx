@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Problema, Tarjeta, cn, type Tono } from "../componentes/ui";
+import { ImagenDeReferencia, Lightbox } from "../componentes/copiar";
 
 export type TabId =
   | "avance"
@@ -544,19 +545,73 @@ function TabAnuncios({
     (campana?.plan_fuente as any)?.conjuntos ||
     [];
   const piezas = campana?.piezas || [];
+  const [imagenAmpliada, setImagenAmpliada] = useState<string | null>(null);
+  const referencia = campana?.referencia_f1;
+
+  const bloqueReferencia = referencia ? (
+    <Tarjeta className="border-sky-800/50 bg-sky-950/20">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-wider text-sky-400">
+            Concepto fijo de FASE 1 · C2_BENEFICIOS variante ligera
+          </span>
+          <p className="mt-1 text-xs text-zinc-300">
+            La misma referencia se usa en los 6 ángulos: pegá esta imagen + la foto del
+            producto + el prompt de cada ángulo en tu creador de imágenes con IA.
+          </p>
+          <p className="mt-2 text-xs text-zinc-400">
+            <span className="font-semibold text-zinc-300">Motivo de la elección:</span>{" "}
+            {referencia.motivo || "(sin motivo registrado)"}
+          </p>
+        </div>
+        <div className="w-48 shrink-0">
+          <ImagenDeReferencia
+            url={referencia.url || ""}
+            alt={`Referencia ligera elegida (${referencia.archivo})`}
+            etiqueta={`Elegida el ${referencia.elegido_el || "?"}`}
+            onAmpliar={setImagenAmpliada}
+          />
+        </div>
+      </div>
+    </Tarjeta>
+  ) : (
+    <Tarjeta className="border-amber-800/50 bg-amber-950/20">
+      <span className="text-xs font-semibold uppercase tracking-wider text-amber-300">
+        Referencia `ligera` pendiente de elegir
+      </span>
+      <p className="mt-1 text-xs text-amber-200/90">
+        Todavía no hay una imagen de referencia fija para este producto. Elegí una de las 3
+        referencias `ligera` y registrala (nunca se inventa):
+      </p>
+      <pre className="mt-1.5 overflow-x-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-amber-100">
+        {campana?.comando_elegir_referencia_f1}
+      </pre>
+    </Tarjeta>
+  );
 
   if (lanzadorConjuntos.length === 0) {
     return (
-      <Tarjeta>
-        <p className="text-sm text-zinc-400">
-          No hay anuncios generados todavía. Se producen al completar las etapas de FASE 1.
-        </p>
-      </Tarjeta>
+      <div className="space-y-6">
+        {bloqueReferencia}
+        <Tarjeta>
+          <p className="text-sm text-zinc-400">
+            No hay anuncios generados todavía. Se producen al completar las etapas de FASE 1.
+          </p>
+        </Tarjeta>
+        {imagenAmpliada && (
+          <Lightbox
+            url={imagenAmpliada}
+            alt="Referencia ligera ampliada"
+            onCerrar={() => setImagenAmpliada(null)}
+          />
+        )}
+      </div>
     );
   }
 
   return (
     <div className="space-y-6">
+      {bloqueReferencia}
       {lanzadorConjuntos.map((cj: any, index: number) => {
         const pieza = piezas.find(
           (p) =>
@@ -689,6 +744,13 @@ function TabAnuncios({
           </Tarjeta>
         );
       })}
+      {imagenAmpliada && (
+        <Lightbox
+          url={imagenAmpliada}
+          alt="Referencia ligera ampliada"
+          onCerrar={() => setImagenAmpliada(null)}
+        />
+      )}
     </div>
   );
 }

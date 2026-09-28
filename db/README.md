@@ -226,6 +226,14 @@ natural donde cambiar el destino en T3.
 - **Sin archivo todavía:** `_VOZ_CLIENTE.csv` (escritor `verificar_voz.py` → `upsert_fact`; no
   tiene tabla `core`).
 - **Sin uso:** `_MAPEO_CREATIVOS.csv` (solo aparece en `db/tables.py`).
+- **Sin fila en `TABLE_SPECS` (deliberado):** `_DIM_REFERENCIA_F1.csv` (escritor
+  exclusivo `Ads/_TOOLS/referencia_f1.py --elegir`, upsert por `producto_key`). Agregar una fila sin
+  aplicar el `schema.sql` regenerado contra el Postgres real rompería `cargar_todo()` (hace
+  `TRUNCATE TABLE raw.<tabla>` incondicional para toda fila de `TABLE_SPECS`, exista o no la
+  tabla). No lo necesita ningún guardia automático: `hook_csv.py` valida su estructura como a
+  cualquier CSV de `PRODUCTOS/`, y el drift guard de `ciclo_diario.py` solo vigila
+  `TABLAS_MIGRADAS_DB`. Si se quiere mirror en Postgres más adelante, agregar la fila a
+  `TABLE_SPECS`, regenerar `schema.sql` (`python db/tables.py`) y aplicarlo contra la base real.
 
 El backend de la app no escribe ningún CSV (`app/backend/vitalcom_app/contratos.py:3`): toda
 escritura pasa por un ejecutor de `Ads/_TOOLS/` declarado en `VISTAS/_MANIFIESTO.json`.
