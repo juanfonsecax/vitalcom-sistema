@@ -24,6 +24,14 @@ def obtener_ordenes(producto: str | None = Query(None, description="Filtrar órd
     """
     try:
         data = contratos.ordenes(producto_key=producto)
+        # Cada orden lleva el mercado de SU producto (resolver de D1): las cifras `*_q` viajan en la
+        # moneda local de ese mercado y la pantalla necesita saber cuál es.
+        perfiles: dict[str, dict[str, str]] = {}
+        for orden in data.get("ordenes", []):
+            clave = orden.get("producto_key", "")
+            if clave not in perfiles:
+                perfiles[clave] = contratos.perfil_de_producto(clave)
+            orden.update(perfiles[clave])
         return OrdenesRespuesta(**data, parametros_motor=contratos.parametros_decision())
     except contratos.ContratoAusente as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
@@ -34,6 +42,6 @@ def obtener_ganadores() -> list[Ganador]:
     """Lista de productos que cuentan con ángulo ganador confirmado por ventas según el flujo."""
     try:
         lista = contratos.ganadores()
-        return [Ganador(**item) for item in lista]
+        return [Ganador(**item, **contratos.perfil_de_producto(item["producto_key"])) for item in lista]
     except contratos.ContratoAusente as error:
         raise HTTPException(status_code=422, detail=str(error)) from error

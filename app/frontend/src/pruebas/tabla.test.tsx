@@ -29,7 +29,7 @@ const COSTEO_60: Costeo = {
 };
 
 test("la escalera y los umbrales salen tal cual del script", () => {
-  render(<TablaGuatemala costeo={COSTEO_60} />);
+  render(<TablaGuatemala costeo={COSTEO_60} simbolo="Q" />);
   const escalera = screen.getByTestId("escalera");
   for (const precio of ["Q199", "Q299", "Q399"]) expect(within(escalera).getByText(precio)).toBeInTheDocument();
   const umbrales = screen.getByTestId("umbrales");
@@ -40,7 +40,7 @@ test("la escalera y los umbrales salen tal cual del script", () => {
 });
 
 test("no redondea ni agrega decimales", () => {
-  render(<TablaGuatemala costeo={{ ...COSTEO_60, cpa_objetivo: 30.8 }} />);
+  render(<TablaGuatemala costeo={{ ...COSTEO_60, cpa_objetivo: 30.8 }} simbolo="Q" />);
   expect(screen.getByText("Q30.8")).toBeInTheDocument();
   expect(screen.queryByText("Q30.80")).not.toBeInTheDocument();
 });
@@ -50,6 +50,7 @@ test("un costo sin fila propia repite el criterio del script, sin inventar otro"
   render(
     <TablaGuatemala
       costeo={{ ...COSTEO_60, costo_ingresado: 41, fila_usada: 40, criterio_de_fila: "más cercana" }}
+      simbolo="Q"
     />,
   );
   const aviso = screen.getByTestId("aviso-fila");
@@ -61,6 +62,7 @@ test("pasar el techo de la tabla se avisa en rojo", () => {
   render(
     <TablaGuatemala
       costeo={{ ...COSTEO_60, costo_ingresado: 400, fila_usada: 130, criterio_de_fila: "TECHO DE TABLA EXCEDIDO" }}
+      simbolo="Q"
     />,
   );
   expect(screen.getByTestId("aviso-fila")).toHaveTextContent("pasa la última fila");
@@ -68,6 +70,6 @@ test("pasar el techo de la tabla se avisa en rojo", () => {
 });
 
 test("con costo exacto no hay aviso de fila", () => {
-  render(<TablaGuatemala costeo={COSTEO_60} />);
+  render(<TablaGuatemala costeo={COSTEO_60} simbolo="Q" />);
   expect(screen.queryByTestId("aviso-fila")).not.toBeInTheDocument();
 });

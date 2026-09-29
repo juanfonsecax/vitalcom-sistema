@@ -32,6 +32,8 @@ import {
 import { api, ErrorDeContrato, type Resultados as ResultadosDatos } from "../api/cliente";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn, Info, Problema } from "../componentes/ui";
+import { BanderaMercado, SelectorMercado, usarMercadoSeleccionado } from "../componentes/mercado";
+import { formatearDinero, TODOS, type PerfilMoneda } from "../dinero";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -65,15 +67,15 @@ type EconomiaUnitaria = {
   ganancia_por_venta_q: number;
 };
 
-const FORMATO_Q = new Intl.NumberFormat("es-GT", {
-  style: "currency",
-  currency: "GTQ",
-  maximumFractionDigits: 0,
-});
+/** Este estado de resultados es el de Guatemala: lo produce `gen_pl.py` desde el export de Dropi GT
+ * (D3 lo abre a otros mercados). Por eso su moneda es la de ESE mercado, declarada acá una vez, y
+ * no se toma de ningún producto. */
+const MERCADO_DEL_PL = "GT";
+const PERFIL_DEL_PL: PerfilMoneda = { mercado: MERCADO_DEL_PL, moneda_local: "GTQ", simbolo: "Q" };
 const FORMATO_FECHA = new Intl.DateTimeFormat("es-GT", { day: "numeric", month: "short", year: "numeric" });
 
 function formatoQ(valor: number | null | undefined): string {
-  return valor == null ? "—" : FORMATO_Q.format(valor);
+  return formatearDinero(valor, PERFIL_DEL_PL, { decimales: 0 });
 }
 
 function fechaCorta(iso: string | undefined): string {
@@ -602,8 +604,26 @@ function EstadoVacio() {
   );
 }
 
+/** Colombia todavía no tiene estado de resultados: no se inventa ni se convierte el de Guatemala. */
+function ResultadosPendientes({ mercado }: { mercado: string }) {
+  return (
+    <Alert data-testid="resultados-pendientes">
+      <UploadCloud className="size-4" />
+      <AlertTitle>
+        Resultados de <BanderaMercado mercado={mercado} /> Colombia: pendiente
+      </AlertTitle>
+      <AlertDescription>
+        Se cargan desde tus exports manuales. Mientras no estén, esta pantalla no muestra ninguna cifra de
+        Colombia — y nunca las mezcla con las de Guatemala.
+      </AlertDescription>
+    </Alert>
+  );
+}
+
 export function Resultados() {
+  const [mercado, setMercado] = usarMercadoSeleccionado();
   const resultados = useQuery({ queryKey: ["resultados"], queryFn: api.resultados, retry: false });
+  const esGuatemala = mercado === TODOS || mercado === MERCADO_DEL_PL;
 
   const noHayCarga = resultados.error instanceof ErrorDeContrato && resultados.error.estado === 404;
 
@@ -615,9 +635,21 @@ export function Resultados() {
           El estado de resultados real, tal como lo manda DOCTRINA/CONTABILIDAD.md — nunca ROAS
           ni la atribución semanal de los anuncios.
         </p>
+        {esGuatemala && (
+          <p className="mt-1 flex items-center gap-2 text-sm font-medium" data-testid="mercado-de-resultados">
+            <BanderaMercado mercado={MERCADO_DEL_PL} /> Guatemala · cifras en {PERFIL_DEL_PL.moneda_local}
+          </p>
+        )}
       </div>
 
-      {resultados.isLoading && (
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mercado</span>
+        <SelectorMercado seleccion={mercado} onCambiar={setMercado} />
+      </div>
+
+      {!esGuatemala && <ResultadosPendientes mercado={mercado} />}
+
+      {esGuatemala && resultados.isLoading && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[0, 1, 2, 3].map((n) => (
             <Skeleton key={n} className="h-28 w-full" />
@@ -625,10 +657,10 @@ export function Resultados() {
         </div>
       )}
 
-      {!resultados.isLoading && resultados.error && !noHayCarga && <Problema error={resultados.error} />}
-      {!resultados.isLoading && noHayCarga && <EstadoVacio />}
+      {esGuatemala && !resultados.isLoading && resultados.error && !noHayCarga && <Problema error={resultados.error} />}
+      {esGuatemala && !resultados.isLoading && noHayCarga && <EstadoVacio />}
 
-      {resultados.data && (
+      {esGuatemala && resultados.data && (
         <>
           <p className="text-sm text-muted-foreground">
             Última carga: {fechaCorta((resultados.data.periodo as Record<string, string>)?.generado)} · período{" "}
@@ -661,7 +693,7 @@ export function Resultados() {
         </>
       )}
 
-      <CargarExport />
+      {esGuatemala && <CargarExport />}
     </div>
   );
 }

@@ -1591,6 +1591,21 @@ export interface components {
             /** Producto Key */
             producto_key: string;
             /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
+            /**
              * Fase
              * @default
              */
@@ -1897,6 +1912,21 @@ export interface components {
              */
             angulo_ganador: string;
             siguiente_paso: components["schemas"]["GanadorPaso"];
+            /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
         } & {
             [key: string]: unknown;
         };
@@ -2180,6 +2210,21 @@ export interface components {
              * @default []
              */
             conjuntos: string[];
+            /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
         } & {
             [key: string]: unknown;
         };

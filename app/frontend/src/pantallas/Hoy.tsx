@@ -39,6 +39,8 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Skeleton } from "@/components/ui/skeleton";
 import { tituloDelPasoActual, trabajoPendientePorProducto } from "../componentes/resumen";
 import { cn, Problema } from "../componentes/ui";
+import { BanderaMercado, SelectorMercado, usarMercadoSeleccionado } from "../componentes/mercado";
+import { contarPorMercado, filtrarPorMercado, formatearDinero, TODOS } from "../dinero";
 import {
   glosarioDeOrden,
   progresoVentasEnPalabras,
@@ -284,13 +286,16 @@ function TarjetaOrdenDelDia({
       <CardHeader className="gap-2">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
-            <Link
-              to="/producto/$clave"
-              params={{ clave: orden.producto_key }}
-              className="truncate font-medium hover:underline"
-            >
-              {orden.producto_key}
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                to="/producto/$clave"
+                params={{ clave: orden.producto_key }}
+                className="truncate font-medium hover:underline"
+              >
+                {orden.producto_key}
+              </Link>
+              <BanderaMercado mercado={orden.mercado} />
+            </div>
             <p className="truncate text-xs text-muted-foreground">
               {orden.angulo_nombre || orden.angulo_key}
             </p>
@@ -317,7 +322,7 @@ function TarjetaOrdenDelDia({
               key={String(pq.cpa_real_q)}
               className="block text-2xl font-bold tabular-nums text-foreground motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-300"
             >
-              {pq.cpa_real_q != null ? `Q${pq.cpa_real_q}` : "Sin datos"}
+              {pq.cpa_real_q != null ? formatearDinero(pq.cpa_real_q as number, orden) : "Sin datos"}
             </span>
           </div>
           <div>
@@ -328,7 +333,7 @@ function TarjetaOrdenDelDia({
               key={String(pq.break_even_q)}
               className="block text-2xl font-bold tabular-nums text-foreground motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-300"
             >
-              {pq.break_even_q != null ? `Q${pq.break_even_q}` : "No fijado"}
+              {pq.break_even_q != null ? formatearDinero(pq.break_even_q as number, orden) : "No fijado"}
             </span>
           </div>
         </div>
@@ -393,6 +398,7 @@ function FilaEnMedicion({ orden }: { orden: OrdenItem }) {
         <Link to="/producto/$clave" params={{ clave: orden.producto_key }} className="font-medium hover:underline">
           {orden.producto_key}
         </Link>
+        <BanderaMercado mercado={orden.mercado} className="ml-2" />
         <span className="ml-2 text-muted-foreground">{orden.angulo_nombre || orden.angulo_key}</span>
       </div>
       <span className="shrink-0 text-xs text-muted-foreground">{progreso}</span>
@@ -583,12 +589,16 @@ function FranjaDelDia({
  * tarjeta grande, para que arriba y abajo se lea el mismo idioma. Las tarjetas de la franja
  * bajan hasta su sección (`irASeccion`); "Siguen midiendo" nace cerrado, controlado, y la
  * tarjeta «Midiendo» es la única que lo abre antes de bajar. */
-function SeccionOrdenes() {
+function SeccionOrdenes({ mercado }: { mercado: string }) {
   const ordenesQuery = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const accionesQuery = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
   const trabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
-  const ordenes = ordenesQuery.data?.ordenes ?? [];
-  const recienEscalaron = usarEscalaresNuevos(ordenes);
+  const todas = ordenesQuery.data?.ordenes ?? [];
+  // La celebración compara contra TODAS las órdenes (la línea base no depende del filtro de pantalla);
+  // todo lo demás se cuenta y se pinta solo del mercado elegido.
+  const recienEscalaron = usarEscalaresNuevos(todas);
+  const ordenes = filtrarPorMercado(todas, mercado);
+  const porMercado = contarPorMercado(todas);
   const [midiendoAbierto, setMidiendoAbierto] = useState(false);
 
   if (ordenesQuery.isLoading) {
@@ -646,6 +656,19 @@ function SeccionOrdenes() {
   return (
     <div className="space-y-4">
       <FranjaDelDia ordenes={ordenes} pendientesDeTrabajos={pendientes} onIrASeccion={irASeccion} />
+      {mercado === TODOS && Object.keys(porMercado).length > 1 && (
+        <p data-testid="resumen-por-mercado" className="text-xs text-muted-foreground">
+          Celdas con orden por mercado (cada mercado aparte, nunca sumados):{" "}
+          {Object.entries(porMercado)
+            .sort(([x], [y]) => x.localeCompare(y))
+            .map(([clave, cantidad], i) => (
+              <span key={clave}>
+                {i > 0 && " · "}
+                <BanderaMercado mercado={clave} /> {cantidad}
+              </span>
+            ))}
+        </p>
+      )}
 
       {accionables.length === 0 ? (
         <Card>
@@ -721,7 +744,10 @@ function FilaSiguientePaso({ producto }: { producto: Producto }) {
       params={{ clave: producto.producto_key }}
       className="flex flex-col gap-1 border-b border-border/60 px-3 py-2 text-sm last:border-b-0 hover:bg-muted/50 sm:grid sm:grid-cols-[1fr_5rem_1fr_1fr] sm:items-center sm:gap-3"
     >
-      <span className="font-medium">{producto.nombre_display || producto.producto_key}</span>
+      <span className="flex items-center gap-2 font-medium">
+        {producto.nombre_display || producto.producto_key}
+        <BanderaMercado mercado={producto.mercado} />
+      </span>
       <span className="text-xs text-muted-foreground">{producto.fase ?? "—"}</span>
       <span className="truncate text-muted-foreground">
         {flujo.isLoading ? <Skeleton className="h-4 w-32" /> : paso}
@@ -740,7 +766,7 @@ function FilaSiguientePaso({ producto }: { producto: Producto }) {
 }
 
 /** Sección 3: el nodo vigente de cada producto (`flujo.py`), qué lo frena y quién lo produce. */
-function SeccionSiguientePaso() {
+function SeccionSiguientePaso({ mercado }: { mercado: string }) {
   const productos = useQuery({ queryKey: ["productos"], queryFn: api.productos });
 
   if (productos.isLoading) {
@@ -754,9 +780,13 @@ function SeccionSiguientePaso() {
   }
   if (productos.error) return <Problema error={productos.error} />;
 
-  const lista = productos.data ?? [];
+  const lista = filtrarPorMercado(productos.data ?? [], mercado);
   if (lista.length === 0) {
-    return <p className="text-sm text-muted-foreground">Todavía no hay productos cargados.</p>;
+    return (
+      <p className="text-sm text-muted-foreground">
+        {(productos.data ?? []).length === 0 ? "Todavía no hay productos cargados." : "No hay productos de este mercado."}
+      </p>
+    );
   }
 
   return (
@@ -769,6 +799,7 @@ function SeccionSiguientePaso() {
 }
 
 export function Hoy() {
+  const [mercado, setMercado] = usarMercadoSeleccionado();
   return (
     <div className="space-y-8">
       <header>
@@ -778,6 +809,11 @@ export function Hoy() {
           cada producto.
         </p>
       </header>
+
+      <section className="flex flex-wrap items-center gap-3">
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mercado</span>
+        <SelectorMercado seleccion={mercado} onCambiar={setMercado} />
+      </section>
 
       <section>
         <BannerDatos />
@@ -793,12 +829,12 @@ export function Hoy() {
             Detalle extendido del motor en Órdenes →
           </Link>
         </div>
-        <SeccionOrdenes />
+        <SeccionOrdenes mercado={mercado} />
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">Qué sigue en cada producto</h2>
-        <SeccionSiguientePaso />
+        <SeccionSiguientePaso mercado={mercado} />
       </section>
     </div>
   );

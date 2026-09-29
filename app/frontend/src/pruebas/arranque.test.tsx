@@ -20,6 +20,9 @@ import { ProductoDetalle } from "../pantallas/ProductoDetalle";
 
 const FLUJO = {
   producto_key: "CLEARSTEM",
+  mercado: "GT",
+  moneda_local: "GTQ",
+  simbolo: "Q",
   nombre: "Clearstem",
   estado_producto: "VIVO",
   fase: "PAUSADO",
@@ -248,4 +251,17 @@ test("sin faltantes la tarjeta no se dibuja; si el motor no responde, la ficha s
   expect(await screen.findByText("Clearstem")).toBeInTheDocument();
   expect(screen.queryByText("Para arrancar te falta")).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Subí la foto del producto" })).not.toBeInTheDocument();
+});
+
+test("el arreglo del costo pide la moneda del mercado del producto (pesos para Colombia)", async () => {
+  servir({
+    "/api/productos/CLEARSTEM": { ...FLUJO, mercado: "CO", moneda_local: "COP", simbolo: "$" },
+    "/api/productos/CLEARSTEM/datos": datos([
+      { clave: "costo_q", rotulo: "Costo del producto", estado: "falta", detalle: "", como_resolver: "Decinos el costo.", accion: "producto.cambiar_costo" },
+    ]),
+  });
+  montar();
+  const campo = await screen.findByLabelText("Costo en pesos colombianos");
+  expect(campo).toHaveAttribute("placeholder", "Costo en $");
+  expect(screen.queryByLabelText("Costo en quetzales")).not.toBeInTheDocument();
 });

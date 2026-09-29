@@ -2,7 +2,8 @@
  * Nuevo producto — el pedido 1 del operador: arrancar con tres cosas.
  *   1. Imagen del producto + nombre.
  *   2. Descripción lo más extensa posible.
- *   3. Costo en Q → la tabla de Guatemala al instante (la calcula costear.py, no la app).
+ *   3. Costo en la moneda del mercado elegido → la tabla de precios al instante (la calcula
+ *      costear.py, no la app; hoy solo existe la de Guatemala).
  *   4. (Opcional) Videos de la competencia → se transcriben en esta máquina.
  *
  * Al confirmar, `alta_producto.py` escribe todo de una vez (o nada) y `flujo.py --todo`
@@ -13,10 +14,15 @@ import { useMutation, useQuery, useQueryClient, type UseMutationResult } from "@
 import { Link } from "@tanstack/react-router";
 import { api, type AccionEncolada, type ResultadoAlta, type ResultadoTranscripcion } from "../api/cliente";
 import { TablaGuatemala } from "../componentes/TablaGuatemala";
+import { banderaDe, conSimbolo, nombreDeMoneda } from "../dinero";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Chip, Tarjeta, cn } from "../componentes/ui";
 import { trabajoEnPalabras } from "../lenguaje";
+
+/** Mercados para los que `costear.py` ya tiene tabla (hoy `_DIM_COSTEO.csv` es la de Guatemala; la de
+ * Colombia llega con D5). Fuera de esta lista no se pide ni se muestra una tabla de otro país. */
+const MERCADOS_CON_COSTEO = ["GT"];
 
 const MINIMO_DESCRIPCION = 120; // el mismo mínimo que exige alta_producto.py
 
@@ -79,10 +85,12 @@ export function NuevoProducto() {
 
   const mercados = useQuery({ queryKey: ["mercados"], queryFn: api.mercados });
 
+  const perfil = mercados.data?.find((m) => m.mercado === mercado);
+  const hayTabla = MERCADOS_CON_COSTEO.includes(mercado);
   const costeo = useQuery({
     queryKey: ["costeo", costoDemorado],
     queryFn: () => api.costeo(costoDemorado),
-    enabled: /^\d+(\.\d+)?$/.test(costoDemorado) && Number(costoDemorado) > 0,
+    enabled: hayTabla && /^\d+(\.\d+)?$/.test(costoDemorado) && Number(costoDemorado) > 0,
   });
 
   const alta = useMutation({
@@ -113,12 +121,12 @@ export function NuevoProducto() {
   const puedeSeguir = [
     nombre.trim().length >= 3 && imagen !== null && mercado !== "",
     descripcion.trim().length >= MINIMO_DESCRIPCION,
-    costoValido && costeo.isSuccess,
+    costoValido && (costeo.isSuccess || !hayTabla),
     true,
   ][paso];
 
   if (alta.isSuccess) {
-    return <Listo resultado={alta.data} transcripcion={transcripcion} />;
+    return <Listo resultado={alta.data} transcripcion={transcripcion} simbolo={perfil?.simbolo ?? ""} />;
   }
 
   return (
@@ -126,7 +134,7 @@ export function NuevoProducto() {
       <header>
         <h1 className="text-2xl font-semibold">Nuevo producto</h1>
         <p className="text-sm text-zinc-400">
-          Tres cosas y arranca: la foto, una descripción larga y el costo en quetzales.
+          Tres cosas y arranca: la foto, una descripción larga y el costo en la moneda del mercado.
         </p>
       </header>
 
@@ -153,7 +161,7 @@ export function NuevoProducto() {
               <option value="">Elegí el mercado…</option>
               {mercados.data?.map((m) => (
                 <option key={m.mercado} value={m.mercado}>
-                  {m.pais} ({m.moneda})
+                  {banderaDe(m.mercado)} {m.pais} ({m.moneda})
                 </option>
               ))}
             </select>
@@ -223,16 +231,18 @@ export function NuevoProducto() {
         <div className="space-y-4">
           <Tarjeta>
             <label className="block max-w-xs">
-              <span className="text-sm text-zinc-300">Costo del pedido completo, en quetzales</span>
+              <span className="text-sm text-zinc-300">
+                Costo del pedido completo, en {nombreDeMoneda(perfil?.moneda)}
+              </span>
               <div className="relative mt-1">
                 <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground">
-                  Q
+                  {perfil?.simbolo}
                 </span>
                 <Input
                   value={costo}
                   inputMode="decimal"
                   onChange={(e) => setCosto(e.target.value.replace(",", "."))}
-                  aria-label="Costo en quetzales"
+                  aria-label={`Costo en ${nombreDeMoneda(perfil?.moneda)}`}
                   className="pl-6"
                 />
               </div>
@@ -242,9 +252,15 @@ export function NuevoProducto() {
               Q45, así que va 90.
             </p>
           </Tarjeta>
+          {!hayTabla && (
+            <p className="text-sm text-amber-300" data-testid="sin-tabla-de-costeo">
+              Todavía no hay tabla de precios para {perfil?.pais ?? "este mercado"}: costear.py hoy solo cubre Guatemala.
+              Podés seguir; el costo se guarda en {nombreDeMoneda(perfil?.moneda)}.
+            </p>
+          )}
           {costeo.isFetching && <p className="text-sm text-zinc-400">Consultando la tabla…</p>}
           {costeo.error && <p className="text-sm text-rose-300">{(costeo.error as Error).message}</p>}
-          {costeo.data && costoDemorado === costo && <TablaGuatemala costeo={costeo.data} />}
+          {costeo.data && costoDemorado === costo && <TablaGuatemala costeo={costeo.data} simbolo={perfil?.simbolo ?? ""} />}
         </div>
       )}
 
@@ -350,9 +366,11 @@ function ProgresoDeTranscripcion({ trabajo }: { trabajo: string }) {
 function Listo({
   resultado,
   transcripcion,
+  simbolo,
 }: {
   resultado: ResultadoAlta;
   transcripcion: UseMutationResult<AccionEncolada, Error, string>;
+  simbolo: string;
 }) {
   const carpetaVideos = `Ads/1.1 Videos/${resultado.producto_key}/`;
   return (
@@ -362,7 +380,7 @@ function Listo({
           {resultado.nombre_display} quedó dado de alta
         </h1>
         <ul className="mt-3 space-y-1 text-sm text-zinc-300">
-          <li>· fila en _DIM_PRODUCTOS.csv con estado NUEVO y costo Q{resultado.costo_q}</li>
+          <li>· fila en _DIM_PRODUCTOS.csv con estado NUEVO y costo {conSimbolo(resultado.costo_q, simbolo)}</li>
           <li>· packshot declarado: <code className="text-zinc-400">{resultado.packshot}</code></li>
           <li>· descripción guardada en <code className="text-zinc-400">{resultado.archivo_datos}</code></li>
         </ul>

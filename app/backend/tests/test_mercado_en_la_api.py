@@ -58,3 +58,27 @@ def test_un_producto_sin_mercado_no_se_sirve_con_un_default(cliente_juguete, sis
         respuesta = cliente_juguete.get(url)
         assert respuesta.status_code == 503, (url, respuesta.text)
         assert "mercado" in respuesta.text
+
+
+def test_cada_orden_lleva_el_mercado_de_su_producto(cliente):
+    """D2: las cifras `*_q` de una orden viajan en la moneda de SU mercado; el frontend no lo deduce."""
+    filas = {f["producto_key"]: f for f in _csv_base(cliente)}
+    ordenes = cliente.get("/api/ordenes").json()["ordenes"]
+    assert ordenes
+    for orden in ordenes:
+        fila = filas[orden["producto_key"]]
+        assert orden["mercado"] == fila["mercado"]
+        assert orden["moneda_local"] and orden["simbolo"]
+
+
+def test_fase2_y_ganadores_llevan_el_mercado(cliente):
+    fase2 = cliente.get("/api/productos/TINNIDROP/fase2").json()
+    assert (fase2["mercado"], fase2["moneda_local"], fase2["simbolo"]) == ("GT", "GTQ", "Q")
+    for ganador in cliente.get("/api/ganadores").json():
+        assert ganador["mercado"] and ganador["simbolo"]
+
+
+def _csv_base(cliente):
+    from vitalcom_app import contratos
+
+    return _csv(contratos.base(), "_DIM_PRODUCTOS.csv")

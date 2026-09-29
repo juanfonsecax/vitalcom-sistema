@@ -28,6 +28,7 @@ test("el asistente muestra la tabla de Guatemala de costear.py sin escribir nada
 
   await page.goto("/nuevo");
   await page.getByPlaceholder("Ej.: Serum Vitamina C").fill("Serum de Prueba E2E");
+  await page.getByLabel("Mercado de venta").selectOption("GT");
   await page.getByLabel("Foto del producto").setInputFiles({
     name: "foto.png",
     mimeType: "image/png",

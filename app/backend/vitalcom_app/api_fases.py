@@ -23,7 +23,7 @@ class ReingresoPeticion(BaseModel):
 def obtener_fase2(producto_key: str) -> Fase2Detalle:
     """Detalle completo de FASE 2: ángulo ganador, 10 conceptos con blueprints, prompts y carriles."""
     try:
-        return Fase2Detalle(**contratos.fase2_detalle(producto_key))
+        return Fase2Detalle(**contratos.fase2_detalle(producto_key), **contratos.perfil_de_producto(producto_key))
     except contratos.ContratoAusente as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
     except Exception as error:

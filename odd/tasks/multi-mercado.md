@@ -30,7 +30,7 @@ provides Meta Ads Manager + LucidSales exports; account EXTERNA, no MCP).
 - [x] D1 Market tag: `mercado` column in _DIM_PRODUCTOS (GT×4, CO OVULOS) + Postgres raw.producto /
       stg_productos; shared resolver (mercado → moneda, simbolo, tasa, persona, registro); missing
       market fails loudly; API exposes market + currency per product. (delegated writer)
-- [ ] D2 App: flag per product, market selector, currency formatting from API everywhere. (writer)
+- [x] D2 App: flag per product, market selector, currency formatting from API everywhere. (writer)
 - [ ] D3 Per-market rollups: gen_dashboard, gen_finanzas, gen_testeos, gen_pl, warehouse; remove
       silent 7.62 fallbacks (fail loud). Nightly-risk → parity check. (writer)
 - [ ] D4 Manual CO ingest: data-driven product map in ingerir_meta; EXTERNA spend path; sales
@@ -105,5 +105,28 @@ nightly/app run on the merged code. In this order, on the live folder after the 
    the migrated DB but the CSV header would then differ from `raw.producto` (drift), so roll back the
    CSV too.
 
+### D2 (2026-09-28, worktree only, nothing committed)
+- Formatter `app/frontend/src/dinero.ts` (`formatearDinero`: GTQ `Q1,234.50`, COP `$ 41.000` es-CO no decimals;
+  unknown currency is never guessed), flags, `filtrarPorMercado`, `contarPorMercado`; UI pieces in
+  `componentes/mercado.tsx` (`BanderaMercado`, `SelectorMercado`, `usarMercadoSeleccionado`, localStorage in
+  try/catch, key `vitalcom-mercado-v1`, default Todos). All hard-coded "Q"/GTQ replaced (Hoy, Ordenes, angulosFase2,
+  TablaGuatemala, Resultados, NuevoProducto, arranque cost fix); `TablaGuatemala` keeps script text byte-for-byte via
+  `conSimbolo`.
+- Backend (minimal): `OrdenItem`, `Ganador`, `Fase2Detalle` carry `mercado`/`moneda_local`/`simbolo` from
+  `contratos.perfil_de_producto` (D1 resolver); the frontend never derives the market from the key.
+- Flags next to every product name: Portafolio (table + mobile), Hoy order/medición/next-step rows, Ordenes, ficha header,
+  Fase 2. Selector at top of Hoy, Portafolio and Resultados. Hoy counts are per selected market; with Todos a
+  per-market count strip is shown (no money is summed in the frontend, so no combined total exists).
+- Resultados: labelled Guatemala (flag, GTQ, declared `PERFIL_DEL_PL`); with Colombia selected it shows "Resultados
+  de Colombia: pendiente" and no figures/upload (gen_pl.py untouched, D3).
+- NuevoProducto: flags in the market select, cost label/symbol from the market; the costing table is requested only for
+  markets in `MERCADOS_CON_COSTEO = ["GT"]` (costear.py is GT-only until D5); other markets get an honest note.
+- Tests: new `dinero.test.ts`; new cases in hoy/productos/resultados/arranque tests; GT decimals now `Q98.20` (was `Q98.2`)
+  in ordenes/fase2 tests; fixtures got the market fields. Backend: 2 new tests in `test_mercado_en_la_api.py`.
+- Verification (`VITALCOM_FUENTE=csv`): app/backend `uv run pytest -q` 225 passed (5m36s) · app/frontend `pnpm test`
+  165 passed, `pnpm build` OK · `pnpm exec playwright test` 16 passed (e2e backend base = the worktree root, resolved
+  `../..` from app/frontend; e2e `nuevo_producto` now selects market GT, `hoy` asserts selector + flag) ·
+  `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` 51 passed. `esquema.d.ts` regenerated from the app object.
+
 ## Next step
-D2 (app: flag per product, market selector, currency from the API) and D3 (per-market rollups).
+D3 (per-market rollups).

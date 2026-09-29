@@ -24,4 +24,10 @@ test("«/» muestra Hoy: banner de datos, órdenes del motor y qué sigue por pr
   const enlacesDeProducto = page.locator('a[href^="/producto/"]');
   await expect(enlacesDeProducto.first()).toBeVisible();
   expect(await enlacesDeProducto.count()).toBeGreaterThanOrEqual(4);
+
+  // Multi-mercado: el selector con su default «Todos» y la bandera junto a cada producto.
+  const selector = page.getByTestId("selector-mercado");
+  await expect(selector.getByRole("button", { name: "Todos" })).toHaveAttribute("aria-pressed", "true");
+  await expect(selector.getByRole("button", { name: /Guatemala/ })).toBeVisible();
+  await expect(page.getByTestId("bandera-mercado").first()).toBeVisible();
 });

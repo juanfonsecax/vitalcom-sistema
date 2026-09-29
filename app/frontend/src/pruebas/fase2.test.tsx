@@ -145,6 +145,7 @@ function fase2Con(generar: Record<string, unknown>) {
 
 const FASE2_MOCK = {
   producto_key: "TINNIDROP",
+  mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
   fase: "FASE 2",
   nodo_actual: "F2.etapa-11",
   angulo_ganador: "ACCESIBILIDAD_MEDICO",
@@ -271,7 +272,7 @@ test("renderiza el #1 en testeo, la fila, los que no funcionaron y la galería",
   expect(hero.textContent).toContain("En testeo de conceptos ahora");
   expect(hero.textContent).toContain("ACCESIBILIDAD_MEDICO");
   expect(hero.textContent).toContain("91");
-  expect(hero.textContent).toContain("Q41.5");
+  expect(hero.textContent).toContain("Q41.50");
   expect(hero.textContent).toContain("18.2%");
   expect(screen.getByText("F2.etapa-11")).toBeDefined();
 

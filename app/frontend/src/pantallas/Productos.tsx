@@ -33,6 +33,8 @@ import { api, type Flujo, type Producto } from "../api/cliente";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema } from "../componentes/ui";
+import { BanderaMercado, SelectorMercado, usarMercadoSeleccionado } from "../componentes/mercado";
+import { filtrarPorMercado } from "../dinero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -91,10 +93,13 @@ const columnas: ColumnDef<Fila>[] = [
     cell: ({ row }) => {
       const p = row.original.producto;
       return (
-        <Link to="/producto/$clave" params={{ clave: p.producto_key }} className="font-medium hover:underline">
-          {p.nombre_display || p.producto_key}
-          <span className="block text-xs font-normal text-muted-foreground">{p.producto_key}</span>
-        </Link>
+        <div className="flex items-start gap-2">
+          <Link to="/producto/$clave" params={{ clave: p.producto_key }} className="font-medium hover:underline">
+            {p.nombre_display || p.producto_key}
+            <span className="block text-xs font-normal text-muted-foreground">{p.producto_key}</span>
+          </Link>
+          <BanderaMercado mercado={p.mercado} className="mt-0.5" />
+        </div>
       );
     },
   },
@@ -202,6 +207,7 @@ export function Productos() {
   });
 
   const [busqueda, setBusqueda] = useState("");
+  const [mercado, setMercado] = usarMercadoSeleccionado();
   const [orden, setOrden] = useState<SortingState>([]);
   const esMovil = useIsMobile();
 
@@ -217,13 +223,17 @@ export function Productos() {
 
   const filasFiltradas = useMemo(() => {
     const q = busqueda.trim().toLowerCase();
-    if (!q) return filas;
-    return filas.filter(({ producto }) =>
+    const delMercado = filtrarPorMercado(
+      filas.map((f) => ({ ...f, mercado: f.producto.mercado })),
+      mercado,
+    ).map(({ producto, flujo }) => ({ producto, flujo }));
+    if (!q) return delMercado;
+    return delMercado.filter(({ producto }) =>
       [producto.producto_key, producto.nombre_display, producto.fase, producto.estado_flujo]
         .filter(Boolean)
         .some((v) => String(v).toLowerCase().includes(q)),
     );
-  }, [filas, busqueda]);
+  }, [filas, busqueda, mercado]);
 
   const tabla = useReactTable({
     data: filasFiltradas,
@@ -264,6 +274,11 @@ export function Productos() {
         </Chip>
       </header>
 
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mercado</span>
+        <SelectorMercado seleccion={mercado} onCambiar={setMercado} />
+      </div>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Input
           placeholder="Buscar por producto, fase o estado…"
@@ -281,6 +296,8 @@ export function Productos() {
           <CardContent className="space-y-4 py-6 text-center text-sm text-muted-foreground">
             {busqueda ? (
               "Ningún producto coincide con la búsqueda."
+            ) : (productos.data ?? []).length > 0 ? (
+              "No hay productos de este mercado."
             ) : (
               <>
                 <p>Todavía no hay productos cargados.</p>
@@ -307,7 +324,10 @@ export function Productos() {
                   <CardContent className="space-y-2 pt-4 text-sm">
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <p className="font-medium">{producto.nombre_display || producto.producto_key}</p>
+                        <p className="flex items-center gap-2 font-medium">
+                          {producto.nombre_display || producto.producto_key}
+                          <BanderaMercado mercado={producto.mercado} />
+                        </p>
                         <p className="text-xs text-muted-foreground">{producto.producto_key}</p>
                       </div>
                       <div className="flex flex-col items-end gap-1">
