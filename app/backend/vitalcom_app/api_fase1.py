@@ -15,7 +15,7 @@ from fastapi.responses import FileResponse
 
 from . import acciones, contratos, fase1, subidas, workflows
 from .acciones import ErrorDeAccion
-from .modelos import CampanaF1, ChecklistF1, CorridaF1, FlujoBot
+from .modelos import CampanaF1, ChecklistF1, CorridaF1, DatosParaArrancar, FlujoBot
 
 router = APIRouter(prefix="/api/productos", tags=["fase1"])
 TOPE_DE_LA_CARGA_S = 120
@@ -52,6 +52,13 @@ def checklist(producto_key: str) -> ChecklistF1:
     """Lo que falta para seguir, cada cosa con la acción que la resuelve (si la carga el operador)."""
     _exigir_producto(producto_key)
     return ChecklistF1(**fase1.checklist(producto_key))
+
+
+@router.get("/{producto_key}/datos", response_model=DatosParaArrancar)
+def datos_para_arrancar(producto_key: str) -> DatosParaArrancar:
+    """Los datos que el producto necesita para arrancar (foto, precio, página, cuenta, costo, perfil, referencia)."""
+    _exigir_producto(producto_key)
+    return DatosParaArrancar(**fase1.datos_para_arrancar(producto_key))
 
 
 @router.get("/{producto_key}/media/{archivo}", response_class=FileResponse)

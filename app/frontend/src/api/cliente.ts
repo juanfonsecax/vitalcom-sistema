@@ -32,6 +32,9 @@ export type ItemDeChecklist = components["schemas"]["ItemDeChecklist"];
 export type BloqueoDelPaquete = components["schemas"]["BloqueoDelPaquete"];
 export type PaqueteF1 = components["schemas"]["PaqueteF1"];
 export type ChecklistF1 = components["schemas"]["ChecklistF1"];
+export type DatosParaArrancar = components["schemas"]["DatosParaArrancar"];
+export type ItemDeDatos = components["schemas"]["ItemDeDatos"];
+export type PackshotDeclarado = components["schemas"]["PackshotDeclarado"];
 export type Cuenta = components["schemas"]["Cuenta"];
 export type FanPage = components["schemas"]["FanPage"];
 export type OrdenItem = components["schemas"]["OrdenItem"];
@@ -183,6 +186,8 @@ export const api = {
     pedir<FlujoBot>(`/api/productos/${encodeURIComponent(clave)}/flujo-bot`),
   checklist: (clave: string) =>
     pedir<ChecklistF1>(`/api/productos/${encodeURIComponent(clave)}/checklist`),
+  datosParaArrancar: (clave: string) =>
+    pedir<DatosParaArrancar>(`/api/productos/${encodeURIComponent(clave)}/datos`),
   urlMedia: (clave: string, archivo: string) =>
     `/api/productos/${encodeURIComponent(clave)}/media/${encodeURIComponent(archivo)}`,
   cargarDato: (clave: string, accionId: string, datos: Record<string, unknown>, archivo?: File) => {

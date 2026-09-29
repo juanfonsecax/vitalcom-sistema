@@ -13,10 +13,11 @@
  * produce y quién es el dueño de cada dato. La pantalla no reordena ni completa nada.
  */
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import { ChevronDown } from "lucide-react";
-import { api, type Flujo, type Nodo, type Requisito } from "../api/cliente";
+import { api, type DatosParaArrancar, type Flujo, type Nodo, type Requisito } from "../api/cliente";
+import { FormularioPackshot, FotoDelProducto, ParaArrancar } from "../componentes/arranque";
 import { AvisosDelRecorrido, BannerRezago, tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
 import { Badge } from "@/components/ui/badge";
@@ -188,7 +189,15 @@ function Resumen({ d }: { d: Flujo }) {
  * se puede pintar cuando esa consulta ya resolvió. Separado del resto para que NO bloquee a
  * Fase1/2/3: cuando la URL ya trae el sufijo de fase (`tabDeUrl`), esas pantallas arrancan sus
  * propias consultas de una vez, en paralelo con esta — nunca esperan a que el header cargue. */
-function Header({ d }: { d: Flujo }) {
+function Header({
+  d,
+  datos,
+  onSubirFoto,
+}: {
+  d: Flujo;
+  datos: DatosParaArrancar | undefined;
+  onSubirFoto: () => void;
+}) {
   const motor = (d.motor ?? null) as MotorInfo | null;
   const tituloDelPaso = tituloDelPasoActual(d.nodos, d.nodo_actual, d.como);
   const quien = quienLoHace(d.ejecutor);
@@ -201,9 +210,12 @@ function Header({ d }: { d: Flujo }) {
       <BannerRezago motor={motor} />
       <div className="space-y-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
-            <p className="text-sm text-muted-foreground">{d.producto_key}</p>
+          <div className="flex items-center gap-3">
+            <FotoDelProducto datos={datos} nombre={d.nombre || d.producto_key} onSubir={onSubirFoto} />
+            <div>
+              <h1 className="text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
+              <p className="text-sm text-muted-foreground">{d.producto_key}</p>
+            </div>
           </div>
           <Badge variant="outline" title={faseEnUnaFrase(d.fase)}>
             {d.fase ?? "sin fase"}
@@ -260,6 +272,17 @@ export function ProductoDetalle() {
   const location = useLocation();
   const navigate = useNavigate();
   const flujo = useQuery({ queryKey: ["flujo", clave], queryFn: () => api.producto(clave) });
+  // Los datos para arrancar (foto, precio, página, cuenta, costo…). Si el motor no responde, la ficha se
+  // ve igual: solo falta la foto del encabezado y la tarjeta «Para arrancar te falta».
+  const datos = useQuery({ queryKey: ["datos", clave], queryFn: () => api.datosParaArrancar(clave) });
+  const cliente = useQueryClient();
+  const [formularioFoto, setFormularioFoto] = useState(false);
+  const recargarDatos = () => {
+    setFormularioFoto(false);
+    void cliente.invalidateQueries({ queryKey: ["datos", clave] });
+    void cliente.invalidateQueries({ queryKey: ["flujo", clave] });
+    void cliente.invalidateQueries({ queryKey: ["checklist", clave] });
+  };
   // "Resumen" no tiene una URL propia distinta de la ficha a secas (`/producto/$clave` es,
   // a la vez, la URL de Resumen Y la de "sin sufijo de fase" — de ahí el default a la fase
   // vigente). Por eso, cuando el operador la elige a mano estando ya en esa URL, hace falta
@@ -300,8 +323,23 @@ export function ProductoDetalle() {
       ) : flujo.error ? (
         <Problema error={flujo.error} />
       ) : (
-        <Header d={d!} />
+        <Header d={d!} datos={datos.data} onSubirFoto={() => setFormularioFoto(true)} />
       )}
+
+      {formularioFoto && (
+        <FormularioPackshot
+          clave={clave}
+          datos={datos.data}
+          onListo={recargarDatos}
+          onCerrar={() => setFormularioFoto(false)}
+        />
+      )}
+      <ParaArrancar
+        clave={clave}
+        datos={datos.data}
+        onSubirFoto={() => setFormularioFoto(true)}
+        onCargado={recargarDatos}
+      />
 
       <Tabs value={tabActiva} onValueChange={cambiarTab}>
         <TabsList>

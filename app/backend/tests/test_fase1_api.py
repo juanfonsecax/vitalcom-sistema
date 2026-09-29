@@ -115,7 +115,7 @@ def test_cargar_rechaza_lo_que_no_es_un_escritor_del_checklist(cliente_juguete, 
 def test_los_escritores_permitidos_son_los_que_nombra_el_manifiesto(sistema_de_juguete):
     assert fase1.escritores_permitidos() == {
         "producto.cambiar_costo", "producto.cargar_transcripcion", "producto.cargar_pieza",
-        "producto.cargar_cuenta", "producto.cargar_page_id"}
+        "producto.cargar_cuenta", "producto.cargar_page_id", "producto.cargar_packshot"}
 
 
 def test_la_media_se_sirve_solo_desde_su_carpeta(cliente_juguete, sistema_de_juguete):
@@ -132,3 +132,64 @@ def test_la_media_se_sirve_solo_desde_su_carpeta(cliente_juguete, sistema_de_jug
     assert cliente_juguete.get("/api/productos/TINNIDROP/media/..%2Fsecreto.png").content != b"no"
     assert fase1.ruta_de_media("TINNIDROP", "../secreto.png") is None
     assert fase1.ruta_de_media("TINNIDROP", "..\\secreto.png") is None
+
+
+def test_cargar_el_packshot_pasa_por_la_accion_con_el_archivo_y_lo_declarado(cliente_juguete, sistema_de_juguete):
+    respuesta = cliente_juguete.post(
+        "/api/productos/TINNIDROP/cargar/producto.cargar_packshot",
+        data={"datos": json.dumps({"marca_impresa": "SANARTE", "color_envase": "azul con blanco",
+                                   "formato_envase": "spray de 60 ml", "color_hex": "#1B4F9C", "reemplazar": True})},
+        files={"archivo": ("mi foto.jpg", b"\xff\xd8\xffxx", "image/jpeg")})
+    assert respuesta.status_code == 200, respuesta.text
+    argv = [c for c in juguete.llamadas(sistema_de_juguete) if c["script"] == "cargar_packshot.py"][-1]["argv"]
+    assert argv[:2] == ["--producto", "TINNIDROP"]
+    assert argv[argv.index("--marca-impresa") + 1] == "SANARTE"
+    assert argv[argv.index("--color-envase") + 1] == "azul con blanco"
+    assert argv[argv.index("--formato-envase") + 1] == "spray de 60 ml"
+    assert argv[argv.index("--color-hex") + 1] == "#1B4F9C" and "--reemplazar" in argv
+    origen = argv[argv.index("--origen") + 1]
+    assert "vitalcom-subida-" in origen and not Path(origen).exists(), "el temporal se borra al terminar"
+
+
+def test_cargar_el_packshot_rechaza_sin_foto_o_con_datos_invalidos(cliente_juguete, sistema_de_juguete):
+    datos = {"marca_impresa": "M", "color_envase": "c", "formato_envase": "f"}
+    assert cliente_juguete.post("/api/productos/TINNIDROP/cargar/producto.cargar_packshot",
+                                data={"datos": json.dumps(datos)}).status_code == 422, "sin foto"
+    for malo in ({**datos, "color_hex": "azul"}, {**datos, "marca_impresa": "a\nb"},
+                 {"color_envase": "c", "formato_envase": "f"}):
+        respuesta = cliente_juguete.post("/api/productos/TINNIDROP/cargar/producto.cargar_packshot",
+                                         data={"datos": json.dumps(malo)},
+                                         files={"archivo": ("f.png", b"\x89PNG", "image/png")})
+        assert respuesta.status_code == 422, malo
+
+
+DATOS_FALSO = '''import json, sys
+print(json.dumps({"ok": True, "producto_key": sys.argv[1], "nombre": "Tinnidrop", "fase": "F2", "angulo_1": "A",
+    "completo": False, "faltan": 1,
+    "packshot": {"archivo": "T_PACKSHOT.png", "marca_impresa": "SANARTE", "color_envase": "AZUL"},
+    "items": [{"clave": "packshot", "rotulo": "Foto", "estado": "ok", "detalle": "SANARTE", "como_resolver": "", "accion": None},
+              {"clave": "precio", "rotulo": "Precio de venta", "estado": "falta", "detalle": "No hay precios",
+               "como_resolver": "Pasale los precios a Claude", "accion": None}], "avisos": []}))
+'''
+
+
+def test_los_datos_para_arrancar_son_los_del_script_y_traen_la_url_de_la_foto(cliente_juguete, sistema_de_juguete):
+    productos = sistema_de_juguete / "PRODUCTOS" / "_DIM_PRODUCTOS.csv"
+    juguete._csv(productos, [*juguete.COLUMNAS_PRODUCTOS, "carpeta_media"], [
+        {"producto_key": "TINNIDROP", "nombre_display": "Tinnidrop", "estado": "VIVO", "carpeta_media": "MEDIA_T"}])
+    (sistema_de_juguete / "Ads" / "MEDIA_T").mkdir()
+    juguete.escribir_script(sistema_de_juguete, "datos_producto.py", DATOS_FALSO)
+    datos = cliente_juguete.get("/api/productos/TINNIDROP/datos").json()
+    assert datos["faltan"] == 1 and datos["items"][1]["como_resolver"] == "Pasale los precios a Claude"
+    assert datos["packshot"]["url"] is None, "la URL solo existe si el archivo está en la carpeta de media"
+    (sistema_de_juguete / "Ads" / "MEDIA_T" / "T_PACKSHOT.png").write_bytes(b"\x89PNG")
+    datos = cliente_juguete.get("/api/productos/TINNIDROP/datos").json()
+    assert datos["packshot"]["url"] == "/api/productos/TINNIDROP/media/T_PACKSHOT.png"
+    assert cliente_juguete.get(datos["packshot"]["url"]).content == b"\x89PNG"
+    assert cliente_juguete.get("/api/productos/NO_EXISTE/datos").status_code == 404
+
+
+def test_si_el_script_de_datos_no_responde_no_se_inventa_un_completo(cliente_juguete, sistema_de_juguete):
+    juguete.escribir_script(sistema_de_juguete, "datos_producto.py", "print('no es json')")
+    datos = cliente_juguete.get("/api/productos/TINNIDROP/datos").json()
+    assert datos["ok"] is False and datos["completo"] is False and datos["avisos"]

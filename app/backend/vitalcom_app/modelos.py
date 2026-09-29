@@ -402,6 +402,44 @@ class ChecklistF1(Base):
     paquete: PaqueteF1 | None = None
 
 
+class PackshotDeclarado(Base):
+    """La foto del envase y su identidad física declarada (`_DIM_ENVASE.csv`), con la URL de media para verla."""
+
+    archivo: str
+    url: str | None = None
+    marca_impresa: str = ""
+    color_envase: str = ""
+    color_hex: str = ""
+    formato_envase: str = ""
+    verificado_el: str = ""
+
+
+class ItemDeDatos(Base):
+    """Un dato que el producto necesita para arrancar: ok o falta, con la frase y la acción que lo carga."""
+
+    clave: str
+    rotulo: str
+    estado: str
+    detalle: str = ""
+    como_resolver: str = ""
+    accion: str | None = None
+
+
+class DatosParaArrancar(Base):
+    """`datos_producto.py`: qué le falta al producto para que el sistema trabaje con él."""
+
+    producto_key: str
+    ok: bool = True
+    nombre: str = ""
+    fase: str | None = None
+    angulo_1: str | None = None
+    completo: bool = False
+    faltan: int = 0
+    packshot: PackshotDeclarado | None = None
+    items: list[ItemDeDatos] = []
+    avisos: list[str] = []
+
+
 class OrdenItem(Base):
     producto_key: str
     angulo_key: str

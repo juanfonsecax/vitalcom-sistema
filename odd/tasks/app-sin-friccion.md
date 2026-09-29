@@ -22,7 +22,7 @@ data contract.
       (queued, staggered) by engine data; losers "apagado" (días sin gasto) or the engine's order;
       fatigue block shows the engine's concrete order; fix concatenated-string fallback.
       (route: delegated writer)
-- [ ] C2 Product start card: packshot photo on top of ProductoDetalle with upload (new manifest
+- [x] C2 Product start card: packshot photo on top of ProductoDetalle with upload (new manifest
       writer `producto.cargar_packshot` → Ads/<carpeta_media>/ + `_DIM_ENVASE.csv` row, declared
       marca/color/formato), and a deterministic "datos faltantes" check (read-only tool in Ads/_TOOLS)
       listing packshot, precio activo, page_id, cuenta, perfil creativo, referencia F1, each with its
@@ -46,6 +46,15 @@ commit nightly data churn; RDD off; TDD not configured.
   gallery grouped by angle (default #1). Checks: pytest 204 passed; pnpm test 128 passed; pnpm build ok;
   playwright 16 passed; test_flujo.py 44/44. Live CLEARSTEM: #1 RESISTENCIA_INSULINA_SOP, #2 ANTI_FALSIFICACION,
   #3 MEDICOS_FALLARON, 3 losers "ya apagado (40-63 días)".
+- C2 (2026-09-28, route: delegated writer, uncommitted): `cargar_packshot.py` (upsert `_DIM_ENVASE.csv` via
+  upsert_fact; photo -> Ads/<carpeta_media>/<PK>_PACKSHOT.<ext by content>; different existing photo refused
+  without --reemplazar, with it the old one is kept as `_ANTERIOR_AAAAMMDD`); manifest `producto.cargar_packshot`
+  (+ `escritores_de_bloqueo.packshot`); `datos_producto.py` read-only (packshot, costo, precio ACTIVO, page_id,
+  cuenta [EXTERNA is legit], perfil #1 in F2, referencia F1 in F1); `GET /api/productos/{pk}/datos`; header photo +
+  "Para arrancar te falta" card (`componentes/arranque.tsx`). Checks: Ads/_TOOLS pytest 50 passed (48 + 2 scripts);
+  backend pytest 208 passed; pnpm test 135 passed; pnpm build ok; playwright 16 passed; hook_csv --barrido exit 0;
+  gen_app --validar-manifiesto valid. Live missing: TINNIDROP perfil #1 (PERDIDA_AUDITIVA), NUSAVA/CLEARSTEM/VARICOSE
+  packshot, OVULOS_PURITY precio + page_id. Note: `python Ads/_TOOLS/gen_app.py` (no flags) regenerates VISTAS by design.
 
 ## Next step
-C2.
+C3.

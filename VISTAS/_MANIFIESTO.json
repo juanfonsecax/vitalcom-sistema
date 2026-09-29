@@ -192,7 +192,8 @@
   "escritores_de_bloqueo": {
    "cuenta": "producto.cargar_cuenta",
    "page_id": "producto.cargar_page_id",
-   "piezas": "producto.cargar_pieza"
+   "piezas": "producto.cargar_pieza",
+   "packshot": "producto.cargar_packshot"
   },
   "lista": [
    {
@@ -1199,6 +1200,88 @@
     "toca_meta": false,
     "escribe": [
      "Ads/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
+    "id": "producto.cargar_packshot",
+    "rotulo": "Cargar la foto del producto y declarar su envase",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cargar_packshot.py",
+     "--producto",
+     "{producto_key}",
+     "--origen",
+     "{origen}",
+     "--marca-impresa",
+     "{marca_impresa}",
+     "--color-envase",
+     "{color_envase}",
+     "--formato-envase",
+     "{formato_envase}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "origen": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "marca_impresa": {
+      "tipo": "texto",
+      "patron": "^[^\r\n\t]{1,80}$",
+      "requerido": true
+     },
+     "color_envase": {
+      "tipo": "texto",
+      "patron": "^[^\r\n\t]{1,60}$",
+      "requerido": true
+     },
+     "formato_envase": {
+      "tipo": "texto",
+      "patron": "^[^\r\n\t]{1,200}$",
+      "requerido": true
+     },
+     "color_hex": {
+      "tipo": "texto",
+      "patron": "^#[0-9A-Fa-f]{6}$",
+      "requerido": false,
+      "bandera": "--color-hex"
+     },
+     "notas": {
+      "tipo": "texto",
+      "patron": "^[^\r\n\t]{1,400}$",
+      "requerido": false,
+      "bandera": "--notas"
+     },
+     "reemplazar": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--reemplazar"
+     },
+     "dry_run": {
+      "tipo": "bandera",
+      "requerido": false,
+      "bandera": "--dry-run"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "Ads/",
+     "PRODUCTOS/_DIM_ENVASE.csv"
     ],
     "idempotente": true,
     "precondicion": "ninguna",

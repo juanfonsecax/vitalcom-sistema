@@ -317,6 +317,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/productos/{producto_key}/datos": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Datos Para Arrancar
+         * @description Los datos que el producto necesita para arrancar (foto, precio, página, cuenta, costo, perfil, referencia).
+         */
+        get: operations["datos_para_arrancar_api_productos__producto_key__datos_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos/{producto_key}/media/{archivo}": {
         parameters: {
             query?: never;
@@ -1323,6 +1343,51 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * DatosParaArrancar
+         * @description `datos_producto.py`: qué le falta al producto para que el sistema trabaje con él.
+         */
+        DatosParaArrancar: {
+            /** Producto Key */
+            producto_key: string;
+            /**
+             * Ok
+             * @default true
+             */
+            ok: boolean;
+            /**
+             * Nombre
+             * @default
+             */
+            nombre: string;
+            /** Fase */
+            fase?: string | null;
+            /** Angulo 1 */
+            angulo_1?: string | null;
+            /**
+             * Completo
+             * @default false
+             */
+            completo: boolean;
+            /**
+             * Faltan
+             * @default 0
+             */
+            faltan: number;
+            packshot?: components["schemas"]["PackshotDeclarado"] | null;
+            /**
+             * Items
+             * @default []
+             */
+            items: components["schemas"]["ItemDeDatos"][];
+            /**
+             * Avisos
+             * @default []
+             */
+            avisos: string[];
+        } & {
+            [key: string]: unknown;
+        };
         /** DecisionDeOrden */
         DecisionDeOrden: {
             /** Decision */
@@ -1850,6 +1915,32 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * ItemDeDatos
+         * @description Un dato que el producto necesita para arrancar: ok o falta, con la frase y la acción que lo carga.
+         */
+        ItemDeDatos: {
+            /** Clave */
+            clave: string;
+            /** Rotulo */
+            rotulo: string;
+            /** Estado */
+            estado: string;
+            /**
+             * Detalle
+             * @default
+             */
+            detalle: string;
+            /**
+             * Como Resolver
+             * @default
+             */
+            como_resolver: string;
+            /** Accion */
+            accion?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** MiembroDePaso */
         MiembroDePaso: {
             /** Etapa */
@@ -2011,6 +2102,43 @@ export interface components {
              * @default []
              */
             parametros_motor: components["schemas"]["ParametroMotor"][];
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * PackshotDeclarado
+         * @description La foto del envase y su identidad física declarada (`_DIM_ENVASE.csv`), con la URL de media para verla.
+         */
+        PackshotDeclarado: {
+            /** Archivo */
+            archivo: string;
+            /** Url */
+            url?: string | null;
+            /**
+             * Marca Impresa
+             * @default
+             */
+            marca_impresa: string;
+            /**
+             * Color Envase
+             * @default
+             */
+            color_envase: string;
+            /**
+             * Color Hex
+             * @default
+             */
+            color_hex: string;
+            /**
+             * Formato Envase
+             * @default
+             */
+            formato_envase: string;
+            /**
+             * Verificado El
+             * @default
+             */
+            verificado_el: string;
         } & {
             [key: string]: unknown;
         };
@@ -3128,6 +3256,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ChecklistF1"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    datos_para_arrancar_api_productos__producto_key__datos_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatosParaArrancar"];
                 };
             };
             /** @description Validation Error */

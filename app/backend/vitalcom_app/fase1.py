@@ -24,6 +24,7 @@ from .config import python_del_sistema, ruta
 ACCION_F1 = "nodo.F1.paquete"
 GEN_FLUJO_BOT = ("Ads", "_TOOLS", "gen_flujo_bot.py")
 GEN_PUBLICACION = ("Ads", "_TOOLS", "gen_publicacion.py")
+DATOS_PRODUCTO = ("Ads", "_TOOLS", "datos_producto.py")
 LANZADOR = ("PRODUCTOS", "_LANZADOR.json")
 EXTENSIONES_DE_MEDIA = {".png", ".jpg", ".jpeg", ".mp4", ".mov"}
 
@@ -164,6 +165,22 @@ def checklist(producto_key: str) -> dict[str, Any]:
             }
     return {"producto_key": producto_key, "nodo_actual": nodo, "estado": flujo.get("estado"),
             "ejecutor": flujo.get("ejecutor"), "faltan": faltan, "paquete": paquete}
+
+
+# ── datos para arrancar ───────────────────────────────────────────────────────
+
+def datos_para_arrancar(producto_key: str) -> dict[str, Any]:
+    """`datos_producto.py <pk> --json` (solo lectura): qué le falta al producto y cómo se resuelve, más la foto
+    declarada con su URL de media. Si el script no responde, se dice; no se inventa un «completo»."""
+    salida = _correr_json([python_del_sistema(), str(ruta(*DATOS_PRODUCTO)), producto_key, "--json"])
+    if salida is None or not salida.get("ok"):
+        return {"producto_key": producto_key, "ok": False, "completo": False, "faltan": 0, "items": [],
+                "avisos": ["No pude revisar los datos del producto en este momento."]}
+    packshot = salida.get("packshot")
+    if packshot:
+        carpeta = contratos.fila_de_producto(producto_key).get("carpeta_media") or ""
+        packshot = {**packshot, "url": _url_de_media(producto_key, carpeta, packshot.get("archivo"))}
+    return {**salida, "packshot": packshot}
 
 
 def escritores_permitidos() -> set[str]:
