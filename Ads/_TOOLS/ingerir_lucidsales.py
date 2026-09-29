@@ -387,7 +387,7 @@ def clave_natural(f):
 def main():
     args = sys.argv[1:]
     rol, fuente, dry = "BASE", "LucidSales", False
-    archivos = []
+    archivos, de_carpeta = [], set()
     i = 0
     while i < len(args):
         a = args[i]
@@ -400,14 +400,26 @@ def main():
         elif a == "--dir":
             i += 1
             d = args[i]
-            archivos += sorted(
+            barridos = sorted(
                 os.path.join(d, f) for f in os.listdir(d)
                 if f.startswith("report-") and f.endswith((".xlsx", ".json"))
                 and not re.search(r"-[0-9a-f]{8}\.xlsx$", f)   # ignora copias con hash
             )
+            archivos += barridos
+            de_carpeta.update(barridos)
         else:
             archivos.append(a)
         i += 1
+
+    # Un export de RANGO (dias>1) es el control semanal: va SIEMPRE con --rol CONTROL
+    # (DATA_PLAYBOOK). La carga BASE que barre la carpeta con --dir lo salta con un aviso en vez
+    # de abortar la corrida entera; un archivo nombrado a mano sigue pasando por el guardarraíl.
+    if rol == "BASE":
+        rangos = [p for p in archivos if p in de_carpeta and ventana_de_nombre(p)[2] > 1]
+        for p in rangos:
+            print(f"↷ {os.path.basename(p)} cubre varios días: es el control semanal "
+                  "(se carga con --rol CONTROL), no entra en la carga BASE.")
+        archivos = [p for p in archivos if p not in rangos]
 
     if not archivos:
         raise SystemExit("Sin archivos. Uso: ingerir_lucidsales.py <xlsx...> | --dir <carpeta>")

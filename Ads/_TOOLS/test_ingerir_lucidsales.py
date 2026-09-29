@@ -432,6 +432,44 @@ def test_control_nunca_reemplaza_base_ni_viceversa(tmp):
     return 0 if ok else 1
 
 
+def test_barrido_base_salta_el_control_semanal(tmp):
+    """La carga BASE con --dir barre toda la carpeta, donde el lunes quedó el control semanal
+    (export de 7 días). Ese archivo se salta con aviso: ni aborta la corrida (el martes salía
+    en ROJO) ni suma dos veces las ventas de los días sueltos."""
+    if not DB_DISPONIBLE:
+        print("  SKIP   Postgres/vitalcom_test no disponible en este entorno")
+        return 0
+    dimp = _escribir_csv(
+        os.path.join(tmp, "_DIM_PRODUCTOS.csv"), ["producto_key", "nombre_display", "slug_carpeta"],
+        [["TINNIDROP", "Tinnidrop Importado Original", "TINNIDROP"]])
+    dimctas = _escribir_csv(
+        os.path.join(tmp, "_DIM_CUENTAS.csv"), ["cuenta_alias", "cuenta_id", "moneda"],
+        [["GTR 0", "1665221077707961", "USD"]])
+    fact = _escribir_csv(os.path.join(tmp, "_FACT_VENTAS.csv"), ing.COLS, [])
+    dimc = _escribir_csv(os.path.join(tmp, "_DIM_CONJUNTOS.csv"), ["conjunto_meta"],
+                          [["CONJ_CONOCIDO"]])
+    bkdir = os.path.join(tmp, "backups_csv")
+    tenant = _tenant_unico("barrido_salta_semanal")
+    _bootstrap_db(tmp, tenant)
+    rutas = dict(DIMP=dimp, DIMCTAS=dimctas, FACT=fact, DIMC=dimc, BKDIR=bkdir, TENANT_ID=tenant)
+
+    carpeta = os.path.join(tmp, "ingesta")
+    os.makedirs(carpeta)
+    fila = _fila_lucidsales("Tinnidrop", "1665221077707961", "CONJ_CONOCIDO", "AD_1", "ad_1")
+    _escribir_export(os.path.join(carpeta, "report-2026-09-20-2026-09-20.json"), [fila])
+    salida1 = _correr_main(rutas, ["--dir", carpeta])
+
+    _escribir_export(os.path.join(carpeta, "report-2026-09-14-2026-09-20.json"), [fila])
+    salida2 = _correr_main(rutas, ["--dir", carpeta])
+    filas = list(csv.DictReader(open(fact, newline="", encoding="utf-8")))
+
+    ok = salida1 is None and salida2 is None and len(filas) == 1 and filas[0]["dias"] == "1"
+    print(("  OK     " if ok else "  FALLA  ")
+          + "la carga BASE con --dir salta el control semanal: no aborta ni duplica ventas"
+          + ("" if ok else f"\n         salida1={salida1} salida2={salida2} filas={filas}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     with tempfile.TemporaryDirectory() as tmp:
@@ -452,6 +490,8 @@ def main():
         fallas += test_upsert_reemplaza_dia_parcial_y_es_idempotente(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_control_nunca_reemplaza_base_ni_viceversa(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        fallas += test_barrido_base_salta_el_control_semanal(tmp)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 
