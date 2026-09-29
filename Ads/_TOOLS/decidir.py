@@ -194,7 +194,8 @@ def _activar_fuente_db_si_corresponde():
     _FUENTE_DB_ACTIVADA = True
 
 
-TASA_Q_USD_DEFAULT = 7.62
+# No hay tasa USD->moneda local por defecto: cada producto declara la suya en _DIM_PRODUCTOS.csv
+# (`tasa`). Un producto sin tasa se OMITE con un aviso (ver `evaluar`); nunca se asume la de GT.
 
 
 def cargar_parametros():
@@ -209,7 +210,6 @@ def cargar_parametros():
         "horizonte_ventas": 60,
         "min_mensajes_cierre": 30,
         "agrega_por": "angulo_key",
-        "tasa_usd_gtq": TASA_Q_USD_DEFAULT,
         "umbral_gasto_sin_chat_usd": 5.0,
         "factor_tolerancia_pd": 1.0,
         "factor_cpa_desbordado": 1.4,
@@ -253,12 +253,14 @@ def cargar_parametros():
     return p
 
 
-def ic_cpa(ventas, gasto_usd, conf=0.95, tasa=TASA_Q_USD_DEFAULT):
+def ic_cpa(ventas, gasto_usd, conf=0.95, tasa=None):
     """Intervalo de credibilidad Bayesiano del CPA en Quetzales.
 
     Ventas ~ Poisson(lambda); posterior Jeffreys lambda|k ~ Gamma(k+0.5, 1);
     CPA = gasto_q / lambda. Devuelve (bajo, punto, alto).
     """
+    if not tasa or tasa <= 0:
+        raise ValueError("ic_cpa necesita la tasa del producto (moneda local por USD); no hay tasa por defecto.")
     gq = gasto_usd * tasa
     if ventas <= 0:
         a = (1.0 - conf) / 2.0
@@ -361,7 +363,7 @@ def cargar_productos():
                 "fase": r.get("fase", ""),
                 "cpa_base_q": _flt(r.get("cpa_base_q")),
                 "cpa_be_q": _flt(r.get("cpa_be_q")),
-                "tasa": _flt(r.get("tasa"), TASA_Q_USD_DEFAULT),
+                "tasa": _flt(r.get("tasa"), None),
             }
     return prods
 
@@ -989,7 +991,13 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
         info = prods.get(pk, {})
         be_q = info.get("cpa_be_q", 90.0)
         obj_q = info.get("cpa_base_q", 30.0)
-        tasa = info.get("tasa", TASA_Q_USD_DEFAULT)
+        tasa = info.get("tasa")
+        if not tasa or tasa <= 0:
+            motivo = ("«%s» no declara `tasa` (moneda local por USD) en _DIM_PRODUCTOS.csv%s: se OMITE "
+                      "de las decisiones; no hay tasa por defecto." % (pk, "" if info else " (ni tiene fila)"))
+            print("AVISO decidir: " + motivo, file=sys.stderr)
+            resultado.setdefault("omitidos", []).append({"producto_key": pk, "motivo": motivo})
+            continue
         estado_prod = info.get("estado", "DESCONOCIDO")
 
         celdas_eval = []

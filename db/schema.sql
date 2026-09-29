@@ -951,6 +951,8 @@ CREATE TABLE IF NOT EXISTS raw.fact_semanal (
     ganancia_q TEXT,
     cpa_q TEXT,
     roas TEXT,
+    mercado TEXT,
+    moneda TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS semana_ini TEXT;
@@ -965,6 +967,8 @@ ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS contribucion_q TEXT;
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS ganancia_q TEXT;
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS cpa_q TEXT;
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS roas TEXT;
+ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS mercado TEXT;
+ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS moneda TEXT;
 
 -- mapeo_creativos <- PRODUCTOS/_MAPEO_CREATIVOS.csv
 CREATE TABLE IF NOT EXISTS raw.mapeo_creativos (

@@ -52,6 +52,10 @@ class MercadoError(Exception):
     """Falta o no cuadra el mercado de un producto. Se dice y se detiene; no se asume."""
 
 
+class TasaFaltante(MercadoError):
+    """Un producto no declara una `tasa` utilizable en _DIM_PRODUCTOS.csv. No hay tasa por defecto."""
+
+
 def _leer(base, nombre):
     ruta = os.path.join(base or BASE_POR_DEFECTO, "PRODUCTOS", nombre)
     if not os.path.isfile(ruta):
@@ -64,6 +68,24 @@ def leer_mercados(base=None):
     """{mercado: fila} de _DIM_MERCADOS.csv."""
     return {(f.get("mercado") or "").strip(): f for f in _leer(base, "_DIM_MERCADOS.csv")
             if (f.get("mercado") or "").strip()}
+
+
+def tasa_de_fila(fila):
+    """La `tasa` (moneda local por USD) de una fila de _DIM_PRODUCTOS, o TasaFaltante.
+
+    No hay valor por defecto: un producto sin tasa numerica y > 0 no se convierte a moneda local.
+    Cada herramienta decide si se detiene (raise) o salta ese producto avisando."""
+    clave = (fila.get("producto_key") or "?").strip()
+    crudo = (fila.get("tasa") or "").strip()
+    try:
+        tasa = float(crudo)
+    except ValueError:
+        tasa = 0.0
+    if tasa <= 0:
+        raise TasaFaltante("«%s» no declara `tasa` (moneda local por USD) en _DIM_PRODUCTOS.csv "
+                           "(valor: «%s»): sin tasa no se convierte su gasto; no hay tasa por defecto."
+                           % (clave, crudo))
+    return tasa
 
 
 def _fila_producto(producto_key, base):

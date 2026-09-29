@@ -697,7 +697,7 @@ def _angulo_ganador_info(p, ctx, env):
     mv = resolver_num(p.get("min_ventas", "@param:min_ventas_ganador"), env) or 5
     prod = next((r for r in env.csv("_DIM_PRODUCTOS.csv") if (r.get("producto_key") or "").strip() == pk), {})
     be = num(prod.get("cpa_be_q"))
-    tasa = num(prod.get("tasa"), 7.62) or 7.62
+    tasa = num(prod.get("tasa"))          # sin tasa NO hay CPA en Q: no se asume la de GT
     ganadores, claves = [], []
     cortos = []                       # ESCALAR que aún no llega al piso: se dice, no se esconde
     celdas, _ = env.celdas(pk)
@@ -710,7 +710,9 @@ def _angulo_ganador_info(p, ctx, env):
             claves.append(c["celda"])
         else:
             cortos.append("%s (ESCALAR pero %.0fv < %g)" % (c["celda"], v, mv))
-    if be:
+    if be and not tasa:
+        cortos.append("rama histórica omitida: %s no declara `tasa` en _DIM_PRODUCTOS.csv" % pk)
+    if be and tasa:
         for k, (v, s) in sorted(_angulos_acumulados(env, pk).items(), key=lambda kv: -kv[1][0]):
             if v >= mv and s > 0 and (s * tasa / v) <= be:
                 et = "%s (histórico %.0fv CPA Q%.1f ≤ BE Q%.1f)" % (k, v, s * tasa / v, be)

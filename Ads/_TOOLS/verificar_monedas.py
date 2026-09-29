@@ -40,9 +40,29 @@ def f(x, d=0.0):
     except (TypeError, ValueError): return d
 
 
-par = {r["parametro"]: r for r in load("_PARAMETROS_FINANZAS.csv")}
-TASA = f(par.get("tasa_usd_gtq", {}).get("valor"), 7.62)
-TASA_COP = f(par.get("tasa_cop_usd", {}).get("valor"), 3152.5)
+sys.path.insert(0, TOOLS)
+import mercado  # noqa: E402
+
+# Este verificador es del mercado GT (quetzales, Dropi + Relay): las filas de productos de otro
+# mercado no entran a sus cheques (mezclarian monedas). Las tasas salen de mercado.py, sin defecto.
+MERCADO_V = "GT"
+TASA = mercado.perfil_mercado(MERCADO_V, ROOT)["tasa_moneda_por_usd"]
+TASA_COP = mercado.perfil_mercado("CO", ROOT)["tasa_moneda_por_usd"]
+if not TASA or not TASA_COP:
+    sys.exit("BLOQUEANTE: _PARAMETROS_FINANZAS.csv no declara la tasa de GT o de CO.")
+_prods = {r["producto_key"]: r for r in load("_DIM_PRODUCTOS.csv")}
+
+
+def load_gt(name):
+    """Filas de `name` (con producto_key) que son del mercado GT. Producto sin fila/mercado: se detiene."""
+    out = []
+    for r in load(name):
+        pk = r.get("producto_key")
+        if pk not in _prods:
+            sys.exit("BLOQUEANTE: %s tiene filas de «%s», que no existe en _DIM_PRODUCTOS.csv." % (name, pk))
+        if mercado.mercado_de_fila(_prods[pk], ROOT) == MERCADO_V:
+            out.append(r)
+    return out
 
 ok, fail, warn = [], [], []
 
@@ -75,7 +95,7 @@ for r in load("_DIM_PRECIOS.csv"):
     if (r.get("estado") or "").upper() != "SIN_REGISTRAR":
         esc[r["producto_key"]].append(f(r["precio_q"]))
 malos = []
-for r in load("_FACT_VENTAS.csv"):
+for r in load_gt("_FACT_VENTAS.csv"):
     v = f(r.get("ventas"))
     if r.get("rol_ventana") != "BASE" or not v:
         continue
@@ -93,7 +113,7 @@ check(not malos, "Los tickets de venta están en QUETZALES (dentro de la escaler
 # ── 3. El gasto diario por cuenta es plausible EN DÓLARES ────────────────
 #    Si `spend_usd` viniera en quetzales, el gasto diario saltaría ~7.6×.
 dia = collections.defaultdict(float)
-for r in load("_FACT_VENTAS.csv"):
+for r in load_gt("_FACT_VENTAS.csv"):
     if r.get("rol_ventana") == "BASE" and f(r.get("dias"), 1) == 1:
         dia[(r["ventana_ini"], r.get("cuenta_alias"))] += f(r["spend_usd"])
 altos = ["%s %s $%.2f/día" % (k[0], k[1], v) for k, v in dia.items() if v > 500]
@@ -112,15 +132,17 @@ check(not cp1 or max(cp1) < 500,
 # ── 5. ROAS del portafolio en un rango sano ──────────────────────────────
 #    facturado (Q) ÷ pauta (Q). Si la pauta quedara sin convertir, el ROAS se
 #    multiplicaría por ~7.6 y daría un número absurdo (30x+).
-fac = sum(f(r["total_q"]) for r in load("_FACT_VENTAS.csv") if r.get("rol_ventana") == "BASE")
-sp  = sum(f(r["spend_usd"]) for r in load("_FACT_VENTAS.csv") if r.get("rol_ventana") == "BASE")
+_base_gt = [r for r in load_gt("_FACT_VENTAS.csv") if r.get("rol_ventana") == "BASE"]
+fac = sum(f(r["total_q"]) for r in _base_gt)
+sp  = sum(f(r["spend_usd"]) for r in _base_gt)
 roas = fac / (sp * TASA) if sp else 0
 check(1.0 <= roas <= 15.0, "El ROAS del portafolio es plausible (facturado Q ÷ pauta Q)",
       "      ROAS {:.2f}x  ·  facturado Q{:,.0f}  ·  pauta Q{:,.0f}"
       "  (si la pauta quedara en USD daría {:.1f}x)".format(roas, fac, sp * TASA, roas * TASA))
 
 # ── 6. Coherencia de _FACT_SEMANAL.csv ───────────────────────────────────
-sem = [r for r in load("_FACT_SEMANAL.csv") if r.get("producto_key") == "TOTAL"]
+sem = [r for r in load("_FACT_SEMANAL.csv") if r.get("producto_key") == "TOTAL"
+       and ("mercado" not in r or r["mercado"] == MERCADO_V)]   # sin la columna = serie historica, solo GT
 if sem:
     raros = ["%s ROAS %s" % (r["semana_ini"], r["roas"])
              for r in sem if r.get("roas") and not (0.3 <= f(r["roas"]) <= 20)]

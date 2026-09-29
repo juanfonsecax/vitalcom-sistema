@@ -35,6 +35,9 @@ select
     coalesce(v.fecha_ini, m.fecha_ini)         as fecha_ini,
     coalesce(v.fecha_fin, m.fecha_fin)         as fecha_fin,
     coalesce(v.conjunto, m.conjunto)           as conjunto,
+    -- mercado del producto (stg_productos, un producto = una fila): spend_usd es USD pero total_q esta en
+    -- la moneda LOCAL del mercado; nunca se suma total_q entre mercados distintos.
+    p.mercado                                  as mercado,
     coalesce(v.ventas, 0)                      as ventas,
     coalesce(v.mensajes, 0)                    as mensajes,
     coalesce(v.total_q, 0)                     as total_q,
@@ -50,3 +53,5 @@ from ventas_agg v
 full outer join meta_agg m
        on v.producto_key = m.producto_key and v.cuenta_id = m.cuenta_id
       and v.fecha_ini = m.fecha_ini and v.fecha_fin = m.fecha_fin and v.conjunto = m.conjunto
+left join {{ ref('stg_productos') }} p
+       on p.producto_key = coalesce(v.producto_key, m.producto_key)

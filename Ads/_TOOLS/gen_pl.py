@@ -31,6 +31,9 @@ no dar un número a dar uno que no cuadra.
 """
 import csv, io, json, os, re, sys, collections, datetime
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado
+
 for _s in (sys.stdout, sys.stderr):
     try:
         _s.reconfigure(encoding="utf-8", errors="replace")
@@ -55,6 +58,26 @@ def fl(x, d=0.0):
 def q(n): return "Q{:>12,.2f}".format(n)
 
 
+_prods = {(r.get("producto_key") or "").strip(): r for r in load("_DIM_PRODUCTOS.csv")}
+_merc = {}
+
+
+def es_mercado_pl(r):
+    """La fila de ventas es de un producto del mercado de este estado de resultados (GT)."""
+    pk = r["producto_key"]
+    if pk not in _prods:
+        raise mercado.MercadoError("«%s» tiene ventas pero no fila en _DIM_PRODUCTOS.csv." % pk)
+    if pk not in _merc:
+        _merc[pk] = mercado.mercado_de_fila(_prods[pk], ROOT)
+    return _merc[pk] == MERCADO_PL
+
+
+def pauta_local(r):
+    """spend_usd de la fila en quetzales, con la tasa DEL producto (TasaFaltante si no la declara)."""
+    usd = fl(r["spend_usd"])
+    return usd * mercado.tasa_de_fila(_prods[r["producto_key"]]) if usd else 0.0
+
+
 # ─────────────── parámetros: dueño único, cero números en el código ───────────────
 _par = {r["parametro"]: r for r in load("_PARAMETROS_FINANZAS.csv")}
 if not _par:
@@ -70,7 +93,11 @@ def par(nombre, default=None):
     return fl(r["valor"])
 
 
-TASA_Q     = par("tasa_usd_gtq")
+# El export de Dropi y el banco Relay son SOLO del mercado GT (quetzales): este estado de resultados
+# es explicitamente GT. La pauta se toma de las ventas de productos GT y se convierte con la tasa de
+# CADA producto; el dinero de otro mercado no entra (se contabiliza aparte, no aca).
+MERCADO_PL = "GT"
+TASA_Q     = par("tasa_usd_gtq")      # referencia GT para el banco Relay (USD -> Q)
 C_DEVOL    = par("costo_devolucion_evento_q")
 C_ADMIN    = par("costo_admin_q")
 C_OTROS    = par("otros_gastos_q")
@@ -152,6 +179,14 @@ def leer_banco(path):
 
 # ──────────────────────────────── main ────────────────────────────────
 def main():
+    try:
+        _main()
+    except mercado.MercadoError as error:     # sin tasa / sin mercado: se detiene, nombrandolo
+        print("BLOQUEANTE: %s" % error, file=sys.stderr)
+        sys.exit(1)
+
+
+def _main():
     a = sys.argv[1:]
     def opt(flag, d=None):
         return a[a.index(flag) + 1] if flag in a else d
@@ -191,6 +226,8 @@ def main():
 
     # ── js: mismos números que L, para --json (T4a) — nunca un cálculo aparte ──
     js = {
+        "mercado": MERCADO_PL,
+        "moneda": mercado.perfil_mercado(MERCADO_PL, ROOT)["moneda"],
         "periodo": {"desde": ini, "hasta": fin, "generado": hoy.isoformat()},
         "vista_a_cohorte": {
             "preliminar": not maduro,
@@ -208,6 +245,7 @@ def main():
     W = 68
     L += ["═" * W,
           "ESTADO DE RESULTADOS — %s → %s" % (ini, fin),
+          "MERCADO %s (%s) — Dropi y el banco Relay solo cubren este mercado" % (MERCADO_PL, js["moneda"]),
           "VISTA A · COHORTE (por fecha de ORDEN) — «¿rindió la pauta de esta ventana?»",
           "Generado %s · norma: DOCTRINA/CONTABILIDAD.md · parámetros: _PARAMETROS_FINANZAS.csv" % hoy,
           "═" * W, ""]
@@ -280,9 +318,10 @@ def main():
 
     # ── publicidad: se toma de _FACT_VENTAS (devengada) y se contrasta con banco ──
     v = [r for r in load("_FACT_VENTAS.csv")
-         if r.get("rol_ventana") == "BASE" and ini <= r["ventana_ini"] <= fin]
+         if r.get("rol_ventana") == "BASE" and ini <= r["ventana_ini"] <= fin and es_mercado_pl(r)]
     pauta_usd = sum(fl(r["spend_usd"]) for r in v)
-    pauta_q   = pauta_usd * TASA_Q
+    pauta_q   = sum(pauta_local(r) for r in v)
+    tasa_pauta = pauta_q / pauta_usd if pauta_usd else TASA_Q      # tasa efectiva (la de cada producto)
     m_oper    = m_contr - pauta_q
     js["vista_a_cohorte"]["estado_de_resultados"].update({
         "publicidad_usd": pauta_usd,
@@ -291,7 +330,7 @@ def main():
         "margen_operativo_q": m_oper,
     })
     L += ["",
-          "  (−) Publicidad Meta ($%.2f × %.2f)    %s" % (pauta_usd, TASA_Q, q(-pauta_q)),
+          "  (−) Publicidad Meta ($%.2f × %.2f)    %s" % (pauta_usd, tasa_pauta, q(-pauta_q)),
           "      " + "·" * 56,
           "  (=) MARGEN OPERATIVO                    %s" % q(m_oper)]
 
@@ -343,7 +382,7 @@ def main():
             tr_al = sum(fl(r["spend_usd"]) for r in load("_FACT_VENTAS.csv")
                         if r.get("rol_ventana") == "BASE"
                         and d_ini <= r["ventana_ini"] <= d_fin
-                        and r.get("cuenta_alias") != "CP1")
+                        and r.get("cuenta_alias") != "CP1" and es_mercado_pl(r))
             cob = 100 * tr_al / fb_al if fb_al else 0
             alertas.append("Cobertura de pauta en el tramo ALINEADO %s→%s (el único comparable, "
                            "APR-070): el banco cobró $%.2f y LucidSales atribuye $%.2f = %.1f%%. "
@@ -397,7 +436,7 @@ def main():
     cpa_prod = collections.defaultdict(float)
     ven_prod = collections.Counter()
     for r in v:
-        cpa_prod[r["producto_key"]] += fl(r["spend_usd"]) * TASA_Q
+        cpa_prod[r["producto_key"]] += pauta_local(r)
         ven_prod[r["producto_key"]] += int(fl(r["ventas"]))
     js["vista_a_cohorte"]["economia_unitaria"] = []
     for pk, g in sorted(ent.groupby("pk"), key=lambda kv: -len(kv[1])):

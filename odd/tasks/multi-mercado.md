@@ -31,7 +31,7 @@ provides Meta Ads Manager + LucidSales exports; account EXTERNA, no MCP).
       stg_productos; shared resolver (mercado → moneda, simbolo, tasa, persona, registro); missing
       market fails loudly; API exposes market + currency per product. (delegated writer)
 - [x] D2 App: flag per product, market selector, currency formatting from API everywhere. (writer)
-- [ ] D3 Per-market rollups: gen_dashboard, gen_finanzas, gen_testeos, gen_pl, warehouse; remove
+- [x] D3 Per-market rollups: gen_dashboard, gen_finanzas, gen_testeos, gen_pl, warehouse; remove
       silent 7.62 fallbacks (fail loud). Nightly-risk → parity check. (writer)
 - [ ] D4 Manual CO ingest: data-driven product map in ingerir_meta; EXTERNA spend path; sales
       currency labelled. (writer)
@@ -92,6 +92,9 @@ nightly/app run on the merged code. In this order, on the live folder after the 
    `raw.producto.mercado` and `core.producto.mercado`). Equivalent minimal SQL:
    `ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS mercado TEXT;`
    `ALTER TABLE core.producto ADD COLUMN IF NOT EXISTS mercado TEXT;`
+   `ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS mercado TEXT;`
+   `ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS moneda TEXT;` (D3: `_FACT_SEMANAL.csv` gained
+   both columns; it is loaded as a full snapshot, so the columns must exist before the next load)
 3. Load the truth: the merged `PRODUCTOS/_DIM_PRODUCTOS.csv` already has the values, but `raw.producto`
    has them blank, so the mirror is no longer byte-identical: run
    `python db/cargar.py --tomar-csv _DIM_PRODUCTOS.csv` (re-imports the CSV as truth into `raw` and
@@ -128,5 +131,32 @@ nightly/app run on the merged code. In this order, on the live folder after the 
   `../..` from app/frontend; e2e `nuevo_producto` now selects market GT, `hoy` asserts selector + flag) ·
   `python -m pytest Ads/_TOOLS -q -p no:cacheprovider` 51 passed. `esquema.d.ts` regenerated from the app object.
 
+### D3 (2026-09-28, worktree only, nothing committed)
+- Owner of the rule: `mercado.tasa_de_fila` / `TasaFaltante` (per-product `_DIM_PRODUCTOS.tasa`; blank, 0 or text
+  raises naming the product). No 7.62/60.5/30.8 GT defaults are left in the money paths.
+- Missing `tasa` policy per tool. RAISE (exit 1, `BLOQUEANTE: ... <producto>`): atribuir, firma (--ficha/--generar),
+  gen_finanzas, gen_pl, `decidir.ic_cpa` (ValueError). SKIP with a stderr warning: decidir (product listed in
+  `omitidos`, key only present when non-empty), perfilar_angulos, backtest_politica, firma --banner (that piece),
+  gen_lanzador (no days-to-PD / accumulated CPA for that product), flujo (historical-winner branch skipped, says why),
+  gen_testeos (test drawn without CPA, "sin tasa").
+- Market grouping: gen_finanzas writes one TOTAL per market (`_FACT_SEMANAL.csv` new columns `mercado`,`moneda`;
+  `db/schema.sql` regenerated for `raw.fact_semanal`; the committed CSV got the two columns, GT/GTQ on every row, values
+  untouched) and the txt report sections per market; its Dropi+Relay cash check is explicitly GT. gen_pl is explicitly
+  GT (`MERCADO_PL`, sales filtered to GT products, header + json `mercado`/`moneda`; no CO accounting). gen_dashboard is
+  a single-market board (`MERCADO_DASH="GT"`): other-market products are excluded with a stderr warning and a footer
+  note (their money is never added), per-product tasa everywhere, `be_de/base_de` raise instead of 60.5/30.8;
+  `PISO_GASTO_Q=60.5` stays as a named GT-board threshold (rules I/J, in Q, not a product default); account-level
+  `_FACT_PAUTA_REAL` USD uses the GT market reference rate and drops accounts of other-market products.
+  atribuir refuses a cut that mixes markets (use --producto). verificar_monedas filters to GT, rates from mercado.py.
+  gen_testeos takes tasa and symbol from each test's product.
+- warehouse (dbt not installed, NOT executed): `mercado` carried via `stg_productos` join in `fct_gasto_dia`,
+  `fct_conjunto_dia` (+ group by, not_null test) and `fct_anuncio_dia`. The marts are already product-grain (none summed
+  across products), so no rollup changed; the column makes any later rollup group by market.
+- Known non-determinism (pre-existing): `perfilar_angulos` `prioridad_ts` is Thompson sampling, differs run to run.
+- Verification: see the D3 report; GT outputs byte-identical vs a detached 78a6d42 worktree for decidir (text and
+  --json), flujo --todo/--validar, gen_lanzador (json+html), gen_testeos, _REPORTE_SEMANAL.txt; gen_dashboard identical
+  except the footer market line; _FACT_SEMANAL.csv identical plus the two columns; _ESTADO_ANGULOS.csv identical except
+  `prioridad_ts`. `python -m pytest Ads/_TOOLS` 52 passed (new `test_multimercado_d3.py`, 9 cases).
+
 ## Next step
-D3 (per-market rollups).
+D4 (manual CO ingest).
