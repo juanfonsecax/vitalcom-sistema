@@ -15,6 +15,9 @@ import { Chip, Tarjeta, cn } from "./ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+/** Ancla de la tarjeta: otras pantallas (FASE 2) llevan hasta acá en vez de mostrar un comando. */
+export const ID_PARA_ARRANCAR = "para-arrancar";
+
 const POR_QUE_LA_FOTO = "La IA la usa para que el producto salga igual en todos los anuncios.";
 
 /** La foto al lado del nombre: miniatura que se amplía, o el botón para subirla si no hay. */
@@ -297,7 +300,7 @@ export function ParaArrancar({
   const faltan = datos.items.filter((i) => i.estado === "falta");
   if (faltan.length === 0) return null;
   return (
-    <Tarjeta className="space-y-3 border-amber-800/60 bg-amber-950/20">
+    <Tarjeta id={ID_PARA_ARRANCAR} className="space-y-3 border-amber-800/60 bg-amber-950/20">
       <p className="text-sm font-semibold text-amber-200">Para arrancar te falta</p>
       <ul className="space-y-2">
         {faltan.map((item) => (

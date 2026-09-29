@@ -1291,6 +1291,43 @@
     "salida": "json"
    },
    {
+    "id": "producto.armar_prompts_fase2",
+    "rotulo": "Generar los prompts de un ángulo (FASE 2)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/armar_prompts_fase2.py",
+     "{producto_key}",
+     "{angulo_key}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "angulo_key": {
+      "tipo": "texto",
+      "patron": "^[A-Za-z0-9_]{1,80}$",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "Ads/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
     "id": "producto.cargar_transcripcion",
     "rotulo": "Cargar una transcripción TXT",
     "nodo": null,

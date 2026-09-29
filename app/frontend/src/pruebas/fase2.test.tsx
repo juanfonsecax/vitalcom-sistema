@@ -89,6 +89,60 @@ const ANGULO_BASE = {
   spend_acum_q: null,
 };
 
+const GENERAR_LISTO = {
+  accion_id: "producto.armar_prompts_fase2",
+  parametros: { producto_key: "TINNIDROP", angulo_key: "ACCESIBILIDAD_MEDICO" },
+  habilitada: true,
+  motivo: "",
+  listo: true,
+  faltan: [],
+  accion_perfil: null,
+  aviso: "",
+};
+
+const GENERAR_EN_FILA = {
+  accion_id: "producto.armar_prompts_fase2",
+  parametros: { producto_key: "TINNIDROP", angulo_key: "NOCHES_SIN_DORMIR" },
+  habilitada: false,
+  motivo: "Se genera cuando le toque su Fase 2.",
+  listo: false,
+  faltan: [],
+  accion_perfil: null,
+  aviso: "",
+};
+
+const FALTA_PACKSHOT = {
+  clave: "packshot",
+  rotulo: "Foto del producto (packshot)",
+  estado: "falta",
+  detalle: "No hay foto declarada.",
+  como_resolver: "Subí la foto del producto tal como se ve en la mano.",
+  accion: "producto.cargar_packshot",
+};
+
+const FALTA_PERFIL = {
+  clave: "perfil_creativo",
+  rotulo: "Perfil creativo del ángulo #1",
+  estado: "falta",
+  detalle: "No hay perfil creativo del ángulo ACCESIBILIDAD_MEDICO.",
+  como_resolver: "Claude lo prepara.",
+  accion: null,
+};
+
+/** FASE2_MOCK con el descriptor del #1 cambiado (y el de la fila siempre deshabilitado). */
+function fase2Con(generar: Record<string, unknown>) {
+  return {
+    ...FASE2_MOCK,
+    angulos: FASE2_MOCK.angulos.map((a) =>
+      a.angulo_key === "ACCESIBILIDAD_MEDICO"
+        ? { ...a, generar }
+        : a.angulo_key === "NOCHES_SIN_DORMIR"
+          ? { ...a, generar: GENERAR_EN_FILA }
+          : a,
+    ),
+  };
+}
+
 const FASE2_MOCK = {
   producto_key: "TINNIDROP",
   fase: "FASE 2",
@@ -108,6 +162,7 @@ const FASE2_MOCK = {
       cierre_pct: 18.2,
       ic: [30, 41.5, 60],
       accion_sugerida: "NO SUBIR PRESUPUESTO todavía",
+      generar: GENERAR_LISTO,
     },
     {
       ...ANGULO_BASE,
@@ -335,7 +390,9 @@ test("botón de copiar prompt invoca clipboard.writeText", async () => {
   });
 });
 
-test("concepto pendiente muestra el comando de armar_prompts_fase2.py, nunca un prompt inventado", async () => {
+const BOTON_GENERAR = "Generar los prompts de este ángulo";
+
+test("concepto pendiente remite al botón; el comando queda solo en el detalle técnico plegado", async () => {
   respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
   renderizar("TINNIDROP");
 
@@ -343,9 +400,116 @@ test("concepto pendiente muestra el comando de armar_prompts_fase2.py, nunca un 
     expect(screen.getByText("Prompt pendiente de generar")).toBeDefined();
   });
 
-  expect(
-    screen.getByText("python Ads/_TOOLS/armar_prompts_fase2.py TINNIDROP ACCESIBILIDAD_MEDICO"),
-  ).toBeDefined();
+  expect(screen.getByText(/Se genera con el botón/)).toBeDefined();
+  expect(screen.getByText("Detalle técnico")).toBeDefined();
+});
+
+test("el #1 listo: el botón está habilitado, lanza la acción con sus parámetros y recarga al terminar", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  respuestas["POST /api/acciones/producto.armar_prompts_fase2"] = {
+    job_id: "abc123", accion_id: "producto.armar_prompts_fase2", estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/abc123", url_eventos: "/api/trabajos/abc123/eventos",
+  };
+  respuestas["GET /api/trabajos/abc123"] = { job_id: "abc123", estado: "EXITO", unidades: [{ json: { ok: true } }] };
+  renderizar("TINNIDROP");
+
+  const boton = await screen.findByRole("button", { name: BOTON_GENERAR });
+  expect((boton as HTMLButtonElement).disabled).toBe(false);
+  const antes = llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length;
+  fireEvent.click(boton);
+
+  await waitFor(() => {
+    const llamada = llamadasFetch.find((l) => l.url === "/api/acciones/producto.armar_prompts_fase2" && l.metodo === "POST");
+    expect(llamada?.cuerpo).toEqual({
+      parametros: { producto_key: "TINNIDROP", angulo_key: "ACCESIBILIDAD_MEDICO" },
+      confirmado: false,
+    });
+  });
+  await waitFor(() => {
+    expect(llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length).toBeGreaterThan(antes);
+  });
+});
+
+test("un trabajo que falla dice el motivo en palabras y no muestra comandos", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  respuestas["POST /api/acciones/producto.armar_prompts_fase2"] = {
+    job_id: "mal1", accion_id: "producto.armar_prompts_fase2", estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/mal1", url_eventos: "/api/trabajos/mal1/eventos",
+  };
+  respuestas["GET /api/trabajos/mal1"] = {
+    job_id: "mal1", estado: "FALLIDO", resultado: { detalle: "x" },
+    unidades: [{ json: { ok: false, motivo: "TINNIDROP no tiene packshot declarado en PRODUCTOS/_DIM_ENVASE.csv." } }],
+  };
+  renderizar("TINNIDROP");
+  fireEvent.click(await screen.findByRole("button", { name: BOTON_GENERAR }));
+  expect(await screen.findByText(/no tiene packshot declarado/)).toBeDefined();
+});
+
+test("si falta el packshot: dice cuál dato, deshabilita el botón y lleva a «Para arrancar te falta»", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2Con({
+    ...GENERAR_LISTO, listo: false, faltan: [FALTA_PACKSHOT],
+  });
+  renderizar("TINNIDROP");
+
+  expect(await screen.findByText("Antes de generarlos falta:")).toBeDefined();
+  expect(screen.getByText("No hay foto declarada.")).toBeDefined();
+  expect(screen.getByText("Subí la foto del producto tal como se ve en la mano.")).toBeDefined();
+  expect((screen.getByRole("button", { name: BOTON_GENERAR }) as HTMLButtonElement).disabled).toBe(true);
+
+  const destino = document.createElement("div");
+  destino.id = "para-arrancar";
+  const desplazar = vi.fn();
+  destino.scrollIntoView = desplazar;
+  document.body.appendChild(destino);
+  fireEvent.click(screen.getByText("Resolverlo en «Para arrancar te falta»"));
+  expect(desplazar).toHaveBeenCalled();
+  destino.remove();
+  expect(llamadasFetch.some((l) => l.metodo === "POST")).toBe(false);
+});
+
+test("si falta el perfil creativo: lo prepara Claude, sin comando y sin acción habilitada queda pendiente", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2Con({
+    ...GENERAR_LISTO, listo: false, faltan: [FALTA_PERFIL],
+  });
+  renderizar("TINNIDROP");
+
+  expect(await screen.findByText("Claude prepara el perfil creativo de este ángulo.")).toBeDefined();
+  expect(screen.getByText(/Queda pendiente de Claude/)).toBeDefined();
+  expect(screen.queryByRole("button", { name: "Pedirle a Claude el perfil creativo" })).toBeNull();
+  expect((screen.getByRole("button", { name: BOTON_GENERAR }) as HTMLButtonElement).disabled).toBe(true);
+});
+
+test("si el manifiesto habilita la acción del perfil, se ofrece y se lanza con confirmación", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2Con({
+    ...GENERAR_LISTO, listo: false, faltan: [FALTA_PERFIL], accion_perfil: "nodo.F2.conceptos",
+  });
+  respuestas["POST /api/acciones/nodo.F2.conceptos"] = {
+    job_id: "perfil1", accion_id: "nodo.F2.conceptos", estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/perfil1", url_eventos: "/api/trabajos/perfil1/eventos",
+  };
+  respuestas["GET /api/trabajos/perfil1"] = { job_id: "perfil1", estado: "EN_CURSO" };
+  renderizar("TINNIDROP");
+
+  fireEvent.click(await screen.findByRole("button", { name: "Pedirle a Claude el perfil creativo" }));
+  await waitFor(() => {
+    const llamada = llamadasFetch.find((l) => l.url === "/api/acciones/nodo.F2.conceptos" && l.metodo === "POST");
+    expect(llamada?.cuerpo).toEqual({ parametros: { producto_key: "TINNIDROP" }, confirmado: true });
+  });
+});
+
+test("un ganador en fila muestra «se genera cuando le toque su Fase 2» y no se puede pedir", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...fase2Con(GENERAR_LISTO),
+    conceptos: [
+      ...FASE2_MOCK.conceptos,
+      { ...FASE2_MOCK.conceptos[1], creativo_id: "TINNIDROP_F2_C09", angulo_key: "NOCHES_SIN_DORMIR", canonico_id: "C09" },
+    ],
+  };
+  renderizar("TINNIDROP");
+
+  fireEvent.click(await screen.findByRole("tab", { name: "NOCHES_SIN_DORMIR" }));
+  expect(await screen.findByText("Se genera cuando le toque su Fase 2.")).toBeDefined();
+  expect((screen.getByRole("button", { name: BOTON_GENERAR }) as HTMLButtonElement).disabled).toBe(true);
 });
 
 test("concepto con paquete muestra la imagen de referencia y el botón de copiar imagen", async () => {

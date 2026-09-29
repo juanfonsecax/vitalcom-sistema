@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import { BotonCopiarTexto, ImagenDeReferencia, Lightbox } from "../componentes/copiar";
+import { GenerarPromptsDelAngulo } from "../componentes/generarPrompts";
 
 const TONOS_ESTADO: Record<string, Tono> = {
   GENERADO: "bien",
@@ -85,6 +86,8 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
         ? (principal?.angulo_key ?? "")
         : (gruposGaleria[0] ?? "");
   const conceptosVisibles = d.conceptos.filter((c) => (c.angulo_key || "") === grupoActivo);
+  const hayPromptsPendientes = conceptosVisibles.some((c) => c.prompt_origen !== "paquete" || !c.prompt);
+  const anguloActivo = angulos.find((a) => a.angulo_key === grupoActivo);
 
   const subirImagen = async (concepto: ConceptoFase2, archivo: File) => {
     setSubiendoArchivo(concepto.creativo_id);
@@ -288,6 +291,10 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
           </div>
         )}
 
+        {hayPromptsPendientes && (
+          <GenerarPromptsDelAngulo generar={anguloActivo?.generar} clave={clave} angulo={grupoActivo} />
+        )}
+
         <div className="grid gap-4 md:grid-cols-2">
           {conceptosVisibles.map((c, i) => (
             <Tarjeta key={c.creativo_id || i} className="space-y-3 border-zinc-800 bg-zinc-900/50">
@@ -322,7 +329,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
               )}
 
               {/* Caja de Prompt Resuelto — el prompt REAL de armar_prompts_fase2.py (nunca uno
-                  inventado); si todavía no se generó el paquete, se muestra el comando exacto. */}
+                  inventado); si todavía no se generó el paquete, el botón de arriba lo genera. */}
               {c.prompt_origen === "paquete" && c.prompt ? (
                 <div className="rounded-lg border border-border bg-muted/40 p-2.5">
                   <div className="mb-1 flex items-center justify-between gap-2">
@@ -346,12 +353,21 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
                     Prompt pendiente de generar
                   </span>
                   <p className="mt-1 text-[11px] text-amber-200/90">
-                    Todavía no existe el paquete creativo de este ángulo. Corré este comando para
-                    generarlo (nunca se inventa un prompt genérico):
+                    Todavía no existe el paquete creativo de este ángulo. Se genera con el botón
+                    «Generar los prompts de este ángulo» (nunca se inventa un prompt genérico).
                   </p>
-                  <pre className="mt-1.5 overflow-x-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-amber-100">
-                    {c.comando_generar}
-                  </pre>
+                  {c.comando_generar && (
+                    <Collapsible>
+                      <CollapsibleTrigger className="mt-1.5 text-[11px] text-zinc-400 underline underline-offset-2 hover:text-zinc-200">
+                        Detalle técnico
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <pre className="mt-1 overflow-x-auto whitespace-pre-wrap break-words rounded-md bg-background/60 p-2 font-mono text-[11px] leading-relaxed text-amber-100">
+                          {c.comando_generar}
+                        </pre>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  )}
                 </div>
               )}
 

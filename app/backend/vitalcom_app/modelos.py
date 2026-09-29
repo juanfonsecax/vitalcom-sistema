@@ -509,6 +509,23 @@ class Ganador(Base):
     siguiente_paso: GanadorPaso
 
 
+class GenerarPrompts(Base):
+    """El botón «Generar los prompts de este ángulo»: la acción del manifiesto con sus parámetros, si se
+    puede pedir ahora y, si no, qué dato lo frena (de `datos_producto.py`, sin repetir sus chequeos).
+    `habilitada` es solo del #1 (el ángulo que está en FASE 2 ahora); el resto se genera cuando le toque."""
+
+    accion_id: str
+    parametros: dict[str, str] = {}
+    habilitada: bool = False
+    motivo: str = ""
+    listo: bool = False
+    faltan: list[ItemDeDatos] = []
+    # Acción del manifiesto que prepara el perfil creativo (concepto), solo si está habilitada; si no, va None
+    # y el perfil lo prepara Claude en la sesión.
+    accion_perfil: str | None = None
+    aviso: str = ""
+
+
 class AnguloFase2(Base):
     """Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`."""
@@ -534,6 +551,7 @@ class AnguloFase2(Base):
     faltan_ventas: float | None = None
     ejecutable: bool | None = None
     bloqueo_fase: str | None = None
+    generar: GenerarPrompts | None = None
 
 
 class ConceptoFase2(Base):

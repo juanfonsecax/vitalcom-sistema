@@ -896,6 +896,7 @@ export interface components {
             ejecutable?: boolean | null;
             /** Bloqueo Fase */
             bloqueo_fase?: string | null;
+            generar?: components["schemas"]["GenerarPrompts"] | null;
         } & {
             [key: string]: unknown;
         };
@@ -1886,6 +1887,52 @@ export interface components {
              * @default
              */
             enlace: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * GenerarPrompts
+         * @description El botón «Generar los prompts de este ángulo»: la acción del manifiesto con sus parámetros, si se
+         *     puede pedir ahora y, si no, qué dato lo frena (de `datos_producto.py`, sin repetir sus chequeos).
+         *     `habilitada` es solo del #1 (el ángulo que está en FASE 2 ahora); el resto se genera cuando le toque.
+         */
+        GenerarPrompts: {
+            /** Accion Id */
+            accion_id: string;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: string;
+            };
+            /**
+             * Habilitada
+             * @default false
+             */
+            habilitada: boolean;
+            /**
+             * Motivo
+             * @default
+             */
+            motivo: string;
+            /**
+             * Listo
+             * @default false
+             */
+            listo: boolean;
+            /**
+             * Faltan
+             * @default []
+             */
+            faltan: components["schemas"]["ItemDeDatos"][];
+            /** Accion Perfil */
+            accion_perfil?: string | null;
+            /**
+             * Aviso
+             * @default
+             */
+            aviso: string;
         } & {
             [key: string]: unknown;
         };

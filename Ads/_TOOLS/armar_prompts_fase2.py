@@ -19,16 +19,19 @@ DE DONDE SALE CADA DATO (un dato, un dueno — este script ya no nombra ningun p
 Si falta cualquiera, BLOQUEA con el nombre de quien lo produce (invariante 4).
 """
 
+import argparse
+import contextlib
 import os
 import sys
 import io
 import csv
 import json
 
-try:
-    sys.stdout.reconfigure(encoding="utf-8")
-except Exception:
-    pass
+for _flujo in (sys.stdout, sys.stderr):
+    try:
+        _flujo.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
@@ -38,6 +41,17 @@ import seleccionar_canonicos as sc
 PROD_DIR = os.path.join(BASE, "PRODUCTOS")
 SWIPE_DIR = os.path.join(BASE, "Ads", "_SWIPE")
 DECISIONES_JSON = os.path.join(PROD_DIR, "_DECISIONES.json")
+
+
+class Bloqueado(SystemExit):
+    """Un BLOQUEANTE con el dato que lo causa. Sigue siendo un `SystemExit` con el mismo texto (la
+    CLI sin `--json` se comporta igual); `dato` deja que el llamador diga QUE falta sin leer prosa:
+    packshot | precio | perfil_creativo | producto | angulo."""
+
+    def __init__(self, mensaje, dato):
+        super().__init__(mensaje)
+        self.mensaje = mensaje
+        self.dato = dato
 
 
 def orden_ganador(celda):
@@ -139,14 +153,15 @@ def requerir_precios_reales(producto_key):
     input requerido, se detiene con el nombre de quien lo produce — nunca se asume."""
     precios = leer_escalera(producto_key)
     if not precios:
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: {producto_key} no tiene fila ACTIVA en PRODUCTOS/_DIM_PRECIOS.csv.\n"
             f"  Sin la escalera de precios real, no se generan los prompts: caer a los precios "
             f"de otro producto (TINNIDROP Q179/Q239/Q299) fue exactamente el bug que "
             f"leer_escalera() vino a cerrar el 08-sep-2026 — no se reintroduce por la puerta "
             f"de atras con un fallback hardcodeado.\n"
             f"  Agrega la fila de {producto_key} en PRODUCTOS/_DIM_PRECIOS.csv (unidades, "
-            f"precio_q, precio_antes_q, estado=ACTIVO) antes de generar."
+            f"precio_q, precio_antes_q, estado=ACTIVO) antes de generar.",
+            "precio",
         )
     return precios
 
@@ -155,19 +170,21 @@ def buscar_foto_producto(producto_key):
     """Devuelve la ruta absoluta del packshot DECLARADO. Falla ruidoso si no lo hay."""
     envase = leer_envase(producto_key)
     if not envase or not envase.get("packshot", "").strip():
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: {producto_key} no tiene packshot declarado en "
             f"PRODUCTOS/_DIM_ENVASE.csv.\n"
             f"  Agregale su fila (packshot, color_envase, marca_impresa) antes de generar.\n"
             f"  No se adivina agarrando un archivo de Ads/MEDIA_{producto_key}/: asi fue como "
-            f"TINNIDROP heredo un frasco verde de otra marca."
+            f"TINNIDROP heredo un frasco verde de otra marca.",
+            "packshot",
         )
     ruta = os.path.join(BASE, envase["packshot"].replace("/", os.sep))
     if not os.path.isfile(ruta):
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: {producto_key} declara el packshot '{envase['packshot']}' "
             f"pero el archivo no existe en el disco.\n"
-            f"  Ponelo ahi o corregi la fila de PRODUCTOS/_DIM_ENVASE.csv."
+            f"  Ponelo ahi o corregi la fila de PRODUCTOS/_DIM_ENVASE.csv.",
+            "packshot",
         )
     return ruta
 
@@ -211,21 +228,24 @@ def cargar_perfil_creativo(producto_key):
     producto nuevo no necesita que nadie toque Python. Es el camino a un sistema autonomo."""
     carpeta = carpeta_de(producto_key)
     if not carpeta:
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: {producto_key} no tiene slug_carpeta en PRODUCTOS/_DIM_PRODUCTOS.csv.\n"
-            f"  La carpeta del producto se resuelve por el CSV, nunca por el nombre (invariante 10).")
+            f"  La carpeta del producto se resuelve por el CSV, nunca por el nombre (invariante 10).",
+            "producto")
     ruta = os.path.join(PROD_DIR, carpeta, PERFIL_CREATIVO)
     if not os.path.exists(ruta):
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: falta PRODUCTOS/{carpeta}/{PERFIL_CREATIVO}.\n"
             f"  Lo produce {PRODUCTOR_PERFIL}, leyendo la investigacion del producto.\n"
-            f"  Sin el no se generan creativos: el codigo ya no inventa el perfil ni los textos.")
+            f"  Sin el no se generan creativos: el codigo ya no inventa el perfil ni los textos.",
+            "perfil_creativo")
     with io.open(ruta, encoding="utf-8") as fh:
         doc = json.load(fh)
     if not isinstance(doc.get("perfil"), dict):
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: PRODUCTOS/{carpeta}/{PERFIL_CREATIVO} no trae el bloque 'perfil'.\n"
-            f"  Lo produce {PRODUCTOR_PERFIL}.")
+            f"  Lo produce {PRODUCTOR_PERFIL}.",
+            "perfil_creativo")
     return doc
 
 
@@ -237,17 +257,19 @@ def requerir_textos(perfil_creativo, producto_key, angulo):
     bloquea en vez de usar en silencio los textos del angulo anterior (16-sep-2026)."""
     declarado = (perfil_creativo.get("angulo_key") or "").strip()
     if declarado != angulo:
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: los textos del {PERFIL_CREATIVO} de {producto_key} son del angulo "
             f"'{declarado or '(sin declarar)'}' y se esta generando para '{angulo}'.\n"
-            f"  Los textos de un angulo no sirven para otro. Los produce {PRODUCTOR_PERFIL}, para '{angulo}'.")
+            f"  Los textos de un angulo no sirven para otro. Los produce {PRODUCTOR_PERFIL}, para '{angulo}'.",
+            "perfil_creativo")
     textos = perfil_creativo.get("textos") or {}
     faltan = [k for k in TEXTOS_REQUERIDOS if not textos.get(k)]
     if faltan:
-        raise SystemExit(
+        raise Bloqueado(
             f"BLOQUEANTE: el {PERFIL_CREATIVO} de {producto_key} no trae los textos: {', '.join(faltan)}.\n"
             f"  Los produce {PRODUCTOR_PERFIL}. No se rellenan con un texto generico: los "
-            f"ingredientes salen de la investigacion, no de una plantilla.")
+            f"ingredientes salen de la investigacion, no de una plantilla.",
+            "perfil_creativo")
     return textos
 
 
@@ -272,7 +294,8 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
     else:
         angulo, info_angulo = detectar_angulo_ganador(producto_key)
         if not angulo:
-            raise SystemExit(f"No se pudo detectar ángulo para {producto_key}: {info_angulo}")
+            raise Bloqueado(f"BLOQUEANTE: no se pudo detectar el ángulo ganador de {producto_key}: {info_angulo}",
+                            "angulo")
 
     print("=" * 80)
     print(f" 🚀 FÁBRICA CREATIVA MULTIMODAL — FASE 2 LEAN")
@@ -422,9 +445,37 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
     return salida_txt, salida_json, paquetes, adaptacion_bot
 
 
+def _json_de_bloqueo(e):
+    """El BLOQUEANTE como dato: `motivo` es la primera linea (la frase), `detalle` el mensaje completo
+    (el runner de la app lo muestra si el trabajo falla) y `dato` que falta."""
+    completo = str(e.mensaje).strip()
+    primera = completo.splitlines()[0].replace("BLOQUEANTE:", "").strip()
+    return {"ok": False, "bloqueado": True, "motivo": primera, "dato": e.dato, "detalle": completo}
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser(description="Arma los prompts multimodales de FASE 2 de un producto")
+    ap.add_argument("producto", help="producto_key")
+    ap.add_argument("angulo", nargs="?", help="angulo_key; sin él, el ganador que fija _DECISIONES.json")
+    ap.add_argument("--json", action="store_true",
+                    help="stdout = un solo JSON (el bloqueo trae `dato`); el resto va a stderr")
+    args = ap.parse_args(argv)
+    if not args.json:
+        generar_paquete_multimodal(args.producto, args.angulo)
+        return 0
+    try:
+        with contextlib.redirect_stdout(sys.stderr):
+            salida_txt, salida_json, paquetes, _ = generar_paquete_multimodal(args.producto, args.angulo)
+    except Bloqueado as e:
+        print(json.dumps(_json_de_bloqueo(e), ensure_ascii=False))
+        return 1
+    rel = lambda r: os.path.relpath(r, BASE).replace("\\", "/")  # noqa: E731
+    angulo = os.path.basename(os.path.dirname(salida_json))[len("FASE2_"):]
+    print(json.dumps({"ok": True, "bloqueado": False, "producto_key": args.producto, "angulo_key": angulo,
+                      "conceptos": len(paquetes), "archivos": [rel(salida_txt), rel(salida_json)]},
+                     ensure_ascii=False))
+    return 0
+
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:          # sin producto por defecto: el codigo no elige un producto por su nombre
-        raise SystemExit("USO: python Ads/_TOOLS/armar_prompts_fase2.py PRODUCTO_KEY [ANGULO]")
-    pk = sys.argv[1]
-    ang = sys.argv[2] if len(sys.argv) > 2 else None
-    generar_paquete_multimodal(pk, ang)
+    sys.exit(main())

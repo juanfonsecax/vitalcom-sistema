@@ -27,7 +27,7 @@ data contract.
       marca/color/formato), and a deterministic "datos faltantes" check (read-only tool in Ads/_TOOLS)
       listing packshot, precio activo, page_id, cuenta, perfil creativo, referencia F1, each with its
       inline fix. (route: delegated writer)
-- [ ] C3 "Generar prompts" button: manifest action for armar_prompts_fase2 on the #1 angle; blocking
+- [x] C3 "Generar prompts" button: manifest action for armar_prompts_fase2 on the #1 angle; blocking
       reasons in plain Spanish linking to the fix. (route: delegated writer)
 - [ ] C4 Bring the 5 products up to date: identify packshots by viewing media, declare envase rows;
       ask operator only for data only they have. (route: parent)
@@ -56,5 +56,15 @@ commit nightly data churn; RDD off; TDD not configured.
   gen_app --validar-manifiesto valid. Live missing: TINNIDROP perfil #1 (PERDIDA_AUDITIVA), NUSAVA/CLEARSTEM/VARICOSE
   packshot, OVULOS_PURITY precio + page_id. Note: `python Ads/_TOOLS/gen_app.py` (no flags) regenerates VISTAS by design.
 
+- C3 (2026-09-28, route: delegated writer, uncommitted): manifest `producto.armar_prompts_fase2` (script, boton, no
+  confirmation, idempotent, params producto_key + angulo_key `^[A-Za-z0-9_]{1,80}$`, writes only `Ads/MEDIA_<pk>/FASE2_<angulo>/`
+  PROMPTS_*.txt + PAQUETE_CREATIVO_*.json, no CSV, no Meta). `armar_prompts_fase2.py`: argparse + `--json` (stdout one JSON;
+  block = `{ok:false, bloqueado:true, motivo, dato: packshot|precio|perfil_creativo|producto|angulo, detalle}` exit 1; CLI without
+  `--json` unchanged via `Bloqueado(SystemExit)`). `contratos.fase2_detalle` -> `angulos[].generar` (action id + params, `habilitada`
+  only for #1, `faltan` from `datos_producto` items packshot/precio/perfil_creativo, `accion_perfil` = `nodo.F2.conceptos` only when
+  enabled: today null). Frontend `componentes/generarPrompts.tsx`: button + job progress + reload; blocked = plain reason + scroll to
+  `#para-arrancar`; perfil = "Claude prepara el perfil creativo de este ángulo" (pending, no command); queued angles = "Se genera
+  cuando le toque su Fase 2."; `comando_generar` only inside folded "Detalle técnico".
+
 ## Next step
-C3.
+C4.

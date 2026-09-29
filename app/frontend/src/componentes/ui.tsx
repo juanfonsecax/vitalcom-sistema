@@ -13,9 +13,9 @@ export function cn(...clases: (string | false | undefined)[]) {
   return clases.filter(Boolean).join(" ");
 }
 
-export function Tarjeta({ children, className }: { children: ReactNode; className?: string }) {
+export function Tarjeta({ children, className, id }: { children: ReactNode; className?: string; id?: string }) {
   return (
-    <div data-slot="card" className={cn("rounded-xl border border-border bg-card p-5", className)}>
+    <div id={id} data-slot="card" className={cn("rounded-xl border border-border bg-card p-5", className)}>
       {children}
     </div>
   );

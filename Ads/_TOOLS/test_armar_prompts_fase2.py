@@ -14,6 +14,7 @@ asumen los precios de otro producto (invariante 4, CLAUDE.md).
 USO:  python Ads/_TOOLS/test_armar_prompts_fase2.py     (exit 0 = pasa, 1 = falla)
 """
 import csv
+import io
 import os
 import sys
 import tempfile
@@ -234,6 +235,114 @@ def test_lo_no_declarado_del_perfil_queda_falso_no_optimista():
     return 0 if ok else 1
 
 
+# ── --json: el bloqueo como dato (C3, la app lanza este script con un boton) ───────────────
+
+def _entorno_json(con_packshot=True, con_precio=True, con_perfil=True, angulo="ANG"):
+    """BASE/PROD_DIR temporales con un producto PX. Devuelve (base, restaurar)."""
+    import json
+    base = tempfile.mkdtemp(prefix="ap_json_")
+    prod = os.path.join(base, "PRODUCTOS")
+    os.makedirs(os.path.join(prod, "PX_CARPETA"))
+    with open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["producto_key", "slug_carpeta"])
+        w.writerow(["PX", "PX_CARPETA"])
+    with open(os.path.join(prod, "_DIM_ENVASE.csv"), "w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["producto_key", "packshot"])
+        if con_packshot:
+            w.writerow(["PX", "Ads/MEDIA_PX/PX_PACKSHOT.png"])
+    os.makedirs(os.path.join(base, "Ads", "MEDIA_PX"))
+    if con_packshot:
+        with open(os.path.join(base, "Ads", "MEDIA_PX", "PX_PACKSHOT.png"), "wb") as fh:
+            fh.write(b"PNG")
+    _dim_precios(prod, [{"producto_key": "PX", "unidades": str(u), "precio_q": str(100 + u * 50),
+                         "estado": "ACTIVO"} for u in (1, 2, 3)] if con_precio else [])
+    if con_perfil:
+        textos = {k: ("x" if k != "ACTIVOS_CLAVE" else ["x"]) for k in ap.TEXTOS_REQUERIDOS}
+        with open(os.path.join(prod, "PX_CARPETA", ap.PERFIL_CREATIVO), "w", encoding="utf-8") as fh:
+            json.dump({"schema": "perfil_creativo/1", "angulo_key": angulo, "perfil": {}, "textos": textos}, fh)
+    viejo = (ap.BASE, ap.PROD_DIR, ap.DECISIONES_JSON)
+    ap.BASE, ap.PROD_DIR, ap.DECISIONES_JSON = base, prod, os.path.join(prod, "_DECISIONES.json")
+
+    def restaurar():
+        ap.BASE, ap.PROD_DIR, ap.DECISIONES_JSON = viejo
+    return base, restaurar
+
+
+def _correr_main(argv):
+    import contextlib
+    import json
+    salida, err = io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(salida), contextlib.redirect_stderr(err):
+        codigo = ap.main(argv)
+    return codigo, json.loads(salida.getvalue()), err.getvalue()
+
+
+def test_json_bloqueo_por_packshot_dice_el_dato_y_sale_con_1():
+    _, restaurar = _entorno_json(con_packshot=False)
+    try:
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert codigo == 1
+    assert cuerpo["ok"] is False and cuerpo["bloqueado"] is True and cuerpo["dato"] == "packshot"
+    assert "packshot" in cuerpo["motivo"] and chr(10) not in cuerpo["motivo"] and not cuerpo["motivo"].startswith("BLOQUEANTE")
+    assert cuerpo["detalle"].startswith("BLOQUEANTE")
+
+
+def test_json_bloqueo_por_precio_y_por_perfil_creativo():
+    _, restaurar = _entorno_json(con_precio=False)
+    try:
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert cuerpo["dato"] == "precio"
+    _, restaurar = _entorno_json(con_perfil=False)
+    try:
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert cuerpo["dato"] == "perfil_creativo"
+    _, restaurar = _entorno_json(angulo="OTRO")
+    try:
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert cuerpo["dato"] == "perfil_creativo" and "OTRO" in cuerpo["detalle"]
+
+
+def test_sin_json_el_bloqueo_sigue_siendo_systemexit_con_el_mismo_texto():
+    _, restaurar = _entorno_json(con_packshot=False)
+    try:
+        try:
+            ap.main(["PX", "ANG"])
+            msg = None
+        except SystemExit as e:
+            msg = str(e)
+    finally:
+        restaurar()
+    assert msg and msg.startswith("BLOQUEANTE: PX no tiene packshot declarado")
+    assert isinstance(ap.Bloqueado("x", "packshot"), SystemExit)
+
+
+def test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta():
+    base, restaurar = _entorno_json()
+    try:
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert codigo == 0 and cuerpo["ok"] is True and cuerpo["bloqueado"] is False
+    assert cuerpo["producto_key"] == "PX" and cuerpo["angulo_key"] == "ANG" and cuerpo["conceptos"] >= 1
+    assert cuerpo["archivos"] == ["Ads/MEDIA_PX/FASE2_ANG/PROMPTS_FASE2_ANG.txt",
+                                  "Ads/MEDIA_PX/FASE2_ANG/PAQUETE_CREATIVO_ANG.json"]
+    for rel in cuerpo["archivos"]:
+        assert os.path.isfile(os.path.join(base, *rel.split("/")))
+    escritos = sorted(os.path.relpath(os.path.join(d, f), base).replace("\\", "/")
+                      for d, _, fs in os.walk(os.path.join(base, "Ads")) for f in fs)
+    assert all(e.startswith("Ads/MEDIA_PX/") for e in escritos)
+
+
 def main():
     fallas = 0
     fallas += test_producto_sin_fila_bloquea_no_hereda_precios_de_otro()
@@ -246,6 +355,16 @@ def main():
     fallas += test_perfil_sin_textos_bloquea_y_lista_los_que_faltan()
     fallas += test_textos_de_otro_angulo_bloquean()
     fallas += test_lo_no_declarado_del_perfil_queda_falso_no_optimista()
+    for prueba in (test_json_bloqueo_por_packshot_dice_el_dato_y_sale_con_1,
+                   test_json_bloqueo_por_precio_y_por_perfil_creativo,
+                   test_sin_json_el_bloqueo_sigue_siendo_systemexit_con_el_mismo_texto,
+                   test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta):
+        try:
+            prueba()
+            print("  OK     " + prueba.__name__)
+        except AssertionError as e:
+            fallas += 1
+            print("  FALLA  " + prueba.__name__ + chr(10) + "         " + repr(e))
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

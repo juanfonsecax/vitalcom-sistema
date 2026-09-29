@@ -597,6 +597,59 @@ def angulos_de_fase2(producto_key: str, ganadores: list[str]) -> list[dict[str, 
     return salida
 
 
+ACCION_ARMAR_PROMPTS = "producto.armar_prompts_fase2"
+ACCION_CONCEPTOS = "nodo.F2.conceptos"
+# Los datos de `datos_producto.py` que frenan a `armar_prompts_fase2.py` (los mismos que él bloquea).
+DATOS_QUE_FRENAN_PROMPTS = ("packshot", "precio", "perfil_creativo")
+MOTIVO_EN_FILA = "Se genera cuando le toque su Fase 2."
+
+
+def _accion_habilitada(accion_id: str) -> bool:
+    from . import acciones
+
+    try:
+        return any(a.get("id") == accion_id and a.get("habilitada") for a in acciones.cargar().lista())
+    except Exception:
+        return False
+
+
+def _generar_prompts(producto_key: str, angulo: dict[str, Any], revisar: bool) -> dict[str, Any]:
+    """El descriptor del botón de un ángulo ganador. Solo el #1 (`ganador_activo`) se puede pedir; los
+    datos que le faltan salen de `datos_producto.py` (`fase1.datos_para_arrancar`), sin repetir sus chequeos.
+    `revisar=False` (no hay conceptos pendientes) evita correr el script de datos."""
+    descriptor: dict[str, Any] = {
+        "accion_id": ACCION_ARMAR_PROMPTS,
+        "parametros": {"producto_key": producto_key, "angulo_key": angulo["angulo_key"]},
+        "habilitada": angulo["rol"] == "ganador_activo",
+        "motivo": "",
+        "listo": False,
+        "faltan": [],
+        "accion_perfil": None,
+        "aviso": "",
+    }
+    if not descriptor["habilitada"]:
+        descriptor["motivo"] = MOTIVO_EN_FILA
+        return descriptor
+    if not revisar:
+        descriptor["listo"] = True
+        return descriptor
+    from . import fase1
+
+    datos = fase1.datos_para_arrancar(producto_key)
+    if not datos.get("ok", True):
+        descriptor["listo"] = True
+        descriptor["aviso"] = "; ".join(datos.get("avisos") or [])
+        return descriptor
+    faltan = [i for i in datos.get("items", [])
+              if i.get("clave") in DATOS_QUE_FRENAN_PROMPTS and i.get("estado") == "falta"]
+    faltan.sort(key=lambda i: DATOS_QUE_FRENAN_PROMPTS.index(i["clave"]))
+    descriptor["faltan"] = faltan
+    descriptor["listo"] = not faltan
+    if any(i["clave"] == "perfil_creativo" for i in faltan) and _accion_habilitada(ACCION_CONCEPTOS):
+        descriptor["accion_perfil"] = ACCION_CONCEPTOS
+    return descriptor
+
+
 def fase2_detalle(producto_key: str) -> dict[str, Any]:
     """Detalles de FASE 2 para el producto: ángulos con su rol, 10 conceptos y órdenes del motor."""
     flujo_data = flujo(producto_key)
@@ -677,6 +730,12 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             **paquete,
         })
         indice_extra += 1
+
+    for angulo in angulos:
+        if angulo["rol"] in ("ganador_activo", "ganador_en_fila"):
+            hay_pendientes = any(c["angulo_key"] == angulo["angulo_key"] and c["prompt_origen"] == "pendiente"
+                                 for c in conceptos)
+            angulo["generar"] = _generar_prompts(producto_key, angulo, hay_pendientes)
 
     angulos_excl = _angulos_probados(producto_key)
 
