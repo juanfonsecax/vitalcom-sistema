@@ -127,20 +127,28 @@ Siempre estas líneas, siempre en este orden. Ninguna se salta, ninguna se agrup
 
 ---
 
-## 3-bis. MONEDAS — QUÉ ESTÁ EN QUETZALES Y QUÉ EN DÓLARES
+## 3-bis. MONEDAS — LA MONEDA LA DICE EL MERCADO DEL PRODUCTO
 
-El negocio **cobra en quetzales** (Guatemala) y **paga la publicidad en dólares**
-(Meta). Un valor convertido de más o de menos se ve plausible y nadie lo nota:
-un error de factor 7.62 en la pauta convierte una ganancia en pérdida sin que
-ninguna cifra parezca absurda. Por eso la regla está escrita **y se verifica sola**.
+Cada producto **cobra en la moneda de su mercado** (`moneda` de
+`PRODUCTOS/_DIM_MERCADOS.csv`; `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`) y
+**paga la publicidad en la moneda de su cuenta** (GT: dólares por Meta). El dinero de
+mercados distintos nunca se suma. Un valor convertido de más o de menos se ve
+plausible y nadie lo nota: un error de factor 7.62 en la pauta convierte una
+ganancia en pérdida sin que ninguna cifra parezca absurda. Por eso la regla está
+escrita **y se verifica sola**.
+
+**Alcance de esta contabilidad.** Las tablas de abajo son las del mercado **GT**: su
+contabilidad es Dropi GT + banco (`gen_pl.py`). La contabilidad del mercado CO está
+pendiente: sus ventas (`total_q`) entran en COP, sin Dropi GT ni banco GT, y no se
+mezclan con este estado de resultados.
 
 | De dónde viene | Qué trae | Moneda | Qué le hace el sistema |
 |---|---|---|---|
-| **Dropi** — órdenes | total, flete, costo proveedor, ganancia | **QUETZALES** | nada, entra tal cual |
-| **Dropi** — historial de cartera | entradas y cobros de devolución | **QUETZALES** | nada, entra tal cual |
-| **LucidSales** | `total` — la venta | **QUETZALES** | nada, entra tal cual |
-| **LucidSales** | `spend` — la pauta | **DÓLARES** | × `tasa_usd_gtq` |
-| **Banco** (Relay) | cargos de Meta y todo lo demás | **DÓLARES** | × `tasa_usd_gtq` |
+| **Dropi GT** — órdenes | total, flete, costo proveedor, ganancia | **QUETZALES** | nada, entra tal cual |
+| **Dropi GT** — historial de cartera | entradas y cobros de devolución | **QUETZALES** | nada, entra tal cual |
+| **LucidSales** | `total` — la venta | **moneda del mercado del producto** (GT: quetzales · CO: pesos) | nada, entra tal cual |
+| **LucidSales** | `spend` — la pauta | **DÓLARES** | × la `tasa` del producto (GT: `tasa_usd_gtq`) |
+| **Banco GT** (Relay) | cargos de Meta y todo lo demás | **DÓLARES** | × `tasa_usd_gtq` |
 | **Cuenta CP1** — única excepción | `spend` de esa cuenta | **COP** | ÷ `tasa_cop_usd` → USD → × `tasa_usd_gtq` |
 
 ⚠️ **Dos trampas visuales:**

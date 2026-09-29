@@ -9,7 +9,7 @@
  *   5. las tarjetas de la franja bajan hasta su sección de estado, y «Midiendo» abre el
  *      grupo colapsado antes de bajar.
  */
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   RouterProvider,
@@ -27,6 +27,7 @@ const PRODUCTO_A = {
   estado: "VIVO",
   cuenta_alias: "GTR7",
   moneda: "GTQ",
+  mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
   costo_q: "100",
   precio_base_q: "",
   cpa_base_q: "",
@@ -80,6 +81,7 @@ const ORDENES_BASE = {
   ordenes: [
     {
       producto_key: "OVULOS_PURITY",
+      mercado: "CO", moneda_local: "COP", simbolo: "$",
       angulo_key: "INFECCION_RECURRENTE",
       angulo_nombre: "Infección Recurrente",
       estado: "SEGUIR_MIDIENDO",
@@ -92,6 +94,7 @@ const ORDENES_BASE = {
     },
     {
       producto_key: "TINNIDROP",
+      mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
       angulo_key: "ZUMBIDO_GRAVE",
       angulo_nombre: "Zumbido Grave",
       estado: "PAUSAR",
@@ -104,6 +107,7 @@ const ORDENES_BASE = {
     },
     {
       producto_key: "CLEARSTEM",
+      mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
       angulo_key: "RESISTENCIA_INSULINA_SOP",
       angulo_nombre: "Resistencia a la Insulina SOP",
       estado: "ESCALAR",
@@ -119,6 +123,11 @@ const ORDENES_BASE = {
   avisos: [],
   parametros_motor: [],
 };
+
+const MERCADOS = [
+  { mercado: "GT", pais: "Guatemala", moneda: "GTQ", simbolo: "Q" },
+  { mercado: "CO", pais: "Colombia", moneda: "COP", simbolo: "$" },
+];
 
 const ACCIONES = [
   { id: "nodo.ciclo.ordenes", rotulo: "Ejecutar órdenes en Meta", habilitada: false, motivo: "Manual" },
@@ -164,6 +173,7 @@ function servirBase(overrides: Record<string, unknown> = {}) {
     "/api/productos/CLEARSTEM": FLUJO_A,
     "/api/productos/TINNIDROP": FLUJO_B,
     "/api/trabajos": [],
+    "/api/mercados": MERCADOS,
     ...overrides,
   });
 }
@@ -182,6 +192,7 @@ function stubScrollIntoView(registro: string[]) {
 }
 
 beforeEach(() => {
+  window.localStorage.clear();
   servirBase();
 });
 
@@ -249,6 +260,7 @@ test("un ESCALAR bloqueado por fase no cuenta ni agrupa junto al ESCALAR acciona
         ...ORDENES_BASE.ordenes,
         {
           producto_key: "TINNIDROP",
+          mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
           angulo_key: "PERDIDA_AUDITIVA",
           angulo_nombre: "Pérdida Auditiva",
           estado: "ESCALAR",
@@ -452,4 +464,108 @@ test("qué sigue por producto: muestra fase, paso y el bloqueante con su dueño;
   expect(await screen.findByText("Generar los conceptos que faltan")).toBeInTheDocument();
   expect(await screen.findByText(/10 conceptos generados · lo produce etapa-9/)).toBeInTheDocument();
   expect(await screen.findByText("Sin bloqueantes")).toBeInTheDocument();
+});
+
+// ── Multi-mercado (D2) ───────────────────────────────────────────────────────────────────────
+
+test("el selector ofrece Todos · Guatemala · Colombia y arranca en Todos", async () => {
+  montar();
+  const selector = await screen.findByTestId("selector-mercado");
+  await within(selector).findByRole("button", { name: "🇨🇴 Colombia" });
+  const botones = within(selector).getAllByRole("button");
+  expect(botones.map((b) => b.textContent)).toEqual(["Todos", "🇬🇹 Guatemala", "🇨🇴 Colombia"]);
+  expect(within(selector).getByRole("button", { name: "Todos" })).toHaveAttribute("aria-pressed", "true");
+});
+
+test("cada tarjeta de orden lleva la bandera de su producto y su dinero en su moneda", async () => {
+  montar();
+  const tarjetas = await screen.findAllByTestId("tarjeta-orden");
+  const pausar = tarjetas.find((t) => t.textContent?.includes("Pausar conjunto de Zumbido Grave"))!;
+  expect(within(pausar).getByTestId("bandera-mercado")).toHaveTextContent("GT");
+  expect(within(pausar).getByText("Q120.50")).toBeInTheDocument();
+  expect(within(pausar).getByText("Q93.40")).toBeInTheDocument();
+});
+
+test("elegir Colombia deja solo lo de Colombia: los conteos salen de las órdenes de ese mercado", async () => {
+  montar();
+  await screen.findByTestId("franja-hoy");
+  // Con Todos: 1 Pausar (GT), 1 Escalar (GT), 1 Midiendo (CO).
+  expect(screen.getByTestId("resumen-pausar")).toBeInTheDocument();
+  fireEvent.click(await screen.findByRole("button", { name: "🇨🇴 Colombia" }));
+  await waitFor(() => expect(screen.queryByTestId("resumen-pausar")).not.toBeInTheDocument());
+  expect(screen.queryByTestId("resumen-escalar")).not.toBeInTheDocument();
+  expect(screen.getByTestId("resumen-midiendo")).toBeInTheDocument();
+  // «Qué sigue»: ningún producto GT se cuela.
+  expect(screen.getByText("No hay productos de este mercado.")).toBeInTheDocument();
+  expect(screen.queryByText("Tinnidrop")).not.toBeInTheDocument();
+});
+
+test("elegir Guatemala esconde Colombia y cuenta solo las de Guatemala", async () => {
+  montar();
+  await screen.findByTestId("franja-hoy");
+  fireEvent.click(await screen.findByRole("button", { name: "🇬🇹 Guatemala" }));
+  await waitFor(() => expect(screen.queryByTestId("resumen-midiendo")).not.toBeInTheDocument());
+  expect(screen.getByTestId("resumen-pausar")).toBeInTheDocument();
+  expect(screen.getByTestId("resumen-escalar")).toBeInTheDocument();
+  expect(screen.getByText("Tinnidrop")).toBeInTheDocument();
+});
+
+test("con Todos las celdas se cuentan por mercado, cada uno aparte y nunca sumados", async () => {
+  montar();
+  const franja = await screen.findByTestId("resumen-por-mercado");
+  const banderas = within(franja).getAllByTestId("bandera-mercado");
+  expect(banderas.map((f) => f.textContent)).toEqual(["🇨🇴CO", "🇬🇹GT"]);
+  expect(franja.textContent).toContain("GT 2");
+  expect(franja.textContent).toContain("CO 1");
+  fireEvent.click(await screen.findByRole("button", { name: "🇬🇹 Guatemala" }));
+  await waitFor(() => expect(screen.queryByTestId("resumen-por-mercado")).not.toBeInTheDocument());
+});
+
+test("el mercado elegido se recuerda en localStorage y se recupera al volver", async () => {
+  const vista = montar();
+  fireEvent.click(await screen.findByRole("button", { name: "🇨🇴 Colombia" }));
+  expect(window.localStorage.getItem("vitalcom-mercado-v1")).toBe("CO");
+  vista.unmount();
+  montar();
+  const selector = await screen.findByTestId("selector-mercado");
+  await waitFor(() =>
+    expect(within(selector).getByRole("button", { name: "🇨🇴 Colombia" })).toHaveAttribute("aria-pressed", "true"),
+  );
+});
+
+test("sin localStorage la pantalla sigue andando en Todos", async () => {
+  const original = Storage.prototype.getItem;
+  Storage.prototype.getItem = () => {
+    throw new Error("bloqueado");
+  };
+  try {
+    montar();
+    expect(await screen.findByTestId("franja-hoy")).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Todos" })).toHaveAttribute("aria-pressed", "true");
+  } finally {
+    Storage.prototype.getItem = original;
+  }
+});
+
+test("una orden de Colombia escribe su dinero en pesos, sin decimales", async () => {
+  servirBase({
+    "/api/ordenes": {
+      ...ORDENES_BASE,
+      ordenes: [
+        {
+          ...ORDENES_BASE.ordenes[1],
+          producto_key: "OVULOS_PURITY",
+          mercado: "CO",
+          moneda_local: "COP",
+          simbolo: "$",
+          por_que: { cpa_real_q: 41000, break_even_q: 52500 },
+        },
+      ],
+    },
+  });
+  montar();
+  const tarjeta = await screen.findByTestId("tarjeta-orden");
+  expect(within(tarjeta).getByText("$ 41.000")).toBeInTheDocument();
+  expect(within(tarjeta).getByText("$ 52.500")).toBeInTheDocument();
+  expect(within(tarjeta).getByTestId("bandera-mercado")).toHaveTextContent("CO");
 });

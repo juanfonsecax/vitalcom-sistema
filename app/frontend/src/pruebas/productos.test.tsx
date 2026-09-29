@@ -25,6 +25,7 @@ const OVULOS = {
   estado: "NUEVO",
   cuenta_alias: "EXTERNA",
   moneda: "GTQ",
+  mercado: "CO", moneda_local: "COP", simbolo: "$",
   costo_q: "7000",
   precio_base_q: "",
   cpa_base_q: "",
@@ -42,6 +43,7 @@ const OVULOS = {
 const TINNIDROP = {
   ...OVULOS,
   producto_key: "TINNIDROP",
+  mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
   nombre_display: "Tinnidrop Importado Original",
   fase: "F2",
   nodo_actual: "F2.etapa-11",
@@ -113,8 +115,15 @@ function montar() {
   );
 }
 
+const MERCADOS = [
+  { mercado: "GT", pais: "Guatemala", moneda: "GTQ", simbolo: "Q" },
+  { mercado: "CO", pais: "Colombia", moneda: "COP", simbolo: "$" },
+];
+
 beforeEach(() => {
+  window.localStorage.clear();
   servir({
+    "/api/mercados": MERCADOS,
     "/api/productos": [OVULOS, TINNIDROP],
     "/api/productos/OVULOS_PURITY": FLUJO_OVULOS,
     "/api/productos/TINNIDROP": FLUJO_TINNIDROP,
@@ -258,4 +267,46 @@ test("ordenar por Fase cambia el orden de las filas", async () => {
 
   // F1 ordena antes que F2 (ascendente): OVULOS_PURITY pasa a ser la primera fila.
   expect(primeraFilaDeDatos()).toContain("OVULOS_PURITY");
+});
+
+// ── Multi-mercado (D2) ───────────────────────────────────────────────────────────────────────
+
+test("cada producto lleva su bandera y código de mercado junto al nombre", async () => {
+  montar();
+  const filaOvulos = (await screen.findByText("Óvulos Purity Hernatura")).closest("tr")!;
+  const filaTinnidrop = screen.getByText("Tinnidrop Importado Original").closest("tr")!;
+  expect(within(filaOvulos).getByTestId("bandera-mercado")).toHaveTextContent("🇨🇴CO");
+  expect(within(filaTinnidrop).getByTestId("bandera-mercado")).toHaveTextContent("🇬🇹GT");
+});
+
+test("el selector filtra el portafolio por mercado y «Todos» los devuelve", async () => {
+  montar();
+  await screen.findByText("Óvulos Purity Hernatura");
+  const selector = screen.getByTestId("selector-mercado");
+  expect(await within(selector).findByRole("button", { name: "🇬🇹 Guatemala" })).toBeInTheDocument();
+
+  fireEvent.click(within(selector).getByRole("button", { name: "🇬🇹 Guatemala" }));
+  expect(screen.queryByText("Óvulos Purity Hernatura")).not.toBeInTheDocument();
+  expect(screen.getByText("Tinnidrop Importado Original")).toBeInTheDocument();
+  expect(screen.getByText("1 producto · 1 frenado")).toBeInTheDocument();
+
+  fireEvent.click(within(selector).getByRole("button", { name: "🇨🇴 Colombia" }));
+  expect(screen.getByText("Óvulos Purity Hernatura")).toBeInTheDocument();
+  expect(screen.queryByText("Tinnidrop Importado Original")).not.toBeInTheDocument();
+
+  fireEvent.click(within(selector).getByRole("button", { name: "Todos" }));
+  expect(screen.getByText("Óvulos Purity Hernatura")).toBeInTheDocument();
+  expect(screen.getByText("Tinnidrop Importado Original")).toBeInTheDocument();
+});
+
+test("un mercado sin productos lo dice, sin fingir que el portafolio está vacío", async () => {
+  servir({
+    "/api/mercados": MERCADOS,
+    "/api/productos": [TINNIDROP],
+    "/api/productos/TINNIDROP": FLUJO_TINNIDROP,
+    "/api/decisiones": { generado: "2026-09-17", rezago_dias: 2, datos_hasta: "2026-09-15", resumen_acciones: {}, productos: [] },
+  });
+  window.localStorage.setItem("vitalcom-mercado-v1", "CO");
+  montar();
+  expect(await screen.findByText("No hay productos de este mercado.")).toBeInTheDocument();
 });

@@ -552,6 +552,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/mercados": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listar Mercados
+         * @description Los mercados del sistema (GT, CO...) con su moneda de venta, símbolo, tono y registro.
+         */
+        get: operations["listar_mercados_api_mercados_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos/{producto_key}": {
         parameters: {
             query?: never;
@@ -966,6 +986,11 @@ export interface components {
              * @default
              */
             clave: string;
+            /**
+             * Mercado
+             * @description mercado de venta (GT/CO): lo elige el operador, sin valor por defecto
+             */
+            mercado: string;
             /**
              * Cuenta
              * @default
@@ -1566,6 +1591,21 @@ export interface components {
             /** Producto Key */
             producto_key: string;
             /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
+            /**
              * Fase
              * @default
              */
@@ -1719,6 +1759,21 @@ export interface components {
              */
             estado_producto: string;
             /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
+            /**
              * Fase
              * @default
              */
@@ -1857,6 +1912,21 @@ export interface components {
              */
             angulo_ganador: string;
             siguiente_paso: components["schemas"]["GanadorPaso"];
+            /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
         } & {
             [key: string]: unknown;
         };
@@ -1988,6 +2058,43 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * Mercado
+         * @description Perfil de un mercado (`_DIM_MERCADOS.csv` + tasa de `_PARAMETROS_FINANZAS.csv`).
+         */
+        Mercado: {
+            /** Mercado */
+            mercado: string;
+            /**
+             * Pais
+             * @default
+             */
+            pais: string;
+            /**
+             * Moneda
+             * @default
+             */
+            moneda: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
+            /**
+             * Persona
+             * @default
+             */
+            persona: string;
+            /**
+             * Registro Sanitario
+             * @default
+             */
+            registro_sanitario: string;
+            /** Tasa Moneda Por Usd */
+            tasa_moneda_por_usd?: number | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** MiembroDePaso */
         MiembroDePaso: {
             /** Etapa */
@@ -2103,6 +2210,21 @@ export interface components {
              * @default []
              */
             conjuntos: string[];
+            /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
         } & {
             [key: string]: unknown;
         };
@@ -2388,6 +2510,21 @@ export interface components {
              * @default
              */
             moneda: string;
+            /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Moneda Local
+             * @default
+             */
+            moneda_local: string;
+            /**
+             * Simbolo
+             * @default
+             */
+            simbolo: string;
             /**
              * Costo Q
              * @default
@@ -3677,6 +3814,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    listar_mercados_api_mercados_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Mercado"][];
                 };
             };
         };

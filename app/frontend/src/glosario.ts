@@ -30,7 +30,7 @@ export const GLOSARIO = {
   },
   cpa: {
     rotulo: "CPA",
-    que_es: "Cuánto cuesta conseguir una venta. Se mide en quetzales por venta, nunca con ROAS.",
+    que_es: "Cuánto cuesta conseguir una venta. Se mide en la moneda del mercado, por venta, nunca con ROAS.",
     dueno: "decidir.py · _PARAMETROS_DECISION.csv",
   },
   break_even: {

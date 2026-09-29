@@ -94,18 +94,25 @@ def simular(desde, opt, par):
         pk = (r.get("producto_key") or "").strip()
         if pk:
             prods[pk] = (PA._num(r.get("cpa_be_q")), PA._num(r.get("cpa_base_q")),
-                         PA._num(r.get("tasa"), PA.TASA_DEFAULT) or PA.TASA_DEFAULT)
+                         PA._num(r.get("tasa"), None))
     fechas = sorted({f for m in serie.values() for f in m})
     dias = [f for f in fechas if f >= desde]
     vent = int(par["ventana_dias"])
     fat = int(par.get("ventana_fatiga_dias", 3))
 
     out = []
+    _sin_tasa = set()
     for t in dias:
         w0 = t - datetime.timedelta(days=vent - 1)
         f0 = t - datetime.timedelta(days=fat - 1)
         for (pk, ang), m in serie.items():
             if pk not in prods or not prods[pk][0]:
+                continue
+            if not prods[pk][2] or prods[pk][2] <= 0:      # sin tasa: se omite el producto, con aviso
+                if pk not in _sin_tasa:
+                    _sin_tasa.add(pk)
+                    print("AVISO backtest_politica: «%s» no declara `tasa` en _DIM_PRODUCTOS.csv: se "
+                          "OMITE (no hay tasa por defecto)." % pk, file=sys.stderr)
                 continue
             be, obj, tasa = prods[pk]
             win = [f for f in m if w0 <= f <= t]

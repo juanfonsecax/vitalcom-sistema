@@ -344,7 +344,7 @@ carpeta del producto). El texto del flujo resultante lo escribe `etapa-5`, y lle
 9. **Los dos brazos del A/B son gemelos del MISMO ángulo** y cambian una sola cosa por ventana: el
    flujo. Repartir ángulos distintos entre brazos compara ángulos, no flujos (70 % de falso ganador).
 10. **Todo cambio de flujo se loguea en `_EVENTOS.csv`** el día que se aplica.
-11. **Voseo guatemalteco** en toda propuesta de texto que vea el cliente.
+11. **Persona del mercado del producto** (voseo GT · tuteo CO; `persona` de `PRODUCTOS/_DIM_MERCADOS.csv`) en toda propuesta de texto que vea el cliente.
 12. **Los CSV se editan con escritor CSV real**, campos con comas entre comillas dobles.
 13. **Solo lectura sobre Meta y LucidBot.** Recomienda; el operador ejecuta.
 

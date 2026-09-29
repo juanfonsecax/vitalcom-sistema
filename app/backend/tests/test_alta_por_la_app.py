@@ -31,7 +31,11 @@ COLUMNAS_PRODUCTOS = [
     "cuenta_id", "page_id", "moneda", "tasa", "costo_q", "fila_costeo_q", "precio_base_q",
     "cpa_base_q", "cpa_be_q", "cpa_be_anterior_q", "notas", "carpeta_videos",
     "carpeta_transcripciones", "carpeta_media", "carpetas_extra", "clave_campana", "campaign_id",
+    "mercado",
 ]
+COLUMNAS_MERCADOS = ["mercado", "pais", "moneda", "simbolo", "persona", "registro_sanitario"]
+FILAS_MERCADOS = [["GT", "Guatemala", "GTQ", "Q", "voseo", "registro MSPAS"],
+                  ["CO", "Colombia", "COP", "$", "tuteo", "registro INVIMA"]]
 COLUMNAS_ENVASE = [
     "producto_key", "packshot", "color_envase", "color_hex", "marca_impresa",
     "formato_envase", "verificado_el", "fuente", "notas",
@@ -112,10 +116,15 @@ def sistema_falso(sistema_de_juguete: Path, monkeypatch) -> Path:
         pytest.skip("Postgres/vitalcom_test no disponible en este entorno: %s" % exc)
 
     shutil.copy2(_script_del_repo("alta_producto.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "alta_producto.py")
+    shutil.copy2(_script_del_repo("mercado.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "mercado.py")
     for nombre, columnas in (("_DIM_PRODUCTOS.csv", COLUMNAS_PRODUCTOS),
                              ("_DIM_ENVASE.csv", COLUMNAS_ENVASE)):
         with io.open(sistema_de_juguete / "PRODUCTOS" / nombre, "w", encoding="utf-8", newline="") as fh:
             csv.writer(fh).writerow(columnas)
+    with io.open(sistema_de_juguete / "PRODUCTOS" / "_DIM_MERCADOS.csv", "w", encoding="utf-8", newline="") as fh:
+        escritor = csv.writer(fh)
+        escritor.writerow(COLUMNAS_MERCADOS)
+        escritor.writerows(FILAS_MERCADOS)
     _bootstrap_producto_vacio(sistema_de_juguete / "PRODUCTOS")
     return sistema_de_juguete
 
@@ -126,7 +135,7 @@ def cliente_falso(sistema_falso: Path, cliente_juguete: TestClient) -> TestClien
 
 
 def _alta(cliente: TestClient, **extra):
-    datos = {"nombre": "Crema Varices Plus", "costo": "60", "descripcion": DESCRIPCION, **extra}
+    datos = {"nombre": "Crema Varices Plus", "costo": "60", "descripcion": DESCRIPCION, "mercado": "GT", **extra}
     return cliente.post(
         "/api/productos",
         data=datos,
@@ -149,6 +158,7 @@ def test_el_alta_crea_fila_carpeta_y_packshot(cliente_falso, sistema_falso):
     fila = dict(zip(filas[0], filas[1]))
     assert fila["estado"] == "NUEVO"
     assert fila["costo_q"] == "60"
+    assert fila["mercado"] == "GT"
     assert len(filas[1]) == len(filas[0]), "la fila tiene que tener las columnas del encabezado"
 
     packshot = sistema_falso / "Ads" / "MEDIA_CREMAVARICESPLUS" / "CREMA_VARICES_PLUS_PACKSHOT.png"
@@ -158,6 +168,23 @@ def test_el_alta_crea_fila_carpeta_y_packshot(cliente_falso, sistema_falso):
 
     datos = sistema_falso / "PRODUCTOS" / "CREMA_VARICES_PLUS" / "2_DATA_PRODUCTO.txt"
     assert DESCRIPCION[:50] in datos.read_text(encoding="utf-8")
+
+
+def test_el_alta_de_un_producto_de_colombia_guarda_su_mercado(cliente_falso, sistema_falso):
+    assert _alta(cliente_falso, mercado="CO").status_code == 201
+    filas = _filas(sistema_falso, "_DIM_PRODUCTOS.csv")
+    assert dict(zip(filas[0], filas[1]))["mercado"] == "CO"
+
+
+def test_el_alta_exige_mercado_y_no_asume_uno(cliente_falso, sistema_falso):
+    """Sin mercado (o con uno que no existe) no hay alta ni fila: el operador elige GT o CO."""
+    datos = {"nombre": "Crema Varices Plus", "costo": "60", "descripcion": DESCRIPCION}
+    archivos = {"imagen": ("foto.png", b"\x89PNG\r\n\x1a\n" + b"0" * 64, "image/png")}
+    sin = cliente_falso.post("/api/productos", data=datos, files=archivos)
+    assert sin.status_code == 422, sin.text
+    desconocido = _alta(cliente_falso, mercado="MX")
+    assert desconocido.status_code == 422 and "MX" in str(desconocido.json()), desconocido.text
+    assert len(_filas(sistema_falso, "_DIM_PRODUCTOS.csv")) == 1, "solo el encabezado"
 
 
 def test_el_alta_no_escribe_cifras_de_costeo(cliente_falso, sistema_falso):

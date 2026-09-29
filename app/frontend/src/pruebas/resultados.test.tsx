@@ -6,7 +6,7 @@
  * todavía un export, y que un error real (no un 404 de "no hay carga") se muestra como falla,
  * no como estado vacío.
  */
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { beforeEach, expect, test, vi } from "vitest";
 import { Resultados } from "../pantallas/Resultados";
@@ -110,6 +110,11 @@ const RESULTADOS_SIN_BANCO = {
   },
 };
 
+const MERCADOS = [
+  { mercado: "GT", pais: "Guatemala", moneda: "GTQ", simbolo: "Q" },
+  { mercado: "CO", pais: "Colombia", moneda: "COP", simbolo: "$" },
+];
+
 function servir(respuestas: Record<string, unknown | { estado: number }>) {
   vi.stubGlobal(
     "fetch",
@@ -138,7 +143,8 @@ function montar() {
 }
 
 beforeEach(() => {
-  servir({ "/api/resultados/historial": [] });
+  window.localStorage.clear();
+  servir({ "/api/resultados/historial": [], "/api/mercados": MERCADOS });
 });
 
 test("sin carga previa muestra el estado vacío, no un error", async () => {
@@ -248,4 +254,29 @@ test("sin extracto bancario, la caja termina en 'Caja antes de publicidad' y no 
   expect(await screen.findByText("Caja antes de publicidad")).toBeInTheDocument();
   expect(screen.queryByText("Caja que generó el negocio")).not.toBeInTheDocument();
   expect(screen.queryByText("Caja que quedó en la cuenta")).not.toBeInTheDocument();
+});
+
+// ── Multi-mercado (D2) ───────────────────────────────────────────────────────────────────────
+
+test("el estado de resultados se rotula como el de Guatemala, con su bandera y su moneda", async () => {
+  servir({ "/api/resultados": RESULTADOS_MADURO, "/api/resultados/historial": [RESULTADOS_MADURO], "/api/mercados": MERCADOS });
+  montar();
+  const rotulo = await screen.findByTestId("mercado-de-resultados");
+  expect(rotulo).toHaveTextContent("🇬🇹GT");
+  expect(rotulo).toHaveTextContent("Guatemala · cifras en GTQ");
+});
+
+test("con Colombia elegida no se muestra ninguna cifra: estado pendiente honesto", async () => {
+  servir({ "/api/resultados": RESULTADOS_MADURO, "/api/resultados/historial": [RESULTADOS_MADURO], "/api/mercados": MERCADOS });
+  montar();
+  await screen.findByText("Margen logístico");
+  fireEvent.click(await screen.findByRole("button", { name: "🇨🇴 Colombia" }));
+  const pendiente = await screen.findByTestId("resultados-pendientes");
+  expect(pendiente).toHaveTextContent("Resultados de");
+  expect(pendiente).toHaveTextContent("Colombia: pendiente");
+  expect(pendiente).toHaveTextContent("Se cargan desde tus exports manuales");
+  expect(screen.queryByText("Margen logístico")).not.toBeInTheDocument();
+  expect(screen.queryByText(/Q\s?6,000/)).not.toBeInTheDocument();
+  expect(screen.queryByTestId("mercado-de-resultados")).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: /calcular el p&l/i })).not.toBeInTheDocument();
 });

@@ -23,6 +23,11 @@ models:
           - relationships:
               to: ref('stg_vocabulario_estado_producto')
               field: valor
+      - name: mercado
+        description: >
+          Mercado de venta (GT/CO, PRODUCTOS/_DIM_MERCADOS.csv). De el salen moneda de venta, tono y
+          registro sanitario; un producto sin mercado no se mide (no hay GT por defecto).
+        data_tests: [not_null]
       - name: cpa_be_q
         description: Break-even. Sin el no hay decision posible sobre ningun producto VIVO.
         data_tests:
@@ -69,9 +74,15 @@ models:
           No es un error de datos: es una alerta de negocio, por eso no falla el build.
 
   - name: fct_conjunto_dia
-    description: Hecho diario por conjunto. La base de toda decision de pausar/escalar.
+    description: >
+      Hecho diario por conjunto. La base de toda decision de pausar/escalar. Lleva `mercado`: total_q
+      esta en la moneda LOCAL de cada mercado, asi que cualquier rollup entre productos se agrupa por
+      mercado y nunca suma GT con CO.
     columns:
       - name: fecha
+        data_tests: [not_null]
+      - name: mercado
+        description: Mercado del producto (stg_productos.mercado).
         data_tests: [not_null]
       - name: ventas
         data_tests: [not_null]

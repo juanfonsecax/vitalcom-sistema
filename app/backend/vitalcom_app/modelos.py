@@ -23,7 +23,11 @@ class Producto(Base):
     nombre_display: str = ""
     estado: str = ""
     cuenta_alias: str = ""
-    moneda: str = ""
+    moneda: str = ""  # la de la CUENTA publicitaria (Meta cobra en ella), no la de venta
+    # Mercado de venta (GT/CO) y de él la moneda y el símbolo en que el producto vende.
+    mercado: str = ""
+    moneda_local: str = ""
+    simbolo: str = ""
     # Los montos viajan como el CSV los escribe: texto, sin convertir ni redondear.
     costo_q: str = ""
     precio_base_q: str = ""
@@ -68,6 +72,9 @@ class Flujo(Base):
     producto_key: str
     nombre: str = ""
     estado_producto: str = ""
+    mercado: str = ""
+    moneda_local: str = ""
+    simbolo: str = ""
     fase: str = ""
     fase_titulo: str = ""
     nodo_actual: str = ""
@@ -83,6 +90,18 @@ class Flujo(Base):
     ordenes: list[Any] = []
     avance: dict[str, Any] | None = None
     motor: dict[str, Any] | None = None
+
+
+class Mercado(Base):
+    """Perfil de un mercado (`_DIM_MERCADOS.csv` + tasa de `_PARAMETROS_FINANZAS.csv`)."""
+
+    mercado: str
+    pais: str = ""
+    moneda: str = ""
+    simbolo: str = ""
+    persona: str = ""
+    registro_sanitario: str = ""
+    tasa_moneda_por_usd: float | None = None
 
 
 class Salud(Base):
@@ -451,6 +470,11 @@ class OrdenItem(Base):
     bloqueo_fase: str | None = None
     ejecutable: bool = True
     conjuntos: list[str] = []
+    # Mercado del producto de la orden (resolver `Ads/_TOOLS/mercado.py`): el frontend formatea el
+    # dinero con esto, nunca lo deduce del `producto_key`.
+    mercado: str = ""
+    moneda_local: str = ""
+    simbolo: str = ""
 
 
 class PendienteRegistro(Base):
@@ -507,6 +531,9 @@ class Ganador(Base):
     nodo_actual: str = ""
     angulo_ganador: str = ""
     siguiente_paso: GanadorPaso
+    mercado: str = ""
+    moneda_local: str = ""
+    simbolo: str = ""
 
 
 class GenerarPrompts(Base):
@@ -600,6 +627,9 @@ class Fase2Detalle(Base):
     órdenes del motor. `angulo_ganador` es el `angulo_key` del #1 (vacío si aún no hay ganador)."""
 
     producto_key: str
+    mercado: str = ""
+    moneda_local: str = ""
+    simbolo: str = ""
     fase: str = ""
     nodo_actual: str = ""
     angulo_ganador: str = ""

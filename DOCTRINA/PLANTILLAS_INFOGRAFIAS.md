@@ -1,4 +1,4 @@
-# PLANTILLAS INFOGRAFÍAS — SISTEMA VITALCOM GUATEMALA
+# PLANTILLAS INFOGRAFÍAS — SISTEMA VITALCOM
 
 ## INSTRUCCIONES DE USO
 Estas 4 plantillas son el sistema de infografías definitivo y validado.
@@ -81,7 +81,7 @@ Solo reemplazar los valores entre `[ ]` con los datos del producto actual.
 | [MOMENTO_USO_SUBTEXTO] | Operador (ej: "30 min antes de dormir", "con el desayuno") |
 | [ICONO_MOMENTO_3D] | Relativo al momento (ej: "Luna creciente 3D", "Sol cálido 3D radiante") |
 | [HEADLINE_CLINICO] | ETAPA-2 (promesa + días, ej: "RESULTADOS CLÍNICOS EN 30 DÍAS") |
-| [PORCENTAJE_1] | Estadística de COMPORTAMIENTO DEL CLIENTE — usar ratio ("4 de cada 5"), puntuación ("4.9/5") o porcentaje ≥98.X% con decimal. NUNCA porcentaje de eficacia clínica entre 70-90%: activa efecto-falla en el consumidor guatemalteco. |
+| [PORCENTAJE_1] | Estadística de COMPORTAMIENTO DEL CLIENTE — usar ratio ("4 de cada 5"), puntuación ("4.9/5") o porcentaje ≥98.X% con decimal. NUNCA porcentaje de eficacia clínica entre 70-90%: activa efecto-falla en el consumidor. |
 | [STAT_1_DESCRIPCION] | ETAPA-2 — redactar como comportamiento o experiencia del cliente, no como resultado médico |
 | [PORCENTAJE_2] | Estadística de VELOCIDAD o RECOMPRA — usar tiempo ("Resultados en 21 días"), ratio de recompra ("9 de cada 10 repiten") o % satisfacción ≥98% con decimal. Evitar porcentajes clínicos de eficacia sin respaldo verificable. |
 | [STAT_2_DESCRIPCION] | ETAPA-2 |

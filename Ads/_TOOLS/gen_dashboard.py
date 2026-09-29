@@ -27,21 +27,23 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 P    = os.path.join(ROOT, "PRODUCTOS")
 OUT  = os.path.join(P, "_DASHBOARD.html")
 
-# ── TASA USD→Q: sale de _PARAMETROS_FINANZAS.csv, NUNCA hardcodeada ──────
-# Regla 20 de CLAUDE.md: un dato, un dueño. Si la tasa cambia se toca UN csv
-# y todos los scripts la toman; hardcodearla en tres lugares garantiza que un
-# dia digan cosas distintas.
-def _tasa_usd_gtq(_default=7.62):
-    import csv as _csv, io as _io, os as _os
-    _p = _os.path.join(P, "_PARAMETROS_FINANZAS.csv")
-    if _os.path.exists(_p):
-        for _r in _csv.DictReader(_io.open(_p, encoding="utf-8")):
-            if _r.get("parametro") == "tasa_usd_gtq" and _r.get("valor"):
-                return float(_r["valor"])
-    return _default
+# ── MONEDA: este tablero es de UN mercado (GT, quetzales) ─────────────────
+# Un dato, un dueño. La tasa USD→moneda local es la DEL PRODUCTO (`_DIM_PRODUCTOS.tasa`, `tasa_pk`):
+# no hay tasa por defecto y un producto que gasta sin tasa DETIENE el build nombrándolo. El dinero de
+# mercados distintos no se suma: los productos de otro mercado no entran a este tablero (se avisa por
+# stderr y en el pie). `TASA_REF` es la tasa de REFERENCIA del mercado (_PARAMETROS_FINANZAS.csv) y
+# solo convierte cifras a nivel CUENTA de Meta (`_FACT_PAUTA_REAL`), que no pertenecen a un producto.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado  # noqa: E402
 
-
-TASA = _tasa_usd_gtq()
+MERCADO_DASH = "GT"
+# Gasto mínimo (Q) para que una cuenta cuente como "gasta de verdad" en las reglas I/J: umbral del
+# tablero GT, en quetzales (no es un break-even de ningún producto).
+PISO_GASTO_Q = 60.5
+_perfil = mercado.perfil_mercado(MERCADO_DASH, ROOT)
+TASA_REF = _perfil["tasa_moneda_por_usd"]
+if not TASA_REF:
+    raise mercado.MercadoError("_PARAMETROS_FINANZAS.csv no declara la tasa del mercado %s." % MERCADO_DASH)
 
 
 def load(name):
@@ -70,12 +72,46 @@ def i(x, d=0):
 
 
 # ── umbrales por producto: salen de _DIM_PRODUCTOS.csv, nunca hardcodeados ──
-prods = {p_["producto_key"]: p_ for p_ in load("_DIM_PRODUCTOS.csv")}
+_prods_todos = {p_["producto_key"]: p_ for p_ in load("_DIM_PRODUCTOS.csv")}
+_mercado_de = {k: mercado.mercado_de_fila(v, ROOT) for k, v in _prods_todos.items()}   # sin mercado: se detiene
+prods = {k: v for k, v in _prods_todos.items() if _mercado_de[k] == MERCADO_DASH}
+_otros = {k: m for k, m in _mercado_de.items() if m != MERCADO_DASH}
+if _otros:
+    print("AVISO gen_dashboard: este tablero es del mercado %s; NO incluye: %s (su dinero no se suma a "
+          "esta moneda)." % (MERCADO_DASH, ", ".join("%s [%s]" % (k, m) for k, m in sorted(_otros.items()))),
+          file=sys.stderr)
+_cuentas_otros = ({(v.get("cuenta_alias") or "").strip() for k, v in _prods_todos.items() if k in _otros}
+                  - {(v.get("cuenta_alias") or "").strip() for v in prods.values()})
 BE = {k: float(v["cpa_be_q"]) for k, v in prods.items() if v.get("cpa_be_q")}
 BASE_CPA = {k: float(v["cpa_base_q"]) for k, v in prods.items() if v.get("cpa_base_q")}
 BE_ANT = {k: float(v["cpa_be_anterior_q"]) for k, v in prods.items() if v.get("cpa_be_anterior_q")}
 costeo = load("_DIM_COSTEO.csv")
 tasa_ent = load("_TASA_ENTREGA.csv")
+
+
+def tasa_pk(pk):
+    """Tasa USD→Q DEL producto. TasaFaltante (nombrándolo) si no la declara."""
+    return mercado.tasa_de_fila(prods[pk])
+
+
+def pq(r):
+    """Gasto (spend_usd) de una fila de ventas en Q, con la tasa de SU producto."""
+    usd = f(r["spend_usd"])
+    return usd * tasa_pk(r["producto_key"]) if usd else 0.0
+
+
+def be_de(pk):
+    if pk not in BE:
+        raise mercado.MercadoError("«%s» no declara cpa_be_q en _DIM_PRODUCTOS.csv ni tiene precios para "
+                                   "derivarlo: no hay break-even por defecto." % pk)
+    return BE[pk]
+
+
+def base_de(pk):
+    if pk not in BASE_CPA:
+        raise mercado.MercadoError("«%s» no declara cpa_base_q en _DIM_PRODUCTOS.csv: no hay CPA "
+                                   "objetivo por defecto." % pk)
+    return BASE_CPA[pk]
 
 # ═════════════════════════════════════════════════════════════════════════
 # ECONOMÍA UNITARIA REAL — desde _DIM_PRECIOS.csv + _TASA_ENTREGA.csv
@@ -261,13 +297,22 @@ def contribucion(r):
         return 0.0
     c = escalon(r["producto_key"], f(r["total_q"]) / v)
     if c is None:                                   # producto sin escalera aún
-        return v * BE.get(r["producto_key"], 60.5)
+        return v * be_de(r["producto_key"])
     return v * c
 
 
+# Filas de ventas del mercado de este tablero. Un producto con ventas y sin fila en _DIM_PRODUCTOS
+# (o sin mercado) detiene el build nombrándolo.
+_fv = load("_FACT_VENTAS.csv")
+_desconocidos = sorted({r["producto_key"] for r in _fv} - set(_prods_todos))
+if _desconocidos:
+    raise mercado.MercadoError("_FACT_VENTAS.csv tiene ventas de %s sin fila en _DIM_PRODUCTOS.csv."
+                               % ", ".join("«%s»" % k for k in _desconocidos))
+_fv = [r for r in _fv if r["producto_key"] in prods]
+
 # break-even real por producto = contribución ponderada por el mix VENDIDO
 _mix = collections.defaultdict(lambda: [0.0, 0])
-for r in load("_FACT_VENTAS.csv"):
+for r in _fv:
     if r.get("rol_ventana") != "BASE" or not i(r["ventas"]):
         continue
     _mix[r["producto_key"]][0] += contribucion(r); _mix[r["producto_key"]][1] += i(r["ventas"])
@@ -276,7 +321,7 @@ BE_VIEJO = dict(BE)
 for k, v in BE_REAL.items():                        # el BE real manda
     BE[k] = v
 
-ventas   = [r for r in load("_FACT_VENTAS.csv") if r.get("rol_ventana") == "BASE"]
+ventas   = [r for r in _fv if r.get("rol_ventana") == "BASE"]
 entrega  = load("_FACT_ENTREGA.csv")
 # Un conjunto renombrado en Meta es el mismo objeto: ventas y dimensión se cruzan por el nombre
 # canónico de _ALIAS_CONJUNTOS.csv, o el nombre nuevo pierde su ángulo en todo el tablero.
@@ -309,12 +354,12 @@ for r in ventas:
 
 filas_pl, T = [], [0.0, 0, 0.0, 0.0]
 for k, (s, v, ing, contrib) in pl.items():
-    g = s * TASA
-    be = BE.get(k, 60.5)
+    g = s * tasa_pk(k)
+    be = be_de(k)
     gan = contrib - g          # contribución real de cada pedido − pauta
     cpa = g / v if v else None
     filas_pl.append({"producto": k, "ventas": v, "pauta": g, "ingreso": ing,
-                     "cpa": cpa, "be": be, "base": BASE_CPA.get(k, 30.8), "ganancia": gan})
+                     "cpa": cpa, "be": be, "base": base_de(k), "ganancia": gan})
     T[0] += g; T[1] += v; T[2] += ing; T[3] += gan
 filas_pl.sort(key=lambda x: -x["ganancia"])
 
@@ -343,8 +388,8 @@ for r in ventas:
 
 filas_ang = []
 for (pk, ak), (s, v, ing, ctas, hooks) in ang.items():
-    g = s * TASA
-    be, base = BE.get(pk, 60.5), BASE_CPA.get(pk, 30.8)
+    g = s * tasa_pk(pk)
+    be, base = be_de(pk), base_de(pk)
     cpa = g / v if v else None
     if cpa is None:
         est = "sub-testeado" if g < be else "sin ventas"
@@ -370,7 +415,7 @@ sangrado, sub = [], []
 for (pk, ca, cj), (s, v) in conj.items():
     if v:
         continue
-    g, be = s * TASA, BE.get(pk, 60.5)
+    g, be = s * tasa_pk(pk), be_de(pk)
     d = dim.get((pk, cj), {})
     row = {"producto": pk, "cuenta": ca, "conjunto": cj, "pauta": g,
            "pd": round(100 * g / be), "angulo": d.get("angulo_key", "—")}
@@ -401,7 +446,7 @@ def calcular_semanas(filas_base):
         n = max(i(r.get("dias"), 1), 1)
         d0 = datetime.date.fromisoformat(ini)
         parte = (i(r["ventas"]) / n, f(r["total_q"]) / n,
-                 f(r["spend_usd"]) * TASA / n, contribucion(r) / n)
+                 pq(r) / n, contribucion(r) / n)
         for k in range(n):
             s = sem[_semana_de((d0 + datetime.timedelta(days=k)).isoformat())]
             s["dias"].add((d0 + datetime.timedelta(days=k)).isoformat())
@@ -457,6 +502,7 @@ cj = collections.defaultdict(lambda: {"sp": 0.0, "v": 0, "msj": 0, "clk": 0,
 for r in ventas:
     k = (r["producto_key"], r["cuenta_alias"], r["conjunto"])
     c = cj[k]
+    c["t"] = tasa_pk(r["producto_key"])          # tasa USD→Q del producto de este conjunto
     c["sp"] += f(r["spend_usd"]); c["v"] += i(r["ventas"])
     c["msj"] += i(r["mensajes"]); c["clk"] += i(r["clicks"])
     c["campana"] = r.get("campana") or c["campana"]
@@ -467,14 +513,14 @@ for r in ventas:
 def ritmo_sem(c):
     """Q/semana al ritmo de los últimos 3 días con data."""
     d = [v[0] for k_, v in c["dias"].items() if k_ in ult3]
-    return (sum(d) / max(len(d), 1)) * 7 * TASA if d else 0.0
+    return (sum(d) / max(len(d), 1)) * 7 * c["t"] if d else 0.0
 
 
 def dias_sobre_pd(c, be):
     """Cuántos días lleva gastando por encima de su PD sin vender."""
     acum, n = 0.0, 0
     for dd in sorted(c["dias"]):
-        acum += c["dias"][dd][0] * TASA
+        acum += c["dias"][dd][0] * c["t"]
         if acum >= be and c["v"] == 0:
             n += 1
     return n
@@ -489,7 +535,7 @@ def conv(c):
 conv_prod = collections.defaultdict(list)
 for (pk, ca, cn), c in cj.items():
     x = conv(c)
-    if x is not None and c["sp"] * TASA > 20:
+    if x is not None and c["sp"] * c["t"] > 20:
         conv_prod[pk].append(x)
 
 
@@ -644,7 +690,7 @@ for pk, meta in prods.items():
         continue
     hist = [x for x in filas_pl if x["producto"] == pk]
     cpa_h = hist[0]["cpa"] if hist and hist[0]["cpa"] else None
-    be = BE.get(pk, 60.5)
+    be = be_de(pk)
     desde = ult_gasto_dia.get(pk)
     ndias = "—"
     if desde and ult_dia:
@@ -732,10 +778,10 @@ if len(dias_data) >= 2:
             _cta_now[ca] += f(r["spend_usd"])
         elif r["ventana_fin"] in _prev:
             x = _cta_prev[ca]
-            x[0] += f(r["spend_usd"]) * TASA
+            x[0] += pq(r)
             x[1] += i(r["ventas"])
             x[2] += contribucion(r)
-    _be_med = mediana(list(BE.values())) or 60.5
+    _be_med = mediana(list(BE.values())) or PISO_GASTO_Q
     for ca, (_gq, _v, _c) in sorted(_cta_prev.items(), key=lambda x: -x[1][0]):
         if _gq < _be_med:                      # no gastaba de verdad
             continue
@@ -770,7 +816,7 @@ for r in ventas:
     if not d:
         continue
     k = (r["producto_key"], d["angulo_key"])
-    _ang_tot[k][0] += f(r["spend_usd"]) * TASA
+    _ang_tot[k][0] += pq(r)
     _ang_tot[k][1] += i(r["ventas"])
 
 
@@ -786,28 +832,28 @@ def _angulo_sano(pk, cn):
     if not ak:
         return False
     g, v = _ang_tot.get((pk, ak), [0.0, 0])
-    return bool(v) and (g / v) < BE.get(pk, 60.5)
+    return bool(v) and (g / v) < be_de(pk)
 
 
 # ── A) matar-por-ventas ──────────────────────────────────────────────────
 for (pk, ca, cn), c in sorted(cj.items(), key=lambda x: -x[1]["sp"]):
-    if c["v"] or c["sp"] * TASA < BE.get(pk, 60.5):
+    if c["v"] or c["sp"] * c["t"] < be_de(pk):
         continue
     if _angulo_sano(pk, cn):
         continue          # el ángulo vende bajo BE: este cero es Poisson, no señal
-    be = BE.get(pk, 60.5)
+    be = be_de(pk)
     activo = any(d in ult3 and c["dias"][d][0] > 0 for d in c["dias"])
     nd = dias_sobre_pd(c, be)
     add(1 if activo else 3, "APAGAR", "crit", "Apagar este conjunto",
         donde_conjunto(pk, ca, cn),
         "gastó {} (={}% de su presupuesto de decisión) y no vendió ni una vez"
-        .format(q(c["sp"] * TASA), round(100 * c["sp"] * TASA / be)),
+        .format(q(c["sp"] * c["t"]), round(100 * c["sp"] * c["t"] / be)),
         ritmo_sem(c),
         "sigue gastando · {} día{} así".format(nd, "s" if nd != 1 else "") if activo else "ya no gasta")
 
 # ── B) matar-por-conversación ────────────────────────────────────────────
 for (pk, ca, cn), c in sorted(cj.items(), key=lambda x: -x[1]["sp"]):
-    if c["v"] or c["sp"] * TASA >= BE.get(pk, 60.5) or c["sp"] * TASA < 20:
+    if c["v"] or c["sp"] * c["t"] >= be_de(pk) or c["sp"] * c["t"] < 20:
         continue
     x, med = conv(c), mediana(conv_prod.get(pk, []))
     if x is None or med is None or x >= med * 0.6:
@@ -839,7 +885,8 @@ for r in ventas:
 # Comparar cuentas sin normalizar por cobertura es comparar peras con manzanas.
 _cob_cta = {}
 try:
-    _pr_early = load("_FACT_PAUTA_REAL.csv")
+    _pr_early = [r for r in load("_FACT_PAUTA_REAL.csv")
+                 if (r.get("cuenta_alias") or "").strip() not in _cuentas_otros]
 except Exception:
     _pr_early = []
 for _r in _pr_early:
@@ -849,8 +896,8 @@ for _r in _pr_early:
 
 por_ang = collections.defaultdict(list)
 for (pk, ak, ca), (s, v) in ang_cta.items():
-    g = s * TASA
-    if g < 0.5 * BE.get(pk, 60.5):
+    g = s * tasa_pk(pk)
+    if g < 0.5 * be_de(pk):
         continue
     cob = _cob_cta.get(ca, 1.0)
     g_real = g / cob                       # gasto que Meta cobró de verdad
@@ -879,8 +926,8 @@ for (pk, ak), lst in por_ang.items():
 for (pk, ca, cn), c in sorted(cj.items(), key=lambda x: -x[1]["v"]):
     if c["v"] < 2:
         continue
-    g = c["sp"] * TASA; cpa = g / c["v"]
-    be, base = BE.get(pk, 60.5), BASE_CPA.get(pk, 30.8)
+    g = c["sp"] * c["t"]; cpa = g / c["v"]
+    be, base = be_de(pk), base_de(pk)
     if cpa > base:
         continue
     if not any(d in ult3 and c["dias"][d][0] > 0 for d in c["dias"]):
@@ -896,7 +943,7 @@ pauta_prod = collections.defaultdict(float)
 for x in filas_ang:
     pauta_prod[x["producto"]] += x["pauta"]
 for x in filas_ang:
-    if not x["cpa"] or x["cpa"] > BASE_CPA.get(x["producto"], 30.8) or x["ventas"] < 3:
+    if not x["cpa"] or x["cpa"] > base_de(x["producto"]) or x["ventas"] < 3:
         continue
     share = x["pauta"] / pauta_prod[x["producto"]] if pauta_prod[x["producto"]] else 1
     if share >= 0.15:
@@ -941,13 +988,13 @@ for r in ventas:
 _cand = []
 for (pk, cam), c in camp.items():
     n = len(c["conc"])
-    if c["sp"] * TASA < 150 or n >= 8:
+    if c["sp"] * tasa_pk(pk) < 150 or n >= 8:
         continue
     if _camp_viva and _norm(cam) not in _camp_viva:
         continue                      # campaña apagada: sumarle creativos no hace nada
     if _norm(cam) in _PAUSAS_CAMP_N:
         continue
-    _cand.append(((8 - n) * c["sp"] * TASA, pk, cam, c, n))
+    _cand.append(((8 - n) * c["sp"] * tasa_pk(pk), pk, cam, c, n))
 
 for _, pk, cam, c, n in sorted(_cand, reverse=True)[:3]:
     add(3, "CREATIVOS", "warn", "Sumar {} concepto{} distinto{}".format(
@@ -980,7 +1027,7 @@ for r in ventas:
     if r["ventana_fin"] not in ult3:
         continue
     a = _cta_ult[r.get("cuenta_alias") or "?"]
-    a[0] += f(r["spend_usd"]) * TASA
+    a[0] += pq(r)
     a[1] += i(r["ventas"])
     a[2] += contribucion(r)
 
@@ -988,7 +1035,7 @@ _g_tot = sum(x[0] for x in _cta_ult.values())
 _v_tot = sum(x[1] for x in _cta_ult.values())
 _cpa_port = (_g_tot / _v_tot) if _v_tot else None
 for _ca, (_g, _v, _c) in sorted(_cta_ult.items(), key=lambda x: x[1][2] - x[1][0]):
-    if _g < 60.5 or _c - _g >= 0:              # gasta poco, o no pierde plata
+    if _g < PISO_GASTO_Q or _c - _g >= 0:              # gasta poco, o no pierde plata
         continue
     if not _cpa_port:
         continue
@@ -1035,7 +1082,7 @@ for r in ventas:
     d = dim.get((r["producto_key"], r["conjunto"]))
     if not d:
         continue
-    _gq = f(r["spend_usd"]) * TASA
+    _gq = pq(r)
     a = _ang_ult[(r["producto_key"], d["angulo_key"])]
     a[0] += _gq
     a[1] += i(r["ventas"])
@@ -1043,7 +1090,7 @@ for r in ventas:
     _ang_ult_cta[(r["producto_key"], d["angulo_key"])][r.get("cuenta_alias") or "?"] += _gq
 
 for (_pk, _ak), (_g, _v, _c) in sorted(_ang_ult.items(), key=lambda x: x[1][2] - x[1][0]):
-    _be = BE.get(_pk, 60.5)
+    _be = be_de(_pk)
     if _v <= 0:                       # el cero ya lo cubren A) y B)
         continue
     if _g < _be:                      # gasto no material todavia: sigue bajo su PD
@@ -1101,7 +1148,7 @@ for r in ventas:
     if not _e or _e == "—":
         continue
     x = _edad[(r["producto_key"], _e)]
-    x[0] += f(r["spend_usd"]) * TASA
+    x[0] += pq(r)
     x[1] += i(r["mensajes"])
     x[2] += i(r["ventas"])
 
@@ -1112,7 +1159,7 @@ for (_pk, _e), v in _edad.items():
 for _pk, _bandas in sorted(_por_prod.items()):
     if len(_bandas) < 2:
         continue
-    _be = BE.get(_pk, 60.5)
+    _be = be_de(_pk)
     _val = [(e, v) for e, v in _bandas if v[1] >= 25]       # bandas con muestra
     if len(_val) < 2:
         continue
@@ -1153,7 +1200,7 @@ if len(dias_data) >= 2:
     for r in ventas:
         k = (r["ventana_ini"], r["ventana_fin"])
         a = _w[k]
-        a[0] += f(r["spend_usd"]) * TASA
+        a[0] += pq(r)
         a[1] += i(r["ventas"])
         a[2] += contribucion(r)
         a[3] = max(a[3], i(r.get("dias"), 1) or 1)
@@ -1204,7 +1251,7 @@ for (_tid, _tpk, _tang, _tfi, _tnom), _brazos in sorted(_tests.items()):
             continue
         d = dim.get((r["producto_key"], r["conjunto"]))
         if d and d.get("angulo_key") == _tang:
-            _sp += f(r["spend_usd"]) * TASA
+            _sp += pq(r)
     if _sp >= 1.0:                                  # arranco: hay gasto real
         continue
     _dias = 0
@@ -1276,11 +1323,11 @@ if ult_dia:
 # se evaluó. Por eso va a prioridad 0, una banda por ENCIMA de "hoy", donde no
 # ordena por magnitud y no puede ser desplazada por ninguna cifra.
 if falt >= 3 and ult3:
-    _sp = sum(f(r["spend_usd"]) for r in ventas if r["ventana_fin"] in ult3)
+    _sp = sum(pq(r) for r in ventas if r["ventana_fin"] in ult3)
     _dd = sum(i(r["dias"], 1) for r in ventas if r["ventana_fin"] in ult3 and r["conjunto"])
     _pts = sum(i(d, 1) for d in
                {r["ventana_fin"]: r["dias"] for r in ventas if r["ventana_fin"] in ult3}.values())
-    _pauta_dia = (_sp * TASA / _pts) if _pts else 0.0
+    _pauta_dia = (_sp / _pts) if _pts else 0.0
     add(0, "DATA", "crit", "El dashboard ya no distingue maduración de caída",
         "{} días sin export · último cierre {}".format(falt, ult_dia),
         "el hueco ({}d) igualó al ciclo de maduración de la COD (~3d): un ángulo en cero "
@@ -1327,8 +1374,8 @@ def corte(col, pk=None):
         if not d:
             continue
         k = d.get(col) or "—"
-        a[k][0] += f(r["spend_usd"]); a[k][1] += i(r["ventas"])
-    out = [{"k": k, "v": v, "g": s * TASA, "cpa": (s * TASA / v) if v else None} for k, (s, v) in a.items()]
+        a[k][0] += pq(r); a[k][1] += i(r["ventas"])
+    out = [{"k": k, "v": v, "g": s, "cpa": (s / v) if v else None} for k, (s, v) in a.items()]
     return sorted(out, key=lambda x: (x["cpa"] is None, x["cpa"] or 0))
 
 cortes = [("Emoción dominante", "emocion_dominante", "qué SIENTE el que compra"),
@@ -1350,8 +1397,8 @@ for r in ventas:
 
 filas_dia = []
 for (fecha, pk, dias), (sp, v, ing, contrib) in sorted(dia.items(), reverse=True):
-    g = sp * TASA
-    be, base = BE.get(pk, 60.5), BASE_CPA.get(pk, 30.8)
+    g = sp * tasa_pk(pk)
+    be, base = be_de(pk), base_de(pk)
     cpa = g / v if v else None
     gan = contrib - g
     if cpa is None:
@@ -2098,7 +2145,7 @@ footer code{font-family:var(--mono)}
 <footer>
   Generado por <code>Ads/_TOOLS/gen_dashboard.py</code> desde <code>_FACT_VENTAS.csv</code>,
   <code>_DIM_PRECIOS.csv</code>, <code>_DIM_CONJUNTOS.csv</code>, <code>_EVENTOS.csv</code> y <code>_APRENDIZAJES.csv</code>.
-  Ningún número está escrito a mano. Tasa USD→GTQ __TASA__.
+  Ningún número está escrito a mano. Mercado __MERCADO__ · tasa de referencia USD→GTQ __TASA__.
 </footer>
 
 </div>
@@ -2161,7 +2208,8 @@ subtxt = ("Otros {} conjuntos con 0 ventas siguen <strong>sub-testeados</strong>
 # (APR-031/033/035). Sin esta corrección el P&L infla la ganancia.
 # _FACT_PAUTA_REAL.csv guarda ambas columnas medidas sobre la MISMA ventana.
 # ═════════════════════════════════════════════════════════════════════════
-pauta_real = load("_FACT_PAUTA_REAL.csv")
+pauta_real = [r for r in load("_FACT_PAUTA_REAL.csv")
+              if (r.get("cuenta_alias") or "").strip() not in _cuentas_otros]
 _pr_trk = sum(f(r["spend_trackeado_usd"]) for r in pauta_real)
 _pr_real = sum(f(r["spend_real_usd"]) for r in pauta_real)
 COBERTURA = (_pr_trk / _pr_real) if _pr_real else 1.0
@@ -2176,13 +2224,13 @@ for r in sorted(pauta_real, key=lambda x: -f(x["spend_real_usd"])):
     else:
         c = tk / rl if rl else 0
         cls = "pos" if c >= .88 else ("warn" if c >= .70 else "neg")
-        cob, falta = "{:.0f}%".format(c * 100), q((rl - tk) * TASA)
+        cob, falta = "{:.0f}%".format(c * 100), q((rl - tk) * TASA_REF)
     rows_cob += (
         '<tr><td><strong>{}</strong><div class="sub">{}</div></td>'
         '<td class="num">{}</td><td class="num">{}</td>'
         '<td class="num {}">{}</td><td class="num {}">{}</td>'
         '<td class="sub">{}</td></tr>').format(
-        esc(r["cuenta_alias"]), esc(r["fuente"]), q(tk * TASA), q(rl * TASA),
+        esc(r["cuenta_alias"]), esc(r["fuente"]), q(tk * TASA_REF), q(rl * TASA_REF),
         cls, cob, "neg" if (rl - tk) > 1 else "muted", falta, esc(r["notas"][:150]))
 
 _pauta_aj = T[0] / COBERTURA if COBERTURA else T[0]
@@ -2297,11 +2345,11 @@ rep = {
     "__ROWSPL__": rows_pl,
     "__ROWSCOB__": rows_cob or '<tr><td colspan="6" class="sub">Sin _FACT_PAUTA_REAL.csv cargado.</td></tr>',
     "__PRVENTANA__": _pr_ventana,
-    "__PRTRK__": q(_pr_trk * TASA),
-    "__PRREAL__": q(_pr_real * TASA),
+    "__PRTRK__": q(_pr_trk * TASA_REF),
+    "__PRREAL__": q(_pr_real * TASA_REF),
     "__PRCOB__": "{:.0f}%".format(COBERTURA * 100),
     "__PRCLS__": "pos" if COBERTURA >= .88 else ("warn" if COBERTURA >= .70 else "neg"),
-    "__PRFALTA__": q((_pr_real - _pr_trk) * TASA),
+    "__PRFALTA__": q((_pr_real - _pr_trk) * TASA_REF),
     "__GANAJ__": ("+" if _gan_aj >= 0 else "") + q(_gan_aj),
     "__GANAJCLS__": "pos" if _gan_aj >= 0 else "neg",
     "__CPAAJ__": q1(_cpa_aj) if T[1] else "—",
@@ -2330,7 +2378,10 @@ rep = {
                        if agregadas else "")
                     + (" ({} filas más viejas ocultas — siguen en el CSV.)".format(filas_dia_ocultas)
                        if filas_dia_ocultas else "")),
-    "__TASA__": "{:.2f}".format(TASA),
+    "__TASA__": "{:.2f}".format(TASA_REF),
+    "__MERCADO__": "{} ({}){}".format(MERCADO_DASH, _perfil["moneda"],
+                                      "" if not _otros else " · no incluido: " + ", ".join(
+                                          "{} [{}]".format(k, m) for k, m in sorted(_otros.items()))),
 }
 doc = DOC
 for k, v in rep.items():
@@ -2411,7 +2462,7 @@ for _nm, _cad, _ult, _tol, _para in _fuentes:
 # la plata de ayer, en cuatro numeros
 _ay = [r for r in ventas if r["rol_ventana"] == "BASE" and r["ventana_fin"] == ult_dia]
 _ay_v = sum(f(r["ventas"]) for r in _ay)
-_ay_g = sum(f(r["spend_usd"]) for r in _ay) * TASA
+_ay_g = sum(pq(r) for r in _ay)
 _ay_q = sum(f(r["total_q"]) for r in _ay)
 _ay_cpa = (_ay_g / _ay_v) if _ay_v else 0
 _be_medio = (sum(BE_REAL.values()) / len(BE_REAL)) if BE_REAL else 0

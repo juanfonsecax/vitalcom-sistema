@@ -4,6 +4,7 @@
 select
     v.fecha_fin as fecha,
     v.producto_key,
+    v.mercado,
     v.cuenta_alias,
     v.conjunto,
     d.angulo_key,
@@ -18,4 +19,4 @@ select
 from {{ ref('fct_gasto_dia') }} v
 left join {{ ref('dim_conjunto') }} d
        on d.conjunto = v.conjunto and d.cuenta_alias = v.cuenta_alias
-group by 1,2,3,4,5,6,7,8,9
+group by 1,2,3,4,5,6,7,8,9,10

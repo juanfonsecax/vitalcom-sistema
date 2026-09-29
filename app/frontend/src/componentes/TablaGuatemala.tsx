@@ -6,19 +6,19 @@
  * igual que en la consola. Si hay que cambiar cómo se ve una cifra, se cambia el script.
  */
 import type { Costeo } from "../api/cliente";
+import { conSimbolo } from "../dinero";
 import { Chip, Info, Tarjeta } from "./ui";
 
-const q = (valor: number | null | undefined) => (valor === null || valor === undefined ? "—" : `Q${String(valor)}`);
 
 /**
  * Cómo elige fila `costear.py` (su `elegir_fila`): la exacta; si no hay, la MÁS CERCANA; en
  * empate, la superior; y si el costo pasa la última fila, avisa TECHO DE TABLA EXCEDIDO.
  * Acá no se deduce nada: se repite el criterio que el script informa.
  */
-function explicarFila(costeo: Costeo): { texto: string; tono: "aviso" | "alto" } | null {
+function explicarFila(costeo: Costeo, simbolo: string): { texto: string; tono: "aviso" | "alto" } | null {
   const criterio = costeo.criterio_de_fila;
-  const costo = `Q${String(costeo.costo_ingresado)}`;
-  const fila = `Q${String(costeo.fila_usada)}`;
+  const costo = conSimbolo(costeo.costo_ingresado, simbolo);
+  const fila = conSimbolo(costeo.fila_usada, simbolo);
   if (criterio === "exacta") return null;
   if (criterio.includes("TECHO")) {
     return {
@@ -32,8 +32,9 @@ function explicarFila(costeo: Costeo): { texto: string; tono: "aviso" | "alto" }
   };
 }
 
-export function TablaGuatemala({ costeo }: { costeo: Costeo }) {
-  const aviso = explicarFila(costeo);
+export function TablaGuatemala({ costeo, simbolo }: { costeo: Costeo; simbolo: string }) {
+  const q = (valor: number | null | undefined) => conSimbolo(valor, simbolo);
+  const aviso = explicarFila(costeo, simbolo);
   const arranque = costeo.arranque as { decision?: string; nota?: string; p1u_minimo?: number };
 
   return (
@@ -41,7 +42,7 @@ export function TablaGuatemala({ costeo }: { costeo: Costeo }) {
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="font-medium text-zinc-100">Tabla de precios · Guatemala</h3>
         <Chip tono={aviso?.tono ?? "dato"} titulo="Qué fila de _DIM_COSTEO.csv se usó">
-          fila Q{String(costeo.fila_usada)} · {costeo.criterio_de_fila}
+          fila {conSimbolo(costeo.fila_usada, simbolo)} · {costeo.criterio_de_fila}
         </Chip>
       </div>
 

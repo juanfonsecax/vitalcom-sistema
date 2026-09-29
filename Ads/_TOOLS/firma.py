@@ -17,6 +17,9 @@ Uso:
 """
 import csv, sys, os, math
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from mercado import MercadoError, tasa_de_fila  # noqa: E402
+
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
     except (AttributeError, ValueError): pass
@@ -83,7 +86,8 @@ def cargar():
 
 
 def metricas(r, pr):
-    tasa = num(pr.get(r["producto_key"], {}).get("tasa")) or 7.62
+    # Tasa DEL PRODUCTO (moneda local por USD). Sin tasa: TasaFaltante (no hay 7.62 por defecto).
+    tasa = tasa_de_fila(pr.get(r["producto_key"]) or {"producto_key": r["producto_key"]})
     be = num(pr.get(r["producto_key"], {}).get("cpa_be_q"))
     g = num(r["spend_usd"]) * tasa
     v = int(num(r["ventas"]))
@@ -141,6 +145,14 @@ def ficha(r, pr, ancho=78):
 
 
 def main():
+    try:
+        _main()
+    except MercadoError as error:   # --ficha / --generar: un producto sin tasa detiene, nombrandolo
+        print("BLOQUEANTE: %s" % error, file=sys.stderr)
+        sys.exit(1)
+
+
+def _main():
     A, pr = cargar()
 
     if "--parsear" in sys.argv:
@@ -162,7 +174,10 @@ def main():
         rows = [r for r in A if (not p or r["producto_key"] == p)]
         rows.sort(key=lambda r: -num(r["spend_usd"]))
         for r in rows[:int(arg("--top", "10"))]:
-            print(ficha(r, pr)); print()
+            try:
+                print(ficha(r, pr)); print()
+            except MercadoError as error:   # producto sin tasa: se omite ESA pieza, se avisa
+                print("AVISO firma: se omite %s: %s" % (r["anuncio_norm"][:40], error), file=sys.stderr)
         return
 
     if "--generar" in sys.argv:

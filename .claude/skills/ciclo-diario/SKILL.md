@@ -113,6 +113,12 @@ skill `fase-2-conceptos`, PASO 0).
 
 ---
 
+## Mercado CO (manual)
+
+Un producto de Colombia (`mercado=CO`, cuenta EXTERNA) no entra por la cadena nocturna: el operador
+entrega el export de Ads Manager y el de LucidSales, se ingieren con `--producto` (ver skill
+`recopilar-lucidsales`, sección «Mercado CO (manual)») y el ciclo sigue igual: `decidir.py` por producto.
+
 ## Los cuatro archivos de apoyo del ciclo
 
 - 📖 **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — el **QUÉ**: fases y timing, señales, palancas en orden, cómo

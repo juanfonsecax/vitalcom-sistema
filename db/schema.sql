@@ -1,4 +1,4 @@
--- schema.sql — generado por db/tables.py (2026-09-25). DDL idempotente.
+-- schema.sql — generado por db/tables.py (2026-09-28). DDL idempotente.
 -- schema `raw`: espejo verbatim de cada CSV de PRODUCTOS/, más tenant_id (single
 -- tenant 'vitalcom') e id. schema `core`: modelo normalizado/tipado construido A
 -- PARTIR de `raw` por db/nucleo.py. Ver tables.py y nucleo.py para el porqué.
@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS raw.producto (
     carpetas_extra TEXT,
     clave_campana TEXT,
     campaign_id TEXT,
+    mercado TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS producto_key TEXT;
@@ -90,6 +91,7 @@ ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS carpeta_media TEXT;
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS carpetas_extra TEXT;
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS clave_campana TEXT;
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS campaign_id TEXT;
+ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS mercado TEXT;
 
 -- costeo <- PRODUCTOS/_DIM_COSTEO.csv
 CREATE TABLE IF NOT EXISTS raw.costeo (
@@ -949,6 +951,8 @@ CREATE TABLE IF NOT EXISTS raw.fact_semanal (
     ganancia_q TEXT,
     cpa_q TEXT,
     roas TEXT,
+    mercado TEXT,
+    moneda TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS semana_ini TEXT;
@@ -963,6 +967,8 @@ ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS contribucion_q TEXT;
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS ganancia_q TEXT;
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS cpa_q TEXT;
 ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS roas TEXT;
+ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS mercado TEXT;
+ALTER TABLE raw.fact_semanal ADD COLUMN IF NOT EXISTS moneda TEXT;
 
 -- mapeo_creativos <- PRODUCTOS/_MAPEO_CREATIVOS.csv
 CREATE TABLE IF NOT EXISTS raw.mapeo_creativos (
@@ -1494,6 +1500,8 @@ CREATE TABLE IF NOT EXISTS core.producto (
   raw_id BIGINT,
   UNIQUE (tenant_id, producto_key)
 );
+-- mercado (GT/CO, _DIM_MERCADOS.csv): una base que ya tenia core.producto no lo recibe por el CREATE.
+ALTER TABLE core.producto ADD COLUMN IF NOT EXISTS mercado TEXT;
 
 CREATE TABLE IF NOT EXISTS core.cuenta (
   id BIGSERIAL PRIMARY KEY,

@@ -249,6 +249,7 @@ def procesar_cuenta(cuenta, fecha, token, dim):
     cuenta_id = cuenta["cuenta_id"]
     moneda = (cuenta.get("moneda") or "USD").strip().upper()
     crudos = insights_de(cuenta_id, fecha, token)
+    externos = im.productos_externos()
 
     propios, gasto_excl, n_excl = [], 0.0, 0
     for r in crudos:
@@ -256,6 +257,8 @@ def procesar_cuenta(cuenta, fecha, token, dim):
         campana = r.get("campaign_name") or ""
         conjunto = r.get("adset_name") or ""
         pk = im.producto_de(campana, conjunto, dim)
+        if pk in externos:
+            pk = "SIN_CLASIFICAR"   # producto de cuenta EXTERNA (mercado manual): nunca entra por la corrida nocturna
         sp = num(r.get("spend"))
         if moneda == "COP":
             sp = sp / im.TASA_COP_USD

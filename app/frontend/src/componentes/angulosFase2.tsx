@@ -9,6 +9,7 @@
 import { Link } from "@tanstack/react-router";
 import type { AnguloFase2 } from "../api/cliente";
 import { Chip, Tarjeta, type Tono } from "./ui";
+import { formatearDinero, type PerfilMoneda } from "../dinero";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const TONO_VEREDICTO: Record<string, Tono> = {
@@ -34,23 +35,23 @@ function Dato({ rotulo, valor }: { rotulo: string; valor: string }) {
   );
 }
 
-function CifrasClave({ a }: { a: AnguloFase2 }) {
+function CifrasClave({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
   return (
     <div className="grid grid-cols-3 gap-3">
       <Dato rotulo="Ventas" valor={a.ventas_acum != null ? String(a.ventas_acum) : "—"} />
-      <Dato rotulo="Cuesta cada venta" valor={a.cpa_real_q != null ? `Q${a.cpa_real_q}` : "—"} />
+      <Dato rotulo="Cuesta cada venta" valor={formatearDinero(a.cpa_real_q, perfil)} />
       <Dato rotulo="Cierra" valor={a.cierre_pct != null ? `${a.cierre_pct}%` : "—"} />
     </div>
   );
 }
 
-function DetalleTecnico({ a }: { a: AnguloFase2 }) {
+function DetalleTecnico({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
   const filas: [string, string][] = [
     ["Veredicto del motor", a.estado ?? "sin veredicto"],
     ["Estado del ángulo", a.estado_angulo || "sin perfil"],
     ["Último día con gasto", a.ultimo_dia_gasto || "—"],
-    ["Rango probable del costo por venta", a.ic ? `Q${a.ic[0]} a Q${a.ic[2]}` : "—"],
-    ["Gasto acumulado", a.spend_acum_q != null ? `Q${a.spend_acum_q}` : "—"],
+    ["Rango probable del costo por venta", a.ic ? `${formatearDinero(a.ic[0], perfil)} a ${formatearDinero(a.ic[2], perfil)}` : "—"],
+    ["Gasto acumulado", formatearDinero(a.spend_acum_q, perfil)],
   ];
   return (
     <Collapsible>
@@ -73,7 +74,15 @@ function DetalleTecnico({ a }: { a: AnguloFase2 }) {
 }
 
 /** El #1: el ángulo que está en su Fase 2 ahora. */
-export function AnguloEnTesteoAhora({ angulo, paso }: { angulo: AnguloFase2 | undefined; paso: string }) {
+export function AnguloEnTesteoAhora({
+  angulo,
+  paso,
+  perfil,
+}: {
+  angulo: AnguloFase2 | undefined;
+  paso: string;
+  perfil: PerfilMoneda;
+}) {
   if (!angulo) {
     return (
       <Tarjeta className="border-zinc-800 bg-zinc-900/40">
@@ -104,10 +113,10 @@ export function AnguloEnTesteoAhora({ angulo, paso }: { angulo: AnguloFase2 | un
         )}
       </div>
       <div className="mt-4">
-        <CifrasClave a={angulo} />
+        <CifrasClave a={angulo} perfil={perfil} />
       </div>
       <div className="mt-3 space-y-2">
-        <DetalleTecnico a={angulo} />
+        <DetalleTecnico a={angulo} perfil={perfil} />
         {paso && <p className="text-[11px] text-zinc-500">Paso del flujo: <span className="font-mono">{paso}</span></p>}
       </div>
     </Tarjeta>
@@ -116,7 +125,7 @@ export function AnguloEnTesteoAhora({ angulo, paso }: { angulo: AnguloFase2 | un
 }
 
 /** #2, #3…: ganadores que esperan su turno. Cada uno tendrá su propia Fase 2. */
-export function AngulosEnFila({ angulos }: { angulos: AnguloFase2[] }) {
+export function AngulosEnFila({ angulos, perfil }: { angulos: AnguloFase2[]; perfil: PerfilMoneda }) {
   if (angulos.length === 0) return null;
   return (
     <section className="space-y-3" data-testid="angulos-en-fila">
@@ -128,11 +137,11 @@ export function AngulosEnFila({ angulos }: { angulos: AnguloFase2[] }) {
               <span className="font-mono text-xs font-semibold text-zinc-200">{a.angulo_key}</span>
               <Chip tono="aviso">#{a.posicion} en la fila</Chip>
             </div>
-            <CifrasClave a={a} />
+            <CifrasClave a={a} perfil={perfil} />
             <p className="text-xs text-amber-300">
               Entra a su propia Fase 2 cuando el #1 cierre la suya, unos 3 días después.
             </p>
-            <DetalleTecnico a={a} />
+            <DetalleTecnico a={a} perfil={perfil} />
           </Tarjeta>
         ))}
       </div>
@@ -144,9 +153,11 @@ export function AngulosEnFila({ angulos }: { angulos: AnguloFase2[] }) {
 export function AngulosQueNoFuncionaron({
   angulos,
   trabajoPendiente,
+  perfil,
 }: {
   angulos: AnguloFase2[];
   trabajoPendiente?: string;
+  perfil: PerfilMoneda;
 }) {
   if (angulos.length === 0) return null;
   return (
@@ -177,7 +188,7 @@ export function AngulosQueNoFuncionaron({
                   ))}
               </span>
             </div>
-            <DetalleTecnico a={a} />
+            <DetalleTecnico a={a} perfil={perfil} />
           </li>
         ))}
       </ul>

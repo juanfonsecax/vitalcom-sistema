@@ -9,6 +9,7 @@ import type { components } from "./esquema";
 
 export type Producto = components["schemas"]["Producto"];
 export type Flujo = components["schemas"]["Flujo"];
+export type Mercado = components["schemas"]["Mercado"];
 export type Nodo = components["schemas"]["Nodo"];
 export type Requisito = components["schemas"]["Requisito"];
 export type Salud = components["schemas"]["Salud"];
@@ -129,6 +130,7 @@ async function pedir<T>(ruta: string, opciones?: RequestInit): Promise<T> {
 export const api = {
   productos: () => pedir<Producto[]>("/api/productos"),
   producto: (clave: string) => pedir<Flujo>(`/api/productos/${encodeURIComponent(clave)}`),
+  mercados: () => pedir<Mercado[]>("/api/mercados"),
   decisiones: () => pedir<Decisiones>("/api/decisiones"),
   salud: () => pedir<Salud>("/api/salud"),
   cuentas: () => pedir<Cuenta[]>("/api/cuentas"),

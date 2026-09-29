@@ -184,8 +184,8 @@ el spec de la imagen con cómo obtenerla.
   desborden. Referencia exacta de largo: *"buenas me llego el producto, vino bien selladito y con
   su sello original. la verdad tenia miedo q fuera estafa pq uno ya ni sabe pero todo bien, pague
   hasta q lo tuve en la mano"* (~175 c).
-- **Voz chapina real:** minúsculas, sin tildes, ortografía imperfecta ("q" por "que", "pq" por
-  "porque", "tambn"), muletillas ("jaja", "enserio", "cabal", "va"). Es raro que alguien escriba
+- **Voz real del mercado** (GT: chapina; CO: colombiana, sin léxico chapín): minúsculas, sin tildes, ortografía imperfecta ("q" por "que", "pq" por
+  "porque", "tambn"), muletillas propias del mercado (GT: "jaja", "enserio", "cabal", "va"). Es raro que alguien escriba
   tan perfecto — resta credibilidad.
 - **Emojis casi cero:** máximo 1 por captura, y varias con cero. Nunca 2+ en un mismo globo.
 - **Sin precio y sin nombre de marca en el globo** (el cliente dice "el producto", "las gotitas").
@@ -256,8 +256,8 @@ objeciones que matan en contraentrega: *"¿me van a estafar?"* y *"¿me va a fun
 10. Cierre redundante — *"muy recomendados de verdad"*.
 
 Sin precio, sin nombre de transportadora, sin mencionar el bot ni el anuncio. **Habla imperfecta:**
-muletillas ("fíjese", "la verdad", "ahorita"), una frase que se corrige, ritmo desigual. Un
-testimonio impecable suena a actriz y no convierte. Léxico chapín, nunca colombiano; a la tienda
+muletillas propias del mercado (GT: "fíjese", "la verdad", "ahorita"), una frase que se corrige, ritmo desigual. Un
+testimonio impecable suena a actriz y no convierte. Léxico del mercado del producto (GT: chapín, nunca colombiano; CO: colombiano, nunca chapín); a la tienda
 se le habla de "ustedes".
 
 ### `faq_venta` (10) · `faq_postventa` (5)

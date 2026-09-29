@@ -10,6 +10,7 @@
 import { useState, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api, type DatosParaArrancar, type ItemDeDatos } from "../api/cliente";
+import { nombreDeMoneda, type PerfilMoneda } from "../dinero";
 import { Lightbox } from "./copiar";
 import { Chip, Tarjeta, cn } from "./ui";
 import { Button } from "@/components/ui/button";
@@ -164,11 +165,13 @@ export function FormularioPackshot({
 function ArregloEnLinea({
   clave,
   item,
+  perfil,
   onSubirFoto,
   onCargado,
 }: {
   clave: string;
   item: ItemDeDatos;
+  perfil?: PerfilMoneda;
   onSubirFoto: () => void;
   onCargado: () => void;
 }) {
@@ -252,9 +255,9 @@ function ArregloEnLinea({
     control = (
       <>
         <Input
-          aria-label="Costo en quetzales"
+          aria-label={`Costo en ${nombreDeMoneda(perfil?.moneda_local)}`}
           inputMode="decimal"
-          placeholder="Costo en Q"
+          placeholder={`Costo en ${perfil?.simbolo ?? "la moneda del mercado"}`}
           value={valor}
           onChange={(e) => setValor(e.target.value)}
           className="w-32"
@@ -288,11 +291,13 @@ function ArregloEnLinea({
 export function ParaArrancar({
   clave,
   datos,
+  perfil,
   onSubirFoto,
   onCargado,
 }: {
   clave: string;
   datos: DatosParaArrancar | undefined;
+  perfil?: PerfilMoneda;
   onSubirFoto: () => void;
   onCargado: () => void;
 }) {
@@ -304,7 +309,7 @@ export function ParaArrancar({
       <p className="text-sm font-semibold text-amber-200">Para arrancar te falta</p>
       <ul className="space-y-2">
         {faltan.map((item) => (
-          <ArregloEnLinea key={item.clave} clave={clave} item={item} onSubirFoto={onSubirFoto} onCargado={onCargado} />
+          <ArregloEnLinea key={item.clave} clave={clave} item={item} perfil={perfil} onSubirFoto={onSubirFoto} onCargado={onCargado} />
         ))}
       </ul>
     </Tarjeta>

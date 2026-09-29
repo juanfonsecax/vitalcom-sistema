@@ -24,6 +24,9 @@ entrega el operador. Misma fórmula de contribución que `gen_dashboard.py`
 """
 import csv, io, os, re, sys, collections, datetime
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado
+
 for _s in (sys.stdout, sys.stderr):
     try:
         _s.reconfigure(encoding="utf-8", errors="replace")
@@ -33,21 +36,11 @@ for _s in (sys.stdout, sys.stderr):
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 P    = os.path.join(ROOT, "PRODUCTOS")
 AUD  = os.path.join(P, "_AUDITORIAS")
-# ── TASA USD→Q: sale de _PARAMETROS_FINANZAS.csv, NUNCA hardcodeada ──────
-# Regla 20 de CLAUDE.md: un dato, un dueño. Si la tasa cambia se toca UN csv
-# y todos los scripts la toman; hardcodearla en tres lugares garantiza que un
-# dia digan cosas distintas.
-def _tasa_usd_gtq(_default=7.62):
-    import csv as _csv, io as _io, os as _os
-    _p = _os.path.join(P, "_PARAMETROS_FINANZAS.csv")
-    if _os.path.exists(_p):
-        for _r in _csv.DictReader(_io.open(_p, encoding="utf-8")):
-            if _r.get("parametro") == "tasa_usd_gtq" and _r.get("valor"):
-                return float(_r["valor"])
-    return _default
-
-
-TASA = _tasa_usd_gtq()
+# ── TASA USD→moneda local: es la DEL PRODUCTO (_DIM_PRODUCTOS.tasa) ──────
+# Un dato, un dueño. Cada producto convierte su pauta con su tasa y en la moneda de SU mercado
+# (mercado.py); no hay tasa por defecto y NUNCA se suma dinero de mercados distintos: los totales
+# se agrupan por mercado. La verificación de caja (Dropi + banco Relay) es solo del mercado GT.
+MERCADO_CAJA = "GT"
 
 
 # ─────────────────────────── utilidades ───────────────────────────
@@ -66,7 +59,7 @@ def i(x, d=0):
     except (TypeError, ValueError): return d
 
 
-def q(n):  return "Q{:,.0f}".format(n)
+def q(n, simbolo="Q"):  return "{}{:,.0f}".format(simbolo, n)
 
 
 # ───────────── parámetros de costo (idénticos a gen_dashboard) ─────────────
@@ -115,6 +108,36 @@ for k in precios:
 prods = {p_["producto_key"]: p_ for p_ in load("_DIM_PRODUCTOS.csv")}
 BE = {k: float(v["cpa_be_q"]) for k, v in prods.items() if v.get("cpa_be_q")}
 
+_MERC, _PERFIL = {}, {}
+
+
+def mercado_pk(pk):
+    """Mercado (GT/CO) del producto, de _DIM_PRODUCTOS.csv. MercadoError si no lo declara."""
+    if pk not in _MERC:
+        if pk not in prods:
+            raise mercado.MercadoError("«%s» tiene ventas pero no fila en _DIM_PRODUCTOS.csv." % pk)
+        _MERC[pk] = mercado.mercado_de_fila(prods[pk], ROOT)
+    return _MERC[pk]
+
+
+def perfil(m):
+    if m not in _PERFIL:
+        _PERFIL[m] = mercado.perfil_mercado(m, ROOT)
+    return _PERFIL[m]
+
+
+def tasa_pk(pk):
+    """Tasa USD→moneda local DEL producto. TasaFaltante (nombrandolo) si no la declara."""
+    if pk not in prods:
+        raise mercado.MercadoError("«%s» tiene ventas pero no fila en _DIM_PRODUCTOS.csv." % pk)
+    return mercado.tasa_de_fila(prods[pk])
+
+
+def pauta_local(r):
+    """Gasto (spend_usd) de una fila de ventas, en la moneda local de SU producto."""
+    usd = f(r["spend_usd"])
+    return usd * tasa_pk(r["producto_key"]) if usd else 0.0
+
 
 def escalon(pk, ticket):
     esc = precios.get(pk)
@@ -136,7 +159,14 @@ def contribucion(r):
     if not v:
         return 0.0
     c = escalon(r["producto_key"], f(r["total_q"]) / v)
-    return v * (c if c is not None else BE.get(r["producto_key"], 60.5))
+    if c is None:
+        # Sin escalon de precios, el break-even del producto es la contribucion de referencia.
+        if r["producto_key"] not in BE:
+            raise mercado.MercadoError(
+                "«%s» no tiene precios en _DIM_PRECIOS.csv ni cpa_be_q en _DIM_PRODUCTOS.csv: no se "
+                "puede estimar su contribucion (no hay valor por defecto)." % r["producto_key"])
+        c = BE[r["producto_key"]]
+    return v * c
 
 
 # ─────────────────────── (1) REPORTE SEMANAL ───────────────────────
@@ -157,7 +187,7 @@ def reporte_semanal():
     diaria limpia.
     """
     ventas = [r for r in load("_FACT_VENTAS.csv") if r.get("rol_ventana") == "BASE"]
-    sem = collections.defaultdict(lambda: {"tot": [0.0, 0.0, 0.0, 0.0],
+    sem = collections.defaultdict(lambda: {"tot": collections.defaultdict(lambda: [0.0, 0.0, 0.0, 0.0]),
                                            "prod": collections.defaultdict(lambda: [0.0, 0.0, 0.0, 0.0]),
                                            "dias": set(), "estimada": False})
     for r in ventas:
@@ -167,15 +197,16 @@ def reporte_semanal():
         n = max(i(r.get("dias"), 1), 1)
         d0 = datetime.date.fromisoformat(ini)
         pk = r["producto_key"]
+        mk = mercado_pk(pk)
         parte = (i(r["ventas"]) / n, f(r["total_q"]) / n,
-                 f(r["spend_usd"]) * TASA / n, contribucion(r) / n)
+                 pauta_local(r) / n, contribucion(r) / n)
         for k in range(n):
             dia = d0 + datetime.timedelta(days=k)
             s = sem[semana_de(dia.isoformat())]
             s["dias"].add(dia.isoformat())
             if n > 1:
                 s["estimada"] = True
-            for tgt in (s["tot"], s["prod"][pk]):
+            for tgt in (s["tot"][mk], s["prod"][pk]):
                 for j in range(4):
                     tgt[j] += parte[j]
     return dict(sorted(sem.items()))
@@ -187,15 +218,20 @@ def escribir_semanal(sem):
     with io.open(out, "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["semana_ini", "semana_fin", "dias_con_data", "corte_estimado", "producto_key",
-                    "ventas", "facturado_q", "pauta_q", "contribucion_q", "ganancia_q", "cpa_q", "roas"])
+                    "ventas", "facturado_q", "pauta_q", "contribucion_q", "ganancia_q", "cpa_q", "roas",
+                    "mercado", "moneda"])
+        # Un TOTAL POR MERCADO (nunca se suman monedas distintas); los montos *_q estan en la moneda
+        # local del mercado que dice la columna `moneda`.
         for lun, d in sem.items():
             dom = lun + datetime.timedelta(days=6)
-            filas = [("TOTAL", d["tot"])] + sorted(d["prod"].items())
-            for pk, x in filas:
+            filas = ([("TOTAL", m, d["tot"][m]) for m in sorted(d["tot"])]
+                     + [(pk, mercado_pk(pk), x) for pk, x in sorted(d["prod"].items())])
+            for pk, mk, x in filas:
                 v, fac, pa, co = x
                 w.writerow([lun, dom, len(d["dias"]), "SI" if d["estimada"] else "NO", pk, round(v, 2), round(fac, 2), round(pa, 2),
                             round(co, 2), round(co - pa, 2),
-                            round(pa / v, 2) if v else "", round(fac / pa, 2) if pa else ""])
+                            round(pa / v, 2) if v else "", round(fac / pa, 2) if pa else "",
+                            mk, perfil(mk)["moneda"]])
 
     # TXT humano
     L = []
@@ -210,39 +246,57 @@ def escribir_semanal(sem):
     L.append("Una semana con menos de 7 días de data está marcada PARCIAL: su total")
     L.append("es un PISO, no el cierre.")
     L.append("")
-    tot_v = tot_f = tot_p = tot_c = 0
+    mercados = sorted({m for d in sem.values() for m in d["tot"]})
+    multi = len(mercados) > 1
+    if multi:
+        L.append("MERCADOS EN ESTE REPORTE: " + " · ".join(
+            "%s (%s)" % (m, perfil(m)["moneda"]) for m in mercados))
+        L.append("Cada mercado se reporta APARTE y en su moneda: nunca se suman montos de mercados distintos.")
+        L.append("")
+    acum = {m: [0.0, 0.0, 0.0, 0.0] for m in mercados}
     for lun, d in sem.items():
         dom = lun + datetime.timedelta(days=6)
-        v, fac, pa, co = d["tot"]
         nd = len(d["dias"])
-        tot_v += v; tot_f += fac; tot_p += pa; tot_c += co
         marca = "" if nd >= 7 else "  ⚠ PARCIAL (%d de 7 días)" % nd
         if d["estimada"]:
             marca += "  · corte estimado (tramo multi-día prorrateado)"
         L.append("─" * 75)
         L.append("SEMANA %s → %s%s" % (lun, dom, marca))
-        L.append("  Facturado %s · Pauta %s · GANANCIA %s%s" % (
-            q(fac), q(pa), q(co - pa), "  🔴" if co - pa < 0 else ""))
-        L.append("  %.0f ventas · CPA %s · ROAS %.2fx · ganancia/día %s" % (
-            v, q(pa / v) if v else "—", (fac / pa) if pa else 0, q((co - pa) / max(nd, 1))))
-        L.append("")
-        L.append("    %-12s %6s %12s %11s %12s %8s" %
-                 ("PRODUCTO", "VENTAS", "FACTURADO", "PAUTA", "GANANCIA", "CPA"))
-        for pk, x in sorted(d["prod"].items(), key=lambda kv: -(kv[1][3] - kv[1][2])):
-            v2, fac2, pa2, co2 = x
-            L.append("    %-12s %6.0f %12s %11s %12s %8s" % (
-                pk[:12], v2, q(fac2), q(pa2), q(co2 - pa2),
-                q(pa2 / v2) if v2 else "—"))
-        L.append("")
+        for mk in sorted(d["tot"]):
+            sim = perfil(mk)["simbolo"]
+            v, fac, pa, co = d["tot"][mk]
+            for j in range(4):
+                acum[mk][j] += d["tot"][mk][j]
+            if multi:
+                L.append("  ▸ MERCADO %s (%s)" % (mk, perfil(mk)["moneda"]))
+            L.append("  Facturado %s · Pauta %s · GANANCIA %s%s" % (
+                q(fac, sim), q(pa, sim), q(co - pa, sim), "  🔴" if co - pa < 0 else ""))
+            L.append("  %.0f ventas · CPA %s · ROAS %.2fx · ganancia/día %s" % (
+                v, q(pa / v, sim) if v else "—", (fac / pa) if pa else 0, q((co - pa) / max(nd, 1), sim)))
+            L.append("")
+            L.append("    %-12s %6s %12s %11s %12s %8s" %
+                     ("PRODUCTO", "VENTAS", "FACTURADO", "PAUTA", "GANANCIA", "CPA"))
+            for pk, x in sorted(d["prod"].items(), key=lambda kv: -(kv[1][3] - kv[1][2])):
+                if mercado_pk(pk) != mk:
+                    continue
+                v2, fac2, pa2, co2 = x
+                L.append("    %-12s %6.0f %12s %11s %12s %8s" % (
+                    pk[:12], v2, q(fac2, sim), q(pa2, sim), q(co2 - pa2, sim),
+                    q(pa2 / v2, sim) if v2 else "—"))
+            L.append("")
     L.append("═" * 75)
-    L.append("ACUMULADO DE LA SERIE: facturado %s · pauta %s · GANANCIA %s" %
-             (q(tot_f), q(tot_p), q(tot_c - tot_p)))
-    L.append("%.0f ventas · CPA %s · ROAS %.2fx" %
-             (tot_v, q(tot_p / tot_v) if tot_v else "—", (tot_f / tot_p) if tot_p else 0))
+    for mk in mercados:
+        sim = perfil(mk)["simbolo"]
+        tot_v, tot_f, tot_p, tot_c = acum[mk]
+        L.append("ACUMULADO DE LA SERIE%s: facturado %s · pauta %s · GANANCIA %s" %
+                 (" — MERCADO %s (%s)" % (mk, perfil(mk)["moneda"]) if multi else "",
+                  q(tot_f, sim), q(tot_p, sim), q(tot_c - tot_p, sim)))
+        L.append("%.0f ventas · CPA %s · ROAS %.2fx" %
+                 (tot_v, q(tot_p / tot_v, sim) if tot_v else "—", (tot_f / tot_p) if tot_p else 0))
     L.append("═" * 75)
     txt = "\n".join(L) + "\n"
     io.open(os.path.join(P, "_REPORTE_SEMANAL.txt"), "w", encoding="utf-8").write(txt)
-    return tot_c - tot_p, txt
+    return {mk: acum[mk][3] - acum[mk][2] for mk in mercados}, txt
 
 
 # ─────────────────── (2) VERIFICACIÓN DE CAJA (3 capas) ───────────────────
@@ -294,27 +348,42 @@ def main():
         if a == "--desde": ini = args[n + 1]
         if a == "--hasta": fin = args[n + 1]
 
+    try:
+        _main_semanal_y_caja(args, dropi, banco, ini, fin)
+    except mercado.MercadoError as error:     # sin tasa / sin mercado / sin precios: se detiene, nombrandolo
+        print("BLOQUEANTE: %s" % error, file=sys.stderr)
+        sys.exit(1)
+
+
+def _main_semanal_y_caja(args, dropi, banco, ini, fin):
     sem = reporte_semanal()
     gan, _ = escribir_semanal(sem)
     print("✅ _REPORTE_SEMANAL.txt + _FACT_SEMANAL.csv — %d semanas · ganancia acumulada %s"
-          % (len(sem), q(gan)))
+          % (len(sem), " · ".join("%s %s" % (mk, q(g, perfil(mk)["simbolo"])) for mk, g in sorted(gan.items()))))
 
     if not (dropi or banco):
         return
 
     ini = ini or "2026-08-01"
     fin = fin or "2026-08-31"
+    # Dropi y el banco Relay son SOLO del mercado GT (quetzales / dolares): la caja de otro mercado
+    # se contabiliza aparte. Aca se filtra a GT y se dice en el encabezado.
+    TASA = perfil(MERCADO_CAJA)["tasa_moneda_por_usd"]
+    if not TASA:
+        raise mercado.MercadoError("_PARAMETROS_FINANZAS.csv no declara la tasa del mercado %s." % MERCADO_CAJA)
+    es_caja = lambda r: mercado_pk(r["producto_key"]) == MERCADO_CAJA
     L = ["═" * 75,
          "VERIFICACIÓN DE CAJA — ¿el dinero que dice el sistema es el que entra?",
+         "Mercado %s (%s) — Dropi y el banco Relay solo cubren este mercado" % (MERCADO_CAJA, perfil(MERCADO_CAJA)["moneda"]),
          "Ventana: %s → %s · generado %s" % (ini, fin, datetime.date.today()),
          "═" * 75, ""]
 
     # capa 1 — LucidSales
     v1 = [r for r in load("_FACT_VENTAS.csv")
-          if r.get("rol_ventana") == "BASE" and ini <= r["ventana_ini"] <= fin]
+          if r.get("rol_ventana") == "BASE" and ini <= r["ventana_ini"] <= fin and es_caja(r)]
     l1_ventas = sum(i(r["ventas"]) for r in v1)
     l1_fact   = sum(f(r["total_q"]) for r in v1)
-    l1_pauta  = sum(f(r["spend_usd"]) for r in v1) * TASA
+    l1_pauta  = sum(pauta_local(r) for r in v1)
     l1_contrib = sum(contribucion(r) for r in v1)
     L += ["CAPA 1 — LucidSales (lo que los ADS atribuyen)",
           "  %d ventas · facturado %s · pauta trackeada %s" % (l1_ventas, q(l1_fact), q(l1_pauta)),
@@ -370,7 +439,7 @@ def main():
             fb_al = sum(t["monto"] for t in fb_all)
             v_al = [r for r in load("_FACT_VENTAS.csv")
                     if r.get("rol_ventana") == "BASE" and d_ini <= r["ventana_ini"] <= d_fin
-                    and r.get("cuenta_alias") != "CP1"]      # CP1 factura en COP, no por esta cuenta
+                    and r.get("cuenta_alias") != "CP1" and es_caja(r)]      # CP1 factura en COP, no por esta cuenta
             tr_al = sum(f(r["spend_usd"]) for r in v_al)
             cobertura = 100 * tr_al / fb_al if fb_al else 0
             L += ["  ── CORTE ALINEADO %s → %s (el único tramo con las dos fuentes) ──" % (d_ini, d_fin),

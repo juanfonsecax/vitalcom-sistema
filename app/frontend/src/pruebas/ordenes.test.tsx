@@ -37,6 +37,7 @@ const DATOS_ORDENES = {
   ordenes: [
     {
       producto_key: "CLEARSTEM",
+      mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
       angulo_key: "RESISTENCIA_INSULINA_SOP",
       angulo_nombre: "Resistencia a la Insulina SOP",
       estado: "ESCALAR",
@@ -58,6 +59,7 @@ const DATOS_ORDENES = {
     },
     {
       producto_key: "TINNIDROP",
+      mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
       angulo_key: "ZUMBIDO_GRAVE",
       angulo_nombre: "Zumbido Grave",
       estado: "PAUSAR",
@@ -78,6 +80,7 @@ const DATOS_ORDENES = {
     },
     {
       producto_key: "NUSAVA",
+      mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
       angulo_key: "FATIGA_CRONICA",
       angulo_nombre: "Fatiga Crónica",
       estado: "RENOVAR",
@@ -98,6 +101,7 @@ const DATOS_ORDENES = {
     },
     {
       producto_key: "OVULOS_PURITY",
+      mercado: "CO", moneda_local: "COP", simbolo: "$",
       angulo_key: "INFECCION_RECURRENTE",
       angulo_nombre: "Infección Recurrente",
       estado: "SEGUIR_MIDIENDO",
@@ -133,6 +137,7 @@ const DATOS_ORDENES = {
 const GANADORES = [
   {
     producto_key: "TINNIDROP",
+    mercado: "GT", moneda_local: "GTQ", simbolo: "Q",
     nombre: "Tinnidrop Importado Original",
     fase: "F2",
     nodo_actual: "F2.etapa-11",
@@ -256,11 +261,11 @@ test("narra la frase de IC vs break-even y el veredicto del motor", async () => 
   // la frase narrada aparece en esas tres tarjetas.
   expect((await screen.findAllByText(/Cada venta te está costando entre/)).length).toBe(3);
   // PAUSAR: cpa_real_q 120.5, ic [98.2, 120.5, 145.0], break_even_q 93.4
-  expect(screen.getByText("Q98.2")).toBeInTheDocument();
-  expect(screen.getByText("Q145")).toBeInTheDocument();
-  // Q93.4 (el break-even de PAUSAR) aparece dos veces: en la frase narrada y en la grilla de
+  expect(screen.getByText("Q98.20")).toBeInTheDocument();
+  expect(screen.getByText("Q145.00")).toBeInTheDocument();
+  // Q93.40 (el break-even de PAUSAR) aparece dos veces: en la frase narrada y en la grilla de
   // métricas de siempre — el mismo dato, nunca recalculado.
-  expect(screen.getAllByText("Q93.4").length).toBe(2);
+  expect(screen.getAllByText("Q93.40").length).toBe(2);
   expect(screen.getByText(/evidencia alcanza para pausar/)).toBeInTheDocument();
 });
 

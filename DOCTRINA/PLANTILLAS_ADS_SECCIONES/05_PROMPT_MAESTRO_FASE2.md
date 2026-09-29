@@ -13,7 +13,7 @@ DATOS DEL PRODUCTO
 - BENEFICIO PRINCIPAL (del ángulo): [BENEFICIO_ANGULO]
 - PROBLEMA QUE RESUELVE (dolor del avatar): [DOLOR_AVATAR]
 - PÚBLICO OBJETIVO: [AVATAR: edad, género, situación]
-- PAÍS/MERCADO: Guatemala
+- PAÍS/MERCADO: [pais del mercado del producto — `PRODUCTOS/_DIM_MERCADOS.csv`]
 - TONO DE MARCA (de la página asignada): [TONO_IDENTIDAD: clínico-cálido / coach energía alta / confesional]
 - OFERTA: [solo si este ad lleva precio según la regla de precio: "[P1u] con envío gratis". Cuando el ad lleva precio/oferta, SUMAR el SELLO DE OFERTA STARBURST (punto 7 de la jerarquía). Si no lleva precio, omitir oferta y sello.]
 

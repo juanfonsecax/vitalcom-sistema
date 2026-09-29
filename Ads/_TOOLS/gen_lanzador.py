@@ -255,7 +255,11 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
     usd_conv = h.get("usd_por_conversacion") or usd_conv_portafolio
     presup, presup_por_que = presupuesto_por_fase(fase, usd_conv)
 
-    tasa = num(prod.get("tasa"), 7.62)
+    tasa = num(prod.get("tasa"))          # sin tasa no hay be_usd ni CPA en Q: quedan en None, con aviso
+    if not tasa or tasa <= 0:
+        tasa = None
+        print("AVISO gen_lanzador: «%s» no declara `tasa` en _DIM_PRODUCTOS.csv: sin dias de PD ni "
+              "CPA acumulado en moneda local (no hay tasa por defecto)." % pk, file=sys.stderr)
     be_q = num(prod.get("cpa_be_q"))
     be_usd = be_q / tasa if be_q and tasa else 0.0
     dias_pd = (be_usd / presup / FACTOR_ENTREGA) if (be_usd and presup) else None
@@ -438,6 +442,7 @@ def construir():
     filas = []
     for prod in productos:
         pk = prod["producto_key"]
+        _tasa_prod = num(prod.get("tasa")) or None     # sin tasa: None (el aviso lo da `derivar`)
         carpeta = os.path.join("PRODUCTOS", prod.get("slug_carpeta") or pk)
         ruta_plan = os.path.join(carpeta, "_PLAN.json")
         h = hechos.get(pk)
@@ -449,8 +454,8 @@ def construir():
             "cuenta": (prod.get("cuenta_alias") or "").strip() or None,
             "cpa_be_q": num(prod.get("cpa_be_q")) or None,
             "historial": h,
-            "cpa_acumulado_q": (round(h["spend_usd"] * num(prod.get("tasa"), 7.62) / h["ventas"], 2)
-                                if h and h["ventas"] else None),
+            "cpa_acumulado_q": (round(h["spend_usd"] * _tasa_prod / h["ventas"], 2)
+                                if h and h["ventas"] and _tasa_prod else None),
             "tiene_plan": os.path.exists(ruta_plan),
             "carpeta": carpeta.replace("\\", "/"),
         }

@@ -16,6 +16,7 @@ USO:  python Ads/_TOOLS/test_armar_prompts_fase2.py     (exit 0 = pasa, 1 = fall
 import csv
 import io
 import os
+import shutil
 import sys
 import tempfile
 
@@ -237,16 +238,36 @@ def test_lo_no_declarado_del_perfil_queda_falso_no_optimista():
 
 # ── --json: el bloqueo como dato (C3, la app lanza este script con un boton) ───────────────
 
-def _entorno_json(con_packshot=True, con_precio=True, con_perfil=True, angulo="ANG"):
-    """BASE/PROD_DIR temporales con un producto PX. Devuelve (base, restaurar)."""
+REAL_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+
+def _doctrina_registros(base, invima=None):
+    """DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md de la doctrina real; con `invima` reemplaza el PENDIENTE."""
+    import re
+    with open(os.path.join(REAL_BASE, "DOCTRINA", "PLANTILLAS_DEFAULTS_OPERADOR.md"), encoding="utf-8") as fh:
+        texto = fh.read()
+    if invima:
+        texto, n = re.subn(r"(\| `\[REG_INVIMA\]` \| )\*\*PENDIENTE del operador\*\* — no hay valor",
+                           lambda m: m.group(1) + "**`%s`** — valor de prueba" % invima, texto)
+        assert n == 1
+    os.makedirs(os.path.join(base, "DOCTRINA"), exist_ok=True)
+    with open(os.path.join(base, "DOCTRINA", "PLANTILLAS_DEFAULTS_OPERADOR.md"), "w", encoding="utf-8") as fh:
+        fh.write(texto)
+
+
+def _entorno_json(con_packshot=True, con_precio=True, con_perfil=True, angulo="ANG", mercado="GT", invima=None):
+    """BASE/PROD_DIR temporales con un producto PX del `mercado`. Devuelve (base, restaurar)."""
     import json
     base = tempfile.mkdtemp(prefix="ap_json_")
     prod = os.path.join(base, "PRODUCTOS")
     os.makedirs(os.path.join(prod, "PX_CARPETA"))
     with open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow(["producto_key", "slug_carpeta"])
-        w.writerow(["PX", "PX_CARPETA"])
+        w.writerow(["producto_key", "slug_carpeta", "mercado"])
+        w.writerow(["PX", "PX_CARPETA", mercado])
+    for nombre in ("_DIM_MERCADOS.csv", "_PARAMETROS_FINANZAS.csv"):
+        shutil.copy(os.path.join(REAL_BASE, "PRODUCTOS", nombre), os.path.join(prod, nombre))
+    _doctrina_registros(base, invima)
     with open(os.path.join(prod, "_DIM_ENVASE.csv"), "w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
         w.writerow(["producto_key", "packshot"])
@@ -343,6 +364,59 @@ def test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta():
     assert all(e.startswith("Ads/MEDIA_PX/") for e in escritos)
 
 
+# ── multi-mercado (D6): el prompt sale del mercado del producto, no de Guatemala hardcodeada ──────────
+
+def _prompt_de(mercado, invima=None):
+    _, restaurar = _entorno_json(mercado=mercado, invima=invima)
+    try:
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+        assert codigo == 0, cuerpo
+        with open(os.path.join(ap.BASE, cuerpo["archivos"][0].replace("/", os.sep)), encoding="utf-8") as fh:
+            return fh.read()
+    finally:
+        restaurar()
+
+
+def test_gt_conserva_el_registro_el_pais_el_voseo_y_la_moneda():
+    t = _prompt_de("GT")
+    assert ("MSPAS NS02026-GT3147 · FDA 30045469041. Somos de Guatemala: nunca INVIMA ni "
+            "ningún otro regulador extranjero.") in t
+    assert "Meta Ads en Guatemala." in t and "OMITILO" in t and "REPLICALO" in t
+    linea_precios = next(l for l in t.splitlines() if "Escalera de Precios" in l)
+    assert "Tier 1: 1 Frasco por Q150" in linea_precios and "$" not in linea_precios
+
+
+def test_co_usa_tuteo_invima_y_pesos():
+    t = _prompt_de("CO", invima="INVIMA 2026M-0012345")
+    assert "Meta Ads en Colombia." in t
+    assert "INVIMA 2026M-0012345. Somos de Colombia: nunca MSPAS ni ningún otro regulador extranjero." in t
+    assert "OMÍTELO" in t and "RÉPLICALO" in t and "OMITILO" not in t and "REPLICALO" not in t
+    assert "Tier 1: 1 Frasco por $ 150" in t
+    for ajeno in ("NS02026", "30045469041", "Guatemala", "Q150"):
+        assert ajeno not in t
+
+
+def test_co_sin_numero_invima_bloquea_con_dato_registro_sanitario():
+    base, restaurar = _entorno_json(mercado="CO")
+    try:
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert codigo == 1 and cuerpo["bloqueado"] is True and cuerpo["dato"] == "registro_sanitario"
+    assert "INVIMA" in cuerpo["motivo"] and "PX" in cuerpo["motivo"]
+    assert "MSPAS" not in cuerpo["motivo"]
+    assert not os.path.exists(os.path.join(base, "Ads", "MEDIA_PX", "FASE2_ANG")), "no escribio nada"
+
+
+def test_producto_sin_mercado_bloquea_no_asume_gt():
+    _, restaurar = _entorno_json(mercado="")
+    try:
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+    finally:
+        restaurar()
+    assert cuerpo["dato"] == "mercado" and "GT o CO" in cuerpo["detalle"]
+
+
 def main():
     fallas = 0
     fallas += test_producto_sin_fila_bloquea_no_hereda_precios_de_otro()
@@ -358,7 +432,11 @@ def main():
     for prueba in (test_json_bloqueo_por_packshot_dice_el_dato_y_sale_con_1,
                    test_json_bloqueo_por_precio_y_por_perfil_creativo,
                    test_sin_json_el_bloqueo_sigue_siendo_systemexit_con_el_mismo_texto,
-                   test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta):
+                   test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta,
+                   test_gt_conserva_el_registro_el_pais_el_voseo_y_la_moneda,
+                   test_co_usa_tuteo_invima_y_pesos,
+                   test_co_sin_numero_invima_bloquea_con_dato_registro_sanitario,
+                   test_producto_sin_mercado_bloquea_no_asume_gt):
         try:
             prueba()
             print("  OK     " + prueba.__name__)

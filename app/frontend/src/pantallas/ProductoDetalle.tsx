@@ -20,6 +20,7 @@ import { api, type DatosParaArrancar, type Flujo, type Nodo, type Requisito } fr
 import { FormularioPackshot, FotoDelProducto, ParaArrancar } from "../componentes/arranque";
 import { AvisosDelRecorrido, BannerRezago, tituloDelPasoActual, type MotorInfo } from "../componentes/resumen";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
+import { BanderaMercado } from "../componentes/mercado";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -214,7 +215,10 @@ function Header({
             <FotoDelProducto datos={datos} nombre={d.nombre || d.producto_key} onSubir={onSubirFoto} />
             <div>
               <h1 className="text-2xl font-semibold">{d.nombre || d.producto_key}</h1>
-              <p className="text-sm text-muted-foreground">{d.producto_key}</p>
+              <p className="flex items-center gap-2 text-sm text-muted-foreground">
+                {d.producto_key}
+                <BanderaMercado mercado={d.mercado} />
+              </p>
             </div>
           </div>
           <Badge variant="outline" title={faseEnUnaFrase(d.fase)}>
@@ -337,6 +341,7 @@ export function ProductoDetalle() {
       <ParaArrancar
         clave={clave}
         datos={datos.data}
+        perfil={flujo.data}
         onSubirFoto={() => setFormularioFoto(true)}
         onCargado={recargarDatos}
       />

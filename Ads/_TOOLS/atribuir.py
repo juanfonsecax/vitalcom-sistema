@@ -19,6 +19,9 @@ Reglas que aplica (no son opinion, salen de la doctrina):
 """
 import csv, sys, os, math, collections
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado  # noqa: E402
+
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
     except (AttributeError, ValueError): pass
@@ -48,9 +51,22 @@ def cargar():
 
 
 def q(r, prods):
-    """spend en Q usando la tasa del producto."""
-    tasa = num(prods.get(r["producto_key"], {}).get("tasa")) or 7.62
+    """spend en moneda local usando la tasa del producto (TasaFaltante si no la declara)."""
+    tasa = mercado.tasa_de_fila(prods.get(r["producto_key"]) or {"producto_key": r["producto_key"]})
     return num(r["spend_usd"]) * tasa
+
+
+def un_solo_mercado(rows, prods):
+    """Una celda suma gasto en moneda local: dos mercados en el mismo corte serian sumar Q con COP.
+    Devuelve el mercado de las filas o se detiene pidiendo --producto."""
+    mercados = {}
+    for pk in {r["producto_key"] for r in rows}:
+        mercados.setdefault(mercado.mercado_de_fila(prods.get(pk) or {"producto_key": pk}), []).append(pk)
+    if len(mercados) > 1:
+        raise mercado.MercadoError(
+            "el corte mezcla mercados (%s): no se suman monedas distintas. Filtra con --producto."
+            % "; ".join("%s: %s" % (m, ", ".join(sorted(p))) for m, p in sorted(mercados.items())))
+    return next(iter(mercados), None)
 
 
 def be(pk, prods):
@@ -84,7 +100,8 @@ def banda(gasto, v):
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         from decidir import ic_cpa, cargar_parametros
         conf = float(cargar_parametros().get("nivel_confianza", 0.95))
-        lo, _, hi = ic_cpa(v, gasto / 7.62, conf, 7.62)   # ic_cpa toma USD y reconvierte
+        # `gasto` ya viene en moneda local: el IC solo depende del gasto local (tasa=1.0 = sin conversion)
+        lo, _, hi = ic_cpa(v, gasto, conf, 1.0)
         return (lo, hi) if hi else None
     except Exception:
         lo, hi = v + math.sqrt(v), max(v - math.sqrt(v), 0.5)
@@ -137,6 +154,7 @@ def leer_eje(A, prods, eje, fijar=None, producto=None):
         return
 
     pks = {r["producto_key"] for r in rows}
+    un_solo_mercado(rows, prods)
     be_ref = sum(be(p, prods) for p in pks) / len(pks)
 
     grupos = collections.defaultdict(list)
@@ -218,6 +236,7 @@ def leer_eje(A, prods, eje, fijar=None, producto=None):
 def matriz(A, prods, e1, e2, producto=None):
     rows = [r for r in A if (not producto or r["producto_key"] == producto)]
     pks = {r["producto_key"] for r in rows}
+    un_solo_mercado(rows, prods)
     be_ref = sum(be(p, prods) for p in pks) / len(pks)
     g = collections.defaultdict(list)
     for r in rows:
@@ -245,11 +264,15 @@ def matriz(A, prods, e1, e2, producto=None):
 def main():
     A, prods = cargar()
     gate_integridad(A, prods)
-    if "--matriz" in sys.argv:
-        i = sys.argv.index("--matriz")
-        matriz(A, prods, sys.argv[i + 1], sys.argv[i + 2], arg("--producto"))
-        return
-    leer_eje(A, prods, arg("--eje", "angulo_key"), arg("--fijar"), arg("--producto"))
+    try:
+        if "--matriz" in sys.argv:
+            i = sys.argv.index("--matriz")
+            matriz(A, prods, sys.argv[i + 1], sys.argv[i + 2], arg("--producto"))
+            return
+        leer_eje(A, prods, arg("--eje", "angulo_key"), arg("--fijar"), arg("--producto"))
+    except mercado.MercadoError as error:   # sin tasa / mercados mezclados: se detiene, nombrandolo
+        print("BLOQUEANTE: %s" % error, file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

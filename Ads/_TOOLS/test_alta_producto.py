@@ -104,6 +104,12 @@ COLUMNAS_PRODUCTOS = [
     "cuenta_id", "page_id", "moneda", "tasa", "costo_q", "fila_costeo_q", "precio_base_q",
     "cpa_base_q", "cpa_be_q", "cpa_be_anterior_q", "notas", "carpeta_videos",
     "carpeta_transcripciones", "carpeta_media", "carpetas_extra", "clave_campana", "campaign_id",
+    "mercado",
+]
+COLUMNAS_MERCADOS = ["mercado", "pais", "moneda", "simbolo", "persona", "registro_sanitario"]
+FILAS_MERCADOS = [
+    ["GT", "Guatemala", "GTQ", "Q", "voseo", "registro MSPAS"],
+    ["CO", "Colombia", "COP", "$", "tuteo", "registro INVIMA"],
 ]
 COLUMNAS_ENVASE = [
     "producto_key", "packshot", "color_envase", "color_hex", "marca_impresa",
@@ -125,6 +131,7 @@ def _fixture(carpeta):
     for nombre, columnas, filas in (
         ("_DIM_PRODUCTOS.csv", COLUMNAS_PRODUCTOS, [["TINNIDROP"] + [""] * (len(COLUMNAS_PRODUCTOS) - 1)]),
         ("_DIM_ENVASE.csv", COLUMNAS_ENVASE, []),
+        ("_DIM_MERCADOS.csv", COLUMNAS_MERCADOS, FILAS_MERCADOS),
     ):
         with io.open(os.path.join(carpeta, "PRODUCTOS", nombre), "w", encoding="utf-8", newline="") as fh:
             escritor = csv.writer(fh)
@@ -146,7 +153,7 @@ def _correr(base, imagen, descripcion, extra=()):
     return alta_producto.main([
         "--nombre", "Serum Vitamina C", "--costo", "60",
         "--descripcion-archivo", descripcion, "--imagen", imagen,
-        "--base", base, "--hoy", "2026-09-17", *extra,
+        "--base", base, "--hoy", "2026-09-17", *(extra or ("--mercado", "GT")),
     ])
 
 
@@ -185,6 +192,34 @@ def main():
             assert fila["estado"] == "NUEVO", fila["estado"]
             assert fila["costo_q"] == "60", fila["costo_q"]
             assert fila["carpeta_media"] == "MEDIA_SERUMVITAMINAC", fila["carpeta_media"]
+            assert fila["mercado"] == "GT", fila["mercado"]
+
+        def exige_mercado():
+            """Sin mercado no hay alta: ni por la CLI (argparse) ni por planear() (la app)."""
+            antes = len(_leer(base, "_DIM_PRODUCTOS.csv"))
+            try:
+                alta_producto.main([
+                    "--nombre", "Sin Mercado", "--costo", "60", "--descripcion-archivo", descripcion,
+                    "--imagen", imagen, "--base", base, "--hoy", "2026-09-17"])
+                raise AssertionError("la CLI tenia que exigir --mercado")
+            except SystemExit as salida:
+                assert salida.code == 2, salida.code
+            datos = {"nombre": "Sin Mercado", "clave": "SIN_MERCADO", "costo": "60",
+                     "descripcion": DESCRIPCION, "imagen": imagen, "cuenta": "", "moneda": "GTQ",
+                     "tasa": "", "color_envase": "", "color_hex": "", "marca": "", "formato": "",
+                     "notas": "", "hoy": "2026-09-17"}
+            for malo in (None, "", "  ", "MX"):
+                try:
+                    alta_producto.planear(base, dict(datos, mercado=malo))
+                    raise AssertionError(f"planear() tenia que rechazar mercado={malo!r}")
+                except alta_producto.Rechazo:
+                    pass
+            assert len(_leer(base, "_DIM_PRODUCTOS.csv")) == antes, "no se escribe nada al rechazar"
+
+        def alta_de_colombia():
+            assert _correr(base, imagen, descripcion, ("--mercado", "CO", "--clave", "SERUM_CO")) == 0
+            filas = _leer(base, "_DIM_PRODUCTOS.csv")
+            assert dict(zip(filas[0], filas[-1]))["mercado"] == "CO"
 
         def no_escribe_cifras_de_costeo():
             fila = dict(zip(*[_leer(base, "_DIM_PRODUCTOS.csv")[i] for i in (0, -1)]))
@@ -223,25 +258,26 @@ def main():
             antes = len(_leer(base, "_DIM_PRODUCTOS.csv"))
             assert alta_producto.main([
                 "--nombre", "Otro Producto", "--costo", "60", "--descripcion-archivo", corta,
-                "--imagen", imagen, "--base", base]) == 1
+                "--imagen", imagen, "--base", base, "--mercado", "GT"]) == 1
             assert len(_leer(base, "_DIM_PRODUCTOS.csv")) == antes, "no se escribe nada al rechazar"
 
         def rechaza_imagen_inexistente():
             assert alta_producto.main([
                 "--nombre", "Otro Producto", "--costo", "60", "--descripcion-archivo", descripcion,
-                "--imagen", os.path.join(base, "no_existe.png"), "--base", base]) == 1
+                "--imagen", os.path.join(base, "no_existe.png"), "--base", base,
+                "--mercado", "GT"]) == 1
 
         def rechaza_costo_no_numerico():
             assert alta_producto.main([
                 "--nombre", "Otro Producto", "--costo", "sesenta", "--descripcion-archivo",
-                descripcion, "--imagen", imagen, "--base", base]) == 1
+                descripcion, "--imagen", imagen, "--base", base, "--mercado", "GT"]) == 1
 
         def dry_run_no_toca_nada():
             antes_productos = _leer(base, "_DIM_PRODUCTOS.csv")
             antes_envase = _leer(base, "_DIM_ENVASE.csv")
             assert alta_producto.main([
                 "--nombre", "Producto En Seco", "--costo", "45", "--descripcion-archivo",
-                descripcion, "--imagen", imagen, "--base", base, "--dry-run"]) == 0
+                descripcion, "--imagen", imagen, "--base", base, "--mercado", "GT", "--dry-run"]) == 0
             assert _leer(base, "_DIM_PRODUCTOS.csv") == antes_productos
             assert _leer(base, "_DIM_ENVASE.csv") == antes_envase
             assert not os.path.isdir(os.path.join(base, "PRODUCTOS", "PRODUCTO_EN_SECO"))
@@ -267,6 +303,7 @@ def main():
                 plan = alta_producto.planear(base, {
                     "nombre": "Producto Roto", "clave": "PRODUCTO_ROTO", "costo": "60",
                     "descripcion": DESCRIPCION, "imagen": imagen, "cuenta": "", "moneda": "GTQ",
+                    "mercado": "GT",
                     "tasa": "", "color_envase": "", "color_hex": "", "marca": "", "formato": "",
                     "notas": "", "hoy": "2026-09-17"})
                 try:
@@ -316,7 +353,7 @@ def main():
                 codigo = alta_producto.main([
                     "--nombre", "Producto Recuperable", "--costo", "60",
                     "--descripcion-archivo", descripcion, "--imagen", imagen,
-                    "--base", base, "--hoy", "2026-09-17", "--json"])
+                    "--base", base, "--hoy", "2026-09-17", "--mercado", "GT", "--json"])
             finally:
                 sys.stdout = real_stdout
                 alta_producto.os.replace = original
@@ -341,6 +378,7 @@ def main():
         print("GATE DEL ALTA DE PRODUCTOS")
         for nombre, funcion in (
             ("alta valida escribe la fila completa", alta_normal),
+            ("sin mercado no hay alta (CLI y planear)", exige_mercado),
             ("no escribe precio, CPA ni break-even", no_escribe_cifras_de_costeo),
             ("no declara la fase", la_fase_no_se_declara),
             ("declara el packshot y lo copia", packshot_declarado_y_en_disco),
@@ -351,6 +389,7 @@ def main():
             ("rechaza un costo que no es numero", rechaza_costo_no_numerico),
             ("--dry-run no toca el disco", dry_run_no_toca_nada),
             ("la clave se deriva sin acentos", la_clave_se_deriva_sin_acentos),
+            ("un producto de Colombia queda con mercado CO", alta_de_colombia),
             ("una falla ANTES de Postgres no deja restos", falla_antes_de_postgres_no_deja_producto_a_medias),
             ("una falla DESPUES de Postgres es recuperable, no se deshace", falla_despues_de_postgres_es_recuperable),
         ):

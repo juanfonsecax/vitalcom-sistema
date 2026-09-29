@@ -93,7 +93,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 SALIDA = os.path.join(PROD, "_ESTADO_ANGULOS.csv")
 PARAMS_OPT = os.path.join(PROD, "_PARAMETROS_OPTIMIZACION.csv")
-TASA_DEFAULT = 7.62
+# No hay tasa USD->moneda local por defecto: un producto sin `tasa` se OMITE con un aviso.
 
 # El ciclo de vida. El orden de esta lista ES el orden de evaluación de los predicados:
 # el primero que se cumple manda. Cambiar el orden cambia la doctrina, no solo el código.
@@ -325,7 +325,7 @@ def construir(pk_filtro=None):
         pk = (r.get("producto_key") or "").strip()
         if pk:
             prods[pk] = {"be": _num(r.get("cpa_be_q")), "obj": _num(r.get("cpa_base_q")),
-                         "tasa": _num(r.get("tasa"), TASA_DEFAULT) or TASA_DEFAULT,
+                         "tasa": _num(r.get("tasa"), None),
                          "estado": (r.get("estado") or "").strip()}
 
     # El veredicto del motor, tal cual. NO se recalcula (invariante 13).
@@ -346,9 +346,16 @@ def construir(pk_filtro=None):
     prev = estado_previo()
 
     perfiles = []
+    _sin_tasa = set()
     for (pk, ak), m in serie.items():
         info = prods.get(pk)
         if not info or not info["be"]:
+            continue
+        if not info["tasa"] or info["tasa"] <= 0:
+            if pk not in _sin_tasa:
+                _sin_tasa.add(pk)
+                print("AVISO perfilar_angulos: «%s» no declara `tasa` en _DIM_PRODUCTOS.csv: se OMITE "
+                      "(no hay tasa por defecto)." % pk, file=sys.stderr)
             continue
         tasa, be = info["tasa"], info["be"]
         fechas = sorted(m)

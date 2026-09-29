@@ -43,7 +43,7 @@ El perfil conectado al MCP debe ser el **LANZADOR (desechable)**, nunca el conte
 MCP_ACCOUNT_ID : [cuenta de anuncios habilitada para MCP, moneda USD]
 MCP_PAGE_ID    : [page_id de la fanpage asignada — con WhatsApp conectado]
 MCP_PIXEL_ID   : [dataset_id que recibe las Compras offline del WABA — para ETAPA-7]
-TASA_USD_GTQ   : [tasa del día, ej. 7.62]
+TASA_MONEDA_POR_USD : [tasa del producto — moneda local por USD; GT: `tasa_usd_gtq`]
 ```
 
 ### Inventario de cuentas — el dueño es `PRODUCTOS/_DIM_CUENTAS.csv`
@@ -125,10 +125,10 @@ Si falta cualquiera → detener y pedirlo. No inventar IDs.
 | billing_event | `IMPRESSIONS` | |
 | daily_budget | **sale de `_PARAMETROS_PUBLICACION.csv`**, por fase y brazo | F1 $2.99 · F2 $6.00/conjunto · F3 $15.00 CBO. Convertir: `cents = round(USD*100)`, y siempre en la **unidad menor de la moneda de la cuenta** (CP1 factura en COP). El dueño único de esta cifra es el CSV, nunca esta prosa. |
 | targeting | `{"geo_locations":{"countries":["GT"]},"age_min":[MIN],"age_max":[MAX],"targeting_automation":{"advantage_audience":0}}` | 🔴 **`age_min`/`age_max` salen del `avatar_edad` del ángulo**, no son 18-65 fijos (APR-060: mismo ángulo y creativo, Q473.6/venta a 25+ contra Q30.6 a 45-60). Tabla de derivación en `ETAPA-6.md` → BANDA DE EDAD. Amplio 18-65 solo si el ángulo no tiene avatar de edad marcada. Advantage+ **siempre** OFF: sin eso Meta ignora la banda. |
-| start_time | `[mañana]T04:00:00-06:00` | 4 AM día siguiente, hora Guatemala (UTC-6) |
+| start_time | `[mañana]T04:00:00-06:00` | 4 AM día siguiente, hora del huso de la cuenta (cuentas GT: Guatemala, UTC-6) |
 | status | **PAUSED** (default del MCP) | nunca ACTIVE |
 
-> Moneda: la cuenta es USD; `daily_budget` va en **centavos de USD**. Los umbrales CPA de ETAPA-1 están en Q → al leer (ETAPA-7) se convierte USD→Q con TASA_USD_GTQ.
+> Moneda: la cuenta es USD; `daily_budget` va en **centavos de USD**. Los umbrales CPA de ETAPA-1 están en la moneda local del producto (GT: Q) → al leer (ETAPA-7) se convierte USD→moneda local con la `tasa` del producto. El MCP corre solo en cuentas GT; el mercado CO es manual.
 
 ---
 
@@ -193,7 +193,7 @@ Generar `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` (ver plantilla abajo) con todos
 ## 6. LECTURA (ETAPA-7) — mapeo de campos del MCP (verificado)
 Campos válidos en `ads_get_ad_entities` (level adset/campaign): `amount_spent` (gasto), `impressions`, `clicks`, `actions:omni_purchase` (= **Compras offline / ventas del bot**), `conversions`, `cost_per_result`, `results`, `cpm`, `ctr`, `frequency`, `reach`. Breakdown `age` para el desglose por edad.
 ```
-CPA real (Q) = (amount_spent / actions:omni_purchase) × TASA_USD_GTQ
+CPA real (moneda local) = (amount_spent / actions:omni_purchase) × TASA_DEL_PRODUCTO
 % conversación por clic = conversaciones ÷ clics (× 100)
 ```
 Comparar contra **CPA Base / CPA Break Even** (ETAPA-1). Zonas: 🟢 ≤ Base · 🟡 ≤ Break Even · 🔴 > Break Even. NUNCA ROAS.

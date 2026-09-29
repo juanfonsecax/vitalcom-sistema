@@ -20,6 +20,7 @@ import {
   OrdenesDeRenovacion,
   type OrdenMotor,
 } from "../componentes/angulosFase2";
+import { BanderaMercado } from "../componentes/mercado";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,7 +124,8 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             FASE 2 · Testeo de Conceptos ({clave})
           </h1>
           <p className="text-sm text-zinc-400">
-            Estructura 1-1-5 + 1-1-5 + 1-2-5 · 10 conceptos con ángulo y copy fijos · <Info termino="fase_2" />
+            Estructura 1-1-5 + 1-1-5 + 1-2-5 · 10 conceptos con ángulo y copy fijos · <Info termino="fase_2" />{" "}
+            <BanderaMercado mercado={d.mercado} />
           </p>
         </div>
 
@@ -171,9 +173,9 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
       )}
 
       {/* Cada ángulo en su propio bloque: el #1 en testeo ahora, los demás en fila o descartados. */}
-      <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} />
-      <AngulosEnFila angulos={enFila} />
-      <AngulosQueNoFuncionaron angulos={noFuncionaron} trabajoPendiente={trabajoPendiente} />
+      <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} perfil={d} />
+      <AngulosEnFila angulos={enFila} perfil={d} />
+      <AngulosQueNoFuncionaron angulos={noFuncionaron} trabajoPendiente={trabajoPendiente} perfil={d} />
 
       {/* Alertas de Fatiga y Botón de Retorno a F1 */}
       <Tarjeta className="border-amber-800/40 bg-amber-950/20 p-4">

@@ -28,6 +28,9 @@ USO
 import csv, io, os, sys, base64, datetime
 from collections import defaultdict, OrderedDict
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado
+
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.chdir(BASE)
 PORTABLE = "--liviano" not in sys.argv
@@ -38,7 +41,9 @@ BANCO   = "Ads/_SWIPE/_BANCO_CREATIVOS"
 SALIDA  = "PRODUCTOS/_TESTEOS.html"
 
 UMBRALES = [(10, "3x"), (25, "2x"), (80, "1.5x")]
-TASA = 7.62  # USD -> GTQ. Si cambia, vive en el 2_DATA_PRODUCTO del producto.
+# La tasa USD -> moneda local es la DEL PRODUCTO del test (_DIM_PRODUCTOS.tasa) y la moneda sale de su
+# mercado (mercado.py): no hay tasa ni simbolo por defecto. Un test cuyo producto no declara tasa se
+# dibuja sin CPA (aviso en stderr); nunca se asume la de GT.
 
 
 def f(x):
@@ -81,7 +86,27 @@ tests = OrderedDict()
 for r in filas:
     tests.setdefault(r["test_id"], {"meta": r, "brazos": []})["brazos"].append(r)
 
+with io.open("PRODUCTOS/_DIM_PRODUCTOS.csv", encoding="utf-8-sig", newline="") as _fh:
+    _productos = {(p.get("producto_key") or "").strip(): p for p in csv.DictReader(_fh)}
+
+
+def _moneda_del_test(t):
+    """(tasa, simbolo) del producto del test; tasa None si no la declara (aviso, sin CPA)."""
+    pk = (t["meta"].get("producto_key") or "").strip()
+    fila = _productos.get(pk) or {"producto_key": pk}
+    try:
+        simbolo = mercado.perfil_de_fila(fila)["simbolo"]
+    except mercado.MercadoError as error:
+        sys.exit("BLOQUEANTE gen_testeos: %s" % error)
+    try:
+        return mercado.tasa_de_fila(fila), simbolo
+    except mercado.TasaFaltante as error:
+        print("AVISO gen_testeos: test %s sin CPA: %s" % (t["meta"].get("test_id"), error), file=sys.stderr)
+        return None, simbolo
+
+
 for t in tests.values():
+    t["tasa"], t["simbolo"] = _moneda_del_test(t)
     for b in t["brazos"]:
         v = s = 0.0
         conj = [c.strip() for c in (b.get("conjuntos_meta") or "").split("|") if c.strip()]
@@ -89,7 +114,7 @@ for t in tests.values():
             v += ventas_por_conjunto[c][0]
             s += ventas_por_conjunto[c][1]
         b["_ventas"], b["_spend"], b["_conj"] = v, s, conj
-        b["_cpa"] = (s / v * TASA) if v else None
+        b["_cpa"] = (s / v * t["tasa"]) if (v and t["tasa"]) else None
 
 
 # ---------- html ----------
@@ -136,10 +161,11 @@ def card_test(tid, t):
         if b["_ventas"]:
             nums = ('<div class="n"><span>%d</span>ventas</div>'
                     '<div class="n"><span>$%.0f</span>gastado</div>'
-                    '<div class="n cpa"><span>Q%.0f</span>CPA real</div>'
-                    % (b["_ventas"], b["_spend"], b["_cpa"]))
+                    '<div class="n cpa"><span>%s</span>CPA real</div>'
+                    % (b["_ventas"], b["_spend"],
+                       ("%s%.0f" % (t["simbolo"], b["_cpa"])) if b["_cpa"] else "sin tasa"))
             barra = ""
-            if corr:
+            if corr and b["_cpa"]:
                 mejor = min(corr)
                 ratio = mejor / b["_cpa"]
                 barra = '<div class="bar"><i style="width:%d%%"></i></div>' % int(ratio * 100)

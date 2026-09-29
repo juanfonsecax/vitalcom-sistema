@@ -172,7 +172,7 @@ export function Guia() {
             </div>
             <p className="text-sm text-muted-foreground">
               Subís la foto del envase, la descripción (con ingredientes y dosis para que los textos
-              de anuncios salgan convincentes) y el costo en quetzales; al instante ves la tabla de
+              de anuncios salgan convincentes) y el costo en la moneda del mercado; al instante ves la tabla de
               precios para Guatemala y el break-even. Después podés transcribir los videos del
               producto para que el motor construya sus ángulos.
             </p>

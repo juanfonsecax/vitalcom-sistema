@@ -5,6 +5,7 @@ select
     upper(trim(estado))                               as estado,
     nullif(upper(trim(fase)),'')                      as fase,
     nullif(trim(cuenta_alias),'')                     as cuenta_alias,
+    upper(trim(mercado))                              as mercado,
     cast(nullif(trim(cpa_be_q),'') as double)         as cpa_be_q,
     cast(nullif(trim(cpa_base_q),'') as double)       as cpa_base_q,
     cast(nullif(trim(precio_base_q),'') as double)    as precio_base_q,

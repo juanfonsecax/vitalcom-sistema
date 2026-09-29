@@ -12,6 +12,8 @@ import { api, type ParametroMotor } from "../api/cliente";
 import { Button } from "@/components/ui/button";
 import { trabajoPendientePorProducto } from "../componentes/resumen";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
+import { BanderaMercado } from "../componentes/mercado";
+import { formatearDinero } from "../dinero";
 import {
   Table,
   TableBody,
@@ -233,7 +235,9 @@ export function Ordenes() {
                 <div className="flex items-start justify-between">
                   <div>
                     <span className="text-xs font-medium text-emerald-400">FASE 2 ALCANZADA</span>
-                    <h3 className="text-lg font-bold text-zinc-100">{g.nombre || g.producto_key}</h3>
+                    <h3 className="text-lg font-bold text-zinc-100">
+                      {g.nombre || g.producto_key} <BanderaMercado mercado={g.mercado} />
+                    </h3>
                   </div>
                   <Chip tono="bien">{g.fase || "F2"}</Chip>
                 </div>
@@ -302,7 +306,8 @@ export function Ordenes() {
                           className="text-base font-bold text-zinc-100 hover:text-sky-300"
                         >
                           {orden.producto_key}
-                        </Link>
+                        </Link>{" "}
+                        <BanderaMercado mercado={orden.mercado} />
                         <p className="text-xs text-zinc-400">
                           Ángulo: <span className="font-semibold text-zinc-200">{orden.angulo_nombre || orden.angulo_key}</span>
                         </p>
@@ -324,9 +329,9 @@ export function Ordenes() {
                     {ic && ic.length === 3 && pq.break_even_q != null && (
                       <p className="mt-2 text-xs text-zinc-400">
                         Cada venta te está costando entre{" "}
-                        <span className="font-mono text-zinc-300">Q{ic[0]}</span> y{" "}
-                        <span className="font-mono text-zinc-300">Q{ic[2]}</span>; tu techo es{" "}
-                        <span className="font-mono text-zinc-300">Q{pq.break_even_q as number}</span>.{" "}
+                        <span className="font-mono text-zinc-300">{formatearDinero(ic[0], orden)}</span> y{" "}
+                        <span className="font-mono text-zinc-300">{formatearDinero(ic[2], orden)}</span>; tu techo es{" "}
+                        <span className="font-mono text-zinc-300">{formatearDinero(pq.break_even_q as number, orden)}</span>.{" "}
                         {veredictoDeOrden(orden.estado, orden.bloqueo_fase)}
                       </p>
                     )}
@@ -344,19 +349,19 @@ export function Ordenes() {
                       <div>
                         <span className="block text-zinc-400">CPA Observado:</span>
                         <span className="font-semibold text-zinc-200">
-                          {pq.cpa_real_q != null ? `Q${pq.cpa_real_q}` : "Sin datos"}
+                          {pq.cpa_real_q != null ? formatearDinero(pq.cpa_real_q as number, orden) : "Sin datos"}
                         </span>
                       </div>
                       <div>
                         <span className="block text-zinc-400">Break-even:</span>
                         <span className="font-semibold text-zinc-200">
-                          {pq.break_even_q != null ? `Q${pq.break_even_q}` : "No fijado"}
+                          {pq.break_even_q != null ? formatearDinero(pq.break_even_q as number, orden) : "No fijado"}
                         </span>
                       </div>
                       <div>
                         <span className="block text-zinc-400">Intervalo 95%:</span>
                         <span className="font-mono text-zinc-300">
-                          {ic && ic.length === 3 ? `[${ic[0]}, ${ic[2]}]` : "No disponible"}
+                          {ic && ic.length === 3 ? `[${formatearDinero(ic[0], orden)}, ${formatearDinero(ic[2], orden)}]` : "No disponible"}
                         </span>
                       </div>
                       <div>

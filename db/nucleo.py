@@ -113,6 +113,8 @@ CREATE TABLE IF NOT EXISTS core.producto (
   raw_id BIGINT,
   UNIQUE (tenant_id, producto_key)
 );
+-- mercado (GT/CO, _DIM_MERCADOS.csv): una base que ya tenia core.producto no lo recibe por el CREATE.
+ALTER TABLE core.producto ADD COLUMN IF NOT EXISTS mercado TEXT;
 
 CREATE TABLE IF NOT EXISTS core.cuenta (
   id BIGSERIAL PRIMARY KEY,
@@ -483,14 +485,14 @@ def construir_core(cur, tenant_id):
             cuenta_id_meta, page_id, moneda, tasa, costo_q, fila_costeo_q, precio_base_q,
             cpa_base_q, cpa_be_q, cpa_be_anterior_q, notas, carpeta_videos,
             carpeta_transcripciones, carpeta_media, carpetas_extra, clave_campana, campaign_id,
-            raw_id
+            mercado, raw_id
         )
         SELECT tenant_id, producto_key, nombre_display, slug_carpeta, estado, fase, cuenta_alias,
                cuenta_id, page_id, moneda, core.try_numeric(tasa), core.try_numeric(costo_q),
                fila_costeo_q, core.try_numeric(precio_base_q), core.try_numeric(cpa_base_q),
                core.try_numeric(cpa_be_q), core.try_numeric(cpa_be_anterior_q), notas,
                carpeta_videos, carpeta_transcripciones, carpeta_media, carpetas_extra,
-               clave_campana, campaign_id, id
+               clave_campana, campaign_id, NULLIF(TRIM(mercado), ''), id
         FROM raw.producto WHERE tenant_id = %s AND producto_key IS NOT NULL AND producto_key <> ''
         """,
         (tenant_id,),

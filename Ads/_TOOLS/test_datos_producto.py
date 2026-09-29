@@ -138,3 +138,43 @@ def test_producto_inexistente(base, capsys):
 
 if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", "-p", "no:cacheprovider", "--noconftest"]))
+
+
+def _base_mercados(tmp_path, invima=None):
+    """Un producto GT y uno CO con su mercado, y la doctrina real (INVIMA pendiente salvo `invima`)."""
+    import re
+    import shutil
+    real = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    p = tmp_path / "PRODUCTOS"
+    _csv(p / "_DIM_PRODUCTOS.csv", COLS_PRODUCTOS + ["mercado"], [
+        ["GTP", "Gt", "GTP", "50", "1", "EXTERNA", "GT"], ["COP1", "Co", "COP1", "7000", "1", "EXTERNA", "CO"],
+        ["SINM", "Sin", "SINM", "50", "1", "EXTERNA", ""]])
+    for nombre in ("_DIM_MERCADOS.csv", "_PARAMETROS_FINANZAS.csv"):
+        shutil.copy(os.path.join(real, "PRODUCTOS", nombre), p / nombre)
+    with io.open(os.path.join(real, "DOCTRINA", "PLANTILLAS_DEFAULTS_OPERADOR.md"), encoding="utf-8") as fh:
+        texto = fh.read()
+    if invima:
+        texto = re.sub(r"(\| `\[REG_INVIMA\]` \| )\*\*PENDIENTE del operador\*\*", lambda m: m.group(1) + "**`%s`**" % invima, texto)
+    (tmp_path / "DOCTRINA").mkdir()
+    (tmp_path / "DOCTRINA" / "PLANTILLAS_DEFAULTS_OPERADOR.md").write_text(texto, encoding="utf-8")
+    return tmp_path
+
+
+def test_registro_sanitario_gt_ok_co_falta_sin_accion_y_sin_mercado_no_se_juzga(tmp_path):
+    b = _base_mercados(tmp_path)
+    gt = dp.revisar_producto(str(b), _fila(b, "GTP"))
+    co = dp.revisar_producto(str(b), _fila(b, "COP1"))
+    sin = dp.revisar_producto(str(b), _fila(b, "SINM"))
+    item = next(i for i in gt["items"] if i["clave"] == "registro_sanitario")
+    assert item["estado"] == "ok" and "NS02026-GT3147" in item["detalle"]
+    falta = next(i for i in co["items"] if i["clave"] == "registro_sanitario")
+    assert falta["estado"] == "falta" and "INVIMA" in falta["detalle"] and "Colombia" in falta["detalle"]
+    assert falta["accion"] is None and "número de registro" in falta["como_resolver"]
+    assert "python" not in falta["como_resolver"].lower() and "MSPAS" not in falta["detalle"]
+    assert "registro_sanitario" not in _estados(sin), "sin mercado valido lo dice mercado.py, no este dato"
+
+
+def test_registro_sanitario_co_con_numero_queda_ok(tmp_path):
+    b = _base_mercados(tmp_path, invima="INVIMA 2026M-0012345")
+    co = dp.revisar_producto(str(b), _fila(b, "COP1"))
+    assert _estados(co)["registro_sanitario"] == "ok"

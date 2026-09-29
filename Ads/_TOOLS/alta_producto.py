@@ -34,7 +34,10 @@ Uso
 
     --clave         producto_key explicita (por defecto se deriva del nombre)
     --cuenta        cuenta_alias de _DIM_CUENTAS.csv (por defecto vacia: la decide F1)
-    --moneda/--tasa por defecto GTQ sin tasa (Guatemala)
+    --mercado       OBLIGATORIO: GT o CO (de _DIM_MERCADOS.csv). El operador elige; no hay
+                    valor por defecto (de el salen moneda de venta, tono y registro sanitario)
+    --moneda/--tasa moneda de la CUENTA PUBLICITARIA (no la de venta) y tasa; por defecto GTQ
+                    sin tasa
     --color-envase --color-hex --marca --formato   identidad fisica, si ya se conoce
     --base          raiz alternativa (fixtures de test)
 """
@@ -66,6 +69,9 @@ MINIMO_DESCRIPCION = 120  # una descripcion de dos lineas no alcanza para invest
 # dentro de las funciones de abajo, nunca como default de parámetro, para que un monkeypatch de
 # módulo (`alta_producto.TENANT_ID = tenant`) surta efecto en la próxima llamada.
 TENANT_ID = "vitalcom"
+
+
+import mercado as mercado_mod  # noqa: E402  (resolver de mercados, mismo directorio)
 
 
 class Rechazo(Exception):
@@ -130,6 +136,20 @@ def planear(base, datos):
             "(invariante 8). Si querés relanzarlo, se edita su fila; no se da de alta de nuevo."
         )
 
+    mercado = (datos.get("mercado") or "").strip()
+    conocidos = mercado_mod.leer_mercados(base)
+    if not mercado:
+        raise Rechazo(
+            "falta el mercado del producto. El operador elige uno de: "
+            + ", ".join(sorted(conocidos)) + ". No hay valor por defecto: de el salen la moneda "
+            "de venta, el tono y el registro sanitario."
+        )
+    if mercado not in conocidos:
+        raise Rechazo(
+            f"el mercado «{mercado}» no existe en _DIM_MERCADOS.csv (mercados: "
+            + ", ".join(sorted(conocidos)) + ")."
+        )
+
     descripcion = datos["descripcion"].strip()
     if len(descripcion) < MINIMO_DESCRIPCION:
         raise Rechazo(
@@ -181,6 +201,7 @@ def planear(base, datos):
         "carpetas_extra": "",
         "clave_campana": clave,
         "campaign_id": "",
+        "mercado": mercado,
     }
     faltantes = [c for c in encabezado if c not in fila_producto]
     if faltantes:
@@ -218,6 +239,7 @@ def planear(base, datos):
         "packshot": packshot_rel,
         "carpeta_transcripciones": os.path.join("Ads", "1.2 Transcripcion videos", slug),
         "costo_q": costo,
+        "mercado": mercado,
         "fila_producto": fila_producto,
         "fila_envase": fila_envase,
         "_encabezados": (encabezado, filas, encabezado_envase, filas_envase),
@@ -372,7 +394,7 @@ def salida_legible(plan, aplicado):
     verbo = "CREADO" if aplicado else "SE CREARIA"
     lineas = [
         f"{verbo}: {plan['nombre_display']}  ·  {plan['producto_key']}",
-        f"  fila en PRODUCTOS/_DIM_PRODUCTOS.csv ...... estado NUEVO, costo Q{plan['costo_q']}",
+        f"  fila en PRODUCTOS/_DIM_PRODUCTOS.csv ...... estado NUEVO, mercado {plan['mercado']}, costo Q{plan['costo_q']}",
         f"  fila en PRODUCTOS/_DIM_ENVASE.csv ......... packshot declarado",
         f"  {plan['archivo_datos']}",
         f"  {plan['packshot']}",
@@ -392,7 +414,8 @@ def main(argv=None):
     ap.add_argument("--imagen", required=True, help="foto limpia del producto (el packshot)")
     ap.add_argument("--clave", default=None)
     ap.add_argument("--cuenta", default="")
-    ap.add_argument("--moneda", default="GTQ")
+    ap.add_argument("--mercado", required=True, help="mercado de venta: GT o CO (_DIM_MERCADOS.csv)")
+    ap.add_argument("--moneda", default="GTQ", help="moneda de la CUENTA PUBLICITARIA, no la de venta")
     ap.add_argument("--tasa", default="")
     ap.add_argument("--color-envase", default="")
     ap.add_argument("--color-hex", default="")
@@ -419,6 +442,7 @@ def main(argv=None):
         "descripcion": descripcion,
         "imagen": args.imagen,
         "cuenta": args.cuenta,
+        "mercado": args.mercado,
         "moneda": args.moneda,
         "tasa": args.tasa,
         "color_envase": args.color_envase,

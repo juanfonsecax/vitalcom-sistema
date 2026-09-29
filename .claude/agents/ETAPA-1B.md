@@ -43,7 +43,7 @@ Antes de tocar los ingredientes, investigar el **dolor real** de la gente que su
 - `[problema/síntoma] foro experiencias` · `[problema/síntoma] testimonios blog`
 - `[nombre producto o categoría] reseñas` · `[nombre producto o categoría] opiniones negativas`
 - `[problema/síntoma] por qué me pasa` / `cómo se siente [síntoma]`
-- (Si aplica al nicho) `[problema] Guatemala` o español latino, para captar el habla local.
+- (Si aplica al nicho) `[problema] [país del mercado del producto]` o español latino, para captar el habla local.
 - **Deseos/anhelos (no solo dolor):** `[resultado deseado] cómo lograr` · `[problema] qué daría por` · `[categoría] lo que más valoran` — para captar lo que la gente ASPIRA, no solo lo que sufre.
 - **Causa / problema oculto (Clase 12):** `por qué [síntoma] aunque [intento común]` · `[síntoma] causa real que nadie menciona` · `[problema] no es lo que crees` — para detectar el problema oculto detrás del síntoma evidente.
 

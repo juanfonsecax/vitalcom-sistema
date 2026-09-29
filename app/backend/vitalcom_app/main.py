@@ -23,7 +23,7 @@ from fastapi.responses import JSONResponse
 from . import acciones, api_acciones, api_fase1, api_fases, api_ordenes, api_trabajos, claude, contratos, subidas, workflows
 from .acciones import ErrorDeAccion
 from .config import base
-from .modelos import Costeo, Cuenta, Decisiones, FanPage, Flujo, Producto, Resultados, Salud
+from .modelos import Costeo, Cuenta, Decisiones, FanPage, Flujo, Mercado, Producto, Resultados, Salud
 
 @asynccontextmanager
 async def _ciclo_de_vida(_app: FastAPI):  # type: ignore[no-untyped-def]
@@ -77,7 +77,7 @@ def listar_productos() -> list[Producto]:
     """
     estados = contratos.estado_flujo()
     salida: list[Producto] = []
-    for fila in contratos.productos():
+    for fila in contratos.productos_con_mercado():
         clave = fila["producto_key"]
         estado = estados.get(clave, {})
         bloqueantes = estado.get("bloqueantes") or ""
@@ -96,6 +96,12 @@ def listar_productos() -> list[Producto]:
     return salida
 
 
+@app.get("/api/mercados", response_model=list[Mercado], tags=["productos"])
+def listar_mercados() -> list[Mercado]:
+    """Los mercados del sistema (GT, CO...) con su moneda de venta, símbolo, tono y registro."""
+    return [Mercado(**perfil) for perfil in contratos.mercados()]
+
+
 @app.get("/api/productos/{producto_key}", response_model=Flujo, tags=["productos"])
 def detalle_producto(producto_key: str) -> Flujo:
     """El recorrido completo del producto en el grafo, tal como lo evalúa `flujo.py`."""
@@ -105,7 +111,7 @@ def detalle_producto(producto_key: str) -> Flujo:
             status_code=404,
             detail=f"«{producto_key}» no tiene fila en _DIM_PRODUCTOS.csv (invariante 8).",
         )
-    return Flujo(**contratos.flujo(producto_key))
+    return Flujo(**contratos.flujo(producto_key), **contratos.perfil_de_producto(producto_key))
 
 
 @app.get("/api/decisiones", response_model=Decisiones, tags=["decisiones"])
@@ -141,6 +147,7 @@ def alta_de_producto(
     descripcion: str = Form(..., description="la descripción extensa del operador"),
     imagen: UploadFile = File(..., description="la foto limpia del producto: el packshot"),
     clave: str = Form(""),
+    mercado: str = Form(..., description="mercado de venta (GT/CO): lo elige el operador, sin valor por defecto"),
     cuenta: str = Form(""),
     moneda: str = Form("GTQ"),
     tasa: str = Form(""),
@@ -164,7 +171,7 @@ def alta_de_producto(
             ruta_descripcion = subidas.guardar_texto(descripcion, temporal)
             accion = acciones.por_id_para_el_runner("producto.alta")
             valores = acciones.validar_parametros(accion, {
-                "nombre": nombre, "costo": costo, "descripcion": str(ruta_descripcion),
+                "nombre": nombre, "costo": costo, "mercado": mercado, "descripcion": str(ruta_descripcion),
                 "imagen": str(ruta_imagen), "dry_run": dry_run,
                 **{k: v for k, v in opcionales.items() if v.strip()},
             })

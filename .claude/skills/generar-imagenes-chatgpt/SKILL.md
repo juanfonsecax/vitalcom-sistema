@@ -108,14 +108,21 @@ producto del competidor.
 modelo que la imagen sí lleve todos los acentos. Los caracteres especiales son
 los que se corrompen al inyectarse. Cerrar el prompt con:
 
-> `MUY IMPORTANTE: todo el texto de la imagen en espanol de Guatemala con voseo
+> `MUY IMPORTANTE: todo el texto de la imagen en espanol de [PAIS DEL MERCADO] con [PERSONA DEL MERCADO: voseo o tuteo]
 > y CON TODOS LOS ACENTOS Y TILDES CORRECTOS, sin errores ortograficos.
 > Replica fielmente todos los elementos de la IMAGEN 1: sellos, badges,
 > certificaciones, estrellas, tarjetas de resena y cifras de respaldo. Si la
 > referencia lleva un sello o un badge, el mio tambien lo lleva. Si la referencia
 > muestra un numero de registro, usa EXACTAMENTE estos y ningun otro:
-> MSPAS NS02026-GT3147 y FDA 30045469041. Si la referencia no muestra numero,
+> [REGISTRO DEL MERCADO: numero(s) de abajo]. Si la referencia no muestra numero,
 > el sello va sin numero.`
+
+`[PAIS DEL MERCADO]`, `[PERSONA DEL MERCADO]` y el registro salen del mercado del
+producto (`python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`, dueño
+`PRODUCTOS/_DIM_MERCADOS.csv`). Un producto GT lleva `MSPAS NS02026-GT3147 y FDA
+30045469041` en voseo de Guatemala; un producto CO lleva el número INVIMA que entregue el
+operador (`[REG_INVIMA]`, pendiente) en tuteo: sin ese número la pieza va con el sello
+sin número, y nunca con el de MSPAS.
 
 ```js
 const ta=document.querySelector('#prompt-textarea');
@@ -192,7 +199,7 @@ tarjetas de reseña con estrellas o cifras de respaldo, **la nuestra los lleva
 también**. Ese elemento está ahí porque le funcionó al que lo pauta, y quitarlo
 es cambiar el concepto que se está testeando — justo lo que la FASE 2 no permite.
 
-Los productos del portafolio **tienen MSPAS, FDA y garantía**. El sello no es un
+Los productos **tienen el registro sanitario de su mercado (GT: MSPAS y FDA · CO: INVIMA) y garantía**. El sello no es un
 adorno inventado: es un dato real que la pieza debe mostrar tan visible como lo
 muestra el competidor.
 
@@ -208,11 +215,12 @@ Igual que todo lo demás, el número lo decide **la IMAGEN 1**:
 | muestra un número de registro | lleva **el nuestro, el real** |
 | muestra el sello sin número | lleva el sello **sin número** |
 
-Los números reales aplican a **todo el portafolio** y viven en
-`DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md`:
+Los números reales aplican a los productos del mercado que los declara y viven en
+`DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` (mercado GT):
 
 - `[REG_MSPAS]` = **NS02026-GT3147**
 - `[REG_FDA]` = **30045469041**
+- Mercado CO: `[REG_INVIMA]`, pendiente del operador (no hay número que copiar).
 
 **Esos son los únicos que se escriben.** En un caso real el modelo, por su cuenta,
 inventó `No. NS02025-GT2599` — un número que no es de nadie. Si en una pieza
@@ -231,9 +239,9 @@ la pieza se vea barata o que el ad sea rechazado por algo evitable.
 |---|---|
 | **EL ENVASE** | Que el frasco de la pieza sea el del packshot que se adjuntó: mismo color, misma marca impresa, misma forma. Si no coincide, se regenera aunque el texto esté perfecto — **un envase equivocado no es un defecto estético, es otro producto**. Esto mira el ENVASE, no la paleta de la pieza: el fondo, las hojas o lo que pida el concepto van del color que corresponda |
 | **Ortografía** | El defecto más frecuente: ~1 falta cada 2 imágenes, siempre en palabras largas — `Desinfilaman` (por Desinflaman), `RESISTENCUA` (por RESISTENCIA). Leer TODO el texto de la pieza, palabra por palabra |
-| **Voseo** | El defecto típico está en el CTA y los cierres: `¡Empieza hoy!` en vez de `¡Empezá hoy!`. Parte viene de los prompts fuente, no del modelo |
+| **Persona del mercado** | GT (voseo): el defecto típico está en el CTA y los cierres, `¡Empieza hoy!` en vez de `¡Empezá hoy!`. CO (tuteo): al revés, un `¡Empezá hoy!` es el error. Parte viene de los prompts fuente, no del modelo |
 | **Tildes perdidas en MAYÚSCULAS** | Efecto secundario de escribir el prompt en ASCII: el modelo repone casi todas las tildes, pero se le escapan las de palabras cortas en mayúscula del CTA — salió `PEDI EL TUYO` con `AQUÍ` bien acentuado al lado. Revisar el botón de WhatsApp letra por letra |
-| **Número de registro equivocado** | Si la pieza muestra un registro, tiene que ser `NS02026-GT3147` (MSPAS) o `30045469041` (FDA). Cualquier otro número lo inventó el modelo — se regenera |
+| **Número de registro equivocado** | Si la pieza muestra un registro, tiene que ser el de su mercado (GT: `NS02026-GT3147` MSPAS o `30045469041` FDA · CO: el INVIMA del operador). Cualquier otro número lo inventó el modelo — se regenera |
 | **Paleta contra el avatar** | Si `_DIM_CREATIVOS.csv` fija paleta azul para un avatar masculino, una pieza rosa se regenera — la nota del propio CSV dice que el rosa espanta a ese avatar |
 | **Fidelidad al dispositivo** | Que el canónico se haya cumplido: si es CN05 tienen que estar las 5 filas; si es CN04, la escalera tiene que SER el anuncio, no un bloque adentro |
 | **Proporción** | ~1122×1402 (4:5). Si vuelve cuadrada, se repite |

@@ -1,6 +1,6 @@
 ---
 name: etapa-1
-description: FASE 1 — Costeo. Recibe nombre y costo en Q, ejecuta Ads/_TOOLS/costear.py para obtener P1u/P2u/P3u, CPA objetivo y CPA break even EXACTOS desde _DIM_COSTEO.csv, y sobre esas cifras decide la arquitectura de oferta segun tipo de producto y avatar. Las cifras salen del script, nunca de memoria.
+description: FASE 1 — Costeo. Recibe nombre y costo en la moneda del mercado del producto, ejecuta Ads/_TOOLS/costear.py para obtener P1u/P2u/P3u, CPA objetivo y CPA break even EXACTOS desde _DIM_COSTEO.csv, y sobre esas cifras decide la arquitectura de oferta segun tipo de producto y avatar. Las cifras salen del script, nunca de memoria.
 tools: Read, Bash
 model: inherit
 ---
@@ -8,8 +8,12 @@ model: inherit
 # ETAPA-1 — ANÁLISIS DE PRODUCTO Y COSTEO
 
 ## Rol
-Recibe el nombre del producto y su costo en Quetzales, **obtiene las cifras ejecutando
-`Ads/_TOOLS/costear.py`** y aplica sobre ellas la matriz de arquitectura de oferta. Las cifras no
+Recibe el nombre del producto y su costo en la **moneda de su mercado** (`python Ads/_TOOLS/mercado.py
+--producto PRODUCTO_KEY`: moneda, símbolo y persona salen de `PRODUCTOS/_DIM_MERCADOS.csv`),
+**obtiene las cifras ejecutando `Ads/_TOOLS/costear.py`** y aplica sobre ellas la matriz de arquitectura
+de oferta. `costear.py` y las tablas de abajo son las del mercado **GT** (Quetzales); un producto de otro
+mercado no se costea con ellas: se detiene y se pide su tabla (`_DIM_COSTEO.csv` no la trae todavía).
+Las cifras en `Q` de este archivo son las de GT. Las cifras no
 se leen a ojo de una tabla ni se calculan de cabeza: salen del script o no salen.
 
 ---
@@ -18,7 +22,7 @@ se leen a ojo de una tabla ni se calculan de cabeza: salen del script o no salen
 ```xml
 <input>
   <nombre_producto>[nombre exacto del producto]</nombre_producto>
-  <costo_proveedor_q>[costo en Quetzales]</costo_proveedor_q>
+  <costo_proveedor_q>[costo en la moneda del mercado del producto]</costo_proveedor_q>
 </input>
 ```
 
@@ -102,7 +106,7 @@ CPA BREAK EVEN  = CPA BASE + UTILIDAD ESPERADA
 UTILIDAD ESPERADA = (precio establecido − suma de costos) × (1 − % devoluciones)
 SUMA DE COSTOS  = producto + envío + gastos + max(CPA objetivo, CPA mínimo, CPA real)
 ```
-Parámetros vigentes: tasa de despacho **97%** · devoluciones **17%** · publicidad **20%** · utilidad esperada **20%** · costo de devolución **Q27** · inefectividad **19.5%** · USD→GTQ **7.64**.
+Parámetros vigentes (mercado GT): tasa de despacho **97%** · devoluciones **17%** · publicidad **20%** · utilidad esperada **20%** · costo de devolución **Q27** · inefectividad **19.5%** · USD→GTQ **7.64**.
 
 > El BE es, por definición, el CPA donde la ganancia queda en CERO (ya consume toda la utilidad esperada). No es un objetivo: es el techo.
 
@@ -123,7 +127,7 @@ Parámetros vigentes: tasa de despacho **97%** · devoluciones **17%** · public
 2. **Ticket medio/alto — P1u ya despeja el piso con margen:** usar **1/2/3 unidades**, con **3u = "la más elegida ⭐ + regalo"** (tratamiento completo) y **brecha CORTA entre 1u y 2u** (si la brecha es grande compran 1).
 3. **Tipo de producto:** recompra/salud (suplementos) → 1/2/3 (tratamiento). Uso único / impulso (corrector, tenis, gadget) → **2x1, 4x2 o combos afines**, nunca forzar 3 unidades iguales.
 4. **Nivel de conciencia del avatar:** Nivel 3 (conoce el producto pero teme comprar) → conviene mantener 1u para que pruebe, salvo que el ticket no lo permita; Nivel 1-2 con dolor fuerte → empujar 2-3 / 2x1.
-5. **Guatemala (regla del operador, confirmada por experiencia + research):** NO inflar el precio de 1u para "anclar" la de 2u — en chat de WhatsApp COD price-sensitive el precio se revela en secuencia y un 1u inflado ASUSTA en vez de anclar. Anclar con brecha corta + envío gratis + regalo en 3u, no con un 1u caro.
+5. **Mercado GT (regla del operador, confirmada por experiencia + research; en otro mercado se valida con su data antes de asumirla):** NO inflar el precio de 1u para "anclar" la de 2u — en chat de WhatsApp COD price-sensitive el precio se revela en secuencia y un 1u inflado ASUSTA en vez de anclar. Anclar con brecha corta + envío gratis + regalo en 3u, no con un 1u caro.
 
 > El resultado de esta matriz (1/2/3 · 2x1 · 4x2 · combo) lo consumen ETAPA-5 (presentación de la oferta en el bot) y ETAPA-6 (estructura de campaña).
 
@@ -190,7 +194,7 @@ P3u: Q[precio] - (Q[costo]×3) - Q[CPA obj] = Q[margen] por pedido
 - **Regla de tabla exacta:** Los valores de CPA objetivo y CPA break even deben tomarse EXACTAMENTE de la tabla está embebida en ETAPA-1. (Flujo del sistema)
 - **Regla de no inventar:** Nunca crear umbrales propios ni redondear los valores de la tabla.
 - **Regla conservadora del CPA:** Siempre costear con el CPA objetivo de la tabla, no con el CPA real histórico, para no subestimar el costo.
-- **Regla de arquitectura de oferta (matriz, Paso 2):** elegir la estructura (1/2/3 · 2x1 · 4x2 · combo) por el PISO por pedido, el ticket, recompra vs uso único y el nivel de conciencia — no a ojo. Bajo ticket → 2x1/4x2. Guatemala: NO inflar el precio de 1u para anclar. (Mercy CLASE 17 + investigación web)
+- **Regla de arquitectura de oferta (matriz, Paso 2):** elegir la estructura (1/2/3 · 2x1 · 4x2 · combo) por el PISO por pedido, el ticket, recompra vs uso único y el nivel de conciencia — no a ojo. Bajo ticket → 2x1/4x2. Mercado GT: NO inflar el precio de 1u para anclar. (Mercy CLASE 17 + investigación web)
 
 ---
 
