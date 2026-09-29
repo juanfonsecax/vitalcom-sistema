@@ -190,5 +190,22 @@ nightly/app run on the merged code. In this order, on the live folder after the 
 - Follow-up (code, not doctrine): `Ads/_TOOLS/armar_prompts_fase2.py` (~:379, `PRECIOS_GT`) hard-codes MSPAS/FDA and
   "Somos de Guatemala: nunca INVIMA"; it must read the market profile before a CO product renders phase-2 prompts.
 
+### D6 follow-up: armar_prompts_fase2 by market (2026-09-28, worktree only, nothing committed)
+- `mercado.py` gained `registro_de_perfil` (reads the real numbers from `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md`:
+  `[REG_MSPAS]`+`[REG_FDA]` for GT, `[REG_INVIMA]` for CO; a non-backticked value such as PENDIENTE = missing ->
+  `RegistroFaltante`), `formatear_monto` (GTQ `Q179`, COP `$ 41.000`) and `regulador_de`.
+- `armar_prompts_fase2.py`: country, persona (voseo OMITILO/REPLICALO vs tuteo OMÍTELO/RÉPLICALO), registry line,
+  "nunca <reguladores de otros mercados>", price ladder and CPA symbol come from the market profile. New blockers
+  with typed `dato`: `mercado` (no default GT) and `registro_sanitario` (CO without INVIMA: asks the operator for the
+  number; never invented, never MSPAS). Nothing is written when it blocks.
+- `datos_producto.py`: new item `registro_sanitario` (only when the product has a valid market); no writer action, the
+  operator hands the number to Claude, who records it in the doctrine row. `contratos.DATOS_QUE_FRENAN_PROMPTS` lists it,
+  so the Fase 2 button shows the plain message (the frontend renders items generically).
+- GT byte-identical: CLEARSTEM and TINNIDROP prompt txt+json generated before/after into a temp base (copy of PRODUCTOS,
+  fake packshots) and `diff -r` empty; real `Ads/MEDIA_*` untouched.
+- Tests: 4 new in `test_armar_prompts_fase2.py` (GT unchanged, CO tuteo/INVIMA/COP, CO sin INVIMA dato=registro_sanitario,
+  sin mercado), 2 in `test_mercado.py`, 2 in `test_datos_producto.py`. Existing fixtures now declare `mercado`.
+- Not done: `revisar_costo`/`revisar_precio` in `datos_producto.py` still say Q/quetzales (a CO product would read wrong).
+
 ## Next step
 D5 (costing per market); D6 follow-up above.

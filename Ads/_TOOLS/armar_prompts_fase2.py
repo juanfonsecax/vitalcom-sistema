@@ -7,7 +7,7 @@ QUE HACE:
 3. Vincula para cada concepto:
    - La Imagen Base del competidor (Layout/Composición) desde Ads/_SWIPE/_IMG/
    - La Foto Real del producto desde Ads/MEDIA_[PRODUCTO]/
-   - El JSON parametrizado con variables de dolor, precios en Q e ingredientes reales.
+   - El JSON parametrizado con variables de dolor, precios en la moneda del mercado e ingredientes reales.
    - El Prompt Multimodal "Director de Arte" listo para pegar en ChatGPT / Gemini Pro.
 4. NO escribe texto de bot: ese flujo es de etapa-5 (PRODUCTOS/[carpeta]/1_HACER_MANUAL.txt).
 
@@ -16,6 +16,12 @@ DE DONDE SALE CADA DATO (un dato, un dueno — este script ya no nombra ningun p
     packshot / envase         PRODUCTOS/_DIM_ENVASE.csv
     perfil y textos           PRODUCTOS/[carpeta]/_PERFIL_CREATIVO.json        (lo escribe la skill
                               generar-conceptos desde la investigacion del producto)
+    mercado                   _DIM_PRODUCTOS.mercado -> _DIM_MERCADOS.csv, via mercado.py: pais, moneda,
+                              simbolo y persona (voseo/tuteo) del prompt
+    registro sanitario        DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md ([REG_MSPAS]/[REG_FDA] en GT,
+                              [REG_INVIMA] en CO), leido por mercado.registro_de_perfil(). Sin numero
+                              (INVIMA pendiente) BLOQUEA con dato=registro_sanitario: nunca se inventa ni
+                              se cae al MSPAS.
 Si falta cualquiera, BLOQUEA con el nombre de quien lo produce (invariante 4).
 """
 
@@ -36,6 +42,7 @@ for _flujo in (sys.stdout, sys.stderr):
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
 
+import mercado as mc
 import seleccionar_canonicos as sc
 
 PROD_DIR = os.path.join(BASE, "PRODUCTOS")
@@ -46,7 +53,7 @@ DECISIONES_JSON = os.path.join(PROD_DIR, "_DECISIONES.json")
 class Bloqueado(SystemExit):
     """Un BLOQUEANTE con el dato que lo causa. Sigue siendo un `SystemExit` con el mismo texto (la
     CLI sin `--json` se comporta igual); `dato` deja que el llamador diga QUE falta sin leer prosa:
-    packshot | precio | perfil_creativo | producto | angulo."""
+    packshot | precio | perfil_creativo | producto | angulo | mercado | registro_sanitario."""
 
     def __init__(self, mensaje, dato):
         super().__init__(mensaje)
@@ -109,7 +116,7 @@ def leer_envase(producto_key):
     return None
 
 
-def leer_escalera(producto_key):
+def leer_escalera(producto_key, perfil=None):
     """Arma los tiers con ANTES y AHORA desde PRODUCTOS/_DIM_PRECIOS.csv.
 
     POR QUE EXISTE (08-sep-2026): los precios estaban hardcodeados por producto dentro de este
@@ -130,19 +137,20 @@ def leer_escalera(producto_key):
         return None
     filas.sort(key=lambda x: int(x["unidades"]))
 
+    monto = (lambda v: mc.formatear_monto(v, perfil)) if perfil else (lambda v: f"Q{float(v):.0f}")
     tiers, etiquetas = {}, {1: "", 2: " (OFERTA MÁS ELEGIDA ⭐)", 3: " (Tratamiento Completo)"}
     for i, x in enumerate(filas[:3], start=1):
         u = int(x["unidades"])
-        ahora = f"Q{float(x['precio_q']):.0f}"
+        ahora = monto(x['precio_q'])
         antes = x.get("precio_antes_q", "").strip()
         txt = f"{u} Frasco{'s' if u > 1 else ''} por {ahora}"
         if antes:
-            txt += f" (antes Q{float(antes):.0f})"
+            txt += f" (antes {monto(antes)})"
         tiers[f"TIER_{i}"] = txt + etiquetas.get(u, "")
     return tiers or None
 
 
-def requerir_precios_reales(producto_key):
+def requerir_precios_reales(producto_key, perfil=None):
     """La escalera de precios REAL o BLOQUEO — nunca los precios de otro producto.
 
     Misma clase de bug que buscar_foto_producto() (07-sep): leer_escalera() ya existia
@@ -151,7 +159,7 @@ def requerir_precios_reales(producto_key):
     hardcodeado — Q179/Q239/Q299 de TINNIDROP para cualquier producto sin fila propia, o
     Q199/Q299/Q399 de CLEARSTEM en la adaptacion de LucidBot. Invariante 4: si falta un
     input requerido, se detiene con el nombre de quien lo produce — nunca se asume."""
-    precios = leer_escalera(producto_key)
+    precios = leer_escalera(producto_key, perfil)
     if not precios:
         raise Bloqueado(
             f"BLOQUEANTE: {producto_key} no tiene fila ACTIVA en PRODUCTOS/_DIM_PRECIOS.csv.\n"
@@ -164,6 +172,39 @@ def requerir_precios_reales(producto_key):
             "precio",
         )
     return precios
+
+
+def requerir_mercado(producto_key):
+    """El perfil del MERCADO del producto (pais, moneda, simbolo, persona, registro) o BLOQUEO.
+
+    Un producto sin `mercado` declarado no tiene un default GT: se detiene y se pide (invariante 4)."""
+    try:
+        return mc.perfil_de_producto(producto_key, BASE)
+    except mc.MercadoError as e:
+        raise Bloqueado(
+            f"BLOQUEANTE: {producto_key} no tiene un mercado utilizable: {e}\n"
+            f"  El mercado (GT o CO) lo declara el operador en la columna `mercado` de "
+            f"PRODUCTOS/_DIM_PRODUCTOS.csv; sin el no se sabe el pais, la moneda ni el tono del prompt.",
+            "mercado")
+
+
+def requerir_registro(producto_key, perfil):
+    """Los numeros de registro sanitario DEL MERCADO del producto o BLOQUEO. Nunca los de otro mercado."""
+    try:
+        return mc.registro_de_perfil(perfil, BASE)
+    except mc.RegistroFaltante as e:
+        nombre = ", ".join(e.claves) or e.regulador or "?"
+        raise Bloqueado(
+            f"BLOQUEANTE: falta el numero de registro sanitario {nombre} de {producto_key} "
+            f"(mercado {perfil['pais']}).\n"
+            f"  Pasale a Claude el numero de registro {nombre} y él lo deja cargado en "
+            f"DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md. Sin ese numero no se generan los prompts: "
+            f"no se inventa uno ni se usa el de otro mercado.\n"
+            f"  ({e})",
+            "registro_sanitario")
+    except mc.MercadoError as e:
+        raise Bloqueado(f"BLOQUEANTE: no se pudo leer el registro sanitario de {producto_key}: {e}",
+                        "registro_sanitario")
 
 
 def buscar_foto_producto(producto_key):
@@ -287,6 +328,10 @@ def obtener_perfil_producto(producto_key, angulo_ganador, perfil_creativo=None):
 
 
 def generar_paquete_multimodal(producto_key, angulo_manual=None):
+    # 0. Mercado del producto: pais, moneda, persona y registro salen de mercado.py, no del codigo.
+    perfil_mercado = requerir_mercado(producto_key)
+    tuteo = perfil_mercado["persona"] == "tuteo"
+
     # 1. Determinar ángulo ganador por data
     if angulo_manual:
         angulo = angulo_manual
@@ -302,7 +347,7 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
     print(f" Producto: {producto_key}")
     print(f" Ángulo Ganador Coronado por Data: {angulo}")
     if isinstance(info_angulo, dict) and "ventas" in info_angulo:
-        print(f" Desempeño Histórico: {info_angulo.get('ventas')} ventas | CPA Real: Q{info_angulo.get('cpa_real_q', 0):.2f}")
+        print(f" Desempeño Histórico: {info_angulo.get('ventas')} ventas | CPA Real: {mc.formatear_monto(info_angulo.get('cpa_real_q', 0), perfil_mercado, 2)}")
     print("=" * 80)
 
     # 2. Foto del producto
@@ -311,7 +356,8 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
 
     # 2b. Precios REALES — se bloquea ANTES de armar un solo paquete, no se descubre a
     # medio prompt ni se cae a los de otro producto (ver requerir_precios_reales).
-    precios_reales = requerir_precios_reales(producto_key)
+    precios_reales = requerir_precios_reales(producto_key, perfil_mercado)
+    registro = requerir_registro(producto_key, perfil_mercado)
 
     # 2c. Perfil y textos DECLARADOS del producto — mismo criterio que los precios: se bloquea
     # antes de escribir un solo archivo, nunca se cae a un texto generico ni al de otro producto.
@@ -363,7 +409,7 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
 
         # Prompt Multimodal listo para copiar en Gemini / ChatGPT
         prompt_ia = (
-            f"Actúa como Director de Arte Senior y diseñador de anuncios de alta conversión para Meta Ads en Guatemala.\n"
+            f"Actúa como Director de Arte Senior y diseñador de anuncios de alta conversión para Meta Ads en {perfil_mercado['pais']}.\n"
             f"Te he adjuntado 2 imágenes:\n"
             f"  • IMAGEN 1 (Referencia visual): {foto_base_rel} -> Mantén EXACTAMENTE su distribución espacial, composición geométrica, encuadre de cámara y jerarquía de elementos.\n"
             f"  • IMAGEN 2 (Mi producto real): {foto_prod_rel} -> Coloca este envase/frasco real en la posición del producto hero, respetando su forma y etiqueta.\n\n"
@@ -376,16 +422,17 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
             f"- Franja inferior: Botón verde WhatsApp con texto: \"{variables_adaptadas['CTA']}\"\n"
             f"- Garantías en micro-badges: {variables_adaptadas['GARANTIAS']} · Garantía de 30 días\n"
             f"- Registro sanitario (si la IMAGEN 1 muestra un sello regulatorio, va ESTE): "
-            f"MSPAS NS02026-GT3147 · FDA 30045469041. Somos de Guatemala: nunca INVIMA ni "
+            f"{registro['texto']}. Somos de {perfil_mercado['pais']}: nunca "
+            f"{' ni '.join(registro['ajenos'])} ni "
             f"ningún otro regulador extranjero.\n"
             f"- Formato: 4:5 vertical (1080x1350 px), fotorrealista, iluminación comercial de estudio, colores nítidos, texto 100% legible y sin errores ortográficos.\n\n"
             f"REGLA DE PRECEDENCIA — MANDA LA IMAGEN 1:\n"
             f"La IMAGEN 1 es un anuncio que YA está validado en este mercado. Su estructura no es "
             f"una sugerencia: es el concepto que se está replicando. Qué bloques existen, cuántos "
             f"elementos tiene cada bloque y —sobre todo— qué NO aparece, lo decide la IMAGEN 1.\n"
-            f"- Si algo de la lista de arriba NO está en la IMAGEN 1, OMITILO. Ejemplo: si la "
+            f"- Si algo de la lista de arriba NO está en la IMAGEN 1, {'OMÍTELO' if tuteo else 'OMITILO'}. Ejemplo: si la "
             f"IMAGEN 1 muestra un solo precio, va un solo precio, no la escalera de tres.\n"
-            f"- Si la IMAGEN 1 tiene un elemento que la lista de arriba no menciona, REPLICALO "
+            f"- Si la IMAGEN 1 tiene un elemento que la lista de arriba no menciona, {'RÉPLICALO' if tuteo else 'REPLICALO'} "
             f"igual, PERO con nuestro dato — nunca con el de la IMAGEN 1.\n"
             f"- Ante cualquier duda entre la lista y la IMAGEN 1, se hace lo que muestra la IMAGEN 1.\n"
             f"La IMAGEN 1 dicta la FORMA. La lista de arriba dicta QUÉ DICE cada parte.\n"

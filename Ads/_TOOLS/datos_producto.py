@@ -13,6 +13,10 @@ Que revisa (cada uno con el mismo criterio que el bloqueo que hoy lo exige)
                    existe (armar_prompts_fase2.buscar_foto_producto).           accion producto.cargar_packshot
   costo_q          _DIM_PRODUCTOS.csv: numero positivo.                          accion producto.cambiar_costo
   precio           _DIM_PRECIOS.csv: al menos una fila con estado == ACTIVO      (armar_prompts_fase2.leer_escalera)
+  registro_sanitario  el mercado del producto exige un numero de registro (MSPAS/FDA en GT, INVIMA en CO) y
+                   DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md lo declara (mercado.registro_de_perfil). No se juzga
+                   si el producto no declara un mercado valido. No tiene accion escritora: el operador
+                   entrega el numero y Claude lo deja en esa fila de la doctrina.
   page_id          _DIM_PRODUCTOS.csv: ni vacio ni PENDIENTE/SIN_MCP/N/A/-       accion producto.cargar_page_id
   cuenta           _DIM_PRODUCTOS.csv cuenta_alias: no pendiente, y si no es EXTERNA, existe en _DIM_CUENTAS.csv y
                    esta ACTIVE. EXTERNA es un valor legitimo (la cuenta es de un tercero y se publica a mano):
@@ -41,6 +45,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import editar_producto as ep  # noqa: E402
+import mercado as mc  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -100,23 +105,66 @@ def revisar_packshot(base, fila):
     return _item("packshot", "Foto del producto (packshot)", True, f"{publico['marca_impresa']} · {publico['color_envase']}"), publico
 
 
-def revisar_costo(fila):
+def _perfil_o_none(base, fila):
+    """El perfil del mercado del producto, o None si no declara uno valido (ese faltante lo reporta
+    `mercado.py`; aca solo decide como se escriben los montos)."""
+    try:
+        return mc.perfil_de_fila(fila, base)
+    except mc.MercadoError:
+        return None
+
+
+def _monto(valor, perfil):
+    """El monto en la notacion de la moneda del mercado; sin mercado valido, el numero pelado."""
+    valor = float(valor)
+    decimales = 0 if valor == int(valor) else 2
+    return mc.formatear_monto(valor, perfil, decimales) if perfil else ("%.*f" % (decimales, valor))
+
+
+def _en_moneda(perfil):
+    return f"en {perfil['moneda']}" if perfil else "en la moneda de su mercado"
+
+
+def revisar_costo(base, fila):
+    perfil = _perfil_o_none(base, fila)
     ok = _numero_positivo(fila.get("costo_q"))
-    return _item("costo_q", "Costo del producto", ok, f"Q{fila['costo_q'].strip()}" if ok else "No hay un costo válido.",
-                 "Decinos cuánto te cuesta el producto (lo que pagás al proveedor por el pedido completo, en quetzales).",
+    return _item("costo_q", "Costo del producto", ok, _monto(fila["costo_q"], perfil) if ok else "No hay un costo válido.",
+                 "Decinos cuánto te cuesta el producto (lo que pagás al proveedor por el pedido completo, "
+                 f"{_en_moneda(perfil)}).",
                  "producto.cambiar_costo")
 
 
 def revisar_precio(base, fila):
     pk = fila["producto_key"]
+    perfil = _perfil_o_none(base, fila)
     activas = sorted((f for f in _leer_csv(base, "_DIM_PRECIOS.csv")
                       if (f.get("producto_key") or "").strip() == pk and (f.get("estado") or "").strip() == "ACTIVO"
                       and _numero_positivo(f.get("precio_q"))), key=lambda f: int(f.get("unidades") or 0))
     if activas:
         return _item("precio", "Precio de venta", True, " · ".join(
-            f"{f['etiqueta'] or f['unidades'] + 'x'} Q{float(f['precio_q']):.0f}" for f in activas))
+            f"{f['etiqueta'] or f['unidades'] + 'x'} {_monto(round(float(f['precio_q'])), perfil)}" for f in activas))
     return _item("precio", "Precio de venta", False, "No hay una escalera de precios activa.",
-                 "Pasale a Claude a cuánto vendés 1, 2 y 3 unidades (en quetzales) y él la deja cargada.")
+                 f"Pasale a Claude a cuánto vendés 1, 2 y 3 unidades ({_en_moneda(perfil)}) y él la deja cargada.")
+
+
+def revisar_registro(base, fila):
+    """El numero de registro sanitario del mercado del producto, o None si el producto no declara un mercado
+    valido (eso lo dice `mercado.py`, no este dato)."""
+    try:
+        perfil = mc.perfil_de_fila(fila, base)
+    except mc.MercadoError:
+        return None
+    rotulo = "Registro sanitario"
+    try:
+        return _item("registro_sanitario", rotulo, True, mc.registro_de_perfil(perfil, base)["texto"])
+    except mc.RegistroFaltante as falta:
+        nombre = ", ".join(falta.claves) or falta.regulador or "?"
+        return _item("registro_sanitario", rotulo, False,
+                     f"Falta el número de registro {nombre} de {perfil['pais']}.",
+                     f"Pasale a Claude el número de registro {nombre}: él lo deja cargado. Sin ese número no se "
+                     "generan los prompts (no se inventa uno ni se usa el de otro país).")
+    except mc.MercadoError:
+        return None
 
 
 def revisar_page_id(fila):
@@ -181,8 +229,11 @@ def revisar_producto(base, fila, flujo=None):
     """El dict de un producto. `flujo` = {fase, angulos_ganadores} de flujo.py, o None si no se consultó."""
     avisos = []
     packshot_item, packshot = revisar_packshot(base, fila)
-    items = [packshot_item, revisar_costo(fila), revisar_precio(base, fila), revisar_page_id(fila),
+    items = [packshot_item, revisar_costo(base, fila), revisar_precio(base, fila), revisar_page_id(fila),
              revisar_cuenta(base, fila)]
+    registro = revisar_registro(base, fila)
+    if registro:
+        items.append(registro)
     fase = (flujo or {}).get("fase")
     ganadores = (flujo or {}).get("angulos_ganadores") or []
     if flujo is None:

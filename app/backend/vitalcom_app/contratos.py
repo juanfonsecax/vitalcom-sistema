@@ -651,7 +651,7 @@ def angulos_de_fase2(producto_key: str, ganadores: list[str]) -> list[dict[str, 
 ACCION_ARMAR_PROMPTS = "producto.armar_prompts_fase2"
 ACCION_CONCEPTOS = "nodo.F2.conceptos"
 # Los datos de `datos_producto.py` que frenan a `armar_prompts_fase2.py` (los mismos que él bloquea).
-DATOS_QUE_FRENAN_PROMPTS = ("packshot", "precio", "perfil_creativo")
+DATOS_QUE_FRENAN_PROMPTS = ("packshot", "precio", "registro_sanitario", "perfil_creativo")
 MOTIVO_EN_FILA = "Se genera cuando le toque su Fase 2."
 
 

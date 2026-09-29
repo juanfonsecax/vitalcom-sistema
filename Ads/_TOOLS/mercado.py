@@ -26,6 +26,14 @@ columna `moneda_origen` es la del gasto publicitario, no la de venta.
 solo se expone la tasa de referencia del mercado y `avisos_tasa()` marca, en solo lectura, a un
 producto cuya tasa se aparta mucho de ella.
 
+Numeros de registro sanitario
+-----------------------------
+`_DIM_MERCADOS.registro_sanitario` nombra al regulador («registro MSPAS», «registro INVIMA»), no trae el
+numero. Los numeros REALES viven en `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` (`[REG_MSPAS]`, `[REG_FDA]`,
+`[REG_INVIMA]`) y `registro_de_perfil()` los lee de ahi: un valor entre `**` y comillas invertidas es un
+numero; cualquier otra cosa (p.ej. «PENDIENTE del operador») es un numero que falta. Falta = `RegistroFaltante`;
+nunca se inventa ni se cae al de otro mercado. Quien escribe ese numero es el operador, editando esa fila.
+
 Uso
 ---
     python Ads/_TOOLS/mercado.py --producto PK     # perfil del producto (JSON, solo lectura)
@@ -37,6 +45,7 @@ import csv
 import io
 import json
 import os
+import re
 import sys
 
 try:
@@ -55,6 +64,15 @@ CAMPOS_PERFIL = ("mercado", "pais", "moneda", "simbolo", "persona", "registro_sa
 
 class MercadoError(Exception):
     """Falta o no cuadra el mercado de un producto. Se dice y se detiene; no se asume."""
+
+
+class RegistroFaltante(MercadoError):
+    """El mercado exige un registro sanitario cuyo numero el operador todavia no entrego."""
+
+    def __init__(self, mensaje, regulador, claves):
+        super().__init__(mensaje)
+        self.regulador = regulador
+        self.claves = list(claves)
 
 
 class TasaFaltante(MercadoError):
@@ -170,6 +188,58 @@ def perfil_de_fila(fila, base=None):
 def perfil_de_producto(producto_key, base=None):
     """El perfil del mercado del producto (falla igual que `mercado_de`)."""
     return perfil_mercado(mercado_de(producto_key, base), base)
+
+
+# Que numeros de DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md lleva el registro de cada regulador.
+NUMEROS_POR_REGULADOR = {"MSPAS": ("MSPAS", "FDA"), "INVIMA": ("INVIMA",)}
+DOCTRINA_REGISTROS = ("DOCTRINA", "PLANTILLAS_DEFAULTS_OPERADOR.md")
+_RE_REGISTRO = re.compile(r"^\|\s*`\[REG_(\w+)\]`\s*\|\s*\*\*`([^`]+)`\*\*", re.M)
+
+
+def regulador_de(perfil):
+    """«MSPAS» / «INVIMA»: la ultima palabra de `registro_sanitario` («registro MSPAS»)."""
+    palabras = (perfil.get("registro_sanitario") or "").split()
+    return palabras[-1].upper() if palabras else ""
+
+
+def leer_registros(base=None):
+    """{'MSPAS': 'NS...', 'FDA': '...'} con los numeros que la doctrina declara como valor real."""
+    ruta = os.path.join(base or BASE_POR_DEFECTO, *DOCTRINA_REGISTROS)
+    if not os.path.isfile(ruta):
+        raise MercadoError("falta %s." % "/".join(DOCTRINA_REGISTROS))
+    with io.open(ruta, encoding="utf-8") as fh:
+        return {clave: valor.strip() for clave, valor in _RE_REGISTRO.findall(fh.read())}
+
+
+def registro_de_perfil(perfil, base=None):
+    """{regulador, texto, ajenos} del registro sanitario del mercado, o `RegistroFaltante`.
+
+    `texto` = los numeros del mercado tal como van en una pieza («MSPAS NS02026-GT3147 · FDA 30045469041»).
+    `ajenos` = los reguladores de los OTROS mercados, para decirle al modelo que no los use."""
+    regulador = regulador_de(perfil)
+    claves = NUMEROS_POR_REGULADOR.get(regulador)
+    if not claves:
+        raise RegistroFaltante("el mercado %s declara el registro «%s», y no se sabe que numeros lleva."
+                               % (perfil.get("mercado"), perfil.get("registro_sanitario")), regulador, [])
+    registros = leer_registros(base)
+    faltan = [c for c in claves if not registros.get(c)]
+    if faltan:
+        raise RegistroFaltante(
+            "falta el numero de registro %s del mercado %s en DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md "
+            "([REG_%s]): lo entrega el operador." % (", ".join(faltan), perfil.get("mercado"), faltan[0]),
+            regulador, faltan)
+    ajenos = sorted({regulador_de(f) for m, f in leer_mercados(base).items()
+                     if m != perfil.get("mercado")} - {"", regulador})
+    return {"regulador": regulador, "texto": " · ".join("%s %s" % (c, registros[c]) for c in claves),
+            "ajenos": ajenos}
+
+
+def formatear_monto(valor, perfil, decimales=0):
+    """Un monto en la notacion de la moneda del mercado: GTQ «Q179» · COP «$ 41.000» (punto de miles)."""
+    simbolo = perfil.get("simbolo") or ""
+    if perfil.get("moneda") == "COP":
+        return "%s %s" % (simbolo, "{:,.{d}f}".format(float(valor), d=decimales).replace(",", "."))
+    return "%s%.*f" % (simbolo, decimales, float(valor))
 
 
 def avisos_tasa(base=None, tolerancia=TOLERANCIA_TASA):

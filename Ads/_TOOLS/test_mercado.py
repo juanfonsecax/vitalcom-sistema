@@ -158,3 +158,20 @@ if __name__ == "__main__":
                 print("  FALLA %s: %s" % (nombre, error))
     print("\n%d falla(s): %s" % (len(fallas), ", ".join(fallas)) if fallas else "\nTodo en verde.")
     sys.exit(1 if fallas else 0)
+
+
+def test_registro_de_perfil_gt_trae_mspas_y_fda_y_co_pendiente_falla():
+    gt = mercado.registro_de_perfil(mercado.perfil_mercado("GT"))
+    assert gt == {"regulador": "MSPAS", "texto": "MSPAS NS02026-GT3147 · FDA 30045469041", "ajenos": ["INVIMA"]}
+    try:
+        mercado.registro_de_perfil(mercado.perfil_mercado("CO"))
+    except mercado.RegistroFaltante as falta:
+        assert falta.regulador == "INVIMA" and falta.claves == ["INVIMA"]
+    else:
+        raise AssertionError("CO sin numero INVIMA debe fallar")
+
+
+def test_formatear_monto_por_moneda():
+    assert mercado.formatear_monto(179, mercado.perfil_mercado("GT")) == "Q179"
+    assert mercado.formatear_monto(30.8, mercado.perfil_mercado("GT"), 2) == "Q30.80"
+    assert mercado.formatear_monto(41000, mercado.perfil_mercado("CO")) == "$ 41.000"
