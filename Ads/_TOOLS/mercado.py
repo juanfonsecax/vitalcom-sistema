@@ -1,0 +1,200 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""mercado.py — resuelve el MERCADO de un producto y su perfil (moneda, simbolo, tono, registro).
+
+Un dato, un dueño
+-----------------
+  · `PRODUCTOS/_DIM_PRODUCTOS.csv` columna `mercado` (GT/CO): a que mercado vende el producto.
+  · `PRODUCTOS/_DIM_MERCADOS.csv`: pais, moneda de venta, simbolo, persona (voseo/tuteo) y
+    registro sanitario de cada mercado.
+  · `PRODUCTOS/_PARAMETROS_FINANZAS.csv`: tasa de referencia del mercado (`tasa_usd_gtq`,
+    `tasa_cop_usd`: unidades de moneda local por USD).
+
+Este modulo NO guarda ningun dato: solo lee esos tres archivos. Un producto sin `mercado`, o con un
+mercado que no existe en `_DIM_MERCADOS.csv`, FALLA con `MercadoError` (invariante 4: nunca se
+asume; no hay GT por defecto).
+
+`_DIM_PRODUCTOS.moneda` NO es la moneda de venta: es la moneda de la CUENTA PUBLICITARIA con la que
+Meta le cobra la pauta al producto (las cuentas GTR facturan en USD, la cuenta de OVULOS_PURITY en
+COP). La moneda en que el producto VENDE sale del mercado (`perfil_mercado(...)["moneda"]`).
+
+`_DIM_PRODUCTOS.tasa` sigue siendo la tasa que usan los motores (decidir, atribuir, flujo...). Aca
+solo se expone la tasa de referencia del mercado y `avisos_tasa()` marca, en solo lectura, a un
+producto cuya tasa se aparta mucho de ella.
+
+Uso
+---
+    python Ads/_TOOLS/mercado.py PRODUCTO_KEY      # perfil del producto (JSON)
+    python Ads/_TOOLS/mercado.py --avisos          # tasas que no cuadran con su mercado
+"""
+
+import csv
+import io
+import json
+import os
+import sys
+
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
+BASE_POR_DEFECTO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Un producto cuya tasa se aparta mas de este margen de la tasa de referencia de su mercado se avisa.
+TOLERANCIA_TASA = 0.20
+
+CAMPOS_PERFIL = ("mercado", "pais", "moneda", "simbolo", "persona", "registro_sanitario",
+                 "tasa_moneda_por_usd")
+
+
+class MercadoError(Exception):
+    """Falta o no cuadra el mercado de un producto. Se dice y se detiene; no se asume."""
+
+
+def _leer(base, nombre):
+    ruta = os.path.join(base or BASE_POR_DEFECTO, "PRODUCTOS", nombre)
+    if not os.path.isfile(ruta):
+        raise MercadoError("falta PRODUCTOS/%s." % nombre)
+    with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
+        return list(csv.DictReader(fh))
+
+
+def leer_mercados(base=None):
+    """{mercado: fila} de _DIM_MERCADOS.csv."""
+    return {(f.get("mercado") or "").strip(): f for f in _leer(base, "_DIM_MERCADOS.csv")
+            if (f.get("mercado") or "").strip()}
+
+
+def _fila_producto(producto_key, base):
+    for fila in _leer(base, "_DIM_PRODUCTOS.csv"):
+        if (fila.get("producto_key") or "").strip() == producto_key:
+            return fila
+    raise MercadoError("«%s» no tiene fila en _DIM_PRODUCTOS.csv." % producto_key)
+
+
+def mercado_de_fila(fila, base=None):
+    """El mercado (`GT`/`CO`) de una fila de _DIM_PRODUCTOS (leida del CSV o de Postgres).
+    Falla si no lo declara o si no existe en _DIM_MERCADOS.csv."""
+    clave = (fila.get("producto_key") or "?").strip()
+    if "mercado" not in fila:
+        raise MercadoError("_DIM_PRODUCTOS no tiene la columna `mercado`.")
+    mercado = (fila.get("mercado") or "").strip()
+    if not mercado:
+        raise MercadoError("«%s» no declara `mercado` en _DIM_PRODUCTOS.csv: el operador elige "
+                           "GT o CO; no hay un valor por defecto." % clave)
+    conocidos = leer_mercados(base)
+    if mercado not in conocidos:
+        raise MercadoError("«%s» declara mercado «%s», que no existe en _DIM_MERCADOS.csv "
+                           "(mercados: %s)." % (clave, mercado, ", ".join(sorted(conocidos))))
+    return mercado
+
+
+def mercado_de(producto_key, base=None):
+    """El mercado (`GT`/`CO`) declarado del producto. Falla si no lo tiene o no existe."""
+    return mercado_de_fila(_fila_producto(producto_key, base), base)
+
+
+def _tasa_de_referencia(moneda, base):
+    """Tasa de _PARAMETROS_FINANZAS.csv en unidades de `moneda` por USD, o None si no esta declarada.
+    Convencion de nombres del CSV: `tasa_usd_<moneda>` (p.ej. tasa_usd_gtq) o `tasa_<moneda>_usd`."""
+    m = moneda.strip().lower()
+    valores = {(f.get("parametro") or "").strip(): (f.get("valor") or "").strip()
+               for f in _leer(base, "_PARAMETROS_FINANZAS.csv")}
+    for nombre in ("tasa_usd_%s" % m, "tasa_%s_usd" % m):
+        if valores.get(nombre):
+            try:
+                return float(valores[nombre])
+            except ValueError:
+                raise MercadoError("_PARAMETROS_FINANZAS.csv: %s = «%s» no es un numero."
+                                   % (nombre, valores[nombre]))
+    return None
+
+
+def perfil_mercado(mercado, base=None):
+    """{mercado, pais, moneda, simbolo, persona, registro_sanitario, tasa_moneda_por_usd}.
+
+    `tasa_moneda_por_usd` es la tasa de REFERENCIA del mercado (unidades locales por USD) o None si
+    _PARAMETROS_FINANZAS.csv no la declara: quien la necesite para un calculo debe fallar, no asumir."""
+    conocidos = leer_mercados(base)
+    fila = conocidos.get((mercado or "").strip())
+    if fila is None:
+        raise MercadoError("mercado «%s» no existe en _DIM_MERCADOS.csv (mercados: %s)."
+                           % (mercado, ", ".join(sorted(conocidos))))
+    moneda = (fila.get("moneda") or "").strip()
+    if not moneda:
+        raise MercadoError("_DIM_MERCADOS.csv: el mercado %s no declara moneda." % mercado)
+    return {
+        "mercado": fila["mercado"].strip(),
+        "pais": (fila.get("pais") or "").strip(),
+        "moneda": moneda,
+        "simbolo": (fila.get("simbolo") or "").strip(),
+        "persona": (fila.get("persona") or "").strip(),
+        "registro_sanitario": (fila.get("registro_sanitario") or "").strip(),
+        "tasa_moneda_por_usd": _tasa_de_referencia(moneda, base),
+    }
+
+
+def perfil_de_fila(fila, base=None):
+    """El perfil del mercado de una fila de _DIM_PRODUCTOS (falla igual que `mercado_de_fila`)."""
+    return perfil_mercado(mercado_de_fila(fila, base), base)
+
+
+def perfil_de_producto(producto_key, base=None):
+    """El perfil del mercado del producto (falla igual que `mercado_de`)."""
+    return perfil_mercado(mercado_de(producto_key, base), base)
+
+
+def avisos_tasa(base=None, tolerancia=TOLERANCIA_TASA):
+    """Solo lectura: lista de textos, uno por producto cuya `tasa` no cuadra con su mercado.
+
+    Se avisa cuando la tasa esta vacia o no es numerica, cuando el mercado no declara tasa de
+    referencia, o cuando se aparta de ella mas de `tolerancia` (relativa). Nunca corrige nada."""
+    avisos = []
+    for fila in _leer(base, "_DIM_PRODUCTOS.csv"):
+        clave = (fila.get("producto_key") or "").strip()
+        if not clave:
+            continue
+        try:
+            perfil = perfil_de_producto(clave, base)
+        except MercadoError as error:
+            avisos.append("%s: %s" % (clave, error))
+            continue
+        referencia = perfil["tasa_moneda_por_usd"]
+        if referencia is None:
+            avisos.append("%s: el mercado %s no tiene tasa de referencia en _PARAMETROS_FINANZAS.csv."
+                          % (clave, perfil["mercado"]))
+            continue
+        crudo = (fila.get("tasa") or "").strip()
+        try:
+            tasa = float(crudo)
+        except ValueError:
+            avisos.append("%s: tasa «%s» vacia o no numerica (referencia %s %s/USD)."
+                          % (clave, crudo, perfil["moneda"], referencia))
+            continue
+        if abs(tasa - referencia) > tolerancia * referencia:
+            avisos.append("%s: tasa %s se aparta de la referencia del mercado %s (%s %s/USD) por mas de %d%%."
+                          % (clave, crudo, perfil["mercado"], perfil["moneda"], referencia,
+                             round(tolerancia * 100)))
+    return avisos
+
+
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    try:
+        if argv == ["--avisos"]:
+            avisos = avisos_tasa()
+            print("\n".join(avisos) if avisos else "Sin avisos: cada tasa cuadra con su mercado.")
+            return 0
+        if len(argv) == 1 and not argv[0].startswith("-"):
+            print(json.dumps(perfil_de_producto(argv[0]), ensure_ascii=False, indent=2))
+            return 0
+    except MercadoError as error:
+        print("BLOQUEANTE: %s" % error, file=sys.stderr)
+        return 1
+    print(__doc__)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

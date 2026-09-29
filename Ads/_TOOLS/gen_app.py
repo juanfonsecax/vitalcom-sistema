@@ -55,7 +55,7 @@ CAMPOS_VISTA = {"id", "seccion", "rotulo", "sub", "tipo", "render", "fuente",
 # ── el bloque `acciones` (v7, HITO 3 de la app) ────────────────────────────────
 ACCION_ID_RE = re.compile(r"^[a-z]+(\.[A-Za-z0-9_-]+)+$")
 EJECUTOR_TIPOS_ACCION = {"script", "subagente", "skill", "mcp", "operador"}
-PARAM_TIPOS_ACCION = {"producto_key", "cuenta_alias", "enum", "texto", "archivo_temporal", "bandera"}
+PARAM_TIPOS_ACCION = {"producto_key", "cuenta_alias", "mercado", "enum", "texto", "archivo_temporal", "bandera"}
 RUTAS_ESCRIBE_PERMITIDAS = ("PRODUCTOS/", "Ads/", "VISTAS/", "warehouse/")
 RUTAS_ESCRIBE_PROHIBIDAS = ("DOCTRINA/", ".claude/", "app/")
 CAMPOS_ACCION_CONOCIDOS = {

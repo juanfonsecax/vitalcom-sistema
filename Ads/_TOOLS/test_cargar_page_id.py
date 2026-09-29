@@ -100,6 +100,7 @@ COLUMNAS_PRODUCTOS = [
     "cuenta_id", "page_id", "moneda", "tasa", "costo_q", "fila_costeo_q", "precio_base_q",
     "cpa_base_q", "cpa_be_q", "cpa_be_anterior_q", "notas", "carpeta_videos",
     "carpeta_transcripciones", "carpeta_media", "carpetas_extra", "clave_campana", "campaign_id",
+    "mercado",
 ]
 NUEVA = "1279576438561754"
 OTRA = "823825257480758"
@@ -119,6 +120,7 @@ def _encabezado(page_id, costo="60"):
 
 def _fila_producto(**campos):
     base = {c: "" for c in COLUMNAS_PRODUCTOS}
+    base["mercado"] = "GT"  # el mercado es obligatorio: los productos del fixture venden en Guatemala
     base.update(campos)
     return [base[c] for c in COLUMNAS_PRODUCTOS]
 

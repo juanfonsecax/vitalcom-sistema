@@ -45,6 +45,7 @@ COLUMNAS_PRODUCTO = (
     "cuenta_alias",
     "cuenta_id",
     "moneda",
+    "mercado",
     "costo_q",
     "precio_base_q",
     "cpa_base_q",
@@ -142,6 +143,56 @@ def _leer_json(partes: tuple[str, ...]) -> Any:
 def productos() -> list[dict[str, str]]:
     """Las filas de `_DIM_PRODUCTOS.csv`, recortadas a las columnas que la pantalla usa."""
     return [{c: fila.get(c, "") for c in COLUMNAS_PRODUCTO} for fila in _leer_csv(DIM_PRODUCTOS)]
+
+
+def _modulo_mercado():
+    """Importa `Ads/_TOOLS/mercado.py` DEL SISTEMA: el resolver de mercado (mercado → moneda de venta,
+    símbolo, persona, registro). Es su dueño; la app no repite su lógica (mismo patrón que `_modulo_db`)."""
+    herramientas = str(base() / "Ads" / "_TOOLS")
+    if herramientas not in sys.path:
+        sys.path.insert(0, herramientas)
+    import mercado as resolver  # noqa: E402
+
+    return resolver
+
+
+def _perfil_de_fila(fila: dict[str, str]) -> dict[str, Any]:
+    """Perfil del mercado de una fila de producto. Sin mercado o con uno desconocido NO hay valor por
+    defecto: se dice como `ContratoAusente` (HTTP 503), nunca se asume GT."""
+    resolver = _modulo_mercado()
+    try:
+        return resolver.perfil_de_fila(fila, str(base()))
+    except resolver.MercadoError as error:
+        raise ContratoAusente(str(error)) from error
+
+
+def _con_mercado(fila: dict[str, str]) -> dict[str, str]:
+    perfil = _perfil_de_fila(fila)
+    return {**fila, "mercado": perfil["mercado"], "moneda_local": perfil["moneda"], "simbolo": perfil["simbolo"]}
+
+
+def productos_con_mercado() -> list[dict[str, str]]:
+    """`productos()` más `moneda_local` y `simbolo` del mercado de cada producto. `moneda` sigue siendo
+    la de la CUENTA publicitaria; `moneda_local` es en la que el producto vende."""
+    return [_con_mercado(fila) for fila in productos()]
+
+
+def perfil_de_producto(producto_key: str) -> dict[str, str]:
+    """`mercado`, `moneda_local` y `simbolo` de UN producto (falla si no declara mercado)."""
+    fila = next((f for f in _leer_csv(DIM_PRODUCTOS) if f.get("producto_key") == producto_key), None)
+    if fila is None:
+        raise ContratoAusente(f"«{producto_key}» no tiene fila en _DIM_PRODUCTOS.csv.")
+    perfil = _con_mercado(fila)
+    return {c: perfil[c] for c in ("mercado", "moneda_local", "simbolo")}
+
+
+def mercados() -> list[dict[str, Any]]:
+    """Los mercados de `_DIM_MERCADOS.csv` con su perfil resuelto (moneda, símbolo, persona, tasa)."""
+    resolver = _modulo_mercado()
+    try:
+        return [resolver.perfil_mercado(clave, str(base())) for clave in resolver.leer_mercados(str(base()))]
+    except resolver.MercadoError as error:
+        raise ContratoAusente(str(error)) from error
 
 
 def fila_de_producto(producto_key: str) -> dict[str, str]:

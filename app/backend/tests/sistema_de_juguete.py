@@ -57,6 +57,14 @@ else:
 COLUMNAS_PRODUCTOS = [
     "producto_key", "nombre_display", "slug_carpeta", "estado", "fase", "cuenta_alias",
     "cuenta_id", "moneda", "costo_q", "precio_base_q", "cpa_base_q", "cpa_be_q", "campaign_id",
+    "mercado",
+]
+COLUMNAS_MERCADOS = ["mercado", "pais", "moneda", "simbolo", "persona", "registro_sanitario"]
+MERCADOS = [
+    {"mercado": "GT", "pais": "Guatemala", "moneda": "GTQ", "simbolo": "Q", "persona": "voseo",
+     "registro_sanitario": "registro MSPAS"},
+    {"mercado": "CO", "pais": "Colombia", "moneda": "COP", "simbolo": "$", "persona": "tuteo",
+     "registro_sanitario": "registro INVIMA"},
 ]
 COLUMNAS_CUENTAS = ["cuenta_alias", "cuenta_id", "moneda", "mcp_habilitado", "sube_media_local",
                     "estado_cuenta"]
@@ -145,9 +153,14 @@ def crear(destino: Path, manifiesto: dict[str, Any] | None = None, flujo: dict[s
     escribir_flujo_falso(destino, {"*": flujo_listo("F2.etapa-11")})
 
     _csv(destino / "PRODUCTOS" / "_DIM_PRODUCTOS.csv", COLUMNAS_PRODUCTOS, [
-        {"producto_key": "TINNIDROP", "nombre_display": "Tinnidrop", "estado": "VIVO"},
-        {"producto_key": "NUSAVA", "nombre_display": "Nusava", "estado": "VIVO"},
+        {"producto_key": "TINNIDROP", "nombre_display": "Tinnidrop", "estado": "VIVO", "mercado": "GT"},
+        {"producto_key": "NUSAVA", "nombre_display": "Nusava", "estado": "VIVO", "mercado": "GT"},
     ])
+    # El resolver de mercado (Ads/_TOOLS/mercado.py) es del sistema: el juguete lleva el real y sus datos.
+    shutil.copy2(REPO / "Ads" / "_TOOLS" / "mercado.py", destino / "Ads" / "_TOOLS" / "mercado.py")
+    _csv(destino / "PRODUCTOS" / "_DIM_MERCADOS.csv", COLUMNAS_MERCADOS, MERCADOS)
+    _csv(destino / "PRODUCTOS" / "_PARAMETROS_FINANZAS.csv", ["parametro", "valor"], [
+        {"parametro": "tasa_usd_gtq", "valor": "7.62"}, {"parametro": "tasa_cop_usd", "valor": "3152.5"}])
     _csv(destino / "PRODUCTOS" / "_DIM_CUENTAS.csv", COLUMNAS_CUENTAS, [
         {"cuenta_alias": "GTR 7", "moneda": "USD", "mcp_habilitado": "SI", "sube_media_local": "SI"},
         {"cuenta_alias": "GTR 13", "moneda": "USD", "mcp_habilitado": "NO", "sube_media_local": "NO"},

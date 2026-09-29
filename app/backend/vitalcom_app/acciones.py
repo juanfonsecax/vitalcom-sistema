@@ -212,6 +212,9 @@ def _validar_uno(nombre: str, especificacion: dict[str, Any], valor: Any) -> Any
     elif tipo == "cuenta_alias":
         if texto not in {fila["cuenta_alias"] for fila in contratos.cuentas()}:
             raise _invalido(nombre, f"«{texto}» no está en _DIM_CUENTAS.csv.")
+    elif tipo == "mercado":
+        if texto not in {fila["mercado"] for fila in contratos.mercados()}:
+            raise _invalido(nombre, f"«{texto}» no está en _DIM_MERCADOS.csv.")
     elif tipo == "enum":
         if texto not in especificacion.get("valores", []):
             raise _invalido(nombre, f"«{texto}» no es una de las opciones: {especificacion.get('valores')}.")

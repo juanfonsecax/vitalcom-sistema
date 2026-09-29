@@ -102,6 +102,7 @@ COLUMNAS_PRODUCTOS = [
     "cuenta_id", "page_id", "moneda", "tasa", "costo_q", "fila_costeo_q", "precio_base_q",
     "cpa_base_q", "cpa_be_q", "cpa_be_anterior_q", "notas", "carpeta_videos",
     "carpeta_transcripciones", "carpeta_media", "carpetas_extra", "clave_campana", "campaign_id",
+    "mercado",
 ]
 COLUMNAS_ENVASE = [
     "producto_key", "packshot", "color_envase", "color_hex", "marca_impresa",
@@ -119,6 +120,7 @@ def _p(slug, nombre):
 
 def _fila_producto(**campos):
     base = {c: "" for c in COLUMNAS_PRODUCTOS}
+    base["mercado"] = "GT"  # el mercado es obligatorio: los productos del fixture venden en Guatemala
     base.update(campos)
     return [base[c] for c in COLUMNAS_PRODUCTOS]
 
@@ -155,6 +157,9 @@ def _fixture(base):
         _fila_producto(producto_key="CON_ENCABEZADO", slug_carpeta="CON_ENCABEZADO", estado="NUEVO", costo_q="60"),
     ])
     _escribir_csv(os.path.join(base, "PRODUCTOS", "_DIM_ENVASE.csv"), COLUMNAS_ENVASE, [])
+    _escribir_csv(os.path.join(base, "PRODUCTOS", "_DIM_MERCADOS.csv"),
+                  ["mercado", "pais", "moneda", "simbolo", "persona", "registro_sanitario"],
+                  [["GT", "Guatemala", "GTQ", "Q", "voseo", "registro MSPAS"]])
     imagen = os.path.join(base, "foto.png")
     with io.open(imagen, "wb") as fh:
         fh.write(b"\x89PNG\r\n\x1a\n" + b"0" * 64)
@@ -171,7 +176,7 @@ def _fixture(base):
 
     codigo = alta_producto.main(["--nombre", "Serum Vitamina C", "--costo", "60",
                                  "--descripcion-archivo", descripcion, "--imagen", imagen,
-                                 "--base", base, "--hoy", "2026-09-17"])
+                                 "--base", base, "--hoy", "2026-09-17", "--mercado", "GT"])
     assert codigo == 0, "el fixture necesita un alta real"
     _escribir(base, _p("CON_MANUAL", "1_HACER_MANUAL.txt"), "TODO A MANO\r\n")
     _escribir(base, _p("CON_ENCABEZADO", "2_DATA_PRODUCTO.txt"),

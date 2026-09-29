@@ -232,8 +232,8 @@ def preparar_activacion(base: Path, campaign_id: str = "120251463036910595") -> 
     poner_en_meta(base, [{"id": campaign_id, "name": "GTR0_TINNIDROP_F1", "nivel": "campaign", "status": "PAUSED"}])
     juguete.escribir_flujo_falso(base, {"*": juguete.flujo_listo("F1.activar", cumplido=True)})
     juguete._csv(base / "PRODUCTOS" / "_DIM_PRODUCTOS.csv", juguete.COLUMNAS_PRODUCTOS, [
-        {"producto_key": "TINNIDROP", "nombre_display": "Tinnidrop", "estado": "VIVO", "cuenta_alias": "GTR 7", "campaign_id": campaign_id},
-        {"producto_key": "NUSAVA", "nombre_display": "Nusava", "estado": "VIVO", "cuenta_alias": "GTR 7"},
+        {"producto_key": "TINNIDROP", "nombre_display": "Tinnidrop", "estado": "VIVO", "cuenta_alias": "GTR 7", "campaign_id": campaign_id, "mercado": "GT"},
+        {"producto_key": "NUSAVA", "nombre_display": "Nusava", "estado": "VIVO", "cuenta_alias": "GTR 7", "mercado": "GT"},
     ])
 
 

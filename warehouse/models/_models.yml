@@ -23,6 +23,11 @@ models:
           - relationships:
               to: ref('stg_vocabulario_estado_producto')
               field: valor
+      - name: mercado
+        description: >
+          Mercado de venta (GT/CO, PRODUCTOS/_DIM_MERCADOS.csv). De el salen moneda de venta, tono y
+          registro sanitario; un producto sin mercado no se mide (no hay GT por defecto).
+        data_tests: [not_null]
       - name: cpa_be_q
         description: Break-even. Sin el no hay decision posible sobre ningun producto VIVO.
         data_tests:

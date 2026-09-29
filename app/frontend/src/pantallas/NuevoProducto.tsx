@@ -69,12 +69,15 @@ export function NuevoProducto() {
   const [imagen, setImagen] = useState<File | null>(null);
   const [descripcion, setDescripcion] = useState("");
   const [costo, setCosto] = useState("");
+  const [mercado, setMercado] = useState(""); // lo elige el operador: no hay mercado por defecto
   const [arrastrando, setArrastrando] = useState(false);
   const cola = useQueryClient();
 
   const vistaPrevia = useMemo(() => (imagen ? URL.createObjectURL(imagen) : null), [imagen]);
   const costoValido = /^\d+(\.\d+)?$/.test(costo) && Number(costo) > 0;
   const costoDemorado = usarDemora(costo, 350);
+
+  const mercados = useQuery({ queryKey: ["mercados"], queryFn: api.mercados });
 
   const costeo = useQuery({
     queryKey: ["costeo", costoDemorado],
@@ -87,6 +90,7 @@ export function NuevoProducto() {
       const formulario = new FormData();
       formulario.set("nombre", nombre.trim());
       formulario.set("costo", costo);
+      formulario.set("mercado", mercado);
       formulario.set("descripcion", descripcion);
       formulario.set("imagen", imagen!);
       return api.alta(formulario);
@@ -107,7 +111,7 @@ export function NuevoProducto() {
   };
 
   const puedeSeguir = [
-    nombre.trim().length >= 3 && imagen !== null,
+    nombre.trim().length >= 3 && imagen !== null && mercado !== "",
     descripcion.trim().length >= MINIMO_DESCRIPCION,
     costoValido && costeo.isSuccess,
     true,
@@ -138,6 +142,21 @@ export function NuevoProducto() {
               placeholder="Ej.: Serum Vitamina C"
               className="mt-1"
             />
+          </label>
+          <label className="block">
+            <span className="text-sm text-zinc-300">Mercado de venta</span>
+            <select
+              value={mercado}
+              onChange={(e) => setMercado(e.target.value)}
+              className="mt-1 block w-full rounded-md border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm"
+            >
+              <option value="">Elegí el mercado…</option>
+              {mercados.data?.map((m) => (
+                <option key={m.mercado} value={m.mercado}>
+                  {m.pais} ({m.moneda})
+                </option>
+              ))}
+            </select>
           </label>
           <div
             onDragOver={(e) => {
