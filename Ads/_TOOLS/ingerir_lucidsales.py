@@ -6,6 +6,18 @@ Uso:
     python Ads/_TOOLS/ingerir_lucidsales.py <archivo.xlsx|.json> [<archivo2> ...]
     python Ads/_TOOLS/ingerir_lucidsales.py --dir <carpeta>   (toma report-*.xlsx|.json)
     ... [--rol BASE|CONTROL] [--fuente LucidSales|LucidSales_CuentaB] [--dry-run]
+    ... [--producto PRODUCTO_KEY | --mercado GT|CO]
+
+MERCADO MANUAL (CO). Un producto cuya cuenta publicitaria es EXTERNA (sin cuenta_id, sin MCP, sin
+API) NO se clasifica en la corrida normal: solo entra con `--producto PK` (todo el export es de ese
+producto) o `--mercado M` (se clasifica por nombre, pero solo entre los productos de ese mercado).
+La fila de una cuenta EXTERNA queda con cuenta_alias=EXTERNA y su gasto se convierte desde
+`_DIM_PRODUCTOS.moneda` (COP) a USD; `moneda_origen` dice esa moneda.
+
+MONEDA DE VENTA. `total_q` es el monto de la venta TAL CUAL en la moneda de venta del mercado del
+producto (GT: GTQ, CO: COP); la columna no lleva etiqueta porque el dueno de esa moneda es
+`mercado.py` (`perfil_de_producto(pk)["moneda"]`, de _DIM_MERCADOS.csv). `moneda_origen` es la
+moneda del GASTO publicitario, no la de la venta. Nunca se suma `total_q` entre mercados.
 
 Dos fuentes, misma data: el .xlsx que el operador bajaba a mano del panel, y el .json
 que baja `bajar_lucidsales.py` contra la API (el xlsx era un volcado literal de ese
@@ -72,8 +84,30 @@ COLS = ["ventana_ini","ventana_fin","dias","rol_ventana","producto_key","product
         "impresiones","spend_usd","ventas","total_q","moneda_origen","fuente","ad_id"]
 
 
-def cargar_productos(path=None):
+def cargar_filas_productos(path=None):
+    """Filas crudas de _DIM_PRODUCTOS.csv (producto_key no vacio)."""
+    with open(path or DIMP, newline="", encoding="utf-8") as fh:
+        return [r for r in csv.DictReader(fh) if (r.get("producto_key") or "").strip()]
+
+
+def es_externa(fila):
+    """Cuenta publicitaria EXTERNA: el producto solo entra por export manual."""
+    return (fila.get("cuenta_alias") or "").strip().upper() == "EXTERNA"
+
+
+def cargar_externos(path=None):
+    """producto_key -> {alias, moneda} de los productos de cuenta EXTERNA. La moneda es la de la
+    cuenta publicitaria (_DIM_PRODUCTOS.moneda): sin ella el gasto no se puede convertir."""
+    return {r["producto_key"].strip(): {"alias": "EXTERNA",
+                                        "moneda": (r.get("moneda") or "").strip().upper()}
+            for r in cargar_filas_productos(path) if es_externa(r)}
+
+
+def cargar_productos(path=None, mercado=None, incluir_externos=False):
     """producto_key -> keywords (lower) para reconocer el nombre que manda LucidSales.
+
+    Sin `mercado` ni `incluir_externos`, los productos de cuenta EXTERNA quedan fuera (solo entran por
+    export manual). Con `mercado`, solo los productos de ese mercado (externos incluidos).
 
     Hasta el 22-sep-2026 el mapeo era un diccionario PROD_KEY cableado a mano en este
     archivo: un producto nuevo (Turmeric, simulación) caía en SIN_CLASIFICAR y perdía
@@ -82,13 +116,15 @@ def cargar_productos(path=None):
     producto_key y la primera palabra de nombre_display/slug_carpeta—, nunca de una
     lista aparte que alguien tiene que recordar mantener sincronizada.
     """
-    with open(path or DIMP, newline="", encoding="utf-8") as fh:
-        filas = list(csv.DictReader(fh))
+    filas = cargar_filas_productos(path)
+    if mercado:
+        import mercado as mkt
+        filas = [r for r in filas if mkt.mercado_de_fila(r, BASE) == mercado]
+    elif not incluir_externos:
+        filas = [r for r in filas if not es_externa(r)]
     out = {}
     for r in filas:
         pk = (r.get("producto_key") or "").strip()
-        if not pk:
-            continue
         kws = {pk.lower(), pk.lower().replace("_", " ")}
         for campo in ("nombre_display", "slug_carpeta"):
             v = (r.get(campo) or "").strip()
@@ -281,7 +317,8 @@ def registros_json(path):
     return out
 
 
-def leer_export(path, rol, fuente, productos, cuentas):
+def leer_export(path, rol, fuente, productos, cuentas, forzar=None, externos=None):
+    externos = externos or {}
     fecha, fin_v, dias = ventana_de_nombre(path)
     registros = (registros_json(path) if path.lower().endswith(".json")
                  else registros_xlsx(path))
@@ -291,9 +328,16 @@ def leer_export(path, rol, fuente, productos, cuentas):
         # accountTitle viene como float grande -> reconstruir el id entero
         if cuenta_id and "." in cuenta_id:
             cuenta_id = str(int(float(cuenta_id)))
+        pk = forzar or producto_key(r.get("producto"), productos)
         info_cuenta = cuentas.get(cuenta_id, {})
         alias = info_cuenta.get("alias", cuenta_id)
         moneda = info_cuenta.get("moneda", "USD")
+        if pk in externos and not cuenta_id:
+            # Cuenta EXTERNA: no esta en _DIM_CUENTAS; la moneda del gasto es la del producto.
+            alias, moneda = externos[pk]["alias"], externos[pk]["moneda"]
+            if not moneda:
+                raise SystemExit(f"«{pk}» es de cuenta EXTERNA y no declara `moneda` en "
+                                 f"_DIM_PRODUCTOS.csv: no se sabe en que moneda esta el gasto.")
         spend = s_num(r.get("spend"))
         if moneda != "USD":
             tasa = TASAS_A_USD.get(moneda)
@@ -305,7 +349,7 @@ def leer_export(path, rol, fuente, productos, cuentas):
             spend = spend / tasa
         filas.append({
             "ventana_ini": fecha, "ventana_fin": fin_v, "dias": dias, "rol_ventana": rol,
-            "producto_key": producto_key(r.get("producto"), productos),
+            "producto_key": pk,
             "producto": s_txt(r.get("producto")),
             "cuenta_id": cuenta_id, "cuenta_alias": alias,
             "campana": s_txt(r.get("campaignTitle")),
@@ -387,6 +431,7 @@ def clave_natural(f):
 def main():
     args = sys.argv[1:]
     rol, fuente, dry = "BASE", "LucidSales", False
+    forzar, mercado_flag = None, None
     archivos = []
     i = 0
     while i < len(args):
@@ -397,6 +442,10 @@ def main():
             i += 1; fuente = args[i]
         elif a == "--dry-run":
             dry = True
+        elif a == "--producto":
+            i += 1; forzar = args[i]
+        elif a == "--mercado":
+            i += 1; mercado_flag = args[i].strip().upper()
         elif a == "--dir":
             i += 1
             d = args[i]
@@ -412,8 +461,32 @@ def main():
     if not archivos:
         raise SystemExit("Sin archivos. Uso: ingerir_lucidsales.py <xlsx...> | --dir <carpeta>")
 
-    productos = cargar_productos()
+    import mercado as mkt
+    perfil = None       # perfil del mercado del alcance (--producto / --mercado); None = corrida normal
+    try:
+        if forzar:
+            fila = next((r for r in cargar_filas_productos()
+                         if r["producto_key"].strip() == forzar), None)
+            if fila is None:
+                raise SystemExit(f"--producto {forzar}: no tiene fila en _DIM_PRODUCTOS.csv.")
+            perfil = mkt.perfil_de_fila(fila, BASE)
+            if mercado_flag and perfil["mercado"] != mercado_flag:
+                raise SystemExit(f"--producto {forzar} es del mercado {perfil['mercado']}, "
+                                 f"no {mercado_flag}.")
+            productos = cargar_productos(incluir_externos=True)
+        elif mercado_flag:
+            perfil = mkt.perfil_mercado(mercado_flag, BASE)
+            productos = cargar_productos(mercado=mercado_flag)
+        else:
+            productos = cargar_productos()
+    except mkt.MercadoError as e:
+        raise SystemExit(f"⛔ {e}")
+    externos = cargar_externos()
     cuentas = cargar_cuentas()
+    simbolo = perfil["simbolo"] if perfil else "Q"
+    if perfil:
+        print(f"mercado {perfil['mercado']} · total_q en {perfil['moneda']} ({perfil['simbolo']})"
+              + (f" · todo el export es de {forzar}" if forzar else ""))
 
     existentes = []
     if os.path.exists(FACT):
@@ -427,7 +500,7 @@ def main():
     # igual que el `ya.update()` de antes hacía entre archivos).
     vistas_run, nuevas, dup, resumen = {}, [], 0, {}
     for path in archivos:
-        filas = leer_export(path, rol, fuente, productos, cuentas)
+        filas = leer_export(path, rol, fuente, productos, cuentas, forzar, externos)
         n_ok = 0
         for f in filas:
             k = clave_natural(f)
@@ -471,7 +544,7 @@ def main():
     for d in sorted(resumen):
         r = resumen[d]
         print(f"  {d}: {r['filas']:>3} filas · {r['ventas']:>3} ventas · "
-              f"Q{r['total_q']:>9,.2f} · ${r['spend_usd']:>7,.2f} · {r['mensajes']:>4} msj")
+              f"{simbolo}{r['total_q']:>9,.2f} · ${r['spend_usd']:>7,.2f} · {r['mensajes']:>4} msj")
     if sin_dim:
         print(f"\n⚠ {len(sin_dim)} conjuntos SIN dimensión (dar de alta en _DIM_CONJUNTOS.csv):")
         for c in sin_dim:

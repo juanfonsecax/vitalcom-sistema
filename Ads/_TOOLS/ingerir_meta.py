@@ -5,7 +5,13 @@
 Uso:
     python Ads/_TOOLS/ingerir_meta.py <archivo.xlsx> [<archivo2.xlsx> ...]
     python Ads/_TOOLS/ingerir_meta.py --dir <carpeta>          (toma Informe-*.xlsx)
-    ... [--dry-run]
+    ... [--producto PRODUCTO_KEY] [--dry-run]
+
+`--producto` asigna TODO el export a ese producto: es el camino de una cuenta EXTERNA de un solo
+producto (mercado CO, export manual del operador). Sin el, cada fila se clasifica por
+_DIM_CONJUNTOS y por las palabras que declara _DIM_PRODUCTOS (producto_key, clave_campana, nombre).
+La divisa del gasto sale de la columna "Divisa" del export; sin ella, de _DIM_PRODUCTOS.moneda; sin
+ninguna de las dos el archivo se rechaza (no se asume USD). `spend_usd` siempre queda en USD.
 
 POR QUE EXISTE (03-sep-2026): la capa de ENTREGA se llenaba SOLO por el MCP de Meta. Cuando el MCP
 dejo de correr, _FACT_ENTREGA.csv quedo congelada en el 25-ago mientras el operador seguia bajando
@@ -38,7 +44,7 @@ La firma se lee del nombre — " ~ producto|angulo|concepto.canonico|NC|oferta|d
 ad_id llego corrupto en 2006 de 2475 filas historicas y el JOIN por id es irrecuperable.
 Un anuncio sin firma NO se descarta: entra con los ejes vacios y se cuenta como deuda.
 """
-import sys, io, os, re, csv, glob, datetime, warnings
+import sys, io, os, re, csv, glob, datetime, warnings, unicodedata
 
 # Windows abre la consola en cp1252: un print con un simbolo fuera de ese mapa revienta con
 # UnicodeEncodeError y el script sale con exit 1 AUNQUE el trabajo ya se completo (bug real del
@@ -58,6 +64,7 @@ PROD = os.path.join(BASE, "PRODUCTOS")
 FACT = os.path.join(PROD, "_FACT_ENTREGA.csv")
 FACT_AD = os.path.join(PROD, "_FACT_ENTREGA_ANUNCIO.csv")
 DIMC = os.path.join(PROD, "_DIM_CONJUNTOS.csv")
+DIMP = os.path.join(PROD, "_DIM_PRODUCTOS.csv")
 BKDIR = upsert_fact.respaldos_dir(BASE, "backups_csv")
 
 # P3 T3: _FACT_ENTREGA.csv / _FACT_ENTREGA_ANUNCIO.csv pasan a Postgres (core.entrega_conjunto_dia
@@ -76,6 +83,9 @@ TENANT_ID = "vitalcom"
 LLAVE_CONJUNTO = ("ventana_ini", "ventana_fin", "cuenta_alias", "campana", "conjunto", "fuente")
 
 TASA_COP_USD = 3152.5          # APR-028, medida contra el banco
+# Monedas de facturacion con tasa declarada (unidades locales por USD). Una divisa fuera de esta tabla
+# y distinta de USD BLOQUEA el archivo: convertir sin tasa es inventar el numero.
+TASAS_A_USD = {"COP": TASA_COP_USD}
 CP1 = "1346891653335162"
 
 ALIAS = {
@@ -87,10 +97,9 @@ ALIAS = {
     "GTR3": "581490137794343",
 }
 
-PROD_KEY = {
-    "TINNIDROP": "TINNIDROP", "CLEARSTEM": "CLEARSTEM", "NUSAVA": "NUSAVA",
-    "VARICOSE": "VARICOSE", "VARICES": "VARICOSE",
-}
+# Nombres historicos que Meta todavia trae en campanas viejas y que no son producto_key ni salen de
+# _DIM_PRODUCTOS. Solo aliases: los productos y sus palabras salen de la dimension.
+ALIAS_NOMBRE = {"VARICES": "VARICOSE"}
 
 COLS = ["ventana_ini", "ventana_fin", "dias", "producto_key", "cuenta_id", "cuenta_alias",
         "campana", "conjunto", "mensajes", "clicks_totales", "link_clicks", "impresiones",
@@ -176,15 +185,79 @@ def alias_de(conjunto, campana):
     return ""
 
 
-def producto_de(campana, conjunto, dim):
-    """Primero la dimension (dueno del dato); si no esta, el nombre."""
+def _sin_tildes(txt):
+    return "".join(c for c in unicodedata.normalize("NFD", str(txt or ""))
+                   if unicodedata.category(c) != "Mn")
+
+
+def cargar_productos_meta(path=None):
+    """producto_key -> {kw, moneda, cuenta_alias} leido de _DIM_PRODUCTOS.csv (el dueno del dato).
+
+    Las palabras que reconocen un producto en el nombre de campana/conjunto salen de lo que la
+    dimension ya declara: el producto_key, las partes de `clave_campana` (p.ej. "OVULOS / PURITY") y la
+    primera palabra de nombre_display/slug_carpeta (>= 4 letras). Mismo criterio que
+    ingerir_lucidsales.cargar_productos, mas clave_campana. Sin tildes y en mayusculas.
+    `moneda` es la moneda de la CUENTA publicitaria del producto (no la de venta)."""
+    out = {}
+    with open(path or DIMP, newline="", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            pk = (r.get("producto_key") or "").strip()
+            if not pk:
+                continue
+            kws = {pk, pk.replace("_", " ")}
+            for parte in re.split(r"[/,;|]", r.get("clave_campana") or ""):
+                parte = parte.strip()
+                if len(parte) >= 4:
+                    kws.add(parte)
+            for campo in ("nombre_display", "slug_carpeta"):
+                v = (r.get(campo) or "").strip()
+                if v:
+                    primera = re.split(r"[\s_]+", v)[0]
+                    if len(primera) >= 4:
+                        kws.add(primera)
+            out[pk] = {"kw": sorted({_sin_tildes(k).upper() for k in kws if k}),
+                       "moneda": (r.get("moneda") or "").strip().upper(),
+                       "cuenta_alias": (r.get("cuenta_alias") or "").strip().upper()}
+    return out
+
+
+_CACHE_PRODUCTOS = {}
+
+
+def _productos_cacheados():
+    """cargar_productos_meta() del DIMP vigente, releido si el archivo cambio (bajar_meta_insights
+    llama producto_de() por fila)."""
+    try:
+        marca = (DIMP, os.path.getmtime(DIMP))
+    except OSError:
+        marca = (DIMP, None)
+    if _CACHE_PRODUCTOS.get("marca") != marca:
+        _CACHE_PRODUCTOS["marca"] = marca
+        _CACHE_PRODUCTOS["valor"] = cargar_productos_meta()
+    return _CACHE_PRODUCTOS["valor"]
+
+
+def productos_externos(productos=None):
+    """Conjunto de producto_key cuya cuenta publicitaria es EXTERNA (sin cuenta_id, sin MCP, sin API):
+    solo entran por export manual. La corrida nocturna nunca los toca."""
+    productos = _productos_cacheados() if productos is None else productos
+    return {pk for pk, f in productos.items() if f["cuenta_alias"] == "EXTERNA"}
+
+
+def producto_de(campana, conjunto, dim, productos=None):
+    """Primero la dimension (dueno del dato); si no esta, el nombre contra las palabras de
+    _DIM_PRODUCTOS (`productos`, por defecto el archivo vigente)."""
     k = str(conjunto or "").strip()
     if k in dim:
         return dim[k]
     if canonico(k) in dim:
         return dim[canonico(k)]
-    txt = (str(campana or "") + "_" + str(conjunto or "")).upper()
-    for pat, pk in PROD_KEY.items():
+    productos = _productos_cacheados() if productos is None else productos
+    txt = _sin_tildes(str(campana or "") + "_" + str(conjunto or "")).upper()
+    for pk, f in productos.items():
+        if any(kw in txt for kw in f["kw"]):
+            return pk
+    for pat, pk in ALIAS_NOMBRE.items():
         if pat in txt:
             return pk
     return "SIN_CLASIFICAR"
@@ -217,7 +290,10 @@ def fecha(v):
         return str(v)[:10]
 
 
-def procesar(path, dim):
+def procesar(path, dim, productos=None, forzar=None):
+    """`forzar` = producto_key que se le asigna a TODAS las filas (export de una cuenta EXTERNA de un
+    solo producto); si no, cada fila se clasifica por la dimension y por el nombre."""
+    productos = _productos_cacheados() if productos is None else productos
     df = pd.read_excel(path)
     c_camp = col(df, "campana")
     if c_camp is None:
@@ -245,15 +321,33 @@ def procesar(path, dim):
         campana = str(r[c_camp]).strip()
         anuncio = str(r[c_ad]).strip() if c_ad and pd.notna(r[c_ad]) else ""
         al = alias_de(conjunto, campana)
+        pk = forzar or producto_de(campana, conjunto, dim, productos)
+        ficha = productos.get(pk, {})
+        if not al and ficha.get("cuenta_alias") == "EXTERNA":
+            al = "EXTERNA"
         sp = num(r[c_sp]) if c_sp else 0.0
-        div = str(r[c_div]).strip().upper() if c_div and pd.notna(r[c_div]) else "USD"
-        if div == "COP" or al == "CP1":
-            sp = sp / TASA_COP_USD
+        # La divisa sale del export; sin esa columna, de la cuenta del producto (_DIM_PRODUCTOS.moneda).
+        # Nunca se asume USD: sin ninguna de las dos el archivo se rechaza.
+        if c_div and pd.notna(r[c_div]):
+            div = str(r[c_div]).strip().upper()
+        elif ficha.get("moneda"):
+            div = ficha["moneda"]
+        elif al == "CP1":
+            div = "COP"
+        else:
+            return None, None, (f"sin columna 'Divisa' y el producto «{pk}» no declara moneda en "
+                                f"_DIM_PRODUCTOS.csv: no se sabe en que moneda esta el gasto")
+        if div != "USD" or al == "CP1":
+            tasa = TASAS_A_USD.get("COP" if al == "CP1" else div)
+            if tasa is None:
+                return None, None, (f"divisa {div} sin tasa declarada en TASAS_A_USD: convertir a USD "
+                                    f"sin tasa es inventar el numero")
+            sp = sp / tasa
         lc = int(num(r[c_lc])) if c_lc else 0
         wa = num(r[c_wa]) if c_wa else 0.0
         filas.append({
             "ventana_ini": ini, "ventana_fin": fin, "dias": dias,
-            "producto_key": producto_de(campana, conjunto, dim),
+            "producto_key": pk,
             "cuenta_id": ALIAS.get(al, ""), "cuenta_alias": al,
             "campana": campana, "conjunto": conjunto, "anuncio": anuncio,
             "mensajes_raw": wa * lc,
@@ -305,6 +399,13 @@ def main():
     args = sys.argv[1:]
     dry = "--dry-run" in args
     args = [a for a in args if a != "--dry-run"]
+    forzar = None
+    if "--producto" in args:
+        i = args.index("--producto")
+        if i + 1 >= len(args):
+            raise SystemExit("--producto necesita un producto_key.")
+        forzar = args[i + 1]
+        args = args[:i] + args[i + 2:]
     if "--dir" in args:
         i = args.index("--dir")
         carpeta = args[i + 1]
@@ -318,6 +419,17 @@ def main():
         return 2
 
     dim, con_angulo = leer_dim()
+    productos = cargar_productos_meta()
+    if forzar:
+        if forzar not in productos:
+            raise SystemExit(f"--producto {forzar}: no tiene fila en _DIM_PRODUCTOS.csv.")
+        import mercado
+        try:
+            perfil = mercado.perfil_de_producto(forzar, BASE)
+        except mercado.MercadoError as e:
+            raise SystemExit(f"--producto {forzar}: {e}")
+        print(f"producto {forzar} · mercado {perfil['mercado']} · venta en {perfil['moneda']} · "
+              f"cuenta {productos[forzar]['cuenta_alias'] or '?'}")
     existentes = list(csv.DictReader(open(FACT, encoding="utf-8"))) if os.path.exists(FACT) else []
     llaves = {(r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
                r["conjunto"], r["fuente"]) for r in existentes}
@@ -329,7 +441,7 @@ def main():
     nuevas, nuevos_ads, dup, dup_ad = [], [], 0, 0
     errores, sin_dim, sin_cuenta, sin_firma = [], set(), set(), []
     for f in archivos:
-        filas, ads, err = procesar(f, dim)
+        filas, ads, err = procesar(f, dim, productos, forzar)
         for r in (ads or []):
             k = (r["ventana_ini"], r["ventana_fin"], r["cuenta_alias"], r["campana"],
                  r["conjunto"], r["anuncio"], r["fuente"])

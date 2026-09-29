@@ -189,6 +189,38 @@ vacíos, `spend_usd` = 0, `ad_id` vacío.
 
 ---
 
+## MERCADO CO (MANUAL)
+
+Colombia no corre en la cadena nocturna: su cuenta publicitaria es EXTERNA (no está en
+`_DIM_CUENTAS.csv`, sin MCP ni API) y su tienda de LucidSales no es la de `LUCIDSALES_TIENDA`. El
+operador entrega dos exports y Claude los ingiere con las mismas herramientas:
+
+```bash
+# 1. Entrega de Meta: export de Ads Manager (xlsx, desglosado por anuncio) de la cuenta externa
+python Ads/_TOOLS/ingerir_meta.py <informe.xlsx> --producto OVULOS_PURITY --dry-run
+python Ads/_TOOLS/ingerir_meta.py <informe.xlsx> --producto OVULOS_PURITY
+# 2. Ventas: export de LucidSales de la tienda CO (report-<ini>-<fin>.xlsx|json)
+python Ads/_TOOLS/ingerir_lucidsales.py <report-...> --producto OVULOS_PURITY --dry-run
+python Ads/_TOOLS/ingerir_lucidsales.py <report-...> --producto OVULOS_PURITY
+```
+
+Reglas:
+- `--producto PK` asigna todo el export a ese producto; `--mercado CO` en `ingerir_lucidsales.py`
+  clasifica por nombre entre los productos de Colombia. Sin ninguno de los dos, un producto de cuenta
+  EXTERNA no se clasifica (queda `SIN_CLASIFICAR` y la corrida sale en rojo).
+- Divisa del gasto: la columna `Divisa` del export; sin ella, `_DIM_PRODUCTOS.moneda`; sin ninguna de
+  las dos el archivo se rechaza. `spend_usd` queda en USD; la fila queda con `cuenta_alias=EXTERNA`.
+- `total_q` es el monto de la venta en la moneda de venta del mercado del producto (CO: COP);
+  el dueño de esa moneda es `mercado.py`. Nunca se suma entre mercados.
+- El nombre del conjunto/anuncio en el export sigue la convención de `ETAPA-6.md`; el conjunto se da de
+  alta en `_DIM_CONJUNTOS.csv` como cualquier otro.
+- `bajar_lucidsales.py` (tienda GT) y `bajar_meta_insights.py` (cuentas `ACTIVE`) nunca traen ni
+  clasifican un producto EXTERNA.
+
+Después, `decidir.py` y `flujo.py` corren como siempre, por producto.
+
+---
+
 ## DESPUÉS DE INGERIR
 
 El hook `PostToolUse` valida el CSV y regenera la app solo — cubre por barrido de `mtime` lo que

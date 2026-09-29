@@ -33,7 +33,7 @@ provides Meta Ads Manager + LucidSales exports; account EXTERNA, no MCP).
 - [x] D2 App: flag per product, market selector, currency formatting from API everywhere. (writer)
 - [x] D3 Per-market rollups: gen_dashboard, gen_finanzas, gen_testeos, gen_pl, warehouse; remove
       silent 7.62 fallbacks (fail loud). Nightly-risk → parity check. (writer)
-- [ ] D4 Manual CO ingest: data-driven product map in ingerir_meta; EXTERNA spend path; sales
+- [x] D4 Manual CO ingest: data-driven product map in ingerir_meta; EXTERNA spend path; sales
       currency labelled. (writer)
 - [ ] D5 Costing per market: _DIM_COSTEO/_TASA_ENTREGA keyed by market; costear.py --mercado;
       CO rows from operator's Dropi CO export (pending data). (writer + operator data)
@@ -158,5 +158,23 @@ nightly/app run on the merged code. In this order, on the live folder after the 
   except the footer market line; _FACT_SEMANAL.csv identical plus the two columns; _ESTADO_ANGULOS.csv identical except
   `prioridad_ts`. `python -m pytest Ads/_TOOLS` 52 passed (new `test_multimercado_d3.py`, 9 cases).
 
+### D4 (2026-09-28, worktree only, nothing committed; no real-data file touched)
+- `ingerir_meta.py`: product map now data-driven (`cargar_productos_meta`: producto_key, `clave_campana` parts,
+  first word of nombre_display/slug, accent-free; `ALIAS_NOMBRE` keeps only the historical VARICES -> VARICOSE).
+  `--producto PK` assigns the whole export (EXTERNA single-product account). Spend currency: export `Divisa`
+  column, else `_DIM_PRODUCTOS.moneda`, else the file is rejected (no silent USD); non-USD needs a rate in
+  `TASAS_A_USD` (COP 3152.5). EXTERNA rows get `cuenta_alias=EXTERNA`. GT parity: 213 real (campana, conjunto)
+  pairs from the FACT CSVs classify identically old vs new (0 differences).
+- `ingerir_lucidsales.py`: `--producto PK` / `--mercado M`; EXTERNA products are excluded from the default
+  classification (manual only); EXTERNA rows: alias EXTERNA, spend converted from the product currency,
+  `moneda_origen` = that currency. No schema change: `total_q` = sale amount in the product's market currency
+  (owner `mercado.py`, documented there and in the tool docstring); `venta` table untouched.
+- Nightly: `bajar_meta_insights.procesar_cuenta` drops EXTERNA products (counts them as ajenos); accounts come
+  from `_DIM_CUENTAS` (no EXTERNA). `bajar_lucidsales` is the single GT store.
+- Manifest/app: skipped. No GT action ingests a file (`ciclo.bajar_meta` and the LucidSales button run the API,
+  no upload); CO exports are ingested by Claude in the session.
+- Skills: "Mercado CO (manual)" in `recopilar-lucidsales`; pointer in `ciclo-diario`.
+- Tests: `test_multimercado_d4.py` (12). `pytest Ads/_TOOLS` 53 passed; `hook_csv.py --barrido` exit 0.
+
 ## Next step
-D4 (manual CO ingest).
+D5 (costing per market).

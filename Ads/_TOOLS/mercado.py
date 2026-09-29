@@ -18,6 +18,10 @@ asume; no hay GT por defecto).
 Meta le cobra la pauta al producto (las cuentas GTR facturan en USD, la cuenta de OVULOS_PURITY en
 COP). La moneda en que el producto VENDE sale del mercado (`perfil_mercado(...)["moneda"]`).
 
+`_FACT_VENTAS.total_q` es el monto de la venta en la moneda de venta del mercado del producto (GT: GTQ,
+CO: COP), sin etiqueta en la fila: la moneda se lee de aqui (`perfil_de_producto(pk)["moneda"]`). Su
+columna `moneda_origen` es la del gasto publicitario, no la de venta.
+
 `_DIM_PRODUCTOS.tasa` sigue siendo la tasa que usan los motores (decidir, atribuir, flujo...). Aca
 solo se expone la tasa de referencia del mercado y `avisos_tasa()` marca, en solo lectura, a un
 producto cuya tasa se aparta mucho de ella.
