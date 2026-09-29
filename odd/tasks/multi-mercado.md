@@ -39,7 +39,7 @@ provides Meta Ads Manager + LucidSales exports; account EXTERNA, no MCP).
       CO rows from operator's Dropi CO export (pending data). (writer + operator data)
 - [x] D6 Doctrine: CLAUDE.md TONALIDAD BASE and stage agents read the product market (tone,
       registry MSPAS/INVIMA, costing). (writer)
-- [ ] D7 Integration: live-data copy, flujo/decidir parity old vs new, nightly pre/postcheck, Postgres
+- [x] D7 Integration: live-data copy, flujo/decidir parity old vs new, nightly pre/postcheck, Postgres
       migration plan for raw.producto, merge with operator go-ahead. (parent)
 
 ## Constraints
@@ -207,5 +207,23 @@ nightly/app run on the merged code. In this order, on the live folder after the 
   sin mercado), 2 in `test_mercado.py`, 2 in `test_datos_producto.py`. Existing fixtures now declare `mercado`.
 - Not done: `revisar_costo`/`revisar_precio` in `datos_producto.py` still say Q/quetzales (a CO product would read wrong).
 
+### D7 (2026-09-29, live folder, merged)
+- Live fix a14415a cherry-picked onto the branch (101845b); conflict in `ingerir_lucidsales.py` `main()` resolved
+  keeping both (`forzar, mercado_flag` from D4 and `de_carpeta` from the fix). `pytest Ads/_TOOLS` 53 passed;
+  `test_ingerir_lucidsales.py` and `test_multimercado_d4.py` direct runners 0 failures (they use `vitalcom_test`).
+- Baseline on the live folder before merge (after the 08:19 catch-up nightly run, exit 0): `decidir.py --json`
+  Postgres == csv, `flujo.py --todo` captured.
+- Backup: `_RESPALDOS/pg/vitalcom_pre_multimercado_20260929_083144.dump` (pg_dump -Fc, 1.0 MB, 61 TABLE DATA
+  entries in `pg_restore --list`). pg_dump needs the credentials from `db/cargar.cargar_env()`; without them it waits
+  for a password prompt.
+- Merge 9190b8a into `feat/dashboard-visual` (same conflict, branch version taken; tracked code == branch).
+- Migration: `psql -f db/schema.sql` exit 0 (`raw.producto`, `core.producto`, `raw.fact_semanal` have
+  `mercado`/`moneda`); `db/cargar.py --tomar-csv _DIM_PRODUCTOS.csv` OK; drift guard OK on every table in
+  `TABLAS_MIGRADAS_DB`; `mercado.py --avisos` no warnings; `core.producto`: 4 GT + OVULOS_PURITY CO.
+- Parity: `decidir.py --json` (Postgres) byte-identical to the pre-merge baseline; `flujo.py --todo` identical;
+  `ciclo_diario.postcheck_real()` -> (True, IGUAL). Postgres vs csv JSON differ only in the key order of the
+  `fuente_gasto` counts (values equal; the postcheck compares parsed JSON).
+
 ## Next step
-D5 (costing per market); D6 follow-up above.
+D5 (costing per market, waits for the operator's Dropi CO orders export); `[REG_INVIMA]` for OVULOS_PURITY;
+`revisar_costo`/`revisar_precio` in `datos_producto.py` still say Q/quetzales.
