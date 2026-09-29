@@ -375,7 +375,7 @@ Antes de cargar cualquier export que pueda solapar, correr estas 4 pruebas:
 
 **Cadencia de la capa de FACTURACIÓN (semanal, domingos):** el operador pega el **extracto de Facturación de Meta por cuenta** (las 6) y, cuando aplique, el **export de Ads Manager nivel conjunto de GTR13 y CP1** — las dos cuentas sin MCP, que son las que concentran la fuga de cobertura. El **extracto bancario** va **mensual**: confirma el veredicto pero no lo cambia, y es lo que permite medir la tasa COP real de CP1. Al cerrar cada corrida hay que guardar el **saldo sin facturar de cada cuenta** en `_FACT_SALDOS.csv` con `estado=OBSERVADO` — es lo único que convierte la conciliación de la semana siguiente en una verificación real.
 
-**Monedas:** `spend`/`costPerMessage`/`costPerSale` → USD · `total` (venta) → QUETZALES.
+**Monedas:** `spend`/`costPerMessage`/`costPerSale` → USD · `total` (venta) → moneda local del mercado del producto (GT: quetzales · CO: pesos; `mercado.py --producto PRODUCTO_KEY`).
 > ⚠️ EXCEPCIÓN: la cuenta **CP1 = 1346891653335162** factura en **COP** → `spend_COP ÷ 3152.5 = spend_USD`. Sin normalizar, contamina el CPA de todo el portafolio.
 >
 > **La tasa vigente es 3,152.5, no 4,050 (APR-028).**

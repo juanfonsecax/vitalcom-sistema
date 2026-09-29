@@ -24,7 +24,7 @@
 - CPC (Colombia/COP): ~150–250. (Clase 15 actualiza a ~150; Clase 7 daba 200–250.) Ecuador y USA mucho más caros.
 - Frecuencia: ≥1.9 → fatiga creativa (renovar creativo, Clase 4) · 2–3 con CPM/CPC caro → apagar (Clase 7).
 
-> ⚠️ Estos números son de **Colombia (COP)**. El sistema opera en **Quetzales (Guatemala)** — mercado nuevo y más barato (Clase 15). Usar como referencia cualitativa, no como umbral fijo en Q. Las métricas % (conversación por clic/impresión) y el CPA contra Break Even sí son la base de decisión.
+> ⚠️ Estos números son de **Colombia (COP)**. El sistema mide en la moneda local de cada mercado (GT: **Quetzales**, mercado nuevo y más barato, Clase 15). Usar como referencia cualitativa, no como umbral fijo en moneda local. Las métricas % (conversación por clic/impresión) y el CPA contra Break Even sí son la base de decisión.
 
 **Diagnóstico rápido:**
 

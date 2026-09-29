@@ -1,9 +1,10 @@
-# ORCHESTRATOR — SISTEMA VITALCOM GUATEMALA
+# ORCHESTRATOR — SISTEMA VITALCOM (GUATEMALA Y COLOMBIA)
 
 ## Rol
 
 Coordina el flujo de **cuatro fases** (ÁNGULOS → CONCEPTOS → FLUJO LUCIDBOT → ESCALADO) para crear
-y lanzar productos de dropshipping COD en Guatemala. El orquestador NO ejecuta tareas operativas: detecta el nodo
+y lanzar productos de dropshipping COD en Guatemala (GT) y Colombia (CO): mismo método, cada producto
+declara su mercado. El orquestador NO ejecuta tareas operativas: detecta el nodo
 activo, **carga su skill**, invoca a los subagentes de etapa en orden, transfiere outputs
 estructurados entre ellos y detiene el flujo si falta un input requerido.
 
@@ -95,7 +96,8 @@ calidad de la escritura y del juicio.
 | Capa analítica (tests de integridad, linaje, métricas) | `warehouse/` (dbt + DuckDB) — lee los CSV, no los escribe |
 | Entrega a nivel ANUNCIO con los 5 ejes parseados | `PRODUCTOS/_FACT_ENTREGA_ANUNCIO.csv` ← `Ads/_TOOLS/ingerir_meta.py` |
 | Contabilidad: 3 vistas, estado de resultados, maduración de 10 días | `DOCTRINA/CONTABILIDAD.md` + `PRODUCTOS/_PARAMETROS_FINANZAS.csv` |
-| Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 | `.claude/agents/ETAPA-1.md` |
+| **Mercado del producto** (país, moneda, símbolo, persona voseo/tuteo, registro sanitario, transportadoras, unidad geográfica). Toda doctrina que varíe por país lee de acá, no lo copia. `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY` imprime el perfil | `PRODUCTOS/_DIM_MERCADOS.csv` + `Ads/_TOOLS/mercado.py` · columna `mercado` de `PRODUCTOS/_DIM_PRODUCTOS.csv` |
+| Costeo, tabla maestra, arquitectura de oferta, regla 1u vs 2x1 (la tabla de `costear.py` es la de GT; la de CO se carga aparte) | `.claude/agents/ETAPA-1.md` |
 | **Voz del cliente como dato** (cita textual + URL, verificable, nunca prosa suelta) | `Ads/_TOOLS/verificar_voz.py` GENERA `PRODUCTOS/_VOZ_CLIENTE.csv` (esquema en su docstring; re-descarga la URL y confirma que la cita está ahí). `etapa-1b` es el único que agrega filas, vía `--agregar-json` (nunca a mano); `gen_plan.py --validar` exige que cada ángulo de un `_PLAN.json` en `version >= 2` cite su origen (voz verificada o video de competencia) |
 | Datos de las 10 FanPages (identidad, tono, edad de orientación, page_id, productos del nicho) | `PRODUCTOS/_DIM_FANPAGES.csv` |
 | El JUICIO de asignación de FanPage (reglas F1–F5) y su output `<pagina_asignada>` | `.claude/agents/ETAPA-2.md` |
@@ -157,8 +159,10 @@ Aplican a **todos los subagentes en todas las fases**.
 >   `Ads/_TOOLS/gen_plan.py --validar` (bloquea un plan de F1 con cualquier conjunto != IMAGEN).
 
 ### TONALIDAD BASE
-Voseo guatemalteco ("vos", "te", "tu"). Coloquial, nunca formal ni genérico. Nunca sonar a anuncio
-de manual.
+La persona del texto sale del **mercado del producto** (`persona` en `_DIM_MERCADOS.csv`): voseo
+guatemalteco en GT, tuteo neutro en CO. Coloquial, nunca formal ni genérico. Nunca sonar a anuncio
+de manual. **Colombia corre en modo manual**: el operador entrega los exports de Meta y LucidSales,
+la cuenta es EXTERNA y no hay MCP (skill `recopilar-lucidsales`, sección «MERCADO CO (MANUAL)»).
 
 ### ALCANCE DEL COMPLIANCE
 El compliance de verbos/claims y el CPM de Andrómeda aplican SOLO a los **ADS** (creativo + copy que
@@ -197,7 +201,7 @@ Si el operador llega con un producto sin fila en `PRODUCTOS/_DIM_PRODUCTOS.csv`:
 ```
 ¿Producto nuevo?
   "0" → FASE 0 — BUSCAR PRODUCTO (skill buscar-producto): no sé qué vender todavía.
-  "1" → FASE 1 — tengo producto + costo en Q + ≥6 transcripciones TXT + imagen del producto.
+  "1" → FASE 1 — tengo producto + mercado + costo en su moneda + ≥6 transcripciones TXT + imagen del producto.
         Se crea la fila en _DIM_PRODUCTOS.csv y flujo.py toma el control desde F1.congelar_inputs.
 ```
 

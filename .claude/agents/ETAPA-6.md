@@ -28,6 +28,8 @@ variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cu
 
 El operador solo necesita leer el output de este agente y replicarlo en Meta Ads.
 
+> **MERCADO.** El país de las cabeceras, la moneda y la persona del texto salen del mercado del producto (`python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`, dueño `PRODUCTOS/_DIM_MERCADOS.csv`). Las cifras en `Q`, la banda por avatar y los presupuestos de este archivo son los del mercado **GT**; un producto de mercado CO corre en modo manual (cuenta EXTERNA, sin MCP) y su tabla de precios y banda se declaran aparte.
+>
 > **MODO MCP (automatizado) — recomendado.** Cuando el conector Meta Ads está disponible, ETAPA-6 NO se limita a texto: el orquestador crea la estructura **real en Meta, en estado PAUSED**, siguiendo `DOCTRINA/MCP_PLAYBOOK.md` (raíz del sistema). Resumen:
 > - Campaña **Tráfico** (`OUTCOME_TRAFFIC`) + 6 conjuntos (**CONVERSATIONS / WHATSAPP**, ABO, **$2.99/conjunto = 299¢ USD** (ETAPA 1), **banda de edad derivada del avatar** (ver BANDA DE EDAD abajo) con Advantage+ OFF, programados **4 AM**, todo **PAUSED**). Nombres según la **CONVENCIÓN DE NOMBRES** de abajo (llave de ETAPA-7).
 > - Los **ANUNCIOS** van en un **2º paso** (requieren media: el MCP no la sube). El operador sube los assets a la biblioteca de la cuenta y avisa; entonces se crean **2 anuncios/conjunto** con su copy (regla del duplicado interno). Precio P1u solo en los conjuntos marcados.
@@ -306,7 +308,7 @@ el nombre de la etapa que lo produce, que es más útil que un dato falso.
 ```
 ══════════════════════════════════════════════════════
 ESTRUCTURA CAMPAÑA DE TESTEO — [NOMBRE PRODUCTO]
-Guatemala | WhatsApp + LucidBot | FASE 1
+[PAÍS DEL MERCADO] | WhatsApp + LucidBot | FASE 1
 ══════════════════════════════════════════════════════
 
 CONFIGURACIÓN GENERAL
@@ -326,11 +328,11 @@ $2.99 por conjunto (299¢ USD) × 6 conjuntos = $17.94 total/día  [ETAPA 1, dí
 (Legacy: Q54/conjunto ≈$7 — solo si se pauta a mano sin MCP. Regla Joaquín/Angi: presupuesto fijo de inicio para WhatsApp)
 ⚠️ Mismo presupuesto en todos los conjuntos para no sesgar qué ángulo gana por dinero.
 
-REGLA DE PRECIO EN CREATIVO (Guatemala — máx 3/6, ideal 2/6):
+REGLA DE PRECIO EN CREATIVO (medida en GT — máx 3/6, ideal 2/6):
 Máximo 3 conjuntos (idealmente solo 2) → llevan precio P1u en copy + creativo visual
 Los demás conjuntos → sin precio en copy ni en creativo visual
 Si un conjunto lleva precio, va en ambos (copy y creativo). Si no, en ninguno.
-(Ajuste V5 — el precio en publicación no rinde igual en Guatemala; usar como filtro de avatar.)
+(Ajuste V5 — el precio en publicación no rinde igual en el mercado GT; usar como filtro de avatar.)
 
 MODO MANUAL (solo si se pauta a mano, SIN MCP) — checklist de configuración Meta (Clase 6 — Mercy):
 □ Objetivo de campaña = Tráfico (no Interacción: a Mercy "nunca le funcionó"; Ventas solo como campaña paralela opcional)
@@ -412,7 +414,7 @@ FIN ESTRUCTURA TESTEO
 ```
 ══════════════════════════════════════════════════════
 TESTEO DE CONCEPTOS — [NOMBRE PRODUCTO]
-Ángulo FIJO: [ANGULO_KEY] | Guatemala | FASE 2
+Ángulo FIJO: [ANGULO_KEY] | [PAÍS DEL MERCADO] | FASE 2
 ══════════════════════════════════════════════════════
 
 LO QUE SE MIDE: la ejecución visual. NADA MÁS SE MUEVE.
@@ -446,8 +448,8 @@ CAMPAÑA C — [CUENTA_REPLICA]_[PRODUCTO]_CONCEPTOS-C_[YYYYMMDD]   ← OTRA CUE
   Conjunto C1 — … · $6.00/día → anuncios 01-05  (los MISMOS de A, mismo número)
   Conjunto C2 — … · $6.00/día → anuncios 06-10  (los MISMOS de B, mismo número)
 
-PRESUPUESTO TOTAL: $6 + $6 + ($6×2) = $24.00/día  ≈ Q183/día
-⚠️ Cabe UN SOLO producto en FASE 2 a la vez (techo de portafolio Q597/día — APR-057).
+PRESUPUESTO TOTAL: $6 + $6 + ($6×2) = $24.00/día  ≈ [monto en la moneda del mercado, con la `tasa` del producto]/día
+⚠️ Cabe UN SOLO producto en FASE 2 a la vez (techo de portafolio del mercado GT: Q597/día — APR-057).
 ──────────────────────────────────────────────────────
 
 CÓMO SE LEE (regla de replicación — DOCTRINA/CALENDARIO_ESCALADO.md §1.7.3):
@@ -516,7 +518,7 @@ MUERTE DE LA CAMPAÑA (M-B09):
 ```
 ══════════════════════════════════════════════════════
 ESTRUCTURA CAMPAÑA DE ESCALADO — [NOMBRE PRODUCTO]
-Ángulo ganador: [NOMBRE ÁNGULO] | Guatemala | FASE 4 (horizontal)
+Ángulo ganador: [NOMBRE ÁNGULO] | [PAÍS DEL MERCADO] | FASE 4 (horizontal)
 ══════════════════════════════════════════════════════
 
 CONFIGURACIÓN GENERAL
@@ -533,7 +535,7 @@ Coherencia obligatoria: el flujo LucidBot activo corresponde a este ángulo.
 ESTRUCTURA
 1 campaña → 6 conjuntos → 2 anuncios por conjunto (mismo creativo duplicado, variación de microángulo por conjunto)
 
-REGLA DE PRECIO EN CREATIVO (Guatemala — máx 3/6, ideal 2/6):
+REGLA DE PRECIO EN CREATIVO (medida en GT — máx 3/6, ideal 2/6):
 Máximo 3 conjuntos (idealmente 2) → precio P1u en copy + creativo visual
 Los demás conjuntos → sin precio en copy ni en creativo visual
 
@@ -723,7 +725,7 @@ FIN ESTRUCTURA ESCALADO
   > los 6 conjuntos con `formato: IMAGEN` fijo (`_PLAN.json`, validado por `gen_plan.py --validar`)
   > — el confound de formato entre ángulos ya no puede ocurrir en F1. El video queda como fuente del
   > ángulo (`etapa-0`) y se testea en FASE 2 como un concepto más.
-- **Regla de precio (Guatemala — máx 3/6, ideal 2/6):** Máximo 3 conjuntos (idealmente 2) llevan precio P1u en copy + creativo visual. El resto sin precio en ninguno. Si un conjunto lleva precio, va en ambos (copy y creativo); si no, en ninguno. (Ajuste V5 — coherente con ETAPA-4.)
+- **Regla de precio (medida en GT — máx 3/6, ideal 2/6; en otro mercado rige hasta que su data la corrija):** Máximo 3 conjuntos (idealmente 2) llevan precio P1u en copy + creativo visual. El resto sin precio en ninguno. Si un conjunto lleva precio, va en ambos (copy y creativo); si no, en ninguno. (Ajuste V5 — coherente con ETAPA-4.)
 - **Regla de métricas de observación:** El primer día de testeo busca datos, no ventas. Meta está identificando quién conecta con cada ángulo.
 - **Regla del 20% matutino:** Subir el presupuesto de un conjunto rentable máximo +20% por día y SOLO en la mañana (hasta 9-10 AM). Tocarlo más tarde reinicia el aprendizaje y desoptimiza. (Clase 8, 11, 15)
 - **Regla del escalado horizontal:** Para crecer en volumen no se infla el conjunto ganador — se replica horizontalmente (duplicar conjunto, más fanpages, más cuentas) usando el MISMO Post ID para acumular prueba social. (Clase 8, 11, 15)

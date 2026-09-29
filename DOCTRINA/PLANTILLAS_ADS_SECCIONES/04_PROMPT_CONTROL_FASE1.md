@@ -94,11 +94,11 @@ no un sustantivo cualquiera. Es una PREGUNTA sobre el problema del lector.
 
   5B. FRANJA DE CONFIANZA (al pie, ancho completo, fondo crema apenas más oscuro que el fondo)
   3 celdas de igual ancho, separadas por filetes verticales finos. Cada celda:
-  ícono lineal a la izquierda (camión / mano con billete / bandera de Guatemala) +
+  ícono lineal a la izquierda (camión / mano con billete / bandera del país del mercado) +
   a la derecha TÍTULO bold en mayúsculas y bajada gris de una línea.
-    · "ENVÍO GRATIS" / "a toda Guatemala"
-    · "PAGO CONTRA ENTREGA" / "pagás cuando lo recibís"
-    · "PRODUCTO DISPONIBLE" / "en Guatemala"
+    · "ENVÍO GRATIS" / "a [PAIS_COBERTURA del mercado]"
+    · "PAGO CONTRA ENTREGA" / "pagás cuando lo recibís" (en la persona del mercado: `tuteo` → "pagas cuando lo recibes")
+    · "PRODUCTO DISPONIBLE" / "en [PAIS del mercado]"
 
 ════════════════════════════════════════════════════════
 TIPOGRAFÍA
@@ -117,7 +117,7 @@ REGLAS DURAS
 · Un solo problema por pieza. No listar varios síntomas.
 · Sin fotos de personas. Sin rostros. Sin antes/después.
 · Sin logos de terceros, sin sellos de organismos reales (FDA, INVIMA), sin banderas de países
-  que no sean Guatemala.
+  que no sean el del mercado del producto (`python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`).
 · COMPLIANCE: prohibido "cura", "trata", "elimina", "acaba con". Prohibido prometer plazos.
   Prohibida la urgencia de pánico. Se habla del problema del lector; NO se afirma curarlo.
   [Si el ángulo es médico sensible: usar "apoya / ayuda a la función / cuidado".]

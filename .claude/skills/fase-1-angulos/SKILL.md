@@ -57,13 +57,13 @@ canta `flujo.py` (`F1.congelar_inputs`) antes de llegar acá:
 ```
 ━━━ INPUTS CONGELADOS — [PRODUCTO] · VERSION v1 · [FECHA] ━━━
 PRODUCTO (nombre exacto):     [..]
-COSTO_PROVEEDOR_Q:            [Q..]              ← define todo el costeo (ETAPA-1)
+COSTO_PROVEEDOR_Q:            [en la moneda del mercado del producto]  ← define todo el costeo (ETAPA-1)
 DOSIS / PRESENTACIÓN:         [ej. 5000 mcg · 1.5 ml sublingual]   ← valor único
 PROVEEDORES_DROPY:            [N]
 ANUNCIANTES_AD_LIBRARY:       [N o "no provisto"]
 IMAGEN_PRODUCTO:              [sí/ruta]          ← obligatoria (análisis visual ETAPA-4/1B)
 INGREDIENTES:                 [lista o "pendiente"]
-TASA_USD_GTQ:                 [ej. 7.62]
+TASA_MONEDA_POR_USD:          [tasa del producto — moneda local por USD; referencia en `_PARAMETROS_FINANZAS.csv`]
 MCP_ACCOUNT_ID / MCP_PAGE_ID / MCP_PIXEL_ID:  [si se creará campaña por MCP]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

@@ -37,7 +37,7 @@ provides Meta Ads Manager + LucidSales exports; account EXTERNA, no MCP).
       currency labelled. (writer)
 - [ ] D5 Costing per market: _DIM_COSTEO/_TASA_ENTREGA keyed by market; costear.py --mercado;
       CO rows from operator's Dropi CO export (pending data). (writer + operator data)
-- [ ] D6 Doctrine: CLAUDE.md TONALIDAD BASE and stage agents read the product market (tone,
+- [x] D6 Doctrine: CLAUDE.md TONALIDAD BASE and stage agents read the product market (tone,
       registry MSPAS/INVIMA, costing). (writer)
 - [ ] D7 Integration: live-data copy, flujo/decidir parity old vs new, nightly pre/postcheck, Postgres
       migration plan for raw.producto, merge with operator go-ahead. (parent)
@@ -176,5 +176,19 @@ nightly/app run on the merged code. In this order, on the live folder after the 
 - Skills: "Mercado CO (manual)" in `recopilar-lucidsales`; pointer in `ciclo-diario`.
 - Tests: `test_multimercado_d4.py` (12). `pytest Ads/_TOOLS` 53 passed; `hook_csv.py --barrido` exit 0.
 
+### D6 (2026-09-28, worktree only, nothing committed)
+- Doctrine follows the product market; values stay in `_DIM_MERCADOS.csv` (persona, registro, transportadoras,
+  cobertura, dias_entrega, unidad_geo/unidad_local, moneda) and are pointed to, never copied. `mercado.py` gained
+  `--producto PK` (read-only profile; positional form kept) + test in `test_mercado.py`.
+- CLAUDE.md: title/intro GT+CO, MAPA row for markets, costeo row (GT table today), TONALIDAD BASE by market with the
+  CO manual-mode line, new-product prompt. Agents: ETAPA-1/1B/2/4/5/6/7/11/GUARDAR-PRODUCTO/PRODUCTO/RENDER. Defaults:
+  `[REG_INVIMA]` PENDING from operator (no number invented), `[REG_MSPAS]`/`[REG_FDA]` scoped to GT. Infographics,
+  generar-imagenes-chatgpt, generar-conceptos, fase-1-angulos, MCP_PLAYBOOK, DATA_PLAYBOOK, CONTABILIDAD §3-bis
+  (GT accounting stays Dropi GT; CO accounting pending), ESCALADO 00/03/10, PLANTILLAS_ADS_SECCIONES 04/05/08.
+- `test_split_doctrina` ESCALADO/PLANTILLAS hashes re-frozen on purpose. GT-specific evidence, GT price rule
+  (labelled as measured in GT), `GUIA_MADRE_PARAMETRIZADA` and evals asserts (GT fixtures) left intact.
+- Follow-up (code, not doctrine): `Ads/_TOOLS/armar_prompts_fase2.py` (~:379, `PRECIOS_GT`) hard-codes MSPAS/FDA and
+  "Somos de Guatemala: nunca INVIMA"; it must read the market profile before a CO product renders phase-2 prompts.
+
 ## Next step
-D5 (costing per market).
+D5 (costing per market); D6 follow-up above.

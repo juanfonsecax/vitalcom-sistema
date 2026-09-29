@@ -28,7 +28,8 @@ producto cuya tasa se aparta mucho de ella.
 
 Uso
 ---
-    python Ads/_TOOLS/mercado.py PRODUCTO_KEY      # perfil del producto (JSON)
+    python Ads/_TOOLS/mercado.py --producto PK     # perfil del producto (JSON, solo lectura)
+    python Ads/_TOOLS/mercado.py PRODUCTO_KEY      # igual
     python Ads/_TOOLS/mercado.py --avisos          # tasas que no cuadran con su mercado
 """
 
@@ -212,6 +213,8 @@ def main(argv=None):
             avisos = avisos_tasa()
             print("\n".join(avisos) if avisos else "Sin avisos: cada tasa cuadra con su mercado.")
             return 0
+        if len(argv) == 2 and argv[0] == "--producto":
+            argv = argv[1:]
         if len(argv) == 1 and not argv[0].startswith("-"):
             print(json.dumps(perfil_de_producto(argv[0]), ensure_ascii=False, indent=2))
             return 0

@@ -127,7 +127,7 @@ pieza de esa familia. Leer además su `ficha_referencia` completa
 
 Reglas al llenar:
 
-1. **Voseo guatemalteco** en todo texto visible (`vos`, `te`, `tu`).
+1. **Persona del mercado del producto** en todo texto visible (`persona` de `PRODUCTOS/_DIM_MERCADOS.csv`: voseo GT — `vos`, `te`, `tu` — · tuteo CO).
 2. **Respetar `restriccion_palabras`** de cada zona. Un titular de 8 palabras en un
    slot de 4 rompe la jerarquía que hacía funcionar la pieza original.
 3. **`reglas_duras` siempre en positivo** — los modelos de imagen leen mal las
@@ -176,7 +176,7 @@ creativa**, es el registro sanitario de país:
 | Sello del original | Al replicar |
 |---|---|
 | **FDA (EEUU)** | **se mantiene** — los productos son de origen americano |
-| **INVIMA (Colombia)** | **MSPAS**, el registro local guatemalteco |
+| Registro sanitario de otro país (INVIMA, MSPAS…) | el registro del **mercado del producto** (`registro_sanitario` de `_DIM_MERCADOS.csv`; GT: MSPAS · CO: INVIMA, con su número pendiente del operador) |
 | cGMP, GMO free, lab tested, sellos de fábrica | **se mantienen** |
 
 Lo que sí se respeta es que **los datos sean del producto real**: precios, dosis,

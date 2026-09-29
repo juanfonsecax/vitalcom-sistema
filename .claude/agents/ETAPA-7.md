@@ -92,7 +92,7 @@ La regla de ingesta garantiza que las BASE nunca se solapen: `ventana_ini = vent
 
 **(d) `pct_conv_clic_enlace` (en `_FACT_ENTREGA`) NO es tasa de cierre.** En el archivo viejo esa columna se llamaba `cierre_pct` y confundía: es **% de conversación sobre clics de ENLACE**, no sobre ventas. `link_clicks` viene derivado de ahí. Los `clicks_totales` inflan el denominador — no usarlos para el %conv.
 
-**(e) Monedas.** `spend_usd` ya viene normalizado a USD (la cuenta **CP1 = 1346891653335162** factura en COP y se divide entre 4,050 al cargar). `total_q` viene en Quetzales.
+**(e) Monedas.** `spend_usd` ya viene normalizado a USD al cargar (la cuenta que factura en otra moneda se convierte con la tasa que declara `ingerir_meta.py`/`ingerir_lucidsales.py`). `total_q` viene en la **moneda local del mercado del producto** (GTQ en GT, COP en CO; `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`): nunca se suma entre mercados. La tasa a moneda local es la `tasa` del producto en `_DIM_PRODUCTOS.csv`; la de referencia de cada mercado, `_PARAMETROS_FINANZAS.csv`.
 
 **(f)** Si una fila trae `cuenta_alias` desconocido → reportarlo como cuenta no registrada en `_DIM_PRODUCTOS.csv`, no ignorarla.
 
@@ -121,9 +121,9 @@ llave = (producto_key, conjunto)   ←  _FACT_VENTAS.csv / _FACT_ENTREGA.csv
 **Cálculos:**
 
 ```
-CPA real (Q)  = (Σ spend_usd × TASA_USD_GTQ) ÷ Σ ventas
-Ingreso (Q)   = Σ total_q
-Ganancia (Q)  = (Σ ventas × CPA_Break_Even) − (Σ spend_usd × TASA)
+CPA real (moneda local) = (Σ spend_usd × TASA_DEL_PRODUCTO) ÷ Σ ventas
+Ingreso (moneda local) = Σ total_q
+Ganancia (moneda local) = (Σ ventas × CPA_Break_Even) − (Σ spend_usd × TASA)
 %conv/clic    = mensajes ÷ clics-en-enlace × 100     ← usar actions:link_click del MCP,
                                                         NO `clicks` totales (infla el denominador)
 ```
@@ -186,7 +186,7 @@ tope de pausas (`max_pausas_por_dia`) y surfing (`surfing_pct`). **ETAPA-7 lee e
 celda en `_DECISIONES.json` y lo cita con su `accion_codigo`; no vuelve a calcularlo.**
 
 Lo que sí sigue siendo lectura/juicio de esta etapa, porque el motor no lo mira:
-- **NUNCA ROAS.** Se mide por CPA en Quetzales contra `cpa_base_q` / `cpa_be_q` de `_DIM_PRODUCTOS.csv`.
+- **NUNCA ROAS.** Se mide por CPA en la moneda local del producto contra `cpa_base_q` / `cpa_be_q` de `_DIM_PRODUCTOS.csv`.
 - **VARIABLES DE CONFUSIÓN:** antes de atribuir un resultado al ángulo, revisar `_EVENTOS.csv` en la ventana leída. Si hay un `CAMBIO_BOT`, `CAMBIO_CREATIVO`, `CAMBIO_PRECIO` o `CAMBIO_PAGINA` → **declararlo en el informe y no culpar al ángulo**. (Caso real: bot nuevo + música de Meta el mismo día.)
 - **Señales de entrega de Meta** (referencia, no umbral duro — `DOCTRINA/ESCALADO/03_SENALES_DECISION.md` y `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md`): % conversación por impresión, frecuencia ≥1.9 = fatiga creativa, CTR cayendo >20 % en 48 h, CPM subiendo >25 % sin cambios. Sirven para el **por qué** (creativo vs ángulo vs bot), no para pausar: pausar es del motor.
 - **Saturación por cuenta** (`DOCTRINA/ESCALADO/06_SATURACION_CUENTA.md`): un ángulo que rinde ≥2× peor en una cuenta que la mediana de las otras está saturado ahí — mover volumen a las cuentas frescas, no renovar el ángulo. Se ejecuta ANTES de proponer cualquier duplicación (PASO 5-B.4).

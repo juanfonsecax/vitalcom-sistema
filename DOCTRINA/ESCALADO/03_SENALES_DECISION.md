@@ -17,7 +17,7 @@
 - **CTR muy bajo + caro** → no hay interés → **pausar**, replantear el dolor/prueba o probar otro ángulo.
 - **Ganador = conversión RENTABLE, no likes** (optimizar por likes engaña: baja CPM pero encarece CPA).
 
-> Referencia mercado Colombia (Clase 22/15): CPM bueno 6-10k COP · CPM ~20k = ángulo saturado/competido · ~10k = menos saturado (trabajable) · CTR ~3% · CPC ~150 COP. En Q/Guatemala son mucho más baratos — usar como cualitativo.
+> Referencia mercado Colombia (Clase 22/15): CPM bueno 6-10k COP · CPM ~20k = ángulo saturado/competido · ~10k = menos saturado (trabajable) · CTR ~3% · CPC ~150 COP. En GT (Q) son mucho más baratos — usar como cualitativo.
 
 ---
 

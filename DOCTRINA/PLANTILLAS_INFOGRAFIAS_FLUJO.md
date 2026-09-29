@@ -412,7 +412,7 @@ REGLAS GLOBALES DEL DISEÑO
 
 ## IMAGEN 3 — CONFIANZA / CONTRAENTREGA + RESULTADOS
 
-> **PROPÓSITO (ETAPA-5 ELEMENTO 6 + Clase 22 Joaquín):** esta es la imagen que ELIMINA el miedo a comprar online. El reductor de fricción #1 en Guatemala es **PAGÁS AL RECIBIR** — debe ser lo primero/más prominente, por encima de stats y FAQ. La autoridad (doctora) y las estadísticas refuerzan, pero el mensaje dominante es "no arriesgás tu dinero". (Joaquín: "la persona no arriesga el dinero, nosotros arriesgamos mandando el producto" — comunicarlo reduce la objeción que más mata ventas.)
+> **PROPÓSITO (ETAPA-5 ELEMENTO 6 + Clase 22 Joaquín):** esta es la imagen que ELIMINA el miedo a comprar online. El reductor de fricción #1 del COD es **PAGÁS AL RECIBIR** (en la persona del mercado: `tuteo` → "PAGAS AL RECIBIR") — debe ser lo primero/más prominente, por encima de stats y FAQ. La autoridad (doctora) y las estadísticas refuerzan, pero el mensaje dominante es "no arriesgás tu dinero". (Joaquín: "la persona no arriesga el dinero, nosotros arriesgamos mandando el producto" — comunicarlo reduce la objeción que más mata ventas.)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PASO 1 — FOTO BASE (generar primero en IA de imágenes)
@@ -451,7 +451,8 @@ BLOQUE CONTRAENTREGA + GARANTÍA (PROMINENTE — primer elemento bajo el headlin
 Badge/pastilla grande con fondo [COLOR_ACENTO_PRODUCTO] (o borde grueso del mismo color sobre fondo oscuro), ícono de billete/mano + casa. Texto bold uppercase, alto contraste:
 "PAGÁS AL RECIBIR"
 Subtexto regular blanco pequeño debajo:
-"Envío GRATIS a toda Guatemala · GINTACOM y FORZA · No pagás nada por adelantado"
+"Envío GRATIS a [PAIS_COBERTURA] · [TRANSPORTADORAS] · No pagás nada por adelantado"
+(`pais_cobertura` y `transportadoras` del mercado del producto, `PRODUCTOS/_DIM_MERCADOS.csv`; `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`)
 Inmediatamente debajo, un **sello de garantía** (escudo/medalla con ícono de check, color [COLOR_ACENTO_PRODUCTO]) con texto bold pequeño:
 "[GARANTIA_TEXTO]"
 Estos dos bloques (contraentrega + garantía) se ven ANTES que las estadísticas — son los reductores de fricción #1 y #2 (responden la objeción "¿y si no me funciona?").
@@ -520,9 +521,11 @@ BARRA DE CERTIFICACIONES FINAL
 Fondo blanco roto teñido ≤5% hacia el color del producto (no #FFFFFF plano), borde superior 1px color [COLOR_ACENTO_PRODUCTO], altura compacta, parte más baja del lienzo
 ──────────────────────────────────────
 
+> **Los sellos dependen del mercado del producto** (`python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`). El texto de abajo es el juego del mercado **GT**. Para otro mercado: el sello izquierdo es el de su autoridad sanitaria (`registro_sanitario` de `_DIM_MERCADOS.csv`; CO → INVIMA, con el número que entregue el operador, `[REG_INVIMA]` en `PLANTILLAS_DEFAULTS_OPERADOR.md`), "REGISTRO SANITARIO [PAÍS]" con el país del mercado, y el sello central es el registro mercantil que el operador declare para ese país. Sin esos datos declarados no se inventa el sello: se detiene y se pide.
+
 Tres sellos en una fila horizontal con espaciado igual. Cada sello: ícono/escudo arriba + dos líneas de texto debajo. Estilo institucional limpio, sin decoración extra.
 
-SELLO IZQUIERDO:
+SELLO IZQUIERDO (GT):
 Escudo institucional del Ministerio de Salud Pública y Asistencia Social de Guatemala — colores verde y blanco, estilo oficial. Tamaño pequeño.
 Texto línea 1, bold azul oscuro #0a1628 muy pequeño:
 "Ministerio de Salud Pública
@@ -530,7 +533,7 @@ y Asistencia Social"
 Texto línea 2, uppercase regular #0a1628 muy pequeño:
 "REGISTRO SANITARIO GUATEMALA"
 
-SELLO CENTRAL:
+SELLO CENTRAL (GT):
 Logotipo Registro Mercantil de Guatemala: rectángulo con "RM" en negro bold a la izquierda + texto "Registro MERCANTIL" en negro al lado derecho. Tamaño pequeño.
 Texto línea 1, bold #0a1628 muy pequeño:
 "Registro Mercantil"

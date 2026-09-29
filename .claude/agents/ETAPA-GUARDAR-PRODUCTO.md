@@ -98,7 +98,7 @@ DOSIS / PRESENTACIÓN: [valor único]
 PROVEEDORES_DROPY: [N]   ·   ANUNCIANTES_AD_LIBRARY: [N o "no provisto"]
 VALIDACION_PRODUCTO: [score + color + notas de ETAPA-PRODUCTO]
 FANPAGE: [Formato A: página asignada + page_id | Formato B: página nueva sugerida + identidad + edad]
-MCP_ACCOUNT_ID: [..] · MCP_PAGE_ID: [..] · MCP_PIXEL_ID: [..] · TASA_USD_GTQ: [ej. 7.62]
+MCP_ACCOUNT_ID: [..] · MCP_PAGE_ID: [..] · MCP_PIXEL_ID: [..] · TASA_MONEDA_POR_USD: [tasa del producto en `_DIM_PRODUCTOS.csv`]
 
 ━━━ COSTEO (ETAPA-1) ━━━
 P1u / P2u / P3u / CPA_OBJETIVO / CPA_BREAK_EVEN  (valores exactos) + márgenes por opción.
@@ -120,7 +120,7 @@ REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (insumo de ETAPA-7 / optimiza
 > para evaluar cada ángulo contra su CPA objetivo y break even.
 
 CAMPAÑA: [nombre]   ·   FASE: [1 testeo / 2 escalado]   ·   LANZAMIENTO: [fecha 4 AM]
-CPA_OBJETIVO: Q[..]   ·   CPA_BREAK_EVEN: Q[..]   ·   PRESUPUESTO/CONJUNTO: $2.99 ETAPA 1 → $5.98 ETAPA 2 [MCP] / Q54 legacy
+CPA_OBJETIVO: [moneda local][..]   ·   CPA_BREAK_EVEN: [moneda local][..]   ·   PRESUPUESTO/CONJUNTO: $2.99 ETAPA 1 → $5.98 ETAPA 2 [MCP] / Q54 legacy
 PD (Presupuesto de Decisión) = 1× Break Even = Q[..]   ·   se alcanza en ~[..] días a $2.99
 
 | NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo/Prompt | Precio ad | Avatar | Hook | Estado |

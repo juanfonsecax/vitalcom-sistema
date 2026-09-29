@@ -10,6 +10,8 @@ model: inherit
 ## Rol
 Toma los 6 videos clasificados por ETAPA-0 y los datos de costeo de ETAPA-1, y construye 6 ángulos de venta rankeados con toda la información que el equipo necesita para crear creativos y flujos coherentes: avatar, dolor, deseo, promesa, nivel de saturación y video asignado.
 
+El país, la persona (voseo/tuteo) y el gentilicio de todo el texto salen del **mercado del producto**: `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY` (dueño `PRODUCTOS/_DIM_MERCADOS.csv`).
+
 Además, es el **dueño único del JUICIO de asignación de FanPage**: determina a qué página del catálogo de `PRODUCTOS/_DIM_FANPAGES.csv` debe asignarse el producto, con su identidad, tono y edad de segmentación (reglas F1-F5, más abajo). Los DATOS de las 10 páginas viven en ese CSV, no en este archivo — ETAPA-4, ETAPA-5 y ETAPA-6 NO consultan el CSV directamente: reciben el resultado ya resuelto en el campo `<pagina_asignada>` (Formato A o B — ver §ASIGNACIÓN DE FANPAGE).
 
 ---
@@ -35,7 +37,7 @@ El operador debe hacer esta búsqueda manual y devolver el resultado:
 1. Abrir biblioteca de anuncios de Meta
 2. Buscar el PROBLEMA que resuelve el producto (no el nombre del producto)
 3. Seleccionar "Todos los países"
-4. Contar cuántos anunciantes activos hay en Guatemala/Colombia para ese problema
+4. Contar cuántos anunciantes activos hay en el país del mercado del producto (`pais` en `PRODUCTOS/_DIM_MERCADOS.csv`) para ese problema
 5. Reportar: "[problema buscado] — [N] anunciantes activos — saturación estimada: ALTA (>20) / MEDIA (5-20) / BAJA (<5)"
 
 Sin este dato, ETAPA-2 no puede estimar saturación correctamente y usará DESCONOCIDA como valor.
@@ -81,7 +83,7 @@ Para cada uno de los 6 videos seleccionados, construir un avatar específico usa
   · **3b — Lo conoce y compara ofertas:** ya está listo, evalúa cuál comprar. → Acelerar la decisión: oferta-escasez o comparación (Clase 20: la oferta-escasez se usa "cuando el cliente ya conoce el producto/resultado").
 (Clase 12 y Clase 22)
 
-Regla: el avatar debe ser tan específico que alguien lo pueda reconocer en la calle. No "mujer que quiere bajar de peso" sino "mujer guatemalteca 30-40 años que lleva 3 meses en el gym y sus glúteos no crecen, ya probó proteína genérica y no funcionó".
+Regla: el avatar debe ser tan específico que alguien lo pueda reconocer en la calle. No "mujer que quiere bajar de peso" sino "mujer [gentilicio del mercado] 30-40 años que lleva 3 meses en el gym y sus glúteos no crecen, ya probó proteína genérica y no funcionó".
 
 ### Paso 2 — Definir el ángulo directo (no generalizado)
 
@@ -154,7 +156,7 @@ Origen del ángulo (T10 — va al `_PLAN.json` de ETAPA-6): [VOZ_CLIENTE: voz_id
 ═══════════════════════════════════════════
 
 AVATAR
-Perfil: [Mujer/Hombre] guatemalteco/a, [rango de edad] años
+Perfil: [Mujer/Hombre] [gentilicio del país del mercado], [rango de edad] años
 Situación: [descripción de 1-2 líneas de quién es y qué hace]
 Dolor activo: "[frase en primera persona — cómo lo diría él/ella]"
 Deseo detrás del dolor: "[qué resultado concreto quiere]"
@@ -204,7 +206,7 @@ Resultado en tiempo: "[en cuánto tiempo y qué cambia]"
 
 COHERENCIA CON FLUJO LUCIDBOT
 Primera frase TEXTO del bot:
-"[Dolor del ángulo en voseo] — eso tiene solución."
+"[Dolor del ángulo en la persona del mercado: voseo o tuteo, `persona` de `_DIM_MERCADOS.csv`] — eso tiene solución."
 Primera frase AUDIO del bot:
 "Hola, claro que sí, te cuento. [Dolor del ángulo]"
 Nota coherencia: [qué debe mencionar el flujo de WhatsApp para mantener la coherencia con este ángulo]

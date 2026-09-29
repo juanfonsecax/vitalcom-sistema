@@ -12,6 +12,7 @@ Corre con pytest (tmp dirs) o directo:  python Ads/_TOOLS/test_mercado.py
 
 import csv
 import io
+import json
 import os
 import shutil
 import sys
@@ -125,6 +126,24 @@ def test_los_datos_reales_del_sistema_resuelven():
     assert mercado.mercado_de("OVULOS_PURITY") == "CO"
     assert mercado.perfil_de_producto("TINNIDROP")["moneda"] == "GTQ"
     assert mercado.avisos_tasa() == []
+
+
+def test_cli_producto_imprime_el_perfil_y_falla_si_no_existe():
+    """`--producto PK` y la forma posicional imprimen el mismo perfil; un producto sin fila sale 1."""
+    import contextlib
+    salida = io.StringIO()
+    with contextlib.redirect_stdout(salida):
+        assert mercado.main(["--producto", "OVULOS_PURITY"]) == 0
+    perfil = json.loads(salida.getvalue())
+    assert perfil["mercado"] == "CO" and perfil["moneda"] == "COP" and perfil["persona"] == "tuteo"
+    posicional = io.StringIO()
+    with contextlib.redirect_stdout(posicional):
+        assert mercado.main(["OVULOS_PURITY"]) == 0
+    assert posicional.getvalue() == salida.getvalue()
+    errores = io.StringIO()
+    with contextlib.redirect_stderr(errores):
+        assert mercado.main(["--producto", "NO_EXISTE_XYZ"]) == 1
+    assert "BLOQUEANTE" in errores.getvalue()
 
 
 if __name__ == "__main__":

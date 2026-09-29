@@ -72,8 +72,8 @@ ARCHIVO_SALIDA:    [nombre canónico, del paquete]
 3. **No instala software.** Ver los límites duros de la skill.
 4. **No juzga si un elemento del concepto "se puede" poner.** El sistema replica
    el dispositivo del ganador completo —sellos, badges, certificaciones,
-   estrellas, cifras de respaldo— porque el portafolio tiene MSPAS, FDA y
-   garantía reales. Su trabajo es que la ejecución salga fiel y sin defectos.
+   estrellas, cifras de respaldo— porque cada producto tiene el registro sanitario de su mercado
+   (GT: MSPAS y FDA · CO: INVIMA) y garantía reales. Su trabajo es que la ejecución salga fiel y sin defectos.
    La única excepción, explicada en la skill, es el **número** de registro
    sanitario: va el real o va sin número, nunca uno fabricado.
 

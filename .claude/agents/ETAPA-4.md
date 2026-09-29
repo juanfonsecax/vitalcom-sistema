@@ -82,7 +82,7 @@ Citar en el output el `id` de cada aprendizaje aplicado.
 Un copy por ángulo (basado en las 6 fichas de ETAPA-2). Aplicar las REGLAS META ADS BASE del sistema: **copy → `DOCTRINA/COPYWRITING_ADS.md`** (fuente única) · **creativo → `DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md` + `11_DOCTRINA_CREATIVOS_VIDEO_IMAGEN.md`** (compliance Andrómeda + DOCTRINA DE CREATIVOS).
 
 **Estructura de cada copy — seguir `DOCTRINA/COPYWRITING_ADS.md` (fuente única, extraída de las clases de los mentores: Andrómeda/Joaquín, Hooks/Mercy, HPPPC):**
-- **(1) TEXTO PRINCIPAL — 3 variaciones, una por enfoque (problema-solución / emocional / prueba social).** El copy se le escribe a **META**, no al cliente: cada síntoma/beneficio/avatar es una **señal** de segmentación. Cada copy le habla a **UN avatar específico** ("si pasás de los 50 y trabajaste de pie…"), no a todos — directos convierten 20-25% vs 4% genéricos. Estructura **HPPPC**: Hook (dolor/deseo, saca el primer SÍ) → Problema + síntomas concretos + reencuadre → Promesa + mecanismo único + "resultados que sí se sienten" (microángulos) → Prueba (autoridad/testimonio/prueba social) → **CTA = ORDEN con beneficio** hacia WhatsApp (nunca pregunta ni el nombre del producto). **Formato anti-muro**: líneas cortas, saltos de línea, emojis de ritmo (1 cada 2-4 líneas), viñetas ✅ — NUNCA un párrafo ("la gente no lee párrafos"). 80-130 palabras (Meta lo lee para segmentar; el cliente lo escanea). Lenguaje de **apoyo**, sin palabras que banean ("cura/elimina/logra/transforma en X días"). Regla de precio (Guatemala): MÁXIMO 3 de 6 con P1u (ideal 2); si lleva precio va en copy Y creativo, si no en ninguno. Plantilla visual y checklist completo en `DOCTRINA/COPYWRITING_ADS.md`.
+- **(1) TEXTO PRINCIPAL — 3 variaciones, una por enfoque (problema-solución / emocional / prueba social).** El copy se le escribe a **META**, no al cliente: cada síntoma/beneficio/avatar es una **señal** de segmentación. Cada copy le habla a **UN avatar específico** ("si pasás de los 50 y trabajaste de pie…", en la persona del mercado del producto: voseo GT · tuteo CO, `persona` de `PRODUCTOS/_DIM_MERCADOS.csv`; se lee con `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`), no a todos — directos convierten 20-25% vs 4% genéricos. Estructura **HPPPC**: Hook (dolor/deseo, saca el primer SÍ) → Problema + síntomas concretos + reencuadre → Promesa + mecanismo único + "resultados que sí se sienten" (microángulos) → Prueba (autoridad/testimonio/prueba social) → **CTA = ORDEN con beneficio** hacia WhatsApp (nunca pregunta ni el nombre del producto). **Formato anti-muro**: líneas cortas, saltos de línea, emojis de ritmo (1 cada 2-4 líneas), viñetas ✅ — NUNCA un párrafo ("la gente no lee párrafos"). 80-130 palabras (Meta lo lee para segmentar; el cliente lo escanea). Lenguaje de **apoyo**, sin palabras que banean ("cura/elimina/logra/transforma en X días"). Regla de precio (Guatemala): MÁXIMO 3 de 6 con P1u (ideal 2); si lleva precio va en copy Y creativo, si no en ninguno. Plantilla visual y checklist completo en `DOCTRINA/COPYWRITING_ADS.md`.
 - **(2) TÍTULO — 3 variaciones.** **2-3 palabras** (la gente no lee — Mercy: alumno pasó de 0 a 200 ventas con títulos de 2 palabras), ≤27 caracteres. Un eje por variación: resultado/beneficio · reencuadre/curiosidad · diferenciador. Ej: "Más memoria y energía" / "No era la vitamina" / "Líquida, no pastilla".
 - **(3) DESCRIPCIÓN — 1-2 opciones.** ≤30 caracteres. Prueba social / garantía / urgencia / pago contra entrega. Usar el **banco validado** de `DOCTRINA/COPYWRITING_ADS.md` (ej: "+8,400 clientes ⭐", "Sin efectos rebote · 100% garantizado", "🏠 ¡Paga en casa!", "Resultados desde semana 2", "Sin efectos secundarios").
 
@@ -147,7 +147,7 @@ Si el operador no entregó alguna variable del grupo `Operador` (estadísticas c
 - 1 copy por microángulo (seleccionar los 6 más potentes si hay más de 6)
 - Tono conversacional — como WhatsApp o Facebook de persona real
 - Sin palabras prohibidas: "garantizamos", "cura", "elimina", "descuento"
-- Regla de precio (Guatemala): MÁXIMO 3 copies llevan P1u (idealmente 2 de 6) en copy Y en creativo visual; el resto sin precio en ninguno de los dos
+- Regla de precio (medida en el mercado GT; en otro mercado rige hasta que su data la corrija): MÁXIMO 3 copies llevan P1u (idealmente 2 de 6) en copy Y en creativo visual; el resto sin precio en ninguno de los dos
 - 80-120 palabras. Emojis: 2-3 máximo, congruentes con el dolor. Nunca al inicio
 
 #### Tarea 2 — Conceptos creativos diversos (anti-fatiga visual — Clase 14, 19)
@@ -206,7 +206,7 @@ Lleva precio P1u: [sí / no]
 
 ──────────────────────────────────────────────────────
 RESUMEN COPIES
-Copies con precio P1u: [2 o 3] de 6 (máx 3, ideal 2 — Guatemala) ✓
+Copies con precio P1u: [2 o 3] de 6 (máx 3, ideal 2) ✓
 ──────────────────────────────────────────────────────
 
 ══════════════════════════════════════════════════════
@@ -298,7 +298,7 @@ Incluye precio P2u: [sí / no]
 ══════════════════════════════════════════════════════
 RESUMEN
 ══════════════════════════════════════════════════════
-Copies con precio P1u: [2 o 3] de 6 (máx 3, ideal 2 — Guatemala)
+Copies con precio P1u: [2 o 3] de 6 (máx 3, ideal 2)
 Microángulos cubiertos: MA-[N], MA-[N], MA-[N], MA-[N], MA-[N], MA-[N]
 ══════════════════════════════════════════════════════
 
@@ -328,7 +328,7 @@ Lleva precio: [sí / no]
 
 - **Regla Kaleth del copy testimonio:** El copy habla a Meta para que encuentre el avatar correcto. No habla directamente al cliente. Es una reseña, no un anuncio. 
 - **Regla del copy largo:** El copy largo funciona porque Meta lo lee completo para segmentar — no porque el cliente lo lea. Entre más señales del avatar en el copy, mejor segmentación. 
-- **Regla de precio (Guatemala):** MÁXIMO 3 copies llevan precio P1u + creativo visual con precio (idealmente solo 2 de 6); el resto sin precio en copy ni en creativo. La regla es solidaria: si un conjunto tiene precio, va en ambos lados; si no tiene, en ninguno. Quien llega al chat ya aceptó el valor. (Ajuste V5 — el precio en publicación no rinde igual en Guatemala; usar como filtro de avatar, no como gancho masivo.)
+- **Regla de precio (medida en el mercado GT; en otro mercado rige hasta que su data la corrija):** MÁXIMO 3 copies llevan precio P1u + creativo visual con precio (idealmente solo 2 de 6); el resto sin precio en copy ni en creativo. La regla es solidaria: si un conjunto tiene precio, va en ambos lados; si no tiene, en ninguno. Quien llega al chat ya aceptó el valor. (Ajuste V5 — el precio en publicación no rinde igual en el mercado GT; usar como filtro de avatar, no como gancho masivo.)
 - **Regla Andrómeda de autenticidad:** Los copies deben sonar como WhatsApp o Facebook de una persona real — no como publicidad. Si suena a anuncio, reescribir. 
 - **Regla de diversidad de microángulos:** Nunca usar el mismo microángulo en dos copies. Cada copy ataca un sub-dolor diferente.
 - **Regla anti-fatiga (FASE 2):** cada concepto COMPLETAMENTE distinto al anterior — regla y lista de ejes a variar en `DOCTRINA/PLANTILLAS_ADS_SECCIONES/01_COMPLIANCE_ANDROMEDA.md` y `06_ESTILOS_ANTIFATIGA.md`. Andrómeda lee el creativo como segmentación: conceptos repetidos saturan la audiencia y suben el CPM. (Clase 14, 19)

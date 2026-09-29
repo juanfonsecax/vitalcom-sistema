@@ -35,8 +35,10 @@ os.chdir(BASE)
 # ESCALADO_SHA256 re-congelado (28-sep-2026, cuatro fases B2): 04_PALANCAS.md, 08_PLAN_ENTREGABLE.md
 # y 09_EXPLORACION_PARALELA.md pasaron sus referencias de "FASE 3"/F3.* (que ahora es la fase de
 # optimizacion de flujo) a "FASE 4"/F4.* (escalado) — cambio de doctrina a proposito.
-ESCALADO_SHA256 = "9d57666adc147da6f835a6a85981281a2e74186442c6e4c5f3bb43a433961857"
-PLANTILLAS_SHA256 = "e4503a723a015618ccb7c12f43dbcf49227ea72610d675dcbf56e73c0cf339d0"
+# ESCALADO_SHA256 y PLANTILLAS_SHA256 re-congelados (multi-mercado D6): la doctrina de escalado y de
+# plantillas nombra la moneda y el mercado del producto en vez de asumir Guatemala.
+ESCALADO_SHA256 = "2786290f1e40621d515761947a8b4669b5792c71b7ab92f5e3ff7f6421036e90"
+PLANTILLAS_SHA256 = "790c8e0f5e67a1208911e563adf3df7c0806bd7200e447d98e2fdfd1707ccfa9"
 
 # Orden EXACTO de reconstruccion — el nombre de archivo ya lo fija (prefijo numerico),
 # pero se declara explicito para que un archivo nuevo mal nombrado no se cuele fuera de orden.

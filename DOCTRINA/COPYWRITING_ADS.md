@@ -128,7 +128,7 @@ Meta admite **hasta 5 opciones** de texto/título por anuncio (el "1 de 5") y ro
 
 ---
 
-## PRINCIPIO 8 — Precio en el copy (regla Guatemala)
+## PRINCIPIO 8 — Precio en el copy (regla medida en GT; en otro mercado rige hasta que su data la corrija)
 Máximo **3 de 6** copies llevan precio P1u (ideal 2/6); el resto sin precio. Si un conjunto lleva precio, va en copy **Y** creativo; si no, en ninguno. El precio actúa como **filtro de avatar** (quien llega al chat ya aceptó el valor). Nunca en Título ni Descripción. La **oferta de tratamiento** (1/2/3 frascos, "la más elegida ⭐") y el **modo de uso** ("una toma al día") van mejor en el cuerpo y el bot.
 
 ---

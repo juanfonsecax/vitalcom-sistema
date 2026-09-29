@@ -23,7 +23,7 @@ Esta etapa existe porque el error #1 es elegir el producto más vendido de Dropy
 ```xml
 <input>
   <producto_candidato>[nombre del producto]</producto_candidato>
-  <costo_proveedor_q>[costo en Q, si se tiene]</costo_proveedor_q>
+  <costo_proveedor_q>[costo en la moneda del mercado del producto, si se tiene]</costo_proveedor_q>
   <datos_mercado>
     [señales que el operador consigue MANUALMENTE (sin herramientas de pago):
      - n.º de proveedores que tienen el producto en Dropy (se cuenta a mano)
