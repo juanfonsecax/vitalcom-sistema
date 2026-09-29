@@ -54,6 +54,9 @@ except (AttributeError, OSError):
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CSV_COSTEO = os.path.join(BASE, "PRODUCTOS", "_DIM_COSTEO.csv")
+# Costing table per market. GT is the default and keeps CSV_COSTEO; other markets have
+# their own table with the same columns, in their own currency.
+TABLAS_POR_MERCADO = {"CO": os.path.join(BASE, "PRODUCTOS", "_DIM_COSTEO_CO.csv")}
 
 # Parámetros de la regla de arranque (ETAPA-1.md Paso 2.5). Los fijos de logística
 # no bajan con el precio: es lo que dispara el múltiplo en productos baratos.
@@ -63,7 +66,7 @@ FIJOS = 40.0                 # flete Q34 + admin Q4 + otros Q2
 CPA_PEOR = 63.0              # mismo default que gen_dashboard.arranque_recomendado
 
 
-def cargar_tabla():
+def cargar_tabla(ruta=None):
     """Filas de _DIM_COSTEO.csv ordenadas por costo, con su valor REAL.
 
     `gen_dashboard.py` lee la fila Q54 como el escalón Q55 para que su grilla
@@ -72,10 +75,11 @@ def cargar_tabla():
     mientras que con el valor real Q54 sale 3 y empata con Q60 — que es la fila
     que el operador usa de verdad para CLEARSTEM.
     """
-    if not os.path.exists(CSV_COSTEO):
-        sys.exit(f"ERROR: no existe {CSV_COSTEO}. Sin la tabla no hay costeo.")
+    ruta = ruta or CSV_COSTEO
+    if not os.path.exists(ruta):
+        sys.exit(f"ERROR: no existe {ruta}. Sin la tabla no hay costeo.")
     filas = []
-    with io.open(CSV_COSTEO, encoding="utf-8") as fh:
+    with io.open(ruta, encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             try:
                 c = float(r["costo_producto"])
@@ -83,7 +87,7 @@ def cargar_tabla():
                 continue
             filas.append((c, r))
     if not filas:
-        sys.exit(f"ERROR: {CSV_COSTEO} no tiene filas legibles.")
+        sys.exit(f"ERROR: {ruta} no tiene filas legibles.")
     return sorted(filas, key=lambda x: x[0])
 
 
@@ -152,8 +156,14 @@ def arranque(costo_u):
             "decision": dec, "nota": nota}
 
 
-def costear(costo, n_unidades=3):
-    filas = cargar_tabla()
+def costear(costo, n_unidades=3, mercado="GT"):
+    if mercado == "GT":
+        ruta = CSV_COSTEO
+    elif mercado in TABLAS_POR_MERCADO:
+        ruta = TABLAS_POR_MERCADO[mercado]
+    else:
+        sys.exit(f"ERROR: no hay tabla de costeo para el mercado {mercado}.")
+    filas = cargar_tabla(ruta)
     costo_fila, r, criterio = elegir_fila(float(costo), filas)
     g = lambda k: float(r[k]) if r.get(k) not in (None, "") else None
 
@@ -174,40 +184,51 @@ def costear(costo, n_unidades=3):
         # El arranque se evalúa sobre el costo REAL: el múltiplo es un diagnóstico
         # del producto, no de la grilla. Con costo Q35 el múltiplo es 4.4x — que es
         # el número que cita ETAPA-1.md Paso 2.5 — no el 4.0x de la fila Q40.
-        "arranque": arranque(float(costo)),
-        "fuente": "PRODUCTOS/_DIM_COSTEO.csv",
+        # The start-up rule (1u vs 2x1) is calibrated on Guatemala logistics in quetzales.
+        "arranque": arranque(float(costo)) if mercado == "GT" else None,
+        "fuente": "PRODUCTOS/" + os.path.basename(ruta),
         "origen_escalera": r.get("origen_escalera", "OPERADOR"),
     }
+    if mercado != "GT":
+        out["mercado"] = mercado
     if criterio == "TECHO DE TABLA EXCEDIDO":
         out["alerta"] = (f"El costo Q{costo} supera el techo de la tabla (Q{costo_fila:.0f}). "
                          "Las cifras NO son válidas: extender _DIM_COSTEO.csv antes de usarlas.")
     return out
 
 
-def imprimir(d):
+def imprimir(d, Q="Q"):
+    """`Q` is the market currency symbol (GT quetzal by default)."""
     a = d["arranque"]
-    print(f"\nCOSTEO — costo de pedido Q{d['costo_ingresado']:.0f}")
+    print(f"\nCOSTEO — costo de pedido {Q}{d['costo_ingresado']:.0f}")
     print("=" * 58)
-    print(f"Fila de tabla usada .... Q{d['fila_usada']:.0f}  ({d['criterio_de_fila']})")
+    print(f"Fila de tabla usada .... {Q}{d['fila_usada']:.0f}  ({d['criterio_de_fila']})")
     print(f"Fuente ................. {d['fuente']}")
     if "alerta" in d:
         print(f"\n  *** {d['alerta']} ***")
     print("\nPRECIOS (envío gratis en todos)")
     for e in d["escalera"]:
         marca = "  <- OFERTA HÉROE" if e["unidades"] == 2 else ""
-        print(f"  {e['unidades']}u ... Q{e['precio']:<6} (costo del pedido Q{e['costo_pedido']:.0f}){marca}")
+        print(f"  {e['unidades']}u ... {Q}{e['precio']:<6} (costo del pedido {Q}{e['costo_pedido']:.0f}){marca}")
     if d["origen_escalera"] == "EXTRAPOLADO":
         print("\n  *** escalera EXTRAPOLADA: el operador nunca fijó precio para este costo.")
         print("      Confirmar con él antes de publicarla. ***")
+    elif d["origen_escalera"] == "PENDIENTE":
+        print("\n  *** escalera 2u/3u PENDIENTE: el operador no la fijó para este costo. ***")
+    elif "mercado" in d:
+        print(f"\n  escalera fijada por el operador en {d['fuente']}, aún sin ventas que la confirmen")
     else:
         print("\n  escalera fijada por el operador en _DIM_COSTEO.csv, confirmada contra Dropi")
     print("\nUMBRALES DE PAUTA")
-    print(f"  CPA objetivo ......... Q{d['cpa_objetivo']:.2f}")
-    print(f"  CPA base ............. Q{d['cpa_base']:.2f}")
-    print(f"  CPA BREAK-EVEN ....... Q{d['cpa_break_even']:.2f}   <- techo, no objetivo")
-    print(f"\nARRANQUE: {a['decision']}")
-    print(f"  P1u mínimo Q{a['p1u_minimo']:.2f} = múltiplo {a['multiplo_necesario']:.2f}x del costo")
-    print(f"  {a['nota']}")
+    print(f"  CPA objetivo ......... {Q}{d['cpa_objetivo']:.2f}")
+    print(f"  CPA base ............. {Q}{d['cpa_base']:.2f}")
+    print(f"  CPA BREAK-EVEN ....... {Q}{d['cpa_break_even']:.2f}   <- techo, no objetivo")
+    if a:
+        print(f"\nARRANQUE: {a['decision']}")
+        print(f"  P1u mínimo Q{a['p1u_minimo']:.2f} = múltiplo {a['multiplo_necesario']:.2f}x del costo")
+        print(f"  {a['nota']}")
+    else:
+        print("\nARRANQUE: la regla 1u vs 2x1 está calibrada para Guatemala; no aplica a este mercado.")
     print("\nLo que este script NO decide (queda para etapa-1):")
     print("  la arquitectura de oferta segun tipo de producto y nivel de")
     print("  conciencia del avatar — matriz del Paso 2 de ETAPA-1.md.\n")
@@ -219,16 +240,22 @@ def main():
                     help="costo del PEDIDO COMPLETO en Q (en combos, no el de la unidad)")
     ap.add_argument("--unidades", type=int, default=3, help="escalones a calcular (default 3)")
     ap.add_argument("--json", action="store_true", help="salida JSON para consumo por una etapa")
+    ap.add_argument("--mercado", default="GT",
+                    help="mercado del producto (default GT); CO lee _DIM_COSTEO_CO.csv, en pesos")
     args = ap.parse_args()
 
     if args.costo <= 0:
         sys.exit("ERROR: el costo debe ser mayor que 0.")
 
-    d = costear(args.costo, args.unidades)
+    mercado = args.mercado.strip().upper()
+    d = costear(args.costo, args.unidades, mercado)
     if args.json:
         print(json.dumps(d, ensure_ascii=False, indent=2))
-    else:
+    elif mercado == "GT":
         imprimir(d)
+    else:
+        import mercado as mc
+        imprimir(d, mc.perfil_mercado(mercado, BASE)["simbolo"])
     return 1 if "alerta" in d else 0
 
 

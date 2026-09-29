@@ -170,6 +170,28 @@ def test_json_cli_devuelve_1_con_alerta():
     return _con_tabla(correr)
 
 
+def test_mercado_lee_su_propia_tabla():
+    """--mercado CO reads its own table (same columns, its currency) and leaves GT untouched;
+    the GT start-up rule is not applied to another market."""
+    def correr(ruta_gt):
+        previo = dict(c.TABLAS_POR_MERCADO)
+        ruta_co = _tabla_temporal()
+        c.TABLAS_POR_MERCADO["CO"] = ruta_co
+        try:
+            co = c.costear(50, mercado="CO")
+            gt = c.costear(50)
+        finally:
+            c.TABLAS_POR_MERCADO.clear()
+            c.TABLAS_POR_MERCADO.update(previo)
+        ok = (co["fuente"] == "PRODUCTOS/" + os.path.basename(ruta_co)
+              and co["arranque"] is None and co.get("mercado") == "CO"
+              and gt["arranque"] is not None and "mercado" not in gt
+              and gt["fuente"] == "PRODUCTOS/" + os.path.basename(ruta_gt))
+        return _informe(ok, "costear(mercado=CO) lee TABLAS_POR_MERCADO['CO'], sin regla de arranque GT; GT intacto",
+                        (co["fuente"], co["arranque"], gt["fuente"]))
+    return _con_tabla(correr)
+
+
 def main():
     pruebas = [
         test_match_exacto,
@@ -180,6 +202,7 @@ def main():
         test_debajo_del_piso_de_tabla_sin_alerta,
         test_escalera_sale_de_la_fila,
         test_json_cli_devuelve_1_con_alerta,
+        test_mercado_lee_su_propia_tabla,
     ]
     fallas = sum(p() for p in pruebas)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")

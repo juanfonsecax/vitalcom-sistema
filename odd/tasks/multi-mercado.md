@@ -35,7 +35,7 @@ provides Meta Ads Manager + LucidSales exports; account EXTERNA, no MCP).
       silent 7.62 fallbacks (fail loud). Nightly-risk → parity check. (writer)
 - [x] D4 Manual CO ingest: data-driven product map in ingerir_meta; EXTERNA spend path; sales
       currency labelled. (writer)
-- [ ] D5 Costing per market: _DIM_COSTEO/_TASA_ENTREGA keyed by market; costear.py --mercado;
+- [x] D5 Costing per market: _DIM_COSTEO/_TASA_ENTREGA keyed by market; costear.py --mercado;
       CO rows from operator's Dropi CO export (pending data). (writer + operator data)
 - [x] D6 Doctrine: CLAUDE.md TONALIDAD BASE and stage agents read the product market (tone,
       registry MSPAS/INVIMA, costing). (writer)
@@ -224,6 +224,22 @@ nightly/app run on the merged code. In this order, on the live folder after the 
   `ciclo_diario.postcheck_real()` -> (True, IGUAL). Postgres vs csv JSON differ only in the key order of the
   `fuente_gasto` counts (values equal; the postcheck compares parsed JSON).
 
+### D5 (2026-09-29, minimal by operator request)
+- New `PRODUCTOS/_DIM_COSTEO_CO.csv`: same columns as `_DIM_COSTEO.csv`, 19 rows (cost COP 5,000-50,000), values
+  from the operator's CO costing sheet (dispatch 90%, returns 20%, ads 20%, expected margin 15%, freight 22,000,
+  admin 2,000 incl. AI cost, return 7,200 net of outbound freight). `cpa_base_usd` = cpa_base / 3152.5
+  (`tasa_cop_usd`). Ladder 129,900/169,900 set by the operator on the COP 7,500 row (OVULOS_PURITY, cost 7,000);
+  other rows `origen_escalera=PENDIENTE`.
+- Cross-check against 388 real Dropi CO orders (another product, 15-may..1-jul): delivery 79% of dispatched,
+  freight 22,349 avg, return charge 37,677 avg; independent unit economics give BE CPA 28,106 vs table 28,031.
+- `costear.py --mercado CO` reads that table (`TABLAS_POR_MERCADO`), prints the market symbol, skips the GT
+  start-up rule. GT default untouched: output byte-identical (text and --json) for costs 57 and 100.
+- Not changed on purpose: `_DIM_COSTEO.csv`, Postgres `raw.costeo`, the app (`MERCADOS_CON_COSTEO = ["GT"]` in
+  NuevoProducto), gen_dashboard.
+- INVIMA: operator decision — no system change. OVULOS_PURITY is the only product without INVIMA; when its
+  phase-2 prompts are made, the registry line is edited by hand for that product only.
+- Verification: `test_costear.py` 0 failures (new case), `test_dueno_cpa_be_q.py` 0 failures,
+  `pytest Ads/_TOOLS` 53 passed, `hook_csv.py --barrido` exit 0.
+
 ## Next step
-D5 (costing per market, waits for the operator's Dropi CO orders export); `[REG_INVIMA]` for OVULOS_PURITY;
-`revisar_costo`/`revisar_precio` in `datos_producto.py` still say Q/quetzales.
+Recalculate the CO table assumptions with OVULOS_PURITY's own first ~50 orders.
