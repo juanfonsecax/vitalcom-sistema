@@ -41,7 +41,7 @@ app/frontend `pnpm test`, `pnpm build`; app/backend `VITALCOM_FUENTE=csv uv run 
 - Layout: Qué hacer ahora -> gallery (Campaña A/B) -> fatiga -> losers collapsed at the bottom.
 - Checks: frontend `pnpm test` 171 passed, `pnpm build` ok; backend subset (angulos, prompt, fases_api,
   sin_aritmetica) 50 passed; first full backend run 236 passed / 1 failed (the arithmetic guard, fixed);
-  second full run did not finish in the session (see report). Known gap kept: concepts 6-10 show as pending.
+  second full run 237 passed (327.78s). Known gap kept: concepts 6-10 show as pending.
 - "Lanzado" step = a LANZAMIENTO/LANZAMIENTO_TEST event whose motivo says FASE 2 (no per-angle launch event exists).
 
 ## Next step
