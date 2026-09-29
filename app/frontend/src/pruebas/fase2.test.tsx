@@ -577,3 +577,25 @@ test("muestra banner de reingreso activo cuando existe", async () => {
   expect(screen.getByText("Fatiga creativa severa")).toBeDefined();
   expect(screen.getByText("Ir a FASE 1 →")).toBeDefined();
 });
+
+test("un ángulo perdedor con filas viejas de conceptos no es pestaña de la galería", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    conceptos: [
+      ...FASE2_MOCK.conceptos,
+      {
+        ...FASE2_MOCK.conceptos[0],
+        creativo_id: "TINNIDROP_R1_VIEJO",
+        angulo_key: "ME_DIJERON_NO_CURA",
+        canonico_id: "",
+        blueprint_nombre: "Pieza vieja de FASE 1",
+      },
+    ],
+  };
+  renderizar("TINNIDROP");
+
+  await screen.findByText("Before / After Split");
+  expect(screen.queryByText("Pieza vieja de FASE 1")).toBeNull();
+  // el perdedor sigue en su lista, pero no como pestaña de la galería
+  expect(screen.queryAllByRole("tab").filter((t) => t.textContent?.includes("ME_DIJERON_NO_CURA"))).toHaveLength(0);
+});

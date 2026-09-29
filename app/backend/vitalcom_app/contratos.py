@@ -730,11 +730,8 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
     carpeta_media = fila_de_producto(producto_key).get("carpeta_media", "") or f"MEDIA_{producto_key}"
 
     conceptos = []
-    usados_canonicos = set()
     for row in creativos_rows:
         cid = row.get("canonico_id", "")
-        if cid:
-            usados_canonicos.add(cid)
         binfo = canonicos_dict.get(cid, {})
         arch = row.get("archivo", "")
         media_path = ruta("Ads", carpeta_media, arch)
@@ -755,32 +752,6 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             "notas": row.get("notas", ""),
             **paquete,
         })
-
-    # Si hay menos de 10, completamos hasta 10 con los blueprints canónicos disponibles
-    indice_extra = 1
-    for cid, binfo in sorted(canonicos_dict.items()):
-        if len(conceptos) >= 10:
-            break
-        if cid in usados_canonicos:
-            continue
-        arch_sug = f"{producto_key}_F2_{cid[:4]}_{indice_extra}.png"
-        paquete = resolver_prompt_fase2(producto_key, carpeta_media, principal, cid)
-        conceptos.append({
-            "creativo_id": f"{producto_key}_F2_{cid[:4]}_{indice_extra}",
-            "archivo": arch_sug,
-            "canonico_id": cid,
-            "angulo_key": principal,
-            "blueprint_nombre": binfo.get("nombre", cid),
-            "dispositivo": binfo.get("dispositivo_canonico", ""),
-            "cuando_elegirlo": binfo.get("cuando_elegirlo", ""),
-            "rol_embudo": "MOFU",
-            "estado": "PENDIENTE_GENERAR",
-            "ad_id": "",
-            "archivo_existe": False,
-            "notas": f"Blueprint recomendado por doctrina ({binfo.get('nombre', '')})",
-            **paquete,
-        })
-        indice_extra += 1
 
     for angulo in angulos:
         if angulo["rol"] in ("ganador_activo", "ganador_en_fila"):

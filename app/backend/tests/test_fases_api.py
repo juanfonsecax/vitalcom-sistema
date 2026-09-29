@@ -18,7 +18,9 @@ def test_api_fase2_tinnidrop():
     assert data["fase"] == "F2"
     assert "angulo_ganador" in data
     assert "conceptos" in data
-    assert len(data["conceptos"]) == 10
+    # solo conceptos reales de _DIM_CREATIVOS.csv, sin relleno hasta 10
+    assert len(data["conceptos"]) == data["total_conceptos"]
+    assert not any(c["notas"].startswith("Blueprint recomendado por doctrina") for c in data["conceptos"])
     # Cada concepto debe traer blueprint y prompt
     for c in data["conceptos"]:
         assert "canonico_id" in c

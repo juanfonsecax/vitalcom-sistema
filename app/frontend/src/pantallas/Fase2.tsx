@@ -74,7 +74,13 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
   const trabajoPendiente = trabajoPendientePorProducto(trabajos.data).get(clave);
 
   // Galería agrupada por ángulo, en el orden de los ángulos; arranca en el #1.
-  const clavesDeConceptos = Array.from(new Set(d.conceptos.map((c) => c.angulo_key || "")));
+  // Solo los ángulos ganadores tienen pestaña: un perdedor con filas viejas de F1 vive en "no funcionaron".
+  const clavesGanadoras = new Set(
+    angulos.filter((a) => a.rol === "ganador_activo" || a.rol === "ganador_en_fila").map((a) => a.angulo_key),
+  );
+  const clavesDeConceptos = Array.from(
+    new Set(d.conceptos.map((c) => c.angulo_key || "").filter((k) => clavesGanadoras.has(k))),
+  );
   const ordenAngulos = angulos.map((a) => a.angulo_key);
   const gruposGaleria = [
     ...ordenAngulos.filter((k) => clavesDeConceptos.includes(k)),
@@ -265,7 +271,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-base font-bold text-zinc-100">
-            Galería de Conceptos ({conceptosVisibles.length} de 10)
+            Galería de Conceptos ({conceptosVisibles.length})
           </h2>
           <span className="text-xs text-zinc-400">
             Copiá el prompt, generá en tu IA favorita (ChatGPT web, Midjourney) y subí la pieza terminada.

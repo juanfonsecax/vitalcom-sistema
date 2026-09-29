@@ -168,3 +168,12 @@ def test_el_contrato_valida_contra_el_modelo(sistema_angulos: Path):
     modelo = Fase2Detalle(**contratos.fase2_detalle("PX"))
     assert len(modelo.angulos) == 6
     assert modelo.angulos[0].rol == "ganador_activo"
+
+
+def test_no_se_rellenan_conceptos_que_nadie_va_a_generar(sistema_angulos: Path):
+    from vitalcom_app import contratos
+
+    detalle = contratos.fase2_detalle("PX")
+    # solo las filas reales de _DIM_CREATIVOS.csv; ningun relleno hasta 10
+    assert [c["creativo_id"] for c in detalle["conceptos"]] == ["PX_F2_1", "PX_F2_2"]
+    assert detalle["total_conceptos"] == 2
