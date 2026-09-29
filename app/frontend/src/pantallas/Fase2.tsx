@@ -96,6 +96,22 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
   const hayPromptsPendientes = conceptosVisibles.some((c) => c.prompt_origen !== "paquete" || !c.prompt);
   const anguloActivo = angulos.find((a) => a.angulo_key === grupoActivo);
 
+  // Campañas (A 1-5 / B 6-10) según la estructura que declara el backend; sin estructura, un solo grupo.
+  let acumulado = 0;
+  const gruposCampana: { brazo: string; desde: number; hasta: number; conceptos: ConceptoFase2[] }[] = (
+    d.campanas ?? []
+  ).map((c) => {
+    const desde = acumulado + 1;
+    acumulado += c.conceptos;
+    return { brazo: c.brazo, desde, hasta: acumulado, conceptos: conceptosVisibles.filter((x) => x.campana === c.brazo) };
+  });
+  if (gruposCampana.length === 0) {
+    gruposCampana.push({ brazo: "", desde: 1, hasta: conceptosVisibles.length, conceptos: conceptosVisibles });
+  } else {
+    const sinCampana = conceptosVisibles.filter((x) => !gruposCampana.some((g) => g.brazo === x.campana));
+    gruposCampana[gruposCampana.length - 1].conceptos.push(...sinCampana);
+  }
+
   const subirImagen = async (concepto: ConceptoFase2, archivo: File) => {
     setSubiendoArchivo(concepto.creativo_id);
     setMensajeSubida(null);
@@ -130,14 +146,16 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             FASE 2 · Testeo de Conceptos ({clave})
           </h1>
           <p className="text-sm text-zinc-400">
-            Estructura 1-1-5 + 1-1-5 + 1-2-5 · 10 conceptos con ángulo y copy fijos · <Info termino="fase_2" />{" "}
+            Estructura 1-1-5 + 1-1-5 + 1-2-5 · {d.conceptos_requeridos ? `${d.conceptos_requeridos} conceptos` : "Conceptos"} con ángulo y copy fijos · <Info termino="fase_2" />{" "}
             <BanderaMercado mercado={d.mercado} />
           </p>
         </div>
 
         <div className="flex items-center gap-3">
-          <Chip tono={d.conceptos_generados >= 10 ? "bien" : "aviso"}>
-            {d.conceptos_generados} de 10 conceptos listos
+          <Chip tono={d.conceptos_generados >= (d.conceptos_requeridos ?? 0) ? "bien" : "aviso"}>
+            {d.conceptos_requeridos
+              ? `${d.conceptos_generados} de ${d.conceptos_requeridos} conceptos listos`
+              : `${d.conceptos_generados} conceptos listos`}
           </Chip>
           <Link
             to="/producto/$clave/fase3"
@@ -179,80 +197,11 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
       )}
 
       {/* Cada ángulo en su propio bloque: el #1 en testeo ahora, los demás en fila o descartados. */}
-      <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} perfil={d} />
-      <AngulosEnFila angulos={enFila} perfil={d} />
-      <AngulosQueNoFuncionaron angulos={noFuncionaron} trabajoPendiente={trabajoPendiente} perfil={d} />
-
-      {/* Alertas de Fatiga y Botón de Retorno a F1 */}
-      <Tarjeta className="border-amber-800/40 bg-amber-950/20 p-4">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h3 className="text-sm font-semibold text-amber-200">
-              Ciclo de Fatiga & Renovación
-            </h3>
-            <OrdenesDeRenovacion ordenes={(d.fatiga?.ordenes ?? []) as OrdenMotor[]} />
-            <Collapsible>
-              <CollapsibleTrigger className="mt-3 text-xs text-zinc-400 underline underline-offset-2 hover:text-zinc-200">
-                ¿Cómo funciona la renovación?
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <p className="mt-1 text-xs text-zinc-300">
-                  Si un ángulo ganador se cansa o el motor emite <span className="font-mono text-amber-300">RENOVAR</span>,
-                  se rotan los creativos en FASE 2 y el ángulo se mantiene. Si el ángulo ya no rinde, se vuelve a FASE 1
-                  con ángulos frescos.
-                </p>
-              </CollapsibleContent>
-            </Collapsible>
-          </div>
-          <Button
-            onClick={() => setModalReingreso(true)}
-            variant="outline"
-            size="sm"
-          >
-            Nuevos ángulos para este producto →
-          </Button>
-        </div>
-
-        {/* Modal / Diálogo de Confirmación de Reingreso */}
-        {modalReingreso && (
-          <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-4 shadow-xl">
-            <h4 className="text-sm font-bold text-zinc-100">
-              ¿Confirmar retorno a FASE 1 para {clave}?
-            </h4>
-            <p className="mt-1 text-xs text-zinc-300">
-              El producto reingresará a FASE 1 para investigar y testear una nueva tanda de 6 ángulos. Se excluirán automáticamente los ángulos que ya corrieron:
-            </p>
-            <div className="mt-2 rounded bg-zinc-950 p-2 font-mono text-xs text-zinc-400">
-              {(d.fatiga?.angulos_probados ?? []).join(", ") || "Ningún ángulo previo registrado"}
-            </div>
-            <div className="mt-3">
-              <label className="text-xs text-zinc-400">Motivo del reingreso:</label>
-              <Input
-                type="text"
-                value={motivoReingreso}
-                onChange={(e) => setMotivoReingreso(e.target.value)}
-                className="mt-1"
-              />
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
-              <Button
-                onClick={() => setModalReingreso(false)}
-                variant="outline"
-                size="sm"
-              >
-                Cancelar
-              </Button>
-              <Button
-                size="sm"
-                disabled={mutacionReingreso.isPending}
-                onClick={() => mutacionReingreso.mutate(motivoReingreso)}
-              >
-                {mutacionReingreso.isPending ? "Registrando..." : "Sí, volver a F1"}
-              </Button>
-            </div>
-          </div>
-        )}
-      </Tarjeta>
+      <section className="space-y-4" data-testid="que-hacer-ahora">
+        <h2 className="text-base font-bold text-zinc-100">Qué hacer ahora</h2>
+        <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} perfil={d} />
+        <AngulosEnFila angulos={enFila} perfil={d} />
+      </section>
 
       {/* Notificación de Subida */}
       {mensajeSubida && (
@@ -303,8 +252,27 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
           <GenerarPromptsDelAngulo generar={anguloActivo?.generar} clave={clave} angulo={grupoActivo} />
         )}
 
+        {gruposCampana.map((g) => (
+        <section key={g.brazo} className="mb-6" data-testid={`campana-${g.brazo || "unica"}`}>
+          {g.brazo && (
+            <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className="text-sm font-semibold text-zinc-200">
+                Campaña {g.brazo} (conceptos {g.desde}-{g.hasta})
+              </h3>
+              <span className="text-xs text-zinc-400">
+                {g.conceptos.length} de {g.hasta - g.desde + 1} conceptos
+              </span>
+            </div>
+          )}
+          {g.brazo && g.conceptos.length < g.hasta - g.desde + 1 && (
+            <p className="mb-2 rounded-lg border border-amber-800/50 bg-amber-950/20 px-3 py-2 text-xs text-amber-200">
+              {g.conceptos.length === 0
+                ? `Conceptos ${g.desde}-${g.hasta} pendientes: todavía no existen para este ángulo.`
+                : `Faltan ${g.hasta - g.desde + 1 - g.conceptos.length} conceptos de la Campaña ${g.brazo}.`}
+            </p>
+          )}
         <div className="grid gap-4 md:grid-cols-2">
-          {conceptosVisibles.map((c, i) => (
+          {g.conceptos.map((c, i) => (
             <Tarjeta key={c.creativo_id || i} className="space-y-3 border-zinc-800 bg-zinc-900/50">
               <div className="flex items-start justify-between gap-2 border-b border-zinc-800 pb-2">
                 <div>
@@ -404,7 +372,83 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
             </Tarjeta>
           ))}
         </div>
+        </section>
+        ))}
       </div>
+
+      {/* Alertas de Fatiga y Botón de Retorno a F1 */}
+      <Tarjeta className="border-amber-800/40 bg-amber-950/20 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h3 className="text-sm font-semibold text-amber-200">
+              Ciclo de Fatiga & Renovación
+            </h3>
+            <OrdenesDeRenovacion ordenes={(d.fatiga?.ordenes ?? []) as OrdenMotor[]} />
+            <Collapsible>
+              <CollapsibleTrigger className="mt-3 text-xs text-zinc-400 underline underline-offset-2 hover:text-zinc-200">
+                ¿Cómo funciona la renovación?
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <p className="mt-1 text-xs text-zinc-300">
+                  Si un ángulo ganador se cansa o el motor emite <span className="font-mono text-amber-300">RENOVAR</span>,
+                  se rotan los creativos en FASE 2 y el ángulo se mantiene. Si el ángulo ya no rinde, se vuelve a FASE 1
+                  con ángulos frescos.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+          <Button
+            onClick={() => setModalReingreso(true)}
+            variant="outline"
+            size="sm"
+          >
+            Nuevos ángulos para este producto →
+          </Button>
+        </div>
+
+        {/* Modal / Diálogo de Confirmación de Reingreso */}
+        {modalReingreso && (
+          <div className="mt-4 rounded-lg border border-zinc-700 bg-zinc-900 p-4 shadow-xl">
+            <h4 className="text-sm font-bold text-zinc-100">
+              ¿Confirmar retorno a FASE 1 para {clave}?
+            </h4>
+            <p className="mt-1 text-xs text-zinc-300">
+              El producto reingresará a FASE 1 para investigar y testear una nueva tanda de 6 ángulos. Se excluirán automáticamente los ángulos que ya corrieron:
+            </p>
+            <div className="mt-2 rounded bg-zinc-950 p-2 font-mono text-xs text-zinc-400">
+              {(d.fatiga?.angulos_probados ?? []).join(", ") || "Ningún ángulo previo registrado"}
+            </div>
+            <div className="mt-3">
+              <label className="text-xs text-zinc-400">Motivo del reingreso:</label>
+              <Input
+                type="text"
+                value={motivoReingreso}
+                onChange={(e) => setMotivoReingreso(e.target.value)}
+                className="mt-1"
+              />
+            </div>
+            <div className="mt-4 flex justify-end gap-2">
+              <Button
+                onClick={() => setModalReingreso(false)}
+                variant="outline"
+                size="sm"
+              >
+                Cancelar
+              </Button>
+              <Button
+                size="sm"
+                disabled={mutacionReingreso.isPending}
+                onClick={() => mutacionReingreso.mutate(motivoReingreso)}
+              >
+                {mutacionReingreso.isPending ? "Registrando..." : "Sí, volver a F1"}
+              </Button>
+            </div>
+          </div>
+        )}
+      </Tarjeta>
+
+      {/* Apagados al final, plegados y sin botones de acción. */}
+      <AngulosQueNoFuncionaron angulos={noFuncionaron} trabajoPendiente={trabajoPendiente} perfil={d} />
 
       {/* Lightbox — imagen de referencia ampliada */}
       {imagenAmpliada && (

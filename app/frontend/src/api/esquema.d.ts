@@ -917,6 +917,32 @@ export interface components {
             /** Bloqueo Fase */
             bloqueo_fase?: string | null;
             generar?: components["schemas"]["GenerarPrompts"] | null;
+            /** Cpa Acum Q */
+            cpa_acum_q?: number | null;
+            /** Cpa Ventana Q */
+            cpa_ventana_q?: number | null;
+            /** Cpa Be Q */
+            cpa_be_q?: number | null;
+            /**
+             * Semaforo Acum
+             * @default
+             */
+            semaforo_acum: string;
+            /**
+             * Semaforo Ventana
+             * @default
+             */
+            semaforo_ventana: string;
+            /**
+             * Orden Motor
+             * @default
+             */
+            orden_motor: string;
+            /**
+             * Checklist
+             * @default []
+             */
+            checklist: components["schemas"]["PasoChecklist"][];
         } & {
             [key: string]: unknown;
         };
@@ -1099,6 +1125,18 @@ export interface components {
             [key: string]: unknown;
         };
         /**
+         * CampanaFase2
+         * @description Una campaña de conceptos de FASE 2 (brazo A/B de `_PARAMETROS_PUBLICACION.csv`).
+         */
+        CampanaFase2: {
+            /** Brazo */
+            brazo: string;
+            /** Conceptos */
+            conceptos: number;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
          * CapaAnalitica
          * @description Estado del último `dbt build` (g07-cimientos T2). "FALLO" significa que el motor está
          *     leyendo los CSV directamente y la capa analitica quedó vieja — visible aca, no solo en stdout.
@@ -1260,6 +1298,16 @@ export interface components {
             referencia_url?: string | null;
             /** Comando Generar */
             comando_generar?: string | null;
+            /**
+             * Numero
+             * @default 0
+             */
+            numero: number;
+            /**
+             * Campana
+             * @default
+             */
+            campana: string;
         } & {
             [key: string]: unknown;
         };
@@ -1635,6 +1683,16 @@ export interface components {
              * @default 0
              */
             total_conceptos: number;
+            /**
+             * Conceptos Requeridos
+             * @default 0
+             */
+            conceptos_requeridos: number;
+            /**
+             * Campanas
+             * @default []
+             */
+            campanas: components["schemas"]["CampanaFase2"][];
             /**
              * Conceptos Generados
              * @default 0
@@ -2355,6 +2413,28 @@ export interface components {
              * @default
              */
             por_que: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * PasoChecklist
+         * @description Un paso del checklist de un ángulo en FASE 2 (`contratos._checklist_angulo`).
+         */
+        PasoChecklist: {
+            /** Clave */
+            clave: string;
+            /** Rotulo */
+            rotulo: string;
+            /**
+             * Cumplido
+             * @default false
+             */
+            cumplido: boolean;
+            /**
+             * Detalle
+             * @default
+             */
+            detalle: string;
         } & {
             [key: string]: unknown;
         };

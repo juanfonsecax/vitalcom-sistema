@@ -553,6 +553,22 @@ class GenerarPrompts(Base):
     aviso: str = ""
 
 
+class PasoChecklist(Base):
+    """Un paso del checklist de un ángulo en FASE 2 (`contratos._checklist_angulo`)."""
+
+    clave: str
+    rotulo: str
+    cumplido: bool = False
+    detalle: str = ""
+
+
+class CampanaFase2(Base):
+    """Una campaña de conceptos de FASE 2 (brazo A/B de `_PARAMETROS_PUBLICACION.csv`)."""
+
+    brazo: str
+    conceptos: int
+
+
 class AnguloFase2(Base):
     """Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`."""
@@ -579,6 +595,15 @@ class AnguloFase2(Base):
     ejecutable: bool | None = None
     bloqueo_fase: str | None = None
     generar: GenerarPrompts | None = None
+    # CPA contra break-even (`_ESTADO_ANGULOS.csv`); el semáforo lo decide el backend
+    # ("verde" | "ambar" | "rojo" | "" sin dato), la pantalla solo pinta.
+    cpa_acum_q: float | None = None
+    cpa_ventana_q: float | None = None
+    cpa_be_q: float | None = None
+    semaforo_acum: str = ""
+    semaforo_ventana: str = ""
+    orden_motor: str = ""
+    checklist: list[PasoChecklist] = []
 
 
 class ConceptoFase2(Base):
@@ -602,6 +627,8 @@ class ConceptoFase2(Base):
     prompt_origen: str = "pendiente"
     referencia_url: str | None = None
     comando_generar: str | None = None
+    numero: int = 0  # posición dentro de su ángulo (1-based)
+    campana: str = ""  # "A" | "B" según `_PARAMETROS_PUBLICACION.csv`
 
 
 class FatigaFase2(Base):
@@ -636,6 +663,8 @@ class Fase2Detalle(Base):
     angulos: list[AnguloFase2] = []
     conceptos: list[ConceptoFase2] = []
     total_conceptos: int = 0
+    conceptos_requeridos: int = 0
+    campanas: list[CampanaFase2] = []
     conceptos_generados: int = 0
     reingreso_activo: ReingresoActivo | None = None
     fatiga: FatigaFase2 | None = None

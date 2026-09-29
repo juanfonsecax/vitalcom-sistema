@@ -177,3 +177,93 @@ def test_no_se_rellenan_conceptos_que_nadie_va_a_generar(sistema_angulos: Path):
     # solo las filas reales de _DIM_CREATIVOS.csv; ningun relleno hasta 10
     assert [c["creativo_id"] for c in detalle["conceptos"]] == ["PX_F2_1", "PX_F2_2"]
     assert detalle["total_conceptos"] == 2
+
+
+PARAMETROS = (
+    "fase,brazo,anuncios_por_conjunto\n"
+    "1,UNICO,1\n"
+    "2,A,5\n"
+    "2,B,5\n"
+    "2,C,5\n"
+)
+
+
+@pytest.mark.parametrize(
+    ("cpa", "be", "esperado"),
+    [(50.0, 100.0, "verde"), (79.9, 100.0, "verde"), (80.0, 100.0, "ambar"),
+     (100.0, 100.0, "ambar"), (100.1, 100.0, "rojo"), (None, 100.0, ""), (50.0, None, "")],
+)
+def test_semaforo_del_cpa_contra_el_break_even(cpa, be, esperado):
+    from vitalcom_app import contratos
+
+    assert contratos._semaforo(cpa, be) == esperado
+
+
+def test_cpa_contra_be_sale_del_perfil_del_angulo(sistema_angulos: Path):
+    from vitalcom_app import contratos
+
+    (sistema_angulos / "PRODUCTOS" / "_ESTADO_ANGULOS.csv").write_text(
+        "producto_key,angulo_key,estado,ultimo_dia_gasto,dias_sin_gasto,cpa_acum_q,cpa_ventana_q,cpa_be_q,accion_motor\n"
+        "PX,ANG_RESISTENCIA,ESCALANDO,2026-09-25,0,38.5,90.0,105.89,NO SUBIR PRESUPUESTO: mantener\n",
+        encoding="utf-8",
+    )
+    a = _por_clave(contratos.fase2_detalle("PX"))["ANG_RESISTENCIA"]
+    assert (a["cpa_acum_q"], a["cpa_ventana_q"], a["cpa_be_q"]) == (38.5, 90.0, 105.89)
+    assert (a["semaforo_acum"], a["semaforo_ventana"]) == ("verde", "ambar")
+    assert a["orden_motor"].startswith("NO SUBIR PRESUPUESTO")
+
+
+def test_checklist_y_campanas_salen_de_la_estructura_de_fase2(sistema_angulos: Path):
+    from vitalcom_app import contratos
+    from vitalcom_app.modelos import Fase2Detalle
+
+    (sistema_angulos / "PRODUCTOS" / "_PARAMETROS_PUBLICACION.csv").write_text(PARAMETROS, encoding="utf-8")
+    (sistema_angulos / "PRODUCTOS" / "_DIM_CREATIVOS.csv").write_text(
+        "producto_key,creativo_id,archivo,angulo_key,canonico_id,rol_embudo,estado,ad_id,notas\n"
+        + "".join(f"PX,PX_{i},PX_{i}.png,ANG_RESISTENCIA,CN0{i},MOFU,GENERADO,{'999' if i < 3 else ''},\n"
+                  for i in range(1, 8)),
+        encoding="utf-8",
+    )
+    detalle = contratos.fase2_detalle("PX")
+    assert detalle["conceptos_requeridos"] == 10
+    assert detalle["campanas"] == [{"brazo": "A", "conceptos": 5}, {"brazo": "B", "conceptos": 5}]
+    assert [c["campana"] for c in detalle["conceptos"]] == ["A"] * 5 + ["B"] * 2
+    assert [c["numero"] for c in detalle["conceptos"]] == list(range(1, 8))
+
+    pasos = {p["clave"]: p for p in _por_clave(detalle)["ANG_RESISTENCIA"]["checklist"]}
+    assert pasos["generar"]["cumplido"] is False
+    assert pasos["generar"]["detalle"] == "7 de 10 (Campaña A: 5 de 5 · Campaña B: 2 de 5)"
+    assert pasos["publicar"]["cumplido"] is False
+    assert pasos["publicar"]["detalle"] == "2 de 10 con anuncio en Meta"
+    assert pasos["lanzar"]["cumplido"] is False
+    # un perdedor no lleva checklist
+    assert _por_clave(detalle)["ANG_APAGADO"].get("checklist") in (None, [])
+    Fase2Detalle(**detalle)
+
+
+def test_checklist_tildado_cuando_todo_esta_generado_publicado_y_lanzado(sistema_angulos: Path):
+    from vitalcom_app import contratos
+
+    (sistema_angulos / "PRODUCTOS" / "_PARAMETROS_PUBLICACION.csv").write_text(PARAMETROS, encoding="utf-8")
+    (sistema_angulos / "PRODUCTOS" / "_DIM_CREATIVOS.csv").write_text(
+        "producto_key,creativo_id,archivo,angulo_key,canonico_id,rol_embudo,estado,ad_id,notas\n"
+        + "".join(f"PX,PX_{i},PX_{i}.png,ANG_RESISTENCIA,CN0{i},MOFU,PUBLICADO,{i}00,\n" for i in range(1, 11)),
+        encoding="utf-8",
+    )
+    (sistema_angulos / "PRODUCTOS" / "_EVENTOS.csv").write_text(
+        "fecha,producto_key,cuenta_alias,campana_clave,conjunto_meta,evento,valor_antes,valor_despues,motivo,fuente_decision\n"
+        "2026-09-30,PX,GTR7,PX,*,LANZAMIENTO,,6.00,FASE 2 conceptos,ETAPA-6\n"
+        "2026-09-01,OTRO,GTR7,OTRO,*,LANZAMIENTO,,6.00,FASE 2 conceptos,ETAPA-6\n",
+        encoding="utf-8",
+    )
+    pasos = _por_clave(contratos.fase2_detalle("PX"))["ANG_RESISTENCIA"]["checklist"]
+    assert [p["cumplido"] for p in pasos] == [True, True, True]
+
+
+def test_sin_parametros_no_se_inventa_la_estructura(sistema_angulos: Path):
+    from vitalcom_app import contratos
+
+    detalle = contratos.fase2_detalle("PX")
+    assert detalle["conceptos_requeridos"] == 0
+    assert detalle["campanas"] == []
+    assert all(c["campana"] == "" for c in detalle["conceptos"])

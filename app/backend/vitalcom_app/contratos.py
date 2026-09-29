@@ -587,6 +587,39 @@ def _entero_o_none(texto: Any) -> int | None:
         return None
 
 
+def _decimal_o_none(texto: Any) -> float | None:
+    try:
+        return float(str(texto).strip())
+    except (TypeError, ValueError):
+        return None
+
+
+def _semaforo(valor: float | None, referencia: float | None) -> str:
+    """Color del costo por venta contra el break-even. La regla (verde < 0.8 x BE <= ambar <= BE < rojo)
+    es de `Ads/_TOOLS/semaforo_be.py`: la app no compara ni calcula."""
+    tools = str(Path(__file__).resolve().parents[3] / "Ads" / "_TOOLS")
+    if tools not in sys.path:
+        sys.path.insert(0, tools)
+    from semaforo_be import semaforo  # noqa: E402
+
+    return semaforo(valor, referencia)
+
+
+def _cpa_contra_be(perfil: dict[str, str]) -> dict[str, Any]:
+    """CPA acumulado y de la ventana contra el break-even, tal cual salen de `_ESTADO_ANGULOS.csv`."""
+    acum = _decimal_o_none(perfil.get("cpa_acum_q"))
+    ventana = _decimal_o_none(perfil.get("cpa_ventana_q"))
+    be = _decimal_o_none(perfil.get("cpa_be_q"))
+    return {
+        "cpa_acum_q": acum,
+        "cpa_ventana_q": ventana,
+        "cpa_be_q": be,
+        "semaforo_acum": _semaforo(acum, be),
+        "semaforo_ventana": _semaforo(ventana, be),
+        "orden_motor": (perfil.get("accion_motor") or "").strip(),
+    }
+
+
 def _es_apagado(estado_angulo: str) -> bool:
     return estado_angulo.startswith("APAGADO") or estado_angulo == "DORMIDO"
 
@@ -641,11 +674,76 @@ def angulos_de_fase2(producto_key: str, ganadores: list[str]) -> list[dict[str, 
             "estado_angulo": estado_angulo,
             "dias_sin_gasto": dias_sin_gasto,
             "ultimo_dia_gasto": perfil.get("ultimo_dia_gasto", ""),
+            **_cpa_contra_be(perfil),
         }
         for campo in CAMPOS_VEREDICTO:
             fila[campo] = celda.get(campo)
         salida.append(fila)
     return salida
+
+
+def _estructura_fase2() -> list[tuple[str, int]]:
+    """Campañas de conceptos de FASE 2 en orden: (brazo, anuncios por conjunto) de los brazos A y B de
+    `_PARAMETROS_PUBLICACION.csv` (el brazo C repite los mismos dos grupos, no suma conceptos)."""
+    try:
+        filas = _leer_csv(("PRODUCTOS", "_PARAMETROS_PUBLICACION.csv"))
+    except Exception:
+        return []
+    salida: list[tuple[str, int]] = []
+    for brazo in ("A", "B"):
+        for f in filas:
+            if f.get("fase") == "2" and f.get("brazo") == brazo:
+                n = _entero_o_none(f.get("anuncios_por_conjunto"))
+                if n:
+                    salida.append((brazo, n))
+                break
+    return salida
+
+
+def _campana_de(numero: int, estructura: list[tuple[str, int]]) -> str:
+    """Campaña (A/B) del concepto nº `numero` (1-based) dentro de su ángulo."""
+    tope = 0
+    for brazo, n in estructura:
+        tope += n
+        if numero <= tope:
+            return brazo
+    return ""
+
+
+_ESTADOS_GENERADO = ("GENERADO", "PUBLICADO")
+
+
+def _lanzado_fase2(producto_key: str) -> bool:
+    """Hay un LANZAMIENTO registrado en `_EVENTOS.csv` cuyo motivo dice FASE 2."""
+    try:
+        eventos = _leer_csv(("PRODUCTOS", "_EVENTOS.csv"))
+    except Exception:
+        return False
+    return any(
+        e.get("producto_key") == producto_key
+        and e.get("evento") in ("LANZAMIENTO", "LANZAMIENTO_TEST")
+        and "FASE 2" in (e.get("motivo") or "").upper()
+        for e in eventos
+    )
+
+
+def _checklist_angulo(conceptos: list[dict[str, Any]], estructura: list[tuple[str, int]],
+                      requeridos: int, lanzado: bool) -> list[dict[str, Any]]:
+    """Qué falta para que el ángulo termine su FASE 2, derivado de los conceptos y eventos ya leídos."""
+    generados = [c for c in conceptos if c.get("estado") in _ESTADOS_GENERADO]
+    por_campana = {b: sum(1 for c in generados if c.get("campana") == b) for b, _ in estructura}
+    desglose = " · ".join(f"Campaña {b}: {por_campana[b]} de {n}" for b, n in estructura)
+    publicados = [c for c in conceptos if c.get("ad_id")]
+    hecho_gen = requeridos > 0 and len(generados) >= requeridos
+    hecho_pub = requeridos > 0 and len(publicados) >= requeridos
+    return [
+        {"clave": "generar", "rotulo": "Conceptos generados", "cumplido": hecho_gen,
+         "detalle": f"{len(generados)} de {requeridos}" + (f" ({desglose})" if desglose else "")},
+        {"clave": "publicar", "rotulo": "Publicados en Meta", "cumplido": hecho_pub,
+         "detalle": f"{len(publicados)} de {requeridos} con anuncio en Meta"},
+        {"clave": "lanzar", "rotulo": "Lanzado", "cumplido": hecho_pub and lanzado,
+         "detalle": "LANZAMIENTO de FASE 2 registrado" if lanzado else "Sin LANZAMIENTO de FASE 2 registrado"},
+    ]
 
 
 ACCION_ARMAR_PROMPTS = "producto.armar_prompts_fase2"
@@ -753,8 +851,19 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             **paquete,
         })
 
+    estructura = _estructura_fase2()
+    requeridos = sum(n for _, n in estructura)
+    vistos: dict[str, int] = {}
+    for c in conceptos:
+        vistos[c["angulo_key"]] = vistos.get(c["angulo_key"], 0) + 1
+        c["numero"] = vistos[c["angulo_key"]]
+        c["campana"] = _campana_de(c["numero"], estructura)
+    lanzado = _lanzado_fase2(producto_key)
+
     for angulo in angulos:
         if angulo["rol"] in ("ganador_activo", "ganador_en_fila"):
+            angulo["checklist"] = _checklist_angulo(
+                [c for c in conceptos if c["angulo_key"] == angulo["angulo_key"]], estructura, requeridos, lanzado)
             hay_pendientes = any(c["angulo_key"] == angulo["angulo_key"] and c["prompt_origen"] == "pendiente"
                                  for c in conceptos)
             angulo["generar"] = _generar_prompts(producto_key, angulo, hay_pendientes)
@@ -769,6 +878,8 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         "angulos": angulos,
         "conceptos": conceptos,
         "total_conceptos": len(conceptos),
+        "conceptos_requeridos": requeridos,
+        "campanas": [{"brazo": b, "conceptos": n} for b, n in estructura],
         "conceptos_generados": sum(1 for c in conceptos if c.get("estado") in ("GENERADO", "PUBLICADO")),
         "reingreso_activo": flujo_data.get("reingreso_activo"),
         "fatiga": {

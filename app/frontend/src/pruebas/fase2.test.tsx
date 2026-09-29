@@ -150,6 +150,11 @@ const FASE2_MOCK = {
   nodo_actual: "F2.etapa-11",
   angulo_ganador: "ACCESIBILIDAD_MEDICO",
   conceptos_generados: 10,
+  conceptos_requeridos: 10,
+  campanas: [
+    { brazo: "A", conceptos: 5 },
+    { brazo: "B", conceptos: 5 },
+  ],
   angulos: [
     {
       ...ANGULO_BASE,
@@ -163,6 +168,17 @@ const FASE2_MOCK = {
       cierre_pct: 18.2,
       ic: [30, 41.5, 60],
       accion_sugerida: "NO SUBIR PRESUPUESTO todavía",
+      cpa_acum_q: 38.5,
+      cpa_ventana_q: 96,
+      cpa_be_q: 105.89,
+      semaforo_acum: "verde",
+      semaforo_ventana: "ambar",
+      orden_motor: "NO SUBIR PRESUPUESTO (TINNIDROP en F2): mantener hasta cerrar la fase.",
+      checklist: [
+        { clave: "generar", rotulo: "Conceptos generados", cumplido: false, detalle: "2 de 10 (Campaña A: 2 de 5 · Campaña B: 0 de 5)" },
+        { clave: "publicar", rotulo: "Publicados en Meta", cumplido: true, detalle: "10 de 10 con anuncio en Meta" },
+        { clave: "lanzar", rotulo: "Lanzado", cumplido: false, detalle: "Sin LANZAMIENTO de FASE 2 registrado" },
+      ],
       generar: GENERAR_LISTO,
     },
     {
@@ -221,6 +237,8 @@ const FASE2_MOCK = {
       archivo: "TINNIDROP_F2_C01.png",
       archivo_existe: true,
       estado: "GENERADO",
+      numero: 1,
+      campana: "A",
     },
     {
       creativo_id: "TINNIDROP_F2_C02",
@@ -237,6 +255,8 @@ const FASE2_MOCK = {
       archivo: "TINNIDROP_F2_C02.png",
       archivo_existe: false,
       estado: "PENDIENTE_GENERAR",
+      numero: 2,
+      campana: "A",
     },
   ],
   fatiga: {
@@ -301,6 +321,10 @@ test("los ángulos que no funcionaron llevan la etiqueta que dicen los datos", a
   renderizar("TINNIDROP");
 
   const lista = await screen.findByTestId("angulos-no-funcionaron");
+  // plegados por defecto: se ve el conteo, no las filas
+  expect(lista.textContent).toContain("Ángulos que no funcionaron (3)");
+  expect(lista.textContent).not.toContain("ME_DIJERON_NO_CURA");
+  fireEvent.click(screen.getByText(/Ángulos que no funcionaron \(3\)/));
   expect(lista.textContent).toContain("ME_DIJERON_NO_CURA");
   expect(lista.textContent).toContain("ya apagado (40 días sin gastar)");
   expect(lista.textContent).toContain("MANCHAS_OSCURAS");
@@ -598,4 +622,73 @@ test("un ángulo perdedor con filas viejas de conceptos no es pestaña de la gal
   expect(screen.queryByText("Pieza vieja de FASE 1")).toBeNull();
   // el perdedor sigue en su lista, pero no como pestaña de la galería
   expect(screen.queryAllByRole("tab").filter((t) => t.textContent?.includes("ME_DIJERON_NO_CURA"))).toHaveLength(0);
+});
+
+test("«Qué hacer ahora»: el checklist del #1 marca los pasos cumplidos y deja los pendientes", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  const bloque = await screen.findByTestId("que-hacer-ahora");
+  expect(bloque.textContent).toContain("Qué hacer ahora");
+  const pasos = Array.from(bloque.querySelectorAll('[data-testid="checklist-angulo"] li'));
+  expect(pasos.map((p) => [p.getAttribute("data-cumplido"), p.textContent])).toEqual([
+    ["no", expect.stringContaining("Conceptos generados2 de 10 (Campaña A: 2 de 5 · Campaña B: 0 de 5)")],
+    ["si", expect.stringContaining("Publicados en Meta")],
+    ["no", expect.stringContaining("Sin LANZAMIENTO de FASE 2 registrado")],
+  ]);
+});
+
+test("el costo por venta se pinta contra el punto de equilibrio con el semáforo del backend", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  const acum = (await screen.findAllByTestId("cpa-acum"))[0];
+  const ventana = screen.getAllByTestId("cpa-ventana")[0];
+  expect(acum.textContent).toContain("Q38.50");
+  expect(acum.getAttribute("data-semaforo")).toBe("verde");
+  expect(acum.className).toContain("emerald");
+  expect(ventana.textContent).toContain("Q96.00");
+  expect(ventana.getAttribute("data-semaforo")).toBe("ambar");
+  expect(ventana.className).toContain("amber");
+  expect(screen.getAllByTestId("cpa-vs-be")[0].textContent).toContain("Q105.89");
+  expect(screen.getAllByTestId("orden-motor")[0].textContent).toContain("NO SUBIR PRESUPUESTO (TINNIDROP en F2)");
+});
+
+test("rojo cuando el backend dice rojo", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    angulos: FASE2_MOCK.angulos.map((a) =>
+      a.angulo_key === "ACCESIBILIDAD_MEDICO" ? { ...a, cpa_acum_q: 130, semaforo_acum: "rojo" } : a,
+    ),
+  };
+  renderizar("TINNIDROP");
+  const acum = (await screen.findAllByTestId("cpa-acum"))[0];
+  expect(acum.className).toContain("rose");
+});
+
+test("la galería rotula cada campaña y dice honestamente cuáles conceptos faltan", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  const a = await screen.findByTestId("campana-A");
+  expect(a.textContent).toContain("Campaña A (conceptos 1-5)");
+  expect(a.textContent).toContain("2 de 5 conceptos");
+  expect(a.textContent).toContain("Faltan 3 conceptos de la Campaña A");
+  const b = screen.getByTestId("campana-B");
+  expect(b.textContent).toContain("Campaña B (conceptos 6-10)");
+  expect(b.textContent).toContain("Conceptos 6-10 pendientes");
+  // los conceptos existentes cuelgan de la campaña A
+  expect(a.textContent).toContain("Before / After Split");
+  expect(b.textContent).not.toContain("Before / After Split");
+});
+
+test("los ángulos apagados quedan plegados al final y sin botones de acción", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  const apagados = await screen.findByTestId("angulos-no-funcionaron");
+  expect(apagados.querySelectorAll("button").length).toBe(1); // solo el plegable
+  expect(apagados.textContent).not.toContain(BOTON_GENERAR);
+  const galeria = screen.getByTestId("campana-A");
+  expect(galeria.compareDocumentPosition(apagados) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });

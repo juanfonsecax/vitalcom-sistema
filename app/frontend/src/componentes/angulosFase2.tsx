@@ -45,6 +45,69 @@ function CifrasClave({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
   );
 }
 
+// El backend decide el color (`semaforo_*`, regla en contratos._semaforo); acá solo se pinta.
+const CLASE_SEMAFORO: Record<string, string> = {
+  verde: "border-emerald-700 bg-emerald-950/50 text-emerald-200",
+  ambar: "border-amber-700 bg-amber-950/50 text-amber-200",
+  rojo: "border-rose-700 bg-rose-950/50 text-rose-200",
+};
+
+function CifraBE({ rotulo, valor, semaforo, id }: { rotulo: string; valor: string; semaforo: string; id: string }) {
+  return (
+    <div
+      data-testid={id}
+      data-semaforo={semaforo}
+      className={`rounded-lg border px-3 py-2 ${CLASE_SEMAFORO[semaforo] ?? "border-zinc-700 bg-zinc-900 text-zinc-300"}`}
+    >
+      <span className="block text-[10px] font-medium uppercase tracking-wide opacity-80">{rotulo}</span>
+      <span className="block text-lg font-bold tabular-nums">{valor}</span>
+    </div>
+  );
+}
+
+/** Costo por venta acumulado y de los últimos días contra el punto de equilibrio, y la orden del motor. */
+function CpaContraBE({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
+  return (
+    <div className="space-y-2" data-testid="cpa-vs-be">
+      <div className="grid grid-cols-3 gap-2">
+        <CifraBE id="cpa-acum" rotulo="Costo por venta (acumulado)" valor={formatearDinero(a.cpa_acum_q, perfil)} semaforo={a.semaforo_acum} />
+        <CifraBE id="cpa-ventana" rotulo="Costo por venta (últimos días)" valor={formatearDinero(a.cpa_ventana_q, perfil)} semaforo={a.semaforo_ventana} />
+        <div className="rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-300">
+          <span className="block text-[10px] font-medium uppercase tracking-wide opacity-80">Punto de equilibrio</span>
+          <span className="block text-lg font-bold tabular-nums">{formatearDinero(a.cpa_be_q, perfil)}</span>
+        </div>
+      </div>
+      {(a.orden_motor || a.accion_sugerida) && (
+        <p className="line-clamp-2 text-xs text-zinc-300" data-testid="orden-motor" title={a.orden_motor || a.accion_sugerida || ""}>
+          <span className="font-semibold text-zinc-200">Orden del motor: </span>
+          {a.orden_motor || a.accion_sugerida}
+        </p>
+      )}
+    </div>
+  );
+}
+
+/** Pasos que faltan para cerrar la Fase 2 del ángulo; los cumplidos van tildados (los decide el backend). */
+function ChecklistAngulo({ a }: { a: AnguloFase2 }) {
+  const pasos = a.checklist ?? [];
+  if (pasos.length === 0) return null;
+  return (
+    <ul className="space-y-1.5" data-testid="checklist-angulo">
+      {pasos.map((p) => (
+        <li key={p.clave} data-cumplido={p.cumplido ? "si" : "no"} className="flex items-start gap-2 text-sm">
+          <span aria-hidden className={p.cumplido ? "text-emerald-400" : "text-zinc-500"}>
+            {p.cumplido ? "☑" : "☐"}
+          </span>
+          <span className={p.cumplido ? "text-zinc-400 line-through" : "text-zinc-100"}>
+            {p.rotulo}
+            {p.detalle && <span className="ml-2 text-xs text-zinc-400 no-underline">{p.detalle}</span>}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function DetalleTecnico({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
   const filas: [string, string][] = [
     ["Veredicto del motor", a.estado ?? "sin veredicto"],
@@ -115,6 +178,10 @@ export function AnguloEnTesteoAhora({
       <div className="mt-4">
         <CifrasClave a={angulo} perfil={perfil} />
       </div>
+      <div className="mt-4 space-y-4">
+        <CpaContraBE a={angulo} perfil={perfil} />
+        <ChecklistAngulo a={angulo} />
+      </div>
       <div className="mt-3 space-y-2">
         <DetalleTecnico a={angulo} perfil={perfil} />
         {paso && <p className="text-[11px] text-zinc-500">Paso del flujo: <span className="font-mono">{paso}</span></p>}
@@ -138,6 +205,8 @@ export function AngulosEnFila({ angulos, perfil }: { angulos: AnguloFase2[]; per
               <Chip tono="aviso">#{a.posicion} en la fila</Chip>
             </div>
             <CifrasClave a={a} perfil={perfil} />
+            <CpaContraBE a={a} perfil={perfil} />
+            <ChecklistAngulo a={a} />
             <p className="text-xs text-amber-300">
               Entra a su propia Fase 2 cuando el #1 cierre la suya, unos 3 días después.
             </p>
@@ -162,8 +231,12 @@ export function AngulosQueNoFuncionaron({
   if (angulos.length === 0) return null;
   return (
     <section className="space-y-2" data-testid="angulos-no-funcionaron">
-      <h3 className="text-sm font-semibold text-zinc-200">Ángulos que no funcionaron</h3>
-      <ul className="divide-y divide-zinc-800 rounded-xl border border-zinc-800 bg-zinc-900/30">
+      <Collapsible>
+      <CollapsibleTrigger className="text-sm font-semibold text-zinc-200 hover:text-zinc-100">
+        Ángulos que no funcionaron ({angulos.length}) ▾
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+      <ul className="mt-2 divide-y divide-zinc-800 rounded-xl border border-zinc-800 bg-zinc-900/30">
         {angulos.map((a) => (
           <li key={a.angulo_key} className="space-y-1 px-4 py-2.5">
             <div className="flex flex-wrap items-center justify-between gap-2">
@@ -192,6 +265,8 @@ export function AngulosQueNoFuncionaron({
           </li>
         ))}
       </ul>
+      </CollapsibleContent>
+      </Collapsible>
     </section>
   );
 }
