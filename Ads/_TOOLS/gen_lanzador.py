@@ -29,7 +29,7 @@ USO
     python Ads/_TOOLS/gen_lanzador.py
     python Ads/_TOOLS/gen_lanzador.py --json    # solo el JSON, sin renderizar
 """
-import io, os, sys, csv, json, math, datetime
+import io, os, sys, csv, json, math, re, datetime
 from collections import defaultdict
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -48,7 +48,6 @@ HOY = datetime.date.today()
 # ── CONSTANTES DE DOCTRINA (con su dueno al lado; no se tocan aca) ─────────────
 PISO_PRESUPUESTO = 2.99      # CALENDARIO_ESCALADO seccion 1.5
 TECHO_PRESUPUESTO = 3.95     # idem
-MULT_CONVERSACIONES = 7      # 50 eventos de optimizacion en 7 dias
 FACTOR_ENTREGA = 0.8         # idem, "factor de entrega real"
 PRESUPUESTO_E2 = 5.98        # ETAPA 2 del testeo: los sobrevivientes al doble
 MAX_CONJUNTOS_CON_PRECIO = 3 # ETAPA-6, regla de precio en creativo (ideal 2)
@@ -160,26 +159,9 @@ def usd_por_conversacion_portafolio(hechos):
     return round(tot_s / tot_m, 3) if tot_m else 0.478  # 0.478 = medicion jul-2026
 
 
-def presupuesto_conjunto(usd_conv):
-    """CALENDARIO_ESCALADO 1.5: 7 x (costo por conversacion), piso 2.99, techo 3.95.
-
-    ALCANCE (1.5, actualizado 02-sep): 'Todo lo de esta seccion gobierna la FASE 1 ·
-    ANGULOS'. La FASE 2 tiene su propio presupuesto (fijo, ver presupuesto_fase_csv) —
-    no esta formula. Nunca llamar esto para fase != 1 (ver presupuesto_por_fase)."""
-    if not usd_conv:
-        return PISO_PRESUPUESTO, "piso (sin historial de conversaciones)"
-    crudo = MULT_CONVERSACIONES * usd_conv
-    if crudo < PISO_PRESUPUESTO:
-        return PISO_PRESUPUESTO, "piso · 7 × $%.3f/conv = $%.2f, por debajo del piso" % (usd_conv, crudo)
-    if crudo > TECHO_PRESUPUESTO:
-        return TECHO_PRESUPUESTO, "techo · 7 × $%.3f/conv = $%.2f, por encima del techo" % (usd_conv, crudo)
-    return round(crudo, 2), "7 × $%.3f/conv observado" % usd_conv
-
-
 def presupuesto_fase_csv(fase, brazo):
-    """FASE 2 y 4: el presupuesto por conjunto/campana NO se autoajusta — es fijo y vive
-    en _PARAMETROS_PUBLICACION.csv (el mismo dueno que ya usa gen_publicacion.py para
-    publicar de verdad). Sin fila VIGENTE para fase+brazo, no inventa: devuelve None."""
+    """Todas las fases leen su fila VIGENTE en _PARAMETROS_PUBLICACION.csv; sin fila,
+    devuelve None y no inventa."""
     for r in leer_csv(PARAMETROS_PUBLICACION):
         if r.get("fase") == str(fase) and r.get("brazo") == brazo and r.get("estado") == "VIGENTE":
             return num(r.get("daily_budget_usd")), (
@@ -188,16 +170,29 @@ def presupuesto_fase_csv(fase, brazo):
 
 
 def presupuesto_por_fase(fase, usd_conv, brazo="A"):
-    """El presupuesto por conjunto SEGUN LA FASE — antes de este arreglo (G0.5 punto 4.4,
-    15-sep-2026) derivar() llamaba presupuesto_conjunto(usd_conv) para las tres fases por
-    igual, y esa formula esta ESCRITA para FASE 1 (piso $2.99, techo $3.95): en FASE 2 el
-    dato real es $6.00/conjunto (_PARAMETROS_PUBLICACION.csv) y el lanzador dictaba casi
-    la mitad. FASE 1 sigue usando la formula autoajustable (es su doctrina); FASE 2 y 4
-    leen el valor fijo de su fila en el CSV — 'A' es el brazo de referencia en FASE 2,
-    donde los tres brazos (A/B/C) valen lo mismo por diseño."""
-    if fase == 1:
-        return presupuesto_conjunto(usd_conv)
-    return presupuesto_fase_csv(fase, brazo if fase == 2 else "UNICO")
+    """El presupuesto por conjunto sale de la fila VIGENTE de la fase en
+    _PARAMETROS_PUBLICACION.csv; sin fila, devuelve None y no inventa. `usd_conv`
+    ya no se usa. FASE 2 usa el brazo dado; cualquier otra fase, "UNICO"."""
+    if fase == 2:
+        return presupuesto_fase_csv(2, brazo)
+    return presupuesto_fase_csv(fase, "UNICO")
+
+
+def monto_cuenta(usd, moneda, tasa):
+    """(valor, texto) de un monto en USD expresado en la moneda de la cuenta
+    publicitaria (_DIM_PRODUCTOS.moneda).
+    USD   -> (usd, "US$2.99")            dos decimales
+    otra  -> (round(usd * tasa), "$9.426 COP")   entero, punto de miles, codigo de moneda
+    (None, None) si falta la moneda, o si no es USD y falta la tasa."""
+    moneda = (moneda or "").strip().upper()
+    if not moneda:
+        return None, None
+    if moneda == "USD":
+        return usd, "US$%.2f" % usd
+    if not tasa:
+        return None, None
+    entero = int(round(usd * tasa))
+    return entero, "$%s %s" % (format(entero, ",").replace(",", "."), moneda)
 
 
 def banda_edad(avatar_edad):
@@ -229,6 +224,30 @@ def destino_actual():
     return "BOT_V%d" % n
 
 
+def lanzamiento_registrado(pk, fase):
+    """(fecha "YYYY-MM-DD", campana_clave) del ÚLTIMO evento LANZAMIENTO del producto
+    para esa fase en _EVENTOS.csv, o None. Un evento es de la fase si su campana_clave,
+    en mayúsculas, contiene alguno de los tokens de flujo.TOKEN_FASE para esa fase."""
+    sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
+    import flujo
+    toks = flujo.TOKEN_FASE.get(str(fase), ())
+    mejor = None
+    for r in leer_csv(EVENTOS):
+        if (r.get("producto_key") or "").strip() != pk:
+            continue
+        if (r.get("evento") or "").strip() != "LANZAMIENTO":
+            continue
+        fecha = (r.get("fecha") or "").strip()
+        if not re.match(r"^\d{4}-\d{2}-\d{2}$", fecha):
+            continue
+        campana = (r.get("campana_clave") or "").strip()
+        if not any(t in campana.upper() for t in toks):
+            continue
+        if mejor is None or fecha > mejor[0]:
+            mejor = (fecha, campana)
+    return mejor
+
+
 def firma(producto_key, angulo_key, concepto, canonico, nivel, oferta, destino):
     """La firma NO se reimplementa aca: la construye su dueno, Ads/_TOOLS/firma.py."""
     sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
@@ -244,10 +263,25 @@ def firma(producto_key, angulo_key, concepto, canonico, nivel, oferta, destino):
 # 2 · EL PLAN DERIVADO: nombres, plata, fechas, gates
 # ─────────────────────────────────────────────────────────────────────────────
 
+CONFIG_META_FIJA = (
+    "Ubicación: %(pais)s · Sin intereses",
+    "Advantage+ Audience: OFF (si no, Meta ignora la banda de edad)",
+    "Optimización: Maximizar CONVERSACIONES — revisarlo justo antes de publicar: Meta lo revierte a clics con cada duplicado",
+    "Destino: WhatsApp (el número conectado a la FanPage, nunca Messenger) · CTA: Enviar mensaje",
+    "DESMARCAR «anuncios multianunciantes»",
+    "DESMARCAR «incluir personas de WhatsApp cuya edad se desconoce»",
+    "Anuncios A y B de una misma pieza: el B es copia exacta del A (misma imagen, mismo copy)",
+    "Texto principal: cargar todos los TEXTOS como opciones · Títulos: todos · Descripción: la indicada",
+    "Cero «- Copia» en ningún nombre: renombrar antes de publicar",
+    "NO aceptar recomendaciones de Meta",
+)
+
+
 def derivar(prod, plan, hechos, usd_conv_portafolio):
     pk = prod["producto_key"]
     cuenta = (prod.get("cuenta_alias") or "").strip()
     cuenta_ok = bool(cuenta) and cuenta.upper() not in ("PENDIENTE", "")
+    moneda = (prod["moneda"] or "").strip().upper()
     fase = int(plan.get("fase") or 1)
     est = ESTRUCTURA[fase]
 
@@ -265,6 +299,9 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
     dias_pd = (be_usd / presup / FACTOR_ENTREGA) if (be_usd and presup) else None
 
     lanzamiento = HOY + datetime.timedelta(days=1)
+    reg = lanzamiento_registrado(pk, fase)
+    if reg:
+        lanzamiento = datetime.datetime.strptime(reg[0], "%Y-%m-%d").date()
     ymd = lanzamiento.strftime("%Y%m%d")
 
     # ── bloqueantes: lo que impide publicar ──────────────────────────────────
@@ -279,6 +316,12 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
     if not (prod.get("page_id") or (plan.get("pagina") or {}).get("page_id")):
         bloqueantes.append({"que": "page_id de la FanPage sin asignar",
                             "quien": "etapa-2 · _DIM_PRODUCTOS.csv columna page_id"})
+    if not moneda:
+        bloqueantes.append({"que": "moneda de la cuenta publicitaria sin declarar",
+                            "quien": "operador · _DIM_PRODUCTOS.csv columna moneda"})
+    if moneda and moneda != "USD" and not tasa:
+        bloqueantes.append({"que": "tasa sin declarar: no se puede dar el presupuesto en %s" % moneda,
+                            "quien": "operador · _DIM_PRODUCTOS.csv columna tasa"})
     if not be_q:
         bloqueantes.append({"que": "break-even sin calcular",
                             "quien": "etapa-1 · Ads/_TOOLS/costear.py"})
@@ -290,6 +333,15 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
 
     prod_corto = corto(prod)
     cta = cuenta if cuenta_ok else "[CUENTA]"
+
+    sys.path.insert(0, os.path.join(BASE, "Ads", "_TOOLS"))
+    import mercado as _mercado
+    try:
+        pais = _mercado.perfil_de_fila(prod)["pais"]
+    except _mercado.MercadoError:
+        bloqueantes.append({"que": "mercado del producto sin declarar o inexistente",
+                            "quien": "operador · _DIM_PRODUCTOS.csv columna mercado"})
+        pais = "[PAÍS]"
 
     if fase == 1:
         campanas = [{"rol": "única", "nombre": "%s_%s_TEST_%s" % (cta, prod_corto, ymd),
@@ -323,6 +375,7 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
     cc = plan.get("concepto_control") or {}
     oferta = plan.get("oferta") or {}
     conjuntos = []
+    presup_cuenta, presup_cuenta_texto = monto_cuenta(presup, moneda, tasa)
     for c in plan.get("conjuntos", []):
         ak = c.get("angulo_key") or "SIN-ANGULO"
         banda, banda_por_que = banda_edad(c.get("avatar_edad"))
@@ -341,6 +394,8 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
             "nombre": nombre,
             "presupuesto_usd": presup,
             "presupuesto_centavos": int(round(presup * 100)),
+            "presupuesto_cuenta": presup_cuenta,
+            "presupuesto_cuenta_texto": presup_cuenta_texto,
             "banda_edad": banda,
             "banda_por_que": banda_por_que,
             "genero": c.get("avatar_genero") or "MIXTO",
@@ -415,14 +470,20 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
             "etapa2_usd": PRESUPUESTO_E2,
             "total_dia_usd": round(presup * len(conjuntos), 2),
             "dias_a_pd": round(dias_pd, 1) if dias_pd else None,
+            "moneda_cuenta": moneda or None,
+            "por_conjunto_cuenta_texto": presup_cuenta_texto,
+            "total_dia_cuenta_texto": monto_cuenta(presup * len(conjuntos), moneda, tasa)[1],
         },
         "historial": h or None,
         "oferta": oferta,
         "concepto_control": cc,
         "lanzamiento": {"fecha": lanzamiento.isoformat(),
-                        "legible": lanzamiento.strftime("%d-%b-%Y").lower(), "hora": "4:00 AM"},
+                        "legible": lanzamiento.strftime("%d-%b-%Y").lower(), "hora": "4:00 AM",
+                        "registrado": bool(reg),
+                        "campana_registrada": reg[1] if reg else None},
         "campanas": campanas,
         "conjuntos": conjuntos,
+        "config_meta": [linea % {"pais": pais} for linea in CONFIG_META_FIJA],
         "calendario": calendario,
         "bloqueantes": bloqueantes,
         "faltantes": plan.get("_faltantes", []),
