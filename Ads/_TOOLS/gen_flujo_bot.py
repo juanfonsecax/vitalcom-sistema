@@ -543,6 +543,86 @@ RE_SECCION_PROPUESTAS = re.compile(r"^━+\s*PROPUESTAS DE VALOR\b.*$", re.M)
 RE_SECCION_2DATA = re.compile(r"^━+", re.M)
 
 
+# Bloques de juicio que etapa-5 escribe en PRODUCTOS/[carpeta]/BLOQUES_BOT.md y este
+# script inserta en el render. `propuestas_valor` NO va en ese archivo: sigue saliendo
+# de 2_DATA_PRODUCTO.txt (ver propuestas_persistidas()).
+BLOQUES_DE_JUICIO = ("descripcion", "modo_de_uso", "caracteristicas", "contenido",
+                     "testimonios", "audio", "m2", "faq_venta", "faq_postventa")
+
+RE_MARCADOR_BLOQUE = re.compile(r"^<<BLOQUE:(\w+)>>$")
+
+
+def parsear_bloques(texto):
+    """{nombre: texto} de un BLOQUES_BOT.md. Quita líneas vacías al inicio y al final de cada
+    bloque. ValueError si un nombre se repite o no está en BLOQUES_DE_JUICIO."""
+    bloques, nombre, lineas = {}, None, []
+    def cerrar():
+        if nombre is not None:
+            while lineas and not lineas[0].strip():
+                lineas.pop(0)
+            while lineas and not lineas[-1].strip():
+                lineas.pop()
+            bloques[nombre] = "\n".join(lineas)
+    for linea in texto.splitlines():
+        m = RE_MARCADOR_BLOQUE.match(linea)
+        if m:
+            cerrar()
+            nombre = m.group(1)
+            if nombre in bloques:
+                raise ValueError("bloque repetido: %s" % nombre)
+            if nombre not in BLOQUES_DE_JUICIO:
+                raise ValueError("bloque desconocido: %s" % nombre)
+            lineas = []
+        elif nombre is not None:
+            lineas.append(linea)
+    cerrar()
+    return bloques
+
+
+def _ruta_bloques(pk):
+    """Ruta de PRODUCTOS/<slug_carpeta>/BLOQUES_BOT.md, o None sin slug_carpeta."""
+    carpeta = carpeta_de(pk)
+    if not carpeta:
+        return None
+    return os.path.join(PROD, carpeta, "BLOQUES_BOT.md")
+
+
+def bloques_persistidos(pk):
+    """Los bloques de PRODUCTOS/<slug_carpeta>/BLOQUES_BOT.md. {} si no hay carpeta o no existe
+    el archivo (nunca bloquea). Usa carpeta_de(pk), igual que propuestas_persistidas()."""
+    ruta = _ruta_bloques(pk)
+    if not ruta or not os.path.exists(ruta):
+        return {}
+    with open(ruta, encoding="utf-8") as fh:
+        return parsear_bloques(fh.read())
+
+
+def insertar_bloques(txt, bloques):
+    """(texto, pendientes). Reemplaza cada LÍNEA que sea exactamente `<<BLOQUE:nombre>>`
+    (con nombre en BLOQUES_DE_JUICIO) por el texto del bloque, si existe y no está vacío.
+    Si no, deja el marcador como está y agrega el nombre a `pendientes` (en el orden de
+    BLOQUES_DE_JUICIO). No toca `<<BLOQUE:propuestas_valor>>` ni un marcador que aparezca
+    en medio de una línea."""
+    sin_rellenar = set()
+    fuera = []
+    for linea in txt.splitlines():
+        m = RE_MARCADOR_BLOQUE.match(linea)
+        if m and m.group(1) in BLOQUES_DE_JUICIO:
+            texto = (bloques.get(m.group(1)) or "")
+            if texto.strip():
+                fuera.extend(texto.splitlines())
+            else:
+                fuera.append(linea)
+                sin_rellenar.add(m.group(1))
+        else:
+            fuera.append(linea)
+    pendientes = [n for n in BLOQUES_DE_JUICIO if n in sin_rellenar]
+    final = "\n".join(fuera)
+    if txt.endswith("\n"):
+        final += "\n"
+    return final, pendientes
+
+
 def carpeta_de(pk):
     """slug_carpeta desde _DIM_PRODUCTOS.csv. Invariante 10: la carpeta nunca se adivina por el
     nombre — mismo patron que armar_prompts_fase2.py:carpeta_de()."""
@@ -632,7 +712,17 @@ def una_json(pk, parcial=False, propuestas=None):
         return False
     for k, d in faltan:
         v[k] = "‹PENDIENTE: %s — %s›" % (k, d)
+    try:
+        bloques = bloques_persistidos(pk)
+    except ValueError as error:
+        salida["prohibiciones"].append("BLOQUES_BOT.md: %s" % error)
+        print(json.dumps(salida, ensure_ascii=False, indent=2))
+        return False
     txt = render(v)
+    txt, pendientes = insertar_bloques(txt, bloques)
+    ruta_bloques = _ruta_bloques(pk)
+    if ruta_bloques and os.path.isfile(ruta_bloques):
+        salida["bloques_pendientes"] = pendientes
     salida["prohibiciones"] = prohibiciones(txt, v.get("persona", ""))
     if bloqueo_prop:
         salida["prohibiciones"].append(bloqueo_prop)
@@ -662,7 +752,16 @@ def una(pk, escribir=True, parcial=False, copy=False, propuestas=None):
             v[k] = "‹PENDIENTE: %s — %s›" % (k, d)
         print("  PARCIAL — %d dato(s) marcados como PENDIENTE" % len(faltan))
 
+    try:
+        bloques = bloques_persistidos(pk)
+    except ValueError as error:
+        print("  BLOQUEADO — BLOQUES_BOT.md: %s" % error)
+        return False
     txt = render(v)
+    txt, pendientes = insertar_bloques(txt, bloques)
+    ruta_bloques = _ruta_bloques(pk)
+    if ruta_bloques and os.path.isfile(ruta_bloques) and pendientes:
+        print("  aviso: bloques pendientes en BLOQUES_BOT.md: %s" % ", ".join(pendientes))
     malos = prohibiciones(txt, v.get("persona", ""))
     if bloqueo_prop:
         malos.append(bloqueo_prop)

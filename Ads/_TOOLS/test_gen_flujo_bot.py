@@ -6,6 +6,7 @@ USO:  python Ads/_TOOLS/test_gen_flujo_bot.py     (exit 0 = pasa, 1 = falla)
 """
 
 import os
+import re
 import sys
 import tempfile
 
@@ -283,6 +284,68 @@ def test_flujo_co_renderiza_sin_voseo():
     if v:
         resto = mercado.voseo_restante(G.solo_copy(G.render(v)))
         check("el copy CO no trae voseo", resto == [], resto)
+
+
+def test_parsear_bloques_lee_y_limpia():
+    """parsear_bloques lee bloques, limpia vacias y rechaza repetidos o desconocidos."""
+    texto = ("\n<<BLOQUE:descripcion>>\n\n\nTexto del bloque.\n\n"
+             "<<BLOQUE:audio>>\nAudio aqui.\n")
+    bloques = G.parsear_bloques(texto)
+    check("lee los dos bloques", bloques == {"descripcion": "Texto del bloque.",
+                                             "audio": "Audio aqui."}, bloques)
+    try:
+        G.parsear_bloques("<<BLOQUE:audio>>\nuno\n<<BLOQUE:audio>>\ndos\n")
+    except ValueError as error:
+        check("nombre repetido lanza ValueError", "repetido" in str(error), error)
+    else:
+        check("nombre repetido lanza ValueError", False)
+    try:
+        G.parsear_bloques("<<BLOQUE:inventado>>\ntexto\n")
+    except ValueError as error:
+        check("nombre desconocido lanza ValueError", "desconocido" in str(error), error)
+    else:
+        check("nombre desconocido lanza ValueError", False)
+
+
+def test_insertar_bloques_reemplaza_solo_la_linea_exacta():
+    """Solo la linea exacta se reemplaza; ni el mid-linea ni propuestas_valor."""
+    txt = ("ELEMENTO 1\n<<BLOQUE:descripcion>>\ncola <<BLOQUE:descripcion>> fin\n"
+           "<<BLOQUE:propuestas_valor>>\n<<BLOQUE:audio>>\n")
+    nuevo, pend = G.insertar_bloques(txt, {"descripcion": "TEXTO"})
+    check("la linea exacta se reemplaza",
+          "\nTEXTO\n" in nuevo and "\n<<BLOQUE:descripcion>>\n" not in nuevo, nuevo[:120])
+    check("en medio de linea no se toca", "cola <<BLOQUE:descripcion>> fin" in nuevo)
+    check("propuestas_valor queda igual", "<<BLOQUE:propuestas_valor>>" in nuevo)
+    check("el ausente queda y va a pendientes",
+          "<<BLOQUE:audio>>" in nuevo and pend == ["audio"], (nuevo[-60:], pend))
+
+
+def test_producto_sin_archivo_de_bloques_queda_igual():
+    """Sin BLOQUES_BOT.md el texto no cambia y los 9 nombres quedan pendientes."""
+    check("CLEARSTEM no tiene archivo", G.bloques_persistidos("CLEARSTEM") == {})
+    v, faltan, _ = G.resolver("CLEARSTEM")
+    if v is None or faltan:
+        check("CLEARSTEM resuelve para probar bloques", False, faltan)
+        return
+    txt = G.render(v)
+    nuevo, pend = G.insertar_bloques(txt, {})
+    check("el texto queda igual", nuevo == txt)
+    check("los 9 nombres quedan pendientes", pend == list(G.BLOQUES_DE_JUICIO), pend)
+
+
+def test_ovulos_sale_completo_con_sus_bloques():
+    """OVULOS_PURITY + su BLOQUES_BOT.md: sin pendientes y sin prohibiciones."""
+    v, faltan, _ = G.resolver("OVULOS_PURITY")
+    if v is None:
+        check("OVULOS_PURITY resuelve", False, faltan)
+        return
+    txt, pend = G.insertar_bloques(G.render(v), G.bloques_persistidos("OVULOS_PURITY"))
+    check("OVULOS_PURITY resuelve sin faltantes", faltan == [], faltan)
+    check("sin bloques pendientes", pend == [], pend)
+    restos = sorted(set(re.findall(r"<<BLOQUE:\w+>>", txt)))
+    check("solo queda propuestas_valor", restos == ["<<BLOQUE:propuestas_valor>>"], restos)
+    check("pasa las prohibiciones",
+          not G.prohibiciones(txt, v["persona"]), G.prohibiciones(txt, v["persona"]))
 
 
 def test_angulo_ganador_f2_un_solo_angulo():
@@ -776,6 +839,10 @@ def main():
                test_persona_tuteo_transforma_y_voseo_no,
                test_voseo_en_mercado_de_tuteo_se_rechaza,
                test_flujo_co_renderiza_sin_voseo,
+               test_parsear_bloques_lee_y_limpia,
+               test_insertar_bloques_reemplaza_solo_la_linea_exacta,
+               test_producto_sin_archivo_de_bloques_queda_igual,
+               test_ovulos_sale_completo_con_sus_bloques,
                test_angulo_ganador_f2_un_solo_angulo,
                test_angulo_ganador_f2_ambiguo_bloquea,
                test_angulo_ganador_f2_sin_datos_usa_paraguas,
