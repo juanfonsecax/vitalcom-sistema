@@ -175,3 +175,31 @@ def test_formatear_monto_por_moneda():
     assert mercado.formatear_monto(179, mercado.perfil_mercado("GT")) == "Q179"
     assert mercado.formatear_monto(30.8, mercado.perfil_mercado("GT"), 2) == "Q30.80"
     assert mercado.formatear_monto(41000, mercado.perfil_mercado("CO")) == "$ 41.000"
+
+
+def test_monto_producto_gt_queda_como_hoy():
+    base = _sistema([["GTP", "USD", "7.62", "GT"]])
+    try:
+        assert mercado.monto_producto(50.123, "GTP", 1, base) == "Q50.1"
+        assert mercado.monto_producto("50.1", "GTP", None, base) == "Q50.1"
+        assert mercado.monto_producto(93, "GTP", 2, base) == "Q93.00"
+    finally:
+        shutil.rmtree(base)
+
+
+def test_monto_producto_co_usa_pesos_sin_decimales():
+    base = _sistema([["COP1", "COP", "3152.5", "CO"]])
+    try:
+        assert mercado.monto_producto(28031.11, "COP1", 2, base) == "$ 28.031"
+        assert mercado.monto_producto(9426, "COP1", None, base) == "$ 9.426"
+    finally:
+        shutil.rmtree(base)
+
+
+def test_monto_producto_sin_mercado_falla():
+    base = _sistema([["GTP", "USD", "7.62", "GT"]])
+    try:
+        assert _falla(mercado.monto_producto, 10, "NO_EXISTE", base=base) == \
+            _falla(mercado.mercado_de, "NO_EXISTE", base)
+    finally:
+        shutil.rmtree(base)

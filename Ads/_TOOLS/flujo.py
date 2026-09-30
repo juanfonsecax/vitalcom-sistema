@@ -108,6 +108,9 @@ import subprocess
 import sys
 import tempfile
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado  # noqa: E402 -- moneda del mercado para presentar montos
+
 for _s in (sys.stdout, sys.stderr):
     try:
         _s.reconfigure(encoding="utf-8", errors="replace")
@@ -495,6 +498,23 @@ def _ev_script(p, ctx, env):
     return r.returncode == esperado, "exit %d · %s" % (r.returncode, ultima[:110])
 
 
+def _monto(valor, decimales, producto_key):
+    """Monto en la moneda del mercado del producto (solo presentacion).
+
+    Sin producto_key, o si el producto no resuelve mercado (fixtures de tests),
+    se formatea en Q como antes: la presentacion nunca tumba al gate."""
+    if decimales is None:
+        q = "Q%s" % valor
+    else:
+        q = "Q%.*f" % (decimales, float(valor))
+    if not producto_key:
+        return q
+    try:
+        return mercado.monto_producto(valor, producto_key, decimales)
+    except mercado.MercadoError:
+        return q
+
+
 def _ev_decision(p, ctx, env):
     celdas, _ = env.celdas(ctx["pk"])
     estados = p.get("estados") or p.get("estado") or []
@@ -502,8 +522,9 @@ def _ev_decision(p, ctx, env):
         estados = [estados]
     mv = resolver_num(p.get("min_ventas", 0), env) or 0
     hit = [c for c in celdas if c.get("estado") in estados and num(c.get("ventas"), 0) >= mv]
-    que = ", ".join("%s (%s %.0fv CPA Q%s)" % (c["celda"], c["estado"], num(c.get("ventas"), 0),
-                                                c.get("cpa_real_q") if c.get("cpa_real_q") is not None else "-")
+    que = ", ".join("%s (%s %.0fv CPA %s)" % (c["celda"], c["estado"], num(c.get("ventas"), 0),
+                                                _monto(c.get("cpa_real_q"), None, ctx["pk"])
+                                                if c.get("cpa_real_q") is not None else "-")
                     for c in hit) or "ninguna celda en %s" % "/".join(estados)
     n = len(hit)
     if "min" in p and n < resolver_num(p["min"], env):
@@ -706,7 +727,7 @@ def _angulo_ganador_info(p, ctx, env):
             continue
         v = num(c.get("ventas"), 0) or 0
         if v >= mv:
-            ganadores.append("%s (ESCALAR %.0fv CPA Q%s)" % (c["celda"], v, c.get("cpa_real_q")))
+            ganadores.append("%s (ESCALAR %.0fv CPA %s)" % (c["celda"], v, _monto(c.get("cpa_real_q"), None, pk)))
             claves.append(c["celda"])
         else:
             cortos.append("%s (ESCALAR pero %.0fv < %g)" % (c["celda"], v, mv))
@@ -715,7 +736,7 @@ def _angulo_ganador_info(p, ctx, env):
     if be and tasa:
         for k, (v, s) in sorted(_angulos_acumulados(env, pk).items(), key=lambda kv: -kv[1][0]):
             if v >= mv and s > 0 and (s * tasa / v) <= be:
-                et = "%s (histórico %.0fv CPA Q%.1f ≤ BE Q%.1f)" % (k, v, s * tasa / v, be)
+                et = "%s (histórico %.0fv CPA %s ≤ BE %s)" % (k, v, _monto(s * tasa / v, 1, pk), _monto(be, 1, pk))
                 if not any(k in g for g in ganadores):
                     ganadores.append(et)
                     claves.append(k)

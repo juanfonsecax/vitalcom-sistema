@@ -277,6 +277,36 @@ def voseo_restante(texto):
     return sorted({m.lower() for m in RE_VOSEO.findall(texto)})
 
 
+_CACHE_PERFIL = {}
+
+
+def monto_producto(valor, producto_key, decimales=None, base=None):
+    """Un monto en la moneda del mercado del producto (solo presentacion).
+
+    COP: formatear_monto(valor, perfil, 0)            → "$ 28.031"
+    resto, decimales=None: simbolo + "%s" % valor     → "Q50.1" (el valor tal cual venía)
+    resto, decimales=N:    simbolo + "%.*f"           → "Q50.10" con N=2
+
+    Sin mercado declarado se propaga el error de perfil_de_producto (no hay default).
+    La caché se indexa por (producto_key, base)."""
+    try:
+        perfil = _CACHE_PERFIL.get((producto_key, base))
+    except TypeError:
+        perfil = None
+    if perfil is None:
+        perfil = perfil_de_producto(producto_key, base)
+        try:
+            _CACHE_PERFIL[(producto_key, base)] = perfil
+        except TypeError:
+            pass
+    if perfil.get("moneda") == "COP":
+        return formatear_monto(valor, perfil, 0)
+    simbolo = perfil.get("simbolo") or ""
+    if decimales is None:
+        return "%s%s" % (simbolo, valor)
+    return "%s%.*f" % (simbolo, decimales, float(valor))
+
+
 def avisos_tasa(base=None, tolerancia=TOLERANCIA_TASA):
     """Solo lectura: lista de textos, uno por producto cuya `tasa` no cuadra con su mercado.
 
