@@ -27,6 +27,8 @@ PERMITIDOS_EXACTOS = {
     "5_FASE2_CONCEPTOS.txt",
     "0_INPUTS_CONGELADOS.md",
     "FLUJO_LUCIDBOT.md",
+    "BLOQUES_BOT.md",
+    "INFOGRAFIAS.md",
     "_PLAN.json",
     "_PLAN_FASE2.json",
     "_PLAN_FASE4.json",
