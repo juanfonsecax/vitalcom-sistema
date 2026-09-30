@@ -556,23 +556,6 @@ def cargar_datos_duckdb(dias=14, grano="angulo", dias_fatiga=3):
     return df
 
 
-def _monto(valor, decimales, producto_key):
-    """Monto en la moneda del mercado del producto (solo presentacion).
-
-    Sin producto_key, o si el producto no resuelve mercado (fixtures de tests,
-    backtest), se formatea en Q como antes: la presentacion nunca tumba al motor."""
-    if decimales is None:
-        q = "Q%s" % valor
-    else:
-        q = "Q%.*f" % (decimales, float(valor))
-    if not producto_key:
-        return q
-    try:
-        return mercado.monto_producto(valor, producto_key, decimales)
-    except mercado.MercadoError:
-        return q
-
-
 def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
                   be_q, obj_q, tasa, params,
                   ventas_acum=None, mensajes_acum=None, spend_acum_usd=None,
@@ -672,7 +655,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "PAUSAR",
             "accion_codigo": "PAUSAR_TOLERANCIA_AGOTADA",
-            "accion_sugerida": f"APAGAR: Gastó {_monto(gasto_acum_q, 1, producto_key)} acumulados (100% de tolerancia BE {_monto(be_q, 1, producto_key)}) sin una sola venta. Cortar pérdida.",
+            "accion_sugerida": f"APAGAR: Gastó {mercado.monto_o_q(gasto_acum_q, 1, producto_key)} acumulados (100% de tolerancia BE {mercado.monto_o_q(be_q, 1, producto_key)}) sin una sola venta. Cortar pérdida.",
             "cpa_real_q": None,
             "cierre_pct": 0.0,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -690,7 +673,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "PAUSAR",
             "accion_codigo": "PAUSAR_CPA_DESBORDADO",
-            "accion_sugerida": f"APAGAR: CPA {_monto(cpa_real_q, 1, producto_key)} desbordado sobre BE {_monto(be_q, 1, producto_key)} (IC mín {_monto(bajo_ic, 0, producto_key)}). Margen destruido.",
+            "accion_sugerida": f"APAGAR: CPA {mercado.monto_o_q(cpa_real_q, 1, producto_key)} desbordado sobre BE {mercado.monto_o_q(be_q, 1, producto_key)} (IC mín {mercado.monto_o_q(bajo_ic, 0, producto_key)}). Margen destruido.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -710,7 +693,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
             return {
                 "estado": "RENOVAR",
                 "accion_codigo": "FATIGA_CREATIVO",
-                "accion_sugerida": f"RENOVAR CREATIVO (FASE 2): Ángulo probado ({ventas_acum:.0f} vts acumuladas a CPA {_monto(cpa_acum_q, 1, producto_key)} bajo BE {_monto(be_q, 1, producto_key)}) pero los últimos {dias_fat}d sangran ({_monto(gasto_3d_q, 0, producto_key)} con {ventas_3d:.0f} vts). Mantener ángulo y rotar concepto — NO apagar.",
+                "accion_sugerida": f"RENOVAR CREATIVO (FASE 2): Ángulo probado ({ventas_acum:.0f} vts acumuladas a CPA {mercado.monto_o_q(cpa_acum_q, 1, producto_key)} bajo BE {mercado.monto_o_q(be_q, 1, producto_key)}) pero los últimos {dias_fat}d sangran ({mercado.monto_o_q(gasto_3d_q, 0, producto_key)} con {ventas_3d:.0f} vts). Mantener ángulo y rotar concepto — NO apagar.",
                 "cpa_real_q": round(cpa_real_q, 1) if cpa_real_q else None,
                 "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
                 "pct_pd": round(pct_pd_consumido, 1),
@@ -729,7 +712,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_SURFING",
-            "accion_sugerida": f"ESCALAR (Calet): CPA {_monto(cpa_real_q, 1, producto_key)} (Obj {_monto(obj_q, 1, producto_key)}) con {ventas:.0f} ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +{surf:.0f}% una vez al día.",
+            "accion_sugerida": f"ESCALAR (Calet): CPA {mercado.monto_o_q(cpa_real_q, 1, producto_key)} (Obj {mercado.monto_o_q(obj_q, 1, producto_key)}) con {ventas:.0f} ventas, IC entero bajo BE. Opciones: (A) Duplicar campaña al ppto inicial, o (B) Pasar a CBO 1-1-7 a Q120 ($15 USD) con Surfing +{surf:.0f}% una vez al día.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -745,7 +728,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "ESCALAR",
             "accion_codigo": "ESCALAR_MODERADO",
-            "accion_sugerida": f"MANTENER / ESCALA LEVE: CPA rentable {_monto(cpa_real_q, 1, producto_key)} bajo BE {_monto(be_q, 1, producto_key)}. Opciones: duplicar o subir hasta +{surf:.0f}% (una vez, en la mañana) si el CPA se mantiene bajo.",
+            "accion_sugerida": f"MANTENER / ESCALA LEVE: CPA rentable {mercado.monto_o_q(cpa_real_q, 1, producto_key)} bajo BE {mercado.monto_o_q(be_q, 1, producto_key)}. Opciones: duplicar o subir hasta +{surf:.0f}% (una vez, en la mañana) si el CPA se mantiene bajo.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -777,7 +760,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "SEGUIR_MIDIENDO",
             "accion_codigo": "TESTEO_EN_TOLERANCIA",
-            "accion_sugerida": f"MANTENER / MEDIR: Gastó {_monto(gasto_acum_q, 1, producto_key)} acumulados de {_monto(pd_q, 1, producto_key)} ({pct_pd_consumido:.0f}% PD). Margen disponible: {_monto(disponible_q, 1, producto_key)}.",
+            "accion_sugerida": f"MANTENER / MEDIR: Gastó {mercado.monto_o_q(gasto_acum_q, 1, producto_key)} acumulados de {mercado.monto_o_q(pd_q, 1, producto_key)} ({pct_pd_consumido:.0f}% PD). Margen disponible: {mercado.monto_o_q(disponible_q, 1, producto_key)}.",
             "cpa_real_q": None,
             "cierre_pct": 0.0,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -794,7 +777,7 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
         return {
             "estado": "SEGUIR_MIDIENDO",
             "accion_codigo": "TESTEO_PRIMERA_VENTA",
-            "accion_sugerida": f"MANTENER / MEDIR: 1 venta a CPA {_monto(cpa_real_q, 1, producto_key)} (IC [{bajo_ic:.0f}-{alto_ic if alto_ic else 'inf'}]).{txt_faltan} Mantener presupuesto.",
+            "accion_sugerida": f"MANTENER / MEDIR: 1 venta a CPA {mercado.monto_o_q(cpa_real_q, 1, producto_key)} (IC [{bajo_ic:.0f}-{alto_ic if alto_ic else 'inf'}]).{txt_faltan} Mantener presupuesto.",
             "cpa_real_q": round(cpa_real_q, 1),
             "cierre_pct": round(cierre_pct, 1) if cierre_pct else None,
             "pct_pd": round(pct_pd_consumido, 1),
@@ -809,11 +792,11 @@ def evaluar_celda(ventas, mensajes, spend_usd, ventas_3d, mensajes_3d, spend_3d,
     txt_f = f" Faltan ~{faltan} ventas al CPA actual para resolver IC." if faltan else " El CPA observado está cerca del BE."
     rentable_pero_sin_evidencia = cpa_real_q is not None and cpa_real_q <= be_q
     if rentable_pero_sin_evidencia:
-        txt_accion = (f"MANTENER PRESUPUESTO (no subir): CPA {_monto(cpa_real_q, 1, producto_key)} bajo BE {_monto(be_q, 1, producto_key)}, "
+        txt_accion = (f"MANTENER PRESUPUESTO (no subir): CPA {mercado.monto_o_q(cpa_real_q, 1, producto_key)} bajo BE {mercado.monto_o_q(be_q, 1, producto_key)}, "
                       f"pero el IC [{bajo_ic:.0f}-{alto_ic if alto_ic else 'inf'}] lo cruza.{txt_f}")
     else:
         txt_accion = (f"MANTENER PRESUPUESTO: IC [{bajo_ic:.0f} - {alto_ic if alto_ic else 'inf'}] "
-                      f"cruza BE {_monto(be_q, 1, producto_key)}.{txt_f}")
+                      f"cruza BE {mercado.monto_o_q(be_q, 1, producto_key)}.{txt_f}")
     v_actual, v_necesarias = _progreso_ventas(ventas, faltan)
     return {
         "estado": "SEGUIR_MIDIENDO",
@@ -1109,7 +1092,7 @@ def imprimir_consola(res):
 
     for p in res["productos"]:
         fv = p.get("fase_vigente")
-        print(f"\n[{p['producto_key']}]  Estado: {p['estado_producto']} | Fase: {fv or '(sin derivar)'} | Break-Even: {_monto(p['break_even_q'], 2, p['producto_key'])} | CPA Objetivo: {_monto(p['cpa_objetivo_q'], 2, p['producto_key'])}")
+        print(f"\n[{p['producto_key']}]  Estado: {p['estado_producto']} | Fase: {fv or '(sin derivar)'} | Break-Even: {mercado.monto_o_q(p['break_even_q'], 2, p['producto_key'])} | CPA Objetivo: {mercado.monto_o_q(p['cpa_objetivo_q'], 2, p['producto_key'])}")
         frenadas = [c for c in p["celdas"] if c.get("ejecutable") is False]
         sin_fase = [c for c in p["celdas"] if c.get("ejecutable") is None]
         if frenadas:
@@ -1125,7 +1108,7 @@ def imprimir_consola(res):
 
         for c in p["celdas"]:
             est = f"[{c['estado']}]"
-            cpa_str = _monto(c['cpa_real_q'], 1, p['producto_key']) if c['cpa_real_q'] else "-"
+            cpa_str = mercado.monto_o_q(c['cpa_real_q'], 1, p['producto_key']) if c['cpa_real_q'] else "-"
             ic = c.get("ic", [0, 0, 0])
             ic_str = f"[{ic[0]:.0f}-{ic[2]:.0f}]" if (ic and ic[2]) else f"[≥{ic[0]:.0f}]" if ic else "-"
             print(f"  {est:<16} {c['celda'][:26]:<28} {c['ventas']:>4.0f} {c['mensajes']:>5.0f} {c['spend_q']:>8.1f} {cpa_str:>8} {ic_str:<15} {c['accion_sugerida']}")

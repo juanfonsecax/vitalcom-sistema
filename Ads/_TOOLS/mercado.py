@@ -307,6 +307,25 @@ def monto_producto(valor, producto_key, decimales=None, base=None):
     return "%s%.*f" % (simbolo, decimales, float(valor))
 
 
+def monto_o_q(valor, decimales, producto_key, base=None):
+    """El monto en la moneda del producto, para textos del motor.
+
+    Sin producto_key, o si el producto NO tiene fila en _DIM_PRODUCTOS (fixtures de tests,
+    backtest): formato Q de siempre. Si el producto SÍ tiene fila pero su mercado no
+    resuelve: se propaga MercadoError (un producto real nunca sale en Q por descarte)."""
+    if decimales is None:
+        q = "Q%s" % valor
+    else:
+        q = "Q%.*f" % (decimales, float(valor))
+    if not producto_key:
+        return q
+    try:
+        _fila_producto(producto_key, base)
+    except MercadoError:
+        return q
+    return monto_producto(valor, producto_key, decimales, base)
+
+
 def avisos_tasa(base=None, tolerancia=TOLERANCIA_TASA):
     """Solo lectura: lista de textos, uno por producto cuya `tasa` no cuadra con su mercado.
 

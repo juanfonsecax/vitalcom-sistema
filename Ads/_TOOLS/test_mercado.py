@@ -203,3 +203,33 @@ def test_monto_producto_sin_mercado_falla():
             _falla(mercado.mercado_de, "NO_EXISTE", base)
     finally:
         shutil.rmtree(base)
+
+
+def test_monto_o_q_producto_inexistente_sale_en_q():
+    base = _sistema([["GTP", "USD", "7.62", "GT"]])
+    try:
+        assert mercado.monto_o_q(50.123, 1, "NO_EXISTE", base) == "Q50.1"
+        assert mercado.monto_o_q(50.1, None, None, base) == "Q50.1"
+    finally:
+        shutil.rmtree(base)
+
+
+def test_monto_o_q_producto_real_sin_mercado_falla():
+    base = _sistema([["SIN", "USD", "7.62", ""]])
+    try:
+        try:
+            mercado.monto_o_q(10, 1, "SIN", base)
+        except mercado.MercadoError as error:
+            assert "no declara" in str(error), str(error)
+        else:
+            raise AssertionError("producto real sin mercado tenia que fallar")
+    finally:
+        shutil.rmtree(base)
+
+
+def test_monto_o_q_producto_co():
+    base = _sistema([["COP1", "COP", "3152.5", "CO"]])
+    try:
+        assert mercado.monto_o_q(28031.11, 2, "COP1", base) == "$ 28.031"
+    finally:
+        shutil.rmtree(base)

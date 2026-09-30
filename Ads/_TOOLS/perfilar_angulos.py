@@ -290,23 +290,6 @@ def estado_previo():
     return prev
 
 
-def _monto(valor, decimales, producto_key):
-    """Monto en la moneda del mercado del producto (solo presentacion).
-
-    Sin producto_key, o si el producto no resuelve mercado (tests con perfiles
-    minimos), se formatea en Q como antes: la presentacion nunca tumba al perfil."""
-    if decimales is None:
-        q = "Q%s" % valor
-    else:
-        q = "Q%.*f" % (decimales, float(valor))
-    if not producto_key:
-        return q
-    try:
-        return mercado.monto_producto(valor, producto_key, decimales)
-    except mercado.MercadoError:
-        return q
-
-
 def clasificar(p, par, opt):
     """Deriva el estado del perfil. Cada rama es un PREDICADO sobre data, nunca un juicio."""
     if p["dias_sin_gasto"] is not None and p["dias_sin_gasto"] >= opt["dias_sin_gasto_apagado"]:
@@ -323,12 +306,12 @@ def clasificar(p, par, opt):
         return "ESCALANDO", "el motor ordena ESCALAR (%s)" % p["accion_codigo"]
     if p["ganador_historico"]:
         return "SOSTENIDO", "historia rentable: %g ventas acum a CPA %s ≤ BE %s" % (
-            p["ventas_acum"], _monto(p["cpa_acum_q"], 1, p.get("producto_key")), _monto(p["be_q"], 1, p.get("producto_key")))
+            p["ventas_acum"], mercado.monto_o_q(p["cpa_acum_q"], 1, p.get("producto_key")), mercado.monto_o_q(p["be_q"], 1, p.get("producto_key")))
     if p["renovado_hace"] is not None and p["renovado_hace"] <= par["ventana_dias"]:
         return "RENOVADO", "CAMBIO_CREATIVO hace %d días, esperando veredicto" % p["renovado_hace"]
     if p["gasto_acum_q"] < p["be_q"]:
         return "EN_PRUEBA", "gastó %s de su presupuesto de decisión (1×BE %s)" % (
-            _monto(p["gasto_acum_q"], 0, p.get("producto_key")), _monto(p["be_q"], 0, p.get("producto_key")))
+            mercado.monto_o_q(p["gasto_acum_q"], 0, p.get("producto_key")), mercado.monto_o_q(p["be_q"], 0, p.get("producto_key")))
     return "MIDIENDO", "PD consumido, sin veredicto: %g ventas acum" % p["ventas_acum"]
 
 
@@ -498,7 +481,7 @@ def imprimir(perfiles, opt, par, dec, huerfanos):
         g = [p for p in perfiles if p["producto_key"] == pk]
         vivos = [p for p in g if p["estado"] in ("ESCALANDO", "SOSTENIDO")]
         print("\n[%s]  BE %s  ·  %d perfiles  ·  %d vivos (mínimo %g)"
-              % (pk, _monto(g[0]["be_q"], 2, pk), len(g), len(vivos), opt["min_angulos_vivos"]))
+              % (pk, mercado.monto_o_q(g[0]["be_q"], 2, pk), len(g), len(vivos), opt["min_angulos_vivos"]))
         if len(vivos) < opt["min_angulos_vivos"]:
             print("   🔴 DEPENDENCIA DE UN SOLO PÚBLICO: %d ángulo(s) vivo(s). Generar variante"
                   " (etapa-3 ángulo adyacente · etapa-9 concepto nuevo)." % len(vivos))
@@ -508,8 +491,8 @@ def imprimir(perfiles, opt, par, dec, huerfanos):
         for p in g:
             print("   %-18s %-26s %5.0f %8s %8s %6s %6s %6.0f%% %s"
                   % (p["estado"], p["angulo_key"][:26], p["ventas_acum"],
-                     _monto(p["cpa_acum_q"], 1, p.get("producto_key")) if p["cpa_acum_q"] else "-",
-                     _monto(p["cpa_ventana_q"], 1, p.get("producto_key")) if p["cpa_ventana_q"] else "-",
+                     mercado.monto_o_q(p["cpa_acum_q"], 1, p.get("producto_key")) if p["cpa_acum_q"] else "-",
+                     mercado.monto_o_q(p["cpa_ventana_q"], 1, p.get("producto_key")) if p["cpa_ventana_q"] else "-",
                      ("%.0f%%" % (p["p_rentable"] * 100)) if p["p_rentable"] is not None else "-",
                      ("%.2f" % p["prioridad_ts"]) if p.get("prioridad_ts") is not None else "-",
                      p.get("pct_gasto_producto", 0), p["evidencia"][:38]))
@@ -594,8 +577,8 @@ def escribir_html(perfiles, opt, par, dec, huerfanos):
             "<td class='n'>%.0f</td><td class='n'>%s</td><td class='n'>%s</td><td class='n'>%s</td>"
             "<td class='n'>%s</td><td class='n'>%.0f%%</td><td class='ev'>%s</td></tr>"
             % (COLOR.get(p["estado"], "#57606a"), p["estado"], p["angulo_key"], p["ventas_acum"],
-               _monto(p["cpa_acum_q"], 1, p.get("producto_key")) if p["cpa_acum_q"] else "—",
-               _monto(p["cpa_ventana_q"], 1, p.get("producto_key")) if p["cpa_ventana_q"] else "—",
+               mercado.monto_o_q(p["cpa_acum_q"], 1, p.get("producto_key")) if p["cpa_acum_q"] else "—",
+               mercado.monto_o_q(p["cpa_ventana_q"], 1, p.get("producto_key")) if p["cpa_ventana_q"] else "—",
                ("%.0f%%" % (p["p_rentable"] * 100)) if p["p_rentable"] is not None else "—",
                ("%.2f" % p["prioridad_ts"]) if p.get("prioridad_ts") is not None else "—",
                p.get("pct_gasto_producto", 0), p["evidencia"]) for p in g)
@@ -604,7 +587,7 @@ def escribir_html(perfiles, opt, par, dec, huerfanos):
             "<table><thead><tr><th>estado</th><th>ángulo</th><th>ventas</th><th>CPA acum</th>"
             "<th>CPA ventana</th><th>P(rentable)</th><th>P(mejor)</th><th>%% gasto</th>"
             "<th>por qué</th></tr></thead><tbody>%s</tbody></table></section>"
-            % (pk, _monto(g[0]["be_q"], 2, pk), len(g), alerta, cuerpo))
+            % (pk, mercado.monto_o_q(g[0]["be_q"], 2, pk), len(g), alerta, cuerpo))
 
     huer = ""
     if huerfanos:
