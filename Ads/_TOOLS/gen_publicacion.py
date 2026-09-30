@@ -104,6 +104,7 @@ if TOOLS not in sys.path:
 import bandas_edad  # LA TABLA no se copia aca: Ads/_TOOLS/bandas_edad.py es su dueno unico.
 import flujo             # gate_entrada: el unico juez de "se cumple el gate de entrada a la fase N"
 import registrar_evento  # registrar_excepcion: el unico escritor de una fila EXCEPCION en _EVENTOS.csv
+from gen_lanzador import corto as token_producto  # dueño del token de producto en los nombres
 
 SCHEMA = "publicacion/1"
 
@@ -484,6 +485,7 @@ def main():
         print("            resuelve leyendo el CSV, nunca adivinando por el nombre.")
         return 1
     prod = productos[pk]
+    tok = token_producto(prod)
 
     # ---------- 2. parametros de la fase ----------------------------------
     if not brazo:
@@ -735,7 +737,7 @@ def main():
     # ---------- 9. nombres y llamadas --------------------------------------
     cta = corto_alias(fila_cta["cuenta_alias"])
     acct = fila_cta["cuenta_id"]
-    camp = nombre_campana(fase, cta, pk, brazo, angulo, fecha)
+    camp = nombre_campana(fase, cta, tok, brazo, angulo, fecha)
     cbo = par["presupuesto_nivel"] == "CAMPANA"
 
     llamadas, manif_conj = [], []
@@ -813,7 +815,7 @@ def main():
             base_replica.setdefault(ang_u, siguiente_replica(filas_conjuntos, pk, ang_u, cta))
             pos_en_angulo[ang_u] = pos_en_angulo.get(ang_u, 0) + 1
             numero_conj = base_replica[ang_u] + pos_en_angulo[ang_u] - 1
-        cj = nombre_conjunto(fase, cta, pk, ang_u, brazo, numero_conj)
+        cj = nombre_conjunto(fase, cta, tok, ang_u, brazo, numero_conj)
         n += 1
         targeting = {
             "geo_locations": {"countries": ["GT"]},
@@ -962,7 +964,7 @@ def main():
     paquete = {
         "schema": SCHEMA,
         "generado_el": datetime.datetime.now().isoformat(timespec="seconds"),
-        "producto_key": pk, "fase": fase, "brazo": brazo,
+        "producto_key": pk, "token_producto": tok, "fase": fase, "brazo": brazo,
         "angulo": angulo if (fase in (2, 3) and not exploracion) else
                   "VARIOS (uno por conjunto — F1/F4.exploracion miden el angulo)",
         "cuenta_alias": cta, "cuenta_id": acct, "moneda": moneda,

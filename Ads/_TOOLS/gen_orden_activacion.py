@@ -81,6 +81,22 @@ def cargar_snapshot(ruta):
     return out
 
 
+def es_campana_de_fase(nombre, token, fase):
+    """True si `nombre` es una campaña de ese producto y esa fase: su segundo campo es
+    el token del producto y contiene un token de flujo.TOKEN_FASE para la fase."""
+    if not token:
+        return False
+    _tools = os.path.dirname(os.path.abspath(__file__))
+    if _tools not in sys.path:
+        sys.path.insert(0, _tools)
+    import flujo
+    campos = (nombre or "").split("_")
+    if len(campos) < 2 or campos[1] != token:
+        return False
+    toks = flujo.TOKEN_FASE.get(str(fase), ())
+    return any(t in (nombre or "").upper() for t in toks)
+
+
 def main():
     pk = arg("--producto")
     fase_str = arg("--fase", "1")
@@ -117,6 +133,11 @@ def main():
         })
 
     fila_prod = productos.get(pk)
+    _tools = os.path.dirname(os.path.abspath(__file__))
+    if _tools not in sys.path:
+        sys.path.insert(0, _tools)
+    from gen_lanzador import corto as token_producto
+    tok = token_producto(fila_prod) if fila_prod else None
     if not fila_prod:
         bloqueantes.append({
             "falta": f"'{pk}' no tiene fila en _DIM_PRODUCTOS.csv",
@@ -142,7 +163,7 @@ def main():
     if (not campaign_id or campaign_id.upper() == "PENDIENTE") and snap and os.path.exists(snap):
         meta_objs = cargar_snapshot(snap)
         for _, info in meta_objs.items():
-            if info.get("nivel") == "campaign" and pk in info.get("name", "") and f"F{fase}" in info.get("name", ""):
+            if info.get("nivel") == "campaign" and es_campana_de_fase(info.get("name", ""), tok, fase):
                 campaign_id = info.get("id", "")
                 break
 
@@ -187,7 +208,7 @@ def main():
             hit = meta_objs.get(campaign_id)
         if not hit and pk:
             for _, info in meta_objs.items():
-                if info.get("nivel") == "campaign" and pk in info.get("name", "") and f"F{fase}" in info.get("name", ""):
+                if info.get("nivel") == "campaign" and es_campana_de_fase(info.get("name", ""), tok, fase):
                     hit = info
                     break
         if hit:

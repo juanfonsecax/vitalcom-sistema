@@ -104,6 +104,16 @@ def objetos_no_pausados(filas, meta):
     return out
 
 
+def no_declarados(meta, declarados, campana):
+    """Nombres del snapshot que empiezan con cuenta_token_ de la campaña declarada, no
+    están en el manifiesto y llevan el token de fase de la campaña. Se reportan, nunca
+    se borran."""
+    prefijo = "_".join(campana.split("_")[:2]) + "_"
+    token_fase = campana.split("_")[2]
+    return [n for n in meta
+            if n.startswith(prefijo) and n not in declarados and token_fase in n]
+
+
 def aplicar_ad_ids(rows, ids_por_creativo, ruta_pq):
     """Escribe ad_id + la transicion de estado en las filas de _DIM_CREATIVOS.csv que
     matchean ids_por_creativo (creativo_id -> {'A': ad_id, 'B': ad_id}).
@@ -199,10 +209,7 @@ def main():
                 ids_por_creativo.setdefault(a["creativo_id"], {})[a["letra"]] = hit["id"]
 
     declarados = {f[1] for f in filas}
-    prefijo = "%s_%s" % (pq["cuenta_alias"], pk)
-    no_declarados = [n for n in meta
-                     if n.startswith(prefijo) and n not in declarados
-                     and man["campana"].split("_")[2] in n]
+    no_declarados_ = no_declarados(meta, declarados, man["campana"])
 
     # Todo objeto declarado que SI existe en Meta tiene que estar PAUSED (invariante 12); si el
     # snapshot lo trae ACTIVE ya esta gastando sin confirmacion del operador.
@@ -219,10 +226,10 @@ def main():
         marca = "OK   " if estado == "OK" else "FALTA"
         print("  [%s] %-9s %-52s %s" % (marca, nivel, nombre[:52], oid))
     print()
-    if no_declarados:
+    if no_declarados_:
         print("  NO DECLARADOS (existen en Meta y el manifiesto no los pedia) — se reportan, "
               "NUNCA se borran:")
-        for n in no_declarados:
+        for n in no_declarados_:
             print("    ? %-56s %s" % (n[:56], meta[n]["id"]))
         print()
 

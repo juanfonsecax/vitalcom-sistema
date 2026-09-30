@@ -195,10 +195,25 @@ def test_bloqueo_sin_ad_ids():
         print("  OK     sin creativos con ad_id bloquea nombrando a verificar_publicacion.py")
 
 
+def test_es_campana_de_fase():
+    casos = [
+        (("EXTERNA_OVULOSPURITY_TEST_20260930", "OVULOSPURITY", 1), True),
+        (("EXTERNA_OVULOSPURITY_TEST_20260930", "OVULOSPURITY", 2), False),
+        (("GTR7_OVULOSPURITY-X_TEST_20260930", "OVULOSPURITY", 1), False),
+        (("GTR0_TINNIDROP_CONCEPTOS-A_20260907", "TINNIDROP", 2), True),
+        (("GTR0_TINNIDROP_CONCEPTOS-A_20260907", None, 1), False),
+    ]
+    for args, esperado in casos:
+        obtenido = goa.es_campana_de_fase(*args)
+        assert obtenido is esperado, "%r esperaba %r, dio %r" % (args, esperado, obtenido)
+    print("  OK     es_campana_de_fase: token exacto del producto + token de fase")
+
+
 def main():
     print("test_gen_orden_activacion.py:")
     fallas = 0
     pruebas = [
+        test_es_campana_de_fase,
         test_orden_activacion_normal,
         test_idempotencia_campana_ya_active,
         test_bloqueo_producto_inexistente,

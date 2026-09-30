@@ -533,7 +533,7 @@ def test_gate_incumplido_con_excepcion_procede_y_registra_una_excepcion():
 # sale en el paquete, ningun nombre viejo se reusa, el nombre no cambia despues de subir, y dos
 # imagenes distintas con el mismo nombre bloquean.
 
-def _fixture_fase1_completa():
+def _fixture_fase1_completa(clave_campana=""):
     """Un producto de FASE 1 con todo en regla (plan de 6 angulos, pagina, cuenta y las 6 imagenes)."""
     import csv, io, shutil, tempfile
     tmp = tempfile.mkdtemp(prefix="genpub_bib_")
@@ -548,7 +548,7 @@ def _fixture_fase1_completa():
         w = csv.DictWriter(fh, fieldnames=cols)
         w.writeheader()
         w.writerow(dict(dict.fromkeys(cols, ""), producto_key="PX", cuenta_alias="GTR 7", page_id="111",
-                        slug_carpeta="PX", carpeta_media="MEDIA_PX"))
+                        slug_carpeta="PX", carpeta_media="MEDIA_PX", clave_campana=clave_campana))
     conjuntos = []
     for i in range(1, 7):
         archivo = "PX_%d_ANG%d.png" % (i, i)
@@ -910,8 +910,38 @@ def test_exploracion_gate_propio_cumplido_no_pide_excepcion():
                     (code, err, out[:200], eventos))
 
 
+def test_token_producto_sale_de_clave_campana():
+    """El token de los nombres sale de clave_campana (dueño: gen_lanzador.corto)."""
+    casos = [
+        ({"producto_key": "OVULOS_PURITY", "clave_campana": "OVULOSPURITY"}, "OVULOSPURITY"),
+        ({"producto_key": "OVULOS_PURITY", "clave_campana": ""}, "OVULOS-PURITY"),
+        ({"producto_key": "NUSAVA", "clave_campana": "NUSAVAB12"}, "NUSAVAB12"),
+    ]
+    mal = [(f, gp.token_producto(f)) for f, esperado in casos if gp.token_producto(f) != esperado]
+    return _informe(not mal, "el token sale de clave_campana, o del producto_key si esta vacia", mal)
+
+
+def test_paquete_nombra_con_el_token_de_clave_campana():
+    """Con clave_campana=PXDOS, campana y conjuntos usan PXDOS y el paquete lo declara."""
+    base = _fixture_fase1_completa(clave_campana="PXDOS")
+    antes = _listado(base, "antes.json", [{"hash": "viejo2", "name": "PX_1_ANG1_V2.png"}])
+    subidas = [{"hash": "h%d" % i, "name": "PX_%d_ANG%d_V%d.png" % (i, i, 3 if i == 1 else 2)} for i in range(1, 7)]
+    despues = _listado(base, "despues.json", [{"hash": "viejo2", "name": "PX_1_ANG1_V2.png"}] + subidas)
+    code, pq, err = _paquete_biblioteca(base, antes, despues)
+    man = (pq or {}).get("manifiesto", {})
+    ok = (err is None and code == 0
+          and man.get("campana", "").startswith("GTR7_PXDOS_TEST_")
+          and all(c["nombre"].startswith("GTR7_PXDOS_") for c in man.get("conjuntos", []))
+          and man.get("conjuntos")
+          and pq.get("token_producto") == "PXDOS")
+    return _informe(ok, "el paquete nombra campana y conjuntos con el token de clave_campana",
+                    (code, err, man.get("campana"), pq and pq.get("token_producto")))
+
+
 def main():
     fallas = 0
+    fallas += test_token_producto_sale_de_clave_campana()
+    fallas += test_paquete_nombra_con_el_token_de_clave_campana()
     fallas += test_fecha_hoy_bloquea()
     fallas += test_fecha_manana_no_bloquea()
     fallas += test_fecha_pasado_manana_bloquea()

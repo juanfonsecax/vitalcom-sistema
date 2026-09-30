@@ -162,8 +162,25 @@ def test_objetos_faltantes_no_entran_al_chequeo_de_paused():
     return 0 if ok else 1
 
 
+def test_no_declarados_usa_el_prefijo_de_la_campana():
+    """Los no declarados salen del prefijo cuenta_token_ de la campaña, no del producto_key."""
+    campana = "EXTERNA_OVULOSPURITY_TEST_20260930"
+    declarados = {"EXTERNA_OVULOSPURITY_TEST_20260930"}
+    meta = {"EXTERNA_OVULOSPURITY_TEST_20260930": {"id": "1"},
+            "EXTERNA_OVULOSPURITY_TEST_20260929": {"id": "2"},
+            "EXTERNA_OTRO_TEST_20260930": {"id": "3"},
+            "GTR7_OVULOSPURITY_TEST_20260930": {"id": "4"}}
+    hallados = vp.no_declarados(meta, declarados, campana)
+    ok = hallados == ["EXTERNA_OVULOSPURITY_TEST_20260929"]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "solo la no declarada con el prefijo y el token de fase de la campaña"
+          + ("" if ok else f"\n         hallados={hallados}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
+    fallas += test_no_declarados_usa_el_prefijo_de_la_campana()
     fallas += test_generado_con_ad_id_pasa_a_publicado()
     fallas += test_pendiente_generar_tambien_asciende_a_publicado()
     fallas += test_retirado_no_se_degrada()
