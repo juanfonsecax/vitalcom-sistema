@@ -242,6 +242,41 @@ def formatear_monto(valor, perfil, decimales=0):
     return "%s%.*f" % (simbolo, decimales, float(valor))
 
 
+VOSEO_A_TUTEO = [   # pares (voseo, tuteo); frases específicas donde la palabra sola es ambigua
+    ("con vos", "contigo"), ("por vos", "por ti"), ("Contame", "Cuéntame"),
+    ("escribís", "escribes"), ("Deseás", "Deseas"), ("sabés", "sabes"), ("pagás", "pagas"),
+    ("¿Confirmame", "¿Me confirmas"), ("Confirmame", "Confírmame"), ("arriesgás", "arriesgas"),
+    ("llevás", "llevas"), ("asegurate", "asegúrate"), ("podés", "puedes"),
+    ("indicame", "indícame"), ("o escribí OFICINA", "o escribe OFICINA"),
+    ("reclamás", "reclamas"), ("preferís", "prefieres"), ("Confirmás", "Confirmas"),
+    ("Recordá", "Recuerda"), ("tenés", "tienes"), ("disfrutés", "disfrutes"),
+    ("escribás", "escribas"), ("hacé ", "haz "), ("Indicale", "Indícale"),
+    ("corregila", "corrígela"), ("Hacelo", "Hazlo"), ("CAMBIÁ", "CAMBIA"), ("Decime", "Dime"),
+    ("persuadilo", "persuádelo"), ("Respondé", "Responde"), ("respondé", "responde"),
+    ("No continuás", "No continúes"),
+]
+
+
+def aplicar_persona(texto, persona):
+    """Devuelve el texto en la persona del mercado. Solo 'tuteo' transforma."""
+    if persona != "tuteo":
+        return texto
+    for voseo, tuteo in VOSEO_A_TUTEO:
+        texto = texto.replace(voseo, tuteo)
+    return texto
+
+
+RE_VOSEO = re.compile(r"\b(vos|sabés|pagás|podés|tenés|querés|llevás|arriesgás|reclamás|"
+    r"preferís|escribís|deseás|confirmás|contame|decime|confirmame|indicame|asegurate|"
+    r"recordá|respondé|hacelo|indicale|corregila|persuadilo|cambiá|disfrutés|escribás|"
+    r"continuás)\b", re.I)
+
+
+def voseo_restante(texto):
+    """Lista ordenada y sin repetir de las formas de voseo que quedan en el texto."""
+    return sorted({m.lower() for m in RE_VOSEO.findall(texto)})
+
+
 def avisos_tasa(base=None, tolerancia=TOLERANCIA_TASA):
     """Solo lectura: lista de textos, uno por producto cuya `tasa` no cuadra con su mercado.
 

@@ -55,6 +55,9 @@ import os
 import re
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mercado  # noqa: E402
+
 try:
     sys.stdout.reconfigure(encoding="utf-8")
 except (AttributeError, OSError):
@@ -127,7 +130,7 @@ NIVELES_APERTURA = {
 PROHIBIDO = [
     (r"cu[aá]l de estas situaciones se parece",
      "PREGUNTA FILTRO DE DOLOR: el filtrado del avatar ocurre en el ANUNCIO."),
-    (r"(?:cura|curar|elimina el|erradica)\b", "VERBO MEDICO PROHIBIDO."),
+    (r"\b(?:cura|curar|elimina el|erradica)\b", "VERBO MEDICO PROHIBIDO."),
 ]
 
 
@@ -169,13 +172,14 @@ def plantilla():
     return bloques[0]
 
 
-def escalera(pk, fila, simbolo):
+def escalera(pk, fila, simbolo, moneda="GTQ"):
     """Construye la escalera de ofertas desde _DIM_PRECIOS.csv.
 
     La ARQUITECTURA sale del CSV (columna `etiqueta`: 1x/2x/3x, 2X1, 4X2), no de una
     suposicion de 3 unidades iguales: los productos de uso unico no la soportan
     (ETAPA-1 Paso 2). Ningun precio se tipea: el bot en vivo de CLEARSTEM cobra
     Q198/Q289/Q389 —lo que manda Dropi— mientras 1_HACER_MANUAL.txt dice Q199/Q299/Q399.
+    El separador de miles sale de la moneda del mercado (COP: punto, resto: coma).
     """
     filas = [r for r in leer("_DIM_PRECIOS.csv")
              if r["producto_key"] == pk and r.get("estado", "").upper() == "ACTIVO"]
@@ -209,8 +213,9 @@ def escalera(pk, fila, simbolo):
             titulo = "Oferta %s" % etq if etq else "Opcion %d" % (i + 1)
 
         precio = float(r["precio_q"])
+        miles = "." if moneda == "COP" else ","
         linea = "%s %s → %s%s + %s ENVÍO TOTALMENTE GRATIS" % (
-            num[min(i, 4)], titulo, simbolo, format(int(round(precio)), ","),
+            num[min(i, 4)], titulo, simbolo, format(int(round(precio)), ",").replace(",", miles),
             regalo[min(i, 2)])
         if i == ultimo and len(filas) > 1:
             linea += ("\n   LA MÁS ELEGIDA ⭐ (tratamiento completo) "
@@ -349,9 +354,10 @@ def resolver(pk):
                 return float(r.get("ventas_acum") or 0)
             except ValueError:
                 return 0.0
-        v["angulo_nombre"] = max(cand, key=ventas)["angulo_key"] if cand else ""
+        v["angulo_nombre"] = max(cand, key=ventas)["angulo_key"] if cand else "PARAGUAS F1"
 
-    esc, aviso_esc = escalera(pk, fila, v["simbolo"] or "Q")
+    moneda = (merc.get("moneda") or "GTQ").strip()
+    esc, aviso_esc = escalera(pk, fila, v["simbolo"] or "Q", moneda)
     v["escalera_ofertas"] = esc or ""
     if aviso_esc:
         avisos.append(aviso_esc)
@@ -411,6 +417,7 @@ def render(v):
         txt = re.sub(r"\n[ \t]*\{\{razon_tier_alto\}\}[ \t]*\n", "\n", txt)
     for k, val in v.items():
         txt = txt.replace("{{%s}}" % k, val)
+    txt = mercado.aplicar_persona(txt, v.get("persona", ""))
     return txt
 
 
@@ -591,12 +598,16 @@ def validar_propuestas_valor(texto):
     return None, None
 
 
-def prohibiciones(txt):
+def prohibiciones(txt, persona=""):
     copy = solo_copy(txt)
     hallados = []
     for patron, motivo in PROHIBIDO:
         if re.search(patron, copy, re.I | re.S):
             hallados.append(motivo)
+    if persona == "tuteo":
+        resto = mercado.voseo_restante(copy)
+        if resto:
+            hallados.append("VOSEO EN MERCADO DE TUTEO: %s" % ", ".join(resto))
     plazos = plazos_de_garantia(copy)
     if len(plazos) > 1:
         hallados.append("DOS PLAZOS DE GARANTIA DISTINTOS (%s dias): va UNO solo, igual "
@@ -622,7 +633,7 @@ def una_json(pk, parcial=False, propuestas=None):
     for k, d in faltan:
         v[k] = "‹PENDIENTE: %s — %s›" % (k, d)
     txt = render(v)
-    salida["prohibiciones"] = prohibiciones(txt)
+    salida["prohibiciones"] = prohibiciones(txt, v.get("persona", ""))
     if bloqueo_prop:
         salida["prohibiciones"].append(bloqueo_prop)
     if not salida["prohibiciones"]:
@@ -652,7 +663,7 @@ def una(pk, escribir=True, parcial=False, copy=False, propuestas=None):
         print("  PARCIAL — %d dato(s) marcados como PENDIENTE" % len(faltan))
 
     txt = render(v)
-    malos = prohibiciones(txt)
+    malos = prohibiciones(txt, v.get("persona", ""))
     if bloqueo_prop:
         malos.append(bloqueo_prop)
     if malos:

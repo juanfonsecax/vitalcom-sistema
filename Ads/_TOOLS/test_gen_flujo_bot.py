@@ -11,6 +11,7 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gen_flujo_bot as G  # noqa: E402
+import mercado  # noqa: E402
 
 try:
     sys.stdout.reconfigure(encoding="utf-8")
@@ -210,6 +211,78 @@ def _conjunto(pk="PROD_X", angulo="ANG_X", fase="FASE2", estado="ACTIVO", nivel=
 
 def _creativo(pk="PROD_X", angulo="ANG_X", concepto="C2_BENEFICIOS"):
     return {"producto_key": pk, "angulo_key": angulo, "concepto_key": concepto}
+
+
+def test_producto_sin_ventas_no_bloquea_por_titulo():
+    """Un producto sin ventas ni angulo no bloquea el flujo: el angulo solo va en el titulo."""
+    v, faltan, _ = _con_datos({"_ESTADO_ANGULOS.csv": [], "_DIM_CREATIVOS.csv": [], "_DIM_CONJUNTOS.csv": []},
+        lambda: G.resolver("CLEARSTEM"))
+    check("sin ventas el angulo es PARAGUAS F1",
+          v is not None and v["angulo_nombre"] == "PARAGUAS F1",
+          (v or {}).get("angulo_nombre") if v else v)
+    check("angulo_nombre no esta en faltan",
+          not [f for f in faltan if f[0] == "angulo_nombre"], faltan)
+
+
+def test_verbo_medico_no_calza_dentro_de_palabra():
+    """El filtro de verbos medicos no calza dentro de otra palabra."""
+    check("frescura y procurar no disparan el gate",
+          not [m for m in G.prohibiciones("la frescura se mantiene y hay que procurar descanso")
+               if "VERBO MEDICO" in m],
+          G.prohibiciones("la frescura se mantiene y hay que procurar descanso"))
+    check("cura la infeccion si dispara el gate",
+          any("VERBO MEDICO" in m for m in G.prohibiciones("esto cura la infección")),
+          G.prohibiciones("esto cura la infección"))
+
+
+def _precios_ficticios():
+    return [{"producto_key": "PROD_X", "unidades": "1", "etiqueta": "1x",
+             "precio_q": "84900", "estado": "ACTIVO"},
+            {"producto_key": "PROD_X", "unidades": "2", "etiqueta": "2x",
+             "precio_q": "129900", "estado": "ACTIVO"},
+            {"producto_key": "PROD_X", "unidades": "3", "etiqueta": "3x",
+             "precio_q": "169900", "estado": "ACTIVO"}]
+
+
+def test_escalera_co_usa_punto_de_miles():
+    """El precio usa el separador de miles de la moneda del mercado."""
+    esc = _con_datos({"_DIM_PRECIOS.csv": _precios_ficticios()},
+        lambda: G.escalera("PROD_X", {"envase": "paquete", "duracion_1u": ""}, "$", "COP")[0])
+    check("CO usa punto de miles", esc is not None and "$84.900" in esc and "84,900" not in esc,
+          (esc or "")[:200])
+    esc_gt = _con_datos({"_DIM_PRECIOS.csv": _precios_ficticios()},
+        lambda: G.escalera("PROD_X", {"envase": "paquete", "duracion_1u": ""}, "Q", "GTQ")[0])
+    check("GT sigue con coma", esc_gt is not None and "Q129,900" in esc_gt,
+          (esc_gt or "")[:200])
+
+
+def test_persona_tuteo_transforma_y_voseo_no():
+    """La persona del texto sale del mercado: tuteo transforma, voseo queda igual."""
+    t = mercado.aplicar_persona("Contame, ¿pagás con vos?", "tuteo")
+    check("tuteo transforma", "Contame" not in t and "pagás" not in t and "vos" not in t, t)
+    mismo = "Contame, ¿pagás con vos?"
+    check("voseo devuelve el texto identico",
+          mercado.aplicar_persona(mismo, "voseo") == mismo,
+          mercado.aplicar_persona(mismo, "voseo"))
+
+
+def test_voseo_en_mercado_de_tuteo_se_rechaza():
+    """Voseo en mercado de tuteo se rechaza; en voseo no."""
+    malos = G.prohibiciones("Ya sabés que pagás al recibir", "tuteo")
+    check("tuteo con voseo se rechaza",
+          any(m.startswith("VOSEO EN MERCADO DE TUTEO") for m in malos), malos)
+    check("voseo no se rechaza",
+          not G.prohibiciones("Ya sabés que pagás al recibir", "voseo"),
+          G.prohibiciones("Ya sabés que pagás al recibir", "voseo"))
+
+
+def test_flujo_co_renderiza_sin_voseo():
+    """OVULOS_PURITY (CO) resuelve sin faltantes y su copy no trae voseo."""
+    v, faltan, _ = G.resolver("OVULOS_PURITY")
+    check("OVULOS_PURITY resuelve sin faltantes", v is not None and faltan == [], faltan)
+    if v:
+        resto = mercado.voseo_restante(G.solo_copy(G.render(v)))
+        check("el copy CO no trae voseo", resto == [], resto)
 
 
 def test_angulo_ganador_f2_un_solo_angulo():
@@ -697,6 +770,12 @@ def main():
                test_mensaje_prellenado_anuncio_sin_registro_bloquea,
                test_mensaje_prellenado_anuncio_ausente_del_copy,
                test_clearstem_tinnidrop_llevan_mensaje_prellenado,
+               test_producto_sin_ventas_no_bloquea_por_titulo,
+               test_verbo_medico_no_calza_dentro_de_palabra,
+               test_escalera_co_usa_punto_de_miles,
+               test_persona_tuteo_transforma_y_voseo_no,
+               test_voseo_en_mercado_de_tuteo_se_rechaza,
+               test_flujo_co_renderiza_sin_voseo,
                test_angulo_ganador_f2_un_solo_angulo,
                test_angulo_ganador_f2_ambiguo_bloquea,
                test_angulo_ganador_f2_sin_datos_usa_paraguas,
