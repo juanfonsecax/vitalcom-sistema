@@ -83,6 +83,9 @@ calidad de la escritura y del juicio.
 | Cómo se RENDERIZA un creativo en ChatGPT web (método, selectores, gate de calidad, réplica del dispositivo del ganador, números de registro) | `.claude/skills/generar-imagenes-chatgpt/SKILL.md` · valores `[REG_MSPAS]`/`[REG_FDA]` en `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` |
 | El flujo LucidBot: su texto, qué parte es variable y qué parte es instrucción. **Declarado, no escrito** | `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` (layout) + `PRODUCTOS/_DIM_FLUJO_BOT.csv` y `_DIM_MERCADOS.csv` (valores) + `Ads/_TOOLS/gen_flujo_bot.py` (renderiza y bloquea). Tres notaciones: `{{variable}}` sale de un CSV y bloquea con exit 1 si falta · `<<BLOQUE:x>>` lo escribe `etapa-5` · una línea `>>` es INSTRUCCIÓN y nunca se pega. Texto fijo no se reescribe por producto; precios se derivan de `_DIM_PRECIOS.csv`; el mercado (`GT`/`CO`) es variable, no doctrina. `test_gen_flujo_bot.py` congela las reglas |
 | Infografías del bot: motor compartido | `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` → `_FLUJO.md` (Info 1/2/3) · `_OPCIONALES.md` (IMAGEN 4/5/6) |
+| Bloques de juicio del bot, por producto (los 4 campos del catálogo, testimonios, audio, M2, FAQ) | `PRODUCTOS/[carpeta]/BLOQUES_BOT.md` — lo escribe `etapa-5`; lo inserta `Ads/_TOOLS/gen_flujo_bot.py` |
+| Prompts de infografías del bot, por producto | `PRODUCTOS/[carpeta]/INFOGRAFIAS.md` — lo escribe `etapa-4` |
+| `1_HACER_MANUAL.txt` de FASE 1: se GENERA, nunca se tipea ni se edita a mano | `Ads/_TOOLS/gen_manual.py` (plan de `gen_lanzador.py` + flujo de `gen_flujo_bot.py` + `INFOGRAFIAS.md`; bloquea nombrando qué falta y quién lo produce) |
 | Escalado: palancas, timing, Presupuesto de Decisión, umbrales de testeo | `DOCTRINA/ESCALADO_PLAYBOOK.md` |
 | Cadencia día a día, gates, multi-ganador, aritmética de las 4 fases | `DOCTRINA/CALENDARIO_ESCALADO.md` |
 | Capa de data: CSV, ganancia, break-even, dashboard | `DOCTRINA/DATA_PLAYBOOK.md` |
