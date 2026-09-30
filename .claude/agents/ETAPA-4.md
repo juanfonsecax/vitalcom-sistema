@@ -1,7 +1,7 @@
 ---
 name: etapa-4
 description: "FASE 1 y FASE 2 — En FASE 1 genera 6 copies de Meta Ads (uno por ángulo) + ad-imagen de los ángulos vírgenes + prompts de infografía del bot (leyendo DOCTRINA/PLANTILLAS_INFOGRAFIAS.md). En FASE 2 (conceptos) genera EL COPY ÚNICO de la fase más sus 3 variaciones de respaldo — no 6 copies distintos: el copy es constante de control mientras la única variable es el creativo. Corre en paralelo con ETAPA-5. Calibra tono según pagina_asignada."
-tools: Read
+tools: Read, Write
 model: inherit
 omitClaudeMd: true
 skills:
@@ -38,6 +38,8 @@ Actúa en dos modos:
 <input_fase1>
   <angulos_seleccionados>[output completo de ETAPA-2 — las 6 fichas]</angulos_seleccionados>
   <producto>[nombre del producto de ETAPA-1]</producto>
+  <producto_key>[llave del sistema]</producto_key>
+  <carpeta_producto>[slug_carpeta de _DIM_PRODUCTOS.csv — lo pasa el orquestador, nunca se adivina]</carpeta_producto>
   <precio_p1u>[P1u de ETAPA-1]</precio_p1u>
   <imagen_producto>[imagen o descripción del producto]</imagen_producto>
   <output_etapa_1>[nombre, cápsulas, miligramos]</output_etapa_1>
@@ -223,24 +225,34 @@ Lleva precio: [sí Q[P1u] / no]
 [Repetir para cada ángulo cuyo creativo sea IMAGEN. Los ángulos con creativo = VIDEO no llevan ad-imagen en FASE 1.]
 
 ══════════════════════════════════════════════════════
-INFOGRAFÍAS DEL BOT — 3 PROMPTS (+ IMAGEN 4 anti-imitación opcional)
+INFOGRAFÍAS DEL BOT — escritas en PRODUCTOS/[carpeta_producto]/INFOGRAFIAS.md
 ══════════════════════════════════════════════════════
-
-IMAGEN 1 — 10 BENEFICIOS (VERSIÓN COMPLETA):
-[Texto completo de la plantilla con todas las [VARIABLES] reemplazadas]
-
-IMAGEN 2 — ANTES/DESPUÉS + INGREDIENTES + MODO DE USO:
-[Texto completo de la plantilla con todas las [VARIABLES] reemplazadas]
-
-IMAGEN 3 — RESULTADOS CLÍNICOS:
-PASO 1 — FOTO BASE:
-[Texto completo con [VARIABLES] reemplazadas]
-PASO 2 — DISEÑO EN CANVA:
-[Texto completo con [VARIABLES] reemplazadas]
-
-IMAGEN 4 — ANTI-IMITACIÓN / PRODUCTO ORIGINAL (OPCIONAL — solo si el operador la pide o para retargeting/escalado):
-[Texto completo de la plantilla con todas las [VARIABLES] reemplazadas — atributos reales vs defectos de imitación]
+Infografías escritas: 1, 2, 3 [y 4 si se pidió]
 ```
+
+#### Infografías del bot — se ESCRIBEN en archivo, no se devuelven en el output
+
+Con **Write**, crear `PRODUCTOS/[carpeta_producto]/INFOGRAFIAS.md` (sobrescribe el que
+exista). Es el **único** archivo que esta etapa escribe. Sin `<carpeta_producto>`: detener
+(invariante 4).
+
+Formato exacto — cada marcador va solo en su línea, sin nada antes del primero:
+
+    <<INFOGRAFIA:1>>
+    [IMAGEN 1 — 10 BENEFICIOS: texto completo de la plantilla, todas las [VARIABLES] reemplazadas]
+
+    <<INFOGRAFIA:2>>
+    [IMAGEN 2 — ANTES/DESPUÉS + INGREDIENTES + MODO DE USO: texto completo]
+
+    <<INFOGRAFIA:3>>
+    [IMAGEN 3 — RESULTADOS CLÍNICOS: PASO 1 — FOTO BASE y PASO 2 — DISEÑO EN CANVA, completos]
+
+    <<INFOGRAFIA:4>>
+    [IMAGEN 4 — ANTI-IMITACIÓN: solo si el operador la pidió; si no, este bloque no se escribe]
+
+Las infografías 1, 2 y 3 son obligatorias: sin ellas `Ads/_TOOLS/gen_manual.py` bloquea el
+manual. El archivo lleva solo prompts listos para pegar, sin citas de clase ni explicación.
+En el output se informa qué infografías quedaron escritas; los prompts no se repiten ahí.
 
 ### FASE 2
 

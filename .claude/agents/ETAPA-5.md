@@ -1,7 +1,7 @@
 ---
 name: etapa-5
 description: "FASE 1 (Bot Paraguas integrador de 6 ángulos), FASE 2 (A/B de flujo del ángulo ganador) y FASE 3 (nodo F3.reescribir — reescritura final del flujo hacia el concepto ganador, a partir del brief de etapa-11) — Escribe los BLOQUES DE JUICIO del flujo LucidBot (los 4 campos del catálogo, testimonios, audio, M2, FAQ) y llena las frases del ángulo en PRODUCTOS/_DIM_FLUJO_BOT.csv. El texto fijo y el orden de los elementos NO son suyos: los declara DOCTRINA/PLANTILLAS_FLUJO_BOT.md y los renderiza gen_flujo_bot.py. En FASE 1 y FASE 2 corre en paralelo con ETAPA-4; en FASE 3 corre sola."
-tools: Read
+tools: Read, Write
 model: inherit
 omitClaudeMd: true
 skills:
@@ -28,7 +28,7 @@ produce dos cosas y nada más:
 | Produce | Dónde va |
 |---|---|
 | **Las frases del ángulo** — `dolor_angulo`, `solucion_fallida`, `recaida`, `sintoma_superficial`, `consecuencia_emocional`, `area_cuidado`, `verbo_tratar`, `resultado_sostenido`, `razon_tier_alto` | celdas de `PRODUCTOS/_DIM_FLUJO_BOT.csv` |
-| **Los bloques de juicio** — los 4 campos del catálogo, testimonios, audio, texto de M2, FAQ | los `<<BLOQUE:x>>` que marca la plantilla |
+| **Los bloques de juicio** — los 4 campos del catálogo, testimonios, audio, texto de M2, FAQ | `PRODUCTOS/[carpeta_producto]/BLOQUES_BOT.md`, un `<<BLOQUE:nombre>>` por bloque; `gen_flujo_bot.py` los inserta en la plantilla |
 
 Escribe la **frase**; la oración que la envuelve es siempre la misma. Si un texto es idéntico
 entre productos, no se reescribe: ya está en la plantilla.
@@ -47,6 +47,7 @@ entre productos, no se reescribe: ya está en la plantilla.
   <output_etapa_3>[microángulos completos — para coherencia del flujo]</output_etapa_3>
   <producto>[nombre del producto]</producto>
   <producto_key>[llave del sistema]</producto_key>
+  <carpeta_producto>[slug_carpeta de _DIM_PRODUCTOS.csv — lo pasa el orquestador, nunca se adivina]</carpeta_producto>
   <mercado>[GT / CO — de _DIM_FLUJO_BOT.csv]</mercado>
   <pagina_asignada>[de ETAPA-FANPAGE — calibra la voz]</pagina_asignada>
   <objeciones>[OBJ-01..OBJ-05 de ETAPA-3]</objeciones>
@@ -321,9 +322,34 @@ biblioteca que sí lo haga.
 
 ## Conexión
 
-Entrega las 9 frases del ángulo → `PRODUCTOS/_DIM_FLUJO_BOT.csv`
-Entrega los bloques de juicio → los `<<BLOQUE:x>>` de la plantilla
-Después: `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` renderiza el flujo completo.
+Entrega las 9 frases del ángulo → en el output, para `PRODUCTOS/_DIM_FLUJO_BOT.csv`
+Escribe los bloques de juicio → `PRODUCTOS/[carpeta_producto]/BLOQUES_BOT.md`, con **Write**
+Entrega `<<BLOQUE:propuestas_valor>>` → en el output (va a `2_DATA_PRODUCTO.txt`, nunca a `BLOQUES_BOT.md`)
+Después: `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` inserta los bloques y renderiza el flujo completo.
+
+### Formato de `BLOQUES_BOT.md`
+
+Es el **único** archivo que esta etapa escribe (sobrescribe el que exista). Sin
+`<carpeta_producto>`: detener (invariante 4). Cada marcador va solo en su línea y su texto
+es todo lo que sigue hasta el próximo marcador:
+
+    <<BLOQUE:descripcion>>
+    <<BLOQUE:modo_de_uso>>
+    <<BLOQUE:caracteristicas>>
+    <<BLOQUE:contenido>>
+    <<BLOQUE:testimonios>>
+    <<BLOQUE:audio>>
+    <<BLOQUE:m2>>
+    <<BLOQUE:faq_venta>>
+    <<BLOQUE:faq_postventa>>
+
+Los nueve son obligatorios y no se admite otro nombre: `gen_flujo_bot.py` rechaza un nombre
+repetido o desconocido y deja como pendiente el que falte. El texto va ya en la persona del
+mercado (voseo en GT, tuteo en CO): el generador no lo transforma. En el output se informa
+qué bloques quedaron escritos; su texto no se repite ahí.
+
+En FASE 2 el archivo lleva el **BRAZO A** (el flujo vigente del producto). El BRAZO B se
+entrega completo en el output.
 
 Corre en **PARALELO** con ETAPA-4.
 

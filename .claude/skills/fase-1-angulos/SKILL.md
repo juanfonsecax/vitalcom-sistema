@@ -179,15 +179,18 @@ Lanzar ambas en el mismo turno. Esperar AMBOS outputs antes de `etapa-6`.
 
 - **`etapa-4` (FASE 1)** — Inputs: las 6 fichas de `etapa-2` (con formato de creativo asignado),
   producto, P1u, imagen del producto, output de `etapa-1` y `etapa-1b`, `<pagina_asignada>`, datos
-  del operador (días de resultado, dosis, momento de uso, estadísticas, FAQs). Output: 6 copies +
-  **ad-imagen** (Prompt Maestro) para los 6 ángulos (F1 es TODO IMAGEN) + **3 infografías del
-  bot** e IMAGEN 4 opcional.
+  del operador (días de resultado, dosis, momento de uso, estadísticas, FAQs), `producto_key` y
+  `carpeta_producto` (el `slug_carpeta` de `_DIM_PRODUCTOS.csv`). Output: 6 copies +
+  **ad-imagen** (Prompt Maestro) para los 6 ángulos (F1 es TODO IMAGEN). Las **3 infografías
+  del bot** (e IMAGEN 4 opcional) las escribe la etapa en
+  `PRODUCTOS/[carpeta_producto]/INFOGRAFIAS.md`; no vuelven en el output.
 - **`etapa-5` (FASE 1 — Bot Paraguas)** — Inputs: las 6 fichas (con nivel de conciencia), producto,
-  `producto_key`, `<pagina_asignada>`. Output: **las 9 frases del ángulo** para
+  `producto_key`, `carpeta_producto`, `<pagina_asignada>`. Output: **las 9 frases del ángulo** para
   `PRODUCTOS/_DIM_FLUJO_BOT.csv` + **los bloques de juicio** (los 4 campos del catálogo,
   testimonios, audio, texto de M2 con su guión de audio testimonio, FAQ), integrando los 6 ángulos
   con **Promesa Integradora**. El texto fijo, el orden de los elementos y las interacciones **no
-  son suyos**: los declara `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`.
+  son suyos**: los declara `DOCTRINA/PLANTILLAS_FLUJO_BOT.md`. Los bloques de juicio los escribe la
+  etapa en `PRODUCTOS/[carpeta_producto]/BLOQUES_BOT.md`; no vuelven en el output.
   Después: `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` renderiza el flujo completo en
   `PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`. Si bloquea, produce el dato que nombra y volvé a correrlo.
 
@@ -233,7 +236,10 @@ DOS CONCEPTOS del mismo ángulo). **Default vigente = DUPLICADO.** Diseño del t
 Crear la carpeta `PRODUCTOS/[NOMBRE]/` y ejecutar **Write** para los archivos por rol (nombres
 fijos, iguales para todo producto):
 
-- `1_HACER_MANUAL.txt` — **todo lo que el operador ejecuta a mano**, en orden y listo para copiar/pegar.
+- `1_HACER_MANUAL.txt` — **todo lo que el operador ejecuta a mano**. No se escribe con Write: lo
+  genera `python Ads/_TOOLS/gen_manual.py [producto_key] --escribir` después de escribir
+  `2_DATA_PRODUCTO.txt`. Si bloquea, nombra qué falta y quién lo produce: se produce ese dato
+  y se vuelve a correr; nunca se completa a mano.
 - `2_DATA_PRODUCTO.txt` — la **memoria del producto**: validación, costeo, componentes, los 6
   ángulos, ángulos descubiertos, página asignada, config MCP y el **REGISTRO DE CONJUNTOS**.
 - *(Si hubo MCP)* `3_CAMPAÑA_META.txt` — **llave técnica**: IDs de campaña, conjuntos, anuncios y creativos.

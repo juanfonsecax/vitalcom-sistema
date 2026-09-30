@@ -48,6 +48,19 @@ La **primera línea de los 3 archivos** es idéntica. Permite saber sin ambigüe
 
 > Es el único archivo que el operador abre para ejecutar. Todo verbatim, en orden, listo para copiar y pegar. Acá va lo que el sistema NO puede hacer solo: editar el flujo de LucidBot, subir creativos, generar imágenes.
 
+> **FASE 1 — este archivo NO se escribe con Write: lo GENERA el código.** Orden obligatorio:
+> 1. Escribir `2_DATA_PRODUCTO.txt` (su primera línea es el encabezado único).
+> 2. Correr `python Ads/_TOOLS/gen_manual.py [producto_key] --escribir`.
+> 3. Si imprime `BLOQUEADO — falta:`, NO escribir el manual a mano ni completar lo que
+>    falta: devolver al orquestador cada línea tal cual (cada una nombra el dato y su
+>    dueño) y detener. Se vuelve a correr cuando el dueño produjo el dato.
+>
+> El generador copia el plan de `_PLAN.json`, el flujo de `gen_flujo_bot.py` con
+> `BLOQUES_BOT.md`, y los prompts de `INFOGRAFIAS.md`. Un error en el manual se corrige en
+> el dato de origen y se regenera; nunca editando `1_HACER_MANUAL.txt`.
+>
+> La plantilla de abajo aplica solo al cierre de FASE 2, hasta que el generador cubra esa fase.
+
 > **REGLA DE CONTENIDO LIMPIO (obligatoria):** ARCHIVO 1 lleva el contenido FINAL completo — nunca truncado, nunca "ver historial" ni "ver 2_DATA" como sustituto de contenido real. Pero NUNCA lleva doctrina: cero citas de clase/mentor ("Clase 19, Joaquín", "Clase 22", etc.), cero explicación de POR QUÉ existe una regla, cero razonamiento de ranking o metodología. Esas dos cosas (la cita y el porqué) van únicamente en ARCHIVO 2. La prueba: si el operador tuviera que preguntar "¿y esto para qué me sirve?", esa frase no debería estar en ARCHIVO 1. Al copiar texto de `DOCTRINA/PLANTILLAS_ADS.md` o `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`, omitir cualquier paréntesis o nota que cite una clase/mentor — pegar solo la instrucción ya resuelta con sus `[VARIABLES]` reemplazadas.
 
 ```
@@ -280,7 +293,7 @@ solo el encabezado) y coinciden con los INPUTS CONGELADOS del orquestador:
 | 6 | campaign_id + 6 ad_set_id | 3_CAMPAÑA · REGISTRO DE CONJUNTOS de 2_DATA |
 | 7 | NOMBRE_CONJUNTO de cada conjunto (exacto) | REGISTRO DE CONJUNTOS de 2_DATA · `_DIM_CONJUNTOS.csv` · 3_CAMPAÑA |
 | 8 | ángulo · formato · precio_en_ad de cada conjunto | 2_DATA · `_DIM_CONJUNTOS.csv` (mismo valor, sin excepción) |
-| 9 | PROPUESTAS DE VALOR (si etapa-5 las entregó) | 2_DATA sección "PROPUESTAS DE VALOR" transcribe **verbatim** el `<<BLOQUE:propuestas_valor>>` de 1_HACER_MANUAL — mismo texto, mismo orden, sin resumir (invariante 3) |
+| 9 | PROPUESTAS DE VALOR (si etapa-5 las entregó) | 2_DATA sección "PROPUESTAS DE VALOR" transcribe **verbatim** el `<<BLOQUE:propuestas_valor>>` que entregó `etapa-5` — mismo texto, mismo orden, sin resumir (invariante 3) |
 
 **Si hay UNA discrepancia → corregir y reescribir; NO entregar.** Reportar al operador qué se reconcilió. Si el operador cambió un input (costo, dosis, página) después de una corrida previa, eso es un **rerun**: subir VERSION y rehacer los archivos completos.
 
