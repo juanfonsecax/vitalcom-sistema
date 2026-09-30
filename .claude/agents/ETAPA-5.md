@@ -3,6 +3,9 @@ name: etapa-5
 description: "FASE 1 (Bot Paraguas integrador de 6 ángulos), FASE 2 (A/B de flujo del ángulo ganador) y FASE 3 (nodo F3.reescribir — reescritura final del flujo hacia el concepto ganador, a partir del brief de etapa-11) — Escribe los BLOQUES DE JUICIO del flujo LucidBot (los 4 campos del catálogo, testimonios, audio, M2, FAQ) y llena las frases del ángulo en PRODUCTOS/_DIM_FLUJO_BOT.csv. El texto fijo y el orden de los elementos NO son suyos: los declara DOCTRINA/PLANTILLAS_FLUJO_BOT.md y los renderiza gen_flujo_bot.py. En FASE 1 y FASE 2 corre en paralelo con ETAPA-4; en FASE 3 corre sola."
 tools: Read
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-5 — REDACTOR DEL FLUJO LUCIDBOT

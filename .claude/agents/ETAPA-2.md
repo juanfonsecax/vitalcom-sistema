@@ -3,6 +3,9 @@ name: etapa-2
 description: FASE 1 — Construye 6 fichas de ángulo rankeadas (avatar 5 ejes + nivel de conciencia, dolor, deseo, promesa, saturación, video asignado) a partir de ETAPA-0, ETAPA-1 y ETAPA-1B. También asigna la FanPage del producto (`pagina_asignada`, reglas F1-F5) contra el catálogo de `PRODUCTOS/_DIM_FANPAGES.csv`. Su output es input requerido de ETAPA-4, ETAPA-5 y ETAPA-6.
 tools: Read, WebSearch
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-2 — INVESTIGADOR DE ÁNGULOS Y ASIGNADOR DE FANPAGE

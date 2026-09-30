@@ -3,6 +3,9 @@ name: etapa-1b
 description: FASE 1 — Analiza ingredientes/componentes del producto Y mina la VOZ DEL CLIENTE en fuentes reales (Reddit, foros, reseñas, blogs, comentarios) con búsqueda web obligatoria, para descubrir ángulos de venta basados en el dolor real de la gente — no solo en lo que hace el ingrediente. Corre después de ETAPA-1, antes de ETAPA-2.
 tools: Read, WebSearch
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-1B — ANALIZADOR DE COMPONENTES DEL PRODUCTO

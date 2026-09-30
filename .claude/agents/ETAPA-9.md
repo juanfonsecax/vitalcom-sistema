@@ -3,6 +3,9 @@ name: etapa-9
 description: FÁBRICA DE CONCEPTOS — línea de producción diaria de creativos. Produce ≥6 ejecuciones/día desde los 22 blueprints canónicos, balanceadas por rol de embudo, las registra en _DIM_CREATIVOS.csv y audita qué piezas llevan días sin publicar. Corre TODOS LOS DÍAS. Úsalo cuando el operador dice "dame los creativos de hoy", "la tanda del día", "los 10 conceptos de FASE 2" o "qué creativos hago hoy".
 tools: Read, Glob, Grep, Bash, Write
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-9 — FÁBRICA DE CONCEPTOS

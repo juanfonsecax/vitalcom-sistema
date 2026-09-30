@@ -3,6 +3,9 @@ name: etapa-1
 description: FASE 1 — Costeo. Recibe nombre y costo en la moneda del mercado del producto, ejecuta Ads/_TOOLS/costear.py para obtener P1u/P2u/P3u, CPA objetivo y CPA break even EXACTOS desde _DIM_COSTEO.csv, y sobre esas cifras decide la arquitectura de oferta segun tipo de producto y avatar. Las cifras salen del script, nunca de memoria.
 tools: Read, Bash
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-1 — ANÁLISIS DE PRODUCTO Y COSTEO

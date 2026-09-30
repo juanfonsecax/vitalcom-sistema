@@ -3,6 +3,9 @@ name: etapa-0
 description: FASE 1 — Clasifica N transcripciones TXT por ángulo del producto, agrupa y selecciona los 6 mejores videos para testeo (1 por ángulo), rankeados por densidad de señales de compra. Lee de Ads/1.2 Transcripcion videos/.
 tools: Read, Glob, Grep
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-0 — PRE-CLASIFICADOR DE CREATIVOS

@@ -127,7 +127,7 @@ def frontmatter(texto):
     fin = texto.find("\n---", 3)
     datos, clave = {}, None
     for linea in texto[3:fin].splitlines():
-        m = re.match(r"^([a-z_]+):\s*(.*)$", linea)
+        m = re.match(r"^([A-Za-z_]+):\s*(.*)$", linea)
         if m:
             clave = m.group(1)
             datos[clave] = m.group(2)
@@ -162,6 +162,8 @@ def construir():
             "archivo": ruta,
             "tokens": tokens(ruta),
             "model": fm.get("model", "(sin declarar)"),
+            "omite_claude": fm.get("omitClaudeMd", "").strip() == "true",
+            "skills": re.findall(r"[\w-]+", fm.get("skills", "")),
             "desc_tok": int(len(fm.get("description", "").encode("utf-8")) / BYTES_POR_TOKEN),
             "lee_md": sorted(md),
             "lee_csv": sorted(csv)}
@@ -194,7 +196,10 @@ def analizar():
             + sum(s["desc_tok"] for s in skills.values()))
 
     def costo_fase(nombre):
-        """Se SUMA por subagente: cada uno hereda CLAUDE.md entero, no lo comparte."""
+        """Se SUMA por subagente: cada uno hereda CLAUDE.md entero, no lo comparte.
+
+        Salvo que el agente lo omita (`omitClaudeMd: true`): ahi precarga las skills
+        que declara su frontmatter en vez de CLAUDE.md."""
         s = skills.get(nombre)
         if not s:
             return 0
@@ -202,7 +207,9 @@ def analizar():
         for etapa in s["invoca"]:
             a = agentes.get(etapa)
             if a:
-                total += claude + a["tokens"] + sum(tokens(indice[m]) for m in a["lee_md"])
+                total += a["tokens"] + sum(tokens(indice[m]) for m in a["lee_md"])
+                total += (sum(skills[k]["tokens"] for k in a["skills"] if k in skills)
+                          if a["omite_claude"] else claude)
         return total
 
     fases = {n: costo_fase(n) for n in

@@ -3,6 +3,9 @@ name: etapa-7
 description: Monitor diario de métricas Y motor de decisión de escalado, en una sola pasada. Fuente de verdad de VENTAS = _FACT_VENTAS.csv; Meta MCP solo aporta señales de entrega. Lee PRODUCTOS/_DECISIONES.json (decidir.py calcula CPA, IC, PD y fatiga: reglamento único) y el árbol de palancas de DOCTRINA/ESCALADO/07_MATRIZ_DUPLICACION.md, verifica integridad de ventana y variables de confusión, mide el sangrado, lee la data por dimensión y ordena el siguiente movimiento (pausar, optimizar flujo, surfing, duplicar, Post ID, multicuenta, multifanpage, subir precio, renovar creativos). Solo lee y recomienda — no ejecuta nada en Meta. Mide por CPA, nunca por ROAS. Escalado fuerte SOLO con CPA real confirmado.
 tools: Read, Glob, Grep
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-7 — MONITOR Y DECISIÓN DE ESCALADO

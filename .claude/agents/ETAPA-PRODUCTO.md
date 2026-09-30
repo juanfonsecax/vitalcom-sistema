@@ -3,6 +3,9 @@ name: etapa-producto
 description: FASE 1 — Valida si un producto candidato es apto para e-commerce de impulso (17 criterios). Corre PRIMERO, antes de ETAPA-0. Entrega veredicto APTO/NO APTO con score 0-1.
 tools: Read, Glob, Grep, WebSearch
 model: inherit
+omitClaudeMd: true
+skills:
+  - reglas-sistema
 ---
 
 # ETAPA-PRODUCTO — VALIDADOR Y SELECTOR DE PRODUCTO
