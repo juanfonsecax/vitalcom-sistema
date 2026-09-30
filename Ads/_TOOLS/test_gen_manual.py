@@ -38,6 +38,7 @@ def _conjunto(n, con_prompt=True):
          "archivo_creativo": "AD%d.png" % n, "lleva_precio": n == 1,
          "nombre": "CJ%d" % n, "presupuesto_usd": 3.95, "banda_edad": "25-40",
          "genero": "MUJER", "anuncios": [{"letra": "A", "nombre": "AD%d ~ A" % n}],
+         "presupuesto_cuenta_texto": "US$3.95",
          "copy": {"textos": ["TEXTO %d-A" % n, "TEXTO %d-B" % n],
                   "titulos": ["TIT %d" % n], "descripcion": "DESC %d" % n}}
     if con_prompt:
@@ -45,34 +46,51 @@ def _conjunto(n, con_prompt=True):
     return c
 
 
-def _plan_falso():
+def _plan_falso(registrado=False):
     return {
         "nombre": "Producto Falso", "fase": 1, "fase_nombre": "FASE 1 · ÁNGULOS",
         "pagina": "Fan Falsa", "page_id": "123", "cuenta": "CUENTAX",
         "bloqueantes": [], "faltantes": [],
         "campanas": [{"nombre": "CAMP1", "objetivo": "Tráfico", "presupuesto": "ABO"}],
-        "lanzamiento": {"fecha": "2026-10-01", "legible": "01-oct-2026", "hora": "4:00 AM"},
+        "lanzamiento": {"fecha": "2026-10-01", "legible": "01-oct-2026", "hora": "4:00 AM",
+                        "registrado": registrado, "campana_registrada": "CAMP1" if registrado else None},
         "calendario": [{"dia": "Día 0", "fecha": "01-oct", "que": "Lanza",
                         "hace": "nada", "manda": None}],
+        "config_meta": ["Ubicación: X · Sin intereses", "NO aceptar recomendaciones de Meta"],
+        "presupuesto": {"moneda_cuenta": "USD", "total_dia_cuenta_texto": "US$7.90"},
         "conjuntos": [_conjunto(1), _conjunto(2, con_prompt=False)],
     }
 
 
-def _datos_falsos():
-    return {"pk": "FALSO", "plan": _plan_falso(), "flujo": "FLUJO PEGABLE",
-            "infografias": {"1": "INFO UNO", "2": "INFO DOS"}}
+def _datos_falsos(registrado=False):
+    return {"pk": "FALSO", "plan": _plan_falso(registrado), "flujo": "FLUJO PEGABLE",
+            "infografias": {"1": "INFO UNO", "2": "INFO DOS"},
+            "encabezado": "ENCABEZADO CANONICO",
+            "mensaje_prellenado": "Hola, quiero info",
+            "packshot": "Ads/MEDIA_X/PACK.png",
+            "referencia": "Ads/_SWIPE/ref.jpg"}
 
 
 def test_render_manual_copia_textual_y_ordena_secciones():
     """Todo lo de origen aparece textual y las secciones van A..F en orden."""
     manual = GM.render_manual(_datos_falsos())
     for esperado in ("PROMPT 1 COMPLETO", "TEXTO 1-A", "TEXTO 2-B", "TIT 1", "TIT 2",
-                     "DESC 1", "DESC 2", "FLUJO PEGABLE", "INFO UNO", "INFO DOS"):
+                     "DESC 1", "DESC 2", "FLUJO PEGABLE", "INFO UNO", "INFO DOS",
+                     "ENCABEZADO CANONICO", "Ads/MEDIA_X/PACK.png", "Ads/_SWIPE/ref.jpg",
+                     "Ubicación: X · Sin intereses", "NO aceptar recomendaciones de Meta",
+                     "Hola, quiero info"):
         check("copia textual %s" % esperado.split()[0], esperado in manual, manual[-200:])
+    check("la primera linea es el encabezado",
+          manual.splitlines()[0] == "ENCABEZADO CANONICO", manual.splitlines()[0])
     posiciones = [manual.find(h) for h in ("A. CHECKLIST", "B. CREATIVOS", "C. INFOGRAFÍAS",
                                            "D. FLUJO", "E. ESTRUCTURA", "F. CALENDARIO")]
     check("secciones A..F en orden",
           all(p >= 0 for p in posiciones) and posiciones == sorted(posiciones), posiciones)
+    con_reg = GM.render_manual(_datos_falsos(registrado=True))
+    check("registrado muestra ya registrado y no el comando",
+          "LANZAMIENTO ya registrado" in con_reg and "--evento LANZAMIENTO" not in con_reg)
+    check("sin registrar sale el comando",
+          "--evento LANZAMIENTO" in manual and "LANZAMIENTO ya registrado" not in manual)
 
 
 def test_parsear_infografias_lee_y_rechaza():
@@ -92,13 +110,17 @@ def test_parsear_infografias_lee_y_rechaza():
 
 
 def test_render_manual_tolera_opcionales_vacios():
-    """Sin prompt_imagen y con manda None el render no falla."""
+    """Sin prompt_imagen, sin claves nuevas y con manda None el render no falla."""
+    datos = {"pk": "FALSO",
+             "plan": {"nombre": "X", "conjuntos": [{"n": 1, "anuncios": [], "copy": {}}],
+                      "campanas": [], "calendario": [{"dia": "D0", "manda": None}]},
+             "flujo": "", "infografias": {}}
     try:
-        manual = GM.render_manual(_datos_falsos())
+        manual = GM.render_manual(datos)
     except (KeyError, TypeError) as error:
         check("render con opcionales vacios no falla", False, error)
         return
-    check("render con opcionales vacios no falla", "AD 2" in manual and "Día 0" in manual)
+    check("render con opcionales vacios no falla", "AD 1" in manual and "D0" in manual)
 
 
 def test_ovulos_reune_sin_bloqueos():
@@ -118,6 +140,17 @@ def test_ovulos_manual_trae_todo_textual():
         return
     manual = GM.render_manual(datos)
     check("trae REGLAS CONVERSACIONALES", "REGLAS CONVERSACIONALES" in manual)
+    with io.open(os.path.join(BASE, "PRODUCTOS", "OVULOS_PURITY", "2_DATA_PRODUCTO.txt"),
+                  encoding="utf-8") as fh:
+        primera = fh.readline().rstrip("\n")
+    check("la primera linea es el encabezado canonico",
+          manual.splitlines()[0] == primera, manual.splitlines()[0])
+    check("trae la config fija", "Advantage+ Audience: OFF" in manual)
+    check("trae el pais", "Ubicación: Colombia" in manual)
+    check("trae el packshot", "OVULOSPURITY_PACKSHOT.png" in manual)
+    check("trae la referencia", "ligera__Camila-Recomienda__15_" in manual)
+    check("trae el lanzamiento registrado",
+          "LANZAMIENTO ya registrado: 2026-09-30" in manual)
     with io.open(os.path.join(BASE, "PRODUCTOS", "OVULOS_PURITY", "INFOGRAFIAS.md"),
                   encoding="utf-8") as fh:
         esperadas = GM.parsear_infografias(fh.read())

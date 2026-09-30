@@ -70,10 +70,16 @@ def parsear_infografias(texto):
 
 
 def reunir(pk):
-    """Junta las fuentes. Devuelve (datos, bloqueos): `datos` trae "plan", "flujo"
-    (texto pegable) e "infografias"; `bloqueos` nombra QUE falta y QUIEN lo produce."""
+    """Junta las fuentes. Devuelve (datos, bloqueos): `datos` trae "plan", "flujo",
+    "infografias", "encabezado", "mensaje_prellenado", "packshot" y "referencia";
+    `bloqueos` nombra QUE falta y QUIEN lo produce."""
+    import referencia_f1 as _ref
+    import verificar_producto as _verif
+
     bloqueos = []
-    datos = {"pk": pk, "plan": None, "flujo": "", "infografias": {}}
+    datos = {"pk": pk, "plan": None, "flujo": "", "infografias": {},
+             "encabezado": None, "mensaje_prellenado": None, "packshot": None,
+             "referencia": None}
 
     modelo = _lanz.construir()
     fila = next((p for p in modelo["productos"] if p["producto_key"] == pk), None)
@@ -90,6 +96,7 @@ def reunir(pk):
         for k, d in faltan:
             bloqueos.append("%s — %s" % (k, d))
     else:
+        datos["mensaje_prellenado"] = v.get("mensaje_prellenado_anuncio") or None
         try:
             bloques = _bot.bloques_persistidos(pk)
         except ValueError as error:
@@ -105,6 +112,35 @@ def reunir(pk):
             datos["flujo"] = _bot.para_pegar(txt)
 
     carpeta = _bot.carpeta_de(pk)
+    ruta_data = os.path.join(PROD, carpeta, "2_DATA_PRODUCTO.txt") if carpeta else None
+    if ruta_data and os.path.isfile(ruta_data) and _verif.parsear_encabezado(ruta_data) is not None:
+        with open(ruta_data, encoding="utf-8") as fh:
+            datos["encabezado"] = fh.readline().rstrip("\n")
+    else:
+        bloqueos.append("2_DATA_PRODUCTO.txt: falta o su primera línea no es el encabezado "
+                        "único — etapa-guardar-producto")
+
+    packshot = None
+    for r in _lanz.leer_csv(os.path.join("PRODUCTOS", "_DIM_ENVASE.csv")):
+        if (r.get("producto_key") or "").strip() == pk:
+            packshot = (r.get("packshot") or "").strip() or None
+            break
+    if packshot:
+        datos["packshot"] = packshot
+    else:
+        bloqueos.append("_DIM_ENVASE.csv: sin packshot declarado — operador "
+                        "(Ads/_TOOLS/cargar_packshot.py)")
+
+    if (datos["plan"] or {}).get("fase") == 1:
+        fila_ref = _ref.fila_de(pk)
+        nombre_ref = (fila_ref.get("referencia") or "").strip() if fila_ref else ""
+        if nombre_ref:
+            datos["referencia"] = os.path.relpath(
+                os.path.join(_ref.BANCO_DIR, nombre_ref), BASE).replace("\\", "/")
+        else:
+            bloqueos.append("_DIM_REFERENCIA_F1.csv: sin referencia elegida — etapa-2 "
+                            "(Ads/_TOOLS/referencia_f1.py --elegir)")
+
     ruta_inf = os.path.join(PROD, carpeta, "INFOGRAFIAS.md") if carpeta else None
     if not ruta_inf or not os.path.isfile(ruta_inf):
         bloqueos.append("INFOGRAFIAS.md: falta el archivo — etapa-4")
@@ -133,14 +169,19 @@ def render_manual(datos):
     conjuntos = sorted(plan.get("conjuntos") or [], key=lambda c: (c.get("n") is None, c.get("n")))
     infografias = datos.get("infografias") or {}
     flujo = datos.get("flujo") or ""
+    pres = plan.get("presupuesto") or {}
+    moneda_cuenta = pres.get("moneda_cuenta")
 
-    encabezado = _lineas(
+    encabezado = []
+    if datos.get("encabezado"):
+        encabezado.append(datos["encabezado"])
+    encabezado.extend(_lineas(
         "HACER MANUAL — %s | %s" % (plan.get("nombre"), plan.get("fase_nombre")),
         "FanPage: %s (page_id %s) · Cuenta: %s" % (plan.get("pagina"), plan.get("page_id"),
                                                    plan.get("cuenta")),
         "GENERADO por Ads/_TOOLS/gen_manual.py — no editar a mano: se corrige el dato de origen",
         "y se vuelve a generar.",
-    )
+    ))
 
     sec_a = _lineas(
         "A. CHECKLIST",
@@ -151,7 +192,12 @@ def render_manual(datos):
         "[ ] 5. Registrar en el sistema (sección F)",
     )
 
-    sec_b = ["B. CREATIVOS DE LOS ANUNCIOS"]
+    sec_b = ["B. CREATIVOS DE LOS ANUNCIOS",
+             "Adjuntar a CADA prompt, en este orden:"]
+    if datos.get("packshot"):
+        sec_b.append("1. Foto del producto: %s" % datos["packshot"])
+    if datos.get("referencia"):
+        sec_b.append("2. Imagen de referencia: %s" % datos["referencia"])
     for c in conjuntos:
         sec_b.append("AD %s — %s · formato: %s · archivo: %s · precio en el ad: %s"
                      % (c.get("n"), c.get("angulo_titulo"), c.get("formato"),
@@ -176,9 +222,23 @@ def render_manual(datos):
     lanz = plan.get("lanzamiento") or {}
     if lanz.get("legible"):
         sec_e.append("Lanzamiento: %s a las %s." % (lanz["legible"], lanz.get("hora") or ""))
+    sec_e.append("CONFIGURACIÓN IGUAL EN TODOS LOS CONJUNTOS:")
+    for linea in plan.get("config_meta") or []:
+        sec_e.append("· %s" % linea)
+    if datos.get("mensaje_prellenado"):
+        sec_e.append("· Mensaje prellenado de WhatsApp (se configura a mano en Ads Manager): %s"
+                     % datos["mensaje_prellenado"])
+    if pres.get("total_dia_cuenta_texto"):
+        sec_e.append("Total del día: %s" % pres["total_dia_cuenta_texto"])
     for c in conjuntos:
-        sec_e.append("%s · presupuesto US$%s/día · edad %s · género %s · %s · %s · precio en el ad %s"
-                     % (c.get("nombre"), c.get("presupuesto_usd"), c.get("banda_edad"),
+        if c.get("presupuesto_cuenta_texto"):
+            ppto = "presupuesto %s/día" % c["presupuesto_cuenta_texto"]
+            if moneda_cuenta and moneda_cuenta != "USD":
+                ppto += " (US$%s)" % c.get("presupuesto_usd")
+        else:
+            ppto = "presupuesto US$%s/día" % c.get("presupuesto_usd")
+        sec_e.append("%s · %s · edad %s · género %s · %s · %s · precio en el ad %s"
+                     % (c.get("nombre"), ppto, c.get("banda_edad"),
                         c.get("genero"), c.get("formato"), c.get("archivo_creativo"),
                         "SI" if c.get("lleva_precio") else "NO"))
         for a in c.get("anuncios") or []:
@@ -203,11 +263,15 @@ def render_manual(datos):
     camp0 = (plan.get("campanas") or [{}])[0]
     sec_f.append('python Ads/_TOOLS/registrar_evento.py --producto %s --evento CAMBIO_BOT '
                  '--motivo "bot cargado en LucidBot" --fuente "operador"' % pk)
-    sec_f.append('python Ads/_TOOLS/registrar_evento.py --producto %s --evento LANZAMIENTO '
-                 '--fase %s --fecha %s --cuenta %s --campana %s --motivo "lanzamiento" '
-                 '--fuente "operador"'
-                 % (pk, plan.get("fase"), lanz.get("fecha"), plan.get("cuenta"),
-                    camp0.get("nombre")))
+    if lanz.get("registrado"):
+        sec_f.append("LANZAMIENTO ya registrado: %s · campaña %s"
+                     % (lanz.get("fecha"), lanz.get("campana_registrada")))
+    else:
+        sec_f.append('python Ads/_TOOLS/registrar_evento.py --producto %s --evento LANZAMIENTO '
+                     '--fase %s --fecha %s --cuenta %s --campana %s --motivo "lanzamiento" '
+                     '--fuente "operador"'
+                     % (pk, plan.get("fase"), lanz.get("fecha"), plan.get("cuenta"),
+                        camp0.get("nombre")))
 
     return SEP.join(["\n".join(encabezado), "\n".join(sec_a), "\n".join(sec_b),
                      "\n".join(sec_c), "\n".join(sec_d), "\n".join(sec_e),
