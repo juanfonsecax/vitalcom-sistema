@@ -224,6 +224,46 @@ def destino_actual():
     return "BOT_V%d" % n
 
 
+def token_formato(formato):
+    """Token de formato del nombre del anuncio: IMG para IMAGEN (o vacío), VID para el resto."""
+    return "IMG" if (formato or "IMAGEN").strip().upper() == "IMAGEN" else "VID"
+
+
+def destino_de(plan):
+    """El eje destino de la firma: el que el plan declara (FASE 2 fija uno por brazo del A/B);
+    si el plan no declara, la versión vigente del bot (destino_actual())."""
+    return (plan.get("destino_key") or "").strip() or destino_actual()
+
+
+PATRON_REPLICA = re.compile(r"_R(\d+)$")
+
+
+def siguiente_replica(filas_conjuntos, pk, angulo, cta, nombres_meta=(), token=None):
+    """El próximo R[N] para producto+ángulo+cuenta. Cuenta solo lo que consta publicado: las
+    filas de _DIM_CONJUNTOS.csv con verificado_en_csv == "SI" y los nombres de un snapshot de
+    Meta (nombres_meta). Una fila de diseño (verificado_en_csv NO) no ocupa número. Sin nada
+    publicado, R1. La publicación siempre corre con snapshot, así que lo vivo nunca se reusa."""
+    maxn = 0
+    for r in filas_conjuntos:
+        if r.get("producto_key") != pk or r.get("angulo_key") != angulo:
+            continue
+        if (r.get("cuenta_alias") or "").replace(" ", "").upper() != cta:
+            continue
+        if (r.get("verificado_en_csv") or "").strip().upper() != "SI":
+            continue
+        m = PATRON_REPLICA.search((r.get("conjunto_meta") or "").strip())
+        if m:
+            maxn = max(maxn, int(m.group(1)))
+    if token is not None:
+        prefijo = "%s_%s_%s_" % (cta, token, guion(angulo))
+        for nombre in nombres_meta:
+            if (nombre or "").startswith(prefijo):
+                m = PATRON_REPLICA.search((nombre or "").strip())
+                if m:
+                    maxn = max(maxn, int(m.group(1)))
+    return maxn + 1
+
+
 def lanzamiento_registrado(pk, fase):
     """(fecha "YYYY-MM-DD", campana_clave) del ÚLTIMO evento LANZAMIENTO del producto
     para esa fase en _EVENTOS.csv, o None. Un evento es de la fase si su campana_clave,
@@ -277,7 +317,7 @@ CONFIG_META_FIJA = (
 )
 
 
-def derivar(prod, plan, hechos, usd_conv_portafolio):
+def derivar(prod, plan, hechos, usd_conv_portafolio, filas_conjuntos):
     pk = prod["producto_key"]
     cuenta = (prod.get("cuenta_alias") or "").strip()
     cuenta_ok = bool(cuenta) and cuenta.upper() not in ("PENDIENTE", "")
@@ -379,12 +419,14 @@ def derivar(prod, plan, hechos, usd_conv_portafolio):
     for c in plan.get("conjuntos", []):
         ak = c.get("angulo_key") or "SIN-ANGULO"
         banda, banda_por_que = banda_edad(c.get("avatar_edad"))
-        nombre = "%s_%s_%s_R1" % (cta, prod_corto, guion(ak))
-        fmt = "IMG" if (c.get("formato") or "IMAGEN").upper() == "IMAGEN" else "VID"
+        numero = siguiente_replica(filas_conjuntos, pk, ak,
+                                   (cta or "").replace(" ", "").upper(), token=prod_corto)
+        nombre = "%s_%s_%s_R%d" % (cta, prod_corto, guion(ak), numero)
+        fmt = token_formato(c.get("formato"))
         fir = firma(pk, ak, cc.get("concepto_key"), cc.get("canonico_id"),
                     c.get("nivel_conciencia"),
                     oferta.get("oferta_key") if c.get("lleva_precio") else "SIN_PRECIO",
-                    destino_actual())
+                    destino_de(plan))
         anuncios = [{"letra": l, "nombre": "%s_%s_%s ~ %s" % (guion(ak), fmt, l, fir)}
                     for l in ("A", "B")]
         conjuntos.append({
@@ -499,6 +541,7 @@ def construir():
     productos = leer_csv(DIM_PRODUCTOS)
     hechos = hechos_por_producto()
     usd_port = usd_por_conversacion_portafolio(hechos)
+    filas_conjuntos = leer_csv("PRODUCTOS/_DIM_CONJUNTOS.csv")
 
     filas = []
     for prod in productos:
@@ -523,7 +566,7 @@ def construir():
         if base["tiene_plan"]:
             with io.open(ruta_plan, encoding="utf-8") as fh:
                 plan = json.load(fh)
-            base["plan"] = derivar(prod, plan, hechos, usd_port)
+            base["plan"] = derivar(prod, plan, hechos, usd_port, filas_conjuntos)
         else:
             base["plan"] = None
             base["falta_para_plan"] = falta_para_plan(prod, carpeta)

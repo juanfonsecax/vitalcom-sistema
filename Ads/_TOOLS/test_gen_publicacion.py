@@ -175,7 +175,8 @@ def test_no_bloquea_con_un_solo_brazo_o_ninguno():
 
 def _conjunto(pk, angulo, cta, n):
     return {"producto_key": pk, "angulo_key": angulo, "cuenta_alias": cta,
-            "conjunto_meta": "%s_%s_%s_R%d" % (cta, pk, angulo.replace("_", "-"), n)}
+            "conjunto_meta": "%s_%s_%s_R%d" % (cta, pk, angulo.replace("_", "-"), n),
+            "verificado_en_csv": "SI"}
 
 
 def test_siguiente_replica_continua_donde_quedo_en_meta():
@@ -222,6 +223,32 @@ def test_siguiente_replica_ignora_huecos_por_pausas():
     print(("  OK     " if ok else "  FALLA  ")
           + "una replica pausada sigue contando para el maximo: la siguiente es R3, no reusa R2"
           + ("" if ok else f"\n         obtenido={n}"))
+    return 0 if ok else 1
+
+
+def test_fila_de_diseno_no_ocupa_numero():
+    """Una fila de diseño (verificado_en_csv NO, la escribe etapa-guardar-producto ANTES de
+    publicar) no ocupa numero: con solo un _R1 de diseño, la primera publicacion sale _R1."""
+    filas = [dict(_conjunto("PX", "ANG1", "GTR7", 1), verificado_en_csv="NO")]
+    n = gp.siguiente_replica(filas, "PX", "ANG1", "GTR7")
+    ok = n == 1
+    print(("  OK     " if ok else "  FALLA  ")
+          + "una fila verificado_en_csv NO con _R1 no cuenta: la siguiente replica es R1"
+          + ("" if ok else f"\n         obtenido={n}"))
+    return 0 if ok else 1
+
+
+def test_snapshot_ocupa_numero():
+    """Lo vivo en Meta cuenta aunque no este en el CSV: sin filas y con _R3 en el snapshot,
+    la siguiente es R4. Sin token no se cuentan nombres (no se sabe el prefijo)."""
+    n = gp.siguiente_replica([], "PX", "ANG1", "GTR7",
+                             nombres_meta=["GTR7_PX_ANG1_R3"], token="PX")
+    n_sin_token = gp.siguiente_replica([], "PX", "ANG1", "GTR7",
+                                       nombres_meta=["GTR7_PX_ANG1_R3"])
+    ok = n == 4 and n_sin_token == 1
+    print(("  OK     " if ok else "  FALLA  ")
+          + "el _R3 del snapshot lleva a R4 con token; sin token no se cuenta y da R1"
+          + ("" if ok else f"\n         obtenido={n} sin_token={n_sin_token}"))
     return 0 if ok else 1
 
 
@@ -1055,6 +1082,8 @@ def main():
     fallas += test_siguiente_replica_sin_historial_arranca_en_1()
     fallas += test_siguiente_replica_no_mezcla_angulo_ni_cuenta()
     fallas += test_siguiente_replica_ignora_huecos_por_pausas()
+    fallas += test_fila_de_diseno_no_ocupa_numero()
+    fallas += test_snapshot_ocupa_numero()
     fallas += test_nombre_conjunto_fase2_no_cambia_de_semantica()
     fallas += test_firma_completa_no_bloquea()
     fallas += test_firma_fase2_sin_ejes_de_oferta_bloquea_con_su_dueno()

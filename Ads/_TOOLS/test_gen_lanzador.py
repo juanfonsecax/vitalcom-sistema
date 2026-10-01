@@ -120,6 +120,27 @@ def _eventos(tmp, filas):
     return ruta
 
 
+def test_token_formato():
+    casos = [("IMAGEN", "IMG"), ("", "IMG"), (None, "IMG"), ("VIDEO", "VID")]
+    fallas = ["%r -> %r" % (dado, gl.token_formato(dado))
+              for dado, esperado in casos if gl.token_formato(dado) != esperado]
+    ok = not fallas
+    print(("  OK     " if ok else "  FALLA  ")
+          + "token_formato: IMAGEN (o vacio) es IMG, el resto es VID"
+          + ("" if ok else "\n         " + "\n         ".join(fallas)))
+    return 0 if ok else 1
+
+
+def test_destino_de():
+    declarado = gl.destino_de({"destino_key": "BOT_V9"})
+    vigente = gl.destino_de({})
+    ok = declarado == "BOT_V9" and vigente == gl.destino_actual()
+    print(("  OK     " if ok else "  FALLA  ")
+          + "destino_de: el plan manda si declara, si no la version vigente del bot"
+          + ("" if ok else f"\n         declarado={declarado!r} vigente={vigente!r}"))
+    return 0 if ok else 1
+
+
 def test_monto_cuenta():
     casos = [
         ((2.99, "USD", 7.62), (2.99, "US$2.99")),
@@ -176,6 +197,8 @@ def test_plan_real_de_ovulos():
         ("nombre de campana registrada",
          plan["campanas"][0]["nombre"] == "EXTERNA_OVULOSPURITY_TEST_20260930"),
         ("config de pais", plan["config_meta"][0] == "Ubicación: Colombia · Sin intereses"),
+        ("primer conjunto en _R1", plan["conjuntos"][0]["nombre"].endswith("_R1")),
+        ("primer anuncio en IMG", "_IMG_A ~ " in plan["conjuntos"][0]["anuncios"][0]["nombre"]),
     ]
     fallas = [nombre for nombre, cond in cheques if not cond]
     ok = not fallas
@@ -192,6 +215,8 @@ def main():
     fallas += test_fase1_lee_el_valor_fijo_del_csv()
     fallas += test_fase_sin_fila_vigente_no_inventa()
     fallas += test_monto_cuenta()
+    fallas += test_token_formato()
+    fallas += test_destino_de()
     fallas += test_lanzamiento_registrado()
     fallas += test_plan_real_de_ovulos()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")

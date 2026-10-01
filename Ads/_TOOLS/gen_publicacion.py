@@ -107,6 +107,7 @@ import mercado           # mercado_de_fila: el mercado del producto (GT/CO), due
 import gen_lanzador      # monto_cuenta: el monto en USD expresado en la moneda de la cuenta
 import registrar_evento  # registrar_excepcion: el unico escritor de una fila EXCEPCION en _EVENTOS.csv
 from gen_lanzador import corto as token_producto  # dueño del token de producto en los nombres
+from gen_lanzador import PATRON_REPLICA, siguiente_replica, token_formato, destino_de  # dueño único del formato, el destino y la réplica del nombre
 
 SCHEMA = "publicacion/1"
 
@@ -181,32 +182,6 @@ def orden_nombre_de(piezas):
     con_indice = list(enumerate(piezas))
     ordenadas = sorted(con_indice, key=lambda t: ((t[1].get("brazo") or ""), t[0]))
     return {r.get("creativo_id"): i for i, (_, r) in enumerate(ordenadas, 1)}
-
-
-PATRON_REPLICA = re.compile(r"_R(\d+)$")
-
-
-def siguiente_replica(filas_conjuntos, pk, angulo, cta):
-    """El proximo numero de replica R[N] para este producto+angulo+cuenta.
-
-    Dueno del dato: _DIM_CONJUNTOS.csv, el registro real de lo que ya vive en Meta —
-    nunca la posicion del conjunto DENTRO DEL LOOP de la corrida actual. Antes ese 'i'
-    local hacia que republicar (una segunda tanda, o una réplica horizontal nueva)
-    volviera a nombrar R1, R2... encima de réplicas que ya existian (simulacion
-    Turmeric, f71f9ec: hubo que fijarlo a mano a R1 para poder avanzar).
-
-    ETAPA-6.md regla 2: 'el numero de replica no se reutiliza nunca'. Sin historial
-    para esta cuenta arranca en R1."""
-    maxn = 0
-    for r in filas_conjuntos:
-        if r.get("producto_key") != pk or r.get("angulo_key") != angulo:
-            continue
-        if corto_alias(r.get("cuenta_alias")) != cta:
-            continue
-        m = PATRON_REPLICA.search((r.get("conjunto_meta") or "").strip())
-        if m:
-            maxn = max(maxn, int(m.group(1)))
-    return maxn + 1
 
 
 def chequear_brazo_ambiguo(piezas, brazo_creativos, brazo_arg):
@@ -670,7 +645,7 @@ def main():
                     "canonico_id": ctrl.get("canonico_id"),
                     "nivel_conciencia": c.get("nivel_conciencia"),
                     "oferta_key": (plan.get("oferta") or {}).get("oferta_key"),
-                    "destino_key": plan.get("destino_key"),
+                    "destino_key": destino_de(plan),
                     "formato": c.get("formato") or "IMAGEN",
                     "variante": ctrl.get("variante"),
                 }],
@@ -694,7 +669,7 @@ def main():
                         if (c.get("nivel_conciencia") or "").strip()), None)
         ejes_plan = {"nivel_conciencia": nc_plan,
                      "oferta_key": (plan.get("oferta") or {}).get("oferta_key"),
-                     "destino_key": plan.get("destino_key")}
+                     "destino_key": destino_de(plan)}
         listas = []
         for r in piezas:
             for eje, valor in ejes_plan.items():
@@ -842,7 +817,9 @@ def main():
         if fase == 2:
             numero_conj = i
         else:
-            base_replica.setdefault(ang_u, siguiente_replica(filas_conjuntos, pk, ang_u, cta))
+            base_replica.setdefault(ang_u, siguiente_replica(filas_conjuntos, pk, ang_u, cta,
+                                                              nombres_meta=list(existentes),
+                                                              token=tok))
             pos_en_angulo[ang_u] = pos_en_angulo.get(ang_u, 0) + 1
             numero_conj = base_replica[ang_u] + pos_en_angulo[ang_u] - 1
         cj = nombre_conjunto(fase, cta, tok, ang_u, brazo, numero_conj)
@@ -881,7 +858,7 @@ def main():
         for cre in uni["piezas"]:
             orden_global += 1
             orden_nombre = orden_nombre_por_creativo.get(cre.get("creativo_id"), orden_global)
-            fmt = (cre.get("formato") or "IMG")[:3].upper()
+            fmt = token_formato(cre.get("formato"))
             an = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, "A", fmod)
             copy, titular, descripcion, sobrantes = extraer_copy(cre.get("copy") or plan.get("copy"))
             if not copy:
