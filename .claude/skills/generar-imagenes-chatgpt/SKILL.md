@@ -21,7 +21,7 @@ Cierra el hueco entre **el prompt** y **el archivo en disco**. `etapa-9` y
 |---|---|
 | El prompt resuelto y qué 2 imágenes lleva | `Ads/_TOOLS/armar_prompts_fase2.py` → `PROMPTS_FASE2_[ANGULO].txt` |
 | El nombre del archivo de salida | El mismo paquete, línea `Guardar archivo generado como:` |
-| La carpeta destino | `Ads/MEDIA_[PRODUCTO]/` (invariante 8 de `CLAUDE.md`) |
+| La carpeta destino | `Ads/MEDIA_[PRODUCTO]/` (invariante 8 de `reglas-sistema`) |
 | El registro del creativo | `PRODUCTOS/_DIM_CREATIVOS.csv` — lo escribe `etapa-9`, **no esta skill** |
 | Compliance de copy en el ad | `DOCTRINA/COPYWRITING_ADS.md` |
 
@@ -121,8 +121,9 @@ los que se corrompen al inyectarse. Cerrar el prompt con:
 producto (`python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`, dueño
 `PRODUCTOS/_DIM_MERCADOS.csv`). Un producto GT lleva `MSPAS NS02026-GT3147 y FDA
 30045469041` en voseo de Guatemala; un producto CO lleva el número INVIMA que entregue el
-operador (`[REG_INVIMA]`, pendiente) en tuteo: sin ese número la pieza va con el sello
-sin número, y nunca con el de MSPAS.
+operador (`[REG_INVIMA]`) en tuteo. Si el operador declaró `SIN_REGISTRO`, la pieza no
+lleva sello ni número: un sello regulatorio de la referencia se reemplaza por un beneficio
+corto del propio producto. Nunca el de MSPAS.
 
 ```js
 const ta=document.querySelector('#prompt-textarea');
@@ -220,7 +221,7 @@ Los números reales aplican a los productos del mercado que los declara y viven 
 
 - `[REG_MSPAS]` = **NS02026-GT3147**
 - `[REG_FDA]` = **30045469041**
-- Mercado CO: `[REG_INVIMA]`, pendiente del operador (no hay número que copiar).
+- Mercado CO: `[REG_INVIMA]` = `SIN_REGISTRO` (ausencia declarada el 29-sep-2026): no hay número que copiar ni sello que mostrar.
 
 **Esos son los únicos que se escriben.** En un caso real el modelo, por su cuenta,
 inventó `No. NS02025-GT2599` — un número que no es de nadie. Si en una pieza
