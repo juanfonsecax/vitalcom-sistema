@@ -167,9 +167,9 @@ def test_plan_real_de_ovulos():
     cheques = [
         ("bloqueantes vacios", plan["bloqueantes"] == []),
         ("presupuesto fijo de fase 1", plan["presupuesto"]["por_conjunto_usd"] == 2.99),
-        ("moneda de la cuenta COP", plan["presupuesto"]["moneda_cuenta"] == "COP"),
-        ("montos por conjunto en COP",
-         all((c.get("presupuesto_cuenta_texto") or "").endswith(" COP")
+        ("moneda de la cuenta USD", plan["presupuesto"]["moneda_cuenta"] == "USD"),
+        ("montos por conjunto en USD",
+         all((c.get("presupuesto_cuenta_texto") or "").startswith("US$")
              for c in plan["conjuntos"])),
         ("lanzamiento registrado", plan["lanzamiento"]["registrado"] is True
          and plan["lanzamiento"]["fecha"] == "2026-09-30"),
