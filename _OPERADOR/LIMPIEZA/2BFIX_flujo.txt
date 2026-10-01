@@ -1,0 +1,119 @@
+================================================================================================
+ TINNIDROP · Tinnidrop Importado Original · VIVO · GTR0
+ FASE F2 — FASE 2 · TESTEO DE CONCEPTOS
+   entrada a F2: ✓ PERDIDA_AUDITIVA (histórico 122v CPA Q66.0 ≤ BE Q93.4); DETERIORO_COGNITIVO (histórico 107v CPA Q53.8 ≤ BE Q93.4); ACCES
+   entrada a F3: ✗ 1 campaña(s) de conceptos con data · se necesitan 2 para replicar
+------------------------------------------------------------------------------------------------
+  ✓ F2.etapa-11              Diagnosticar la congruencia del bot hacia el ángulo ganador 
+  ▶ F2.conceptos             Fabricar y renderizar los conceptos del ángulo ganador ← NODO ACTUAL
+        falta  conceptos GENERADOS (10 = A 5 + B  5 fila(s) · esperado ≥ 10
+               lo produce: etapa-9 (filas) + etapa-render (PNG)  (R3F-13: FASE 2 necesita 10 conceptos publicables o no arranca)
+        ejecutar: subagente `etapa-9` (Task, subagent_type=etapa-9)
+        cómo: etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md an
+        secuencia: etapa-9 → Ads/_TOOLS/lavar_videos.sh → etapa-render
+  · F2.plan                  Copy único, los dos flujos del A/B y el plan de las 3 campañ
+        falta  _PLAN_FASE2.json en el contrato pl ✗ no existe o no es JSON: PRODUCTOS/TINNIDROP/_PLAN_FASE2.json | ✗ no existe o no es JSON:
+  · F2.publicar              Publicar las campañas de conceptos en Meta (todo nace PAUSED
+        falta  ad_id escritos en _DIM_CREATIVOS.c 5 fila(s) · esperado ≥ 10
+        ⚠ Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada — suma spend_usd = 65.22 (44 filas) · esperado ≥ 0.01
+        ⚠ la estructura publicada NO es la de la doctrina — 5 conjunto(s) en 1 campaña(s) · doctrina: 4 conjuntos (1-1-5 + 1-1-5 + 1-2-5)
+  ✓ F2.activar               Activar las campañas de conceptos a las 4 AM y registrar LAN  (fuera de orden: ya existe)
+  — F2.ciclo.datos           Recolectar la data del día (LucidSales por API)
+  — F2.ciclo.motor           Correr el motor de decisión (dbt build + decidir.py)
+  — F2.ciclo.ordenes         Ejecutar las órdenes del motor (con confirmación) y registra
+------------------------------------------------------------------------------------------------
+  PARA PASAR A F3: ✗ 1 campaña(s) de conceptos con data · se necesitan 2 para replicar
+     regla: regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido
+------------------------------------------------------------------------------------------------
+  ⚠ F2.publicar: Meta YA gastó en una campaña de conceptos de este producto — verificar contra Meta antes de crear nada — suma spend_usd = 65.22 (44 filas) · espera
+  ⚠ F2.publicar: la estructura publicada NO es la de la doctrina — 5 conjunto(s) en 1 campaña(s) · doctrina: 4 conjuntos (1-1-5 + 1-1-5 + 1-2-5)
+  ⚠ F4.plan: existe «4_PLAN_ESCALADO.txt» (existe (hace 72 días)) sin haber pasado el gate de entrada a F4
+  ⚠ F4.publicar: existe «LANZAMIENTO de escalado registrado con su presupuesto inicial» (4 evento(s) LANZAMIENTO · último 2026-09-03) sin haber pasado el gate de en
+================================================================================================
+ NUSAVA · NUSAVA B12 · VIVO · GTR7
+ FASE F2 — FASE 2 · TESTEO DE CONCEPTOS
+   entrada a F2: ✓ ARDOR (ESCALAR 20v CPA Q55.8)
+   entrada a F3: ✗ 0 campaña(s) de conceptos con data · se necesitan 2 para replicar
+------------------------------------------------------------------------------------------------
+  ▶ F2.etapa-11              Diagnosticar la congruencia del bot hacia el ángulo ganador  ← NODO ACTUAL
+        falta  DIAGNOSTICO_CONGRUENCIA registrado 0 evento(s) DIAGNOSTICO_CONGRUENCIA · posterior a 2026-07-24
+               lo produce: etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)  (verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot)
+        ejecutar: subagente `etapa-11` (Task, subagent_type=etapa-11)
+        cómo: En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (
+  · F2.conceptos             Fabricar y renderizar los conceptos del ángulo ganador
+        falta  conceptos GENERADOS (10 = A 5 + B  0 fila(s) · esperado ≥ 10
+  · F2.plan                  Copy único, los dos flujos del A/B y el plan de las 3 campañ
+        falta  _PLAN_FASE2.json en el contrato pl ✗ no existe o no es JSON: PRODUCTOS/NusavaB12/_PLAN_FASE2.json | ✗ no existe o no es JSON:
+  · F2.publicar              Publicar las campañas de conceptos en Meta (todo nace PAUSED
+        falta  ad_id escritos en _DIM_CREATIVOS.c 0 fila(s) · esperado ≥ 10
+  · F2.activar               Activar las campañas de conceptos a las 4 AM y registrar LAN
+        falta  gasto observado en una campaña de  0 evento(s) LANZAMIENTO | suma spend_usd = 0.00 (0 filas) · esperado ≥ 0.01
+  — F2.ciclo.datos           Recolectar la data del día (LucidSales por API)
+  — F2.ciclo.motor           Correr el motor de decisión (dbt build + decidir.py)
+  — F2.ciclo.ordenes         Ejecutar las órdenes del motor (con confirmación) y registra
+------------------------------------------------------------------------------------------------
+  PARA PASAR A F3: ✗ 0 campaña(s) de conceptos con data · se necesitan 2 para replicar
+     regla: regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido
+------------------------------------------------------------------------------------------------
+  ÓRDENES DEL MOTOR (data hasta 2026-09-28, rezago 2 d · 0 en SEGUIR_MIDIENDO):
+     [ESCALAR] ARDOR                        NO SUBIR PRESUPUESTO todavía: NUSAVA ya es ganador (rentable, evidencia confirma
+------------------------------------------------------------------------------------------------
+  ⚠ F4.publicar: existe «LANZAMIENTO de escalado registrado con su presupuesto inicial» (1 evento(s) LANZAMIENTO · último 2026-07-15) sin haber pasado el gate de en
+================================================================================================
+ CLEARSTEM · Clearstem Mindbodyskin · VIVO · GTR13
+ FASE F2 — FASE 2 · TESTEO DE CONCEPTOS
+   entrada a F2: ✓ RESISTENCIA_INSULINA_SOP (ESCALAR 26v CPA Q48.2); ANTI_FALSIFICACION (histórico 66v CPA Q44.1 ≤ BE Q105.9); MEDICOS_FALL
+   entrada a F3: ✗ 0 campaña(s) de conceptos con data · se necesitan 2 para replicar
+------------------------------------------------------------------------------------------------
+  ✓ F2.etapa-11              Diagnosticar la congruencia del bot hacia el ángulo ganador 
+  ▶ F2.conceptos             Fabricar y renderizar los conceptos del ángulo ganador ← NODO ACTUAL
+        falta  conceptos GENERADOS (10 = A 5 + B  5 fila(s) · esperado ≥ 10
+               lo produce: etapa-9 (filas) + etapa-render (PNG)  (R3F-13: FASE 2 necesita 10 conceptos publicables o no arranca)
+        ejecutar: subagente `etapa-9` (Task, subagent_type=etapa-9)
+        cómo: etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md an
+        secuencia: etapa-9 → Ads/_TOOLS/lavar_videos.sh → etapa-render
+        ⚠ conceptos registrados pero sin renderizar (PENDIENTE_GENERAR) — 4 fila(s) · esperado ≥ 1
+  · F2.plan                  Copy único, los dos flujos del A/B y el plan de las 3 campañ
+        falta  _PLAN_FASE2.json en el contrato pl ✗ no existe o no es JSON: PRODUCTOS/CLEARSTEM/_PLAN_FASE2.json | ✗ no existe o no es JSON:
+  · F2.publicar              Publicar las campañas de conceptos en Meta (todo nace PAUSED
+        falta  ad_id escritos en _DIM_CREATIVOS.c 0 fila(s) · esperado ≥ 10
+        ⚠ hay conceptos GENERADOS sin ad_id (el CSV dice sin publicar; Meta puede decir otra cosa) — 5 fila(s) · esperado ≥ 1
+  · F2.activar               Activar las campañas de conceptos a las 4 AM y registrar LAN
+        falta  gasto observado en una campaña de  0 evento(s) LANZAMIENTO | suma spend_usd = 0.00 (0 filas) · esperado ≥ 0.01
+  — F2.ciclo.datos           Recolectar la data del día (LucidSales por API)
+  — F2.ciclo.motor           Correr el motor de decisión (dbt build + decidir.py)
+  — F2.ciclo.ordenes         Ejecutar las órdenes del motor (con confirmación) y registra
+------------------------------------------------------------------------------------------------
+  PARA PASAR A F3: ✗ 0 campaña(s) de conceptos con data · se necesitan 2 para replicar
+     regla: regla de replicación: un concepto gana en 2 de 2; un ganador de 1 de 2 es ruido
+------------------------------------------------------------------------------------------------
+  ÓRDENES DEL MOTOR (data hasta 2026-09-28, rezago 2 d · 1 en SEGUIR_MIDIENDO):
+     [RENOVAR] ANTI_FALSIFICACION           RENOVAR CREATIVO (FASE 2): Ángulo probado (66 vts acumuladas a CPA Q44.1 bajo BE
+     [ESCALAR] RESISTENCIA_INSULINA_SOP     NO SUBIR PRESUPUESTO todavía: CLEARSTEM ya es ganador (rentable, evidencia confi
+------------------------------------------------------------------------------------------------
+  ⚠ F2.conceptos: conceptos registrados pero sin renderizar (PENDIENTE_GENERAR) — 4 fila(s) · esperado ≥ 1
+  ⚠ F2.publicar: hay conceptos GENERADOS sin ad_id (el CSV dice sin publicar; Meta puede decir otra cosa) — 5 fila(s) · esperado ≥ 1
+================================================================================================
+ VARICOSE · Varicose Veins Ointment · PAUSADO · GTR7
+   PAUSADO — Reingreso solo con decisión explícita del operador (cambiar estado en _DIM_PRODUCTOS.csv y registrar el motivo en _EVENTOS.csv). No se audita ni se ordena nada mientras tanto.
+   observado: estado=«PAUSADO»
+================================================================================================
+ OVULOS_PURITY · Óvulos Purity Hernatura · NUEVO · EXTERNA
+ FASE F1 — FASE 1 · TESTEO DE ÁNGULOS
+   entrada a F2: ✗ ningún ángulo con ≥5 ventas a CPA ≤ BE ni ESCALAR vigente con ≥5 ventas
+------------------------------------------------------------------------------------------------
+  ✓ F1.congelar_inputs       Congelar los inputs del producto
+  ✓ F1.paquete               Construir el paquete de FASE 1 (validar, clasificar, costear
+  ✓ F1.publicar              Publicar la estructura de FASE 1 en Meta (todo nace PAUSED)
+  ▶ F1.activar               Activar a las 4 AM del día siguiente y registrar LANZAMIENTO ← NODO ACTUAL
+        falta  LANZAMIENTO registrado o gasto obs 0 evento(s) LANZAMIENTO/LANZAMIENTO_TEST | suma spend_usd = 0.00 (0 filas) · esperado ≥ 0.
+               lo produce: operador · _EVENTOS.csv evento LANZAMIENTO  (invariante 7: 4 AM del día siguiente)
+        ejecutar: MCP con confirmación del operador por orden
+        cómo: Activar la campaña (MCP con confirmación, o a mano) y anexar el evento LANZAMIENTO a _EVENTOS.csv con el presupuesto inicial. Control D+1 de
+  — F1.ciclo.datos           Recolectar la data del día (LucidSales por API)
+  — F1.ciclo.motor           Correr el motor de decisión (dbt build + decidir.py)
+  — F1.ciclo.ordenes         Ejecutar las órdenes del motor (con confirmación) y registra
+------------------------------------------------------------------------------------------------
+  PARA PASAR A F2: ✗ ningún ángulo con ≥5 ventas a CPA ≤ BE ni ESCALAR vigente con ≥5 ventas
+     regla: invariante 1: el ganador se declara por VENTA agregando por angulo_key; nunca por conversación
+================================================================================================

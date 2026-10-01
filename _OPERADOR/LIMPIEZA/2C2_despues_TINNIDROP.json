@@ -1,0 +1,765 @@
+{
+  "schema": "publicacion/1",
+  "generado_el": "2026-09-30T19:24:23",
+  "producto_key": "TINNIDROP",
+  "token_producto": "TINNIDROP",
+  "pais": "GT",
+  "fase": 1,
+  "brazo": "UNICO",
+  "angulo": "VARIOS (uno por conjunto ÔÇö F1/F4.exploracion miden el angulo)",
+  "cuenta_alias": "GTR0",
+  "cuenta_id": "1665221077707961",
+  "moneda": "USD",
+  "page_id": "498977893288095",
+  "estructura": "6-1-1",
+  "presupuesto_nivel": "ADSET",
+  "daily_budget_usd_por_conjunto": 2.99,
+  "daily_budget_cents": 299,
+  "banda_edad": {
+    "age_min": 45,
+    "age_max": 60,
+    "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+  },
+  "advantage_audience": 0,
+  "start_time": "2026-10-01T04:00:00-06:00",
+  "estado_al_crear": "PAUSED",
+  "plan": "PRODUCTOS\\TINNIDROP\\_PLAN.json",
+  "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.5 + 1.7.2 / ETAPA-6.md",
+  "preflight": [
+    {
+      "paso": 1,
+      "llamada": "ads_get_ad_accounts",
+      "verificar": "que GTR0 (1665221077707961) tenga is_ads_mcp_enabled=true y is_queryable=true"
+    },
+    {
+      "paso": 2,
+      "llamada": "ads_get_ad_entities level=campaign",
+      "verificar": "PREGUNTARLE A META QUE YA EXISTE antes de crear nada. El CSV no es evidencia del estado de Meta: el 08-sep decia 'cero publicados' con $23.46 ya gastados. Guardar la respuesta y volver a correr este generador con --snapshot."
+    },
+    {
+      "paso": 3,
+      "llamada": "ads_get_user_pages",
+      "verificar": "que el page_id 498977893288095 exista, sea visible para el lanzador y tenga WhatsApp conectado en la cuenta GTR0"
+    },
+    {
+      "paso": 4,
+      "llamada": "ads_create_ad_set (el primero)",
+      "verificar": "es el test real de la pagina: si el primer conjunto la acepta, esta bien. ads_get_ad_account_pages puede tardar en listarla (lag de lectura)."
+    }
+  ],
+  "bloqueantes": [
+    {
+      "falta": "6 pieza(s) declaradas no tienen su archivo en disco: tinnidrop_4.mp4, tinnidrop_6.mp4, TINNIDROP_3_noches.jpg, tinnidrop_3.mp4, TINNIDROP_5_medijeron.jpg, tinnidrop_1.mp4. Sin el archivo no hay media que subir y el anuncio no se puede crear.",
+      "lo_produce": "etapa-render / el operador",
+      "ambito": "paquete",
+      "clave": "piezas",
+      "archivos": [
+        "tinnidrop_4.mp4",
+        "tinnidrop_6.mp4",
+        "TINNIDROP_3_noches.jpg",
+        "tinnidrop_3.mp4",
+        "TINNIDROP_5_medijeron.jpg",
+        "tinnidrop_1.mp4"
+      ]
+    }
+  ],
+  "avisos": [
+    "la firma sale sin destino_key en 6 anuncio(s): el eje esta declarado ABIERTO en _DIM_VOCABULARIO.csv (dueno .claude/agents/ETAPA-11.md), asi que no bloquea. Se pierde para esos anuncios; se empieza a exigir cuando su dueno cierre el vocabulario.",
+    "'ACCESIBILIDAD-MEDICO_VID_A' trae 2 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'PERDIDA-AUDITIVA_VID_A' trae 2 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'NOCHES-SIN-DORMIR_IMA_A' trae 2 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'DETERIORO-COGNITIVO_VID_A' trae 2 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'ME-DIJERON-NO-CURA_IMA_A' trae 2 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'INGREDIENTES-NATURALES_VID_A' trae 2 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador."
+  ],
+  "llamadas": [
+    {
+      "n": 1,
+      "tool": "ads_create_campaign",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_name": "GTR0_TINNIDROP_TEST_20261001",
+        "objective": "OUTCOME_TRAFFIC",
+        "buying_type": "AUCTION",
+        "special_ad_categories": "[]"
+      },
+      "guardar_como": "campaign_id",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "ABO: el presupuesto NO va aca, va en el conjunto."
+    },
+    {
+      "n": 2,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_1",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 3,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_1",
+      "archivo_local": "{{FALTA_ARCHIVO: tinnidrop_4.mp4}}",
+      "nombre_en_biblioteca": "tinnidrop_4_V2",
+      "omitir": false,
+      "nota": "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la biblioteca y el ejecutor lee el hash con ads_get_ad_images."
+    },
+    {
+      "n": 4,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "page_id": "498977893288095",
+        "name": "ACCESIBILIDAD-MEDICO_VID_A",
+        "image_hash": "{{image_hash_1}}",
+        "message": "┬┐Cansado de gastar en consultas que solo te dicen 'aprend├® a vivir con el zumbido'? ­ƒÿ«ÔÇì­ƒÆ¿\n\nEl zumbido en el o├¡do desgasta, roba el sue├▒o y altera los nervios.\n\nTinnidrop es un spray sublingual con extractos bot├ínicos que apoyan la circulaci├│n auditiva y relajan la tensi├│n del nervio.\n\nÔ£à F├ícil aplicaci├│n 2 veces al d├¡a\nÔ£à F├│rmula natural sin qu├¡micos agresivos\nÔ£à Miles de personas ya descansan en paz\n\nPed├¡ hoy con env├¡o gratis y pag├ís en efectivo al recibir ­ƒæë",
+        "headline": "Alivio para el zumbido",
+        "description": "Pag├ís en efectivo al recibir en casa ­ƒÅá",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_1",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 5,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 6,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 7,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_2",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 8,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_2",
+      "archivo_local": "{{FALTA_ARCHIVO: tinnidrop_6.mp4}}",
+      "nombre_en_biblioteca": "tinnidrop_6_V2",
+      "omitir": false,
+      "nota": "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la biblioteca y el ejecutor lee el hash con ads_get_ad_images."
+    },
+    {
+      "n": 9,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "page_id": "498977893288095",
+        "name": "PERDIDA-AUDITIVA_VID_A",
+        "image_hash": "{{image_hash_2}}",
+        "message": "Ese pitido constante no es solo molestiaÔÇª es tu o├¡do pidiendo auxilio.\n\nCon el tiempo el zumbido puede afectar la claridad con la que escuch├ís a tu familia.\n\nProteg├® tu audici├│n a tiempo con la f├│rmula de Tinnidrop:\nÔ£à Estimula el microflujo del canal auditivo\nÔ£à Calma el timbre constante\nÔ£à Apoya tu bienestar d├¡a y noche\n\nConsult├í con una asesora por WhatsApp ­ƒæë",
+        "headline": "Cuid├í tu audici├│n",
+        "description": "+5,000 clientes satisfechos en GT",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_2",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 10,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 11,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 12,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_3",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 13,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_3",
+      "archivo_local": "{{FALTA_ARCHIVO: TINNIDROP_3_noches.jpg}}",
+      "nombre_en_biblioteca": "TINNIDROP_3_noches_V2",
+      "omitir": false,
+      "nota": "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la biblioteca y el ejecutor lee el hash con ads_get_ad_images."
+    },
+    {
+      "n": 14,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "page_id": "498977893288095",
+        "name": "NOCHES-SIN-DORMIR_IMA_A",
+        "image_hash": "{{image_hash_3}}",
+        "message": "Cuando todo se apaga en la nocheÔÇª el pitido se vuelve insoportable. ­ƒîæ\n\nNo logr├ís conciliar el sue├▒o y te levant├ís agotado al d├¡a siguiente.\n\nDos aplicaciones de Tinnidrop antes de acostarte ayudan a relajar la tensi├│n auditiva para que vuelvas a descansar.\n\nEscribinos y conoc├® la oferta especial de hoy ­ƒæë",
+        "headline": "Volv├® a dormir en silencio",
+        "description": "Env├¡o gratis a toda Guatemala ­ƒç¼­ƒç╣",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_3",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 15,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_3}}",
+        "ad_name": "NOCHES-SIN-DORMIR_IMA_A ~ TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 16,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_3}}",
+        "ad_name": "NOCHES-SIN-DORMIR_IMA_B ~ TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 17,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR0_TINNIDROP_DETERIORO-COGNITIVO_R1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_4",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 18,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_4",
+      "archivo_local": "{{FALTA_ARCHIVO: tinnidrop_3.mp4}}",
+      "nombre_en_biblioteca": "tinnidrop_3_V2",
+      "omitir": false,
+      "nota": "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la biblioteca y el ejecutor lee el hash con ads_get_ad_images."
+    },
+    {
+      "n": 19,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "page_id": "498977893288095",
+        "name": "DETERIORO-COGNITIVO_VID_A",
+        "image_hash": "{{image_hash_4}}",
+        "message": "El zumbido constante no te deja concentrarte ni pensar con claridad.\n\nEsa fatiga mental tiene soluci├│n apoyando la microcirculaci├│n cerebral y auditiva con Ginkgo Biloba y extractos naturales de Tinnidrop.\n\nM├ís enfoque, menos ruido de fondo.\nEscribinos hoy mismo ­ƒæë",
+        "headline": "Despej├í tu mente",
+        "description": "Tratamiento 100% natural",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_4",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 20,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_4}}",
+        "ad_name": "DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 21,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_4}}",
+        "ad_name": "DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 22,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_5",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 23,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_5",
+      "archivo_local": "{{FALTA_ARCHIVO: TINNIDROP_5_medijeron.jpg}}",
+      "nombre_en_biblioteca": "TINNIDROP_5_medijeron_V2",
+      "omitir": false,
+      "nota": "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la biblioteca y el ejecutor lee el hash con ads_get_ad_images."
+    },
+    {
+      "n": 24,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "page_id": "498977893288095",
+        "name": "ME-DIJERON-NO-CURA_IMA_A",
+        "image_hash": "{{image_hash_5}}",
+        "message": "\"Aprend├® a vivir con eso\"ÔÇª la frase que nadie quiere escuchar. ­ƒÆö\n\nAunque no haya soluciones m├ígicas, no ten├®s que resignarte al sufrimiento diario.\n\nMiles de guatemaltecos han reducido la intensidad del zumbido con Tinnidrop Spray.\n\n­ƒö┤ OFERTA LIMITADA: 2 frascos por Q239 con env├¡o incluido.\nMandanos un mensaje y empez├í tu tratamiento ­ƒæë",
+        "headline": "No te resignes al zumbido",
+        "description": "Pag├ís en efectivo al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_5",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 25,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_5}}",
+        "ad_name": "ME-DIJERON-NO-CURA_IMA_A ~ TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 26,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_5}}",
+        "ad_name": "ME-DIJERON-NO-CURA_IMA_B ~ TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 27,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR0_TINNIDROP_INGREDIENTES-NATURALES_R1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"498977893288095\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 45, \"age_max\": 60, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_6",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 28,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_6",
+      "archivo_local": "{{FALTA_ARCHIVO: tinnidrop_1.mp4}}",
+      "nombre_en_biblioteca": "tinnidrop_1_V2",
+      "omitir": false,
+      "nota": "ESTA CUENTA NO SUBE MEDIA LOCAL: el operador la sube a mano a la biblioteca y el ejecutor lee el hash con ads_get_ad_images."
+    },
+    {
+      "n": 29,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "page_id": "498977893288095",
+        "name": "INGREDIENTES-NATURALES_VID_A",
+        "image_hash": "{{image_hash_6}}",
+        "message": "Cuid├í tu salud sin someter a tu cuerpo a qu├¡micos pesados.\n\nTinnidrop combina Ginkgo Biloba, Ginseng y extractos bot├ínicos puros para el confort del canal auditivo.\n\nF├ícil de aplicar, suave y efectivo.\nPregunt├í por nuestras promociones aqu├¡ ­ƒæë",
+        "headline": "F├│rmula bot├ínica pura",
+        "description": "Entrega en 24 a 48 horas",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_6",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 30,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_6}}",
+        "ad_name": "INGREDIENTES-NATURALES_VID_A ~ TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_6}}\"}"
+      },
+      "guardar_como": "ad_id_6A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 31,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "1665221077707961",
+        "ad_set_id": "{{adset_id_6}}",
+        "ad_name": "INGREDIENTES-NATURALES_VID_B ~ TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|ESCALERA|?",
+        "creative": "{\"creative_id\": \"{{creative_id_6}}\"}"
+      },
+      "guardar_como": "ad_id_6B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    }
+  ],
+  "manifiesto": {
+    "campana": "GTR0_TINNIDROP_TEST_20261001",
+    "conjuntos": [
+      {
+        "nombre": "GTR0_TINNIDROP_ACCESIBILIDAD-MEDICO_R2",
+        "posicion": 1,
+        "angulo": "ACCESIBILIDAD_MEDICO",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "ACCESIBILIDAD-MEDICO_VID_A ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|?",
+            "letra": "A",
+            "creativo_id": "tinnidrop_4",
+            "archivo": "tinnidrop_4.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|?",
+            "orden": 1
+          },
+          {
+            "nombre": "ACCESIBILIDAD-MEDICO_VID_B ~ TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|?",
+            "letra": "B",
+            "creativo_id": "tinnidrop_4",
+            "archivo": "tinnidrop_4.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|ACCESIBILIDAD_ME|C2.CN05|NC3A|ESCALERA|?",
+            "orden": 1
+          }
+        ]
+      },
+      {
+        "nombre": "GTR0_TINNIDROP_PERDIDA-AUDITIVA_R1",
+        "posicion": 2,
+        "angulo": "PERDIDA_AUDITIVA",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "PERDIDA-AUDITIVA_VID_A ~ TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|ESCALERA|?",
+            "letra": "A",
+            "creativo_id": "tinnidrop_6",
+            "archivo": "tinnidrop_6.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|ESCALERA|?",
+            "orden": 2
+          },
+          {
+            "nombre": "PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|ESCALERA|?",
+            "letra": "B",
+            "creativo_id": "tinnidrop_6",
+            "archivo": "tinnidrop_6.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|PERDIDA_AUDITIVA|C2.CN05|NC2|ESCALERA|?",
+            "orden": 2
+          }
+        ]
+      },
+      {
+        "nombre": "GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1",
+        "posicion": 3,
+        "angulo": "NOCHES_SIN_DORMIR",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "NOCHES-SIN-DORMIR_IMA_A ~ TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|ESCALERA|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_3_noches",
+            "archivo": "TINNIDROP_3_noches.jpg",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|ESCALERA|?",
+            "orden": 3
+          },
+          {
+            "nombre": "NOCHES-SIN-DORMIR_IMA_B ~ TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|ESCALERA|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_3_noches",
+            "archivo": "TINNIDROP_3_noches.jpg",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|NOCHES_SIN_DORMI|C2.CN05|NC2|ESCALERA|?",
+            "orden": 3
+          }
+        ]
+      },
+      {
+        "nombre": "GTR0_TINNIDROP_DETERIORO-COGNITIVO_R1",
+        "posicion": 4,
+        "angulo": "DETERIORO_COGNITIVO",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "DETERIORO-COGNITIVO_VID_A ~ TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|ESCALERA|?",
+            "letra": "A",
+            "creativo_id": "tinnidrop_3",
+            "archivo": "tinnidrop_3.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|ESCALERA|?",
+            "orden": 4
+          },
+          {
+            "nombre": "DETERIORO-COGNITIVO_VID_B ~ TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|ESCALERA|?",
+            "letra": "B",
+            "creativo_id": "tinnidrop_3",
+            "archivo": "tinnidrop_3.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|DETERIORO_COGNIT|C2.CN05|NC1|ESCALERA|?",
+            "orden": 4
+          }
+        ]
+      },
+      {
+        "nombre": "GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1",
+        "posicion": 5,
+        "angulo": "ME_DIJERON_NO_CURA",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "ME-DIJERON-NO-CURA_IMA_A ~ TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|?",
+            "letra": "A",
+            "creativo_id": "TINNIDROP_5_medijeron",
+            "archivo": "TINNIDROP_5_medijeron.jpg",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|?",
+            "orden": 5
+          },
+          {
+            "nombre": "ME-DIJERON-NO-CURA_IMA_B ~ TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|?",
+            "letra": "B",
+            "creativo_id": "TINNIDROP_5_medijeron",
+            "archivo": "TINNIDROP_5_medijeron.jpg",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|ME_DIJERON_NO_CU|C2.CN05|NC3A|ESCALERA|?",
+            "orden": 5
+          }
+        ]
+      },
+      {
+        "nombre": "GTR0_TINNIDROP_INGREDIENTES-NATURALES_R1",
+        "posicion": 6,
+        "angulo": "INGREDIENTES_NATURALES",
+        "banda_edad": {
+          "age_min": 45,
+          "age_max": 60,
+          "origen": "avatar_edad=45-60 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "INGREDIENTES-NATURALES_VID_A ~ TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|ESCALERA|?",
+            "letra": "A",
+            "creativo_id": "tinnidrop_1",
+            "archivo": "tinnidrop_1.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|ESCALERA|?",
+            "orden": 6
+          },
+          {
+            "nombre": "INGREDIENTES-NATURALES_VID_B ~ TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|ESCALERA|?",
+            "letra": "B",
+            "creativo_id": "tinnidrop_1",
+            "archivo": "tinnidrop_1.mp4",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "TINNIDROP|INGREDIENTES_NAT|C2.CN05|NC2|ESCALERA|?",
+            "orden": 6
+          }
+        ]
+      }
+    ],
+    "total_conjuntos": 6,
+    "total_anuncios": 12
+  }
+}

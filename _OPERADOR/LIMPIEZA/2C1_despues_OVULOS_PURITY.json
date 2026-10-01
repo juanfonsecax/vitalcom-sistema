@@ -1,0 +1,756 @@
+﻿{
+  "schema": "publicacion/1",
+  "generado_el": "2026-09-30T12:25:14",
+  "producto_key": "OVULOS_PURITY",
+  "token_producto": "OVULOSPURITY",
+  "fase": 1,
+  "brazo": "UNICO",
+  "angulo": "VARIOS (uno por conjunto ÔÇö F1/F4.exploracion miden el angulo)",
+  "cuenta_alias": "EXTERNA",
+  "cuenta_id": "",
+  "moneda": "USD",
+  "page_id": "61574253581304",
+  "estructura": "6-1-1",
+  "presupuesto_nivel": "ADSET",
+  "daily_budget_usd_por_conjunto": 2.99,
+  "daily_budget_cents": 299,
+  "banda_edad": {
+    "age_min": 25,
+    "age_max": 40,
+    "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+  },
+  "advantage_audience": 0,
+  "start_time": "2026-10-01T04:00:00-06:00",
+  "estado_al_crear": "PAUSED",
+  "plan": "PRODUCTOS\\OVULOS_PURITY\\_PLAN.json",
+  "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.5 + 1.7.2 / ETAPA-6.md",
+  "preflight": [
+    {
+      "paso": 1,
+      "llamada": "ads_get_ad_accounts",
+      "verificar": "que EXTERNA () tenga is_ads_mcp_enabled=true y is_queryable=true"
+    },
+    {
+      "paso": 2,
+      "llamada": "ads_get_ad_entities level=campaign",
+      "verificar": "PREGUNTARLE A META QUE YA EXISTE antes de crear nada. El CSV no es evidencia del estado de Meta: el 08-sep decia 'cero publicados' con $23.46 ya gastados. Guardar la respuesta y volver a correr este generador con --snapshot."
+    },
+    {
+      "paso": 3,
+      "llamada": "ads_get_user_pages",
+      "verificar": "que el page_id 61574253581304 exista, sea visible para el lanzador y tenga WhatsApp conectado en la cuenta EXTERNA"
+    },
+    {
+      "paso": 4,
+      "llamada": "ads_create_ad_set (el primero)",
+      "verificar": "es el test real de la pagina: si el primer conjunto la acepta, esta bien. ads_get_ad_account_pages puede tardar en listarla (lag de lectura)."
+    }
+  ],
+  "bloqueantes": [
+    {
+      "falta": "la cuenta 'EXTERNA' no existe en _DIM_CUENTAS.csv",
+      "lo_produce": "el operador ┬À _DIM_PRODUCTOS.csv columna cuenta_alias",
+      "ambito": "publicacion",
+      "clave": "cuenta"
+    }
+  ],
+  "avisos": [
+    "la firma sale sin destino_key en 6 anuncio(s): el eje esta declarado ABIERTO en _DIM_VOCABULARIO.csv (dueno .claude/agents/ETAPA-11.md), asi que no bloquea. Se pierde para esos anuncios; se empieza a exigir cuando su dueno cierre el vocabulario.",
+    "'DESPUES-DE-ESTAR-CON-EL_IMA_A' trae 4 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'INFECCION-QUE-VUELVE_IMA_A' trae 4 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'PROTECTOR-TODOS-LOS-DIAS_IMA_A' trae 4 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'OLOR-QUE-SE-NOTA_IMA_A' trae 4 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'ME-LAVO-Y-SIGUE_IMA_A' trae 4 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador.",
+    "'OCHO-RAICES-TODO-EN-UNO_IMA_A' trae 4 opcion(es) extra de texto/titulo. El '1 de 5' NO existe en la Marketing API: por MCP va una sola y el resto lo agrega el operador a mano en el Administrador."
+  ],
+  "llamadas": [
+    {
+      "n": 1,
+      "tool": "ads_create_campaign",
+      "args": {
+        "ad_account_id": "",
+        "campaign_name": "EXTERNA_OVULOSPURITY_TEST_20261001",
+        "objective": "OUTCOME_TRAFFIC",
+        "buying_type": "AUCTION",
+        "special_ad_categories": "[]"
+      },
+      "guardar_como": "campaign_id",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "ABO: el presupuesto NO va aca, va en el conjunto."
+    },
+    {
+      "n": 2,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "EXTERNA_OVULOSPURITY_DESPUES-DE-ESTAR-CON-EL_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"61574253581304\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 25, \"age_max\": 40, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_1",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 3,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_1",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_OVULOSPURITY\\OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png",
+      "nombre_en_biblioteca": "OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre ÔÇö el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 4,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "",
+        "page_id": "61574253581304",
+        "name": "DESPUES-DE-ESTAR-CON-EL_IMA_A",
+        "image_hash": "{{image_hash_1}}",
+        "message": "┬┐Mal olor ├¡ntimo que vuelve despu├®s de estar con ├®l? ­ƒÿö\n\nMe pasaba siempre.\nMe ba├▒aba, me cambiaba,\ny duraba d├¡as sinti├®ndome inc├│moda.\n\nLlegu├® a inventar excusas para no estar con mi pareja.\nPens├® que el problema era mi cuerpo.\n\nNo era falta de higiene ­ƒÆí\nEra un desequilibrio que el jab├│n no alcanza.\n\n­ƒî┐ Prob├® las perlas Purity de Her Natura:\n8 ra├¡ces naturales en un tratamiento de 3 perlas.\n\nÔ£à Frescura que se siente, no perfume que tapa\nÔ£à Confianza para volver a estar tranquila con ├®l\nÔ£à Llega a tu casa y pagas al recibir\n\nMuchas mujeres viven esto en silencio.\nEscr├¡benos por WhatsApp y te contamos c├│mo se usa ­ƒæë",
+        "headline": "Tranquila con ├®l",
+        "description": "Env├¡o gratis ┬À Paga al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_1",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 5,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "DESPUES-DE-ESTAR-CON-EL_IMA_A ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 6,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "DESPUES-DE-ESTAR-CON-EL_IMA_B ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 7,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "EXTERNA_OVULOSPURITY_INFECCION-QUE-VUELVE_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"61574253581304\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 25, \"age_max\": 40, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_2",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 8,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_2",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_OVULOSPURITY\\OVULOSPURITY_2_INFECCION_QUE_VUELVE.png",
+      "nombre_en_biblioteca": "OVULOSPURITY_2_INFECCION_QUE_VUELVE_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre ÔÇö el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 9,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "",
+        "page_id": "61574253581304",
+        "name": "INFECCION-QUE-VUELVE_IMA_A",
+        "image_hash": "{{image_hash_2}}",
+        "message": "┬┐Candidiasis que vuelve aunque uses ├│vulos y cremas? ­ƒÿ®\n\nAs├¡ estuve meses.\nMe pon├¡a lo de la farmacia,\nsent├¡a alivio unos d├¡as\ny a las semanas otra vez la picaz├│n y el olor.\n\nSent├¡a que estaba botando la plata.\n\nLo que nadie me dijo ­ƒÆí\napagar la molestia del d├¡a no es lo mismo\nque cuidar el equilibrio que la hace volver.\n\n­ƒî┐ Perlas Purity de Her Natura:\n8 ra├¡ces naturales en un tratamiento de 3 perlas.\n\nÔ£à Apoya el equilibrio natural de tu cuerpo\nÔ£à Alivio y confort en el d├¡a a d├¡a\nÔ£à Env├¡o gratis a toda Colombia, pagas al recibir\n\nRompe el ciclo de probar y probar.\nEscr├¡benos y te decimos qu├® tratamiento te sirve ­ƒæë",
+        "headline": "Por fin tranquila",
+        "description": "­ƒÅá ┬íPaga en casa!",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_2",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 10,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "INFECCION-QUE-VUELVE_IMA_A ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 11,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "INFECCION-QUE-VUELVE_IMA_B ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 12,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "EXTERNA_OVULOSPURITY_PROTECTOR-TODOS-LOS-DIAS_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"61574253581304\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 25, \"age_max\": 40, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_3",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 13,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_3",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_OVULOSPURITY\\OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png",
+      "nombre_en_biblioteca": "OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre ÔÇö el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 14,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "",
+        "page_id": "61574253581304",
+        "name": "PROTECTOR-TODOS-LOS-DIAS_IMA_A",
+        "image_hash": "{{image_hash_3}}",
+        "message": "┬┐Flujo que te mancha la ropa interior aunque uses protector? ­ƒÿú\n\nAs├¡ viv├¡ a├▒os.\nCambiaba de protector dos o tres veces al d├¡a,\ncambi├® de jab├│n,\ny la humedad segu├¡a ah├¡.\n\nLlegu├® a creer que yo era as├¡.\n\nLo que no sab├¡a ­ƒÆí\nel protector guarda calor y humedad\ny el c├¡rculo nunca se corta.\n\n­ƒî┐ Perlas Purity de Her Natura:\n8 ra├¡ces naturales que ayudan a equilibrar desde adentro.\n\nÔ£à Sensaci├│n de limpieza todo el d├¡a\nÔ£à Un tratamiento de 3 perlas, f├ícil y sin dolor\nÔ£à Env├¡o gratis a toda Colombia, pagas al recibir\n\nVuelve a ponerte lo que quieras sin protector.\nEscr├¡benos por WhatsApp y te contamos c├│mo ­ƒæë",
+        "headline": "Limpia todo el d├¡a",
+        "description": "Env├¡o gratis ┬À Paga al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_3",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 15,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_3}}",
+        "ad_name": "PROTECTOR-TODOS-LOS-DIAS_IMA_A ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 16,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_3}}",
+        "ad_name": "PROTECTOR-TODOS-LOS-DIAS_IMA_B ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 17,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "EXTERNA_OVULOSPURITY_OLOR-QUE-SE-NOTA_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"61574253581304\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 25, \"age_max\": 40, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_4",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 18,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_4",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_OVULOSPURITY\\OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png",
+      "nombre_en_biblioteca": "OVULOSPURITY_4_OLOR_QUE_SE_NOTA_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre ÔÇö el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 19,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "",
+        "page_id": "61574253581304",
+        "name": "OLOR-QUE-SE-NOTA_IMA_A",
+        "image_hash": "{{image_hash_4}}",
+        "message": "┬┐Olor a pescado que se nota hasta en la ropa? ­ƒÿ░\n\nMe pasaba en la oficina.\nMe sentaba y lo sent├¡a.\nMe cambiaba el pantal├│n y segu├¡a ah├¡.\n\nProb├® jabones, vinagre, perfumeÔÇª\nlo tapaba un rato y volv├¡a.\n\nTaparlo no es lo mismo que equilibrarlo ­ƒÆí\n\n­ƒî┐ Perlas Purity de Her Natura:\n8 ra├¡ces naturales en un tratamiento de 3 perlas.\n\nÔ£à Frescura que dura, no perfume que se va\nÔ£à Seguridad para estar cerca de la gente\nÔ£à Env├¡o gratis a toda Colombia, pagas al recibir\n\nVuelve a sentirte segura en la oficina, el bus o el gym.\nEscr├¡benos por WhatsApp y te contamos c├│mo se usa ­ƒæë",
+        "headline": "Fresca todo el d├¡a",
+        "description": "­ƒÅá ┬íPaga en casa!",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_4",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 20,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_4}}",
+        "ad_name": "OLOR-QUE-SE-NOTA_IMA_A ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 21,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_4}}",
+        "ad_name": "OLOR-QUE-SE-NOTA_IMA_B ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 22,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "EXTERNA_OVULOSPURITY_ME-LAVO-Y-SIGUE_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"61574253581304\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 35, \"age_max\": 50, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_5",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 23,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_5",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_OVULOSPURITY\\OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png",
+      "nombre_en_biblioteca": "OVULOSPURITY_5_ME_LAVO_Y_SIGUE_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre ÔÇö el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 24,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "",
+        "page_id": "61574253581304",
+        "name": "ME-LAVO-Y-SIGUE_IMA_A",
+        "image_hash": "{{image_hash_5}}",
+        "message": "┬┐Te lavas todo el d├¡a y el mal olor ├¡ntimo sigue? ­ƒÿ®\n\nJab├│n ├¡ntimo, toallitas, perfume.\nMe lavaba dos, tres veces al d├¡a\ny cada vez era peor.\n\nPens├® que ten├¡a que lavarme m├ís.\n\nEra justo al rev├®s ­ƒÆí\nel exceso de jab├│n y perfume\npuede desequilibrar lo que te protege.\n\n­ƒî┐ Perlas Purity de Her Natura:\n8 ra├¡ces naturales que ayudan a limpiar desde adentro,\ndonde el jab├│n no llega.\n\nÔ£à Frescura sin depender del jab├│n ni del perfume\nÔ£à Un tratamiento de 3 perlas, f├ícil y sin dolor\nÔ£à Env├¡o gratis a toda Colombia, pagas al recibir\n\nDeja de lavarte de m├ís y si├®ntete fresca.\nEscr├¡benos y te explicamos c├│mo funciona ­ƒæë",
+        "headline": "Fresca de verdad",
+        "description": "100% hierbas naturales",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_5",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 25,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_5}}",
+        "ad_name": "ME-LAVO-Y-SIGUE_IMA_A ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 26,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_5}}",
+        "ad_name": "ME-LAVO-Y-SIGUE_IMA_B ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 27,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "EXTERNA_OVULOSPURITY_OCHO-RAICES-TODO-EN-UNO_R2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"61574253581304\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 35, \"age_max\": 50, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-01T04:00:00-06:00",
+        "daily_budget": 299
+      },
+      "guardar_como": "adset_id_6",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 28,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_6",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_OVULOSPURITY\\OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png",
+      "nombre_en_biblioteca": "OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre ÔÇö el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 29,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "",
+        "page_id": "61574253581304",
+        "name": "OCHO-RAICES-TODO-EN-UNO_IMA_A",
+        "image_hash": "{{image_hash_6}}",
+        "message": "┬┐Olor, picaz├│n y flujo a la vez? ­ƒñ»\n\nEso era yo:\nun producto para el olor,\notro para la picaz├│n,\notro para la resequedad.\nPlata y enredo, y nada me cubr├¡a todo.\n\nHasta que encontr├® algo que junta todo en uno ­ƒÆí\n\n­ƒî┐ Perlas Purity de Her Natura:\n8 ra├¡ces naturales en cada tratamiento de 3 perlas.\nOsthol, Ang├®lica, Borneol y 5 ra├¡ces m├ís.\n\nÔ£à Frescura, confort y equilibrio en un solo tratamiento\nÔ£à 100% hierbas naturales, sin dolor\nÔ£à Env├¡o gratis a toda Colombia, pagas al recibir\n\nSimplifica tu cuidado ├¡ntimo.\nEscr├¡benos por WhatsApp y te explicamos qu├® hace cada ra├¡z ­ƒæë",
+        "headline": "Todo en uno natural",
+        "description": "8 ra├¡ces naturales ┬À 3 perlas",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_6",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 30,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_6}}",
+        "ad_name": "OCHO-RAICES-TODO-EN-UNO_IMA_A ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_6}}\"}"
+      },
+      "guardar_como": "ad_id_6A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 31,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "",
+        "ad_set_id": "{{adset_id_6}}",
+        "ad_name": "OCHO-RAICES-TODO-EN-UNO_IMA_B ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?",
+        "creative": "{\"creative_id\": \"{{creative_id_6}}\"}"
+      },
+      "guardar_como": "ad_id_6B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    }
+  ],
+  "manifiesto": {
+    "campana": "EXTERNA_OVULOSPURITY_TEST_20261001",
+    "conjuntos": [
+      {
+        "nombre": "EXTERNA_OVULOSPURITY_DESPUES-DE-ESTAR-CON-EL_R2",
+        "posicion": 1,
+        "angulo": "DESPUES_DE_ESTAR_CON_EL",
+        "banda_edad": {
+          "age_min": 25,
+          "age_max": 40,
+          "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "DESPUES-DE-ESTAR-CON-EL_IMA_A ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "A",
+            "creativo_id": "OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL",
+            "archivo": "OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 1
+          },
+          {
+            "nombre": "DESPUES-DE-ESTAR-CON-EL_IMA_B ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "B",
+            "creativo_id": "OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL",
+            "archivo": "OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 1
+          }
+        ]
+      },
+      {
+        "nombre": "EXTERNA_OVULOSPURITY_INFECCION-QUE-VUELVE_R2",
+        "posicion": 2,
+        "angulo": "INFECCION_QUE_VUELVE",
+        "banda_edad": {
+          "age_min": 25,
+          "age_max": 40,
+          "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "INFECCION-QUE-VUELVE_IMA_A ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?",
+            "letra": "A",
+            "creativo_id": "OVULOSPURITY_2_INFECCION_QUE_VUELVE",
+            "archivo": "OVULOSPURITY_2_INFECCION_QUE_VUELVE.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?",
+            "orden": 2
+          },
+          {
+            "nombre": "INFECCION-QUE-VUELVE_IMA_B ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?",
+            "letra": "B",
+            "creativo_id": "OVULOSPURITY_2_INFECCION_QUE_VUELVE",
+            "archivo": "OVULOSPURITY_2_INFECCION_QUE_VUELVE.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?",
+            "orden": 2
+          }
+        ]
+      },
+      {
+        "nombre": "EXTERNA_OVULOSPURITY_PROTECTOR-TODOS-LOS-DIAS_R2",
+        "posicion": 3,
+        "angulo": "PROTECTOR_TODOS_LOS_DIAS",
+        "banda_edad": {
+          "age_min": 25,
+          "age_max": 40,
+          "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "PROTECTOR-TODOS-LOS-DIAS_IMA_A ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "A",
+            "creativo_id": "OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS",
+            "archivo": "OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 3
+          },
+          {
+            "nombre": "PROTECTOR-TODOS-LOS-DIAS_IMA_B ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "B",
+            "creativo_id": "OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS",
+            "archivo": "OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 3
+          }
+        ]
+      },
+      {
+        "nombre": "EXTERNA_OVULOSPURITY_OLOR-QUE-SE-NOTA_R2",
+        "posicion": 4,
+        "angulo": "OLOR_QUE_SE_NOTA",
+        "banda_edad": {
+          "age_min": 25,
+          "age_max": 40,
+          "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "OLOR-QUE-SE-NOTA_IMA_A ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "A",
+            "creativo_id": "OVULOSPURITY_4_OLOR_QUE_SE_NOTA",
+            "archivo": "OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 4
+          },
+          {
+            "nombre": "OLOR-QUE-SE-NOTA_IMA_B ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "B",
+            "creativo_id": "OVULOSPURITY_4_OLOR_QUE_SE_NOTA",
+            "archivo": "OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 4
+          }
+        ]
+      },
+      {
+        "nombre": "EXTERNA_OVULOSPURITY_ME-LAVO-Y-SIGUE_R2",
+        "posicion": 5,
+        "angulo": "ME_LAVO_Y_SIGUE",
+        "banda_edad": {
+          "age_min": 35,
+          "age_max": 50,
+          "origen": "avatar_edad=35-45 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "ME-LAVO-Y-SIGUE_IMA_A ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?",
+            "letra": "A",
+            "creativo_id": "OVULOSPURITY_5_ME_LAVO_Y_SIGUE",
+            "archivo": "OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?",
+            "orden": 5
+          },
+          {
+            "nombre": "ME-LAVO-Y-SIGUE_IMA_B ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?",
+            "letra": "B",
+            "creativo_id": "OVULOSPURITY_5_ME_LAVO_Y_SIGUE",
+            "archivo": "OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?",
+            "orden": 5
+          }
+        ]
+      },
+      {
+        "nombre": "EXTERNA_OVULOSPURITY_OCHO-RAICES-TODO-EN-UNO_R2",
+        "posicion": 6,
+        "angulo": "OCHO_RAICES_TODO_EN_UNO",
+        "banda_edad": {
+          "age_min": 35,
+          "age_max": 50,
+          "origen": "avatar_edad=35-45 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 2.99,
+        "anuncios": [
+          {
+            "nombre": "OCHO-RAICES-TODO-EN-UNO_IMA_A ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "A",
+            "creativo_id": "OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO",
+            "archivo": "OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 6
+          },
+          {
+            "nombre": "OCHO-RAICES-TODO-EN-UNO_IMA_B ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?",
+            "letra": "B",
+            "creativo_id": "OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO",
+            "archivo": "OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?",
+            "orden": 6
+          }
+        ]
+      }
+    ],
+    "total_conjuntos": 6,
+    "total_anuncios": 12
+  }
+}

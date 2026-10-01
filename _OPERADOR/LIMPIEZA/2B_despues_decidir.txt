@@ -1,0 +1,34 @@
+===================================================================================================================
+ MOTOR DE DECISIÓN UNIFICADO — VITALCOM GUATEMALA (Evaluación: 14d | Fatiga: 3d | Tolerancia: acumulada | IC 95% | Grano: angulo)
+ Data: 2026-09-15 → 2026-09-28  (generado 2026-09-30)
+ Resumen:  🔴 PAUSAR: 0  |  🔵 RENOVAR (FATIGA): 1  |  🟢 ESCALAR: 2  |  🟡 SEGUIR MIDIENDO: 5
+===================================================================================================================
+
+[CLEARSTEM]  Estado: VIVO | Fase: F2 | Break-Even: Q105.89 | CPA Objetivo: Q30.80
+  ⛔ 1 orden(es) de ESCALAR NO EJECUTABLES: CLEARSTEM está en F2, gate de testeo. Valen como EVIDENCIA de ganador; mover plata ahora sesga la medición (invariante 6). Mantener presupuesto hasta cerrar la fase.
+-------------------------------------------------------------------------------------------------------------------
+  ESTADO           CELDA / ÁNGULO                VTS   MSJ  GASTO Q CPA REAL IC 95% Q        ACCIÓN INMEDIATA
+-------------------------------------------------------------------------------------------------------------------
+  [RENOVAR]        ANTI_FALSIFICACION             12    63    870.5    Q72.5 [43-133]        RENOVAR CREATIVO (FASE 2): Ángulo probado (66 vts acumuladas a CPA Q44.1 bajo BE Q105.9) pero los últimos 3d sangran (Q183 con 1 vts). Mantener ángulo y rotar concepto — NO apagar.
+  [ESCALAR]        RESISTENCIA_INSULINA_SOP       26   187   1252.3    Q48.2 [33-72]         NO SUBIR PRESUPUESTO todavía: CLEARSTEM ya es ganador (rentable, evidencia confirmada), pero está en FASE 2 testeando conceptos: si le subís presupuesto ahora, gana el conjunto que recibió más plata, no el mejor concepto. Para desbloquearlo: terminá el testeo hasta que un concepto gane 2 de 2, lo que pasa el producto a FASE 3 (optimización del flujo del bot). Mantené el presupuesto que ya tiene hasta entonces. Orden original del motor: MANTENER / ESCALA LEVE: CPA rentable Q48.2 bajo BE Q105.9. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.
+  [SEGUIR_MIDIENDO] MEDICOS_FALLARON                6   100    802.0   Q133.7 [65-320]        MANTENER PRESUPUESTO: IC [65 - 320.2] cruza BE Q105.9. El CPA observado está cerca del BE.
+
+[NUSAVA]  Estado: VIVO | Fase: F2 | Break-Even: Q92.64 | CPA Objetivo: Q30.80
+  ⛔ 1 orden(es) de ESCALAR NO EJECUTABLES: NUSAVA está en F2, gate de testeo. Valen como EVIDENCIA de ganador; mover plata ahora sesga la medición (invariante 6). Mantener presupuesto hasta cerrar la fase.
+-------------------------------------------------------------------------------------------------------------------
+  ESTADO           CELDA / ÁNGULO                VTS   MSJ  GASTO Q CPA REAL IC 95% Q        ACCIÓN INMEDIATA
+-------------------------------------------------------------------------------------------------------------------
+  [ESCALAR]        ARDOR                          20   175   1116.5    Q55.8 [37-89]         NO SUBIR PRESUPUESTO todavía: NUSAVA ya es ganador (rentable, evidencia confirmada), pero está en FASE 2 testeando conceptos: si le subís presupuesto ahora, gana el conjunto que recibió más plata, no el mejor concepto. Para desbloquearlo: terminá el testeo hasta que un concepto gane 2 de 2, lo que pasa el producto a FASE 3 (optimización del flujo del bot). Mantené el presupuesto que ya tiene hasta entonces. Orden original del motor: MANTENER / ESCALA LEVE: CPA rentable Q55.8 bajo BE Q92.6. Opciones: duplicar o subir hasta +20% (una vez, en la mañana) si el CPA se mantiene bajo.
+
+[TINNIDROP]  Estado: VIVO | Fase: F2 | Break-Even: Q93.41 | CPA Objetivo: Q30.80
+-------------------------------------------------------------------------------------------------------------------
+  ESTADO           CELDA / ÁNGULO                VTS   MSJ  GASTO Q CPA REAL IC 95% Q        ACCIÓN INMEDIATA
+-------------------------------------------------------------------------------------------------------------------
+  [SEGUIR_MIDIENDO] ACCESIBILIDAD_MEDICO           23   219   1720.9    Q74.8 [51-115]        MANTENER PRESUPUESTO (no subir): CPA Q74.8 bajo BE Q93.4, pero el IC [51-114.9] lo cruza. El CPA observado está cerca del BE.
+  [SEGUIR_MIDIENDO] PERDIDA_AUDITIVA               20   251   1315.1    Q65.8 [43-104]        MANTENER PRESUPUESTO (no subir): CPA Q65.8 bajo BE Q93.4, pero el IC [43-104.3] lo cruza. Faltan ~14 ventas al CPA actual para resolver IC.
+  [SEGUIR_MIDIENDO] DETERIORO_COGNITIVO            12   111    726.6    Q60.6 [36-111]        MANTENER PRESUPUESTO (no subir): CPA Q60.6 bajo BE Q93.4, pero el IC [36-110.8] lo cruza. Faltan ~11 ventas al CPA actual para resolver IC.
+  [SEGUIR_MIDIENDO] NOCHES_SIN_DORMIR               4    44    380.1    Q95.0 [40-282]        MANTENER PRESUPUESTO: IC [40 - 281.5] cruza BE Q93.4. El CPA observado está cerca del BE.
+
+===================================================================================================================
+ SÍNTESIS COMPLETA: Cero parálisis por falta de muestra · Cero decisiones irreversibles sin evidencia.
+===================================================================================================================
