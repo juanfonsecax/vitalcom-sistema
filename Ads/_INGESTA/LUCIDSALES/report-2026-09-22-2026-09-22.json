@@ -3,7 +3,7 @@
  "ventana_fin": "2026-09-22",
  "dias": 1,
  "tienda": "PRIMAX GT",
- "bajado_en": "2026-09-25T09:35:58",
+ "bajado_en": "2026-09-25T21:01:52",
  "insights": [
   {
    "adTitle": "RESISTENCIA-INSULINA_IMG_A ~ CLEARSTEM|RESISTENCIA_INSU|?|NC1|SIN_PRECIO|BOT_V1",
@@ -51,7 +51,7 @@
    "ctr": "1.6925",
    "cpm": "1.889985",
    "orderStatus": 2,
-   "fulfillmentStatus": "INCIDENCIA VALIDADA"
+   "fulfillmentStatus": "ENTREGADO"
   },
   {
    "adTitle": "PERDIDA-AUDITIVA_VID_B ~ TINNIDROP|PERDIDA_AUDITIVA|C3|NC2|SIN_PRECIO|BOT_V1",
@@ -668,12 +668,12 @@
    "total": null,
    "costPerSale": null,
    "cierre": null,
-   "clicks": "14",
+   "clicks": "16",
    "spend": "0.55",
-   "impressions": "349",
-   "reach": "340",
-   "ctr": "4.0115",
-   "cpm": "1.575931",
+   "impressions": "350",
+   "reach": "341",
+   "ctr": "4.5714",
+   "cpm": "1.571428",
    "orderStatus": null,
    "fulfillmentStatus": null
   },
