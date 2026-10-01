@@ -207,7 +207,7 @@ esto el test corre y **no se puede leer después**: la columna que mide el conce
 queda vacía.
 
 Escribir el CSV **con un escritor CSV real, nunca a mano** — todo campo de texto
-libre con comas va entre comillas dobles (regla 22 del orquestador).
+libre con comas va entre comillas dobles (invariante 11 de `reglas-sistema`).
 
 **(c) El plan de campaña** → `PRODUCTOS/[X]/4_PLAN_ESCALADO.txt` (plantilla en
 `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md` §7). Se **sobrescribe** y sube `v[N]`. Prohibido dejar
@@ -218,7 +218,7 @@ archivos sueltos de reruns.
 ## GUARDARRAÍLES
 
 1. **Sin ángulo ganador confirmado, no corre.** Y el ganador se declara agregando
-   por `angulo_key`, nunca por conjunto-semana (regla 6 del orquestador).
+   por `angulo_key`, nunca por conjunto-semana (invariante 1 de `reglas-sistema`).
 2. **Un `concepto_key` no se repite mientras queden conceptos sin usar.** La gracia
    de la fase es medir conceptos distintos, no ejecuciones del mismo.
 3. **`concepto_key` sale del vocabulario cerrado de 8** (`_CATALOGO_CONCEPTOS.md`
@@ -232,7 +232,7 @@ archivos sueltos de reruns.
 6. **La banda de edad se hereda del producto, no se reabre acá** (APR-060: es la
    variable más cara del sistema). Si el `2_DATA_PRODUCTO.txt` dice 45-60, es 45-60.
 7. **Los prompts se entregan también en el chat**, parte por parte y con
-   checkpoint, además de escribirse en disco (regla 19 del orquestador).
+   checkpoint, además de escribirse en disco (preferencia del operador).
 
 ---
 
