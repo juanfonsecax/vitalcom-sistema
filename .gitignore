@@ -39,8 +39,6 @@ PRODUCTOS/_TESTEOS.html
 PRODUCTOS/_META_ADS.html
 # gen_dashboard.py (vista de una pantalla)
 VISTAS/HOY.html
-# gen_sistema.py / gen_banco.py
-Ads/_SWIPE/_SISTEMA.html
 Ads/_SWIPE/_GALERIA.html
 Ads/_SWIPE/_WINNERS.html
 Ads/_SWIPE/_WINNERS_PORTABLE.html
