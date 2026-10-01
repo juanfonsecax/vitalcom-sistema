@@ -1,13 +1,14 @@
-# ÓVULOS PURITY HERNATURA — INPUTS CONGELADOS · VERSION v1 · 16-sep-2026
+# ÓVULOS PURITY HERNATURA — INPUTS CONGELADOS · VERSION v2 · 29-sep-2026
 
 > Única fuente de verdad del producto. Toda etapa lo lee antes de producir.
 > La data anterior del producto se borró completa el 16-sep-2026 por falsa: nada de antes vale.
 
 ```
-━━━ INPUTS CONGELADOS — OVULOS_PURITY · VERSION v1 · 2026-09-16 ━━━
+━━━ INPUTS CONGELADOS — OVULOS_PURITY · VERSION v2 · 2026-09-29 ━━━
 PRODUCTO (nombre exacto):     Óvulos Purity Hernatura  (marca impresa: HER NATURA)
 MERCADO:                      COLOMBIA · moneda COP · contra entrega (paga al recibir)
-COSTO_PROVEEDOR:              $7.000 COP por paquete (3 perlas)   ← costeado por el operador en COP
+COSTO_PROVEEDOR:              $7.000 COP por paquete (3 perlas)   ← costeo: costear.py 7000 --mercado CO
+                              (fila $7.500 de _DIM_COSTEO_CO.csv) · CPA break-even $28.031 por pedido
 DOSIS / PRESENTACIÓN:         paquete de 3 perlas (óvulos) de hierbas en malla con hilo;
                               1 tratamiento = 3 perlas
 PROVEEDORES_DROPY:            no provisto
@@ -19,28 +20,30 @@ IMAGEN_PRODUCTO:              Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_PACKSHOT.png
 INGREDIENTES:                 Osthol · Stemona Sessilifolia · Kochia Scoparia · Motherwort ·
                               Rhizoma Smilacis Glabrae · Angelica · Rhizoma Chuanxiong · Borneol
                               (8 raíces de la medicina ayurveda)
-REGISTRO:                     INVIMA y sellos verificables — declarado por el operador 16-sep
+REGISTRO:                     SIN INVIMA (operador, 29-sep). Ninguna pieza muestra sello ni número de
+                              registro de ningún regulador; donde el concepto lleve sello, va un
+                              beneficio del producto (ej. 100% natural).
 TASA:                         3152.5 COP por USD (tasa_cop_usd, _PARAMETROS_FINANZAS.csv)
 FANPAGE:                      HERNATURA CO (decisión del operador; NO se asigna por etapa-fanpage)
-CUENTA META / page_id:        PENDIENTE — la página no aparece en ninguna cuenta con MCP (16-sep)
+CUENTA META / page_id:        61574253581304 (HERNATURA CO, perfil de Facebook distinto al de GT;
+                              cuenta EXTERNA, publicación manual, sin MCP)
 TRANSCRIPCIONES:              Ads/1.2 Transcripcion videos/OVULOS PURITY HERNATURA/ (15 TXT)
 VIDEOS ORIGINALES:            VITALCOM_MEDIA/Ads/1.1 Videos/HERNATURA/
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-## Escalera de oferta (decisión 16-sep-2026)
+## Escalera de oferta (decisión v2, 29-sep-2026 — reemplaza la de v1)
 
-| Oferta | Precio | Envío | Paga el cliente |
-|---|---|---|---|
-| 1 paquete · 3 perlas · tratamiento básico | $41.000 | +$15.000 | **$56.000** |
-| **2 paquetes · 6 perlas · tratamiento recomendado — LA MÁS ELEGIDA** | $69.000 | gratis | **$69.000** |
-| 3 paquetes · 9 perlas · tratamiento completo | $99.000 | gratis | **$99.000** |
+| Oferta | Precio (envío incluido, paga al recibir) |
+|---|---|
+| 1 paquete · 3 perlas · tratamiento básico | **$84.900** |
+| **2 paquetes · 6 perlas · tratamiento recomendado — LA MÁS ELEGIDA** | **$129.900** |
+| 3 paquetes · 9 perlas · tratamiento completo | **$169.900** |
 
-- Estrategia de los mentores: precio de entrada bajo y llamativo en el anuncio ("desde $41.000"), el
-  envío se cobra solo en 1 paquete. Por $13.000 más la clienta se lleva el doble y no paga envío: la
-  oferta objetivo es 2 paquetes.
-- El operador confirma que 2 paquetes a $69.000 es rentable. No hay fila en `_DIM_COSTEO.csv`
-  (esa tabla es de Guatemala/Q). El break-even en COP queda pendiente del flete real Colombia.
+- Fuente: `python Ads/_TOOLS/costear.py 7000 --mercado CO` (fila $7.500, origen OPERADOR).
+- CPA break-even $28.031 por pedido (≈ USD 8.89) · CPA base $15.000 · CPA objetivo $11.944.
+- La escalera v1 ($41.000 + $15.000 envío / $69.000 / $99.000) queda SUPERADA: no se usa en ninguna pieza.
+- 3 paquetes ≈ "paga 2, lleva 3" (2 × $84.900 = $169.800).
 
 ## Mercado y tono
 
@@ -69,7 +72,7 @@ meses.
 
 El texto del proveedor (abajo) es la base del copy y **se usa con su fuerza**: detox íntimo,
 elimina mal olor, combate infecciones y hongos, candidiasis recurrente, vaginitis, flujo, picazón,
-pH, residuos que se expulsan, ayurveda, 8 raíces, sellos INVIMA, garantía, testimonios reales.
+pH, residuos que se expulsan, ayurveda, 8 raíces, garantía, testimonios reales.
 
 - **ADS (lo que Meta lee):** manda `DOCTRINA/COPYWRITING_ADS.md` y el compliance de Andrómeda, como
   en todo el portafolio. Es riesgo de cuenta y CPM, no de contenido.

@@ -1,0 +1,104 @@
+<<BLOQUE:descripcion>>
+¿Mal olor íntimo, flujo que te mancha, picazón o esa molestia que siempre te vuelve? No es falta de higiene: es tu flora íntima desequilibrada. Las relaciones, el protector de todos los días, el exceso de jabón y los cambios hormonales alteran tu pH, y ahí aparecen el olor, el flujo y las infecciones.
+Óvulos Purity es un detox íntimo con 8 raíces naturales que limpia, desintoxica y equilibra tu zona íntima desde adentro. Combate las bacterias y los hongos que causan el mal olor, ayuda a expulsar los residuos acumulados y calma la irritación, en vez de solo taparlo como el jabón o el perfume.
+En solo 4 días vuelves a sentirte fresca, limpia y segura: con tu pareja, en el trabajo, con la ropa que quieras y sin depender del protector.
+
+<<BLOQUE:modo_de_uso>>
+Súper fácil, sin dolor y en solo 4 días: 3 perlas, una tras otra.
+1. Lava bien tus manos.
+2. Abre el empaque de la perla y suelta el hilo hasta el final (la perla va dentro de su malla).
+3. Sumérgela 1 minuto en un vaso de agua limpia.
+4. Introdúcela en tu vagina lo más profundo que puedas, dejando el hilo por fuera.
+5. Déjala 24 horas, retírala con el hilo y descansa 12 horas.
+6. Pasadas las 12 horas, pones la siguiente perla. Repites hasta terminar las 3.
+Es normal que durante la limpieza te bajen residuos o flujo: es tu cuerpo soltando lo que tenía acumulado.
+Repite el tratamiento cada 2 meses para mantener tu flora en equilibrio.
+
+<<BLOQUE:caracteristicas>>
+BENEFICIOS
+- Ayuda a eliminar los malos olores íntimos desde la raíz, no solo a taparlos
+- Combate las bacterias y los hongos que causan infecciones
+- Rompe el ciclo de infección y rebote que dejan los tratamientos que solo calman
+- Equilibra tu flora vaginal y tu pH
+- Ayuda a expulsar los residuos acumulados (limpieza y desintoxicación íntima)
+- Regula y mejora el flujo vaginal
+- Calma la picazón, la irritación y el ardor
+- Ayuda con la sequedad y la incomodidad diaria
+- Protege tu zona íntima después de las relaciones
+- Apoya la firmeza y la elasticidad de tu zona íntima
+- Alivio y confort en los días del ciclo
+- 100% natural: 8 raíces naturales, sin químicos agresivos
+- Sin dolor, fácil de usar y sin efecto rebote
+- Un solo tratamiento en lugar de jabón, crema, óvulo y pastillas por separado
+- Resultados que se sienten desde los primeros días del tratamiento
+LAS 8 RAÍCES NATURALES
+- Osthol: mejora la circulación y promueve la limpieza interna de tu zona íntima.
+- Stemona Sessilifolia: calmante, reduce la irritación y mantiene el equilibrio natural.
+- Kochia Scoparia: desintoxicante y purificadora, ayuda a eliminar toxinas.
+- Motherwort: ayuda a regular el ciclo y aporta calma, para un entorno íntimo equilibrado.
+- Rhizoma Smilacis Glabrae: antibacteriana y antifúngica, protege y equilibra tu flora.
+- Angélica: mejora la circulación y apoya la salud del sistema reproductivo femenino.
+- Rhizoma Chuanxiong: alivia la congestión y mejora el flujo sanguíneo de la zona.
+- Borneol: antiinflamatorio y desinfectante, mantiene tu zona íntima limpia y saludable.
+
+<<BLOQUE:contenido>>
+Tratamiento detox íntimo de ~4 días: 3 perlas de hierbas naturales, cada una en su malla con hilo, empacadas individualmente.
+1 paquete = 1 tratamiento completo de limpieza (se repite cada 2 meses).
+Empaque 100% discreto: por fuera no dice qué es.
+
+<<BLOQUE:testimonios>>
+Si tienes las capturas originales de WhatsApp del proveedor (Manuela, Paula Andrea, Chat 3), úsalas en lugar de estos.
+T1 · objeción "¿me va a llegar? ¿es original?" · 1 globo + 1 imagen
+- Globo: `hola buenas, ya me llego el paquete y vino bien selladito. la verdad me daba miedo q fuera estafa pq uno ya ni sabe, pero pague cuando lo tuve en la mano. mañana empiezo`
+- Imagen: foto del producto recibido. Si no hay foto real, es la única que puede ser IA: foto realista tipo celular del paquete celeste HER NATURA (#5BB4EA) en una mano de mujer, sobre una mesa de comedor de una casa colombiana, luz natural de ventana, empaque cerrado y visible, fondo algo desordenado (cuaderno, vaso). Sin texto encima y sin sellos.
+T2 · objeciones "¿funciona?" y "¿por qué más de 1?" · texto, imagen, texto
+- Texto 1: `hola! ya termine las 3 perlitas. yo lo pedi por el olor q me daba despues de estar con mi esposo y tambn se me calmo la picazon. ya llevo 2 semanas fresquita y tranquila`
+- Imagen (real, nunca IA de personas): beneficio sin producto — cajón de ropa interior clara ordenado y sin protectores, o mujer de espaldas con jean claro sentada con las piernas cruzadas en un café. Sin cara ni anatomía.
+- Texto 2: `ah y pedi 2 paquetes pq en 2 meses repito el tratamiento y el otro se lo di a mi hermana q tambn sufre de eso`
+T3 · objeción "¿a otros les sirvió de verdad?" · captura de comentarios de Facebook · 0 emojis
+- Leidy Johana Castaño: `yo tenia una picazon y un flujo q me volvian cada mes, ya habia gastado en ovulos de la drogueria y nada. con estas perlas llevo 2 meses tranquila, super recomendadas`
+- Diana Marcela Rojas: `si sirven de verdad? me da pena preguntar pero tengo mucho flujo y ya no se q mas hacer`
+- Yurany Ospina (responde a Diana): `Diana si sirven, a mi me las recomendo una amiga q trabaja en una drogueria. yo manchaba todos los calzones y ahorita ni uso protector`
+- Claudia Patricia Henao: `las use por el olor despues de las relaciones y la verdad cambio full, mi esposo ni sabe jaja pero yo si me siento otra`
+
+<<BLOQUE:audio>>
+¡Hola! Claro que sí, te cuento. Soy Valentina, de HerNatura.
+Los Óvulos Purity son un detox íntimo natural que le devuelve el equilibrio a tu zona íntima desde adentro.
+Mira, ese mal olor, el flujo, la picazón o esa molestia que siempre te vuelve no son falta de higiene: es tu flora desequilibrada, por el jabón, el protector, las relaciones o los cambios hormonales.
+Purity limpia, desintoxica y equilibra tu flora con solo 3 perlas en 4 días. Vas a sentir cómo tu cuerpo suelta lo que tenía acumulado y cómo vuelve esa frescura que ya ni recordabas. Olvídate de taparlo con perfume o de vivir pegada al protector: es fácil de usar y no duele.
+Imagínate cruzar las piernas tranquila, estar con tu pareja sin pensar en cómo hueles, ponerte la ropa que quieras. Es la mejor decisión para tu salud íntima.
+Y todo con 8 raíces naturales, como el Osthol, la Angélica y el Borneol.
+
+<<BLOQUE:m2>>
+Ese es el testimonio de una de nuestras últimas clientas 💜
+Tu flora no se equilibra en una sola limpieza: el tratamiento se repite cada 2 meses para que el olor y la picazón no vuelvan. Con 3 paquetes ya tienes cubiertas tus limpiezas de los próximos 6 meses, y cada uno te sale a 39.966 con envío gratis.
+¿Te aparto 1 tratamiento ($79.900 con envío) o los 3 ($119.900 con envío gratis, cada uno a 39.966)?
+
+AUDIO TESTIMONIO DE M2 (50-60 s, voz de CLIENTA colombiana de 30-35 años, habla imperfecta):
+Holaa, buenas… ay, primero que todo gracias por el producto, me llegó rapidito y bien empacadito.
+Pues ya llevo como… tres semanas de haber terminado las perlitas y la verdad quedé súper satisfecha. O sea, el olor se me fue, pero así, del todo, y el flujo ya no es como antes.
+Yo antes andaba con protector todos los días, me cambiaba en el baño del trabajo dos, tres veces… y cuando estaba con mi esposo me daba era como miedo, me paraba a bañarme de una. Ahorita no, ahorita ando tranquila, me pongo el jean clarito, me siento como quiero.
+Y con él… bueno, eso cambió mucho, la verdad, uno anda hasta de mejor genio.
+Las recomiendo full, y les recomiendo a ustedes también, porque ya es mi segundo tratamiento con ustedes, ya les había pedido antes… y mi hermana también les compra.
+Muy recomendados, de verdad.
+
+<<BLOQUE:faq_venta>>
+FAQ DE VENTA
+1. ¿Es seguro comprar? ¿Me va a llegar? → Sí, tranquila: pagas solo cuando tienes el producto en tus manos. Enviamos a toda Colombia con transportadoras nacionales, en empaque discreto.
+2. Ya probé óvulos de droguería y me volvió, ¿esto sí sirve? → Esos óvulos calman el síntoma, pero la flora queda desequilibrada y por eso vuelve. Purity limpia y equilibra tu flora desde adentro con 8 raíces naturales: por eso ya son más de 10.000 clientas con resultados reales.
+3. ¿Y si no me funciona? → Si no notas cambios, te devolvemos tu dinero. Y además pagas al recibir: no arriesgas nada. [DEFAULT del sistema — reemplazar por la política real del operador]
+4. ¿Cómo se usa? ¿Duele? → No duele y es muy fácil: una perla dentro por 24 horas, 12 horas de descanso y la siguiente. Son 3 perlas en unos 4 días.
+5. ¿Qué es lo que me va a bajar? → Son residuos y flujo acumulado que tu cuerpo suelta con la limpieza. A cada mujer le baja distinto, y si te baja poquito también está trabajando. Si ves algo que te preocupe, consulta con tu médico.
+6. ¿En cuánto tiempo noto cambios? → Muchas clientas sienten la diferencia desde los primeros días del tratamiento, y la frescura se mantiene si repites cada 2 meses.
+7. El olor me aparece después de estar con mi pareja, ¿me sirve? → Sí. Después de las relaciones tu pH cambia y ahí aparece el olor: no es tu cuerpo ni falta de higiene. Purity le devuelve el equilibrio a tu flora. Mientras la perla está puesta no se tienen relaciones. [PENDIENTE del proveedor: si se puede entre perlas]
+8. Uso protector todos los días y me lavo mucho, y sigo igual, ¿por qué? → El protector sube el calor y la humedad, y el exceso de jabón desequilibra tu flora: más higiene termina en más olor. Purity limpia por dentro, donde el jabón no llega.
+9. ¿Por qué llevar más de 1? → Porque el tratamiento se repite cada 2 meses para que no vuelva. Con 2 paquetes haces tu limpieza ahora y ya tienes lista la siguiente.
+10. ¿Tiene efectos secundarios? ¿Puedo usarlo si estoy embarazada? → Es 100% natural. Si estás embarazada, lactando o en tratamiento médico, consulta primero con tu médico: Purity acompaña tu cuidado, no reemplaza tu tratamiento.
+
+<<BLOQUE:faq_postventa>>
+FAQ POSTVENTA
+1. ¿Ya salió mi pedido? → Ya lo despachamos y te llega en 2 a 5 días hábiles. Cualquier novedad te aviso.
+2. ¿Cómo me pongo la perla? → Manos limpias, sueltas el hilo, la sumerges 1 minuto en agua limpia y la introduces lo más profundo que puedas, con el hilo por fuera. 24 horas dentro, 12 de descanso y la siguiente.
+3. Me bajó algo raro, ¿es normal? → Sí, es tu cuerpo soltando residuos acumulados, y a cada una le baja distinto. Si tienes dolor fuerte, fiebre o algo que te preocupe, consulta con tu médico.
+4. ¿Cada cuánto repito? → Cada 2 meses, para mantener tu flora en equilibrio.
+5. ¿Puedo pedir otra vez? → ¡Claro! Escríbeme y te dejo el pedido listo.

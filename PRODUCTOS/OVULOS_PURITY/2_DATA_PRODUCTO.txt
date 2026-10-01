@@ -1,198 +1,166 @@
-═══ OVULOS_PURITY · VERSION v1 · 2026-09-16 · COSTO 7000 COP/paquete ($7.000) · DOSIS 3 perlas por paquete · page_id PENDIENTE (externa) · campaign_id SIN_MCP ═══
+═══ OVULOS_PURITY · VERSION v2 · 2026-09-29 · COSTO 7000 COP · DOSIS 3 perlas por paquete · page_id 61574253581304 · campaign_id SIN_MCP ═══
 PRODUCTO: Óvulos Purity Hernatura (marca impresa: HER NATURA)
-FECHA_PROCESADO: 2026-09-16
-VERSION: v1 (reconstruido desde cero; la data anterior del producto se borró el 16-sep-2026 por falsa)
-MERCADO: COLOMBIA · COP · contra entrega · PRODUCTO DE VALIDACIÓN DEL SISTEMA, fuera del portafolio Guatemala
-COSTO_PROVEEDOR: $7.000 COP por paquete (3 perlas)   [en _DIM_PRODUCTOS.csv: costo_q = 7000, columna en COP]
-DOSIS / PRESENTACIÓN: paquete de 3 perlas (óvulos) de hierbas en malla con hilo · 1 ciclo = 3 perlas = 4 días (24 h dentro + 12 h de descanso × 3) · repetir cada 2 meses
+FECHA_PROCESADO: 2026-09-29
+VERSION: v2 (rerun completo; reemplaza v1 del 16-sep-2026 entero. La escalera v1 $41.000+$15.000 / $69.000 / $99.000 queda SUPERADA)
+MERCADO: COLOMBIA · moneda COP · contra entrega (paga al recibir) · tono tuteo colombiano, nunca voseo
+COSTO_PROVEEDOR_Q: 7000 COP por paquete (las columnas *_q de este producto están en COP)
+DOSIS / PRESENTACIÓN: paquete de 3 perlas (óvulos) de hierbas en malla con hilo · 1 paquete = 1 tratamiento (~4 días) · se repite cada 2 meses
 PROVEEDORES_DROPY: no provisto   ·   ANUNCIANTES_AD_LIBRARY: no provisto
-VALIDACION_PRODUCTO: APTO CONDICIONAL · score provisional 0.92 (VERDE) — detalle abajo
-FANPAGE: HERNATURA CO (decisión del operador, no asignada por etapa-fanpage) · cuenta y página EXTERNAS (no están en _DIM_CUENTAS.csv) · page_id PENDIENTE · publicación manual
-MCP_ACCOUNT_ID: sin MCP · MCP_PAGE_ID: PENDIENTE · MCP_PIXEL_ID: n/a · TASA: 3152.5 COP por USD (tasa_cop_usd, _PARAMETROS_FINANZAS.csv)
-TRANSCRIPCIONES: Ads/1.2 Transcripcion videos/OVULOS PURITY HERNATURA/ (15 TXT) · MEDIA: Ads/MEDIA_OVULOSPURITY/
-TONO: tú colombiano, cercano y femenino ("amiga"). Nunca voseo.
+VALIDACION_PRODUCTO: no corrida en v2 (00_etapa-producto vacío). Producto de validación del sistema en Colombia, fuera del portafolio Guatemala.
+REGISTRO SANITARIO: el producto NO tiene registro. Ninguna pieza (ad, infografía, bot) muestra sello ni número de registro de ningún organismo; donde un concepto lleva sello va un beneficio del producto (100% natural / 8 raíces naturales).
+FANPAGE: Formato A (decisión del operador) · HERNATURA CO · page_id 61574253581304 · perfil de Facebook distinto al de GT · identidad marca HER NATURA, sin personaje · edad por avatar de cada ángulo
+MCP_ACCOUNT_ID: sin MCP (cuenta EXTERNA, publicación manual) · MCP_PAGE_ID: 61574253581304 · MCP_PIXEL_ID: no aplica · TASA_MONEDA_POR_USD: 3152.5 COP por USD (tasa de _DIM_PRODUCTOS.csv)
+IMAGEN_PRODUCTO: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_PACKSHOT.png · OVULOSPURITY_CHICA_SOSTENIENDO.png
+REFERENCIA F1 (ligera, única para las 6 fichas): Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg (registrada con referencia_f1.py --elegir, 2026-09-29)
 
-━━━ VALIDACIÓN DE PRODUCTO (ETAPA-PRODUCTO) ━━━
-FILTRO DE DESCARTE: pasa con reserva. Dropi y Ad Library no provistos → saturación no evaluable. Señales de categoría muy vendida en Colombia ("+10.000 clientas", "+325 reseñas", alertas INVIMA 2024). Mercado tradicional con sustitutos en farmacia (clotrimazol/metronidazol) → el ángulo no compite contra el óvulo de farmacia, va por "ya probaste cremas y pastillas y vuelve". No estacional.
-D1 resuelve problema específico: SÍ (mal olor, flujo, picazón, infecciones íntimas recurrentes).
-Obligatorios: O1 stock SIN CONFIRMAR · O2 ligero/no frágil SÍ · O3 proveedor confiable SIN CONFIRMAR (INVIMA declarado sin número) · O4 no estacional SÍ.
-Recomendados (10/12 seguros): R1 micronicho ✓ · R2 innovador ✗ · R3 percepción de valor ✓ · R4 público masivo ✓ (mujeres 25-55) · R5 fuera de mercado tradicional ✓ · R6 ticket bajo ✓ (2 paq $69.000 = 21,9 USD; 1 paq $56.000 = 17,8 USD; 3 paq 31,4 USD) · R7 viral ✓ · R8 tamaño ✓ · R9 sin variaciones ✓ · R10 combos ✓ (1/2/3 + recompra cada 2 meses) · R11 WOW ✓ · R12 margen ≥3 USD PENDIENTE (flete Colombia no provisto).
-RIESGOS:
- 1. Sanitario: INVIMA alerta 417-2024 contra óvulos/perlas detox sin registro vendidos por redes; otra alerta sobre "Óvulos Détox by Naturalistica" (el texto del proveedor dice "FRESCURA NATURALISTICA"). Confirmar número, vigencia, titular HER NATURA y tipo de registro.
- 2. Cuenta publicitaria: salud sexual/zona íntima y atributos personales → rechazos y CPM alto. En ADS no van: "cura", "99%", "endometriosis", "enfermedades uterinas", "estrechar tu vagina", "mioma", "candidiasis recurrente", "semen".
- 3. Contradicciones del texto del proveedor: "ayurveda" pero las hierbas son de medicina tradicional china; "envíos 100% gratuitos" vs $15.000 en 1 paquete; "devolución 110%" solo con tarjeta (no aplica a contra entrega). El bot usa UNA versión: envío gratis en 2 y 3 paquetes; garantía = cambio si llega dañado o con defecto de fábrica (30 días).
- 4. Contra entrega + producto íntimo de impulso → más rechazo en puerta; costearlo. En bot no afirmar que se expulsa mioma/tumor.
- 5. Uso: 24 h dentro; el bot excluye embarazo, lactancia y sangrado activo.
-Fuentes: invima.gov.co alerta 417-2024 · atlantico.gov.co alerta Naturalistica · Infobae 26-dic-2024 · El Tiempo · Agenciapi.
-
-━━━ COSTEO (ETAPA-1 no aplica: _DIM_COSTEO está en Q; el operador costeó en COP) ━━━
-P1u: 1 paquete · 3 perlas · tratamiento básico → $41.000 + $15.000 envío = paga $56.000
-P2u: 2 paquetes · 6 perlas · tratamiento recomendado → $69.000 envío gratis ← LA MÁS ELEGIDA · OFERTA OBJETIVO
-P3u: 3 paquetes · 9 perlas · tratamiento completo → $99.000 envío gratis
-Arquitectura: escalera 1/2/3 (no 2x1). En el anuncio: "desde $41.000" + pack de 2 a $69.000. Por $13.000 más la clienta lleva el doble sin envío.
-Margen bruto de producto (sin flete, CPA, admin ni devoluciones): P1u $41.000 − $7.000 = $34.000 (+ envío cobrado $15.000) · P2u $69.000 − $14.000 = $55.000 · P3u $99.000 − $21.000 = $78.000.
-El operador confirma que 2 paquetes a $69.000 es rentable.
-CPA_OBJETIVO: PENDIENTE   ·   CPA_BREAK_EVEN: PENDIENTE — dependen del flete contra entrega Colombia (no provisto). No se inventan. cpa_base_q y cpa_be_q quedan VACÍOS en _DIM_PRODUCTOS.csv.
-Presupuesto de testeo: US$2.99/conjunto = $9.426 COP (9.425,98 redondeado hacia arriba) × 6 = $56.556 COP/día. ETAPA 2 (~20-sep): US$5.98 = $18.852 COP por conjunto.
+━━━ COSTEO (ETAPA-1) ━━━
+Fuente: python Ads/_TOOLS/costear.py 7000 --mercado CO (exit 0) · tabla PRODUCTOS/_DIM_COSTEO_CO.csv · fila usada $7.500 (más cercana) · escalera origen OPERADOR
+P1u — 1 paquete · 3 perlas · tratamiento básico ........ $84.900
+P2u — 2 paquetes · 6 perlas · tratamiento recomendado .. $129.900  ← LA MÁS ELEGIDA (decisión del operador)
+P3u — 3 paquetes · 9 perlas · tratamiento completo ..... $169.900  (paga 2, lleva 3: 2 × $84.900 = $169.800)
+Todos con envío incluido, paga al recibir.
+CPA_OBJETIVO: $11.944,44   ·   CPA_BASE: $15.000   ·   CPA_BREAK_EVEN: $28.031,11 (≈ USD 8,89)
+Utilidad esperada (script): $13.031,11 · Valor envío (script): $27.500
+Margen por opción (precio - costo_pedido - CPA objetivo): P1u $65.455,56 · P2u $102.955,56 · P3u $135.455,56
+Restando además el envío de $27.500 (mismo flete para 1, 2 y 3, sin verificar): P1u $37.955,56 · P2u $75.455,56 · P3u $107.955,56. No incluye comisión/RTO COD ni devoluciones (dato inexistente para CO).
+Piso por pedido 1u: $7.500 + $28.031,11 + $27.500 = $63.031,11 → P1u lo despeja con $21.868,89 antes de comisión/RTO.
+Arquitectura: 1/2/3 unidades (escalera de tratamiento con recompra cada 2 meses). La regla de arranque 1u vs 2x1 no aplica (calibrada en GT; arranque = null).
+Garantía: el proveedor declara 30 días; NO confirmada → no aparece en ninguna pieza. Nunca "devolución del 110%" (es para pago con tarjeta).
+Regalo en 3u: ninguno declarado, no se inventa.
 
 ━━━ COMPONENTES (ETAPA-1B) ━━━
-Nota: evidencia in vitro, animal o tradicional; sin ensayos en humanos de uso vaginal. Son hierbas de medicina tradicional china, no ayurveda.
-- Osthol (Cnidium monnieri): antipicazón (TRPV1, ratones), antifúngico, antibacteriano, activo in vitro contra Trichomonas. Dolor: "me pica tanto por la noche que no puedo dormir". CUBIERTO a medias.
-- Stemona sessilifolia (Bai Bu): alcaloides antiparasitarios y antibacterianos (no calmante). CUBIERTO.
-- Kochia scoparia (Di Fu Zi): saponinas antipicazón, antialérgicas, antiinflamatorias, antifúngicas (animales). Dolor: irritación por jabón → MELAVOYSIGUE. DESCUBIERTO.
-- Motherwort (Leonurus / agripalma): regula contracción uterina, bajó dolor menstrual en ratas; CONTRAINDICADO EN EMBARAZO. DESCUBIERTO.
-- Rhizoma Smilacis Glabrae (Tu Fu Ling): redujo inflamación del tracto genital superior en ratas (NF-κB); antibacteriano. Dolor: "me trato, se calma y vuelve". CUBIERTO.
-- Angelica (Dang Gui): uso tradicional en trastornos menstruales; "equilibrio hormonal" no demostrado en humanos. → DESPUESDELAREGLA. DESCUBIERTO.
-- Rhizoma Chuanxiong: hierba clásica para dolor menstrual. → DESPUESDELAREGLA. DESCUBIERTO.
-- Borneol: antibacteriano, antiinflamatorio; potencia absorción por mucosa y da sensación fresca; puede causar ardor en piel sensible; riesgo en embarazo. Explica el ardor durante el uso → objeción resuelta en el bot.
-Fuentes: PMC8528571 · PMID 36387775 · PMID 32726680 · PMC7868135 · ScienceDirect S0378874117307456 · MSKCC Smilax · PMC12301920 · ScienceDirect S0753332219317779 · Frontiers fphar.2021.751207.
-
-━━━ VOZ DEL CLIENTE (ETAPA-1B · banco de dolor real) ━━━
-Fuentes con señal: Doctoralia (CO, MX, ES, AR), 1DOC3 (Colombia), Quora ES. Sin señal: Reddit ES, reseñas ML Colombia, TikTok/IG/FB (login).
-Temas más repetidos: infección/candidiasis que vuelve 7 · olor tras relaciones/pareja 6 · higiene o jabón y sigue 4 · óvulos de farmacia 4 · vergüenza del ginecólogo 2 · síntomas con la regla 2 · protector diario 0.
-Infección que vuelve:
- 1 "Ya llevo casi un mes con candidiasis se me pasa una semana y vuelve. Me he puesto ovulos y crema…" (doctoralia.es)
- 2 "Llevo un año con candidiasis y no se me va. ¿Que puedo hacer?" (doctoralia.es)
- 3 "LLevo más de un año con candidiasis recurrente. No encuentro modo alguno de eliminarlo…" (doctoralia.es)
- 4 "Cuál es el tratamiento más efectivo para candidiasis recurrente? (5 años de recurrencia)" (doctoralia.com.mx)
- 5 "Creo tener candidiasis e infección de orina a la vez, esto me ocurre cada dos por tres…" (doctoralia.es)
- 6 "Después de la menstruación tengo los siguientes síntomas: comezón, ardor, flujo blanco…" (doctoralia.com.mx, resumen)
- 7 "Hace unos días me dio candidiasis por qué estuve dos semanas tomando antibióticos…" (doctoralia.es)
-Olor después de las relaciones:
- 8 "Tengo mal olor en la vagina y después de tener relaciones sexuales es peor que puede ser" (doctoralia.com.mx)
- 9 "Porque tengo un olor horrible después de tener relaciones con mi pareja?… ese olor a putrefacción..." (1DOC3)
- 10 "Al tener relaciones sexuales después de tres días me sale un mal olor… ya me hice exámenes y no sale nada" (1DOC3)
- 11 "El semen de mi pareja cambia mi ph vaginal y me genera un olor fuerte días después. Debemos hacernos tratamiento con Albisec one ambos?" (1DOC3)
- 12 "Tengo olor a pescado vaginal desde q mi pareja se viene dentro de mi…" (doctoralia.com.mx)
- 13 "…mi novio me hizo sexo oral y me dijo que tenía un olor raro… como pescado algo así." (1DOC3)
-Me lavo y sigo oliendo:
- 14 "cuando sudo mucho me huele a cebolla mi parte íntima y por más que me lave no se me quita…" (doctoralia.com.mx)
- 15 "A que se deberá el mal olor vaginal? Si tengo una buena higiene día a día y aún así se da…" (doctoralia.com.mx)
- 16 "¿Estos jabones funcionan para tratar malos olores y flujo?… El jabón intimo Nosotras con camelia…" (1DOC3)
- 17 "Cada vez que me baño con jabón siento mucha comezón y ardor en mi area vaginal…" (doctoralia.com.mx)
-Óvulos de farmacia:
- 18 "Tengo mal olor y flujo y ardor, no se si ponerme ovulos de clotimazol o usar los ovulos VAXIDUO…" (doctoralia.co)
- 19 "el gynoflor óvulo ayuda a combatir el mal olor vaginal" (doctoralia.co)
- 20 "Porque me pongo óvulo y al dia siguiente sale un mal olor?" (doctoralia.com.mx)
- 21 "que me recomiendan para el flujo con olor, el cual al pasar los días me lastima? Me pongo ovulos…" (doctoraliar.com)
-Vergüenza del médico: 22 "Miedo a ir al ginecólogo y vergüenza." (1DOC3) · 23 "Cada vez que pienso en que tengo que ir me pongo a llorar… Me da pánico." (es.quora.com)
-Objeción de la categoría: 24 "Use un ovulo detox y estoy expulsando grumos por mi vagina antes no tenia nada d esto ni mal olor…" (doctoralia.co)
-Deseo (deducido del dolor): estar con la pareja sin pensar en el olor · terminar un tratamiento y que no vuelva · "mantenerse jugosas, frescas" (competencia 9 HN).
-PROBLEMAS OCULTOS: pH del semen (7,2-8) vs vagina (3,8-4,5) · lavarse de más arrasa la flora · óvulo de farmacia/antibiótico se lleva los lactobacilos → rebote · la regla cambia pH y hormonas cada mes.
-
-━━━ SWIPE (ETAPA-0) ━━━
-15 transcripciones = SWIPE DE COMPETENCIA (9 ICO-LITE, 6 HER NATURA). No se publica ningún video; FASE 1 es 6 ángulos × AD-IMAGEN sin lavado.
-Hooks más fuertes: "Mi novio me dijo que huelo mal durante el delicioso" (5 NUEVO) · "Cuando no entiendes porque tu 🐱 pica, duele, y huele mal…" (2X1 HER5, 75 %) · "Tienes mucho flujo y huele a pescado…" (10 HN, 50 %) · "Las mujeres no tienen idea lo fácil que es mantenerse jugosas, frescas…" (9 HN, 63 %).
-Descartado: QUISTES (ICO-LITE 7, promete evitar cirugía = cura enfermedad grave).
-Hooks con riesgo en ADS: "clínicamente probado", "sin efectos secundarios", "72 horas", "infecciones recurrentes", "combatir la candidiasis", fotos de flujo/residuos.
+Sin respaldo clínico del producto terminado: los mecanismos son de los ingredientes por separado.
+- Osthol (Cnidium monnieri): antifúngico in vitro, sinergia con fluconazol contra Candida resistente → ángulo INFECCION_QUE_VUELVE.
+- Stemona sessilifolia: sin datos externos útiles para uso vaginal → ángulo OCHO_RAICES_TODO_EN_UNO.
+- Kochia scoparia: fungistático débil contra C. albicans in vitro → INFECCION_QUE_VUELVE.
+- Rhizoma Smilacis Glabrae: antifúngico in vitro; uso tradicional para leucorrea → PROTECTOR_TODOS_LOS_DIAS.
+- Motherwort, Rhizoma Chuanxiong, Angelica: uso tradicional para cólicos (evidencia oral, no vaginal) → sin voz, no se usa como ángulo.
+- Borneol: antiinflamatorio y desinfectante (proveedor) → OCHO_RAICES_TODO_EN_UNO.
+- "Rejuvenecimiento / estrecha": claim del proveedor sin ingrediente ni voz → no se recomienda.
+Diferenciador: 8 raíces naturales en 3 perlas, un solo tratamiento en lugar de jabón + crema + óvulo + pastilla; trabaja el equilibrio de la flora y el pH, no solo el síntoma del día.
+Problemas ocultos (van al BOT, no al hook): pH alcalino del semen tras las relaciones · el protector diario sube calor, humedad y pH · el exceso de jabón y perfume altera la flora · el óvulo de farmacia apaga el síntoma y la flora queda desequilibrada.
+Voz del cliente: 23 citas VERIFICADAS en PRODUCTOS/_VOZ_CLIENTE.csv (OVP-V01..V23, verificar_voz.py --producto OVULOS_PURITY --escribir).
 
 ━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) ━━━
-Reglas comunes: concepto FIJO C2_BENEFICIOS ligera · CN05_LISTA_BENEFICIOS · los 6 en AD-IMAGEN 4:5 · hooks sin "¿tienes…?" · la causa oculta va solo en el bot (APR-001) · saturación ESTIMADA, no medida en Ad Library.
+concepto_key C2_BENEFICIOS (variante ligera) fijo en los 6 · formato IMAGEN en los 6 · saturación DESCONOCIDA en los 6 (Ad Library no provista; ranking provisional)
 
-#1 OLORTRASRELACIONES — "El olor del día después" · IMAGEN · SIN precio · NC1 · VERGUENZA · MUJER 25-35 (banda Meta 25-40) · saturación MEDIA
-   Avatar: colombiana 25-38, pareja estable, relaciones sin preservativo; se baña antes y después y al otro día o a los 2-3 días aparece olor fuerte; exámenes "no sale nada".
-   Dolor: "Estoy con él y al otro día, o a los tres días, me sale ese olor horrible. Ya me hice exámenes y no sale nada." [VOZ-REAL 9, 10]
-   Promesa: A "después huelo mal y me muero de pena" → B "disfruto con mi pareja y al otro día me siento fresca".
-   Hook: "Después de estar con él, otra vez ese olor" · swipe 5 NUEVO / ICO-LITE 5 · origen VOZ_REAL (problema oculto, reemplaza OLORPAREJA)
-#2 INFECCIONQUEVUELVE — "La que va y vuelve" · IMAGEN · CON precio · NC2 · AGOTAMIENTO · MUJER 25-35 (banda 25-40) · saturación ALTA
-   Avatar: colombiana 25-40, meses o años con picazón, ardor, flujo blanco espeso; se trata, se calma una semana y vuelve.
-   Dolor: "Se me pasa una semana y vuelve. Llevo un año así y no se me va." [VOZ-REAL 1, 2, 3]
-   Promesa: A "me trato y a la semana vuelve" → B "termino el tratamiento y vuelvo a sentirme normal". Dato: 3 de cada 4 mujeres tendrán una infección por hongos alguna vez; casi la mitad, más de una (Fisterra, Rev Iberoam Micol).
-   Hook: "Se me quita una semana y vuelve" · swipe 2X1 HER5 / ICO-LITE 8 · empujar pack 3 cuando vuelve seguido
-#3 CREMASREBOTE — "Ya probé de todo en la droguería" · IMAGEN · CON precio · NC3B · FRUSTRACION_MEDICA · MUJER 25-35 (banda 25-40) · saturación MEDIA (estimada)
-   Avatar: colombiana 25-40 que se automedica (clotrimazol, Vaxiduo, Gynoflor, ácido bórico); mejora unos días y vuelve el flujo con olor.
-   Dolor: "Me pongo el óvulo y al día siguiente sale un mal olor; ya no sé si ponerme clotrimazol o Vaxiduo." [VOZ-REAL 18, 20, 21]
-   Promesa: A "cada mes un óvulo distinto y el olor vuelve" → B "un tratamiento natural sin volver a empezar". "Sin efecto rebote" solo en el bot.
-   Hook: "Cremas y óvulos de droguería… y sigue ahí" · swipe 9 HN / ICO-LITE 9
-#4 MELAVOYSIGUE — "Me lavo y sigo oliendo" · IMAGEN · SIN precio · NC1 · VERGUENZA · MUJER 35-45 (banda 35-50) · saturación MEDIA
-   Avatar: colombiana 30-50 muy cuidadosa (2-3 baños al día, jabón íntimo, toallitas, perfume); trabaja en calor o transporte.
-   Dolor: "Por más que me lave no se me quita el olor. Tengo buena higiene y aun así." [VOZ-REAL 14, 15]
-   Promesa: A "me lavo tres veces al día y sigo sintiéndome sucia" → B "rutina simple y tranquilidad de oler a limpio".
-   Hook: "Me lavo todos los días y el olor sigue" · swipe ICO-LITE 8 y 4 · origen VOZ_REAL (reemplaza MALOLOR)
-#5 FLUJOPESCADO — "Ese olor que se nota" · IMAGEN · SIN precio · NC2 · VERGUENZA · MUJER 25-35 (banda 25-40) · saturación ALTA (estimada)
-   Avatar: colombiana 22-35, estudia o trabaja y va al gym; flujo abundante con olor a pescado al sentarse o cambiarse.
-   Dolor: "Tengo mucho flujo y huele a pescado; me huelo al abrir las piernas y el perfume no lo tapa." [competencia 10 HN / ICO-LITE 2 + VOZ-REAL 12]
-   Promesa: A "mucho flujo, olor y miedo a que se note" → B "fresca todo el día, en el trabajo y en el gym".
-   Hook: "Mucho flujo y ese olor que se nota" · swipe 10 HN / ICO-LITE 2, 3
-#6 DESPUESDELAREGLA — "Se acaba la regla, empieza la picazón" · IMAGEN · SIN precio · NC1 · MIEDO_FUTURO · MUJER 25-35 (banda 25-40) · saturación BAJA
-   Avatar: colombiana 22-40; cada mes, al terminar la regla, comezón, ardor y flujo blanco.
-   Dolor: "Cada vez que se me acaba la regla empieza la comezón, el ardor y el flujo blanco. Ya usé óvulos, pastillas y cremas." [VOZ-REAL 6, 5]
-   Promesa: A "cada mes la misma molestia" → B "meses tranquilos sin el ciclo regla-picazón". Único que usa Motherwort, Angélica, Chuanxiong.
-   Hook: "Se acaba la regla y empieza la picazón" · ángulo virgen (nadie del swipe) · reemplaza FLUJODIARIO
-Pendientes de ETAPA-2: 3 de 6 con VERGUENZA (1, 4, 5): no afecta FASE 1 (variable = angulo_key) pero no separa efecto de emoción.
+#1 DESPUES_DE_ESTAR_CON_EL — "Después de estar con él"
+   Creativo: IMAGEN · OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png · fuente 5 NUEVO 30fps (escena) + 5. Ovulos Purity (causa, sin bata)
+   Avatar: mujer colombiana 25-35, pareja estable; después de estar con él dura días con mal olor; ya probó óvulo de farmacia (Isodine) y vuelve; evita la intimidad.
+   Dolor: "Después de estar con mi pareja duro días con ese olor, y cada vez es peor."  Deseo: "Quiero estar con él tranquila, sin estar pendiente de cómo huelo."
+   NC 2 · MUJER · 25-35 · VERGUENZA · tipo emocional · origen VOZ_CLIENTE OVP-V16..V23 (8)
+   Promesa: "evito estar con él por el olor" → Purity, 3 perlas de 8 raíces naturales → "vuelvo a estar tranquila y segura con él"
+   Hook: "¿POR QUÉ VUELVE ESE OLOR DESPUÉS DE ESTAR CON ÉL?" · precio en ad: NO
+#2 INFECCION_QUE_VUELVE — "La infección que vuelve"
+   Creativo: IMAGEN · OVULOSPURITY_2_INFECCION_QUE_VUELVE.png · fuente 2X1 HER5 (banco de hooks: 9. Ovulos Purity)
+   Avatar: mujer colombiana 25-35 con meses o años de picazón, flujo y olor que se van con el tratamiento y regresan; ya gastó en óvulos, pastillas y cremas.
+   Dolor: "Tengo candidiasis recurrente y no se me quita con nada."  Deseo: "Pasar un mes entero sin que me vuelva."
+   NC 3A · MUJER · 25-35 · FRUSTRACION_MEDICA · problema-dolor + comparación · origen VOZ_CLIENTE OVP-V04..V09 (6)
+   Promesa: "gasto en óvulos, cremas y pastillas y vuelve" → 8 raíces en 3 perlas → "dejo de vivir pendiente de cuándo me vuelve"
+   Hook: "¿ÓVULOS, CREMAS, PASTILLAS… Y SIEMPRE VUELVE?" · precio en ad: NO · 1 paquete · 3 perlas
+#3 PROTECTOR_TODOS_LOS_DIAS — "Protector todos los días"
+   Creativo: IMAGEN · OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png · fuente 6. Ovulos Purity
+   Avatar: mujer colombiana 25-35 que usa protector diario porque el flujo le mancha la ropa interior; cambió de jabón y sigue igual.
+   Dolor: "¿Por qué mancho tanto mi ropa interior con flujo? Uso protectores y aun así."  Deseo: "Ponerme cualquier calzón sin protector."
+   NC 2 · MUJER · 25-35 · RESIGNACION · problema-dolor · origen VOZ_CLIENTE OVP-V01..V03 (3, CO)
+   Promesa: "vivo pegada al protector" → Purity → "me siento limpia sin depender del protector"
+   Hook: "¿PROTECTOR TODOS LOS DÍAS Y AUN ASÍ?" · precio en ad: NO · 1 paquete · 3 perlas
+#4 OLOR_QUE_SE_NOTA — "El olor que se nota"
+   Creativo: IMAGEN · OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png · fuente 10 HN (1)
+   Avatar: mujer colombiana 25-35 que trabaja o estudia fuera de casa y teme que su olor se note en la ropa y en público.
+   Dolor: "Desprendo un olor como a pescado que se traspasa hasta mi pantalón."  Deseo: "Que se me quite el mal olor y cruzar las piernas sin pensar en eso."
+   NC 2 · MUJER · 25-35 · VERGUENZA · emocional · origen VOZ_CLIENTE OVP-V10..V12 (3, MX)
+   Promesa: "me escondo por el olor" → Purity → "fresca y segura todo el día"
+   Hook: "¿POR QUÉ ESE OLOR SE NOTA HASTA EN LA ROPA?" · precio en ad: NO
+#5 ME_LAVO_Y_SIGUE — "Me lavo y sigue"
+   Creativo: IMAGEN · OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png · fuente 8. Ovulos Purity (sin su cierre de "no vuelves a sufrir candidiasis")
+   Avatar: mujer colombiana 35-45 muy cuidadosa con su higiene (jabón íntimo, toallitas, perfume) que cree que debe lavarse más.
+   Dolor: "Tengo una buena higiene, me lavo constantemente, y aun así me da el olor."  Deseo: "Entender qué tengo y que el olor se vaya de verdad."
+   NC 1 · MUJER · 35-45 (inferido por ETAPA-2) · CURIOSIDAD · error común / educativo · origen VOZ_CLIENTE OVP-V13..V15 (3)
+   Promesa: "me lavo cada vez más y huelo igual" → Purity limpia desde adentro → "dejo de depender del jabón y del perfume"
+   Hook: "ME LAVO TODO EL DÍA… ¿Y POR QUÉ SIGUE?" · precio en ad: NO
+#6 OCHO_RAICES_TODO_EN_UNO — "8 raíces en un solo tratamiento"
+   Creativo: IMAGEN · OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png · fuente 1. Purity de Hernatura (solo mecanismo; sin "clínicamente probado", sin falso doctor, sin escasez inventada)
+   Avatar: mujer colombiana 35-45 con varias molestias a la vez (olor, picazón, sequedad, flujo, cólicos) que no sabe qué comprar.
+   Dolor: "Tengo de todo un poco y no sé qué comprar; cinco productos distintos es plata y enredo."  Deseo: "Una sola cosa, natural y fácil, que cubra todo."
+   NC 2 · MUJER · 35-45 (inferido) · CURIOSIDAD · mecanismo único + ahorro · origen VIDEO_COMPETENCIA (sin voz propia)
+   Promesa: "5 productos y nada" → 8 raíces en 3 perlas → "un solo tratamiento natural"
+   Hook: "¿JABÓN, CREMA Y ÓVULO POR SEPARADO?" · precio en ad: NO · 1 paquete · 3 perlas
+   Nota: contradice APR-001 (MEDIA, mecanismo no vende como hook de testeo); entra por pedido del operador, reencuadrado como comparación/ahorro.
 
-━━━ ÁNGULOS DESCUBIERTOS / RESERVA (ETAPA-1B) ━━━
-- PENAGINECOLOGO (reserva): tratamiento en casa, discreto. Voz 22-23. En ads no sugerir "sin ir al médico"; usado en el bot como objeción de privacidad.
-- PICAZONNOCHE (reserva): Osthol + Kochia. "La picazón que quema y no me deja dormir". Saturación MEDIA.
-- FLUJODIARIO y MALOLOR (reserva, reemplazados).
-- DESCARTADO como ángulo de anuncio: RESIDUOSDETOX (voz real en contra, ginecólogas colombianas, INVIMA 417-2024). Solo post-clic con testimonio literal.
+Aprendizajes aplicados: APR-001 (causa oculta al bot, no al hook) · APR-003 (F1 todo imagen) · APR-065 (empaque real: sobre celeste #5BB4EA) · APR-079 (precio en ad filtra antes de gastar la conversación → 3 de 6 con precio).
+Precio en los ads: NINGUNO de los 6 lleva precio (decisión del operador 29-sep-2026: FASE 1 mide solo el ángulo; concepto, formato y oferta fijos). La escalera va en el bot.
+Compliance de ADS: hooks en escena o primera persona; sin "vagina", "candidiasis", "infección", "hongos", "zona íntima" en el ad; sin "cura/trata/elimina", sin plazos. POST-CLIC (bot, infografías, audio) con la fuerza del texto del proveedor; único límite: no prometer que cura endometriosis, miomas ni enfermedades graves, y no afirmar que lo que se expulsa es un mioma o un tumor.
 
-━━━ CREATIVOS (ETAPA-4) ━━━
-ADN visual: celeste #5BB4EA (principal) · lima #D6FB93 (marcador) · crema #F5F0D0 (fondo ads) · verde oscuro #0E3B2C (texto) · azul profundo #123A55 (fondos oscuros del bot). Montserrat Black/Bold. Envase: SOBRE PLANO de aluminio mate celeste + 3 sobrecitos + perla en malla.
-Las 6 piezas comparten plantilla; solo cambian hook, 4 beneficios, props de ingrediente y (en 2 y 3) el bloque de precio + sello "2 PAQUETES ENVÍO GRATIS". Hooks de imagen: 1 "¿Después de estar con él, otra vez ese olor?" · 2 "¿Se quita una semana y vuelve?" · 3 "¿Cremas de droguería y sigue ahí?" · 4 "¿Me lavo y el olor sigue?" · 5 "¿Flujo con olor que se nota?" · 6 "¿Se acaba la regla y empieza la picazón?"
-Decisiones de copy: sin "¿tienes…?" (atributos personales Meta); "sin efecto rebote" y "controlar el flujo" fuera de ads; dato 3 de 4 en el cuerpo, no en el hook; testimonios textuales recortados sin plazos ni "expulsé". Sin precio tachado ni urgencia falsa: "LA MÁS ELEGIDA".
-Aprendizajes aplicados: APR-001 MEDIA · APR-003 MEDIA · APR-065 ALTA (color de la foto real) · APR-024 ALTA (consistencia envase ad ↔ bot) · APR-079 MEDIA / APR-005 BAJA (precio en 2 de 6).
-IMAGEN 4 (anti-imitación) no generada; opcional para retargeting.
-Copies completos, prompts y flujo verbatim: 1_HACER_MANUAL.txt (C, D, E) · prompts también en Ads/MEDIA_OVULOSPURITY/PROMPTS_IMAGENES_OVULOSPURITY.txt · contenido estructurado en PRODUCTOS/OVULOS_PURITY/_PLAN.json.
+━━━ ÁNGULOS DESCUBIERTOS (ETAPA-1B) ━━━
+1. "Después de estar con él" (G con la emoción de pareja de F) — ADOPTADO como #1.
+2. "El protector te está dando más flujo" — usado como reencuadre/cuerpo de #3, no como conjunto aparte.
+3. "Candidiasis + cistitis que va y viene" (sub-ángulo de #2, OVP-V08/V09) — reserva; no prometer que cura la cistitis.
+4. Cólicos menstruales (Motherwort, Chuanxiong, Angelica) — sin voz real, la vía de uso no lo sostiene. No recomendado.
+Reservas de ETAPA-0: H "detox preventivo" (dolor no definido) · I "quistes" DESCARTADO (promete curar enfermedad grave).
 
-━━━ BOT (ETAPA-5) — análisis ━━━
-Bot PARAGUAS (los 6 ángulos), BUYER TYPE EMOCIONAL, flujo NARRATIVO, 13 elementos (4 testimonios: el 4º prepara para "lo que me baja", voz 24).
-Promesa integradora: la flora y el pH se desequilibran por las relaciones, la regla, el exceso de jabón o los tratamientos de droguería → olor, flujo, picazón o infección que vuelve. "Devolverle el equilibrio a tu zona íntima desde adentro, para que el olor, el flujo y la picazón dejen de volver, sin importar qué lo desencadena."
-Propuestas de valor: PV1 pareja (Smilax + Osthol, pH) · PV2 vuelve (Smilax + Stemona) · PV3 droguería (sin arrasar flora) · PV4 jabón (Kochia) · PV5 flujo (Borneol, frescura) · PV6 regla (Motherwort, Angélica, Chuanxiong) · PV7 privacidad · PV8 facilidad.
-Mapeo de barreras: Video 1 (autoridad) → OBJ-01 "¿esto sí sirve?" · Video 2 (UGC) → OBJ-02 · Info 1 → OBJ-03 "¿sirve para mi caso?" · Info 2 → OBJ-04 "¿duele, cuándo lo uso?" · Info 3 → OBJ-05 "¿estafa / me llega?" · Testimonio 3 → OBJ-06 "¿es normal lo que me sale?" · Audio → OBJ-01 + vergüenza. Si el Video 1 elegido no explica la causa, cambiarlo.
-Spec de etapa-5 para los Elementos 4-6 (texto de las infografías) DIFIERE de los prompts de etapa-4 (p. ej. Info 1: etapa-5 titula "DILE ADIÓS AL OLOR Y A LA INFECCIÓN QUE SIEMPRE VUELVE"; el prompt renderiza "LA PAZ Y FRESCURA QUE TU ZONA ÍNTIMA NECESITA"). En 1_HACER_MANUAL manda el prompt renderizable (sección C.2). Spec etapa-5 conservada: Info 1 10 bullets en palabras de ella (olor tras pareja, infección que va y vuelve, picazón nocturna, flujo que se nota, sin rebote, picazón post-regla, oler a limpio, cólicos, frescura desde el primer uso, sin dolor y en casa) · Info 2 antes/ahora + modo de uso + Osthol/Smilax/Borneol/Motherwort + timeline 12 h / día 4 / 2 meses · Info 3 PAGAS AL RECIBIR + garantía de cambio 30 días (sin 110 %) + INVIMA sin número + transportadoras + 3 mini testimonios + "+10.000 clientas · 4,8/5".
-Conflicto de reglas del agente resuelto: saludo FIJO (08-jul) prevalece sobre "el saludo menciona el dolor"; el dolor va al audio.
-Tiempo de entrega "2 a 5 días hábiles" = valor provisional.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (insumo de ETAPA-7 / optimización)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CAMPAÑA: [CUENTA]_OVULOSPURITY_TEST_20260917   ·   FASE: 1 testeo   ·   LANZAMIENTO: 04:00 AM hora Colombia del día siguiente a publicar (17-sep-2026 si se publica el 16)
-CPA_OBJETIVO: PENDIENTE (COP)   ·   CPA_BREAK_EVEN: PENDIENTE (COP)   ·   PRESUPUESTO/CONJUNTO: US$2.99 ETAPA 1 → US$5.98 ETAPA 2 ($9.426 → $18.852 COP)
-PD (Presupuesto de Decisión) = 1× Break Even = PENDIENTE → sin break-even no hay PD ni lectura de decidir.py
-Estructura: ABO · 6 conjuntos × 2 anuncios idénticos · solo mujeres · Colombia · Advantage+ OFF · concepto fijo C2_BENEFICIOS/CN05
-[CUENTA] = alias de la cuenta externa, por definir (en _DIM_CONJUNTOS.csv cuenta_alias = EXTERNA). Al definirlo, renombrar conjunto_meta en _DIM_CONJUNTOS.csv y en este registro con el nombre EXACTO de Meta.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPAÑA: EXTERNA_OVULOSPURITY_TEST_20260930   ·   FASE: 1 testeo de ángulos   ·   LANZAMIENTO: 2026-09-30 04:00 hora Colombia (UTC-5)
+Estructura: 1 campaña · 6 conjuntos ABO · 2 anuncios duplicados por conjunto · Tráfico → Maximizar conversaciones → WhatsApp · Advantage+ Audience OFF · solo mujeres · Colombia
+CPA_OBJETIVO: $11.944,44   ·   CPA_BREAK_EVEN: $28.031,11   ·   PRESUPUESTO/CONJUNTO: US$2.99 = $9.426 COP ETAPA 1 → US$5.98 = $18.852 COP ETAPA 2 (sobrevivientes, a la vez)
+Total ETAPA 1: 6 × $9.426 = $56.556 COP/día (US$17.94)
+PD (Presupuesto de Decisión) = 1× Break Even = $28.031 COP · se alcanza en ~3,0 días a $9.426/día
 
-| NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo/Prompt | Precio ad | Avatar | Hook | Estado |
+| NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo | Precio ad | Avatar | Hook | Estado |
 |---|---|---|---|---|---|---|---|---|
-| [CUENTA]_OVULOSPURITY_OLORTRASRELACIONES_R1 | OLORTRASRELACIONES | emocional · NC1 · TOFU | IMAGEN | OVULOSPURITY_1_OLORTRASRELACIONES.png | NO | MUJER 25-35 · banda 25-40 · VERGUENZA | Después de estar con él, otra vez ese olor | SIN PUBLICAR |
-| [CUENTA]_OVULOSPURITY_INFECCIONQUEVUELVE_R1 | INFECCIONQUEVUELVE | problema-dolor + dato · NC2 · TOFU | IMAGEN | OVULOSPURITY_2_INFECCIONQUEVUELVE.png | SI | MUJER 25-35 · banda 25-40 · AGOTAMIENTO | Se me quita una semana y vuelve | SIN PUBLICAR |
-| [CUENTA]_OVULOSPURITY_CREMASREBOTE_R1 | CREMASREBOTE | comparación · NC3B · MOFU | IMAGEN | OVULOSPURITY_3_CREMASREBOTE.png | SI | MUJER 25-35 · banda 25-40 · FRUSTRACION_MEDICA | Cremas y óvulos de droguería… y sigue ahí | SIN PUBLICAR |
-| [CUENTA]_OVULOSPURITY_MELAVOYSIGUE_R1 | MELAVOYSIGUE | error común · NC1 · TOFU | IMAGEN | OVULOSPURITY_4_MELAVOYSIGUE.png | NO | MUJER 35-45 · banda 35-50 · VERGUENZA | Me lavo todos los días y el olor sigue | SIN PUBLICAR |
-| [CUENTA]_OVULOSPURITY_FLUJOPESCADO_R1 | FLUJOPESCADO | problema-dolor · NC2 · TOFU | IMAGEN | OVULOSPURITY_5_FLUJOPESCADO.png | NO | MUJER 25-35 · banda 25-40 · VERGUENZA | Mucho flujo y ese olor que se nota | SIN PUBLICAR |
-| [CUENTA]_OVULOSPURITY_DESPUESDELAREGLA_R1 | DESPUESDELAREGLA | problema-dolor · NC1 · TOFU | IMAGEN | OVULOSPURITY_6_DESPUESDELAREGLA.png | NO | MUJER 25-35 · banda 25-40 · MIEDO_FUTURO | Se acaba la regla y empieza la picazón | SIN PUBLICAR |
-Anuncios (A y B por conjunto): [ANGULO]_IMG_A / _IMG_B ~ OVULOS_PUR|[ANGULO≤16]|C2.CN05|NC[x]|SIN_PRECIO o ESCALERA|BOTv1 (BOTv1 = propuesta, confirmar).
-rol_embudo: DERIVADO_NC. CREMASREBOTE queda MOFU por la regla NC3 → MOFU (etapa-6 lo había marcado BOFU; hook DOLOR, no OFERTA).
-En _DIM_CONJUNTOS.csv: estado = ACTIVO (vocabulario vigente del CSV; "PLANIFICADO" no existe) + verificado_en_csv = NO + nota "SIN PUBLICAR". Pasa a verificado SI cuando gaste.
+| EXTERNA_OVULOSPURITY_DESPUES-DE-ESTAR-CON-EL_R1 | DESPUES_DE_ESTAR_CON_EL | EMOCIONAL | IMAGEN | OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png | NO | Mujer 25-35 con pareja · banda 25-40 | ¿Por qué vuelve ese olor después de estar con él? | SIN PUBLICAR |
+| EXTERNA_OVULOSPURITY_INFECCION-QUE-VUELVE_R1 | INFECCION_QUE_VUELVE | DOLOR | IMAGEN | OVULOSPURITY_2_INFECCION_QUE_VUELVE.png | NO | Mujer 25-35 · banda 25-40 | ¿Óvulos, cremas, pastillas… y siempre vuelve? | SIN PUBLICAR |
+| EXTERNA_OVULOSPURITY_PROTECTOR-TODOS-LOS-DIAS_R1 | PROTECTOR_TODOS_LOS_DIAS | DOLOR | IMAGEN | OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png | NO | Mujer 25-35 · banda 25-40 | ¿Protector todos los días y aun así? | SIN PUBLICAR |
+| EXTERNA_OVULOSPURITY_OLOR-QUE-SE-NOTA_R1 | OLOR_QUE_SE_NOTA | EMOCIONAL | IMAGEN | OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png | NO | Mujer 25-35 · banda 25-40 | ¿Por qué ese olor se nota hasta en la ropa? | SIN PUBLICAR |
+| EXTERNA_OVULOSPURITY_ME-LAVO-Y-SIGUE_R1 | ME_LAVO_Y_SIGUE | EDUCACIONAL | IMAGEN | OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png | NO | Mujer 35-45 · banda 35-50 | Me lavo todo el día… ¿y por qué sigue? | SIN PUBLICAR |
+| EXTERNA_OVULOSPURITY_OCHO-RAICES-TODO-EN-UNO_R1 | OCHO_RAICES_TODO_EN_UNO | MECANISMO | IMAGEN | OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png | NO | Mujer 35-45 · banda 35-50 | ¿Jabón, crema y óvulo por separado? | SIN PUBLICAR |
+
+Anuncios: [ANGULO]_IMG_A y [ANGULO]_IMG_B ~ firma de firma.py (ej. DESPUES-DE-ESTAR-CON-EL_IMG_A ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?). oferta_key SIN_PRECIO en los 6.
+Misma fila en PRODUCTOS/_DIM_CONJUNTOS.csv (verificado_en_csv=NO hasta que gasten).
 
 RESULTADOS_TESTEO: [vacío en FASE 1. Al optimizar, pegar por conjunto:
-  conjunto | clics | impresiones | conversaciones | ventas | CPC | CPM | CPA_real (COP) | %conv_clic | %conv_impresion ]
-  Ojo moneda: si la cuenta factura en COP, convertir gasto a USD con tasa 3152.5 al ingerir; no mezclar con el CPA en Q del portafolio.
-ANGULO_GANADOR: [vacío hasta que el operador lo confirme con métricas — por VENTA agregando por angulo_key]
+  conjunto | clics | impresiones | conversaciones | ventas | CPC | CPM | CPA_real | %conv_clic | %conv_impresion ]
+ANGULO_GANADOR: [vacío hasta que decidir.py lo declare por VENTA, agregado por angulo_key]
+  → al confirmarlo, anotar: conjunto ganador + avatar al que iba + por qué ganó.
 
 ━━━ DATOS DE SATURACIÓN ━━━
-No corrido (ETAPA-RESEARCH Módulo B). Saturación estimada por etapa-1b/etapa-2. Pendiente medir en Ad Library Colombia: "mal olor vaginal", "candidiasis", "flujo vaginal", "óvulos detox".
+No corrido. ANUNCIANTES_AD_LIBRARY no provisto → los 6 ángulos en DESCONOCIDA. Nota cualitativa de los 15 videos: el territorio "mal olor" (4 de 15) y "infección recurrente" (3 de 15) son los más competidos; "protector diario" (1 de 15) y "exceso de higiene" (1 de 15) los menos. Pendiente: buscar en la Biblioteca de anuncios de Colombia "mal olor íntimo", "flujo vaginal", "candidiasis".
 
-━━━ PENDIENTES REALES (bloquean publicar o leer) ━━━
+━━━ PROPUESTAS DE VALOR (ETAPA-5 Paso 1) ━━━
+¿Después de estar con tu pareja te dura días ese olor? → las 8 raíces naturales devuelven el equilibrio de tu pH íntimo → vuelves a estar con él tranquila, sin pensar en cómo hueles
+¿Óvulos, cremas y pastillas, y la molestia siempre vuelve? → Purity limpia y equilibra tu flora desde adentro, no solo calma el síntoma → rompes el ciclo de la infección que va y viene
+¿Usas protector todos los días y aun así te manchas? → las perlas limpian el flujo acumulado y equilibran tu zona íntima → te pones cualquier ropa interior sin depender del protector
+¿Sientes que ese olor se nota hasta en la ropa? → la Smilax y el Borneol combaten las bacterias que lo causan → te sientes fresca y segura todo el día, cerca de quien sea
+¿Te lavas todo el día y el olor sigue? → Purity limpia por dentro, donde el jabón no llega y sin el exceso de químicos que desequilibra tu flora → dejas de depender del jabón íntimo y del perfume
+¿Olor, picazón, flujo y sequedad a la vez, y no sabes qué comprar? → 8 raíces naturales en 3 perlas hacen el trabajo de 5 productos → un solo tratamiento natural de 4 días
+¿Esa picazón que quema no te deja dormir? → la Stemona y el Borneol calman la irritación y desinflaman → vuelves a dormir y a moverte tranquila
+¿Te da miedo algo complicado o que duela? → solo 3 perlas, una cada día y medio, sin dolor → cuidas tu zona íntima en 4 días sin cambiar tu rutina
+
+━━━ BOT (ETAPA-5) — DATOS DE ANÁLISIS ━━━
+Bot paraguas único de F1 (fila v2 en PRODUCTOS/_DIM_FLUJO_BOT.csv, 2026-09-29).
+Promesa integradora: "Devuelve el equilibrio a tu zona íntima desde adentro: limpia, equilibra tu flora y la protege, para que te sientas fresca y segura en cualquier momento y con cualquier persona."
+Testimonios: fuente REDACTADO (3). Si el operador consigue las capturas originales de WhatsApp del proveedor (Manuela, Paula Andrea, Chat 3), ganan y la columna pasa a fuente_testimonios=REAL. El de Yorleidis no va en el bot (dice "mioma").
+Correcciones de render SOLO de este producto (decisión del operador, sin tocar plantilla, _DIM_MERCADOS.csv ni scripts): (1) mensaje prellenado sin "con registro INVIMA"; (2) tuteo colombiano en todo el texto fijo; (3) "LA MÁS ELEGIDA ⭐" en 2 paquetes $129.900, precios con punto de miles; (4) transportadoras no se nombran en los bloques de juicio.
+Defaults del sistema dentro del bot/infografías, a reemplazar por dato real: garantia_texto "90 días de garantía" (en la fila del CSV) · FAQ 3 "te devolvemos tu dinero" · "9 de cada 10 repiten" (infografía 3) · "4,8/5" y "+10.000 clientas" (dato del proveedor, confirmar).
+Registro al pegar el bot: CAMBIO_BOT (comando en 1_HACER_MANUAL.txt, sección F).
+
+━━━ PENDIENTES DEL OPERADOR ━━━
 Bloquean publicar:
- 1. Alias de la cuenta externa (reemplaza [CUENTA]), page_id de HERNATURA CO, número de WhatsApp conectado, moneda y zona horaria de la cuenta.
- 2. Envase físico: los prompts usan SOBRE PLANO; las infografías viejas 24/26/27/28/32 muestran doypack. Confirmar cuál llega y retirar del bot las piezas del otro (APR-024).
- 3. Los 6 PNG + 3 infografías sin renderizar.
- 4. Los 2 videos del bot (Elementos 2 y 3) sin elegir.
- 5. Destino WhatsApp con identificador de atribución de LucidSales (APR-033/034).
-No bloquean lanzar, sí leer:
- 6. Flete contra entrega Colombia → CPA objetivo y break-even en COP (cpa_be_q vacío bloquea F1.paquete en flujo.py).
- 7. Número INVIMA (sello de la IMAGEN 3 va sin número; si no se confirma, cambiar por "Fórmula natural · Control de calidad").
- 8. Cifras del proveedor sin verificar: +10.000 clientas, 4,8/5, +325 reseñas.
- 9. Precio por mayor (6+ paquetes) · empaque discreto · plazo de entrega real · nombre de tienda en el saludo.
-Conflictos de doctrina anotados:
- 10. _PARAMETROS_PUBLICACION.csv fase 1: anuncios_por_conjunto=1 vs 2 decididos; tz -06:00 (Guatemala) vs Colombia -05:00.
- 11. oferta_key ESCALERA en conjuntos 2 y 3 es aproximado (pieza = pack 2 + "desde $41.000").
- 12. Bandas ensanchadas (25-35→25-40, 35-45→35-50) con evidencia de Guatemala (APR-060), no de Colombia.
- 13. _PLAN.json usa precio_q=null; los precios COP viven en oferta.texto.
+- Render de los 6 PNG de ad (Ads/MEDIA_OVULOSPURITY/) — etapa-render / operador.
+- Número de WhatsApp conectado a HERNATURA CO.
+- Moneda COP y zona horaria Colombia (UTC-5) de la cuenta EXTERNA (sin fila en _DIM_CUENTAS.csv).
+- Flujo LucidBot: gen_flujo_bot.py BLOQUEADO el 29-sep (faltan escalera_ofertas ← _DIM_PRECIOS.csv sin filas ACTIVO de OVULOS_PURITY, y angulo_nombre ← _ESTADO_ANGULOS.csv sin filas del producto).
+- destino_key del bot v2 para el último eje de la firma (hoy "?").
+No bloquean:
+- Confirmar que LucidSales recibe los mensajes de la cuenta de Colombia (sin eso no hay CPA por venta).
+- Garantía real (plazo, si es de satisfacción) · empaque de despacho discreto · relaciones entre perlas y uso con la menstruación (proveedor) · transportadoras reales en CO · regalo de la 3u · flete y comisión COD reales.
+- Ad Library de Colombia (saturación) · avatar_edad 35-45 de los ángulos 5 y 6 es inferencia · la banda ensanchada (25-40 / 35-50) tiene evidencia de GT, no de CO.
 
 ━━━ PRÓXIMA SESIÓN ━━━
-- Optimización (ETAPA-7): leer este REGISTRO + datos de Meta/LucidSales, unir por NOMBRE_CONJUNTO exacto, comparar CPA real (COP) vs objetivo/break even — requiere cerrar antes el pendiente 6.
-- FASE 2: solo con ángulo ganador confirmado por venta → ETAPA-3.
-- Nuevo testeo del mismo producto: saltar ETAPA-1/1B (costeo y componentes ya están).
-- El detalle copiable (copies, prompts, bot) está en 1_HACER_MANUAL.txt.
+- Al publicar: anotar el campaign_id real en _DIM_PRODUCTOS.csv (columna campaign_id) y registrar LANZAMIENTO. Sin MCP no hay 3_CAMPAÑA_META.txt.
+- Optimización (ETAPA-7): leer este REGISTRO + datos de Meta/LucidSales, unir por NOMBRE_CONJUNTO, comparar CPA real contra objetivo $11.944 y break-even $28.031; la orden la emite decidir.py.
+- FASE 2: solo con ángulo ganador por VENTA (≥5 ventas a CPA ≤ BE, agregado por angulo_key) → skill fase-2-conceptos.
+- Nuevo testeo del mismo producto: saltar ETAPA-1 y ETAPA-1B, ir a ETAPA-0 con nuevos videos.
+- El detalle copiable (prompts, copies, bot, estructura) está en 1_HACER_MANUAL.txt.
