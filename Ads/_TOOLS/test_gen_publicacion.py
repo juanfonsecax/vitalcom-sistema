@@ -316,7 +316,8 @@ def test_firma_eje_se_exige_cuando_su_dueno_cierra_el_vocabulario():
 #    no la pagina, la banda, las piezas en disco, el copy ni la firma: decia OK, y el bloqueo
 #    aparecia recien en F1.publicar, cargando publicar-meta para algo que se arregla en una etapa.
 
-MSG_DE_PUBLICACION = ("cuenta", "metodo de pago", "factura en", "minimo de la cuenta", "lanzamiento")
+MSG_DE_PUBLICACION = ("cuenta", "metodo de pago", "factura en", "minimo de la cuenta", "lanzamiento",
+                        "tasa sin declarar")
 
 
 def _bloqueos_declarados():
@@ -384,10 +385,13 @@ def _fixture_producto_sin_cuenta():
         shutil.copy(gp.P(nombre), os.path.join(prod, nombre))     # los CSV de sistema, reales
     with io.open(gp.P("_DIM_PRODUCTOS.csv"), encoding="utf-8-sig", newline="") as fh:
         cols = csv.DictReader(fh).fieldnames
+    if "mercado" not in cols:
+        cols = cols + ["mercado"]
     with io.open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
         w.writeheader()
-        w.writerow(dict(dict.fromkeys(cols, ""), producto_key="PX_NUEVO", cuenta_alias="PENDIENTE"))
+        w.writerow(dict(dict.fromkeys(cols, ""), producto_key="PX_NUEVO", cuenta_alias="PENDIENTE",
+                       mercado="GT"))
     return tmp
 
 
@@ -533,7 +537,8 @@ def test_gate_incumplido_con_excepcion_procede_y_registra_una_excepcion():
 # sale en el paquete, ningun nombre viejo se reusa, el nombre no cambia despues de subir, y dos
 # imagenes distintas con el mismo nombre bloquean.
 
-def _fixture_fase1_completa(clave_campana=""):
+def _fixture_fase1_completa(clave_campana="", mercado="GT", moneda="", tasa="", cuenta="GTR 7",
+                           cuenta_extra=None):
     """Un producto de FASE 1 con todo en regla (plan de 6 angulos, pagina, cuenta y las 6 imagenes)."""
     import csv, io, shutil, tempfile
     tmp = tempfile.mkdtemp(prefix="genpub_bib_")
@@ -542,13 +547,28 @@ def _fixture_fase1_completa(clave_campana=""):
     os.makedirs(os.path.join(tmp, "Ads", "MEDIA_PX"))
     for nombre in ("_PARAMETROS_PUBLICACION.csv", "_DIM_CUENTAS.csv", "_DIM_VOCABULARIO.csv"):
         shutil.copy(gp.P(nombre), os.path.join(prod, nombre))
+    if cuenta_extra is not None:
+        ruta_ctas = os.path.join(prod, "_DIM_CUENTAS.csv")
+        with io.open(ruta_ctas, encoding="utf-8-sig", newline="") as fh:
+            lector = csv.DictReader(fh)
+            cols_ctas = lector.fieldnames
+            filas_ctas = list(lector)
+        filas_ctas.append({c: cuenta_extra.get(c, "") for c in cols_ctas})
+        with io.open(ruta_ctas, "w", encoding="utf-8", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=cols_ctas)
+            w.writeheader()
+            w.writerows(filas_ctas)
     with io.open(gp.P("_DIM_PRODUCTOS.csv"), encoding="utf-8-sig", newline="") as fh:
         cols = csv.DictReader(fh).fieldnames
+    if "mercado" not in cols:
+        cols = cols + ["mercado"]
     with io.open(os.path.join(prod, "_DIM_PRODUCTOS.csv"), "w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=cols)
         w.writeheader()
-        w.writerow(dict(dict.fromkeys(cols, ""), producto_key="PX", cuenta_alias="GTR 7", page_id="111",
-                        slug_carpeta="PX", carpeta_media="MEDIA_PX", clave_campana=clave_campana))
+        fila = dict(dict.fromkeys(cols, ""), producto_key="PX", cuenta_alias=cuenta, page_id="111",
+                    slug_carpeta="PX", carpeta_media="MEDIA_PX", clave_campana=clave_campana,
+                    mercado=mercado, moneda=moneda, tasa=tasa)
+        w.writerow({c: fila.get(c, "") for c in cols})
     conjuntos = []
     for i in range(1, 7):
         archivo = "PX_%d_ANG%d.png" % (i, i)
@@ -910,6 +930,75 @@ def test_exploracion_gate_propio_cumplido_no_pide_excepcion():
                     (code, err, out[:200], eventos))
 
 
+# ---------------------------------------------------------------- 2C-2: pais del mercado y presupuesto en moneda de la cuenta
+#
+# El targeting va al pais del mercado del producto (GT/CO: el codigo de mercado es el codigo
+# de pais ISO que usa Meta) y una cuenta que no factura en USD recibe el presupuesto
+# convertido a su moneda (COP en pesos enteros) en vez de bloquear. Sin mercado, el paquete
+# bloquea.
+
+_CUENTA_COP_TEST = {"cuenta_alias": "CO TEST", "cuenta_id": "999", "moneda": "COP",
+                    "min_daily_budget_cents": "3154", "mcp_habilitado": "SI",
+                    "tiene_metodo_pago": "SI", "sube_media_local": "NO", "estado_cuenta": "ACTIVE"}
+
+
+def _paquete_solo(base, argv_extra):
+    salida = os.path.join(base, "paquete.json")
+    code, _out, err = _correr_main(base, ["--producto", "PX", "--fase", "1", "--solo-paquete",
+                                          "--lanzamiento", MANANA, "--salida", salida] + argv_extra)
+    with open(salida, encoding="utf-8") as fh:
+        return code, json.load(fh), err
+
+
+def test_targeting_usa_el_pais_del_mercado():
+    base = _fixture_fase1_completa(mercado="CO")
+    code, pq, err = _paquete_solo(base, [])
+    paises = {tuple(json.loads(l["args"]["targeting"])["geo_locations"]["countries"])
+              for l in pq["llamadas"] if l["tool"] == "ads_create_ad_set"}
+    ok = err is None and paises == {("CO",)} and pq.get("pais") == "CO"
+    return _informe(ok, 'mercado="CO": cada conjunto targetea ["CO"] y paquete["pais"] == "CO"',
+                    (code, err, paises, pq.get("pais")))
+
+
+def test_sin_mercado_bloquea_el_paquete():
+    base = _fixture_fase1_completa(mercado="")
+    code, pq, err = _paquete_solo(base, [])
+    hit = [b for b in pq["bloqueantes"]
+           if b["ambito"] == "paquete" and "columna mercado" in b["lo_produce"]]
+    ok = err is None and code == 1 and bool(hit)
+    return _informe(ok, 'mercado="": un bloqueante de ambito paquete nombra la columna mercado',
+                    (code, err, pq["bloqueantes"]))
+
+
+def test_cuenta_en_cop_presupuesta_en_pesos():
+    base = _fixture_fase1_completa(cuenta_extra=dict(_CUENTA_COP_TEST), cuenta="CO TEST",
+                                   mercado="CO", moneda="COP", tasa="3152.5")
+    code, pq, err = _paquete_solo(base, ["--cuenta", "CO TEST"])
+    sin_factura = not any("factura en" in b["falta"] for b in pq["bloqueantes"])
+    ok = err is None and pq.get("daily_budget_cents") == 9426 and sin_factura
+    return _informe(ok, "cuenta COP: 2.99 USD x 3152.5 = 9426 pesos, sin bloqueante de factura",
+                    (code, err, pq.get("daily_budget_cents"), pq["bloqueantes"]))
+
+
+def test_moneda_del_producto_distinta_a_la_cuenta_bloquea():
+    base = _fixture_fase1_completa(cuenta_extra=dict(_CUENTA_COP_TEST), cuenta="CO TEST",
+                                   mercado="CO", moneda="USD", tasa="3152.5")
+    code, pq, err = _paquete_solo(base, ["--cuenta", "CO TEST"])
+    hit = [b for b in pq["bloqueantes"]
+           if b["ambito"] == "publicacion" and "factura en COP" in b["falta"]]
+    ok = err is None and bool(hit)
+    return _informe(ok, "producto en USD contra cuenta COP: bloquea la publicacion con factura en COP",
+                    (code, err, pq["bloqueantes"]))
+
+
+def test_cuenta_usd_sigue_en_centavos():
+    base = _fixture_fase1_completa()
+    code, pq, err = _paquete_solo(base, [])
+    ok = err is None and pq.get("daily_budget_cents") == 299
+    return _informe(ok, "cuenta USD: 2.99 sigue siendo 299 centavos, igual que antes",
+                    (code, err, pq.get("daily_budget_cents")))
+
+
 def test_token_producto_sale_de_clave_campana():
     """El token de los nombres sale de clave_campana (dueño: gen_lanzador.corto)."""
     casos = [
@@ -942,6 +1031,11 @@ def main():
     fallas = 0
     fallas += test_token_producto_sale_de_clave_campana()
     fallas += test_paquete_nombra_con_el_token_de_clave_campana()
+    fallas += test_targeting_usa_el_pais_del_mercado()
+    fallas += test_sin_mercado_bloquea_el_paquete()
+    fallas += test_cuenta_en_cop_presupuesta_en_pesos()
+    fallas += test_moneda_del_producto_distinta_a_la_cuenta_bloquea()
+    fallas += test_cuenta_usd_sigue_en_centavos()
     fallas += test_fecha_hoy_bloquea()
     fallas += test_fecha_manana_no_bloquea()
     fallas += test_fecha_pasado_manana_bloquea()

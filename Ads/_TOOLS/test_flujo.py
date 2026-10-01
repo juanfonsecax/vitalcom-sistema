@@ -88,8 +88,9 @@ def fixture_escalar_flaco(ventas_nuevo=3, con_probado=True):
     prod = os.path.join(tmp, "PRODUCTOS")
     os.makedirs(prod)
     _escribir_csv(prod, "_DIM_PRODUCTOS.csv",
-                  ["producto_key", "nombre_display", "estado", "fase", "cpa_base_q", "cpa_be_q", "tasa"],
-                  [["PX", "PX", "VIVO", "F1", "30", "90", "7.62"]])
+                  ["producto_key", "nombre_display", "estado", "fase", "cpa_base_q", "cpa_be_q", "tasa",
+                   "mercado"],
+                  [["PX", "PX", "VIVO", "F1", "30", "90", "7.62", "GT"]])
     _escribir_csv(prod, "_DIM_CONJUNTOS.csv", ["producto_key", "conjunto_meta", "angulo_key"],
                   [["PX", "GTR7_PX_NUEVO_R1", "ANG_NUEVO"], ["PX", "GTR7_PX_PROBADO_R1", "ANG_PROBADO"]])
     _escribir_csv(prod, "_PARAMETROS_DECISION.csv", ["parametro", "valor", "unidad", "dueno", "por_que"],

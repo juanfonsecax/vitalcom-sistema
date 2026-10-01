@@ -103,10 +103,17 @@ if TOOLS not in sys.path:
     sys.path.insert(0, TOOLS)
 import bandas_edad  # LA TABLA no se copia aca: Ads/_TOOLS/bandas_edad.py es su dueno unico.
 import flujo             # gate_entrada: el unico juez de "se cumple el gate de entrada a la fase N"
+import mercado           # mercado_de_fila: el mercado del producto (GT/CO), dueno del pais del targeting
+import gen_lanzador      # monto_cuenta: el monto en USD expresado en la moneda de la cuenta
 import registrar_evento  # registrar_excepcion: el unico escritor de una fila EXCEPCION en _EVENTOS.csv
 from gen_lanzador import corto as token_producto  # dueño del token de producto en los nombres
 
 SCHEMA = "publicacion/1"
+
+# Unidades menores por unidad de moneda en el daily_budget de Meta. COP va en pesos
+# enteros: el mínimo diario medido de las cuentas COP es 3154 (~1 USD) en
+# _DIM_CUENTAS.csv.min_daily_budget_cents.
+UNIDAD_MENOR = {"USD": 100, "COP": 1}
 
 
 # ---------------------------------------------------------------- utilidades
@@ -486,6 +493,11 @@ def main():
         return 1
     prod = productos[pk]
     tok = token_producto(prod)
+    try:
+        pais = mercado.mercado_de_fila(prod)
+    except mercado.MercadoError as e:
+        pq.bloquear_paquete(str(e), "operador · _DIM_PRODUCTOS.csv columna mercado")
+        pais = None
 
     # ---------- 2. parametros de la fase ----------------------------------
     if not brazo:
@@ -528,18 +540,36 @@ def main():
                     "el operador, en Business Manager")
 
     moneda = fila_cta["moneda"]
+    moneda_norm = (moneda or "").strip().upper()
     minimo = int(fila_cta["min_daily_budget_cents"])
     presu_usd = float(par["daily_budget_usd"])
-    if moneda != "USD":
-        pq.bloquear_publicacion("la cuenta %s factura en %s y el presupuesto de la doctrina esta en USD. "
-                    "El daily_budget va SIEMPRE en la unidad menor de la moneda de la cuenta."
-                    % (alias_pedido, moneda), "DOCTRINA/CALENDARIO_ESCALADO.md")
+    moneda_prod = (prod.get("moneda") or "").strip().upper()
+    if moneda_prod and moneda_prod != moneda_norm:
+        pq.bloquear_publicacion("la cuenta %s factura en %s y _DIM_PRODUCTOS.moneda de %s dice %s"
+                    % (alias_pedido, moneda_norm, pk, moneda_prod),
+                    "operador · _DIM_PRODUCTOS.csv columna moneda o la cuenta asignada")
+    if moneda_norm not in UNIDAD_MENOR:
+        pq.bloquear_publicacion("la moneda %s de la cuenta %s no tiene unidad menor declarada"
+                    % (moneda_norm or "?", alias_pedido),
+                    "Ads/_TOOLS/gen_publicacion.py UNIDAD_MENOR")
         presu_cents = None
     else:
-        presu_cents = int(round(presu_usd * 100))
-        if presu_cents < minimo:
-            pq.bloquear_publicacion("presupuesto %d centavos < minimo de la cuenta (%d)" % (presu_cents, minimo),
-                        "_DIM_CUENTAS.csv")
+        crudo_tasa = (prod.get("tasa") or "").strip()
+        try:
+            tasa_del_producto = float(crudo_tasa) if crudo_tasa else None
+        except ValueError:
+            tasa_del_producto = None
+        valor, _ = gen_lanzador.monto_cuenta(presu_usd, moneda, tasa_del_producto)
+        if valor is None:
+            pq.bloquear_publicacion("tasa sin declarar: no se puede convertir el presupuesto a %s"
+                        % moneda_norm,
+                        "operador · _DIM_PRODUCTOS.csv columna tasa")
+            presu_cents = None
+        else:
+            presu_cents = int(round(valor * UNIDAD_MENOR[moneda_norm]))
+            if presu_cents < minimo:
+                pq.bloquear_publicacion("presupuesto %d centavos < minimo de la cuenta (%d)" % (presu_cents, minimo),
+                            "_DIM_CUENTAS.csv")
 
     # ---------- 4. plan ----------------------------------------------------
     carpeta = prod.get("slug_carpeta") or pk
@@ -818,7 +848,8 @@ def main():
         cj = nombre_conjunto(fase, cta, tok, ang_u, brazo, numero_conj)
         n += 1
         targeting = {
-            "geo_locations": {"countries": ["GT"]},
+            # el código de mercado (GT, CO) es el código de país ISO que usa Meta.
+            "geo_locations": {"countries": [pais or "{{FALTA_PAIS}}"]},
             "age_min": banda_u[0], "age_max": banda_u[1],
             "targeting_automation": {"advantage_audience": int(par["advantage_audience"])},
         }
@@ -964,7 +995,7 @@ def main():
     paquete = {
         "schema": SCHEMA,
         "generado_el": datetime.datetime.now().isoformat(timespec="seconds"),
-        "producto_key": pk, "token_producto": tok, "fase": fase, "brazo": brazo,
+        "producto_key": pk, "token_producto": tok, "pais": pais, "fase": fase, "brazo": brazo,
         "angulo": angulo if (fase in (2, 3) and not exploracion) else
                   "VARIOS (uno por conjunto — F1/F4.exploracion miden el angulo)",
         "cuenta_alias": cta, "cuenta_id": acct, "moneda": moneda,
