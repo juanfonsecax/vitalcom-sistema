@@ -70,8 +70,8 @@ def avisos_de_la_cuenta(cuenta):
         avisos.append(f"{alias} no tiene el MCP habilitado: F1.publicar queda bloqueado y se "
                       "pauta a mano (dueno: Meta, rollout; _DIM_CUENTAS.csv).")
     if cuenta["moneda"] != "USD":
-        avisos.append(f"{alias} factura en {cuenta['moneda']}: gen_publicacion.py bloquea la "
-                      "publicacion hasta que el presupuesto se derive en esa moneda.")
+        avisos.append(f"{alias} factura en {cuenta['moneda']}: el presupuesto se convierte "
+                      "con la tasa del producto (columna tasa).")
     if cuenta["tiene_metodo_pago"] != "SI":
         avisos.append(f"{alias} no tiene metodo de pago: Meta no la deja gastar (dueno: el operador).")
     if cuenta["sube_media_local"] != "SI":
