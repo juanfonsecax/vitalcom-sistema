@@ -62,7 +62,7 @@ ARCHIVO_SALIDA:    [nombre canónico, del paquete]
 ```
 
 **Si falta uno, detenerse** y decir exactamente cuál y quién lo produce
-(invariante 4 de `CLAUDE.md`). Nunca rellenar con un valor plausible.
+(invariante 4 de `reglas-sistema`). Nunca rellenar con un valor plausible.
 
 ---
 

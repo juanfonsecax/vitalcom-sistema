@@ -36,7 +36,7 @@ El operador solo necesita leer el output de este agente y replicarlo en Meta Ads
 > **MODO MCP (automatizado) — recomendado.** Cuando el conector Meta Ads está disponible, ETAPA-6 NO se limita a texto: el orquestador crea la estructura **real en Meta, en estado PAUSED**, siguiendo `DOCTRINA/MCP_PLAYBOOK.md` (raíz del sistema). Resumen:
 > - Campaña **Tráfico** (`OUTCOME_TRAFFIC`) + 6 conjuntos (**CONVERSATIONS / WHATSAPP**, ABO, **$2.99/conjunto = 299¢ USD** (ETAPA 1), **banda de edad derivada del avatar** (ver BANDA DE EDAD abajo) con Advantage+ OFF, programados **4 AM**, todo **PAUSED**). Nombres según la **CONVENCIÓN DE NOMBRES** de abajo (llave de ETAPA-7).
 > - Los **ANUNCIOS** van en un **2º paso** (requieren media: el MCP no la sube). El operador sube los assets a la biblioteca de la cuenta y avisa; entonces se crean **2 anuncios/conjunto** con su copy (regla del duplicado interno). Precio P1u solo en los conjuntos marcados.
-> - La carpeta `Ads/MEDIA_[PRODUCTO]/` con los videos renombrados por conjunto **ya existe desde antes** (la crea el orquestador justo después de ETAPA-0 — ver CLAUDE.md PASO 1.5, independiente del MCP); acá solo se completa con `PROMPTS_IMAGENES_[PRODUCTO].txt` (ETAPA-4) para los ángulos-imagen, y se genera `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` con todos los IDs (campaign_id + 6 ad_set_id).
+> - La carpeta `Ads/MEDIA_[PRODUCTO]/` con los videos renombrados por conjunto **ya existe desde antes** (la crea el orquestador justo después de ETAPA-0, independiente del MCP); acá solo se completa con `PROMPTS_IMAGENES_[PRODUCTO].txt` (ETAPA-4) para los ángulos-imagen, y se genera `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` con todos los IDs (campaign_id + 6 ad_set_id).
 > - Pre-flight (cuenta `is_ads_mcp_enabled`+`is_queryable`, fanpage asignada a la cuenta con WhatsApp, IDs en `2_DATA_PRODUCTO.txt`), parámetros exactos, mapeo de campos y gotchas: ver **`DOCTRINA/MCP_PLAYBOOK.md`**.
 > - El texto-estructura de abajo es el espejo legible del esqueleto y el **fallback** si no hay MCP. Presupuesto canónico = **$2.99/conjunto** (299¢ USD) para la ETAPA 1 del testeo; al día ~3 se cortan 2-3 conjuntos por conversación y los sobrevivientes suben a **$5.98** (ETAPA 2). Fórmula y aritmética en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5. El **$1.59** queda deprecado (no sacaba a Meta de aprendizaje). El **Q54** que aparezca abajo es el legacy pre-MCP (≈$7) y solo aplica si se pauta a mano sin MCP.
 
@@ -45,7 +45,7 @@ El operador solo necesita leer el output de este agente y replicarlo en Meta Ads
 ## BANDA DE EDAD (corrige la constante de segmentación amplia)
 
 > **Por qué cambia.** Andrómeda dice que el creativo segmenta y de ahí salió la constante
-> "amplio 18-65+" de `CLAUDE.md`. **Es correcta en su núcleo y equivocada en su consecuencia
+> "amplio 18-65+" de `reglas-sistema` (SEGMENTACIÓN). **Es correcta en su núcleo y equivocada en su consecuencia
 > práctica**: el creativo sí segmenta, pero mientras tanto la cuenta paga impresiones a una banda
 > que no compra.
 >
@@ -214,14 +214,14 @@ campaña `EXPLORA` (no `ESCALA`), un conjunto por ángulo nuevo como FASE 1. Det
 
 **Reglas de formación (no negociables):**
 1. **`CUENTA` = el alias de la cuenta publicitaria donde el objeto REALMENTE vive** (`GTR7`, `GTR0`, `GTR1`, `GTR3`, `GTR13`, `CP1`). Nunca el nombre de otra cuenta, aunque sea réplica de una campaña que nació allá.
-2. **`ANGULO` = el `angulo_key`, idéntico entre réplicas y entre cuentas.** Es lo que permite agregar por ángulo (regla 6 de `CLAUDE.md`). Si el mismo ángulo se llama distinto en dos cuentas, la agregación se parte y el ganador se declara sobre data incompleta.
+2. **`ANGULO` = el `angulo_key`, idéntico entre réplicas y entre cuentas.** Es lo que permite agregar por ángulo (invariante 1 de `reglas-sistema`). Si el mismo ángulo se llama distinto en dos cuentas, la agregación se parte y el ganador se declara sobre data incompleta.
 3. **Separador de campos = `_`. Dentro de un campo solo guion medio (`-`).** Así el nombre se parte por `_` de forma determinista: `GTR7_VARICOSE_MIEDO-CIRUGIA_R1` → 4 campos exactos. Un `_` dentro del ángulo rompe el parseo.
 4. **`R[N]`: R1 es el original, R2/R3/R4… los duplicados horizontales.** El número es obligatorio incluso cuando hay una sola réplica — un conjunto sin `R` es un conjunto que no se sabe si es original o copia.
 5. **Prohibido dejar `- Copia`.** Meta lo agrega al duplicar; se renombra ANTES de publicar. Un `- Copia` publicado es data que nace anónima.
 6. Sin emojis ni espacios en el nombre. Los emojis de estado (`🟩`/`🟦`) pueden ir **al final**, nunca entre los campos.
 
 **⚠️ Qué NO significa el `R[N]` — leer antes de podar réplicas:**
-Las réplicas de un mismo ángulo son **idénticas por diseño** (mismo creativo, misma audiencia, mismo presupuesto). La diferencia de resultados entre `R1` y `R3` es **ruido de Poisson, no señal** — medido sobre data propia, el índice de dispersión por conjunto es 1.12 (azar casi puro) y solo sube a 2.99 al agregar por ángulo (regla 6 de `CLAUDE.md`). Por lo tanto:
+Las réplicas de un mismo ángulo son **idénticas por diseño** (mismo creativo, misma audiencia, mismo presupuesto). La diferencia de resultados entre `R1` y `R3` es **ruido de Poisson, no señal** — medido sobre data propia, el índice de dispersión por conjunto es 1.12 (azar casi puro) y solo sube a 2.99 al agregar por ángulo (invariante 1 de `reglas-sistema`). Por lo tanto:
 - Las réplicas **se suman**, no se comparan. El CPA del ángulo es el gasto total de R1+R2+R3 dividido por sus ventas totales.
 - **Nunca coronar "la mejor copia"** ni apagar R2 para dejar R3: se está eligiendo ruido.
 - El `R[N]` sirve para (a) identificar filas en el CSV, (b) sumarlas correctamente, y (c) detectar una réplica **rota** — entrega en cero, rechazada, o con creativo distinto al que debía. Eso sí es señal.
@@ -756,7 +756,7 @@ FIN ESTRUCTURA ESCALADO
     CSV es un espejo regenerado desde Postgres, ver `db/escribir.py`) — si no, ETAPA-7 va a leer
     el cambio como si fuera el ángulo.
   · Al cerrarlo, escribir el resultado en `PRODUCTOS/_APRENDIZAJES.csv` (alcance GLOBAL) y actualizar
-    esta regla y la de CLAUDE.md nº 9.
+    esta regla.
 
 ---
 

@@ -145,7 +145,7 @@ aptitud, el contrato de variables y el prompt resuelto. **No reimplementar su pr
 ### PASO 4 — REGISTRAR (el paso que cierra el loop)
 
 Por cada pieza se escribe una fila en `PRODUCTOS/_DIM_CREATIVOS.csv`. **Con un escritor CSV real,
-nunca a mano** (regla 22 de `CLAUDE.md`: campos de texto libre con comas entre comillas dobles).
+nunca a mano** (invariante 11 de `reglas-sistema`: campos de texto libre con comas entre comillas dobles).
 
 Campos obligatorios de la fila:
 

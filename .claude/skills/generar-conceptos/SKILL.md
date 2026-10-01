@@ -14,12 +14,12 @@ ya está fijo y validado por venta, y lo que se mide es qué **ejecución visual
 comunica más barato.
 
 **Requiere ángulo ganador confirmado.** Sin él esta skill no corre — sería mover
-ángulo y concepto a la vez, que es exactamente lo que `CLAUDE.md` prohíbe (nada
+ángulo y concepto a la vez, que es exactamente lo que `reglas-sistema` prohíbe (nada
 sería atribuible).
 
 > ⛔ **No se usa en FASE 1.** En el testeo de ángulos el concepto es FIJO
 > (`C2_BENEFICIOS` variante ligera, el mismo layout en los 6 conjuntos). Rotar
-> estructuras ahí destruye la atribución del ángulo. Ver `CLAUDE.md` →
+> estructuras ahí destruye la atribución del ángulo. Ver `reglas-sistema` →
 > "ÁNGULO vs CONCEPTO".
 
 ---

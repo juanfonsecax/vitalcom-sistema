@@ -138,7 +138,7 @@ Parámetros vigentes (mercado GT): tasa de despacho **97%** · devoluciones **17
 
 ### Paso 2.5 — REGLA DE ARRANQUE: ¿1 unidad o directo en 2x1? (aritmética del múltiplo)
 
-> Vale para TODO producto nuevo. Movida desde `CLAUDE.md` — **este archivo es el dueño.** Es la versión numérica de la matriz del Paso 2: cuando el Paso 2 deja duda, esto la resuelve.
+> Vale para TODO producto nuevo. **Este archivo es el dueño.** Es la versión numérica de la matriz del Paso 2: cuando el Paso 2 deja duda, esto la resuelve.
 
 Lo decide el **múltiplo del costo que habría que cobrar por UNA unidad**, no el margen — a cualquier costo el margen cierra. Los ~Q40 fijos de logística (flete Q34 + admin Q4 + otros Q2) **no bajan con el precio**, así que en un producto barato ese múltiplo se dispara y el precio deja de ser creíble para la categoría.
 

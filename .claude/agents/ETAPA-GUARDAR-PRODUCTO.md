@@ -307,7 +307,7 @@ Después de los Write, confirmar:
  - `3_CAMPAÑA_META.txt` — los IDs reales de Meta (si hubo MCP).
 La próxima sesión, adjuntá `2_DATA_PRODUCTO.txt` y retomamos sin reprocesar; `1_HACER_MANUAL.txt` lo abrís para configurar Meta/LucidBot. Gate de reconciliación: OK."
 
-## Entrega de ejecución en el chat (default — CLAUDE.md regla 19)
+## Entrega de ejecución en el chat (default — preferencia del operador)
 Después de escribir los archivos y confirmar el gate, el orquestador NO se queda solo en el TXT: entrega el contenido de EJECUCIÓN de `1_HACER_MANUAL.txt` **en el chat, parte por parte y verbatim (nunca truncado)**, en el orden de ejecución (prompts de imagen → flujo LucidBot campo por campo → subir media → conjuntos + copies + precio → duplicar→WhatsApp + activar 4 AM), esperando el "listo/check" del operador entre cada parte. Solo lo copiable (sin doctrina ni data de análisis — eso vive en `2_DATA_PRODUCTO.txt`). Los prompts de imagen se entregan como el Prompt Maestro YA RELLENADO, un bloque por creativo. El TXT queda como respaldo; el chat es la vía de ejecución del operador.
 
 ## Cómo se usa en sesión futura

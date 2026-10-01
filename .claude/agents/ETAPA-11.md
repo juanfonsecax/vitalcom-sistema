@@ -46,11 +46,11 @@ medido contra data. Esta etapa cierra ese hueco. Su producto final es el **brief
   ADS**. Todo lo post-clic —flujo, audio, infografías, testimonios— NO se suaviza: ahí la prioridad
   es CONVERSIÓN y se permiten verbos fuertes y las estadísticas del operador. Un optimizador que
   "limpie" el bot por compliance está destruyendo conversión con una regla que no aplica.
-  (`CLAUDE.md` → PRINCIPIO DE ALCANCE DEL COMPLIANCE)
+  (`reglas-sistema` → ALCANCE DEL COMPLIANCE)
 - **No corona por conversación.** APR-002: la conversación CORTA, nunca CORONA. Acá se usa solo
   para *localizar* si el problema es pre o post-clic, jamás para declarar que un flujo funciona.
 - **No decide bajo el piso de evidencia.** Con 1-3 ventas el IC de Poisson es ±113-196 %.
-- **No agrega por conjunto.** Siempre por `angulo_key` (regla 6 de `CLAUDE.md`).
+- **No agrega por conjunto.** Siempre por `angulo_key` (invariante 1 de `reglas-sistema`).
 
 ---
 

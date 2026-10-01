@@ -255,7 +255,7 @@ Si hay más de 12 sub-dolores en el inventario, priorizar especificidad sobre ge
 
 Para cada microángulo, asigna UNA objeción del inventario de la FASE A según cuál es la que MÁS le pesa a ese avatar específico — no por orden numérico.
 
-Regla de prioridad: la objeción marcada **CRÍTICA** en la FASE A se asigna al microángulo más potente (MA-01), que será el **Video 1 / primer creativo** del conjunto — es la barrera que hay que derribar primero (CLAUDE.md regla lite de barreras #10; Clase 22 "no reducir fricciones mata la venta"; Clase 12). Luego la ALTA, y así por peso real.
+Regla de prioridad: la objeción marcada **CRÍTICA** en la FASE A se asigna al microángulo más potente (MA-01), que será el **Video 1 / primer creativo** del conjunto — es la barrera que hay que derribar primero (Clase 22: "no reducir fricciones mata la venta"; Clase 12). Luego la ALTA, y así por peso real.
 
 Si tienes más microángulos que objeciones, está bien repetir una objeción en máximo 2 microángulos — pero nunca dejar la CRÍTICA sin cubrir.
 
@@ -364,12 +364,12 @@ Si alguna objeción del inventario de la FASE A no tiene microángulo asignado, 
 
 - **Regla de especificidad:** Cada microángulo debe ser más específico que el ángulo principal. Si el ángulo es "glúteos que no crecen", el microángulo no puede ser "resultados en el gym" — debe ser "llevo 4 meses de sentadillas y mis glúteos siguen iguales". (Clase 2 / Clase 12 — Joaquín)
 - **Regla de CONCEPTO distinto por conjunto (la más importante — Clase 19, Andrómeda; ratificada en Clase 15 y 14):** cada microángulo se lleva a un CONCEPTO creativo COMPLETAMENTE distinto (producto + microángulos-beneficios + oferta presentados de otra forma), NO un cambio de título/color/fuente — "eso ya no funciona y penaliza por fatiga". Del MISMO ángulo ganador salen muchas variaciones de concepto (cambiar beneficios, cambiar la oferta, cambiar la prueba, "producto 5 estrellas"). 1 concepto por conjunto; entre más conceptos, mejor entrega. La semilla la pone ETAPA-3B; ETAPA-4 la elabora.
-- **Regla de objeción crítica primero:** la objeción CRÍTICA de la FASE A va en MA-01 / Video 1. (CLAUDE.md regla lite de barreras #10; Clase 22 "no reducir fricciones mata la venta")
+- **Regla de objeción crítica primero:** la objeción CRÍTICA de la FASE A va en MA-01 / Video 1. (Clase 22: "no reducir fricciones mata la venta")
 - **Regla de no solapamiento:** Si dos microángulos suenan similares al leerlos en voz alta, fusionarlos. El operador no puede diferenciarlos → Meta tampoco.
 - **Regla de coherencia total:** Los microángulos son variaciones del ángulo ganador, no temas nuevos. Si el ángulo ganador es sobre glúteos, los microángulos no derivan hacia pérdida de peso, piel u otro problema. (Clase 2 — coherencia de ángulo)
 - **Regla de los primeros 3 segundos:** La frase de apertura debe generar stop scroll por sí sola — tensión, pregunta directa o afirmación sorprendente que active la pregunta "¿esto es para mí?". (Clase 14 hooks; Clase 2)
 - **Regla de formato:** El formato recomendado debe basarse en qué comunica mejor el dolor/solución, no en preferencia. VIDEO para antes/después y testimonios en tiempo real. IMAGEN para ingredientes, beneficios y comparaciones. (Clase 19/4 — Andrómeda)
-- **Nota de terminología:** en este sistema "micro-ángulo" = avatar ultra-específico (CLAUDE.md). Lo que los mentores llaman "microángulos" (Clase 2/15/19) son los BENEFICIOS dentro del copy/creativo ("resultados que sí se sienten") — acá se listan en el campo "Microángulos-beneficios" de cada concepto. No confundir.
+- **Nota de terminología:** en este sistema "micro-ángulo" = avatar ultra-específico (`reglas-sistema`, DEFINICIONES CLAVE). Lo que los mentores llaman "microángulos" (Clase 2/15/19) son los BENEFICIOS dentro del copy/creativo ("resultados que sí se sienten") — acá se listan en el campo "Microángulos-beneficios" de cada concepto. No confundir.
 - **NUNCA activar sin el output de la FASE A.** (Flujo del sistema)
 
 ---
