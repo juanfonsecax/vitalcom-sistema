@@ -238,7 +238,7 @@ Regla de derivación NC → rol de embudo (doctrina del sistema: el rol se mapea
 
 > **Qué es:** la tabla que traduce el `producto_key` a **dónde vive el producto en el disco**. El mismo producto tiene nombres distintos en las 4 ubicaciones (NUSAVA llegó a tener 5 grafías). Sin esta fila, ningún agente puede encontrar sus videos, transcripciones ni creativos sin adivinar.
 
-Además de los umbrales (`cpa_be_q`, `cpa_base_q`, tasa, cuenta, page_id), rellenar **las 5 columnas de carpeta**:
+La fila la crea `Ads/_TOOLS/alta_producto.py`: escribe Postgres y regenera este CSV, que es su espejo, con las 5 columnas de carpeta ya derivadas de la clave. Esta etapa solo VERIFICA que apunten a las carpetas reales:
 
 | Columna | Qué apunta | Ejemplo (NUSAVA) |
 |---|---|---|
@@ -251,8 +251,8 @@ Además de los umbrales (`cpa_be_q`, `cpa_base_q`, tasa, cuenta, page_id), relle
 **Reglas:**
 - Se escriben con el **nombre EXACTO de la carpeta en disco**, tal como está — no se normaliza ni se corrige. La tabla se adapta al disco, no al revés.
 - **Las carpetas NO se renombran para emparejarlas**: los `1_HACER_MANUAL.txt` referencian rutas `MEDIA_*` que el operador usa para ejecutar.
-- Si el producto todavía no tiene alguna carpeta (ej. sin videos), se deja vacío y se anota en `carpetas_extra`.
-- ⚠️ **Escribir este CSV con un escritor CSV real** (`csv.DictWriter`), nunca a mano: el campo `notas` lleva comas y **debe ir entre comillas dobles**. (Bug real: una fila quedó con 20 campos en vez de 17 y la nota se truncaba.)
+- Si el producto todavía no tiene alguna carpeta (ej. sin videos), se reporta como pendiente; la columna no se toca.
+- ⚠️ **Esta etapa NUNCA escribe `_DIM_PRODUCTOS.csv`**, ni a mano ni con un escritor CSV: es espejo de Postgres y cualquier cambio por fuera de sus escritores frena la corrida nocturna entera (guardia de drift). Cada dato tiene su escritor: `alta_producto.py` (la fila), `cargar_cuenta.py`, `cargar_page_id.py`, `cargar_moneda_cuenta.py`, `cambiar_costo.py`. Si un dato no tiene escritor o el escritor se niega, se reporta como pendiente nombrando la columna y el error; nunca se escribe por otro camino.
 
 ---
 
