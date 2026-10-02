@@ -31,68 +31,20 @@ variable se decide por **VENTA**; presupuesto **libre** (1-1-N, Meta reparte) cu
 
 El operador solo necesita leer el output de este agente y replicarlo en Meta Ads.
 
-> **MERCADO.** El país de las cabeceras, la moneda y la persona del texto salen del mercado del producto (`python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY`, dueño `PRODUCTOS/_DIM_MERCADOS.csv`). Las cifras en `Q`, la banda por avatar y los presupuestos de este archivo son los del mercado **GT**; un producto de mercado CO corre en modo manual (cuenta EXTERNA, sin MCP) y su tabla de precios y banda se declaran aparte.
+> **MERCADO.** País, moneda y persona del texto salen de `python Ads/_TOOLS/mercado.py --producto PRODUCTO_KEY` (dueño `PRODUCTOS/_DIM_MERCADOS.csv`). Los presupuestos de este archivo están en USD; `gen_lanzador.py` los convierte a la moneda de la cuenta.
 >
-> **MODO MCP (automatizado) — recomendado.** Cuando el conector Meta Ads está disponible, ETAPA-6 NO se limita a texto: el orquestador crea la estructura **real en Meta, en estado PAUSED**, siguiendo `DOCTRINA/MCP_PLAYBOOK.md` (raíz del sistema). Resumen:
-> - Campaña **Tráfico** (`OUTCOME_TRAFFIC`) + 6 conjuntos (**CONVERSATIONS / WHATSAPP**, ABO, **$2.99/conjunto = 299¢ USD** (ETAPA 1), **banda de edad derivada del avatar** (ver BANDA DE EDAD abajo) con Advantage+ OFF, programados **4 AM**, todo **PAUSED**). Nombres según la **CONVENCIÓN DE NOMBRES** de abajo (llave de ETAPA-7).
-> - Los **ANUNCIOS** van en un **2º paso** (requieren media: el MCP no la sube). El operador sube los assets a la biblioteca de la cuenta y avisa; entonces se crean **2 anuncios/conjunto** con su copy (regla del duplicado interno). Precio P1u solo en los conjuntos marcados.
-> - La carpeta `Ads/MEDIA_[PRODUCTO]/` con los videos renombrados por conjunto **ya existe desde antes** (la crea el orquestador justo después de ETAPA-0, independiente del MCP); acá solo se completa con `PROMPTS_IMAGENES_[PRODUCTO].txt` (ETAPA-4) para los ángulos-imagen, y se genera `PRODUCTOS/[NOMBRE]/3_CAMPAÑA_META.txt` con todos los IDs (campaign_id + 6 ad_set_id).
-> - Pre-flight (cuenta `is_ads_mcp_enabled`+`is_queryable`, fanpage asignada a la cuenta con WhatsApp, IDs en `2_DATA_PRODUCTO.txt`), parámetros exactos, mapeo de campos y gotchas: ver **`DOCTRINA/MCP_PLAYBOOK.md`**.
-> - El texto-estructura de abajo es el espejo legible del esqueleto y el **fallback** si no hay MCP. Presupuesto canónico = **$2.99/conjunto** (299¢ USD) para la ETAPA 1 del testeo; al día ~3 se cortan 2-3 conjuntos por conversación y los sobrevivientes suben a **$5.98** (ETAPA 2). Fórmula y aritmética en `DOCTRINA/CALENDARIO_ESCALADO.md` §1.5. El **$1.59** queda deprecado (no sacaba a Meta de aprendizaje). El **Q54** que aparezca abajo es el legacy pre-MCP (≈$7) y solo aplica si se pauta a mano sin MCP.
+> **QUIÉN HACE QUÉ.** ETAPA-6 no crea nada en Meta: escribe el plan. `Ads/_TOOLS/gen_lanzador.py` deriva nombres, presupuesto, banda de edad, fecha de lanzamiento y la configuración fija de cada conjunto (`CONFIG_META_FIJA`); `Ads/_TOOLS/gen_publicacion.py` y la skill `publicar-meta` publican, todo en PAUSED. El presupuesto por fase vive en `PRODUCTOS/_PARAMETROS_PUBLICACION.csv`.
 
 ---
 
 ## BANDA DE EDAD (corrige la constante de segmentación amplia)
 
-> **Por qué cambia.** Andrómeda dice que el creativo segmenta y de ahí salió la constante
-> "amplio 18-65+" de `reglas-sistema` (SEGMENTACIÓN). **Es correcta en su núcleo y equivocada en su consecuencia
-> práctica**: el creativo sí segmenta, pero mientras tanto la cuenta paga impresiones a una banda
-> que no compra.
->
-> **APR-060, ventana 17-20 ago, portafolio completo:**
->
-> | Banda | Pauta Q | Mensajes | Ventas | Cierre | CPA |
-> |---|---|---|---|---|---|
-> | **25+** (amplia) | 983 | 228 | 7 | **3.1 %** | **Q140.5** |
-> | **45-60** | 886 | 220 | 28 | **12.7 %** | **Q31.7** |
-> | 25-35 | 230 | 39 | 5 | 12.8 % | Q46.1 |
->
-> Experimento natural — **mismo ángulo, mismo producto, mismo creativo**: `PERDIDA_AUDITIVA` pagó
-> **Q473.6/venta** en GTR0 a 25+ y **Q30.6** en GTR7 a 45-60. Quince veces.
-> Los mismos Q983 al CPA de la banda 45-60 habrían sido **31 ventas en vez de 7**.
+**REGLA:** la banda de edad se deriva del `avatar_edad` del ángulo (`_DIM_CONJUNTOS.csv`), no se
+deja amplia por defecto. Evidencia APR-060: con el mismo ángulo y el mismo creativo, la banda
+45-60 vendió a Q30.6 por venta y la amplia 25+ a Q473.6.
 
-**REGLA:** la banda de edad **se deriva del `avatar_edad` del ángulo** (`_DIM_CONJUNTOS.csv`), no se
-deja amplia por defecto.
-
-> **Fuente ejecutable única: [`Ads/_TOOLS/bandas_edad.py`](../../Ads/_TOOLS/bandas_edad.py).**
-> `gen_publicacion.py` y `gen_lanzador.py` importan esa tabla — ninguno la copia. El bloque de
-> abajo es su copia en prosa, para leer sin abrir el código; si alguna vez difieren, **manda el
-> módulo**.
-
-```
-avatar_edad del ángulo   ->   banda que se configura en Meta
-    45-65                ->   45-65
-    45-60                ->   45-60
-    35-55                ->   35-55
-    35-45                ->   35-50
-    25-35                ->   25-40
-    30-45                ->   30-45
-    40-55                ->   40-55
-    45-55                ->   45-55
-    25-45                ->   25-45
-    25-40                ->   25-40   (sin ensanche propio, ver nota)
-    30-40                ->   30-40   (sin ensanche propio, ver nota)
-    SIN AVATAR DE EDAD MARCADA  ->  amplio 18-65+   (única excepción)
-```
-
-> **`25-40` y `30-40`:** el operador señaló estos dos
-> valores del vocabulario sin fila. `PRODUCTOS/CLEARSTEM/_PLAN.json` los declara como
-> `avatar_edad` de `ANTI_FALSIFICACION`/`MEDICOS_FALLARON` (`25-40`) y `TESTIMONIO_RADICAL`
-> (`30-40`) — pero `PRODUCTOS/_DIM_CONJUNTOS.csv` registra el avatar REAL medido en Meta para
-> esos mismos ángulos como `25-35`, lo que sugiere que el plan guardó la banda YA DERIVADA en el
-> campo `avatar_edad` en vez del bucket crudo. Se registraron en identidad (sin el ensanche +5 de
-> `25-35`/`35-45`, que sí tiene evidencia propia APR-060) para no bloquear la publicación; el
-> operador debe confirmar contra el avatar crudo antes de asumir que son el bucket real.
+**Tabla única: `Ads/_TOOLS/bandas_edad.py`** (la importan `gen_lanzador.py` y
+`gen_publicacion.py`). Un ángulo sin avatar de edad marcada va amplio 18-65+.
 
 - El **género** sigue amplio salvo que el producto sea inequívocamente de un solo sexo.
 - **Advantage+ Audience OFF** — sin eso Meta ignora la banda y vuelve a lo amplio.
@@ -308,107 +260,19 @@ el nombre de la etapa que lo produce, que es más útil que un dato falso.
 
 ## Output FASE 1 — Campaña de Testeo
 
-```
-══════════════════════════════════════════════════════
-ESTRUCTURA CAMPAÑA DE TESTEO — [NOMBRE PRODUCTO]
-[PAÍS DEL MERCADO] | WhatsApp + LucidBot | FASE 1
-══════════════════════════════════════════════════════
+En FASE 1 el output es **solo `_PLAN.json`** (sección anterior): 6 conjuntos, uno por ángulo,
+todos con `formato: IMAGEN`, cada uno con su copy y su avatar, más `pagina` y `_faltantes`. La
+estructura legible para el operador no se escribe acá: la arma `Ads/_TOOLS/gen_manual.py` desde
+el plan.
 
-CONFIGURACIÓN GENERAL
-Nombre de campaña: [CUENTA]_[PRODUCTO]_TEST_[YYYYMMDD]   ← ver CONVENCIÓN DE NOMBRES
-Objetivo de campaña: Tráfico (OUTCOME_TRAFFIC) · Optimización de rendimiento: Maximizar conversaciones · Destino: WhatsApp
-(Nunca Interacción — Mercy: "nunca me funcionó". Ventas solo como campaña paralela opcional: trae público más calificado pero CPA más alto, Camilo/Mercy.)
-Tipo de presupuesto: ABO (presupuesto por conjunto, no por campaña)
-Lanzamiento: 4 AM del día [FECHA DÍA SIGUIENTE]
-⚠️ NUNCA lanzar el mismo día. Siempre programar para 4 AM. (Regla Joaquín/Angi)
-Segmentación: **banda de edad derivada del `avatar_edad` del ángulo** (ver BANDA DE EDAD arriba), Advantage+ OFF, sin intereses — el creativo segmenta (Andrómeda, Clase 19). El amplio 18-65+ queda **solo** para ángulos sin avatar de edad marcada. APR-060 midió Q473.6/venta a 25+ contra Q30.6 a 45-60 con el mismo ángulo y el mismo creativo — esperar a que "la data suba el piso después" costó ~24 ventas en 4 días.
+Lo que el plan decide y ningún script deriva:
+- **Precio en el creativo:** máximo 3 de los 6 conjuntos (ideal 2) llevan el precio P1u, y si lo
+  llevan va en el copy Y en el creativo; los demás, en ninguno. Medido en GT; en otro mercado
+  rige hasta que su data la corrija.
+- **2 anuncios por conjunto** (ver «Regla de los 2 anuncios por conjunto»).
+- **Un ángulo distinto por conjunto**, sin repetir copy ni hook entre conjuntos.
 
-ESTRUCTURA
-1 campaña → 6 conjuntos de anuncios → 2 anuncios por conjunto (mismo creativo duplicado)
-
-PRESUPUESTO
-$2.99 por conjunto (299¢ USD) × 6 conjuntos = $17.94 total/día  [ETAPA 1, días 0-3 · luego 3 sobrevivientes × $5.98]  ·  modo low-budget MCP (default actual)
-(Legacy: Q54/conjunto ≈$7 — solo si se pauta a mano sin MCP. Regla Joaquín/Angi: presupuesto fijo de inicio para WhatsApp)
-⚠️ Mismo presupuesto en todos los conjuntos para no sesgar qué ángulo gana por dinero.
-
-REGLA DE PRECIO EN CREATIVO (medida en GT — máx 3/6, ideal 2/6):
-Máximo 3 conjuntos (idealmente solo 2) → llevan precio P1u en copy + creativo visual
-Los demás conjuntos → sin precio en copy ni en creativo visual
-Si un conjunto lleva precio, va en ambos (copy y creativo). Si no, en ninguno.
-(Ajuste V5 — el precio en publicación no rinde igual en el mercado GT; usar como filtro de avatar.)
-
-MODO MANUAL (solo si se pauta a mano, SIN MCP) — checklist de configuración Meta (Clase 6 — Mercy):
-□ Objetivo de campaña = Tráfico (no Interacción: a Mercy "nunca le funcionó"; Ventas solo como campaña paralela opcional)
-□ "Maximizar CONVERSACIONES" verificado JUSTO antes de publicar — Meta lo revierte solo a "maximizar clics en el enlace" con cada cambio
-□ Presupuesto a nivel CONJUNTO + DESMARCAR "compartir presupuesto entre conjuntos" (si no, un conjunto malo roba presupuesto de los demás)
-□ Destino MANUAL → WhatsApp (nunca Messenger: "no está entrenado para vender"). Número de WhatsApp conectado a la fanpage
-□ DESMARCAR "anuncios multianunciantes" (si no, tu anuncio sale junto a competencia más barata)
-□ DESMARCAR "incluir personas de WhatsApp cuya edad se desconoce" (cae a menores y se pierde la impresión)
-□ NO aceptar las recomendaciones de Meta (apaga buenos conjuntos, sugiere subir presupuesto en campañas apagadas)
-(En MODO MCP estos puntos se auto-configuran vía MCP_PLAYBOOK; este checklist es solo para el pauteo manual/legacy Q54.)
-
-──────────────────────────────────────────────────────
-CONJUNTO 1 — [NOMBRE ÁNGULO 1]
-──────────────────────────────────────────────────────
-Nombre del conjunto: [CUENTA]_[PRODUCTO]_[ÁNGULO1]_R1
-Presupuesto: $2.99 diario (299¢ USD · ETAPA 1; sube a $5.98 en ETAPA 2 · legacy Q54 si es a mano sin MCP)
-Ángulo: [nombre del ángulo]
-Creativo: [VIDEO: nombre de archivo de ETAPA-0  /  IMAGEN: ad Prompt Maestro de ETAPA-4 — ángulo virgen]
-Hook del anuncio: "[primeros 3-5 segundos del video, o hook del ad-imagen]"
-Tipo de contenido: [UGC / Autoridad / Testimonial / Lifestyle / Imagen Prompt Maestro]
-Avatar objetivo: [descripción breve]
-Dolor que activa: "[frase]"
-Precio en creativo: [SÍ — Q[P1u] con envío gratis] solo si es uno de los máx 3 conjuntos con precio (ideal 2) / [NO] en el resto
-CTA: Más información / Enviar mensaje
-Anuncios dentro del conjunto (SIEMPRE duplicar):
-  → Anuncio A: [nombre del video / creativo]
-  → Anuncio B: copia exacta del Anuncio A — mismo video, mismo copy, mismo todo
-  ⚠️ Regla Joaquín: el duplicado interno reduce el CPA de forma significativa. Nunca lanzar con 1 solo anuncio por conjunto.
-
-──────────────────────────────────────────────────────
-CONJUNTO 2 — [NOMBRE ÁNGULO 2]
-──────────────────────────────────────────────────────
-Nombre del conjunto: [CUENTA]_[PRODUCTO]_[ÁNGULO2]_R1
-[misma estructura]
-
-[Repetir para CONJUNTOS 3, 4, 5, 6]
-
-──────────────────────────────────────────────────────
-TABLA RESUMEN DE TESTEO
-──────────────────────────────────────────────────────
-
-| Conjunto | Ángulo | Creativo (VIDEO archivo / IMAGEN) | Avatar | Dolor | Presupuesto |
-|----------|--------|-------|--------|-------|-------------|
-| 1 | [ángulo 1] | [VIDEO archivo / IMAGEN] | [avatar] | "[dolor]" | $2.99 |
-| 2 | [ángulo 2] | [video] | [avatar] | "[dolor]" | $2.99 |
-| 3 | [ángulo 3] | [video] | [avatar] | "[dolor]" | $2.99 |
-| 4 | [ángulo 4] | [video] | [avatar] | "[dolor]" | $2.99 |
-| 5 | [ángulo 5] | [video] | [avatar] | "[dolor]" | $2.99 |
-| 6 | [ángulo 6] | [video] | [avatar] | "[dolor]" | $2.99 |
-
-──────────────────────────────────────────────────────
-QUÉ OBSERVAR AL DÍA SIGUIENTE
-──────────────────────────────────────────────────────
-Para identificar el ángulo ganador, revisar por conjunto:
-
-MÉTRICAS PRIORITARIAS (usar los umbrales canónicos de `DOCTRINA/ESCALADO/10_METRICAS_TESTEO.md` → "MÉTRICAS DE EVALUACIÓN DE TESTEO" — fuente única, no duplicar otros números acá):
-1. % Conversación por Clic en enlace = Conversaciones ÷ Clics × 100  (la más importante)
-   → <35% problema de flujo/coherencia · 35-49% bueno/escalable · ≥50% (50-70%) excelente y súper escalable
-2. % Conversación por Impresión = Conversaciones ÷ Impresiones × 100
-   → 1.5% malo · 2.5% bueno · 3.5% excelente · 4.5%+ extraordinario
-3. CPA real (Q) vs CPA Objetivo y CPA Break Even de ETAPA-1 (nunca ROAS)
-
-CRITERIO DE GANADOR:
-El conjunto ganador es el que combina: mejor tasa de conversión a WhatsApp + CPA real más cercano o por debajo del CPA objetivo.
-
-ACCIÓN POST-TESTEO:
-→ Confirmar al orquestador: "El ángulo ganador es [nombre del conjunto]" + métricas de los 6 conjuntos
-→ El orquestador inicia FASE 2
-
-══════════════════════════════════════════════════════
-FIN ESTRUCTURA TESTEO
-══════════════════════════════════════════════════════
-```
+Quién gana no lo dice esta etapa: lo dice `Ads/_TOOLS/decidir.py` (invariante 13).
 
 ---
 
@@ -704,7 +568,8 @@ FIN ESTRUCTURA ESCALADO
 
 ### Reglas base
 
-- **Regla de 4 AM obligatoria:** Toda campaña nueva se programa para las 4 AM del día siguiente. Si se aprueba a mitad del día, WhatsApp quema el presupuesto en minutos y no optimiza. (Clase 6 — Mercy: 4 AM día siguiente)
+- **Escalado (FASE 4):** el 20 % matutino, el escalado horizontal, el Post ID, el límite por
+  fanpage y los dos modos de escalado están en «Expansión horizontal», arriba. No se repiten acá.
 - **Regla de presupuesto igual:** Mismo monto en todos los conjuntos **dentro de cada etapa** ($2.99 en ETAPA 1 · $5.98 en ETAPA 2 · legacy Q54 si es a mano) para no sesgar qué ángulo o microángulo gana por más presupuesto. (Clase 6 — Mercy: mismo presupuesto por conjunto). La subida a $5.98 se aplica a los 3 sobrevivientes **a la vez**, nunca a uno solo — si no, el que sube gana por dinero, no por ángulo.
 - **Regla ABO en testeo:** Usar ABO (presupuesto por conjunto) durante testeo para controlar individual. CBO solo cuando ya hay un ganador claro. (Clase 6 — presupuesto a nivel conjunto)
 - **Regla de coherencia ángulo-flujo en FASE 2 y 3:** Todos los conjuntos apuntan al mismo flujo LucidBot (el del ángulo ganador). Nunca mezclar conjuntos que apunten a flujos distintos. (Regla Mercy/Joaquín)
@@ -721,21 +586,8 @@ FIN ESTRUCTURA ESCALADO
     (la calidad del creativo explica ~56% del resultado y el benchmark es 8-12 conceptos distintos
     por campaña; un duplicado no cuenta como concepto).
   Mientras el test no cierre, el default sigue siendo DUPLICADO. Ver el TEST DE DIVERSIDAD abajo.
-- **Regla de no pausar por falta de video (DOCTRINA DE CREATIVOS):** Un ángulo cuyo creativo es IMAGEN (ad Prompt Maestro de ETAPA-4) lanza igual que uno con video. NUNCA dejar un conjunto pausado por no tener video — la imagen lo cubre. Marcar el formato de cada conjunto (VIDEO/IMAGEN), no pausarlo.
-- **Regla de lectura del ganador (confound de formato):** Leer el resultado a nivel de ÁNGULO con las métricas de conversación. Si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato (uno video, otro imagen), no declarar ganador aún: en FASE 2 probar el ángulo en un solo formato para aislar la variable. Un video validado es un creativo más fuerte que una imagen fría — tenerlo en cuenta al comparar.
-
-  > **Reemplaza estas dos reglas hacia adelante:** F1 planifica
-  > los 6 conjuntos con `formato: IMAGEN` fijo (`_PLAN.json`, validado por `gen_plan.py --validar`)
-  > — el confound de formato entre ángulos ya no puede ocurrir en F1. El video queda como fuente del
-  > ángulo (`etapa-0`) y se testea en FASE 2 como un concepto más.
 - **Regla de precio (medida en GT — máx 3/6, ideal 2/6; en otro mercado rige hasta que su data la corrija):** Máximo 3 conjuntos (idealmente 2) llevan precio P1u en copy + creativo visual. El resto sin precio en ninguno. Si un conjunto lleva precio, va en ambos (copy y creativo); si no, en ninguno. (Ajuste V5 — coherente con ETAPA-4.)
 - **Regla de métricas de observación:** El primer día de testeo busca datos, no ventas. Meta está identificando quién conecta con cada ángulo.
-- **Regla del 20% matutino:** Subir el presupuesto de un conjunto rentable máximo +20% por día y SOLO en la mañana (hasta 9-10 AM). Tocarlo más tarde reinicia el aprendizaje y desoptimiza. (Clase 8, 11, 15)
-- **Regla del escalado horizontal:** Para crecer en volumen no se infla el conjunto ganador — se replica horizontalmente (duplicar conjunto, más fanpages, más cuentas) usando el MISMO Post ID para acumular prueba social. (Clase 8, 11, 15)
-- **Regla del Post ID:** Las réplicas del anuncio ganador usan "publicación existente" (mismo Post ID) para que likes/comentarios/reproducciones se acumulen en una sola publicación = más prueba social, menor CPM. Moderar comentarios antes de replicar. (Clase 11, 15)
-  > Matiz de objetivo (Clase 15): en el TESTEO el objetivo es Tráfico (Mercy: "Interacción nunca me funcionó"). En el ESCALADO con Post ID, Joaquín en Clase 15 crea la campaña de réplica con objetivo **Interacción**. Este sistema mantiene Tráfico por defecto; usar Interacción para Post ID solo si el operador lo valida.
-- **Regla de límite por fanpage:** Hasta ~250 anuncios activos por fanpage. Pasado ese punto, abrir nueva fanpage del mismo nicho/identidad. El ganador solo se replica en fanpages del mismo nicho. (Clase 15)
-- **Regla de los dos modos de escalado:** El operador elige modo AGRESIVO (Mercy — duplicar y multicuenta rápido) o PROGRESIVO (Joaquín — +20% matutino y duplicar solo tras 2-3 días estables). No mezclar criterios a mitad del escalado. (Clase 8, 11, 15)
 - **Regla de diversidad conceptual en FASE 2 (benchmark Andromeda):** La campaña de escalado sale con **8-12 conceptos conceptualmente distintos**, no 4. La infraestructura ya existe y está sin usar: `DOCTRINA/PLANTILLAS_ADS_SECCIONES/06_ESTILOS_ANTIFATIGA.md` tiene 15 estilos visuales y `PRODUCTOS/_DIM_CREATIVOS.csv` ya tiene el campo `bloque_concepto`. En FASE 2 el objetivo es VOLUMEN, no atribución, así que acá conviene la diversidad máxima (similarity score <40% entre conceptos; las cuentas que testean 20+ anuncios/mes reportan 65% más ROAS que las que testean <10).
   > ⚠️ **NO APLICA A FASE 1.** Los 6 conjuntos con 1 creativo cada uno son el instrumento de MEDICIÓN: si se meten 3 creativos por conjunto se pierde saber qué ángulo ganó. Andromeda premia diversidad, pero el objetivo de FASE 1 es aprender, no entregar barato. Sacrificar la atribución ahí sale más caro que el CPM que se ahorra.
 - **TEST DE DIVERSIDAD CONCEPTUAL (activo, leer antes de cerrarlo):** TINNIDROP corre
