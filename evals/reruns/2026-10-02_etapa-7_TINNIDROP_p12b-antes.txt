@@ -1,0 +1,62 @@
+===================================================================================================================
+ MOTOR DE DECISIÓN UNIFICADO — VITALCOM GUATEMALA (Evaluación: 14d | Fatiga: 3d | Tolerancia: acumulada | IC 95% | Grano: angulo)
+ Data: 2026-09-16 → 2026-09-29  (generado 2026-10-02)
+ ⚠️  LA DATA ARRASTRA 3 DÍAS DE REZAGO. Estas órdenes NO describen lo que pasó después del 2026-09-29: cargá el export antes de ejecutarlas.
+ Resumen:  🔴 PAUSAR: 0  |  🔵 RENOVAR (FATIGA): 1  |  🟢 ESCALAR: 0  |  🟡 SEGUIR MIDIENDO: 3
+===================================================================================================================
+
+[TINNIDROP]  Estado: VIVO | Fase: F2 | Break-Even: Q93.41 | CPA Objetivo: Q30.80
+-------------------------------------------------------------------------------------------------------------------
+  ESTADO           CELDA / ÁNGULO                VTS   MSJ  GASTO Q CPA REAL IC 95% Q        ACCIÓN INMEDIATA
+-------------------------------------------------------------------------------------------------------------------
+  [RENOVAR]        ACCESIBILIDAD_MEDICO           23   223   1645.1    Q71.5 [48-110]        RENOVAR CREATIVO (FASE 2): Ángulo probado (96 vts acumuladas a CPA Q52.0 bajo BE Q93.4) pero los últimos 3d sangran (Q380 con 3 vts). Mantener ángulo y rotar concepto — NO apagar.
+  [SEGUIR_MIDIENDO] PERDIDA_AUDITIVA               18   252   1249.5    Q69.4 [45-113]        MANTENER PRESUPUESTO (no subir): CPA Q69.4 bajo BE Q93.4, pero el IC [45-113.1] lo cruza. Faltan ~29 ventas al CPA actual para resolver IC.
+  [SEGUIR_MIDIENDO] DETERIORO_COGNITIVO            11   106    637.5    Q58.0 [34-109]        MANTENER PRESUPUESTO (no subir): CPA Q58.0 bajo BE Q93.4, pero el IC [34-109.1] lo cruza. Faltan ~8 ventas al CPA actual para resolver IC.
+  [SEGUIR_MIDIENDO] NOCHES_SIN_DORMIR               4    44    361.3    Q90.3 [38-268]        MANTENER PRESUPUESTO (no subir): CPA Q90.3 bajo BE Q93.4, pero el IC [38-267.6] lo cruza. El CPA observado está cerca del BE.
+
+===================================================================================================================
+ SÍNTESIS COMPLETA: Cero parálisis por falta de muestra · Cero decisiones irreversibles sin evidencia.
+===================================================================================================================
+
+INFORME DIARIO — TINNIDROP · Día 14 · 2026-10-02
+INTEGRIDAD DE VENTANA: 7 de 7 días COMPLETA ✅ (BASE diaria 23→29-sep en CSV; 14/14 días 16→29; _BITACORA_DATA.txt desactualizada — última fila 08-sep; rezago 3d: nada describe lo posterior al 2026-09-29 — cargar export antes de ejecutar)
+Campaña: GTR*_TINNIDROP_ESCALA_20260812 (GTR7+GTR1+GTR0; GTR0_F2-CONCEPTOS_20260907 PAUSED 08-sep) · Gasto: $510.95 / Q3893.4 (motor) · Ventas: 56 atribuidas (+1 orgánica gasto 0) · Ingreso Q12898.1 (ingreso atribuido Q12659.1) · GANANCIA Q1337.6 (atribuida: 56×Break-Even Q93.41 − gasto Q3893.4)
+Break-Even Q93.41 · CPA Objetivo Q30.80 · REGLA DE ORO: se escala lo que YA vende.
+
+SANGRADO: Q0 (0.0% del gasto) en 0 conjuntos con 0 ventas pasados de su PD Q93.41
+           → podarlo recupera Q0 de ganancia (+0%)
+
+LECTURA POR DIMENSIÓN (join con _DIM_CONJUNTOS.csv — el "POR QUÉ funciona")
+   SIN DIMENSIÓN: 0 filas [debe ser 0] (GTR0_TINNIDROP_NOCHES-SIN-DORMIR_R1 resuelto por _ALIAS_CONJUNTOS.csv 06-sep → NOCHES_SIN_DORMIR, agregado por angulo_key [APR-004]; 1 fila orgánica con conjunto vacío, gasto 0 y 1 venta, fuera del ranking — no es hueco)
+   · por TIPO DE HOOK ...... MIEDO 29v CPA Q65.1 (PERDIDA+DETERIORO) | TESTIMONIO 23v CPA Q71.5 (ACCESIBILIDAD) | EMOCIONAL 4v CPA Q90.3 [n bajo] (NOCHES) ← vena que compra: miedo a perder audición/cabeza + frustración médica, un solo cluster [APR-010]
+   · por FORMATO ........... VIDEO 52v CPA Q67.9 vs IMAGEN 4v CPA Q90.3 [n bajo] ← con 4 ventas la IMAGEN no decide nada
+   · por ROL DE EMBUDO ..... TOFU 33v CPA Q68.1 (PERDIDA+DETERIORO+NOCHES) vs MOFU 23v CPA Q71.5 (ACCESIBILIDAD)
+   · por PRECIO EN EL AD ... CON 0v vs SIN 56v CPA Q69.5 ← toda la ventana corre SIN precio, sin señal con/sin
+   · por NIVEL CONCIENCIA .. NC2 56v CPA Q69.5 (toda la ventana en NC2)
+   Con <10 ventas en una celda, marcarla [n bajo] y NO decidir sobre ella.
+
+MATRIZ ÁNGULO × CUENTA (si el producto corre en >1 cuenta)
+   ACCESIBILIDAD_MEDICO → LOCAL (GTR7 23v; sin ventas ni gasto en GTR1/GTR0 en ventana; histórico VIAJA GTR7/CP1/GTR0)
+   PERDIDA_AUDITIVA → LOCAL (GTR7 17v + 1 residual GTR0 gasto 0; 18v)
+   DETERIORO_COGNITIVO → LOCAL (GTR1 11v)
+   NOCHES_SIN_DORMIR → LOCAL (GTR0 4v)
+   Ninguno VIAJA (≥3) en ventana; ninguno MURIENDO. Saturación §5: no diagnosticable mismo-ángulo entre cuentas en ventana (cada ángulo aislado en una cuenta).
+
+ÁNGULO(S) GANADOR(ES): ACCESIBILIDAD_MEDICO (96v acumuladas, CPA Q52.0 acumulado bajo Break-Even Q93.41) — fijo de F2 (3_CAMPAÑA_META l.120); mejor ángulo medido [APR-084], en cluster con PERDIDA/DETERIORO [APR-010]
+ESTADOS DEL MOTOR (citados de la tabla de PASO 4, con accion_codigo):
+         PAUSAR: [] · RENOVAR: [ACCESIBILIDAD_MEDICO — FATIGA_CREATIVO] · ESCALAR: [] · SEGUIR_MIDIENDO: 3 (PERDIDA_AUDITIVA, DETERIORO_COGNITIVO, NOCHES_SIN_DORMIR — MANTENER_Y_MEDIR)
+         (una PAUSAR por ventas exige ventana COMPLETA; la ventana es COMPLETA y el motor trae 0 PAUSAR)
+FATIGA: ACCESIBILIDAD_MEDICO (FATIGA_CREATIVO) → cambiar creativo, no el ángulo ni el presupuesto [APR-007]; brief vía etapa-10 → etapa-9
+VARIABLES DE CONFUSIÓN: 21-sep GTR7 sin entrega (tarjeta pausada por el operador, volvió 22-sep) — deprime gasto/ventas 21-sep en ACCESIBILIDAD+PERDIDA, no atribuir al ángulo; sin CAMBIO_BOT/CAMBIO_CREATIVO/CAMBIO_PRECIO/CAMBIO_PAGINA en ventana 16→29; DIAGNOSTICO_CONGRUENCIA 24-sep sin reescritura (cierre ACCESIBILIDAD 11.8% estable, deterioro pre-clic; desajustes C1/C2/C5 y física South Moon vs SANARTE sin verificar)
+
+PLAN DE ESCALADO (según ESCALADO_PLAYBOOK) — Fase: DEFINICIÓN (F2 — testeo de conceptos, ángulo fijo ACCESIBILIDAD_MEDICO; F2-CONCEPTOS GTR0 pausada 08-sep por defecto de creativo)
+1) PAUSAR: ninguno (0 PAUSAR; 0 PAUSAR_DIFERIDA — tope 2 sin uso).
+2) OPTIMIZAR FLUJO: no — F2.etapa-11 ya diagnosticó 24-sep sin reescritura; la reescritura es F3 con concepto ganador 2 de 2 (pendiente 0/2).
+3) SURFING +20 %: aún no (0 ESCALAR).
+4) ESCALAR HORIZONTAL (solo con CPA real): esperar — gate §6 exige CPA Q ≤ CPA Base Q30.80; acumulado CPA Q52.0 y ventana CPA Q71.5 no cumplen; Post ID ACCESIBILIDAD 498977893288095_122222002070566196 listo para cuando cumpla; sin saturación nueva que mover (§5).
+5) CREATIVOS (variable #1): ángulo ganador ACCESIBILIDAD_MEDICO, por qué gana: frustración médica (años pagando consultas y pastillas, el pitido sigue igual; testimonio tinnidrop4) (§4).
+   Brief → ETAPA-4: [5 conceptos del mismo ángulo, variación real nunca mínima — 1) testimonio hombre 58 en cocina "gasté miles y sigo igual" IMAGEN 4:5 avatar 45-60; 2) comparativa consulta vs spray con oferta 1u Q179/2u Q239/3u Q299 visible IMAGEN 1:1; 3) "mi esposo se cansó de repetirme" (roce familiar) IMAGEN 4:5; 4) progresión noche sin dormir → mañana clara (video UGC) 9:16; 5) autoridad médica que sostiene SANARTE con modo de uso ótico 2 veces/día IMAGEN 1:1. Todos: marca SANARTE visible, vía ótica, sin sellos ni promesas de cura, CTA con beneficio + prueba social + oferta + modo de uso (Clase 19); respetar color/etiqueta real contra foto — F2 pausado 08-sep traía South Moon + copy sublingual; banda 25+ no abrir en TINNIDROP [APR-060] (excepción vigente: NOCHES 25+ sí cierra — evento 03-sep — se mantiene). Brief definitivo lo fija etapa-10 por canonico_id; esta dirección no lo sustituye].
+6) PRECIO: mantener (1u Q179 / 2u Q239 / 3u Q299 fila Q40; subir gradual solo con ESCALAR — no hay).
+
+QUÉ HACER HOY (1-2 líneas): Mantener presupuestos: no pausar ni subir nada. Pedir el brief a etapa-10 y fabricar 5 conceptos SANARTE/óticos de ACCESIBILIDAD, y cargar el export 30-sep→01-oct antes de ejecutar (rezago 3d).
+DECISIÓN RECOMENDADA (confirma el operador, orden por orden): (1) no pausar ningún conjunto; (2) no aplicar surfing; (3) RENOVAR creativo de ACCESIBILIDAD_MEDICO (FATIGA_CREATIVO) sin tocar presupuesto ni ángulo — brief etapa-10 → etapa-9 → ETAPA-4; (4) MANTENER presupuesto en PERDIDA_AUDITIVA, DETERIORO_COGNITIVO y NOCHES_SIN_DORMIR (MANTENER_Y_MEDIR) — en TINNIDROP la conversación no decide ni para cortar sin cruzar ventas [APR-009]; (5) verificar estados en Meta antes de actuar (data hasta 29-sep) y anexar cada orden ejecutada a _EVENTOS.csv.
