@@ -176,7 +176,8 @@ def _fixture(base):
 
     codigo = alta_producto.main(["--nombre", "Serum Vitamina C", "--costo", "60",
                                  "--descripcion-archivo", descripcion, "--imagen", imagen,
-                                 "--base", base, "--hoy", "2026-09-17", "--mercado", "GT"])
+                                 "--base", base, "--hoy", "2026-09-17", "--mercado", "GT",
+                                 "--moneda", "GTQ"])
     assert codigo == 0, "el fixture necesita un alta real"
     _escribir(base, _p("CON_MANUAL", "1_HACER_MANUAL.txt"), "TODO A MANO\r\n")
     _escribir(base, _p("CON_ENCABEZADO", "2_DATA_PRODUCTO.txt"),

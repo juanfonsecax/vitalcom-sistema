@@ -417,7 +417,7 @@ def main(argv=None):
     ap.add_argument("--clave", default=None)
     ap.add_argument("--cuenta", default="")
     ap.add_argument("--mercado", required=True, help="mercado de venta: GT o CO (_DIM_MERCADOS.csv)")
-    ap.add_argument("--moneda", default="GTQ", help="moneda de la CUENTA PUBLICITARIA, no la de venta")
+    ap.add_argument("--moneda", required=True, help="moneda con que Meta cobra la CUENTA PUBLICITARIA (USD, COP), no la de venta")
     ap.add_argument("--tasa", default="")
     ap.add_argument("--color-envase", default="")
     ap.add_argument("--color-hex", default="")

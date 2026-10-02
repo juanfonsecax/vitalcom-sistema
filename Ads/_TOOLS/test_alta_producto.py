@@ -153,7 +153,8 @@ def _correr(base, imagen, descripcion, extra=()):
     return alta_producto.main([
         "--nombre", "Serum Vitamina C", "--costo", "60",
         "--descripcion-archivo", descripcion, "--imagen", imagen,
-        "--base", base, "--hoy", "2026-09-17", *(extra or ("--mercado", "GT")),
+        "--base", base, "--hoy", "2026-09-17", "--moneda", "GTQ",
+        *(extra or ("--mercado", "GT")),
     ])
 
 
@@ -200,7 +201,7 @@ def main():
             try:
                 alta_producto.main([
                     "--nombre", "Sin Mercado", "--costo", "60", "--descripcion-archivo", descripcion,
-                    "--imagen", imagen, "--base", base, "--hoy", "2026-09-17"])
+                    "--imagen", imagen, "--base", base, "--hoy", "2026-09-17", "--moneda", "GTQ"])
                 raise AssertionError("la CLI tenia que exigir --mercado")
             except SystemExit as salida:
                 assert salida.code == 2, salida.code
@@ -258,26 +259,28 @@ def main():
             antes = len(_leer(base, "_DIM_PRODUCTOS.csv"))
             assert alta_producto.main([
                 "--nombre", "Otro Producto", "--costo", "60", "--descripcion-archivo", corta,
-                "--imagen", imagen, "--base", base, "--mercado", "GT"]) == 1
+                "--imagen", imagen, "--base", base, "--mercado", "GT", "--moneda", "GTQ"]) == 1
             assert len(_leer(base, "_DIM_PRODUCTOS.csv")) == antes, "no se escribe nada al rechazar"
 
         def rechaza_imagen_inexistente():
             assert alta_producto.main([
                 "--nombre", "Otro Producto", "--costo", "60", "--descripcion-archivo", descripcion,
                 "--imagen", os.path.join(base, "no_existe.png"), "--base", base,
-                "--mercado", "GT"]) == 1
+                "--mercado", "GT", "--moneda", "GTQ"]) == 1
 
         def rechaza_costo_no_numerico():
             assert alta_producto.main([
                 "--nombre", "Otro Producto", "--costo", "sesenta", "--descripcion-archivo",
-                descripcion, "--imagen", imagen, "--base", base, "--mercado", "GT"]) == 1
+                descripcion, "--imagen", imagen, "--base", base, "--mercado", "GT",
+                "--moneda", "GTQ"]) == 1
 
         def dry_run_no_toca_nada():
             antes_productos = _leer(base, "_DIM_PRODUCTOS.csv")
             antes_envase = _leer(base, "_DIM_ENVASE.csv")
             assert alta_producto.main([
                 "--nombre", "Producto En Seco", "--costo", "45", "--descripcion-archivo",
-                descripcion, "--imagen", imagen, "--base", base, "--mercado", "GT", "--dry-run"]) == 0
+                descripcion, "--imagen", imagen, "--base", base, "--mercado", "GT", "--moneda", "GTQ",
+                "--dry-run"]) == 0
             assert _leer(base, "_DIM_PRODUCTOS.csv") == antes_productos
             assert _leer(base, "_DIM_ENVASE.csv") == antes_envase
             assert not os.path.isdir(os.path.join(base, "PRODUCTOS", "PRODUCTO_EN_SECO"))
@@ -353,7 +356,8 @@ def main():
                 codigo = alta_producto.main([
                     "--nombre", "Producto Recuperable", "--costo", "60",
                     "--descripcion-archivo", descripcion, "--imagen", imagen,
-                    "--base", base, "--hoy", "2026-09-17", "--mercado", "GT", "--json"])
+                    "--base", base, "--hoy", "2026-09-17", "--mercado", "GT", "--moneda", "GTQ",
+                    "--json"])
             finally:
                 sys.stdout = real_stdout
                 alta_producto.os.replace = original
