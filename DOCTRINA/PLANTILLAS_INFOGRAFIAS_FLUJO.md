@@ -8,55 +8,16 @@
 
 ## IMAGEN 1 — BENEFICIOS (6–10, FLEXIBLE)
 
-> ## ⭐ DOCTRINA DE LA IMAGEN DE BENEFICIOS (LEER ANTES DE GENERAR)
-> Esta pieza vive DENTRO del flujo del bot (Info 1), después del punto de dolor. **No es el anuncio frío de Meta** — la persona ya está enganchada. Por eso aguanta densidad: Clase 7 (Joaquín) confirma que poner "la imagen con 10-30 beneficios después del punto de dolor sube la conversión de una". Es el momento "vitrina" de carga de valor antes del precio (Clase 1).
->
-> **PERO el límite lo pone el UMBRAL COGNITIVO (Clase 22):** *"si saturás UNA imagen con todo, la persona NO la procesa."* La saturación NO viene del número de beneficios — viene de (a) descripciones largas en cada punto, (b) todos los textos del mismo tamaño sin jerarquía, y (c) fondo plano que no deja respirar al producto. Una pieza con 10 beneficios bien jerarquizados se procesa; una con 5 mal jerarquizados, no.
->
-> **REGLA DE CONTEO — flexible, no fijo en 10:** usar **entre 6 y 10 beneficios REALES y diferenciados** (default 8-10 si el producto los tiene). **PROHIBIDO rellenar hasta 10 con beneficios débiles, repetidos o genéricos** ("100% vegetariano", "fórmula segura") solo para llegar al número — ese relleno es lo que satura. Si el producto solo tiene 5-6 beneficios fuertes (ej. creatina, magnesio), hacer 5-6 con más aire, como hacen los ads del proveedor. La cantidad sigue a la sustancia, no al revés.
->
-> **REGLA DE FONDO (corrección crítica vs versión vieja):** el fondo NUNCA es blanco plano. Es un **fondo de color derivado del producto** ([COLOR_DEGRADADO_PRODUCTO]): degradado o color sólido tomado del frasco/etiqueta, igual que los ads del proveedor que "conectan" (Intimate Rose morado, Magnesium azul, Height dorado-oscuro). Clase 14: *"una mala paleta de colores no detiene el scroll"*; PDF Prompt Maestro lista "fondo degradado moderno" / "oscuro de lujo" — nunca blanco clínico. La micro-textura va ENCIMA de ese fondo de color, no lo reemplaza.
->
-> **REGLA DE PRODUCTO HÉROE (Clase 14):** *"la imagen del producto debe ser GRANDE y protagonista"*. Frasco centrado, grande, con iluminación dramática (glow/halo del color del producto), reflejo o pódium sutil. Es lo primero que rompe el scroll, por encima de los beneficios.
-> **REGLA DE COMBO (2x1 / 4x2):** si el producto se vende en combo (no por unidad), el héroe muestra **DOS frascos idénticos** juntos (o cuatro para 4x2) + un **banner MODERADO, no muy grande, que diga "MEGA OFERTA 2X1"** (fondo rojo/color del producto, texto blanco bold). Un solo frasco solo si el producto se vende por unidad suelta. Aplica a las piezas con producto héroe (IMAGEN 1, oferta). Un producto con arquitectura de oferta 2x1 fija = SIEMPRE 2 frascos + banner.
->
-> **Test antes de generar:** (1) ¿el fondo es del color del producto, no blanco? (2) ¿el frasco domina la pieza? (3) ¿los títulos de beneficio se leen, sin que las descripciones saturen? (4) ¿cada beneficio es real, no relleno? (5) ¿los íconos de beneficio son ilustrados A COLOR (no de línea gris)? Si alguna falla → corregir.
+> **REGLAS DE IMAGEN 1** (Info 1 del bot, después del punto de dolor; no es el anuncio de Meta):
+> - **Conteo:** 6 a 10 beneficios reales y distintos (8-10 si el producto los tiene). Nunca relleno genérico para llegar a 10: si hay 5-6 fuertes, van 5-6 con más aire.
+> - **Jerarquía:** el título de cada beneficio domina; la descripción es corta (máximo 1 línea) y en la mitad de los puntos se omite.
+> - **Fondo:** degradado o sólido del color del producto ([COLOR_DEGRADADO_PRODUCTO]), nunca blanco plano. La micro-textura va encima del color, no lo reemplaza.
+> - **Producto héroe:** frasco grande y centrado, con glow o halo del color del producto. Nunca cede el centro.
+> - **Combo:** si se vende en 2x1 (o 4x2), el héroe muestra 2 (o 4) frascos idénticos y un banner moderado «MEGA OFERTA 2X1» (fondo rojo o del color del producto, texto blanco bold). Un solo frasco solo si se vende por unidad.
+> - **Íconos:** cada beneficio lleva su NÚMERO en círculo [COLOR_CIRCULOS_BENEFICIOS] y, pegada, una «Ilustración 3D die-cut de [concepto]» a color (la palabra «sticker» rinde peor), un poco más pequeña de lo que la IA genera por defecto, del mismo estilo y tamaño en todas. Cada una en el color natural de su concepto (energía → amarillo, sangre → rojo, mente → rosado o azul, protección → azul, digestión → verde, sueño → morado). Son la única capa multicolor: la estructura sigue en [COLOR_ACENTO_PRODUCTO]. Se reconocen en el celular en menos de un segundo.
+> - **Test antes de entregar:** ¿fondo del color del producto? ¿el frasco domina? ¿los títulos se leen sin que las descripciones saturen? ¿cada beneficio es real? ¿íconos die-cut a color?
 
-> ## ⭐ REGLA DE ESTILO DE ÍCONOS DE BENEFICIO — ILUSTRACIÓN 3D DIE-CUT + NÚMERO (obligatoria en IMAGEN 1)
-> Cada beneficio se refuerza con DOS elementos juntos: (1) su **NÚMERO** en círculo `[COLOR_CIRCULOS_BENEFICIOS]`, y (2) una **ILUSTRACIÓN 3D DIE-CUT A COLOR** — el `[BENEFICIO_N_ICONO]` se describe literal como **"Ilustración 3D die-cut de [concepto]"** (ej. "Ilustración 3D die-cut de un cerebro rosado", "…de una neurona azul", "…de un rayo amarillo"): objeto ilustrado a color, glossy/semi-3D, con recorte die-cut — NO un ícono de línea plano ni monocromático gris. **⚠️ La frase "Ilustración 3D die-cut de…" rinde mucho mejor que la palabra "sticker".** **TAMAÑO MODERADO: hacerlas un poco MÁS PEQUEÑAS de lo que la IA genera por defecto** (salen grandes) — que no le quiten protagonismo al frasco ni saturen. Estilo/tamaño uniforme entre todas. Número + ilustración van pegados, uno por beneficio.
-> - **Color por concepto, no por producto:** cada ícono lleva el color natural de lo que representa (energía → rayo amarillo/dorado · sangre/circulación → rojo · nervios/mente → rosado o azul · protección → escudo azul · digestión → verde · sueño → morado/índigo · vegano → verde hoja). Los íconos son la **única capa de la pieza que sí es multicolor** — así rompen el escaneo y se leen de un vistazo.
-> - **Esto NO contradice la REGLA MAESTRA DE COLOR:** la estructura (fondo, títulos, círculos numerados `[COLOR_CIRCULOS_BENEFICIOS]`, bandas, pie) sigue en `[COLOR_ACENTO_PRODUCTO]`. El color del producto manda en la estructura; los íconos aportan el toque multicolor encima, contenidos en su badge/círculo.
-> - **Estilo consistente entre los N íconos:** todos del mismo grosor, misma familia visual (flat con relleno suave o semi-3D ligero), tamaño uniforme. Nunca mezclar íconos de línea con íconos rellenos en la misma pieza.
-> - **Legibles a tamaño chico en celular:** símbolo simple y reconocible en <1 seg, sin detalle microscópico.
-
-### VERSIÓN RÁPIDA (usar cuando se necesita brevedad)
-
-FORMATO: 4:5 (1080×1350) por defecto — coherente con el resto del flujo del bot (ELEMENTO 4 de ETAPA-5). Usar 2:3 (1080×1620) solo si los beneficios necesitan más alto. **FONDO DE COLOR DEL PRODUCTO ([COLOR_DEGRADADO_PRODUCTO]) — NUNCA blanco plano.** Degradado o color sólido tomado del frasco/etiqueta (como los ads del proveedor que conectan). Estética premium de bienestar, no clínica-plana.
-
-ENCABEZADO (12%): TÍTULO PRINCIPAL grande y en bold, color [COLOR_BOTON_ENCABEZADO] (o degradado [COLOR_DEGRADADO_ENCABEZADO]): "[HEADLINE_BENEFICIO]" — el dolor/deseo del ángulo, congruente con el anuncio de Meta. Encima o al lado, en etiqueta pequeña: "[KICKER_BENEFICIOS]" (ej: "[N] BENEFICIOS"). Botón [COLOR_BOTON_ENCABEZADO] con texto blanco: "[NOMBRE_PRODUCTO]". [DECORACION_ENCABEZADO] sutiles. NUNCA poner "BENEFICIOS" como título principal.
-
-CENTRO — PRODUCTO HÉROE: Frasco ultra-realista de "[NOMBRE_PRODUCTO]", **grande y protagonista**, con iluminación dramática (glow/halo del color del producto) y reflejo o pódium sutil. Base rodeada de ingredientes naturales compactos: [INGREDIENTES_BASE_BOTELLA].
-
-LOS [N] BENEFICIOS (6–10 reales, sin relleno — Círculos numerados alrededor). **Cada beneficio = NÚMERO en su círculo + una ILUSTRACIÓN 3D DIE-CUT a color (tamaño moderado, un poco más pequeña de lo que sale por defecto)** descrita como "Ilustración 3D die-cut de [concepto]" (cerebro rosado, neurona azul, rayo amarillo, gota de sangre roja…), estilo/tamaño uniforme entre todas (ver REGLA DE ESTILO DE ÍCONOS — ILUSTRACIÓN 3D DIE-CUT + NÚMERO):
-Columna Izquierda:
-[[BENEFICIO_1_ICONO]] [BENEFICIO_1_TITULO]. [BENEFICIO_1_DESC]
-[[BENEFICIO_2_ICONO]] [BENEFICIO_2_TITULO]. [BENEFICIO_2_DESC]
-[[BENEFICIO_3_ICONO]] [BENEFICIO_3_TITULO]. [BENEFICIO_3_DESC]
-[[BENEFICIO_4_ICONO]] [BENEFICIO_4_TITULO]. [BENEFICIO_4_DESC]
-[[BENEFICIO_5_ICONO]] [BENEFICIO_5_TITULO]. [BENEFICIO_5_DESC]
-
-Columna Derecha (resto, hasta completar N):
-6. [[BENEFICIO_6_ICONO]] [BENEFICIO_6_TITULO].
-7. [[BENEFICIO_7_ICONO]] [BENEFICIO_7_TITULO]. [BENEFICIO_7_DESC]
-8. [[BENEFICIO_8_ICONO]] [BENEFICIO_8_TITULO]. [BENEFICIO_8_DESC]
-9. [[BENEFICIO_9_ICONO]] [BENEFICIO_9_TITULO].
-10. [[BENEFICIO_10_ICONO]] [BENEFICIO_10_TITULO].
-
-PIE DE PÁGINA: Logotipo "sanarte®" (letras #117200, contorno #caec55). Barra [COLOR_BARRA_INFERIOR] abajo. Izquierda: [Escudo] "[FOOTER_TEXTO_IZQ]". Derecha: [[ICONO_FOOTER_DER]] "FÓRMULA SEGURA Y DE ALTA CALIDAD". (SIN SELLOS OFICIALES).
-
----
-
-### VERSIÓN COMPLETA (usar por defecto — mayor control y calidad)
+### PLANTILLA
 
 Un póster de infografía de producto vertical de alta resolución y calidad profesional, recreando fielmente el diseño, texto y elementos de la imagen de referencia, optimizado para una lectura clara y sin saturación.
 
@@ -117,7 +78,7 @@ Base de la Botella: Dispuesto alrededor de la base de la botella hay una disposi
 > - **Nunca apilar los beneficios DEBAJO del frasco en bloque** salvo formato muy vertical (2:3) con pocos puntos. El frasco siempre conserva el centro visual.
 > Regla: la disposición sigue la CANTIDAD de beneficios reales; el frasco-héroe nunca cede el centro.
 
-Diagramas de Beneficios Numerados (Círculos que rodean la botella): entre **6 y 10 beneficios REALES y diferenciados** (default 8-10 si el producto los tiene; NUNCA relleno genérico para llegar a 10 — el relleno es lo que satura, no el número). Puntos numerados circulares con puntos [COLOR_CIRCULOS_BENEFICIOS] y números blancos, dispuestos en dos columnas con buen espaciado/aire entre ellos. **Cada beneficio lleva un ícono ILUSTRADO A COLOR (estilo flat/moderno multicolor, NO línea gris monocromática), cada uno pintado en el color natural de su concepto (rayo amarillo = energía, corazón rojo = sangre, cerebro rosado = memoria, escudo azul = protección, hoja verde = vegano, etc.), con estilo y grosor uniformes entre todos los íconos.** Los íconos son la única capa multicolor de la pieza; la estructura (círculos, títulos, bandas) sigue en el color del producto. **Jerarquía obligatoria (Clase 14):** el título del beneficio (en MAYÚSCULAS) domina en tamaño y peso; la descripción va en tipografía notablemente más pequeña, delgada y CORTA (máx 1 línea breve). Para mantener el umbral cognitivo bajo, en aproximadamente la mitad de los puntos basta el ícono + título sin descripción (como los ads del proveedor). Todo texto legible en celular (≥24 pts).
+Diagramas de Beneficios Numerados (Círculos que rodean la botella): entre **6 y 10 beneficios REALES y diferenciados** (default 8-10 si el producto los tiene; NUNCA relleno genérico para llegar a 10 — el relleno es lo que satura, no el número). Puntos numerados circulares con puntos [COLOR_CIRCULOS_BENEFICIOS] y números blancos, dispuestos en dos columnas con buen espaciado/aire entre ellos. **Cada beneficio lleva su número en el círculo y, pegada a él, una «Ilustración 3D die-cut de [concepto]» a color, en el color natural de su concepto (rayo amarillo = energía, corazón rojo = sangre, cerebro rosado = memoria, escudo azul = protección, hoja verde = vegano), un poco más pequeña de lo que la IA genera por defecto, con estilo y tamaño uniformes entre todas.** Los íconos son la única capa multicolor de la pieza; la estructura (círculos, títulos, bandas) sigue en el color del producto. **Jerarquía obligatoria (Clase 14):** el título del beneficio (en MAYÚSCULAS) domina en tamaño y peso; la descripción va en tipografía notablemente más pequeña, delgada y CORTA (máx 1 línea breve). Para mantener el umbral cognitivo bajo, en aproximadamente la mitad de los puntos basta el ícono + título sin descripción (como los ads del proveedor). Todo texto legible en celular (≥24 pts).
 
 Columna Izquierda (1-5):
 
@@ -155,7 +116,7 @@ TODO EN ESPAÑOL
 
 Un póster de infografía de producto vertical, alta resolución, calidad profesional, estilo médico-wellness premium. **Hereda el PASO 0 (color, [KIT_TIPO_LETRA] del producto, render del frasco).** Fondo base blanco roto teñido ≤5% hacia el color del producto (no #FFFFFF plano; ver REGLA DE ZONAS BLANCAS). Las zonas hero (ANTES/DESPUÉS, ingredientes) van en oscuro del producto. Todo el texto en español.
 
-> **REGLA DE UMBRAL COGNITIVO (Clase 22 Joaquín — obligatoria en esta pieza):** esta imagen carga 3 ideas (antes/después, ingredientes, modo de uso) y es la más propensa a saturarse. "Si saturás una imagen con todo, la persona NO la procesa." Por eso: (1) cada zona respira, separada con aire en blanco; (2) **máximo 4-6 ingredientes principales** (NO listar 10-15 en grilla diminuta), 1 línea por ingrediente; (3) **texto legible a ~24pt en celular** — nada de letra microscópica que "la gente no lee", recordando que parte del público es 50-70 años; (4) si el producto tiene muchos ingredientes, mostrar solo los protagonistas del ángulo y mencionar "y más" — la lista completa va en el catálogo/audio, no saturando la imagen.
+> **UMBRAL COGNITIVO (obligatorio: esta pieza carga 3 ideas y es la que más se satura):** (1) cada zona separada con aire; (2) máximo 4-6 ingredientes principales, 1 línea cada uno; (3) texto legible a ~24 pt en el celular (parte del público tiene 50-70 años); (4) si hay muchos ingredientes, solo los protagonistas del ángulo más «y más»: la lista completa va en el catálogo o el audio.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ZONA 1 — ANTES / DESPUÉS (50% superior del lienzo)
@@ -337,11 +298,6 @@ ojeras, sonrisa tranquila. Misma ropa de dormir. Teléfono en mesa de noche most
 INSTRUCCIÓN FINAL DE COMPOSICIÓN (según el FORMATO elegido)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-- **FORMATO A (evidencia):** dos fotos del ARTEFACTO antes/después (prueba, laboratorio, pesa, glucómetro), sin persona. Macro real, grano de teléfono.
-- **FORMATO B (reseña):** una o dos tarjetas de reseña con tiempo (texto humano, ortografía natural, nombre + inicial, fecha relativa). Sin foto posada de IA.
-- **FORMATO C (UGC candid):** dos fotografías lado a lado, MISMA persona, estilo selfie de cámara frontal — usar solo cuando el cambio sea visible y fotografiable de verdad (piel, cabello, cuerpo).
-- **FORMATO D (momento):** dos momentos de la misma situación (reloj/escena), no dos retratos de "la misma persona transformada".
-
 En todos los casos: grano natural de cámara de teléfono, sin filtros, sin retoque, sin actuación exagerada — altamente auténtico (Clase 1: "no traten de tontos a los clientes"). Si la pieza usa persona (Formato C), nunca dejar que el rostro se vea plástico/IA: ante la duda, cambiar a Formato A o B.
 
 Separador central: línea vertical delgada 1px con el logo de la fanpage ([LOGO_MARCA]) pequeño centrado, en su color de marca.
@@ -412,7 +368,7 @@ REGLAS GLOBALES DEL DISEÑO
 
 ## IMAGEN 3 — CONFIANZA / CONTRAENTREGA + RESULTADOS
 
-> **PROPÓSITO (ETAPA-5 ELEMENTO 6 + Clase 22 Joaquín):** esta es la imagen que ELIMINA el miedo a comprar online. El reductor de fricción #1 del COD es **PAGÁS AL RECIBIR** (en la persona del mercado: `tuteo` → "PAGAS AL RECIBIR") — debe ser lo primero/más prominente, por encima de stats y FAQ. La autoridad (doctora) y las estadísticas refuerzan, pero el mensaje dominante es "no arriesgás tu dinero". (Joaquín: "la persona no arriesga el dinero, nosotros arriesgamos mandando el producto" — comunicarlo reduce la objeción que más mata ventas.)
+> **PROPÓSITO:** quitar el miedo a comprar online. Lo primero y más grande es **PAGÁS AL RECIBIR** (en la persona del mercado: `tuteo` → «PAGAS AL RECIBIR»), por encima de estadísticas y FAQ. La doctora y las estadísticas refuerzan; el mensaje dominante es que la persona no arriesga su dinero.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 PASO 1 — FOTO BASE (generar primero en IA de imágenes)
