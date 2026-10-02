@@ -268,48 +268,117 @@ def test_texto_racha_anuncia_cierre_con_siete_dias():
 # ── plan de pasos: lunes agrega el control semanal, el resto de días no ─────────────────────
 
 def test_pasos_reales_entre_semana_no_trae_control():
-    martes = datetime.date(2026, 9, 22)
-    nombres = [p["nombre"] for p in cd.pasos_reales(martes)]
-    assert "bajar_lucidsales_control" not in nombres
-    assert "ingerir_lucidsales_control" not in nombres
+    orig = cd.ENV_LUCIDSALES_CO
+    cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")
+    try:
+        martes = datetime.date(2026, 9, 22)
+        nombres = [p["nombre"] for p in cd.pasos_reales(martes)]
+        assert "bajar_lucidsales_control" not in nombres
+        assert "ingerir_lucidsales_control" not in nombres
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
 
 
 def test_pasos_reales_lunes_agrega_control_con_rol_control():
-    lunes = datetime.date(2026, 9, 21)
-    pasos = cd.pasos_reales(lunes)
-    nombres = [p["nombre"] for p in pasos]
-    assert "bajar_lucidsales_control" in nombres
-    control = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_control")
-    assert "--rol" in control["argv"] and "CONTROL" in control["argv"]
+    orig = cd.ENV_LUCIDSALES_CO
+    cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")
+    try:
+        lunes = datetime.date(2026, 9, 21)
+        pasos = cd.pasos_reales(lunes)
+        nombres = [p["nombre"] for p in pasos]
+        assert "bajar_lucidsales_control" in nombres
+        control = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_control")
+        assert "--rol" in control["argv"] and "CONTROL" in control["argv"]
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
 
 
 def test_pasos_reales_bajar_meta_insights_declara_aviso_2():
-    pasos = cd.pasos_reales(datetime.date(2026, 9, 22))
-    meta = next(p for p in pasos if p["nombre"] == "bajar_meta_insights")
-    assert meta["codigos_aviso"] == (2,)
+    orig = cd.ENV_LUCIDSALES_CO
+    cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")
+    try:
+        pasos = cd.pasos_reales(datetime.date(2026, 9, 22))
+        meta = next(p for p in pasos if p["nombre"] == "bajar_meta_insights")
+        assert meta["codigos_aviso"] == (2,)
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
 
 
 # ── pasos_lucidsales: única fuente compartida con recopilar_lucidsales.py (T4) ───────────────
 
 def test_pasos_lucidsales_es_el_mismo_arranque_de_pasos_reales():
-    martes = datetime.date(2026, 9, 22)
-    solo_lucidsales = cd.pasos_lucidsales(martes)
-    nombres_lucidsales = [p["nombre"] for p in solo_lucidsales]
-    nombres_reales = [p["nombre"] for p in cd.pasos_reales(martes)]
-    assert nombres_lucidsales == nombres_reales[:len(nombres_lucidsales)]
-    assert "bajar_meta_insights" not in nombres_lucidsales
-    assert "ciclo_hoy" not in nombres_lucidsales
-    assert "gen_dashboard" not in nombres_lucidsales
+    orig = cd.ENV_LUCIDSALES_CO
+    cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")
+    try:
+        martes = datetime.date(2026, 9, 22)
+        solo_lucidsales = cd.pasos_lucidsales(martes, env_co=cd.ENV_LUCIDSALES_CO)
+        nombres_lucidsales = [p["nombre"] for p in solo_lucidsales]
+        nombres_reales = [p["nombre"] for p in cd.pasos_reales(martes)]
+        assert nombres_lucidsales == nombres_reales[:len(nombres_lucidsales)]
+        assert "bajar_meta_insights" not in nombres_lucidsales
+        assert "ciclo_hoy" not in nombres_lucidsales
+        assert "gen_dashboard" not in nombres_lucidsales
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
 
 
 def test_pasos_lucidsales_lunes_agrega_control_con_rol_control():
-    lunes = datetime.date(2026, 9, 21)
-    pasos = cd.pasos_lucidsales(lunes)
-    nombres = [p["nombre"] for p in pasos]
-    assert nombres == ["bajar_lucidsales", "ingerir_lucidsales",
-                       "bajar_lucidsales_control", "ingerir_lucidsales_control"]
-    control = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_control")
-    assert "--rol" in control["argv"] and "CONTROL" in control["argv"]
+    with tempfile.TemporaryDirectory() as tmp:
+        env_inexistente = os.path.join(tmp, "co.env")
+        lunes = datetime.date(2026, 9, 21)
+        pasos = cd.pasos_lucidsales(lunes, env_co=env_inexistente)
+        nombres = [p["nombre"] for p in pasos]
+        assert nombres == ["bajar_lucidsales", "ingerir_lucidsales",
+                           "bajar_lucidsales_control", "ingerir_lucidsales_control"]
+        control = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_control")
+        assert "--rol" in control["argv"] and "CONTROL" in control["argv"]
+
+
+# ── tienda de Colombia (P8): solo si existe co.env, pasos opcionales ─────────────────────────
+
+def test_pasos_co_si_existe_la_credencial():
+    with tempfile.TemporaryDirectory() as tmp:
+        env_co = os.path.join(tmp, "co.env")
+        with open(env_co, "w", encoding="utf-8") as fh:
+            fh.write("")
+        martes = datetime.date(2026, 9, 22)
+        pasos = cd.pasos_lucidsales(martes, env_co=env_co)
+        nombres = [p["nombre"] for p in pasos]
+        assert nombres[-2:] == ["bajar_lucidsales_co", "ingerir_lucidsales_co"]
+        ingerir = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_co")
+        assert "--mercado" in ingerir["argv"] and "CO" in ingerir["argv"]
+        assert cd.INGESTA_CO in ingerir["argv"]
+        bajar = next(p for p in pasos if p["nombre"] == "bajar_lucidsales_co")
+        assert "--env" in bajar["argv"] and env_co in bajar["argv"]
+
+
+def test_pasos_co_lunes_lleva_control():
+    with tempfile.TemporaryDirectory() as tmp:
+        env_co = os.path.join(tmp, "co.env")
+        with open(env_co, "w", encoding="utf-8") as fh:
+            fh.write("")
+        lunes = datetime.date(2026, 9, 21)
+        pasos = cd.pasos_lucidsales(lunes, env_co=env_co)
+        nombres = [p["nombre"] for p in pasos]
+        assert "bajar_lucidsales_co_control" in nombres
+        assert "ingerir_lucidsales_co_control" in nombres
+        bajar = next(p for p in pasos if p["nombre"] == "bajar_lucidsales_co_control")
+        assert "--dias" in bajar["argv"] and "7" in bajar["argv"]
+        ingerir = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_co_control")
+        assert "--rol" in ingerir["argv"] and "CONTROL" in ingerir["argv"]
+
+
+def test_sin_credencial_co_no_hay_pasos_co():
+    with tempfile.TemporaryDirectory() as tmp:
+        env_inexistente = os.path.join(tmp, "co.env")
+        martes = datetime.date(2026, 9, 22)
+        nombres = [p["nombre"] for p in cd.pasos_lucidsales(martes, env_co=env_inexistente)]
+        assert not any("_co" in n for n in nombres)
+
+
+def test_paso_opcional_falla_como_aviso():
+    assert cd._clasificar(cd._paso("x", [], opcional=True), 1) == "AVISO"
+    assert cd._clasificar(cd._paso("x", []), 1) == "FATAL"
 
 
 # ── el CSV: header se crea una sola vez ──────────────────────────────────────────────────────

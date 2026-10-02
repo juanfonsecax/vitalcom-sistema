@@ -95,6 +95,9 @@ PROD = os.path.join(BASE, "PRODUCTOS")
 LOGDIR = os.path.join(BASE, "_RESPALDOS", "logs")
 CORRIDAS_CSV = os.path.join(PROD, "_CORRIDAS_DIARIAS.csv")
 TENANT_ID = "vitalcom"
+# La tienda de Colombia tiene credenciales propias y su propia carpeta, porque el nombre del reporte no lleva la tienda y una tienda pisaría a la otra.
+ENV_LUCIDSALES_CO = os.path.join(os.path.expanduser("~"), ".config", "lucidsales", "co.env")
+INGESTA_CO = os.path.join(BASE, "Ads", "_INGESTA", "LUCIDSALES_CO")
 
 COLUMNAS = ["fecha", "inicio", "fin", "estado", "paso_fallido", "paridad", "detalle"]
 
@@ -108,17 +111,20 @@ def _ahora():
 
 # ── plan de pasos (dict de datos: nombre, argv, códigos fatales/aviso) ──────────────────────────
 
-def _paso(nombre, argv, codigos_aviso=()):
-    return {"nombre": nombre, "argv": argv, "codigos_aviso": tuple(codigos_aviso)}
+def _paso(nombre, argv, codigos_aviso=(), opcional=False):
+    return {"nombre": nombre, "argv": argv, "codigos_aviso": tuple(codigos_aviso),
+            "opcional": opcional}
 
 
-def pasos_lucidsales(hoy):
+def pasos_lucidsales(hoy, env_co=None):
     """Los pasos de LucidSales de la cadena nocturna, en orden. `hoy` decide el control semanal
     (lunes). ÚNICA fuente de esta sub-secuencia: la reusa también `recopilar_lucidsales.py`, el
     fallback manual del botón "Traer las ventas de LucidSales" (T4, 26-sep-2026) — un dato, un
-    dueño, para no tener dos copias de la cadena que puedan divergir."""
+    dueño, para no tener dos copias de la cadena que puedan divergir.
+    La tienda de Colombia corre solo si existe su archivo de credenciales, y sus pasos son opcionales."""
     py = sys.executable
     ingesta_dir = os.path.join(BASE, "Ads", "_INGESTA", "LUCIDSALES")
+    env_co = env_co or ENV_LUCIDSALES_CO
     pasos = [
         _paso("bajar_lucidsales", [py, os.path.join(TOOLS, "bajar_lucidsales.py")]),
         _paso("ingerir_lucidsales",
@@ -130,6 +136,22 @@ def pasos_lucidsales(hoy):
         pasos.append(_paso("ingerir_lucidsales_control",
                             [py, os.path.join(TOOLS, "ingerir_lucidsales.py"),
                              "--dir", ingesta_dir, "--rol", "CONTROL"]))
+    if os.path.isfile(env_co):
+        pasos.append(_paso("bajar_lucidsales_co",
+                            [py, os.path.join(TOOLS, "bajar_lucidsales.py"),
+                             "--env", env_co, "--salida", INGESTA_CO], opcional=True))
+        pasos.append(_paso("ingerir_lucidsales_co",
+                            [py, os.path.join(TOOLS, "ingerir_lucidsales.py"),
+                             "--dir", INGESTA_CO, "--mercado", "CO"], opcional=True))
+        if hoy.weekday() == 0:
+            pasos.append(_paso("bajar_lucidsales_co_control",
+                                [py, os.path.join(TOOLS, "bajar_lucidsales.py"),
+                                 "--env", env_co, "--salida", INGESTA_CO, "--dias", "7"],
+                                opcional=True))
+            pasos.append(_paso("ingerir_lucidsales_co_control",
+                                [py, os.path.join(TOOLS, "ingerir_lucidsales.py"),
+                                 "--dir", INGESTA_CO, "--mercado", "CO", "--rol", "CONTROL"],
+                                opcional=True))
     return pasos
 
 
@@ -145,6 +167,8 @@ def pasos_reales(hoy):
 
 
 def _clasificar(paso, codigo):
+    if codigo != 0 and paso.get("opcional"):
+        return "AVISO"
     if codigo == 0:
         return "OK"
     if codigo in paso["codigos_aviso"]:
