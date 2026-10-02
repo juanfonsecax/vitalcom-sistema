@@ -71,7 +71,9 @@ MINIMO_DESCRIPCION = 120  # una descripcion de dos lineas no alcanza para invest
 TENANT_ID = "vitalcom"
 
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mercado as mercado_mod  # noqa: E402  (resolver de mercados, mismo directorio)
+import upsert_fact  # noqa: E402
 
 
 class Rechazo(Exception):
@@ -287,7 +289,7 @@ def _escribir_producto_alta(base, encabezado, filas, fila_producto):
     filas_dict = [dict(zip(encabezado, f)) for f in filas]
     filas_dict.append(dict(fila_producto))
     prod_dir = os.path.join(base, "PRODUCTOS")
-    bkdir = os.path.join(base, "backups_csv")
+    bkdir = upsert_fact.respaldos_dir(base, "backups_csv")
     try:
         con = db_cargar.conectar()
     except Exception as exc:

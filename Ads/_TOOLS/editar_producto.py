@@ -38,6 +38,7 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import upsert_fact  # noqa: E402
 from alta_producto import BASE_POR_DEFECTO, Rechazo, leer_csv  # noqa: E402,F401
 
 try:
@@ -183,7 +184,7 @@ def _escribir_producto_en_db(contenido_productos, base):
     filas = [dict(zip(encabezado, f)) for f in filas_texto]
 
     prod_dir = os.path.join(base, "PRODUCTOS")
-    bkdir = os.path.join(base, "backups_csv")
+    bkdir = upsert_fact.respaldos_dir(base, "backups_csv")
     try:
         con = db_cargar.conectar()
     except Exception as exc:
