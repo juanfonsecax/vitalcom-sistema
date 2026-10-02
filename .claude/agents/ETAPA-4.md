@@ -121,14 +121,14 @@ Leer `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` (motor compartido: PASO 0, variables, 
 
 > **REGLAS CRÍTICAS (actualización):** (1) El TÍTULO de IMAGEN 1 es el **dolor/deseo impactante del ángulo congruente con Meta**, NUNCA "10 BENEFICIOS" ni el nombre del producto ("BENEFICIOS" va como kicker pequeño). (2) El acento de color de las 4 infografías = **color del producto** (REGLA MAESTRA DE COLOR de DOCTRINA/PLANTILLAS_INFOGRAFIAS.md); NO forzar el verde lima #caec55 si el producto no es verde.  (3) **KIT TIPOGRÁFICO DE CAMPAÑA:** usar la **misma fuente** ([KIT_TIPO_LETRA]) en las infografías, en los ads de Meta y en el bot — fijada por la identidad de la fanpage / ads de referencia (Clase 22 Joaquín: marca = secuencia). (4) **Sello de GARANTÍA** junto al contraentrega en IMAGEN 3 (Clase 22 fricciones). Verificar todas antes de entregar los prompts.
 
-> **OPTIMIZACIÓN CLASE 22 (Joaquín — convertir más sin gastar más) — aplicar a TODA infografía del bot y a cada ad de testeo:**
-> (a) **Título impactante:** fuente grande, lo primero que se ve; el subtítulo NUNCA del mismo tamaño/color que el título (si compiten, no destaca). Congruente con lo pautado en Meta — si la persona ve algo distinto → efecto rebote, se sale.
-> (b) **Beneficio principal + resultado deseado en la MISMA imagen** (el ángulo que atacás + el punto B del avatar) y **cómo lo logra** ("con solo 2 cápsulas al día…").
-> (c) **IMAGEN 1 = propuestas de valor, no beneficios sueltos.** Cada ítem en fórmula problema + solución + resultado deseado; mostrar que el producto sirve para MUCHO más que el ángulo de entrada (sube percepción de valor — Clase 22 BLOQUE 5; hasta 10-20). Coherente con la Regla de propuestas de valor de ETAPA-5.
-> (d) **Umbral cognitivo:** no saturar una imagen con todo (beneficios + envío + contraentrega + garantía); segmentar, texto legible. "El cerebro no procesa todo de golpe; a las personas solo les interesa cómo les vas a resolver su problema."
-> (e) **Reducir fricción (las 3 cositas):** GARANTÍA visible (el [GARANTIA_TEXTO] de IMAGEN 3: no prometer reembolso salvo que el operador confirme esa política) · **CTA con beneficio** (no "compra ahora"; sí "desinflamá tu [dolor] desde hoy"; en salud usar "tratamiento" + cantidad "180 cápsulas") · **prueba social con IMÁGENES** (persona usándose/tomándose el producto, no solo "ya lo recibí").
-> (f) **Prueba social con MOMENTOS** (antes/después) + recomendación de autoridad ("me lo recomendó mi médico / mi tía").
-> (g) **Calidad e identidad de marca:** imágenes de buena calidad, NUNCA copiar la imagen de la competencia tal cual (mejorarla); misma fuente en Meta/flujo/infografía = marca = secuencia.
+> **REGLAS DE CONVERSIÓN (toda infografía del bot y cada ad de testeo):**
+> - **Título:** grande y lo primero que se ve; el subtítulo nunca del mismo tamaño ni color. Congruente con el anuncio de Meta: si la persona ve algo distinto, se sale.
+> - **Beneficio principal + resultado deseado en la misma pieza**, y cómo se logra («con solo 2 cápsulas al día…»).
+> - **IMAGEN 1 = propuestas de valor:** cada ítem en fórmula problema + solución + resultado, mostrando que el producto sirve para más que el ángulo de entrada. La cantidad la fija `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` (6 a 10 reales).
+> - **Fricción:** garantía visible (el [GARANTIA_TEXTO] de IMAGEN 3: no prometer reembolso salvo que el operador confirme esa política) · CTA con beneficio, no «compra ahora» (en salud: «tratamiento» y la cantidad, «180 cápsulas») · prueba social con imágenes de personas usando el producto.
+> - **Prueba con momentos** (antes/después) y recomendación de autoridad («me lo recomendó mi médico»).
+> - **Marca:** imágenes de buena calidad, nunca la de la competencia tal cual; la misma fuente en Meta, flujo e infografías.
+> - El umbral cognitivo (no saturar una pieza) está en las plantillas de infografías.
 
 Si el operador no entregó alguna variable del grupo `Operador` (estadísticas clínicas, FAQs, dosis, días de resultado, momento de uso), **NO detener el flujo**: tomar el valor base de `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` (raíz del proyecto), adaptarlo al ángulo/producto y marcarlo en el output como `(default del sistema — reemplazar con dato real)`. El dato real del operador SIEMPRE manda sobre el default. Cumplir la regla de compliance: estadísticas como satisfacción/percepción del cliente (ratios como "9 de cada 10"), nunca % clínico 70-90% ni claims de cura.
 

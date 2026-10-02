@@ -19,7 +19,7 @@
 
 ### PLANTILLA
 
-Un póster de infografía de producto vertical de alta resolución y calidad profesional, recreando fielmente el diseño, texto y elementos de la imagen de referencia, optimizado para una lectura clara y sin saturación.
+Un póster de infografía de producto vertical de alta resolución y calidad profesional, formato 4:5 (1080×1350; 2:3 de 1080×1620 solo si los beneficios necesitan más alto), recreando fielmente el diseño, texto y elementos de la imagen de referencia, optimizado para una lectura clara y sin saturación.
 
 Estilo y Layout: Un diseño de póster premium y profesional, con estética de bienestar de marca (NO clínica-plana), renderizado con alto nivel de detalle y fidelidad. El layout se organiza en una columna central con un PRODUCTO HÉROE grande y protagonista y diagramas numerados alrededor con aire/espacio entre ellos.
 
