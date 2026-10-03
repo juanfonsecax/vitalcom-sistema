@@ -252,7 +252,7 @@ La fila la crea `Ads/_TOOLS/alta_producto.py`: escribe Postgres y regenera este 
 - Se escriben con el **nombre EXACTO de la carpeta en disco**, tal como está — no se normaliza ni se corrige. La tabla se adapta al disco, no al revés.
 - **Las carpetas NO se renombran para emparejarlas**: los `1_HACER_MANUAL.txt` referencian rutas `MEDIA_*` que el operador usa para ejecutar.
 - Si el producto todavía no tiene alguna carpeta (ej. sin videos), se reporta como pendiente; la columna no se toca.
-- ⚠️ **Esta etapa NUNCA escribe `_DIM_PRODUCTOS.csv`**, ni a mano ni con un escritor CSV: es espejo de Postgres y cualquier cambio por fuera de sus escritores frena la corrida nocturna entera (guardia de drift). Cada dato tiene su escritor: `alta_producto.py` (la fila), `cargar_cuenta.py`, `cargar_page_id.py`, `cargar_moneda_cuenta.py`, `cambiar_costo.py`. Si un dato no tiene escritor o el escritor se niega, se reporta como pendiente nombrando la columna y el error; nunca se escribe por otro camino.
+- ⚠️ **Esta etapa NUNCA escribe `_DIM_PRODUCTOS.csv`**, ni a mano ni con un escritor CSV: es espejo de Postgres y cualquier cambio por fuera de sus escritores frena la corrida nocturna entera (guardia de drift). Cada dato tiene su escritor: `alta_producto.py` (la fila), `cargar_cuenta.py`, `cargar_page_id.py`, `cargar_moneda_cuenta.py`, `cambiar_costo.py`, `cargar_costeo.py` (cifras de costeo, después de etapa-1), `cargar_estado.py`. Si un dato no tiene escritor o el escritor se niega, se reporta como pendiente nombrando la columna y el error; nunca se escribe por otro camino.
 
 ---
 

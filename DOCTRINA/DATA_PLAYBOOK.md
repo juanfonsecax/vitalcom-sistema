@@ -191,7 +191,7 @@ Una fila por campaña: `cuenta_alias · campana · producto_key · estado (ON/OF
 > nombre contenga `clave_campana` **con gasto > 0** — un duplicado manual (`…- Copia`)
 > de una campaña pausada y renombrada por el operador puede quedar como la única viva.
 > El `campaign_id` de esta tabla es una pista, no la verdad.
-- Al **dar de alta un producto**, `etapa-guardar-producto` escribe su fila con las 5 columnas de carpeta ya resueltas.
+- Al **dar de alta un producto**, `Ads/_TOOLS/alta_producto.py` crea su fila con las 5 columnas de carpeta ya resueltas. Ningún dato de esa fila se escribe a mano: cada uno tiene su escritor en `Ads/_TOOLS/` (`cargar*.py`, `cambiar_costo.py`).
 - **Las carpetas NO se renombran para "emparejarlas"**: 17 referencias a rutas `MEDIA_*` viven en los `1_HACER_MANUAL.txt`/`2_DATA_PRODUCTO.txt` que el operador usa para ejecutar. Renombrar las rompería a cambio de nada — el alias hace el mismo trabajo sin tocar un byte.
 
 > ⚠️ **CSV malformado — cómo evitarlo.** **Todo campo de texto libre con comas va entre comillas
