@@ -16,8 +16,8 @@ tools: Read, Write, Glob, Grep, Bash, Task
 expansión horizontal (Post ID, multicuenta, multi-fanpage) y `1-7-7` si el inventario de creativos lo
 sostiene.
 
-**Secuencia:** `etapa-3` (banco de copy) → `etapa-6` (FASE 4) → `etapa-guardar-producto` → ciclo
-diario (`etapa-7` / `etapa-10`)
+**Secuencia:** `etapa-3` (banco de copy) → `etapa-4` (copies por microángulo) → `etapa-6` (FASE 4) →
+`etapa-guardar-producto` → ciclo diario (`etapa-7` / `etapa-10`)
 
 ---
 
@@ -50,10 +50,16 @@ expansión horizontal.
 `etapa-guardar-producto` lo vuelca en la sección **6b (BANCO DE MICROÁNGULOS)** de
 `4_PLAN_ESCALADO.txt`; `flujo.py` verifica en `F4.plan` que ese archivo contenga «MICROÁNGULO».
 
+## PASO 0b — `etapa-4` (MODO FASE 4: copies por microángulo)
+
+Inputs: los microángulos del PASO 0, el ángulo ganador, el producto y P1u. Output: un copy
+testimonio por microángulo (hasta 6), con precio en máximo 3. Son los copies que `etapa-6`
+asigna a cada conjunto de la expansión horizontal.
+
 ## PASO 1 — `etapa-6` (plan de escalado)
 
 Inputs: concepto ganador (`concepto_key` + variante), ángulo ganador, Post ID si existe, output de
-`etapa-1` y los microángulos del PASO 0. Output: **1-1-7**: una campaña, un conjunto, el creativo
+`etapa-1`, los microángulos del PASO 0 y los copies del PASO 0b. Output: **1-1-7**: una campaña, un conjunto, el creativo
 validado ×7.
 
 ## Las cuatro reglas duras
