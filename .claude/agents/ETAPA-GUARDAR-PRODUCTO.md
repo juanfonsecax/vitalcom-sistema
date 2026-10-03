@@ -11,189 +11,175 @@ skills:
 # ETAPA-GUARDAR-PRODUCTO
 
 ## Cuándo se activa
-- **Fin de FASE 1** (después de ETAPA-6): crea la carpeta y sus archivos.
-- **Fin de FASE 2** (después de ETAPA-6 Fase 2): ACTUALIZA los mismos archivos con el ángulo ganador, microángulos, copies/bot/campaña de escalado, y los resultados del testeo si el operador los entregó. Sube VERSION.
-- **Fin de FASE 4** (después de ETAPA-6 Fase 4, `F4.plan`): escribe `4_PLAN_ESCALADO.txt`
-  (plantilla y BANCO DE MICROÁNGULOS de `etapa-3` en `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md §7`;
-  `flujo.py` verifica que quede escrito).
 
-⚠️ Usar el tool **Write** para crear físicamente los archivos. No basta mostrarlos en el chat — si no se escriben en disco, se pierden al cerrar la sesión.
+| Cierre | Qué escribe |
+|---|---|
+| **FASE 1** (después de `etapa-6`) | crea la carpeta: `2_DATA_PRODUCTO.txt`, el manual generado por código, `3_CAMPAÑA_META.txt` si hubo MCP, las filas de `_DIM_CONJUNTOS.csv` y la de `_PORTAFOLIO.txt` |
+| **FASE 2** (después de `etapa-6` FASE 2) | actualiza los mismos archivos con el ángulo ganador, el copy único, los 10 conceptos, el A/B de flujo y la estructura de las 3 campañas; sube `VERSION` |
+| **FASE 4** (después de `etapa-6` FASE 4, nodo `F4.plan`) | escribe `4_PLAN_ESCALADO.txt` |
+
+Los archivos se crean con **Write**: mostrarlos en el chat no basta, se pierden al cerrar la sesión.
 
 ---
 
-## ESTRUCTURA FIJA — una carpeta por producto
+## ESTRUCTURA FIJA — una carpeta por producto (invariante 8)
 
 ```
-PRODUCTOS/
-  └── [NOMBRE_SIN_ESPACIOS]/
-        ├── 1_HACER_MANUAL.txt     ← TODO lo que el operador ejecuta a mano (copiar/pegar)
-        ├── 2_DATA_PRODUCTO.txt    ← memoria del producto (análisis / optimización futura)
-        └── 3_CAMPAÑA_META.txt     ← IDs reales de Meta (solo si la campaña se creó por MCP)
+PRODUCTOS/[slug_carpeta]/
+  ├── 1_HACER_MANUAL.txt     ← lo que el operador ejecuta a mano
+  ├── 2_DATA_PRODUCTO.txt    ← memoria del producto (análisis / optimización)
+  ├── 3_CAMPAÑA_META.txt     ← IDs reales de Meta (solo si la campaña se creó por MCP)
+  └── 4_PLAN_ESCALADO.txt    ← plan de FASE 4
 ```
 
-- **Nombres de archivo FIJOS**, iguales para todo producto. El operador siempre abre `1_HACER_MANUAL.txt` para trabajar y adjunta `2_DATA_PRODUCTO.txt` en la próxima sesión.
-- **Un rerun SOBRESCRIBE** estos mismos archivos (Write sobre la misma ruta) y sube `VERSION`. **Prohibido** crear `_SIMULACION`, `_COPIES_V2`, `_v3`, etc. — esos archivos sueltos son los que generan contradicciones.
-- Si hay archivos viejos del mismo producto sueltos en `PRODUCTOS/` (esquema plano anterior), consolidar su contenido vigente en los 3 oficiales y borrar los viejos.
+Conviven con los archivos que escriben otras etapas o generadores (`BLOQUES_BOT.md`, `INFOGRAFIAS.md`,
+`FLUJO_LUCIDBOT.md`, `_PLAN*.json`, `_PUBLICACION_*.json`). La carpeta se resuelve leyendo
+`slug_carpeta` de `_DIM_PRODUCTOS.csv` (invariante 10).
+
+- **Nombres de archivo fijos**, iguales para todo producto.
+- **Un rerun SOBRESCRIBE los mismos archivos** y sube `VERSION` (invariante 5). Prohibido crear
+  `_SIMULACION`, `_COPIES_V2`, `_v3` o cualquier archivo suelto: son los que generan contradicciones.
+  Si hay archivos sueltos viejos del producto, su contenido vigente se consolida en los oficiales y se
+  borran.
 
 ### ENCABEZADO ÚNICO DE VERDAD
-La **primera línea de los 3 archivos** es idéntica. Permite saber sin ambigüedad cuál es la versión vigente y detectar discrepancias:
+
+La **primera línea de `1_`, `2_` y `3_`** es idéntica (la verifica `verificar_producto.py`):
 
 ```
-═══ [PRODUCTO] · VERSION [v1] · [FECHA] · COSTO Q[..] · DOSIS [..] · page_id [..] · campaign_id [.. o "sin MCP"] ═══
+═══ [PRODUCTO] · VERSION [v1] · [FECHA] · COSTO [costo del proveedor] [moneda] · DOSIS [..] · page_id [..] · campaign_id [.. o "SIN_MCP"] ═══
 ```
 
 ---
 
 ## ARCHIVO 1 — `1_HACER_MANUAL.txt` (lo que el operador hace a mano)
 
-> Es el único archivo que el operador abre para ejecutar. Todo verbatim, en orden, listo para copiar y pegar. Acá va lo que el sistema NO puede hacer solo: editar el flujo de LucidBot, subir creativos, generar imágenes.
+**FASE 1 — este archivo NO se escribe con Write: lo GENERA el código.** Orden obligatorio:
+1. Escribir `2_DATA_PRODUCTO.txt` (su primera línea es el encabezado).
+2. Correr `python Ads/_TOOLS/gen_manual.py [producto_key] --escribir`.
+3. Si imprime `BLOQUEADO — falta:`, NO escribir el manual a mano ni completar lo que falta: devolver al
+   orquestador cada línea tal cual (cada una nombra el dato y su dueño) y detener. Se vuelve a correr
+   cuando el dueño produjo el dato.
 
-> **FASE 1 — este archivo NO se escribe con Write: lo GENERA el código.** Orden obligatorio:
-> 1. Escribir `2_DATA_PRODUCTO.txt` (su primera línea es el encabezado único).
-> 2. Correr `python Ads/_TOOLS/gen_manual.py [producto_key] --escribir`.
-> 3. Si imprime `BLOQUEADO — falta:`, NO escribir el manual a mano ni completar lo que
->    falta: devolver al orquestador cada línea tal cual (cada una nombra el dato y su
->    dueño) y detener. Se vuelve a correr cuando el dueño produjo el dato.
->
-> El generador copia el plan de `_PLAN.json`, el flujo de `gen_flujo_bot.py` con
-> `BLOQUES_BOT.md`, y los prompts de `INFOGRAFIAS.md`. Un error en el manual se corrige en
-> el dato de origen y se regenera; nunca editando `1_HACER_MANUAL.txt`.
->
-> La plantilla de abajo aplica solo al cierre de FASE 2, hasta que el generador cubra esa fase.
+El generador arma el manual desde `_PLAN.json`, el flujo de `gen_flujo_bot.py` con `BLOQUES_BOT.md` y
+las infografías de `INFOGRAFIAS.md`. Un error en el manual se corrige en el dato de origen y se
+regenera; nunca editando `1_HACER_MANUAL.txt`.
 
-> **REGLA DE CONTENIDO LIMPIO (obligatoria):** ARCHIVO 1 lleva el contenido FINAL completo — nunca truncado, nunca "ver historial" ni "ver 2_DATA" como sustituto de contenido real. Pero NUNCA lleva doctrina: cero citas de clase/mentor ("Clase 19, Joaquín", "Clase 22", etc.), cero explicación de POR QUÉ existe una regla, cero razonamiento de ranking o metodología. Esas dos cosas (la cita y el porqué) van únicamente en ARCHIVO 2. La prueba: si el operador tuviera que preguntar "¿y esto para qué me sirve?", esa frase no debería estar en ARCHIVO 1. Al copiar texto de `DOCTRINA/PLANTILLAS_ADS.md` o `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`, omitir cualquier paréntesis o nota que cite una clase/mentor — pegar solo la instrucción ya resuelta con sus `[VARIABLES]` reemplazadas.
+**FASE 2 — mientras el generador no cubra esta fase**, el manual se escribe con Write. Lleva el
+contenido FINAL completo, verbatim y en orden de ejecución, **sin doctrina**: cero citas de clase o
+mentor y cero explicación de por qué existe una regla (eso va en `2_DATA_PRODUCTO.txt`).
 
 ```
 ═══ [encabezado único] ═══
-HACER MANUAL — [PRODUCTO] | FASE [1/2] | [fecha]
-FanPage de pauta: [página + identidad]   ·   Edad de segmentación: [XX+]
+HACER MANUAL — [PRODUCTO] | FASE 2 | [fecha]
+Ángulo ganador: [angulo_key]   ·   FanPage: [página]   ·   Banda de edad: [del avatar]
 
-── A. CHECKLIST RÁPIDO (lo que tenés que hacer) ──
-[ ] Generar las imágenes-ad de los ángulos vírgenes (prompts en sección C)
-[ ] Generar las 3 infografías del bot (prompts en sección C)
-[ ] Configurar el flujo en LucidBot (sección E, campo por campo)
-[ ] Subir creativos a Meta y revisar los anuncios (sección B + D)
-[ ] Programar/activar la campaña a las 4 AM (sección F)
+── A. CHECKLIST ──
+[ ] Renderizar los 10 conceptos que falten (filas PENDIENTE_GENERAR de _DIM_CREATIVOS.csv)
+[ ] Cargar en LucidBot los dos flujos del A/B (sección D) y verificar el ruteo por Post ID de cada gemelo
+[ ] Subir los 10 creativos con la MISMA numeración en A/B y en C
+[ ] Armar las 3 campañas (sección C) y programar la hora de lanzamiento del día siguiente
 
-── B. CREATIVOS POR CONJUNTO (qué va en cada uno) ──
-[tabla: conjunto | formato (VIDEO archivo / IMAGEN) | archivo o prompt | precio en ad sí/no]
+── B. LOS 10 CONCEPTOS ──
+[tabla: n.º | concepto_key + variante | archivo en Ads/MEDIA_[PRODUCTO]/ | campaña y conjunto donde va]
 
-── C. PROMPTS DE IMAGEN (copiar y pegar en Gemini/DALL·E) ──
-[Prompts completos de los ads-imagen de ángulos vírgenes + los 3 prompts de infografías del bot, con todas las variables reemplazadas]
+── C. LAS 3 CAMPAÑAS ──
+[A 1-1-5 · B 1-1-5 · C 1-2-5 en OTRA cuenta — nombres exactos de `etapa-6`, presupuestos de
+ `_PARAMETROS_PUBLICACION.csv`, el copy único en los 10 anuncios]
 
-── D. COPIES POR CONJUNTO (copiar y pegar en Meta) ──
-[Los 6 copies COMPLETOS verbatim: 3 textos + 3 títulos + descripción por ángulo, con marca de "lleva precio: sí/no"]
+── D. FLUJO LUCIDBOT ──
+El flujo no se copia acá: `python Ads/_TOOLS/gen_flujo_bot.py [producto_key] --copy` imprime lo que
+se pega (brazo A). El brazo B dedicado va completo debajo, tal como lo entregó `etapa-5`.
+Si el producto se importó de Superbodega, LucidBot queda DESACTIVADO: activarlo es manual.
 
-── E. FLUJO LUCIDBOT ──
-El flujo NO se copia verbatim acá: está DECLARADO y se genera.
-  → `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]` escribe `PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`
-  → `python Ads/_TOOLS/gen_flujo_bot.py [producto_key] --copy` imprime solo lo que se pega
-Lo que sí se guarda en esta sección: los BLOQUES DE JUICIO que produjo `etapa-5` y que el
-generador no inventa — los 4 campos del catálogo, los testimonios con sus textos redactados,
-el guión del audio, el texto de M2 con su audio testimonio, y las FAQ.
-⚠️ VERIFICAR ANTES DE LANZAR: si el producto se importó de Superbodega, LucidBot queda
-DESACTIVADO y el mensaje inicial no sale. Activarlo es manual.
-
-── F. CHECKLIST ANTES DE LANZAR ──
-[Pasos finales: revisar 12 anuncios, precio donde corresponde, programar 4 AM, etc.]
+── E. ANTES DE LANZAR ──
+[revisión de los anuncios, precio donde corresponde, eventos a registrar con registrar_evento.py]
 ```
 
 ---
 
 ## ARCHIVO 2 — `2_DATA_PRODUCTO.txt` (memoria del producto)
 
-> Liviano. Es lo que se carga en la próxima sesión para retomar sin reinvestigar y lo que usa la fase de análisis/optimización (ETAPA-7) para saber qué ángulo ganó, a quién iba y cómo.
+Liviano: es lo que se carga para retomar sin reinvestigar y lo que usan las etapas de análisis
+(`etapa-7`, `etapa-11`) para saber qué ángulo ganó, a quién iba y cómo. Los títulos de sección van
+**exactos** (el código y los chequeos los buscan por nombre).
 
 ```
 ═══ [encabezado único] ═══
 PRODUCTO: [nombre completo]
 FECHA_PROCESADO: [fecha]
-VERSION: [v1 / v2 ... — subir +1 en cada rerun, nunca dejar dos versiones vivas]
-COSTO_PROVEEDOR_Q: [valor]
+VERSION: [v1, v2… — +1 en cada rerun, nunca dos versiones vivas]
+COSTO_PROVEEDOR_Q: [valor, en la moneda del mercado]
 DOSIS / PRESENTACIÓN: [valor único]
 PROVEEDORES_DROPY: [N]   ·   ANUNCIANTES_AD_LIBRARY: [N o "no provisto"]
-VALIDACION_PRODUCTO: [score + color + notas de ETAPA-PRODUCTO]
+VALIDACION_PRODUCTO: [score + color + notas de etapa-producto]
 FANPAGE: [Formato A: página asignada + page_id | Formato B: página nueva sugerida + identidad + edad]
-MCP_ACCOUNT_ID: [..] · MCP_PAGE_ID: [..] · MCP_PIXEL_ID: [..] · TASA_MONEDA_POR_USD: [tasa del producto en `_DIM_PRODUCTOS.csv`]
+MCP_ACCOUNT_ID: [..] · MCP_PAGE_ID: [..] · MCP_PIXEL_ID: [..] · TASA_MONEDA_POR_USD: [la tasa de `_DIM_PRODUCTOS.csv`]
 
 ━━━ COSTEO (ETAPA-1) ━━━
-P1u / P2u / P3u / CPA_OBJETIVO / CPA_BREAK_EVEN  (valores exactos) + márgenes por opción.
+P1u / P2u / P3u / CPA_OBJETIVO / CPA_BREAK_EVEN (valores exactos de costear.py) + márgenes por opción.
 
 ━━━ COMPONENTES (ETAPA-1B) ━━━
 [ingredientes con mecanismo + diferenciador clave]
 
 ━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) ━━━
-[por ángulo: nombre, creativo asignado (VIDEO archivo / IMAGEN), dolor, AVATAR (a quién va), nivel de conciencia, saturación, promesa]
+[por ángulo: nombre, origen (voz_id o video), dolor, avatar, nivel de conciencia, saturación, promesa]
 
 ━━━ ÁNGULOS DESCUBIERTOS (ETAPA-1B) ━━━
 [lista]
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META (insumo de ETAPA-7 / optimización)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-> Cada fila usa el NOMBRE EXACTO del conjunto en Meta (de ETAPA-6) como llave. Cuando se lean
-> los datos de Meta (CPC, CPA, CPM, conversaciones, impresiones, clics), se unen por ese nombre
-> para evaluar cada ángulo contra su CPA objetivo y break even.
-
-CAMPAÑA: [nombre]   ·   FASE: [1 testeo / 2 escalado]   ·   LANZAMIENTO: [fecha 4 AM]
-CPA_OBJETIVO: [moneda local][..]   ·   CPA_BREAK_EVEN: [moneda local][..]   ·   PRESUPUESTO/CONJUNTO: $2.99 ETAPA 1 → $5.98 ETAPA 2 [MCP] / Q54 legacy
-PD (Presupuesto de Decisión) = 1× Break Even = Q[..]   ·   se alcanza en ~[..] días a $2.99
-
+━━━ REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META ━━━
+Cada fila usa el NOMBRE EXACTO del conjunto en Meta (de etapa-6) como llave: los datos de Meta y de
+LucidSales se unen por ese nombre.
+CAMPAÑA: [nombre] · FASE: [1 / 2 / 4] · LANZAMIENTO: [fecha y hora]
+CPA_OBJETIVO: [moneda][..] · CPA_BREAK_EVEN: [moneda][..] · PRESUPUESTO/CONJUNTO: [de _PARAMETROS_PUBLICACION.csv]
 | NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo/Prompt | Precio ad | Avatar | Hook | Estado |
-|---|---|---|---|---|---|---|---|---|
-[una fila por conjunto]
-
-RESULTADOS_TESTEO: [vacío en FASE 1. Al optimizar, pegar por conjunto:
-  conjunto | clics | impresiones | conversaciones | ventas | CPC | CPM | CPA_real | %conv_clic | %conv_impresion ]
-ANGULO_GANADOR: [vacío hasta que el operador lo confirme con métricas]
-  → al confirmarlo, anotar: conjunto ganador + avatar al que iba + por qué ganó (qué se hizo distinto).
+ANGULO_GANADOR: [vacío hasta que flujo.py lo confirme por venta; entonces: conjunto, avatar y por qué ganó]
+CONCEPTO_GANADOR: [vacío hasta la replicación 2 de 2 de FASE 2]
 
 ━━━ DATOS DE SATURACIÓN ━━━
-[resultado de ETAPA-RESEARCH Módulo B si se corrió, o "no corrido"]
+[resultado de la búsqueda del operador, o "no provisto"]
 
 ━━━ PROPUESTAS DE VALOR (ETAPA-5 Paso 1) ━━━
-[una propuesta por línea, TRANSCRITA VERBATIM del <<BLOQUE:propuestas_valor>> que entregó
-etapa-5 — invariante 3, nunca resumir ni reescribir. Fórmula: problema concreto del avatar ->
-qué hace el producto -> resultado. Sin esta sección, gen_flujo_bot.py queda PENDIENTE (aviso,
-no bloquea); con ella, cuenta 6-8 y bloquea el render con menos de 6.]
-
-━━━ PRÓXIMA SESIÓN ━━━
-- Optimización (ETAPA-7): leer este REGISTRO + datos de Meta, comparar CPA real vs objetivo/break even, indicar qué escalar y qué apagar.
-- FASE 2: si hay ángulo ganador confirmado + métricas → ir directo a ETAPA-3.
-- Nuevo testeo del mismo producto: saltar ETAPA-1 y ETAPA-1B (ya están), ir a ETAPA-0 con nuevos videos.
-- El detalle copiable (copies, prompts, bot) está en 1_HACER_MANUAL.txt.
+[una propuesta por línea, TRANSCRITA VERBATIM del <<BLOQUE:propuestas_valor>> de etapa-5 —
+invariante 3: ni resumir ni reescribir. gen_flujo_bot.py las cuenta y bloquea con menos de 6.]
 ```
 
 ---
 
 ## ARCHIVO 3 — `3_CAMPAÑA_META.txt` (solo si hubo MCP)
 
-> Llave técnica. No se abre a mano; lo usa el sistema para leer métricas por MCP (ETAPA-7).
+Llave técnica: no se abre a mano.
 
 ```
 ═══ [encabezado único] ═══
-MAPA DE CAMPAÑA — [PRODUCTO] | FASE [1/2]
+MAPA DE CAMPAÑA — [PRODUCTO] | FASE [1/2/4]
 Cuenta: [nombre · act_id · moneda]   ·   Negocio: [nombre · id]
 FanPage: [nombre · page_id]   ·   WhatsApp: [número]
-Campaña: [nombre · campaign_id]   ·   Objetivo: Tráfico → CONVERSATIONS → WHATSAPP
-Presupuesto: ABO $2.99/conjunto (ETAPA 1 · $5.98 en ETAPA 2)   ·   Segmentación: [BANDA del avatar del ángulo] Advantage+ OFF   ·   4 AM [fecha]
-
-[Por conjunto: NOMBRE · ad_set_id · formato · creative_id/video_id · precio · los 2 ad_id]
-Lectura ETAPA-7: CPA real = (amount_spent ÷ actions:omni_purchase) × TASA, vs CPA Base / Break Even.
-
-RESULTADOS_TESTEO: [vacío — lo lee ETAPA-7]
-ANGULO_GANADOR: [pendiente]
+Campaña: [nombre · campaign_id]   ·   Objetivo y presupuesto: [los de _PARAMETROS_PUBLICACION.csv]
+Segmentación: [banda del avatar de cada ángulo] Advantage+ OFF   ·   Lanzamiento: [fecha y hora]
+[Por conjunto: NOMBRE · ad_set_id · formato · creative_id · precio · ad_id]
 ```
 
 ---
 
-## SALIDA 4 — anexar a `PRODUCTOS/_DIM_CONJUNTOS.csv` (obligatorio, portafolio-wide)
+## ARCHIVO 4 — `4_PLAN_ESCALADO.txt` (cierre de FASE 4)
 
-> **Qué es:** la tabla de DIMENSIONES que traduce el nombre crudo del conjunto en Meta a la semántica del sistema (ángulo, avatar, dolor, formato, tipo de hook, nivel de conciencia, rol de embudo, precio). Sin ella, las tablas de hechos son solo plata y clics: no se puede responder **qué ángulo / qué avatar / qué hook / qué formato funciona**, ni dentro de un producto ni entre productos.
->
-> **Por qué es un CSV del portafolio y no una tabla dentro de `2_DATA_PRODUCTO.txt`:** el REGISTRO DE CONJUNTOS del `2_DATA` sigue existiendo (es la vista legible por producto), pero está en prosa y con nombres abreviados — no se puede agregar por él. El CSV es la capa máquina, con la MISMA llave que usan `_FACT_VENTAS.csv` y `_FACT_ENTREGA.csv`.
+Plantilla en `DOCTRINA/ESCALADO/08_PLAN_ENTREGABLE.md` §7, con el **BANCO DE MICROÁNGULOS** de
+`etapa-3` y los copies por microángulo de `etapa-4`. `flujo.py` verifica en `F4.plan` que el archivo
+contenga «MICROÁNGULO».
 
-**Regla dura de la llave:** `conjunto_meta` debe ser el **nombre EXACTO tal como quedó en Meta**, con sufijos incluidos (`- Copia`, `- Copia 2`), copiado de `3_CAMPAÑA_META.txt` o del export. **No normalizar, no abreviar, no corregir mayúsculas.** Si el mismo ángulo corre bajo dos nombres distintos, van **dos filas con el mismo `angulo_key`** — así se agregan juntas sin tocar Meta.
+---
+
+## SALIDA 5 — `PRODUCTOS/_DIM_CONJUNTOS.csv` (obligatorio, portafolio-wide)
+
+La tabla de DIMENSIONES que traduce el nombre del conjunto en Meta a la semántica del sistema (ángulo,
+avatar, formato, hook, nivel de conciencia, rol de embudo, precio). Se edita con un escritor CSV real
+(invariante 11), con la misma llave que `_FACT_VENTAS.csv` y `_FACT_ENTREGA.csv`.
+
+**Llave:** `conjunto_meta` = el **nombre EXACTO como quedó en Meta**, sufijos incluidos. No
+normalizar, no abreviar, no corregir mayúsculas. El mismo ángulo con dos nombres = dos filas con el
+mismo `angulo_key`. Llave única: (`producto_key`, `conjunto_meta`); un rerun actualiza, no duplica.
 
 Columnas (orden fijo):
 ```
@@ -203,117 +189,91 @@ nivel_conciencia, rol_embudo, rol_embudo_origen,
 lleva_precio, creativo_id, origen_angulo, estado, verificado_en_csv, fecha_alta, notas
 ```
 
-Vocabularios controlados (no inventar valores nuevos sin anotarlo):
+Vocabularios cerrados (`DOCTRINA/DATA_PLAYBOOK.md` §1 y `_DIM_VOCABULARIO.csv`):
 - `avatar_genero`: MUJER · HOMBRE · MIXTO
-- `avatar_edad`: 25-35 · 35-45 · 45-60 · 60+ — el bucket DOMINANTE, no el rango completo
-- `emocion_dominante`: MIEDO_FUTURO · VERGUENZA · RESIGNACION · FRUSTRACION_MEDICA · DESCONFIANZA · AGOTAMIENTO · CURIOSIDAD
-  Los declara ETAPA-2 en su ficha de ángulo. **Nunca dejarlos vacíos**: si un ángulo viejo no los
-  trae, se rellenan leyendo su ficha en `2_DATA_PRODUCTO.txt`. Son lo que convierte la investigación
-  de avatar en algo agregable — sin ellos el avatar muere en el copy y no se contrasta nunca contra
-  quién compró. Con Andromeda pesan más que antes: el creativo es el targeting, así que el avatar
-  solo se puede medir por lo que el creativo dice y retrata.
-- `fase`: FASE1 · FASE2 · FASE4 · EXPLORACION (F4.exploracion, P12 — DOCTRINA/FLUJO.json). FASE 3
-  (optimización de flujo) no publica estructura nueva en Meta, así que no aporta valor propio acá.
+- `avatar_edad`: 25-35 · 35-45 · 45-60 · 60+ (el bucket dominante)
+- `emocion_dominante`: MIEDO_FUTURO · VERGUENZA · RESIGNACION · FRUSTRACION_MEDICA · DESCONFIANZA ·
+  AGOTAMIENTO · CURIOSIDAD — los declara `etapa-2`; **nunca vacíos**
+- `fase`: FASE1 · FASE2 · FASE4 · EXPLORACION (FASE 3 no publica estructura nueva)
 - `formato`: VIDEO · IMAGEN
-- `tipo_hook`: MIEDO · EMOCIONAL · TESTIMONIO · EDUCACIONAL · MECANISMO · OFERTA · PRUEBA_SOCIAL · ANTI_FALSIFICACION
-- `nivel_conciencia`: 1 · 2 · 3 (admite 3a/3b/1-2 como en ETAPA-2). Vacío si no se declaró — **no inventarlo**.
-- `rol_embudo`: TOFU · MOFU · BOFU — `rol_embudo_origen` = **DECLARADO** (lo dijo ETAPA-3/ETAPA-4) o **DERIVADO_NC** (se dedujo del nivel de conciencia con la regla de abajo).
-- `lleva_precio`: SI · NO → refleja lo **EJECUTADO** en Meta, no lo planificado. Si difieren, se anota la discrepancia en `notas`.
-- `origen_angulo`: TRANSCRIPCION (ETAPA-0) · VOZ_REAL (ETAPA-1B) · PROBLEMA_OCULTO · GANADOR_PRIOR · MICROANGULO_3B
+- `tipo_hook`: MIEDO · EMOCIONAL · DOLOR · TESTIMONIO · EDUCACIONAL · MECANISMO · OFERTA · PRUEBA_SOCIAL · ANTI_FALSIFICACION
+- `nivel_conciencia`: **1 · 2 · 3A · 3B**. `3` a secas es ambiguo y bloquea `gen_flujo_bot.py`. Vacío
+  si no se declaró — **no inventarlo**.
+- `rol_embudo`: TOFU · MOFU · BOFU, con `rol_embudo_origen` = DECLARADO (lo dijo una etapa) o
+  DERIVADO_NC (regla: NC 1 → TOFU · NC 2 → TOFU · NC 3A/3B → MOFU · `tipo_hook`=OFERTA → BOFU)
+- `lleva_precio`: SI · NO — lo **EJECUTADO** en Meta; si difiere de lo planificado, se anota en `notas`
+- `origen_angulo`: TRANSCRIPCION (etapa-0) · VOZ_REAL (etapa-1b) · PROBLEMA_OCULTO · GANADOR_PRIOR ·
+  MICROANGULO_3B (microángulo de `etapa-3`; el nombre es histórico)
 - `estado`: ACTIVO · PODADO · PAUSADO · NUNCA_ENTREGO
-- `verificado_en_csv`: SI si el `conjunto_meta` ya aparece en `_FACT_VENTAS.csv` o `_FACT_ENTREGA.csv` (llave confirmada contra data real) · NO si todavía es solo diseño.
-
-Regla de derivación NC → rol de embudo (doctrina del sistema: el rol se mapea al nivel de conciencia de ETAPA-2):
-`NC 1 → TOFU · NC 2 → TOFU · NC 3 → MOFU · tipo_hook=OFERTA → BOFU`. Se marca `rol_embudo_origen=DERIVADO_NC` para no leerlo como dato duro.
+- `verificado_en_csv`: SI si el `conjunto_meta` ya aparece en `_FACT_VENTAS.csv` o
+  `_FACT_ENTREGA.csv` · NO si todavía es solo diseño
 
 **Cuándo se escribe:**
-- **FASE 1**, al cerrar: una fila por cada uno de los 6 conjuntos (`verificado_en_csv=NO` hasta que gasten).
-- **FASE 2**, al cerrar: una fila por microángulo, con `rol_embudo` DECLARADO por ETAPA-3.
-- **Al leer data** (ETAPA-7): si aparece un `conjunto_meta` que no está acá, se **anexa la fila** y se marca `verificado_en_csv=SI`. Nunca se descarta una fila de datos por falta de dimensión.
-- Un rerun **actualiza** las filas del producto; no duplica. Llave única = (`producto_key`, `conjunto_meta`).
+- **FASE 1:** una fila por cada uno de los 6 conjuntos (`verificado_en_csv=NO` hasta que gasten).
+- **FASE 2:** una fila por cada **conjunto real** de las 3 campañas, con el `angulo_key` del ganador
+  (constante en toda la fase). El concepto de cada anuncio va en `_DIM_CREATIVOS.csv`, no acá.
+- **FASE 4:** una fila por conjunto de la expansión horizontal (`origen_angulo` = MICROANGULO_3B cuando
+  el conjunto lleva el copy de un microángulo).
+- Un conjunto que aparece en la data y falta acá se **anexa**: nunca se descarta una fila de datos por
+  falta de dimensión.
 
 ---
 
-## SALIDA 5 — fila en `PRODUCTOS/_DIM_PRODUCTOS.csv` (obligatorio al dar de alta un producto)
+## SALIDA 6 — `PRODUCTOS/_DIM_PRODUCTOS.csv`: esta etapa NUNCA lo escribe
 
-> **Qué es:** la tabla que traduce el `producto_key` a **dónde vive el producto en el disco**. El mismo producto tiene nombres distintos en las 4 ubicaciones (NUSAVA llegó a tener 5 grafías). Sin esta fila, ningún agente puede encontrar sus videos, transcripciones ni creativos sin adivinar.
+Es espejo de Postgres: cualquier cambio por fuera de sus escritores frena la corrida nocturna entera
+(guardia de drift). La fila la crea `Ads/_TOOLS/alta_producto.py`, con las 5 columnas de carpeta
+(`slug_carpeta`, `carpeta_videos`, `carpeta_transcripciones`, `carpeta_media`, `carpetas_extra`)
+derivadas de la clave. Esta etapa solo **verifica** que apunten a carpetas reales; las que todavía no
+existen se reportan como pendiente.
 
-La fila la crea `Ads/_TOOLS/alta_producto.py`: escribe Postgres y regenera este CSV, que es su espejo, con las 5 columnas de carpeta ya derivadas de la clave. Esta etapa solo VERIFICA que apunten a las carpetas reales:
-
-| Columna | Qué apunta | Ejemplo (NUSAVA) |
-|---|---|---|
-| `slug_carpeta` | `PRODUCTOS/[X]/` | `NusavaB12` |
-| `carpeta_videos` | `Ads/1.1 Videos/[X]/` | `NUSAVA B12` |
-| `carpeta_transcripciones` | `Ads/1.2 Transcripcion videos/[X]/` | `NUSAVA B12` |
-| `carpeta_media` | `Ads/[X]/` (lavados + ads-imagen) | `MEDIA_GTR7_NUSAVAB12` |
-| `carpetas_extra` | sub-lotes / casos especiales | `NUSABA B12 ARDOR = sub-lote sin transcripciones` |
-
-**Reglas:**
-- Se escriben con el **nombre EXACTO de la carpeta en disco**, tal como está — no se normaliza ni se corrige. La tabla se adapta al disco, no al revés.
-- **Las carpetas NO se renombran para emparejarlas**: los `1_HACER_MANUAL.txt` referencian rutas `MEDIA_*` que el operador usa para ejecutar.
-- Si el producto todavía no tiene alguna carpeta (ej. sin videos), se reporta como pendiente; la columna no se toca.
-- ⚠️ **Esta etapa NUNCA escribe `_DIM_PRODUCTOS.csv`**, ni a mano ni con un escritor CSV: es espejo de Postgres y cualquier cambio por fuera de sus escritores frena la corrida nocturna entera (guardia de drift). Cada dato tiene su escritor: `alta_producto.py` (la fila), `cargar_cuenta.py`, `cargar_page_id.py`, `cargar_moneda_cuenta.py`, `cambiar_costo.py`, `cargar_costeo.py` (cifras de costeo, después de etapa-1), `cargar_estado.py`. Si un dato no tiene escritor o el escritor se niega, se reporta como pendiente nombrando la columna y el error; nunca se escribe por otro camino.
+Cada dato tiene su escritor: `alta_producto.py` (la fila) · `cargar_cuenta.py` · `cargar_page_id.py` ·
+`cargar_moneda_cuenta.py` · `cambiar_costo.py` · `cargar_costeo.py` (cifras de costeo, después de
+`etapa-1`) · `cargar_estado.py`. Si un dato no tiene escritor o el escritor se niega, se reporta como
+pendiente nombrando la columna y el error; nunca se escribe por otro camino. Las carpetas del disco
+**no se renombran** para emparejarlas.
 
 ---
 
-## GATE DE RECONCILIACIÓN (obligatorio antes de cerrar)
-> El producto NO está "completo" hasta pasar este gate. Garantiza que el sistema entregue **siempre lo mismo**, sin que un rerun deje datos que se contradicen entre archivos.
+## GATE DE RECONCILIACIÓN (obligatorio antes de cerrar — invariante 9)
 
-### PASO 1 — Correr el verificador (obligatorio, no negociable)
+### PASO 1 — El verificador
 
 ```bash
 python Ads/_TOOLS/verificar_producto.py [PRODUCTO_KEY]
 ```
 
-**Exit 0 = pasa. Exit 1 = NO cerrar.** Si sale 1, corregir cada discrepancia que reporte y volver
-a correrlo hasta que salga 0. Nunca declarar el producto completo "asumiendo" que reconcilia: eso
-es exactamente lo que este gate existe para impedir.
-
-El script compara el encabezado de `1_`/`2_`/`3_` entre sí y contra `_DIM_PRODUCTOS.csv`, y verifica
-que el producto tenga fila en `_PORTAFOLIO.txt`. Las líneas `[!]` son avisos (un `page_id PENDIENTE`
-no bloquea el guardado, pero sí impide pautar); las `[x]` son discrepancias y bloquean.
-
-> Caso real del tipo de deriva silenciosa que a ojo no se ve: un producto falló el gate porque su
-> `3_CAMPAÑA_META.txt` quedó en una versión vieja con el `campaign_id` desactualizado mientras
-> `1_` y `2_` ya estaban en la versión nueva, y porque los tres encabezados seguían citando un
-> costo que `_DIM_PRODUCTOS.csv` ya había corregido.
+**Exit 0 = pasa. Exit 1 = NO cerrar:** corregir cada discrepancia y volver a correrlo hasta que salga
+0. Compara el encabezado de `1_`/`2_`/`3_` entre sí y contra `_DIM_PRODUCTOS.csv`, y que el producto
+tenga fila en `_PORTAFOLIO.txt`. Las líneas `[!]` son avisos (un `page_id PENDIENTE` no bloquea el
+guardado, pero impide pautar); las `[x]` son discrepancias y bloquean.
 
 ### PASO 2 — Lo que el script todavía no cubre
 
-Verificar a mano que estos valores son **idénticos** donde aparezcan (cuerpo de los archivos, no
-solo el encabezado) y coinciden con los INPUTS CONGELADOS del orquestador:
+Verificar que estos valores son **idénticos** donde aparezcan (en el cuerpo, no solo en el
+encabezado) y coinciden con los inputs congelados del orquestador:
 
 | # | Valor | Debe coincidir en |
 |---|---|---|
-| 1 | COSTO_PROVEEDOR_Q | encabezado · 2_DATA (costeo) |
-| 2 | PRECIOS P1u/P2u/P3u | 2_DATA (costeo) · 1_HACER_MANUAL (copies + bot) · 3_CAMPAÑA |
-| 3 | DOSIS / presentación | encabezado · 2_DATA (componentes) · 1_HACER_MANUAL (infografías + bot) |
-| 4 | PROVEEDORES_DROPY | 2_DATA (un solo número) |
-| 5 | FANPAGE (Formato A/B + page_id) | los 3 archivos |
-| 6 | campaign_id + 6 ad_set_id | 3_CAMPAÑA · REGISTRO DE CONJUNTOS de 2_DATA |
-| 7 | NOMBRE_CONJUNTO de cada conjunto (exacto) | REGISTRO DE CONJUNTOS de 2_DATA · `_DIM_CONJUNTOS.csv` · 3_CAMPAÑA |
-| 8 | ángulo · formato · precio_en_ad de cada conjunto | 2_DATA · `_DIM_CONJUNTOS.csv` (mismo valor, sin excepción) |
-| 9 | PROPUESTAS DE VALOR (si etapa-5 las entregó) | 2_DATA sección "PROPUESTAS DE VALOR" transcribe **verbatim** el `<<BLOQUE:propuestas_valor>>` que entregó `etapa-5` — mismo texto, mismo orden, sin resumir (invariante 3) |
+| 1 | costo del proveedor | encabezado · costeo de `2_DATA` |
+| 2 | precios P1u/P2u/P3u | costeo de `2_DATA` · copies del manual · `_DIM_PRECIOS.csv` |
+| 3 | dosis / presentación | encabezado · componentes de `2_DATA` · infografías y bot |
+| 4 | proveedores | `2_DATA` (un solo número) |
+| 5 | FanPage (Formato A/B + page_id) | los 3 archivos |
+| 6 | `campaign_id` y `ad_set_id` | `3_CAMPAÑA` · REGISTRO DE CONJUNTOS de `2_DATA` |
+| 7 | nombre exacto de cada conjunto | REGISTRO DE CONJUNTOS · `_DIM_CONJUNTOS.csv` · `3_CAMPAÑA` |
+| 8 | ángulo · formato · precio en el ad de cada conjunto | `2_DATA` · `_DIM_CONJUNTOS.csv` |
+| 9 | propuestas de valor | `2_DATA` transcribe verbatim el `<<BLOQUE:propuestas_valor>>` de `etapa-5` |
 
-**Si hay UNA discrepancia → corregir y reescribir; NO entregar.** Reportar al operador qué se reconcilió. Si el operador cambió un input (costo, dosis, página) después de una corrida previa, eso es un **rerun**: subir VERSION y rehacer los archivos completos.
+**Una discrepancia → corregir y reescribir; no entregar.** Si el operador cambió un input (costo,
+dosis, página) después de una corrida, es un **rerun**: sube `VERSION` y se rehacen los archivos
+completos.
 
 ---
 
 ## Confirmación al operador
-Después de los Write, confirmar:
-"✓ Guardé el producto en disco en `PRODUCTOS/[NOMBRE]/`:
- - `1_HACER_MANUAL.txt` — todo lo que ejecutás a mano (copies, prompts, flujo LucidBot, checklist).
- - `2_DATA_PRODUCTO.txt` — la memoria del producto (ángulos, avatares, costeo, registro de conjuntos).
- - `3_CAMPAÑA_META.txt` — los IDs reales de Meta (si hubo MCP).
-La próxima sesión, adjuntá `2_DATA_PRODUCTO.txt` y retomamos sin reprocesar; `1_HACER_MANUAL.txt` lo abrís para configurar Meta/LucidBot. Gate de reconciliación: OK."
 
-## Entrega de ejecución en el chat (default — preferencia del operador)
-Después de escribir los archivos y confirmar el gate, el orquestador NO se queda solo en el TXT: entrega el contenido de EJECUCIÓN de `1_HACER_MANUAL.txt` **en el chat, parte por parte y verbatim (nunca truncado)**, en el orden de ejecución (prompts de imagen → flujo LucidBot campo por campo → subir media → conjuntos + copies + precio → duplicar→WhatsApp + activar 4 AM), esperando el "listo/check" del operador entre cada parte. Solo lo copiable (sin doctrina ni data de análisis — eso vive en `2_DATA_PRODUCTO.txt`). Los prompts de imagen se entregan como el Prompt Maestro YA RELLENADO, un bloque por creativo. El TXT queda como respaldo; el chat es la vía de ejecución del operador.
-
-## Cómo se usa en sesión futura
-1. El operador adjunta `2_DATA_PRODUCTO.txt`.
-2. Leer el análisis + el REGISTRO DE CONJUNTOS.
-3. Tres caminos:
-   - **Optimización (ETAPA-7):** traer datos de Meta (o leerlos por MCP), unir por NOMBRE_CONJUNTO, comparar CPA real vs objetivo/break even y % de conversación, e indicar qué escalar y qué apagar.
-   - **FASE 2:** ángulo ganador confirmado + métricas → ETAPA-3.
-   - **Nuevo testeo:** saltar ETAPA-1/1B → ETAPA-0 con nuevos videos.
+"✓ Guardé el producto en `PRODUCTOS/[carpeta]/`: `1_HACER_MANUAL.txt` (lo que ejecutás a mano),
+`2_DATA_PRODUCTO.txt` (la memoria del producto) y `3_CAMPAÑA_META.txt` (si hubo MCP). Gate de
+reconciliación: OK." — más los pendientes, cada uno con su dato y su dueño. La entrega por partes en
+el chat la hace el orquestador (skill de la fase).
