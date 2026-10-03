@@ -6,155 +6,75 @@ tools: Read, Write, Glob, Grep, Bash, Task
 
 # CICLO DE OPTIMIZACIÓN — post-lanzamiento
 
-No va en la secuencia de FASE 1/2/3. Es lo que corre **después de lanzar**, todos los días.
+Corre **después de lanzar**, todos los días. Audita **cada producto con `estado=VIVO`** de
+`PRODUCTOS/_DIM_PRODUCTOS.csv` (el registro maestro: estado, fase, cuenta, página, tasa, CPA base,
+break-even, `clave_campana`, `campaign_id`), no uno solo.
 
-**Recorre `PRODUCTOS/_DIM_PRODUCTOS.csv` y audita CADA producto en `estado=VIVO`**, no uno solo.
-
-> **La cadena determinística ya corre sola (P3 T6):** `Ads/_TOOLS/ciclo_diario.py`, disparado por
-> Task Scheduler, encadena la recolección de datos con `ciclo_hoy.py` y `gen_dashboard.py`, y deja
-> una fila en `PRODUCTOS/_CORRIDAS_DIARIAS.csv` (VERDE/AMARILLO/ROJO) que cuenta para T7. Correrlo
-> a mano sigue funcionando igual, para depurar o para una corrida fuera de horario:
+La recolección de datos ya corre sola: Task Scheduler dispara `Ads/_TOOLS/ciclo_diario.py`, que baja
+e ingiere ventas y gasto, corre `ciclo_hoy.py` y regenera el dashboard, y deja una fila en
+`PRODUCTOS/_CORRIDAS_DIARIAS.csv` (VERDE / AMARILLO / ROJO). Para correrlo a mano:
 
 ```bash
 python Ads/_TOOLS/ciclo_hoy.py        # motor (dbt + decidir) → flujo.py --todo → lanzador → app
 ```
 
-El ciclo son tres nodos de `DOCTRINA/FLUJO.json`, por producto lanzado: `ciclo.datos` (ventas con
-rezago ≤ `rezago_max_dias`), `ciclo.motor` (`_DECISIONES.json` generado hoy) y `ciclo.ordenes`
-(cada PAUSAR/ESCALAR/RENOVAR ejecutada **con confirmación del operador** y registrada en
-`_EVENTOS.csv`; sin evento, el nodo no se cierra). `flujo.py --todo` dice cuál de los tres falta.
-
-El evento se registra con `python Ads/_TOOLS/registrar_evento.py`, nunca a mano. Todo ESCALAR
-ejecutado deja un `CAMBIO_PRESUPUESTO` con `--antes` y `--despues` (USD/día): sin esas filas la
-elasticidad del CPA al surfing no se puede medir.
-
-> El registro maestro es ese CSV: trae estado, fase, cuenta, página, tasa, CPA base, break-even,
-> `clave_campana` y `campaign_id` en una fila por producto. `_PORTAFOLIO.txt` quedó como bitácora
-> legible (historial de decisiones y snapshots fechados) — no se lee para ejecutar.
+El ciclo son tres nodos de `DOCTRINA/FLUJO.json` por producto lanzado: `ciclo.datos` (ventas con
+rezago ≤ `rezago_max_dias`), `ciclo.motor` (`_DECISIONES.json` de hoy) y `ciclo.ordenes` (cada
+PAUSAR / ESCALAR / RENOVAR ejecutada **con confirmación del operador** y registrada en
+`_EVENTOS.csv`; sin evento el nodo no se cierra). `python Ads/_TOOLS/flujo.py --todo` dice cuál falta.
 
 ---
 
-## Tabla determinística — SIEMPRE primero (`decidir.py`)
-
-Antes de invocar a `etapa-7`, correr el motor y pegar su salida de consola completa arriba del
-informe del día:
+## 1. Tabla determinística — SIEMPRE primero
 
 ```bash
-python Ads/_TOOLS/decidir.py   # sin --json: imprime la tabla (imprimir_consola)
+python Ads/_TOOLS/decidir.py   # sin --json: imprime la tabla
 ```
 
-Esa tabla trae, por producto, `Break-Even`, `CPA Objetivo` y por celda: estado (`PAUSAR` /
-`RENOVAR` / `ESCALAR` / `SEGUIR_MIDIENDO`), ventas, mensajes, gasto Q, CPA real, IC 95 % y
-`accion_sugerida` — son los números de `_DECISIONES.json` sin pasar por ningún LLM. Hasta que exista
-el dashboard P4, esta consola es el único lugar determinístico donde el operador ve las cifras
-crudas (fuera de `_DECISIONES.json` mismo). `etapa-7` cita esta tabla, nunca la recalcula ni la
-reimprime en prosa.
+Se pega completa arriba del informe del día. Trae por producto el Break-Even y el CPA Objetivo, y por
+celda el estado, ventas, mensajes, gasto, CPA real, IC 95 % y `accion_sugerida`. Ninguna etapa la
+recalcula ni la reescribe en prosa.
 
----
+## 2. `etapa-7` — monitor y decisión de escalado
 
-## `etapa-7` — Monitor Y decisión de escalado (fusionadas)
+Sobre esa tabla, por cada producto VIVO con campaña activa hace 24 h o más: integridad, confusión,
+sangrado, lectura por dimensión y plan de palancas. Solo lee y recomienda. Todo su método está en
+`.claude/agents/ETAPA-7.md`.
 
-Cada mañana (campaña ≥24h activa) o como tarea programada, sobre la tabla de arriba: lee los
-conjuntos, verifica integridad y variables de confusión, mide el sangrado, rankea por dimensión, y
-ordena las palancas de escalado — optimizar flujo hacia el ganador, **surfing +20% diario**,
-duplicar conjunto, **Post ID**, **multicuenta**, **multifanpage**, subir precio, y —variable #1—
-**renovar/replicar los creativos del ganador entendiendo POR QUÉ ganó** (brief para `etapa-4`, o
-citado de `etapa-10` si ya corrió). Solo lee y recomienda — nunca toca presupuestos/estados.
-**Escalado fuerte SOLO con CPA real confirmado.**
+## 3. `etapa-10` — lector concepto ↔ métrica
 
-- **Robustez de lectura:** no fijar el `campaign_id` a ciegas. El operador pausa/renombra/duplica
-  campañas (caso real: la campaña viva era un duplicado manual "…- Copia"). Debe **listar las
-  campañas de la cuenta y tomar la ACTIVE cuyo nombre contenga el producto**, y verificar gasto > 0.
-- **Sin CPA (tracking roto):** si `omni_purchase` sale "Not available", rankear PROVISIONAL por
-  eficiencia de conversación y NO declarar ganador oficial ni escalar fuerte.
-  `%conv/clic-enlace = conversaciones ÷ clics-en-enlace` (usar `actions:link_click`, NO `clicks`
-  totales).
-- La orden la ejecuta la sesión por MCP **con confirmación explícita del operador, orden por
-  orden**, y después se verifica contra Meta y se registra en `_EVENTOS.csv`.
+Después de `etapa-7`. Cruza el rendimiento de cada anuncio contra el blueprint que lo originó
+(`canonico_id`) y dice **por qué** ganó, con piso de evidencia. Su salida es el brief de `etapa-9`.
+`etapa-7` mueve dinero; `etapa-10` mueve el diseño.
 
-Detalle en `.claude/agents/ETAPA-7.md`; mapeo de campos en `DOCTRINA/MCP_PLAYBOOK.md` §6; reglas de data en
-`DOCTRINA/DATA_PLAYBOOK.md`.
+## 4. `etapa-9` — fábrica de conceptos (diaria, en paralelo)
 
----
+Produce **≥6 ejecuciones por día** desde los blueprints canónicos (el llenado lo hace la skill
+`generar-conceptos`) y las registra en `_DIM_CREATIVOS.csv`. Antes de producir, audita los atascos:
+una pieza `GENERADO` con más de 7 días sin `ad_id` es una alerta (el cuello de botella medido es
+publicar, no producir).
 
-## `etapa-9` — Fábrica de conceptos (DIARIA)
+`etapa-11` (optimizador de flujo) **no es diaria**: corre al confirmarse el ángulo ganador por venta
+(lo dicta `flujo.py`, nodo `F2.etapa-11`).
 
-No espera a la FASE 2: produce **≥6 ejecuciones/día** desde los 22 blueprints canónicos, balanceadas
-por rol de embudo, y las registra en `_DIM_CREATIVOS.csv` con su ciclo de vida.
+## 5. Órdenes
 
-**Audita los atascos antes de producir** — una pieza `GENERADO` que lleva más de 7 días sin `ad_id`
-es una alerta, porque el cuello de botella medido no fue producir sino **publicar** (caso real: 7 de
-8 PNG generados llevaban 26 días en disco sin pautarse).
+Cada orden del motor se ejecuta por MCP **con confirmación explícita del operador, orden por orden**
+(o la hace el operador a mano), se verifica contra Meta y se registra con
+`python Ads/_TOOLS/registrar_evento.py`, nunca a mano. Todo ESCALAR ejecutado deja un
+`CAMBIO_PRESUPUESTO` con `--antes` y `--despues` en USD/día.
 
-El llenado lo hace la skill `generar-conceptos`.
+## 6. Mercado CO
 
----
+Las ventas de la tienda de Colombia entran solas de noche si existe `~/.config/lucidsales/co.env`
+(pasos opcionales de `ciclo_diario.py`). El gasto de un producto en una cuenta EXTERNA (sin MCP ni
+token) no: el operador entrega el export de Ads Manager y se ingiere con `ingerir_meta.py --producto`
+(skill `recopilar-lucidsales`, sección «MERCADO CO (MANUAL)»). Después, `decidir.py` por producto
+igual que el resto.
 
-## `etapa-10` — Lector concepto ↔ métrica
+## 7. Dónde se escribe
 
-Tras `etapa-7`. Cruza el rendimiento de cada anuncio contra los atributos del blueprint JSON que lo
-originó (`canonico_id`) y responde **por qué** ganó: descomposición por atributo con **piso de
-evidencia** (≥5 ventas y ≥2 creativos por nivel, sin solape de intervalos de Poisson), cada **rol de
-embudo con su propia métrica** (TOFU por costo de conversación · MOFU por %conv/clic · BOFU por
-cierre) y la matriz **ángulo × concepto** que dice si un concepto viaja o es de contexto. Su salida
-es el **brief de producción** de `etapa-9`. Solo lectura.
-
-> **`etapa-7` mueve dinero; `etapa-10` mueve el diseño.** No se pisan.
-
----
-
-## `etapa-11` — Optimizador de flujo
-
-No es diaria: corre **al confirmar el ángulo ganador por VENTA**, entre FASE 1 y FASE 2 (ver la
-skill `fase-2-conceptos`, PASO 0).
-
-> **`etapa-10` mira el pre-clic (por qué hacen clic); `etapa-11` mira el post-clic (por qué,
-> habiendo escrito, no compran).**
-
----
-
-## Mercado CO (manual)
-
-Un producto de Colombia (`mercado=CO`, cuenta EXTERNA) no entra por la cadena nocturna: el operador
-entrega el export de Ads Manager y el de LucidSales, se ingieren con `--producto` (ver skill
-`recopilar-lucidsales`, sección «Mercado CO (manual)») y el ciclo sigue igual: `decidir.py` por producto.
-
-## Los cuatro archivos de apoyo del ciclo
-
-- 📖 **`DOCTRINA/ESCALADO_PLAYBOOK.md`** — el **QUÉ**: fases y timing, señales, palancas en orden, cómo
-  replicar el creativo ganador, contingencia, árbol de decisión y los umbrales de métricas (§8).
-- 🗓️ **`DOCTRINA/CALENDARIO_ESCALADO.md`** — el **CUÁNDO**: ritmo día-a-día con gates (Ventana 0 lanzamiento ·
-  Días 1-2 DATA no ventas · Día 3 GATE #1 podar · Días 4-6 GATE #2 FASE 2 del ganador · Día 7+
-  escalado). Incluye la **REGLA DEL MULTI-GANADOR**: el bot paraguas es de TESTEO; a escala cada
-  ángulo ganador corre su **FASE 2 dedicada**.
-- 🧮 **`DOCTRINA/DATA_PLAYBOOK.md`** — el **CON QUÉ**: los CSV, cómo leerlos sin sacar cifras falsas, fórmula
-  de ganancia, break-even y el dashboard.
-- 🗂️ **`PRODUCTOS/_DIM_PRODUCTOS.csv`** — registro maestro de TODOS los productos trackeados.
-  `_PORTAFOLIO.txt` es su bitácora en prosa: se consulta a mano, no se recorre.
-
----
-
-## EL DASHBOARD SE REGENERA SOLO
-
-Ya no hay que acordarse: un hook `PostToolUse` valida todo CSV escrito en `PRODUCTOS/` y regenera el
-dashboard (774 ms). Cubre las escrituras con Write/Edit y, por barrido de `mtime`, también las que
-hace cualquier script — `ingerir_lucidsales.py` incluido.
-
-Si el CSV queda malformado el hook **bloquea** con el detalle del error: no se puede dejar una fila
-corrupta como pasó en un caso real. Para forzarlo a mano:
-
-```bash
-python Ads/_TOOLS/gen_dashboard.py
-```
-
----
-
-## Dónde se escribe
-
-Los informes por producto van a `PRODUCTOS/[NOMBRE]/`. **Todo informe fechado** (auditorías
-nocturnas, planes multi-producto) va a **`PRODUCTOS/_AUDITORIAS/`**, nunca suelto en la raíz. Son
-registro histórico legible: **prohibido reconstruir métricas desde ahí** (eso sale del CSV).
-
-**Retención: automática.** Un hook `SessionStart` corre
-`Ads/_TOOLS/archivar_auditorias.py` y colapsa a subcarpeta mensual (`2026-07/`) todo lo anterior a
-30 días. **Nada se borra**, solo se mueve. Ya no depende de que alguien lo recuerde.
+Los informes por producto van a `PRODUCTOS/[carpeta]/`; **todo informe fechado** va a
+`PRODUCTOS/_AUDITORIAS/`. Son registro histórico: **prohibido sacar métricas de ahí** (salen del CSV).
+El dashboard se regenera solo cuando cambia un CSV de `PRODUCTOS/`; a mano:
+`python Ads/_TOOLS/gen_dashboard.py`.
