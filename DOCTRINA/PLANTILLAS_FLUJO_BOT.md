@@ -3,51 +3,44 @@
 > **Dueño único del TEXTO del flujo LucidBot.** Acá vive el layout completo: lo que es literal, lo
 > que es variable y lo que es instrucción. Lo renderiza `Ads/_TOOLS/gen_flujo_bot.py` leyendo
 > `PRODUCTOS/_DIM_FLUJO_BOT.csv`, `PRODUCTOS/_DIM_MERCADOS.csv` y `PRODUCTOS/_DIM_PRECIOS.csv`, y
-> deja el resultado en `PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`.
->
-> **Estructura base:** el flujo de CLEARSTEM — el mejor cierre y el mejor CPA del portafolio
-> (12.8 % acumulado · 7.3 jul → 13.3 ago → **17.3 sep** · CPA Q42.9 contra BE Q105.9).
-> **Doctrina:** las dos clases de agosto de Calet (16-ago y 22-ago), que son las más recientes
-> sobre flujo y derogan cualquier versión anterior en lo que toquen (§0).
+> deja el resultado en `PRODUCTOS/[PK]/FLUJO_LUCIDBOT.md`. La estructura base es el flujo del
+> producto con mejor cierre y mejor CPA del portafolio; la doctrina, las clases de flujo de agosto
+> (16-ago y 22-ago), que derogan cualquier versión anterior en lo que toquen (§0).
 
 ```bash
-python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM          # renderiza el flujo del producto
-python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM --copy   # solo lo que se pega en Lucid
-python Ads/_TOOLS/gen_flujo_bot.py --validar          # gate de todo el portafolio
+python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM          # renderiza y ESCRIBE el flujo del producto
+python Ads/_TOOLS/gen_flujo_bot.py CLEARSTEM --copy   # solo imprime lo que se pega en Lucid
+python Ads/_TOOLS/gen_flujo_bot.py --validar          # gate de todo el portafolio, no escribe
 ```
 
 ---
 
 ## 0. LO QUE MANDAN LAS DOS CLASES DE AGOSTO
 
-Son la fuente vigente.
-
 | # | Regla |
 |---|---|
 | **A** | **El flujo va ANTES que la estructura de campaña.** Ninguna estructura salva un flujo malo. |
 | **B** | **El objetivo de cierre es 15-20 %**, y la condición es ser rentable. |
 | **C** | **PROHIBIDO escalar con cierre bajo.** Escalar un cierre malo escala el error. |
-| **D** | **Lo que más mueve el cierre son las PROPUESTAS DE VALOR.** No los hooks, no los testimonios. Es la respuesta directa a *"¿en qué te centrás para optimizar el flujo?"*. |
+| **D** | **Lo que más mueve el cierre son las PROPUESTAS DE VALOR.** No los hooks, no los testimonios. |
 | **E** | **Cierre bajo → primer diagnóstico es CONGRUENCIA anuncio ↔ flujo**, no reescribir copy. |
-| **F** | **Un cambio de flujo se nota en HORAS, no en semanas.** Por eso se loguea el día que se aplica. |
+| **F** | **Un cambio de flujo se nota en HORAS, no en semanas.** Por eso se registra el día que se aplica. |
 | **G** | **La investigación de mercado previa evita rehacer el flujo.** |
 | **H** | **Ningún flujo está terminado.** Aun uno que vende puede subir. |
 | **I** | **La información del producto NO va en las reglas.** Las reglas son solo CONVERSACIONALES. |
 | **J** | **LucidBot queda DESACTIVADO al importar de Superbodega.** El flujo se ve cargado y el mensaje inicial no sale. Activarlo es manual. |
 | **K** | **Las FAQ crecen leyendo los chats reales.** No se quedan en el banco inicial. |
-| **L** | **El CIERRE no corona: corta.** Caso medido en clase — mismo creativo duplicado, mismo gasto: uno con 4 mensajes cerró 2 (50 %), el otro cerró al 25 % pero hizo 5 ventas. La orden fue diversificar conceptos del que **vendió más**, no del que cerró mejor. |
+| **L** | **El CIERRE no corona: corta.** Entre dos anuncios iguales, se diversifica desde el que **vendió más**, no desde el que cerró mejor con menos mensajes. |
 
-> **Choque registrado (C-06).** La regla **D** pide *"muchas propuestas de valor, atacando todo"*;
-> la Clase 22 pide no romper el **umbral cognitivo**. Se resuelve por ubicación: **dentro del bot
-> manda D** (es post-clic, Meta no lo lee, la prioridad es conversión y no hay límite de
-> compliance); **en el creativo del ad manda el umbral cognitivo**, y cuánta densidad soporta la
-> imagen es materia del test T01.
+> **Choque C-06.** La regla D pide muchas propuestas de valor; el umbral cognitivo pide no saturar.
+> Se resuelve por ubicación: **dentro del bot manda D** (post-clic, Meta no lo lee, la prioridad es
+> conversión); **en el creativo del ad manda el umbral cognitivo**.
 
 ---
 
 ## 1. LAS TRES NOTACIONES
 
-Son tres y no se parecen entre sí. Ésa es toda la regla: **una forma, un significado.**
+**Una forma, un significado:**
 
 | Notación | Qué es | Quién la resuelve | Si falta |
 |---|---|---|---|
@@ -55,15 +48,13 @@ Son tres y no se parecen entre sí. Ésa es toda la regla: **una forma, un signi
 | `<<BLOQUE:nombre>>` | Texto largo que exige juicio (audio, testimonios, FAQ) | `etapa-5` lo escribe | se marca pendiente |
 | `>> ` al inicio de la línea | **INSTRUCCIÓN.** Le habla al operador o a `etapa-5`. **NUNCA se pega en LucidBot** | nadie: es una nota | — |
 
-Todo lo demás es **literal**: se copia tal cual, para todos los productos, sin reescribir.
+Todo lo demás es **literal**: se copia tal cual, para todos los productos. `--copy` imprime el flujo
+sin ninguna línea `>>`: es lo que se pega, y nada más.
 
-`--copy` imprime el flujo sin ninguna línea `>>`: es lo que se pega, y nada más.
-
-**Dos formas que se parecen a un placeholder y no lo son — ninguna se toca:**
-- `{CIUDAD}`, `{NOMBRE}`, `{TOTAL}` (llave simple) son **variables de LucidBot en tiempo de
-  conversación**. Las resuelve el bot, no este sistema.
-- `[IMPORTANTE: …]` es la **sintaxis literal del campo «Reglas»** de LucidBot. Es contenido, no
-  un hueco por llenar.
+**Dos formas que parecen placeholder y no lo son — ninguna se toca:**
+- `{CIUDAD}`, `{NOMBRE}`, `{TOTAL}` (llave simple): **variables de LucidBot en la conversación**. Las
+  resuelve el bot.
+- `[IMPORTANTE: …]`: la **sintaxis literal del campo «Reglas»** de LucidBot. Es contenido.
 
 ---
 
@@ -83,7 +74,7 @@ Todo lo demás es **literal**: se copia tal cual, para todos los productos, sin 
 | `{{dias_entrega}}` | 2 a 5 días hábiles | 2 a 5 días hábiles |
 | `{{dias_espera_casa}}` | 5 | 5 |
 
-Todas bloquean.
+Todas bloquean. Los valores de la tabla son ilustrativos: manda el CSV.
 
 ### 2.2 De la tienda y el producto — `PRODUCTOS/_DIM_FLUJO_BOT.csv`
 
@@ -103,7 +94,7 @@ Todas bloquean.
 
 ### 2.3 Del ángulo — las escribe `etapa-5` en el CSV
 
-Son frases cortas. La oración que las envuelve es fija; la frase es el juicio.
+Frases cortas: la oración que las envuelve es fija; la frase es el juicio.
 
 | Variable | CLEARSTEM | TINNIDROP |
 |---|---|---|
@@ -119,46 +110,31 @@ Son frases cortas. La oración que las envuelve es fija; la frase es el juicio.
 
 ### 2.4 Los precios — derivados de `PRODUCTOS/_DIM_PRECIOS.csv`
 
-`{{escalera_ofertas}}` **no se tipea**: se construye con las filas `ACTIVO` del producto y su
-columna `etiqueta` (`1x` · `2x` · `3x` · `2X1` · `4X2`). Así la arquitectura de oferta sale del
-CSV, y los productos de uso único no reciben una escalera de tres unidades iguales que
-`ETAPA-1.md` Paso 2 prohíbe.
+`{{escalera_ofertas}}` **no se tipea**: se construye con las filas `ACTIVO` del producto y su columna
+`etiqueta` (`1x` · `2x` · `3x` · `2X1` · `4X2`). La arquitectura de oferta sale del CSV, y un producto
+de uso único no recibe una escalera de tres unidades iguales (`ETAPA-1.md` Paso 2).
 
 ### 2.5 La apertura por nivel de conciencia — derivada de `PRODUCTOS/_DIM_CONJUNTOS.csv`
 
-`{{apertura_nivel}}` **no se tipea ni lo escribe `etapa-5`**: `gen_flujo_bot.py` resuelve el
-`nivel_conciencia` del ángulo ganador (`{{angulo_nombre}}`) sobre las filas `ACTIVO` de
-`_DIM_CONJUNTOS.csv`, normalizado con los alias de `_DIM_VOCABULARIO.csv`, y arma la instrucción
-desde el dict `NIVELES_APERTURA` — su único dueño de texto (`ETAPA-5.md` Paso 3 solo apunta acá).
-Solo aplica al **flujo dedicado** (el producto ya tiene algún conjunto fuera de `FASE1`); en el
-bot paraguas de FASE 1 la línea se omite sin bloquear.
+`{{apertura_nivel}}` **no se tipea ni la escribe `etapa-5`**: `gen_flujo_bot.py` resuelve el
+`nivel_conciencia` del ángulo ganador en las filas `ACTIVO` de `_DIM_CONJUNTOS.csv` (con los alias de
+`_DIM_VOCABULARIO.csv`) y arma la instrucción desde su dict `NIVELES_APERTURA`, único dueño del texto.
+Solo aplica al **flujo dedicado**; en el bot paraguas de FASE 1 la línea se omite sin bloquear.
 
 | Nivel | Falta / ambiguo / en conflicto → | Se resuelve → |
 |---|---|---|
-| `1` / `2` / `3A` / `3B` | **BLOQUEA** con exit 1, nombrando qué se encontró en `_DIM_CONJUNTOS.csv` | instrucción `>>` antes de ELEMENTO 3, coherente con la apertura del anuncio |
+| `1` / `2` / `3A` / `3B` | **BLOQUEA** con exit 1, nombrando qué encontró en `_DIM_CONJUNTOS.csv` | instrucción `>>` antes de ELEMENTO 3, coherente con la apertura del anuncio |
 
-`3` a secas es alias sucio **AMBIGUO** (`_DIM_VOCABULARIO.csv` lo mapea a `REVISAR`: no distingue
-3A de 3B) y bloquea igual que si faltara.
+`3` a secas es **ambiguo** (no distingue 3A de 3B) y bloquea igual que si faltara.
 
-### 2.6 El mensaje prellenado del anuncio — derivada de `_DIM_MERCADOS.csv` + `_DIM_FLUJO_BOT.csv`
+### 2.6 El mensaje prellenado del anuncio — derivado de `_DIM_MERCADOS.csv` + `_DIM_FLUJO_BOT.csv`
 
-`{{mensaje_prellenado_anuncio}}` **no se tipea por producto**: es "Hola, quiero más información
-de {{producto_display}} con {{registro_sanitario}}", con `registro_sanitario` sacado de
-`_DIM_MERCADOS.csv` (GT → `registro MSPAS`, CO → `registro INVIMA` — el mercado es variable, no
-doctrina; ver `test_mercado_es_variable`). Falta el registro del mercado o `producto_display` →
-**BLOQUEA** como cualquier `{{variable}}`.
-
-Es el texto que el cliente manda al tocar el anuncio Click-to-WhatsApp. Va como instrucción `>>`
-(nunca como campo de LucidBot) porque **no se configura acá**: el MCP `ads_create_creative` no
-tiene campo para el mensaje prellenado, así que es un paso manual en Ads Manager (skill
-`publicar-meta` paso 3 / `DOCTRINA/MCP_PLAYBOOK.md`). El enrutamiento del chat al producto es por
-el ID del anuncio/conjunto (integración LucidBot), nunca por el texto del primer mensaje del
-cliente — por eso este texto puede declararse y cambiar libremente sin
-romper la atribución de ventas.
-
-No lleva el NÚMERO de registro (`[REG_MSPAS]`/`[REG_FDA]` en
-`DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md`), solo el nombre del organismo: la frase es corta y
-natural, como la escribiría el cliente.
+`{{mensaje_prellenado_anuncio}}` = "Hola, quiero más información de {{producto_display}} con
+{{registro_sanitario}}", con el organismo del mercado (`registro_sanitario` de `_DIM_MERCADOS.csv`,
+sin el número de registro). Es el texto que el cliente manda al tocar el anuncio Click-to-WhatsApp.
+Va como instrucción `>>` porque **se configura a mano en Ads Manager**: el MCP no tiene campo para
+él. El ruteo del chat al producto es por el ID del anuncio o conjunto, nunca por este texto: puede
+cambiar sin romper la atribución.
 
 ---
 
@@ -438,8 +414,8 @@ M3 — ~23 h · prompt de IA + texto fijo + botón "No me escribás más"
 
 ## 4. LOS BLOQUES DE JUICIO
 
-Los escribe `etapa-5`, que es su dueño y tiene las reglas de redacción completas. La plantilla
-solo declara dónde van y la regla dura que el gate sí puede verificar.
+Los escribe `etapa-5`, su dueño, con las reglas de redacción completas en `.claude/agents/ETAPA-5.md`.
+La plantilla solo declara dónde van y la regla dura que el gate sí puede verificar.
 
 | Bloque | Qué es | Regla que el gate verifica |
 |---|---|---|
@@ -448,10 +424,10 @@ solo declara dónde van y la regla dura que el gate sí puede verificar.
 | `audio` | Guión de 45-55 seg | **sin precio** · sin contraentrega · segunda persona |
 | `m2` | Texto del 2º mensaje de inactividad | dos niveles de oferta, nunca tres |
 | `faq_venta` · `faq_postventa` | Preguntas reales del avatar | lenguaje de apoyo |
-| `propuestas_valor` | Lista de trabajo (una por línea) para las infografías — nunca se pega | `etapa-guardar-producto` la persiste en `2_DATA_PRODUCTO.txt` (sección "PROPUESTAS DE VALOR"); `gen_flujo_bot.py` la lee sola y cuenta: menos de 6 **BLOQUEA**; sin la sección, PENDIENTE (aviso). `--propuestas ARCHIVO` override manual, opcional |
+| `propuestas_valor` | Lista de trabajo (una por línea) para las infografías — nunca se pega | vive en `2_DATA_PRODUCTO.txt`, sección «PROPUESTAS DE VALOR»; `gen_flujo_bot.py` la cuenta: menos de 6 **BLOQUEA**, sin la sección queda PENDIENTE. `--propuestas ARCHIVO` es un override manual de una corrida |
 
-**`fuente_testimonios`.** Material real (`REAL`) gana a material fabricado (`REDACTADO`). La
-columna existe para poder medir la diferencia.
+**`fuente_testimonios`:** material real (`REAL`) gana a material fabricado (`REDACTADO`); la columna
+existe para medir la diferencia.
 
 ---
 
@@ -484,21 +460,11 @@ _DIM_PRECIOS.csv  ┘    (esta plantilla)
 | Las plantillas visuales de las infografías | `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md` |
 | Los precios | `PRODUCTOS/_DIM_PRECIOS.csv` (manda Dropi) |
 | La política de garantía y las cifras de prueba social | el operador |
-| El diagnóstico de por qué no cierra y el brief de qué cambiar | `.claude/agents/ETAPA-11.md` |
+| El diagnóstico de por qué no cierra y el brief | `.claude/agents/ETAPA-11.md` |
+| Cuándo se diagnostica (FASE 2) y cuándo se reescribe (FASE 3) | `DOCTRINA/FLUJO.json` |
 | Las reglas congeladas | `Ads/_TOOLS/test_gen_flujo_bot.py` |
 
-**Todo cambio de flujo en un producto vivo se registra como `CAMBIO_BOT` el día que se aplica**,
-con `python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento CAMBIO_BOT --motivo
-"[qué cambió]" --fuente "[quién y cuándo]"` — nunca a mano en `PRODUCTOS/_EVENTOS.csv` (P3 T4: es
-un espejo regenerado desde Postgres, ver `db/escribir.py`). El efecto se nota en horas (regla F),
-así que sin la fecha del cambio no hay forma de saber qué lo movió.
-
-**Cuándo diagnostica y cuándo reescribe (mapea reglas A/E de arriba a `DOCTRINA/FLUJO.json`):**
-el DIAGNÓSTICO de congruencia (regla E) va en `F2.etapa-11`, en paralelo al testeo de conceptos,
-y registra `DIAGNOSTICO_CONGRUENCIA` — no
-bloquea F2. La REESCRITURA (`CAMBIO_BOT`) es su propia fase, **FASE 3** (nodo `F3.reescribir`):
-corre DESPUÉS del concepto ganador confirmado en 2 de 2 y ANTES de entrar a FASE 4 (regla A: el
-flujo va antes que la estructura, y F4 es CBO — la estructura más irreversible del sistema): gate
-en `F4.entrada`, que exige el `CAMBIO_BOT` (o un `EXCEPCION_CAMBIO_BOT` si el operador decide
-saltárselo) fechado DESPUÉS del ganador, nunca uno viejo que sea variable de confusión — MÁS el
-cierre medido después de ese cambio por encima de `cierre_min_escalar_pct`.
+**Todo cambio de flujo en un producto vivo se registra como `CAMBIO_BOT` el día que se aplica**
+(regla F), con `python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento CAMBIO_BOT
+--motivo "[qué cambió]" --fuente "[quién y cuándo]"` — nunca a mano en `_EVENTOS.csv` (espejo de
+Postgres). Sin la fecha del cambio no hay forma de saber qué movió el cierre.
