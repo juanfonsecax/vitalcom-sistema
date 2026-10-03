@@ -22,7 +22,7 @@ Que escribe
   1. costo_q en PRODUCTOS/_DIM_PRODUCTOS.csv.
   2. La linea «costo del pedido . Q<n>» del 2_DATA_PRODUCTO.txt que dejo alta_producto.py.
 Y NADA mas: ni precio_base_q, ni cpa_base_q, ni cpa_be_q, ni fila_costeo_q. Esas cifras las
-calcula costear.py y las escribe etapa-guardar-producto (un dato, un dueno). La pantalla de
+calcula costear.py y las escribe cargar_costeo.py (un dato, un dueno). La pantalla de
 costo las MUESTRA en vivo con `costear.py <costo> --json`, pero no las guarda.
 
 Uso

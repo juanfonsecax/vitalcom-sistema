@@ -9,6 +9,8 @@ No se ejecuta solo. La usan tres escritores, cada uno dueno de UN dato:
     cargar_page_id.py   page_id de la FanPage
     cargar_moneda_cuenta.py   moneda (de la cuenta publicitaria)
     cambiar_costo.py    costo_q, antes de cerrar el paquete de FASE 1
+    cargar_costeo.py    fila_costeo_q, precio_base_q, cpa_base_q, cpa_be_q (de costear.py)
+    cargar_estado.py    estado (NUEVO / VIVO / PAUSADO)
 
 Por que existe
 --------------
