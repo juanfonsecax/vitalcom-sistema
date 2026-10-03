@@ -6,108 +6,75 @@ tools: Read, Write, Glob, Grep, Bash, Task
 
 # FASE 3 — OPTIMIZACIÓN DE FLUJO LUCIDBOT
 
-## Qué hace esta fase
-
-**No mide ángulo ni concepto: ya están fijos por el ganador de FASE 2.** La única variable de esta
-fase es el flujo LucidBot — mismo presupuesto que ya venía corriendo, nada nuevo se publica en
-Meta. Doctrina de origen: Clase 22-ago (Calet) — `PALANCA_1` (propuestas de valor) y
-`DIAGNOSTICO_1` (congruencia anuncio↔flujo) de `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`;
-`VELOCIDAD_CAMBIO_DE_FLUJO`: los cambios se notan en HORAS, no semanas.
+**Ángulo y concepto ya están fijos por el ganador de FASE 2.** La única variable es el flujo
+LucidBot, con el mismo presupuesto que ya venía corriendo; nada nuevo se publica en Meta. Los cambios
+de flujo se notan en HORAS, no en semanas.
 
 ```
 1 ángulo + 1 concepto validados, MISMO presupuesto · la variable es el flujo LucidBot ← mide el CIERRE
 ```
 
-**Secuencia:** `etapa-11` (brief, si no está fresco) → `etapa-5` (reescribe) → operador aplica en
-LucidBot y registra `CAMBIO_BOT` → ciclo diario mide el cierre en horas.
+**Secuencia:** `etapa-11` (brief, si no está fresco) → `etapa-5` (reescribe) → el operador aplica en
+LucidBot y registra `CAMBIO_BOT` → el ciclo diario mide el cierre.
 
 ---
 
-## EL FLUJO DICTA
+## Entrada — el flujo dicta
 
-`python Ads/_TOOLS/flujo.py [producto_key]` mete al producto en FASE 3 con el mismo gate de entrada
-que hoy lleva a FASE 2→3, `F3.entrada` de `DOCTRINA/FLUJO.json`:
-
-- `concepto_2de2`: el mismo concepto es el mejor CPA (≥ `min_ventas_escalar` ventas) en **2 de 2**
-  campañas de conceptos. **No hace falta ningún `CAMBIO_BOT` para entrar a FASE 3** — la reescritura
-  es justamente lo que se hace DENTRO de esta fase, no un requisito previo.
+`python Ads/_TOOLS/flujo.py [producto_key]` mete al producto en FASE 3 con `F3.entrada` de
+`DOCTRINA/FLUJO.json`: **`concepto_2de2`**, el mismo concepto es el mejor CPA (≥ `min_ventas_escalar`
+ventas) en **2 de 2** campañas de conceptos. **No hace falta ningún `CAMBIO_BOT` para entrar**: la
+reescritura es lo que se hace dentro de esta fase.
 
 ---
 
 ## PASO 1 — `etapa-11` (brief, si no está fresco)
 
-`etapa-11` diagnostica el cierre y la congruencia anuncio↔bot en **FASE 2** (nodo `F2.etapa-11`,
-en paralelo al testeo de conceptos, registra `DIAGNOSTICO_CONGRUENCIA`, no bloquea nada). Si ese
-diagnóstico ya existe y sigue vigente para el concepto ganador, se reutiliza tal cual — nunca se
-repite el trabajo. Si no corrió todavía, o el diagnóstico es anterior a un cambio material (nuevo
-concepto ganador, nueva objeción detectada), corré `etapa-11` acá para tener el brief priorizado
-antes de reescribir.
-
-Output que consume el PASO 2: brief priorizado de qué cambiar en el flujo (`.claude/agents/ETAPA-11.md`).
-
----
+`etapa-11` ya diagnosticó el cierre y la congruencia anuncio ↔ bot en FASE 2 (nodo `F2.etapa-11`).
+Si ese diagnóstico sigue vigente para el concepto ganador, se reutiliza. Se vuelve a correr acá solo
+si no corrió, o si es anterior a un cambio material (nuevo concepto ganador, nueva objeción
+detectada). Su output es el brief priorizado de qué cambiar en el flujo.
 
 ## PASO 2 — `etapa-5` reescribe los BLOQUES DE JUICIO (nodo `F3.reescribir`)
 
-`etapa-5` redacta los 4 campos del catálogo, testimonios, audio, M2 y FAQ siguiendo:
-
-- **El texto fijo y el orden de los elementos**, que NO son suyos: los declara
-  `DOCTRINA/PLANTILLAS_FLUJO_BOT.md` (reglas A-G) y los renderiza `Ads/_TOOLS/gen_flujo_bot.py`.
-- **`PALANCA_1` (propuestas de valor)** y **`DIAGNOSTICO_1` (congruencia)** de
-  `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md` — la doctrina de la Clase 22-ago que sostiene esta fase.
-- El brief del PASO 1 (qué está fallando y por qué, ya priorizado).
-
-`etapa-5` llena las frases del ángulo en `PRODUCTOS/_DIM_FLUJO_BOT.csv` (notación `{{variable}}`);
-lo que va entre `<<BLOQUE:x>>` es lo que esta fase reescribe. Ninguna línea `>>` (instrucción) se
-pega en el flujo. **ETAPA-5 no se suaviza por compliance post-clic** (`CLAUDE.md` § ALCANCE DEL
-COMPLIANCE): dentro del bot la prioridad es conversión.
-
----
+`etapa-5` redacta los 4 campos del catálogo, testimonios, audio, M2 y FAQ a partir del brief,
+empezando por las propuestas de valor y la congruencia anuncio ↔ flujo. Llena las frases del ángulo
+en `PRODUCTOS/_DIM_FLUJO_BOT.csv` y los bloques en `PRODUCTOS/[carpeta]/BLOQUES_BOT.md`; el texto fijo
+y el orden del flujo no son suyos. Dentro del bot la prioridad es conversión: no se suaviza por
+compliance. Cerrar con `python Ads/_TOOLS/gen_flujo_bot.py [producto_key]`.
 
 ## PASO 3 — El operador aplica y registra `CAMBIO_BOT`
 
-El operador aplica el cambio directamente en LucidBot (fuera de este sistema) y lo anexa el
-**mismo día**, nunca después:
+El operador aplica el cambio en LucidBot y lo registra el **mismo día**:
 
-```
-python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento CAMBIO_BOT \
-  --motivo "[qué cambió]" --fuente "etapa-5 [fecha]"
+```bash
+python Ads/_TOOLS/registrar_evento.py --producto [PRODUCTO] --evento CAMBIO_BOT --motivo "[qué cambió]" --fuente "etapa-5 [fecha]"
 ```
 
-Si el operador decide explícitamente saltarse la reescritura, registra `EXCEPCION_CAMBIO_BOT` en
-su lugar — mismo efecto de fecha-ancla para el PASO 4, pero deja constancia de que fue una decisión
-deliberada, no un olvido. `_EVENTOS.csv` nunca se edita a mano (P3 T4): es un espejo regenerado
-desde Postgres.
-
----
+Si decide explícitamente saltarse la reescritura, registra `EXCEPCION_CAMBIO_BOT`: misma fecha-ancla
+para medir, y deja constancia de que fue una decisión. `_EVENTOS.csv` nunca se edita a mano.
 
 ## PASO 4 — Medir el cierre (nodo `F3.medir_cierre`)
 
-El cambio se nota en HORAS, no en días (`VELOCIDAD_CAMBIO_DE_FLUJO`). El ciclo diario
-(`Ads/_TOOLS/gen_decisiones.py`, corrido por la skill `ciclo-diario`) ya recalcula el cierre
-posterior al `CAMBIO_BOT`/`EXCEPCION_CAMBIO_BOT` en cada pasada — no hace falta un script aparte:
-
-- `min_mensajes_cierre` (`PRODUCTOS/_PARAMETROS_DECISION.csv`, hoy 30): mensajes mínimos recibidos
-  DESPUÉS del `CAMBIO_BOT` para que la medición sea evidencia, no ruido.
-- `cierre_min_escalar_pct` (`PRODUCTOS/_PARAMETROS_DECISION.csv`, hoy 10%, doctrina
-  `PROHIBIDO_ESCALAR_CIERRE_BAJO` en `DOCTRINA/GUIA_MADRE_PARAMETRIZADA.md`): el piso duro. Por
-  debajo, el producto se queda en FASE 3.
-- `cierre_meta_min_pct`/`cierre_meta_max_pct` (15-20%): benchmark de referencia, **nunca bloquea**.
+El ciclo diario (`Ads/_TOOLS/gen_decisiones.py`, dentro de `ciclo-diario`) recalcula en cada pasada
+el cierre posterior al `CAMBIO_BOT` / `EXCEPCION_CAMBIO_BOT`. Umbrales de `PRODUCTOS/_PARAMETROS_DECISION.csv`:
+- `min_mensajes_cierre`: mensajes mínimos recibidos después del cambio para que la medición cuente.
+- `cierre_min_escalar_pct`: el piso duro. Por debajo, el producto se queda en FASE 3.
+- `cierre_meta_min_pct` / `cierre_meta_max_pct`: benchmark de referencia, nunca bloquea.
 
 ---
 
-## SALIDA — Gate hacia FASE 4 (`F4.entrada`)
+## SALIDA — gate hacia FASE 4 (`F4.entrada`)
 
-`DOCTRINA/FLUJO.json` exige las tres condiciones juntas antes de comprar volumen:
-
-1. `concepto_2de2` (heredado de la entrada a esta fase).
+Las tres condiciones juntas:
+1. `concepto_2de2` (heredado de la entrada).
 2. `CAMBIO_BOT` (o `EXCEPCION_CAMBIO_BOT`) fechado DESPUÉS del concepto ganador.
-3. `cierre_post_cambio_bot`: ≥ `min_mensajes_cierre` mensajes y cierre ≥ `cierre_min_escalar_pct`,
-   medidos desde ese `CAMBIO_BOT`/`EXCEPCION_CAMBIO_BOT`.
+3. `cierre_post_cambio_bot`: al menos `min_mensajes_cierre` mensajes y cierre ≥ `cierre_min_escalar_pct`,
+   medidos desde ese cambio.
 
-**Por debajo del 10 % de cierre, el producto no avanza: vuelve al PASO 1 de esta fase para otra
-iteración del flujo.** El presupuesto se mantiene igual mientras tanto — `decidir.py` incluye F3 en
-`FASES_EN_TESTEO`, así que ninguna orden de escalado sale de acá.
+**Por debajo del piso de cierre, el producto no avanza: vuelve al PASO 1 para otra iteración del
+flujo**, con el mismo presupuesto (`decidir.py` cuenta F3 como fase en testeo: no sale ninguna orden
+de escalado).
 
 ---
 
@@ -119,5 +86,5 @@ FASE 3 EN CURSO ✓ / GANADA ✓
 □ Brief de etapa-11 vigente para el concepto ganador
 □ Bloques de juicio reescritos por etapa-5, aplicados en LucidBot
 □ CAMBIO_BOT (o EXCEPCION_CAMBIO_BOT) registrado en _EVENTOS.csv el mismo día
-□ Cierre medido ≥30 mensajes desde el CAMBIO_BOT — ≥10% para pasar a FASE 4, si no: otra iteración
+□ Cierre medido con min_mensajes_cierre desde el CAMBIO_BOT — ≥ cierre_min_escalar_pct para pasar a FASE 4; si no, otra iteración
 ```
