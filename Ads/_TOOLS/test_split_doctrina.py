@@ -38,7 +38,7 @@ os.chdir(BASE)
 # ESCALADO_SHA256 y PLANTILLAS_SHA256 re-congelados (multi-mercado D6): la doctrina de escalado y de
 # plantillas nombra la moneda y el mercado del producto en vez de asumir Guatemala.
 ESCALADO_SHA256 = "2786290f1e40621d515761947a8b4669b5792c71b7ab92f5e3ff7f6421036e90"
-PLANTILLAS_SHA256 = "790c8e0f5e67a1208911e563adf3df7c0806bd7200e447d98e2fdfd1707ccfa9"
+PLANTILLAS_SHA256 = "90e33b86027177b794c9b064a9bae40576d63bfb8db81ac16cf718667928ad4a"
 
 # Orden EXACTO de reconstruccion — el nombre de archivo ya lo fija (prefijo numerico),
 # pero se declara explicito para que un archivo nuevo mal nombrado no se cuele fuera de orden.

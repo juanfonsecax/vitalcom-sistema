@@ -1,28 +1,31 @@
-## DOCTRINA DE CREATIVOS (VIDEO vs IMAGEN) — regla de asignación
+## DOCTRINA DE CREATIVOS (VIDEO vs IMAGEN) — qué formato va en cada fase
 
-> **Este archivo es el dueño.** `etapa-2` y `etapa-6` la citan como "DOCTRINA DE CREATIVOS del sistema" y leen el detalle de acá.
->
-> "Sistemático" = regla de decisión consistente, **NO** formato uniforme. La asignación es determinista y se aplica igual a todo producto.
+> **Este archivo es el dueño** de la regla de formato del creativo de Meta por fase. La citan
+> `etapa-2` y `etapa-9`.
 
-**Los ~21 videos por producto cumplen DOS roles:**
-1. **DATA primero** — `etapa-0`/`1b`/`2`/`3a` los minan para ángulos, hooks, lenguaje UGC real, señales de compra y objeciones (incluso los videos NO usados como anuncio enriquecen el análisis).
-2. **ACTIVO segundo** — los mejores que calzan un ángulo se vuelven el creativo de ese conjunto (UGC validado y gratis; Andrómeda premia el watch-time).
+**En FASE 1 los videos de competencia son DATA, no creativo.** `etapa-0`, `etapa-1b` y `etapa-2` los
+minan para ángulos, hooks, lenguaje real, señales de compra y objeciones. El video que sostiene un
+ángulo queda registrado como su ORIGEN (`VIDEO_COMPETENCIA` en el `_PLAN.json`), nunca como su
+creativo.
 
-**REGLA DE ASIGNACIÓN (FASE 1, por ángulo) — determinista:**
-- Si un video seleccionado en `etapa-0` calza el ángulo → **creativo = VIDEO** (ese archivo).
-- Si es ángulo descubierto/virgen sin video → **creativo = IMAGEN** (Prompt Maestro de este archivo).
-- **NUNCA pausar ni descartar un ángulo por falta de video.** La imagen lo cubre y se lanza igual.
-- FASE 1 = **1 creativo por conjunto** (lean). No generar espejos.
+| Fase | Formato del creativo | Regla |
+|---|---|---|
+| **FASE 1 · ángulos** | **IMAGEN en los 6 conjuntos** | Prompt de Control (`04_PROMPT_CONTROL_FASE1.md`), concepto fijo `C2_BENEFICIOS` variante `ligera`, 1 creativo por conjunto. `gen_plan.py --validar` bloquea un plan de F1 con un conjunto que no sea IMAGEN. |
+| **FASE 2 · conceptos** | IMAGEN o VIDEO | El VIDEO es un concepto más dentro de la tanda de 10 de `etapa-9`. Un video de competencia se lava antes de subirlo (`Ads/_TOOLS/LAVADO.md`). |
+| **FASE 4 · escalado** | el creativo validado | Se replica por Post ID; no se produce un formato nuevo. |
 
-**ESCALADO (FASE 2):** el ángulo ganador se escala con **banco de imágenes anti-fatiga** (50+, los 15 estilos de este archivo) + se **replica el video ganador vía Post ID** (si ganó un video). Acá las imágenes dominan por volumen — no se hacen 50 videos. El banco se organiza además por **ROL DE EMBUDO (TOFU/MOFU/BOFU)** mapeado al nivel de conciencia de `etapa-2`, para alimentar el embudo interno de la CBO (ver `etapa-4` FASE 2 · `DOCTRINA/ESCALADO_PLAYBOOK.md` §4). **Solo FASE 2** — FASE 1 se mantiene lean.
+- **Ningún ángulo de FASE 1 se pausa ni se descarta por no tener video:** todos van en imagen.
+- **Confound de formato.** Cuando un video le gana a una imagen no se sabe si ganó el ángulo o el
+  formato. En FASE 1 no puede pasar (todo imagen). En FASE 2, `etapa-9` lo ataca bajando el contenido
+  del video ganador a piezas IMAGEN independientes.
+- **Variación agresiva o de choque** (`02_ENFOQUE_AGRESIVO.md`): no va en FASE 1, porque el concepto
+  es fijo en los 6 conjuntos y cambiar la ejecución visual junto con el ángulo vuelve el resultado no
+  atribuible. En FASE 2 puede ser uno de los 10 conceptos, con su compliance («ahuyenta / aleja»,
+  nunca «elimina / mata») y render propio.
 
-**Nota de lectura (confound de formato):** mezclar video e imagen entre conjuntos mete un sesgo leve (un video validado es un creativo más fuerte que una imagen fría). Mitigación: leer FASE 1 a nivel de **ÁNGULO** con las métricas de conversación (robustas al formato); si los 2 mejores ángulos quedan a <15% entre sí y difieren en formato, FASE 2 los controla probando el ganador en un solo formato. No sobre-optimizar esto en FASE 1.
-
-> **Este confound ya no puede ocurrir en F1** — los 6
-> conjuntos declaran `formato: IMAGEN` fijo (`gen_plan.py --validar` bloquea cualquier otro).
-
-**Variación AGRESIVA / de impacto** (palanca validada por data de competencia — ver "ENFOQUE AGRESIVO / DE IMPACTO" arriba): en categorías de plaga/miedo/higiene, el creativo de CHOQUE frena el scroll más fuerte que el limpio. Regla: **1-2 de los 6 conjuntos por lanzamiento** la usan (preferente el genérico/amplio + un ángulo de MIEDO), NUNCA los 6 — se mantiene el "1 creativo por conjunto" lean y la diversidad de conceptos y entrega. Guardarraíles: compliance "ahuyenta/aleja" (no "elimina/mata"), render propio y único (no copiar la huella de la competencia = baneo silencioso). `etapa-4` la aplica en su Tarea 2.
-
-**Dos sistemas de creativo distintos (no confundir):**
-- **(a) ADS DE TESTEO** = video lavado o imagen Prompt Maestro (este archivo) que van en la campaña de Meta.
-- **(b) INFOGRAFÍAS DEL BOT** = 3 imágenes informativas dentro del flujo de WhatsApp (Info 1 beneficios, Info 2 modo de uso/ingredientes, Info 3 confianza) + IMAGEN 4 anti-imitación opcional, todas de `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` y `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md`, sobre el motor compartido de `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`.
+**Dos sistemas de creativo, no confundir:**
+- **(a) ADS DE TESTEO:** la imagen (o el video lavado en FASE 2) que va en la campaña de Meta.
+- **(b) INFOGRAFÍAS DEL BOT:** las imágenes dentro del flujo de WhatsApp (IMAGEN 1 beneficios,
+  IMAGEN 2 modo de uso e ingredientes, IMAGEN 3 confianza, IMAGEN 4 anti-imitación opcional), de
+  `DOCTRINA/PLANTILLAS_INFOGRAFIAS_FLUJO.md` y `DOCTRINA/PLANTILLAS_INFOGRAFIAS_OPCIONALES.md`, sobre
+  el motor de `DOCTRINA/PLANTILLAS_INFOGRAFIAS.md`.
