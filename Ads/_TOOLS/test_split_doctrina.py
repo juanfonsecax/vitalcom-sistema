@@ -37,8 +37,8 @@ os.chdir(BASE)
 # optimizacion de flujo) a "FASE 4"/F4.* (escalado) — cambio de doctrina a proposito.
 # ESCALADO_SHA256 y PLANTILLAS_SHA256 re-congelados (multi-mercado D6): la doctrina de escalado y de
 # plantillas nombra la moneda y el mercado del producto en vez de asumir Guatemala.
-ESCALADO_SHA256 = "2786290f1e40621d515761947a8b4669b5792c71b7ab92f5e3ff7f6421036e90"
-PLANTILLAS_SHA256 = "90e33b86027177b794c9b064a9bae40576d63bfb8db81ac16cf718667928ad4a"
+ESCALADO_SHA256 = "965b8716d1cca0bd229046dd08d9c12a89265f74dd1e83d1ea68afbb9e044222"
+PLANTILLAS_SHA256 = "ec888fd02f1f38b773fb6ad9491ea1da12fb724d1b07c26d1153c47adf3fa53c"
 
 # Orden EXACTO de reconstruccion — el nombre de archivo ya lo fija (prefijo numerico),
 # pero se declara explicito para que un archivo nuevo mal nombrado no se cuele fuera de orden.
@@ -57,7 +57,8 @@ PLANTILLAS_ORDEN = [
 
 
 def leer(ruta):
-    return io.open(ruta, encoding="utf-8", newline="").read()
+    # Sin fin de linea: core.autocrlf decide CRLF o LF al sacar el archivo de git.
+    return io.open(ruta, encoding="utf-8", newline="").read().replace("\r\n", "\n")
 
 
 def reconstruir(carpeta, orden):
