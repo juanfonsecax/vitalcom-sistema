@@ -407,13 +407,13 @@ Máximo 3 conjuntos (idealmente 2) → precio P1u en copy + creativo visual
 Los demás conjuntos → sin precio en copy ni en creativo visual
 
 PRESUPUESTO
-$2.99 por conjunto (299¢ USD) × 6 conjuntos = $17.94 total/día  [ETAPA 1, días 0-3 · luego 3 sobrevivientes × $5.98] al inicio  ·  modo low-budget MCP (legacy Q54 si es a mano sin MCP)
+$2.99 por conjunto (299¢ USD) × 6 conjuntos = $17.94 total/día  [ETAPA 1, días 0-3 · luego 3 sobrevivientes × $5.98] al inicio
 
 ──────────────────────────────────────────────────────
 CONJUNTO 1 — [MICROÁNGULO 1 DEL ÁNGULO GANADOR]
 ──────────────────────────────────────────────────────
 Nombre del conjunto: [CUENTA]_[PRODUCTO]_[ÁNGULO_GANADOR]-MA1_R1
-Presupuesto inicial: $2.99 diario (299¢ USD · legacy Q54 si es a mano sin MCP)
+Presupuesto inicial: $2.99 diario (299¢ USD)
 Microángulo: [nombre del microángulo]
 Copy asignado: Copy [N] de ETAPA-4 (microángulo "[nombre]")
 Dolor específico cubierto: "[dolor del microángulo]"
@@ -476,7 +476,7 @@ más fanpages y más cuentas, manteniendo la prueba social acumulada.
 
 2) DUPLICADO HORIZONTAL:
    - Duplicar el conjunto ganador 3-5 veces dentro de la campaña (mismo creativo, mismo Post ID).
-   - Cada duplicado arranca con $2.99 (legacy Q54) y se sube máx +20% en la mañana (regla del 20% matutino).
+   - Cada duplicado arranca con $2.99 y se sube máx +20% en la mañana (regla del 20% matutino).
 
 3) MULTICUENTA / MULTI-FANPAGE:
    - Replicar el ganador en otras cuentas publicitarias y fanpages del mismo nicho para diluir
@@ -515,7 +515,7 @@ CHECKLIST ANTES DE LANZAR A LAS 4 AM
 □ Los conjuntos con precio lo llevan en copy Y en creativo visual; los sin precio, en ninguno
 □ Cada conjunto tiene 2 anuncios (mismo creativo duplicado dentro del conjunto)
 □ La campaña está programada para 4 AM mañana (no para hoy)
-□ El presupuesto de todos los conjuntos es igual ($2.99 en MCP · o Q54 si es a mano) — igual DENTRO de cada etapa
+□ El presupuesto de todos los conjuntos es igual ($2.99 en ETAPA 1 · $5.98 en ETAPA 2) — igual DENTRO de cada etapa
 □ El objetivo de campaña es Tráfico, destino WhatsApp, optimización "maximizar conversaciones" (nunca Interacción ni Ventas en el testeo — Mercy: Interacción nunca le funcionó)
 
 ══════════════════════════════════════════════════════
@@ -570,7 +570,7 @@ FIN ESTRUCTURA ESCALADO
 
 - **Escalado (FASE 4):** el 20 % matutino, el escalado horizontal, el Post ID, el límite por
   fanpage y los dos modos de escalado están en «Expansión horizontal», arriba. No se repiten acá.
-- **Regla de presupuesto igual:** Mismo monto en todos los conjuntos **dentro de cada etapa** ($2.99 en ETAPA 1 · $5.98 en ETAPA 2 · legacy Q54 si es a mano) para no sesgar qué ángulo o microángulo gana por más presupuesto. (Clase 6 — Mercy: mismo presupuesto por conjunto). La subida a $5.98 se aplica a los 3 sobrevivientes **a la vez**, nunca a uno solo — si no, el que sube gana por dinero, no por ángulo.
+- **Regla de presupuesto igual:** Mismo monto en todos los conjuntos **dentro de cada etapa** ($2.99 en ETAPA 1 · $5.98 en ETAPA 2, de `PRODUCTOS/_PARAMETROS_PUBLICACION.csv`) para no sesgar qué ángulo o microángulo gana por más presupuesto. (Clase 6 — Mercy: mismo presupuesto por conjunto). La subida a $5.98 se aplica a los 3 sobrevivientes **a la vez**, nunca a uno solo — si no, el que sube gana por dinero, no por ángulo.
 - **Regla ABO en testeo:** Usar ABO (presupuesto por conjunto) durante testeo para controlar individual. CBO solo cuando ya hay un ganador claro. (Clase 6 — presupuesto a nivel conjunto)
 - **Regla de coherencia ángulo-flujo en FASE 2 y 3:** Todos los conjuntos apuntan al mismo flujo LucidBot (el del ángulo ganador). Nunca mezclar conjuntos que apunten a flujos distintos. (Regla Mercy/Joaquín)
 - **Regla del ángulo único por conjunto (solo FASE 1):** En el testeo de ángulos, cada conjunto lleva un ángulo diferente y nunca se duplica el mismo copy/hook en dos conjuntos. (Clase 19 — Joaquín: conceptos/ángulos diferentes)
