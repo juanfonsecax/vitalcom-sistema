@@ -1,18 +1,16 @@
 ## ENFOQUE AGRESIVO / DE IMPACTO (variación de choque — validado por data de competencia)
 
 > **Qué es:** una VARIACIÓN del creativo que lidera con la AMENAZA en primer plano y choque visual crudo, en vez
-> del estilo limpio/aspiracional. Nace de la data real: en categorías de plaga, miedo, higiene y "problema
-> asqueroso", los anuncios más fuertes de la competencia (ej. la rata gigante amenazante de "¡AHUYENTA RATAS Y
-> RATONES!") rinden porque el **asco/miedo crudo detiene el scroll más rápido** que una escena bonita. Es la
-> misma lógica de Andrómeda ("se vende en <3 segundos") y del hook de dolor de Mercy, llevada al extremo visual.
+> del estilo limpio/aspiracional. En categorías de plaga, miedo, higiene y "problema asqueroso", los anuncios más
+> fuertes de la competencia rinden porque el **asco/miedo crudo detiene el scroll más rápido** que una escena
+> bonita. Es la lógica de Andrómeda ("se vende en <3 segundos") llevada al extremo visual.
 
 **Cuándo usarlo (NO en todos los ads):**
-- **1 a 2 de los 6 conjuntos por lanzamiento** llevan la variación agresiva — nunca los 6. El resto mantiene los
-  15 estilos limpios/diversos. Así se prueba el enfoque de choque SIN sacrificar la diversidad de conceptos que
-  premia Andrómeda ni la entrega (el texto grande + escena cargada sube el scroll-stop pero baja un poco la
-  entrega por la regla del <20% de texto).
-- Aplicar preferentemente al **ángulo amplio/genérico** (abre mercado, TOFU) y a un **ángulo de MIEDO**
-  (veneno/niños, incendio por cables, plaga que invade) — son los que mejor aguantan el tono de choque.
+- **Solo en FASE 2, como uno de los 10 conceptos de la tanda.** Nunca en FASE 1: ahí el concepto es fijo
+  (`C2_BENEFICIOS` variante `ligera`) en los 6 conjuntos, y cambiar la ejecución visual junto con el ángulo
+  vuelve el resultado no atribuible. El texto grande + escena cargada sube el scroll-stop pero baja un poco la
+  entrega por la regla del <20% de texto.
+- Encaja con un ángulo ganador de **MIEDO** o amplio (veneno/niños, incendio por cables, plaga que invade).
 - Encaja mejor en nichos de **plaga, higiene, miedo, salud urgente o "problema asqueroso"**; en nichos
   aspiracionales (belleza, fitness) usar con cuidado o no usar.
 
@@ -28,7 +26,7 @@
   imposibles. El choque es VISUAL, no una promesa médica exagerada.
 - **NO copiar la huella de la competencia:** jamás subir su imagen tal cual (Meta la detecta por huella de
   contenido y sube los CPM en silencio — baneo Andrómeda). El render es PROPIO, con tu marca, composición y
-  paleta distintas, y se **varía en cada copia** (cada uno de los ~2 agresivos único entre sí).
+  paleta distintas; si hay más de una pieza agresiva en la tanda, cada una es única.
 - **Calidad:** que no parezca IA (sin deformidades, texto legible). Choque ≠ mala calidad.
 - **Marca visible arriba** (misma jerarquía marca→hook→producto→beneficio→CTA que el resto).
 
@@ -36,4 +34,3 @@
 > u "oscuro de lujo/dramático" y cargar el hook de choque en el HOOK VISUAL.
 
 ---
-
