@@ -318,7 +318,7 @@ function vistaPortafolio(){
   h += '<div class="pie">Generado por <code>Ads/_TOOLS/gen_lanzador.py</code> · '+
     'los planes salen de <code>PRODUCTOS/[X]/_PLAN.json</code> · '+
     'costo por conversación del portafolio: $'+D.usd_por_conversacion_portafolio+
-    ' → presupuesto derivado con la fórmula de CALENDARIO_ESCALADO §1.5</div>';
+    ' · el presupuesto sale de PRODUCTOS/_PARAMETROS_PUBLICACION.csv</div>';
   return h;
 }
 
@@ -405,10 +405,10 @@ function gate(L, p){
     '</div>';
 
   h += card('De dónde sale el presupuesto',
-    '<p style="margin:0 0 10px">El presupuesto no es un número elegido: sale de la fórmula de '+
-    '<code style="font-family:var(--mono);font-size:12px">CALENDARIO_ESCALADO §1.5</code> — '+
-    '<b>7 × (costo por conversación observado)</b>, con piso $'+D.constantes.piso_presupuesto+
-    ' y techo $'+D.constantes.techo_presupuesto+'. Para este producto: <b>'+esc(pr.por_que)+'</b>.</p>'+
+    '<p style="margin:0 0 10px">El presupuesto no es un número elegido: sale de '+
+    '<code style="font-family:var(--mono);font-size:12px">PRODUCTOS/_PARAMETROS_PUBLICACION.csv</code> '+
+    '(el mismo monto en todos los conjuntos; al día ~3 los sobrevivientes suben al doble)'+
+    '. Para este producto: <b>'+esc(pr.por_que)+'</b>.</p>'+
     '<div class="aviso"><b>Qué significan los '+q(pr.dias_a_pd)+' días.</b> Antes de ese día, '+
     'un conjunto con <b>0 ventas no perdió</b> — todavía no gastó lo suficiente para que un cero '+
     'signifique algo. Apagarlo antes es tirar una moneda. Después de ese día, el cero sí es veredicto.</div>');

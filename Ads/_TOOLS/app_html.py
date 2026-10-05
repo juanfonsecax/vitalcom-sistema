@@ -1223,7 +1223,7 @@ def HTML(estado, lanzador, decisiones=None, blueprints=None):
                 <div class="stat-card"><div class="stat-val">$${{L.presupuesto.por_conjunto_usd.toFixed(2)}}</div><div class="stat-label">Presupuesto/Conjunto/Día</div></div>
                 <div class="stat-card"><div class="stat-val">${{L.presupuesto.dias_a_pd}} días</div><div class="stat-label">Margen a Decisión (PD)</div></div>
               </div>
-              <p style="color:var(--ink-2);font-size:13px;line-height:1.6;"><b>Regla de Oro de CALENDARIO_ESCALADO §1.5:</b> Presupuesto derivado de 7 × Costo por Conversación observado. Durante los primeros ${{L.presupuesto.dias_a_pd}} días un conjunto con 0 ventas NO se pausa: aún está dentro de su margen de prueba.</p>
+              <p style="color:var(--ink-2);font-size:13px;line-height:1.6;"><b>Presupuesto:</b> sale de PRODUCTOS/_PARAMETROS_PUBLICACION.csv, el mismo en todos los conjuntos. Durante los primeros ${{L.presupuesto.dias_a_pd}} días un conjunto con 0 ventas NO se pausa: aún está dentro de su margen de prueba.</p>
             </div>
           </div>
         `;
