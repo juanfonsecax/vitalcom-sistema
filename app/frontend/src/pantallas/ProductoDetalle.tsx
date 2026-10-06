@@ -26,6 +26,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { ClaveGlosario } from "../glosario";
 import { estadoEnPalabras, faseEnUnaFrase, pasoCorto, quienLoHace } from "../lenguaje";
+import { responsableEnPalabras } from "../componentes/situacion";
 import { Fase1 } from "./Fase1";
 import { Fase2 } from "./Fase2";
 import { Fase3 } from "./Fase3";
@@ -201,9 +202,10 @@ function Header({
 }) {
   const motor = (d.motor ?? null) as MotorInfo | null;
   const tituloDelPaso = tituloDelPasoActual(d.nodos, d.nodo_actual, d.como);
-  const quien = quienLoHace(d.ejecutor);
   const estado = estadoEnPalabras(d.estado);
-  const primerBloqueante = d.bloqueantes[0];
+  // El mismo pendiente que la línea de estado de la fase: un bloqueante duro o, si no hay, lo que
+  // falta para cumplir el gate. «Nada lo frena» solo cuando no queda nada pendiente.
+  const pendiente = d.bloqueantes[0] ?? d.falta_para_cumplir?.[0];
   const claveGlosarioFase = d.fase ? CLAVE_GLOSARIO_DE_FASE[d.fase] : undefined;
 
   return (
@@ -240,12 +242,17 @@ function Header({
             <p className="mt-1 text-sm">
               {tituloDelPaso} <Chip tono={estado.tono}>{estado.texto}</Chip>
             </p>
-            <p className="mt-1 text-xs text-muted-foreground">{quien}</p>
-            {d.ejecutor && <p className="text-xs text-muted-foreground">{d.ejecutor}</p>}
-            {d.nodo_actual && (
-              <p className="mt-1 font-mono text-[11px] text-muted-foreground" title="Id interno del paso en el grafo">
-                {d.nodo_actual}
-              </p>
+            <p className="mt-1 text-xs text-muted-foreground">Lo hace: {responsableEnPalabras(d.ejecutor)}</p>
+            {(d.ejecutor || d.nodo_actual) && (
+              <details className="mt-1 text-[11px] text-muted-foreground">
+                <summary className="cursor-pointer select-none underline-offset-2 hover:underline">Detalle técnico</summary>
+                {d.ejecutor && <p>{d.ejecutor}</p>}
+                {d.nodo_actual && (
+                  <p className="font-mono" title="Id interno del paso en el grafo">
+                    {d.nodo_actual}
+                  </p>
+                )}
+              </details>
             )}
           </div>
           <div>
@@ -253,11 +260,11 @@ function Header({
               Esto te bloquea
               <Info termino="bloqueante" />
             </p>
-            {primerBloqueante ? (
+            {pendiente ? (
               <p className="mt-1 text-sm">
-                {primerBloqueante.dato}
+                {pendiente.falta || pendiente.dato}
                 <span className="block text-xs text-muted-foreground">
-                  lo produce {primerBloqueante.dueno}
+                  lo hace {responsableEnPalabras(pendiente.dueno)}
                   {d.bloqueantes.length > 1 ? ` (+${d.bloqueantes.length - 1} más)` : ""}
                 </span>
               </p>

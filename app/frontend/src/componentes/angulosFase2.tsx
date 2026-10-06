@@ -10,6 +10,7 @@ import { Link } from "@tanstack/react-router";
 import type { AnguloFase2 } from "../api/cliente";
 import { Chip, Tarjeta, type Tono } from "./ui";
 import { formatearDinero, type PerfilMoneda } from "../dinero";
+import { tituloDeOrden, veredictoDeOrden } from "../lenguaje";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const TONO_VEREDICTO: Record<string, Tono> = {
@@ -67,6 +68,7 @@ function CifraBE({ rotulo, valor, semaforo, id }: { rotulo: string; valor: strin
 
 /** Costo por venta acumulado y de los últimos días contra el punto de equilibrio, y la orden del motor. */
 function CpaContraBE({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
+  const veredictoCorto = tituloDeOrden(a.estado, "", a.bloqueo_fase) || veredictoDeOrden(a.estado, a.bloqueo_fase);
   return (
     <div className="space-y-2" data-testid="cpa-vs-be">
       <div className="grid grid-cols-3 gap-2">
@@ -78,10 +80,17 @@ function CpaContraBE({ a, perfil }: { a: AnguloFase2; perfil: PerfilMoneda }) {
         </div>
       </div>
       {(a.orden_motor || a.accion_sugerida) && (
-        <p className="line-clamp-2 text-xs text-zinc-300" data-testid="orden-motor" title={a.orden_motor || a.accion_sugerida || ""}>
-          <span className="font-semibold text-zinc-200">Orden del motor: </span>
-          {a.orden_motor || a.accion_sugerida}
-        </p>
+        <div data-testid="orden-motor-bloque" className="space-y-1 text-xs text-zinc-300">
+          {/* Una línea de veredicto (misma lógica que las tarjetas de orden); el texto largo del motor, plegado. */}
+          {veredictoCorto && <p className="font-medium text-zinc-100">{veredictoCorto}</p>}
+          <details>
+            <summary className="cursor-pointer select-none text-zinc-400 underline-offset-2 hover:underline">¿Por qué?</summary>
+            <p className="mt-1" data-testid="orden-motor">
+              <span className="font-semibold text-zinc-200">Orden del motor: </span>
+              {a.orden_motor || a.accion_sugerida}
+            </p>
+          </details>
+        </div>
       )}
     </div>
   );

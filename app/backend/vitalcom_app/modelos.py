@@ -42,6 +42,11 @@ class Producto(Base):
     bloqueantes: int | None = None
     siguiente_ejecutor: str | None = None
     evaluado_el: str | None = None
+    # Estado corto (de `_FLUJO.json`, sin una llamada por producto): lo que se lee de un vistazo.
+    fase_titulo: str | None = None
+    paso_titulo: str | None = None
+    bloqueante_principal: str | None = None
+    dueno_bloqueante: str | None = None
 
 
 class Requisito(Base):
@@ -50,6 +55,7 @@ class Requisito(Base):
     observado: str = ""
     dueno: str = ""
     regla: str = ""
+    falta: str | None = None  # el texto corto para el operador (FLUJO.json -> flujo.py)
 
 
 class Nodo(Base):
@@ -666,6 +672,13 @@ class Fase2Detalle(Base):
     conceptos_requeridos: int = 0
     campanas: list[CampanaFase2] = []
     conceptos_generados: int = 0
+    conceptos_faltan: int = 0
+    fase_validada: bool = False
+    ejecutor: str = ""
+    fase_titulo: str | None = None
+    paso_titulo: str | None = None
+    bloqueante_principal: str | None = None
+    dueno_bloqueante: str | None = None
     reingreso_activo: ReingresoActivo | None = None
     fatiga: FatigaFase2 | None = None
 

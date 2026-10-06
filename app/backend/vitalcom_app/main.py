@@ -76,6 +76,13 @@ def listar_productos() -> list[Producto]:
     `_DIM_PRODUCTOS.csv` viaja aparte, como `fase_bitacora`, para que nadie las confunda.
     """
     estados = contratos.estado_flujo()
+    try:
+        situaciones = {
+            p.get("producto_key", ""): contratos.situacion_de_flujo(p)
+            for p in contratos.flujo_global().get("productos", [])
+        }
+    except Exception:  # `_FLUJO.json` ausente o ilegible: el portafolio sirve igual, sin estado corto
+        situaciones = {}
     salida: list[Producto] = []
     for fila in contratos.productos_con_mercado():
         clave = fila["producto_key"]
@@ -91,6 +98,7 @@ def listar_productos() -> list[Producto]:
                 bloqueantes=int(bloqueantes) if bloqueantes.isdigit() else None,
                 siguiente_ejecutor=estado.get("siguiente_ejecutor") or None,
                 evaluado_el=estado.get("evaluado_el") or None,
+                **situaciones.get(clave, {}),
             )
         )
     return salida

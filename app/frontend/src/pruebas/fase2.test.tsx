@@ -692,3 +692,55 @@ test("los ángulos apagados quedan plegados al final y sin botones de acción", 
   const galeria = screen.getByTestId("campana-A");
   expect(galeria.compareDocumentPosition(apagados) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
+
+test("el estado de la fase en una línea y «Qué hacer ahora» va primero", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    conceptos_generados: 5,
+    conceptos_faltan: 5,
+    fase_validada: false,
+    fase_titulo: "FASE 2 · TESTEO DE CONCEPTOS",
+    paso_titulo: "Fabricar los 10 conceptos",
+    bloqueante_principal: "faltan 5 conceptos",
+    dueno_bloqueante: "etapa-9 (filas) + etapa-render (PNG)",
+    ejecutor: "subagente `etapa-9`",
+    reingreso_activo: { fecha: "2026-09-30", motivo: "fatiga", angulos_excluidos: [] },
+  };
+  renderizar("TINNIDROP");
+
+  const estado = await screen.findByTestId("estado-de-fase");
+  expect(estado.textContent).toContain("Fase 2 · testeo de conceptos");
+  expect(estado.textContent).toContain("Sin validar");
+  expect(estado.textContent).toContain("Paso: Fabricar los 10 conceptos");
+  expect(estado.textContent).toContain("Trabado: faltan 5 conceptos");
+  expect(estado.textContent).toContain("Lo hace: Fábrica de conceptos + Renderizador de creativos");
+
+  // El chip de conceptos dice cuántos faltan y quién los fabrica.
+  expect(
+    screen.getByText("5 de 10 conceptos listos · faltan 5 · los fabrica la Fábrica de conceptos"),
+  ).toBeInTheDocument();
+
+  // Orden: estado → «Qué hacer ahora» → banner de reingreso → galería.
+  const quehacer = screen.getByTestId("que-hacer-ahora");
+  const pos = (a: Node, b: Node) => a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING;
+  expect(pos(estado, quehacer)).toBeTruthy();
+  expect(pos(quehacer, screen.getByText(/Reingreso a FASE 1 activo/))).toBeTruthy();
+});
+
+test("la tarjeta del ángulo dice un veredicto corto y pliega el texto largo del motor en «¿Por qué?»", async () => {
+  const LARGO = "NO SUBIR PRESUPUESTO todavía: TINNIDROP ya es ganador pero está testeando conceptos y subir plata sesga la medición.";
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    angulos: FASE2_MOCK.angulos.map((a) =>
+      a.angulo_key === "ACCESIBILIDAD_MEDICO" ? { ...a, bloqueo_fase: "F2.gate", orden_motor: LARGO } : a,
+    ),
+  };
+  renderizar("TINNIDROP");
+  const bloque = (await screen.findAllByTestId("orden-motor-bloque"))[0];
+  expect(bloque.textContent).toContain("No subir presupuesto: mantener el que ya tiene hasta cerrar la fase.");
+  const largo = screen.getAllByTestId("orden-motor")[0];
+  expect(largo.textContent).toContain(LARGO);
+  const pliegue = largo.closest("details");
+  expect(pliegue).not.toBeNull();
+  expect(pliegue).not.toHaveAttribute("open");
+});

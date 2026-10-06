@@ -1698,6 +1698,25 @@ export interface components {
              * @default 0
              */
             conceptos_generados: number;
+            /**
+             * Conceptos Faltan
+             * @default 0
+             */
+            conceptos_faltan: number;
+            /**
+             * Fase Validada
+             * @default false
+             */
+            fase_validada: boolean;
+            /**
+             * Ejecutor
+             * @default
+             */
+            ejecutor: string;
+            fase_titulo?: string | null;
+            paso_titulo?: string | null;
+            bloqueante_principal?: string | null;
+            dueno_bloqueante?: string | null;
             reingreso_activo?: components["schemas"]["ReingresoActivo"] | null;
             fatiga?: components["schemas"]["FatigaFase2"] | null;
         } & {
@@ -2647,6 +2666,14 @@ export interface components {
             siguiente_ejecutor?: string | null;
             /** Evaluado El */
             evaluado_el?: string | null;
+            /** Fase Titulo */
+            fase_titulo?: string | null;
+            /** Paso Titulo */
+            paso_titulo?: string | null;
+            /** Bloqueante Principal */
+            bloqueante_principal?: string | null;
+            /** Dueno Bloqueante */
+            dueno_bloqueante?: string | null;
         } & {
             [key: string]: unknown;
         };
@@ -2759,6 +2786,7 @@ export interface components {
              * @default
              */
             regla: string;
+            falta?: string | null;
         } & {
             [key: string]: unknown;
         };

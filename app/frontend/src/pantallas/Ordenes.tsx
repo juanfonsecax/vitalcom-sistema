@@ -11,6 +11,7 @@ import { Link } from "@tanstack/react-router";
 import { api, type ParametroMotor } from "../api/cliente";
 import { Button } from "@/components/ui/button";
 import { trabajoPendientePorProducto } from "../componentes/resumen";
+import { LineaDeSituacion } from "../componentes/situacion";
 import { Cargando, Chip, Problema, Tarjeta, type Tono } from "../componentes/ui";
 import { BanderaMercado } from "../componentes/mercado";
 import { formatearDinero } from "../dinero";
@@ -156,6 +157,9 @@ export function Ordenes() {
   const consultaGanadores = useQuery({ queryKey: ["ganadores"], queryFn: api.ganadores });
   const consultaAcciones = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
   const consultaTrabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos });
+  // Una sola consulta para todas las tarjetas: el estado corto de cada producto.
+  const consultaProductos = useQuery({ queryKey: ["productos"], queryFn: api.productos });
+  const productoPorClave = new Map((consultaProductos.data ?? []).map((p) => [p.producto_key, p]));
 
   if (consultaOrdenes.isLoading || consultaGanadores.isLoading) {
     return <Cargando que="las órdenes del día" />;
@@ -294,6 +298,7 @@ export function Ordenes() {
               const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
               const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
               const glosarioDelEstado = glosarioDeOrden(orden.estado, orden.bloqueo_fase);
+              const producto = productoPorClave.get(orden.producto_key);
               return (
                 <Tarjeta key={`${orden.producto_key}-${orden.angulo_key}-${idx}`} className="flex flex-col justify-between gap-4">
                   <div>
@@ -332,7 +337,7 @@ export function Ordenes() {
                         <span className="font-mono text-zinc-300">{formatearDinero(ic[0], orden)}</span> y{" "}
                         <span className="font-mono text-zinc-300">{formatearDinero(ic[2], orden)}</span>; tu techo es{" "}
                         <span className="font-mono text-zinc-300">{formatearDinero(pq.break_even_q as number, orden)}</span>.{" "}
-                        {veredictoDeOrden(orden.estado, orden.bloqueo_fase)}
+                        {!orden.bloqueo_fase && veredictoDeOrden(orden.estado, orden.bloqueo_fase)}
                       </p>
                     )}
 
@@ -401,7 +406,25 @@ export function Ordenes() {
                     {/* Bloqueo de fase o advertencia */}
                     {orden.bloqueo_fase && (
                       <div className="mt-3 rounded border border-estado-escalar/40 bg-estado-escalar/10 p-2 text-xs text-estado-escalar">
-                        <strong>Qué falta para escalar:</strong> {orden.bloqueo_fase}
+                        <LineaDeSituacion
+                          testid="situacion-orden"
+                          className="text-xs"
+                          datos={{
+                            fase: producto?.fase,
+                            faseTitulo: producto?.fase_titulo,
+                            paso: producto?.paso_titulo,
+                            trabadoPor: producto?.bloqueante_principal,
+                            dueno: producto?.dueno_bloqueante,
+                            ejecutor: producto?.siguiente_ejecutor,
+                          }}
+                        />
+                        <details className="mt-1.5">
+                          <summary className="cursor-pointer select-none underline-offset-2 hover:underline">¿Por qué?</summary>
+                          <p className="mt-1">{veredictoDeOrden(orden.estado, orden.bloqueo_fase)}</p>
+                          <p className="mt-1">
+                            <strong>Qué falta para escalar:</strong> {orden.bloqueo_fase}
+                          </p>
+                        </details>
                       </div>
                     )}
                   </div>

@@ -21,6 +21,7 @@ import {
   type OrdenMotor,
 } from "../componentes/angulosFase2";
 import { BanderaMercado } from "../componentes/mercado";
+import { LineaDeSituacion, responsableEnPalabras } from "../componentes/situacion";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -154,7 +155,11 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
         <div className="flex items-center gap-3">
           <Chip tono={d.conceptos_generados >= (d.conceptos_requeridos ?? 0) ? "bien" : "aviso"}>
             {d.conceptos_requeridos
-              ? `${d.conceptos_generados} de ${d.conceptos_requeridos} conceptos listos`
+              ? `${d.conceptos_generados} de ${d.conceptos_requeridos} conceptos listos${
+                  d.conceptos_faltan > 0
+                    ? ` · faltan ${d.conceptos_faltan} · los fabrica la ${responsableEnPalabras("etapa-9")}`
+                    : ""
+                }`
               : `${d.conceptos_generados} conceptos listos`}
           </Chip>
           <Link
@@ -166,6 +171,28 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
           </Link>
         </div>
       </div>
+
+      {/* El estado de la fase en una línea: dónde está, qué la frena y quién lo hace. */}
+      <LineaDeSituacion
+        testid="estado-de-fase"
+        className="rounded-lg border border-zinc-800 bg-zinc-900/60 px-3 py-2 text-sm text-zinc-300"
+        prefijo={d.fase_validada ? "Validada" : "Sin validar"}
+        datos={{
+          fase: d.fase,
+          faseTitulo: d.fase_titulo,
+          paso: d.paso_titulo,
+          trabadoPor: d.bloqueante_principal,
+          dueno: d.dueno_bloqueante,
+          ejecutor: d.ejecutor,
+        }}
+      />
+
+      {/* Cada ángulo en su propio bloque: el #1 en testeo ahora, los demás en fila o descartados. */}
+      <section className="space-y-4" data-testid="que-hacer-ahora">
+        <h2 className="text-base font-bold text-zinc-100">¿Qué hacer ahora?</h2>
+        <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} perfil={d} />
+        <AngulosEnFila angulos={enFila} perfil={d} />
+      </section>
 
       {/* Banner de Reingreso Activo (si ya volvió a F1) */}
       {d.reingreso_activo && (
@@ -195,13 +222,6 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
           </div>
         </div>
       )}
-
-      {/* Cada ángulo en su propio bloque: el #1 en testeo ahora, los demás en fila o descartados. */}
-      <section className="space-y-4" data-testid="que-hacer-ahora">
-        <h2 className="text-base font-bold text-zinc-100">Qué hacer ahora</h2>
-        <AnguloEnTesteoAhora angulo={principal} paso={d.nodo_actual} perfil={d} />
-        <AngulosEnFila angulos={enFila} perfil={d} />
-      </section>
 
       {/* Notificación de Subida */}
       {mensajeSubida && (

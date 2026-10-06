@@ -109,8 +109,10 @@ test("resume la fase en una frase y el paso de ahora con su título humano, no e
   // El título de la fase tal como lo nombra flujo.py (FLUJO.json), no solo el código "F2".
   expect(screen.getByText("FASE 2 · TESTEO DE CONCEPTOS")).toBeInTheDocument();
   expect(await screen.findAllByText("Optimizar el CIERRE del bot hacia el ángulo ganador (antes de gastar más)")).toHaveLength(1);
-  expect((await screen.findAllByText("lo hace Claude")).length).toBeGreaterThanOrEqual(1);
-  // El id crudo sigue presente, pero como dato secundario, nunca el único texto del paso.
+  // Quién lo hace, con el nombre de la etapa; el comando técnico no es texto visible del header.
+  expect(await screen.findByText("Lo hace: Optimizador de flujo")).toBeInTheDocument();
+  expect(screen.queryByText("lo hace Claude")).not.toBeInTheDocument();
+  // El id crudo sigue presente, pero como dato secundario (plegado), nunca el único texto del paso.
   expect((await screen.findAllByText("F2.etapa-11")).length).toBeGreaterThanOrEqual(1);
 
   // Al abrir Resumen, el mismo título humano aparece TAMBIÉN en su tarjeta del recorrido: dos
@@ -171,7 +173,7 @@ test("el header dice el bloqueante y su dueño, y la pestaña Resumen los repite
   });
   montar();
   expect(await screen.findAllByText("carpeta de media del producto")).toHaveLength(1);
-  expect(screen.getByText(/lo produce operador/)).toBeInTheDocument();
+  expect(screen.getByText(/lo hace vos/)).toBeInTheDocument();
 });
 
 test("pestañas — P4/T3: la URL manda cuando trae sufijo de fase (/fase2 → pestaña Fase 2)", async () => {
@@ -203,4 +205,34 @@ test("pestañas — hacer clic en Fase 1 navega a la URL de esa fase", async () 
   montar("/producto/TINNIDROP");
   fireEvent.click(await screen.findByRole("tab", { name: "Fase 1" }));
   expect(await screen.findByRole("tab", { name: "Fase 1" })).toHaveAttribute("aria-selected", "true");
+});
+
+test("el header usa el mismo pendiente que la línea de la fase: «Trabado» aunque no haya bloqueantes duros", async () => {
+  servir({
+    "/api/productos/TINNIDROP": {
+      ...FLUJO_BASE,
+      nodo_actual: "F2.conceptos",
+      ejecutor: "subagente `etapa-9` (Task, subagent_type=etapa-9)",
+      bloqueantes: [],
+      falta_para_cumplir: [
+        {
+          dato: "conceptos GENERADOS (10 = A 5 + B 5)",
+          ok: false,
+          observado: "5 fila(s) · esperado ≥ 10",
+          dueno: "etapa-9 (filas) + etapa-render (PNG)",
+          regla: "R3F-13",
+          falta: "faltan 5 conceptos",
+        },
+      ],
+    },
+  });
+  montar();
+  expect(await screen.findByText("faltan 5 conceptos")).toBeInTheDocument();
+  expect(screen.queryByText("Nada lo frena.")).not.toBeInTheDocument();
+  expect(screen.getByText("Lo hace: Fábrica de conceptos")).toBeInTheDocument();
+  expect(screen.getByText(/lo hace Fábrica de conceptos \+ Renderizador de creativos/)).toBeInTheDocument();
+  // El comando técnico queda plegado.
+  const tecnico = screen.getByText(/subagente `etapa-9` \(Task, subagent_type=etapa-9\)/);
+  expect(tecnico.closest("details")).not.toBeNull();
+  expect(tecnico.closest("details")).not.toHaveAttribute("open");
 });

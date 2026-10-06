@@ -38,6 +38,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
 import { tituloDelPasoActual, trabajoPendientePorProducto } from "../componentes/resumen";
+import { LineaDeSituacion, responsableEnPalabras } from "../componentes/situacion";
 import { cn, Problema } from "../componentes/ui";
 import { BanderaMercado, SelectorMercado, usarMercadoSeleccionado } from "../componentes/mercado";
 import { contarPorMercado, filtrarPorMercado, formatearDinero, TODOS } from "../dinero";
@@ -239,12 +240,15 @@ function TarjetaOrdenDelDia({
   indice = 0,
   celebrar = false,
   trabajoPendiente,
+  producto,
 }: {
   orden: OrdenItem;
   cicloHabilitado: boolean;
   indice?: number;
   celebrar?: boolean;
   trabajoPendiente?: string;
+  /** El producto de la orden (de `/api/productos`, una sola consulta para todas las tarjetas). */
+  producto?: Producto;
 }) {
   const escalarBloqueado = orden.estado === "ESCALAR" && Boolean(orden.bloqueo_fase);
   const titulo = tituloDeOrden(orden.estado, orden.frase_simple, orden.bloqueo_fase);
@@ -307,11 +311,33 @@ function TarjetaOrdenDelDia({
         <CardTitle className="text-base font-semibold">{titulo}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {veredicto && <p className="text-sm text-muted-foreground">{veredicto}</p>}
         {escalarBloqueado && (
-          <p className="rounded-lg border border-estado-escalar/40 bg-estado-escalar/10 p-2.5 text-sm text-estado-escalar">
-            <strong>Qué falta para escalar:</strong> {orden.bloqueo_fase}
-          </p>
+          <div className="rounded-lg border border-estado-escalar/40 bg-estado-escalar/10 p-2.5 text-sm text-estado-escalar">
+            <LineaDeSituacion
+              testid="situacion-orden"
+              className="text-sm"
+              datos={{
+                fase: producto?.fase,
+                faseTitulo: producto?.fase_titulo,
+                paso: producto?.paso_titulo,
+                trabadoPor: producto?.bloqueante_principal,
+                dueno: producto?.dueno_bloqueante,
+                ejecutor: producto?.siguiente_ejecutor,
+              }}
+            />
+          </div>
+        )}
+        {/* Visible: el titular, la línea de estado y los números. La explicación va plegada. */}
+        {(veredicto || escalarBloqueado) && (
+          <details className="text-xs text-muted-foreground">
+            <summary className="cursor-pointer select-none underline-offset-2 hover:underline">¿Por qué?</summary>
+            {veredicto && <p className="mt-1 text-sm">{veredicto}</p>}
+            {escalarBloqueado && (
+              <p className="mt-1">
+                <strong>Qué falta para escalar:</strong> {orden.bloqueo_fase}
+              </p>
+            )}
+          </details>
         )}
         <div className="grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-muted/30 p-3">
           <div>
@@ -593,6 +619,8 @@ function SeccionOrdenes({ mercado }: { mercado: string }) {
   const ordenesQuery = useQuery({ queryKey: ["ordenes"], queryFn: () => api.ordenes() });
   const accionesQuery = useQuery({ queryKey: ["acciones"], queryFn: () => api.acciones() });
   const trabajos = useQuery({ queryKey: ["trabajos"], queryFn: api.trabajos, refetchInterval: 5000 });
+  const productosQuery = useQuery({ queryKey: ["productos"], queryFn: api.productos });
+  const productoPorClave = new Map((productosQuery.data ?? []).map((p) => [p.producto_key, p]));
   const todas = ordenesQuery.data?.ordenes ?? [];
   // La celebración compara contra TODAS las órdenes (la línea base no depende del filtro de pantalla);
   // todo lo demás se cuenta y se pinta solo del mercado elegido.
@@ -698,6 +726,7 @@ function SeccionOrdenes({ mercado }: { mercado: string }) {
                     indice={i}
                     celebrar={recienEscalaron.includes(`${orden.producto_key}|${orden.angulo_key}`)}
                     trabajoPendiente={trabajoPendiente.get(orden.producto_key)}
+                    producto={productoPorClave.get(orden.producto_key)}
                   />
                 ))}
               </div>
@@ -737,6 +766,9 @@ function FilaSiguientePaso({ producto }: { producto: Producto }) {
   const quien = quienLoHace(flujo.data?.ejecutor || producto.siguiente_ejecutor);
   const bloqueantes = flujo.data?.bloqueantes ?? [];
   const primero = bloqueantes[0];
+  // El mismo pendiente que dice la tarjeta de la orden (`bloqueante_principal`): hay uno aunque
+  // `bloqueantes` esté vacío (lo que falta para cumplir el gate no es un bloqueante duro).
+  const pendiente = producto.bloqueante_principal;
 
   return (
     <Link
@@ -755,10 +787,12 @@ function FilaSiguientePaso({ producto }: { producto: Producto }) {
       <span className="truncate text-xs text-muted-foreground">
         {flujo.isLoading ? (
           <Skeleton className="h-4 w-24" />
-        ) : bloqueantes.length === 0 ? (
-          "Sin bloqueantes"
+        ) : primero && !primero.falta ? (
+          `${primero.dato} · lo produce ${primero.dueno || quien}${bloqueantes.length > 1 ? ` (+${bloqueantes.length - 1} más)` : ""}`
+        ) : primero || pendiente ? (
+          `${primero?.falta || pendiente} · lo hace ${responsableEnPalabras(primero?.dueno || producto.dueno_bloqueante || producto.siguiente_ejecutor)}${bloqueantes.length > 1 ? ` (+${bloqueantes.length - 1} más)` : ""}`
         ) : (
-          `${primero!.dato} · lo produce ${primero!.dueno || quien}${bloqueantes.length > 1 ? ` (+${bloqueantes.length - 1} más)` : ""}`
+          "Sin bloqueantes"
         )}
       </span>
     </Link>

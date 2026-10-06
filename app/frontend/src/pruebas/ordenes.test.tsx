@@ -255,6 +255,38 @@ test("ESCALAR con bloqueo_fase no se contradice: chip, veredicto y glosario dice
   expect(screen.getByText(/CLEARSTEM está en F2: subir presupuesto sesga la medición/)).toBeInTheDocument();
 });
 
+test("la tarjeta dice fase, trabado y quién lo hace en una línea y pliega la nota larga", async () => {
+  servir({
+    "/api/ordenes": DATOS_ORDENES,
+    "/api/ganadores": GANADORES,
+    "/api/acciones": ACCIONES,
+    "/api/trabajos": [],
+    "/api/productos": [
+      {
+        producto_key: "CLEARSTEM",
+        fase: "F2",
+        nodo_actual: "F2.conceptos",
+        siguiente_ejecutor: "subagente etapa-9",
+        fase_titulo: "FASE 2 · TESTEO DE CONCEPTOS",
+        paso_titulo: "Fabricar los 10 conceptos",
+        bloqueante_principal: "faltan 5 conceptos",
+        dueno_bloqueante: "etapa-9 (filas) + etapa-render (PNG)",
+      },
+    ],
+  });
+  renderizar();
+  const linea = await screen.findByTestId("situacion-orden");
+  expect(linea.textContent).toContain("Fase 2 · testeo de conceptos");
+  expect(linea.textContent).toContain("Trabado: faltan 5 conceptos");
+  expect(linea.textContent).toContain("Lo hace: Fábrica de conceptos");
+  const pliegue = screen.getByText(/CLEARSTEM está en F2: subir presupuesto sesga la medición/).closest("details");
+  expect(pliegue).not.toBeNull();
+  expect(pliegue).not.toHaveAttribute("open");
+  // La oración explicativa del veredicto vive dentro del mismo «¿Por qué?» plegado.
+  const veredicto = screen.getByText(/La celda es rentable y cuenta como evidencia de ganador/);
+  expect(veredicto.closest("details")).toBe(pliegue);
+});
+
 test("narra la frase de IC vs break-even y el veredicto del motor", async () => {
   renderizar();
   // Tres de las cuatro órdenes traen IC y break-even completos (SEGUIR_MIDIENDO no trae IC):

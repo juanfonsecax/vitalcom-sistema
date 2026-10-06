@@ -458,6 +458,71 @@ test("una orden ESCALAR bloqueada por fase muestra tal cual la nota del motor, n
   expect(screen.getByRole("link", { name: "Ver el avance de su fase" })).toBeInTheDocument();
 });
 
+test("la tarjeta de orden dice en una línea fase, trabado y quién lo hace; la nota larga queda plegada", async () => {
+  const NOTA = "NO SUBIR PRESUPUESTO todavía: está en FASE 2 testeando conceptos y subir plata sesga la medición.";
+  servirBase({
+    "/api/productos": [
+      {
+        ...PRODUCTO_A,
+        fase_titulo: "FASE 2 · TESTEO DE CONCEPTOS",
+        paso_titulo: "Fabricar los 10 conceptos",
+        bloqueante_principal: "faltan 5 conceptos",
+        dueno_bloqueante: "etapa-9 (filas) + etapa-render (PNG)",
+      },
+      PRODUCTO_B,
+    ],
+    "/api/ordenes": {
+      ...ORDENES_BASE,
+      ordenes: [
+        {
+          producto_key: "CLEARSTEM",
+          angulo_key: "RESISTENCIA_INSULINA_SOP",
+          angulo_nombre: "Resistencia a la Insulina SOP",
+          estado: "ESCALAR",
+          accion_codigo: "ESCALAR_SURFING",
+          frase_simple: "Subir 20% al presupuesto",
+          por_que: { cpa_real_q: 27.3, break_even_q: 105.89 },
+          bloqueo_fase: NOTA,
+          ejecutable: false,
+          conjuntos: [],
+        },
+      ],
+    },
+  });
+  montar();
+  const linea = await screen.findByTestId("situacion-orden");
+  expect(linea.textContent).toContain("Fase 2 · testeo de conceptos");
+  expect(linea.textContent).toContain("Trabado: faltan 5 conceptos");
+  expect(linea.textContent).toContain("Lo hace: Fábrica de conceptos + Renderizador de creativos");
+  // La nota larga sigue disponible, pero plegada tras «¿Por qué?».
+  const nota = screen.getByText(NOTA);
+  const pliegue = nota.closest("details");
+  expect(pliegue).not.toBeNull();
+  expect(pliegue).not.toHaveAttribute("open");
+  expect(within(pliegue as HTMLElement).getByText("¿Por qué?")).toBeInTheDocument();
+  // La oración explicativa del veredicto también queda plegada, no a la vista.
+  const veredicto = screen.getByText(/La celda es rentable y cuenta como evidencia de ganador/);
+  expect(veredicto.closest("details")).toBe(pliegue);
+});
+
+test("qué sigue por producto: si hay un pendiente (bloqueante_principal) lo muestra y no dice «Sin bloqueantes»", async () => {
+  servirBase({
+    "/api/productos": [
+      {
+        ...PRODUCTO_B,
+        producto_key: "NUSAVA",
+        nombre_display: "Nusava",
+        bloqueante_principal: "falta el diagnóstico del bot (etapa-11)",
+        dueno_bloqueante: "etapa-11 (mide y diagnostica) → operador (registra)",
+      },
+    ],
+    "/api/productos/NUSAVA": { ...FLUJO_B, producto_key: "NUSAVA", bloqueantes: [] },
+  });
+  montar();
+  expect(await screen.findByText(/falta el diagnóstico del bot \(etapa-11\) · lo hace Optimizador de flujo/)).toBeInTheDocument();
+  expect(screen.queryByText("Sin bloqueantes")).not.toBeInTheDocument();
+});
+
 test("qué sigue por producto: muestra fase, paso y el bloqueante con su dueño; sin bloqueante lo dice", async () => {
   montar();
   expect(await screen.findByText("ClearStem")).toBeInTheDocument();

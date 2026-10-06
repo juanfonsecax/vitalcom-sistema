@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 import os
 import subprocess
 import sys
@@ -353,6 +354,30 @@ def ordenes(producto_key: str | None = None) -> dict[str, Any]:
         detalle = (completado.stderr or completado.stdout or "sin salida").strip()
         raise ContratoAusente(f"gen_ordenes.py falló: {detalle[-400:]}")
     return json.loads(completado.stdout)
+
+
+def situacion_de_flujo(datos: dict[str, Any]) -> dict[str, Any]:
+    """El estado corto de un producto, sacado de lo que ya dijo `flujo.py`: título del paso,
+    el primer pendiente (bloqueante duro o, si no hay, lo que falta para cumplir el gate) y su
+    dueño. Nada se calcula: usa el `falta` que renderiza flujo.py; si el requisito no lo declara,
+    cae al texto técnico recortado (sin el paréntesis de la fórmula)."""
+    nodo = datos.get("nodo_actual")
+    titulo = next((n.get("titulo") for n in datos.get("nodos") or [] if n.get("id") == nodo), None)
+    pendientes = datos.get("bloqueantes") or datos.get("falta_para_cumplir") or []
+    primero = pendientes[0] if pendientes else None
+    texto = None
+    if primero:
+        texto = primero.get("falta")  # el texto del operador, que declara FLUJO.json y renderiza flujo.py
+        if not texto:
+            dato = re.sub(r"\s*\([^)]*\)", "", str(primero.get("dato", ""))).strip()
+            observado = str(primero.get("observado", "")).strip()
+            texto = f"{dato}: {observado}" if observado else dato
+    return {
+        "fase_titulo": datos.get("fase_titulo") or None,
+        "paso_titulo": titulo or None,
+        "bloqueante_principal": texto,
+        "dueno_bloqueante": (primero.get("dueno") or None) if primero else None,
+    }
 
 
 def ganadores() -> list[dict[str, Any]]:
@@ -853,6 +878,7 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
 
     estructura = _estructura_fase2()
     requeridos = sum(n for _, n in estructura)
+    generados = sum(1 for c in conceptos if c.get("estado") in ("GENERADO", "PUBLICADO"))
     vistos: dict[str, int] = {}
     for c in conceptos:
         vistos[c["angulo_key"]] = vistos.get(c["angulo_key"], 0) + 1
@@ -880,7 +906,11 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         "total_conceptos": len(conceptos),
         "conceptos_requeridos": requeridos,
         "campanas": [{"brazo": b, "conceptos": n} for b, n in estructura],
-        "conceptos_generados": sum(1 for c in conceptos if c.get("estado") in ("GENERADO", "PUBLICADO")),
+        "conceptos_generados": generados,
+        "conceptos_faltan": max(0, requeridos - generados),
+        "fase_validada": bool((flujo_data.get("avance") or {}).get("ok")),
+        "ejecutor": flujo_data.get("ejecutor", ""),
+        **situacion_de_flujo(flujo_data),
         "reingreso_activo": flujo_data.get("reingreso_activo"),
         "fatiga": {
             "ordenes": flujo_data.get("ordenes", []),
