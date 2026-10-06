@@ -167,14 +167,14 @@ def cargar_pendientes_registro():
 
 
 def cargar_parametros():
-    p = {"surfing_pct": 20.0}
+    p = {"surfing_pct": 20.0, "rezago_max_dias": 2.0}
     ruta = P("_PARAMETROS_DECISION.csv")
     if os.path.exists(ruta):
         with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
             for r in csv.DictReader(fh):
                 k = (r.get("parametro") or "").strip()
                 v = (r.get("valor") or "").strip()
-                if k == "surfing_pct":
+                if k in ("surfing_pct", "rezago_max_dias"):
                     try:
                         p[k] = float(v)
                     except ValueError:
@@ -209,7 +209,9 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
             "pendientes_registro": [],
         }
 
-    rezago_dias = data_dec.get("rezago_dias", 0)
+    # Unknown lag (missing or None) counts as stale: ESCALAR is never emitted on data of
+    # unknown age. PAUSAR still goes out with a warning (it stops spend and is reversible).
+    rezago_dias = data_dec.get("rezago_dias")
     # g07-cimientos T2 (22-sep-2026): un dbt build roto quedaba solo en stdout de
     # gen_decisiones.py. Ahora viaja en _DECISIONES.json (capa_analitica) y de aca sube al
     # header de órdenes / la app, que es donde el operador de verdad mira.
@@ -218,6 +220,10 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
     dim_productos = cargar_dim_productos()
     params = cargar_parametros()
     surfing_pct = params.get("surfing_pct", 20.0)
+    rezago_max = params.get("rezago_max_dias", 2.0)
+    data_vieja = rezago_dias is None or rezago_dias > rezago_max
+    texto_rezago = ("rezago desconocido" if rezago_dias is None
+                    else "rezago de %s días" % rezago_dias)
 
     # Cargar snapshot si se especificó, o buscar en INGESTA_META
     snapshot_meta = {}
@@ -238,6 +244,10 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
     if capa_analitica.get("estado") == "FALLO":
         avisos.append("CAPA ANALITICA (dbt) FALLO: %s — el motor esta leyendo los CSV "
                        "directamente." % capa_analitica.get("detalle", ""))
+    if data_vieja:
+        avisos.append("DATA VIEJA (%s, máximo %g): no sale ninguna orden de ESCALAR; las de "
+                      "PAUSAR sí salen. Recolectar (recopilar-lucidsales) y correr decidir.py "
+                      "--escribir antes de subir presupuesto." % (texto_rezago, rezago_max))
     pendientes_registro = cargar_pendientes_registro()
     if pendientes_registro:
         gasto_pend = sum(p["spend_usd"] for p in pendientes_registro)
@@ -376,6 +386,15 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                     })
                     continue
 
+                if data_vieja:
+                    bloqueantes.append({
+                        "falta": f"data con {texto_rezago} (máximo {rezago_max:g}): no se sube "
+                                 f"presupuesto de '{ak}' de '{pk}'",
+                        "lo_produce": "recopilar-lucidsales + decidir.py --escribir",
+                        "ambito": "ordenes",
+                    })
+                    continue
+
                 for c_nombre in set(nombres_conjuntos):
                     meta_obj = snapshot_meta.get(c_nombre)
                     if not meta_obj:
@@ -390,14 +409,27 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                     status_actual = meta_obj.get("status", "ACTIVE")
                     budget_actual = meta_obj.get("daily_budget")
 
-                    # Si el snapshot no tiene daily_budget, default a 2.99 USD o su valor actual
+                    # The new budget is computed only from the real one in the snapshot. Without
+                    # it (CBO keeps the budget on the campaign; old snapshots omit it) the order
+                    # is blocked: an invented base would move real money.
                     try:
-                        b_val = float(budget_actual) if budget_actual else 2.99
+                        b_val = float(budget_actual)
                     except (ValueError, TypeError):
-                        b_val = 2.99
+                        b_val = None
+                    if b_val is None or b_val <= 0:
+                        bloqueantes.append({
+                            "falta": f"sin daily_budget real en el snapshot para el conjunto "
+                                     f"'{c_nombre}' (ángulo '{ak}') de '{pk}': no se calcula el "
+                                     f"surfing sobre un presupuesto inventado (en CBO el "
+                                     f"presupuesto vive en la campaña)",
+                            "lo_produce": "snapshot Meta con daily_budget (ads_get_ad_entities "
+                                          "-> verificar_publicacion.py --snapshot)",
+                            "ambito": "ordenes",
+                        })
+                        continue
 
                     nuevo_budget = round(b_val * (1.0 + surfing_pct / 100.0), 2)
-                    ya_escalado = (budget_actual is not None and abs(float(budget_actual) - nuevo_budget) < 0.01)
+                    ya_escalado = abs(b_val - nuevo_budget) < 0.01
 
                     llamadas.append({
                         "n": num_llamada,
@@ -467,10 +499,9 @@ def main():
         return 1 if res.get("bloqueantes") else 0
 
     print("=" * 78)
-    print(f"ÓRDENES DEL MOTOR  ·  REZAGO: {res.get('rezago_dias', 0)} DÍAS")
+    rez = res.get("rezago_dias")
+    print(f"ÓRDENES DEL MOTOR  ·  REZAGO: {'?' if rez is None else rez} DÍAS")
     print("=" * 78)
-    if res.get("rezago_dias", 0) > 2:
-        print(f"  [!] ALERTA: Data con {res['rezago_dias']} días de rezago. Revisar antes de ejecutar.")
     print(f"  Total órdenes analizadas : {len(res.get('ordenes', []))}")
     print(f"  Total llamadas a Meta     : {len(res.get('llamadas', []))}")
     print()

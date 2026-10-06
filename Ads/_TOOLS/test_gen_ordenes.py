@@ -310,6 +310,84 @@ class TestGenOrdenes(unittest.TestCase):
             gen_ordenes.cargar_dim_conjuntos = orig_dim
 
 
+class TestPlataNuncaInventada(unittest.TestCase):
+    """ESCALAR mueve plata: nunca sobre un presupuesto inventado ni sobre data vieja.
+    PAUSAR frena gasto y se revierte: sigue saliendo con data vieja, con aviso."""
+
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self._orig_pendientes = gen_ordenes.cargar_pendientes_registro
+        self._orig_dim = gen_ordenes.cargar_dim_conjuntos
+        gen_ordenes.cargar_pendientes_registro = lambda: []
+        gen_ordenes.cargar_dim_conjuntos = lambda: {
+            ("PX", "ANG_SUBE"): [{"conjunto_meta": "Conjunto Sube", "angulo_nombre": "Sube"}],
+            ("PX", "ANG_BAJA"): [{"conjunto_meta": "Conjunto Baja", "angulo_nombre": "Baja"}],
+        }
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.temp_dir, ignore_errors=True)
+        gen_ordenes.cargar_pendientes_registro = self._orig_pendientes
+        gen_ordenes.cargar_dim_conjuntos = self._orig_dim
+
+    def _correr(self, rezago, budget_sube, con_rezago=True):
+        dec = {"generado": "2026-10-05", "productos": [{
+            "producto_key": "PX", "break_even_q": 80.0, "cpa_objetivo_q": 35.0,
+            "fase_vigente": "F4", "celdas": [
+                {"celda": "ANG_SUBE", "estado": "ESCALAR", "ejecutable": True},
+                {"celda": "ANG_BAJA", "estado": "PAUSAR", "ejecutable": True},
+            ]}]}
+        if con_rezago:
+            dec["rezago_dias"] = rezago
+        sube = {"id": "adset_sube", "name": "Conjunto Sube", "nivel": "adset", "status": "ACTIVE"}
+        if budget_sube is not None:
+            sube["daily_budget"] = budget_sube
+        snap = {"ad_entities": [sube, {"id": "adset_baja", "name": "Conjunto Baja",
+                                       "nivel": "adset", "status": "ACTIVE"}]}
+        dec_path = os.path.join(self.temp_dir, "dec.json")
+        snap_path = os.path.join(self.temp_dir, "snap.json")
+        with io.open(dec_path, "w", encoding="utf-8") as fh:
+            json.dump(dec, fh)
+        with io.open(snap_path, "w", encoding="utf-8") as fh:
+            json.dump(snap, fh)
+        return gen_ordenes.generar_ordenes(producto_filtro="PX", ruta_decisiones=dec_path,
+                                           ruta_snapshot=snap_path)
+
+    def _acciones(self, res):
+        return sorted(ll["accion"] for ll in res["llamadas"])
+
+    def test_escalar_sin_daily_budget_bloquea_y_no_inventa(self):
+        res = self._correr(rezago=0, budget_sube=None)
+        self.assertEqual(self._acciones(res), ["PAUSAR"])
+        self.assertTrue(any("daily_budget" in b["falta"] and "Conjunto Sube" in b["falta"]
+                            for b in res["bloqueantes"]))
+
+    def test_escalar_con_budget_invalido_o_cero_bloquea(self):
+        for malo in ("", "abc", 0, -5):
+            res = self._correr(rezago=0, budget_sube=malo)
+            self.assertEqual(self._acciones(res), ["PAUSAR"], malo)
+            self.assertTrue(res["bloqueantes"], malo)
+
+    def test_escalar_con_budget_real_y_data_fresca_sale(self):
+        res = self._correr(rezago=2, budget_sube=15.0)
+        self.assertEqual(self._acciones(res), ["ESCALAR", "PAUSAR"])
+        sube = next(ll for ll in res["llamadas"] if ll["accion"] == "ESCALAR")
+        self.assertEqual(sube["args"]["fields"]["daily_budget"], 18.0)
+        self.assertEqual(res["bloqueantes"], [])
+
+    def test_rezago_mayor_al_maximo_bloquea_escalar_y_deja_pausar(self):
+        res = self._correr(rezago=3, budget_sube=15.0)
+        self.assertEqual(self._acciones(res), ["PAUSAR"])
+        self.assertTrue(any("rezago" in b["falta"] for b in res["bloqueantes"]))
+        self.assertTrue(any("rezago" in a for a in res["avisos"]))
+
+    def test_rezago_desconocido_bloquea_escalar(self):
+        for res in (self._correr(rezago=None, budget_sube=15.0),
+                    self._correr(rezago=None, budget_sube=15.0, con_rezago=False)):
+            self.assertEqual(self._acciones(res), ["PAUSAR"])
+            self.assertTrue(any("rezago" in b["falta"] for b in res["bloqueantes"]))
+
+
 class TestPendientesRegistro(unittest.TestCase):
     """Conjuntos NUESTROS (producto_key clasificado) sin fila de angulo_key en
     _DIM_CONJUNTOS.csv deben salir como pendiente visible, distintos de un AJENO
