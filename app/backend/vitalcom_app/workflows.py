@@ -95,10 +95,14 @@ PROMPT_SNAPSHOT = "\n".join([
     "SOLO LECTURA: no crees, actualices ni actives nada en Meta.",
     "1. Llamá `ads_get_ad_accounts` y verificá que la cuenta {cuenta} ({cuenta_id}) tenga is_ads_mcp_enabled "
     "e is_queryable. Si no los tiene, terminá tu respuesta con la línea `{marca}` y nada más.",
-    "2. Llamá `ads_get_ad_entities` con level=campaign, level=adset y level=ad sobre esa cuenta.",
+    "2. Llamá `ads_get_ad_entities` sobre esa cuenta, una vez por nivel, pidiendo `fields`: "
+    "level=campaign -> id, name, status, effective_status, daily_budget; "
+    "level=adset -> id, name, status, effective_status, campaign_id, daily_budget; "
+    "level=ad -> id, name, status, effective_status, campaign_id.",
     "3. Llamá `ads_get_user_pages`.",
     "4. Guardá lo del paso 2 en `{snapshot}` con esta forma exacta: "
-    '{{"cuenta_alias":"…","cuenta_id":"…","tomado_el":"<ISO>","ad_entities":[{{"id":"…","nivel":"campaign|adset|ad","name":"…","status":"…"}}]}}',
+    '{{"cuenta_alias":"…","cuenta_id":"…","tomado_el":"<ISO>","ad_entities":[{{"id":"…","nivel":"campaign|adset|ad","name":"…","status":"…","effective_status":"…","campaign_id":"… (adset y ad)","daily_budget":{{"value":"…","unit":"USD"}}}}]}} '
+    "(daily_budget tal cual lo devuelve Meta; omitilo si no viene).",
     "SNAPSHOT_EN: {snapshot}",
 ])
 PROMPT_EJECUCION = "\n".join([

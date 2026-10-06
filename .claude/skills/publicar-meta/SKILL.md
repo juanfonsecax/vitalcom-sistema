@@ -32,15 +32,22 @@ candado. Si el operador confirma que quiere seguir igual, repetir el mismo coman
 Lee el bloque `preflight` del paquete y corré sus llamadas:
 
 1. `ads_get_ad_accounts` → la cuenta tiene `is_ads_mcp_enabled` y `is_queryable`.
-2. `ads_get_ad_entities` **level=campaign, adset y ad** sobre esa cuenta → **qué existe YA**.
+2. `ads_get_ad_entities` **level=campaign, adset y ad** sobre esa cuenta → **qué existe YA**. Pedí
+   `fields`: campaign → id, name, status, effective_status, daily_budget; adset → id, name, status,
+   effective_status, campaign_id, daily_budget; ad → id, name, status, effective_status, campaign_id.
 3. `ads_get_user_pages` → el `page_id` existe y el lanzador lo ve.
 
 Volcá lo del paso 2 a `Ads/_INGESTA/META/snapshot_[ALIAS].json` con esta forma:
 
 ```json
 {"cuenta_alias":"GTR7","cuenta_id":"598687956219141","tomado_el":"...",
- "ad_entities":[{"id":"...","nivel":"campaign","name":"...","status":"PAUSED"}]}
+ "ad_entities":[{"id":"...","nivel":"campaign|adset|ad","name":"...","status":"PAUSED",
+   "effective_status":"...","campaign_id":"... (adset y ad)",
+   "daily_budget":{"value":"3.99","unit":"USD"}}]}
 ```
+
+`daily_budget` va tal cual lo devuelve Meta (objeto en unidades mayores) y se omite cuando no viene
+(las campañas ABO no lo traen; en CBO lo trae la campaña y no los conjuntos).
 
 ### 2 · REGENERAR el paquete contra ese snapshot
 
