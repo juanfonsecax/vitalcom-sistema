@@ -106,7 +106,10 @@ No se violan en ninguna fase. El código las cita por número: **no renumerar**.
       mide sobre el gasto ACUMULADO desde el lanzamiento. Lo que fija un mentor en días es volumen
       de evidencia, no tiempo.
     - Las ventanas viven en `PRODUCTOS/_PARAMETROS_DECISION.csv` y se cuentan desde el **último día
-      CON DATA**; si esa data tiene más de 2 días de rezago, la orden lo declara arriba de todo.
+      CON DATA**; si esa data supera `rezago_max_dias` (o su edad es desconocida), `gen_ordenes.py`
+      no emite ninguna orden de ESCALAR (bloqueante); PAUSAR sí sale, con aviso.
+    - **Nunca se sube presupuesto sobre una base inventada**: sin `daily_budget` real en el
+      snapshot de Meta, la orden de ESCALAR se bloquea.
     - **Ejecutar una orden en Meta por MCP requiere la confirmación explícita del operador, orden por
       orden.** Después se verifica contra Meta y se anexa el evento a `_EVENTOS.csv`.
 
