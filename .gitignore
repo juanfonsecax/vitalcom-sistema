@@ -42,6 +42,8 @@ VISTAS/HOY.html
 Ads/_SWIPE/_GALERIA.html
 Ads/_SWIPE/_WINNERS.html
 Ads/_SWIPE/_WINNERS_PORTABLE.html
+# bajar_lucidsales.py (raw API export, re-downloadable)
+Ads/_INGESTA/LUCIDSALES/
 
 # ── ARTEFACTOS DE PYTHON ────────────────────────────────────────
 __pycache__/
