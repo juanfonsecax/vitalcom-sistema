@@ -43,3 +43,14 @@ backend: `app/backend/.venv/Scripts/python.exe -m pytest -q` on touched test fil
   so the angle cards' "Orden del motor" disagreed with _DECISIONES.json.
 - Daily cycle ROJO since 2026-10-05 09:34: ingerir_lucidsales_control refuses because daily
   files 2026-09-20/22..27 were loaded as rol=CONTROL besides the weekly CONTROL 09-21..27.
+
+## Data fixes (2026-10-05, operator authorized)
+- [x] D1 Weekly control loaded every daily file as CONTROL (folder sweep with --rol CONTROL), so
+      the next Monday the guardrail refused the weekly file: ciclo ROJO x4. ciclo_diario passes
+      only the freshly downloaded weekly file (GT and CO); ingerir_lucidsales.filtrar_barrido_por_rol
+      makes a CONTROL sweep skip single days. Existing daily CONTROL rows left in place: every
+      money consumer (decidir, gasto, dbt stg_ventas) sums BASE only, so they are inert.
+- [x] D2 perfilar_angulos.py --registrar --silencioso runs after ciclo_hoy.
+- Evidence: test_ciclo_diario 35/35 (RED 3 first), test_ingerir_lucidsales 0 fallas (new pure test;
+  its RED not observed before the code, function absent in HEAD), Ads/_TOOLS 61 passed, real
+  ciclo_diario VERDE paridad IGUAL, datos_hasta 2026-10-04, motor vs ángulos 0 mismatches.
