@@ -39,12 +39,13 @@ class TestVerificarOrden(unittest.TestCase):
                 {
                     "n": 2,
                     "tool": "ads_update_entity",
-                    "args": {"entity_id": "adset_2", "fields": {"daily_budget": 3.60}},
+                    "args": {"entity_id": "adset_2", "fields": {"daily_budget": 360}},
                     "entidad": {"id": "adset_2", "nombre": "Conjunto 2"},
                 },
             ],
         }
         snap_fixture = {
+            "moneda": "USD",
             "ad_entities": [
                 {"id": "adset_1", "name": "Conjunto 1", "status": "PAUSED"},
                 {"id": "adset_2", "name": "Conjunto 2", "status": "ACTIVE", "daily_budget": "3.60"},
@@ -91,12 +92,13 @@ class TestVerificarOrden(unittest.TestCase):
                 {
                     "n": 1,
                     "tool": "ads_update_entity",
-                    "args": {"entity_id": "adset_2", "fields": {"daily_budget": 5.00}},
+                    "args": {"entity_id": "adset_2", "fields": {"daily_budget": 500}},
                     "entidad": {"id": "adset_2", "nombre": "Conjunto 2"},
                 }
             ],
         }
         snap_fixture = {
+            "moneda": "USD",
             "ad_entities": [
                 {"id": "adset_2", "name": "Conjunto 2", "status": "ACTIVE", "daily_budget": 2.99}
             ]
@@ -109,6 +111,33 @@ class TestVerificarOrden(unittest.TestCase):
         self.assertFalse(ok)
         self.assertEqual(len(fallas), 1)
         self.assertIn("daily_budget", fallas[0])
+
+    def _verificar_budget(self, esperado, budget_real, extra=None):
+        orden = {"llamadas": [{
+            "n": 1, "tool": "ads_update_entity",
+            "args": {"entity_id": "adset_2", "fields": {"daily_budget": esperado}},
+            "entidad": {"id": "adset_2", "nombre": "Conjunto 2"},
+        }]}
+        snap = {"ad_entities": [{"id": "adset_2", "name": "Conjunto 2", "status": "ACTIVE",
+                                 "daily_budget": budget_real}]}
+        snap.update(extra or {})
+        snap_path = os.path.join(self.temp_dir, "snap_obj.json")
+        with io.open(snap_path, "w", encoding="utf-8") as fh:
+            json.dump(snap, fh)
+        return verificar_orden.verificar(orden, snap_path)
+
+    def test_budget_objeto_meta_coincide_en_unidad_menor(self):
+        ok, fallas = self._verificar_budget(479, {"value": "4.79", "unit": "USD"})
+        self.assertTrue(ok, fallas)
+
+    def test_budget_objeto_meta_distinto_es_discrepancia(self):
+        ok, fallas = self._verificar_budget(479, {"value": "3.99", "unit": "USD"})
+        self.assertFalse(ok)
+        self.assertIn("daily_budget", fallas[0])
+
+    def test_budget_sin_moneda_conocida_es_discrepancia(self):
+        ok, fallas = self._verificar_budget(479, 4.79)
+        self.assertFalse(ok)
 
 
 if __name__ == "__main__":

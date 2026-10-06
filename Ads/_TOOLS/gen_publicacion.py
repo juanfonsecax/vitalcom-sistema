@@ -111,10 +111,7 @@ from gen_lanzador import PATRON_REPLICA, siguiente_replica, token_formato, desti
 
 SCHEMA = "publicacion/1"
 
-# Unidades menores por unidad de moneda en el daily_budget de Meta. COP va en pesos
-# enteros: el mínimo diario medido de las cuentas COP es 3154 (~1 USD) en
-# _DIM_CUENTAS.csv.min_daily_budget_cents.
-UNIDAD_MENOR = {"USD": 100, "COP": 1}
+from presupuesto_meta import UNIDAD_MENOR  # dueño único de las unidades de presupuesto de Meta
 
 
 # ---------------------------------------------------------------- utilidades

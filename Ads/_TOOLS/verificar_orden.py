@@ -24,6 +24,9 @@ for _s in (sys.stdout, sys.stderr):
     except (AttributeError, ValueError):
         pass
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import presupuesto_meta as pm  # dueño único de las unidades de presupuesto de Meta
+
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
 
@@ -39,6 +42,7 @@ def cargar_snapshot(ruta):
             objetos = json.loads(objetos)
         except Exception:
             objetos = []
+    moneda = (str(d.get("moneda") or "").strip().upper() if isinstance(d, dict) else "")
     out = {}
     for o in objetos:
         nombre = (o.get("name") or "").strip()
@@ -52,6 +56,7 @@ def cargar_snapshot(ruta):
             "nivel": nivel,
             "status": status,
             "daily_budget": daily_budget,
+            "moneda": moneda,
         }
         if nombre:
             out[nombre] = item
@@ -90,16 +95,19 @@ def verificar(orden_data, snapshot_ruta):
                 )
 
         if "daily_budget" in fields:
-            budget_esperado = float(fields["daily_budget"])
-            budget_real_raw = meta_ent.get("daily_budget")
+            # Expected is an integer in minor units; the snapshot's real budget is converted
+            # through presupuesto_meta (Meta object or plain number + top-level moneda).
             try:
-                budget_real = float(budget_real_raw) if budget_real_raw is not None else None
-            except (ValueError, TypeError):
-                budget_real = None
+                esperado_menor = int(round(float(fields["daily_budget"])))
+            except (TypeError, ValueError):
+                esperado_menor = None
+            budget_real_raw = meta_ent.get("daily_budget")
+            mayor, moneda = pm.leer_presupuesto(budget_real_raw, meta_ent.get("moneda") or None)
+            real_menor = pm.a_unidad_menor(mayor, moneda) if mayor is not None else None
 
-            if budget_real is None or abs(budget_real - budget_esperado) > 0.05:
+            if esperado_menor is None or real_menor is None or abs(real_menor - esperado_menor) > 1:
                 discrepancias.append(
-                    f"Llamada #{ll.get('n')}: daily_budget de '{nombre_ent}' ({eid}) es '{budget_real_raw}', esperado '{budget_esperado:.2f}'."
+                    f"Llamada #{ll.get('n')}: daily_budget de '{nombre_ent}' ({eid}) es '{budget_real_raw}', esperado '{fields['daily_budget']}' (unidad menor)."
                 )
 
     return len(discrepancias) == 0, discrepancias

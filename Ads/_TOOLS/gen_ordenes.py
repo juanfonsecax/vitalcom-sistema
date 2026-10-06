@@ -7,7 +7,9 @@ POR QUE EXISTE (Hito 5, 19-sep-2026):
 _DECISIONES.json trae la recomendación en prosa ("APAGAR: Gastó Q95...", "ESCALAR (Calet)...").
 Este script traduce esas decisiones a órdenes LITERALES de Meta para el operador y el runner:
   - Entidad de Meta (id, nombre, nivel: adset o campaign)
-  - Acción: ads_update_entity con fields: {"status": "PAUSED"} o {"daily_budget": ...}
+  - Acción: ads_update_entity con fields: {"status": "PAUSED"} o {"daily_budget": <entero en
+    unidad menor de la moneda, p.ej. USD 4.79 -> 479>}; args lleva ad_account_id, entity_id y
+    entity_type (campaign|ad_set|ad). En CBO el presupuesto vive en la campaña: se sube ahí.
   - Valor antes -> valor después
   - El porqué (CPA observado, IC 95%, break-even, ventas faltantes) y el rezago de la data
   - SEGUIR_MIDIENDO no genera orden a Meta (mantiene y mide).
@@ -40,6 +42,11 @@ INGESTA_META = os.path.join(BASE, "Ads", "_INGESTA", "META")
 
 P = lambda *a: os.path.join(PROD, *a)
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import presupuesto_meta as pm  # dueño único de las unidades de presupuesto de Meta
+
+ENTITY_TYPE = {"adset": "ad_set", "campaign": "campaign", "ad": "ad"}
+
 
 def cargar_json(ruta):
     if not os.path.exists(ruta):
@@ -60,10 +67,12 @@ def cargar_snapshot(ruta):
             objetos = json.loads(objetos)
         except Exception:
             objetos = []
+    cuenta_id = (str(d.get("cuenta_id") or "").strip() if isinstance(d, dict) else "")
+    moneda = (str(d.get("moneda") or "").strip().upper() if isinstance(d, dict) else "")
     out = {}
     for o in objetos:
         nombre = (o.get("name") or "").strip()
-        oid = (o.get("id") or "").strip()
+        oid = str(o.get("id") or "").strip()
         nivel = (o.get("nivel") or o.get("entity_type") or "").strip().lower()
         status = (o.get("status") or o.get("effective_status") or "").strip().upper()
         daily_budget = o.get("daily_budget")
@@ -73,6 +82,9 @@ def cargar_snapshot(ruta):
             "nivel": nivel,
             "status": status,
             "daily_budget": daily_budget,
+            "campaign_id": str(o.get("campaign_id") or "").strip(),
+            "cuenta_id": cuenta_id,
+            "moneda": moneda,
         }
         if nombre:
             out[nombre] = item
@@ -180,6 +192,15 @@ def cargar_parametros():
                     except ValueError:
                         pass
     return p
+
+
+def _bloqueo_sin_cuenta(c_nombre, ak, pk):
+    return {
+        "falta": f"el snapshot no trae cuenta_id para el conjunto '{c_nombre}' (ángulo '{ak}') "
+                 f"de '{pk}': ads_update_entity exige ad_account_id",
+        "lo_produce": "snapshot Meta con cuenta_id (publicar-meta paso 1.2)",
+        "ambito": "ordenes",
+    }
 
 
 def generar_frase_simple(estado, angulo_nombre, cpa_real, obj_q, be_q, faltan_ventas, surfing_pct):
@@ -355,11 +376,17 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                     status_actual = meta_obj.get("status", "ACTIVE")
                     ya_pausado = (status_actual == "PAUSED")
 
+                    if not meta_obj.get("cuenta_id"):
+                        bloqueantes.append(_bloqueo_sin_cuenta(c_nombre, ak, pk))
+                        continue
+
                     llamadas.append({
                         "n": num_llamada,
                         "tool": "ads_update_entity",
                         "args": {
+                            "ad_account_id": meta_obj["cuenta_id"],
                             "entity_id": cid,
+                            "entity_type": ENTITY_TYPE.get(meta_obj.get("nivel") or "adset", "ad_set"),
                             "fields": {"status": "PAUSED"},
                         },
                         "entidad": {
@@ -395,7 +422,8 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                     })
                     continue
 
-                for c_nombre in set(nombres_conjuntos):
+                objetivos_hechos = set()
+                for c_nombre in sorted(set(nombres_conjuntos)):
                     meta_obj = snapshot_meta.get(c_nombre)
                     if not meta_obj:
                         bloqueantes.append({
@@ -405,18 +433,20 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                         })
                         continue
 
-                    cid = meta_obj.get("id")
-                    status_actual = meta_obj.get("status", "ACTIVE")
-                    budget_actual = meta_obj.get("daily_budget")
-
-                    # The new budget is computed only from the real one in the snapshot. Without
-                    # it (CBO keeps the budget on the campaign; old snapshots omit it) the order
-                    # is blocked: an invented base would move real money.
-                    try:
-                        b_val = float(budget_actual)
-                    except (ValueError, TypeError):
-                        b_val = None
-                    if b_val is None or b_val <= 0:
+                    # The new budget is computed only from the real one in the snapshot. The
+                    # adset carries it in ABO; in CBO it lives on the parent campaign. Without
+                    # either, the order is blocked: an invented base would move real money.
+                    objetivo = meta_obj
+                    moneda_defecto = meta_obj.get("moneda") or None
+                    b_val, moneda = pm.leer_presupuesto(meta_obj.get("daily_budget"), moneda_defecto)
+                    if b_val is None:
+                        padre = snapshot_meta.get(meta_obj.get("campaign_id") or "")
+                        if padre:
+                            b_val, moneda = pm.leer_presupuesto(
+                                padre.get("daily_budget"), padre.get("moneda") or moneda_defecto)
+                            if b_val is not None:
+                                objetivo = padre
+                    if b_val is None:
                         bloqueantes.append({
                             "falta": f"sin daily_budget real en el snapshot para el conjunto "
                                      f"'{c_nombre}' (ángulo '{ak}') de '{pk}': no se calcula el "
@@ -428,24 +458,47 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                         })
                         continue
 
-                    nuevo_budget = round(b_val * (1.0 + surfing_pct / 100.0), 2)
-                    ya_escalado = abs(b_val - nuevo_budget) < 0.01
+                    actual_menor = pm.a_unidad_menor(b_val, moneda)
+                    if actual_menor is None:
+                        bloqueantes.append({
+                            "falta": f"moneda '{moneda or 'desconocida'}' sin unidad menor conocida "
+                                     f"para el conjunto '{c_nombre}' (ángulo '{ak}') de '{pk}': no se "
+                                     f"escribe un presupuesto en una unidad que no se sabe",
+                            "lo_produce": "Ads/_TOOLS/presupuesto_meta.py UNIDAD_MENOR",
+                            "ambito": "ordenes",
+                        })
+                        continue
+                    if not objetivo.get("cuenta_id"):
+                        bloqueantes.append(_bloqueo_sin_cuenta(c_nombre, ak, pk))
+                        continue
+
+                    cid = objetivo.get("id")
+                    if cid in objetivos_hechos:
+                        continue   # CBO: one call per campaign, however many adsets point to it
+                    objetivos_hechos.add(cid)
+
+                    nuevo_menor = pm.a_unidad_menor(b_val * (1.0 + surfing_pct / 100.0), moneda)
+                    nuevo_mayor = nuevo_menor / pm.UNIDAD_MENOR[moneda]
+                    ya_escalado = (actual_menor == nuevo_menor)
+                    nivel = objetivo.get("nivel") or "adset"
 
                     llamadas.append({
                         "n": num_llamada,
                         "tool": "ads_update_entity",
                         "args": {
+                            "ad_account_id": objetivo["cuenta_id"],
                             "entity_id": cid,
-                            "fields": {"daily_budget": nuevo_budget},
+                            "entity_type": ENTITY_TYPE.get(nivel, "ad_set"),
+                            "fields": {"daily_budget": nuevo_menor},
                         },
                         "entidad": {
                             "id": cid,
-                            "nombre": c_nombre,
-                            "nivel": meta_obj.get("nivel", "adset"),
+                            "nombre": objetivo.get("name") or c_nombre,
+                            "nivel": nivel,
                         },
                         "accion": "ESCALAR",
-                        "antes": f"{b_val:.2f}",
-                        "despues": f"{nuevo_budget:.2f}",
+                        "antes": f"{b_val:.2f} {moneda}",
+                        "despues": f"{nuevo_mayor:.2f} {moneda}",
                         "omitir": ya_escalado,
                         "id_existente": cid if ya_escalado else None,
                         "por_que": orden_item["por_que"],

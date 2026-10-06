@@ -88,6 +88,8 @@ class TestGenOrdenes(unittest.TestCase):
             json.dump(decisiones_fixture, fh)
 
         snapshot_fixture = {
+            "cuenta_id": "act_1",
+            "moneda": "USD",
             "ad_entities": [
                 {
                     "id": "adset_111",
@@ -141,12 +143,19 @@ class TestGenOrdenes(unittest.TestCase):
             llamada_pausa = next(ll for ll in llamadas if ll["accion"] == "PAUSAR")
             self.assertEqual(llamada_pausa["entidad"]["id"], "adset_111")
             self.assertEqual(llamada_pausa["args"]["fields"]["status"], "PAUSED")
+            self.assertEqual(llamada_pausa["args"]["entity_type"], "ad_set")
+            self.assertEqual(llamada_pausa["args"]["ad_account_id"], "act_1")
             self.assertEqual(llamada_pausa["omitir"], False)
 
             llamada_escala = next(ll for ll in llamadas if ll["accion"] == "ESCALAR")
             self.assertEqual(llamada_escala["entidad"]["id"], "adset_222")
-            # 3.00 + 20% = 3.60
-            self.assertEqual(llamada_escala["args"]["fields"]["daily_budget"], 3.60)
+            # 3.00 + 20% = 3.60 USD = 360 minor units (integer)
+            self.assertEqual(llamada_escala["args"]["fields"]["daily_budget"], 360)
+            self.assertIsInstance(llamada_escala["args"]["fields"]["daily_budget"], int)
+            self.assertEqual(llamada_escala["args"]["entity_type"], "ad_set")
+            self.assertEqual(llamada_escala["args"]["ad_account_id"], "act_1")
+            self.assertEqual(llamada_escala["antes"], "3.00 USD")
+            self.assertEqual(llamada_escala["despues"], "3.60 USD")
             self.assertEqual(llamada_escala["omitir"], False)
 
             # Las órdenes de resumen deben contener las 3 celdas
@@ -188,6 +197,7 @@ class TestGenOrdenes(unittest.TestCase):
             json.dump(decisiones_fixture, fh)
 
         snapshot_fixture = {
+            "cuenta_id": "act_1",
             "ad_entities": [
                 {
                     "id": "adset_999",
@@ -342,7 +352,8 @@ class TestPlataNuncaInventada(unittest.TestCase):
         sube = {"id": "adset_sube", "name": "Conjunto Sube", "nivel": "adset", "status": "ACTIVE"}
         if budget_sube is not None:
             sube["daily_budget"] = budget_sube
-        snap = {"ad_entities": [sube, {"id": "adset_baja", "name": "Conjunto Baja",
+        snap = {"cuenta_id": "act_1", "moneda": "USD",
+                "ad_entities": [sube, {"id": "adset_baja", "name": "Conjunto Baja",
                                        "nivel": "adset", "status": "ACTIVE"}]}
         dec_path = os.path.join(self.temp_dir, "dec.json")
         snap_path = os.path.join(self.temp_dir, "snap.json")
@@ -372,7 +383,7 @@ class TestPlataNuncaInventada(unittest.TestCase):
         res = self._correr(rezago=2, budget_sube=15.0)
         self.assertEqual(self._acciones(res), ["ESCALAR", "PAUSAR"])
         sube = next(ll for ll in res["llamadas"] if ll["accion"] == "ESCALAR")
-        self.assertEqual(sube["args"]["fields"]["daily_budget"], 18.0)
+        self.assertEqual(sube["args"]["fields"]["daily_budget"], 1800)
         self.assertEqual(res["bloqueantes"], [])
 
     def test_rezago_mayor_al_maximo_bloquea_escalar_y_deja_pausar(self):
@@ -386,6 +397,111 @@ class TestPlataNuncaInventada(unittest.TestCase):
                     self._correr(rezago=None, budget_sube=15.0, con_rezago=False)):
             self.assertEqual(self._acciones(res), ["PAUSAR"])
             self.assertTrue(any("rezago" in b["falta"] for b in res["bloqueantes"]))
+
+
+class TestPresupuestoMeta(unittest.TestCase):
+    """Meta units: reads {"value","unit"} in major units, writes integers in minor units;
+    CBO targets the campaign; every call carries account + entity_type."""
+
+    def setUp(self):
+        self.temp_dir = tempfile.mkdtemp()
+        self._orig_pendientes = gen_ordenes.cargar_pendientes_registro
+        self._orig_dim = gen_ordenes.cargar_dim_conjuntos
+        gen_ordenes.cargar_pendientes_registro = lambda: []
+        gen_ordenes.cargar_dim_conjuntos = lambda: {
+            ("PX", "ANG_SUBE"): [
+                {"conjunto_meta": "Conjunto Sube", "angulo_nombre": "Sube"},
+                {"conjunto_meta": "Conjunto Sube B", "angulo_nombre": "Sube"},
+            ],
+        }
+
+    def tearDown(self):
+        import shutil
+        shutil.rmtree(self.temp_dir, ignore_errors=True)
+        gen_ordenes.cargar_pendientes_registro = self._orig_pendientes
+        gen_ordenes.cargar_dim_conjuntos = self._orig_dim
+
+    def _correr(self, entidades, cuenta_id="act_9", extra=None):
+        dec = {"generado": "2026-10-05", "rezago_dias": 0, "productos": [{
+            "producto_key": "PX", "break_even_q": 80.0, "cpa_objetivo_q": 35.0,
+            "fase_vigente": "F4", "celdas": [
+                {"celda": "ANG_SUBE", "estado": "ESCALAR", "ejecutable": True}]}]}
+        snap = {"ad_entities": entidades}
+        if cuenta_id is not None:
+            snap["cuenta_id"] = cuenta_id
+        snap.update(extra or {})
+        dec_path = os.path.join(self.temp_dir, "dec.json")
+        snap_path = os.path.join(self.temp_dir, "snap.json")
+        with io.open(dec_path, "w", encoding="utf-8") as fh:
+            json.dump(dec, fh)
+        with io.open(snap_path, "w", encoding="utf-8") as fh:
+            json.dump(snap, fh)
+        return gen_ordenes.generar_ordenes(producto_filtro="PX", ruta_decisiones=dec_path,
+                                           ruta_snapshot=snap_path)
+
+    def _escalar(self, res):
+        return [ll for ll in res["llamadas"] if ll["accion"] == "ESCALAR"]
+
+    def test_budget_objeto_en_adset(self):
+        res = self._correr([{"id": "as1", "name": "Conjunto Sube", "nivel": "adset",
+                             "status": "ACTIVE", "campaign_id": "c1",
+                             "daily_budget": {"value": "3.99", "unit": "USD"}}])
+        ll = self._escalar(res)
+        self.assertEqual(len(ll), 1)
+        self.assertEqual(ll[0]["args"]["fields"]["daily_budget"], 479)
+        self.assertEqual(ll[0]["args"]["entity_type"], "ad_set")
+        self.assertEqual(ll[0]["args"]["entity_id"], "as1")
+        self.assertEqual(ll[0]["antes"], "3.99 USD")
+        self.assertEqual(ll[0]["despues"], "4.79 USD")
+        self.assertFalse(ll[0]["omitir"])
+
+    def test_cbo_apunta_a_la_campana(self):
+        res = self._correr([
+            {"id": "as1", "name": "Conjunto Sube", "nivel": "adset", "status": "ACTIVE",
+             "campaign_id": "c1"},
+            {"id": "c1", "name": "Camp CBO", "nivel": "campaign", "status": "ACTIVE",
+             "daily_budget": {"value": "15.00", "unit": "USD"}},
+        ])
+        ll = self._escalar(res)
+        self.assertEqual(len(ll), 1, res["bloqueantes"])
+        self.assertEqual(ll[0]["args"]["entity_type"], "campaign")
+        self.assertEqual(ll[0]["args"]["entity_id"], "c1")
+        self.assertEqual(ll[0]["args"]["ad_account_id"], "act_9")
+        self.assertEqual(ll[0]["args"]["fields"]["daily_budget"], 1800)
+
+    def test_dos_conjuntos_de_la_misma_campana_cbo_una_llamada(self):
+        res = self._correr([
+            {"id": "as1", "name": "Conjunto Sube", "nivel": "adset", "status": "ACTIVE",
+             "campaign_id": "c1"},
+            {"id": "as2", "name": "Conjunto Sube B", "nivel": "adset", "status": "ACTIVE",
+             "campaign_id": "c1"},
+            {"id": "c1", "name": "Camp CBO", "nivel": "campaign", "status": "ACTIVE",
+             "daily_budget": {"value": "15.00", "unit": "USD"}},
+        ])
+        self.assertEqual(len(self._escalar(res)), 1)
+
+    def test_moneda_desconocida_bloquea(self):
+        res = self._correr([{"id": "as1", "name": "Conjunto Sube", "nivel": "adset",
+                             "status": "ACTIVE", "campaign_id": "c1",
+                             "daily_budget": {"value": "3.99", "unit": "EUR"}}])
+        self.assertEqual(self._escalar(res), [])
+        self.assertTrue(any("moneda" in b["falta"] for b in res["bloqueantes"]))
+
+    def test_sin_cuenta_id_bloquea_escalar_y_pausar(self):
+        ents = [{"id": "as1", "name": "Conjunto Sube", "nivel": "adset", "status": "ACTIVE",
+                 "daily_budget": {"value": "3.99", "unit": "USD"}}]
+        res = self._correr(ents, cuenta_id=None)
+        self.assertEqual(res["llamadas"], [])
+        self.assertTrue(any("cuenta_id" in b["falta"] for b in res["bloqueantes"]))
+
+    def test_omitir_compara_en_unidad_menor(self):
+        # 0.01 USD = 1 minor unit; +20% rounds back to 1 -> already at target, idempotent skip
+        res = self._correr([{"id": "as1", "name": "Conjunto Sube", "nivel": "adset",
+                             "status": "ACTIVE", "campaign_id": "c1",
+                             "daily_budget": {"value": "0.01", "unit": "USD"}}])
+        ll = self._escalar(res)
+        self.assertEqual(ll[0]["args"]["fields"]["daily_budget"], 1)
+        self.assertTrue(ll[0]["omitir"])
 
 
 class TestPendientesRegistro(unittest.TestCase):
