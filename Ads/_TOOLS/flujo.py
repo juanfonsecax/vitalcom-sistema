@@ -1171,6 +1171,29 @@ def contexto(prod, env):
     })
 
 
+_FALTA_NUMEROS = re.compile(r"^\s*(\d+(?:\.\d+)?)(?!\d).*?esperado\s*≥\s*(\d+(?:\.\d+)?)")
+
+
+def texto_falta(plantilla, observado):
+    """El `falta` de un requisito, listo para el operador. Dueño único del texto corto:
+    `{n}` = esperado - observado (solo si el predicado informó ambos números); `a|b` da la forma
+    singular `b` cuando n == 1. Devuelve None si la plantilla pide `{n}` y no se puede calcular:
+    el consumidor cae al texto técnico en vez de inventar una cifra."""
+    if not isinstance(plantilla, str) or not plantilla.strip():
+        return None
+    plural, _, singular = plantilla.partition("|")
+    plural, singular = plural.strip(), singular.strip()
+    if "{n}" not in plural and "{n}" not in singular:
+        return plural
+    m = _FALTA_NUMEROS.match(observado or "")
+    if not m:
+        return None
+    n = round(float(m.group(2)) - float(m.group(1)))
+    if n <= 0:
+        return None
+    return (singular if (n == 1 and singular) else plural).replace("{n}", str(n))
+
+
 def _lista(pred_list, ctx, env, con_dueno=True):
     out = []
     for req in pred_list or []:
@@ -1179,6 +1202,9 @@ def _lista(pred_list, ctx, env, con_dueno=True):
         if con_dueno:
             item["dueno"] = req.get("dueno", "")
             item["regla"] = req.get("regla", "")
+            falta = texto_falta(req.get("falta"), obs)
+            if falta:
+                item["falta"] = falta
         out.append(item)
     return out
 
@@ -1610,6 +1636,11 @@ def validar(flujo, env):
             problemas.append("%s: sin `produce` ni `requiere` — nunca se podría dar por cumplido" % nid)
         for lista in ("requiere", "produce", "avisos"):
             for i, req in enumerate(n.get(lista) or []):
+                if "falta" in req:
+                    f = req["falta"]
+                    resto = f.replace("{n}", "") if isinstance(f, str) else ""
+                    if not isinstance(f, str) or not f.strip() or "{" in resto or "}" in resto:
+                        problemas.append("%s.%s[%d]: `falta` debe ser texto, con `{n}` como único campo" % (nid, lista, i))
                 if "predicado" not in req:
                     problemas.append("%s.%s[%d]: sin `predicado`" % (nid, lista, i))
                 else:

@@ -33,16 +33,16 @@
      "ejecutor": {"tipo": "operador"},
      "como": "Entregar producto, costo Q, dosis, imagen y ≥6 transcripciones TXT en Ads/1.2 Transcripcion videos/{carpeta_transcripciones}/. Se decide UNA vez; si cambia, rerun completo (invariante 5).",
      "requiere": [
-      {"dato": "fila del producto en _DIM_PRODUCTOS.csv",
+      {"dato": "fila del producto en _DIM_PRODUCTOS.csv", "falta": "el producto no tiene fila en _DIM_PRODUCTOS.csv",
        "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "producto_key", "no_vacio": true},
        "dueno": "operador · _DIM_PRODUCTOS.csv", "regla": "invariante 8 y 10"},
-      {"dato": "COSTO_PROVEEDOR_Q",
+      {"dato": "COSTO_PROVEEDOR_Q", "falta": "falta el costo del proveedor",
        "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "costo_q", "num_min": 1},
        "dueno": "operador · _DIM_PRODUCTOS.csv columna costo_q", "regla": "fase-1 PASO −1"},
-      {"dato": "≥6 transcripciones TXT",
+      {"dato": "≥6 transcripciones TXT", "falta": "faltan {n} transcripciones de videos|falta 1 transcripción de video",
        "predicado": {"tipo": "glob", "patron": "Ads/1.2 Transcripcion videos/{carpeta_transcripciones}/*.txt", "min": 6},
        "dueno": "operador · Ads/1.2 Transcripcion videos/", "regla": "fase-1 PRE-VALIDACIÓN: 6 ángulos = 6 transcripciones"},
-      {"dato": "carpeta de media del producto (imagen del frasco)",
+      {"dato": "carpeta de media del producto (imagen del frasco)", "falta": "falta la imagen del producto",
        "predicado": {"tipo": "archivo", "ruta": "Ads/{carpeta_media}"},
        "dueno": "operador · Ads/MEDIA_[PRODUCTO]/", "regla": "invariante 8"}
      ]
@@ -54,18 +54,18 @@
      "secuencia": ["etapa-producto", "etapa-0", "etapa-1", "etapa-1b", "etapa-2", "etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
      "como": "La skill invoca los subagentes en ese orden (etapa-2 ya incluye la asignación de FanPage — absorbida de la extinta etapa-fanpage, T1 p2-simplificacion; etapa-4 ∥ etapa-5). Si etapa-producto dice NO APTO se detiene y se pregunta. Termina con el paquete en disco.",
      "produce": [
-      {"dato": "2_DATA_PRODUCTO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/2_DATA_PRODUCTO.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
-      {"dato": "1_HACER_MANUAL.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/1_HACER_MANUAL.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
-      {"dato": "break-even calculado (cpa_be_q)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cpa_be_q", "num_min": 1}, "dueno": "cargar_costeo.py (escritor) · el numero lo calcula costear.py, etapa-1 lo usa, etapa-guardar-producto lo escribe", "regla": "invariante 2"},
-      {"dato": "_PLAN.json fase 1 con ≥6 conjuntos (contrato plan/1)",
+      {"dato": "2_DATA_PRODUCTO.txt", "falta": "falta el archivo de datos del producto (2_DATA_PRODUCTO.txt)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/2_DATA_PRODUCTO.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
+      {"dato": "1_HACER_MANUAL.txt", "falta": "falta el manual de lanzamiento (1_HACER_MANUAL.txt)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/1_HACER_MANUAL.txt"}, "dueno": "etapa-guardar-producto", "regla": "invariante 8"},
+      {"dato": "break-even calculado (cpa_be_q)", "falta": "falta calcular el break-even", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cpa_be_q", "num_min": 1}, "dueno": "cargar_costeo.py (escritor) · el numero lo calcula costear.py, etapa-1 lo usa, etapa-guardar-producto lo escribe", "regla": "invariante 2"},
+      {"dato": "_PLAN.json fase 1 con ≥6 conjuntos (contrato plan/1)", "falta": "falta el plan de la campaña de FASE 1",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN.json", "campo": "schema", "eq": "plan/1"},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN.json", "campo": "conjuntos", "min_len": 6}]},
        "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "6 ángulos × concepto fijo"},
-      {"dato": "≥6 conjuntos FASE1 registrados en _DIM_CONJUNTOS.csv",
+      {"dato": "≥6 conjuntos FASE1 registrados en _DIM_CONJUNTOS.csv", "falta": "faltan {n} conjuntos de FASE 1 por registrar|falta 1 conjunto de FASE 1 por registrar",
        "predicado": {"tipo": "csv", "csv": "_DIM_CONJUNTOS.csv", "where": {"producto_key": "{pk}", "fase": ["FASE1", "TESTEO"]}, "min": 6},
        "dueno": "etapa-guardar-producto (SALIDA 4)", "regla": "un dato, un dueño"},
-      {"dato": "paquete LANZABLE: lo que las etapas produjeron alcanza para publicar (página, banda, piezas en disco, copy, firma)",
+      {"dato": "paquete LANZABLE: lo que las etapas produjeron alcanza para publicar (página, banda, piezas en disco, copy, firma)", "falta": "el paquete de FASE 1 todavía no está listo para publicar",
        "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "1", "--solo-paquete"], "exit": 0},
        "dueno": "la etapa que nombra cada bloqueante · Ads/_TOOLS/gen_publicacion.py --solo-paquete (solo los de ámbito paquete: la cuenta y la fecha los juzga F1.publicar)",
        "regla": "un paquete que no se puede lanzar no está cumplido (simulación TURMERIC)"}
@@ -77,15 +77,15 @@
      "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
      "como": "Pre-flight contra Meta (snapshot), regenerar el paquete contra ese snapshot, ejecutar las llamadas en orden, cerrar el gate con verificar_publicacion.py --escribir.",
      "requiere": [
-      {"dato": "cuenta publicitaria asignada", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias", "regla": "invariante 4"},
-      {"dato": "page_id de la FanPage", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "page_id", "no_vacio": true}, "dueno": "etapa-2 + operador · _DIM_PRODUCTOS.csv columna page_id", "regla": "invariante 4"},
-      {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
-      {"dato": "gate de reconciliación del producto", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "etapa-guardar-producto · Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
-      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json (publicar-meta paso 1)", "regla": "HANDOFF 08-sep: el CSV no es evidencia del estado de Meta"},
-      {"dato": "paquete de publicación sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "1", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py (deriva y bloquea)", "regla": "_PARAMETROS_PUBLICACION.csv fase 1"}
+      {"dato": "cuenta publicitaria asignada", "falta": "falta asignar la cuenta publicitaria", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv columna cuenta_alias", "regla": "invariante 4"},
+      {"dato": "page_id de la FanPage", "falta": "falta el page_id de la FanPage", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "page_id", "no_vacio": true}, "dueno": "etapa-2 + operador · _DIM_PRODUCTOS.csv columna page_id", "regla": "invariante 4"},
+      {"dato": "la cuenta tiene el MCP habilitado", "falta": "la cuenta no tiene el MCP habilitado (se pauta a mano)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
+      {"dato": "gate de reconciliación del producto", "falta": "los archivos del producto no coinciden entre sí", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "etapa-guardar-producto · Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
+      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "falta": "falta el snapshot de Meta de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json (publicar-meta paso 1)", "regla": "HANDOFF 08-sep: el CSV no es evidencia del estado de Meta"},
+      {"dato": "paquete de publicación sin bloqueantes", "falta": "el paquete de publicación tiene bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "1", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py (deriva y bloquea)", "regla": "_PARAMETROS_PUBLICACION.csv fase 1"}
      ],
      "produce": [
-      {"dato": "evidencia de campaña de FASE 1 en Meta",
+      {"dato": "evidencia de campaña de FASE 1 en Meta", "falta": "la campaña de FASE 1 todavía no está publicada en Meta",
        "predicado": {"tipo": "alguno", "de": [
          {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "campaign_id", "not_in": ["", "PENDIENTE", "SIN_MCP"]},
          {"tipo": "eventos", "evento": ["LANZAMIENTO", "LANZAMIENTO_TEST"], "min": 1},
@@ -105,7 +105,7 @@
      "ejecutor": {"tipo": "mcp"},
      "como": "Activar la campaña (MCP con confirmación, o a mano) y anexar el evento LANZAMIENTO a _EVENTOS.csv con el presupuesto inicial. Control D+1 de tracking (MCP_PLAYBOOK 7.5).",
      "produce": [
-      {"dato": "LANZAMIENTO registrado o gasto observado",
+      {"dato": "LANZAMIENTO registrado o gasto observado", "falta": "la campaña todavía no se activó",
        "predicado": {"tipo": "alguno", "de": [
          {"tipo": "eventos", "evento": ["LANZAMIENTO", "LANZAMIENTO_TEST"], "min": 1},
          {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}"}, "sum": "spend_usd", "sum_min": 0.01}]},
@@ -129,7 +129,7 @@
      "ejecutor": {"tipo": "subagente", "name": "etapa-11"},
      "como": "En F2 etapa-11 SOLO diagnostica — mide el cierre por ángulo y audita la congruencia anuncio ↔ bot, sin reescribir el flujo. La REESCRITURA (CAMBIO_BOT) corre después del concepto ganador 2/2 y antes de F3 (ver F3.entrada más abajo): reescribir el bot mientras F2 todavía está midiendo CONCEPTO metería una segunda variable a la vez (PLANTILLAS_FLUJO_BOT.md reglas A-G). Este nodo NO bloquea F2.conceptos: corre en paralelo, entrega su brief a etapa-5 para cuando llegue el momento de reescribir.",
      "produce": [
-      {"dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador",
+      {"dato": "DIAGNOSTICO_CONGRUENCIA registrado en _EVENTOS.csv, fechado después del ángulo ganador", "falta": "falta el diagnóstico del bot (etapa-11)",
        "predicado": {"tipo": "eventos", "evento": ["DIAGNOSTICO_CONGRUENCIA"], "min": 1, "posterior_a": {"tipo": "angulo_ganador"}},
        "dueno": "etapa-11 (mide y diagnostica) → operador (registra el evento con registrar_evento.py)",
        "regla": "verificable sin exigir una reescritura de flujo: un diagnóstico posterior al ganador prueba que se MIDIÓ el cierre antes de F2, no que ya se reescribió el bot"}
@@ -142,7 +142,7 @@
      "secuencia": ["etapa-9", "Ads/_TOOLS/lavar_videos.sh", "etapa-render"],
      "como": "etapa-9 registra las filas en _DIM_CREATIVOS.csv (PENDIENTE_GENERAR); si algun concepto es formato VIDEO se lava con Ads/_TOOLS/LAVADO.md antes de registrarlo GENERADO (decision operador 22-sep-2026: el video se testea en FASE 2, ya no en F1); etapa-render produce los conceptos IMAGEN en ChatGPT web y deja GENERADO con el gate de calidad corrido.",
      "produce": [
-      {"dato": "conceptos GENERADOS (10 = A 5 + B 5, de _PARAMETROS_PUBLICACION.csv)",
+      {"dato": "conceptos GENERADOS (10 = A 5 + B 5, de _PARAMETROS_PUBLICACION.csv)", "falta": "faltan {n} conceptos|falta 1 concepto",
        "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "estado": ["GENERADO", "PUBLICADO"]}, "min": "@publicacion:conceptos_fase2"},
        "dueno": "etapa-9 (filas) + etapa-render (PNG)", "regla": "R3F-13: FASE 2 necesita 10 conceptos publicables o no arranca"}
      ],
@@ -158,7 +158,7 @@
      "secuencia": ["etapa-4", "etapa-5", "etapa-6", "etapa-guardar-producto"],
      "como": "etapa-4 ∥ etapa-5 (copy único + brazos A/B del bot), luego etapa-6 escribe PRODUCTOS/{slug}/_PLAN_FASE2.json en el contrato plan/1 y etapa-guardar-producto actualiza el paquete.",
      "produce": [
-      {"dato": "_PLAN_FASE2.json en el contrato plan/1 con los 10 conceptos",
+      {"dato": "_PLAN_FASE2.json en el contrato plan/1 con los 10 conceptos", "falta": "falta el plan de FASE 2 con los 10 conceptos",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "schema", "eq": "plan/1"},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE2.json", "campo": "fase", "eq": 2},
@@ -180,14 +180,14 @@
      "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
      "como": "Brazos A y B en la cuenta principal, C en OTRA cuenta. Pre-flight contra Meta, paquete contra el snapshot, llamadas en orden, gate que escribe los ad_id.",
      "requiere": [
-      {"dato": "cuenta publicitaria asignada", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv", "regla": "invariante 4"},
-      {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
-      {"dato": "gate de reconciliación del producto", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
-      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json", "regla": "HANDOFF 08-sep: preguntarle a Meta qué existe antes de crear"},
-      {"dato": "paquete de publicación del brazo A sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "2", "--brazo", "A", "--brazo-creativos", "A", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 2"}
+      {"dato": "cuenta publicitaria asignada", "falta": "falta asignar la cuenta publicitaria", "predicado": {"tipo": "csv_campo", "csv": "_DIM_PRODUCTOS.csv", "where": {"producto_key": "{pk}"}, "campo": "cuenta_alias", "not_in": ["", "PENDIENTE", "SIN_MCP"]}, "dueno": "operador · _DIM_PRODUCTOS.csv", "regla": "invariante 4"},
+      {"dato": "la cuenta tiene el MCP habilitado", "falta": "la cuenta no tiene el MCP habilitado (se pauta a mano)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv; si NO, se pauta a mano", "regla": "MCP_PLAYBOOK pre-flight"},
+      {"dato": "gate de reconciliación del producto", "falta": "los archivos del producto no coinciden entre sí", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/verificar_producto.py", "{pk}"], "exit": 0}, "dueno": "Ads/_TOOLS/verificar_producto.py", "regla": "invariante 9"},
+      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "falta": "falta el snapshot de Meta de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión: ads_get_ad_entities → Ads/_INGESTA/META/snapshot_{cuenta}.json", "regla": "HANDOFF 08-sep: preguntarle a Meta qué existe antes de crear"},
+      {"dato": "paquete de publicación del brazo A sin bloqueantes", "falta": "el paquete de publicación de FASE 2 tiene bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "2", "--brazo", "A", "--brazo-creativos", "A", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 2"}
      ],
      "produce": [
-      {"dato": "ad_id escritos en _DIM_CREATIVOS.csv para los conceptos (gate cerrado)",
+      {"dato": "ad_id escritos en _DIM_CREATIVOS.csv para los conceptos (gate cerrado)", "falta": "los conceptos todavía no están publicados en Meta",
        "predicado": {"tipo": "csv", "csv": "_DIM_CREATIVOS.csv", "where": {"producto_key": "{pk}", "ad_id": {"no_vacio": true}}, "min": "@publicacion:conceptos_fase2"},
        "dueno": "Ads/_TOOLS/verificar_publicacion.py --escribir", "regla": "publicar-meta paso 4: el gate escribe los ad_id"}
      ],
@@ -206,7 +206,7 @@
      "ejecutor": {"tipo": "mcp"},
      "como": "Activar (MCP con confirmación, o a mano), registrar LANZAMIENTO con campana_clave de conceptos, y el A/B de flujo con dos conjuntos gemelos del ganador (ETAPA-11 PASO 6): CAMBIO_BOT (paraguas) + LANZAMIENTO de cada gemelo, y su test_id en _TESTEOS.csv.",
      "produce": [
-      {"dato": "gasto observado en una campaña de conceptos",
+      {"dato": "gasto observado en una campaña de conceptos", "falta": "la campaña de conceptos todavía no gasta en Meta",
        "predicado": {"tipo": "alguno", "de": [
          {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "CONCEPTOS", "min": 1},
          {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}", "campana": {"contiene": "CONCEPTOS"}}, "sum": "spend_usd", "sum_min": 0.01}]},
@@ -238,7 +238,7 @@
      "ejecutor": {"tipo": "subagente", "name": "etapa-5"},
      "como": "Consume el brief de F2.etapa-11 (DIAGNOSTICO_CONGRUENCIA) y las PALANCA_1/DIAGNOSTICO_1 de la Clase 22-ago Calet: etapa-5 redacta los bloques de juicio del flujo hacia el ángulo+concepto ganador (PLANTILLAS_FLUJO_BOT.md reglas A-G), el operador APLICA el cambio en LucidBot a mano (esto NO es un objeto de Meta, no hay MCP) y anexa el evento CAMBIO_BOT con Ads/_TOOLS/registrar_evento.py. Si el operador decide explícitamente saltarse la reescritura, registra EXCEPCION_CAMBIO_BOT con el motivo en su lugar — ambos eventos sirven de fecha de corte para F3.medir_cierre y para el gate de F4.entrada.",
      "produce": [
-      {"dato": "CAMBIO_BOT (o EXCEPCION_CAMBIO_BOT) registrado en _EVENTOS.csv, fechado después del concepto ganador",
+      {"dato": "CAMBIO_BOT (o EXCEPCION_CAMBIO_BOT) registrado en _EVENTOS.csv, fechado después del concepto ganador", "falta": "falta registrar el cambio del bot (CAMBIO_BOT)",
        "predicado": {"tipo": "alguno", "de": [
          {"tipo": "eventos", "evento": ["CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}},
          {"tipo": "eventos", "evento": ["EXCEPCION_CAMBIO_BOT"], "min": 1, "posterior_a": {"tipo": "concepto_ganador"}}
@@ -253,7 +253,7 @@
      "ejecutor": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_decisiones.py"]},
      "como": "Corre con el ciclo diario existente (ciclo.datos/ciclo.motor), sin gate de ejecución aparte: los mensajes y ventas posteriores al CAMBIO_BOT/EXCEPCION_CAMBIO_BOT se cuentan automáticamente cada corrida. Si el cierre sigue bajo @param:cierre_min_escalar_pct al llegar a @param:min_mensajes_cierre mensajes, el producto se queda en FASE 3 para otra iteración de F3.reescribir (PROHIBIDO_ESCALAR_CIERRE_BAJO, Clase 22-ago Calet) — nunca se fuerza F4 con un CAMBIO_BOT viejo.",
      "produce": [
-      {"dato": "≥@param:min_mensajes_cierre mensajes con cierre ≥@param:cierre_min_escalar_pct% desde el último CAMBIO_BOT/EXCEPCION_CAMBIO_BOT (benchmark de referencia 15-20%, @param:cierre_meta_min_pct/@param:cierre_meta_max_pct, nunca bloquea)",
+      {"dato": "≥@param:min_mensajes_cierre mensajes con cierre ≥@param:cierre_min_escalar_pct% desde el último CAMBIO_BOT/EXCEPCION_CAMBIO_BOT (benchmark de referencia 15-20%, @param:cierre_meta_min_pct/@param:cierre_meta_max_pct, nunca bloquea)", "falta": "el cierre del bot todavía no se midió después del cambio",
        "predicado": {"tipo": "cierre_post_cambio_bot", "min_mensajes": "@param:min_mensajes_cierre", "min_cierre_pct": "@param:cierre_min_escalar_pct"},
        "dueno": "Ads/_TOOLS/decidir.py (mensajes/ventas) · Ads/_TOOLS/flujo.py (el predicado corta la fecha en el CAMBIO_BOT)",
        "regla": "PROHIBIDO_ESCALAR_CIERRE_BAJO — mismo gate que F4.entrada (b)+(c), declarado acá para que F3 muestre su propio avance antes de intentar F4"}
@@ -292,20 +292,20 @@
      "secuencia": ["etapa-2", "etapa-6", "etapa-guardar-producto", "publicar-meta"],
      "como": "Decisión del operador (22-sep-2026, P12): mientras F4 escala el ganador corre en PARALELO un mini-F1 fijo de @param:exploracion_n_angulos ángulos NUNCA probados por este producto (misma exclusión que reingreso_f1.py/_angulos_probados), cada uno en su propio conjunto ABO al presupuesto por-adset de la fila fase=4 brazo=EXPLORACION de _PARAMETROS_PUBLICACION.csv (el mismo monto de FASE 1, ~9 USD/día en total), TODO EN IMAGEN (regla de F1, gen_plan.py). Se mide POR VENTA agregando por angulo_key igual que F1 (invariante 1): un ganador de esta exploración entra a F2 por el MISMO gate F1→F2 (angulo_ganador) que cualquier otro ángulo, sin importar de qué conjunto salió. Este nodo NO bloquea F4.plan ni F4.publicar: corre en paralelo, como F2.etapa-11.",
      "requiere": [
-      {"dato": "F4 rentable según decidir.py (celda ESCALAR con volumen mínimo)",
+      {"dato": "F4 rentable según decidir.py (celda ESCALAR con volumen mínimo)", "falta": "el producto todavía no es rentable para escalar",
        "predicado": {"tipo": "decision", "estados": ["ESCALAR"], "min_ventas": "@param:min_ventas_escalar", "min": 1},
        "dueno": "Ads/_TOOLS/decidir.py", "regla": "P12: la exploración arranca solo cuando el escalado es rentable (decisión del operador 22-sep-2026)"}
      ],
      "produce": [
-      {"dato": "_PLAN_EXPLORACION.json con @param:exploracion_n_angulos conjuntos IMAGEN (contrato plan/1)",
+      {"dato": "_PLAN_EXPLORACION.json con @param:exploracion_n_angulos conjuntos IMAGEN (contrato plan/1)", "falta": "falta el plan de exploración de ángulos",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_EXPLORACION.json", "campo": "schema", "eq": "plan/1"},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_EXPLORACION.json", "campo": "conjuntos", "min_len": 3}]},
        "dueno": "etapa-6 · Ads/_TOOLS/gen_plan.py --validar", "regla": "ángulos no repetidos y TODO EN IMAGEN, como F1"},
-      {"dato": "conjuntos EXPLORACION registrados en _DIM_CONJUNTOS.csv",
+      {"dato": "conjuntos EXPLORACION registrados en _DIM_CONJUNTOS.csv", "falta": "faltan {n} conjuntos de exploración por registrar|falta 1 conjunto de exploración por registrar",
        "predicado": {"tipo": "csv", "csv": "_DIM_CONJUNTOS.csv", "where": {"producto_key": "{pk}", "fase": "EXPLORACION"}, "min": 3},
        "dueno": "etapa-guardar-producto", "regla": "un dato, un dueño"},
-      {"dato": "la exploración fue publicada (LANZAMIENTO o gasto observado en la campaña EXPLORA)",
+      {"dato": "la exploración fue publicada (LANZAMIENTO o gasto observado en la campaña EXPLORA)", "falta": "la exploración todavía no se publicó",
        "predicado": {"tipo": "alguno", "de": [
          {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "EXPLORA", "min": 1},
          {"tipo": "csv", "csv": "_FACT_VENTAS.csv", "where": {"producto_key": "{pk}", "campana": {"contiene": "EXPLORA"}}, "sum": "spend_usd", "sum_min": 0.01}]},
@@ -320,15 +320,15 @@
      "secuencia": ["etapa-3", "etapa-6", "etapa-guardar-producto"],
      "como": "etapa-3 produce los 8-12 microángulos (banco de copy de la expansión horizontal); etapa-6 planifica el 1-1-7 con el creativo validado ×7; guardar escribe 4_PLAN_ESCALADO.txt.",
      "produce": [
-      {"dato": "_PLAN_FASE4.json (contrato plan/1, fase 4)",
+      {"dato": "_PLAN_FASE4.json (contrato plan/1, fase 4)", "falta": "falta el plan de FASE 4",
        "predicado": {"tipo": "todos", "de": [
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "schema", "eq": "plan/1"},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "fase", "eq": 4},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "angulo_ganador", "no_vacio": true},
          {"tipo": "json", "ruta": "PRODUCTOS/{slug}/_PLAN_FASE4.json", "campo": "copy", "no_vacio": true}]},
        "dueno": "etapa-6", "regla": "gen_plan.py"},
-      {"dato": "4_PLAN_ESCALADO.txt", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"},
-      {"dato": "4_PLAN_ESCALADO.txt trae el banco de microángulos de etapa-3 (T8-4)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt", "contiene": "MICROÁNGULO"}, "dueno": "etapa-3 (banco de copy) · etapa-guardar-producto (lo escribe)", "regla": "ESCALADO_PLAYBOOK §7 · etapa-3 nunca corrió sin consumidor visible antes de este check"}
+      {"dato": "4_PLAN_ESCALADO.txt", "falta": "falta el plan de escalado (4_PLAN_ESCALADO.txt)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt"}, "dueno": "etapa-guardar-producto", "regla": "ESCALADO_PLAYBOOK §7"},
+      {"dato": "4_PLAN_ESCALADO.txt trae el banco de microángulos de etapa-3 (T8-4)", "falta": "al plan de escalado le falta el banco de microángulos (etapa-3)", "predicado": {"tipo": "archivo", "ruta": "PRODUCTOS/{slug}/4_PLAN_ESCALADO.txt", "contiene": "MICROÁNGULO"}, "dueno": "etapa-3 (banco de copy) · etapa-guardar-producto (lo escribe)", "regla": "ESCALADO_PLAYBOOK §7 · etapa-3 nunca corrió sin consumidor visible antes de este check"}
      ]
     },
     {
@@ -336,12 +336,12 @@
      "titulo": "Publicar el 1-1-7 CBO en Meta (PAUSED)",
      "ejecutor": {"tipo": "skill", "name": "publicar-meta"},
      "requiere": [
-      {"dato": "la cuenta tiene el MCP habilitado", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv", "regla": "MCP_PLAYBOOK"},
-      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión (publicar-meta paso 1)", "regla": "HANDOFF 08-sep"},
-      {"dato": "paquete de publicación de FASE 4 sin bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "4", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 4"}
+      {"dato": "la cuenta tiene el MCP habilitado", "falta": "la cuenta no tiene el MCP habilitado (se pauta a mano)", "predicado": {"tipo": "csv_campo", "csv": "_DIM_CUENTAS.csv", "where": {"cuenta_alias": {"norm": "{cuenta}"}}, "campo": "mcp_habilitado", "eq": "SI"}, "dueno": "Meta (rollout) · _DIM_CUENTAS.csv", "regla": "MCP_PLAYBOOK"},
+      {"dato": "snapshot de Meta de la cuenta, de hoy o ayer", "falta": "falta el snapshot de Meta de hoy o ayer", "predicado": {"tipo": "archivo", "ruta": "Ads/_INGESTA/META/snapshot_{cuenta}.json", "edad_max_dias": 1}, "dueno": "la sesión (publicar-meta paso 1)", "regla": "HANDOFF 08-sep"},
+      {"dato": "paquete de publicación de FASE 4 sin bloqueantes", "falta": "el paquete de publicación de FASE 4 tiene bloqueantes", "predicado": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_publicacion.py", "--producto", "{pk}", "--fase", "4", "--json", "--salida", "{tmp}"], "exit": 0}, "dueno": "Ads/_TOOLS/gen_publicacion.py", "regla": "_PARAMETROS_PUBLICACION.csv fase 4"}
      ],
      "produce": [
-      {"dato": "LANZAMIENTO de escalado registrado con su presupuesto inicial",
+      {"dato": "LANZAMIENTO de escalado registrado con su presupuesto inicial", "falta": "falta registrar el lanzamiento del escalado",
        "predicado": {"tipo": "eventos", "evento": ["LANZAMIENTO"], "campana_contiene": "ESCALA", "min": 1},
        "dueno": "operador · _EVENTOS.csv (el presupuesto inicial es al que se duplica después)", "regla": "fase-3 regla dura 1"}
      ]
@@ -365,7 +365,7 @@
    "ejecutor": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/recopilar_lucidsales.py"]},
    "como": "bajar_lucidsales.py + ingerir_lucidsales.py (mismos pasos que ciclo_diario.py, vía pasos_lucidsales()). La ventana se cuenta desde el último día CON DATA; con más de 2 días de rezago ninguna orden vale.",
    "produce": [
-    {"dato": "ventas del producto con rezago ≤ @param:rezago_max_dias",
+    {"dato": "ventas del producto con rezago ≤ @param:rezago_max_dias", "falta": "las ventas están desactualizadas",
      "predicado": {"tipo": "data_fresca", "csv": "_FACT_VENTAS.csv", "col": "ventana_fin", "where": {"producto_key": "{pk}"}, "max_rezago_dias": "@param:rezago_max_dias"},
      "dueno": "Ads/_TOOLS/recopilar_lucidsales.py · bajar_lucidsales.py", "regla": "invariante 13: una orden sobre data vieja es el error de ventana del 06-sep"}
    ]
@@ -376,7 +376,7 @@
    "ejecutor": {"tipo": "script", "cmd": ["python", "Ads/_TOOLS/gen_decisiones.py"]},
    "como": "Reconstruye el warehouse y escribe PRODUCTOS/_DECISIONES.json. Ninguna orden de pausar o escalar sale de otro lado.",
    "produce": [
-    {"dato": "_DECISIONES.json generado hoy con rezago ≤ @param:rezago_max_dias",
+    {"dato": "_DECISIONES.json generado hoy con rezago ≤ @param:rezago_max_dias", "falta": "las decisiones del motor no se generaron hoy",
      "predicado": {"tipo": "decisiones_json", "generado_hoy": true, "rezago_max_dias": "@param:rezago_max_dias"},
      "dueno": "Ads/_TOOLS/gen_decisiones.py", "regla": "invariante 13"}
    ]
@@ -387,7 +387,7 @@
    "ejecutor": {"tipo": "mcp"},
    "como": "Por cada PAUSAR / ESCALAR / RENOVAR: el operador confirma la orden, la sesión la ejecuta por MCP (o el operador a mano), se verifica contra Meta y se anexa el evento del día con Ads/_TOOLS/registrar_evento.py (todo ESCALAR deja un CAMBIO_PRESUPUESTO con --antes y --despues). RENOVAR dispara etapa-10 → etapa-9. Sin órdenes, no hay nada que registrar.",
    "produce": [
-    {"dato": "sin órdenes pendientes, o al menos un evento de ejecución registrado hoy",
+    {"dato": "sin órdenes pendientes, o al menos un evento de ejecución registrado hoy", "falta": "hay órdenes del motor sin ejecutar",
      "predicado": {"tipo": "alguno", "de": [
        {"tipo": "decision", "estados": ["PAUSAR", "ESCALAR", "RENOVAR"], "max": 0},
        {"tipo": "eventos", "evento": ["PAUSA", "ORDEN_PAUSA", "CAMBIO_PRESUPUESTO", "ORDEN_ESCALADO", "ESCALADO", "CAMBIO_CREATIVO", "ORDEN_RENOVACION", "REPLICA_MULTICUENTA", "ORDEN_REVOCADA"], "hoy": true, "min": 1}]},
