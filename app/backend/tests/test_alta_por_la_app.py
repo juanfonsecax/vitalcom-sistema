@@ -117,6 +117,7 @@ def sistema_falso(sistema_de_juguete: Path, monkeypatch) -> Path:
 
     shutil.copy2(_script_del_repo("alta_producto.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "alta_producto.py")
     shutil.copy2(_script_del_repo("mercado.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "mercado.py")
+    shutil.copy2(_script_del_repo("upsert_fact.py"), sistema_de_juguete / "Ads" / "_TOOLS" / "upsert_fact.py")
     for nombre, columnas in (("_DIM_PRODUCTOS.csv", COLUMNAS_PRODUCTOS),
                              ("_DIM_ENVASE.csv", COLUMNAS_ENVASE)):
         with io.open(sistema_de_juguete / "PRODUCTOS" / nombre, "w", encoding="utf-8", newline="") as fh:
