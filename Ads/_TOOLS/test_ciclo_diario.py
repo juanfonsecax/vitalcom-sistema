@@ -293,6 +293,48 @@ def test_pasos_reales_lunes_agrega_control_con_rol_control():
         cd.ENV_LUCIDSALES_CO = orig
 
 
+def test_control_semanal_carga_solo_el_archivo_recien_bajado():
+    # Barrer la carpeta con --rol CONTROL cargaba los diarios como CONTROL cada lunes; al lunes
+    # siguiente el semanal chocaba con esas filas y el guardarraíl dejaba el ciclo en ROJO.
+    orig = cd.ENV_LUCIDSALES_CO
+    cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")
+    try:
+        lunes = datetime.date(2026, 10, 5)
+        control = next(p for p in cd.pasos_reales(lunes) if p["nombre"] == "ingerir_lucidsales_control")
+        assert "--dir" not in control["argv"], control["argv"]
+        assert any(a.endswith("report-2026-09-28-2026-10-04.json") for a in control["argv"]), control["argv"]
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
+
+
+def test_control_semanal_co_carga_solo_el_archivo_recien_bajado():
+    orig = cd.ENV_LUCIDSALES_CO
+    env_co = os.path.join(tempfile.mkdtemp(), "co.env")
+    io.open(env_co, "w").close()
+    try:
+        pasos = cd.pasos_lucidsales(datetime.date(2026, 10, 5), env_co=env_co)
+        control = next(p for p in pasos if p["nombre"] == "ingerir_lucidsales_co_control")
+        assert "--dir" not in control["argv"], control["argv"]
+        assert any(a.endswith("report-2026-09-28-2026-10-04.json") for a in control["argv"]), control["argv"]
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
+
+
+def test_perfilar_angulos_corre_despues_del_motor_y_registra_transiciones():
+    orig = cd.ENV_LUCIDSALES_CO
+    cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")
+    try:
+        pasos = cd.pasos_reales(datetime.date(2026, 9, 22))
+        nombres = [p["nombre"] for p in pasos]
+        assert "perfilar_angulos" in nombres
+        assert nombres.index("ciclo_hoy") < nombres.index("perfilar_angulos") < nombres.index("gen_dashboard")
+        perfil = pasos[nombres.index("perfilar_angulos")]
+        assert any(a.endswith("perfilar_angulos.py") for a in perfil["argv"])
+        assert "--registrar" in perfil["argv"]
+    finally:
+        cd.ENV_LUCIDSALES_CO = orig
+
+
 def test_pasos_reales_bajar_meta_insights_declara_aviso_2():
     orig = cd.ENV_LUCIDSALES_CO
     cd.ENV_LUCIDSALES_CO = os.path.join(tempfile.gettempdir(), "co_env_inexistente_p8")

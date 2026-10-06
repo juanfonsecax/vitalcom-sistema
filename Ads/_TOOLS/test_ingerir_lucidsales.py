@@ -432,6 +432,26 @@ def test_control_nunca_reemplaza_base_ni_viceversa(tmp):
     return 0 if ok else 1
 
 
+def test_barrido_control_salta_los_dias_sueltos(tmp):
+    """El barrido con --rol CONTROL cargaba cada diario como CONTROL: el lunes siguiente el
+    semanal chocaba con esas filas y el ciclo quedaba en ROJO (05-oct-2026). Lógica pura."""
+    diario = os.path.join(tmp, "report-2026-09-22-2026-09-22.json")
+    semanal = os.path.join(tmp, "report-2026-09-21-2026-09-27.json")
+    a_mano = os.path.join(tmp, "report-2026-09-23-2026-09-23.json")
+    archivos = [diario, semanal, a_mano]
+    barrido = {diario, semanal}
+    fallas = 0
+    for rol, esperado, saltado in (("CONTROL", [semanal, a_mano], [diario]),
+                                    ("BASE", [diario, a_mano], [semanal])):
+        cargar, saltar = ing.filtrar_barrido_por_rol(archivos, barrido, rol)
+        if cargar != esperado or saltar != saltado:
+            print(f"  FALLA  {rol}: cargar={cargar} saltar={saltar}")
+            fallas += 1
+    if not fallas:
+        print("  OK     test_barrido_control_salta_los_dias_sueltos")
+    return fallas
+
+
 def test_barrido_base_salta_el_control_semanal(tmp):
     """La carga BASE con --dir barre toda la carpeta, donde el lunes quedó el control semanal
     (export de 7 días). Ese archivo se salta con aviso: ni aborta la corrida (el martes salía
@@ -492,6 +512,8 @@ def main():
         fallas += test_control_nunca_reemplaza_base_ni_viceversa(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         fallas += test_barrido_base_salta_el_control_semanal(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        fallas += test_barrido_control_salta_los_dias_sueltos(tmp)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

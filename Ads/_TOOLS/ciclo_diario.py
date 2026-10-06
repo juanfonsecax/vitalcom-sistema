@@ -125,6 +125,10 @@ def pasos_lucidsales(hoy, env_co=None):
     py = sys.executable
     ingesta_dir = os.path.join(BASE, "Ads", "_INGESTA", "LUCIDSALES")
     env_co = env_co or ENV_LUCIDSALES_CO
+    # The weekly control loads ONLY the file `bajar_lucidsales.py --dias 7` just wrote
+    # (yesterday and the 6 days before). Sweeping the folder with --rol CONTROL also loaded every
+    # daily file as CONTROL, and the next Monday the guardrail refused the weekly file.
+    semanal = "report-%s-%s.json" % (hoy - datetime.timedelta(days=7), hoy - datetime.timedelta(days=1))
     pasos = [
         _paso("bajar_lucidsales", [py, os.path.join(TOOLS, "bajar_lucidsales.py")]),
         _paso("ingerir_lucidsales",
@@ -135,7 +139,7 @@ def pasos_lucidsales(hoy, env_co=None):
                             [py, os.path.join(TOOLS, "bajar_lucidsales.py"), "--dias", "7"]))
         pasos.append(_paso("ingerir_lucidsales_control",
                             [py, os.path.join(TOOLS, "ingerir_lucidsales.py"),
-                             "--dir", ingesta_dir, "--rol", "CONTROL"]))
+                             os.path.join(ingesta_dir, semanal), "--rol", "CONTROL"]))
     if os.path.isfile(env_co):
         pasos.append(_paso("bajar_lucidsales_co",
                             [py, os.path.join(TOOLS, "bajar_lucidsales.py"),
@@ -150,7 +154,8 @@ def pasos_lucidsales(hoy, env_co=None):
                                 opcional=True))
             pasos.append(_paso("ingerir_lucidsales_co_control",
                                 [py, os.path.join(TOOLS, "ingerir_lucidsales.py"),
-                                 "--dir", INGESTA_CO, "--mercado", "CO", "--rol", "CONTROL"],
+                                 os.path.join(INGESTA_CO, semanal), "--mercado", "CO",
+                                 "--rol", "CONTROL"],
                                 opcional=True))
     return pasos
 
@@ -162,6 +167,10 @@ def pasos_reales(hoy):
     pasos.append(_paso("bajar_meta_insights", [py, os.path.join(TOOLS, "bajar_meta_insights.py")],
                         codigos_aviso=(2,)))
     pasos.append(_paso("ciclo_hoy", [py, os.path.join(TOOLS, "ciclo_hoy.py")]))
+    # The angle life-cycle (_ESTADO_ANGULOS.csv) consumes the fresh _DECISIONES.json; without
+    # this step it froze and the app showed an old engine order next to the current one.
+    pasos.append(_paso("perfilar_angulos", [py, os.path.join(TOOLS, "perfilar_angulos.py"),
+                                            "--registrar", "--silencioso"]))
     pasos.append(_paso("gen_dashboard", [py, os.path.join(TOOLS, "gen_dashboard.py")]))
     return pasos
 

@@ -256,6 +256,21 @@ def ventana_de_nombre(path):
     return ini, fin, (d1 - d0).days + 1
 
 
+def filtrar_barrido_por_rol(archivos, de_carpeta, rol):
+    """(a_cargar, saltados). Solo filtra lo que llegó por --dir: un archivo nombrado a mano
+    sigue pasando por el guardarraíl de solape.
+
+    BASE salta los exports de RANGO (el control semanal) y CONTROL salta los días sueltos.
+    Sin el filtro de CONTROL, el barrido del lunes cargaba cada diario también como CONTROL y
+    el lunes siguiente el semanal chocaba con esas filas (ciclo en ROJO el 05-oct-2026).
+    """
+    def es_rango(p):
+        return ventana_de_nombre(p)[2] > 1
+    saltar = [p for p in archivos if p in de_carpeta
+              and (es_rango(p) if rol == "BASE" else not es_rango(p))]
+    return [p for p in archivos if p not in saltar], saltar
+
+
 def fecha_de_nombre(path):
     return ventana_de_nombre(path)[0]
 
@@ -460,15 +475,14 @@ def main():
             archivos.append(a)
         i += 1
 
-    # Un export de RANGO (dias>1) es el control semanal: va SIEMPRE con --rol CONTROL
-    # (DATA_PLAYBOOK). La carga BASE que barre la carpeta con --dir lo salta con un aviso en vez
-    # de abortar la corrida entera; un archivo nombrado a mano sigue pasando por el guardarraíl.
-    if rol == "BASE":
-        rangos = [p for p in archivos if p in de_carpeta and ventana_de_nombre(p)[2] > 1]
-        for p in rangos:
+    archivos, saltados = filtrar_barrido_por_rol(archivos, de_carpeta, rol)
+    for p in saltados:
+        if rol == "BASE":
             print(f"↷ {os.path.basename(p)} cubre varios días: es el control semanal "
                   "(se carga con --rol CONTROL), no entra en la carga BASE.")
-        archivos = [p for p in archivos if p not in rangos]
+        else:
+            print(f"↷ {os.path.basename(p)} es un día suelto: va en la carga BASE, "
+                  "no en el control semanal.")
 
     if not archivos:
         raise SystemExit("Sin archivos. Uso: ingerir_lucidsales.py <xlsx...> | --dir <carpeta>")
