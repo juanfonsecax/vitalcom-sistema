@@ -61,4 +61,5 @@ backend: `app/backend/.venv/Scripts/python.exe -m pytest -q` on touched test fil
   own collapsible "Galería de conceptos (X de 10)" filtered by angulo_key; #1 open by default,
   queued angles closed; losing angles last, collapsed. "Campaña A/B" → "Conceptos 1–5 / 6–10"
   with one explanatory line (C repeats the same pool).
-- [ ] T3 Regroup Fase2.tsx / angulosFase2.tsx per angle (route: delegated writer)
+- [x] T3 Regroup Fase2.tsx / angulosFase2.tsx per angle (route: delegated writer)
+- T3 evidence: frontend 184 passed + build OK, backend 57 passed (RED 9 first); real data: #1 gallery (5 de 10) open, #2/#3 closed with empty-state line, Otros conceptos (4), Ángulos que no funcionaron (3) collapsed; expand click verified.
