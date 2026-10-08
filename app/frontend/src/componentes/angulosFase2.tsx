@@ -6,6 +6,7 @@
  * calcula ni se ordena nada. Cada ángulo va en su propio bloque; el detalle técnico queda
  * plegado, nunca se quita.
  */
+import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import type { AnguloFase2 } from "../api/cliente";
 import { Chip, Tarjeta, type Tono } from "./ui";
@@ -150,10 +151,13 @@ export function AnguloEnTesteoAhora({
   angulo,
   paso,
   perfil,
+  galeria,
 }: {
   angulo: AnguloFase2 | undefined;
   paso: string;
   perfil: PerfilMoneda;
+  /** La galería de conceptos de ESTE ángulo, que va justo debajo de su tarjeta. */
+  galeria?: ReactNode;
 }) {
   if (!angulo) {
     return (
@@ -166,6 +170,7 @@ export function AnguloEnTesteoAhora({
     );
   }
   return (
+    <div data-testid={`bloque-${angulo.angulo_key}`} className="space-y-3">
     <div data-testid="angulo-en-testeo">
     <Tarjeta className="border-emerald-800/50 bg-emerald-950/20">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -197,18 +202,30 @@ export function AnguloEnTesteoAhora({
       </div>
     </Tarjeta>
     </div>
+    {galeria}
+    </div>
   );
 }
 
 /** #2, #3…: ganadores que esperan su turno. Cada uno tendrá su propia Fase 2. */
-export function AngulosEnFila({ angulos, perfil }: { angulos: AnguloFase2[]; perfil: PerfilMoneda }) {
+export function AngulosEnFila({
+  angulos,
+  perfil,
+  galeriaDe,
+}: {
+  angulos: AnguloFase2[];
+  perfil: PerfilMoneda;
+  /** La galería de conceptos de cada ángulo en fila, debajo de su tarjeta. */
+  galeriaDe?: (a: AnguloFase2) => ReactNode;
+}) {
   if (angulos.length === 0) return null;
   return (
     <section className="space-y-3" data-testid="angulos-en-fila">
       <h3 className="text-sm font-semibold text-zinc-200">En fila</h3>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="space-y-4">
         {angulos.map((a) => (
-          <Tarjeta key={a.angulo_key} className="space-y-3 border-zinc-800 bg-zinc-900/40 p-4">
+          <div key={a.angulo_key} data-testid={`bloque-${a.angulo_key}`} className="space-y-3">
+          <Tarjeta className="space-y-3 border-zinc-800 bg-zinc-900/40 p-4">
             <div className="flex items-center justify-between gap-2">
               <span className="font-mono text-xs font-semibold text-zinc-200">{a.angulo_key}</span>
               <Chip tono="aviso">#{a.posicion} en la fila</Chip>
@@ -221,6 +238,8 @@ export function AngulosEnFila({ angulos, perfil }: { angulos: AnguloFase2[]; per
             </p>
             <DetalleTecnico a={a} perfil={perfil} />
           </Tarjeta>
+          {galeriaDe?.(a)}
+          </div>
         ))}
       </div>
     </section>

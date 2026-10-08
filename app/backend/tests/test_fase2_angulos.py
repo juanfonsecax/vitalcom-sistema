@@ -232,7 +232,10 @@ def test_checklist_y_campanas_salen_de_la_estructura_de_fase2(sistema_angulos: P
 
     pasos = {p["clave"]: p for p in _por_clave(detalle)["ANG_RESISTENCIA"]["checklist"]}
     assert pasos["generar"]["cumplido"] is False
-    assert pasos["generar"]["detalle"] == "7 de 10 (Campaña A: 5 de 5 · Campaña B: 2 de 5)"
+    assert pasos["generar"]["detalle"] == "7 de 10 (Conceptos 1–5: 5 de 5 · Conceptos 6–10: 2 de 5)"
+    # el conteo por ángulo (X de N de su galería) lo decide el backend, no la pantalla
+    assert _por_clave(detalle)["ANG_RESISTENCIA"]["conceptos_listos"] == 7
+    assert _por_clave(detalle)["ANG_FALSIFICACION"]["conceptos_listos"] == 0
     assert pasos["publicar"]["cumplido"] is False
     assert pasos["publicar"]["detalle"] == "2 de 10 con anuncio en Meta"
     assert pasos["lanzar"]["cumplido"] is False

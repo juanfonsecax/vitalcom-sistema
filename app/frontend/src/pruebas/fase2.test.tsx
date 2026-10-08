@@ -8,7 +8,7 @@
  * 4. Modal de confirmación para reingreso a FASE 1 por fatiga y envío de la mutación.
  * 5. Banner informativo cuando ya existe un reingreso activo.
  */
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   RouterProvider,
@@ -75,6 +75,7 @@ function renderizar(clave = "TINNIDROP") {
 }
 
 const ANGULO_BASE = {
+  conceptos_listos: 0,
   posicion: null,
   etiqueta: "",
   estado_angulo: "",
@@ -173,9 +174,10 @@ const FASE2_MOCK = {
       cpa_be_q: 105.89,
       semaforo_acum: "verde",
       semaforo_ventana: "ambar",
+      conceptos_listos: 1,
       orden_motor: "NO SUBIR PRESUPUESTO (TINNIDROP en F2): mantener hasta cerrar la fase.",
       checklist: [
-        { clave: "generar", rotulo: "Conceptos generados", cumplido: false, detalle: "2 de 10 (Campaña A: 2 de 5 · Campaña B: 0 de 5)" },
+        { clave: "generar", rotulo: "Conceptos generados", cumplido: false, detalle: "2 de 10 (Conceptos 1–5: 2 de 5 · Conceptos 6–10: 0 de 5)" },
         { clave: "publicar", rotulo: "Publicados en Meta", cumplido: true, detalle: "10 de 10 con anuncio en Meta" },
         { clave: "lanzar", rotulo: "Lanzado", cumplido: false, detalle: "Sin LANZAMIENTO de FASE 2 registrado" },
       ],
@@ -353,7 +355,7 @@ test("la fatiga muestra la orden concreta del motor como «Qué hacer» y pliega
   expect(screen.getByText("¿Cómo funciona la renovación?")).toBeDefined();
 });
 
-test("la galería agrupa por ángulo y arranca en el #1", async () => {
+test("cada ángulo lleva SU galería debajo de su tarjeta: la del #1 abierta, la de los que esperan cerrada", async () => {
   respuestas["GET /api/productos/TINNIDROP/fase2"] = {
     ...FASE2_MOCK,
     conceptos: [
@@ -369,15 +371,47 @@ test("la galería agrupa por ángulo y arranca en el #1", async () => {
   };
   renderizar("TINNIDROP");
 
-  const pestanas = await screen.findAllByRole("tab");
-  expect(pestanas.map((t) => t.textContent)).toEqual(["ACCESIBILIDAD_MEDICO", "NOCHES_SIN_DORMIR"]);
-  expect(pestanas[0].getAttribute("aria-selected")).toBe("true");
-  expect(screen.getByText("Before / After Split")).toBeDefined();
-  expect(screen.queryByText("Testimonio de noche")).toBeNull();
+  const g1 = await screen.findByTestId("galeria-ACCESIBILIDAD_MEDICO");
+  const g2 = screen.getByTestId("galeria-NOCHES_SIN_DORMIR");
+  expect(screen.queryAllByRole("tab")).toHaveLength(0); // ya no hay pestañas: el ángulo es el bloque
+  expect(screen.getByTestId("bloque-ACCESIBILIDAD_MEDICO")).toContainElement(g1);
+  expect(screen.getByTestId("bloque-NOCHES_SIN_DORMIR")).toContainElement(g2);
+  expect(g1.textContent).toContain("Before / After Split");
+  expect(g1.textContent).not.toContain("Testimonio de noche");
+  expect(g2.textContent).toContain("Testimonio de noche");
+  expect(g1.querySelector("summary")?.textContent).toContain("Galería de conceptos (1 de 10)");
+  expect(g1).toHaveAttribute("open");
+  expect(g2).not.toHaveAttribute("open");
+  const tarjeta1 = screen.getByTestId("angulo-en-testeo");
+  expect(tarjeta1.compareDocumentPosition(g1) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(g1.compareDocumentPosition(g2) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+});
 
-  fireEvent.click(pestanas[1]);
-  expect(screen.getByText("Testimonio de noche")).toBeDefined();
-  expect(screen.queryByText("Before / After Split")).toBeNull();
+test("un ángulo en fila sin conceptos lo dice dentro de su galería", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+  const g = await screen.findByTestId("galeria-DETERIORO_COGNITIVO");
+  expect(g.textContent).toContain("Todavía sin conceptos: se fabrican cuando el #1 cierre su FASE 2");
+  expect(g).not.toHaveAttribute("open");
+});
+
+test("los conceptos de ángulos fuera del ranking no desaparecen: van a «Otros conceptos registrados»", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    conceptos: [
+      ...FASE2_MOCK.conceptos,
+      { ...FASE2_MOCK.conceptos[0], creativo_id: "TINNIDROP_X1", angulo_key: "DOLOR_EMOCIONAL_MASCULINO", canonico_id: "X1", blueprint_nombre: "Pieza de otro ángulo" },
+      { ...FASE2_MOCK.conceptos[0], creativo_id: "TINNIDROP_X2", angulo_key: "", canonico_id: "X2", blueprint_nombre: "Pieza sin ángulo" },
+    ],
+  };
+  renderizar("TINNIDROP");
+  const otros = await screen.findByTestId("otros-conceptos");
+  expect(otros.textContent).toContain("Otros conceptos registrados (2)");
+  expect(otros.textContent).toContain("Pieza de otro ángulo");
+  expect(otros.textContent).toContain("DOLOR_EMOCIONAL_MASCULINO");
+  expect(otros.textContent).toContain("Pieza sin ángulo");
+  expect(otros).not.toHaveAttribute("open");
+  expect(screen.getByTestId("galeria-ACCESIBILIDAD_MEDICO").textContent).not.toContain("Pieza de otro ángulo");
 });
 
 test("sin ganador no inventa un #1 y lo dice", async () => {
@@ -532,9 +566,9 @@ test("un ganador en fila muestra «se genera cuando le toque su Fase 2» y no se
   };
   renderizar("TINNIDROP");
 
-  fireEvent.click(await screen.findByRole("tab", { name: "NOCHES_SIN_DORMIR" }));
   expect(await screen.findByText("Se genera cuando le toque su Fase 2.")).toBeDefined();
-  expect((screen.getByRole("button", { name: BOTON_GENERAR }) as HTMLButtonElement).disabled).toBe(true);
+  const enFila = within(screen.getByTestId("galeria-NOCHES_SIN_DORMIR"));
+  expect((enFila.getByRole("button", { name: BOTON_GENERAR }) as HTMLButtonElement).disabled).toBe(true);
 });
 
 test("concepto con paquete muestra la imagen de referencia y el botón de copiar imagen", async () => {
@@ -602,7 +636,7 @@ test("muestra banner de reingreso activo cuando existe", async () => {
   expect(screen.getByText("Ir a FASE 1 →")).toBeDefined();
 });
 
-test("un ángulo perdedor con filas viejas de conceptos no es pestaña de la galería", async () => {
+test("un ángulo perdedor con filas viejas de conceptos no tiene galería propia: sus piezas van a «Otros»", async () => {
   respuestas["GET /api/productos/TINNIDROP/fase2"] = {
     ...FASE2_MOCK,
     conceptos: [
@@ -619,9 +653,8 @@ test("un ángulo perdedor con filas viejas de conceptos no es pestaña de la gal
   renderizar("TINNIDROP");
 
   await screen.findByText("Before / After Split");
-  expect(screen.queryByText("Pieza vieja de FASE 1")).toBeNull();
-  // el perdedor sigue en su lista, pero no como pestaña de la galería
-  expect(screen.queryAllByRole("tab").filter((t) => t.textContent?.includes("ME_DIJERON_NO_CURA"))).toHaveLength(0);
+  expect(screen.queryByTestId("galeria-ME_DIJERON_NO_CURA")).toBeNull();
+  expect(screen.getByTestId("otros-conceptos").textContent).toContain("Pieza vieja de FASE 1");
 });
 
 test("«Qué hacer ahora»: el checklist del #1 marca los pasos cumplidos y deja los pendientes", async () => {
@@ -632,7 +665,7 @@ test("«Qué hacer ahora»: el checklist del #1 marca los pasos cumplidos y deja
   expect(bloque.textContent).toContain("Qué hacer ahora");
   const pasos = Array.from(bloque.querySelectorAll('[data-testid="checklist-angulo"] li'));
   expect(pasos.map((p) => [p.getAttribute("data-cumplido"), p.textContent])).toEqual([
-    ["no", expect.stringContaining("Conceptos generados2 de 10 (Campaña A: 2 de 5 · Campaña B: 0 de 5)")],
+    ["no", expect.stringContaining("Conceptos generados2 de 10 (Conceptos 1–5: 2 de 5 · Conceptos 6–10: 0 de 5)")],
     ["si", expect.stringContaining("Publicados en Meta")],
     ["no", expect.stringContaining("Sin LANZAMIENTO de FASE 2 registrado")],
   ]);
@@ -666,20 +699,23 @@ test("rojo cuando el backend dice rojo", async () => {
   expect(acum.className).toContain("rose");
 });
 
-test("la galería rotula cada campaña y dice honestamente cuáles conceptos faltan", async () => {
+test("la galería rotula por rango de conceptos (no por «Campaña A/B») y dice cuáles faltan", async () => {
   respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
   renderizar("TINNIDROP");
 
-  const a = await screen.findByTestId("campana-A");
-  expect(a.textContent).toContain("Campaña A (conceptos 1-5)");
+  const galeria = await screen.findByTestId("galeria-ACCESIBILIDAD_MEDICO");
+  expect(galeria.textContent).not.toContain("Campaña");
+  expect(galeria.textContent).toContain("Los 10 conceptos se publican en dos campañas de 5; la tercera repite los mismos.");
+  const a = within(galeria).getByTestId("grupo-ACCESIBILIDAD_MEDICO-A");
+  expect(a.textContent).toContain("Conceptos 1–5");
   expect(a.textContent).toContain("2 de 5 conceptos");
-  expect(a.textContent).toContain("Faltan 3 conceptos de la Campaña A");
-  const b = screen.getByTestId("campana-B");
-  expect(b.textContent).toContain("Campaña B (conceptos 6-10)");
-  expect(b.textContent).toContain("Conceptos 6-10 pendientes");
-  // los conceptos existentes cuelgan de la campaña A
+  expect(a.textContent).toContain("Faltan 3 de los conceptos 1–5");
+  const b = within(galeria).getByTestId("grupo-ACCESIBILIDAD_MEDICO-B");
+  expect(b.textContent).toContain("Conceptos 6–10");
+  expect(b.textContent).toContain("Conceptos 6–10 pendientes");
   expect(a.textContent).toContain("Before / After Split");
   expect(b.textContent).not.toContain("Before / After Split");
+  expect(galeria.textContent!.split("la tercera repite los mismos").length - 1).toBe(1);
 });
 
 test("los ángulos apagados quedan plegados al final y sin botones de acción", async () => {
@@ -689,7 +725,7 @@ test("los ángulos apagados quedan plegados al final y sin botones de acción", 
   const apagados = await screen.findByTestId("angulos-no-funcionaron");
   expect(apagados.querySelectorAll("button").length).toBe(1); // solo el plegable
   expect(apagados.textContent).not.toContain(BOTON_GENERAR);
-  const galeria = screen.getByTestId("campana-A");
+  const galeria = screen.getByTestId("galeria-ACCESIBILIDAD_MEDICO");
   expect(galeria.compareDocumentPosition(apagados) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
 
@@ -743,4 +779,31 @@ test("la tarjeta del ángulo dice un veredicto corto y pliega el texto largo del
   const pliegue = largo.closest("details");
   expect(pliegue).not.toBeNull();
   expect(pliegue).not.toHaveAttribute("open");
+});
+
+test("orden de la pantalla: estado, un bloque por ángulo (tarjeta + galería), reingreso, fatiga, no funcionaron, otros", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = {
+    ...FASE2_MOCK,
+    reingreso_activo: { fecha: "2026-09-30", motivo: "fatiga", angulos_excluidos: [] },
+    conceptos: [
+      ...FASE2_MOCK.conceptos,
+      { ...FASE2_MOCK.conceptos[0], creativo_id: "TINNIDROP_X1", angulo_key: "DOLOR_EMOCIONAL_MASCULINO", canonico_id: "X1" },
+    ],
+  };
+  renderizar("TINNIDROP");
+  await screen.findByTestId("otros-conceptos");
+  const en = [
+    screen.getByTestId("estado-de-fase"),
+    screen.getByTestId("bloque-ACCESIBILIDAD_MEDICO"),
+    screen.getByTestId("bloque-NOCHES_SIN_DORMIR"),
+    screen.getByTestId("bloque-DETERIORO_COGNITIVO"),
+    screen.getByText(/Reingreso a FASE 1 activo/),
+    screen.getByTestId("ordenes-renovar"),
+    screen.getByTestId("angulos-no-funcionaron"),
+    screen.getByTestId("otros-conceptos"),
+  ];
+  for (let i = 0; i < en.length - 1; i++) {
+    expect(en[i].compareDocumentPosition(en[i + 1]) & Node.DOCUMENT_POSITION_FOLLOWING, `posición ${i}`).toBeTruthy();
+  }
+  expect(screen.queryByText(/^Galería de Conceptos \(/)).toBeNull();
 });

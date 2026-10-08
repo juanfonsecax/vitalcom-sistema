@@ -939,6 +939,11 @@ export interface components {
              */
             orden_motor: string;
             /**
+             * Conceptos Listos
+             * @default 0
+             */
+            conceptos_listos: number;
+            /**
              * Checklist
              * @default []
              */

@@ -609,6 +609,7 @@ class AnguloFase2(Base):
     semaforo_acum: str = ""
     semaforo_ventana: str = ""
     orden_motor: str = ""
+    conceptos_listos: int = 0
     checklist: list[PasoChecklist] = []
 
 

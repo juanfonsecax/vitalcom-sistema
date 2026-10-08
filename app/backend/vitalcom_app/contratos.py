@@ -757,7 +757,11 @@ def _checklist_angulo(conceptos: list[dict[str, Any]], estructura: list[tuple[st
     """Qué falta para que el ángulo termine su FASE 2, derivado de los conceptos y eventos ya leídos."""
     generados = [c for c in conceptos if c.get("estado") in _ESTADOS_GENERADO]
     por_campana = {b: sum(1 for c in generados if c.get("campana") == b) for b, _ in estructura}
-    desglose = " · ".join(f"Campaña {b}: {por_campana[b]} de {n}" for b, n in estructura)
+    partes, desde = [], 1
+    for b, n in estructura:  # «Conceptos 1–5» / «Conceptos 6–10»: el rango, no la letra de la campaña
+        partes.append(f"Conceptos {desde}–{desde + n - 1}: {por_campana[b]} de {n}")
+        desde += n
+    desglose = " · ".join(partes)
     publicados = [c for c in conceptos if c.get("ad_id")]
     hecho_gen = requeridos > 0 and len(generados) >= requeridos
     hecho_pub = requeridos > 0 and len(publicados) >= requeridos
@@ -887,6 +891,9 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
     lanzado = _lanzado_fase2(producto_key)
 
     for angulo in angulos:
+        # X de la «Galería de conceptos (X de N)» de cada ángulo: la regla de «listo» vive acá.
+        angulo["conceptos_listos"] = sum(
+            1 for c in conceptos if c["angulo_key"] == angulo["angulo_key"] and c.get("estado") in _ESTADOS_GENERADO)
         if angulo["rol"] in ("ganador_activo", "ganador_en_fila"):
             angulo["checklist"] = _checklist_angulo(
                 [c for c in conceptos if c["angulo_key"] == angulo["angulo_key"]], estructura, requeridos, lanzado)
