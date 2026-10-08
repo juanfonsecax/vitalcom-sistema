@@ -54,3 +54,11 @@ backend: `app/backend/.venv/Scripts/python.exe -m pytest -q` on touched test fil
 - Evidence: test_ciclo_diario 35/35 (RED 3 first), test_ingerir_lucidsales 0 fallas (new pure test;
   its RED not observed before the code, function absent in HEAD), Ads/_TOOLS 61 passed, real
   ciclo_diario VERDE paridad IGUAL, datos_hasta 2026-10-04, motor vs ángulos 0 mismatches.
+
+## Round 2 — Fase 2 grouped by angle (2026-10-07, branch feat/app-fase2-por-angulo)
+- Operator: the concept gallery sits apart from the angles and "Campaña A/B" is unclear.
+- Decision: the angle is the unit. Each angle block = header (#1 en testeo / #N en fila) + its
+  own collapsible "Galería de conceptos (X de 10)" filtered by angulo_key; #1 open by default,
+  queued angles closed; losing angles last, collapsed. "Campaña A/B" → "Conceptos 1–5 / 6–10"
+  with one explanatory line (C repeats the same pool).
+- [ ] T3 Regroup Fase2.tsx / angulosFase2.tsx per angle (route: delegated writer)
