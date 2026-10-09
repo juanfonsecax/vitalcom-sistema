@@ -526,6 +526,7 @@ def paso_sellar(job_id: str, accion_id: str, parametros: dict[str, Any]) -> dict
     sello = {
         "job_id": job_id, "accion": accion, "parametros": valores,
         "ejecutor": _ejecutor_textual(accion, producto),
+        "contexto": contexto_de_prompt(accion, valores),
         "claude": acciones.cargar().bloque.get("claude")
         if accion["ejecutor_tipo"] in ("subagente", "skill") or accion.get("toca_meta") else None,
         "manifiesto_sha": acciones.sha_del_manifiesto(), "hoy": reservados["hoy"],
@@ -547,8 +548,36 @@ def spec_de_script(sello: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def contexto_de_prompt(accion: dict[str, Any], valores: dict[str, Any]) -> dict[str, str]:
+    """Lo que un prompt propio (`accion["prompt"]`) necesita y NO es un parámetro: sale de los datos
+    al sellar. Hoy: `{ya_registrados}`, los conceptos de ese producto+ángulo que no hay que repetir."""
+    if not accion.get("prompt"):
+        return {}
+    registrados = contratos.conceptos_registrados(valores.get("producto_key", ""), valores.get("angulo_key", ""))
+    if not registrados:
+        return {"ya_registrados": "(ninguno: este ángulo todavía no tiene conceptos registrados)"}
+    return {"ya_registrados": "\n".join(
+        f"- {r['canonico_id'] or '(sin canónico)'} · {r['concepto_key'] or '(sin concepto_key)'} · {r['estado']}"
+        for r in registrados)}
+
+
+def _prompt_propio(sello: dict[str, Any]) -> str:
+    """El prompt dedicado de una acción (manifiesto `acciones.claude.<accion.prompt>`), con sus parámetros."""
+    accion = sello["accion"]
+    valores = {
+        "job_id": sello["job_id"], "ejecutor": sello["ejecutor"], "name": accion.get("name") or "",
+        **{k: str(v) for k, v in sello["parametros"].items()}, **(sello.get("contexto") or {}),
+    }
+    texto = "\n".join(sello["claude"][accion["prompt"]])
+    for nombre, valor in valores.items():
+        texto = texto.replace("{" + nombre + "}", valor)
+    return texto
+
+
 def prompt_del_nodo(sello: dict[str, Any]) -> str:
     """El «prompt mínimo» del nodo (manifiesto `acciones.claude.prompt_nodo`); la doctrina la carga CLAUDE.md."""
+    if sello["accion"].get("prompt"):
+        return _prompt_propio(sello)
     producto = sello["parametros"].get("producto_key")
     lineas = [
         linea for linea in sello["claude"]["prompt_nodo"]

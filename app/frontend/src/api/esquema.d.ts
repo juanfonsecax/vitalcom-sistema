@@ -857,6 +857,33 @@ export interface components {
             [key: string]: unknown;
         };
         /**
+         * FabricarConceptos
+         * @description El botón «Generar los conceptos que faltan (N)» de un ángulo ganador (`contratos._fabricar`).
+         */
+        FabricarConceptos: {
+            /** Accion Id */
+            accion_id: string;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: string;
+            };
+            /**
+             * Faltan
+             * @default 0
+             */
+            faltan: number;
+            /**
+             * Habilitada
+             * @default false
+             */
+            habilitada: boolean;
+            /** Trabajo En Curso */
+            trabajo_en_curso?: string | null;
+        };
+        /**
          * AnguloFase2
          * @description Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
          *     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`.
@@ -943,6 +970,7 @@ export interface components {
              * @default 0
              */
             conceptos_listos: number;
+            fabricar?: components["schemas"]["FabricarConceptos"] | null;
             /**
              * Checklist
              * @default []

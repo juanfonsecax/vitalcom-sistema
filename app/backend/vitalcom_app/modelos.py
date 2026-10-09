@@ -232,6 +232,7 @@ class Trabajo(Base):
     accion_id: str = ""
     rotulo: str = ""
     producto_key: str | None = None
+    angulo_key: str | None = None
     estado: str
     iniciado: str | None = None
     terminado: str | None = None
@@ -575,6 +576,16 @@ class CampanaFase2(Base):
     conceptos: int
 
 
+class FabricarConceptos(Base):
+    """El botón «Generar los conceptos que faltan (N)» de un ángulo ganador (`contratos._fabricar`)."""
+
+    accion_id: str
+    parametros: dict[str, str] = {}
+    faltan: int = 0
+    habilitada: bool = False
+    trabajo_en_curso: str | None = None
+
+
 class AnguloFase2(Base):
     """Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`."""
@@ -610,6 +621,7 @@ class AnguloFase2(Base):
     semaforo_ventana: str = ""
     orden_motor: str = ""
     conceptos_listos: int = 0
+    fabricar: FabricarConceptos | None = None
     checklist: list[PasoChecklist] = []
 
 

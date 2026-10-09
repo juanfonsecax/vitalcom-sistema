@@ -807,3 +807,139 @@ test("orden de la pantalla: estado, un bloque por ángulo (tarjeta + galería), 
   }
   expect(screen.queryByText(/^Galería de Conceptos \(/)).toBeNull();
 });
+
+// ── «Generar los conceptos que faltan (N)» por ángulo ganador ─────────────────────────────────
+
+const ACCION_FABRICAR = "producto.fabricar_conceptos_fase2";
+
+function fabricarDe(angulo: string, faltan: number, extra: Record<string, unknown> = {}) {
+  return {
+    accion_id: ACCION_FABRICAR,
+    parametros: { producto_key: "TINNIDROP", angulo_key: angulo, n: String(faltan) },
+    faltan,
+    habilitada: true,
+    trabajo_en_curso: null,
+    ...extra,
+  };
+}
+
+/** #1 y #2 con conceptos por fabricar, #3 completo, y un perdedor que (por error) trajera el campo. */
+function fase2ConBotones(extra1: Record<string, unknown> = {}) {
+  const fabricar: Record<string, unknown> = {
+    ACCESIBILIDAD_MEDICO: fabricarDe("ACCESIBILIDAD_MEDICO", 8, extra1),
+    NOCHES_SIN_DORMIR: fabricarDe("NOCHES_SIN_DORMIR", 10),
+    DETERIORO_COGNITIVO: fabricarDe("DETERIORO_COGNITIVO", 0),
+  };
+  return {
+    ...FASE2_MOCK,
+    angulos: FASE2_MOCK.angulos.map((a) => (fabricar[a.angulo_key] ? { ...a, fabricar: fabricar[a.angulo_key] } : a)),
+  };
+}
+
+const TEXTO_BOTON = (n: number) => `Generar los conceptos que faltan (${n})`;
+
+test("fabricar: el botón aparece en cada ángulo ganador con conceptos por hacer, con su N, y nunca en los perdedores", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConBotones();
+  renderizar("TINNIDROP");
+
+  const b1 = await within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO")).findByRole("button", { name: TEXTO_BOTON(8) });
+  expect(b1).toBeEnabled();
+  const g1 = screen.getByTestId("galeria-ACCESIBILIDAD_MEDICO");
+  // el botón vive pegado al encabezado de su galería (justo antes), dentro del bloque de su ángulo
+  expect(b1.compareDocumentPosition(g1) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  expect(
+    within(screen.getByTestId("bloque-NOCHES_SIN_DORMIR")).getByRole("button", { name: TEXTO_BOTON(10) }),
+  ).toBeEnabled();
+  // N = 0 → sin botón
+  expect(within(screen.getByTestId("bloque-DETERIORO_COGNITIVO")).queryByRole("button", { name: /Generar los conceptos que faltan/ })).toBeNull();
+  // perdedores: ni botón ni nada
+  const apagados = screen.getByTestId("angulos-no-funcionaron");
+  expect(within(apagados).queryByRole("button", { name: /Generar los conceptos que faltan/ })).toBeNull();
+  expect(screen.getAllByRole("button", { name: /Generar los conceptos que faltan/ })).toHaveLength(2);
+});
+
+test("fabricar: pide confirmación con la explicación en palabras y no lanza nada hasta confirmar", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConBotones();
+  respuestas[`POST /api/acciones/${ACCION_FABRICAR}`] = {
+    job_id: "job-fab-1", accion_id: ACCION_FABRICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-fab-1", url_eventos: "/api/trabajos/job-fab-1/eventos",
+  };
+  respuestas["GET /api/trabajos/job-fab-1"] = { job_id: "job-fab-1", estado: "CORRIENDO", unidades: [] };
+  renderizar("TINNIDROP");
+
+  const bloque = within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO"));
+  fireEvent.click(await bloque.findByRole("button", { name: TEXTO_BOTON(8) }));
+
+  const aviso = await bloque.findByTestId("confirmar-fabricar");
+  expect(aviso.textContent).toContain(
+    "La Fábrica de conceptos va a crear 8 conceptos nuevos para ACCESIBILIDAD_MEDICO y dejar sus prompts listos. No toca Meta ni mueve plata. Tarda unos minutos.",
+  );
+  expect(llamadasFetch.some((l) => l.metodo === "POST")).toBe(false);
+
+  // cancelar cierra el aviso sin lanzar nada
+  fireEvent.click(within(aviso).getByRole("button", { name: "Cancelar" }));
+  await waitFor(() => expect(bloque.queryByTestId("confirmar-fabricar")).toBeNull());
+  expect(llamadasFetch.some((l) => l.metodo === "POST")).toBe(false);
+
+  // confirmar lanza la acción del manifiesto con confirmación explícita
+  fireEvent.click(await bloque.findByRole("button", { name: TEXTO_BOTON(8) }));
+  fireEvent.click(within(await bloque.findByTestId("confirmar-fabricar")).getByRole("button", { name: "Sí, confirmar y ejecutar" }));
+  await waitFor(() => {
+    const llamada = llamadasFetch.find((l) => l.url === `/api/acciones/${ACCION_FABRICAR}` && l.metodo === "POST");
+    expect(llamada?.cuerpo).toEqual({
+      parametros: { producto_key: "TINNIDROP", angulo_key: "ACCESIBILIDAD_MEDICO", n: "8" },
+      confirmado: true,
+    });
+  });
+});
+
+test("fabricar: mientras el trabajo corre el botón dice «Generando…», no se puede volver a apretar y linkea al trabajo", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConBotones();
+  respuestas[`POST /api/acciones/${ACCION_FABRICAR}`] = {
+    job_id: "job-fab-2", accion_id: ACCION_FABRICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-fab-2", url_eventos: "/api/trabajos/job-fab-2/eventos",
+  };
+  respuestas["GET /api/trabajos/job-fab-2"] = { job_id: "job-fab-2", estado: "CORRIENDO", unidades: [] };
+  renderizar("TINNIDROP");
+
+  const bloque = within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO"));
+  fireEvent.click(await bloque.findByRole("button", { name: TEXTO_BOTON(8) }));
+  fireEvent.click(within(await bloque.findByTestId("confirmar-fabricar")).getByRole("button", { name: "Sí, confirmar y ejecutar" }));
+
+  const generando = await bloque.findByRole("button", { name: "Generando…" });
+  expect(generando).toBeDisabled();
+  expect(bloque.queryByRole("button", { name: TEXTO_BOTON(8) })).toBeNull();
+  expect(await bloque.findByRole("link", { name: /Ver el progreso en vivo/ })).toBeInTheDocument();
+  // el otro ángulo sigue libre
+  expect(
+    within(screen.getByTestId("bloque-NOCHES_SIN_DORMIR")).getByRole("button", { name: TEXTO_BOTON(10) }),
+  ).toBeEnabled();
+});
+
+test("fabricar: un trabajo que ya corre (lo dice el backend) bloquea el botón al cargar la pantalla", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConBotones({ trabajo_en_curso: "job-previo" });
+  respuestas["GET /api/trabajos/job-previo"] = { job_id: "job-previo", estado: "CORRIENDO", unidades: [] };
+  renderizar("TINNIDROP");
+
+  const bloque = within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO"));
+  expect(await bloque.findByRole("button", { name: "Generando…" })).toBeDisabled();
+});
+
+test("fabricar: al terminar bien la galería se recarga (vuelve a pedir el detalle de FASE 2)", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConBotones({ trabajo_en_curso: "job-listo" });
+  respuestas["GET /api/trabajos/job-listo"] = { job_id: "job-listo", estado: "EXITO", unidades: [] };
+  renderizar("TINNIDROP");
+
+  await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO");
+  await waitFor(() => {
+    const cargas = llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2" && l.metodo === "GET");
+    expect(cargas.length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+test("fabricar: si la acción está deshabilitada el botón se ve pero no se puede apretar", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConBotones({ habilitada: false });
+  renderizar("TINNIDROP");
+  const bloque = within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO"));
+  expect(await bloque.findByRole("button", { name: TEXTO_BOTON(8) })).toBeDisabled();
+});

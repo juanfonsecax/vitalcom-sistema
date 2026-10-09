@@ -461,6 +461,36 @@ def test_acciones_v7():
     check(_problemas_que_empiezan(m, "V21:"), "un escritor de bloqueo que no es script interno → V21")
 
 
+def _con_prompt_propio(prompt_key="prompt_x", lineas=None, **cambios):
+    """Una acción subagente SIN nodo con prompt dedicado en `acciones.claude` (V22)."""
+    m = manifiesto_v7_valido()
+    m["acciones"]["claude"] = {prompt_key: lineas if lineas is not None else
+                               ["Trabajo {job_id}: {n} cosas de {producto_key}.", "{ya_registrados}"]}
+    a = accion_base("producto.hacer_x", None, "subagente", name="etapa-9", requiere_confirmacion=True,
+                    escribe=["PRODUCTOS/"], presupuesto_usd=20, tiempo_max_s=3600,
+                    parametros={"producto_key": {"tipo": "producto_key", "requerido": True},
+                                "n": {"tipo": "texto", "patron": "^[0-9]$", "requerido": True}})
+    a["prompt"] = "prompt_x"
+    a.update(cambios)
+    _lista(m).append(a)
+    return m
+
+
+def test_prompt_propio_v22():
+    m = _con_prompt_propio()
+    check(_problemas_que_empiezan(m, "V22:") == [] and _problemas_que_empiezan(m, "V3:") == [],
+          "un subagente con 'prompt' que existe en acciones.claude y solo usa sus parámetros es válido",
+          str(gen_app.problemas_de_manifiesto(m, FLUJO_JUGUETE)))
+    m = _con_prompt_propio(prompt="no_existe")
+    check(_problemas_que_empiezan(m, "V22:"), "'prompt' que no está en acciones.claude → V22")
+    m = _con_prompt_propio(lineas=["{angulo_key} no es un parámetro"])
+    check(_problemas_que_empiezan(m, "V22:"), "un {marcador} que no es parámetro ni reservado → V22")
+    m = _con_prompt_propio(lineas="no es una lista")
+    check(_problemas_que_empiezan(m, "V22:"), "el prompt tiene que ser una lista de líneas → V22")
+    m = _con_prompt_propio(ejecutor_tipo="script", comando=["python", "Ads/_TOOLS/gen_decisiones.py"], name=None)
+    check(_problemas_que_empiezan(m, "V22:"), "'prompt' en una acción que no es subagente ni skill → V22")
+
+
 def _con_pasos(pasos, prompt=True):
     flujo = copy.deepcopy(FLUJO_JUGUETE)
     flujo["fases"][0]["nodos"][1].update(
@@ -505,7 +535,8 @@ def main():
     test_leer_manifiesto_real()
     test_leer_manifiesto_fixture_invalido()
     test_acciones_v7()
-    total = 51
+    test_prompt_propio_v22()
+    total = 56
     print("\n%d de %d comprobaciones pasan." % (total - fallas, total))
     return 1 if fallas else 0
 

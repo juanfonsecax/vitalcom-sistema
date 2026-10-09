@@ -176,3 +176,20 @@ def test_endpoint_swipe_404_archivo_inexistente(sistema_min: Path):
     cliente = TestClient(app)
     res = cliente.get("/api/swipe/_IMG/no_existe.jpg")
     assert res.status_code == 404
+
+
+def test_resolver_encuentra_el_prompt_de_cada_tanda_en_el_paquete_acumulado(sistema_min: Path):
+    """`armar_prompts_fase2.py` acumula las tandas en UN paquete (fusion por canonico_id): la galeria
+    tiene que resolver el prompt de los conceptos de la tanda 1 Y de la tanda 2."""
+    from vitalcom_app import contratos
+
+    archivo = sistema_min / "Ads" / "MEDIA_CLEARSTEM" / "FASE2_RESISTENCIA_INSULINA" / "PAQUETE_CREATIVO_RESISTENCIA_INSULINA.json"
+    paquete = json.loads(archivo.read_text(encoding="utf-8"))
+    paquete["conceptos"].append({**paquete["conceptos"][0], "slot": 2, "canonico_id": "CN07_DOLOR_A_PLENO",
+                                 "prompt_director_de_arte": "PROMPT DE LA TANDA 2"})
+    archivo.write_text(json.dumps(paquete, ensure_ascii=False), encoding="utf-8")
+    ang = "RESISTENCIA_INSULINA_SOP"
+    vieja = contratos.resolver_prompt_fase2("CLEARSTEM", "MEDIA_CLEARSTEM", ang, "CN05_LISTA_BENEFICIOS")
+    nueva = contratos.resolver_prompt_fase2("CLEARSTEM", "MEDIA_CLEARSTEM", ang, "CN07_DOLOR_A_PLENO")
+    assert vieja["prompt"] == PROMPT_REAL and nueva["prompt"] == "PROMPT DE LA TANDA 2"
+    assert vieja["prompt_origen"] == nueva["prompt_origen"] == "paquete"

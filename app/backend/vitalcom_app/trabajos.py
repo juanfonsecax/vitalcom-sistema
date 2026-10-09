@@ -73,7 +73,8 @@ def _resumen(estado_dbos: Any) -> dict[str, Any]:
     estado = estado_visible(estado_dbos, publicado)
     return {
         "job_id": estado_dbos.workflow_id, "accion_id": accion_id, "rotulo": _rotulo(accion_id),
-        "producto_key": parametros.get("producto_key"), "estado": estado,
+        "producto_key": parametros.get("producto_key"), "angulo_key": parametros.get("angulo_key"),
+        "estado": estado,
         "iniciado": _iso(estado_dbos.created_at),
         "terminado": _iso(estado_dbos.completed_at or estado_dbos.updated_at) if estado not in ESTADOS_EN_CURSO else None,
         "app_version": estado_dbos.app_version, "otra_version": estado == "OTRA_VERSION",

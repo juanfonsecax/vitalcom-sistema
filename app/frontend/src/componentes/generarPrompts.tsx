@@ -23,7 +23,7 @@ function irALaTarjetaDeArranque() {
 }
 
 /** Sigue un trabajo hasta que termina y, al terminar bien, avisa para que la pantalla se recargue. */
-function ProgresoDelTrabajo({ trabajo, alTerminar }: { trabajo: string; alTerminar: () => void }) {
+export function ProgresoDelTrabajo({ trabajo, alTerminar }: { trabajo: string; alTerminar: () => void }) {
   const detalle = useQuery({
     queryKey: ["trabajo", trabajo],
     queryFn: () => api.trabajo(trabajo),

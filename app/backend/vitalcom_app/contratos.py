@@ -775,6 +775,49 @@ def _checklist_angulo(conceptos: list[dict[str, Any]], estructura: list[tuple[st
     ]
 
 
+ACCION_FABRICAR = "producto.fabricar_conceptos_fase2"
+
+
+def conceptos_registrados(producto_key: str, angulo_key: str) -> list[dict[str, str]]:
+    """Las filas de `_DIM_CREATIVOS.csv` de un producto+ángulo (cualquier estado): lo que la fábrica NO
+    debe repetir. Solo lectura: el único escritor de ese CSV es el camino de etapa-9."""
+    try:
+        filas = _leer_csv(("PRODUCTOS", "_DIM_CREATIVOS.csv"))
+    except Exception:
+        return []
+    return [
+        {"canonico_id": f.get("canonico_id", ""), "concepto_key": f.get("concepto_key", ""), "estado": f.get("estado", "")}
+        for f in filas if f.get("producto_key") == producto_key and f.get("angulo_key") == angulo_key
+    ]
+
+
+def _trabajo_en_curso(accion_id: str, producto_key: str, angulo_key: str) -> str | None:
+    """El `job_id` de un trabajo vivo de esta acción para este producto+ángulo, o None. Si el runner
+    no responde, None: la pantalla se sirve igual (el botón solo pierde el candado)."""
+    try:
+        from . import trabajos
+
+        for fila in trabajos.listar(producto_key=producto_key, limite=trabajos.MAXIMO_A_LISTAR):
+            if (fila.get("accion_id") == accion_id and fila.get("angulo_key") == angulo_key
+                    and fila.get("estado") in trabajos.ESTADOS_EN_CURSO):
+                return fila["job_id"]
+    except Exception:
+        return None
+    return None
+
+
+def _fabricar(producto_key: str, angulo: dict[str, Any], requeridos: int, registrados: int) -> dict[str, Any]:
+    """El descriptor del botón «Generar los conceptos que faltan (N)»: N es resta del backend."""
+    faltan = max(0, requeridos - registrados)
+    return {
+        "accion_id": ACCION_FABRICAR,
+        "parametros": {"producto_key": producto_key, "angulo_key": angulo["angulo_key"], "n": str(faltan)},
+        "faltan": faltan,
+        "habilitada": _accion_habilitada(ACCION_FABRICAR),
+        "trabajo_en_curso": _trabajo_en_curso(ACCION_FABRICAR, producto_key, angulo["angulo_key"]) if faltan else None,
+    }
+
+
 ACCION_ARMAR_PROMPTS = "producto.armar_prompts_fase2"
 ACCION_CONCEPTOS = "nodo.F2.conceptos"
 # Los datos de `datos_producto.py` que frenan a `armar_prompts_fase2.py` (los mismos que él bloquea).
@@ -895,6 +938,8 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         angulo["conceptos_listos"] = sum(
             1 for c in conceptos if c["angulo_key"] == angulo["angulo_key"] and c.get("estado") in _ESTADOS_GENERADO)
         if angulo["rol"] in ("ganador_activo", "ganador_en_fila"):
+            registrados = sum(1 for c in conceptos if c["angulo_key"] == angulo["angulo_key"])
+            angulo["fabricar"] = _fabricar(producto_key, angulo, requeridos, registrados)
             angulo["checklist"] = _checklist_angulo(
                 [c for c in conceptos if c["angulo_key"] == angulo["angulo_key"]], estructura, requeridos, lanzado)
             hay_pendientes = any(c["angulo_key"] == angulo["angulo_key"] and c["prompt_origen"] == "pendiente"

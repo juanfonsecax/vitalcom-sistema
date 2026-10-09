@@ -182,6 +182,20 @@
     "No toques Meta: publicar es otro nodo (F1.publicar).",
     "Si necesitás una decisión del operador, no la asumas: terminá tu respuesta con una línea que empiece con `PREGUNTA_OPERADOR:` seguida de la pregunta y las opciones.",
     "PASO_ETAPA: {etapa}"
+   ],
+   "prompt_fabricar_conceptos": [
+    "Sos el orquestador de VITALCOM corriendo desde la app, sin operador en línea (trabajo {job_id}).",
+    "Tarea: FABRICAR conceptos de FASE 2 y nada más. Producto {producto_key}, ángulo {angulo_key}: exactamente {n} conceptos nuevos (los que le faltan a ese ángulo).",
+    "NO renderices ninguna imagen (nada de etapa-render ni de Chrome) y NO toques Meta (ni leer ni publicar).",
+    "Primero corré `python Ads/_TOOLS/flujo.py {producto_key}` y confirmá que {angulo_key} es un ángulo ganador del producto. Si no lo es, no produzcas nada: devolvé el motivo y terminá.",
+    "QUIÉN ELIGE LOS CANÓNICOS: el script, nadie más. Corré `python Ads/_TOOLS/armar_prompts_fase2.py {producto_key} {angulo_key} --n {n} --json`. Elige los canónicos que siguen en el ranking, excluye los ya registrados, respeta que no se repita un concepto_key mientras queden sin usar, arma sus prompts y los acumula en Ads/MEDIA_{producto_key}/FASE2_{angulo_key}/ sin pisar los de tandas anteriores. Su JSON trae `canonicos` (la lista exacta de esta tanda), `conceptos`, `aviso` y `faltantes_de_aptos`.",
+    "Si el JSON trae `bloqueado: true`: no registres nada y terminá contando `dato` y `motivo`. Única excepción: si `dato` es `perfil_creativo`, pedile a etapa-9 que cargue la skill generar-conceptos y produzca el perfil y los textos de {angulo_key} (PASOS 1 y 3, a PRODUCTOS/<carpeta>/_PERFIL_CREATIVO.json) y volvé a correr el script UNA vez. Si `nada_que_hacer` es true, terminá diciéndolo.",
+    "Ya están registrados para este producto y ángulo (canónico · concepto_key · estado). El script ya los excluye; están acá para que no los toques:",
+    "{ya_registrados}",
+    "Con el JSON ok, invocá a la etapa {name} con Task (subagent_type = {name}), ejecutor declarado: {ejecutor}. Pedile que cargue la skill generar-conceptos y que registre en PRODUCTOS/_DIM_CREATIVOS.csv EXACTAMENTE los canónicos de `canonicos`, uno por fila (PASO 4 de etapa-9: escritor CSV real, nunca a mano; canonico_id y concepto_key llenos; estado PENDIENTE_GENERAR), sin elegir otros ni correr seleccionar_canonicos.py para decidirlos. No inventes precios, dosis ni sellos; los prompts ya están armados en el paquete.",
+    "Después de registrar NO vuelvas a correr armar_prompts_fase2.py (con todo registrado diría que no falta nada, y si faltara armaría la tanda siguiente).",
+    "Respondé cuántos conceptos nuevos quedaron registrados y con qué canónicos; si el script entregó menos de {n} (`faltantes_de_aptos` > 0), decilo con su `aviso`.",
+    "Si necesitás una decisión del operador, no la asumas: terminá tu respuesta con una línea que empiece con `PREGUNTA_OPERADOR:` seguida de la pregunta y las opciones."
    ]
   },
   "tras_escribir": [
@@ -465,7 +479,46 @@
     "tiempo_max_s": 5400,
     "herramientas": [],
     "presupuesto_usd": 25,
-    "motivo": "etapa-render conduce el Chrome del operador; no está verificado que claude-in-chrome exista en una corrida headless (spike pendiente)."
+    "motivo": "Fabricar y renderizar en una sola corrida sigue deshabilitado: etapa-render conduce el Chrome del operador y no está verificado que claude-in-chrome exista en una corrida headless (spike pendiente). La fabricación ya corre sola, por ángulo, con la acción producto.fabricar_conceptos_fase2; el render sigue siendo manual (copiar prompt + imagen)."
+   },
+   {
+    "id": "producto.fabricar_conceptos_fase2",
+    "rotulo": "Fabricar los conceptos que faltan de un ángulo (FASE 2)",
+    "nodo": null,
+    "ejecutor_tipo": "subagente",
+    "name": "etapa-9",
+    "comando": null,
+    "prompt": "prompt_fabricar_conceptos",
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "angulo_key": {
+      "tipo": "texto",
+      "patron": "^[A-Za-z0-9_]{1,80}$",
+      "requerido": true
+     },
+     "n": {
+      "tipo": "texto",
+      "patron": "^([1-9]|10)$",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": true,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/",
+     "Ads/"
+    ],
+    "idempotente": false,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 3600,
+    "herramientas": [],
+    "presupuesto_usd": 20
    },
    {
     "id": "nodo.F2.plan",

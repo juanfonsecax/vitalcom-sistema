@@ -10,6 +10,7 @@ import type { AnguloFase2, CampanaFase2, ConceptoFase2 } from "../api/cliente";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Chip, Tarjeta, type Tono } from "./ui";
 import { BotonCopiarTexto, ImagenDeReferencia } from "./copiar";
+import { BotonFabricarConceptos } from "./fabricarConceptos";
 import { GenerarPromptsDelAngulo } from "./generarPrompts";
 import { responsableEnPalabras } from "./situacion";
 
@@ -189,6 +190,9 @@ export function GaleriaDeConceptos({
       : null;
 
   return (
+    <div className="space-y-2">
+    {/* El botón de fabricar va pegado al encabezado de la galería, visible aunque ésta esté cerrada. */}
+    <BotonFabricarConceptos fabricar={angulo.fabricar} angulo={angulo.angulo_key} clave={clave} />
     <details
       open={abierta}
       className="group rounded-xl border border-zinc-800 bg-zinc-950/40"
@@ -243,6 +247,7 @@ export function GaleriaDeConceptos({
         )}
       </div>
     </details>
+    </div>
   );
 }
 

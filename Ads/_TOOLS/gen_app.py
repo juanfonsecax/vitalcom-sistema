@@ -58,11 +58,13 @@ EJECUTOR_TIPOS_ACCION = {"script", "subagente", "skill", "mcp", "operador"}
 PARAM_TIPOS_ACCION = {"producto_key", "cuenta_alias", "mercado", "enum", "texto", "archivo_temporal", "bandera"}
 RUTAS_ESCRIBE_PERMITIDAS = ("PRODUCTOS/", "Ads/", "VISTAS/", "warehouse/")
 RUTAS_ESCRIBE_PROHIBIDAS = ("DOCTRINA/", ".claude/", "app/")
+# V22: marcadores que el runner llena además de los parámetros y los reservados.
+MARCADORES_DE_PROMPT_PROPIO = {"ejecutor", "name", "ya_registrados"}
 CAMPOS_ACCION_CONOCIDOS = {
     "id", "rotulo", "nodo", "ejecutor_tipo", "name", "comando", "salida", "parametros",
     "requiere_confirmacion", "aprobacion", "toca_meta", "herramientas", "herramientas_meta",
     "ordenes", "escribe", "idempotente", "precondicion", "visibilidad", "habilitada", "motivo",
-    "tiempo_max_s", "presupuesto_usd", "datos_del_operador", "pasos",
+    "tiempo_max_s", "presupuesto_usd", "datos_del_operador", "pasos", "prompt",
 }
 CAMPOS_ACCION_OBLIGATORIOS = {
     "id", "rotulo", "nodo", "ejecutor_tipo", "parametros", "requiere_confirmacion",
@@ -217,6 +219,22 @@ def _problemas_de_pasos(a, nf, bloque, d):
     return problemas
 
 
+def _validar_prompt_propio(a, d, bloque, parametros, reservados):
+    """V22: una acción subagente/skill puede traer su propio prompt (`prompt` = clave de
+    `acciones.claude`): tiene que existir, ser una lista de líneas y no usar marcadores que el
+    runner no sabe llenar (parámetros, reservados y los de MARCADORES_DE_PROMPT_PROPIO)."""
+    if a.get("ejecutor_tipo") not in ("subagente", "skill"):
+        return ["V22: %s declara 'prompt' pero no es subagente ni skill" % d]
+    clave = a.get("prompt")
+    lineas = (bloque.get("claude") or {}).get(clave) if isinstance(clave, str) else None
+    if not isinstance(lineas, list) or not lineas or not all(isinstance(x, str) for x in lineas):
+        return ["V22: %s: acciones.claude.%s no es una lista de líneas" % (d, clave)]
+    usados = set(re.findall(r"\{([a-zA-Z_][a-zA-Z0-9_]*)\}", chr(10).join(lineas)))
+    permitidos = set(parametros) | set(reservados) | MARCADORES_DE_PROMPT_PROPIO
+    return ["V22: %s: acciones.claude.%s usa {%s}, que no es parámetro, reservado ni marcador conocido" % (d, clave, m)
+            for m in sorted(usados - permitidos)]
+
+
 def validar_acciones(m, flujo):
     """Las 21 reglas del bloque `acciones` (v7). Ver el diseño del Hito 3, §2.4 (V20-V21: Hito 4).
 
@@ -336,6 +354,9 @@ def validar_acciones(m, flujo):
                         re.compile(patron)
                     except re.error:
                         problemas.append("V10: %s: el parámetro '%s' tiene un patrón que no compila" % (d, pname))
+
+        if "prompt" in a:
+            problemas.extend(_validar_prompt_propio(a, d, bloque, parametros, reservados))
 
         requiere_confirmacion = a.get("requiere_confirmacion")
         aprobacion = a.get("aprobacion")
