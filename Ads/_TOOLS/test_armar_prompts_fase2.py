@@ -22,6 +22,7 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import armar_prompts_fase2 as ap  # noqa: E402
+import seleccionar_canonicos as sc  # noqa: E402
 
 
 def _dim_precios(tmp, filas):
@@ -255,7 +256,8 @@ def _doctrina_registros(base, invima=None):
         fh.write(texto)
 
 
-def _entorno_json(con_packshot=True, con_precio=True, con_perfil=True, angulo="ANG", mercado="GT", invima=None):
+def _entorno_json(con_packshot=True, con_precio=True, con_perfil=True, angulo="ANG", mercado="GT", invima=None,
+                  perfil=None, con_parametros=False):
     """BASE/PROD_DIR temporales con un producto PX del `mercado`. Devuelve (base, restaurar)."""
     import json
     base = tempfile.mkdtemp(prefix="ap_json_")
@@ -282,7 +284,11 @@ def _entorno_json(con_packshot=True, con_precio=True, con_perfil=True, angulo="A
     if con_perfil:
         textos = {k: ("x" if k != "ACTIVOS_CLAVE" else ["x"]) for k in ap.TEXTOS_REQUERIDOS}
         with open(os.path.join(prod, "PX_CARPETA", ap.PERFIL_CREATIVO), "w", encoding="utf-8") as fh:
-            json.dump({"schema": "perfil_creativo/1", "angulo_key": angulo, "perfil": {}, "textos": textos}, fh)
+            json.dump({"schema": "perfil_creativo/1", "angulo_key": angulo, "perfil": perfil or {}, "textos": textos}, fh)
+    if con_parametros:  # la estructura de FASE 2: A (1x5) + B (1x5) = 10 conceptos; C repite los mismos
+        with open(os.path.join(prod, "_PARAMETROS_PUBLICACION.csv"), "w", newline="", encoding="utf-8") as fh:
+            fh.write("fase,brazo,conjuntos,anuncios_por_conjunto,estado" + chr(10)
+                     + "2,A,1,5,VIGENTE" + chr(10) + "2,B,1,5,VIGENTE" + chr(10) + "2,C,2,5,VIGENTE" + chr(10))
     viejo = (ap.BASE, ap.PROD_DIR, ap.DECISIONES_JSON)
     ap.BASE, ap.PROD_DIR, ap.DECISIONES_JSON = base, prod, os.path.join(prod, "_DECISIONES.json")
 
@@ -364,6 +370,173 @@ def test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta():
     assert all(e.startswith("Ads/MEDIA_PX/") for e in escritos)
 
 
+
+# ── segunda tanda: el script es el DUEÑO de «qué canónicos» y no repite los ya registrados ──────────
+
+def _perfil_rico():
+    """Un perfil que deja pasar casi todos los gates (>=10 canonicos aptos)."""
+    perfil = dict(sc.PLANTILLA_PERFIL)
+    for k, v in perfil.items():
+        if isinstance(v, bool):
+            perfil[k] = True
+        elif isinstance(v, int) and k != "nivel_conciencia_objetivo":
+            perfil[k] = 5
+    perfil.update(categoria="dolor", tiers_de_oferta=3, testimonios_reales_disponibles=5,
+                  prueba_social_clientes=500, alternativa_conocida="")
+    perfil.pop("producto", None)
+    perfil.pop("angulo_ganador", None)
+    return perfil
+
+
+def _registrar(prod, canonicos, angulo="ANG", pk="PX", estado="GENERADO", extra_filas=0):
+    """Escribe _DIM_CREATIVOS.csv como lo deja etapa-9 (esta prueba SI escribe: es un sandbox)."""
+    with open(os.path.join(prod, "_DIM_CREATIVOS.csv"), "w", newline="", encoding="utf-8") as fh:
+        w = csv.writer(fh)
+        w.writerow(["producto_key", "creativo_id", "angulo_key", "canonico_id", "concepto_key", "estado"])
+        for c in canonicos:
+            w.writerow([pk, f"{pk}_F2_{c}", angulo, c, "", estado])
+        for i in range(extra_filas):  # piezas viejas del angulo, sin canonico
+            w.writerow([pk, f"{pk}_R{i}", angulo, "", "SIN_CLASIFICAR", "PENDIENTE_GENERAR"])
+
+
+def _ids(cuerpo):
+    return cuerpo["canonicos"]
+
+
+def _paquete(base, angulo="ANG"):
+    import json
+    ruta = os.path.join(base, "Ads", "MEDIA_PX", f"FASE2_{angulo}", f"PAQUETE_CREATIVO_{angulo}.json")
+    with open(ruta, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def test_selector_excluye_los_ya_registrados_y_sigue_la_regla_del_concepto_key():
+    perfil = dict(_perfil_rico(), producto="PX", angulo_ganador="ANG")
+    uno = sc.seleccionar(perfil, 5)
+    ya = [i["canonico_id"] for i in uno["seleccion"]]
+    dos = sc.seleccionar(perfil, 5, ya=ya)
+    ids2 = [i["canonico_id"] for i in dos["seleccion"]]
+    assert len(ids2) == 5 and not set(ids2) & set(ya), "5 canonicos DISTINTOS de los ya registrados"
+    docs = sc.cargar_canonicos()
+    ck = lambda cid: sc.concepto_dominante(docs[cid])  # noqa: E731
+    usados = {ck(c) for c in ya}
+    sin_usar = [c for c in ids2 if ck(c) not in usados]
+    # un concepto_key sin usar entra antes que uno repetido: mientras queden, no se repite
+    assert sin_usar and ids2[:len(sin_usar)] == sin_usar
+    assert dos["ya_registrados"] == sorted(ya)
+    assert set(dos["repiten_concepto_key"]) == set(ids2) - set(sin_usar)
+    assert not set(i["canonico_id"] for i in dos["aptos_no_elegidos"]) & set(ya)
+
+
+def test_segunda_tanda_elige_otros_5_y_no_pisa_la_primera():
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    prod = os.path.join(base, "PRODUCTOS")
+    try:
+        c1, uno, _ = _correr_main(["PX", "ANG", "--json", "--n", "5"])
+        assert c1 == 0 and uno["conceptos"] == 5 and len(_ids(uno)) == 5
+        primera = {x["canonico_id"]: x["prompt_director_de_arte"] for x in _paquete(base)["conceptos"]}
+        _registrar(prod, _ids(uno))
+        c2, dos, _ = _correr_main(["PX", "ANG", "--json"])  # sin --n: faltan 10 - 5 = 5
+        assert c2 == 0 and dos["conceptos"] == 5
+        assert not set(_ids(dos)) & set(_ids(uno)), "ningun canonico de la tanda 1 se repite"
+        paquete = _paquete(base)
+        todos = {x["canonico_id"]: x for x in paquete["conceptos"]}
+        assert set(todos) == set(_ids(uno)) | set(_ids(dos)), "el paquete acumula las dos tandas"
+        for cid, prompt in primera.items():  # la tanda 1 quedo intacta, byte a byte
+            assert todos[cid]["prompt_director_de_arte"] == prompt
+        assert [x["slot"] for x in paquete["conceptos"]] == list(range(1, 11))
+        # lo que lee la app: cada concepto trae su prompt y su imagen de referencia
+        assert all(x["prompt_director_de_arte"] and "foto_base_competidor" in x for x in todos.values())
+        ruta_txt = os.path.join(base, "Ads", "MEDIA_PX", "FASE2_ANG", "PROMPTS_FASE2_ANG.txt")
+        with open(ruta_txt, encoding="utf-8") as fh:
+            txt = fh.read()
+        assert all(cid in txt for cid in todos), "el .txt lista las dos tandas"
+        assert dos["archivos"] == uno["archivos"], "mismos archivos, acumulados (no uno por tanda que se pise)"
+    finally:
+        restaurar()
+
+
+def test_repetir_la_misma_tanda_es_idempotente():
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    prod = os.path.join(base, "PRODUCTOS")
+    try:
+        _, uno, _ = _correr_main(["PX", "ANG", "--json", "--n", "5"])
+        _registrar(prod, _ids(uno))
+        _, dos, _ = _correr_main(["PX", "ANG", "--json"])
+        _, tres, _ = _correr_main(["PX", "ANG", "--json"])  # la tanda 2 nunca se registro: se rehace igual
+        assert _ids(tres) == _ids(dos)
+        assert len(_paquete(base)["conceptos"]) == 10
+    finally:
+        restaurar()
+
+
+def test_nada_que_hacer_cuando_no_falta_ningun_concepto():
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    prod = os.path.join(base, "PRODUCTOS")
+    try:
+        _, uno, _ = _correr_main(["PX", "ANG", "--json", "--n", "10"])
+        assert uno["conceptos"] == 10
+        _registrar(prod, _ids(uno))
+        ruta = os.path.join(base, "Ads", "MEDIA_PX", "FASE2_ANG", "PAQUETE_CREATIVO_ANG.json")
+        with open(ruta, "rb") as fh:
+            antes = fh.read()
+        codigo, nada, _ = _correr_main(["PX", "ANG", "--json"])
+        assert codigo == 0 and nada["ok"] is True and nada["nada_que_hacer"] is True and nada["conceptos"] == 0
+        assert "no falta" in nada["aviso"].lower()
+        with open(ruta, "rb") as fh:
+            assert fh.read() == antes, "no escribe nada"
+    finally:
+        restaurar()
+
+
+def test_n_se_topa_con_lo_que_falta_para_la_estructura():
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    prod = os.path.join(base, "PRODUCTOS")
+    try:
+        _registrar(prod, ["CN01_ANTES_DESPUES", "CN02_TIMELINE_PROGRESION", "CN10_PRUEBA_SOCIAL",
+                          "CN04_ESCALERA_PRECIOS", "CN05_LISTA_BENEFICIOS", "CN03_OFERTA_MULTIPLICADOR",
+                          "CN07_DOLOR_A_PLENO", "CN06_CHECKLIST_SINTOMAS"])
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json", "--n", "9"])  # faltan 2 de 10
+        assert cuerpo["conceptos"] == 2 and "tope" in cuerpo["aviso"].lower()
+    finally:
+        restaurar()
+
+
+def test_si_quedan_menos_aptos_que_los_pedidos_lo_dice_y_no_repite():
+    base, restaurar = _entorno_json(con_parametros=True)  # perfil vacio: solo 4 canonicos aptos
+    prod = os.path.join(base, "PRODUCTOS")
+    try:
+        _registrar(prod, ["CN20_PRECIO_ANCLA"])
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json", "--n", "5"])
+        assert codigo == 0 and cuerpo["ok"] is True
+        assert cuerpo["conceptos"] == 3 and cuerpo["solicitados"] == 5 and cuerpo["faltantes_de_aptos"] == 2
+        assert "CN20_PRECIO_ANCLA" not in _ids(cuerpo)
+        assert "3" in cuerpo["aviso"] and "descartad" in cuerpo["aviso"].lower()
+        assert cuerpo["descartados"] and {"canonico_id", "motivo"} <= set(cuerpo["descartados"][0])
+    finally:
+        restaurar()
+
+
+def test_piezas_viejas_sin_canonico_cuentan_como_registradas_pero_no_excluyen_nada():
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    prod = os.path.join(base, "PRODUCTOS")
+    try:
+        _registrar(prod, [], extra_filas=4)  # 4 piezas R1..R4 del angulo, sin canonico
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+        assert cuerpo["conceptos"] == 6, "10 requeridos - 4 registradas"
+    finally:
+        restaurar()
+
+
+def test_sin_estructura_declarada_el_default_sigue_siendo_5():
+    _, restaurar = _entorno_json(perfil=_perfil_rico())  # sin _PARAMETROS_PUBLICACION.csv
+    try:
+        _, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+        assert cuerpo["conceptos"] == 5
+    finally:
+        restaurar()
+
+
 # ── multi-mercado (D6): el prompt sale del mercado del producto, no de Guatemala hardcodeada ──────────
 
 def _prompt_de(mercado, invima=None):
@@ -433,6 +606,14 @@ def main():
                    test_json_bloqueo_por_precio_y_por_perfil_creativo,
                    test_sin_json_el_bloqueo_sigue_siendo_systemexit_con_el_mismo_texto,
                    test_json_exito_lista_lo_que_escribio_y_solo_bajo_su_carpeta,
+                   test_selector_excluye_los_ya_registrados_y_sigue_la_regla_del_concepto_key,
+                   test_segunda_tanda_elige_otros_5_y_no_pisa_la_primera,
+                   test_repetir_la_misma_tanda_es_idempotente,
+                   test_nada_que_hacer_cuando_no_falta_ningun_concepto,
+                   test_n_se_topa_con_lo_que_falta_para_la_estructura,
+                   test_si_quedan_menos_aptos_que_los_pedidos_lo_dice_y_no_repite,
+                   test_piezas_viejas_sin_canonico_cuentan_como_registradas_pero_no_excluyen_nada,
+                   test_sin_estructura_declarada_el_default_sigue_siendo_5,
                    test_gt_conserva_el_registro_el_pais_el_voseo_y_la_moneda,
                    test_co_usa_tuteo_invima_y_pesos,
                    test_co_sin_numero_invima_bloquea_con_dato_registro_sanitario,

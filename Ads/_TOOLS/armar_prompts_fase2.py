@@ -23,6 +23,16 @@ DE DONDE SALE CADA DATO (un dato, un dueno — este script ya no nombra ningun p
                               (INVIMA pendiente) BLOQUEA con dato=registro_sanitario: nunca se inventa ni
                               se cae al MSPAS.
 Si falta cualquiera, BLOQUEA con el nombre de quien lo produce (invariante 4).
+
+DUENO DE «QUE CANONICOS» (tandas): este script. Elige, con seleccionar_canonicos.py, los canonicos de
+cada tanda EXCLUYENDO los que ya estan registrados en PRODUCTOS/_DIM_CREATIVOS.csv para ese
+producto+angulo (lectura; jamas lo escribe), y respeta «un concepto_key no se repite mientras queden
+sin usar» a traves de todas las tandas. etapa-9 registra EXACTAMENTE los canonicos que este script
+devuelve (`canonicos` en el JSON / PAQUETE_CREATIVO_*.json); no elige otros. Cuantos faltan: la
+estructura de FASE 2 (_PARAMETROS_PUBLICACION.csv: brazos A y B, como flujo.publicacion_num) menos las
+filas del angulo en _DIM_CREATIVOS.csv. `--n` (default = lo que falta) nunca pasa de eso; con 0
+faltantes sale en limpio sin escribir. Los archivos del angulo ACUMULAN las tandas (se fusionan por
+canonico_id): el paquete que lee la app nunca pierde el prompt de una tanda anterior.
 """
 
 import argparse
@@ -59,6 +69,60 @@ class Bloqueado(SystemExit):
         super().__init__(mensaje)
         self.mensaje = mensaje
         self.dato = dato
+
+
+DIM_CREATIVOS = "_DIM_CREATIVOS.csv"
+PARAMETROS_PUBLICACION = "_PARAMETROS_PUBLICACION.csv"
+N_POR_DEFECTO = 5  # sin estructura de FASE 2 declarada: la tanda historica de este script
+
+
+def _filas_csv(nombre):
+    ruta = os.path.join(PROD_DIR, nombre)
+    if not os.path.isfile(ruta):
+        return None
+    with io.open(ruta, encoding="utf-8-sig", newline="") as fh:
+        return list(csv.DictReader(fh))
+
+
+def conceptos_requeridos():
+    """Cuantos conceptos pide la estructura de FASE 2, o None si no esta declarada. Misma cuenta que
+    flujo.publicacion_num(env, "conceptos_fase2"): conjuntos x anuncios de los brazos A y B (C repite)."""
+    filas = _filas_csv(PARAMETROS_PUBLICACION)
+    if filas is None:
+        return None
+    total = 0
+    for r in filas:
+        if (r.get("estado") or "") != "VIGENTE" or (r.get("fase") or "") != "2":
+            continue
+        if (r.get("brazo") or "").upper() == "C":
+            continue
+        try:
+            total += int(float(r.get("conjuntos") or 0)) * int(float(r.get("anuncios_por_conjunto") or 0))
+        except ValueError:
+            continue
+    return total or None
+
+
+def registrados_del_angulo(producto_key, angulo):
+    """(filas, canonicos) de _DIM_CREATIVOS.csv para este producto+angulo, solo lectura. `filas` son TODAS
+    las piezas registradas (cuentan para lo que falta); `canonicos` los que ya tienen canonico_id (no se repiten)."""
+    filas = [r for r in (_filas_csv(DIM_CREATIVOS) or [])
+             if (r.get("producto_key") or "").strip() == producto_key and (r.get("angulo_key") or "").strip() == angulo]
+    canonicos = [r["canonico_id"].strip() for r in filas if (r.get("canonico_id") or "").strip()]
+    return len(filas), canonicos
+
+
+def cuantos_pedir(n_pedido, requeridos, n_registradas):
+    """(n efectivo, aviso de tope). Default = lo que falta; --n nunca pasa de lo que falta."""
+    if requeridos is None:
+        return (N_POR_DEFECTO if n_pedido is None else n_pedido), ""
+    faltan = max(0, requeridos - n_registradas)
+    if n_pedido is None:
+        return faltan, ""
+    if n_pedido > faltan:
+        return faltan, (f"Tope: se pidieron {n_pedido} pero la estructura de FASE 2 pide {requeridos} y el angulo "
+                        f"ya tiene {n_registradas}: solo faltan {faltan}.")
+    return n_pedido, ""
 
 
 def orden_ganador(celda):
@@ -327,7 +391,7 @@ def obtener_perfil_producto(producto_key, angulo_ganador, perfil_creativo=None):
     return p
 
 
-def generar_paquete_multimodal(producto_key, angulo_manual=None):
+def _armar(producto_key, angulo_manual=None, n_pedido=None):
     # 0. Mercado del producto: pais, moneda, persona y registro salen de mercado.py, no del codigo.
     perfil_mercado = requerir_mercado(producto_key)
     tuteo = perfil_mercado["persona"] == "tuteo"
@@ -350,6 +414,19 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
         print(f" Desempeño Histórico: {info_angulo.get('ventas')} ventas | CPA Real: {mc.formatear_monto(info_angulo.get('cpa_real_q', 0), perfil_mercado, 2)}")
     print("=" * 80)
 
+    # 1b. Cuantos faltan: la estructura de FASE 2 menos lo ya registrado. 0 = no hay nada que armar (no
+    # se exigen precios ni perfil para decir eso, y no se escribe nada).
+    requeridos = conceptos_requeridos()
+    n_filas, ya = registrados_del_angulo(producto_key, angulo)
+    n, aviso_tope = cuantos_pedir(n_pedido, requeridos, n_filas)
+    if n <= 0:
+        aviso = (f"No falta ningun concepto de {angulo}: la estructura de FASE 2 pide {requeridos} y ya hay "
+                 f"{n_filas} registrados. No se armo nada.")
+        print(aviso)
+        return {"nada_que_hacer": True, "aviso": aviso, "angulo": angulo, "paquetes": [], "requeridos": requeridos,
+                "registradas": n_filas, "solicitados": 0, "salida_txt": None, "salida_json": None,
+                "adaptacion_bot": None, "descartados": [], "faltantes_de_aptos": 0, "repiten_concepto_key": []}
+
     # 2. Foto del producto
     foto_prod_path = buscar_foto_producto(producto_key)
     foto_prod_rel = os.path.relpath(foto_prod_path, BASE).replace("\\", "/")
@@ -366,8 +443,20 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
 
     # 3. Selección de los 5 blueprints canónicos
     perfil = obtener_perfil_producto(producto_key, angulo, perfil_creativo)
-    sel_res = sc.seleccionar(perfil, n=5)
+    sel_res = sc.seleccionar(perfil, n=n, ya=ya)
     elegidos = sel_res["seleccion"]
+    faltantes_de_aptos = n - len(elegidos)
+    descartados = [{"canonico_id": d["canonico_id"], "motivo": d["motivo_descarte"]} for d in sel_res["descartados"]]
+    avisos = [aviso_tope] if aviso_tope else []
+    if faltantes_de_aptos > 0:
+        avisos.append(
+            f"Se pidieron {n} conceptos pero solo hay {len(elegidos)} canonicos aptos sin usar para {angulo}; "
+            f"faltan {faltantes_de_aptos} y NO se repite ninguno ya registrado. Descartados por sus gates: "
+            + "; ".join(f"{d['canonico_id']} ({d['motivo']})" for d in descartados) + ".")
+    if sel_res["repiten_concepto_key"]:
+        avisos.append("Repiten concepto_key (ya no quedaban sin usar): " + ", ".join(sel_res["repiten_concepto_key"]) + ".")
+    for a in avisos:
+        print("⚠️  " + a)
 
     # 4. Construir los 5 paquetes
     out_dir = os.path.join(BASE, "Ads", f"MEDIA_{producto_key}", f"FASE2_{angulo}")
@@ -476,20 +565,54 @@ def generar_paquete_multimodal(producto_key, angulo_manual=None):
         "regla": "saludo FIJO sin dolor del angulo · sin pregunta de opciones · el dolor va en el anuncio",
     }
 
-    # Guardar archivos
+    # Guardar archivos: ACUMULAN las tandas (se fusionan por canonico_id; la tanda nueva pisa solo sus
+    # propios canonicos). El paquete que lee la app nunca pierde el prompt de una tanda anterior.
     salida_txt = os.path.join(out_dir, f"PROMPTS_FASE2_{angulo}.txt")
-    with io.open(salida_txt, "w", encoding="utf-8") as f:
-        f.write("\n".join(prompts_texto))
-
     salida_json = os.path.join(out_dir, f"PAQUETE_CREATIVO_{angulo}.json")
-    with io.open(salida_json, "w", encoding="utf-8") as f:
-        json.dump({"producto": producto_key, "angulo": angulo, "conceptos": paquetes, "lucidbot_flujo": adaptacion_bot}, f, ensure_ascii=False, indent=2)
+    previos = []
+    if os.path.isfile(salida_json):
+        try:
+            with io.open(salida_json, encoding="utf-8") as fh:
+                previos = (json.load(fh).get("conceptos") or [])
+        except (OSError, ValueError):
+            previos = []
+    nuevos = {p["canonico_id"]: p for p in paquetes}
+    acumulados = [nuevos.pop(p["canonico_id"], p) for p in previos] + list(nuevos.values())
+    for slot, p in enumerate(acumulados, 1):
+        p["slot"] = slot
 
-    print(f"✅ Generados los 5 paquetes creativos multimodales en:")
+    cabecera = prompts_texto[:5]
+    cuerpo_txt = []
+    for p in acumulados:
+        cuerpo_txt += [
+            "──────────────────────────────────────────────────────────────────────────────",
+            f" CONCEPTO #{p['slot']} · {p['nombre_blueprint']} ({p['canonico_id']})",
+            f" Guardar archivo generado como: {p['archivo_salida']}",
+            f" [1] FOTO BASE REFERENCIA: {p['foto_base_competidor']}",
+            f" [2] FOTO TU PRODUCTO:     {p['foto_producto_propio']}",
+            "──────────────────────────────────────────────────────────────────────────────",
+            f"{p['prompt_director_de_arte']}\n\n",
+        ]
+    with io.open(salida_txt, "w", encoding="utf-8") as f:
+        f.write("\n".join(cabecera + cuerpo_txt))
+    with io.open(salida_json, "w", encoding="utf-8") as f:
+        json.dump({"producto": producto_key, "angulo": angulo, "conceptos": acumulados, "lucidbot_flujo": adaptacion_bot},
+                  f, ensure_ascii=False, indent=2)
+
+    print(f"✅ Armados {len(paquetes)} paquetes creativos multimodales ({len(acumulados)} acumulados en el angulo):")
     print(f"   📄 {salida_txt}")
     print(f"   📄 {salida_json}")
     print(f"\n🤖 El texto del bot no se genera aca: es de etapa-5, en {adaptacion_bot['flujo']}.")
-    return salida_txt, salida_json, paquetes, adaptacion_bot
+    return {"nada_que_hacer": False, "aviso": " ".join(avisos), "angulo": angulo, "paquetes": paquetes,
+            "requeridos": requeridos, "registradas": n_filas, "solicitados": n, "salida_txt": salida_txt,
+            "salida_json": salida_json, "adaptacion_bot": adaptacion_bot, "descartados": descartados,
+            "faltantes_de_aptos": faltantes_de_aptos, "repiten_concepto_key": sel_res["repiten_concepto_key"]}
+
+
+def generar_paquete_multimodal(producto_key, angulo_manual=None, n=None):
+    """(salida_txt, salida_json, paquetes de ESTA tanda, adaptacion_bot). Con nada que armar: (None, None, [], None)."""
+    r = _armar(producto_key, angulo_manual, n)
+    return r["salida_txt"], r["salida_json"], r["paquetes"], r["adaptacion_bot"]
 
 
 def _json_de_bloqueo(e):
@@ -504,23 +627,30 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="Arma los prompts multimodales de FASE 2 de un producto")
     ap.add_argument("producto", help="producto_key")
     ap.add_argument("angulo", nargs="?", help="angulo_key; sin él, el ganador que fija _DECISIONES.json")
+    ap.add_argument("--n", type=int, default=None,
+                    help="cuantos conceptos armar en esta tanda; default = los que faltan del angulo, y nunca mas que eso")
     ap.add_argument("--json", action="store_true",
                     help="stdout = un solo JSON (el bloqueo trae `dato`); el resto va a stderr")
     args = ap.parse_args(argv)
+    if args.n is not None and args.n < 0:
+        ap.error("--n no puede ser negativo")
     if not args.json:
-        generar_paquete_multimodal(args.producto, args.angulo)
+        _armar(args.producto, args.angulo, args.n)
         return 0
     try:
         with contextlib.redirect_stdout(sys.stderr):
-            salida_txt, salida_json, paquetes, _ = generar_paquete_multimodal(args.producto, args.angulo)
+            r = _armar(args.producto, args.angulo, args.n)
     except Bloqueado as e:
         print(json.dumps(_json_de_bloqueo(e), ensure_ascii=False))
         return 1
-    rel = lambda r: os.path.relpath(r, BASE).replace("\\", "/")  # noqa: E731
-    angulo = os.path.basename(os.path.dirname(salida_json))[len("FASE2_"):]
-    print(json.dumps({"ok": True, "bloqueado": False, "producto_key": args.producto, "angulo_key": angulo,
-                      "conceptos": len(paquetes), "archivos": [rel(salida_txt), rel(salida_json)]},
-                     ensure_ascii=False))
+    rel = lambda ruta: os.path.relpath(ruta, BASE).replace("\\", "/")  # noqa: E731
+    cuerpo = {"ok": True, "bloqueado": False, "producto_key": args.producto, "angulo_key": r["angulo"],
+              "nada_que_hacer": r["nada_que_hacer"], "conceptos": len(r["paquetes"]),
+              "canonicos": [p["canonico_id"] for p in r["paquetes"]], "solicitados": r["solicitados"],
+              "faltantes_de_aptos": r["faltantes_de_aptos"], "repiten_concepto_key": r["repiten_concepto_key"],
+              "descartados": r["descartados"], "aviso": r["aviso"],
+              "archivos": [rel(r["salida_txt"]), rel(r["salida_json"])] if r["salida_json"] else []}
+    print(json.dumps(cuerpo, ensure_ascii=False))
     return 0
 
 

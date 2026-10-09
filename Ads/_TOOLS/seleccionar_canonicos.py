@@ -203,27 +203,35 @@ def ordenar(aptos, perfil):
     return sorted(aptos, key=clave)
 
 
-def seleccionar(perfil, n):
+def seleccionar(perfil, n, ya=()):
+    """Los `n` canonicos de la tanda. `ya` son los canonicos YA registrados para este producto+angulo
+    (tandas anteriores): no vuelven a elegirse, y sus `concepto_key` cuentan como usados, asi la regla
+    «un concepto_key no se repite mientras queden sin usar» vale a traves de TODAS las tandas."""
+    ya = set(ya)
     docs = cargar_canonicos()
     aptos, descartados = evaluar(perfil, docs)
     ordenados = ordenar(aptos, perfil)
+    candidatos = [it for it in ordenados if it["canonico_id"] not in ya]
 
     # Un concepto_key no se repite mientras queden conceptos sin usar: la gracia
     # de FASE 2 es medir CONCEPTOS distintos, no ejecuciones del mismo.
-    elegidos, usados = [], set()
-    for it in ordenados:
+    elegidos = []
+    usados = {concepto_dominante(docs[c]) for c in ya if c in docs}
+    for it in candidatos:
         if len(elegidos) >= n:
             break
         if it["concepto_key"] in usados:
             continue
         usados.add(it["concepto_key"])
         elegidos.append(it)
+    repiten = []
     if len(elegidos) < n:
-        for it in ordenados:
+        for it in candidatos:
             if len(elegidos) >= n:
                 break
             if it not in elegidos:
                 elegidos.append(it)
+                repiten.append(it["canonico_id"])
 
     return {
         "producto": perfil["producto"],
@@ -231,7 +239,9 @@ def seleccionar(perfil, n):
         "solicitados": n,
         "entregados": len(elegidos),
         "seleccion": elegidos,
-        "aptos_no_elegidos": [i for i in ordenados if i not in elegidos],
+        "ya_registrados": sorted(c for c in ya if c in docs),
+        "repiten_concepto_key": repiten,
+        "aptos_no_elegidos": [i for i in candidatos if i not in elegidos],
         "descartados": sorted(descartados, key=lambda i: i["canonico_id"]),
     }
 
