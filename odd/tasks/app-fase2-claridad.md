@@ -74,5 +74,10 @@ backend: `app/backend/.venv/Scripts/python.exe -m pytest -q` on touched test fil
   angle and N missing concepts, excluding canónicos already used, then builds the prompts;
   rendering stays manual (copy prompt + image) or etapa-render later. Button on every ranked
   winning angle (#1 and queued): concepts move no money, so queued angles can be prepared ahead.
-- [ ] T4 Manifest action + runner prompt + backend endpoint/fields + button with confirmation
+- [x] T4 Manifest action + runner prompt + backend endpoint/fields + button with confirmation
       and job status (route: delegated writer)
+- T4 evidence: new action producto.fabricar_conceptos_fase2 (manifest rule V22 in gen_app);
+  armar_prompts_fase2.py owns "which canónicos" (skips registered, merges packages by canonico_id);
+  etapa-9 registers exactly the returned list. Frontend 190, backend 137, Ads/_TOOLS 61 passed;
+  RED first. Real data: buttons CLEARSTEM #1 (5), #2/#3 (10); confirmation text checked and
+  cancelled; no real generation run. Temp-copy run picks CN06, CN13, CN15, CN08, CN09.
