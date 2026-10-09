@@ -63,3 +63,16 @@ backend: `app/backend/.venv/Scripts/python.exe -m pytest -q` on touched test fil
   with one explanatory line (C repeats the same pool).
 - [x] T3 Regroup Fase2.tsx / angulosFase2.tsx per angle (route: delegated writer)
 - T3 evidence: frontend 184 passed + build OK, backend 57 passed (RED 9 first); real data: #1 gallery (5 de 10) open, #2/#3 closed with empty-state line, Otros conceptos (4), Ángulos que no funcionaron (3) collapsed; expand click verified.
+
+## Round 3 — "Generar conceptos" button per angle (2026-10-08)
+- Operator: the page says "faltan 5" but offers no way to make them.
+- Evidence: manifest action `nodo.F2.conceptos` (etapa-9) exists but `habilitada: false` because it
+  bundles fabrication with etapa-render (operator's Chrome, headless unverified). Subagent actions
+  already run from the app (`nodo.F2.plan` etapa-6 enabled). `producto.armar_prompts_fase2`
+  (script, per angle) exists and is enabled.
+- Decision: split. New action fabricates ONLY (etapa-9 / skill generar-conceptos) for one
+  angle and N missing concepts, excluding canónicos already used, then builds the prompts;
+  rendering stays manual (copy prompt + image) or etapa-render later. Button on every ranked
+  winning angle (#1 and queued): concepts move no money, so queued angles can be prepared ahead.
+- [ ] T4 Manifest action + runner prompt + backend endpoint/fields + button with confirmation
+      and job status (route: delegated writer)
