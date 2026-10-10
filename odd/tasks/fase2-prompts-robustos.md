@@ -36,6 +36,9 @@ Known environmental failure: `test_armar_prompts_fase2` (OSError WinError 6), fa
 - [x] T3 Per-angle texts in the creative profile + producer docs + migration — delegated (2+ files) — commit e80b908
 - [x] T4 Product-neutral `dispositivo` per canonical, preferred over the ficha — delegated (23 files) — commit efc7926
 
+- [ ] T5 Manual render path: promote IMAGEN rows from PENDIENTE_GENERAR to GENERADO when the PNG
+  with its canonical name exists; app button — delegated (script + test + manifest)
+
 ## Acceptance
 - T3: generating for angle B never needs to delete angle A's texts; missing angle B blocks with
   `dato = perfil_creativo`; legacy file still loads.
@@ -51,6 +54,7 @@ Strategy: ask-on-risk. Forecast ~300 authored lines. RDD: off (default).
 - 2026-10-09: parent spot check: 46 passed, 2 environmental failures; `test_datos_producto` also fails on
   base 5e59c38 (confirmed in a detached worktree). CLEARSTEM ANTI_FALSIFICACION package rebuilt with the
   neutral devices for the 10 registered canonicals: no niche leak. Rows committed in 3ffea09.
+- 2026-10-09: T5 (cfab103): `marcar_generados.py` + 11 tests, manifest action `producto.marcar_conceptos_generados` (button visibility, no screen wiring yet), FLUJO.json F2.conceptos clause. Backend manifest tests: 69 passed. Frontend placement (backend descriptor + component) still pending.
 
 ## Next step
 Render the 10 CLEARSTEM concepts with `etapa-render`. Push / PR are the operator's decision.
