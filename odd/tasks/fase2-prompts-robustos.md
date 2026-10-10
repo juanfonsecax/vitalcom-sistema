@@ -48,3 +48,9 @@ Strategy: ask-on-risk. Forecast ~300 authored lines. RDD: off (default).
 ## Progress
 - 2026-10-09: T1, T2 committed on `fix/fase2-prompts-robustos`.
 - 2026-10-09: T3 (e80b908) and T4 (efc7926) committed. `test_armar_prompts_fase2` and `test_datos_producto` fail only with the environmental OSError; the rest pass (36 and 12). Profiles migrated to perfil_creativo/2: CLEARSTEM, NusavaB12, TINNIDROP. `datos_producto.revisar_perfil` reads `textos_por_angulo`; `agrupar_canonicos.py` owns the canonical `dispositivo` (field `dispositivo_neutro` in FAMILIAS).
+- 2026-10-09: parent spot check: 46 passed, 2 environmental failures; `test_datos_producto` also fails on
+  base 5e59c38 (confirmed in a detached worktree). CLEARSTEM ANTI_FALSIFICACION package rebuilt with the
+  neutral devices for the 10 registered canonicals: no niche leak. Rows committed in 3ffea09.
+
+## Next step
+Render the 10 CLEARSTEM concepts with `etapa-render`. Push / PR are the operator's decision.
