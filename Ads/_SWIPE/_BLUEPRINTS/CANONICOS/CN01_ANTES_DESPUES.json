@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Antes / Despues partido",
   "dispositivo_canonico": "DOS ESTADOS DEL MISMO SUJETO EN UNA SOLA PIEZA. La imagen se parte en dos mitades — vertical, horizontal o por el eje del producto — y cada mitad muestra el mismo cuerpo, rostro u organo en un estado distinto. El producto vive en la costura: es la bisagra que explica el salto. La prueba no se argumenta, se ve.",
+  "dispositivo": "EL ANTES/DESPUES PARTIDO POR EL PRODUCTO. Dos fotos de la MISMA zona afectada, una al lado de la otra y rotuladas ANTES y DESPUES, con el producto plantado en el centro tapando la costura. El producto es lo que separa los dos estados: la causalidad se lee sin texto.",
   "cuando_elegirlo": "El resultado es VISIBLE en el cuerpo (piel, varices, hinchazon, cabello, peso). Si el beneficio es una sensacion interna que no se fotografia — dormir mejor, menos zumbido, mas memoria — esta familia obliga a inventar la imagen y la pieza se cae.",
   "ejes_de_variacion": [
     "eje del corte: vertical / horizontal / apilado / rostro partido al medio",

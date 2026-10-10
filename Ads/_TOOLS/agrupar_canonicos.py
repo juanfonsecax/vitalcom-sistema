@@ -29,7 +29,9 @@ SCHEMA = "canonico-1.0"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # EL MAPA — unica parte escrita a mano.
-# `dispositivo` = la estructura que se replica. `ejes` = que cambia entre
+# `dispositivo` = la estructura que se replica. `dispositivo_neutro` = esa misma
+# estructura sin ningun dato del anuncio de referencia (zona del cuerpo, dolencia,
+# producto): es lo que el prompt de FASE 2 lee. `ejes` = que cambia entre
 # miembros sin dejar de ser la misma familia.
 # ─────────────────────────────────────────────────────────────────────────────
 FAMILIAS = [
@@ -42,6 +44,13 @@ FAMILIAS = [
             "cada mitad muestra el mismo cuerpo, rostro u organo en un estado "
             "distinto. El producto vive en la costura: es la bisagra que explica "
             "el salto. La prueba no se argumenta, se ve."
+        ),
+        "dispositivo_neutro": (
+            "EL ANTES/DESPUES PARTIDO POR EL PRODUCTO. Dos fotos de la MISMA "
+            "zona afectada, una al lado de la otra y rotuladas ANTES y DESPUES, "
+            "con el producto plantado en el centro tapando la costura. El "
+            "producto es lo que separa los dos estados: la causalidad se lee "
+            "sin texto."
         ),
         "cuando_elegirlo": (
             "El resultado es VISIBLE en el cuerpo (piel, varices, hinchazon, "
@@ -69,6 +78,13 @@ FAMILIAS = [
             "recorrido — y al hacerlo instala la idea de que el producto se toma "
             "durante un periodo, no una vez."
         ),
+        "dispositivo_neutro": (
+            "EL TIMELINE DE 3 ESTADOS EN EL TOPE. Tres imagenes del mismo "
+            "sujeto o de la misma zona afectada, separadas por flechas, con una "
+            "etiqueta de plazo debajo de cada una (SEMANA 0 / 4 / 8) y una "
+            "linea de descripcion. No promete un resultado: promete un "
+            "CRONOGRAMA."
+        ),
         "cuando_elegirlo": (
             "El producto es un TRATAMIENTO con curva de resultado y el argumento "
             "de venta es la duracion (por eso empuja el pack de 3). Tambien "
@@ -95,6 +111,12 @@ FAMILIAS = [
             "llama o card de oro, y el resto de la pieza se ordena alrededor. El "
             "argumento no es el beneficio: es cuanto te llevas."
         ),
+        "dispositivo_neutro": (
+            "EL NUMERAL DE CANTIDAD GIGANTE. Un digito grande ocupa cerca de un "
+            "tercio del alto del frame y se lee antes que el producto, el "
+            "precio o el titular. No dice 'oferta': dice CUANTO te llevas. El "
+            "precio unitario derivado hace la division por el lector."
+        ),
         "cuando_elegirlo": (
             "Publico que ya conoce el producto o la categoria (NC3+), BOFU y "
             "retargeting. Exige una oferta de volumen real: sin 2x1 ni pack, el "
@@ -118,6 +140,13 @@ FAMILIAS = [
             "marca con medalla, borde o subtitulo de intencion. No se argumenta "
             "cual conviene — se deja ver."
         ),
+        "dispositivo_neutro": (
+            "LA ESCALERA DE 3 PRECIOS EN COLUMNA, CADA UNO EN SU PROPIA CARD. "
+            "Los tres niveles de compra se apilan verticalmente en un flanco "
+            "del frame, cada uno en card con borde de color e icono de "
+            "destaque. La escalera ES el anuncio y el resto (titular, producto, "
+            "CTA) la rodea."
+        ),
         "cuando_elegirlo": (
             "Hay 3 tiers reales con precio unitario decreciente y el publico ya "
             "decidio comprar (BOFU/NC4). Con 1 o 2 tiers la escalera se ve "
@@ -139,6 +168,14 @@ FAMILIAS = [
             "alineados en columna al flanco o en fila bajo el titular. Es la "
             "estructura mas neutra del banco: no dramatiza, ordena. El producto "
             "queda en podio o al centro y la lista lo rodea."
+        ),
+        "dispositivo_neutro": (
+            "LA COLUMNA DE BENEFICIOS CON TITULO MAS SUBTITULO. Cada fila es un "
+            "icono en contenedor redondeado mas TITULO EN MAYUSCULAS mas "
+            "subtitulo gris, con el producto en podio o al centro. El par sirve "
+            "al lector que escanea (solo titulos) y al que profundiza (con "
+            "subtitulos). El ultimo item es el sello regulatorio disfrazado de "
+            "beneficio."
         ),
         "cuando_elegirlo": (
             "El producto tiene 3-6 beneficios distintos y ninguno domina a los "
@@ -164,6 +201,12 @@ FAMILIAS = [
             "auto-diagnostico: el lector se cuenta a si mismo cuantos tiene. El "
             "producto aparece recien despues de la lista, como la salida."
         ),
+        "dispositivo_neutro": (
+            "LA COLUMNA DE PROBLEMAS CON EVIDENCIA FOTOGRAFICA MAS CHECK. No "
+            "dice que elimina el problema: MUESTRA la foto de cada sintoma y la "
+            "tacha con un check. La prueba es visual, no verbal. La figura de "
+            "autoridad va DETRAS del producto: respalda, no compite."
+        ),
         "cuando_elegirlo": (
             "Publico FRIO (TOFU/NC2) que tiene el problema pero no lo nombra "
             "todavia. Es la unica familia que engancha a alguien que no esta "
@@ -186,6 +229,13 @@ FAMILIAS = [
             "cuerpo en el gesto exacto del dolor — la mano en el oido, la pierna "
             "que arde, la cara de la noche sin dormir. El texto es una sola frase "
             "que nombra ese momento."
+        ),
+        "dispositivo_neutro": (
+            "LA FOTO DEL SINTOMA A SANGRE, DEL TAMANO DE UNA PERSONA. Un cuerpo "
+            "real con la zona afectada encendida en rojo ocupa media pieza o "
+            "mas y sangra por el borde. El titular es una PREGUNTA DE UNA "
+            "PALABRA sobre franja de color, y el producto cruza el frame en "
+            "diagonal."
         ),
         "cuando_elegirlo": (
             "TOFU puro, para detener el scroll con reconocimiento emocional. "
@@ -210,6 +260,15 @@ FAMILIAS = [
             "de todo lo que la persona ya probo y le fallo. Lo que se replica no "
             "es un layout: son las condiciones de captura."
         ),
+        "dispositivo_neutro": (
+            "LA FOTO CRUDA, SIN UNA SOLA PALABRA. Una sola fotografia que no "
+            "parece un anuncio: la zona afectada vista de cerca en encuadre "
+            "clinico sin retoque, o un rostro real en su propia casa, o el "
+            "bodegon cenital de todo lo que la persona ya probo y le fallo. No "
+            "hay titular, ni precio, ni logo, y el producto puede no aparecer. "
+            "La evidencia esta DENTRO de la foto y las condiciones de captura "
+            "dan toda la autoridad."
+        ),
         "cuando_elegirlo": (
             "El publico esta quemado de carteles y la categoria huele a estafa. "
             "Compra atencion por parecer contenido, no publicidad. El copy tiene "
@@ -233,6 +292,13 @@ FAMILIAS = [
             "entra como caja de subtitulo de video o nota manuscrita, nunca como "
             "titular de cartel."
         ),
+        "dispositivo_neutro": (
+            "LA MANO SOSTENIENDO LA CAJA ABIERTA CON EL PACK ADENTRO. Una mano "
+            "real entra por el borde inferior sosteniendo la caja de envio "
+            "abierta, con las unidades acomodadas sobre el relleno. Es la foto "
+            "de la ENTREGA, no del producto: muestra lo que va a llegar a la "
+            "puerta, en la mano de alguien, ya desempacado."
+        ),
         "cuando_elegirlo": (
             "MOFU: la objecion viva es 'esto no llega' o 'no es real'. El "
             "unboxing responde la logistica sin nombrarla."
@@ -252,6 +318,14 @@ FAMILIAS = [
             "con foto de perfil, nombre, ciudad y estrellas; una fila de "
             "comentarios de red social; o un rating decimal del tamano de un "
             "titular. La cifra no acompana — es la pieza."
+        ),
+        "dispositivo_neutro": (
+            "LAS TRES TARJETAS DE RESENA CON FOTO DE PERFIL, NOMBRE, CIUDAD Y "
+            "ESTRELLAS. Cada testimonio va en card blanca con avatar circular a "
+            "la izquierda, el nombre y la CIUDAD debajo, cinco estrellas "
+            "doradas a la derecha y la cita entre comillas con las palabras "
+            "clave resaltadas en color. El icono de WhatsApp sobre cada avatar "
+            "sugiere que la resena llego por chat."
         ),
         "cuando_elegirlo": (
             "MOFU/BOFU donde la objecion es '¿a quien mas le funciono?'. Necesita "
@@ -274,6 +348,14 @@ FAMILIAS = [
             "de estado completa, dos globos de chat sobre una escena real. Toma "
             "prestada la credibilidad del medio, no la de la marca."
         ),
+        "dispositivo_neutro": (
+            "LA CAPTURA DE PANTALLA DE UN BUSCADOR, CON EL PRODUCTO INSERTADO "
+            "EN EL RESULTADO. La pieza imita la interfaz de una pagina de "
+            "resultados: barra de busqueda con la pregunta escrita, pestanas, "
+            "un bloque de respuesta destacado con el producto recortado adentro "
+            "y, debajo, el comienzo de un segundo resultado con su URL. No se "
+            "ve como anuncio porque imita algo que no lo es."
+        ),
         "cuando_elegirlo": (
             "Publico NC1-NC2 que todavia no busca el producto: la captura le "
             "muestra la busqueda que 'deberia' haber hecho. Tambien para llevar "
@@ -295,6 +377,14 @@ FAMILIAS = [
             "ningun lado: muestra el estado de llegada. El aparato comercial "
             "(oferta, sellos, precio) se apila en el flanco opuesto o baja a una "
             "banda, sin invadir la figura."
+        ),
+        "dispositivo_neutro": (
+            "EL AVATAR DESEADO SOSTENIENDO EL PRODUCTO, EN SU ACTIVIDAD. Una "
+            "persona real en su entorno cotidiano mira el envase que tiene en "
+            "la mano. No hay problema ni sintoma: se muestra el CUERPO Y LA "
+            "VIDA que el producto acompana. El titular declara para quien es en "
+            "la primera linea, antes de nombrar el producto; el aparato "
+            "comercial va en el flanco opuesto sin invadir la figura."
         ),
         "cuando_elegirlo": (
             "Categorias donde el motor es aspiracional y no clinico — figura, "
@@ -319,6 +409,14 @@ FAMILIAS = [
             "mecanismo trazadas sobre la zona. Explica POR QUE funciona, no que "
             "resultado da."
         ),
+        "dispositivo_neutro": (
+            "EL RESULTADO YA LOGRADO AL FONDO Y EL MECANISMO COMO GRAFICO "
+            "ANATOMICO JUNTO AL PRODUCTO. Personas felices en su vida cotidiana "
+            "ocupan el fondo y, flotando junto al envase, un grafico anatomico "
+            "de la zona afectada encendida, del tamano de un puno. No se "
+            "muestra el dolor: se muestra la vida SIN el dolor y, en el "
+            "grafico, POR QUE funciona."
+        ),
         "cuando_elegirlo": (
             "El publico ya probo cosas que fallaron y la objecion es "
             "'¿por que esto si?'. Convierte un producto mas en un mecanismo. "
@@ -341,6 +439,13 @@ FAMILIAS = [
             "remedio de la cocina / el producto. El rival casi nunca es una marca "
             "competidora — es la persona contra si misma o contra lo que ya hace "
             "gratis."
+        ),
+        "dispositivo_neutro": (
+            "EL COMPARADOR DE DOS OPCIONES, CON EL PRODUCTO FOTOGRAFIADO EN "
+            "CADA UNA. Dos cards o columnas enfrentadas, una con un envase y "
+            "otra con dos, cada una con su precio y su cantidad. La decision se "
+            "toma mirando cuanto producto hay en cada foto, no leyendo cuanto "
+            "cuesta."
         ),
         "cuando_elegirlo": (
             "Hay una alternativa concreta que el publico YA esta usando (remedio "
@@ -366,6 +471,13 @@ FAMILIAS = [
             "ingrediente (no de ingredientes sueltos), o el badge con la cifra "
             "gigante de cuantos tipos lleva."
         ),
+        "dispositivo_neutro": (
+            "EL BADGE DE FORMULA MULTIPLE CON LA CIFRA GIGANTE Y LOS TIPOS "
+            "ENUMERADOS. Un bloque en una esquina declara cuantas cosas hace la "
+            "formula (5 EN 1) con el numeral al mayor tamano y, debajo, enumera "
+            "los tipos incluidos en numeracion romana. La columna de beneficios "
+            "que sigue es la explicacion de ese numero."
+        ),
         "cuando_elegirlo": (
             "Publico NC4 que compara formulas y lee etiquetas, o cuando el "
             "diferencial real del producto es la dosis. Requiere una formula que "
@@ -390,6 +502,14 @@ FAMILIAS = [
             "botones de contacto y el nombre del producto como titular completan "
             "un cartel de comercio, no de marca."
         ),
+        "dispositivo_neutro": (
+            "EL LOGO DEL PUNTO DE VENTA COMO EMISOR, CON EL BADGE DE DURACION "
+            "DEL TRATAMIENTO. El anuncio no lo firma la marca del producto sino "
+            "la farmacia o tienda, cuyo logotipo ocupa una esquina superior con "
+            "su nombre y su sucursal. Enfrente, un badge circular declara para "
+            "cuantos dias alcanza el frasco y lo traduce a meses; el telefono "
+            "puede ser el elemento mas grande."
+        ),
         "cuando_elegirlo": (
             "La pagina ya tiene reconocimiento local y la venta se cierra por "
             "mensaje. Convierte al que ya conoce el negocio. Con una fanpage nueva "
@@ -413,6 +533,14 @@ FAMILIAS = [
             "retargeting explicito. El producto aparece pequeno o al pie: lo que "
             "detiene el scroll es la frase."
         ),
+        "dispositivo_neutro": (
+            "EL REENCUADRE DEL PROBLEMA EN EL TITULAR. El texto es la imagen: "
+            "dos oraciones cortas separadas por coma sobre un fondo casi vacio; "
+            "la primera niega lo que la persona cree de si misma y la segunda "
+            "ofrece una explicacion distinta, con la palabra clave subrayada. "
+            "No promete nada todavia: le cambia el diagnostico. El producto "
+            "aparece pequeno."
+        ),
         "cuando_elegirlo": (
             "Hay UNA frase con giro real — reencuadre, negacion, pregunta "
             "incomoda. Sin ese giro queda un cartel vacio. Es tambien la unica "
@@ -434,6 +562,13 @@ FAMILIAS = [
             "unida al frasco por una linea punteada. Convierte al envase en un "
             "diagrama tecnico. Algunos callouts pueden ir TACHADOS: lo que el "
             "producto NO tiene se vuelve argumento igual que lo que tiene."
+        ),
+        "dispositivo_neutro": (
+            "LOS CALLOUTS FLOTANTES CON LINEA PUNTEADA AL PRODUCTO. Cuatro "
+            "pildoras blancas con icono cuelgan alrededor del envase y cada una "
+            "apunta al producto con una linea punteada curva. No hay columna ni "
+            "fila: los beneficios ORBITAN el producto, cada uno ligado "
+            "espacialmente a la pieza que lo cumple."
         ),
         "cuando_elegirlo": (
             "El diferencial esta en atributos del producto mismo (sin azucar, sin "
@@ -457,6 +592,13 @@ FAMILIAS = [
             "intercalarse entre los beneficios y el precio, con su propio header "
             "en pregunta."
         ),
+        "dispositivo_neutro": (
+            "EL INSTRUCTIVO DE 4 PASOS NUMERADOS, CADA UNO CON SU FOTO DE LA "
+            "ACCION. Cuatro filas apiladas: foto cuadrada de la mano ejecutando "
+            "el paso, numeral grande, titulo del verbo en dos colores y una "
+            "explicacion de dos lineas. La pieza no vende el producto, ENSENA A "
+            "USARLO, y al hacerlo demuestra que es facil."
+        ),
         "cuando_elegirlo": (
             "El producto tiene un modo de uso que no se adivina (ovulo, gotero "
             "sublingual, parche, polvo que se prepara). Si se toma como cualquier "
@@ -477,6 +619,14 @@ FAMILIAS = [
             "ancho completo o en tres partes (precio tachado, precio actual, "
             "ahorro) bajo una columna corta de atributos. No hay escalera ni "
             "eleccion: hay una cifra y su referencia."
+        ),
+        "dispositivo_neutro": (
+            "EL PRECIO CON ANCLAJE EN CARD DE ANCHO COMPLETO, BAJO UNA COLUMNA "
+            "CORTA DE 3 ATRIBUTOS. La mitad izquierda es una escalera de "
+            "lectura de cuatro pisos: pregunta, promesa, tres atributos, "
+            "precio; cada piso mas chico que el anterior salvo el precio, que "
+            "vuelve a crecer. Un solo precio presentado contra su ancla "
+            "(tachado, actual, ahorro)."
         ),
         "cuando_elegirlo": (
             "La oferta tiene UNA sola presentacion, o se quiere empujar una sola "
@@ -500,6 +650,14 @@ FAMILIAS = [
             "al avatar y deja la MISMA card y la MISMA oferta — que el rostro sea "
             "opcional es el hallazgo de esta familia."
         ),
+        "dispositivo_neutro": (
+            "EL AVATAR SOSTIENE EL PRODUCTO A LA ALTURA DEL PECHO, CON LA CARD "
+            "DE BENEFICIOS FLOTANDO A SU LADO. La persona ocupa la mitad del "
+            "frame, sostiene el envase con las dos manos y lo presenta hacia "
+            "camara; a su lado, una card semitransparente con cuatro beneficios "
+            "en iconos. El producto queda en el centro por estar en sus manos. "
+            "La persona da la cara; la card da el argumento."
+        ),
         "cuando_elegirlo": (
             "MOFU donde conviene que alguien 'ponga la cara' pero el argumento "
             "sigue siendo la lista. Correr la pieza CON y SIN avatar es un test "
@@ -521,6 +679,14 @@ FAMILIAS = [
             "metrica como eje vertical del frame y el gesto de auto-medirse. No es "
             "el problema ni el resultado — es el ritual. Instala CUANDO se usa sin "
             "escribirlo."
+        ),
+        "dispositivo_neutro": (
+            "LA ESCENA DEL MOMENTO EN QUE EL PRODUCTO ENTRA EN LA VIDA. El "
+            "envase queda iluminado en su lugar de uso (por ejemplo sobre la "
+            "mesa de noche, en una habitacion a oscuras, bajo la luz calida de "
+            "una lampara). La pieza no muestra el problema ni el mecanismo: "
+            "muestra el MOMENTO Y EL LUGAR donde el producto se usa, y ese "
+            "contexto declara para que sirve."
         ),
         "cuando_elegirlo": (
             "El momento de uso es parte del beneficio (antes de dormir, en ayunas, "
@@ -791,6 +957,7 @@ def main():
         doc["schema_version"] = SCHEMA
         doc["nombre"] = fam["nombre"]
         doc["dispositivo_canonico"] = fam["dispositivo"]
+        doc["dispositivo"] = fam["dispositivo_neutro"]
         doc["cuando_elegirlo"] = fam["cuando_elegirlo"]
         doc["ejes_de_variacion"] = fam["ejes"]
         doc["n_miembros"] = derivado["n_miembros"]

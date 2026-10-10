@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Multiplicador de cantidad",
   "dispositivo_canonico": "UN NUMERAL DE CANTIDAD DOMINA LA PIEZA. El digito (2X1, 3X2, el numero de unidades) se lee ANTES que el producto y antes que el titular: ocupa un cuarto del alto, va dentro de un escudo, cartucho, llama o card de oro, y el resto de la pieza se ordena alrededor. El argumento no es el beneficio: es cuanto te llevas.",
+  "dispositivo": "EL NUMERAL DE CANTIDAD GIGANTE. Un digito grande ocupa cerca de un tercio del alto del frame y se lee antes que el producto, el precio o el titular. No dice 'oferta': dice CUANTO te llevas. El precio unitario derivado hace la division por el lector.",
   "cuando_elegirlo": "Publico que ya conoce el producto o la categoria (NC3+), BOFU y retargeting. Exige una oferta de volumen real: sin 2x1 ni pack, el numeral no tiene que decir.",
   "ejes_de_variacion": [
     "contenedor del numeral: escudo, cartucho ovalado, llama, card dorada, banda",

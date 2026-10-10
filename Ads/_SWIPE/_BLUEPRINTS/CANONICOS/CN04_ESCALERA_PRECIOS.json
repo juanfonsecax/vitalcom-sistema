@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Escalera de tiers",
   "dispositivo_canonico": "TRES NIVELES DE COMPRA EN CARDS PARALELAS, cada uno con su cantidad y su precio, ordenados para que la aritmetica hable sola: el salto del tier 1 al 2 cuesta menos que una unidad suelta. El tier heroe se marca con medalla, borde o subtitulo de intencion. No se argumenta cual conviene — se deja ver.",
+  "dispositivo": "LA ESCALERA DE 3 PRECIOS EN COLUMNA, CADA UNO EN SU PROPIA CARD. Los tres niveles de compra se apilan verticalmente en un flanco del frame, cada uno en card con borde de color e icono de destaque. La escalera ES el anuncio y el resto (titular, producto, CTA) la rodea.",
   "cuando_elegirlo": "Hay 3 tiers reales con precio unitario decreciente y el publico ya decidio comprar (BOFU/NC4). Con 1 o 2 tiers la escalera se ve incompleta y pierde todo su mecanismo.",
   "ejes_de_variacion": [
     "orientacion: columna al flanco (F019) o tabla horizontal (F038)",

@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Precio unico con ancla",
   "dispositivo_canonico": "UN SOLO PRECIO, PRESENTADO CONTRA SU ANCLA. El bloque va en card de ancho completo o en tres partes (precio tachado, precio actual, ahorro) bajo una columna corta de atributos. No hay escalera ni eleccion: hay una cifra y su referencia.",
+  "dispositivo": "EL PRECIO CON ANCLAJE EN CARD DE ANCHO COMPLETO, BAJO UNA COLUMNA CORTA DE 3 ATRIBUTOS. La mitad izquierda es una escalera de lectura de cuatro pisos: pregunta, promesa, tres atributos, precio; cada piso mas chico que el anterior salvo el precio, que vuelve a crecer. Un solo precio presentado contra su ancla (tachado, actual, ahorro).",
   "cuando_elegirlo": "La oferta tiene UNA sola presentacion, o se quiere empujar una sola unidad sin abrir la decision. Hermano de CN04_ESCALERA_PRECIOS: si hay 3 tiers reales, ese canonico rinde mas.",
   "ejes_de_variacion": [
     "bloque de tres partes (tachado / actual / ahorro) o card simple con ancla",

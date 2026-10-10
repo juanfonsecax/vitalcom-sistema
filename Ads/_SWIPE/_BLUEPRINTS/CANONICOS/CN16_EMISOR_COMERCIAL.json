@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Cartel de tienda / emisor comercial",
   "dispositivo_canonico": "QUIEN VENDE PESA MAS QUE QUE SE VENDE. El logo de la farmacia o la tienda funciona como emisor, se repite arriba y abajo, y el TELEFONO puede ser el elemento mas grande de la pieza. Las garantias, los botones de contacto y el nombre del producto como titular completan un cartel de comercio, no de marca.",
+  "dispositivo": "EL LOGO DEL PUNTO DE VENTA COMO EMISOR, CON EL BADGE DE DURACION DEL TRATAMIENTO. El anuncio no lo firma la marca del producto sino la farmacia o tienda, cuyo logotipo ocupa una esquina superior con su nombre y su sucursal. Enfrente, un badge circular declara para cuantos dias alcanza el frasco y lo traduce a meses; el telefono puede ser el elemento mas grande.",
   "cuando_elegirlo": "La pagina ya tiene reconocimiento local y la venta se cierra por mensaje. Convierte al que ya conoce el negocio. Con una fanpage nueva y sin prueba social, esta familia no tiene de donde sacar autoridad.",
   "ejes_de_variacion": [
     "peso del telefono: barra de pie discreta o el mayor tamano de la pieza (F082)",

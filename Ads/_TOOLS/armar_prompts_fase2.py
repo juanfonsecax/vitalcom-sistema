@@ -495,13 +495,16 @@ def _armar(producto_key, angulo_manual=None, n_pedido=None):
         ficha_path = os.path.join(SWIPE_DIR, "_BLUEPRINTS", "FICHAS", f"{ref_ficha}.json")
 
         foto_base_rel = "No disponible"
+        # El dispositivo es del CANONICO (neutro de producto). El de la ficha describe un anuncio de
+        # otro nicho: solo es respaldo si el canonico no declara el suyo.
         dispositivo_txt = bp.get("dispositivo", "")
         if os.path.exists(ficha_path):
             with io.open(ficha_path, encoding="utf-8") as fh:
                 f_data = json.load(fh)
                 orig_file = f_data.get("origen", {}).get("archivo", "")
                 foto_base_rel = os.path.join("Ads", "_SWIPE", orig_file).replace("\\", "/")
-                dispositivo_txt = f_data.get("dispositivo_dominante", dispositivo_txt)
+                if not dispositivo_txt:
+                    dispositivo_txt = f_data.get("dispositivo_dominante", "")
 
         # Los textos DECLARADOS del producto (requerir_textos, validados al arrancar). Copia por
         # concepto: abajo se le agrega PRECIOS_GT y no debe filtrarse al siguiente.

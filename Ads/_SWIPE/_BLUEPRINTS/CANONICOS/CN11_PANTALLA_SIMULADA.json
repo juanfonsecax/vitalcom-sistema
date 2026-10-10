@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Captura de pantalla simulada",
   "dispositivo_canonico": "LA PIEZA IMITA UNA INTERFAZ QUE EL LECTOR YA USA: el resultado de un buscador con el producto insertado, el marco del telefono con barra de estado completa, dos globos de chat sobre una escena real. Toma prestada la credibilidad del medio, no la de la marca.",
+  "dispositivo": "LA CAPTURA DE PANTALLA DE UN BUSCADOR, CON EL PRODUCTO INSERTADO EN EL RESULTADO. La pieza imita la interfaz de una pagina de resultados: barra de busqueda con la pregunta escrita, pestanas, un bloque de respuesta destacado con el producto recortado adentro y, debajo, el comienzo de un segundo resultado con su URL. No se ve como anuncio porque imita algo que no lo es.",
   "cuando_elegirlo": "Publico NC1-NC2 que todavia no busca el producto: la captura le muestra la busqueda que 'deberia' haber hecho. Tambien para llevar la conversacion a WhatsApp mostrando el chat como CTA.",
   "ejes_de_variacion": [
     "interfaz imitada: buscador, chat, ficha de producto",

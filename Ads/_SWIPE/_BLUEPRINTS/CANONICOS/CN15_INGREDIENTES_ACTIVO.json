@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Despiece de ingredientes",
   "dispositivo_canonico": "LA FORMULA SE ABRE Y SE MUESTRA POR PARTES: el activo principal solo en un circulo grande con su dosis y su explicacion, el despiece de los componentes alrededor del frasco, la lista de CATEGORIAS de ingrediente (no de ingredientes sueltos), o el badge con la cifra gigante de cuantos tipos lleva.",
+  "dispositivo": "EL BADGE DE FORMULA MULTIPLE CON LA CIFRA GIGANTE Y LOS TIPOS ENUMERADOS. Un bloque en una esquina declara cuantas cosas hace la formula (5 EN 1) con el numeral al mayor tamano y, debajo, enumera los tipos incluidos en numeracion romana. La columna de beneficios que sigue es la explicacion de ese numero.",
   "cuando_elegirlo": "Publico NC4 que compara formulas y lee etiquetas, o cuando el diferencial real del producto es la dosis. Requiere una formula que aguante el escrutinio: si el activo esta subdosificado, esta familia expone el problema en vez de venderlo.",
   "ejes_de_variacion": [
     "granularidad: un solo activo protagonista o el despiece completo",

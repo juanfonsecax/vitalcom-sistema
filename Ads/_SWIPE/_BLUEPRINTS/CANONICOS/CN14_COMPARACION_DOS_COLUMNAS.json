@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Comparacion en dos columnas",
   "dispositivo_canonico": "LA PIEZA SE PARTE EN DOS COLUMNAS ENFRENTADAS y cada una lista un estado: yo sin / yo con, problema / solucion, falso / real, el remedio de la cocina / el producto. El rival casi nunca es una marca competidora — es la persona contra si misma o contra lo que ya hace gratis.",
+  "dispositivo": "EL COMPARADOR DE DOS OPCIONES, CON EL PRODUCTO FOTOGRAFIADO EN CADA UNA. Dos cards o columnas enfrentadas, una con un envase y otra con dos, cada una con su precio y su cantidad. La decision se toma mirando cuanto producto hay en cada foto, no leyendo cuanto cuesta.",
   "cuando_elegirlo": "Hay una alternativa concreta que el publico YA esta usando (remedio casero, generico, falsificacion) y el argumento es la friccion de esa alternativa, no su ineficacia. Discutir si el remedio sirve pierde; cobrarle el olor, la preparacion y el tiempo gana.",
   "ejes_de_variacion": [
     "rival elegido: yo mismo, remedio casero, producto falso, no hacer nada",

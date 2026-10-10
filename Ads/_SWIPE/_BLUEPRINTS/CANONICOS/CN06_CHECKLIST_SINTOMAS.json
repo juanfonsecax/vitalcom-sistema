@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Checklist de sintomas / diagnostico",
   "dispositivo_canonico": "UNA LISTA DE PROBLEMAS, NO DE BENEFICIOS. Cada item es un sintoma que la persona reconoce en si misma, con su mini-foto o icono de evidencia y su check. La pieza funciona como test de auto-diagnostico: el lector se cuenta a si mismo cuantos tiene. El producto aparece recien despues de la lista, como la salida.",
+  "dispositivo": "LA COLUMNA DE PROBLEMAS CON EVIDENCIA FOTOGRAFICA MAS CHECK. No dice que elimina el problema: MUESTRA la foto de cada sintoma y la tacha con un check. La prueba es visual, no verbal. La figura de autoridad va DETRAS del producto: respalda, no compite.",
   "cuando_elegirlo": "Publico FRIO (TOFU/NC2) que tiene el problema pero no lo nombra todavia. Es la unica familia que engancha a alguien que no esta buscando nada: le pone nombre a lo que siente.",
   "ejes_de_variacion": [
     "orientacion: columna vertical, fila horizontal o collage de cuadrantes (F030)",

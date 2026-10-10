@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Titular tipografico dominante",
   "dispositivo_canonico": "EL TEXTO ES LA IMAGEN. Tres lineas apiladas con una sola palabra en color sobre un fondo casi vacio, un titular que NIEGA que el problema sea el problema, una pregunta contra el propio pasado, un hook de retargeting explicito. El producto aparece pequeno o al pie: lo que detiene el scroll es la frase.",
+  "dispositivo": "EL REENCUADRE DEL PROBLEMA EN EL TITULAR. El texto es la imagen: dos oraciones cortas separadas por coma sobre un fondo casi vacio; la primera niega lo que la persona cree de si misma y la segunda ofrece una explicacion distinta, con la palabra clave subrayada. No promete nada todavia: le cambia el diagnostico. El producto aparece pequeno.",
   "cuando_elegirlo": "Hay UNA frase con giro real — reencuadre, negacion, pregunta incomoda. Sin ese giro queda un cartel vacio. Es tambien la unica familia con una pieza de NC5 (retargeting explicito, F056).",
   "ejes_de_variacion": [
     "mecanismo del giro: negacion, reencuadre, pregunta al propio pasado, retargeting",

@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Lista de beneficios con icono",
   "dispositivo_canonico": "N BENEFICIOS ENUMERADOS, cada uno con su icono o foto circular, alineados en columna al flanco o en fila bajo el titular. Es la estructura mas neutra del banco: no dramatiza, ordena. El producto queda en podio o al centro y la lista lo rodea.",
+  "dispositivo": "LA COLUMNA DE BENEFICIOS CON TITULO MAS SUBTITULO. Cada fila es un icono en contenedor redondeado mas TITULO EN MAYUSCULAS mas subtitulo gris, con el producto en podio o al centro. El par sirve al lector que escanea (solo titulos) y al que profundiza (con subtitulos). El ultimo item es el sello regulatorio disfrazado de beneficio.",
   "cuando_elegirlo": "El producto tiene 3-6 beneficios distintos y ninguno domina a los otros. Es la estructura de FASE 1 (C2 variante ligera) justamente porque es la mas neutra: mide el ANGULO sin que el creativo se lleve el credito.",
   "ejes_de_variacion": [
     "orientacion: columna vertical al flanco o fila horizontal bajo el titular",

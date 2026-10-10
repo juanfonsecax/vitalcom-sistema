@@ -173,6 +173,7 @@ def evaluar(perfil, docs):
             "nombre": doc["nombre"],
             "concepto_key": ck,
             "ficha_referencia": doc["ficha_referencia"],
+            "dispositivo": doc.get("dispositivo", ""),
             "n_miembros": doc["n_miembros"],
             "rol_embudo": doc["perfil"]["rol_embudo"],
             "contrato_variables": doc["contrato_variables"],

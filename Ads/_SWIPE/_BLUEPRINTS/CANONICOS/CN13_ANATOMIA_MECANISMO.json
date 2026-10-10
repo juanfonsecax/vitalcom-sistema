@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Anatomia y mecanismo de accion",
   "dispositivo_canonico": "EL INTERIOR DEL CUERPO SE DIBUJA Y SE ENCIENDE: el organo iluminado, la silueta digital con los puntos de accion prendidos, el sistema interno superpuesto sobre el torso del avatar, las flechas de mecanismo trazadas sobre la zona. Explica POR QUE funciona, no que resultado da.",
+  "dispositivo": "EL RESULTADO YA LOGRADO AL FONDO Y EL MECANISMO COMO GRAFICO ANATOMICO JUNTO AL PRODUCTO. Personas felices en su vida cotidiana ocupan el fondo y, flotando junto al envase, un grafico anatomico de la zona afectada encendida, del tamano de un puno. No se muestra el dolor: se muestra la vida SIN el dolor y, en el grafico, POR QUE funciona.",
   "cuando_elegirlo": "El publico ya probo cosas que fallaron y la objecion es '¿por que esto si?'. Convierte un producto mas en un mecanismo. Exige un mecanismo real que se pueda localizar en el cuerpo.",
   "ejes_de_variacion": [
     "material: render anatomico, ilustracion digital, silueta en movimiento",

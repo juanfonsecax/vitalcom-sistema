@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Avatar con card de beneficios flotante",
   "dispositivo_canonico": "EL AVATAR SOSTIENE EL PRODUCTO A LA ALTURA DEL PECHO y una card semitransparente de beneficios flota a su lado, sin taparlo. La persona da la cara; la card da el argumento. Su pieza hermana retira al avatar y deja la MISMA card y la MISMA oferta — que el rostro sea opcional es el hallazgo de esta familia.",
+  "dispositivo": "EL AVATAR SOSTIENE EL PRODUCTO A LA ALTURA DEL PECHO, CON LA CARD DE BENEFICIOS FLOTANDO A SU LADO. La persona ocupa la mitad del frame, sostiene el envase con las dos manos y lo presenta hacia camara; a su lado, una card semitransparente con cuatro beneficios en iconos. El producto queda en el centro por estar en sus manos. La persona da la cara; la card da el argumento.",
   "cuando_elegirlo": "MOFU donde conviene que alguien 'ponga la cara' pero el argumento sigue siendo la lista. Correr la pieza CON y SIN avatar es un test limpio: cambia una sola variable.",
   "ejes_de_variacion": [
     "con avatar (F028) o sin nadie, misma card y misma oferta (F089)",

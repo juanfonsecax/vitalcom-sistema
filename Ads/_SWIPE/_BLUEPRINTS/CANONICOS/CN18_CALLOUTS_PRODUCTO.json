@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Callouts cableados al producto",
   "dispositivo_canonico": "EL PRODUCTO AL CENTRO Y LAS ETIQUETAS FLOTANDO ALREDEDOR, cada una unida al frasco por una linea punteada. Convierte al envase en un diagrama tecnico. Algunos callouts pueden ir TACHADOS: lo que el producto NO tiene se vuelve argumento igual que lo que tiene.",
+  "dispositivo": "LOS CALLOUTS FLOTANTES CON LINEA PUNTEADA AL PRODUCTO. Cuatro pildoras blancas con icono cuelgan alrededor del envase y cada una apunta al producto con una linea punteada curva. No hay columna ni fila: los beneficios ORBITAN el producto, cada uno ligado espacialmente a la pieza que lo cumple.",
   "cuando_elegirlo": "El diferencial esta en atributos del producto mismo (sin azucar, sin gluten, absorcion sublingual, dosis) y no en un resultado. Requiere una foto del envase limpia y con espacio a los lados.",
   "ejes_de_variacion": [
     "cantidad de callouts: 3 (respira) o mas (se lee como ficha tecnica)",

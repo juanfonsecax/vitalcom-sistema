@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Instructivo de pasos numerados",
   "dispositivo_canonico": "COMO SE USA, EN PASOS NUMERADOS CON SU FOTO DE LA ACCION. Responde la pregunta que frena la compra en productos de aplicacion no obvia: '¿y esto como se hace?'. La seccion de modo de preparacion puede intercalarse entre los beneficios y el precio, con su propio header en pregunta.",
+  "dispositivo": "EL INSTRUCTIVO DE 4 PASOS NUMERADOS, CADA UNO CON SU FOTO DE LA ACCION. Cuatro filas apiladas: foto cuadrada de la mano ejecutando el paso, numeral grande, titulo del verbo en dos colores y una explicacion de dos lineas. La pieza no vende el producto, ENSENA A USARLO, y al hacerlo demuestra que es facil.",
   "cuando_elegirlo": "El producto tiene un modo de uso que no se adivina (ovulo, gotero sublingual, parche, polvo que se prepara). Si se toma como cualquier capsula, el instructivo gasta espacio en algo que nadie pregunta.",
   "ejes_de_variacion": [
     "3-4 pasos con foto real de la accion, o solo iconos",

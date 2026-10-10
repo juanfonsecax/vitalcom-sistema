@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Prueba social en tarjetas y rating",
   "dispositivo_canonico": "EL TESTIMONIO DE OTROS SE VUELVE OBJETO GRAFICO: tarjetas de resena con foto de perfil, nombre, ciudad y estrellas; una fila de comentarios de red social; o un rating decimal del tamano de un titular. La cifra no acompana — es la pieza.",
+  "dispositivo": "LAS TRES TARJETAS DE RESENA CON FOTO DE PERFIL, NOMBRE, CIUDAD Y ESTRELLAS. Cada testimonio va en card blanca con avatar circular a la izquierda, el nombre y la CIUDAD debajo, cinco estrellas doradas a la derecha y la cita entre comillas con las palabras clave resaltadas en color. El icono de WhatsApp sobre cada avatar sugiere que la resena llego por chat.",
   "cuando_elegirlo": "MOFU/BOFU donde la objecion es '¿a quien mas le funciono?'. Necesita volumen real o al menos un numero de clientes defendible; con 3 resenas inventadas la pieza se lee falsa.",
   "ejes_de_variacion": [
     "formato de la prueba: cards de resena, comentarios de red, rating decimal",

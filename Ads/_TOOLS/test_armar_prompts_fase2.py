@@ -679,6 +679,65 @@ def test_generar_para_un_angulo_no_toca_los_textos_del_otro():
         restaurar()
 
 
+# ── dispositivo neutro por canonico (T4): el prompt usa el del canonico, no el de la ficha de otro nicho ──
+
+# Palabras de nicho que un dispositivo neutro no puede nombrar: son zonas del cuerpo o dolencias de los
+# anuncios de referencia; el dispositivo describe la composicion, no el producto del anuncio original.
+PALABRAS_DE_NICHO = ("pie", "pies", "oido", "oído", "acne", "acné", "varice", "várice", "hongo", "cabello",
+                     "rodilla", "ovulo", "óvulo")
+
+
+def test_todo_canonico_declara_un_dispositivo_neutro():
+    import re
+    docs = sc.cargar_canonicos()
+    assert len(docs) == 22
+    for cid, doc in docs.items():
+        d = (doc.get("dispositivo") or "").strip()
+        assert d, f"{cid} no declara `dispositivo`"
+        for palabra in PALABRAS_DE_NICHO:
+            assert not re.search(r"" + palabra + r"", d, re.IGNORECASE), f"{cid}: «{palabra}» en su dispositivo"
+
+
+def test_el_prompt_usa_el_dispositivo_del_canonico_y_no_el_de_la_ficha():
+    import json
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    try:
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+        assert codigo == 0, cuerpo
+        docs = sc.cargar_canonicos()
+        paquete = _paquete(base)
+        assert paquete["conceptos"]
+        for c in paquete["conceptos"]:
+            doc = docs[c["canonico_id"]]
+            ruta = os.path.join(ap.SWIPE_DIR, "_BLUEPRINTS", "FICHAS", doc["ficha_referencia"] + ".json")
+            with open(ruta, encoding="utf-8") as fh:
+                ficha = json.load(fh)["dispositivo_dominante"]
+            linea = "- Dispositivo Canónico: " + doc["dispositivo"]
+            assert linea in c["prompt_director_de_arte"], c["canonico_id"]
+            if ficha != doc["dispositivo"]:  # algunas fichas ya son neutras y coinciden con el canonico
+                assert ficha not in c["prompt_director_de_arte"], c["canonico_id"]
+    finally:
+        restaurar()
+
+
+def test_sin_dispositivo_en_el_canonico_cae_al_de_la_ficha():
+    import json
+    base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
+    docs = sc.cargar_canonicos()
+    viejo = sc.cargar_canonicos
+    sc.cargar_canonicos = lambda: {k: {kk: vv for kk, vv in v.items() if kk != "dispositivo"} for k, v in docs.items()}
+    try:
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG", "--json"])
+        assert codigo == 0, cuerpo
+        for c in _paquete(base)["conceptos"]:
+            ruta = os.path.join(ap.SWIPE_DIR, "_BLUEPRINTS", "FICHAS", docs[c["canonico_id"]]["ficha_referencia"] + ".json")
+            with open(ruta, encoding="utf-8") as fh:
+                assert json.load(fh)["dispositivo_dominante"] in c["prompt_director_de_arte"]
+    finally:
+        sc.cargar_canonicos = viejo
+        restaurar()
+
+
 def main():
     fallas = 0
     fallas += test_producto_sin_fila_bloquea_no_hereda_precios_de_otro()
@@ -711,7 +770,10 @@ def main():
                    test_angulo_ausente_en_textos_por_angulo_bloquea_con_dato_perfil_creativo,
                    test_textos_por_angulo_sigue_exigiendo_los_textos_requeridos,
                    test_perfil_viejo_de_un_solo_angulo_sigue_funcionando,
-                   test_generar_para_un_angulo_no_toca_los_textos_del_otro):
+                   test_generar_para_un_angulo_no_toca_los_textos_del_otro,
+                   test_todo_canonico_declara_un_dispositivo_neutro,
+                   test_el_prompt_usa_el_dispositivo_del_canonico_y_no_el_de_la_ficha,
+                   test_sin_dispositivo_en_el_canonico_cae_al_de_la_ficha):
         try:
             prueba()
             print("  OK     " + prueba.__name__)

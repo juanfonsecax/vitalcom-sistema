@@ -3,6 +3,7 @@
   "schema_version": "canonico-1.0",
   "nombre": "Timeline de progresion",
   "dispositivo_canonico": "TRES O MAS ESTADOS EN FILA, CADA UNO CON SU ETIQUETA DE PLAZO. A diferencia del antes/despues, aca el eje del tiempo esta DIBUJADO: dia 1, semana 2, mes 3. La pieza no promete un salto, promete un recorrido — y al hacerlo instala la idea de que el producto se toma durante un periodo, no una vez.",
+  "dispositivo": "EL TIMELINE DE 3 ESTADOS EN EL TOPE. Tres imagenes del mismo sujeto o de la misma zona afectada, separadas por flechas, con una etiqueta de plazo debajo de cada una (SEMANA 0 / 4 / 8) y una linea de descripcion. No promete un resultado: promete un CRONOGRAMA.",
   "cuando_elegirlo": "El producto es un TRATAMIENTO con curva de resultado y el argumento de venta es la duracion (por eso empuja el pack de 3). Tambien cuando el resultado es invisible: el timeline lo puede narrar en ilustracion o render sin necesitar una foto real.",
   "ejes_de_variacion": [
     "material del estado: render de organo, ilustracion de linea, foto cotidiana",
