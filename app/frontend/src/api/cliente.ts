@@ -228,6 +228,7 @@ export type ConceptoFase2 = components["schemas"]["ConceptoFase2"];
 export type AnguloFase2 = components["schemas"]["AnguloFase2"];
 export type CampanaFase2 = components["schemas"]["CampanaFase2"];
 export type FabricarConceptos = components["schemas"]["FabricarConceptos"];
+export type MarcarGenerados = components["schemas"]["MarcarGenerados"];
 export type GenerarPrompts = components["schemas"]["GenerarPrompts"];
 export type FatigaFase2 = components["schemas"]["FatigaFase2"];
 export type ReingresoActivo = components["schemas"]["ReingresoActivo"];

@@ -943,3 +943,49 @@ test("fabricar: si la acción está deshabilitada el botón se ve pero no se pue
   const bloque = within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO"));
   expect(await bloque.findByRole("button", { name: TEXTO_BOTON(8) })).toBeDisabled();
 });
+
+// ── «Marcar como generadas las imágenes que ya subiste» por ángulo ────────────────────────────
+
+const ACCION_MARCAR = "producto.marcar_conceptos_generados";
+const TEXTO_MARCAR = (n: number) => `Marcar como generadas las imágenes que ya subiste (${n})`;
+
+function fase2ConMarcar() {
+  const marcar: Record<string, unknown> = {
+    ACCESIBILIDAD_MEDICO: {
+      accion_id: ACCION_MARCAR,
+      parametros: { producto_key: "TINNIDROP", angulo_key: "ACCESIBILIDAD_MEDICO" },
+      listos: 3,
+      habilitada: true,
+    },
+  };
+  return {
+    ...FASE2_MOCK,
+    angulos: FASE2_MOCK.angulos.map((a) => (marcar[a.angulo_key] ? { ...a, marcar: marcar[a.angulo_key] } : a)),
+  };
+}
+
+test("marcar: el botón aparece solo en el ángulo con imágenes listas y lanza la acción con producto y ángulo", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConMarcar();
+  respuestas[`POST /api/acciones/${ACCION_MARCAR}`] = {
+    job_id: "job-mar-1", accion_id: ACCION_MARCAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-mar-1", url_eventos: "/api/trabajos/job-mar-1/eventos",
+  };
+  respuestas["GET /api/trabajos/job-mar-1"] = { job_id: "job-mar-1", estado: "EXITO", unidades: [{ json: { ok: true } }] };
+  renderizar("TINNIDROP");
+
+  const boton = await within(await screen.findByTestId("bloque-ACCESIBILIDAD_MEDICO")).findByRole("button", { name: TEXTO_MARCAR(3) });
+  expect(screen.getAllByRole("button", { name: /Marcar como generadas/ })).toHaveLength(1);
+  const antes = llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length;
+  fireEvent.click(boton);
+
+  await waitFor(() => {
+    const llamada = llamadasFetch.find((l) => l.url === `/api/acciones/${ACCION_MARCAR}` && l.metodo === "POST");
+    expect(llamada?.cuerpo).toEqual({
+      parametros: { producto_key: "TINNIDROP", angulo_key: "ACCESIBILIDAD_MEDICO" },
+      confirmado: false,
+    });
+  });
+  await waitFor(() => {
+    expect(llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length).toBeGreaterThan(antes);
+  });
+});

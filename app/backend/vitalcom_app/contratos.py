@@ -818,6 +818,22 @@ def _fabricar(producto_key: str, angulo: dict[str, Any], requeridos: int, regist
     }
 
 
+ACCION_MARCAR = "producto.marcar_conceptos_generados"
+
+
+def _marcar(producto_key: str, angulo_key: str, listos: int) -> dict[str, Any] | None:
+    """El descriptor del botón «Marcar como generadas las imágenes que ya subiste»: `listos` son los
+    conceptos IMAGEN en PENDIENTE_GENERAR cuyo archivo ya está en disco. Sin ninguno, no hay botón."""
+    if listos <= 0:
+        return None
+    return {
+        "accion_id": ACCION_MARCAR,
+        "parametros": {"producto_key": producto_key, "angulo_key": angulo_key},
+        "listos": listos,
+        "habilitada": _accion_habilitada(ACCION_MARCAR),
+    }
+
+
 ACCION_ARMAR_PROMPTS = "producto.armar_prompts_fase2"
 ACCION_CONCEPTOS = "nodo.F2.conceptos"
 # Los datos de `datos_producto.py` que frenan a `armar_prompts_fase2.py` (los mismos que él bloquea).
@@ -933,7 +949,13 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         c["campana"] = _campana_de(c["numero"], estructura)
     lanzado = _lanzado_fase2(producto_key)
 
+    formato_de = {r.get("creativo_id", ""): (r.get("formato") or "").strip().upper() for r in creativos_rows}
     for angulo in angulos:
+        listos_para_marcar = sum(
+            1 for c in conceptos
+            if c["angulo_key"] == angulo["angulo_key"] and c.get("estado") == "PENDIENTE_GENERAR"
+            and c["archivo_existe"] and formato_de.get(c["creativo_id"]) == "IMAGEN")
+        angulo["marcar"] = _marcar(producto_key, angulo["angulo_key"], listos_para_marcar)
         # X de la «Galería de conceptos (X de N)» de cada ángulo: la regla de «listo» vive acá.
         angulo["conceptos_listos"] = sum(
             1 for c in conceptos if c["angulo_key"] == angulo["angulo_key"] and c.get("estado") in _ESTADOS_GENERADO)

@@ -56,7 +56,7 @@ export function ProgresoDelTrabajo({ trabajo, alTerminar }: { trabajo: string; a
 }
 
 /** Lanza una acción del manifiesto y muestra su trabajo; al terminar bien, `alTerminar`. */
-function useLanzarAccion(accionId: string, parametros: Record<string, string>, confirmado: boolean) {
+export function useLanzarAccion(accionId: string, parametros: Record<string, string>, confirmado: boolean) {
   const [trabajo, setTrabajo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const lanzar = useMutation({

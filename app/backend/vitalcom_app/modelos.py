@@ -586,6 +586,15 @@ class FabricarConceptos(Base):
     trabajo_en_curso: str | None = None
 
 
+class MarcarGenerados(Base):
+    """El botón «Marcar como generadas las imágenes que ya subiste» de un ángulo (`contratos._marcar`)."""
+
+    accion_id: str
+    parametros: dict[str, str] = {}
+    listos: int = 0
+    habilitada: bool = False
+
+
 class AnguloFase2(Base):
     """Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`."""
@@ -622,6 +631,7 @@ class AnguloFase2(Base):
     orden_motor: str = ""
     conceptos_listos: int = 0
     fabricar: FabricarConceptos | None = None
+    marcar: MarcarGenerados | None = None
     checklist: list[PasoChecklist] = []
 
 

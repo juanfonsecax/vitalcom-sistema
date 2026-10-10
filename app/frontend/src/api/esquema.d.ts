@@ -857,33 +857,6 @@ export interface components {
             [key: string]: unknown;
         };
         /**
-         * FabricarConceptos
-         * @description El botón «Generar los conceptos que faltan (N)» de un ángulo ganador (`contratos._fabricar`).
-         */
-        FabricarConceptos: {
-            /** Accion Id */
-            accion_id: string;
-            /**
-             * Parametros
-             * @default {}
-             */
-            parametros: {
-                [key: string]: string;
-            };
-            /**
-             * Faltan
-             * @default 0
-             */
-            faltan: number;
-            /**
-             * Habilitada
-             * @default false
-             */
-            habilitada: boolean;
-            /** Trabajo En Curso */
-            trabajo_en_curso?: string | null;
-        };
-        /**
          * AnguloFase2
          * @description Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
          *     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`.
@@ -971,6 +944,7 @@ export interface components {
              */
             conceptos_listos: number;
             fabricar?: components["schemas"]["FabricarConceptos"] | null;
+            marcar?: components["schemas"]["MarcarGenerados"] | null;
             /**
              * Checklist
              * @default []
@@ -1640,6 +1614,35 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * FabricarConceptos
+         * @description El botón «Generar los conceptos que faltan (N)» de un ángulo ganador (`contratos._fabricar`).
+         */
+        FabricarConceptos: {
+            /** Accion Id */
+            accion_id: string;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: string;
+            };
+            /**
+             * Faltan
+             * @default 0
+             */
+            faltan: number;
+            /**
+             * Habilitada
+             * @default false
+             */
+            habilitada: boolean;
+            /** Trabajo En Curso */
+            trabajo_en_curso?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** FanPage */
         FanPage: {
             /** Pagina Num */
@@ -1746,9 +1749,13 @@ export interface components {
              * @default
              */
             ejecutor: string;
+            /** Fase Titulo */
             fase_titulo?: string | null;
+            /** Paso Titulo */
             paso_titulo?: string | null;
+            /** Bloqueante Principal */
             bloqueante_principal?: string | null;
+            /** Dueno Bloqueante */
             dueno_bloqueante?: string | null;
             reingreso_activo?: components["schemas"]["ReingresoActivo"] | null;
             fatiga?: components["schemas"]["FatigaFase2"] | null;
@@ -2165,6 +2172,33 @@ export interface components {
             como_resolver: string;
             /** Accion */
             accion?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * MarcarGenerados
+         * @description El botón «Marcar como generadas las imágenes que ya subiste» de un ángulo (`contratos._marcar`).
+         */
+        MarcarGenerados: {
+            /** Accion Id */
+            accion_id: string;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: string;
+            };
+            /**
+             * Listos
+             * @default 0
+             */
+            listos: number;
+            /**
+             * Habilitada
+             * @default false
+             */
+            habilitada: boolean;
         } & {
             [key: string]: unknown;
         };
@@ -2819,6 +2853,7 @@ export interface components {
              * @default
              */
             regla: string;
+            /** Falta */
             falta?: string | null;
         } & {
             [key: string]: unknown;
@@ -2966,6 +3001,8 @@ export interface components {
             rotulo: string;
             /** Producto Key */
             producto_key?: string | null;
+            /** Angulo Key */
+            angulo_key?: string | null;
             /** Estado */
             estado: string;
             /** Iniciado */
@@ -3006,6 +3043,8 @@ export interface components {
             rotulo: string;
             /** Producto Key */
             producto_key?: string | null;
+            /** Angulo Key */
+            angulo_key?: string | null;
             /** Estado */
             estado: string;
             /** Iniciado */
