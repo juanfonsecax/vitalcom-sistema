@@ -1386,6 +1386,44 @@
     "salida": "json"
    },
    {
+    "id": "producto.marcar_conceptos_generados",
+    "rotulo": "Marcar como generados los conceptos que ya tienen su imagen (FASE 2)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/marcar_generados.py",
+     "{producto_key}",
+     "--escribir",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "angulo_key": {
+      "tipo": "texto",
+      "patron": "^[A-Za-z0-9_]{1,80}$",
+      "requerido": false,
+      "bandera": "--angulo"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
     "id": "producto.cargar_transcripcion",
     "rotulo": "Cargar una transcripción TXT",
     "nodo": null,
