@@ -611,6 +611,74 @@ def test_producto_sin_mercado_bloquea_no_asume_gt():
     assert cuerpo["dato"] == "mercado" and "GT o CO" in cuerpo["detalle"]
 
 
+# ── textos por angulo (perfil_creativo/2) ────────────────────────────────────────────────────────────
+
+def _textos(marca):
+    return {k: (marca if k != "ACTIVOS_CLAVE" else [marca]) for k in ap.TEXTOS_REQUERIDOS}
+
+
+def _doc_dos_angulos():
+    return {"schema": "perfil_creativo/2", "producto_key": "PX", "perfil": {},
+            "textos_por_angulo": {"ANG_A": {"textos": _textos("a"), "textos_notas": {"n": "a"}},
+                                  "ANG_B": {"textos": _textos("b")}}}
+
+
+def test_textos_por_angulo_devuelve_los_del_angulo_pedido():
+    base = _con_producto(_doc_dos_angulos())
+    ta, ea = _bajo(base, lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ANG_A"))
+    tb, eb = _bajo(base, lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ANG_B"))
+    assert ea is None and eb is None
+    assert ta == _textos("a") and tb == _textos("b")
+
+
+def test_angulo_ausente_en_textos_por_angulo_bloquea_con_dato_perfil_creativo():
+    base = _con_producto(_doc_dos_angulos())
+    viejo = ap.PROD_DIR
+    ap.PROD_DIR = base
+    try:
+        try:
+            ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ANG_C")
+            raise AssertionError("debio bloquear")
+        except ap.Bloqueado as e:
+            assert e.dato == "perfil_creativo"
+            msg = str(e)
+            assert "ANG_C" in msg and "ANG_A" in msg and "ANG_B" in msg and "generar-conceptos" in msg
+    finally:
+        ap.PROD_DIR = viejo
+
+
+def test_textos_por_angulo_sigue_exigiendo_los_textos_requeridos():
+    doc = _doc_dos_angulos()
+    doc["textos_por_angulo"]["ANG_B"]["textos"].pop("CTA")
+    _, err = _bajo(_con_producto(doc), lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ANG_B"))
+    assert err and "CTA" in err
+
+
+def test_perfil_viejo_de_un_solo_angulo_sigue_funcionando():
+    doc = {"schema": "perfil_creativo/1", "angulo_key": "ANG_A", "perfil": {}, "textos": _textos("a")}
+    t, err = _bajo(_con_producto(doc), lambda: ap.requerir_textos(ap.cargar_perfil_creativo("PX"), "PX", "ANG_A"))
+    assert err is None and t == _textos("a")
+
+
+def test_generar_para_un_angulo_no_toca_los_textos_del_otro():
+    import json
+    base, restaurar = _entorno_json(angulo="ANG_A")
+    try:
+        ruta = os.path.join(ap.PROD_DIR, "PX_CARPETA", ap.PERFIL_CREATIVO)
+        with open(ruta, "w", encoding="utf-8") as fh:
+            json.dump(_doc_dos_angulos(), fh)
+        with open(ruta, "rb") as fh:
+            antes = fh.read()
+        codigo, cuerpo, _ = _correr_main(["PX", "ANG_B", "--json"])
+        assert codigo == 0, cuerpo
+        with open(ruta, "rb") as fh:
+            assert fh.read() == antes
+        with open(os.path.join(ap.BASE, cuerpo["archivos"][0].replace("/", os.sep)), encoding="utf-8") as fh:
+            assert '"b"' in fh.read()
+    finally:
+        restaurar()
+
+
 def main():
     fallas = 0
     fallas += test_producto_sin_fila_bloquea_no_hereda_precios_de_otro()
@@ -638,7 +706,12 @@ def main():
                    test_gt_conserva_el_registro_el_pais_el_voseo_y_la_moneda,
                    test_co_usa_tuteo_invima_y_pesos,
                    test_co_sin_numero_invima_bloquea_con_dato_registro_sanitario,
-                   test_producto_sin_mercado_bloquea_no_asume_gt):
+                   test_producto_sin_mercado_bloquea_no_asume_gt,
+                   test_textos_por_angulo_devuelve_los_del_angulo_pedido,
+                   test_angulo_ausente_en_textos_por_angulo_bloquea_con_dato_perfil_creativo,
+                   test_textos_por_angulo_sigue_exigiendo_los_textos_requeridos,
+                   test_perfil_viejo_de_un_solo_angulo_sigue_funcionando,
+                   test_generar_para_un_angulo_no_toca_los_textos_del_otro):
         try:
             prueba()
             print("  OK     " + prueba.__name__)

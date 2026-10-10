@@ -15,7 +15,8 @@ DE DONDE SALE CADA DATO (un dato, un dueno — este script ya no nombra ningun p
     precios                   PRODUCTOS/_DIM_PRECIOS.csv                       (nunca se inventan)
     packshot / envase         PRODUCTOS/_DIM_ENVASE.csv
     perfil y textos           PRODUCTOS/[carpeta]/_PERFIL_CREATIVO.json        (lo escribe la skill
-                              generar-conceptos desde la investigacion del producto)
+                              generar-conceptos desde la investigacion del producto; el perfil es del
+                              producto, los textos son por angulo en `textos_por_angulo`)
     mercado                   _DIM_PRODUCTOS.mercado -> _DIM_MERCADOS.csv, via mercado.py: pais, moneda,
                               simbolo y persona (voseo/tuteo) del prompt
     registro sanitario        DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md ([REG_MSPAS]/[REG_FDA] en GT,
@@ -295,7 +296,7 @@ def buscar_foto_producto(producto_key):
 
 
 PERFIL_CREATIVO = "_PERFIL_CREATIVO.json"
-PRODUCTOR_PERFIL = "la skill generar-conceptos (PASO 1 arma el perfil, PASO 3 los textos)"
+PRODUCTOR_PERFIL = "la skill generar-conceptos (PASO 1 arma el perfil, PASO 3 agrega los textos del angulo)"
 # Los textos que el prompt usa si o si. PRODUCTO, DESCRIPTOR, SINTOMA_ANTES y RESULTADO_DESPUES
 # viajan en variables_json pero el prompt no los pide: no se exigen.
 TEXTOS_REQUERIDOS = ("HOOK_TITULAR", "SUB_HOOK", "ACTIVOS_CLAVE", "GARANTIAS", "CTA")
@@ -357,17 +358,34 @@ def cargar_perfil_creativo(producto_key):
 def requerir_textos(perfil_creativo, producto_key, angulo):
     """Los textos del creativo PARA ESTE ANGULO, o BLOQUEO. Nunca un texto generico ni de otro angulo.
 
-    El perfil (si el resultado se ve, si hay curva...) es del PRODUCTO. Los textos son de UN ANGULO: el hook de TINNIDROP ("¿cansado de gastar en consultas...?") es de
-    ACCESIBILIDAD_MEDICO. Por eso el archivo declara `angulo_key`: si el angulo ganador cambia, se
-    bloquea en vez de usar en silencio los textos del angulo anterior (16-sep-2026)."""
-    declarado = (perfil_creativo.get("angulo_key") or "").strip()
-    if declarado != angulo:
-        raise Bloqueado(
-            f"BLOQUEANTE: los textos del {PERFIL_CREATIVO} de {producto_key} son del angulo "
-            f"'{declarado or '(sin declarar)'}' y se esta generando para '{angulo}'.\n"
-            f"  Los textos de un angulo no sirven para otro. Los produce {PRODUCTOR_PERFIL}, para '{angulo}'.",
-            "perfil_creativo")
-    textos = perfil_creativo.get("textos") or {}
+    El perfil (si el resultado se ve, si hay curva...) es del PRODUCTO. Los textos son de UN ANGULO:
+    el hook de TINNIDROP ("¿cansado de gastar en consultas...?") es de ACCESIBILIDAD_MEDICO.
+    Esquema `perfil_creativo/2`: los textos viven en `textos_por_angulo[ANGULO]["textos"]` y cada
+    angulo tiene su entrada; generar para uno nunca lee ni toca la de otro. Si el angulo no tiene
+    entrada, bloquea nombrando los angulos que si existen.
+    Archivo de un solo angulo (sin `textos_por_angulo`): `angulo_key` + `textos` de primer nivel;
+    si el angulo ganador es otro, bloquea."""
+    por_angulo = perfil_creativo.get("textos_por_angulo")
+    if isinstance(por_angulo, dict):
+        entrada = por_angulo.get(angulo)
+        if not isinstance(entrada, dict):
+            existentes = ", ".join(sorted(por_angulo)) or "(ninguno)"
+            raise Bloqueado(
+                f"BLOQUEANTE: el {PERFIL_CREATIVO} de {producto_key} no trae textos para el angulo '{angulo}'.\n"
+                f"  Angulos con textos: {existentes}. Los textos de un angulo no sirven para otro.\n"
+                f"  Los produce {PRODUCTOR_PERFIL}, para '{angulo}' (agrega su entrada en "
+                f"textos_por_angulo sin tocar las demas).",
+                "perfil_creativo")
+        textos = entrada.get("textos") or {}
+    else:
+        declarado = (perfil_creativo.get("angulo_key") or "").strip()
+        if declarado != angulo:
+            raise Bloqueado(
+                f"BLOQUEANTE: los textos del {PERFIL_CREATIVO} de {producto_key} son del angulo "
+                f"'{declarado or '(sin declarar)'}' y se esta generando para '{angulo}'.\n"
+                f"  Los textos de un angulo no sirven para otro. Los produce {PRODUCTOR_PERFIL}, para '{angulo}'.",
+                "perfil_creativo")
+        textos = perfil_creativo.get("textos") or {}
     faltan = [k for k in TEXTOS_REQUERIDOS if not textos.get(k)]
     if faltan:
         raise Bloqueado(

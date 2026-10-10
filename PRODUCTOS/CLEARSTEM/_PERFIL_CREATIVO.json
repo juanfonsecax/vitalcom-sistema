@@ -1,9 +1,15 @@
 {
-  "schema": "perfil_creativo/1",
+  "schema": "perfil_creativo/2",
   "producto_key": "CLEARSTEM",
-  "angulo_key": "RESISTENCIA_INSULINA_SOP",
   "producido_por": "skill generar-conceptos — PASO 1 (perfil) y PASO 3 (textos)",
-  "origen": "migrado el 16-sep-2026 desde armar_prompts_fase2.py, donde estaba escrito a mano dentro del codigo. Valores identicos a los que usaba el script.",
+  "origen": "2026-10-09: PASO 1 re-derivado y PASO 3 producido para ANTI_FALSIFICACION (ganador #1 de flujo.py, F2 / nodo F2.conceptos). Fuentes: PRODUCTOS/CLEARSTEM/2_DATA_PRODUCTO.txt, PRODUCTOS/_DIM_PRECIOS.csv, PRODUCTOS/_DIM_ENVASE.csv, PRODUCTOS/_DIM_CONJUNTOS.csv y Ads/1.2 Transcripcion videos/CLEARSTEM/{Clearstem3,Clearstem19}.txt. Mercado resuelto con Ads/_TOOLS/mercado.py: GT, persona voseo, registro MSPAS.",
+  "mercado": {
+    "mercado": "GT",
+    "pais": "Guatemala",
+    "persona": "voseo",
+    "registro_sanitario": "registro MSPAS",
+    "fuente": "Ads/_TOOLS/mercado.py --producto CLEARSTEM"
+  },
   "perfil": {
     "categoria": "dolor",
     "resultado_visible_en_el_cuerpo": true,
@@ -15,48 +21,166 @@
     "mecanismo_localizable_en_el_cuerpo": true,
     "modo_de_uso_no_obvio": false,
     "momento_de_uso_distintivo": false,
-    "alternativa_conocida": "",
-    "prueba_social_clientes": 1000,
-    "testimonios_reales_disponibles": 0,
+    "alternativa_conocida": "falsificacion",
+    "prueba_social_clientes": 1500,
+    "testimonios_reales_disponibles": 2,
     "fanpage_con_reconocimiento_local": false,
     "sintomas_reconocibles": 3,
     "gesto_del_dolor_fotografiable": false,
     "beneficios_distintos": 4,
-    "frase_con_giro_disponible": false,
-    "atributos_de_producto_diferenciales": 0,
+    "frase_con_giro_disponible": true,
+    "atributos_de_producto_diferenciales": 5,
     "avatar_fotografiable": false,
     "nivel_conciencia_objetivo": 3
   },
-  "textos": {
-    "PRODUCTO": "Clearstem Mindbodyskin (90 Cápsulas)",
-    "DESCRIPTOR": "Apoyo hormonal de raíz para la piel con acné",
-    "HOOK_TITULAR": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE VAN CON CREMAS!",
-    "SUB_HOOK": "Ataca el exceso de sebo, la inflamación y los picos de glucosa desde adentro.",
-    "SINTOMA_ANTES": "Rostro con brotes profundos e inflamados en mandíbula, poros obstruidos y textura grasa",
-    "RESULTADO_DESPUES": "Piel limpia, calmada, textura lisa y poros cerrados sin manchas rojas",
-    "ACTIVOS_CLAVE": [
-      "DIM: Equilibra el exceso hormonal y el sebo",
-      "Glutatión + Vitamina A: Desinflaman y regeneran la piel",
-      "Diente de León: Apoya la desintoxicación hepática"
-    ],
-    "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Americano",
-    "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
+  "perfil_evidencia": {
+    "categoria": "acne con brotes DOLOROSOS en la mandibula (2_DATA, hook de Clearstem18) y tono definido como 'confesional + educativo (no aspiracional puro)' (2_DATA, 6 FANPAGE ASIGNADA). No es motor aspiracional -> dolor.",
+    "resultado_visible_en_el_cuerpo": "el acne esta en la cara; Info 2 del bot es una progresion Dia 1 / Dia 25 / Dia 50 y la clienta real dice 'carita ya se ve diferente' (2_DATA, TESTIMONIOS REALES DE WHATSAPP).",
+    "resultado_fotografiable_sin_montaje": "misma evidencia: es una foto de rostro, sin render.",
+    "es_tratamiento_con_curva": "'Empezas a notar cambios entre la semana 2 y 3' (guion del audio del bot, 2_DATA) + la clienta real 'ya voy en la semana 3'.",
+    "tiers_de_oferta": "_DIM_PRECIOS.csv: 1x Q198.00 · 2x Q289.00 · 3x Q389.01, los tres ACTIVO. El 199/299/399 del bloque 2) COSTEO de 2_DATA es el precio PLANIFICADO de julio; manda el CSV (Dropi).",
+    "tiene_multiplicador": "no hay 2x1 ni 3x2: la escalera es 1/2/3 unidades reales (_DIM_PRECIOS.csv).",
+    "activo_estrella_con_dosis": "activo estrella DIM: 'tiene DIM que regula tus hormonas, que es la raiz del problema' (guion del audio, 2_DATA). Dosis documentada = 2-3 capsulas/dia con la 1ra comida (cabecera de 2_DATA). OJO: no hay MILIGRAMOS por ingrediente en ninguna parte del paquete -> si se selecciona CN15_INGREDIENTES_ACTIVO, la zona de dosis dice '2-3 capsulas al dia', nunca un mg inventado.",
+    "mecanismo_localizable_en_el_cuerpo": "'Trabaja desde adentro (hormonas, intestino, higado, estres)' (2_DATA, 1) VALIDACION) y el angulo hermano EJE_INTESTINO_PIEL.",
+    "modo_de_uso_no_obvio": "capsulas con la primera comida: se adivina.",
+    "momento_de_uso_distintivo": "'con la 1ra comida' no alcanza para construir una escena de momento; se deja false por conservador.",
+    "alternativa_conocida": "'falsificacion' — es el nucleo DECLARADO del angulo ganador. _DIM_CONJUNTOS.csv trae dolor_nucleo = \"'esto es falso, falsisimo' — miedo a pagar por un producto no original\"; Clearstem3 ('se compraron las falsas', 'el distribuidor oficial') y Clearstem19 ('muchisimas copias', 'Gold Star Seller', 'tienda oficial'); y la clienta real +502 8955 6589 ('me di cuenta que es el original'). ALTERNATIVA DOCUMENTADA #2, por si el operador prefiere esa columna: 'cremas y jabones' (Clearstem19: 'ya intentaste todo, cremas, jabones, y al contrario terminan poniendote peor').",
+    "prueba_social_clientes": "1500 = las reseñas de la marca citadas TEXTUALMENTE en Clearstem3 ('mas de 1,500 reseñas', junto a 'mas de 39,000 unidades'). Se toma la cifra MENOR de las documentadas (Clearstem18 habla de ~3,000 reseñas y 54,000 unidades). Son cifras de la MARCA original, que es justamente el chequeo de autenticidad del angulo. El 1000 anterior, heredado del codigo, no tenia fuente citada.",
+    "testimonios_reales_disponibles": "2 conversaciones reales de WhatsApp entregadas por el operador el 25-jul (+502 5974 0833 y +502 8955 6589), transcritas en 2_DATA. La segunda valida este angulo en particular.",
+    "fanpage_con_reconocimiento_local": "pagina 4 Belleza & Piel (Astrid Garcia) es reuso, sin reconocimiento documentado.",
+    "sintomas_reconocibles": "3 reconocibles y documentados: brotes en mandibula/barbilla, exceso de grasa, manchas (Info 1 del bot: reduce acne, regula grasa, disminuye manchas).",
+    "gesto_del_dolor_fotografiable": "la emocion de ESTE angulo es DESCONFIANZA (_DIM_CONJUNTOS.csv), no una postura de dolor fotografiable. Se deja false.",
+    "beneficios_distintos": "4 de Info 1: reduce acne · regula grasa · disminuye manchas · equilibra hormonas.",
+    "frase_con_giro_disponible": "dos frases con giro, documentadas palabra por palabra: 'Yo se que este suplemento no es el mas economico de todos, pero si ya realmente intentaste todo...' (Clearstem19) y el [VOZ-REAL] de la clienta 'yo dude si pedir 1 o los 3 pero que bueno que pedi los 3' (2_DATA).",
+    "atributos_de_producto_diferenciales": "5 atributos del producto MISMO, todos documentados: (1) formula original americana; (2) marca CLEARSTEM impresa en el frasco (_DIM_ENVASE.csv, verificado 2026-09-28); (3) 90 capsulas (_DIM_ENVASE.csv); (4) todo natural, sin gluten y vegano (guion del audio, 2_DATA); (5) 4.4 estrellas con 1,500+ reseñas (Clearstem19 / Clearstem3). EXCLUIDO A PROPOSITO: el sello 'FDA-APPROVED' de Info 1 — 2_DATA lo marca como factualmente falso (la FDA no aprueba suplementos) y como ad sube CPM. No entra en ningun creativo.",
+    "avatar_fotografiable": "no hay foto de clienta real; los 2 testimonios son texto de WhatsApp.",
+    "nivel_conciencia_objetivo": "se deja en 3 porque es el TIPO que espera PLANTILLA_PERFIL de seleccionar_canonicos.py (entero) y ningun gate lo lee. El valor FINO de este angulo es 3A (_DIM_CONJUNTOS.csv nivel_conciencia = 3A). Ver nivel_conciencia_detalle."
   },
-  "compliance_ads": {
-    "fecha": "2026-09-16",
-    "cambios": [
-      {
-        "campo": "DESCRIPTOR",
-        "antes": "Tratamiento hormonal de raíz para el acné",
-        "despues": "Apoyo hormonal de raíz para la piel con acné",
-        "regla": "COPYWRITING_ADS.md: no se afirma que el producto TRATA un diagnostico; lenguaje de apoyo"
+  "nivel_conciencia_detalle": {
+    "valor": "3A",
+    "fuente": "PRODUCTOS/_DIM_CONJUNTOS.csv, filas ANTI_FALSIFICACION de CLEARSTEM",
+    "por_que_importa": "reglas-sistema: 3A y 3B piden ads OPUESTOS, nunca '3' a secas. 3A = ya conoce el Clearstem viral y esta comparando QUIEN se lo vende; el ad no explica el producto, prueba que el de uno es el original."
+  },
+  "textos_por_angulo": {
+    "ANTI_FALSIFICACION": {
+      "textos": {
+        "PRODUCTO": "Clearstem Mindbodyskin (90 Cápsulas)",
+        "DESCRIPTOR": "Fórmula original americana para el acné hormonal",
+        "HOOK_TITULAR": "SI NO TE FUNCIONÓ, FIJATE SI COMPRASTE EL FALSO",
+        "SUB_HOOK": "Hay copias del viral de TikTok. El original dice CLEARSTEM en el frasco y trae 90 cápsulas.",
+        "SINTOMA_ANTES": "Rostro con brotes inflamados en la mandíbula y la barbilla, piel grasa y poros obstruidos",
+        "RESULTADO_DESPUES": "Piel más calmada, textura lisa y menos brotes nuevos",
+        "ACTIVOS_CLAVE": [
+          "DIM: apoya el equilibrio hormonal, la raíz del brote",
+          "Cúrcuma + Glutatión: ayudan a calmar la piel inflamada",
+          "5-HTP: acompaña en el estrés que dispara los brotes",
+          "Vitamina A + B5 + Diente de León: apoyan la renovación de la piel y la limpieza del hígado"
+        ],
+        "GARANTIAS": "Pago Contra Entrega en toda Guatemala · Envío Gratis · Fórmula original americana, 90 cápsulas",
+        "CTA": "PEDÍ EL ORIGINAL POR WHATSAPP"
       },
-      {
-        "campo": "HOOK_TITULAR",
-        "antes": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE CURAN CON CREMAS!",
-        "despues": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE VAN CON CREMAS!",
-        "regla": "COPYWRITING_ADS.md: 'cura' es palabra que banea en ADS"
+      "textos_notas": {
+        "persona": "voseo GT en todo texto visible: 'fijate', 'compraste', 'te funcionó', 'pedí' (mercado.py: persona = voseo).",
+        "HOOK_TITULAR": "es el MECANISMO del angulo, no una frase bonita: Clearstem3 documenta que la gente escribe 'que no le han funcionado y cuando me mandan la foto se compraron las falsas'. El hook reencuadra el fracaso previo como falsificacion, que es lo que hizo vender este angulo (CPA Q18.3-Q18.6 en sus mejores ventanas).",
+        "SUB_HOOK": "los dos chequeos de autenticidad son datos REALES del envase verificado por el operador (_DIM_ENVASE.csv: marca impresa CLEARSTEM, 90 capsulas), no el 'Gold Star Seller' de TikTok del video original, que no aplica a la venta por WhatsApp en GT.",
+        "GARANTIAS": "envio gratis y pago contra entrega salen de 2_DATA (2) COSTEO: 'P1u Q198 + envio gratis') y del modelo COD del sistema. NO lleva numero de registro sanitario: no existe el numero MSPAS de CLEARSTEM en el paquete y los numeros de registro no se fabrican.",
+        "sin_precio_en_los_textos": "ningun texto base trae precio: la regla es por tanda (max 3 de 6 ads con precio, ideal 2 de 6) y la decide la arquitectura de oferta, no el texto. Precios vigentes si un creativo los lleva: 1u Q198 · 2u Q289 · 3u Q389.01 (_DIM_PRECIOS.csv)."
+      },
+      "compliance_ads": {
+        "fecha": "2026-10-09",
+        "angulo_key": "ANTI_FALSIFICACION",
+        "regla": "DOCTRINA/COPYWRITING_ADS.md — lenguaje de APOYO ('apoya / ayuda a / acompaña'); banean 'cura', 'elimina', 'logra', 'transforma en [X dias]' y los timelines imposibles. Aplica SOLO al ads; el post-clic (bot, audio, infografias) no se suaviza.",
+        "cambios": [
+          {
+            "campo": "ACTIVOS_CLAVE[0]",
+            "antes": "DIM que regula tus hormonas (guion del audio del bot; Clearstem3: 'Regula tus hormonas')",
+            "despues": "DIM: apoya el equilibrio hormonal, la raíz del brote",
+            "regla": "'regula' afirma accion sobre un diagnostico hormonal -> lenguaje de apoyo. El texto del BOT se queda como esta: el compliance no aplica post-clic."
+          },
+          {
+            "campo": "ACTIVOS_CLAVE[1]",
+            "antes": "cúrcuma y glutatión para desinflamar",
+            "despues": "Cúrcuma + Glutatión: ayudan a calmar la piel inflamada",
+            "regla": "verbo absoluto -> 'ayudan a'."
+          },
+          {
+            "campo": "ACTIVOS_CLAVE[2]",
+            "antes": "5-HTP para controlar el estrés que dispara los brotes",
+            "despues": "5-HTP: acompaña en el estrés que dispara los brotes",
+            "regla": "'controlar' es absoluto -> 'acompaña'."
+          },
+          {
+            "campo": "RESULTADO_DESPUES",
+            "antes": "'me ayudó a eliminar casi que por completo todos esos granitos' (Clearstem19) / 'eliminar ese acné hormonal' (Clearstem3)",
+            "despues": "Piel más calmada, textura lisa y menos brotes nuevos",
+            "regla": "'eliminar' es palabra que banea. Ademas no se copia el texto del anunciante original (guardarrail de la skill): la ficha guarda ESTRUCTURA, el contenido lo pone el producto propio."
+          },
+          {
+            "campo": "DESCRIPTOR",
+            "antes": "Tratamiento original para el acné hormonal",
+            "despues": "Fórmula original americana para el acné hormonal",
+            "regla": "no se afirma que el producto TRATA un diagnostico; 'formula' describe el producto y sostiene el angulo (original vs copia)."
+          },
+          {
+            "campo": "(no entra) sello FDA-APPROVED",
+            "antes": "Info 1 del bot lo trae",
+            "despues": "EXCLUIDO de todo creativo de ads",
+            "regla": "2_DATA lo marca como factualmente falso (la FDA no aprueba suplementos dieteticos). Dentro del bot es decision del operador; como AD sube CPM y arriesga rechazo."
+          },
+          {
+            "campo": "(no entra) urgencia 'precio de Black Friday'",
+            "antes": "Clearstem3 cierra con 'aprovecha porque ahorita mismo ya tienen precio de Black Friday'",
+            "despues": "EXCLUIDO",
+            "regla": "escasez falsa: no hay promocion detras en _DIM_PRECIOS.csv. No se inventa una oferta."
+          }
+        ]
       }
-    ]
-  }
+    },
+    "RESISTENCIA_INSULINA_SOP": {
+      "textos": {
+        "PRODUCTO": "Clearstem Mindbodyskin (90 Cápsulas)",
+        "DESCRIPTOR": "Apoyo hormonal de raíz para la piel con acné",
+        "HOOK_TITULAR": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE VAN CON CREMAS!",
+        "SUB_HOOK": "Ataca el exceso de sebo, la inflamación y los picos de glucosa desde adentro.",
+        "SINTOMA_ANTES": "Rostro con brotes profundos e inflamados en mandíbula, poros obstruidos y textura grasa",
+        "RESULTADO_DESPUES": "Piel limpia, calmada, textura lisa y poros cerrados sin manchas rojas",
+        "ACTIVOS_CLAVE": [
+          "DIM: Equilibra el exceso hormonal y el sebo",
+          "Glutatión + Vitamina A: Desinflaman y regeneran la piel",
+          "Diente de León: Apoya la desintoxicación hepática"
+        ],
+        "GARANTIAS": "Pago Contra Entrega en Toda Guatemala · Envío Gratis · Producto 100% Original Americano",
+        "CTA": "PEDÍ EL TUYO POR WHATSAPP AQUÍ"
+      },
+      "compliance_ads": {
+        "fecha": "2026-09-16",
+        "cambios": [
+          {
+            "campo": "DESCRIPTOR",
+            "antes": "Tratamiento hormonal de raíz para el acné",
+            "despues": "Apoyo hormonal de raíz para la piel con acné",
+            "regla": "COPYWRITING_ADS.md: no se afirma que el producto TRATA un diagnostico; lenguaje de apoyo"
+          },
+          {
+            "campo": "HOOK_TITULAR",
+            "antes": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE CURAN CON CREMAS!",
+            "despues": "¡EL ACNÉ HORMONAL Y LA RESISTENCIA A LA INSULINA NO SE VAN CON CREMAS!",
+            "regla": "COPYWRITING_ADS.md: 'cura' es palabra que banea en ADS"
+          }
+        ]
+      }
+    }
+  },
+  "datos_duros_faltantes": [
+    {
+      "dato": "numero de registro sanitario MSPAS de CLEARSTEM",
+      "de_donde_sale": "DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md (lo aporta el operador). mercado.py confirma que a GT le corresponde 'registro MSPAS'.",
+      "efecto": "ningun creativo puede mostrar un numero de registro. Los sellos usables son los no regulatorios y documentados: formula americana, 4.4 estrellas, 1,500+ reseñas."
+    },
+    {
+      "dato": "miligramos por ingrediente (DIM, Vitamina A, B5, Cúrcuma, Diente de León, 5-HTP, Glutatión)",
+      "de_donde_sale": "investigacion del producto — 2_DATA_PRODUCTO.txt (ETAPA-1B). Hoy 2_DATA lista los 7 ingredientes y ningun mg.",
+      "efecto": "la unica dosis citable es '2-3 capsulas al dia con la primera comida'. Si se selecciona CN15_INGREDIENTES_ACTIVO, su zona de dosis usa esa, nunca un mg inventado."
+    }
+  ]
 }

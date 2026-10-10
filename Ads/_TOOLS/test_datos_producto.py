@@ -121,6 +121,23 @@ def test_perfil_creativo_se_juzga_solo_en_fase_2_contra_el_numero_1(base):
     assert "referencia_f1" not in _estados(dp.revisar_producto(str(base), fila, f2))
 
 
+def test_perfil_creativo_por_angulo_se_juzga_por_la_entrada_del_numero_1(base):
+    fila = _fila(base, "COMPLETO")
+    f2 = {"fase": "F2", "angulo_key": "ANG_1", "angulos_ganadores": ["ANG_1", "ANG_2"]}
+    ruta = base / "PRODUCTOS" / "COMPLETO" / "_PERFIL_CREATIVO.json"
+    ruta.parent.mkdir()
+    doc = {"schema": "perfil_creativo/2", "perfil": {}, "textos_por_angulo": {"ANG_2": {"textos": TEXTOS}}}
+    ruta.write_text(json.dumps(doc), encoding="utf-8")
+    r = dp.revisar_producto(str(base), fila, f2)
+    assert _estados(r)["perfil_creativo"] == "falta" and "ANG_1" in r["items"][-1]["detalle"]
+    doc["textos_por_angulo"]["ANG_1"] = {"textos": TEXTOS}
+    ruta.write_text(json.dumps(doc), encoding="utf-8")
+    assert _estados(dp.revisar_producto(str(base), fila, f2))["perfil_creativo"] == "ok"
+    doc["textos_por_angulo"]["ANG_1"] = {"textos": {"CTA": "x"}}
+    ruta.write_text(json.dumps(doc), encoding="utf-8")
+    assert _estados(dp.revisar_producto(str(base), fila, f2))["perfil_creativo"] == "falta"
+
+
 def test_mirar_no_escribe_nada(base, capsys):
     antes = {str(p): p.read_bytes() for p in base.rglob("*") if p.is_file()}
     assert dp.main(["--todo", "--sin-flujo", "--base", str(base), "--json"]) == 0

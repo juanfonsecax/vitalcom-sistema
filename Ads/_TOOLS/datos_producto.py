@@ -203,12 +203,24 @@ def revisar_perfil(base, fila, angulo_1):
             doc = json.load(fh)
     except (OSError, ValueError):
         return _item("perfil_creativo", rotulo, False, "El perfil creativo no se puede leer.", como)
-    declarado = (doc.get("angulo_key") or "").strip() if isinstance(doc, dict) else ""
-    if declarado != angulo_1:
-        return _item("perfil_creativo", rotulo, False,
-                     f"El perfil que hay es del ángulo {declarado or '(sin declarar)'}, no del #1 ({angulo_1}).", como)
+    if not isinstance(doc, dict):
+        return _item("perfil_creativo", rotulo, False, "El perfil creativo no se puede leer.", como)
+    por_angulo = doc.get("textos_por_angulo")
+    if isinstance(por_angulo, dict):
+        # perfil_creativo/2: cada angulo tiene su entrada de textos.
+        if not isinstance(por_angulo.get(angulo_1), dict):
+            hay = ", ".join(sorted(por_angulo)) or "(ninguno)"
+            return _item("perfil_creativo", rotulo, False,
+                         f"El perfil no trae textos del ángulo #1 ({angulo_1}); tiene: {hay}.", como)
+        textos = por_angulo[angulo_1].get("textos") or {}
+    else:
+        declarado = (doc.get("angulo_key") or "").strip()
+        if declarado != angulo_1:
+            return _item("perfil_creativo", rotulo, False,
+                         f"El perfil que hay es del ángulo {declarado or '(sin declarar)'}, no del #1 ({angulo_1}).", como)
+        textos = doc.get("textos") or {}
     from armar_prompts_fase2 import TEXTOS_REQUERIDOS
-    sin = [k for k in TEXTOS_REQUERIDOS if not (doc.get("textos") or {}).get(k)]
+    sin = [k for k in TEXTOS_REQUERIDOS if not textos.get(k)]
     if not isinstance(doc.get("perfil"), dict) or sin:
         return _item("perfil_creativo", rotulo, False, "Al perfil le faltan textos: " + (", ".join(sin) or "el bloque perfil") + ".", como)
     return _item("perfil_creativo", rotulo, True, angulo_1)

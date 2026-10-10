@@ -35,7 +35,7 @@ sería atribuible).
 | Prompt Maestro y los 15 estilos anti-fatiga | `DOCTRINA/PLANTILLAS_ADS_SECCIONES/05_PROMPT_MAESTRO_FASE2.md` + `06_ESTILOS_ANTIFATIGA.md` |
 | Precios, CPA objetivo, break even | `PRODUCTOS/[X]/2_DATA_PRODUCTO.txt` |
 | Tono y edad de la página | `.claude/agents/ETAPA-2.md` §ASIGNACIÓN DE FANPAGE (ya resuelto en `<pagina_asignada>`) |
-| **El perfil y los textos del creativo, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1 y PASO 3) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
+| **El perfil y los textos del creativo, ya resueltos** | `PRODUCTOS/[X]/_PERFIL_CREATIVO.json` — **lo escribe esta skill** (PASO 1: el `perfil` del producto; PASO 3: agrega los textos de UN ángulo en `textos_por_angulo`) y lo lee `Ads/_TOOLS/armar_prompts_fase2.py`. Si falta, el script bloquea: no inventa |
 
 **Qué nunca se inventa y qué sí:**
 
@@ -93,8 +93,10 @@ Los tres que más deciden:
   de la rotación (C3_SINTOMA o C7_DESEO).
 
 **Guardar el perfil** en el bloque `perfil` de `PRODUCTOS/[X]/_PERFIL_CREATIVO.json`
-(`"schema": "perfil_creativo/1"`). Ese archivo es el contrato con
-`armar_prompts_fase2.py`: sin él, el script bloquea en vez de adivinar el perfil.
+(`"schema": "perfil_creativo/2"`). Ese archivo es el contrato con
+`armar_prompts_fase2.py`: sin él, el script bloquea en vez de adivinar el perfil. Si el archivo ya
+existe, el `perfil` y el resto de las claves del producto se actualizan en su lugar y
+`textos_por_angulo` no se toca en este paso.
 
 ### PASO 2 — Seleccionar los canónicos
 
@@ -142,10 +144,19 @@ Reglas al llenar:
    ("apoya / ayuda a / acompaña"), nunca "cura / elimina / logra / trata". Es texto
    del anuncio: Meta lo lee.
 
-**Guardar los textos** en el bloque `textos` del mismo `_PERFIL_CREATIVO.json`, y **declarar su
-ángulo** en `angulo_key` (idéntico al de `_DIM_CONJUNTOS.csv`). El perfil es del producto, pero los
-textos son de **un** ángulo: si el ganador cambia, el script bloquea en vez de
-usar en silencio los textos del ángulo anterior, y esta skill los vuelve a producir para el nuevo.
+**Guardar los textos** del ángulo en `textos_por_angulo[ANGULO_KEY]` del mismo `_PERFIL_CREATIVO.json`
+(la clave es idéntica al `angulo_key` de `_DIM_CONJUNTOS.csv`):
+
+```json
+"textos_por_angulo": {
+  "ANGULO_KEY": {"textos": {...}, "textos_notas": {...}, "compliance_ads": {...}}
+}
+```
+
+`textos_notas` y `compliance_ads` son opcionales. El perfil es del producto, pero los textos son de
+**un** ángulo: esta skill agrega o reemplaza SOLO la entrada del ángulo que está produciendo y nunca
+borra las de otros ángulos. Si el ganador cambia y su entrada no existe, el script bloquea (nombrando
+los ángulos que sí tienen textos) y esta skill produce la del nuevo.
 
 | Campo | |
 |---|---|
@@ -251,7 +262,7 @@ DESCARTADOS Y POR QUÉ:
 (canónico → motivo del gate; incluir los que quedaron aptos pero no entraron)
 
 ARCHIVOS ESCRITOS:
-□ PRODUCTOS/[X]/_PERFIL_CREATIVO.json (perfil + textos)
+□ PRODUCTOS/[X]/_PERFIL_CREATIVO.json (perfil + textos_por_angulo[ANGULO])
 □ Ads/MEDIA_[PRODUCTO]/FASE2_[ANGULO]/PROMPTS_FASE2_[ANGULO].txt
 □ filas en PRODUCTOS/_DIM_CONJUNTOS.csv (concepto_key poblado)
 □ PRODUCTOS/[X]/4_PLAN_ESCALADO.txt
