@@ -112,9 +112,11 @@ def ruta_de_media(producto_key: str, archivo: str) -> Path | None:
     """El archivo de la carpeta de media del producto, si existe y es media. Nunca sale de esa carpeta."""
     if not archivo or archivo != Path(archivo).name or Path(archivo).suffix.lower() not in EXTENSIONES_DE_MEDIA:
         return None
-    carpeta_media = contratos.fila_de_producto(producto_key).get("carpeta_media")
-    if not carpeta_media:
+    fila = contratos.fila_de_producto(producto_key)
+    if not fila:
         return None
+    # Sin carpeta declarada, la misma por defecto que usa la galería de FASE 2 y `marcar_generados.py`.
+    carpeta_media = fila.get("carpeta_media") or f"MEDIA_{producto_key}"
     candidato = ruta("Ads", carpeta_media, archivo)
     return candidato if candidato.is_file() else None
 

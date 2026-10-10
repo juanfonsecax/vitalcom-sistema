@@ -1036,3 +1036,26 @@ test("subir: el archivo va al endpoint del concepto y la galería se recarga", a
   });
   expect(llamadasFetch.some((l) => l.url.includes("/cargar/"))).toBe(false);
 });
+
+
+// ── la imagen del concepto, a la vista en su tarjeta ──────────────────────────────────────────
+
+test("miniatura: la tarjeta muestra la imagen en disco, con la versión del archivo para no ver la vieja", async () => {
+  const conceptos = FASE2_MOCK.conceptos.map((c) => ({ ...c, archivo_version: c.archivo_existe ? "1700000000" : "" }));
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = { ...FASE2_MOCK, conceptos };
+  renderizar("TINNIDROP");
+
+  const miniatura = (await screen.findByAltText("Imagen de TINNIDROP_F2_C01")) as HTMLImageElement;
+  expect(miniatura.getAttribute("src")).toBe("/api/productos/TINNIDROP/media/TINNIDROP_F2_C01.png?v=1700000000");
+  expect(miniatura.getAttribute("loading")).toBe("lazy");
+  expect(screen.queryByAltText("Imagen de TINNIDROP_F2_C02")).toBeNull();
+});
+
+test("miniatura: un click la abre ampliada", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  renderizar("TINNIDROP");
+
+  fireEvent.click(await screen.findByTitle("Ver la imagen en tamaño completo"));
+  const ampliada = screen.getByAltText("Imagen ampliada") as HTMLImageElement;
+  expect(ampliada.getAttribute("src")).toBe("/api/productos/TINNIDROP/media/TINNIDROP_F2_C01.png");
+});

@@ -193,3 +193,11 @@ def test_si_el_script_de_datos_no_responde_no_se_inventa_un_completo(cliente_jug
     juguete.escribir_script(sistema_de_juguete, "datos_producto.py", "print('no es json')")
     datos = cliente_juguete.get("/api/productos/TINNIDROP/datos").json()
     assert datos["ok"] is False and datos["completo"] is False and datos["avisos"]
+
+
+def test_la_media_sin_carpeta_declarada_sale_de_media_del_producto(cliente_juguete, sistema_de_juguete):
+    """Mismo default que la galería de FASE 2: sin `carpeta_media` en la fila, `MEDIA_<producto_key>`."""
+    (sistema_de_juguete / "Ads" / "MEDIA_TINNIDROP").mkdir()
+    (sistema_de_juguete / "Ads" / "MEDIA_TINNIDROP" / "T_1.png").write_bytes(b"\x89PNG")
+    assert cliente_juguete.get("/api/productos/TINNIDROP/media/T_1.png").content == b"\x89PNG"
+    assert fase1.ruta_de_media("TINNIDROP", "../T_1.png") is None

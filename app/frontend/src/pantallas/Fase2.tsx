@@ -88,7 +88,7 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
     }
   };
 
-  const accionesDeConcepto = { subiendoArchivo, onSubir: subirImagen, onAmpliar: setImagenAmpliada };
+  const accionesDeConcepto = { clave, subiendoArchivo, onSubir: subirImagen, onAmpliar: setImagenAmpliada };
   const galeriaDe = (a: AnguloFase2, abierta: boolean) => (
     <GaleriaDeConceptos
       angulo={a}
@@ -282,11 +282,11 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
       {/* Conceptos de ángulos fuera del ranking: no se pierden, pero no estorban. */}
       <OtrosConceptos conceptos={otrosConceptos} acciones={accionesDeConcepto} />
 
-      {/* Lightbox — imagen de referencia ampliada */}
+      {/* Lightbox — referencia del swipe o imagen del concepto, ampliada */}
       {imagenAmpliada && (
         <Lightbox
           url={imagenAmpliada}
-          alt="Referencia de swipe ampliada"
+          alt="Imagen ampliada"
           onCerrar={() => setImagenAmpliada(null)}
         />
       )}

@@ -6,7 +6,7 @@
  * backend (`campanas`); acá no se inventa ninguna cifra.
  */
 import { ChevronDown } from "lucide-react";
-import type { AnguloFase2, CampanaFase2, ConceptoFase2 } from "../api/cliente";
+import { api, type AnguloFase2, type CampanaFase2, type ConceptoFase2 } from "../api/cliente";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Chip, Tarjeta, type Tono } from "./ui";
 import { BotonCopiarTexto, ImagenDeReferencia } from "./copiar";
@@ -24,6 +24,8 @@ const TONOS_ESTADO: Record<string, Tono> = {
 const NUMERO_EN_PALABRAS: Record<number, string> = { 2: "dos", 3: "tres", 4: "cuatro" };
 
 export interface AccionesDeConcepto {
+  /** El producto de la galería: la miniatura se pide a su carpeta de media. */
+  clave: string;
   subiendoArchivo: string | null;
   onSubir: (concepto: ConceptoFase2, archivo: File) => void;
   onAmpliar: (url: string) => void;
@@ -41,7 +43,11 @@ export function TarjetaConcepto({
   acciones: AccionesDeConcepto;
   mostrarAngulo?: boolean;
 }) {
-  const { subiendoArchivo, onSubir, onAmpliar } = acciones;
+  const { clave, subiendoArchivo, onSubir, onAmpliar } = acciones;
+  // `?v=` es el mtime del archivo: al re-subir cambia y el navegador no muestra la imagen vieja.
+  const urlImagen = c.archivo_existe
+    ? `${api.urlMedia(clave, c.archivo)}${c.archivo_version ? `?v=${encodeURIComponent(c.archivo_version)}` : ""}`
+    : null;
   return (
     <Tarjeta className="space-y-3 border-zinc-800 bg-zinc-900/50">
       <div className="flex items-start justify-between gap-2 border-b border-zinc-800 pb-2">
@@ -114,6 +120,22 @@ export function TarjetaConcepto({
             </Collapsible>
           )}
         </div>
+      )}
+
+      {urlImagen && (
+        <button
+          type="button"
+          onClick={() => onAmpliar(urlImagen)}
+          className="block w-full overflow-hidden rounded-lg border border-border bg-background/60"
+          title="Ver la imagen en tamaño completo"
+        >
+          <img
+            src={urlImagen}
+            alt={`Imagen de ${c.creativo_id}`}
+            loading="lazy"
+            className="h-32 w-full object-contain"
+          />
+        </button>
       )}
 
       {/* Botón de Carga de Imagen */}
