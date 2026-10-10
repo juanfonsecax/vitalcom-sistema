@@ -224,14 +224,23 @@ def seleccionar(perfil, n, ya=()):
             continue
         usados.add(it["concepto_key"])
         elegidos.append(it)
+    # Agotados los concepto_key sin usar, cada repeticion va al concepto_key MENOS usado (empate: el
+    # orden de la rotacion). Rellenar en orden de prioridad apilaba todo en C2_BENEFICIOS.
     repiten = []
-    if len(elegidos) < n:
-        for it in candidatos:
-            if len(elegidos) >= n:
-                break
-            if it not in elegidos:
-                elegidos.append(it)
-                repiten.append(it["canonico_id"])
+    veces = {}
+    for c in ya:
+        if c in docs:
+            ck = concepto_dominante(docs[c])
+            veces[ck] = veces.get(ck, 0) + 1
+    for it in elegidos:
+        veces[it["concepto_key"]] = veces.get(it["concepto_key"], 0) + 1
+    restantes = [it for it in candidatos if it not in elegidos]
+    while len(elegidos) < n and restantes:
+        it = min(restantes, key=lambda r: veces.get(r["concepto_key"], 0))
+        restantes.remove(it)
+        veces[it["concepto_key"]] = veces.get(it["concepto_key"], 0) + 1
+        elegidos.append(it)
+        repiten.append(it["canonico_id"])
 
     return {
         "producto": perfil["producto"],

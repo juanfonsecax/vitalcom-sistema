@@ -428,6 +428,27 @@ def test_selector_excluye_los_ya_registrados_y_sigue_la_regla_del_concepto_key()
     assert not set(i["canonico_id"] for i in dos["aptos_no_elegidos"]) & set(ya)
 
 
+def test_al_repetir_se_reparte_entre_los_concepto_key_menos_usados():
+    """Agotados los concepto_key sin usar, el relleno va al menos usado, no siempre al primero de la rotacion."""
+    perfil = dict(_perfil_rico(), producto="PX", angulo_ganador="ANG")
+    aptos, _ = sc.evaluar(perfil, sc.cargar_canonicos())
+    disponibles = {}
+    for it in aptos:
+        disponibles[it["concepto_key"]] = disponibles.get(it["concepto_key"], 0) + 1
+    distintos = len(disponibles)
+    assert len(aptos) > distintos + 2, "el perfil de prueba tiene que obligar a repetir"
+    res = sc.seleccionar(perfil, distintos + 3)
+    conteo = {}
+    for it in res["seleccion"]:
+        conteo[it["concepto_key"]] = conteo.get(it["concepto_key"], 0) + 1
+    assert set(conteo) == set(disponibles), "primero entra un canonico de cada concepto_key"
+    # ningun concepto_key lleva 2+ piezas mas que otro al que todavia le quedaban aptos sin elegir
+    for ck, veces in conteo.items():
+        for otro, veces_otro in conteo.items():
+            if veces_otro < disponibles[otro]:
+                assert veces - veces_otro <= 1, (ck, veces, otro, veces_otro)
+
+
 def test_segunda_tanda_elige_otros_5_y_no_pisa_la_primera():
     base, restaurar = _entorno_json(perfil=_perfil_rico(), con_parametros=True)
     prod = os.path.join(base, "PRODUCTOS")
