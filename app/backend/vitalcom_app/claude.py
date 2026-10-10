@@ -72,6 +72,8 @@ def meta_falso() -> bool:
 def resolver_binario(herramientas: list[str] | None = None) -> list[str]:
     """`VITALCOM_CLAUDE_CMD` → `VITALCOM_CLAUDE_EXE` → PATH → `~/.local/bin` → la app de escritorio.
 
+    Del PATH nunca se toma un wrapper `.cmd`/`.bat` (cmd.exe trunca el prompt en el primer salto de línea).
+
     Si `herramientas` incluye alguna herramienta con prefijo `mcp__` y existe la variable
     `VITALCOM_CLAUDE_CMD_META`, se usa esa lista (Meta falso).
     """
@@ -93,7 +95,9 @@ def resolver_binario(herramientas: list[str] | None = None) -> list[str]:
     if declarado and Path(declarado).is_file():
         return [declarado]
     en_el_path = shutil.which("claude")
-    if en_el_path:
+    # Un wrapper .cmd/.bat pasa por cmd.exe, que corta los argumentos en el primer salto de
+    # línea: el prompt multilínea y los flags que le siguen se pierden sin error.
+    if en_el_path and Path(en_el_path).suffix.lower() not in (".cmd", ".bat"):
         return [en_el_path]
     for nombre in ("claude.exe", "claude"):
         candidato = Path.home() / ".local" / "bin" / nombre

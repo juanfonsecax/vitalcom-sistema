@@ -111,6 +111,26 @@ def test_el_binario_se_resuelve_en_orden(sistema_de_juguete, monkeypatch, tmp_pa
     assert claude.resolver_binario() == ["python", "otro.py"], "VITALCOM_CLAUDE_CMD tiene prioridad"
 
 
+def test_un_wrapper_cmd_del_path_nunca_se_usa(monkeypatch, tmp_path):
+    """cmd.exe corta los argumentos en el primer salto de línea: el prompt y los flags se pierden."""
+    monkeypatch.delenv("VITALCOM_CLAUDE_CMD", raising=False)
+    monkeypatch.delenv("VITALCOM_CLAUDE_EXE", raising=False)
+    monkeypatch.setenv("APPDATA", str(tmp_path / "sin_escritorio"))
+    wrapper = tmp_path / "npm" / "claude.CMD"
+    wrapper.parent.mkdir()
+    wrapper.write_text("", encoding="utf-8")
+    monkeypatch.setattr(claude.shutil, "which", lambda _nombre: str(wrapper))
+    monkeypatch.setattr(claude.Path, "home", lambda: tmp_path / "home")
+
+    with pytest.raises(claude.ClaudeNoDisponible):
+        claude.resolver_binario()
+
+    nativo = tmp_path / "home" / ".local" / "bin" / "claude.exe"
+    nativo.parent.mkdir(parents=True)
+    nativo.write_text("", encoding="utf-8")
+    assert claude.resolver_binario() == [str(nativo)]
+
+
 def test_perilla_meta_falso_solo_aplica_a_herramientas_mcp(monkeypatch, tmp_path):
     monkeypatch.delenv("VITALCOM_CLAUDE_CMD", raising=False)
     monkeypatch.delenv("VITALCOM_CLAUDE_CMD_META", raising=False)
