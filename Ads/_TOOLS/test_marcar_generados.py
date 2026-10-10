@@ -114,6 +114,15 @@ def test_filtro_por_angulo(base):
     assert _estados(base) == {"PX_1": "PENDIENTE_GENERAR", "PX_2": "GENERADO"}
 
 
+def test_filtro_por_creativo(base):
+    _crear(base, [_fila("PX", 1), _fila("PX", 2)])
+    for n in (1, 2):
+        (base / "Ads" / "MEDIA_PX" / f"PX_{n}.png").write_bytes(PNG)
+    r = mg.marcar("PX", None, escribir=True, creativo_id="PX_2")
+    assert r["promovidos"] == ["PX_2"]
+    assert _estados(base) == {"PX_1": "PENDIENTE_GENERAR", "PX_2": "GENERADO"}
+
+
 def test_otros_productos_intactos_y_ya_generados_se_reportan(base):
     _crear(base, [_fila("PX", 1, estado="GENERADO"), _fila("OTRO", 1)])
     (base / "Ads" / "MEDIA_PX" / "PX_1.png").write_bytes(PNG)

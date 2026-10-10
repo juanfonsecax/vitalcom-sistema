@@ -651,6 +651,9 @@ class ConceptoFase2(Base):
     estado: str = ""
     ad_id: str = ""
     archivo_existe: bool = False
+    archivo_version: str = ""  # mtime del archivo en disco; cambia al re-subir y rompe la caché de la miniatura
+    formato: str = ""  # IMAGEN | VIDEO
+    puede_subir: bool = False  # IMAGEN no publicada y la acción de carga habilitada
     notas: str = ""
     prompt: str | None = None
     prompt_origen: str = "pendiente"

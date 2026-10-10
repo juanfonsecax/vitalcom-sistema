@@ -439,6 +439,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/productos/{producto_key}/conceptos/{creativo_id}/imagen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Subir Imagen De Concepto
+         * @description La imagen que el operador renderizó a mano para UN concepto: la acción del manifiesto la deja con
+         *     el nombre de su fila y la marca GENERADO. Un video o un concepto publicado se rechazan acá, antes de correr.
+         */
+        post: operations["subir_imagen_de_concepto_api_productos__producto_key__conceptos__creativo_id__imagen_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos/{producto_key}/fase3": {
         parameters: {
             query?: never;
@@ -1103,6 +1124,11 @@ export interface components {
              */
             hasta: string;
         };
+        /** Body_subir_imagen_de_concepto_api_productos__producto_key__conceptos__creativo_id__imagen_post */
+        Body_subir_imagen_de_concepto_api_productos__producto_key__conceptos__creativo_id__imagen_post: {
+            /** Archivo */
+            archivo: string;
+        };
         /**
          * CampanaF1
          * @description El lanzador del producto (`_LANZADOR.json`) y el `_PLAN.json` de origen, tal cual.
@@ -1289,6 +1315,21 @@ export interface components {
              * @default false
              */
             archivo_existe: boolean;
+            /**
+             * Archivo Version
+             * @default
+             */
+            archivo_version: string;
+            /**
+             * Formato
+             * @default
+             */
+            formato: string;
+            /**
+             * Puede Subir
+             * @default false
+             */
+            puede_subir: boolean;
             /**
              * Notas
              * @default
@@ -3802,6 +3843,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Fase2Detalle"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    subir_imagen_de_concepto_api_productos__producto_key__conceptos__creativo_id__imagen_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                producto_key: string;
+                creativo_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_subir_imagen_de_concepto_api_productos__producto_key__conceptos__creativo_id__imagen_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Validation Error */

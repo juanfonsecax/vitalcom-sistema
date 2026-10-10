@@ -122,19 +122,31 @@ export function TarjetaConcepto({
           <span className="font-mono text-[11px] text-zinc-400">{c.archivo}</span>
           {c.archivo_existe && <span className="text-[11px] font-medium text-emerald-400">✓ En disco</span>}
         </div>
-        <label className="cursor-pointer rounded border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-xs font-medium text-zinc-200 hover:bg-zinc-700">
-          {subiendoArchivo === c.creativo_id ? "Subiendo..." : "Subir imagen"}
-          <input
-            type="file"
-            accept="image/png,image/jpeg"
-            className="hidden"
-            disabled={subiendoArchivo === c.creativo_id}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) onSubir(c, file);
+        {c.puede_subir && (
+          <label
+            className="cursor-pointer rounded border border-zinc-700 bg-zinc-800 px-2.5 py-1 text-xs font-medium text-zinc-200 hover:bg-zinc-700"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files?.[0];
+              if (file && subiendoArchivo !== c.creativo_id) onSubir(c, file);
             }}
-          />
-        </label>
+          >
+            {subiendoArchivo === c.creativo_id ? "Subiendo..." : c.archivo_existe ? "Reemplazar imagen" : "Subir imagen"}
+            <input
+              type="file"
+              accept="image/png,image/jpeg"
+              className="hidden"
+              data-testid={`subir-${c.creativo_id}`}
+              disabled={subiendoArchivo === c.creativo_id}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) onSubir(c, file);
+                e.target.value = "";
+              }}
+            />
+          </label>
+        )}
       </div>
     </Tarjeta>
   );

@@ -77,17 +77,8 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
     setSubiendoArchivo(concepto.creativo_id);
     setMensajeSubida(null);
     try {
-      await api.cargarDato(
-        clave,
-        "producto.cargar_pieza",
-        {
-          producto_key: clave,
-          archivo: concepto.archivo,
-          origen: archivo.name,
-        },
-        archivo,
-      );
-      setMensajeSubida({ tipo: "ok", texto: `Pieza ${concepto.archivo} subida correctamente.` });
+      await api.subirImagenDeConcepto(clave, concepto.creativo_id, archivo);
+      setMensajeSubida({ tipo: "ok", texto: `Imagen ${concepto.archivo} cargada y concepto marcado como generado.` });
       queryClient.invalidateQueries({ queryKey: ["fase2", clave] });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Error al subir la pieza";

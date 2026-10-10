@@ -989,3 +989,50 @@ test("marcar: el botón aparece solo en el ángulo con imágenes listas y lanza 
     expect(llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length).toBeGreaterThan(antes);
   });
 });
+
+// ── subir la imagen renderizada a mano sobre la tarjeta del concepto ──────────────────────────
+
+function fase2ConSubida(puede: Record<string, boolean>) {
+  return {
+    ...FASE2_MOCK,
+    conceptos: FASE2_MOCK.conceptos.map((c) => ({
+      ...c,
+      formato: puede[c.creativo_id] ? "IMAGEN" : "VIDEO",
+      puede_subir: !!puede[c.creativo_id],
+    })),
+  };
+}
+
+test("subir: el control aparece solo en los conceptos que admiten imagen", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConSubida({ TINNIDROP_F2_C01: true });
+  renderizar("TINNIDROP");
+
+  await screen.findByText("Social Proof Wall");
+  expect(screen.getAllByTestId(/^subir-/)).toHaveLength(1);
+  expect(screen.getByText("Reemplazar imagen")).toBeDefined();
+  expect(screen.getByTestId("subir-TINNIDROP_F2_C01")).toBeDefined();
+  expect(screen.queryByTestId("subir-TINNIDROP_F2_C02")).toBeNull();
+});
+
+test("subir: el archivo va al endpoint del concepto y la galería se recarga", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConSubida({ TINNIDROP_F2_C02: true });
+  respuestas["POST /api/productos/TINNIDROP/conceptos/TINNIDROP_F2_C02/imagen"] = { ok: true };
+  renderizar("TINNIDROP");
+
+  const control = (await screen.findByTestId("subir-TINNIDROP_F2_C02")) as HTMLInputElement;
+  const antes = llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length;
+  const archivo = new File([new Uint8Array([137, 80, 78, 71])], "descarga (3).png", { type: "image/png" });
+  fireEvent.change(control, { target: { files: [archivo] } });
+
+  await waitFor(() => {
+    expect(
+      llamadasFetch.some(
+        (l) => l.metodo === "POST" && l.url === "/api/productos/TINNIDROP/conceptos/TINNIDROP_F2_C02/imagen",
+      ),
+    ).toBe(true);
+  });
+  await waitFor(() => {
+    expect(llamadasFetch.filter((l) => l.url === "/api/productos/TINNIDROP/fase2").length).toBeGreaterThan(antes);
+  });
+  expect(llamadasFetch.some((l) => l.url.includes("/cargar/"))).toBe(false);
+});

@@ -13,7 +13,7 @@ Reglas:
   - La carpeta sale de _DIM_PRODUCTOS.csv (`carpeta_media`; sin valor, MEDIA_<producto_key>).
 
 USO:
-  python Ads/_TOOLS/marcar_generados.py PRODUCTO_KEY [--angulo ANGULO_KEY] [--escribir] [--json]
+  python Ads/_TOOLS/marcar_generados.py PRODUCTO_KEY [--angulo ANGULO_KEY] [--creativo CREATIVO_ID] [--escribir] [--json]
 
 Sin --escribir solo informa. Exit 0 si corrio; 1 si el producto no existe.
 """
@@ -56,7 +56,7 @@ def _carpeta_media(producto_key):
     return None
 
 
-def marcar(producto_key, angulo_key, escribir):
+def marcar(producto_key, angulo_key, escribir, creativo_id=None):
     carpeta = _carpeta_media(producto_key)
     if carpeta is None:
         raise KeyError(producto_key)
@@ -75,6 +75,8 @@ def marcar(producto_key, angulo_key, escribir):
         if r.get("producto_key") != producto_key:
             continue
         if angulo_key and r.get("angulo_key") != angulo_key:
+            continue
+        if creativo_id and r.get("creativo_id") != creativo_id:
             continue
         if (r.get("formato") or "").strip().upper() != "IMAGEN":
             continue
@@ -103,11 +105,12 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description="Marca GENERADO los conceptos IMAGEN que ya tienen su archivo")
     ap.add_argument("producto", help="producto_key")
     ap.add_argument("--angulo", default=None, help="angulo_key; sin el, todos los angulos del producto")
+    ap.add_argument("--creativo", default=None, help="creativo_id; sin el, todos los conceptos del angulo/producto")
     ap.add_argument("--escribir", action="store_true", help="persiste el cambio de estado (sin esto solo informa)")
     ap.add_argument("--json", action="store_true", help="stdout = un solo JSON")
     args = ap.parse_args(argv)
     try:
-        r = marcar(args.producto, args.angulo, args.escribir)
+        r = marcar(args.producto, args.angulo, args.escribir, args.creativo)
     except KeyError:
         print("BLOQUEANTE: '%s' no tiene fila en PRODUCTOS/_DIM_PRODUCTOS.csv." % args.producto,
               file=sys.stderr)

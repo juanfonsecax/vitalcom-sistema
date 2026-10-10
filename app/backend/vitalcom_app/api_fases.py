@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from . import contratos
+from .api_fase1 import ejecutar_con_archivo
 from .modelos import Fase2Detalle, Fase3Detalle, Fase4Detalle
 
 router = APIRouter(prefix="/api/productos", tags=["fases"])
@@ -28,6 +29,22 @@ def obtener_fase2(producto_key: str) -> Fase2Detalle:
         raise HTTPException(status_code=422, detail=str(error)) from error
     except Exception as error:
         raise HTTPException(status_code=500, detail=str(error)) from error
+
+
+@router.post("/{producto_key}/conceptos/{creativo_id}/imagen")
+def subir_imagen_de_concepto(producto_key: str, creativo_id: str, archivo: UploadFile = File(...)) -> dict[str, Any]:
+    """La imagen que el operador renderizó a mano para UN concepto: la acción del manifiesto la deja con
+    el nombre de su fila y la marca GENERADO. Un video o un concepto publicado se rechazan acá, antes de correr."""
+    fila = next((r for r in contratos._leer_csv(("PRODUCTOS", "_DIM_CREATIVOS.csv"))
+                 if r.get("producto_key") == producto_key and r.get("creativo_id") == creativo_id), None)
+    if fila is None:
+        raise HTTPException(status_code=404, detail=f"«{creativo_id}» no es un concepto de {producto_key}.")
+    if (fila.get("formato") or "").strip().upper() != "IMAGEN":
+        raise HTTPException(status_code=422, detail=f"«{creativo_id}» no es una imagen: el video no se carga desde acá.")
+    if (fila.get("estado") or "").strip() not in contratos._ESTADOS_QUE_ADMITEN_IMAGEN:
+        raise HTTPException(status_code=422, detail=f"«{creativo_id}» ya está publicado: su imagen no se pisa.")
+    return ejecutar_con_archivo(contratos.ACCION_SUBIR_IMAGEN,
+                                {"producto_key": producto_key, "creativo_id": creativo_id}, archivo)
 
 
 @router_swipe.get("/{ruta_imagen:path}", response_class=FileResponse)

@@ -819,6 +819,9 @@ def _fabricar(producto_key: str, angulo: dict[str, Any], requeridos: int, regist
 
 
 ACCION_MARCAR = "producto.marcar_conceptos_generados"
+ACCION_SUBIR_IMAGEN = "producto.cargar_imagen_concepto"
+# Un concepto PUBLICADO ya corre en Meta: su imagen no se pisa (la regla es de `cargar_imagen_concepto.py`).
+_ESTADOS_QUE_ADMITEN_IMAGEN = ("PENDIENTE_GENERAR", "GENERADO")
 
 
 def _marcar(producto_key: str, angulo_key: str, listos: int) -> dict[str, Any] | None:
@@ -915,6 +918,7 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
 
     carpeta_media = fila_de_producto(producto_key).get("carpeta_media", "") or f"MEDIA_{producto_key}"
 
+    subida_habilitada = _accion_habilitada(ACCION_SUBIR_IMAGEN)
     conceptos = []
     for row in creativos_rows:
         cid = row.get("canonico_id", "")
@@ -923,6 +927,8 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         media_path = ruta("Ads", carpeta_media, arch)
         angulo_key = row.get("angulo_key", "") or principal
         paquete = resolver_prompt_fase2(producto_key, carpeta_media, angulo_key, cid)
+        estado = row.get("estado", "PENDIENTE_GENERAR")
+        formato = (row.get("formato") or "").strip().upper()
         conceptos.append({
             "creativo_id": row.get("creativo_id", ""),
             "archivo": arch,
@@ -932,9 +938,12 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
             "dispositivo": binfo.get("dispositivo_canonico", ""),
             "cuando_elegirlo": binfo.get("cuando_elegirlo", ""),
             "rol_embudo": row.get("rol_embudo", "") or binfo.get("perfil", {}).get("rol_embudo", "MOFU"),
-            "estado": row.get("estado", "PENDIENTE_GENERAR"),
+            "estado": estado,
             "ad_id": row.get("ad_id", ""),
             "archivo_existe": media_path.is_file(),
+            "archivo_version": str(media_path.stat().st_mtime_ns) if media_path.is_file() else "",
+            "formato": formato,
+            "puede_subir": subida_habilitada and formato == "IMAGEN" and estado in _ESTADOS_QUE_ADMITEN_IMAGEN,
             "notas": row.get("notas", ""),
             **paquete,
         })

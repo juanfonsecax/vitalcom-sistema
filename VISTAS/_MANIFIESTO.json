@@ -1424,6 +1424,52 @@
     "salida": "json"
    },
    {
+    "id": "producto.cargar_imagen_concepto",
+    "rotulo": "Cargar la imagen renderizada de un concepto (FASE 2)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/cargar_imagen_concepto.py",
+     "--producto",
+     "{producto_key}",
+     "--creativo",
+     "{creativo_id}",
+     "--origen",
+     "{origen}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "creativo_id": {
+      "tipo": "texto",
+      "patron": "^[A-Za-z0-9_]{1,120}$",
+      "requerido": true
+     },
+     "origen": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "Ads/",
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
     "id": "producto.cargar_transcripcion",
     "rotulo": "Cargar una transcripción TXT",
     "nodo": null,

@@ -70,21 +70,10 @@ def media(producto_key: str, archivo: str) -> FileResponse:
     return FileResponse(encontrado)
 
 
-@router.post("/{producto_key}/cargar/{accion_id}")
-def cargar_dato(producto_key: str, accion_id: str, datos: str = Form("{}"),
-                archivo: UploadFile | None = File(None)) -> dict:
-    """Carga UN dato del checklist con su acción escritora y espera el resultado (como el alta)."""
-    _exigir_producto(producto_key)
-    if accion_id not in fase1.escritores_permitidos():
-        raise ErrorDeAccion(403, "NO_ES_UN_ESCRITOR", f"«{accion_id}» no es la escritora de un dato del checklist.")
+def ejecutar_con_archivo(accion_id: str, parametros: dict, archivo: UploadFile | None) -> dict:
+    """Corre una acción escritora esperando su resultado; el archivo subido entra por el temporal de la
+    subida, nunca directo al sistema. Lo comparten la carga de un dato del checklist y la imagen de un concepto."""
     accion = acciones.por_id_para_el_runner(accion_id)
-    try:
-        parametros = json.loads(datos or "{}")
-    except json.JSONDecodeError as error:
-        raise ErrorDeAccion(422, "PARAMETRO_INVALIDO", "«datos» no es JSON.", campo="datos") from error
-    if not isinstance(parametros, dict):
-        raise ErrorDeAccion(422, "PARAMETRO_INVALIDO", "«datos» tiene que ser un objeto.", campo="datos")
-    parametros["producto_key"] = producto_key
     de_archivo = next((n for n, e in accion.get("parametros", {}).items() if e.get("tipo") == "archivo_temporal"), None)
     try:
         with subidas.carpeta_temporal() as temporal:
@@ -104,3 +93,20 @@ def cargar_dato(producto_key: str, accion_id: str, datos: str = Form("{}"),
     if resultado["estado"] != "EXITO":
         raise HTTPException(status_code=422, detail=unidad.get("detalle") or resultado["detalle"])
     return unidad.get("json") or {"ok": True}
+
+
+@router.post("/{producto_key}/cargar/{accion_id}")
+def cargar_dato(producto_key: str, accion_id: str, datos: str = Form("{}"),
+                archivo: UploadFile | None = File(None)) -> dict:
+    """Carga UN dato del checklist con su acción escritora y espera el resultado (como el alta)."""
+    _exigir_producto(producto_key)
+    if accion_id not in fase1.escritores_permitidos():
+        raise ErrorDeAccion(403, "NO_ES_UN_ESCRITOR", f"«{accion_id}» no es la escritora de un dato del checklist.")
+    try:
+        parametros = json.loads(datos or "{}")
+    except json.JSONDecodeError as error:
+        raise ErrorDeAccion(422, "PARAMETRO_INVALIDO", "«datos» no es JSON.", campo="datos") from error
+    if not isinstance(parametros, dict):
+        raise ErrorDeAccion(422, "PARAMETRO_INVALIDO", "«datos» tiene que ser un objeto.", campo="datos")
+    parametros["producto_key"] = producto_key
+    return ejecutar_con_archivo(accion_id, parametros, archivo)

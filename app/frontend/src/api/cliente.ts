@@ -203,6 +203,15 @@ export const api = {
       { method: "POST", body: form },
     );
   },
+  /** La imagen renderizada a mano de UN concepto: el backend la guarda con el nombre de su fila y la marca GENERADO. */
+  subirImagenDeConcepto: (clave: string, creativoId: string, archivo: File) => {
+    const form = new FormData();
+    form.append("archivo", archivo);
+    return pedir<Record<string, unknown>>(
+      `/api/productos/${encodeURIComponent(clave)}/conceptos/${encodeURIComponent(creativoId)}/imagen`,
+      { method: "POST", body: form },
+    );
+  },
   ordenes: (producto?: string) =>
     pedir<OrdenesRespuesta>(producto ? `/api/ordenes?producto=${encodeURIComponent(producto)}` : "/api/ordenes"),
   ganadores: () => pedir<Ganador[]>("/api/ganadores"),
