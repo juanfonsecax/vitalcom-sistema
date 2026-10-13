@@ -153,5 +153,42 @@ class TestGenPlJson(unittest.TestCase):
         (AUD / (base + ".txt")).unlink()
 
 
+EXTRACTO_CON_SIGNO = """Business Checking Account Statement
+SUMMARY
+Opening Balance Closing Balance Deposits Withdrawals
+$1,525.73 $111.25 +$1,000.00 -$2,414.48
+Name Date Status Amount Balance
+Facebook
+Oct 1, 2026 Settled -$30.64 $111.25
+VISA
+RUBI WEALTH CORPORATION
+Sep 21, 2026 Settled +$1,000.00 $1,015.49
+Wire
+THE LUCID HOLDING
+Sep 22, 2026 Settled -$1,044.00 $958.80
+VISA
+"""
+
+EXTRACTO_SIN_SIGNO = """Opening Balance Closing Balance Deposits Withdrawals
+$500.00 $400.00 $0.00 $100.00
+Facebook
+Aug 3, 2026 Settled $100.00 $400.00
+"""
+
+
+class LecturaDelExtracto(unittest.TestCase):
+    def test_formato_con_signo_lee_solo_salidas_y_el_control_de_withdrawals(self) -> None:
+        mov, control = gen_pl.movimientos_del_extracto(EXTRACTO_CON_SIGNO)
+        self.assertEqual([(m["nombre"], m["monto"]) for m in mov],
+                         [("Facebook", 30.64), ("THE LUCID HOLDING", 1044.00)])
+        self.assertEqual(mov[0]["fecha"], datetime.date(2026, 10, 1))
+        self.assertEqual(control, 2414.48)
+
+    def test_formato_viejo_sin_signo_sigue_funcionando(self) -> None:
+        mov, control = gen_pl.movimientos_del_extracto(EXTRACTO_SIN_SIGNO)
+        self.assertEqual([(m["nombre"], m["monto"]) for m in mov], [("Facebook", 100.00)])
+        self.assertEqual(control, 100.00)
+
+
 if __name__ == "__main__":
     unittest.main()

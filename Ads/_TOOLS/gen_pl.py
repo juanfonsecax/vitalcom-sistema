@@ -156,22 +156,28 @@ def leer_banco(path):
     with pdfplumber.open(path) as pdf:
         for pg in pdf.pages:
             txt += (pg.extract_text() or "") + "\n"
-    # El PDF de Relay antepone glifos de uso privado (U+E000-U+F8FF) a los
-    # montos para marcar entradas/salidas. Se limpian antes de parsear: depender
-    # de ellos hace el regex frágil e ilegible.
-    txt = re.sub(r"[\ue000-\uf8ff]", "", txt)
+    return movimientos_del_extracto(txt)
+
+
+def movimientos_del_extracto(txt):
+    """(salidas, total de Withdrawals del resumen) del texto de un extracto de Relay.
+
+    Solo las SALIDAS: un deposito (`+$`) no es gasto. Acepta los dos formatos de Relay: montos
+    con signo (`-$30.64`, `+$1,000.00`) y montos sin signo marcados con glifos de uso privado
+    (U+E000-U+F8FF), que se limpian antes de parsear; sin signo, todo movimiento es salida."""
+    txt = re.sub("[\ue000-\uf8ff]", "", txt)
     lines = [l.strip() for l in txt.split("\n")]
     pat = re.compile(r"^(\w{3} \d{1,2}, \d{4})\s+(\w+)\s+"
-                     r"\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})$")
+                     r"([+-]?)\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})$")
     mov, control = [], None
     for n, l in enumerate(lines):
         m = pat.match(l)
-        if m:
+        if m and m.group(3) != "+":
             mov.append({"nombre": lines[n - 1] if n else "",
                         "fecha": datetime.datetime.strptime(m.group(1), "%b %d, %Y").date(),
-                        "monto": float(m.group(3).replace(",", ""))})
+                        "monto": float(m.group(4).replace(",", ""))})
         mc = re.search(r"\$[\d,]+\.\d{2}\s+\$[\d,]+\.\d{2}\s+"
-                       r"\$[\d,]+\.\d{2}\s+\$([\d,]+\.\d{2})", l)
+                       r"[+-]?\$[\d,]+\.\d{2}\s+-?\$([\d,]+\.\d{2})", l)
         if mc and control is None:
             control = float(mc.group(1).replace(",", ""))
     return mov, control
