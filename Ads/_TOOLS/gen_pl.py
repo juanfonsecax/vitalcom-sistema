@@ -159,28 +159,47 @@ def leer_banco(path):
     return movimientos_del_extracto(txt)
 
 
-def movimientos_del_extracto(txt):
-    """(salidas, total de Withdrawals del resumen) del texto de un extracto de Relay.
+def movimientos_completos_del_extracto(txt):
+    """(movimientos, resumen) del texto de un extracto de Relay, con salidas Y depositos.
 
-    Solo las SALIDAS: un deposito (`+$`) no es gasto. Acepta los dos formatos de Relay: montos
-    con signo (`-$30.64`, `+$1,000.00`) y montos sin signo marcados con glifos de uso privado
-    (U+E000-U+F8FF), que se limpian antes de parsear; sin signo, todo movimiento es salida."""
+    Cada movimiento: nombre, fecha, monto (positivo), tipo (`SALIDA`/`ENTRADA`) y saldo (la
+    columna Balance, que sirve de llave de dedupe). `resumen`: apertura, cierre, depositos y
+    retiros del bloque SUMMARY, o None si el texto no lo trae. Acepta los dos formatos de Relay:
+    montos con signo (`-$30.64`, `+$1,000.00`) y montos sin signo marcados con glifos de uso
+    privado (U+E000-U+F8FF), que se limpian antes de parsear; sin signo, todo movimiento es
+    salida."""
     txt = re.sub("[\ue000-\uf8ff]", "", txt)
     lines = [l.strip() for l in txt.split("\n")]
     pat = re.compile(r"^(\w{3} \d{1,2}, \d{4})\s+(\w+)\s+"
                      r"([+-]?)\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})$")
-    mov, control = [], None
+    pat_resumen = re.compile(r"\$([\d,]+\.\d{2})\s+\$([\d,]+\.\d{2})\s+"
+                             r"[+-]?\$([\d,]+\.\d{2})\s+-?\$([\d,]+\.\d{2})")
+    num = lambda g: float(g.replace(",", ""))
+    mov, resumen = [], None
     for n, l in enumerate(lines):
         m = pat.match(l)
-        if m and m.group(3) != "+":
+        if m:
             mov.append({"nombre": lines[n - 1] if n else "",
                         "fecha": datetime.datetime.strptime(m.group(1), "%b %d, %Y").date(),
-                        "monto": float(m.group(4).replace(",", ""))})
-        mc = re.search(r"\$[\d,]+\.\d{2}\s+\$[\d,]+\.\d{2}\s+"
-                       r"[+-]?\$[\d,]+\.\d{2}\s+-?\$([\d,]+\.\d{2})", l)
-        if mc and control is None:
-            control = float(mc.group(1).replace(",", ""))
-    return mov, control
+                        "monto": num(m.group(4)),
+                        "tipo": "ENTRADA" if m.group(3) == "+" else "SALIDA",
+                        "saldo": num(m.group(5))})
+        mr = pat_resumen.search(l)
+        if mr and resumen is None:
+            resumen = {"apertura": num(mr.group(1)), "cierre": num(mr.group(2)),
+                       "depositos": num(mr.group(3)), "retiros": num(mr.group(4))}
+    return mov, resumen
+
+
+def movimientos_del_extracto(txt):
+    """(salidas, total de Withdrawals del resumen) del texto de un extracto de Relay.
+
+    Solo las SALIDAS: un deposito (`+$`) no es gasto. Mismos dos formatos de Relay que
+    `movimientos_completos_del_extracto`, de donde sale."""
+    mov, resumen = movimientos_completos_del_extracto(txt)
+    salidas = [{"nombre": x["nombre"], "fecha": x["fecha"], "monto": x["monto"]}
+               for x in mov if x["tipo"] == "SALIDA"]
+    return salidas, (resumen["retiros"] if resumen else None)
 
 
 # ──────────────────────────────── main ────────────────────────────────

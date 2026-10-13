@@ -190,5 +190,30 @@ class LecturaDelExtracto(unittest.TestCase):
         self.assertEqual(control, 100.00)
 
 
+class LecturaCompletaDelExtracto(unittest.TestCase):
+    """`movimientos_completos_del_extracto` agrega depositos y saldo SIN tocar el contrato de
+    `movimientos_del_extracto` (solo salidas)."""
+
+    def test_trae_salidas_y_depositos_con_tipo_y_saldo(self) -> None:
+        mov, resumen = gen_pl.movimientos_completos_del_extracto(EXTRACTO_CON_SIGNO)
+        self.assertEqual(
+            [(m["nombre"], m["monto"], m["tipo"], m["saldo"]) for m in mov],
+            [("Facebook", 30.64, "SALIDA", 111.25),
+             ("RUBI WEALTH CORPORATION", 1000.00, "ENTRADA", 1015.49),
+             ("THE LUCID HOLDING", 1044.00, "SALIDA", 958.80)])
+        self.assertEqual(resumen, {"apertura": 1525.73, "cierre": 111.25,
+                                   "depositos": 1000.00, "retiros": 2414.48})
+
+    def test_formato_sin_signo_todo_es_salida(self) -> None:
+        mov, resumen = gen_pl.movimientos_completos_del_extracto(EXTRACTO_SIN_SIGNO)
+        self.assertEqual([(m["tipo"], m["saldo"]) for m in mov], [("SALIDA", 400.00)])
+        self.assertEqual(resumen["retiros"], 100.00)
+
+    def test_el_contrato_de_solo_salidas_no_cambia(self) -> None:
+        mov, _ = gen_pl.movimientos_del_extracto(EXTRACTO_CON_SIGNO)
+        self.assertEqual(set(mov[0]), {"nombre", "fecha", "monto"})
+        self.assertEqual(len(mov), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

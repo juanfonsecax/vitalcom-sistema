@@ -46,6 +46,14 @@ sumarlas al P&L es imposible, no solo prohibido.**
   inventado. Con fuente `MetaAPI-directo`, `mensajes` sale de las conversaciones reales de mensajería
   (`actions`); la derivación por clics vive solo para los exports de Ads Manager, que no traen `actions`.
 
+### `_FACT_ORDENES_DROPI.csv` y `_FACT_BANCO.csv` — HECHOS DE FINANZAS (capa máquina)
+Lo que el estado de resultados mensual lee: las órdenes de Dropi (quetzales, una fila por ID, UPSERT:
+el export más nuevo pisa estatus y montos y las órdenes que ya no trae se conservan) y los
+movimientos del banco (moneda de la cuenta, salidas y depósitos, dedupe por banco + cuenta + fecha +
+nombre + monto + saldo). Se escriben solo con `Ads/_TOOLS/ingerir_dropi.py` e
+`Ads/_TOOLS/ingerir_banco.py`, que miran por defecto y necesitan `--escribir`; el banco valida el
+extracto contra su propio resumen antes de escribir. No son espejo de Postgres.
+
 ### `_DIM_CONJUNTOS.csv` — DIMENSIONES (capa máquina)
 Traduce el nombre crudo del conjunto en Meta a la semántica del sistema: `angulo_key`, avatar, dolor,
 formato, `tipo_hook`, nivel de conciencia, rol de embudo, si el ad lleva precio. **Es lo que convierte
