@@ -30,6 +30,10 @@ Los cargos del banco se cortan por la FECHA del movimiento (mes calendario), no 
 extracto: el extracto de agosto trae cargos del 1-sep. Los montos del banco se leen en dólares (la
 moneda de la cuenta Relay).
 
+Los dólares (pauta y gastos fijos) se convierten con la tasa EFECTIVA de las transferencias Dropi ->
+banco (`_FACT_TRANSFERENCIAS_FX.csv`, `tasa_fx.py`), no con el parámetro; cada mes dice la tasa, su
+regla y el costo de conversión (informativo: ya está dentro de la publicidad).
+
 Mercados: GT es el único con Dropi y banco hoy; CO sale vacío con su nota en `faltantes`.
 """
 import argparse
@@ -44,6 +48,7 @@ import csv_hechos  # noqa: E402
 import gasto       # noqa: E402
 import gen_pl      # noqa: E402
 import mercado     # noqa: E402
+import tasa_fx     # noqa: E402
 
 for _s in (sys.stdout, sys.stderr):
     try:
@@ -60,7 +65,8 @@ def cargar_hechos():
     return {"ordenes": csv_hechos.leer(FACT_ORDENES), "banco": csv_hechos.leer(FACT_BANCO),
             "cartera": csv_hechos.leer(FACT_CARTERA),
             "gasto": gasto.gasto_por_conjunto_ventana(), "reglas": gen_pl.load("_DIM_GASTOS.csv"),
-            "reglas_retiros": gen_pl.load("_DIM_RETIROS.csv")}
+            "reglas_retiros": gen_pl.load("_DIM_RETIROS.csv"),
+            "transferencias": tasa_fx.leer()}
 
 
 def df_de_ordenes(filas):
@@ -158,17 +164,27 @@ def _meses_de_los_hechos(mercado_pl, ordenes, banco, filas_gasto, cartera=()):
     return sorted(meses)
 
 
-def _detalle_q(detalle):
+def _detalle_q(detalle, tasa_usd):
     return [{"nombre": d["nombre"], "monto_usd": d["monto_usd"],
-             "monto_q": d["monto_usd"] * gen_pl.TASA_Q, "categoria": d["categoria"],
+             "monto_q": d["monto_usd"] * tasa_usd, "categoria": d["categoria"],
              "mercado": d["mercado"], "parte": d["parte"]} for d in detalle]
 
 
+def _conversion(tasa, pauta_usd):
+    """La tasa USD -> Q del mes, de dónde sale y cuánto suma sobre el parámetro. `costo_q` es
+    informativo: ya está dentro de la publicidad y de los gastos, no se resta otra vez."""
+    return {"tasa": tasa["valor"], "regla": tasa["regla"], "tasa_parametro": gen_pl.TASA_Q,
+            "transferencias": tasa["transferencias"], "usd": tasa["usd"], "q": tasa["q"],
+            "desde": tasa["desde"], "hasta": tasa["hasta"], "ventana_dias": gen_pl.VENTANA_TASA_FX,
+            "costo_q": pauta_usd * (tasa["valor"] - gen_pl.TASA_Q)}
+
+
 def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_gasto,
-         cartera=(), reglas_retiros=()):
+         cartera=(), reglas_retiros=(), transferencias=()):
     ini, fin = mes + "-01", _ultimo_dia(mes)
     faltantes = []
-    pauta = gen_pl.pauta_de_la_ventana(ini, fin, filas_gasto)
+    tasa = gen_pl.tasa_del_mes(fin, transferencias)
+    pauta = gen_pl.pauta_con_tasa(gen_pl.pauta_de_la_ventana(ini, fin, filas_gasto), tasa)
     activos = gen_pl.mercados_activos(ini, fin, filas_gasto, ordenes_todas)
     mov_mes = [t for t in mov if ini <= str(t["fecha"]) <= fin]
     tiene_banco = bool(mov_mes)
@@ -183,7 +199,7 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
     r = None
     if ord_mes:
         r = gen_pl.calcular_vista_a(df_ord, ini, fin, hoy, pauta, mov=mov, reglas=reglas,
-                                    activos=activos | {gen_pl.MERCADO_PL}, car=df_car,
+                                    activos=activos | {gen_pl.MERCADO_PL}, car=df_car, tasa=tasa,
                                     fin_edad=hoy.isoformat() if fin >= hoy.isoformat()
                                     else ultimo_con_ordenes)
         banco = r
@@ -191,7 +207,7 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
         sin_conf, sin_repartir = r.sin_confirmar, r.sin_repartir
         fb_usd, fb_cargos = r.pauta_banco_usd, r.pauta_banco_cargos
     else:
-        b = gen_pl.gastos_del_banco(mov, reglas, ini, fin, activos)
+        b = gen_pl.gastos_del_banco(mov, reglas, ini, fin, activos, tasa["valor"])
         fijos, retiros, det_fijos, det_retiros = b.fijos, b.retiros, b.det_fijos, b.det_retiros
         sin_conf, sin_repartir = b.sin_confirmar, b.sin_repartir
         fb_usd, fb_cargos = b.pauta_usd, b.pauta_cargos
@@ -251,12 +267,13 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
         "mes": mes, "desde": ini, "hasta": fin,
         "publicidad": {"usd": pauta["usd"], "q": pauta["q"], "meta_usd": pauta["meta_usd"],
                        "lucidsales_fallback_usd": pauta["fallback_usd"],
-                       "tasa": pauta["q"] / pauta["usd"] if pauta["usd"] else gen_pl.TASA_Q},
+                       "tasa": tasa["valor"]},
+        "conversion": _conversion(tasa, pauta["usd"]),
         "banco_facebook": {"usd": fb_usd if tiene_banco else None,
                            "cargos": fb_cargos if tiene_banco else None},
         # sin extracto del mes no se sabe cuánto fue: null, no un cero (el resultado igual los toma como 0)
-        "gastos_fijos": {"q": fijos if tiene_banco else None, "detalle": _detalle_q(det_fijos)},
-        "retiros_personales": {"q": retiros if tiene_banco else None, "detalle": _detalle_q(det_retiros)},
+        "gastos_fijos": {"q": fijos if tiene_banco else None, "detalle": _detalle_q(det_fijos, tasa["valor"])},
+        "retiros_personales": {"q": retiros if tiene_banco else None, "detalle": _detalle_q(det_retiros, tasa["valor"])},
         "cargos_sin_clasificar": [{"nombre": n, "monto_usd": v} for n, v in sin_conf],
         # movimientos de caja de la billetera de Dropi: no afectan la ganancia
         "cartera": info_cartera,
@@ -321,7 +338,8 @@ def pl_mensual(mercado_pl, desde=None, hasta=None, hoy=None, hechos=None):
     meses = [m for m in meses if (not desde or m >= desde) and (not hasta or m <= hasta)]
     for mes in meses:
         out["meses"].append(_mes(mes, hoy, df_ord, ordenes_mercado, h["ordenes"], mov,
-                                 h["reglas"], h["gasto"], cartera, reglas_retiros))
+                                 h["reglas"], h["gasto"], cartera, reglas_retiros,
+                                 h.get("transferencias", [])))
     if not meses:
         out["faltantes"].append("Todavía no hay órdenes de Dropi, movimientos del banco ni pauta "
                                 "cargados para %s." % mercado_pl)
@@ -356,6 +374,11 @@ def texto(r):
               "  pauta: Meta $%.2f + LucidSales $%.2f · el banco cobró Facebook: %s" % (
                   m["publicidad"]["meta_usd"], m["publicidad"]["lucidsales_fallback_usd"],
                   "—" if m["banco_facebook"]["usd"] is None else "$%.2f" % m["banco_facebook"]["usd"])]
+        c_ = m["conversion"]
+        L.append("  tasa USD→Q %.4f (%s%s) · costo de conversión %s sobre el parámetro %.2f (ya está en la pauta)" % (
+            c_["tasa"], c_["regla"],
+            ": %d transferencias, $%.2f" % (c_["transferencias"], c_["usd"]) if c_["transferencias"] else "",
+            _q(c_["costo_q"]), c_["tasa_parametro"]))
         if m["retiros_personales"]["q"]:
             L.append("  retiros personales del banco (fuera del resultado): %s" % _q(m["retiros_personales"]["q"]))
         c = m["cartera"]

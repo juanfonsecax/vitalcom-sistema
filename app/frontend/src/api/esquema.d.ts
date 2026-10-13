@@ -1471,6 +1471,60 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * ConversionDelMes
+         * @description La tasa USD -> moneda local con la que el script convirtió la pauta y los gastos del mes, y la
+         *     regla que la dio (VENTANA | ULTIMA_CONOCIDA | PARAMETRO). `costo_q` es informativo: ya está
+         *     dentro de la publicidad.
+         */
+        ConversionDelMes: {
+            /**
+             * Tasa
+             * @default 0
+             */
+            tasa: number;
+            /**
+             * Regla
+             * @default PARAMETRO
+             */
+            regla: string;
+            /**
+             * Tasa Parametro
+             * @default 0
+             */
+            tasa_parametro: number;
+            /**
+             * Transferencias
+             * @default 0
+             */
+            transferencias: number;
+            /**
+             * Usd
+             * @default 0
+             */
+            usd: number;
+            /**
+             * Q
+             * @default 0
+             */
+            q: number;
+            /** Desde */
+            desde?: string | null;
+            /** Hasta */
+            hasta?: string | null;
+            /**
+             * Ventana Dias
+             * @default 90
+             */
+            ventana_dias: number;
+            /**
+             * Costo Q
+             * @default 0
+             */
+            costo_q: number;
+        } & {
+            [key: string]: unknown;
+        };
         /** Corrida */
         Corrida: {
             /** Job Id */
@@ -2508,6 +2562,19 @@ export interface components {
              *     }
              */
             publicidad: components["schemas"]["PautaDelMes"];
+            /**
+             * @default {
+             *       "tasa": 0,
+             *       "regla": "PARAMETRO",
+             *       "tasa_parametro": 0,
+             *       "transferencias": 0,
+             *       "usd": 0,
+             *       "q": 0,
+             *       "ventana_dias": 90,
+             *       "costo_q": 0
+             *     }
+             */
+            conversion: components["schemas"]["ConversionDelMes"];
             /** Margen Operativo Q */
             margen_operativo_q?: number | null;
             /** @default {} */

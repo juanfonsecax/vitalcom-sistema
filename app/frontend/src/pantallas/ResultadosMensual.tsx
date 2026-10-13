@@ -89,6 +89,22 @@ const CLASE_DE_RETIRO: Record<string, string> = {
   SIN_CLASIFICAR: "Sin clasificar",
 };
 
+/** La tasa tal cual la dio el script: «7.62», «7.9079». */
+function textoDeTasa(tasa: number): string {
+  return tasa.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+}
+
+function transferencias(n: number): string {
+  return n === 1 ? "1 transferencia" : `${n} transferencias`;
+}
+
+/** De dónde sale la tasa del mes, en una línea corta. */
+function origenDeTasa(c: MesDelPL["conversion"]): string {
+  if (c.regla === "VENTANA") return `${transferencias(c.transferencias)} en ${c.ventana_dias} días`;
+  if (c.regla === "ULTIMA_CONOCIDA") return `última conocida (${c.desde})`;
+  return "parámetro (sin transferencias)";
+}
+
 /** Debajo del costo de devoluciones: de dónde sale (cobro real de la billetera o promedio). */
 function origenDeDevoluciones(mes: MesDelPL): string | null {
   const d = mes.cartera.devoluciones;
@@ -221,6 +237,25 @@ function TablaMensual({
           ))}
         </TableRow>
         <TableRow className="text-muted-foreground">
+          <TableCell className="whitespace-nowrap">Tasa USD → Q</TableCell>
+          {meses.map((mes) => (
+            <TableCell key={mes.mes} className="text-right tabular-nums">
+              {textoDeTasa(mes.conversion.tasa)}
+              <div className="text-[11px] font-normal">{origenDeTasa(mes.conversion)}</div>
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableRow className="text-muted-foreground">
+          <TableCell className="whitespace-nowrap">
+            Costo de conversión <span className="text-xs">(ya está en la publicidad)</span>
+          </TableCell>
+          {meses.map((mes) => (
+            <TableCell key={mes.mes} className="text-right tabular-nums">
+              {dinero(mes.conversion.costo_q)}
+            </TableCell>
+          ))}
+        </TableRow>
+        <TableRow className="text-muted-foreground">
           <TableCell className="whitespace-nowrap">Órdenes entregadas / devueltas / en tránsito</TableCell>
           {meses.map((mes) => (
             <TableCell key={mes.mes} className="text-right tabular-nums">
@@ -315,6 +350,34 @@ function DetalleBilletera({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda
   );
 }
 
+function DetalleTasa({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda }) {
+  const dinero = (valor: number | null | undefined) => formatearDinero(valor, perfil, { decimales: 0 });
+  const dolares = (valor: number | null | undefined) => formatearDinero(valor, PERFIL_USD);
+  const c = mes.conversion;
+  return (
+    <div data-testid="detalle-tasa" className="flex flex-col gap-1">
+      {c.regla === "PARAMETRO" ? (
+        <p className="text-sm">
+          No hay ninguna transferencia de Dropi al banco hasta el cierre de este mes: la pauta y los gastos en dólares se
+          convierten con el parámetro ({textoDeTasa(c.tasa_parametro)}), que es declarado, no medido.
+        </p>
+      ) : (
+        <p className="text-sm">
+          {c.regla === "VENTANA"
+            ? `${transferencias(c.transferencias)} en los ${c.ventana_dias} días hasta el cierre del mes`
+            : `Última transferencia conocida (${c.desde})`}
+          : {dinero(c.q)} retirados de Dropi ↔ {dolares(c.usd)} recibidos = {textoDeTasa(c.tasa)} por dólar
+          (promedio ponderado por dólares).
+        </p>
+      )}
+      <p className="text-xs text-muted-foreground">
+        Sobre el parámetro {textoDeTasa(c.tasa_parametro)} esa tasa suma {dinero(c.costo_q)} a la pauta. Es informativo:
+        ya está dentro de la publicidad, no se resta otra vez.
+      </p>
+    </div>
+  );
+}
+
 function DetalleDelMes({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda }) {
   const dinero = (valor: number | null | undefined) => formatearDinero(valor, perfil, { decimales: 0 });
   const dolares = (valor: number | null | undefined) => formatearDinero(valor, PERFIL_USD);
@@ -380,6 +443,10 @@ function DetalleDelMes({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda })
             {mes.banco_facebook.cargos != null ? ` en ${mes.banco_facebook.cargos} cargos` : ""}; son fechas de
             cobro, no de gasto, así que no tienen por qué coincidir con la pauta del mes.
           </p>
+        </Detalle>
+
+        <Detalle titulo="Tasa de conversión">
+          <DetalleTasa mes={mes} perfil={perfil} />
         </Detalle>
 
         <Detalle titulo="Gastos fijos del negocio">

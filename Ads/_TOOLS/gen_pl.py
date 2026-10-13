@@ -40,6 +40,7 @@ import csv, io, json, os, re, sys, collections, datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gasto
 import mercado
+import tasa_fx
 
 for _s in (sys.stdout, sys.stderr):
     try:
@@ -169,6 +170,7 @@ def par_texto(nombre, default):
 # CADA producto; el dinero de otro mercado no entra (se contabiliza aparte, no aca).
 MERCADO_PL = "GT"
 TASA_Q     = par("tasa_usd_gtq")      # referencia GT para el banco Relay (USD -> Q)
+VENTANA_TASA_FX = int(par("ventana_tasa_fx_dias", 90))
 C_DEVOL    = par("costo_devolucion_evento_q")
 C_ADMIN    = par("costo_admin_q")
 C_OTROS    = par("otros_gastos_q")
@@ -325,7 +327,25 @@ def clasificar_retiro(concepto, reglas):
     return "SIN_CLASIFICAR"
 
 
-def gastos_del_banco(mov, reglas, ini, fin, activos):
+def tasa_del_mes(fin, transferencias=None):
+    """Tasa USD -> Q de la ventana que termina el `fin`: la efectiva de las transferencias Dropi ->
+    banco (`tasa_fx.tasa_del_mes`) y, sin ninguna, el parámetro `tasa_usd_gtq`."""
+    if transferencias is None:
+        transferencias = tasa_fx.leer()
+    return tasa_fx.tasa_del_mes(fin, transferencias, TASA_Q, VENTANA_TASA_FX)
+
+
+def pauta_con_tasa(pauta, tasa):
+    """La pauta de `pauta_de_la_ventana` con sus quetzales recalculados a la tasa de `tasa_del_mes`
+    (sin `tasa` queda como está: cada fila con la tasa de su producto)."""
+    if tasa is None:
+        return pauta
+    return dict(pauta, q=pauta["usd"] * tasa["valor"],
+                q_por_producto=collections.defaultdict(
+                    float, {pk: u * tasa["valor"] for pk, u in pauta["usd_por_producto"].items()}))
+
+
+def gastos_del_banco(mov, reglas, ini, fin, activos, tasa_usd=None):
     """Cargos del banco de [ini, fin] clasificados con `_DIM_GASTOS.csv` (CONTABILIDAD.md §3-ter).
 
       NEGOCIO_PAUTA  -> ya contado en la línea de Publicidad, no se resta otra vez (se reporta
@@ -336,6 +356,7 @@ def gastos_del_banco(mov, reglas, ini, fin, activos):
     Un gasto COMPARTIDO se reparte entre los mercados `activos` (`parte_de_mercado`); si ningún
     mercado está activo queda en `sin_repartir`. `mov` None = sin extracto."""
     from types import SimpleNamespace
+    tasa_usd = TASA_Q if tasa_usd is None else tasa_usd
     fijos, retiros, sin_confirmar = 0.0, 0.0, []
     det_fijos, det_retiros, sin_repartir = [], [], []
     pauta_usd, pauta_cargos = 0.0, 0
@@ -362,10 +383,10 @@ def gastos_del_banco(mov, reglas, ini, fin, activos):
                 det = {"nombre": nom, "monto_usd": val * parte, "categoria": cat,
                        "mercado": merc_gasto or "COMPARTIDO", "parte": parte}
                 if cl == "NEGOCIO_FIJO":
-                    fijos += val * parte * TASA_Q
+                    fijos += val * parte * tasa_usd
                     det_fijos.append(det)
                 else:
-                    retiros += val * parte * TASA_Q
+                    retiros += val * parte * tasa_usd
                     det_retiros.append(det)
             elif cl == "SIN_CLASIFICAR":
                 pend[nom] += val
@@ -377,7 +398,7 @@ def gastos_del_banco(mov, reglas, ini, fin, activos):
 
 
 def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None, car=None,
-                     fin_edad=None):
+                     fin_edad=None, tasa=None):
     """VISTA A (cohorte por fecha de ORDEN) de la ventana [ini, fin]: el estado de resultados de §3.
 
     Función pura sobre los datos que recibe, para que el reporte de una corrida y el mensual por
@@ -385,7 +406,9 @@ def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None
     resultado de `pauta_de_la_ventana`, `mov` las salidas del banco, `reglas` las filas de
     `_DIM_GASTOS.csv`, `activos` los mercados con actividad en la ventana (reparto de los gastos
     COMPARTIDO) y `car` el historial de cartera. `fin_edad` es el último día con órdenes cuando la
-    ventana aún no terminó. Devuelve un SimpleNamespace, o None si la ventana no tiene órdenes."""
+    ventana aún no terminó. `tasa` es el dict de `tasa_del_mes`: con él la pauta y los gastos en USD de
+    la ventana se convierten a quetzales con ESA tasa (sin él, cada fila con la tasa de su producto y
+    los gastos con el parámetro). Devuelve un SimpleNamespace, o None si la ventana no tiene órdenes."""
     from types import SimpleNamespace
     m = df[(df.f_orden >= ini) & (df.f_orden <= fin)]
     if not len(m):
@@ -427,12 +450,16 @@ def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None
     m_contr = m_log - c_dev - c_adm - c_otr
 
     # ── publicidad: de Meta (gasto.py), LucidSales solo donde Meta no cubre ──
+    pauta = pauta_con_tasa(pauta, tasa)
     pauta_usd, pauta_q = pauta["usd"], pauta["q"]
     tasa_pauta = pauta_q / pauta_usd if pauta_usd else TASA_Q      # tasa efectiva (la de cada producto)
+    # Informativo: lo que la tasa real suma sobre el parámetro. Ya está dentro de la publicidad.
+    costo_conversion = pauta_usd * (tasa["valor"] - TASA_Q) if tasa is not None else 0.0
     m_oper = m_contr - pauta_q
 
     activos = set(activos) if activos else {MERCADO_PL}
-    banco = gastos_del_banco(mov, reglas, ini, fin, activos)
+    banco = gastos_del_banco(mov, reglas, ini, fin, activos,
+                             tasa["valor"] if tasa is not None else None)
     fijos, retiros = banco.fijos, banco.retiros
     det_fijos, det_retiros, sin_confirmar = banco.det_fijos, banco.det_retiros, banco.sin_confirmar
     neto = m_oper - fijos
@@ -496,7 +523,7 @@ def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None
         c_adm=c_adm, c_otr=c_otr, m_contr=m_contr, pauta=pauta, pauta_usd=pauta_usd,
         pauta_q=pauta_q, tasa_pauta=tasa_pauta, m_oper=m_oper, fijos=fijos, det_fijos=det_fijos,
         retiros=retiros, det_retiros=det_retiros, sin_confirmar=sin_confirmar, neto=neto,
-        economia=economia)
+        economia=economia, tasa=tasa, costo_conversion_q=costo_conversion)
 
 
 def cobertura_de_pauta(mov, filas_gasto=None):
@@ -557,7 +584,9 @@ def _main():
                       "$%.2f." % (sum(x["monto"] for x in mov), control))
 
     # ── ventana: VISTA A (cohorte por fecha de ORDEN) ──
-    r = calcular_vista_a(df, ini, fin, hoy, pauta, mov=mov, reglas=reglas, activos=activos, car=car)
+    tasa = tasa_del_mes(fin)
+    r = calcular_vista_a(df, ini, fin, hoy, pauta, mov=mov, reglas=reglas, activos=activos, car=car,
+                         tasa=tasa)
     if r is None:
         sys.exit("Sin órdenes de Dropi en %s → %s" % (ini, fin))
     m, ent, dev, tra = r.m, r.ent, r.dev, r.tra
@@ -636,7 +665,9 @@ def _main():
         "publicidad_usd": pauta_usd,
         "publicidad_fuente": {"meta_usd": pauta["meta_usd"],
                               "lucidsales_fallback_usd": pauta["fallback_usd"]},
-        "tasa_usd_gtq": TASA_Q,
+        "tasa_usd_gtq": tasa["valor"],
+        "tasa_fuente": dict(tasa, tasa_parametro=TASA_Q, ventana_dias=VENTANA_TASA_FX),
+        "costo_conversion_q": r.costo_conversion_q,
         "publicidad_q": pauta_q,
         "margen_operativo_q": m_oper,
     })
@@ -644,6 +675,10 @@ def _main():
           "  (−) Publicidad Meta ($%.2f × %.2f)    %s" % (pauta_usd, tasa_pauta, q(-pauta_q)),
           "      Fuente: Meta $%.2f · LucidSales donde Meta no cubre $%.2f"
           % (pauta["meta_usd"], pauta["fallback_usd"]),
+          "      Tasa %.4f · %s%s · sobre el parámetro %.2f suma %s (ya está en la línea de arriba)"
+          % (tasa["valor"], tasa["regla"],
+             " (%d transferencias Dropi→banco, $%.2f)" % (tasa["transferencias"], tasa["usd"])
+             if tasa["transferencias"] else "", TASA_Q, q(r.costo_conversion_q).strip()),
           "      " + "·" * 56,
           "  (=) MARGEN OPERATIVO                    %s" % q(m_oper)]
 
@@ -654,7 +689,7 @@ def _main():
             alertas.append("Cobertura de pauta en el tramo ALINEADO %s→%s (el único comparable, "
                            "APR-070): el banco cobró $%.2f y Meta atribuye $%.2f = %.1f%%. "
                            "Faltan %s de gasto real en el P&L."
-                           % (d_ini, d_fin, fb_al, tr_al, cob, q((fb_al - tr_al) * TASA_Q).strip()))
+                           % (d_ini, d_fin, fb_al, tr_al, cob, q((fb_al - tr_al) * tasa["valor"]).strip()))
             if df.f_orden.min() >= pd.Timestamp(ini):
                 alertas.append("El extracto arranca antes que los cargos de Meta: los primeros días "
                                "del mes se cobraron en el extracto ANTERIOR. Para cerrar el arrastre "
@@ -687,7 +722,7 @@ def _main():
               "sí reducen la CAJA disponible. Contablemente es un retiro de socio."]
         for d in sorted(det_retiros, key=lambda x: -x["monto_usd"]):
             L.append("     {:<26} ${:>8,.2f} = {}".format(d["nombre"][:26], d["monto_usd"],
-                                                          q(d["monto_usd"] * TASA_Q)))
+                                                          q(d["monto_usd"] * tasa["valor"])))
         L += ["     " + "·" * 52,
               "     Total retirado                       %s" % q(retiros),
               "",
@@ -700,7 +735,7 @@ def _main():
               "   No se atribuyen por descarte (APR-030): confirmá si son del negocio",
               "   y se agregan a `PRODUCTOS/_DIM_GASTOS.csv`. Si lo son, el resultado baja."]
         for k, val in sin_confirmar:
-            L.append("     {:<26} ${:>8,.2f} = {}".format(k[:26], val, q(val * TASA_Q)))
+            L.append("     {:<26} ${:>8,.2f} = {}".format(k[:26], val, q(val * tasa["valor"])))
         L.append("")
 
     # ── economía unitaria por producto (§4) ──
@@ -741,7 +776,7 @@ def _main():
         caja_dropi = entra - sale_d - sale_o
         adm_caja = len(e_gan) * (C_ADMIN + C_OTROS)
         pauta_caja = (sum(t["monto"] for t in mov if "Facebook" in t["nombre"]
-                          and ini <= str(t["fecha"]) <= fin) * TASA_Q) if banco else None
+                          and ini <= str(t["fecha"]) <= fin) * tasa["valor"]) if banco else None
         js["vista_b_caja"] = {
             "entradas_ganancia_ordenes_q": entra,
             "n_entradas_ganancia_ordenes": len(e_gan),

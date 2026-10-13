@@ -258,3 +258,18 @@ def test_sin_cartera_cargada_el_mes_lo_dice_y_los_rubros_son_null(cliente_falso:
     assert mes["cartera"]["saldo_cierre_q"] is None
     assert mes["cartera"]["retiros_personales_q"] is None
     assert any("cartera" in x.lower() for x in mes["faltantes"])
+
+
+def test_el_mensual_trae_la_tasa_efectiva_de_cada_mes(cliente_falso: TestClient, sistema_falso: Path) -> None:
+    cliente_falso.post("/api/resultados/mensual/cargar",
+                       files={"dropi": ("ordenes_productos_20240310_090000.xlsx",
+                                        _dropi_xlsx(datetime.date(2024, 3, 1)), XLSX)})
+    sin = cliente_falso.get("/api/resultados/mensual", params={"mercado": "GT"}).json()["meses"][0]["conversion"]
+    assert (sin["regla"], sin["tasa"], sin["transferencias"]) == ("PARAMETRO", 7.62, 0)
+
+    with io.open(sistema_falso / "PRODUCTOS" / "_FACT_TRANSFERENCIAS_FX.csv", "w", encoding="utf-8", newline="") as fh:
+        fh.write("fecha_salida,monto_q,fecha_llegada,monto_usd,banco_destino,origen_salida,origen_llegada,"
+                 "confirmado_por\r\n2024-03-05,80000.00,,10000.00,MERCURY,7,operador,operador\r\n")
+    con = cliente_falso.get("/api/resultados/mensual", params={"mercado": "GT"}).json()["meses"][0]["conversion"]
+    assert (con["regla"], con["tasa"], con["transferencias"], con["usd"]) == ("VENTANA", 8.0, 1, 10000.0)
+    assert con["tasa_parametro"] == 7.62

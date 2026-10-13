@@ -104,7 +104,7 @@ Siempre estas líneas, siempre en este orden. Ninguna se salta, ninguna se agrup
   (−)  Otros gastos operativos      n_entregadas × otros_gastos_q
   ────────────────────────────────
   (=)  MARGEN DE CONTRIBUCIÓN       lo que queda antes de pagar publicidad
-  (−)  Publicidad (Meta)            USD × tasa_usd_gtq  [CP1: COP ÷ tasa_cop_usd]
+  (−)  Publicidad (Meta)            USD × tasa efectiva (§3-bis)  [CP1: COP ÷ tasa_cop_usd]
   ────────────────────────────────
   (=)  MARGEN OPERATIVO             ← el número que dice si el negocio funciona
   (−)  Gastos fijos                 software, suscripciones, herramientas
@@ -147,9 +147,9 @@ mezclan con este estado de resultados.
 | **Dropi GT** — órdenes | total, flete, costo proveedor, ganancia | **QUETZALES** | nada, entra tal cual |
 | **Dropi GT** — historial de cartera | entradas y cobros de devolución | **QUETZALES** | nada, entra tal cual |
 | **LucidSales** | `total` — la venta | **moneda del mercado del producto** (GT: quetzales · CO: pesos) | nada, entra tal cual |
-| **Meta** (`_FACT_ENTREGA.csv`, vía `gasto.py`) | `spend` — la pauta | **DÓLARES** | × la `tasa` del producto (GT: `tasa_usd_gtq`) |
+| **Meta** (`_FACT_ENTREGA.csv`, vía `gasto.py`) | `spend` — la pauta | **DÓLARES** | × la tasa efectiva del mes (GT, ver abajo) |
 | **LucidSales** | `spend` — la pauta | **DÓLARES** | solo donde Meta no tiene cobertura (día de producto sin fila de Meta); el reporte dice cuánta pauta vino de cada fuente |
-| **Banco GT** (Relay) | cargos de Meta y todo lo demás | **DÓLARES** | × `tasa_usd_gtq` |
+| **Banco GT** (Relay) | cargos de Meta y todo lo demás | **DÓLARES** | × la tasa efectiva del mes (GT, ver abajo) |
 | **Cuenta CP1** — única excepción | `spend` de esa cuenta | **COP** | ÷ `tasa_cop_usd` → USD → × `tasa_usd_gtq` |
 
 ⚠️ **Dos trampas visuales:**
@@ -165,9 +165,21 @@ mezclan con este estado de resultados.
 script la tiene escrita adentro — antes estaba hardcodeada en dos motores, lo
 que garantizaba que algún día dijeran cosas distintas.
 
-⚠️ `tasa_usd_gtq` está marcada **DECLARADA**, no medida: la cuenta es en dólares
-y el negocio cobra en quetzales, así que la conversión real solo se puede medir
-cuando se cambie divisa. Cuando eso pase, se mide y se actualiza el CSV.
+**Tasa efectiva.** El operador pasa los quetzales de la billetera de Dropi a su
+LLC en dólares (retiro `TRANSFERENCIA_PROPIA`), y eso mide la tasa real. Cada par
+(Q que salieron, USD que llegaron) vive en `_FACT_TRANSFERENCIAS_FX.csv`
+(`registrar_transferencia_fx.py`); la tasa de un par es Q ÷ USD, derivada al leer.
+La tasa de un mes, para la pauta y los gastos en USD:
+
+1. **VENTANA** — promedio ponderado por USD de las transferencias que salieron en
+   los `ventana_tasa_fx_dias` (90) que terminan el último día del mes.
+2. **ULTIMA_CONOCIDA** — sin ninguna en la ventana, la última anterior a ese día.
+3. **PARAMETRO** — sin ninguna anterior, `tasa_usd_gtq` (**DECLARADA**, no medida).
+
+Una transferencia posterior al cierre de un mes no cuenta para ese mes. Cada mes
+reporta su tasa, la regla usada y el **costo de conversión** = USD de pauta ×
+(tasa − `tasa_usd_gtq`): informativo, ya está dentro de la publicidad (no se
+resta dos veces).
 
 **Verificación automática:** `python Ads/_TOOLS/verificar_monedas.py` comprueba
 6 invariantes sobre la data real (no sobre el código) y **sale con error si

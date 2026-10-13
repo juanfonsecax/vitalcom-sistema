@@ -801,6 +801,23 @@ class PautaDelMes(Base):
     tasa: float = 0.0
 
 
+class ConversionDelMes(Base):
+    """La tasa USD -> moneda local con la que el script convirtió la pauta y los gastos del mes, y la
+    regla que la dio (VENTANA | ULTIMA_CONOCIDA | PARAMETRO). `costo_q` es informativo: ya está
+    dentro de la publicidad."""
+
+    tasa: float = 0.0
+    regla: str = "PARAMETRO"
+    tasa_parametro: float = 0.0
+    transferencias: int = 0
+    usd: float = 0.0
+    q: float = 0.0
+    desde: str | None = None
+    hasta: str | None = None
+    ventana_dias: int = 90
+    costo_q: float = 0.0
+
+
 class BancoFacebook(Base):
     usd: float | None = None
     cargos: int | None = None
@@ -893,6 +910,7 @@ class MesDelPL(Base):
     costos_operativos_q: float | None = None  # producto + flete + devoluciones + personal + otros
     margen_contribucion_q: float | None = None
     publicidad: PautaDelMes = PautaDelMes()
+    conversion: ConversionDelMes = ConversionDelMes()
     margen_operativo_q: float | None = None
     banco_facebook: BancoFacebook = BancoFacebook()
     gastos_fijos: GastosDelMes = GastosDelMes()

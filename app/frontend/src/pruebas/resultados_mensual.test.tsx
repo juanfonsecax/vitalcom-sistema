@@ -55,6 +55,16 @@ const CARTERA_OCTUBRE = {
   devoluciones: { origen: "REAL", reales: 3, estimadas: 0 },
 };
 
+const CONVERSION_PARAMETRO = {
+  tasa: 7.62, regla: "PARAMETRO", tasa_parametro: 7.62, transferencias: 0, usd: 0, q: 0,
+  desde: null, hasta: null, ventana_dias: 90, costo_q: 0,
+};
+
+const CONVERSION_OCTUBRE = {
+  tasa: 7.9079, regla: "VENTANA", tasa_parametro: 7.62, transferencias: 1, usd: 11381, q: 90000,
+  desde: "2026-10-01", hasta: "2026-10-01", ventana_dias: 90, costo_q: 89.35,
+};
+
 const AGOSTO = {
   mes: "2026-08",
   desde: "2026-08-01",
@@ -73,6 +83,7 @@ const AGOSTO = {
   costos_operativos_q: null,
   margen_contribucion_q: null,
   publicidad: { usd: 1978.3, q: 15075, meta_usd: 698.92, lucidsales_fallback_usd: 1279.38, tasa: 7.62 },
+  conversion: CONVERSION_PARAMETRO,
   margen_operativo_q: null,
   banco_facebook: { usd: 1871.89, cargos: 75 },
   gastos_fijos: { q: 364, detalle: [] },
@@ -105,6 +116,7 @@ const SEPTIEMBRE = {
   costos_operativos_q: 29350,
   margen_contribucion_q: 26891,
   publicidad: { usd: 2188.04, q: 16673, meta_usd: 2188.04, lucidsales_fallback_usd: 0, tasa: 7.62 },
+  conversion: CONVERSION_PARAMETRO,
   margen_operativo_q: 10218,
   banco_facebook: { usd: 2193.06, cargos: 114 },
   gastos_fijos: {
@@ -142,6 +154,7 @@ const OCTUBRE = {
   resultado_neto_q: 2295,
   gastos_fijos: SIN_DETALLE,
   cartera: CARTERA_OCTUBRE,
+  conversion: CONVERSION_OCTUBRE,
   banco_facebook: { usd: 141.31, cargos: 8 },
   por_producto: [
     {
@@ -288,6 +301,32 @@ test("el detalle del mes elegido trae el desglose por producto y la fuente de la
   expect(detalle).toHaveTextContent("Meta $2,188.04");
   expect(detalle).toHaveTextContent("LucidSales");
   expect(detalle).toHaveTextContent("THE LUCID HOLDING");
+});
+
+test("cada mes muestra la tasa con que se convirtió, su regla y el costo de conversión", async () => {
+  montar();
+  const tabla = await screen.findByTestId("tabla-mensual");
+  const tasa = within(tabla).getByText("Tasa USD → Q").closest("tr")!;
+  const celdas = within(tasa).getAllByRole("cell");
+  expect(celdas[1]).toHaveTextContent("7.62");
+  expect(celdas[1]).toHaveTextContent("parámetro");
+  expect(celdas[3]).toHaveTextContent("7.9079");
+  expect(celdas[3]).toHaveTextContent("1 transferencia");
+  const costo = within(tabla).getByText(/Costo de conversión/).closest("tr")!;
+  expect(costo).toHaveTextContent("ya está en la publicidad");
+  expect(within(costo).getAllByRole("cell")[3]).toHaveTextContent("Q89");
+});
+
+test("el detalle explica la tasa del mes elegido con las transferencias que la fijan", async () => {
+  montar();
+  await screen.findByTestId("tabla-mensual");
+  const detalle = await screen.findByTestId("detalle-del-mes");   // octubre por defecto
+  expect(detalle).toHaveTextContent("Tasa de conversión");
+  expect(detalle).toHaveTextContent("1 transferencia");
+  expect(detalle).toHaveTextContent("$11,381.00");
+  expect(detalle).toHaveTextContent("7.9079");
+  fireEvent.click(screen.getByRole("button", { name: /sep 2026/i }));
+  expect(await screen.findByTestId("detalle-del-mes")).toHaveTextContent("ninguna transferencia");
 });
 
 test("los faltantes del script se listan tal cual", async () => {

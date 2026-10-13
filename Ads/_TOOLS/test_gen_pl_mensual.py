@@ -361,6 +361,75 @@ class CarteraDeDropi(unittest.TestCase):
                                                      "movimientos": 2})
 
 
+def _transferencia(salida, q, usd):
+    return {"fecha_salida": salida, "monto_q": "%.2f" % q, "fecha_llegada": "", "monto_usd": "%.2f" % usd,
+            "banco_destino": "MERCURY", "origen_salida": "1", "origen_llegada": "operador",
+            "confirmado_por": "operador"}
+
+
+class TasaEfectiva(unittest.TestCase):
+    """La pauta y los fijos en USD se convierten con la tasa que midieron las transferencias."""
+
+    def _mes(self, transferencias):
+        h = _enero()
+        h["transferencias"] = transferencias
+        return gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+
+    def test_sin_transferencias_manda_el_parametro_y_no_hay_costo_de_conversion(self) -> None:
+        m = self._mes([])
+        c = m["conversion"]
+        self.assertEqual((c["regla"], c["tasa"], c["tasa_parametro"]), ("PARAMETRO", gen_pl.TASA_Q, gen_pl.TASA_Q))
+        self.assertAlmostEqual(c["costo_q"], 0.0)
+        self.assertAlmostEqual(m["publicidad"]["tasa"], gen_pl.TASA_Q)
+
+    def test_la_pauta_y_los_fijos_usan_la_tasa_efectiva(self) -> None:
+        base = self._mes([])
+        m = self._mes([_transferencia("2024-01-10", 80000, 10000)])     # 8.00
+        self.assertEqual(m["conversion"]["regla"], "VENTANA")
+        self.assertAlmostEqual(m["conversion"]["tasa"], 8.0)
+        self.assertAlmostEqual(m["publicidad"]["q"], m["publicidad"]["usd"] * 8.0)
+        self.assertAlmostEqual(m["gastos_fijos"]["q"], 26.0 * 8.0)
+        self.assertAlmostEqual(m["retiros_personales"]["q"], 50.0 * 8.0)
+        self.assertAlmostEqual(base["publicidad"]["q"], base["publicidad"]["usd"] * gen_pl.TASA_Q)
+
+    def test_el_costo_de_conversion_es_informativo_y_ya_esta_dentro_de_la_publicidad(self) -> None:
+        base = self._mes([])
+        m = self._mes([_transferencia("2024-01-10", 80000, 10000)])
+        usd = m["publicidad"]["usd"]
+        self.assertAlmostEqual(m["conversion"]["costo_q"], usd * (8.0 - gen_pl.TASA_Q))
+        # el neto baja EXACTAMENTE por la publicidad y los fijos mas caros, sin restar el costo aparte
+        mas_pauta = m["publicidad"]["q"] - base["publicidad"]["q"]
+        mas_fijos = m["gastos_fijos"]["q"] - base["gastos_fijos"]["q"]
+        self.assertAlmostEqual(base["resultado_neto_q"] - m["resultado_neto_q"], mas_pauta + mas_fijos)
+        self.assertAlmostEqual(mas_pauta, m["conversion"]["costo_q"])
+
+    def test_cada_mes_usa_su_propia_ventana(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2024-01-02"), _orden(2, "2024-05-02")],
+                    gasto=[_gasto("CLEARSTEM", "2024-01-05", 20.0), _gasto("CLEARSTEM", "2024-05-05", 20.0)])
+        h["transferencias"] = [_transferencia("2024-01-10", 80000, 10000)]
+        ene, may = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"]
+        self.assertEqual(ene["conversion"]["regla"], "VENTANA")
+        self.assertEqual(may["conversion"]["regla"], "ULTIMA_CONOCIDA")     # 112 dias despues
+        self.assertAlmostEqual(may["conversion"]["tasa"], 8.0)
+
+    def test_una_transferencia_posterior_al_mes_no_lo_toca(self) -> None:
+        m = self._mes([_transferencia("2024-02-01", 90000, 11381)])
+        self.assertEqual(m["conversion"]["regla"], "PARAMETRO")
+
+    def test_la_misma_formula_que_gen_pl_con_la_misma_tasa(self) -> None:
+        h = _enero()
+        trs = [_transferencia("2024-01-10", 80000, 10000)]
+        h["transferencias"] = trs
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        pauta = gen_pl.pauta_de_la_ventana("2024-01-01", "2024-01-31", h["gasto"])
+        tasa = gen_pl.tasa_del_mes("2024-01-31", trs)
+        r = gen_pl.calcular_vista_a(gpm.df_de_ordenes(h["ordenes"]), "2024-01-01", "2024-01-31", HOY,
+                                    pauta, mov=gpm.movimientos_del_banco(h["banco"]), reglas=REGLAS,
+                                    activos={"GT"}, fin_edad="2024-01-04", tasa=tasa)
+        self.assertAlmostEqual(m["resultado_neto_q"], r.neto)
+        self.assertAlmostEqual(m["conversion"]["costo_q"], r.costo_conversion_q)
+
+
 class Cli(unittest.TestCase):
     def test_mirar_no_escribe_y_colombia_sale_vacia(self) -> None:
         antes = sorted((p.name, p.stat().st_mtime_ns) for p in (RAIZ / "PRODUCTOS").iterdir())
