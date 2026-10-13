@@ -48,6 +48,12 @@ venta ese día nunca aparecía en ningún lado (se perdía, violando "nunca inve
 Con la agregación separada + full outer join, cada dólar de Meta vive en UNA sola fila del
 resultado, sin importar cuántas filas de venta o de Meta lo describan por dentro.
 
+GASTO DE LUCIDSALES SOLO DONDE META NO LLEGA (13-oct-2026): una venta cuya ventana Meta ya cubre
+por completo (misma cuenta, todos los dias) nunca aporta su `spend_usd`, aunque su llave de
+conjunto/anuncio no calce con ninguna fila de Meta (renombre, o una ventana de varios dias que no
+coincide con las filas diarias): sus ventas se conservan, su gasto es 0 (`FUENTE_CUBIERTO`). El
+`cuenta_id` se normaliza ('123.0' == '123'). Solo una ventana que Meta no cubre cae al fallback.
+
 PRECEDENCIA POR FUENTE (13-oct-2026): para una misma cuenta y un mismo dia, `MetaAPI-directo`
 supera a toda otra fuente de Meta (export de Ads Manager, MCP). Sin esto, el mismo gasto con otro
 nombre de conjunto se sumaba dos veces. La regla vive en `upsert_fact.superar_por_api_directa`, la
@@ -74,7 +80,9 @@ import collections
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from alias import canonico  # noqa: E402
-from upsert_fact import superar_por_api_directa  # noqa: E402
+from upsert_fact import (  # noqa: E402
+    cobertura_api, cuenta_norm, dias_de_la_fila, superar_por_api_directa,
+)
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -94,6 +102,10 @@ FUENTE_CONJUNTO = "MetaAPI-conjunto"   # match (o suma) contra _FACT_ENTREGA.csv
 FUENTE_AD_ID = "MetaAPI-ad_id"         # match contra _FACT_ENTREGA_ANUNCIO.csv por ad_id
 FUENTE_NOMBRE = "MetaAPI-nombre"       # match contra _FACT_ENTREGA_ANUNCIO.csv por nombre
 FUENTE_FALLBACK = "LucidSales-fallback"
+# Una venta de LucidSales cuya ventana Meta ya cubre por completo (otro nombre de conjunto, o una
+# ventana de varios dias que no calza con las filas diarias de Meta): conserva sus ventas, pero su
+# gasto es 0 porque ese dinero ya esta en las filas de Meta. Nunca se suman dos fuentes.
+FUENTE_CUBIERTO = "MetaAPI-cubierto"
 
 
 def _filas_meta(filas):
@@ -103,6 +115,30 @@ def _filas_meta(filas):
     gasto y nunca se suma. Una cuenta-dia sin API directa conserva su fuente de respaldo."""
     vigentes, _, _ = superar_por_api_directa(filas)
     return [r for r in vigentes if _strip(r.get("fuente")) in FUENTES_META]
+
+
+def _cobertura_meta(filas):
+    """{(cuenta_id, dia)} que Meta cubre al decidir si LucidSales puede aportar gasto.
+
+    La API directa se consulta cuenta por cuenta y dia por dia, y solo devuelve anuncios con
+    entrega. Por eso un dia en que ALGUNA cuenta tiene filas de la API fue consultado para TODAS las
+    cuentas que la API cubre: si una de ellas no tiene filas ese dia, no gasto. Una cuenta que la API
+    nunca consulto (sin una sola fila) no esta cubierta. A eso se suman los dias de cualquier otra
+    fila de Meta vigente (export de Ads Manager)."""
+    cubiertos = set(cobertura_api(filas))
+    api = [r for r in filas if _strip(r.get("fuente")) == "MetaAPI-directo"]
+    cuentas_api = {cuenta_norm(r.get("cuenta_id")) for r in api} - {""}
+    dias_api = {d for r in api for d in dias_de_la_fila(r)}
+    cubiertos.update((c, d) for c in cuentas_api for d in dias_api)
+    for r in _filas_meta(filas):
+        cuenta = cuenta_norm(r.get("cuenta_id"))
+        cubiertos.update((cuenta, d) for d in dias_de_la_fila(r))
+    return cubiertos
+
+
+def _ventana_cubierta(cuenta, ini, fin, cubiertos):
+    dias = dias_de_la_fila({"ventana_ini": ini, "ventana_fin": fin})
+    return bool(dias) and all((cuenta, d) in cubiertos for d in dias)
 
 
 def _leer_csv(path):
@@ -146,7 +182,7 @@ def _strip(v):
 # ─────────────────────────────────────────────────────────────────────────────────────────────
 
 def _clave_conjunto(r, canon):
-    return (_strip(r.get("producto_key")), _strip(r.get("cuenta_id")),
+    return (_strip(r.get("producto_key")), cuenta_norm(r.get("cuenta_id")),
             _strip(r.get("ventana_ini")), _strip(r.get("ventana_fin")),
             canon(_strip(r.get("conjunto"))))
 
@@ -180,12 +216,15 @@ def gasto_por_conjunto_ventana(filas_venta=None, filas_entrega_conjunto=None, al
         k = _clave_conjunto(r, canon)
         meta_agg[k] = meta_agg.get(k, 0.0) + _num(r.get("spend_usd"))
 
+    cubiertos = _cobertura_meta(meta_rows)
     filas = []
     for k in set(ventas_agg) | set(meta_agg):
         pk, cuenta_id, vi, vf, conj = k
         v = ventas_agg.get(k, {"ventas": 0.0, "mensajes": 0.0, "spend_lucidsales": 0.0})
         if k in meta_agg:
             spend, fuente = meta_agg[k], FUENTE_CONJUNTO
+        elif _ventana_cubierta(cuenta_id, vi, vf, cubiertos):
+            spend, fuente = 0.0, FUENTE_CUBIERTO
         else:
             spend, fuente = v["spend_lucidsales"], FUENTE_FALLBACK
         filas.append({
@@ -244,7 +283,7 @@ def escribir_conjunto_ventana_csv(ruta_salida=None, filas_venta=None, filas_entr
 # ─────────────────────────────────────────────────────────────────────────────────────────────
 
 def _clave_ventana(r):
-    return (_strip(r.get("cuenta_id")), _strip(r.get("ventana_ini")), _strip(r.get("ventana_fin")))
+    return (cuenta_norm(r.get("cuenta_id")), _strip(r.get("ventana_ini")), _strip(r.get("ventana_fin")))
 
 
 def _clave_anuncio(r, canon):
@@ -306,6 +345,7 @@ def gasto_por_anuncio_ventana(filas_venta=None, filas_entrega_anuncio=None, alia
         })
         m["spend"] += _num(r.get("spend_usd"))
 
+    cubiertos = _cobertura_meta(meta_rows)
     filas = []
     for k in set(ventas_agg) | set(meta_agg):
         v = ventas_agg.get(k)
@@ -313,6 +353,8 @@ def gasto_por_anuncio_ventana(filas_venta=None, filas_entrega_anuncio=None, alia
         base = v or m
         if m is not None:
             spend, fuente = m["spend"], (FUENTE_AD_ID if k[0] == "AD" else FUENTE_NOMBRE)
+        elif _ventana_cubierta(k[1], k[2], k[3], cubiertos):
+            spend, fuente = 0.0, FUENTE_CUBIERTO
         else:
             spend, fuente = v["spend_lucidsales"], FUENTE_FALLBACK
         filas.append({

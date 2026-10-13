@@ -6,7 +6,7 @@ select
     cast(v.ventana_ini as date)                       as fecha_ini,
     cast(v.ventana_fin as date)                       as fecha,
     trim(v.producto_key)                              as producto_key,
-    trim(v.cuenta_id)                                 as cuenta_id,
+    regexp_replace(trim(v.cuenta_id), '[.]0$', '')    as cuenta_id,   -- exports viejos: '123.0' == '123'
     trim(v.cuenta_alias)                              as cuenta_alias,
     trim(v.campana)                                   as campana,
     coalesce(a.nombre_nuevo, trim(v.conjunto))        as conjunto,

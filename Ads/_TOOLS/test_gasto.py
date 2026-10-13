@@ -122,13 +122,28 @@ def test_conjunto_sin_cobertura_meta_cae_a_lucidsales():
     return 0 if ok else 1
 
 
-def test_conjuntos_distintos_no_se_mezclan():
+def test_conjunto_sin_fila_propia_en_una_cuenta_cubierta_por_meta_no_suma_su_gasto():
+    """Mismo dia y misma cuenta que una fila de Meta, pero un conjunto que Meta no lista: su gasto
+    ya esta en Meta (con otro nombre) o fue cero. LucidSales conserva las ventas, no el gasto."""
     filas = gasto.gasto_por_conjunto_ventana(
         filas_venta=[_venta(conjunto="CONJ_A"), _venta(conjunto="CONJ_B", anuncio="ANU_B")],
         filas_entrega_conjunto=[_fila_entrega_conjunto(conjunto="CONJ_A", spend_usd="80.0")],
     )
-    a = _una_celda(filas, conjunto="CONJ_A")
     b = _una_celda(filas, conjunto="CONJ_B")
+    ok = (len(filas) == 2 and b["spend_usd"] == 0.0 and b["ventas"] == 1.0
+          and b["fuente_gasto"] == gasto.FUENTE_CUBIERTO and abs(sum(x["spend_usd"] for x in filas) - 80.0) < 1e-9)
+    print(("  OK     " if ok else "  FALLA  ") + "un conjunto sin fila de Meta en una cuenta-dia cubierta "
+          "conserva sus ventas y aporta gasto 0" + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_conjuntos_distintos_no_se_mezclan():
+    filas = gasto.gasto_por_conjunto_ventana(
+        filas_venta=[_venta(conjunto="CONJ_A"), _venta(conjunto="CONJ_B", anuncio="ANU_B", cuenta_id="CTA2")],
+        filas_entrega_conjunto=[_fila_entrega_conjunto(conjunto="CONJ_A", spend_usd="80.0")],
+    )
+    a = _una_celda(filas, conjunto="CONJ_A")
+    b = _una_celda(filas, conjunto="CONJ_B")   # su cuenta (CTA2) no tiene cobertura de Meta
     ok = (len(filas) == 2 and a["spend_usd"] == 80.0 and a["fuente_gasto"] == gasto.FUENTE_CONJUNTO
           and b["spend_usd"] == 10.0 and b["fuente_gasto"] == gasto.FUENTE_FALLBACK)
     print(("  OK     " if ok else "  FALLA  ") + "dos conjuntos distintos resuelven su gasto por "
@@ -236,7 +251,7 @@ def test_anuncio_sin_ad_id_usa_nombre_pero_no_hereda_el_conjunto():
     """Sin ad_id, el match es por (campaña, conjunto, anuncio) exacto -- nunca cae al total del
     conjunto (ESE fue el defecto: acá simplemente no hay match y se va a LucidSales)."""
     filas = gasto.gasto_por_anuncio_ventana(
-        filas_venta=[_venta(ad_id="", anuncio="ANU_DISTINTO", spend_usd="10.0")],
+        filas_venta=[_venta(ad_id="", anuncio="ANU_DISTINTO", spend_usd="10.0", cuenta_id="CTA2")],
         filas_entrega_anuncio=[_fila_entrega_anuncio(ad_id="", anuncio="ANU_A", spend_usd="50.0")],
     )
     ok = len(filas) == 2  # dos anuncios distintos, ninguno hereda el gasto del otro
@@ -283,7 +298,7 @@ def test_invariante_conservacion_de_plata_grano_conjunto():
         _venta(conjunto="CONJ_A", anuncio="A1", spend_usd="10.0"),
         _venta(conjunto="CONJ_A", anuncio="A2", spend_usd="8.0"),   # mismo conjunto, sin match individual
         _venta(conjunto="CONJ_A", anuncio="A3", spend_usd="6.0"),
-        _venta(conjunto="CONJ_B", anuncio="B1", spend_usd="15.0"),  # CONJ_B sin cobertura Meta
+        _venta(conjunto="CONJ_B", anuncio="B1", spend_usd="15.0", cuenta_id="CTA2"),  # sin cobertura Meta
         _venta(conjunto="CONJ_C", anuncio="C1", spend_usd="1.0"),
     ]
     entrega = [
@@ -311,8 +326,8 @@ def test_invariante_conservacion_de_plata_grano_conjunto():
 def test_invariante_conservacion_de_plata_grano_anuncio():
     ventas = [
         _venta(ad_id="1", anuncio="A1", spend_usd="10.0"),
-        _venta(ad_id="", anuncio="A2", campana="CAMP", spend_usd="8.0"),   # sin match -> fallback
-        _venta(ad_id="", anuncio="A3", campana="CAMP", spend_usd="6.0"),   # sin match -> fallback
+        _venta(ad_id="", anuncio="A2", campana="CAMP", spend_usd="8.0", cuenta_id="CTA2"),   # sin Meta -> fallback
+        _venta(ad_id="", anuncio="A3", campana="CAMP", spend_usd="6.0", cuenta_id="CTA2"),   # sin Meta -> fallback
     ]
     entrega = [
         _fila_entrega_anuncio(ad_id="1", anuncio="A1", spend_usd="50.0"),
@@ -416,6 +431,76 @@ def test_anuncio_api_directa_supera_export_del_mismo_dia():
     return 0 if ok else 1
 
 
+def test_ventas_de_ventana_multidia_cubierta_por_meta_no_suman_su_gasto_de_lucidsales():
+    """Doble conteo real (13-oct-2026): LucidSales trae ventanas de 3-8 dias que nunca calzan con las
+    filas diarias de Meta, asi que caian al fallback y su spend_usd se SUMABA al de Meta, que ya
+    cubria esos dias. Las ventas se conservan; el gasto lo pone Meta una sola vez."""
+    meta = [_fila_entrega_conjunto(ventana_ini="2026-07-10", ventana_fin="2026-07-10", spend_usd="30.0"),
+            _fila_entrega_conjunto(ventana_ini="2026-07-11", ventana_fin="2026-07-11", spend_usd="40.0")]
+    venta = _venta(ventana_ini="2026-07-10", ventana_fin="2026-07-11", spend_usd="55.0", ventas="2")
+    filas = gasto.gasto_por_conjunto_ventana(filas_venta=[venta], filas_entrega_conjunto=meta)
+    total = sum(f["spend_usd"] for f in filas)
+    ventas = sum(f["ventas"] for f in filas)
+    cub = [f for f in filas if f["fuente_gasto"] == gasto.FUENTE_CUBIERTO]
+    ok = abs(total - 70.0) < 1e-9 and ventas == 2 and len(cub) == 1 and cub[0]["spend_usd"] == 0.0
+    print(("  OK     " if ok else "  FALLA  ") + "ventana de LucidSales cubierta por Meta: ventas si, gasto no"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_cuenta_con_api_sin_filas_un_dia_en_que_otra_cuenta_si_tuvo_es_dia_sin_gasto():
+    """La API se consulta cuenta por cuenta, dia por dia: si otra cuenta tiene filas ese dia y esta
+    cuenta (que la API si cubre otros dias) no, ese dia no tuvo gasto. Una cuenta que la API nunca
+    consulto (CTA3) si cae al fallback de LucidSales."""
+    meta = [_fila_entrega_conjunto(cuenta_id="CTA1", ventana_ini="2026-07-10", ventana_fin="2026-07-10"),
+            _fila_entrega_conjunto(cuenta_id="CTA2", ventana_ini="2026-07-10", ventana_fin="2026-07-10"),
+            _fila_entrega_conjunto(cuenta_id="CTA2", ventana_ini="2026-07-20", ventana_fin="2026-07-20")]
+    ventas = [_venta(cuenta_id="CTA1", ventana_ini="2026-07-20", ventana_fin="2026-07-20", spend_usd="9.0"),
+              _venta(cuenta_id="CTA3", ventana_ini="2026-07-20", ventana_fin="2026-07-20", spend_usd="7.0")]
+    filas = gasto.gasto_por_conjunto_ventana(filas_venta=ventas, filas_entrega_conjunto=meta)
+    uno = _una_celda(filas, cuenta_id="CTA1", ventana_ini="2026-07-20")
+    tres = _una_celda(filas, cuenta_id="CTA3")
+    ok = (uno["fuente_gasto"] == gasto.FUENTE_CUBIERTO and uno["spend_usd"] == 0.0
+          and tres["fuente_gasto"] == gasto.FUENTE_FALLBACK and tres["spend_usd"] == 7.0)
+    print(("  OK     " if ok else "  FALLA  ") + "dia sin filas de una cuenta que la API cubre = sin gasto; "
+          "una cuenta que la API nunca consulto cae al fallback" + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_ventana_sin_cobertura_de_meta_sigue_cayendo_al_fallback():
+    meta = [_fila_entrega_conjunto(ventana_ini="2026-07-10", ventana_fin="2026-07-10", spend_usd="30.0")]
+    venta = _venta(ventana_ini="2026-07-20", ventana_fin="2026-07-21", spend_usd="55.0", ventas="2")
+    filas = gasto.gasto_por_conjunto_ventana(filas_venta=[venta], filas_entrega_conjunto=meta)
+    fb = [f for f in filas if f["fuente_gasto"] == gasto.FUENTE_FALLBACK]
+    ok = len(fb) == 1 and fb[0]["spend_usd"] == 55.0
+    print(("  OK     " if ok else "  FALLA  ") + "una ventana que Meta no cubre conserva el gasto de LucidSales"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_cuenta_id_con_sufijo_punto_cero_calza_con_el_de_meta():
+    """LucidSales viejo guarda la cuenta como float ('598687956219141.0'); Meta como entero."""
+    venta = _venta(cuenta_id="123.0", spend_usd="10.0")
+    meta = _fila_entrega_conjunto(cuenta_id="123", spend_usd="80.0")
+    filas = gasto.gasto_por_conjunto_ventana(filas_venta=[venta], filas_entrega_conjunto=[meta])
+    ok = len(filas) == 1 and filas[0]["fuente_gasto"] == gasto.FUENTE_CONJUNTO and filas[0]["spend_usd"] == 80.0
+    print(("  OK     " if ok else "  FALLA  ") + "cuenta_id '123.0' (LucidSales) y '123' (Meta) son la misma cuenta"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_anuncio_de_ventana_cubierta_por_meta_no_suma_gasto_de_lucidsales():
+    meta = [_fila_entrega_anuncio(ad_id="999", ventana_ini="2026-07-10", ventana_fin="2026-07-10", spend_usd="30.0"),
+            _fila_entrega_anuncio(ad_id="999", ventana_ini="2026-07-11", ventana_fin="2026-07-11", spend_usd="40.0")]
+    venta = _venta(ventana_ini="2026-07-10", ventana_fin="2026-07-11", anuncio="OTRO", spend_usd="55.0")
+    filas = gasto.gasto_por_anuncio_ventana(filas_venta=[venta], filas_entrega_anuncio=meta)
+    total = sum(f["spend_usd"] for f in filas)
+    ok = abs(total - 70.0) < 1e-9
+    print(("  OK     " if ok else "  FALLA  ") + "grano anuncio: ventana de LucidSales cubierta por Meta no suma su gasto"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
 def main():
     pruebas = [
         test_conjunto_meta_gana_y_se_cuenta_una_sola_vez,
@@ -423,6 +508,7 @@ def main():
         test_meta_sin_ninguna_venta_se_cuenta_igual,
         test_conjunto_sin_dim_todavia_cuenta_a_nivel_producto,
         test_conjunto_sin_cobertura_meta_cae_a_lucidsales,
+        test_conjunto_sin_fila_propia_en_una_cuenta_cubierta_por_meta_no_suma_su_gasto,
         test_conjuntos_distintos_no_se_mezclan,
         test_alias_canonicaliza_los_dos_lados_del_join,
         test_dos_grafias_meta_que_canonicalizan_igual_no_duplican_con_fila_de_anuncio_presente,
@@ -440,6 +526,11 @@ def main():
         test_conjunto_api_directa_supera_export_del_mismo_dia_aunque_cambie_el_nombre,
         test_conjunto_export_sin_cobertura_api_sigue_contando,
         test_anuncio_api_directa_supera_export_del_mismo_dia,
+        test_ventas_de_ventana_multidia_cubierta_por_meta_no_suman_su_gasto_de_lucidsales,
+        test_cuenta_con_api_sin_filas_un_dia_en_que_otra_cuenta_si_tuvo_es_dia_sin_gasto,
+        test_ventana_sin_cobertura_de_meta_sigue_cayendo_al_fallback,
+        test_cuenta_id_con_sufijo_punto_cero_calza_con_el_de_meta,
+        test_anuncio_de_ventana_cubierta_por_meta_no_suma_gasto_de_lucidsales,
     ]
     fallas = sum(p() for p in pruebas)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")

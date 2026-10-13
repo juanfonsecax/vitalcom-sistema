@@ -125,6 +125,12 @@ def leer_migrado(path, cols):
 FUENTE_API_DIRECTA = "MetaAPI-directo"
 
 
+def cuenta_norm(v):
+    """'598687956219141.0' (float mal serializado por exports viejos) -> '598687956219141'."""
+    v = (v or "").strip()
+    return v[:-2] if v.endswith(".0") and v[:-2].isdigit() else v
+
+
 def _dias_de(fila):
     """Fechas ISO cubiertas por la ventana de la fila, o None si no se pueden leer."""
     try:
@@ -149,14 +155,14 @@ def _mapa_alias(filas):
     puede traer el alias ('GTR7') sin el id: se resuelve por este mapa, nunca por suposicion."""
     ids = {}
     for f in filas:
-        alias, cid = (f.get("cuenta_alias") or "").strip(), (f.get("cuenta_id") or "").strip()
+        alias, cid = (f.get("cuenta_alias") or "").strip(), cuenta_norm(f.get("cuenta_id"))
         if alias and cid:
             ids.setdefault(alias, set()).add(cid)
     return {a: next(iter(v)) for a, v in ids.items() if len(v) == 1}
 
 
 def _cuenta_de(f, mapa):
-    return (f.get("cuenta_id") or "").strip() or mapa.get((f.get("cuenta_alias") or "").strip(), "")
+    return cuenta_norm(f.get("cuenta_id")) or mapa.get((f.get("cuenta_alias") or "").strip(), "")
 
 
 def _dias_cubiertos(filas, fuente, mapa):
@@ -178,6 +184,16 @@ def _dias_cubiertos(filas, fuente, mapa):
                 for i in range(1, hueco + 1):
                     cubiertos.add((cuenta, (a + datetime.timedelta(days=i)).isoformat()))
     return cubiertos
+
+
+def dias_de_la_fila(fila):
+    """Fechas ISO que cubre la ventana de la fila (lista vacia si no se pueden leer)."""
+    return _dias_de(fila) or []
+
+
+def cobertura_api(filas, fuente=FUENTE_API_DIRECTA):
+    """{(cuenta_id, 'YYYY-MM-DD')} que la API directa cubre (ver MAX_HUECO_DIAS)."""
+    return _dias_cubiertos(filas, fuente, _mapa_alias(filas))
 
 
 def superar_por_api_directa(filas, fuente=FUENTE_API_DIRECTA):
