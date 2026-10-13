@@ -115,6 +115,30 @@ Name Date Status Amount Balance
         self.assertEqual(res["nuevas"], 0)
         self.assertEqual(_leer(self.destino), [])
 
+    def test_sin_cuenta_declarada_la_toma_del_extracto(self) -> None:
+        res = self._ingerir(cuenta=None)
+        self.assertEqual(res["cuenta"], "8889")
+        self.assertEqual({f["cuenta"] for f in _leer(self.destino)}, {"8889"})
+
+    def test_sin_cuenta_y_sin_numero_en_el_extracto_se_rechaza(self) -> None:
+        sin_numero = "\n".join(l for l in EXTRACTO.split("\n") if not l.startswith("Account Number"))
+        with self.assertRaises(ib.ExtractoInvalido):
+            self._ingerir(sin_numero, cuenta=None)
+        self.assertFalse(self.destino.exists())
+
+    def test_json_imprime_solo_el_resumen(self) -> None:
+        import contextlib, io, json
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as d:
+            pdf = Path(d) / "Relay 2026-09-01 #8889.pdf"
+            pdf.write_bytes(b"%PDF")
+            salida = io.StringIO()
+            with mock.patch.object(ib, "texto_del_pdf", return_value=EXTRACTO),                     mock.patch.object(ib.csv_hechos, "leer", return_value=[]),                     contextlib.redirect_stdout(salida):
+                rc = ib.main(["--archivo", str(pdf), "--banco", "relay", "--json"])
+        self.assertEqual(rc, 0)
+        resumen = json.loads(salida.getvalue())
+        self.assertEqual((resumen["nuevas"], resumen["cuenta"], resumen["escrito"]), (4, "8889", False))
+
     def test_sin_escribir_solo_mira(self) -> None:
         res = self._ingerir(escribir=False)
         self.assertFalse(self.destino.exists())

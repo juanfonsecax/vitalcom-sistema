@@ -149,6 +149,14 @@ class MesesYFormula(unittest.TestCase):
                           m["ordenes"]["en_transito"]),
                          (cohorte["entregadas"], cohorte["devueltas"], cohorte["en_transito"]))
 
+    def test_los_costos_operativos_son_todo_lo_que_hay_entre_la_venta_y_la_contribucion(self) -> None:
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=_enero())["meses"][0]
+        self.assertAlmostEqual(m["costos_operativos_q"],
+                               m["costo_producto_q"] + m["flete_q"] + m["devoluciones_q"]
+                               + m["personal_q"] + m["otros_q"])
+        self.assertAlmostEqual(m["venta_entregada_q"] - m["costos_operativos_q"],
+                               m["margen_contribucion_q"])
+
     def test_idempotente(self) -> None:
         h = _enero()
         a = gpm.pl_mensual("GT", hoy=HOY, hechos=h)
@@ -219,6 +227,8 @@ class Faltantes(unittest.TestCase):
     def test_un_mes_sin_banco_lo_dice(self) -> None:
         m = gpm.pl_mensual("GT", hoy=HOY, hechos=_hechos(ordenes=[_orden(1, "2024-01-02")]))["meses"][0]
         self.assertIsNone(m["banco_facebook"]["usd"])
+        self.assertIsNone(m["gastos_fijos"]["q"])      # sin extracto no se sabe: no es un cero
+        self.assertIsNone(m["retiros_personales"]["q"])
         self.assertTrue(any("banco" in x.lower() for x in m["faltantes"]))
 
     def test_pauta_de_lucidsales_se_avisa(self) -> None:
@@ -231,6 +241,11 @@ class Faltantes(unittest.TestCase):
         m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
         self.assertEqual(m["cargos_sin_clasificar"][0]["nombre"], "COSA NUEVA")
         self.assertTrue(any("sin clasificar" in x.lower() for x in m["faltantes"]))
+
+    def test_sin_ningun_hecho_cargado_lo_dice(self) -> None:
+        r = gpm.pl_mensual("GT", hoy=HOY, hechos=_hechos())
+        self.assertEqual(r["meses"], [])
+        self.assertTrue(any("todavía no hay" in x.lower() for x in r["faltantes"]))
 
     def test_colombia_no_tiene_datos_todavia(self) -> None:
         r = gpm.pl_mensual("CO", hoy=HOY, hechos=_enero())

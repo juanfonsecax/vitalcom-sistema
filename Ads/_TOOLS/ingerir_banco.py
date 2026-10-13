@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """ingerir_banco.py — persiste los movimientos de un extracto bancario en `PRODUCTOS/_FACT_BANCO.csv`.
 
-  python Ads/_TOOLS/ingerir_banco.py --archivo <extracto.pdf> --banco RELAY --cuenta 8889 [--escribir]
+  python Ads/_TOOLS/ingerir_banco.py --archivo <extracto.pdf> --banco RELAY [--cuenta 8889]
+                                     [--escribir] [--json]
 
-`--cuenta` son los últimos 4 dígitos (el PDF de Relay los imprime como `Account Number: XXXXXX-8889`).
-Sin `--escribir` solo MIRA y no toca disco (DOCTRINA/DATA_PLAYBOOK.md §7).
+`--cuenta` son los últimos 4 dígitos (el PDF de Relay los imprime como `Account Number: XXXXXX-8889`);
+si no se pasa, se toma del extracto, y si el extracto tampoco la trae se rechaza.
+Sin `--escribir` solo MIRA y no toca disco (DOCTRINA/DATA_PLAYBOOK.md §7). Con `--json` el stdout es
+SOLO el resumen en JSON (para el runner de la app).
 
 Guarda las salidas Y los depósitos (`tipo` SALIDA/ENTRADA): un depósito no es gasto, pero sin él el
 saldo de la cuenta no se puede reconstruir. Los montos van en la moneda de la cuenta (Relay: USD),
@@ -22,6 +25,7 @@ traen movimientos de los primeros días del mes siguiente (el de agosto trae el 
 tal cual vienen, y los reportes cortan por la fecha del movimiento.
 """
 import argparse
+import json
 import os
 import re
 import sys
@@ -67,7 +71,7 @@ def llave(f):
 
 
 def validar(mov, resumen, cuenta, cuenta_pdf):
-    if cuenta_pdf is not None and cuenta_pdf != cuenta:
+    if cuenta_pdf is not None and cuenta is not None and cuenta_pdf != cuenta:
         raise ExtractoInvalido("el extracto es de la cuenta %s y se declaró --cuenta %s."
                                % (cuenta_pdf, cuenta))
     if resumen is None:
@@ -87,9 +91,14 @@ def validar(mov, resumen, cuenta, cuenta_pdf):
                                % (cierre, resumen["cierre"]))
 
 
-def ingerir_texto(txt, archivo, banco, cuenta, destino=DESTINO, escribir=False):
+def ingerir_texto(txt, archivo, banco, cuenta=None, destino=DESTINO, escribir=False):
     mov, resumen = gen_pl.movimientos_completos_del_extracto(txt)
-    validar(mov, resumen, cuenta, cuenta_del_extracto(txt))
+    cuenta_pdf = cuenta_del_extracto(txt)
+    cuenta = cuenta or cuenta_pdf
+    if not cuenta:
+        raise ExtractoInvalido("el extracto no trae el número de cuenta: pasá --cuenta con los "
+                               "últimos 4 dígitos.")
+    validar(mov, resumen, cuenta, cuenta_pdf)
     nuevas = [{
         "fecha": m["fecha"].isoformat(), "banco": banco, "cuenta": cuenta, "nombre": m["nombre"],
         "monto": csv_hechos.monto(m["monto"]), "tipo": m["tipo"],
@@ -106,7 +115,8 @@ def ingerir_texto(txt, archivo, banco, cuenta, destino=DESTINO, escribir=False):
         agregar.append(f)
     filas = sorted(existentes + agregar, key=lambda f: (f["fecha"], f["banco"], f["cuenta"],
                                                         f["nombre"], f["monto"], f["saldo"]))
-    res = {"movimientos_en_el_extracto": len(nuevas), "nuevas": len(agregar),
+    res = {"banco": banco, "cuenta": cuenta, "archivo": os.path.basename(archivo),
+           "movimientos_en_el_extracto": len(nuevas), "nuevas": len(agregar),
            "duplicadas": duplicadas,
            "salidas": sum(1 for f in nuevas if f["tipo"] == "SALIDA"),
            "entradas": sum(1 for f in nuevas if f["tipo"] == "ENTRADA"),
@@ -118,7 +128,7 @@ def ingerir_texto(txt, archivo, banco, cuenta, destino=DESTINO, escribir=False):
     return res
 
 
-def ingerir(archivo, banco, cuenta, destino=DESTINO, escribir=False):
+def ingerir(archivo, banco, cuenta=None, destino=DESTINO, escribir=False):
     return ingerir_texto(texto_del_pdf(archivo), archivo, banco, cuenta, destino, escribir)
 
 
@@ -126,16 +136,20 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--archivo", required=True, help="extracto bancario (.pdf)")
     ap.add_argument("--banco", required=True, help="banco del extracto (RELAY)")
-    ap.add_argument("--cuenta", required=True, help="últimos 4 dígitos de la cuenta")
+    ap.add_argument("--cuenta", help="últimos 4 dígitos de la cuenta (default: la del extracto)")
     ap.add_argument("--escribir", action="store_true", help="persistir (sin esto solo mira)")
+    ap.add_argument("--json", action="store_true", help="imprime solo el resumen en JSON")
     a = ap.parse_args(argv)
     try:
         res = ingerir(a.archivo, a.banco.upper(), a.cuenta, escribir=a.escribir)
     except ExtractoInvalido as e:
         print("BLOQUEANTE: %s: %s" % (os.path.basename(a.archivo), e), file=sys.stderr)
         return 1
+    if a.json:
+        print(json.dumps(res, ensure_ascii=False))
+        return 0
     print("%s · %s ····%s · %d movimientos (%d salidas, %d depósitos) · Withdrawals $%.2f" % (
-        os.path.basename(a.archivo), a.banco.upper(), a.cuenta, res["movimientos_en_el_extracto"],
+        os.path.basename(a.archivo), a.banco.upper(), res["cuenta"], res["movimientos_en_el_extracto"],
         res["salidas"], res["entradas"], res["retiros_usd"]))
     print("  nuevas %d · ya estaban %d" % (res["nuevas"], res["duplicadas"]))
     if res["escrito"]:

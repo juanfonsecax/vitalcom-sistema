@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """ingerir_dropi.py — persiste el export de órdenes de Dropi en `PRODUCTOS/_FACT_ORDENES_DROPI.csv`.
 
-  python Ads/_TOOLS/ingerir_dropi.py --archivo <ordenes.xlsx> [--mercado GT] [--escribir]
+  python Ads/_TOOLS/ingerir_dropi.py --archivo <ordenes.xlsx> [--mercado GT] [--escribir] [--json]
 
 Sin `--escribir` solo MIRA: cuenta cuántas órdenes entrarían (nuevas / actualizadas) y no toca
-disco (DOCTRINA/DATA_PLAYBOOK.md §7).
+disco (DOCTRINA/DATA_PLAYBOOK.md §7). Con `--json` el stdout es SOLO el resumen en JSON (para el
+runner de la app).
 
 El export de Dropi es una ventana móvil, no el historial: por eso cada ingesta hace UPSERT por ID
 de orden. Una fila ya guardada se reemplaza solo si el export nuevo es del mismo día de reporte o
@@ -23,6 +24,7 @@ modificación del archivo.
 """
 import argparse
 import datetime
+import json
 import os
 import re
 import sys
@@ -150,12 +152,16 @@ def main(argv=None):
     ap.add_argument("--mercado", default="GT",
                     help="mercado de las órdenes de un producto que el sistema no conoce (GT)")
     ap.add_argument("--escribir", action="store_true", help="persistir (sin esto solo mira)")
+    ap.add_argument("--json", action="store_true", help="imprime solo el resumen en JSON")
     a = ap.parse_args(argv)
     try:
         res = ingerir(a.archivo, escribir=a.escribir, mercado_defecto=a.mercado)
     except (ExportInvalido, mercado.MercadoError) as e:
         print("BLOQUEANTE: %s" % e, file=sys.stderr)
         return 1
+    if a.json:
+        print(json.dumps(res, ensure_ascii=False))
+        return 0
     print("Dropi %s · reporte %s · %d órdenes en el export" % (
         os.path.basename(a.archivo), res["fecha_reporte"], res["ordenes_en_el_export"]))
     print("  nuevas %d · actualizadas %d · sin cambio %d · omitidas por export más viejo %d" % (

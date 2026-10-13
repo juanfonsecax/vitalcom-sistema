@@ -123,6 +123,17 @@ class IngestaDropi(unittest.TestCase):
             idr.ingerir(str(ruta), destino=str(self.destino), escribir=True)
         self.assertFalse(self.destino.exists())
 
+    def test_json_imprime_solo_el_resumen(self) -> None:
+        import contextlib, io, json
+        ruta = _xlsx(self.dir / "ordenes_productos_20261013_083238.xlsx", [_orden(1)])
+        salida = io.StringIO()
+        from unittest import mock
+        with mock.patch.object(idr.csv_hechos, "leer", return_value=[]),                 contextlib.redirect_stdout(salida):
+            rc = idr.main(["--archivo", str(ruta), "--json"])   # sin --escribir: solo mira
+        self.assertEqual(rc, 0)
+        resumen = json.loads(salida.getvalue())
+        self.assertEqual((resumen["nuevas"], resumen["escrito"]), (1, False))
+
     def test_una_orden_sin_producto_conocido_queda_otro_en_el_mercado_dado(self) -> None:
         self._ingerir("ordenes_productos_20261013_083238.xlsx",
                       [_orden(9, producto="Cosa rara")])

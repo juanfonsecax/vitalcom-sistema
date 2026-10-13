@@ -21,6 +21,7 @@ type Formato = { decimales: number; miles: string; decimal: string; espacio: str
 
 const FORMATOS: Record<string, Formato> = {
   GTQ: { decimales: 2, miles: ",", decimal: ".", espacio: "" },
+  USD: { decimales: 2, miles: ",", decimal: ".", espacio: "" },
   COP: { decimales: 0, miles: ".", decimal: ",", espacio: " " },
 };
 
@@ -57,7 +58,7 @@ export function conSimbolo(valor: number | string | null | undefined, simbolo: s
   return valor === null || valor === undefined ? vacio : `${simbolo}${String(valor)}`;
 }
 
-const NOMBRES_MONEDA: Record<string, string> = { GTQ: "quetzales", COP: "pesos colombianos" };
+const NOMBRES_MONEDA: Record<string, string> = { GTQ: "quetzales", COP: "pesos colombianos", USD: "dólares" };
 
 /** «quetzales», «pesos colombianos»; el código de la moneda si no hay nombre declarado. */
 export function nombreDeMoneda(moneda: string | null | undefined): string {

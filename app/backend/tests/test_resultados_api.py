@@ -105,10 +105,12 @@ def test_cargar_y_leer_el_pl_real(cliente_falso: TestClient, sistema_falso: Path
     assert (sistema_falso / "PRODUCTOS" / "_AUDITORIAS" / (base + ".json")).is_file()
     assert (sistema_falso / "PRODUCTOS" / "_AUDITORIAS" / (base + ".txt")).is_file()
 
-    # GET /api/resultados sirve exactamente lo que gen_pl.py acaba de escribir
+    # GET /api/resultados sirve exactamente lo que gen_pl.py acaba de escribir (la respuesta de la
+    # carga suma `persistido`: lo que además se guardó en los hechos de finanzas)
     leido = cliente_falso.get("/api/resultados")
     assert leido.status_code == 200
-    assert leido.json() == cuerpo
+    assert "persistido" in cuerpo
+    assert leido.json() == {k: v for k, v in cuerpo.items() if k != "persistido"}
 
 
 def test_dropi_faltante_es_422(cliente_falso: TestClient) -> None:

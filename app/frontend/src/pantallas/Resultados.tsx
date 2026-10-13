@@ -34,6 +34,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { cn, Info, Problema } from "../componentes/ui";
 import { BanderaMercado, SelectorMercado, usarMercadoSeleccionado } from "../componentes/mercado";
 import { formatearDinero, TODOS, type PerfilMoneda } from "../dinero";
+import { ResultadosMensual } from "./ResultadosMensual";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -620,33 +622,25 @@ function ResultadosPendientes({ mercado }: { mercado: string }) {
   );
 }
 
-export function Resultados() {
-  const [mercado, setMercado] = usarMercadoSeleccionado();
-  const resultados = useQuery({ queryKey: ["resultados"], queryFn: api.resultados, retry: false });
-  const esGuatemala = mercado === TODOS || mercado === MERCADO_DEL_PL;
+const CLAVE_VISTA = "vitalcom-resultados-vista";
+type Vista = "mensual" | "periodo";
 
+function leerVista(): Vista {
+  try {
+    return window.localStorage.getItem(CLAVE_VISTA) === "periodo" ? "periodo" : "mensual";
+  } catch {
+    return "mensual";
+  }
+}
+
+/** El último export de Dropi que el operador cargó, como lo calcula `gen_pl.py` (VISTA A · COHORTE y
+ * VISTA B · CAJA): la pestaña «Último export». */
+function VistaPorPeriodo({ esGuatemala, mercado }: { esGuatemala: boolean; mercado: string }) {
+  const resultados = useQuery({ queryKey: ["resultados"], queryFn: api.resultados, retry: false });
   const noHayCarga = resultados.error instanceof ErrorDeContrato && resultados.error.estado === 404;
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Resultados</h1>
-        <p className="text-sm text-muted-foreground">
-          El estado de resultados real, tal como lo manda DOCTRINA/CONTABILIDAD.md — nunca ROAS
-          ni la atribución semanal de los anuncios.
-        </p>
-        {esGuatemala && (
-          <p className="mt-1 flex items-center gap-2 text-sm font-medium" data-testid="mercado-de-resultados">
-            <BanderaMercado mercado={MERCADO_DEL_PL} /> Guatemala · cifras en {PERFIL_DEL_PL.moneda_local}
-          </p>
-        )}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3">
-        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mercado</span>
-        <SelectorMercado seleccion={mercado} onCambiar={setMercado} />
-      </div>
-
       {!esGuatemala && <ResultadosPendientes mercado={mercado} />}
 
       {esGuatemala && resultados.isLoading && (
@@ -694,6 +688,58 @@ export function Resultados() {
       )}
 
       {esGuatemala && <CargarExport />}
+    </div>
+  );
+}
+
+export function Resultados() {
+  const [mercado, setMercado] = usarMercadoSeleccionado();
+  const [vista, setVista] = useState<Vista>(leerVista);
+  const esGuatemala = mercado === TODOS || mercado === MERCADO_DEL_PL;
+
+  function cambiarVista(valor: unknown) {
+    const siguiente: Vista = valor === "periodo" ? "periodo" : "mensual";
+    setVista(siguiente);
+    try {
+      window.localStorage.setItem(CLAVE_VISTA, siguiente);
+    } catch {
+      /* sin localStorage se pierde el recuerdo, nunca la pantalla */
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="text-2xl font-semibold">Resultados</h1>
+        <p className="text-sm text-muted-foreground">
+          El estado de resultados real, tal como lo manda DOCTRINA/CONTABILIDAD.md — nunca ROAS
+          ni la atribución semanal de los anuncios.
+        </p>
+        {esGuatemala && (
+          <p className="mt-1 flex items-center gap-2 text-sm font-medium" data-testid="mercado-de-resultados">
+            <BanderaMercado mercado={MERCADO_DEL_PL} /> Guatemala · cifras en {PERFIL_DEL_PL.moneda_local}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Mercado</span>
+        <SelectorMercado seleccion={mercado} onCambiar={setMercado} />
+      </div>
+
+      <Tabs value={vista} onValueChange={cambiarVista}>
+        <TabsList>
+          <TabsTrigger value="mensual">Mes a mes</TabsTrigger>
+          <TabsTrigger value="periodo">Último export</TabsTrigger>
+        </TabsList>
+        <TabsContent value={vista} className="pt-4">
+          {vista === "mensual" ? (
+            <ResultadosMensual mercado={esGuatemala ? MERCADO_DEL_PL : mercado} />
+          ) : (
+            <VistaPorPeriodo esGuatemala={esGuatemala} mercado={mercado} />
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

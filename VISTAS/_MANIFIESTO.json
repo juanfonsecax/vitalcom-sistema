@@ -2140,6 +2140,80 @@
     "habilitada": true,
     "tiempo_max_s": 120,
     "salida": "json"
+   },
+   {
+    "id": "finanzas.ingerir_dropi",
+    "rotulo": "Guardar el export de órdenes de Dropi (finanzas)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/ingerir_dropi.py",
+     "--archivo",
+     "{archivo}",
+     "--escribir",
+     "--json"
+    ],
+    "parametros": {
+     "archivo": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
+    "id": "finanzas.ingerir_banco",
+    "rotulo": "Guardar un extracto bancario (finanzas)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/ingerir_banco.py",
+     "--archivo",
+     "{archivo}",
+     "--banco",
+     "RELAY",
+     "--escribir",
+     "--json"
+    ],
+    "parametros": {
+     "archivo": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     },
+     "cuenta": {
+      "tipo": "texto",
+      "patron": "^[0-9]{4}$",
+      "requerido": false,
+      "bandera": "--cuenta"
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
    }
   ]
  }

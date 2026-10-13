@@ -157,8 +157,9 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
                        "tasa": pauta["q"] / pauta["usd"] if pauta["usd"] else gen_pl.TASA_Q},
         "banco_facebook": {"usd": fb_usd if tiene_banco else None,
                            "cargos": fb_cargos if tiene_banco else None},
-        "gastos_fijos": {"q": fijos, "detalle": _detalle_q(det_fijos)},
-        "retiros_personales": {"q": retiros, "detalle": _detalle_q(det_retiros)},
+        # sin extracto del mes no se sabe cuánto fue: null, no un cero (el resultado igual los toma como 0)
+        "gastos_fijos": {"q": fijos if tiene_banco else None, "detalle": _detalle_q(det_fijos)},
+        "retiros_personales": {"q": retiros if tiene_banco else None, "detalle": _detalle_q(det_retiros)},
         "cargos_sin_clasificar": [{"nombre": n, "monto_usd": v} for n, v in sin_conf],
     }
     if r is None:
@@ -169,7 +170,8 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
                         "pct_resuelto": None},
             "venta_entregada_q": None, "costo_producto_q": None, "flete_q": None,
             "margen_logistico_q": None, "devoluciones_q": None, "personal_q": None,
-            "otros_q": None, "margen_contribucion_q": None, "margen_operativo_q": None,
+            "otros_q": None, "costos_operativos_q": None, "margen_contribucion_q": None,
+            "margen_operativo_q": None,
             "resultado_neto_q": None,
             "por_producto": [{"producto_key": pk, "ordenes": 0, "entregadas": 0, "devueltas": 0,
                               "en_transito": 0, "venta_entregada_q": None,
@@ -185,7 +187,10 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
                         "en_transito": len(r.tra), "pct_resuelto": r.pct_res},
             "venta_entregada_q": r.venta, "costo_producto_q": r.costo, "flete_q": r.flete,
             "margen_logistico_q": r.m_log, "devoluciones_q": r.c_dev, "personal_q": r.c_adm,
-            "otros_q": r.c_otr, "margen_contribucion_q": r.m_contr,
+            "otros_q": r.c_otr,
+            # todo lo que se resta entre la venta y el margen de contribución (para graficar un solo bloque)
+            "costos_operativos_q": r.costo + r.flete + r.c_dev + r.c_adm + r.c_otr,
+            "margen_contribucion_q": r.m_contr,
             "margen_operativo_q": r.m_oper, "resultado_neto_q": r.neto,
             "por_producto": r.por_producto,
         })
@@ -215,6 +220,9 @@ def pl_mensual(mercado_pl, desde=None, hasta=None, hoy=None, hechos=None):
     for mes in meses:
         out["meses"].append(_mes(mes, hoy, df_ord, ordenes_mercado, h["ordenes"], mov,
                                  h["reglas"], h["gasto"]))
+    if not meses:
+        out["faltantes"].append("Todavía no hay órdenes de Dropi, movimientos del banco ni pauta "
+                                "cargados para %s." % mercado_pl)
     if ordenes_mercado:
         out["cobertura"]["dropi"] = {"desde": ordenes_mercado[0]["fecha_orden"],
                                      "hasta": ordenes_mercado[-1]["fecha_orden"],

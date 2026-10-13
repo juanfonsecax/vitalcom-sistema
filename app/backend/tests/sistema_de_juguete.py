@@ -158,6 +158,9 @@ def crear(destino: Path, manifiesto: dict[str, Any] | None = None, flujo: dict[s
     ])
     # El resolver de mercado (Ads/_TOOLS/mercado.py) es del sistema: el juguete lleva el real y sus datos.
     shutil.copy2(REPO / "Ads" / "_TOOLS" / "mercado.py", destino / "Ads" / "_TOOLS" / "mercado.py")
+    # Las librerías que comparten los motores de dinero (el gasto de Meta y el escritor de hechos).
+    for libreria in ("alias.py", "gasto.py", "csv_hechos.py"):
+        shutil.copy2(REPO / "Ads" / "_TOOLS" / libreria, destino / "Ads" / "_TOOLS" / libreria)
     _csv(destino / "PRODUCTOS" / "_DIM_MERCADOS.csv", COLUMNAS_MERCADOS, MERCADOS)
     _csv(destino / "PRODUCTOS" / "_PARAMETROS_FINANZAS.csv", ["parametro", "valor"], [
         {"parametro": "tasa_usd_gtq", "valor": "7.62"}, {"parametro": "tasa_cop_usd", "valor": "3152.5"}])

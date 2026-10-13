@@ -20,7 +20,10 @@ from fastapi.staticfiles import StaticFiles
 
 from fastapi.responses import JSONResponse
 
-from . import acciones, api_acciones, api_fase1, api_fases, api_ordenes, api_trabajos, claude, contratos, subidas, workflows
+from . import (
+    acciones, api_acciones, api_fase1, api_fases, api_finanzas, api_ordenes, api_trabajos, claude, contratos,
+    subidas, workflows,
+)
 from .acciones import ErrorDeAccion
 from .config import base
 from .modelos import Costeo, Cuenta, Decisiones, FanPage, Flujo, Mercado, Producto, Resultados, Salud
@@ -61,6 +64,7 @@ app.include_router(api_fase1.router)
 app.include_router(api_ordenes.router)
 app.include_router(api_fases.router)
 app.include_router(api_fases.router_swipe)
+app.include_router(api_finanzas.router)
 
 
 @app.exception_handler(ErrorDeAccion)
@@ -278,6 +282,14 @@ def cargar_resultados(
             )
             job_id, _repetido = workflows.encolar(accion, valores, uuid.uuid4().hex)
             resultado = workflows.esperar_resultado(job_id, TOPE_DEL_PL_S)
+            # Los mismos archivos quedan guardados en los hechos de finanzas (el mensual los lee).
+            persistido = (
+                api_finanzas.persistir_en_finanzas(
+                    Path(valores_crudos["dropi"]), Path(valores_crudos["banco"]) if "banco" in valores_crudos else None
+                )
+                if resultado is not None and resultado["estado"] == "EXITO"
+                else {}
+            )
     except subidas.SubidaRechazada as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
     if resultado is None:
@@ -288,7 +300,7 @@ def cargar_resultados(
     unidad = resultado["unidades"][0]
     if resultado["estado"] != "EXITO":
         raise HTTPException(status_code=422, detail=unidad.get("detalle") or resultado["detalle"])
-    return unidad["json"]
+    return {**unidad["json"], "persistido": persistido}
 
 
 @app.exception_handler(contratos.ContratoAusente)

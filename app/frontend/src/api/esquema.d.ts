@@ -543,6 +543,48 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/resultados/mensual": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Resultado Mensual
+         * @description El estado de resultados de cada mes de un mercado, tal como lo calcula `gen_pl_mensual.py`.
+         *     Colombia (y un mes sin datos) salen vacíos con su nota en `faltantes`: nunca ceros inventados.
+         */
+        get: operations["resultado_mensual_api_resultados_mensual_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/resultados/mensual/cargar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cargar Mensual
+         * @description Guarda lo que el operador sube: el export de Dropi y/o un extracto bancario, cada uno con su
+         *     acción escritora. Se pueden subir por separado (Dropi es semanal, el banco mensual).
+         */
+        post: operations["cargar_mensual_api_resultados_mensual_cargar_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/productos": {
         parameters: {
             query?: never;
@@ -974,6 +1016,15 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** BancoFacebook */
+        BancoFacebook: {
+            /** Usd */
+            usd?: number | null;
+            /** Cargos */
+            cargos?: number | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** BloqueDeFlujo */
         BloqueDeFlujo: {
             /** Titulo */
@@ -1095,6 +1146,25 @@ export interface components {
             datos: string;
             /** Archivo */
             archivo?: string | null;
+        };
+        /** Body_cargar_mensual_api_resultados_mensual_cargar_post */
+        Body_cargar_mensual_api_resultados_mensual_cargar_post: {
+            /**
+             * Dropi
+             * @description export de órdenes de Dropi (.xlsx)
+             */
+            dropi?: string | null;
+            /**
+             * Banco
+             * @description extracto bancario de Relay (.pdf)
+             */
+            banco?: string | null;
+            /**
+             * Cuenta
+             * @description últimos 4 dígitos de la cuenta; vacío = la del extracto
+             * @default
+             */
+            cuenta: string;
         };
         /** Body_cargar_resultados_api_resultados_cargar_post */
         Body_cargar_resultados_api_resultados_cargar_post: {
@@ -1571,6 +1641,32 @@ export interface components {
              * @default []
              */
             productos: unknown[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** DetalleDeGasto */
+        DetalleDeGasto: {
+            /** Nombre */
+            nombre: string;
+            /** Monto Usd */
+            monto_usd: number;
+            /** Monto Q */
+            monto_q: number;
+            /**
+             * Categoria
+             * @default
+             */
+            categoria: string;
+            /**
+             * Mercado
+             * @default
+             */
+            mercado: string;
+            /**
+             * Parte
+             * @default 1
+             */
+            parte: number;
         } & {
             [key: string]: unknown;
         };
@@ -2118,6 +2214,18 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** GastosDelMes */
+        GastosDelMes: {
+            /** Q */
+            q?: number | null;
+            /**
+             * Detalle
+             * @default []
+             */
+            detalle: components["schemas"]["DetalleDeGasto"][];
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * GenerarPrompts
          * @description El botón «Generar los prompts de este ángulo»: la acción del manifiesto con sus parámetros, si se
@@ -2280,6 +2388,102 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * MesDelPL
+         * @description Un mes del estado de resultados. Una línea en `null` es un dato que no se pudo medir (el mes
+         *     no tiene órdenes de Dropi), nunca un cero: el porqué está en `faltantes`.
+         */
+        MesDelPL: {
+            /** Mes */
+            mes: string;
+            /** Desde */
+            desde: string;
+            /** Hasta */
+            hasta: string;
+            /** Preliminar */
+            preliminar?: boolean | null;
+            /** Edad Dias */
+            edad_dias?: number | null;
+            /**
+             * Dias Maduro Umbral
+             * @default 10
+             */
+            dias_maduro_umbral: number;
+            /**
+             * @default {
+             *       "total": 0,
+             *       "entregadas": 0,
+             *       "devueltas": 0,
+             *       "en_transito": 0
+             *     }
+             */
+            ordenes: components["schemas"]["OrdenesDelMes"];
+            /** Venta Entregada Q */
+            venta_entregada_q?: number | null;
+            /** Costo Producto Q */
+            costo_producto_q?: number | null;
+            /** Flete Q */
+            flete_q?: number | null;
+            /** Margen Logistico Q */
+            margen_logistico_q?: number | null;
+            /** Devoluciones Q */
+            devoluciones_q?: number | null;
+            /** Personal Q */
+            personal_q?: number | null;
+            /** Otros Q */
+            otros_q?: number | null;
+            /** Costos Operativos Q */
+            costos_operativos_q?: number | null;
+            /** Margen Contribucion Q */
+            margen_contribucion_q?: number | null;
+            /**
+             * @default {
+             *       "usd": 0,
+             *       "q": 0,
+             *       "meta_usd": 0,
+             *       "lucidsales_fallback_usd": 0,
+             *       "tasa": 0
+             *     }
+             */
+            publicidad: components["schemas"]["PautaDelMes"];
+            /** Margen Operativo Q */
+            margen_operativo_q?: number | null;
+            /** @default {} */
+            banco_facebook: components["schemas"]["BancoFacebook"];
+            /**
+             * @default {
+             *       "detalle": []
+             *     }
+             */
+            gastos_fijos: components["schemas"]["GastosDelMes"];
+            /**
+             * @default {
+             *       "detalle": []
+             *     }
+             */
+            retiros_personales: components["schemas"]["GastosDelMes"];
+            /**
+             * Cargos Sin Clasificar
+             * @default []
+             */
+            cargos_sin_clasificar: {
+                [key: string]: unknown;
+            }[];
+            /** Resultado Neto Q */
+            resultado_neto_q?: number | null;
+            /**
+             * Por Producto
+             * @default []
+             */
+            por_producto: components["schemas"]["ProductoDelMes"][];
+            /**
+             * Faltantes
+             * @default []
+             */
+            faltantes: string[];
+        } & {
+            [key: string]: unknown;
+        };
         /** MiembroDePaso */
         MiembroDePaso: {
             /** Etapa */
@@ -2410,6 +2614,33 @@ export interface components {
              * @default
              */
             simbolo: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** OrdenesDelMes */
+        OrdenesDelMes: {
+            /**
+             * Total
+             * @default 0
+             */
+            total: number;
+            /**
+             * Entregadas
+             * @default 0
+             */
+            entregadas: number;
+            /**
+             * Devueltas
+             * @default 0
+             */
+            devueltas: number;
+            /**
+             * En Transito
+             * @default 0
+             */
+            en_transito: number;
+            /** Pct Resuelto */
+            pct_resuelto?: number | null;
         } & {
             [key: string]: unknown;
         };
@@ -2581,6 +2812,36 @@ export interface components {
              * @default []
              */
             miembros: components["schemas"]["MiembroDePaso"][];
+        } & {
+            [key: string]: unknown;
+        };
+        /** PautaDelMes */
+        PautaDelMes: {
+            /**
+             * Usd
+             * @default 0
+             */
+            usd: number;
+            /**
+             * Q
+             * @default 0
+             */
+            q: number;
+            /**
+             * Meta Usd
+             * @default 0
+             */
+            meta_usd: number;
+            /**
+             * Lucidsales Fallback Usd
+             * @default 0
+             */
+            lucidsales_fallback_usd: number;
+            /**
+             * Tasa
+             * @default 0
+             */
+            tasa: number;
         } & {
             [key: string]: unknown;
         };
@@ -2785,6 +3046,44 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** ProductoDelMes */
+        ProductoDelMes: {
+            /** Producto Key */
+            producto_key: string;
+            /**
+             * Ordenes
+             * @default 0
+             */
+            ordenes: number;
+            /**
+             * Entregadas
+             * @default 0
+             */
+            entregadas: number;
+            /**
+             * Devueltas
+             * @default 0
+             */
+            devueltas: number;
+            /**
+             * En Transito
+             * @default 0
+             */
+            en_transito: number;
+            /** Venta Entregada Q */
+            venta_entregada_q?: number | null;
+            /** Margen Antes Publicidad Q */
+            margen_antes_publicidad_q?: number | null;
+            /**
+             * Pauta Q
+             * @default 0
+             */
+            pauta_q: number;
+            /** Ganancia Q */
+            ganancia_q?: number | null;
+        } & {
+            [key: string]: unknown;
+        };
         /**
          * ReferenciaF1
          * @description La referencia `ligera` fija de FASE 1 elegida para el producto (una sola, para las 6
@@ -2905,6 +3204,43 @@ export interface components {
             n: number;
             /** Texto */
             texto: string;
+        };
+        /**
+         * ResultadoMensual
+         * @description Salida de `gen_pl_mensual.py --json`: el P&L de cada mes de un mercado y lo que le falta.
+         */
+        ResultadoMensual: {
+            /** Mercado */
+            mercado: string;
+            /**
+             * Moneda
+             * @default
+             */
+            moneda: string;
+            /**
+             * Generado
+             * @default
+             */
+            generado: string;
+            /**
+             * Meses
+             * @default []
+             */
+            meses: components["schemas"]["MesDelPL"][];
+            /**
+             * Faltantes
+             * @default []
+             */
+            faltantes: string[];
+            /**
+             * Cobertura
+             * @default {}
+             */
+            cobertura: {
+                [key: string]: unknown;
+            };
+        } & {
+            [key: string]: unknown;
         };
         /**
          * Resultados
@@ -4010,6 +4346,73 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resultado_mensual_api_resultados_mensual_get: {
+        parameters: {
+            query?: {
+                /** @description GT o CO */
+                mercado?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResultadoMensual"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cargar_mensual_api_resultados_mensual_cargar_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_cargar_mensual_api_resultados_mensual_cargar_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
             };
             /** @description Validation Error */
             422: {

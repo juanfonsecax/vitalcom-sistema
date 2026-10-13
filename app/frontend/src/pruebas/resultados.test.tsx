@@ -144,6 +144,7 @@ function montar() {
 
 beforeEach(() => {
   window.localStorage.clear();
+  window.localStorage.setItem("vitalcom-resultados-vista", "periodo"); // estas pruebas son de «Último export»
   servir({ "/api/resultados/historial": [], "/api/mercados": MERCADOS });
 });
 

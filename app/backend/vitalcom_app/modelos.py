@@ -786,3 +786,97 @@ class Fase4Detalle(Base):
     expansion: ExpansionEscalado
     fatiga: FatigaEscalado
 
+
+
+# ── Resultados mes a mes por mercado (`gen_pl_mensual.py --json`) ─────────────────────────────
+# La forma la fija el script; los números llegan tal cual (la app no calcula). Todo monto de Dropi
+# viaja en la moneda del mercado y el del banco en dólares, como el script los dice.
+
+
+class PautaDelMes(Base):
+    usd: float = 0.0
+    q: float = 0.0
+    meta_usd: float = 0.0
+    lucidsales_fallback_usd: float = 0.0
+    tasa: float = 0.0
+
+
+class BancoFacebook(Base):
+    usd: float | None = None
+    cargos: int | None = None
+
+
+class DetalleDeGasto(Base):
+    nombre: str
+    monto_usd: float
+    monto_q: float
+    categoria: str = ""
+    mercado: str = ""
+    parte: float = 1.0
+
+
+class GastosDelMes(Base):
+    q: float | None = None
+    detalle: list[DetalleDeGasto] = []
+
+
+class OrdenesDelMes(Base):
+    total: int = 0
+    entregadas: int = 0
+    devueltas: int = 0
+    en_transito: int = 0
+    pct_resuelto: float | None = None
+
+
+class ProductoDelMes(Base):
+    producto_key: str
+    ordenes: int = 0
+    entregadas: int = 0
+    devueltas: int = 0
+    en_transito: int = 0
+    venta_entregada_q: float | None = None
+    margen_antes_publicidad_q: float | None = None
+    pauta_q: float = 0.0
+    ganancia_q: float | None = None
+
+
+class MesDelPL(Base):
+    """Un mes del estado de resultados. Una línea en `null` es un dato que no se pudo medir (el mes
+    no tiene órdenes de Dropi), nunca un cero: el porqué está en `faltantes`."""
+
+    mes: str
+    desde: str
+    hasta: str
+    preliminar: bool | None = None
+    edad_dias: int | None = None
+    dias_maduro_umbral: int = 10
+    ordenes: OrdenesDelMes = OrdenesDelMes()
+    venta_entregada_q: float | None = None
+    costo_producto_q: float | None = None
+    flete_q: float | None = None
+    margen_logistico_q: float | None = None
+    devoluciones_q: float | None = None
+    personal_q: float | None = None
+    otros_q: float | None = None
+    costos_operativos_q: float | None = None  # producto + flete + devoluciones + personal + otros
+    margen_contribucion_q: float | None = None
+    publicidad: PautaDelMes = PautaDelMes()
+    margen_operativo_q: float | None = None
+    banco_facebook: BancoFacebook = BancoFacebook()
+    gastos_fijos: GastosDelMes = GastosDelMes()
+    retiros_personales: GastosDelMes = GastosDelMes()
+    cargos_sin_clasificar: list[dict[str, Any]] = []
+    resultado_neto_q: float | None = None
+    por_producto: list[ProductoDelMes] = []
+    faltantes: list[str] = []
+
+
+class ResultadoMensual(Base):
+    """Salida de `gen_pl_mensual.py --json`: el P&L de cada mes de un mercado y lo que le falta."""
+
+    mercado: str
+    moneda: str = ""
+    generado: str = ""
+    meses: list[MesDelPL] = []
+    faltantes: list[str] = []
+    cobertura: dict[str, Any] = {}

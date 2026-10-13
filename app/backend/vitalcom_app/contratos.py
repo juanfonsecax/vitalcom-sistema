@@ -34,6 +34,7 @@ AUDITORIAS = ("PRODUCTOS", "_AUDITORIAS")
 FLUJO_PY = ("Ads", "_TOOLS", "flujo.py")
 COSTEAR_PY = ("Ads", "_TOOLS", "costear.py")
 GEN_ORDENES_PY = ("Ads", "_TOOLS", "gen_ordenes.py")
+GEN_PL_MENSUAL_PY = ("Ads", "_TOOLS", "gen_pl_mensual.py")
 
 # Lo que la pantalla necesita de _DIM_PRODUCTOS.csv. El resto de las columnas (notas de
 # auditoría, alias de carpetas, tasas) no se sirven: la app muestra, no vuelca el CSV.
@@ -280,6 +281,22 @@ def resultados() -> dict[str, Any]:
         )
     with archivos[-1].open(encoding="utf-8") as fh:
         return json.load(fh)
+
+
+def resultado_mensual(mercado: str) -> dict[str, Any]:
+    """Corre `gen_pl_mensual.py --mercado <M> --json` (SOLO LEE): el estado de resultados de cada mes.
+
+    Nada se calcula acá: los hechos persistidos (Dropi, banco, Meta) los lee el script y la fórmula
+    es la de `gen_pl.py`."""
+    completado = subprocess.run(
+        [python_del_sistema(), str(ruta(*GEN_PL_MENSUAL_PY)), "--mercado", mercado, "--json"],
+        cwd=str(ruta()), capture_output=True, text=True,
+        encoding="utf-8", errors="replace", timeout=120,
+    )
+    if completado.returncode != 0 or not completado.stdout.strip():
+        detalle = (completado.stderr or completado.stdout or "sin salida").strip()
+        raise ContratoAusente(f"gen_pl_mensual.py falló para «{mercado}»: {detalle[-600:]}")
+    return json.loads(completado.stdout)
 
 
 def flujo(producto_key: str, hoy: str | None = None) -> dict[str, Any]:

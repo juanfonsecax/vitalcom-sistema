@@ -43,6 +43,9 @@ export type OrdenesRespuesta = components["schemas"]["OrdenesRespuesta"];
 export type ParametroMotor = components["schemas"]["ParametroMotor"];
 export type Ganador = components["schemas"]["Ganador"];
 export type Resultados = components["schemas"]["Resultados"];
+export type ResultadoMensual = components["schemas"]["ResultadoMensual"];
+export type MesDelPL = components["schemas"]["MesDelPL"];
+export type ProductoDelMes = components["schemas"]["ProductoDelMes"];
 
 /** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
  * las imágenes que tiene que subir a mano a la biblioteca de Meta. */
@@ -220,6 +223,14 @@ export const api = {
   fase4: (clave: string) => pedir<Fase4Detalle>(`/api/productos/${encodeURIComponent(clave)}/fase4`),
   resultados: () => pedir<Resultados>("/api/resultados"),
   historialResultados: () => pedir<Resultados[]>("/api/resultados/historial"),
+  resultadoMensual: (mercado: string) =>
+    pedir<ResultadoMensual>(`/api/resultados/mensual?mercado=${encodeURIComponent(mercado)}`),
+  /** Guarda un export de Dropi y/o un extracto bancario en los hechos de finanzas. */
+  cargarMensual: (formulario: FormData) =>
+    pedir<{ dropi?: Record<string, unknown>; banco?: Record<string, unknown> }>(
+      "/api/resultados/mensual/cargar",
+      { method: "POST", body: formulario },
+    ),
   cargarResultados: (formulario: FormData) =>
     pedir<Resultados>("/api/resultados/cargar", { method: "POST", body: formulario }),
   reingresoF1: (clave: string, motivo?: string) =>
