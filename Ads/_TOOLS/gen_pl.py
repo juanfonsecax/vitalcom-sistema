@@ -308,6 +308,57 @@ def clasificar(nombre, reglas):
     return "SIN_CLASIFICAR", "", ""
 
 
+def gastos_del_banco(mov, reglas, ini, fin, activos):
+    """Cargos del banco de [ini, fin] clasificados con `_DIM_GASTOS.csv` (CONTABILIDAD.md §3-ter).
+
+      NEGOCIO_PAUTA  -> ya contado en la línea de Publicidad, no se resta otra vez (se reporta
+                        aparte como lo que el banco cobró)
+      NEGOCIO_FIJO   -> resta del RESULTADO (software, herramientas)
+      PERSONAL       -> RETIRO DE SOCIO: NO toca el resultado, sí la caja
+      SIN_CLASIFICAR -> no entra a nada; se lista y se pregunta (APR-030)
+    Un gasto COMPARTIDO se reparte entre los mercados `activos` (`parte_de_mercado`); si ningún
+    mercado está activo queda en `sin_repartir`. `mov` None = sin extracto."""
+    from types import SimpleNamespace
+    fijos, retiros, sin_confirmar = 0.0, 0.0, []
+    det_fijos, det_retiros, sin_repartir = [], [], []
+    pauta_usd, pauta_cargos = 0.0, 0
+    if mov is not None:
+        agr = collections.defaultdict(float)
+        cargos = collections.Counter()
+        for t in mov:
+            if t.get("tipo", "SALIDA") == "SALIDA" and ini <= str(t["fecha"]) <= fin:
+                agr[t["nombre"]] += t["monto"]
+                cargos[t["nombre"]] += 1
+        pend = collections.defaultdict(float)
+        for nom, val in agr.items():
+            cl, cat, merc_gasto = clasificar(nom, reglas)
+            if cl in ("NEGOCIO_FIJO", "PERSONAL", "NEGOCIO_PAUTA"):
+                parte = parte_de_mercado(merc_gasto, MERCADO_PL, activos)
+                if not parte:
+                    if (merc_gasto or "COMPARTIDO").upper() == "COMPARTIDO" and cl != "NEGOCIO_PAUTA":
+                        sin_repartir.append(nom)
+                    continue
+                if cl == "NEGOCIO_PAUTA":
+                    pauta_usd += val * parte
+                    pauta_cargos += cargos[nom]
+                    continue
+                det = {"nombre": nom, "monto_usd": val * parte, "categoria": cat,
+                       "mercado": merc_gasto or "COMPARTIDO", "parte": parte}
+                if cl == "NEGOCIO_FIJO":
+                    fijos += val * parte * TASA_Q
+                    det_fijos.append(det)
+                else:
+                    retiros += val * parte * TASA_Q
+                    det_retiros.append(det)
+            elif cl == "SIN_CLASIFICAR":
+                pend[nom] += val
+        sin_confirmar = sorted(pend.items(), key=lambda kv: -kv[1])
+    return SimpleNamespace(fijos=fijos, retiros=retiros, det_fijos=det_fijos,
+                           det_retiros=det_retiros, sin_confirmar=sin_confirmar,
+                           sin_repartir=sin_repartir, pauta_usd=pauta_usd,
+                           pauta_cargos=pauta_cargos)
+
+
 def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None, car=None,
                      fin_edad=None):
     """VISTA A (cohorte por fecha de ORDEN) de la ventana [ini, fin]: el estado de resultados de §3.
@@ -363,38 +414,10 @@ def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None
     tasa_pauta = pauta_q / pauta_usd if pauta_usd else TASA_Q      # tasa efectiva (la de cada producto)
     m_oper = m_contr - pauta_q
 
-    # ── clasificación de cargos del banco (DOCTRINA/CONTABILIDAD.md §3-ter) ──
-    #   NEGOCIO_PAUTA  -> ya contado en la línea de Publicidad, no se resta otra vez
-    #   NEGOCIO_FIJO   -> resta del RESULTADO (software, herramientas)
-    #   PERSONAL       -> RETIRO DE SOCIO: NO toca el resultado, sí la caja
-    #   SIN_CLASIFICAR -> no entra a nada; se lista y se pregunta (APR-030)
-    # Un gasto COMPARTIDO se reparte entre los mercados activos (`parte_de_mercado`).
     activos = set(activos) if activos else {MERCADO_PL}
-    fijos, retiros, sin_confirmar = 0.0, 0.0, []
-    det_fijos, det_retiros = [], []
-    if mov is not None:
-        agr = collections.defaultdict(float)
-        for t in mov:
-            if t.get("tipo", "SALIDA") == "SALIDA" and ini <= str(t["fecha"]) <= fin:
-                agr[t["nombre"]] += t["monto"]
-        pend = collections.defaultdict(float)
-        for nom, val in agr.items():
-            cl, cat, merc_gasto = clasificar(nom, reglas)
-            if cl in ("NEGOCIO_FIJO", "PERSONAL"):
-                parte = parte_de_mercado(merc_gasto, MERCADO_PL, activos)
-                if not parte:
-                    continue
-                det = {"nombre": nom, "monto_usd": val * parte, "categoria": cat,
-                       "mercado": merc_gasto or "COMPARTIDO", "parte": parte}
-                if cl == "NEGOCIO_FIJO":
-                    fijos += val * parte * TASA_Q
-                    det_fijos.append(det)
-                else:
-                    retiros += val * parte * TASA_Q
-                    det_retiros.append(det)
-            elif cl == "SIN_CLASIFICAR":
-                pend[nom] += val
-        sin_confirmar = sorted(pend.items(), key=lambda kv: -kv[1])
+    banco = gastos_del_banco(mov, reglas, ini, fin, activos)
+    fijos, retiros = banco.fijos, banco.retiros
+    det_fijos, det_retiros, sin_confirmar = banco.det_fijos, banco.det_retiros, banco.sin_confirmar
     neto = m_oper - fijos
 
     # ── economía unitaria por producto (§4) ──
@@ -425,7 +448,32 @@ def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None
             "ganancia_por_venta_q": be - cpa,
         })
 
+    # ── desglose por producto: la misma fórmula, partida por `pk` (suma al total) ──
+    por_producto = []
+    for pk in sorted(set(m["pk"]) | set(pauta["q_por_producto"])):
+        mp = m[m.pk == pk]
+        ep, dp = mp[mp.ESTATUS == "ENTREGADO"], mp[mp.ESTATUS == "DEVOLUCION"]
+        v_p = float(ep["TOTAL DE LA ORDEN"].sum())
+        c_p = float(ep["PRECIO PROVEEDOR X CANTIDAD"].sum())
+        f_p = float(ep["PRECIO FLETE"].sum())
+        if car is not None:
+            cob_p = car[(car.cat == "COBRO_DEVOLUCION") & (car["ORDEN ID"].isin(set(dp["ID"])))]
+            dev_p = float(cob_p["MONTO"].sum()) + max(len(dp) - len(cob_p), 0) * C_DEVOL
+        else:
+            dev_p = len(dp) * C_DEVOL
+        marg_p = v_p - c_p - f_p - dev_p - len(ep) * (C_ADMIN + C_OTROS)
+        pauta_p = pauta["q_por_producto"][pk]
+        por_producto.append({
+            "producto_key": pk, "ordenes": len(mp), "entregadas": len(ep), "devueltas": len(dp),
+            "en_transito": int((~mp.ESTATUS.isin(RESUELTOS)).sum()),
+            "venta_entregada_q": v_p, "costo_producto_q": c_p, "flete_q": f_p,
+            "devoluciones_q": dev_p, "personal_y_otros_q": len(ep) * (C_ADMIN + C_OTROS),
+            "margen_antes_publicidad_q": marg_p, "pauta_q": pauta_p,
+            "ganancia_q": marg_p - pauta_p})
+
     return SimpleNamespace(
+        pauta_banco_usd=banco.pauta_usd, pauta_banco_cargos=banco.pauta_cargos,
+        sin_repartir=banco.sin_repartir, por_producto=por_producto,
         m=m, ent=ent, dev=dev, tra=tra, edad=edad, maduro=maduro, pct_res=pct_res,
         venta=venta, costo=costo, flete=flete, m_log=m_log, c_dev=c_dev, origen_dev=origen_dev,
         c_adm=c_adm, c_otr=c_otr, m_contr=m_contr, pauta=pauta, pauta_usd=pauta_usd,

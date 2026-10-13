@@ -333,6 +333,58 @@ class FormulaDeLaVentana(unittest.TestCase):
                                                   datetime.date(2024, 6, 1), pauta))
 
 
+class GastosDelBanco(unittest.TestCase):
+    """El bloque del banco se puede pedir solo, para un mes sin órdenes de Dropi."""
+
+    def test_separa_fijos_retiros_pauta_y_pendientes(self) -> None:
+        g = gen_pl.gastos_del_banco(MOV, REGLAS, "2024-01-01", "2024-01-31", {"GT"})
+        self.assertAlmostEqual(g.fijos, 26.0 * gen_pl.TASA_Q)
+        self.assertAlmostEqual(g.retiros, 50.0 * gen_pl.TASA_Q)
+        self.assertAlmostEqual(g.pauta_usd, 100.0)
+        self.assertEqual(g.pauta_cargos, 1)
+        self.assertEqual(g.sin_confirmar, [("COSA NUEVA", 3.0)])
+        self.assertEqual(g.sin_repartir, [])
+
+    def test_sin_mercado_activo_los_compartidos_quedan_sin_repartir(self) -> None:
+        g = gen_pl.gastos_del_banco(MOV, REGLAS, "2024-01-01", "2024-01-31", set())
+        self.assertEqual(g.fijos, 0.0)
+        self.assertEqual(sorted(g.sin_repartir), ["LUCIDSALES, LLC", "MINIMED X"])
+
+    def test_la_formula_de_una_ventana_expone_la_pauta_del_banco(self) -> None:
+        pauta = gen_pl.pauta_de_la_ventana("2024-01-01", "2024-01-31", [])
+        r = gen_pl.calcular_vista_a(_ordenes_df(datetime.date(2024, 1, 1)), "2024-01-01",
+                                    "2024-01-31", datetime.date(2024, 6, 1), pauta,
+                                    mov=MOV, reglas=REGLAS, activos={"GT"})
+        self.assertAlmostEqual(r.pauta_banco_usd, 100.0)
+        self.assertEqual(r.pauta_banco_cargos, 1)
+
+
+class DesgloseDeLaVentanaPorProducto(unittest.TestCase):
+    def test_los_productos_suman_el_total_y_la_pauta_sin_ordenes_aparece(self) -> None:
+        import pandas as pd
+        base = _ordenes_df(datetime.date(2024, 1, 1))
+        otro = pd.DataFrame([_fila(9, "Spray para Oídos (Tinnidrop / Alivio)", "ENTREGADO",
+                                   datetime.date(2024, 1, 2), 179.0, 30.0, 41.0)])
+        otro["pk"] = otro["PRODUCTO"].map(gen_pl.pk_dropi)
+        otro["f_orden"] = pd.to_datetime(otro["FECHA"], format="%d-%m-%Y")
+        otro["f_mov"] = otro["f_orden"]
+        df = pd.concat([base, otro], ignore_index=True)
+        pauta = gen_pl.pauta_de_la_ventana("2024-01-01", "2024-01-31", [
+            _gasto("TINNIDROP", "2024-01-05", 10.0, ventas=1),
+            _gasto("NUSAVA", "2024-01-05", 4.0)])
+        r = gen_pl.calcular_vista_a(df, "2024-01-01", "2024-01-31", datetime.date(2024, 6, 1), pauta)
+        por = {p["producto_key"]: p for p in r.por_producto}
+        self.assertEqual(set(por), {"CLEARSTEM", "TINNIDROP", "NUSAVA"})
+        self.assertEqual(por["CLEARSTEM"]["entregadas"], 2)
+        self.assertEqual(por["CLEARSTEM"]["devueltas"], 1)
+        self.assertAlmostEqual(por["CLEARSTEM"]["venta_entregada_q"], 550.0)
+        self.assertAlmostEqual(por["NUSAVA"]["pauta_q"], 4.0 * gen_pl.TASA_Q)
+        self.assertEqual(por["NUSAVA"]["entregadas"], 0)
+        self.assertAlmostEqual(sum(p["margen_antes_publicidad_q"] for p in r.por_producto), r.m_contr)
+        self.assertAlmostEqual(sum(p["pauta_q"] for p in r.por_producto), r.pauta_q)
+        self.assertAlmostEqual(sum(p["ganancia_q"] for p in r.por_producto), r.m_oper)
+
+
 class ReportePorCli(unittest.TestCase):
     def test_el_json_declara_de_donde_sale_la_pauta(self) -> None:
         with tempfile.TemporaryDirectory() as d:
