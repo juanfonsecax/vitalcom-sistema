@@ -42,6 +42,18 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
 - [x] T3 Monthly P&L by market (CLI `--json`) reusing gen_pl's formula — 5dd95a1
 - [x] T4 App screen: market selector, monthly charts/table, per-product, preliminary flag — ad704d6
 
+- [x] T5 Meta spend dedupe: `MetaAPI-directo` supersedes other sources for the same account-day
+  (CSV + Postgres + gasto.py + dbt mirror); every GT account-month equals live Meta — 7989e11, 37d7c9a
+- [x] T6 Ingest Jul-Aug Dropi orders and the Dropi wallet history; classify withdrawals by
+  `CONCEPTO DE RETIRO` (own transfer vs personal draw vs unclassified) — 1631d8b
+- [x] T7 Dashboard: Jul-Aug months, real return cost from the wallet, withdrawals and transfers
+  shown apart from profit, Dropi wallet balance — e6a37df (+ 80af2c3 toy-system fix)
+
+- [ ] T8 Effective FX rate: Q withdrawn from Dropi ÷ USD received (pair TRANSFERENCIA_PROPIA wallet
+  rows with bank deposits; operator-confirmed pair 2026-10-01 Q90,000 → $11,381 ≈ 7.908). Monthly ad
+  spend converts with the weighted rate of recent transfers, else the latest known; parameter 7.62
+  only when no transfer exists. Starts after T5–T7 (same files).
+
 ## Acceptance
 - Re-ingesting the same files changes nothing (idempotent).
 - September GT: ad spend equals Meta ($2,188.62 incl. GTR13 from `_FACT_ENTREGA`); bank Facebook
@@ -68,4 +80,27 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
   --validar-manifiesto valid; flujo.py --validar valid; screen checked live on the real data.
 - Not done: the full backend suite (it did not finish in a reasonable time here); gen_finanzas.py and
   gen_dashboard.py still read LucidSales `spend_usd` (they are the tracked-attribution layer, not the P&L).
-
+- 2026-10-13 (T5-T7): the CSV doubled Meta spend because older sources (Ads Manager export, MCP, 4-7
+  day windows) describe the same account-day with other conjunto names or windows. Rule: for one
+  account and day `MetaAPI-directo` wins (`upsert_fact.superar_por_api_directa`; a window is dropped
+  only if the API covers all its days, a gap of up to 7 days without API rows counts as covered).
+  Applied on write (bajar_meta_insights, ingerir_meta, Postgres upsert), on read (`gasto.py`) and in
+  dbt (`entrega_con_superada` macro); `reconciliar_entrega.py --escribir` cleaned the history
+  (637 + 177 rows). Second cause found while checking the P&L: LucidSales windows of 3-8 days and
+  float account ids ('123.0') never matched Meta's daily rows, so their spend fell to the fallback on
+  top of Meta (about USD 1,900 over Jul-Aug); a sale whose window Meta covers now keeps its sales and
+  contributes zero spend. GT account-months equal live Meta (tolerance 0.02) except Oct GTR0
+  (2.54 vs 2.62, one day of lag). Remaining LucidSales fallback: USD 61.53 Jul / 37.71 Aug from the
+  retired COP account CP1 (no API coverage).
+- decidir.py before/after: same actions (RENOVAR 3, ESCALAR 1, SEGUIR_MIDIENDO 3, PAUSAR 0), no order
+  changed; accumulated spend per angle fell 8-27% and the CPA in three RENOVAR texts fell (Q57.6 to
+  Q42.6, Q65.0 to Q46.9, Q113.6 to Q78.9; BE Q105.9).
+- Wallet: 393 movements (2026-09-01 to 2026-10-13), balance chain continuous; Jul-Aug orders 586;
+  945 orders total. Return cost is REAL where the wallet covers the month from day 1 (Sep MIXTO 50/51,
+  Oct REAL 3/3) and the parameter average for Jul-Aug (flagged in each month).
+- Checks observed: Ads/_TOOLS test_gasto, test_upsert_fact, test_reconciliar_entrega,
+  test_bajar_meta_insights, test_ingerir_cartera, test_ingerir_dropi, test_gen_pl, test_gen_pl_mensual,
+  test_decidir, test_flujo all exit 0; backend pytest (acciones, finanzas_mensual, resultados,
+  sin_aritmetica, api_espeja_los_csv, mercado_en_la_api) 63 passed; vitest 214 passed; tsc -b and vite
+  build clean; dbt build PASS=36; gen_app --validar-manifiesto and flujo --validar valid. db/test_db.py:
+  8 failures all `voz_cliente.producto_key` missing in the local Postgres schema (not from this work).
