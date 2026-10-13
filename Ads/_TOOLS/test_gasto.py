@@ -367,6 +367,55 @@ def test_escribir_conjunto_ventana_csv_roundtrip():
         return 0 if ok else 1
 
 
+def test_conjunto_api_directa_supera_export_del_mismo_dia_aunque_cambie_el_nombre():
+    """Doble conteo real (13-oct-2026): el export de Ads Manager y la API directa describen el
+    MISMO dia de la MISMA cuenta con otro nombre de conjunto. Solo cuenta la API directa."""
+    filas = gasto.gasto_por_conjunto_ventana(
+        filas_venta=[],
+        filas_entrega_conjunto=[
+            _fila_entrega_conjunto(conjunto="CONJ_A", spend_usd="80.0"),
+            _fila_entrega_conjunto(conjunto="CONJ_A viejo", spend_usd="60.0", fuente="AdsManager-export-1d"),
+        ],
+    )
+    total = sum(f["spend_usd"] for f in filas)
+    ok = abs(total - 80.0) < 1e-9
+    print(("  OK     " if ok else "  FALLA  ") + "grano conjunto: dos fuentes para la misma cuenta-dia no se suman"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_conjunto_export_sin_cobertura_api_sigue_contando():
+    filas = gasto.gasto_por_conjunto_ventana(
+        filas_venta=[],
+        filas_entrega_conjunto=[
+            _fila_entrega_conjunto(conjunto="CONJ_A", spend_usd="80.0"),
+            _fila_entrega_conjunto(conjunto="CONJ_A", spend_usd="60.0", fuente="AdsManager-export-1d",
+                                   ventana_ini="2026-09-05", ventana_fin="2026-09-05"),
+        ],
+    )
+    total = sum(f["spend_usd"] for f in filas)
+    ok = abs(total - 140.0) < 1e-9
+    print(("  OK     " if ok else "  FALLA  ") + "grano conjunto: un dia sin API directa conserva el export"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
+def test_anuncio_api_directa_supera_export_del_mismo_dia():
+    filas = gasto.gasto_por_anuncio_ventana(
+        filas_venta=[],
+        filas_entrega_anuncio=[
+            _fila_entrega_anuncio(ad_id="999", spend_usd="50.0"),
+            _fila_entrega_anuncio(ad_id="", anuncio="ANU viejo", spend_usd="40.0",
+                                  fuente="AdsManager-export-1d"),
+        ],
+    )
+    total = sum(f["spend_usd"] for f in filas)
+    ok = abs(total - 50.0) < 1e-9
+    print(("  OK     " if ok else "  FALLA  ") + "grano anuncio: dos fuentes para la misma cuenta-dia no se suman"
+          + ("" if ok else f"\n         {filas}"))
+    return 0 if ok else 1
+
+
 def main():
     pruebas = [
         test_conjunto_meta_gana_y_se_cuenta_una_sola_vez,
@@ -388,6 +437,9 @@ def main():
         test_invariante_conservacion_de_plata_grano_anuncio,
         test_indice_gasto_por_anuncio_resuelve_por_llave,
         test_escribir_conjunto_ventana_csv_roundtrip,
+        test_conjunto_api_directa_supera_export_del_mismo_dia_aunque_cambie_el_nombre,
+        test_conjunto_export_sin_cobertura_api_sigue_contando,
+        test_anuncio_api_directa_supera_export_del_mismo_dia,
     ]
     fallas = sum(p() for p in pruebas)
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")

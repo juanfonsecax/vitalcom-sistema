@@ -274,6 +274,108 @@ def test_ingestion_a_base_temporal_escribe_su_backup_en_RESPALDOS(tmp):
     return 0 if ok else 1
 
 
+def _e(fuente, cuenta, ini, fin=None, spend="10.0", conjunto="C"):
+    return {"fuente": fuente, "cuenta_id": cuenta, "ventana_ini": ini, "ventana_fin": fin or ini,
+            "conjunto": conjunto, "spend_usd": spend}
+
+
+COLS_E = ["fuente", "cuenta_id", "ventana_ini", "ventana_fin", "conjunto", "spend_usd"]
+
+
+def test_api_directa_supera_otras_fuentes_misma_cuenta_y_dia(tmp):
+    filas = [
+        _e("MetaAPI-directo", "A", "2026-09-10"),
+        _e("AdsManager-export-1d", "A", "2026-09-10", conjunto="C viejo"),
+        _e("MCP_META", "A", "2026-09-10"),
+        _e("AdsManager-export-1d", "B", "2026-09-10"),   # otra cuenta: queda
+        _e("AdsManager-export-1d", "A", "2026-09-11"),   # otro dia: queda
+    ]
+    cons, sup, parc = uf.superar_por_api_directa(filas)
+    quedan = sorted((f["fuente"], f["cuenta_id"], f["ventana_ini"]) for f in cons)
+    ok = (len(sup) == 2 and not parc and quedan == [
+        ("AdsManager-export-1d", "A", "2026-09-11"), ("AdsManager-export-1d", "B", "2026-09-10"),
+        ("MetaAPI-directo", "A", "2026-09-10")])
+    print(("  OK     " if ok else "  FALLA  ") + "MetaAPI-directo supera a las otras fuentes de la misma cuenta y dia"
+          + ("" if ok else f"\n         {quedan} sup={len(sup)}"))
+    return 0 if ok else 1
+
+
+def test_ventana_multidia_solo_se_supera_si_la_api_cubre_todos_sus_dias(tmp):
+    api = [_e("MetaAPI-directo", "A", d) for d in ("2026-09-10", "2026-09-11")]
+    completa = _e("AdsManager-export-4d", "A", "2026-09-10", "2026-09-11", spend="20.0")
+    parcial = _e("MCP-ladoads-7d", "A", "2026-09-10", "2026-09-16", spend="70.0")
+    lejana = _e("MCP-ladoads-3d", "A", "2026-09-20", "2026-09-22", spend="30.0")
+    cons, sup, parc = uf.superar_por_api_directa(api + [completa, parcial, lejana])
+    fuentes = sorted(f["fuente"] for f in cons)
+    ok = (sup == [completa] and parc == [parcial]
+          and fuentes == ["MCP-ladoads-3d", "MCP-ladoads-7d", "MetaAPI-directo", "MetaAPI-directo"])
+    print(("  OK     " if ok else "  FALLA  ") + "ventana multidia: se supera si la API cubre todos sus dias; "
+          "parcial se conserva y se reporta" + ("" if ok else f"\n         sup={sup} parc={parc} {fuentes}"))
+    return 0 if ok else 1
+
+
+def test_dia_sin_gasto_entre_dos_dias_de_la_api_cuenta_como_cubierto(tmp):
+    """Una ventana de 3 dias con un dia sin filas de la API en medio (dia sin gasto propio) queda
+    superada; si el hueco es largo (tramo nunca consultado) se conserva."""
+    api = [_e("MetaAPI-directo", "A", d) for d in ("2026-09-10", "2026-09-12")]
+    corta = _e("MCP-ladoads-3d", "A", "2026-09-10", "2026-09-12", spend="30.0")
+    api_lejos = [_e("MetaAPI-directo", "B", d) for d in ("2026-09-01", "2026-09-30")]
+    larga = _e("MCP-ladoads-7d", "B", "2026-09-10", "2026-09-16", spend="70.0")
+    cons, sup, parc = uf.superar_por_api_directa(api + [corta] + api_lejos + [larga])
+    ok = sup == [corta] and larga in cons and larga not in parc
+    print(("  OK     " if ok else "  FALLA  ") + "un dia sin gasto entre dos dias de la API cuenta como cubierto; "
+          "un hueco largo no" + ("" if ok else f"\n         sup={sup} parc={parc}"))
+    return 0 if ok else 1
+
+
+def test_fila_sin_cuenta_id_se_atribuye_por_su_alias(tmp):
+    api = [dict(_e("MetaAPI-directo", "A", d), cuenta_alias="GTR7") for d in ("2026-09-10", "2026-09-11")]
+    sin_id = dict(_e("AdsManager-export-4d", "", "2026-09-10", "2026-09-11"), cuenta_alias="GTR7")
+    otro = dict(_e("AdsManager-export-4d", "", "2026-09-10", "2026-09-11"), cuenta_alias="GTR9")
+    cons, sup, parc = uf.superar_por_api_directa(api + [sin_id, otro])
+    ok = sup == [sin_id] and otro in cons
+    print(("  OK     " if ok else "  FALLA  ") + "una fila sin cuenta_id se atribuye por su alias; un alias desconocido no se toca"
+          + ("" if ok else f"\n         sup={sup}"))
+    return 0 if ok else 1
+
+
+def test_sin_api_directa_no_se_toca_nada(tmp):
+    filas = [_e("AdsManager-export-1d", "A", "2026-09-10"), _e("MCP_META", "B", "2026-09-10")]
+    cons, sup, parc = uf.superar_por_api_directa(filas)
+    ok = cons == filas and not sup and not parc
+    print(("  OK     " if ok else "  FALLA  ") + "sin filas de API directa no se elimina nada")
+    return 0 if ok else 1
+
+
+def test_fusionar_con_reconciliar_elimina_las_superadas_y_es_idempotente(tmp):
+    existentes = [_e("AdsManager-export-1d", "A", "2026-09-10", conjunto="viejo", spend="9.0")]
+    nuevas = [_e("MetaAPI-directo", "A", "2026-09-10", conjunto="nuevo", spend="10.0")]
+    llave = ("fuente", "cuenta_id", "ventana_ini", "conjunto")
+    res, reemp, nue, sc, elim = uf.fusionar(existentes, nuevas, COLS_E, llave,
+                                            reconciliar=uf.superar_por_api_directa)
+    res2, reemp2, nue2, sc2, elim2 = uf.fusionar(res, nuevas, COLS_E, llave,
+                                                 reconciliar=uf.superar_por_api_directa)
+    ok = (len(res) == 1 and res[0]["fuente"] == "MetaAPI-directo" and (nue, elim) == (1, 1)
+          and res2 == res and (reemp2, nue2, elim2) == (0, 0, 0))
+    print(("  OK     " if ok else "  FALLA  ") + "fusionar(reconciliar=...) elimina lo superado y re-correr no cambia nada"
+          + ("" if ok else f"\n         {res} {(reemp, nue, sc, elim)} {(reemp2, nue2, sc2, elim2)}"))
+    return 0 if ok else 1
+
+
+def test_upsert_con_reconciliar_devuelve_eliminadas_y_reescribe(tmp):
+    path = os.path.join(tmp, "e.csv")
+    bkdir = os.path.join(tmp, "bk")
+    key = ("fuente", "cuenta_id", "ventana_ini", "conjunto")
+    uf.upsert(path, COLS_E, key, [_e("AdsManager-export-1d", "A", "2026-09-10", conjunto="viejo")], bkdir)
+    r = uf.upsert(path, COLS_E, key, [_e("MetaAPI-directo", "A", "2026-09-10")], bkdir,
+                  reconciliar=uf.superar_por_api_directa)
+    filas = _leer(path)
+    ok = len(r) == 4 and r[3] == 1 and [f["fuente"] for f in filas] == ["MetaAPI-directo"]
+    print(("  OK     " if ok else "  FALLA  ") + "upsert(reconciliar=...) reescribe el CSV sin la fila superada"
+          + ("" if ok else f"\n         {r} {filas}"))
+    return 0 if ok else 1
+
+
 def main():
     import tempfile as _t
     pruebas = [
@@ -287,6 +389,13 @@ def main():
         test_particion_no_tocada_queda_intacta,
         test_particion_idempotente_no_reescribe,
         test_particion_elimina_anuncio_desaparecido,
+        test_api_directa_supera_otras_fuentes_misma_cuenta_y_dia,
+        test_ventana_multidia_solo_se_supera_si_la_api_cubre_todos_sus_dias,
+        test_dia_sin_gasto_entre_dos_dias_de_la_api_cuenta_como_cubierto,
+        test_fila_sin_cuenta_id_se_atribuye_por_su_alias,
+        test_sin_api_directa_no_se_toca_nada,
+        test_fusionar_con_reconciliar_elimina_las_superadas_y_es_idempotente,
+        test_upsert_con_reconciliar_devuelve_eliminadas_y_reescribe,
         test_respaldos_dir_resuelve_bajo__RESPALDOS,
         test_ingestion_a_base_temporal_escribe_su_backup_en_RESPALDOS,
     ]

@@ -26,6 +26,7 @@ meta_agg as (
         sum(spend_usd) as spend_usd
     from {{ ref('stg_entrega_conjunto') }}
     where fuente in ('MetaAPI-directo', 'AdsManager-export-1d')
+      and not superada_por_api   -- precedencia por fuente: ver macros/entrega_con_superada.sql
     group by 1, 2, 3, 4, 5, 6
 )
 select

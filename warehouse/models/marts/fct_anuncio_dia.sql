@@ -24,4 +24,5 @@ select
     sum(a.spend_usd)   as spend_usd
 from {{ ref('stg_entrega_anuncio') }} a
 left join {{ ref('stg_productos') }} p on p.producto_key = a.producto_key
+where not a.superada_por_api   -- precedencia por fuente: ver macros/entrega_con_superada.sql
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15

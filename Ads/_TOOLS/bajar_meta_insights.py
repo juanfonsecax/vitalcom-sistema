@@ -69,6 +69,13 @@ y una fila vieja de la misma cuenta/dia que no vino en la respuesta se ELIMINA, 
 Una cuenta-dia que fallo no aporta ninguna fila (ver el aislamiento de fallas en `main()`),
 asi que su particion nunca se toca.
 
+PRECEDENCIA POR FUENTE (13-oct-2026): ademas de la particion, el upsert pasa
+`reconciliar=upsert_fact.superar_por_api_directa`. Una fila de OTRA fuente (export de Ads Manager,
+MCP) de la misma cuenta cuyos dias esta API ya cubre por completo se elimina: describe el mismo
+gasto con otro nombre de conjunto o de ventana y su llave natural nunca colisiona con la de esta
+fuente. Una ventana multidia cubierta solo en parte se conserva (es un agregado, no se parte) y
+`reconciliar_entrega.py` la lista. Mismo criterio que aplica `gasto.py` al leer.
+
 CREDENCIALES — nunca en el repo, nunca en git, nunca en la linea de comandos.
   Se leen de la variable de entorno META_SYSTEM_USER_TOKEN, y si no esta, de un .env local
   (default ~/.config/meta/.env, permisos 600). Este script NO imprime jamas el token.
@@ -431,7 +438,8 @@ def main():
                                                 tenant_id=TENANT_ID)
         reemp_c, nuevas_c, sc_c, elim_c = db_escribir.upsert(
             con, "entrega_conjunto_dia", conjuntos, key=_clave_conjunto, particion=PARTICION,
-            prod_dir=prod_dir_conjunto, bkdir=BKDIR, tenant_id=TENANT_ID)
+            prod_dir=prod_dir_conjunto, bkdir=BKDIR, tenant_id=TENANT_ID,
+            reconciliar=uf.superar_por_api_directa)
         print(f"\n_FACT_ENTREGA.csv: {reemp_c} reemplazadas · {nuevas_c} nuevas · "
               f"{elim_c} eliminadas (superadas por el re-pull) · {sc_c} sin cambio "
               f"(Postgres es la verdad)")
@@ -439,7 +447,8 @@ def main():
                                                 tenant_id=TENANT_ID)
         reemp_a, nuevas_a, sc_a, elim_a = db_escribir.upsert(
             con, "entrega_anuncio_dia", todos, key=_clave_anuncio, particion=PARTICION,
-            prod_dir=prod_dir_anuncio, bkdir=BKDIR, tenant_id=TENANT_ID)
+            prod_dir=prod_dir_anuncio, bkdir=BKDIR, tenant_id=TENANT_ID,
+            reconciliar=uf.superar_por_api_directa)
         print(f"_FACT_ENTREGA_ANUNCIO.csv: {reemp_a} reemplazadas · {nuevas_a} nuevas · "
               f"{elim_a} eliminadas (superadas por el re-pull) · {sc_a} sin cambio "
               f"(Postgres es la verdad)")

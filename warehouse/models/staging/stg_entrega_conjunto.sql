@@ -1,7 +1,7 @@
 -- Entrega diaria por conjunto. El conjunto llega YA canonizado: cualquier consumidor aguas
 -- abajo ve un solo objeto por conjunto real, se haya renombrado o no.
 with e as (
-    select * from {{ source('csv','entrega_conjunto') }}
+    select * from {{ entrega_con_superada(source('csv','entrega_conjunto')) }}
 )
 select
     cast(e.ventana_ini as date)                       as fecha_ini,
@@ -17,6 +17,7 @@ select
     cast(e.link_clicks as double)                     as link_clicks,
     cast(e.impresiones as double)                     as impresiones,
     cast(e.spend_usd as double)                       as spend_usd,
-    trim(e.fuente)                                    as fuente
+    trim(e.fuente)                                    as fuente,
+    e.superada_por_api                                as superada_por_api
 from e
 left join {{ ref('stg_alias') }} a on trim(e.conjunto) = a.nombre_viejo

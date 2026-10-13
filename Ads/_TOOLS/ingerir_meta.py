@@ -527,9 +527,9 @@ def main():
         if nuevas:
             db_escribir.verificar_csv_sincronizado(con, "entrega_conjunto_dia", prod_dir_conjunto,
                                                     tenant_id=TENANT_ID)
-            _, n_nuevas_c, _ = db_escribir.upsert(
+            _, n_nuevas_c, *_ = db_escribir.upsert(
                 con, "entrega_conjunto_dia", nuevas, key=LLAVE_CONJUNTO, prod_dir=prod_dir_conjunto,
-                bkdir=BKDIR, tenant_id=TENANT_ID)
+                bkdir=BKDIR, tenant_id=TENANT_ID, reconciliar=upsert_fact.superar_por_api_directa)
             print(f"\nescritas {n_nuevas_c} filas en {os.path.relpath(FACT, BASE)} "
                   f"(Postgres es la verdad; espejo regenerado)")
         if nuevos_ads:
@@ -539,9 +539,9 @@ def main():
                         "anuncio", "fuente")
             db_escribir.verificar_csv_sincronizado(con, "entrega_anuncio_dia", prod_dir_anuncio,
                                                     tenant_id=TENANT_ID)
-            _, n_nuevas_a, _ = db_escribir.upsert(
+            _, n_nuevas_a, *_ = db_escribir.upsert(
                 con, "entrega_anuncio_dia", nuevos_ads, key=llave_ad, prod_dir=prod_dir_anuncio,
-                bkdir=BKDIR, tenant_id=TENANT_ID)
+                bkdir=BKDIR, tenant_id=TENANT_ID, reconciliar=upsert_fact.superar_por_api_directa)
             print(f"escritas {n_nuevas_a} filas en {os.path.relpath(FACT_AD, BASE)} "
                   f"(Postgres es la verdad; espejo regenerado)")
     except db_escribir.ErrorEscritura as exc:

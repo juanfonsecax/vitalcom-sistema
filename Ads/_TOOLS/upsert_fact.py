@@ -116,6 +116,107 @@ def leer_migrado(path, cols):
     return [_completar(f, cols) for f in filas]
 
 
+# ── REGLA DE PRECEDENCIA POR FUENTE (T5, 13-oct-2026) ──────────────────────────────────────────
+# Las filas de entrega de Meta llegan de varias fuentes (API directa, export de Ads Manager,
+# MCP). Para una misma CUENTA y un mismo DIA, la API directa es la verdad: describe todo ese dia
+# con los nombres vigentes. Las demas fuentes pueden traer el mismo gasto con otro nombre de
+# conjunto o de ventana, asi que su llave natural no colisiona con la de la API y, sin esta regla,
+# el gasto de ese dia se sumaba dos veces (medido 13-oct: GTR7 sep $1,109 en Meta, ~2x en el CSV).
+FUENTE_API_DIRECTA = "MetaAPI-directo"
+
+
+def _dias_de(fila):
+    """Fechas ISO cubiertas por la ventana de la fila, o None si no se pueden leer."""
+    try:
+        d0 = datetime.date.fromisoformat((fila.get("ventana_ini") or "").strip())
+        d1 = datetime.date.fromisoformat((fila.get("ventana_fin") or "").strip())
+    except ValueError:
+        return None
+    if d1 < d0:
+        return None
+    return [(d0 + datetime.timedelta(days=i)).isoformat() for i in range((d1 - d0).days + 1)]
+
+
+# Un dia sin filas de la API entre dos dias CON filas de la misma cuenta es un dia que se consulto
+# y no tuvo gasto propio (la API solo devuelve anuncios con entrega): cuenta como cubierto. Un hueco
+# mas largo que esto (una semana) puede ser un tramo que nunca se consulto: ahi las otras fuentes
+# se conservan.
+MAX_HUECO_DIAS = 7
+
+
+def _mapa_alias(filas):
+    """{cuenta_alias: cuenta_id} para los alias que apuntan a UN solo cuenta_id. Un export viejo
+    puede traer el alias ('GTR7') sin el id: se resuelve por este mapa, nunca por suposicion."""
+    ids = {}
+    for f in filas:
+        alias, cid = (f.get("cuenta_alias") or "").strip(), (f.get("cuenta_id") or "").strip()
+        if alias and cid:
+            ids.setdefault(alias, set()).add(cid)
+    return {a: next(iter(v)) for a, v in ids.items() if len(v) == 1}
+
+
+def _cuenta_de(f, mapa):
+    return (f.get("cuenta_id") or "").strip() or mapa.get((f.get("cuenta_alias") or "").strip(), "")
+
+
+def _dias_cubiertos(filas, fuente, mapa):
+    """{(cuenta_id, 'YYYY-MM-DD')} que la API directa cubre: sus dias con filas, mas los huecos de
+    hasta MAX_HUECO_DIAS entre dos de ellos."""
+    por_cuenta = {}
+    for f in filas:
+        if (f.get("fuente") or "").strip() == fuente:
+            cuenta = _cuenta_de(f, mapa)
+            por_cuenta.setdefault(cuenta, set()).update(_dias_de(f) or ())
+    cubiertos = set()
+    for cuenta, dias in por_cuenta.items():
+        ordenados = [datetime.date.fromisoformat(d) for d in sorted(dias)]
+        for d in ordenados:
+            cubiertos.add((cuenta, d.isoformat()))
+        for a, b in zip(ordenados, ordenados[1:]):
+            hueco = (b - a).days - 1
+            if 0 < hueco <= MAX_HUECO_DIAS:
+                for i in range(1, hueco + 1):
+                    cubiertos.add((cuenta, (a + datetime.timedelta(days=i)).isoformat()))
+    return cubiertos
+
+
+def superar_por_api_directa(filas, fuente=FUENTE_API_DIRECTA):
+    """(conservadas, superadas, parciales). Una fila de otra fuente queda SUPERADA cuando la API
+    directa cubre a esa cuenta en TODOS los dias de su ventana (un export de 1 dia, o uno de varios
+    dias totalmente cubierto; ver MAX_HUECO_DIAS para los dias sin gasto). Una ventana multidia
+    cubierta solo en parte NO se puede partir (es un agregado): se CONSERVA y se devuelve en
+    `parciales` para que el llamador la reporte. Las filas de la propia API directa y las de una
+    cuenta-dia sin cobertura de la API no se tocan. Una fila sin `cuenta_id` se atribuye por su
+    `cuenta_alias` cuando ese alias apunta a una sola cuenta. Pura: no escribe nada y conserva el orden."""
+    mapa = _mapa_alias(filas)
+    cubiertos = _dias_cubiertos(filas, fuente, mapa)
+    conservadas, superadas, parciales = [], [], []
+    for f in filas:
+        if (f.get("fuente") or "").strip() == fuente:
+            conservadas.append(f)
+            continue
+        dias = _dias_de(f)
+        if not dias:
+            conservadas.append(f)
+            continue
+        cuenta = _cuenta_de(f, mapa)
+        n = sum(1 for d in dias if cuenta and (cuenta, d) in cubiertos)
+        if n == len(dias):
+            superadas.append(f)
+        else:
+            conservadas.append(f)
+            if n:
+                parciales.append(f)
+    return conservadas, superadas, parciales
+
+
+def _reconciliar_filas(filas, reconciliar):
+    """Aplica `reconciliar` (fila-list -> (conservadas, superadas, ...)) y devuelve
+    (conservadas, n_eliminadas)."""
+    conservadas, superadas = reconciliar(filas)[:2]
+    return conservadas, len(superadas)
+
+
 def _clave(fila, key):
     if callable(key):
         return key(fila)
@@ -128,7 +229,7 @@ def _particion_valor(fila, particion):
     return tuple(fila.get(k, "") for k in particion)
 
 
-def fusionar(existentes, filas_nuevas, cols, key, particion=None):
+def fusionar(existentes, filas_nuevas, cols, key, particion=None, reconciliar=None):
     """MECÁNICA PURA de merge (P3 T2): sin I/O, sin backup, sin escribir nada — la parte de
     `upsert()` que `db/escribir.py` necesita reusar tal cual para hacer lo mismo sobre `raw.*`
     de Postgres en vez de un CSV. `upsert()` (abajo) es ahora un wrapper delgado de disco sobre
@@ -138,6 +239,11 @@ def fusionar(existentes, filas_nuevas, cols, key, particion=None):
     antes). Devuelve (resultado, reemplazadas, nuevas, sin_cambio, eliminadas) — SIEMPRE con
     `eliminadas` (0 si no se pasó `particion`), a diferencia de `upsert()` que mantiene su
     contrato histórico de tupla de largo variable para no romper a sus llamadores.
+
+    `reconciliar` (opcional): funcion `filas -> (conservadas, superadas, ...)` que se aplica al
+    resultado ya fusionado (ver `superar_por_api_directa`). Lo que declara superado se ELIMINA y
+    suma a `eliminadas`: una fuente de menor precedencia nunca convive con la verdad del mismo
+    cuenta-dia. Es idempotente si `reconciliar` lo es.
     """
     existentes = [_completar(f, cols) for f in existentes]
     filas_completas = [_completar(f, cols) for f in filas_nuevas]
@@ -174,10 +280,14 @@ def fusionar(existentes, filas_nuevas, cols, key, particion=None):
             conservar.append(f)
         resultado = conservar
 
+    if reconciliar is not None:
+        resultado, n_superadas = _reconciliar_filas(resultado, reconciliar)
+        eliminadas += n_superadas
+
     return resultado, reemplazadas, nuevas, sin_cambio, eliminadas
 
 
-def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
+def upsert(path, cols, key, filas_nuevas, bkdir, particion=None, reconciliar=None):
     """UPSERT por llave natural `key` sobre el CSV de hechos en `path`.
 
     `key`: tupla de nombres de columna, o función `fila(dict) -> tupla hasheable`
@@ -190,8 +300,11 @@ def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
     partición que trae (ver docstring del módulo). Sin `particion` el comportamiento es
     el de siempre: nunca se borra nada.
 
-    Devuelve (reemplazadas, nuevas, sin_cambio) sin `particion`, o
-    (reemplazadas, nuevas, sin_cambio, eliminadas) con `particion`. No escribe nada si
+    `reconciliar` (opcional): ver `fusionar()`; lo que declara superado se elimina y cuenta en
+    `eliminadas`.
+
+    Devuelve (reemplazadas, nuevas, sin_cambio) sin `particion` ni `reconciliar`, o
+    (reemplazadas, nuevas, sin_cambio, eliminadas) con alguno de los dos. No escribe nada si
     no hubo reemplazo, alta NI baja — en ese caso el archivo en disco queda intacto (ni
     backup ni reescritura de más).
 
@@ -200,7 +313,7 @@ def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
     """
     existentes = leer_migrado(path, cols)
     resultado, reemplazadas, nuevas, sin_cambio, eliminadas = fusionar(
-        existentes, filas_nuevas, cols, key, particion)
+        existentes, filas_nuevas, cols, key, particion, reconciliar)
 
     if reemplazadas or nuevas or eliminadas:
         os.makedirs(bkdir, exist_ok=True)
@@ -216,6 +329,6 @@ def upsert(path, cols, key, filas_nuevas, bkdir, particion=None):
             for f in resultado:
                 w.writerow(f)
 
-    if particion is not None:
+    if particion is not None or reconciliar is not None:
         return reemplazadas, nuevas, sin_cambio, eliminadas
     return reemplazadas, nuevas, sin_cambio

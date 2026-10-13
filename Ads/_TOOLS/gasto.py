@@ -48,6 +48,11 @@ venta ese día nunca aparecía en ningún lado (se perdía, violando "nunca inve
 Con la agregación separada + full outer join, cada dólar de Meta vive en UNA sola fila del
 resultado, sin importar cuántas filas de venta o de Meta lo describan por dentro.
 
+PRECEDENCIA POR FUENTE (13-oct-2026): para una misma cuenta y un mismo dia, `MetaAPI-directo`
+supera a toda otra fuente de Meta (export de Ads Manager, MCP). Sin esto, el mismo gasto con otro
+nombre de conjunto se sumaba dos veces. La regla vive en `upsert_fact.superar_por_api_directa`, la
+misma que aplica el escritor al guardar, asi que ni un CSV viejo ni un re-pull pueden inflar el gasto.
+
 ESPEJO EN dbt: `warehouse/models/marts/fct_gasto_dia.sql` implementa la MISMA regla (agregación
 por separado + full outer join) en SQL. Si la regla cambia, cambia en los dos lugares.
 
@@ -69,6 +74,7 @@ import collections
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from alias import canonico  # noqa: E402
+from upsert_fact import superar_por_api_directa  # noqa: E402
 
 BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROD = os.path.join(BASE, "PRODUCTOS")
@@ -88,6 +94,15 @@ FUENTE_CONJUNTO = "MetaAPI-conjunto"   # match (o suma) contra _FACT_ENTREGA.csv
 FUENTE_AD_ID = "MetaAPI-ad_id"         # match contra _FACT_ENTREGA_ANUNCIO.csv por ad_id
 FUENTE_NOMBRE = "MetaAPI-nombre"       # match contra _FACT_ENTREGA_ANUNCIO.csv por nombre
 FUENTE_FALLBACK = "LucidSales-fallback"
+
+
+def _filas_meta(filas):
+    """Filas de Meta que SI cuentan como gasto: de una fuente reconocida y no superadas. Para una
+    misma cuenta y un mismo dia manda `MetaAPI-directo` (upsert_fact.superar_por_api_directa): un
+    export de Ads Manager o una fila MCP de ese dia, con otro nombre de conjunto, describe el MISMO
+    gasto y nunca se suma. Una cuenta-dia sin API directa conserva su fuente de respaldo."""
+    vigentes, _, _ = superar_por_api_directa(filas)
+    return [r for r in vigentes if _strip(r.get("fuente")) in FUENTES_META]
 
 
 def _leer_csv(path):
@@ -161,9 +176,7 @@ def gasto_por_conjunto_ventana(filas_venta=None, filas_entrega_conjunto=None, al
         a["spend_lucidsales"] += _num(r.get("spend_usd"))
 
     meta_agg = {}
-    for r in meta_rows:
-        if _strip(r.get("fuente")) not in FUENTES_META:
-            continue
+    for r in _filas_meta(meta_rows):
         k = _clave_conjunto(r, canon)
         meta_agg[k] = meta_agg.get(k, 0.0) + _num(r.get("spend_usd"))
 
@@ -282,9 +295,7 @@ def gasto_por_anuncio_ventana(filas_venta=None, filas_entrega_anuncio=None, alia
         a["spend_lucidsales"] += _num(r.get("spend_usd"))
 
     meta_agg = {}
-    for r in meta_rows:
-        if _strip(r.get("fuente")) not in FUENTES_META:
-            continue
+    for r in _filas_meta(meta_rows):
         if not _strip(r.get("anuncio")):
             continue
         k = _clave_anuncio(r, canon)

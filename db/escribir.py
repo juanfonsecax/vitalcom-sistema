@@ -331,11 +331,13 @@ def verificar_decision_sincronizada(conn, prod_dir, tenant_id="vitalcom"):
 
 
 def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, bkdir=None,
-           tenant_id="vitalcom"):
+           tenant_id="vitalcom", reconciliar=None):
     """UPSERT (misma semántica que `upsert_fact.upsert()`, vía `fusionar()`) sobre `raw.<tabla>`,
     con reconstrucción de `core` en LA MISMA transacción. Devuelve (reemplazadas, nuevas,
     sin_cambio) sin `particion`, o +eliminadas con `particion` — igual contrato que
-    `upsert_fact.upsert()`.
+    `upsert_fact.upsert()`. `reconciliar` es el mismo de `upsert_fact.fusionar()` (precedencia
+    por fuente, p.ej. `superar_por_api_directa`): lo superado se elimina de `raw` y cuenta en
+    `eliminadas`.
 
     Si `prod_dir` se pasa, y hubo algún cambio (alta, reemplazo o baja), regenera el espejo CSV de
     ese archivo en `prod_dir` DESPUÉS de que el commit ya haya ocurrido (nunca antes: un fallo a
@@ -347,7 +349,7 @@ def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, bkdir=
     def _cuerpo(cur):
         existentes = _leer_raw(cur, tenant_id, tabla, cols)
         resultado, reemplazadas, nuevas, sin_cambio, eliminadas = fusionar(
-            existentes, filas_nuevas, cols, key, particion)
+            existentes, filas_nuevas, cols, key, particion, reconciliar)
         if reemplazadas or nuevas or eliminadas:
             _reescribir_raw(cur, tenant_id, tabla, cols, resultado)
         N.construir_core(cur, tenant_id)
@@ -363,7 +365,7 @@ def upsert(conn, tabla, filas_nuevas, key, particion=None, prod_dir=None, bkdir=
     if prod_dir and (reemplazadas or nuevas or eliminadas):
         _regenerar_espejo_csv(conn, tenant_id, tabla, prod_dir, bkdir)
 
-    if particion is not None:
+    if particion is not None or reconciliar is not None:
         return reemplazadas, nuevas, sin_cambio, eliminadas
     return reemplazadas, nuevas, sin_cambio
 

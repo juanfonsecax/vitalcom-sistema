@@ -1,7 +1,7 @@
 -- Entrega diaria por ANUNCIO, con los 5 ejes que viajan en la firma del nombre.
 -- Sin este grano el eje CONCEPTO es inobservable y la FASE 2 no mide nada.
 with e as (
-    select * from {{ source('csv','entrega_anuncio') }}
+    select * from {{ entrega_con_superada(source('csv','entrega_anuncio')) }}
 )
 select
     cast(e.ventana_ini as date)                       as fecha_ini,
@@ -25,6 +25,7 @@ select
     cast(e.impresiones as double)                     as impresiones,
     cast(e.spend_usd as double)                       as spend_usd,
     trim(e.fuente)                                     as fuente,
-    (nullif(trim(e.firma),'') is not null)            as tiene_firma
+    (nullif(trim(e.firma),'') is not null)            as tiene_firma,
+    e.superada_por_api                                as superada_por_api
 from e
 left join {{ ref('stg_alias') }} a on trim(e.conjunto) = a.nombre_viejo
