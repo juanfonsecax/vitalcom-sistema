@@ -54,6 +54,11 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
   spend converts with the weighted rate of recent transfers, else the latest known; parameter 7.62
   only when no transfer exists. Starts after T5–T7 (same files). — 256a758
 
+- [x] T9 Rate before the first transfer: a month with no transfer in its window and none before uses
+  the first later transfer (PRIMERA_POSTERIOR); PARAMETRO only when no transfer exists at all
+  (CONTABILIDAD.md §3-bis). Jul/Aug/Sep now price at 7.9079; Sep neto Q7,855.95 (conversion cost
+  Q630.16 on the pauta). Frontend names the posterior transfer and its date. — e25e0c5
+
 ## Acceptance
 - Re-ingesting the same files changes nothing (idempotent).
 - September GT: ad spend equals Meta ($2,188.62 incl. GTR13 from `_FACT_ENTREGA`); bank Facebook
@@ -119,4 +124,11 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
 - Checks observed: Ads/_TOOLS unittest test_gen_pl 25, test_gen_pl_mensual 36, test_tasa_fx 21,
   test_ingerir_cartera 10 OK; test_multimercado_d3 9/9; backend pytest (finanzas_mensual, resultados,
   acciones, sin_aritmetica, mercado_en_la_api, api_espeja_los_csv) 64 passed; vitest 216 passed;
-  tsc -b and vite build clean; gen_app --validar-manifiesto valid; verificar_monedas 6/6.
+   tsc -b and vite build clean; gen_app --validar-manifiesto valid; verificar_monedas 6/6.
+- 2026-10-13 (T9): `~/AppData/Local/Python/bin/python -m unittest test_tasa_fx test_gen_pl
+  test_gen_pl_mensual`: 86 OK. `pytest Ads/_TOOLS/test_tasa_fx.py`: 25 passed + the known extra wrapper
+  item failing with OSError WinError 6. Backend `tests/test_finanzas_mensual_api.py`: 17 passed.
+  `npx vitest run`: 217 passed (incl. the new posterior-rate test, seen failing before the fix);
+  `npx tsc -b` and `npx vite build` clean. `gen_pl_mensual.py --mercado GT --json`: Jul/Ago/Sep tasa
+  7.9079 PRIMERA_POSTERIOR, Oct 7.9079 VENTANA; Sep neto Q7,855.95, pauta USD 2,188.69, costo de
+  conversión Q630.16.
