@@ -496,6 +496,7 @@ CREATE TABLE IF NOT EXISTS raw.dim_gastos (
     confirmado_por TEXT,
     fecha TEXT,
     notas TEXT,
+    mercado TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ALTER TABLE raw.dim_gastos ADD COLUMN IF NOT EXISTS patron TEXT;
@@ -504,6 +505,7 @@ ALTER TABLE raw.dim_gastos ADD COLUMN IF NOT EXISTS categoria TEXT;
 ALTER TABLE raw.dim_gastos ADD COLUMN IF NOT EXISTS confirmado_por TEXT;
 ALTER TABLE raw.dim_gastos ADD COLUMN IF NOT EXISTS fecha TEXT;
 ALTER TABLE raw.dim_gastos ADD COLUMN IF NOT EXISTS notas TEXT;
+ALTER TABLE raw.dim_gastos ADD COLUMN IF NOT EXISTS mercado TEXT;
 
 -- dim_mercados <- PRODUCTOS/_DIM_MERCADOS.csv
 CREATE TABLE IF NOT EXISTS raw.dim_mercados (

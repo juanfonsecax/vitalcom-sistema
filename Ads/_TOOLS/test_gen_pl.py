@@ -215,5 +215,144 @@ class LecturaCompletaDelExtracto(unittest.TestCase):
         self.assertEqual(len(mov), 2)
 
 
+def _gasto(pk, ini, spend, ventas=0.0, fuente="MetaAPI-conjunto", cuenta="598687956219141"):
+    return {"producto_key": pk, "cuenta_id": cuenta, "ventana_ini": ini, "ventana_fin": ini,
+            "conjunto": "C", "ventas": ventas, "mensajes": 0.0, "spend_usd": spend,
+            "spend_usd_lucidsales": 0.0, "fuente_gasto": fuente, "tiene_fila_ventas": True}
+
+
+class PautaDeMeta(unittest.TestCase):
+    """La pauta sale de gasto.py (Meta), con LucidSales solo donde Meta no cubre."""
+
+    def test_suma_meta_y_fallback_por_separado_y_convierte_con_la_tasa_del_producto(self) -> None:
+        filas = [_gasto("TINNIDROP", "2026-09-02", 100.0, ventas=2),
+                 _gasto("CLEARSTEM", "2026-09-03", 50.0, ventas=1),
+                 _gasto("CLEARSTEM", "2026-09-04", 20.0, fuente="LucidSales-fallback")]
+        p = gen_pl.pauta_de_la_ventana("2026-09-01", "2026-09-30", filas)
+        self.assertAlmostEqual(p["usd"], 170.0)
+        self.assertAlmostEqual(p["meta_usd"], 150.0)
+        self.assertAlmostEqual(p["fallback_usd"], 20.0)
+        self.assertAlmostEqual(p["q"], 170.0 * gen_pl.TASA_Q)
+        self.assertEqual(p["ventas_por_producto"]["TINNIDROP"], 2)
+        self.assertAlmostEqual(p["q_por_producto"]["CLEARSTEM"], 70.0 * gen_pl.TASA_Q)
+
+    def test_ignora_otras_ventanas_y_otros_mercados(self) -> None:
+        filas = [_gasto("TINNIDROP", "2026-08-31", 10.0), _gasto("TINNIDROP", "2026-10-01", 10.0),
+                 _gasto("OVULOS_PURITY", "2026-09-05", 99.0), _gasto("TINNIDROP", "2026-09-05", 5.0)]
+        p = gen_pl.pauta_de_la_ventana("2026-09-01", "2026-09-30", filas)
+        self.assertAlmostEqual(p["usd"], 5.0)
+
+    def test_excluye_las_cuentas_pedidas(self) -> None:
+        filas = [_gasto("TINNIDROP", "2026-09-05", 5.0, cuenta="1346891653335162.0"),
+                 _gasto("TINNIDROP", "2026-09-05", 7.0)]
+        p = gen_pl.pauta_de_la_ventana("2026-09-01", "2026-09-30", filas,
+                                       excluir_cuentas=("1346891653335162",))
+        self.assertAlmostEqual(p["usd"], 7.0)
+
+    def test_un_producto_sin_fila_en_el_sistema_bloquea(self) -> None:
+        with self.assertRaises(gen_pl.mercado.MercadoError):
+            gen_pl.pauta_de_la_ventana("2026-09-01", "2026-09-30",
+                                       [_gasto("NO_EXISTE", "2026-09-05", 5.0)])
+
+
+class ReparteDeGastosCompartidos(unittest.TestCase):
+    def test_un_gasto_de_un_mercado_va_entero_a_ese_mercado(self) -> None:
+        self.assertEqual(gen_pl.parte_de_mercado("GT", "GT", {"GT", "CO"}), 1.0)
+        self.assertEqual(gen_pl.parte_de_mercado("GT", "CO", {"GT", "CO"}), 0.0)
+
+    def test_compartido_se_reparte_en_partes_iguales_entre_los_mercados_activos(self) -> None:
+        self.assertEqual(gen_pl.parte_de_mercado("COMPARTIDO", "GT", {"GT"}), 1.0)
+        self.assertEqual(gen_pl.parte_de_mercado("COMPARTIDO", "GT", {"GT", "CO"}), 0.5)
+        self.assertEqual(gen_pl.parte_de_mercado("COMPARTIDO", "CO", {"GT"}), 0.0)
+
+    def test_sin_mercado_declarado_cuenta_como_compartido(self) -> None:
+        self.assertEqual(gen_pl.parte_de_mercado("", "GT", {"GT", "CO"}), 0.5)
+
+
+def _ordenes_df(desde):
+    import pandas as pd
+    filas = [_fila(1, "CLEARSTEM.VT", "ENTREGADO", desde, 250.0, 30.0, 60.0),
+             _fila(2, "CLEARSTEM.VT", "ENTREGADO", desde, 300.0, 30.0, 70.0),
+             _fila(3, "CLEARSTEM.VT", "DEVOLUCION", desde, 250.0, 30.0, 60.0)]
+    df = pd.DataFrame(filas)
+    df["pk"] = df["PRODUCTO"].map(gen_pl.pk_dropi)
+    df["f_orden"] = pd.to_datetime(df["FECHA"], format="%d-%m-%Y")
+    df["f_mov"] = df["f_orden"]
+    return df
+
+
+REGLAS = [
+    {"patron": "Facebook", "clasificacion": "NEGOCIO_PAUTA", "categoria": "publicidad", "mercado": "COMPARTIDO"},
+    {"patron": "LUCIDSALES", "clasificacion": "NEGOCIO_FIJO", "categoria": "software", "mercado": "COMPARTIDO"},
+    {"patron": "SOLO_CO", "clasificacion": "NEGOCIO_FIJO", "categoria": "software", "mercado": "CO"},
+    {"patron": "MINIMED", "clasificacion": "PERSONAL", "categoria": "retiro_socio", "mercado": "COMPARTIDO"},
+]
+MOV = [
+    {"nombre": "Facebook", "fecha": datetime.date(2024, 1, 2), "monto": 100.0},
+    {"nombre": "LUCIDSALES, LLC", "fecha": datetime.date(2024, 1, 2), "monto": 26.0},
+    {"nombre": "SOLO_CO", "fecha": datetime.date(2024, 1, 2), "monto": 10.0},
+    {"nombre": "MINIMED X", "fecha": datetime.date(2024, 1, 2), "monto": 50.0},
+    {"nombre": "COSA NUEVA", "fecha": datetime.date(2024, 1, 2), "monto": 3.0},
+    {"nombre": "LUCIDSALES, LLC", "fecha": datetime.date(2024, 2, 2), "monto": 26.0},
+]
+
+
+class FormulaDeLaVentana(unittest.TestCase):
+    def _calcular(self, activos):
+        pauta = gen_pl.pauta_de_la_ventana("2024-01-01", "2024-01-31", [])
+        return gen_pl.calcular_vista_a(_ordenes_df(datetime.date(2024, 1, 1)), "2024-01-01",
+                                       "2024-01-31", datetime.date(2024, 6, 1), pauta,
+                                       mov=MOV, reglas=REGLAS, activos=activos)
+
+    def test_los_fijos_compartidos_se_reparten_y_los_de_otro_mercado_no_entran(self) -> None:
+        r = self._calcular({"GT", "CO"})
+        self.assertAlmostEqual(r.fijos, 26.0 * 0.5 * gen_pl.TASA_Q)
+        self.assertEqual([d["nombre"] for d in r.det_fijos], ["LUCIDSALES, LLC"])
+
+    def test_con_un_solo_mercado_activo_el_fijo_entra_entero(self) -> None:
+        r = self._calcular({"GT"})
+        self.assertAlmostEqual(r.fijos, 26.0 * gen_pl.TASA_Q)
+
+    def test_el_retiro_personal_no_toca_el_resultado_y_la_pauta_del_banco_no_se_resta_dos_veces(self) -> None:
+        r = self._calcular({"GT"})
+        self.assertAlmostEqual(r.retiros, 50.0 * gen_pl.TASA_Q)
+        self.assertAlmostEqual(r.neto, r.m_oper - r.fijos)
+        self.assertEqual([n for n, _ in r.sin_confirmar], ["COSA NUEVA"])
+
+    def test_la_formula_es_la_de_siempre(self) -> None:
+        r = self._calcular({"GT"})
+        venta, costo, flete = 550.0, 130.0, 60.0
+        contrib = venta - costo - flete - gen_pl.C_DEVOL - 2 * gen_pl.C_ADMIN - 2 * gen_pl.C_OTROS
+        self.assertAlmostEqual(r.m_contr, contrib)
+        self.assertEqual((len(r.ent), len(r.dev)), (2, 1))
+
+    def test_sin_ordenes_en_la_ventana_devuelve_none(self) -> None:
+        pauta = gen_pl.pauta_de_la_ventana("2023-01-01", "2023-01-31", [])
+        self.assertIsNone(gen_pl.calcular_vista_a(_ordenes_df(datetime.date(2024, 1, 1)),
+                                                  "2023-01-01", "2023-01-31",
+                                                  datetime.date(2024, 6, 1), pauta))
+
+
+class ReportePorCli(unittest.TestCase):
+    def test_el_json_declara_de_donde_sale_la_pauta(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            xlsx = Path(d) / "ordenes.xlsx"
+            ini_d = datetime.date(2024, 3, 1)
+            _dropi_de_juguete(xlsx, ini_d)
+            proc = _correr(xlsx, ini_d.isoformat(), (ini_d + datetime.timedelta(days=2)).isoformat())
+            try:
+                self.assertEqual(proc.returncode, 0, proc.stderr)
+                er = json.loads(proc.stdout)["vista_a_cohorte"]["estado_de_resultados"]
+                self.assertEqual(set(er["publicidad_fuente"]), {"meta_usd", "lucidsales_fallback_usd"})
+                self.assertAlmostEqual(er["publicidad_fuente"]["meta_usd"]
+                                       + er["publicidad_fuente"]["lucidsales_fallback_usd"],
+                                       er["publicidad_usd"])
+            finally:
+                for suf in ("txt", "json"):
+                    f = AUD / ("_PL_20240301_20240303." + suf)
+                    if f.is_file():
+                        f.unlink()
+
+
 if __name__ == "__main__":
     unittest.main()

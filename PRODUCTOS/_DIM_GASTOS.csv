@@ -1,7 +1,7 @@
-patron,clasificacion,categoria,confirmado_por,fecha,notas
-Facebook,NEGOCIO_PAUTA,publicidad,operador,2026-07-01,La pauta de Meta. Ya se cuenta en la linea (-) Publicidad del estado de resultados: NO se vuelve a restar en gastos fijos o se contaria dos veces.
-THE LUCID HOLDING,NEGOCIO_FIJO,software,operador,2026-09-02,Suscripcion de la herramienta del bot. CONFIRMADO por el operador el 02-sep: es del negocio. Visto el 01-sep en el banco: 2 cargos de $44.00.
-LUCIDSALES,NEGOCIO_FIJO,software,operador,2026-09-02,Suscripcion del CRM que atribuye las ventas a cada anuncio. CONFIRMADO por el operador el 02-sep: es del negocio. Visto el 01-sep en el banco: $26.00.
-MINIMED,PERSONAL,retiro_socio,operador,2026-09-02,"⚠ NO ES UN GASTO DEL NEGOCIO. CONFIRMADO por el operador el 02-sep: es un gasto personal suyo que se pago desde la cuenta del negocio. Contablemente es un RETIRO DE SOCIO (owner's draw): NO reduce la ganancia del negocio, pero SI reduce la caja disponible. Se muestra aparte, nunca dentro del resultado. Agosto: $901.59 = Q6,870."
-Proxy-Cheap,NEGOCIO_FIJO,infraestructura,operador,2026-09-02,Proxies para la operacion de ads. CONFIRMADO por el operador el 02-sep: es del negocio. Agosto: $26.29 = Q200.33.
-ANTHROPIC,NEGOCIO_FIJO,software,operador,2026-09-02,"Suscripcion de Claude, la herramienta con la que corre el sistema. CONFIRMADO por el operador el 02-sep: es del negocio. Agosto: $21.53 = Q164.06."
+patron,clasificacion,categoria,confirmado_por,fecha,notas,mercado
+Facebook,NEGOCIO_PAUTA,publicidad,operador,2026-07-01,La pauta de Meta. Ya se cuenta en la linea (-) Publicidad del estado de resultados: NO se vuelve a restar en gastos fijos o se contaria dos veces.,COMPARTIDO
+THE LUCID HOLDING,NEGOCIO_FIJO,software,operador,2026-09-02,Suscripcion de la herramienta del bot. CONFIRMADO por el operador el 02-sep: es del negocio. Visto el 01-sep en el banco: 2 cargos de $44.00.,COMPARTIDO
+LUCIDSALES,NEGOCIO_FIJO,software,operador,2026-09-02,Suscripcion del CRM que atribuye las ventas a cada anuncio. CONFIRMADO por el operador el 02-sep: es del negocio. Visto el 01-sep en el banco: $26.00.,COMPARTIDO
+MINIMED,PERSONAL,retiro_socio,operador,2026-09-02,"⚠ NO ES UN GASTO DEL NEGOCIO. CONFIRMADO por el operador el 02-sep: es un gasto personal suyo que se pago desde la cuenta del negocio. Contablemente es un RETIRO DE SOCIO (owner's draw): NO reduce la ganancia del negocio, pero SI reduce la caja disponible. Se muestra aparte, nunca dentro del resultado. Agosto: $901.59 = Q6,870.",COMPARTIDO
+Proxy-Cheap,NEGOCIO_FIJO,infraestructura,operador,2026-09-02,Proxies para la operacion de ads. CONFIRMADO por el operador el 02-sep: es del negocio. Agosto: $26.29 = Q200.33.,COMPARTIDO
+ANTHROPIC,NEGOCIO_FIJO,software,operador,2026-09-02,"Suscripcion de Claude, la herramienta con la que corre el sistema. CONFIRMADO por el operador el 02-sep: es del negocio. Agosto: $21.53 = Q164.06.",COMPARTIDO

@@ -7,6 +7,12 @@
 Determinista por diseño: mismos archivos de entrada -> mismos números de salida.
 Ningún parámetro vive acá dentro: todos salen de `_PARAMETROS_FINANZAS.csv`.
 
+La publicidad sale de Meta (`gasto.py` sobre `_FACT_ENTREGA.csv`); el `spend_usd` de LucidSales
+entra SOLO donde Meta no tiene cobertura, y el reporte dice cuánta pauta vino de cada fuente. Los
+gastos fijos y retiros del banco llevan su mercado (`_DIM_GASTOS.csv`): los COMPARTIDO se reparten
+con `parte_de_mercado`. `calcular_vista_a` es la fórmula de una ventana y la comparte
+`gen_pl_mensual.py`.
+
 Con `--json`: además del reporte de siempre (que igual se escribe en
 `_AUDITORIAS/_PL_<ini>_<fin>.txt`), serializa EXACTAMENTE los mismos números —
 ningún cálculo nuevo — en `_AUDITORIAS/_PL_<ini>_<fin>.json` y los imprime en
@@ -32,6 +38,7 @@ no dar un número a dar uno que no cuadra.
 import csv, io, json, os, re, sys, collections, datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gasto
 import mercado
 
 for _s in (sys.stdout, sys.stderr):
@@ -62,20 +69,78 @@ _prods = {(r.get("producto_key") or "").strip(): r for r in load("_DIM_PRODUCTOS
 _merc = {}
 
 
-def es_mercado_pl(r):
-    """La fila de ventas es de un producto del mercado de este estado de resultados (GT)."""
-    pk = r["producto_key"]
+def _mercado_de(pk):
+    """Mercado (`GT`/`CO`) de un producto de _DIM_PRODUCTOS.csv; MercadoError si no existe."""
     if pk not in _prods:
-        raise mercado.MercadoError("«%s» tiene ventas pero no fila en _DIM_PRODUCTOS.csv." % pk)
+        raise mercado.MercadoError("«%s» tiene ventas o gasto pero no fila en _DIM_PRODUCTOS.csv." % pk)
     if pk not in _merc:
         _merc[pk] = mercado.mercado_de_fila(_prods[pk], ROOT)
-    return _merc[pk] == MERCADO_PL
+    return _merc[pk]
+
+
+def es_mercado_pl(r):
+    """La fila (de ventas o de gasto) es de un producto del mercado de este estado de resultados (GT)."""
+    return _mercado_de(r["producto_key"]) == MERCADO_PL
 
 
 def pauta_local(r):
     """spend_usd de la fila en quetzales, con la tasa DEL producto (TasaFaltante si no la declara)."""
     usd = fl(r["spend_usd"])
     return usd * mercado.tasa_de_fila(_prods[r["producto_key"]]) if usd else 0.0
+
+
+def _cuenta_norm(v):
+    """'598687956219141.0' -> '598687956219141' (el id de cuenta viene a veces como float de Excel)."""
+    v = (v or "").strip()
+    try:
+        return str(int(float(v)))
+    except ValueError:
+        return v
+
+
+def pauta_de_la_ventana(ini, fin, filas=None, excluir_cuentas=()):
+    """Pauta del mercado de este estado de resultados con `ventana_ini` en [ini, fin].
+
+    El dueño del gasto es Meta (`_FACT_ENTREGA.csv`), vía `gasto.gasto_por_conjunto_ventana()`:
+    LucidSales aporta su `spend_usd` SOLO donde Meta no tiene cobertura (`fuente_gasto`
+    LucidSales-fallback), y la fuente se reporta aparte. Cada fila se convierte con la tasa DEL
+    producto. `filas` permite pasar el resultado ya calculado de gasto.py (una sola lectura para
+    varias ventanas); `excluir_cuentas` saca cuentas por id (p.ej. CP1, que el banco no ve)."""
+    filas = gasto.gasto_por_conjunto_ventana() if filas is None else filas
+    excluidas = {_cuenta_norm(c) for c in excluir_cuentas}
+    out = {"usd": 0.0, "q": 0.0, "meta_usd": 0.0, "fallback_usd": 0.0,
+           "ventas_por_producto": collections.Counter(),
+           "q_por_producto": collections.defaultdict(float),
+           "usd_por_producto": collections.defaultdict(float)}
+    for r in filas:
+        if not (ini <= r["ventana_ini"] <= fin):
+            continue
+        if _cuenta_norm(r.get("cuenta_id")) in excluidas:
+            continue
+        if not es_mercado_pl(r):
+            continue
+        usd, local, pk = fl(r["spend_usd"]), pauta_local(r), r["producto_key"]
+        out["usd"] += usd
+        out["q"] += local
+        out["fallback_usd" if r["fuente_gasto"] == gasto.FUENTE_FALLBACK else "meta_usd"] += usd
+        out["q_por_producto"][pk] += local
+        out["usd_por_producto"][pk] += usd
+        out["ventas_por_producto"][pk] += int(fl(r["ventas"]))
+    return out
+
+
+def mercados_activos(ini, fin, filas_gasto=None, ordenes=None):
+    """Mercados con actividad en [ini, fin]: órdenes de Dropi (por fecha de orden) o pauta de Meta."""
+    activos = set()
+    ordenes = load("_FACT_ORDENES_DROPI.csv") if ordenes is None else ordenes
+    for o in ordenes:
+        if ini <= (o.get("fecha_orden") or "") <= fin and o.get("mercado"):
+            activos.add(o["mercado"])
+    filas_gasto = gasto.gasto_por_conjunto_ventana() if filas_gasto is None else filas_gasto
+    for r in filas_gasto:
+        if ini <= r["ventana_ini"] <= fin and fl(r["spend_usd"]) > 0:
+            activos.add(_mercado_de(r["producto_key"]))
+    return activos
 
 
 # ─────────────── parámetros: dueño único, cero números en el código ───────────────
@@ -93,6 +158,12 @@ def par(nombre, default=None):
     return fl(r["valor"])
 
 
+def par_texto(nombre, default):
+    """Parámetro no numérico (una regla) de _PARAMETROS_FINANZAS.csv."""
+    r = _par.get(nombre)
+    return r["valor"].strip() if r is not None and r["valor"].strip() else default
+
+
 # El export de Dropi y el banco Relay son SOLO del mercado GT (quetzales): este estado de resultados
 # es explicitamente GT. La pauta se toma de las ventas de productos GT y se convierte con la tasa de
 # CADA producto; el dinero de otro mercado no entra (se contabiliza aparte, no aca).
@@ -102,8 +173,25 @@ C_DEVOL    = par("costo_devolucion_evento_q")
 C_ADMIN    = par("costo_admin_q")
 C_OTROS    = par("otros_gastos_q")
 DIAS_MADURO = int(par("dias_cohorte_maduro"))
+REPARTO_COMPARTIDO = par_texto("reparto_gasto_compartido", "ACTIVOS_IGUAL")
+CUENTA_CP1 = next((_cuenta_norm(r["cuenta_id"]) for r in load("_DIM_CUENTAS.csv")
+                   if r["cuenta_alias"] == "CP1"), "")
 
 RESUELTOS = ("ENTREGADO", "DEVOLUCION", "CANCELADO")
+
+
+def parte_de_mercado(mercado_gasto, mercado_pl, activos):
+    """Fracción (0-1) de un gasto que le toca a `mercado_pl`.
+
+    Un gasto declarado de un mercado va entero a ese mercado. Uno COMPARTIDO (o sin mercado
+    declarado) se reparte según `reparto_gasto_compartido` de _PARAMETROS_FINANZAS.csv:
+    ACTIVOS_IGUAL = partes iguales entre los mercados con actividad, y 0 a uno sin actividad."""
+    g = (mercado_gasto or "COMPARTIDO").strip().upper()
+    if g != "COMPARTIDO":
+        return 1.0 if g == mercado_pl else 0.0
+    if REPARTO_COMPARTIDO != "ACTIVOS_IGUAL":
+        sys.exit("Parámetro reparto_gasto_compartido = «%s»: solo existe ACTIVOS_IGUAL." % REPARTO_COMPARTIDO)
+    return 1.0 / len(activos) if mercado_pl in activos else 0.0
 
 
 def pk_dropi(nombre):
@@ -202,6 +290,167 @@ def movimientos_del_extracto(txt):
     return salidas, (resumen["retiros"] if resumen else None)
 
 
+# ──────────────────────── la fórmula (reutilizable por ventana) ────────────────────────
+def cuadre_dropi(df):
+    """(ok, calculado, columna GANANCIA) — integridad 1 de §6: venta − producto − flete = GANANCIA."""
+    chk = df[df.ESTATUS == "ENTREGADO"]
+    calc = float((chk["TOTAL DE LA ORDEN"] - chk["PRECIO FLETE"]
+                  - chk["PRECIO PROVEEDOR X CANTIDAD"]).sum())
+    gan = float(chk["GANANCIA"].sum())
+    return abs(calc - gan) <= 1.0, calc, gan
+
+
+def clasificar(nombre, reglas):
+    """(clasificación, categoría, mercado del gasto) de un cargo del banco, o SIN_CLASIFICAR."""
+    for g in reglas:
+        if g["patron"] and g["patron"].lower() in nombre.lower():
+            return g["clasificacion"], g.get("categoria", ""), (g.get("mercado") or "")
+    return "SIN_CLASIFICAR", "", ""
+
+
+def calcular_vista_a(df, ini, fin, hoy, pauta, mov=None, reglas=(), activos=None, car=None,
+                     fin_edad=None):
+    """VISTA A (cohorte por fecha de ORDEN) de la ventana [ini, fin]: el estado de resultados de §3.
+
+    Función pura sobre los datos que recibe, para que el reporte de una corrida y el mensual por
+    mercado usen LA MISMA fórmula. `df` trae las órdenes (columnas de `leer_dropi`), `pauta` es el
+    resultado de `pauta_de_la_ventana`, `mov` las salidas del banco, `reglas` las filas de
+    `_DIM_GASTOS.csv`, `activos` los mercados con actividad en la ventana (reparto de los gastos
+    COMPARTIDO) y `car` el historial de cartera. `fin_edad` es el último día con órdenes cuando la
+    ventana aún no terminó. Devuelve un SimpleNamespace, o None si la ventana no tiene órdenes."""
+    from types import SimpleNamespace
+    m = df[(df.f_orden >= ini) & (df.f_orden <= fin)]
+    if not len(m):
+        return None
+    ent = m[m.ESTATUS == "ENTREGADO"]
+    dev = m[m.ESTATUS == "DEVOLUCION"]
+    tra = m[~m.ESTATUS.isin(RESUELTOS)]
+
+    # ── maduración del cohorte (§1) ──
+    edad = (hoy - datetime.date.fromisoformat(fin_edad or fin)).days
+    maduro = edad >= DIAS_MADURO
+    pct_res = 100.0 * (len(m) - len(tra)) / len(m)
+
+    venta = float(ent["TOTAL DE LA ORDEN"].sum())
+    costo = float(ent["PRECIO PROVEEDOR X CANTIDAD"].sum())
+    flete = float(ent["PRECIO FLETE"].sum())
+    m_log = venta - costo - flete
+
+    # ── costo de devolución: REAL orden por orden si hay cartera, si no el parámetro ──
+    # Nunca sale del export de órdenes (ahí COSTO DEVOLUCION FLETE = 0 siempre), así
+    # que SIEMPRE se suma aparte: una vez por cada orden en estado DEVOLUCION.
+    dev_ids = set(dev["ID"])
+    if car is not None:
+        cob = car[(car.cat == "COBRO_DEVOLUCION") & (car["ORDEN ID"].isin(dev_ids))]
+        c_dev = float(cob["MONTO"].sum())
+        n_cob = len(cob)
+        sin_cobrar = len(dev) - n_cob
+        # las devoluciones aún sin cobrar se estiman al promedio medido
+        c_dev += max(sin_cobrar, 0) * C_DEVOL
+        origen_dev = ("REAL: %d cobros del historial de cartera%s"
+                      % (n_cob, " + %d aún sin cobrar al promedio Q%.2f" % (sin_cobrar, C_DEVOL)
+                         if sin_cobrar > 0 else ""))
+    else:
+        c_dev = len(dev) * C_DEVOL
+        origen_dev = "estimado: %d devoluciones × Q%.2f (sin historial de cartera)" % (len(dev), C_DEVOL)
+
+    c_adm = len(ent) * C_ADMIN
+    c_otr = len(ent) * C_OTROS
+    m_contr = m_log - c_dev - c_adm - c_otr
+
+    # ── publicidad: de Meta (gasto.py), LucidSales solo donde Meta no cubre ──
+    pauta_usd, pauta_q = pauta["usd"], pauta["q"]
+    tasa_pauta = pauta_q / pauta_usd if pauta_usd else TASA_Q      # tasa efectiva (la de cada producto)
+    m_oper = m_contr - pauta_q
+
+    # ── clasificación de cargos del banco (DOCTRINA/CONTABILIDAD.md §3-ter) ──
+    #   NEGOCIO_PAUTA  -> ya contado en la línea de Publicidad, no se resta otra vez
+    #   NEGOCIO_FIJO   -> resta del RESULTADO (software, herramientas)
+    #   PERSONAL       -> RETIRO DE SOCIO: NO toca el resultado, sí la caja
+    #   SIN_CLASIFICAR -> no entra a nada; se lista y se pregunta (APR-030)
+    # Un gasto COMPARTIDO se reparte entre los mercados activos (`parte_de_mercado`).
+    activos = set(activos) if activos else {MERCADO_PL}
+    fijos, retiros, sin_confirmar = 0.0, 0.0, []
+    det_fijos, det_retiros = [], []
+    if mov is not None:
+        agr = collections.defaultdict(float)
+        for t in mov:
+            if t.get("tipo", "SALIDA") == "SALIDA" and ini <= str(t["fecha"]) <= fin:
+                agr[t["nombre"]] += t["monto"]
+        pend = collections.defaultdict(float)
+        for nom, val in agr.items():
+            cl, cat, merc_gasto = clasificar(nom, reglas)
+            if cl in ("NEGOCIO_FIJO", "PERSONAL"):
+                parte = parte_de_mercado(merc_gasto, MERCADO_PL, activos)
+                if not parte:
+                    continue
+                det = {"nombre": nom, "monto_usd": val * parte, "categoria": cat,
+                       "mercado": merc_gasto or "COMPARTIDO", "parte": parte}
+                if cl == "NEGOCIO_FIJO":
+                    fijos += val * parte * TASA_Q
+                    det_fijos.append(det)
+                else:
+                    retiros += val * parte * TASA_Q
+                    det_retiros.append(det)
+            elif cl == "SIN_CLASIFICAR":
+                pend[nom] += val
+        sin_confirmar = sorted(pend.items(), key=lambda kv: -kv[1])
+    neto = m_oper - fijos
+
+    # ── economía unitaria por producto (§4) ──
+    economia = []
+    for pk, g in sorted(ent.groupby("pk"), key=lambda kv: -len(kv[1])):
+        n_e = len(g)
+        n_d = len(dev[dev.pk == pk])
+        te = n_e / (n_e + n_d) if (n_e + n_d) else 1.0
+        tick = float(g["TOTAL DE LA ORDEN"].mean())
+        cos = float(g["PRECIO PROVEEDOR X CANTIDAD"].mean())
+        fle = float(g["PRECIO FLETE"].mean())
+        dev_amort = ((1 - te) / te) * C_DEVOL if te else 0.0
+        be = tick - cos - fle - dev_amort - C_ADMIN - C_OTROS
+        ven = pauta["ventas_por_producto"][pk]
+        cpa = pauta["q_por_producto"][pk] / ven if ven else 0.0
+        economia.append({
+            "producto_key": pk,
+            "pct_entrega": 100 * te,
+            "entregadas": n_e,
+            "devueltas": n_d,
+            "ticket_promedio_q": tick,
+            "costo_producto_q": cos,
+            "flete_q": fle,
+            "devolucion_amortizada_q": dev_amort,
+            "admin_y_otros_q": C_ADMIN + C_OTROS,
+            "margen_antes_publicidad_q": be,
+            "cpa_real_q": cpa,
+            "ganancia_por_venta_q": be - cpa,
+        })
+
+    return SimpleNamespace(
+        m=m, ent=ent, dev=dev, tra=tra, edad=edad, maduro=maduro, pct_res=pct_res,
+        venta=venta, costo=costo, flete=flete, m_log=m_log, c_dev=c_dev, origen_dev=origen_dev,
+        c_adm=c_adm, c_otr=c_otr, m_contr=m_contr, pauta=pauta, pauta_usd=pauta_usd,
+        pauta_q=pauta_q, tasa_pauta=tasa_pauta, m_oper=m_oper, fijos=fijos, det_fijos=det_fijos,
+        retiros=retiros, det_retiros=det_retiros, sin_confirmar=sin_confirmar, neto=neto,
+        economia=economia)
+
+
+def cobertura_de_pauta(mov, filas_gasto=None):
+    """Texto de la cobertura de pauta en el tramo ALINEADO del banco (APR-070), o None sin cargos.
+
+    Meta cobra por umbral y con retraso, así que el mes calendario mezcla dos preguntas: se compara
+    la intersección de las dos series, y se excluye CP1 (factura en COP por otro medio de pago)."""
+    fbm = [t for t in mov if "Facebook" in t["nombre"]]
+    if not fbm:
+        return None
+    d_ini = min(t["fecha"] for t in fbm).isoformat()
+    d_fin = max(t["fecha"] for t in fbm).isoformat()
+    fb_al = sum(t["monto"] for t in fbm)
+    p = pauta_de_la_ventana(d_ini, d_fin, filas_gasto, excluir_cuentas=(CUENTA_CP1,))
+    tr_al = p["usd"]
+    cob = 100 * tr_al / fb_al if fb_al else 0
+    return (d_ini, d_fin, fb_al, tr_al, cob, p)
+
+
 # ──────────────────────────────── main ────────────────────────────────
 def main():
     try:
@@ -226,28 +475,33 @@ def _main():
     alertas, fallos = [], []
 
     # ── integridad 1: el cuadre interno de Dropi ──
-    chk = df[df.ESTATUS == "ENTREGADO"]
-    calc = (chk["TOTAL DE LA ORDEN"] - chk["PRECIO FLETE"] - chk["PRECIO PROVEEDOR X CANTIDAD"]).sum()
-    if abs(calc - chk["GANANCIA"].sum()) > 1.0:
+    ok_cuadre, calc, gan = cuadre_dropi(df)
+    if not ok_cuadre:
         fallos.append("El cuadre de Dropi NO da: venta−producto−flete = Q%.2f pero la columna "
-                      "GANANCIA suma Q%.2f. El export cambió de formato." % (calc, chk["GANANCIA"].sum()))
+                      "GANANCIA suma Q%.2f. El export cambió de formato." % (calc, gan))
+
+    hoy = datetime.date.today()
+    filas_gasto = gasto.gasto_por_conjunto_ventana()
+    pauta = pauta_de_la_ventana(ini, fin, filas_gasto)
+    activos = mercados_activos(ini, fin, filas_gasto) | {MERCADO_PL}
+    reglas = load("_DIM_GASTOS.csv")
+    car = leer_cartera(cartera) if cartera else None
+    mov, control = leer_banco(banco) if banco else (None, None)
+    if mov is not None and control is not None and abs(sum(x["monto"] for x in mov) - control) > 0.02:
+        fallos.append("El extracto no cuadra: los movimientos suman $%.2f y el resumen dice "
+                      "$%.2f." % (sum(x["monto"] for x in mov), control))
 
     # ── ventana: VISTA A (cohorte por fecha de ORDEN) ──
-    m   = df[(df.f_orden >= ini) & (df.f_orden <= fin)]
-    if not len(m):
+    r = calcular_vista_a(df, ini, fin, hoy, pauta, mov=mov, reglas=reglas, activos=activos, car=car)
+    if r is None:
         sys.exit("Sin órdenes de Dropi en %s → %s" % (ini, fin))
-    ent = m[m.ESTATUS == "ENTREGADO"]
-    dev = m[m.ESTATUS == "DEVOLUCION"]
-    tra = m[~m.ESTATUS.isin(RESUELTOS)]
-
-    # ── maduración del cohorte (§1) ──
-    hoy  = datetime.date.today()
-    edad = (hoy - datetime.date.fromisoformat(fin)).days
-    maduro = edad >= DIAS_MADURO
-    pct_res = 100.0 * (len(m) - len(tra)) / len(m)
-
-    # ── rango de órdenes que trae el export: ¿alcanza para la vista de CAJA? ──
-    trae_previo = df.f_orden.min() < pd.Timestamp(ini)
+    m, ent, dev, tra = r.m, r.ent, r.dev, r.tra
+    edad, maduro, pct_res = r.edad, r.maduro, r.pct_res
+    venta, costo, flete, m_log = r.venta, r.costo, r.flete, r.m_log
+    c_dev, origen_dev, c_adm, c_otr, m_contr = r.c_dev, r.origen_dev, r.c_adm, r.c_otr, r.m_contr
+    pauta_usd, pauta_q, tasa_pauta, m_oper = r.pauta_usd, r.pauta_q, r.tasa_pauta, r.m_oper
+    fijos, retiros, neto = r.fijos, r.retiros, r.neto
+    det_fijos, det_retiros, sin_confirmar = r.det_fijos, r.det_retiros, r.sin_confirmar
 
     # ── js: mismos números que L, para --json (T4a) — nunca un cálculo aparte ──
     js = {
@@ -286,34 +540,6 @@ def _main():
           % (len(m), len(ent), len(dev), len(tra), pct_res), ""]
 
     # ── el estado de resultados, orden fijo §3 ──
-    venta   = float(ent["TOTAL DE LA ORDEN"].sum())
-    costo   = float(ent["PRECIO PROVEEDOR X CANTIDAD"].sum())
-    flete   = float(ent["PRECIO FLETE"].sum())
-    m_log   = venta - costo - flete
-
-    # ── costo de devolución: REAL orden por orden si hay cartera, si no el parámetro ──
-    # Nunca sale del export de órdenes (ahí COSTO DEVOLUCION FLETE = 0 siempre), así
-    # que SIEMPRE se suma aparte: una vez por cada orden en estado DEVOLUCION.
-    car = leer_cartera(cartera) if cartera else None
-    dev_ids = set(dev["ID"])
-    if car is not None:
-        cob = car[(car.cat == "COBRO_DEVOLUCION") & (car["ORDEN ID"].isin(dev_ids))]
-        c_dev = float(cob["MONTO"].sum())
-        n_cob = len(cob)
-        sin_cobrar = len(dev) - n_cob
-        # las devoluciones aún sin cobrar se estiman al promedio medido
-        c_dev += max(sin_cobrar, 0) * C_DEVOL
-        origen_dev = ("REAL: %d cobros del historial de cartera%s"
-                      % (n_cob, " + %d aún sin cobrar al promedio Q%.2f" % (sin_cobrar, C_DEVOL)
-                         if sin_cobrar > 0 else ""))
-    else:
-        c_dev = len(dev) * C_DEVOL
-        origen_dev = "estimado: %d devoluciones × Q%.2f (sin historial de cartera)" % (len(dev), C_DEVOL)
-
-    c_adm   = len(ent) * C_ADMIN
-    c_otr   = len(ent) * C_OTROS
-    m_contr = m_log - c_dev - c_adm - c_otr
-
     js["vista_a_cohorte"]["estado_de_resultados"] = {
         "venta_bruta_entregada_q": venta,
         "costo_producto_q": costo,
@@ -341,94 +567,49 @@ def _main():
           "      " + "·" * 56,
           "  (=) MARGEN DE CONTRIBUCIÓN              %s" % q(m_contr)]
 
-    # ── publicidad: se toma de _FACT_VENTAS (devengada) y se contrasta con banco ──
-    v = [r for r in load("_FACT_VENTAS.csv")
-         if r.get("rol_ventana") == "BASE" and ini <= r["ventana_ini"] <= fin and es_mercado_pl(r)]
-    pauta_usd = sum(fl(r["spend_usd"]) for r in v)
-    pauta_q   = sum(pauta_local(r) for r in v)
-    tasa_pauta = pauta_q / pauta_usd if pauta_usd else TASA_Q      # tasa efectiva (la de cada producto)
-    m_oper    = m_contr - pauta_q
     js["vista_a_cohorte"]["estado_de_resultados"].update({
         "publicidad_usd": pauta_usd,
+        "publicidad_fuente": {"meta_usd": pauta["meta_usd"],
+                              "lucidsales_fallback_usd": pauta["fallback_usd"]},
         "tasa_usd_gtq": TASA_Q,
         "publicidad_q": pauta_q,
         "margen_operativo_q": m_oper,
     })
     L += ["",
           "  (−) Publicidad Meta ($%.2f × %.2f)    %s" % (pauta_usd, tasa_pauta, q(-pauta_q)),
+          "      Fuente: Meta $%.2f · LucidSales donde Meta no cubre $%.2f"
+          % (pauta["meta_usd"], pauta["fallback_usd"]),
           "      " + "·" * 56,
           "  (=) MARGEN OPERATIVO                    %s" % q(m_oper)]
 
-    # ── clasificación de cargos del banco (DOCTRINA/CONTABILIDAD.md §3-ter) ──
-    #   NEGOCIO_PAUTA  -> ya contado en la línea de Publicidad, no se resta otra vez
-    #   NEGOCIO_FIJO   -> resta del RESULTADO (software, herramientas)
-    #   PERSONAL       -> RETIRO DE SOCIO: NO toca el resultado, sí la caja
-    #   SIN_CLASIFICAR -> no entra a nada; se lista y se pregunta (APR-030)
-    reglas = load("_DIM_GASTOS.csv")
-
-    def clasificar(nombre):
-        for g in reglas:
-            if g["patron"] and g["patron"].lower() in nombre.lower():
-                return g["clasificacion"], g.get("categoria", "")
-        return "SIN_CLASIFICAR", ""
-
-    fijos, retiros, sin_confirmar = 0.0, 0.0, []
-    det_fijos, det_retiros = [], []
-    if banco:
-        mov, control = leer_banco(banco)
-        if control is not None and abs(sum(x["monto"] for x in mov) - control) > 0.02:
-            fallos.append("El extracto no cuadra: los movimientos suman $%.2f y el resumen dice "
-                          "$%.2f." % (sum(x["monto"] for x in mov), control))
-        agr = collections.defaultdict(float)
-        for t in mov:
-            if ini <= str(t["fecha"]) <= fin:
-                agr[t["nombre"]] += t["monto"]
-        pend = collections.defaultdict(float)
-        for nom, val in agr.items():
-            cl, cat = clasificar(nom)
-            if cl == "NEGOCIO_FIJO":
-                fijos += val * TASA_Q
-                det_fijos.append((nom, val, cat))
-            elif cl == "PERSONAL":
-                retiros += val * TASA_Q
-                det_retiros.append((nom, val, cat))
-            elif cl == "SIN_CLASIFICAR":
-                pend[nom] += val
-        sin_confirmar = sorted(pend.items(), key=lambda kv: -kv[1])
-        # Cobertura SOLO sobre el tramo alineado (APR-070): Meta cobra por umbral
-        # y con retraso, así que el mes calendario mezcla dos preguntas. Se compara
-        # la intersección de las dos series, y se excluye CP1 (factura en COP por
-        # otro medio de pago).
-        fbm = [t for t in mov if "Facebook" in t["nombre"]]
-        if fbm:
-            d_ini = min(t["fecha"] for t in fbm).isoformat()
-            d_fin = max(t["fecha"] for t in fbm).isoformat()
-            fb_al = sum(t["monto"] for t in fbm)
-            tr_al = sum(fl(r["spend_usd"]) for r in load("_FACT_VENTAS.csv")
-                        if r.get("rol_ventana") == "BASE"
-                        and d_ini <= r["ventana_ini"] <= d_fin
-                        and r.get("cuenta_alias") != "CP1" and es_mercado_pl(r))
-            cob = 100 * tr_al / fb_al if fb_al else 0
+    if mov is not None:
+        cob_txt = cobertura_de_pauta(mov, filas_gasto)
+        if cob_txt:
+            d_ini, d_fin, fb_al, tr_al, cob, _ = cob_txt
             alertas.append("Cobertura de pauta en el tramo ALINEADO %s→%s (el único comparable, "
-                           "APR-070): el banco cobró $%.2f y LucidSales atribuye $%.2f = %.1f%%. "
+                           "APR-070): el banco cobró $%.2f y Meta atribuye $%.2f = %.1f%%. "
                            "Faltan %s de gasto real en el P&L."
                            % (d_ini, d_fin, fb_al, tr_al, cob, q((fb_al - tr_al) * TASA_Q).strip()))
             if df.f_orden.min() >= pd.Timestamp(ini):
                 alertas.append("El extracto arranca antes que los cargos de Meta: los primeros días "
                                "del mes se cobraron en el extracto ANTERIOR. Para cerrar el arrastre "
                                "hace falta el extracto del mes previo.")
-    neto = m_oper - fijos
+
     js["vista_a_cohorte"]["estado_de_resultados"].update({
         "gastos_fijos_q": fijos,
-        "gastos_fijos_detalle": [{"nombre": n, "monto_usd": v_, "categoria": c} for n, v_, c in det_fijos],
+        "gastos_fijos_detalle": [{"nombre": d["nombre"], "monto_usd": d["monto_usd"],
+                                  "categoria": d["categoria"], "mercado": d["mercado"],
+                                  "parte": d["parte"]} for d in det_fijos],
         "resultado_neto_q": neto,
         "retiros_personales_q": retiros,
-        "retiros_personales_detalle": [{"nombre": n, "monto_usd": v_, "categoria": c} for n, v_, c in det_retiros],
+        "retiros_personales_detalle": [{"nombre": d["nombre"], "monto_usd": d["monto_usd"],
+                                        "categoria": d["categoria"], "mercado": d["mercado"],
+                                        "parte": d["parte"]} for d in det_retiros],
         "cargos_sin_clasificar": [{"nombre": n, "monto_usd": v_} for n, v_ in sin_confirmar],
     })
     L += ["", "  (−) Gastos fijos del negocio            %s" % q(-fijos)]
-    for nom, val, cat in sorted(det_fijos, key=lambda x: -x[1]):
-        L.append("        {:<24} ${:>8,.2f}  {}".format(nom[:24], val, cat))
+    for d in sorted(det_fijos, key=lambda x: -x["monto_usd"]):
+        L.append("        {:<24} ${:>8,.2f}  {}".format(d["nombre"][:24], d["monto_usd"], d["categoria"]))
     if not det_fijos:
         L.append("        (ninguno confirmado en esta ventana)")
     L += ["      " + "═" * 56,
@@ -439,8 +620,9 @@ def _main():
         L += ["RETIROS PERSONALES — salieron de la cuenta pero NO son del negocio.",
               "No reducen la ganancia (no es plata que el negocio gastó en operar);",
               "sí reducen la CAJA disponible. Contablemente es un retiro de socio."]
-        for nom, val, cat in sorted(det_retiros, key=lambda x: -x[1]):
-            L.append("     {:<26} ${:>8,.2f} = {}".format(nom[:26], val, q(val * TASA_Q)))
+        for d in sorted(det_retiros, key=lambda x: -x["monto_usd"]):
+            L.append("     {:<26} ${:>8,.2f} = {}".format(d["nombre"][:26], d["monto_usd"],
+                                                          q(d["monto_usd"] * TASA_Q)))
         L += ["     " + "·" * 52,
               "     Total retirado                       %s" % q(retiros),
               "",
@@ -458,48 +640,23 @@ def _main():
 
     # ── economía unitaria por producto (§4) ──
     L += ["═" * W, "ECONOMÍA UNITARIA — cuánto deja CADA VENTA, por producto", "═" * W, ""]
-    cpa_prod = collections.defaultdict(float)
-    ven_prod = collections.Counter()
-    for r in v:
-        cpa_prod[r["producto_key"]] += pauta_local(r)
-        ven_prod[r["producto_key"]] += int(fl(r["ventas"]))
-    js["vista_a_cohorte"]["economia_unitaria"] = []
-    for pk, g in sorted(ent.groupby("pk"), key=lambda kv: -len(kv[1])):
-        n_e = len(g)
-        n_d = len(dev[dev.pk == pk])
-        te  = n_e / (n_e + n_d) if (n_e + n_d) else 1.0
-        tick = float(g["TOTAL DE LA ORDEN"].mean())
-        cos  = float(g["PRECIO PROVEEDOR X CANTIDAD"].mean())
-        fle  = float(g["PRECIO FLETE"].mean())
-        dev_amort = ((1 - te) / te) * C_DEVOL if te else 0.0
-        be   = tick - cos - fle - dev_amort - C_ADMIN - C_OTROS
-        cpa  = cpa_prod[pk] / ven_prod[pk] if ven_prod[pk] else 0.0
-        js["vista_a_cohorte"]["economia_unitaria"].append({
-            "producto_key": pk,
-            "pct_entrega": 100 * te,
-            "entregadas": n_e,
-            "devueltas": n_d,
-            "ticket_promedio_q": tick,
-            "costo_producto_q": cos,
-            "flete_q": fle,
-            "devolucion_amortizada_q": dev_amort,
-            "admin_y_otros_q": C_ADMIN + C_OTROS,
-            "margen_antes_publicidad_q": be,
-            "cpa_real_q": cpa,
-            "ganancia_por_venta_q": be - cpa,
-        })
-        L += ["  %s   (entrega %.1f%% · %d entregadas / %d devueltas)" % (pk, 100 * te, n_e, n_d),
-              "     Precio de venta (ticket promedio)      %s" % q(tick),
-              "     − Costo del producto                   %s" % q(-cos),
-              "     − Flete                                %s" % q(-fle),
-              "     − Devolución amortizada                %s" % q(-dev_amort),
-              "     − Admin y otros                        %s" % q(-(C_ADMIN + C_OTROS)),
+    js["vista_a_cohorte"]["economia_unitaria"] = r.economia
+    for e in r.economia:
+        L += ["  %s   (entrega %.1f%% · %d entregadas / %d devueltas)"
+              % (e["producto_key"], e["pct_entrega"], e["entregadas"], e["devueltas"]),
+              "     Precio de venta (ticket promedio)      %s" % q(e["ticket_promedio_q"]),
+              "     − Costo del producto                   %s" % q(-e["costo_producto_q"]),
+              "     − Flete                                %s" % q(-e["flete_q"]),
+              "     − Devolución amortizada                %s" % q(-e["devolucion_amortizada_q"]),
+              "     − Admin y otros                        %s" % q(-e["admin_y_otros_q"]),
               "       " + "·" * 54,
-              "     = MARGEN ANTES DE PUBLICIDAD           %s  ← break-even del CPA" % q(be),
-              "     − CPA real (pauta ÷ ventas)            %s" % q(-cpa),
+              "     = MARGEN ANTES DE PUBLICIDAD           %s  ← break-even del CPA"
+              % q(e["margen_antes_publicidad_q"]),
+              "     − CPA real (pauta ÷ ventas)            %s" % q(-e["cpa_real_q"]),
               "       " + "·" * 54,
               "     = GANANCIA POR VENTA                   %s  %s" % (
-                  q(be - cpa), "🔴 PIERDE en cada venta" if be - cpa < 0 else "✅"),
+                  q(e["ganancia_por_venta_q"]),
+                  "🔴 PIERDE en cada venta" if e["ganancia_por_venta_q"] < 0 else "✅"),
               ""]
 
     # ── VISTA B — CAJA (por fecha del movimiento de dinero, §2) ──

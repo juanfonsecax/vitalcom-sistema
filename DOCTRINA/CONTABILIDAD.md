@@ -147,7 +147,8 @@ mezclan con este estado de resultados.
 | **Dropi GT** — órdenes | total, flete, costo proveedor, ganancia | **QUETZALES** | nada, entra tal cual |
 | **Dropi GT** — historial de cartera | entradas y cobros de devolución | **QUETZALES** | nada, entra tal cual |
 | **LucidSales** | `total` — la venta | **moneda del mercado del producto** (GT: quetzales · CO: pesos) | nada, entra tal cual |
-| **LucidSales** | `spend` — la pauta | **DÓLARES** | × la `tasa` del producto (GT: `tasa_usd_gtq`) |
+| **Meta** (`_FACT_ENTREGA.csv`, vía `gasto.py`) | `spend` — la pauta | **DÓLARES** | × la `tasa` del producto (GT: `tasa_usd_gtq`) |
+| **LucidSales** | `spend` — la pauta | **DÓLARES** | solo donde Meta no tiene cobertura (día de producto sin fila de Meta); el reporte dice cuánta pauta vino de cada fuente |
 | **Banco GT** (Relay) | cargos de Meta y todo lo demás | **DÓLARES** | × `tasa_usd_gtq` |
 | **Cuenta CP1** — única excepción | `spend` de esa cuenta | **COP** | ÷ `tasa_cop_usd` → USD → × `tasa_usd_gtq` |
 
@@ -212,6 +213,13 @@ que el operador diga qué es. Nunca se adivina por el nombre del comercio.
 | Proxy-Cheap | `NEGOCIO_FIJO` | $26.29 = Q200 | resta del resultado |
 | Anthropic | `NEGOCIO_FIJO` | $21.53 = Q164 | resta del resultado |
 | MINIMED | `PERSONAL` | $901.59 = Q6,870 | **solo caja**, no el resultado |
+
+**Gastos por mercado.** Cada fila de `_DIM_GASTOS.csv` declara su `mercado` (`GT`, `CO` o
+`COMPARTIDO`). Un gasto de un mercado va entero a ese mercado; uno `COMPARTIDO` se reparte según
+`reparto_gasto_compartido` de `_PARAMETROS_FINANZAS.csv`: `ACTIVOS_IGUAL` = partes iguales entre los
+mercados con actividad en el mes (órdenes de Dropi o pauta de Meta), y un mercado sin actividad no
+paga. Vale igual para los fijos y para los retiros personales. El banco no dice a qué mercado
+pertenece cada cargo, por eso las suscripciones por mercado también van `COMPARTIDO`.
 
 **Cierre de agosto:** resultado del negocio **Q16,232** · retiro personal Q6,870
 · **caja que quedó en la cuenta Q9,911**.
