@@ -23,7 +23,9 @@ carpeta principal (misma regla que `iniciar.bat`). El paso 1 (`VITALCOM_BASE` ex
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
+import sys
 from functools import lru_cache
 from pathlib import Path
 
@@ -128,9 +130,20 @@ def python_del_sistema() -> str:
     """Con qué intérprete se corren los scripts de `Ads/_TOOLS/`.
 
     Los scripts del motor son del sistema, no de la app: corren con el Python del sistema,
-    no con el venv de la app, salvo que se declare `VITALCOM_PYTHON`.
+    no con el venv de la app, salvo que se declare `VITALCOM_PYTHON`. `uv run` pone el venv
+    primero en el PATH, asi que se busca `python` saltando las carpetas de ese venv y el alias
+    de la Microsoft Store (`WindowsApps`), que no es un interprete.
     """
-    return os.environ.get("VITALCOM_PYTHON") or "python"
+    declarado = os.environ.get("VITALCOM_PYTHON")
+    if declarado:
+        return declarado
+    venv = os.path.normcase(os.path.abspath(sys.prefix))
+    fuera_del_venv = [
+        c for c in os.environ.get("PATH", "").split(os.pathsep)
+        if c and not os.path.normcase(os.path.abspath(c)).startswith(venv)
+        and os.path.basename(os.path.normpath(c)).lower() != "windowsapps"
+    ]
+    return shutil.which("python", path=os.pathsep.join(fuera_del_venv)) or "python"
 
 
 def datos_de_la_app() -> Path:
