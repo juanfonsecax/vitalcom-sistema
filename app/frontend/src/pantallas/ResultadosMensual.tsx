@@ -5,14 +5,16 @@
  * (`GET /api/resultados/mensual`), que usa la fórmula de `gen_pl.py` (DOCTRINA/CONTABILIDAD.md).
  * Un valor `null` es un dato que no se pudo medir (el mes no tiene órdenes de Dropi): se escribe
  * «—», nunca un cero. La insignia PRELIMINAR y la lista de faltantes también las decide el script.
- * El retiro personal se muestra aparte: nunca entra al resultado.
+ * El retiro personal se muestra aparte: nunca entra al resultado. Lo mismo la billetera de Dropi
+ * (retiros, transferencias a cuenta propia, saldo): son movimientos de caja, van en su propia sección
+ * y no tocan la ganancia.
  */
 import { useState, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UploadCloud } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Cell, XAxis } from "recharts";
 
-import { api, type MesDelPL, type ProductoDelMes } from "../api/cliente";
+import { api, type CarteraDelMes, type MesDelPL, type ProductoDelMes } from "../api/cliente";
 import { BanderaMercado } from "../componentes/mercado";
 import { cn, Problema } from "../componentes/ui";
 import { formatearDinero, type PerfilMoneda } from "../dinero";
@@ -72,6 +74,29 @@ const RUBROS: Rubro[] = [
   { rotulo: "Gastos fijos", signo: "(−)", valor: (m) => m.gastos_fijos.q },
   { rotulo: "Resultado neto", signo: "(=)", valor: (m) => m.resultado_neto_q, fuerte: true },
 ];
+
+/** Movimientos de caja de la billetera de Dropi: NO afectan la ganancia. */
+const RUBROS_DE_CAJA: { rotulo: string; valor: (c: CarteraDelMes) => number | null | undefined; alerta?: boolean }[] = [
+  { rotulo: "Retiros personales desde Dropi", valor: (c) => c.retiros_personales_q },
+  { rotulo: "Transferencias a cuenta propia", valor: (c) => c.transferencias_propias_q },
+  { rotulo: "Retiros sin clasificar", valor: (c) => c.sin_clasificar_q, alerta: true },
+  { rotulo: "Saldo de la billetera de Dropi", valor: (c) => c.saldo_cierre_q },
+];
+
+const CLASE_DE_RETIRO: Record<string, string> = {
+  RETIRO_PERSONAL: "Retiro personal",
+  TRANSFERENCIA_PROPIA: "A cuenta propia",
+  SIN_CLASIFICAR: "Sin clasificar",
+};
+
+/** Debajo del costo de devoluciones: de dónde sale (cobro real de la billetera o promedio). */
+function origenDeDevoluciones(mes: MesDelPL): string | null {
+  const d = mes.cartera.devoluciones;
+  if (d.origen === "REAL") return "costo real de la billetera";
+  if (d.origen === "MIXTO") return `${d.reales} de ${d.reales + d.estimadas} cobradas en la billetera; el resto, promedio`;
+  if (d.origen === "ESTIMADO") return "promedio estimado";
+  return null;
+}
 
 const CONFIG_GRAFICO = {
   venta_entregada_q: { label: "Venta entregada", color: "var(--chart-1)" },
@@ -160,6 +185,7 @@ function TablaMensual({
             {meses.map((mes) => {
               const valor = rubro.valor(mes);
               const neto = rubro.rotulo === "Resultado neto";
+              const origen = rubro.rotulo === "Devoluciones" ? origenDeDevoluciones(mes) : null;
               return (
                 <TableCell
                   key={mes.mes}
@@ -170,6 +196,7 @@ function TablaMensual({
                   )}
                 >
                   {dinero(valor)}
+                  {origen && <div className="text-[11px] font-normal text-muted-foreground">{origen}</div>}
                 </TableCell>
               );
             })}
@@ -177,7 +204,7 @@ function TablaMensual({
         ))}
         <TableRow className="text-muted-foreground">
           <TableCell className="whitespace-nowrap">
-            Retiros personales <span className="text-xs">(fuera del resultado)</span>
+            Retiros personales del banco <span className="text-xs">(fuera del resultado)</span>
           </TableCell>
           {meses.map((mes) => (
             <TableCell key={mes.mes} className="text-right tabular-nums">
@@ -203,6 +230,27 @@ function TablaMensual({
             </TableCell>
           ))}
         </TableRow>
+        <TableRow className="bg-muted/40 hover:bg-muted/40">
+          <TableCell colSpan={meses.length + 1} className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Movimientos de caja (no afectan la ganancia)
+          </TableCell>
+        </TableRow>
+        {RUBROS_DE_CAJA.map((rubro) => (
+          <TableRow key={rubro.rotulo} className="text-muted-foreground">
+            <TableCell className="whitespace-nowrap">{rubro.rotulo}</TableCell>
+            {meses.map((mes) => {
+              const valor = rubro.valor(mes.cartera);
+              return (
+                <TableCell
+                  key={mes.mes}
+                  className={cn("text-right tabular-nums", rubro.alerta && valor != null && valor > 0 && "text-estado-seguir")}
+                >
+                  {dinero(valor)}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
@@ -214,6 +262,56 @@ function Detalle({ titulo, children }: { titulo: string; children: ReactNode }) 
       <h3 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{titulo}</h3>
       {children}
     </div>
+  );
+}
+
+function DetalleBilletera({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda }) {
+  const dinero = (valor: number | null | undefined) => formatearDinero(valor, perfil, { decimales: 0 });
+  const c = mes.cartera;
+  const origen = origenDeDevoluciones(mes);
+  return (
+    <Detalle titulo="Billetera de Dropi">
+      <div data-testid="detalle-billetera" className="flex flex-col gap-1.5">
+        {c.saldo_cierre_q == null ? (
+          <p className="text-sm text-muted-foreground">
+            Sin historial de cartera en este mes: no hay retiros ni saldo, y las devoluciones usan el promedio.
+          </p>
+        ) : (
+          <>
+            <p className="text-sm">
+              {mes.preliminar ? `Saldo al ${c.fecha_corte}` : `Saldo al cierre (${c.fecha_corte})`}: {dinero(c.saldo_cierre_q)}. No tocan la
+              ganancia: son movimientos de caja.
+            </p>
+            {c.retiros.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Sin retiros este mes.</p>
+            ) : (
+              <ul className="text-sm">
+                {c.retiros.map((r) => (
+                  <li key={`${r.fecha}-${r.hora}-${r.monto_q}`} className="flex justify-between gap-4">
+                    <span>
+                      {r.fecha} · <span>{r.concepto}</span>{" "}
+                      <Badge
+                        variant="outline"
+                        className={cn(r.clasificacion === "SIN_CLASIFICAR" && "border-estado-seguir text-estado-seguir")}
+                      >
+                        {CLASE_DE_RETIRO[r.clasificacion] ?? r.clasificacion}
+                      </Badge>
+                    </span>
+                    <span className="tabular-nums">{dinero(r.monto_q)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </>
+        )}
+        {origen && (
+          <p className="text-xs text-muted-foreground">
+            Costo de las devoluciones: {origen} ({mes.cartera.devoluciones.reales} reales,{" "}
+            {mes.cartera.devoluciones.estimadas} estimadas).
+          </p>
+        )}
+      </div>
+    </Detalle>
   );
 }
 
@@ -301,6 +399,8 @@ function DetalleDelMes({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda })
           )}
         </Detalle>
 
+        <DetalleBilletera mes={mes} perfil={perfil} />
+
         {mes.retiros_personales.detalle.length > 0 && (
           <Detalle titulo="Retiros personales (no son del negocio)">
             <ul className="text-sm">
@@ -335,16 +435,18 @@ function Faltantes({ globales, mes }: { globales: string[]; mes: MesDelPL | unde
   );
 }
 
-/** Subir un export de Dropi y/o un extracto bancario: el script los guarda en el historial. */
+/** Subir un export de Dropi, su historial de cartera y/o un extracto bancario: el script los guarda. */
 function CargarHistorial() {
   const cola = useQueryClient();
   const [dropi, setDropi] = useState<File | null>(null);
+  const [cartera, setCartera] = useState<File | null>(null);
   const [banco, setBanco] = useState<File | null>(null);
   const [cuenta, setCuenta] = useState("");
   const cargar = useMutation({
     mutationFn: () => {
       const formulario = new FormData();
       if (dropi) formulario.append("dropi", dropi);
+      if (cartera) formulario.append("cartera", cartera);
       if (banco) formulario.append("banco", banco);
       if (cuenta.trim()) formulario.append("cuenta", cuenta.trim());
       return api.cargarMensual(formulario);
@@ -352,12 +454,14 @@ function CargarHistorial() {
     onSuccess: () => {
       cola.invalidateQueries({ queryKey: ["resultados"] });
       setDropi(null);
+      setCartera(null);
       setBanco(null);
     },
   });
   const resumen = cargar.data;
   const frases = [
     resumen?.dropi ? `Dropi: ${String(resumen.dropi.nuevas ?? 0)} órdenes nuevas, ${String(resumen.dropi.actualizadas ?? 0)} actualizadas.` : null,
+    resumen?.cartera ? `Cartera: ${String(resumen.cartera.nuevas ?? 0)} movimientos nuevos.` : null,
     resumen?.banco ? `Banco: ${String(resumen.banco.nuevas ?? 0)} movimientos nuevos.` : null,
   ].filter(Boolean);
   return (
@@ -369,13 +473,17 @@ function CargarHistorial() {
         </CardTitle>
         <CardDescription>
           Cada archivo se guarda una sola vez: subir de nuevo el mismo no cambia nada, y un export más nuevo
-          actualiza el estatus de las órdenes que ya estaban. Dropi se baja cada semana; el extracto, cada mes.
+          actualiza el estatus de las órdenes que ya estaban. Dropi se baja cada semana (órdenes y cartera); el extracto, cada mes.
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="mensual-dropi">Export de órdenes de Dropi (.xlsx)</Label>
           <Input id="mensual-dropi" type="file" accept=".xlsx" onChange={(e) => setDropi(e.target.files?.[0] ?? null)} />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="mensual-cartera">Historial de cartera de Dropi (.xlsx)</Label>
+          <Input id="mensual-cartera" type="file" accept=".xlsx" onChange={(e) => setCartera(e.target.files?.[0] ?? null)} />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label htmlFor="mensual-banco">Extracto bancario de Relay (.pdf)</Label>
@@ -394,7 +502,7 @@ function CargarHistorial() {
         </div>
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-3">
-        <Button onClick={() => cargar.mutate()} disabled={(!dropi && !banco) || cargar.isPending}>
+        <Button onClick={() => cargar.mutate()} disabled={(!dropi && !cartera && !banco) || cargar.isPending}>
           {cargar.isPending ? "Guardando…" : "Guardar en el historial"}
         </Button>
         {cargar.isSuccess && frases.length > 0 && (

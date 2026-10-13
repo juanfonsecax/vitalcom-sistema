@@ -575,8 +575,9 @@ export interface paths {
         put?: never;
         /**
          * Cargar Mensual
-         * @description Guarda lo que el operador sube: el export de Dropi y/o un extracto bancario, cada uno con su
-         *     acción escritora. Se pueden subir por separado (Dropi es semanal, el banco mensual).
+         * @description Guarda lo que el operador sube: el export de órdenes de Dropi, el historial de cartera de Dropi
+         *     y/o un extracto bancario, cada uno con su acción escritora. Se pueden subir por separado (Dropi es
+         *     semanal, el banco mensual).
          */
         post: operations["cargar_mensual_api_resultados_mensual_cargar_post"];
         delete?: never;
@@ -1155,6 +1156,11 @@ export interface components {
              */
             dropi?: string | null;
             /**
+             * Cartera
+             * @description historial de cartera de Dropi (.xlsx)
+             */
+            cartera?: string | null;
+            /**
              * Banco
              * @description extracto bancario de Relay (.pdf)
              */
@@ -1260,6 +1266,42 @@ export interface components {
              * @default
              */
             generado: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * CarteraDelMes
+         * @description La billetera de Dropi en el mes. Son movimientos de caja: NO afectan la ganancia. Un rubro
+         *     `null` es un dato que la cartera cargada no cubre, nunca un cero.
+         */
+        CarteraDelMes: {
+            /**
+             * Cubre Mes
+             * @default false
+             */
+            cubre_mes: boolean;
+            /** Saldo Cierre Q */
+            saldo_cierre_q?: number | null;
+            /** Fecha Corte */
+            fecha_corte?: string | null;
+            /** Retiros Personales Q */
+            retiros_personales_q?: number | null;
+            /** Transferencias Propias Q */
+            transferencias_propias_q?: number | null;
+            /** Sin Clasificar Q */
+            sin_clasificar_q?: number | null;
+            /**
+             * Retiros
+             * @default []
+             */
+            retiros: components["schemas"]["RetiroDeCartera"][];
+            /**
+             * @default {
+             *       "reales": 0,
+             *       "estimadas": 0
+             *     }
+             */
+            devoluciones: components["schemas"]["DevolucionesDelMes"];
         } & {
             [key: string]: unknown;
         };
@@ -1667,6 +1709,26 @@ export interface components {
              * @default 1
              */
             parte: number;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * DevolucionesDelMes
+         * @description De dónde sale el costo de las devoluciones: cobros reales de la billetera o el promedio.
+         */
+        DevolucionesDelMes: {
+            /** Origen */
+            origen?: string | null;
+            /**
+             * Reales
+             * @default 0
+             */
+            reales: number;
+            /**
+             * Estimadas
+             * @default 0
+             */
+            estimadas: number;
         } & {
             [key: string]: unknown;
         };
@@ -2469,6 +2531,17 @@ export interface components {
             cargos_sin_clasificar: {
                 [key: string]: unknown;
             }[];
+            /**
+             * @default {
+             *       "cubre_mes": false,
+             *       "retiros": [],
+             *       "devoluciones": {
+             *         "estimadas": 0,
+             *         "reales": 0
+             *       }
+             *     }
+             */
+            cartera: components["schemas"]["CarteraDelMes"];
             /** Resultado Neto Q */
             resultado_neto_q?: number | null;
             /**
@@ -3292,6 +3365,30 @@ export interface components {
              * @default true
              */
             ok: boolean;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * RetiroDeCartera
+         * @description Un retiro de la billetera de Dropi, con el destino que le da `_DIM_RETIROS.csv`.
+         */
+        RetiroDeCartera: {
+            /** Fecha */
+            fecha: string;
+            /**
+             * Hora
+             * @default
+             */
+            hora: string;
+            /**
+             * Concepto
+             * @default
+             */
+            concepto: string;
+            /** Monto Q */
+            monto_q: number;
+            /** Clasificacion */
+            clasificacion: string;
         } & {
             [key: string]: unknown;
         };

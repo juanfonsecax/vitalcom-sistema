@@ -258,6 +258,109 @@ class Faltantes(unittest.TestCase):
         self.assertEqual(m["ordenes"]["total"], 1)
 
 
+def _cart(mov_id, fecha, categoria, tipo, monto, despues, orden="", concepto=""):
+    previo = despues + monto if tipo == "SALIDA" else despues - monto
+    return {"mov_id": str(mov_id), "fecha": fecha, "hora": "10:00", "tipo": tipo,
+            "monto_q": "%.2f" % monto, "saldo_previo_q": "%.2f" % previo,
+            "saldo_despues_q": "%.2f" % despues, "orden_id": str(orden), "guia": "",
+            "categoria": categoria, "descripcion": "x", "concepto_retiro": concepto,
+            "mercado": "GT", "archivo_origen": "c.xlsx"}
+
+
+REGLAS_RETIROS = [
+    {"patron": "papa", "clasificacion": "RETIRO_PERSONAL"},
+    {"patron": "RETIRO PROPIO", "clasificacion": "TRANSFERENCIA_PROPIA"},
+]
+
+
+def _con_cartera(cartera, ordenes=None, **kw):
+    h = _enero() if ordenes is None else _hechos(ordenes=ordenes, **kw)
+    h["cartera"] = cartera
+    h["reglas_retiros"] = REGLAS_RETIROS
+    return h
+
+
+class CarteraDeDropi(unittest.TestCase):
+    """El historial de cartera es el libro de caja: da el costo REAL de cada devolución y los
+    retiros, que son movimiento de caja y no tocan el resultado."""
+
+    def _enero_con(self, filas):
+        return gpm.pl_mensual("GT", hoy=HOY, hechos=_con_cartera(filas))["meses"][0]
+
+    def test_la_devolucion_usa_el_cobro_real_cuando_la_cartera_cubre_el_mes(self) -> None:
+        # la orden 3 de _enero() es la devolución; Dropi cobró Q41.5 (no el promedio)
+        m = self._enero_con([_cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 510.0, orden=1),
+                             _cart(2, "2024-01-09", "COBRO_DEVOLUCION", "SALIDA", 41.5, 468.5, orden=3)])
+        self.assertAlmostEqual(m["devoluciones_q"], 41.5)
+        self.assertEqual(m["cartera"]["devoluciones"], {"origen": "REAL", "reales": 1, "estimadas": 0})
+        self.assertAlmostEqual(m["resultado_neto_q"] - (m["margen_operativo_q"] - m["gastos_fijos"]["q"]), 0.0)
+
+    def test_una_devolucion_aun_sin_cobrar_se_estima(self) -> None:
+        h = _con_cartera([_cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 510.0, orden=1)])
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertAlmostEqual(m["devoluciones_q"], gen_pl.C_DEVOL)
+        self.assertEqual(m["cartera"]["devoluciones"], {"origen": "ESTIMADO", "reales": 0, "estimadas": 1})
+
+    def test_un_mes_anterior_a_la_cartera_se_estima_y_lo_dice(self) -> None:
+        h = _con_cartera([_cart(1, "2024-03-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 510.0, orden=9)])
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertEqual(m["mes"], "2024-01")
+        self.assertAlmostEqual(m["devoluciones_q"], gen_pl.C_DEVOL)
+        self.assertEqual(m["cartera"]["devoluciones"]["origen"], "ESTIMADO")
+        self.assertFalse(m["cartera"]["cubre_mes"])
+        self.assertIsNone(m["cartera"]["saldo_cierre_q"])
+        self.assertTrue(any("cartera" in x.lower() for x in m["faltantes"]))
+
+    def test_los_retiros_se_clasifican_y_no_tocan_el_resultado(self) -> None:
+        base = self._enero_con([_cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 9000.0, orden=1)])
+        con = self._enero_con([
+            _cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 9000.0, orden=1),
+            _cart(2, "2024-01-10", "RETIRO", "SALIDA", 5000.0, 4000.0, concepto="Retiro papa"),
+            _cart(3, "2024-01-11", "RETIRO", "SALIDA", 3000.0, 1000.0, concepto="a LLC RETIRO PROPIO"),
+            _cart(4, "2024-01-12", "RETIRO", "SALIDA", 70.0, 930.0, concepto="pago raro")])
+        c = con["cartera"]
+        self.assertAlmostEqual(c["retiros_personales_q"], 5000.0)
+        self.assertAlmostEqual(c["transferencias_propias_q"], 3000.0)
+        self.assertAlmostEqual(c["sin_clasificar_q"], 70.0)
+        self.assertEqual([r["clasificacion"] for r in c["retiros"]],
+                         ["RETIRO_PERSONAL", "TRANSFERENCIA_PROPIA", "SIN_CLASIFICAR"])
+        self.assertAlmostEqual(con["resultado_neto_q"], base["resultado_neto_q"])
+        self.assertTrue(any("sin clasificar" in x.lower() and "pago raro" in x for x in con["faltantes"]))
+
+    def test_el_saldo_de_cierre_es_el_del_ultimo_movimiento_del_mes(self) -> None:
+        m = self._enero_con([_cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 510.0, orden=1),
+                             _cart(2, "2024-01-20", "GANANCIA_ORDEN", "ENTRADA", 10.0, 520.0, orden=2),
+                             _cart(3, "2024-02-02", "GANANCIA_ORDEN", "ENTRADA", 10.0, 530.0, orden=4)])
+        self.assertAlmostEqual(m["cartera"]["saldo_cierre_q"], 520.0)
+        self.assertEqual(m["cartera"]["fecha_corte"], "2024-01-20")
+        self.assertTrue(m["cartera"]["cubre_mes"])
+
+    def test_los_retiros_del_banco_y_los_de_la_cartera_son_rubros_aparte(self) -> None:
+        m = self._enero_con([_cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 9000.0, orden=1),
+                             _cart(2, "2024-01-10", "RETIRO", "SALIDA", 5000.0, 4000.0, concepto="Retiro papa")])
+        self.assertAlmostEqual(m["retiros_personales"]["q"], 50.0 * gen_pl.TASA_Q)   # MINIMED, banco
+        self.assertAlmostEqual(m["cartera"]["retiros_personales_q"], 5000.0)          # papa, cartera
+
+    def test_sin_cartera_cargada_los_rubros_son_null_y_lo_dice(self) -> None:
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=_enero())["meses"][0]
+        self.assertFalse(m["cartera"]["cubre_mes"])
+        self.assertIsNone(m["cartera"]["retiros_personales_q"])
+        self.assertIsNone(m["cartera"]["saldo_cierre_q"])
+        self.assertEqual(m["cartera"]["retiros"], [])
+
+    def test_un_mes_sin_extracto_bancario_lo_dice(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2024-07-02")])
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertTrue(any("extracto" in x.lower() and "2024-07" in x for x in m["faltantes"]))
+
+    def test_la_cobertura_de_la_cartera_se_reporta(self) -> None:
+        r = gpm.pl_mensual("GT", hoy=HOY, hechos=_con_cartera(
+            [_cart(1, "2024-01-01", "GANANCIA_ORDEN", "ENTRADA", 10.0, 510.0, orden=1),
+             _cart(2, "2024-01-20", "GANANCIA_ORDEN", "ENTRADA", 10.0, 520.0, orden=2)]))
+        self.assertEqual(r["cobertura"]["cartera"], {"desde": "2024-01-01", "hasta": "2024-01-20",
+                                                     "movimientos": 2})
+
+
 class Cli(unittest.TestCase):
     def test_mirar_no_escribe_y_colombia_sale_vacia(self) -> None:
         antes = sorted((p.name, p.stat().st_mtime_ns) for p in (RAIZ / "PRODUCTOS").iterdir())

@@ -46,6 +46,7 @@ export type Resultados = components["schemas"]["Resultados"];
 export type ResultadoMensual = components["schemas"]["ResultadoMensual"];
 export type MesDelPL = components["schemas"]["MesDelPL"];
 export type ProductoDelMes = components["schemas"]["ProductoDelMes"];
+export type CarteraDelMes = components["schemas"]["CarteraDelMes"];
 
 /** Lo que el workflow deja pendiente para el operador: una orden a aprobar, una pregunta de Claude o
  * las imágenes que tiene que subir a mano a la biblioteca de Meta. */
@@ -225,9 +226,9 @@ export const api = {
   historialResultados: () => pedir<Resultados[]>("/api/resultados/historial"),
   resultadoMensual: (mercado: string) =>
     pedir<ResultadoMensual>(`/api/resultados/mensual?mercado=${encodeURIComponent(mercado)}`),
-  /** Guarda un export de Dropi y/o un extracto bancario en los hechos de finanzas. */
+  /** Guarda un export de Dropi, el historial de cartera de Dropi y/o un extracto bancario en los hechos de finanzas. */
   cargarMensual: (formulario: FormData) =>
-    pedir<{ dropi?: Record<string, unknown>; banco?: Record<string, unknown> }>(
+    pedir<{ dropi?: Record<string, unknown>; cartera?: Record<string, unknown>; banco?: Record<string, unknown> }>(
       "/api/resultados/mensual/cargar",
       { method: "POST", body: formulario },
     ),

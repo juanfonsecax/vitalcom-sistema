@@ -2214,6 +2214,39 @@
     "habilitada": true,
     "tiempo_max_s": 120,
     "salida": "json"
+   },
+   {
+    "id": "finanzas.ingerir_cartera",
+    "rotulo": "Guardar el historial de cartera de Dropi (finanzas)",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/ingerir_cartera.py",
+     "--archivo",
+     "{archivo}",
+     "--escribir",
+     "--json"
+    ],
+    "parametros": {
+     "archivo": {
+      "tipo": "archivo_temporal",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "interna",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
    }
   ]
  }

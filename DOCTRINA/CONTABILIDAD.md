@@ -221,6 +221,12 @@ mercados con actividad en el mes (órdenes de Dropi o pauta de Meta), y un merca
 paga. Vale igual para los fijos y para los retiros personales. El banco no dice a qué mercado
 pertenece cada cargo, por eso las suscripciones por mercado también van `COMPARTIDO`.
 
+**Retiros de la cartera de Dropi.** Un retiro de la billetera se clasifica por su CONCEPTO con
+`PRODUCTOS/_DIM_RETIROS.csv`: `TRANSFERENCIA_PROPIA` (a una cuenta del propio operador, su LLC) o
+`RETIRO_PERSONAL` (pagar a la familia o cosas personales). Ninguno es gasto ni toca el resultado: son
+movimientos de caja, como el `PERSONAL` del banco, y se muestran aparte. Lo que ninguna regla calza queda
+`SIN_CLASIFICAR`: se lista y se pregunta.
+
 **Cierre de agosto:** resultado del negocio **Q16,232** · retiro personal Q6,870
 · **caja que quedó en la cuenta Q9,911**.
 

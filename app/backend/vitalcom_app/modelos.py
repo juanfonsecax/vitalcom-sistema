@@ -840,6 +840,38 @@ class ProductoDelMes(Base):
     ganancia_q: float | None = None
 
 
+class RetiroDeCartera(Base):
+    """Un retiro de la billetera de Dropi, con el destino que le da `_DIM_RETIROS.csv`."""
+
+    fecha: str
+    hora: str = ""
+    concepto: str = ""
+    monto_q: float
+    clasificacion: str  # RETIRO_PERSONAL | TRANSFERENCIA_PROPIA | SIN_CLASIFICAR
+
+
+class DevolucionesDelMes(Base):
+    """De dónde sale el costo de las devoluciones: cobros reales de la billetera o el promedio."""
+
+    origen: str | None = None  # REAL | MIXTO | ESTIMADO; null si el mes no tiene devoluciones
+    reales: int = 0
+    estimadas: int = 0
+
+
+class CarteraDelMes(Base):
+    """La billetera de Dropi en el mes. Son movimientos de caja: NO afectan la ganancia. Un rubro
+    `null` es un dato que la cartera cargada no cubre, nunca un cero."""
+
+    cubre_mes: bool = False
+    saldo_cierre_q: float | None = None
+    fecha_corte: str | None = None
+    retiros_personales_q: float | None = None
+    transferencias_propias_q: float | None = None
+    sin_clasificar_q: float | None = None
+    retiros: list[RetiroDeCartera] = []
+    devoluciones: DevolucionesDelMes = DevolucionesDelMes()
+
+
 class MesDelPL(Base):
     """Un mes del estado de resultados. Una línea en `null` es un dato que no se pudo medir (el mes
     no tiene órdenes de Dropi), nunca un cero: el porqué está en `faltantes`."""
@@ -866,6 +898,7 @@ class MesDelPL(Base):
     gastos_fijos: GastosDelMes = GastosDelMes()
     retiros_personales: GastosDelMes = GastosDelMes()
     cargos_sin_clasificar: list[dict[str, Any]] = []
+    cartera: CarteraDelMes = CarteraDelMes()
     resultado_neto_q: float | None = None
     por_producto: list[ProductoDelMes] = []
     faltantes: list[str] = []

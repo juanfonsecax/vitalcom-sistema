@@ -18,6 +18,43 @@ const MERCADOS = [
 
 const SIN_DETALLE = { q: 0, detalle: [] };
 
+const SIN_CARTERA = {
+  cubre_mes: false,
+  saldo_cierre_q: null,
+  fecha_corte: null,
+  retiros_personales_q: null,
+  transferencias_propias_q: null,
+  sin_clasificar_q: null,
+  retiros: [],
+  devoluciones: { origen: null, reales: 0, estimadas: 0 },
+};
+
+const CARTERA_SEPTIEMBRE = {
+  cubre_mes: true,
+  saldo_cierre_q: 94867.12,
+  fecha_corte: "2026-09-30",
+  retiros_personales_q: 5000,
+  transferencias_propias_q: 0,
+  sin_clasificar_q: 0,
+  retiros: [{ fecha: "2026-09-14", hora: "10:11", concepto: "retiro papa", monto_q: 5000, clasificacion: "RETIRO_PERSONAL" }],
+  devoluciones: { origen: "MIXTO", reales: 50, estimadas: 1 },
+};
+
+const CARTERA_OCTUBRE = {
+  cubre_mes: true,
+  saldo_cierre_q: 7530.08,
+  fecha_corte: "2026-10-13",
+  retiros_personales_q: 5000,
+  transferencias_propias_q: 90000,
+  sin_clasificar_q: 70,
+  retiros: [
+    { fecha: "2026-10-01", hora: "08:28", concepto: "Retiro a LLC DFF VENTURES RETIRO PROPIO", monto_q: 90000, clasificacion: "TRANSFERENCIA_PROPIA" },
+    { fecha: "2026-10-09", hora: "14:38", concepto: "Retiro papa", monto_q: 5000, clasificacion: "RETIRO_PERSONAL" },
+    { fecha: "2026-10-12", hora: "09:00", concepto: "pago raro", monto_q: 70, clasificacion: "SIN_CLASIFICAR" },
+  ],
+  devoluciones: { origen: "REAL", reales: 3, estimadas: 0 },
+};
+
 const AGOSTO = {
   mes: "2026-08",
   desde: "2026-08-01",
@@ -44,6 +81,7 @@ const AGOSTO = {
     detalle: [{ nombre: "MINIMED GEDIATRIA", monto_usd: 901.59, monto_q: 6870, categoria: "retiro_socio", mercado: "COMPARTIDO", parte: 1 }],
   },
   cargos_sin_clasificar: [],
+  cartera: SIN_CARTERA,
   resultado_neto_q: null,
   por_producto: [],
   faltantes: ["Sin órdenes de Dropi en 2026-08: cargá el export de Dropi que cubra el mes (ingerir_dropi.py)."],
@@ -78,6 +116,7 @@ const SEPTIEMBRE = {
   },
   retiros_personales: SIN_DETALLE,
   cargos_sin_clasificar: [],
+  cartera: CARTERA_SEPTIEMBRE,
   resultado_neto_q: 8589,
   por_producto: [
     {
@@ -102,6 +141,7 @@ const OCTUBRE = {
   venta_entregada_q: 9765,
   resultado_neto_q: 2295,
   gastos_fijos: SIN_DETALLE,
+  cartera: CARTERA_OCTUBRE,
   banco_facebook: { usd: 141.31, cargos: 8 },
   por_producto: [
     {
@@ -227,7 +267,7 @@ test("el mes que el script marca preliminar lleva la insignia; el maduro no", as
 test("el retiro personal se muestra aparte, fuera de las líneas del resultado", async () => {
   montar();
   const tabla = await screen.findByTestId("tabla-mensual");
-  const fila = within(tabla).getByText(/Retiros personales/).closest("tr")!;
+  const fila = within(tabla).getByText(/Retiros personales del banco/).closest("tr")!;
   expect(fila).toHaveTextContent("Q6,870");
   expect(fila).toHaveTextContent("fuera del resultado");
   // el neto de agosto sigue sin dato: el retiro no lo toca
@@ -318,6 +358,96 @@ test("un error real del script se muestra como falla, no como estado vacío", as
   });
   montar();
   expect(await screen.findByText(/no pude leer el sistema/i)).toBeInTheDocument();
+});
+
+test("los movimientos de caja van en su propia sección, después del resultado neto, y dicen que no afectan la ganancia", async () => {
+  montar();
+  const tabla = await screen.findByTestId("tabla-mensual");
+  const seccion = within(tabla).getByText("Movimientos de caja (no afectan la ganancia)");
+  const neto = within(tabla).getByText("Resultado neto");
+  expect(neto.compareDocumentPosition(seccion) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  for (const rubro of [
+    "Retiros personales desde Dropi",
+    "Transferencias a cuenta propia",
+    "Retiros sin clasificar",
+    "Saldo de la billetera de Dropi",
+  ]) {
+    const fila = within(tabla).getByText(rubro).closest("tr")!;
+    expect(seccion.compareDocumentPosition(fila) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  }
+});
+
+test("la billetera de Dropi muestra retiros, transferencias, sin clasificar y saldo tal cual; un mes sin cartera, guiones", async () => {
+  montar();
+  const tabla = await screen.findByTestId("tabla-mensual");
+  const celdas = (rotulo: string) => within(within(tabla).getByText(rotulo).closest("tr")!).getAllByRole("cell");
+  // columnas: rótulo, ago (sin cartera), sep, oct
+  expect(celdas("Retiros personales desde Dropi").map((c) => c.textContent)).toEqual(
+    expect.arrayContaining(["—", "Q5,000"]),
+  );
+  expect(celdas("Retiros personales desde Dropi")[1]).toHaveTextContent("—");
+  expect(celdas("Retiros personales desde Dropi")[3]).toHaveTextContent("Q5,000");
+  expect(celdas("Transferencias a cuenta propia")[3]).toHaveTextContent("Q90,000");
+  expect(celdas("Retiros sin clasificar")[3]).toHaveTextContent("Q70");
+  expect(celdas("Saldo de la billetera de Dropi")[1]).toHaveTextContent("—");
+  expect(celdas("Saldo de la billetera de Dropi")[2]).toHaveTextContent("Q94,867");
+  expect(celdas("Saldo de la billetera de Dropi")[3]).toHaveTextContent("Q7,530");
+});
+
+test("el costo de las devoluciones dice si es real, mixto o estimado", async () => {
+  montar();
+  const tabla = await screen.findByTestId("tabla-mensual");
+  const fila = within(tabla).getByText("Devoluciones").closest("tr")!;
+  const celdas = within(fila).getAllByRole("cell");
+  expect(celdas[2]).toHaveTextContent("50 de 51 cobradas en la billetera");
+  expect(celdas[3]).toHaveTextContent("costo real de la billetera");
+  expect(celdas[1]).not.toHaveTextContent("billetera");
+});
+
+test("el detalle del mes lista los retiros de la billetera y marca el que no se pudo clasificar", async () => {
+  montar();
+  await screen.findByTestId("tabla-mensual");
+  // por defecto: el último mes con resultado (octubre)
+  const detalle = await screen.findByTestId("detalle-del-mes");
+  const billetera = within(detalle).getByTestId("detalle-billetera");
+  expect(billetera).toHaveTextContent("Retiro a LLC DFF VENTURES RETIRO PROPIO");
+  expect(billetera).toHaveTextContent("A cuenta propia");
+  expect(billetera).toHaveTextContent("Retiro personal");
+  const sinClasificar = within(billetera).getByText("pago raro").closest("li")!;
+  expect(sinClasificar).toHaveTextContent("Sin clasificar");
+  expect(billetera).toHaveTextContent("No tocan la ganancia");
+  expect(billetera).toHaveTextContent("al 2026-10-13");
+});
+
+test("un mes sin cartera cargada lo dice en el detalle", async () => {
+  montar();
+  await screen.findByTestId("tabla-mensual");
+  fireEvent.click(screen.getByRole("button", { name: /ago 2026/i }));
+  const detalle = await screen.findByTestId("detalle-del-mes");
+  expect(within(detalle).getByTestId("detalle-billetera")).toHaveTextContent("Sin historial de cartera");
+});
+
+test("subir el historial de cartera lo manda a guardar junto con el resto", async () => {
+  const fetchFalso = servir({
+    "/api/mercados": MERCADOS,
+    "/api/resultados/mensual": MENSUAL_GT,
+    "/api/resultados/mensual/cargar": { cartera: { nuevas: 5, actualizadas: 0 } },
+    "/api/resultados": { estado: 404 },
+    "/api/resultados/historial": [],
+  });
+  montar();
+  await screen.findByTestId("tabla-mensual");
+  const entrada = screen.getByLabelText(/historial de cartera de dropi/i);
+  fireEvent.change(entrada, { target: { files: [new File(["x"], "historial de cartera.xlsx")] } });
+  fireEvent.click(screen.getByRole("button", { name: /guardar en el historial/i }));
+  await waitFor(() => {
+    const llamada = fetchFalso.mock.calls.find(([url]) => String(url).includes("/mensual/cargar"));
+    expect(llamada).toBeTruthy();
+    const cuerpo = (llamada![1] as RequestInit).body as FormData;
+    expect(cuerpo.get("cartera")).toBeInstanceOf(File);
+    expect(cuerpo.get("dropi")).toBeNull();
+  });
+  expect(await screen.findByText(/cartera: 5 movimientos nuevos/i)).toBeInTheDocument();
 });
 
 test("la pestaña Último export sigue ahí y recuerda la elección", async () => {

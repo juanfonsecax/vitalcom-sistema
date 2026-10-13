@@ -22,7 +22,7 @@ from fastapi.testclient import TestClient
 from sistema_de_juguete import llamadas
 from test_resultados_api import COLUMNAS_DROPI, PARAMETROS_FINANZAS
 
-SCRIPTS_REALES = ("gen_pl.py", "gen_pl_mensual.py", "ingerir_dropi.py", "ingerir_banco.py")
+SCRIPTS_REALES = ("gen_pl.py", "gen_pl_mensual.py", "ingerir_dropi.py", "ingerir_banco.py", "ingerir_cartera.py")
 XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 
@@ -180,3 +180,81 @@ def test_el_get_de_resultados_no_incluye_lo_persistido(cliente_falso: TestClient
     leido = cliente_falso.get("/api/resultados").json()
     assert leido == {k: v for k, v in cuerpo.items() if k != "persistido"}
     assert json.dumps(leido)  # serializable
+
+
+def _cartera_xlsx(dia: datetime.date) -> bytes:
+    """Un historial de cartera de juguete: una ganancia, el cobro de la devolución y un retiro."""
+    columnas = ["ID", "FECHA", "TIPO", "MONTO", "MONTO PREVIO", "ORDEN ID", "NUMERO DE GUIA", "DESCRIPCIÓN",
+                "CUENTA", "CONCEPTO DE RETIRO"]
+    f = dia.strftime("%d-%m-%Y")
+    filas = [
+        [30, f + " 14:38", "SALIDA", 500.0, 1000.0, None, None, "SALIDA POR PETICION DE RETIRO DE SALDO EN CARTERA",
+         None, "Retiro papa"],
+        [20, f + " 08:00", "SALIDA", 41.5, 1041.5, 2, "FD2", "SALIDA DE COBRO DE DEVOLUCIÓN POR ENTREGA NO EFECTIVA: 2",
+         None, None],
+        [10, f + " 00:09", "ENTRADA", 160.0, 881.5, 1, "FD1",
+         "ENTRADA POR GANANCIA EN LA ORDEN COMO DROPSHIPPER: 1* GUIA: *FD1*", None, None],
+    ]
+    libro = openpyxl.Workbook()
+    hoja = libro.active
+    hoja.append(columnas)
+    for fila in filas:
+        hoja.append(fila)
+    salida = io.BytesIO()
+    libro.save(salida)
+    return salida.getvalue()
+
+
+def _con_reglas_de_retiro(sistema: Path) -> None:
+    with io.open(sistema / "PRODUCTOS" / "_DIM_RETIROS.csv", "w", encoding="utf-8", newline="") as fh:
+        escritor = csv.writer(fh)
+        escritor.writerow(["patron", "clasificacion", "confirmado_por", "fecha", "notas"])
+        escritor.writerow(["papa", "RETIRO_PERSONAL", "operador", "2024-03-10", ""])
+
+
+def test_cargar_la_cartera_la_guarda_y_el_mensual_muestra_retiros_saldo_y_costo_real(
+        cliente_falso: TestClient, sistema_falso: Path) -> None:
+    _con_reglas_de_retiro(sistema_falso)
+    desde = datetime.date(2024, 3, 1)
+    archivos = {"dropi": ("ordenes_productos_20240310_090000.xlsx", _dropi_xlsx(desde), XLSX),
+                "cartera": ("historial de cartera-10-03-2024 10_05.xlsx", _cartera_xlsx(desde), XLSX)}
+    r = cliente_falso.post("/api/resultados/mensual/cargar", files=archivos)
+    assert r.status_code == 201, r.text
+    assert r.json()["cartera"]["nuevas"] == 3
+    assert (sistema_falso / "PRODUCTOS" / "_FACT_CARTERA_DROPI.csv").is_file()
+
+    mes = cliente_falso.get("/api/resultados/mensual", params={"mercado": "GT"}).json()["meses"][0]
+    cartera = mes["cartera"]
+    assert cartera["cubre_mes"] is True
+    assert cartera["saldo_cierre_q"] == 500.0
+    assert cartera["retiros_personales_q"] == 500.0
+    assert cartera["transferencias_propias_q"] == 0.0
+    assert [x["clasificacion"] for x in cartera["retiros"]] == ["RETIRO_PERSONAL"]
+    assert cartera["devoluciones"] == {"origen": "REAL", "reales": 1, "estimadas": 0}
+    assert mes["devoluciones_q"] == 41.5
+
+
+def test_cargar_la_cartera_dos_veces_no_duplica(cliente_falso: TestClient) -> None:
+    archivo = {"cartera": ("historial.xlsx", _cartera_xlsx(datetime.date(2024, 3, 1)), XLSX)}
+    cliente_falso.post("/api/resultados/mensual/cargar", files=archivo)
+    otra = cliente_falso.post("/api/resultados/mensual/cargar", files=archivo)
+    assert otra.status_code == 201
+    assert otra.json()["cartera"]["nuevas"] == 0
+
+
+def test_un_archivo_que_no_es_cartera_se_rechaza_y_no_se_guarda(cliente_falso: TestClient, sistema_falso: Path) -> None:
+    r = cliente_falso.post("/api/resultados/mensual/cargar",
+                           files={"cartera": ("roto.xlsx", _dropi_xlsx(datetime.date(2024, 3, 1)), XLSX)})
+    assert r.status_code == 422
+    assert not (sistema_falso / "PRODUCTOS" / "_FACT_CARTERA_DROPI.csv").exists()
+
+
+def test_sin_cartera_cargada_el_mes_lo_dice_y_los_rubros_son_null(cliente_falso: TestClient) -> None:
+    cliente_falso.post("/api/resultados/mensual/cargar",
+                       files={"dropi": ("ordenes_productos_20240310_090000.xlsx",
+                                        _dropi_xlsx(datetime.date(2024, 3, 1)), XLSX)})
+    mes = cliente_falso.get("/api/resultados/mensual", params={"mercado": "GT"}).json()["meses"][0]
+    assert mes["cartera"]["cubre_mes"] is False
+    assert mes["cartera"]["saldo_cierre_q"] is None
+    assert mes["cartera"]["retiros_personales_q"] is None
+    assert any("cartera" in x.lower() for x in mes["faltantes"])

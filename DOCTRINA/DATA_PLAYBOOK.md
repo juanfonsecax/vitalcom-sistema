@@ -46,6 +46,21 @@ sumarlas al P&L es imposible, no solo prohibido.**
   inventado. Con fuente `MetaAPI-directo`, `mensajes` sale de las conversaciones reales de mensajería
   (`actions`); la derivación por clics vive solo para los exports de Ads Manager, que no traen `actions`.
 
+### `_FACT_CARTERA_DROPI.csv` — LA BILLETERA DE DROPI (capa máquina)
+El libro de caja de Dropi: una fila por movimiento (ID único, UPSERT, quetzales, con el saldo después
+del movimiento). Lo escribe solo `Ads/_TOOLS/ingerir_cartera.py` (mira por defecto, `--escribir` para
+guardar). Da el costo REAL de cada devolución en los meses que cubre desde su primer día y los retiros
+de la billetera, que se clasifican al LEER con `_DIM_RETIROS.csv` (`TRANSFERENCIA_PROPIA`,
+`RETIRO_PERSONAL`; lo que ninguna regla calza es `SIN_CLASIFICAR` y se lista, nunca se adivina). Son
+movimientos de caja: no tocan el resultado.
+
+### Precedencia por fuente en `_FACT_ENTREGA*.csv`
+Para una misma cuenta y un mismo día manda `MetaAPI-directo`: las filas de otras fuentes (export de Ads
+Manager, MCP) que la API cubre por completo se eliminan al guardar y no se suman al leer
+(`upsert_fact.superar_por_api_directa`, `gasto.py`, espejo en `warehouse/macros/entrega_con_superada.sql`).
+`Ads/_TOOLS/reconciliar_entrega.py` la aplica al histórico (`--escribir`). El gasto de LucidSales solo
+cuenta donde Meta no llega: una venta cuya ventana Meta cubre entera conserva sus ventas y aporta gasto 0.
+
 ### `_FACT_ORDENES_DROPI.csv` y `_FACT_BANCO.csv` — HECHOS DE FINANZAS (capa máquina)
 Lo que el estado de resultados mensual lee: las órdenes de Dropi (quetzales, una fila por ID, UPSERT:
 el export más nuevo pisa estatus y montos y las órdenes que ya no trae se conservan) y los

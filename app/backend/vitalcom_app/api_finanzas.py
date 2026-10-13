@@ -1,8 +1,8 @@
 """api_finanzas.py — el estado de resultados mes a mes y la carga de los datos que lo alimentan.
 
 La lectura corre `gen_pl_mensual.py` (solo lee); la carga pasa por las acciones del manifiesto
-`finanzas.ingerir_dropi` y `finanzas.ingerir_banco`, que son las que escriben
-`_FACT_ORDENES_DROPI.csv` y `_FACT_BANCO.csv`. La app no calcula ni escribe: el archivo subido
+`finanzas.ingerir_dropi`, `finanzas.ingerir_cartera` y `finanzas.ingerir_banco`, que son las que
+escriben `_FACT_ORDENES_DROPI.csv`, `_FACT_CARTERA_DROPI.csv` y `_FACT_BANCO.csv`. La app no calcula ni escribe: el archivo subido
 entra por el temporal de la subida y lo guarda el script.
 """
 
@@ -22,6 +22,7 @@ from .modelos import ResultadoMensual
 router = APIRouter(prefix="/api/resultados", tags=["resultados"])
 
 ACCION_DROPI = "finanzas.ingerir_dropi"
+ACCION_CARTERA = "finanzas.ingerir_cartera"
 ACCION_BANCO = "finanzas.ingerir_banco"
 
 
@@ -38,23 +39,39 @@ def resultado_mensual(mercado: str = Query("GT", description="GT o CO")) -> Resu
 @router.post("/mensual/cargar", status_code=201)
 def cargar_mensual(
     dropi: UploadFile | None = File(None, description="export de órdenes de Dropi (.xlsx)"),
+    cartera: UploadFile | None = File(None, description="historial de cartera de Dropi (.xlsx)"),
     banco: UploadFile | None = File(None, description="extracto bancario de Relay (.pdf)"),
     cuenta: str = Form("", description="últimos 4 dígitos de la cuenta; vacío = la del extracto"),
 ) -> dict[str, Any]:
-    """Guarda lo que el operador sube: el export de Dropi y/o un extracto bancario, cada uno con su
-    acción escritora. Se pueden subir por separado (Dropi es semanal, el banco mensual)."""
-    if dropi is None and banco is None:
-        raise HTTPException(status_code=422, detail="Subí un export de Dropi o un extracto bancario.")
+    """Guarda lo que el operador sube: el export de órdenes de Dropi, el historial de cartera de Dropi
+    y/o un extracto bancario, cada uno con su acción escritora. Se pueden subir por separado (Dropi es
+    semanal, el banco mensual)."""
+    if dropi is None and cartera is None and banco is None:
+        raise HTTPException(
+            status_code=422, detail="Subí un export de Dropi, el historial de cartera o un extracto bancario."
+        )
     resultado: dict[str, Any] = {}
-    if dropi is not None:
-        resultado["dropi"] = ejecutar_con_archivo(ACCION_DROPI, {}, dropi)
+    guardados: list[str] = []
+    for clave, accion_id, archivo, nombre in (
+        ("dropi", ACCION_DROPI, dropi, "el export de Dropi"),
+        ("cartera", ACCION_CARTERA, cartera, "el historial de cartera"),
+    ):
+        if archivo is None:
+            continue
+        try:
+            resultado[clave] = ejecutar_con_archivo(accion_id, {}, archivo)
+        except HTTPException as error:
+            if guardados:
+                error.detail = f"{error.detail} (ya quedó guardado: {', '.join(guardados)})"
+            raise
+        guardados.append(nombre)
     if banco is not None:
         parametros = {"cuenta": cuenta.strip()} if cuenta.strip() else {}
         try:
             resultado["banco"] = ejecutar_con_archivo(ACCION_BANCO, parametros, banco)
         except HTTPException as error:
-            if dropi is not None:
-                error.detail = f"{error.detail} (el export de Dropi ya quedó guardado)"
+            if guardados:
+                error.detail = f"{error.detail} (ya quedó guardado: {', '.join(guardados)})"
             raise
     return resultado
 
