@@ -317,6 +317,31 @@ test("cada mes muestra la tasa con que se convirtió, su regla y el costo de con
   expect(within(costo).getAllByRole("cell")[3]).toHaveTextContent("Q89");
 });
 
+test("un mes con tasa de la primera transferencia posterior lo dice", async () => {
+  const posterior = {
+    ...SEPTIEMBRE,
+    conversion: {
+      tasa: 7.9079, regla: "PRIMERA_POSTERIOR", tasa_parametro: 7.62, transferencias: 1,
+      usd: 11381, q: 90000, desde: "2026-10-01", hasta: "2026-10-01", ventana_dias: 90,
+      costo_q: 630.5,
+    },
+  };
+  servir({
+    "/api/mercados": MERCADOS,
+    "/api/resultados/mensual": { ...MENSUAL_GT, meses: [posterior] },
+    "/api/resultados": { estado: 404 },
+    "/api/resultados/historial": [],
+  });
+  montar();
+  const tabla = await screen.findByTestId("tabla-mensual");
+  const tasa = within(tabla).getByText("Tasa USD → Q").closest("tr")!;
+  expect(within(tasa).getAllByRole("cell")[1]).toHaveTextContent("7.9079");
+  expect(within(tasa).getAllByRole("cell")[1]).toHaveTextContent("posterior");
+  const detalle = await screen.findByTestId("detalle-del-mes");
+  expect(detalle).toHaveTextContent("posterior");
+  expect(detalle).toHaveTextContent("2026-10-01");
+});
+
 test("el detalle explica la tasa del mes elegido con las transferencias que la fijan", async () => {
   montar();
   await screen.findByTestId("tabla-mensual");

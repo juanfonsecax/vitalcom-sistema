@@ -10,8 +10,9 @@ La tasa de un mes (`tasa_del_mes`, regla en DOCTRINA/CONTABILIDAD.md):
   VENTANA          promedio ponderado por USD de las transferencias que salieron en los
                    `ventana_dias` que terminan el último día del mes;
   ULTIMA_CONOCIDA  si la ventana no tiene ninguna, la última que salió antes de ese día;
+  PRIMERA_POSTERIOR  si no hay ninguna en la ventana ni anterior, la primera que salió
+                   después de ese día;
   PARAMETRO        si no existe ninguna, `tasa_usd_gtq` de `_PARAMETROS_FINANZAS.csv`.
-Una transferencia posterior al cierre del mes nunca cuenta para ese mes.
 """
 import datetime
 import os
@@ -57,8 +58,12 @@ def tasa_del_mes(fin, transferencias, tasa_parametro, ventana_dias):
     elif hasta_fin:
         pesan, regla = [hasta_fin[-1]], "ULTIMA_CONOCIDA"
     else:
-        return {"valor": tasa_parametro, "regla": "PARAMETRO", "transferencias": 0, "usd": 0.0,
-                "q": 0.0, "desde": None, "hasta": None}
+        posteriores = [t for t in validas if t["fecha_salida"] > fin]
+        if posteriores:
+            pesan, regla = [posteriores[0]], "PRIMERA_POSTERIOR"
+        else:
+            return {"valor": tasa_parametro, "regla": "PARAMETRO", "transferencias": 0, "usd": 0.0,
+                    "q": 0.0, "desde": None, "hasta": None}
     usd = sum(_num(t["monto_usd"]) for t in pesan)
     q = sum(_num(t["monto_q"]) for t in pesan)
     return {"valor": q / usd, "regla": regla, "transferencias": len(pesan), "usd": usd, "q": q,

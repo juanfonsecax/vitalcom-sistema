@@ -102,6 +102,7 @@ function transferencias(n: number): string {
 function origenDeTasa(c: MesDelPL["conversion"]): string {
   if (c.regla === "VENTANA") return `${transferencias(c.transferencias)} en ${c.ventana_dias} días`;
   if (c.regla === "ULTIMA_CONOCIDA") return `última conocida (${c.desde})`;
+  if (c.regla === "PRIMERA_POSTERIOR") return `primera posterior (${c.desde})`;
   return "parámetro (sin transferencias)";
 }
 
@@ -365,7 +366,9 @@ function DetalleTasa({ mes, perfil }: { mes: MesDelPL; perfil: PerfilMoneda }) {
         <p className="text-sm">
           {c.regla === "VENTANA"
             ? `${transferencias(c.transferencias)} en los ${c.ventana_dias} días hasta el cierre del mes`
-            : `Última transferencia conocida (${c.desde})`}
+            : c.regla === "PRIMERA_POSTERIOR"
+              ? `Primera transferencia posterior al cierre (${c.desde})`
+              : `Última transferencia conocida (${c.desde})`}
           : {dinero(c.q)} retirados de Dropi ↔ {dolares(c.usd)} recibidos = {textoDeTasa(c.tasa)} por dólar
           (promedio ponderado por dólares).
         </p>

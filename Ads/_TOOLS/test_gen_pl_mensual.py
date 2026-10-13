@@ -412,9 +412,10 @@ class TasaEfectiva(unittest.TestCase):
         self.assertEqual(may["conversion"]["regla"], "ULTIMA_CONOCIDA")     # 112 dias despues
         self.assertAlmostEqual(may["conversion"]["tasa"], 8.0)
 
-    def test_una_transferencia_posterior_al_mes_no_lo_toca(self) -> None:
+    def test_una_transferencia_posterior_al_mes_le_da_su_tasa(self) -> None:
         m = self._mes([_transferencia("2024-02-01", 90000, 11381)])
-        self.assertEqual(m["conversion"]["regla"], "PARAMETRO")
+        self.assertEqual(m["conversion"]["regla"], "PRIMERA_POSTERIOR")
+        self.assertAlmostEqual(m["conversion"]["tasa"], 90000 / 11381, places=4)
 
     def test_la_misma_formula_que_gen_pl_con_la_misma_tasa(self) -> None:
         h = _enero()

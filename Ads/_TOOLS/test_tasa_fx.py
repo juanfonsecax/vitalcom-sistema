@@ -4,8 +4,9 @@
 
 La tasa de un mes sale de las transferencias propias (quetzales retirados de la billetera de Dropi
 contra los dólares que llegaron al banco): promedio ponderado por USD de las que salieron en la
-ventana que termina el último día del mes; si no hay, la última anterior; si no existe ninguna, el
-parámetro. Corre sobre datos de juguete y carpetas temporales: nunca toca PRODUCTOS/.
+ventana que termina el último día del mes; si no hay, la última anterior; si no hay ninguna
+previa, la primera posterior; si no existe ninguna, el parámetro. Corre sobre datos de juguete y
+carpetas temporales: nunca toca PRODUCTOS/.
 """
 import os
 import sys
@@ -51,10 +52,34 @@ class TasaDelMes(unittest.TestCase):
         self.assertEqual((t["regla"], t["valor"], t["transferencias"]), ("ULTIMA_CONOCIDA", 8.0, 1))
         self.assertEqual(t["desde"], "2026-05-01")
 
-    def test_la_ventana_termina_el_ultimo_dia_del_mes_y_una_posterior_no_cuenta(self) -> None:
+    def test_la_ventana_termina_el_ultimo_dia_del_mes_y_una_posterior_no_entra_en_ventana(self) -> None:
         trs = [_par("2026-10-01", 90000, 11381)]
         t = tasa_fx.tasa_del_mes("2026-09-30", trs, PARAM, 90)
-        self.assertEqual((t["regla"], t["valor"]), ("PARAMETRO", PARAM))
+        self.assertEqual((t["regla"], t["valor"]), ("PRIMERA_POSTERIOR", 90000 / 11381))
+
+    def test_mes_sin_previas_usa_la_primera_posterior(self) -> None:
+        trs = [_par("2026-10-01", 90000, 11381)]
+        t = tasa_fx.tasa_del_mes("2026-09-30", trs, PARAM, 90)
+        self.assertEqual(t["regla"], "PRIMERA_POSTERIOR")
+        self.assertAlmostEqual(t["valor"], 90000 / 11381, places=4)
+        self.assertEqual((t["transferencias"], t["desde"], t["hasta"]), (1, "2026-10-01", "2026-10-01"))
+
+    def test_con_varias_posteriores_manda_la_primera(self) -> None:
+        trs = [_par("2026-11-01", 8000, 1000), _par("2026-10-01", 90000, 11381)]
+        t = tasa_fx.tasa_del_mes("2026-09-30", trs, PARAM, 90)
+        self.assertEqual((t["regla"], t["desde"]), ("PRIMERA_POSTERIOR", "2026-10-01"))
+        self.assertAlmostEqual(t["valor"], 90000 / 11381, places=4)
+
+    def test_una_anterior_manda_sobre_una_posterior(self) -> None:
+        trs = [_par("2026-05-01", 8000, 1000), _par("2026-10-01", 90000, 11381)]
+        t = tasa_fx.tasa_del_mes("2026-09-30", trs, PARAM, 90)
+        self.assertEqual((t["regla"], t["valor"]), ("ULTIMA_CONOCIDA", 8.0))
+
+    def test_una_posterior_sin_usd_no_cuenta_y_cae_al_parametro(self) -> None:
+        malo = _par("2026-10-01", 90000, 1)
+        malo["monto_usd"] = ""
+        t = tasa_fx.tasa_del_mes("2026-09-30", [malo], PARAM, 90)
+        self.assertEqual(t["regla"], "PARAMETRO")
 
     def test_el_dia_final_de_la_ventana_entra_y_el_dia_anterior_al_inicio_no(self) -> None:
         # ventana de 90 dias que termina el 2026-10-31 -> 2026-08-03 .. 2026-10-31

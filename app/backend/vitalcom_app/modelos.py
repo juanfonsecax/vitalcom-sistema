@@ -803,7 +803,7 @@ class PautaDelMes(Base):
 
 class ConversionDelMes(Base):
     """La tasa USD -> moneda local con la que el script convirtió la pauta y los gastos del mes, y la
-    regla que la dio (VENTANA | ULTIMA_CONOCIDA | PARAMETRO). `costo_q` es informativo: ya está
+    regla que la dio (VENTANA | ULTIMA_CONOCIDA | PRIMERA_POSTERIOR | PARAMETRO). `costo_q` es informativo: ya está
     dentro de la publicidad."""
 
     tasa: float = 0.0

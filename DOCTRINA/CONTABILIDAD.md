@@ -174,10 +174,10 @@ La tasa de un mes, para la pauta y los gastos en USD:
 1. **VENTANA** — promedio ponderado por USD de las transferencias que salieron en
    los `ventana_tasa_fx_dias` (90) que terminan el último día del mes.
 2. **ULTIMA_CONOCIDA** — sin ninguna en la ventana, la última anterior a ese día.
-3. **PARAMETRO** — sin ninguna anterior, `tasa_usd_gtq` (**DECLARADA**, no medida).
+3. **PRIMERA_POSTERIOR** — sin ninguna en la ventana ni anterior, la primera posterior a ese día.
+4. **PARAMETRO** — sin ninguna transferencia, `tasa_usd_gtq` (**DECLARADA**, no medida).
 
-Una transferencia posterior al cierre de un mes no cuenta para ese mes. Cada mes
-reporta su tasa, la regla usada y el **costo de conversión** = USD de pauta ×
+Cada mes reporta su tasa, la regla usada y el **costo de conversión** = USD de pauta ×
 (tasa − `tasa_usd_gtq`): informativo, ya está dentro de la publicidad (no se
 resta dos veces).
 
