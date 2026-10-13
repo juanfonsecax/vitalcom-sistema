@@ -308,6 +308,23 @@ def clasificar(nombre, reglas):
     return "SIN_CLASIFICAR", "", ""
 
 
+def clasificar_retiro(concepto, reglas):
+    """Clasificación de un RETIRO de la cartera de Dropi por su CONCEPTO de retiro, con las reglas de
+    `_DIM_RETIROS.csv` (la primera cuyo patrón aparece en el concepto gana):
+
+      TRANSFERENCIA_PROPIA -> el dinero pasa a una cuenta del propio operador (su LLC): no es gasto
+      RETIRO_PERSONAL      -> el operador lo saca para pagar algo personal o familiar: retiro de socio
+      SIN_CLASIFICAR       -> ninguna regla calza: se lista y se pregunta, nunca se adivina (APR-030)
+
+    Ninguna de las tres toca el resultado: es movimiento de caja."""
+    texto = str(concepto or "").lower()
+    if texto:
+        for g in reglas:
+            if g.get("patron") and g["patron"].lower() in texto:
+                return g["clasificacion"]
+    return "SIN_CLASIFICAR"
+
+
 def gastos_del_banco(mov, reglas, ini, fin, activos):
     """Cargos del banco de [ini, fin] clasificados con `_DIM_GASTOS.csv` (CONTABILIDAD.md §3-ter).
 

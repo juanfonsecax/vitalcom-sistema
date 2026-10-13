@@ -1,0 +1,4 @@
+patron,clasificacion,confirmado_por,fecha,notas
+papa,RETIRO_PERSONAL,operador,2026-10-13,"Retiro de la cartera de Dropi para pagar a la familia o cosas personales (el operador lo confirmo el 13-oct: un retiro a su papa es personal). Es un retiro de socio: NO reduce la ganancia, SI reduce la caja."
+RETIRO PROPIO,TRANSFERENCIA_PROPIA,operador,2026-10-13,Retiro de la cartera de Dropi hacia una cuenta del propio operador (su LLC). Es movimiento entre cuentas suyas: no es gasto ni ganancia.
+DFF VENTURES,TRANSFERENCIA_PROPIA,operador,2026-10-13,"La LLC del operador. Un retiro a DFF VENTURES es una transferencia a su propia cuenta, no un gasto."
