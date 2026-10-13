@@ -49,10 +49,10 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
 - [x] T7 Dashboard: Jul-Aug months, real return cost from the wallet, withdrawals and transfers
   shown apart from profit, Dropi wallet balance — e6a37df (+ 80af2c3 toy-system fix)
 
-- [ ] T8 Effective FX rate: Q withdrawn from Dropi ÷ USD received (pair TRANSFERENCIA_PROPIA wallet
+- [x] T8 Effective FX rate: Q withdrawn from Dropi ÷ USD received (pair TRANSFERENCIA_PROPIA wallet
   rows with bank deposits; operator-confirmed pair 2026-10-01 Q90,000 → $11,381 ≈ 7.908). Monthly ad
   spend converts with the weighted rate of recent transfers, else the latest known; parameter 7.62
-  only when no transfer exists. Starts after T5–T7 (same files).
+  only when no transfer exists. Starts after T5–T7 (same files). — 256a758
 
 ## Acceptance
 - Re-ingesting the same files changes nothing (idempotent).
@@ -104,3 +104,19 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
   sin_aritmetica, api_espeja_los_csv, mercado_en_la_api) 63 passed; vitest 214 passed; tsc -b and vite
   build clean; dbt build PASS=36; gen_app --validar-manifiesto and flujo --validar valid. db/test_db.py:
   8 failures all `voz_cliente.producto_key` missing in the local Postgres schema (not from this work).
+- 2026-10-13 (T8): pairs live in `_FACT_TRANSFERENCIAS_FX.csv`; the rate is derived on read (Q / USD),
+  not stored, so it cannot contradict its two amounts. `registrar_transferencia_fx.py` auto-pairs a
+  TRANSFERENCIA_PROPIA wallet row with one bank ENTRADA (arrival within 5 business days, rate band
+  6.5-9.5, ambiguous or doubly claimed entries listed, never paired) or takes an operator-confirmed
+  pair (`--salida --usd`). Seeded: wallet movement 6450689 (2026-10-01, Q90,000) -> $11,381.00 =
+  7.9079, bank MERCURY, arrival date empty (unknown). Rule (CONTABILIDAD.md): USD-weighted rate of
+  transfers leaving in the 90 days (`ventana_tasa_fx_dias`) that end on the month's last day; else
+  the latest earlier one; else `tasa_usd_gtq`. One formula: `gen_pl.calcular_vista_a(tasa=)` reprices
+  ad spend and USD fixed costs; CLI and monthly both use it; `conversion` block per month (rate,
+  rule, transfers, conversion cost = USD spend x (rate - 7.62), informational). Real result: Jul, Aug,
+  Sep use the parameter 7.62 (the only transfer is after their close), Oct 7.9079 (VENTANA), Oct
+  conversion cost Q89, Oct neto Q2,203 (Q2,292 at 7.62: the difference is the Q89 conversion cost; Oct fixed costs are Q0).
+- Checks observed: Ads/_TOOLS unittest test_gen_pl 25, test_gen_pl_mensual 36, test_tasa_fx 21,
+  test_ingerir_cartera 10 OK; test_multimercado_d3 9/9; backend pytest (finanzas_mensual, resultados,
+  acciones, sin_aritmetica, mercado_en_la_api, api_espeja_los_csv) 64 passed; vitest 216 passed;
+  tsc -b and vite build clean; gen_app --validar-manifiesto valid; verificar_monedas 6/6.
