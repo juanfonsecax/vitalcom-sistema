@@ -157,15 +157,17 @@ if __name__ == "__main__":
     sys.exit(pytest.main([__file__, "-q", "-p", "no:cacheprovider", "--noconftest"]))
 
 
-def _base_mercados(tmp_path, invima=None):
+def _base_mercados(tmp_path, invima=None, estados=None):
     """Un producto GT y uno CO con su mercado, y la doctrina real (INVIMA pendiente salvo `invima`)."""
     import re
     import shutil
     real = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     p = tmp_path / "PRODUCTOS"
-    _csv(p / "_DIM_PRODUCTOS.csv", COLS_PRODUCTOS + ["mercado"], [
-        ["GTP", "Gt", "GTP", "50", "1", "EXTERNA", "GT"], ["COP1", "Co", "COP1", "7000", "1", "EXTERNA", "CO"],
-        ["SINM", "Sin", "SINM", "50", "1", "EXTERNA", ""]])
+    estados = estados or {}
+    _csv(p / "_DIM_PRODUCTOS.csv", COLS_PRODUCTOS + ["mercado", "registro_sanitario_estado"], [
+        ["GTP", "Gt", "GTP", "50", "1", "EXTERNA", "GT", estados.get("GTP", "")],
+        ["COP1", "Co", "COP1", "7000", "1", "EXTERNA", "CO", estados.get("COP1", "")],
+        ["SINM", "Sin", "SINM", "50", "1", "EXTERNA", "", ""]])
     for nombre in ("_DIM_MERCADOS.csv", "_PARAMETROS_FINANZAS.csv"):
         shutil.copy(os.path.join(real, "PRODUCTOS", nombre), p / nombre)
     with io.open(os.path.join(real, "DOCTRINA", "PLANTILLAS_DEFAULTS_OPERADOR.md"), encoding="utf-8") as fh:
@@ -195,3 +197,11 @@ def test_registro_sanitario_co_con_numero_queda_ok(tmp_path):
     b = _base_mercados(tmp_path, invima="INVIMA 2026M-0012345")
     co = dp.revisar_producto(str(b), _fila(b, "COP1"))
     assert _estados(co)["registro_sanitario"] == "ok"
+
+
+def test_registro_sanitario_co_en_tramite_queda_ok_sin_sello(tmp_path):
+    b = _base_mercados(tmp_path, estados={"COP1": "EN_TRAMITE"})
+    co = dp.revisar_producto(str(b), _fila(b, "COP1"))
+    assert _estados(co)["registro_sanitario"] == "ok"
+    item = next(i for i in co["items"] if i["clave"] == "registro_sanitario")
+    assert "trámite" in item["detalle"].lower()

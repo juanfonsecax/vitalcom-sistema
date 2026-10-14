@@ -149,14 +149,14 @@ def revisar_precio(base, fila):
 
 def revisar_registro(base, fila):
     """El numero de registro sanitario del mercado del producto, o None si el producto no declara un mercado
-    valido (eso lo dice `mercado.py`, no este dato)."""
+    valido (eso lo dice `mercado.py`, no este dato). Con EN_TRAMITE queda ok: la pieza sale sin sello."""
     try:
         perfil = mc.perfil_de_fila(fila, base)
     except mc.MercadoError:
         return None
     rotulo = "Registro sanitario"
     try:
-        return _item("registro_sanitario", rotulo, True, mc.registro_de_perfil(perfil, base)["texto"])
+        reg = mc.registro_de_producto(fila["producto_key"], base)
     except mc.RegistroFaltante as falta:
         nombre = ", ".join(falta.claves) or falta.regulador or "?"
         return _item("registro_sanitario", rotulo, False,
@@ -165,6 +165,10 @@ def revisar_registro(base, fila):
                      "generan los prompts (no se inventa uno ni se usa el de otro país).")
     except mc.MercadoError:
         return None
+    if reg.get("en_tramite"):
+        return _item("registro_sanitario", rotulo, True,
+                      "En trámite: las piezas salen sin sello ni número de registro.")
+    return _item("registro_sanitario", rotulo, True, reg["texto"])
 
 
 def revisar_page_id(fila):

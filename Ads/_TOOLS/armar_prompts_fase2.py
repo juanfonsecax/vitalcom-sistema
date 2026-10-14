@@ -254,9 +254,12 @@ def requerir_mercado(producto_key):
 
 
 def requerir_registro(producto_key, perfil):
-    """Los numeros de registro sanitario DEL MERCADO del producto o BLOQUEO. Nunca los de otro mercado."""
+    """Los numeros de registro sanitario DEL MERCADO del producto o BLOQUEO. Nunca los de otro mercado.
+
+    Con `registro_sanitario_estado` EN_TRAMITE no se bloquea: sale el registro vacio y marcado, y el
+    prompt dice que no lleve sello (linea_registro)."""
     try:
-        return mc.registro_de_perfil(perfil, BASE)
+        return mc.registro_de_producto(producto_key, BASE)
     except mc.RegistroFaltante as e:
         nombre = ", ".join(e.claves) or e.regulador or "?"
         raise Bloqueado(
@@ -270,6 +273,18 @@ def requerir_registro(producto_key, perfil):
     except mc.MercadoError as e:
         raise Bloqueado(f"BLOQUEANTE: no se pudo leer el registro sanitario de {producto_key}: {e}",
                         "registro_sanitario")
+
+
+def linea_registro(registro, pais):
+    """La linea del registro sanitario del prompt: con numero, el sello que va; EN_TRAMITE, la
+    instrucción de no llevar sello ni numero. Nunca un numero."""
+    if registro.get("en_tramite"):
+        return ("- Registro sanitario: NO incluyas ningún sello ni número de registro sanitario "
+                "(está en trámite).")
+    return ("- Registro sanitario (si la IMAGEN 1 muestra un sello regulatorio, va ESTE): "
+            f"{registro['texto']}. Somos de {pais}: nunca "
+            f"{' ni '.join(registro['ajenos'])} ni "
+            f"ningún otro regulador extranjero.")
 
 
 def buscar_foto_producto(producto_key):
@@ -531,10 +546,7 @@ def _armar(producto_key, angulo_manual=None, n_pedido=None):
             f"- Escalera de Precios: Tier 1: {variables_adaptadas['PRECIOS_GT']['TIER_1']} | Tier 2: {variables_adaptadas['PRECIOS_GT']['TIER_2']} | Tier 3: {variables_adaptadas['PRECIOS_GT']['TIER_3']}\n"
             f"- Franja inferior: Botón verde WhatsApp con texto: \"{variables_adaptadas['CTA']}\"\n"
             f"- Garantías en micro-badges: {variables_adaptadas['GARANTIAS']} · Garantía de 30 días\n"
-            f"- Registro sanitario (si la IMAGEN 1 muestra un sello regulatorio, va ESTE): "
-            f"{registro['texto']}. Somos de {perfil_mercado['pais']}: nunca "
-            f"{' ni '.join(registro['ajenos'])} ni "
-            f"ningún otro regulador extranjero.\n"
+            f"{linea_registro(registro, perfil_mercado['pais'])}\n"
             f"- Formato: 4:5 vertical (1080x1350 px), fotorrealista, iluminación comercial de estudio, colores nítidos, texto 100% legible y sin errores ortográficos.\n\n"
             f"REGLA DE PRECEDENCIA — MANDA LA IMAGEN 1:\n"
             f"La IMAGEN 1 es un anuncio que YA está validado en este mercado. Su estructura no es "

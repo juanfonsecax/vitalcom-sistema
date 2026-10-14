@@ -33,6 +33,9 @@ numero. Los numeros REALES viven en `DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md` (
 `[REG_INVIMA]`) y `registro_de_perfil()` los lee de ahi: un valor entre `**` y comillas invertidas es un
 numero; cualquier otra cosa (p.ej. «PENDIENTE del operador») es un numero que falta. Falta = `RegistroFaltante`;
 nunca se inventa ni se cae al de otro mercado. Quien escribe ese numero es el operador, editando esa fila.
+Excepcion por producto: con `registro_sanitario_estado` EN_TRAMITE en `_DIM_PRODUCTOS.csv`,
+`registro_de_producto()` devuelve el registro vacio y marcado (`en_tramite=True`) y la pieza sale
+sin sello ni numero.
 
 Uso
 ---
@@ -116,6 +119,13 @@ def _fila_producto(producto_key, base):
         if (fila.get("producto_key") or "").strip() == producto_key:
             return fila
     raise MercadoError("«%s» no tiene fila en _DIM_PRODUCTOS.csv." % producto_key)
+
+
+def estado_registro(fila):
+    """`registro_sanitario_estado` de una fila de _DIM_PRODUCTOS: VIGENTE (default, vacío =
+    VIGENTE) o EN_TRAMITE. Solo EN_TRAMITE saca la pieza sin sello; cualquier otro valor
+    exige el número como siempre."""
+    return (fila.get("registro_sanitario_estado") or "").strip().upper() or "VIGENTE"
 
 
 def mercado_de_fila(fila, base=None):
@@ -228,10 +238,32 @@ def registro_de_perfil(perfil, base=None):
             "falta el numero de registro %s del mercado %s en DOCTRINA/PLANTILLAS_DEFAULTS_OPERADOR.md "
             "([REG_%s]): lo entrega el operador." % (", ".join(faltan), perfil.get("mercado"), faltan[0]),
             regulador, faltan)
-    ajenos = sorted({regulador_de(f) for m, f in leer_mercados(base).items()
-                     if m != perfil.get("mercado")} - {"", regulador})
     return {"regulador": regulador, "texto": " · ".join("%s %s" % (c, registros[c]) for c in claves),
-            "ajenos": ajenos}
+            "ajenos": _ajenos(perfil, base)}
+
+
+def _ajenos(perfil, base=None):
+    """Los reguladores de los OTROS mercados, para decirle al modelo que no los use."""
+    regulador = regulador_de(perfil)
+    return sorted({regulador_de(f) for m, f in leer_mercados(base).items()
+                   if m != perfil.get("mercado")} - {"", regulador})
+
+
+def registro_en_tramite(perfil, base=None):
+    """El registro de un producto con `registro_sanitario_estado` EN_TRAMITE: vacío y marcado
+    con `en_tramite=True`. La pieza sale sin sello ni número, nunca con uno inventado."""
+    return {"regulador": regulador_de(perfil), "texto": "", "ajenos": _ajenos(perfil, base),
+            "en_tramite": True}
+
+
+def registro_de_producto(producto_key, base=None):
+    """El registro sanitario del producto: con EN_TRAMITE sale vacío y marcado (la pieza no
+    lleva sello); sin él exige el número del mercado como siempre (`RegistroFaltante`)."""
+    fila = _fila_producto(producto_key, base)
+    perfil = perfil_de_fila(fila, base)
+    if estado_registro(fila) == "EN_TRAMITE":
+        return registro_en_tramite(perfil, base)
+    return registro_de_perfil(perfil, base)
 
 
 def formatear_monto(valor, perfil, decimales=0):
