@@ -248,8 +248,13 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
                          % (sum(x["monto_q"] for x in sin_clas), len(sin_clas),
                             "; ".join("%s «%s»" % (x["fecha"], x["concepto"]) for x in sin_clas)))
     if not tiene_banco:
-        faltantes.append("Sin movimientos del banco en %s: cargá el extracto bancario "
-                         "(ingerir_banco.py)." % mes)
+        if gen_pl.BANCO_DESDE and fin < gen_pl.BANCO_DESDE:
+            faltantes.append("Sin movimientos del banco en %s: el negocio todavía no usaba Relay "
+                             "(el banco arranca el %s), se pagó por otro medio y los gastos "
+                             "fijos no están medidos." % (mes, gen_pl.BANCO_DESDE))
+        else:
+            faltantes.append("Sin movimientos del banco en %s: cargá el extracto bancario "
+                             "(ingerir_banco.py)." % mes)
     if not pauta["usd"]:
         faltantes.append("Sin pauta registrada en %s (ni de Meta ni de LucidSales)." % mes)
     if pauta["fallback_usd"]:

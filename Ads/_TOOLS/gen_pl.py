@@ -176,6 +176,7 @@ C_ADMIN    = par("costo_admin_q")
 C_OTROS    = par("otros_gastos_q")
 DIAS_MADURO = int(par("dias_cohorte_maduro"))
 REPARTO_COMPARTIDO = par_texto("reparto_gasto_compartido", "ACTIVOS_IGUAL")
+BANCO_DESDE = par_texto("banco_desde", "")   # primer día con banco (Relay); "" = siempre hubo
 CUENTA_CP1 = next((_cuenta_norm(r["cuenta_id"]) for r in load("_DIM_CUENTAS.csv")
                    if r["cuenta_alias"] == "CP1"), "")
 

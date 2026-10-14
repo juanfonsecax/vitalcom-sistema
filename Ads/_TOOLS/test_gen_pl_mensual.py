@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock as mock
 from pathlib import Path
 
 import pandas as pd
@@ -231,6 +232,29 @@ class Faltantes(unittest.TestCase):
         self.assertIsNone(m["retiros_personales"]["q"])
         self.assertTrue(any("banco" in x.lower() for x in m["faltantes"]))
 
+    def test_un_mes_anterior_al_banco_es_informativo_y_no_pide_extracto(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2026-07-02")])
+        with mock.patch.object(gen_pl, "BANCO_DESDE", "2026-08-01"):
+            m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertIsNone(m["gastos_fijos"]["q"])
+        self.assertTrue(any("otro medio" in x and "2026-07" in x for x in m["faltantes"]))
+        self.assertTrue(any("no están medidos" in x for x in m["faltantes"]))
+        self.assertFalse(any("cargá el extracto" in x for x in m["faltantes"]))
+
+    def test_un_mes_posterior_al_banco_si_pide_el_extracto(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2026-09-02")])
+        with mock.patch.object(gen_pl, "BANCO_DESDE", "2026-08-01"):
+            m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertTrue(any("cargá el extracto" in x.lower() and "2026-09" in x
+                            for x in m["faltantes"]))
+
+    def test_sin_parametro_de_banco_se_pide_siempre(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2026-07-02")])
+        with mock.patch.object(gen_pl, "BANCO_DESDE", ""):
+            m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertTrue(any("cargá el extracto" in x.lower() and "2026-07" in x
+                            for x in m["faltantes"]))
+
     def test_pauta_de_lucidsales_se_avisa(self) -> None:
         m = gpm.pl_mensual("GT", hoy=HOY, hechos=_enero())["meses"][0]
         self.assertTrue(any("LucidSales" in x for x in m["faltantes"]))
@@ -350,7 +374,8 @@ class CarteraDeDropi(unittest.TestCase):
 
     def test_un_mes_sin_extracto_bancario_lo_dice(self) -> None:
         h = _hechos(ordenes=[_orden(1, "2024-07-02")])
-        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        with mock.patch.object(gen_pl, "BANCO_DESDE", ""):
+            m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
         self.assertTrue(any("extracto" in x.lower() and "2024-07" in x for x in m["faltantes"]))
 
     def test_la_cobertura_de_la_cartera_se_reporta(self) -> None:
