@@ -1,43 +1,25 @@
 ═══ OVULOS_PURITY · VERSION v2 · 2026-09-29 · COSTO 7000 COP · DOSIS 3 perlas por paquete · page_id 61574253581304 · campaign_id SIN_MCP ═══
-HACER MANUAL — ÓVULOS PURITY HERNATURA | FASE 1 TESTEO DE ÁNGULOS | 2026-09-29
-FanPage de pauta: HERNATURA CO (page_id 61574253581304, cuenta EXTERNA, publicación manual)   ·   Edad de segmentación: mujeres 25-40 (conjuntos 1-4) · 35-50 (conjuntos 5 y 6)
-Mercado: Colombia · COP · contra entrega · Oferta del bot: 1 paquete $84.900 · 2 paquetes $129.900 (LA MÁS ELEGIDA) · 3 paquetes $169.900, envío gratis, pagas al recibir
-Lanzamiento: miércoles 30-sep-2026, 04:00 HORA COLOMBIA
-Ninguna pieza lleva sello ni número de registro sanitario.
+HACER MANUAL — Óvulos Purity Hernatura | FASE 1 · ÁNGULOS
+FanPage: HERNATURA CO (page_id 61574253581304) · Cuenta: GTR3
+GENERADO por Ads/_TOOLS/gen_manual.py — no editar a mano: se corrige el dato de origen
+y se vuelve a generar.
 
-════════════════════════════════════════════════════════════════════════
-── A. CHECKLIST RÁPIDO (en este orden) ──
-════════════════════════════════════════════════════════════════════════
+========================================================================
 
-[ ] 1. Generar los 6 ads-imagen (sección B) y guardarlos en Ads/MEDIA_OVULOSPURITY/ con el nombre exacto de cada uno
-[ ] 2. Generar las 3 infografías del bot (sección C); la IMAGEN 4 es opcional
-[ ] 3. Configurar el flujo en LucidBot (sección D) — HOY BLOQUEADO, ver D.1
-[ ] 4. Crear la campaña a mano en Ads Manager: 6 conjuntos, 12 anuncios, copies y presupuesto (sección E)
-[ ] 5. Programar la campaña para las 04:00 hora Colombia del 30-sep y revisar todo (sección E.4)
-[ ] 6. Registrar CAMBIO_BOT al pegar el bot y LANZAMIENTO al activar (sección F)
+A. CHECKLIST
+[ ] 1. Generar las imágenes de los anuncios (sección B)
+[ ] 2. Generar las infografías del bot (sección C)
+[ ] 3. Armar el flujo en LucidBot (sección D) y probarlo desde otro WhatsApp
+[ ] 4. Crear la campaña en Meta (sección E)
+[ ] 5. Registrar en el sistema (sección F)
 
-════════════════════════════════════════════════════════════════════════
-── B. PROMPTS DE LOS 6 ADS-IMAGEN (copiar y pegar en ChatGPT) ──
-════════════════════════════════════════════════════════════════════════
+========================================================================
 
-En CADA generación adjunta la foto del producto:
-  Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_PACKSHOT.png
-Referencia de layout (opcional, la misma para las 6):
-  Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg
-Formato 4:5 (1080×1350). Guarda cada imagen con el nombre de archivo indicado.
-
-| Conjunto | Ángulo | Archivo | Precio en la imagen |
-|---|---|---|---|
-| 1 | Después de estar con él | OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png | NO |
-| 2 | La infección que vuelve | OVULOSPURITY_2_INFECCION_QUE_VUELVE.png | NO |
-| 3 | Protector todos los días | OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png | NO |
-| 4 | El olor que se nota | OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png | NO |
-| 5 | Me lavo y sigue | OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png | NO |
-| 6 | 8 raíces en un solo tratamiento | OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png | NO |
-
-────────────────────────────────────────────────────────────────────────
-AD 1 — DESPUÉS DE ESTAR CON ÉL · archivo: OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png · precio: NO
-────────────────────────────────────────────────────────────────────────
+B. CREATIVOS DE LOS ANUNCIOS
+Adjuntar a CADA prompt, en este orden:
+1. Foto del producto: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_PACKSHOT.png
+2. Imagen de referencia: Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg
+AD 1 — Después de estar con él · formato: IMAGEN · archivo: OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png · precio en el ad: NO
 Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Entre ellas solo cambian el texto y los props.
 
 Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
@@ -91,10 +73,7 @@ REGLAS DURAS
 · Prohibido "cura", "trata", "elimina", "acaba con", nombres de enfermedades y plazos. Sin urgencia de pánico.
 
 ENTREGA: una sola imagen de 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60 px.
-
-────────────────────────────────────────────────────────────────────────
-AD 2 — LA INFECCIÓN QUE VUELVE · archivo: OVULOSPURITY_2_INFECCION_QUE_VUELVE.png · precio: NO
-────────────────────────────────────────────────────────────────────────
+AD 2 — La infección que vuelve · formato: IMAGEN · archivo: OVULOSPURITY_2_INFECCION_QUE_VUELVE.png · precio en el ad: NO
 Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Entre ellas solo cambian el texto y los props.
 
 Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
@@ -148,10 +127,7 @@ REGLAS DURAS
 · Prohibido "cura", "trata", "elimina", "acaba con", nombres de enfermedades y plazos. Sin urgencia de pánico.
 
 ENTREGA: una sola imagen de 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60 px.
-
-────────────────────────────────────────────────────────────────────────
-AD 3 — PROTECTOR TODOS LOS DÍAS · archivo: OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png · precio: NO
-────────────────────────────────────────────────────────────────────────
+AD 3 — Protector todos los días · formato: IMAGEN · archivo: OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png · precio en el ad: NO
 Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Entre ellas solo cambian el texto y los props.
 
 Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
@@ -205,10 +181,7 @@ REGLAS DURAS
 · Prohibido "cura", "trata", "elimina", "acaba con", nombres de enfermedades y plazos. Sin urgencia de pánico.
 
 ENTREGA: una sola imagen de 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60 px.
-
-────────────────────────────────────────────────────────────────────────
-AD 4 — EL OLOR QUE SE NOTA · archivo: OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png · precio: NO
-────────────────────────────────────────────────────────────────────────
+AD 4 — El olor que se nota · formato: IMAGEN · archivo: OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png · precio en el ad: NO
 Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Entre ellas solo cambian el texto y los props.
 
 Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
@@ -262,10 +235,7 @@ REGLAS DURAS
 · Prohibido "cura", "trata", "elimina", "acaba con", nombres de enfermedades y plazos. Sin urgencia de pánico.
 
 ENTREGA: una sola imagen de 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60 px.
-
-────────────────────────────────────────────────────────────────────────
-AD 5 — ME LAVO Y SIGUE · archivo: OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png · precio: NO
-────────────────────────────────────────────────────────────────────────
+AD 5 — Me lavo y sigue · formato: IMAGEN · archivo: OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png · precio en el ad: NO
 Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Entre ellas solo cambian el texto y los props.
 
 Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
@@ -319,10 +289,7 @@ REGLAS DURAS
 · Prohibido "cura", "trata", "elimina", "acaba con", nombres de enfermedades y plazos. Sin urgencia de pánico.
 
 ENTREGA: una sola imagen de 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60 px.
-
-────────────────────────────────────────────────────────────────────────
-AD 6 — 8 RAÍCES EN UN SOLO TRATAMIENTO · archivo: OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png · precio: NO
-────────────────────────────────────────────────────────────────────────
+AD 6 — 8 raíces en un solo tratamiento · formato: IMAGEN · archivo: OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png · precio en el ad: NO
 Actúa como director de arte senior especializado en creativos de e-commerce para Meta Ads en Latinoamérica. Vas a producir UNA pieza de una serie de 6 que deben verse como hermanas: misma plantilla, mismo acabado, mismo mundo visual. Entre ellas solo cambian el texto y los props.
 
 Formato: 1080x1350 px (4:5), vertical, feed de Facebook e Instagram.
@@ -377,15 +344,11 @@ REGLAS DURAS
 
 ENTREGA: una sola imagen de 1080x1350. Ningún elemento cortado por el borde. Márgenes de seguridad de 60 px.
 
-════════════════════════════════════════════════════════════════════════
-── C. INFOGRAFÍAS DEL BOT (copiar y pegar en ChatGPT; van dentro del flujo, no en Meta) ──
-════════════════════════════════════════════════════════════════════════
+========================================================================
 
-Adjunta Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_PACKSHOT.png en cada una.
-Antes de generar la IMAGEN 3, confirma o cambia estas cifras: "4,8/5", "9 de cada 10 clientas repiten" y "+10.000".
-Guárdalas en Ads/MEDIA_OVULOSPURITY/ como OVULOSPURITY_INFO_1.png, _INFO_2.png, _INFO_3.png (y _INFO_4.png si haces la opcional).
-
-── IMAGEN 1 — BENEFICIOS (VERSIÓN COMPLETA) ──
+C. INFOGRAFÍAS DEL BOT (van dentro del flujo, no en Meta)
+INFOGRAFÍA 1:
+IMAGEN 1 — BENEFICIOS (VERSIÓN COMPLETA)
 Un póster de infografía de producto vertical de alta resolución y calidad profesional, formato 4:5 (1080×1350), optimizado para una lectura clara y sin saturación.
 
 Estilo y Layout: diseño de póster premium y profesional, con estética de bienestar de marca (NO clínica-plana), renderizado con alto nivel de detalle y fidelidad. El layout se organiza en una columna central con un PRODUCTO HÉROE grande y protagonista y diagramas numerados alrededor, con aire entre ellos.
@@ -426,8 +389,8 @@ Sección Inferior (Pie de Página): una barra horizontal estrecha color azul pro
 Tipografía: sans serif geométrica tipo Poppins/Montserrat en toda la pieza. Sin sellos de registro sanitario de ningún organismo. Sin emojis.
 
 TODO EN ESPAÑOL
-
-── IMAGEN 2 — ANTES/DESPUÉS + INGREDIENTES + MODO DE USO ──
+INFOGRAFÍA 2:
+IMAGEN 2 — ANTES/DESPUÉS + INGREDIENTES + MODO DE USO
 Un póster de infografía de producto vertical, alta resolución, calidad profesional, estilo wellness premium, formato 4:5 (1080×1350). Tipografía sans serif geométrica tipo Poppins/Montserrat. Fondo base blanco roto teñido ≤5% hacia celeste (nunca #FFFFFF plano). Las zonas hero van en azul profundo #0F3D5E. Todo el texto en español. Cada zona respira, separada por aire; texto legible a ~24 pt en celular.
 
 ━━ ZONA 1 — ANTES / DESPUÉS (50% superior) ━━
@@ -476,8 +439,8 @@ BARRA INFERIOR: "SIN DOLOR · 100% HIERBAS NATURALES · REPÍTELO CADA DOS MESES
 Logo "HER NATURA" centrado debajo, pequeño.
 
 REGLAS GLOBALES: todo en español · tipografía sans serif geométrica tipo Poppins/Montserrat · sin emojis · paleta estricta: celeste #5BB4EA (acento dominante), azul profundo #0F3D5E, #0A1628, blanco roto, #6b7280, más el rojo #E0201B y el lima #D6FB93 de la marca solo en etiquetas · resolución mínima 1080x1350 · estilo limpio y premium.
-
-── IMAGEN 3 — CONFIANZA / CONTRAENTREGA + RESULTADOS ──
+INFOGRAFÍA 3:
+IMAGEN 3 — CONFIANZA / CONTRAENTREGA + RESULTADOS
 PASO 1 — FOTO BASE (ChatGPT, adjuntando el packshot)
 Candid iPhone photo, highly realistic UGC style. A real Colombian woman in her early 30s, casual light-colored clothes, standing in a bright, tidy home bathroom or bedroom with soft natural daylight from the left.
 
@@ -533,8 +496,8 @@ BARRA FINAL (blanco roto, borde superior de 1 px celeste, compacta): tres insign
   · Casa con billete: "PAGO AL RECIBIR" / "ENVÍO GRATIS A TODA COLOMBIA"
 
 REGLAS GLOBALES: todo en español · sans serif geométrica tipo Poppins/Montserrat, nunca serif en cuerpos pequeños · sin emojis · paleta: celeste #5BB4EA (headline, separadores, los 3 números), #0F3D5E, #0A1628, blanco roto, #6b7280 · la foto nunca recortada, filtrada ni artificial · mínimo 1080x1350.
-
-── IMAGEN 4 — ANTI-IMITACIÓN (OPCIONAL: retargeting/escalado) ──
+INFOGRAFÍA 4:
+IMAGEN 4 — ANTI-IMITACIÓN (OPCIONAL: retargeting/escalado)
 Si "TIENDA AUTORIZADA" no es cierto, sácalo del BLOQUE 8 antes de generar.
 Póster de advertencia/comparación vertical de alta resolución, formato 2:3. Sans serif geométrica bold tipo Poppins/Montserrat. Todo en español. Sin emojis.
 
@@ -569,58 +532,33 @@ BLOQUE 8 — PIE (≈7%): fondo blanco con franjas diagonales celeste/negro a lo
 
 Paleta: celeste #5BB4EA, #0F3D5E, #FFC107, #cc0000, #0A1628, blanco, #6b7280, #39ff14. Mínimo 1080x1350.
 
-════════════════════════════════════════════════════════════════════════
-── D. FLUJO LUCIDBOT ──
-════════════════════════════════════════════════════════════════════════
+========================================================================
 
-D.1 GENERAR EL FLUJO (hoy BLOQUEADO)
-El texto completo del flujo se genera, no se escribe a mano:
-  python Ads/_TOOLS/gen_flujo_bot.py OVULOS_PURITY           → escribe PRODUCTOS/OVULOS_PURITY/FLUJO_LUCIDBOT.md
-  python Ads/_TOOLS/gen_flujo_bot.py OVULOS_PURITY --copy    → imprime solo lo que se pega
-Estado 29-sep: BLOQUEADO. Faltan 2 datos:
-  · escalera_ofertas  ← PRODUCTOS/_DIM_PRECIOS.csv no tiene filas ACTIVO de OVULOS_PURITY (1/2/3 paquetes)
-  · angulo_nombre     ← PRODUCTOS/_ESTADO_ANGULOS.csv no tiene filas de OVULOS_PURITY
-Cuando esos datos existan, vuelve a correr el comando y aplica las correcciones de D.2.
+D. FLUJO LUCIDBOT (copiar cada parte en su campo)
+════════════════════════════════════════════════════════════
+FLUJO LUCIDBOT — Óvulos Purity | PARAGUAS F1
+Colombia | HerNatura | 2026-10-14
+════════════════════════════════════════════════════════════
 
-D.2 CORRECCIONES A MANO SOBRE EL TEXTO GENERADO (solo este producto)
-1. Mensaje prellenado del anuncio: exactamente
-   Hola, quiero más información de Óvulos Purity
-   (sin "con registro INVIMA").
-2. Todo el texto fijo en TÚ colombiano, nunca "vos":
-   con vos → contigo · Contame → Cuéntame · ¿Deseás…? → ¿Deseas…? · Ya sabés → Ya sabes ·
-   Confirmame → Confírmame · pagás → pagas · indicame → indícame · Recordá → Recuerda
-   (y cualquier otra forma en vos que aparezca).
-3. Escalera de ofertas:
-   1 paquete · 3 perlas → $84.900
-   2 paquetes · 6 perlas → $129.900   ← aquí va "LA MÁS ELEGIDA ⭐"
-   3 paquetes · 9 perlas → $169.900
-   Precios siempre con punto de miles ($84.900, nunca $84,900). "LA MÁS ELEGIDA ⭐" NO va en 3 paquetes.
-4. No nombres transportadoras en el texto del bot.
-⚠️ Si el producto se importó de Superbodega, LucidBot queda DESACTIVADO y el mensaje inicial no sale: actívalo a mano.
+═══════════════ FICHA DEL PRODUCTO (catálogo de LucidBot) ═══════════════
 
-D.3 BLOQUES QUE VAN DENTRO DEL FLUJO (copiar tal cual)
-
-── CATÁLOGO · DESCRIPCIÓN ──
+DESCRIPCIÓN:
 ¿Mal olor íntimo, flujo que te mancha, picazón o esa molestia que siempre te vuelve? No es falta de higiene: es tu flora íntima desequilibrada. Las relaciones, el protector de todos los días, el exceso de jabón y los cambios hormonales alteran tu pH, y ahí aparecen el olor, el flujo y las infecciones.
-
 Óvulos Purity es un detox íntimo con 8 raíces naturales que limpia, desintoxica y equilibra tu zona íntima desde adentro. Combate las bacterias y los hongos que causan el mal olor, ayuda a expulsar los residuos acumulados y calma la irritación, en vez de solo taparlo como el jabón o el perfume.
-
 En solo 4 días vuelves a sentirte fresca, limpia y segura: con tu pareja, en el trabajo, con la ropa que quieras y sin depender del protector.
 
-── CATÁLOGO · MODO DE USO ──
+MODO DE USO:
 Súper fácil, sin dolor y en solo 4 días: 3 perlas, una tras otra.
-
 1. Lava bien tus manos.
 2. Abre el empaque de la perla y suelta el hilo hasta el final (la perla va dentro de su malla).
 3. Sumérgela 1 minuto en un vaso de agua limpia.
 4. Introdúcela en tu vagina lo más profundo que puedas, dejando el hilo por fuera.
 5. Déjala 24 horas, retírala con el hilo y descansa 12 horas.
 6. Pasadas las 12 horas, pones la siguiente perla. Repites hasta terminar las 3.
-
 Es normal que durante la limpieza te bajen residuos o flujo: es tu cuerpo soltando lo que tenía acumulado.
 Repite el tratamiento cada 2 meses para mantener tu flora en equilibrio.
 
-── CATÁLOGO · CARACTERÍSTICAS ──
+CARACTERÍSTICAS TÉCNICAS:
 BENEFICIOS
 - Ayuda a eliminar los malos olores íntimos desde la raíz, no solo a taparlos
 - Combate las bacterias y los hongos que causan infecciones
@@ -637,7 +575,6 @@ BENEFICIOS
 - Sin dolor, fácil de usar y sin efecto rebote
 - Un solo tratamiento en lugar de jabón, crema, óvulo y pastillas por separado
 - Resultados que se sienten desde los primeros días del tratamiento
-
 LAS 8 RAÍCES NATURALES
 - Osthol: mejora la circulación y promueve la limpieza interna de tu zona íntima.
 - Stemona Sessilifolia: calmante, reduce la irritación y mantiene el equilibrio natural.
@@ -648,74 +585,148 @@ LAS 8 RAÍCES NATURALES
 - Rhizoma Chuanxiong: alivia la congestión y mejora el flujo sanguíneo de la zona.
 - Borneol: antiinflamatorio y desinfectante, mantiene tu zona íntima limpia y saludable.
 
-── CATÁLOGO · CONTENIDO ──
+CONTENIDO DEL PAQUETE:
 Tratamiento detox íntimo de ~4 días: 3 perlas de hierbas naturales, cada una en su malla con hilo, empacadas individualmente.
 1 paquete = 1 tratamiento completo de limpieza (se repite cada 2 meses).
 Empaque 100% discreto: por fuera no dice qué es.
-(Confirma que el despacho es discreto; si no, borra la última línea.)
 
-── PROPUESTAS DE VALOR ──
-¿Después de estar con tu pareja te dura días ese olor? → las 8 raíces naturales devuelven el equilibrio de tu pH íntimo → vuelves a estar con él tranquila, sin pensar en cómo hueles
-¿Óvulos, cremas y pastillas, y la molestia siempre vuelve? → Purity limpia y equilibra tu flora desde adentro, no solo calma el síntoma → rompes el ciclo de la infección que va y viene
-¿Usas protector todos los días y aun así te manchas? → las perlas limpian el flujo acumulado y equilibran tu zona íntima → te pones cualquier ropa interior sin depender del protector
-¿Sientes que ese olor se nota hasta en la ropa? → la Smilax y el Borneol combaten las bacterias que lo causan → te sientes fresca y segura todo el día, cerca de quien sea
-¿Te lavas todo el día y el olor sigue? → Purity limpia por dentro, donde el jabón no llega y sin el exceso de químicos que desequilibra tu flora → dejas de depender del jabón íntimo y del perfume
-¿Olor, picazón, flujo y sequedad a la vez, y no sabes qué comprar? → 8 raíces naturales en 3 perlas hacen el trabajo de 5 productos → un solo tratamiento natural de 4 días
-¿Esa picazón que quema no te deja dormir? → la Stemona y el Borneol calman la irritación y desinflaman → vuelves a dormir y a moverte tranquila
-¿Te da miedo algo complicado o que duela? → solo 3 perlas, una cada día y medio, sin dolor → cuidas tu zona íntima en 4 días sin cambiar tu rutina
+═══════════════════════ MENSAJE INICIAL ═══════════════════════
 
-── TESTIMONIOS (3) ──
+ELEMENTO 1 — TEXTO · SALUDO
+¡Hola! 👋 Bienvenida/o a *HerNatura*, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto contigo. ✨
+
+ELEMENTO 2 — VIDEO 1 · AUTORIDAD: ‹DECLARAR: video_1 — operador / Ads/MEDIA_[PK]›
+ELEMENTO 3 — VIDEO 2 · UGC: ‹DECLARAR: video_2 — operador / Ads/MEDIA_[PK]›
+
+INFOGRAFÍAS (3): ‹DECLARAR: lista_infografias — operador / Ads/MEDIA_[PK]›
+<<BLOQUE:propuestas_valor>>
+
+TEXTO · TRANSICIÓN A TESTIMONIOS
+A continuación te muestro lo que dicen quienes ya lo tienen en casa 👇
+
+TESTIMONIOS (3 · fuente REDACTADO):
 Si tienes las capturas originales de WhatsApp del proveedor (Manuela, Paula Andrea, Chat 3), úsalas en lugar de estos.
 T1 · objeción "¿me va a llegar? ¿es original?" · 1 globo + 1 imagen
 - Globo: `hola buenas, ya me llego el paquete y vino bien selladito. la verdad me daba miedo q fuera estafa pq uno ya ni sabe, pero pague cuando lo tuve en la mano. mañana empiezo`
 - Imagen: foto del producto recibido. Si no hay foto real, es la única que puede ser IA: foto realista tipo celular del paquete celeste HER NATURA (#5BB4EA) en una mano de mujer, sobre una mesa de comedor de una casa colombiana, luz natural de ventana, empaque cerrado y visible, fondo algo desordenado (cuaderno, vaso). Sin texto encima y sin sellos.
-
 T2 · objeciones "¿funciona?" y "¿por qué más de 1?" · texto, imagen, texto
 - Texto 1: `hola! ya termine las 3 perlitas. yo lo pedi por el olor q me daba despues de estar con mi esposo y tambn se me calmo la picazon. ya llevo 2 semanas fresquita y tranquila`
 - Imagen (real, nunca IA de personas): beneficio sin producto — cajón de ropa interior clara ordenado y sin protectores, o mujer de espaldas con jean claro sentada con las piernas cruzadas en un café. Sin cara ni anatomía.
 - Texto 2: `ah y pedi 2 paquetes pq en 2 meses repito el tratamiento y el otro se lo di a mi hermana q tambn sufre de eso`
-
 T3 · objeción "¿a otros les sirvió de verdad?" · captura de comentarios de Facebook · 0 emojis
 - Leidy Johana Castaño: `yo tenia una picazon y un flujo q me volvian cada mes, ya habia gastado en ovulos de la drogueria y nada. con estas perlas llevo 2 meses tranquila, super recomendadas`
 - Diana Marcela Rojas: `si sirven de verdad? me da pena preguntar pero tengo mucho flujo y ya no se q mas hacer`
 - Yurany Ospina (responde a Diana): `Diana si sirven, a mi me las recomendo una amiga q trabaja en una drogueria. yo manchaba todos los calzones y ahorita ni uso protector`
 - Claudia Patricia Henao: `las use por el olor despues de las relaciones y la verdad cambio full, mi esposo ni sabe jaja pero yo si me siento otra`
 
-── AUDIO DE PRESENTACIÓN · 45-55 s · voz femenina colombiana de 30-40 años ──
+AUDIO (45-55 seg):
 ¡Hola! Claro que sí, te cuento. Soy Valentina, de HerNatura.
-
 Los Óvulos Purity son un detox íntimo natural que le devuelve el equilibrio a tu zona íntima desde adentro.
-
 Mira, ese mal olor, el flujo, la picazón o esa molestia que siempre te vuelve no son falta de higiene: es tu flora desequilibrada, por el jabón, el protector, las relaciones o los cambios hormonales.
-
 Purity limpia, desintoxica y equilibra tu flora con solo 3 perlas en 4 días. Vas a sentir cómo tu cuerpo suelta lo que tenía acumulado y cómo vuelve esa frescura que ya ni recordabas. Olvídate de taparlo con perfume o de vivir pegada al protector: es fácil de usar y no duele.
-
 Imagínate cruzar las piernas tranquila, estar con tu pareja sin pensar en cómo hueles, ponerte la ropa que quieras. Es la mejor decisión para tu salud íntima.
-
 Y todo con 8 raíces naturales, como el Osthol, la Angélica y el Borneol.
 
-── MENSAJE M2 (después del audio testimonio) ──
+ELEMENTO FINAL — CIERRE → PREGUNTA DE UBICACIÓN
+Hola, soy Valentina, estaré atendiéndote el día de hoy 😊 Cuéntame, ¿desde qué ciudad y departamento nos escribes?
+
+══════════════════════════ INTERACCIONES ══════════════════════════
+
+INTERACCIÓN 1 — AL RECIBIR LA UBICACIÓN
+¡Qué bien, desde {CIUDAD}! 😊
+
+Me alegra que estés dando el paso de cuidar tu salud íntima desde adentro — es una gran decisión por ti.
+
+Confirmo que tenemos cobertura completa ahí, con envíos a toda Colombia y *pago contraentrega*. Las entregas tardan de 2 a 5 días hábiles. 🚚
+
+¿Deseas conocer nuestros precios?
+
+INTERACCIÓN 2 — PRESENTACIÓN DE PRECIOS
+¡Claro! 😊
+
+Ya sabes que el mal olor íntimo que viene con flujo y picazón *no se quita con jabones íntimos, protectores ni óvulos de farmacia* — lo tapas un rato y vuelve, y después de estar con tu pareja empeora.
+
+Y lo que más pesa no es el olor ni el flujo: es *vivir pendiente de si se nota, evitar la intimidad con tu pareja, no salir de casa sin protector y sentir que el problema es tu cuerpo.*
+
+Óvulos Purity actúa *desde la raíz* con 8 raíces naturales que limpian y desintoxican tu zona íntima por dentro y un efecto antibacteriano y antihongos que equilibra tu flora y tu pH. Por eso ya son *más de 10.000 clientas* con resultados reales.
+
+Cuando equilibras tu flora *desde la raíz, la frescura sí se mantiene.* ✨
+
+OFERTAS HASTA AGOTAR
+
+1️⃣ Tratamiento (1 paquete) → $79.900 + 🛻 ENVÍO TOTALMENTE GRATIS
+
+2️⃣ Tratamiento (2 paquetes) → $99.900 + 🎁 ENVÍO TOTALMENTE GRATIS
+   OFERTA IRRESISTIBLE 🥰👇
+
+3️⃣ Tratamiento (3 paquetes) → $119.900 + 🎁🎁 ENVÍO TOTALMENTE GRATIS
+   LA MÁS ELEGIDA ⭐ (tratamiento completo) — y lo mejor, pagas al recibir 😊
+
+Tu flora no se equilibra en una sola limpieza: el tratamiento se repite cada 2 meses para que el olor y la picazón no vuelvan. Por eso la mayoría se lleva los 2 paquetes: haces tu limpieza ahora y ya tienes lista la siguiente.
+
+¿Me confirmas tu ciudad y departamento? 😊
+
+INTERACCIÓN 3 — PEDIDO DE DATOS
+¡Perfecto! Tranqui, no arriesgas nada: pagas solo cuando tengas el producto en tus manos, y llevas *90 días de garantía*. 🙌
+
+Antes de continuar con la compra asegúrate de que vas a permanecer en casa los próximos 5 días, o que algún familiar o amigo te reciba el producto en la dirección que indicarás.
+
+En caso de no ser así, puedes solicitar que tu envío se haga a la agencia principal de INTERRAPIDISIMO y ENVIA de tu ciudad.
+
+Para continuar con la compra indícame los siguientes datos EN UN SOLO MENSAJE Y EN EL MISMO ORDEN:
+
+1. Nombre
+2. Apellido
+3. Teléfono de LLAMADAS
+4. Departamento
+5. Municipio
+6. Dirección exacta (o escribe OFICINA si reclamas en agencia)
+7. Barrio
+8. ¿Cuál opción prefieres?
+
+INTERACCIÓN 4 — CONFIRMACIÓN DEL PEDIDO
+¡Todo confirmado!
+
+Resumen de tu pedido:
+- Nombre: {NOMBRE} {APELLIDO}
+- Teléfono: {TEL}
+- Departamento: {DEPTO}
+- Municipio: {MUNICIPIO}
+- Dirección: {DIR}
+- Barrio: {BARRIO}
+- Producto: Óvulos Purity — {OPCIÓN}
+- Total a pagar: ${TOTAL} al recibir
+
+¿Confirmas que los datos están correctos?
+
+INTERACCIÓN 5 — CIERRE FINAL
+¡Listo, {NOMBRE}! Tu pedido fue tomado exitosamente.
+
+Tu Óvulos Purity está en camino. La entrega tarda de 2 a 5 días hábiles en {MUNICIPIO}.
+
+Recuerda: solo pagas cuando lo tienes en tus manos. Si tienes alguna duda mientras tanto, acá estoy. ¡Que lo disfrutes mucho! 💜
+
+═════════════ MENSAJES DE INACTIVIDAD (3) ═════════════
+
+M1 — 45 min · prompt de IA + video nuevo + texto fijo + botones "Hoy" / "Mañana"
+
+M2 — 5 h · prompt de IA + audio testimonio + texto del producto + 2 botones de oferta
 Ese es el testimonio de una de nuestras últimas clientas 💜
+Tu flora no se equilibra en una sola limpieza: el tratamiento se repite cada 2 meses para que el olor y la picazón no vuelvan. Con 3 paquetes ya tienes cubiertas tus limpiezas de los próximos 6 meses, y cada uno te sale a 39.966 con envío gratis.
+¿Te aparto 1 tratamiento ($79.900 con envío) o los 3 ($119.900 con envío gratis, cada uno a 39.966)?
 
-Tu flora no se equilibra en una sola limpieza: el tratamiento se repite cada 2 meses para que el olor y la picazón no vuelvan. Con 3 paquetes ya tienes cubiertas tus limpiezas de los próximos 6 meses, y pagas como si fueran 2.
-
-¿Te aparto el de 1 paquete ($84.900) o el de 3 paquetes ($169.900)?
-
-── AUDIO TESTIMONIO DE M2 · 50-60 s · voz de CLIENTA colombiana de 30-35 años, habla imperfecta ──
+AUDIO TESTIMONIO DE M2 (50-60 s, voz de CLIENTA colombiana de 30-35 años, habla imperfecta):
 Holaa, buenas… ay, primero que todo gracias por el producto, me llegó rapidito y bien empacadito.
-
 Pues ya llevo como… tres semanas de haber terminado las perlitas y la verdad quedé súper satisfecha. O sea, el olor se me fue, pero así, del todo, y el flujo ya no es como antes.
-
 Yo antes andaba con protector todos los días, me cambiaba en el baño del trabajo dos, tres veces… y cuando estaba con mi esposo me daba era como miedo, me paraba a bañarme de una. Ahorita no, ahorita ando tranquila, me pongo el jean clarito, me siento como quiero.
-
 Y con él… bueno, eso cambió mucho, la verdad, uno anda hasta de mejor genio.
-
 Las recomiendo full, y les recomiendo a ustedes también, porque ya es mi segundo tratamiento con ustedes, ya les había pedido antes… y mi hermana también les compra.
-
 Muy recomendados, de verdad.
 
-── FAQ DE VENTA (10) ──
-Las respuestas 3 y 7 llevan una nota entre corchetes: reemplázala por el dato real antes de pegar y no pegues el corchete.
+M3 — ~23 h · prompt de IA + texto fijo + botón "No me escribas más"
+
+═══════════════════════════ FAQ ═══════════════════════════
+FAQ DE VENTA
 1. ¿Es seguro comprar? ¿Me va a llegar? → Sí, tranquila: pagas solo cuando tienes el producto en tus manos. Enviamos a toda Colombia con transportadoras nacionales, en empaque discreto.
 2. Ya probé óvulos de droguería y me volvió, ¿esto sí sirve? → Esos óvulos calman el síntoma, pero la flora queda desequilibrada y por eso vuelve. Purity limpia y equilibra tu flora desde adentro con 8 raíces naturales: por eso ya son más de 10.000 clientas con resultados reales.
 3. ¿Y si no me funciona? → Si no notas cambios, te devolvemos tu dinero. Y además pagas al recibir: no arriesgas nada. [DEFAULT del sistema — reemplazar por la política real del operador]
@@ -726,61 +737,70 @@ Las respuestas 3 y 7 llevan una nota entre corchetes: reemplázala por el dato r
 8. Uso protector todos los días y me lavo mucho, y sigo igual, ¿por qué? → El protector sube el calor y la humedad, y el exceso de jabón desequilibra tu flora: más higiene termina en más olor. Purity limpia por dentro, donde el jabón no llega.
 9. ¿Por qué llevar más de 1? → Porque el tratamiento se repite cada 2 meses para que no vuelva. Con 2 paquetes haces tu limpieza ahora y ya tienes lista la siguiente.
 10. ¿Tiene efectos secundarios? ¿Puedo usarlo si estoy embarazada? → Es 100% natural. Si estás embarazada, lactando o en tratamiento médico, consulta primero con tu médico: Purity acompaña tu cuidado, no reemplaza tu tratamiento.
-
-── FAQ POSTVENTA (5) ──
+FAQ POSTVENTA
 1. ¿Ya salió mi pedido? → Ya lo despachamos y te llega en 2 a 5 días hábiles. Cualquier novedad te aviso.
 2. ¿Cómo me pongo la perla? → Manos limpias, sueltas el hilo, la sumerges 1 minuto en agua limpia y la introduces lo más profundo que puedas, con el hilo por fuera. 24 horas dentro, 12 de descanso y la siguiente.
 3. Me bajó algo raro, ¿es normal? → Sí, es tu cuerpo soltando residuos acumulados, y a cada una le baja distinto. Si tienes dolor fuerte, fiebre o algo que te preocupe, consulta con tu médico.
 4. ¿Cada cuánto repito? → Cada 2 meses, para mantener tu flora en equilibrio.
 5. ¿Puedo pedir otra vez? → ¡Claro! Escríbeme y te dejo el pedido listo.
 
-════════════════════════════════════════════════════════════════════════
-── E. ESTRUCTURA EN META, A MANO (Ads Manager de la cuenta EXTERNA) ──
-════════════════════════════════════════════════════════════════════════
+════════════ REGLAS CONVERSACIONALES (campo "Reglas" de LucidBot) ════════════
 
-E.1 CAMPAÑA
-Nombre: EXTERNA_OVULOSPURITY_TEST_20260930
-Objetivo: Tráfico · Optimización: Maximizar CONVERSACIONES · Destino: WhatsApp (número conectado a HERNATURA CO, nunca Messenger)
-Presupuesto: a nivel CONJUNTO (ABO) · DESMARCAR "compartir presupuesto entre conjuntos"
-Moneda de la cuenta: COP → $9.426 por conjunto por día (los 6 iguales) · total $56.556/día
-Mensaje prellenado de WhatsApp: Hola, quiero más información de Óvulos Purity
-Programación: inicio miércoles 30-sep-2026 a las 04:00 HORA COLOMBIA (UTC-5). Revisa la zona horaria de la cuenta: si está en hora Guatemala, 04:00 GT = 05:00 CO.
+[IMPORTANTE: Si el cliente envía parte de sus datos, dale tiempo para que escriba los faltantes. No seas insistente.]
 
-E.2 CONFIGURACIÓN IGUAL EN LOS 6 CONJUNTOS
-· Ubicación: Colombia · Género: Mujeres · Sin intereses
+[IMPORTANTE: Si el cliente ya envió sus datos, no preguntar nuevamente cuál producto desea comprar, ni preguntarle si están bien. Solo haz el cierre agrupando los datos y resumiendo la compra con producto y precio.]
+
+[IMPORTANTE: Si el cliente indicó que reclama en agencia u oficina, ese dato reemplaza la dirección. No preguntar dirección de casa ni barrio. Indícale que su pedido será enviado a la agencia principal de INTERRAPIDISIMO y ENVIA de su ciudad.]
+
+[IMPORTANTE: Si el cliente escribió una palabra mal, corrígela sin pedirle que la corrija. Hazlo de forma natural, sin hacer notar el error.]
+
+[IMPORTANTE: NUNCA insistir en la misma pregunta más de 2 veces, y CAMBIA EL ENFOQUE en el 2do intento en vez de repetir igual. Ej. ubicación — 1ra vez: "Dime tu ciudad para confirmarte cobertura." 2da vez: "Con tu ciudad te confirmo si te llega con pago contraentrega." Después, cambiar de tema.]
+
+[IMPORTANTE: Si el cliente eligió la opción de 1 unidad, persuádelo de llevar 2 o más por el mayor ahorro que representa.]
+
+[IMPORTANTE: Si el cliente solicita descuento por una sola unidad, NO bajar el precio de 1 unidad. Responde: "El precio de 1 unidad no lo puedo bajar porque ya es el mejor del mercado. Pero si llevas 2, te sale mucho más conveniente y el envío es totalmente gratis."]
+
+[IMPORTANTE: Si el cliente pregunta "¿hasta cuándo está la promoción?" responde: "Tenemos ese precio hasta agotar existencias."]
+
+[IMPORTANTE: Si el cliente dice que hará el pedido después, responde solamente: "¡Súper, no hay problema! Estaremos atentos a cuando desees realizar tu pedido."]
+
+[IMPORTANTE: Si el cliente pregunta por ubicación o tienda física: "Nuestro centro de distribución trabaja solo por envíos y no tenemos atención al público. Hacemos entregas a casi toda Colombia por INTERRAPIDISIMO y ENVIA, según cobertura."]
+
+[IMPORTANTE: Si el cliente envía GIFs, stickers o imágenes, responde de forma amable sin describir el contenido visual.]
+
+[IMPORTANTE: Si el cliente solicita audios, responde: "En este momento no puedo enviarte audios pues el micrófono del celular está fallando."]
+
+[IMPORTANTE: Una vez cerrada y confirmada la venta, solo responde preguntas del cliente. No continúes intentando vender.]
+
+[IMPORTANTE: TODO el texto usa tuteo. La confirmación de dirección usa "ciudad y departamento", no "ciudad" a secas.]
+
+[IMPORTANTE: El audio NUNCA menciona precio.]
+
+
+========================================================================
+
+E. ESTRUCTURA EN META
+Campaña: GTR3_OVULOSPURITY_TEST_20260930
+Objetivo: Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp
+Presupuesto: ABO — el presupuesto vive en el conjunto
+Lanzamiento: 30-sep-2026 a las 4:00 AM.
+CONFIGURACIÓN IGUAL EN TODOS LOS CONJUNTOS:
+· Ubicación: Colombia · Sin intereses
 · Advantage+ Audience: OFF (si no, Meta ignora la banda de edad)
-· Edad: la de cada conjunto (tabla E.3)
-· DESMARCAR "anuncios multianunciantes"
-· DESMARCAR "incluir personas de WhatsApp cuya edad se desconoce"
-· CTA: Enviar mensaje
-· 2 anuncios por conjunto: el B es copia exacta del A (misma imagen, mismo copy)
-· Texto principal: cargar los 3 textos como opciones · Títulos: los 3 · Descripciones: las 2
-· Cero "- Copia" en ningún nombre: renombra todo antes de publicar
+· Optimización: Maximizar CONVERSACIONES — revisarlo justo antes de publicar: Meta lo revierte a clics con cada duplicado
+· Destino: WhatsApp (el número conectado a la FanPage, nunca Messenger) · CTA: Enviar mensaje
+· DESMARCAR «anuncios multianunciantes»
+· DESMARCAR «incluir personas de WhatsApp cuya edad se desconoce»
+· Anuncios A y B de una misma pieza: el B es copia exacta del A (misma imagen, mismo copy)
+· Texto principal: cargar todos los TEXTOS como opciones · Títulos: todos · Descripción: la indicada
+· Cero «- Copia» en ningún nombre: renombrar antes de publicar
 · NO aceptar recomendaciones de Meta
-
-E.3 LOS 6 CONJUNTOS
-
-| # | Nombre del conjunto | Edad | Presupuesto/día | Imagen | Precio en el ad |
-|---|---|---|---|---|---|
-| 1 | EXTERNA_OVULOSPURITY_DESPUES-DE-ESTAR-CON-EL_R1 | 25-40 | $9.426 | OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png | NO |
-| 2 | EXTERNA_OVULOSPURITY_INFECCION-QUE-VUELVE_R1 | 25-40 | $9.426 | OVULOSPURITY_2_INFECCION_QUE_VUELVE.png | NO |
-| 3 | EXTERNA_OVULOSPURITY_PROTECTOR-TODOS-LOS-DIAS_R1 | 25-40 | $9.426 | OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png | NO |
-| 4 | EXTERNA_OVULOSPURITY_OLOR-QUE-SE-NOTA_R1 | 25-40 | $9.426 | OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png | NO |
-| 5 | EXTERNA_OVULOSPURITY_ME-LAVO-Y-SIGUE_R1 | 35-50 | $9.426 | OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png | NO |
-| 6 | EXTERNA_OVULOSPURITY_OCHO-RAICES-TODO-EN-UNO_R1 | 35-50 | $9.426 | OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png | NO |
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONJUNTO 1 — DESPUÉS DE ESTAR CON ÉL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre del conjunto: EXTERNA_OVULOSPURITY_DESPUES-DE-ESTAR-CON-EL_R1
-Presupuesto: $9.426 COP/día · Edad: 25-40 · Mujeres · Colombia · Advantage+ OFF
-Imagen: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png
-Precio en el ad: NO
-Anuncio A: DESPUES-DE-ESTAR-CON-EL_IMG_A ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?
-Anuncio B: DESPUES-DE-ESTAR-CON-EL_IMG_B ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|?   (copia exacta de A)
-  (el último eje "?" se reemplaza por el código del bot v2 antes de publicar)
-
-· TEXTO PRINCIPAL 1:
+· Mensaje prellenado de WhatsApp (se configura a mano en Ads Manager): Hola, quiero más información de Óvulos Purity con registro INVIMA
+Total del día: US$17.94
+GTR3_OVULOSPURITY_DESPUES-DE-ESTAR-CON-EL_R1 · presupuesto US$2.99/día · edad 25-40 · género MUJER · IMAGEN · OVULOSPURITY_1_DESPUES_DE_ESTAR_CON_EL.png · precio en el ad NO
+Anuncio A: DESPUES-DE-ESTAR-CON-EL_IMG_A ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: DESPUES-DE-ESTAR-CON-EL_IMG_B ~ OVULOS_PUR|DESPUES_DE_ESTAR|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
 ¿Mal olor íntimo que vuelve después de estar con él? 😔
 
 Me pasaba siempre.
@@ -802,8 +822,7 @@ Era un desequilibrio que el jabón no alcanza.
 
 Muchas mujeres viven esto en silencio.
 Escríbenos por WhatsApp y te contamos cómo se usa 👉
-
-· TEXTO PRINCIPAL 2:
+TEXTO PRINCIPAL 2:
 Me daba miedo que él lo notara 💭
 
 Esa sensación de estar pendiente de cómo huelo,
@@ -826,8 +845,7 @@ volví a sentirme fresca y segura con él.
 
 Vuelve a disfrutar tu intimidad sin miedo.
 Escríbenos y te explicamos paso a paso 👉
-
-· TEXTO PRINCIPAL 3:
+TEXTO PRINCIPAL 3:
 "No creí que fueran tan buenos… ya lo he recomendado" ⭐⭐⭐⭐⭐
 — Yorleidis, 25 años
 
@@ -845,28 +863,18 @@ y probaban de todo sin que durara 😔
 
 Deja de estar pendiente y disfruta tu relación.
 Escríbenos por WhatsApp y te contamos cómo empezar 👉
-
-· TÍTULOS:
-  Tranquila con él
-  No era mi cuerpo
-  8 raíces naturales
-
-· DESCRIPCIONES:
-  Envío gratis · Paga al recibir
-  100% hierbas naturales
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONJUNTO 2 — LA INFECCIÓN QUE VUELVE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre del conjunto: EXTERNA_OVULOSPURITY_INFECCION-QUE-VUELVE_R1
-Presupuesto: $9.426 COP/día · Edad: 25-40 · Mujeres · Colombia · Advantage+ OFF
-Imagen: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_2_INFECCION_QUE_VUELVE.png
-Precio en el ad: NO (FASE 1 mide solo el ángulo: los 6 ads sin precio)
-Anuncio A: INFECCION-QUE-VUELVE_IMG_A ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?
-Anuncio B: INFECCION-QUE-VUELVE_IMG_B ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|?   (copia exacta de A)
-  (el último eje "?" se reemplaza por el código del bot v2 antes de publicar)
-
-· TEXTO PRINCIPAL 1:
+TÍTULO 1:
+Tranquila con él
+TÍTULO 2:
+No era mi cuerpo
+TÍTULO 3:
+8 raíces naturales
+DESCRIPCIÓN:
+Envío gratis · Paga al recibir
+GTR3_OVULOSPURITY_INFECCION-QUE-VUELVE_R1 · presupuesto US$2.99/día · edad 25-40 · género MUJER · IMAGEN · OVULOSPURITY_2_INFECCION_QUE_VUELVE.png · precio en el ad NO
+Anuncio A: INFECCION-QUE-VUELVE_IMG_A ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|BOT_V3
+Anuncio B: INFECCION-QUE-VUELVE_IMG_B ~ OVULOS_PUR|INFECCION_QUE_VU|C2.CN05|NC3A|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
 ¿Candidiasis que vuelve aunque uses óvulos y cremas? 😩
 
 Así estuve meses.
@@ -889,8 +897,7 @@ que cuidar el equilibrio que la hace volver.
 
 Rompe el ciclo de probar y probar.
 Escríbenos y te decimos qué tratamiento te sirve 👉
-
-· TEXTO PRINCIPAL 2:
+TEXTO PRINCIPAL 2:
 Estaba cansada de vivir pendiente de cuándo iba a volver 💭
 
 Cada vez que me sentía bien,
@@ -911,8 +918,7 @@ sentí que recuperaba el control.
 
 Recupera el control de tu cuerpo.
 Escríbenos por WhatsApp y te acompañamos 👉
-
-· TEXTO PRINCIPAL 3:
+TEXTO PRINCIPAL 3:
 "Yo sufría de un olor extraño… y hasta el momento ya no lo he sentido" ⭐⭐⭐⭐⭐
 — Manuela, 32 años
 
@@ -929,28 +935,18 @@ con 8 raíces que acompañan el equilibrio de tu cuerpo 🌿
 
 Deja de gastar en lo que no dura.
 Escríbenos y te contamos cómo empezar 👉
-
-· TÍTULOS:
-  Por fin tranquila
-  No es solo alivio
-  Natural, no farmacia
-
-· DESCRIPCIONES:
-  🏠 ¡Paga en casa!
-  Envío gratis a toda Colombia
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONJUNTO 3 — PROTECTOR TODOS LOS DÍAS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre del conjunto: EXTERNA_OVULOSPURITY_PROTECTOR-TODOS-LOS-DIAS_R1
-Presupuesto: $9.426 COP/día · Edad: 25-40 · Mujeres · Colombia · Advantage+ OFF
-Imagen: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png
-Precio en el ad: NO (FASE 1 mide solo el ángulo: los 6 ads sin precio)
-Anuncio A: PROTECTOR-TODOS-LOS-DIAS_IMG_A ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?
-Anuncio B: PROTECTOR-TODOS-LOS-DIAS_IMG_B ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|?   (copia exacta de A)
-  (el último eje "?" se reemplaza por el código del bot v2 antes de publicar)
-
-· TEXTO PRINCIPAL 1:
+TÍTULO 1:
+Por fin tranquila
+TÍTULO 2:
+No es solo alivio
+TÍTULO 3:
+Natural, no farmacia
+DESCRIPCIÓN:
+🏠 ¡Paga en casa!
+GTR3_OVULOSPURITY_PROTECTOR-TODOS-LOS-DIAS_R1 · presupuesto US$2.99/día · edad 25-40 · género MUJER · IMAGEN · OVULOSPURITY_3_PROTECTOR_TODOS_LOS_DIAS.png · precio en el ad NO
+Anuncio A: PROTECTOR-TODOS-LOS-DIAS_IMG_A ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: PROTECTOR-TODOS-LOS-DIAS_IMG_B ~ OVULOS_PUR|PROTECTOR_TODOS_|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
 ¿Flujo que te mancha la ropa interior aunque uses protector? 😣
 
 Así viví años.
@@ -973,8 +969,7 @@ y el círculo nunca se corta.
 
 Vuelve a ponerte lo que quieras sin protector.
 Escríbenos por WhatsApp y te contamos cómo 👉
-
-· TEXTO PRINCIPAL 2:
+TEXTO PRINCIPAL 2:
 Siempre pensé que era mi forma de ser 💭
 
 Ropa interior clara, nunca.
@@ -994,8 +989,7 @@ empecé a sentirme fresca sin estar pendiente.
 
 Deja de depender del protector.
 Escríbenos y te explicamos paso a paso 👉
-
-· TEXTO PRINCIPAL 3:
+TEXTO PRINCIPAL 3:
 "Probé los óvulos al ver los testimonios… quedé sorprendida con los resultados" ⭐⭐⭐⭐⭐
 
 Eso nos escribió una clienta que, como muchas,
@@ -1012,28 +1006,18 @@ con un tratamiento natural de 3 perlas 🌿
 
 Siéntete limpia sin depender del protector.
 Escríbenos por WhatsApp y te contamos cómo empezar 👉
-
-· TÍTULOS:
-  Limpia todo el día
-  No era mi forma de ser
-  3 perlas naturales
-
-· DESCRIPCIONES:
-  Envío gratis · Paga al recibir
-  100% hierbas naturales
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONJUNTO 4 — EL OLOR QUE SE NOTA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre del conjunto: EXTERNA_OVULOSPURITY_OLOR-QUE-SE-NOTA_R1
-Presupuesto: $9.426 COP/día · Edad: 25-40 · Mujeres · Colombia · Advantage+ OFF
-Imagen: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png
-Precio en el ad: NO
-Anuncio A: OLOR-QUE-SE-NOTA_IMG_A ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?
-Anuncio B: OLOR-QUE-SE-NOTA_IMG_B ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|?   (copia exacta de A)
-  (el último eje "?" se reemplaza por el código del bot v2 antes de publicar)
-
-· TEXTO PRINCIPAL 1:
+TÍTULO 1:
+Limpia todo el día
+TÍTULO 2:
+No era mi forma de ser
+TÍTULO 3:
+3 perlas naturales
+DESCRIPCIÓN:
+Envío gratis · Paga al recibir
+GTR3_OVULOSPURITY_OLOR-QUE-SE-NOTA_R1 · presupuesto US$2.99/día · edad 25-40 · género MUJER · IMAGEN · OVULOSPURITY_4_OLOR_QUE_SE_NOTA.png · precio en el ad NO
+Anuncio A: OLOR-QUE-SE-NOTA_IMG_A ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: OLOR-QUE-SE-NOTA_IMG_B ~ OVULOS_PUR|OLOR_QUE_SE_NOTA|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
 ¿Olor a pescado que se nota hasta en la ropa? 😰
 
 Me pasaba en la oficina.
@@ -1054,8 +1038,7 @@ Taparlo no es lo mismo que equilibrarlo 💡
 
 Vuelve a sentirte segura en la oficina, el bus o el gym.
 Escríbenos por WhatsApp y te contamos cómo se usa 👉
-
-· TEXTO PRINCIPAL 2:
+TEXTO PRINCIPAL 2:
 Vivía a la defensiva 💭
 
 No cruzaba las piernas.
@@ -1077,8 +1060,7 @@ volví a sentirme fresca y tranquila todo el día.
 
 Recupera tu seguridad frente a los demás.
 Escríbenos y te explicamos 👉
-
-· TEXTO PRINCIPAL 3:
+TEXTO PRINCIPAL 3:
 "Mira, desde el primer óvulo se ven los cambios. Muchas gracias 😊" ⭐⭐⭐⭐⭐
 — Alejandra
 
@@ -1094,28 +1076,18 @@ Lo que le funcionó fue un tratamiento natural de 3 perlas 🌿
 
 Siéntete fresca y segura donde estés.
 Escríbenos por WhatsApp y te contamos cómo empezar 👉
-
-· TÍTULOS:
-  Fresca todo el día
-  Taparlo no basta
-  Natural, no perfume
-
-· DESCRIPCIONES:
-  🏠 ¡Paga en casa!
-  100% hierbas naturales
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONJUNTO 5 — ME LAVO Y SIGUE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre del conjunto: EXTERNA_OVULOSPURITY_ME-LAVO-Y-SIGUE_R1
-Presupuesto: $9.426 COP/día · Edad: 35-50 · Mujeres · Colombia · Advantage+ OFF
-Imagen: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png
-Precio en el ad: NO
-Anuncio A: ME-LAVO-Y-SIGUE_IMG_A ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?
-Anuncio B: ME-LAVO-Y-SIGUE_IMG_B ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|?   (copia exacta de A)
-  (el último eje "?" se reemplaza por el código del bot v2 antes de publicar)
-
-· TEXTO PRINCIPAL 1:
+TÍTULO 1:
+Fresca todo el día
+TÍTULO 2:
+Taparlo no basta
+TÍTULO 3:
+Natural, no perfume
+DESCRIPCIÓN:
+🏠 ¡Paga en casa!
+GTR3_OVULOSPURITY_ME-LAVO-Y-SIGUE_R1 · presupuesto US$2.99/día · edad 35-50 · género MUJER · IMAGEN · OVULOSPURITY_5_ME_LAVO_Y_SIGUE.png · precio en el ad NO
+Anuncio A: ME-LAVO-Y-SIGUE_IMG_A ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|BOT_V3
+Anuncio B: ME-LAVO-Y-SIGUE_IMG_B ~ OVULOS_PUR|ME_LAVO_Y_SIGUE|C2.CN05|NC1|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
 ¿Te lavas todo el día y el mal olor íntimo sigue? 😩
 
 Jabón íntimo, toallitas, perfume.
@@ -1138,8 +1110,7 @@ donde el jabón no llega.
 
 Deja de lavarte de más y siéntete fresca.
 Escríbenos y te explicamos cómo funciona 👉
-
-· TEXTO PRINCIPAL 2:
+TEXTO PRINCIPAL 2:
 Hago todo bien… ¿por qué sigue? 💭
 
 Esa pregunta me acompañó meses.
@@ -1161,8 +1132,7 @@ entendí que la frescura se cuida desde adentro.
 
 Deja de culparte y recupera tu frescura.
 Escríbenos por WhatsApp y te contamos 👉
-
-· TEXTO PRINCIPAL 3:
+TEXTO PRINCIPAL 3:
 "Nunca me imaginé que uno estuviera tan mal por dentro" ⭐⭐⭐⭐⭐
 — Paula Andrea, 30 años
 
@@ -1180,28 +1150,18 @@ y hacer un detox natural de 3 perlas 🌿
 
 Cuida tu frescura desde adentro.
 Escríbenos por WhatsApp y te contamos cómo empezar 👉
-
-· TÍTULOS:
-  Fresca de verdad
-  Más jabón, peor
-  Limpia desde adentro
-
-· DESCRIPCIONES:
-  100% hierbas naturales
-  Envío gratis · Paga al recibir
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CONJUNTO 6 — 8 RAÍCES EN UN SOLO TRATAMIENTO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Nombre del conjunto: EXTERNA_OVULOSPURITY_OCHO-RAICES-TODO-EN-UNO_R1
-Presupuesto: $9.426 COP/día · Edad: 35-50 · Mujeres · Colombia · Advantage+ OFF
-Imagen: Ads/MEDIA_OVULOSPURITY/OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png
-Precio en el ad: NO (FASE 1 mide solo el ángulo: los 6 ads sin precio)
-Anuncio A: OCHO-RAICES-TODO-EN-UNO_IMG_A ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?
-Anuncio B: OCHO-RAICES-TODO-EN-UNO_IMG_B ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|?   (copia exacta de A)
-  (el último eje "?" se reemplaza por el código del bot v2 antes de publicar)
-
-· TEXTO PRINCIPAL 1:
+TÍTULO 1:
+Fresca de verdad
+TÍTULO 2:
+Más jabón, peor
+TÍTULO 3:
+Limpia desde adentro
+DESCRIPCIÓN:
+100% hierbas naturales
+GTR3_OVULOSPURITY_OCHO-RAICES-TODO-EN-UNO_R1 · presupuesto US$2.99/día · edad 35-50 · género MUJER · IMAGEN · OVULOSPURITY_6_OCHO_RAICES_TODO_EN_UNO.png · precio en el ad NO
+Anuncio A: OCHO-RAICES-TODO-EN-UNO_IMG_A ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: OCHO-RAICES-TODO-EN-UNO_IMG_B ~ OVULOS_PUR|OCHO_RAICES_TODO|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
 ¿Olor, picazón y flujo a la vez? 🤯
 
 Eso era yo:
@@ -1222,8 +1182,7 @@ Osthol, Angélica, Borneol y 5 raíces más.
 
 Simplifica tu cuidado íntimo.
 Escríbenos por WhatsApp y te explicamos qué hace cada raíz 👉
-
-· TEXTO PRINCIPAL 2:
+TEXTO PRINCIPAL 2:
 Quería cuidarme de verdad, sin complicarme 💭
 
 Pasados los 35, el cuerpo cambia
@@ -1245,8 +1204,7 @@ encontré un cuidado íntimo completo y sencillo.
 
 Cuídate con algo natural y completo.
 Escríbenos y te contamos cómo empezar 👉
-
-· TEXTO PRINCIPAL 3:
+TEXTO PRINCIPAL 3:
 "Gracias a ti me siento mejor" ⭐⭐⭐⭐⭐
 — Judith, al terminar su tratamiento
 
@@ -1264,35 +1222,38 @@ con 8 raíces naturales en 3 perlas 🌿
 
 Deja de gastar en cinco productos.
 Escríbenos por WhatsApp y te contamos cómo empezar 👉
+TÍTULO 1:
+Todo en uno natural
+TÍTULO 2:
+Uno, no cinco
+TÍTULO 3:
+8 raíces en 3 perlas
+DESCRIPCIÓN:
+8 raíces naturales · 3 perlas
+PENDIENTES QUE DECLARA EL LANZADOR:
+cuenta: alias EXTERNA sin fila en _DIM_CUENTAS.csv; confirmar que la cuenta factura en COP y su zona horaria (Colombia UTC-5) -> operador
+hora: _PARAMETROS_PUBLICACION.csv fase 1 tz_offset=-06:00 (Guatemala); este producto se programa 04:00 hora Colombia a mano -> dueño _PARAMETROS_PUBLICACION.csv / mercado.py
+nombres: clave_campana de _DIM_PRODUCTOS.csv es 'OVULOS / PURITY' (espacios y barra rompen la convención); etapa-6 usa el token OVULOSPURITY -> corregir la fila con etapa-guardar-producto y verificar que el LANZADOR derive el mismo token
+estructura: _PARAMETROS_PUBLICACION.csv fase 1 dice anuncios_por_conjunto=1; ETAPA-6 publica 2 (duplicado)
+destino_key: el eje destino de la firma queda '?' hasta que etapa-5 v2 entregue el bot y su clave -> reemplazar antes de publicar
+whatsapp: número conectado a HERNATURA CO sin confirmar
+atribución: confirmar que LucidSales recibe los mensajes de la cuenta de Colombia (sin eso no hay CPA por venta)
+creativos: los 6 PNG todavía no están renderizados en Ads/MEDIA_OVULOSPURITY/ -> etapa-render
+copy: ETAPA-4 dio 2 descripciones por ángulo; el esquema guarda 1 (la primera). La segunda se carga a mano como descripción adicional en Meta
+bandas: el ensanche 25-35->25-40 y 35-45->35-50 tiene evidencia de Guatemala (APR-060), no de Colombia; avatar_edad 35-45 de los ángulos 5 y 6 es inferencia de ETAPA-2
+saturación: ANUNCIANTES_AD_LIBRARY no provisto; los 6 ángulos en DESCONOCIDA y el ranking es provisional
+garantía de 30 días sin confirmar: ninguna pieza la muestra
+reconciliación: la fila OVULOS_PURITY de _DIM_PRODUCTOS.csv sigue con la escalera v1 (precio_base 41000, sin cpa_be) y la nota de 'registro INVIMA declarado'; v2 dice SIN INVIMA, P1u 84.900 y BE 28.031 -> etapa-guardar-producto antes del gate de cierre (invariante 9)
+oferta: el esquema solo tiene precio_q (quetzales); el P1u en COP vive en oferta.texto
 
-· TÍTULOS:
-  Todo en uno natural
-  Uno, no cinco
-  8 raíces en 3 perlas
+========================================================================
 
-· DESCRIPCIONES:
-  8 raíces naturales · 3 perlas
-  🏠 ¡Paga en casa!
-
-E.4 REVISIÓN ANTES DE PROGRAMAR
-[ ] 6 conjuntos, 12 anuncios, nombres exactos, cero "- Copia"
-[ ] "Maximizar CONVERSACIONES" verificado JUSTO antes de publicar (Meta lo revierte a clics)
-[ ] Destino WhatsApp con el número de HERNATURA CO y el mensaje prellenado sin "registro"
-[ ] $9.426 COP en los 6 conjuntos, presupuesto a nivel conjunto
-[ ] Bandas: 25-40 en conjuntos 1, 2, 3 y 4 · 35-50 en conjuntos 5 y 6 · Advantage+ OFF en los 6
-[ ] Ninguno de los 6 anuncios lleva precio (FASE 1 mide solo el ángulo)
-[ ] Ninguna imagen muestra sello ni número de registro
-[ ] El bot está activo en LucidBot y responde al mensaje prellenado
-[ ] Programada para las 04:00 hora Colombia del 30-sep (nunca el mismo día)
-
-════════════════════════════════════════════════════════════════════════
-── F. REGISTRAR EN EL SISTEMA (terminal, desde la carpeta SISTEMA, de a un comando) ──
-════════════════════════════════════════════════════════════════════════
-
-F.1 Al pegar el bot v2 en LucidBot:
-python Ads/_TOOLS/registrar_evento.py --producto OVULOS_PURITY --evento CAMBIO_BOT --motivo "reescritura v2 bot paraguas F1 (8 raíces naturales, escalera 84.900/129.900/169.900)" --fuente "ETAPA-5 2026-09-29"
-
-F.2 Cuando la campaña quede activa a las 04:00 del 30-sep:
-python Ads/_TOOLS/registrar_evento.py --producto OVULOS_PURITY --evento LANZAMIENTO --fase 1 --fecha 2026-09-30 --cuenta EXTERNA --campana EXTERNA_OVULOSPURITY_TEST_20260930 --motivo "Lanzamiento FASE 1 v2: 6 conjuntos IMAGEN C2_BENEFICIOS, 04:00 hora Colombia" --fuente "operador, publicación manual 2026-09-30"
-
-F.3 Anota el campaign_id que te da Meta y pásalo para cargarlo en _DIM_PRODUCTOS.csv.
+F. CALENDARIO Y REGISTRO
+Día 0 (30-sep) — Lanza a las 4 AM · hacer: nada — no se toca nada más hoy · traer: —
+Días 1-2 (01-oct → 02-oct) — Meta está en aprendizaje · hacer: observar clics-enlace y %conv. NO pausar, NO escalar · traer: nada — el reloj de ENTREGA es automático
+Día 3 (03-oct) — GATE 1 · corte por conversación · hacer: apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98 · traer: export de Meta Ads Manager (no hace falta LucidSales)
+Día 3.2 (04-oct) — PRESUPUESTO DE DECISIÓN alcanzado · hacer: recién acá un '0 ventas' es veredicto y no falta de exposición · traer: export de LucidSales
+Día 4 (04-oct) — GATE 2 · validación · hacer: ya hay CPA formándose; arranca FASE 2 del ganador #1 · traer: export de LucidSales de 7 días
+Domingo (cada semana) — ingesta principal · hacer: el sistema decide qué se poda y qué se escala · traer: export de LucidSales de 7 días
+python Ads/_TOOLS/registrar_evento.py --producto OVULOS_PURITY --evento CAMBIO_BOT --motivo "bot cargado en LucidBot" --fuente "operador"
+LANZAMIENTO ya registrado: 2026-09-30 · campaña EXTERNA_OVULOSPURITY_TEST_20260930
