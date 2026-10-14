@@ -73,6 +73,14 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
   movements reports paying by other means with unmeasured fixed costs instead of asking for a
   statement. Missing parameter keeps the old ask-everywhere behavior. — 857517e
 
+- [x] T13 Mercury ingestion (`--banco MERCURY` in `ingerir_banco.py`): reads the downloaded
+  transactions CSV as-is (only `Sent` enters; `Pending`/`Failed` counted and reported). Own-account
+  legs enter as INTERNO, Dropi arrivals as ENTRADA (paired by `registrar_transferencia_fx.py`),
+  charges as SALIDA with the card's last-4 and its market from `_DIM_TARJETAS_MERCADO.csv`
+  (empty when the card has no market: never guessed). Bank charges of another market stay out of
+  this market's P&L; market-less card charges are listed in `faltantes`. Intl fees classify as
+  NEGOCIO_FIJO/comision_bancaria/COMPARTIDO in `_DIM_GASTOS.csv`. — 29c898e
+
 ## Acceptance
 - Re-ingesting the same files changes nothing (idempotent).
 - September GT: ad spend equals Meta ($2,188.62 incl. GTR13 from `_FACT_ENTREGA`); bank Facebook
@@ -154,3 +162,14 @@ Known environmental failures: Ads/_TOOLS conftest wrapper items fail with OSErro
 - 2026-10-14 (T12): `unittest test_gen_pl_mensual`: 39 OK (3 new July/bank-cutoff tests, seen failing
   before the fix); `unittest test_gen_pl`: 25 OK. Real `--mercado GT --desde 2026-07 --hasta 2026-07`:
   July says it paid by other means with unmeasured fixed costs, no statement asked.
+- 2026-10-14 (T13): real file `dff-...-2026-aug-31-to-2026-oct-13 (1).csv` (the plain one is a subset:
+  verified contained): 91 rows → 9 new (1 SALIDA Facebook $1.25 card 2479, 1 ENTRADA Dropi $11,775,
+  7 INTERNO), 2 Pending + 80 Failed left out, 0 non-USD. Re-ingest byte-identical. Operator
+  corrected the FX pair meanwhile (`b68d86f`: arrival 2026-10-13 $11,775, rate 7.6433 — the T9
+  7.9079 figures are superseded); `registrar_transferencia_fx.py` (mirar) proposes nothing new.
+  GT table now: Jul 9,520 / Aug 16,074 / Sep 8,492 (PRIMERA_POSTERIOR 7.6433) / Oct 2,285 (VENTANA
+  7.6433); Sep bank Facebook $2,193.06 with the $1.25 dead-card charge listed in `faltantes`.
+- Checks observed: `unittest test_ingerir_banco test_dim_tarjetas_mercado test_gen_pl_mensual
+  test_gen_pl test_tasa_fx test_ingerir_cartera`: 127 OK; `pytest` on the new Mercury tests shows
+  only the known extra wrapper item (OSError WinError 6); backend `test_finanzas_mensual_api.py`:
+  17 passed; `vitest`: 217 passed. Relay rows in `_FACT_BANCO.csv` verified intact (207/207).
