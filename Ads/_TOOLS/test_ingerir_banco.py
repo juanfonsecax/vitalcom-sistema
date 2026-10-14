@@ -150,5 +150,81 @@ Name Date Status Amount Balance
             self._ingerir(sin_resumen)
 
 
+MERCURY_CSV = """Date (UTC),Description,Amount,Status,Source Account,Bank Description,Last Four Digits,Original Currency
+09-21-2026,Facebook,-1.25,Sent,Mercury Credit,FACEBK *6T57P6ASW4,9736,USD
+10-13-2026,Dropi,11775.00,Sent,Mercury Checking xx6842,DROPI SERVICES L; SENDER; 0000DFF VENTURES LLC,,,
+10-13-2026,Facebook,-71.00,Pending,Welcome to Column N.A. (Mercury Checking xx6159),FACEBK *NA28Y8E4N4,9736,USD
+10-13-2026,Facebook,-2.04,Failed,Mercury Credit,FACEBK *ZD9LG92TW4,2479,COP
+10-13-2026,Welcome to Column N.A. (Mercury Checking xx6159),-1000.00,Sent,Mercury Checking xx6842,Transfer between your Mercury accounts,,,
+10-13-2026,Mercury Checking xx6842,1000.00,Sent,Welcome to Column N.A. (Mercury Checking xx6159),Transfer between your Mercury accounts,,,
+"""
+
+DIM_MERCADO_JUGUETE = [
+    {"banco": "MERCURY", "ultimos4": "9736", "bm": "AMG 5", "mercado": "GT", "uso": "PAUTA",
+     "cuentas_publicitarias": "GTR7", "estado": "ACTIVA", "confirmado_por": "operador",
+     "fecha": "2026-10-14", "notas": ""},
+]
+
+
+class IngestaMercury(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tmp = tempfile.TemporaryDirectory()
+        self.destino = Path(self.tmp.name) / "_FACT_BANCO.csv"
+        self.csv = Path(self.tmp.name) / "mercury.csv"
+        self.csv.write_text(MERCURY_CSV, encoding="utf-8")
+
+    def tearDown(self) -> None:
+        self.tmp.cleanup()
+
+    def _ingerir(self, escribir=True, tarjetas=DIM_MERCADO_JUGUETE):
+        return ib.ingerir_mercury(str(self.csv), destino=str(self.destino), escribir=escribir,
+                                  tarjetas=tarjetas)
+
+    def test_guarda_el_cargo_con_su_tarjeta_y_el_deposito_como_entrada(self) -> None:
+        res = self._ingerir()
+        filas = _leer(self.destino)
+        self.assertEqual((res["nuevas"], res["salidas"], res["entradas"], res["internos"]), (4, 1, 1, 2))
+        self.assertEqual((res["excluidas_pending"], res["excluidas_failed"]), (1, 1))
+        d = {(f["fecha"], f["nombre"]): f for f in filas}
+        fb = [f for f in filas if f["nombre"].startswith("Facebook")][0]
+        self.assertEqual((fb["banco"], fb["tarjeta"], fb["tipo"], fb["monto"], fb["mercado"]),
+                         ("MERCURY", "9736", "SALIDA", "1.25", "GT"))
+        dep = d[("2026-10-13", "Dropi · DROPI SERVICES L; SENDER; 0000DFF VENTURES LLC")]
+        self.assertEqual((dep["tipo"], dep["monto"], dep["cuenta"]), ("ENTRADA", "11775.00", "6842"))
+
+    def test_los_traspasos_entre_cuentas_propias_entran_como_internos(self) -> None:
+        self._ingerir()
+        tipos = {(f["nombre"], f["tipo"]) for f in _leer(self.destino)}
+        self.assertTrue(all(t == "INTERNO" for n, t in tipos if "Transfer between" in n))
+
+    def test_la_cuenta_dice_si_es_checking_o_credito(self) -> None:
+        self._ingerir()
+        cuentas = {(f["nombre"], f["cuenta"]) for f in _leer(self.destino)}
+        self.assertIn("CREDIT", {c for _, c in cuentas})
+
+    def test_una_tarjeta_sin_fila_queda_sin_mercado(self) -> None:
+        res = ib.ingerir_mercury(str(self.csv), destino=str(self.destino), escribir=True, tarjetas=[])
+        fb = [f for f in _leer(self.destino) if f["nombre"].startswith("Facebook")][0]
+        self.assertEqual(fb["mercado"], "")
+        self.assertEqual(res["nuevas"], 4)
+
+    def test_reingerir_el_mismo_csv_no_cambia_nada(self) -> None:
+        self._ingerir()
+        antes = self.destino.read_bytes()
+        res = self._ingerir()
+        self.assertEqual(self.destino.read_bytes(), antes)
+        self.assertEqual((res["nuevas"], res["duplicadas"]), (0, 4))
+
+    def test_sin_las_columnas_que_lee_se_rechaza_sin_escribir(self) -> None:
+        self.csv.write_text("fecha,monto\n2026-10-01,5.00\n", encoding="utf-8")
+        with self.assertRaises(ib.ExtractoInvalido):
+            self._ingerir()
+        self.assertFalse(self.destino.exists())
+
+    def test_cuenta_declarada_no_aplica_a_mercury(self) -> None:
+        with self.assertRaises(ib.ExtractoInvalido):
+            ib.ingerir(str(self.csv), "MERCURY", cuenta="6842", destino=str(self.destino))
+
+
 if __name__ == "__main__":
     unittest.main()

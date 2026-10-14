@@ -51,5 +51,19 @@ class ArchivoReal(unittest.TestCase):
         self.assertEqual(tarjetas_mercado.validar(filas), [])
 
 
+class MercadoDe(unittest.TestCase):
+    FILAS = [_fila("4232", mercado="GT"), _fila("9893", mercado="CO"),
+             _fila("2479", mercado="", estado="MUERTA", uso="")]
+
+    def test_la_tarjeta_conocida_da_su_mercado(self) -> None:
+        self.assertEqual(tarjetas_mercado.mercado_de("4232", self.FILAS), "GT")
+        self.assertEqual(tarjetas_mercado.mercado_de("9893", self.FILAS), "CO")
+
+    def test_la_desconocida_o_sin_mercado_da_vacio(self) -> None:
+        self.assertEqual(tarjetas_mercado.mercado_de("0000", self.FILAS), "")
+        self.assertEqual(tarjetas_mercado.mercado_de("2479", self.FILAS), "")
+        self.assertEqual(tarjetas_mercado.mercado_de("", self.FILAS), "")
+
+
 if __name__ == "__main__":
     unittest.main()

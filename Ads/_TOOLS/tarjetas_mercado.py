@@ -36,3 +36,15 @@ def validar(filas):
         if (f.get("mercado") or "") not in MERCADOS:
             errores.append("mercado no declarado en %s: «%s»" % (u4, f.get("mercado") or ""))
     return errores
+
+
+def mercado_de(ultimos4, filas=None):
+    """El mercado de una tarjeta (últimos 4), o "" si no tiene fila o no tiene mercado.
+    Una tarjeta sin mercado nunca se reparte por adivinanza."""
+    u4 = (ultimos4 or "").strip()
+    if not u4:
+        return ""
+    for f in filas if filas is not None else cargar():
+        if (f.get("ultimos4") or "").strip() == u4:
+            return (f.get("mercado") or "")
+    return ""

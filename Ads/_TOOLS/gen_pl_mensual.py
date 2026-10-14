@@ -145,7 +145,30 @@ def _origen_devoluciones(r, cartera_usada, cartera):
 
 def movimientos_del_banco(filas):
     return [{"nombre": f["nombre"], "fecha": datetime.date.fromisoformat(f["fecha"]),
-             "monto": gen_pl.fl(f["monto"]), "tipo": f.get("tipo") or "SALIDA"} for f in filas]
+             "monto": gen_pl.fl(f["monto"]), "tipo": f.get("tipo") or "SALIDA",
+             "banco": f.get("banco") or "", "tarjeta": f.get("tarjeta") or "",
+             "mercado": f.get("mercado") or ""} for f in filas]
+
+
+def _separar_por_mercado(mov, mercado_pl):
+    """Los movimientos del banco que entran al P&L de `mercado_pl` y los que no.
+
+    Un cargo de Mercury con tarjeta y sin mercado (tarjeta desconocida o MUERTA) no se
+    adivina: queda fuera y se lista. Uno de otro mercado aparece en su propio mercado, acá
+    no se lista. Lo sin marca (Relay) y lo COMPARTIDO entran como hoy."""
+    dentro, fuera = [], []
+    for t in mov:
+        merc = (t.get("mercado") or "").upper()
+        if merc in ("COMPARTIDO",) or merc == (mercado_pl or "").upper() \
+                or (not merc and not t.get("tarjeta")):
+            dentro.append(t)
+        elif merc in ("GT", "CO"):
+            continue
+        elif t.get("tarjeta"):
+            fuera.append(t)
+        else:
+            dentro.append(t)
+    return dentro, fuera
 
 
 def _ultimo_dia(mes):
@@ -180,13 +203,15 @@ def _conversion(tasa, pauta_usd):
 
 
 def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_gasto,
-         cartera=(), reglas_retiros=(), transferencias=()):
+         cartera=(), reglas_retiros=(), transferencias=(), mercado_pl="GT"):
     ini, fin = mes + "-01", _ultimo_dia(mes)
     faltantes = []
     tasa = gen_pl.tasa_del_mes(fin, transferencias)
     pauta = gen_pl.pauta_con_tasa(gen_pl.pauta_de_la_ventana(ini, fin, filas_gasto), tasa)
     activos = gen_pl.mercados_activos(ini, fin, filas_gasto, ordenes_todas)
     mov_mes = [t for t in mov if ini <= str(t["fecha"]) <= fin]
+    mov = _separar_por_mercado(mov, mercado_pl)[0]
+    fuera_mes = _separar_por_mercado(mov_mes, mercado_pl)[1]
     tiene_banco = bool(mov_mes)
     ord_mes = [o for o in ordenes_mercado if ini <= o["fecha_orden"] <= fin]
     ultimo_con_ordenes = max((o["fecha_orden"] for o in ord_mes), default=None)
@@ -255,6 +280,13 @@ def _mes(mes, hoy, df_ord, ordenes_mercado, ordenes_todas, mov, reglas, filas_ga
         else:
             faltantes.append("Sin movimientos del banco en %s: cargá el extracto bancario "
                              "(ingerir_banco.py)." % mes)
+    if fuera_mes:
+        faltantes.append("Cargos de Mercury sin mercado ($%.2f en %d: %s): la tarjeta no tiene "
+                         "mercado en _DIM_TARJETAS_MERCADO.csv: no entran al resultado hasta "
+                         "asignarla."
+                         % (sum(t["monto"] for t in fuera_mes), len(fuera_mes),
+                            "; ".join("«%s» ••%s" % (t["nombre"].split(" · ")[0], t.get("tarjeta"))
+                                       for t in fuera_mes)))
     if not pauta["usd"]:
         faltantes.append("Sin pauta registrada en %s (ni de Meta ni de LucidSales)." % mes)
     if pauta["fallback_usd"]:
@@ -344,7 +376,7 @@ def pl_mensual(mercado_pl, desde=None, hasta=None, hoy=None, hechos=None):
     for mes in meses:
         out["meses"].append(_mes(mes, hoy, df_ord, ordenes_mercado, h["ordenes"], mov,
                                  h["reglas"], h["gasto"], cartera, reglas_retiros,
-                                 h.get("transferencias", [])))
+                                 h.get("transferencias", []), mercado_pl))
     if not meses:
         out["faltantes"].append("Todavía no hay órdenes de Dropi, movimientos del banco ni pauta "
                                 "cargados para %s." % mercado_pl)

@@ -47,9 +47,10 @@ def _orden(id_, fecha, estatus="ENTREGADO", pk="CLEARSTEM", total=250.0, flete=3
             "archivo_origen": "x.xlsx"}
 
 
-def _mov(fecha, nombre, monto, tipo="SALIDA", saldo="1.00"):
-    return {"fecha": fecha, "banco": "RELAY", "cuenta": "8889", "nombre": nombre,
-            "monto": "%.2f" % monto, "tipo": tipo, "saldo": saldo, "tarjeta": "", "archivo": "a.pdf"}
+def _mov(fecha, nombre, monto, tipo="SALIDA", saldo="1.00", mercado="", tarjeta="", banco="RELAY"):
+    return {"fecha": fecha, "banco": banco, "cuenta": "8889", "nombre": nombre,
+            "monto": "%.2f" % monto, "tipo": tipo, "saldo": saldo, "tarjeta": tarjeta,
+            "mercado": mercado, "archivo": "a.pdf"}
 
 
 def _gasto(pk, ini, spend, ventas=0.0, fuente="MetaAPI-conjunto"):
@@ -280,6 +281,23 @@ class Faltantes(unittest.TestCase):
         h = _hechos(ordenes=[_orden(1, "2024-01-02"), _orden(2, "2024-01-02", mercado="CO")])
         m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
         self.assertEqual(m["ordenes"]["total"], 1)
+
+    def test_un_cargo_de_tarjeta_co_no_entra_al_pl_de_gt(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2024-01-02")],
+                    banco=[_mov("2024-01-05", "Facebook", 100.0),
+                           _mov("2024-01-06", "Facebook CO", 50.0, mercado="CO", tarjeta="9893",
+                                banco="MERCURY")])
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertAlmostEqual(m["banco_facebook"]["usd"], 100.0)
+        self.assertEqual(m["banco_facebook"]["cargos"], 1)
+
+    def test_un_cargo_sin_mercado_sale_en_faltantes_y_no_entra(self) -> None:
+        h = _hechos(ordenes=[_orden(1, "2024-01-02")],
+                    banco=[_mov("2024-01-05", "Facebook", 100.0),
+                           _mov("2024-01-06", "Facebook", 50.0, tarjeta="0000", banco="MERCURY")])
+        m = gpm.pl_mensual("GT", hoy=HOY, hechos=h)["meses"][0]
+        self.assertAlmostEqual(m["banco_facebook"]["usd"], 100.0)
+        self.assertTrue(any("0000" in x for x in m["faltantes"]))
 
 
 def _cart(mov_id, fecha, categoria, tipo, monto, despues, orden="", concepto=""):
