@@ -171,6 +171,9 @@ Cadencia **semanal**. Responde dos preguntas que suelen mezclarse.
 - `_DIM_TARJETAS.csv` — tarjeta (últimos 4) → BM, con cobros, rechazos y veredicto (SANA · LEVE ·
   INTERMITENTE · MUERTA). Se completa con cada extracto. **Nunca atribuir una tarjeta a una cuenta
   por descarte** (APR-030).
+- `_DIM_TARJETAS_MERCADO.csv` — tarjeta de Mercury (últimos 4) → BM → mercado
+  (GT · CO · COMPARTIDO · SIN_USO), con las cuentas que paga cada una. La ingesta de Mercury asigna
+  cada cargo de Facebook a su mercado con esta tabla; una tarjeta sin fila sale en faltantes.
 - `_FACT_FACTURACION.csv` — un cargo por fila (COBRO / RECHAZO / CREDITO).
   `_FACT_FACTURACION_AGREGADO.csv` — fallback por ventana cuando solo hay el total por cuenta.
 - `_FACT_SALDOS.csv` — saldo gastado y aún NO facturado al corte. Sin él no hay conciliación.

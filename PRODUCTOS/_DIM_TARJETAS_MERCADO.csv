@@ -1,0 +1,14 @@
+banco,ultimos4,bm,mercado,uso,cuentas_publicitarias,estado,confirmado_por,fecha,notas
+MERCURY,4232,AMG 2,GT,PAUTA,GTR0|GTR1|GTR2|GTR18,ACTIVA,operador,2026-10-14,
+MERCURY,9736,AMG 5,GT,PAUTA,GTR7,ACTIVA,operador,2026-10-14,
+MERCURY,0237,AMG 9,GT,PAUTA,GTR13|GTR14|GTR15|GTR16|GTR17,ACTIVA,operador,2026-10-14,
+MERCURY,9893,AMG 3,CO,PAUTA,GTR3|GTR9|GTR10,ACTIVA,operador,2026-10-14,
+MERCURY,1077,AMG 4,SIN_USO,PAUTA,GTR4|GTR5,RESERVA,operador,2026-10-14,
+MERCURY,2190,AMG 8,SIN_USO,PAUTA,GTR11|GTR12,RESERVA,operador,2026-10-14,
+MERCURY,9282,,COMPARTIDO,SOFTWARE,,ACTIVA,operador,2026-10-14,
+MERCURY,2479,,,,,MUERTA,operador,2026-10-14,cargos fallidos en Mercury Credit sep-oct 2026
+MERCURY,8931,,,,,MUERTA,operador,2026-10-14,cargos fallidos en Mercury Credit sep-oct 2026
+MERCURY,1193,,,,,MUERTA,operador,2026-10-14,cargos fallidos en Mercury Credit sep-oct 2026
+MERCURY,2187,,,SOFTWARE,,MUERTA,operador,2026-10-14,cargos fallidos en Mercury Credit sep-oct 2026
+MERCURY,4895,,,SOFTWARE,,MUERTA,operador,2026-10-14,cargos fallidos en Mercury Credit sep-oct 2026
+MERCURY,1766,,,SOFTWARE,,MUERTA,operador,2026-10-14,cargos fallidos en Mercury Credit sep-oct 2026
