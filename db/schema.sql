@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS raw.producto (
     clave_campana TEXT,
     campaign_id TEXT,
     mercado TEXT,
+    registro_sanitario_estado TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS producto_key TEXT;
@@ -92,6 +93,7 @@ ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS carpetas_extra TEXT;
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS clave_campana TEXT;
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS campaign_id TEXT;
 ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS mercado TEXT;
+ALTER TABLE raw.producto ADD COLUMN IF NOT EXISTS registro_sanitario_estado TEXT;
 
 -- costeo <- PRODUCTOS/_DIM_COSTEO.csv
 CREATE TABLE IF NOT EXISTS raw.costeo (
