@@ -991,6 +991,8 @@ def analizar_portafolio(producto_filtro=None, grano="angulo", dias=None):
 
     for pk, g in df_celdas.groupby("producto_key"):
         info = prods.get(pk, {})
+        if info.get("estado") == "PAUSADO":
+            continue  # reingreso solo por decision del operador (flujo.py: no se audita ni se ordena)
         be_q = info.get("cpa_be_q", 90.0)
         obj_q = info.get("cpa_base_q", 30.0)
         tasa = info.get("tasa")
