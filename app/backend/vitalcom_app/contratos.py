@@ -367,10 +367,15 @@ def ordenes(producto_key: str | None = None) -> dict[str, Any]:
         errors="replace",
         timeout=60,
     )
-    if completado.returncode != 0 or not completado.stdout.strip():
-        detalle = (completado.stderr or completado.stdout or "sin salida").strip()
-        raise ContratoAusente(f"gen_ordenes.py falló: {detalle[-400:]}")
-    return json.loads(completado.stdout)
+    # Código 1 con JSON válido = el script terminó y dejó `bloqueantes`: se muestran, no se descartan.
+    try:
+        datos = json.loads(completado.stdout)
+    except ValueError:
+        datos = None
+    if isinstance(datos, dict) and "ordenes" in datos:
+        return datos
+    detalle = (completado.stderr or completado.stdout or "sin salida").strip()
+    raise ContratoAusente(f"gen_ordenes.py falló: {detalle[-400:]}")
 
 
 def situacion_de_flujo(datos: dict[str, Any]) -> dict[str, Any]:
