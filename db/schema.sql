@@ -1,4 +1,4 @@
--- schema.sql — generado por db/tables.py (2026-09-28). DDL idempotente.
+-- schema.sql — generado por db/tables.py (2026-10-15). DDL idempotente.
 -- schema `raw`: espejo verbatim de cada CSV de PRODUCTOS/, más tenant_id (single
 -- tenant 'vitalcom') e id. schema `core`: modelo normalizado/tipado construido A
 -- PARTIR de `raw` por db/nucleo.py. Ver tables.py y nucleo.py para el porqué.
@@ -270,8 +270,36 @@ ALTER TABLE raw.creativo ADD COLUMN IF NOT EXISTS notas TEXT;
 CREATE TABLE IF NOT EXISTS raw.voz_cliente (
     id BIGSERIAL PRIMARY KEY,
     tenant_id TEXT NOT NULL DEFAULT 'vitalcom',
+    producto_key TEXT,
+    voz_id TEXT,
+    variable TEXT,
+    cita_textual TEXT,
+    url TEXT,
+    fuente_tipo TEXT,
+    fecha_captura TEXT,
+    pais TEXT,
+    idioma TEXT,
+    nivel_conciencia TEXT,
+    embudo TEXT,
+    angulo_key TEXT,
+    estado TEXT,
+    verificado_el TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS producto_key TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS voz_id TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS variable TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS cita_textual TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS url TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS fuente_tipo TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS fecha_captura TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS pais TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS idioma TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS nivel_conciencia TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS embudo TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS angulo_key TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS estado TEXT;
+ALTER TABLE raw.voz_cliente ADD COLUMN IF NOT EXISTS verificado_el TEXT;
 
 -- dim_bandas <- PRODUCTOS/_DIM_BANDAS.csv
 CREATE TABLE IF NOT EXISTS raw.dim_bandas (
@@ -362,6 +390,7 @@ CREATE TABLE IF NOT EXISTS raw.dim_cuentas (
     verificado_el TEXT,
     fuente TEXT,
     notas TEXT,
+    mercado TEXT,
     loaded_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 ALTER TABLE raw.dim_cuentas ADD COLUMN IF NOT EXISTS cuenta_alias TEXT;
@@ -378,6 +407,7 @@ ALTER TABLE raw.dim_cuentas ADD COLUMN IF NOT EXISTS estado_cuenta TEXT;
 ALTER TABLE raw.dim_cuentas ADD COLUMN IF NOT EXISTS verificado_el TEXT;
 ALTER TABLE raw.dim_cuentas ADD COLUMN IF NOT EXISTS fuente TEXT;
 ALTER TABLE raw.dim_cuentas ADD COLUMN IF NOT EXISTS notas TEXT;
+ALTER TABLE raw.dim_cuentas ADD COLUMN IF NOT EXISTS mercado TEXT;
 
 -- dim_envase <- PRODUCTOS/_DIM_ENVASE.csv
 CREATE TABLE IF NOT EXISTS raw.dim_envase (
@@ -640,6 +670,7 @@ CREATE TABLE IF NOT EXISTS raw.dim_anuncios (
     producto_key TEXT,
     anuncio_norm TEXT,
     anuncio_ejemplo TEXT,
+    firma TEXT,
     ad_ids TEXT,
     conjunto_norm TEXT,
     cuenta_alias TEXT,
@@ -678,6 +709,7 @@ CREATE TABLE IF NOT EXISTS raw.dim_anuncios (
 ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS producto_key TEXT;
 ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS anuncio_norm TEXT;
 ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS anuncio_ejemplo TEXT;
+ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS firma TEXT;
 ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS ad_ids TEXT;
 ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS conjunto_norm TEXT;
 ALTER TABLE raw.dim_anuncios ADD COLUMN IF NOT EXISTS cuenta_alias TEXT;
