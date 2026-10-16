@@ -364,6 +364,10 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
 
                 for c_nombre in set(nombres_conjuntos):
                     meta_obj = snapshot_meta.get(c_nombre)
+                    if not meta_obj and any((r.get("cuenta_alias") or "").strip().upper() == "EXTERNA"
+                                            and r.get("conjunto_meta") == c_nombre for r in filas_conj):
+                        # Cuenta EXTERNA: no hay MCP ni id de Meta; la orden se ejecuta a mano, no bloquea.
+                        continue
                     if not meta_obj:
                         bloqueantes.append({
                             "falta": f"no existe id de Meta para el conjunto '{c_nombre}' (ángulo '{ak}') de '{pk}'",
@@ -425,6 +429,10 @@ def generar_ordenes(producto_filtro=None, ruta_decisiones=None, ruta_snapshot=No
                 objetivos_hechos = set()
                 for c_nombre in sorted(set(nombres_conjuntos)):
                     meta_obj = snapshot_meta.get(c_nombre)
+                    if not meta_obj and any((r.get("cuenta_alias") or "").strip().upper() == "EXTERNA"
+                                            and r.get("conjunto_meta") == c_nombre for r in filas_conj):
+                        # Cuenta EXTERNA: no hay MCP ni id de Meta; la orden se ejecuta a mano, no bloquea.
+                        continue
                     if not meta_obj:
                         bloqueantes.append({
                             "falta": f"no existe id de Meta para el conjunto '{c_nombre}' (ángulo '{ak}') de '{pk}'",
