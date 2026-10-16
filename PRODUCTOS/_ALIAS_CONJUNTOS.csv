@@ -10,3 +10,8 @@ GTR0_TINNIDROP_ME-DIJERON-NO-CURA_R1 +25AÑOS,GTR0_TINNIDROP_ME-DIJERON-NO-CURA_
 GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R2 +25años,GTR13_CLEARSTEM_RESISTENCIA-INSULINA_R2,GTR13,CLEARSTEM,2026-09-06,renombrado 06-sep-2026 a la CONVENCION DE NOMBRES (ETAPA-6): el sufijo de banda sale del nombre y pasa a _DIM_BANDAS.csv
 GTR13_CLEARSTEM_MEDICOS-FALLARON_R1 + 25AÑOS - Copia,GTR13_CLEARSTEM_MEDICOS-FALLARON_R1,GTR13,CLEARSTEM,2026-09-06,renombrado 06-sep-2026 a la CONVENCION DE NOMBRES (ETAPA-6): el sufijo de banda sale del nombre y pasa a _DIM_BANDAS.csv
 GTR13_CLEARSTEM_MEDICOS-FALLARON_R2 + 25AÑOS,GTR13_CLEARSTEM_MEDICOS-FALLARON_R2,GTR13,CLEARSTEM,2026-09-06,renombrado 06-sep-2026 a la CONVENCION DE NOMBRES (ETAPA-6): el sufijo de banda sale del nombre y pasa a _DIM_BANDAS.csv
+1️⃣ VIAJERO (sin precio - Copia,EXTERNA_GAFAS_VIAJERO_SIN_TELEFONO_R1,EXTERNA,GAFAS,2026-10-02,nombre de Meta de la cuenta EXTERNA (publicacion manual) mapeado al conjunto de la dimension
+2️⃣ PAPÁS (sin precio,EXTERNA_GAFAS_MOMENTOS_QUE_NO_VUELVEN_R1,EXTERNA,GAFAS,2026-10-02,nombre de Meta de la cuenta EXTERNA (publicacion manual) mapeado al conjunto de la dimension
+3️⃣ TRADUCCIÓN ($249.900),EXTERNA_GAFAS_TRADUCCION_QUE_FUNCIONA_R1,EXTERNA,GAFAS,2026-10-02,nombre de Meta de la cuenta EXTERNA (publicacion manual) mapeado al conjunto de la dimension
+4️⃣ MANOS LIBRES,EXTERNA_GAFAS_MANOS_LIBRES_R1,EXTERNA,GAFAS,2026-10-02,nombre de Meta de la cuenta EXTERNA (publicacion manual) mapeado al conjunto de la dimension
+5️⃣ CREADORES (sin precio),EXTERNA_GAFAS_CALIDAD_PRO_CREADORES_R1,EXTERNA,GAFAS,2026-10-02,nombre de Meta de la cuenta EXTERNA (publicacion manual) mapeado al conjunto de la dimension

@@ -553,8 +553,12 @@ def main():
     # El mapeo es de alias.py — ningún consumidor escribe el suyo (regla de CLAUDE.md).
     dim = pd.read_csv(DIMC)
     conocidos = {alias.canonico(c) for c in dim["conjunto_meta"].astype(str).str.strip()}
+    # Un producto PAUSADO no se estudia: sus conjuntos no necesitan dimension (reingreso = decision del operador).
+    pausados = {(r.get("producto_key") or "").strip() for r in cargar_filas_productos()
+                if (r.get("estado") or "").strip().upper() == "PAUSADO"}
     sin_dim = sorted({f["conjunto"] for f in nuevas
-                      if f["conjunto"] and alias.canonico(f["conjunto"]) not in conocidos})
+                      if f["conjunto"] and f.get("producto_key") not in pausados
+                      and alias.canonico(f["conjunto"]) not in conocidos})
 
     # GATE DE INTEGRIDAD. Hasta el 22-sep-2026 este chequeo solo imprimía "sin dimensión"
     # o "cierra al 100%" sin mirar SIN_CLASIFICAR: la corrida de Turmeric mostró el
