@@ -878,23 +878,18 @@ def main():
                 n += 1
                 llamadas.append(llamada_de_subida_local(n, cre, orden_global))
 
-            n += 1
-            llamadas.append({
-                "n": n, "tool": "ads_create_creative",
-                "args": {
-                    "ad_account_id": acct, "page_id": page_id,
-                    "name": an.split(" ~ ")[0],
-                    "image_hash": image_hash,
-                    "message": copy or "{{FALTA_COPY}}",
-                    "headline": titular,
-                    "description": descripcion,
-                    "call_to_action_type": "WHATSAPP_MESSAGE",
-                },
-                "guardar_como": "creative_id_%d" % orden_global,
-                "omitir": False,
-                "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, "
-                        "el destino lo enruta el conjunto y el CTA va sin value.link (APR-035).",
-            })
+            # Creativo EN LINEA (validado por el operador 16-oct-2026): ads_create_creative inyecta
+            # link_title/link_description dentro de call_to_action.value y Meta lo rechaza como obsoleto
+            # (#1815589). Con object_story_spec propio el boton lleva solo app_destination y el titulo y la
+            # descripcion van en link_data.name / link_data.description.
+            creativo_en_linea = json.dumps({"object_story_spec": {"page_id": page_id, "link_data": {
+                "link": "https://api.whatsapp.com/send",
+                "message": copy or "{{FALTA_COPY}}",
+                "name": titular,
+                "description": descripcion,
+                "image_hash": image_hash,
+                "call_to_action": {"type": "WHATSAPP_MESSAGE", "value": {"app_destination": "WHATSAPP"}},
+            }}}, ensure_ascii=False)
 
             for letra in ("A", "B"):
                 nom = nombre_anuncio(fase, cre, orden_nombre, ang_u, fmt, letra, fmod)
@@ -905,7 +900,7 @@ def main():
                         "ad_account_id": acct,
                         "ad_set_id": "{{adset_id_%d}}" % i,
                         "ad_name": nom,
-                        "creative": json.dumps({"creative_id": "{{creative_id_%d}}" % orden_global}),
+                        "creative": creativo_en_linea,
                     },
                     "guardar_como": "ad_id_%d%s" % (orden_global, letra),
                     "omitir": nom in existentes,

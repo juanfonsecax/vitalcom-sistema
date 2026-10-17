@@ -635,7 +635,15 @@ def _paquete_biblioteca(base, antes=None, despues=None):
 
 
 def _creativos(paquete):
-    return [l["args"]["image_hash"] for l in paquete["llamadas"] if l["tool"] == "ads_create_creative"]
+    """image_hash de cada pieza, en orden. El creativo viaja EN LINEA dentro de cada ads_create_ad
+    (A y B comparten pieza), no en una llamada ads_create_creative: ver gen_publicacion.creativo_en_linea."""
+    hashes = []
+    for l in paquete["llamadas"]:
+        if l["tool"] == "ads_create_ad":
+            h = json.loads(l["args"]["creative"])["object_story_spec"]["link_data"]["image_hash"]
+            if h not in hashes:
+                hashes.append(h)
+    return hashes
 
 
 def _informe(ok, texto, detalle=""):
@@ -736,6 +744,25 @@ def test_subida_local_sigue_igual_para_la_skill():
           and _creativos(pq)[0] == "{{image_hash_1}}")
     return _informe(ok, "sin --media, el paquete de la skill interactiva sigue con sus 6 subidas LOCAL_FILE",
                     (code, err, len(subidas), pq["bloqueantes"]))
+
+
+def test_creativo_en_linea_sin_titulo_dentro_del_boton():
+    """Meta rechaza link_title/link_description dentro de call_to_action.value (#1815589): el boton
+    lleva solo app_destination y el titulo/descripcion van en link_data.name/description."""
+    base = _fixture_fase1_completa()
+    salida = os.path.join(base, "p.json")
+    code, _out, err = _correr_main(base, ["--producto", "PX", "--fase", "1", "--cuenta", "GTR7",
+                                          "--lanzamiento", MANANA, "--salida", salida])
+    with open(salida, encoding="utf-8") as fh:
+        pq = json.load(fh)
+    assert err is None and code == 0, (code, err)
+    assert not [l for l in pq["llamadas"] if l["tool"] == "ads_create_creative"]
+    anuncios = [l for l in pq["llamadas"] if l["tool"] == "ads_create_ad"]
+    assert anuncios
+    for l in anuncios:
+        ld = json.loads(l["args"]["creative"])["object_story_spec"]["link_data"]
+        assert ld["call_to_action"] == {"type": "WHATSAPP_MESSAGE", "value": {"app_destination": "WHATSAPP"}}
+        assert "name" in ld and "description" in ld and ld["image_hash"]
 
 
 def test_media_invalida_no_arranca():
