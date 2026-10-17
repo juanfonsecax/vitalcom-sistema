@@ -46,6 +46,8 @@ TENANT_ID = os.environ.get("DECIDIR_TENANT_ID") or "vitalcom"
 
 def correr(cmd, cwd, env=None):
     e = dict(os.environ, PYTHONIOENCODING="utf-8", **(env or {}))
+    if cmd.startswith("python "):
+        cmd = '"%s" %s' % (sys.executable, cmd[len("python "):])
     r = subprocess.run(cmd, cwd=cwd, env=e, shell=True,
                        capture_output=True, text=True, encoding="utf-8", errors="replace")
     return r.returncode, (r.stdout or "") + (r.stderr or "")

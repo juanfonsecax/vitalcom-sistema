@@ -28,6 +28,8 @@ os.chdir(BASE)
 
 def correr(cmd):
     e = dict(os.environ, PYTHONIOENCODING="utf-8")
+    if cmd.startswith("python "):
+        cmd = '"%s" %s' % (sys.executable, cmd[len("python "):])
     r = subprocess.run(cmd, shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace", env=e)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
