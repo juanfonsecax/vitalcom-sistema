@@ -178,6 +178,46 @@ def test_no_declarados_usa_el_prefijo_de_la_campana():
     return 0 if ok else 1
 
 
+def test_copia_sin_renombrar_se_detecta_solo_en_la_campana():
+    meta = {
+        "C2-X A ~ P|A|C2.CN05|NC3A|1U|BOT_V3": {"id": "1", "campaign_id": "C"},
+        "C2-X A ~ P|A|C2.CN05|NC3A|1U|BOT_V3 - Copia": {"id": "2", "campaign_id": "C"},
+        "OTRO ~ Q - Copia 2": {"id": "3", "campaign_id": "OTRA"},
+    }
+    hits = vp.copias_sin_renombrar(meta, "C")
+    ok = hits == [("C2-X A ~ P|A|C2.CN05|NC3A|1U|BOT_V3 - Copia", "2")]
+    print(("  OK     " if ok else "  FALLA  ")
+          + "un anuncio '- Copia' de la campana declarada bloquea; el de otra campana no"
+          + ("" if ok else f"\n         hits={hits!r}"))
+    return 0 if ok else 1
+
+
+def test_alta_conjuntos_hereda_de_la_fila_del_mismo_angulo():
+    dim = [{"producto_key": "P", "angulo_key": "ANG", "conjunto_meta": "G13_R1", "avatar": "av",
+            "fase": "FASE2_ESCALA", "estado": "ACTIVO"}]
+    man = {"campana": "G7_P_CONCEPTOS-C", "conjuntos": [{"nombre": "G7_P_ANG_C1"}, {"nombre": "G13_R1"}]}
+    pq = {"producto_key": "P", "angulo": "ANG", "cuenta_alias": "GTR7", "fase": 2}
+    altas = vp.filas_alta_conjuntos(man, pq, dim, True, "2026-10-17")
+    ok = (len(altas) == 1 and altas[0]["conjunto_meta"] == "G7_P_ANG_C1"
+          and altas[0]["avatar"] == "av" and altas[0]["fase"] == "FASE2"
+          and altas[0]["campana_clave"] == "G7_P_CONCEPTOS-C" and altas[0]["estado"] == "ACTIVO")
+    print(("  OK     " if ok else "  FALLA  ")
+          + "el alta solo crea los conjuntos que faltan, heredando atributos del mismo producto y angulo"
+          + ("" if ok else f"\n         altas={altas!r}"))
+    return 0 if ok else 1
+
+
+def test_alta_conjuntos_sin_plantilla_no_inventa():
+    man = {"campana": "C", "conjuntos": [{"nombre": "NUEVO"}]}
+    pq = {"producto_key": "P", "angulo": "ANG", "cuenta_alias": "GTR7", "fase": 2}
+    altas = vp.filas_alta_conjuntos(man, pq, [], False, "2026-10-17")
+    ok = altas == []
+    print(("  OK     " if ok else "  FALLA  ")
+          + "sin fila del mismo producto y angulo no se inventan atributos"
+          + ("" if ok else f"\n         altas={altas!r}"))
+    return 0 if ok else 1
+
+
 def main():
     fallas = 0
     fallas += test_no_declarados_usa_el_prefijo_de_la_campana()
@@ -191,6 +231,9 @@ def main():
     fallas += test_un_anuncio_active_bloquea()
     fallas += test_sin_effective_status_no_pasa()
     fallas += test_objetos_faltantes_no_entran_al_chequeo_de_paused()
+    fallas += test_copia_sin_renombrar_se_detecta_solo_en_la_campana()
+    fallas += test_alta_conjuntos_hereda_de_la_fila_del_mismo_angulo()
+    fallas += test_alta_conjuntos_sin_plantilla_no_inventa()
     print(f"\n{'0 fallas' if not fallas else str(fallas) + ' falla(s)'}.")
     return 1 if fallas else 0
 

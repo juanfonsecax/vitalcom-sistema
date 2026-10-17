@@ -1,0 +1,169 @@
+{
+ "cuenta_alias": "GTR7",
+ "cuenta_id": "598687956219141",
+ "tomado_el": "2026-10-17T18:45:29.884792-05:00",
+ "nota": "campana C publicada por el operador; ids leidos de Meta 2026-10-17",
+ "ad_entities": [
+  {
+   "id": "120249347517520784",
+   "nivel": "campaign",
+   "name": "GTR7_CLEARSTEM_CONCEPTOS-C_20261017",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347526910784",
+   "nivel": "adset",
+   "name": "GTR7_CLEARSTEM_ANTI-FALSIFICACION_C1",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347530830784",
+   "nivel": "adset",
+   "name": "GTR7_CLEARSTEM_ANTI-FALSIFICACION_C2",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347557010784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_01 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347944360784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_01 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347911560784",
+   "nivel": "ad",
+   "name": "C4-TRANSFORMACION_BASE_02 A ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347582140784",
+   "nivel": "ad",
+   "name": "C4-TRANSFORMACION_BASE_02 B ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347589170784",
+   "nivel": "ad",
+   "name": "C8-PROGRESION_BASE_03 A ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347965440784",
+   "nivel": "ad",
+   "name": "C8-PROGRESION_BASE_03 B ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347598520784",
+   "nivel": "ad",
+   "name": "C5-PRUEBA_BASE_04 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347896530784",
+   "nivel": "ad",
+   "name": "C5-PRUEBA_BASE_04 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347607620784",
+   "nivel": "ad",
+   "name": "C9-COMPARACION_BASE_05 A ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347929390784",
+   "nivel": "ad",
+   "name": "C9-COMPARACION_BASE_05 B ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347626550784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_06 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347632420784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_06 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347638760784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_07 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347645210784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_07 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347651880784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_08 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347660090784",
+   "nivel": "ad",
+   "name": "C2-BENEFICIOS_BASE_08 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347671890784",
+   "nivel": "ad",
+   "name": "C5-PRUEBA_BASE_09 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347682240784",
+   "nivel": "ad",
+   "name": "C5-PRUEBA_BASE_09 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347689750784",
+   "nivel": "ad",
+   "name": "C5-PRUEBA_BASE_10 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  },
+  {
+   "id": "120249347693570784",
+   "nivel": "ad",
+   "name": "C5-PRUEBA_BASE_10 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+   "effective_status": "ACTIVE",
+   "campaign_id": "120249347517520784"
+  }
+ ]
+}

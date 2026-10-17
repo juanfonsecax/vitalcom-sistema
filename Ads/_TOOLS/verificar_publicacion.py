@@ -51,9 +51,12 @@ cruzar Meta contra LucidSales conjunto por conjunto.
 USO
     python Ads/_TOOLS/verificar_publicacion.py --producto TINNIDROP --fase 2 --brazo A \
            --snapshot Ads/_INGESTA/META/snapshot_GTR7.json
-    ... --escribir     # ademas escribe los ad_id en _DIM_CREATIVOS.csv
+    ... --escribir     # ademas escribe los ad_id en _DIM_CREATIVOS.csv y da de alta en
+                       # _DIM_CONJUNTOS.csv los conjuntos del manifiesto que falten
+    ... --ya-activo    # el operador ya publico/activo la campana (borrador de Ads Manager):
+                       # se omite el gate de PAUSED; el de '- Copia' sigue vigente
 """
-import csv, io, os, sys, json, shutil, datetime
+import csv, io, os, re, sys, json, shutil, datetime
 
 for _s in (sys.stdout, sys.stderr):
     try: _s.reconfigure(encoding="utf-8", errors="replace")
@@ -84,8 +87,50 @@ def cargar_snapshot(ruta):
     for o in objetos:
         if o.get("name"):
             out[o["name"].strip()] = {"id": o.get("id"), "nivel": o.get("nivel", ""),
-                                      "status": o.get("status") or o.get("effective_status", "")}
+                                      "status": o.get("status") or o.get("effective_status", ""),
+                                      "campaign_id": o.get("campaign_id", "")}
     return out
+
+
+def copias_sin_renombrar(meta, campaign_id):
+    """Anuncios de la campana declarada cuyo nombre termina en '- Copia' (o '- Copia N'):
+    Meta los nombra asi al duplicar y nadie los renombro (invariante 12: prohibido publicar un
+    '- Copia'). Con ese nombre el anuncio no matchea el manifiesto: su ad_id no se escribe y su
+    gasto y sus ventas quedan sin dimension. Devuelve [(nombre, id)]."""
+    return [(n, m["id"]) for n, m in meta.items()
+            if re.search(r"\s-\s*Copia(\s*\d+)?$", n, re.I)
+            and (not campaign_id or m.get("campaign_id") == campaign_id)]
+
+
+def filas_alta_conjuntos(man, pq, dim_rows, ya_activo, hoy):
+    """Filas nuevas de _DIM_CONJUNTOS.csv para los conjuntos del manifiesto que aun no existen.
+    Sin esa fila el JOIN de LucidSales contra la dimension deja el gasto y las ventas del
+    conjunto fuera del analisis (y el ciclo nocturno queda amarillo). La plantilla es una fila
+    del mismo producto y angulo (atributos HEREDADOS), nunca atributos inventados.
+    Devuelve [fila_dict]; vacio si todo ya esta dado de alta."""
+    existentes = {r["conjunto_meta"].strip() for r in dim_rows}
+    pk, ang = pq["producto_key"], pq["angulo"]
+    plantilla = next((r for r in dim_rows
+                      if r["producto_key"] == pk and r["angulo_key"] == ang), None)
+    if plantilla is None:
+        return []
+    nuevas = []
+    for cj in man["conjuntos"]:
+        if cj["nombre"] in existentes:
+            continue
+        f = dict(plantilla)
+        f.update({
+            "conjunto_meta": cj["nombre"], "cuenta_alias": pq["cuenta_alias"],
+            "campana_clave": man["campana"], "fase": "FASE%d" % pq["fase"],
+            "formato": "IMAGEN", "concepto_key": "SIN_CLASIFICAR", "creativo_id": "",
+            "estado": "ACTIVO" if ya_activo else "PAUSADO", "verificado_en_csv": "SI",
+            "fecha_alta": hoy, "origen_angulo": "HEREDADO_PAQUETE",
+            "notas": ("ALTA %s por verificar_publicacion.py desde el paquete de publicacion. "
+                      "Atributos HEREDADOS de '%s' (mismo producto y angulo)."
+                      % (hoy, plantilla["conjunto_meta"])),
+        })
+        nuevas.append(f)
+    return nuevas
 
 
 def objetos_no_pausados(filas, meta):
@@ -213,7 +258,9 @@ def main():
 
     # Todo objeto declarado que SI existe en Meta tiene que estar PAUSED (invariante 12); si el
     # snapshot lo trae ACTIVE ya esta gastando sin confirmacion del operador.
-    no_pausados = objetos_no_pausados(filas, meta)
+    ya_activo = "--ya-activo" in sys.argv
+    no_pausados = [] if ya_activo else objetos_no_pausados(filas, meta)
+    copias = copias_sin_renombrar(meta, (meta.get(man["campana"]) or {}).get("id", ""))
 
     print("=" * 78)
     print("GATE DE PUBLICACION  ·  %s  ·  FASE %d brazo %s  ·  %s"
@@ -235,6 +282,16 @@ def main():
 
     ok = len(filas) - faltan
     print("  RESULTADO: %d de %d objetos declarados existen en Meta." % (ok, len(filas)))
+
+    if copias:
+        print()
+        print("  X %d anuncio(s) con nombre '- Copia' sin renombrar (invariante 12):" % len(copias))
+        for n, oid in copias:
+            print("    ! %-60s id=%s" % (n[:60], oid))
+        print("    Renombra cada uno al nombre declarado en el manifiesto (el que lleva A o B) y")
+        print("    vuelve a correr este gate. Con ese nombre su ad_id, su gasto y sus ventas no")
+        print("    cruzan con el analisis.")
+        return 1
 
     if faltan:
         print()
@@ -268,6 +325,23 @@ def main():
     shutil.copy(CREATIVOS, CREATIVOS + ".bak_publicacion_" + stamp)
 
     rows, escritas, ascendidas, conflictos = aplicar_ad_ids(rows, ids_por_creativo, ruta_pq)
+
+    # Alta de los conjuntos en _DIM_CONJUNTOS.csv: sin esa fila el JOIN de LucidSales los
+    # deja sin dimension y el ciclo nocturno queda amarillo.
+    dim_ruta = P("_DIM_CONJUNTOS.csv")
+    with io.open(dim_ruta, encoding="utf-8-sig", newline="") as f:
+        rd = csv.DictReader(f)
+        dim_cols, dim_rows = rd.fieldnames, list(rd)
+    altas = filas_alta_conjuntos(man, pq, dim_rows, ya_activo, datetime.date.today().isoformat())
+    if altas:
+        shutil.copy(dim_ruta, dim_ruta + ".bak_publicacion_" + stamp)
+        with io.open(dim_ruta, "w", encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=dim_cols)
+            w.writeheader()
+            for r in dim_rows + altas:
+                w.writerow(r)
+        print("  ALTA:    %d conjunto(s) nuevos en _DIM_CONJUNTOS.csv: %s"
+              % (len(altas), ", ".join(a["conjunto_meta"] for a in altas)))
 
     with io.open(CREATIVOS, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=cols)

@@ -243,6 +243,21 @@ Comparar contra **CPA Base / CPA Break Even** (ETAPA-1). Zonas: 🟢 ≤ Base ·
 
 ---
 
+## 7.6 CAMPAÑA PUBLICADA O RECREADA A MANO EN ADS MANAGER (cierre obligatorio)
+
+Los borradores del MCP no conservan sus ids al publicarse, y duplicar un anuncio en Ads Manager lo
+nombra `... - Copia`. Tras publicar (o recrear) una campaña, el mismo día:
+
+1. Renombrar todo `- Copia` al nombre declarado en el paquete (el que lleva A o B). Un renombre
+   por MCP queda en borrador: se publica con `ads_activate_entity` sobre ese solo anuncio.
+2. Volcar el snapshot de la cuenta (`ads_get_ad_entities` nivel campaña, conjunto y anuncio) a
+   `Ads/_INGESTA/META/snapshot_{cuenta}_{brazo}.json`.
+3. Correr `verificar_publicacion.py --producto P --fase N --brazo X --snapshot ... --ya-activo
+   --escribir`. Cruza por NOMBRE (los ids viejos no importan), escribe los `ad_id` reales y da de
+   alta en `_DIM_CONJUNTOS.csv` los conjuntos nuevos. Si queda un `- Copia`, el gate falla.
+
+Sin el paso 3 el ciclo nocturno ve gasto y ventas de un conjunto sin dimensión.
+
 ## 8. Plantilla del 3_CAMPAÑA_META (resumen de campos)
 ```
 Cuenta / Negocio / Moneda · FanPage (page_id) · Campaña (campaign_id) · Objetivo (Tráfico→CONVERSATIONS→WHATSAPP)
