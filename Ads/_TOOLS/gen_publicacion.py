@@ -838,6 +838,9 @@ def main():
             "targeting": json.dumps(targeting, ensure_ascii=False),
             "start_time": start_time,
         }
+        # Estrategia de puja SIEMPRE explicita (operador 16-oct-2026): volumen mas alto, entrega estandar.
+        # Nunca objetivo de ROAS ni tope de costo; sin esto el borrador lo dejaba en ROAS en Ads Manager.
+        args_cj["bid_strategy"] = "LOWEST_COST_WITHOUT_CAP"
         if not cbo and presu_cents:
             args_cj["daily_budget"] = presu_cents
         llamadas.append({
