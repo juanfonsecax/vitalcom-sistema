@@ -1,0 +1,192 @@
+{
+  "schema": "plan/1",
+  "producto_key": "CLEARSTEM",
+  "fase": 2,
+  "version": "v1",
+  "origen": "etapa-6 FASE 2 CONCEPTOS 2026-10-16. Angulo ANTI_FALSIFICACION (#1 de flujo.py). 10 conceptos de _DIM_CREATIVOS.csv (id_tanda CLEARSTEM-T01, GENERADO). Copy unico de etapa-4. avatar_edad 25-35 por decision del operador (mejor tasa de cierre medida).",
+  "pagina": {
+    "nombre": "Belleza & Piel (Astrid Garcia)",
+    "page_id": "823825257480758"
+  },
+  "oferta": {
+    "oferta_key": "1U",
+    "precio_q": 198,
+    "texto": "Q198 - envio gratis - paga al recibir"
+  },
+  "angulo_ganador": "ANTI_FALSIFICACION",
+  "copy": {
+    "textos": [
+      "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉"
+    ],
+    "titulos": [
+      "¿Compraste el falso?"
+    ],
+    "descripcion": "Original · Pagá al recibir"
+  },
+  "_faltantes": [
+    "cuenta_replica de la campana C: decision del operador (recomendacion GTR 7)",
+    "campaign_id de CLEARSTEM vacio en _DIM_PRODUCTOS.csv"
+  ],
+  "conjuntos": [
+    {
+      "n": 1,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN05_ANTI_FALSIFI.png",
+      "concepto_key": "C2_BENEFICIOS",
+      "canonico_id": "CN05_LISTA_BENEFICIOS",
+      "brazo": "A",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 2,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN01_ANTI_FALSIFI.png",
+      "concepto_key": "C4_TRANSFORMACION",
+      "canonico_id": "CN01_ANTES_DESPUES",
+      "brazo": "A",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 3,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN02_ANTI_FALSIFI.png",
+      "concepto_key": "C8_PROGRESION",
+      "canonico_id": "CN02_TIMELINE_PROGRESION",
+      "brazo": "A",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 4,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN10_ANTI_FALSIFI.png",
+      "concepto_key": "C5_PRUEBA",
+      "canonico_id": "CN10_PRUEBA_SOCIAL",
+      "brazo": "A",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 5,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN14_ANTI_FALSIFI.png",
+      "concepto_key": "C9_COMPARACION",
+      "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+      "brazo": "A",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 6,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN04_ANTI_FALSIFI.png",
+      "concepto_key": "C2_BENEFICIOS",
+      "canonico_id": "CN04_ESCALERA_PRECIOS",
+      "brazo": "B",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 7,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN06_ANTI_FALSIFI.png",
+      "concepto_key": "C2_BENEFICIOS",
+      "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+      "brazo": "B",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 8,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN13_ANTI_FALSIFI.png",
+      "concepto_key": "C2_BENEFICIOS",
+      "canonico_id": "CN13_ANATOMIA_MECANISMO",
+      "brazo": "B",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 9,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN09_ANTI_FALSIFI.png",
+      "concepto_key": "C5_PRUEBA",
+      "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+      "brazo": "B",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    },
+    {
+      "n": 10,
+      "angulo_key": "ANTI_FALSIFICACION",
+      "angulo_titulo": "Anti-Falsificación",
+      "avatar_edad": "25-35",
+      "avatar_genero": "MIXTO",
+      "nivel_conciencia": "3A",
+      "formato": "IMAGEN",
+      "lleva_precio": true,
+      "archivo_creativo": "CLEARSTEM_F2_CN11_ANTI_FALSIFI.png",
+      "concepto_key": "C5_PRUEBA",
+      "canonico_id": "CN11_PANTALLA_SIMULADA",
+      "brazo": "B",
+      "prompt_imagen": null,
+      "origen_angulo": "VIDEO_COMPETENCIA"
+    }
+  ]
+}
