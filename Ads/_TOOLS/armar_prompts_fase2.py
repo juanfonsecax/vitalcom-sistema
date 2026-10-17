@@ -212,6 +212,17 @@ def leer_escalera(producto_key, perfil=None):
         if antes:
             txt += f" (antes {monto(antes)})"
         tiers[f"TIER_{i}"] = txt + etiquetas.get(u, "")
+    # El truco de los anuncios que ganan con UN solo precio: el precio por unidad del paquete más
+    # grande (389 / 3). Se calcula acá, de _DIM_PRECIOS.csv; el modelo no hace la cuenta.
+    mayor = filas[:3][-1]
+    unidades, total = int(mayor["unidades"]), float(mayor["precio_q"])
+    por_unidad = total / unidades
+    if perfil and perfil.get("moneda") != "GTQ":
+        unitario = monto(round(por_unidad))
+    else:
+        unitario = f"{(perfil or {}).get('simbolo') or 'Q'}{por_unidad:.2f}"
+    tiers["UNITARIO"] = (f"{unitario} por frasco (el paquete de {unidades} dividido entre {unidades}, "
+                         f"c/u); no se muestra el total del paquete")
     return tiers or None
 
 
@@ -544,6 +555,9 @@ def _armar(producto_key, angulo_manual=None, n_pedido=None):
             f"- Subtitular: \"{variables_adaptadas['SUB_HOOK']}\"\n"
             f"- Beneficios en viñetas/cards: {', '.join(variables_adaptadas['ACTIVOS_CLAVE'])}\n"
             f"- Escalera de Precios: Tier 1: {variables_adaptadas['PRECIOS_GT']['TIER_1']} | Tier 2: {variables_adaptadas['PRECIOS_GT']['TIER_2']} | Tier 3: {variables_adaptadas['PRECIOS_GT']['TIER_3']}\n"
+            f"- Cuántos precios poner (manda la IMAGEN 1; cuéntalos ahí): si la IMAGEN 1 no muestra ningún precio, "
+            f"no va ninguno; si muestra UN precio, va UN solo precio: {variables_adaptadas['PRECIOS_GT']['UNITARIO']}; "
+            f"si muestra DOS, van dos tiers de la escalera; si muestra TRES, van los tres. Nunca más precios de los que tiene la IMAGEN 1.\n"
             f"- Franja inferior: Botón verde WhatsApp con texto: \"{variables_adaptadas['CTA']}\"\n"
             f"- Garantías en micro-badges: {variables_adaptadas['GARANTIAS']} · Garantía de 30 días\n"
             f"{linea_registro(registro, perfil_mercado['pais'])}\n"
