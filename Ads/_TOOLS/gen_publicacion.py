@@ -657,7 +657,7 @@ def main():
             pq.bloquear_publicacion(error_brazo, "el operador (pasar --brazo-creativos %s)" % brazo)
 
         piezas = piezas_del_angulo
-        if arg("--brazo-creativos"):
+        if arg("--brazo-creativos") and arg("--brazo-creativos").upper() != "TODOS":  # TODOS: campana C, las 10 piezas
             piezas = [r for r in piezas if r.get("brazo") == arg("--brazo-creativos")]
         # Los tres ejes de la oferta NO viven en _DIM_CREATIVOS.csv: son constantes de la fase y
         # los declara el plan (mismo lugar de donde los toma la FASE 1). Sin esto la firma de toda

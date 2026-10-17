@@ -1,0 +1,922 @@
+{
+  "schema": "publicacion/1",
+  "generado_el": "2026-10-16T21:49:33",
+  "producto_key": "CLEARSTEM",
+  "token_producto": "CLEARSTEM",
+  "pais": "GT",
+  "fase": 2,
+  "brazo": "C",
+  "angulo": "ANTI_FALSIFICACION",
+  "cuenta_alias": "GTR7",
+  "cuenta_id": "598687956219141",
+  "moneda": "USD",
+  "page_id": "823825257480758",
+  "estructura": "1-2-5",
+  "presupuesto_nivel": "ADSET",
+  "daily_budget_usd_por_conjunto": 6.0,
+  "daily_budget_cents": 600,
+  "banda_edad": {
+    "age_min": 25,
+    "age_max": 40,
+    "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+  },
+  "advantage_audience": 0,
+  "start_time": "2026-10-17T04:00:00-06:00",
+  "estado_al_crear": "PAUSED",
+  "plan": "PRODUCTOS\\CLEARSTEM\\_PLAN_FASE2.json",
+  "fuente_doctrina": "CALENDARIO_ESCALADO.md 1.7.2",
+  "preflight": [
+    {
+      "paso": 1,
+      "llamada": "ads_get_ad_accounts",
+      "verificar": "que GTR7 (598687956219141) tenga is_ads_mcp_enabled=true y is_queryable=true"
+    },
+    {
+      "paso": 2,
+      "llamada": "ads_get_ad_entities level=campaign",
+      "verificar": "PREGUNTARLE A META QUE YA EXISTE antes de crear nada. El CSV no es evidencia del estado de Meta: el 08-sep decia 'cero publicados' con $23.46 ya gastados. Guardar la respuesta y volver a correr este generador con --snapshot."
+    },
+    {
+      "paso": 3,
+      "llamada": "ads_get_user_pages",
+      "verificar": "que el page_id 823825257480758 exista, sea visible para el lanzador y tenga WhatsApp conectado en la cuenta GTR7"
+    },
+    {
+      "paso": 4,
+      "llamada": "ads_create_ad_set (el primero)",
+      "verificar": "es el test real de la pagina: si el primer conjunto la acepta, esta bien. ads_get_ad_account_pages puede tardar en listarla (lag de lectura)."
+    }
+  ],
+  "bloqueantes": [],
+  "avisos": [],
+  "llamadas": [
+    {
+      "n": 1,
+      "tool": "ads_create_campaign",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_name": "GTR7_CLEARSTEM_CONCEPTOS-C_20261017",
+        "objective": "OUTCOME_TRAFFIC",
+        "buying_type": "AUCTION",
+        "special_ad_categories": "[]"
+      },
+      "guardar_como": "campaign_id",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "ABO: el presupuesto NO va aca, va en el conjunto."
+    },
+    {
+      "n": 2,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR7_CLEARSTEM_ANTI-FALSIFICACION_C1",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"823825257480758\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 25, \"age_max\": 40, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-17T04:00:00-06:00",
+        "daily_budget": 600
+      },
+      "guardar_como": "adset_id_1",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 3,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_1",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN05_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN05_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 4,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C2-BENEFICIOS_BASE_01 A",
+        "image_hash": "{{image_hash_1}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_1",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 5,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C2-BENEFICIOS_BASE_01 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 6,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C2-BENEFICIOS_BASE_01 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_1}}\"}"
+      },
+      "guardar_como": "ad_id_1B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 7,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_2",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN01_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN01_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 8,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C4-TRANSFORMACION_BASE_02 A",
+        "image_hash": "{{image_hash_2}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_2",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 9,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C4-TRANSFORMACION_BASE_02 A ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 10,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C4-TRANSFORMACION_BASE_02 B ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_2}}\"}"
+      },
+      "guardar_como": "ad_id_2B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 11,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_3",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN02_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN02_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 12,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C8-PROGRESION_BASE_03 A",
+        "image_hash": "{{image_hash_3}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_3",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 13,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C8-PROGRESION_BASE_03 A ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 14,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C8-PROGRESION_BASE_03 B ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_3}}\"}"
+      },
+      "guardar_como": "ad_id_3B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 15,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_4",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN10_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN10_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 16,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C5-PRUEBA_BASE_04 A",
+        "image_hash": "{{image_hash_4}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_4",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 17,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C5-PRUEBA_BASE_04 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 18,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C5-PRUEBA_BASE_04 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_4}}\"}"
+      },
+      "guardar_como": "ad_id_4B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 19,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_5",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN14_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN14_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 20,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C9-COMPARACION_BASE_05 A",
+        "image_hash": "{{image_hash_5}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_5",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 21,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C9-COMPARACION_BASE_05 A ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 22,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_1}}",
+        "ad_name": "C9-COMPARACION_BASE_05 B ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_5}}\"}"
+      },
+      "guardar_como": "ad_id_5B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 23,
+      "tool": "ads_create_ad_set",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "campaign_id": "{{campaign_id}}",
+        "ad_set_name": "GTR7_CLEARSTEM_ANTI-FALSIFICACION_C2",
+        "billing_event": "IMPRESSIONS",
+        "optimization_goal": "CONVERSATIONS",
+        "destination_type": "WHATSAPP",
+        "promoted_object": "{\"page_id\": \"823825257480758\"}",
+        "targeting": "{\"geo_locations\": {\"countries\": [\"GT\"]}, \"age_min\": 25, \"age_max\": 40, \"targeting_automation\": {\"advantage_audience\": 0}}",
+        "start_time": "2026-10-17T04:00:00-06:00",
+        "daily_budget": 600
+      },
+      "guardar_como": "adset_id_2",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "destination_type=WHATSAPP + promoted_object.page_id son lo que hace que Meta enrute por Click-to-WhatsApp y el mensaje llegue con el bloque referral. Sin eso el conjunto nace CIEGO: gasta, trae conversaciones y marca 0 ventas para siempre (APR-035)."
+    },
+    {
+      "n": 24,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_6",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN04_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN04_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 25,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C2-BENEFICIOS_BASE_06 A",
+        "image_hash": "{{image_hash_6}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_6",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 26,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C2-BENEFICIOS_BASE_06 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_6}}\"}"
+      },
+      "guardar_como": "ad_id_6A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 27,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C2-BENEFICIOS_BASE_06 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_6}}\"}"
+      },
+      "guardar_como": "ad_id_6B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 28,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_7",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN06_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN06_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 29,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C2-BENEFICIOS_BASE_07 A",
+        "image_hash": "{{image_hash_7}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_7",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 30,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C2-BENEFICIOS_BASE_07 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_7}}\"}"
+      },
+      "guardar_como": "ad_id_7A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 31,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C2-BENEFICIOS_BASE_07 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_7}}\"}"
+      },
+      "guardar_como": "ad_id_7B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 32,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_8",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN13_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN13_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 33,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C2-BENEFICIOS_BASE_08 A",
+        "image_hash": "{{image_hash_8}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_8",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 34,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C2-BENEFICIOS_BASE_08 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_8}}\"}"
+      },
+      "guardar_como": "ad_id_8A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 35,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C2-BENEFICIOS_BASE_08 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_8}}\"}"
+      },
+      "guardar_como": "ad_id_8B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 36,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_9",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN09_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN09_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 37,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C5-PRUEBA_BASE_09 A",
+        "image_hash": "{{image_hash_9}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_9",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 38,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C5-PRUEBA_BASE_09 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_9}}\"}"
+      },
+      "guardar_como": "ad_id_9A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 39,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C5-PRUEBA_BASE_09 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_9}}\"}"
+      },
+      "guardar_como": "ad_id_9B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 40,
+      "tool": "ads_creative_upload_media",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "upload_source": "LOCAL_FILE"
+      },
+      "guardar_como": "image_hash_10",
+      "archivo_local": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA\\Ads\\MEDIA_CLEARSTEM\\CLEARSTEM_F2_CN11_ANTI_FALSIFI.png",
+      "nombre_en_biblioteca": "CLEARSTEM_F2_CN11_ANTI_FALSIFI_V2",
+      "omitir": false,
+      "nota": "LOCAL_FILE abre un widget donde el operador elige el archivo y SOLO esta habilitado en GTR 7 (_DIM_CUENTAS.csv). NUNCA reusar el nombre de una pieza vieja: Meta guarda las dos y quedan indistinguibles por nombre — el 08-sep se publicaron 10 anuncios con la pieza del 06-sep por eso. Sufijo _V2/_V3."
+    },
+    {
+      "n": 41,
+      "tool": "ads_create_creative",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "page_id": "823825257480758",
+        "name": "C5-PRUEBA_BASE_10 A",
+        "image_hash": "{{image_hash_10}}",
+        "message": "Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️\n\nYo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬\n\nCuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.\n\nRevisá dos cosas:\n✅ Dice CLEARSTEM en el frasco\n✅ Trae 90 cápsulas\n\nEl original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.\n\nQ198, envío gratis y pagás al recibir.\nEscribinos y pedí el original 👉",
+        "headline": "¿Compraste el falso?",
+        "description": "Original · Pagá al recibir",
+        "call_to_action_type": "WHATSAPP_MESSAGE"
+      },
+      "guardar_como": "creative_id_10",
+      "omitir": false,
+      "nota": "El link_url del wa.me NO va: con destination_type=WHATSAPP en el conjunto, el destino lo enruta el conjunto y el CTA va sin value.link (APR-035)."
+    },
+    {
+      "n": 42,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C5-PRUEBA_BASE_10 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_10}}\"}"
+      },
+      "guardar_como": "ad_id_10A",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    },
+    {
+      "n": 43,
+      "tool": "ads_create_ad",
+      "args": {
+        "ad_account_id": "598687956219141",
+        "ad_set_id": "{{adset_id_2}}",
+        "ad_name": "C5-PRUEBA_BASE_10 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+        "creative": "{\"creative_id\": \"{{creative_id_10}}\"}"
+      },
+      "guardar_como": "ad_id_10B",
+      "omitir": false,
+      "id_existente": null,
+      "nota": "2 anuncios identicos por concepto (regla del duplicado interno)."
+    }
+  ],
+  "manifiesto": {
+    "campana": "GTR7_CLEARSTEM_CONCEPTOS-C_20261017",
+    "conjuntos": [
+      {
+        "nombre": "GTR7_CLEARSTEM_ANTI-FALSIFICACION_C1",
+        "posicion": 1,
+        "angulo": "ANTI_FALSIFICACION",
+        "banda_edad": {
+          "age_min": 25,
+          "age_max": 40,
+          "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 6.0,
+        "anuncios": [
+          {
+            "nombre": "C2-BENEFICIOS_BASE_01 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN05_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN05_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+            "orden": 1
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_01 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN05_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN05_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN05_LISTA_BENEFICIOS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3",
+            "orden": 1
+          },
+          {
+            "nombre": "C4-TRANSFORMACION_BASE_02 A ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN01_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN01_ANTI_FALSIFI.png",
+            "concepto_key": "C4_TRANSFORMACION",
+            "canonico_id": "CN01_ANTES_DESPUES",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+            "orden": 2
+          },
+          {
+            "nombre": "C4-TRANSFORMACION_BASE_02 B ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN01_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN01_ANTI_FALSIFI.png",
+            "concepto_key": "C4_TRANSFORMACION",
+            "canonico_id": "CN01_ANTES_DESPUES",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3",
+            "orden": 2
+          },
+          {
+            "nombre": "C8-PROGRESION_BASE_03 A ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN02_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN02_ANTI_FALSIFI.png",
+            "concepto_key": "C8_PROGRESION",
+            "canonico_id": "CN02_TIMELINE_PROGRESION",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+            "orden": 3
+          },
+          {
+            "nombre": "C8-PROGRESION_BASE_03 B ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN02_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN02_ANTI_FALSIFI.png",
+            "concepto_key": "C8_PROGRESION",
+            "canonico_id": "CN02_TIMELINE_PROGRESION",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3",
+            "orden": 3
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_04 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN10_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN10_ANTI_FALSIFI.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN10_PRUEBA_SOCIAL",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+            "orden": 4
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_04 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN10_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN10_ANTI_FALSIFI.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN10_PRUEBA_SOCIAL",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3",
+            "orden": 4
+          },
+          {
+            "nombre": "C9-COMPARACION_BASE_05 A ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN14_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN14_ANTI_FALSIFI.png",
+            "concepto_key": "C9_COMPARACION",
+            "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+            "orden": 5
+          },
+          {
+            "nombre": "C9-COMPARACION_BASE_05 B ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN14_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN14_ANTI_FALSIFI.png",
+            "concepto_key": "C9_COMPARACION",
+            "canonico_id": "CN14_COMPARACION_DOS_COLUMNAS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3",
+            "orden": 5
+          }
+        ]
+      },
+      {
+        "nombre": "GTR7_CLEARSTEM_ANTI-FALSIFICACION_C2",
+        "posicion": 2,
+        "angulo": "ANTI_FALSIFICACION",
+        "banda_edad": {
+          "age_min": 25,
+          "age_max": 40,
+          "origen": "avatar_edad=25-35 (_DIM_CONJUNTOS.csv)"
+        },
+        "daily_budget_usd": 6.0,
+        "anuncios": [
+          {
+            "nombre": "C2-BENEFICIOS_BASE_06 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN04_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN04_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN04_ESCALERA_PRECIOS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+            "orden": 6
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_06 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN04_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN04_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN04_ESCALERA_PRECIOS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3",
+            "orden": 6
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_07 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN06_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN06_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+            "orden": 7
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_07 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN06_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN06_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN06_CHECKLIST_SINTOMAS",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3",
+            "orden": 7
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_08 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN13_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN13_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN13_ANATOMIA_MECANISMO",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+            "orden": 8
+          },
+          {
+            "nombre": "C2-BENEFICIOS_BASE_08 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN13_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN13_ANTI_FALSIFI.png",
+            "concepto_key": "C2_BENEFICIOS",
+            "canonico_id": "CN13_ANATOMIA_MECANISMO",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3",
+            "orden": 8
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_09 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN09_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN09_ANTI_FALSIFI.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+            "orden": 9
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_09 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN09_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN09_ANTI_FALSIFI.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN09_UGC_PRODUCTO_EN_MANO",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3",
+            "orden": 9
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_10 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+            "letra": "A",
+            "creativo_id": "CLEARSTEM_F2_CN11_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN11_ANTI_FALSIFI.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN11_PANTALLA_SIMULADA",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+            "orden": 10
+          },
+          {
+            "nombre": "C5-PRUEBA_BASE_10 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+            "letra": "B",
+            "creativo_id": "CLEARSTEM_F2_CN11_ANTI_FALSIFI",
+            "archivo": "CLEARSTEM_F2_CN11_ANTI_FALSIFI.png",
+            "concepto_key": "C5_PRUEBA",
+            "canonico_id": "CN11_PANTALLA_SIMULADA",
+            "firma": "CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3",
+            "orden": 10
+          }
+        ]
+      }
+    ],
+    "total_conjuntos": 2,
+    "total_anuncios": 20
+  }
+}

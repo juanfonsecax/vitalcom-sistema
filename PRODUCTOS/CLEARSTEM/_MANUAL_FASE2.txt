@@ -1,0 +1,83 @@
+MANUAL FASE 2 · CLEARSTEM · ANGULO ANTI_FALSIFICACION · campanas A y B en GTR 13 (a mano)
+Generado desde PRODUCTOS/CLEARSTEM/_PUBLICACION_F2A.json y _F2B.json (gen_publicacion.py). No se edita a mano.
+
+========================================================================
+CAMPANA A  ·  cuenta GTR 13 (916746367261028)
+========================================================================
+1. Campana:   GTR13_CLEARSTEM_CONCEPTOS-A_20261017
+   Objetivo:  OUTCOME_TRAFFIC (Trafico) · Presupuesto en el CONJUNTO (ABO) · categoria especial: ninguna
+2. Conjunto:  GTR13_CLEARSTEM_ANTI-FALSIFICACION_A1
+   Optimizacion: CONVERSATIONS · Destino: WhatsApp · Pagina: 823825257480758
+   Presupuesto diario: US$ 6.00 · Pais: GT · Edad: 25-40 · Advantage+ Audience: APAGADO
+   Inicio: 2026-10-17T04:00:00-06:00  (manana 04:00 hora Guatemala; el lanzamiento es siempre el dia siguiente)
+
+3. Anuncios (2 identicos por concepto: A y B; misma imagen, mismo copy):
+   1. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN05_ANTI_FALSIFI.png
+      Nombre del anuncio: C2-BENEFICIOS_BASE_01 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3
+      Nombre del anuncio: C2-BENEFICIOS_BASE_01 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN05|NC3A|1U|BOT_V3
+   2. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN01_ANTI_FALSIFI.png
+      Nombre del anuncio: C4-TRANSFORMACION_BASE_02 A ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3
+      Nombre del anuncio: C4-TRANSFORMACION_BASE_02 B ~ CLEARSTEM|ANTI_FALSIFICACI|C4.CN01|NC3A|1U|BOT_V3
+   3. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN02_ANTI_FALSIFI.png
+      Nombre del anuncio: C8-PROGRESION_BASE_03 A ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3
+      Nombre del anuncio: C8-PROGRESION_BASE_03 B ~ CLEARSTEM|ANTI_FALSIFICACI|C8.CN02|NC3A|1U|BOT_V3
+   4. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN10_ANTI_FALSIFI.png
+      Nombre del anuncio: C5-PRUEBA_BASE_04 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3
+      Nombre del anuncio: C5-PRUEBA_BASE_04 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN10|NC3A|1U|BOT_V3
+   5. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN14_ANTI_FALSIFI.png
+      Nombre del anuncio: C9-COMPARACION_BASE_05 A ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3
+      Nombre del anuncio: C9-COMPARACION_BASE_05 B ~ CLEARSTEM|ANTI_FALSIFICACI|C9.CN14|NC3A|1U|BOT_V3
+
+COPY UNICO (identico en los 10 anuncios, A y B):
+   Texto principal:
+      Si el Clearstem no te funcionó, fijate si compraste el falso. ⚠️
+      
+      Yo también dudé. Pero me fijé y el mío era el original, y ya necesito otro porque he visto resultados. 💬
+      
+      Cuando algo se vuelve viral en TikTok, salen las copias. Y con un suplemento que te vas a tomar, importa.
+      
+      Revisá dos cosas:
+      ✅ Dice CLEARSTEM en el frasco
+      ✅ Trae 90 cápsulas
+      
+      El original apoya el equilibrio hormonal desde adentro (DIM), con cúrcuma y glutatión que ayudan a calmar la piel inflamada. Para el acné de la mandíbula y la barbilla que no se va con cremas.
+      
+      Q198, envío gratis y pagás al recibir.
+      Escribinos y pedí el original 👉
+   Titulo:      ¿Compraste el falso?
+   Descripcion: Original · Pagá al recibir
+   Boton:       WHATSAPP_MESSAGE (Enviar mensaje de WhatsApp)
+
+========================================================================
+CAMPANA B  ·  cuenta GTR 13 (916746367261028)
+========================================================================
+1. Campana:   GTR13_CLEARSTEM_CONCEPTOS-B_20261017
+   Objetivo:  OUTCOME_TRAFFIC (Trafico) · Presupuesto en el CONJUNTO (ABO) · categoria especial: ninguna
+2. Conjunto:  GTR13_CLEARSTEM_ANTI-FALSIFICACION_B1
+   Optimizacion: CONVERSATIONS · Destino: WhatsApp · Pagina: 823825257480758
+   Presupuesto diario: US$ 6.00 · Pais: GT · Edad: 25-40 · Advantage+ Audience: APAGADO
+   Inicio: 2026-10-17T04:00:00-06:00  (manana 04:00 hora Guatemala; el lanzamiento es siempre el dia siguiente)
+
+3. Anuncios (2 identicos por concepto: A y B; misma imagen, mismo copy):
+   1. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN04_ANTI_FALSIFI.png
+      Nombre del anuncio: C2-BENEFICIOS_BASE_06 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3
+      Nombre del anuncio: C2-BENEFICIOS_BASE_06 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN04|NC3A|1U|BOT_V3
+   2. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN06_ANTI_FALSIFI.png
+      Nombre del anuncio: C2-BENEFICIOS_BASE_07 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3
+      Nombre del anuncio: C2-BENEFICIOS_BASE_07 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN06|NC3A|1U|BOT_V3
+   3. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN13_ANTI_FALSIFI.png
+      Nombre del anuncio: C2-BENEFICIOS_BASE_08 A ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3
+      Nombre del anuncio: C2-BENEFICIOS_BASE_08 B ~ CLEARSTEM|ANTI_FALSIFICACI|C2.CN13|NC3A|1U|BOT_V3
+   4. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN09_ANTI_FALSIFI.png
+      Nombre del anuncio: C5-PRUEBA_BASE_09 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3
+      Nombre del anuncio: C5-PRUEBA_BASE_09 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN09|NC3A|1U|BOT_V3
+   5. Imagen: Ads/MEDIA_CLEARSTEM/CLEARSTEM_F2_CN11_ANTI_FALSIFI.png
+      Nombre del anuncio: C5-PRUEBA_BASE_10 A ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3
+      Nombre del anuncio: C5-PRUEBA_BASE_10 B ~ CLEARSTEM|ANTI_FALSIFICACI|C5.CN11|NC3A|1U|BOT_V3
+
+========================================================================
+ANTES DE PUBLICAR
+========================================================================
+- Misma pagina y mismo copy en los 10 anuncios; imagenes numeradas IGUAL en A, B y la replica C (GTR 7).
+- Aplicar el flujo del bot A/B antes de activar (PRODUCTOS/CLEARSTEM/FLUJO_LUCIDBOT.md) y verificar el ruteo con una conversacion de prueba por brazo.
+- Despues de crear, correr verificar_publicacion.py contra un snapshot de Meta para escribir los ad_id; registrar LANZAMIENTO con registrar_evento.py.
