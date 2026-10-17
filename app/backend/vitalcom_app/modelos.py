@@ -698,6 +698,7 @@ class Fase2Detalle(Base):
     conceptos_requeridos: int = 0
     campanas: list[CampanaFase2] = []
     conceptos_generados: int = 0
+    conceptos_requeridos_total: int = 0
     conceptos_faltan: int = 0
     fase_validada: bool = False
     ejecutor: str = ""

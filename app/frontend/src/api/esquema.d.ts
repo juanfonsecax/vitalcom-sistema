@@ -1991,6 +1991,7 @@ export interface components {
              * Conceptos Faltan
              * @default 0
              */
+            conceptos_requeridos_total: number;
             conceptos_faltan: number;
             /**
              * Fase Validada

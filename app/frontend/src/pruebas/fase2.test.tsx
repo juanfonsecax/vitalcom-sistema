@@ -733,6 +733,7 @@ test("el estado de la fase en una línea y «Qué hacer ahora» va primero", asy
   respuestas["GET /api/productos/TINNIDROP/fase2"] = {
     ...FASE2_MOCK,
     conceptos_generados: 5,
+    conceptos_requeridos_total: 10,
     conceptos_faltan: 5,
     fase_validada: false,
     fase_titulo: "FASE 2 · TESTEO DE CONCEPTOS",

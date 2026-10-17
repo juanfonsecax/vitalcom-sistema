@@ -1001,6 +1001,13 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
 
     angulos_excl = _angulos_probados(producto_key)
 
+    # El chip de arriba cuenta POR ÁNGULO EN JUEGO: `requeridos` es lo que pide UN ángulo (10); sumar
+    # los conceptos de todos los ángulos contra ese 10 daba «23 de 10».
+    en_juego = [a for a in angulos if a.get("rol") in ("ganador_activo", "ganador_en_fila")]
+    if en_juego:
+        generados = sum(min(a.get("conceptos_listos", 0), requeridos) for a in en_juego)
+    requeridos_total = requeridos * max(len(en_juego), 1)
+
     return {
         "producto_key": producto_key,
         "fase": flujo_data.get("fase", "F2"),
@@ -1010,9 +1017,10 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         "conceptos": conceptos,
         "total_conceptos": len(conceptos),
         "conceptos_requeridos": requeridos,
+        "conceptos_requeridos_total": requeridos_total,
         "campanas": [{"brazo": b, "conceptos": n} for b, n in estructura],
         "conceptos_generados": generados,
-        "conceptos_faltan": max(0, requeridos - generados),
+        "conceptos_faltan": max(0, requeridos_total - generados),
         "fase_validada": bool((flujo_data.get("avance") or {}).get("ok")),
         "ejecutor": flujo_data.get("ejecutor", ""),
         **situacion_de_flujo(flujo_data),

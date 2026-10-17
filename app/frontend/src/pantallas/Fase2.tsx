@@ -117,9 +117,9 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <Chip tono={d.conceptos_generados >= (d.conceptos_requeridos ?? 0) ? "bien" : "aviso"}>
-            {d.conceptos_requeridos
-              ? `${d.conceptos_generados} de ${d.conceptos_requeridos} conceptos listos${
+          <Chip tono={d.conceptos_generados >= (d.conceptos_requeridos_total ?? 0) ? "bien" : "aviso"}>
+            {d.conceptos_requeridos_total
+              ? `${d.conceptos_generados} de ${d.conceptos_requeridos_total} conceptos listos${
                   d.conceptos_faltan > 0
                     ? ` · faltan ${d.conceptos_faltan} · los fabrica la ${responsableEnPalabras("etapa-9")}`
                     : ""
