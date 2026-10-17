@@ -159,6 +159,8 @@ id_tanda ([PRODUCTO]-T[NN]) · brazo (A|B|C1|C2, vacío fuera de FASE 2)
 fecha_alta · estado · notas
 ```
 
+> **`avatar_edad` no se pregunta: se decide.** Es la banda de edad con la mejor tasa de cierre medida del ángulo (FASE 1 / `etapa-11`); en empate o sin medición, la registrada en `_DIM_CONJUNTOS.csv`. Preguntarlo deja el trabajo en espera y bloquea el producto.
+
 > 🔑 **`canonico_id` es el campo que hace posible toda la `etapa-10`.** Es el puente entre la pieza
 > pautada y el JSON del blueprint que la originó. Sin él, "comparar la métrica contra el JSON" es
 > imposible y la fábrica vuelve a ser un generador ciego. **Una fila sin `canonico_id` es una fila
