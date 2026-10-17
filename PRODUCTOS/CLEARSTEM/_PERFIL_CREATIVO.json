@@ -2,7 +2,7 @@
   "schema": "perfil_creativo/2",
   "producto_key": "CLEARSTEM",
   "producido_por": "skill generar-conceptos — PASO 1 (perfil) y PASO 3 (textos)",
-  "origen": "2026-10-09: PASO 1 re-derivado y PASO 3 producido para ANTI_FALSIFICACION (ganador #1 de flujo.py, F2 / nodo F2.conceptos). Fuentes: PRODUCTOS/CLEARSTEM/2_DATA_PRODUCTO.txt, PRODUCTOS/_DIM_PRECIOS.csv, PRODUCTOS/_DIM_ENVASE.csv, PRODUCTOS/_DIM_CONJUNTOS.csv y Ads/1.2 Transcripcion videos/CLEARSTEM/{Clearstem3,Clearstem19}.txt. Mercado resuelto con Ads/_TOOLS/mercado.py: GT, persona voseo, registro MSPAS.",
+  "origen": "2026-10-09: PASO 1 re-derivado y PASO 3 producido para ANTI_FALSIFICACION (ganador #1 de flujo.py, F2 / nodo F2.conceptos). Fuentes: PRODUCTOS/CLEARSTEM/2_DATA_PRODUCTO.txt, PRODUCTOS/_DIM_PRECIOS.csv, PRODUCTOS/_DIM_ENVASE.csv, PRODUCTOS/_DIM_CONJUNTOS.csv y Ads/1.2 Transcripcion videos/CLEARSTEM/{Clearstem3,Clearstem19}.txt. Mercado resuelto con Ads/_TOOLS/mercado.py: GT, persona voseo, registro MSPAS. || 2026-10-16: PASO 1 re-derivado y PASO 3 producido para MEDICOS_FALLARON (ganador por VENTA: 56 ventas historicas, CPA Q77.8 <= BE Q105.89 de _DIM_PRODUCTOS.csv; la ventana vigente de _DECISIONES.json lo tiene en SEGUIR_MIDIENDO con 11 ventas a Q65.6, tambien bajo BE). Fuentes nuevas de esta pasada: PRODUCTOS/_DIM_CONJUNTOS.csv (filas MEDICOS_FALLARON de CLEARSTEM) y Ads/1.2 Transcripcion videos/CLEARSTEM/{Clearstem2,Clearstem14,Clearstem18}.txt. DOS CAMPOS DEL PERFIL CAMBIARON DE VALOR: gesto_del_dolor_fotografiable false->true (abre CN07_DOLOR_A_PLENO para TODOS los angulos del producto, no solo este) y alternativa_conocida, reescrita a nivel producto (el gate la lee solo como booleana, asi que ninguna seleccion previa cambia). Las entradas de ANTI_FALSIFICACION y RESISTENCIA_INSULINA_SOP NO se tocaron.",
   "mercado": {
     "mercado": "GT",
     "pais": "Guatemala",
@@ -21,12 +21,12 @@
     "mecanismo_localizable_en_el_cuerpo": true,
     "modo_de_uso_no_obvio": false,
     "momento_de_uso_distintivo": false,
-    "alternativa_conocida": "falsificacion",
+    "alternativa_conocida": "cremas y skincare (+ consultas con dermatologo/ginecologo/endocrino)",
     "prueba_social_clientes": 1500,
     "testimonios_reales_disponibles": 2,
     "fanpage_con_reconocimiento_local": false,
     "sintomas_reconocibles": 3,
-    "gesto_del_dolor_fotografiable": false,
+    "gesto_del_dolor_fotografiable": true,
     "beneficios_distintos": 4,
     "frase_con_giro_disponible": true,
     "atributos_de_producto_diferenciales": 5,
@@ -40,26 +40,39 @@
     "es_tratamiento_con_curva": "'Empezas a notar cambios entre la semana 2 y 3' (guion del audio del bot, 2_DATA) + la clienta real 'ya voy en la semana 3'.",
     "tiers_de_oferta": "_DIM_PRECIOS.csv: 1x Q198.00 · 2x Q289.00 · 3x Q389.01, los tres ACTIVO. El 199/299/399 del bloque 2) COSTEO de 2_DATA es el precio PLANIFICADO de julio; manda el CSV (Dropi).",
     "tiene_multiplicador": "no hay 2x1 ni 3x2: la escalera es 1/2/3 unidades reales (_DIM_PRECIOS.csv).",
-    "activo_estrella_con_dosis": "activo estrella DIM: 'tiene DIM que regula tus hormonas, que es la raiz del problema' (guion del audio, 2_DATA). Dosis documentada = 2-3 capsulas/dia con la 1ra comida (cabecera de 2_DATA). OJO: no hay MILIGRAMOS por ingrediente en ninguna parte del paquete -> si se selecciona CN15_INGREDIENTES_ACTIVO, la zona de dosis dice '2-3 capsulas al dia', nunca un mg inventado.",
-    "mecanismo_localizable_en_el_cuerpo": "'Trabaja desde adentro (hormonas, intestino, higado, estres)' (2_DATA, 1) VALIDACION) y el angulo hermano EJE_INTESTINO_PIEL.",
+    "activo_estrella_con_dosis": "activo estrella DIM: 'tiene DIM que regula tus hormonas, que es la raiz del problema' (guion del audio del bot, 2_DATA) y, para este angulo, Clearstem2 lo nombra dos veces y lo pone en pantalla ('un ingrediente que se llama DIM, DIM, que es un compuesto vegetal'). Dosis documentada = 2-3 capsulas/dia con la 1ra comida (cabecera de 2_DATA), confirmada textual por Clearstem18 ('Solo tienes que tomar dos a tres capsulas al dia'). OJO: no hay MILIGRAMOS por ingrediente en ninguna parte del paquete -> si se selecciona CN15_INGREDIENTES_ACTIVO, la zona de dosis dice '2-3 capsulas al dia', nunca un mg inventado.",
+    "mecanismo_localizable_en_el_cuerpo": "'Trabaja desde adentro (hormonas, intestino, higado, estres)' (2_DATA, 1) VALIDACION) y el angulo hermano EJE_INTESTINO_PIEL. Reforzado por MEDICOS_FALLARON, que es el angulo que MAS lo localiza: Clearstem2 y Clearstem14 sobreponen un 'MAPA FACIAL DEL ACNE' con la zona T, el menton y la mandibula marcados, y Clearstem18 nombra la cadena higado -> sistema digestivo -> hormonas. Hay zona del cuerpo y hay cadena causal que dibujar.",
     "modo_de_uso_no_obvio": "capsulas con la primera comida: se adivina.",
     "momento_de_uso_distintivo": "'con la 1ra comida' no alcanza para construir una escena de momento; se deja false por conservador.",
-    "alternativa_conocida": "'falsificacion' — es el nucleo DECLARADO del angulo ganador. _DIM_CONJUNTOS.csv trae dolor_nucleo = \"'esto es falso, falsisimo' — miedo a pagar por un producto no original\"; Clearstem3 ('se compraron las falsas', 'el distribuidor oficial') y Clearstem19 ('muchisimas copias', 'Gold Star Seller', 'tienda oficial'); y la clienta real +502 8955 6589 ('me di cuenta que es el original'). ALTERNATIVA DOCUMENTADA #2, por si el operador prefiere esa columna: 'cremas y jabones' (Clearstem19: 'ya intentaste todo, cremas, jabones, y al contrario terminan poniendote peor').",
-    "prueba_social_clientes": "1500 = las reseñas de la marca citadas TEXTUALMENTE en Clearstem3 ('mas de 1,500 reseñas', junto a 'mas de 39,000 unidades'). Se toma la cifra MENOR de las documentadas (Clearstem18 habla de ~3,000 reseñas y 54,000 unidades). Son cifras de la MARCA original, que es justamente el chequeo de autenticidad del angulo. El 1000 anterior, heredado del codigo, no tenia fuente citada.",
-    "testimonios_reales_disponibles": "2 conversaciones reales de WhatsApp entregadas por el operador el 25-jul (+502 5974 0833 y +502 8955 6589), transcritas en 2_DATA. La segunda valida este angulo en particular.",
+    "alternativa_conocida": "SE REESCRIBE A NIVEL PRODUCTO (antes 'falsificacion', que es la alternativa de UN angulo). El gate de CN14_COMPARACION_DOS_COLUMNAS lo lee SOLO como verdadero/falso (seleccionar_canonicos.py linea 107: `None if p['alternativa_conocida']`) y ningun otro consumidor lo imprime como contenido -> el cambio de texto NO altera la seleccion de ningun angulo, solo deja de hacer pasar la alternativa de un angulo por dato del producto. ALTERNATIVAS DOCUMENTADAS, y a que angulo le toca cada columna B: (a) 'cremas y skincare' -> MEDICOS_FALLARON; citado palabra por palabra en Clearstem2 ('no lo vas a curar con cremitas ni con skincare ni con nada de eso'), en Clearstem14 (misma frase) y en Clearstem19 ('ya intentaste todo, cremas, jabones, y al contrario terminan poniendote peor'). (b) 'consultas con dermatologo / ginecologo / endocrino' -> MEDICOS_FALLARON; Clearstem2: 'yendo a dermatologos, a ginecologos, a endocrinos, y ninguno me daba la solucion'; _DIM_CONJUNTOS.csv dolor_nucleo del angulo: 'pago especialistas y sigue con brotes — nadie le resolvio'. (c) 'falsificacion' -> ANTI_FALSIFICACION; sigue vigente para ESE angulo (Clearstem3, Clearstem19, clienta +502 8955 6589). No se perdio: vive aca y en los textos de su angulo.",
+    "prueba_social_clientes": "1500 = la cifra MENOR de las documentadas, se conserva por conservador. Citas textuales: Clearstem3 'mas de 1,500 reseñas' + 'mas de 39,000 unidades'; Clearstem18 '4.4 estrellas, casi 3.000 reseñas positivas' + 'se han vendido mas de 54.000 unidades' (y su propia captura de tienda muestra '49.3k sold', o sea el audio ya exagera sobre su propio pantallazo -> otra razon para quedarse en 1,500). Son cifras de la MARCA original.",
+    "testimonios_reales_disponibles": "2 conversaciones reales de WhatsApp entregadas por el operador el 25-jul (+502 5974 0833 y +502 8955 6589), transcritas en 2_DATA. OJO para MEDICOS_FALLARON: NINGUNA de las dos valida ESTE angulo (la primera valida el timeline semana-3 y el P3u; la segunda valida ANTI_FALSIFICACION). Por eso, en este angulo, CN10_PRUEBA_SOCIAL pasa el gate por la rama de VOLUMEN (prueba_social_clientes >= 100), no por la de testimonios: su vitrina se arma con las reseñas de la marca, nunca poniendole a una clienta guatemalteca una frase sobre medicos que nadie dijo.",
     "fanpage_con_reconocimiento_local": "pagina 4 Belleza & Piel (Astrid Garcia) es reuso, sin reconocimiento documentado.",
-    "sintomas_reconocibles": "3 reconocibles y documentados: brotes en mandibula/barbilla, exceso de grasa, manchas (Info 1 del bot: reduce acne, regula grasa, disminuye manchas).",
-    "gesto_del_dolor_fotografiable": "la emocion de ESTE angulo es DESCONFIANZA (_DIM_CONJUNTOS.csv), no una postura de dolor fotografiable. Se deja false.",
+    "sintomas_reconocibles": "3, re-confirmado con fuentes mas fuertes que las del 09-oct (antes se apoyaba solo en Info 1 del bot): (1) brotes localizados en barbilla/menton/mandibula — Clearstem2 y Clearstem14 abren con eso y lo dibujan en un 'MAPA FACIAL DEL ACNE'; (2) exceso de grasa — Clearstem18 'sintiendo que tu piel tiene demasiada grasa'; (3) manchas — Clearstem2 muestra 'una foto de su antes, con acne y manchas rojas en la mejilla' e Info 1 del bot dice 'disminuye manchas'. Se queda en 3 a proposito: 'brote doloroso/inflamado' (Clearstem18) seria un 4º candidato, pero es la misma lesion descrita por su cualidad, no un sintoma distinto. El gate pide >=3 y ya pasa; inflarlo no cambia nada y rompe la regla de declarar solo lo sostenible.",
+    "gesto_del_dolor_fotografiable": "CAMBIA A true (antes false). El false del 09-oct se justificaba con la emocion de UN angulo ('la emocion de ESTE angulo es DESCONFIANZA'), y este campo es del PRODUCTO, no del angulo. Evidencia del propio banco del producto: Clearstem18 abre con 'Sigues despertando con esos brotes DOLOROSOS en la mandibula' y su B-roll es literalmente 'una mujer tocandose el acne inflamado en el espejo' / 'una mujer frente al espejo sufriendo por su acne inflamado'; Clearstem2 muestra a la avatar 'señalando en su propio rostro la barbilla, menton y boca'. Postura reconocible y fotografiable = mano en la mandibula frente al espejo. EFECTO EN LA SELECCION: abre CN07_DOLOR_A_PLENO (gate unico = este campo), que es la familia TOFU que pide MEDICOS_FALLARON (rol_embudo TOFU, nivel_conciencia 2 en _DIM_CONJUNTOS.csv). Tambien queda disponible para los otros angulos: el campo es del producto.",
     "beneficios_distintos": "4 de Info 1: reduce acne · regula grasa · disminuye manchas · equilibra hormonas.",
-    "frase_con_giro_disponible": "dos frases con giro, documentadas palabra por palabra: 'Yo se que este suplemento no es el mas economico de todos, pero si ya realmente intentaste todo...' (Clearstem19) y el [VOZ-REAL] de la clienta 'yo dude si pedir 1 o los 3 pero que bueno que pedi los 3' (2_DATA).",
+    "frase_con_giro_disponible": "true. A las dos frases con giro ya documentadas (Clearstem19 'yo se que este suplemento no es el mas economico de todos, pero si ya realmente intentaste todo...' y el [VOZ-REAL] 'yo dude si pedir 1 o los 3 pero que bueno que pedi los 3') se suman las de MEDICOS_FALLARON, palabra por palabra en Clearstem2: 'quiero que sepas que eso NO ES CUALQUIER ACNE' y 'yendo a dermatologos, a ginecologos, a endocrinos, y ninguno me daba la solucion'. El giro de este angulo es el reencuadre: lo que parecia acne comun es hormonal, y por eso la consulta no lo resolvio.",
     "atributos_de_producto_diferenciales": "5 atributos del producto MISMO, todos documentados: (1) formula original americana; (2) marca CLEARSTEM impresa en el frasco (_DIM_ENVASE.csv, verificado 2026-09-28); (3) 90 capsulas (_DIM_ENVASE.csv); (4) todo natural, sin gluten y vegano (guion del audio, 2_DATA); (5) 4.4 estrellas con 1,500+ reseñas (Clearstem19 / Clearstem3). EXCLUIDO A PROPOSITO: el sello 'FDA-APPROVED' de Info 1 — 2_DATA lo marca como factualmente falso (la FDA no aprueba suplementos) y como ad sube CPM. No entra en ningun creativo.",
     "avatar_fotografiable": "no hay foto de clienta real; los 2 testimonios son texto de WhatsApp.",
     "nivel_conciencia_objetivo": "se deja en 3 porque es el TIPO que espera PLANTILLA_PERFIL de seleccionar_canonicos.py (entero) y ningun gate lo lee. El valor FINO de este angulo es 3A (_DIM_CONJUNTOS.csv nivel_conciencia = 3A). Ver nivel_conciencia_detalle."
   },
   "nivel_conciencia_detalle": {
-    "valor": "3A",
-    "fuente": "PRODUCTOS/_DIM_CONJUNTOS.csv, filas ANTI_FALSIFICACION de CLEARSTEM",
-    "por_que_importa": "reglas-sistema: 3A y 3B piden ads OPUESTOS, nunca '3' a secas. 3A = ya conoce el Clearstem viral y esta comparando QUIEN se lo vende; el ad no explica el producto, prueba que el de uno es el original."
+    "valor": "3A en ANTI_FALSIFICACION · 2 en MEDICOS_FALLARON (ver por_angulo)",
+    "fuente": "PRODUCTOS/_DIM_CONJUNTOS.csv, columna nivel_conciencia de las filas de CLEARSTEM por angulo_key.",
+    "por_que_importa": "reglas-sistema: 3A y 3B piden ads OPUESTOS, nunca '3' a secas. Y aca el salto es mas grande todavia: 3A (ANTI_FALSIFICACION) vs 2 (MEDICOS_FALLARON) son dos personas distintas. perfil.nivel_conciencia_objetivo se queda en 3 porque es el TIPO (entero) que espera PLANTILLA_PERFIL de seleccionar_canonicos.py y NINGUN gate lo lee; el valor fino por angulo es este.",
+    "por_angulo": {
+      "ANTI_FALSIFICACION": {
+        "nivel": "3A",
+        "que_implica": "ya conoce el Clearstem viral y esta comparando QUIEN se lo vende; el ad no explica el producto, prueba que el de uno es el original."
+      },
+      "MEDICOS_FALLARON": {
+        "nivel": "2",
+        "que_implica": "sabe que tiene el problema (el acne) y NO sabe que la causa es hormonal ni que se trabaja desde adentro. El ad TIENE que enseñar el mecanismo (zona de la mandibula = hormonal, DIM, desde adentro). Un ad de autenticidad aca no comunica nada: no esta eligiendo vendedor, esta descubriendo la causa."
+      },
+      "RESISTENCIA_INSULINA_SOP": {
+        "nivel": "sin textos de nivel en esta pasada — su entrada de textos es del 16-sep y no declaro nivel; se lee de _DIM_CONJUNTOS.csv cuando se re-derive."
+      }
+    }
   },
   "textos_por_angulo": {
     "ANTI_FALSIFICACION": {
@@ -132,6 +145,104 @@
             "antes": "Clearstem3 cierra con 'aprovecha porque ahorita mismo ya tienen precio de Black Friday'",
             "despues": "EXCLUIDO",
             "regla": "escasez falsa: no hay promocion detras en _DIM_PRECIOS.csv. No se inventa una oferta."
+          }
+        ]
+      }
+    },
+    "MEDICOS_FALLARON": {
+      "textos": {
+        "PRODUCTO": "Clearstem Mindbodyskin (90 Cápsulas)",
+        "DESCRIPTOR": "Suplemento de apoyo hormonal para el acné de la mandíbula y la barbilla",
+        "HOOK_TITULAR": "DERMATÓLOGO, GINECÓLOGO, ENDOCRINO… ¿Y SEGUÍS CON BROTES?",
+        "SUB_HOOK": "Ese acné de la barbilla y la mandíbula es hormonal: no se calma desde afuera. Se trabaja desde adentro.",
+        "SINTOMA_ANTES": "Rostro con brotes dolorosos e inflamados en la mandíbula y la barbilla, y piel con exceso de grasa",
+        "RESULTADO_DESPUES": "Mandíbula y barbilla más despejadas, piel calmada y menos brotes nuevos",
+        "ACTIVOS_CLAVE": [
+          "DIM: compuesto vegetal que apoya el equilibrio hormonal — la raíz que una crema no alcanza",
+          "Cúrcuma + Glutatión: ayudan a bajar la inflamación y el enrojecimiento del brote",
+          "Vitamina A biodisponible + B5: apoyan la renovación de la piel y ayudan con el exceso de grasa",
+          "5-HTP + Raíz de Diente de León: acompañan el estrés que dispara la recaída y la limpieza del hígado"
+        ],
+        "GARANTIAS": "Pagás al recibir · Envío Gratis a toda Guatemala · Frasco original americano de 90 cápsulas",
+        "CTA": "EMPEZÁ DESDE ADENTRO — ESCRIBINOS POR WHATSAPP"
+      },
+      "textos_notas": {
+        "angulo": "MEDICOS_FALLARON. Fuentes del angulo: _DIM_CONJUNTOS.csv (avatar 'adulto con acne hormonal que fue a dermatologo/ginecologo/endocrino sin solucion'; dolor_nucleo 'pago especialistas y sigue con brotes — nadie le resolvio'; emocion FRUSTRACION_MEDICA; nivel_conciencia 2; rol_embudo TOFU; avatar_edad 25-35) + las transcripciones Clearstem2 (el creativo original del angulo, Post ID), Clearstem14 (su variante) y Clearstem18 (el educacional con avatar DOCTORA que 2_DATA marca como el que 'ENCAJA con el angulo #4 Medicos Fallaron y aporta AUTORIDAD').",
+        "por_que_no_se_reusan_los_textos_de_los_otros_angulos": "ANTI_FALSIFICACION le habla a un nivel 3A que ya conoce el producto y esta eligiendo vendedor; su hook ('fijate si compraste el falso') no le dice NADA a quien todavia no sabe que su acne es hormonal. RESISTENCIA_INSULINA_SOP nombra un diagnostico (SOP, resistencia a la insulina) que esta persona no tiene ni sospecha: su frustracion es con la CONSULTA, no con un examen de sangre. Son tres personas distintas y tres hooks distintos.",
+        "persona": "voseo GT en todo texto visible: 'seguís', 'pagás', 'escribinos', 'empezá' (mercado.py --producto CLEARSTEM: persona = voseo, pais Guatemala).",
+        "HOOK_TITULAR": "es el MECANISMO del angulo, no una frase bonita: la lista de tres especialistas es textual de Clearstem2 ('yendo a dermatologos, a ginecologos, a endocrinos, y ninguno me daba la solucion') y es exactamente el dolor_nucleo declarado en _DIM_CONJUNTOS.csv. Va en PREGUNTA porque el rol es TOFU: no cierra, interrumpe al que se reconoce en esa historia. No dice ni insinua que el producto sea mejor que la medicina — relata la experiencia de la persona, que es lo que ya vendio (56 ventas historicas, CPA Q77.8 contra BE Q105.89).",
+        "SUB_HOOK": "es la carga EDUCATIVA que exige el nivel de conciencia 2: nombra la zona (barbilla y mandibula = el 'MAPA FACIAL DEL ACNE' que Clearstem2 y Clearstem14 ponen en pantalla), la causa (hormonal) y el mecanismo (desde adentro). Sin esto el ad asumiria un conocimiento que esta persona no tiene.",
+        "ACTIVOS_CLAVE": "los 7 ingredientes salen de 2_DATA (1) VALIDACION: DIM, Vitamina A biodisponible, B5, Curcuma, Raiz de Diente de Leon, 5-HTP, Glutation). Se agrupan en 4 lineas para no desbordar la zona de bullets de los canonicos. DIM va primero porque es el activo que el creativo original de este angulo pone en pantalla con su propio overlay ('DIM'). NINGUNA linea lleva miligramos: no existen en el paquete (ver datos_duros_faltantes).",
+        "GARANTIAS": "'Pagas al recibir' es el contra-argumento exacto de este angulo: la persona YA gasto en consultas que no le resolvieron, asi que el riesgo de pagar por adelantado es su objecion viva. Sale del modelo COD del sistema y de 2_DATA (2) COSTEO: 'P1u Q198 + envio gratis'). '90 capsulas' y 'original americano' estan verificados en _DIM_ENVASE.csv (marca impresa Clearstem, formato 90 capsulas, verificado 2026-09-28). NO lleva numero de registro sanitario: el numero MSPAS de CLEARSTEM no existe en el paquete y los numeros de registro no se fabrican.",
+        "CTA": "'EMPEZA DESDE ADENTRO' repite el mecanismo del angulo en el cierre, en vez de un 'pedi el tuyo' neutro. Distinto a proposito de los CTA de los otros dos angulos ('PEDI EL ORIGINAL POR WHATSAPP' / 'PEDI EL TUYO POR WHATSAPP AQUI') para que _DIM_ANUNCIOS pueda leer que el cambio de CTA fue del angulo, no del azar.",
+        "duracion_del_frasco_si_una_zona_la_pide": "90 capsulas a 2-3 capsulas/dia = 30 a 45 dias de uso. Es aritmetica sobre dos datos documentados (_DIM_ENVASE.csv + dosis de 2_DATA, confirmada textual por Clearstem18), no una promesa. Se deja FUERA de los textos base para no meter un timeline en el ad; si un canonico pide esa zona, se usa asi redactada.",
+        "sin_precio_en_los_textos": "ningun texto base trae precio: la regla es por tanda (max 3 de 6 ads con precio, ideal 2 de 6, COPYWRITING_ADS.md) y la decide la arquitectura de oferta, no el texto. Precios vigentes si un creativo los lleva: 1u Q198.00 · 2u Q289.00 · 3u Q389.01 (_DIM_PRECIOS.csv, los tres ACTIVO). El Q199/Q299/Q399 de costear.py y del bloque 2) COSTEO de 2_DATA es el precio PLANIFICADO de julio; manda el CSV (Dropi).",
+        "banda_de_edad": "25-35, HEREDADA, no se reabre (guardarrail 6 de la skill / APR-060). Es el dato mas caro de este angulo en particular: la auditoria del 21 y 26-ago probo que sus replicas en 25+ cerraban 9.1% (5/55 msj) contra 29.7% (11/37) en 25-35, con frecuencia 1.19-1.21 y la conversacion MAS ALTA del producto (45-47%). El cero de ventas del 17-20 ago no era fatiga ni angulo muerto: era la banda. Cualquier creativo nuevo de este angulo corre en 25-35."
+      },
+      "compliance_ads": {
+        "fecha": "2026-10-16",
+        "angulo_key": "MEDICOS_FALLARON",
+        "regla": "DOCTRINA/COPYWRITING_ADS.md — lenguaje de APOYO ('apoya / ayuda a / contribuye a / acompaña'); banean 'cura', 'elimina', 'logra', 'transforma en [X dias]', 'sobrepeso', 'garantizamos [resultado medico]' y los timelines imposibles; prohibido afirmar que el producto TRATA el diagnostico. Aplica SOLO al ads; el post-clic (bot, audio, infografias) no se suaviza.",
+        "cambios": [
+          {
+            "campo": "SUB_HOOK",
+            "antes": "'no lo vas a curar con cremitas ni con skincare ni con nada de eso' (Clearstem2, textual; Clearstem14 repite la frase)",
+            "despues": "Ese acné de la barbilla y la mandíbula es hormonal: no se calma desde afuera. Se trabaja desde adentro.",
+            "regla": "'curar' es palabra que banea. Se conserva el ARGUMENTO (lo de afuera no llega) sin el verbo. Ademas no se copia el texto del anunciante original: la ficha guarda ESTRUCTURA, el contenido lo pone el producto propio."
+          },
+          {
+            "campo": "DESCRIPTOR",
+            "antes": "'tratarlo desde adentro' / 'tratar tu acne desde adentro' (Clearstem2 y Clearstem18)",
+            "despues": "Suplemento de apoyo hormonal para el acné de la mandíbula y la barbilla",
+            "regla": "no se afirma que el producto TRATA un diagnostico. 'Suplemento de apoyo' dice QUE es sin prometer accion clinica, y la localizacion (mandibula/barbilla) es lo que sostiene el angulo."
+          },
+          {
+            "campo": "ACTIVOS_CLAVE[0]",
+            "antes": "'DIM... te va a ayudar directamente con la fluctuacion hormonal. Que eso es lo que realmente hay que hacer, REGULAR esas hormonas' (Clearstem2) / 'DIM que regula tus hormonas' (guion del audio del bot)",
+            "despues": "DIM: compuesto vegetal que apoya el equilibrio hormonal — la raíz que una crema no alcanza",
+            "regla": "'regular las hormonas' afirma accion sobre un diagnostico hormonal -> lenguaje de apoyo. 'Compuesto vegetal' si se conserva: es descripcion del ingrediente y es textual del video. El texto del BOT se queda como esta: el compliance no aplica post-clic."
+          },
+          {
+            "campo": "ACTIVOS_CLAVE[1] y [2]",
+            "antes": "'curcuma y glutation para DESINFLAMAR' (guion del audio) / 'Disminuye la produccion de sebo' (infografia de Clearstem14)",
+            "despues": "Cúrcuma + Glutatión: ayudan a bajar la inflamación y el enrojecimiento del brote · Vitamina A biodisponible + B5: apoyan la renovación de la piel y ayudan con el exceso de grasa",
+            "regla": "verbos absolutos ('desinflamar', 'disminuye') -> 'ayudan a'. Se evita tambien 'regula la grasa' por la misma razon que 'regula las hormonas'."
+          },
+          {
+            "campo": "ACTIVOS_CLAVE[3]",
+            "antes": "'5-HTP para CONTROLAR el estres que dispara los brotes' (guion del audio)",
+            "despues": "5-HTP + Raíz de Diente de León: acompañan el estrés que dispara la recaída y la limpieza del hígado",
+            "regla": "'controlar' es absoluto -> 'acompañan'."
+          },
+          {
+            "campo": "RESULTADO_DESPUES",
+            "antes": "'ya no tiene rastro de absolutamente nada' (Clearstem2, sobre la amiga) y el 'antes y un despues en mi piel' que el video repite tres veces",
+            "despues": "Mandíbula y barbilla más despejadas, piel calmada y menos brotes nuevos",
+            "regla": "'no tiene rastro de nada' es resultado absoluto. Ademas COPYWRITING_ADS.md pide antes/ahora EN PALABRAS y prohibe el antes/despues corporal bilateral en el COPY (el antes/despues como DISPOSITIVO VISUAL de CN01 no se toca: el banco se replica como esta documentado, PASO 4 de la skill)."
+          },
+          {
+            "campo": "(no entra) '22% de descuento' / 'aprovecha esta oferta'",
+            "antes": "Clearstem18 lo dice dos veces y es el cierre de su CTA",
+            "despues": "EXCLUIDO",
+            "regla": "escasez falsa: no hay ninguna promocion detras en _DIM_PRECIOS.csv (1u Q198 · 2u Q289 · 3u Q389.01, los tres ACTIVO, sin precio_antes_q). No se inventa una oferta. Mismo criterio que ya se aplico al 'precio de Black Friday' de Clearstem3 en ANTI_FALSIFICACION."
+          },
+          {
+            "campo": "(no entra) '4.4 estrellas, casi 3.000 reseñas', 'mas de 54.000 unidades'",
+            "antes": "Clearstem18 los usa como su prueba social principal",
+            "despues": "si una zona pide prueba social, se usa '1,500+ reseñas · 4.4 estrellas' (la cifra MENOR documentada)",
+            "regla": "el propio pantallazo de Clearstem18 muestra '49.3k sold' mientras la voz dice 54.000: el audio exagera sobre su propia evidencia. Se usa la cifra menor documentada (Clearstem3: 'mas de 1,500 reseñas'), que es la que el perfil declara."
+          },
+          {
+            "campo": "(no entra) sello FDA-APPROVED",
+            "antes": "Info 1 del bot lo trae",
+            "despues": "EXCLUIDO de todo creativo de ads",
+            "regla": "2_DATA lo marca como factualmente falso (la FDA no aprueba suplementos dieteticos). Dentro del bot es decision del operador; como AD sube CPM y arriesga rechazo. Misma exclusion que en ANTI_FALSIFICACION."
+          },
+          {
+            "campo": "(no entra) 'resistencia a la insulina' y los examenes de sangre",
+            "antes": "Clearstem14, la variante del mismo creativo, construye todo su argumento ahi ('descubri que tenia resistencia a la insulina', 'esa insulina extra le dice a tus ovarios que produzcan mas testosterona')",
+            "despues": "EXCLUIDO de MEDICOS_FALLARON",
+            "regla": "no es compliance, es ATRIBUCION: ese es el territorio de RESISTENCIA_INSULINA_SOP, que es otro angulo con su propia entrada de textos y sus propias ventas. Mezclarlos deja los dos ilegibles (invariante 1: el ganador se declara agregando por angulo_key)."
           }
         ]
       }
