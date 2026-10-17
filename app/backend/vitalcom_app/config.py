@@ -143,7 +143,24 @@ def python_del_sistema() -> str:
         if c and not os.path.normcase(os.path.abspath(c)).startswith(venv)
         and os.path.basename(os.path.normpath(c)).lower() != "windowsapps"
     ]
-    return shutil.which("python", path=os.pathsep.join(fuera_del_venv)) or "python"
+    candidatos: list[str] = []
+    for carpeta in fuera_del_venv:
+        encontrado = shutil.which("python", path=carpeta)
+        if encontrado and encontrado not in candidatos:
+            candidatos.append(encontrado)
+    return _el_que_trae_pandas(tuple(candidatos)) or "python"
+
+
+@lru_cache(maxsize=8)
+def _el_que_trae_pandas(candidatos: tuple[str, ...]) -> str | None:
+    """El primer intérprete que importa pandas (el motor lo necesita); si ninguno, el primero del PATH."""
+    for candidato in candidatos:
+        try:
+            if subprocess.run([candidato, "-c", "import pandas"], capture_output=True, timeout=30).returncode == 0:
+                return candidato
+        except (OSError, subprocess.SubprocessError):
+            continue
+    return candidatos[0] if candidatos else None
 
 
 def datos_de_la_app() -> Path:
