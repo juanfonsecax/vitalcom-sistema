@@ -269,6 +269,9 @@ def nivel_conciencia_angulo(pk, angulo_key):
     return vistos.pop(), None
 
 
+_ANGULO_FIJADO = None   # lo fija `--angulo KEY` en main(): desempata varios angulos de FASE 2
+
+
 def angulo_ganador_f2(pk):
     """El angulo que el flujo DEDICADO debe abrir: el que quedo FIJO en el testeo de
     CONCEPTOS de FASE 2 (doctrina CLAUDE.md "1 angulo ganador x 10 CONCEPTOS"), no el de mas
@@ -293,9 +296,24 @@ def angulo_ganador_f2(pk):
         and (r.get("concepto_key") or "").strip().upper() not in ("", "SIN_CLASIFICAR")
         and (r.get("angulo_key") or "").strip()
     })
+    if _ANGULO_FIJADO and _ANGULO_FIJADO in angulos:
+        return _ANGULO_FIJADO, None   # declarado por el operador con --angulo: no se adivina
     if not angulos:
         return None, None
     if len(angulos) > 1:
+        # El ranking de flujo.py (_FLUJO.json: angulos_ganadores, #1 primero) dice cual esta en su FASE 2 ahora;
+        # los demas esperan su turno. Es un dato declarado por el sistema, no una eleccion de este script.
+        try:
+            with open(os.path.join(PROD, "_FLUJO.json"), encoding="utf-8") as fh:
+                lista = json.load(fh)
+            lista = lista.get("productos", lista)
+            lista = lista if isinstance(lista, list) else list(lista.values())
+            ranking = next((x.get("angulos_ganadores") or [] for x in lista if x.get("producto_key") == pk), [])
+        except (OSError, ValueError, AttributeError):
+            ranking = []
+        primero = next((a for a in ranking if a in angulos), None)
+        if primero:
+            return primero, None
         return None, ("%d angulos distintos con concepto de FASE 2 en _DIM_CREATIVOS.csv "
                        "(%s) — el flujo dedicado necesita UN angulo ganador fijo"
                        % (len(angulos), ", ".join(angulos)))
@@ -806,6 +824,15 @@ def main():
             return 2
         with open(args[i + 1], encoding="utf-8") as fh:
             propuestas = fh.read()
+        del args[i:i + 2]
+
+    global _ANGULO_FIJADO
+    if "--angulo" in args:
+        i = args.index("--angulo")
+        if i + 1 >= len(args):
+            print("--angulo necesita un angulo_key (el que abre el flujo dedicado)", file=sys.stderr)
+            return 2
+        _ANGULO_FIJADO = args[i + 1]
         del args[i:i + 2]
 
     pks = [a for a in args if not a.startswith("--")]
