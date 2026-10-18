@@ -109,6 +109,16 @@ class SnapshotTests(unittest.TestCase):
             sm.main(["--help"])
         self.assertEqual(cm.exception.code, 0)
 
+    def test_importar_con_stdout_capturado_no_cierra_el_stdout(self):
+        # El runner de la app captura stdout (StringIO). ingerir_meta reemplaza sys.stdout con
+        # un envoltorio de .buffer al importarse: sin proteccion revienta o cierra el buffer real.
+        capturado = io.StringIO()
+        with contextlib.redirect_stdout(capturado):
+            sm._bmi()
+            print("sigue vivo")
+        self.assertIn("sigue vivo", capturado.getvalue())
+        self.assertFalse(sys.__stdout__.buffer.closed)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

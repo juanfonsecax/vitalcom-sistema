@@ -43,10 +43,24 @@ class SnapshotError(Exception):
     """Error legible para el operador (nunca lleva el token)."""
 
 
+_MANTENER = []
+
+
 def _bmi():
     # Import perezoso: bajar_meta_insights arrastra la capa de datos y tarda ~3 s. Con --help
     # o en los tests con la red simulada no hace falta.
-    import bajar_meta_insights as bmi
+    # ingerir_meta (que arrastra bajar_meta_insights) reemplaza sys.stdout usando .buffer: si el
+    # llamador tiene stdout capturado (StringIO) revienta. Se importa con el stdout real y se
+    # devuelve el del llamador.
+    capturado = sys.stdout
+    sys.stdout = sys.__stdout__
+    try:
+        import bajar_meta_insights as bmi
+    finally:
+        # El envoltorio nuevo comparte buffer con el stdout real: si se descarta, el GC cierra
+        # el buffer y el siguiente print revienta ('I/O operation on closed file').
+        _MANTENER.append(sys.stdout)
+        sys.stdout = capturado
     return bmi
 
 
