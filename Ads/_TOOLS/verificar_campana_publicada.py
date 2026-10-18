@@ -21,7 +21,7 @@ USO
 
 SALIDA (ultima linea, o unica con --json)
     {"ok","objetos_declarados","objetos_ok","copias":[...],"altas":[...],
-     "ad_ids_escritos","mensaje_operador"}
+     "ad_ids_escritos","mensaje_operador"} + "detalle" (copia de mensaje_operador, para el runner)
 
 CODIGOS DE SALIDA   0 = el gate paso.   1 = no paso (ver mensaje_operador).   2 = uso incorrecto.
 """
@@ -159,7 +159,8 @@ def main(argv=None):
     res, log = verificar(a.producto, a.fase, a.brazo.upper(), escribir=not a.sin_escribir)
     if not a.json and log.strip():
         print(log)
-    print(json.dumps(res, ensure_ascii=False))
+    # `detalle` repite el mensaje: el runner de la app lo muestra como motivo cuando el gate no pasa.
+    print(json.dumps(dict(res, detalle=res["mensaje_operador"]), ensure_ascii=False))
     return 0 if res["ok"] else 1
 
 

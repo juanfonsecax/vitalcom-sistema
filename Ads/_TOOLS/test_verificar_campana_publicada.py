@@ -154,7 +154,7 @@ class WrapperTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         salida = json.loads(buf.getvalue())
         self.assertEqual(set(salida), {"ok", "objetos_declarados", "objetos_ok", "copias", "altas",
-                                       "ad_ids_escritos", "mensaje_operador"})
+                                       "ad_ids_escritos", "mensaje_operador", "detalle"})
         buf = io.StringIO()
         with self._snapshot(_entidades(omitir=["C2 B ~ X"])), contextlib.redirect_stdout(buf):
             rc = vcp.main(["--producto", "PROD", "--fase", "2", "--brazo", "C", "--json", "--sin-escribir"])
