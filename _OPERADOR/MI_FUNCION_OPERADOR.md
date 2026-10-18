@@ -1,147 +1,113 @@
-# 🧑‍💻 MI FUNCIÓN EN EL SISTEMA — Guía del Operador (Vitalcom Guatemala)
+# 🧑‍💻 MI FUNCIÓN EN EL SISTEMA — Guía del Operador (Vitalcom GT y CO)
 
-> **Para pegar en Notion y copiar al tablero.** Esta es la parte que hace JUAN. El sistema hace todo lo demás.
+> Esta es la parte que hace JUAN. El sistema hace todo lo demás. Detalle completo del sistema en
+> `_OPERADOR/SISTEMA_COMPLETO_PARA_OTRA_IA.md`.
 
 ---
 
 ## EN UNA FRASE
 
 **El sistema es el cerebro (estrategia). Yo soy las manos y los ojos.**
-El sistema piensa los ángulos, escribe los copies, arma el flujo del bot y diseña la campaña.
-**Yo le doy la materia prima, genero las imágenes, configuro el bot, subo todo a Meta y aprieto el botón.**
-👉 **Nada se lanza solo. La campaña siempre la activo yo.**
+El sistema piensa los ángulos, escribe los copies, arma el flujo del bot, diseña y publica las
+campañas (en PAUSA) y manda las órdenes de pausar/escalar. **Yo doy la materia prima, genero o reviso
+las imágenes, configuro LucidBot, activo la campaña y confirmo cada orden.**
+👉 **Nada se lanza solo y nada se toca en Meta sin mi confirmación, orden por orden.**
 
 ---
 
-## EL CICLO COMPLETO — MIS 5 MOMENTOS
+## LAS 4 FASES (QUÉ ME TOCA EN CADA UNA)
 
 ```
-[0] RECOLECTO  →  [1] ARRANCO  →  [2] EJECUTO FASE 1  →  [3] LANZO + MONITOREO  →  [4] FASE 2
-   (materia prima)  (le doy inputs)   (1_HACER_MANUAL)      (4 AM + día sgte)     (ángulo ganador)
+FASE 1 ÁNGULOS  →  FASE 2 CONCEPTOS  →  FASE 3 FLUJO LUCIDBOT  →  FASE 4 ESCALADO
+(6 ángulos)        (10 conceptos)        (reescribir el bot)       (1-1-7 + horizontal)
 ```
 
----
+La fase en la que está cada producto **no la decido yo: la dice la data**. Al empezar la sesión el
+sistema corre `python Ads/_TOOLS/flujo.py --todo --escribir` y me dice en qué nodo está cada producto
+y qué lo bloquea.
 
-## 🟦 MOMENTO 0 — RECOLECTAR (antes de abrir el chat)
+### 🟦 ANTES DE EMPEZAR — materia prima
+- [ ] **Producto + mercado** (GT o CO) y **costo del proveedor en su moneda**.
+- [ ] **Dosis / presentación** y **foto del frasco**.
+- [ ] **≥6 transcripciones** de videos de competencia (ideal ~20: ~10 de TikTok + ~10 de Meta Ads Library),
+      transcritas con Gemini y guardadas como `.txt` en `Ads/1.2 Transcripcion videos/[PRODUCTO]/`.
+- [ ] Opcionales: copys de la competencia y N.º de anunciantes activos en la Biblioteca de Anuncios.
 
-Esta es la única fase 100% manual. Junto la materia prima:
+> Estos inputs se **congelan**: si cambian a mitad, es rerun completo.
 
-**Creativos (lo más importante):**
-- [ ] **20 creativos** = **10 de TikTok** (frescura/hooks orgánicos) + **10 de Meta Ads Library** (validación: lo que la competencia ya pauta activo HOY).
-- [ ] Mínimo absoluto: 12 (6+6). Menos de 6 → el sistema se detiene.
-- [ ] **Diversidad de formatos** (no 20 testimonios): testimonio, educacional, prueba social, anti-falsificación, oferta/precio.
+### 🟩 FASE 1 — Ángulos
+1. El sistema valida el producto, saca 6 ángulos, costea, asigna FanPage y escribe copies y bot.
+2. Me deja `PRODUCTOS/[PRODUCTO]/1_HACER_MANUAL.txt` (se genera solo): **esa es mi lista**.
+3. Yo: generar las **imágenes** (FASE 1 es todo imagen), las **3 infografías del bot**, **configurar
+   LucidBot** campo por campo, y **activar a las 4 AM del día siguiente** (nunca el mismo día).
+4. El sistema publica la estructura en Meta **en PAUSA** (si la cuenta tiene MCP; si no, la pauto a mano).
+5. Estructura: 6 conjuntos, 1 anuncio cada uno, mismo presupuesto en los 6.
 
-**Transcribir con Gemini:**
-- [ ] Descargo los 20 videos a `Ads/1.1 Videos/[PRODUCTO]/`
-- [ ] Abro `Ads/Prompt-Gemini.txt`, copio el prompt tal cual, lo pego en Gemini con los videos.
-- [ ] Guardo cada `.txt` en `Ads/1.2 Transcripcion videos/[PRODUCTO]/` con el **mismo nombre y número** que el video (`5. Nusava B12.mp4` → `5. Nusava B12.txt`).
+### 🟨 FASE 2 — Conceptos (cuando hay ángulo ganador por VENTA)
+1. El sistema fabrica **10 conceptos** del ángulo ganador y deja los prompts.
+2. Yo: **renderizar las imágenes** (o dejar que `etapa-render` las genere en ChatGPT web con mi sesión
+   abierta) y marcarlas como generadas.
+3. Se publican 3 campañas: A (1-1-5), B (1-1-5) y C (1-2-5, **en otra cuenta**). Activo a las 4 AM.
+4. Gana el concepto que queda arriba en **2 de 2** apariciones.
 
-**Datos del producto (obligatorios):**
-- [ ] **Imagen del producto** (foto del frasco) — siempre va en el chat.
-- [ ] **Costo del proveedor en Q**.
-- [ ] **Dosis / presentación** (ej. B12 5000 mcg, 1.5 ml sublingual).
+### 🟧 FASE 3 — Flujo LucidBot
+1. El sistema redacta la reescritura del flujo del bot hacia el ángulo+concepto ganador.
+2. Yo **aplico el cambio en LucidBot a mano** y registro `CAMBIO_BOT` (o `EXCEPCION_CAMBIO_BOT` si
+   decido saltármelo).
+3. Se mide el cierre: hacen falta **≥30 mensajes** después del cambio y cierre **≥ el piso** para pasar
+   a FASE 4. Si no llega, el producto se queda en FASE 3 para otra iteración.
 
-**Opcionales (mejoran el resultado):**
-- [ ] `Ads/COPYS_COMPETENCIA.txt` con el copy de los 10 anuncios de Meta.
-- [ ] Pantallazo de la FanPage de 1-2 competidores fuertes.
-- [ ] N.º de proveedores en Dropy + N.º de anunciantes activos en Ads Library (valida el producto).
-
----
-
-## 🟩 MOMENTO 1 — ARRANCAR (abrir el chat y dar los inputs)
-
-Abro el sistema y respondo **"1"** (Fase 1 — Pre-testeo). Después le entrego el bloque de **INPUTS CONGELADOS**. Estos se deciden UNA vez y no se cambian a mitad de camino (si cambian, es rerun completo):
-
-```
-PRODUCTO (nombre exacto):   ____________
-COSTO_PROVEEDOR_Q:          Q______
-DOSIS / PRESENTACIÓN:       ____________
-IMAGEN_PRODUCTO:            (adjuntar en el chat)
-INGREDIENTES:               ______ (o "pendiente")
-PROVEEDORES_DROPY:          ___ (opcional)
-ANUNCIANTES_AD_LIBRARY:     ___ (opcional)
-TASA_USD_GTQ:               ____ (ej. 7.62)
-MCP_ACCOUNT_ID / PAGE_ID / PIXEL_ID:  ____ (si se crea campaña por MCP)
-```
-
-> A partir de aquí el sistema trabaja solo: valida el producto, saca 6 ángulos, hace costeo, asigna FanPage, escribe los 6 copies y arma el flujo del bot.
+### 🟥 FASE 4 — Escalado
+1. El sistema arma el banco de microángulos y la campaña **1-1-7 CBO**; se publica en PAUSA.
+2. Yo activo y, cada mañana, confirmo las órdenes de **surfing** (+20% máximo, una vez al día).
+3. Palancas horizontales: Post ID, multicuenta, multifanpage. En paralelo corre una exploración de
+   3 ángulos nuevos.
 
 ---
 
-## 🟨 MOMENTO 2 — EJECUTAR FASE 1 (mi lista la da el sistema)
+## 🔁 CADA DÍA (post-lanzamiento)
 
-Cuando el sistema termina, me deja una carpeta `PRODUCTOS/[PRODUCTO]/` con **`1_HACER_MANUAL.txt`**. Ese archivo ES mi lista de tareas. Lo que el sistema NO puede hacer y hago yo:
-
-1. **Generar las imágenes-ad** de los ángulos sin video → copio el prompt del archivo en Gemini/ChatGPT **adjuntando la foto del frasco**. Las guardo en `Ads/MEDIA_[CUENTA]_[PRODUCTO]/`.
-2. **Generar las 3 infografías del bot** (Info 1 beneficios / Info 2 uso / Info 3 confianza) con sus prompts.
-3. **Configurar el flujo en LucidBot** copiando campo por campo la sección del archivo.
-4. **Subir los creativos a Meta** y revisar los anuncios (preview, copy, precio donde toca).
-5. **Activar/programar la campaña a las 4 AM del día siguiente.** ⚠️ Nada se activa solo.
-
-> Si la campaña se crea por MCP, el sistema deja el esqueleto **en PAUSA**; los anuncios y el botón final los pongo yo.
-
----
-
-## 🟧 MOMENTO 3 — LANZAR Y MONITOREAR
-
-- [ ] Campaña programada a **4 AM del día siguiente** (nunca el mismo día).
-- [ ] Estructura: **1 campaña, 6 conjuntos, 2 anuncios por conjunto** (mismo creativo duplicado — baja el CPA hasta 50%).
-- [ ] Presupuesto: **$1.59 por conjunto** (igual en los 6, para no sesgar qué ángulo gana).
-- [ ] **Al día siguiente (campaña ≥24h):** el sistema ya monitorea **solo cada mañana** (tarea programada, ~7 AM) — recorre `PRODUCTOS/_PORTAFOLIO.txt`, lee Meta por MCP (ETAPA-7) y me deja el **informe + PLAN DE ESCALADO** (ETAPA-8). También lo puedo pedir a mano: *"analizame el rendimiento de hoy"*.
-- [ ] **Lo ejecuto yo:** el sistema recomienda (pausar X, subir 20% a Y, crear creativos del ganador Z, Post ID…). El botón lo aprieto yo — el sistema nunca toca campañas vivas.
-- [ ] **Agregar otro producto al tracking:** le digo *"agregá [PRODUCTO] al tracking"* y entra al portafolio; la auditoría diaria lo audita junto con los demás.
-
-Lo que YO entrego del monitoreo si no hay MCP: CTR, CPA real, mensajes y conversiones por cada uno de los 6 conjuntos.
+- El sistema **baja solo** ventas (LucidSales) y gasto/entrega (Meta) de noche y corre el motor
+  `decidir.py`.
+- Por la mañana veo en la app (pantalla **Hoy** y **Órdenes**) qué ordena el motor: PAUSAR / ESCALAR /
+  RENOVAR / SEGUIR_MIDIENDO.
+- **Yo confirmo cada orden una por una**; se ejecuta por MCP (o la hago a mano), se verifica contra Meta
+  y queda registrada en `_EVENTOS.csv`.
+- Si aparece la tarjeta **«Necesita Claude»**, es una tarea que la app no puede resolver sola
+  (por ejemplo renombrar anuncios «- Copia» por MCP).
+- **Colombia es manual:** yo entrego los exports de Meta y LucidSales.
 
 ---
 
-## 🟥 MOMENTO 4 — FASE 2 (escalar el ganador)
+## ✅ LO QUE YO HAGO / LO QUE HACE EL SISTEMA
 
-Abro el sistema, respondo **"2"** y le doy:
-- [ ] **Ángulo ganador** confirmado (uno de los 6).
-- [ ] **Métricas del día** de los 6 conjuntos: CTR / CPA real / mensajes / conversiones.
-
-> El sistema saca microángulos, 6 copies nuevos, el flujo del bot de un solo ángulo y la campaña de escalado. Yo vuelvo a ejecutar como en el Momento 2 (imágenes, bot, subir, activar 4 AM).
-
----
-
-## ✅ LO QUE YA NO HAGO A MANO (antes vs. ahora)
-
-| Antes lo hacía yo manual | Ahora lo hace el sistema |
+| Lo hace el sistema | Lo hago yo |
 |---|---|
-| Validar el mercado / producto | ETAPA-PRODUCTO (automático) |
-| Elegir ángulos y avatares | ETAPA-0/1B/2 (6 ángulos con voz real del cliente) |
-| Escribir copies y hooks | ETAPA-4 (6 copies con metodología de los mentores) |
-| Costeo y precios | ETAPA-1 (tabla fija, no se inventa) |
-| Decidir la FanPage | ETAPA-FANPAGE (10 páginas, asignación automática) |
-| Armar la estructura de campaña | ETAPA-6 (campaña + 6 conjuntos + 2 anuncios c/u) |
-| Leer métricas y decidir ganador | ETAPA-7 (CPA real en Q, ranking, fatiga) |
-| Decidir cómo escalar y qué creativos crear | ETAPA-8 (PLAN DE ESCALADO según los mentores) |
-| Auditar el rendimiento cada mañana | Tarea programada (recorre el portafolio sola) |
-
-**Sigo haciendo yo:** recolectar creativos + transcribir · generar imágenes/infografías · configurar LucidBot · subir a Meta · apretar activar · **ejecutar las decisiones de escalado** (subir presupuesto, crear los creativos nuevos, Post ID).
+| Validar producto, ángulos, voz del cliente | Recolectar creativos y transcribirlos |
+| Costeo, break-even y precios (`costear.py`) | Dar costo, dosis y foto |
+| Copies, bot, infografías (prompts), plan de campaña | Generar/renderizar imágenes |
+| Publicar estructura en Meta (PAUSED) | Activar a las 4 AM |
+| Bajar data, calcular CPA con intervalo y emitir órdenes | **Confirmar cada orden** |
+| Medir cierre, fatiga, concepto ganador | Configurar y cambiar el flujo en LucidBot |
 
 ---
 
-## 💡 SOBRE TESTEAR OFERTAS (tu duda del tablero)
+## 💡 SOBRE TESTEAR OFERTAS
 
-Tu sistema viejo tenía 3 métodos de oferta (M1 precios normales, M2 una unidad cara para que el combo se vea barato, M3 solo 2x1 / 4x2). **El sistema nuevo usa UNA sola oferta en Fase 1 a propósito** — y está bien así:
-
-- En **Fase 1 (testeo)** lo único que se mide es **qué ÁNGULO gana**. Si meto varias ofertas, contamino la data: no sabría si ganó el ángulo o ganó el precio. Por eso los 6 conjuntos llevan el mismo presupuesto y la misma oferta.
-- **Testear ofertas SÍ tiene lugar — pero en Fase 2 o después,** ya con el ángulo ganador y el producto validado. Ahí tu lógica vieja sirve: M3 (combos) para productos que la gente ya conoce (magnesio, etc.), M2 (ancla de precio) para productos donde quiero subir el ticket. Tu intuición era correcta: **primero valido el producto, después pruebo ofertas.**
-
-> Recomendación: el testeo de ofertas vive en **FASE 2 / escalado**, ya con el ángulo ganador. El `ESCALADO_PLAYBOOK.md` incluye "subir el precio gradual" como palanca, y ETAPA-8 (motor de escalado) decide cuándo. Hoy enfocate en el ciclo de arriba para no fragmentar la data.
+En **FASE 1** se mide solo el **ángulo**: una sola oferta en los 6 conjuntos, si no se contamina la
+data. Testear ofertas (combos, ancla de precio) tiene lugar **después**, con el ángulo ganador
+(FASE 2 en adelante). «Subir el precio gradual» es una palanca de FASE 4.
 
 ---
 
-## 📌 CHECKLIST CORTO PARA EL TABLERO
+## 📌 CHECKLIST CORTO
 
 ```
-0. RECOLECTO  → 20 creativos (10 TikTok + 10 Meta) → transcribo en Gemini → foto + costo Q + dosis
-1. ARRANCO    → chat → "1" → INPUTS CONGELADOS (producto, costo, dosis, imagen)
-2. EJECUTO    → 1_HACER_MANUAL.txt: imágenes-ad + 3 infografías + LucidBot + subir a Meta
-3. LANZO      → activo campaña 4 AM (6 conjuntos, 2 anuncios c/u, $1.59)
-              → cada mañana el sistema audita solo (ETAPA-7 informe + ETAPA-8 plan de escalado) → yo ejecuto
-4. FASE 2     → chat → "2" → ángulo ganador + métricas → escalo
+0. RECOLECTO  → ≥6 transcripciones + foto + costo + dosis (+ mercado)
+1. FASE 1     → 1_HACER_MANUAL.txt: imágenes + infografías + LucidBot → activo 4 AM
+2. FASE 2     → ángulo ganador por VENTA → 10 conceptos → activo 4 AM
+3. FASE 3     → aplico el CAMBIO_BOT en LucidBot → mido el cierre
+4. FASE 4     → 1-1-7 CBO + surfing diario con mi confirmación
+   Cada día   → reviso las órdenes y confirmo una por una
               ⚠️ NADA SE LANZA SOLO. EL BOTÓN LO APRIETO YO.
 ```

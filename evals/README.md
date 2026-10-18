@@ -1,8 +1,8 @@
 # evals/ — baseline congelada de outputs reales, por etapa
 
 Por qué existe: CLAUDE.md prohíbe podar la prosa de `.claude/agents/ETAPA-*.md`
-hasta que exista un eval — y hasta hoy (T11, `odd/tasks/g07-cimientos.md`) no
-existía ninguno, así que las 17 prompts quedaban congeladas para siempre. Esta
+hasta que exista un eval — y hasta T11 (`odd/tasks/g07-cimientos.md`) no
+existía ninguno, así que los prompts de las etapas quedaban congelados. Esta
 carpeta es ese eval: una foto de outputs REALES ya guardados en `PRODUCTOS/`,
 más un assert determinista por etapa que dice si ese output cumple su propio
 contrato. No mide "calidad de redacción" — mide que la ESTRUCTURA del output
@@ -44,7 +44,12 @@ El runner propio y `promptfoo eval` leen la MISMA config y deben coincidir en
 qué test pasa y cuál falla: el provider `echo` + `assert type: python` es
 compatible con ambos.
 
-## Cobertura — 11 de las 17 etapas
+## Cobertura por etapa
+
+> Hoy el sistema tiene **15 etapas** (`.claude/agents/`). `etapa-fanpage` y `etapa-8` ya no existen como
+> agentes: sus fixtures se conservan como contrato histórico (`etapa-fanpage` → hoy lo emite
+> `etapa-2`; `etapa-8` → absorbida por `etapa-7`). Los conteos «de 17» más abajo son de esa
+> fecha y se mantienen tal cual como registro de cobertura.
 
 | Etapa | Productos cubiertos | Fixture (fuente real) |
 |---|---|---|
