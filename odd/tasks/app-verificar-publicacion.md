@@ -19,8 +19,7 @@ reachable internally (`publicacion.verificar`, visibilidad interna, no `--ya-act
 - Work-unit commits, conventional, no AI attribution.
 
 ## Authorized scope
-Tasks T1-T4 only. Writing to Meta (rename "- Copia", activate, pause/scale), `control_d1.py` and the CAMBIO_BOT
-form are proposals pending the operator's decision (token scope), NOT in scope.
+Tasks T1-T8. Operator decision 2026-10-18: NO write-scoped Meta token; Meta writes stay on the MCP via Claude. CAMBIO_BOT form remains a proposal, NOT in scope.
 
 ## Tasks
 - [x] T1 `Ads/_TOOLS/snapshot_meta.py` + test: read campaigns/ad sets/ads of one account via Graph (`ads_read`),
@@ -31,6 +30,13 @@ form are proposals pending the operator's decision (token scope), NOT in scope.
       Ads/_INGESTA/META/) + manifest validation passes + backend test.
 - [x] T4 Frontend button on the Fase2 screen using `api.pedirAccion` + `ProgresoDelTrabajo`, with a vitest test.
 - [x] T5 Audit report to the operator (done by two read-only mappers; summarized in chat).
+- [ ] T6 (accepted change 2026-10-18: writes to Meta stay on the MCP; the app only reads/verifies and warns when Claude is needed)
+      `verificar_campana_publicada.py` / the gate: when the result needs a Meta write (e.g. '- Copia' to rename), return a structured
+      `requiere_claude` item {motivo, pedirle_a_claude} with the exact Spanish sentence to ask Claude.
+- [ ] T7 `Ads/_TOOLS/control_d1.py` + test: per ad set launched in the last 3 days, Meta delivery (from _FACT_ENTREGA) vs LucidSales
+      activity (from _FACT_VENTAS); flag CIEGO / SIN_ENTREGA with the same `requiere_claude` shape. Read-only. Report honestly any
+      limitation (e.g. LucidSales messages null on same-day exports).
+- [ ] T8 App: show `requiere_claude` items only when present (no noise) on the Hoy screen and in the verify job result; vitest + backend test.
 
 ## Acceptance
 - Running the button against GTR7 campaign C returns OK for 23/23 objects and no "- Copia".
