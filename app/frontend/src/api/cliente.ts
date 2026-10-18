@@ -40,6 +40,7 @@ export type Cuenta = components["schemas"]["Cuenta"];
 export type FanPage = components["schemas"]["FanPage"];
 export type OrdenItem = components["schemas"]["OrdenItem"];
 export type OrdenesRespuesta = components["schemas"]["OrdenesRespuesta"];
+export type AvisoClaude = components["schemas"]["AvisoClaude"];
 export type ParametroMotor = components["schemas"]["ParametroMotor"];
 export type Ganador = components["schemas"]["Ganador"];
 export type Resultados = components["schemas"]["Resultados"];

@@ -1120,3 +1120,54 @@ test("verificar: sin paquetes no hay botón, y deshabilitada se ve pero no se ap
   const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
   botones.forEach((b) => expect(b).toBeDisabled());
 });
+
+test("verificar: el resultado con requiere_claude muestra el motivo y la frase con Copiar; sin él, nada", async () => {
+  const pedido =
+    "Renombrá en la cuenta GTR7 los anuncios con '- Copia' de la campaña C a su nombre del paquete: 123 -> X A ~ Y.";
+  const escribir = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: escribir }, configurable: true });
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConPublicaciones();
+  respuestas[`POST /api/acciones/${ACCION_VERIFICAR}`] = {
+    job_id: "job-ver-2", accion_id: ACCION_VERIFICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-ver-2", url_eventos: "/api/trabajos/job-ver-2/eventos",
+  };
+  respuestas["GET /api/trabajos/job-ver-2"] = {
+    job_id: "job-ver-2", estado: "FALLIDO",
+    unidades: [{ json: {
+      ok: false,
+      mensaje_operador: "Hay 1 anuncio(s) con nombre '- Copia'.",
+      requiere_claude: [{
+        codigo: "RENOMBRAR_COPIA", severidad: "alta",
+        motivo: "Hay 1 anuncio(s) con '- Copia' en Meta.", pedirle_a_claude: pedido,
+        objetos: [{ id: "123", nombre: "X A ~ Y - Copia" }],
+      }],
+    } }],
+  };
+  renderizar("TINNIDROP");
+  const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
+  fireEvent.click(botones[1]);
+
+  const tarjeta = await within(screen.getByTestId("verificar-C")).findByTestId("necesita-claude");
+  expect(within(tarjeta).getByText("Hay 1 anuncio(s) con '- Copia' en Meta.")).toBeInTheDocument();
+  expect(within(tarjeta).getByText(pedido)).toBeInTheDocument();
+  fireEvent.click(within(tarjeta).getByRole("button", { name: "Copiar" }));
+  await waitFor(() => expect(escribir).toHaveBeenCalledWith(pedido));
+  expect(within(screen.getByTestId("verificar-A")).queryByTestId("necesita-claude")).toBeNull();
+});
+
+test("verificar: un resultado sin requiere_claude (o vacío) no muestra la tarjeta", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConPublicaciones();
+  respuestas[`POST /api/acciones/${ACCION_VERIFICAR}`] = {
+    job_id: "job-ver-3", accion_id: ACCION_VERIFICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-ver-3", url_eventos: "/api/trabajos/job-ver-3/eventos",
+  };
+  respuestas["GET /api/trabajos/job-ver-3"] = {
+    job_id: "job-ver-3", estado: "EXITO",
+    unidades: [{ json: { ok: true, mensaje_operador: "Todo en orden.", requiere_claude: [] } }],
+  };
+  renderizar("TINNIDROP");
+  const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
+  fireEvent.click(botones[0]);
+  await within(screen.getByTestId("verificar-A")).findByTestId("mensaje-verificacion");
+  expect(screen.queryByTestId("necesita-claude")).toBeNull();
+});

@@ -634,3 +634,34 @@ test("una orden de Colombia escribe su dinero en pesos, sin decimales", async ()
   expect(within(tarjeta).getByText("$ 52.500")).toBeInTheDocument();
   expect(within(tarjeta).getByTestId("bandera-mercado")).toHaveTextContent("CO");
 });
+
+// ── «Necesita Claude»: solo existe cuando el backend trae avisos ─────────────────────────────
+
+const AVISO_CIEGO = {
+  codigo: "CONJUNTO_CIEGO",
+  severidad: "alta",
+  motivo: "El conjunto X gastó y Meta registra conversaciones, pero LucidSales no registra ninguna.",
+  pedirle_a_claude:
+    "Pausá por MCP el conjunto X (123): Meta registra conversaciones y LucidSales ninguna, el tracking está ciego.",
+  objetos: [{ id: "123", nombre: "X" }],
+};
+
+test("necesita Claude: sin avisos no se pinta nada", async () => {
+  servirBase({ "/api/ordenes": { ...ORDENES_BASE, avisos_claude: [] } });
+  montar();
+  await screen.findByTestId("franja-hoy");
+  expect(screen.queryByTestId("necesita-claude")).toBeNull();
+  expect(screen.queryByText("Necesita Claude")).toBeNull();
+});
+
+test("necesita Claude: con un aviso muestra el motivo y copia la frase exacta", async () => {
+  const escribir = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: escribir }, configurable: true });
+  servirBase({ "/api/ordenes": { ...ORDENES_BASE, avisos_claude: [AVISO_CIEGO] } });
+  montar();
+  const tarjeta = await screen.findByTestId("necesita-claude");
+  expect(within(tarjeta).getByText(AVISO_CIEGO.motivo)).toBeInTheDocument();
+  expect(within(tarjeta).getByText(AVISO_CIEGO.pedirle_a_claude)).toBeInTheDocument();
+  fireEvent.click(within(tarjeta).getByRole("button", { name: "Copiar" }));
+  await waitFor(() => expect(escribir).toHaveBeenCalledWith(AVISO_CIEGO.pedirle_a_claude));
+});

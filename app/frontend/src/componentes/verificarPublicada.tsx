@@ -8,7 +8,8 @@
  */
 import { useCallback } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { api, type PublicacionFase2 } from "../api/cliente";
+import { api, type AvisoClaude, type PublicacionFase2 } from "../api/cliente";
+import { NecesitaClaude } from "./necesitaClaude";
 import { ProgresoDelTrabajo, useLanzarAccion } from "./generarPrompts";
 import { Button } from "@/components/ui/button";
 
@@ -16,17 +17,23 @@ function MensajeDelTrabajo({ trabajo }: { trabajo: string }) {
   const detalle = useQuery({ queryKey: ["trabajo", trabajo], queryFn: () => api.trabajo(trabajo) });
   const estado = detalle.data?.estado;
   if (estado !== "EXITO" && estado !== "FALLIDO") return null;
-  const unidad = (detalle.data?.unidades?.[0] ?? {}) as { json?: { mensaje_operador?: string } };
+  const unidad = (detalle.data?.unidades?.[0] ?? {}) as {
+    json?: { mensaje_operador?: string; requiere_claude?: AvisoClaude[] };
+  };
   const mensaje = unidad.json?.mensaje_operador;
   if (!mensaje) return null;
   return (
-    <p
-      role="status"
-      data-testid="mensaje-verificacion"
-      className={estado === "EXITO" ? "text-xs text-emerald-300" : "text-xs text-rose-300"}
-    >
-      {mensaje}
-    </p>
+    <>
+      <p
+        role="status"
+        data-testid="mensaje-verificacion"
+        className={estado === "EXITO" ? "text-xs text-emerald-300" : "text-xs text-rose-300"}
+      >
+        {mensaje}
+      </p>
+      {/* Solo aparece si el resultado trae algo que exige una escritura en Meta por MCP. */}
+      <NecesitaClaude avisos={unidad.json?.requiere_claude} />
+    </>
   );
 }
 

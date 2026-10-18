@@ -1017,6 +1017,29 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /**
+         * AvisoClaude
+         * @description Algo que la app NO puede hacer sola (toda escritura en Meta va por el MCP en una sesión de
+         *     Claude). Forma de `Ads/_TOOLS/requiere_claude.py`; `pedirle_a_claude` es la frase exacta que el
+         *     operador pega.
+         */
+        AvisoClaude: {
+            /** Codigo */
+            codigo: string;
+            /** Severidad */
+            severidad: string;
+            /** Motivo */
+            motivo: string;
+            /** Pedirle A Claude */
+            pedirle_a_claude: string;
+            /**
+             * Objetos
+             * @default []
+             */
+            objetos: components["schemas"]["ObjetoAviso"][];
+        } & {
+            [key: string]: unknown;
+        };
         /** BancoFacebook */
         BancoFacebook: {
             /** Usd */
@@ -2713,6 +2736,21 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** ObjetoAviso */
+        ObjetoAviso: {
+            /**
+             * Id
+             * @default
+             */
+            id: string;
+            /**
+             * Nombre
+             * @default
+             */
+            nombre: string;
+        } & {
+            [key: string]: unknown;
+        };
         /** OrdenItem */
         OrdenItem: {
             /** Producto Key */
@@ -2837,6 +2875,11 @@ export interface components {
              * @default []
              */
             parametros_motor: components["schemas"]["ParametroMotor"][];
+            /**
+             * Avisos Claude
+             * @default []
+             */
+            avisos_claude: components["schemas"]["AvisoClaude"][];
         } & {
             [key: string]: unknown;
         };

@@ -38,6 +38,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
 import { tituloDelPasoActual, trabajoPendientePorProducto } from "../componentes/resumen";
+import { NecesitaClaude } from "../componentes/necesitaClaude";
 import { LineaDeSituacion, responsableEnPalabras } from "../componentes/situacion";
 import { cn, Problema } from "../componentes/ui";
 import { BanderaMercado, SelectorMercado, usarMercadoSeleccionado } from "../componentes/mercado";
@@ -683,6 +684,7 @@ function SeccionOrdenes({ mercado }: { mercado: string }) {
 
   return (
     <div className="space-y-4">
+      <NecesitaClaude avisos={ordenesQuery.data?.avisos_claude} />
       <FranjaDelDia ordenes={ordenes} pendientesDeTrabajos={pendientes} onIrASeccion={irASeccion} />
       {mercado === TODOS && Object.keys(porMercado).length > 1 && (
         <p data-testid="resumen-por-mercado" className="text-xs text-muted-foreground">

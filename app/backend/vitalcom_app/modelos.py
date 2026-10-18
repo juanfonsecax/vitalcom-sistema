@@ -509,6 +509,23 @@ class ParametroMotor(Base):
     por_que: str = ""
 
 
+class ObjetoAviso(Base):
+    id: str = ""
+    nombre: str = ""
+
+
+class AvisoClaude(Base):
+    """Algo que la app NO puede hacer sola (toda escritura en Meta va por el MCP en una sesión de
+    Claude). Forma de `Ads/_TOOLS/requiere_claude.py`; `pedirle_a_claude` es la frase exacta que el
+    operador pega."""
+
+    codigo: str
+    severidad: str
+    motivo: str
+    pedirle_a_claude: str
+    objetos: list[ObjetoAviso] = []
+
+
 class OrdenesRespuesta(Base):
     schema_version: str = Field(alias="schema", default="")
     rezago_dias: int = 0
@@ -521,6 +538,9 @@ class OrdenesRespuesta(Base):
     # Los relojes del motor (ventana_dias, ventana_fatiga_dias, duracion_testeo_fase2_dias, …),
     # leídos tal cual de `_PARAMETROS_DECISION.csv`: la pantalla los explica, no los inventa.
     parametros_motor: list[ParametroMotor] = []
+    # «Necesita Claude»: conjuntos ciegos del control D+1 (`control_d1.py`). Vacío = la pantalla no
+    # muestra nada.
+    avisos_claude: list[AvisoClaude] = []
 
 
 class GanadorPaso(Base):

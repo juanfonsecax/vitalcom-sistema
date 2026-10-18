@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import csv
 import json
+import logging
 import re
 import os
 import subprocess
@@ -156,6 +157,23 @@ def _modulo_mercado():
     import mercado as resolver  # noqa: E402
 
     return resolver
+
+
+def avisos_claude() -> list[dict[str, Any]]:
+    """Lo que hoy exige una sesión de Claude (forma `requiere_claude`): los conjuntos CIEGOS del
+    control D+1. Importa `control_d1.py` DEL SISTEMA (su dueño; la app no repite la regla). Solo
+    lectura. Sin data o con cualquier falla del control devuelve [] y lo deja en el log: un aviso
+    que no se puede calcular no debe tumbar la pantalla Hoy."""
+    herramientas = str(base() / "Ads" / "_TOOLS")
+    if herramientas not in sys.path:
+        sys.path.insert(0, herramientas)
+    try:
+        import control_d1  # noqa: E402
+
+        return list(control_d1.avisos_claude())
+    except Exception:  # noqa: BLE001 — ver docstring
+        logging.getLogger(__name__).exception("control_d1 falló; avisos_claude queda vacío")
+        return []
 
 
 def _perfil_de_fila(fila: dict[str, str]) -> dict[str, Any]:
