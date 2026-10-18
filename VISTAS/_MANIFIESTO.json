@@ -1730,6 +1730,57 @@
     "salida": "texto"
    },
    {
+    "id": "publicacion.verificar_publicada",
+    "rotulo": "Ya publiqué la campaña: verificar en Meta y grabar los ids",
+    "nodo": null,
+    "ejecutor_tipo": "script",
+    "name": null,
+    "comando": [
+     "python",
+     "Ads/_TOOLS/verificar_campana_publicada.py",
+     "--producto",
+     "{producto_key}",
+     "--fase",
+     "{fase}",
+     "--brazo",
+     "{brazo}",
+     "--json"
+    ],
+    "parametros": {
+     "producto_key": {
+      "tipo": "producto_key",
+      "requerido": true
+     },
+     "fase": {
+      "tipo": "enum",
+      "valores": [
+       "1",
+       "2",
+       "4"
+      ],
+      "requerido": true
+     },
+     "brazo": {
+      "tipo": "texto",
+      "patron": "^[A-Z]{1,8}$",
+      "requerido": true
+     }
+    },
+    "requiere_confirmacion": false,
+    "aprobacion": "ninguna",
+    "toca_meta": false,
+    "escribe": [
+     "PRODUCTOS/",
+     "Ads/_INGESTA/META/"
+    ],
+    "idempotente": true,
+    "precondicion": "ninguna",
+    "visibilidad": "boton",
+    "habilitada": true,
+    "tiempo_max_s": 120,
+    "salida": "json"
+   },
+   {
     "id": "activacion.orden",
     "rotulo": "Generar la orden de activación a las 4 AM",
     "nodo": null,
