@@ -859,6 +859,27 @@ def _marcar(producto_key: str, angulo_key: str, listos: int) -> dict[str, Any] |
     }
 
 
+ACCION_VERIFICAR_PUBLICADA = "publicacion.verificar_publicada"
+BRAZOS_PUBLICABLES_FASE2 = ("A", "B", "C")
+
+
+def _publicaciones_fase2(producto_key: str) -> list[dict[str, Any]]:
+    """Un botón «Ya publiqué la campaña — verificar» por brazo de FASE 2 que tenga su paquete
+    `_PUBLICACION_F2<brazo>.json` en la carpeta del producto. Sin paquete no hay nada que verificar."""
+    carpeta = fila_de_producto(producto_key).get("slug_carpeta") or producto_key
+    habilitada = _accion_habilitada(ACCION_VERIFICAR_PUBLICADA)
+    return [
+        {
+            "brazo": brazo,
+            "accion_id": ACCION_VERIFICAR_PUBLICADA,
+            "parametros": {"producto_key": producto_key, "fase": "2", "brazo": brazo},
+            "habilitada": habilitada,
+        }
+        for brazo in BRAZOS_PUBLICABLES_FASE2
+        if ruta("PRODUCTOS", carpeta, f"_PUBLICACION_F2{brazo}.json").is_file()
+    ]
+
+
 ACCION_ARMAR_PROMPTS = "producto.armar_prompts_fase2"
 ACCION_CONCEPTOS = "nodo.F2.conceptos"
 # Los datos de `datos_producto.py` que frenan a `armar_prompts_fase2.py` (los mismos que él bloquea).
@@ -1019,6 +1040,7 @@ def fase2_detalle(producto_key: str) -> dict[str, Any]:
         "conceptos_requeridos": requeridos,
         "conceptos_requeridos_total": requeridos_total,
         "campanas": [{"brazo": b, "conceptos": n} for b, n in estructura],
+        "publicaciones": _publicaciones_fase2(producto_key),
         "conceptos_generados": generados,
         "conceptos_faltan": max(0, requeridos_total - generados),
         "fase_validada": bool((flujo_data.get("avance") or {}).get("ok")),

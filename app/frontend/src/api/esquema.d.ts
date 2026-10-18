@@ -1474,7 +1474,7 @@ export interface components {
         /**
          * ConversionDelMes
          * @description La tasa USD -> moneda local con la que el script convirtió la pauta y los gastos del mes, y la
-         *     regla que la dio (VENTANA | ULTIMA_CONOCIDA | PARAMETRO). `costo_q` es informativo: ya está
+         *     regla que la dio (VENTANA | ULTIMA_CONOCIDA | PRIMERA_POSTERIOR | PARAMETRO). `costo_q` es informativo: ya está
          *     dentro de la publicidad.
          */
         ConversionDelMes: {
@@ -1983,15 +1983,24 @@ export interface components {
              */
             campanas: components["schemas"]["CampanaFase2"][];
             /**
+             * Publicaciones
+             * @default []
+             */
+            publicaciones: components["schemas"]["PublicacionFase2"][];
+            /**
              * Conceptos Generados
              * @default 0
              */
             conceptos_generados: number;
             /**
-             * Conceptos Faltan
+             * Conceptos Requeridos Total
              * @default 0
              */
             conceptos_requeridos_total: number;
+            /**
+             * Conceptos Faltan
+             * @default 0
+             */
             conceptos_faltan: number;
             /**
              * Fase Validada
@@ -3222,6 +3231,31 @@ export interface components {
             pauta_q: number;
             /** Ganancia Q */
             ganancia_q?: number | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /**
+         * PublicacionFase2
+         * @description El botón «Ya publiqué la campaña — verificar» de un brazo de FASE 2 que ya tiene su paquete de
+         *     publicación (`contratos._publicaciones_fase2`).
+         */
+        PublicacionFase2: {
+            /** Brazo */
+            brazo: string;
+            /** Accion Id */
+            accion_id: string;
+            /**
+             * Parametros
+             * @default {}
+             */
+            parametros: {
+                [key: string]: string;
+            };
+            /**
+             * Habilitada
+             * @default false
+             */
+            habilitada: boolean;
         } & {
             [key: string]: unknown;
         };

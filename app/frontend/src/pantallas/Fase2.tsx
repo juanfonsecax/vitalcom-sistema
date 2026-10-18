@@ -28,6 +28,7 @@ import { Input } from "@/components/ui/input";
 import { Cargando, Chip, Info, Problema, Tarjeta } from "../componentes/ui";
 import { Lightbox } from "../componentes/copiar";
 import { GaleriaDeConceptos, OtrosConceptos } from "../componentes/galeriaConceptos";
+import { VerificarPublicadas } from "../componentes/verificarPublicada";
 
 export function Fase2({ clave: claveProp }: { clave?: string }) {
   const params = useParams({ strict: false }) as { clave?: string };
@@ -135,6 +136,9 @@ export function Fase2({ clave: claveProp }: { clave?: string }) {
           </Link>
         </div>
       </div>
+
+      {/* Campaña publicada a mano: un botón por brazo con paquete (el backend dice cuáles). */}
+      <VerificarPublicadas publicaciones={d.publicaciones} clave={clave} />
 
       {/* El estado de la fase en una línea: dónde está, qué la frena y quién lo hace. */}
       <LineaDeSituacion

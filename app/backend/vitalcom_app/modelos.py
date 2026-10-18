@@ -595,6 +595,16 @@ class MarcarGenerados(Base):
     habilitada: bool = False
 
 
+class PublicacionFase2(Base):
+    """El botón «Ya publiqué la campaña — verificar» de un brazo de FASE 2 que ya tiene su paquete de
+    publicación (`contratos._publicaciones_fase2`)."""
+
+    brazo: str
+    accion_id: str
+    parametros: dict[str, str] = {}
+    habilitada: bool = False
+
+
 class AnguloFase2(Base):
     """Un ángulo que el producto testeó en FASE 1, con su rol en FASE 2 y el veredicto del motor
     (`decidir.py`) pasado tal cual. Ver `contratos.angulos_de_fase2`."""
@@ -697,6 +707,7 @@ class Fase2Detalle(Base):
     total_conceptos: int = 0
     conceptos_requeridos: int = 0
     campanas: list[CampanaFase2] = []
+    publicaciones: list[PublicacionFase2] = []
     conceptos_generados: int = 0
     conceptos_requeridos_total: int = 0
     conceptos_faltan: int = 0
