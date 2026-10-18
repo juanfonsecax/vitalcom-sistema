@@ -32,7 +32,11 @@ def obtener_ordenes(producto: str | None = Query(None, description="Filtrar órd
             if clave not in perfiles:
                 perfiles[clave] = contratos.perfil_de_producto(clave)
             orden.update(perfiles[clave])
-        return OrdenesRespuesta(**data, parametros_motor=contratos.parametros_decision())
+        # Los avisos son del sistema entero (no de un producto): solo viajan en la vista sin filtro.
+        avisos = [] if producto else contratos.avisos_claude()
+        return OrdenesRespuesta(
+            **data, parametros_motor=contratos.parametros_decision(), avisos_claude=avisos
+        )
     except contratos.ContratoAusente as error:
         raise HTTPException(status_code=422, detail=str(error)) from error
 

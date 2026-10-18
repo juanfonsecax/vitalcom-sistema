@@ -1060,3 +1060,114 @@ test("miniatura: un click la abre ampliada", async () => {
   const ampliada = screen.getByAltText("Imagen ampliada") as HTMLImageElement;
   expect(ampliada.getAttribute("src")).toBe("/api/productos/TINNIDROP/media/TINNIDROP_F2_C01.png");
 });
+
+// ── «Ya publiqué la campaña — verificar»: un botón por brazo con paquete ──────────────────────
+
+const ACCION_VERIFICAR = "publicacion.verificar_publicada";
+
+function fase2ConPublicaciones() {
+  const publicacion = (brazo: string) => ({
+    brazo,
+    accion_id: ACCION_VERIFICAR,
+    parametros: { producto_key: "TINNIDROP", fase: "2", brazo },
+    habilitada: true,
+  });
+  return { ...FASE2_MOCK, publicaciones: [publicacion("A"), publicacion("C")] };
+}
+
+test("verificar: un botón por brazo con paquete, lanza la acción con su brazo y muestra el mensaje", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConPublicaciones();
+  respuestas[`POST /api/acciones/${ACCION_VERIFICAR}`] = {
+    job_id: "job-ver-1", accion_id: ACCION_VERIFICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-ver-1", url_eventos: "/api/trabajos/job-ver-1/eventos",
+  };
+  respuestas["GET /api/trabajos/job-ver-1"] = {
+    job_id: "job-ver-1", estado: "EXITO",
+    unidades: [{ json: { ok: true, mensaje_operador: "Todo en orden: 23 de 23 objetos existen en Meta." } }],
+  };
+  renderizar("TINNIDROP");
+
+  const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
+  expect(botones.map((b) => b.textContent)).toEqual([
+    "Ya publiqué la campaña A — verificar",
+    "Ya publiqué la campaña C — verificar",
+  ]);
+  fireEvent.click(botones[1]);
+
+  await waitFor(() => {
+    const llamada = llamadasFetch.find((l) => l.url === `/api/acciones/${ACCION_VERIFICAR}` && l.metodo === "POST");
+    expect(llamada?.cuerpo).toEqual({
+      parametros: { producto_key: "TINNIDROP", fase: "2", brazo: "C" },
+      confirmado: false,
+    });
+  });
+  const mensaje = await within(screen.getByTestId("verificar-C")).findByTestId("mensaje-verificacion");
+  expect(mensaje).toHaveTextContent("Todo en orden: 23 de 23 objetos existen en Meta.");
+  expect(within(screen.getByTestId("verificar-A")).queryByTestId("mensaje-verificacion")).toBeNull();
+});
+
+test("verificar: sin paquetes no hay botón, y deshabilitada se ve pero no se aprieta", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = FASE2_MOCK;
+  const vista = renderizar("TINNIDROP");
+  await screen.findByTestId("estado-de-fase");
+  expect(screen.queryByRole("button", { name: /Ya publiqué la campaña/ })).toBeNull();
+  vista.unmount();
+
+  const deshabilitada = fase2ConPublicaciones();
+  deshabilitada.publicaciones = deshabilitada.publicaciones.map((p) => ({ ...p, habilitada: false }));
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = deshabilitada;
+  renderizar("TINNIDROP");
+  const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
+  botones.forEach((b) => expect(b).toBeDisabled());
+});
+
+test("verificar: el resultado con requiere_claude muestra el motivo y la frase con Copiar; sin él, nada", async () => {
+  const pedido =
+    "Renombrá en la cuenta GTR7 los anuncios con '- Copia' de la campaña C a su nombre del paquete: 123 -> X A ~ Y.";
+  const escribir = vi.fn().mockResolvedValue(undefined);
+  Object.defineProperty(navigator, "clipboard", { value: { writeText: escribir }, configurable: true });
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConPublicaciones();
+  respuestas[`POST /api/acciones/${ACCION_VERIFICAR}`] = {
+    job_id: "job-ver-2", accion_id: ACCION_VERIFICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-ver-2", url_eventos: "/api/trabajos/job-ver-2/eventos",
+  };
+  respuestas["GET /api/trabajos/job-ver-2"] = {
+    job_id: "job-ver-2", estado: "FALLIDO",
+    unidades: [{ json: {
+      ok: false,
+      mensaje_operador: "Hay 1 anuncio(s) con nombre '- Copia'.",
+      requiere_claude: [{
+        codigo: "RENOMBRAR_COPIA", severidad: "alta",
+        motivo: "Hay 1 anuncio(s) con '- Copia' en Meta.", pedirle_a_claude: pedido,
+        objetos: [{ id: "123", nombre: "X A ~ Y - Copia" }],
+      }],
+    } }],
+  };
+  renderizar("TINNIDROP");
+  const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
+  fireEvent.click(botones[1]);
+
+  const tarjeta = await within(screen.getByTestId("verificar-C")).findByTestId("necesita-claude");
+  expect(within(tarjeta).getByText("Hay 1 anuncio(s) con '- Copia' en Meta.")).toBeInTheDocument();
+  expect(within(tarjeta).getByText(pedido)).toBeInTheDocument();
+  fireEvent.click(within(tarjeta).getByRole("button", { name: "Copiar" }));
+  await waitFor(() => expect(escribir).toHaveBeenCalledWith(pedido));
+  expect(within(screen.getByTestId("verificar-A")).queryByTestId("necesita-claude")).toBeNull();
+});
+
+test("verificar: un resultado sin requiere_claude (o vacío) no muestra la tarjeta", async () => {
+  respuestas["GET /api/productos/TINNIDROP/fase2"] = fase2ConPublicaciones();
+  respuestas[`POST /api/acciones/${ACCION_VERIFICAR}`] = {
+    job_id: "job-ver-3", accion_id: ACCION_VERIFICAR, estado: "ENCOLADO", repetido: false,
+    url_estado: "/api/trabajos/job-ver-3", url_eventos: "/api/trabajos/job-ver-3/eventos",
+  };
+  respuestas["GET /api/trabajos/job-ver-3"] = {
+    job_id: "job-ver-3", estado: "EXITO",
+    unidades: [{ json: { ok: true, mensaje_operador: "Todo en orden.", requiere_claude: [] } }],
+  };
+  renderizar("TINNIDROP");
+  const botones = await screen.findAllByRole("button", { name: /Ya publiqué la campaña/ });
+  fireEvent.click(botones[0]);
+  await within(screen.getByTestId("verificar-A")).findByTestId("mensaje-verificacion");
+  expect(screen.queryByTestId("necesita-claude")).toBeNull();
+});

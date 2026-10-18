@@ -509,6 +509,23 @@ class ParametroMotor(Base):
     por_que: str = ""
 
 
+class ObjetoAviso(Base):
+    id: str = ""
+    nombre: str = ""
+
+
+class AvisoClaude(Base):
+    """Algo que la app NO puede hacer sola (toda escritura en Meta va por el MCP en una sesión de
+    Claude). Forma de `Ads/_TOOLS/requiere_claude.py`; `pedirle_a_claude` es la frase exacta que el
+    operador pega."""
+
+    codigo: str
+    severidad: str
+    motivo: str
+    pedirle_a_claude: str
+    objetos: list[ObjetoAviso] = []
+
+
 class OrdenesRespuesta(Base):
     schema_version: str = Field(alias="schema", default="")
     rezago_dias: int = 0
@@ -521,6 +538,9 @@ class OrdenesRespuesta(Base):
     # Los relojes del motor (ventana_dias, ventana_fatiga_dias, duracion_testeo_fase2_dias, …),
     # leídos tal cual de `_PARAMETROS_DECISION.csv`: la pantalla los explica, no los inventa.
     parametros_motor: list[ParametroMotor] = []
+    # «Necesita Claude»: conjuntos ciegos del control D+1 (`control_d1.py`). Vacío = la pantalla no
+    # muestra nada.
+    avisos_claude: list[AvisoClaude] = []
 
 
 class GanadorPaso(Base):
@@ -592,6 +612,16 @@ class MarcarGenerados(Base):
     accion_id: str
     parametros: dict[str, str] = {}
     listos: int = 0
+    habilitada: bool = False
+
+
+class PublicacionFase2(Base):
+    """El botón «Ya publiqué la campaña — verificar» de un brazo de FASE 2 que ya tiene su paquete de
+    publicación (`contratos._publicaciones_fase2`)."""
+
+    brazo: str
+    accion_id: str
+    parametros: dict[str, str] = {}
     habilitada: bool = False
 
 
@@ -697,6 +727,7 @@ class Fase2Detalle(Base):
     total_conceptos: int = 0
     conceptos_requeridos: int = 0
     campanas: list[CampanaFase2] = []
+    publicaciones: list[PublicacionFase2] = []
     conceptos_generados: int = 0
     conceptos_requeridos_total: int = 0
     conceptos_faltan: int = 0
