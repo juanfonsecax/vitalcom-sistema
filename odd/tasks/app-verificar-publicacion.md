@@ -30,7 +30,7 @@ form are proposals pending the operator's decision (token scope), NOT in scope.
 - [x] T3 Manifest action `publicacion.verificar_publicada` (visibilidad boton, tiempo_max_s 120, escribe PRODUCTOS/ +
       Ads/_INGESTA/META/) + manifest validation passes + backend test.
 - [x] T4 Frontend button on the Fase2 screen using `api.pedirAccion` + `ProgresoDelTrabajo`, with a vitest test.
-- [ ] T5 Audit report to the operator (done by two read-only mappers; summarized in chat).
+- [x] T5 Audit report to the operator (done by two read-only mappers; summarized in chat).
 
 ## Acceptance
 - Running the button against GTR7 campaign C returns OK for 23/23 objects and no "- Copia".
@@ -42,5 +42,10 @@ form are proposals pending the operator's decision (token scope), NOT in scope.
 - Commits: T1 0452727 · T2 080692c (+ cbc1666 detalle fix) · T3 c10f2bb · T4 382bf5c.
 - Mirror: Engram topic `odd/app-verificar-publicacion/tasks`.
 
+## Verification evidence
+- 2026-10-18 real run against GTR7 (read-only Graph, ads_read): `verificar_campana_publicada.py --producto CLEARSTEM --fase 2 --brazo C --sin-escribir --json` -> ok, 23/23 objects, no '- Copia'.
+- Found and fixed in that run: sys.stdout capture closed the real buffer (commit a3e64ce, regression test added).
+- Tests: test_snapshot_meta 7 OK, test_verificar_campana_publicada OK, manifest valid, backend 35 + frontend 219 (writer report).
+
 ## Next step
-T1-T4 done; pending: real-account run of the button (needs META_SYSTEM_USER_TOKEN) and operator decision on write scope.
+Operator decision on a write-scoped Meta token (rename '- Copia', activate, pause/scale from the app); then control_d1.py.
