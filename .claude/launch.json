@@ -4,15 +4,71 @@
     {
       "name": "vistas",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8777"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8777"
+      ],
       "port": 8777,
       "url": "http://localhost:8777"
     },
     {
+      "name": "app-api",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": [
+        "--directory",
+        "../SISTEMA-app/app/backend",
+        "run",
+        "uvicorn",
+        "vitalcom_app.main:app",
+        "--port",
+        "8000"
+      ],
+      "env": {
+        "VITALCOM_BASE": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA"
+      },
+      "port": 8000
+    },
+    {
+      "name": "app-api-worktree",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": [
+        "--directory",
+        "../SISTEMA-app/app/backend",
+        "run",
+        "uvicorn",
+        "vitalcom_app.main:app",
+        "--port",
+        "8001"
+      ],
+      "env": {
+        "VITALCOM_BASE": "C:\\Users\\juand\\Downloads\\AGENTES LUCID\\Profesional en Eccomerce gestion\\SISTEMA-app"
+      },
+      "port": 8001
+    },
+    {
       "name": "app-web",
       "runtimeExecutable": "pnpm",
-      "runtimeArgs": ["--dir", "app/frontend", "dev"],
+      "runtimeArgs": [
+        "--dir",
+        "../SISTEMA-app/app/frontend",
+        "dev"
+      ],
       "port": 5173
+    },
+    {
+      "name": "app-rama",
+      "runtimeExecutable": "uv",
+      "runtimeArgs": [
+        "--directory",
+        "app/backend",
+        "run",
+        "uvicorn",
+        "vitalcom_app.main:app",
+        "--port",
+        "8010"
+      ],
+      "port": 8010
     }
   ]
 }

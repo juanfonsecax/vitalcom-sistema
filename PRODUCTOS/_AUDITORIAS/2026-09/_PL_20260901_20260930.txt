@@ -1,0 +1,96 @@
+════════════════════════════════════════════════════════════════════
+ESTADO DE RESULTADOS — 2026-09-01 → 2026-09-30
+MERCADO GT (GTQ) — Dropi y el banco Relay solo cubren este mercado
+VISTA A · COHORTE (por fecha de ORDEN) — «¿rindió la pauta de esta ventana?»
+Generado 2026-10-13 · norma: DOCTRINA/CONTABILIDAD.md · parámetros: _PARAMETROS_FINANZAS.csv
+════════════════════════════════════════════════════════════════════
+
+✅ COHORTE MADURO (13 días de edad ≥ 10 de la norma) — resultado concluyente.
+
+   307 órdenes · 249 entregadas · 51 devueltas · 5 sin resolver (98.4% resuelto)
+
+────────────────────────────────────────────────────────────────────
+  (+) VENTA BRUTA ENTREGADA               Q   56,241.12
+  (−) Costo de producto                   Q  -17,473.00
+  (−) Flete de entrega                    Q   -8,933.88
+      ························································
+  (=) MARGEN LOGÍSTICO                    Q   29,834.24
+      ↑ esto es lo que muestra el panel de Dropi. NO es tu ganancia.
+
+  (−) Costo de devoluciones ( 51 devol.)  Q   -1,429.02
+      estimado: 51 devoluciones × Q28.02 (sin historial de cartera)
+  (−) Costo de personal     (249 × Q4.00)  Q     -996.00
+  (−) Otros gastos operativos(249 × Q2.08)  Q     -517.92
+      ························································
+  (=) MARGEN DE CONTRIBUCIÓN              Q   26,891.30
+
+  (−) Publicidad Meta ($2114.35 × 7.62)    Q  -16,111.35
+      ························································
+  (=) MARGEN OPERATIVO                    Q   10,779.95
+
+  (−) Gastos fijos del negocio            Q   -1,629.16
+        THE LUCID HOLDING        $   88.00  software
+        Proxy-Cheap              $   52.27  infraestructura
+        LUCIDSALES, LLC          $   52.00  software
+        ANTHROPIC* CLAUDE SUB    $   21.53  software
+      ════════════════════════════════════════════════════════
+  (=) RESULTADO NETO DEL NEGOCIO          Q    9,150.80
+────────────────────────────────────────────────────────────────────
+
+════════════════════════════════════════════════════════════════════
+ECONOMÍA UNITARIA — cuánto deja CADA VENTA, por producto
+════════════════════════════════════════════════════════════════════
+
+  TINNIDROP   (entrega 80.9% · 114 entregadas / 27 devueltas)
+     Precio de venta (ticket promedio)      Q      214.20
+     − Costo del producto                   Q      -65.10
+     − Flete                                Q      -35.43
+     − Devolución amortizada                Q       -6.64
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      100.96  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -63.82
+       ······················································
+     = GANANCIA POR VENTA                   Q       37.15  ✅
+
+  CLEARSTEM   (entrega 83.3% · 95 entregadas / 19 devueltas)
+     Precio de venta (ticket promedio)      Q      232.96
+     − Costo del producto                   Q      -78.60
+     − Flete                                Q      -36.30
+     − Devolución amortizada                Q       -5.60
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      106.38  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -46.91
+       ······················································
+     = GANANCIA POR VENTA                   Q       59.47  ✅
+
+  NUSAVA   (entrega 88.9% · 40 entregadas / 5 devueltas)
+     Precio de venta (ticket promedio)      Q      242.28
+     − Costo del producto                   Q      -64.62
+     − Flete                                Q      -36.17
+     − Devolución amortizada                Q       -3.50
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      131.89  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -49.74
+       ······················································
+     = GANANCIA POR VENTA                   Q       82.15  ✅
+
+════════════════════════════════════════════════════════════════════
+VISTA B — CAJA (¿cuánto dinero entró de verdad en la ventana?)
+════════════════════════════════════════════════════════════════════
+🔴 NO SE PUEDE CALCULAR: falta el HISTORIAL DE CARTERA de Dropi (--cartera).
+   Lo de arriba es COHORTE: mide si la pauta rindió, no el saldo de la cuenta.
+
+────────────────────────────────────────────────────────────────────
+NOTAS
+  ⚠ Cobertura de pauta en el tramo ALINEADO 2026-09-01→2026-10-01 (el único comparable, APR-070): el banco cobró $2200.68 y LucidSales atribuye $2160.50 = 98.2%. Faltan Q      306.17 de gasto real en el P&L.
+  ⚠ El extracto arranca antes que los cargos de Meta: los primeros días del mes se cobraron en el extracto ANTERIOR. Para cerrar el arrastre hace falta el extracto del mes previo.
+
+────────────────────────────────────────────────────────────────────
+VERIFICACIÓN DE INTEGRIDAD
+  ✅ Cuadre de Dropi (venta−producto−flete = GANANCIA)
+  ✅ Cuadre del extracto (movimientos = total del resumen)
+  ✅ Maduración del cohorte (≥ 10 días)
+────────────────────────────────────────────────────────────────────

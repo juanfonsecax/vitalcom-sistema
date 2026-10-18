@@ -94,3 +94,53 @@ fecha,producto_key,cuenta_alias,campana_clave,conjunto_meta,evento,valor_antes,v
 2026-09-30,OVULOS_PURITY,EXTERNA,*,*,TRANSICION_FLUJO,F1 / F1.paquete,F1 / F1.activar,flujo.py: el nodo actual cambió al evaluar la data del 2026-09-30,Ads/_TOOLS/flujo.py
 2026-09-30,OVULOS_PURITY,*,*,*,CAMBIO_BOT,escalera 84.900/129.900/169.900,escalera 79.900/99.900/119.900,"escalera de oferta nueva en el bot: 1 paquete 64.900 + 15.000 de envío = 79.900, 2 paquetes 99.900, 3 paquetes 119.900 (LA MÁS VENDIDA); saludo pregunta solo ciudad","operador 2026-09-30, aplicado en LucidBot"
 2026-09-30,OVULOS_PURITY,EXTERNA,EXTERNA_OVULOSPURITY_TEST_20260930,*,LANZAMIENTO,,,"Lanzamiento FASE 1 v2: 6 conjuntos IMAGEN C2_BENEFICIOS, 04:00 hora Colombia, campaign_id 52584931238968","operador, publicación manual 2026-09-30"
+2026-09-30,OVULOS_PURITY,EXTERNA,*,*,TRANSICION_FLUJO,F1 / F1.activar,F1 / F1.ciclo.datos,flujo.py: el nodo actual cambió al evaluar la data del 2026-09-30,Ads/_TOOLS/flujo.py
+2026-10-05,CLEARSTEM,,,ANTI_FALSIFICACION,TRANSICION_ANGULO,EN_DECLIVE,SOSTENIDO,historia rentable: 73 ventas acum a CPA Q44.7 ≤ BE Q105.9,perfilar_angulos.py
+2026-10-05,CLEARSTEM,,,MEDICOS_FALLARON,TRANSICION_ANGULO,SOSTENIDO,EN_DECLIVE,el motor ordena RENOVAR concepto (fatiga con historia rentable),perfilar_angulos.py
+2026-10-05,NUSAVA,,,ARDOR,TRANSICION_ANGULO,ESCALANDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-05,TINNIDROP,,,DETERIORO_COGNITIVO,TRANSICION_ANGULO,SOSTENIDO,DORMIDO,"sin gasto hace 8 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-05,TINNIDROP,,,NOCHES_SIN_DORMIR,TRANSICION_ANGULO,SOSTENIDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-05,TINNIDROP,,,PERDIDA_AUDITIVA,TRANSICION_ANGULO,SOSTENIDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-05,TINNIDROP,,,ACCESIBILIDAD_MEDICO,TRANSICION_ANGULO,SOSTENIDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-06,CLEARSTEM,,,MEDICOS_FALLARON,TRANSICION_ANGULO,EN_DECLIVE,SOSTENIDO,historia rentable: 48 ventas acum a CPA Q76.5 ≤ BE Q105.9,perfilar_angulos.py
+2026-10-09,CLEARSTEM,,,RESISTENCIA_INSULINA_SOP,TRANSICION_ANGULO,ESCALANDO,EN_DECLIVE,el motor ordena RENOVAR concepto (fatiga con historia rentable),perfilar_angulos.py
+2026-10-09,CLEARSTEM,,,ANTI_FALSIFICACION,TRANSICION_ANGULO,SOSTENIDO,ESCALANDO,el motor ordena ESCALAR (ESCALAR_MODERADO),perfilar_angulos.py
+2026-10-13,CLEARSTEM,,,ANTI_FALSIFICACION,TRANSICION_ANGULO,ESCALANDO,EN_DECLIVE,el motor ordena RENOVAR concepto (fatiga con historia rentable),perfilar_angulos.py
+2026-10-13,CLEARSTEM,,,MEDICOS_FALLARON,TRANSICION_ANGULO,SOSTENIDO,EN_DECLIVE,el motor ordena RENOVAR concepto (fatiga con historia rentable),perfilar_angulos.py
+2026-10-13,TINNIDROP,,,DETERIORO_COGNITIVO,TRANSICION_ANGULO,DORMIDO,APAGADO_ABANDONO,sin gasto hace 16 días (≥ 14),perfilar_angulos.py
+2026-10-14,CLEARSTEM,,,MEDICOS_FALLARON,TRANSICION_ANGULO,EN_DECLIVE,SOSTENIDO,historia rentable: 54 ventas acum a CPA Q78.0 ≤ BE Q105.9,perfilar_angulos.py
+2026-10-14,NUSAVA,,,ARDOR,TRANSICION_ANGULO,DORMIDO,ESCALANDO,el motor ordena ESCALAR (ESCALAR_MODERADO),perfilar_angulos.py
+2026-10-14,TINNIDROP,,,ACCESIBILIDAD_MEDICO,TRANSICION_ANGULO,DORMIDO,SOSTENIDO,historia rentable: 104 ventas acum a CPA Q54.4 ≤ BE Q93.4,perfilar_angulos.py
+2026-10-14,TINNIDROP,,,NOCHES_SIN_DORMIR,TRANSICION_ANGULO,DORMIDO,SOSTENIDO,historia rentable: 26 ventas acum a CPA Q66.6 ≤ BE Q93.4,perfilar_angulos.py
+2026-10-14,TINNIDROP,,,DETERIORO_COGNITIVO,TRANSICION_ANGULO,APAGADO_ABANDONO,SOSTENIDO,historia rentable: 108 ventas acum a CPA Q57.6 ≤ BE Q93.4,perfilar_angulos.py
+2026-10-14,TINNIDROP,,,PERDIDA_AUDITIVA,TRANSICION_ANGULO,DORMIDO,EN_DECLIVE,el motor ordena RENOVAR concepto (fatiga con historia rentable),perfilar_angulos.py
+2026-10-15,TINNIDROP,,,PERDIDA_AUDITIVA,TRANSICION_ANGULO,EN_DECLIVE,SOSTENIDO,historia rentable: 129 ventas acum a CPA Q69.7 ≤ BE Q93.4,perfilar_angulos.py
+2026-10-16,CLEARSTEM,,,ANTI_FALSIFICACION,TRANSICION_ANGULO,EN_DECLIVE,ESCALANDO,el motor ordena ESCALAR (ESCALAR_MODERADO),perfilar_angulos.py
+2026-10-16,NUSAVA,,,ARDOR,TRANSICION_ANGULO,ESCALANDO,SOSTENIDO,historia rentable: 116 ventas acum a CPA Q58.2 ≤ BE Q92.6,perfilar_angulos.py
+2026-10-16,OVULOS_PURITY,*,*,*,CAMBIO_ESTADO,NUEVO,PAUSADO,Prueba manual de flujos A (GMI) vs B (DETOX) en GTR3; fuera del estudio de angulos,operador
+2026-10-16,OVULOS_PURITY,GTR3,*,*,TRANSICION_FLUJO,F1 / F1.ciclo.datos,PAUSADO / PAUSADO,flujo.py: el nodo actual cambió al evaluar la data del 2026-10-16,Ads/_TOOLS/flujo.py
+2026-10-16,OVULOS_PURITY,,,05,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 2 ventas acum",perfilar_angulos.py
+2026-10-16,OVULOS_PURITY,,,04,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 2 ventas acum",perfilar_angulos.py
+2026-10-16,OVULOS_PURITY,,,02,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 1 ventas acum",perfilar_angulos.py
+2026-10-16,OVULOS_PURITY,,,03,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 0 ventas acum",perfilar_angulos.py
+2026-10-16,OVULOS_PURITY,,,06,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 0 ventas acum",perfilar_angulos.py
+2026-10-16,OVULOS_PURITY,,,01,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 0 ventas acum",perfilar_angulos.py
+2026-10-16,CLEARSTEM,GTR13,*,*,TRANSICION_FLUJO,F2 / F2.conceptos,F2 / F2.plan,flujo.py: el nodo actual cambió al evaluar la data del 2026-10-16,Ads/_TOOLS/flujo.py
+2026-10-17,CLEARSTEM,GTR13,*,*,TRANSICION_FLUJO,F2 / F2.plan,F2 / F2.publicar,flujo.py: el nodo actual cambió al evaluar la data del 2026-10-17,Ads/_TOOLS/flujo.py
+2026-10-17,CLEARSTEM,,,RESISTENCIA_INSULINA_SOP,TRANSICION_ANGULO,EN_DECLIVE,SOSTENIDO,historia rentable: 126 ventas acum a CPA Q44.5 ≤ BE Q105.9,perfilar_angulos.py
+2026-10-17,GAFAS,,,TRADUCCION_QUE_FUNCIONA,TRANSICION_ANGULO,APAGADO,MIDIENDO,"PD consumido, sin veredicto: 0 ventas acum",perfilar_angulos.py
+2026-10-17,GAFAS,,,VIAJERO_SIN_TELEFONO,TRANSICION_ANGULO,MIDIENDO,APAGADO,el motor ordena PAUSAR (PAUSAR_TOLERANCIA_AGOTADA),perfilar_angulos.py
+2026-10-17,CLEARSTEM,GTR13,*,*,TRANSICION_FLUJO,F2 / F2.publicar,F2 / F2.activar,flujo.py: el nodo actual cambió al evaluar la data del 2026-10-17,Ads/_TOOLS/flujo.py
+2026-10-18,CLEARSTEM,GTR13,*,*,TRANSICION_FLUJO,F2 / F2.activar,F2 / F2.ciclo.ordenes,flujo.py: el nodo actual cambió al evaluar la data del 2026-10-18,Ads/_TOOLS/flujo.py
+2026-10-18,GAFAS,,,MOMENTOS_QUE_NO_VUELVEN,TRANSICION_ANGULO,MIDIENDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,GAFAS,,,MANOS_LIBRES,TRANSICION_ANGULO,MIDIENDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,GAFAS,,,TRADUCCION_QUE_FUNCIONA,TRANSICION_ANGULO,MIDIENDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,Nuevo conjunto de anuncios de Tráfico,TRANSICION_ANGULO,MIDIENDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,1,TRANSICION_ANGULO,SOSTENIDO,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,OLOR_QUE_SE_NOTA,TRANSICION_ANGULO,EN_PRUEBA,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,DESPUES_DE_ESTAR_CON_EL,TRANSICION_ANGULO,EN_PRUEBA,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,ME_LAVO_Y_SIGUE,TRANSICION_ANGULO,EN_PRUEBA,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,PROTECTOR_TODOS_LOS_DIAS,TRANSICION_ANGULO,EN_PRUEBA,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,OCHO_RAICES_TODO_EN_UNO,TRANSICION_ANGULO,EN_PRUEBA,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,OVULOS_PURITY,,,INFECCION_QUE_VUELVE,TRANSICION_ANGULO,EN_PRUEBA,DORMIDO,"sin gasto hace 3 días (≥ 3): no está rindiendo mal, no está corriendo",perfilar_angulos.py
+2026-10-18,TINNIDROP,,,DETERIORO_COGNITIVO,TRANSICION_ANGULO,SOSTENIDO,EN_DECLIVE,el motor ordena RENOVAR concepto (fatiga con historia rentable),perfilar_angulos.py

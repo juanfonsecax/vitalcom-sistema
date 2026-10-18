@@ -1,5 +1,5 @@
 {
-  "generado": "2026-09-30",
+  "generado": "2026-10-18",
   "version": 7,
   "app": {
     "titulo": "VitalCom Guatemala",
@@ -53,12 +53,12 @@
       "src": "FLUJO.html",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-30",
+        "mtime": "2026-10-18",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-30"
+        "detalle": "hoy · escrita 2026-10-18"
       }
     },
     {
@@ -79,12 +79,12 @@
       "src": "../PRODUCTOS/_DECISIONES.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-30",
+        "mtime": "2026-10-18",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-30"
+        "detalle": "hoy · escrita 2026-10-18"
       }
     },
     {
@@ -106,11 +106,11 @@
       "estado": {
         "existe": true,
         "mtime": "2026-09-30",
-        "edad_dias": 0,
-        "clase": "ok",
-        "etiqueta": "hoy",
-        "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-30"
+        "edad_dias": 18,
+        "clase": "vieja",
+        "etiqueta": "hace 18d",
+        "chip": "c-crit",
+        "detalle": "hace 18d · escrita 2026-09-30"
       }
     },
     {
@@ -131,12 +131,12 @@
       "src": "../PRODUCTOS/_LANZADOR.json",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-30",
+        "mtime": "2026-10-18",
         "edad_dias": 0,
         "clase": "ok",
         "etiqueta": "hoy",
         "chip": "c-good",
-        "detalle": "hoy · escrita 2026-09-30"
+        "detalle": "hoy · escrita 2026-10-18"
       }
     },
     {
@@ -154,11 +154,11 @@
       "src": "../Ads/_SWIPE/_BLUEPRINTS/CANONICOS/_INDICE.md",
       "estado": {
         "existe": true,
-        "mtime": "2026-09-30",
-        "edad_dias": 0,
+        "mtime": "2026-10-09",
+        "edad_dias": 9,
         "clase": "ninguna",
         "etiqueta": "",
-        "detalle": "no caduca · escrita 2026-09-30",
+        "detalle": "no caduca · escrita 2026-10-09",
         "chip": "c-neutro"
       }
     },
@@ -187,8 +187,8 @@
     }
   ],
   "salud": {
-    "al_dia": 4,
-    "envejecidas": 0,
+    "al_dia": 3,
+    "envejecidas": 1,
     "faltantes": 0,
     "pendientes": [
       {

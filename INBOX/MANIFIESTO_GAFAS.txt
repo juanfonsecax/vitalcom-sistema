@@ -1,0 +1,6 @@
+1	DEMO	C:/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/Ads/1.1 Videos/GAFAS/1. Gafas_67days_ad1582330806797302.mp4
+2	TRADUCCION	C:/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/Ads/1.1 Videos/GAFAS/2. Gafas_ad6a7bd851.mp4
+3	TODOUNO	C:/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/Ads/1.1 Videos/GAFAS/3. Gafas_adAQMk9Ci7.mp4
+4	TRADUCCION2	C:/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/Ads/1.1 Videos/GAFAS/4. Gafas_ad1405999987587541.mp4
+5	MANOSLIBRES	C:/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/Ads/1.1 Videos/GAFAS/5. Gafas_ad1490963253078216.mp4
+6	CREADORES	C:/Users/juand/Downloads/AGENTES LUCID/Profesional en Eccomerce gestion/SISTEMA/Ads/1.1 Videos/GAFAS/6. Gafas_ad2297677351073992.mp4

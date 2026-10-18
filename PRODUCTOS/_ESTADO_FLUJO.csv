@@ -1,6 +1,7 @@
 producto_key,fase,nodo_actual,estado,desde,bloqueantes,siguiente_ejecutor,evaluado_el
-TINNIDROP,F2,F2.conceptos,LISTO_PARA_EJECUTAR,2026-09-25,0,"subagente etapa-9 (Task, subagent_type=etapa-9)",2026-09-30
-NUSAVA,F2,F2.etapa-11,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-11 (Task, subagent_type=etapa-11)",2026-09-30
-CLEARSTEM,F2,F2.conceptos,LISTO_PARA_EJECUTAR,2026-09-25,0,"subagente etapa-9 (Task, subagent_type=etapa-9)",2026-09-30
-VARICOSE,PAUSADO,PAUSADO,EXCEPCION,2026-09-09,0,operador,2026-09-30
-OVULOS_PURITY,F1,F1.activar,LISTO_PARA_EJECUTAR,2026-09-30,0,MCP con confirmación del operador por orden,2026-09-30
+TINNIDROP,F2,F2.conceptos,LISTO_PARA_EJECUTAR,2026-09-25,0,"subagente etapa-9 (Task, subagent_type=etapa-9)",2026-10-18
+NUSAVA,F2,F2.etapa-11,LISTO_PARA_EJECUTAR,2026-09-09,0,"subagente etapa-11 (Task, subagent_type=etapa-11)",2026-10-18
+CLEARSTEM,F2,F2.ciclo.ordenes,LISTO_PARA_EJECUTAR,2026-10-18,0,MCP con confirmación del operador por orden,2026-10-18
+VARICOSE,PAUSADO,PAUSADO,EXCEPCION,2026-09-09,0,operador,2026-10-18
+OVULOS_PURITY,PAUSADO,PAUSADO,EXCEPCION,2026-10-16,0,operador,2026-10-18
+GAFAS,F1,F1.paquete,LISTO_PARA_EJECUTAR,2026-10-02,0,skill fase-1-angulos,2026-10-18

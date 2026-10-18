@@ -1,0 +1,519 @@
+═══ GAFAS · VERSION v1 · 2026-10-01 · COSTO Q120000 · DOSIS Set completo (marco + 2 lentes + accesorios) · page_id 61587359024658 · campaign_id sin MCP ═══
+HACER MANUAL — Gafas Inteligentes Video Cámara 13Mp Asistente IA Traductor | FASE 1 · ÁNGULOS
+FanPage: Espacia (page_id 61587359024658) · Cuenta: EXTERNA
+GENERADO por Ads/_TOOLS/gen_manual.py — no editar a mano: se corrige el dato de origen
+y se vuelve a generar.
+
+========================================================================
+
+A. CHECKLIST
+[ ] 1. Generar las imágenes de los anuncios (sección B)
+[ ] 2. Generar las infografías del bot (sección C)
+[ ] 3. Armar el flujo en LucidBot (sección D) y probarlo desde otro WhatsApp
+[ ] 4. Crear la campaña en Meta (sección E)
+[ ] 5. Registrar en el sistema (sección F)
+
+========================================================================
+
+B. CREATIVOS DE LOS ANUNCIOS
+Adjuntar a CADA prompt, en este orden:
+1. Foto del producto: Ads/MEDIA_GAFAS/GAFAS_PACKSHOT.jpg
+2. Imagen de referencia: Ads/_SWIPE/_BANCO_CREATIVOS/C2_BENEFICIOS/ligera__Camila-Recomienda__15_1364693855873597.jpg
+AD 1 — Viajero sin teléfono · formato: IMAGEN · archivo: GAFAS_1_VIAJERO_SIN_TELEFONO.png · precio en el ad: NO
+Actúa como director de arte senior de e-commerce para Meta Ads en Latinoamérica. Pieza 1 de 6 hermanas (misma plantilla). Formato 1080x1350 (4:5). Foto de estudio catálogo premium, NO look IA. ADJUNTO: GAFAS_PACKSHOT.jpg — reproduce las gafas NEGRAS exactamente (marco negro, cámara en patilla), no cambies el color. Fondo gris perla claro textura papel. Paleta: negro grafito + azul eléctrico + neutro oscuro. Eyebrow: GAFAS INTELIGENTES · CÁMARA HD + IA + TRADUCTOR. Sello 90 días de garantía arriba derecha. HOOK gigante a la izquierda (2 líneas, una palabra en azul): ¿VIAJAS MIRANDO POR UNA PANTALLA? Cuerpo: izquierda 4 beneficios con ícono lineal en círculo azul (GRABA EN POV / lo que ves queda guardado · FOTOS CON UN TOQUE / captura el instante · SIN SACAR EL TELÉFONO / vive el momento · OÍDO ABIERTO / oyes tu entorno); derecha producto grande en pedestal con props (lente de repuesto, cable USB, pasaporte). SIN bloque de precio. Pie: ENVÍO GRATIS a toda Colombia / PAGO CONTRA ENTREGA pagas cuando lo recibes / PRODUCTO DISPONIBLE en Colombia.
+AD 2 — Momentos que no vuelven · formato: IMAGEN · archivo: GAFAS_2_MOMENTOS_QUE_NO_VUELVEN.png · precio en el ad: NO
+Actúa como director de arte senior de e-commerce para Meta Ads en Latinoamérica. Pieza 2 de 6 hermanas (misma plantilla que pieza 1: fondo gris perla, paleta negro grafito + azul eléctrico, eyebrow GAFAS INTELIGENTES · CÁMARA HD + IA + TRADUCTOR, sello 90 días, foto GAFAS_PACKSHOT.jpg marco NEGRO exacto). HOOK gigante: ¿TE PIERDES SUS MOMENTOS? 4 beneficios (MANOS LIBRES PARA ABRAZAR / nada te interrumpe · FOTO CON UN TOQUE / el instante exacto · VIDEO POV / recuerdos nítidos · PAGAS AL RECIBIR / cero riesgo). Producto a la derecha con props (juguete pequeño, cable USB, estuche). SIN bloque de precio. Pie: ENVÍO GRATIS a toda Colombia / PAGO CONTRA ENTREGA pagas cuando lo recibes / PRODUCTO DISPONIBLE en Colombia.
+AD 3 — Traducción que funciona · formato: IMAGEN · archivo: GAFAS_3_TRADUCCION_QUE_FUNCIONA.png · precio en el ad: SI
+Actúa como director de arte senior de e-commerce para Meta Ads en Latinoamérica. Pieza 3 de 6 hermanas (misma plantilla: fondo gris perla, negro grafito + azul eléctrico, eyebrow, sello 90 días, GAFAS_PACKSHOT.jpg negro exacto). HOOK gigante: ¿NO ENTIENDES OTRO IDIOMA? 4 beneficios (100+ IDIOMAS AL OÍDO / entiende y responde · CHATGPT INTEGRADO / pregunta y te responde · MÚSICA Y LLAMADAS / sin audífonos · SET COMPLETO / 2 lentes incluidos). Props (pasaporte, mapa, audífono tachado). CON bloque de precio: caja oscura OFERTA POR TIEMPO LIMITADO, $249.900 gigante, 1 UNIDAD, tachado PRECIO NORMAL $279.900. Pie estándar.
+AD 4 — Manos libres multitarea · formato: IMAGEN · archivo: GAFAS_4_MANOS_LIBRES.png · precio en el ad: NO
+Actúa como director de arte senior de e-commerce para Meta Ads en Latinoamérica. Pieza 4 de 6 hermanas (misma plantilla: fondo gris perla, negro grafito + azul eléctrico, eyebrow, sello 90 días, GAFAS_PACKSHOT.jpg negro exacto). HOOK gigante: ¿EL TELÉFONO TE ESTORBA? 4 beneficios (MÚSICA SIN AISLARTE / oyes todo · LLAMADAS CON UN TOQUE / sin soltar nada · FOTOS Y VIDEO / sin parar · BATERÍA TODO EL DÍA / carga rápida). Props (llaves de moto, cable USB, termo). SIN bloque de precio. Pie estándar.
+AD 5 — Anti-premium con COD · formato: IMAGEN · archivo: GAFAS_5_ANTI_PREMIUM_COD.png · precio en el ad: SI
+Actúa como director de arte senior de e-commerce para Meta Ads en Latinoamérica. Pieza 5 de 6 hermanas (misma plantilla: fondo gris perla, negro grafito + azul eléctrico, eyebrow, sello 90 días, GAFAS_PACKSHOT.jpg negro exacto). HOOK gigante: ¿$600 POR UNAS GAFAS? 4 beneficios (CÁMARA HD + IA / lo mismo por menos · 100 IDIOMAS / habla sin miedo · PAGAS AL RECIBIR / primero lo tienes · ENVÍO GRATIS / a toda Colombia). Props (etiqueta de precio rota, caja del set, estuche). CON bloque de precio: $249.900 gigante, 1 UNIDAD, tachado PRECIO NORMAL $279.900. Pie estándar.
+AD 6 — Calidad pro para creadores · formato: IMAGEN · archivo: GAFAS_6_CALIDAD_PRO_CREADORES.png · precio en el ad: NO
+Actúa como director de arte senior de e-commerce para Meta Ads en Latinoamérica. Pieza 6 de 6 hermanas (misma plantilla: fondo gris perla, negro grafito + azul eléctrico, eyebrow, sello 90 días, GAFAS_PACKSHOT.jpg negro exacto). HOOK gigante: ¿TU CONTENIDO SE VE AMATEUR? 4 beneficios (POV NÍTIDO / como los grandes · SIN CÁMARA GRANDE / solo mira · FOTO Y VIDEO AL INSTANTE / un toque · MANOS LIBRES TOTAL / crea en movimiento). Props (trípode pequeño, aro de luz, cable USB). SIN bloque de precio. Pie estándar.
+
+========================================================================
+
+C. INFOGRAFÍAS DEL BOT (van dentro del flujo, no en Meta)
+INFOGRAFÍA 1:
+IMAGEN 1 — BENEFICIOS (VERSIÓN COMPLETA). Formato 1080x1350. FONDO: degradado grafito oscuro a negro con brillo azul sutil (color del producto: marco negro), micro-textura de circuitos punteados al 3%. Tipografía Poppins (Black títulos, Bold subtítulos, Regular bajadas).
+ENCABEZADO: kicker pequeño "8 BENEFICIOS". TÍTULO principal (lo más grande): "VIVE EL MOMENTO MIENTRAS TODO QUEDA GRABADO". Botón azul eléctrico con texto blanco: "GAFAS INTELIGENTES". Decoración: líneas de circuito azules discretas.
+CENTRO — PRODUCTO HÉROE: gafas negras de marco grueso TR90 con cámara visible en la patilla, grandes y protagonistas, con halo azul eléctrico y reflejo sobre pódium oscuro. Base rodeada de: lente transparente de repuesto, lente oscura, cable USB, estuche negro.
+8 BENEFICIOS (círculo azul eléctrico + número blanco + Ilustración 3D die-cut a color, tamaño moderado):
+Columna izquierda:
+1. Ilustración 3D die-cut de una cámara de video roja. Título: "GRABA EN POV". Desc: "lo que ves, queda guardado".
+2. Ilustración 3D die-cut de un globo de diálogo con letras. Título: "TRADUCE 100+ IDIOMAS". Desc: "entiende y responde al instante".
+3. Ilustración 3D die-cut de un robot azul. Título: "CHATGPT INTEGRADO". Desc: "preguntas y te responde al oído".
+4. Ilustración 3D die-cut de una nota musical morada. Título: "MÚSICA SIN AISLARTE". Desc: "oyes todo tu entorno".
+Columna derecha:
+5. Ilustración 3D die-cut de un teléfono verde con llamada. Título: "LLAMADAS MANOS LIBRES".
+6. Ilustración 3D die-cut de unas gafas de sol. Título: "2 LENTES INCLUIDOS".
+7. Ilustración 3D die-cut de una batería verde llena. Título: "BATERÍA TODO EL DÍA".
+8. Ilustración 3D die-cut de una gota de agua azul. Título: "RESISTE LLUVIA Y SUDOR".
+PIE: barra grafito. Izquierda: escudo "TECNOLOGÍA QUE SE USA TODOS LOS DÍAS". Derecha: chip "SET COMPLETO, LISTO PARA USAR". Todo en español.
+INFOGRAFÍA 2:
+IMAGEN 2 — PRUEBA + COMPONENTES + MODO DE USO. Formato 1080x1350. Fondo blanco roto teñido 5% a grafito. Tipografía Poppins.
+ZONA 1 (50% superior, fondo degradado grafito a negro): HEADLINE "RESULTADOS REALES DESDE EL PRIMER DÍA" con separador azul eléctrico. FORMATO B — RESEÑA CON TIEMPO (2 tarjetas estilo reseña, ortografía natural, nombre + inicial, fecha relativa): Reseña 1: "las pedí el lunes y el viernes ya estaba grabando el cumple de mi hijo sin sacar el celular, se ve clarito. hace 2 semanas" — M. Reseña 2: "yo no creía lo de la traducción pero en el viaje la usé con un taxista y nos entendimos perfecto. hace 5 días" — J. C.
+ZONA 2 (fondo grafito, borde superior/inferior azul 1px): TÍTULO "LO QUE HAY DENTRO IMPORTA", subtítulo azul "Componentes clave con función específica". GRILLA 2 columnas (aire generoso):
+● CÁMARA HD → graba fotos y video en primera persona.
+● IA CON CHATGPT → preguntas por voz y te responde.
+● TRADUCCIÓN 100+ IDIOMAS → entiende y traduce en vivo.
+● BLUETOOTH 5.3 → música y llamadas sin audífonos.
+● BATERÍA 290 MAH → música y grabación todo el día.
+● LENTES UV400 + IP65 → sol, lluvia y sudor sin miedo.
+Nota: "Set completo — cada pieza potencia a la otra."
+ZONA 3 (25% inferior, fondo claro): TÍTULO "MODO DE USO". TRES ÍCONOS EN FILA con flecha azul entre ellos: Ícono 1 botón lateral 3D. Texto: "PRESIONA 2 VECES". Subtexto: "para grabar". Ícono 2 teléfono 3D con app. Texto: "CONECTA LA APP". Subtexto: "HeyCyan gratis". Ícono 3 gafas 3D con ondas. Texto: "ÚSALAS NORMAL". Subtexto: "todo el día". BARRA INFERIOR: "SIN INSTALACIONES COMPLICADAS · SET COMPLETO · LISTO PARA USAR". Todo en español.
+INFOGRAFÍA 3:
+IMAGEN 3 — CONFIANZA (foto base + Canva, 1080x1350).
+PASO 1 — FOTO BASE: foto estilo iPhone UGC. Mujer colombiana real de unos 30 años, blusa casual, de pie en sala luminosa de casa. Posicionada a la DERECHA del frame (centro a borde derecho); lado IZQUIERDO vacío con fondo desenfocado. Sostiene con ambas manos a la altura del pecho las gafas negras con su estuche. Mira a cámara, sonrisa genuina. Grano natural, sin filtros. Aspecto 4:5.
+PASO 2 — DISEÑO EN CANVA: degradado oscuro grafito 65% solo lado izquierdo. CAPA 2 IZQUIERDA: HEADLINE "COMPRA SIN MIEDO" + separador azul 2px. BLOQUE PROMINENTE: pastilla azul eléctrico con ícono billete+casa: "PAGAS AL RECIBIR". Subtexto: "Envío GRATIS a toda Colombia · INTERRAPIDISIMO y ENVIA · No pagas nada por adelantado". Sello escudo azul: "Garantía de satisfacción · Acompañamiento del equipo (default del sistema — reemplazar con dato real)". ZOOM CONFIANZA: círculo lupa hacia la cámara de la patilla, texto azul italic "Cámara HD integrada". ESTADÍSTICAS (azul eléctrico, grandes): "9 de cada 10" / "clientes notan la diferencia desde el primer día (default del sistema)"; "92%" / "volvería a comprarlo (default del sistema)"; "+1.000" / "clientes ya las usan (default del sistema)". CAPA 3 FAQ INFERIOR (fondo claro, "RESOLVAMOS TUS DUDAS"): COL1 icono camión 3D: "¿LLEGA A MI CIUDAD?" / "Sí, cobertura en toda Colombia en 2 a 5 días hábiles." COL2 reloj 3D: "¿EN CUÁNTO FUNCIONA?" / "Desde el primer día: enciendes, conectas y grabas." COL3 escudo 3D: "¿Y SI NO ME GUSTA?" / "Tienes garantía de satisfacción y acompañamiento." SIN sellos sanitarios con número (REG_INVIMA pendiente del operador — ninguna pieza muestra sello ni número). Todo en español, tipografía Poppins, sin emojis.
+
+========================================================================
+
+D. FLUJO LUCIDBOT (copiar cada parte en su campo)
+════════════════════════════════════════════════════════════
+FLUJO LUCIDBOT — Gafas Inteligentes | PARAGUAS F1
+Colombia | Espacia | 2026-10-01
+════════════════════════════════════════════════════════════
+
+═══════════════ FICHA DEL PRODUCTO (catálogo de LucidBot) ═══════════════
+
+DESCRIPCIÓN:
+Unas gafas que graban lo que ves, traducen más de 100 idiomas y te hablan con ChatGPT, mientras oyes música y contestas llamadas sin taparte los oídos. Para que vivas el momento y todo quede guardado sin andar con el teléfono en la mano.
+
+MODO DE USO:
+Facilísimo, desde el primer día: presionas dos veces el botón de la patilla para grabar, una vez para la foto, conectas la app HeyCyan gratis y listo. Las usas como unas gafas normales, todo el día.
+
+CARACTERÍSTICAS TÉCNICAS:
+Graba fotos y video en primera persona sin sacar el teléfono. Traduce más de 100 idiomas en tiempo real. Asistente con ChatGPT por voz: preguntas y te responde al oído. Música y llamadas con oído abierto: oyes tu entorno. 2 lentes incluidos (transparente + oscura UV400). Batería de 290 mAh para todo el día. Resiste lluvia y sudor (IP65). App HeyCyan gratis para ver e importar todo. Cámara HD en la patilla que graba lo que miras. Bluetooth 5.3 de conexión rápida. Controles físicos y táctiles. Detección de uso: pausa sola la música. Marco liviano TR90 que se ajusta a tu cara.
+
+CONTENIDO DEL PAQUETE:
+Te llega el set completo: gafas de marco negro, lente transparente, lente oscura de cambio, estuche con bolso de almacenamiento, cable de carga, manual en español y caja. Todo listo para usar.
+
+═══════════════════════ MENSAJE INICIAL ═══════════════════════
+
+ELEMENTO 1 — TEXTO · SALUDO
+¡Hola! 👋 Bienvenida/o a *Espacia*, estamos encantados de tenerte por acá. En un momento una asesora se pondrá en contacto contigo. ✨
+
+ELEMENTO 2 — VIDEO 1 · AUTORIDAD: ‹DECLARAR: video_1 — operador / Ads/MEDIA_[PK]›
+ELEMENTO 3 — VIDEO 2 · UGC: ‹DECLARAR: video_2 — operador / Ads/MEDIA_[PK]›
+
+INFOGRAFÍAS (3): ‹DECLARAR: lista_infografias — operador / Ads/MEDIA_[PK]›
+<<BLOQUE:propuestas_valor>>
+
+TEXTO · TRANSICIÓN A TESTIMONIOS
+A continuación te muestro lo que dicen quienes ya lo tienen en casa 👇
+
+TESTIMONIOS (3 · fuente REDACTADO):
+T1 (llegó + original + COD): "buenas me llego ayer, venia selladito en su cajita. yo tenia miedo q fuera estafa pq por redes uno ya no sabe pero pague cuando lo tuve en la mano" + foto del set recibido sobre la mesa.
+T2 (funciona + justifica 2): "ya llevo como 3 semanas grabando con ellas, la calidad del video es buenísima. pedí 2 pq mi hermano tambn quería unas" + imagen: captura de un video POV grabado con las gafas (paseo/viaje). / Texto 1: "al principio pensé q era puro cuento lo de traducir" (165 c). Texto 2 + imagen: "pero en el paseo le pregunté algo a un gringo y me respondió en español, quedé fría. pedí las 2 de una" + foto POV del paseo (125 c).
+T3 (comunidad + autoridad): comentarios FB encadenados (80-160 c/u): "¿sí graban bien de noche?" → "yo las uso y de día se ven claritas, de noche normal como todo celular" · "a mi me las recomendó mi primo q trabaja en tecnología, dice q por ese precio están regaladas" · "llegaron en 3 días a cali, pagué al recibir".
+
+AUDIO (45-55 seg):
+Hola! Claro que sí, te cuento. Estas gafas graban lo que tú ves sin que saques el teléfono, traducen más de 100 idiomas y te hablan con ChatGPT. Gracias a su cámara HD y su Bluetooth de oído abierto, vas a capturar cada momento y seguir oyendo todo tu entorno, olvídate de andar con las manos ocupadas. Te vas a sentir libre, presente, con todo guardado. Y trae sus 2 lentes, su estuche y su cable: el set completo.
+
+ELEMENTO FINAL — CIERRE → PREGUNTA DE UBICACIÓN
+Hola, soy Andrea, estaré atendiéndote el día de hoy 😊 Cuéntame, ¿desde qué ciudad y departamento nos escribes?
+
+══════════════════════════ INTERACCIONES ══════════════════════════
+
+INTERACCIÓN 1 — AL RECIBIR LA UBICACIÓN
+¡Qué bien, desde {CIUDAD}! 😊
+
+Me alegra que estés dando el paso de cuidar tus recuerdos y tu día a día — es una gran decisión por ti.
+
+Confirmo que tenemos cobertura completa ahí, con envíos a toda Colombia y *pago contraentrega*. Las entregas tardan de 2 a 5 días hábiles. 🚚
+
+¿Deseas conocer nuestros precios?
+
+INTERACCIÓN 2 — PRESENTACIÓN DE PRECIOS
+¡Claro! 😊
+
+Ya sabes que andar con el teléfono en la mano y perderte los momentos *no se quita con grabar con el teléfono, audífonos con cable ni cámaras grandes* — vuelves al teléfono y te lo vuelves a perder.
+
+Y lo que más pesa no es andar grabando a medias: es *ver cómo los momentos pasan sin quedar guardados, y sentir que la tecnología buena es solo para los que pagan 600 dólares.*
+
+Gafas Inteligentes actúa *desde la raíz* con cámara HD que graba lo que miras en primera persona y IA con ChatGPT que traduce más de 100 idiomas y te responde al oído. Por eso ya son *más de 3.450 clientes* con resultados reales.
+
+Cuando los capturas *desde la raíz, el recuerdo sí se queda.* ✨
+
+OFERTAS HASTA AGOTAR
+
+1️⃣ Tratamiento (1 set) → $249.900 + 🛻 ENVÍO TOTALMENTE GRATIS
+
+2️⃣ Tratamiento (2 sets) → $399.900 + 🎁 ENVÍO TOTALMENTE GRATIS
+   LA MÁS ELEGIDA ⭐ (tratamiento completo) — y lo mejor, pagas al recibir 😊
+
+Con el uso diario descubres la traducción, la IA, la música. Por eso la mayoría se lleva las 2: una para ti y otra para regalo.
+
+¿Me confirmas tu ciudad y departamento? 😊
+
+INTERACCIÓN 3 — PEDIDO DE DATOS
+¡Perfecto! Tranqui, no arriesgas nada: pagas solo cuando tengas el producto en tus manos, y llevas *90 días de garantía*. 🙌
+
+Antes de continuar con la compra asegúrate de que vas a permanecer en casa los próximos 5 días, o que algún familiar o amigo te reciba el producto en la dirección que indicarás.
+
+En caso de no ser así, puedes solicitar que tu envío se haga a la agencia principal de INTERRAPIDISIMO y ENVIA de tu ciudad.
+
+Para continuar con la compra indícame los siguientes datos EN UN SOLO MENSAJE Y EN EL MISMO ORDEN:
+
+1. Nombre
+2. Apellido
+3. Teléfono de LLAMADAS
+4. Departamento
+5. Municipio
+6. Dirección exacta (o escribe OFICINA si reclamas en agencia)
+7. Barrio
+8. ¿Cuál opción prefieres?
+
+INTERACCIÓN 4 — CONFIRMACIÓN DEL PEDIDO
+¡Todo confirmado!
+
+Resumen de tu pedido:
+- Nombre: {NOMBRE} {APELLIDO}
+- Teléfono: {TEL}
+- Departamento: {DEPTO}
+- Municipio: {MUNICIPIO}
+- Dirección: {DIR}
+- Barrio: {BARRIO}
+- Producto: Gafas Inteligentes — {OPCIÓN}
+- Total a pagar: ${TOTAL} al recibir
+
+¿Confirmas que los datos están correctos?
+
+INTERACCIÓN 5 — CIERRE FINAL
+¡Listo, {NOMBRE}! Tu pedido fue tomado exitosamente.
+
+Tu Gafas Inteligentes está en camino. La entrega tarda de 2 a 5 días hábiles en {MUNICIPIO}.
+
+Recuerda: solo pagas cuando lo tienes en tus manos. Si tienes alguna duda mientras tanto, acá estoy. ¡Que lo disfrutes mucho! 💜
+
+═════════════ MENSAJES DE INACTIVIDAD (3) ═════════════
+
+M1 — 45 min · prompt de IA + video nuevo + texto fijo + botones "Hoy" / "Mañana"
+
+M2 — 5 h · prompt de IA + audio testimonio + texto del producto + 2 botones de oferta
+Ese es el testimonio de una de nuestras últimas clientas 💜
+
+La mayoría se lleva las 2 porque uno siempre termina regalando o prestando unas: con el uso diario descubres la traducción, la IA, la música.
+
+¿Te aparto el de 1 ($249900) o el de 2 ($399900)?
+
+M3 — ~23 h · prompt de IA + texto fijo + botón "No me escribas más"
+
+═══════════════════════════ FAQ ═══════════════════════════
+1. ¿Sí me va a llegar? → Sí, pagas hasta que lo tienes en tus manos. Envío a toda Colombia con INTERRAPIDISIMO y ENVIA.
+2. ¿De verdad graba bien? → Sí, cámara HD en primera persona. Muchos clientes notan la calidad desde el primer día. Te paso testimonios reales.
+3. ¿Y si no me funciona? → Tienes garantía de satisfacción y acompañamiento del equipo. (default del sistema — reemplazar con dato real)
+4. ¿Cómo se usa? → Presionas 2 veces para grabar, 1 para foto, conectas la app gratis. Súper fácil.
+5. ¿En cuánto funciona? → Desde el primer día, con uso normal.
+6. ¿Me aísla del entorno? → No: el diseño de oído abierto te deja oír todo mientras escuchas música o llamadas.
+7. ¿Por qué llevar 2? → La mayoría lleva 2 porque siempre hay alguien que las quiere probar, y te sale mejor precio por unidad.
+8. ¿Cuánto cuesta el envío? → Gratis a toda Colombia.
+9. ¿Llegan a mi ciudad? → Sí, cobertura en toda Colombia, 2 a 5 días hábiles. ¿En qué ciudad estás?
+10. ¿Hacen descuento? → No bajamos el precio porque ya es el mejor del mercado, pero llevando 2 te sale mejor precio por unidad.
+1. ¿Ya salió mi pedido? → Lo despachamos y te llega en 2 a 5 días hábiles; cualquier cosa te aviso.
+2. ¿Cómo las uso para mejor resultado? → Cárgalas full la primera vez, conecta la app y úsalas todos los días.
+3. ¿En cuánto noto todo? → Desde el primer día; la constancia es lo que más importa.
+4. ¿Puedo pedir otra vez? → Claro, escríbeme y te dejo el pedido listo.
+5. No me llegó / tengo una duda con la entrega → Pásame tu nombre y te lo rastreo de una.
+
+════════════ REGLAS CONVERSACIONALES (campo "Reglas" de LucidBot) ════════════
+
+[IMPORTANTE: Si el cliente envía parte de sus datos, dale tiempo para que escriba los faltantes. No seas insistente.]
+
+[IMPORTANTE: Si el cliente ya envió sus datos, no preguntar nuevamente cuál producto desea comprar, ni preguntarle si están bien. Solo haz el cierre agrupando los datos y resumiendo la compra con producto y precio.]
+
+[IMPORTANTE: Si el cliente indicó que reclama en agencia u oficina, ese dato reemplaza la dirección. No preguntar dirección de casa ni barrio. Indícale que su pedido será enviado a la agencia principal de INTERRAPIDISIMO y ENVIA de su ciudad.]
+
+[IMPORTANTE: Si el cliente escribió una palabra mal, corrígela sin pedirle que la corrija. Hazlo de forma natural, sin hacer notar el error.]
+
+[IMPORTANTE: NUNCA insistir en la misma pregunta más de 2 veces, y CAMBIA EL ENFOQUE en el 2do intento en vez de repetir igual. Ej. ubicación — 1ra vez: "Dime tu ciudad para confirmarte cobertura." 2da vez: "Con tu ciudad te confirmo si te llega con pago contraentrega." Después, cambiar de tema.]
+
+[IMPORTANTE: Si el cliente eligió la opción de 1 unidad, persuádelo de llevar 2 o más por el mayor ahorro que representa.]
+
+[IMPORTANTE: Si el cliente solicita descuento por una sola unidad, NO bajar el precio de 1 unidad. Responde: "El precio de 1 unidad no lo puedo bajar porque ya es el mejor del mercado. Pero si llevas 2, te sale mucho más conveniente y el envío es totalmente gratis."]
+
+[IMPORTANTE: Si el cliente pregunta "¿hasta cuándo está la promoción?" responde: "Tenemos ese precio hasta agotar existencias."]
+
+[IMPORTANTE: Si el cliente dice que hará el pedido después, responde solamente: "¡Súper, no hay problema! Estaremos atentos a cuando desees realizar tu pedido."]
+
+[IMPORTANTE: Si el cliente pregunta por ubicación o tienda física: "Nuestro centro de distribución trabaja solo por envíos y no tenemos atención al público. Hacemos entregas a casi toda Colombia por INTERRAPIDISIMO y ENVIA, según cobertura."]
+
+[IMPORTANTE: Si el cliente envía GIFs, stickers o imágenes, responde de forma amable sin describir el contenido visual.]
+
+[IMPORTANTE: Si el cliente solicita audios, responde: "En este momento no puedo enviarte audios pues el micrófono del celular está fallando."]
+
+[IMPORTANTE: Una vez cerrada y confirmada la venta, solo responde preguntas del cliente. No continúes intentando vender.]
+
+[IMPORTANTE: TODO el texto usa tuteo. La confirmación de dirección usa "ciudad y departamento", no "ciudad" a secas.]
+
+[IMPORTANTE: El audio NUNCA menciona precio.]
+
+
+========================================================================
+
+E. ESTRUCTURA EN META
+Campaña: EXTERNA_GAFAS_TEST_20261002
+Objetivo: Tráfico (OUTCOME_TRAFFIC) · Maximizar conversaciones · WhatsApp
+Presupuesto: ABO — el presupuesto vive en el conjunto
+Lanzamiento: 02-oct-2026 a las 4:00 AM.
+CONFIGURACIÓN IGUAL EN TODOS LOS CONJUNTOS:
+· Ubicación: Colombia · Sin intereses
+· Advantage+ Audience: OFF (si no, Meta ignora la banda de edad)
+· Optimización: Maximizar CONVERSACIONES — revisarlo justo antes de publicar: Meta lo revierte a clics con cada duplicado
+· Destino: WhatsApp (el número conectado a la FanPage, nunca Messenger) · CTA: Enviar mensaje
+· DESMARCAR «anuncios multianunciantes»
+· DESMARCAR «incluir personas de WhatsApp cuya edad se desconoce»
+· Anuncios A y B de una misma pieza: el B es copia exacta del A (misma imagen, mismo copy)
+· Texto principal: cargar todos los TEXTOS como opciones · Títulos: todos · Descripción: la indicada
+· Cero «- Copia» en ningún nombre: renombrar antes de publicar
+· NO aceptar recomendaciones de Meta
+· Mensaje prellenado de WhatsApp (se configura a mano en Ads Manager): Hola, quiero más información de Gafas Inteligentes con registro INVIMA
+Total del día: US$17.94
+EXTERNA_GAFAS_VIAJERO-SIN-TELEFONO_R1 · presupuesto US$2.99/día · edad 25-40 · género MIXTO · IMAGEN · GAFAS_1_VIAJERO_SIN_TELEFONO.png · precio en el ad NO
+Anuncio A: VIAJERO-SIN-TELEFONO_IMG_A ~ GAFAS|VIAJERO_SIN_TELE|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: VIAJERO-SIN-TELEFONO_IMG_B ~ GAFAS|VIAJERO_SIN_TELE|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
+¿Viajas y te pierdes todo por grabar con el teléfono? 📱
+
+Llegas al viaje y lo miras por una pantallita. El momento pasa y te queda un video movido.
+
+No es que grabes mal. Es que un teléfono no te deja vivir el momento.
+
+🧬 Estas gafas graban lo que TÚ ves, sin que saques nada:
+
+✅ Video en primera persona
+✅ Fotos con un toque
+✅ Te llegan a toda Colombia, pagas al recibir
+
+Viajeras, papás, creadores ya graban así. Escríbeme hoy y te las aparto 👉
+TEXTO PRINCIPAL 2:
+Hay momentos que no se repiten. Y tú los miras por una pantalla…
+
+Estar ahí sin estar. Esa es la peor sensación de un viaje.
+
+Imagínate volver con todo guardado y haberlo vivido de verdad.
+
+Míralo con tus ojos, que quede grabado solo. Escríbeme y te cuento cómo 👉
+TEXTO PRINCIPAL 3:
+“yo era la del teléfono en todos los paseos, ahora grabo sin sacarlo y mis videos parecen de otro nivel”
+
+Antes: fotos movidas y batería muerta a mediodía. Ahora: todo en POV y el teléfono en el bolso.
+
+Si viajas o sales con tu familia, esto es para ti. Escríbeme hoy 👉
+TÍTULO 1:
+Viaja sin teléfono
+TÍTULO 2:
+Vívelo, no lo grabes
+TÍTULO 3:
+POV real
+DESCRIPCIÓN:
+🏠 ¡Paga en casa!
+EXTERNA_GAFAS_MOMENTOS-QUE-NO-VUELVEN_R1 · presupuesto US$2.99/día · edad 35-50 · género MIXTO · IMAGEN · GAFAS_2_MOMENTOS_QUE_NO_VUELVEN.png · precio en el ad NO
+Anuncio A: MOMENTOS-QUE-NO-VUELVEN_IMG_A ~ GAFAS|MOMENTOS_QUE_NO_|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: MOMENTOS-QUE-NO-VUELVEN_IMG_B ~ GAFAS|MOMENTOS_QUE_NO_|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
+¿Tus hijos hacen algo increíble y tú buscas el teléfono? 👶
+
+Para cuando lo desbloqueas ya pasó. Y ese momento no vuelve.
+
+No es tu culpa: ningún papá anda con la cámara lista.
+
+🧬 Graba con solo mirar, fotos con un toque:
+
+✅ Actos, travesuras, primeros pasos
+✅ Manos libres para abrazar
+✅ Pagas al recibir en toda Colombia
+
+Papás que ya no se pierden nada. Escríbeme hoy y te las aparto 👉
+TEXTO PRINCIPAL 2:
+El primer gol, el diente que se cae, la caída chistosa…
+
+Todo pasa cuando el teléfono está en el bolso.
+
+Volver con el recuerdo Y haber estado presente: eso no tiene precio.
+
+Escríbeme y te muestro cómo 👉
+TEXTO PRINCIPAL 3:
+“capté cuando a mi hija se le cayó el diente en pleno almuerzo, yo ni me moví”
+
+Antes me perdía todo. Ahora vivo el momento y queda grabado.
+
+Si tienes hijos pequeños, te entiendo. Escríbeme 👉
+TÍTULO 1:
+No te lo pierdas
+TÍTULO 2:
+Papás presentes
+TÍTULO 3:
+Guarda el momento
+DESCRIPCIÓN:
+Envío gratis · Paga al recibir
+EXTERNA_GAFAS_TRADUCCION-QUE-FUNCIONA_R1 · presupuesto US$2.99/día · edad 25-40 · género MIXTO · IMAGEN · GAFAS_3_TRADUCCION_QUE_FUNCIONA.png · precio en el ad SI
+Anuncio A: TRADUCCION-QUE-FUNCIONA_IMG_A ~ GAFAS|TRADUCCION_QUE_F|C2.CN05|NC2|ESCALERA|BOT_V3
+Anuncio B: TRADUCCION-QUE-FUNCIONA_IMG_B ~ GAFAS|TRADUCCION_QUE_F|C2.CN05|NC2|ESCALERA|BOT_V3
+TEXTO PRINCIPAL 1:
+¿Te hablan en otro idioma y no entiendes nada? 🗣️
+
+En viajes o negocios, no entender te deja fuera. Y las apps son lentas.
+
+No es tu inglés. Es que necesitas respuesta al instante.
+
+🧬 Traduce más de 100 idiomas directo en tu oído:
+
+✅ Entiendes y respondes al momento
+✅ Con ChatGPT integrado
+✅ $249.900, envío gratis, pagas al recibir
+
+Viajeros y negociantes ya se mueven así. Escríbeme hoy 👉
+TEXTO PRINCIPAL 2:
+Esa vergüenza de no entender al taxista, al cliente, al guía…
+
+Quedarte callada cuando todos hablan. Se siente horrible.
+
+Hablar de tú a tú en cualquier idioma: esa es la libertad.
+
+Escríbeme y te explico 👉
+TEXTO PRINCIPAL 3:
+“en el viaje le pregunté a un gringo y me respondió en español, quedé fría”
+
+Antes: señas y traductor a medias. Ahora: converso normal.
+
+Si viajas o atiendes gente, es para ti. $249.900 y es tuyo 👉
+TÍTULO 1:
+100 idiomas al oído
+TÍTULO 2:
+Entiende todo
+TÍTULO 3:
+Habla sin miedo
+DESCRIPCIÓN:
+🏠 ¡Paga en casa!
+EXTERNA_GAFAS_MANOS-LIBRES_R1 · presupuesto US$2.99/día · edad 25-40 · género MUJER · IMAGEN · GAFAS_4_MANOS_LIBRES.png · precio en el ad NO
+Anuncio A: MANOS-LIBRES_IMG_A ~ GAFAS|MANOS_LIBRES|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: MANOS-LIBRES_IMG_B ~ GAFAS|MANOS_LIBRES|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
+¿Andas con las manos ocupadas y el teléfono estorba? 🙌
+
+Manejas, entrenas, cocinas… y todo te interrumpe.
+
+No es falta de tiempo. Es que tus manos no dan más.
+
+🧬 Música, llamadas, fotos y video sin parar nada:
+
+✅ Oído abierto: oyes tu entorno
+✅ Llamadas con un toque
+✅ Pagas al recibir
+
+Escríbeme hoy y te las aparto 👉
+TEXTO PRINCIPAL 2:
+El taco, el bus, el gym, la cocina…
+
+Tu día no para y el teléfono te frena.
+
+Seguir en lo tuyo mientras todo queda hecho: eso es libertad.
+
+Escríbeme 👉
+TEXTO PRINCIPAL 3:
+“manejo moto y contesto sin soltar nada, la música no para”
+
+Antes: o paraba o me lo perdía. Ahora: todo junto.
+
+Si vives en movimiento, escríbeme 👉
+TÍTULO 1:
+Manos libres total
+TÍTULO 2:
+Sigue en lo tuyo
+TÍTULO 3:
+Sin parar nada
+DESCRIPCIÓN:
+🏠 ¡Paga en casa!
+EXTERNA_GAFAS_ANTI-PREMIUM-COD_R1 · presupuesto US$2.99/día · edad 25-40 · género MIXTO · IMAGEN · GAFAS_5_ANTI_PREMIUM_COD.png · precio en el ad SI
+Anuncio A: ANTI-PREMIUM-COD_IMG_A ~ GAFAS|ANTI_PREMIUM_COD|C2.CN05|NC3A|ESCALERA|BOT_V3
+Anuncio B: ANTI-PREMIUM-COD_IMG_B ~ GAFAS|ANTI_PREMIUM_COD|C2.CN05|NC3A|ESCALERA|BOT_V3
+TEXTO PRINCIPAL 1:
+¿Pagarías $600 por unas gafas que se mueren a los 3 meses? 💸
+
+Las famosas cuestan un ojo, fallan y la garantía no responde.
+
+No es que la tecnología sea mala. Es que te cobran la marca.
+
+🧬 Lo mismo por $249.900, pagando al recibir:
+
+✅ Cámara HD + ChatGPT + 100 idiomas
+✅ Set completo con 2 lentes
+✅ Envío gratis a toda Colombia
+
+Tecnología premium sin precio premium. Escríbeme hoy 👉
+TEXTO PRINCIPAL 2:
+Da rabia: pagar carísimo y que a los meses no enciendan.
+
+Ese miedo a que te vendan humo por redes es válido.
+
+Por eso pagas al recibir: primero lo tienes, después pagas.
+
+Escríbeme 👉
+TEXTO PRINCIPAL 3:
+“yo iba por las de $600 y terminé con estas por menos de la mitad, graban igual”
+
+Antes: cuota tras cuota por la marca. Ahora: lo mismo, sin deuda. $249.900.
+
+Escríbeme 👉
+TÍTULO 1:
+Premium sin $600
+TÍTULO 2:
+Paga al recibir
+TÍTULO 3:
+Sin pagar de más
+DESCRIPCIÓN:
+Envío gratis · Paga al recibir
+EXTERNA_GAFAS_CALIDAD-PRO-CREADORES_R1 · presupuesto US$2.99/día · edad 25-40 · género MIXTO · IMAGEN · GAFAS_6_CALIDAD_PRO_CREADORES.png · precio en el ad NO
+Anuncio A: CALIDAD-PRO-CREADORES_IMG_A ~ GAFAS|CALIDAD_PRO_CREA|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+Anuncio B: CALIDAD-PRO-CREADORES_IMG_B ~ GAFAS|CALIDAD_PRO_CREA|C2.CN05|NC2|SIN_PRECIO|BOT_V3
+TEXTO PRINCIPAL 1:
+¿Tu contenido se ve amateur al lado de los grandes? 🎥
+
+Grabas con el teléfono y se nota: movido, plano, igual que todos.
+
+No es tu talento. Es tu cámara.
+
+🧬 POV nítido sin cargar cámara:
+
+✅ Graba lo que ves, manos libres
+✅ Fotos y video al instante
+✅ Pagas al recibir
+
+Creadores que ya subieron de nivel. Escríbeme hoy 👉
+TEXTO PRINCIPAL 2:
+Publicas todos los días y el algoritmo no te mira.
+
+Ver a otros crecer con mejor calidad duele.
+
+Verte pro sin gastar en equipo: ese es el salto.
+
+Escríbeme 👉
+TEXTO PRINCIPAL 3:
+“mis tomas POV parecen de otro nivel desde que grabo con ellas”
+
+Antes: trípode y teléfono. Ahora: solo miro.
+
+Si creas contenido, escríbeme 👉
+TÍTULO 1:
+POV profesional
+TÍTULO 2:
+Se ve pro
+TÍTULO 3:
+Sin cámara grande
+DESCRIPCIÓN:
+🏠 ¡Paga en casa!
+
+========================================================================
+
+F. CALENDARIO Y REGISTRO
+Día 0 (02-oct) — Lanza a las 4 AM · hacer: nada — no se toca nada más hoy · traer: —
+Días 1-2 (03-oct → 04-oct) — Meta está en aprendizaje · hacer: observar clics-enlace y %conv. NO pausar, NO escalar · traer: nada — el reloj de ENTREGA es automático
+Día 3 (05-oct) — GATE 1 · corte por conversación · hacer: apagar los 2-3 peores por conversación (%conv/clic-enlace) y subir los sobrevivientes a $5.98 · traer: export de Meta Ads Manager (no hace falta LucidSales)
+Día 4 (06-oct) — GATE 2 · validación · hacer: ya hay CPA formándose; arranca FASE 2 del ganador #1 · traer: export de LucidSales de 7 días
+Día 8.9 (11-oct) — PRESUPUESTO DE DECISIÓN alcanzado · hacer: recién acá un '0 ventas' es veredicto y no falta de exposición · traer: export de LucidSales
+Domingo (cada semana) — ingesta principal · hacer: el sistema decide qué se poda y qué se escala · traer: export de LucidSales de 7 días
+python Ads/_TOOLS/registrar_evento.py --producto GAFAS --evento CAMBIO_BOT --motivo "bot cargado en LucidBot" --fuente "operador"
+python Ads/_TOOLS/registrar_evento.py --producto GAFAS --evento LANZAMIENTO --fase 1 --fecha 2026-10-02 --cuenta EXTERNA --campana EXTERNA_GAFAS_TEST_20261002 --motivo "lanzamiento" --fuente "operador"

@@ -1,0 +1,68 @@
+═══ GAFAS · VERSION v1 · 2026-10-01 · COSTO Q120000 · DOSIS Set completo (marco + 2 lentes + accesorios) · page_id 61587359024658 · campaign_id sin MCP ═══
+PRODUCTO: Gafas Inteligentes Video Cámara 13Mp Asistente IA Traductor
+FECHA_PROCESADO: 2026-10-01
+VERSION: v1
+COSTO_PROVEEDOR_Q: 120000 COP (mercado CO; las columnas *_q de este producto están en COP)
+DOSIS / PRESENTACIÓN: Set completo: marco negro + lente transparente + lente oscura + estuche + cable + manual + caja
+PROVEEDORES_DROPY: 0 (producto propio, stock 150)   ·   ANUNCIANTES_AD_LIBRARY: 3
+VALIDACION_PRODUCTO: score 0.96 VERDE ÓPTIMO (11/12 R; falla R6 ticket $79 USD; O1/O3 confirmados por operador)
+FANPAGE: Formato B — sin página ideal en el catálogo (10 páginas de salud/belleza). Sugerida: Tech Gadgets CO. Opera en Fanpage Espacia page_id 61587359024658 (externa, manual)
+MCP_ACCOUNT_ID: EXTERNA 828263263310627 (manual, sin MCP) · MCP_PAGE_ID: 61587359024658 · MCP_PIXEL_ID: — · TASA_MONEDA_POR_USD: 3152.5
+
+━━━ COSTEO (ETAPA-1, fila CO exacta 120000) ━━━
+P1u $249.900 / P2u $399.900 (sin 3u, solo 2 opciones) / CPA_OBJETIVO $40.069,44 / CPA_BREAK_EVEN $67.245,62
+Márgenes a CPA objetivo: P1u $69.830,56 · P2u $119.830,56. Arquitectura: 1/2 unidades, envío gratis.
+Origen escalera: OPERADOR. Fila creada 01-oct-2026 (la tabla CO llegaba a 50000; matemática verificada al centavo en 19 filas).
+
+━━━ COMPONENTES (ETAPA-1B) ━━━
+Cámara HD POV (graba lo que ves) · IA con ChatGPT por voz · Traducción 100+ idiomas en vivo · Bluetooth 5.3 música/llamadas oído abierto · 2 lentes UV400 intercambiables · Batería 290 mAh · IP65 · App HeyCyan gratis · Controles físicos + táctiles · Detección de uso · Marco TR90 liviano.
+Diferenciador: ChatGPT que responde + traducción demostrada + pago contra entrega a $249.900 (las premium de $600 mueren a los 3 meses).
+
+━━━ ÁNGULOS FASE 1 (6 rankeados — ETAPA-2) ━━━
+1. VIAJERO_SIN_TELEFONO (emocional, VOZ V08-V10) · IMAGEN · MIXTO 25-35 CURIOSIDAD · NC2 · BAJA · "viaja y graba sin sacar el teléfono"
+2. MOMENTOS_QUE_NO_VUELVEN (emocional, VOZ V08-V10) · IMAGEN · MIXTO 35-45 MIEDO_FUTURO · NC2 · BAJA · "no te pierdas ni un momento"
+3. TRADUCCION_QUE_FUNCIONA (solución, VIDEO video 2) · IMAGEN · MIXTO 25-35 CURIOSIDAD · NC2 · BAJA · "entiende más de 100 idiomas" · LLEVA PRECIO
+4. MANOS_LIBRES (facilidad, VIDEO video 5) · IMAGEN · MUJER 25-35 CURIOSIDAD · NC2 · BAJA · "música, llamadas y fotos sin parar"
+5. ANTI_PREMIUM_COD (comparación, VIDEO video 3) · IMAGEN · MIXTO 25-35 DESCONFIANZA · NC3A · BAJA · "lo premium sin precio premium" · LLEVA PRECIO
+6. CALIDAD_PRO_CREADORES (resultado, VIDEO video 6) · IMAGEN · MIXTO 25-35 CURIOSIDAD · NC2 · BAJA · "graba como los grandes, sin cámara"
+Concepto fijo: C2_BENEFICIOS ligera (ref. Camila-Recomienda 15). Formato B FanPage (alerta sin bloqueo). Aprendizajes: APR-001 (mecanismo no hook), APR-003 (TODO IMAGEN), APR-065 (marco NEGRO exacto), APR-079 (precio filtra).
+
+━━━ ÁNGULOS DESCUBIERTOS (ETAPA-1B) ━━━
+Viajero sin teléfono · Momentos papás · IA que responde · Anti-premium COD · Comodidad todo el día · Motero/deporte. Cubiertos por videos: demo grabación, traducción-trabajo, todo-en-uno. Objeción al bot (no anuncio): vergüenza de grabar (V07) → LED + pedir permiso.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGISTRO DE CONJUNTOS — LLAVE DE UNIÓN CON META
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CAMPAÑA: EXTERNA_GAFAS_TEST_20261002 (manual, cuenta externa 828263263310627) · FASE: 1 testeo · LANZAMIENTO: 2026-10-02 04:00 hora Colombia
+CPA_OBJETIVO: $40.069,44 · CPA_BREAK_EVEN: $67.245,62 · PRESUPUESTO/CONJUNTO: $2.99 USD/día ETAPA 1 → $5.98 ETAPA 2
+PD = 1× BE = $67.245,62 · se alcanza en ~22 días-conjunto a $2.99 (lectura por ángulo, no por día).
+
+| NOMBRE_CONJUNTO (llave Meta) | Ángulo | Tipo | Formato | Archivo/Prompt | Precio ad | Avatar | Hook | Estado |
+| EXTERNA_GAFAS_VIAJERO-SIN-TELEFONO_R1 | VIAJERO_SIN_TELEFONO | emocional | IMAGEN | GAFAS_1_VIAJERO_SIN_TELEFONO.png | NO | MIXTO 25-35 | viaja y graba sin sacar el teléfono | DISEÑO |
+| EXTERNA_GAFAS_MOMENTOS-QUE-NO-VUELVEN_R1 | MOMENTOS_QUE_NO_VUELVEN | emocional | IMAGEN | GAFAS_2_MOMENTOS_QUE_NO_VUELVEN.png | NO | MIXTO 35-45 | no te pierdas ni un momento | DISEÑO |
+| EXTERNA_GAFAS_TRADUCCION-QUE-FUNCIONA_R1 | TRADUCCION_QUE_FUNCIONA | solución | IMAGEN | GAFAS_3_TRADUCCION_QUE_FUNCIONA.png | SÍ $249.900 | MIXTO 25-35 | entiende más de 100 idiomas | DISEÑO |
+| EXTERNA_GAFAS_MANOS-LIBRES_R1 | MANOS_LIBRES | facilidad | IMAGEN | GAFAS_4_MANOS_LIBRES.png | NO | MUJER 25-35 | música, llamadas y fotos sin parar | DISEÑO |
+| EXTERNA_GAFAS_ANTI-PREMIUM-COD_R1 | ANTI_PREMIUM_COD | comparación | IMAGEN | GAFAS_5_ANTI_PREMIUM_COD.png | SÍ $249.900 | MIXTO 25-35 | lo premium sin precio premium | DISEÑO |
+| EXTERNA_GAFAS_CALIDAD-PRO-CREADORES_R1 | CALIDAD_PRO_CREADORES | resultado | IMAGEN | GAFAS_6_CALIDAD_PRO_CREADORES.png | NO | MIXTO 25-35 | graba como los grandes, sin cámara | DISEÑO |
+
+RESULTADOS_TESTEO: vacío.
+ANGULO_GANADOR: vacío hasta confirmación con métricas por VENTA.
+
+━━━ DATOS DE SATURACIÓN ━━━
+Operador: 3 anunciantes activos (producto) → BAJA. Módulo B no corrido.
+
+━━━ PROPUESTAS DE VALOR (ETAPA-5 Paso 1, verbatim) ━━━
+andar con el teléfono y perderte momentos → graban lo que ves → vives el momento y queda guardado
+no entender otro idioma → traducen 100+ al oído → hablas de tú a tú donde sea
+manos ocupadas → música, llamadas y fotos sin parar → sigues en lo tuyo
+pagar caro por marca → mismo tech por $249.900 con COD → premium sin deuda
+contenido amateur → POV nítido sin cámara → te ves pro
+miedo a comprar por redes → pagas al recibir → cero riesgo
+audífonos que aíslan → oído abierto → oyes tu entorno
+equipos complicados → 2 toques y listo → funciona desde el día 1
+
+━━━ PRÓXIMA SESIÓN ━━━
+- FASE 2: ángulo ganador confirmado por VENTA + métricas + export de chats LucidBot → ETAPA-3.
+- Nuevo testeo: saltar ETAPA-1/1B → ETAPA-0 con nuevos videos.
+- Videos lavados FASE 2 en Ads/MEDIA_GAFAS/ (GAFAS_1_DEMO.mp4 … GAFAS_6_CREADORES.mp4).
+- Detalle copiable en 1_HACER_MANUAL.txt (cuando gen_manual.py lo genere).

@@ -1,0 +1,89 @@
+════════════════════════════════════════════════════════════════════
+ESTADO DE RESULTADOS — 2026-10-01 → 2026-10-13
+MERCADO GT (GTQ) — Dropi y el banco Relay solo cubren este mercado
+VISTA A · COHORTE (por fecha de ORDEN) — «¿rindió la pauta de esta ventana?»
+Generado 2026-10-13 · norma: DOCTRINA/CONTABILIDAD.md · parámetros: _PARAMETROS_FINANZAS.csv
+════════════════════════════════════════════════════════════════════
+
+🟡 COHORTE PRELIMINAR — el último día tiene 0 días de edad y la norma pide 10.
+   Las devoluciones tardan ~8 días en confirmarse, así que este resultado
+   está SOBRESTIMADO. No declarar ganador ni mandar apagar con esto.
+
+   53 órdenes · 39 entregadas · 3 devueltas · 10 sin resolver (81.1% resuelto)
+
+────────────────────────────────────────────────────────────────────
+  (+) VENTA BRUTA ENTREGADA               Q    9,765.06
+  (−) Costo de producto                   Q   -3,330.00
+  (−) Flete de entrega                    Q   -1,454.23
+      ························································
+  (=) MARGEN LOGÍSTICO                    Q    4,980.83
+      ↑ esto es lo que muestra el panel de Dropi. NO es tu ganancia.
+
+  (−) Costo de devoluciones (  3 devol.)  Q      -84.06
+      estimado: 3 devoluciones × Q28.02 (sin historial de cartera)
+  (−) Costo de personal     ( 39 × Q4.00)  Q     -156.00
+  (−) Otros gastos operativos( 39 × Q2.08)  Q      -81.12
+      ························································
+  (=) MARGEN DE CONTRIBUCIÓN              Q    4,659.65
+
+  (−) Publicidad Meta ($310.15 × 7.62)    Q   -2,363.34
+      ························································
+  (=) MARGEN OPERATIVO                    Q    2,296.31
+
+  (−) Gastos fijos del negocio            Q       -0.00
+        (ninguno confirmado en esta ventana)
+      ════════════════════════════════════════════════════════
+  (=) RESULTADO NETO DEL NEGOCIO          Q    2,296.31
+────────────────────────────────────────────────────────────────────
+
+════════════════════════════════════════════════════════════════════
+ECONOMÍA UNITARIA — cuánto deja CADA VENTA, por producto
+════════════════════════════════════════════════════════════════════
+
+  CLEARSTEM   (entrega 90.3% · 28 entregadas / 3 devueltas)
+     Precio de venta (ticket promedio)      Q      251.29
+     − Costo del producto                   Q      -89.57
+     − Flete                                Q      -37.26
+     − Devolución amortizada                Q       -3.00
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      115.38  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -59.25
+       ······················································
+     = GANANCIA POR VENTA                   Q       56.12  ✅
+
+  TINNIDROP   (entrega 100.0% · 7 entregadas / 0 devueltas)
+     Precio de venta (ticket promedio)      Q      221.86
+     − Costo del producto                   Q      -70.29
+     − Flete                                Q      -35.68
+     − Devolución amortizada                Q       -0.00
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      109.81  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q      -22.47
+       ······················································
+     = GANANCIA POR VENTA                   Q       87.35  ✅
+
+  NUSAVA   (entrega 100.0% · 4 entregadas / 0 devueltas)
+     Precio de venta (ticket promedio)      Q      294.00
+     − Costo del producto                   Q      -82.50
+     − Flete                                Q      -40.32
+     − Devolución amortizada                Q       -0.00
+     − Admin y otros                        Q       -6.08
+       ······················································
+     = MARGEN ANTES DE PUBLICIDAD           Q      165.10  ← break-even del CPA
+     − CPA real (pauta ÷ ventas)            Q       -9.03
+       ······················································
+     = GANANCIA POR VENTA                   Q      156.07  ✅
+
+════════════════════════════════════════════════════════════════════
+VISTA B — CAJA (¿cuánto dinero entró de verdad en la ventana?)
+════════════════════════════════════════════════════════════════════
+🔴 NO SE PUEDE CALCULAR: falta el HISTORIAL DE CARTERA de Dropi (--cartera).
+   Lo de arriba es COHORTE: mide si la pauta rindió, no el saldo de la cuenta.
+
+────────────────────────────────────────────────────────────────────
+VERIFICACIÓN DE INTEGRIDAD
+  ✅ Cuadre de Dropi (venta−producto−flete = GANANCIA)
+  🟡 Maduración del cohorte (≥ 10 días)
+────────────────────────────────────────────────────────────────────
