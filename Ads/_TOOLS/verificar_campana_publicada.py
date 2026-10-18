@@ -21,11 +21,13 @@ USO
 
 SALIDA (ultima linea, o unica con --json)
     {"ok","objetos_declarados","objetos_ok","copias":[...],"altas":[...],
-     "ad_ids_escritos","mensaje_operador"} + "detalle" (copia de mensaje_operador, para el runner)
+     "ad_ids_escritos","mensaje_operador","requiere_claude"} + "detalle" (copia de mensaje_operador,
+    para el runner). `requiere_claude` (forma en requiere_claude.py) lista lo que exige una
+    escritura en Meta por MCP; va VACIA cuando no hace falta Claude.
 
 CODIGOS DE SALIDA   0 = el gate paso.   1 = no paso (ver mensaje_operador).   2 = uso incorrecto.
 """
-import sys, os, io, csv, json, argparse, contextlib
+import sys, os, io, re, csv, json, argparse, contextlib
 from unittest import mock
 
 for _s in (sys.stdout, sys.stderr):
@@ -35,6 +37,7 @@ for _s in (sys.stdout, sys.stderr):
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import verificar_publicacion as vp  # noqa: E402
 import snapshot_meta as sm          # noqa: E402
+import requiere_claude as rq        # noqa: E402
 
 
 def ruta_snapshot(alias, brazo):
@@ -86,6 +89,59 @@ def _declarados(man):
     return out
 
 
+_COPIA_RE = re.compile(r"\s-\s*Copia(\s*\d+)?$", re.I)
+_ANUNCIO_RE = re.compile(r"^(.*) ([A-Z]) ~ (.*)$")
+
+
+def _clave_anuncio(nombre):
+    """(concepto, cola) de 'CONCEPTO LETRA ~ COLA'; None si el nombre no sigue esa forma."""
+    m = _ANUNCIO_RE.match(nombre)
+    return (m.group(1), m.group(3)) if m else None
+
+
+def nombres_esperados(copias, declarados, meta):
+    """{id_copia: [candidatos]} — a que nombre del paquete debe renombrarse cada '- Copia'.
+
+    Un '- Copia' es el duplicado de un anuncio: sin sufijo es el nombre original (si ese ya no
+    esta en Meta) o su hermano de la otra letra (si el original sigue ahi). Los candidatos son los
+    anuncios declarados que NO existen en Meta y comparten concepto y cola con el nombre sin
+    sufijo. Un candidato unico es la respuesta; varios (o ninguno) se devuelven tal cual para que
+    lo resuelva una persona: nunca se adivina."""
+    faltan = [n for nivel, n in declarados if nivel == "ANUNCIO" and n not in meta]
+    out = {}
+    for c in copias:
+        base = _COPIA_RE.sub("", c["nombre"]).strip()
+        clave = _clave_anuncio(base)
+        cands = [n for n in faltan if n == base or (clave and _clave_anuncio(n) == clave)]
+        out[c["id"]] = cands
+    return out
+
+
+def _requiere_claude(alias, campana, copias, declarados, meta):
+    """Lista `requiere_claude` del resultado: un item RENOMBRAR_COPIA si quedan '- Copia'."""
+    if not copias:
+        return []
+    esperados = nombres_esperados(copias, declarados, meta)
+    # Un candidato reclamado por dos copias tampoco es una respuesta unica.
+    uso = {}
+    for cands in esperados.values():
+        for n in cands:
+            uso[n] = uso.get(n, 0) + 1
+    partes = []
+    for c in copias:
+        cands = esperados[c["id"]]
+        if len(cands) == 1 and uso[cands[0]] == 1:
+            partes.append("%s -> %s" % (c["id"], cands[0]))
+        else:
+            partes.append("%s -> (no es unico, candidatos: %s)"
+                          % (c["id"], " | ".join(cands) if cands else "ninguno declarado sin publicar"))
+    frase = ("Renombrá en la cuenta %s los anuncios con '- Copia' de la campaña %s a su nombre del "
+             "paquete: %s." % (alias, campana, "; ".join(partes)))
+    motivo = ("Hay %d anuncio(s) con '- Copia' en Meta. Renombrarlos es una escritura en Meta y se "
+              "hace por el MCP desde una sesión de Claude." % len(copias))
+    return [rq.item("RENOMBRAR_COPIA", "alta", motivo, frase, copias)]
+
+
 def _mensaje(ok, declarados, objetos_ok, faltan, copias, bloqueo, escribio):
     if bloqueo:
         return bloqueo
@@ -110,7 +166,7 @@ def verificar(producto, fase, brazo, escribir=True):
     """Devuelve (resultado_dict, texto_log)."""
     log = []
     res = {"ok": False, "objetos_declarados": 0, "objetos_ok": 0, "copias": [], "altas": [],
-           "ad_ids_escritos": 0, "mensaje_operador": ""}
+           "ad_ids_escritos": 0, "mensaje_operador": "", "requiere_claude": []}
     try:
         ruta_pq, pq = cargar_paquete(producto, fase, brazo)
     except ValueError as e:
@@ -136,6 +192,8 @@ def verificar(producto, fase, brazo, escribir=True):
     res["objetos_ok"] = len(declarados) - len(faltan)
     res["copias"] = [{"nombre": n, "id": i} for n, i in copias_raw]
     res["ok"] = rc == 0
+    res["requiere_claude"] = _requiere_claude(pq["cuenta_alias"], man["campana"], res["copias"],
+                                              declarados, meta)
     for linea in txt.splitlines():
         if linea.strip().startswith("ALTA:"):
             res["altas"] = [x.strip() for x in linea.split(":", 2)[2].split(",") if x.strip()]

@@ -11,6 +11,7 @@ os.environ.setdefault("PGDATABASE", "vitalcom_test")
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import verificar_campana_publicada as vcp  # noqa: E402
 import verificar_publicacion as vp         # noqa: E402
+import requiere_claude as rq               # noqa: E402
 
 CAMP = "GTR7_PROD_CONCEPTOS-C_20261017"
 CONJ = ["PROD_ANG_C1", "PROD_ANG_C2"]
@@ -127,6 +128,35 @@ class WrapperTests(unittest.TestCase):
         self.assertEqual([c["nombre"] for c in res["copias"]], ["C1 A ~ X - Copia"])
         self.assertIn("C1 A ~ X - Copia", res["mensaje_operador"])
         self.assertTrue(all(f["ad_id"] == "" for f in self._creativos()))
+        # Copia del original que ya no esta en Meta: el nombre esperado es el original, sin ambiguedad.
+        rcl = res["requiere_claude"]
+        self.assertEqual(rq.validar(rcl), [])
+        self.assertEqual([i["codigo"] for i in rcl], ["RENOMBRAR_COPIA"])
+        self.assertEqual(rcl[0]["objetos"], [{"id": "adX", "nombre": "C1 A ~ X - Copia"}])
+        self.assertEqual(rcl[0]["pedirle_a_claude"],
+                         "Renombrá en la cuenta GTR7 los anuncios con '- Copia' de la campaña %s a su "
+                         "nombre del paquete: adX -> C1 A ~ X." % CAMP)
+
+    def test_copia_de_hermano_apunta_a_la_otra_letra(self):
+        # Se duplico A (sigue en Meta) y el duplicado es el B que falta.
+        ents = _entidades(extra_ads=["C1 A ~ X - Copia"], omitir=["C1 B ~ X"])
+        with self._snapshot(ents):
+            res, _ = vcp.verificar("PROD", 2, "C", escribir=False)
+        self.assertIn("adX -> C1 B ~ X.", res["requiere_claude"][0]["pedirle_a_claude"])
+
+    def test_copia_ambigua_lista_candidatos_sin_adivinar(self):
+        # Faltan A y B del mismo concepto: la copia puede ser cualquiera de los dos.
+        ents = _entidades(extra_ads=["C1 A ~ X - Copia"], omitir=["C1 A ~ X", "C1 B ~ X"])
+        with self._snapshot(ents):
+            res, _ = vcp.verificar("PROD", 2, "C", escribir=False)
+        frase = res["requiere_claude"][0]["pedirle_a_claude"]
+        self.assertIn("no es unico", frase)
+        self.assertIn("C1 A ~ X | C1 B ~ X", frase)
+
+    def test_faltante_sin_copia_no_pide_claude(self):
+        with self._snapshot(_entidades(omitir=["C2 B ~ X"])):
+            res, _ = vcp.verificar("PROD", 2, "C", escribir=False)
+        self.assertEqual(res["requiere_claude"], [])
 
     def test_faltante_bloquea(self):
         with self._snapshot(_entidades(omitir=["C2 B ~ X"])):
@@ -154,7 +184,9 @@ class WrapperTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         salida = json.loads(buf.getvalue())
         self.assertEqual(set(salida), {"ok", "objetos_declarados", "objetos_ok", "copias", "altas",
-                                       "ad_ids_escritos", "mensaje_operador", "detalle"})
+                                       "ad_ids_escritos", "mensaje_operador", "detalle",
+                                       "requiere_claude"})
+        self.assertEqual(salida["requiere_claude"], [])
         buf = io.StringIO()
         with self._snapshot(_entidades(omitir=["C2 B ~ X"])), contextlib.redirect_stdout(buf):
             rc = vcp.main(["--producto", "PROD", "--fase", "2", "--brazo", "C", "--json", "--sin-escribir"])
