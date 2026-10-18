@@ -607,3 +607,51 @@ método vale en ambos mercados; cada producto declara el suyo en la columna `mer
   explica el porqué de una regla.
 - Si algo de este texto contradice lo que te muestra el operador desde el sistema vivo, **gana el
   sistema vivo** y conviene avisarle que este documento quedó desactualizado.
+
+---
+
+## 24. BRIEF DE AUDITORÍA — PARA DECIDIR SI HACE FALTA UNA v2.0
+
+**Qué pide el operador.** Que auditás el sistema completo y concluyas si conviene una versión 2.0
+(rediseño/simplificación) o si basta con podar y corregir. Motivo declarado: "hemos trabajado
+demasiado" — el sistema creció mucho y se sospecha complejidad acumulada.
+
+**Dimensiones medidas (18-oct-2026)**
+- 169 scripts Python en `Ads/_TOOLS/` (75 de ellos tests), 520 commits.
+- Mayores: `gen_dashboard.py` 2576 líneas, `flujo.py` 1858, `app_html.py` 1626, `decidir.py` 1169,
+  `gen_publicacion.py` 1121, `agrupar_canonicos.py` 1027, `gen_pl.py` 907.
+- Doctrina en `DOCTRINA/`: ~377 KB de markdown. Prompts de las 15 etapas: ~228 KB (`ETAPA-6` 41 KB,
+  `ETAPA-7` 22 KB, `ETAPA-5` 17 KB, `ETAPA-4` 17 KB, `ETAPA-1B` 16 KB). 49 CSV en `PRODUCTOS/`.
+- Coste de contexto heredado (reporte `gen_grafo.py`): los "nodos dios" más pesados son
+  `DATA_PLAYBOOK.md` (~14k tokens heredados), `PLANTILLAS_INFOGRAFIAS_FLUJO.md` (~11k),
+  `PARAMETRIZACION_ADS.md` (~8k), `PLANTILLAS_FLUJO_BOT.md` (~8k), `COPYWRITING_ADS.md` (~7.5k).
+- Hallazgos menores del propio sistema: `_DIM_REFERENCIA_F1.csv` sin consumidor; 2 rutas muertas en
+  `test_armar_prompts_fase2.py`; `etapa-render` es la única etapa con modelo fijo (sonnet).
+
+**Tensiones de diseño conocidas (candidatas a revisar, no verdades)**
+1. **Fuentes de verdad duales:** 5 tablas con verdad en Postgres y espejo CSV, el resto en CSV
+   editado a mano, más un warehouse dbt/DuckDB y varios JSON derivados. ¿Se justifica la mezcla?
+2. **Tamaño de los prompts de etapa** (ETAPA-6 en especial) frente al principio "lo determinista va
+   en código": ¿cuánta prosa debería migrar a scripts/CSV? Existe `evals/` como requisito previo
+   para podar, y el roadmap G0→G4 ya lo prevé.
+3. **Mezcla de dos mercados** (GT y CO) sobre una base pensada para GT: tabla de costeo, moneda,
+   cuenta externa sin MCP, modo manual en CO. ¿Está bien abstraído o hay ramas especiales?
+4. **Gates de FLUJO.json y estados derivados** (`_ESTADO_FLUJO.csv`, `_DIM_PRODUCTOS.fase` como
+   bitácora): riesgo de divergencia entre lo que dice la bitácora, el flujo y la realidad en Meta.
+5. **Escritura en Meta solo por MCP con confirmación orden por orden:** seguridad vs fricción; la app
+   web avisa "Necesita Claude". ¿Se puede automatizar más sin perder control?
+6. **Pocos datos por decisión:** presupuestos de 3-6 USD/día dan 1-3 ventas por celda; el diseño
+   estadístico (IC bayesiano, agregación por `angulo_key`, replicación 2 de 2) compensa eso. ¿El
+   método sigue siendo decidible a ese volumen?
+7. **Dependencia de herramientas manuales:** LucidBot sin API, render de imágenes por navegador en
+   ChatGPT web, transcripción con Gemini. Son los cuellos de botella operativos.
+
+**Cómo auditar sin romper nada**
+- Solo lectura. No proponer cambios a las reglas del §19 (invariantes) sin justificarlo con
+  evidencia: el código las cita por número.
+- Separar tres tipos de hallazgo: (a) **error o inconsistencia** (corregir ya), (b) **deuda/poda**
+  (simplificar sin cambiar el método), (c) **rediseño** (cambia el método o la arquitectura →
+  candidato a v2.0).
+- Para cada hallazgo: evidencia concreta (archivo/regla), impacto, esfuerzo estimado y riesgo.
+- Conclusión esperada: recomendación explícita **"v2.0 sí/no"**, qué conservar intacto (el método de
+  4 fases, el motor `decidir.py`, el principio un-dato-un-dueño), qué eliminar y en qué orden.
